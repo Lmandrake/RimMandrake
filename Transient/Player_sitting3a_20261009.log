@@ -1,0 +1,772 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.264 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.763400 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001C4DEED4030.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001C4DF115750.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 58 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=169 elapsedMs=170
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=170
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=170 elapsedMs=170
+Tried to get a resource "UI/Commands/TryReconnect" from a different thread. All resources must be loaded in the main thread.
+Tried to get a resource "UI/Designators/Cancel" from a different thread. All resources must be loaded in the main thread.
+[RimMandrake.GimmeSomeSlack] Harmony: patched 26, missing 0
+[RimMandrake.ExplosiveKnockback] Harmony: patched 4, missing 0
+[RimMandrake.GravshipLanding] Harmony: patched 1, missing 0
+[RimMandrake.GravshipLanding] ready.
+[RimMandrake.KeelHoist] Harmony: patched 2, missing 0
+[RimMandrake.KineticArms] Harmony: patched 2, missing 0
+[RimMandrake.Utinni.CathedralPass] Harmony: patched 1, missing 0
+[RimMandrake.Wreckage] Harmony: patched 1, missing 0
+[RimMandrake.Abyss] Harmony: patched 1, missing 0
+[RimMandrake.FeverWood] Harmony: patched 5, missing 0
+[RimMandrake.FloodedCanyon] Harmony: patched 2, missing 0
+[RimMandrake.TerminalBiomes] Harmony: patched 11, missing 0
+[RimMandrake.DivingInteraction] Harmony: patched 10, missing 0
+[RimMandrake.SolarMirrors] Harmony: patched 3, missing 0
+[RimStarWars.SWBestiary.BeastMechanics] Harmony: patched 1, missing 0
+XML error: <bleedRate>0.02</bleedRate> doesn't correspond to any field in type HediffStage. Context: <li><label>feeding</label><minSeverity>0.35</minSeverity><painOffset>0.08</painOffset><bleedRate>0.02</bleedRate></li>
+XML error: <bleedRate>0.05</bleedRate> doesn't correspond to any field in type HediffStage. Context: <li><label>swarming</label><minSeverity>0.75</minSeverity><painOffset>0.15</painOffset><bleedRate>0.05</bleedRate></li>
+XML error: <baseTendDuration>90000</baseTendDuration> doesn't correspond to any field in type HediffCompProperties_TendDuration. Context: <li Class="HediffCompProperties_TendDuration"><baseTendDuration>90000</baseTendDuration></li>
+Could not find a type named BiomesPlus.BiomeWorker_PoisonForest
+Could not find a type named VanillaBiomes.BiomeWorker_Badlands
+Could not find a type named ReGrowthCore.UniversalBiomeWorker
+Could not find a type named BiomeWorker_CypreJungle
+Could not find a type named BiomesPlus.BiomeWorker_Wasteland
+Could not find a type named VanillaBiomes.BiomeWorker_DesertOasis
+XML error: <successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent> doesn't correspond to any field in type QuestNode_End. Context: <li Class="QuestNode_End"><inSignal>EggHatched</inSignal><outcome>Success</outcome><sendStandardLetter>true</sendStandardLetter><successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent></li>
+XML error: <failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent> doesn't correspond to any field in type QuestNode_End. Context: <li Class="QuestNode_End"><inSignal>EggFoundBeforeHatch</inSignal><outcome>Fail</outcome><sendStandardLetter>true</sendStandardLetter><goodwillChangeAmount>-25</goodwillChangeAmount><goodwillChangeFactionOf>$target</goodwillChangeFactionOf><goodwillChangeReason>RUT_HistoryEvent_ReckoningAttempt</goodwillChangeReason><failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent></li>
+XML error: <successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent> doesn't correspond to any field in type QuestNode_End. Context: <li Class="QuestNode_End"><inSignal>EggHatched</inSignal><outcome>Success</outcome><sendStandardLetter>true</sendStandardLetter><successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent></li>
+XML error: <failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent> doesn't correspond to any field in type QuestNode_End. Context: <li Class="QuestNode_End"><inSignal>EggFoundBeforeHatch</inSignal><outcome>Fail</outcome><sendStandardLetter>true</sendStandardLetter><goodwillChangeAmount>-25</goodwillChangeAmount><goodwillChangeFactionOf>$target</goodwillChangeFactionOf><goodwillChangeReason>RUT_HistoryEvent_ReckoningAttempt</goodwillChangeReason><failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent></li>
+[RimMandrake: SW — Bestiary] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\SWBestiary\Patches\SeasWaterline\Waterline_Lane1.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/PawnKindDef[defName="AncientSoldierBoss"]/weaponTags/li[text()="IndustrialGunAdvanced"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AncientArsenal_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_GreyLady"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_AridGrass"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_CreepStern"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_CrimsonCushion"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_Dervish"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationSequence(count=60, lastFailedOperation=Verse.PatchOperationReplace(Defs/PawnKindDef[defName="BMT_Thrumbungus"]/lifeStages/li[1]/bodyGraphicData/drawSize)) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\CreatureResize_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeGamorrean"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeHerglic"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeTrandoshan"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeTogorian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeLasat"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeFeeorin"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeSithMassassi"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeAqualish"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeCathar"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeChagrian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeGungan"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeKaleesh"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeKlatoonian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeNelvaanian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationFindMod(Alpha Animals) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\Ikee_Rename.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="RUT_Jawa_MessImmune"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\JawaMessImmunity.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeHutt"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_VibroBlade found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Empire_DrillInstructorHeskVaro
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Bolting
+Could not resolve cross-reference to Verse.ThingDef named guy762_MandoHelmet_supercom (wanter=apparelRequired)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_DLT19XTargetingBlaster found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Empire_TrooperBoAnder
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Spiking
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_CompositeHelmet (wanter=apparel)
+Could not resolve cross-reference to Verse.ThingDef named guy762_Headband_rebreathermask (wanter=apparel)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_DLT19HeavyBlasterRifle found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Droids_CaptainFourteen
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_DLT19HeavyBlasterRifle found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Droids_Wallop
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_StormtrooperHelmet (wanter=apparel)
+Could not resolve cross-reference: No Verse.ThingDef named Force_Lightsaber_Inquisitor found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Empire_InquisitorVaunt
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_ShopRepair
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Reassembly
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_PrimitiveFabrication
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Formatting
+Could not resolve cross-reference to Verse.ThingDef named guy762_Headband_rebreathermask (wanter=apparel)
+Could not resolve cross-reference: No Verse.ThingDef named DV_MeleeWeapon_SerratedScimitar found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Hutt_MargraveSarrick
+Could not resolve cross-reference: No Verse.ThingDef named GS_Gaffi found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Tusken_GhurrVex
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_CyclerRifle found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Tusken_ShaaNel
+Could not resolve cross-reference to Verse.ThingDef named guy762_TuskenMask (wanter=apparel)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_A280Blaster found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Wildsteam_BoKesh
+Could not resolve cross-reference to Verse.ThingDef named guy762_Headband_rebreathermask (wanter=apparel)
+Could not resolve cross-reference: No Verse.TerrainDef named CypreJungleMud found to give to RimWorld.BiomeDef RUT_Greentide
+Could not resolve cross-reference: No RimWorld.StatDef named EBSG_SkillLossRate found to give to RimWorld.StatModifier (null stat)
+Could not resolve cross-reference: No Verse.WeatherDef named RSW_SW_RedFog found to give to RimWorld.WeatherCommonalityRecord RimWorld.WeatherCommonalityRecord
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Reboot
+Failed to find Verse.PawnKindDef named VAEWaste_Wasteboar. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxscorpion. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxiguana. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxlion. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxbear. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxafox. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Pestigator. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Hydra. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Wasteffalo. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Wastedeer. There are 1331 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_AttackTree. There are 458 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_AttackSelf. There are 458 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_EatWastepack. There are 458 defs of this type loaded.
+Failed to find Verse.HediffDef named VAEWaste_LongToxflu. There are 689 defs of this type loaded.
+Failed to find Verse.HediffDef named VAEWaste_Toxflu. There are 689 defs of this type loaded.
+Config error in Eclipse: world-targeting incident has a biome restriction list
+Config error in SolarFlare: world-targeting incident has a biome restriction list
+Config error in Aurora: world-targeting incident has a biome restriction list
+Config error in CannibalPirate: has a required meme which is not allowed: Cannibal
+Config error in PirateYttakin: has a required meme which is not allowed: AnimalPersonhood
+Config error in RM_FE_Ash_Trace: burnedDef is flammable
+Config error in RM_FE_Ash_Light: burnedDef is flammable
+Config error in RM_FE_Ground_Sand: burnedDef is flammable
+Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+Config error in RM_FE_Ground_Soil: burnedDef is flammable
+Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+Config error in RUT_Jawa_Homestead_Heavy: Cheapest weapon with one of my weaponTags costs 480 but weaponMoney min is 300, so could end up weaponless.
+Config error in RUT_Jawa_Homestead_Specialist: Cheapest weapon with one of my weaponTags costs 530 but weaponMoney min is 450, so could end up weaponless.
+Config error in RM_SpecimenCabinet: is minifiable but not in any thing category
+Config error in RUT_Jawa_DeepDesert_Grunt: Cheapest weapon with one of my weaponTags costs 164.25 but weaponMoney min is 150, so could end up weaponless.
+Config error in RM_SpecimenCabinet: is minifiable but not in any thing category
+Config error in RM_FE_Ash_Trace: burnedDef is flammable
+Config error in RM_FE_Ash_Light: burnedDef is flammable
+Config error in RM_FE_Ground_Sand: burnedDef is flammable
+Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+Config error in RM_FE_Ground_Soil: burnedDef is flammable
+Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+Config error in RUT_Jawa_Junkers_Specialist: Cheapest weapon with one of my weaponTags costs 480 but weaponMoney min is 200, so could end up weaponless.
+Config error in RM_LureAwning: is not minifiable yet has thing categories (could be confusing in thing filters because it can't be moved/stored anyway)
+Config error in RM_LureAwning: is not minifiable yet has thing categories (could be confusing in thing filters because it can't be moved/stored anyway)
+Config error in RM_Illisk: has tool with linkedBodyPartsGroup Teeth but body Snake has no parts with that group.
+Config error in RM_Illisk: has tool with linkedBodyPartsGroup Teeth but body Snake has no parts with that group.
+Config error in RUT_ShieldGenerator: is minifiable but not in any thing category
+Config error in RUT_ShieldGenerator: is minifiable but not in any thing category
+Failed to find any textures at RotSpecies/Swarmling/Swarmling while constructing Multi(initPath=RotSpecies/Swarmling/Swarmling, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Cannot init Graphic of class Verse.Graphic_Linked
+Could not load Texture2D at 'Things/Item/Resource/ComponentSpacer' for def 'RM_HagglerModule' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/ComponentSpacer' for def 'RM_ManifestDecoder' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/ComponentSpacer' for def 'RM_TransponderScanner' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/ComponentSpacer' for def 'RM_PriceAlmanac' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Plant/RUT_Fuzz
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantA
+Collection cannot init: No textures found at path Things/Item/Fish/RM_SkarrinCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_KarrekCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_VizhikCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_LoomuCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_HulduCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_IvvolCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Ikkal
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Tarrik
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Duul
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Ullo
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Ozhu
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Vobbal
+Collection cannot init: No textures found at path Things/Plant/DosimeterLawn
+Collection cannot init: No textures found at path Things/Plant/VaultRoot
+Collection cannot init: No textures found at path Things/Plant/RM_Scumgrass
+Collection cannot init: No textures found at path Things/Plant/RM_TallScumgrass
+Collection cannot init: No textures found at path Things/Plant/RM_Pusberry
+Collection cannot init: No textures found at path Things/Plant/RM_Boilbulb
+Collection cannot init: No textures found at path Things/Plant/RM_Wartshrub
+Collection cannot init: No textures found at path Things/Plant/RM_Cinderfelt
+Collection cannot init: No textures found at path Things/Item/RM_Etchant
+Collection cannot init: No textures found at path Things/Item/RM_DielectricGel
+Collection cannot init: No textures found at path Things/Item/RM_Etchant
+Collection cannot init: No textures found at path Things/Item/RM_MedicalCoagulant
+Collection cannot init: No textures found at path Things/Item/RM_BloomLiquor
+Collection cannot init: No textures found at path Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods
+Collection cannot init: No textures found at path Things/Item/Fish/RM_ShullaCatch
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RM_FessuCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RM_OdduCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RM_TarnnCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Item/Fish/RM_EeshCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_MuddalCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_KarrashCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Saal
+Collection cannot init: No textures found at path Things/Item/Fish/RM_BladderboilCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_DossCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_ThuumCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_EkkelCatch
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantB
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_OommokSkeleton
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_MuurrokSkeleton
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_GuzzkaSkeleton
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_VozzikSkeleton
+Collection cannot init: No textures found at path Things/Item/Fish/RM_CoolantEelCatch
+Collection cannot init: No textures found at path Things/Plant/RM_Braskeen/RM_Braskeen
+Collection cannot init: No textures found at path Things/Plant/RM_Ismerrow/RM_Ismerrow
+Collection cannot init: No textures found at path Things/Item/Plant/RM_UltracactusPad
+Collection cannot init: No textures found at path Things/Item/Meal/RM_VorrelSeedDish
+Could not load Texture2D at 'Things/Item/Resource/RM_SweetlineToken' for def 'RM_SweetlineToken' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FE_ScorchFruit
+Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain
+Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain
+Collection cannot init: No textures found at path Things/Plant/RM_Brakkel/RM_Brakkel_a
+Collection cannot init: No textures found at path Things/Plant/RM_Maddrick/RM_Maddrick_a
+Collection cannot init: No textures found at path Things/Plant/RM_Illurin/RM_Illurin_a
+Could not load Texture2D at 'Things/Item/Plant/RM_YearningFruitHarvested' for def 'RM_YearningFruitHarvested' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilImpression/RM_FossilImpression
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton
+Failed to find any textures at Animal/RockTroll/RockTroll while constructing Multi(initPath=Animal/RockTroll/RockTroll, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Collection cannot init: No textures found at path Things/Item/Resource/RM_RadioactiveSuppressant/RM_RadioactiveSuppressant
+Collection cannot init: No textures found at path Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar
+Collection cannot init: No textures found at path Things/Item/Resource/RM_VaulmLacquer/RM_VaulmLacquer
+Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathSap/RM_DrommathSap
+Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap
+Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals
+Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathCream/RM_SekkulaathCream
+Collection cannot init: No textures found at path Things/Item/RM_Vexxith/RM_Vexxith
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RSW_KraytSkeleton
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RSW_GreaterKraytSkeleton
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RSW_WarWyrmSkeleton
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RSW_MeeCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RSW_FaaCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RSW_LaaCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path swresource/RSW_ZakkroEgg
+Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Tubbik' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Zhurr' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Hurrok' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Vhessa' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Fessu' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Krellik' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Oddu' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Oovu' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Tarnn' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Plant/DosimeterLawn
+Collection cannot init: No textures found at path Things/Plant/VaultRoot
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 69483433]
+  at Verse.Graphic_Linked.get_MatSingle () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Graphic.get_MatNorth () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Graphic.MatAt (Verse.Rot4 rot, Verse.Thing thing) [0x00020] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.BuildableDef.ResolveIcon () [0x00074] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.ThingDef.ResolveIcon () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.BuildableDef.<PostLoad>b__78_0 () [0x00021] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 
+Alien race successfully completed 280 patches (50 pre, 82 post, 148 trans) with harmony.
+KCSG has Created 7274 symbolDefs for vanilla and DLCs
+[RimMandrake.FlowWorks] Harmony: patched 31, missing 0
+[GimmeSomeSlack] targets: PowerConduit, WaterproofConduit, KCSG_PowerConduit; invisible=True
+[RimMandrake.HugeThings] ready: 9 huge plants, 0 huge pawn races.
+[RimMandrake.TitanicCreatures] ready: 4 patches, 300 races auto-tiered.
+[RimMandrake.Inhabited] Harmony: patched 3, missing 0
+[RimMandrake.Inhabited] ready: 2 patches, 294 characters, 4 places, 0 casts.
+[RimMandrake.Ninefold] subscribed to RimMandrake.Aftermath.ChronicleEvents.
+[RimMandrake.Ninefold] Harmony: patched 31, missing 0
+[RimMandrake.Ninefold] ready: 27 event-hook patches.
+[RimMandrake.Aftermath] Harmony: patched 6, missing 0
+[RimMandrake.Aftermath] ready: 6 battle-recorder patches.
+[RimMandrake.LuminousPigment] Harmony: patched 14, missing 0
+[RimMandrake.PlanetPresetPrime] Harmony: patched 1, missing 0
+[RimMandrake.PlanetPresetPrime] loaded: will prime coverage 1, subdivisions 7. MLP type ABSENT.
+[RimMandrake.RaidRedesigner] Harmony: patched 5, missing 0
+[RimMandrake.RaidRedesigner] mandrake.rm.property not active - BetrayedTrader capture hook skipped.
+[RimMandrake.RaidRedesigner] ready: 5 capture-hook patches.
+[RimMandrake.StarWars.WeatherSuite] loaded — terminator-band and nightside-band geometry checks armed (MapComponent_TerminatorBand, IncidentWorker_NightsideAurora). No Harmony patches: both hooks are ordinary MapComponent/IncidentWorker overrides.
+[RimUtinni.EmpirePursuit] Harmony: patched 3, missing 0
+[Baroque Biomes] roster 30 entries (CreatureBehaviors:0, EnvironmentalHazards:0, Wreckage:0, Abyss:1, BlueDesert:1, Cauldron:1, Contagion:1, FeverWood:1, FloodedCanyon:1, GelatinousSlime:1, Greentide:1, LanternDeeps:1, LeaningScrub:1, LongShade:1, Miasma:1, NightsideIce:1, Pyrelands:1, RustCathedral:1, Stillsand:1, TerminalBiomes:5, TheForge:1, TheRot:1, TheSump:1, Warscar:1, Wasteland:1, Webwork:1, WeepingStones:1, DivingInteraction:6, MovingDunes:0, SeaShores:0); 34 BiomeDef(s) mapped
+[Baroque Biomes] worldgen gate applied (startup): all biomes on
+[RimMandrake.Cauldron] Harmony: patched 1, missing 0
+[RM Cauldron] dewfall variants not on disk yet (no swap for): RM_CrystalFlower, RM_BloodBouquet, RM_RedBugloss, RM_KeeningCordax, RM_GiantToxicFlower
+[RM Cauldron] assay fleck overlays not on disk yet: Things/Plant/RM_AssayFlecks/Flecks_Light, Things/Plant/RM_AssayFlecks/Flecks_Heavy
+[RimMandrake.LanternDeeps] Harmony: patched 4, missing 0
+[RimMandrake.Pyrelands] fulgurite-spawn: armed; strikes on sand-family ground may leave a fulgurite
+[RimMandrake.Pyrelands] fire-tick-ash-scorchfruit: armed; burning cells on scorchable ground may dust loose ash and rarely seed a scorch-fruit pod
+[RimMandrake.Pyrelands] pyrelands-wildplant-allowlist: armed; only RM_FE_ grasses may spawn wild on a Pyrelands map, however a foreign plant reaches the candidate list.
+[RimMandrake.Pyrelands] furnace-beast heat immunity: armed; RM_FurnaceBeast absorbs all Heat-category damage.
+[RimMandrake.Pyrelands] furnace-beast herd world-recall: armed; surviving furnace-beasts rejoin the world when their map is removed.
+[RimMandrake.RustCathedral.Hum] Harmony: patched 12, missing 0
+[RimMandrake.RustCathedral.Walls] Harmony: patched 1, missing 0
+[RimMandrake.TheForge] Harmony: patched 3, missing 0
+[RimMandrake.Scarlands] Harmony: patched 12, missing 0
+[RimMandrake.MovingDunes] sand-holds-on-sand: armed; on a dune-field map, Sand and SoftSand terrain hold depth (water, space and full-fillage buildings still refuse it)
+[RimMandrake.MovingDunes] ambient-decay-suppression: armed; vanilla's -1/180 per-cell-visit sand decay is scaled by the map material's ambientDecayFactor (0 = drifts persist)
+[RimMandrake.MovingDunes] vanilla-sand-layer-suppression: armed; the vanilla sand submesh is disabled on skinned maps so the tinted layer never double-draws
+[RimMandrake.MovingDunes] clear-sand-yield: armed; shovelling drift on a dune field whose biome names a clearYield drops it in proportion to the depth removed
+[RimMandrake.MovingDunes] hide-depths: 3520 items @0.45, 561 plants @0.55, 124 filth @0.2 (of 9036 ThingDefs; defs with their own value untouched).
+[RimMandrake.SeaShores] Harmony: patched 3, missing 0
+[RimMandrake.Utinni.FallLineArrivals] Harmony: patched 1, missing 0
+[RimMandrake.Utinni.ShipShields] Harmony: patched 2, missing 0
+[RimMandrake.Utinni.ShipShields] ready.
+[RimUtinni.UnfinishedLine] Harmony: patched 3, missing 0
+Type Patch_LeaveBehind_Gizmo probably needs a StaticConstructorOnStartup attribute, because it has a field icon of type Texture2D. All assets must be loaded in the main thread.
+Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.
+Type RM_MapComponent_HullBoltMarks probably needs a StaticConstructorOnStartup attribute, because it has a field mat of type Material. All assets must be loaded in the main thread.
+Type RM_Building_TractionLance probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.
+Type RM_GameCondition_Mirage probably needs a StaticConstructorOnStartup attribute, because it has a field bandMat of type Material. All assets must be loaded in the main thread.
+Type SectionLayer_RM_SkyColumns probably needs a StaticConstructorOnStartup attribute, because it has a field hazeMat of type Material. All assets must be loaded in the main thread.
+Type RM_CapstanTurret probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.
+Type RM_MapComponent_MirrorLight probably needs a StaticConstructorOnStartup attribute, because it has a field spotMats of type Material[]. All assets must be loaded in the main thread.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 7)
+MVCF successfully applied 0 patches
+[RimMandrake.Pyrelands] growth-stage art: armed for 1 plant def(s)
+Unloading 289 unused Assets to reduce memory usage. Loaded Objects now: 46102.
+Total: 316.006200 ms (FindLiveObjects: 2.313200 ms CreateObjectMapping: 2.415400 ms MarkObjects: 310.661500 ms  DeleteObjects: 0.615600 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=40 elapsedMs=114360
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=1193 elapsedMs=115554
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=115554
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=115562
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=115562
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=115562
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=115562
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=2 elapsedMs=115564
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=115567
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=115568
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=115568
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=115572
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=37 elapsedMs=115609
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=1248 elapsedMs=115609
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=37 elapsedMs=115609
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: bea44e4dcf5246e4b6e399d118f68005
+Error in WorldGenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref D5A5D0C7]
+  at RimWorld.IdeoFoundation_Deity.FillDeity (RimWorld.IdeoFoundation_Deity+Deity deity) [0x00078] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.IdeoFoundation_Deity.GenerateNewDeity () [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.IdeoFoundation_Deity.GenerateDeities () [0x00056] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.IdeoFoundation_Deity.Init (RimWorld.IdeoGenerationParms parms) [0x00032] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.IdeoGenerator.MakeFixedIdeo (RimWorld.IdeoGenerationParms parms) [0x00010] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionIdeosTracker.ChooseOrGenerateIdeo (RimWorld.IdeoGenerationParms parms) [0x000a0] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.NewGeneratedFaction (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionGeneratorParms parms) [0x0008a] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX OskarPotocki.VEF: Void VEF.Planet.VanillaExpandedFramework_FactionGenerator_NewGeneratedFaction_Patch:Postfix(PlanetLayer layer, FactionGeneratorParms parms, Faction& __result)
+  at RimWorld.FactionGenerator.CreateFactionAndAddToManager (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionDef facDef) [0x00065] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.AddFactionToManager (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionDef facDef) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.InitializeFactions (RimWorld.Planet.PlanetLayer layer, System.Collections.Generic.List`1[T] factions) [0x000b0] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.GenerateFactionsIntoWorldLayer (RimWorld.Planet.PlanetLayer layer, System.Collections.Generic.List`1[T] factions) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX mlie.horrors: Void Horrors.FactionGenerator_GenerateFactionsIntoWorldLayer:Postfix()
+  at RimWorld.Planet.WorldGenStep_Factions.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (1 of 1) on tile 89401,0.
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (2 of 2) on tile 74940,0.
+Unloading 3 Unused Serialized files (Serialized files now loaded: 7)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.724100 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46298.
+Total: 282.711000 ms (FindLiveObjects: 1.506900 ms CreateObjectMapping: 2.020100 ms MarkObjects: 279.110600 ms  DeleteObjects: 0.073000 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - erdelf.HumanoidAlienRaces
+  - Mlie.Horrors
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - VanillaExpanded.VFEFactory
+  - mandrake.rm.acousticscanner
+  - mandrake.rm.flowworks
+  - mandrake.rm.bazaar
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.explosiveknockback
+  - mandrake.rm.graffiti
+  - mandrake.rm.gravshiplanding
+  - mandrake.rm.hugethings
+  - mandrake.rm.inhabited
+  - mandrake.rm.keelhoist
+  - mandrake.rm.kineticarms
+  - mandrake.rm.ninefold
+  - mandrake.rm.aftermath
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.planetpresetprime
+  - mandrake.rm.proximityhatch
+  - mandrake.rm.raidredesigner
+  - mandrake.rm.visibility
+  - mandrake.rm.watchers
+  - mandrake.rm.weathersuite
+  - mandrake.rm.wreckedmachines
+  - mandrake.rsw.bacta
+  - mandrake.rsw.droidworks
+  - mandrake.rsw.trophycraft
+  - mandrake.rut.antiquities
+  - mandrake.rut.ashkarrflora
+  - mandrake.rut.cathedralpass
+  - mandrake.rut.droidrepairjobs
+  - mandrake.rut.empirepursuit
+  - mandrake.rut.rites
+  - mandrake.rm.biomes
+  - mandrake.rm.shipvermin
+  - mandrake.rm.solarmirrors
+  - mandrake.rm.warcasket
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.falllinearrivals
+  - mandrake.rut.patches
+  - mandrake.rut.eggreckoning
+  - mandrake.rut.shipshields
+  - mandrake.rut.unfinishedline
+  - mandrake.rut.wasterun
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 2867,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[RimMandrake.StarWars.WeatherSuite] no PlanetGeometryDef loaded — terminator-band and nightside-band checks will always return false. The RimUtinni wiring mod ships the one Ash'karr needs.
+[RimMandrake.MovingDunes] dune field armed on Desert with material RM_Dunes_Sand; wind SE, K=2005 attempts/batch over 62500 cells.
+[Ninefold] front reckoned at landing: Ishko (loudness 0.0)
+[Ninefold] Ozzik satiation +15.0 (research completed: ComplexFurniture) -> 15.0 [Neutral]
+[Ninefold] front FLIPPED mid-map on a violent swing (Ozzik 15.0) -> Ozzik (loudness 15.0)
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): ComplexFurniture) -> 3.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: PassiveCooler) -> 30.0 [Content]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): PassiveCooler) -> 6.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: Stonecutting) -> 45.0 [Content]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): Stonecutting) -> 9.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: ComplexClothing) -> 60.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): ComplexClothing) -> 12.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: Electricity) -> 75.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): Electricity) -> 15.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: NutrientPaste) -> 90.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): NutrientPaste) -> 18.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: AirConditioning) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): AirConditioning) -> 21.0 [Content]
+Unloading 0 Unused Serialized files (Serialized files now loaded: 7)
+Could not execute post-long-event action. Exception: System.TypeLoadException: Could not resolve type with token 0100002e from typeref (expected class 'RimMandrake.Property.TakingEvent' in assembly 'RimMandrakeProperty, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null')
+[Ref 83DCA415]
+(wrapper managed-to-native) System.Reflection.MonoMethodInfo.get_method_info(intptr,System.Reflection.MonoMethodInfo&)
+  at System.Reflection.MonoMethodInfo.GetMethodInfo (System.IntPtr handle) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Reflection.RuntimeMethodInfo.GetPseudoCustomAttributes () [0x00002] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.MonoCustomAttrs.GetPseudoCustomAttributes (System.Reflection.ICustomAttributeProvider obj, System.Type attributeType) [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.MonoCustomAttrs.IsDefined (System.Reflection.ICustomAttributeProvider obj, System.Type attributeType, System.Boolean inherit) [0x00032] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Reflection.RuntimeMethodInfo.IsDefined (System.Type attributeType, System.Boolean inherit) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Attribute.IsDefined (System.Reflection.MemberInfo element, System.Type attributeType, System.Boolean inherit) [0x00088] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at Verse.GenAttribute.HasAttribute[T] (System.Reflection.MemberInfo memberInfo) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.GenAttribute.TryGetAttribute[T] (System.Reflection.MemberInfo memberInfo, T& customAttribute) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at LudeonTK.DebugTabMenu_Actions.InitActions (LudeonTK.DebugActionNode absRoot) [0x00080] in <61e4173561894da49d210260257b5097>:0 
+  at LudeonTK.Dialog_Debug.TrySetupNodeGraph () [0x00040] in <61e4173561894da49d210260257b5097>:0 
+  at LudeonTK.Dialog_Debug.GetNode (System.String path) [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at LudeonTK.Dialog_DevPalette.EnsureAllNodesValid () [0x00021] in <61e4173561894da49d210260257b5097>:0 
+LudeonTK.Dialog_DevPalette..ctor()
+  at Verse.DebugWindowsOpener.TryOpenOrClosePalette () [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Game+<>c.<FinalizeInit>b__86_0 () [0x0000f] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 
+Faction leader for Ascendant Helix is null.
+Faction leader for Deepwater Compact is null.
+Faction leader for Free Droid Enclaves is null.
+Faction leader for Geonosian Foundry Hive is null.
+Faction leader for Hutt Cartel is null.
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 52303.
+Total: 325.473600 ms (FindLiveObjects: 1.691000 ms CreateObjectMapping: 1.967700 ms MarkObjects: 321.712500 ms  DeleteObjects: 0.102100 ms)
+
+[JawaBench] ready: 387 tools, build a33a471fa522
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] event recorder: damage=True kill=True lineage=True
+[JawaBench] context: modSet 58/f11afac8, toolSet 6b317080, defDump ARMED, engine 1.6.4871 rev591
+[TILEGEN_SILENT_REUSE_1] call #1 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[Stillsand] precious cave: granite yardang north-east (80 cells, yardang-shaped), chamber r=1 at (68, 0, 82), mouth (70, 0, 88) (0 deg off the shadow line, facing-away dot 1.00, sun from pinned sun).
+[Stillsand] precious cave roll: RM_PreciousCave_SealedCache (RM) in the granite yardang at (68, 0, 82) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5, RSW_PreciousCave_KraytDen=0.6, RUT_PreciousCave_DebtCave=0.8]
+[Stillsand] cave place: drip source at (68, 0, 82)
+[RimMandrake.MovingDunes] dune field armed on RM_Stillsand with material RM_Dunes_Sand; wind N, K=321 attempts/batch over 10000 cells.
+[TILEGEN_SILENT_REUSE_1] call #1 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=1 map.Index=1
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Terrorworm10537 issued IdleError wait job. The behavior tree should never get here.
+Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.
+Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.
+Unloading 2 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 37 unused Assets to reduce memory usage. Loaded Objects now: 53874.
+Total: 323.989300 ms (FindLiveObjects: 3.880100 ms CreateObjectMapping: 2.070100 ms MarkObjects: 317.891800 ms  DeleteObjects: 0.146900 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #2 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #2 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=2 map.Index=1
+Unloading 1 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 54240.
+Total: 317.814100 ms (FindLiveObjects: 2.457700 ms CreateObjectMapping: 2.917100 ms MarkObjects: 312.362700 ms  DeleteObjects: 0.076200 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #3 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #3 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=3 map.Index=1
+[JawaBench] JawaBenchTerrainTools.DrainLog was given 1 argument(s) it does not declare and the bridge DROPPED them silently: offset. Accepted: ctx, cancellationToken, limit, errorsOnly, contains
+Unloading 1 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 54486.
+Total: 331.863400 ms (FindLiveObjects: 1.719300 ms CreateObjectMapping: 1.921600 ms MarkObjects: 328.146100 ms  DeleteObjects: 0.076000 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #4 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #4 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=4 map.Index=1
+Unloading 1 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 55128.
+Total: 330.894000 ms (FindLiveObjects: 1.870300 ms CreateObjectMapping: 2.121500 ms MarkObjects: 326.810100 ms  DeleteObjects: 0.091700 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #5 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #5 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=5 map.Index=1
+Unloading 1 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 55599.
+Total: 331.698100 ms (FindLiveObjects: 1.787200 ms CreateObjectMapping: 2.072600 ms MarkObjects: 327.769500 ms  DeleteObjects: 0.068300 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #6 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #6 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=6 map.Index=1
+Unloading 1 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 55778.
+Total: 338.661200 ms (FindLiveObjects: 1.765500 ms CreateObjectMapping: 2.003600 ms MarkObjects: 334.826600 ms  DeleteObjects: 0.065100 ms)
+
+Could not load Texture2D at 'Biomes/PoisonForest' in any active mod or in base resources.
+[TILEGEN_SILENT_REUSE_1] call #7 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #7 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=7 map.Index=1
+Playing sound RM_Hum_Thalquith_Low on camera, but it has sub-sounds in the world.
+Playing sound RM_Hum_Thalquith_Mid on camera, but it has sub-sounds in the world.
+Exception ticking RM_Mirrelbole69623: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF]
+  at Verse.RegionAndRoomQuery.RegionAt (Verse.IntVec3 c, Verse.Map map, Verse.RegionType allowedRegionTypes) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.RegionAndRoomQuery.DistrictAt (Verse.IntVec3 c, Verse.Map map, Verse.RegionType allowedRegionTypes) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.RegionAndRoomQuery.RoomAt (Verse.IntVec3 c, Verse.Map map, Verse.RegionType allowedRegionTypes) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.RegionAndRoomQuery.RoomAtOrAdjacent (Verse.IntVec3 c, Verse.Map map, Verse.RegionType allowedRegionTypes) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.GridsUtility.GetRoomOrAdjacent (Verse.IntVec3 loc, Verse.Map map, Verse.RegionType allowedRegionTypes) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.PlantUtility.GrowthSeasonNow (Verse.IntVec3 c, Verse.Map map, Verse.ThingDef plantDef) [0x00006] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX mandrake.rm.terminalbiomes: Void RimMandrake.TerminalBiomes.RM_Patch_CryoGrowthSeason:Postfix(IntVec3 c, Map map, Boolean& __result)
+  at RimWorld.Plant.TickLong () [0x00021] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Thing.DoTick () [0x00199] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.TickList.Tick () [0x00139] in <61e4173561894da49d210260257b5097>:0 
+Exception ticking RM_Mirrelbole69895: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole62405: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole64440: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole62776: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole70909: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole65161: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole73369: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole71052: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole67178: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole69910: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole61914: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole72305: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole60523: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole70964: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole63353: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole67376: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole74119: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole62447: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole66710: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole61729: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole70195: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole62523: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole70630: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole74997: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole63473: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole67751: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole63015: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole75333: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole69495: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole69780: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole62021: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole71194: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Unloading 1 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 56345.
+Total: 370.297300 ms (FindLiveObjects: 1.806000 ms CreateObjectMapping: 2.107800 ms MarkObjects: 366.309200 ms  DeleteObjects: 0.073900 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #8 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #8 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=8 map.Index=1
+[Ninefold] Oomo satiation +8.0 (a marriage, the family grows) -> 8.0 [Neutral]
+[Ninefold] MobUnloo satiation +3.0 (a marriage, a contract struck) -> 3.0 [Neutral]
+[Ninefold] Ozzik satiation +3.0 (a marriage, an act of statecraft) -> 100.0 [Exalted]
+Geyser spray sustainer still playing after 1000 ticks. Force-ending.
+Geyser spray sustainer still playing after 1000 ticks. Force-ending.
+Playing sound RM_Hum_Thalquith_Low on camera, but it has sub-sounds in the world.
+Playing sound RM_Hum_Thalquith_Mid on camera, but it has sub-sounds in the world.
+Exception ticking RM_Mirrelbole90289: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Exception ticking RM_Mirrelbole100455: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref B9174DAF] Duplicate stacktrace, see ref for original
+Unloading 1 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 56524.
+Total: 394.051000 ms (FindLiveObjects: 1.999300 ms CreateObjectMapping: 2.125600 ms MarkObjects: 389.852600 ms  DeleteObjects: 0.072900 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #9 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #9 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=9 map.Index=1
+Geyser spray sustainer still playing after 1000 ticks. Force-ending.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 56730.
+Total: 397.098700 ms (FindLiveObjects: 1.773900 ms CreateObjectMapping: 2.031600 ms MarkObjects: 393.210400 ms  DeleteObjects: 0.082500 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #10 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #10 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=10 map.Index=1
+Geyser spray sustainer still playing after 1000 ticks. Force-ending.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 56858.
+Total: 411.541900 ms (FindLiveObjects: 1.925500 ms CreateObjectMapping: 2.210100 ms MarkObjects: 407.329400 ms  DeleteObjects: 0.076300 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #11 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #11 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=11 map.Index=1
+Geyser spray sustainer still playing after 1000 ticks. Force-ending.
+Unloading 1 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 56991.
+Total: 401.299900 ms (FindLiveObjects: 1.802000 ms CreateObjectMapping: 2.073600 ms MarkObjects: 397.348900 ms  DeleteObjects: 0.075100 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #12 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #12 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=12 map.Index=1
+Geyser spray sustainer still playing after 1000 ticks. Force-ending.
+Geyser spray sustainer still playing after 1000 ticks. Force-ending.
+Caribou111165 on unwalkable cell (62, 0, 61). Teleporting to (62, 0, 60)
+Unloading 2 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 57063.
+Total: 405.133400 ms (FindLiveObjects: 1.908300 ms CreateObjectMapping: 1.980400 ms MarkObjects: 401.172800 ms  DeleteObjects: 0.071600 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #13 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #13 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=13 map.Index=1
+Unloading 1 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 57142.
+Total: 439.346100 ms (FindLiveObjects: 1.902000 ms CreateObjectMapping: 2.197600 ms MarkObjects: 435.155200 ms  DeleteObjects: 0.090700 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #14 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #14 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=14 map.Index=1
+Unloading 1 Unused Serialized files (Serialized files now loaded: 7)
+Unloading 0 unused Assets to reduce memory usage. Loaded Objects now: 57256.
+Total: 473.408100 ms (FindLiveObjects: 1.891700 ms CreateObjectMapping: 2.132200 ms MarkObjects: 469.290100 ms  DeleteObjects: 0.093600 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #15 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[TILEGEN_SILENT_REUSE_1] call #15 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=15 map.Index=1

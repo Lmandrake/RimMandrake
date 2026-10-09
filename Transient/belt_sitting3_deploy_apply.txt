@@ -1,0 +1,16 @@
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+    ~  Biomes/_Kits/CreatureBehaviors/Assemblies/RimMandrake.CreatureBehaviors.dll.srchash
+    ~  Biomes/_Kits/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll
+    ~  Biomes/_Kits/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll.srchash
+    -> VERIFIED in sync
+
+Deployed 22 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+done
