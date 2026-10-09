@@ -465,9 +465,11 @@ MEASURED about the live world — the live system is the only instrument for "ri
   a list, a `ModExtension`, a `ThingDef`'s own attribute) — never assume it gates a
   whole `<Operation>` block; guard with `PatchOperationFindMod`/`Conditional` instead,
   or (the fix actually applied) test that the referenced def actually exists before
-  applying. **74 more `<Operation MayRequire=…>` guards found sweep-wide and are
-  UNVERIFIED** — any one that pulls in a genuinely absent mod's item can trigger the
-  same reset. Sweep: `PATCH_MAYREQUIRE_GUARD_INERT_1`.
+  applying. MEASURED 2026-10-09: **0** live top-level `<Operation MayRequire>` remain in
+  `src/` and all 14 `<li>`-level attributes resolve (`Transient/belt_mayrequire_census_20261009.md`).
+  ⚠️ A composed member (e.g. `mandrake.rm.longshade`) has a standalone About.xml in `src/` but
+  **no packageId at runtime** — its id is folded into `mandrake.rm.biomes`, so a `MayRequire`
+  naming a member id silently never loads (sitting 2 found 26 such sites).
 - **Dumps and harvests decay** (owner, 2026-08-27): trust one only after its
   fingerprint matches the live mod set; the frozen `official` dump is the sole
   design target (`GAME_STATE_WORKFLOW.md`).
