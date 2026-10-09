@@ -19,6 +19,7 @@ namespace RimMandrake.Ninefold
     // Oomo claim about it either way, and this pass is not the place to
     // guess a sign for grief).
     [HarmonyPatch(typeof(PregnancyUtility), nameof(PregnancyUtility.ApplyBirthOutcome))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: BirthOutcome")]
     public static class Patch_BirthOutcome
     {
         [HarmonyPostfix]

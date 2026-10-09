@@ -15,6 +15,7 @@ namespace RimMandrake.Ninefold
     // once per marriage, so no double-count. Gated to a marriage that touches a
     // player colonist; ___pawn is the tracker's own pawn (Harmony field inject).
     [HarmonyPatch(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.AddDirectRelation))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: Marriage")]
     public static class Patch_Marriage
     {
         [HarmonyPostfix]

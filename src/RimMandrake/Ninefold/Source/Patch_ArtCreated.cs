@@ -13,6 +13,7 @@ namespace RimMandrake.Ninefold
     // is called once when a piece of art is finished and attributed to its
     // maker. Gated to art made by a player colonist.
     [HarmonyPatch(typeof(CompArt), nameof(CompArt.JustCreatedBy))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: ArtCreated")]
     public static class Patch_ArtCreated
     {
         [HarmonyPostfix]

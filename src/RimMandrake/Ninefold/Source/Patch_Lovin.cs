@@ -32,6 +32,7 @@ namespace RimMandrake.Ninefold
     // runs from inside this same call) -- a stable, well-trodden hook, not
     // a private toil internal.
     [HarmonyPatch(typeof(HistoryEventsManager), nameof(HistoryEventsManager.RecordEvent))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: Lovin")]
     public static class Patch_Lovin
     {
         [HarmonyPostfix]

@@ -49,6 +49,7 @@ namespace RimMandrake.Ninefold
     // real content for any def, ever. Harmless no-op on every def that doesn't
     // have this bug (i.e. everything except RR_ElectricityBasics today).
     [HarmonyPatch(typeof(ResearchManager), nameof(ResearchManager.FinishProject))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: ResearchManager_NoSelfPrereq")]
     public static class Patch_ResearchManager_NoSelfPrereq
     {
         [HarmonyPrefix]

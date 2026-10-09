@@ -24,6 +24,7 @@ namespace RimMandrake.Ninefold
     // identify a droid pawn, so it needs no compile-time dependency on that
     // mod's assembly.
     [HarmonyPatch(typeof(Pawn), nameof(Pawn.SetFaction))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: DroidOnline")]
     public static class Patch_DroidOnline
     {
         [HarmonyPostfix]

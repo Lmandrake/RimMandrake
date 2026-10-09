@@ -13,6 +13,7 @@ namespace RimMandrake.Ninefold
     // is the single choke every capture funnels through (it sets GuestStatus to
     // Prisoner). Filtered to captures BY the player faction.
     [HarmonyPatch(typeof(Pawn_GuestTracker), nameof(Pawn_GuestTracker.CapturedBy))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: PrisonerCaptured")]
     public static class Patch_PrisonerCaptured
     {
         [HarmonyPostfix]

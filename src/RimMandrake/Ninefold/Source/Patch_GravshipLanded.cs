@@ -25,6 +25,7 @@ namespace RimMandrake.Ninefold
     // that path ever needs the same treatment, it is a separate hook, not an
     // extension of this one.
     [HarmonyPatch(typeof(GenStep_GravshipMarker), nameof(GenStep_GravshipMarker.Generate))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: GravshipLanded_ReckonFront")]
     public static class Patch_GravshipLanded_ReckonFront
     {
         [HarmonyPostfix]

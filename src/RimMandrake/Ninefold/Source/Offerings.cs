@@ -195,6 +195,7 @@ namespace RimMandrake.Ninefold
 
     // ---- taken: claimed in place ------------------------------------------
     [HarmonyPatch(typeof(Designator_Claim), nameof(Designator_Claim.DesignateThing))]
+    [RimMandrake.Shared.PatchFeature("Offerings", typeof(RM_NinefoldSettings), "offeringsEnabled")]
     public static class Patch_FreshFind_Claimed
     {
         [HarmonyPostfix]
@@ -208,6 +209,7 @@ namespace RimMandrake.Ninefold
 
     // ---- taken: a found minified machine installed ------------------------
     [HarmonyPatch(typeof(Blueprint_Install), nameof(Blueprint_Install.TryReplaceWithSolidThing))]
+    [RimMandrake.Shared.PatchFeature("Offerings", typeof(RM_NinefoldSettings), "offeringsEnabled")]
     public static class Patch_FreshFind_Installed
     {
         [HarmonyPrefix]
@@ -228,6 +230,7 @@ namespace RimMandrake.Ninefold
 
     // ---- used: switched on and powered ------------------------------------
     [HarmonyPatch(typeof(CompPowerTrader), nameof(CompPowerTrader.PowerOn), MethodType.Setter)]
+    [RimMandrake.Shared.PatchFeature("Offerings", typeof(RM_NinefoldSettings), "offeringsEnabled")]
     public static class Patch_FreshFind_PoweredOn
     {
         [HarmonyPostfix]
@@ -242,6 +245,7 @@ namespace RimMandrake.Ninefold
 
     // ---- used: worked at --------------------------------------------------
     [HarmonyPatch(typeof(Building_WorkTable), nameof(Building_WorkTable.UsedThisTick))]
+    [RimMandrake.Shared.PatchFeature("Offerings", typeof(RM_NinefoldSettings), "offeringsEnabled")]
     public static class Patch_FreshFind_WorkedAt
     {
         [HarmonyPostfix]
@@ -259,6 +263,7 @@ namespace RimMandrake.Ninefold
     // lose their chance here.
     [HarmonyPatch(typeof(WorldComponent_GravshipController),
                   nameof(WorldComponent_GravshipController.InitiateTakeoff))]
+    [RimMandrake.Shared.PatchFeature("Offerings", typeof(RM_NinefoldSettings), "offeringsEnabled")]
     public static class Patch_FreshFind_Departed
     {
         [HarmonyPrefix]
@@ -281,6 +286,7 @@ namespace RimMandrake.Ninefold
     // ════════════════════════════════════════════════════════════════════
 
     [HarmonyPatch(typeof(Building), nameof(Building.GetGizmos))]
+    [RimMandrake.Shared.PatchFeature("Offerings", typeof(RM_NinefoldSettings), "offeringsEnabled")]
     public static class Patch_LeaveBehind_Gizmo
     {
         private static Texture2D icon;
@@ -318,6 +324,7 @@ namespace RimMandrake.Ninefold
     // the map has NO grav anchor. On an anchored map nothing is abandoned, so
     // nothing is lost forever and no favour moves — the mark simply waits.
     [HarmonyPatch(typeof(GravshipUtility), nameof(GravshipUtility.AbandonMap))]
+    [RimMandrake.Shared.PatchFeature("Offerings", typeof(RM_NinefoldSettings), "offeringsEnabled")]
     public static class Patch_LeaveBehind_Departure
     {
         [HarmonyPrefix]

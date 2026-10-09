@@ -18,6 +18,7 @@ namespace RimMandrake.Ninefold
     // double-counted, and covers the flesh-humanlike (recruit) and animal (tame)
     // branches it leaves untouched.
     [HarmonyPatch(typeof(Pawn), nameof(Pawn.SetFaction))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: FactionJoined")]
     public static class Patch_FactionJoined
     {
         [HarmonyPostfix]

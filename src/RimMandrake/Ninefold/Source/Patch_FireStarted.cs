@@ -47,6 +47,7 @@ namespace RimMandrake.Ninefold
     // once the window rolls over (an ongoing fire IS worse than a
     // one-cell scorch), just not once per cell per tick.
     [HarmonyPatch(typeof(FireUtility), nameof(FireUtility.TryStartFireIn))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: FireStarted")]
     public static class Patch_FireStarted
     {
         // 🔴 UNTUNED -- first-pass ordering only, same status as

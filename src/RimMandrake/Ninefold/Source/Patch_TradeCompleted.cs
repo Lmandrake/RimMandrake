@@ -17,6 +17,7 @@ namespace RimMandrake.Ninefold
     // when the dialog closed with nothing exchanged, which this patch must
     // not count as a completed trade.
     [HarmonyPatch(typeof(TradeDeal), nameof(TradeDeal.TryExecute))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: TradeCompleted")]
     public static class Patch_TradeCompleted
     {
         [HarmonyPostfix]

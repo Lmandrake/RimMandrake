@@ -72,6 +72,7 @@ namespace RimMandrake.Ninefold
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref engineEnabled, "engineEnabled", true);
             Scribe_Values.Look(ref firstContactLettersEnabled, "firstContactLettersEnabled", true);
@@ -80,12 +81,14 @@ namespace RimMandrake.Ninefold
             Scribe_Values.Look(ref favourOddsEnabled, "favourOddsEnabled", true);
             Scribe_Values.Look(ref favourStrength, "favourStrength", 1f);
             Scribe_Values.Look(ref offeringsEnabled, "offeringsEnabled", true);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         public void DoWindowContents(Rect inRect)
         {
             Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
             list.Begin(inRect);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.CheckboxLabeled("Enable the Ninefold engine", ref engineEnabled,
                 "The nine gods' satiation/mood tracking and their event-driven reactions "
@@ -159,6 +162,7 @@ namespace RimMandrake.Ninefold
         public override void DoSettingsWindowContents(Rect inRect)
         {
             settings.DoWindowContents(inRect);
+            RimMandrake.Shared.PatchApplier.ReforceOff();
         }
     }
 }

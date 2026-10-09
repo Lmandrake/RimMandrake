@@ -17,6 +17,7 @@ namespace RimMandrake.Ninefold
     // building reaches full health, rather than spamming a delta per
     // repair-tick.
     [HarmonyPatch(typeof(ListerBuildingsRepairable), nameof(ListerBuildingsRepairable.Notify_BuildingRepaired))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: BuildingRepaired")]
     public static class Patch_BuildingRepaired
     {
         [HarmonyPostfix]
