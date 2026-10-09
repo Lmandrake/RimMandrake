@@ -63,41 +63,31 @@ silver"**; **hair black**; **eyes red**; distinctions **"Glowing red eyes"**;
   gestures, and rarely vocal about anger or frustration.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Deleted: the *Rebels* CGI Thrawn infobox model (`wookieepedia_canon_infobox_thrawn.jpg`) and the comic close-up (`wookieepedia_blue_skin_red_eyes.jpg`). Added: the live-action *Ahsoka* Thrawn (Lars Mikkelsen) — a posed promotional photograph (`wookieepedia_thrawn_live_action_poster.png`) and a screen still from "Part Eight" (`wookieepedia_thrawn_ahsoka_part8.png`). The two remaining Legends images are realistic painted art.
 
-The four references agree on structure and **disagree on saturation in an informative way** —
-and the Legends "blue to silver / oxygen-dependent" text explains the disagreement rather
-than being contradicted by it.
+**`wookieepedia_thrawn_live_action_poster.png` — the reference of record** (live-action, *Ahsoka*):
+- **Skin is a matte, powdery, light periwinkle/cornflower blue** over an ordinary human face, with real skin texture — pores, crow's-feet, nasolabial lines and jowls all visible through the colour. Ears and neck the same blue. 🔴 **It is NOT the vivid saturated cobalt of the deleted comic, and not the flat even cyan of the Rebels model** — it reads as real skin that happens to be blue.
+- **Hair is near-black, short, slicked straight back** off a high forehead — "blue-black", never azure.
+- 🔴 **Eyes: bright red irises set in ordinary eyes with pale pinkish-white sclera visible.** The old brief (from the Rebels model and comic) said "glowing red with no visible white sclera" — **the live-action eye disagrees**; it is a human eye with a red iris, slightly luminous, not a solid red glow.
+- **Face is a normal, slightly gaunt, mature human face** — straight brows, ordinary nose, thin blue-grey lips. 🔴 The "very angular, flat-planed, geometric" face was an animation stylisation; live action shows ordinary human bone structure.
+- Tall, lean, ordinary human build in the white grand-admiral uniform.
 
-**`wookieepedia_canon_infobox_thrawn.jpg`** (full-body canon infobox, *Rebels* CGI model,
-1000×2630 — the best full-body reference in this directory):
-- **Mid-tone cyan-leaning blue skin**, fairly desaturated and even, with cooler shadow
-  under the jaw. Not a vivid cobalt.
-- **Hair reads near-black with a blue sheen**, swept straight back off a high forehead —
-  matching "shimmering blue-black" precisely. It is **not azure or bright blue.**
-- **Eyes glow red** — a light-emitting red iris with no visible white sclera, sitting under a
-  heavy straight brow.
-- **Very angular face**: narrow, flat-planed cheeks, sharp cheekbones, straight jaw, thin
-  **grey-mauve lips**. Nose and ears are ordinary human.
-- **Build is ordinary human proportions** — tall and lean, no exaggerated mass. Consistent
-  with `Body_Standard`.
-
-**`wookieepedia_blue_skin_red_eyes.jpg`** (comic close-up) is the saturated end: **vivid
-cobalt/periwinkle skin**, **jet-black hair**, **bright red irises with a light ring**, an
-almost geometrically angular brow, and **dark blue-black lips**. High-oxygen end of the
-Legends rule.
+**`wookieepedia_thrawn_ahsoka_part8.png`** — live-action screen still, dim bridge lighting: same face and red eyes; under low warm light the blue reads deeper slate-blue — a reminder that the hue shifts with light.
 
 **`wookieepedia_legends_infobox.jpg`** (Legends infobox, two Chiss in scavenger/soldier gear)
 is the **pale end and the most important corrective**: both figures are **grey-blue to
-lavender, several steps toward silver**, clearly duller than the canon Thrawn cyan, with
+lavender, several steps toward silver**, clearly duller and greyer than the live-action Thrawn periwinkle, with
 **black hair** and **glowing red-orange eyes**. This is "blue to **silver**" made visible.
 
 **`wookieepedia_chiss_females.jpg`** confirms it independently: two females with **pale,
 almost silver-blue skin**, long **straight jet-black hair**, **glowing orange-red eyes**, and
 **dark purple lips**, on the same angular bone structure.
 
-🔑 **Reading across all four: the constants are (a) glowing red eyes with no white sclera,
-(b) jet-black-to-blue-black hair, (c) an angular, flat-planed face — and the variable is the
-blue itself, which runs cyan → cobalt → grey → near-silver.** A single fixed `Skin_Blue` is
+🔑 **Reading across the images: the constants are (a) red irises (luminous in the paintings,
+a red iris in a normal eye in live action), (b) jet-black-to-blue-black hair, (c) an otherwise
+ordinary human face — and the variable is the blue itself, which runs from live-action
+periwinkle to the paintings' grey-blue and near-silver.** A single fixed `Skin_Blue` is
 the failure mode here.
 
 **`donor_current_sprite.png` is weak evidence and is not a pawn sprite.** It is
@@ -109,12 +99,13 @@ authors the angular face canon calls out. Skin and eye colour come from the gene
 `Skin_Blue` / `Eyes_Red` genes.
 
 ## Must show
-- [ ] Glowing red eyes with no visible white sclera
+- [ ] Bright red irises (a red iris in an otherwise human eye, slightly luminous)
 - [ ] Hair reads jet-black to blue-black, not bright azure
-- [ ] Angular, flat-planed face with sharp cheekbones and a straight jaw
-- [ ] Skin blue, but the exact shade varies across individuals from cyan to cobalt to
-  grey/near-silver — not a single fixed hue
+- [ ] Ordinary human face and bone structure — not a stylised angular mask
+- [ ] Skin blue, matte, with the shade varying from light periwinkle to grey-blue to
+  near-silver — not a single fixed saturated hue
 - [ ] Ordinary human body proportions
+- [ ] Realistic rendering: real human skin texture (pores, lines) under the blue, natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -129,11 +120,10 @@ none known
   with `page=Chiss/Legends` (115,214 chars, 2026-09-15). Height/lifespan cite *Legacy Era
   Campaign Guide* and *Alien Anthology*; the glacial-mineral skin-tone origin cites
   *The Unknown Regions*; the oxygen-dependent shade and gray-hair note cite *Alien Anthology*.
-- https://static.wikia.nocookie.net/starwars/images/f/ff/Thrawn_fullbody.png
-  (File:Thrawn fullbody.png → `wookieepedia_canon_infobox_thrawn.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/1/1b/Aralani-Thrawn6.png
-  (File:Aralani-Thrawn6.png, the article's "The Chiss had blue skin and red eyes" figure →
-  `wookieepedia_blue_skin_red_eyes.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/f/fe/Thrawn_Character_poster.png/revision/latest?cb=20260325022606
+  (File:Thrawn Character poster.png → `wookieepedia_thrawn_live_action_poster.png`)
+- https://static.wikia.nocookie.net/starwars/images/a/ab/Thrawn-AhsokaPart8.png/revision/latest?cb=20240530114511
+  (File:Thrawn-AhsokaPart8.png → `wookieepedia_thrawn_ahsoka_part8.png`)
 - https://static.wikia.nocookie.net/starwars/images/6/6a/Chiss_EtU.png
   (File:Chiss EtU.png, the Legends infobox → `wookieepedia_legends_infobox.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/a/a3/ChissFemales-FF137.png
@@ -144,11 +134,8 @@ none known
 
 ## Candidate images
 
-- `wookieepedia_canon_infobox_thrawn.jpg` — **the reference of record.** Full-body canon
-  infobox render; settles blue-black swept hair, glowing red sclera-less eyes, angular
-  flat-planed face, grey-mauve lips, ordinary human build and height.
-- `wookieepedia_blue_skin_red_eyes.jpg` — comic close-up, the **saturated cobalt** end of the
-  skin range with jet-black hair. Stylised line; palette is the point.
+- `wookieepedia_thrawn_live_action_poster.png` — **the reference of record.** Live-action *Ahsoka* promotional posed photograph of Thrawn, head to hip: matte periwinkle skin with real texture, slicked near-black hair, red irises with pale sclera, human face; file `Thrawn Character poster.png` — https://static.wikia.nocookie.net/starwars/images/f/fe/Thrawn_Character_poster.png/revision/latest?cb=20260325022606
+- `wookieepedia_thrawn_ahsoka_part8.png` — live-action *Ahsoka* "Part Eight" screen still, Thrawn on his bridge in dim light; file `Thrawn-AhsokaPart8.png` — https://static.wikia.nocookie.net/starwars/images/a/ab/Thrawn-AhsokaPart8.png/revision/latest?cb=20240530114511
 - `wookieepedia_legends_infobox.jpg` — Legends infobox, the **pale grey-to-silver-blue** end.
   The single most useful image for showing the blue is a *range*, not a value.
 - `wookieepedia_chiss_females.jpg` — independent confirmation of the pale end plus long
@@ -168,7 +155,7 @@ none known
    reflexes**. The def has no dark-vision/night-vision analogue and no reflex/move-speed gene.
    These are the species' three mechanical facts and all three are missing.
 3. 🔴 **Hair colour is wrong.** Def carries only `Outland_HairColor_DarkAzure`. Canon is
-   **"shimmering blue-black"**, Legends is **"typically jet black"**, and all four reference
+   **"shimmering blue-black"**, Legends is **"typically jet black"**, and every reference
    images show near-black. Azure is a bright blue and no source supports it.
 4. 🔴 **`Hair_Grayless` contradicts a specific sourced detail.** Legends: Chiss hair
    **"did on rare occasions go gray with age,"** and Chiss read gray hair as a mark of having

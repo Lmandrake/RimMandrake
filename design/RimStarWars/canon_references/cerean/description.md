@@ -61,6 +61,8 @@ the species, in-universe as well as visually.
   cognitive consequence, **not elevated Force power.** This matters for the repo def.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The *Clone Wars* CGI render of O-Mer (`wookieepedia_omer_youth.jpg`) was deleted. Added two live-action Ki-Adi-Mundi stills: a *Revenge of the Sith* head close-up (`wookieepedia_kiadimundi_rots_closeup.png`) and a younger, dark-bearded Ki-Adi-Mundi from *The Acolyte* "Day" (`wookieepedia_kiadimundi_acolyte.png`). Every remaining image is live-action or realistic painted art.
 
 **All four references agree on the cranium and on almost nothing being alien below it.** The
 head is the entire species read; the body is essentially human.
@@ -94,17 +96,13 @@ full-body live-action reference shot on a transparent background):
   tan suede boots.
 - No visible tail, claws, fur, or non-human limb structure of any kind.
 
-**`wookieepedia_omer_youth.jpg` — the youth data point, and the eye-colour proof.** O-Mer, a
-Cerean Padawan, CGI render from *The Clone Wars*:
-- 🔑 **Eyes are unmistakably YELLOW-GOLD**, bright against the face — directly corroborating
-  the canon "eye colour yellow" cite (from "Padawan Lost"). Since the def sets no eye gene at
-  all, this is a concrete thing to add.
-- **Completely hairless** — bald cone, bald lower skull, no beard. So Cereans are not
-  obligately haired.
-- **The body is very thin and lanky with long limbs**, gaunt in the face. A juvenile Cerean is
-  a beanpole, not a scaled-down Ki-Adi-Mundi.
-- Skin is a warmer tan-pink with visible dirt and wear. Sleeveless top, worn trousers, wrapped
-  boots, coloured cords at the throat and shins.
+**`wookieepedia_kiadimundi_rots_closeup.png`** — live-action *Revenge of the Sith* (Mygeeto) head close-up of Ki-Adi-Mundi, the best realistic HEAD reference:
+- The **tall bald cone with deep horizontal creases and a vertical midline ridge**, the same pale greyish-tan flesh as the face; heavy **white bushy eyebrows** sweeping up and out, deep-set dark eyes under a heavy brow, a **full white beard and moustache**, a human nose and mouth. Skin is lined and slightly mottled — real aged skin texture.
+- 🔴 **His eyes are dark brown, not yellow.** Yellow-gold eyes are now evidenced only by the canon infobox cite and the NEGAS painting's amber; the deleted O-Mer render was the bright-yellow image.
+
+**`wookieepedia_kiadimundi_acolyte.png`** — live-action *The Acolyte* "Day", a younger Ki-Adi-Mundi (132 BBY) in white Jedi robes beside Vernestra Rwoh: the same cone, but a **dark brown beard** — the younger-male data point; the white beard comes with age.
+
+The deleted O-Mer render was the only image of a **juvenile** Cerean (fully hairless, very thin and lanky). That is now unillustrated; treat juvenile build as unknown rather than copying an animated design.
 
 **`wookieepedia_negas_legends.jpg` — the best hair-arrangement reference** (a Legends *New
 Essential Guide to Alien Species* painting of a female Cerean with a blaster):
@@ -115,7 +113,7 @@ Essential Guide to Alien Species* painting of a female Cerean with a blaster):
 - **The cone here is slightly shorter and broader than Ki-Adi-Mundi's**, and the individual is
   clearly female — consistent with a sexually dimorphic species, though the sources do not
   describe a cranial sex difference, so treat this as artist variation rather than a rule.
-- **Amber/yellow eyes**, agreeing with O-Mer and the canon cite.
+- **Amber/yellow eyes**, agreeing with the canon cite.
 - **Body is slim and athletic, human-proportioned, and long-limbed.** Sleeveless leather
   jerkin, bracer of cartridges, belt pouches, thigh holster, tall black boots — a scoundrel,
   not a Jedi, which is a useful non-Jedi Cerean.
@@ -156,7 +154,8 @@ better than a mere tall forehead. Three problems:
 - [ ] Below the cone, an otherwise ordinary human face — no other alien features
 - [ ] Where hair is present, it grows only from the sides and back of the lower skull,
   never on the cone itself
-- [ ] Eyes read yellow/amber
+- [ ] Eyes yellow/amber (canon cite, NEGAS) or dark brown (live-action Ki-Adi-Mundi) — never an alien solid colour
+- [ ] Realistic rendering: natural lined human skin texture on face and cone under natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -188,12 +187,12 @@ This is one of only two anatomical facts canon gives about the species and nothi
 touches it.
 
 - 🔴 **No eye gene, on a species whose canon infobox names a specific eye colour — yellow —
-  corroborated by two independent references** (O-Mer's CGI render and the NEGAS painting).
+  corroborated by the NEGAS painting** (the live-action Ki-Adi-Mundi has dark eyes, so yellow is not universal).
   Likewise **no skin gene** (canon "light tones", Legends "tan") and **no hair gene** (canon
   blond/brown/white; Legends red/blonde/brown/black). All three are left to inherit whatever
   the parent stock supplies, so the species has no colour identity at all in game.
-- ⚠️ **`Body_Thin` is only half-right and cuts against a canon description.** O-Mer and the
-  NEGAS female are genuinely slim, so thin is defensible for those — but the one in-universe
+- ⚠️ **`Body_Thin` is only half-right and cuts against a canon description.** The NEGAS female
+  is genuinely slim, so thin is defensible for those — but the one in-universe
   description of a Cerean body is Varralis admiring Ki-Adi-Mundi's **"rugged frame,"** and the
   full-body reference is unremarkably built rather than gaunt. Nothing in either article makes
   slenderness a species trait.
@@ -226,8 +225,10 @@ touches it.
 - https://static.wikia.nocookie.net/starwars/images/b/be/Mundi_bodyshot.png
   (File:Mundi bodyshot.png, the canon infobox image →
   `wookieepedia_infobox_mundi_bodyshot.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/7/7a/OmerRun-SWE.png
-  (File:OmerRun-SWE.png → `wookieepedia_omer_youth.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/1/1c/KiAdiMundi-realization.png/revision/latest?cb=20130208034900
+  (File:KiAdiMundi-realization.png → `wookieepedia_kiadimundi_rots_closeup.png`)
+- https://static.wikia.nocookie.net/starwars/images/e/e6/Ki-Adi-Mundi_132_BBY.png/revision/latest?cb=20250517210631
+  (File:Ki-Adi-Mundi 132 BBY.png → `wookieepedia_kiadimundi_acolyte.png`)
 - https://static.wikia.nocookie.net/starwars/images/5/53/KiAdiMundi-SmugglersOutpost2025.png
   (File:KiAdiMundi-SmugglersOutpost2025.png → `wookieepedia_kiadimundi_2025.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/a/ae/Cerean_NEGAS.jpg
@@ -249,9 +250,8 @@ touches it.
   full-body live-action reference on a transparent background. Settles the **tall, narrow,
   laterally compressed, bald, transversely creased cone**, pale tan skin, the aged white
   beard, and a **tall, human, unremarkable body** with no other alien features. 280×687 px.
-- `wookieepedia_omer_youth.jpg` — O-Mer, a Cerean Padawan, CGI render from *The Clone Wars*.
-  **The eye-colour proof (bright yellow-gold)**, the fully hairless option, and the juvenile
-  build: **very thin and lanky with long limbs.** 318×618 px.
+- `wookieepedia_kiadimundi_rots_closeup.png` — live-action *Revenge of the Sith* (Mygeeto) head close-up of Ki-Adi-Mundi: creased cone, white brows and beard, dark eyes; file `KiAdiMundi-realization.png` — https://static.wikia.nocookie.net/starwars/images/1/1c/KiAdiMundi-realization.png/revision/latest?cb=20130208034900
+- `wookieepedia_kiadimundi_acolyte.png` — live-action *The Acolyte* "Day", younger dark-bearded Ki-Adi-Mundi, mid-shot; file `Ki-Adi-Mundi 132 BBY.png` — https://static.wikia.nocookie.net/starwars/images/e/e6/Ki-Adi-Mundi_132_BBY.png/revision/latest?cb=20250517210631
 - `wookieepedia_negas_legends.jpg` — Legends *New Essential Guide to Alien Species* painting
   of a female Cerean scoundrel. **The best hair reference: long straight brown hair from the
   sides and back of the lower skull, with the cone itself bald.** Also amber eyes and a slim

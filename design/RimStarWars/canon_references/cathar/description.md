@@ -45,6 +45,8 @@ of Cathar**, killing **over 90 percent of the species** — a survivor-diaspora 
 sits well with rare placement in a scavenger clan and among pirates.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The current-canon infobox image `wookieepedia_canon_twins.jpg` (flash-animated *Tall Tales* twins, near-human, no muzzle) was deleted. No live-action or photoreal Cathar exists (searched: Cathar and Cathar/Legends page images, "Images of Cathar" — only KOTOR/SWTOR stylised game models — and the StarWars.com Databank). Added a realistic painted *Ultimate Alien Anthology* line-up plate (`wookieepedia_uaa_lineup_legends.jpg`). The Sylvar comic panel is kept ONLY as animated/negative reference for female anatomy, which no realistic image shows.
 
 🔴 **The two continuities show genuinely different animals, and the def sits on the Legends
 side while its art sits on the canon side.** Both are documented below; the reference of
@@ -65,7 +67,7 @@ strongest single reference.** It settles the palette the def gets wrong:
   ears" as a silhouette feature rather than a detail.
 - **Fur covers the entire torso and arms**, and the hands are broad with visible claws.
 
-**`wookieepedia_sylvar_and_males.jpg`** (comic panel, Sylvar with two males of the more
+**`wookieepedia_sylvar_and_males.jpg`** (KEPT AS ANIMATED/NEGATIVE REFERENCE, anatomy only — comic panel, not a style target; Sylvar with two males of the more
 common subspecies) adds the **sexual dimorphism, and it is large**: the two males have full
 maned lion faces with **white/cream manes and beards** and heavy muzzles; **Sylvar, the
 female, has a much flatter, more humanoid face**, pale cream-yellow skin, **white head-hair
@@ -78,13 +80,9 @@ large tufted ears and a long-fingered clawed hand. Confirms fur hue varies indiv
 (gold, cream, white) while **muzzle + mane + tufted ears stay constant**. That constancy is
 the fact to preserve; the hue is not.
 
-**`wookieepedia_canon_twins.jpg`** (the *current canon* infobox image, the Cathar criminal
-twins from "Tall Tales") is the outlier and must be labelled as such: these two read as
-**near-human**, with warm pinkish-tan skin, ordinary human-shaped faces and flat noses,
-**no muzzle at all**, and only **grey-white fur along the jaw and temples** plus slitted eyes
-suggesting the species. It is a stylised flash-animation design. It is kept because it is the
-current-canon infobox, but **taken alone it would produce a Cathar with no feline silhouette
-whatsoever** — and if the owner wants the recognisable Cathar, the three Legends images win.
+**`wookieepedia_uaa_lineup_legends.jpg`** — realistic painted plate by Jeremy Jarvis, *Ultimate Alien Anthology* (Legends), four species in a line-up; the Cathar is the second figure, a **big, heavy-shouldered, barrel-chested male** in a leather vest and boots: tawny golden-tan fur over the whole body, a **shaggy pale-gold mane and beard** framing a projecting feline muzzle, small pointed ears, thick furred arms and clawed hands. Confirms the lion read and adds the **powerful heavy build** at full body.
+
+🔴 **The deleted current-canon image disagreed with all of this** — it drew Cathar as near-human faces with no muzzle and only jaw-and-temple fur. That design survives only in the canon text's silence; every realistic image is the maned, muzzled Legends lion. If the owner wants the recognisable Cathar, the realistic Legends paintings win.
 
 **`donor_current_sprite.png` is the finding.** It is
 `RimMandrakeSW/OR/Things/Pawn/Humanlike/Heads/Cathar/Male_Head_south.png` (512×512; the
@@ -111,8 +109,8 @@ most defining canon feature — the projecting muzzle and mane — is not repres
   endpoint with `page=Cathar/Legends` (15,006 chars, 2026-09-15). Infobox figures
   (1.8 m / 1.6 m, gold to yellow-brown with dark stripes, lifespan bands) cite
   *Ultimate Alien Anthology* and *Coruscant Nights II: Street of Shadows*.
-- https://static.wikia.nocookie.net/starwars/images/8/8c/CatharBounties-TallTales.png
-  (File:CatharBounties-TallTales.png → `wookieepedia_canon_twins.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/0/01/Alien_lineup2.jpg/revision/latest?cb=20071029035409
+  (File:Alien lineup2.jpg → `wookieepedia_uaa_lineup_legends.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/a/a9/CatharDefender-TCGMaM.png
   (File:CatharDefender-TCGMaM.png → `wookieepedia_legends_infobox.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/b/b1/SylvarAndEscorts-TOTJR2.jpg
@@ -130,14 +128,12 @@ most defining canon feature — the projecting muzzle and mane — is not repres
 - `wookieepedia_legends_infobox.jpg` — **the reference of record.** Painted full-torso
   golden-orange Cathar mid-roar in jungle: settles muzzle, dark rope mane, amber eyes,
   tufted ears, gold-to-yellow-brown fur, clawed hands.
-- `wookieepedia_sylvar_and_males.jpg` — comic panel establishing **sexual dimorphism**
+- `wookieepedia_sylvar_and_males.jpg` — **animated/negative reference, anatomy only.** Comic panel establishing **sexual dimorphism**
   (maned/bearded male lion faces vs a flatter, mane-less, long-white-haired female).
   Stylised line and palette; its value is the male/female contrast.
 - `wookieepedia_cathar_jedi.jpg` — painted Legends piece, a cream/white-furred individual;
   confirms hue varies while muzzle, mane, tufted ears and clawed hands do not.
-- `wookieepedia_canon_twins.jpg` — **negative/weak reference, kept deliberately.** The
-  current-canon infobox image, but a near-human stylised design with no muzzle. Do not use
-  it alone to establish appearance.
+- `wookieepedia_uaa_lineup_legends.jpg` — realistic painted *Ultimate Alien Anthology* line-up (Jeremy Jarvis, Legends); second figure is a heavy maned male Cathar, full body; file `Alien lineup2.jpg` — https://static.wikia.nocookie.net/starwars/images/0/01/Alien_lineup2.jpg/revision/latest?cb=20071029035409
 - `donor_current_sprite.png` — the shipped head mask. Evidence of the gap, not of canon.
 
 ## Must show
@@ -151,6 +147,7 @@ most defining canon feature — the projecting muzzle and mane — is not repres
 - [ ] Amber/gold eyes with round pupils
 - [ ] Females have a flatter, more human face with long head-hair rather than a mane, and
   no beard — not simply a smaller male
+- [ ] Realistic rendering: natural dense fur with visible direction and texture under natural lighting, no outlines, no comic shading
 
 ## Engine limits
 Cathar striping (the sourced "dark stripes" over the gold-to-yellow-brown coat) cannot be
