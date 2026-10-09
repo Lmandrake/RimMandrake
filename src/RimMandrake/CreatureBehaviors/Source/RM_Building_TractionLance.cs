@@ -309,6 +309,143 @@ namespace RimMandrake.CreatureBehaviors
             return outcome;
         }
 
+        /// <summary>
+        /// TETHER_PRODUCTION_REEL_PROOF_1. The production path, not DebugReelNow: advances REAL game ticks
+        /// (TickManager.DoSingleTick, so the lance's own CompTick runs the reel timer and the CanWork gate) and reads
+        /// cadence (ticks between moves vs ReelIntervalTicks), the stun left on the target right after a step
+        /// (ReelIntervalTicks+5), the gate (crew removed mid-reel, then power cut mid-reel: outcome "off"), and the
+        /// despawn release (lance despawned mid-reel: target cleared, outcome "off").
+        /// Call via jawa/static_call type=RimMandrake.CreatureBehaviors.RM_TractionLanceProof method=ProofReelTicked.
+        /// </summary>
+        public static string ProofReelTicked(string stuff)
+        {
+            var parts = new List<string>();
+            parts.Add("cadence " + ReelPhase(stuff, "cadence"));
+            parts.Add("unmanned " + ReelPhase(stuff, "unmanned"));
+            parts.Add("unpowered " + ReelPhase(stuff, "unpowered"));
+            parts.Add("despawn " + ReelPhase(stuff, "despawn"));
+            return "REEL " + string.Join(" | ", parts);
+        }
+
+        private static string ReelPhase(string stuff, string phase)
+        {
+            Map map = Find.CurrentMap;
+            ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail("RM_TractionLance");
+            ThingDef stuffDef = DefDatabase<ThingDef>.GetNamedSilentFail(stuff);
+            if (map == null || def == null || stuffDef == null)
+            {
+                return "UNMEASURED no map, no RM_TractionLance def, or no stuff " + stuff;
+            }
+            IntVec3 origin = IntVec3.Invalid;
+            foreach (IntVec3 c in map.AllCells)
+            {
+                if (c.x + 12 >= map.Size.x || c.z + 2 >= map.Size.z || c.x < 2 || c.z < 2)
+                {
+                    continue;
+                }
+                bool clear = true;
+                foreach (IntVec3 x in CellRect.CenteredOn(c + new IntVec3(6, 0, 0), 6, 2))
+                {
+                    if (!x.InBounds(map) || !x.Standable(map) || x.GetFirstBuilding(map) != null || x.GetFirstPawn(map) != null || x.Fogged(map))
+                    {
+                        clear = false;
+                        break;
+                    }
+                }
+                if (clear)
+                {
+                    origin = c;
+                    break;
+                }
+            }
+            if (!origin.IsValid)
+            {
+                return "UNMEASURED no clear 13x5 strip";
+            }
+            var lance = (RM_Building_TractionLance)GenSpawn.Spawn(ThingMaker.MakeThing(def, stuffDef), origin, map);
+            lance.SetFaction(Faction.OfPlayer);
+            if (lance.Power != null)
+            {
+                lance.Power.PowerOn = true;
+            }
+            lance.debugForceManned = true;
+            RM_CompTetherPull pull = lance.Pull;
+            Faction enemy = Find.FactionManager.RandomEnemyFaction(allowNonHumanlike: false);
+            Pawn p = PawnGenerator.GeneratePawn(PawnKindDefOf.Villager, enemy);
+            GenSpawn.Spawn(p, origin + new IntVec3(9, 0, 0), map);
+            string result;
+            try
+            {
+                if (!lance.TetherCanWork || !pull.TryRope(p))
+                {
+                    return "UNMEASURED could not rope (canWork=" + lance.TetherCanWork + ", outcome=" + pull.LastOutcome + ")";
+                }
+                int interval = pull.ReelIntervalTicks;
+                IntVec3 last = p.Position;
+                int lastMoveTick = -1;
+                var gaps = new List<int>();
+                int stunAfterMove = -1;
+                int ticks = 0;
+                bool toggled = false;
+                while (ticks < interval * 40 && pull.Target != null)
+                {
+                    if (!toggled && gaps.Count >= 1 && phase != "cadence")
+                    {
+                        toggled = true;
+                        if (phase == "unmanned")
+                        {
+                            lance.debugForceManned = false;
+                        }
+                        else if (phase == "unpowered" && lance.Power != null)
+                        {
+                            lance.Power.PowerOn = false;
+                        }
+                        else if (phase == "despawn")
+                        {
+                            lance.DeSpawn();
+                            break;
+                        }
+                    }
+                    Find.TickManager.DoSingleTick();
+                    ticks++;
+                    if (p.Spawned && p.Position != last)
+                    {
+                        int now = Find.TickManager.TicksGame;
+                        if (lastMoveTick >= 0)
+                        {
+                            gaps.Add(now - lastMoveTick);
+                        }
+                        else
+                        {
+                            gaps.Add(-1); // first move: no gap yet
+                        }
+                        lastMoveTick = now;
+                        last = p.Position;
+                        if (stunAfterMove < 0 && p.stances != null)
+                        {
+                            stunAfterMove = p.stances.stunner.StunTicksLeft;
+                        }
+                    }
+                }
+                gaps.RemoveAll(g => g < 0);
+                result = string.Format("interval={0} gaps=[{1}] stunAfterStep={2} expectedStun={3} ticks={4} target={5} outcome={6}",
+                    interval, string.Join(",", gaps), stunAfterMove, interval + 5, ticks,
+                    pull.Target == null ? "none" : "held", pull.LastOutcome.NullOrEmpty() ? "none" : pull.LastOutcome);
+            }
+            finally
+            {
+                if (p.Spawned)
+                {
+                    p.Destroy();
+                }
+                if (!lance.Destroyed)
+                {
+                    lance.Destroy();
+                }
+            }
+            return result;
+        }
+
         /// <summary>Range and snap chance per fabric, no map needed: the stuff criterion's deterministic read.</summary>
         public static string ProofStuffTable()
         {

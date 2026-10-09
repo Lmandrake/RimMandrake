@@ -79,6 +79,12 @@ namespace RimMandrake.CreatureBehaviors
 
         private void Evaluate(Pawn pawn)
         {
+            if (pawn.jobs?.curJob != null && pawn.jobs.curJob.def == RM_JobDefOf.RM_LungeAttack)
+            {
+                Note("lunging");
+                return; // mid-lunge: stay visible, never re-hide before the strike (CREATURE_JOB_INTERRUPTION_POLICY_1)
+            }
+
             bool submerged = IsDeepWater(pawn.Position, pawn.Map);
             Pawn target = submerged ? FindLungeTarget(pawn) : null;
 
@@ -116,7 +122,7 @@ namespace RimMandrake.CreatureBehaviors
                     continue;
                 }
 
-                if (!pawn.HostileTo(candidate))
+                if (!RM_AmbushJobPolicy.IsPrey(pawn, candidate))
                 {
                     continue;
                 }
@@ -137,6 +143,11 @@ namespace RimMandrake.CreatureBehaviors
             if (pawn.jobs?.curJob != null && pawn.jobs.curJob.def == RM_JobDefOf.RM_LungeAttack)
             {
                 return; // already mid-lunge — don't restart it every interval tick
+            }
+            if (!RM_AmbushJobPolicy.MayForceJobOn(pawn))
+            {
+                Note("not_interruptible");
+                return;
             }
 
             if (Props.lungeSpeedHediff != null
