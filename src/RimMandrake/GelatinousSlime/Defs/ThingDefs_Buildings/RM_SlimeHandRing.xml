@@ -10,8 +10,8 @@
     <category>Building</category>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
     <graphicData>
-      <texPath>Things/Item/Chunk/ChunkSlag</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Building/RM_SlimeHandRing</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(3,3)</drawSize>
       <color>(110, 150, 80)</color>
     </graphicData>
