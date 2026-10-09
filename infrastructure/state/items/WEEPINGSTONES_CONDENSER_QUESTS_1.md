@@ -63,3 +63,8 @@ Depends on: `WEEPINGSTONES_WALKING_CONDENSER_1`, `WEEPINGSTONES_TRUCE_HUNT_SUPPR
   `selftest_condenser_slots.py`.
 - Deviations: the buyer's crew taking the crab happens offstage, in a letter. No new truce-radius overlay was drawn.
   The "water stewards" have no free-tier faction, so only the settlers lose goodwill.
+
+## verify
+
+### Exact checks 2026-10-09 (acceptance sitting)
+- C6 CHECK: Two loads. Free-tier list (no Utinni patches): `jawa/get_defs defs="RimMandrake.WeepingStones.RM_FactionSlotDef/RM_FactionSlot_CondenserBuyer;RimMandrake.WeepingStones.RM_FactionSlotDef/RM_FactionSlot_CondenserSettlers;RimMandrake.WeepingStones.RM_FactionSlotDef/RM_FactionSlot_CondenserHunters;QuestScriptDef/RM_CondenserCapture;QuestScriptDef/RM_CondenserKeepFree" fields="label,description,preferredFactions"` then regex the returned text for `Hutt|Blackstar|Homestead|Jawa|Kyber`. Campaign list (adds `src/RimUtinni/UtinniPatches/Patches/RUT_CondenserQuestSlots.xml`): the same call plus `FactionDef/RUT_Jawa_HuttCartel`, read preferredFactions. PASS: free list: success=true, the regex finds nothing and preferredFactions[0] is Empire; campaign list: preferredFactions[0] resolves to the Hutt Cartel faction (and the Settlers/Hunters slots to Homestead and Blackstar). FAIL: a canon string in the free-list text (IP leak across tiers), or the campaign list still showing Empire first (the patch missed its `li[1]` xpath and logs nothing).

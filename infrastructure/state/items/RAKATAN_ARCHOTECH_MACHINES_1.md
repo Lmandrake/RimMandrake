@@ -335,3 +335,8 @@ Not built (open or needs the game):
 - Per-class Wrecked values for factories; the neutral "grade changed" signal for layer 3.
 - Art: every new grade reuses vanilla or Repaired textures as placeholders (cosmetic needs the owner).
 - Live: placement, ratio patching, thought, RR opportunities — all unproven in game.
+
+## verify
+
+### Exact checks 2026-10-09 (acceptance sitting)
+- A1 CHECK: `jawa/get_defs defs="ThingDef/RM_WM_AncientComponent;ThingDef/RM_WM_AutomatedSmelter_Wrecked;ThingDef/RM_WM_AutomatedSmelter_Kludged;ThingDef/RM_WM_AutomatedSmelter_Refurbished;ThingDef/RM_WM_AutomatedSmelter_Repaired;ThingDef/RM_WM_PowerCell_Wrecked;ThingDef/RM_WM_PowerCell_Kludged;ThingDef/RM_WM_PowerCell_Refurbished;ThingDef/RM_WM_PsychicEmanator_Wrecked;ThingDef/RM_WM_PsychicEmanator_Kludged;ThingDef/RM_WM_PsychicEmanator_Refurbished;ResearchProjectDef/RM_WM_AutomatedSmelterRestoration;ResearchProjectDef/RM_WM_PowerCellRestoration;ResearchProjectDef/RM_WM_EmanatorRestoration" fields="defName"` (defs in `src/RimMandrake/WreckedMachines/Defs`; the manifest guess in `Transient/l1_manifest.json` lists only 3 of these) and `jawa/drain_log limit=400 errorsOnly=True` for `RM_WM_`. PASS: success=true, foundCount=14, notFound empty; no error line naming RM_WM_. FAIL: any def missing (Refurbished grade absent = the ladder is incomplete) or an RM_WM_ error line.

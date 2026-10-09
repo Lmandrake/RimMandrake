@@ -32,6 +32,9 @@ toggling a feature off provably disables it live or at next map-gen (say
 which) with no errors; Greentide features work in a non-Greentide biome when
 opted in.
 
+### Exact checks 2026-10-09 (acceptance sitting)
+- A1 CHECK: Player.log (WSL `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log`) on the full-list load, regex `(?i)ModSettings|DoSettingsWindowContents|settings.*(exception|error)` filtered to lines mentioning `RimMandrake|mandrake` (opening a settings page that throws logs an exception with a stack naming `DoSettingsWindowContents`). Opening the page itself is a UI act with no bridge tool; needs a debug hook: a small item owed for `RM_SettingsOpenSmoke.Run(string)` that instantiates each `Mod` subclass whose assembly is ours and calls `DoSettingsWindowContents` on an off-screen rect, returning `opened=<N> failed=<list>`, read via `jawa/static_call`. PASS: with the hook: failed list empty, opened equals the number of our mods with a settings class (`jawa/mod_inventory` lists them); log regex finds nothing. FAIL: any mod in failed, or an exception line naming one of ours. Log-only evidence is partial: it proves nothing about pages nobody opened.
+
 ## criteria
 Owner can open Mod Settings on any of our mods and meaningfully tailor it.
 
