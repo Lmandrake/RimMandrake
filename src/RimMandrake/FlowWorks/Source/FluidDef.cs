@@ -66,6 +66,12 @@ namespace RimMandrake.FlowWorks
 		/// a brimming cell, scaled by fill and the pawn's toxic resistance. 0 = not poisonous.</summary>
 		public float toxicPerDayAtBrim;
 
+		/// <summary>LIQUID_HEAT_PUSH_1: this fluid warms (hot) or chills (cold) the room it stands in through vanilla heat
+		/// (RM_LiquidHeat). A FluidDef with neither flag still heats when its LiquidDef (the one naming it as canalFluid)
+		/// is hot or cold. No shipped FluidDef sets either today.</summary>
+		public bool hot;
+		public bool cold;
+
 		/// <summary>Ticks the fluid stands on a cell after the whole release has
 		/// finished spreading, before the map's temp-terrain manager drains it
 		/// and hands the cell back. Default is the midpoint of vanilla

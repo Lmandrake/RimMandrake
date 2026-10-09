@@ -944,6 +944,8 @@ LIQUID_DEF_ROWS = {
         "corrodesApparel": False,
         "terrainSuite": {"shallow": "RM_WaterFrigidShallow", "deep": "RM_WaterFrigidDeep"},
         "distillable": True,
+        # LIQUID_HEAT_PUSH_1: chills the room it stands in (RM_LiquidHeat), the cold twin of boiling's "hot".
+        "cold": True,
         # Bottled icy water warms to fresh: 5000 ticks = two in-game hours, PROVISIONAL.
         "bottled": {"bottle": "RM_Bottle_IcyWater", "unitsPerBottle": 1,
                     "bucket": "RM_Bucket_IcyWater", "barrel": "RM_Barrel_IcyWater",
@@ -1327,6 +1329,8 @@ def build_liquiddef_xml(row):
         lines.append("    <distillable>true</distillable>")
     if row.get("hot"):
         lines.append("    <hot>true</hot>")
+    if row.get("cold"):
+        lines.append("    <cold>true</cold>")
     if LIQUID_CONTAINER_COLORS.get(row.get("_key")):
         lines.append(f"    <color>{LIQUID_CONTAINER_COLORS[row['_key']]}</color>")
 

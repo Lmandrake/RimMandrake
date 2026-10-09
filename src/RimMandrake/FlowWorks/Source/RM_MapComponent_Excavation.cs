@@ -133,6 +133,8 @@ namespace RimMandrake.FlowWorks
 		public float OverflowDestroyedTotal => overflowDestroyedTotal;
 
 		public int ExcavatedCellCount => excavatedCells.Count;
+		/// <summary>Read-only view of the excavated set (LIQUID_HEAT_PUSH_1). Never mutate while iterating.</summary>
+		public IEnumerable<IntVec3> ExcavatedCells => excavatedCells;
 
 		// ════════════════════════════════════════════════════════════════
 		// PHASE 5 — SUPERDEEP. Additive: nothing above was changed to add it.
@@ -925,6 +927,9 @@ namespace RimMandrake.FlowWorks
 
 		/// <summary>FLOWWORKS_BUILD_PROGRAM_1 Phase 6: fire on the liquid (RM_LiquidFire).</summary>
 		private RM_LiquidFire liquidFire = new RM_LiquidFire();
+		/// <summary>LIQUID_HEAT_PUSH_1: hot/icy liquid warms or chills its room (vanilla heat). Derived, never scribed.</summary>
+		private readonly RM_LiquidHeat liquidHeat = new RM_LiquidHeat();
+		public RM_LiquidHeat LiquidHeat => liquidHeat;
 
 		public RM_LiquidFire LiquidFire => liquidFire;
 
@@ -1004,6 +1009,8 @@ namespace RimMandrake.FlowWorks
 			// (GPT FlowWorks review #19).
 			RM_PitExposure.Tick(map, this);
 			liquidFire.Tick(map, this);
+			// Own timer, not the pulse: heat is the liquid's presence, so it keeps running with the depth engine off.
+			liquidHeat.Tick(map, this);
 			if (excavatedCells.Count > 0)
 			{
 				RM_PitFillEffects.Tick(map, this);

@@ -53,6 +53,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// refuses it. A property flag like <see cref="flammable"/>, not a form slot.</summary>
         public bool hot;
 
+        /// <summary>LIQUID_HEAT_PUSH_1: icy (icy/frigid water). Beside <see cref="hot"/>: a cold liquid chills the
+        /// room it stands in through vanilla heat (RM_LiquidHeat), a hot one warms it. A property flag, not a form slot.</summary>
+        public bool cold;
+
         /// <summary>FLOWWORKS_CONTAINER_MATERIALS_1: acid for container purposes -- corrodes apparel,
         /// burns with AcidBurn, or pH 4 and below (RM_ContainerMaterialMath.IsAcid).</summary>
         public bool IsAcid => RM_ContainerMaterialMath.IsAcid(pH, corrodesApparel,

@@ -1028,6 +1028,69 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_PitDrawMath.ClampSinkToLip(s4, 135.5f, 136f), 0f, "lip at or north of the centre: no sink");
             });
 
+            // ── LIQUID_HEAT_PUSH_1: hot and icy liquid move the room through vanilla heat ──
+            Case("LiquidHeat_kind_hot_cold_neither_and_both", () =>
+            {
+                Assert(RM_LiquidHeatMath.Kind(true, false) == 1, "hot alone is +1");
+                Assert(RM_LiquidHeatMath.Kind(false, true) == -1, "cold alone is -1");
+                Assert(RM_LiquidHeatMath.Kind(false, false) == 0, "neither pushes nothing");
+                Assert(RM_LiquidHeatMath.Kind(true, true) == 0, "a def claiming both pushes nothing (safe reading)");
+            });
+
+            Case("LiquidHeat_cell_energy_scales_with_fill_and_strength_and_sign", () =>
+            {
+                float one = RM_LiquidHeatMath.CellEnergy(1, 1, 1f);
+                Assert(one > 0f, "hot liquid pushes positive energy");
+                AssertClose(RM_LiquidHeatMath.CellEnergy(1, 4, 1f), 4f * one, "a brim-full superdeep cell is four levels");
+                AssertClose(RM_LiquidHeatMath.CellEnergy(1, 2, 2f), 4f * one, "strength multiplies");
+                Assert(RM_LiquidHeatMath.CellEnergy(-1, 2, 1f) < 0f, "icy liquid pushes negative energy");
+                AssertClose(RM_LiquidHeatMath.CellEnergy(1, 0, 1f), 0f, "a dry cell pushes nothing");
+                AssertClose(RM_LiquidHeatMath.CellEnergy(0, 4, 1f), 0f, "plain water pushes nothing");
+                AssertClose(RM_LiquidHeatMath.CellEnergy(1, 4, 0f), 0f, "strength 0 pushes nothing");
+                // calibration: a superdeep cell brim-full of boiling water is about half a vanilla heater (21/s)
+                float heater = 21f * RM_LiquidHeatMath.SecondsPerInterval;
+                float pit = RM_LiquidHeatMath.CellEnergy(1, 4, 1f);
+                Assert(pit > 0.4f * heater && pit < 0.75f * heater, "one full boiling pit cell is ~half a heater: " + pit + " vs " + heater);
+            });
+
+            Case("LiquidHeat_room_never_passes_its_target", () =>
+            {
+                // A 9-cell pit room at 20 C under a huge push: it may rise at most to 50 C (30 C x 9 cells = 270).
+                float e = RM_LiquidHeatMath.RoomEnergy(1e6f, 20f, 9, 1f);
+                Assert(e > 0f, "a cool room takes heat");
+                Assert(20f + e / 9f <= RM_LiquidHeatMath.HotTargetC + 1e-3f, "a hot room overshot its target: " + (20f + e / 9f));
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(100f, RM_LiquidHeatMath.HotTargetC, 9, 1f), 0f, "a room at the target takes nothing");
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(100f, 70f, 9, 1f), 0f, "a room ABOVE a hot target is never cooled by hot liquid");
+                float c = RM_LiquidHeatMath.RoomEnergy(-1e6f, 20f, 9, 1f);
+                Assert(c < 0f, "a warm room is chilled by icy liquid");
+                Assert(20f + c / 9f >= RM_LiquidHeatMath.ColdTargetC - 1e-3f, "a cold room undershot its target: " + (20f + c / 9f));
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(-100f, -10f, 9, 1f), 0f, "a room below 0 C is never warmed by icy liquid");
+            });
+
+            Case("LiquidHeat_room_cap_is_eight_heaters_per_interval", () =>
+            {
+                float heater = 21f * RM_LiquidHeatMath.SecondsPerInterval;
+                // A 1000-cell hall at 0 C: the target allows 50,000; the cap must bind.
+                float e = RM_LiquidHeatMath.RoomEnergy(1e7f, 0f, 1000, 1f);
+                AssertClose(e, 8f * heater, "a hall over a lake takes eight heaters' worth, no more");
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(-1e7f, 40f, 1000, 1f), -8f * heater, "the cap binds for cold too");
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(1e7f, 0f, 1000, 2f), 16f * heater, "the cap scales with strength");
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(10f, 0f, 1000, 1f), 10f, "under the cap the sum passes whole");
+                AssertClose(RM_LiquidHeatMath.RoomEnergy(10f, 0f, 0, 1f), 0f, "a room of no cells takes nothing");
+            });
+
+            Case("LiquidHeat_budget_bounds_cost_and_keeps_average_power", () =>
+            {
+                int v = RM_LiquidHeatMath.Budget(100, out float s1);
+                Assert(v == 100 && s1 == 1f, "under the budget every cell is visited at face value");
+                int big = RM_LiquidHeatMath.CellBudgetPerInterval * 4;
+                v = RM_LiquidHeatMath.Budget(big, out float s2);
+                Assert(v == RM_LiquidHeatMath.CellBudgetPerInterval, "a big lake visits only the budget");
+                AssertClose(v * s2, big, "visited x scale equals the full count: average power is exact");
+                v = RM_LiquidHeatMath.Budget(0, out float s3);
+                Assert(v == 0 && s3 == 1f, "nothing to visit");
+            });
+
             // ── FLOWWORKS_BUILD_PROGRAM_1 Phase 6: ruling 7's burn rates and the travelling front ──
             Case("Fire_burn_is_a_rate_on_the_ladder_one_level_a_day_source_one_per_five", () =>
             {

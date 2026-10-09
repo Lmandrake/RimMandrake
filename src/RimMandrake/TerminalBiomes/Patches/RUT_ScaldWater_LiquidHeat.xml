@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LIQUID_HEAT_PUSH_1 (FL-1 / X-8): the Scald's boiling water warms the room it lies in, through vanilla heat
+  (FlowWorks RM_LiquidHeat; owner's "one kind of heat" ruling). These six terrains are no LiquidDef's terrainSuite,
+  so they are marked hot by FlowWorks' terrain extension instead.
+
+  Vanilla Room.PushHeat ignores a room that uses the outdoor temperature (MEASURED, decompiled 1.6), so an OPEN
+  shore stays at the outdoor temperature; a roofed hut or wall-enclosed room on the shore warms (closed
+  BOILING_WATER_BURNS_1 §3's "the shore of a boiling pool is a warm room").
+
+  Gate: PatchOperationFindMod on FlowWorks' display name. RM_LiquidHeatExtension is a FlowWorks class, and a
+  mod-extension naming a missing class discards the whole TerrainDef.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: FlowWorks</li>
+    </mods>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/TerrainDef[defName="RUT_ScaldWaterDeep" or defName="RUT_ScaldWaterOceanDeep" or defName="RUT_ScaldWaterMovingChestDeep" or defName="RUT_ScaldWaterShallow" or defName="RUT_ScaldWaterOceanShallow" or defName="RUT_ScaldWaterMovingShallow"]</xpath>
+      <value>
+        <li Class="RimMandrake.FlowWorks.RM_LiquidHeatExtension">
+          <hot>true</hot>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>
