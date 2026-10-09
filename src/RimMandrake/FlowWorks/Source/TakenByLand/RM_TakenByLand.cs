@@ -222,7 +222,20 @@ namespace RimMandrake.FlowWorks.TakenByLand
         private static bool SafeReturn(RM_TakenRecord r)
         {
             try { return Return(r); }
-            catch (Exception e) { Log.Error("[FlowWorks] taken-by-land return of " + r?.pawn + " failed: " + e); return true; }
+            catch (Exception e)
+            {
+                Log.Error("[FlowWorks] taken-by-land return of " + r?.pawn + " failed: " + e);
+                // Return() takes the pawn out of the world's keeping before it spawns it. If it threw in between, put the pawn back
+                // and retry in an hour, so a throw never leaves a pawn held by nothing (no pawn vanishes without a sign).
+                Pawn p = r?.pawn;
+                if (p != null && !p.Destroyed && !p.Discarded && !p.Spawned)
+                {
+                    if (!Find.WorldPawns.Contains(p)) Find.WorldPawns.PassToWorld(p, PawnDiscardDecideMode.KeepForever);
+                    r.returnTick = Find.TickManager.TicksGame + GenDate.TicksPerHour;
+                    return false;
+                }
+                return true;
+            }
         }
 
         /// <summary>True when the record is finished with (returned or lost); false to keep it for later.</summary>
