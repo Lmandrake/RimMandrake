@@ -16,9 +16,10 @@ h2{font-family:Georgia,serif;font-weight:normal;color:var(--orange);font-size:22
 .sub{color:var(--dim);margin:0 0 16px;max-width:1100px}
 .stripe{height:8px;background:linear-gradient(90deg,#7d4a1e 0 20%,#c4702c 20% 40%,#d9ae3f 40% 60%,#8a9a3b 60% 80%,#5a3e2a 80%);border-radius:4px;margin:6px 0 18px}
 .bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:0 0 14px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:5}
-.toggle{display:inline-flex;border:2px solid var(--orange);border-radius:22px;overflow:hidden}
-.toggle button{background:transparent;color:var(--ink);border:0;padding:8px 18px;font:inherit;font-weight:bold;cursor:pointer}
-.toggle button.on{background:var(--orange);color:#24170f}
+.g-key{background:var(--mustard);color:#1e130c;outline:2px solid #f3e4c8}
+td.c.key{background:#4a3a14;box-shadow:inset 0 0 0 2px var(--mustard)}
+tr.keyrow td.job{border-left:5px solid var(--mustard)}
+td.job .hard{display:inline-block;margin-top:4px;font-size:11px;font-weight:bold;color:#1e130c;background:var(--mustard);border-radius:8px;padding:1px 7px}
 .mode-note{color:var(--dim);max-width:640px}
 .legend{display:flex;flex-wrap:wrap;gap:8px}
 .chip{display:inline-block;padding:2px 9px;border-radius:10px;font-size:12px;font-weight:bold;color:#1e130c;white-space:nowrap}
@@ -55,14 +56,8 @@ ol.q li b{color:var(--mustard)}
 <body>
 <h1>Canon materials: what each one is good for</h1>
 <div class="stripe"></div>
-<p class="sub">Rows are <b>jobs</b>, columns are <b>materials</b>. Each cell says how good that material is at that job, and what that means in plain words. Origin chips under each material say where a Jawa clan gets it. Steel, plasteel and durasteel numbers are MEASURED from today's defs (Core, the Armoury); every other number is a proposal. Flip the switch to feel the difference between soft preferences and hard refusals. Design: <code>D:\Luke\dev\RimMandrake\design\RimMandrake\canon_materials_design_2026-10-09.md</code></p>
+<p class="sub">Rows are <b>jobs</b>, columns are <b>materials</b>. Each cell says how good that material is at that job, and what that means in plain words. Origin chips under each material say where a Jawa clan gets it. Steel, plasteel and durasteel numbers are MEASURED from today's defs (Core, the Armoury); every other number is a proposal. Every job is a soft preference (the wrong material works, it just costs you) except the <b>key jobs</b> marked HARD RULE, which take only one material. The key-job list is a <b>proposal</b> for the owner to confirm. Design: <code>D:\Luke\dev\RimMandrake\design\RimMandrake\canon_materials_design_2026-10-09.md</code></p>
 
-<div class="bar">
-  <div class="toggle" role="group" aria-label="Mode">
-    <button id="bPref" class="on">Preference</button><button id="bExcl">Exclusive</button>
-  </div>
-  <div class="mode-note" id="modeNote"></div>
-</div>
 <div class="legend" id="legend" style="margin-bottom:12px"></div>
 
 <div class="wrap"><table id="m"></table></div>
@@ -73,37 +68,40 @@ ol.q li b{color:var(--mustard)}
 </div>
 <div class="cards" id="cards"></div>
 
-<h2>Still open</h2>
+<h2>Key jobs — proposed, for the owner to confirm</h2>
 <ol class="q">
-  <li><b>Preference or exclusive?</b> Can any metal do any job with soft penalties, or do jobs refuse the wrong material outright? (the switch above)</li>
-  <li><b>Plasteel supply:</b> salvage and trade only, or also a costly bench recipe later?</li>
-  <li><b>Durasteel supply:</b> local zersium + steel alloy in a few industrial biomes, or salvage and trade only?</li>
-  <li><b>Unused materials</b> (phrik, transparisteel, stygium, coaxium…): reserve their defs now, or only when something uses them?</li>
-  <li><b>Ancient vs Empire incompatibility:</b> <b>I1</b> two part standards + crafted adapters (the adapter is the rare-material hack) · <b>I2</b> mix freely but each foreign part adds breakdowns and inefficiency · <b>I3</b> Empire parts can't go in ancient builds at all — strip them to raw materials.</li>
+  <li><b>Ship hull plating</b> — durasteel only</li>
+  <li><b>Blast doors &amp; vaults</b> — durasteel only</li>
+  <li><b>Droid shells</b> — plasteel only</li>
+  <li><b>Prosthetics &amp; implants</b> — plasteel only</li>
+  <li><b>Large frames</b> — duranium only (owner rule 2026-10-03)</li>
+  <li><b>Reactor &amp; ship cores</b> — doonium only (owner rule 2026-10-03)</li>
 </ol>
-<p class="foot">Ruled already: plasteel is its own canon material; durasteel becomes our new <code>RSW_Durasteel</code> and every donor durasteel converts into it; duranium and doonium are mostly salvage, rare trade, required for large ships and machines; materials serve recovery, refit, repair and the occasional rare-material hack. 2026-10-09.</p>
+<p class="foot">Decided 2026-10-09: plasteel is its own canon material, salvage and trade only, never craftable; durasteel is our new <code>RSW_Durasteel</code>, salvage and trade only, every donor durasteel converts into it; phrik, transparisteel, stygium and coaxium are trade-only goods; duranium and doonium are mostly salvage, rare trade, required for large ships and machines; ancient and Empire salvage differ in origin and flavour only. Materials serve recovery, refit, repair and the occasional rare-material hack.</p>
 
 <script>
 const MATS=[
  {k:"steel",n:"Steel",o:["local"],verb:"Baseline",src:"Not a canon material; RimWorld's own metal. Iron is mined everywhere by deep drill."},
  {k:"plasteel",n:"Plasteel",o:["anc","emp","trade"],verb:"Shape",src:"Canon 'hard material': Vader's helmet parts, M3 blast shields, B1 battle droids, bone sleeves (Queen's Peril; Rise of the Separatists)."},
- {k:"durasteel",n:"Durasteel",o:["anc","emp","trade"],verb:"Hold",src:"Canon metal alloy, 'more resistant than standard steel': ship plating, buildings, crates; zersium ore critical to it. New def: RSW_Durasteel."},
+ {k:"durasteel",n:"Durasteel",o:["anc","emp","trade"],verb:"Hold",src:"Canon metal alloy, 'more resistant than standard steel': ship plating, buildings, crates; Salvage and trade only. New def: RSW_Durasteel."},
  {k:"plastoid",n:"Plastoid",o:["emp","bench"],verb:"Seal",src:"Canon armour plastic of clone and stormtrooper armour; vulnerable to blaster fire (Rebels: The Visual Guide)."},
  {k:"duranium",n:"Duranium",o:["anc","trade"],verb:"Brace",src:"Canon military plating stronger than titanium; Grievous's body, MagnaGuard frames."},
  {k:"doonium",n:"Doonium",o:["anc","emp","trade"],verb:"Contain",src:"Canon heavy metal for starship construction; with dolovite shielded the Death Star's hypermatter reactor."},
  {k:"beskar",n:"Beskar",o:["anc"],verb:"Protect",src:"Canon Mandalorian iron; armour that stops blaster bolts and resists lightsabers; found only on Mandalorian worlds."},
  {k:"cortosis",n:"Cortosis",o:["anc","trade"],verb:"Disrupt",src:"Canon rare ore that absorbs energy and can short a lightsaber; brittle and porous raw (The Acolyte)."},
- {k:"phrik",n:"Phrik",o:["local","anc"],verb:"Parry",src:"Canon lightsaber-resistant alloy; electrostaffs, Sidious's sabers; mined on Gromas and Tatooine (Mos Algo)."},
- {k:"transp",n:"Transparisteel",o:["emp","local"],verb:"Observe",src:"Canon transparent alloy for windows and canopies, can be blaster-proof; lommite ore is a major component."},
+ {k:"phrik",n:"Phrik",o:["trade"],verb:"Parry",src:"Canon lightsaber-resistant alloy; electrostaffs, Sidious's sabers; mined on Gromas and Tatooine (Mos Algo)."},
+ {k:"transp",n:"Transparisteel",o:["trade"],verb:"Observe",src:"Canon transparent alloy for windows and canopies, can be blaster-proof; lommite ore is a major component."},
  {k:"bronzium",n:"Bronzium",o:["bench","trade"],verb:"Decorate",src:"Canon bronze-coloured alloy for statues, decorative finishes, some armour."},
  {k:"kyber",n:"Kyber",o:["local"],verb:"Focus",src:"Canon Force-attuned crystal; lightsabers; superweapon cores. Ours: Lantern Deeps only."},
- {k:"stygium",n:"Stygium",o:["emp","trade"],verb:"Conceal",src:"Canon crystal that powers cloaking devices (TIE Phantom, the Scimitar)."},
+ {k:"stygium",n:"Stygium",o:["trade"],verb:"Conceal",src:"Canon crystal that powers cloaking devices (TIE Phantom, the Scimitar)."},
  {k:"aurodium",n:"Aurodium",o:["trade"],verb:"Wealth",src:"Canon yellow metal rarer than gold; currency standard on Cantonica, jewellery."},
  {k:"coaxium",n:"Coaxium",o:["trade"],verb:"Extend",src:"Canon hyperfuel mined on Kessel; raw coaxium explodes unless kept cold (Solo)."}
 ];
 const OL={local:["o-local","local mine"],anc:["o-anc","salvage-ancient"],emp:["o-emp","salvage-Empire"],trade:["o-trade","trade"],bench:["o-bench","bench"],herd:["o-herd","herds"]};
 // trade-only materials get a distinct label
-const TRADE_ONLY=new Set(["aurodium","coaxium"]);
+const TRADE_ONLY=new Set(["aurodium","coaxium","phrik","transp","stygium"]);
+// KEY jobs (PROPOSED): only this material is accepted; every other material is refused
+const KEY={"Ship hull plating":"durasteel","Blast doors & vaults":"durasteel","Droid shells":"plasteel","Prosthetics & implants":"plasteel","Large frames":"duranium","Reactor & ship cores":"doonium"};
 const GW={B:"Best",G:"Good",F:"Fair",P:"Poor"};
 // JOBS: [group, name, hint, {mat:[grade, effect]}]
 const J=[
@@ -116,7 +114,7 @@ const J=[
    duranium:["F","very strong, but too rare to spend on walls"],
    doonium:["P","heavy and rare; wasted outside a reactor"],
    beskar:["P","squanders a relic metal on masonry"],
-   transp:["G","see-through wall, about steel's HP (proposed); costly"],
+   transp:["G","see-through wall, about steel's HP (proposed); trade-only, costly"],
    bronzium:["F","about steel's HP; looks handsome (beauty +)"]}],
  ["Blast doors & vaults","doors, vault walls, safes",{
    steel:["F","ordinary door: opens fast, breaks fast"],
@@ -124,10 +122,9 @@ const J=[
    durasteel:["B","3× HP, heavy, the canon blast door"],
    plastoid:["P","a cupboard door, not a blast door"],
    duranium:["G","near-unbreakable but slow to open (proposed)"],
-   cortosis:["F","vault lining that blocks energy cutters (proposed)"],
    beskar:["P","absurd use of an heirloom"]}],
  ["Windows & canopies","see-through walls, cockpits",{
-   transp:["B","clear and blaster-proof; the only real window"],
+   transp:["B","clear and blaster-proof; the only real window (trade-only)"],
    plastoid:["P","cloudy viewport; cracks under fire"],
    plasteel:["P","not transparent; a shuttered port only"]}],
  ["Ships & machines"],
@@ -228,7 +225,6 @@ const J=[
    plasteel:["F","clean modern look"],
    beskar:["G","Mandalorian heirloom pieces"]}]
 ];
-let mode="pref";
 function chips(m){return m.o.map(o=>{let [c,l]=OL[o];if(o==="trade"&&TRADE_ONLY.has(m.k))l="trade-ONLY";return `<span class="chip ${c}">${l}</span>`}).join("")}
 function render(){
   const t=document.getElementById("m");
@@ -236,33 +232,26 @@ function render(){
   for(const r of J){
     if(r.length===1){h+=`<tr class="grp"><td colspan="${MATS.length+1}">${r[0]}</td></tr>`;continue}
     const [name,hint,cells]=r;
-    h+=`<tr><td class="job"><b>${name}</b><span>${hint}</span></td>`;
+    const key=KEY[name];
+    h+=`<tr${key?' class="keyrow"':''}><td class="job"><b>${name}</b><span>${hint}</span>${key?'<br><span class="hard">HARD RULE (proposed)</span>':''}</td>`;
     for(const m of MATS){
       const c=cells[m.k];
-      if(!c){h+=`<td class="c na"><span class="w g-na">—</span><span class="e">${mode==="pref"?"not a material for this":"refused"}</span></td>`;continue}
-      const [g,e]=c;
-      if(mode==="excl"&&(g==="F"||g==="P")){
-        h+=`<td class="c refused"><span class="w g-refused">Refused</span><span class="e">the bill won't accept ${m.n.toLowerCase()}</span></td>`;
-      }else{
-        const cls={B:"g-best",G:"g-good",F:"g-fair",P:"g-poor"}[g];
-        const word=mode==="excl"?(g==="B"?"Best":"Allowed"):GW[g];
-        h+=`<td class="c"><span class="w ${cls}">${word}</span><span class="e">${e}</span></td>`;
+      if(key){
+        if(m.k===key){h+=`<td class="c key"><span class="w g-key">Required</span><span class="e">${c?c[1]:""} The only material this job accepts.</span></td>`;}
+        else if(c){h+=`<td class="c refused"><span class="w g-refused">Refused</span><span class="e">key job: the bill won't accept ${m.n.toLowerCase()}</span></td>`;}
+        else{h+=`<td class="c na"><span class="w g-na">—</span><span class="e">refused</span></td>`;}
+        continue;
       }
+      if(!c){h+=`<td class="c na"><span class="w g-na">—</span><span class="e">not a material for this</span></td>`;continue}
+      const [g,e]=c;
+      const cls={B:"g-best",G:"g-good",F:"g-fair",P:"g-poor"}[g];
+      h+=`<td class="c"><span class="w ${cls}">${GW[g]}</span><span class="e">${e}</span></td>`;
     }
     h+=`</tr>`;
   }
   t.innerHTML=h+`</tbody>`;
-  document.getElementById("modeNote").innerHTML= mode==="pref"
-   ? "<b>Preference:</b> any listed material may do any job; the wrong one just costs you (weaker, heavier, slower, pricier). The player decides."
-   : "<b>Exclusive:</b> only Best/Good materials are accepted; Fair and Poor become hard refusals. Compare how many choices survive per row.";
-  document.getElementById("legend").innerHTML= mode==="pref"
-   ? `<span class="chip g-best">Best</span><span class="chip g-good">Good</span><span class="chip g-fair">Fair — works, costs you</span><span class="chip g-poor">Poor — works badly</span><span class="chip g-na">— not this material's kind of job</span>`
-   : `<span class="chip g-best">Best</span><span class="chip g-good">Allowed</span><span class="chip g-refused">Refused</span><span class="chip g-na">— not this material's kind of job</span>`;
-  document.getElementById("bPref").classList.toggle("on",mode==="pref");
-  document.getElementById("bExcl").classList.toggle("on",mode==="excl");
+  document.getElementById("legend").innerHTML=`<span class="chip g-key">Required — key job, hard rule</span><span class="chip g-refused">Refused — key job only</span><span class="chip g-best">Best</span><span class="chip g-good">Good</span><span class="chip g-fair">Fair — works, costs you</span><span class="chip g-poor">Poor — works badly</span><span class="chip g-na">— not this material's kind of job</span>`;
 }
-document.getElementById("bPref").onclick=()=>{mode="pref";render()};
-document.getElementById("bExcl").onclick=()=>{mode="excl";render()};
 document.getElementById("cards").innerHTML=MATS.map(m=>`<div class="card"><h3>${m.n}</h3><div class="verb">${m.verb}</div><div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px">${chips(m)}</div><div class="src">${m.src}</div></div>`).join("");
 render();
 </script>
