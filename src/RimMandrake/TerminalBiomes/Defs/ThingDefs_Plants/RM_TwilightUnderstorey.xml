@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_TwilightUnderstorey.xml          TerminalBiomes · TWILIGHTSEA_FLORA_PASS_1
+  ============================================================================
+  The ten understorey flora of
+  design/Jawa/worldbuilding/biomes/the_twilight_deep_flora_pass_2026-09-27.md,
+  one VERB of the light economy each (tax, bank, refuse, mint, record, answer,
+  inhabit, eat, carry, give). Built as defs 2026-10-08, same shape as the Grey's
+  RM_GreySeaUnderstorey.xml; shares RM_TwilightFloorFloraBase
+  (RM_TwilightSeaFlora.xml) for the three engine facts that make any floor
+  plant spawn (completelyIgnoreFertility, plantDensity, vanilla Plants genstep).
+
+  ROUTE A (in RM_TwilightSea.xml <wildPlants>, shorthand form): Almslight,
+  Weircomb (terrain-gated), Murkspindle, Gloamurn, Glimmerhusk, Hushcoral.
+  ROUTE B (NOT in wildPlants; needs the dressing genstep, OWED): Tithemoss,
+  Tollhorn, Gleamfloss, Farwick (+ hushcoral rings at Compact stakes).
+
+  OWED, deliberately not built here (C#, not defs): gloamurn's charge/discharge
+  glower, hushcoral's entrained pulse, murkspindle's wilt-above-glow comp, the
+  Route B genstep extension. Where a design glow was a steady radius it ships
+  as a plain CompProperties_Glower (glow grid only, per the light-economy
+  pass sec 1.4); gloamurn ships with none (its glow is discharge-only).
+  Nothing here is a harvestable lamp SKU: yields go to EXISTING items
+  (RM_LampBladder, RM_NoothelmBulb), plus the one new trade good
+  RM_TollhornCore (RM_TwilightFloraProducts.xml).
+
+  PLACEHOLDER ART: vanilla EcheveriaA / SnakePlantA distinguished by colorTwo,
+  as the other Twilight plants do. Real art: artpipe jobs filed, see
+  Transient/twilightsea_flora_art_jobs_2026-10-08.json. No art for these names
+  existed (artpipe_state find: 0 hits for all ten).
+  ============================================================================
+-->
+<Defs>
+
+  <!-- 1. RM_TITHEMOSS - tax. Route B. Route B only: attachment overlay on wild/Compact lamp hosts, never the player's clipped lamps, never on a vaulisk lure. No glow of its own. Cut-only weeding job, no yield. Host-adjacency placement needs the dressing genstep (owed). -->
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_Tithemoss</defName>
+    <label>tithemoss</label>
+    <description>A grey-green felt of filament colonies that grows only on the bodies of living lights, drinking a tithe of the glow out of the symbionts and wearing a faint rim of the stolen colour. A tithed lamp is a dimmer lamp. The Compact weed their stakes every morning the way surface people sweep a doorstep, and a stake gone furry is the readable sign of an abandoned one.</description>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Beauty>1</Beauty>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(120,150,125)</colorTwo>
+      <drawSize>(0.8,0.8)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>3</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.6~0.9</visualSizeRange>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 2. RM_GLOAMURN - bank. Route A. Charge/discharge glower (glow 2.5 gold, breathing, only while discharging) is a small C# comp, OWED; no glower here until it exists (a static glow would make it a permanent lamp, against the design). -->
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_Gloamurn</defName>
+    <label>gloamurn</label>
+    <description>A translucent urn-sponge that drinks the gold all the days a well stands over it and gives none of it back, dark and swollen and miserly, until the well closes. Then, alone on ground the sky has abandoned, the urns light, spending the hoard down over most of a week. A charged urn squeezes to a lamp bladder; harvesting ends the urn.</description>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Beauty>3</Beauty>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(110,140,115)</colorTwo>
+      <drawSize>(0.9,0.9)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>10</growDays>
+      <harvestWork>200</harvestWork>
+      <harvestYield>1</harvestYield>
+      <harvestedThingDef>RM_LampBladder</harvestedThingDef>
+      <harvestFailable>false</harvestFailable>
+      <harvestMinGrowth>0.8</harvestMinGrowth>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.7~1.1</visualSizeRange>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>0.6</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 3. RM_MURKSPINDLE - refuse. Route A. No glow. The wilt-above-glow comp (ruled to ship 2026-09-27) is a small C# comp, OWED; the def is complete without it. -->
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_Murkspindle</defName>
+    <label>murkspindle</label>
+    <description>Upright spindles of jet-black filament, matte as soot, strung in loose stands across the dark between the beams. It combs the still water for the fine detritus that settles only where nothing swims, and it wants nothing from the light. Where murkspindle grows, nothing has been bright for a long time, which is exactly what a diver needs to know about that ground.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Beauty>1</Beauty>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(25,25,32)</colorTwo>
+      <drawSize>(0.8,0.8)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>6</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.7~1.0</visualSizeRange>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>1.0</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 4. RM_WEIRCOMB - mint. Route A. Terrain-gated on RM_BankSilt (no such TerrainDef yet, so the row is a dead letter until the bank terrain is authored; design says this is sequencing). Static 1.5 blue-white glow; the current-stepped brightness is owed. -->
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_Weircomb</defName>
+    <label>weircomb</label>
+    <description>Rows of upright combs rooted in the bank silt, teeth of stiff bacterial filament held against the invisible river, and along each tooth a blue-white light in proportion to the current that feeds it. A slack day is a dim bank; a running day is a lit weir; and in the hours before an undersurge the whole bank blazes. Its glow is minted from motion, and the river has never stopped paying.</description>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Beauty>3</Beauty>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(70,50,45)</colorTwo>
+      <drawSize>(1.0,1.0)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>1.5</glowRadius>
+        <glowColor>(140,190,255,0)</glowColor>
+      </li>
+    </comps>
+    <plant>
+      <growDays>6</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.8~1.1</visualSizeRange>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>1.0</wildClusterWeight>
+      <wildTerrainTags><li>RM_BankSilt</li></wildTerrainTags>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 5. RM_TOLLHORN - record. Route B. Route B only: seeded on well-recurrence ground by the dressing genstep (owed). No glow; inert to the lightweb on purpose. -->
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_Tollhorn</defName>
+    <label>tollhorn</label>
+    <description>A soft horn-coral, blunt and unbeautiful, that grows where wells recur and keeps books. Every week of standing gold above it lays a gold-veined growth band; every dark season lays a blank one. A cut core is a core sample of the sky, banded like tree rings, and the Compact's well-keeper buys them dearly and has never once sold one.</description>
+    <statBases>
+      <MaxHitPoints>160</MaxHitPoints>
+      <Beauty>4</Beauty>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(190,150,150)</colorTwo>
+      <drawSize>(1.2,1.2)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>20</growDays>
+      <harvestWork>600</harvestWork>
+      <harvestYield>1</harvestYield>
+      <harvestedThingDef>RM_TollhornCore</harvestedThingDef>
+      <harvestFailable>false</harvestFailable>
+      <harvestMinGrowth>0.9</harvestMinGrowth>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.2</visualSizeRange>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 6. RM_HUSHCORAL - answer. Route A. Static radius-1 gold glow; the entrained-pulse comp (sibling of RM_Comp_WarblingGlow) and the Compact stake-ring placement are OWED. -->
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_Hushcoral</defName>
+    <label>hushcoral</label>
+    <description>A soft coral of small gold polyps that do not make their own case: they answer. Within a few cells of an honest living light the colony breathes in time with the lamp it hears, and beside a light with no pulse it goes silent and dark. A ring of hushed coral around a gold lamp is the oldest alarm in the sea: a lamp the coral will not answer is a trap.</description>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Beauty>3</Beauty>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(190,170,100)</colorTwo>
+      <drawSize>(0.7,0.7)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>1.0</glowRadius>
+        <glowColor>(235,200,110,0)</glowColor>
+      </li>
+    </comps>
+    <plant>
+      <growDays>12</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.6~0.9</visualSizeRange>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>0.6</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 7. RM_GLEAMFLOSS - inhabit. Route B. Route B only: shaft cells, seeded/killed by the well-ledger (owed). No glower (the skylight's 6.0 covers it). No yield (ruled: no gilt item). -->
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_Gleamfloss</defName>
+    <label>gleamfloss</label>
+    <description>A bacterial floss so fine it has no purchase on the floor at all: it lives suspended in a skylight's column, a slow drifting haze of gold-lit filament that is half the reason the shafts read as literal golden shafts. The pallu eat it. When a well closes the floss starves and settles, a gold dust-fall the Deepwater call gilt, and for a few days the dead well's floor glitters with it.</description>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Beauty>2</Beauty>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(225,195,110)</colorTwo>
+      <drawSize>(0.5,0.5)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>2</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.5~0.8</visualSizeRange>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 8. RM_GLIMMERHUSK - eat. Route A. Single mixed-tint 1.5 glower stands in for the dappled uneven breathing glow (owed). -->
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_Glimmerhusk</defName>
+    <label>glimmerhusk</label>
+    <description>A barrel sponge of the dark between, big as a barrel and twice as patient, that strains the water for the sea's smallest lights and cannot digest the glow as fast as the flesh. Its charcoal body is speckled with the still-lit remains of everything it has eaten, gold and blue-white and green at once, each point fading over days. None of the lights is its own.</description>
+    <statBases>
+      <MaxHitPoints>140</MaxHitPoints>
+      <Beauty>3</Beauty>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(55,58,60)</colorTwo>
+      <drawSize>(1.1,1.1)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>1.5</glowRadius>
+        <glowColor>(190,215,170,0)</glowColor>
+      </li>
+    </comps>
+    <plant>
+      <growDays>15</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.2</visualSizeRange>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>0.7</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 9. RM_FARWICK - carry. Route B. Route B only: runner placement (4-8 cell run from shaft rims), breathing pulse and die-with-the-well are OWED; this def is the bud. -->
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_Farwick</defName>
+    <label>farwick</label>
+    <description>A creeping runner of glassy thread that roots at a shaft's rim and grows away from it, cell by cell into the dark, piping the well's gold down its own fibre to a single small lit bud at the far end. Every bud on the floor dies the same hour its home well closes. A lone gold bud burning in country whose well is a week dead is not a farwick. Picked, the bud yields a noothelm bulb and the runner dies.</description>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Beauty>2</Beauty>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(215,205,170)</colorTwo>
+      <drawSize>(0.5,0.5)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>1.5</glowRadius>
+        <glowColor>(255,214,130,0)</glowColor>
+      </li>
+    </comps>
+    <plant>
+      <growDays>15</growDays>
+      <harvestWork>120</harvestWork>
+      <harvestYield>1</harvestYield>
+      <harvestedThingDef>RM_NoothelmBulb</harvestedThingDef>
+      <harvestFailable>false</harvestFailable>
+      <harvestMinGrowth>0.8</harvestMinGrowth>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.5~0.8</visualSizeRange>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 10. RM_ALMSLIGHT - give. Route A. growMinGlow 0.15 does the only-within-the-spill placement on the glow grid. -->
+  <ThingDef ParentName="RM_TwilightFloorFloraBase">
+    <defName>RM_Almslight</defName>
+    <label>almslight</label>
+    <description>A low cushion-turf that cannot keep what it is given: everything it drinks by the standing light it leaks straight back, all hours, as a floor-hugging carpet glow too dim to work by and too kind to waste. It grows only within the spill of standing light, and its soft-lit edge maps the true reach of every light in the sea. The Compact seed it along their paths.</description>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Beauty>2</Beauty>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(130,150,115)</colorTwo>
+      <drawSize>(1.0,1.0)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>1.0</glowRadius>
+        <glowColor>(230,200,150,0)</glowColor>
+      </li>
+    </comps>
+    <plant>
+      <growDays>4</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>1.2</wildClusterWeight>
+      <growMinGlow>0.15</growMinGlow>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+</Defs>
