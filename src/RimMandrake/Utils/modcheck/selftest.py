@@ -6,11 +6,9 @@ for why this discipline exists; modcheck inherits it.
 
 Picked up automatically by run_selftests.py (glob `selftest*.py` under src/).
 """
-# selftest-timeout: 600
-# Reason (measured 2026-10-07): t_floor_triage_positive_counts runs floor.triage over the REAL
-# mod tree on the drvfs mount - 112 components_declared calls, ~17k stat + 26k lstat (patch_targets
-# mod_index/location_index/check_mod) - 22/22 alone in ~110 s wall (~27 s CPU, rest is drvfs IO),
-# which under the parallel pool brushes the 240 s default. The check is deliberately against live data.
+# t_floor_triage_positive_counts (floor.triage over the REAL deployed mod tree, ~110 s of drvfs IO)
+# moved to selftest_deployed_floor.py on 2026-10-08: it is a live-install check, run by
+# `run_selftests.py --tier deployed`, not on every commit.
 import os
 import shutil
 import sys
@@ -50,19 +48,6 @@ def t_floor_uncovered():
     missing = floor.uncovered(toggles, components)
     check("floor: an uncovered toggle is reported", missing == ["spikesEnabled"],
          missing)
-
-
-def t_floor_triage_positive_counts():
-    """`modcheck floor --all` (DETERMINISM_ASSESSMENT.md SS6, C4), against the
-    REAL repo -- a positive-count assertion only, never a threshold on the
-    counts themselves (SS6's own instruction). The dangerous failure mode is
-    a glob that quietly matches nothing and reports a clean empty table, not
-    any specific count changing as walks/mods are added or fixed."""
-    rows, footer = floor.triage(runner.ROOT)
-    check("floor.triage: at least one walk read", len(rows) >= 1, len(rows))
-    check("floor.triage: at least one mod indexed with a resolvable subject",
-         any(r["subject_ok"] for r in rows), len(rows))
-    check("floor.triage: footer renders a non-empty summary line", bool(footer))
 
 
 def t_floor_met_when_every_toggle_has_a_component():
@@ -579,7 +564,6 @@ def t_dependency_closure_and_composed_folders():
 TESTS = [
     t_dependency_closure_and_composed_folders,
     t_floor_uncovered,
-    t_floor_triage_positive_counts,
     t_compose_test_list_appends_once_and_reads_back,
     t_floor_met_when_every_toggle_has_a_component,
     t_chain_happy_path_is_pass,

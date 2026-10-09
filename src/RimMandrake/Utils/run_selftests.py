@@ -12,11 +12,17 @@ the parallel pool, with nothing else in flight. Nothing else in the suite has a
 timing-sensitive assertion (checked 2026-09-03); if a future one does, add its
 basename to SEQUENTIAL_ISOLATED rather than raising the worker count to paper over it.
 
-selftest_cli.py is the long pole (~150s+ solo — 87 real subprocess spawns, deliberately
-not in-process, see that file's own docstring) and is NOT parallelized internally here;
-that's real, separate surgery (PARALLELIZE_SELFTEST_CLI_INTERNAL_1), not a rider on this
-fix. It still runs inside the shared pool since it has no timing assertion of its own to
-protect from contention.
+VERDICTS (owner card 2026-10-08): every test is exactly one of PASS / FAIL / UNMEASURED /
+CRASH / SKIPPED, each reported as N/N. GREEN iff FAIL + CRASH == 0. A test that prints the
+unmeasured phrase is UNMEASURED even at exit 0 — it skipped its own check; listed loudly.
+
+TIERS. `--tier default` (the default) runs every unit test; tests tagged
+`# selftest-tier: deployed` are live-install checks (the deployed Steam Mods tree, vanilla
+Data) and print SKIPPED there. Run `--tier deployed` after a deploy, a game update, or a
+mod subscribe/unsubscribe — that is when their answer can change. `--tier all` runs both.
+
+LOCK. A full suite (anything but --only) holds an flock on /home/mandrake/rm/.selftest-suite.lock
+shared by every clone on the machine; a second suite waits and prints who holds it.
 
 🔑 Discovery is `selftest*.py` — NOT `selftest_*.py` — over SEARCH_ROOTS. The narrower
 glob silently skipped every selftest named plainly `selftest.py` (rimbench's and
@@ -56,6 +62,45 @@ PER_TEST_TIMEOUT_S = 240
 #   # selftest-timeout: 600
 # so the runner does not report a 367 s PASS as a TIMEOUT (2026-09-23).
 _TIMEOUT_TAG = re.compile(r"^#\s*selftest-timeout:\s*(\d+)", re.M)
+
+
+# Tiers. A test declares a non-default tier in its first 40 lines, e.g.
+#   # selftest-tier: deployed
+# DEPLOYED = a live-install check (reads the deployed Steam Mods tree / vanilla Data on drvfs), not a unit test:
+# it answers "is the installed world consistent", which only changes after a deploy, a game update or a mod
+# subscribe, so it runs then (`--tier deployed`), not on every commit. The default tier SKIPS it visibly.
+_TIER_TAG = re.compile(r"^#\s*selftest-tier:\s*(\w+)", re.M)
+TIERS = ("default", "deployed")
+TIER_WHEN = {"deployed": "live-install check — run `run_selftests.py --tier deployed` after a deploy, "
+                         "a game update or a mod subscribe/unsubscribe"}
+
+
+def _head(path: Path) -> str:
+    try:
+        return "".join(path.open(encoding="utf-8", errors="replace").readlines()[:40])
+    except OSError:
+        return ""
+
+
+def tier_of(path: Path) -> str:
+    m = _TIER_TAG.search(_head(path))
+    return m.group(1) if m else "default"
+
+
+def select_tier(tests, tier: str):
+    """(to run, [(path, why skipped)]) for --tier default|deployed|all. An unknown tag is an error, never a skip."""
+    run, skipped, bad = [], [], []
+    for t in tests:
+        tt = tier_of(t)
+        if tt not in TIERS:
+            bad.append(f"{_rel(t) or t}: unknown selftest-tier {tt!r} (known: {', '.join(TIERS)})")
+        elif tier == "all" or tt == tier:
+            run.append(t)
+        else:
+            skipped.append((t, f"tier {tt}, not run in --tier {tier}" + (f" ({TIER_WHEN[tt]})" if tt in TIER_WHEN else "")))
+    if bad:
+        raise ValueError("; ".join(bad))
+    return run, skipped
 
 
 def per_test_timeout(path: Path) -> int:
@@ -476,8 +521,64 @@ def _parser():
     ap.add_argument("--timings", action="store_true",
                     help="print the 10 slowest tests after the summary")
     ap.add_argument("--only", nargs="+", metavar="PATH",
-                    help="run just these selftest files (still contained, still N/N)")
+                    help="run just these selftest files, whatever their tier (still contained, still N/N; no suite lock)")
+    ap.add_argument("--tier", choices=TIERS + ("all",), default="default",
+                    help="default: every unit test (deployed-tier tests print SKIPPED). deployed: only the "
+                         "live-install checks — run after a deploy, a game update or a mod subscribe. all: both")
     return ap
+
+
+# --- the machine-wide suite lock -------------------------------------------------------
+# Three full suites at once (two seat clones + a helper) took 30+ min instead of ~3 x 5 (audit §8 #7): each
+# runner's memory admission only sees its own tests. So a full suite holds an flock on an ext4 path shared by every
+# clone on this machine; a second one WAITS, and says on whom. --only runs and nested runs take no lock.
+SUITE_LOCK = Path(os.environ.get("RM_SELFTEST_LOCK", "/home/mandrake/rm/.selftest-suite.lock"))
+
+
+class suite_lock:
+    def __init__(self, path: Path = None, poll_s: float = 2.0, say_every_s: float = 60.0, out=sys.stderr):
+        self.path, self.poll_s, self.say_every_s, self.out = path or SUITE_LOCK, poll_s, say_every_s, out
+        self.fd = None
+        self.waited = 0.0
+
+    def holder(self) -> str:
+        try:
+            return self.path.read_text().strip() or "an unknown holder (no note written yet)"
+        except OSError:
+            return "an unknown holder"
+
+    def __enter__(self):
+        import fcntl
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.fd = os.open(self.path, os.O_RDWR | os.O_CREAT, 0o644)
+        start, said = time.monotonic(), None
+        while True:
+            try:
+                fcntl.flock(self.fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                now = time.monotonic()
+                if said is None or now - said >= self.say_every_s:
+                    print(f"WAITING for the selftest suite lock {self.path} ({now - start:.0f}s so far) — held by "
+                          f"{self.holder()}", file=self.out, flush=True)
+                    said = now
+                time.sleep(self.poll_s)
+        self.waited = time.monotonic() - start
+        note = (f"pid {os.getpid()} seat {os.environ.get('AGENT_SEAT', '?')} repo {REPO_ROOT} "
+                f"since {time.strftime('%H:%M:%S')} argv {' '.join(sys.argv[1:]) or '(full suite)'}")
+        os.ftruncate(self.fd, 0)
+        os.pwrite(self.fd, note.encode(), 0)
+        if self.waited > 1:
+            print(f"got the selftest suite lock after waiting {self.waited:.0f}s", file=self.out, flush=True)
+        return self
+
+    def __exit__(self, *exc):
+        import fcntl
+        try:
+            os.ftruncate(self.fd, 0)
+            fcntl.flock(self.fd, fcntl.LOCK_UN)
+        finally:
+            os.close(self.fd)
 
 
 class run_cache:
@@ -499,10 +600,23 @@ class run_cache:
             os.environ.pop("RM_SELFTEST_CACHE_DIR", None)
 
 
+_OUTER = [None]   # False inside a nested runner (or a fixture): it must not overwrite the outer run's records
+
+
 def main(argv=None) -> int:
     args = _parser().parse_args(argv)
-    with run_cache():
-        return _suite(args)
+    nested = bool(os.environ.get("RM_SELFTEST_NESTED"))
+    _OUTER[0] = not nested
+    import contextlib
+    lock = contextlib.nullcontext() if (args.only or nested) else suite_lock()
+    with lock:
+        os.environ["RM_SELFTEST_NESTED"] = "1"   # a test that runs the runner must not wait on our own lock
+        try:
+            with run_cache():
+                return _suite(args)
+        finally:
+            if not nested:
+                os.environ.pop("RM_SELFTEST_NESTED", None)
 
 
 def _suite(args) -> int:
@@ -540,6 +654,15 @@ def _suite(args) -> int:
     if missing:
         print("REQUIRED lint selftest(s) not discovered: " + ", ".join(sorted(missing)))
         return 1
+
+    if not args.only:
+        try:
+            tests, off_tier = select_tier(tests, args.tier)
+        except ValueError as exc:
+            print(f"selftest-tier error: {exc}")
+            return 1
+    else:
+        off_tier = []
 
     stale = set() if args.only else set(NOT_STANDALONE) - {p.relative_to(REPO_ROOT).as_posix()
                                    for p, _ in excluded}
@@ -609,7 +732,7 @@ def _suite(args) -> int:
             PEAKS_FILE.write_text(json.dumps({**load_peaks(), **_PEAK_SEEN}, indent=0, sort_keys=True))
         except OSError:
             pass
-    skipped = [(path, "SKIPPED", 0.0, why) for path, why in excluded]
+    skipped = [(path, "SKIPPED", 0.0, why) for path, why in excluded + off_tier]
     return report(results, skipped, len(tests) + len(skipped), wall_elapsed, contain_note,
                   ISOLATED, args.timings)
 
@@ -672,7 +795,7 @@ STATE_DIR = Path(os.environ.get("RM_SELFTEST_STATE_DIR", Path.home() / ".local/s
 
 def _write_last_run(allr, wall) -> None:
     """Machine-readable copy of the run (a program reads it, so it is not in the repo)."""
-    if os.environ.get("RM_SELFTEST_NESTED"):
+    if _OUTER[0] is False:
         return
     try:
         STATE_DIR.mkdir(parents=True, exist_ok=True)

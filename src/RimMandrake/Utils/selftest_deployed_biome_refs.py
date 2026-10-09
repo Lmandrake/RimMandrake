@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # selftest-timeout: 600   # cold run walks every deployed mod on the drvfs mount; warm runs hit /tmp caches
+# selftest-tier: deployed   # live-install check: `run_selftests.py --tier deployed` after a deploy or game update
 """
 selftest_deployed_biome_refs.py
 

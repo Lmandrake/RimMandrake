@@ -93,13 +93,10 @@ import contextlib, io
 def _rep(states):
     rows = [(Path(f"/x/t{i}.py"), s, 0.1, "why") for i, s in enumerate(states)]
     buf = io.StringIO()
-    os.environ["RM_SELFTEST_NESTED"] = "1"   # do not overwrite the real last_run.json
-    try:
-        with contextlib.redirect_stdout(buf):
-            rc = rs.report([r for r in rows if r[1] != "SKIPPED"], [r for r in rows if r[1] == "SKIPPED"],
-                           len(rows), 0.0, "fixture")
-    finally:
-        os.environ.pop("RM_SELFTEST_NESTED", None)
+    rs._OUTER[0] = False   # do not overwrite the real last_run.json
+    with contextlib.redirect_stdout(buf):
+        rc = rs.report([r for r in rows if r[1] != "SKIPPED"], [r for r in rows if r[1] == "SKIPPED"],
+                       len(rows), 0.0, "fixture")
     return rc, buf.getvalue()
 rc, out = _rep(["PASS", "UNMEASURED", "SKIPPED"])
 eq(rc, 0, "PASS+UNMEASURED+SKIPPED is green")
