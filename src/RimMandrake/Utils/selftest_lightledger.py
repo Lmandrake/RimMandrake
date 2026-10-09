@@ -23,8 +23,6 @@ WRITE = re.compile(r"\bGlowRadius\s*=(?!=)")
 # Writers not yet migrated (LIGHT_LEDGER_ONE_1 lands one commit per writer). Shrinks to empty; a file
 # listed here that no longer writes directly is itself a failure, so the list cannot rot.
 NOT_YET_MIGRATED = {
-    "LanternDeeps/Source/RM_AuroraCollapse.cs",
-    "LanternDeeps/Source/RM_HydrocarbonWave3.cs",
     "Abyss/Source/RM_MapComponentDark.cs",
     "Abyss/Source/RM_CompKrizzak.cs",
     "LuminousPigment/Source/MapComponent_DeepfireLights.cs",

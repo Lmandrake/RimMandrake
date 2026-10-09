@@ -2,7 +2,7 @@
 
   <!--
     LanternDeeps offline fuzz (Approach B, same shape as DivingInteraction/Bazaar). Plain net8.0, zero RimWorld/Unity references:
-    ../RM_DeepCollapseKernel.cs and ../RM_SipperLedgerKernel.cs are the PRODUCTION files the mod compiles, pulled in directly.
+    ../RM_DeepCollapseKernel.cs, ../RM_SipperLedgerKernel.cs and the shared LightLedgerKernel.cs are the PRODUCTION files the mod compiles, pulled in directly.
     If a `using Verse;` ever lands in either, this build breaks - the guard rail working.
     Run: python3 src/RimMandrake/Utils/selftest_lanterndeeps_fuzz.py [fuzz knobs]
   -->
@@ -23,6 +23,7 @@
   <ItemGroup>
     <Compile Include="..\RM_DeepCollapseKernel.cs" />
     <Compile Include="..\RM_SipperLedgerKernel.cs" />
+    <Compile Include="..\..\..\_Shared\LightLedger\LightLedgerKernel.cs" />
     <Compile Include="LanternDeepsFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

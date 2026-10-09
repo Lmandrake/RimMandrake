@@ -173,6 +173,13 @@ namespace RimMandrake.Shared
             return LightLedgerKernel.Scaled(g.Props.glowRadius, For(g, false));
         }
 
+        /// <summary>Scaled, leaving out one multiplier by its owner: what a proportional share is taken of.</summary>
+        public static float ScaledExceptMul(CompGlower g, string owner)
+        {
+            if (g == null) return 0f;
+            return LightLedgerKernel.ScaledExcept(g.Props.glowRadius, For(g, false), LightLedgerKernel.Mul + owner);
+        }
+
         public static float Get(CompGlower g, string fullKey, float fallback)
         {
             Dictionary<string, float> m = g == null ? null : For(g, false);
