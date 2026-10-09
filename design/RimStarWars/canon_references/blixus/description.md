@@ -18,10 +18,11 @@ Blixus were large non-sentient carnivorous cephalopods from an unknown planet of
 **Biology and appearance** A horrific monstrosity coated with a half-shelled, articulated carapace, with hard chitin covering its six pick-like legs. Its well-muscled underbelly concealed a ghastly gash of a mouth filled with sharp teeth, and a pair of pincer-tipped graspers. Its most terrifying feature, though, were the five sinewy tentacles that terminated in sucker-lined grasping pads.
 
 ## Visual brief
-Two images, and they disagree sharply on colour and body plan, so read both before drawing.
+**Animation-only canon — no realistic source found (searched: `Images of blixus`, `Blixus` and `Blixus/Legends` page images, wiki title search).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The Legends comic panel (`wookieepedia_legends_1.webp`, red-orange/yellow squid, a non-canon palette) was deleted; the Clone Wars 3D render `wookieepedia_canon_1.webp` is the only reference kept. Read it as a real animal: horseshoe-crab/isopod chitin with real sheen and wear, wet ringed earthworm-like tentacle flesh.
 - **Canon (`wookieepedia_canon_1.webp`, Clone Wars 3D render, side view):** a compact, low, crab/trilobite-like body. The top is a smooth teal-blue overlapping armour carapace (flared plates like a horseshoe-crab or isopod shell, pale veining on the head plate) that sweeps back past the body. Beneath it the flesh is soft pinkish-tan, with a wide, lip-lined slit of a mouth low on the front of the underbelly. Two small amber/orange eyes sit under the carapace brim. Six rigid, blade-like blue-grey chitin legs (jointed with rusty-orange joints) point down and slightly forward like picks; two small pincer claws sit near the mouth. Five very long, thick, flesh-pink tentacles (finely ringed like an earthworm) trail and loop from the front/upper body, each longer than the whole body; the distal third is grey and studded with small thorn spikes, ending in a flat pink paddle-pad with a ring of dark suckers.
-- **Legends (`wookieepedia_legends_1.webp`, comic panel):** the same animal reads as a squid-like thing in red-orange with yellow-gold armour plates and yellow scaly sucker-skin, a large yellow eye with a black slit pupil, and a yellow beak/crest. LEGENDS continuity, and the colours (red-orange and yellow, not teal and pink) do not match canon. Do not blend the palettes.
-- Text agrees with both on the count: five tentacles, six legs, half-shell.
+- Text agrees with the render on the count: five tentacles, six legs, half-shell.
 - Size: canon dimensions are 6.48 m high and 13.33 m long (Databank, https://starwars.fandom.com/wiki/Blixus); the images give no scale reference, and the "compact" low body reading above describes only the central body, not the whole animal. Canon lists yellow eyes and red as well as teal skin; the "amber" eyes above are an image reading.
 
 ## Must show
@@ -32,6 +33,8 @@ Two images, and they disagree sharply on colour and body plan, so read both befo
 - [ ] Wide lip-lined slit mouth low on the front of the underbelly, with small pincer claws beside it
 - [ ] Two small amber eyes tucked under the carapace brim
 
+- [ ] Realistic rendering: natural wet chitin and ringed soft-flesh texture and lighting, no outlines, no cartoon shading
+
 ## Engine limits
 not yet assessed
 
@@ -40,8 +43,7 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Blixus/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Blixus`; wiki caption: infobox image. File: `Blixus-SW.png` — https://static.wikia.nocookie.net/starwars/images/5/5a/Blixus-SW.png/revision/latest?cb=20221112004934
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Blixus/Legends`; wiki caption: The Blixus in the second Slaves of the Republic comic. File: `Blixus.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b3/Blixus.jpg/revision/latest?cb=20081024121142
+- `wookieepedia_canon_1.webp` — CANON page `Blixus`; wiki caption: infobox image; The Clone Wars season 4 3D CGI animation render. File: `Blixus-SW.png` — https://static.wikia.nocookie.net/starwars/images/5/5a/Blixus-SW.png/revision/latest?cb=20221112004934
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

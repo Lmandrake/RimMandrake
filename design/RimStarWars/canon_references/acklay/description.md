@@ -27,6 +27,8 @@ agile despite their size; strong enough to bite through a polearm and smash
 a stone pillar.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** This entry's own `## ruling` (2026-09-14) picked the stylised profile illustration `acklay_wookieepedia_2.jpg`, so that image is KEPT and is not overridden here. Two realistic *Attack of the Clones* references were added beside it: `acklay_wookieepedia_3.jpg` (film still, the acklay in the Petranaki arena gate) and `acklay_wookieepedia_4.jpg` (the film's CGI model in the same profile pose as #2). Read #2's pose and colouring through #4's realistic surface: in the film the hide is a dusty sage-to-olive green with fine wrinkled, ridged, leathery texture and a paler grey-green throat/belly; the cream-yellow underside of #2 reads much greyer and less contrasting in the realistic versions. The forelimb blades are broad, flat, scythe-like hooked claws.
+
 Both candidate images and the infobox agree tightly: **the acklay is GREEN**
 (mottled olive/sage-green to yellow-green, sometimes with a paler
 cream/yellow underside), a spider-crab body plan with a long upward-curving
@@ -58,6 +60,8 @@ color should very likely be corrected to green on any regen.
 - [ ] Two of the six legs raised and functioning as grappling arms with hooked claws
 - [ ] Skin/hide reads as textured or ridged, not armored shell plates
 
+- [ ] Realistic rendering: natural wrinkled, ridged leathery hide texture and lighting, no outlines, no cartoon shading
+
 ## Engine limits
 none known
 
@@ -77,6 +81,8 @@ none known
   underside and legs, same long-necked six-legged crested-head silhouette,
   small tail nub. Confirms the green coloring and body plan from a second,
   independent illustration.
+- `acklay_wookieepedia_3.jpg` — *Attack of the Clones* live-action/CGI film still, acklay emerging from the arena gate; file `Acklay3.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a5/Acklay3.jpg/revision/latest?cb=20101224201604
+- `acklay_wookieepedia_4.jpg` — *Attack of the Clones* realistic CGI model, profile view (same pose as #2); file `Acklay-SWCTP.png` — https://static.wikia.nocookie.net/starwars/images/3/3a/Acklay-SWCTP.png/revision/latest?cb=20230910183750
 - `donor_current_sprite.png` — our own SWBestiary donor sprite (`swanimals/
   Acklay/Acklay_east.png`): matches the body plan (curved neck, crested
   head, six spindly legs) but renders in blue-teal instead of canon green —

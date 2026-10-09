@@ -40,37 +40,20 @@ domestication examples are all non-Tatooine-native individuals (Embo, a
 Kyuzo bounty hunter).
 
 ## Visual brief
-The three candidate images agree with each other far more strongly, and more
-specifically, than the prose summary suggests. All three show:
-- **Large, erect, pointed ears** with visibly pink/red-toned interior skin —
-  bat-like or donkey-like in proportion, not small hyena ears.
-- **A spiky dorsal mane/ridge** of longer fur running from the back of the
-  skull down the spine, distinct from the shorter body coat.
-- **Tiger-like dark stripes over a blue-grey to grey body coat** — this is the
-  single biggest thing the "varying tones of gray" text undersells. Every
-  image (concept-art illustration, in-show 3D render, and a separate painted
-  bestiary piece) independently shows banded/striped fur, not a flat gray or
-  solid color. This is exactly the kind of feature a text-only prompt would
-  invent wrong (cf. the Wyyyschokk case this library exists to prevent).
-- **A long, thin, low-carried or curled tail**, out of proportion to a stocky
-  hyena body — closer to a rat or lizard tail than a canine brush tail.
-- **Large forward-set eyes**, yellow/amber in the CGI and bestiary pieces
-  (agrees with the "Yellow" eye-color citation more than "Blue").
-  Note wookieepedia_infobox.jpg is a hand-painted/illustrated concept-style
-  piece (possibly a bestiary-book plate) rather than a film/show frame — treat
-  its exact palette as one artist's interpretation, though it agrees closely
-  with the separate wookieepedia_bestiary.jpg painting on stripe pattern, ear
-  shape, and mane.
-- **Sloped hyena posture**: front legs visibly longer/more developed than hind
-  legs in all three images, confirming the "smaller hind legs" text detail.
-- **Prominent lower jaw and tusk**, visible fangs, in all three.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The Clone Wars animated frame (`wookieepedia_citadel.jpg`) and the inked Alien Archive infobox illustration (`wookieepedia_infobox.jpg`) were deleted. No live-action or photoreal anooba exists on film; the only REAL physical depiction is the mounted anooba head prop at Dok-Ondar's Den of Antiquities, Star Wars: Galaxy's Edge (`wookieepedia_galaxysedge_prop.jpg`). The full-body anatomy reference is the painted Star Wars Bestiary plate (`wookieepedia_bestiary.jpg`).
 
-wookieepedia_citadel.jpg (the in-show CGI frame, a pair of "dark anoobas" from
-the Citadel) is the darkest/most desaturated of the three — near-black in low
-purple lighting — but even here the dorsal mane spikes, ear shape, and tail
-are consistent with the other two images. This is plausibly the "black"
-color-cite individual type rather than contradicting the gray/blue-gray
-majority.
+What the realistic prop shows (head and neck only):
+- **Skin:** bare, deeply wrinkled, leathery pink-to-flesh-brown skin over the muzzle, jaw and throat, folded in heavy creases down the neck — NOT a furred face.
+- **Hair:** a coarse pale grey-white shaggy mane on the crown and back of the head/neck only.
+- **Mouth:** long open jaw with a heavy, protruding lower jaw, ragged lips and many uneven yellowed fangs.
+- **Eyes:** small, deep-set, dark, under a heavy wrinkled brow.
+
+🔴 **The realistic prop and the illustrations DISAGREE, loudly.** The Bestiary painting (and the deleted animated/illustrated images) show a furred hyena-like beast with blue-grey coat and tiger-like dark stripes; the physical prop shows a bare, wrinkled, pink-brown skinned head with only a pale mane. Per the owner's ruling the realistic look wins where they conflict: render the face, muzzle and neck as bare wrinkled leathery skin with a pale shaggy mane, and treat the striped grey coat as belonging to the body (which no realistic source shows). Body anatomy comes from the Bestiary plate:
+- **Large, erect, pointed ears** with pink/red-toned interior skin.
+- **Spiky dorsal mane** of longer fur from the skull down the spine.
+- **Long, thin, low-carried or curled tail**, rat- or lizard-like, not a canine brush.
+- **Sloped hyena posture**: front legs longer and heavier than the hind legs.
+- **Prominent lower jaw** with a chin tusk and visible fangs.
 
 **donor_current_sprite.png is weak evidence**: it is the ONLY anooba art
 present on disk in this repo's SWBestiary mod, and it is a Dessicated
@@ -81,12 +64,12 @@ validate or invalidate any of the canon findings above; it mainly documents
 that this creature's live sprite still needs to be authored.
 
 ## Must show
+- [ ] Bare, deeply wrinkled, leathery pink-to-flesh-brown skin on the muzzle, jaw and neck (per the Galaxy's Edge prop)
+- [ ] Coarse pale grey-white shaggy mane on the crown and running down the spine
 - [ ] Large, erect, pointed ears with pink/red-toned interior skin
-- [ ] Spiky dorsal mane/ridge of longer fur running from the skull down the spine
-- [ ] Tiger-like dark stripes over a blue-grey to grey coat — not a flat solid gray
-- [ ] Long, thin, low-carried or curled tail, not a canine brush tail
-- [ ] Front legs visibly longer/more developed than the hind legs (sloped hyena stance)
-- [ ] Prominent lower jaw with visible fangs (chin tusk present on larger individuals)
+- [ ] Heavy protruding lower jaw with many uneven yellowed fangs and a chin tusk
+- [ ] Sloped hyena stance: front legs longer/heavier than hind legs; long thin rat-like tail
+- [ ] Realistic rendering: natural wrinkled skin and coarse hair texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -95,8 +78,6 @@ none known
 - https://starwars.fandom.com/wiki/Anooba (Wookieepedia article; direct page HTML
   is Cloudflare-walled — text pulled via
   `https://starwars.fandom.com/api.php?action=parse&page=Anooba&format=json&prop=wikitext`)
-- https://static.wikia.nocookie.net/starwars/images/d/df/Anooba.png (infobox image, saved as wookieepedia_infobox.jpg)
-- https://static.wikia.nocookie.net/starwars/images/2/2c/Anooba-CR.jpg (Citadel Rescue in-show frame, saved as wookieepedia_citadel.jpg)
 - https://static.wikia.nocookie.net/starwars/images/3/34/Anooba-Bestiary.jpg (bestiary painting, saved as wookieepedia_bestiary.jpg)
 - https://www.starwars.com/databank/anooba (official Databank text, fetched successfully; no image URL was present in the fetched markup)
 - Search snippets only, not directly fetched/verified this pass:
@@ -104,20 +85,9 @@ none known
   https://thecompletedog.fandom.com/wiki/Anooba, https://aliens.fandom.com/wiki/Anooba
 
 ## Candidate images
-- `wookieepedia_infobox.jpg` — the Wookieepedia infobox portrait: a painted/illustrated
-  full-body anooba on a transparent background, mid-snarl, showing striped
-  blue-grey coat, spiky dorsal mane, large pink-interior ears, long thin tail,
-  chin tusk and fangs, front-heavy hyena stance. From the Anooba infobox image
-  (File:Anooba.png) on Wookieepedia.
-- `wookieepedia_citadel.jpg` — an in-show CGI frame from The Clone Wars
-  "Citadel Rescue" (S3E20), showing a pair of the dark/black Citadel anoobas
-  crouched and snarling in low purple night lighting, confirming mane, ear,
-  and tail shape from a different (darker) color individual. From
-  File:Anooba-CR.jpg on Wookieepedia.
-- `wookieepedia_bestiary.jpg` — a separate painted bestiary-style illustration
-  (aged-paper background) of an anooba, agreeing closely with the infobox
-  piece on stripe pattern, ear shape/color, mane, and posture. From
-  File:Anooba-Bestiary.jpg on Wookieepedia.
+- `wookieepedia_galaxysedge_prop.jpg` — REAL physical prop: mounted anooba head at Dok-Ondar's Den of Antiquities, Star Wars: Galaxy's Edge (Traveler's Guide to Batuu); file `Anooba TGTB.jpg` — https://static.wikia.nocookie.net/starwars/images/1/14/Anooba_TGTB.jpg/revision/latest?cb=20211204175440
+- `wookieepedia_bestiary.jpg` — painted Star Wars Bestiary, Vol. 1 plate (illustration, not animation): full-body striped blue-grey anooba, the only full-anatomy canon reference; file `Anooba-Bestiary.jpg` — https://static.wikia.nocookie.net/starwars/images/3/34/Anooba-Bestiary.jpg/revision/latest?cb=20241106025626
+- `donor_current_sprite.png` — our own SWBestiary desiccated-corpse sprite; weak evidence (see Visual brief)
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
