@@ -16,3 +16,11 @@ Decision taken by question card 2026-10-08 19:02 PDT: build everything from the 
 - 19:36 waiting: a FOUNDRY full suite (old runner, no lock) is running; not starting mine on top
 - 19:45 FOUNDRY suites done; starting --full baseline
 - 19:50 --full baseline: wall 285.3 s, sum 1687 s; PASS 340/344 FAIL 2 (greentide_spine: RM_Greentide lacks RM_GreentideWetBulbLock; placeholder_lint: stale allowlist entries after art installs — content state, not runner) SKIPPED 2 (deployed tier). 0 UNMEASURED, 0 CRASH. evidence: 95 eligible, 91 recorded. Fixed: eligibility tag must be a whole line (the evidence selftest quoted it). That fix changes RUNNER_VERSION, so next default run re-records; the one after proves skips.
+- 20:18 default run 1 (re-record after version change): wall 295.4 s, PASS 342/345 FAIL 1 (placeholder_lint, content). default run 2: wall 141.6 s, sum 830 s, 91 SKIPPED as unchanged + 2 tier, GREEN; it WAITED 290 s on FOUNDRY's suite and named it. 0 UNMEASURED / 0 CRASH in every run. Now: deployed tier via --only.
+- deployed tier (--only both): floor 159 s PASS, deployed_biome_refs 97.5 s PASS — both real PASSes now (no rc-0 UNMEASURED today).
+
+## Result
+- Tests that went PASS -> UNMEASURED/CRASH under the honesty fix: **0** (full, both default runs, and the deployed tier). Nothing to triage.
+- Wall: --full 285.3 s (audit baseline 298 s; suite now 345 tests); default with skips 141.6 s (91 evidence skips + 2 tier skips).
+- Not built / left for later: a small fixture-tree floor check in the default tier (audit #8 suggestion); per-mod lint extras still re-glob/re-parse src XML (stillsand `_all_defnames` 1.15 of 1.85 s per lint); MandrakePatches 9x deepcopy (107 s, audit #5, not in this build's list); 3 lint tests read outside the repo (decompiled reference on /mnt/d, ~/.cache quest corpus) so they always run.
+- Live content FAILs seen (not runner): placeholder_lint stale allowlist entries; greentide_spine (RM_GreentideWetBulbLock) failed in the --full run, passed in the next.
