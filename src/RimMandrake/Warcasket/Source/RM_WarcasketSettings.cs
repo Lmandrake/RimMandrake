@@ -34,6 +34,10 @@ namespace RimMandrake.Warcasket
         // RM_CompCoreDose. Off: a half-extracted core is inert cargo.
         public static bool coreDoseEnabled = true;
 
+        // RM_GenStep_SealedCorpses (WARCASKET_JUNKER_KINDS_BUILD_1). Off: no sealed Junker corpses are
+        // scattered at map generation; already-placed ones stay.
+        public static bool sealedCorpseScatterEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -43,6 +47,7 @@ namespace RimMandrake.Warcasket
             Scribe_Values.Look(ref sarcophagiEnabled, "sarcophagiEnabled", true);
             Scribe_Values.Look(ref caskBayShieldingEnabled, "caskBayShieldingEnabled", true);
             Scribe_Values.Look(ref coreDoseEnabled, "coreDoseEnabled", true);
+            Scribe_Values.Look(ref sealedCorpseScatterEnabled, "sealedCorpseScatterEnabled", true);
         }
 
         private static Vector2 settingsScroll;
@@ -99,6 +104,11 @@ namespace RimMandrake.Warcasket
                     "Shipped default: ON. A loose half-extracted core doses nearby pawns with toxic "
                   + "buildup (toxic resistance and a warcasket's toxin rating both apply). Off: the "
                   + "core is inert cargo.");
+
+                list.Gap();
+                list.CheckboxLabeled("Sealed-corpse scatter", ref sealedCorpseScatterEnabled,
+                    "Shipped default: ON. New maps (where a biome asks for it) scatter dead Junkers sealed in "
+                  + "their adjusted warcaskets, ready to crack open. Off: none are placed; existing ones stay.");
             }
 
             settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
