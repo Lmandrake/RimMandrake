@@ -59,6 +59,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_TerminalBiomesMod.cs" />
     <Compile Include="RM_TerminalBiomesScaldKit.cs" />
     <!-- CHILL_CRYOPONICS_GROWER_1 / CHILL_FLOOR_GROWING_BED_1 -->

@@ -23,7 +23,7 @@ namespace RimMandrake.RustCathedral.Hum
 	{
 		static RustCathedralHumHarmony()
 		{
-			new Harmony("mandrake.rut.rustcathedralhum").PatchAll();
+			RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rut.rustcathedralhum"), typeof(RustCathedralHumHarmony).Assembly, "RimMandrake.RustCathedral.Hum");
 		}
 	}
 

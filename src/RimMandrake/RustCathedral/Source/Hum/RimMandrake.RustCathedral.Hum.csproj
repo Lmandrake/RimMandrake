@@ -50,6 +50,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_AttitudeKernel.cs" />
     <Compile Include="RM_BiomeAttitudeDef.cs" />
     <Compile Include="RM_MapComponent_BiomeAttitude.cs" />

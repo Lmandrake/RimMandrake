@@ -573,7 +573,7 @@ namespace RimMandrake.TerminalBiomes
             // same repo, verifies this against the decompiled source) — the
             // patch target always resolves, and the postfix itself is a
             // no-op on any map with no RM_VeilPane things on it.
-            new Harmony("mandrake.rm.terminalbiomes").PatchAll(typeof(RM_TerminalBiomesMod).Assembly);
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rm.terminalbiomes"), typeof(RM_TerminalBiomesMod).Assembly, "RimMandrake.TerminalBiomes");
             RegisterRiverWorksSeams();
         }
 

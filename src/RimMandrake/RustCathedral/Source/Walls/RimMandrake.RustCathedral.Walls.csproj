@@ -48,6 +48,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="GenStep_ScatterCathedralWallTiers.cs" />
     <Compile Include="GenStep_ScatterSacredWalls.cs" />
     <Compile Include="HarmonyPatch_GateLivePatternMetal.cs" />
