@@ -437,6 +437,15 @@ namespace RimMandrake.FeverWood
             return n;
         }
 
+        /// <summary>FEVERWOOD_LIMB_PROOF_HOOK_1: read-only snapshot for RM_FeverWoodProof.ProofLimbs. No side effects.</summary>
+        public string ProofSnapshot()
+        {
+            int tick = Find.TickManager.TicksGame;
+            return "limbs=" + CountLimbs() + " cap=" + RM_FeverWoodSettings.tentacleLiveLimbCap + " pressure=" + encounterPressure
+                + " chorusSilenced=" + ChorusSilenced + " sentinels=" + sentinelCount
+                + " blockedUntil=" + blockedUntilTick + " cooldownLeft=" + System.Math.Max(0, blockedUntilTick - tick);
+        }
+
         public void OnPorterAttacked()
         {
             porterAngeredForever = true;
