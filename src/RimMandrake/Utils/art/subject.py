@@ -229,7 +229,9 @@ class World:
             for slug in self.canon_dirs.values():
                 for line in (self.canon_root / slug / "description.md").read_text(errors="replace").splitlines()[:12]:
                     if line.lower().startswith("**defname"):
-                        for dn in re.findall(r"`([A-Za-z0-9_]+)`", line):
+                        # only the defNames before the first parenthetical: what follows is prose ("`MayRequire` on
+                        # the donor", "no `RSW_` twin") whose backticks are not defNames
+                        for dn in re.findall(r"`([A-Za-z0-9_]+)`", line.split("(", 1)[0]):
                             out.setdefault(dn, slug)
             self._c["cidx"] = out
         return self._c["cidx"]

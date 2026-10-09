@@ -63,6 +63,9 @@ def fixture(tmp: Path) -> S.World:
         (canon / slug / "description.md").write_text(f"# {slug}\n\n## Must show\n- legs\n")
         (canon / slug / "wookieepedia_canon_1.webp").write_bytes(b"x")
         (canon / slug / "donor_current_sprite.png").write_bytes(b"x")
+    (canon / "tibi").mkdir()
+    (canon / "tibi" / "description.md").write_text(
+        "# tibi\n\n**defName**: `Tibi` (donor: X; `MayRequire` on the donor, no `RSW_` twin)\n\n## Must show\n- fins\n")
     (canon / "INDEX.md").write_text("| slug | category | defName(s) |\n|---|---|---|\n"
                                     "| [wraid](wraid/description.md) | creature | RSW_Wraid |\n"
                                     "| [kinrath](kinrath/description.md) | creature | RSW_Kinrath |\n")
@@ -99,6 +102,8 @@ def fixture_tests(w: S.World):
           "canon: none carries what was searched", c["searched"])
     check("vellak" in S.describe_none(c["searched"]), "describe_none names the keys tried")
 
+    check("Tibi" in w.canon_index and "MayRequire" not in w.canon_index and "RSW_" not in w.canon_index,
+          "canon index: defNames come from before the first parenthetical, not from prose backticks", sorted(w.canon_index))
     ours, orig = w.identify("Wraid")
     check(ours == "RSW_Wraid" and "Wraid" in orig, "identity: a donor name maps to our defName and stays an original", (ours, orig))
     r = S.resolve("Wraid", w)
