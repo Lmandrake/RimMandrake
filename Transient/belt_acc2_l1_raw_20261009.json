@@ -1,0 +1,1470 @@
+{
+ "_drain_errors": {
+  "n": 289,
+  "sample": [
+   "Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+   "Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+   "Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+   "Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+   "Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+   "Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+   "Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+   "Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+   "Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+   "Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+   "Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.",
+   "Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name."
+  ]
+ },
+ "BAZAAR_PRICE_ENGINE_1.A1": {
+  "defs": {
+   "success": true,
+   "foundCount": 8,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "RM_PriceAlmanac",
+    "RM_HagglerModule",
+    "RM_ManifestDecoder",
+    "RM_TransponderScanner",
+    "RM_PriceAlmanacFitted",
+    "RM_HagglerModuleFitted",
+    "RM_ManifestDecoderFitted",
+    "RM_TransponderScannerFitted"
+   ]
+  },
+  "seeds": {
+   "success": true,
+   "foundCount": 0,
+   "notFound": [
+    "RM_BazaarSeedRuleDef/RM_BazaarSeed_DesertWater",
+    "RM_BazaarSeedRuleDef/RM_BazaarSeed_BrineSalt",
+    "RM_BazaarSeedRuleDef/RM_BazaarSeed_PropaneFuel",
+    "RM_BazaarSeedRuleDef/RM_BazaarSeed_BoilingSeaStill"
+   ],
+   "raw": null,
+   "rows": [
+    "RM_BazaarSeed_DesertWater",
+    "RM_BazaarSeed_BrineSalt",
+    "RM_BazaarSeed_PropaneFuel",
+    "RM_BazaarSeed_BoilingSeaStill"
+   ]
+  },
+  "store": {
+   "resolved": true,
+   "success": true
+  },
+  "settings": {
+   "success": true,
+   "action": "list",
+   "typeName": "RimMandrake.Bazaar.RM_BazaarSettings",
+   "count": 7,
+   "fields": [
+    {
+     "name": "economyEnabled",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "proceduralLocality",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "intelPriceContext",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "intelGoodDeals",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "intelLocalEconomy",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "intelScarcity",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    },
+    {
+     "name": "intelModules",
+     "type": "Boolean",
+     "kind": "static",
+     "value": "True"
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_adc0a542e2264f5bab410210dd3cf0e6",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 152
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  },
+  "errs": []
+ },
+ "BLOWER_ROOM_COOLER_1.A2": {
+  "ctl": {
+   "success": true,
+   "foundCount": 1,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "RM_DryAirBlower"
+   ]
+  },
+  "errs": []
+ },
+ "CATHEDRAL_MECHANOID_PASS_VERBS_1.A1": {
+  "defs": {
+   "success": true,
+   "foundCount": 3,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "RUT_CathedralPass",
+    "RM_RustCathedral",
+    "RUT_RustCathedral"
+   ]
+  },
+  "harm": {
+   "success": true,
+   "typeName": "GenHostility",
+   "methodName": "HostileTo",
+   "methodCount": 1,
+   "methods": [
+    {
+     "method": "HostileTo",
+     "declaringType": "RimWorld.GenHostility",
+     "prefixCount": 0,
+     "postfixCount": 1,
+     "transpilerCount": 0,
+     "finalizerCount": 0,
+     "prefixes": [],
+     "postfixes": [
+      {
+       "owner": "mandrake.rut.cathedralpass",
+       "priority": 400,
+       "patchMethod": "RimMandrake.Utinni.CathedralPass.Patch_CathedralPassHostility.Postfix",
+       "patchAssembly": "RimMandrake.Utinni.CathedralPass"
+      }
+     ],
+     "transpilers": [],
+     "finalizers": []
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_6b87bcf252ed47f18b9551882e80211e",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 19
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  },
+  "setting": {
+   "success": true,
+   "action": "get",
+   "field": "cathedralPassEnabled",
+   "fieldKind": "static",
+   "value": "True",
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_63ef965c67114566ab0c9a502cc61385",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 153
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ "DECOY_SHADE_TARP_1.A1": {
+  "probes": {
+   "RM_CompDecoyShade": {
+    "resolved": true,
+    "success": true
+   },
+   "RM_FalseShadeExtension": {
+    "resolved": true,
+    "success": true
+   },
+   "RM_MapComponent_FalseShade": {
+    "resolved": true,
+    "success": true
+   }
+  },
+  "defs": {
+   "success": true,
+   "foundCount": 2,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "RM_DecoyShadeTarp",
+    "RM_DecoyShadeResearch"
+   ]
+  },
+  "toggle": {
+   "get0": {
+    "success": true,
+    "action": "get",
+    "field": "decoyShadeEnabled",
+    "fieldKind": "static",
+    "value": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_1a71dc55551541aeba5516f8e9d4d019",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 146
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "set_false": {
+    "success": true,
+    "action": "set",
+    "field": "decoyShadeEnabled",
+    "fieldKind": "static",
+    "valueBefore": "True",
+    "valueAfter": "False",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_cd1483b59ac242af913f663dab0182af",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 35
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "get1": {
+    "success": true,
+    "action": "get",
+    "field": "decoyShadeEnabled",
+    "fieldKind": "static",
+    "value": "False",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_dd01ff1b3b064ea7bb0622c0f4045936",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 46
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "restore": {
+    "success": true,
+    "action": "set",
+    "field": "decoyShadeEnabled",
+    "fieldKind": "static",
+    "valueBefore": "False",
+    "valueAfter": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_33b545c1e0bd46a8ad148428e0a2cf43",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 49
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "get2": {
+    "success": true,
+    "action": "get",
+    "field": "decoyShadeEnabled",
+    "fieldKind": "static",
+    "value": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_57e229d8e14349468169bbd693fbbb55",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 48
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   }
+  }
+ },
+ "SHIP_TOW_LINE_1.A2": {
+  "probes": {
+   "RM_CompSalvageWinch": {
+    "resolved": true,
+    "success": true
+   },
+   "RM_CompProperties_SalvageWinch": {
+    "resolved": true,
+    "success": true
+   },
+   "RM_SalvageWinchRules": {
+    "resolved": true,
+    "success": true
+   }
+  },
+  "defs": {
+   "success": true,
+   "foundCount": 2,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "RM_SalvageWinch",
+    "RM_SalvageWinch"
+   ]
+  },
+  "toggle": {
+   "get0": {
+    "success": true,
+    "action": "get",
+    "field": "salvageWinchEnabled",
+    "fieldKind": "static",
+    "value": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_3e9e78fc9edf4e48b4481b6483608e50",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 48
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "set_false": {
+    "success": true,
+    "action": "set",
+    "field": "salvageWinchEnabled",
+    "fieldKind": "static",
+    "valueBefore": "True",
+    "valueAfter": "False",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_e54da734622e47b7a9bc5cf6b79912c7",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 49
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "get1": {
+    "success": true,
+    "action": "get",
+    "field": "salvageWinchEnabled",
+    "fieldKind": "static",
+    "value": "False",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_157aa72855b84ddaa88da5c0d5258550",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 48
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "restore": {
+    "success": true,
+    "action": "set",
+    "field": "salvageWinchEnabled",
+    "fieldKind": "static",
+    "valueBefore": "False",
+    "valueAfter": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_4a0cf3d0057e4456bb1ab7848752ae2a",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 48
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "get2": {
+    "success": true,
+    "action": "get",
+    "field": "salvageWinchEnabled",
+    "fieldKind": "static",
+    "value": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_6f865260fd9e49eb99dc03d607a71930",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 49
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   }
+  }
+ },
+ "VERMIN_EAT_BREEDING_FOOD_1.A2": {
+  "probes": {
+   "RM_CompVerminBreeder": {
+    "resolved": true,
+    "success": true
+   },
+   "RM_VerminFoodMath": {
+    "resolved": true,
+    "success": true
+   }
+  },
+  "toggle": {
+   "get0": {
+    "success": true,
+    "action": "get",
+    "field": "verminBreedingEatsFood",
+    "fieldKind": "static",
+    "value": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_7090f6467d9e4566b32288c00e14eaa3",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 31
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "set_false": {
+    "success": true,
+    "action": "set",
+    "field": "verminBreedingEatsFood",
+    "fieldKind": "static",
+    "valueBefore": "True",
+    "valueAfter": "False",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_a05e0ca1ce784ec5bde0999b2190dcc1",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 49
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "get1": {
+    "success": true,
+    "action": "get",
+    "field": "verminBreedingEatsFood",
+    "fieldKind": "static",
+    "value": "False",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_ae713201830543788055a71a12f95fe5",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 43
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "restore": {
+    "success": true,
+    "action": "set",
+    "field": "verminBreedingEatsFood",
+    "fieldKind": "static",
+    "valueBefore": "False",
+    "valueAfter": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_5c99fc3525454ef69b5b8beadad3ca02",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 62
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "get2": {
+    "success": true,
+    "action": "get",
+    "field": "verminBreedingEatsFood",
+    "fieldKind": "static",
+    "value": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_8a5551a694904e6bb23e762c8bf31c32",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 31
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   }
+  }
+ },
+ "SCREEN_STOPS_SPORES_1.A1": {
+  "toggle": {
+   "get0": {
+    "success": true,
+    "action": "get",
+    "field": "screenStopsSporesEnabled",
+    "fieldKind": "static",
+    "value": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_a61558bc96ce42348c5889b2a3d357ac",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 176
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "set_false": {
+    "success": true,
+    "action": "set",
+    "field": "screenStopsSporesEnabled",
+    "fieldKind": "static",
+    "valueBefore": "True",
+    "valueAfter": "False",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_9dfa01bf2b2a471da7101205e030de93",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 34
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "get1": {
+    "success": true,
+    "action": "get",
+    "field": "screenStopsSporesEnabled",
+    "fieldKind": "static",
+    "value": "False",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_25eb31fa49df4e8b8b4c7527ef04f2e0",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 40
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "restore": {
+    "success": true,
+    "action": "set",
+    "field": "screenStopsSporesEnabled",
+    "fieldKind": "static",
+    "valueBefore": "False",
+    "valueAfter": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_616a4c36fb124b8f8755bee58d930ef2",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 49
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "get2": {
+    "success": true,
+    "action": "get",
+    "field": "screenStopsSporesEnabled",
+    "fieldKind": "static",
+    "value": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_7f25b768c8b9403dbfde0a6cad25e818",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 32
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   }
+  }
+ },
+ "EMPIRE_ESCALATION_LADDER_1.A4": {
+  "defs": {
+   "success": true,
+   "foundCount": 0,
+   "notFound": [
+    "RUT_EmpireRungDef/RUT_EmpireRung_Probe",
+    "RUT_EmpireRungDef/RUT_EmpireRung_Spotter",
+    "RUT_EmpireRungDef/RUT_EmpireRung_Strike",
+    "RUT_EmpireRungDef/RUT_EmpireRung_Cordon",
+    "RUT_EmpireRungDef/RUT_EmpireRung_Breach",
+    "RUT_EmpireRungDef/RUT_EmpireRung_Bombardment"
+   ],
+   "raw": null,
+   "rows": [
+    "RUT_EmpireRung_Probe",
+    "RUT_EmpireRung_Spotter",
+    "RUT_EmpireRung_Strike",
+    "RUT_EmpireRung_Cordon",
+    "RUT_EmpireRung_Breach",
+    "RUT_EmpireRung_Bombardment"
+   ]
+  },
+  "errs": []
+ },
+ "FORCE_DISTURBANCE_REFLAVOR_1.A1": {
+  "defs": {
+   "success": true,
+   "foundCount": 7,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "PsychicDrone",
+    "PsychicSoothe",
+    "PsychicDrone",
+    "PsychicSoothe",
+    "PsychicDroner",
+    "PsychicSuppression",
+    "PsychicEmanatorShipPartCrash"
+   ]
+  }
+ },
+ "HARMONY_PATCH_RESILIENCE_1.A1": {
+  "takedamage": {
+   "success": true,
+   "typeName": "Thing",
+   "methodName": "TakeDamage",
+   "methodCount": 1,
+   "methods": [
+    {
+     "method": "TakeDamage",
+     "declaringType": "Verse.Thing",
+     "prefixCount": 2,
+     "postfixCount": 2,
+     "transpilerCount": 0,
+     "finalizerCount": 0,
+     "prefixes": [
+      {
+       "owner": "OskarPotocki.VEF",
+       "priority": 400,
+       "patchMethod": "VEF.AnimalBehaviours.Patch_TakeDamage.Prefix",
+       "patchAssembly": "VEF"
+      },
+      {
+       "owner": "mandrake.rm.cauldron.vexxith",
+       "priority": 400,
+       "patchMethod": "RimMandrake.Cauldron.Patch_Thing_TakeDamage_VexxithAcid.Prefix",
+       "patchAssembly": "RimMandrake.Cauldron"
+      }
+     ],
+     "postfixes": [
+      {
+       "owner": "OskarPotocki.VEF",
+       "priority": 400,
+       "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Thing_TakeDamage_Patch.Postfix",
+       "patchAssembly": "VEF"
+      },
+      {
+       "owner": "mandrake.jawabench.eventrecorder",
+       "priority": 400,
+       "patchMethod": "JawaBench.BridgeTools.JawaBenchEventRecorder.TakeDamagePostfix",
+       "patchAssembly": "JawaBench.BridgeTools"
+      }
+     ],
+     "transpilers": [],
+     "finalizers": []
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_e1c2fbf5c0df442ebe3c929ea0c9b6df",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 10
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ "LAUNCH_HELD_COLONIST_WARNING_1.A2": {
+  "harm": {
+   "success": true,
+   "typeName": "GravshipUtility",
+   "methodName": "PreLaunchConfirmation",
+   "methodCount": 1,
+   "methods": [
+    {
+     "method": "PreLaunchConfirmation",
+     "declaringType": "RimWorld.GravshipUtility",
+     "prefixCount": 0,
+     "postfixCount": 1,
+     "transpilerCount": 0,
+     "finalizerCount": 0,
+     "prefixes": [],
+     "postfixes": [
+      {
+       "owner": "mandrake.rm.environmentalhazards",
+       "priority": 400,
+       "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_LaunchHeldColonistWarning.PreLaunchConfirmation_Postfix",
+       "patchAssembly": "RimMandrake.EnvironmentalHazards"
+      }
+     ],
+     "transpilers": [],
+     "finalizers": []
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_a221721a5434441dba5f38c2d4d0734d",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 6
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ "NINEFOLD_FAVOUR_ODDS_BUILD_1.A1": {
+  "ntilts": 20,
+  "tilts": {
+   "success": true,
+   "foundCount": 0,
+   "notFound": [
+    "RM_GodFavourTiltDef/RM_Tilt_Ishko_Eclipse",
+    "RM_GodFavourTiltDef/RM_Tilt_Ishko_Sandstorm",
+    "RM_GodFavourTiltDef/RM_Tilt_Ishko_Fog",
+    "RM_GodFavourTiltDef/RM_Tilt_Ishko_FoggyRain",
+    "RM_GodFavourTiltDef/RM_Tilt_Ishko_SelfTame",
+    "RM_GodFavourTiltDef/RM_Tilt_Ohm_ShipChunkDrop",
+    "RM_GodFavourTiltDef/RM_Tilt_Ohm_ShortCircuit",
+    "RM_GodFavourTiltDef/RM_Tilt_Oomo_FarmAnimalsWanderIn",
+    "RM_GodFavourTiltDef/RM_Tilt_Oomo_Disease_Flu",
+    "RM_GodFavourTiltDef/RM_Tilt_MobUnloo_TraderCaravanArrival",
+    "RM_GodFavourTiltDef/RM_Tilt_MobUnloo_OrbitalTraderArrival",
+    "RM_GodFavourTiltDef/RM_Tilt_Rekko_ResourcePodCrash",
+    "RM_GodFavourTiltDef/RM_Tilt_TaBaa_TravelerGroup",
+    "RM_GodFavourTiltDef/RM_Tilt_TaBaa_HerdMigration",
+    "RM_GodFavourTiltDef/RM_Tilt_Zizzik_Flashstorm",
+    "RM_GodFavourTiltDef/RM_Tilt_Zizzik_SolarFlare",
+    "RM_GodFavourTiltDef/RM_Tilt_Zizzik_Infestation",
+    "RM_GodFavourTiltDef/RM_Tilt_Shkaar_HeatWave",
+    "RM_GodFavourTiltDef/RM_Tilt_Shkaar_Eclipse",
+    "RM_GodFavourTiltDef/RM_Tilt_Ozzik_VisitorGroup"
+   ],
+   "raw": null,
+   "rows": [
+    "RM_Tilt_Ishko_Eclipse",
+    "RM_Tilt_Ishko_Sandstorm",
+    "RM_Tilt_Ishko_Fog",
+    "RM_Tilt_Ishko_FoggyRain",
+    "RM_Tilt_Ishko_SelfTame",
+    "RM_Tilt_Ohm_ShipChunkDrop",
+    "RM_Tilt_Ohm_ShortCircuit",
+    "RM_Tilt_Oomo_FarmAnimalsWanderIn",
+    "RM_Tilt_Oomo_Disease_Flu",
+    "RM_Tilt_MobUnloo_TraderCaravanArrival",
+    "RM_Tilt_MobUnloo_OrbitalTraderArrival",
+    "RM_Tilt_Rekko_ResourcePodCrash",
+    "RM_Tilt_TaBaa_TravelerGroup",
+    "RM_Tilt_TaBaa_HerdMigration",
+    "RM_Tilt_Zizzik_Flashstorm",
+    "RM_Tilt_Zizzik_SolarFlare",
+    "RM_Tilt_Zizzik_Infestation",
+    "RM_Tilt_Shkaar_HeatWave",
+    "RM_Tilt_Shkaar_Eclipse",
+    "RM_Tilt_Ozzik_VisitorGroup"
+   ]
+  },
+  "rites": {
+   "success": true,
+   "foundCount": 7,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "RUT_Ritual_NineFaults",
+    "RUT_NineFaultsPattern",
+    "RUT_NineFaultsBehavior",
+    "RUT_NineFaultsOutcome",
+    "RUT_FreshFind",
+    "RUT_GaveTheNineFaults",
+    "RUT_GaveTheFirstSpark"
+   ]
+  },
+  "setting": {
+   "success": true,
+   "action": "get",
+   "field": "favourOddsEnabled",
+   "fieldKind": "static",
+   "value": "True",
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_e6bc1b8cc47449149f9a2a69da368c1f",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 133
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  },
+  "errs": []
+ },
+ "RAKATAN_ARCHOTECH_MACHINES_1.A1": {
+  "defs": {
+   "success": true,
+   "foundCount": 14,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "RM_WM_AncientComponent",
+    "RM_WM_AutomatedSmelter_Wrecked",
+    "RM_WM_AutomatedSmelter_Kludged",
+    "RM_WM_AutomatedSmelter_Refurbished",
+    "RM_WM_AutomatedSmelter_Repaired",
+    "RM_WM_PowerCell_Wrecked",
+    "RM_WM_PowerCell_Kludged",
+    "RM_WM_PowerCell_Refurbished",
+    "RM_WM_PsychicEmanator_Wrecked",
+    "RM_WM_PsychicEmanator_Kludged",
+    "RM_WM_PsychicEmanator_Refurbished",
+    "RM_WM_AutomatedSmelterRestoration",
+    "RM_WM_PowerCellRestoration",
+    "RM_WM_EmanatorRestoration"
+   ]
+  },
+  "errs": []
+ },
+ "RUSTCATHEDRAL_BASE_FINISH_BUILD_1.A4": {
+  "probe": {
+   "success": true,
+   "message": "1 biome(s) probed; searched for 2 name(s) \u2014 read `findResults` per biome, and note that present-at-commonality-0 is NOT absent.",
+   "biomesProbed": 1,
+   "notFound": [],
+   "searched": [
+    "RSW_Mynock",
+    "RM_CathedralRoach"
+   ],
+   "absentFromEveryProbedBiome": [],
+   "biomes": [
+    {
+     "defName": "RM_RustCathedral",
+     "label": "the Rust Cathedral",
+     "modName": "RimMandrake: Baroque Biomes",
+     "implemented": true,
+     "generatesNaturally": true,
+     "canBuildBase": true,
+     "canAutoChoose": true,
+     "isExtremeBiome": false,
+     "isWaterBiome": false,
+     "impassable": false,
+     "animalDensity": 0.1,
+     "plantDensity": 0.0,
+     "diseaseMtbDays": 90.0,
+     "forageability": 0.0,
+     "settlementSelectionWeight": 1.0,
+     "wildAnimalCount": 4,
+     "wildPlantCount": 0,
+     "animalsListed": 4,
+     "plantsListed": 0,
+     "animals": [
+      {
+       "defName": "RM_CathedralRoach",
+       "commonality": 0.12
+      },
+      {
+       "defName": "RM_LivingBolt",
+       "commonality": 0.06
+      },
+      {
+       "defName": "RSW_Mynock",
+       "commonality": 0.04
+      },
+      {
+       "defName": "RSW_Vozzik",
+       "commonality": 0.0005
+      }
+     ],
+     "findResults": [
+      {
+       "defName": "RSW_Mynock",
+       "present": true,
+       "state": "spawning",
+       "declared": true,
+       "where": "animal",
+       "commonality": 0.04,
+       "declaredCommonality": 0.04
+      },
+      {
+       "defName": "RM_CathedralRoach",
+       "present": true,
+       "state": "spawning",
+       "declared": true,
+       "where": "animal",
+       "commonality": 0.12,
+       "declaredCommonality": 0.12
+      }
+     ]
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_5e7eceb5539e4bab861c69ae4c12591e",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 49
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ "SALVAGE_WRECKAGE_EVERYWHERE_1.A1": {
+  "campaign": {
+   "success": true,
+   "foundCount": 8,
+   "notFound": [
+    "ThingDef/RUT_FoundrySalvageCache"
+   ],
+   "raw": null,
+   "rows": [
+    "RUT_FoundrySalvageCache",
+    "RM_WreckFall",
+    "RUT_FallLineWreckFall",
+    "RUT_SalvageLoot_Foundry",
+    "RUT_SalvageLoot_Imperial",
+    "RUT_WreckList_FallLine",
+    "RUT_WreckWeathering_FallLine",
+    "RUT_WreckWeathering_ForgeWarm",
+    "RM_WreckField_Scald"
+   ]
+  },
+  "loot": {
+   "success": true,
+   "foundCount": 10,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "RM_SalvageLoot_Scrap",
+    "RM_SalvageLoot_Hull",
+    "RM_SalvageLoot_Tank",
+    "RM_SalvageLoot_Carapace",
+    "RM_SalvageLoot_Sealed",
+    "RM_SalvageLoot_Hull_Rare",
+    "RM_SalvageLoot_Tank_Rare",
+    "RM_SalvageLoot_Carapace_Rare",
+    "RM_SalvageLoot_Sealed_Rare",
+    "RM_SalvageLoot_GreyShards"
+   ]
+  },
+  "errs": []
+ },
+ "SHIPVERMIN_FREE_TIER_BEASTS_1.A2": {
+  "defs": {
+   "success": true,
+   "foundCount": 9,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "RM_Skivvik",
+    "RM_Rattagh",
+    "RM_Gorrud",
+    "RM_Fethrik",
+    "RM_Skivvik",
+    "RM_Rattagh",
+    "RM_Gorrud",
+    "RM_Fethrik",
+    "RM_FethrikFuelSpew"
+   ]
+  },
+  "errs": []
+ },
+ "SOLAR_MIRRORS_BUILD_1.A2": {
+  "defs": {
+   "success": true,
+   "foundCount": 18,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "RM_SignalMirror",
+    "RM_StaticMirror",
+    "RM_Heliostat",
+    "RM_AncientHeliostat",
+    "RM_SunStone",
+    "RM_SolarFurnace",
+    "RM_MirrorDetent",
+    "RM_SunVaultWall",
+    "RM_SunVaultSeal",
+    "RM_GlazedAperture",
+    "RM_ReAimMirror",
+    "RM_CleanMirror",
+    "RM_RepairAncientMirror",
+    "RM_FlashHeliograph",
+    "RM_ReAimMirror",
+    "RM_CleanMirror",
+    "RM_RepairAncientMirror",
+    "RM_GenStep_AncientMirrorField"
+   ]
+  },
+  "shade": {
+   "success": true,
+   "present": {
+    "shadeGrid": true,
+    "mirrorLight": true,
+    "mirrorField": true
+   },
+   "gridVersion": 3,
+   "cells": [],
+   "mirrors": [],
+   "mirrorsTruncated": false,
+   "receivers": [],
+   "mirrorLight": {
+    "mirrorCount": 0,
+    "anyLight": false,
+    "passCount": 1,
+    "lastChangeHash": 527
+   },
+   "field": {
+    "hasField": false,
+    "latched": false,
+    "currentlySolved": false,
+    "solverReport": "no field on this map",
+    "solutionCount": 0,
+    "minReAims": -1,
+    "configurations": 0
+   },
+   "badTokens": [],
+   "missingMembers": [],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_fa0fd23f742b411fafbca825a93eccdc",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 353
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  },
+  "errs": []
+ },
+ "TAKEN_BY_LAND_SERVICE_1.A2": {
+  "proof": {
+   "success": true,
+   "method": "System.String ProofTaken(System.String)",
+   "result": "TAKEN river=True gale=True traceSetting=True traces=0 pending=0",
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_d2c9896491f346748e9b9857686c7f80",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 32
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ "WARSCAR_AEROSOL_SCREEN_1.A1": {
+  "defs": {
+   "success": true,
+   "foundCount": 9,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "RM_AerosolScreen",
+    "RM_AerosolScreenResearch",
+    "RM_GlowerCrust",
+    "RM_GlowerPlate",
+    "RM_GlowerShieldPanel",
+    "RM_ProjectorCore",
+    "RM_Settling",
+    "RM_Warscar",
+    "RM_WarscarProjector_Salvaged"
+   ]
+  },
+  "t1": {
+   "resolved": true,
+   "success": true
+  },
+  "t2": {
+   "resolved": true,
+   "success": true
+  },
+  "errs": []
+ },
+ "GRAVSHIP_WIRES_SURVIVE_LAUNCH_1.A2": {
+  "setting": {
+   "success": true,
+   "action": "get",
+   "field": "keepWiresOnGravship",
+   "fieldKind": "static",
+   "value": "True",
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_3d04926993e3403889081ac74edf60e0",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 138
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  },
+  "toggle": {
+   "get0": {
+    "success": true,
+    "action": "get",
+    "field": "keepWiresOnGravship",
+    "fieldKind": "static",
+    "value": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_1d8856560c4c479f9d96b723bb353f3c",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 28
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "set_false": {
+    "success": true,
+    "action": "set",
+    "field": "keepWiresOnGravship",
+    "fieldKind": "static",
+    "valueBefore": "True",
+    "valueAfter": "False",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_daef58d5242b48a5a7ffc55c96c3c95b",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 48
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "get1": {
+    "success": true,
+    "action": "get",
+    "field": "keepWiresOnGravship",
+    "fieldKind": "static",
+    "value": "False",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_6606e83b9c2b4ab1be18030228413a28",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 32
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "restore": {
+    "success": true,
+    "action": "set",
+    "field": "keepWiresOnGravship",
+    "fieldKind": "static",
+    "valueBefore": "False",
+    "valueAfter": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_f4dc22a4c69c420f81cd19b767916a42",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 49
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   },
+   "get2": {
+    "success": true,
+    "action": "get",
+    "field": "keepWiresOnGravship",
+    "fieldKind": "static",
+    "value": "True",
+    "ticksGame": 1,
+    "operation": {
+     "OperationId": "op_300de967505b46ce857a66224d507587",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 40
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 1
+    }
+   }
+  }
+ },
+ "VEXXITH_CLOSED_LOOP_BUILD_1.A2": {
+  "takedamage": {
+   "success": true,
+   "typeName": "Thing",
+   "methodName": "TakeDamage",
+   "methodCount": 1,
+   "methods": [
+    {
+     "method": "TakeDamage",
+     "declaringType": "Verse.Thing",
+     "prefixCount": 2,
+     "postfixCount": 2,
+     "transpilerCount": 0,
+     "finalizerCount": 0,
+     "prefixes": [
+      {
+       "owner": "OskarPotocki.VEF",
+       "priority": 400,
+       "patchMethod": "VEF.AnimalBehaviours.Patch_TakeDamage.Prefix",
+       "patchAssembly": "VEF"
+      },
+      {
+       "owner": "mandrake.rm.cauldron.vexxith",
+       "priority": 400,
+       "patchMethod": "RimMandrake.Cauldron.Patch_Thing_TakeDamage_VexxithAcid.Prefix",
+       "patchAssembly": "RimMandrake.Cauldron"
+      }
+     ],
+     "postfixes": [
+      {
+       "owner": "OskarPotocki.VEF",
+       "priority": 400,
+       "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Thing_TakeDamage_Patch.Postfix",
+       "patchAssembly": "VEF"
+      },
+      {
+       "owner": "mandrake.jawabench.eventrecorder",
+       "priority": 400,
+       "patchMethod": "JawaBench.BridgeTools.JawaBenchEventRecorder.TakeDamagePostfix",
+       "patchAssembly": "JawaBench.BridgeTools"
+      }
+     ],
+     "transpilers": [],
+     "finalizers": []
+    }
+   ],
+   "ticksGame": 1,
+   "operation": {
+    "OperationId": "op_e1c2fbf5c0df442ebe3c929ea0c9b6df",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 10
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 1
+   }
+  }
+ },
+ "TICKER_NEVER_FIRES_FIX_1.A4": {
+  "dryrooms": {
+   "resolved": false,
+   "success": true
+  }
+ },
+ "ELDER_TREASURE_TAG_TABLE_1.A1": {
+  "defs": {
+   "success": true,
+   "foundCount": 2,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "RM_ElderSealedRelic",
+    "RM_ElderUnknownWeapon"
+   ]
+  }
+ },
+ "MOVING_DUNES_BUILD_1.A3": {
+  "defs": {
+   "success": true,
+   "foundCount": 2,
+   "notFound": [],
+   "raw": null,
+   "rows": [
+    "RM_Dunes_Sand",
+    "RM_Dunes_BuriedCache"
+   ]
+  }
+ },
+ "_log_path": {
+  "p": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Player.log"
+ },
+ "_note": "raw replies; judged by hand in belt_acc_sitting_20261009.md"
+}

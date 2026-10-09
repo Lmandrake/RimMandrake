@@ -1,0 +1,125 @@
+== CathedralPass
+    ~  Assemblies/RimMandrake.Utinni.CathedralPass.dll.srchash
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== EmpirePursuit
+    ~  Assemblies/RuthlessPursuingMechanoids.dll.srchash
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== ExplosiveGrowth
+    ~  Assemblies/RimMandrake.ExplosiveGrowth.dll.srchash
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== ExplosiveKnockback
+    ~  Assemblies/RimMandrakeExplosiveKnockback.dll.srchash
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== FlowWorks
+    -  northstar/validation_v2_result_20261005T202312.json   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== FungalSoilTrade
+    ~  Assemblies/RimMandrake.Utinni.FungalSoilTrade.dll.srchash
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== GimmeSomeSlack
+    ~  Assemblies/RimMandrakeGimmeSomeSlack.dll.srchash
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== GizkaStowaway
+    ~  Assemblies/RimMandrakeGizkaStowaway.dll.srchash
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== JawaRules
+    ~  Assemblies/JawaRules.dll.srchash
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== KeelHoist
+    ~  Assemblies/RimMandrakeKeelHoist.dll.srchash
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== LuminousPigment
+    -  Patches/DeepfireMealsOnStoves.xml   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== PlantGrowth
+    ~  Assemblies/JawaPlantGrowth.dll.srchash
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== PropaneLakeMechanics
+    ~  Assemblies/RimMandrake.Utinni.PropaneLakeMechanics.dll.srchash
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== Rites
+    +  Defs/RUT_JoiningWater.xml
+    -> VERIFIED in sync
+
+Deployed 1 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== RiverColors
+    ~  Assemblies/RimMandrake.Utinni.RiverColors.dll
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== SWBestiary
+    -  Textures/swanimals/Scurrier/Scurrier_m_south.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -> VERIFIED in sync
+
+Deployed 18 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== Sarlacc
+    ~  Patches/RSW_SarlaccSeeker_Rooting.xml
+    -> VERIFIED in sync
+
+Deployed 1 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== ShipShields
+    ~  Assemblies/RimMandrake.Utinni.ShipShields.dll.srchash
+    -> VERIFIED in sync
+
+Deployed 2 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== SolarMirrors
+    +  Textures/Things/Building/RM_SolarMirrors/RM_SunStone_Lit.png
+    -> VERIFIED in sync
+
+Deployed 1 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== SwarmlingArtOverride
+    +  Textures/Things/Pawn/Animal/Swarmling/Swarmling_south.png
+    -> VERIFIED in sync
+
+Deployed 5 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== UnfinishedLine
+    ~  Defs/QuestScriptDefs/RUT_UnfinishedLine.xml
+    -> VERIFIED in sync
+
+Deployed 3 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== UtinniPatches
+    -  Textures/Things/Building/RUT_GreatboleHeartwood/RUT_GreatboleHeartwood.png   (in game, not in repo; kept — use --prune to delete, or --pull to rescue)
+    -> VERIFIED in sync
+
+Deployed 1 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== WasteRun
+    +  Patches/RUT_CaskBay_WasteRunPlanner.xml
+    -> VERIFIED in sync
+
+Deployed 7 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== BIOMES
+    ~  Biomes/_Kits/CreatureBehaviors/Assemblies/RimMandrake.CreatureBehaviors.dll
+    ~  Biomes/_Kits/CreatureBehaviors/Assemblies/RimMandrake.CreatureBehaviors.dll.srchash
+    ~  Biomes/_Kits/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll
+    ~  Biomes/_Kits/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll.srchash
+    ~  Biomes/_Kits/EnvironmentalHazards/Languages/English/Keyed/RM_EnvironmentalHazards_Keys.xml
+    -> VERIFIED in sync
+
+Deployed 68 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+ALLDONE
