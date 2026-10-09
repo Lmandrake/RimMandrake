@@ -72,16 +72,17 @@ namespace RimMandrake.DivingInteraction.SelfTest
                     float d = Density(a.c);
                     float weight = RM_GardenDefenseKernel.WeightFor(kind);
                     float scoreIn = before.offenseScore + weight;
-                    bool wantT2 = scoreIn >= RM_GardenDefenseKernel.Tier2Threshold * (1f - RM_GardenDefenseKernel.TrailThresholdDiscount * d) && w.now >= before.tier2CooldownUntilTick;
+                    bool wantT2 = before.escalationScore + weight >= RM_GardenDefenseKernel.Tier2Threshold * (1f - RM_GardenDefenseKernel.TrailThresholdDiscount * d) && w.now >= before.tier2CooldownUntilTick;
                     bool wantT1 = !wantT2 && scoreIn >= RM_GardenDefenseKernel.Tier1Threshold * (1f - RM_GardenDefenseKernel.TrailThresholdDiscount * d) && w.now >= before.tier1CooldownUntilTick;
                     var o = RM_GardenDefenseKernel.Offense(ref w.s, kind, w.now, d);
                     Check((o == RM_GardenDefenseKernel.Outcome.Tier2Wake) == wantT2, $"tier-2 wake {(o == RM_GardenDefenseKernel.Outcome.Tier2Wake ? "fired" : "did not fire")} but score {scoreIn} at t={w.now} (cd2 {before.tier2CooldownUntilTick}, density {d}) says it should {(wantT2 ? "" : "not ")}");
                     Check((o == RM_GardenDefenseKernel.Outcome.Tier1Arc) == wantT1, $"tier-1 arc {(o == RM_GardenDefenseKernel.Outcome.Tier1Arc ? "fired" : "did not fire")} but score {scoreIn} at t={w.now} (cd1 {before.tier1CooldownUntilTick}, density {d}) says it should {(wantT1 ? "" : "not ")}");
                     if (o == RM_GardenDefenseKernel.Outcome.None)
-                        Check(w.s.offenseScore == scoreIn, "a non-firing offense changed the score by other than its weight");
+                        Check(w.s.offenseScore == scoreIn && w.s.escalationScore == before.escalationScore + weight, "a non-firing offense changed the scores by other than its weight");
                     else
                     {
                         Check(w.s.offenseScore == 0f, "a firing offense left score " + w.s.offenseScore);
+                        Check(o == RM_GardenDefenseKernel.Outcome.Tier2Wake ? w.s.escalationScore == 0f : w.s.escalationScore == before.escalationScore + weight, "escalation pool wrong after " + o);
                         Check(w.s.tier1CooldownUntilTick == w.now + RM_GardenDefenseKernel.Tier1CooldownTicks, "a fire did not arm the tier-1 cooldown");
                         // spacing: the tier-1 channel (arc, or the arc a wake replaces) is never re-armed early
                         if (o == RM_GardenDefenseKernel.Outcome.Tier1Arc)   // a wake may follow an arc at once; an arc never follows either inside the cooldown
@@ -119,8 +120,10 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 {
                     var r = w.s;
                     r.offenseScore = float.Parse(w.s.offenseScore.ToString("R", CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
+                    r.escalationScore = float.Parse(w.s.escalationScore.ToString("R", CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
                     r.agitationScore = float.Parse(w.s.agitationScore.ToString("R", CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
                     Check(r.offenseScore == w.s.offenseScore && r.agitationScore == w.s.agitationScore, "score did not survive a text round trip");
+                    Check(r.escalationScore == w.s.escalationScore, "escalation score did not survive a text round trip");
                     w.s = r;
                     break;
                 }
@@ -366,6 +369,17 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 if (RM_GardenDefenseKernel.Offense(ref s2, RM_GardenOffenseKind.Kill, 5000, 0f) != RM_GardenDefenseKernel.Outcome.Tier1Arc) fails.Add("units: one kill did not arc");
                 var s3 = RM_GardenDefenseKernel.State.Fresh();
                 if (RM_GardenDefenseKernel.Offense(ref s3, RM_GardenOffenseKind.HeatDamage, 5000, 0f) != RM_GardenDefenseKernel.Outcome.Tier1Arc) fails.Add("units: one heat hit did not arc");
+            }
+            // GARDEN_ESCALATION_PROGRESS_FIX_1: offending at the tier-1 cadence must still reach the wake
+            Cases++; Steps++;
+            {
+                var s = RM_GardenDefenseKernel.State.Fresh(); int t = 5000; bool woke = false;
+                for (int i = 0; i < 6 && !woke; i++)
+                {
+                    woke = RM_GardenDefenseKernel.Offense(ref s, RM_GardenOffenseKind.Kill, t, 0f) == RM_GardenDefenseKernel.Outcome.Tier2Wake;
+                    t += RM_GardenDefenseKernel.Tier1CooldownTicks;
+                }
+                if (!woke) fails.Add("units: six kills at the tier-1 cadence never woke the Tarnn (tier-1 arcs reset tier-2 progress)");
             }
             return fails;
         }

@@ -37,7 +37,8 @@ namespace RimMandrake.DivingInteraction
         /// <summary>The scalar state RM_MapComponent_ChillGardenDefense Scribes (names unchanged there).</summary>
         public struct State
         {
-            public float offenseScore;
+            public float offenseScore;       // tier-1 pool: reset by every arc or wake
+            public float escalationScore;    // tier-2 pool: fed by every offense, reset ONLY by a wake (GARDEN_ESCALATION_PROGRESS_FIX_1)
             public float agitationScore;
             public int tier1CooldownUntilTick;
             public int tier2CooldownUntilTick;
@@ -72,13 +73,16 @@ namespace RimMandrake.DivingInteraction
         /// <summary>One offense (Harvest/Kill/HeatDamage). Updates the score and cooldowns and names the effect to play.</summary>
         public static Outcome Offense(ref State s, RM_GardenOffenseKind kind, int now, float trailDensity)
         {
-            s.offenseScore += WeightFor(kind);
+            float w = WeightFor(kind);
+            s.offenseScore += w;
+            s.escalationScore += w;
 
-            if (s.offenseScore >= AdjustedThreshold(Tier2Threshold, trailDensity) && now >= s.tier2CooldownUntilTick)
+            if (s.escalationScore >= AdjustedThreshold(Tier2Threshold, trailDensity) && now >= s.tier2CooldownUntilTick)
             {
                 s.tier2CooldownUntilTick = now + Tier2CooldownTicks;
                 s.tier1CooldownUntilTick = now + Tier1CooldownTicks; // the wake already IS the warning; don't also arc on the same breach
                 s.offenseScore = 0f;
+                s.escalationScore = 0f;
                 return Outcome.Tier2Wake;
             }
             if (s.offenseScore >= AdjustedThreshold(Tier1Threshold, trailDensity) && now >= s.tier1CooldownUntilTick)

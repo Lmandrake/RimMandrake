@@ -1,0 +1,1 @@
+A1 L1: Chill floor, offend with kills at the tier-1 cadence: arcs fire, then the Tarnn wake fires once escalation reaches the tier-2 threshold. PROVISIONAL numbers. Wake stays repeatable per Tier2Cooldown (one-time vs repeat is still undecided; RM_CompTarnnRoused header says no repeat).
