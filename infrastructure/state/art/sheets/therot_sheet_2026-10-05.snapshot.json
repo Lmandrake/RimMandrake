@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheRot",
- "built": "2026-10-07T20:09:27-0700",
+ "built": "2026-10-09T05:08:40-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
  "rows": {
   "AA_Agaripawn": {
    "columns": {
@@ -160,20 +160,27 @@
   "AA_Swarmling": {
    "columns": {
     "A": {
-     "east": "3034bea4ac29a39ded7f9eeed9a8889409ebcd663ca26b432a57383411ad2533",
-     "north": "5bb78e31ab58f106311544a98de064834faffe2cbe47938fe2695a552aee4d59",
-     "south": "58fe0732b61fa39a1e17a81cb256e9e12dffe8d32b95acb228cae8b4f116259c"
+     "east": "a6100b1c2102ebdb444cfcdeb9fa8c5c21958aa6d79097fa29f1c76df20a4b6a",
+     "north": "df52e3736d2984f6ca6ff3122cdd77011f26275eb7c1f62e0875688c6c7e1418",
+     "south": "5376e2b5135e2d9695b133f28e8f219de07d36adc55a5ddeb4e5cbb0bef13772"
+    },
+    "B": {
+     "east": "855fd0d57f8dcb42ae64cf040e81e3f89128e8b4a2bb8454f816a9f6b33d00bd",
+     "north": "c398689ba78ec5b915301bfdf1bd3e90781a44a589dd2f67252e4f56d43e161c"
     }
    },
    "graphic_of": {
-    "A": "RotSpecies/Swarmling/Swarmling"
+    "A": "RotSpecies/Swarmling/Swarmling",
+    "B": "RotSpecies/Swarmling/Swarmling"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheRot"
+    "A": "render miasma_swarmling_green_v2",
+    "B": "render miasma_swarmling_green_v3"
    },
    "res": "RotSpecies/Swarmling/Swarmling",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "swarmling"
   },
@@ -438,30 +445,24 @@
      "single": "6800368c9e2ee35421e18770a28012d90fbdddfa8bc52b98861199bc090aa294"
     },
     "C": {
-     "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
-    },
-    "D": {
      "single": "925feb103df63816f8e76cc8af317a643f537a2d1293ca1ffd5aa0d7f104a095"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/AgelessCap",
     "B": "RotSporeKit/Things/Plant/AgelessCap",
-    "C": "RotSporeKit/Things/Plant/AgelessCap",
-    "D": "RotSporeKit/Things/Plant/AgelessCap"
+    "C": "RotSporeKit/Things/Plant/AgelessCap"
    },
    "labels": {
     "A": "our deployed art (render rot_agelesscap_v2) \u2014 RimMandrake: Baroque Biomes",
     "B": "render rut_agelesscap_v2",
-    "C": "render rut_agelesscap_v1",
-    "D": "render rut_liveingredient_agelesscap_v1"
+    "C": "render rut_liveingredient_agelesscap_v1"
    },
    "res": "RotSporeKit/Things/Plant/AgelessCap",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D"
+    "C"
    ],
    "subject_key": "agelesscap"
   },
@@ -788,32 +789,26 @@
     },
     "D": {
      "single": "b02bc9e2464a1f47c2e6c5c27a5dbe1d44dcac98ef25a0a2031f30a0a13c7976"
-    },
-    "E": {
-     "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
     "B": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
     "C": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
-    "D": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
-    "E": "_byname"
+    "D": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown"
    },
    "labels": {
     "A": "our deployed art (render rot_greylady_v3) \u2014 RimMandrake: Baroque Biomes",
     "B": "render greyladygrown_a_v1",
     "C": "render greyladygrown_b_v1",
-    "D": "render greyladygrown_c_v1",
-    "E": "render rot_greylady_v2"
+    "D": "render greyladygrown_c_v1"
    },
    "res": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
    "reserved": [
     "A",
     "B",
     "C",
-    "D",
-    "E"
+    "D"
    ],
    "subject_key": "greylady"
   },
@@ -1340,16 +1335,31 @@
   "RSW_ShiroTrap": {
    "columns": {
     "A": {
+     "east": "319a9d0a07c3f0dbe060e1dc38b55e98b1904a34eab5b9041fda230a2a0c485b",
+     "north": "7c010de897bf89f38df87914d5583c4cae8fb5fe3e2ef4d7ac91093560db027f",
+     "south": "9234254e26038b048656eeb66a7aecb0501e86b80b5112243966fd9c0d3df863"
+    },
+    "B": {
+     "east": "c26ba72f3c99f7b199d9672b6601800ff89e317defd1400f32f8eab77456c05d",
+     "north": "335e7c919ba15bc6a9f499df86ce249304c000e4996ffd08c15c77459c605350",
+     "south": "3713dcf7f1c90ca94fd7facfd396f5329b11ba647d0a29ff1378d73a4968388d"
+    },
+    "C": {
+     "east": "7f87b2dde7d7a9c898fdd1d119986c6a01dd913182774c7451100fbeb4e37e1e",
+     "north": "5fd33f77bfa07c29286311a05162be018799a7eba28143de26b61c63dd07b094",
+     "south": "3be9ad845f817b75cef8a1d4106557f6a4fe7edcb81a96632edfc73dc0e429eb"
+    },
+    "D": {
      "east": "c15f31c73a543fea740004f8aa1b6e951d0f228f8054eec7c9729e16e6e3d764",
      "north": "9ded9c265c32e51f4a62ac31b595c6e16abbcd58bf63e96fdf2553c0043e1791",
      "south": "71bc818df17f50639a95e89317210a981d3a40cbb588d2951e5c51486a8ff622"
     },
-    "B": {
+    "E": {
      "east": "1638eb06ac8ad05585fa0418a58f4f0a8fb1ced49edf1d10f8abefeea288a53d",
      "north": "64e8a7b01468a6be75d7ff64e1939aef15980e72d7861e769244e1fe8d1c3fb5",
      "south": "ab0eba0b16a0d64921d64ea8dd3917bf79b20bb6737fc686ab0d292035d9228f"
     },
-    "C": {
+    "F": {
      "east": "0fb340316f7c162bdf1c1bfaf3bc507f4a025e3f199e6ea44e7afcb19e5ee8b1",
      "north": "081005155dc2c73537267237f86b2e83c1ed423cbc4bb53d4d5a0d06b4be521a",
      "south": "ce84c80fc922ee5bb95898af8236e06f95b7292641bc99013f471888302e3ceb"
@@ -1357,19 +1367,28 @@
    },
    "graphic_of": {
     "A": "swanimals/ShiroTrap/ShiroTrap",
-    "B": "swanimals/ShiroTrap/ShiroTrap_i",
-    "C": "swanimals/ShiroTrap/ShiroTrap_j"
+    "B": "swanimals/ShiroTrap/ShiroTrap",
+    "C": "swanimals/ShiroTrap/ShiroTrap",
+    "D": "swanimals/ShiroTrap/ShiroTrap",
+    "E": "swanimals/ShiroTrap/ShiroTrap_i",
+    "F": "swanimals/ShiroTrap/ShiroTrap_j"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "IN GAME \u2014 SWBestiary",
-    "C": "IN GAME \u2014 SWBestiary"
+    "B": "render regen_gt_canon_shirotrap_i_v1",
+    "C": "render regen_gt_canon_shirotrap_j_v1",
+    "D": "history SWBestiary 2026-09-18",
+    "E": "IN GAME \u2014 SWBestiary",
+    "F": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/ShiroTrap/ShiroTrap",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E",
+    "F"
    ],
    "subject_key": "shirotrap"
   },
@@ -1411,5 +1430,5 @@
   }
  },
  "sheetId": "therot_sheet_2026-10-05",
- "snapshotId": "58029c059aa9aaf1"
+ "snapshotId": "416984f55fd3c539"
 }

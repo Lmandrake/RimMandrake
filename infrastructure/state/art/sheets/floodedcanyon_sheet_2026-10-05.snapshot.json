@@ -1,9 +1,9 @@
 {
  "biome": "RM_FloodedCanyon",
- "built": "2026-10-07T20:07:27-0700",
+ "built": "2026-10-09T05:05:36-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
  "rows": {
   "AA_Murkling": {
    "columns": {
@@ -416,16 +416,26 @@
      "south": "93c3d7d58fab40a0826afd87ee12e210b010dfcc0340059b929f530f2e918b95"
     },
     "B": {
+     "east": "d1f7c87906618d48004a8794f7ca6af9a4c85c0fb7e2cb65f7520aec4debbb87",
+     "north": "2161e64b279cefeadb45863b3640d13bc20a8fab1839bb3b1a0285f16038cfaf",
+     "south": "2fc80191c68997f2051b0d4ea71a9d57707f75c3d1fcc47fa9a80579050cf87b"
+    },
+    "C": {
+     "east": "d01bc774a48caa84b3973f2f82550dc733dd0bcbc3e9bc61ebe431f52cf5e9cf",
+     "north": "39b4b2c0a9e55bbe48776c730e74f6b77fd4defe2ce8b2feb78284acdc84b95c",
+     "south": "406350d7d732d766987e8c37f47d7931d2758f435525d28d7652653a93fe36a9"
+    },
+    "D": {
      "east": "296f437d6d9ed1daa204963512269ac8604fabeff44ef04aca7220210e712360",
      "north": "980b49b06f96675a3e0992038b1c3c863276a9d111697b00010cd63306eeedfd",
      "south": "c02dd654f26961c188eb153df2753557c3141121091abdb191d3db8e5587ab2c"
     },
-    "C": {
+    "E": {
      "east": "52fb2d350a99cd931e32d3bc748561c6c13db31b10f998f9b81c4c20d6d5ca31",
      "north": "fa71044cbca1efb3f746a11d0713f4860818e6f079f019562dde3d6e61c39352",
      "south": "fa7ef3949ca880b50a9f80890bd1599fee7826a016a20d92f737900c9468b3b8"
     },
-    "D": {
+    "F": {
      "1_east": "81aa3a96abf52a6b789671f7c81258b92830823b7e6d385866e6cfc7c9e20043",
      "1_north": "92d2782e702eff8b88cca80717f125d540e1202bc216428bc26fb37ad75d4d2a",
      "1_south": "74148c2ae3e091d64f606292973f2f0fd9910bebea25455bef2d0b9aa309c320",
@@ -439,7 +449,7 @@
      "4_north": "eaa9143a524f973c8c3dce80ab5094b7d42ce8a20cad459c5b265a11975a7ed3",
      "4_south": "7d1cc1d5284369c2928a5b9ac966683e5fe3a3f7103e3d53da1effb631226358"
     },
-    "E": {
+    "G": {
      "1_east": "d67594dc3f78ef20ef7118421c67ea10746278cf541b6457b1b7370c1607e2cc",
      "1_north": "e0aa83483c18ee6835a3770cafc49a9ddf8940f7c3bbd0cebeac398071207919",
      "1_south": "7a0a10afbdbfd9eedeb8d6436a06970ced3ceaaa726a3cec43feb1a09679f4c3",
@@ -457,16 +467,20 @@
    "graphic_of": {
     "A": "swanimals/Convor/Convor",
     "B": "swanimals/Convor/Convor",
-    "C": "swanimals/Convor/Convor_f",
-    "D": "_flip:swanimals/Convor/Convor_Flying_",
-    "E": "_flip:swanimals/Convor/Convor_Flying_"
+    "C": "swanimals/Convor/Convor",
+    "D": "swanimals/Convor/Convor",
+    "E": "swanimals/Convor/Convor_f",
+    "F": "_flip:swanimals/Convor/Convor_Flying_",
+    "G": "_flip:swanimals/Convor/Convor_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render leaningscrub_convor_v1",
-    "C": "IN GAME \u2014 SWBestiary",
-    "D": "IN GAME \u2014 Convor_f_Flying_",
-    "E": "IN GAME \u2014 Convor_Flying_"
+    "B": "render regen_ls2_canon_convor_v2",
+    "C": "render regen_ls2_canon_convor_v3",
+    "D": "render leaningscrub_convor_v1",
+    "E": "IN GAME \u2014 SWBestiary",
+    "F": "IN GAME \u2014 Convor_f_Flying_",
+    "G": "IN GAME \u2014 Convor_Flying_"
    },
    "res": "swanimals/Convor/Convor",
    "reserved": [
@@ -474,7 +488,9 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "convor"
   },
@@ -486,87 +502,21 @@
      "south": "d08be7051362c4dd382545e6acacffe179cab08b8e4509c30c2bd04c66f824a5"
     },
     "B": {
-     "single": "4ba5d288e328718b0a41376692b097db699a8a20856c4b6e1dfa10adde0ae0c7"
-    },
-    "C": {
-     "single": "59a2c8a46e141443c9c041a8cce36f63f9ce2b0efa9a71a562b55cd8ea5c53ca"
-    },
-    "D": {
-     "single": "4439de18f6d26ddffb4fe2f6ff5252a8b380b9e795647d18f648abd13f1ab90f"
-    },
-    "E": {
      "single": "7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d"
-    },
-    "F": {
-     "single": "cc79ab2cdd30341f339e9fd2374a6f36c82de7dae941cf8de47dbbcf8e2130c2"
-    },
-    "G": {
-     "single": "0a87017de19c6882744d411db229e4a201541e9a6c9f0285f2f4a13840510184"
-    },
-    "H": {
-     "single": "5ebfc3726523f778670d25ec838afaa9efd5fec2d53b49ddbdbbef94cce6d0c4"
-    },
-    "I": {
-     "single": "7ed9b10335828766c00bb710d97420624743856f57d290c1eadf0b220847eff7"
-    },
-    "J": {
-     "single": "8094444617567d8f0485d46c337df6bd6814eebfae3d7caa839e4e55080054e3"
-    },
-    "K": {
-     "single": "14bb57f1d400a32829ea378aa6b385610b98b97af43397d0f73aeeed81b39c55"
-    },
-    "L": {
-     "single": "13681d3f00b37acc202724159d3bafbfac165018c26ad6206d8f0c7597808bbb"
-    },
-    "M": {
-     "single": "2e3e0a9af339ad58b89ef4bd6edf5c46fddd5b9bbece38d51c0a9fb3ae1ee305"
     }
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "C": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "D": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "E": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "F": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "G": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "H": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "I": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "J": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "K": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "L": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "M": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap"
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render codexcal_mantrap_r4",
-    "C": "render mantrap_improve_a",
-    "D": "render mantrap_improve_a_r2",
-    "E": "render mantrap_improve_a_r7",
-    "F": "render mantrap_improve_b",
-    "G": "render mantrap_improve_b_r2",
-    "H": "render mantrap_improve_b_r3",
-    "I": "render mantrap_improve_b_r4",
-    "J": "render mantrap_improve_b_r5",
-    "K": "render mantrap_improve_b_r6",
-    "L": "render mantrap_improve_b_r7",
-    "M": "render mantrap_improve_b_r8"
+    "B": "render mantrap_improve_a_r7"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
    "reserved": [
     "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M"
+    "B"
    ],
    "subject_key": "creature_mantrap"
   },
@@ -712,5 +662,5 @@
   }
  },
  "sheetId": "floodedcanyon_sheet_2026-10-05",
- "snapshotId": "db724682ad62c3e6"
+ "snapshotId": "39b81786e279194e"
 }

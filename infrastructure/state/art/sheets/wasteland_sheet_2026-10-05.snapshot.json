@@ -1,9 +1,9 @@
 {
  "biome": "RM_Wasteland",
- "built": "2026-10-07T20:09:53-0700",
+ "built": "2026-10-09T05:09:59-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
  "rows": {
   "Plant_GrayGrass": {
    "columns": {
@@ -326,28 +326,20 @@
   "RSW_Excretor": {
    "columns": {
     "A": {
-     "east": "e409971715490635a7d5e810fa1c95aa3b98d583082c03600e4e4c78b19a5abb",
-     "north": "429708aa40b47773a57b0b5c3e06221e039ac7360e59701ec4f6b37033c42629",
-     "south": "69045ee348ece520f9ce270e980793ad657321413ef7e4261e91b6d5e8a2d880"
-    },
-    "B": {
      "east": "0a20ff93042f043a877cbac86d43c6a84f8d18af65ae4e709b008a5676132086",
      "north": "c6fee02abd34428995a367bb5b5a457009afd537e728f587d0743c6abb1eff79",
      "south": "1ebb66b07ec805aee4dfe6cf1de38706e2da80d7dc3d4fd4c4f61c3fc9c54d7e"
     }
    },
    "graphic_of": {
-    "A": "swanimals/FeralNerf/FeralNerf",
-    "B": "swanimals/FeralNerf/FeralNerf"
+    "A": "swanimals/FeralNerf/FeralNerf"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "render leaningscrub_feralnerf_v1"
+    "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/FeralNerf/FeralNerf",
    "reserved": [
-    "A",
-    "B"
+    "A"
    ],
    "subject_key": "excretor"
   },
@@ -535,5 +527,5 @@
   }
  },
  "sheetId": "wasteland_sheet_2026-10-05",
- "snapshotId": "976375bacd60ee73"
+ "snapshotId": "9525f83430407c92"
 }

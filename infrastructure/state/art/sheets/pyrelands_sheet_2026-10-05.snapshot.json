@@ -1,9 +1,9 @@
 {
  "biome": "RM_Pyrelands",
- "built": "2026-10-07T20:20:11-0700",
+ "built": "2026-10-09T05:07:14-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
  "rows": {
   "RM_Ashwallow": {
    "columns": {
@@ -186,7 +186,7 @@
      "2_east": "2cb3e6f7e3e61463e4048ba6bacf6e3358a75399c8ad836247c82921ab76db90",
      "3_east": "a674f5b0bd80c751572737f5f51873a11dec9931065df12a691b8c2dce5ad21f"
     },
-    "p": {
+    "q": {
      "1_east": "914df485d9ce798ea94c799bcb91fa49a0101dc4655720503c74d3e452157fb7",
      "1_north": "372522174a2f6bc6eceae5896b6c5bcea2d9c7e1e83b4045e8140b4f51a9558b",
      "1_south": "595e99efd30d2739425ca5de31fc253f645c87772a8996682876651d909451c4",
@@ -208,13 +208,13 @@
     "M": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
     "X": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
     "j": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
-    "p": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_"
+    "q": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_"
    },
    "labels": {
     "M": "IN GAME \u2014 Pyrelands",
     "X": "IN GAME \u2014 FireHawk_Flying_",
     "j": "flight frames pyrelands_firehawk_flight8",
-    "p": "flight frames rut_firehawk_flying_v2"
+    "q": "flight frames rut_firehawk_flying_v2"
    },
    "res": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
    "reserved": [
@@ -259,7 +259,8 @@
     "m",
     "n",
     "o",
-    "p"
+    "p",
+    "q"
    ],
    "subject_key": "firehawk"
   },
@@ -438,20 +439,10 @@
      "north": "a93d680fe46c242d9e6fc62256362c3e6cd9c71cd5b263c89a81d02e7203bef7",
      "south": "5d13d2b683d57087a156ecff1ccfbc3ed69098b8c8472c30209ff6e2c012cd61"
     },
-    "B": {
-     "east": "361c4a194cb7c9376c47d7883f5fe2086fccb18eeac6c0acf0f2e38f75388a0a",
-     "north": "f3ba2a949cd8cee0f7511a9937da3987e924a3e1a87ea84f99686b442d7381fa",
-     "south": "acf5c4deef3e5fb939a13b500336174541623256711c0c607707b6efb342f0b9"
-    },
     "C": {
      "east": "2cbadfc9c5276d09059b21427d0b5e6f18361464d58c1400b3477a1e3c5c04b1",
      "north": "44db05fb521cd8b507450ba517a3b6c7c097434d9370b494451bddb08765892e",
      "south": "0964a84c920eedd515ae9327bf42115ec42c4190ceedb9388953a97cf36863d9"
-    },
-    "D": {
-     "east": "9176e14b0bd117f519fc445dcb968fc49f77f8fe3e31c2390865a64c25598bda",
-     "north": "1578777c0ecf7d064c275d6d8d3a9868bbca020221c98fbd3e067fb55ed278b0",
-     "south": "d1ac9b1fee217b3183ef3d0e7ed7dc9f5b8e8866800bd56b9b3d7daf0aa92da5"
     },
     "E": {
      "east": "a616443d96fbee65ef9170145a450a5d4dace58012cbd5205d4d4f77e03c0d04",
@@ -461,17 +452,13 @@
    },
    "graphic_of": {
     "A": "swanimals/Anooba/Anooba_f",
-    "B": "swanimals/Anooba/Anooba_f",
     "C": "swanimals/Anooba/Anooba_m",
-    "D": "swanimals/Anooba/Anooba_m",
-    "E": "_byname"
+    "E": "swanimals/Anooba/Anooba_f"
    },
    "labels": {
     "A": "IN GAME \u2014 AnoobaArtOverride",
-    "B": "history AnoobaArtOverride 2026-09-17",
     "C": "IN GAME \u2014 AnoobaArtOverride",
-    "D": "history AnoobaArtOverride 2026-09-17",
-    "E": "render leaningscrub_anooba_v1 \u2014 failed canon check"
+    "E": "IN GAME \u2014 AnoobaArtOverride"
    },
    "res": "swanimals/Anooba/Anooba_f",
    "reserved": [
@@ -485,11 +472,6 @@
   },
   "RSW_Dalgo": {
    "columns": {
-    "A": {
-     "east": "59600ba22d28a0d6dfd1a17bfa443a560368b3cffc4a96648b8102f8e20638f4",
-     "north": "5fbbc26d986460617ff6994ebb504f98c8b3b280ff6f3303fa47828697141998",
-     "south": "01701e6929f442a7af8bb4e475c2cf777cb83245541a4f640f179b3ed2fd208d"
-    },
     "B": {
      "east": "3c899a7822f892fca6000caf78c46ba1069e4eb9dd137124d214bbb31ec277dc",
      "north": "44f229222949dc126256abcc6f685e704cefb4d0d060ee599bd71920e60d3ef8",
@@ -499,24 +481,15 @@
      "east": "bad7d8226b8670e33a087cfa443ff8d797c80c5613cc614917489480c04f4792",
      "north": "cc17fdc77fd524ef160b8f5631987d489b4e1f74e2017c0620a3333ce6d9ee8d",
      "south": "11617c1a94d5fbca848d4ee4b6f92f45055b5a30953c3d4f16c2030a45290bbd"
-    },
-    "G": {
-     "east": "002e2f698d87a21626bb963cca4e225c0d2f0d73cfcc5dc95d01697db823f204",
-     "north": "1964cc764f572ca1b7a07774ab481787e769f72cd941ffb688ef792eb45e4b5c",
-     "south": "cb0f2dfa7a1c974d20a5fadd6c55b561bcc32bf866b9997555e8a895c4ab15e4"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Dalgo/Dalgo",
     "B": "swanimals/Dalgo/Dalgo",
-    "F": "swanimals/Dalgo/Dalgo",
-    "G": "swanimals/Dalgo/Dalgo"
+    "F": "swanimals/Dalgo/Dalgo"
    },
    "labels": {
-    "A": "history SWBestiary 2026-09-12",
     "B": "IN GAME \u2014 SWBestiary",
-    "F": "history DalgoArtOverride 2026-09-17",
-    "G": "donor original \u2014 mlie.starwarsanimalcollection"
+    "F": "history DalgoArtOverride 2026-09-17"
    },
    "res": "swanimals/Dalgo/Dalgo",
    "reserved": [
@@ -566,40 +539,33 @@
      "north": "f5306e2f56ebb9f110d1984dd4e570262ac8b646d29abb41a252d6f46b1fa58f",
      "south": "f094aac1dd4e441fc7da112129d0926cab1c26acb8a81ed9e7d1c137efb7a684"
     },
-    "B": {
-     "east": "6df9daa0dd032d2d6fe8ab9b6ccd293c927307b3cb26db6ee2d2abb66138ad24",
-     "north": "c89db66e50c906953a07ef5c10ed194b1a05abfccf64dff33dcb38a06a796205",
-     "south": "2a992e80b52bdfb60bacf805ea2a912f8f24492bfc64741333d5e76e0f61ea14"
-    },
-    "C": {
-     "east": "6df9daa0dd032d2d6fe8ab9b6ccd293c927307b3cb26db6ee2d2abb66138ad24",
-     "north": "c89db66e50c906953a07ef5c10ed194b1a05abfccf64dff33dcb38a06a796205",
-     "south": "dbf9e182ffe4b57075ce9f21a9505c6f389901e6ab11db6e475a761c32295be6"
-    },
     "D": {
      "east": "51a1e8a59765bae754d5a286305875fcb75a18485e1a365aa85b74bfe0f211f9",
      "north": "2b33ce06b59e38194e148128657a69bfa40eee4fbb293c1bffc822b9e6f0466e",
      "south": "0c71a8259e7497dfe8798e1ca10309cb7f6137b0eefcc5a78b85d005c4f34139"
     },
-    "E": {
-     "east": "1c9975dd7e0a36005569f9b01cb76475f19d2b10aad8804576133cc9ee5538c0",
-     "north": "f0417789c32fb83912fbe9d56b6d1fc1f769e308826567e01f678e111de62a67",
-     "south": "21a39e0981d79fa8f04c97d063b04018936b710b6f6184c1f4660fbb3450fca9"
+    "F": {
+     "east": "65f9b2aea569338ab9c1363a2b0486cec19b9a05323c2d1ee4d5650643e99be3",
+     "north": "2590fe2296f093f8a3e1a25fcaa67c2be984ea36c6b30757908ef26f582cbf82",
+     "south": "31b47949ff35c4fe52dab6e321d8603d2b439cea369f73b6dc2661d722a1a514"
+    },
+    "G": {
+     "east": "c5514385a669b60d4254bf0a30430719a5e8ce1c4099bb7ba73dfdff6992ff27",
+     "north": "0a198d1088753b4aeb454b15724dfeaad18e1c127e381abdeac8afed1bf167ec",
+     "south": "c14b301e8ee0f02d0607407758e25841d69b1d2725ac04da12db0caaf98e55e8"
     }
    },
    "graphic_of": {
     "A": "swanimals/Iriaz/Iriaz",
-    "B": "swanimals/Iriaz/Iriaz",
-    "C": "swanimals/Iriaz/Iriaz",
     "D": "swanimals/Iriaz/Iriaz",
-    "E": "swanimals/Iriaz/Iriaz"
+    "F": "swanimals/Iriaz/Iriaz",
+    "G": "swanimals/Iriaz/Iriaz"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "history IriazArtOverride 2026-09-17",
-    "C": "history IriazArtOverride 2026-09-18",
     "D": "history IriazArtOverride 2026-09-20",
-    "E": "history SWBestiary 2026-09-12"
+    "F": "render regen_ls3_iriaz_h_v1",
+    "G": "render regen_ls3_iriaz_i_v1"
    },
    "res": "swanimals/Iriaz/Iriaz",
    "reserved": [
@@ -607,7 +573,9 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "iriaz"
   },
@@ -725,8 +693,8 @@
     "C": "swanimals/Zeer/Zeer"
    },
    "labels": {
-    "A": "IN GAME \u2014 ZeerArtOverride",
-    "B": "render longshade_rsw_zeer_v1",
+    "A": "history ZeerArtOverride 2026-09-20",
+    "B": "IN GAME \u2014 ZeerArtOverride",
     "C": "history ZeerArtOverride 2026-09-18"
    },
    "res": "swanimals/Zeer/Zeer",
@@ -739,5 +707,5 @@
   }
  },
  "sheetId": "pyrelands_sheet_2026-10-05",
- "snapshotId": "62ddfdac157c1ff0"
+ "snapshotId": "f9a798fbce2e304e"
 }
