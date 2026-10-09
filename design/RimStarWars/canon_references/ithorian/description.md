@@ -47,7 +47,10 @@ hand-carved from stone marked graves and carried deep spiritual meaning, and **I
 Weather Chimes** were handcrafted and prayed to for fertile soil and good weather.
 
 ## Visual brief
-Three canon references, tightly consistent, and the thing they agree on is not a head —
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The Clone Wars image of Onca and Bulduga (`wookieepedia_oncabulduga_db.png`) was removed. All references are now live-action: Mok Shaiz in *The Book of Boba Fett* (seated three-quarter, front view, and a head close-up) and a physical costume in profile. The close-up shows the hide as **fine pebbled, deeply wrinkled tan-ochre skin** with large glossy dark eyes on the crossbar pods.
+
+The live-action references are tightly consistent, and the thing they agree on is not a head —
 it is a **neck**.
 
 - 🔑 **The defining structure is a long, thick, muscular neck that rises from the
@@ -72,14 +75,13 @@ it is a **neck**.
   `ElongatedFingers` gene in the def.
 - **Build: bulky and heavy through the torso with relatively short legs and a stooped,
   forward-leaning stance** — the forward-carried head pulls the whole posture over.
-  Consistent across all three images.
-- **Palette varies across individuals and all of it is in the earth range**: Mok Shaiz
-  is a warm olive-tan/yellow-ochre; Onca is a pinkish-tan; Bulduga is a darker
-  grey-brown; the costume photo is mid-brown. **Nothing is blue.**
+  Consistent across every image.
+- **Palette is in the earth range**: Mok Shaiz is a warm olive-tan/yellow-ochre; the
+  costume photo is mid-brown. (The deleted animated image added pinkish-tan and grey-brown
+  individuals; no live-action image confirms those hues.) **Nothing is blue.**
 - Costume note worth having: Mok Shaiz wears dark green robes with gold embroidery
-  (a magistrate); Onca and Bulduga wear vests, bandoliers, gunbelts, boots and in one
-  case a wide-brimmed hat (bounty hunters). The species is not visually locked to
-  pacifist gardener dress even though that is the cultural default.
+  (a magistrate); the costume photo wears a plain cream coat. The species is not visually
+  locked to pacifist gardener dress even though that is the cultural default.
 
 `donor_current_sprite.png` is the mod's current head mask (greyscale — correct, tinted at
 runtime). It gets the general idea: a broad upper cranium with two eyes in lateral
@@ -97,7 +99,8 @@ should be documented rather than hidden.
 - [ ] Twin mouths on the sides of the neck (not on the face) — a large oval opening ringed with plate-like teeth partway down the neck
 - [ ] Leathery, deeply wrinkled/creased skin, especially across the crossbar and along the neck
 - [ ] Thick, short, blunt, few-digited hands and broad three-toed feet — not elongated fingers
-- [ ] Palette is an earth tone (olive-tan, pinkish-tan, grey-brown or mid-brown) — never blue
+- [ ] Palette is an earth tone (olive-tan/ochre to mid-brown) — never blue
+- [ ] Realistic rendering: fine pebbled, wrinkled leathery hide and natural lighting as on the live-action costume, no outlines, no cartoon shading
 
 ## Engine limits
 - A RimWorld head sprite cannot carry the forward-curving neck, which is where both mouths
@@ -148,8 +151,10 @@ should be documented rather than hidden.
   38,530 chars, 2026-09-15)
 - File:MokShaiz-CGSWG.png — the infobox image (Mok Shaiz, mayor of Mos Espa) →
   `wookieepedia_mokshaiz_cgswg.png`
-- Onca and Bulduga, Ithorian bounty hunters and brothers — the *Biology and appearance*
-  inline image → `wookieepedia_oncabulduga_db.png`
+- File:Mok Shaiz Ithorian Databank.png → `wookieepedia_mokshaiz_head_closeup.png` —
+  https://static.wikia.nocookie.net/starwars/images/3/37/Mok_Shaiz_Ithorian_Databank.png/revision/20220113034222
+- File:MayorMokShaiz-BoBFCh2.png → `wookieepedia_mokshaiz_front_bobf.png` —
+  https://static.wikia.nocookie.net/starwars/images/1/11/MayorMokShaiz-BoBFCh2.png/revision/20221129054015
 - A physical Ithorian costume/figure in profile, from *Star Wars: The Visual
   Encyclopedia* → `wookieepedia_ithorian_swtve.jpg`
 - NOT fetched this pass: https://www.starwars.com/databank/ithorians (official Databank —
@@ -165,10 +170,8 @@ should be documented rather than hidden.
   species: a physical costume photographed near-profile in a cream coat, showing how far
   forward and how thick the neck arcs. Photographed from a printed page (paper grain
   visible), so treat hue as approximate; treat the silhouette as authoritative.
-- `wookieepedia_oncabulduga_db.png` — Onca and Bulduga, two Ithorian bounty hunters, one
-  pinkish-tan and one grey-brown, in vests, bandoliers and a wide-brimmed hat. Confirms
-  the head/neck plan recurs across individuals while the hue shifts, and shows the
-  species out of pacifist-gardener costume. Small in frame.
+- `wookieepedia_mokshaiz_head_closeup.png` — live-action, *The Book of Boba Fett* (Databank still): head and neck close-up — pebbled wrinkled tan hide, eye pods at the crossbar tips, neck collar. File `Mok Shaiz Ithorian Databank.png`.
+- `wookieepedia_mokshaiz_front_bobf.png` — live-action, *The Book of Boba Fett* Chapter 2: Mok Shaiz seated, front view — shows the crossbar width head-on. File `MayorMokShaiz-BoBFCh2.png`.
 - `donor_current_sprite.png` — the mod's current head mask, for comparison only. Right
   idea, wrong proportions; see the visual brief.
 

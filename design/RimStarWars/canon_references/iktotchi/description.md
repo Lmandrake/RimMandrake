@@ -59,11 +59,10 @@ seal into a plateau weeks before the Republic's explorers arrived** — a precog
 is the species' defining anecdote.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The Ferren Barr comic panel (`wookieepedia_ferren_barr.jpg`) was removed. What remains is realistic: two live-action costume photographs of Saesee Tiin (the reference of record) and the realistic Legends infobox painting.
 
-⚠️ **This is the one species in this batch where the reference images contradict the wiki's own
-prose in the def's favour, and the honest answer is that the def's palette is closer to the
-pictures than the infobox is.** The infobox says **Tan** (canon) / **Pink** (Legends); the prose
-says **peach to brown**. The pictures run from warm tan all the way to **brick orange-red**.
+🔴 **The live-action Iktotchi is TAN/PEACH, not red.** The brick orange-red the old brief leaned on came mostly from the deleted comic. Both film photographs show **warm tan/peach-brown skin with pink undertones**; the Legends painting is the only remaining image at the reddish-mauve end. Treat **tan/peach as the realistic norm** and reddish-mauve as a painted-Legends variant, never the default.
 
 **`wookieepedia_canon_infobox_saesee_tiin.jpg`** (canon infobox, film costume photograph of
 Saesee Tiin, 740×1935 — the highest-fidelity reference here):
@@ -90,12 +89,9 @@ not the same colour, and nothing in the def or its art can express that differen
 teeth**, same down-curved cream-tan horns, bald, deeply furrowed, and **long tapering
 claw-like fingers**.
 
-**`wookieepedia_ferren_barr.jpg`** (comic) is redder still: **strong orange-red brick skin**,
-bald dome, pale horns curving down at the sides, pointed teeth, long clawed fingers.
-
 🔑 **So the constants are: the broad domed cranium; long down-curved temple horns in a PALER,
 different hue from the skin; total hairlessness; deep furrows; oversized blunt fleshy hands.
-The variable is skin hue, running warm tan/peach → mauve → brick orange-red.**
+The variable is skin hue: warm tan/peach in live action, reddish-mauve in the Legends painting.**
 
 **`donor_current_sprite.png` is the best of this batch's donor sprites, and it still misses one
 specific thing.** It is
@@ -123,6 +119,8 @@ male/female × 3 facings and `*m.png` masks):
 - [ ] Deep leathery furrows across the brow and down the cheeks
 - [ ] Completely hairless — no hair, no eyebrows, no beard
 - [ ] Large, thick, blunt hands with fleshy tapering digits, visibly bigger than a human hand
+- [ ] Warm tan/peach-brown skin (live-action norm), reddish-mauve only as a variant
+- [ ] Realistic rendering: natural leathery skin texture and lighting as on the film costume, no outlines, no cartoon shading
 
 ## Engine limits
 - The head texture is pure greyscale and its tint mask uses only the red channel (green
@@ -145,27 +143,23 @@ male/female × 3 facings and `*m.png` masks):
   (File:SaeseeTiin-USWNE.png, canon infobox → `wookieepedia_canon_infobox_saesee_tiin.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/8/83/Iktotchi-NEGAS.png
   (File:Iktotchi-NEGAS.png, Legends infobox → `wookieepedia_legends_infobox.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/0/0b/FerrenBarr-2017DarthVader16.png
-  (File:FerrenBarr-2017DarthVader16.png → `wookieepedia_ferren_barr.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/f/f4/SaeseeTiinFull-SWE.png
   (File:SaeseeTiinFull-SWE.png → `wookieepedia_saesee_tiin_fullbody.jpg`)
-- ⚠️ All four served as **WebP** despite `.png` extensions; re-encoded to real JPEG locally.
+- ⚠️ All served as **WebP** despite `.png` extensions; re-encoded to real JPEG locally.
 - NOT fetched this pass: `https://www.starwars.com/databank/iktotchi` — the canon infobox's
   skin-colour cite points at it and it may carry official appearance text; a direct fetch was
   not attempted.
 
 ## Candidate images
 
-- `wookieepedia_canon_infobox_saesee_tiin.jpg` — **the reference of record.** Film costume
-  photograph: settles the broad domed cranium, the long forward-down temple horns in a paler
+- `wookieepedia_canon_infobox_saesee_tiin.jpg` — **the reference of record.** Live-action film costume
+  photograph (file `SaeseeTiin-USWNE.png`, https://static.wikia.nocookie.net/starwars/images/7/78/SaeseeTiin-USWNE.png): settles the broad domed cranium, the long forward-down temple horns in a paler
   cream-grey hue, deep leathery furrows, hairlessness, oversized blunt hands, and a warm
   tan/peach skin.
-- `wookieepedia_saesee_tiin_fullbody.jpg` — second full-body of the same character; independent
+- `wookieepedia_saesee_tiin_fullbody.jpg` — live-action, second full-body of the same character (file `SaeseeTiinFull-SWE.png`, https://static.wikia.nocookie.net/starwars/images/f/f4/SaeseeTiinFull-SWE.png); independent
   confirmation that **horn colour ≠ skin colour**.
-- `wookieepedia_legends_infobox.jpg` — Legends infobox painting, the **mauve/brick** end of the
+- `wookieepedia_legends_infobox.jpg` — Legends infobox, realistic painting (file `Iktotchi-NEGAS.png`, https://static.wikia.nocookie.net/starwars/images/8/83/Iktotchi-NEGAS.png), the **reddish-mauve** end of the
   skin range, with pointed teeth and clawed fingers.
-- `wookieepedia_ferren_barr.jpg` — comic, the **orange-red brick** extreme. Stylised; palette
-  is the point.
 - `donor_current_sprite.png` — the shipped head mask. Unusually good (horns present and
   correctly oriented) and still evidence of the dome-shape and horn-colour gaps.
 
@@ -208,7 +202,7 @@ male/female × 3 facings and `*m.png` masks):
 11. ✅ **Skin genes are defensible, and this is where the images side with the def.** The wiki
     infoboxes say **Tan** (canon) and **Pink** (Legends) and the prose says "peach to brown,"
     which alone would make `Skin_DeepRed` and `Skin_PaleRed` look invented — but the Legends
-    infobox painting and the Ferren Barr comic are plainly **brick and orange-red**, and
+    infobox painting is plainly **reddish-mauve** (the orange-red Ferren Barr comic was removed 2026-10-08 as cartoon reference; the live-action skin is tan/peach), and
     `Outland_Skin_PaleBrown` covers the tan/peach end. **Do not "correct" the reds away on the
     strength of the infobox.**
 12. ✅ **Other sourced and correct genes — do not "fix" these:** `Outland_ThickSkin` ("a very

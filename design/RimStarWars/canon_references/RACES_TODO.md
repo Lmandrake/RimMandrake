@@ -476,10 +476,9 @@ dark orbital rims read as goggles only at small scale.
 Negative / contrast references kept and labelled rather than deleted:
 `mimbanese/donor_current_head_is_tusken_art.png` (**the Tusken head a Mimbanese actually renders
 with** — the defect itself), `zabrak/wookieepedia_dathomirian_maul.jpg` (wrong subspecies, kept
-so the distinction is checkable by eye), `kaleesh/wookieepedia_grievous_concept_alien_stage.jpg`
-(**pre-final Grievous concept sketches**, mutually inconsistent, none shipped — same status as
-the Whitlatch Geonosian art), `kaleesh/wookieepedia_eyes_closeup.jpg` (**Grievous the cyborg** —
-everything bone-coloured is his faceplate; valid for the yellow slit-pupil eyes only),
+so the distinction is checkable by eye), `kaleesh/wookieepedia_eyes_rots_liveaction.png`
+(**Grievous the cyborg**, live-action *Revenge of the Sith* — everything bone-coloured is his
+faceplate; valid for the yellow slit-pupil eyes only),
 `kel_dor/donor_current_sprite_headflaps.png` (smooth pointed flaps where canon has irregular
 pebbled lobe clusters).
 
@@ -747,9 +746,7 @@ Ferren Barr comic are plainly **brick and orange-red**, and `Outland_Skin_PaleBr
 the tan end. Do not correct the reds away on the strength of the infobox.
 
 Negative / weak references labelled rather than deleted:
-`cathar/wookieepedia_canon_twins.jpg` (the **current-canon infobox image**, but a
-near-human stylised flash design with **no muzzle at all** — taken alone it would produce a
-Cathar with no feline silhouette); `echani/wookieepedia_handmaiden_brianna.jpg` (Brianna is
+`echani/wookieepedia_handmaiden_brianna.jpg` (Brianna is
 **half-Echani** by the article's own text, so a blended reference — she is the warm end of
 "light skin", not the species centre); `duros/wookieepedia_cad_bane.jpg` (the one
 famously **blue** Duros — one character, not the species colour);

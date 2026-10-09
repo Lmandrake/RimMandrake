@@ -54,6 +54,21 @@ their jawbones, framing their faces on either side**, and **bony protrusions jut
 their chins.**
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Removed: the flat-coloured Alien Archive infobox illustration (`wookieepedia_infobox_masked.jpg`), the animated
+*Path of Fear* eye close-up (`wookieepedia_eyes_closeup.jpg`) and the Grievous concept-sketch sheet
+(`wookieepedia_grievous_concept_alien_stage.jpg`). Added: `wookieepedia_legends_negas_painted.jpg` (realistic
+painted full figure, *The New Essential Guide to Alien Species*) for mask, skin and dress, and
+`wookieepedia_eyes_rots_liveaction.png` (live-action *Revenge of the Sith* close-up of Grievous's eyes).
+⚠️ **No realistic UNMASKED Kaleesh exists anywhere** (searched: Kaleesh and Kaleesh/Legends page images, "Images of
+Kaleesh" — SWTOR, comics and RPG art only). The comic face `wookieepedia_unmasked_face.jpg` is **kept as the only
+anatomy reference for the face** — render that anatomy realistically, not in its inked comic style.
+
+🔴 **Where the realistic painting disagrees with the deleted illustration:** the removed infobox showed a
+rust-red cloth-wrapped figure with **no skin visible**. The realistic painting shows **bare rust-red skin on the
+arms, hands, legs and clawed bare feet**, and a **light sand/cream campaign cloak and wrappings** — matching the
+sourced *"light-coloured campaign cloaks"*. Rust-red cloth is therefore a variant, not the norm.
+
 🔑 **The mask/face split, and it is the whole entry.** Canon says the mask is worn *nearly
 always* — but unlike the Kel Dor's, it is **cultural, not medical**. A Kaleesh can be unmasked
 without dying; a mask worn "just for effect" by an outsider is an offence. So both states are
@@ -76,25 +91,17 @@ legitimate to draw, and the *anatomy* below must exist under the mask regardless
 - Ears are not visible in this image (hooded). Take the ears from the sourced text and Legends:
   **elongated, pointed, large and triangular — bat-like flaps.**
 
-**The mask (equipment), from `wookieepedia_infobox_masked.jpg`:**
-- 🔴 **The mask is BONE-WHITE / cream, not red.** The image's dominant red is the *cloth*, and a
-  text-only prompt reading "red-skinned species with war masks" will produce a red mask. It is
-  an animal skull: pale cream, with **two dark angular eye sockets** through which the **yellow
-  slitted eyes show**, a downward-projecting nasal/jaw structure, and **a pair of long pale
-  fangs hanging from its lower edge.**
-- Worn with **a close-fitting knitted cap over the crown** and **four or five long, thin
-  rust-red braided cords trailing backward from the head** — read these as **costume cords,
-  not hair**; nothing in the wikitext describes head tendrils.
-- The rest: **rust-red / brick layered cloth** — hooded coat, tattered tabard-skirt over
-  trousers — with **grey armour plates at the shoulder and forearms**, a **bandolier of
-  pouches and tools** across the chest, **tall black boots**, and a **slugthrower rifle** in
-  hand. ⚠️ Note this contradicts the sourced *"light-coloured campaign cloaks"* — the reference
-  image's cloth is saturated rust-red. Trust the image on appearance, and treat light-coloured
-  as a variant.
-- **Zero skin is visible in the masked reference** — hands gloved, neck wrapped. A masked
-  Kaleesh communicates species entirely through mask silhouette plus the eyes.
+**The mask (equipment), from `wookieepedia_legends_negas_painted.jpg`:**
+- 🔴 **The mask is BONE-WHITE / cream, not red** — an animal skull with **two dark angular eye
+  sockets**, a projecting jaw structure and **pale fangs hanging from its lower edge**; the painted
+  mask also carries **pale backswept horn spikes at the crown** and frayed fibre ruffs at the sides.
+- **Bare skin shows at the limbs**: **deep rust-red, matte**, on the arms, hands and legs; feet are
+  **bare, broad and clawed** (three forward claws).
+- **Dress:** a long **sand/cream campaign cloak**, cloth wrappings binding the forearms, shins and
+  torso, a wrapped tabard-skirt, a bandolier of pouches across the chest, and a **long spear**.
+  The Legends / SWTOR images also show rust-red cloth and knit caps with trailing cords — variants.
 
-**Build.** The masked figure reads **tall-ish, lean and long-limbed**, upright, with the
+**Build.** The painted figure reads **tall-ish, lean and long-limbed**, upright, with the
 **long thin arms** the text describes. It does **not** read as heavy or oversized — consistent
 with Legends' 1.6–1.8 m / 80 kg.
 
@@ -105,6 +112,7 @@ with Legends' 1.6–1.8 m / 80 kg.
 - [ ] Two long, pale ivory tusks curving up and outward from the lower jaw, framing the mouth
 - [ ] When masked, the mask reads bone-white/cream (not red) — an animal-skull mask with dark angular eye sockets and hanging fangs
 - [ ] Large, elongated, pointed, triangular bat-like ear flaps
+- [ ] Realistic rendering: matte natural skin, bone and cloth textures and lighting, no outlines, no comic inking or flat colour
 
 ## Engine limits
 none known
@@ -158,16 +166,13 @@ none known
 - https://starwars.fandom.com/wiki/Kaleesh/Legends — Legends article, same API route
   (30,634 chars, 2026-09-15). **Source for height, mass, lifespan, the black/brown hair, the
   arched brows and the large triangular ear flaps.**
-- https://static.wikia.nocookie.net/starwars/images/d/d0/Kaleesh-Alien_Archive.jpg
-  (File:Kaleesh-Alien_Archive.jpg, canon infobox → `wookieepedia_infobox_masked.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/1/14/Kaleesh_NEGAS.jpg/revision/latest?cb=20061205191444
+  (File:Kaleesh NEGAS.jpg, Legends infobox → `wookieepedia_legends_negas_painted.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/3/32/EyesofGrievous-ROTS.png/revision/20260619042917
+  (File:EyesofGrievous-ROTS.png → `wookieepedia_eyes_rots_liveaction.png`)
 - https://static.wikia.nocookie.net/starwars/images/f/f5/KaleeshUnmasked-AORGrievous1.png
   (File:KaleeshUnmasked-AORGrievous1.png, captioned *"Grievous' face before being cybernetically
   enhanced"* → `wookieepedia_unmasked_face.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/1/18/EyesofGrievous-PathofFear.png
-  (File:EyesofGrievous-PathofFear.png → `wookieepedia_eyes_closeup.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/b/b7/Grievous-alien-stage.jpg
-  (File:Grievous-alien-stage.jpg, from the article's *Concept art galleries* section →
-  `wookieepedia_grievous_concept_alien_stage.jpg`)
 - https://www.starwars.com/databank/kaleesh — cited by the canon article for the flat nose,
   elongated ears and the humanoid classification, but **not fetched this pass**.
 
@@ -175,21 +180,16 @@ none known
 - `wookieepedia_unmasked_face.jpg` — 🔑 **the reference of record for the FACE.** A comic panel
   of Grievous **pre-cybernetics**, hooded. Settles the brick-red striated skin, the yellow
   slit-pupil eyes under an arched brow, the flat faceted nose plate, the elongated muzzle and
-  the two ivory lower-jaw tusks. Comic-styled — trust proportion and arrangement, treat exact
-  hue as the colourist's.
-- `wookieepedia_infobox_masked.jpg` — the canon infobox: a full-body Kaleesh warrior, painted.
-  **The reference of record for the MASK and the dress** — bone-white skull mask with dark eye
-  sockets and hanging fangs, knit cap, trailing rust cords, rust-red layered cloth, grey armour
-  plates, bandolier, black boots, slugthrower. Shows **no skin at all.**
-- `wookieepedia_eyes_closeup.jpg` — **partial / negative reference.** A film-styled close-up of
-  **Grievous the cyborg**: everything bone-coloured here is his **cybernetic faceplate**, not
-  Kaleesh anatomy. Its only valid use is the **eyes** — yellow irises, vertical slit pupils, set
-  in reddish organic sockets. Do not read the surrounding plate as a Kaleesh head.
-- `wookieepedia_grievous_concept_alien_stage.jpg` — 🔴 **negative reference, kept and labelled.**
-  A sheet of **pre-final Grievous concept sketches** from the article's *Concept art galleries*
-  section: a grid of mutually inconsistent cloaked and staff-bearing figures, none of which
-  shipped. It is Grievous design exploration, **not Kaleesh species anatomy.** Same status as
-  the pre-final Terryl Whitlatch Geonosian art in `geonosian/`.
+  the two ivory lower-jaw tusks. **Animated/comic — kept because no realistic unmasked Kaleesh exists**; trust proportion and
+  arrangement, treat exact hue as the colourist's, and never copy its inked style.
+- `wookieepedia_legends_negas_painted.jpg` — **the reference of record for the MASK, skin and dress.**
+  Legends, *The New Essential Guide to Alien Species*, realistic painting: full figure, bone skull mask with
+  horn spikes and fangs, bare rust-red limbs, clawed bare feet, sand-coloured cloak and wrappings, spear.
+  File `Kaleesh NEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/1/14/Kaleesh_NEGAS.jpg/revision/latest?cb=20061205191444
+- `wookieepedia_eyes_rots_liveaction.png` — **partial / negative reference.** Live-action *Revenge of the Sith*
+  close-up of **Grievous the cyborg**: everything bone-coloured is his **cybernetic faceplate**, not Kaleesh
+  anatomy. Valid only for the **eyes** — yellow irises, slit pupils, in dark reddish organic sockets.
+  File `EyesofGrievous-ROTS.png` — https://static.wikia.nocookie.net/starwars/images/3/32/EyesofGrievous-ROTS.png/revision/20260619042917
 - `donor_current_sprite.png` — the mod's current art,
   `SWX/Pawn/HeadAttachments/kaleesh/mask_kaleesh1_south.png`. **Full colour, not greyscale**,
   which is correct for a mask: it is not meant to be tinted by the skin gene. A creditable

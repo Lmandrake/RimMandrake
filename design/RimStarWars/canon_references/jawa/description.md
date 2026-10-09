@@ -41,9 +41,13 @@ statement — treat it as canon-flavored testimony, not as a licence to draw an
 exposed pelt.
 
 ## Visual brief
-Four independent images (a photographic four-figure reference render, a stylized
-Alien Archive illustration, an in-show Mandalorian-era off-world individual, and
-a taller-individuals still) agree on the silhouette and disagree sharply on
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The stylised Alien Archive illustration (`wookieepedia_alien_archive_illustration.jpg`, hot rust-orange
+graphic plate) was removed. The three remaining images are all live-action costume references; nothing
+in the look changes — the brief already treated the plate's orange as illustration licence.
+
+Three independent live-action images (a photographic four-figure costume reference, an in-show
+Mandalorian-era off-world individual, and an *A New Hope* still of taller individuals) agree on the silhouette and disagree sharply on
 palette. **On palette, trust the images: "Black" skin in the infobox is not a
 skin color at all.**
 
@@ -56,17 +60,17 @@ skin color at all.**
   a text-only prompt makes from the word "Black".
 - **Two glowing eyes, ovoid, close-set, no visible pupil or sclera structure** —
   they read as two lamps, not as eyes with anatomy. Color: **yellow** in the
-  four-figure reference and the Alien Archive plate; **red-orange** in the
+  four-figure reference; **red-orange** in the
   off-world Mandalorian-era individual. Both are attested by the infobox
   (Yellow / Orange / Red) AND independently by image, so red-eyed and
   yellow-eyed Jawas are both correct and either is safe to ship.
 - **Robe color is NOT one color.** The four-figure reference render is a warm
   mid-**brown** (chocolate-to-russet, film-canonical). The off-world Mandalorian
   individual is a desaturated **grey-brown/charcoal**, visibly dust-caked and
-  much colder. The Alien Archive plate is pushed to hot **rust-orange** for
-  graphic effect. So the honest range is warm brown to cold dusty grey-brown;
-  bright saturated orange is illustration licence, not the canonical hue.
-- **The cowl is a soft, fabric peak, not a rigid cone.** In all four it is a
+  much colder; the *A New Hope* still reads russet-red under the desert sun.
+  So the honest range is warm brown to cold dusty grey-brown; bright saturated
+  orange is not the canonical hue.
+- **The cowl is a soft, fabric peak, not a rigid cone.** In every image it is a
   loose hood pulled well forward so the brow line overhangs the eyes, with the
   fabric slumping into an irregular point or fold at the crown. Some individuals
   have the hood peaked high and forward; others have it collapsed almost flat.
@@ -80,9 +84,8 @@ skin color at all.**
 - **Gear is worn as crossed bandoliers over the chest**, not on a single belt:
   in the off-world individual, two straps cross at the sternum carrying a
   rectangular metal device with three lenses/dials, small tools, a canteen or
-  pouch, and a large single-edged blade slung horizontally across the belly. The
-  Alien Archive plate independently shows the same crossed-bandolier-plus-pouches
-  arrangement plus a hand tool. **A Jawa reads as a walking tool rack** — that,
+  pouch, and a large single-edged blade slung horizontally across the belly; the
+  four-figure reference shows the same straps and pouches. **A Jawa reads as a walking tool rack** — that,
   not the robe alone, is the species' visual signature.
 - **Feet**: the four-figure reference shows small dark feet emerging bare
   beneath the hem; the off-world individual shows wrapped/booted feet. Both
@@ -114,6 +117,7 @@ art gap in the roster.
 - [ ] Cowl is a soft fabric hood pulled forward over the brow, not a rigid cone
 - [ ] Hands are always covered — leather gloves or frayed cloth mitts — never bare skin
 - [ ] Gear worn as crossed bandoliers over the chest with pouches/tools, not a single belt
+- [ ] Realistic rendering: coarse dusty woven-cloth robe texture and natural desert lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known — the missing hood/robe/bandolier art is a content gap (no sprite exists yet),
@@ -125,7 +129,6 @@ not a rendering constraint.
   `https://starwars.fandom.com/api.php?action=parse&page=Jawa&format=json&prop=wikitext`,
   42,432 chars, 2026-09-15)
 - https://static.wikia.nocookie.net/starwars/images/b/bd/Jawas-SWApp.png (File:Jawas-SWApp.png → wookieepedia_four_jawas_reference.jpg)
-- https://static.wikia.nocookie.net/starwars/images/1/1b/Jawa_scavengers-AA.jpg (File:Jawa_scavengers-AA.jpg → wookieepedia_alien_archive_illustration.jpg)
 - https://static.wikia.nocookie.net/starwars/images/4/49/OffworldJawa-AG.png (File:OffworldJawa-AG.png → wookieepedia_offworld_jawa_mandalorian.jpg)
 - https://static.wikia.nocookie.net/starwars/images/0/09/Jumbo_Jawas.png (File:Jumbo_Jawas.png → wookieepedia_tall_jawas.jpg)
 - NOT fetched this pass: https://www.starwars.com/databank/jawa (official Databank; the
@@ -139,11 +142,6 @@ not a rendering constraint.
   this entry** — it settles robe brown, the black hood void, yellow eye lamps,
   leather gloves, bare feet and the bell silhouette all at once, and shows four
   different hood drapes.
-- `wookieepedia_alien_archive_illustration.jpg` — a stylized Alien Archive plate
-  of five Jawas stripping a crate under Tatooine's twin suns. Illustration, so
-  its hot rust-orange palette is graphic licence — but independently confirms
-  crossed bandoliers, pouch load-out, hand tools, glowing yellow paired eyes and
-  the cowl silhouette.
 - `wookieepedia_offworld_jawa_mandalorian.jpg` — a full-body in-show off-world
   Jawa (Mandalorian era): **the contrasting palette case** — cold dusty
   grey-brown robe, RED eyes, frayed cloth mitts, and the clearest view of the
