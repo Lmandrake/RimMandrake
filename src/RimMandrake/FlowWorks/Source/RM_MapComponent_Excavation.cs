@@ -1190,6 +1190,11 @@ namespace RimMandrake.FlowWorks
 			flowKernel.edgeSinksEnabled = RimMandrakeFlowWorksSettings.edgeSinksEnabled;
 			flowKernel.viscosityEnabled = RimMandrakeFlowWorksSettings.viscosityEnabled;
 			flowKernel.creepEnabled = RimMandrakeFlowWorksSettings.viscosityEnabled && RimMandrakeFlowWorksSettings.thickCreepEnabled;
+			// FLOW_ORDER_EXTERNAL_INPUT_1: cells a driver (pump, drill) fed recently seed the flow order.
+			PruneDriverInputs();
+			flowKernel.externalInput = RimMandrakeFlowWorksSettings.pumpFedSpreadEnabled && driverInputTick.Count > 0
+				? (System.Func<int, bool>)(idx => driverInputTick.ContainsKey(idx))
+				: null;
 			pulseSeeds.Clear();
 			foreach (IntVec3 seed in excavatedCells)
 			{
@@ -1472,6 +1477,34 @@ namespace RimMandrake.FlowWorks
 		/// liquid), the driver must leave the cell alone; Applied = written.</summary>
 		public enum DriverFillOutcome { NotOwned, Refused, Applied }
 
+		// FLOW_ORDER_EXTERNAL_INPUT_1: cell index -> tick a driver last RAISED its fill. Not saved: after a load a pump
+		// re-marks its cell on its next write.
+		private readonly Dictionary<int, int> driverInputTick = new Dictionary<int, int>();
+		// PROVISIONAL (auto-decided 2026-10-09, FLOW_ORDER_EXTERNAL_INPUT_1): a driver input seeds the flow order for 5000 ticks after its last write.
+		private const int DriverInputWindowTicks = 5000;
+		private readonly List<int> driverInputScratch = new List<int>();
+
+		private void PruneDriverInputs()
+		{
+			if (driverInputTick.Count == 0)
+			{
+				return;
+			}
+			int now = Find.TickManager.TicksGame;
+			driverInputScratch.Clear();
+			foreach (KeyValuePair<int, int> kv in driverInputTick)
+			{
+				if (now - kv.Value > DriverInputWindowTicks || depthGrid[kv.Key] == 0)
+				{
+					driverInputScratch.Add(kv.Key);
+				}
+			}
+			foreach (int k in driverInputScratch)
+			{
+				driverInputTick.Remove(k);
+			}
+		}
+
 		public DriverFillOutcome TrySetDriverFillOutcome(IntVec3 c, int fill, FluidDef driverFluid = null)
 		{
 			if (!c.InBounds(map))
@@ -1507,6 +1540,10 @@ namespace RimMandrake.FlowWorks
 			if (fill > 0 && fillGrid[i] == 0)
 			{
 				fluidGrid[i] = PaletteKey(fluid);
+			}
+			if (fill > fillGrid[i])
+			{
+				driverInputTick[i] = Find.TickManager.TicksGame;
 			}
 			fillGrid[i] = (byte)fill;
 			if (fill == 0)

@@ -111,6 +111,8 @@ namespace RimMandrake.FlowWorks
         public static bool legacyFillFallbackEnabled = true;
         // FLOOD_DRIVER_OWNERSHIP_CONTRACT_1: a legacy flood release on an excavated cell fills it through the engine.
         public static bool legacyFloodViaEngineEnabled = true;
+        // FLOW_ORDER_EXTERNAL_INPUT_1: a pump/drill-fed channel with no natural source spreads away from its input.
+        public static bool pumpFedSpreadEnabled = true;
         public static float sourceBudgetMultiplier = 1f;
         public static float minLimitlessBodyCells = 50f;
         public static float refillRateMultiplier = 1f;
@@ -361,6 +363,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref excavationLoadRepairEnabled, "excavationLoadRepairEnabled", true);
             Scribe_Values.Look(ref legacyFillFallbackEnabled, "legacyFillFallbackEnabled", true);
             Scribe_Values.Look(ref legacyFloodViaEngineEnabled, "legacyFloodViaEngineEnabled", true);
+            Scribe_Values.Look(ref pumpFedSpreadEnabled, "pumpFedSpreadEnabled", true);
             Scribe_Values.Look(ref sourceBudgetMultiplier, "sourceBudgetMultiplier", 1f);
             Scribe_Values.Look(ref minLimitlessBodyCells, "minLimitlessBodyCells", 50f);
             Scribe_Values.Look(ref refillRateMultiplier, "refillRateMultiplier", 1f);
@@ -576,7 +579,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Stock, recession and drainage");
-            DrawSectionReset(list, new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "refillEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "edgeSinksEnabled" });
+            DrawSectionReset(list, new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "refillEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" });
             Text.Font = GameFont.Small;
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -668,6 +671,11 @@ namespace RimMandrake.FlowWorks
                 "A spill or release that runs into a dug channel fills it the same way a pump does, so the "
               + "channel owns that liquid and it flows on with the rest. Off: the spill lies on top as a "
               + "temporary puddle that dries on its own timer, and can clash with the channel's own liquid.");
+
+            list.CheckboxLabeled("Pumped liquid spreads along the channel", ref pumpFedSpreadEnabled,
+                "Liquid a pump or drill puts into a channel spreads outward from where it enters, even when no "
+              + "pond or river feeds that channel. Off: in a flat channel with no natural source, pumped liquid "
+              + "piles up beside the pump.");
 
             list.CheckboxLabeled("Map-edge sinks drain", ref edgeSinksEnabled,
                 "A channel dug into the strip along the map edge is a drain: liquid reaching it "

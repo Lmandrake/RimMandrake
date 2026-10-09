@@ -63,6 +63,12 @@ namespace RimMandrake.FlowWorks
 		/// leaves a sealed cell and no flow order is walked through it, so the level stops at the gate. Null = no
 		/// cell is sealed (the offline worlds, and every map without a shut sluice).</summary>
 		public Func<int, bool> sealedCell;
+		/// <summary>FLOW_ORDER_EXTERNAL_INPUT_1: true for an excavated cell a pump, drill or other driver has fed
+		/// recently. The flow order's "source hops" are walked from these as well as from supplying natural sources, so
+		/// a pump-fed equal-depth run spreads AWAY from the pump (a brimming cell overflows to a later key) instead of
+		/// sitting beside it with every key equal. Geometry from fixed input cells, so the order stays static and
+		/// acyclic (FLOWWORKS_CHANNEL_OSCILLATION_1). Null = no inputs (the offline worlds' default).</summary>
+		public Func<int, bool> externalInput;
 		/// <summary>Superdeep: what a natural source reads as (RM_ExcavationDepth.Superdeep).</summary>
 		public const byte Superdeep = 4;
 
@@ -327,6 +333,18 @@ namespace RimMandrake.FlowWorks
 				if (IsSource(c) && world.CanSupply(c))
 				{
 					hopFrontier.Add(c);
+				}
+			}
+			if (externalInput != null)
+			{
+				for (int i = 0; i < component.Count; i++)
+				{
+					int c = component[i];
+					if (IsExcavated(c) && !IsSealed(c) && externalInput(c))
+					{
+						sourceHops[c] = 0;   // an input cell is hop 0, like a source's own cell
+						hopFrontier.Add(c);
+					}
 				}
 			}
 			HopsFrom(sourceHops, false);

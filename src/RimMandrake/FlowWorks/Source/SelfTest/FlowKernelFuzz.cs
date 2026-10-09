@@ -293,6 +293,34 @@ namespace RimMandrake.FlowWorks.SelfTest
 
 		// ── regression cases for the confirmed findings (flowworks_playtest_automation_2026-10-06.md) ──
 
+		/// <summary>FLOW_ORDER_EXTERNAL_INPUT_1: a pump-fed flat channel with no natural source. Without an input
+		/// seed every flow key is equal and the liquid stays beside the pump; with the pump cell as an external input
+		/// it spreads to the far end, and once the pump stops the channel settles (no period-2 shuttle).
+		/// Returns "OK ..." or "BROKEN ...".</summary>
+		public static string PumpFedChannelSpreads()
+		{
+			int Run(bool seeded, out bool settled)
+			{
+				var w = new ArrayWorld(10, 3);
+				var digs = new List<int>();
+				for (int x = 0; x < 10; x++) { int c = 1 * 10 + x; w.k.depth[c] = 2; digs.Add(c); }
+				int pump = digs[0];
+				w.k.externalInput = seeded ? (Func<int, bool>)(i => i == pump) : null;
+				for (int p = 0; p < 80; p++) { w.k.fill[pump] = 2; if (w.cellFluid[pump] == null) w.cellFluid[pump] = ArrayWorld.Water; w.Pulse(digs); Pulses++; }
+				for (int p = 0; p < 60; p++) { w.Pulse(digs); Pulses++; }
+				byte[] a = (byte[])w.k.fill.Clone();
+				w.Pulse(digs); byte[] b = (byte[])w.k.fill.Clone();
+				w.Pulse(digs); byte[] c2 = (byte[])w.k.fill.Clone();
+				settled = a.SequenceEqual(b) && b.SequenceEqual(c2);
+				return w.k.fill[digs[9]];
+			}
+			int farSeeded = Run(true, out bool settledSeeded);
+			int farPlain = Run(false, out _);
+			return farSeeded > 0 && settledSeeded
+				? $"OK: far end holds {farSeeded} with the pump as input (without: {farPlain}); settled after the pump stops"
+				: $"BROKEN: farSeeded={farSeeded} settled={settledSeeded} farPlain={farPlain}";
+		}
+
 		/// <summary>Ruling 1 (owner, 2026-10-06): touching water and tar stay separate bodies; a channel over the tar
 		/// fills only with tar (or stays dry), never water. Returns "OK ..." or "BROKEN ...".</summary>
 		public static string TouchingFluidsStaySeparate()
