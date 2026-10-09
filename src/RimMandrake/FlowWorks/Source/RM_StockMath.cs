@@ -157,6 +157,69 @@ namespace RimMandrake.FlowWorks
 			return supported < 0 ? 0 : supported;
 		}
 
+		/// <summary>LIQUID_RECESSION_TOPOLOGY_1: <see cref="SupportedCells"/>, except that a body still holding
+		/// any stock keeps at least one cell, so its last sub-cell remainder stays drawable instead of
+		/// stranded behind a fully receded footprint until refill.</summary>
+		// PROVISIONAL (auto-decided 2026-10-09, LIQUID_RECESSION_TOPOLOGY_1): keep the last cell while stock > 0 (setting recedeKeepsLastCell, default on).
+		public static int SupportedCellsKeepingLast(float stock, float perCellVolume, bool keepLast)
+		{
+			int supported = SupportedCells(stock, perCellVolume);
+			if (keepLast && supported == 0 && stock > 0f && perCellVolume > 0f)
+			{
+				return 1;
+			}
+			return supported;
+		}
+
+		/// <summary>LIQUID_RECESSION_TOPOLOGY_1: would removing the centre cell of a 3x3 window split its
+		/// 8-way neighbours? <paramref name="ring"/> bit k is set when neighbour k is a live same-body cell,
+		/// k in ring order N, NE, E, SE, S, SW, W, NW. True when the set neighbours stay one 8-connected
+		/// group inside the window — a sufficient (local) condition for the removal not to fragment the
+		/// body. False is conservative: the body may still be connected around a longer path.</summary>
+		public static bool LocalRemovalKeepsConnected(int ring)
+		{
+			ring &= 0xFF;
+			if (ring == 0)
+			{
+				return true;
+			}
+			// window coordinates of ring positions (x, z) around the centre (1,1)
+			int[] rx = { 1, 2, 2, 2, 1, 0, 0, 0 };
+			int[] rz = { 2, 2, 1, 0, 0, 0, 1, 2 };
+			int first = -1;
+			int total = 0;
+			for (int k = 0; k < 8; k++)
+			{
+				if ((ring & (1 << k)) != 0)
+				{
+					total++;
+					if (first < 0) first = k;
+				}
+			}
+			int seen = 1 << first;
+			int reached = 1;
+			bool grew = true;
+			while (grew)
+			{
+				grew = false;
+				for (int a = 0; a < 8; a++)
+				{
+					if ((seen & (1 << a)) == 0) continue;
+					for (int b = 0; b < 8; b++)
+					{
+						if ((ring & (1 << b)) == 0 || (seen & (1 << b)) != 0) continue;
+						if (Math.Abs(rx[a] - rx[b]) <= 1 && Math.Abs(rz[a] - rz[b]) <= 1)
+						{
+							seen |= 1 << b;
+							reached++;
+							grew = true;
+						}
+					}
+				}
+			}
+			return reached == total;
+		}
+
 		/// <summary>§5's recession order, as a strict "is A a better candidate
 		/// than the incumbent" predicate: fewest same-liquid neighbours first,
 		/// tie-broken by greatest distance from the centroid, then by the cell
