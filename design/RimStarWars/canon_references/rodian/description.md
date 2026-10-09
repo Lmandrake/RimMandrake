@@ -36,45 +36,16 @@ distinguished by their mammary glands, and some — like Greeata Jendowanian —
 capable of growing long tresses. **Rodians smelled rank to humans.**
 
 ## Visual brief
-The three images agree closely on structure and correct the prose in two specific
-places.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: the stylised Alien Archive print (`wookieepedia_alien_archive_illustration.jpg`) and the *Clone Wars* mother-and-child (`wookieepedia_female_and_child.jpg`). Added live-action: a Rodian child (*Book of Boba Fett*), a New Republic Rodian officer and a Rodian civilian (*The Mandalorian* S3), and a behind-the-scenes photo of the original Greedo mask. The Battlefront II render (`infobox_fullbody`) stays as the full-body gear reference.
 
-- 🔴 **"Pupil-less eyes" plus an eye-colour list of "blue, black, green, purple,
-  red" reads as a DARK eye, and that is wrong.** In the full-body reference render
-  the eyes are **large, hemispherical, pale iridescent lavender-white domes with a
-  faint internal sheen** — they read as frosted glass or opal, lit from within, not
-  as dark orbs. The Alien Archive plate independently shows the same pale
-  luminous domes. So "purple" here means *pale opalescent violet*, not a dark
-  purple eye. This is the single highest-value correction in the entry, because
-  the eyes dominate the face at any size.
-- **Eye SIZE is the silhouette.** The two eyes together occupy roughly the upper
-  half of the face and bulge outward past the skull profile. Anything that draws
-  them at humanlike scale loses the species.
-- 🔴 **The "antennae" are much less prominent than the text implies, and the
-  cranial crest is much more prominent.** The text lists "twin saucer-like
-  antennae ... atop their head" and "a ridge of spines cresting their skulls" as
-  co-equal, but in the reference render the top of the head carries **a
-  conspicuous crest of small backswept fleshy knobs/spines**, while the antennae
-  read as **two short, low, blunt nubs at the temples**, roughly level with the
-  eyes rather than on the crown. A sprite that puts large saucer-dishes on top of
-  the head over-reads the prose.
-- **The snout is a smooth tapering cone**, noticeably smoother than the body — the
-  "pebbly except on the snout and hands" text is visible: the snout and the backs
-  of the hands are matte and fine-grained while the neck, crest and body carry a
-  visible bumpy grain.
-- **The colour is a mid-to-light yellow-green with darker green mottling**, not a
-  flat green: the crest and the sides of the snout go darker, the throat lighter.
-- **Ears are small, low, and pointed backward**, easily lost — they are not a
-  read-at-a-glance feature and should not be exaggerated.
-- **Rodians wear ordinary galactic clothing.** The reference render shows a
-  Rodian in a canvas jacket, cargo trousers, boots, gloves, a shoulder harness and
-  a rectangular field pack with a slung rifle. There is no species costume: a
-  Rodian should read as *a person in workwear with a Rodian head*. The
-  female-and-child image confirms the same for civilian dress. This matters for
-  RimWorld, where the apparel layer does the work anyway.
-- The Alien Archive plate is a stylized illustration (heavier outlines, pushed
-  saturation) but agrees on eye scale, eye luminosity, crest, snout taper and the
-  suction-tipped digits.
+🔴 **The live-action heads overturn two of this entry's old corrections — trust them:**
+- **Eyes are GLOSSY BLACK (or very dark violet) hemispherical domes**, wet and reflective with hard specular highlights, set wide and bulging past the skull. Every live-action head (`child_bobf`, `officer_mando`, `greedo_unmasked`) is black; the civilian (`scam_victim_mando`) is dark plum-violet. The old brief's "pale iridescent lavender-white" came from the game render and the deleted illustration — **it is the game's look, not the screen's.** Draw dark glossy eyes.
+- **The antennae ARE prominent: two stalked, cupped SAUCER-DISH antennae on top of the head**, angled up and outward, often tinted yellow-ochre against the green (`officer_mando`, `child_bobf`). The crest of small fleshy spines runs between and behind them (`scam_victim_mando`, `officer_mando`). The old "two blunt nubs at the temples" was wrong for live action.
+- **Snout:** a tapering conical muzzle ending in a small puckered, pursed-lipped mouth; smoother than the head but with fine wrinkles.
+- **Skin:** green — from olive and sage to blue-green — **densely pebbled and ridged across the whole cranium** like reptile/toad skin, finer on the snout. Ears and antennae may go yellow-ochre.
+- **Ears:** pointed, swept back, at the sides of the head below the antennae; clearly visible.
+- **Hands:** long green fingers with suction-cup tips (`child_bobf`).
+- **Clothing:** ordinary galactic dress — uniforms, bright layered civilian robes, field gear. No species costume.
 
 **donor_current_sprite.png is partial evidence, and the composite is better than
 the file.** The copied file is
@@ -86,25 +57,25 @@ blunt snout. What the base file lacks is the eyes — it carries only two ordina
 small dots. **In the shipped composite that is compensated for**: the Rodian
 xenotype's gene list includes `RSW_Eyes_Big` (a
 `HeadAttachments/bigeyes/bigeyes*` overlay), `RSW_Headbone_rodian` (verified to be
-`HeadAttachments/rodian/rodian_*.png` — two small temple nubs, i.e. the antennae,
-correctly small), `Skin_Green` / `RSW_Skin_DarkGreen`, `Outland_ScaleSkin`,
+`HeadAttachments/rodian/rodian_*.png` — two small temple nubs, i.e. the antennae —
+now TOO small against the live-action saucer-dish antennae), `Skin_Green` / `RSW_Skin_DarkGreen`, `Outland_ScaleSkin`,
 `Outland_Blood_Green` and `DarkVision` — so large eyes, green scaled skin, green
 blood and low-light vision are all already modelled. **What is NOT modelled by any
-file on disk: the pale iridescent quality of the eyes, the crest of dorsal
+file on disk: the glossy black wet sheen of the eyes, the stalked saucer-dish antennae, the crest of dorsal
 skull-spines, and the suction-cup digits.** (`HeadAttachments/rodian/mohawk_*.png`
 exists and is a small tuft, but it is wired to `RSW_Hair_rodian`, a hair gene, not
 to the head — it is not the bony crest.)
 
 ## Must show
-- [ ] Large, hemispherical, pale iridescent lavender-white eyes with a faint internal sheen — not dark orbs; occupy roughly the upper half of the face and bulge outward past the skull profile
-- [ ] A conspicuous crest of small, backswept, fleshy knobs/spines atop the head — more prominent than the antennae
-- [ ] Two short, low, blunt antenna nubs at the temples, roughly level with the eyes — not large saucer-dishes on the crown
-- [ ] A smooth, tapering snout, noticeably smoother than the pebbly-textured body and hands
-- [ ] Mid-to-light yellow-green skin with darker green mottling (crest and snout sides darker, throat lighter) — not a flat green
-- [ ] Ordinary galactic workwear clothing, no species-specific costume
+- [ ] Very large glossy BLACK (or very dark violet) hemispherical eyes, wet and reflective, bulging past the skull profile
+- [ ] Two stalked, cupped saucer-dish antennae on top of the head, with a crest of small fleshy spines between and behind them
+- [ ] A tapering conical snout ending in a small puckered pursed-lipped mouth
+- [ ] Green (olive to blue-green) skin, densely pebbled and ridged over the cranium; pointed swept-back ears at the sides
+- [ ] Long fingers with suction-cup tips; ordinary galactic clothing
+- [ ] Realistic rendering: natural rubbery prosthetic-skin texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
-none known — the pale iridescent eye quality, the dorsal spine crest, and the suction-cup digits are all missing art, not a pipeline limitation.
+none known — the glossy black eye sheen, the saucer-dish antennae, the dorsal spine crest, and the suction-cup digits are all missing art, not a pipeline limitation.
 
 ## Source URLs
 - https://starwars.fandom.com/wiki/Rodian (Wookieepedia article; direct page HTML is
@@ -112,24 +83,14 @@ none known — the pale iridescent eye quality, the dorsal spine crest, and the 
   `https://starwars.fandom.com/api.php?action=parse&page=Rodian&format=json&prop=wikitext`,
   67,886 chars, 2026-09-15)
 - https://static.wikia.nocookie.net/starwars/images/d/d3/Rodian_DICE.png (File:Rodian_DICE.png, the infobox image → wookieepedia_infobox_fullbody.jpg)
-- https://static.wikia.nocookie.net/starwars/images/1/1d/Rodians-Alien_Archive.jpg (File:Rodians-Alien_Archive.jpg → wookieepedia_alien_archive_illustration.jpg)
-- https://static.wikia.nocookie.net/starwars/images/2/2a/MahteeWeeDunn-TCWCE.png (File:MahteeWeeDunn-TCWCE.png → wookieepedia_female_and_child.jpg)
 - NOT fetched this pass: https://www.starwars.com/databank/rodians (official Databank).
 
 ## Candidate images
-- `wookieepedia_infobox_fullbody.jpg` — **the reference of record.** The infobox
-  image (File:Rodian_DICE.png): a full-body Rodian in field gear on a transparent
-  background, game-render fidelity. Settles the pale iridescent domed eyes, the
-  crest of backswept skull knobs, the small temple antenna nubs, the smooth
-  tapering snout against pebbly body skin, the yellow-green mottling, and the
-  fact that Rodians dress in ordinary workwear.
-- `wookieepedia_alien_archive_illustration.jpg` — a stylized Alien Archive plate.
-  Independent confirmation of eye scale and luminosity, crest and snout; treat its
-  pushed saturation and heavy outlines as illustration style.
-- `wookieepedia_female_and_child.jpg` — a female Rodian holding her infant son
-  (Mahtee and Wee Dunn). Useful for the juvenile proportions and for confirming
-  civilian dress; note the text's female distinction is mammary glands, which
-  this image does not make a costume feature.
+- `wookieepedia_officer_mando.jpg` — live-action, *The Mandalorian* ch. 21; New Republic Rodian officer, clearest adult head: black eyes, yellow saucer antennae, spine crest, pebbled green skin; file `Unidentified Rodian Officer MandoS3.png` — https://static.wikia.nocookie.net/starwars/images/d/d5/Unidentified_Rodian_Officer_MandoS3.png/revision/latest?cb=20230331152123
+- `wookieepedia_scam_victim_mando.jpg` — live-action, *The Mandalorian* ch. 18; Rodian civilian in bright layered robes, dark violet eyes, blue-green skin; file `Rodian scam victim.png` — https://static.wikia.nocookie.net/starwars/images/a/ad/Rodian_scam_victim.png/revision/latest?cb=20230310012450
+- `wookieepedia_child_bobf.jpg` — live-action, *The Book of Boba Fett* ch. 5; Rodian child close-up — juvenile head, saucer antennae, suction-tipped fingers; file `Rodian child BOBF.png` — https://static.wikia.nocookie.net/starwars/images/3/3f/Rodian_child_BOBF.png/revision/20220130192029
+- `wookieepedia_greedo_unmasked.jpg` — behind-the-scenes photograph, *A New Hope*: the original Greedo mask being removed; head small in frame; file `GreedoUnmasked.jpg` — https://static.wikia.nocookie.net/starwars/images/8/8f/GreedoUnmasked.jpg/revision/latest?cb=20120615191722
+- `wookieepedia_infobox_fullbody.jpg` — photoreal game render (*Battlefront II*), infobox file `Rodian DICE.png`: full-body Rodian in field gear. Its pale lavender eyes are the game's — the screen eyes are black — https://static.wikia.nocookie.net/starwars/images/d/d3/Rodian_DICE.png
 
 ## ruling
 (empty — owner has not reviewed this race yet)
