@@ -1,0 +1,1 @@
+A composed mod member (e.g. mandrake.rm.longshade) has a standalone About.xml in src but NO packageId at runtime: its id is folded into mandrake.rm.biomes, so MayRequire naming it silently never loads. 26 sites dropped whole features until sitting 2. A test of 'exists in src' gives the wrong answer; consult Biomes.compose.json. (2026-10-09)

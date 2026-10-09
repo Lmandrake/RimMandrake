@@ -1,0 +1,1 @@
+A native Burst-job crash with no managed exception (Stillsand 100x100, 4 of 4) was a sun-cost path array freed one rebuild too early in RM_MapComponent_ShadeGrid, not the sounds logged just before it; free retired native arrays only after 60 ticks (RM_DeferredDisposal). Live-confirmed 12,084 ticks, one run. (2026-10-09)
