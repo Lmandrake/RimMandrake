@@ -847,11 +847,39 @@ def _is_failed_canon(fam: str, fc: set) -> bool:
     return any(j == fam or FAM_RE.sub("", j) == fam for j in fc)
 
 
-def name_render_cols(idx: L.Index, words, exact) -> list[dict]:
-    """Artpipe render families whose job name carries one of WORDS (word-bounded, >= 4 chars) or is one of
-    EXACT (artpipe_state_jobs). Corpse/mote/mask/filth jobs are not body art and never join."""
+_JOB_TARGETS: dict | None = None
+
+
+def job_targets() -> dict:
+    """job id -> target_def for every finished artpipe job (done/<id>.json). A render filed under a NEW name (the
+    owner renamed the creature: regen_gt_ookala_v2_* for RM_CanopySwinger) still names the def it is a picture of,
+    so it joins its row by that def even when no word of the row's name is in the job id. Read once per process."""
+    global _JOB_TARGETS
+    if _JOB_TARGETS is None:
+        import os
+        _JOB_TARGETS = {}
+        root = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe") / "done"
+        if root.is_dir():
+            for f in root.glob("*.json"):
+                if f.name.endswith(".manifest.json"):
+                    continue
+                try:
+                    j = json.loads(f.read_text())
+                except (OSError, ValueError):
+                    continue
+                if isinstance(j, dict) and j.get("id") and j.get("target_def"):
+                    _JOB_TARGETS[str(j["id"]).lower()] = j["target_def"]
+    return _JOB_TARGETS
+
+
+def name_render_cols(idx: L.Index, words, exact, defs=()) -> list[dict]:
+    """Artpipe render families whose job name carries one of WORDS (word-bounded, >= 4 chars), is one of
+    EXACT (artpipe_state_jobs), or whose job was filed for one of DEFS (its target_def — survives a rename).
+    Corpse/mote/mask/filth jobs are not body art and never join."""
     keys = [S.norm(w) for w in words if w and len(S.norm(w)) >= 4]
     exact = {e.lower() for e in exact}
+    defs = {d for d in defs if d}
+    targets = job_targets() if defs else {}
     fams, meta = defaultdict(dict), {}
     for sha, vs in idx.variants.items():
         if idx.is_purged(sha):
@@ -862,7 +890,8 @@ def name_render_cols(idx: L.Index, words, exact) -> list[dict]:
             job = v.get("job", "")
             fam = FAM_RE.sub("", job)
             fl = fam.lower()
-            if NOT_BODY_JOB.search(fl) or not (fl in exact or any(S.token_match(fl, k) for k in keys)):
+            if NOT_BODY_JOB.search(fl) or not (fl in exact or any(S.token_match(fl, k) for k in keys)
+                                               or targets.get(job.lower()) in defs):
                 continue
             fac = v.get("facing")
             if fac not in FACINGS:
@@ -1023,6 +1052,15 @@ def _graphic_prefill(g: dict, rulings: list[dict]):
 
 
 BIOME_BODY = r"""
+(function () {  // freshness banner (built at, how many prior rulings are reflected) — always visible under the title
+  const add = () => { let fr = ''; try { fr = JSON.parse(document.getElementById('CONFIG').textContent).freshness || ''; } catch (e) {}
+    if (!fr || document.getElementById('freshBanner')) return;
+    const h = document.querySelector('header .hrow'); if (!h) return;
+    const d = document.createElement('div'); d.id = 'freshBanner'; d.className = 'bs-fresh-banner'; d.innerHTML = fr;
+    h.insertAdjacentElement('afterend', d); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', add); else add();
+})();
+
 /* Layout (owner complaint 2026-10-04, "poorly constructed"): one compact strip per graphic. Each picture
    set is a card whose facings sit SIDE BY SIDE; cards wrap across the width, so a row is about one
    thumbnail tall. Provenance is a tooltip, never wallpaper. Letters are row-local; the pick buttons on
@@ -1134,6 +1172,7 @@ const _itemBody = it => {
   const reHead = re ? `<summary class="bs-ruledsum" title="You already ruled on this subject on another sheet, so it needs no pick here. Expand to see the pictures and change your mind.">Already ruled on <b>${esc(re.sheet)}</b>: ${esc(re.pick)}${re.label ? ' — ' + esc(re.label) : ''}${re.note ? ' · “' + esc(re.note) + '”' : ''} <span class="sub">${esc(re.at)} · expand to change your mind</span></summary>` : '';
   const inner = `<div class="ac-body bs-body" style="${it.band ? 'border-left:6px solid ' + it.band + ';padding-left:8px' : ''}">
     <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
+    ${it.fresh ? `<div class="bs-fresh bs-fresh-${it.fresh.state}">${esc(it.fresh.text)}</div>` : ''}
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
     ${desc}${links}${elsewhere}${rul}${purgedNote}${noart}</div>
     <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${scaleBlock(it)}${donorAbs}${canon}</div></div>`;
@@ -1213,7 +1252,14 @@ document.addEventListener('click', e => {
 window.itemBody = it => { try { return _itemBody(it); } catch (e) { return `<div class="bs-noart">row render error (this row only; the sheet is intact): ${esc(String(e && e.message || e))}</div>`; } };
 """
 
-BIOME_STYLE = """
+BIOME_STYLE = """<style>
+.bs-fresh-banner{font-size:12.5px;padding:6px 10px;margin:4px 0;border:1px solid #6b5a3a;border-radius:6px;background:#2a2116;color:#e9dcc0;max-height:30vh;overflow:auto}
+.bs-fresh{font-size:12px;padding:2px 6px;border-radius:4px;margin:2px 0;display:inline-block}
+.bs-fresh-reflected,.bs-fresh-redrawn{background:#1f3a24;color:#9fe0a8}
+.bs-fresh-awaiting,.bs-fresh-refiled{background:#3a3218;color:#f0d68a}
+.bs-fresh-conflict{background:#4a2f10;color:#ffc070}
+.bs-fresh-not_acted{background:#a01818;color:#fff;font-weight:700}
+</style>
 <style>
 .bs-body{display:flex;gap:14px;align-items:flex-start}
 .bs-meta{flex:0 0 300px;min-width:0}
@@ -1571,6 +1617,40 @@ def _first_seen(idx, sha: str) -> float:
     return min(ts) if ts else float("-inf")
 
 
+FRESH_TEXT = {"reflected": "✓ reflected", "redrawn": "✓ redrawn after your ruling", "awaiting": "⏳ awaiting render",
+              "refiled": "⏳ failed, re-filed", "conflict": "⚠ needs your call", "not_acted": "NOT YET ACTED ON"}
+
+
+def _fresh_mark(fresh, key):
+    if not fresh or "rows" not in fresh:
+        return None
+    r = fresh["rows"].get(key)
+    if not r:
+        return None
+    said = r["decision"] + (f" — “{r['note']}”" if r["note"] else "")
+    return {"state": r["state"], "text": f"your ruling {r['when']}: {said} · {FRESH_TEXT[r['state']]}: {r['detail']}"}
+
+
+def _fresh_banner(fresh, sheet_rows) -> str:
+    import html as _h
+    built = time.strftime("%Y-%m-%d %H:%M %Z")
+    if not fresh:
+        return f"<b>Built {built}.</b> No prior ruling of yours is on record for this sheet."
+    if "rows" not in fresh:
+        return f"<b>Built {built}.</b> <span style='color:#ff6b6b'>Freshness UNMEASURED: {_h.escape(fresh.get('error', ''))}</span>"
+    rows = fresh["rows"]
+    bad = {k: r for k, r in rows.items() if r["state"] not in ("reflected", "redrawn")}
+    off = [k for k in rows if k not in sheet_rows]
+    out = (f"<b>Built {built}.</b> {fresh['reflected']} of {fresh['total']} of your prior rulings fully reflected "
+           f"(source: {_h.escape(Path(fresh['file']).name)}).")
+    if bad:
+        out += "<ul style='margin:4px 0 0 18px'>" + "".join(
+            f"<li><span class='bs-fresh bs-fresh-{r['state']}'>{FRESH_TEXT[r['state']]}</span> <b>{_h.escape(k)}</b> — "
+            f"{_h.escape(r['detail'][:200])}{' (row no longer on this biome)' if k in off else ''}</li>"
+            for k, r in sorted(bad.items(), key=lambda kv: (kv[1]['state'] != 'not_acted', kv[0]))) + "</ul>"
+    return out
+
+
 def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None = None,
                    date: str | None = None, thumb_size: int = 160, sheet_only: bool = False,
                    allow_failing: str | None = None) -> dict:
@@ -1589,6 +1669,17 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     prev_rows = prev.get("rows") or {}
     decisions_path = out_html.parent / (out_html.stem + ".decisions.json")
     old = json.loads(decisions_path.read_text()) if decisions_path.is_file() else None
+    # FRESHNESS (owner, 2026-10-08: "how can I trust anything on the review sheet if I don't know if it's up to
+    # date?"): every prior ruling on this sheet is graded by the plan `art.py enact` would carry out — reflected only
+    # when a render filed for that ruling, a live pick, a done cut or a marked def edit exists
+    fresh = None
+    try:
+        import enact as _EN
+        _rf = _EN.ruled_decisions_for(sheet_id)
+        if _rf:
+            fresh = _EN.ruling_status(_rf, idx=L.Index())
+    except Exception as e:                                  # noqa: BLE001
+        fresh = {"error": f"{type(e).__name__}: {e}"}
     untouched = old is not None and not old.get("savedBy") and not old.get("writeCount") and \
         (old.get("reviewStatus") or {}).get("state") == "prefill"
     # letters are kept stable only once a human has written to the decisions file; until then every row
@@ -1677,7 +1768,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         flips = [c for c in flipbook_cols(idx, words, r.get("artpipe_state_jobs") or [], prefixes)
                  if not (set(c["faces"].values()) & have)]
         flip_shas = {s for c in flips for s in c["faces"].values()}
-        named = [c for c in name_render_cols(idx, words, r.get("artpipe_state_jobs") or [])
+        named = [c for c in name_render_cols(idx, words, r.get("artpipe_state_jobs") or [],
+                                             defs={r["key"], r.get("port"), *(r.get("defNames") or [])})
                  if _fkey(c) not in seen and not (set(c["faces"].values()) & (have | flip_shas))]
         if flips:
             graphics.append({"res": "_flip:" + (prefixes[0] if prefixes else r["key"]), "role": FLIP_ROLE,
@@ -1888,6 +1980,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                        + (f"{n_sets} picture set(s)" + (f" across {len(gitems)} graphics" if len(gitems) > 1 else "")
                           if gitems else "no pictures")),
             "tier": tier, "tierText": tier_text, "canonTag": canon_tag, "flags": flags,
+            "fresh": _fresh_mark(fresh, key),
             "prefillShort": _prefill_short(source, why),
             "prefill": letter, "prefillWhy": why, "prefillSource": source,
             "contested": source in ("inferred", "none"), "inferred": source == "inferred",
@@ -2010,6 +2103,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                     "graphic). The winner goes into the owning mod and the loser is archived — nothing installs until you see "
                     "that plan. ✕ on a picture = reject + PURGE."},
         "options": opts, "groupLabel": "group", "media": True,
+        "freshness": _fresh_banner(fresh, {it["id"] for it in ordered}),
         "decisionsFile": decisions_path.name, "decisionsPath": str(decisions_path), "sheetPath": str(out_html),
     }
     render = '<script id="RENDER">' + BIOME_BODY.replace("%LETTERS%", LETTERS).replace("%NEAR%", str(NEAR)) + COMMON_JS + "</script>" + STYLE + BIOME_STYLE

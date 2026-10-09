@@ -245,6 +245,37 @@ def main():
         check(tree_digest(F["root"] / "src") + tree_digest(F["led"]) + tree_digest(F["ap"]) == mid,
               "second --apply writes nothing")
 
+        # a ruled redraw whose job FAILED is re-filed, never counted as handled (bug 2026-10-08)
+        ap = F["ap"]
+        job = sorted((ap / "pending").glob("*.json"))[0]
+        jid = job.stem
+        job.rename(ap / "failed" / job.name)
+        (ap / "failed" / f"{jid}.manifest.json").write_text(json.dumps({"id": jid, "status": "failed",
+                                                                        "worker_status": "worker_error"}))
+        R5 = E.enact(F["decisions"], apply=False, holds=["vine"], no_deploy=True)
+        check([x["job"]["id"] for x in R5["plan"]["refile"]] == [jid] and not any(
+            q.startswith("RM_Redo") for q in R5["plan"]["queued_already"]),
+            "a failed-only redraw is planned for RE-FILE, not listed as already queued")
+        check(E.ruling_status(F["decisions"])["rows"]["RM_Redo"]["state"] == "refiled", "ruling_status: failed, re-filed")
+        R6 = E.enact(F["decisions"], apply=True, holds=["vine"], no_deploy=True)
+        check(R6["refiled"] == 1 and (ap / "pending" / f"{jid}.json").exists()
+              and not (ap / "failed" / f"{jid}.json").exists()
+              and len(list((ap / "_requeued_manifests").glob(f"{jid}.manifest*.json"))) == 1,
+              "--apply moves it failed/ -> pending/ and parks its manifest")
+        # a DONE render that is neither live nor rejected is AWAITING OWNER PICK (and the row reads 'redrawn')
+        j = json.loads((ap / "pending" / f"{jid}.json").read_text())
+        j["target_def"], j["target_original"] = "RM_Renamed", ["RM_Redo"]     # filed under the NEW name
+        (ap / "done" / f"{jid}.json").write_text(json.dumps(j))
+        (ap / "pending" / f"{jid}.json").unlink()
+        (ap / "_artsrc" / jid).mkdir(parents=True)
+        (ap / "_artsrc" / jid / f"{jid}.png").write_bytes(noise_png(99))
+        R7 = E.enact(F["decisions"], apply=False, holds=["vine"], no_deploy=True)
+        check(any(a.startswith("RM_Redo:") and jid in a for a in R7["plan"]["awaiting_pick"]),
+              "a finished render filed under the row's NEW name (target_original) is AWAITING OWNER PICK")
+        check(E.ruling_status(F["decisions"])["rows"]["RM_Redo"]["state"] == "redrawn", "ruling_status: redrawn")
+        check(E.ruling_status(F["decisions"])["rows"]["RM_Note"]["state"] == "not_acted",
+              "ruling_status: an un-enacted note is NOT YET ACTED ON")
+
         alt = F["root"] / "elsewhere" / "copy.decisions.json"
         alt.parent.mkdir()
         shutil.copy(F["decisions"], alt)

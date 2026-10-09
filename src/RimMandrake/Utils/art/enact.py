@@ -17,8 +17,11 @@ Without --apply it is a DRY RUN: the full plan is printed and nothing changes. S
               IN GAME) is left alone; a pick with no slot of ours is a TODO. Authorised by the sheet's keep ruling.
   3 QUEUE     every `redo` row via fill_queue.py at priority 0 (ruled work first), his note verbatim as
               owner_note, the picked/in-game column as canon_reference. A row whose job already exists (its
-              note verbatim, or the same target_def filed after his click) is reported, never re-filed; one whose
-              jobs ALL failed is listed as FAILED (not re-filed: the failure needs a look first).
+              note verbatim, or the same target_def filed after his click) is reported, never re-filed. A FAILED
+              job is re-filed (failed/ -> pending/, manifest parked in _requeued_manifests/, at most
+              REFILE_CAP times) unless the same id has since run or a later job of the row covers its facing; a
+              DONE render that is neither live nor purged/rejected is listed as AWAITING OWNER PICK — a row is
+              "already handled" only when every job is pending/active or its render shipped or was rejected.
   4 PURGE     every ✕ except protected pictures — live in a mod, owner-kept, or the row's own pick/variants.
               Those are listed as CONFLICTS, one line each, and are never deleted.
   5 CUT       a row whose decision is `cut`, or `hold` with a note saying cut / not needed, is removed from
@@ -68,6 +71,76 @@ def artpipe_dirs() -> dict:
     import common as C  # noqa: E402
     return {"pending": C.DEFAULT_PENDING, "active": C.DEFAULT_ACTIVE, "done": C.DEFAULT_DONE,
             "failed": C.DEFAULT_FAILED}
+
+
+REFILE_CAP = 3  # parked manifests per job id — same cap as requeue_flakes.py --max
+
+
+def artpipe_aux() -> dict:
+    """The state dir's _artsrc/ (finished renders) and _requeued_manifests/ (re-file history)."""
+    root = artpipe_dirs()["failed"].parent
+    return {"artsrc": root / "_artsrc", "parked": root / "_requeued_manifests"}
+
+
+def job_render_sha(j: dict) -> str | None:
+    """sha256 of a done job's PNG in _artsrc/<id>/<id>.png (None when absent)."""
+    f = artpipe_aux()["artsrc"] / j["id"] / f"{j['id']}.png"
+    try:
+        return L.sha256_file(f)
+    except OSError:
+        return None
+
+
+def times_refiled(jid: str) -> int:
+    d = artpipe_aux()["parked"]
+    return len(list(d.glob(f"{jid}.manifest*.json"))) if d.is_dir() else 0
+
+
+def job_defs(j: dict) -> set:
+    """Every def a job is a picture of: target_def, and the originals fill_queue mapped away from (a row ruled
+    under RSW_Ultracactus files a job whose target_def is our RM_UltrissPad, target_original the ruled name)."""
+    orig = j.get("target_original") or []
+    if isinstance(orig, str):
+        orig = [x for x in re.split(r"[;,]", orig) if x.strip()]
+    return {d.strip() for d in [j.get("target_def") or "", *orig] if d and d.strip()}
+
+
+def classify_jobs(match: list[dict], jobs: list[dict], idx: L.Index) -> dict:
+    """Sort a row's matching jobs: live (pending/active), shipped/rejected done renders, renders AWAITING a pick,
+    and failed jobs to RE-FILE (or over the cap). A failed job is covered when its id has since run again, or any
+    other job of the same target_def and facing was filed strictly later (the newer ask supersedes it)."""
+    out = {"live": [], "handled": [], "awaiting": [], "refile": [], "capped": []}
+    alive_ids = {j["id"] for j in jobs if j["_state"] != "failed"}
+    for j in match:
+        st = j["_state"]
+        if st in ("pending", "active"):
+            out["live"].append(j)
+        elif st == "done":
+            sha = job_render_sha(j)
+            if sha and (idx.live_anywhere(sha) or idx.is_purged(sha) or idx.rejection(sha)):
+                out["handled"].append(j)
+            else:
+                out["awaiting"].append(j)
+        elif st == "failed":
+            if j["id"] in alive_ids:
+                continue
+            c = str(j.get("created") or "")
+            if any(k["id"] != j["id"] and job_defs(k) & job_defs(j)
+                   and k.get("facing") == j.get("facing") and str(k.get("created") or "") > c for k in jobs):
+                continue
+            (out["capped"] if times_refiled(j["id"]) >= REFILE_CAP else out["refile"]).append(j)
+    return out
+
+
+def refile(j: dict) -> None:
+    """failed/<id>.json -> pending/<id>.json; its manifest parked (requeue_flakes.py's move)."""
+    d, aux = artpipe_dirs(), artpipe_aux()
+    src = d["failed"] / f"{j['id']}.json"
+    man = d["failed"] / f"{j['id']}.manifest.json"
+    aux["parked"].mkdir(parents=True, exist_ok=True)
+    if man.exists():
+        man.rename(aux["parked"] / f"{j['id']}.manifest.{time.strftime('%Y%m%dT%H%M%SZ', time.gmtime())}.json")
+    src.rename(d["pending"] / src.name)
 
 
 def load_jobs() -> list[dict]:
@@ -407,7 +480,7 @@ def keep_ruling(idx: L.Index, row: str, letter: str, sha: str):
     return None
 
 
-def build_plan(decisions: Path, holds=(), idx: L.Index | None = None) -> dict:
+def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list[dict] | None = None) -> dict:
     doc = json.loads(decisions.read_text())
     snap_path = Path(doc.get("snapshot") or "")
     if not snap_path.is_absolute():
@@ -416,12 +489,12 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None) -> dict:
     biome = doc.get("biome") or snap.get("biome")
     sheet = doc.get("sheetId") or snap.get("sheetId") or decisions.stem
     idx = idx or L.Index()
-    jobs = load_jobs()
+    jobs = load_jobs() if jobs is None else jobs
     census = census_rows_for(biome)
     src = L.src_root()
     done_marks = {(e.get("sheet"), e.get("row"), e.get("note")) for e in idx.events if e.get("type") == "enact_done"}
     P = {"decisions": decisions, "sheet": sheet, "biome": biome, "held": [], "install": [], "installed_already": [],
-         "install_after_ingest": [], "queue": [], "queued_already": [], "queue_failed": [], "purge": [], "purged_already": 0,
+         "install_after_ingest": [], "queue": [], "queued_already": [], "refile": [], "awaiting_pick": [], "purge": [], "purged_already": 0,
          "cuts": [], "todo": [], "done": [], "conflicts": [], "in_game_not_ours": 0}
     for row, v in (doc.get("decisions") or {}).items():
         if not isinstance(v, dict) or not v.get("at"):
@@ -489,20 +562,28 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None) -> dict:
         # ── 3 queue / 6 todo
         if decided and not is_cut and (dec == "redo" or note):
             at = v.get("at") or ""
-            match = [j for j in jobs if j.get("target_def") in names and
+            match = [j for j in jobs if job_defs(j) & names and
                      ((note and note in I._note_text(j.get("owner_note"))) or
                       str(j.get("created") or "") >= at[:19])]
-            earlier = [j for j in jobs if j.get("target_def") in names and j["_state"] in ("pending", "active")
+            earlier = [j for j in jobs if job_defs(j) & names and j["_state"] in ("pending", "active")
                        and j not in match]
             if earlier and not any(j["_state"] != "failed" for j in match):
                 P["queued_already"].append(f"{row}: {len(earlier)} job(s) pending, filed BEFORE his latest note — "
                                            f"check they cover {note[:60]!r}")
-            elif match and all(j["_state"] == "failed" for j in match):
-                P["queue_failed"].append(f"{row}: {len(match)} job(s) failed in artpipe — not re-filed "
-                                         f"(retry from failed/ or re-file by hand)")
             elif match:
-                states = sorted({j["_state"] for j in match})
-                P["queued_already"].append(f"{row}: {len(match)} job(s) {'/'.join(states)}")
+                cj = classify_jobs(match, jobs, idx)
+                for j in cj["refile"]:
+                    P["refile"].append({"row": row, "job": j})
+                for j in cj["capped"]:
+                    P["conflicts"].append(f"{row}: job {j['id']} failed after {REFILE_CAP} re-files — needs its spec "
+                                          f"looked at, not another retry")
+                if cj["awaiting"]:
+                    P["awaiting_pick"].append(f"{row}: {len(cj['awaiting'])} render(s) done, not installed — "
+                                              + ", ".join(j["id"] for j in cj["awaiting"][:4])
+                                              + (" …" if len(cj["awaiting"]) > 4 else ""))
+                if not (cj["refile"] or cj["capped"] or cj["awaiting"]):
+                    states = sorted({j["_state"] for j in match})
+                    P["queued_already"].append(f"{row}: {len(match)} job(s) {'/'.join(states)}")
             elif dec == "redo":
                 P["queue"].append({"row": row, "names": names, "note": note, "srow": srow, "v": v})
             elif (sheet, row, note) in done_marks:
@@ -526,6 +607,76 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None) -> dict:
     for c in P["cuts"]:
         c["plan"] = plan_cut(src, biome, c["names"])
     return P
+
+
+# ───────────────────────────────────────────── freshness for the sheet ──
+
+RULINGS_DIR = L.REPO_ROOT / "infrastructure" / "state" / "art_rulings"
+
+
+def ruled_decisions_for(sheet_id: str) -> Path | None:
+    """The newest ingested ruling file (art_rulings/*.decisions.json) whose sheetId is SHEET_ID."""
+    best = None
+    for f in sorted(RULINGS_DIR.glob("*.decisions.json")):
+        try:
+            if json.loads(f.read_text()).get("sheetId") == sheet_id:
+                best = f
+        except (OSError, ValueError):
+            continue
+    return best
+
+
+def ruling_status(decisions: Path, idx: L.Index | None = None, jobs: list[dict] | None = None) -> dict:
+    """Per ruled row: is his ruling reflected? From the same plan `enact` would carry out, so the sheet can never
+    say "done" for something enact still owes. state is one of
+      reflected   the pick is live / the cut is done / the note is marked done / nothing was asked
+      redrawn     renders filed for THIS ruling (after his click, or carrying his note) finished, awaiting his pick
+      awaiting    its jobs are pending or running
+      refiled     its jobs failed and are back in the queue
+      conflict    needs him (listed on enact's CONFLICTS)
+      not_acted   NOT YET ACTED ON — enact still owes it
+    """
+    decisions = Path(decisions)
+    doc = json.loads(decisions.read_text())
+    P = build_plan(decisions, (), idx or L.Index(), jobs)
+    def mine(lst, row):
+        return [x for x in lst if (x.get("row") if isinstance(x, dict) else str(x).split(":", 1)[0]) == row]
+    rows = {}
+    for row, v in (doc.get("decisions") or {}).items():
+        if not isinstance(v, dict) or not v.get("at"):
+            continue
+        when = (v.get("decidedAt") or v.get("at") or "")[:16].replace("T", " ")
+        st, detail = "reflected", "nothing further was asked"
+        conf, todo = mine(P["conflicts"], row), mine(P["todo"], row)
+        q, rf, aw = mine(P["queue"], row), mine(P["refile"], row), mine(P["awaiting_pick"], row)
+        qa, dn = mine(P["queued_already"], row), mine(P["done"], row)
+        inst, pur = mine(P["install"], row), mine(P["purge"], row)
+        cut = [c for c in P["cuts"] if c["row"] == row]
+        if todo or q or inst or pur or any(c["plan"]["sites"] or c["plan"]["deleted"] for c in cut):
+            st = "not_acted"
+            detail = "; ".join([t.split(": ", 1)[1].split(" (art or def edit?")[0] for t in todo]
+                               + (["redraw not yet filed"] if q else []) + (["pick not yet installed"] if inst else [])
+                               + (["✕ not yet purged"] if pur else []) + (["cut not yet done"] if cut and st else []))
+        elif conf:
+            st, detail = "conflict", "; ".join(c.split(": ", 1)[1] for c in conf)
+        elif rf:
+            st, detail = "refiled", "failed, re-filed: " + ", ".join(x["job"]["id"] for x in rf[:4])
+        elif any("pending" in x or "active" in x for x in qa):
+            st, detail = "awaiting", "awaiting render: " + "; ".join(x.split(": ", 1)[1] for x in qa)
+        elif aw:
+            st, detail = "redrawn", "redrawn after your ruling: " + "; ".join(x.split(": ", 1)[1] for x in aw)
+        elif dn:
+            st, detail = "reflected", "def edit done: " + "; ".join(x.split(": ", 1)[1] for x in dn)
+        elif cut:
+            st, detail = "reflected", "cut from this biome"
+        elif qa:
+            st, detail = "reflected", "redraw shipped or rejected: " + "; ".join(x.split(": ", 1)[1] for x in qa)
+        elif any(r == row for r, *_ in P["installed_already"]):
+            st, detail = "reflected", "your pick is live in game files"
+        rows[row] = {"state": st, "detail": detail[:300], "when": when, "decision": (v.get("decision") or "").strip(),
+                     "note": (v.get("note") or "").strip()[:200]}
+    n_ok = sum(1 for r in rows.values() if r["state"] in ("reflected", "redrawn"))
+    return {"file": str(decisions), "rows": rows, "total": len(rows), "reflected": n_ok}
 
 
 # ──────────────────────────────────────────────────────────── applying ──
@@ -605,7 +756,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
     idx = L.Index()
     P = build_plan(decisions, holds, idx)
     R = {"ok": True, "apply": apply, "ingest_new": ing.get("rulings", 0) + ing.get("rejected", 0),
-         "installed": 0, "queued_jobs": 0, "purged": 0, "cut_rows": 0, "defs_deleted": 0, "textures_retired": 0,
+         "installed": 0, "queued_jobs": 0, "refiled": 0, "purged": 0, "cut_rows": 0, "defs_deleted": 0, "textures_retired": 0,
          "deploy": [], "conflicts": list(P["conflicts"]), "todo": list(P["todo"]), "plan": P}
     touched_mods: set[str] = set()
     sheet = P["sheet"]
@@ -628,6 +779,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
     if not apply:
         R["installed"] = len(P["install"])
         R["queued_jobs"] = len(P["queue"])
+        R["refiled"] = len(P["refile"])
         R["purged"] = len(P["purge"])
         R["cut_rows"] = sum(1 for c in P["cuts"] if c["plan"]["sites"] or c["plan"]["deleted"])
         R["defs_deleted"] = sum(len(c["plan"]["deleted"]) for c in P["cuts"])
@@ -666,6 +818,13 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
                 R["queued_jobs"] = len(rows)
             else:
                 R["conflicts"].append(f"fill_queue refused {jp.name}: {(r.stderr or r.stdout).strip()[-300:]}")
+        # 3b re-file failed jobs
+        for rf in P["refile"]:
+            try:
+                refile(rf["job"])
+                R["refiled"] += 1
+            except OSError as e:
+                R["conflicts"].append(f"{rf['row']}: re-file of {rf['job']['id']} failed — {e}")
         # 4 purge
         for p in P["purge"]:
             try:
@@ -729,8 +888,11 @@ def report(R: dict) -> str:
         L_.append(f"     {q['row']}: {q['note'][:90]!r}")
     for q in P["queued_already"]:
         L_.append(f"     already: {q}")
-    for q in P["queue_failed"]:
-        L_.append(f"     FAILED:  {q}")
+    L_.append(f"  re-file    {R['refiled']} failed job(s) back to pending/")
+    for rf in P["refile"]:
+        L_.append(f"     {rf['row']}: {rf['job']['id']}")
+    L_.append(f"AWAITING OWNER PICK ({len(P['awaiting_pick'])}) — rendered for his note, neither installed nor rejected:")
+    L_ += [f"  {a}" for a in P["awaiting_pick"]] or ["  none"]
     L_.append(f"  purge      {R['purged']} picture(s); {P['purged_already']} already purged")
     L_.append(f"  cut        {R['cut_rows']} row(s), {R['defs_deleted']} def(s) deleted, {R['textures_retired']} texture(s) retired")
     for c in P["cuts"]:
