@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_ScaldUnderstorey.xml             TerminalBiomes · SCALD_UNDERWATER_FLORA_1
+  ============================================================================
+  The seven unbuilt flora of
+  design/Jawa/worldbuilding/biomes/the_scald_underwater_flora_pass_2026-09-27.md
+  (Glasskelle and Pulsebead are Route B and live in
+  DivingInteraction/.../RM_ScaldVentFlora.xml; Crowncarpet is LuminousPigment's).
+  Built as defs 2026-10-08. Rulings applied: plantDensity 0.30 (already set in
+  RM_TheScald.xml), thurlsponge pays real Steel, kettlewick's collar is a tiny
+  new mineral-salt keepsake (RM_KettlewickSalt, never drinkable), seepcandle
+  wax is plain Chemfuel, chillbrace cut.
+
+  PLACEMENT (all seven are Route A, in RM_TheScald.xml <wildPlants>):
+    - Shallow-boil flora (simmerlace, threshreed, foamgorse, seepcandle) key on
+      the EXISTING terrain tag RUT_ScaldShallow instead of the design's new
+      RM_ScaldFloorBed tag: same cells, no terrain edit. (Seepcandle also takes
+      RUT_ScaldMarginMat, "shallows and margins".) Kettlewick: margin tag only.
+    - Deep-floor flora (vekkfan, thurlsponge) key on RM_SeaFloorGround, because
+      the floor a gravship lands on is RM_SeaFloorGround with only 5% shallow
+      and 12% margin bands (RM_SeaDiveGenerators.xml / RM_SeabedGenerators.xml);
+      RUT_ScaldWaterOceanDeep is never generated there, so the design's "tag
+      the deep variant" would spawn nothing. That tag is shared by every sea
+      floor, but these defs are only in the Scald's wildPlants.
+
+  OWED (not built here): thurlsponge's wreck colonisation (the design's
+  "colonise the wrecks") needs a scatter step; the two-state/behaviour details
+  of the design are description-only. No C# comps were required by this set.
+
+  Numbers the design left open, chosen minimally (the knobs): temperatures
+  0..90 like RM_Crowncarpet (the Scald floor is 55 C), optimal 20..80; Beauty
+  for the plants the design gave none (1 for dressing, 2 for seepcandle);
+  MaxHitPoints and harvestWork by size.
+
+  PLACEHOLDER ART: vanilla EcheveriaA / SnakePlantA / PincushionPlantA
+  distinguished by colorTwo, as the other sea sets do. Real art: artpipe jobs
+  filed, Transient/scald_flora_art_jobs_2026-10-08.json (artpipe_state find: 0
+  hits for all seven names).
+  ============================================================================
+-->
+<Defs>
+
+  <!-- Shared shape: everything true of a Scald floor plant. Hot-water plants,
+       unlike the Twilight base: the temperature window is Crowncarpet's. -->
+  <ThingDef Name="RM_ScaldFloorFloraBase" ParentName="PlantBaseNonEdible" Abstract="True">
+    <statBases>
+      <Flammability>0</Flammability>
+      <Nutrition>0</Nutrition>
+    </statBases>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <minGrowthTemperature>0</minGrowthTemperature>
+      <maxGrowthTemperature>90</maxGrowthTemperature>
+      <minOptimalGrowthTemperature>20</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>80</maxOptimalGrowthTemperature>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <interferesWithRoof>false</interferesWithRoof>
+      <topWindExposure>0</topWindExposure>
+      <purpose>Misc</purpose>
+      <allowAutoCut>false</allowAutoCut>
+    </plant>
+  </ThingDef>
+
+  <!-- 1. RM_SIMMERLACE - mirror. Shallow boil. Dressing only. -->
+  <ThingDef ParentName="RM_ScaldFloorFloraBase">
+    <defName>RM_Simmerlace</defName>
+    <label>simmerlace</label>
+    <description>A lace of silver wire spread flat under the roil, each thread a rope of mirror-skinned bacteria: the same heat-mirror trick the eesh wears as skin, grown into a mesh that reflects the boil away from itself. A shoal passing over simmerlace doubles in the mirror, and a pilgrim on the rim who sees the shallows flash twice is seeing lace, not fish. It sheds: broken threads knot in the current, and fishermen on the rim say a knot that learns to roll is an ekkel.</description>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(215,225,235)</colorTwo>
+      <drawSize>(1.0,1.0)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>4</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.8~1.1</visualSizeRange>
+      <wildTerrainTags><li>RUT_ScaldShallow</li></wildTerrainTags>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>0.8</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 2. RM_KETTLEWICK - distillation. Margins. Harvest: the mineral collar. Faint warm tip glow radius 1 (plain glower). -->
+  <ThingDef ParentName="RM_ScaldFloorFloraBase">
+    <defName>RM_Kettlewick</defName>
+    <label>kettlewick</label>
+    <description>A single upright string of colony-flesh that boils itself on purpose, wicking the fouled water up its length and sweating one clean drop at a time off its tip: fouled heart, clean breath, three inches tall. Everything the drop leaves behind the wick keeps, growing a crusted collar of salt and mineral at its base like a candle drowning in its own wax. Both faiths press kettlewicks flat in books; each is certain the little distillery proves their reading of the shore.</description>
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(225,200,130)</colorTwo>
+      <drawSize>(0.6,0.6)</drawSize>
+    </graphicData>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>1</glowRadius>
+        <glowColor>(255,200,120,0)</glowColor>
+      </li>
+    </comps>
+    <plant>
+      <growDays>5</growDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_KettlewickSalt</harvestedThingDef>
+      <harvestYield>2</harvestYield>
+      <harvestWork>100</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.5~0.7</visualSizeRange>
+      <wildTerrainTags><li>RUT_ScaldMarginMat</li></wildTerrainTags>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 3. RM_VEKKFAN - circulation. Deep floor. Dressing, moderate beauty. -->
+  <ThingDef ParentName="RM_ScaldFloorFloraBase">
+    <defName>RM_Vekkfan</defName>
+    <label>vekkfan</label>
+    <description>A fan coral the height of a man that runs its own coolant loop: it drinks through a root throat sunk into the cold bottom mud, pumps the deep water up through its vanes, and exhales it warmed, a fountain running backwards. Vekkfan stands where the dung-fall drifts thickest, combing the water the doss and the eesh have not yet picked clean, and a stand of fans all lean the same way, into the fall, like a congregation. The Cathedral cools itself through the Scald; the vekkfan was doing it first, and nobody built it.</description>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Beauty>4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(200,120,110)</colorTwo>
+      <drawSize>(1.8,1.8)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>12</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>1.4~2.0</visualSizeRange>
+      <wildTerrainTags><li>RM_SeaFloorGround</li></wildTerrainTags>
+      <wildClusterRadius>8</wildClusterRadius>
+      <wildClusterWeight>0.7</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 4. RM_THURLSPONGE - filtration. Deep floor. Steel 5-8 (ruled), high harvestWork. Wreck colonisation OWED. -->
+  <ThingDef ParentName="RM_ScaldFloorFloraBase">
+    <defName>RM_Thurlsponge</defName>
+    <label>thurlsponge</label>
+    <description>The floor's kidney. A barrel sponge that filters the fouled water for a living and hoards what it cannot spit out: metals, fines, the pan's whole mineral grief, packed lattice by lattice into its own body. An old thurl is heavier than stone and rings when struck. They colonize the wrecks for the iron, and salvagers read a thick thurl-coat the way prospectors read an outcrop: something worth eating is under there.</description>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Beauty>0</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(80,70,65)</colorTwo>
+      <drawSize>(1.1,1.1)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>20</growDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>Steel</harvestedThingDef>
+      <harvestYield>6</harvestYield>
+      <harvestWork>400</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <wildTerrainTags><li>RM_SeaFloorGround</li></wildTerrainTags>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>0.5</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 7. RM_FOAMGORSE - insulation. Shallow boil. Dressing; the saal nursery is description-only. -->
+  <ThingDef ParentName="RM_ScaldFloorFloraBase">
+    <defName>RM_Foamgorse</defName>
+    <label>foamgorse</label>
+    <description>A low thicket that wears its own atmosphere: foamgorse respires a metabolic gas and keeps it, trapping the bubbles under a shingled skin until the whole plant is jacketed in a silver sleeve of foam, rooted and straining upward like a held balloon. The bubble lines the saal ride begin in foamgorse beds as often as at the vents, and young sails shelter in its skirts until their vanes stiffen.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(190,195,200)</colorTwo>
+      <drawSize>(0.9,0.9)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>6</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.7~1.0</visualSizeRange>
+      <wildTerrainTags><li>RUT_ScaldShallow</li></wildTerrainTags>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>0.7</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 8. RM_SEEPCANDLE - ablation. Shallows and margins. Wax harvests as plain Chemfuel x3 (ruled 2026-09-27). -->
+  <ThingDef ParentName="RM_ScaldFloorFloraBase">
+    <defName>RM_Seepcandle</defName>
+    <label>seepcandle</label>
+    <description>A dripstone coral sheathed in mineral wax that never sets: the boil melts its skin exactly as fast as the seepcandle lays it down, and the melt runs, refreezes lower, and sculpts every colony into a guttered candle shaped by its own weather. No two are alike and none is symmetrical; the current writes them. Shore-folk read old seepcandles the way sailors read driftwood: which way the water has been leaning all these years.</description>
+    <statBases>
+      <MaxHitPoints>70</MaxHitPoints>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(225,215,185)</colorTwo>
+      <drawSize>(1.0,1.0)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>10</growDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>Chemfuel</harvestedThingDef>
+      <harvestYield>3</harvestYield>
+      <harvestWork>150</harvestWork>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.8~1.1</visualSizeRange>
+      <wildTerrainTags>
+        <li>RUT_ScaldShallow</li>
+        <li>RUT_ScaldMarginMat</li>
+      </wildTerrainTags>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- 9. RM_THRESHREED - migration. The simmer line (shallow boil tag; the moving-band behaviour is description-only). -->
+  <ThingDef ParentName="RM_ScaldFloorFloraBase">
+    <defName>RM_Threshreed</defName>
+    <label>threshreed</label>
+    <description>Threshreed grows only on the moving boundary where simmer becomes boil: a band of copper filaments, each rooted lightly and each dying the moment the line leaves it, the colony surviving as a wave that re-seeds itself along the new edge day by day. Where a threshreed band stands is the line, and the fishermen set their margin-nets a spear's length behind it and are never scalded.</description>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <colorTwo>(190,115,70)</colorTwo>
+      <drawSize>(0.8,0.8)</drawSize>
+    </graphicData>
+    <plant>
+      <growDays>2</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.6~0.9</visualSizeRange>
+      <wildTerrainTags><li>RUT_ScaldShallow</li></wildTerrainTags>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>0.8</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+    </plant>
+  </ThingDef>
+
+</Defs>
