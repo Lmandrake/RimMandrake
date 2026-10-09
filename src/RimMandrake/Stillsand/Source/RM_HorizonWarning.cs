@@ -151,6 +151,10 @@ namespace RimMandrake.Stillsand
             {
                 return true; // let vanilla decline it as it would have
             }
+            if (!WalksIn(fi.def, fi.parms))
+            {
+                return true; // drop pods / centre drops are not dust on the horizon: vanilla fires them unchanged
+            }
             bool passer = IsPasser(fi.def.workerClass);
             if (!fi.parms.spawnCenter.IsValid
                 && !RCellFinder.TryFindRandomPawnEntryCell(out fi.parms.spawnCenter, map,
@@ -199,6 +203,50 @@ namespace RimMandrake.Stillsand
             }
             return w != null && (typeof(IncidentWorker_Raid).IsAssignableFrom(w)
                                  || typeof(IncidentWorker_NeutralGroup).IsAssignableFrom(w));
+        }
+
+        private static readonly System.Reflection.MethodInfo raidPoints =
+            AccessTools.Method(typeof(IncidentWorker_Raid), "ResolveRaidPoints");
+        private static readonly System.Reflection.MethodInfo raidFaction =
+            AccessTools.Method(typeof(IncidentWorker_Raid), "TryResolveRaidFaction");
+
+        /// <summary>HORIZON_WARNING_DROP_RAIDS_1: a preset spawnCenter is honoured by EVERY arrival mode, so presetting
+        /// an edge cell turned centre drops into edge drops. A raid is only warned of once its arrival mode is known to
+        /// be an edge walk-in. The mode is resolved NOW (points → faction → strategy → arrival, the order
+        /// TryGenerateRaidInfo uses) and kept on the parms, so the delayed fire arrives the way the letter promised.
+        /// PROVISIONAL (auto-decided 2026-10-09, HORIZON_WARNING_DROP_RAIDS_1): only PawnsArrivalModeWorker_EdgeWalkIn*
+        /// modes are warned; every drop mode fires on time, unwarned and unmoved. Non-raids (neutral groups, passers)
+        /// always walk in.</summary>
+        public static bool WalksIn(IncidentDef def, IncidentParms parms)
+        {
+            if (!(def.Worker is IncidentWorker_Raid raid))
+            {
+                return true;
+            }
+            if (parms.raidArrivalMode == null)
+            {
+                try
+                {
+                    raidPoints?.Invoke(raid, new object[] { parms });
+                    if (raidFaction == null || !(bool)raidFaction.Invoke(raid, new object[] { parms }))
+                    {
+                        return false;
+                    }
+                    raid.ResolveRaidStrategy(parms, parms.pawnGroupKind ?? PawnGroupKindDefOf.Combat);
+                    if (!raid.TryResolveRaidArriveMode(parms))
+                    {
+                        return false;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.ErrorOnce("[RimMandrake.Stillsand] horizon warning: could not resolve a raid's arrival mode, "
+                                  + "firing it unwarned: " + e, 0x52484457);
+                    return false;
+                }
+            }
+            System.Type w = parms.raidArrivalMode?.workerClass;
+            return w != null && w.Name.StartsWith("PawnsArrivalModeWorker_EdgeWalkIn", StringComparison.Ordinal);
         }
 
         /// <summary>Eight-point bearing from the map centre to a cell, +z north.</summary>

@@ -74,14 +74,40 @@ namespace RimMandrake.Stillsand
             __state = __instance.GetDepth(c);
         }
 
+        // DUNE_TRACK_ERASE_ACCUMULATE_1: sand moved over a printed cell since its print, per cell. A dune engine
+        // stepping in slabs smaller than ChangeThreshold used to never erase; now the steps add up. Starts counting
+        // at the first move that finds a print on the cell (and resets when the cell has none), so sand that moved
+        // BEFORE the print never counts against it.
+        // PROVISIONAL (auto-decided 2026-10-09, DUNE_TRACK_ERASE_ACCUMULATE_1): session-only (not saved); a reload
+        // restarts a part-buried print's count.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<SandGrid, System.Collections.Generic.Dictionary<int, float>>
+            moved = new System.Runtime.CompilerServices.ConditionalWeakTable<SandGrid, System.Collections.Generic.Dictionary<int, float>>();
+
         public static void Postfix(SandGrid __instance, IntVec3 c, float __state)
         {
             if (!RM_DuneTrackEraserSettings.duneErasesTracks) return;
-            if (Mathf.Abs(__instance.GetDepth(c) - __state) < ChangeThreshold) return;
+            float delta = Mathf.Abs(__instance.GetDepth(c) - __state);
+            if (delta <= 0f) return;
             Map map = MapRef != null ? MapRef(__instance) : null;
             if (map == null || map.Biome == null || map.Biome.defName != "RM_Stillsand") return;
             RM_MapComponent_TrackGrid grid = RM_MapComponent_TrackGrid.For(map);
-            if (grid != null && grid.ClearCell(c)) Erased++;
+            if (grid == null) return;
+            var acc = moved.GetOrCreateValue(__instance);
+            int idx = map.cellIndices.CellToIndex(c);
+            if (!grid.TryGetPrint(c, out _))
+            {
+                acc.Remove(idx);
+                return;
+            }
+            acc.TryGetValue(idx, out float sum);
+            sum += delta;
+            if (sum < ChangeThreshold)
+            {
+                acc[idx] = sum;
+                return;
+            }
+            acc.Remove(idx);
+            if (grid.ClearCell(c)) Erased++;
         }
 
         /// <summary>

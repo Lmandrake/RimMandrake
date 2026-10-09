@@ -95,7 +95,8 @@ namespace RimMandrake.Stillsand
                     return 0f;
                 }
                 RM_MirrorBeamExtension rules = SunRules ?? new RM_MirrorBeamExtension();
-                if (!CasterIsPawn)
+                // MIRROR_BEAM_SUN_POLICY_1: the muurrok shares the turret's sun unless the setting is off.
+                if (!CasterIsPawn || RM_StillsandEventsSettings.mirrorBeamSharedSun)
                 {
                     // STILLSAND_SUN_LANCE_1: a turret caster uses the same sun the sun tables use
                     // (pinned-sun elevation, shade, roof, gale), so strength scales with elevation.

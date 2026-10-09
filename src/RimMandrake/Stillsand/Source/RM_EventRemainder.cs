@@ -232,8 +232,7 @@ namespace RimMandrake.Stillsand
                 {
                     continue;
                 }
-                Pawn found = m.mapPawns.AllPawnsSpawned.FirstOrDefault(p => !p.Dead && p.Faction == null
-                    && p.kindDef != null && p.kindDef.defName == kind);
+                Pawn found = c.DenOccupant(kind); // PRECIOUS_CAVE_DEN_OCCUPANT_1: this den's occupant, not any of the kind
                 if (found != null)
                 {
                     map = m;
