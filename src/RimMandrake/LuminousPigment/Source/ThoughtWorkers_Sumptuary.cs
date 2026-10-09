@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
@@ -101,16 +102,35 @@ namespace RimMandrake.LuminousPigment
             Map map = p.MapHeld;
             if (map == null) return ThoughtState.Inactive;
 
+            return CommonerOffendsOn(map) ? ThoughtState.ActiveAtStage(0) : ThoughtState.Inactive;
+        }
+
+        // The answer does not depend on which titled pawn asks, so it is computed once per map and
+        // refreshed on a short timer instead of by every titled pawn walking every pawn (belt LP-7).
+        private const int RefreshTicks = 250;
+        private static readonly System.Collections.Generic.Dictionary<int, KeyValuePair<int, bool>> cache =
+            new System.Collections.Generic.Dictionary<int, KeyValuePair<int, bool>>();
+
+        private static bool CommonerOffendsOn(Map map)
+        {
+            int now = Find.TickManager.TicksGame;
+            if (cache.TryGetValue(map.uniqueID, out KeyValuePair<int, bool> hit) && now - hit.Key >= 0 && now - hit.Key < RefreshTicks)
+            {
+                return hit.Value;
+            }
+            bool offends = false;
             foreach (Pawn other in map.mapPawns.AllPawnsSpawned)
             {
-                if (other == p || !other.RaceProps.Humanlike) continue;
+                if (!other.RaceProps.Humanlike) continue;
                 if (SumptuaryUtility.IsTitled(other)) continue;
                 if (SumptuaryUtility.DisplayScoreFor(other) >= LuminousPigmentSettings.offenceThreshold)
                 {
-                    return ThoughtState.ActiveAtStage(0);
+                    offends = true;
+                    break;
                 }
             }
-            return ThoughtState.Inactive;
+            cache[map.uniqueID] = new KeyValuePair<int, bool>(now, offends);
+            return offends;
         }
     }
 }
