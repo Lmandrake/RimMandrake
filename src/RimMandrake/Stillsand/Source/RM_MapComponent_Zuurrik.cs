@@ -47,6 +47,14 @@ namespace RimMandrake.Stillsand
         private int bloodAtWake;
         private int fatness;
         private int lastBuryTick = -999999;
+        // ZUURRIK_GROWTH_BY_FEEDING_1: what the awake swarm actually ate — blood filth stripped (counted as each
+        // stain a member was eating is destroyed) and corpse nutrition (vanilla's NutritionEaten record).
+        private int filthEaten;
+        private float corpseNutritionEaten;
+        // PROVISIONAL (auto-decided 2026-10-09, ZUURRIK_GROWTH_BY_FEEDING_1): one corpse nutrition = 2 stains;
+        // 5 stain-units per point of fatness, the same rate as the old bloodAtWake/5.
+        private const float StainsPerNutrition = 2f;
+        private const int StainsPerFatness = 5;
 
         private static List<ThingDef> bloodFilthDefs;
 
@@ -91,6 +99,14 @@ namespace RimMandrake.Stillsand
             if (!active && !(inBiome && swarm.Count > 0))
             {
                 return;
+            }
+            for (int i = 0; i < swarm.Count; i++)
+            {
+                Pawn gone = swarm[i];
+                if (gone != null && (gone.Destroyed || gone.Dead || !gone.Spawned))
+                {
+                    HarvestCorpseEating(gone);
+                }
             }
             swarm.RemoveAll(p => p == null || p.Destroyed || p.Dead || !p.Spawned);
             if (swarm.Count == 0)
@@ -192,6 +208,8 @@ namespace RimMandrake.Stillsand
                 return;
             }
             bloodAtWake = bestCount;
+            filthEaten = 0;
+            corpseNutritionEaten = 0f;
             quietPolls = 0;
             Messages.Message("The blood-stained sand boils. Something in it has woken to strip the stain, and what lies beside it.",
                 new TargetInfo(best, map), MessageTypeDefOf.NeutralEvent, false);
@@ -216,6 +234,7 @@ namespace RimMandrake.Stillsand
             for (int i = 0; i < swarm.Count; i++)
             {
                 Pawn p = swarm[i];
+                HarvestCorpseEating(p);
                 if (p != null && p.Spawned)
                 {
                     FleckMaker.ThrowDustPuff(p.Position.ToVector3Shifted(), map, 1.4f);
@@ -223,10 +242,42 @@ namespace RimMandrake.Stillsand
                 }
             }
             swarm.Clear();
-            fatness = Mathf.Min(MaxFatness, fatness + Mathf.Max(1, bloodAtWake / 5));
+            int growth = RM_StillsandMod.settings == null || RM_StillsandMod.settings.zuurrikGrowByFeeding
+                ? Mathf.FloorToInt((filthEaten + corpseNutritionEaten * StainsPerNutrition) / StainsPerFatness)
+                : Mathf.Max(1, bloodAtWake / 5);
+            fatness = Mathf.Min(MaxFatness, fatness + growth);
+            filthEaten = 0;
+            corpseNutritionEaten = 0f;
             lastBuryTick = Find.TickManager.TicksGame;
             quietPolls = 0;
         }
+
+        /// <summary>A member's whole corpse diet: it was generated at wake, so its record is all this swarm ate.
+        /// Read once, as it leaves the swarm.</summary>
+        private void HarvestCorpseEating(Pawn p)
+        {
+            if (p?.records != null)
+            {
+                corpseNutritionEaten += p.records.GetValue(RecordDefOf.NutritionEaten);
+            }
+        }
+
+        /// <summary>Called from the Thing.Destroy prefix: blood filth destroyed while a swarm member's current job
+        /// targets it was eaten by the swarm (a colonist cleaning it is not).</summary>
+        public void Notify_FilthDestroyed(Thing filth)
+        {
+            for (int i = 0; i < swarm.Count; i++)
+            {
+                Pawn p = swarm[i];
+                if (p != null && p.Spawned && p.CurJob != null && p.CurJob.targetA.Thing == filth)
+                {
+                    filthEaten++;
+                    return;
+                }
+            }
+        }
+
+        public bool HasSwarm => swarm.Count > 0;
 
         private bool HasWorkNear(IntVec3 centre)
         {
@@ -260,6 +311,8 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref bloodAtWake, "bloodAtWake", 0);
             Scribe_Values.Look(ref fatness, "fatness", 0);
             Scribe_Values.Look(ref lastBuryTick, "lastBuryTick", -999999);
+            Scribe_Values.Look(ref filthEaten, "filthEaten", 0);
+            Scribe_Values.Look(ref corpseNutritionEaten, "corpseNutritionEaten", 0f);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 if (swarm == null)
@@ -267,6 +320,36 @@ namespace RimMandrake.Stillsand
                     swarm = new List<Pawn>();
                 }
                 swarm.RemoveAll(p => p == null);
+            }
+        }
+    }
+
+    /// <summary>ZUURRIK_GROWTH_BY_FEEDING_1: counts blood filth a swarm member strips.</summary>
+    [StaticConstructorOnStartup]
+    public static class RM_ZuurrikFeedingPatch
+    {
+        static RM_ZuurrikFeedingPatch()
+        {
+            var target = HarmonyLib.AccessTools.Method(typeof(Thing), nameof(Thing.Destroy));
+            if (target == null)
+            {
+                Log.Error("[RimMandrake.Stillsand] zuurrik feeding: Thing.Destroy NOT FOUND; swarms will not grow by feeding.");
+                return;
+            }
+            new HarmonyLib.Harmony("mandrake.rm.stillsand.zuurrikfeeding").Patch(target,
+                prefix: new HarmonyLib.HarmonyMethod(typeof(RM_ZuurrikFeedingPatch), nameof(DestroyPrefix)));
+        }
+
+        public static void DestroyPrefix(Thing __instance)
+        {
+            if (__instance == null || __instance.def.category != ThingCategory.Filth || !__instance.Spawned)
+            {
+                return;
+            }
+            RM_MapComponent_Zuurrik comp = __instance.Map.GetComponent<RM_MapComponent_Zuurrik>();
+            if (comp != null && comp.HasSwarm)
+            {
+                comp.Notify_FilthDestroyed(__instance);
             }
         }
     }

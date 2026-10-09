@@ -303,6 +303,7 @@ namespace RimMandrake.Stillsand
                 Pawn pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(kind, null,
                     PawnGenerationContext.NonPlayer, forceGenerateNewPawn: true, canGeneratePawnRelations: false));
                 GenSpawn.Spawn(pawn, cell, map);
+                RM_MapComponent_PreciousCave.For(map)?.denOccupants.Add(pawn); // PRECIOUS_CAVE_DEN_OCCUPANT_1
             }
         }
     }
@@ -329,6 +330,34 @@ namespace RimMandrake.Stillsand
         public bool denCleared;
 
         public List<Thing> frozenThings = new List<Thing>();
+
+        /// <summary>PRECIOUS_CAVE_DEN_OCCUPANT_1: the animals the cave was generated holding, so the den quest
+        /// names THIS den's occupant and not the first wild pawn of that kind anywhere on the map.</summary>
+        public List<Pawn> denOccupants = new List<Pawn>();
+
+        /// <summary>The den's living occupant of this kind: a saved occupant first; else (a save from before the
+        /// list existed) a wild one of the kind standing on the cave floor. Null when none.</summary>
+        public Pawn DenOccupant(string kind)
+        {
+            for (int i = 0; i < denOccupants.Count; i++)
+            {
+                Pawn p = denOccupants[i];
+                if (p != null && p.Spawned && !p.Dead && p.Map == map && p.Faction == null
+                    && p.kindDef != null && p.kindDef.defName == kind)
+                {
+                    return p;
+                }
+            }
+            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+            {
+                if (!p.Dead && p.Faction == null && p.kindDef != null && p.kindDef.defName == kind
+                    && caveCells.Contains(p.Position))
+                {
+                    return p;
+                }
+            }
+            return null;
+        }
 
         /// <summary>Corpse thingIDNumber -> its vanishAfterTimestamp before preservation zeroed it, so release can put it back.</summary>
         public Dictionary<int, int> frozenVanish = new Dictionary<int, int>();
@@ -362,10 +391,13 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref denCleared, "denCleared");
             Scribe_Collections.Look(ref caveCells, "caveCells", LookMode.Value);
             Scribe_Collections.Look(ref frozenThings, "frozenThings", LookMode.Reference);
+            Scribe_Collections.Look(ref denOccupants, "denOccupants", LookMode.Reference);
             Scribe_Collections.Look(ref frozenVanish, "frozenVanish", LookMode.Value, LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 caveCells = caveCells ?? new List<IntVec3>();
+                denOccupants = denOccupants ?? new List<Pawn>();
+                denOccupants.RemoveAll(p => p == null);
                 frozenThings = frozenThings ?? new List<Thing>();
                 frozenThings.RemoveAll(t => t == null);
                 frozenVanish = frozenVanish ?? new Dictionary<int, int>();

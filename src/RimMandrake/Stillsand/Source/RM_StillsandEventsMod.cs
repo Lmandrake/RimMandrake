@@ -21,6 +21,9 @@ namespace RimMandrake.Stillsand
     public class RM_StillsandEventsSettings : ModSettings
     {
         public static bool mirrorBeamEnabled = true;
+        // PROVISIONAL (auto-decided 2026-10-09, MIRROR_BEAM_SUN_POLICY_1): the muurrok's beam reads the same sun as
+        // the sun lance and sun tables (pinned sun, shade grid, roof, gale). Off: vanilla celestial glow, as before.
+        public static bool mirrorBeamSharedSun = true;
 
         // STILLSAND_EVENT_CREATURES_REMAINDER_1: the horn, its answer chance, and the den quest.
         public static bool hornEnabled = true;
@@ -44,6 +47,7 @@ namespace RimMandrake.Stillsand
         {
             base.ExposeData();
             Scribe_Values.Look(ref mirrorBeamEnabled, "mirrorBeamEnabled", true);
+            Scribe_Values.Look(ref mirrorBeamSharedSun, "mirrorBeamSharedSun", true);
             Scribe_Values.Look(ref hornEnabled, "hornEnabled", true);
             Scribe_Values.Look(ref hornAnswerChance, "hornAnswerChance", 0.15f);
             Scribe_Values.Look(ref denQuestEnabled, "denQuestEnabled", true);
@@ -95,6 +99,12 @@ namespace RimMandrake.Stillsand
             list.CheckboxLabeled("Muurrok mirror beam", ref mirrorBeamEnabled,
                 "The muurrok reflects the sun off its crest as a sweeping heat beam (never fire). "
                 + "It needs sun: none at night, under a roof, or in a sand gale. Off: it only strikes from under.");
+            if (mirrorBeamEnabled)
+            {
+                list.CheckboxLabeled("  Muurrok beam uses the sun-lance sun", ref mirrorBeamSharedSun,
+                    "On: the beam's strength follows the same sun as the sun lance and sun tables (this map's sun "
+                    + "height, shade from walls and dunes, roof, gale). Off: it follows the plain day/night light level.");
+            }
             list.GapLine();
             list.CheckboxLabeled("Krayt horn", ref hornEnabled,
                 "A horn that can be blown to rout smaller predators and tribal raiders nearby. Off: it cannot be used.");

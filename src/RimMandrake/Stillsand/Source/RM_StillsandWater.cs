@@ -71,6 +71,12 @@ namespace RimMandrake.Stillsand
         /// <summary>What drawing it is called in a ledger letter ("canteen egg", "still flask").</summary>
         public string drawnAs;
 
+        /// <summary>WATER_LEDGER_DOUBLE_CHARGE_1: true when the land was already charged as this item was MADE (the
+        /// solar still books its litres in Consume), so drinking it books nothing more. The comp stays on the item
+        /// so the Return still counts it as water.
+        /// PROVISIONAL (auto-decided 2026-10-09, WATER_LEDGER_DOUBLE_CHARGE_1): the one charge is at production.</summary>
+        public bool bookedAtSource;
+
         public RM_CompProperties_WaterVolume()
         {
             compClass = typeof(RM_CompWaterVolume);
@@ -87,7 +93,7 @@ namespace RimMandrake.Stillsand
         {
             base.PostIngested(ingester);
             Map map = ingester?.MapHeld;
-            if (map != null)
+            if (map != null && !Props.bookedAtSource)
             {
                 RM_WaterLedger.Notify_Drawn(map, Props.litres, Props.drawnAs ?? parent.def.label);
             }

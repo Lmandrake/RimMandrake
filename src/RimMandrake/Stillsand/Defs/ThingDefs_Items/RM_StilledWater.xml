@@ -31,6 +31,8 @@
       <li Class="RimMandrake.Stillsand.RM_CompProperties_WaterVolume">
         <litres>1</litres>
         <drawnAs>still flask</drawnAs>
+        <!-- PROVISIONAL (auto-decided 2026-10-09, WATER_LEDGER_DOUBLE_CHARGE_1): the still books it when made -->
+        <bookedAtSource>true</bookedAtSource>
       </li>
     </comps>
   </ThingDef>

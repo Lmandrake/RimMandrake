@@ -25,11 +25,16 @@ namespace RimMandrake.Stillsand
         /// <summary>Stained sand cells within one cluster that wake a swarm.</summary>
         public int zuurrikBloodThreshold = 8;
 
+        /// <summary>ZUURRIK_GROWTH_BY_FEEDING_1: the next swarm grows by what this one really ate.
+        /// PROVISIONAL (auto-decided 2026-10-09, ZUURRIK_GROWTH_BY_FEEDING_1). Off: by the stain it woke to.</summary>
+        public bool zuurrikGrowByFeeding = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref zuurrikEnabled, "zuurrikEnabled", true);
             Scribe_Values.Look(ref zuurrikBloodThreshold, "zuurrikBloodThreshold", 8);
+            Scribe_Values.Look(ref zuurrikGrowByFeeding, "zuurrikGrowByFeeding", true);
             RM_PreciousCaveSettings.Expose(); // STILLSAND_PRECIOUS_CAVES_1
             RM_StillsandWaterSettings.Expose(); // STILLSAND_RETURN_RITUAL_1
             RM_SandSwimRemSettings.Expose(); // STILLSAND_SAND_SWIM_REMAINDER_1
@@ -57,6 +62,9 @@ namespace RimMandrake.Stillsand
             {
                 list.Label("Stained cells needed to wake a swarm: " + zuurrikBloodThreshold);
                 zuurrikBloodThreshold = (int)list.Slider(zuurrikBloodThreshold, 2, 40);
+                list.CheckboxLabeled("Swarms grow by what they eat", ref zuurrikGrowByFeeding,
+                    "On: the next swarm is bigger by the stains and bodies this one actually stripped; a stain your "
+                    + "colonists cleaned first feeds nothing. Off: it grows by the size of the stain it woke to.");
             }
             list.GapLine();
             list.Label("The biome itself reuses vanilla Core's BiomeWorker_ExtremeDesert unchanged, "
