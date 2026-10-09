@@ -71,7 +71,7 @@ namespace RimMandrake.TitanicCreatures
             float damage = GiantSmash.Damage(RM_TitanicKernel.CrushDamageHeavy, RM_HugeThingsSettings.wakeCrushDamageMultiplier);
             foreach (int id in GiantSmash.Owners((int)tier, minTier, active, rect.minX, rect.minZ, rect.maxX, rect.maxZ, solid))
             {
-                Building_TrunkBlocker.ForwardToPlant(plants[id], new DamageInfo(DamageDefOf.Crush, damage, instigator: titan));
+                Building_TrunkBlocker.ForwardToPlant(plants[id], new DamageInfo(DamageDefOf.Crush, damage, instigator: titan), true);   // an area event
             }
         }
 

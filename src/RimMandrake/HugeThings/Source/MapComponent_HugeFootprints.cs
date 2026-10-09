@@ -219,6 +219,7 @@ namespace RimMandrake.HugeThings
             {
                 if (!flags.TryGetValue(k, out CellFlags f) || f != (CellFlags.Passable | CellFlags.Item)) continue;
                 if (lastMoveTick.TryGetValue(k, out int t) && now - t < PendingRetryInterval) continue;
+                if (HoldsQuestItem(Cell(k))) continue;   // A3.6: never move a quest thing; the cell is deferred (stays open)
                 counts[k] = Cell(k).GetItemCount(map);
             }
             if (counts.Count == 0) return new Dictionary<long, List<long>>();
@@ -244,6 +245,7 @@ namespace RimMandrake.HugeThings
             List<Thing> items = new List<Thing>();
             foreach (Thing t in src.GetThingList(map)) if (t.def.category == ThingCategory.Item) items.Add(t);
             if (items.Count != dests.Count) return false;   // the cell changed since planning: try again later
+            if (HoldsQuestItem(src)) return false;          // A3.6: a quest thing arrived since planning: defer
             for (int i = 0; i < items.Count; i++)
             {
                 Thing t = items[i];
@@ -261,6 +263,16 @@ namespace RimMandrake.HugeThings
                 if (!t.Spawned) GenSpawn.Spawn(t, src, map, WipeMode.Vanish);   // put it back rather than lose it
             }
             return src.GetItemCount(map) == 0;
+        }
+
+        /// <summary>PLANT_INTERACTION_GUARDS_1 (A3.6, mechanical half): 1.6 Thing.DeSpawn releases reservations and sends the quest
+        /// "Despawned" signal, so a thing carrying questTags is never moved; its cell waits. (Wider relocation policy: owner Q8.)</summary>
+        private bool HoldsQuestItem(IntVec3 c)
+        {
+            if (!c.InBounds(map)) return false;
+            foreach (Thing t in c.GetThingList(map))
+                if (t.def.category == ThingCategory.Item && !t.questTags.NullOrEmpty()) return true;
+            return false;
         }
 
         private bool Spawn(long k)
@@ -294,11 +306,19 @@ namespace RimMandrake.HugeThings
         }
 
         /// <summary>Planner input for every cell of a window.</summary>
+        /// <summary>How far outside a planning window a building's interaction cell may lie and still be seen (A3.4).</summary>
+        public const int InteractionScanMargin = 8;
+
         private Dictionary<long, CellFlags> Flags(CellBox w)
         {
             Dictionary<long, CellFlags> f = new Dictionary<long, CellFlags>();
             HashSet<IntVec3> protectedCells = new HashSet<IntVec3>();
-            CellRect scan = CellRect.FromLimits(w.MinX - 3, w.MinZ - 3, w.MaxX + 3, w.MaxZ + 3).ClipInsideMap(map);
+            // PLANT_INTERACTION_GUARDS_1 (A3.4): interaction cells resolved as vanilla does (GenConstruct.NotBlockingAnyInteractionCells):
+            // a blueprint or frame answers for the def it builds, and multipleInteractionCellOffsets are all honoured
+            // (ThingUtility.InteractionCellsWhenAt). The scan margin covers a big building's far interaction spot.
+            const int margin = InteractionScanMargin;
+            CellRect scan = CellRect.FromLimits(w.MinX - margin, w.MinZ - margin, w.MaxX + margin, w.MaxZ + margin).ClipInsideMap(map);
+            List<IntVec3> icells = new List<IntVec3>();
             foreach (IntVec3 c in scan)
             {
                 List<Thing> list = c.GetThingList(map);
@@ -307,7 +327,15 @@ namespace RimMandrake.HugeThings
                     Thing t = list[i];
                     if (t is Building_TrunkBlocker) continue;
                     bool building = t.def.category == ThingCategory.Building || t.def.IsBlueprint || t.def.IsFrame;
-                    if (building && t.def.hasInteractionCell) protectedCells.Add(t.InteractionCell);
+                    if (building)
+                    {
+                        ThingDef built = (t.def.IsBlueprint || t.def.IsFrame) ? t.def.entityDefToBuild as ThingDef : t.def;
+                        if (built != null && built.HasSingleOrMultipleInteractionCells)
+                        {
+                            ThingUtility.InteractionCellsWhenAt(icells, built, t.Position, t.Rotation, map);
+                            foreach (IntVec3 ic in icells) protectedCells.Add(ic);
+                        }
+                    }
                     if (t is Building_Door)
                     {
                         foreach (IntVec3 d in GenAdj.CardinalDirections) protectedCells.Add(c + d);

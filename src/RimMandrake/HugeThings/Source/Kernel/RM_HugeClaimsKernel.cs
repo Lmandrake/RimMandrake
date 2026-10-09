@@ -385,6 +385,15 @@ namespace RimMandrake.HugeThings
         private int tick = int.MinValue;
         private readonly HashSet<(long, int)> seen = new HashSet<(long, int)>();
 
+        /// <summary>PLANT_INTERACTION_GUARDS_1 (A3.7): only an AREA event (an explosion, a multi-cell titan step) is deduplicated per
+        /// (tick, source, owner). A single projectile is its own event: 1.6 Bullet.Impact makes one DamageInfo per projectile, so
+        /// pellets or burst rounds from one launcher in one tick each land.</summary>
+        public bool ShouldForward(int nowTick, long sourceKey, int ownerId, bool areaEvent)
+        {
+            if (!areaEvent) return true;
+            return ShouldForward(nowTick, sourceKey, ownerId);
+        }
+
         public bool ShouldForward(int nowTick, long sourceKey, int ownerId)
         {
             if (nowTick != tick)
@@ -393,6 +402,21 @@ namespace RimMandrake.HugeThings
                 seen.Clear();
             }
             return seen.Add((sourceKey, ownerId));
+        }
+    }
+
+    /// <summary>PLANT_INTERACTION_GUARDS_1 (C3.3): the drawn size a huge pawn's hitbox is built from. 1.6
+    /// PawnRenderNode_AnimalPart.GraphicFor draws an alternate graphic or femaleGraphicData when one applies, and the mesh follows
+    /// THAT graphic's drawSize; the hitbox takes the larger of it and the body graphic per axis, so it never shrinks below the
+    /// default body.</summary>
+    public static class HitboxDraw
+    {
+        public static void Pick(float bodyX, float bodyY, bool hasActive, float activeX, float activeY, out float x, out float y)
+        {
+            x = bodyX; y = bodyY;
+            if (!hasActive) return;
+            if (!float.IsNaN(activeX) && activeX > x) x = activeX;
+            if (!float.IsNaN(activeY) && activeY > y) y = activeY;
         }
     }
 }
