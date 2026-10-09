@@ -1,0 +1,1 @@
+Subagent census claims of 'owner KEEP-ruled' and 'no sheet ruling' were both wrong on the same night (flat-square art) - verify a claimed ruling against art events + decisions json before relaying it.

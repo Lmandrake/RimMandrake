@@ -1,0 +1,1 @@
+A sheet rebuilt after the owner clicked re-letters columns; before ab6bed31a ingest resolved old letters against the new snapshot and wrote 28 spurious 'rejected' events (no retract verb exists). Never rebuild a sheet between his clicks and enact without the stale-letter guard (Transient/stale_letter_ingest_audit_2026-10-09.md).
