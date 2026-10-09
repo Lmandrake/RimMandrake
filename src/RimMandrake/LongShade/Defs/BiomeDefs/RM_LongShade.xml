@@ -215,6 +215,7 @@
            the dakkra's weight, the other rare ambusher. PROVISIONAL (owner ruling
            2026-10-03: first-guess numbers ship, tuned live later). -->
       <RM_Mirrak>0.05</RM_Mirrak>
+      <RM_Harrok>0.04</RM_Harrok>
       <!-- LONGSHADE_BEDAZZLE_CONTENT_1 point 8: the four owner-kept animal fills
            (RM_LongShade_Fills.xml). Weights are first values: rare ambusher, common
            small scavenger/rim-grazer, ash-answerer. -->

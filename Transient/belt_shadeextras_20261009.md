@@ -8,5 +8,6 @@
 - harrok: (pending)
 - Jawa return: (pending)
 - joining water rite: (pending)
-- kernel + csproj started (tollok/lure/stampede)
+- DONE and pushed 2d6149a22: empty patch (reuse tell), lure awning, stampede, tollok; fuzz family extras OK, validation STATIC PASS
 - C#/XML for tollok, lure, stampede written; building
+- harrok written (comp + def + roster 0.04), building

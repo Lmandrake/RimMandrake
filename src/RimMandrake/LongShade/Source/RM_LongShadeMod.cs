@@ -76,9 +76,13 @@ namespace RimMandrake.LongShade
         /// <summary>LONGSHADE_STAMPEDE_ROOF_1: the overheated-herd stampede incident.</summary>
         public static bool stampedeEnabled = true;
 
+        /// <summary>LONGSHADE_HARROK_STILT_1): the harrok's ambush from its own shadow.</summary>
+        public static bool harrokEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref harrokEnabled, "harrokEnabled", true);
             Scribe_Values.Look(ref tollokTicksEnabled, "tollokTicksEnabled", true);
             Scribe_Values.Look(ref lureAwningEnabled, "lureAwningEnabled", true);
             Scribe_Values.Look(ref stampedeEnabled, "stampedeEnabled", true);
@@ -166,6 +170,9 @@ namespace RimMandrake.LongShade
             list.CheckboxLabeled("Lure awning", ref lureAwningEnabled,
                 "A cheap hide awning on poles that throws a patch of shade where there was none, to draw game within "
               + "gunshot. Off: the awning casts nothing and is ordinary furniture.");
+            list.CheckboxLabeled("Harrok ambush", ref harrokEnabled,
+                "The harrok stands in the open as a pole and strikes whatever rests in the strip of shade it throws. "
+              + "Off: harrok still stand and cast shade but never strike.");
             list.CheckboxLabeled("Stampede for your roof", ref stampedeEnabled,
                 "A herd caught out in the heat with every patch full may bolt for the roofed part of your home area "
               + "and stay until it has cooled. Off: the incident never fires.");
