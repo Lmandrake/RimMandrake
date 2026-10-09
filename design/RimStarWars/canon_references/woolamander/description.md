@@ -23,6 +23,10 @@ A temple in the forests of Yavin 4 seems to have been erected in respect to the 
 The bones of the Harrower subspecies were said to be excellent material for making armor, especially Reinforced Insulated Sheath armor.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia pageimages Woolamander and Woolamander/Legends, catimages "Images of woolamanders"; only the Galactic Atlas illustration, a Wildlife of Star Wars painting, a Star Wars Galaxies model and concept sketch, and a LEGO figure exist).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
 Four images: CANON (the *Star Wars: Galactic Atlas* illustration, file `Woolamander-SWGA.jpg`, labelled WOOLAMANDER, flat illustrated), and three LEGENDS (a painted plate of a male, a female with young and a female back view; a game render of a green-furred one; and a pencil concept sketch that was eventually used for a different creature, the skreeg, so ignore it). The canon image and the plate match closely.
 - **Silhouette**: a roughly ape/sloth-like arboreal primate shape: a rotund, pot-bellied body sitting on a branch, hunched shoulders, a heavy dropped head, very long arms that hang down far below the branch (much longer than the legs, as the text says), and short thin legs dangling or tucked. Hands have long dark curved claws.
 - **Colour/pattern**: blue fur (a slate to cornflower blue) across the arms, back and head, with a cream-white fur patch on the chest and belly banded with blue; orange-red and yellow patches on the face and shoulders; the face is flat, monkey-like or mandrill-like, with a bare yellow-orange brow, red cheek and nose stripes, bright green or yellow eyes. The Legends game render shows an alternative green-furred troop variant with a pale underside.
@@ -37,6 +41,7 @@ Four images: CANON (the *Star Wars: Galactic Atlas* illustration, file `Woolaman
 - [ ] Long dark curved claws on hands and feet
 - [ ] Very long thin bare cord-like tail ending in a rainbow-striped (red, yellow, blue) fan or bulb of fur
 - [ ] Arboreal pose, perched on a branch
+- [ ] Realistic rendering: natural primate fur and bare-skin face under natural forest light, no outlines, no cartoon or map-illustration shading
 
 ## Engine limits
 not yet assessed

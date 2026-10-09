@@ -16,6 +16,10 @@ Despite their ferocious appearance and short temper, they were a popular quarry 
 Their skull plates were rumored to have medical uses, but the market for them was very specific. Wraidskin could be used to make armor such as Cerean wraidskin chestguards, Huttese wraidskin chestguards, Echani wraidskin chestguard, and Huttese wraidskin wristguards.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia pageimages Wraid, catimages "Images of wraids", title search "wraid"; only stylised SWTOR and KOTOR game models exist).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
 Viewed 2026-10-04. Both images are Legends (video-game renders: a Star Wars: The Old Republic wraid on
 sand, and an older Galaxies-era wraid on a Tatooine dune with Mos Eisley behind).
 - **Silhouette (loud: the defining trait)**: a HUGE-ARMED ape/gorilla-like knuckle-walker. The two
@@ -41,6 +45,7 @@ sand, and an older Galaxies-era wraid on a Tatooine dune with Mos Eisley behind)
 - [ ] Huge low blocky flat-topped wrinkled head with no visible neck, wide mouth with small sharp teeth and tiny deep-set eyes
 - [ ] Pinkish-red to maroon (prose, SWG) or orange-gold (SWTOR) tough bumpy scaly hide, with darker olive-brown forearms
 - [ ] Short stout hump-shouldered body slung low
+- [ ] Realistic rendering: natural thick reptilian hide and muscle under harsh desert daylight, no stylised-game smoothing or cartoon shading
 
 ## Engine limits
 not yet assessed

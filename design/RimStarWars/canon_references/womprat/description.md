@@ -31,36 +31,35 @@ Given its repugnant bestial qualities, it therefore may be somewhat surprising f
 The Jundland Wastes womp rat appeared shortly after Imperials arrived on Tatooine, and some have speculated it was a mutated form of the Beggar's Canyon womp rat, affected by chemicals from Imperial waste dumps. Some of its mutations include a larger size, slower reproduction rate, and lower numbers …[truncated by script; rest UNREAD here, not absent]
 
 ## Visual brief
-Viewed 2026-10-04. Images 1 and 2 are canon (a live-action/practical-style render of a brown womp rat
-sitting up, and a grey-black illustration from a Databank-style book); images 3 and 4 are LEGENDS (a
-golden-furred painting with tusks, and three greenish-tan womp rats on a landspeeder). The
-four show four different colourings; the canon prose ("lumpish gray skin with tufts of spiky black
-hair along the back") fits image 2 best.
-- **Silhouette**: a large, heavy-chested, hunched, rat-like quadruped, with a long naked scaly tail
-  as long as the body or longer. Hindquarters lower, shoulders tall, slung head; image 1 sits up like
-  a kangaroo/rat on its haunches with arms down.
-- **Head**: a long rat-like snout, small dark nose, long upright rounded ears (very large in image 3,
-  tall pointed tufted in image 1), long whiskers, large YELLOW eyes (image 2 and 3 glow amber-yellow;
-  image 1 eyes dull red), prominent long curved incisor fangs jutting upward from the lower jaw (images
-  2, 3, 4), and a pale wispy beard tuft under the chin in image 1.
-- **Hands/feet**: THREE long dark curved claws on each paw (clearly counted in images 2 and 3), thin
-  hairless pads/fingers; forepaws are hand-like.
-- **Coat (images disagree)**: image 2 (canon) = lumpy bare grey-black hide with a stiff mohawk-like
-  ridge of spiky black bristle hair along the spine and thin whiskers; image 1 (canon, *Book of Boba Fett* ch. 5) = scruffy
-  mottled brown fur with a dark patchy back; image 3 (Legends) = long golden-tan flowing fur; image 4
-  (Legends) = scruffy olive-tan with a dark mane ridge. Prose and the strongest canon art say grey skin
-  + black spiky back tufts; fur length varies by image.
-- **Tail**: long, thin, hairless, pale, ringed/segmented like a rat's tail (image 2 clearest), often
-  curling up.
-- **Size cues**: prose says about two metres; images 4 shows each about the size of the landspeeder
-  roof canopy, meaning bigger than a dog. Image 2 seems dog-pony sized.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+The hatched *Alien Archive* line illustration (`canon_2`, grey-black) was deleted 2026-10-08. Canon is now
+LIVE-ACTION *The Book of Boba Fett*: `canon_1` (the practical puppet sitting up, collector's-edition still) and
+`canon_3` (chapter 5, a womp rat sunning itself full-length on a rock in a Tatooine canyon). `legends_1` and
+`legends_2` are realistic Legends paintings.
+
+From the live-action images:
+- **Silhouette**: a large, lean, hunched rat-like quadruped, long-bodied and low when lying flat, with a long thin
+  naked tail; sits up on its haunches like a rat.
+- **Coat**: scruffy, thin, patchy dusty brown-grey to tan fur over visibly wrinkled, lumpy pinkish-grey bare skin,
+  darker mottling down the back, sparse wispy hairs along the spine and a pale wispy beard tuft under the chin.
+- **Head**: long rat-like snout, small dark nose, long tall pointed ears with tufted tips, small dull reddish eyes.
+- **Feet**: long-fingered, dark, clawed hand-like paws gripping the rock.
+- **Tail**: long, thin, hairless, pale grey and ringed, as long as the body.
+- **Disagreement (loud)**: the deleted canon illustration and the old Must show asked for a grey-black hide with a
+  stiff black mohawk of spikes, big yellow eyes and long upward fangs. The live-action womp rat shows NONE of those:
+  dusty brown-grey patchy fur over wrinkled skin, small dull eyes, no visible tusks. The canon prose ("lumpish gray
+  skin with tufts of spiky black hair along the back") is only loosely met. Follow the live-action puppet. The Legends
+  paintings (golden fur, big ears, tusks; olive-tan) are secondary and are not the look.
+- **Size cues**: prose says about two metres; the canyon still reads dog-sized or larger.
 
 ## Must show
-- [ ] Large hunched heavy-shouldered rat-like quadruped, a bit bigger than a big dog
-- [ ] Grey-black lumpy hide with a ridge of stiff spiky black hairs along the spine (canon prose and image 2)
-- [ ] Long snout with whiskers, big yellow eyes, long upright rounded ears, and long curved upward fangs from the lower jaw
-- [ ] Three-clawed hand-like paws with long dark claws
+- [ ] Large, lean, hunched rat-like quadruped with a long body, bigger than a big dog
+- [ ] Scruffy, thin, patchy dusty brown-grey fur over wrinkled lumpy pinkish-grey skin, darker mottling on the back
+- [ ] Long snout, tall pointed tufted ears, small dull reddish eyes, wispy chin tuft
+- [ ] Long-fingered dark clawed hand-like paws
 - [ ] Very long thin hairless ringed pale tail
+- [ ] Realistic rendering: natural mangy fur and wrinkled skin under harsh desert daylight, no outlines, no ink hatching or cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -70,9 +69,9 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Womp_rat/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Womp rat`; wiki caption: infobox image. File: `Womprat-BOBFCE.png` — https://static.wikia.nocookie.net/starwars/images/e/e2/Womprat-BOBFCE.png/revision/latest?cb=20250523005810
+- `wookieepedia_canon_1.webp` — CANON page `Womp rat`; live-action *Book of Boba Fett* puppet (collector's edition still). File: `Womprat-BOBFCE.png` — https://static.wikia.nocookie.net/starwars/images/e/e2/Womprat-BOBFCE.png/revision/latest?cb=20250523005810
 - `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Womp rat/Legends`; wiki caption: infobox image. File: `Womp Rat.jpg` — https://static.wikia.nocookie.net/starwars/images/c/c9/Womp_Rat.jpg/revision/latest?cb=20170712064800
-- `wookieepedia_canon_2.webp` — CANON page `Womp rat`; wiki caption: A womp rat. File: `Womp rat Alien Archive.jpg` — https://static.wikia.nocookie.net/starwars/images/1/1a/Womp_rat_Alien_Archive.jpg/revision/latest?cb=20190803000450
+- `wookieepedia_canon_3.webp` — CANON; *The Book of Boba Fett* chapter 5, live-action womp rat sunning on a rock. File: `WompRatSunning-BoBFCh5.png` — https://static.wikia.nocookie.net/starwars/images/0/0c/WompRatSunning-BoBFCh5.png/revision/latest?cb=20220130213913
 - `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Womp rat/Legends`; wiki caption: Jundland Waste womp rats. File: `Womp rat AA.jpg` — https://static.wikia.nocookie.net/starwars/images/9/95/Womp_rat_AA.jpg/revision/latest?cb=20071123163553
 
 ## ruling
