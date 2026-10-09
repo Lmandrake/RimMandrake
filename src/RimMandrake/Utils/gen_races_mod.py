@@ -890,6 +890,27 @@ def namemaker_for(b, x, tbl, defmap):
     return None, None, None
 
 
+# Owner rulings 2026-10-09 (UNSUBSTANTIATED_SPECIES_ABILITIES_1, decided by question card):
+# genes REMOVED from the shipped lists. Applied to the shipped list on every run, so the
+# ratchet in _shipped_gene_lists can never bring them back. Everything not listed stays.
+OWNER_GENE_REMOVALS = {
+    "RSW_RimMandrakeCerean": ["PsychicAbility_Enhanced"],
+    "RSW_RimMandrakeAnzati": ["TotalHealing", "PerfectImmunity", "DiseaseFree", "Robust",
+                              "WoundHealing_Fast", "ArchiteMetabolism", "Superclotting", "LowSleep"],
+    "RSW_RimMandrakeFeeorin": ["TotalHealing", "DiseaseFree", "Robust", "MeleeDamage_Strong"],
+    "RSW_RimMandrakeKelDor": ["PsychicAbility_Enhanced", "Turn_Gene_LatentPsychic", "RSW_lifespan_double"],
+    "RSW_RimMandrakeGand": ["PsychicAbility_Enhanced", "Pain_Reduced"],
+    "RSW_RimMandrakeChagrian": ["WoundHealing_Fast", "ToxResist_Partial"],
+    "RSW_RimMandrakeNautolan": ["WoundHealing_Fast"],
+    "RSW_RimMandrakeFalleen": ["MeleeDamage_Strong", "Pain_Reduced", "Outland_ThickSkin"],
+    "RSW_RimMandrakeWeequay": ["Pain_Reduced", "ToxicEnvironmentResistance_Total"],
+    "RSW_RimMandrakeAqualish": ["Pain_Reduced"],
+    "RSW_RimMandrakeKlatoonian": ["Robust"],
+    "RSW_RimMandrakeEwok": ["Robust"],
+    "RSW_RimMandrakeNikto": ["ToxicEnvironmentResistance_Total"],
+    "RSW_RimMandrakeKubaz": ["ToxicEnvironmentResistance_Partial"],
+}
+
 _SHIPPED_GENES = {}
 
 
@@ -941,6 +962,8 @@ def write_xenotypes(built, defmap, x, tbl):
     # ⚠️ IT RATCHETS: this reads the file the last run WROTE, so one bad run
     # becomes the new floor. Always restore from git before testing a change here.
     _SHIPPED_GENES = _shipped_gene_lists()
+    _SHIPPED_GENES = {k: [g for g in v if g not in OWNER_GENE_REMOVALS.get(k, ())]
+                      for k, v in _SHIPPED_GENES.items()}
     _SHIPPED_META = _shipped_meta()
     els = []
     unnamed = []
