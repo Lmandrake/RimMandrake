@@ -4481,3 +4481,24 @@
 {"seat":"FOUNDRY","event":"file","id":"STILLSAND_LOOKUP_CACHE_1","title":"SS-1: Cache loud-draw defs and sand-swim registry lookup","kind":"task","target":"v1","needs":"offline","spec":"/home/mandrake/.seat-tmp/FOUNDRY/claude-1000/-home-mandrake-rm-foundry/8b492b40-416d-4101-8a21-f0e36de09d17/scratchpad/sp/STILLSAND_LOOKUP_CACHE_1.md","for":"FOUNDRY","ts":"2026-10-09T06:10:11Z","tsn":1791526211467319651}
 {"seat":"FOUNDRY","event":"file","id":"ZUURRIK_OFF_FINISH_SWARM_1","title":"SS-2: Turning zuurrik off lets the current swarm bury itself","kind":"task","target":"v1","needs":"offline","spec":"/home/mandrake/.seat-tmp/FOUNDRY/claude-1000/-home-mandrake-rm-foundry/8b492b40-416d-4101-8a21-f0e36de09d17/scratchpad/sp/ZUURRIK_OFF_FINISH_SWARM_1.md","for":"FOUNDRY","ts":"2026-10-09T06:10:12Z","tsn":1791526212364824412}
 {"seat":"FOUNDRY","event":"file","id":"HAZARD_CLOCK_INSPECT_LINES_1","title":"TB-4: Inspect lines for Grey lamp burn time, twilight well phase, grav engine crust count","kind":"task","target":"v1","needs":"offline","spec":"/home/mandrake/.seat-tmp/FOUNDRY/claude-1000/-home-mandrake-rm-foundry/8b492b40-416d-4101-8a21-f0e36de09d17/scratchpad/sp/HAZARD_CLOCK_INSPECT_LINES_1.md","for":"FOUNDRY","ts":"2026-10-09T06:10:13Z","tsn":1791526213257544190}
+{"seat":"FOUNDRY","event":"lease","id":"LONGSHADE_HARROK_STILT_1","action":"take","token":"FOUNDRY.pid28168.f2bef6d2","expires":"2026-10-09T06:55:37Z","ts":"2026-10-09T06:10:37Z","tsn":1791526237978276385}
+{"seat":"FOUNDRY","event":"claim","id":"LONGSHADE_HARROK_STILT_1","ts":"2026-10-09T06:10:38Z","tsn":1791526238244079570}
+{"seat":"FOUNDRY","event":"start","id":"LONGSHADE_HARROK_STILT_1","ts":"2026-10-09T06:10:38Z","tsn":1791526238482441306}
+{"seat":"FOUNDRY","event":"implemented","id":"LONGSHADE_HARROK_STILT_1","sha":"961f4b4dcbe1","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:10:39Z","tsn":1791526239504325278}
+{"seat":"FOUNDRY","event":"lease","id":"HERD_FEAR_TICK_OFFSET_1","action":"take","token":"FOUNDRY.pid28200.d9772ccf","expires":"2026-10-09T06:56:33Z","ts":"2026-10-09T06:11:33Z","tsn":1791526294124080634}
+{"seat":"FOUNDRY","event":"claim","id":"HERD_FEAR_TICK_OFFSET_1","ts":"2026-10-09T06:11:34Z","tsn":1791526294368073318}
+{"seat":"FOUNDRY","event":"start","id":"HERD_FEAR_TICK_OFFSET_1","ts":"2026-10-09T06:11:34Z","tsn":1791526294612738436}
+{"seat":"FOUNDRY","event":"lease","id":"CHOTRIX_PREY_FILTER_ORDER_1","action":"take","token":"FOUNDRY.pid28201.e8b10fe5","expires":"2026-10-09T06:56:35Z","ts":"2026-10-09T06:11:35Z","tsn":1791526295924638853}
+{"seat":"FOUNDRY","event":"claim","id":"CHOTRIX_PREY_FILTER_ORDER_1","ts":"2026-10-09T06:11:36Z","tsn":1791526296161337557}
+{"seat":"FOUNDRY","event":"start","id":"CHOTRIX_PREY_FILTER_ORDER_1","ts":"2026-10-09T06:11:36Z","tsn":1791526296427733994}
+{"seat":"FOUNDRY","event":"lease","id":"STILLSAND_LOOKUP_CACHE_1","action":"take","token":"FOUNDRY.pid28201.604bfb3d","expires":"2026-10-09T06:56:37Z","ts":"2026-10-09T06:11:37Z","tsn":1791526297802705540}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_LOOKUP_CACHE_1","ts":"2026-10-09T06:11:38Z","tsn":1791526298066717809}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_LOOKUP_CACHE_1","ts":"2026-10-09T06:11:38Z","tsn":1791526298329829672}
+{"seat":"FOUNDRY","event":"lease","id":"ZUURRIK_OFF_FINISH_SWARM_1","action":"take","token":"FOUNDRY.pid28201.e66ce0b6","expires":"2026-10-09T06:56:39Z","ts":"2026-10-09T06:11:39Z","tsn":1791526299698958186}
+{"seat":"FOUNDRY","event":"claim","id":"ZUURRIK_OFF_FINISH_SWARM_1","ts":"2026-10-09T06:11:39Z","tsn":1791526299970333784}
+{"seat":"FOUNDRY","event":"start","id":"ZUURRIK_OFF_FINISH_SWARM_1","ts":"2026-10-09T06:11:40Z","tsn":1791526300218216390}
+{"seat":"FOUNDRY","event":"implemented","id":"HERD_FEAR_TICK_OFFSET_1","sha":"95b539b9ec60","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:11:45Z","tsn":1791526305646326477}
+{"seat":"FOUNDRY","event":"implemented","id":"CHOTRIX_PREY_FILTER_ORDER_1","sha":"95b539b9ec60","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:11:47Z","tsn":1791526307472081631}
+{"seat":"FOUNDRY","event":"implemented","id":"STILLSAND_LOOKUP_CACHE_1","sha":"95b539b9ec60","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:11:49Z","tsn":1791526309346899918}
+{"seat":"FOUNDRY","event":"implemented","id":"ZUURRIK_OFF_FINISH_SWARM_1","sha":"95b539b9ec60","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:11:51Z","tsn":1791526311099734282}
+{"seat":"FOUNDRY","event":"drop","id":"RANKLESS_DLC_SETTING_REMOVE_1","reason":"stale-drop: grep -i rankless|royalty|ideology over LuminousPigment/Source finds no setting, field or RanklessAllowed (row cited a removed setting)","ts":"2026-10-09T06:12:00Z","tsn":1791526320868321892}
