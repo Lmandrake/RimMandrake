@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Answering.xml    mandrake.rm.lanterndeeps - LANTERNDEEPS_ANSWERING_RITE_BUILD_1
+  The two marks the Answering leaves on a droid. Engine: Source/RM_Answering.cs. The rite itself is campaign data in
+  mandrake.rut.rites (Defs/RUT_Answering.xml). All numbers PROVISIONAL.
+-->
+<Defs>
+
+  <!-- A poor Answering: the droid stops. It cannot move, so it is downed and can be carried; it restarts by itself once it is out of
+       every mind's sight (Hediff_RM_AnsweringStalled.Tick). -->
+  <HediffDef>
+    <defName>RM_AnsweringStalled</defName>
+    <label>stopped</label>
+    <description>Stopped in the sight of a mind that answered nothing. It will start again once it is carried out of that sight.</description>
+    <hediffClass>RimMandrake.LanternDeeps.Hediff_RM_AnsweringStalled</hediffClass>
+    <defaultLabelColor>(0.6, 0.7, 0.9)</defaultLabelColor>
+    <isBad>true</isBad>
+    <tendable>false</tendable>
+    <makesSickThought>false</makesSickThought>
+    <stages>
+      <li>
+        <becomeVisible>true</becomeVisible>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- A good or excellent Answering: one line in the droid's log that it did not write. The line text rides on the hediff
+       (Hediff_RM_LogLine) and shows on its health tab. -->
+  <HediffDef>
+    <defName>RM_AnsweredLogLine</defName>
+    <label>a line it did not write</label>
+    <description>Its log holds one line it did not write.</description>
+    <hediffClass>RimMandrake.LanternDeeps.Hediff_RM_LogLine</hediffClass>
+    <defaultLabelColor>(0.6, 0.7, 0.9)</defaultLabelColor>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <stages>
+      <li>
+        <becomeVisible>true</becomeVisible>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

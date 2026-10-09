@@ -62,6 +62,8 @@
     <Compile Include="DeepFloraPlanter.cs" />
     <Compile Include="LanternDeepsMod.cs" />
     <Compile Include="RM_WorkingDead.cs" />
+    <Compile Include="RM_Answering.cs" />
+    <Compile Include="RM_AnsweringKernel.cs" />
     <Compile Include="RM_OrunGhal.cs" />
     <Compile Include="RM_HydrocarbonFauna.cs" />
     <Compile Include="RM_CreepCleavers.cs" />

@@ -90,6 +90,10 @@ namespace RimMandrake.LanternDeeps
         public static float sipperCellsPerSipper = 0.1f;        // glow radius lost per sipper sitting on a light
         public static bool tapperEnabled = true;                // live: wild tappers drain batteries; tame ones store aurora charge
         public static bool poolerSmotherEnabled = true;         // live: poolers smother fires, heaters and warm bodies
+        // LANTERNDEEPS_ANSWERING_RITE_BUILD_1 (numbers PROVISIONAL, on the outcome def's RM_AnsweringExtension)
+        public static bool answeringRiteEnabled = true;         // live: the Answering may be held at a Shard-mind / mindstone
+        public static bool answeringStallEnabled = true;        // live: a poor Answering stops the droid and it must be carried out
+        public static bool answeringNextStoneEnabled = true;    // live: an excellent Answering names (and places) the next mindstone
 
         // DEEP_ENTRANCE_BIOMES_SETTING_1 — owner, 2026-09-18: "The mod itself
         // will be (3) but for the Utinni scenario it's definitely (1)". The
@@ -232,6 +236,9 @@ namespace RimMandrake.LanternDeeps
             Scribe_Values.Look(ref sipperCellsPerSipper, "sipperCellsPerSipper", 0.1f);
             Scribe_Values.Look(ref tapperEnabled, "tapperEnabled", true);
             Scribe_Values.Look(ref poolerSmotherEnabled, "poolerSmotherEnabled", true);
+            Scribe_Values.Look(ref answeringRiteEnabled, "answeringRiteEnabled", true);
+            Scribe_Values.Look(ref answeringStallEnabled, "answeringStallEnabled", true);
+            Scribe_Values.Look(ref answeringNextStoneEnabled, "answeringNextStoneEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -400,6 +407,15 @@ namespace RimMandrake.LanternDeeps
                 "On: a wild pooler seeks the warmest thing near it: it puts out fires, drowns a fuelled heater flat, holds a powered "
               + "heater off while it sits on it, and chills a warm body fast; a tame one only hunts fires. Fire never hurts it. Off: "
               + "it wanders and any heater it held comes back on. Safe mid-game.");
+            list.CheckboxLabeled("The Answering can be held (campaign rite)", ref answeringRiteEnabled,
+                "On: the Answering may be held at a Shard-mind or mindstone with one of your droids standing in its sight, if the "
+              + "campaign's rites mod teaches it. Off: it cannot be started, and a rite already running changes nothing. Safe mid-game.");
+            list.CheckboxLabeled("A poor Answering stops the droid", ref answeringStallEnabled,
+                "On: after a poor Answering the droid stops and has to be carried out of the mind's sight, where it restarts. "
+              + "Off: a poor Answering costs nothing but the attempt.");
+            list.CheckboxLabeled("An excellent Answering names the next mindstone", ref answeringNextStoneEnabled,
+                "On: an excellent Answering leaves a line in the droid's log naming where the next mindstone lies on this Deep, "
+              + "and a vein is there. Off: it only leaves the line it did not write.");
 
             // DEEP_ENTRANCE_BIOMES_SETTING_1 — worldgen-affecting biome checklist.
             list.Gap();
