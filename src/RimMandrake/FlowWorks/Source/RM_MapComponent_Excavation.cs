@@ -1228,7 +1228,21 @@ namespace RimMandrake.FlowWorks
 
 		bool RM_IFlowWorld.CanSupply(int idx)
 		{
-			return stock == null || stock.CanSupply(map, map.cellIndices.IndexToCell(idx), this);
+			IntVec3 c = map.cellIndices.IndexToCell(idx);
+			// FLUID_DISABLE_ALL_INPUTS_1: a natural body of a liquid switched off in Mod Settings feeds no new liquid.
+			if (!InputAllowed(DonorFluid(c, true) ?? ActiveFluid))
+			{
+				return false;
+			}
+			return stock == null || stock.CanSupply(map, c, this);
+		}
+
+		/// <summary>FLUID_DISABLE_ALL_INPUTS_1: the one check every NEW liquid input passes — pump, drill, driver
+		/// fill, natural-source transfer, rain and the legacy flood spread. What already stands stays: liquid already
+		/// in a cut keeps moving and draining; only liquid entering the world is refused.</summary>
+		public static bool InputAllowed(FluidDef fluid)
+		{
+			return RimMandrakeFlowWorksSettings.FluidAllowed(fluid);
 		}
 
 		bool RM_IFlowWorld.TryDebitLevel(int idx)
@@ -1312,6 +1326,10 @@ namespace RimMandrake.FlowWorks
 			}
 			// Rain is water (step 2b): it lands on a dry cell (claiming it) or a water cell, never on another fluid.
 			FluidDef fluid = RimMandrakeFlowWorks_DefOf.RM_Fluid_Water ?? ActiveFluid;
+			if (!InputAllowed(fluid))
+			{
+				return;   // FLUID_DISABLE_ALL_INPUTS_1: water switched off means rain adds none
+			}
 			foreach (IntVec3 c in excavatedCells)
 			{
 				int i = map.cellIndices.CellToIndex(c);
@@ -1464,7 +1482,7 @@ namespace RimMandrake.FlowWorks
 			// already holding a different fluid (fluids never mix) and returns false so the caller can keep its own behaviour.
 			FluidDef fluid = driverFluid ?? FluidAt(c) ?? ActiveFluid;
 			// FLOWWORKS_REVIEW_LOOKS_ROUND_1: a liquid switched off in Mod Settings never pours into a cut.
-			if (fill > fillGrid[i] && !RimMandrakeFlowWorksSettings.FluidAllowed(fluid))
+			if (fill > fillGrid[i] && !InputAllowed(fluid))
 			{
 				return false;
 			}
