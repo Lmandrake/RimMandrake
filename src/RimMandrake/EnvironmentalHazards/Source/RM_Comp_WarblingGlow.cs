@@ -25,6 +25,11 @@ namespace RimMandrake.EnvironmentalHazards
         // (cosmetic only; not worth a Scribe entry).
         private int phaseOffset;
 
+        // WARBLING_GLOW_BASELINE_1: the colour the lamp had before we first touched it (a player-picked colour
+        // survives), scribed as four ints so a save made mid-warble reloads around the same centre.
+        private bool hasBaseline;
+        private int baseR, baseG, baseB, baseA;
+
         private CompGlower glowerCache;
         private CompQuality qualityCache;
         private bool cachedSiblingComps;
@@ -50,6 +55,16 @@ namespace RimMandrake.EnvironmentalHazards
             cachedSiblingComps = true;
         }
 
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Values.Look(ref hasBaseline, "warbleHasBaseline", false);
+            Scribe_Values.Look(ref baseR, "warbleBaseR", 0);
+            Scribe_Values.Look(ref baseG, "warbleBaseG", 0);
+            Scribe_Values.Look(ref baseB, "warbleBaseB", 0);
+            Scribe_Values.Look(ref baseA, "warbleBaseA", 255);
+        }
+
         private const string WarbleOwner = "eh.warble";
 
         public override void CompTick()
@@ -57,7 +72,16 @@ namespace RimMandrake.EnvironmentalHazards
             if (!RM_EnvironmentalHazardsSettings.warblingGlowEnabled)
             {
                 // mod option: warbling gaslight animation disabled — let go of the pulse once
-                if (glowerCache != null && parent.IsHashIntervalTick(250)) LightLedger.ClearMul(glowerCache, WarbleOwner);
+                EnsureSiblingComps();
+                if (glowerCache != null && parent.IsHashIntervalTick(250))
+                {
+                    LightLedger.ClearMul(glowerCache, WarbleOwner);
+                    if (hasBaseline)
+                    {
+                        glowerCache.GlowColor = new ColorInt(baseR, baseG, baseB, baseA); // put the colour back where we found it
+                        hasBaseline = false;
+                    }
+                }
                 return;
             }
 
@@ -104,7 +128,13 @@ namespace RimMandrake.EnvironmentalHazards
             // Color: base hue wanders +/- hueRangeDegrees on wavePrimary,
             // brightness pulses +/- valuePulseFraction on the SAME wave so
             // the color and the "breathing" brightness read as one motion.
-            Color baseColor = glowProps.glowColor.ToColor;
+            if (!hasBaseline)
+            {
+                ColorInt now = glowerCache.GlowColor;
+                baseR = now.r; baseG = now.g; baseB = now.b; baseA = now.a;
+                hasBaseline = true;
+            }
+            Color baseColor = new ColorInt(baseR, baseG, baseB, baseA).ToColor;
             Color.RGBToHSV(baseColor, out float h, out float s, out float v);
             h = Mathf.Repeat(h + wavePrimary * (p.hueRangeDegrees / 360f), 1f);
             v = Mathf.Clamp01(v + wavePrimary * p.valuePulseFraction * qualityScale);

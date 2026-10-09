@@ -1,0 +1,1 @@
+A1 L1: Warbling lamp with a player-picked glow colour: after warbling the colour oscillates around the picked colour, not the def default; toggling warblingGlowEnabled off restores the picked colour. PROVISIONAL.
