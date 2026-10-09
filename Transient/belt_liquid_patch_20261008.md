@@ -42,4 +42,7 @@ probe, NO_FEATURE mutation). All of src/: 408 targets, 402 OK, 0 missing, 4 unre
 run_selftests GREEN 344/346 (2 skipped).
 
 ## Stage 5: publish + rimflow implemented
-(pending)
+LIQUID_HEAT_PUSH_1 f90610cd5 -> built (owes A1 L1 load clean; A2/A3 L2 liquid_heat chain live).
+HARMONY_PATCH_RESILIENCE_1 d5a1163d4 -> built (owes A1 L1 census line in Player.log; A2 L1 deliberately-broken-patch build).
+Nothing deployed to the game Mods folder (offline pass). Follow-ups: BOILING_ICY_CANAL_FLUIDS_1; per-mod adoption list in
+HARMONY_PATCH_RESILIENCE_1.md.
