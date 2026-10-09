@@ -78,12 +78,12 @@ art line up cleanly:
   than in the references — worth sharpening on any redo, not a wrong hue.
 
 ## Must show
-- [ ] Pterosaur-shaped body: long slender neck, elongated toothless beak, digit-supported membrane wings (not feathered), long thin tail
-- [ ] Blue-grey to slate-grey body coloring
-- [ ] Dark maroon/wine-red wing membranes
-- [ ] Pale tan/bone-colored beak, with the two-pronged (bicorn) hooked tip rendered gold or pale yellow
-- [ ] Red/orange eyes
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all three images (infobox render, *Clone Wars Legacy* concept, TCG card art) as read by the visual brief, and the canon text (bicorn beak, claws, "blue and purple").*
+- [ ] BODY PLAN: a large, rideable pterosaur-shaped flyer: long slender neck, elongated toothless beak, digit-supported membrane wings (not feathered), long thin tail, clawed hands/feet used for perching, gripping and scaling rock walls (not a bird's talons)
+- [ ] COLOUR LAYOUT: body, neck and head blue-grey to slate-grey; wing membranes dark maroon/wine-red (the darkest, warmest element); beak pale tan/bone-coloured with the forked tip gold or pale yellow; eyes red/orange
+- [ ] Beak: long, toothless, ending in a two-pronged (bicorn) hooked tip — the forked prongs clearly visible
 - [ ] Clawed hands/feet suited to perching and gripping (not a bird's talons)
+- [ ] NEGATIVE: not a bird (no feathers, no fan tail, no single-pointed beak), not a dragon or wyvern (no scaled horned head, no teeth, no thick tail); not purple-bodied with blue wings, not a short-necked bat
 
 ## Engine limits
 none known

@@ -36,13 +36,14 @@ Both images are CANON (The Clone Wars, infobox render and the "snorting worms" f
 - Matches the prose (worm-like, enters through the nose). Prose of yellow eggs is not shown.
 
 ## Must show
-- [ ] Legless eyeless tube body, thick at the head and tapering to a whip-thin tail
-- [ ] Mustard-yellow/olive-gold skin with a dark green dorsal stripe
-- [ ] Orange-brown banding and small orange dorsal nubs along the fore body
-- [ ] Pointed cone-shaped head with no visible eyes
-- [ ] Small: about a forearm long, finger-thick, glossy and moist
-
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both Clone Wars images (`canon_1` anatomy, `canon_2` scale) as read by the visual brief, and the owner's 2026-10-08 realism ruling there.*
+- [ ] BODY PLAN: a single legless, limbless worm — one long smooth muscular tube, thickest at the head end and tapering steadily to a whip-thin tail; body carried in a wavy S-curve; no eyes visible
+- [ ] COLOUR LAYOUT: mustard-yellow to olive-gold body with a dark olive-green stripe running the length of the back; orange-brown banded patches on the fore body; the tail tip fading to a thin rust-orange banded filament
+- [ ] Small orange dorsal nubs/ridges along the front third of the back
+- [ ] Head: a pointed, blunt-cone tip with no visible eyes or mouth detail
+- [ ] Small: finger-thick; forearm-length in the canon frame against a clone's face (canon infobox gives 1 m, Legends about 0.5 m) — glossy and moist
 - [ ] Realistic rendering: natural moist, glistening segmented worm skin and lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a snake (no eyes, no scales, no flat head with a jaw), not a caterpillar or centipede (no legs), not a cartoon worm with a face; not uniformly one colour — the dark dorsal stripe and orange fore-body banding must show
 
 ## Engine limits
 not yet assessed

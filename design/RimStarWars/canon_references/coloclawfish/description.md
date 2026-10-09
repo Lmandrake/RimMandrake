@@ -36,14 +36,13 @@ Their stomachs could expand to accommodate larger prey, resulting in some colos 
 - **Disagreement:** the prose says "flat eel-like" and "serpentine and spine-studded"; images agree, but the canon text says "serpentine and spine-studded" and the Legends text says nodules; whether the spine studs read as small nodules or sharp spikes in the images is my reading and is not settled by the text. Size: canon gives 40 m long (not shown by the images); Legends text: second-largest predator in Naboo's seas, bigger than an opee sea killer.
 
 ## Must show
-- [ ] Very long, flat, eel-like body tapering to a thin or paddle-shaped tail, not a stout fish
-- [ ] Crocodile-like head with a long snout, large curved front fangs and a yellow slit-pupil eye
-- [ ] A pair of clawed arm-like appendages directly behind the head
-- [ ] Glowing cyan/teal fringe along the flank edge and a row of glowing nodules down the spine
-- [ ] Olive to khaki-brown back with dark blue-black flank spots, paler grey-blue belly
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the *Phantom Menace* CGI render `legends_1` (adult) and `canon_2` (infant) as read by the visual brief, which follows the owner's 2026-10-08 realism ruling there.*
+- [ ] BODY PLAN: a huge sea predator with a very long, flat, eel/serpent body — a thick crocodilian head and neck at one end, tapering back into a long ribbon tail ending in a flat paddle — with a pair of jointed, clawed arm-like appendages directly behind the head, ending in large curved talons; not a stout fish, no paired fins along the body
+- [ ] COLOUR LAYOUT: olive to khaki-brown, finely textured back and flanks with scattered dark blue-black spots; belly a grey/grey-blue band distinct from the khaki back; a glowing cyan/teal fringe along the edge between back and belly and a row of glowing teal nodules down the spine and flanks; yellow eye
+- [ ] Crocodile-like head with a long snout, large curved white/cream front fangs, and a yellow slit-pupil eye set high on a bony brow
 - [ ] Mandible-like jaw appendages (Legends render) kept subtle, not required in canon art
-
 - [ ] Realistic rendering: natural wet, finely textured eel/crocodilian skin and underwater lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a plain eel or moray (must have the croc head and the two clawed arms), not a crocodile or sea serpent with legs/flippers; not the deleted comic's plain unspotted olive body with small tucked claws and bright red mouth
 
 ## Engine limits
 not yet assessed

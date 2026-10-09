@@ -48,12 +48,13 @@ reasonable design to keep or lightly extend (bigger frill, more visible
 mottling) rather than a confirmed mismatch to fix.
 
 ## Must show
-- [ ] Stocky, quadrupedal, ceratopsian-like body plan
-- [ ] Bony head frill with multiple horns
-- [ ] Warm orange/tan hide mottled with darker rust-brown patches
-- [ ] Visibly smaller young present within a herd context (if depicting a herd)
-
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the sole image, the Legends *Empire* 16 comic panel, as read by the visual brief, the Legends text (gigantic, massive, orange with brown spots, multihorned, short tail) and the owner's 2026-10-08 realism ruling there. Canon gives no appearance at all.*
+- [ ] BODY PLAN: a gigantic, massive, stocky, slow-moving quadruped of ceratopsian (triceratops-like) build — heavy body on four thick legs, a large head carried low bearing a bony frill and multiple horns, a short tail
+- [ ] COLOUR LAYOUT: warm orange/tan hide over the whole body, mottled with darker rust-brown patches/spots
+- [ ] Bony head frill with multiple horns (more than two)
+- [ ] Visibly smaller animals present within a herd context (if depicting a herd; the page does not say they are young)
 - [ ] Realistic rendering: natural thick wrinkled hide texture and lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a rhino or two-horned cow-like animal with no frill (the donor's simplification), not a long-tailed dinosaur, not a predator (no fangs or claws); not grey or unspotted
 
 ## Engine limits
 none known

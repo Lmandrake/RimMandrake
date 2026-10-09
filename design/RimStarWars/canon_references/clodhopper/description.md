@@ -46,13 +46,13 @@ juveniles. The blue "eyecolor" infobox field is not tied to a patch by the page;
 blue-toned eye patch.
 
 ## Must show
-- [ ] Vivid red/crimson head and neck (adults)
-- [ ] Pale grey-blue patch of skin around the eye
-- [ ] Pale grey beak
-- [ ] Brown, ridged, feathered-looking body with a long neck
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_fieldguide.jpg` (the only image, Legends) as read by the visual brief, and the Legends text ("powerful forelegs to forage and hop", rarely over three feet tall).*
+- [ ] BODY PLAN: a small (rarely over three feet), stocky, flightless "avian" with no wings: sturdy, powerful clawed FORELEGS used for foraging and hopping plus hind legs, a long neck, and a beaked head carried low toward the food
+- [ ] COLOUR LAYOUT (adult): vivid red/crimson head and neck; brown, ridged, feathered-looking body; a pale grey-blue patch of skin around each eye (the eye itself dark within it); a pale grey beak
+- [ ] Brown, ridged, feathered-looking body texture with tough, durable-looking skin
 - [ ] Sturdy clawed forelimbs used for foraging
-- [ ] Juveniles are smaller and more uniformly brown/olive, lacking the adult's vivid red
-  head
+- [ ] Juveniles are smaller and more uniformly brown/olive, lacking the adult's vivid red head
+- [ ] NEGATIVE: not a flying bird (no wings, no flight feathers), not an insect, not a plain-dark-eyed muted red-brown animal (the donor's failure — the head must be vivid red and the eye patch blue-grey)
 
 ## Engine limits
 none known

@@ -67,15 +67,15 @@ All images agree on *shape*; colour is a range.
 captured for comparison, so nothing here validates or invalidates what the mod renders today.
 
 ## Must show
-- [ ] Enormous, tall, upright bat-like ears, roughly as tall as the skull itself, thin
-  enough to read as translucent
-- [ ] Short, flat, forward-facing snout ending in a broad nose-pad (not a human nose)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Kabe costume photo and cantina still, the NEGAS painting and the hyperlane-scout painting, as read by the visual brief.*
+- [ ] BODY PLAN: a small (about one metre), stocky, short-limbed furred humanoid with a proportionally huge head, topped by enormous, tall, upright bat-like ears roughly as tall as the skull itself, standing up and outward, thin enough to read as translucent
+- [ ] COLOUR LAYOUT: warm mid-to-dark brown fur over the whole body and face, longest as a ruff around the jaw and neck (grey/tan also sourced); bare skin only on the ears, nose-pad and palms/soles; ears pale pink-lilac with darker veined edges; nose-pad pink; hands and feet dark and leathery
+- [ ] Short, flat, forward-facing snout ending in a broad pig-like nose-pad (not a human nose)
 - [ ] Small mouth showing two prominent pointed upper incisors hanging over the lower lip
 - [ ] Small dark eyes set forward in the face fur (live-action); large blue eyes only as a painted variant
-- [ ] Full body fur, with bare skin only on the ears, nose-pad, and palms/soles
-- [ ] Stocky, short-limbed body with a proportionally huge head relative to a roughly
-  one-metre stature
+- [ ] Long-fingered, wrinkled, dark clawed hands and long splayed clawed toes
 - [ ] Realistic rendering: shaggy natural fur, thin veined skin on the ears, leathery clawed hands, natural lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a human head with a pig nose and small non-human ears (no bare human face, no small ears); not a Ewok (no small rounded ears) and not a plain mouse or bat animal (it stands and is dressed as a humanoid); not a comic-relief critter
 
 ## Engine limits
 none known
