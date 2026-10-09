@@ -27,3 +27,9 @@ dependency or the hook lives in an engine mod.
 ## verify
 
 Offline build + Abyss validation.py; the sound itself is a joint session.
+
+## Owner note 2026-10-09 (typed on a question card)
+
+*"You know all the biomes are being moved into a single Baroque Biome mod that WILL take harmony, right? Then this is moot... right?"*
+
+Finding: yes. The unified `RimMandrake.Biomes` mod is built from per-biome Assemblies (`biome_mod_unification_spec.md` section 3 allows multi-DLL), so a Harmony hook there is fine and the "Abyss carries no Harmony by design" constraint is void. Also: the Abyss already declares `brrainz.harmony` in its About.xml and its csproj records `RM_AbyssSoundHook.cs` (a postfix on `Sample.Update`, 0Harmony Private=false), so the hook was already taken inside the Abyss section. Sound is judged only with him present.
