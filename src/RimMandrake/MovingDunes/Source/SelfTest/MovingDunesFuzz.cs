@@ -297,6 +297,27 @@ namespace RimMandrake.MovingDunes.SelfTest
             }
             RM_DuneKernel.SetDepthHysteretic(g, 1, 1, -3f, 0.012f); Check(g.d[5] == 0f, "negative target not clamped to 0");
             RM_DuneKernel.SetDepthHysteretic(g, 1, 1, 7f, 0.012f); Check(g.d[5] == 1f, "huge target not clamped to max");
+            // DUNE_MOVED_EVENT_1: a declined move raises no event; an accepted one raises exactly one
+            int moved = 0; float lastBefore = -1f, lastAfter = -1f;
+            Action<IDuneField, int, int, float, float> h = (fld, x, z, b0, a0) => { moved++; lastBefore = b0; lastAfter = a0; };
+            RM_DuneKernel.DepthMoved += h;
+            try
+            {
+                var e = new ArrField(4, 4); e.Max = 1f; e.d[5] = 0.4f;
+                RM_DuneKernel.SetDepthHysteretic(e, 1, 1, 0.4f, 0.012f);
+                Check(moved == 0, "a no-change write raised an event");
+                e.canHold[5] = false;
+                RM_DuneKernel.SetDepthHysteretic(e, 1, 1, 0.9f, 0.012f);
+                Check(moved == 0 && e.d[5] == 0.4f, "a refused write raised an event");
+                e.canHold[5] = true;
+                RM_DuneKernel.SetDepthHysteretic(e, 1, 1, 0.9f, 0.012f);
+                Check(moved == 1 && Math.Abs(lastBefore - 0.4f) < 1e-6f && Math.Abs(lastAfter - e.d[5]) < 1e-6f, $"an accepted write raised {moved} events");
+                RM_DuneKernel.SetDepthHysteretic(e, 1, 1, 7f, 0.012f);
+                Check(moved == 2, "a second accepted write did not raise exactly one more event");
+                RM_DuneKernel.SetDepthHysteretic(e, 1, 1, 7f, 0.012f);
+                Check(moved == 2, "a clamped-to-same write raised an event");
+            }
+            finally { RM_DuneKernel.DepthMoved -= h; }
             return null;
         }
 

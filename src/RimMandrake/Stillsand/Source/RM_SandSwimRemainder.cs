@@ -108,7 +108,7 @@ namespace RimMandrake.Stillsand
     // WindManager speed (the SoundDef curves do the scaling); only on the map in view, only on a Stillsand
     // map. Deviation from the spec's "ride RM_MapComponent_ProximitySoundscape": that component is driven
     // by tagged Things near the listener and cannot scale on wind, so the bed is its own small component.
-    // Singing dunes: Harmony prefix on MapComponent_DuneField.SetDepthHysteretic notes each slab shed
+    // Singing dunes: a listener on MovingDunes' RM_DuneEvents.SandMoved notes each slab shed
     // from a cell (a slip face); a sampled one plays the song, and the first one near a player building
     // posts a one-line warning (scribed, once per map).
     public class RM_MapComponent_SandListening : MapComponent
@@ -224,9 +224,14 @@ namespace RimMandrake.Stillsand
             catch (Exception e) { Log.Warning(rule + "drift patch failed: " + e.Message); }
             try
             {
-                Type field = GenTypes.GetTypeInAnyAssembly("RimMandrake.MovingDunes.MapComponent_DuneField");
-                MethodInfo m = field == null ? null : AccessTools.Method(field, "SetDepthHysteretic");
-                if (m != null) { h.Patch(m, prefix: new HarmonyMethod(typeof(Patch_SlipFace), "Prefix")); songPatched = true; }
+                // DUNE_MOVED_EVENT_1: listen to MovingDunes' "this sand actually moved" instead of patching a request.
+                Type events = GenTypes.GetTypeInAnyAssembly("RimMandrake.MovingDunes.RM_DuneEvents");
+                EventInfo ev = events?.GetEvent("SandMoved", BindingFlags.Public | BindingFlags.Static);
+                if (ev != null)
+                {
+                    ev.AddEventHandler(null, new Action<Map, IntVec3, float, float>(SandMovedListener.OnSandMoved));
+                    songPatched = true;
+                }
             }
             catch (Exception e) { Log.Warning(rule + "singing-dune hook failed: " + e.Message); }
 
@@ -243,16 +248,14 @@ namespace RimMandrake.Stillsand
         }
     }
 
-    public static class Patch_SlipFace
+    public static class SandMovedListener
     {
-        // MapComponent.map is public; __instance typed as the base so Harmony needs no MovingDunes reference.
-        public static void Prefix(MapComponent __instance, IntVec3 cell, float target)
+        // Raised by MovingDunes only when a cell's sand depth really changed; a slab shed is a drop of 0.05 or more.
+        public static void OnSandMoved(Map map, IntVec3 cell, float before, float after)
         {
             if (!RM_SandSwimRemSettings.listeningSingingEnabled && !RM_SandSwimRemSettings.listeningWarningEnabled) return;
-            Map map = __instance.map;
-            SandGrid grid = map?.sandGrid;
-            if (grid == null || grid.GetDepth(cell) - target < 0.05f) return;
-            map.GetComponent<RM_MapComponent_SandListening>()?.NoteSlipFace(cell);
+            if (before - after < 0.0499f) return;
+            map?.GetComponent<RM_MapComponent_SandListening>()?.NoteSlipFace(cell);
         }
     }
 }
