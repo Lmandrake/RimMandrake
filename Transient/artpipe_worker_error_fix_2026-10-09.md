@@ -1,6 +1,6 @@
 # artpipe worker_error fix 2026-10-09
 
-Status: code landed; restart + requeue below.
+Status: done. Fix landed at 2a84f5851; daemon restarted 06:34.
 
 ## Counts (measured 06:30)
 
@@ -60,8 +60,13 @@ either (same rate for short generate prompts and long canon-retry edit prompts).
 
 ## Requeue
 
-(filled after restart)
+`requeue_flakes.py --since-hours 48` (the tool's own verb) requeued 1 job, `sketto_fly_plate_v3_east`, the only
+48 h `worker_error` with no later success. It had no `master_failed` children, so 0 were requeued.
+It was skipped 4 times on the cap and 32 times because the master was still failed, which is correct.
 
 ## Restart
 
-(filled after restart)
+The daemon was restarted at 06:34 on the new code, after `contagion_RustPuff_var2` PASSED (06:32) and `active/` was empty.
+After the restart: `RM_Swale_v3` PASS. `sketto_fly_plate_v3_east` drew an image on its first attempt
+(`attempt_log`: exit 0, no_image false) and then failed the canon grader, 4/5 after its corrected
+retry. The canon grader is out of scope here. The new manifest fields are being written.
