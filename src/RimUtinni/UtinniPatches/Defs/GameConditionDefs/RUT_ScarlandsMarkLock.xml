@@ -48,6 +48,8 @@
       <li Class="RimMandrake.EnvironmentalHazards.EnvironmentalWeatherExtension">
         <hediffToApply>RUT_ScarlandsMark</hediffToApply>
         <hediffSeverityPerInterval>0.0125</hediffSeverityPerInterval>
+        <!-- SC-1: one scar per pawn; yields to the RM Warscar mark (tag on RM_WarscarMark). -->
+        <skipHediffIfCarryingOtherTagged>RM_WarscarMarkFamily</skipHediffIfCarryingOtherTagged>
         <damageIntervalTicks>2500</damageIntervalTicks>
         <onlyUnroofed>false</onlyUnroofed>
       </li>

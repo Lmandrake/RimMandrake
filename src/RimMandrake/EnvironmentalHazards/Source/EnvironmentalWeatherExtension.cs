@@ -55,6 +55,12 @@ namespace RimMandrake.EnvironmentalHazards
         public HediffDef hediffToApply;
         public float hediffSeverityPerInterval;
 
+        // SC-1 (design pass 2026-10-08): one mark per pawn. When set, a pawn already carrying ANY other
+        // hediff whose HediffDef.tags contains this tag is skipped for hediffToApply (not for carrierHediff
+        // or damage). Lets the frozen RUT Scarlands mark yield to the RM Warscar mark, as the Warscar side
+        // already yields to it.
+        public string skipHediffIfCarryingOtherTagged;
+
         // MIASMA_MECHANICS_1 M4 build. Some hazards (e.g.
         // RM_HediffComp_EnvironmentalExposure) read weather/roof/map state
         // from INSIDE the hediff's own comp rather than from the periodic

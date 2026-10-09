@@ -12,8 +12,8 @@ namespace RimMandrake.Scarlands
     // (hacking, mechanoid butchery, smelting). Done here in Warscar's own C#, not through
     // EnvironmentalHazards' weather condition, because mandrake.rm.warscar does not depend on that
     // mod. The RUT twin (RUT_ScarlandsMark) is frozen: this lock skips a pawn carrying any other
-    // hediff tagged RM_WarscarMarkFamily, or the twin itself; the twin's lock does not yet skip
-    // ours (its EnvironmentalHazards class has no such gate).
+    // hediff tagged RM_WarscarMarkFamily, or the twin itself; the twin's lock now skips ours (SC-1: skipHediffIfCarryingOtherTagged);
+    // no stacking either way.
 
     public class RM_HediffCompProperties_WarscarMarkFloor : HediffCompProperties
     {
