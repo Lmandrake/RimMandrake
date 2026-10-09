@@ -34,6 +34,16 @@ namespace RimMandrake.Stillsand
                 Thing t = comp.frozenThings[i];
                 if (t == null || t.Destroyed || !on || !InCave(comp, t))
                 {
+                    if (t is Corpse released && t != null && vanishField != null
+                        && comp.frozenVanish.TryGetValue(released.thingIDNumber, out int savedVanish))
+                    {
+                        // Put back the vanish clock preservation zeroed (0 disables vanishing).
+                        vanishField.SetValue(released, savedVanish);
+                    }
+                    if (t != null)
+                    {
+                        comp.frozenVanish.Remove(t.thingIDNumber);
+                    }
                     if (t is ThingWithComps twc)
                     {
                         CompRottable rot = twc.GetComp<CompRottable>();
@@ -89,6 +99,11 @@ namespace RimMandrake.Stillsand
             comp.frozenThings.Add(t);
             if (t is Corpse corpse && vanishField != null && corpse.InnerPawn != null && corpse.InnerPawn.RaceProps.Animal)
             {
+                object prior = vanishField.GetValue(corpse);
+                if (prior is int priorTicks && priorTicks != 0)
+                {
+                    comp.frozenVanish[corpse.thingIDNumber] = priorTicks;
+                }
                 vanishField.SetValue(corpse, 0); // a desiccated animal corpse otherwise vanishes with time
             }
         }
