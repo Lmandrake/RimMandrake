@@ -253,6 +253,13 @@
           <RM_Dripfringe>1</RM_Dripfringe>
         </plants>
       </li>
+      <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
+           own description, always-true list and shipped mechanics, flagged for the owner's review
+           (Transient/arrival_letters_draft_20261008.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
+        <letterLabel>The Weeping Stones</letterLabel>
+        <letterText>Water is on the cold, shaded faces: follow the black streaks down the pale rock. Every pool is a working thing, part stone, part machine, part crowd of everything that drinks, and the truce at the water holds only while there is enough. The ridges are bright and dry and the sun sits low: a roof does nothing here, only a lee shadow does, a rock face or a sun shield to stand behind. A parasol barely helps.</letterText>
+      </li>
     </modExtensions>
   </BiomeDef>
 

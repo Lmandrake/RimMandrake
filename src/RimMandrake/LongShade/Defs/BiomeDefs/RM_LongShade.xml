@@ -340,6 +340,13 @@
           </li>
         </stages>
       </li>
+      <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
+           own description, always-true list and shipped mechanics, flagged for the owner's review
+           (Transient/arrival_letters_draft_20261008.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
+        <letterLabel>The Long Shade</letterLabel>
+        <letterText>Nothing lives in the light here and nothing survives long out of shelter. Every stone throws a long shadow; cross between them as a sprint, rest, then dash. The gaps between the shadows are the only map that matters. When you must go out into the sun, for graves or salvage, take shade with you. The heat comes from above: a roof, a rock's shadow, a parasol or a shade tent all answer it.</letterText>
+      </li>
     </modExtensions>
   </BiomeDef>
 

@@ -119,6 +119,13 @@
         <heatKind>ambient</heatKind>
         <heatOffsetC>15</heatOffsetC>
       </li>
+      <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
+           own description, always-true list and shipped mechanics, flagged for the owner's review
+           (Transient/arrival_letters_draft_20261008.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
+        <letterLabel>The Forge</letterLabel>
+        <letterText>The mountain runs on a cycle of fire and water, and the warning comes before each turn. Rain here falls boiling. Gas washes down and catches. Lava cools into a crust you can walk, until the melt comes back and takes whatever stands on it. The heat is in the air and the steam: shade does nothing here, so dress against it or stay in a closed room.</letterText>
+      </li>
     </modExtensions>
     <diseases>
       <li>

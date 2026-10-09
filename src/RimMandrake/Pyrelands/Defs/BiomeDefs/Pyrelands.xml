@@ -100,6 +100,13 @@
         <minScaledHeatOffsetC>4</minScaledHeatOffsetC>
         <overheadAboveElevationDegrees>55</overheadAboveElevationDegrees>
       </li>
+      <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
+           own description, always-true list and shipped mechanics, flagged for the owner's review
+           (Transient/arrival_letters_draft_20261008.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
+        <letterLabel>The Pyrelands</letterLabel>
+        <letterText>This grass burns on its own schedule, and somewhere on this ground it is always burning. It grows back faster than anything can eat it and dries within days, and the first dry storm sets it off. Keep a firebreak. The ash falls for days after a big burn and the rain comes down black with it. Scorch-fruit opens only in the burn and spoils within a day: the harvest belongs to whoever walks the flame line. The heat comes straight down: a roof, a parasol or a shade tent answers it.</letterText>
+      </li>
     </modExtensions>
 
     <animalDensity>2.1</animalDensity>

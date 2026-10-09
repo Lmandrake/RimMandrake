@@ -55,6 +55,13 @@
         <minScaledHeatOffsetC>4</minScaledHeatOffsetC>
         <overheadAboveElevationDegrees>55</overheadAboveElevationDegrees>
       </li>
+      <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
+           own description, always-true list and shipped mechanics, flagged for the owner's review
+           (Transient/arrival_letters_draft_20261008.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
+        <letterLabel>The Webwork</letterLabel>
+        <letterText>The silence is not peace; it means something owns this jungle. The web is a nervous system: touch it anywhere and you are felt everywhere near it. The things that hunt here cannot stand direct sun, so clearings are the only safe ground, and fire is the only thing that drives them back. There is no surface water: the river is inside the plants. The heat comes straight down: a roof, a parasol or a shade tent answers it.</letterText>
+      </li>
     </modExtensions>
     <texture>World/Biomes/TropicalRainforest</texture>
     <foragedFood>RawBerries</foragedFood>
