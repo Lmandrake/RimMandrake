@@ -1,0 +1,98 @@
+{
+  "posture": "blacklist",
+  "criterion": "Grouped by creature, not ranked. Each row shows the picture, what marks it carries, and the live art for the same facing beside it.",
+  "sheetId": "leaningscrub_conflict17_2026-10-08",
+  "reviewStatus": {
+    "state": "prefill",
+    "by": null,
+    "at": null,
+    "evidence": "generated; no human has picked"
+  },
+  "decisions": {
+    "RSW_Eopie/0b1cf5fc262d": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Eopie/305ed2283f53": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Eopie/7a1d3d488177": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Eopie/65248648d1d1": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Eopie/175b5632c893": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Eopie/42f39bfebf67": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Lothcat/5a6fb8d87f02": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Lothcat/d572e6c95de3": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Scurrier/16618daa21c9": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Scurrier/3ab62dcb53f0": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Scurrier/c46bacb303eb": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Scurrier/dfd4730c2130": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Scurrier/4013c85c85c1": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Scurrier/5f001366df91": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Strill/4b6c9cd4de89": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Strill/a89217c5dcc4": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RSW_Strill/536117bd9fcb": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    }
+  }
+}
