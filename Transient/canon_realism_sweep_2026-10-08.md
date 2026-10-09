@@ -1,0 +1,227 @@
+# Canon realism sweep — 2026-10-08 (CANON_REALISTIC_REFERENCE_SWEEP_1)
+
+Owner, typed 2026-10-08 19:17: *"That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them"*. Decision taken by question card 2026-10-08 19:17: sweep all entries. Pattern: Lothcat, `5ef5d39ee`.
+
+Classification uses Wookieepedia's own file categories (`Live-action images`, `Realistic CGI images`, `Photographs` = REAL; `3D CGI animation images`, comic categories = ANIM; `Video game CGI images` judged by eye) plus a look at each image.
+
+Per-entry outcome: REALISTIC-OK (already realistic, unchanged) · REPLACED (cartoon deleted, realistic added) · ANIMATION-ONLY (no realistic source; best animated kept, entry marked) · FAILED.
+
+## Log
+- **dianoga** — REALISTIC-OK — Battlefront photoreal renders + Galaxy's Edge prop photo; no change
+- **abednedo** — REALISTIC-OK — all three are live-action prosthetic/costume photos; no change
+- **acklay** — RULING-CONFLICT — ruling picks stylised #2 (kept); removed: none; added: acklay_wookieepedia_3.jpg, acklay_wookieepedia_4.jpg (AOTC Acklay3.jpg, Acklay-SWCTP.png); look change: underside greyer, wrinkled leathery hide
+- **nerf** — REPLACED — removed: canon_2 (Marvel comic), legends_2 (SWTOR render); added: wookieepedia_alienanthology.jpg (Alien Anthology painting, Nerf-aa.jpg); no live-action nerf exists, target is the painted plates; look change: dropped pale cream/orange/blue SWTOR variant, brown only
+- **iridonianreek** — REPLACED — removed: wookieepedia_legends_3 (SWTOR plague reek); added: wookieepedia_canon_2 (AotC film still Reek.jpg); look change: none
+- **snoruuk** — ANIMATION-ONLY — removed: none; added: none (only depiction is an Essential Guide ink drawing); look change: none
+- **strill** — ANIMATION-ONLY — removed: none; added: none (Legends comic + sketch only; canon shows only the Armorer's fur mantle); look change: none
+- **tauntaun** — REALISTIC-OK — all three images realistic (ESB live-action still, SWE photoreal render, Legion painted box art)
+- **dragonsnake** — RULING-CONFLICT — removed: none (ruling names huntforziro + visualencyclopedia); added: concept_jfo (Jedi Fallen Order realistic concept); look change: realistic wet olive crocodilian quadruped with glowing spots
+- **droid_aq** — ANIMATION-ONLY — removed: wookieepedia_kamino_siege.png, wookieepedia_tamson_moncala.png; added: wookieepedia_legion_miniatures.png (SWQ136-Miniatures1, physical Legion miniature photo); look change: ice-blue trim lines on pale brushed steel confirmed
+- **nuna** — REPLACED — removed: wookieepedia_classic_render.jpg (wrong subject: stylised game Jawa render); added: none (remaining infobox + walkintime are realistic CGI; owner-ruled infobox kept); look change: none
+- **pyke** — REPLACED — removed: tall_cranium_masked (Clone Wars), syndicate_capo_comic (comic); added: capo_bobf, traveler_bobf, boss_bobf, courier_bobf (Book of Boba Fett live-action); look change: compact capped skull, no tall spiked dome; barbels hang from snout
+- **teemuss** — ANIMATION-ONLY — removed: none; added: none (Clone Wars render only; Hunters avatar stylised); look change: none
+- **tibidee** — ANIMATION-ONLY — removed: none; added: none (Rebels Card Trader CG + Homeworlds cartoon only); look change: none
+- **droid_b1** — REALISTIC-OK — both images photoreal film-model renders; no change
+- **nysillin** — ANIMATION-ONLY — removed: none; added: none (only a Clone Wars frame exists; brief tells renderer to go realistic); look change: none
+- **herglic** — REPLACED — removed: canon_qensog_comic, canon_weapon_of_a_jedi, legends_alien_encounters_fullbody; added: legends_essential_atlas_painted, legends_ultimate_alien_anthology_painted, legends_galaxy_of_intrigue_bodyguard (realistic painted Legends RPG art; no live-action exists); look change: skin glossy charcoal-black, not flat slate-lavender
+- **anzati** — REPLACED — removed: volfe_karkko_legends, anzati_attacking_secura (comic); added: legends_negas_head, legends_negas_fullbody (NEGAS realistic paintings), dannik_jerriko_anh (live-action); kept Noto comic for canon anatomy; look change: proboscises fleshy shoulder-length from cheeks, not waist-length strings
+- **tooke_trap_plant** — ANIMATION-ONLY — removed: tooke_trap_wookieepedia_3_lego.png (LEGO toy duplicate); added: none (no live-action or photoreal depiction); look change: none
+- **ollopom** — REALISTIC-OK — Galaxy's Edge practical prop photo + realistic painted field-guide/bestiary plates; nothing changed
+- **droid_b1a** — REALISTIC-OK — only 3 images exist (ROTS 2005 game); game model render is realistically textured = look target; concept art labelled line-art anatomy-only in brief; nothing removed
+- **opeeseakiller** — REALISTIC-OK — all four are TPM film CGI / realistic renders; nothing changed
+- **anooba** — REPLACED — removed: wookieepedia_citadel.jpg, wookieepedia_infobox.jpg; added: wookieepedia_galaxysedge_prop.jpg (Anooba TGTB.jpg, Galaxy's Edge prop head); look change: realistic prop shows bare wrinkled pink-brown skin + pale mane vs striped grey fur in illustrations
+- **droid_b2** — REALISTIC-OK — infobox is photoreal film-model render; no change
+- **quarren** — REPLACED — removed: ink_spit_comic (comic); added: drunk, pirate (live-action); look change: live-action skin slightly pinker/mauve
+- **bantha** — REALISTIC-OK — all three images live-action/realistic painted; no change
+- **orray** — REALISTIC-OK — AotC film stills + film CGI infobox; nothing changed
+- **eopie** — REPLACED — removed: herd (SW Kids cartoon); added: factfile (Fact File realistic render); look change: tall thin legs, finely wrinkled grey-lavender hide
+- **paleyobshrimp** — REALISTIC-OK — food photo + Whitlatch Field Guide naturalist painting (only living-animal image anywhere); nothing changed
+- **jerba** — RULING-CONFLICT — ruled image wookieepedia_alienarchive.jpg (ink illustration) kept per ## ruling; removed: wookieepedia_cantina_tethered (comic); added: wookieepedia_wosw_jerba2.jpg (Whitlatch realistic painted plate, Jerba2.jpg); look change: added huge mouth/long ears/back-curving horns per ruling
+- **beldon** — REPLACED — removed: beldon_wookieepedia_1.jpg (flat purple Galactic Atlas drawing, already ruled ignore); added: none (woswfg painted plate stays as sole canon); look change: colour settled orange
+- **eopie** — correction: factfile was a duplicate of infobox, removed; net change is herd cartoon deleted only
+- **jakobeast** — ANIMATION-ONLY — removed: wookieepedia_legends_2 (sourcebook comic cover); kept legends_1 (Jedi Path ink-wash); only 2 images exist anywhere; look change: none
+- **uvak** — REPLACED — removed: wookieepedia_canon_1.webp, wookieepedia_canon_4.webp (Lost Tribe comics); added: none (no other realistic source); canon_3 Essential Reader's Companion painting is now primary, canon_2 comic kept for juveniles; look change: muted charcoal/grey-blue with dull pinkish-brown membrane, not vivid red-orange
+- **urusai** — REALISTIC-OK — all four are Wildlife of Star Wars naturalistic painted field-guide art (Whitlatch); no live-action urusai exists
+- **faascalefish** — REPLACED — removed: legends_2 (pencil-and-wash sketch); added: none (canon_1 Jedi Survivor + legends_1 CGI already realistic); look change: none
+- **blarth** — REPLACED — removed: wookieepedia_legends_2.webp (Republic 61 comic); added: none (no realistic source exists; two painted woswfg plates kept as anatomy); look change: none
+- **jamel** — ANIMATION-ONLY — removed: wookieepedia_canon_1 (low-res Clone Wars screen grab); kept Presley concept sheets; look change: none
+- **rakata** — REPLACED — removed: comic_closeup, poe_dameron_comic, warrior_combat (comics); added: none (no live-action exists; painted TUR/JMGD art now leads, KOTOR/SWTOR kept as labelled stylised anatomy refs); look change: none
+- **pekopeko** — REPLACED — removed: swg_toxic_pekopeko_mount.jpg (SWG UI screenshot); added: none (no live-action exists; field-guide painting = owner-ruled target, BF2 painting, grey model remain); also fixed brief that had fieldguide/infobox descriptions swapped; look change: none (blue)
+- **aqualish** — REPLACED — removed: infobox (comic-style illustration); added: ponda_baba_rogueone, garfalaquox_bobf (live-action); kept quara/aquala line art as anatomy-only negative ref; look change: none (Ponda Baba live-action matches the dark-bearded variant)
+- **varactyl** — REALISTIC-OK — ROTS live-action still, photoreal render, realistic painting, SWG game render
+- **pikobis** — REALISTIC-OK — TPM film still, film CGI render, realistic concept sketch; nothing changed
+- **arkanian** — REALISTIC-OK — single image is a realistic painted reference illustration (Disciples of Harmony); no change
+- **blixus** — ANIMATION-ONLY — removed: wookieepedia_legends_1.webp (Legends comic, off-palette); kept Clone Wars render canon_1; added: none; look change: none
+- **jimvu** — REALISTIC-OK — only image is Whitlatch's naturalistic pencil-and-watercolour field plate (Wildlife of SW); no other depiction exists
+- **vaapad** — RULING-CONFLICT (animation-only) — removed: none; added: none; only depiction is a Galactic Battlegrounds sprite and the 2026-10-05 ruling binds the design to it; brief now asks for realistic rendering of that design; look change: none
+- **porg** — REALISTIC-OK — TLJ practical puppet/film stills; nothing changed
+- **bloddle** — ANIMATION-ONLY — only image is a SWG low-poly game model (kept); removed: none; added: none; look change: none
+- **falumpaset** — REPLACED — removed: legends_1 (Wildlife of SW pencil plate); added: canon_2 (GunganBattleWagon-SWE realistic CGI); look change: no chocolate stocking legs / no gaping hippo mouth
+- **droid_bx_commando** — REPLACED — removed: none (Clone Wars infobox kept, labelled anatomy-only: no photoreal standard BX exists); added: wookieepedia_nd5_outlaws.png (ND5full-OutlawsVCG, Outlaws photoreal); look change: worn chipped grey-mauve metal, flat round white eyes
+- **voorpak** — ANIMATION-ONLY — removed: none (canon_1 Forces of Destiny image is the only canon design, kept); added: none; look change: none
+- **kinrath** — RULING-CONFLICT — ruling keeps TCW netcaster clip/design (animated); all sources animated or KOTOR game; animation-only header added; removed: kotor_screenshot_hivekinrath_dantooine (low-res dup of Viperkinrath); look change: none
+- **vornskyr** — REALISTIC-OK — three realistic painted Legends illustrations (no live-action vornskr exists)
+- **vulptex** — REALISTIC-OK — The Last Jedi live-action stills and photoreal promo renders
+- **pufferpig** — REPLACED — removed: none; added: wookieepedia_canon_5 (Alien Archive painted plate, Puffer pig-AA.png); rejected Galaxy of Creatures cartoon stills; on-screen only in Rebels; look change: wrinkled elephant-like brown hide, AA horns/spikes pale ivory vs dark elsewhere
+- **rodian** — REPLACED — removed: alien_archive_illustration (stylised print), female_and_child (Clone Wars); added: officer_mando, scam_victim_mando, child_bobf (live-action), greedo_unmasked (BTS photo); look change: eyes glossy BLACK not pale lavender; prominent saucer-dish antennae on crown
+- **blurrg** — REPLACED — removed: wookieepedia_legends_1.webp (TCW render), wookieepedia_canon_2.webp (Smuggler's Gambit game); added: wookieepedia_canon_3.webp, wookieepedia_canon_4.webp (Mandalorian Ch1 stills); look change: uniform dark slate wrinkled hide, not mottled/pale belly
+- **bith** — REPLACED — removed: bith_brute (flat stylised illustration); added: starwars_databank_cantina_band (live-action ANH); look change: pink brute build no longer image-evidenced; pale bone-cream confirmed
+- **kraytdragon** — REALISTIC-OK — Mandalorian CGI + live-action spit still, Legends painted plate and an older 3D render; nothing cartoon
+- **fambaa** — REPLACED — removed: infobox (Alien Archive comic ink), fieldguide (WoSW pencil plate); added: factfile (Fambaa-FF47 realistic CGI); look change: duller olive-khaki pebbled scales, yellow-amber eye, paired lower tusks
+- **wampa** — REPLACED — removed: comic_cover_agesolo.jpg; added: wookieepedia_esb_fullbody.png (Wampa-BOSWI11.png), wookieepedia_esb_onearm.png (OneArm-ESB.png), ESB live-action; look change: fur reads warm cream with clumping, small dark curled horns confirmed
+- **droid_droideka** — REPLACED — removed: wookieepedia_deployed_in_show.png (Clone Wars comic); added: wookieepedia_film_tpm.png (P60-TPM, TPM live-action); sharpshooter CW render kept anatomy-only; look change: darker gunmetal with oxblood-bronze belly, not bronze-brown overall
+- **wampa** — REPLACED — removed: comic_cover_agesolo.jpg; added: wookieepedia_esb_fullbody.png (Wampa-BOSWI11.png), wookieepedia_esb_onearm.png (OneArm-ESB.png), ESB live-action; look change: fur reads warm cream with clumping, small dark curled horns confirmed
+- **droid_dsd1** — REALISTIC-OK — AOTC-style photoreal still + realistic painted Legion art; no change
+- **fanback** — REALISTIC-OK — only depiction anywhere is Gungan Frontier (1999) pre-rendered realistic-style CGI, low-res/sepia; all 6 category files are the same game; no change
+- **hutt** — REPLACED — removed: hutt_council_comic; added: jabba_palace_rotj, jabba_puppet_face, rotta_adult_mandalorian_and_grogu (live-action ROTJ / M&G); huttlet (Clone Wars) kept as juvenile-anatomy-only; look change: warmer olive-brown/reddish-tan, deeply furrowed wet hide
+- **qormot** — ANIMATION-ONLY — removed: none; added: none (only depiction is a Creatures of the Galaxy ink drawing); look change: none
+- **gelagrub** — REPLACED — removed: legends_2 (Galaxy at War painted plate); added: none (Databank CGI + ROTS film still already realistic); look change: no lime-green flanks or spiky ridges
+- **iktotchi** — REPLACED — removed: ferren_barr (comic); added: none (two live-action Saesee Tiin + realistic Legends painting remain); look change: skin tan/peach is the norm, brick-red was the comic
+- **selkath** — REPLACED — removed: infobox_mantu_canon, mantu_detail_encyclopedia (Clone Wars), legends_infobox_kotor_fullbody, legends_headshot (KotOR game); added: peex_curando_acolyte (live-action), peex_curando_concept_acolyte (Acolyte design art); look change: cracked polygonal blue-grey plates not maroon blotches; amber side eyes
+- **whisperbird** — REPLACED — removed: wookieepedia_alienarchive.jpg; added: wookieepedia_bf2_render.png (WhisperBird-BFII.png, photoreal game), wookieepedia_woswfg_legends.jpg (Wildlife of SW painting); look change: no dark wing barring, slim straight beak, long tail streamer, heron-like silhouette
+- **bothan** — REPLACED — removed: bothan_legends_um (comic); added: borsk_feylya_aod_legends, swg_concept_legends (realistic paintings, Legends); no live-action/photoreal Bothan exists; look change: feline variant is natural tan not saturated orange
+- **bogwing** — REALISTIC-OK — Visual Encyclopedia CGI render + ESB-era painted/composite images; no change
+- **bolotaur** — REPLACED — removed: bolotaur_wookieepedia_2.jpg (SWG game render); added: none (no realistic source beyond the GAW painting); look change: colour settled olive-green
+- **boma** — REPLACED — removed: boma_wookieepedia_2.jpg (Empire's End comic); added: none (ruled painted render #1 stays); look change: none
+- **borcatu** — RULING-CONFLICT — ruling says mix donor + Disney Infinity game render, ignore #3; only sources are a 1994 B/W sourcebook ink drawing and a Disney Infinity toy; nothing changed
+- **ronto** — REPLACED — removed: wookieepedia_infobox.jpg (flat inked Alien Archive art); added: film_still_r3t2.jpg (ANH SE still), wookieepedia_negas.jpg (NEGAS painting); look change: none (film grey-brown wrinkled hide is anchor)
+- **droid_dum_pit** — REPLACED — removed: wookieepedia_reddish_clonewars.png (Clone Wars); added: wookieepedia_pair_carrying.png (PitDroids-WiaW05), wookieepedia_stack_tpm.jpg (Pitdroidstack wsmi, TPM); look change: brick/oxide red chipped paint, spindlier limbs; schemes vary per unit
+- **gizka** — ANIMATION-ONLY — removed: none; added: none (only KOTOR model/concept/Disney Infinity exist; owner's KOTOR refs stay authoritative); look change: render the KOTOR anatomy with real reptile skin
+- **ithorian** — REPLACED — removed: oncabulduga_db (Clone Wars); added: mokshaiz_head_closeup, mokshaiz_front_bobf (live-action BoBF); look change: palette narrowed to olive-ochre/mid-brown (pink/grey-brown were the cartoon)
+- **runyip** — REPLACED — removed: canon_1 (flat Galactic Atlas illustration), legends_2 (ink drawing of unrelated Tran Mariel runyip); added: none (no live-action; Whitlatch painting + BFII still remain); look change: none
+- **kowakianmonkeylizard** — REPLACED — removed: canon_2 (SWGoH portrait); added: canon_2 (Crumb puppet full body), canon_3 (Outlaws crop), canon_4 (Mandalorian roast), canon_5 (Crumb puppet head); look change: base is live-action tan wrinkled skin + ginger hair + blue-grey beak, not the CG blue ruff/yellow belly
+- **jawa** — REPLACED — removed: alien_archive_illustration (stylised plate); added: none (three live-action remain); look change: none
+- **sandoaquamonster** — REALISTIC-OK — TPM film CGI + Whitlatch naturalist plates; nothing changed
+- **scurrier** — REALISTIC-OK — ANH SE film stills/CGI + realistic painted plate; nothing changed
+- **gorg** — REPLACED — removed: none; added: canon_2 (JarJarGragra-TPM live-action); legends_1 + nl_gorgs1 watercolours kept labelled illustration-only (sole evidence of variant shapes); look change: realism target is the TPM wet-skinned props, muted colours
+- **droid_fx7** — REALISTIC-OK — FX-7 practical prop photo + realistic painted FX-9 art; no change
+- **womprat** — REPLACED — removed: wookieepedia_canon_2.webp (Alien Archive line art); added: wookieepedia_canon_3.webp (WompRatSunning-BoBFCh5.png, live-action); look change: dusty brown-grey patchy fur over wrinkled skin, small dull eyes, no black spike mohawk or yellow eyes or tusks
+- **woolamander** — ANIMATION-ONLY — removed: none; added: none (Galactic Atlas illustration, Wildlife of SW painting, SWG model/sketch only); look change: none
+- **droid_ge3** — ANIMATION-ONLY — KOTOR-only droid; kept CzerkaDroid promo render, animation-only banner + realistic Must-show line added; nothing removed
+- **droid_g0t0** — REALISTIC-OK — infobox is a photoreal guide-book render of the black sphere; no change
+- **worrt** — REALISTIC-OK — Jedi: Survivor photoreal model, photoreal render, ROTJ practical puppet, realistic painting
+- **sith_pureblood** — REPLACED — removed: jatm_sith_group (ink plate), kissai_infobox_variant (comic); added: massassi_and_kissai_jmgd (painted timeline art); no live-action exists; look change: no image now supports long sideways cheek tendrils or ringed tendrils
+- **cancell** — REPLACED — removed: wookieepedia_teth_tcw.jpg (Clone Wars render); added: wookieepedia_render_starwarscom.jpg (Can-cell.png, the ROTS render the owner's ruling text names; ruling header names the TCW file — flag); look change: long rust-brown body, teal head cap, plumed tail fan, not red bug with green eyes
+- **cathar** — REPLACED — removed: canon_twins (flash animation); added: uaa_lineup_legends (realistic UAA painting); kept sylvar comic as female-anatomy-only negative ref; look change: canon near-human no-muzzle design no longer imaged — maned muzzled lion is the target
+- **wraid** — ANIMATION-ONLY — removed: none; added: none (SWTOR + KOTOR stylised game models only); look change: none
+- **brainworm** — ANIMATION-ONLY — only Clone Wars Brain Invaders images exist; kept both; removed: none; added: none; look change: none
+- **klorslug** — REPLACED — removed: canon_1 (Marvel comic), legends_3 (SWTOR kitchen); added: canon_2 + canon_2_crop (ANH stop-motion dejarik piece, Dejarik.png); look change: base colour pink (live-action + prose), not the comic's orange
+- **shaaks** — REPLACED — removed: canon_1 (stylised Visual Encyclopedia/Card Trader render); added: canon_3 (AotC film still Shaak AotC.png); look change: muted mauve-grey-brown with faint mottling, not bold cream swirl marbling
+- **wyyyschokk** — REALISTIC-OK — Jedi: Fallen Order photoreal model, game stills and realistic concept art
+- **sith_species** — REPLACED — removed: canon_sith_aphra29 (comic); added: massassi_and_kissai_jmgd (painted); kept sith_youngling (comic) as labelled juvenile anatomy ref; no live-action exists; look change: none (hue anchor now painted crimson)
+- **gornt** — ANIMATION-ONLY — removed: legends_2 (B&W line-art duplicate); added: none (only Creatures of the Galaxy comic plate exists); look change: none
+- **cannok** — REPLACED — removed: wookieepedia_totj_comic.jpg (TotJ comic); added: none (no realistic source; KOTOR2 painted concept primary, game model kept for stalked eyes only); look change: none
+- **droid_gnk** — REPLACED — removed: wookieepedia_clonewars_renown.png (Clone Wars); added: none needed (3 practical-prop images remain); look change: rough weathered greeblied prop, small red/green lamps not a glowing amber panel
+- **yobshrimp** — REALISTIC-OK — Galaxy's Edge food photograph (canon) and Wildlife of SW naturalistic painted field-guide art (Legends live animal)
+- **chak_root** — ANIMATION-ONLY — only a Gungan Frontier game sprite exists (kept); removed: none; added: none; look change: none
+- **graniteslug** — ANIMATION-ONLY — removed: none; added: none (only WoSW watercolour + JAS ink drawing exist); look change: render as a real wet nudibranch-like slug
+- **kaleesh** — REPLACED — removed: infobox_masked (Alien Archive flat illus.), eyes_closeup (animated), grievous_concept_alien_stage (sketches); added: legends_negas_painted, eyes_rots_liveaction; unmasked comic face kept (no realistic unmasked exists); look change: bare rust-red limbs + sand cloak, not all-rust cloth
+- **ysalamir** — REPLACED — removed: wookieepedia_canon_1.webp (Rebels sculpture frame), wookieepedia_legends_3.webp (ink sketch); added: none (no canon realistic depiction); the two realistic Legends paintings are now the whole reference; look change: none beyond dropping the green finned sculpture
+- **droid_hk_series** — ANIMATION-ONLY — game-only droid; kept all 3, HK-01 guide-book CGI made look target, banner + realistic Must-show line; nothing removed
+- **cerean** — REPLACED — removed: omer_youth (Clone Wars CGI); added: kiadimundi_rots_closeup, kiadimundi_acolyte (live-action); look change: live-action eyes are dark brown, yellow now only cite+painting; juvenile build unillustrated
+- **kreetle** — REPLACED — removed: swg_kreetle (low-poly SWG render, off-colour); kept owner-ruled Wildlife of SW watercolour as target + 2 RC screenshots as colour corroboration; look change: dropped olive/khaki variant
+- **zakkeg** — ANIMATION-ONLY — removed: none; added: none (KOTOR II + SWTOR stylised game models only); look change: none
+- **zeer** — REALISTIC-OK — Gungan Frontier naturalistic CG render and Wildlife of SW naturalistic painting (no live-action zeer exists)
+- **droid_kx_series** — REALISTIC-OK — Rogue One renders and set still; no change
+- **snivvian** — REPLACED — removed: unidentified_snivvian (Bad Batch), kattmol_tcw, sinrich_legends (Clone Wars); added: databank_mask_photo (1977 practical mask photo); look change: blond hair no longer attested; wispy brown hair on the practical mask
+- **droid_kx12_probe** — ANIMATION-ONLY — sole image is KOTOR II model Drdprobe.jpg; banner + realistic Must-show line; nothing removed
+- **grank** — ANIMATION-ONLY — removed: steam_workshop_roster_grid (donor flat-vector icon); added: gunganfrontier (1999 pre-rendered CGI, low-res); look change: bulkier heavier-headed per CGI
+- **sullustan** — REALISTIC-OK — Nien Nunb live-action/promo plus realistic painted illustrations; nothing changed
+- **shiro** — REPLACED — removed: shirodisneyinfinity.png (Disney Infinity toy render, was the colour anchor); added: none (no live-action; owner-ruled painted plate is target); look change: muted olive not bright green, tall columnar legs not stubby, duck-billed snout, frilled ridged shell; also corrected shiro-trap plate descriptions
+- **shirotrap** — REALISTIC-OK — both are realistic painted Legends plates; nothing changed
+- **krykna** — ANIMATION-ONLY — removed: canon_2 (dup Rebels render), canon_3 (Rebels frame); kept canon_1 render + McQuarrie painting; look change: none (texture called out as weathered skin, not plastic)
+- **taung** — REALISTIC-OK — all three are realistic painted art (no live-action Taung exists); nothing changed
+- **shyrack** — REPLACED — removed: legends_2 (tiny KotOR II game render); added: none (no live-action; JATM painting remains as target); look change: none
+- **droid_magnaguard** — REALISTIC-OK — infobox is photoreal render; no change
+- **grazer** — ANIMATION-ONLY — removed: none; added: none (only WoSW watercolour exists); look change: none
+- **kwi** — ANIMATION-ONLY — comic-only (Star Wars 1998 #24); removed: none (both frames unique); look change: none
+- **greaterkraytdragon** — REALISTIC-OK — Mandalorian render + Ch9 still + ANH skeleton photo; no change
+- **silooth** — REALISTIC-OK — both are realistic painted RPG/sourcebook plates; nothing changed
+- **sith_wyrm** — REALISTIC-OK — both are realistic painted Legends plates (owner-ruled canon art); nothing changed
+- **sketto** — REALISTIC-OK — Galaxy's Edge practical prop photo + realistic painted plates; nothing changed
+- **chadra_fan** — REPLACED — removed: shortpaw_render (stylised render); added: kabe_costume, kabe_anh (live-action ANH), negas_legends (realistic painting); look change: realistic eyes are small dark/beady, not big blue; grey fur no longer imaged
+- **droid_lr57** — REPLACED (partial) — removed: none; only realistic depiction is the Destiny painting (already present, made look target); Clone Wars infobox kept anatomy-only (sole stock-unit view); look change: pitted rusted heavy metal, glowing red eye
+- **convor** — REPLACED — removed: wookieepedia_cam_disguise.jpg (Galaxy of Creatures cartoon); added: starwarscom_morai_ahsoka.jpg (StarWars.com databank, live-action Ahsoka); look change: real barn-owl proportions, normal eyes, pale Morai form vs big-eyed cartoon
+- **togorian** — REPLACED — removed: infobox_thrawn_comic (comic), gg4_illustration (ink); added: muuurgh_paradise_snare (painted cover); kept legends_fullbody as labelled stylised anatomy ref (digitigrade); no live-action exists; look change: tail no longer image-attested
+- **laascalefish** — REALISTIC-OK — all images live-action/realistic CGI, photoreal game or naturalistic painted plates
+- **lavaflea** — REALISTIC-OK — all images live-action/realistic CGI, photoreal game or naturalistic painted plates
+- **longtailgorg** — REALISTIC-OK — all images live-action/realistic CGI, photoreal game or naturalistic painted plates
+- **chagrian** — REALISTIC-OK — live-action Mas Amedda prosthetics plus two realistic painted plates; no change
+- **skalders** — ANIMATION-ONLY — removed: none; added: none (Clone Wars only; databank has no image); look change: none
+- **coloclawfish** — REPLACED — removed: wookieepedia_canon_1.webp (inked comic-style infobox); added: none (TPM CGI renders legends_1 + canon_2 already present); look change: spotted khaki-brown, large claws, per film model
+- **clodhopper** — REALISTIC-OK — single realistic painted field-guide plate; no change
+- **gutkurr** — ANIMATION-ONLY — removed: canon_2, legends_1, legends_2 (TCW episode duplicates); added: galaxyatwar (Gutkurr-GAW painted plate); look change: darker lumpier rust-brown hide per painting
+- **kybuck** — ANIMATION-ONLY — removed: legends_1 (2003 Clone Wars 2D cartoon); kept canon_1 (Tales of the Jedi render) + 2 Legends paintings; look change: none
+- **kaminoan** — REPLACED — removed: kaminoans_group (Clone Wars-model plate); added: taun_we_fullbody_aotc, kaminoans_fullbody_aotc (live-action AotC); look change: proportions re-measured live-action (neck ~1.7x head, slender not skeletal arms)
+- **trandoshan** — REALISTIC-OK — Dokk Strassi/Bossk live-action and a realistic Topps render; nothing changed
+- **corinathoth** — ANIMATION-ONLY — only an Empire 16 comic panel exists (kept); removed: none; added: none; look change: none
+- **hawkbat** — RULING-CONFLICT — removed: none (ruling picks WoSW watercolour legends_infobox); added: none (only realistic depiction is the wingless canon prop photo already present); look change: render watercolour design with real veined membrane
+- **droid_mse** — REPLACED — removed: wookieepedia_interior.png (Bad Batch cutaway); added: wookieepedia_original_prop.jpg (MSE-6 btm.jpg, ANH prop photo); look change: weathered charcoal-grey not pure black; opened-interior now unreferenced
+- **massiff** — REPLACED — removed: legends_2 (inked arena illustration); added: canon_3 (Mandalorian close still), canon_4 (BoBF Tusken kids with massiffs); look change: short blunt snout, grey-brown hide — Outlaws gharial snout/rust colour rejected
+- **dactillion** — REALISTIC-OK — ROTS CGI infobox + painted concept and card art; no change
+- **dalgo** — REPLACED — removed: wookieepedia_encyclopedia_art.png (TCW S5 toon render); added: none (ruled painted SoT art stays); look change: four-legged horse-like runner, not theropod
+- **dewback** — REPLACED — removed: wookieepedia_kenobi_screencap.jpg (cartoon Insider illustration); added: none (realistic CGI infobox + ANH puppet stay); look change: muted dusty olive/grey-brown, not bright yellow-green
+- **chiss** — REPLACED — removed: canon_infobox_thrawn (Rebels CGI), blue_skin_red_eyes (comic); added: thrawn_live_action_poster, thrawn_ahsoka_part8 (live-action Ahsoka); look change: matte periwinkle skin with real texture, red iris with white sclera, ordinary human face not angular mask
+- **lylek** — REPLACED — removed: canon_1 (stylised map plate), legends_2 (comic), legends_3 (creature-less nest tile); kept legends_1 realistic painting as target; look change: olive/moss green only
+- **marshhaunt** — ANIMATION-ONLY — sole image is a Corroney sourcebook comic illustration; nothing removed; look change: none
+- **horax** — ANIMATION-ONLY — removed: battle_horax (flat 2003 microseries still); added: none (only microseries + Campaign Guide painting exist); look change: none, painting is target
+- **droid_pistoeka** — REPLACED — removed: wookieepedia_buzzdroid_tools.jpg, wookieepedia_buzzdroid_on_starfighter.jpg (Clone Wars), wookieepedia_markone.jpg (comic); added: wookieepedia_film_closeup.jpg (Buzzdroid-green), wookieepedia_film_on_wing.png (R4-P17 Buzz Droids) (ROTS live-action); look change: weathered grey body, cream-khaki stepped shells
+- **kel_dor** — REPLACED — removed: none; added: plo_koon_prosthetic_unmasked (film makeup BTS photo), male_female_painted, tarast_voon_painted (realistic FFG paintings); unmasked comic kept as only true-face anatomy; look change: hue orange-tan to copper, glossy leathery; prosthetic's human eyes/mouth flagged
+- **klatooinian** — REALISTIC-OK — all three images live-action; no change
+- **togruta** — REPLACED — removed: ahsoka_art (stylised painting), two_kinds_of_lekku (Rebels); added: ahsoka_liveaction_mando, ahsoka_headshot_mando (live-action); kept kiros_male_and_female (Clone Wars) as labelled male-form anatomy ref; look change: terracotta skin and soft slate-blue bands, not bright orange/blue
+- **hrumph** — ANIMATION-ONLY — removed: none; added: gunganfrontier (1999 pre-rendered CGI); look change: none (CGI confirms cool grey hide)
+- **tusken_raider** — REALISTIC-OK — live-action BoBF/promo plus McQuarrie and realistic painted art; nothing changed
+- **meescalefish** — REALISTIC-OK — live-action/realistic CGI and naturalistic painted plates only
+- **mott** — REALISTIC-OK — live-action/realistic CGI and naturalistic painted plates only
+- **mudhorn** — REALISTIC-OK — live-action/realistic CGI and naturalistic painted plates only
+- **hssiss** — ANIMATION-ONLY — removed: canon_2 (TotJ comic), canon_4 (sourcebook painting); added: none (comics/sourcebook/KOTOR II only); look change: tone bright lime to natural olive-green
+- **hubba_gourd** — REALISTIC-OK — Fact File image is a photograph (a real cacao-pod-like gourd); no change
+- **lasat** — REPLACED — removed: lasat_zeb_fathead, chava_and_gron_as_prisoners (Rebels), lasat_legends_ae (line art); added: zeb_liveaction_closeup, zeb_liveaction_scale (Mandalorian ch.21); look change: shaggy matted fur with soft blended streaks + full beard, not hard tiger bands
+- **kubaz** — REALISTIC-OK — all three images are realistic painted art (Alien Archive / FFG); no change
+- **igitz** — REALISTIC-OK — only depiction is Gungan Frontier (1999) pre-rendered realistic-style CGI; no change
+- **mynock** — REPLACED — removed: canon_1 (Alien Archive ink plate); added: canon_4 (Whitlatch painting Mynock-FF75.png); ESB still kept as target; look change: base dark olive-brown/black (film), not rust-orange
+- **droid_super_tactical** — REPLACED — removed: wookieepedia_std_kalani.jpg (Clone Wars); added: wookieepedia_zerocompany_geryon.png, wookieepedia_zerocompany_typhon.jpg (Star Wars: Zero Company photoreal); Kraken CW kept anatomy-only (only full body); look change: glossier hard-edged armour, recessed amber lenses under a brow hood
+- **dathomirian** — REPLACED — removed: dathomirian_infobox (TCW), dathomirian_wallpaper (Shatterpoint stylised), nightsisters (TCW); added: maul_live_action (Solo promo), great_mothers_ahsoka (live-action), merrin_jedi_survivor (photoreal game); look change: male horns are pale bone-tan not dark; yellow male now text-only; females may have hair
+- **twilek** — REPLACED — removed: two_kinds_of_lekku, hera_syndulla (Rebels), aayla_secura, innocents_of_ryloth, numa_youngling (Clone Wars); added: hera_liveaction_empire (Ahsoka promo), female_server_bobf (live-action); look change: matte natural skin; pointed-ear female and lekku-mottling evidence withdrawn
+- **droid_r8_009** — ANIMATION-ONLY — sole image is KOTOR model Utility1.jpg; banner + realistic Must-show line; nothing removed
+- **neebray** — ANIMATION-ONLY — removed: canon_3 (Clone Wars Yoda frame, dup of baby render); kept canon_1, canon_2, legends_1; look change: none
+- **insectomorph** — ANIMATION-ONLY — removed: dugwarriors_screenshot (TCW duplicate); added: none (TCW CGI only); look change: none
+- **ugnaught** — REALISTIC-OK — Cloud City live-action, Kuiil live-action, realistic painted NEGAS; nothing changed
+- **iriaz** — ANIMATION-ONLY — removed: none; added: none (cut KOTOR asset: WotC card + engine screenshot only); look change: none
+- **droid_t1_tactical** — ANIMATION-ONLY — T-series only in Clone Wars/comics/Legion art; kept infobox + colour variants (+ KOTOR T1 negative ref), banner + realistic Must-show line; nothing removed
+- **defel** — REPLACED — removed: glahst_ombra, male_female_pair (comics); added: schous_mask_prop (prop photo), defel_set_photo (set photo); kept GG4 ink plate as anatomy-only; look change: lit fur is coarse grey-brown with bare fleshy wrinkled snout; wraith tint neutral black not teal
+- **umbaran** — REPLACED — removed: mee_deechi_face, militia_soldier (Clone Wars); added: sly_moore_still (live-action costume portrait); look change: soft smoky eye shadow not hard domino band; near-colourless pale eyes; hair now text-only
+- **droid_t3** — ANIMATION-ONLY — KOTOR-only droid; NEGD guide-book CGI made look target, KOTOR II render silhouette-only; banner + realistic Must-show line; nothing removed
+- **devaronian** — REALISTIC-OK — live-action Burg plus two realistic painted plates (FFG pair, Tress Hacnua portrait); no change
+- **weequay** — REPLACED — removed: two_weequays (Clone Wars); added: weequay_rotj_still (ROTJ production still); look change: none
+- **massassi** — REPLACED — removed: massassi_architects, massassi_warriors_funeral (comics), massassi_swtor_infobox (SWTOR), massassi_egtas_alchemical (ink); added: massassi_kotorcg_painted, massassi_and_kissai_painted, massassi_exar_kun_painted (painted Legends; no live-action exists); warrior ink concept kept for silhouette; look change: paintings show massive red fin-crowned tendrilled brute, contradicting lean long-haired concept
+- **duros** — REALISTIC-OK — live-action cantina pair, live-action Cad Bane (Book of Boba Fett), photoreal canon render, realistic Legends painting; no change
+- **yoda_species** — REALISTIC-OK — Yoda/Yaddle/Grogu all live-action or photoreal; nothing changed
+- **mimbanese** — REALISTIC-OK — all three images live-action (Solo); no change
+- **echani** — REPLACED — removed: echani_practice (stylised illustration); added: none (no realistic Echani exists anywhere searched); remaining Raskta painting + Brianna painted promo; look change: none (training dress/mirrored poses now text-only)
+- **ewok** — REALISTIC-OK — all four are Return of the Jedi live-action/costume photos; no change
+- **wookiee** — REPLACED — removed: youngling_animated (Clone Wars Gungi); added: lumpy_juvenile_holiday (Holiday Special live-action), wookiee_roar_rots (ROTS); look change: none
+- **zabrak** — REALISTIC-OK — Eeth Koth live-action, Battlefront II and Maul photoreal; Clone Wars skull X-ray kept and labelled structure-only (sole bone-horn evidence); description labelled, no files changed
+- **mirialan** — REPLACED — removed: adysunzee_yttransparent (flat illus.), mirialan_diplomat (stylised game); added: luminara_closeup_aotc, luminara_fullbody (live-action AotC); look change: skin natural yellow-ochre/olive-gold, not vivid lime or lavender
+- **muun** — REALISTIC-OK — live-action (AotC, Acolyte) plus a photoreal game render; no change
+- **mon_calamari** — REPLACED — removed: none; added: ackbar_closeup_rotj (live-action); mon_cal_hand_holes (Clone Wars) kept as palm-anatomy-only; look change: glossy wet wrinkled hide, golden eye
+- **falleen** — REPLACED — removed: infobox_ziton_moj (TCW CG), black_sun_nobles (animated), uil (comic); added: kenobi_part2_live_action (live-action), negas_legends, uaa_legends (realistic paintings); look change: dorsal crest is segmented plates skull-to-spine; hair can be white; no teal
+- **zygerrian** — REPLACED — removed: dartsdnar_tcwcejtb (Clone Wars), zygerriansareback_tbb (Bad Batch); added: zygerrian_slaver_painting, zygerrian_slave_auction_painting (realistic sourcebook paintings); kept atai_molec + zygerrians_swe as labelled anatomy refs (ear-horns, female); no live-action exists; look change: furred brown face with tall pointed ears leads
+- **zeltron** — REPLACED — removed: legends_dani (comic); added: none (no live-action exists; realistic painted legends_female now leads; canon comic kept as labelled hair-colour ref); look change: none
+- **nagai** — ANIMATION-ONLY — removed: nagai_telepath (weak costume-only RPG figure); added: none (comics/RPG/painted covers only exist); look change: skin cool grey-white per painted cover, not flat chalk-blue
+- **feeorin** — REPLACED — kept: 2017darthmaul1 comic as canon-tendril-count negative ref; added: feeorin_kotorcg_legends, feeorin_uaa_legends (realistic paintings), feeorin_tfu2_tarkose (game CGI); look change: realistic depictions have 2-few thick head-tails + chin barbels, blue-grey/olive/purple skin vs comic's dozen tendrils on turquoise
+- **nautolan** — REPLACED — removed: zattfull_cgswg (Clone Wars), nautolan_vengeful_waves (stylised painting); added: kitfisto_closeup_aotc (live-action); look change: red-iris/short-tendril youngling now text-only option; wet olive skin texture
+- **gamorrean** — REALISTIC-OK — two live-action costume photos plus a realistic Scum and Villainy painting (file misnamed 'animated_clonewars'; bullet corrected, file kept)
+- **gand** — REPLACED — kept: masklesszuckuss comic as only maskless-body ref (anatomy only); added: zuckuss_esb_live_action (live-action ESB), gand_negas_legends (realistic painting); look change: none — realistic sources confirm wrinkled ochre chitin head
+- **neimoidian** — REPLACED — removed: royal_guard (Clone Wars); added: lufa_danak_tpm, uniformed_pair_lostfound (live-action); look change: grey variant now text-only, live action is grey-green/olive
+- **nelvaanian** — REALISTIC-OK — all three are realistic painted RPG illustrations (no cartoon); no change
+- **pantoran** — REALISTIC-OK — two live-action, two realistic paintings; no change
+- **geonosian** — REALISTIC-OK — live-action CGI Poggle, realistic Sun Fac figure render, realistic Whitlatch concept art; no change
+- **nikto** — REPLACED — removed: guard_animated (Clone Wars); added: nikto_profile_liveaction (BoBF); look change: none (green subspecies now text-only)
+- **ortolan** — REPLACED — removed: azool_and_max (comic); added: max_rebo_rotj_puppet (ROTJ live-action); look change: velvety wrinkled hide, brighter blue in ROTJ; teal variant now text-only
+- **gungan** — REPLACED — removed: otolla_female_peppi_bow (Clone Wars); added: tarpals_tpm (live-action TPM); look change: female pink/purple/tied haillu now unillustrated (cite-only)
+
+## Totals (212 entries; the last line per slug wins)
+- REPLACED 95, counting Lothcat at `5ef5d39ee` · REALISTIC-OK 67 · ANIMATION-ONLY 43 · RULING-CONFLICT 7 (acklay, borcatu, dragonsnake, hawkbat, jerba, kinrath, vaapad: an owner ruling names a stylised image or design, so it was kept) · FAILED 0.
+- Not fixed: `infrastructure/state/art/events/BENCH.jsonl` still names some deleted files. It is an append-only history ledger, so it was left alone.
+- INDEX.md regenerated: there were 809 reference images and there are now 783.

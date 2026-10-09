@@ -53,7 +53,7 @@ their planet were noticeably less colourful than those from the tropical zones.*
 
 ## Verification note on the mislabelled image (read this before adding any file here)
 
-The `rakata/` directory in this library holds
+The `rakata/` directory in this library held (until the 2026-10-08 realism sweep deleted it)
 `wookieepedia_comic_closeup.jpg` = **`File:RakatanOnMonCala-2015StarWars48.jpg`**,
 which the Rakata article's own *Inconsistencies* section says was a **Mon Calamari
 in the script mistakenly drawn as a Rakata**. **It is a bad reference for BOTH
@@ -196,8 +196,7 @@ two lateral eye bulges**, which is the core silhouette. What is wrong:
   `File:Mon_Cal_Hand_Holes.png`. All three were already on disk from an earlier pass
   and were verified against the article's own file list this pass.
 - ⛔ **Deliberately NOT used**: https://static.wikia.nocookie.net/starwars/images/f/f3/RakatanOnMonCala-2015StarWars48.jpg
-  (`File:RakatanOnMonCala-2015StarWars48.jpg`, held in `rakata/` as
-  `wookieepedia_comic_closeup.jpg`) — a Mon Calamari the artist drew as a Rakata.
+  (`File:RakatanOnMonCala-2015StarWars48.jpg`, formerly in `rakata/`, deleted 2026-10-08) — a Mon Calamari the artist drew as a Rakata.
   Bad evidence for either species.
 - NOT fetched this pass: https://www.starwars.com/databank/mon-calamari (the
   article's `{{Databank|mon-calamari}}` citation, and the source of the "large,
