@@ -42,7 +42,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     public class FallenCord : IExposable
     {
         public IntVec3 toward;
+        /// <summary>AERIAL_CUT_POINT_PRECISION_1: the exact cut point (map units). NaN = not recorded (an older save, or a
+        /// dead-anchor fall): lay toward the centre of <see cref="toward"/> as before.</summary>
+        public float towardX = float.NaN, towardZ = float.NaN;
         public float length;
+
+        public float AimX => float.IsNaN(towardX) ? toward.x + 0.5f : towardX;
+        public float AimZ => float.IsNaN(towardZ) ? toward.z + 0.5f : towardZ;
         public int seed;
         /// <summary>thingIDNumber of the partner whose cut span this half belongs to; -1 = the partner is dead.</summary>
         public int cutPartner = -1;
@@ -54,6 +60,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             Scribe_Values.Look(ref wires, "wires");
             Scribe_Values.Look(ref toward, "toward");
+            Scribe_Values.Look(ref towardX, "towardX", float.NaN);
+            Scribe_Values.Look(ref towardZ, "towardZ", float.NaN);
             Scribe_Values.Look(ref length, "length");
             Scribe_Values.Look(ref seed, "seed");
             Scribe_Values.Look(ref cutPartner, "cutPartner", -1);
@@ -337,8 +345,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             {
                 Vector3 cut = Vector3.Lerp(a.BasePoint, b.BasePoint, Mathf.Clamp01(atT));
                 var cell = new IntVec3(Mathf.FloorToInt(cut.x), 0, Mathf.FloorToInt(cut.z));
-                a.fallen.Add(new FallenCord { wires = WiresBetween(a, b), toward = cell, length = Vector3.Distance(a.BasePoint, cut) * 1.05f, seed = (int)AerialMath.Hash(a.thingIDNumber, b.thingIDNumber, 11), cutPartner = b.thingIDNumber });
-                b.fallen.Add(new FallenCord { wires = WiresBetween(a, b), toward = cell, length = Vector3.Distance(b.BasePoint, cut) * 1.05f, seed = (int)AerialMath.Hash(b.thingIDNumber, a.thingIDNumber, 11), cutPartner = a.thingIDNumber });
+                a.fallen.Add(new FallenCord { wires = WiresBetween(a, b), toward = cell, towardX = cut.x, towardZ = cut.z, length = Vector3.Distance(a.BasePoint, cut) * 1.05f, seed = (int)AerialMath.Hash(a.thingIDNumber, b.thingIDNumber, 11), cutPartner = b.thingIDNumber });
+                b.fallen.Add(new FallenCord { wires = WiresBetween(a, b), toward = cell, towardX = cut.x, towardZ = cut.z, length = Vector3.Distance(b.BasePoint, cut) * 1.05f, seed = (int)AerialMath.Hash(b.thingIDNumber, a.thingIDNumber, 11), cutPartner = a.thingIDNumber });
             }
             Changed(a, b);
             return true;

@@ -18,8 +18,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     ///   requires that exact class) with a negative base consumption, so PowerNet counts it as a power source. It
     ///   hooks up to OUR grid as a connector; this comp writes its PowerOutput every tick = what it stole.
     /// * PowerConnectionMaker.BestTransmitterForConnector has no faction check, and the victim's conduit is the
-    ///   nearest transmitter by construction, so Patch_TryConnect_TapOwnFaction hands it every foreign net as
-    ///   disallowed and Patch_ConnectToTransmitter_TapGuard refuses any other route onto a foreign transmitter.
+    ///   nearest transmitter by construction, so Patch_TryConnect_TapOwnFaction picks the nearest OWN-faction
+    ///   transmitter itself and Patch_ConnectToTransmitter_TapGuard refuses any other route onto a foreign transmitter.
     /// * The victim pays through vanilla's own books: Patch_PowerNet_GainRate_TapDebit subtracts this tick's stolen
     ///   energy from the victim net's CurrentEnergyGainRate, so PowerNetTick drains their batteries and browns out
     ///   their machines exactly as an extra consumer would -- with no consumer of ours in their net.
@@ -178,26 +178,52 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
     {
         public static bool IsTap(CompPower c) => c?.parent != null && c.parent.def == AerialDefOf.RM_PowerTapClamp;
 
-        public static bool NetHasFaction(PowerNet net, Faction f) =>
-            net != null && net.transmitters.Any(t => t?.parent != null && t.parent.Faction == f);
     }
 
-    /// <summary>The clamp hooks up only to a net holding a transmitter of its own faction.</summary>
+    /// <summary>The clamp hooks up only to a transmitter of its own faction (POWER_TAP_MIXED_NET_CONNECT_1: filtered per
+    /// TRANSMITTER, not per net — a mixed net whose nearest transmitter is foreign used to pass the net filter, be refused by
+    /// the guard below, re-queue, and loop on every net update). The pick is vanilla's BestTransmitterForConnector rule
+    /// (6-cell square, transmitting, wire-connectable, nearest) with the faction test added.</summary>
     [HarmonyPatch(typeof(PowerConnectionMaker), nameof(PowerConnectionMaker.TryConnectToAnyPowerNet))]
     internal static class Patch_TryConnect_TapOwnFaction
     {
-        private static void Prefix(CompPower pc, ref List<PowerNet> disallowedNets)
+        private static bool Prefix(CompPower pc, List<PowerNet> disallowedNets)
         {
-            if (!TapUtil.IsTap(pc) || !pc.parent.Spawned) return;
-            var list = disallowedNets != null ? new List<PowerNet>(disallowedNets) : new List<PowerNet>();
-            foreach (PowerNet n in pc.parent.Map.powerNetManager.AllNetsListForReading)
-                if (!TapUtil.NetHasFaction(n, pc.parent.Faction) && !list.Contains(n)) list.Add(n);
-            disallowedNets = list;
+            if (!TapUtil.IsTap(pc) || !pc.parent.Spawned) return true;
+            if (pc.connectParent != null) return false;
+            CompPower best = BestOwnTransmitter(pc, disallowedNets);
+            if (best != null) pc.ConnectToTransmitter(best);
+            else pc.connectParent = null;
+            return false;
+        }
+
+        internal static CompPower BestOwnTransmitter(CompPower pc, List<PowerNet> disallowedNets = null)
+        {
+            Map map = pc.parent.Map;
+            if (map == null) return null;
+            IntVec3 at = pc.parent.def.building != null && pc.parent.def.building.isAttachment
+                ? (GenConstruct.GetWallAttachedTo(pc.parent)?.Position ?? pc.parent.Position)
+                : pc.parent.Position;
+            CellRect r = CellRect.SingleCell(at).ExpandedBy(6).ClipInsideMap(map);
+            float bestD = float.MaxValue;
+            CompPower best = null;
+            foreach (IntVec3 c in r)
+            {
+                Building t = c.GetTransmitter(map);
+                if (t == null || t.Destroyed || t.Faction != pc.parent.Faction) continue;
+                CompPower comp = t.PowerComp;
+                if (comp == null || !comp.TransmitsPowerNow || (t.def.building != null && !t.def.building.allowWireConnection)) continue;
+                if (disallowedNets != null && disallowedNets.Contains(comp.transNet)) continue;
+                float d = (t.Position - at).LengthHorizontalSquared;
+                if (d < bestD) { bestD = d; best = comp; }
+            }
+            return best;
         }
     }
 
     /// <summary>Every other route (ConnectAllConnectorsToTransmitter when their net is rebuilt, manual reconnect) is
-    /// refused onto a foreign transmitter; the clamp then asks again through the faction-aware path above.</summary>
+    /// refused onto a foreign transmitter; the clamp then asks again through the faction-aware path above — but only
+    /// when that path has an own-faction transmitter to give it, so a refusal it would repeat never re-queues.</summary>
     [HarmonyPatch(typeof(CompPower), nameof(CompPower.ConnectToTransmitter))]
     internal static class Patch_ConnectToTransmitter_TapGuard
     {
@@ -208,7 +234,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (!TapUtil.IsTap(__instance) || transmitter?.parent == null) return true;
             if (transmitter.parent.Faction == __instance.parent.Faction) return true;
             refused++;
-            if (__instance.connectParent == null && __instance.parent.Spawned)
+            if (__instance.connectParent == null && __instance.parent.Spawned
+                && Patch_TryConnect_TapOwnFaction.BestOwnTransmitter(__instance) != null)
                 __instance.parent.Map.powerNetManager.Notify_ConnectorWantsConnect(__instance);
             return false;
         }
