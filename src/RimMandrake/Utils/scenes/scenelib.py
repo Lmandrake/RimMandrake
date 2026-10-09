@@ -71,7 +71,9 @@ def _tile_objs(tile):
     r = call("jawa/world_objects_get", tiles=str(tile), limit=50)
     return [o for o in (r.get("objects") or []) if o.get("tile") == tile]
 
-def biome_map(tile, biome, size=100, layer=None, keeper=(50, 50)):
+_restore = {}
+
+def biome_map(tile, biome, size=100, layer=None, keeper=(50, 50), surface_biome=None):
     """Generate a map of `biome` on `tile` (any free tile), make it current, and return mapId.
     Pass layer='RM_SeabedLayer' for a sea-floor map. Free it with drop_map(id, tile).
     MEASURED 2026-10-09, two traps: (1) the generated Settlement has NO faction, so after the map is culled its
@@ -79,6 +81,11 @@ def biome_map(tile, biome, size=100, layer=None, keeper=(50, 50)):
     auto-paused forever); so the settlement is handed to the player faction here and removed by drop_map.
     (2) an unowned map is culled within ~1000 ticks; a player settlement plus a player colonist keeps it."""
     quiet()
+    if surface_biome:
+        # A seabed-layer map is "the floor of the sea above it" (RM_SeaFloorIdentity): the SURFACE tile with the same id must carry the sea biome.
+        g = call("jawa/world_tile_get", tiles=str(tile)); rows = g.get("tiles") or g.get("rows") or []
+        _restore[tile] = (rows[0].get("biome") if rows else None)
+        need(call("jawa/world_tile_set", tiles=str(tile), biome=surface_biome), "world_tile_set"); call("jawa/world_commit")
     kw = dict(tile=tile, biome=biome, sizeX=size, sizeZ=size)
     if layer: kw["layer"] = layer
     r = need(call("jawa/world_tile_map_generate", **kw), "world_tile_map_generate")
@@ -96,6 +103,8 @@ def drop_map(mid, tile=None, back=0):
     if tile is not None:
         ids = [str(o["id"]) for o in _tile_objs(tile)]
         if ids: call("jawa/world_objects_remove", ids=",".join(ids))
+        if _restore.get(tile):
+            call("jawa/world_tile_set", tiles=str(tile), biome=_restore.pop(tile)); call("jawa/world_commit")
     return r
 
 def quiet():
@@ -124,11 +133,12 @@ class Scene:
     def floor(self, terrain, rel=None):
         r = rel or (0, 0, self.w, self.h)
         return call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, rect(self.x + r[0], self.z + r[1], r[2], r[3])), layer="top")
-    def put(self, defName, dx, dz, n=None, stuff=None):
+    def put(self, defName, dx, dz, n=None, stuff=None, rot=None):
         """Spawn a thing (or n of them / a stack of n) at a relative cell."""
         x, z = self.abs(dx, dz)
         kw = dict(ops="%s:%d,%d" % (defName, x, z) + (",%d" % n if n else ""))
         if stuff: kw["stuff"] = stuff
+        if rot is not None: kw["rot"] = rot
         r = call("jawa/spawn_batch", **kw)
         return need(r, "spawn %s" % defName)
     def power(self, defName="Battery", dx=0, dz=0):
