@@ -23,3 +23,8 @@ Succeeded end, and the item's premise is wrong.
 
 ## criteria
 - Bars 1 and 3 read as above; bar 2's line is captured into SOORRAK_INSTANT_JOB_LOOP_1.
+
+## verify
+
+### Exact checks 2026-10-09 (acceptance sitting)
+- A3 CHECK: Named in the item: `jawa/run_genstep genStepDef=RSW_GenStep_WhisperSarlaccSign` (WARNING: high risk, irreversible, runs on the live map; only on a throwaway quicktest map; GenStep defined in `RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_Whisper_Batch1.xml`). Before it, record the line count of Player.log (WSL `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log`); after it, `jawa/drain_log limit=400 contains="stuff"` and regex the new log tail for `madeFromStuff but stuff=null|MakeThing.*stuff=null`. PASS: run_genstep success=true and the log tail since the call holds zero `stuff=null` lines (control: the same regex on the pre-fix log in `Transient/` finds the old errors, if a copy exists). FAIL: any `stuff=null` line after the call, or run_genstep success=false / null-elevation no-op (UNMEASURED: the step did not place anything; confirm with `jawa/list_things` for the sign).

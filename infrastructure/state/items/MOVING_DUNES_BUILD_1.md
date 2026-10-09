@@ -27,6 +27,9 @@ item, no burying pawns or turrets, no worldgen, no non-Odyssey fallback.
 - `deploy_custom_mods.py --mod MovingDunes` → clean plan, 6 files, packageId
   unique across tiers.
 
+### Exact checks 2026-10-09 (acceptance sitting)
+- A3 CHECK: needs a debug hook. The gate is which Unity shader property tints the dune material (MaterialColor vs VertexColor), a render fact no def read shows. Offline half: `jawa/get_defs defs="RimMandrake.MovingDunes.RM_DuneMaterialDef/RM_Dunes_Sand;ThingDef/RM_Dunes_BuriedCache" fields="defName"` proves the defs load. Small item owed: a `RM_DunesProof.ProofTint(string)` returning `shader=<name> hasColorProp=<B> usesVertexColor=<B>` for the live dune material, read via `jawa/static_call`. PASS: with the hook: the material reports the property the tint code writes to (MaterialColor), so the gate resolves one way, recorded in the item. FAIL: the tint code writes a property the shader lacks (flat untinted dunes).
+
 ## criteria
 
 1. A dune-field map's sand persists (ambient decay suppressed) and MOVES
