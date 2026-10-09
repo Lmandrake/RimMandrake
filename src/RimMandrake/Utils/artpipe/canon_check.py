@@ -242,7 +242,7 @@ def build_prompt(spec: dict) -> str:
 
 
 def codex_vision(prompt: str, images: list[Path], *, model: str = DEFAULT_MODEL, effort: str = DEFAULT_EFFORT,
-                 timeout: int = DEFAULT_TIMEOUT_S, home: Path | None = None) -> str:
+                 timeout: int = DEFAULT_TIMEOUT_S, home: Path | None = None, schema: dict | None = None) -> str:
     """One codex.exe exec turn with images; returns the -o last-message text. Raises CanonCheckError."""
     import codex_image  # noqa: E402 — imported lazily so selftests never need codex.exe
     job = codex_image.CODEX_SCRATCH / f"canoncheck-{time.strftime('%Y%m%d-%H%M%S')}-{uuid.uuid4().hex[:8]}"
@@ -253,7 +253,7 @@ def codex_vision(prompt: str, images: list[Path], *, model: str = DEFAULT_MODEL,
             dst = job / f"img{i}{Path(img).suffix.lower() or '.png'}"
             shutil.copyfile(img, dst)
             staged.append(dst)
-        (job / "schema.json").write_text(json.dumps(RESPONSE_SCHEMA))
+        (job / "schema.json").write_text(json.dumps(schema or RESPONSE_SCHEMA))
         (job / "prompt.md").write_text(prompt)
         answer = job / "answer.json"
         cmd = [str(codex_image.find_codex_cli()), "exec", "--sandbox", "read-only", "--skip-git-repo-check",
@@ -304,8 +304,110 @@ def parse_answer(text: str, lines: list[str]) -> list[dict]:
     return out, str(data.get("summary", "")).strip()
 
 
-def grade(render: Path, spec: dict, vision=None, **vision_kw) -> dict:
-    """-> verdict dict. `vision(prompt, images, **kw) -> str` defaults to codex_vision (tests pass a mock)."""
+
+# ─────────────────────────────────────────────── v2 (CANDIDATE, off by default) ──
+# Leniency diagnosis 2026-10-09 (Transient/canon_check_leniency_2026-10-09.md), fixes 2 + 3: the v1 grader only ever
+# tests text lines for the PRESENCE of a feature, so a wrong animal with the right parts passes. v2 adds (a) two
+# generic whole-image gate lines on every canon grade and (b) a describe-then-diff pass: the canon images and the
+# render are described separately, canon FIRST, with no checklist in view; the grading call then gets both
+# descriptions. Selected with grade(mode="v2") / `--mode v2`; the daemon path never sets it.
+
+MODES = ("v1", "v2")
+GATE_LINES = (
+    "GATE: OVERALL BODY PLAN. Shown only the render and the canon image(s), could a stranger call them the same kind "
+    "of animal? Compare silhouette, number and placement of limbs, tail, wing/body structure, head shape and "
+    "proportions. A render that has all the right parts arranged as a different body plan FAILS this line.",
+    "GATE: COLOUR LAYOUT. The colours must sit in the same PLACES and the same PATTERN as the canon image (which "
+    "region is which colour, stripes vs spots vs bars vs gradient), not merely use the same colours somewhere.",
+)
+DESCRIBE_SCHEMA = {
+    "type": "object", "additionalProperties": False, "required": ["canon_description", "render_description"],
+    "properties": {"canon_description": {"type": "string"}, "render_description": {"type": "string"}}}
+
+
+def describe_prompt(spec: dict) -> str:
+    n = len(spec["images"])
+    p = ["Describe images WITHOUT judging them. Image 1 is a finished game sprite (the RENDER)."]
+    if n:
+        p.append(f"Images 2..{n + 1} are canon reference images of the real subject.")
+        p.append("Step 1: describe the CANON image(s) first, as one subject: silhouette and overall body plan, limbs "
+                 "(count, position), tail, wings/fins, head, and for colour WHERE each colour sits (which body "
+                 "region, stripes/spots/bars/gradient). Ignore art style and scale.")
+        p.append("Step 2: only afterwards, describe the RENDER the same way, from what is actually drawn, not from "
+                 "what it is meant to be. Do not copy the canon description or assume matching features.")
+    else:
+        p.append("Describe the RENDER only: silhouette and overall body plan, limbs (count, position), tail, "
+                 "wings, head, and where each colour sits. Say what is actually drawn.")
+    p.append('Reply with JSON only: {"canon_description":"<step 1 text, or empty if no canon image>",'
+             '"render_description":"<step 2 text>"}.')
+    return "\n\n".join(p) + "\n"
+
+
+def build_prompt_v2(spec: dict, descriptions: dict) -> str:
+    """The v1 prompt, plus the independent descriptions and the gate lines (spec['lines'] already carries the gates)."""
+    base = build_prompt(spec)
+    d = []
+    if descriptions.get("canon_description"):
+        d.append("INDEPENDENT DESCRIPTION OF THE CANON IMAGE(S) (written before you saw this checklist):\n"
+                 + descriptions["canon_description"])
+    d.append("INDEPENDENT DESCRIPTION OF THE RENDER (written before you saw this checklist):\n"
+             + descriptions.get("render_description", ""))
+    d.append("Before grading, diff the two descriptions: list every difference in body plan, limb/tail/wing structure "
+             "and colour placement. Presence of a feature is NOT enough: a line passes only if the feature is "
+             "present AND the animal still reads as the canon subject. Any difference that changes what kind of "
+             "animal it is, or where its colours sit, must fail the line it touches (and the GATE lines). "
+             "Cosmetic style difference is still not a failure.")
+    head = "MUST SHOW (canon acceptance lines)" if spec["kind"] == "canon" else "OWNER NOTE (acceptance lines)"
+    return base.replace(head, "\n".join(d) + "\n\n" + head, 1)
+
+
+def _gated(spec: dict) -> tuple[dict, int]:
+    """spec with gate lines prepended (canon jobs only); canon_na int marks shifted. -> (spec, n_gates)."""
+    if spec["kind"] != "canon":
+        return spec, 0
+    g = len(GATE_LINES)
+    marks = [m + g if isinstance(m, int) and not isinstance(m, bool) else m for m in spec.get("na_marks") or []]
+    return dict(spec, lines=list(GATE_LINES) + list(spec["lines"]), na_marks=marks), g
+
+
+def grade_v2(render: Path, spec: dict, vision=None, **vision_kw) -> dict:
+    vision = vision or codex_vision
+    gspec, g = _gated(spec)
+    imgs = [Path(render)] + [Path(p) for p in spec["images"]]
+    dtext = vision(describe_prompt(spec), imgs, schema=DESCRIBE_SCHEMA, **vision_kw)
+    m = re.search(r"\{.*\}", dtext, re.S)
+    try:
+        desc = json.loads(m.group(0)) if m else {}
+    except ValueError:
+        desc = {}
+    if not str(desc.get("render_description", "")).strip():
+        raise CanonCheckError(f"describe pass returned no render description: {dtext[:200]!r}")
+    text = vision(build_prompt_v2(gspec, desc), imgs, **vision_kw)
+    rows, summary = parse_answer(text, gspec["lines"])
+    for i, why in resolve_na(gspec).items():
+        rows[i - 1] = dict(rows[i - 1], verdict="na", reason=f"n/a by canon_na: {why}", canon_na=True)
+    for r in rows[:g]:
+        r["gate"] = True
+    graded = [r for r in rows if r["verdict"] != "na"]
+    failed = [r for r in graded if r["verdict"] == "fail"]
+    passed = sum(r["verdict"] == "pass" for r in graded)
+    return {"status": "graded", "verdict": "FAIL" if failed else "PASS", "mode": "v2",
+            "score": f"{passed}/{len(graded)}", "passed": passed, "graded": len(graded),
+            "na": len(rows) - len(graded), "kind": spec["kind"], "slug": spec.get("slug"),
+            "slug_via": spec.get("slug_via"), "lines": rows, "summary": summary,
+            "descriptions": desc, "gate_failed": any(r["verdict"] == "fail" for r in rows[:g]),
+            "model": vision_kw.get("model", DEFAULT_MODEL if vision is codex_vision else "mock"),
+            "render": str(render), "canon_images": [str(p) for p in spec["images"]],
+            "ts": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
+
+
+def grade(render: Path, spec: dict, vision=None, mode: str = "v1", **vision_kw) -> dict:
+    """-> verdict dict. `vision(prompt, images, **kw) -> str` defaults to codex_vision (tests pass a mock).
+    mode "v1" (default, what the daemon runs) or the candidate "v2" (see grade_v2)."""
+    if mode not in MODES:
+        raise CanonCheckError(f"unknown grade mode {mode!r}")
+    if mode == "v2":
+        return grade_v2(render, spec, vision=vision, **vision_kw)
     vision = vision or codex_vision
     images = [Path(render)] + [Path(p) for p in spec["images"]]
     text = vision(build_prompt(spec), images, **vision_kw)
@@ -351,7 +453,7 @@ def _find_job(job_id: str, done: Path, failed: Path):
 
 
 def check_one(job_id: str, *, done: Path, failed: Path, artsrc: Path, force: bool, dry_run: bool,
-              vision=None, **vkw) -> dict:
+              vision=None, mode: str = "v1", **vkw) -> dict:
     d, jp = _find_job(job_id, done, failed)
     if jp is None:
         return {"id": job_id, "status": "missing", "note": "no done/ or failed/ job file"}
@@ -362,7 +464,7 @@ def check_one(job_id: str, *, done: Path, failed: Path, artsrc: Path, force: boo
     if not png.is_file():
         return {"id": job_id, "status": "no_render", "note": f"{png} absent"}
     prior = manifest.get("canon_check")
-    if prior and prior.get("status") == "graded" and not force:
+    if prior and prior.get("status") == "graded" and not force and mode == "v1":
         return {"id": job_id, "status": "already", "check": prior, "job": job, "dir": d.name}
     spec = gather(job)
     if dry_run:
@@ -374,9 +476,11 @@ def check_one(job_id: str, *, done: Path, failed: Path, artsrc: Path, force: boo
         return {"id": job_id, "status": "dry", "kind": spec["kind"], "slug": spec["slug"], "n": len(spec["lines"])}
     else:
         try:
-            rec = grade(png, spec, vision=vision, **vkw)
+            rec = grade(png, spec, vision=vision, mode=mode, **vkw)
         except Exception as exc:  # noqa: BLE001 — a grader outage is recorded, never fatal to the sweep
             return {"id": job_id, "status": "error", "note": f"{type(exc).__name__}: {exc}"[:400]}
+    if mode != "v1":  # a candidate mode never overwrites the live verdict the owner-facing tools read
+        return {"id": job_id, "status": "checked", "check": rec, "job": job, "dir": d.name}
     if mp.is_file():
         manifest["canon_check"] = rec
         common.atomic_write_json(mp, manifest)
@@ -405,6 +509,8 @@ def main(argv=None) -> int:
     ap.add_argument("-j", "--jobs", type=int, default=2)
     ap.add_argument("-m", "--model", default=DEFAULT_MODEL)
     ap.add_argument("--effort", default=DEFAULT_EFFORT)
+    ap.add_argument("--mode", choices=MODES, default="v1",
+                    help="v2 = CANDIDATE gate lines + describe-then-diff (not validated; the daemon never uses it)")
     ap.add_argument("--json-out", type=Path, help="write all results here")
     ap.add_argument("--done-dir", type=Path, default=common.DEFAULT_DONE)
     ap.add_argument("--failed-dir", type=Path, default=common.DEFAULT_FAILED)
@@ -428,7 +534,7 @@ def main(argv=None) -> int:
         ap.error("no jobs: give job ids or --since")
     print(f"[canon_check] {len(ids)} job(s), model {a.model} effort {a.effort}, -j {a.jobs}", file=sys.stderr)
     kw = dict(done=a.done_dir, failed=a.failed_dir, artsrc=a.artsrc_dir, force=a.force, dry_run=a.dry_run,
-              model=a.model, effort=a.effort)
+              model=a.model, effort=a.effort, mode=a.mode)
     with ThreadPoolExecutor(max_workers=max(1, a.jobs)) as ex:
         results = list(ex.map(lambda i: check_one(i, **kw), ids))
     fails = []

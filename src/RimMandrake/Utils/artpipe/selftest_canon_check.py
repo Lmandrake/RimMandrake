@@ -135,6 +135,47 @@ def test_canon_na():
         ok("canon_na: unmatched mark raises", True)
 
 
+def test_v2_mode():
+    job = {"id": "t_c", "facing": "south", "prompt": "a creature", "target_canon": "t",
+           "owner_note": ["Pale body."]}
+    spec = {"kind": "canon", "slug": "t", "slug_via": "x", "lines": ["Has a tail", "Two horns"], "brief": "", "engine_limits": "",
+            "images": ["/c/1.png"], "owner_note": [], "facing": "south", "prompt": "p", "na_marks": [1], "na_reason": ""}
+    desc = json.dumps({"canon_description": "CANONTEXT", "render_description": "RENDERTEXT"})
+    mv = MockVision(desc, reply("pass", "fail", "pass", "pass"))
+    v = canon_check.grade(Path("/x/r.png"), spec, vision=mv, mode="v2")
+    ok("v2: two calls, describe first with the descriptions schema",
+       len(mv.calls) == 2 and mv.calls[0]["kw"].get("schema") is canon_check.DESCRIBE_SCHEMA
+       and "CANON" in mv.calls[0]["prompt"] and "MUST SHOW" not in mv.calls[0]["prompt"], mv.calls[0]["prompt"][:200])
+    p2 = mv.calls[1]["prompt"]
+    ok("v2: grading prompt carries both descriptions and the gate lines before the Must-show lines",
+       "CANONTEXT" in p2 and "RENDERTEXT" in p2 and p2.index("GATE: OVERALL BODY PLAN") < p2.index("Has a tail")
+       and "GATE: COLOUR LAYOUT" in p2)
+    ok("v2: a failed gate line fails the verdict and is flagged; Must-show numbering shifted past the gates",
+       v["verdict"] == "FAIL" and v["gate_failed"] and v["mode"] == "v2" and v["lines"][0]["gate"]
+       and v["lines"][2]["line"] == "Has a tail", v)
+    ok("v2: canon_na int mark shifts with the gates (mark 1 -> original line 1 'Has a tail')",
+       v["lines"][2]["verdict"] == "na", v["lines"][2])
+    mv = MockVision(desc, reply("pass", "pass", "pass", "pass"))
+    ok("v2: all pass -> PASS", canon_check.grade(Path("/x/r.png"), dict(spec, na_marks=[]), vision=mv, mode="v2")["verdict"] == "PASS")
+    ospec = canon_check.gather(OWNER_JOB, use_subject=False)
+    mv = MockVision(json.dumps({"canon_description": "", "render_description": "R"}), reply("pass", "pass", "pass"))
+    v = canon_check.grade(Path("/x/r.png"), ospec, vision=mv, mode="v2")
+    ok("v2: owner-note jobs get no gate lines", v["graded"] == 3 and not any(r.get("gate") for r in v["lines"]), v)
+    try:
+        canon_check.grade(Path("/x/r.png"), spec, vision=MockVision(json.dumps({"render_description": ""})), mode="v2")
+        ok("v2: empty render description raises", False)
+    except canon_check.CanonCheckError:
+        ok("v2: empty render description raises", True)
+    mv = MockVision(reply("pass", "pass", "pass", "pass"))
+    canon_check.grade(Path("/x/r.png"), dict(spec, na_marks=[]), vision=mv)
+    ok("default mode is v1: one call, no gate lines", len(mv.calls) == 1 and "GATE:" not in mv.calls[0]["prompt"])
+    try:
+        canon_check.grade(Path("/x/r.png"), spec, vision=MockVision(), mode="v3")
+        ok("unknown mode raises", False)
+    except canon_check.CanonCheckError:
+        ok("unknown mode raises", True)
+
+
 def _ctx(vision, tmp: Path):
     slots = queue.Queue()
     slots.put(0)
@@ -248,7 +289,7 @@ def test_cli():
 
 
 def main():
-    for t in (test_parsing, test_resolve_and_gather, test_grade, test_canon_na, test_gate_in_process, test_daemon_end_to_end,
+    for t in (test_parsing, test_resolve_and_gather, test_grade, test_canon_na, test_v2_mode, test_gate_in_process, test_daemon_end_to_end,
               test_cli):
         try:
             t()
