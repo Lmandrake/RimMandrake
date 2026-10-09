@@ -120,9 +120,9 @@ OVERRIDES = {
              "(the item prose says src/RimUtinni/VaultDungeons/, which is stale)."),
     ("GREENTIDE_BASE_PORT_BUILD_1", "A2"): dict(
         defs=["WeatherDef/RM_RoilWeather", "WeatherDef/RM_BreaklightClear",
-              "GameConditionDef/RM_RoilLock", "GameConditionDef/RM_GreentideWetBulbLock", "GameConditionDef/RM_BreaklightCondition",
+              "GameConditionDef/RM_RoilLock", "GameConditionDef/RM_BreaklightCondition",
               "IncidentDef/RM_Breaklight", "IncidentDef/RM_GreatboleFruitfall", "IncidentDef/RM_SteamDevilAppears",
-              "HediffDef/RM_WetBulbOverwhelm", "HediffDef/RM_DryAirAversion",
+              "HediffDef/RM_DryAirAversion",
               "ThingDef/RM_DryAirBlower", "ThingDef/RM_GreatboleHeartwood", "ThingDef/RM_GreatboleCore",
               "ThingDef/RM_GreatboleTrunkSegment", "ThingDef/RM_GreatboleDeadHusk", "ThingDef/RM_SteamDevil",
               "TerrainDef/RM_RootCauseway"],

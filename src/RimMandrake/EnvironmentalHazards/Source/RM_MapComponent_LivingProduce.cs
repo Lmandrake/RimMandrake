@@ -4,15 +4,14 @@ using Verse;
 namespace RimMandrake.EnvironmentalHazards
 {
     // ROT_DECAY_HARVEST_1 ("the gut digests"). Generic on
-    // purpose, same idiom as RM_MapComponent_DryRooms in this assembly: any
+    // purpose: any
     // ThingDef anywhere can opt in by carrying RM_LivingProduceExtension
     // (currently patched onto RotSporeKit's two fungal food crops,
     // RUT_Glimmerslime / RUT_RawDulcis — see
     // UtinniPatches/Patches/RotDecayHarvest_LivingProduce.xml), and this
     // component is a harmless no-op if nothing on the map carries it.
     //
-    // Fully re-derived from currently spawned things every sweep, same
-    // reasoning RM_MapComponent_DryRooms already gives: no Scribe state
+    // Fully re-derived from currently spawned things every sweep: no Scribe state
     // owed, a load just re-establishes it within one TickInterval.
     public class RM_MapComponent_LivingProduce : MapComponent
     {

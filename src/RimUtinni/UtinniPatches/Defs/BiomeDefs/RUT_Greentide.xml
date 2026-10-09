@@ -44,7 +44,7 @@
     posture RUT_MiasmaWeatherLock.xml's own header already documents for its
     sibling biome); kept at 0 rather than removed so the slots stay visible.
 
-    GREENTIDE_BASE_PORT_BUILD_1: the Roil, the wet-bulb lock, Breaklight, the blower, the causeways
+    GREENTIDE_BASE_PORT_BUILD_1: the Roil, Breaklight, the blower, the causeways
     and the greatbole landmark now live in the free mod as RM_ defs (mandrake.rm.greentide), carried
     by BiomeDef RM_Greentide. This frozen twin no longer gets the two locks (their wiring patches were
     deleted) and Breaklight/fruitfall are allowed on RM_Greentide only; its extensions below point at

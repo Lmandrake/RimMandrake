@@ -9,15 +9,16 @@
   armor stats and the vacuum-specific equippedStatOffset (VacuumResistance)
   are deliberately NOT copied: this is a heat/humidity seal, not space
   armor, and giving it vacuum resistance for free would be an undeserved
-  side effect of the crib, not a design choice. RM_WetBulbProtection is
-  this build pass's own addition.
+  side effect of the crib, not a design choice. Since WETBULB_FOLD_INTO_HEAT_1 (decision taken by question card 2026-10-08) wet-bulb heat is
+  vanilla heat, so this garment answers it with StuffEffectMultiplierInsulation_Heat (PROVISIONAL:
+  sealed suit 1.4, wicking wrap 0.8, dry-hood 0.5, keeping the old 0.6 / 0.3 / 0.2 protection order).
 -->
 <Defs>
 
   <ThingDef ParentName="ApparelMakeableBase" MayRequire="mandrake.rm.biomes">
     <defName>RUT_SealedSuit</defName>
     <label>sealed suit</label>
-    <description>A full-body suit of rubberized fabric over a sweat-wicking lining, cinched tight at the wrists, neck and ankles — cuts off the saturated outside air almost entirely. Hot, heavy and slow to put on, but nothing else worn keeps the wet-bulb clock as still.</description>
+    <description>A full-body suit of rubberized fabric over a sweat-wicking lining, cinched tight at the wrists, neck and ankles — cuts off the saturated outside air almost entirely. Hot, heavy and slow to put on, but nothing else worn holds off the heat as well.</description>
     <graphicData>
       <texPath>Things/Pawn/Humanlike/Apparel/Vacsuit/Vacsuit</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -41,9 +42,8 @@
       <Flammability>0.4</Flammability>
       <StuffEffectMultiplierArmor>0.15</StuffEffectMultiplierArmor>
       <StuffEffectMultiplierInsulation_Cold>0.3</StuffEffectMultiplierInsulation_Cold>
-      <StuffEffectMultiplierInsulation_Heat>0.3</StuffEffectMultiplierInsulation_Heat>
+      <StuffEffectMultiplierInsulation_Heat>1.4</StuffEffectMultiplierInsulation_Heat>
       <EquipDelay>6</EquipDelay>
-      <RM_WetBulbProtection>0.6</RM_WetBulbProtection>
     </statBases>
     <equippedStatOffsets>
       <MoveSpeed>-0.4</MoveSpeed>

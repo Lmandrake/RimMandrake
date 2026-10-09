@@ -5,8 +5,10 @@
   greentide_kit_spec.md M1's gear tree, headgear piece ("dry-hood"). Shape
   and texPath/wornGraphicPath cribbed verbatim from vanilla Apparel_HatHood
   (RimSage raw fetch this pass) - a real, already-shipping Overhead
-  garment - so this ships with real art on day one. RM_WetBulbProtection is
-  this build pass's own addition; the donor's SocialImpact offset is kept
+  garment - so this ships with real art on day one. Since WETBULB_FOLD_INTO_HEAT_1 (decision taken by question card 2026-10-08) wet-bulb heat is
+  vanilla heat, so this garment answers it with StuffEffectMultiplierInsulation_Heat (PROVISIONAL:
+  sealed suit 1.4, wicking wrap 0.8, dry-hood 0.5, keeping the old 0.6 / 0.3 / 0.2 protection order).
+  The donor's SocialImpact offset is kept
   (a sealed hood reads as unfriendly, same as the donor's own hood).
 -->
 <Defs>
@@ -33,8 +35,7 @@
       <EquipDelay>0.8</EquipDelay>
       <StuffEffectMultiplierArmor>0.15</StuffEffectMultiplierArmor>
       <StuffEffectMultiplierInsulation_Cold>0.1</StuffEffectMultiplierInsulation_Cold>
-      <StuffEffectMultiplierInsulation_Heat>0.15</StuffEffectMultiplierInsulation_Heat>
-      <RM_WetBulbProtection>0.2</RM_WetBulbProtection>
+      <StuffEffectMultiplierInsulation_Heat>0.5</StuffEffectMultiplierInsulation_Heat>
     </statBases>
     <equippedStatOffsets>
       <SocialImpact>-0.1</SocialImpact>

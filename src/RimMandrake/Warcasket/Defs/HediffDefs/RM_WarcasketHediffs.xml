@@ -3,7 +3,7 @@
   RM_WarcasketHediffs.xml                Warcasket - WARCASKET_SUIT_CLASS_1
 
   Two hediffs, one per hazard the mod adds real mechanism for. Stage shape
-  cribbed from this repo's own RUT_WetBulbOverwhelm.xml (UtinniPatches) -
+  follows vanilla Heatstroke -
   escalating capMods, a final life-threatening stage, lethalSeverity 1 so
   it keeps getting worse until death if exposure continues, tendable.
 
@@ -11,7 +11,7 @@
   HazardousTerrainImmersion to a pawn standing on deep/non-walkable water
   without enough RM_HazardousTerrainProtection. Heals off on its own once
   the pawn is out of the hazard (see the MapComponent's own negative
-  gain), same "clock, not a switch" shape WetBulb uses.
+  gain): a clock, not a switch.
 
   RM_WarcasketBreach: applied by RM_CompWarcasketIntegrity on a compound
   failure roll - the suit's own "primitive tank around a person" failing

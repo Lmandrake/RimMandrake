@@ -46,8 +46,7 @@ namespace RimMandrake.EnvironmentalHazards
 
         // ROT_SHEEN_WEATHER_1 addition: gear-slows-the-clock (owner card 5).
         // Summed across worn apparel via HazardTargeting.SumApparelStat (an
-        // "Apparel"-category StatDef, same reasoning RM_WetBulbProtection's
-        // header gives — no vanilla per-pawn aggregation exists). The applied
+        // "Apparel"-category StatDef — no vanilla per-pawn aggregation exists). The applied
         // gain is severityPerDayExposed * max(minDriveFactor, 1 - protection):
         // protection alone can slow the clock but, by the floor, never zero
         // it — card 5 is explicit that gear is never full immunity.
@@ -160,11 +159,8 @@ namespace RimMandrake.EnvironmentalHazards
             // ROT_SHEEN_WEATHER_1: gear-slows-the-clock (card 5). Miasma sets
             // no protectionStat, so protection stays 0 and driveFactor stays
             // 1 — unchanged behaviour for the existing consumer.
-            // WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1: the floor curve
-            // (holdThreshold left at 0f) is HazardTargeting.ProtectionDriveFactor's
-            // shared home for this formula — RM_GameCondition_WetBulb calls
-            // the same method with its own hold-threshold curve instead of
-            // reimplementing this shape.
+            // The floor curve (holdThreshold left at 0f) lives in
+            // HazardTargeting.ProtectionDriveFactor, shared with other callers.
             float driveFactor = 1f;
             if (props.protectionStat != null)
             {

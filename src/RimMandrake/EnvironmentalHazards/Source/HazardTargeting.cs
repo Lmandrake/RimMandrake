@@ -72,9 +72,7 @@ namespace RimMandrake.EnvironmentalHazards
         }
 
         // ROT_SHEEN_WEATHER_1. Shared by every hazard's apparel-summed
-        // protection, including RM_GameCondition_WetBulb since
-        // WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1 retired its own private
-        // reimplementation of this loop — an "Apparel"-category StatDef has
+        // protection — an "Apparel"-category StatDef has
         // no vanilla auto-aggregation onto a pawn stat (ArmorUtility is the
         // only vanilla reader, and it reads per-apparel-item, not per-pawn),
         // so any consumer summing one across a worn outfit must do it itself.
@@ -98,16 +96,13 @@ namespace RimMandrake.EnvironmentalHazards
             return total;
         }
 
-        // WETBULB_IS_A_THIRD_EXPOSURE_ENGINE_1. The "gear slows the clock"
-        // shape both RM_HediffComp_EnvironmentalExposure and
-        // RM_GameCondition_WetBulb apply to a summed protection stat,
-        // unified into one formula instead of two near-identical
-        // reimplementations. Two curve shapes, selected by which parameter
-        // the caller sets (the other stays at its neutral default so a
-        // caller keeps its exact pre-dedup numbers):
+        // The "gear slows the clock" shape every exposure consumer
+        // (RM_HediffComp_EnvironmentalExposure, Warcasket's terrain
+        // immersion) applies to a summed protection stat. Two curve shapes,
+        // selected by which parameter the caller sets:
         //   holdThreshold > 0   -> a hold-threshold curve: driveFactor hits
-        //                          0 at protection == holdThreshold (RM_GameCondition_WetBulb's
-        //                          own shape, minDriveFactor left at 0f).
+        //                          0 at protection == holdThreshold (no
+        //                          current caller; minDriveFactor left at 0f).
         //   holdThreshold <= 0  -> a floor curve: driveFactor never drops
         //                          below minDriveFactor regardless of
         //                          protection (RM_HediffComp_EnvironmentalExposure's

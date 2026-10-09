@@ -6,9 +6,10 @@
   Shape and texPath/wornGraphicPath cribbed verbatim from vanilla
   Apparel_TribalA (RimSage raw fetch this pass) - a real, already-shipping
   torso/legs OnSkin garment - so this ships with real art on day one rather
-  than a placeholder pink rectangle or a DEPLOY_HOLD entry. RM_WetBulbProtection
-  is this build pass's own addition; every other field is the donor's own
-  tuning, lightly retouched (Mass/EquipDelay) for a lighter garment than a
+  than a placeholder pink rectangle or a DEPLOY_HOLD entry. Since WETBULB_FOLD_INTO_HEAT_1 (decision taken by question card 2026-10-08) wet-bulb heat is
+  vanilla heat, so this garment answers it with StuffEffectMultiplierInsulation_Heat (PROVISIONAL:
+  sealed suit 1.4, wicking wrap 0.8, dry-hood 0.5, keeping the old 0.6 / 0.3 / 0.2 protection order).
+  Every other field is the donor's own tuning, lightly retouched (Mass/EquipDelay) for a lighter garment than a
   full tribalwear robe.
 -->
 <Defs>
@@ -33,9 +34,8 @@
       <Mass>0.3</Mass>
       <StuffEffectMultiplierArmor>0.15</StuffEffectMultiplierArmor>
       <StuffEffectMultiplierInsulation_Cold>0.2</StuffEffectMultiplierInsulation_Cold>
-      <StuffEffectMultiplierInsulation_Heat>0.2</StuffEffectMultiplierInsulation_Heat>
+      <StuffEffectMultiplierInsulation_Heat>0.8</StuffEffectMultiplierInsulation_Heat>
       <EquipDelay>1.2</EquipDelay>
-      <RM_WetBulbProtection>0.3</RM_WetBulbProtection>
     </statBases>
     <thingCategories>
       <li>ApparelMisc</li>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GREENTIDE_BASE_PORT_BUILD_1: moved from the campaign tier, RUT_ -> RM_.
+
+  RM_DryAirAversion (spec M2): applied by RM_CompDryFieldEmitter (on RM_DryAirBlower) to a wild animal
+  in the blower's doorway arc, alongside a vanilla PanicFlee. Inert by itself: it is the re-trigger
+  cooldown, and its short Disappears lifetime lets the same animal be repelled again later.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_DryAirAversion</defName>
+    <label>dry-air aversion</label>
+    <description>A blast of bone-dry heat off a dry-air blower — uncomfortable enough that a wild animal wants nothing more to do with wherever it came from.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>2500~3500</disappearsAfterTicks>
+      </li>
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+
+</Defs>

@@ -14,7 +14,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_DryAirBlower</defName>
     <label>dry-air blower</label>
-    <description>A fueled doorway machine that gushes hot, bone-dry air downward across its threshold. Run continuously, it holds the room behind it dry — the wet-bulb clock stops indoors — and the shimmer of heat off its vents sends anything wild-skinned looking for another way round. Fire is not the tool here; dry heat is the one alien thing the green has no answer for. Starve it of fuel and the room notices within hours.</description>
+    <description>A fueled doorway machine that gushes hot, bone-dry air downward across its threshold. Run continuously, it holds back the creeping green across its doorway, and the shimmer of heat off its vents sends anything wild-skinned looking for another way round. Fire is not the tool here; dry heat is the one alien thing the green has no answer for. Starve it of fuel and the room notices within hours.</description>
     <graphicData>
       <texPath>Things/Building/Production/RM_DryAirBlower</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -78,7 +78,7 @@
         <heatPushMaxTemperature>200</heatPushMaxTemperature>
       </li>
       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_DryFieldEmitter">
-        <dryRoomHoldTicks>15000</dryRoomHoldTicks>
+        <suppressHoldTicks>15000</suppressHoldTicks>
         <animalRepelRadius>3</animalRepelRadius>
         <animalRepelArcDegrees>90</animalRepelArcDegrees>
         <aversionHediff>RM_DryAirAversion</aversionHediff>

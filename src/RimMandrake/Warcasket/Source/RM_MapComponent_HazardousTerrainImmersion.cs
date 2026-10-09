@@ -9,9 +9,7 @@ namespace RimMandrake.Warcasket
     // "ocean access [is] TERRAIN survival (sea floors stay ship-only)".
     //
     // GENERAL, not warcasket-specific: this scans every map for every
-    // spawned apparel-capable pawn, the same shape RM_GameCondition_
-    // WetBulb.RampMap already uses in this repo (EnvironmentalHazards),
-    // and applies/heals RM_TerrainImmersionHazard based on the pawn's
+    // spawned apparel-capable pawn and applies/heals RM_TerrainImmersionHazard based on the pawn's
     // SUMMED RM_HazardousTerrainProtection apparel stat — ANY apparel
     // that carries the stat helps, not only a warcasket. Reuses
     // HazardTargeting.SumApparelStat/ProtectionDriveFactor (this mod
@@ -65,8 +63,7 @@ namespace RimMandrake.Warcasket
 
             // Snapshot: HealthUtility.AdjustSeverity can, in principle,
             // trigger death and mutate the live pawn list — same caution
-            // this repo's own GameCondition_EnvironmentalWeather/
-            // RM_GameCondition_WetBulb already take.
+            // this repo's own GameCondition_EnvironmentalWeather already takes.
             List<Pawn> pawns = new List<Pawn>(map.mapPawns.AllPawnsSpawned);
             for (int i = 0; i < pawns.Count; i++)
             {

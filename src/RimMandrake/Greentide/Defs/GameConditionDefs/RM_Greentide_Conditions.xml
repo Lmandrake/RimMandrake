@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  The Greentide's three conditions (GREENTIDE_BASE_PORT_BUILD_1: moved from the campaign tier, RUT_ -> RM_).
+  The Greentide's two conditions (GREENTIDE_BASE_PORT_BUILD_1: moved from the campaign tier, RUT_ -> RM_).
   Classes and extensions are all mandrake.rm.environmentalhazards (a declared dependency).
 
   RM_RoilLock: permanent biomeMapConditions entry on RM_Greentide forcing RM_RoilWeather. Pure weather
   force, no damage fields (spec M4). Mod Settings "The Roil" removes it from the biome for new maps.
 
-  RM_GreentideWetBulbLock: permanent biomeMapConditions entry; RM_GameCondition_WetBulb ramps
-  RM_WetBulbOverwhelm on exposed pawns (spec M1). Idles while RM_BreaklightCondition is active (dry air).
-  immunePawnKinds/immuneThingDefs are empty until the roster sitting names natives.
+  Wet-bulb heat is vanilla heat (WETBULB_FOLD_INTO_HEAT_1, decision taken by question card 2026-10-08):
+  the biome's RM_SunHeatExtension (heat kind ambient) raises felt temperature, and vanilla Heatstroke does
+  the rest. There is no wet-bulb condition.
 
   RM_BreaklightCondition: fired only by RM_Breaklight (RM_Greentide_Spine_Incidents.xml), which owns the
   duration. Forces RM_BreaklightClear, +12 C ramped over 2500 ticks (INVENTED), and
@@ -26,27 +26,6 @@
     <modExtensions>
       <li Class="RimMandrake.EnvironmentalHazards.EnvironmentalWeatherExtension">
         <forcedWeather>RM_RoilWeather</forcedWeather>
-      </li>
-    </modExtensions>
-  </GameConditionDef>
-
-  <GameConditionDef>
-    <defName>RM_GreentideWetBulbLock</defName>
-    <conditionClass>RimMandrake.EnvironmentalHazards.RM_GameCondition_WetBulb</conditionClass>
-    <label>wet-bulb overwhelm</label>
-    <description>The Greentide's saturated air holds heat against the skin no matter how deep the shade — sweat does nothing here. Only sealed or wicking gear, or a dried room, keeps the collapse clock from running.</description>
-    <canBePermanent>true</canBePermanent>
-    <allowUnderground>true</allowUnderground>
-    <modExtensions>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_WetBulbExtension">
-        <hediffDef>RM_WetBulbOverwhelm</hediffDef>
-        <protectionStat>RM_WetBulbProtection</protectionStat>
-        <intervalTicks>600</intervalTicks>
-        <severityPerInterval>0.00667</severityPerInterval>
-        <protectionHoldThreshold>0.8</protectionHoldThreshold>
-        <pausedByConditions>
-          <li>RM_BreaklightCondition</li>
-        </pausedByConditions>
       </li>
     </modExtensions>
   </GameConditionDef>
