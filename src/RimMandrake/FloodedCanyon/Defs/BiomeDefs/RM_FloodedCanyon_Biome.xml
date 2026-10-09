@@ -33,7 +33,7 @@
       </li>
       <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
            own description, always-true list and shipped mechanics, flagged for the owner's review
-           (Transient/arrival_letters_draft_20261008.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
       <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
         <letterLabel>The Cracked Lands</letterLabel>
         <letterText>Water comes rarely and it comes down the canyon as a wall: it drowns what stands in its path. Chimes ring ahead of it in stages; when you hear them, get out of the cut. When it drains it leaves real soil in the shade, the one dryland ground you can farm. The sun owns the flats. It sits low, so a roof does nothing here: only a lee shadow helps, a canyon wall, a rock face, or a sun shield to stand behind. A parasol barely helps.</letterText>

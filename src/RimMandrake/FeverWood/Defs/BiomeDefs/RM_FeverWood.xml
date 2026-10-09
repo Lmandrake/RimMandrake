@@ -189,7 +189,7 @@
       </li>
       <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
            own description, always-true list and shipped mechanics, flagged for the owner's review
-           (Transient/arrival_letters_draft_20261008.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+           (infrastructure/state/items/BIOME_ARRIVAL_LETTERS_ALL_1.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
       <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
         <letterLabel>The Fever Wood</letterLabel>
         <letterText>Read the water before you read anything else. The still black pools are one creature, not many: whatever rises from one has come from all of them. A tentacle that sets down a gift and goes is no danger until you hit it; hit it and the pools remember. The kurreth carry off anything they can lift, so leave nothing light outside. When the oil-boil haze hangs over the water, one spark flashes it. The heat here is in the wet air itself: shade does nothing, so dress against it or stay in a closed room.</letterText>
