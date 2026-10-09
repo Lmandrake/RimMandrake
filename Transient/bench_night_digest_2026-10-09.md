@@ -10,7 +10,11 @@ Everything below is committed and pushed. Nothing is deployed. Every change wait
    - lost-cargo quests: `D:\Luke\dev\RimMandrake\Transient\fallzone_lost_cargo_quests_draft_2026-10-09.md`
    - species traits instead of aptitudes: `D:\Luke\dev\RimMandrake\Transient\species_traits_over_aptitudes_draft_2026-10-09.md`
 4. **Xenotype canon list, re-measured, with draft rulings.** Cosmetic items are marked as needing your permission: `D:\Luke\dev\RimMandrake\Transient\xenotype_canon_correction_rulings_2026-10-09.md`
-5. **Sketto lock step refuses south and north.** The redrawn thin-leg plates no longer line up with the masters and wing frames (alpha cover 0.78–0.87 against the 0.92 gate), so the body counts as re-posed. Two wing frames also still fail canon on tusks and legs. A design fix is being drafted. `D:\Luke\dev\RimMandrake\Transient\sketto_plate_east_iter_2026-10-09.md`
+5. **Sketto lock: three decisions.** Measured, with options: `D:\Luke\dev\RimMandrake\Transient\sketto_repose_fix_2026-10-09.md`
+   - Where the plate body comes from. Recommended: built offline from master v3 with the thin legs pasted in. With that, north passes the unchanged gate.
+   - A new south/north floor. 0.38 is unreachable with these wings; the most a perfect lock can reach is 0.32–0.34.
+   - One south wing2 regen.
+   A tighter wing rule in the lock is being built meanwhile, offline and selftested.
 6. **Sheet leftovers:**
    - Abyss: Durrgak "rename to Sorter", plus 4 conflicts.
    - Deep Desert: 3 Vozzik conflicts.
