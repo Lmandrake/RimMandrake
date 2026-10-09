@@ -99,15 +99,17 @@ namespace RimMandrake.EnvironmentalHazards
             }
         }
 
-        public override void CompTick()
+        // The only user is a PlantBase plant (RUT_DyingCreep), and plants tick Long only, so the
+        // clock advances in TickLongInterval steps (TICKER_NEVER_FIRES_FIX_1; it was CompTick and never ran).
+        public override void CompTickLong()
         {
-            base.CompTick();
+            base.CompTickLong();
             if (dead || parent.Map == null)
             {
                 return;
             }
 
-            ticksSinceSpawn++;
+            ticksSinceSpawn += GenTicks.TickLongInterval;
 
             int lifetimeTicks = Mathf.Max(1, Mathf.RoundToInt(Props.lifetimeHours * TicksPerHour));
             if (ticksSinceSpawn >= lifetimeTicks)

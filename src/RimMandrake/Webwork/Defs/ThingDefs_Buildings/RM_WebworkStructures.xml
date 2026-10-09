@@ -83,7 +83,7 @@
     <fillPercent>0.05</fillPercent>
     <passability>Standable</passability>
     <pathCost>0</pathCost>
-    <tickerType>Never</tickerType>
+    <tickerType>Normal</tickerType> <!-- RM_CompAdhesiveSlick ticks on CompTick, self-throttled -->
     <statBases>
       <MaxHitPoints>30</MaxHitPoints>
       <Flammability>1.6</Flammability>

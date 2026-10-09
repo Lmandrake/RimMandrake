@@ -70,10 +70,13 @@ namespace RimMandrake.Webwork
 			}
 		}
 
-		public override void CompTickRare()
+		// The nest wall is tickerType Normal (its dormancy/spawner comps need it), and a Normal
+		// building never calls CompTickRare, so this runs from CompTick on the rare cadence
+		// (TICKER_NEVER_FIRES_FIX_1).
+		public override void CompTick()
 		{
-			base.CompTickRare();
-			if (!parent.Spawned)
+			base.CompTick();
+			if (!parent.Spawned || !parent.IsHashIntervalTick(GenTicks.TickRareInterval))
 			{
 				return;
 			}
