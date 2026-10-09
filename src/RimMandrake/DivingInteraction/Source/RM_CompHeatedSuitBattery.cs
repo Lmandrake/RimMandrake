@@ -225,6 +225,10 @@ namespace RimMandrake.DivingInteraction
             string status = IsCharged
                 ? "RM_HeatedSuitCharge".Translate(ChargeFraction.ToStringPercent())
                 : "RM_HeatedSuitChargeDepleted".Translate();
+            if (IsCharged && RM_DivingSettings.chillHeatedSuitEnabled && RM_DivingSettings.masterEnabled)
+            {
+                status += " (about " + Mathf.CeilToInt(chargeTicksRemaining / 2500f) + "h outdoors)"; // DI-4 time-left line
+            }
             return status;
         }
     }

@@ -8,3 +8,4 @@
 - TB-3 TWILIGHT_WELL_AVOIDS_CURRENT_1: WellLedger.IsChannelBed asks ChannelCurrent.HasCurrent (toggle). built.
 - TB-2 SALT_TRAVELS_WITH_DOOR_1: two-strike prune + minified doors (grace, not literal on-door salt; no toggle). built.
 - GS-5 POLE_OWNER_CHANGE_DROPS_WIRES_1: OwnerMismatchSweep built (toggle). EH-5 HAZARD_TAR_TERRAIN_FROM_LIQUIDS_1: LiquidDef-derived tar terrains built.
+- DI-4 DANGER_CLOCK_ALERTS_1: built (RM_Alerts_DangerClock.cs). X-1 skipped: RM_SurfaceHome already exists, peer in flight.
