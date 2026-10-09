@@ -836,6 +836,23 @@ if Suite is not None:
                     if int(m.get("fessk", 0)) < 1 or int(m.get("scrape", 0)) < 1 or int(m.get("reefback", 0)) < 1:
                         _fail("9 hours of burn did not bring watcher + scrape + giant: %r" % res)
 
+    @suite.chain("settings_expose_round_trip")
+    def settings_expose_round_trip(t):
+        """VALIDATION_SETTINGS_SNAPSHOT_1: every settings field survives a real Scribe save + load (RM_TerminalBiomesSettingsProof
+        writes alternates, saves, resets, loads, compares, restores) -- the set/get flips alone pass a missing Scribe call."""
+        with _comp(t, "every_field_scribed_through_save_and_load", beyond_toggle=True):
+            if _live(t):
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.TerminalBiomes.RM_TerminalBiomesSettingsProof",
+                                  method="ExposeRoundTrip")
+                res = str((r or {}).get("result", ""))
+                if not res.startswith("fields="):
+                    _unmeasured(t, "round trip could not run: %r" % res[:160])
+                m = dict(kv.split("=", 1) for kv in res.split(" ") if "=" in kv)
+                if int(m.get("fields", 0)) < 30:
+                    _fail("sanity probe: only %s fields reflected (expected 30+): %r" % (m.get("fields"), res))
+                if m.get("lost") != "0":
+                    _fail("settings fields lost through save+load (no Scribe call): %r" % res)
+
     @suite.chain("settings_restored")
     def settings_restored(t):
         """LAST: every field is back at the value it held BEFORE the run (snapshot), not the shipped default; a leaked

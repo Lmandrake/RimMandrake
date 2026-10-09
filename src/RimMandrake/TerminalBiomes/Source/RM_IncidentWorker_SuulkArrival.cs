@@ -42,8 +42,11 @@ namespace RimMandrake.TerminalBiomes
             {
                 return false; // nothing to graze yet
             }
+            // TERMINAL_SETTINGS_CONSUMERS_WIRE_1: twilightSuulkPressureScalingEnabled now decides whether the count
+            // matters; off holds the chance at the one-lamp level.
+            int pressure = RM_TerminalBiomesSettings.twilightSuulkPressureScalingEnabled ? glowers : 1;
             float chance = Mathf.Clamp01(RM_TerminalBiomesSettings.suulkFrequencyMultiplier
-                * Mathf.Min(1f, 0.4f + glowers * 0.15f));
+                * Mathf.Min(1f, 0.4f + pressure * 0.15f));
             return Rand.Chance(chance);
         }
 
@@ -91,7 +94,7 @@ namespace RimMandrake.TerminalBiomes
                     continue;
                 }
                 CompGlower glower = t.TryGetComp<CompGlower>();
-                if (glower != null && glower.GlowRadius > 0f)
+                if (glower != null && glower.Glows && glower.GlowRadius > 0f) // lit only: a dark lamp draws nothing
                 {
                     count++;
                 }

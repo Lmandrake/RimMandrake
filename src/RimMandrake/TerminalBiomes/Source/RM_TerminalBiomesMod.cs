@@ -1,4 +1,6 @@
 using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+using System.Linq;
 using RimMandrake.EnvironmentalHazards;
 using RimWorld;
 using UnityEngine;
@@ -111,6 +113,9 @@ namespace RimMandrake.TerminalBiomes
         public static bool suulkEnabled = true;
         public static float suulkFrequencyMultiplier = 1f;
         public static bool vauliskEnabled = true;
+        // VAULISK_LURE_REVEAL_TRIGGER_1: proximity checked every second and any job aimed at the lure reveals it.
+        // PROVISIONAL (auto-decided 2026-10-09). Off: only the old slow (2000-tick) proximity check.
+        public static bool vauliskQuickReveal = true;
 
         private static bool TwilightSeaActive => masterEnabled && twilightSeaEnabled;
         public static bool SuulkActive => TwilightSeaActive && suulkEnabled;
@@ -185,7 +190,6 @@ namespace RimMandrake.TerminalBiomes
         public static bool twilightSuulkPressureScalingEnabled = true;
         public static bool twilightCagesPassableBeneath = true;
         public static float twilightSunSphereGraceDays = 3f;
-        public static bool twilightChartsAgeEnabled = true;
 
         // TWILIGHTSEA_FLORA_PASS_1: Route B placement (tithemoss/tollhorn/gleamfloss/farwick) and the light comps (gloamurn, murkspindle).
         public static bool twilightFloraDressingEnabled = true;
@@ -261,6 +265,7 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref suulkEnabled, "suulkEnabled", true);
             Scribe_Values.Look(ref suulkFrequencyMultiplier, "suulkFrequencyMultiplier", 1f);
             Scribe_Values.Look(ref vauliskEnabled, "vauliskEnabled", true);
+            Scribe_Values.Look(ref vauliskQuickReveal, "vauliskQuickReveal", true);
             Scribe_Values.Look(ref twilightPaneStrikeEnabled, "twilightPaneStrikeEnabled", true);
             Scribe_Values.Look(ref twilightPaneStrikeFrequency, "twilightPaneStrikeFrequency", 1.0f);
             Scribe_Values.Look(ref twilightDeckAccumulationEnabled, "twilightDeckAccumulationEnabled", true);
@@ -281,7 +286,6 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref twilightSuulkPressureScalingEnabled, "twilightSuulkPressureScalingEnabled", true);
             Scribe_Values.Look(ref twilightCagesPassableBeneath, "twilightCagesPassableBeneath", true);
             Scribe_Values.Look(ref twilightSunSphereGraceDays, "twilightSunSphereGraceDays", 3f);
-            Scribe_Values.Look(ref twilightChartsAgeEnabled, "twilightChartsAgeEnabled", true);
             Scribe_Values.Look(ref twilightFloraDressingEnabled, "twilightFloraDressingEnabled", true);
             Scribe_Values.Look(ref twilightFloraLightCompsEnabled, "twilightFloraLightCompsEnabled", true);
             Scribe_Values.Look(ref greyHullCrustEnabled, "greyHullCrustEnabled", true);
@@ -389,6 +393,12 @@ namespace RimMandrake.TerminalBiomes
                 "A rare, one-per-map ambush predator disguised as a lit lamp-bladder plant "
               + "carrying a false, steady (never-breathing) glow. Swaps to a fightable pawn "
               + "when approached.");
+            if (vauliskEnabled)
+            {
+                list.CheckboxLabeled("  The vaulisk springs the moment it is touched", ref vauliskQuickReveal,
+                    "On: it reveals as soon as anyone comes within reach or a colonist is ordered to harvest or cut it. "
+                  + "Off: it checks only every half-minute or so, so a pawn may walk right past it.");
+            }
             list.GapLine();
 
             list.Label("THE TWILIGHT SEA'S KIT");
@@ -401,7 +411,7 @@ namespace RimMandrake.TerminalBiomes
               + "still harvestable.");
             if (twilightPaneStrikeEnabled)
             {
-                list.Label("  Frequency: " + twilightPaneStrikeFrequency.ToString("0.0") + "x");
+                list.Label("  Frequency (litter and whole-pane strikes): " + twilightPaneStrikeFrequency.ToString("0.0") + "x");
                 twilightPaneStrikeFrequency = list.Slider(twilightPaneStrikeFrequency, 0.25f, 3f);
             }
             list.CheckboxLabeled("Deck accumulation", ref twilightDeckAccumulationEnabled,
@@ -429,23 +439,21 @@ namespace RimMandrake.TerminalBiomes
                 if (list.RadioButton("  Week — the shipped pace", twilightDriftCadence == 1)) twilightDriftCadence = 1;
                 if (list.RadioButton("  Slow — roughly double the week", twilightDriftCadence == 2)) twilightDriftCadence = 2;
             }
-            list.Label("Tether-chain availability (how many mobile cages/lamps the Compact "
-              + "restocks toward):");
+            list.Label("Tether-chain availability — NO EFFECT YET: no trader stocks tether chains "
+              + "(the Compact's stock was retired); the choice is kept for when one does:");
             if (list.RadioButton("  Scarce", twilightChainAvailability == 0)) twilightChainAvailability = 0;
             if (list.RadioButton("  Standard", twilightChainAvailability == 1)) twilightChainAvailability = 1;
             if (list.RadioButton("  Plentiful", twilightChainAvailability == 2)) twilightChainAvailability = 2;
             list.CheckboxLabeled("Suulk pressure scales with constellation size", ref twilightSuulkPressureScalingEnabled,
-                "Carrying more mobile lamps/cages than the ruled handful shortens the suulk's "
-              + "grazing cadence. No effect until the suulk incident (a separate item) ships — "
-              + "persisted so a save carries a chosen value forward.");
+                "On: each LIT lamp or cage the colony owns makes a suulk arrival more likely, up to "
+              + "certain at four. Off: the chance stays at the one-lamp level however many you carry "
+              + "(none at all still draws none).");
             list.CheckboxLabeled("Cages passable beneath", ref twilightCagesPassableBeneath,
                 "The floating farm doesn't use up surface space because it floats above you. "
               + "Off: a cage occupies its cells like a normal building. Takes effect after mod "
               + "settings apply, at the next map/region rebuild.");
             list.Label("Sun-sphere grace period before it dims to a husk: " + twilightSunSphereGraceDays.ToString("0.#") + " days");
             twilightSunSphereGraceDays = list.Slider(twilightSunSphereGraceDays, 0.5f, 10f);
-            list.CheckboxLabeled("Charts age", ref twilightChartsAgeEnabled,
-                "Off: a well-chart's forecast never marks itself stale.");
             list.CheckboxLabeled("Floor flora placement (Route B)", ref twilightFloraDressingEnabled,
                 "Tithemoss on wild lamp-plants at map generation; gleamfloss, farwick buds and tollhorn seeded "
               + "when a skylight opens, and floss and buds dying when it closes. Off: those four only appear if "
@@ -528,7 +536,7 @@ namespace RimMandrake.TerminalBiomes
                 "While a gravship sits parked on the Grey Sea floor, salt rimes its plating (about "
               + "a day), salts its outer doors shut one by one (from about two and a half days), and "
               + "after long neglect jackets the hull in crust that must be chipped off before "
-              + "launch (ramping in from day five, whole hull by about a quadrum). Chipping pays "
+              + "launch (ramping in from day five, up to a third of the hull by about a quadrum). Chipping pays "
               + "salt and sets the clock back. A salted door always yields to a short no-tool job "
               + "from either side, and crust only ever delays a launch. Off: nothing new grows, "
               + "salted doors open normally and crust no longer blocks launch.");
@@ -657,6 +665,84 @@ namespace RimMandrake.TerminalBiomes
         }
     }
 
+    // VALIDATION_SETTINGS_SNAPSHOT_1: the settings ExposeData round trip. The bridge's set/get round trips touch the
+    // static fields only, so a field missing its Scribe call passed them. This writes every public static settings
+    // field to an alternate value, SAVES the settings through Scribe to a temp file exactly as WriteSettings would,
+    // puts the fields back to their prior values, LOADS the file, and reports every field that did not come back as
+    // the alternate (= not Scribed, or Scribed under a key that does not load). Prior values are always restored.
+    public static class RM_TerminalBiomesSettingsProof
+    {
+        public static string ExposeRoundTrip()
+        {
+            if (Scribe.mode != LoadSaveMode.Inactive)
+            {
+                return "busy: Scribe is " + Scribe.mode;
+            }
+            var fields = new List<System.Reflection.FieldInfo>();
+            foreach (var f in typeof(RM_TerminalBiomesSettings).GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+            {
+                if (f.IsLiteral || f.IsInitOnly) continue;
+                System.Type ty = f.FieldType;
+                if (ty == typeof(bool) || ty == typeof(int) || ty == typeof(float) || ty == typeof(string) || ty.IsEnum) fields.Add(f);
+            }
+            var prior = new Dictionary<System.Reflection.FieldInfo, object>();
+            var alt = new Dictionary<System.Reflection.FieldInfo, object>();
+            foreach (var f in fields)
+            {
+                object v = f.GetValue(null);
+                prior[f] = v;
+                alt[f] = Alt(f.FieldType, v);
+            }
+            string path = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "rm_tb_settings_roundtrip.xml");
+            var bad = new List<string>();
+            try
+            {
+                foreach (var f in fields) f.SetValue(null, alt[f]);
+                ModSettings inst = RM_TerminalBiomesMod.settings ?? new RM_TerminalBiomesSettings();
+                Scribe.saver.InitSaving(path, "SettingsBlock");
+                try { Scribe_Deep.Look(ref inst, "ModSettings"); }
+                finally { Scribe.saver.FinalizeSaving(); }
+                foreach (var f in fields) f.SetValue(null, prior[f]);
+                ModSettings loaded = null;
+                Scribe.loader.InitLoading(path);
+                try { Scribe_Deep.Look(ref loaded, "ModSettings"); }
+                finally { Scribe.loader.FinalizeLoading(); }
+                foreach (var f in fields)
+                {
+                    if (!Same(f.GetValue(null), alt[f])) bad.Add(f.Name);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Scribe.ForceStop();
+                return "error: " + e.Message;
+            }
+            finally
+            {
+                foreach (var f in fields) f.SetValue(null, prior[f]);
+                try { System.IO.File.Delete(path); } catch { }
+            }
+            return "fields=" + fields.Count + " lost=" + bad.Count + (bad.Count > 0 ? " missing=" + string.Join(",", bad) : "");
+        }
+
+        private static object Alt(System.Type ty, object v)
+        {
+            if (ty == typeof(bool)) return !(bool)v;
+            if (ty == typeof(int)) return (int)v + 1;
+            if (ty == typeof(float)) return (float)v * 2f + 1f;
+            if (ty == typeof(string)) return (v as string ?? "") + "_rt";
+            System.Array vals = System.Enum.GetValues(ty);
+            foreach (object m in vals) if (!m.Equals(v)) return m;
+            return v;
+        }
+
+        private static bool Same(object a, object b)
+        {
+            if (a is float fa && b is float fb) return System.Math.Abs(fa - fb) < 1e-4f;
+            return Equals(a, b);
+        }
+    }
+
     // TWILIGHT_LIGHT_ECONOMY_1: "cages passable-beneath" (Mod Settings).
     // No Harmony patch exists for this specific lever, so the only vanilla
     // one for a building's own collision is ThingDef.passability itself — a shared,
@@ -678,17 +764,51 @@ namespace RimMandrake.TerminalBiomes
             Apply();
         }
 
+        private static Traversability? applied;
+        private static readonly System.Reflection.MethodInfo walkabilityChanged =
+            HarmonyLib.AccessTools.Method(typeof(RegionDirtyer), "Notify_WalkabilityChanged");
+
+        // TERMINAL_SETTINGS_CONSUMERS_WIRE_1: writes the defs only when the setting actually changed (it used to run
+        // every settings-window frame), and then re-reads every spawned cage's cells into the path grid and marks
+        // their regions dirty, so a flip takes effect on maps already loaded instead of at some later rebuild.
         public static void Apply()
         {
             Traversability value = RM_TerminalBiomesSettings.twilightCagesPassableBeneath
                 ? Traversability.PassThroughOnly
                 : Traversability.Impassable;
+            if (applied == value)
+            {
+                return;
+            }
+            bool first = applied == null;
+            applied = value;
+            var defs = new List<ThingDef>();
             foreach (string defName in CageDefNames)
             {
                 ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
                 if (def != null)
                 {
                     def.passability = value;
+                    defs.Add(def);
+                }
+            }
+            if (first || Find.Maps == null)
+            {
+                return; // startup: nothing spawned yet
+            }
+            foreach (Map map in Find.Maps)
+            {
+                foreach (ThingDef def in defs)
+                {
+                    foreach (Thing cage in map.listerThings.ThingsOfDef(def).ToList())
+                    {
+                        if (!cage.Spawned) continue;
+                        foreach (IntVec3 c in cage.OccupiedRect())
+                        {
+                            walkabilityChanged?.Invoke(map.regionDirtyer, new object[] { c, c.Walkable(map) });
+                        }
+                        map.pathing.RecalculatePerceivedPathCostUnderThing(cage);
+                    }
                 }
             }
         }

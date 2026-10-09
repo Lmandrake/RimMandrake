@@ -22,6 +22,9 @@ namespace RimMandrake.TerminalBiomes
         // just its interior.
         private const int MinDistToEdge = 6;
 
+        // TERMINAL_SETTINGS_CONSUMERS_WIRE_1: the Frequency slider scales the whole-pane strike too, not only litter.
+        public override float BaseChanceThisGame => base.BaseChanceThisGame * RM_TerminalBiomesSettings.twilightPaneStrikeFrequency;
+
         protected override bool CanFireNowSub(IncidentParms parms)
         {
             if (!RM_TerminalBiomesSettings.TwilightPaneStrikeActive)
