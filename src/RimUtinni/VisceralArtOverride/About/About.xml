@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rut.visceralartoverride</packageId>
+  <name>Visceral Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces Horrors (mlie.horrors)'s Visceral art (south/east/north facings only) with a render
+generated for this campaign (Cauldron sheet 2026-10-04, owner pick B for the adult; his picks C/D for VisceralBaby/VisceralTeen are copies of the donor pictures, owned here so no donor art is kept). LABEL/ART ONLY - no defName touched, no Defs, no Patches, loose
+Textures/ only, same relative path (Things/Pawn/Animal/Visceral/Visceral_&lt;facing&gt;) the donor
+uses so this mod's later load order wins the same-path resolution.</description>
+  <loadAfter>
+    <li>mlie.horrors</li>
+  </loadAfter>
+</ModMetaData>

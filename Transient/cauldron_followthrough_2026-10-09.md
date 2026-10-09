@@ -3,8 +3,19 @@
 One line per TODO/conflict from `art.py enact` (8eaa2b252): what was done, evidence.
 
 ## TODOs
+- AA_OcularJelly pick B (3 facings): new override mod `src/RimUtinni/OcularJellyArtOverride` (loadAfter sarg.alphaanimals), installed via `art.py install … --ruling cee4797f0e0dfd1d5f16`.
+- AA_Plasmorph pick B (3): `src/RimUtinni/PlasmorphArtOverride`, ruling 080eb8b460c4178b8dd0.
+- AM_Dryad_Corruptor pick B (3): `src/RimUtinni/DryadCorruptorArtOverride` (loadAfter sarg.alphamemes), ruling f4cf19902d45f267e962.
+- AM_Dryad_Tumorous pick B (3): `src/RimUtinni/DryadTumorousArtOverride`, ruling b10fc06c28d5a6b1c1d0.
+- GR_Beetlefleet pick B (east, south): `src/RimUtinni/BeetlefleetArtOverride` (loadAfter vanillaexpanded.vgeneticse), ruling 0bc5d894264bbaa0b3c6. North NOT installed — he ✕'d it (1353dead) and asked for a north regen; until it lands the donor north shows.
+- Visceral pick B adult (3) + his C/D picks for VisceralBaby/VisceralTeen (6, donor pictures — standing rule: no donor art kept as donor, so our own copies): `src/RimUtinni/VisceralArtOverride` (loadAfter mlie.horrors), rulings c9fbfc688f6c0d771396 / 50a214bd2225e02cfa39 / f161a94418bfd74c9ec4.
+- RM_TreeMartyr pick B: OUR def, Graphic_Random folder `Things/Plant/RM_TreeMartyr`; B installed over `MartyrTree_a.png` (ruling ffc7a3559d915aa7d294), `MartyrTree_b.png` (same rejected style) retired through the ledger.
+- RM_TwistingThornwood pick B: same — over `TwistingThornwood_a.png` (ruling df968e719e90b2e540e3), `_b` retired.
 
 ## Conflicts
+- RSW_VentStalker ×3 (pick C vs Kinrath override): CONFIRMED it shared `swanimals/Kinrath/Kinrath` with RSW_Kinrath. Gave it its own slot: def texPath -> `swanimals/VentStalker/VentStalker` (`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_VentStalker.xml`), pick C installed at `src/RimStarWars/SWBestiary/Textures/swanimals/VentStalker/` (ruling 63e6a1304088fc48d4e6). Kinrath's override art untouched.
+- RSW_VentStalker ✕ ×3 (478166/9a89a9/0acf8d, "owner-kept greentide"): he ✕'d the same three on the Greentide RSW_Kinrath row too; the only keeps were Greentide's same-row DEFAULT variant keeps (variants [A,B,C], variantsDefault) — the same bug class. Purged with release_keep (via cauldron decisions).
+- Second ledger bug found on the way: a purge's `release` freed the WHOLE keep ruling, so purging one facing unprotected its sibling facings (20 unpurged pictures, 7 live, had lost their keep: Nuudal, Oobo, Pallu, Tikkarr, Cravvet, Skennet, Orray, PekoPeko). `Index.protected` now releases per picture; selftest in selftest_enact_selfpurge.py.
 
 ## Enact bug
 - ROOT CAUSE: on --apply, step 1 ingest wrote owner KEEP rulings for the row's own pick column (GR_Beetlefleet: pick B incl. B-north 1353dead) and for a DEFAULT variant column on a redo row (AA_InfectedAerofleet: variants [B], variantsDefault, all three B pictures ✕'d) — ruling ids 0bc5d894264bbaa0b3c6, f23447ec2a9ccf1a612b. Step 4 then read those fresh keeps as protection. The dry run never writes ingest, so it planned the purges: dry ≠ apply.

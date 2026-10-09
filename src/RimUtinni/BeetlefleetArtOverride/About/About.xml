@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rut.beetlefleetartoverride</packageId>
+  <name>Beetlefleet Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces Vanilla Genetics Expanded's GR_Beetlefleet art (south/east/north facings only) with a render
+generated for this campaign (Cauldron sheet 2026-10-04, owner pick B (east/south; north was rejected and is being redrawn)). LABEL/ART ONLY - no defName touched, no Defs, no Patches, loose
+Textures/ only, same relative path (Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet_&lt;facing&gt;) the donor
+uses so this mod's later load order wins the same-path resolution.</description>
+  <loadAfter>
+    <li>vanillaexpanded.vgeneticse</li>
+  </loadAfter>
+</ModMetaData>

@@ -20,10 +20,12 @@
   RSW_Kinrath itself is cast to RUT_Greentide ("canopy-ambush", row 184,
   status keep). This def does NOT place Kinrath in a second biome — same
   asset-reuse-without-species-reuse pattern RSW_TunnelSnake used on
-  RSW_Klorslug and RSW_ShadeWhale used on RSW_Horax: new defName, a retint,
-  zero new PNGs (both `kinrath_v1` and `canon_kinrath_v1` artpipe jobs
-  confirm the donor texPath already carries real generated art, not a
-  placeholder), no double-booked species identity.
+  RSW_Klorslug and RSW_ShadeWhale used on RSW_Horax: new defName, no
+  double-booked species identity. Art: its own slot
+  swanimals/VentStalker/VentStalker (owner pick C, render kinrath_netcaster_v3,
+  Cauldron sheet 2026-10-04) — it no longer shares Kinrath's texPath, so
+  Kinrath's owner-kept override art is untouched by it. Corpse still uses
+  Kinrath_Dessicated.
 
   Body/tools/resources/comps kept close to the Kinrath donor def (bs 1.2,
   toxic-appendage tool, CanBeDormant/WakeUpDormant ambush pair — a ground-
@@ -42,8 +44,8 @@
   (POISONFOREST_SHIPPING_NAMES_1).
 
   mechanic_load for this slug reads "none blocking (prep §12)" in the
-  roster's own new_defs entry — a pure art/def commission, built whole this
-  pass (art reused wholesale, zero new PNGs), no companion mechanics item.
+  roster's own new_defs entry — a pure art/def commission, no companion
+  mechanics item.
 -->
 <Defs>
 
@@ -158,7 +160,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Kinrath/Kinrath</texPath>
+          <texPath>swanimals/VentStalker/VentStalker</texPath>
           <drawSize>1.0</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -168,7 +170,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Kinrath/Kinrath</texPath>
+          <texPath>swanimals/VentStalker/VentStalker</texPath>
           <drawSize>1.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -178,7 +180,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Kinrath/Kinrath</texPath>
+          <texPath>swanimals/VentStalker/VentStalker</texPath>
           <drawSize>2.5</drawSize>
           <shadowData>
             <volume>(0.4, 0.6, 0.33)</volume>
