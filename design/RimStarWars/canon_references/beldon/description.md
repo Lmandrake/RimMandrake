@@ -22,36 +22,22 @@ Legends origin (*Galaxy Guide 2: Yavin and Bespin*, 1989), folded into
 canon by *Ultimate Star Wars* (2015).
 
 ## Visual brief
-The one period illustration found (a *Star Wars Galaxies* / guidebook-style
-piece, labeled "BELDON") shows a cluster of several individuals: rounded
-bulbous heads/bodies trailing long dark tendrils/tentacles beneath, **colored
-purple/lavender** with darker purple shading — floating in formation,
-consistent with a herd drifting through atmosphere. This directly
-**disagrees with the infobox text**, which specifies orange gas bladders,
-not purple.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The flat purple Galactic Atlas drawing (`beldon_wookieepedia_1.jpg`) was deleted, as this entry's own ruling already ordered. The canon reference is the painted Wildlife of Star Wars field-guide plate `wookieepedia_woswfg.webp` (no live-action beldon exists); render it far more realistically than either that plate or the donor sprite.
 
-Our own donor sprite (`donor_current_sprite.png`) shows a single rounded,
-lumpy, **orange/peach-colored** balloon-like body with dark wispy tendrils
-trailing from its underside — this matches the **text** (orange gas
-bladders, long tendrils) closely, but is a single individual rather than a
-herd, and the found illustration's purple coloring means the two visual
-sources (text-matching donor art vs. the one image found) disagree with
-each other on color. No source can meaningfully depict the canon 0.8–10km
-scale on a creature-sized sprite; that fact is simply unrenderable at
-gameplay scale and should not drive a "wrong size" concern.
+What `wookieepedia_woswfg.webp` shows:
+- **Body:** a huge cluster of several rounded, swollen, translucent-looking **orange-to-peach gas bladders**, each with paler highlights, fine dark speckling and a puckered, frilled crown — lumpy and organic, like a bunch of inflated sacs, not one smooth balloon.
+- **Fins:** broad, thin, ragged orange membranous fins/flaps projecting sideways from the bladder cluster.
+- **Underside:** a dense reddish-brown knobbly mass under the bladders, from which hangs a curtain of long, thin, dark tendrils.
+- **Herd:** smaller individuals drift below the large one at a distance — same shape at reduced size.
 
-**Disagreement flagged for owner ruling**: orange (infobox text + our donor
-sprite) vs. purple (the one Wookieepedia illustration found). Recommend
-treating the donor's orange as likely correct given it is directly
-cited in the current canon infobox, but this needs a human call since a
-real canon image contradicts it.
+The colour question is settled: **orange** (infobox text, the woswfg plate and the donor sprite all agree); the purple was a one-off stylised drawing. The canon 0.8–10 km size is unrenderable at sprite scale (see Engine limits).
 
 ## Must show
-- [ ] Rounded, bulbous gas-bladder body enabling flotation
-- [ ] Fleshy fins visible on the body, used for propulsion
-- [ ] Long, dark tendrils trailing from the underside
-- [ ] Gas-bladder colour matches one of the two attested options — orange (infobox text)
-  or purple/lavender (the one illustration found) — not an invented third hue
+- [ ] Cluster of several rounded, swollen orange-to-peach gas bladders with paler highlights and fine dark speckling, not one smooth balloon
+- [ ] Broad, thin, ragged orange membranous fins projecting from the sides
+- [ ] Reddish-brown knobbly mass under the bladders with a curtain of long thin dark tendrils hanging below
+- [ ] Orange colouring — never purple/lavender
+- [ ] Realistic rendering: natural translucent, moist membrane texture and soft atmospheric lighting, no outlines, no cartoon shading
 
 ## Engine limits
 The canon 0.8–10 km size range cannot be depicted at gameplay creature-sprite scale; the
@@ -60,19 +46,11 @@ entry treats this as an inherent, unrenderable fact rather than a "wrong size" d
 ## Source URLs
 - https://starwars.fandom.com/wiki/Beldon (Wookieepedia, text pulled via
   MediaWiki API `action=parse` 2026-09-13)
-- https://static.wikia.nocookie.net/starwars/images/6/64/Beldons_SWGA.jpg (File:Beldons_SWGA.jpg)
+- https://static.wikia.nocookie.net/starwars/images/b/bc/Beldons-woswfg.jpg (File:Beldons-woswfg.jpg)
 
 ## Candidate images
-- `beldon_wookieepedia_1.jpg` — guidebook-style illustration (File:Beldons_
-  SWGA.jpg) showing a herd of ~5 individuals: purple/lavender bulbous
-  heads with dark tendrils trailing below, drifting in formation. Disagrees
-  with the infobox's "orange gas bladders" on color.
-- `donor_current_sprite.png` — our own SWBestiary donor sprite (`swanimals/
-  Beldon/Beldon_east.png`): a single orange/peach lumpy balloon body with
-  dark tendrils — matches the infobox text's orange coloring, disagrees
-  with the one image found on color.
-
-- `wookieepedia_woswfg.webp` — File:Beldons-woswfg.jpg (1000x933 WebP despite the name on the wiki), the actual canon image per the owner, 2026-10-08: the illustration the donor sprite was inspired by. Use ONLY this image as the canon reference; ignore `beldon_wookieepedia_1.jpg` (the purple SWGA drawing).
+- `wookieepedia_woswfg.webp` — painted plate from The Wildlife of Star Wars: A Field Guide (realistic painted illustration; the owner's chosen canon image 2026-10-08); file `Beldons-woswfg.jpg` — https://static.wikia.nocookie.net/starwars/images/b/bc/Beldons-woswfg.jpg/revision/latest?cb=20070123191252
+- `donor_current_sprite.png` — our own SWBestiary donor sprite (`swanimals/Beldon/Beldon_east.png`): orange lumpy balloon body with dark tendrils, low quality; ruled 2026-09-14 as a good base
 
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `donor_current_sprite.png`
