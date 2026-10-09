@@ -18,7 +18,7 @@ namespace RuthlessPursuingMechanoids
     {
         static HarmonyPatcher()
         {
-            new Harmony("mandrake.rut.empirepursuit").PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rut.empirepursuit"), Assembly.GetExecutingAssembly(), "RimUtinni.EmpirePursuit");
         }
     }
 

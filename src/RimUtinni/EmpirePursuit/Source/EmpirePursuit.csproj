@@ -44,6 +44,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\..\RimMandrake\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RuthlessPursuingMechanoids.cs" />
     <Compile Include="ScenPartDef_RuthlessPursuit.cs" />
     <Compile Include="Settings.cs" />
