@@ -54,10 +54,6 @@
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <genes>
-      <li>ArchiteMetabolism</li>
-      <li>DiseaseFree</li>
-      <li>PerfectImmunity</li>
-      <li>TotalHealing</li>
       <li>RSW_Beard_chintendril</li>
       <li>Hemogenic</li>
       <li>HemogenDrain</li>
@@ -65,11 +61,7 @@
       <li>Coagulate</li>
       <li>Deathrest</li>
       <li>LongjumpLegs</li>
-      <li>WoundHealing_Fast</li>
-      <li>Superclotting</li>
       <li>PsychicAbility_Enhanced</li>
-      <li>LowSleep</li>
-      <li>Robust</li>
       <li>Body_Standard</li>
       <li>Hair_SnowWhite</li>
       <li>Hair_DarkReddish</li>
@@ -96,7 +88,6 @@
     <genes>
       <li>RSW_butchergene_insectmeat</li>
       <li>Aggression_HyperAggressive</li>
-      <li>Pain_Reduced</li>
       <li>Outland_EggLayer</li>
       <li>Hair_BaldOnly</li>
       <li>Beard_NoBeardOnly</li>
@@ -251,7 +242,6 @@
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <genes>
       <li>RSW_BodySizeGene_big</li>
-      <li>PsychicAbility_Enhanced</li>
       <li>Turn_Gene_SlowNeuralHeat</li>
       <li>Turn_Gene_MeditationNeed</li>
       <li>RSW_CereanHead</li>
@@ -311,8 +301,6 @@
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <genes>
       <li>RSW_statgene_metabolismcheat</li>
-      <li>WoundHealing_Fast</li>
-      <li>ToxResist_Partial</li>
       <li>FireWeakness</li>
       <li>Libido_High</li>
       <li>Outland_EggLayer</li>
@@ -536,7 +524,6 @@
       <li>Turn_Gene_GauranlenNeed</li>
       <li>NakedSpeed</li>
       <li>Aggression_Aggressive</li>
-      <li>Robust</li>
       <li>Libido_High</li>
       <li>Fertile</li>
       <li>Outland_AcceleratedPregnancy</li>
@@ -583,8 +570,6 @@
       <li>Turn_Gene_TraitGrandeur</li>
       <li>MinTemp_SmallIncrease</li>
       <li>MaxTemp_LargeIncrease</li>
-      <li>MeleeDamage_Strong</li>
-      <li>Pain_Reduced</li>
       <li>Outland_EggLayer</li>
       <li>Outland_DeceleratedPregnancy</li>
       <li>Turn_Gene_HighBeautyStandard</li>
@@ -601,7 +586,6 @@
       <li>Outland_RidgedSkin</li>
       <li>Outland_FamiliarScent</li>
       <li>Outland_CalmingPheromones</li>
-      <li>Outland_ThickSkin</li>
       <li>AptitudeStrong_Social</li>
     </genes>
   </XenotypeDef>
@@ -616,8 +600,6 @@
     <nameMaker>RSW_KoTOR_NamerFeeorin</nameMaker>
     <chanceToUseNameMaker>0</chanceToUseNameMaker>
     <genes>
-      <li>DiseaseFree</li>
-      <li>TotalHealing</li>
       <li>RSW_FacialRidges_bumpy</li>
       <li>RSW_Headbone_nautolan</li>
       <li>RSW_Beard_chintendril</li>
@@ -625,8 +607,6 @@
       <li>RSW_lifespan_quad</li>
       <li>Turn_Gene_TraitGrandeur</li>
       <li>Aggression_Aggressive</li>
-      <li>MeleeDamage_Strong</li>
-      <li>Robust</li>
       <li>Outland_EggLayer</li>
       <li>Hair_BaldOnly</li>
       <li>Beard_NoBeardOnly</li>
@@ -699,10 +679,8 @@
       <li>RSW_HeadAttachment_gandmask</li>
       <li>RSW_BodySizeGene_small</li>
       <li>RSW_lifespan_half</li>
-      <li>PsychicAbility_Enhanced</li>
       <li>Turn_Gene_MeditationNeed</li>
       <li>MinTemp_SmallIncrease</li>
-      <li>Pain_Reduced</li>
       <li>Outland_EggLayer</li>
       <li>Beauty_VeryUgly</li>
       <li>Hair_BaldOnly</li>
@@ -1050,9 +1028,6 @@
       <li>RSW_Mouth_sus</li>
       <li>RSW_HeadAttachment_keldormask</li>
       <li>RSW_BodySizeGene_big</li>
-      <li>RSW_lifespan_double</li>
-      <li>PsychicAbility_Enhanced</li>
-      <li>Turn_Gene_LatentPsychic</li>
       <li>Turn_Gene_MeditationNeed</li>
       <li>Hair_BaldOnly</li>
       <li>Beard_NoBeardOnly</li>
@@ -1082,7 +1057,6 @@
       <li>RSW_Nose_Dog</li>
       <li>MaxTemp_SmallIncrease</li>
       <li>MeleeDamage_Strong</li>
-      <li>Robust</li>
       <li>Outland_EggLayer</li>
       <li>Outland_DeceleratedPregnancy</li>
       <li>Hair_BaldOnly</li>
@@ -1116,7 +1090,6 @@
       <li>PsychicAbility_Dull</li>
       <li>MinTemp_SmallIncrease</li>
       <li>BS_Diet_Carnivore</li>
-      <li>ToxicEnvironmentResistance_Partial</li>
       <li>UVSensitivity_Mild</li>
       <li>Hair_BaldOnly</li>
       <li>Beard_NoBeardOnly</li>
@@ -1336,7 +1309,6 @@
     <genes>
       <li>RSW_Headbone_nautolan</li>
       <li>RSW_Eyes_Big</li>
-      <li>WoundHealing_Fast</li>
       <li>MinTemp_SmallIncrease</li>
       <li>MaxTemp_SmallDecrease</li>
       <li>Turn_Gene_Duelist</li>
@@ -1439,7 +1411,6 @@
       <li>Superclotting</li>
       <li>MinTemp_SmallIncrease</li>
       <li>MaxTemp_SmallIncrease</li>
-      <li>ToxicEnvironmentResistance_Total</li>
       <li>Aggression_Aggressive</li>
       <li>MeleeDamage_Strong</li>
       <li>Outland_EggLayer</li>
@@ -2115,8 +2086,6 @@ Note: The appearance of Tuskens under their wrappings is not absolutely confirme
       <li>RSW_FacialRidges_bumpy</li>
       <li>RSW_Beard_chinspines</li>
       <li>MinTemp_SmallIncrease</li>
-      <li>ToxicEnvironmentResistance_Total</li>
-      <li>Pain_Reduced</li>
       <li>Beauty_Ugly</li>
       <li>Hair_BaldOnly</li>
       <li>Beard_NoBeardOnly</li>
