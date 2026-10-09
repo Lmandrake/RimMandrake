@@ -40,6 +40,21 @@ namespace RimMandrake.CreatureBehaviors
     {
         public RM_CompProperties_HeatBurstPredator Props => (RM_CompProperties_HeatBurstPredator)props;
 
+        private RM_LastOutcomeLog outcome;
+
+        /// <summary>CB-7: the last decision, readable by a test (null until the first one).</summary>
+        public RM_LastOutcomeLog Outcome => outcome;
+
+        private void Note(string code) { RM_LastOutcomeLog.Record(ref outcome, code); }
+
+        public override string CompInspectStringExtra() { return RM_LastOutcomeLog.InspectLine(outcome); }
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Deep.Look(ref outcome, "lastOutcome");
+        }
+
         public override void CompTick()
         {
             base.CompTick();
@@ -56,6 +71,7 @@ namespace RimMandrake.CreatureBehaviors
 
             if (!RM_CreatureBehaviorsSettings.heatDrivenBurstEnabled || Props.hediffDef == null)
             {
+                Note("off");
                 return; // mod option: the shared burst/retreat hediff is off — never trigger or retreat
             }
 
@@ -77,12 +93,14 @@ namespace RimMandrake.CreatureBehaviors
             Pawn target = FindHostileTarget(pawn);
             if (target == null)
             {
+                Note("no_target");
                 return;
             }
 
             Hediff hediff = HediffMaker.MakeHediff(Props.hediffDef, pawn);
             hediff.Severity = 1f;
             pawn.health.AddHediff(hediff);
+            Note("burst_started");
         }
 
         private Pawn FindHostileTarget(Pawn pawn)
@@ -112,6 +130,7 @@ namespace RimMandrake.CreatureBehaviors
             RM_MapComponent_ShadeGrid grid = pawn.Map.GetComponent<RM_MapComponent_ShadeGrid>();
             if (grid == null || grid.ShadeAt(pawn.Position) >= Props.retreatShadeThreshold)
             {
+                Note("shaded");
                 return; // already shaded enough — sit and let the fatigue tail burn off
             }
 
@@ -119,6 +138,7 @@ namespace RimMandrake.CreatureBehaviors
             if (cur != null && cur.def == JobDefOf.Goto && cur.targetA.IsValid
                 && cur.targetA.Cell.InBounds(pawn.Map) && grid.ShadeAt(cur.targetA.Cell) >= Props.retreatShadeThreshold)
             {
+                Note("retreating");
                 return; // already retreating to shade — don't restart the goto every interval tick (a Goto into sun is not a retreat)
             }
 
@@ -128,9 +148,11 @@ namespace RimMandrake.CreatureBehaviors
                 out IntVec3 dest);
             if (!found)
             {
+                Note("no_shade_found");
                 return;
             }
 
+            Note("retreat_ordered");
             Job job = JobMaker.MakeJob(JobDefOf.Goto, dest);
             pawn.jobs.StartJob(job, JobCondition.InterruptForced, resumeCurJobAfterwards: false, cancelBusyStances: true);
         }

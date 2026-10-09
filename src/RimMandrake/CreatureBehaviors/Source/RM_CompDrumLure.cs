@@ -44,6 +44,15 @@ namespace RimMandrake.CreatureBehaviors
     {
         private Pawn luredTarget;
 
+        private RM_LastOutcomeLog outcome;
+
+        /// <summary>CB-7: the last decision, readable by a test (null until the first one).</summary>
+        public RM_LastOutcomeLog Outcome => outcome;
+
+        private void Note(string code) { RM_LastOutcomeLog.Record(ref outcome, code); }
+
+        public override string CompInspectStringExtra() { return RM_LastOutcomeLog.InspectLine(outcome); }
+
         public RM_CompProperties_DrumLure Props => (RM_CompProperties_DrumLure)props;
 
         public override void CompTick()
@@ -73,6 +82,7 @@ namespace RimMandrake.CreatureBehaviors
                 // here, same degrade-cleanly posture as aquaticAmbushEnabled.
                 ClearLure(removeHediff: true);
                 BecomeVisible(pawn);
+                Note("off");
                 return;
             }
 
@@ -91,16 +101,19 @@ namespace RimMandrake.CreatureBehaviors
             {
                 ClearLure(removeHediff: true);
                 BecomeInvisible(pawn);
+                Note("lure_lost");
                 return;
             }
 
             float distSq = (luredTarget.Position - pawn.Position).LengthHorizontalSquared;
             if (distSq <= Props.ambushRangeCells * Props.ambushRangeCells)
             {
+                Note("ambush");
                 Ambush(pawn, luredTarget);
                 return;
             }
 
+            Note("waiting");
             BecomeInvisible(pawn); // still patient, still hidden, still waiting — the compulsion job is doing the work
         }
 
@@ -111,17 +124,20 @@ namespace RimMandrake.CreatureBehaviors
             Pawn target = FindLureCandidate(pawn);
             if (target == null)
             {
+                Note("no_candidate");
                 return;
             }
 
             if (!Rand.Chance(Props.lureChancePerScan * RM_CreatureBehaviorsSettings.drumLureChanceMultiplier))
             {
+                Note("declined");
                 return; // appraised, and declined — the sheet's own default
             }
 
             ApplyLuredHediff(target);
             ForceGotoLure(pawn, target);
             luredTarget = target;
+            Note("lure_started");
         }
 
         private Pawn FindLureCandidate(Pawn pawn)
@@ -279,6 +295,7 @@ namespace RimMandrake.CreatureBehaviors
         {
             base.PostExposeData();
             Scribe_References.Look(ref luredTarget, "luredTarget");
+            Scribe_Deep.Look(ref outcome, "lastOutcome");
         }
     }
 }

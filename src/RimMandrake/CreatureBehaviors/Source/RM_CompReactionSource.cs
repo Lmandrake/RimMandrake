@@ -26,6 +26,15 @@ namespace RimMandrake.CreatureBehaviors
 	{
 		private int lastTriggerTick = -999999;
 
+		private RM_LastOutcomeLog outcome;
+
+		/// <summary>CB-7: the last decision, readable by a test (null until the first one).</summary>
+		public RM_LastOutcomeLog Outcome => outcome;
+
+		private void Note(string code) { RM_LastOutcomeLog.Record(ref outcome, code); }
+
+		public override string CompInspectStringExtra() { return RM_LastOutcomeLog.InspectLine(outcome); }
+
 		public RM_CompProperties_ReactionSource Props => (RM_CompProperties_ReactionSource)props;
 
 		public override void PostPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
@@ -43,6 +52,7 @@ namespace RimMandrake.CreatureBehaviors
 		{
 			if (!RM_CreatureBehaviorsSettings.reactionSourceSpawnEnabled)
 			{
+				Note("off");
 				return; // mod option: reaction-source spawning disabled
 			}
 
@@ -59,17 +69,20 @@ namespace RimMandrake.CreatureBehaviors
 
 			if (RM_ReactionSuppression.IsSuppressed(map, parent.Position))
 			{
+				Note("suppressed");
 				return; // step 5: a source standing in suppression does not ring
 			}
 
 			if (instigator != null && RM_ReactionResponders.IsUnseenBy(instigator, Props.tag))
 			{
+				Note("unseen_by_network");
 				return; // the network cannot perceive this one (a tolerated parasite)
 			}
 
 			int now = Find.TickManager.TicksGame;
 			if (now - lastTriggerTick < Props.cooldownTicks)
 			{
+				Note("cooldown");
 				return;
 			}
 			lastTriggerTick = now;
@@ -78,6 +91,7 @@ namespace RimMandrake.CreatureBehaviors
 			int budget = Mathf.RoundToInt(Props.eventBudget * mult);
 			if (budget <= 0)
 			{
+				Note("budget_zero");
 				return; // the player has turned this all the way down
 			}
 
@@ -92,6 +106,7 @@ namespace RimMandrake.CreatureBehaviors
 			// second Respond() call from its own propagation, silently
 			// double-spending the event's shared budget on itself.
 			evt.TryMarkActivated(parent);
+			Note("rang");
 
 			// CB-1 (CREATURE_ALARM_ORIGIN_SHARE_1): the disturbed source answers
 			// first, so neighbours it wakes cannot spend the shared budget
@@ -148,9 +163,11 @@ namespace RimMandrake.CreatureBehaviors
 			int now = Find.TickManager.TicksGame;
 			if (now - lastTriggerTick < Props.cooldownTicks)
 			{
+				Note("propagation_cooldown");
 				return false;
 			}
 			lastTriggerTick = now;
+			Note("propagated_in");
 
 			(Props.propagation ?? RM_ReactionPropagationRule_None.Instance).Propagate(evt, parent);
 
@@ -252,6 +269,7 @@ namespace RimMandrake.CreatureBehaviors
 		{
 			base.PostExposeData();
 			Scribe_Values.Look(ref lastTriggerTick, "rmReactionSourceLastTriggerTick", -999999);
+			Scribe_Deep.Look(ref outcome, "lastOutcome");
 		}
 	}
 }
