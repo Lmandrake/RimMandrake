@@ -1,600 +1,860 @@
 {
- "biome": "RM_Abyss",
- "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
- "decidedCount": 31,
- "decisions": {
-  "AA_CrepuscularBeetle": {
-   "at": "2026-10-06T03:02:28.064Z",
-   "decidedAt": "2026-10-06T03:02:18.564Z",
-   "decision": "C",
-   "note": "Add four yellow glowing eyes",
-   "picks": {
-    "_byname": "C"
-   },
-   "prefill": "A",
-   "purge": [
-    "7f68064aaeb849ec00b11c3c959087205cb7f04e45bff85bbaeb3ac74ad448e3",
-    "2d6672a8356ded4adda531eeae2c2013282c8e3edaf1715b9d811f4401067f9e",
-    "041d2a45a05b68b5ac0ee78a1b603c25632d302f8a158b54a49249a90cf72a66"
-   ],
-   "purgeTouched": true
+  "biome": "RM_Abyss",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 31,
+  "decisions": {
+    "AA_CrepuscularBeetle": {
+      "at": "2026-10-06T03:02:28.064Z",
+      "decidedAt": "2026-10-06T03:02:18.564Z",
+      "decision": "C",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:02:28.064Z",
+          "followed_by": [
+            "abyss_moravatha_v3_east",
+            "abyss_moravatha_v3_north",
+            "abyss_moravatha_v3_south"
+          ],
+          "note": "Add four yellow glowing eyes",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {
+        "_byname": "C"
+      },
+      "prefill": "A",
+      "purge": [
+        "7f68064aaeb849ec00b11c3c959087205cb7f04e45bff85bbaeb3ac74ad448e3",
+        "2d6672a8356ded4adda531eeae2c2013282c8e3edaf1715b9d811f4401067f9e",
+        "041d2a45a05b68b5ac0ee78a1b603c25632d302f8a158b54a49249a90cf72a66"
+      ],
+      "purgeTouched": true
+    },
+    "AA_DarkVandal": {
+      "at": "2026-10-06T03:04:50.898Z",
+      "decidedAt": "2026-10-06T03:04:38.850Z",
+      "decision": "D",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:04:50.898Z",
+          "followed_by": [
+            "abyss_ossumatha_v3_east",
+            "abyss_ossumatha_v3_north",
+            "abyss_ossumatha_v3_south",
+            "abyss_ossumatha_v4_north",
+            "abyss_ossumatha_v4_south"
+          ],
+          "note": "Make hide pitch black with four glowing yellow eyes",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {
+        "_byname": "D"
+      },
+      "prefill": "A",
+      "purge": [
+        "319bbac758f8dcb1d1024ef28cdb893aa0ef7c85abe7c4c1583a01386d45d434",
+        "2d295fdf25b6e3f67ba7a3b46abf8614e0fcb376825a7e512bd4da17cca87cd7",
+        "497a96e66f1837324c050d6497b0a44c880c34c484a6e36021cac81cd79e8ce3"
+      ],
+      "purgeTouched": true
+    },
+    "AA_Darkbeast": {
+      "at": "2026-10-06T03:03:05.672Z",
+      "decidedAt": "2026-10-06T03:02:54.821Z",
+      "decision": "C",
+      "note": "Regenerate description to match image. ",
+      "prefill": "A",
+      "purge": [
+        "eefa39c16fa233eb8087adebf901f78acb70f4a4fababc1031687eeee82729e5",
+        "d9c8fc71d136f4c67fe81eade19a209ffaa97942c0114ed5da7714832a6a34d1",
+        "6cf3b0f64f553478175857c41c8dd6f88d3c36f0547b231d13a141faa6f3f1e2"
+      ],
+      "purgeTouched": true
+    },
+    "AA_DuskProwler": {
+      "at": "2026-10-06T03:07:50.181Z",
+      "decidedAt": "2026-10-06T03:07:30.435Z",
+      "decision": "C",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:07:50.181Z",
+          "followed_by": [
+            "abyss_ysvaltha_v3_east",
+            "abyss_ysvaltha_v3_north",
+            "abyss_ysvaltha_v3_south"
+          ],
+          "note": "Change description to match image. Make four glowing yellow eyes though.",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {
+        "_byname": "C"
+      },
+      "prefill": "A",
+      "purge": [
+        "d436ab4d58be22d84c54cea1957e53675709b5adb213bf8f58253c2ee1d0fc70",
+        "6c73f799e9fab30e35779bb925c202fb90572aa3ed421b4b8854609e66b3f8b1",
+        "402fa518893e7d11a4c2f5a7d3e8fc1fb77e67052e53c54d11fb0b42c36c6834"
+      ],
+      "purgeTouched": true
+    },
+    "AA_DuskRat": {
+      "at": "2026-10-05T14:15:38.919Z",
+      "decidedAt": "2026-10-05T14:15:34.693Z",
+      "decision": "hold",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T14:15:38.919Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "No longer needed, cut.",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "prefill": "A"
+    },
+    "AA_Frostling": {
+      "at": "2026-10-05T14:16:05.612Z",
+      "decidedAt": "2026-10-05T14:16:01.086Z",
+      "decision": "hold",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T14:16:05.612Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "cut. no longer needed.",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "prefill": "A"
+    },
+    "AA_Murkling": {
+      "at": "2026-10-06T03:01:37.612Z",
+      "decidedAt": "2026-10-06T03:01:18.757Z",
+      "decision": "D",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:01:37.612Z",
+          "followed_by": [
+            "abyss_lirrith_v3_east",
+            "abyss_lirrith_v3_north",
+            "abyss_lirrith_v3_south"
+          ],
+          "note": "Needs regenerated description compared to image, and also the image must be made to be dark-skinned with four yellow glowing eyes",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {
+        "_byname": "D"
+      },
+      "prefill": "A",
+      "purge": [
+        "eb74804fdc77625e3f0b12f1b62d302ffc88c0b4fab2b90704c8dcce9ceb060a",
+        "b2b57bb55ba1c2d3db97a3068f40a9f367afd757e95be12652f3b60b97a4725d",
+        "b0b04bf49d8ef03573b89b587a250284f3ecc9bf8e5dcac6c04576f16e1f5a7e",
+        "68c7dde016ef99d7d1651819c12142bd88ad0494ee6449f93d68a512b562fa87",
+        "586bc7fab6d2d789c15efea92b3bb8ed280be19e8b6c0fa35ee1676b6a78d789"
+      ],
+      "purgeTouched": true
+    },
+    "AA_NightAve": {
+      "at": "2026-10-05T14:19:10.742Z",
+      "decidedAt": "2026-10-05T14:19:00.778Z",
+      "decision": "hold",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T14:19:10.742Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "cut. no longer needed.",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "prefill": "A",
+      "purge": [
+        "835352d90829d2f0b6ff235a208e915d33a4ae8058c944b1c36ffab23e9c67d1",
+        "30e9b2c87604d5078b7b121cab64a7ae46bd62bae1a2421a26600f238edc594a",
+        "61e943d40e85ec071ef07791dbf0758be08b3b095c01b7d15d67ea2f29b9bb91"
+      ],
+      "purgeTouched": true
+    },
+    "AA_NightMule": {
+      "at": "2026-10-06T03:00:00.332Z",
+      "decidedAt": "2026-10-06T02:59:15.015Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:00:00.332Z",
+          "followed_by": [
+            "abyss_aveluthia_v3_east",
+            "abyss_aveluthia_v3_north",
+            "abyss_aveluthia_v3_south"
+          ],
+          "note": "Regenerate the description to match the appearance, but the appearance must be made to be like black flesh. There should also be four glowing yellow eyes.",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {
+        "Things/Pawn/Animal/AA_NightMule/AA_NightMule_baby": "B",
+        "Things/Pawn/Animal/AA_NightMule/AA_NightMule_female": "C",
+        "_byname": "D"
+      },
+      "prefill": "A",
+      "purge": [
+        "c5a5c3fc0e8faa33ace04362eea3787126504436f6361145601b90eb3f348e59",
+        "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
+        "fdd90268d2fedd7a62bcf09a3cc330cdcdb172a5a78048417305f3d76403f089"
+      ],
+      "purgeTouched": true
+    },
+    "AA_NightRam": {
+      "at": "2026-10-06T03:03:40.131Z",
+      "decidedAt": "2026-10-06T03:03:24.156Z",
+      "decision": "B",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:03:40.131Z",
+          "followed_by": [
+            "abyss_olumetha_v3_east",
+            "abyss_olumetha_v3_north",
+            "abyss_olumetha_v3_south",
+            "abyss_olumetha_v4_south"
+          ],
+          "note": "But you need to make its skin inky black and four yellow glowing eyes",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "purge": [
+        "add388e498126c854541374dc4fa715dffcc1676cff81f982dc74b93d1b7df37",
+        "86e01fc989af3c3a88eab789ba730441effbbcfb49cac18e20a3f32b453c811f",
+        "23ddc95e6bb277bd86fa97a760604cca0bacde7f22f36e38925925a0d9888953"
+      ],
+      "purgeTouched": true
+    },
+    "AA_Nightling": {
+      "at": "2026-10-06T03:05:51.279Z",
+      "decidedAt": "2026-10-06T03:05:31.691Z",
+      "decision": "E",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:05:51.279Z",
+          "followed_by": [
+            "abyss_sesserith_v3_east",
+            "abyss_sesserith_v3_north",
+            "abyss_sesserith_v3_south"
+          ],
+          "note": "I like it. Regenerate description based on image. Make its surface pitch black and its eyes glow yellow.",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {
+        "Things/Pawn/Animal/AA_Nightling/AA_NightlingPuppy": "B",
+        "_byname": "E"
+      },
+      "prefill": "A"
+    },
+    "AA_ShadowCharger": {
+      "at": "2026-10-06T03:06:22.907Z",
+      "decidedAt": "2026-10-06T03:06:14.215Z",
+      "decision": "hold",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:06:22.907Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "Cut this. Don't need it anymore.",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {
+        "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_baby": "D",
+        "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_female": "E",
+        "_byname": "G"
+      },
+      "prefill": "A",
+      "purge": [
+        "622de3a31f607dc608f4fb449275f09c2a045c590c2ecf2ff4d519d6e1e3ec51",
+        "3aa982234ca012ffd3d6cd50c4104a782f49c40e5929a490d41d0f6e4bbb8f5c",
+        "744065013b5a341f76c3ba6ef6ccc45b26b15cef2945833aaed962ba31373e68",
+        "aa9e2e74f6486385387349359831e3725c79040f25b7f408a0d92570211cac64",
+        "a589c80fe2eb5a0bbab99ccc400a12dca9a828907f4567739c8afc9a34ce2932",
+        "d877bc6f7256eefb728e7a691b7c72a89a1445a66769dead9e0ba0237b05cee1"
+      ],
+      "purgeTouched": true
+    },
+    "AA_Thunderox": {
+      "at": "2026-10-06T03:07:16.946Z",
+      "decidedAt": "2026-10-06T03:07:13.359Z",
+      "decision": "hold",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:07:16.946Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "cut this, no longer needed",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {
+        "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_female": "B",
+        "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male": "C"
+      },
+      "prefill": "A"
+    },
+    "AB_GiantGamma": {
+      "at": "2026-10-06T03:10:01.953Z",
+      "decidedAt": "2026-10-06T03:09:59.430Z",
+      "decision": "C",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:10:01.953Z",
+          "followed_by": [
+            "abyss_giantglowglobe_b_v2",
+            "abyss_giantglowglobe_c_v2"
+          ],
+          "note": "Make variants",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {
+        "_byname": "C"
+      },
+      "prefill": "A"
+    },
+    "AB_GiantSeptimum": {
+      "at": "2026-10-06T03:09:29.885Z",
+      "decidedAt": "2026-10-06T03:09:26.161Z",
+      "decision": "B",
+      "note": "Looks good. ",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A"
+    },
+    "AB_GiantStikehr": {
+      "at": "2026-10-06T03:11:45.222Z",
+      "decidedAt": "2026-10-06T03:11:30.327Z",
+      "decision": "C",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:11:45.222Z",
+          "followed_by": [
+            "abyss_treemushroom_c_v2"
+          ],
+          "note": "Needs regen at proper resolution.",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-06T03:11:31.997Z"
+    },
+    "AB_GlowingGrass": {
+      "at": "2026-10-06T03:10:41.469Z",
+      "decidedAt": "2026-10-06T03:10:25.450Z",
+      "decision": "B",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:10:41.469Z",
+          "followed_by": [
+            "abyss_glowinggrass_a_tint_v1",
+            "abyss_glowinggrass_b_tint_v2",
+            "abyss_glowinggrass_c_tint_v1",
+            "abyss_glowinggrass_b_tint_v1"
+          ],
+          "note": "Tint all of these to be dull yellow-green glowing.",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "prefill": "A",
+      "variants": [
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-06T03:10:23.255Z"
+    },
+    "AB_ToxicGamma": {
+      "at": "2026-10-06T03:11:13.055Z",
+      "decidedAt": "2026-10-06T03:11:08.720Z",
+      "decision": "C",
+      "note": "",
+      "picks": {
+        "_byname": "C"
+      },
+      "prefill": "A",
+      "purge": [
+        "c67027dd42f93671c58d792f1df5d344aec880fac63a3d22808459b58dbb291b"
+      ],
+      "purgeTouched": true
+    },
+    "AB_WildRadagast": {
+      "at": "2026-10-06T03:10:13.842Z",
+      "decidedAt": "2026-10-06T03:10:13.842Z",
+      "decision": "C",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:10:13.842Z",
+          "followed_by": [
+            "abyss_glowberrybush_b_v2",
+            "abyss_glowberrybush_c_v2"
+          ],
+          "note": "Make variants",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {
+        "_byname": "C"
+      },
+      "prefill": "A"
+    },
+    "AG_Gamma": {
+      "at": "2026-10-06T03:09:51.684Z",
+      "decidedAt": "2026-10-06T03:09:48.287Z",
+      "decision": "B",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:09:51.684Z",
+          "followed_by": [
+            "abyss_glowglobe_b_v2",
+            "abyss_glowglobe_c_v2"
+          ],
+          "note": "Make variants",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A"
+    },
+    "AG_Septimum": {
+      "at": "2026-10-06T03:09:02.837Z",
+      "decidedAt": "2026-10-05T14:22:38.898Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:09:02.837Z",
+          "followed_by": [
+            "abyss_paddlevine_v1"
+          ],
+          "note": "Needs whole new description and name and graphics. Try again, that looked like bad computer art. Wide paddles instead of leaves, a huge flower-like leaf at the top, and scarlet twining vine... all glistening with photoreceptive surfaces like the eye of a fly. ",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "prefill": "A",
+      "purge": [
+        "732f654aaf1d927d57c2c3675b78930831bb30aaab27fd7652b59c547485f741"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Aveluthia": {
+      "at": "2026-10-06T03:00:00.332Z",
+      "carriedAt": "2026-10-07",
+      "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
+      "carriedFrom": "AA_NightMule",
+      "decidedAt": "2026-10-06T02:59:15.015Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:00:00.332Z",
+          "followed_by": [
+            "abyss_aveluthia_v3_east",
+            "abyss_aveluthia_v3_north",
+            "abyss_aveluthia_v3_south"
+          ],
+          "note": "Regenerate the description to match the appearance, but the appearance must be made to be like black flesh. There should also be four glowing yellow eyes.",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "picks": {},
+      "purge": [
+        "c5a5c3fc0e8faa33ace04362eea3787126504436f6361145601b90eb3f348e59",
+        "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
+        "fdd90268d2fedd7a62bcf09a3cc330cdcdb172a5a78048417305f3d76403f089"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Cindermare": {
+      "at": "2026-10-06T03:05:12.882Z",
+      "decidedAt": "2026-10-06T03:05:00.830Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Drokattak": {
+      "at": "2026-10-06T03:04:12.817Z",
+      "decidedAt": "2026-10-06T03:03:45.884Z",
+      "decision": "C",
+      "note": "Regenerate description based on image",
+      "prefill": "A"
+    },
+    "RM_Durrgak": {
+      "at": "2026-10-05T14:14:51.052Z",
+      "decision": "A",
+      "note": "This is really cool and eerie. Rename to a Sorter. Trainable. Tamable. Cleans.",
+      "prefill": "A"
+    },
+    "RM_Etchcap": {
+      "at": "2026-10-06T03:07:57.478Z",
+      "decision": "A",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:07:57.478Z",
+          "followed_by": [
+            "abyss_etchcap_b_v1",
+            "abyss_etchcap_c_v1"
+          ],
+          "note": "make variants",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-06T03:07:57.478Z"
+    },
+    "RM_Gharrek": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_GiantFibreStalk": {
+      "at": "2026-10-06T03:09:29.885Z",
+      "carriedAt": "2026-10-07",
+      "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
+      "carriedFrom": "AB_GiantSeptimum",
+      "decidedAt": "2026-10-06T03:09:26.161Z",
+      "decision": "A",
+      "note": "Looks good. ",
+      "picks": {}
+    },
+    "RM_GiantGlowGlobe": {
+      "agentInference": {
+        "basis": "your 2026-10-06 ruling on AB_GiantGamma (C: Make variants) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art",
+        "by": "agent (BENCH helper) 2026-10-07",
+        "not_owner_ruling": true,
+        "pick": "A"
+      },
+      "carriedFrom": "AB_GiantGamma",
+      "carriedRuledAt": "2026-10-06T03:09:59.430Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_GlowGlobe": {
+      "agentInference": {
+        "basis": "your 2026-10-06 ruling on AG_Gamma (B: Make variants) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art",
+        "by": "agent (BENCH helper) 2026-10-07",
+        "not_owner_ruling": true,
+        "pick": "A"
+      },
+      "carriedFrom": "AG_Gamma",
+      "carriedRuledAt": "2026-10-06T03:09:48.287Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_GlowberryBush": {
+      "agentInference": {
+        "basis": "your 2026-10-06 ruling on AB_WildRadagast (C: Make variants) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art",
+        "by": "agent (BENCH helper) 2026-10-07",
+        "not_owner_ruling": true,
+        "pick": "A"
+      },
+      "carriedFrom": "AB_WildRadagast",
+      "carriedRuledAt": "2026-10-06T03:10:13.842Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_GlowingGrass": {
+      "at": "2026-10-06T03:10:41.469Z",
+      "carriedAt": "2026-10-07",
+      "carriedBy": "BENCH helper: renamed/moved row (owner note on the old row)",
+      "carriedFrom": "AB_GlowingGrass",
+      "decidedAt": "2026-10-06T03:10:25.450Z",
+      "decision": "E",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:10:41.469Z",
+          "followed_by": [
+            "abyss_glowinggrass_a_tint_v1",
+            "abyss_glowinggrass_b_tint_v2",
+            "abyss_glowinggrass_c_tint_v1",
+            "abyss_glowinggrass_b_tint_v1"
+          ],
+          "note": "Tint all of these to be dull yellow-green glowing.",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ]
+    },
+    "RM_Krizzak": {
+      "at": "2026-10-05T14:17:25.933Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [],
+      "purgeTouched": true,
+      "variants": [
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "variantsAt": "2026-10-05T14:17:25.933Z"
+    },
+    "RM_Lirrith": {
+      "agentInference": {
+        "basis": "your 2026-10-06 ruling on AA_Murkling (D: Needs regenerated description compared to image, and also the image must be made to be dark-skinned with four yellow glowing eyes) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art",
+        "by": "agent (BENCH helper) 2026-10-07",
+        "not_owner_ruling": true,
+        "pick": "A"
+      },
+      "carriedFrom": "AA_Murkling",
+      "carriedRuledAt": "2026-10-06T03:01:18.757Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Moravatha": {
+      "agentInference": {
+        "basis": "your 2026-10-06 ruling on AA_CrepuscularBeetle (C: Add four yellow glowing eyes) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art",
+        "by": "agent (BENCH helper) 2026-10-07",
+        "not_owner_ruling": true,
+        "pick": "A"
+      },
+      "carriedFrom": "AA_CrepuscularBeetle",
+      "carriedRuledAt": "2026-10-06T03:02:18.564Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Nevarithia": {
+      "at": "2026-10-06T03:03:05.672Z",
+      "carriedAt": "2026-10-07",
+      "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
+      "carriedFrom": "AA_Darkbeast",
+      "decidedAt": "2026-10-06T03:02:54.821Z",
+      "decision": "A",
+      "note": "Regenerate description to match image. ",
+      "purge": [
+        "eefa39c16fa233eb8087adebf901f78acb70f4a4fababc1031687eeee82729e5",
+        "d9c8fc71d136f4c67fe81eade19a209ffaa97942c0114ed5da7714832a6a34d1",
+        "6cf3b0f64f553478175857c41c8dd6f88d3c36f0547b231d13a141faa6f3f1e2"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Olumetha": {
+      "agentInference": {
+        "basis": "your 2026-10-06 ruling on AA_NightRam (B: But you need to make its skin inky black and four yellow glowing eyes) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art",
+        "by": "agent (BENCH helper) 2026-10-07",
+        "not_owner_ruling": true,
+        "pick": "A"
+      },
+      "carriedFrom": "AA_NightRam",
+      "carriedRuledAt": "2026-10-06T03:03:24.156Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Ossumatha": {
+      "agentInference": {
+        "basis": "your 2026-10-06 ruling on AA_DarkVandal (D: Make hide pitch black with four glowing yellow eyes) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art",
+        "by": "agent (BENCH helper) 2026-10-07",
+        "not_owner_ruling": true,
+        "pick": "A"
+      },
+      "carriedFrom": "AA_DarkVandal",
+      "carriedRuledAt": "2026-10-06T03:04:38.850Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_PaddleVine": {
+      "at": "2026-10-06T03:09:02.837Z",
+      "carriedAt": "2026-10-07",
+      "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
+      "carriedFrom": "AG_Septimum",
+      "decidedAt": "2026-10-05T14:22:38.898Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:09:02.837Z",
+          "followed_by": [
+            "abyss_paddlevine_v1"
+          ],
+          "note": "Needs whole new description and name and graphics. Try again, that looked like bad computer art. Wide paddles instead of leaves, a huge flower-like leaf at the top, and scarlet twining vine... all glistening with photoreceptive surfaces like the eye of a fly. ",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "purge": [
+        "732f654aaf1d927d57c2c3675b78930831bb30aaab27fd7652b59c547485f741"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Sesserith": {
+      "agentInference": {
+        "basis": "your 2026-10-06 ruling on AA_Nightling (E: I like it. Regenerate description based on image. Make its surface pitch black and its eyes glow yellow.) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art",
+        "by": "agent (BENCH helper) 2026-10-07",
+        "not_owner_ruling": true,
+        "pick": "A"
+      },
+      "carriedFrom": "AA_Nightling",
+      "carriedRuledAt": "2026-10-06T03:05:31.691Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_SicklyGlowMushroom": {
+      "at": "2026-10-06T03:11:13.055Z",
+      "carriedAt": "2026-10-07",
+      "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
+      "carriedFrom": "AB_ToxicGamma",
+      "decidedAt": "2026-10-06T03:11:08.720Z",
+      "decision": "A",
+      "note": "",
+      "picks": {},
+      "purge": [
+        "c67027dd42f93671c58d792f1df5d344aec880fac63a3d22808459b58dbb291b"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Skarnix": {
+      "at": "2026-10-06T03:00:35.361Z",
+      "decidedAt": "2026-10-06T03:00:31.199Z",
+      "decision": "C",
+      "note": "Match description to image. ",
+      "picks": {
+        "_byname": "C"
+      },
+      "prefill": "A"
+    },
+    "RM_Summ": {
+      "at": "2026-10-05T14:21:28.340Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsAt": "2026-10-05T14:21:28.340Z"
+    },
+    "RM_TreeMushroom": {
+      "agentInference": {
+        "basis": "your 2026-10-06 ruling on AB_GiantStikehr (C: Needs regen at proper resolution.) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art",
+        "by": "agent (BENCH helper) 2026-10-07",
+        "not_owner_ruling": true,
+        "pick": "A"
+      },
+      "carriedFrom": "AB_GiantStikehr",
+      "carriedRuledAt": "2026-10-06T03:11:30.327Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Vosska": {
+      "at": "2026-10-05T14:22:05.797Z",
+      "decidedAt": "2026-10-05T14:22:01.812Z",
+      "decision": "hold",
+      "note": "doesn't belong here. ",
+      "prefill": "A"
+    },
+    "RM_Wickwood": {
+      "at": "2026-10-06T03:11:51.375Z",
+      "decidedAt": "2026-10-05T14:25:24.170Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:11:51.375Z",
+          "followed_by": [
+            "abyss_wickwood_b_v1",
+            "abyss_wickwood_c_v1"
+          ],
+          "note": "I like this. Twice as big. Variations.",
+          "when": "2026-10-09T01:19:07-0700"
+        }
+      ],
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-06T03:11:51.375Z"
+    },
+    "RM_Ysvaltha": {
+      "agentInference": {
+        "basis": "your 2026-10-06 ruling on AA_DuskProwler (C: Change description to match image. Make four glowing yellow eyes though.) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art",
+        "by": "agent (BENCH helper) 2026-10-07",
+        "not_owner_ruling": true,
+        "pick": "A"
+      },
+      "carriedFrom": "AA_DuskProwler",
+      "carriedRuledAt": "2026-10-06T03:07:30.435Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    }
   },
-  "AA_DarkVandal": {
-   "at": "2026-10-06T03:04:50.898Z",
-   "decidedAt": "2026-10-06T03:04:38.850Z",
-   "decision": "D",
-   "note": "Make hide pitch black with four glowing yellow eyes",
-   "picks": {
-    "_byname": "D"
-   },
-   "prefill": "A",
-   "purge": [
-    "319bbac758f8dcb1d1024ef28cdb893aa0ef7c85abe7c4c1583a01386d45d434",
-    "2d295fdf25b6e3f67ba7a3b46abf8614e0fcb376825a7e512bd4da17cca87cd7",
-    "497a96e66f1837324c050d6497b0a44c880c34c484a6e36021cac81cd79e8ce3"
-   ],
-   "purgeTouched": true
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": "2026-10-05T20:11:52-0700",
+    "by": "owner (Lukas)",
+    "evidence": "second sitting: sidecar savedBy review-sheet-sidecar, writeCount 204, savedAt 2026-10-05T20:11:52-0700; 24 rows carry an owner 'at' stamp 20:00-20:11; owner typed \"The Abyss sheet done\" (BENCH relay)",
+    "state": "ruled"
   },
-  "AA_Darkbeast": {
-   "at": "2026-10-06T03:03:05.672Z",
-   "decidedAt": "2026-10-06T03:02:54.821Z",
-   "decision": "C",
-   "note": "Regenerate description to match image. ",
-   "prefill": "A",
-   "purge": [
-    "eefa39c16fa233eb8087adebf901f78acb70f4a4fababc1031687eeee82729e5",
-    "d9c8fc71d136f4c67fe81eade19a209ffaa97942c0114ed5da7714832a6a34d1",
-    "6cf3b0f64f553478175857c41c8dd6f88d3c36f0547b231d13a141faa6f3f1e2"
-   ],
-   "purgeTouched": true
-  },
-  "AA_DuskProwler": {
-   "at": "2026-10-06T03:07:50.181Z",
-   "decidedAt": "2026-10-06T03:07:30.435Z",
-   "decision": "C",
-   "note": "Change description to match image. Make four glowing yellow eyes though.",
-   "picks": {
-    "_byname": "C"
-   },
-   "prefill": "A",
-   "purge": [
-    "d436ab4d58be22d84c54cea1957e53675709b5adb213bf8f58253c2ee1d0fc70",
-    "6c73f799e9fab30e35779bb925c202fb90572aa3ed421b4b8854609e66b3f8b1",
-    "402fa518893e7d11a4c2f5a7d3e8fc1fb77e67052e53c54d11fb0b42c36c6834"
-   ],
-   "purgeTouched": true
-  },
-  "AA_DuskRat": {
-   "at": "2026-10-05T14:15:38.919Z",
-   "decidedAt": "2026-10-05T14:15:34.693Z",
-   "decision": "hold",
-   "note": "No longer needed, cut.",
-   "prefill": "A"
-  },
-  "AA_Frostling": {
-   "at": "2026-10-05T14:16:05.612Z",
-   "decidedAt": "2026-10-05T14:16:01.086Z",
-   "decision": "hold",
-   "note": "cut. no longer needed.",
-   "prefill": "A"
-  },
-  "AA_Murkling": {
-   "at": "2026-10-06T03:01:37.612Z",
-   "decidedAt": "2026-10-06T03:01:18.757Z",
-   "decision": "D",
-   "note": "Needs regenerated description compared to image, and also the image must be made to be dark-skinned with four yellow glowing eyes",
-   "picks": {
-    "_byname": "D"
-   },
-   "prefill": "A",
-   "purge": [
-    "eb74804fdc77625e3f0b12f1b62d302ffc88c0b4fab2b90704c8dcce9ceb060a",
-    "b2b57bb55ba1c2d3db97a3068f40a9f367afd757e95be12652f3b60b97a4725d",
-    "b0b04bf49d8ef03573b89b587a250284f3ecc9bf8e5dcac6c04576f16e1f5a7e",
-    "68c7dde016ef99d7d1651819c12142bd88ad0494ee6449f93d68a512b562fa87",
-    "586bc7fab6d2d789c15efea92b3bb8ed280be19e8b6c0fa35ee1676b6a78d789"
-   ],
-   "purgeTouched": true
-  },
-  "AA_NightAve": {
-   "at": "2026-10-05T14:19:10.742Z",
-   "decidedAt": "2026-10-05T14:19:00.778Z",
-   "decision": "hold",
-   "note": "cut. no longer needed.",
-   "prefill": "A",
-   "purge": [
-    "835352d90829d2f0b6ff235a208e915d33a4ae8058c944b1c36ffab23e9c67d1",
-    "30e9b2c87604d5078b7b121cab64a7ae46bd62bae1a2421a26600f238edc594a",
-    "61e943d40e85ec071ef07791dbf0758be08b3b095c01b7d15d67ea2f29b9bb91"
-   ],
-   "purgeTouched": true
-  },
-  "AA_NightMule": {
-   "at": "2026-10-06T03:00:00.332Z",
-   "decidedAt": "2026-10-06T02:59:15.015Z",
-   "decision": "redo",
-   "note": "Regenerate the description to match the appearance, but the appearance must be made to be like black flesh. There should also be four glowing yellow eyes.",
-   "picks": {
-    "Things/Pawn/Animal/AA_NightMule/AA_NightMule_baby": "B",
-    "Things/Pawn/Animal/AA_NightMule/AA_NightMule_female": "C",
-    "_byname": "D"
-   },
-   "prefill": "A",
-   "purge": [
-    "c5a5c3fc0e8faa33ace04362eea3787126504436f6361145601b90eb3f348e59",
-    "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
-    "fdd90268d2fedd7a62bcf09a3cc330cdcdb172a5a78048417305f3d76403f089"
-   ],
-   "purgeTouched": true
-  },
-  "AA_NightRam": {
-   "at": "2026-10-06T03:03:40.131Z",
-   "decidedAt": "2026-10-06T03:03:24.156Z",
-   "decision": "B",
-   "note": "But you need to make its skin inky black and four yellow glowing eyes",
-   "picks": {
-    "_byname": "B"
-   },
-   "prefill": "A",
-   "purge": [
-    "add388e498126c854541374dc4fa715dffcc1676cff81f982dc74b93d1b7df37",
-    "86e01fc989af3c3a88eab789ba730441effbbcfb49cac18e20a3f32b453c811f",
-    "23ddc95e6bb277bd86fa97a760604cca0bacde7f22f36e38925925a0d9888953"
-   ],
-   "purgeTouched": true
-  },
-  "AA_Nightling": {
-   "at": "2026-10-06T03:05:51.279Z",
-   "decidedAt": "2026-10-06T03:05:31.691Z",
-   "decision": "E",
-   "note": "I like it. Regenerate description based on image. Make its surface pitch black and its eyes glow yellow.",
-   "picks": {
-    "Things/Pawn/Animal/AA_Nightling/AA_NightlingPuppy": "B",
-    "_byname": "E"
-   },
-   "prefill": "A"
-  },
-  "AA_ShadowCharger": {
-   "at": "2026-10-06T03:06:22.907Z",
-   "decidedAt": "2026-10-06T03:06:14.215Z",
-   "decision": "hold",
-   "note": "Cut this. Don't need it anymore.",
-   "picks": {
-    "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_baby": "D",
-    "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_female": "E",
-    "_byname": "G"
-   },
-   "prefill": "A",
-   "purge": [
-    "622de3a31f607dc608f4fb449275f09c2a045c590c2ecf2ff4d519d6e1e3ec51",
-    "3aa982234ca012ffd3d6cd50c4104a782f49c40e5929a490d41d0f6e4bbb8f5c",
-    "744065013b5a341f76c3ba6ef6ccc45b26b15cef2945833aaed962ba31373e68",
-    "aa9e2e74f6486385387349359831e3725c79040f25b7f408a0d92570211cac64",
-    "a589c80fe2eb5a0bbab99ccc400a12dca9a828907f4567739c8afc9a34ce2932",
-    "d877bc6f7256eefb728e7a691b7c72a89a1445a66769dead9e0ba0237b05cee1"
-   ],
-   "purgeTouched": true
-  },
-  "AA_Thunderox": {
-   "at": "2026-10-06T03:07:16.946Z",
-   "decidedAt": "2026-10-06T03:07:13.359Z",
-   "decision": "hold",
-   "note": "cut this, no longer needed",
-   "picks": {
-    "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_female": "B",
-    "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_male": "C"
-   },
-   "prefill": "A"
-  },
-  "AB_GiantGamma": {
-   "at": "2026-10-06T03:10:01.953Z",
-   "decidedAt": "2026-10-06T03:09:59.430Z",
-   "decision": "C",
-   "note": "Make variants",
-   "picks": {
-    "_byname": "C"
-   },
-   "prefill": "A"
-  },
-  "AB_GiantSeptimum": {
-   "at": "2026-10-06T03:09:29.885Z",
-   "decidedAt": "2026-10-06T03:09:26.161Z",
-   "decision": "B",
-   "note": "Looks good. ",
-   "picks": {
-    "_byname": "B"
-   },
-   "prefill": "A"
-  },
-  "AB_GiantStikehr": {
-   "at": "2026-10-06T03:11:45.222Z",
-   "decidedAt": "2026-10-06T03:11:30.327Z",
-   "decision": "C",
-   "note": "Needs regen at proper resolution.",
-   "picks": {
-    "_byname": "B"
-   },
-   "prefill": "A",
-   "variants": [
-    "B",
-    "C"
-   ],
-   "variantsAt": "2026-10-06T03:11:31.997Z"
-  },
-  "AB_GlowingGrass": {
-   "at": "2026-10-06T03:10:41.469Z",
-   "decidedAt": "2026-10-06T03:10:25.450Z",
-   "decision": "B",
-   "note": "Tint all of these to be dull yellow-green glowing.",
-   "prefill": "A",
-   "variants": [
-    "B",
-    "C",
-    "D"
-   ],
-   "variantsAt": "2026-10-06T03:10:23.255Z"
-  },
-  "AB_ToxicGamma": {
-   "at": "2026-10-06T03:11:13.055Z",
-   "decidedAt": "2026-10-06T03:11:08.720Z",
-   "decision": "C",
-   "note": "",
-   "picks": {
-    "_byname": "C"
-   },
-   "prefill": "A",
-   "purge": [
-    "c67027dd42f93671c58d792f1df5d344aec880fac63a3d22808459b58dbb291b"
-   ],
-   "purgeTouched": true
-  },
-  "AB_WildRadagast": {
-   "at": "2026-10-06T03:10:13.842Z",
-   "decidedAt": "2026-10-06T03:10:13.842Z",
-   "decision": "C",
-   "note": "Make variants",
-   "picks": {
-    "_byname": "C"
-   },
-   "prefill": "A"
-  },
-  "AG_Gamma": {
-   "at": "2026-10-06T03:09:51.684Z",
-   "decidedAt": "2026-10-06T03:09:48.287Z",
-   "decision": "B",
-   "note": "Make variants",
-   "picks": {
-    "_byname": "B"
-   },
-   "prefill": "A"
-  },
-  "AG_Septimum": {
-   "at": "2026-10-06T03:09:02.837Z",
-   "decidedAt": "2026-10-05T14:22:38.898Z",
-   "decision": "redo",
-   "note": "Needs whole new description and name and graphics. Try again, that looked like bad computer art. Wide paddles instead of leaves, a huge flower-like leaf at the top, and scarlet twining vine... all glistening with photoreceptive surfaces like the eye of a fly. ",
-   "prefill": "A",
-   "purge": [
-    "732f654aaf1d927d57c2c3675b78930831bb30aaab27fd7652b59c547485f741"
-   ],
-   "purgeTouched": true
-  },
-  "RM_Cindermare": {
-   "at": "2026-10-06T03:05:12.882Z",
-   "decidedAt": "2026-10-06T03:05:00.830Z",
-   "decision": "B",
-   "note": "",
-   "prefill": "A"
-  },
-  "RM_Drokattak": {
-   "at": "2026-10-06T03:04:12.817Z",
-   "decidedAt": "2026-10-06T03:03:45.884Z",
-   "decision": "C",
-   "note": "Regenerate description based on image",
-   "prefill": "A"
-  },
-  "RM_Durrgak": {
-   "at": "2026-10-05T14:14:51.052Z",
-   "decision": "A",
-   "note": "This is really cool and eerie. Rename to a Sorter. Trainable. Tamable. Cleans.",
-   "prefill": "A"
-  },
-  "RM_Etchcap": {
-   "at": "2026-10-06T03:07:57.478Z",
-   "decision": "A",
-   "note": "make variants",
-   "prefill": "A",
-   "variants": [
-    "A",
-    "B",
-    "C"
-   ],
-   "variantsAt": "2026-10-06T03:07:57.478Z"
-  },
-  "RM_Gharrek": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RM_Krizzak": {
-   "at": "2026-10-05T14:17:25.933Z",
-   "decision": "A",
-   "note": "",
-   "prefill": "A",
-   "purge": [],
-   "purgeTouched": true,
-   "variants": [
-    "B",
-    "C",
-    "D",
-    "E",
-    "F"
-   ],
-   "variantsAt": "2026-10-05T14:17:25.933Z"
-  },
-  "RM_Skarnix": {
-   "at": "2026-10-06T03:00:35.361Z",
-   "decidedAt": "2026-10-06T03:00:31.199Z",
-   "decision": "C",
-   "note": "Match description to image. ",
-   "picks": {
-    "_byname": "C"
-   },
-   "prefill": "A"
-  },
-  "RM_Summ": {
-   "at": "2026-10-05T14:21:28.340Z",
-   "decision": "A",
-   "note": "",
-   "picks": {
-    "RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing": "B"
-   },
-   "prefill": "A",
-   "variants": [
-    "A",
-    "B"
-   ],
-   "variantsAt": "2026-10-05T14:21:28.340Z"
-  },
-  "RM_Vosska": {
-   "at": "2026-10-05T14:22:05.797Z",
-   "decidedAt": "2026-10-05T14:22:01.812Z",
-   "decision": "hold",
-   "note": "doesn't belong here. ",
-   "prefill": "A"
-  },
-  "RM_Wickwood": {
-   "at": "2026-10-06T03:11:51.375Z",
-   "decidedAt": "2026-10-05T14:25:24.170Z",
-   "decision": "redo",
-   "note": "I like this. Twice as big. Variations.",
-   "prefill": "A",
-   "variants": [
-    "A",
-    "B",
-    "C"
-   ],
-   "variantsAt": "2026-10-06T03:11:51.375Z"
-  },
-  "RM_Olumetha": {
-   "decision": "A",
-   "prefill": "A",
-   "note": "",
-   "carriedFrom": "AA_NightRam",
-   "carriedRuledAt": "2026-10-06T03:03:24.156Z",
-   "agentInference": {
-    "not_owner_ruling": true,
-    "by": "agent (BENCH helper) 2026-10-07",
-    "pick": "A",
-    "basis": "your 2026-10-06 ruling on AA_NightRam (B: But you need to make its skin inky black and four yellow glowing eyes) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art"
-   }
-  },
-  "RM_PaddleVine": {
-   "at": "2026-10-06T03:09:02.837Z",
-   "decidedAt": "2026-10-05T14:22:38.898Z",
-   "decision": "redo",
-   "note": "Needs whole new description and name and graphics. Try again, that looked like bad computer art. Wide paddles instead of leaves, a huge flower-like leaf at the top, and scarlet twining vine... all glistening with photoreceptive surfaces like the eye of a fly. ",
-   "purge": [
-    "732f654aaf1d927d57c2c3675b78930831bb30aaab27fd7652b59c547485f741"
-   ],
-   "purgeTouched": true,
-   "carriedFrom": "AG_Septimum",
-   "carriedAt": "2026-10-07",
-   "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)"
-  },
-  "RM_Ysvaltha": {
-   "decision": "A",
-   "prefill": "A",
-   "note": "",
-   "carriedFrom": "AA_DuskProwler",
-   "carriedRuledAt": "2026-10-06T03:07:30.435Z",
-   "agentInference": {
-    "not_owner_ruling": true,
-    "by": "agent (BENCH helper) 2026-10-07",
-    "pick": "A",
-    "basis": "your 2026-10-06 ruling on AA_DuskProwler (C: Change description to match image. Make four glowing yellow eyes though.) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art"
-   }
-  },
-  "RM_Aveluthia": {
-   "at": "2026-10-06T03:00:00.332Z",
-   "decidedAt": "2026-10-06T02:59:15.015Z",
-   "decision": "redo",
-   "note": "Regenerate the description to match the appearance, but the appearance must be made to be like black flesh. There should also be four glowing yellow eyes.",
-   "picks": {},
-   "purge": [
-    "c5a5c3fc0e8faa33ace04362eea3787126504436f6361145601b90eb3f348e59",
-    "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
-    "fdd90268d2fedd7a62bcf09a3cc330cdcdb172a5a78048417305f3d76403f089"
-   ],
-   "purgeTouched": true,
-   "carriedFrom": "AA_NightMule",
-   "carriedAt": "2026-10-07",
-   "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)"
-  },
-  "RM_GlowGlobe": {
-   "decision": "A",
-   "prefill": "A",
-   "note": "",
-   "carriedFrom": "AG_Gamma",
-   "carriedRuledAt": "2026-10-06T03:09:48.287Z",
-   "agentInference": {
-    "not_owner_ruling": true,
-    "by": "agent (BENCH helper) 2026-10-07",
-    "pick": "A",
-    "basis": "your 2026-10-06 ruling on AG_Gamma (B: Make variants) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art"
-   }
-  },
-  "RM_Lirrith": {
-   "decision": "A",
-   "prefill": "A",
-   "note": "",
-   "carriedFrom": "AA_Murkling",
-   "carriedRuledAt": "2026-10-06T03:01:18.757Z",
-   "agentInference": {
-    "not_owner_ruling": true,
-    "by": "agent (BENCH helper) 2026-10-07",
-    "pick": "A",
-    "basis": "your 2026-10-06 ruling on AA_Murkling (D: Needs regenerated description compared to image, and also the image must be made to be dark-skinned with four yellow glowing eyes) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art"
-   }
-  },
-  "RM_GlowberryBush": {
-   "decision": "A",
-   "prefill": "A",
-   "note": "",
-   "carriedFrom": "AB_WildRadagast",
-   "carriedRuledAt": "2026-10-06T03:10:13.842Z",
-   "agentInference": {
-    "not_owner_ruling": true,
-    "by": "agent (BENCH helper) 2026-10-07",
-    "pick": "A",
-    "basis": "your 2026-10-06 ruling on AB_WildRadagast (C: Make variants) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art"
-   }
-  },
-  "RM_GiantGlowGlobe": {
-   "decision": "A",
-   "prefill": "A",
-   "note": "",
-   "carriedFrom": "AB_GiantGamma",
-   "carriedRuledAt": "2026-10-06T03:09:59.430Z",
-   "agentInference": {
-    "not_owner_ruling": true,
-    "by": "agent (BENCH helper) 2026-10-07",
-    "pick": "A",
-    "basis": "your 2026-10-06 ruling on AB_GiantGamma (C: Make variants) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art"
-   }
-  },
-  "RM_Ossumatha": {
-   "decision": "A",
-   "prefill": "A",
-   "note": "",
-   "carriedFrom": "AA_DarkVandal",
-   "carriedRuledAt": "2026-10-06T03:04:38.850Z",
-   "agentInference": {
-    "not_owner_ruling": true,
-    "by": "agent (BENCH helper) 2026-10-07",
-    "pick": "A",
-    "basis": "your 2026-10-06 ruling on AA_DarkVandal (D: Make hide pitch black with four glowing yellow eyes) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art"
-   }
-  },
-  "RM_TreeMushroom": {
-   "decision": "A",
-   "prefill": "A",
-   "note": "",
-   "carriedFrom": "AB_GiantStikehr",
-   "carriedRuledAt": "2026-10-06T03:11:30.327Z",
-   "agentInference": {
-    "not_owner_ruling": true,
-    "by": "agent (BENCH helper) 2026-10-07",
-    "pick": "A",
-    "basis": "your 2026-10-06 ruling on AB_GiantStikehr (C: Needs regen at proper resolution.) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art"
-   }
-  },
-  "RM_Moravatha": {
-   "decision": "A",
-   "prefill": "A",
-   "note": "",
-   "carriedFrom": "AA_CrepuscularBeetle",
-   "carriedRuledAt": "2026-10-06T03:02:18.564Z",
-   "agentInference": {
-    "not_owner_ruling": true,
-    "by": "agent (BENCH helper) 2026-10-07",
-    "pick": "A",
-    "basis": "your 2026-10-06 ruling on AA_CrepuscularBeetle (C: Add four yellow glowing eyes) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art"
-   }
-  },
-  "RM_Nevarithia": {
-   "at": "2026-10-06T03:03:05.672Z",
-   "decidedAt": "2026-10-06T03:02:54.821Z",
-   "decision": "A",
-   "note": "Regenerate description to match image. ",
-   "purge": [
-    "eefa39c16fa233eb8087adebf901f78acb70f4a4fababc1031687eeee82729e5",
-    "d9c8fc71d136f4c67fe81eade19a209ffaa97942c0114ed5da7714832a6a34d1",
-    "6cf3b0f64f553478175857c41c8dd6f88d3c36f0547b231d13a141faa6f3f1e2"
-   ],
-   "purgeTouched": true,
-   "carriedFrom": "AA_Darkbeast",
-   "carriedAt": "2026-10-07",
-   "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)"
-  },
-  "RM_SicklyGlowMushroom": {
-   "at": "2026-10-06T03:11:13.055Z",
-   "decidedAt": "2026-10-06T03:11:08.720Z",
-   "decision": "A",
-   "note": "",
-   "picks": {},
-   "purge": [
-    "c67027dd42f93671c58d792f1df5d344aec880fac63a3d22808459b58dbb291b"
-   ],
-   "purgeTouched": true,
-   "carriedFrom": "AB_ToxicGamma",
-   "carriedAt": "2026-10-07",
-   "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)"
-  },
-  "RM_GiantFibreStalk": {
-   "at": "2026-10-06T03:09:29.885Z",
-   "decidedAt": "2026-10-06T03:09:26.161Z",
-   "decision": "A",
-   "note": "Looks good. ",
-   "picks": {},
-   "carriedFrom": "AB_GiantSeptimum",
-   "carriedAt": "2026-10-07",
-   "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)"
-  },
-  "RM_Sesserith": {
-   "decision": "A",
-   "prefill": "A",
-   "note": "",
-   "carriedFrom": "AA_Nightling",
-   "carriedRuledAt": "2026-10-06T03:05:31.691Z",
-   "agentInference": {
-    "not_owner_ruling": true,
-    "by": "agent (BENCH helper) 2026-10-07",
-    "pick": "A",
-    "basis": "your 2026-10-06 ruling on AA_Nightling (E: I like it. Regenerate description based on image. Make its surface pitch black and its eyes glow yellow.) was executed as new art, now IN GAME on this renamed row; you have not ruled on the new art"
-   }
-  },
-  "RM_GlowingGrass": {
-   "decision": "E",
-   "note": "Tint all of these to be dull yellow-green glowing.",
-   "decidedAt": "2026-10-06T03:10:25.450Z",
-   "at": "2026-10-06T03:10:41.469Z",
-   "carriedFrom": "AB_GlowingGrass",
-   "carriedAt": "2026-10-07",
-   "carriedBy": "BENCH helper: renamed/moved row (owner note on the old row)"
-  }
- },
- "posture": "pick-one",
- "reviewStatus": {
-  "at": "2026-10-05T20:11:52-0700",
-  "by": "owner (Lukas)",
-  "state": "ruled",
-  "evidence": "second sitting: sidecar savedBy review-sheet-sidecar, writeCount 204, savedAt 2026-10-05T20:11:52-0700; 24 rows carry an owner 'at' stamp 20:00-20:11; owner typed \"The Abyss sheet done\" (BENCH relay)"
- },
- "savedAt": "2026-10-05T20:11:52-0700",
- "savedBy": "review-sheet-sidecar",
- "sheetId": "abyss_sheet_2026-10-04",
- "snapshot": "infrastructure/state/art/sheets/abyss_sheet_2026-10-04.snapshot.json",
- "snapshotId": "54bf020bff3792a8",
- "writeCount": 204
+  "savedAt": "2026-10-05T20:11:52-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "abyss_sheet_2026-10-04",
+  "snapshot": "infrastructure/state/art/sheets/abyss_sheet_2026-10-04.snapshot.json",
+  "snapshotId": "54bf020bff3792a8",
+  "writeCount": 204
 }

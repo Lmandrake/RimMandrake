@@ -7,7 +7,17 @@
       "at": "2026-10-06T03:12:59.600Z",
       "decidedAt": "2026-10-06T03:12:54.791Z",
       "decision": "E",
-      "note": "Looks good, but needs its other facings. Also needs improved description. Half the size. Still missing a north facing.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:12:59.600Z",
+          "followed_by": [
+            "bluedesert_Thunderbeast_v4_north"
+          ],
+          "note": "Looks good, but needs its other facings. Also needs improved description. Half the size. Still missing a north facing.",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
       "prefill": "hold",
       "purge": [
         "19c0fa186245ff23eae8bbc484c9d4426bd0a19445567a25c967e3b67e5b5a55",
@@ -67,7 +77,19 @@
     "RM_Kethevar": {
       "at": "2026-10-05T14:37:17.720Z",
       "decision": "A",
-      "note": "Add some variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T14:37:17.720Z",
+          "followed_by": [
+            "RM_Kethevar_var1",
+            "RM_Kethevar_var2",
+            "RM_Kethevar_var3"
+          ],
+          "note": "Add some variants",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -85,7 +107,19 @@
     "RM_Lisqueth": {
       "at": "2026-10-05T14:37:22.774Z",
       "decision": "A",
-      "note": "Add some variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T14:37:22.774Z",
+          "followed_by": [
+            "RM_Lisqueth_var1",
+            "RM_Lisqueth_var2",
+            "RM_Lisqueth_var3"
+          ],
+          "note": "Add some variants",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -106,7 +140,22 @@
       "at": "2026-10-06T03:12:38.560Z",
       "decidedAt": "2026-10-05T14:27:05.681Z",
       "decision": "B",
-      "note": "This looks vaguely lewd and also somewhat humanoid. More alien please.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:12:38.560Z",
+          "followed_by": [
+            "bluedesert_Ossivel_v3_east",
+            "bluedesert_Ossivel_v3_north",
+            "bluedesert_Ossivel_v3_south",
+            "bluedesert_Ossivel_v4_east",
+            "bluedesert_Ossivel_v4_north",
+            "bluedesert_Ossivel_v4_south"
+          ],
+          "note": "This looks vaguely lewd and also somewhat humanoid. More alien please.",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "030dccd5223e9dd7f359d4ea95ac7ff510efef33435c348a61af6bae98bbfece",
@@ -136,7 +185,19 @@
       "at": "2026-10-06T03:14:54.825Z",
       "decidedAt": "2026-10-04T23:43:38.375Z",
       "decision": "A",
-      "note": "Make some variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:14:54.825Z",
+          "followed_by": [
+            "RM_Qeshra_var1",
+            "RM_Qeshra_var2",
+            "RM_Qeshra_var3"
+          ],
+          "note": "Make some variants",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Utikka": {
@@ -155,7 +216,19 @@
     "RM_Vashpuk": {
       "at": "2026-10-06T03:14:47.467Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:14:47.467Z",
+          "followed_by": [
+            "RM_Vashpuk_var1",
+            "RM_Vashpuk_var2",
+            "RM_Vashpuk_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -184,7 +257,19 @@
     "RM_Virr": {
       "at": "2026-10-06T03:15:00.961Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:15:00.961Z",
+          "followed_by": [
+            "RM_Virr_var1",
+            "RM_Virr_var2",
+            "RM_Virr_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",

@@ -1,224 +1,255 @@
 {
- "biome": "RM_Warscar",
- "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
- "decidedCount": 19,
- "decisions": {
-  "AA_Helixien": {
-   "at": "2026-10-06T05:26:56.383Z",
-   "decidedAt": "2026-10-06T05:23:51.904Z",
-   "decision": "B",
-   "note": "Rename to Bileworm",
-   "prefill": "A"
+  "biome": "RM_Warscar",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 19,
+  "decisions": {
+    "AA_Helixien": {
+      "at": "2026-10-06T05:26:56.383Z",
+      "decidedAt": "2026-10-06T05:23:51.904Z",
+      "decision": "B",
+      "note": "Rename to Bileworm",
+      "prefill": "A"
+    },
+    "AA_SpinedGow": {
+      "at": "2026-10-06T05:25:10.458Z",
+      "decidedAt": "2026-10-06T05:25:05.447Z",
+      "decision": "hold",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:25:10.458Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "Cut this, no longer needed",
+          "when": "2026-10-09T01:21:41-0700"
+        }
+      ],
+      "picks": {
+        "Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowFemale": "B",
+        "Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowMale": "C"
+      },
+      "prefill": "A"
+    },
+    "RG_Rimclaw": {
+      "at": "2026-10-06T05:28:25.992Z",
+      "decision": "A",
+      "note": "redo description",
+      "picks": {
+        "Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw": "B"
+      },
+      "prefill": "A",
+      "purge": [
+        "a912b693e72eb200cfc293c99232eb7ac31a712281897f989bf4aea91780ea9d",
+        "03af9f9eaafacfee86efb1f6b1da20fa1e8ac1b8e803fe400f3a72802f365083",
+        "1fedd2d398e41b10a2e100fa4d98b300e6384301cac3a15183434f74fb6be11e"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Bileworm": {
+      "at": "2026-10-06T05:26:56.383Z",
+      "carriedAt": "2026-10-07",
+      "carriedBy": "BENCH helper: renamed/moved row (owner note: \"Rename to Bileworm\")",
+      "carriedFrom": "AA_Helixien",
+      "decidedAt": "2026-10-06T05:23:51.904Z",
+      "decision": "A",
+      "note": "Rename to Bileworm"
+    },
+    "RM_Chatrak": {
+      "at": "2026-10-06T05:25:37.457Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "ce8f4355ad4bfefe3258979566fb58cff76909e0f49e8cfb0bb6c261c5c5d4c7"
+      ],
+      "purgeTouched": true
+    },
+    "RM_ElectricGryllotalpa": {
+      "at": "2026-10-06T05:26:21.831Z",
+      "carriedAt": "2026-10-07",
+      "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
+      "carriedFrom": "SW_Electricgryllotalpa",
+      "decidedAt": "2026-10-06T05:26:21.831Z",
+      "decision": "A",
+      "note": "",
+      "picks": {}
+    },
+    "RM_ElectricTick": {
+      "at": "2026-10-06T05:23:39.764Z",
+      "carriedAt": "2026-10-07",
+      "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
+      "carriedFrom": "SW_Electrictick",
+      "decidedAt": "2026-10-06T05:23:39.764Z",
+      "decision": "A",
+      "note": ""
+    },
+    "RM_Glower": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_JuggernautBeetle": {
+      "at": "2026-10-06T05:27:49.312Z",
+      "carriedAt": "2026-10-07",
+      "carriedBy": "BENCH helper: renamed/moved row (renamed port)",
+      "carriedFrom": "SW_Juggernautbeetles",
+      "decidedAt": "2026-10-06T05:27:19.382Z",
+      "decision": "A",
+      "note": "Redo description"
+    },
+    "RM_Pallbearer": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Rimclaw": {
+      "agentInference": {
+        "basis": "your 2026-10-06 note on RG_Rimclaw ('redo description'; old art purged, extra graphic B picked) was executed as the renamed RM_Rimclaw; its in-game set is shown, you have not ruled on it",
+        "by": "agent (BENCH helper) 2026-10-07",
+        "not_owner_ruling": true,
+        "pick": "A"
+      },
+      "carriedFrom": "RG_Rimclaw",
+      "carriedRuledAt": "2026-10-06T05:28:25.992Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_ScarRoach": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_ScorchedStars": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Tetchik": {
+      "at": "2026-10-06T05:25:14.982Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "17dff18c61d60255ccd721d556ae190b6930a10a59e60af4f00d902b10f63149"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Vozzik": {
+      "decision": "B",
+      "note": "",
+      "prefill": "B"
+    },
+    "RSW_CrystalFairyMole": {
+      "at": "2026-10-06T05:26:18.561Z",
+      "decidedAt": "2026-10-06T05:26:15.508Z",
+      "decision": "hold",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:26:18.561Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "cut no longer needed",
+          "when": "2026-10-09T01:21:41-0700"
+        }
+      ],
+      "prefill": "A"
+    },
+    "RSW_FoundryBeetle": {
+      "at": "2026-10-06T05:23:47.858Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "4aed6b3add2e0cb7a429c35c393b00a21f6ea693d4847c2478c94036628600e5",
+        "72a73e692de54389b56bb127fec348cc054f2ba0d5256034a39d6d9b586503fe",
+        "6fa06669bcafbe54022597936d040de50a351cdbda01eae2a3fbc8da0c8a5683"
+      ],
+      "purgeTouched": true
+    },
+    "RSW_Korrum": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RSW_MegaphoridLarva": {
+      "at": "2026-10-06T05:28:03.596Z",
+      "decidedAt": "2026-10-06T05:28:03.596Z",
+      "decision": "redo",
+      "note": "",
+      "prefill": "A"
+    },
+    "RSW_Mynock": {
+      "at": "2026-10-06T05:24:25.166Z",
+      "decidedAt": "2026-10-06T05:24:17.192Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:24:25.166Z",
+          "followed_by": [
+            "warscar_Mynock_v2_east",
+            "warscar_Mynock_v2_north"
+          ],
+          "note": "I like the mynok there, but needs north and east",
+          "when": "2026-10-09T01:21:41-0700"
+        }
+      ],
+      "prefill": "A",
+      "purge": [
+        "72ad8be3cf0844bf99cab8d878b50483c679db93f06dbea013a47313c289bc06",
+        "0997c491f9fe2eabf9d93aad1a53f38fd55234bd786976b5b1a80cf44b4a87ad",
+        "a0781a8ba736a2203889baae18105a288fe3520477c2a00424812a0bcd071cc8"
+      ],
+      "purgeTouched": true
+    },
+    "RSW_Vozzik": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "SW_Electricgryllotalpa": {
+      "at": "2026-10-06T05:26:21.831Z",
+      "decidedAt": "2026-10-06T05:26:21.831Z",
+      "decision": "B",
+      "note": "",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A"
+    },
+    "SW_Electrictick": {
+      "at": "2026-10-06T05:23:39.764Z",
+      "decidedAt": "2026-10-06T05:23:39.764Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A"
+    },
+    "SW_Juggernautbeetles": {
+      "at": "2026-10-06T05:27:49.312Z",
+      "decidedAt": "2026-10-06T05:27:19.382Z",
+      "decision": "B",
+      "note": "Redo description",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A"
+    }
   },
-  "AA_SpinedGow": {
-   "at": "2026-10-06T05:25:10.458Z",
-   "decidedAt": "2026-10-06T05:25:05.447Z",
-   "decision": "hold",
-   "note": "Cut this, no longer needed",
-   "picks": {
-    "Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowFemale": "B",
-    "Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowMale": "C"
-   },
-   "prefill": "A"
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": "2026-10-06T05:30:00Z",
+    "by": "owner",
+    "evidence": "owner typed: Done with Warscar",
+    "state": "ruled"
   },
-  "RG_Rimclaw": {
-   "at": "2026-10-06T05:28:25.992Z",
-   "decision": "A",
-   "note": "redo description",
-   "picks": {
-    "Things/Pawn/Animal/ReGrowth/Rimclaw/Rimclaw": "B"
-   },
-   "prefill": "A",
-   "purge": [
-    "a912b693e72eb200cfc293c99232eb7ac31a712281897f989bf4aea91780ea9d",
-    "03af9f9eaafacfee86efb1f6b1da20fa1e8ac1b8e803fe400f3a72802f365083",
-    "1fedd2d398e41b10a2e100fa4d98b300e6384301cac3a15183434f74fb6be11e"
-   ],
-   "purgeTouched": true
-  },
-  "RM_Chatrak": {
-   "at": "2026-10-06T05:25:37.457Z",
-   "decision": "A",
-   "note": "",
-   "prefill": "A",
-   "purge": [
-    "ce8f4355ad4bfefe3258979566fb58cff76909e0f49e8cfb0bb6c261c5c5d4c7"
-   ],
-   "purgeTouched": true
-  },
-  "RM_Glower": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RM_Pallbearer": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RM_ScarRoach": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RM_ScorchedStars": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RM_Tetchik": {
-   "at": "2026-10-06T05:25:14.982Z",
-   "decision": "A",
-   "note": "",
-   "prefill": "A",
-   "purge": [
-    "17dff18c61d60255ccd721d556ae190b6930a10a59e60af4f00d902b10f63149"
-   ],
-   "purgeTouched": true
-  },
-  "RM_Vozzik": {
-   "decision": "B",
-   "note": "",
-   "prefill": "B"
-  },
-  "RSW_CrystalFairyMole": {
-   "at": "2026-10-06T05:26:18.561Z",
-   "decidedAt": "2026-10-06T05:26:15.508Z",
-   "decision": "hold",
-   "note": "cut no longer needed",
-   "prefill": "A"
-  },
-  "RSW_FoundryBeetle": {
-   "at": "2026-10-06T05:23:47.858Z",
-   "decision": "A",
-   "note": "",
-   "prefill": "A",
-   "purge": [
-    "4aed6b3add2e0cb7a429c35c393b00a21f6ea693d4847c2478c94036628600e5",
-    "72a73e692de54389b56bb127fec348cc054f2ba0d5256034a39d6d9b586503fe",
-    "6fa06669bcafbe54022597936d040de50a351cdbda01eae2a3fbc8da0c8a5683"
-   ],
-   "purgeTouched": true
-  },
-  "RSW_Korrum": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RSW_MegaphoridLarva": {
-   "at": "2026-10-06T05:28:03.596Z",
-   "decidedAt": "2026-10-06T05:28:03.596Z",
-   "decision": "redo",
-   "note": "",
-   "prefill": "A"
-  },
-  "RSW_Mynock": {
-   "at": "2026-10-06T05:24:25.166Z",
-   "decidedAt": "2026-10-06T05:24:17.192Z",
-   "decision": "redo",
-   "note": "I like the mynok there, but needs north and east",
-   "prefill": "A",
-   "purge": [
-    "72ad8be3cf0844bf99cab8d878b50483c679db93f06dbea013a47313c289bc06",
-    "0997c491f9fe2eabf9d93aad1a53f38fd55234bd786976b5b1a80cf44b4a87ad",
-    "a0781a8ba736a2203889baae18105a288fe3520477c2a00424812a0bcd071cc8"
-   ],
-   "purgeTouched": true
-  },
-  "RSW_Vozzik": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "SW_Electricgryllotalpa": {
-   "at": "2026-10-06T05:26:21.831Z",
-   "decidedAt": "2026-10-06T05:26:21.831Z",
-   "decision": "B",
-   "note": "",
-   "picks": {
-    "_byname": "B"
-   },
-   "prefill": "A"
-  },
-  "SW_Electrictick": {
-   "at": "2026-10-06T05:23:39.764Z",
-   "decidedAt": "2026-10-06T05:23:39.764Z",
-   "decision": "B",
-   "note": "",
-   "prefill": "A"
-  },
-  "SW_Juggernautbeetles": {
-   "at": "2026-10-06T05:27:49.312Z",
-   "decidedAt": "2026-10-06T05:27:19.382Z",
-   "decision": "B",
-   "note": "Redo description",
-   "picks": {
-    "_byname": "B"
-   },
-   "prefill": "A"
-  },
-  "RM_ElectricGryllotalpa": {
-   "at": "2026-10-06T05:26:21.831Z",
-   "decidedAt": "2026-10-06T05:26:21.831Z",
-   "decision": "A",
-   "note": "",
-   "picks": {},
-   "carriedFrom": "SW_Electricgryllotalpa",
-   "carriedAt": "2026-10-07",
-   "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)"
-  },
-  "RM_ElectricTick": {
-   "at": "2026-10-06T05:23:39.764Z",
-   "decidedAt": "2026-10-06T05:23:39.764Z",
-   "decision": "A",
-   "note": "",
-   "carriedFrom": "SW_Electrictick",
-   "carriedAt": "2026-10-07",
-   "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)"
-  },
-  "RM_Bileworm": {
-   "decision": "A",
-   "note": "Rename to Bileworm",
-   "decidedAt": "2026-10-06T05:23:51.904Z",
-   "at": "2026-10-06T05:26:56.383Z",
-   "carriedFrom": "AA_Helixien",
-   "carriedAt": "2026-10-07",
-   "carriedBy": "BENCH helper: renamed/moved row (owner note: \"Rename to Bileworm\")"
-  },
-  "RM_JuggernautBeetle": {
-   "decision": "A",
-   "note": "Redo description",
-   "decidedAt": "2026-10-06T05:27:19.382Z",
-   "at": "2026-10-06T05:27:49.312Z",
-   "carriedFrom": "SW_Juggernautbeetles",
-   "carriedAt": "2026-10-07",
-   "carriedBy": "BENCH helper: renamed/moved row (renamed port)"
-  },
-  "RM_Rimclaw": {
-   "decision": "A",
-   "prefill": "A",
-   "note": "",
-   "carriedFrom": "RG_Rimclaw",
-   "carriedRuledAt": "2026-10-06T05:28:25.992Z",
-   "agentInference": {
-    "not_owner_ruling": true,
-    "by": "agent (BENCH helper) 2026-10-07",
-    "pick": "A",
-    "basis": "your 2026-10-06 note on RG_Rimclaw ('redo description'; old art purged, extra graphic B picked) was executed as the renamed RM_Rimclaw; its in-game set is shown, you have not ruled on it"
-   }
-  }
- },
- "posture": "pick-one",
- "reviewStatus": {
-  "state": "ruled",
-  "at": "2026-10-06T05:30:00Z",
-  "by": "owner",
-  "evidence": "owner typed: Done with Warscar"
- },
- "savedAt": "2026-10-05T22:28:26-0700",
- "savedBy": "review-sheet-sidecar",
- "sheetId": "warscar_sheet_2026-10-05",
- "snapshot": "infrastructure/state/art/sheets/warscar_sheet_2026-10-05.snapshot.json",
- "snapshotId": "96f7fbde17b09a22",
- "writeCount": 35
+  "savedAt": "2026-10-05T22:28:26-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "warscar_sheet_2026-10-05",
+  "snapshot": "infrastructure/state/art/sheets/warscar_sheet_2026-10-05.snapshot.json",
+  "snapshotId": "96f7fbde17b09a22",
+  "writeCount": 35
 }

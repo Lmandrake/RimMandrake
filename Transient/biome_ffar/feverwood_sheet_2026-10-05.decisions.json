@@ -6,7 +6,18 @@
     "Plant_HydenockTree_Wild": {
       "at": "2026-10-08T04:24:50.999Z",
       "decision": "A",
-      "note": "add more realistic variants, we will remove the less realistic ones later",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:24:50.999Z",
+          "followed_by": [
+            "regen_fw_hydenocktree_varb_v1",
+            "regen_fw_hydenocktree_varc_v1"
+          ],
+          "note": "add more realistic variants, we will remove the less realistic ones later",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -17,7 +28,18 @@
       "at": "2026-10-08T04:25:01.748Z",
       "decidedAt": "2026-10-08T04:24:57.680Z",
       "decision": "B",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:25:01.748Z",
+          "followed_by": [
+            "regen_fw_jogantree_varb_v1",
+            "regen_fw_jogantree_varc_v1"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -28,7 +50,19 @@
       "at": "2026-10-08T04:23:19.867Z",
       "decidedAt": "2026-10-08T04:22:52.463Z",
       "decision": "redo",
-      "note": "too cartoonish, but good concept.  Regenerate twice as big from the description and make it very realistic, add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:23:19.867Z",
+          "followed_by": [
+            "regen_fw_ammeth_v2b",
+            "regen_fw_ammeth_v2c",
+            "regen_fw_ammeth_v2a"
+          ],
+          "note": "too cartoonish, but good concept.  Regenerate twice as big from the description and make it very realistic, add variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
@@ -43,7 +77,19 @@
       "at": "2026-10-08T04:14:17.998Z",
       "decidedAt": "2026-10-08T04:13:42.431Z",
       "decision": "redo",
-      "note": "Redo description and image. It was supposed to be a wood-boring larva that rasps into trees, somehow it ended up with a drill head (not cool). I like the little gripper peg legs though. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:14:17.998Z",
+          "followed_by": [
+            "regen_fw_brathek_v2_east",
+            "regen_fw_brathek_v2_north",
+            "regen_fw_brathek_v2_south"
+          ],
+          "note": "Redo description and image. It was supposed to be a wood-boring larva that rasps into trees, somehow it ended up with a drill head (not cool). I like the little gripper peg legs though. ",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -54,7 +100,19 @@
       "at": "2026-10-08T04:15:42.986Z",
       "decidedAt": "2026-10-08T04:15:42.986Z",
       "decision": "B",
-      "note": "Add the East facing, and do not use a beak. More like a lipless whistling flap of skin for a mouth.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:15:42.986Z",
+          "followed_by": [
+            "regen_fw_chellow_v2_east",
+            "regen_fw_chellow_v2_south",
+            "regen_fw_chellow_v2_north"
+          ],
+          "note": "Add the East facing, and do not use a beak. More like a lipless whistling flap of skin for a mouth.",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -65,7 +123,19 @@
       "at": "2026-10-08T04:23:33.463Z",
       "decidedAt": "2026-10-08T04:23:25.274Z",
       "decision": "redo",
-      "note": "More realistic but good concept, add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:23:33.463Z",
+          "followed_by": [
+            "regen_fw_cistrel_v2b",
+            "regen_fw_cistrel_v2c",
+            "regen_fw_cistrel_v2a"
+          ],
+          "note": "More realistic but good concept, add variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },
@@ -79,7 +149,18 @@
       "at": "2026-10-08T04:23:58.403Z",
       "decidedAt": "2026-10-08T04:23:50.858Z",
       "decision": "B",
-      "note": "add variants realistically",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:23:58.403Z",
+          "followed_by": [
+            "regen_fw_claithe_varb_v1",
+            "regen_fw_claithe_varc_v1"
+          ],
+          "note": "add variants realistically",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },
@@ -94,7 +175,19 @@
       "at": "2026-10-08T04:24:10.850Z",
       "decidedAt": "2026-10-08T04:24:04.391Z",
       "decision": "redo",
-      "note": "Redo more realistically and add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:24:10.850Z",
+          "followed_by": [
+            "regen_fw_corvath_v2b",
+            "regen_fw_corvath_v2c",
+            "regen_fw_corvath_v2a"
+          ],
+          "note": "Redo more realistically and add variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -105,7 +198,18 @@
       "at": "2026-10-08T04:16:20.333Z",
       "decidedAt": "2026-10-08T04:16:05.334Z",
       "decision": "redo",
-      "note": "You cna't have actual wood showing. I like the B south facing, though, generalize that to North and East. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:16:20.333Z",
+          "followed_by": [
+            "regen_fw_drommath_v2_east",
+            "regen_fw_drommath_v2_north"
+          ],
+          "note": "You cna't have actual wood showing. I like the B south facing, though, generalize that to North and East. ",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -116,7 +220,18 @@
     "RM_GiantLeaf": {
       "at": "2026-10-08T04:24:21.206Z",
       "decision": "A",
-      "note": "add variants realistically",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:24:21.206Z",
+          "followed_by": [
+            "regen_fw_giantleaf_varb_v1",
+            "regen_fw_giantleaf_varc_v1"
+          ],
+          "note": "add variants realistically",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -127,7 +242,17 @@
       "at": "2026-10-08T04:18:12.027Z",
       "decidedAt": "2026-10-08T04:18:08.895Z",
       "decision": "hold",
-      "note": "cut no longer needed",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:18:12.027Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "cut no longer needed",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -138,7 +263,17 @@
       "at": "2026-10-08T04:19:01.635Z",
       "decidedAt": "2026-10-08T04:18:24.616Z",
       "decision": "A",
-      "note": "Redo description based on image",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:19:01.635Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Redo description based on image",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -149,7 +284,18 @@
       "at": "2026-10-08T04:24:33.899Z",
       "decidedAt": "2026-10-08T04:24:24.365Z",
       "decision": "A",
-      "note": "add variants realistically",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:24:33.899Z",
+          "followed_by": [
+            "regen_fw_halquin_varb_v1",
+            "regen_fw_halquin_varc_v1"
+          ],
+          "note": "add variants realistically",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },
@@ -163,7 +309,17 @@
       "at": "2026-10-08T04:19:17.485Z",
       "decidedAt": "2026-10-08T04:19:14.639Z",
       "decision": "hold",
-      "note": "no longer needed",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:19:17.485Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "no longer needed",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -174,7 +330,18 @@
       "at": "2026-10-08T04:25:12.516Z",
       "decidedAt": "2026-10-08T04:25:06.931Z",
       "decision": "A",
-      "note": "add more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:25:12.516Z",
+          "followed_by": [
+            "regen_fw_maulith_varb_v1",
+            "regen_fw_maulith_varc_v1"
+          ],
+          "note": "add more realistic variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },
@@ -188,7 +355,19 @@
       "at": "2026-10-08T04:20:31.026Z",
       "decidedAt": "2026-10-08T04:20:10.260Z",
       "decision": "redo",
-      "note": "Very close. Please regenerate but make those streamers beautifully translucent rainbow colors, regally.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:20:31.026Z",
+          "followed_by": [
+            "regen_fw_murrelith_v2_east",
+            "regen_fw_murrelith_v2_north",
+            "regen_fw_murrelith_v2_south"
+          ],
+          "note": "Very close. Please regenerate but make those streamers beautifully translucent rainbow colors, regally.",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -200,7 +379,17 @@
       "at": "2026-10-08T04:20:41.962Z",
       "decidedAt": "2026-10-08T04:20:39.227Z",
       "decision": "hold",
-      "note": "no longer needed",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:20:41.962Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "no longer needed",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -210,7 +399,18 @@
     "RM_Nubrith": {
       "at": "2026-10-08T04:25:18.455Z",
       "decision": "A",
-      "note": "add more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:25:18.455Z",
+          "followed_by": [
+            "regen_fw_nubrith_varb_v1",
+            "regen_fw_nubrith_varc_v1"
+          ],
+          "note": "add more realistic variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -231,7 +431,18 @@
     "RM_Ossagrel": {
       "at": "2026-10-08T04:25:22.837Z",
       "decision": "A",
-      "note": "add more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:25:22.837Z",
+          "followed_by": [
+            "regen_fw_ossagrel_varb_v1",
+            "regen_fw_ossagrel_varc_v1"
+          ],
+          "note": "add more realistic variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -241,7 +452,18 @@
     "RM_Plennith": {
       "at": "2026-10-08T04:25:26.659Z",
       "decision": "A",
-      "note": "add more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:25:26.659Z",
+          "followed_by": [
+            "regen_fw_plennith_varb_v1",
+            "regen_fw_plennith_varc_v1"
+          ],
+          "note": "add more realistic variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -251,7 +473,18 @@
     "RM_Seepril": {
       "at": "2026-10-08T04:25:35.361Z",
       "decision": "A",
-      "note": "add more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:25:35.361Z",
+          "followed_by": [
+            "regen_fw_seepril_varb_v1",
+            "regen_fw_seepril_varc_v1"
+          ],
+          "note": "add more realistic variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -261,7 +494,17 @@
     "RM_Silloch": {
       "at": "2026-10-08T04:21:13.639Z",
       "decision": "A",
-      "note": "regenerate description",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:21:13.639Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "regenerate description",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -272,7 +515,17 @@
       "at": "2026-10-08T04:21:45.193Z",
       "decidedAt": "2026-10-08T04:21:24.688Z",
       "decision": "B",
-      "note": "This creature is a thief.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:21:45.193Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "This creature is a thief.",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -283,7 +536,17 @@
       "at": "2026-10-08T04:25:49.620Z",
       "decidedAt": "2026-10-08T04:25:46.462Z",
       "decision": "hold",
-      "note": "cut no longer needed",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:25:49.620Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "cut no longer needed",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -294,7 +557,19 @@
       "at": "2026-10-08T04:25:59.507Z",
       "decidedAt": "2026-10-08T04:25:59.507Z",
       "decision": "redo",
-      "note": "add more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:25:59.507Z",
+          "followed_by": [
+            "regen_fw_skimmel_v2a",
+            "regen_fw_skimmel_v2b",
+            "regen_fw_skimmel_v2c"
+          ],
+          "note": "add more realistic variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [],
       "variantsAt": "2026-10-08T04:25:54.299Z"
@@ -303,7 +578,19 @@
       "at": "2026-10-08T04:26:10.034Z",
       "decidedAt": "2026-10-08T04:26:09.463Z",
       "decision": "redo",
-      "note": "add more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:26:10.034Z",
+          "followed_by": [
+            "regen_fw_sodderel_v2a",
+            "regen_fw_sodderel_v2b",
+            "regen_fw_sodderel_v2c"
+          ],
+          "note": "add more realistic variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -314,7 +601,17 @@
       "at": "2026-10-08T04:21:59.305Z",
       "decidedAt": "2026-10-08T04:21:56.322Z",
       "decision": "hold",
-      "note": "no longer needed",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:21:59.305Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "no longer needed",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -326,7 +623,19 @@
       "at": "2026-10-08T04:22:25.362Z",
       "decidedAt": "2026-10-08T04:22:07.444Z",
       "decision": "redo",
-      "note": "Good concept, but make it three cells wide",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:22:25.362Z",
+          "followed_by": [
+            "regen_fw_thornbug_v2_east",
+            "regen_fw_thornbug_v2_north",
+            "regen_fw_thornbug_v2_south"
+          ],
+          "note": "Good concept, but make it three cells wide",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -337,7 +646,19 @@
       "at": "2026-10-08T04:26:23.824Z",
       "decidedAt": "2026-10-08T04:26:23.824Z",
       "decision": "redo",
-      "note": "add more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:26:23.824Z",
+          "followed_by": [
+            "regen_fw_thulvane_v2a",
+            "regen_fw_thulvane_v2b",
+            "regen_fw_thulvane_v2c"
+          ],
+          "note": "add more realistic variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -348,7 +669,19 @@
       "at": "2026-10-08T04:26:22.555Z",
       "decidedAt": "2026-10-08T04:26:22.555Z",
       "decision": "redo",
-      "note": "add more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:26:22.555Z",
+          "followed_by": [
+            "regen_fw_tullick_v2a",
+            "regen_fw_tullick_v2b",
+            "regen_fw_tullick_v2c"
+          ],
+          "note": "add more realistic variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -359,7 +692,19 @@
       "at": "2026-10-08T04:26:32.304Z",
       "decidedAt": "2026-10-08T04:26:31.553Z",
       "decision": "redo",
-      "note": "add more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:26:32.304Z",
+          "followed_by": [
+            "regen_fw_varnoth_v2a",
+            "regen_fw_varnoth_v2b",
+            "regen_fw_varnoth_v2c"
+          ],
+          "note": "add more realistic variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -382,7 +727,19 @@
       "at": "2026-10-08T04:26:35.240Z",
       "decidedAt": "2026-10-08T04:26:34.478Z",
       "decision": "redo",
-      "note": "add more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:26:35.240Z",
+          "followed_by": [
+            "regen_fw_verrow_v2a",
+            "regen_fw_verrow_v2b",
+            "regen_fw_verrow_v2c"
+          ],
+          "note": "add more realistic variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -394,7 +751,19 @@
       "at": "2026-10-08T04:26:38.631Z",
       "decidedAt": "2026-10-08T04:26:37.657Z",
       "decision": "redo",
-      "note": "add more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:26:38.631Z",
+          "followed_by": [
+            "regen_fw_wanlith_v2a",
+            "regen_fw_wanlith_v2b",
+            "regen_fw_wanlith_v2c"
+          ],
+          "note": "add more realistic variants",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -415,7 +784,19 @@
       "at": "2026-10-08T04:17:31.328Z",
       "decidedAt": "2026-10-08T04:17:15.974Z",
       "decision": "redo",
-      "note": "Pay close attention to the canon imagery, yellow with green spots, long forward neck. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:17:31.328Z",
+          "followed_by": [
+            "regen_fw_canon_fambaa_v1_east",
+            "regen_fw_canon_fambaa_v1_north",
+            "regen_fw_canon_fambaa_v1_south"
+          ],
+          "note": "Pay close attention to the canon imagery, yellow with green spots, long forward neck. ",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "picks": {
         "swanimals/Fambaa/Fambaa_Swimming": "D",
         "swanimals/Fambaa/Fambaa_j": "E",
@@ -444,7 +825,19 @@
       "at": "2026-10-08T04:17:49.473Z",
       "decidedAt": "2026-10-08T04:17:44.418Z",
       "decision": "redo",
-      "note": "follow canon precisely",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:17:49.473Z",
+          "followed_by": [
+            "regen_fw_canon_gelagrub_v1_east",
+            "regen_fw_canon_gelagrub_v1_north",
+            "regen_fw_canon_gelagrub_v1_south"
+          ],
+          "note": "follow canon precisely",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -494,7 +887,17 @@
       "at": "2026-10-08T04:19:37.267Z",
       "decidedAt": "2026-10-08T04:19:22.065Z",
       "decision": "B",
-      "note": "Redo name and description.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:19:37.267Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Redo name and description.",
+          "when": "2026-10-09T01:19:58-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"

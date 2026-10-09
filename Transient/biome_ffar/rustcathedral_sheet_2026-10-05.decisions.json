@@ -1,64 +1,89 @@
 {
- "biome": "RM_RustCathedral",
- "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
- "decidedCount": 5,
- "decisions": {
-  "GR_Mecharat": {
-   "at": "2026-10-06T02:17:04.145Z",
-   "decidedAt": "2026-10-06T02:17:01.434Z",
-   "decision": "hold",
-   "note": "cut no longer need",
-   "prefill": "A"
+  "biome": "RM_RustCathedral",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 5,
+  "decisions": {
+    "GR_Mecharat": {
+      "at": "2026-10-06T02:17:04.145Z",
+      "decidedAt": "2026-10-06T02:17:01.434Z",
+      "decision": "hold",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T02:17:04.145Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "cut no longer need",
+          "when": "2026-10-09T01:20:53-0700"
+        }
+      ],
+      "prefill": "A"
+    },
+    "RM_CathedralRoach": {
+      "at": "2026-10-06T02:17:33.661Z",
+      "decidedAt": "2026-10-06T02:17:28.561Z",
+      "decision": "A",
+      "note": "smaller than a rat",
+      "prefill": "A"
+    },
+    "RM_CoolantEelCatch": {
+      "at": "2026-10-06T02:16:49.843Z",
+      "decidedAt": "2026-10-06T02:16:49.843Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_byname": "C"
+      },
+      "prefill": "A"
+    },
+    "RM_LivingBolt": {
+      "at": "2026-10-06T02:16:26.289Z",
+      "decidedAt": "2026-10-06T02:15:27.363Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T02:16:26.289Z",
+          "followed_by": [
+            "rustcathedral_livingbolt_corpse_v1_east",
+            "rustcathedral_livingbolt_corpse_v1_north",
+            "rustcathedral_livingbolt_corpse_v1_south",
+            "rustcathedral_livingbolt_v1_east",
+            "rustcathedral_livingbolt_v1_north",
+            "rustcathedral_livingbolt_v1_south"
+          ],
+          "note": "Nope. They should look like a large chrome nut with a bolthead above that. It should be oddly shiny and bear a very advanced-seeming geometry for such a nut and bolt configuration. Very small 0.1 cells, more like a little button that flits around on walls and other surfaces.",
+          "when": "2026-10-09T01:20:53-0700"
+        }
+      ],
+      "prefill": "A"
+    },
+    "RSW_Vozzik": {
+      "at": "2026-10-06T02:16:39.953Z",
+      "decidedAt": "2026-10-06T02:16:39.953Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e",
+        "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
+        "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc"
+      ],
+      "purgeTouched": true
+    }
   },
-  "RM_CathedralRoach": {
-   "at": "2026-10-06T02:17:33.661Z",
-   "decidedAt": "2026-10-06T02:17:28.561Z",
-   "decision": "A",
-   "note": "smaller than a rat",
-   "prefill": "A"
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": "2026-10-05T19:20:00-0700",
+    "by": "owner (Lukas)",
+    "evidence": "sidecar savedBy review-sheet-sidecar, writeCount 26, savedAt 2026-10-05T19:17:34-0700; 5 of 5 decided rows carry an owner 'at' stamp; owner typed 'rust cathedral sheet done.' (BENCH relay)",
+    "state": "ruled"
   },
-  "RM_CoolantEelCatch": {
-   "at": "2026-10-06T02:16:49.843Z",
-   "decidedAt": "2026-10-06T02:16:49.843Z",
-   "decision": "A",
-   "note": "",
-   "picks": {
-    "_byname": "C"
-   },
-   "prefill": "A"
-  },
-  "RM_LivingBolt": {
-   "at": "2026-10-06T02:16:26.289Z",
-   "decidedAt": "2026-10-06T02:15:27.363Z",
-   "decision": "redo",
-   "note": "Nope. They should look like a large chrome nut with a bolthead above that. It should be oddly shiny and bear a very advanced-seeming geometry for such a nut and bolt configuration. Very small 0.1 cells, more like a little button that flits around on walls and other surfaces.",
-   "prefill": "A"
-  },
-  "RSW_Vozzik": {
-   "at": "2026-10-06T02:16:39.953Z",
-   "decidedAt": "2026-10-06T02:16:39.953Z",
-   "decision": "B",
-   "note": "",
-   "prefill": "A",
-   "purge": [
-    "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e",
-    "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
-    "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc"
-   ],
-   "purgeTouched": true
-  }
- },
- "posture": "pick-one",
- "reviewStatus": {
-  "at": "2026-10-05T19:20:00-0700",
-  "by": "owner (Lukas)",
-  "evidence": "sidecar savedBy review-sheet-sidecar, writeCount 26, savedAt 2026-10-05T19:17:34-0700; 5 of 5 decided rows carry an owner 'at' stamp; owner typed 'rust cathedral sheet done.' (BENCH relay)",
-  "state": "ruled"
- },
- "savedAt": "2026-10-05T19:17:34-0700",
- "savedBy": "review-sheet-sidecar",
- "sheetId": "rustcathedral_sheet_2026-10-05",
- "snapshot": "infrastructure/state/art/sheets/rustcathedral_sheet_2026-10-05.snapshot.json",
- "snapshotId": "fd0ec4cb2368d3e8",
- "writeCount": 26
+  "savedAt": "2026-10-05T19:17:34-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "rustcathedral_sheet_2026-10-05",
+  "snapshot": "infrastructure/state/art/sheets/rustcathedral_sheet_2026-10-05.snapshot.json",
+  "snapshotId": "fd0ec4cb2368d3e8",
+  "writeCount": 26
 }

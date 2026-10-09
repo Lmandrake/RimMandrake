@@ -6,7 +6,19 @@
     "RM_Bleedleaf": {
       "at": "2026-10-06T05:21:20.876Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:21:20.876Z",
+          "followed_by": [
+            "contagion_Bleedleaf_var1",
+            "contagion_Bleedleaf_var2",
+            "contagion_Bleedleaf_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:27-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Blisterfloat": {
@@ -22,7 +34,19 @@
     "RM_BloodyFist": {
       "at": "2026-10-06T05:21:29.197Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:21:29.197Z",
+          "followed_by": [
+            "contagion_BloodyFist_var1",
+            "contagion_BloodyFist_var2",
+            "contagion_BloodyFist_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:27-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_BloodyMess": {
@@ -66,7 +90,19 @@
     "RM_Eyebark": {
       "at": "2026-10-06T05:21:32.982Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:21:32.982Z",
+          "followed_by": [
+            "contagion_Eyebark_var1",
+            "contagion_Eyebark_var2",
+            "contagion_Eyebark_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:27-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Eyestinger": {
@@ -107,31 +143,91 @@
     "RM_Gorestalk": {
       "at": "2026-10-06T05:21:35.951Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:21:35.951Z",
+          "followed_by": [
+            "contagion_Gorestalk_var2",
+            "contagion_Gorestalk_var3",
+            "contagion_Gorestalk_var1"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:27-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_HalfmadeTree": {
       "at": "2026-10-06T05:21:38.533Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:21:38.533Z",
+          "followed_by": [
+            "contagion_HalfmadeTree_var1",
+            "contagion_HalfmadeTree_var2",
+            "contagion_HalfmadeTree_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:27-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_HalfmadeTreeBlighted": {
       "at": "2026-10-06T05:21:26.734Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:21:26.734Z",
+          "followed_by": [
+            "contagion_HalfmadeTreeBlighted_var1",
+            "contagion_HalfmadeTreeBlighted_var2",
+            "contagion_HalfmadeTreeBlighted_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:27-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Lashgrass": {
       "at": "2026-10-06T05:21:41.184Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:21:41.184Z",
+          "followed_by": [
+            "contagion_Lashgrass_var1",
+            "contagion_Lashgrass_var2",
+            "contagion_Lashgrass_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:27-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Meatvine": {
       "at": "2026-10-06T05:21:43.121Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:21:43.121Z",
+          "followed_by": [
+            "contagion_Meatvine_var1",
+            "contagion_Meatvine_var2",
+            "contagion_Meatvine_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:27-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Meltgut": {
@@ -152,20 +248,56 @@
     "RM_Rattlegrope": {
       "at": "2026-10-06T05:21:45.516Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:21:45.516Z",
+          "followed_by": [
+            "contagion_Rattlegrope_var1",
+            "contagion_Rattlegrope_var2",
+            "contagion_Rattlegrope_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:27-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_RustPuff": {
       "at": "2026-10-06T05:21:53.864Z",
       "decidedAt": "2026-10-06T05:21:52.589Z",
       "decision": "B",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:21:53.864Z",
+          "followed_by": [
+            "contagion_RustPuff_var1",
+            "contagion_RustPuff_var3",
+            "contagion_RustPuff_var2"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:27-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Sapblister": {
       "at": "2026-10-06T05:21:58.792Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:21:58.792Z",
+          "followed_by": [
+            "contagion_Sapblister_var1",
+            "contagion_Sapblister_var2",
+            "contagion_Sapblister_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:27-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Scaldhide": {
@@ -208,13 +340,37 @@
     "RM_Toothmoss": {
       "at": "2026-10-06T05:22:03.495Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:22:03.495Z",
+          "followed_by": [
+            "contagion_Toothmoss_var1",
+            "contagion_Toothmoss_var2",
+            "contagion_Toothmoss_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:27-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Wombpod": {
       "at": "2026-10-06T05:22:09.790Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:22:09.790Z",
+          "followed_by": [
+            "contagion_Wombpod_var1",
+            "contagion_Wombpod_var2",
+            "contagion_Wombpod_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:27-0700"
+        }
+      ],
       "prefill": "A"
     }
   },

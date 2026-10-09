@@ -58,7 +58,40 @@
       "at": "2026-10-06T05:32:18.962Z",
       "decidedAt": "2026-10-06T05:31:20.199Z",
       "decision": "M",
-      "note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:32:18.962Z",
+          "followed_by": [
+            "pyrelands_firehawk_flight8_1_east",
+            "pyrelands_firehawk_flight8_2_east",
+            "pyrelands_firehawk_flight8_1_north",
+            "pyrelands_firehawk_flight8_1_south",
+            "pyrelands_firehawk_flight8_2_north",
+            "pyrelands_firehawk_flight8_2_south",
+            "pyrelands_firehawk_flight8_3_east",
+            "pyrelands_firehawk_flight8_3_north",
+            "pyrelands_firehawk_flight8_3_south",
+            "pyrelands_firehawk_flight8_4_east",
+            "pyrelands_firehawk_flight8_4_north",
+            "pyrelands_firehawk_flight8_4_south",
+            "pyrelands_firehawk_flight8_5_east",
+            "pyrelands_firehawk_flight8_5_north",
+            "pyrelands_firehawk_flight8_5_south",
+            "pyrelands_firehawk_flight8_6_east",
+            "pyrelands_firehawk_flight8_6_north",
+            "pyrelands_firehawk_flight8_6_south",
+            "pyrelands_firehawk_flight8_7_east",
+            "pyrelands_firehawk_flight8_7_north",
+            "pyrelands_firehawk_flight8_7_south",
+            "pyrelands_firehawk_flight8_8_east",
+            "pyrelands_firehawk_flight8_8_north",
+            "pyrelands_firehawk_flight8_8_south"
+          ],
+          "note": "I can't believe we still don't have the Fire-hawk art down. It needs art to walk along the ground cleanly, and then the flying art separately. I don't clearly see those options here. Please advise and assist. ",
+          "when": "2026-10-09T01:20:43-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "e3fa5e9b18d36d47ee96ff9eab46aeb9d5344d50c35b10e8d0f93a5ad608c9cc",

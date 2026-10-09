@@ -7,7 +7,18 @@
       "at": "2026-10-08T05:23:31.827Z",
       "decidedAt": "2026-10-08T05:23:26.023Z",
       "decision": "F",
-      "note": "Good. Now make N and S.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:23:31.827Z",
+          "followed_by": [
+            "regen_ls_x_landopus_buried_v1_north",
+            "regen_ls_x_landopus_buried_v1_south"
+          ],
+          "note": "Good. Now make N and S.",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "picks": {
         "Things/Pawn/Animal/landopus/swimming_landopus": "D"
       },
@@ -42,7 +53,19 @@
       "at": "2026-10-08T05:04:06.869Z",
       "decidedAt": "2026-10-08T05:03:46.933Z",
       "decision": "redo",
-      "note": "Make this thing 5 cells wide please, regenerate but keep roughly the same otherwise. Regenerate description.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:04:06.869Z",
+          "followed_by": [
+            "regen_ls_x_chorn_v2_east",
+            "regen_ls_x_chorn_v2_north",
+            "regen_ls_x_chorn_v2_south"
+          ],
+          "note": "Make this thing 5 cells wide please, regenerate but keep roughly the same otherwise. Regenerate description.",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -53,7 +76,18 @@
       "at": "2026-10-08T05:04:40.956Z",
       "decidedAt": "2026-10-08T05:04:23.401Z",
       "decision": "C",
-      "note": "Good! Now make North and South versions of C",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:04:40.956Z",
+          "followed_by": [
+            "regen_ls_x_dakkra_rest_v1_north",
+            "regen_ls_x_dakkra_rest_v1_south"
+          ],
+          "note": "Good! Now make North and South versions of C",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "C"
@@ -63,7 +97,17 @@
     "RM_Dewfringe": {
       "at": "2026-10-08T05:27:33.439Z",
       "decision": "A",
-      "note": "Add a bunch of variants, move to RimMandrake tier",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:27:33.439Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Add a bunch of variants, move to RimMandrake tier",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -79,7 +123,17 @@
       "at": "2026-10-08T05:05:58.736Z",
       "decidedAt": "2026-10-08T05:05:45.139Z",
       "decision": "D",
-      "note": "Regenerate description from image",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:05:58.736Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Regenerate description from image",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "808e80d3bdb999d5f8c1581aaddeb53c43ed5fe3e0b9dad99b062b24eb89cd6a",
@@ -150,7 +204,17 @@
     "RM_Groundrunner": {
       "at": "2026-10-05T03:22:41.896Z",
       "decision": "A",
-      "note": "See above.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:22:41.896Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "See above.",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Jellypot": {
@@ -175,7 +239,17 @@
       "at": "2026-10-05T03:25:18.886Z",
       "decidedAt": "2026-10-05T03:25:14.272Z",
       "decision": "hold",
-      "note": "Just cut this creature. It's dumb.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:25:18.886Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "Just cut this creature. It's dumb.",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Leachmoss": {
@@ -205,7 +279,17 @@
       "at": "2026-10-05T03:26:07.380Z",
       "decidedAt": "2026-10-05T03:26:00.765Z",
       "decision": "hold",
-      "note": "Remove this, no longer needed",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:26:07.380Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "Remove this, no longer needed",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Mirrak": {
@@ -216,13 +300,33 @@
     "RM_Ommok": {
       "at": "2026-10-05T03:27:16.168Z",
       "decision": "A",
-      "note": "see above",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:27:16.168Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "see above",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Oreclaw": {
       "at": "2026-10-08T05:12:59.593Z",
       "decision": "A",
-      "note": "Add description based on image",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:12:59.593Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Add description based on image",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -233,13 +337,33 @@
       "at": "2026-10-05T03:27:44.922Z",
       "decidedAt": "2026-10-05T03:27:42.379Z",
       "decision": "hold",
-      "note": "no longer needed",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:27:44.922Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "no longer needed",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Pavecrust": {
       "at": "2026-10-08T05:27:42.510Z",
       "decision": "A",
-      "note": "add many variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:27:42.510Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "add many variants",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -307,7 +431,17 @@
     "RM_Skiralim": {
       "at": "2026-10-08T05:19:02.305Z",
       "decision": "A",
-      "note": "write new descriptionm based on image",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:19:02.305Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "write new descriptionm based on image",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -354,14 +488,34 @@
       "at": "2026-10-05T03:28:32.410Z",
       "decidedAt": "2026-10-05T03:28:29.768Z",
       "decision": "hold",
-      "note": "no longer needed",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:28:32.410Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "no longer needed",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_TruffleMole": {
       "at": "2026-10-05T03:29:44.217Z",
       "decidedAt": "2026-10-05T03:29:44.217Z",
       "decision": "B",
-      "note": "see above",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:29:44.217Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "see above",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Ulgga": {
@@ -386,7 +540,20 @@
       "at": "2026-10-08T05:28:23.003Z",
       "decidedAt": "2026-10-05T03:36:51.415Z",
       "decision": "redo",
-      "note": "REDO THE VENOM VINE!! Totally wrong art.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:28:23.003Z",
+          "followed_by": [
+            "0vv_desert_venomvine_v1",
+            "0vv_desert_venomvine_v2",
+            "0vv_desert_venomvine_v3",
+            "0vv_desert_venomvine_v4"
+          ],
+          "note": "REDO THE VENOM VINE!! Totally wrong art.",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "hold",
       "variants": [],
       "variantsDefault": true
@@ -419,7 +586,17 @@
       "at": "2026-10-08T05:02:38.415Z",
       "decidedAt": "2026-10-08T05:02:21.204Z",
       "decision": "F",
-      "note": "Nice!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:02:38.415Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Nice!",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "picks": {
         "swanimals/Bantha/BanthaW_j": "C"
       },
@@ -446,7 +623,17 @@
       "at": "2026-10-05T03:18:38.290Z",
       "decidedAt": "2026-10-05T03:18:20.809Z",
       "decision": "B",
-      "note": "Should live at RimMandrake level",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:18:38.290Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Should live at RimMandrake level",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RSW_Bolotaur": {
@@ -488,7 +675,19 @@
       "at": "2026-10-08T05:05:19.261Z",
       "decidedAt": "2026-10-08T05:04:56.887Z",
       "decision": "H",
-      "note": "Good! Now make North and South versions of that creature, and make it four cells wide.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:05:19.261Z",
+          "followed_by": [
+            "regen_ls_canon_dewback_v1_east",
+            "regen_ls_canon_dewback_v1_ns_north",
+            "regen_ls_canon_dewback_v1_ns_south"
+          ],
+          "note": "Good! Now make North and South versions of that creature, and make it four cells wide.",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "88aaff25c565b25b88bbd5fab5cf0ceb510a35bcb6af84b6f8ca62e0e48e9f2a",
@@ -510,7 +709,17 @@
       "at": "2026-10-05T03:34:06.796Z",
       "decidedAt": "2026-10-05T03:34:02.881Z",
       "decision": "hold",
-      "note": "cut this",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:34:06.796Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "cut this",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RSW_Eopie": {
@@ -543,7 +752,19 @@
       "at": "2026-10-08T05:07:03.438Z",
       "decidedAt": "2026-10-08T05:06:54.313Z",
       "decision": "C",
-      "note": "Good! Now make N and S views.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:07:03.438Z",
+          "followed_by": [
+            "regen_ls_canon_falumpaset_v1_east",
+            "regen_ls_canon_falumpaset_v1_ns_north",
+            "regen_ls_canon_falumpaset_v1_ns_south"
+          ],
+          "note": "Good! Now make N and S views.",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "f9ece556f07e1e95697566c969e62e7bbe20eaac91d5e20bb048214830b8f09e",
@@ -560,7 +781,17 @@
       "at": "2026-10-08T05:07:24.282Z",
       "decidedAt": "2026-10-08T05:07:24.282Z",
       "decision": "C",
-      "note": "Good!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:07:24.282Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Good!",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "a13e7f34318460abe8de7fe85460cac3e619f8ef32babe34c23e19a18634dfc4",
@@ -577,7 +808,20 @@
       "at": "2026-10-08T05:08:05.789Z",
       "decidedAt": "2026-10-08T05:07:50.851Z",
       "decision": "F",
-      "note": "Good! Make sure all the variants have N, E, S",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:08:05.789Z",
+          "followed_by": [
+            "regen_ls_canon_frilledgorg_i_v1_north",
+            "regen_ls_canon_frilledgorg_i_v1_south",
+            "regen_ls_canon_frilledgorg_k_v1_north",
+            "regen_ls_canon_frilledgorg_k_v1_south"
+          ],
+          "note": "Good! Make sure all the variants have N, E, S",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "picks": {
         "swanimals/FrilledGorg/FrilledGorg_Swimming": "C",
         "swanimals/FrilledGorg/FrilledGorg_j": "D",
@@ -605,7 +849,18 @@
       "at": "2026-10-08T05:09:15.863Z",
       "decidedAt": "2026-10-08T05:09:15.863Z",
       "decision": "F",
-      "note": "Good! Make sure all variants have N, E, S",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:09:15.863Z",
+          "followed_by": [
+            "regen_ls_canon_gorg_l_v1_north",
+            "regen_ls_canon_gorg_l_v1_south"
+          ],
+          "note": "Good! Make sure all variants have N, E, S",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "picks": {
         "swanimals/Gorg/Gorg_Swimming": "C",
         "swanimals/Gorg/Gorg_j": "D",
@@ -642,7 +897,17 @@
     "RSW_Groundrunner": {
       "at": "2026-10-05T03:22:34.924Z",
       "decision": "A",
-      "note": "Keep art, rename to the Oreclaw, lives in RimMandrake level.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:22:34.924Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Keep art, rename to the Oreclaw, lives in RimMandrake level.",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RSW_Gutkurr": {
@@ -855,7 +1120,17 @@
       "at": "2026-10-05T03:25:10.421Z",
       "decidedAt": "2026-10-05T03:25:05.824Z",
       "decision": "hold",
-      "note": "Just cut this creature. It's dumb.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:25:10.421Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "Just cut this creature. It's dumb.",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RSW_Kwi": {
@@ -882,7 +1157,17 @@
       "at": "2026-10-08T05:12:07.465Z",
       "decidedAt": "2026-10-08T05:12:02.554Z",
       "decision": "F",
-      "note": "Good!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:12:07.465Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Good!",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "picks": {
         "swanimals/LongtailGorg/LongtailGorg_Swimming": "C",
         "swanimals/LongtailGorg/LongtailGorg_j": "D",
@@ -910,7 +1195,17 @@
       "at": "2026-10-05T03:25:53.952Z",
       "decidedAt": "2026-10-05T03:25:45.188Z",
       "decision": "hold",
-      "note": "No longer needed, remove.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:25:53.952Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "No longer needed, remove.",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "c252527a99985e86c0af1bdc2f0a6d18a8251479300d8c4709567e57b88652d7",
@@ -923,7 +1218,18 @@
       "at": "2026-10-08T05:12:34.688Z",
       "decidedAt": "2026-10-08T05:12:29.408Z",
       "decision": "E",
-      "note": "Good! Now do N and S too",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:12:34.688Z",
+          "followed_by": [
+            "regen_ls_canon_nerf_v1_north",
+            "regen_ls_canon_nerf_v1_south"
+          ],
+          "note": "Good! Now do N and S too",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "picks": {
         "_byname": "E",
         "swanimals/Nerf/Nerf_j": "B",
@@ -971,14 +1277,34 @@
       "at": "2026-10-05T03:27:10.393Z",
       "decidedAt": "2026-10-05T03:26:29.583Z",
       "decision": "B",
-      "note": "Move this to the Miasma Biome and shrink by half, should be Rim Mandrake tier",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:27:10.393Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Move this to the Miasma Biome and shrink by half, should be Rim Mandrake tier",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RSW_Ossik": {
       "at": "2026-10-05T03:27:37.053Z",
       "decidedAt": "2026-10-05T03:27:34.261Z",
       "decision": "hold",
-      "note": "no longer needed",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:27:37.053Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "no longer needed",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "a741bfbc024eada102892042fb000dabe3d88b855c458f84d4cf7aadd22fa819",
@@ -1082,7 +1408,28 @@
       "at": "2026-10-08T05:15:19.408Z",
       "decidedAt": "2026-10-08T05:14:52.796Z",
       "decision": "C",
-      "note": "going to have to regenerate those flyers",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:15:19.408Z",
+          "followed_by": [
+            "regen_ls_canon_shyrack_flying_1_v1_east",
+            "regen_ls_canon_shyrack_flying_1_v1_north",
+            "regen_ls_canon_shyrack_flying_1_v1_south",
+            "regen_ls_canon_shyrack_flying_2_v1_east",
+            "regen_ls_canon_shyrack_flying_2_v1_north",
+            "regen_ls_canon_shyrack_flying_2_v1_south",
+            "regen_ls_canon_shyrack_flying_3_v1_east",
+            "regen_ls_canon_shyrack_flying_3_v1_south",
+            "regen_ls_canon_shyrack_flying_4_v1_east",
+            "regen_ls_canon_shyrack_flying_4_v1_north",
+            "regen_ls_canon_shyrack_flying_4_v1_south",
+            "regen_ls_canon_shyrack_flying_3_v1_north"
+          ],
+          "note": "going to have to regenerate those flyers",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "813a8fd1d2fae098cda3e252eec8621991255e72eb6fae0bbb693e0ee2de1b21",
@@ -1101,7 +1448,17 @@
       "at": "2026-10-08T05:18:21.443Z",
       "decidedAt": "2026-10-08T05:18:11.034Z",
       "decision": "D",
-      "note": "Follow the canon description very closely. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:18:21.443Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Follow the canon description very closely. ",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "picks": {
         "swanimals/Skalder/Skalder_Swimming": "C"
       },
@@ -1124,7 +1481,51 @@
       "at": "2026-10-08T05:18:45.590Z",
       "decidedAt": "2026-10-08T05:18:36.800Z",
       "decision": "C",
-      "note": "Please follow canon closely and regenerate N and S",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:18:45.590Z",
+          "followed_by": [
+            "regen_ls_canon_sketto_flying_1_v1_east",
+            "regen_ls_canon_sketto_flying_1_v1_north",
+            "regen_ls_canon_sketto_flying_2_v1_east",
+            "regen_ls_canon_sketto_flying_2_v1_north",
+            "regen_ls_canon_sketto_flying_2_v1_south",
+            "regen_ls_canon_sketto_flying_3_v1_east",
+            "regen_ls_canon_sketto_flying_3_v1_north",
+            "regen_ls_canon_sketto_flying_3_v1_south",
+            "regen_ls_canon_sketto_flying_4_v1_east",
+            "regen_ls_canon_sketto_flying_4_v1_north",
+            "regen_ls_canon_sketto_flying_4_v1_south",
+            "regen_ls_canon_sketto_v1_north",
+            "regen_ls_canon_sketto_v1_south",
+            "sketto_fly_master_v3_east",
+            "sketto_fly_master_v3_north",
+            "sketto_fly_master_v3_south",
+            "sketto_fly_plate_v1_north",
+            "sketto_fly_plate_v1_south",
+            "sketto_fly_plate_v2_north",
+            "sketto_fly_plate_v2_south",
+            "sketto_fly_wing2_v1_east",
+            "sketto_fly_wing2_v1_north",
+            "sketto_fly_wing3_v1_north",
+            "regen_ls_canon_sketto_flying_1_v1_south",
+            "sketto_fly_master_v1_east",
+            "sketto_fly_master_v1_north",
+            "sketto_fly_master_v1_south",
+            "sketto_fly_master_v2_east",
+            "sketto_fly_master_v2_north",
+            "sketto_fly_master_v2_south",
+            "sketto_fly_plate_v1_east",
+            "sketto_fly_plate_v2_east",
+            "sketto_fly_wing2_v1_south",
+            "sketto_fly_wing3_v1_east",
+            "sketto_fly_wing3_v1_south"
+          ],
+          "note": "Please follow canon closely and regenerate N and S",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "756bae622ab3d1be35ee73c681cd7474cee83877dc39b44e0ebb88ccf5bd747d",
@@ -1157,7 +1558,19 @@
       "at": "2026-10-08T05:22:52.947Z",
       "decidedAt": "2026-10-08T05:22:40.525Z",
       "decision": "C",
-      "note": "Good! Now make North and South and the proper resolutions. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:22:52.947Z",
+          "followed_by": [
+            "regen_ls_canon_teemuss_v1_east",
+            "regen_ls_canon_teemuss_v1_ns_north",
+            "regen_ls_canon_teemuss_v1_ns_south"
+          ],
+          "note": "Good! Now make North and South and the proper resolutions. ",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "3e8008f496f91d87921379ce0f21ba8e22920869db7a007bb23351d2cde92e53",
@@ -1175,21 +1588,53 @@
       "at": "2026-10-05T03:28:27.392Z",
       "decidedAt": "2026-10-05T03:28:24.020Z",
       "decision": "hold",
-      "note": "no longer needed",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:28:27.392Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "no longer needed",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RSW_TruffleMole": {
       "at": "2026-10-05T03:29:33.405Z",
       "decidedAt": "2026-10-05T03:28:38.873Z",
       "decision": "B",
-      "note": "Move this to the biome with all the Fuzz (Leaning?), Rim Mandrake level.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:29:33.405Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Move this to the biome with all the Fuzz (Leaning?), Rim Mandrake level.",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RSW_Ulgga": {
       "at": "2026-10-05T03:31:30.186Z",
       "decidedAt": "2026-10-05T03:30:13.684Z",
       "decision": "redo",
-      "note": "Good, but make it twice as big. Move to our custom extreme desert biome. RimMandrake level.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:31:30.186Z",
+          "followed_by": [
+            "enact_6fe353e8_ulgga_v1_east",
+            "enact_6fe353e8_ulgga_v1_north",
+            "enact_6fe353e8_ulgga_v1_south"
+          ],
+          "note": "Good, but make it twice as big. Move to our custom extreme desert biome. RimMandrake level.",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "ef255da3b1be3aa457bc0ffbef952cee63f1a0206df330c86ac530639dfee03a",
@@ -1202,14 +1647,45 @@
       "at": "2026-10-05T03:38:44.071Z",
       "decidedAt": "2026-10-05T03:38:00.163Z",
       "decision": "redo",
-      "note": "This is supposed to be in the most extreme desert. It is supposed to be semi-transparent and mostly pale clear with only a hint of green. Rename this to Ultriss Pad. RimMandrake tier.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T03:38:44.071Z",
+          "followed_by": [
+            "enact_6f47cc65_ultracactus_v1"
+          ],
+          "note": "This is supposed to be in the most extreme desert. It is supposed to be semi-transparent and mostly pale clear with only a hint of green. Rename this to Ultriss Pad. RimMandrake tier.",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "hold"
     },
     "RSW_Uvak": {
       "at": "2026-10-08T05:24:03.615Z",
       "decidedAt": "2026-10-08T05:23:47.357Z",
       "decision": "C",
-      "note": "Will need to redo flying art too",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:24:03.615Z",
+          "followed_by": [
+            "regen_ls_canon_uvak_flying_1_v1_north",
+            "regen_ls_canon_uvak_flying_2_v1_east",
+            "regen_ls_canon_uvak_flying_2_v1_north",
+            "regen_ls_canon_uvak_flying_3_v1_east",
+            "regen_ls_canon_uvak_flying_3_v1_north",
+            "regen_ls_canon_uvak_flying_3_v1_south",
+            "regen_ls_canon_uvak_flying_4_v1_east",
+            "regen_ls_canon_uvak_flying_4_v1_north",
+            "regen_ls_canon_uvak_flying_1_v1_east",
+            "regen_ls_canon_uvak_flying_1_v1_south",
+            "regen_ls_canon_uvak_flying_2_v1_south",
+            "regen_ls_canon_uvak_flying_4_v1_south"
+          ],
+          "note": "Will need to redo flying art too",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "28a13db922200f77112d72bc110136bbf04e759012f5e80e83df3f15956c9fe0",
@@ -1263,7 +1739,17 @@
       "at": "2026-10-08T05:25:14.959Z",
       "decidedAt": "2026-10-08T05:25:12.005Z",
       "decision": "D",
-      "note": "Bizarre little furball with bird-like legs. Follow canon closely. Do not make cartoonish. Two antenna-like tufts on head. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:25:14.959Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Bizarre little furball with bird-like legs. Follow canon closely. Do not make cartoonish. Two antenna-like tufts on head. ",
+          "when": "2026-10-09T01:19:47-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "b660632fdcdaf338d71cb734e6c8b2edc5097996a0a331a0928c504e5130ed3d",
