@@ -618,9 +618,7 @@ Negative references labelled rather than deleted:
 and violet colour casts respectively; prose wins on skin colour, images win on
 structure), `sith_species/wookieepedia_sith_pureblood_swtor.jpg` (a *hybrid*
 Pureblood, not a Red Sith), `sith_pureblood/wookieepedia_sith_king_adas.jpg` (a Sith
-King, not a Kissai), `massassi/wookieepedia_massassi_warriors_funeral.jpg` and
-`.../wookieepedia_massassi_architects.jpg` (**skin coloured blue-grey/violet** against
-five sources saying red), `dathomirian/wookieepedia_mother_talzin.jpg` (one Clan
+King, not a Kissai), `dathomirian/wookieepedia_mother_talzin.jpg` (one Clan
 Mother's regalia, not a species baseline),
 `yoda_species/wookieepedia_grogu.jpg` (positive for the infant, **negative for the
 adult** — using it for an adult is exactly the error `RSW_Eyes_Big` makes).

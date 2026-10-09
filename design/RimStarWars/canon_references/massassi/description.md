@@ -83,68 +83,34 @@ species' natural form.** Nothing sources a height, mass or lifespan for the alte
 line.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+No live-action or photoreal Massassi exists (searched: Massassi, Massassi/Legends, Sith (species) and Sith (species)/Legends
+page images, "Images of Massassi" — comics, pen-and-ink RPG art, SWTOR game assets and painted SWTOR timeline art only).
+Removed: the two *Tales of the Jedi* comic panels (`wookieepedia_massassi_architects.jpg`, `wookieepedia_massassi_warriors_funeral.jpg`),
+the stylised SWTOR game asset (`wookieepedia_massassi_swtor_infobox.jpg`) and the *Essential Guide* pen-and-ink
+(`wookieepedia_massassi_egtas_alchemical.jpg`). Added the three most realistic **painted** depictions:
+`wookieepedia_massassi_kotorcg_painted.jpg` (head and shoulders, *Knights of the Old Republic Campaign Guide*),
+`wookieepedia_massassi_and_kissai_painted.jpg` (Massassi warriors beside a human, SWTOR *Timeline 12: The Great Hyperspace War*)
+and `wookieepedia_massassi_exar_kun_painted.jpg` (Exar Kun among the altered Yavin 4 Massassi, *Timeline 10*).
+`wookieepedia_massassi_warrior.jpg` (pen-and-ink concept) is **kept only for the lean, long-haired original-form
+silhouette**, which no painting shows. Render realistically: real skin, horn and muscle, natural light.
 
-🔴 **The Wookieepedia infobox image shows the ALTERED form, not the species the
-infobox's own numbers describe.** `wookieepedia_massassi_swtor_infobox.jpg`
-(`File:Massassi-SWTOR.png`, 403×660) is a *Star Wars: The Old Republic* asset and it
-matches the alchemical paragraph point for point:
+🔴 **The paintings disagree with the pen-and-ink "Massassi Warrior" concept, loudly.** The concept sheet shows a
+tall, LEAN, upright warrior with long bound hair. Every realistic painting — including the pre-Yavin *Great Hyperspace
+War* scene — shows a **massive, heavily muscled, broad-shouldered brute**, towering over the human beside it, with:
+- **Saturated crimson-red skin**, glossy over the muscle, with darker red shading (all three paintings; hue settled —
+  the deleted comics' blue-grey/violet was the colourist's).
+- 🔑 **A crown of stiff fin-like spikes sweeping back from the skull** and **long hanging tendrils/dreadlock-like
+  fronds** falling from the brow, cheeks and back of the head over the shoulders — fins AND tendrils together.
+- **A heavy, deeply ridged brow over small, glowing, sunken eyes**; the KotOR painting shows a **fanged mouth
+  framed by long hanging cheek/chin tendrils** and **folded, bat-like pointed ears**.
+- **Bare torso and arms**, gold armour or a beaded collar worn over them.
+- The **altered Yavin 4 Massassi** (Exar Kun painting) are the same red-orange creature pushed further: **hunched,
+  crouching, crests and fronds thicker and more stringy, clawed limbs**, moving like beasts.
 
-- **Deep uniform crimson**, glossy — the best hue reference in the set.
-- **Hunched, top-heavy, enormously broad through the shoulders and chest**, short
-  thick neck, head carried forward and low.
-- 🔑 **A crown and shoulder mantle of hard fin/spike growths** sweeping back from the
-  skull and over both deltoids — the "grotesque fin-like growths on their head and
-  back."
-- **A short muzzle with an outward-flaring tusked lower jaw and a mouth full of
-  visible fangs** — closer to a boar or a demon than to the "simian mouth, small
-  nose" of the original.
-- **Three long hooked claws on each hand** and **three heavy clawed toes on each
-  foot** — this *does* match the sourced tridactyl Sith hand and foot, and it is the
-  only image in the batch that shows it clearly. Worth keeping for that alone.
-- ⛔ **No cheek tendrils. No eyebrow stalks. No hair.** Eyes are small, sunk and dark.
-- Clothing is minimal: a leather bandolier, a wrapped loincloth, limb wraps.
-
-**`wookieepedia_massassi_egtas_alchemical.jpg`** (`File:Massassi_EGTAS.jpg`, from
-*The Essential Guide to Alien Species*, 675×1038 pen-and-ink) is the **definitive**
-image of the altered form and independently confirms the SWTOR read: extreme hunch,
-a great sweeping fan of long spine/fin growths from the skull and down the back, an
-elongated snout with a huge jagged-toothed maw, long trailing chin filaments, **four
-enormously long hooked claws** on the hand, and **three clawed toes**. Pebbled,
-warty hide. This is the "savage brute" the text describes.
-
-🔴 **And here is the contradiction the library exists to catch:
-`wookieepedia_massassi_warrior.jpg`** (`File:MassassiWarrior.jpg`, 480×726, a
-pen-and-ink concept sheet lettered **"Massassi Warrior"**) shows something almost
-unrelated to both of the above:
-
-- **Tall, LEAN and fully upright** — long-limbed and slim, not hulking. The "tall
-  stature" distinction is real but **"hulk" is not what this drawing shows**; it
-  reads like a 2 m aristocratic warrior, not a 2.5 m gorilla.
-- 🔑 **LONG STRAIGHT DARK HAIR swept back from the crown to below the shoulders**,
-  bound with a clasp. **The Massassi is not bald** — and this matches the infobox's
-  sourced **hair colour: red**, which a bald species could not have.
-- **A pair of long tendrils hanging from the cheekbones down onto the chest**, plus
-  a heavy angular brow shelf and a hard square jaw with a slightly receding chin.
-- **Small pointed ears.**
-- **Long slender fingers, three to four visible per hand**, and **narrow pointed feet**.
-- Costume: a caped robe over segmented cuirass, a gorget medallion, rows of round
-  studs, chain, and a labelled **"crystal axe."**
-
-**`wookieepedia_massassi_warriors_funeral.jpg`** (450×1479, from *Tales of the Jedi –
-The Golden Age of the Sith*) and **`wookieepedia_massassi_architects.jpg`** (795×1028)
-are the comic-continuity Massassi and they agree with the *Warrior* concept, not the
-brutes: upright, long-headed, heavy-browed humanoids with **long swept-back cranial
-crests or bound hair**, cheek tendrils, and **large solid pupil-less eyes** — the
-funeral panel is the best confirmation of finding (1) above, a whole eye of flat
-colour.
-
-🔴 **But their skin in these two panels reads BLUE-GREY / VIOLET, not red**, with
-green facial markings, over a green-and-white robe. Here the prose wins on hue: red
-is asserted by five independent sources and the comic colourist is the lone
-dissenter. Recorded so the panels are not used as a palette source.
-
-**Bottom line for art**: the repo has to choose which Massassi it ships. The def's
-gene list currently sits between the two forms and lands on neither.
+So the realistic consensus is a **red, fin-crowned, tendrilled giant**; the lean long-haired figure survives only in the
+one pen-and-ink concept. The text's tridactyl Sith hand/foot (three clawed digits) is sourced but is not clearly visible
+in the painted set.
 
 ⚠️ **No `donor_current_sprite.png`.** The Massassi xenotype has no species art of its
 own; it renders from `RSW_Head_Bone` (forcing `RSW_Male_HeavyBoneNormal` /
@@ -153,12 +119,12 @@ own; it renders from `RSW_Head_Bone` (forcing `RSW_Male_HeavyBoneNormal` /
 sprite.
 
 ## Must show
-- [ ] If depicting the ORIGINAL Massassi: tall, lean, fully upright build with long dark hair swept back and bound at the crown (not bald), plus long tendrils hanging from the cheekbones
-- [ ] If depicting the ORIGINAL Massassi: large, solid, pupil-less yellow eyes with no visible whites
-- [ ] If depicting the ALTERED (Yavin 4 / Exar Kun-era) Massassi: hunched, top-heavy build with a crown/shoulder mantle of hard fin-like spike growths sweeping back from the skull
-- [ ] If depicting the ALTERED Massassi: short muzzle with an outward-flaring tusked lower jaw and visible fangs, and no cheek tendrils, no eyebrow stalks, no hair
-- [ ] Three clawed digits per hand and per foot (clearest in the altered-form images, but sourced for both)
-- [ ] Skin reads a saturated red (florid crimson to lighter pink, or orange) — not the blue-grey/violet seen in the comic-continuity negative reference
+- [ ] Massive, heavily muscled, broad-shouldered build that towers over a human (altered form: hunched and crouching)
+- [ ] Saturated crimson-red glossy skin — not blue-grey or violet
+- [ ] Crown of stiff fin-like spikes sweeping back from the skull, plus long hanging tendrils/fronds from brow, cheeks and head
+- [ ] Heavy ridged brow over small sunken glowing eyes; fanged mouth framed by hanging tendrils; pointed folded ears
+- [ ] Three clawed digits per hand and per foot (sourced text)
+- [ ] Realistic rendering: real skin, muscle and horn texture with natural lighting, no outlines, no comic inking or flat colour
 
 ## Engine limits
 none known
@@ -231,34 +197,14 @@ none known
   brief warns about.)
 - https://starwars.fandom.com/wiki/Sith_(species)/Legends — 127,967 chars,
   2026-09-15. Shared anatomy and the caste hierarchy.
-- https://static.wikia.nocookie.net/starwars/images/6/60/Massassi-SWTOR.png → `wookieepedia_massassi_swtor_infobox.jpg` (403×660)
-- https://static.wikia.nocookie.net/starwars/images/1/12/Massassi_EGTAS.jpg → `wookieepedia_massassi_egtas_alchemical.jpg` (675×1038)
 - https://static.wikia.nocookie.net/starwars/images/9/9b/MassassiWarrior.jpg → `wookieepedia_massassi_warrior.jpg` (480×726)
-- https://static.wikia.nocookie.net/starwars/images/e/e7/Massassi_at_the_funeral_of_Marka_Ragnos.jpg → `wookieepedia_massassi_warriors_funeral.jpg` (450×1479)
-- https://static.wikia.nocookie.net/starwars/images/2/2b/Massassi_architects.png → `wookieepedia_massassi_architects.jpg` (795×1028)
 - NOT fetched: no `starwars.com/databank` page exists for Massassi; not attempted.
 
 ## Candidate images
-- `wookieepedia_massassi_warrior.jpg` — 🔑 **the reference of record for the ORIGINAL
-  Massassi**, and the image that contradicts the def hardest. Lettered "Massassi
-  Warrior." Tall, lean, upright, **long bound hair**, long cheek tendrils, heavy brow,
-  small pointed ears, slender many-jointed fingers, crystal axe. Pen-and-ink, so no
-  colour information.
-- `wookieepedia_massassi_swtor_infobox.jpg` — **the reference of record for the
-  ALTERED form**, and the best hue reference in the set (deep saturated crimson).
-  ⚠️ **Mislabelled by context**: it fills the infobox whose numbers describe the
-  original species. Hunched, fin-crowned, tusked, tendril-less. Its **three hooked
-  claws per hand and three clawed toes per foot** are the clearest confirmation of the
-  sourced tridactyl Sith extremity anywhere in this batch.
-- `wookieepedia_massassi_egtas_alchemical.jpg` — the definitive altered-form drawing,
-  independent of SWTOR. Extreme hunch, sweeping fin/spine crest, elongated jagged maw,
-  four huge hooked claws, warty hide.
-- `wookieepedia_massassi_warriors_funeral.jpg` — comic continuity; best confirmation
-  of the **solid pupil-less eye**. ⚠️ **Negative reference on hue**: skin coloured
-  blue-grey/violet, contradicting five sources that say red.
-- `wookieepedia_massassi_architects.jpg` — same continuity and same hue problem;
-  valuable as the **architect/builder** read (drafting plans, blueprints, tools),
-  which balances `AptitudeTerrible_Intellectual`.
+- `wookieepedia_massassi_kotorcg_painted.jpg` — **reference of record for the head.** Legends, *Knights of the Old Republic Campaign Guide*, painted: crimson ridged skull, sunken eyes, fangs, hanging cheek tendrils, folded ears, beaded collar. File `Massassi-KotORCG.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b6/Massassi-KotORCG.jpg/revision/latest?cb=20081230050518
+- `wookieepedia_massassi_and_kissai_painted.jpg` — **reference of record for build and scale.** Legends, SWTOR *Timeline 12: The Great Hyperspace War* painting: red Massassi warriors in gold armour beside a human — fin crown, dreadlock tendrils, bare muscled torso. File `Massassi and Kissai.jpg` — https://static.wikia.nocookie.net/starwars/images/8/8d/Massassi_and_Kissai.jpg/revision/20180817170438
+- `wookieepedia_massassi_exar_kun_painted.jpg` — the **altered (Yavin 4) form.** Legends, SWTOR *Timeline 10: The Exar Kun War* painting: hunched, crouching red-orange Massassi with stringy crests around Exar Kun. File `Exar kun massassi.jpg` — https://static.wikia.nocookie.net/starwars/images/2/2f/Exar_kun_massassi.jpg/revision/latest?cb=20120418190618
+- `wookieepedia_massassi_warrior.jpg` — **pen-and-ink concept, kept for the original-form silhouette only.** Lettered "Massassi Warrior": tall, lean, upright, long bound hair, cheek tendrils, crystal axe. No colour; contradicted by every painting on build. File `MassassiWarrior.jpg` — https://static.wikia.nocookie.net/starwars/images/9/9b/MassassiWarrior.jpg
 
 ## ruling
 (empty — owner has not reviewed this race yet)
