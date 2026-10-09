@@ -197,7 +197,9 @@ class Store:
                 ok, why = self._child(ch, listed, read)
                 if not ok:
                     return None, why
-        inputs = {p for p in read - wrote if "/__pycache__/" not in p}
+        tracer = os.path.join(str(TRACER_DIR), "")
+        # the tracer itself is covered by RUNNER_VERSION, not by the test's own inputs
+        inputs = {p for p in read - wrote if "/__pycache__/" not in p and not p.startswith(tracer)}
 
         def inside(p):
             return p.startswith(repo)
