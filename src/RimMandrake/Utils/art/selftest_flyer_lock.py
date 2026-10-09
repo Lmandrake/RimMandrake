@@ -162,6 +162,29 @@ def main() -> int:
                   "--plate", str(ROOT / "plate_east.png")])
     check(rc == 0, "check CLI exits 0 on the composed set", rc)
 
+    # option C: body-colour noise inside the plate is NOT wing; a wing sweeping across the body IS (near the wing)
+    f0 = plate.copy()
+    pm0 = plate[..., 3] > 0
+    nz = np.zeros((256, 256), bool); nz[120:140, 60:180] = True   # a big body-interior patch, L1 > 60, no wing
+    f0[nz & pm0, :3] = np.clip(f0[nz & pm0, :3] - 50, 0, 255)
+    f0[nz & pm0, 3] = 255
+    out0, i0 = FL.lock_frame(plate, f0)
+    check(i0["body_px_as_wing"] == 0 and np.array_equal(out0, plate),
+          f"C: body-colour patch inside plate is not wing ({i0['body_px_as_wing']} px)", i0)
+    # a wing attached to the body and crossing it: outside part + its membrane over the body, far-from-wing body stays plate
+    fw = plate.copy()
+    sweep = wings[0][..., 3] > 0
+    fw[sweep] = wings[0][sweep]
+    far_nz = nz.copy(); far_nz[:, 140:] = False                  # a distant patch (x 60..140), well beyond wing depth
+    fw[far_nz & pm0, :3] = np.clip(plate[far_nz & pm0, :3] - 50, 0, 255)
+    outw, iw = FL.lock_frame(plate, fw)
+    inside_wing = sweep & pm0 & (np.abs(outw - plate).sum(-1) > 0)
+    check(inside_wing.sum() > 0 and (outw[sweep & ~pm0] == fw[sweep & ~pm0]).all(),
+          f"C: a wing sweeping across the body is kept ({int(inside_wing.sum())} px over the body)", iw)
+    check((outw[far_nz & pm0] == plate[far_nz & pm0]).all(), "C: body noise far from the wing stays plate")
+    old = FL.lock_frame(plate, fw, wing_far=0, wing_depth=10**6)[1]["body_px_as_wing"]
+    check(iw["body_px_as_wing"] <= old, f"C is stricter than the old rule ({iw['body_px_as_wing']} <= {old})")
+
     print(f"\n{'OK' if not FAILS else 'FAILED'}: {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 

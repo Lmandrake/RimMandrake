@@ -17,8 +17,10 @@ Three verbs (each exits 0 = pass, 1 = a gate failed, 2 = bad input):
              2. GATES re-posing: the frame must be opaque over ≥ --min-cover of the plate's silhouette,
                 or it is rejected (a moved body leaves plate pixels bare; a wing over the body does not);
              3. classes a frame pixel as WING when it is opaque and lies outside the plate, or differs
-                from the plate by RGB L1 > --wing-l1. Wing pixels inside the plate count only when they
-                connect to wing outside it, so isolated re-shading speckle on the body is dropped;
+                from the plate by RGB L1 > --wing-l1. Wing pixels inside the plate count only when
+                they connect to wing outside it that reaches > --wing-far (4) px from the body, and only
+                within --wing-depth (12) px of that wing (option C), so re-shading speckle and the frame's
+                own head/tusks/legs are not re-admitted;
              4. writes the plate's exact RGBA everywhere else.
            Frames are ping-ponged: k poses -> 2k-2 frames (3 -> 1,2,3,4 = 2, byte copy).
   compose  --body B --wing W1 --wing W2 --wing W3 --facing east --order over|under --prefix .. --out DIR
@@ -49,6 +51,8 @@ from PIL import Image
 OPAQUE = 128          # alpha > OPAQUE counts as body/wing (the engine's animal shader is a cutout)
 LOCK_TOL = 40         # design §3: "within RGB L1 ≤ 40 of frame 1"
 WING_L1 = 60          # design §4 D: a wing pixel differs from the plate by L1 > 60
+WING_FAR = 4          # option C: an outside-plate wing must reach more than this many px from the body
+WING_DEPTH = 12       # option C: wing pixels inside the plate count only within this many px of that wing
 MIN_COVER = 0.92      # design §4 C: re-posed bodies are rejected below this
 FLOORS = {"east": 0.45, "west": 0.45, "south": 0.38, "north": 0.38}   # design §6.3
 MARGIN = 6
@@ -109,8 +113,20 @@ def reconstruct(seed: np.ndarray, mask: np.ndarray) -> np.ndarray:
         cur = nxt
 
 
+def reconstruct_n(seed: np.ndarray, mask: np.ndarray, n: int) -> np.ndarray:
+    """Like reconstruct, but grows at most N pixels from SEED."""
+    cur = seed & mask
+    for _ in range(n):
+        nxt = _dilate(cur) & mask
+        if (nxt == cur).all():
+            break
+        cur = nxt
+    return cur
+
+
 def lock_frame(plate: np.ndarray, frame: np.ndarray, search: int = 8, wing_l1: int = WING_L1,
-               min_cover: float = MIN_COVER, keep_isolated: bool = False) -> tuple[np.ndarray, dict]:
+               min_cover: float = MIN_COVER, keep_isolated: bool = False,
+               wing_far: int = WING_FAR, wing_depth: int = WING_DEPTH) -> tuple[np.ndarray, dict]:
     dx, dy = align(plate, frame, search)
     f = shift(frame, dx, dy)
     pm, fo = plate[..., 3] > OPAQUE, f[..., 3] > OPAQUE
@@ -118,10 +134,21 @@ def lock_frame(plate: np.ndarray, frame: np.ndarray, search: int = 8, wing_l1: i
     alpha_cover = float((pm & fo).sum()) / n_plate
     body_cover = float((pm & fo & (l1(f, plate) <= wing_l1)).sum()) / n_plate   # design's literal metric, info
     cand = fo & (~pm | (l1(f, plate) > wing_l1))
-    wing = cand if keep_isolated else (cand & ~pm) | reconstruct(cand & ~pm, cand)
+    if keep_isolated:
+        wing = cand
+    else:
+        # Option C. Outside the plate: a wing must join something reaching > wing_far px from the body.
+        # Inside the plate: only pixels within wing_depth px of that wing, so a frame's own head, tusks and
+        # legs (differing from the plate only by outline jitter) are never re-admitted as "wing".
+        out_c = cand & ~pm
+        near = pm.copy()
+        for _ in range(wing_far):
+            near = _dilate(near)
+        wing_out = reconstruct(out_c & ~near, out_c) if wing_far else out_c
+        wing = wing_out | (reconstruct_n(wing_out, cand, wing_depth) & pm)
     out = np.where(wing[..., None], f, plate)
     info = {"shift": [dx, dy], "alpha_cover": round(alpha_cover, 4), "body_cover": round(body_cover, 4),
-            "wing_px": int(wing.sum()), "speckle_dropped": int((cand & ~wing).sum()),
+            "wing_px": int(wing.sum()), "body_px_as_wing": int((wing & pm).sum()), "speckle_dropped": int((cand & ~wing).sum()),
             "rejected": alpha_cover < min_cover}
     return out, info
 
@@ -214,7 +241,8 @@ def cmd_lock(a) -> dict:
         fr = load(fp)
         if fr.shape != plate.shape:
             raise SystemExit(f"{fp}: size {fr.shape[:2]} differs from plate {plate.shape[:2]}")
-        out, info = lock_frame(plate, fr, a.search, a.wing_l1, a.min_cover, a.keep_isolated)
+        out, info = lock_frame(plate, fr, a.search, a.wing_l1, a.min_cover, a.keep_isolated,
+                              a.wing_far, a.wing_depth)
         infos.append({"frame": str(fp), **info})
         locked.append(out)
     rej = [i["frame"] for i in infos if i["rejected"]]
@@ -270,6 +298,8 @@ def main(argv=None) -> int:
             s.add_argument("--search", type=int, default=8)
             s.add_argument("--wing-l1", type=int, default=WING_L1)
             s.add_argument("--min-cover", type=float, default=MIN_COVER)
+            s.add_argument("--wing-far", type=int, default=WING_FAR, help="outside wing must reach > N px from the body")
+            s.add_argument("--wing-depth", type=int, default=WING_DEPTH, help="inside-plate wing only within N px of the outside wing")
             s.add_argument("--keep-isolated", action="store_true", help="keep wing speckle not joined to a wing")
         if name == "compose":
             s.add_argument("--body", required=True, type=Path)
