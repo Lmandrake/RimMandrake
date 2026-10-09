@@ -102,6 +102,8 @@ five-fingered hands**" — so finger count is genuinely unsettled, do not treat 
 canonical.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Deleted: the *Clone Wars*-style CG render of Ziton Moj (`wookieepedia_infobox_ziton_moj.jpg`), the animated Black Sun nobles frame (`wookieepedia_black_sun_nobles.jpg`) and the inked *Han Solo* comic panel of U'il (`wookieepedia_uil.jpg`). Added: a live-action Falleen from *Obi-Wan Kenobi* "Part II" (`wookieepedia_kenobi_part2_live_action.png`), the realistic *New Essential Guide to Alien Species* painting (`wookieepedia_negas_legends.jpg`) and Raven Mimura's *Ultimate Alien Anthology* painting (`wookieepedia_uaa_legends.jpg`). The Xizor colour-shift image is a painted 1996 Topps *Shadows of the Empire* card and stays.
 
 🔴 **The colour shift is not a hue drift — it goes all the way to a saturated RED, and
 the images prove it.** `wookieepedia_xizor_colorshift_red.jpg` is captioned by the wiki
@@ -114,39 +116,18 @@ shows **a complete repaint of the same anatomy**. The ridged skull, brow and che
 structure are unchanged — **only the hue moves.** That is the correct model: one
 geometry, two (or a continuum of) skin colours.
 
-**The resting green is mottled and varies between individuals, not a flat fill.**
-`wookieepedia_infobox_ziton_moj.jpg` (the canon infobox, a high-fidelity CG render) is
-the reference of record for the resting state and shows **mid green with distinctly
-darker green mottling patches** concentrated on the forehead, temples and cheeks. The
-`wookieepedia_black_sun_nobles.jpg` frame is the best evidence on **range**: five
-Falleen in one shot run from **yellow-green through mid green to a distinctly
-teal/blue-green** on the central figure. So the hue varies individual to individual
-inside "green" — matching the Legends "green or gray-green" — *before* any mood shift
-is applied.
+**`wookieepedia_kenobi_part2_live_action.png` — the live-action reference of record for the resting state** (*Obi-Wan Kenobi* "Part II", a Falleen thug in a dark Daiyu corridor, at right of frame):
+- **Bright, slightly yellowish green skin over an ordinary human face** — smooth, with a subtle sheen, a faint raised ridge texture over the crown. Very low light, so hue is approximate.
+- **Bald crown with long dark hair gathered at the back into thin braids/ponytail.**
+- Lean, ordinary human build in dark tactical clothing. Nothing monstrous: a green human.
 
-**The skull ridges are raised plates, not texture.** In the Ziton Moj render the ridges
-read as **a defined pattern of raised, scaled plates** running over the crown, brow and
-cheekbones — a hard structural crest, catching its own specular highlight, distinct in
-value from the surrounding skin. ⚠️ They are **not** a bumpy skin texture, which is the
-easy wrong reading of "ridged skulls." At small scale they should read as a **crest
-silhouette on the head**, not as noise.
+**The resting green varies between individuals.** The live-action Falleen is a bright yellow-green; the NEGAS painting is a **muted grey-green**; the UAA painting is a **deep mid-green**; the Legends outlaw is acid yellow-green — matching the Legends "green or gray-green". (The deleted animated frame also showed teal; no realistic image does.)
 
-**The ponytail is real, prominent, and consistent.** Every image with hair shows **long
-hair, very dark (blue-black), gathered high and pulled back into a single tail** — Ziton
-Moj's falls past the shoulder, the Legends outlaw's is bound high on the crown. The
-def's `Hair_LongOnly` + `Hair_DarkBlack` is well aimed. Ziton Moj also carries a **small
-dark chin tuft/goatee**, which is worth noting because the def forces
-`Beard_NoBeardOnly`.
+**The ridges are a hard structural crest, and they run down the SPINE.** 🔴 `wookieepedia_negas_legends.jpg` (realistic painting, a Falleen with a lightsaber seen from behind) shows the clearest anatomy in the set: **a broad column of overlapping, segmented, scaled plates running from the back of the skull down the nape and the whole spine**, like a lizard's dorsal crest, darker olive than the grey-green skin, plus a raised ridge over the crown and brow. `wookieepedia_uaa_legends.jpg` shows the head ridges from the front as **dark reddish-brown raised stripes over the crown and down the forehead** against green skin, with red-rimmed eyes. ⚠️ They are **not** a bumpy skin texture — at small scale they should read as a crest silhouette.
 
-**Face and build.** The features are **sleek and symmetrical** — a narrow, angular,
-almost aristocratic face with a straight nose, thin lips and high cheekbones — matching
-"sleek symmetry" and "aesthetically pleasing" rather than a monstrous alien. Eyes read
-**dark/yellow** in the Moj render; the canon infobox's six-colour eye list is
-individual variation and none of it is contradicted. Build is **lean and upright**
-throughout, never bulky. `wookieepedia_legends_outlaw.jpg` and `wookieepedia_uil.jpg`
-are both **yellow-green, lean, and ponytailed**, and agree with the CG render on
-everything except palette saturation (they are more acid/yellow-green; both are painted
-or inked, so treat exact hue as the artist's).
+**Hair is long, gathered and pulled back.** Live-action: dark braids from a bald crown. NEGAS: very long dark brown ponytail bound high with a metal ring. UAA: 🔴 **long straight WHITE/silver hair** falling past the shoulders from a topknot — so dark is typical but not universal. The def's `Hair_LongOnly` + `Hair_DarkBlack` is well aimed but misses white.
+
+**Face and build.** Sleek, narrow, angular, aristocratic — straight nose, thin lips, high cheekbones — "sleek symmetry", not a monster. Build is **lean and upright** throughout, never bulky. `wookieepedia_legends_outlaw.jpg` (realistic painting) agrees: yellow-green, lean, high-bound dark ponytail.
 
 **No visible anatomical dimorphism in these references.** The Legends text says females
 had **slighter, more subtle** facial and spinal ridges, which is a real and usable art
@@ -173,12 +154,13 @@ is the wrong idiom (texture, not plates).
 Colour-shifting skin is the species' defining trait and canon (the current-canon
 article) never mentions it at all — the checklist below follows the Legends text and,
 above all, the images, per this library's own rule.
-- [ ] Resting state: mid-green skin with distinctly darker green mottling patches (hue itself can vary individual to individual, yellow-green through teal-green)
+- [ ] Resting state: green skin over an ordinary human face, hue varying individual to individual from bright yellow-green to muted grey-green
 - [ ] Shifted state: a complete repaint to fully saturated orange-red across the whole head and face — not a blush or flush on green skin, the same anatomy in a different hue
 - [ ] Skull ridges read as raised, structural scaled plates forming a crest silhouette — not a bumpy skin texture
-- [ ] Long, very dark (blue-black) hair gathered high and pulled into a single ponytail
+- [ ] Long hair (usually very dark, sometimes white) gathered and pulled back into a ponytail or braids
 - [ ] Sleek, symmetrical, narrow, angular face; lean and upright build, never bulky
-- [ ] A vertical column of chevron/arrowhead dorsal plates down the back
+- [ ] A column of overlapping segmented dorsal plates running from the back of the skull down the spine
+- [ ] Realistic rendering: smooth real skin with a slight sheen and hard scaled crest plates under natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 Each skin state (mottled green, or solid red) is a single flat hue and is individually
@@ -227,9 +209,8 @@ average. The def carries `Body_Standard` and no size gene.
 **"incredibly quick reflexes"** twice and never gives them strength. Reflexes would map
 to melee *dodge*, aim speed or work speed, not damage.
 
-⚠️ **`Beard_NoBeardOnly` versus the reference image.** Ziton Moj — the canon infobox
-individual — has a visible dark chin tuft. Minor, but the def forbids what the primary
-reference shows.
+⚠️ **`Beard_NoBeardOnly`.** Ziton Moj, the canon infobox individual, has a dark chin tuft
+in his (now deleted, animated) render; no remaining realistic image shows facial hair. Minor.
 
 **Well matched, recorded so a later pass does not undo them.** This def is one of the
 better-aimed ones in the file on everything except colour:
@@ -263,18 +244,17 @@ open warfare.
   (20,036 chars, 2026-09-15). Carries a `{{Citation}}` maintenance banner, and its
   biology paragraphs are cited largely to *Ultimate Alien Anthology* and *Scum and
   Villainy*.
-- https://static.wikia.nocookie.net/starwars/images/1/18/ZitonMoj-BHUSC.png —
-  File:ZitonMoj-BHUSC.png, the **canon infobox image** → `wookieepedia_infobox_ziton_moj.jpg`
+- https://static.wikia.nocookie.net/starwars/images/c/ca/KenobiOutplayed-KenobiPartII.png/revision/latest?cb=20220529162132 —
+  File:KenobiOutplayed-KenobiPartII.png, live-action *Obi-Wan Kenobi* → `wookieepedia_kenobi_part2_live_action.png`
+- https://static.wikia.nocookie.net/starwars/images/f/f9/FalleenNEGAS.jpg/revision/latest?cb=20061205185216 —
+  File:FalleenNEGAS.jpg → `wookieepedia_negas_legends.jpg`
+- https://static.wikia.nocookie.net/starwars/images/5/5e/Falleen_UAA.jpg/revision/latest?cb=20061107212659 —
+  File:Falleen UAA.jpg → `wookieepedia_uaa_legends.jpg`
 - https://static.wikia.nocookie.net/starwars/images/e/e1/XizorHoldsHisBreathUntilMomGetsHimAToy-SOTETC.jpg —
   File:XizorHoldsHisBreathUntilMomGetsHimAToy-SOTETC.jpg, captioned by the wiki "Xizor
   altering his skin pigmentation from green to red" → `wookieepedia_xizor_colorshift_red.jpg`
-- https://static.wikia.nocookie.net/starwars/images/0/07/BlackSunLeaders-Eminence.png —
-  File:BlackSunLeaders-Eminence.png, the Falleen nobles of Black Sun →
-  `wookieepedia_black_sun_nobles.jpg`
 - https://static.wikia.nocookie.net/starwars/images/f/fc/Falleen_Outlaw.jpg —
   File:Falleen_Outlaw.jpg, the **Legends infobox image** → `wookieepedia_legends_outlaw.jpg`
-- https://static.wikia.nocookie.net/starwars/images/7/71/Uil-HanSolo2.png —
-  File:Uil-HanSolo2.png, the Falleen U'il → `wookieepedia_uil.jpg`
 - https://www.starwars.com/databank/falleen — **cited by the canon article as `{{Databank|falleen}}`
   and is the source of the "mottled green skin, ridged skulls, long black hair in
   ponytails" sentence, but was NOT fetched directly this pass.** The sentence above is
@@ -288,24 +268,17 @@ open warfare.
 ## Candidate images
 
 - `wookieepedia_xizor_colorshift_red.jpg` — 🔑 **the reference this entry exists for.**
-  A painted piece the wiki captions as Xizor **altering his skin pigmentation from green
+  A painted 1996 Topps *Shadows of the Empire* card the wiki captions as Xizor **altering his skin pigmentation from green
   to red**, showing the shifted state as a **fully saturated orange-red across the whole
   head**, with the ridged-skull anatomy unchanged. Settles that the shift is a complete
   repaint, not a flush. Painted, so treat brush and lighting as the artist's — but the
   *magnitude* of the colour change is the point and is unambiguous.
-- `wookieepedia_infobox_ziton_moj.jpg` — **the reference of record for the resting
-  state.** The canon infobox: a high-fidelity full-body CG render of Ziton Moj. Settles
-  the mottled mid-green skin, the raised scaled plate structure of the skull ridges, the
-  long dark ponytail, the chin tuft, the sleek angular face and the lean upright build.
-- `wookieepedia_black_sun_nobles.jpg` — an in-show frame of five Falleen nobles seated
-  together. Its value is **range**: hue runs yellow-green → mid green → teal within one
-  shot, establishing that individual variation exists inside "green" independently of
-  the mood shift. Dim cinematic lighting, so not a palette authority.
+- `wookieepedia_kenobi_part2_live_action.png` — **live-action reference of record for the resting state.** *Obi-Wan Kenobi* "Part II" screen still; the Falleen is at right, green skin, bald crown, dark braids, dim light; file `KenobiOutplayed-KenobiPartII.png` — https://static.wikia.nocookie.net/starwars/images/c/ca/KenobiOutplayed-KenobiPartII.png/revision/latest?cb=20220529162132
+- `wookieepedia_negas_legends.jpg` — realistic painting, *The New Essential Guide to Alien Species* (Legends): grey-green Falleen from behind, the segmented dorsal crest from skull down the spine, long dark ponytail; file `FalleenNEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/f/f9/FalleenNEGAS.jpg/revision/latest?cb=20061205185216
+- `wookieepedia_uaa_legends.jpg` — realistic painting by Raven Mimura, *Ultimate Alien Anthology* (Legends): full body, deep green skin, red-brown crown ridges, long white hair; file `Falleen UAA.jpg` — https://static.wikia.nocookie.net/starwars/images/5/5e/Falleen_UAA.jpg/revision/latest?cb=20061107212659
 - `wookieepedia_legends_outlaw.jpg` — the **Legends infobox image**: a lean yellow-green
   Falleen with a high-bound dark ponytail. Painted and small; confirms silhouette,
   ponytail and lean build, agrees with the CG render on everything but saturation.
-- `wookieepedia_uil.jpg` — the canon Falleen U'il, from a *Han Solo* comic. Inked, so
-  stylized; kept as a third independent confirmation of green skin plus dark ponytail.
 - `donor_current_sprite.png` — the repo's own art,
   `SWX/Pawn/BodyAttachments/falleen/ridgedspine_male_north.png`: five chevron dorsal
   plates down the back. **The strongest donor asset in this batch** — a correct rendering
