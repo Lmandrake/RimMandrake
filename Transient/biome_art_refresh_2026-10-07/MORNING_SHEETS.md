@@ -6,14 +6,14 @@ Each sheet shows new renders as extra columns beside the in-game art; a row whos
 
 | sheet | URL | rows flagged NEW | jobs still pending | jobs done (all-time) | failed |
 |---|---|---|---|---|---|
-| RM_Miasma | http://localhost:34609/?t=icyGP5klq95SAJbpgZzVeg (200) | 10 | 3 (0 running) | 208 | 20 |
-| RM_FeverWood | http://localhost:39151/?t=Gf16hOwPEcv6SaQ8b55L2g (200) | 24 | 5 (5 running) | 156 | 22 |
-| RM_Greentide | http://localhost:36367/?t=i7OfoBXpzK19Bk1_NOalgA (200) | 2 | 177 (0 running) | 0 | 0 |
-| RM_LongShade | http://localhost:40813/?t=pAzYN01j1Rn4TI63gP9JAA (200) | 4 | 68 (0 running) | 0 | 0 |
-| RM_LeaningScrub | http://localhost:39617/?t=nl3XOn-nePp7KKe3-XYXag (200) | 16 | 48 (0 running) | 84 | 2 |
-| RM_Webwork | http://localhost:34871/?t=akw0P54hCTqopbWYe66c6A (200) | 11 | 9 (0 running) | 76 | 2 |
+| RM_Miasma | http://localhost:34609/?t=icyGP5klq95SAJbpgZzVeg (200) | 27 | 3 (0 running) | 210 | 18 |
+| RM_FeverWood | http://localhost:39151/?t=Gf16hOwPEcv6SaQ8b55L2g (200) | 27 | 0 (0 running) | 182 | 20 |
+| RM_Greentide | http://localhost:36367/?t=i7OfoBXpzK19Bk1_NOalgA (200) | 37 | 0 (0 running) | 306 | 28 |
+| RM_LongShade | http://localhost:40813/?t=pAzYN01j1Rn4TI63gP9JAA (200) | 19 | 0 (0 running) | 102 | 34 |
+| RM_LeaningScrub | http://localhost:39617/?t=nl3XOn-nePp7KKe3-XYXag (200) | 30 | 0 (0 running) | 170 | 12 |
+| RM_Webwork | http://localhost:34871/?t=akw0P54hCTqopbWYe66c6A (200) | 14 | 0 (0 running) | 94 | 2 |
 
-Cross-sheet placeholder fixes (`phfix_*`, rows from many biomes): 0 pending/running. Wrong-subject fixes (`wsfix_*`): 5 pending/running.
-**Total pending/running for these sheets: 315.**
+Cross-sheet placeholder fixes (`phfix_*`, rows from many biomes): 0 pending/running. Wrong-subject fixes (`wsfix_*`): 0 pending/running.
+**Total pending/running for these sheets: 3.**
 
 Notes: a sheet shows 0 flagged rows until its redraws land (FeverWood and Greentide queues had not started when written); rerun the script as renders arrive. Failed jobs are listed in `D:\Luke\dev\_artpipe\failed`.

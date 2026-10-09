@@ -163,22 +163,34 @@
       "prefill": "A"
     },
     "RM_Fuzzrunner": {
-      "at": "2026-10-08T05:40:08.956Z",
+      "at": "2026-10-08T15:00:10.302Z",
       "decidedAt": "2026-10-08T05:40:05.085Z",
       "decision": "B",
       "note": "",
       "prefill": "A",
+      "purge": [
+        "a1857de56c35b3d6bb0ffbde7e3cff87a94bae34747c0370341bdc623235d53f",
+        "688bd798401e654eb7fae848a0b2ce6fd520babad685783c2c1d1e557d8566ab",
+        "4782b3237ab715d8cf797465482c96a0b23f15034edc22568834c3122ddc2a04"
+      ],
+      "purgeTouched": true,
       "variants": [
         "B"
       ],
       "variantsAt": "2026-10-08T05:40:06.100Z"
     },
     "RM_Fuzzviper": {
-      "at": "2026-10-08T05:40:17.343Z",
+      "at": "2026-10-08T15:00:15.070Z",
       "decidedAt": "2026-10-08T05:40:14.256Z",
       "decision": "B",
       "note": "",
       "prefill": "A",
+      "purge": [
+        "e358efd9936ef6a9fa1c048f76d91dbbd31c943dbabc33e0183542b1790718fd",
+        "b92c65f85ecc3b752931ba24330e422a9693e6532ce6d46e80789f976e6ac7db",
+        "32b60f4021586f3bfb38a44ee40c61039504bbbfba06a805639beb1cc5297ecf"
+      ],
+      "purgeTouched": true,
       "variants": [
         "B"
       ],
@@ -210,16 +222,23 @@
       "variantsDefault": true
     },
     "RM_HoardVenomvine": {
-      "at": "2026-10-08T05:49:38.976Z",
-      "decidedAt": "2026-10-08T05:49:31.061Z",
-      "decision": "redo",
-      "note": "STOP USING THIS GRAPHICS AND MAKE VENOMVINE!",
+      "at": "2026-10-08T15:06:56.786Z",
+      "decidedAt": "2026-10-08T15:06:38.262Z",
+      "decision": "J",
+      "note": "Keep all of these for now, Venomvine is a mechanic as well as graphics, so we will need to reason about this during Bench settings. Nice job.",
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "purge": [
+        "cef3eb92543ad01b9925c3487416f88ceb78e9724008dbdb2fb6f9fd9bc61a92",
+        "7d25c383afb7a51b0a1c59f6300de9055027c427823b7122140d21a0c05e4ff6"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "I"
+      ],
+      "variantsAt": "2026-10-08T15:06:31.190Z"
     },
     "RM_HollowVenomvine": {
-      "at": "2026-10-08T05:49:45.508Z",
+      "at": "2026-10-08T15:07:05.619Z",
       "decision": "A",
       "note": "",
       "prefill": "A",
@@ -227,9 +246,11 @@
         "A",
         "B",
         "C",
-        "D"
+        "D",
+        "E",
+        "F"
       ],
-      "variantsAt": "2026-10-08T05:49:43.508Z"
+      "variantsAt": "2026-10-08T15:07:05.619Z"
     },
     "RM_Mullgoth": {
       "at": "2026-10-06T01:21:09.534Z",
@@ -327,11 +348,17 @@
       "prefill": "A"
     },
     "RM_TruffleMole": {
-      "at": "2026-10-08T05:46:57.548Z",
+      "at": "2026-10-08T15:04:48.027Z",
       "decidedAt": "2026-10-06T01:25:53.290Z",
       "decision": "B",
       "note": "",
       "prefill": "A",
+      "purge": [
+        "e6173760cd2a4923996d14e7f0801d0a5aca9a8bcf1fa27350ce435dcf98e5cc",
+        "681035b6a4485896d65e1080dfb366c25892abe54f6395905ee7ae24637a3cee",
+        "11e1aedb5b3ae818717c7535b83f606804ea86ec5cd724a904ca833dadb43cb8"
+      ],
+      "purgeTouched": true,
       "variants": [
         "B"
       ],
@@ -393,18 +420,24 @@
       "prefill": "A"
     },
     "RM_Zellik": {
-      "at": "2026-10-08T05:48:20.689Z",
+      "at": "2026-10-08T15:05:22.019Z",
       "decidedAt": "2026-10-08T05:48:20.689Z",
       "decision": "B",
       "note": "Make this more alien",
       "prefill": "A",
+      "purge": [
+        "cb02dbceb61521d6136c71bb965690eba9564a5045a45e59f04f3270aaa0117a",
+        "649bf869dda635baf0f84abfdd25a6eb11aef50503464e3170694aff925ce8f1",
+        "ac16f5003563992e748f8fc0b542813665c87694627322d1842e04fcb6fbb7bc"
+      ],
+      "purgeTouched": true,
       "variants": [
         "B"
       ],
       "variantsAt": "2026-10-08T05:48:19.289Z"
     },
     "RSW_Anooba": {
-      "at": "2026-10-08T05:37:53.477Z",
+      "at": "2026-10-08T14:58:41.232Z",
       "decidedAt": "2026-10-08T05:37:24.130Z",
       "decision": "L",
       "note": "",
@@ -436,7 +469,10 @@
         "f3ba2a949cd8cee0f7511a9937da3987e924a3e1a87ea84f99686b442d7381fa",
         "d1ac9b1fee217b3183ef3d0e7ed7dc9f5b8e8866800bd56b9b3d7daf0aa92da5",
         "9176e14b0bd117f519fc445dcb968fc49f77f8fe3e31c2390865a64c25598bda",
-        "1578777c0ecf7d064c275d6d8d3a9868bbca020221c98fbd3e067fb55ed278b0"
+        "1578777c0ecf7d064c275d6d8d3a9868bbca020221c98fbd3e067fb55ed278b0",
+        "5d13d2b683d57087a156ecff1ccfbc3ed69098b8c8472c30209ff6e2c012cd61",
+        "7b7bef9a67bf92ef82a379b771934ed1e6a010251fff3a2e4de5f7be3905bdd3",
+        "a93d680fe46c242d9e6fc62256362c3e6cd9c71cd5b263c89a81d02e7203bef7"
       ],
       "purgeTouched": true,
       "variants": [
@@ -472,7 +508,7 @@
       "variantsAt": "2026-10-06T01:05:49.646Z"
     },
     "RSW_Cannok": {
-      "at": "2026-10-08T05:38:13.181Z",
+      "at": "2026-10-08T14:58:58.800Z",
       "decidedAt": "2026-10-08T05:38:08.512Z",
       "decision": "C",
       "note": "",
@@ -480,7 +516,10 @@
       "purge": [
         "8cf86dfb280e6cdd4f420ae754530bb3c1b87a3642ff562317ca3ae73083105e",
         "a85a3897cdb7c986ab2a8ba2b66aefa6afe901c5cee37b3a19c86685d7d3b9b3",
-        "158c89d1666a22a18891332c366fc4897e3630e4e8951ed9ee09c1d94767fef2"
+        "158c89d1666a22a18891332c366fc4897e3630e4e8951ed9ee09c1d94767fef2",
+        "b53c2747e2ff122b4e8027321f570ae3cdc4cc08b2d7fdba52d4c2b035a2216d",
+        "08bb9d6c8d52bfb372b89527a63c4b25b47fe1077b9373f7d274cae86096690f",
+        "853c4c7af663d7b3c820b831eb56575364201fe7981a99ce7114298f0c19a71b"
       ],
       "purgeTouched": true,
       "variants": [
@@ -524,11 +563,20 @@
       "variantsAt": "2026-10-08T05:38:33.390Z"
     },
     "RSW_Corinathoth": {
-      "at": "2026-10-08T05:38:55.632Z",
-      "decidedAt": "2026-10-08T05:38:53.470Z",
+      "at": "2026-10-08T14:59:28.466Z",
+      "decidedAt": "2026-10-08T14:59:23.473Z",
       "decision": "D",
       "note": "",
       "prefill": "A",
+      "purge": [
+        "0695b97516023887b4b71fa916fb985dfc8d0ce2bdb3cac24bae73b597ad2354",
+        "41005e7219f1cbc80422e9c9b3be5f5a6944be2ae86db18312fc0dbfba44c6db",
+        "015feb3bb6d90d01c852056fbcc2f44b1d7803586d7ffb960873958ab8f9143e",
+        "a7e126cd8b1c7587184a4949598b9e825eea10668e97dce77325114040fc0ee0",
+        "bd3181b72d421358f9835a4fbe8d6a2d7436a7922e6ad31ed18590e2ff23c939",
+        "4a1e634c6cc8809a9fa6908ecfe01664a0afbd9adee72c60bde7d27387799720"
+      ],
+      "purgeTouched": true,
       "variants": [
         "D"
       ],
@@ -542,7 +590,7 @@
       "prefill": "A"
     },
     "RSW_Eopie": {
-      "at": "2026-10-08T05:39:09.754Z",
+      "at": "2026-10-08T14:59:45.721Z",
       "decidedAt": "2026-10-06T01:12:08.558Z",
       "decision": "E",
       "note": "",
@@ -565,14 +613,17 @@
         "e92587194d7df7e897ab5d81dd063e1ddea115d5fb5bc1180bd1b92ab25500f8",
         "0b1cf5fc262da4bc2b3fe3720a01174c512178ad880612b236c4ef5780e23898",
         "305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42",
-        "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b"
+        "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b",
+        "65248648d1d1ed3398fbdba10379c8882d52653044bdaa7d07cb0a3fcd4d4bf8",
+        "175b5632c893c4df8e6ee71932e4113efa20826dbae97003f6a70b80a1c9b5d1",
+        "42f39bfebf676e8dbb530025d7adca91170aecf7797363446ec75dd95e90a1a6"
       ],
       "purgeTouched": true,
       "variants": [],
       "variantsAt": "2026-10-06T01:12:27.112Z"
     },
     "RSW_FeralNerf": {
-      "at": "2026-10-08T05:39:46.554Z",
+      "at": "2026-10-08T14:59:53.810Z",
       "decidedAt": "2026-10-08T05:39:17.697Z",
       "decision": "C",
       "note": "",
@@ -580,7 +631,10 @@
       "purge": [
         "a94174bdc57b18382386baf919cd6baf2b2f53c2381166f766161d78466266e6",
         "2dae2ceca927e04a59cc0226ee6d424cb4bac28b22630fe135e67a4cc84f357e",
-        "901d8f737fbdf2530c37c302f6be171ccaa333dc0970df3fd2bb29d754f97cd9"
+        "901d8f737fbdf2530c37c302f6be171ccaa333dc0970df3fd2bb29d754f97cd9",
+        "69045ee348ece520f9ce270e980793ad657321413ef7e4261e91b6d5e8a2d880",
+        "e409971715490635a7d5e810fa1c95aa3b98d583082c03600e4e4c78b19a5abb",
+        "429708aa40b47773a57b0b5c3e06221e039ac7360e59701ec4f6b37033c42629"
       ],
       "purgeTouched": true,
       "variants": [
@@ -641,7 +695,7 @@
       "purgeTouched": true
     },
     "RSW_Gorg": {
-      "at": "2026-10-06T01:15:20.213Z",
+      "at": "2026-10-08T15:00:23.734Z",
       "decidedAt": "2026-10-06T01:15:04.171Z",
       "decision": "B",
       "note": "",
@@ -654,7 +708,10 @@
       "purge": [
         "5d23ef610783cee163727ace06f0d2402d6cbe1ad3f7dbcd2a8ec67f3b06b184",
         "dc6ad278bb698b15ffb1051547a298e1885ecec60f307778b1440fb32d3d67dd",
-        "6abf49062826588170b9ade67da4aeeba55426034831692cc60cbf17d08d65e7"
+        "6abf49062826588170b9ade67da4aeeba55426034831692cc60cbf17d08d65e7",
+        "605c4213aeeb0c0f179348b45d16213064a57ef60df7117c5bd1d001552e9153",
+        "e09e6079ada034af58ceb9a96a300a6a548b6acfb3e9b1c59605ae58ca1582a7",
+        "4bead2784236c91637798a55773fddd3b36ddc707fedf4c20e62f828f56a8ea8"
       ],
       "purgeTouched": true,
       "variants": [
@@ -669,7 +726,7 @@
       "variantsAt": "2026-10-06T01:15:20.213Z"
     },
     "RSW_Grank": {
-      "at": "2026-10-08T05:40:53.698Z",
+      "at": "2026-10-08T15:00:46.289Z",
       "decidedAt": "2026-10-08T05:40:42.426Z",
       "decision": "E",
       "note": "Follow canon PRECISELY, look at the parent image. Make North and South now.",
@@ -677,7 +734,13 @@
       "purge": [
         "22ad3baae555ac68a29ef6fec9d4c65c3a98c3a51a46d74b3429037fd6842e4c",
         "4ef4e21ad6aeecf71711cde15a3896ef57a2e85b04f9eeb1e25580549845c5be",
-        "0dfa0f4bf03050ad69987b938b4eb4b87d3c0700ebf1f7600d32af4305e23379"
+        "0dfa0f4bf03050ad69987b938b4eb4b87d3c0700ebf1f7600d32af4305e23379",
+        "4b980aefdd9305d6beaeb32d7e1df2ced461ac1b528b390a0ae2ed1e0e227ccc",
+        "84a80542cf841ba2c810f6d148b6d1c1a223f5b0ccd318daaf41d348dbcc91c5",
+        "b9893b6e5e9892faf34e2ac8e2798acf8989385d4027a02b4fd0bae25c7cc829",
+        "bb77d0791588fc20692bd0a1d837b350d09baa3a077f9d61b2a2f8d4d3daf031",
+        "ec070a853856f42fa1ff148f8394725f7f60e48026c9e8cae8ce189a5086f361",
+        "1fd297392af1c6fbeb93c6bbb041eb7e108235812401da4182472a3cb1fb80c9"
       ],
       "purgeTouched": true,
       "variants": [
@@ -686,7 +749,7 @@
       "variantsAt": "2026-10-08T05:40:43.933Z"
     },
     "RSW_Igitz": {
-      "at": "2026-10-08T05:41:08.648Z",
+      "at": "2026-10-08T15:00:56.869Z",
       "decidedAt": "2026-10-08T05:41:06.462Z",
       "decision": "E",
       "note": "",
@@ -698,7 +761,10 @@
       "purge": [
         "47f056e586eaf017b2ffca910f60954d823591c28290f7d35c98e51783934d4a",
         "373fee86504a5f4fc3d7803717ed1a833d70a7b5b1ebbd4538a96626fc810b7e",
-        "405ab62fb22b4a878e7a5e581cedec28b6a8d9fad7da36a1e7074e64733a68de"
+        "405ab62fb22b4a878e7a5e581cedec28b6a8d9fad7da36a1e7074e64733a68de",
+        "60acbcf214a49a8180ccfafd16f2cd0ce752b0f082226c609bedc32fda315cc5",
+        "bd897feae0215ef8619e16b765855839c7aa969d4e7bd5e72f1dd9c29e0acda1",
+        "ff4759b80d47a79e5e4100e32e20a6b8a46a89d99226186f1f23b4ab1cd811e2"
       ],
       "purgeTouched": true,
       "variants": [
@@ -746,7 +812,7 @@
       "variantsAt": "2026-10-08T05:41:20.386Z"
     },
     "RSW_KowakianMonkeyLizard": {
-      "at": "2026-10-08T05:41:50.196Z",
+      "at": "2026-10-08T15:01:05.631Z",
       "decidedAt": "2026-10-08T05:41:41.959Z",
       "decision": "C",
       "note": "",
@@ -754,7 +820,10 @@
       "purge": [
         "8d00455c09bf33c48c9670eddb1bd21f8da36ab0343840f282000ed8891dd427",
         "ad4525f3561862987298076c924e1eda90a3bc7158a85bd79859cd838c89e66c",
-        "6e36168888f722edcf71dc48e025f558b354d8163d05f2d1c32bfe27d8a0b871"
+        "6e36168888f722edcf71dc48e025f558b354d8163d05f2d1c32bfe27d8a0b871",
+        "c142ee27dd7d8a35b12069ceaa26b46d00c8ae3a9a5b84781b35cfea788ad5b4",
+        "7644e6cd86f8ff5dfbe0e7902285f4f3341a72e857d146f2bfdc4f5111160570",
+        "9e967ced546246c5d998cb28263178f4d1ca15a59f241d8822d09e87e9c1c07b"
       ],
       "purgeTouched": true,
       "variants": [
@@ -763,10 +832,10 @@
       "variantsAt": "2026-10-08T05:41:47.709Z"
     },
     "RSW_Kreetle": {
-      "at": "2026-10-08T05:42:10.086Z",
+      "at": "2026-10-08T15:01:28.711Z",
       "decidedAt": "2026-10-08T05:42:01.751Z",
       "decision": "J",
-      "note": "",
+      "note": "Should be only 0.3 cell",
       "picks": {
         "swanimals/Kreetle/Kreetle_j": "H"
       },
@@ -784,7 +853,10 @@
         "23adc329784f9f3a887e839a8a585230793477a14adcc935053c17c5282dce84",
         "ea3297c44fad8e13acc106067e1896e9d3e0e6f6c29d4e8488dddb82835b4f43",
         "72840821544035a205c7026848fedcf8d1fc7afee1764230af5196511f4a8970",
-        "9fdba3024594a222f7746226f2239159c1b91cf3b4fd69bdad7587eb3a830e57"
+        "9fdba3024594a222f7746226f2239159c1b91cf3b4fd69bdad7587eb3a830e57",
+        "54b3b5929300b30db237b46a1dc9f168f6341e1b3496c250ffbbf749d6f8e4f8",
+        "e9657aa9c5a87f3a63204189dd787b792237ba0cb535b8fcc59839bae374bb4e",
+        "2a051dc12dfd8cd97473dea28010bb9152be424a0700087c0c60764c9a11cb7e"
       ],
       "purgeTouched": true,
       "variants": [
@@ -810,7 +882,7 @@
       "variantsAt": "2026-10-08T05:42:47.826Z"
     },
     "RSW_LongtailGorg": {
-      "at": "2026-10-06T01:19:44.201Z",
+      "at": "2026-10-08T15:01:43.994Z",
       "decidedAt": "2026-10-06T01:19:32.316Z",
       "decision": "E",
       "note": "",
@@ -820,6 +892,12 @@
         "swanimals/LongtailGorg/LongtailGorg_j_Swimming": "L"
       },
       "prefill": "A",
+      "purge": [
+        "61dc060c32b633a0e2aed41504f5af9c656efccd6ba7e1263fe6f6e610be56d2",
+        "07ab933f1ae0e91ce571e0dcabbfe894015e4719aeed2712f66edb240c7e4028",
+        "1c83168a0137eb0c05d06502a04b6e7d20dfe462be5592784c4f8f4064cb1608"
+      ],
+      "purgeTouched": true,
       "variants": [
         "B",
         "C",
@@ -833,7 +911,7 @@
       "variantsAt": "2026-10-06T01:19:44.201Z"
     },
     "RSW_Lothcat": {
-      "at": "2026-10-08T05:43:13.288Z",
+      "at": "2026-10-08T15:01:52.283Z",
       "decidedAt": "2026-10-08T05:43:03.673Z",
       "decision": "D",
       "note": "Now just north and south. Less cartoonish please",
@@ -845,7 +923,10 @@
       "purge": [
         "bbe09e5723a7001b9c6bb4a616e775513e1c5e76df643de38847c2f5620caef8",
         "eb6e2e083eec262c74d2aed7c5ec25e37465850ef985cef107cf4f4f10bcd484",
-        "9e5db4f9857946234a30a630e215864711a2b7a5d4f20e3f4d62002613c7f214"
+        "9e5db4f9857946234a30a630e215864711a2b7a5d4f20e3f4d62002613c7f214",
+        "5a6fb8d87f02fa978ccb72f2eb07d78675e0c1b241186a83df04e7d8c14906b1",
+        "11779b2ad303651f69e952921e7626e50130539c21fec9a71fd04cff9ce231b9",
+        "d572e6c95de39a6dcf6d1356a0f0f40393440c1fa7c3119a07387e8f1802c0f6"
       ],
       "purgeTouched": true,
       "variants": [
@@ -854,7 +935,7 @@
       "variantsAt": "2026-10-08T05:43:00.658Z"
     },
     "RSW_Massiff": {
-      "at": "2026-10-08T05:43:28.662Z",
+      "at": "2026-10-08T15:01:58.822Z",
       "decidedAt": "2026-10-08T05:43:25.262Z",
       "decision": "C",
       "note": "",
@@ -862,7 +943,10 @@
       "purge": [
         "8efe8aab34b8a421531d1b63d3f8b6111c39ebe1aa2790975d992cf6faecfb0a",
         "58806a1dcfa826335650825ac0a54e1fdec32b7becf2ba930d27bca7450ad0f2",
-        "a9b8972c03273e5ac1e454f33beb04f106d0706c5572d1225b905dae0718d236"
+        "a9b8972c03273e5ac1e454f33beb04f106d0706c5572d1225b905dae0718d236",
+        "7caf1f348df7eeb0d0318392e4c5564b1f2a7141e6ebdeb9f8d78a8640ee49bc",
+        "f6aedf931740bdeafb9c7aa2431a534c0c2cedd94b015409485a1dd0949f99d4",
+        "60a96725a563f1e8e53f6b511f546f1ab9190f5f523ff76d5b579904c9b6d948"
       ],
       "purgeTouched": true,
       "variants": [
@@ -871,18 +955,24 @@
       "variantsAt": "2026-10-08T05:43:25.763Z"
     },
     "RSW_MossBeetle": {
-      "at": "2026-10-08T05:43:35.300Z",
+      "at": "2026-10-08T15:02:03.256Z",
       "decidedAt": "2026-10-08T05:43:32.724Z",
       "decision": "B",
       "note": "",
       "prefill": "A",
+      "purge": [
+        "38dc5430e79490c1cc364c2c51d7cd5570a571bdad55771f6dc503026cb0bf91",
+        "86fbd6e1db626073b58b52a933989a4442bc8319a403bdaba6268762a37aa697",
+        "c0064f8a317735ff4b689d1e459288ff47b5a2a5c9b8c955ef553bc20faca18a"
+      ],
+      "purgeTouched": true,
       "variants": [
         "B"
       ],
       "variantsAt": "2026-10-08T05:43:35.300Z"
     },
     "RSW_Mudhorn": {
-      "at": "2026-10-08T05:43:44.334Z",
+      "at": "2026-10-08T15:02:09.772Z",
       "decidedAt": "2026-10-08T05:43:44.334Z",
       "decision": "B",
       "note": "",
@@ -890,6 +980,12 @@
         "swanimals/Mudhorn/Mudhorn_j": "C"
       },
       "prefill": "A",
+      "purge": [
+        "7025953b36b16dc68cf960737839f05342897285074c4d351b3776929fe4ef79",
+        "bbc3177e9ac675878d2dd29ed349190af49e1ed10c06312f09f47bbe112e98fc",
+        "f4c0caa2a186e40b0578bc0b578f6be9a39f8cf73a77df677338c8661f615706"
+      ],
+      "purgeTouched": true,
       "variants": [
         "B"
       ],
@@ -935,7 +1031,7 @@
       "variantsAt": "2026-10-06T01:21:28.452Z"
     },
     "RSW_Pikobis": {
-      "at": "2026-10-08T05:44:07.600Z",
+      "at": "2026-10-08T15:02:26.724Z",
       "decidedAt": "2026-10-08T05:44:04.808Z",
       "decision": "D",
       "note": "",
@@ -945,7 +1041,10 @@
       "prefill": "A",
       "purge": [
         "53a83d3987f4c9d606a17aeaa9d56a81ca2b921626d9da6fbb807534a70d0f12",
-        "2c6d037841756c67b5056e2c57412405d31c232e9a09d5074c596f377eeffb33"
+        "2c6d037841756c67b5056e2c57412405d31c232e9a09d5074c596f377eeffb33",
+        "85a74c107cf96ee7ab51f56fd027b841749d4202af3a4003475ec8f659720869",
+        "9f23f1230673309d49adcf7915fc9ea532c12ca46fd3468cead8c3f285b95169",
+        "cf9ea6f6580a9071cee6fcdad2725b792ea6e18d53723f1171ab4cb23b9702d2"
       ],
       "purgeTouched": true,
       "variants": [
@@ -954,18 +1053,24 @@
       "variantsAt": "2026-10-08T05:44:01.936Z"
     },
     "RSW_Plant_Nysyllin_Wild": {
-      "at": "2026-10-06T01:30:21.628Z",
+      "at": "2026-10-08T15:07:44.617Z",
       "decidedAt": "2026-10-06T01:30:14.544Z",
       "decision": "redo",
-      "note": "follow canon art",
+      "note": "Ok, now make a realistic version based on this, two variants",
       "prefill": "A",
       "purge": [
         "3105b6b801ac592bf39c17c086011c3241ccd24c33cc1388eb4f75723f9cd5c4"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "variants": [
+        "C",
+        "D",
+        "E"
+      ],
+      "variantsDefault": true
     },
     "RSW_Porg": {
-      "at": "2026-10-08T05:44:27.418Z",
+      "at": "2026-10-08T15:02:41.423Z",
       "decidedAt": "2026-10-08T05:44:21.333Z",
       "decision": "E",
       "note": "",
@@ -974,6 +1079,15 @@
         "swanimals/Porg/Porg_j": "D"
       },
       "prefill": "A",
+      "purge": [
+        "406f9e430ca6cd65db93ee33bda73bf1c88c9f3413b2da28bd0b908871b5aaf8",
+        "2bfb8b11454932f8c0ab8aacb76cc77530e92cbb30b222f91d6508a5eb9ebc69",
+        "29aa384497f9d8c32c0e91d04b4037ac0b9278bc2eed96f06a2c1f08983429b9",
+        "c96f10b2e403d9ae11bdd4757b53a6eaf5e4949156778f383216490e1de4e7b8",
+        "ebef1709622906b18a5e66ce2c703e75b4429c045056930c837ae4612324ef67",
+        "6b54fc3d08d37335c1e095ceeab86e41e28263c0390f51ff1a8a5d6984257c59"
+      ],
+      "purgeTouched": true,
       "variants": [
         "E",
         "F",
@@ -982,15 +1096,18 @@
       "variantsAt": "2026-10-08T05:44:22.724Z"
     },
     "RSW_Pufferpig": {
-      "at": "2026-10-08T05:44:37.611Z",
+      "at": "2026-10-08T15:03:11.387Z",
       "decidedAt": "2026-10-08T05:44:33.839Z",
       "decision": "C",
-      "note": "",
+      "note": "Please make a more realistic variant now based on this version.",
       "prefill": "A",
       "purge": [
         "6d29685ba9396ed84f084d26f1ad717886c40ac4e6f488657ee6dee08221e28e",
         "ac401125f52017d0914c4ac237b0147d846dd9afe1c242ac56d621769183a1b5",
-        "99bf5ea745be638880cf6fc325800f790792a1ff310bfc5d0487c5ae9611d4a9"
+        "99bf5ea745be638880cf6fc325800f790792a1ff310bfc5d0487c5ae9611d4a9",
+        "02aa366218cc2323d5955b9bf228ff504de9dc566dd3e664d0492fc6ce5c6a7a",
+        "1dd696b229329fe96020c1cf5c7d1b3d71d3a5fbe5f355ae311b02f639b87292",
+        "153e82b836953193b33202ffdca2b0b858ab950c9622684f505d1bdaf56672f9"
       ],
       "purgeTouched": true,
       "variants": [
@@ -999,15 +1116,18 @@
       "variantsAt": "2026-10-08T05:44:35.213Z"
     },
     "RSW_Qormot": {
-      "at": "2026-10-08T05:44:54.421Z",
+      "at": "2026-10-08T15:03:34.063Z",
       "decidedAt": "2026-10-08T05:44:54.421Z",
       "decision": "C",
-      "note": "",
+      "note": "Please make a more realistic version based on this version to consider",
       "prefill": "A",
       "purge": [
         "6405d03dca9bfef8db707764618836625bf32c91a5d0204049dd088b167cbbd8",
         "f602b63646d11c3ba28010f9f66a94d9b1802972f613ac130273f86f706b2b5d",
-        "0681288966407aaf0a434933a4c1dc63d96326cd9b55ba8ba77bc968985eba5a"
+        "0681288966407aaf0a434933a4c1dc63d96326cd9b55ba8ba77bc968985eba5a",
+        "1a266d7c6c527232997d6a54cc1df6183f848ddc9a8051e02d53f7dcb24e3347",
+        "bec328700d4218c2323eb7ce33d4f8e17c46818d2c0b2d705b74e9ed32a83cc3",
+        "afffae3690c95bbd4cfc86655bc595032d6670d5c053358c055a3d3053336d3d"
       ],
       "purgeTouched": true,
       "variants": [
@@ -1016,10 +1136,10 @@
       "variantsAt": "2026-10-08T05:44:41.072Z"
     },
     "RSW_Ronto": {
-      "at": "2026-10-08T05:45:09.798Z",
+      "at": "2026-10-08T15:03:55.500Z",
       "decidedAt": "2026-10-06T01:23:01.702Z",
       "decision": "B",
-      "note": "",
+      "note": "Please make one variant based on this version and canon to consider",
       "prefill": "A",
       "purge": [
         "9bb6a0c62dc1418e776597fe8991b82624badc6a18704e167b276f0c48c279dc",
@@ -1056,7 +1176,7 @@
       "variantsDefault": true
     },
     "RSW_Scurrier": {
-      "at": "2026-10-08T05:46:06.118Z",
+      "at": "2026-10-08T15:04:12.739Z",
       "decidedAt": "2026-10-08T05:46:06.118Z",
       "decision": "C",
       "note": "",
@@ -1068,7 +1188,13 @@
       "purge": [
         "15a515d0b777dc76d35838b29a9cb42770a90fde965ea27680c4934329fa98e6",
         "921f7f67eed0281f6f87bf9ef9406e8ed688ac51fc86ae82c44eecc37d77dd3d",
-        "89a9bba4173fe3a6867a87f39429de32ea72ed9fd24f2eb129bd0eebc322b8ea"
+        "89a9bba4173fe3a6867a87f39429de32ea72ed9fd24f2eb129bd0eebc322b8ea",
+        "16618daa21c940e2051449148bab890e3694711bd6f35db30bd53f8d48cd0769",
+        "3ab62dcb53f0ef25dace8865e42684df6a9039df6b23d510d641d57616bfff82",
+        "c46bacb303eb525dd52a91d108072a7283c41c04b37f42faead8dffa4b2e2424",
+        "dfd4730c213079542f1516e29add5e2852036cf59ff84055bf691499930ee5c3",
+        "4013c85c85c10160455c2bb2dba89d8c5070b6a59a0775c2b3cea9d15371045e",
+        "5f001366df915888909ce053457caf791efda3e7f795cc0e7f61bc8b024de9eb"
       ],
       "purgeTouched": true,
       "variants": [
@@ -1130,23 +1256,25 @@
       "prefill": "A"
     },
     "RSW_Strill": {
-      "at": "2026-10-08T05:46:41.364Z",
+      "at": "2026-10-08T15:04:35.166Z",
       "decidedAt": "2026-10-08T05:46:37.347Z",
       "decision": "C",
       "note": "",
       "prefill": "A",
       "purge": [
         "1590531b2f1829d7ddba4680b38eeb8ad56845c75f10b58e1e668a75676ccbce",
-        "4e599897b6ca83967b2ae47158c99c40aa16ad31748fab9b55fc7aa3498fb86c"
+        "4e599897b6ca83967b2ae47158c99c40aa16ad31748fab9b55fc7aa3498fb86c",
+        "4b6c9cd4de89400884bb367ffbc75bbb4021ef7a95c51079c72286217ce912c3",
+        "a89217c5dcc4f919159f020a68e07921840c0a8e3b645b6db8654fbcb3765901",
+        "536117bd9fcb7594c46e02ee8ad54a16e504396b6ea3617d93aa0811de40a3ef"
       ],
       "purgeTouched": true,
       "variants": [
-        "A",
         "C",
         "D",
         "E"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-08T15:04:31.678Z"
     },
     "RSW_TunnelSnake": {
       "at": "2026-10-06T01:27:57.861Z",
@@ -1155,7 +1283,7 @@
       "prefill": "A"
     },
     "RSW_Urusai": {
-      "at": "2026-10-08T05:47:07.661Z",
+      "at": "2026-10-08T15:04:53.980Z",
       "decidedAt": "2026-10-08T05:47:02.044Z",
       "decision": "C",
       "note": "Redo to canon imagery",
@@ -1163,7 +1291,10 @@
       "purge": [
         "6a747e6205d11b738bc84058531b6485a7f1c27c4fe34e03b9cdaee3a01d072e",
         "15eb2cf446afc8c630c42ab471c59e85cc996b7883622ea8e5373cef53e52483",
-        "447718bba6754a462915a301b161c91c23ca351a92e6c3320257e8d06b48630f"
+        "447718bba6754a462915a301b161c91c23ca351a92e6c3320257e8d06b48630f",
+        "adda04cbe6ddb4f59e7455a73ea6e6e5f86184ce961546dd62d99e00e9dccc45",
+        "2f152f938b6bdf3753eb2a476cbce50ee4e493d83cfbb6a9fc5f50f8efcf3c48",
+        "939926fe3b36410f0dfee0c136cf2a7f98d3955bdc8cfc8c5c81f6ac7615da8e"
       ],
       "purgeTouched": true,
       "variants": [
@@ -1173,7 +1304,7 @@
       "variantsAt": "2026-10-08T05:47:07.661Z"
     },
     "RSW_Voorpak": {
-      "at": "2026-10-08T05:47:22.363Z",
+      "at": "2026-10-08T15:05:03.272Z",
       "decidedAt": "2026-10-08T05:47:22.363Z",
       "decision": "D",
       "note": "",
@@ -1181,7 +1312,10 @@
       "purge": [
         "b660632fdcdaf338d71cb734e6c8b2edc5097996a0a331a0928c504e5130ed3d",
         "0f2c3fc58793ae1870b1e67d809b70f50944e63a3c72f9acf8cbdb962bb8a2e6",
-        "f4f121dfc2d25040ef23803edd4bd16dd49fc574bdf9689fb3f8a2ab8913900e"
+        "f4f121dfc2d25040ef23803edd4bd16dd49fc574bdf9689fb3f8a2ab8913900e",
+        "ea086151d738a051e562314f0e42e281ca6374fab00036ffa8be433340118534",
+        "ff43a38b5d87f1f6b113cbe40fa41b508864f79341fcc18874cfbffe481cc944",
+        "e5f503be488eeef3d026f02d117f364aef52c2b6ebe922c4a19dbe9a237fa1eb"
       ],
       "purgeTouched": true,
       "variants": [
@@ -1190,7 +1324,7 @@
       "variantsAt": "2026-10-08T05:47:16.099Z"
     },
     "RSW_Vulptex": {
-      "at": "2026-10-08T05:47:25.296Z",
+      "at": "2026-10-08T15:05:09.257Z",
       "decidedAt": "2026-10-06T01:26:43.253Z",
       "decision": "C",
       "note": "",
@@ -1198,7 +1332,10 @@
       "purge": [
         "637445a48157eb8beabfa0e7f5459f098001e0bb90f367620b727643ff0ecaa3",
         "21e1f4df95518d335c648c4b592a2ff0cb716bcee1086c4ee04b379bb1419f66",
-        "57ae51606fa2167aff31de4810ada7baa41404d2a59c0505a82bba0cb9815923"
+        "57ae51606fa2167aff31de4810ada7baa41404d2a59c0505a82bba0cb9815923",
+        "35efa8b5c66f4db7b07a48b18025bdd998f5914b956bcc597cf4eec532df2f85",
+        "9a886a6cd31a2ed042c283d5163308579d0238e2bf821c2b649140e7768b6261",
+        "801b3554e9be981fce23e496703d70c4ca8b960d1314c9b3353c0506d3a2e69b"
       ],
       "purgeTouched": true,
       "variants": [
@@ -1269,10 +1406,10 @@
     "evidence": "sidecar savedBy review-sheet-sidecar, writeCount 339, savedAt 2026-10-05T18:30:22-0700; 67 of 78 rows carry an owner 'at' stamp; owner typed 'Leaning scrub sheet done' (BENCH relay)",
     "state": "ruled"
   },
-  "savedAt": "2026-10-07T22:50:10-0700",
+  "savedAt": "2026-10-08T08:07:45-0700",
   "savedBy": "review-sheet-sidecar",
   "sheetId": "leaningscrub_sheet_2026-10-05",
   "snapshot": "infrastructure/state/art/sheets/leaningscrub_sheet_2026-10-05.snapshot.json",
   "snapshotId": "a67c22bdea193c12",
-  "writeCount": 521
+  "writeCount": 646
 }

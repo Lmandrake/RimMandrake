@@ -110,13 +110,13 @@ def static_checks():
             bad.append("%s lost its Anomaly guard" % fn)
     if "RSW_DeepDesertSeep" not in names:
         bad.append("seep marker def missing")
-    # SARLACC_SEEKER_ROOTING_1: the seeker's comp is patched onto RSW_GreatDevourer; it roots only at a seep
+    # SARLACC_SEEKER_ROOTING_1: the seeker's comp is patched onto RM_Gulloth; it roots only at a seep
     pt = os.path.join(HERE, "Patches", "RSW_SarlaccSeeker_Rooting.xml")
     if not os.path.isfile(pt):
         bad.append("seeker rooting patch missing")
     else:
         t = open(pt, encoding="utf-8").read()
-        for needle in ('RSW_GreatDevourer', '<rootWhenReserveRunsOut>false</rootWhenReserveRunsOut>', '<seepRootMinReserveFraction>',
+        for needle in ('RM_Gulloth', '<rootWhenReserveRunsOut>false</rootWhenReserveRunsOut>', '<seepRootMinReserveFraction>',
                        '<reserveGainPerKilledBodySize>', 'RSW_DeepDesertSeep', 'RSW_SarlaccAnchored'):
             if needle not in t:
                 bad.append("seeker patch lacks " + needle)

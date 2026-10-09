@@ -68,3 +68,15 @@ Six ruled sheets: FeverWood, Greentide, Miasma, Webwork, LeaningScrub, LongShade
 7. **LongShade: GreatDevourer tier.** The RM_ row says "Lives at the RSW level"; the RSW_ row says "Not SW". It is relabelled "sarlacc seeker" and the canon link is removed.
    - RSW tier: the RM_ twin is retired.
    - Or: RimMandrake tier: it needs a name without "sarlacc", because that name is Star Wars IP.
+
+## Enacted 2026-10-08 20:45 (by question card; clicks)
+Decisions taken by question card (clicks, not typed words).
+1. FeverWood placeholder: all seven plants (Ammeth, Cistrel, Halquin, Maulith, Nubrith, Plennith, Verrow) redrawn, one job each at priority 0: `regen_fw_<name>_own_v1`. Halquin and Maulith carry pick B as a style description in words (no reference=).
+2. Greentide Swarmling: live art deleted and purged (TheRot `RotSpecies/Swarmling`, 3 facings). The Saluksis redraw (`regen_gt_saluksis_v2_*`) is done and stays on the sheet for his pick. The creature shows magenta until then.
+3. Grass: reference only, no defs changed. One redraw of our own grass queued: `regen_gt_grass_ownstyle_v1` (target Plant_Grass, RG_Grass look described in words).
+4. LongShade RSW_Nerf: pick E installed as `swanimals/Nerf/Nerf_m_east.png` in SWBestiary (the def's bodyGraphicData, the adult body). Nothing else touched; E carries east only. The female adult (`Nerf_f`), calf (`Nerf_j`) and the F north/south renders are unchanged.
+5. Webwork Cravvet east: `regen_wb_cravvet_east_v4_east` queued at 0, derived from the picked south render.
+6. LeaningScrub live eight deleted and purged. Because EopieA..E shared the same three pictures in StarWarsPatches, all 15 Eopie files (A-E) went with them. Lothcat v3 had failed again (4 of 6, ear tips and face), so `regen_c17_lothcat_v4_*` was queued at 0 with those two lines spelled out. Eopie v1 and Scurrier v1 are done and on the sheets.
+7. Great Devourer -> **gulloth** (`RM_Gulloth`) in LongShade, franchise-free. Label, description and eggs (`RM_EggGullothFertilized/Unfertilized`), body (`RM_GullothBody`), textures (`RM_Gulloth/`), rosters (RM_LongShade, RUT_Desert, acoustic payloads) all renamed. The RSW_ twin (def, eggs, textures) is deleted. The Sarlacc mod's rooting patch now targets `RM_Gulloth`. The art ledger maps the old name through the rename comment in the def.
+Magenta now: VFEI2_Swarmling (all facings), Eopie (RSW_Eopie, StarWarsPatches A-E), Lothcat female north and south, Scurrier male east/north/south.
+Not deployed (RimWorld running; needs the restart).

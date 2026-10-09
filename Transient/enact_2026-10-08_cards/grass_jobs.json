@@ -1,0 +1,15 @@
+[
+ {
+  "id": "regen_gt_grass_ownstyle_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_Grass",
+  "target_original": "RG_Grass",
+  "priority": 0,
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "biome_neutral": true,
+  "owner_note": "Reference only: use the ReGrowth RG_Grass look as the style target for OUR OWN grass; change no defs (owner card 2026-10-08).",
+  "prompt": "RimWorld plant sprite of wild grass, ours (a new drawing, not a copy of any donor texture). Style target described in words, taken from the ReGrowth RG_Grass look the owner picked: one dense upright clump of fine long blades fanning out from a tight base, olive-to-mid green with lighter yellow-green highlights, blades gently curved at the tips, several slender seed-head spikes rising above the leaves; soft painterly shading, believable botanical form, matte, no outline, transparent background, one whole clump centred."
+ }
+]

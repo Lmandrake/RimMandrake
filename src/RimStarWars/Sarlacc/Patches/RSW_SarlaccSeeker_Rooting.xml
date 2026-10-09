@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- SARLACC_SEEKER_ROOTING_1: the sarlacc seeker (RSW_GreatDevourer, Stage I) quests for rich food, then water, then roots.
+<!-- SARLACC_SEEKER_ROOTING_1: the sarlacc seeker (the franchise-free gulloth, RM_Gulloth, Stage I) quests for rich food, then water, then roots.
      PROVISIONAL numbers. It roots ONLY at a deep-desert seep (rootWhenReserveRunsOut=false), so no pit ever appears
      on ordinary desert: the seep marker is the biome gate (owner yes owed for any other placement). -->
 <Patch>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_GreatDevourer"]/comps</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_Gulloth"]/comps</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_GreatDevourer"]/comps</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_Gulloth"]/comps</xpath>
       <value>
             <li Class="RimMandrake.StarWars.Sarlacc.CompProperties_SarlaccSwimmer">
               <startingReserveRange>300~900</startingReserveRange>

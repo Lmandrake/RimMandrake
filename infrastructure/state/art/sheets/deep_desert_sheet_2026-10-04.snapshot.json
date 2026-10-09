@@ -1,9 +1,9 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-08T20:19:19-0700",
+ "built": "2026-10-08T20:54:55-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 16 mods \u2014 a test list): 614 active",
  "rows": {
   "RM_Aurrok": {
    "columns": {
@@ -629,20 +629,26 @@
     },
     "B": {
      "single": "a49e8d6b6a520c0f40cd981a8afd9d2ebe344c3252439c86b9be3ff961c810a1"
+    },
+    "C": {
+     "single": "0e12ca9111947aed88b3a697177a65666fe277696d68ed598248ada185fdd8b0"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Ultracactus",
-    "B": "Things/Plant/RM_Ultracactus"
+    "B": "Things/Plant/RM_Ultracactus",
+    "C": "Things/Plant/RM_Ultracactus"
    },
    "labels": {
     "A": "our deployed art (render rswultracactus_v1) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render longshade_rsw_ultracactus_v1"
+    "B": "render longshade_rsw_ultracactus_v1",
+    "C": "render enact_6f47cc65_ultracactus_v1"
    },
    "res": "Things/Plant/RM_Ultracactus",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "ultrisspad"
   },

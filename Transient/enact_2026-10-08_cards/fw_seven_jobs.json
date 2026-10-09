@@ -1,0 +1,86 @@
+[
+ {
+  "id": "regen_fw_ammeth_own_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ammeth",
+  "prompt": "RimWorld plant sprite of the ammeth, painterly vanilla-RimWorld house style, a picture of its own (the FeverWood placeholder shared by seven plants is being replaced). Description: One stiff flat fan of fused leaf held in a single plane from a short base, so it reads as a panel from one side and a line edge-on \u2014 the only plant here whose silhouette changes with facing. Waxy, rain-shedding, pale underneath. Roofing and decking; the cheapest building material in the biome, cut but never felled.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Redraw all seven plants that shared one placeholder, each with art of its own (owner card 2026-10-08)."
+ },
+ {
+  "id": "regen_fw_cistrel_own_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Cistrel",
+  "prompt": "RimWorld plant sprite of the cistrel, painterly vanilla-RimWorld house style, a picture of its own (the FeverWood placeholder shared by seven plants is being replaced). Description: A tight rosette of stiff waxy leaves forming a cup at chest height, holding clear standing water you can see into \u2014 the only water on this map that is not black. Outer leaves rust-red, inner pale. The only safe water in the Fever Wood, where people and tame animals drink.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Redraw all seven plants that shared one placeholder, each with art of its own (owner card 2026-10-08)."
+ },
+ {
+  "id": "regen_fw_halquin_own_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Halquin",
+  "prompt": "RimWorld plant sprite of the halquin, painterly vanilla-RimWorld house style, a picture of its own (the FeverWood placeholder shared by seven plants is being replaced). Description: Two broad blade-leaves lying flat and opposite against the trunk like a pressed specimen, dark and leathery, with a swollen joint between them that beads resin. The medicine \u2014 the resin is the biome's herbal medicine line, gathered by scraping, a safe patient crown-side income. Style guide in words (his pick B): two broad, dark, leathery olive-green blade-leaves flat and opposite either side of a short bark-ringed stub, amber resin beading at the joint; heavy dark outline, painterly, rich detail.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Redraw all seven plants that shared one placeholder, each with art of its own (owner card 2026-10-08)."
+ },
+ {
+  "id": "regen_fw_maulith_own_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Maulith",
+  "prompt": "RimWorld plant sprite of the maulith, painterly vanilla-RimWorld house style, a picture of its own (the FeverWood placeholder shared by seven plants is being replaced). Description: A crossbeam of stiff branches carrying a dense curtain of flat ribbon-leaves that falls to the walkway below, so the plant is a room with walls. Leaves olive above, silver-backed and always moving slightly. The concealment plant of the crown, and the boughway's privacy screen. Ribbon-leaf is cordage. Style guide in words (his pick B): a crossbeam of bare brown branches forming a plus-shaped frame, hung with a dense curtain of long olive ribbon-leaves, silver-backed, drooping; heavy dark outline, painterly, rich detail.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Redraw all seven plants that shared one placeholder, each with art of its own (owner card 2026-10-08)."
+ },
+ {
+  "id": "regen_fw_nubrith_own_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Nubrith",
+  "prompt": "RimWorld plant sprite of the nubrith, painterly vanilla-RimWorld house style, a picture of its own (the FeverWood placeholder shared by seven plants is being replaced). Description: A low leathery dome on a squat stalk, glowing a steady warm amber downward onto the deck. The only natural light in the crown \u2014 deliberately warm, sitting beside the Wildsteam's steam-lamp gold rather than fighting it. A leaf that glows, not a mushroom.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Redraw all seven plants that shared one placeholder, each with art of its own (owner card 2026-10-08)."
+ },
+ {
+  "id": "regen_fw_plennith_own_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Plennith",
+  "prompt": "RimWorld plant sprite of the plennith, painterly vanilla-RimWorld house style, a picture of its own (the FeverWood placeholder shared by seven plants is being replaced). Description: A dense low mat of overlapping grey-green scales lying directly along bark and bough, thickening into a spongy bed that visibly holds silt and rot. Reads as a surface, never as a plant. This is what makes the bough-soil \u2014 the crown's fertility is biological, not geological, and where plennith has run, other things can grow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Redraw all seven plants that shared one placeholder, each with art of its own (owner card 2026-10-08)."
+ },
+ {
+  "id": "regen_fw_verrow_own_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Verrow",
+  "prompt": "RimWorld plant sprite of the verrow, painterly vanilla-RimWorld house style, a picture of its own (the FeverWood placeholder shared by seven plants is being replaced). Description: Few fronds, held high and thin, with heavy dull-skinned gourds hanging well below them on long stalks \u2014 the fruit is the visual mass, not the leaves. The crown's staple food, reachable from a boughway without climbing. Free calories that draw the crown's grazers, and then the things that wait for grazers.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Redraw all seven plants that shared one placeholder, each with art of its own (owner card 2026-10-08)."
+ }
+]

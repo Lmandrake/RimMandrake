@@ -1,0 +1,26 @@
+[
+ {
+  "owner_note": "Nope. Try this. (photo: live-action Loth-cat) / \"That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic.\"",
+  "style_notes": "LIVE-ACTION PUPPET REALISM (Ahsoka). The v2 glossy spotted frog-lizard was rejected as too reptilian and animated. Warm natural light, soft photographic realism, plush fur, no outlines, no cartoon gloss, no reptile skin. Canon visual brief (design/RimStarWars/canon_references/lothcat/description.md): **Owner ruling 2026-10-08 (verbatim): \"That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them.\"** Earlier, rejecting a glossy frog-lizard render, he replied \"Nope. Try this.\" with a photo of the LIVE-ACTION Ahsoka puppet. The target is that live-action look; the animated Rebels / Tales of Lothal / SWTOR images were deleted from this entry. Realistic live-action creature (all images are Ahsoka / Mandalorian stills, `canon_2`..`canon_5`; `canon_1` is the CGI promo render of the same design): - **Coat:** dense, soft, fluffy pale cream-to-oatmeal fur over a plump rounded body; sparse dark brown spots on the flanks and on the tall ears. (The Mandalorian Sorgan one is ginger-orange with a cream chin and belly; same anatomy.) - **Ears:** two very tall, upright, pointed ears with dark tufted tips and dark spot markings, pinkish-grey inside. - **Face:** broad, flat face with a wide CLOSED frog-like mouth, heavy drooping lips/jowls, pale chin pouch, small round black eyes set wide, small flat nose, fine whiskers. No toothy grin in the live-action stills (`canon_1` shows an open mouth; do not copy it). - **Legs:** thin, dark grey scaly bird-like legs with long clawed toes, contrasting with the fluffy body; reads plump-bodied on stilt-like bird legs, resting low on the forelegs when lying. - **Tail:** bushy, fluffy, banded or spotted, carried up. - **Rendering:** warm natural light, soft photographic realism, plush fur, no outlines, no cartoon gloss, no reptile skin. Must show: - [ ] Dense soft fluffy pale cream-to-oatmeal fur on a plump rounded body, with sparse dark brown spots on the flanks - [ ] Two very tall upright pointed ears with dark tufted tips and dark spots - [ ] Broad flat face with a wide closed frog-like mouth, heavy drooping jowls, pale chin pouch, small round black eyes set wide - [ ] Thin dark grey scaly bird-like legs with long clawed toes, contrasting with the fluffy body - [ ] Bushy fluffy tail carried up - [ ] Realistic photographic fur rendering: no outlines, no cartoon gloss, no reptile skin",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "priority": 0,
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/lothcat/wookieepedia_canon_2.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/lothcat/wookieepedia_canon_3.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/lothcat/wookieepedia_canon_4.webp"
+  ],
+  "id": "regen_c17_lothcat_v4",
+  "target_def": "RSW_Lothcat",
+  "target_original": "Lothcat",
+  "prompt": "The attached image is a CANON REFERENCE of this species, not a sprite to edit: match its anatomy, proportions, limb count and colouring, but draw a NEW game sprite in the house style below \u2014 do not copy its pixels, background, lighting or camera framing. RimWorld creature sprite of the Star Wars canon loth-cat, as the live-action puppet from the Ahsoka series. One animal, whole body, centred. Realistic live-action creature: dense, soft, fluffy pale cream-to-oatmeal fur over a plump rounded body, sparse dark brown spots on the flanks and tall ears; two very tall upright pointed ears with tufted tips and dark spot markings, pinkish-grey inner ear; broad flat face with a wide closed frog-like mouth and heavy drooping lips/jowls, pale chin pouch, small round black eyes set wide, a small flat nose; whiskers; a bushy fluffy tail carried up; thin dark grey scaly bird-like legs with long clawed toes, contrasting with the fluffy body. Warm natural light, soft photographic realism -- plush fur, no outlines, no cartoon gloss, no reptile skin. Follow the canon Must show list exactly. CORRECTIONS from the failed v3 grade, obey them: (1) the ear TIPS must be clearly DARK brown/black and tufted, not tan; (2) the face must be a BROAD FLAT FROG-LIKE face with a very wide closed mouth and heavy drooping jowls and a pale chin pouch -- NOT a projecting feline muzzle, no cat snout.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "channel": "codex",
+  "background": "transparent"
+ }
+]

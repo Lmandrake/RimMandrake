@@ -948,18 +948,13 @@
 
 
 	<ThingDef ParentName="AnimalThingBase">
-		<!-- LONGSHADE_BEDAZZLE_CONTENT_1 part 6: texPaths below repointed off Alpha
-		     Animals' own AA_GreatDevourer textures onto this def's own RM_GreatDevourer
-		     path — the free mod must not hard-depend on sarg.alphaanimals for its
-		     texture to resolve. No owned render exists yet (checked
-		     infrastructure/artpipe/done, _artsrc, pending, registry.jsonl: 3 jobs are
-		     QUEUED in pending/ under RM_GreatDevourer_{east,north,south}, not yet
-		     rendered) — this def is intentionally magenta until that job clears.
-		     BLOCKED, art owed. Never repoint back at AA_ art to hide the magenta. -->
-		<!-- Owner 2026-10-04 (desert sheet, RM_GreatDevourer row): "This is NOT Canon ... It is now a life stage of the Sarlacc ... Remove the canon association". Relabelled to match RSW_GreatDevourer (sarlacc seeker, Stage I). Tier (RSW per this row vs "Not SW" on the RSW row, 2026-10-08) is unresolved. -->
-		<defName>RM_GreatDevourer</defName>
-		<label>sarlacc seeker</label>
-		<description>A young sarlacc in its questing stage: an armoured worm, a mouth with a body behind it, that swims the sand on the water it was born with. It gorges on small prey to top that reserve up, and where one hunts the small life of a region can collapse. It wanders until it finds rich food and a water source worth claiming, then sinks, roots, and becomes the pit that every desert traveller learns to fear. Desert tribes call it the seeker.\n\nIt will not attack large creatures, humans included, unless provoked. Its armour is thinner than it looks, and it heals slowly.</description>
+		<!-- Textures are this def's own (Things/Pawn/Animal/RM_Gulloth); never repoint at Alpha Animals' AA_ art. -->
+		<!-- Renamed RM_GreatDevourer -> RM_Gulloth and moved to the franchise-free RM_ tier, owner card 2026-10-08: the canon sarlacc association is gone; RSW_GreatDevourer -> RM_Gulloth (the RSW_ twin was retired). The Sarlacc mod patches its rooting behaviour on top (RSW_SarlaccSeeker_Rooting.xml). -->
+		<defName>RM_Gulloth</defName>
+		<label>gulloth</label>
+		<description>An armoured worm, a mouth with a body behind it, that swims the sand on the water it was born with. It gorges on small prey to top that reserve up, and where one hunts the small life of a region can collapse. It wanders until it finds rich food and a water source worth claiming. Desert tribes call it the seeker.
+
+It will not attack large creatures, humans included, unless provoked. Its armour is thinner than it looks, and it heals slowly.</description>
 		<statBases>
 			<MoveSpeed>2.8</MoveSpeed>
 			<ComfyTemperatureMin>-5</ComfyTemperatureMin>
@@ -998,14 +993,14 @@
 		</tools>
 		<comps>
 			<li Class="CompProperties_EggLayer">
-				<eggUnfertilizedDef>RM_EggGreatDevourerUnfertilized</eggUnfertilizedDef>
-				<eggFertilizedDef>RM_EggGreatDevourerFertilized</eggFertilizedDef>
+				<eggUnfertilizedDef>RM_EggGullothUnfertilized</eggUnfertilizedDef>
+				<eggFertilizedDef>RM_EggGullothFertilized</eggFertilizedDef>
 				<eggFertilizationCountMax>1</eggFertilizationCountMax>
 				<eggLayIntervalDays>6</eggLayIntervalDays>
 			</li>
 		</comps>
 		<race>
-			<body>RM_GreatDevourerBody</body>
+			<body>RM_GullothBody</body>
 			<predator>true</predator>
 			<maxPreyBodySize>0.75</maxPreyBodySize>
 			<baseBodySize>2.5</baseBodySize>
@@ -1047,31 +1042,31 @@
 	</ThingDef>
 
 	<PawnKindDef ParentName="AnimalKindBase">
-		<defName>RM_GreatDevourer</defName>
-		<label>sarlacc seeker</label>
-		<race>RM_GreatDevourer</race>
+		<defName>RM_Gulloth</defName>
+		<label>gulloth</label>
+		<race>RM_Gulloth</race>
 		<combatPower>200</combatPower>
 		<ecoSystemWeight>1</ecoSystemWeight>
 		<alternateGraphicChance>1</alternateGraphicChance>
 		<alternateGraphics>
 			<li>
-				<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
+				<texPath>Things/Pawn/Animal/RM_Gulloth/RM_Gulloth</texPath>
 			</li>
 		</alternateGraphics>
 		<lifeStages>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_Gulloth/RM_Gulloth</texPath>
 					<drawSize>2</drawSize>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_Gulloth/RM_Gulloth</texPath>
 					<drawSize>1.5</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_Gulloth/RM_Gulloth</texPath>
 					<drawSize>2.5</drawSize>
 					<shadowData>
 						<volume>(0.3, 0.3, 0.3)</volume>
@@ -1079,13 +1074,13 @@
 					</shadowData>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_Gulloth/RM_Gulloth</texPath>
 					<drawSize>2.5</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
 			<li>
 				<bodyGraphicData>
-					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_Gulloth/RM_Gulloth</texPath>
 					<drawSize>3.5</drawSize>
 					<shadowData>
 						<volume>(0.4, 0.4, 0.4)</volume>
@@ -1093,7 +1088,7 @@
 					</shadowData>
 				</bodyGraphicData>
 				<dessicatedBodyGraphicData>
-					<texPath>Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer</texPath>
+					<texPath>Things/Pawn/Animal/RM_Gulloth/RM_Gulloth</texPath>
 					<drawSize>3.5</drawSize>
 				</dessicatedBodyGraphicData>
 			</li>
