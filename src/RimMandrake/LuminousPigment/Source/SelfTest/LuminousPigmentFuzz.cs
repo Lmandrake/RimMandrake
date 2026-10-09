@@ -543,6 +543,8 @@ namespace RimMandrake.LuminousPigment.SelfTest
                     Check(v >= 0f && v <= mxn + 1e-5f, "OtherLightAt out of [0,max]");
                     Check(RM_DeepfireRules.OtherLightAt(false, ar + 10, ag, ab, or, og, ob, rad, lerp, fac, mxn) >= v - 1e-5f, "more ambient light lowered the reading");
                     Check(RM_DeepfireRules.OtherLightAt(false, ar, ag, ab, or + 10, og, ob, rad, lerp, fac, mxn) <= v + 1e-5f, "more of OUR light raised the other-light reading");
+                    Check(Near(RM_DeepfireRules.OtherLightAtMany(false, ar, ag, ab, new[] { (float)or }, new[] { (float)og }, new[] { (float)ob }, new[] { rad }, lerp, fac, mxn), v, 1e-5f),
+                        "OtherLightAtMany with one light disagrees with OtherLightAt");
                     float none = RM_DeepfireRules.OtherLightAt(false, ar, ag, ab, 0, 0, 0, rad, lerp, fac, mxn);
                     Check(Near(none, Math.Min(mxn, Math.Max(ar, Math.Max(ag, ab)) / 255f * fac), 1e-4f), "with no light of ours the reading is not the plain ground glow");
                     Check(Near(RM_DeepfireRules.OtherLightAt(false, ar, ag, ab, or, og, ob, 0.2f, lerp, fac, mxn), RM_DeepfireRules.OtherLightAt(false, ar, ag, ab, or, og, ob, 1f, lerp, fac, mxn), 1e-5f), "a radius under 1 is not treated as 1");

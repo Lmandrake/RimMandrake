@@ -108,6 +108,11 @@ namespace RimMandrake.LuminousPigment
         public static int vermilionMinSkill = 14;
         public static int maxFamiliesPerPawn = 3;
         public static bool hediffGlowEnabled = true;
+        // HEDIFF_GLOW_MOVING_PROXY_1: a glow-hediff's light rides a moving proxy polled with the worn lights.
+        public static bool hediffGlowFollowsPawn = true;
+        // HEDIFF_GLOW_TARGETING_PULSE_1 PROVISIONAL (auto-decided 2026-10-09): glow-hediff lights count in the
+        // darkness-combat model, carrying their glowTargetFactorOverride.
+        public static bool hediffGlowInCombat = true;
         public static bool[] familyEnabled = NewFamilyEnabledArray();
 
         private static bool[] NewFamilyEnabledArray()
@@ -210,6 +215,8 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref vermilionMinSkill, "vermilionMinSkill", 14);
             Scribe_Values.Look(ref maxFamiliesPerPawn, "maxFamiliesPerPawn", 3);
             Scribe_Values.Look(ref hediffGlowEnabled, "hediffGlowEnabled", true);
+            Scribe_Values.Look(ref hediffGlowFollowsPawn, "hediffGlowFollowsPawn", true);
+            Scribe_Values.Look(ref hediffGlowInCombat, "hediffGlowInCombat", true);
             // Saved by stable family key (the disabled ones), so adding or reordering families never resets or moves a toggle.
             // The positional "familyEnabled" list of older settings files is read only to migrate, and is never written again.
             List<string> familyDisabledKeys = new List<string>();
@@ -445,6 +452,13 @@ namespace RimMandrake.LuminousPigment
             list.CheckboxLabeled("Glow-hediffs give off light", ref hediffGlowEnabled,
                 "Off: the stat/mood effects of every glow-hediff family still apply, but none of " +
                 "them light up.");
+            list.CheckboxLabeled("Glow-hediff light follows the pawn", ref hediffGlowFollowsPawn,
+                "On: a glowing pawn's own light moves with them on the worn-light poll, cell by cell. " +
+                "Off: the light is re-placed only every few seconds, so it trails a walking pawn.");
+            list.CheckboxLabeled("Glow-hediffs count for combat in the dark", ref hediffGlowInCombat,
+                "On: a pawn lit by a glow-hediff is easier to hit in the dark, just like one in coated gear; " +
+                "hair-glow and the vermilion make an even bigger target (x1.5). Off: only coated gear counts. " +
+                "Needs the combat penalties switch above.");
             list.Label(RM_LuminousSettingsReadouts.SteerOddsLine("Steered dish", steerMinSkill));
             list.Label(RM_LuminousSettingsReadouts.SteerOddsLine("Vermilion dish", vermilionMinSkill));
             list.Label(RM_LuminousSettingsReadouts.PlainOddsLine(familyEnabled));

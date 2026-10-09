@@ -24,9 +24,10 @@ namespace RimMandrake.LuminousPigment
         {
             if (!LuminousPigmentSettings.combatPenaltiesEnabled) return;
             if (!(target.Thing is Pawn pawn)) return;
-            if (!DeepfireDarkness.IsGlowingInDark(pawn)) return;
+            float factor = DeepfireDarkness.TargetFactorInDark(pawn);
+            if (factor <= 0f) return;
             ref float f = ref FactorFromTargetSize(ref __result);
-            f = Mathf.Clamp(f * LuminousPigmentSettings.glowTargetFactor,
+            f = Mathf.Clamp(f * factor,
                 DeepfirePaintDefaults.TargetSizeFactorMin, DeepfirePaintDefaults.TargetSizeFactorMax);
         }
     }
@@ -47,9 +48,10 @@ namespace RimMandrake.LuminousPigment
             if (!LuminousPigmentSettings.combatPenaltiesEnabled) return;
             TargetInfo t = TargetField(ref __instance);
             if (!(t.Thing is Pawn pawn)) return;
-            if (!DeepfireDarkness.IsGlowingInDark(pawn)) return;
+            float factor = DeepfireDarkness.TargetFactorInDark(pawn);
+            if (factor <= 0f) return;
             __result += "   " + LineLabel.CapitalizeFirst() + ": x"
-                + LuminousPigmentSettings.glowTargetFactor.ToString("0.##") + " target size\n";
+                + factor.ToString("0.##") + " target size\n";
         }
     }
 

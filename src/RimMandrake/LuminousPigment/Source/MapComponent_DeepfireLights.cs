@@ -62,10 +62,9 @@ namespace RimMandrake.LuminousPigment
     //  - the RegisterHediffGlow/DeregisterHediffGlow pair below: the
     //    contract HediffComp_DeepfireGlow.cs (Cuisine, already shipped)
     //    already soft-binds to by reflection. That hediff comp re-registers
-    //    every 250 ticks on its own (CompPostTick -> Apply()), so a plain
-    //    "move this key's proxy to the pawn's CURRENT cell" here is enough
-    //    to track a moving pawn at that cadence with NO extra polling built
-    //    in this class.
+    //    every 250 ticks on its own (CompPostTick -> Apply()) for stage and
+    //    colour; between those, PollHediffPositions moves the proxy with the
+    //    pawn on the worn-light poll (HEDIFF_GLOW_MOVING_PROXY_1).
     //  - worn/equipped gear (DEEPFIRE_WORN_GLOW_1, spec §10 step 8,
     //    MapComponent_DeepfireLights.Worn.cs): one MOVING Ethereal proxy per
     //    glowing pawn, polled every 15 ticks and moved by Position, not
@@ -164,6 +163,46 @@ namespace RimMandrake.LuminousPigment
             Get(here)?.SetLight(key, pawn.Position, color, radius);
         }
 
+        // HEDIFF_GLOW_MOVING_PROXY_1: every live hediff light on this map, polled with the worn lights so a
+        // walking pawn's glow keeps up cell by cell; the hediff's own 250-tick Apply only handles stage/colour.
+        private readonly HashSet<PawnHediffKey> hediffKeys = new HashSet<PawnHediffKey>();
+        private readonly List<PawnHediffKey> tmpHediffKeys = new List<PawnHediffKey>();
+
+        public void PollHediffPositions()
+        {
+            if (hediffKeys.Count == 0 || !LuminousPigmentSettings.hediffGlowFollowsPawn) return;
+            tmpHediffKeys.Clear();
+            tmpHediffKeys.AddRange(hediffKeys);
+            for (int i = 0; i < tmpHediffKeys.Count; i++)
+            {
+                PawnHediffKey k = tmpHediffKeys[i];
+                Pawn p = k.Pawn;
+                if (!entries.TryGetValue(k, out LightEntry e) || e.Proxy == null || e.Proxy.Destroyed)
+                {
+                    hediffKeys.Remove(k);
+                    continue;
+                }
+                if (p == null || !p.Spawned || p.Map != map || p.Dead) continue; // the hediff's own Apply drops it
+                if (e.Cell != p.Position) MoveLight(e, p.Position);
+            }
+        }
+
+        /// <summary>HEDIFF_GLOW_TARGETING_PULSE_1: this pawn's light for one glow-hediff, if it is lit here.</summary>
+        public bool TryGetHediffLight(Pawn pawn, HediffDef def, out ColorInt color, out float radius, out IntVec3 cell)
+        {
+            color = default(ColorInt);
+            radius = 0f;
+            cell = IntVec3.Invalid;
+            if (pawn == null || !entries.TryGetValue(new PawnHediffKey(pawn, def), out LightEntry e)
+                || e.Proxy == null || e.Proxy.Destroyed) return false;
+            CompGlower glower = e.Proxy.TryGetComp<CompGlower>();
+            if (glower == null) return false;
+            color = glower.GlowColor;
+            radius = glower.GlowRadius;
+            cell = e.Proxy.Position;
+            return radius > 0f;
+        }
+
         public static void DeregisterHediffGlow(Pawn pawn, HediffDef def)
         {
             if (pawn == null) return;
@@ -194,11 +233,19 @@ namespace RimMandrake.LuminousPigment
             }
             else if (e.Cell != cell)
             {
-                e.Proxy.Destroy(DestroyMode.Vanish);
-                e.Proxy = SpawnProxy(cell);
-                e.Cell = cell;
-                fresh = true;
+                if (key is PawnHediffKey && LuminousPigmentSettings.hediffGlowFollowsPawn)
+                {
+                    MoveLight(e, cell); // HEDIFF_GLOW_MOVING_PROXY_1: moved by Position, never respawned per step
+                }
+                else
+                {
+                    e.Proxy.Destroy(DestroyMode.Vanish);
+                    e.Proxy = SpawnProxy(cell);
+                    e.Cell = cell;
+                    fresh = true;
+                }
             }
+            if (key is PawnHediffKey hkey) hediffKeys.Add(hkey);
 
             // GPT review #30: an unchanged light on an unchanged proxy is not
             // re-registered (hediffs call this every 250 ticks while idle).
@@ -228,6 +275,7 @@ namespace RimMandrake.LuminousPigment
 
         private void RemoveLight(object key)
         {
+            if (key is PawnHediffKey hkey) hediffKeys.Remove(hkey);
             if (entries.TryGetValue(key, out LightEntry e))
             {
                 if (e.Proxy != null && !e.Proxy.Destroyed) e.Proxy.Destroy(DestroyMode.Vanish);
@@ -239,6 +287,7 @@ namespace RimMandrake.LuminousPigment
         {
             base.MapRemoved();
             entries.Clear();
+            hediffKeys.Clear();
             ClearClusterState();
             ClearWornState();
             if (cachedMap == map)

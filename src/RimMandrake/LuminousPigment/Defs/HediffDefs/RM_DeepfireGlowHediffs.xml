@@ -367,8 +367,7 @@
         <useHairColor>true</useHairColor>
         <glowRadiusByStage><li>0.8</li><li>1.2</li><li>1.8</li></glowRadiusByStage>
         <!-- spec: "the hair is a beacon" — glowTargetFactorOverride is read
-             by piece 2's (deferred) darkness-targeting hook once it ships;
-             harmless data field until then. -->
+             by DeepfireDarkness.TargetFactorInDark (ranged target size in the dark). -->
         <glowTargetFactorOverride>1.5</glowTargetFactorOverride>
       </li>
     </comps>
@@ -477,7 +476,7 @@
   <HediffDef>
     <defName>RM_Glow_Pulse</defName>
     <label>pulse-glow</label>
-    <description>The whole pawn glows dimly, pulsing with the heartbeat — the showpiece family, and a real cardiac risk at its worst.</description>
+    <description>The whole pawn glows dimly from within — the showpiece family, and a real cardiac risk at its worst.</description>
     <hediffClass>HediffWithComps</hediffClass>
     <isBad>false</isBad>
     <tendable>false</tendable>
@@ -488,11 +487,8 @@
       <li Class="RimMandrake.LuminousPigment.HediffCompProperties_DeepfireGlow">
         <glowColor>(1,0.7,0.75,0)</glowColor>
         <glowRadiusByStage><li>0.8</li><li>1.2</li><li>1.8</li></glowRadiusByStage>
-        <!-- "pulsing at the heart rate" (RM_Comp_WarblingGlow's value-pulse
-             parameters) is a proxy-light behaviour and rides on
-             RM_MapComponent_DeepfireLights, deferred with piece 1; the flag
-             below is read by that component once it exists. -->
-        <pulsesWithHeartRate>true</pulsesWithHeartRate>
+        <!-- PROVISIONAL (auto-decided 2026-10-09, HEDIFF_GLOW_TARGETING_PULSE_1): the
+             unread pulsesWithHeartRate flag was removed; this light is steady. -->
       </li>
     </comps>
     <stages>

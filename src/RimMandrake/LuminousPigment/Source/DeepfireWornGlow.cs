@@ -80,18 +80,63 @@ namespace RimMandrake.LuminousPigment
     }
 
     // Spec §3.4 "Easier to hit in the dark": the target has an active worn
-    // Deepfire glow AND its surroundings are dark WITHOUT our light.
+    // Deepfire glow (or, HEDIFF_GLOW_TARGETING_PULSE_1, a lit glow-hediff)
+    // AND its surroundings are dark WITHOUT our light.
     public static class DeepfireDarkness
     {
-        public static bool IsGlowingInDark(Pawn pawn)
+        public static bool IsGlowingInDark(Pawn pawn) => TargetFactorInDark(pawn) > 0f;
+
+        private static readonly List<float> tmpR = new List<float>(), tmpG = new List<float>(), tmpB = new List<float>(), tmpRad = new List<float>();
+
+        /// <summary>The ranged target-size factor this pawn's own light earns in the dark, or 0 when it is not
+        /// glowing in the dark. Worn gear earns glowTargetFactor; a glow-hediff earns its glowTargetFactorOverride
+        /// when that is set (hair-glow, vermilion: 1.5), else glowTargetFactor; the largest wins.</summary>
+        public static float TargetFactorInDark(Pawn pawn)
         {
-            if (pawn == null || !pawn.Spawned) return false;
+            if (pawn == null || !pawn.Spawned) return 0f;
             MapComponent_DeepfireLights mc = MapComponent_DeepfireLights.Get(pawn.Map);
-            if (mc == null || !mc.TryGetWornLight(pawn, out ColorInt ownColor, out float ownRadius)) return false;
-            // GPT review #13: a black light (glowMinValue 0 on dark dye) emits nothing and is no beacon.
-            if (ownRadius <= 0f || (ownColor.r <= 0 && ownColor.g <= 0 && ownColor.b <= 0)) return false;
-            return OtherLightAt(pawn.Map, pawn.Position, ownColor, ownRadius) < DeepfirePaintDefaults.DarkGroundGlowMax
-                && SkyIsDark(pawn.Map, pawn.Position);
+            if (mc == null) return 0f;
+            tmpR.Clear(); tmpG.Clear(); tmpB.Clear(); tmpRad.Clear();
+            float factor = 0f;
+            // WORN_DARKNESS_PROXY_POSITION_1: evaluate at the proxy's ACTUAL cell (its centre-cell contribution is
+            // exact there), not pawn.Position, which can be one poll ahead of it.
+            IntVec3 at = IntVec3.Invalid;
+            if (mc.TryGetWornLight(pawn, out ColorInt wc, out float wr) && Emits(wc, wr)
+                && mc.TryGetWornProxyCell(pawn, out IntVec3 wcell))
+            {
+                at = wcell;
+                factor = LuminousPigmentSettings.glowTargetFactor;
+                Add(wc, wr);
+            }
+            // PROVISIONAL (auto-decided 2026-10-09, HEDIFF_GLOW_TARGETING_PULSE_1): glow-hediff lights feed the
+            // same darkness model, carrying their override.
+            if (LuminousPigmentSettings.hediffGlowInCombat && pawn.health?.hediffSet != null)
+            {
+                List<Hediff> hs = pawn.health.hediffSet.hediffs;
+                for (int i = 0; i < hs.Count; i++)
+                {
+                    HediffComp_DeepfireGlow comp = hs[i].TryGetComp<HediffComp_DeepfireGlow>();
+                    if (comp == null || !mc.TryGetHediffLight(pawn, hs[i].def, out ColorInt hc, out float hr, out IntVec3 hcell)
+                        || !Emits(hc, hr)) continue;
+                    if (!at.IsValid) at = hcell;
+                    if (hcell == at) Add(hc, hr); // a light centred elsewhere is not subtracted as centre-cell glow
+                    float o = comp.Props.glowTargetFactorOverride;
+                    factor = Mathf.Max(factor, o != 1f ? o : LuminousPigmentSettings.glowTargetFactor);
+                }
+            }
+            if (factor <= 0f || !at.IsValid || !at.InBounds(pawn.Map)) return 0f;
+            Color32 acc = pawn.Map.glowGrid.VisualGlowAt(at);
+            float other = RM_DeepfireRules.OtherLightAtMany(acc.a == 1, acc.r, acc.g, acc.b, tmpR, tmpG, tmpB, tmpRad,
+                DeepfirePaintDefaults.GlowFalloffLerp, DeepfirePaintDefaults.GroundGlowFactor, DeepfirePaintDefaults.MaxNonOverlitGroundGlow);
+            return other < DeepfirePaintDefaults.DarkGroundGlowMax && SkyIsDark(pawn.Map, at) ? factor : 0f;
+        }
+
+        // GPT review #13: a black light (glowMinValue 0 on dark dye) emits nothing and is no beacon.
+        private static bool Emits(ColorInt c, float radius) => radius > 0f && (c.r > 0 || c.g > 0 || c.b > 0);
+
+        private static void Add(ColorInt c, float radius)
+        {
+            tmpR.Add(c.r); tmpG.Add(c.g); tmpB.Add(c.b); tmpRad.Add(radius);
         }
 
         private static bool SkyIsDark(Map map, IntVec3 c)
@@ -101,19 +146,11 @@ namespace RimMandrake.LuminousPigment
         }
 
         // GroundGlowAt(c, ignoreSky: true) re-derived from the public
-        // accumulated colour (GlowGrid.VisualGlowAt) with OUR proxy's own
-        // centre-cell contribution taken off first. Lights accumulate
-        // additively (GlowGrid.CombineColorsJob.AddColors), and a light's
-        // centre cell receives glowColor * Lerp(1 - 1/radius, 1, 0.4)
-        // (ComputeGlowGridsJob.SetGlowFromDist at intDist 100). The pawn
-        // stands on its proxy's cell whenever this is asked between polls
-        // closer than WornLightTickInterval; in between it is off by at most
-        // one cell, which only makes the subtraction slightly generous.
-        public static float OtherLightAt(Map map, IntVec3 c, ColorInt own, float ownRadius)
-        {
-            Color32 acc = map.glowGrid.VisualGlowAt(c);
-            return RM_DeepfireRules.OtherLightAt(acc.a == 1, acc.r, acc.g, acc.b, own.r, own.g, own.b, ownRadius,
-                DeepfirePaintDefaults.GlowFalloffLerp, DeepfirePaintDefaults.GroundGlowFactor, DeepfirePaintDefaults.MaxNonOverlitGroundGlow);
-        }
+        // accumulated colour (GlowGrid.VisualGlowAt) with OUR lights' own
+        // centre-cell contributions taken off first (RM_DeepfireRules.OtherLightAtMany).
+        // Lights accumulate additively (GlowGrid.CombineColorsJob.AddColors), and a
+        // light's centre cell receives glowColor * Lerp(1 - 1/radius, 1, 0.4)
+        // (ComputeGlowGridsJob.SetGlowFromDist at intDist 100) -- exact only AT the
+        // proxy's cell, which is why TargetFactorInDark evaluates there.
     }
 }
