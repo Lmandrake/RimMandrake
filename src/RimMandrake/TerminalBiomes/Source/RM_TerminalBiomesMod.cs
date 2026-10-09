@@ -214,6 +214,8 @@ namespace RimMandrake.TerminalBiomes
         public static bool greyLampWatcherEnabled = true;
         public static bool greyLampGiantEnabled = true;
         public static bool twilightWellAvoidsCurrent = true;
+        // HAZARD_CLOCK_INSPECT_LINES_1 (TB-4): Grey lamp burn time, twilight well phase and crust count in inspect text.
+        public static bool hazardClockInspectEnabled = true;
         public static float greyLampGiantBurnHours = 8f;
         public static float greyLampGiantMinRadius = 12f;
         private static bool GreyActive => masterEnabled && greySeaEnabled;
@@ -276,6 +278,7 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref greyLampWatcherEnabled, "greyLampWatcherEnabled", true);
             Scribe_Values.Look(ref greyLampGiantEnabled, "greyLampGiantEnabled", true);
             Scribe_Values.Look(ref twilightWellAvoidsCurrent, "twilightWellAvoidsCurrent", true);
+            Scribe_Values.Look(ref hazardClockInspectEnabled, "hazardClockInspectEnabled", true);
             Scribe_Values.Look(ref greyLampGiantBurnHours, "greyLampGiantBurnHours", 8f);
             Scribe_Values.Look(ref greyLampGiantMinRadius, "greyLampGiantMinRadius", 12f);
         }
@@ -529,6 +532,10 @@ namespace RimMandrake.TerminalBiomes
               + "watches (it never enters, never attacks, leaves when approached). Three quarters "
               + "of the way, fresh scrape-sign appears in the silt at the light's edge. These are the "
               + "warnings: switch the lamp off and its clock is gone.");
+            list.CheckboxLabeled("Show hazard clocks when inspecting", ref hazardClockInspectEnabled,
+                "A bright lamp in the Grey Sea says how long it has burned steadily; a twilight well says whether it is "
+              + "opening, standing or waning and how long is left; a grav engine on the Grey Sea says how many crust "
+              + "cells still hold the deck. Text only: it changes nothing else. Applies now.");
             list.CheckboxLabeled("Wells keep out of the current's lanes", ref twilightWellAvoidsCurrent,
                 "On: a twilight well never opens in the middle of a current lane (TB-3). Off: any standable cell may host one.");
             list.CheckboxLabeled("The giant breaks bright lamps", ref greyLampGiantEnabled,
