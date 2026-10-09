@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using RimMandrake.CreatureBehaviors;
 using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using Verse.AI.Group;
 
 namespace RimMandrake.LongShade
 {
@@ -371,6 +373,178 @@ namespace RimMandrake.LongShade
         {
             base.PostExposeData();
             Scribe_Values.Look(ref lastStrike, "rmHarrokLastStrike", -999999);
+        }
+    }
+
+    // ───────────────────────────── Jawa return (I5) ─────────────────────────────
+    /// <summary>Which factions may come for the hull (def-name prefixes), and how long the tow takes. Set on the IncidentDef (the campaign tier names the clan).</summary>
+    public class RM_HullTowExtension : DefModExtension
+    {
+        public List<string> factionPrefixes = new List<string>();
+        public int arrivalPawns = 3;
+        public int towTicks = 15000;      // PROVISIONAL: about a quarter day after they arrive
+        public int maxLooseItems = 0;     // PROVISIONAL
+        public int hullWidth = 25;        // dead_crawler.txt FOOTPRINT 25x9
+        public int hullHeight = 9;
+    }
+
+    /// <summary>Remembers where the road's dead crawler lies, whether anyone has been inside, and the tow.</summary>
+    public class RM_MapComponent_CrawlerHull : MapComponent
+    {
+        public IntVec3 hullCenter = IntVec3.Invalid;
+        public int width = 25, height = 9;
+        private bool entered;
+        private int towStartTick = -1;
+        private bool towed;
+        private int towTicks = 15000;
+
+        public RM_MapComponent_CrawlerHull(Map map) : base(map) { }
+
+        public bool HasHull => hullCenter.IsValid && !towed;
+        public bool ClanComing => towStartTick >= 0 && !towed;
+
+        public void SetHull(IntVec3 center, int w, int h)
+        {
+            hullCenter = center; width = w; height = h; entered = false; towStartTick = -1; towed = false;
+        }
+
+        public bool InHull(IntVec3 c)
+        {
+            return hullCenter.IsValid && RM_LongShadeKernel.InHullRect(c.x, c.z, hullCenter.x, hullCenter.z, width, height);
+        }
+
+        private IEnumerable<IntVec3> HullCells()
+        {
+            CellRect r = new CellRect(hullCenter.x - width / 2, hullCenter.z - height / 2, width, height);
+            foreach (IntVec3 c in r) if (c.InBounds(map)) yield return c;
+        }
+
+        public bool Looted(int maxItems)
+        {
+            if (!HasHull) return false;
+            int hostiles = 0, items = 0;
+            foreach (IntVec3 c in HullCells())
+            {
+                List<Thing> things = c.GetThingList(map);
+                for (int i = 0; i < things.Count; i++)
+                {
+                    Pawn p = things[i] as Pawn;
+                    if (p != null && p.HostileTo(Faction.OfPlayer) && !p.Dead) hostiles++;
+                    else if (things[i].def.category == ThingCategory.Item && things[i].def.EverHaulable) items++;
+                }
+            }
+            return RM_LongShadeKernel.HullLooted(entered, hostiles, items, maxItems);
+        }
+
+        public void ClanArrived(int towTicksForThisClan) { towStartTick = Find.TickManager.TicksGame; towTicks = towTicksForThisClan; }
+
+        public override void MapComponentTick()
+        {
+            if (!hullCenter.IsValid || towed || Find.TickManager.TicksGame % RM_ShadeExtrasTuning.ScanTicks != 0) return;
+            if (!entered)
+            {
+                foreach (Pawn p in map.mapPawns.FreeColonistsSpawned)
+                {
+                    if (InHull(p.Position)) { entered = true; break; }
+                }
+            }
+            if (RM_LongShadeKernel.TowDone(towStartTick, Find.TickManager.TicksGame, towTicks)) Tow();
+        }
+
+        private void Tow()
+        {
+            towed = true;
+            int removed = 0;
+            foreach (IntVec3 c in HullCells())
+            {
+                List<Thing> things = new List<Thing>(c.GetThingList(map));
+                for (int i = 0; i < things.Count; i++)
+                {
+                    Thing t = things[i];
+                    if (t.def.category == ThingCategory.Building && t.Faction == null
+                        && !(t.def.building != null && t.def.building.isNaturalRock))
+                    {
+                        t.Destroy(DestroyMode.Vanish);
+                        removed++;
+                    }
+                }
+                if (Rand.Chance(0.15f)) FleckMaker.ThrowDustPuffThick(c.ToVector3Shifted(), map, 3f, new Color(0.8f, 0.7f, 0.5f));
+            }
+            RM_MapComponent_ShadeGrid.For(map)?.Recompute();
+            Messages.Message("The clan has towed the dead sandcrawler away. Its shadow went with it, and everything that lived in its lee is looking for the next one.",
+                new TargetInfo(hullCenter, map), MessageTypeDefOf.NeutralEvent);
+            Log.Message("[RM LongShade] Jawa return: hull towed, " + removed + " buildings removed");
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref hullCenter, "hullCenter", IntVec3.Invalid);
+            Scribe_Values.Look(ref width, "hullWidth", 25);
+            Scribe_Values.Look(ref height, "hullHeight", 9);
+            Scribe_Values.Look(ref entered, "hullEntered", false);
+            Scribe_Values.Look(ref towStartTick, "towStartTick", -1);
+            Scribe_Values.Look(ref towed, "hullTowed", false);
+            Scribe_Values.Look(ref towTicks, "towTicks", 15000);
+        }
+    }
+
+    public class IncidentWorker_RM_HullTow : IncidentWorker
+    {
+        private RM_HullTowExtension Ext => def.GetModExtension<RM_HullTowExtension>();
+
+        private Faction FindClan()
+        {
+            RM_HullTowExtension ext = Ext;
+            if (ext == null) return null;
+            foreach (Faction f in Find.FactionManager.AllFactionsVisible)
+            {
+                if (f.IsPlayer || f.defeated || f.HostileTo(Faction.OfPlayer) || f.def.defName == null) continue;
+                for (int i = 0; i < ext.factionPrefixes.Count; i++)
+                {
+                    if (f.def.defName.StartsWith(ext.factionPrefixes[i])) return f;
+                }
+            }
+            return null;
+        }
+
+        protected override bool CanFireNowSub(IncidentParms parms)
+        {
+            Map map = parms.target as Map;
+            if (map == null || !RM_LongShadeSettings.modEnabled || !RM_LongShadeSettings.jawaReturnEnabled
+                || !RM_ShadeExtrasTuning.OnLongShade(map) || Ext == null) return false;
+            RM_MapComponent_CrawlerHull hull = map.GetComponent<RM_MapComponent_CrawlerHull>();
+            return hull != null && hull.HasHull && !hull.ClanComing && hull.Looted(Ext.maxLooseItems) && FindClan() != null;
+        }
+
+        protected override bool TryExecuteWorker(IncidentParms parms)
+        {
+            Map map = (Map)parms.target;
+            RM_MapComponent_CrawlerHull hull = map.GetComponent<RM_MapComponent_CrawlerHull>();
+            Faction clan = FindClan();
+            if (hull == null || clan == null) return false;
+            PawnGroupMakerParms gp = new PawnGroupMakerParms
+            {
+                groupKind = PawnGroupKindDefOf.Peaceful,
+                tile = map.Tile,
+                faction = clan,
+                points = Mathf.Max(200f, 120f * Ext.arrivalPawns),
+            };
+            List<Pawn> pawns = PawnGroupMakerUtility.GeneratePawns(gp, false).ToList();
+            if (pawns.Count == 0) return false;
+            if (!RCellFinder.TryFindRandomPawnEntryCell(out IntVec3 entry, map, CellFinder.EdgeRoadChance_Friendly)) return false;
+            for (int i = 0; i < pawns.Count; i++)
+            {
+                IntVec3 c = CellFinder.RandomClosewalkCellNear(entry, map, 4);
+                GenSpawn.Spawn(pawns[i], c, map);
+            }
+            LordMaker.MakeNewLord(clan, new LordJob_VisitColony(clan, hull.hullCenter), map, pawns);
+            hull.ClanArrived(Ext.towTicks);
+            SendStandardLetter("A clan has come for the crawler",
+                "A clan of scavengers has walked in from the edge of the map. The dead sandcrawler was theirs once, and now that it has been picked clean they mean to tow it away. "
+                + "Its shadow is the biggest on the map and it will leave with the hull. Everything sheltering in its lee will have to find another.",
+                LetterDefOf.NeutralEvent, parms, pawns[0]);
+            return true;
         }
     }
 }

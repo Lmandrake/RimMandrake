@@ -11,3 +11,4 @@
 - DONE and pushed 2d6149a22: empty patch (reuse tell), lure awning, stampede, tollok; fuzz family extras OK, validation STATIC PASS
 - C#/XML for tollok, lure, stampede written; building
 - harrok written (comp + def + roster 0.04), building
+- harrok pushed 961f4b4dc; mirror field superseded by SOLAR_MIRRORS_BUILD_1

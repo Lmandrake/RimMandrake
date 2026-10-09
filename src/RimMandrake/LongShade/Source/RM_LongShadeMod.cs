@@ -79,9 +79,13 @@ namespace RimMandrake.LongShade
         /// <summary>LONGSHADE_HARROK_STILT_1): the harrok's ambush from its own shadow.</summary>
         public static bool harrokEnabled = true;
 
+        /// <summary>LONGSHADE_JAWA_RETURN_1: a clan may return for the looted dead crawler and tow it away.</summary>
+        public static bool jawaReturnEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref jawaReturnEnabled, "jawaReturnEnabled", true);
             Scribe_Values.Look(ref harrokEnabled, "harrokEnabled", true);
             Scribe_Values.Look(ref tollokTicksEnabled, "tollokTicksEnabled", true);
             Scribe_Values.Look(ref lureAwningEnabled, "lureAwningEnabled", true);
@@ -170,6 +174,10 @@ namespace RimMandrake.LongShade
             list.CheckboxLabeled("Lure awning", ref lureAwningEnabled,
                 "A cheap hide awning on poles that throws a patch of shade where there was none, to draw game within "
               + "gunshot. Off: the awning casts nothing and is ordinary furniture.");
+            list.CheckboxLabeled("A clan returns for the dead crawler", ref jawaReturnEnabled,
+                "Once the dead sandcrawler at the end of the Crawler Road has been cleared and looted, a clan of scavengers "
+              + "may walk in and tow the whole hull away, taking the biggest shadow on the map with it. Needs the campaign "
+              + "layer's incident. Off: the hull stays for good.");
             list.CheckboxLabeled("Harrok ambush", ref harrokEnabled,
                 "The harrok stands in the open as a pole and strikes whatever rests in the strip of shade it throws. "
               + "Off: harrok still stand and cast shade but never strike.");
