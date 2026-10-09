@@ -8,12 +8,36 @@ import os
 import subprocess
 import sys
 import tempfile
+import time
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, _HERE)
 
 import common            # noqa: E402
 import jobs              # noqa: E402
+import clockgate         # noqa: E402  (on sys.path via common, as every job body imports it)
+
+
+class VirtualClock:
+    """clockgate.verify_pause proves a pause by re-reading ticksGame across REAL wall-clock gaps (0.15 s each). On
+    FakeWorld ticks move only inside step_game_ticks, never with wall time, so the gaps prove nothing here and cost
+    54.6 of this test's 55.5 s (364 sleeps, cProfiled 2026-10-08). The virtual clock advances its own time instead and
+    still yields the thread (sleep(0)), so a job stepping the world on another thread interleaves as before; the
+    moving-ticks negative cases still see ticks move between reads."""
+    def __init__(self):
+        self.now = 0.0
+        self.calls = 0
+
+    def sleep(self, s):
+        self.calls += 1
+        self.now += s
+        time.sleep(0)
+
+
+CLOCK = VirtualClock()
+# verify_pause/ensure_paused bind sleep=time.sleep as a DEFAULT, so swap the default (callers pass none).
+for _fn in (clockgate.verify_pause, clockgate.ensure_paused):
+    _fn.__defaults__ = _fn.__defaults__[:-1] + (CLOCK.sleep,)
 
 _results = []
 

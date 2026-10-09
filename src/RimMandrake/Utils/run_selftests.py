@@ -469,16 +469,43 @@ def run_one(path: Path, cap: int = 0, est: int = 0) -> tuple[Path, str, float, s
         return path, "CRASH", elapsed, f"harness error: {type(exc).__name__}: {exc}"
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__)
+def _parser():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--workers", type=int, default=None,
                     help=f"contained default {DEFAULT_WORKERS}; forced to 1 when NOT CONTAINED")
     ap.add_argument("--timings", action="store_true",
                     help="print the 10 slowest tests after the summary")
     ap.add_argument("--only", nargs="+", metavar="PATH",
                     help="run just these selftest files (still contained, still N/N)")
-    args = ap.parse_args()
+    return ap
 
+
+class run_cache:
+    """A per-run scratch dir on ext4 (never /tmp tmpfs) that tests may share derived indexes through, exported as
+    RM_SELFTEST_CACHE_DIR; removed when the run ends. A nested runner reuses its parent's."""
+    def __enter__(self):
+        self.mine = None
+        if not os.environ.get("RM_SELFTEST_CACHE_DIR"):
+            STATE_DIR.mkdir(parents=True, exist_ok=True)
+            self.mine = STATE_DIR / f"run-cache-{os.getpid()}"
+            self.mine.mkdir(exist_ok=True)
+            os.environ["RM_SELFTEST_CACHE_DIR"] = str(self.mine)
+        return self
+
+    def __exit__(self, *exc):
+        if self.mine:
+            import shutil
+            shutil.rmtree(self.mine, ignore_errors=True)
+            os.environ.pop("RM_SELFTEST_CACHE_DIR", None)
+
+
+def main(argv=None) -> int:
+    args = _parser().parse_args(argv)
+    with run_cache():
+        return _suite(args)
+
+
+def _suite(args) -> int:
     global _HARNESS
     _HARNESS, why_not = probe_harness()
     if _HARNESS:
