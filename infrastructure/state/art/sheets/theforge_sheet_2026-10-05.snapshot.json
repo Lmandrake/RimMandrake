@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheForge",
- "built": "2026-10-07T20:09:17-0700",
+ "built": "2026-10-09T05:07:52-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
  "rows": {
   "AA_Aerofleet": {
    "columns": {
@@ -486,21 +486,34 @@
   "RSW_Beldon": {
    "columns": {
     "A": {
+     "east": "cede05f5faf76e1b758456447d14d1682a2bbd64d4a64557c340c77cc7669aca",
+     "north": "8812dccba18bc3c185052986cab28961ba4fb81ea588fd64ae61732ecd41c8f3",
+     "south": "9d81799ecf9a0be2556a4b6330bbc90102fe1fbc88dee8b1530998363abdc482"
+    },
+    "B": {
+     "east": "ca581fee816d5a7a1f1ddacbbf3da68e6aa6ccb3d7b0e135267af552e0669201",
+     "south": "54a5b59bf71ebcfae4cae7540bf10b428853ec69ea1b5807b4f8149eadeb83b9"
+    },
+    "C": {
+     "east": "9bc8ae51b86a9e39d940ade61642e8b9a7600e45d46982056d17d28ed83f4991",
+     "south": "92ae9baa108e3bbfcead5eb7ecfc89a6f2c950a485db537c2498a331cebd5875"
+    },
+    "D": {
+     "east": "0c87f3308092253710f877d0df5c525d3c3b1ba7152f8ab7490a2097037c9dcd",
+     "north": "06aa6751671020d1457fe451b571c078595b1e8ab54386c0044fa98d26125c7b",
+     "south": "3ca656719d55554406d888b3ce906d4d270b8115d605d6a6e19b5abbdf50cc0a"
+    },
+    "E": {
      "east": "5b4ff5388507a62dcc7330f588b545c7c4f8714ec56e44979577d47ab17a6938",
      "north": "d9938e919ff979d04e518dc01d10db846f1cfd4e1f4ce19a03ff5aea340d4c4f",
      "south": "e9aa92ee266a9726fe6a7ce7464803b69d3302e01f5ffc2beb98e846562b5d55"
     },
-    "B": {
-     "east": "f7979ad866c4990b643671f88f327cd9f8029d7b23de380aeb605d5d9c52a2b9",
-     "north": "c2b656d1e6fa133a4d3f4ed897f6839c1903bd4eb63a827bfbc2dd611d4c41ef",
-     "south": "4c50ccd8ca5d9b79787f2885774658c5268915dc08542481b9b7324b26f16dbf"
-    },
-    "C": {
+    "F": {
      "east": "ee247eff82ff722d5f309a836ce190a4ec1241d1ce58cd4a185844cdecfc1085",
      "north": "ce73ccff6ca8fbaf9a978cd317d3e0b9f8f3e2588e7c7850b487395feb00cb2a",
      "south": "9f21e1101f9b5c6d2f36772de854927e5082cac51b6b71552a364c7f36f499bd"
     },
-    "D": {
+    "G": {
      "1_east": "d6ebe5f1f0d5578e513a6b5fd446b942c5430c7a243a6ec1b7a50f470d067357",
      "1_north": "4abcacae8112c143e0f3173dfc3367f9672b451220506936c4ad0fdd4cda1626",
      "1_south": "50411bd94fceef0047c16beded8a663138d4c3fcf9a7b1533a3d48a06aa09834",
@@ -511,7 +524,7 @@
      "3_north": "dab8a60d8894b67c3732ae8f3b376c83a10fb50f824e18b3535f790569c56eff",
      "3_south": "084c8ada17bd0e74656853ca9d02baf65e7054290e7f9cee6660038d332f818e"
     },
-    "E": {
+    "H": {
      "1_east": "8db4e307bdbfa9debf9b8a29f9b1a45c2dfcb1df3db0125b854803ecd381c789",
      "1_north": "be091798911b521b0cff9a61895fd51c163dd74655a1c209c58c259e132e9a43",
      "1_south": "dfbea120334feaac431315583b0ee365021a08dc03959b99503f80a3dbb0ce8c",
@@ -526,16 +539,22 @@
    "graphic_of": {
     "A": "swanimals/Beldon/Beldon",
     "B": "swanimals/Beldon/Beldon",
-    "C": "swanimals/Beldon/BeldonC",
-    "D": "_flip:swanimals/Beldon/BeldonC_Flying_",
-    "E": "_flip:swanimals/Beldon/BeldonC_Flying_"
+    "C": "swanimals/Beldon/Beldon",
+    "D": "swanimals/Beldon/Beldon",
+    "E": "swanimals/Beldon/Beldon",
+    "F": "swanimals/Beldon/BeldonC",
+    "G": "_flip:swanimals/Beldon/BeldonC_Flying_",
+    "H": "_flip:swanimals/Beldon/BeldonC_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render canon_beldon_v1",
-    "C": "IN GAME \u2014 SWBestiary",
-    "D": "IN GAME \u2014 Beldon_Flying_",
-    "E": "IN GAME \u2014 BeldonC_Flying_"
+    "B": "render regen_gt_beldon_flying_1_v1",
+    "C": "render regen_gt_beldon_flying_2_v1",
+    "D": "render regen_gt_canon_beldon_v1",
+    "E": "history SWBestiary 2026-09-12",
+    "F": "IN GAME \u2014 SWBestiary",
+    "G": "IN GAME \u2014 Beldon_Flying_",
+    "H": "IN GAME \u2014 BeldonC_Flying_"
    },
    "res": "swanimals/Beldon/Beldon",
    "reserved": [
@@ -543,7 +562,10 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G",
+    "H"
    ],
    "subject_key": "beldon"
   },
@@ -625,5 +647,5 @@
   }
  },
  "sheetId": "theforge_sheet_2026-10-05",
- "snapshotId": "03567340eb8ecae5"
+ "snapshotId": "cc05b756d1b41b42"
 }

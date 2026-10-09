@@ -1,9 +1,9 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-08T20:54:55-0700",
+ "built": "2026-10-09T05:03:56-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 16 mods \u2014 a test list): 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
  "rows": {
   "RM_Aurrok": {
    "columns": {
@@ -572,7 +572,7 @@
    "labels": {
     "A": "render RM_Soorrak_b",
     "D": "IN GAME \u2014 Stillsand",
-    "E": "render stillsand_s2_RM_Soorrak_v3 \u2014 failed canon check"
+    "E": "render stillsand_s2_RM_Soorrak_v3"
    },
    "res": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
    "reserved": [
@@ -859,21 +859,23 @@
      "north": "d92afdcfd53f7e3d9c714fdbdd3729542265c77f326bc1f2194d40629c3384f9",
      "south": "47ddd4cb149e691d9895589ac172f0d141ae55c0a27ddb21ee3d0344b129e816"
     },
-    "F": {
-     "east": "4992d127ede20e98d5f21851706fe7123a82c6478873d26ee9577775ed17b34d"
+    "G": {
+     "east": "4992d127ede20e98d5f21851706fe7123a82c6478873d26ee9577775ed17b34d",
+     "north": "2812bcf457fc0d95db39315c413d59273bed7bc2dacee3ba7b37a43021035a05",
+     "south": "ce7d26c06ea03dbee7cca49c13a76a0317602b38389db9cb44f05d36fed3b5ce"
     }
    },
    "graphic_of": {
     "A": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
     "C": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
     "E": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
-    "F": "swanimals/GreaterKraytDragon/GreaterKraytDragon"
+    "G": "swanimals/GreaterKraytDragon/GreaterKraytDragon"
    },
    "labels": {
     "A": "history GreaterKraytDragonArtOverride 2026-09-20",
     "C": "history GreaterKraytDragonArtOverride 2026-09-13",
     "E": "IN GAME \u2014 GreaterKraytDragonArtOverride",
-    "F": "render stillsand_s2_RSW_GreaterKraytDragon_v3 \u2014 failed canon check"
+    "G": "render stillsand_s2_RSW_GreaterKraytDragon_v3 \u2014 failed canon check"
    },
    "res": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
    "reserved": [
@@ -882,7 +884,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "subject_key": "greaterkraytdragon"
   },
@@ -942,8 +945,10 @@
     "E": {
      "east": "f5575bcffa2686fd5fa0cf195778c107a6fb0e19147d48aadd5a617c9e4257a7"
     },
-    "F": {
-     "east": "ffdebb8da516b084e9f54ea4e845d6cc94b8afb2c6774f23ec6258dee1aff85c"
+    "G": {
+     "east": "ffdebb8da516b084e9f54ea4e845d6cc94b8afb2c6774f23ec6258dee1aff85c",
+     "north": "fd5016ffc420587efdde34513bd74dc570d14901c8d7f5a89208ad327459134b",
+     "south": "e1825dc95d882cd6389ec5ca0df726c710bf85c96aedb6d03c24e75db9c6923c"
     }
    },
    "graphic_of": {
@@ -951,14 +956,14 @@
     "B": "swanimals/KraytDragon/KraytDragon_j",
     "C": "swanimals/KraytDragon/KraytDragon_m",
     "E": "_byname",
-    "F": "_byname"
+    "G": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
     "C": "IN GAME \u2014 SWBestiary",
     "E": "render stillsand_regen_RSW_KraytDragon_v2 \u2014 failed canon check",
-    "F": "render stillsand_s2_RSW_KraytDragon_v3 \u2014 failed canon check"
+    "G": "render stillsand_s2_RSW_KraytDragon_v3 \u2014 failed canon check"
    },
    "res": "swanimals/KraytDragon/KraytDragon_f",
    "reserved": [
@@ -967,7 +972,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "subject_key": "kraytdragon"
   },
@@ -994,6 +1000,11 @@
     "L": {
      "east": "5336ed954b9d0bde5145fab2e4e0331c01214fbc39d31f4d68d50f94c3d8ef4c",
      "south": "f0a167b6ad5f2ee0b6dba6a7d7c0683ec9282ce61fd17906f4b52d842a1acf2f"
+    },
+    "M": {
+     "east": "ff14b5b4dfc1555fbc4cfc192850ca8ffc937ff35a684d32e5f2ecb1ee08af16",
+     "north": "96b0d7a35b521b922dfd6ac4f29d5b27c7f4250b0b3ee5c853eb9bf90b362ef6",
+     "south": "1db929490093e68e4670815c344d155c3af8616fb500b6708774f99ea54e2fe5"
     }
    },
    "graphic_of": {
@@ -1001,14 +1012,16 @@
     "I": "swanimals/Kreetle/Kreetle",
     "J": "swanimals/Kreetle/Kreetle",
     "K": "swanimals/Kreetle/Kreetle",
-    "L": "swanimals/Kreetle/Kreetle"
+    "L": "swanimals/Kreetle/Kreetle",
+    "M": "swanimals/Kreetle/Kreetle"
    },
    "labels": {
     "F": "IN GAME \u2014 SWBestiary",
     "I": "render leaningscrub_kreetle_v1",
     "J": "render leaningscrub_kreetle_v1 \u2014 failed canon check",
-    "K": "IN GAME \u2014 KreetleArtOverride",
-    "L": "history KreetleArtOverride 2026-09-20"
+    "K": "render stillsand_s2_RSW_Kreetle_v2",
+    "L": "history KreetleArtOverride 2026-09-20",
+    "M": "IN GAME \u2014 KreetleArtOverride"
    },
    "res": "swanimals/Kreetle/Kreetle",
    "reserved": [
@@ -1023,7 +1036,8 @@
     "I",
     "J",
     "K",
-    "L"
+    "L",
+    "M"
    ],
    "subject_key": "kreetle"
   },
@@ -1240,5 +1254,5 @@
   }
  },
  "sheetId": "deep_desert_sheet_2026-10-04",
- "snapshotId": "8a0556e0992f8af4"
+ "snapshotId": "4f4a567575af28cf"
 }

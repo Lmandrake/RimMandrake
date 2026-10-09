@@ -1,9 +1,9 @@
 {
  "biome": "RM_WeepingStones",
- "built": "2026-10-07T20:10:00-0700",
+ "built": "2026-10-09T05:10:40-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
  "rows": {
   "ColossusToad": {
    "columns": {
@@ -1501,40 +1501,61 @@
   "RSW_Dewback": {
    "columns": {
     "A": {
-     "east": "3b7873e344c08bfc53037a0406fd563b6aa07cf790db15b26639eb36725238b2",
+     "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df",
      "north": "b7b58c3a104b13a56c5387493a099cbefed279c952abfb3c0659a11132f4d6db",
      "south": "8550e4638e026dd94c018251ac39cdcbaf88b779f34d3874de43ecfff4e02917"
     },
     "B": {
-     "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df"
+     "east": "a64097abc972d7bafdc36a7ed07f7708952c2d2c3ca0a4e388d6bded18558f30"
     },
     "C": {
-     "south": "c25e20d775248d8b55e9affff1a6f44021cf8dd530aaae33170b6d88079e713f"
+     "north": "48c4fecca5406f0133bb2de963cb99666927f7f7f9ddc6ad7249e7b70a6888b3",
+     "south": "576adedfebb3240571e59324a7fd4c475a365b81bebdf05fb0f09c54bcbf4fc8"
     },
     "D": {
+     "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df"
+    },
+    "E": {
+     "south": "c25e20d775248d8b55e9affff1a6f44021cf8dd530aaae33170b6d88079e713f"
+    },
+    "F": {
      "east": "be61243d6dab85d4e64e372f0d6f7519b3933cdae0bbc6cb0f22693c2fe7e8f3",
      "north": "5da6c3b2f118ac58e94313a620e372e4e5dfc1e9b21730fd54041a4cd5f1dc86",
      "south": "8abaefe6bee04fae0aaf92bb16968ef2a3e5123ea519ef9184908e9bebe5d98d"
+    },
+    "G": {
+     "east": "3b7873e344c08bfc53037a0406fd563b6aa07cf790db15b26639eb36725238b2",
+     "north": "b7b58c3a104b13a56c5387493a099cbefed279c952abfb3c0659a11132f4d6db",
+     "south": "8550e4638e026dd94c018251ac39cdcbaf88b779f34d3874de43ecfff4e02917"
     }
    },
    "graphic_of": {
     "A": "swanimals/Dewback/Dewback",
     "B": "swanimals/Dewback/Dewback",
     "C": "swanimals/Dewback/Dewback",
-    "D": "swanimals/Dewback/Dewback"
+    "D": "swanimals/Dewback/Dewback",
+    "E": "swanimals/Dewback/Dewback",
+    "F": "swanimals/Dewback/Dewback",
+    "G": "swanimals/Dewback/Dewback"
    },
    "labels": {
     "A": "IN GAME \u2014 DewbackArtOverride",
-    "B": "render longshade_rsw_dewback_v1 \u2014 failed canon check",
-    "C": "render facingrepair_dewback_v1",
-    "D": "history DewbackArtOverride 2026-09-11"
+    "B": "render regen_ls_canon_dewback_v1",
+    "C": "render regen_ls_canon_dewback_v1_ns",
+    "D": "render longshade_rsw_dewback_v1 \u2014 failed canon check",
+    "E": "render facingrepair_dewback_v1",
+    "F": "history DewbackArtOverride 2026-09-11",
+    "G": "history DewbackArtOverride 2026-09-20"
    },
    "res": "swanimals/Dewback/Dewback",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "dewback"
   },
@@ -1546,16 +1567,11 @@
      "south": "c590be4ec0f72ad8e196afce18090c922f1baa81b2b4ac2d73c02ae4c3f5cc91"
     },
     "B": {
-     "east": "175b5632c893c4df8e6ee71932e4113efa20826dbae97003f6a70b80a1c9b5d1",
-     "north": "42f39bfebf676e8dbb530025d7adca91170aecf7797363446ec75dd95e90a1a6",
-     "south": "65248648d1d1ed3398fbdba10379c8882d52653044bdaa7d07cb0a3fcd4d4bf8"
+     "east": "3ccf06bbdc18838ed99d9962e5c963d0387001c24f089ca09f9c89fbb26aa2cf",
+     "north": "00073fd75ad207268d0653e18feaf46b912a42a0064b96c7be895935bfd30197",
+     "south": "8e7827f19df536fc157e91bf86b33e893ffb2f47e773451e83152bb17ce011bd"
     },
     "C": {
-     "east": "305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42",
-     "north": "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b",
-     "south": "0b1cf5fc262da4bc2b3fe3720a01174c512178ad880612b236c4ef5780e23898"
-    },
-    "D": {
      "east": "dfc421ff4d871aeaa1def4a4ed5131c067a9c4ec87eeb2db6ce3c4a0ea027392",
      "north": "550bf96d6a9d4bc119024a4327471895a512fe2980e8b1b47b6dc35ba7e8d99b",
      "south": "f45c7cbc5051f9c07d9a618eee0001e90ef28790fda21a454bcf565f166d59f2"
@@ -1564,21 +1580,18 @@
    "graphic_of": {
     "A": "swanimals/Eopie/Eopie",
     "B": "swanimals/Eopie/Eopie",
-    "C": "swanimals/Eopie/Eopie",
-    "D": "swanimals/Eopie/Eopie_j"
+    "C": "swanimals/Eopie/Eopie_j"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-12",
-    "C": "history Jawa_Patches 2026-08-24",
-    "D": "IN GAME \u2014 SWBestiary"
+    "B": "render regen_c17_eopie_v1",
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Eopie/Eopie",
    "reserved": [
     "A",
     "B",
-    "C",
-    "D"
+    "C"
    ],
    "subject_key": "eopie"
   },
@@ -1633,14 +1646,14 @@
   "RSW_Jamel": {
    "columns": {
     "A": {
-     "east": "a0e576417866b99fd313d9c04c7d964d7c9aedcff1b994272cf9c5aa0fc4bc91",
-     "north": "6e69283222a063c5f84ee2cd24f59778e4c02e04da37885cb1e7d075be0bf581",
-     "south": "cd21af6751294b44af38af9c54cdf6bde4d9b02aeec5bb8b2504ee754bb33d05"
-    },
-    "B": {
      "east": "1b17ef32a1c6d1aac8dd628554242baee904b77ac63c4853ab24e826b617ccdf",
      "north": "08d586f5808ca080f76e9b46d5e14d750ce804e59111b65853a81a824e9d887a",
      "south": "8a4f2642b6956d2c534d4a137d3beb82c2620fd9f887b61e13ebc5a502ca1807"
+    },
+    "B": {
+     "east": "a0e576417866b99fd313d9c04c7d964d7c9aedcff1b994272cf9c5aa0fc4bc91",
+     "north": "6e69283222a063c5f84ee2cd24f59778e4c02e04da37885cb1e7d075be0bf581",
+     "south": "cd21af6751294b44af38af9c54cdf6bde4d9b02aeec5bb8b2504ee754bb33d05"
     },
     "C": {
      "east": "95c106d6e9eee79d456afff41d9180af629a08ce423c6d046b9afe68850a2687",
@@ -1655,7 +1668,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render longshade_rsw_jamel_v1",
+    "B": "history JamelArtOverride 2026-09-13",
     "C": "history SWBestiary 2026-09-17"
    },
    "res": "swanimals/Jamel/Jamel",
@@ -1712,5 +1725,5 @@
   }
  },
  "sheetId": "weepingstones_sheet_2026-10-05",
- "snapshotId": "2a61d73e179d5161"
+ "snapshotId": "f887cb22b7201552"
 }

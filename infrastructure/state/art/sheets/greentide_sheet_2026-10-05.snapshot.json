@@ -1,9 +1,9 @@
 {
  "biome": "RM_Greentide",
- "built": "2026-10-08T22:56:19-0700",
+ "built": "2026-10-09T05:06:39-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 19 mods \u2014 a test list): 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
  "rows": {
   "AA_BloodShrimp": {
    "columns": {
@@ -1172,10 +1172,6 @@
      "north": "8dd585b77fc38d3cbf7140f3fe8854aba841162f30ade1e4fd62ff65125061cd",
      "south": "3601ff8203913163c81d1820b83ffe92fd1a65ac1801ca7b0c42f36398738fb0"
     },
-    "C": {
-     "east": "788e8ab1999465d4ec4409118609fcc5c11efef95b5edfb37e4cb2fab8b2dcbc",
-     "south": "edbbf5992596112a9c92b43d4e836e1d68b82915becbea93215256cec1c683ce"
-    },
     "D": {
      "east": "56f8d76d2939a4d32923f6694e756e96fef02a7a2717ee55dc7901c25f2c29ee",
      "north": "fec488f1f69ad2ae6e2a73b2ee59cc559d26f35284cc2dc88757779263f184af",
@@ -1190,23 +1186,28 @@
      "east": "9e0f11108fd59541edc2e18dc730e3b511312dfde79f8b88878d315e16c22e9b",
      "north": "50da82f4a530ce1e0507b516983ad0ae86abee404e8bfc788280e1b8afb8f3c3",
      "south": "c617a3bdae414b5744d784274edced21739183c516bde0391395c73bd647fb25"
+    },
+    "G": {
+     "east": "788e8ab1999465d4ec4409118609fcc5c11efef95b5edfb37e4cb2fab8b2dcbc",
+     "north": "26de15d72c897bf892a3cbd31da59b0ccfb9be69079a695ae830f1c4802f2c95",
+     "south": "edbbf5992596112a9c92b43d4e836e1d68b82915becbea93215256cec1c683ce"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
     "B": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
-    "C": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
     "D": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
     "E": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
-    "F": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth"
+    "F": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
+    "G": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth"
    },
    "labels": {
     "A": "IN GAME \u2014 Greentide",
     "B": "history Greentide 2026-10-03",
-    "C": "render regen_gt_yammeth_flying_1_v1",
     "D": "render regen_gt_yammeth_flying_2_v1",
     "E": "render regen_gt_yammeth_flying_3_v1",
-    "F": "render regen_gt_yammeth_flying_4_v1"
+    "F": "render regen_gt_yammeth_flying_4_v1",
+    "G": "render regen_gt_yammeth_flying_1_v1"
    },
    "res": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
    "reserved": [
@@ -1215,7 +1216,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "subject_key": "yammeth"
   },
@@ -1614,8 +1616,9 @@
      "north": "72145c0126cc95f3d299f5be219914d141ade7e6bc286dce949b02ed373a2228",
      "south": "6ebfafc37cbee0418392bde46f4401a2f1b2b23c9964db763f697084339bffc6"
     },
-    "F": {
+    "G": {
      "east": "4b4350425edb6c35c2059ff192215bf76b3d54170a6fa0ebac822019e1f6def8",
+     "north": "e1eee1d8bdd20ce38c142ccc9f448e7d87d018c9d9e9b0fa63792d064eec116d",
      "south": "656c748fad1cbeab9bd0d0aa48db448e1a30b169cd823daa7433f617bf165652"
     }
    },
@@ -1624,14 +1627,14 @@
     "B": "swanimals/Dragonsnake/Dragonsnake",
     "D": "swanimals/Dragonsnake/Dragonsnake_Swimming",
     "E": "swanimals/Dragonsnake/Dragonsnake",
-    "F": "swanimals/Dragonsnake/Dragonsnake"
+    "G": "swanimals/Dragonsnake/Dragonsnake"
    },
    "labels": {
     "A": "history DragonsnakeArtOverride 2026-09-20",
     "B": "history DragonsnakeArtOverride 2026-09-11",
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 DragonsnakeArtOverride",
-    "F": "render regen_gt_canon_dragonsnake_v1_swim \u2014 failed canon check"
+    "G": "render regen_gt_canon_dragonsnake_v1_swim \u2014 failed canon check"
    },
    "res": "swanimals/Dragonsnake/Dragonsnake",
    "reserved": [
@@ -1640,7 +1643,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "subject_key": "dragonsnake"
   },
@@ -1911,6 +1915,14 @@
      "east": "ef15e242b68db6bca030ea5dea78e940a0c92269fe257adb55283857a11217ab",
      "north": "21c94c73d670a8a3ce0d43edfd708d02d250fa79a6b71c4934da34e99ef6cfc6",
      "south": "db7b3fea91f21772b513c86bbb2e6a0ce0467d0808c9290019417b3a5ecd8419"
+    },
+    "T": {
+     "east": "014d8397294ef5d511d4d2255804abd7c6f68fc56d9ae94990984511379853b4"
+    },
+    "U": {
+     "east": "63c4a42c32acc26bf583d4abdd3e0dd07a546e3da82afcf8cef7301e52a556ac",
+     "north": "e4c13fcda780eefea9c004e7eb7993ea0a42e87c10b07f2af67b2566c36188e0",
+     "south": "b5d3470f8e79a3e1636a9f5355efa4c4fcabd8fec73d268e0006c21ef744199a"
     }
    },
    "graphic_of": {
@@ -1930,7 +1942,9 @@
     "P": "swanimals/Hawkbat/Hawkbat",
     "Q": "swanimals/Hawkbat/Hawkbat",
     "R": "swanimals/Hawkbat/Hawkbat",
-    "S": "swanimals/Hawkbat/Hawkbat"
+    "S": "swanimals/Hawkbat/Hawkbat",
+    "T": "swanimals/Hawkbat/Hawkbat",
+    "U": "swanimals/Hawkbat/Hawkbat"
    },
    "labels": {
     "A": "history HawkbatArtOverride 2026-09-20",
@@ -1949,7 +1963,9 @@
     "P": "render regen_gt_hawkbat_flying_j_1_v1",
     "Q": "render regen_gt_hawkbat_flying_j_2_v1",
     "R": "render regen_gt_hawkbat_flying_j_3_v1",
-    "S": "render regen_gt_hawkbat_flying_j_4_v1"
+    "S": "render regen_gt_hawkbat_flying_j_4_v1",
+    "T": "render hawkbat_fly_master_v1",
+    "U": "render regen_gt_hawkbat_flying_j_2_v1"
    },
    "res": "swanimals/Hawkbat/Hawkbat",
    "reserved": [
@@ -1971,7 +1987,9 @@
     "P",
     "Q",
     "R",
-    "S"
+    "S",
+    "T",
+    "U"
    ],
    "subject_key": "hawkbat"
   },
@@ -2032,19 +2050,31 @@
      "east": "7b329492a519dcae0883542e0619fd0ece1b5799807e50b04b111d962f2ecca5",
      "north": "8c84187972efc3016ac993d1ffe1bbf3202a14b63af89be64184060ee369e7e5",
      "south": "8f71ade410e925b9202fac04dba832272f80e5f8b92e4e5d84d1cc3ee17685e2"
+    },
+    "G": {
+     "east": "65780bcefaf9011096f1f4a3615e5fe33e0a972beea836f9c874e41a84a554d3"
+    },
+    "H": {
+     "east": "bef5081ec5f93526632eef147fad04cab129990b76fe641edc141d57ea8a2c41",
+     "north": "e2a32b171d67d4bfc9a52f9be012764d42ccbdae2353d5e3938483339ca54368",
+     "south": "4b122f0c7957b34fceb768dcd3647aebcab4f1226e03cadb34e1e69e9d52dd7f"
     }
    },
    "graphic_of": {
     "A": "swanimals/Kinrath/Kinrath",
     "B": "swanimals/Kinrath/Kinrath",
     "C": "swanimals/Kinrath/Kinrath",
-    "F": "swanimals/Kinrath/Kinrath"
+    "F": "swanimals/Kinrath/Kinrath",
+    "G": "swanimals/Kinrath/Kinrath",
+    "H": "swanimals/Kinrath/Kinrath"
    },
    "labels": {
     "A": "history KinrathArtOverride 2026-09-20",
     "B": "render canon_kinrath_v1",
     "C": "history KinrathArtOverride 2026-09-13",
-    "F": "IN GAME \u2014 KinrathArtOverride"
+    "F": "IN GAME \u2014 KinrathArtOverride",
+    "G": "render kinrath_netcaster_v2",
+    "H": "render kinrath_netcaster_v3"
    },
    "res": "swanimals/Kinrath/Kinrath",
    "reserved": [
@@ -2053,7 +2083,9 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G",
+    "H"
    ],
    "subject_key": "kinrath"
   },
@@ -2151,19 +2183,24 @@
      "east": "83aebfc2d39de2d015073c1487c9aa113d2676aa3743a64ee1a358ca78259b1f",
      "north": "c14b47e2fc083f4c77ff11548487c93b84db9e73bfceb72963a99d431c9c23a4",
      "south": "f8800811a6b1c40baf3ef2cb13f8d987731134db2ca745c1fd33632f6dd0c25f"
+    },
+    "I": {
+     "north": "1449a8b42738e52af1ea95c84e05c46c105655204c19acce391423f55b536cfd"
     }
    },
    "graphic_of": {
     "A": "swanimals/Mott/Mott_f",
     "B": "swanimals/Mott/Mott_m",
     "C": "swanimals/Mott/Mott_m_Swimming",
-    "G": "swanimals/Mott/Mott_m"
+    "G": "swanimals/Mott/Mott_m",
+    "I": "swanimals/Mott/Mott_f"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "history SWBestiary 2026-09-17",
     "C": "IN GAME \u2014 SWBestiary",
-    "G": "IN GAME \u2014 SWBestiary"
+    "G": "IN GAME \u2014 SWBestiary",
+    "I": "render regen_gt_canon_mott_f_v1"
    },
    "res": "swanimals/Mott/Mott_f",
    "reserved": [
@@ -2174,7 +2211,8 @@
     "E",
     "F",
     "G",
-    "H"
+    "H",
+    "I"
    ],
    "subject_key": "mott"
   },
@@ -2298,7 +2336,7 @@
     "O": {
      "east": "5c42e3dd6f38da825cd0f8f4c71f071a95cafda7449047e87699aa587be5f5fa"
     },
-    "P": {
+    "Q": {
      "1_east": "ab34e6db0e984248d6b7925d8dcf3d507bc33e0ff1af0be97e6db4cec0565d09",
      "1_north": "5a528f5d96f21be3ba80890057523da3c72a316b1c7891c85169b2a7676fba85",
      "1_south": "7731466a138016177521e5dc2f572b0e3b585725e0abc6b2f8f94afca95e4b53",
@@ -2326,7 +2364,7 @@
     "M": "_byname",
     "N": "_byname",
     "O": "_byname",
-    "P": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_"
+    "Q": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 PekoPekoArtOverride",
@@ -2339,9 +2377,9 @@
     "K": "render regen_gt_pekopeko_flying_f_1_v1",
     "L": "render regen_gt_pekopeko_flying_f_2_v1 \u2014 failed canon check",
     "M": "render regen_gt_pekopeko_flying_f_3_v1",
-    "N": "render regen_gt_pekopeko_flying_f_4_v1",
+    "N": "render regen_gt_pekopeko_flying_f_4_v1 \u2014 failed canon check",
     "O": "render regen_gt_pekopeko_flying_m_1_v1",
-    "P": "IN GAME \u2014 PekoPeko_f_Flying_"
+    "Q": "IN GAME \u2014 PekoPeko_f_Flying_"
    },
    "res": "swanimals/PekoPeko/PekoPeko_f",
    "reserved": [
@@ -2360,7 +2398,8 @@
     "M",
     "N",
     "O",
-    "P"
+    "P",
+    "Q"
    ],
    "subject_key": "pekopeko"
   },
@@ -2628,27 +2667,42 @@
      "east": "18b9a987ab8183d2b2cb432046736016e137b0f7414a5d1a73ec93ce473804b8",
      "north": "bda1ecd6c34bc0db1c31355485600dccc22619fa8498a03827722575bf4c0f9c",
      "south": "2e61bd2f76e84da257775976427b0a80fffe64762de5de680c8e696ca5993111"
+    },
+    "D": {
+     "east": "a6100b1c2102ebdb444cfcdeb9fa8c5c21958aa6d79097fa29f1c76df20a4b6a",
+     "north": "df52e3736d2984f6ca6ff3122cdd77011f26275eb7c1f62e0875688c6c7e1418",
+     "south": "5376e2b5135e2d9695b133f28e8f219de07d36adc55a5ddeb4e5cbb0bef13772"
+    },
+    "E": {
+     "east": "855fd0d57f8dcb42ae64cf040e81e3f89128e8b4a2bb8454f816a9f6b33d00bd",
+     "north": "c398689ba78ec5b915301bfdf1bd3e90781a44a589dd2f67252e4f56d43e161c"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/Swarmling/Swarmling",
     "B": "Things/Pawn/Animal/Swarmling/Swarmling",
-    "C": "Things/Pawn/Animal/Swarmling/Swarmling"
+    "C": "Things/Pawn/Animal/Swarmling/Swarmling",
+    "D": "Things/Pawn/Animal/Swarmling/Swarmling",
+    "E": "Things/Pawn/Animal/Swarmling/Swarmling"
    },
    "labels": {
     "A": "IN GAME \u2014 Vanilla Factions Expanded - Insectoids 2",
     "B": "render rot_swarmling_v2",
-    "C": "shipped, not loaded \u2014 SwarmlingArtOverride"
+    "C": "shipped, not loaded \u2014 SwarmlingArtOverride",
+    "D": "render miasma_swarmling_green_v2",
+    "E": "render miasma_swarmling_green_v3"
    },
    "res": "Things/Pawn/Animal/Swarmling/Swarmling",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "swarmling"
   }
  },
  "sheetId": "greentide_sheet_2026-10-05",
- "snapshotId": "7789f85961122bb4"
+ "snapshotId": "fe3e85daabe73e36"
 }

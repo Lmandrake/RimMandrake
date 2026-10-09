@@ -1,9 +1,9 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-07T20:07:12-0700",
+ "built": "2026-10-09T05:03:13-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
  "rows": {
   "AA_BedBug": {
    "columns": {
@@ -80,7 +80,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_DecayDrake_v1"
+    "B": "shipped, not loaded \u2014 DecayDrakeArtOverride"
    },
    "res": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake",
    "reserved": [
@@ -986,20 +986,28 @@
   "RSW_Lylek": {
    "columns": {
     "A": {
+     "east": "30ea952a4c20db6a1d5cc5f49366ef5bb14444ea38cea9ddff3899e6dcec599b",
+     "north": "f9e1fe30b8821babaf01a4637de11df60fa318a4a8fb6554226ab6fdfd4abf32",
+     "south": "c135525886b3e3a29cbb60236b61a747ae58999119179236f6259450af84efcf"
+    },
+    "B": {
      "east": "7586a95880e328662548de31c764b8bbe05da39955f8892f39d7cc53caf185c1",
      "north": "14da01de98dbfa21ff89df2eaa9553fdb429dc72680d3a7f44031c4664922220",
      "south": "7e7ad3fc5e0485eed5985e981270ef093f180a7bc7fd29f0cb2c0f2f57336196"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Lylek/Lylek"
+    "A": "swanimals/Lylek/Lylek",
+    "B": "swanimals/Lylek/Lylek"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "history SWBestiary 2026-09-17"
    },
    "res": "swanimals/Lylek/Lylek",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "lylek"
   },
@@ -1109,11 +1117,6 @@
      "south": "8a522d27100ccd11fe0d7d0cef53d650f7864087fc01933f71fc86753c9e0698"
     },
     "B": {
-     "east": "5879e940a5c716b3ddb140b000d5158e38be97de0b5ac7d7b49c468d47804575",
-     "north": "d4e402ac13bee4208bbfe088fe5ec27c94797047f965ab6ccdb57fe646c3bf34",
-     "south": "9380c8568a951dfd511406ff6e3b5704614906dcc1f7e6a4b2e9e3b2e1bdf7b3"
-    },
-    "C": {
      "east": "086e7012ec781f65a10c4a0267bc6d72d855f8ae77c477ee025e22b5d044613e",
      "north": "91578cd65de4259e1b5bc0916a045069dbc063b28ac48f320f48497c35594de6",
      "south": "8f631848c120023acff8586cff3b792f137d95a71f6f9f7547ebe5288b946d87"
@@ -1121,43 +1124,38 @@
    },
    "graphic_of": {
     "A": "swanimals/Skalder/Skalder",
-    "B": "swanimals/Skalder/Skalder",
-    "C": "swanimals/Skalder/Skalder_Swimming"
+    "B": "swanimals/Skalder/Skalder_Swimming"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-18",
-    "C": "IN GAME \u2014 SWBestiary"
+    "B": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Skalder/Skalder",
    "reserved": [
     "A",
-    "B",
-    "C"
+    "B"
    ],
    "subject_key": "skalder"
   },
   "RSW_VentStalker": {
    "columns": {
     "A": {
+     "east": "7b329492a519dcae0883542e0619fd0ece1b5799807e50b04b111d962f2ecca5",
+     "north": "8c84187972efc3016ac993d1ffe1bbf3202a14b63af89be64184060ee369e7e5",
+     "south": "8f71ade410e925b9202fac04dba832272f80e5f8b92e4e5d84d1cc3ee17685e2"
+    },
+    "B": {
+     "east": "65780bcefaf9011096f1f4a3615e5fe33e0a972beea836f9c874e41a84a554d3"
+    },
+    "C": {
+     "east": "bef5081ec5f93526632eef147fad04cab129990b76fe641edc141d57ea8a2c41",
+     "north": "e2a32b171d67d4bfc9a52f9be012764d42ccbdae2353d5e3938483339ca54368",
+     "south": "4b122f0c7957b34fceb768dcd3647aebcab4f1226e03cadb34e1e69e9d52dd7f"
+    },
+    "D": {
      "east": "9a89a904bff14d577e843ae5f2c77a26ce17e9cd73534917dccd8e13e40cab8e",
      "north": "0acf8db94c0d1bbe99a7f65514195706be71a256798cc1f5cc679fcd29c56580",
      "south": "478166e4e7ce77b5afb665777dd37ea4dd38236f7b4306f4064900baa5052334"
-    },
-    "B": {
-     "east": "66640308151aca479ad48034514a4e1fd10bb0b5c96d366634bf52dd5f80761a",
-     "north": "9b7f3788c7cb569f2068cc0ae6801ad1f6a4b5d762d435cd289443ded88340b0",
-     "south": "7b03cf3076b405e5b8beebf0f4156dd3d4b46f56f5c34461d281bb1699b3228b"
-    },
-    "C": {
-     "east": "1dc12bcf53aecba1cd77d46cac36270d743da787c416fc2938440534bed0eb3b",
-     "north": "3fc86e6157d8b9b6a55f27f07d51563292b84fce0812c692715f55f8075f5f1b",
-     "south": "ac70f1fdede063cc610c8a987dd84200e2f1d4eab7e4413d8c595944969b7479"
-    },
-    "D": {
-     "east": "8f307c24cd8c3ee502bb63772f55ee173894bbba7c9c649c5779860222580769",
-     "north": "fb4f8c33d8c2cdae8679597ec5078755f02a967c5da32d4eab9e08a48d4c20fd",
-     "south": "2c2a86f8ce0180242cb369658185fcdfb0ea71a3ec34c940061eef620881baf2"
     }
    },
    "graphic_of": {
@@ -1168,9 +1166,9 @@
    },
    "labels": {
     "A": "IN GAME \u2014 KinrathArtOverride",
-    "B": "render canon_kinrath_v1",
-    "C": "history KinrathArtOverride 2026-09-13",
-    "D": "donor original \u2014 mlie.starwarsanimalcollection"
+    "B": "render kinrath_netcaster_v2",
+    "C": "render kinrath_netcaster_v3",
+    "D": "history KinrathArtOverride 2026-09-20"
    },
    "res": "swanimals/Kinrath/Kinrath",
    "reserved": [
@@ -1263,5 +1261,5 @@
   }
  },
  "sheetId": "cauldron_sheet_2026-10-04",
- "snapshotId": "ee1d5c31993bafe3"
+ "snapshotId": "55c4254b730defc3"
 }

@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-<head><meta name="scaled-review-gate" content="v1 sha256:a39e7da922a349127c3a5c8915eeb52f5dfac01b32d368ee88c270b67a86f192">
+<head><meta name="scaled-review-gate" content="v1 sha256:64c6c408da3e28679214a4cd758e677ba74a92018d5472a171ac6ffffd2a7d3d">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>the Blue Desert — flora & fauna art</title>
@@ -199,7 +199,7 @@ body.grid .row.sel-tint{border-color:currentColor}
 {
  "sheetId": "blue_desert_sheet_2026-10-04",
  "title": "the Blue Desert \u2014 flora & fauna art",
- "subtitle": "20 rows \u00b7 1 canon \u00b7 0 linked \u00b7 0 prefilled from desert sitting 1 \u00b7 0 NO ART YET \u00b7 IN GAME judged on ModsConfig.FULL.LATEST.xml (live list has 16 mods \u2014 a test list)",
+ "subtitle": "20 rows \u00b7 1 canon \u00b7 0 linked \u00b7 0 prefilled from desert sitting 1 \u00b7 0 NO ART YET \u00b7 IN GAME judged on ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list)",
  "briefHtml": "<p><b>the Blue Desert<\/b> \u2014 every flora and fauna row of this biome (20 rows), one row per species. Each row shows\n<b>every picture we hold<\/b> for it: <b>IN GAME<\/b> (blue frame) is what the game draws now; <b>shipped, shadowed<\/b> is a copy losing\nthe load-order race; <b>render<\/b> columns are artpipe outputs (newest first); <b>history<\/b> columns are earlier states of our files\nfrom git; <b>donor original<\/b> is the donor mod's own sprite. Each set shows its facings side by side (S, E, N);\nhover a set's header for where it came from.<\/p>\n<p><b>Pick, per row, the column the game should show<\/b> (letter buttons, or click a column's header). A row with a second graphic\n(swimming, flying) shows it as its own strip \u2014 click a column header there to pick for it. <b>\u2715<\/b> on a non-live picture rejects and\npurges it for good. The note box is the most useful control on the row: say what is wrong, and a redo is written from it.<\/p>\n<p><b>Canon rows<\/b> show the canon-library reference images and the entry's <b>Must show<\/b> list beside the pictures. A canon creature and\nour own (franchise-free) stand-in for it are <b>separate rows<\/b>, each judged on its own, but grouped together under one coloured band\nwith a <b>related<\/b> link both ways. A stand-in's Star Wars twin (RSW_) is always its own full row in the band, even where the biome\nnever casts it. Rows you already ruled on in <b>desert sitting 1<\/b> are prefilled with that pick and say so\n(green line naming the set). The counter separates rows <b>you<\/b> decided from rows still holding the agent's\nprefill. Nothing installs from this sheet: your picks become ledger rulings, then you see an install plan.<\/p>",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "invented": [
@@ -286,7 +286,7 @@ body.grid .row.sel-tint{border-color:currentColor}
  ],
  "groupLabel": "group",
  "media": true,
- "freshness": "<b>Built 2026-10-08 20:54 PDT.<\/b> No prior ruling of yours is on record for this sheet.",
+ "freshness": "<b>Built 2026-10-09 05:02 PDT.<\/b> No prior ruling of yours is on record for this sheet.",
  "decisionsFile": "blue_desert_sheet_2026-10-04.decisions.json",
  "decisionsPath": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
  "sheetPath": "/home/mandrake/rm/bench/Transient/biome_ffar/blue_desert_sheet_2026-10-04.html"
@@ -488,7 +488,7 @@ const _itemBody = it => {
     <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
     ${it.fresh ? `<div class="bs-fresh bs-fresh-${it.fresh.state}">${esc(it.fresh.text)}</div>` : ''}
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
-    ${desc}${links}${elsewhere}${rul}${purgedNote}${noart}</div>
+    ${desc}${links}${elsewhere}${rul}${window.artFollowedHtml(d)}${purgedNote}${noart}</div>
     <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${scaleBlock(it)}${donorAbs}${canon}</div></div>`;
   return re ? `<details class="bs-ruled">${reHead}${inner}</details>` : inner;
 };
@@ -565,6 +565,12 @@ document.addEventListener('click', e => {
 })();
 window.itemBody = it => { try { return _itemBody(it); } catch (e) { return `<div class="bs-noart">row render error (this row only; the sheet is intact): ${esc(String(e && e.message || e))}</div>`; } };
 
+/* Notes he wrote that were already FOLLOWED (enact moves them out of the note box into notes_followed): history, not
+   an open request, so a reload cannot resubmit them. */
+window.artFollowedHtml = d => {
+  const f = (d && d.notes_followed) || [];
+  return f.length ? `<div class="ac-followed" style="font-size:12px;opacity:.75;margin:3px 0">${f.map(x => `followed: “${esc(x.note)}” <span class="sub">(${esc((x.followed_by || []).slice(0, 2).join(', '))}${(x.followed_by || []).length > 2 ? ' …' : ''} · ${esc(String(x.when || '').slice(0, 10))})</span>`).join('<br>')}</div>` : '';
+};
 window.artRepaint = id => {
   const node = document.querySelector(`.row[data-id="${cssEsc(id)}"] .ac-body`);
   const it = byId.get(id);

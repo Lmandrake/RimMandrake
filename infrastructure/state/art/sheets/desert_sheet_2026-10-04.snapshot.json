@@ -1,9 +1,9 @@
 {
  "biome": "RM_LongShade",
- "built": "2026-10-08T20:55:53-0700",
+ "built": "2026-10-09T05:04:58-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 16 mods \u2014 a test list): 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
  "rows": {
   "JOE_Landopus": {
    "columns": {
@@ -463,20 +463,26 @@
     },
     "B": {
      "single": "31d3fe4f28279f205954f1c550b0d90015bded66f713a2c4a0fa5a00b2c60a1c"
+    },
+    "C": {
+     "single": "785c762f931c2dda170d62b03b53ab62771f0fc4b5594c69d659e2c802761f07"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Leachmoss",
-    "B": "Things/Plant/RM_Leachmoss"
+    "B": "Things/Plant/RM_Leachmoss",
+    "C": "Things/Plant/RM_Leachmoss"
    },
    "labels": {
     "A": "our deployed art (render rmleachmoss_v1) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render ls_regen_RM_Leachmoss_v1"
+    "B": "render ls_regen_RM_Leachmoss_v1",
+    "C": "render enact_1886230e_leachmoss_v1"
    },
    "res": "Things/Plant/RM_Leachmoss",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "leachmoss"
   },
@@ -2112,8 +2118,9 @@
      "north": "2590fe2296f093f8a3e1a25fcaa67c2be984ea36c6b30757908ef26f582cbf82",
      "south": "31b47949ff35c4fe52dab6e321d8603d2b439cea369f73b6dc2661d722a1a514"
     },
-    "K": {
+    "L": {
      "east": "c5514385a669b60d4254bf0a30430719a5e8ce1c4099bb7ba73dfdff6992ff27",
+     "north": "0a198d1088753b4aeb454b15724dfeaad18e1c127e381abdeac8afed1bf167ec",
      "south": "c14b301e8ee0f02d0607407758e25841d69b1d2725ac04da12db0caaf98e55e8"
     }
    },
@@ -2124,7 +2131,7 @@
     "H": "swanimals/Iriaz/Iriaz",
     "I": "swanimals/Iriaz/Iriaz",
     "J": "swanimals/Iriaz/Iriaz",
-    "K": "swanimals/Iriaz/Iriaz"
+    "L": "swanimals/Iriaz/Iriaz"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
@@ -2133,7 +2140,7 @@
     "H": "history IriazArtOverride 2026-09-18",
     "I": "IN GAME \u2014 SWBestiary",
     "J": "render regen_ls3_iriaz_h_v1",
-    "K": "render regen_ls3_iriaz_i_v1"
+    "L": "render regen_ls3_iriaz_i_v1"
    },
    "res": "swanimals/Iriaz/Iriaz",
    "reserved": [
@@ -2147,7 +2154,8 @@
     "H",
     "I",
     "J",
-    "K"
+    "K",
+    "L"
    ],
    "subject_key": "iriaz"
   },
@@ -2567,11 +2575,6 @@
     "F": {
      "north": "63c389c1b0d5300a721483b0bc2428e169f1ecf6196aaa2f6c3b703c8d5bbd7b",
      "south": "223bb34ad09d5034bdea9077a82de18c194c82ef6a0a5392876775b0f1039df7"
-    },
-    "G": {
-     "east": "effceaee76228b401f0a77e1fb330c01a71c6509d2358315b6a3aa7732d98c7d",
-     "north": "1c040b3b4348a24809fc0ceabad92ec685af7abd071be1b61265323077068347",
-     "south": "f7a05f8e5dc75d7ddd190539287610efc2d01e9bcfbda131d1c1d60fbc62e217"
     }
    },
    "graphic_of": {
@@ -2579,16 +2582,14 @@
     "B": "swanimals/Nerf/Nerf_j",
     "C": "swanimals/Nerf/Nerf_m",
     "E": "_byname",
-    "F": "_byname",
-    "G": "swanimals/Nerf/Nerf_m"
+    "F": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
-    "C": "history SWBestiary 2026-09-17",
+    "C": "IN GAME \u2014 SWBestiary",
     "E": "render longshade_rsw_nerf_v1 \u2014 failed canon check",
-    "F": "render regen_ls_canon_nerf_v1 \u2014 failed canon check",
-    "G": "IN GAME \u2014 SWBestiary"
+    "F": "render regen_ls_canon_nerf_v1"
    },
    "res": "swanimals/Nerf/Nerf_f",
    "reserved": [
@@ -2735,11 +2736,11 @@
    "graphic_of": {
     "B": "Things/Plant/RSW_Plant_Chakroot_Wild",
     "C": "Things/Plant/RSW_Plant_Chakroot_Wild",
-    "D": "_byname",
-    "E": "_byname",
-    "F": "_byname",
-    "G": "_byname",
-    "H": "_byname"
+    "D": "Things/Plant/RSW_Plant_Chakroot_Wild",
+    "E": "Things/Plant/RSW_Plant_Chakroot_Wild",
+    "F": "Things/Plant/RSW_Plant_Chakroot_Wild",
+    "G": "Things/Plant/RSW_Plant_Chakroot_Wild",
+    "H": "Things/Plant/RSW_Plant_Chakroot_Wild"
    },
    "labels": {
     "B": "IN GAME \u2014 RimMandrake: SW \u2014 Bestiary",
@@ -2784,9 +2785,9 @@
    "graphic_of": {
     "A": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
     "B": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
-    "C": "_byname",
-    "D": "_byname",
-    "E": "_byname"
+    "C": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
+    "D": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
+    "E": "Things/Plant/RSW_Plant_HubbaGourd_Wild"
    },
    "labels": {
     "A": "render desertportb_plant_hubbagourd_wild",
@@ -2957,14 +2958,15 @@
      "north": "ba886070a316f62a89eaaac5b61579e56ef1ed0f36d7a532b3e5424b1c4fd911",
      "south": "9bddd5309b5f3a3f2fc301b40e5c95cd21c8b1a201602469f30d48d9a9cff604"
     },
-    "G": {
-     "east": "0de5ac90e7cf494968ecbdd6ae2c434cbb3a30c62ad5a44cdc24f600832e0f7a",
-     "south": "494e91ba04d09890776210cd88ff40ffe7b1b80d06dd9c48ef106c67366be1fa"
-    },
     "H": {
      "east": "3fd1d7f53e5bea815bfdded678cc875996ac8a6469210b50bec703e9d090d865",
      "north": "a0db9a03c6bb37e4b8f583256b59a364d2b67a04d673dd7603fa771b9dbd04c8",
      "south": "2147aafe9c3005fd206df52f5855bd2b4b0b8a7affeae9168e364460688f2d8e"
+    },
+    "I": {
+     "east": "0de5ac90e7cf494968ecbdd6ae2c434cbb3a30c62ad5a44cdc24f600832e0f7a",
+     "north": "1b2608a45f95bb7e6cd54af63b24055689433e0832955c293b2d5bd4dc7892b7",
+     "south": "494e91ba04d09890776210cd88ff40ffe7b1b80d06dd9c48ef106c67366be1fa"
     }
    },
    "graphic_of": {
@@ -2973,8 +2975,8 @@
     "D": "_flip:swanimals/Shyrack/Shyrack_Flying_",
     "E": "swanimals/Shyrack/Shyrack",
     "F": "swanimals/Shyrack/Shyrack",
-    "G": "swanimals/Shyrack/Shyrack",
-    "H": "swanimals/Shyrack/Shyrack"
+    "H": "swanimals/Shyrack/Shyrack",
+    "I": "swanimals/Shyrack/Shyrack"
    },
    "labels": {
     "A": "history SWBestiary 2026-09-18",
@@ -2982,8 +2984,8 @@
     "D": "IN GAME \u2014 Shyrack_Flying_",
     "E": "render regen_ls_canon_shyrack_flying_1_v1",
     "F": "render regen_ls_canon_shyrack_flying_2_v1",
-    "G": "render regen_ls_canon_shyrack_flying_3_v1",
-    "H": "render regen_ls_canon_shyrack_flying_4_v1"
+    "H": "render regen_ls_canon_shyrack_flying_4_v1",
+    "I": "render regen_ls_canon_shyrack_flying_3_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Shyrack/Shyrack",
    "reserved": [
@@ -2994,7 +2996,8 @@
     "E",
     "F",
     "G",
-    "H"
+    "H",
+    "I"
    ],
    "subject_key": "shyrack"
   },
@@ -3062,10 +3065,6 @@
      "north": "d2b0f6fff8e086933711e003dc7e44c338d71581f0361f7805c509065cada607",
      "south": "78e39e0873b46d9b1e236a2b8f0832995af0be2389562b0164b8139360dfa8a1"
     },
-    "G": {
-     "east": "cd6241d0da421a5aebf14e6708694a835a281eab5b6efc0fe09170ba558d4704",
-     "north": "e5d9d3dc784acfa79b20abe8b217736c3601dfb82776ac623a44946c3b3dfafb"
-    },
     "H": {
      "east": "78d3e7d59545bf6043d6c5b889c931cdf13aeaea1605fa2655ccb354b6d70398",
      "north": "1c5a120a4d82b1bbd6ae0f080087b260247a3978ade6ecfacc3b2430cc2c095f",
@@ -3082,6 +3081,39 @@
     },
     "K": {
      "east": "99665372d8ec3edb7fc0a662c544eeb33a0315f15d37a0b2e6629e2e66d44176"
+    },
+    "L": {
+     "east": "15b5f5efbe89c34474dc8e5bc577a6033ae1aa0f87cee5592944965303c1a86a",
+     "north": "a07f352ebb572db935bb93b4c63363acabfcc2d88e8f2d27d8d9cbdeb232983f",
+     "south": "7d4df2cefe64223534f1fc71b56df7acf0858f741362a49da245cfdf3892b7a9"
+    },
+    "M": {
+     "east": "9f307c22de61fa97d71dcbeba54b37b83c4ffc7e82b8613d602cc33b903be26b",
+     "north": "dd7990842e5fe022c37d4a562335849a012b543831c24e63fda772ec782498e1",
+     "south": "099022d943a4bfb02a84cf4c1cdad7916e244940a09ed650253b5d99647c9651"
+    },
+    "N": {
+     "east": "14e7a8f0ef21e7f351b03dac29ab8de917e054afaa747d7f07b2c9a8136cb705",
+     "north": "9cd1b61094cdf155b2bade177b8685c00098c1a254910443792967c91d36e18d",
+     "south": "babce3920c49deefa92f693949dae4c8fd74a3e85f99fe83b52af3b0658bb699"
+    },
+    "O": {
+     "east": "d82f6aef924ef0023bc900dafe51f9b459ce6b865afa5c560d5ae2ef20829b5f",
+     "north": "80b1e51310c4ff9246f6771c6e4baa88494d60d545ec38037acf5dda76833808",
+     "south": "54a01704a3704de149e97b64bf1d6c20ec919ae0f6928f91b16fbb55fe6841d7"
+    },
+    "P": {
+     "east": "fce1eb56a6609de84a2571a01ca640f3b15002e1b58488e6314be16b0e8065e6"
+    },
+    "Q": {
+     "east": "cd6241d0da421a5aebf14e6708694a835a281eab5b6efc0fe09170ba558d4704",
+     "north": "e5d9d3dc784acfa79b20abe8b217736c3601dfb82776ac623a44946c3b3dfafb",
+     "south": "510340269ca30a2f52fc8bc73fa1f308d274f32c99a74fe7bd45f6be148f7d85"
+    },
+    "R": {
+     "east": "fe8246947e142bb041fb40f8ff21172fefd40ad6334003d8ed1b019519530bef",
+     "north": "0cc2c5f4c9771a65928c4c0a24b7263eed6fea6b9d50042cb6c5279395d05b41",
+     "south": "f5ec5c5402cc67642d10975c6ff9ac05781206f83604c993ebbbb74c35766ed8"
     }
    },
    "graphic_of": {
@@ -3090,11 +3122,17 @@
     "D": "swanimals/Sketto/Sketto",
     "E": "_flip:swanimals/Sketto/Sketto_Flying_",
     "F": "swanimals/Sketto/Sketto",
-    "G": "swanimals/Sketto/Sketto",
     "H": "swanimals/Sketto/Sketto",
     "I": "swanimals/Sketto/Sketto",
     "J": "swanimals/Sketto/Sketto",
-    "K": "swanimals/Sketto/Sketto"
+    "K": "swanimals/Sketto/Sketto",
+    "L": "swanimals/Sketto/Sketto",
+    "M": "swanimals/Sketto/Sketto",
+    "N": "swanimals/Sketto/Sketto",
+    "O": "swanimals/Sketto/Sketto",
+    "P": "swanimals/Sketto/Sketto",
+    "Q": "swanimals/Sketto/Sketto",
+    "R": "swanimals/Sketto/Sketto"
    },
    "labels": {
     "A": "history SWBestiary 2026-09-18",
@@ -3102,11 +3140,17 @@
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 Sketto_Flying_",
     "F": "render sketto_fly_master_v3",
-    "G": "render regen_ls_canon_sketto_flying_1_v1",
     "H": "render regen_ls_canon_sketto_flying_2_v1",
     "I": "render regen_ls_canon_sketto_flying_3_v1",
     "J": "render regen_ls_canon_sketto_v1",
-    "K": "render sketto_fly_master_v2 \u2014 failed canon check"
+    "K": "render sketto_fly_master_v2 \u2014 failed canon check",
+    "L": "render sketto_fly_plate_v1 \u2014 failed canon check",
+    "M": "render sketto_fly_wing2_v1 \u2014 failed canon check",
+    "N": "render sketto_fly_wing3_v1 \u2014 failed canon check",
+    "O": "render sketto_fly_plate_v2 \u2014 failed canon check",
+    "P": "render sketto_fly_plate_v3",
+    "Q": "render regen_ls_canon_sketto_flying_1_v1",
+    "R": "render regen_ls_canon_sketto_flying_4_v1"
    },
    "res": "swanimals/Sketto/Sketto",
    "reserved": [
@@ -3120,7 +3164,14 @@
     "H",
     "I",
     "J",
-    "K"
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R"
    ],
    "subject_key": "sketto"
   },
@@ -3675,5 +3726,5 @@
   }
  },
  "sheetId": "desert_sheet_2026-10-04",
- "snapshotId": "63da9ac4aee0b7e1"
+ "snapshotId": "37f7f8f39ba650bd"
 }

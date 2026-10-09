@@ -2,7 +2,7 @@
  "sheetId": "wasteland_sheet_2026-10-05",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/wasteland_sheet_2026-10-05.snapshot.json",
- "snapshotId": "976375bacd60ee73",
+ "snapshotId": "9525f83430407c92",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_Wasteland",
  "reviewStatus": {
