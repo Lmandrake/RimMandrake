@@ -1,0 +1,1 @@
+A1 L1: Chill floor: wearer in a roofed but cold space still drains; wearer in a warm room drains nothing; charger behind a wall does not recharge, same-room powered charger does. Behaviour of this comp never checked live since the tickerType fix. PROVISIONAL drainBelowTempC=0.

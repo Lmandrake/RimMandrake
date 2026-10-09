@@ -90,6 +90,10 @@ namespace RimMandrake.DivingInteraction
         // not whole-map range.
         public float chargerSearchRadius = 3.9f;
 
+        // CHILL_SUIT_SHELTER_RULE_1: the suit drains while the AIR AT THE WEARER is colder than this (vanilla
+        // temperature, no second heat model), roof or no roof. PROVISIONAL.
+        public float drainBelowTempC = 0f;
+
         public RM_CompProperties_HeatedSuitBattery()
         {
             compClass = typeof(RM_CompHeatedSuitBattery);
@@ -157,15 +161,15 @@ namespace RimMandrake.DivingInteraction
                 return; // every other map in the game, including the Chill's own SURFACE tile: neither drains nor recharges
             }
 
-            bool outdoors = !wearer.Position.Roofed(map);
-            if (outdoors)
+            bool cold = wearer.Position.GetTemperature(map) < Props.drainBelowTempC;
+            if (cold)
             {
                 if (chargeTicksRemaining > 0)
                 {
                     chargeTicksRemaining = Mathf.Max(0, chargeTicksRemaining - Props.drainIntervalTicks);
                 }
             }
-            else if (chargeTicksRemaining < Props.maxChargeTicks)
+            else if (chargeTicksRemaining < Props.maxChargeTicks && !wearer.Position.UsesOutdoorTemperature(map))
             {
                 TryRechargeNearCharger(wearer, map);
             }
@@ -200,6 +204,11 @@ namespace RimMandrake.DivingInteraction
                 if (wearer.Position.DistanceTo(charger.Position) > Props.chargerSearchRadius)
                 {
                     continue;
+                }
+                Room wr = wearer.Position.GetRoom(map);
+                if (wr == null || charger.GetRoom() != wr)
+                {
+                    continue; // through a wall is not docked: same room only
                 }
                 CompPowerTrader power = charger.TryGetComp<CompPowerTrader>();
                 if (power != null && power.PowerOn)
