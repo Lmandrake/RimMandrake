@@ -6,6 +6,8 @@ namespace RimMandrake.MovingDunes
     public sealed class MapDuneField : IDuneField
     {
         private readonly Map map;
+
+        public Map Map { get { return map; } }
         private readonly SandGrid grid;
 
         public MapDuneField(Map map)

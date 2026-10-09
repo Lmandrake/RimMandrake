@@ -44,6 +44,7 @@ namespace RimMandrake.MovingDunes
         public static bool duneEngineEnabled = true;
         public static float transportRateMultiplier = 1f;
         public static bool burialEnabled = true;
+        public static bool announceSandMoved = true;
         public static bool plantChokeEnabled = true;
         public static bool windLockEnabled = true;
         public static bool clearYieldEnabled = true;          // STILLSAND_GLASS_LENS_CHAIN_1 §1
@@ -55,6 +56,7 @@ namespace RimMandrake.MovingDunes
             Scribe_Values.Look(ref duneEngineEnabled, "duneEngineEnabled", true);
             Scribe_Values.Look(ref transportRateMultiplier, "transportRateMultiplier", 1f);
             Scribe_Values.Look(ref burialEnabled, "burialEnabled", true);
+            Scribe_Values.Look(ref announceSandMoved, "announceSandMoved", true);
             Scribe_Values.Look(ref plantChokeEnabled, "plantChokeEnabled", true);
             Scribe_Values.Look(ref windLockEnabled, "windLockEnabled", true);
             Scribe_Values.Look(ref clearYieldEnabled, "clearYieldEnabled", true);
@@ -82,6 +84,9 @@ namespace RimMandrake.MovingDunes
             list.CheckboxLabeled("Buried caches", ref burialEnabled,
                 "Items fully buried by an advancing dune become a lootable cache. Off: "
               + "dunes still bury things visually, but no cache — and nothing to dig for.");
+            list.CheckboxLabeled("Announce moved sand to other mods", ref announceSandMoved,
+                "Tells listening mods (the Stillsand's singing dunes and slip-face warning) when sand really moved. "
+              + "Off: those listeners stay silent; the dunes themselves are unaffected.");
             list.CheckboxLabeled("Sand chokes plants", ref plantChokeEnabled,
                 "A plant fully buried by sand slowly dies. Off: buried plants are unaffected.");
             list.CheckboxLabeled("Wind locked to the sun (the Stillsand)", ref windLockEnabled,

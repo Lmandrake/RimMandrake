@@ -113,8 +113,16 @@ namespace RimMandrake.MovingDunes
         }
 
         // ── the grid write that keeps clear of the movement-category boundaries ──
+        /// <summary>DUNE_MOVED_EVENT_1: raised once, after the field accepted a write, only when the stored depth
+        /// really changed by more than <see cref="MovedEpsilon"/>. A request the field refuses or clamps back to the old
+        /// depth raises nothing. Args: field, x, z, depth before, depth after.</summary>
+        public static event Action<IDuneField, int, int, float, float> DepthMoved;
+
+        public const float MovedEpsilon = 0.0001f;
+
         public static void SetDepthHysteretic(IDuneField f, int x, int z, float target, float hysteresis)
         {
+            float before = f.GetDepth(x, z);
             target = Clamp(target, 0f, f.MaxDepth);
             if (target > 0f)
             {
@@ -130,6 +138,12 @@ namespace RimMandrake.MovingDunes
                 target = Clamp(target, 0f, f.MaxDepth);
             }
             f.SetDepth(x, z, target);
+            Action<IDuneField, int, int, float, float> moved = DepthMoved;
+            if (moved != null)
+            {
+                float after = f.GetDepth(x, z);
+                if (Math.Abs(after - before) > MovedEpsilon) moved(f, x, z, before, after);
+            }
         }
 
         // ── transport ──
