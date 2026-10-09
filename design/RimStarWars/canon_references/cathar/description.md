@@ -137,17 +137,14 @@ most defining canon feature — the projecting muzzle and mane — is not repres
 - `donor_current_sprite.png` — the shipped head mask. Evidence of the gap, not of canon.
 
 ## Must show
-- [ ] Body fur golden-orange to yellow-brown, with darker shading over the muzzle, brow
-  and shoulders — no red, no grey
-- [ ] A true feline muzzle projecting forward from the face with a black nose pad and
-  visible fangs
-- [ ] A heavy, dark mane worn as thick ropes/dreadlocks, distinctly darker than the body
-  coat
-- [ ] Tufted, pointed, backswept ears
-- [ ] Amber/gold eyes with round pupils
-- [ ] Females have a flatter, more human face with long head-hair rather than a mane, and
-  no beard — not simply a smaller male
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends infobox painting (reference of record), the UAA line-up plate and the Cathar Jedi painting, with the Sylvar panel for female anatomy only, as read by the visual brief.*
+- [ ] BODY PLAN: a powerful, heavy-shouldered, fur-covered humanoid of roughly human height whose head is a LION'S head — a true feline muzzle projecting forward from the face with a black nose pad and visible fangs, a heavy mane framing it, and tufted, pointed, backswept ears; broad clawed hands
+- [ ] COLOUR LAYOUT: body fur golden-orange to yellow-brown over the whole torso, arms and face, with darker shading over the muzzle, brow and shoulders — no red, no grey; individual hue may run to cream/white (Cathar Jedi painting), but never red or grey
+- [ ] Mane: a heavy mane worn as thick ropes/dreadlocks swept back off the skull — in the reference of record distinctly darker than the body coat (the UAA plate and the comic males show pale-gold/cream manes, so the mane's presence and mass are the fixed fact)
+- [ ] Amber/gold eyes with round pupils, set forward under a shelf brow
+- [ ] Females have a flatter, more human face with long head-hair rather than a mane, and no beard — not simply a smaller male
 - [ ] Realistic rendering: natural dense fur with visible direction and texture under natural lighting, no outlines, no comic shading
+- [ ] NEGATIVE: not a tinted human with a cat nose (no flat human face, no elf ears, no bare skin on the male face — the donor's failure); not a Bothan (no long equine/canine snout) and not a Wookiee (no ape face, no shaggy all-over hair coat)
 
 ## Engine limits
 Cathar striping (the sourced "dark stripes" over the gold-to-yellow-brown coat) cannot be

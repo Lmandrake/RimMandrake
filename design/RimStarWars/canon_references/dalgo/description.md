@@ -42,12 +42,15 @@ onto long thin legs, lengthen the snout, and keep the orange-with-cream-
 underside palette and dorsal crest.
 
 ## Must show
-- [ ] Tall, long-legged, horse-like four-legged reptilian runner build, not a low-slung lizard and not a biped
-- [ ] Large ridged fan-like crest sweeping back from the crown of the head
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_sot_art.png` as read by the visual brief, the canon/Clone Wars wiki text (crest, three nostrils, tusks, blade tail), and the `## ruling` below.*
+- [ ] BODY PLAN: a tall (2.5–3 m), long-legged, horse-like four-legged reptilian runner — deep muscular chest, long thin legs ending in rounded hoof-like pads, a long upright neck, long-snouted head — not a low-slung lizard and not a biped
+- [ ] COLOUR LAYOUT: smooth rust-orange hide over the body with darker reddish shading along the back and a paler tan underside; eyes purple
+- [ ] Large ridged fan-like crest sweeping back from the crown of the head (text: the crest runs the animal's length)
 - [ ] Long snout (text: sharp teeth and two lower tusks)
-- [ ] Smooth rust-orange hide with darker reddish shading and a paler tan underside
 - [ ] Wide, curling, blade/fin-like tail tip
 - [ ] Realistic rendering: natural smooth reptile-skin texture and muscle under real lighting, no outlines, no cartoon shading
+- [ ] Owner rulings carried: 2026-09-14 picked the *Stay on Target* art and noted "But the Donor mod really isn't too bad this time." (palette and crest, per the brief); 2026-10-04 on the redo: "Canon shows somthing more like C. We need a high quality version of that. Look at Canon please." (C = the sail-crested orange dalgo render `pyrelands_dalgo_v1`)
+- [ ] NEGATIVE: not a dachshund-shaped low stocky quadruped with short stubby legs and a curled tail (the donor's proportions), not a raptor/theropod biped, not a horse (scaly reptile skin, crest, blade tail, no mane)
 
 ## Engine limits
 none known

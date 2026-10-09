@@ -146,16 +146,13 @@ the element that ramps, purple → yellow. Whoever corrects this should move the
 onto the tip and flatten the lobe to skin value.
 
 ## Must show
-- [ ] Two separate horn structures: upright primary horns (male only) rising from the top
-  of the skull, AND fleshy lateral head lobes (lethorns) hanging down each side that
-  terminate in a long tapering pendant tip
-- [ ] The lethorn lobes themselves are skin-coloured flesh, not horn material — only the
-  pendant tip is purple-to-yellow
-- [ ] Skin reads pale blue-grey to lavender/purple, heavily mottled with pale cream-yellow
-  patches — not a flat blue
-- [ ] Hairless, elongated cranial dome
-- [ ] Female lethorn lobes are shorter and blunter, curving forward to rounded tips near
-  the chin, with no long pendant tusk
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_male_closeup.jpg` (reference of record), the Mas Amedda infobox shot and the female plate, as read by the visual brief, and the `## ruling` below.*
+- [ ] BODY PLAN: a tall (about 2 m), muscular, hairless humanoid whose head is an elongated cranial dome bearing two separate horn structures: upright primary horns (male only) rising from the top of the skull — the tallest thing in the silhouette — AND fleshy lateral head lobes (lethorns) hanging down each side over the ear position that terminate in a long tapering pendant tip onto the chest
+- [ ] COLOUR LAYOUT: skin pale blue-grey to lavender/purple, heavily mottled with pale cream-yellow patches across the lobes and crown — not a flat blue, and blue-range only (owner ruling 2026-09-20: "2 shades of blue by choice" — never orange skin); upright horns dark purple/mauve
+- [ ] The lethorn lobes themselves are skin-coloured flesh, not horn material — only the pendant tip is purple at its base shading to pale yellow/cream at the point
+- [ ] Hairless, elongated cranial dome; no hair or beard anywhere
+- [ ] Female lethorn lobes are shorter and blunter, curving forward to rounded tips near the chin, with no long pendant tusk, and no upright horns
+- [ ] NEGATIVE: not a Togruta (no striped montrals and lekku, no white face markings), not a ram/goat-horned humanoid with the whole side structure drawn as one cream horn; not orange-skinned; no hair
 
 ## Engine limits
 none known

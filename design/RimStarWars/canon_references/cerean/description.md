@@ -146,16 +146,14 @@ better than a mere tall forehead. Three problems:
   nothing in the references.
 
 ## Must show
-- [ ] A tall, narrow, bald, skin-toned cone rising vertically from the top of the skull,
-  roughly as tall again as the face beneath it
-- [ ] The cone is laterally compressed — a tapering wedge viewed front-on, not a circular
-  dome
-- [ ] Soft horizontal creases/wrinkles across the cone; completely hairless
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Ki-Adi-Mundi images (body shot, ROTS close-up, Acolyte still) and the NEGAS painting for hair, as read by the visual brief.*
+- [ ] BODY PLAN: a tall (about 2 m), upright, ordinary human body, with a tall, narrow, bald, skin-toned cone rising vertically from the top of the skull, roughly as tall again as the face beneath it, tapering to a blunt rounded apex; the skull narrows inward from the temples before the cone rises
+- [ ] The cone is laterally compressed — a tapering wedge viewed front-on, not a circular dome — with soft horizontal creases/wrinkles across it; completely hairless
+- [ ] COLOUR LAYOUT: pale tan/light flesh skin over face and cone alike (the cone is the same flesh colour as the face); hair, where present, blond, brown or white (white beards come with age); eyes yellow/amber (canon cite, NEGAS) or dark brown (live-action Ki-Adi-Mundi) — never an alien solid colour
 - [ ] Below the cone, an otherwise ordinary human face — no other alien features
-- [ ] Where hair is present, it grows only from the sides and back of the lower skull,
-  never on the cone itself
-- [ ] Eyes yellow/amber (canon cite, NEGAS) or dark brown (live-action Ki-Adi-Mundi) — never an alien solid colour
+- [ ] Where hair is present, it grows only from the sides and back of the lower skull (and as beard/brows), never on the cone itself
 - [ ] Realistic rendering: natural lined human skin texture on face and cone under natural lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a human with a tall forehead or a small bump on a wide egg-shaped head (the donor's failure); not a horn or pointed spike; no invented alien facial features, no tail, claws or fur
 
 ## Engine limits
 none known

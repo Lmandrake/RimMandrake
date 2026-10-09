@@ -40,11 +40,12 @@ What the live-action Morai shows: a **real-looking barn-owl-like bird** — upri
 **The current donor sprite (`donor_current_sprite.png`)** shows a brown/cream mottled owl with a visible long ringed prehensile tail — keep the tail; push the proportions and plumage toward a real owl.
 
 ## Must show
-- [ ] Real owl proportions: rounded head with a flat facial disc and short hooked beak, normal-sized eyes — not oversized cartoon eyes
-- [ ] Dense, soft owl plumage in brown/cream/gold (or the pale cream-white Morai form), finely mottled
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Morai still (proportions, per the owner's 2026-10-08 realism ruling in the visual brief) and the Card Trader infobox render (anatomy only: the tail), as read by the visual brief.*
+- [ ] BODY PLAN: a small (about 0.2 m), compact, upright owl with real owl proportions — rounded head with a flat facial disc and short hooked beak, normal-sized eyes (not oversized cartoon eyes), two wings with long folded wing tips reaching down past the body — plus a long, ringed, prehensile grasping tail
+- [ ] COLOUR LAYOUT: dense, soft owl plumage in brown/cream/gold (text: gold, green or brown), finely mottled, with a paler facial disc and breast; or the pale form (Morai): white heart-shaped facial disc, cream-white breast, pale grey-buff back and wings with faint tawny shoulders; eyes dark
 - [ ] Long, ringed, prehensile tail used for grasping — not a standard fan-shaped bird tail
-- [ ] Compact owl body with long folded wing tips
 - [ ] Realistic rendering: natural feather texture and lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a round plush ball with huge glowing amber eyes (the animated convor); not an ordinary owl with a fan tail; not a Kiros bird (no purple/blue feathers)
 
 ## Engine limits
 none known

@@ -158,21 +158,14 @@ framing the cheeks and jaw**, and a **small dark triangular nose**. Three proble
   the fur ruff is a flat outline rather than the layered directional coat of the paintings.
 
 ## Must show
-Canon fixes almost nothing here: no height, mass, skin colour, hair colour, eye colour or
-anatomical distinction is sourced for Bothans, and the one available reference book
-actively disowns the Legends silhouette. The items below are deliberately short and test
-only what is actually checkable — behaviour, and the constraints the sourced text and the
-disowned-art record impose even in the absence of a canon look.
-
-- [ ] No canon-attributed appearance claim is made — a sprite is not labelled "per canon"
-  for any physical trait, since none exists
-- [ ] If communication is represented at all, it is by growls (the one sourced canon
-  physical/behavioural fact) — expressed as behaviour/flavour, not as a visual feature
-- [ ] No tail is present — the available Legends paintings and the Legends text agree
-  the tail belongs only to Bothan/other-species hybrids, never to a full-blooded Bothan
-- [ ] If a beard or facial fur is shown, it can appear on either sex — Legends states
-  explicitly that both males and females sport beards, so it is not a male-only marker
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Canon fixes no Bothan appearance at all (empty infobox; *How Not to Get Eaten by Ewoks* X's out the Legends silhouettes), so the body lines below are LEGENDS, grounded in the three realistic Legends paintings (NEGAS, Borsk Fey'lya cover, SWG concept) that the owner's 2026-10-08 visual-brief ruling put in place of the comic art.*
+- [ ] No canon-attributed appearance claim is made — a sprite is not labelled "per canon" for any physical trait, since none exists; if communication is represented at all it is by growls (the one sourced canon fact), as behaviour/flavour, not a visual feature
+- [ ] BODY PLAN (Legends): a short, stocky, fully furred humanoid (1.4–1.6 m, well under human height) with a head carrying a forward-projecting canine/equine muzzle ending in a dark nose — the defining silhouette feature — and tall, narrow, sharply pointed ears standing up and outward from the top of the skull, about a third of the head's height
+- [ ] COLOUR LAYOUT (Legends): fur over the whole head, neck and hands in naturalistic warm tan to mid-brown or cream, lighter on the muzzle and throat, darker over the crown; ear interiors pale pink-tan; eyes small and dark
+- [ ] A mane of longer tan/blond hair falling from the crown past the jaw, and a beard of facial fur along the jaw and chin — on either sex (Legends: "both males and females were known to sport beards"), never a male-only marker
+- [ ] No tail is present — the Legends text gives the tail only to Bothan/other-species hybrids, and none of the Legends paintings shows one
 - [ ] Realistic rendering: naturalistic tan fur with visible direction and length, no outlines, no cartoon or comic shading
+- [ ] NEGATIVE: not a human with a fur tint or elf-pointed ears (no flat human face, no small ear points), not a round-domed head with the nose sitting flat on it (the donor sprite's failure); no hooves, no haunches, no saturated orange comic fur
 
 ## Engine limits
 `useSkinShader: false` is set over the Bothan head's greyscale mask, so no skin/fur-colour

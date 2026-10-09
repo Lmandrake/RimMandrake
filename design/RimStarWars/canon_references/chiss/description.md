@@ -99,13 +99,13 @@ authors the angular face canon calls out. Skin and eye colour come from the gene
 `Skin_Blue` / `Eyes_Red` genes.
 
 ## Must show
-- [ ] Bright red irises (a red iris in an otherwise human eye, slightly luminous)
-- [ ] Hair reads jet-black to blue-black, not bright azure
-- [ ] Ordinary human face and bone structure — not a stylised angular mask
-- [ ] Skin blue, matte, with the shade varying from light periwinkle to grey-blue to
-  near-silver — not a single fixed saturated hue
-- [ ] Ordinary human body proportions
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action *Ahsoka* Thrawn poster (reference of record) and Part Eight still, plus the two Legends paintings for the pale end of the blue range, as read by the visual brief.*
+- [ ] BODY PLAN: an ordinary near-human: human body proportions (tall, lean or powerfully built), ordinary human face and bone structure — straight brows, ordinary nose, thin lips — not a stylised angular mask; no horns, ridges, lekku or other head features
+- [ ] COLOUR LAYOUT: skin blue all over (face, ears, neck, hands alike), matte, with the shade varying from light periwinkle to grey-blue to near-silver — not a single fixed saturated hue; hair jet-black to blue-black, not bright azure; lips blue-grey to dark purple
+- [ ] Bright red irises (a red iris in an otherwise human eye with pale sclera visible, slightly luminous)
+- [ ] Hair short and slicked back (male reference) or long and straight (female references), jet-black
 - [ ] Realistic rendering: real human skin texture (pores, lines) under the blue, natural lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a Pantoran (Pantorans lack red eyes), not a human with a light blue tint and normal eyes; not vivid saturated cobalt or flat cyan cartoon skin; not azure or blue hair; not a solid glowing red eye with no sclera
 
 ## Engine limits
 none known

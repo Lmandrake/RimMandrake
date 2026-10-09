@@ -59,14 +59,14 @@ the in-game KOTOR2 render and the source text both call for — a regen should
 add the stalked-eye detail rather than a single flat eye.
 
 ## Must show
-- [ ] Squat, bloated, toad-like quadruped body
-- [ ] Mottled tan/khaki/olive-yellow-green hide on the back and flanks, paler/whitish on
-  the belly
-- [ ] Fringe of thin pointed spines running from the crown of the head down the back
-- [ ] Wide, low-slung jaw lined with many small sharp teeth
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the KOTOR II concept art and game model as read by the visual brief, and the Legends sourced text (this species is Legends-only).*
+- [ ] BODY PLAN: a small, squat, bloated, toad-like quadruped held low to the ground on four thick stocky legs, each foot three-toed with tough spatulate claws; big head with a wide low-slung jaw; short stubby tail
+- [ ] COLOUR LAYOUT: mottled dull tan/khaki/olive-yellow-green hide over the back and flanks; belly and underside clearly paler, near-white
+- [ ] A fringe of thin pointed spines/quills rising from the crown of the head and running down a bony ridge along the back
+- [ ] Wide, low-slung jaw lined with many small sharp teeth, needle teeth of the lower jaw jutting up over the upper lip
 - [ ] Two eyes on short stalks that read independently, not a single flat eye
-
 - [ ] Realistic rendering: natural wet, wrinkled, warty amphibian skin texture and lighting, no outlines, no cartoon or low-poly shading
+- [ ] NEGATIVE: not a plain frog or toad (no smooth skin, no flat-set eyes, no long jumping hind legs, no spineless back), not a lizard (no long body or long tail), not a single-eyed creature (the donor's failure)
 
 ## Engine limits
 none known

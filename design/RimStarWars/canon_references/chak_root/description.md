@@ -19,11 +19,12 @@ Viewed `wookieepedia_legends_1.webp` (small thumbnail from the Legends infobox; 
 - Prose says only "red"; the image adds the forked root and carrot-top foliage. Trust the image for shape.
 
 ## Must show
-- [ ] Red root body, thick and forked into 3-4 stubby legs
-- [ ] A tall tuft of finely cut dark-green carrot-like leaves from the crown
-- [ ] Marsh-plant context; harvested for its root
-
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_legends_1.webp` (the only image) as read by the visual brief, the Legends text ("reddish-coloured", marshlands) and the owner's 2026-10-08 realism ruling there.*
+- [ ] BODY PLAN: a root vegetable plant shown whole — a thick red tuberous root body that splits into 3-4 thick, stubby, tapering "legs" like a tripod, with a tall tuft of foliage rising from its crown; a marsh plant harvested for its root
+- [ ] COLOUR LAYOUT: root body red (the lightest/most saturated element), leg tips green at the bottoms; foliage dark green
+- [ ] Foliage: a tall tuft of finely cut, finely divided dark-green carrot-like fronds from the crown
 - [ ] Realistic rendering: natural fibrous root-skin and leaf texture and lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a carrot, radish or beet (no single tapering taproot, no round bulb — the root forks into stubby legs), not a mandrake-style root with a face or limbs; no flowers or broad leaves
 
 ## Engine limits
 none known

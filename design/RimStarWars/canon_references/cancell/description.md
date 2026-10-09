@@ -42,12 +42,14 @@ candidate image's palette well; a regen should push the donor's washed-out pink-
 realistic render's rust-brown body, teal head cap and pale-orange plumed tail.
 
 ## Must show
-- [ ] Long, slender, rust-brown mottled body with paler pinkish-cream underside
-- [ ] Small head topped with a smooth domed teal/turquoise cap
-- [ ] Two pairs of very long, narrow, translucent veined dragonfly wings tinted pale yellow-green
-- [ ] Several long thin dark jointed legs hanging below, ending in hooked claws
-- [ ] Long banded segmented tail ending in a spreading fan of pale orange feather-like plumes
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_render_starwarscom.jpg` and `wookieepedia_tgtb.jpg` as read by the visual brief, and the `## ruling` below (owner 2026-09-14: "Follow this render: …/Can-cell.png … (same as #3)").*
+- [ ] BODY PLAN: a large (over 3 m long) flying insect: small head on a long, slender, upright body/neck, two pairs (four wings) of very long narrow dragonfly wings, several long thin jointed legs hanging beneath, and a long thin segmented tail ending in a spreading plume fan — the realistic ROTS design the owner said to follow
+- [ ] COLOUR LAYOUT: body rust/reddish-brown and mottled, with a paler pinkish-cream underside; a smooth domed teal/turquoise cap over the top of the small head; wings translucent pale yellow-green with darker edges; legs dark; tail banded blue-grey to rust; tail-tip plumes pale orange
+- [ ] Wings: two pairs of very long, narrow, translucent, finely veined dragonfly wings
+- [ ] Legs end in grasping hooked claws; head has a short pointed snout under the teal cap
+- [ ] Tail ends in a large spreading fan of pale orange feather-like plumes
 - [ ] Realistic rendering: natural translucent wing membrane, chitin and soft-tissue texture and lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not the Clone Wars can-cell (no stubby red thorax with bright green bug-eyes), not a plain dragonfly (no plumed tail fan, no teal head cap), not small bug-sized, not the donor's washed-out pink-tan palette
 
 ## Engine limits
 none known
