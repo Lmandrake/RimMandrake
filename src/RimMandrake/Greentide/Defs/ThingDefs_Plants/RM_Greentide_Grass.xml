@@ -23,6 +23,7 @@
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
     <ingestible />
     <plant>
+      <leaflessGraphicPath>Things/Plant/Grass_Leafless</leaflessGraphicPath>  <!-- Core texture (resources.assets); resolves from any mod -->
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0.3</fertilitySensitivity>
       <growDays>2.5</growDays>
