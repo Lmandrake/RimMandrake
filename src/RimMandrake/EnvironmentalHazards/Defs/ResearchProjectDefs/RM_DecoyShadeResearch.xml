@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- DECOY_SHADE_TARP_1: gates RM_DecoyShadeTarp (researchPrerequisites on the building). PROVISIONAL cost. -->
+  <ResearchProjectDef>
+    <defName>RM_DecoyShadeResearch</defName>
+    <label>decoy shade</label>
+    <description>How a painted awning can pass for a patch of shade to a creature that hunts by it. The cloth gives no cooling at all; it only has to look dark from far off.</description>
+    <baseCost>350</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <researchViewX>0</researchViewX>
+    <researchViewY>0</researchViewY>
+  </ResearchProjectDef>
+</Defs>

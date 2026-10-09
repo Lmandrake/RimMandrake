@@ -119,7 +119,7 @@ namespace RimMandrake.CreatureBehaviors
 
         private static RM_MapComponent_FalseShade Lures(Map map)
         {
-            return RM_CreatureBehaviorsSettings.falseShadeAmbushEnabled ? map.GetComponent<RM_MapComponent_FalseShade>() : null;
+            return RM_CreatureBehaviorsSettings.falseShadeAmbushEnabled || RM_CreatureBehaviorsSettings.decoyShadeEnabled ? map.GetComponent<RM_MapComponent_FalseShade>() : null;
         }
 
         /// <summary>Shelter as the pawn perceives it: a real shade patch, or a
@@ -153,7 +153,25 @@ namespace RimMandrake.CreatureBehaviors
             {
                 return;
             }
-            IReadOnlyList<Pawn> lures = fs.Lures;
+            IReadOnlyList<Thing> decoys = fs.Decoys;
+            for (int i = 0; RM_CreatureBehaviorsSettings.decoyShadeEnabled && i < decoys.Count; i++)
+            {
+                Thing decoy = decoys[i];
+                if (!decoy.Spawned || decoy.Map != pawn.Map)
+                {
+                    continue;
+                }
+                IntVec3 dat = decoy.Position;
+                if (RM_ShadePatchGraph.Octile(from.x, from.z, dat.x, dat.z) > maxCost || (dat - pawn.Position).LengthHorizontalSquared <= 2.25f)
+                {
+                    continue;
+                }
+                if (CellFinder.TryFindRandomCellNear(dat, pawn.Map, 1, c => c != dat && c.Standable(pawn.Map), out IntVec3 dbeside))
+                {
+                    candidates.Add(new Candidate { from = from, to = dbeside, weight = weight });
+                }
+            }
+            IReadOnlyList<Pawn> lures = RM_CreatureBehaviorsSettings.falseShadeAmbushEnabled ? fs.Lures : (IReadOnlyList<Pawn>)new Pawn[0];
             for (int i = 0; i < lures.Count; i++)
             {
                 Pawn lure = lures[i];

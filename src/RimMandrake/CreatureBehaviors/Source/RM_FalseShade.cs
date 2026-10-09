@@ -44,12 +44,30 @@ namespace RimMandrake.CreatureBehaviors
         private const int RefreshIntervalTicks = 120;
 
         private readonly List<Pawn> lures = new List<Pawn>();
+        private readonly List<Thing> decoys = new List<Thing>();
 
         public RM_MapComponent_FalseShade(Map map) : base(map)
         {
         }
 
         public IReadOnlyList<Pawn> Lures => lures;
+
+        /// <summary>DECOY_SHADE_TARP_1: buildings (RM_CompDecoyShade) that read as shade to seekers and give none.</summary>
+        public IReadOnlyList<Thing> Decoys => decoys;
+        public void RegisterDecoy(Thing t) { if (!decoys.Contains(t)) decoys.Add(t); }
+        public void UnregisterDecoy(Thing t) { decoys.Remove(t); }
+
+        /// <summary>What a decoy reads as: its extension's perceivedShade plus the stuff's shade bonus (mirrak hide
+        /// is the most convincing), clamped to 1. 0 when the decoy toggle is off.</summary>
+        public static float DecoyShadeOf(Thing t)
+        {
+            RM_FalseShadeExtension ext = t.def.GetModExtension<RM_FalseShadeExtension>();
+            if (ext == null || !RM_CreatureBehaviorsSettings.decoyShadeEnabled)
+            {
+                return 0f;
+            }
+            return Mathf.Min(1f, ext.perceivedShade + RM_ShadeGear.StuffBonus(t));
+        }
 
         public override void FinalizeInit()
         {
@@ -92,7 +110,21 @@ namespace RimMandrake.CreatureBehaviors
         public float FalseShadeAt(IntVec3 cell)
         {
             float best = 0f;
-            for (int i = 0; i < lures.Count; i++)
+            for (int i = 0; i < decoys.Count; i++)
+            {
+                Thing d = decoys[i];
+                if (!d.Spawned || d.Map != map)
+                {
+                    continue;
+                }
+                RM_FalseShadeExtension dext = d.def.GetModExtension<RM_FalseShadeExtension>();
+                float shade = DecoyShadeOf(d);
+                if (dext != null && shade > best && (cell - d.Position).LengthHorizontalSquared <= dext.radius * dext.radius)
+                {
+                    best = shade;
+                }
+            }
+            for (int i = 0; RM_CreatureBehaviorsSettings.falseShadeAmbushEnabled && i < lures.Count; i++)
             {
                 Pawn p = lures[i];
                 if (!p.Spawned || p.Map != map || p.Dead || p.Downed || (p.pather != null && p.pather.Moving))
@@ -125,12 +157,29 @@ namespace RimMandrake.CreatureBehaviors
                 return 0f;
             }
             float real = map.GetComponent<RM_MapComponent_ShadeGrid>()?.ShadeAt(cell) ?? 0f;
-            if (!RM_CreatureBehaviorsSettings.falseShadeAmbushEnabled)
+            if (!RM_CreatureBehaviorsSettings.falseShadeAmbushEnabled && !RM_CreatureBehaviorsSettings.decoyShadeEnabled)
             {
                 return real;
             }
             float lie = map.GetComponent<RM_MapComponent_FalseShade>()?.FalseShadeAt(cell) ?? 0f;
             return Mathf.Max(real, lie);
+        }
+    }
+
+    /// <summary>DECOY_SHADE_TARP_1: a cheap painted awning. Registers with RM_MapComponent_FalseShade so shade-SEEKING
+    /// animals read it as shade (RM_ShadePerception); it is never written to the shade grid, so it cools nobody.</summary>
+    public class RM_CompDecoyShade : ThingComp
+    {
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            parent.Map.GetComponent<RM_MapComponent_FalseShade>()?.RegisterDecoy(parent);
+        }
+
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+        {
+            base.PostDeSpawn(map, mode);
+            map.GetComponent<RM_MapComponent_FalseShade>()?.UnregisterDecoy(parent);
         }
     }
 }

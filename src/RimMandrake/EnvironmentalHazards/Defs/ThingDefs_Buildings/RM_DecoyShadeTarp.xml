@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DECOY_SHADE_TARP_1 (design pass CB-8). A cheap painted awning. To animals that look for shade (the shade-seeking
+  wander and shade-hop of RM_ShadePerception) it reads as real shade; it is NEVER written to the shade grid, so it cools
+  nobody. Lure heat-driven predators into a killbox or pen. Mirrak hide (RM_ShadeClothExtension.shadeBonus) is the most
+  convincing. Research-gated; Mod Settings: Creature Behaviors decoyShadeEnabled.
+  ART: placeholder reuses the shade tent texture (PROVISIONAL); own art is owed.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_DecoyShadeTarp</defName>
+    <label>decoy shade tarp</label>
+    <description>A painted cloth stretched flat on four pegs, dark enough from a distance to pass for the shadow of a rock. It gives no cooling to anyone who stands under it, but anything that hunts for shade will see it as shade.\n\nMirrak hide makes the most convincing decoy.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_ShadeGear/RM_ShadeTent</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0.05</fillPercent>
+    <canOverlapZones>true</canOverlapZones>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <WorkToBuild>300</WorkToBuild>
+      <Mass>4</Mass>
+      <Flammability>1</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <costStuffCount>20</costStuffCount>
+    <costList>
+      <WoodLog>6</WoodLog>
+    </costList>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsTemperature</li>
+    </thingCategories>
+    <designationCategory>Temperature</designationCategory>
+    <techLevel>Neolithic</techLevel>
+    <researchPrerequisites>
+      <li>RM_DecoyShadeResearch</li>
+    </researchPrerequisites>
+    <building>
+      <destroySound>BuildingDestroyed_Soft_Small</destroySound>
+    </building>
+    <comps>
+      <li Class="CompProperties">
+        <compClass>RimMandrake.CreatureBehaviors.RM_CompDecoyShade</compClass>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_FalseShadeExtension">
+        <perceivedShade>0.75</perceivedShade>
+        <radius>1.5</radius>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

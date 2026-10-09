@@ -337,6 +337,8 @@ MECHANICS = [
     ("aquaticAmbushEnabled", ["RM_CompAquaticAmbusher", "RM_JobDriver_LungeAttack"],
      ["JobDef/RM_LungeAttack", "HediffDef/RM_AquaticAmbushInvisibility", "HediffDef/RM_LungeSpeedBurst"]),
     ("parentalEnrageEnabled", ["RM_CompParentalEnrage"], ["MentalStateDef/RM_ParentalEnrage"]),
+    ("decoyShadeEnabled", ["RM_CompDecoyShade", "RM_FalseShadeExtension", "RM_MapComponent_FalseShade"],
+     ["ThingDef/RM_DecoyShadeTarp", "ResearchProjectDef/RM_DecoyShadeResearch"]),
     ("drumLureEnabled", ["RM_CompDrumLure"], ["HediffDef/RM_DrumLureSubmersion", "HediffDef/RM_DrumLureLured"]),
 ]
 
