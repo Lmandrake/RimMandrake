@@ -50,17 +50,18 @@ pattern are already correct — this is the strongest existing donor-vs-canon
 agreement found in this pass.
 
 ## Must show
-- [ ] Long-necked, antelope/giraffe-proportioned quadruped body with thin legs
-- [ ] Base skin colour is muted green/olive-teal
-- [ ] Leopard-style orange-yellow spotted markings scattered across neck, shoulders and flank
-- [ ] Exactly two long, ridged, backward-curving horns, a matched pair (owner ruling 2026-10-04; the card art shows a pair)
-- [ ] Four legs
-- [ ] Thin, whip-like tail
-- [ ] Smooth hide with no visible fur
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both images and the `## ruling` below.*
+- [ ] BODY PLAN: a tall, lean, standing four-legged browser: legs long and thin (leg length at least equal to body depth), a long slender neck rising steeply so the head sits well above the back, a narrow body with a visible tucked waist, and a thin whip tail ending in a small tuft
+- [ ] Horns: exactly two long, ridged, dark horns rising from the top of the head and sweeping BACKWARD in a curve over the neck (owner ruling 2026-10-04: "Four legs, two horns, greenish")
+- [ ] COLOUR LAYOUT: muted green/olive-teal base all over; orange-yellow leopard-like spots concentrated along the top of the neck, shoulders and back, fading out toward the belly and lower legs; horns dark brown, darker than the hide
+- [ ] Long narrow horse/goat-like head with a blunt muzzle carried forward at the top of the neck
+- [ ] Feet end in pale claws, not hooves
+- [ ] Smooth fine hide with no visible fur
 - [ ] Realistic rendering: natural finely textured hide, keratin horns and lighting, no outlines, no airbrushed or low-poly game look
+- [ ] NEGATIVE: not a horse, deer or goat (no fur coat, no hooves, no antlers), not one single horn, not a short-legged or stocky animal
 
 ## Engine limits
-none known
+- Spots confined to the neck/shoulder/back over a plain green base is a per-region pattern: needs art, not a tint value.
 
 ## Source URLs
 - https://starwars.fandom.com/wiki/Iriaz/Legends (Wookieepedia article text,

@@ -32,12 +32,14 @@ Two images: the CANON infobox render (a Clone Wars CG skalder being ridden by a 
 - **Disagreement**: the text calls it a 'mammalian desert species with a hump'; the images show a layered, armour-like mantle, not a soft fat hump. The wiki text only says "a large hump protruding from the base of the neck" and "thick hides"; it never says shell or plates, so treat the layered-plate look as this CG depiction.
 
 ## Must show
-- [ ] Stout rounded pachyderm body with a thick armoured, layered, ridged mantle draped over neck, shoulders and back
-- [ ] Grey-green slate hide with pale vertical stripes on the flanks and legs
-- [ ] Blunt dome head, short snout, small round eye, and two long ivory tusks from the lower jaw curving forward
-- [ ] Short pillar legs with broad three-clawed feet
-- [ ] Large enough to ride (back at about head height or above)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both images.*
+- [ ] BODY PLAN: a barrel-round, short-legged quadruped whose body is mostly hidden under a huge layered mantle; the round dome head pokes forward and DOWN from under the front edge of the mantle, carried low at about knee-to-chest height of the body; four short thick pillar legs, all equal length
+- [ ] COLOUR LAYOUT: mantle the darkest part (dark slate/green-grey with horizontal ridges); body, legs and cheeks a lighter grey-green crossed by pale bluish-grey bands; tusks the only near-white element
+- [ ] Mantle reads as stacked overlapping horizontal plates/ridges draped from behind the head over neck, shoulders and back, ending in a skirt-like edge above the legs
+- [ ] Two long pale ivory tusks projecting forward and out from the sides of the lower jaw, clearly visible against the face
+- [ ] Broad dark feet with three pale clawed toes
 - [ ] Realistic rendering: natural thick wrinkled pachyderm hide and horny plated mantle, natural desert lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a rhino or elephant: no nose horn, no trunk longer than the tusks, no long legs or tall neck; not a turtle: the head is not retracted into a shell and the legs are not reptile-sprawled
 
 ## Engine limits
 not yet assessed
