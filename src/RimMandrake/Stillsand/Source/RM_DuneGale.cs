@@ -961,8 +961,22 @@ namespace RimMandrake.Stillsand
             RM_ReturnOutcome outcome = RM_GaleKernel.Decide(false, false, p.Dead, alive);
             if (outcome == RM_ReturnOutcome.LostDead)
             {
-                Find.LetterStack.ReceiveLetter("Lost to the sand",
-                    p.LabelShortCap + " died out past the edge. The wind kept the body.", LetterDefOf.NeutralEvent);
+                // The carry setting promises the pawn "always comes back, alive or not": give the body back.
+                Corpse body = p.Corpse ?? p.MakeCorpse(null, null);
+                if (body == null)
+                {
+                    Find.LetterStack.ReceiveLetter("Lost to the sand",
+                        p.LabelShortCap + " died out past the edge. No body came back.", LetterDefOf.NeutralEvent);
+                    return;
+                }
+                if (!body.Spawned)
+                {
+                    GenSpawn.Spawn(body, cell, map, WipeMode.VanishOrMoveAside);
+                }
+                Find.LetterStack.ReceiveLetter("Given back: the body of " + p.LabelShortCap,
+                    "The wind has brought back what it took. " + p.LabelShortCap + " died out past the edge; the body lies where the drift dropped it, in from the "
+                    + RM_GameCondition_DuneGale.BearingName(wind) + ".",
+                    r.wasPlayer ? LetterDefOf.Death : LetterDefOf.NeutralEvent, body);
                 return;
             }
             GenSpawn.Spawn(p, cell, map, WipeMode.VanishOrMoveAside);
@@ -1025,10 +1039,16 @@ namespace RimMandrake.Stillsand
             }
         }
 
+        private static Vector2 settingsScroll;
+        private static float settingsViewHeight = 800f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
+            list.Begin(settingsView);
             list.CheckboxLabeled("Dune gale", ref galeEnabled,
                 "The Stillsand's own storm: a herald, one to two days of gale, then one thing the wind uncovers. "
                 + "Off: it never fires; Odyssey's sandstorm is unaffected.");
@@ -1064,7 +1084,9 @@ namespace RimMandrake.Stillsand
                 "A fair-weather column that wanders the flat, lifts light items and spooks animals. Never damages.");
             list.Label("Dust devil frequency: x" + dustDevilFrequency.ToString("0.00"));
             dustDevilFrequency = Mathf.Round(list.Slider(dustDevilFrequency, 0f, 3f) * 20f) / 20f;
+            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
+            Widgets.EndScrollView();
         }
     }
 

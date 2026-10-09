@@ -330,6 +330,9 @@ namespace RimMandrake.Stillsand
 
         public List<Thing> frozenThings = new List<Thing>();
 
+        /// <summary>Corpse thingIDNumber -> its vanishAfterTimestamp before preservation zeroed it, so release can put it back.</summary>
+        public Dictionary<int, int> frozenVanish = new Dictionary<int, int>();
+
         // Mapgen-only hand-off from the carve step to the contents step.
         [Unsaved] public List<IntVec3> chamberFloor = new List<IntVec3>();
         [Unsaved] public IntVec3 chamberCentre = IntVec3.Invalid;
@@ -359,11 +362,13 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref denCleared, "denCleared");
             Scribe_Collections.Look(ref caveCells, "caveCells", LookMode.Value);
             Scribe_Collections.Look(ref frozenThings, "frozenThings", LookMode.Reference);
+            Scribe_Collections.Look(ref frozenVanish, "frozenVanish", LookMode.Value, LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 caveCells = caveCells ?? new List<IntVec3>();
                 frozenThings = frozenThings ?? new List<Thing>();
                 frozenThings.RemoveAll(t => t == null);
+                frozenVanish = frozenVanish ?? new Dictionary<int, int>();
             }
         }
 
