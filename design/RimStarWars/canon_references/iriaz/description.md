@@ -21,6 +21,10 @@ horns, which fetched a high market price; a crime lord (Davik Kang) had a
 mounted iriaz head as a trophy.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Iriaz/Legends` page images; the creature is a cut *Knights of the Old Republic* asset with only a Wizards of the Coast card painting and an in-engine model screenshot).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. Both images stay (they are the owner's "canon imagery" in his 2026-10-04 ruling below). Think of a real antelope/gerenuk-proportioned animal with smooth, finely textured greenish hide, real pigment spots, ridged keratin horns and natural light — not the card's airbrushed gloss or the game model's low-poly texture.
+
 Only two images exist for this creature, both drawn from the same cut
 KOTOR asset: promotional card art and an in-engine screenshot of the unused
 model. They agree closely with each other. Iriaz reads as a **long-necked,
@@ -53,6 +57,7 @@ agreement found in this pass.
 - [ ] Four legs
 - [ ] Thin, whip-like tail
 - [ ] Smooth hide with no visible fur
+- [ ] Realistic rendering: natural finely textured hide, keratin horns and lighting, no outlines, no airbrushed or low-poly game look
 
 ## Engine limits
 none known
@@ -68,8 +73,8 @@ none known
 
 ## Candidate images
 - `donor_current_sprite.png` — this repo's current shipped sprite (SWBestiary mod, `Iriaz_east` base variant), green/olive body with orange-yellow spots and a pair of curved horns
-- `wookieepedia_wotc_card.jpg` — Wizards of the Coast promotional/card art, full body, green-teal skin with orange leopard-spot markings, single dominant ridged horn
-- `wookieepedia_cutmodel.jpg` — in-engine screenshot of the unused KOTOR 3D model standing in a grassy canyon, confirms the same coloring and long-necked antelope body plan from a different angle
+- `wookieepedia_wotc_card.jpg` — STYLISED ILLUSTRATION, Wizards of the Coast promotional/card art, full body, green-teal skin with orange leopard-spot markings, single dominant ridged horn
+- `wookieepedia_cutmodel.jpg` — GAME (stylised 2003 engine) in-engine screenshot of the unused KOTOR 3D model standing in a grassy canyon, confirms the same coloring and long-necked antelope body plan from a different angle
 
 ## ruling
 **Antelope — canon identity stands.** Owner, 2026-09-18: *"antelope and close,

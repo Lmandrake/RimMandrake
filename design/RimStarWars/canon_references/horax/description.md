@@ -45,9 +45,12 @@ Two tiers, same core creature:
 horned-and-fanged reptile, not a small or drab creature.**
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Horax`, `Horax/Legends`, `Battle of Nelvaan` page images — the creature exists only in the 2003 *Clone Wars* microseries and the *Clone Wars Campaign Guide* painting).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. The flat-animation Battle of Nelvaan still (`wookieepedia_battle_horax.jpg`, which showed clone troopers for scale) was deleted; the *Campaign Guide* painting (`wookieepedia_infobox_cw_horax.jpg`) is the most naturalistic depiction and the target — thick, heavily wrinkled blue hide like a giant mammal's, horn and tooth with real keratin/ivory texture. `wookieepedia_tail_attack.jpg` is flat animation kept ONLY because it is the sole image of the spiked, clubbed tail.
+
 Unlike the wyyyschokk/pekopeko cases, there is **no text/image conflict**
-here — the three candidate images (two Legends-tagged, one from the 2003
-microseries itself) line up cleanly with both the canon and Legends text:
+here — the two remaining images line up cleanly with both the canon and Legends text:
 
 - `wookieepedia_infobox_cw_horax.jpg` — painted/rendered concept-style
   close-up of the head and forepaws in a snowy forest. Confirms: deep
@@ -58,14 +61,6 @@ microseries itself) line up cleanly with both the canon and Legends text:
   figure with a green lightsaber stands at the creature's foot for scale —
   confirms the "over 15 meters" claim is not an exaggeration; the animal
   dwarfs a standing human many times over.
-- `wookieepedia_battle_horax.jpg` — a still from the actual 2003 microseries
-  episode (flat 2D animation style, not the concept painting). Same design
-  read through the show's line-art style: blue body, tan curved horns,
-  orange eyes, a wide fanged maw, clawed feet. Clone troopers in white armor
-  ring the creature at the base of its forelimbs, again confirming
-  building-sized scale. This is the strongest single confirmation that the
-  concept-art coloring/shape actually shipped on screen rather than being a
-  promotional-only design.
 - `wookieepedia_tail_attack.jpg` — a darker action still: a segmented blue
   tail with pale spiked/clubbed knobs at each joint sweeping through the
   frame, with a trooper or creature silhouette flung through the air.
@@ -92,6 +87,7 @@ flag as a text/image mismatch this time.
 - [ ] Multiple long saber-like fangs visible in the upper and lower jaw
 - [ ] Thick clawed limbs
 - [ ] Spiked/clubbed tail visible as a distinct feature
+- [ ] Realistic rendering: natural heavily wrinkled hide, keratin horns and lighting, no outlines, no flat-animation shading
 
 ## Engine limits
 none known
@@ -121,14 +117,11 @@ none known
   either. **No donor-mod sprite obtained this pass.**
 
 ## Candidate images
-- `wookieepedia_infobox_cw_horax.jpg` — Legends-page concept-style painting:
+- `wookieepedia_infobox_cw_horax.jpg` — PAINTED ILLUSTRATION (*The Clone Wars Campaign Guide*), most naturalistic:
   blue wrinkled hide, tan sweeping horns, orange eyes, exposed fangs, clawed
   forepaws, tiny lightsaber-wielding figure for scale. **Best single
   reference — confirms color, head shape, and scale together.**
-- `wookieepedia_battle_horax.jpg` — actual 2003 microseries animation still
-  (Battle of Nelvaan): same blue/tan/orange design rendered in the show's
-  flat animation style, clone troopers for scale.
-- `wookieepedia_tail_attack.jpg` — action still confirming the large
+- `wookieepedia_tail_attack.jpg` — ANIMATED (2003 microseries), kept only for the tail — action still confirming the large
   spiked/clubbed blue tail described in the Legends text.
 - **No donor-mod (`mlie.starwarsanimalcollection`) sprite included** — not
   present on this machine, current release packs art in AssetBundles, no

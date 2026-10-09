@@ -36,8 +36,12 @@ Legends flavors that agree closely with each other:
   reptile or mammal.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Insectomorph`, `Insectomorph/Legends` and `Battle of Malastare` page images, "Images of insectomorphs" category — only *The Clone Wars* CGI exists).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. The wide battlefield screenshot (`wookieepedia_dugwarriors_screenshot.jpg`) was deleted as a weaker duplicate. Render as a real giant arthropod: a hard, weathered, matte bony exoskeleton (not shiny beetle chitin), dry bony leg segments with real joint membranes, natural light — not TCW's smooth painted-clay surfaces.
+
 Unlike the PekoPeko/Wyyyschokk cases this library exists to guard against,
-**text and images agree well here** — all three candidates below show the
+**text and images agree well here** — both remaining candidates show the
 same creature consistently, and that creature matches the sourced
 description closely:
 
@@ -60,20 +64,13 @@ description closely:
   silhouette — long banded legs, low blunt red-eyed head, mounted Dug rider
   with an electrostaff — seen from a closer three-quarter angle. Leg banding
   and the red eye are both visible even under the desaturated scene lighting.
-- `wookieepedia_dugwarriors_screenshot.jpg` — a wide battlefield shot showing
-  a whole line of mounted Insectomorphs (Dug cavalry) charging with raised,
-  crackling electrostaves. Confirms the four-legged banded-leg silhouette is
-  consistent across many individuals (not a one-off render), and shows the
-  gait implied by the "hind legs twice the length, more muscular" text: the
-  animals are shown reared up/leaning forward on their front legs with
-  powerful rear legs planted behind, a leaping-insect stance rather than a
-  standing quadruped.
+
 
 **Net read**: a low, long-legged, spider/mantis-like insectoid mount —
 tan/gold legs with dark brown banding, gray-white bone-toned leg segments,
 a small blunt red-eyed toothy head held low and forward, hind legs markedly
 longer/more powerful than the front legs. No disagreement between the
-sourced text and the images to flag this time; all three images and both
+sourced text and the images to flag this time; both images and both
 text tiers reinforce the same creature.
 
 ## Must show
@@ -83,6 +80,7 @@ text tiers reinforce the same creature.
 - [ ] Small, blunt head held low and forward between the front legs, with a wide toothy mouth
 - [ ] Glowing red eye(s)
 - [ ] No wings and no shiny chitinous segmentation — reads as a bony/skeletal arthropod, not a beetle
+- [ ] Realistic rendering: natural weathered matte exoskeleton and lighting, no outlines, no smooth clay-CGI or cartoon shading
 
 ## Engine limits
 none known
@@ -123,10 +121,7 @@ none known
 - `wookieepedia_mounted_screenshot.jpg` — in-episode screenshot ("The Zillo
   Beast," closer angle, dusk battlefield lighting): confirms silhouette and
   coloring under real scene lighting.
-- `wookieepedia_dugwarriors_screenshot.jpg` — wide in-episode battlefield
-  shot showing a full line of mounted Insectomorphs charging: confirms the
-  leaping/reared stance and that the banded-leg look is consistent across
-  many individuals, not a one-off render.
+
 - **No donor-mod (`mlie.starwarsanimalcollection`) sprite included** — the
   mod is not present on this machine, its current release packs art in
   AssetBundles rather than loose textures, and no labeled Workshop preview
