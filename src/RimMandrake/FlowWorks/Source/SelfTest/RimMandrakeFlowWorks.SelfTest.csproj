@@ -48,6 +48,7 @@
     <Compile Include="..\RM_PitExposureMath.cs" />
     <Compile Include="..\RM_PitDrawMath.cs" />
     <Compile Include="..\RM_FireMath.cs" />
+    <Compile Include="..\RM_LiquidHeatMath.cs" />
     <Compile Include="..\RM_FillEffectMath.cs" />
     <Compile Include="..\RM_PitRoomMath.cs" />
     <Compile Include="..\RM_DigDiscoveryMath.cs" />

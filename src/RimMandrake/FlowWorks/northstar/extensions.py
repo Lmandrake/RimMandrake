@@ -71,6 +71,7 @@ FW_TOGGLES = [
     "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled",
     "liquidPumpEnabled", "bottleRevertEnabled", "excavationWallFacesEnabled",
     "digFindsEnabled", "digFindsLocalOnly", "digFindLetterEnabled",
+    "liquidHeatPushEnabled",     # LIQUID_HEAT_PUSH_1 (2026-10-08): chain liquid_heat (DRAFT)
 ]
 PITS_TOGGLES = ["trapTriggerEnabled", "fallDamageEnabled"]
 RIVER_TOGGLES = ["riverSteamEnabled"]
@@ -2014,3 +2015,68 @@ def machinery_found_works(t):
             if t._guard():
                 t.upstream_reason = "UNMEASURED: %s" % why
                 t.upstream_failed = True
+
+
+HEAT_PROOF = "RimMandrake.FlowWorks.RM_LiquidHeatProof"
+
+
+def _heat(t, c):
+    """ProofHeat at one cell: kind (+1 hot / -1 cold / 0), room temp, outdoor flag, last interval's counters."""
+    return _kv(_sc(t, HEAT_PROOF, "ProofHeat", "%d,%d" % c))
+
+
+def _hut(t, x0, z0, terrain):
+    """A 7x7 steel-walled, fully roofed hut whose 5x5 floor holds a 3x3 patch of `terrain`. Returns a floor cell."""
+    ring = [(x0 + i, z0) for i in range(7)] + [(x0 + i, z0 + 6) for i in range(7)] + \
+           [(x0, z0 + j) for j in range(1, 6)] + [(x0 + 6, z0 + j) for j in range(1, 6)]
+    t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, _rect(x0 + 2, z0 + 2, 3, 3)))
+    t.bridge_call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % c for c in ring), stuff="Steel")
+    t.bridge_call("jawa/set_roof_batch", ops="RoofConstructed:%s" % _rect(x0, z0, 7, 7))
+    return (x0 + 1, z0 + 1)
+
+
+@suite.chain("liquid_heat")
+def liquid_heat(t):
+    """LIQUID_HEAT_PUSH_1 (FL-1 / X-8), DRAFT criteria, never run live yet. Three identical roofed huts, each over a
+    3x3 pool: boiling water (RM_WaterBoilingShallow, LiquidDef hot), icy water (RM_WaterFrigidShallow, LiquidDef
+    cold) and plain WaterShallow (the control). After ~5 intervals the boiling hut reads warmer than the control and
+    the icy hut colder; with liquidHeatPushEnabled off the boiling hut's lead over the control does not grow. An OPEN
+    boiling patch identifies as hot but reads outdoor (vanilla Room.PushHeat ignores outdoor rooms, MEASURED).
+    Not staged: a pit FLOODED with a hot liquid -- no hot canal FluidDef ships yet (follow-up item), so
+    PIT_TEMPERATURE_SOFTENING_1's coupling to a hot pit is proven only by the C# identity path, not live."""
+    x0, z0 = _prep_plot(t, "C")
+    boil = _hut(t, x0 + 1, z0 + 3, "RM_WaterBoilingShallow")
+    icy = _hut(t, x0 + 9, z0 + 3, "RM_WaterFrigidShallow")
+    ctrl = _hut(t, x0 + 17, z0 + 3, "WaterShallow")
+    open_boil = (x0 + 12, z0 + 12)
+    t.bridge_call("jawa/set_terrain_batch", ops="RM_WaterBoilingShallow:%s" % _rect(open_boil[0], open_boil[1], 1, 1))
+    _sc(t, HEAT_PROOF, "ProofRescan", " ")
+    with t.component("liquid_heat_kinds", toggle="liquidHeatPushEnabled"):
+        kb, ki, kc, ko = (_heat(t, (x0 + 4, z0 + 6)), _heat(t, (x0 + 12, z0 + 6)), _heat(t, (x0 + 20, z0 + 6)),
+                          _heat(t, open_boil))
+        if t._guard():
+            _expect(kb.get("kind") == "1" and ki.get("kind") == "-1" and kc.get("kind") == "0",
+                    "pool kinds boiling/icy/plain: %s / %s / %s" % (kb, ki, kc))
+            _expect(ko.get("kind") == "1" and ko.get("outdoor") == "True", "open boiling patch: %s" % ko)
+            _expect(kb.get("outdoor") == "False", "the boiling hut is not an enclosed room: %s" % kb)
+    with t.component("liquid_heat_warms_and_chills", toggle="liquidHeatPushEnabled"):
+        t.wait_ticks(1250)
+        b, i, c = _heat(t, boil), _heat(t, icy), _heat(t, ctrl)
+        if t._guard():
+            tb, ti, tc = float(b.get("temp", "nan")), float(i.get("temp", "nan")), float(c.get("temp", "nan"))
+            _expect(tb > tc + 3.0, "boiling hut %.1f C not warmer than the control %.1f C" % (tb, tc))
+            _expect(ti < tc - 3.0, "icy hut %.1f C not colder than the control %.1f C" % (ti, tc))
+            _expect(tb <= 50.5, "boiling hut %.1f C passed the 50 C target" % tb)
+    with t.component("liquid_heat_off_is_inert", toggle="liquidHeatPushEnabled"):
+        with _setting(t, "liquidHeatPushEnabled", False):
+            b0, c0 = _heat(t, boil), _heat(t, ctrl)
+            t.wait_ticks(1250)
+            b1, c1 = _heat(t, boil), _heat(t, ctrl)
+            if t._guard():
+                lead0 = float(b0.get("temp", "nan")) - float(c0.get("temp", "nan"))
+                lead1 = float(b1.get("temp", "nan")) - float(c1.get("temp", "nan"))
+                _expect(lead1 <= lead0 + 0.5, "boiling hut kept gaining with the setting OFF: lead %.1f -> %.1f"
+                        % (lead0, lead1))
+                _expect(b1.get("warmed") == "0", "rooms still warmed with the setting OFF: %s" % b1)
+    t.bridge_call("jawa/destroy_batch", rects=_rect(x0, z0, PW, PH), categories="All")
+    t.bridge_call("jawa/set_roof_batch", ops=_rect(x0, z0, PW, PH), roofDef="None")

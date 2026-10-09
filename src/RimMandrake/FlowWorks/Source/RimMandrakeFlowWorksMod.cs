@@ -62,6 +62,9 @@ namespace RimMandrake.FlowWorks
         // FLOWWORKS_BUILD_PROGRAM_1 Phase 6 — fire on the depth/fill engine (RM_LiquidFire). Ruling 7's numbers are
         // the owner's (1 canal level/day, 1 source level/5 days); front speed and source reach are PROVISIONAL.
         public static bool canalFireEnabled = true;
+        // LIQUID_HEAT_PUSH_1: hot/icy liquid warms or chills its room through vanilla heat (strength PROVISIONAL).
+        public static bool liquidHeatPushEnabled = true;
+        public static float liquidHeatStrength = 1f;
         public static float canalBurnDaysPerLevel = 1f;
         public static float sourceBurnDaysPerLevel = 5f;
         public static float fireFrontSpeedMultiplier = 1f;
@@ -321,6 +324,8 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref liquidCorrosionEnabled, "liquidCorrosionEnabled", false);
             Scribe_Values.Look(ref liquidIgnitionEnabled, "liquidIgnitionEnabled", false);
             Scribe_Values.Look(ref canalFireEnabled, "canalFireEnabled", true);
+            Scribe_Values.Look(ref liquidHeatPushEnabled, "liquidHeatPushEnabled", true);
+            Scribe_Values.Look(ref liquidHeatStrength, "liquidHeatStrength", 1f);
             Scribe_Values.Look(ref canalBurnDaysPerLevel, "canalBurnDaysPerLevel", 1f);
             Scribe_Values.Look(ref sourceBurnDaysPerLevel, "sourceBurnDaysPerLevel", 5f);
             Scribe_Values.Look(ref fireFrontSpeedMultiplier, "fireFrontSpeedMultiplier", 1f);
@@ -435,8 +440,8 @@ namespace RimMandrake.FlowWorks
             // to. Anyone adding a block here raises this number in the same
             // edit or their block is invisible. (+2000 for the Rivers section; +2400 for the
             // tanker / sluice-gate / blood / quarry sections, 2026-10-05; +500 for liquid looks / pit outline /
-            // pit shadow.)
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 10800f);
+            // pit shadow; +150 for hot and icy liquid, 2026-10-08.)
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 10950f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -584,6 +589,22 @@ namespace RimMandrake.FlowWorks
               + "leaves the map. It is not destroyed — it goes where an edge-touching lake's "
               + "water comes from. This also lets you dig in that strip at all, which the game "
               + "normally refuses. Off: the edge strip is undiggable again and nothing drains.");
+
+            // ── LIQUID_HEAT_PUSH_1: hot and icy liquid ──────────────────────
+            list.GapLine();
+            Text.Font = GameFont.Medium;
+            list.Label("Hot and icy liquid");
+            Text.Font = GameFont.Small;
+            list.CheckboxLabeled("Boiling and icy liquid warm or chill the room they are in", ref liquidHeatPushEnabled,
+                "Boiling water (and any hot liquid) warms the room it stands in, the same way a heater does; icy water "
+              + "chills it. A roofed hut over a boiling pool is warm, and a closed pit flooded with a hot liquid becomes "
+              + "a heat trap. Outdoors nothing changes: like a heater, the open air takes no heat. A room levels off at "
+              + "50 C (hot) or 0 C (icy). Takes effect within a few seconds. Off: liquid never changes the air.");
+            if (liquidHeatPushEnabled)
+            {
+                list.Label("Heat strength: x" + liquidHeatStrength.ToString("F2") + " (PROVISIONAL; applies now)");
+                liquidHeatStrength = list.Slider(liquidHeatStrength, 0.25f, 3f);
+            }
 
             // ── PHASE 6: fire ───────────────────────────────────────────────
             list.GapLine();

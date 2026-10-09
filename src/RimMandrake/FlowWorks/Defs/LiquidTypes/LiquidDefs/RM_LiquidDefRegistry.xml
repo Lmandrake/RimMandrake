@@ -159,6 +159,7 @@
     </damageOnImmersion>
     <corrodesApparel>false</corrodesApparel>
     <distillable>true</distillable>
+    <cold>true</cold>
     <color>(0.78,0.93,1.0)</color>
     <terrainSuite>
       <shallow>RM_WaterFrigidShallow</shallow>
