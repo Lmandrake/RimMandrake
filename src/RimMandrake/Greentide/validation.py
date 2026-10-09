@@ -797,7 +797,7 @@ def static_checks():
     for dp, _, files in os.walk(os.path.join(HERE, "Source")):
         for f in files:
             rel = os.path.relpath(os.path.join(dp, f), os.path.join(HERE, "Source")).replace("\\", "/")
-            if f.endswith(".cs") and not rel.startswith(("obj/", "bin/")) and rel not in listed:
+            if f.endswith(".cs") and not rel.startswith(("obj/", "bin/", "SelfTest/")) and rel not in listed:
                 bad.append("%s is not in the csproj (EnableDefaultCompileItems false: compiles into nothing)" % rel)
     defs = shipped_defs()
     if len(defs) < 1:
@@ -827,7 +827,7 @@ def static_checks():
     for v in ("Warg", "Muffalo", "Elephant", "Cobra", "Megaspider", "Rat", "Hare"):
         if v in wa:
             bad.append("free roster still names vanilla %s" % v)
-    for n in ("RM_Krannock", "RM_Sulleth", "RM_Dhollock", "RM_Yammeth", "RM_CanopySwinger", "RM_Vurrak"):
+    for n in ("RM_Krannock", "RM_Sulleth", "RM_Dhollock", "RM_Yammeth", "RM_CanopySwinger", "RM_Vurrak", "RM_Illisk"):
         if n not in wa:
             bad.append("free roster lacks %s" % n)
         if n not in names:
@@ -853,6 +853,12 @@ def static_checks():
         bad.append("RM_Vurrak lacks the bank ambusher comp")
     if races.get("RM_Vurrak") is not None and races["RM_Vurrak"].findtext("race/predator") != "false":
         bad.append("RM_Vurrak must not be a predator (it ambushes on contact, never hunts across the map)")
+    if not _has("RM_Illisk", "RimMandrake.Greentide.CompProperties_ShoalHide"):
+        bad.append("RM_Illisk lacks the shoal hide comp")
+    elif "Bomb" not in [x.text for x in races["RM_Illisk"].findall(".//blastDamageDefs/li")]:
+        bad.append("RM_Illisk hide must let Bomb through at full damage")
+    if races.get("RM_Illisk") is not None and races["RM_Illisk"].findtext("race/waterSeeker") != "true":
+        bad.append("RM_Illisk must be a water seeker")
     if not _has("RM_Sulleth", "RimMandrake.CreatureBehaviors.RM_SeekShadeExtension"):
         bad.append("RM_Sulleth lacks seek-shade")
     if races.get("RM_Yammeth") is None or float(races["RM_Yammeth"].findtext("statBases/MaxFlightTime") or 0) <= 0:

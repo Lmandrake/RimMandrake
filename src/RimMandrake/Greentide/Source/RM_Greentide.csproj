@@ -57,6 +57,7 @@
     <Compile Include="RM_HediffComp_MarksFeverSurvivor.cs" />
     <Compile Include="RM_Proj_GrenadeStenchSmoke.cs" />
     <Compile Include="RM_CompBankAmbusher.cs" />
+    <Compile Include="RM_CompShoalHide.cs" />
     <Compile Include="RM_StellockLace.cs" />
     <Compile Include="RM_ThurrockAuraApplier.cs" />
     <Compile Include="RM_CompGreatboleHarvestLadder.cs" />
