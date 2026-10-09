@@ -1,0 +1,1467 @@
+{
+ "sheetId": "sheet_conflicts_review_2026-10-09",
+ "decisionsFile": "Transient/sheet_conflicts_review_2026-10-09.decisions.json",
+ "note": "Enact ONLY rows whose decisions-file record has decidedAt (a human click); the page pre-selects a suggestion (prefill) that is NOT a decision. Each item id is a key in the decisions file. A/B/other -> maps[id][A|B]; 'other' means read the note.",
+ "maps": {
+  "RM_Abyss/Night Mule/del": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "AA_NightMule",
+   "kind": "del",
+   "conflictLines": [
+    "AA_NightMule: ✕ a25f92f19950 not purged — live at src/RimMandrake/AssailantSalvage/Textures/Things/Building/Ancient/RUT_AncientShieldedTurret.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_Abyss/Nightling/amb": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "AA_Nightling",
+   "kind": "amb",
+   "conflictLines": [
+    "AA_Nightling: pick E is a by-name render and the row has 2 graphics; it does not say which one it replaces — nothing installed for it"
+   ],
+   "A": {
+    "means": "replaces the main picture",
+    "letter": "E",
+    "action": "column E replaces the row's main picture"
+   },
+   "B": {
+    "means": "tell me which one",
+    "letter": "E",
+    "action": "owner will say which graphic; read the notes box"
+   },
+   "graphics": [
+    "Things/Pawn/Animal/AA_Nightling/AA_Nightling",
+    "Things/Pawn/Animal/AA_Nightling/AA_NightlingPuppy"
+   ]
+  },
+  "RM_Abyss/Shadow Charger/amb": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "AA_ShadowCharger",
+   "kind": "amb",
+   "conflictLines": [
+    "AA_ShadowCharger: pick G is a by-name render and the row has 3 graphics; it does not say which one it replaces — nothing installed for it"
+   ],
+   "A": {
+    "means": "replaces the main picture",
+    "letter": "G",
+    "action": "column G replaces the row's main picture"
+   },
+   "B": {
+    "means": "tell me which one",
+    "letter": "G",
+    "action": "owner will say which graphic; read the notes box"
+   },
+   "graphics": [
+    "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger",
+    "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_baby",
+    "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_female"
+   ]
+  },
+  "RM_Abyss/Aveluthia/del": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "RM_Aveluthia",
+   "kind": "del",
+   "conflictLines": [
+    "RM_Aveluthia: ✕ a25f92f19950 not purged — live at src/RimMandrake/AssailantSalvage/Textures/Things/Building/Ancient/RUT_AncientShieldedTurret.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_Abyss/Giant Fibre Stalk/stale": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "RM_GiantFibreStalk",
+   "kind": "stale",
+   "conflictLines": [
+    "RM_GiantFibreStalk: letter(s) A were clicked before the sheet's columns were rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done for this row; re-confirm it on the current sheet"
+   ],
+   "A": {
+    "means": "re-pick it on the new sheet",
+    "letters": [
+     "A"
+    ],
+    "action": "owner re-picks on the current sheet (say which column in the notes)"
+   },
+   "B": {
+    "means": "leave the current art",
+    "action": "leave the current art"
+   },
+   "oldSnapshotRev": "b9e310644"
+  },
+  "RM_Abyss/Glowing Grass/stale": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "RM_GlowingGrass",
+   "kind": "stale",
+   "conflictLines": [
+    "RM_GlowingGrass: letter(s) E were clicked before the sheet's columns were rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done for this row; re-confirm it on the current sheet"
+   ],
+   "A": {
+    "means": "re-pick it on the new sheet",
+    "letters": [
+     "E"
+    ],
+    "action": "owner re-picks on the current sheet (say which column in the notes)"
+   },
+   "B": {
+    "means": "leave the current art",
+    "action": "leave the current art"
+   },
+   "oldSnapshotRev": "b9e310644"
+  },
+  "RM_Abyss/Nevarithia/stale": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "RM_Nevarithia",
+   "kind": "stale",
+   "conflictLines": [
+    "RM_Nevarithia: letter(s) A were clicked before the sheet's columns were rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done for this row; re-confirm it on the current sheet"
+   ],
+   "A": {
+    "means": "re-pick it on the new sheet",
+    "letters": [
+     "A"
+    ],
+    "action": "owner re-picks on the current sheet (say which column in the notes)"
+   },
+   "B": {
+    "means": "leave the current art",
+    "action": "leave the current art"
+   },
+   "oldSnapshotRev": "b9e310644"
+  },
+  "RM_Abyss/Sickly Glow Mushroom/stale": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "RM_SicklyGlowMushroom",
+   "kind": "stale",
+   "conflictLines": [
+    "RM_SicklyGlowMushroom: letter(s) A were clicked before the sheet's columns were rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done for this row; re-confirm it on the current sheet"
+   ],
+   "A": {
+    "means": "re-pick it on the new sheet",
+    "letters": [
+     "A"
+    ],
+    "action": "owner re-picks on the current sheet (say which column in the notes)"
+   },
+   "B": {
+    "means": "leave the current art",
+    "action": "leave the current art"
+   },
+   "oldSnapshotRev": "b9e310644"
+  },
+  "RM_Abyss/Crepuscular Beetle/noslot": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "AA_CrepuscularBeetle",
+   "kind": "noslot",
+   "conflictLines": [
+    "AA_CrepuscularBeetle: pick C Things/Pawn/Animal/AA_CrepuscularBeetle/AA_CrepuscularBeetle_east.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)",
+    "AA_CrepuscularBeetle: pick C Things/Pawn/Animal/AA_CrepuscularBeetle/AA_CrepuscularBeetle_north.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)",
+    "AA_CrepuscularBeetle: pick C Things/Pawn/Animal/AA_CrepuscularBeetle/AA_CrepuscularBeetle_south.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)"
+   ],
+   "A": {
+    "means": "create our own override so it ships",
+    "letters": [
+     "C"
+    ],
+    "action": "create our own override texture slot so the pick ships"
+   },
+   "B": {
+    "means": "drop the pick",
+    "action": "drop the pick"
+   }
+  },
+  "RM_Abyss/Dark Vandal/noslot": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "AA_DarkVandal",
+   "kind": "noslot",
+   "conflictLines": [
+    "AA_DarkVandal: pick D Things/Pawn/Animal/FO_ForsakenBoar/FO_ForsakenBoar_east.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)",
+    "AA_DarkVandal: pick D Things/Pawn/Animal/FO_ForsakenBoar/FO_ForsakenBoar_north.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)",
+    "AA_DarkVandal: pick D Things/Pawn/Animal/FO_ForsakenBoar/FO_ForsakenBoar_south.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)"
+   ],
+   "A": {
+    "means": "create our own override so it ships",
+    "letters": [
+     "D"
+    ],
+    "action": "create our own override texture slot so the pick ships"
+   },
+   "B": {
+    "means": "drop the pick",
+    "action": "drop the pick"
+   }
+  },
+  "RM_Abyss/Dusk Prowler/noslot": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "AA_DuskProwler",
+   "kind": "noslot",
+   "conflictLines": [
+    "AA_DuskProwler: pick C Things/Pawn/Animal/FO_DuskProwler/FO_DuskProwler_east.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)",
+    "AA_DuskProwler: pick C Things/Pawn/Animal/FO_DuskProwler/FO_DuskProwler_north.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)",
+    "AA_DuskProwler: pick C Things/Pawn/Animal/FO_DuskProwler/FO_DuskProwler_south.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)"
+   ],
+   "A": {
+    "means": "create our own override so it ships",
+    "letters": [
+     "C"
+    ],
+    "action": "create our own override texture slot so the pick ships"
+   },
+   "B": {
+    "means": "drop the pick",
+    "action": "drop the pick"
+   }
+  },
+  "RM_Abyss/Murkling/noslot": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "AA_Murkling",
+   "kind": "noslot",
+   "conflictLines": [
+    "AA_Murkling: pick D Things/Pawn/Animal/FO_NightPest/FO_NightPest_east.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)",
+    "AA_Murkling: pick D Things/Pawn/Animal/FO_NightPest/FO_NightPest_north.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)",
+    "AA_Murkling: pick D Things/Pawn/Animal/FO_NightPest/FO_NightPest_south.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)"
+   ],
+   "A": {
+    "means": "create our own override so it ships",
+    "letters": [
+     "D"
+    ],
+    "action": "create our own override texture slot so the pick ships"
+   },
+   "B": {
+    "means": "drop the pick",
+    "action": "drop the pick"
+   }
+  },
+  "RM_Abyss/Night Ram/noslot": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "AA_NightRam",
+   "kind": "noslot",
+   "conflictLines": [
+    "AA_NightRam: pick B Things/Pawn/Animal/AA_NightRam/AA_NightRam_east.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)",
+    "AA_NightRam: pick B Things/Pawn/Animal/AA_NightRam/AA_NightRam_north.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)",
+    "AA_NightRam: pick B Things/Pawn/Animal/AA_NightRam/AA_NightRam_south.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)"
+   ],
+   "A": {
+    "means": "create our own override so it ships",
+    "letters": [
+     "B"
+    ],
+    "action": "create our own override texture slot so the pick ships"
+   },
+   "B": {
+    "means": "drop the pick",
+    "action": "drop the pick"
+   }
+  },
+  "RM_Abyss/Glowing Grass/noslot": {
+   "decisionsFile": "Transient/biome_ffar/abyss_sheet_2026-10-04.decisions.json",
+   "sheetId": "abyss_sheet_2026-10-04",
+   "row": "AB_GlowingGrass",
+   "kind": "noslot",
+   "conflictLines": [
+    "AB_GlowingGrass: pick B Things/Plants/AB_GlowingGrass.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)"
+   ],
+   "A": {
+    "means": "create our own override so it ships",
+    "letters": [
+     "B"
+    ],
+    "action": "create our own override texture slot so the pick ships"
+   },
+   "B": {
+    "means": "drop the pick",
+    "action": "drop the pick"
+   }
+  },
+  "RM_BlueDesert/Vhaulk/del": {
+   "decisionsFile": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+   "sheetId": "blue_desert_sheet_2026-10-04",
+   "row": "RM_Vhaulk",
+   "kind": "del",
+   "conflictLines": [
+    "RM_Vhaulk: ✕ a25f92f19950 not purged — live at src/RimMandrake/AssailantSalvage/Textures/Things/Building/Ancient/RUT_AncientShieldedTurret.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_BlueDesert/Dovvik/note": {
+   "decisionsFile": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+   "sheetId": "blue_desert_sheet_2026-10-04",
+   "row": "RM_Dovvik",
+   "kind": "note",
+   "conflictLines": [
+    "RM_Dovvik: note not enacted — \"You drew a beast that appears to be eating a plant... of course they can't be like that. Also, the graphics re\" (art or def edit? `--mark-done RM_Dovvik` when done)"
+   ],
+   "A": {
+    "means": "redraw it per the note",
+    "action": "queue a redraw following the note"
+   },
+   "B": {
+    "means": "already handled / ignore the note",
+    "action": "mark the note handled / ignore it"
+   }
+  },
+  "RM_BlueDesert/Murrek/note": {
+   "decisionsFile": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+   "sheetId": "blue_desert_sheet_2026-10-04",
+   "row": "RM_Murrek",
+   "kind": "note",
+   "conflictLines": [
+    "RM_Murrek: note not enacted — 'Give it a yellower hue due to the hydrocarbon blood' (art or def edit? `--mark-done RM_Murrek` when done)"
+   ],
+   "A": {
+    "means": "redraw it per the note",
+    "action": "queue a redraw following the note"
+   },
+   "B": {
+    "means": "already handled / ignore the note",
+    "action": "mark the note handled / ignore it"
+   }
+  },
+  "RM_BlueDesert/Utikka/note": {
+   "decisionsFile": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+   "sheetId": "blue_desert_sheet_2026-10-04",
+   "row": "RM_Utikka",
+   "kind": "note",
+   "conflictLines": [
+    "RM_Utikka: note not enacted — 'You made another image of an animal eating plants. It also is supposed to be hydrocarbon based (pale white/blu' (art or def edit? `--mark-done RM_Utikka` when done)"
+   ],
+   "A": {
+    "means": "redraw it per the note",
+    "action": "queue a redraw following the note"
+   },
+   "B": {
+    "means": "already handled / ignore the note",
+    "action": "mark the note handled / ignore it"
+   }
+  },
+  "RM_BlueDesert/Vrisk/note": {
+   "decisionsFile": "Transient/biome_ffar/blue_desert_sheet_2026-10-04.decisions.json",
+   "sheetId": "blue_desert_sheet_2026-10-04",
+   "row": "RM_Vrisk",
+   "kind": "note",
+   "conflictLines": [
+    "RM_Vrisk: note not enacted — 'Good, but please make the head less recognizable and more alien. Perhaps no eyes at all.' (art or def edit? `--mark-done RM_Vrisk` when done)"
+   ],
+   "A": {
+    "means": "redraw it per the note",
+    "action": "queue a redraw following the note"
+   },
+   "B": {
+    "means": "already handled / ignore the note",
+    "action": "mark the note handled / ignore it"
+   }
+  },
+  "RM_Contagion/Contagion Ikee/kept": {
+   "decisionsFile": "Transient/biome_ffar/contagion_sheet_2026-10-04.decisions.json",
+   "sheetId": "contagion_sheet_2026-10-04",
+   "row": "RM_ContagionIkee",
+   "kind": "kept",
+   "conflictLines": [
+    "RM_ContagionIkee: Contagion/Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee_east.png holds 0a52fabd2e89, owner-kept on art install (owner words); pick B not installed",
+    "RM_ContagionIkee: Contagion/Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee_north.png holds f124c52df712, owner-kept on art install (owner words); pick B not installed",
+    "RM_ContagionIkee: Contagion/Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee_south.png holds a336837e6bad, owner-kept on art install (owner words); pick B not installed"
+   ],
+   "A": {
+    "means": "keep the current one",
+    "letter": "B",
+    "action": "keep the protected current picture"
+   },
+   "B": {
+    "means": "install the new pick",
+    "letter": "B",
+    "action": "install the new pick (column B); release the keep"
+   },
+   "keptBy": [
+    "art install (owner words)"
+   ]
+  },
+  "RM_Contagion/Contagion Ikee/note": {
+   "decisionsFile": "Transient/biome_ffar/contagion_sheet_2026-10-04.decisions.json",
+   "sheetId": "contagion_sheet_2026-10-04",
+   "row": "RM_ContagionIkee",
+   "kind": "note",
+   "conflictLines": [
+    "RM_ContagionIkee: note not enacted — \"Not again! Where's the ikee art I had before? I liked it! Why do you keep changing the ikee art?\" (art or def edit? `--mark-done RM_ContagionIkee` when done)"
+   ],
+   "A": {
+    "means": "redraw it per the note",
+    "action": "queue a redraw following the note"
+   },
+   "B": {
+    "means": "already handled / ignore the note",
+    "action": "mark the note handled / ignore it"
+   }
+  },
+  "RM_Contagion/Doublemaw/note": {
+   "decisionsFile": "Transient/biome_ffar/contagion_sheet_2026-10-04.decisions.json",
+   "sheetId": "contagion_sheet_2026-10-04",
+   "row": "RM_Doublemaw",
+   "kind": "note",
+   "conflictLines": [
+    "RM_Doublemaw: note not enacted — 'stop tintint red' (art or def edit? `--mark-done RM_Doublemaw` when done)"
+   ],
+   "A": {
+    "means": "redraw it per the note",
+    "action": "queue a redraw following the note"
+   },
+   "B": {
+    "means": "already handled / ignore the note",
+    "action": "mark the note handled / ignore it"
+   }
+  },
+  "RM_Contagion/Eyestinger/note": {
+   "decisionsFile": "Transient/biome_ffar/contagion_sheet_2026-10-04.decisions.json",
+   "sheetId": "contagion_sheet_2026-10-04",
+   "row": "RM_Eyestinger",
+   "kind": "note",
+   "conflictLines": [
+    "RM_Eyestinger: note not enacted — 'stop tintint red' (art or def edit? `--mark-done RM_Eyestinger` when done)"
+   ],
+   "A": {
+    "means": "redraw it per the note",
+    "action": "queue a redraw following the note"
+   },
+   "B": {
+    "means": "already handled / ignore the note",
+    "action": "mark the note handled / ignore it"
+   }
+  },
+  "RM_Contagion/Gawpsack/note": {
+   "decisionsFile": "Transient/biome_ffar/contagion_sheet_2026-10-04.decisions.json",
+   "sheetId": "contagion_sheet_2026-10-04",
+   "row": "RM_Gawpsack",
+   "kind": "note",
+   "conflictLines": [
+    "RM_Gawpsack: note not enacted — 'stop tinting it pink, I like the original art as shown on left.' (art or def edit? `--mark-done RM_Gawpsack` when done)"
+   ],
+   "A": {
+    "means": "redraw it per the note",
+    "action": "queue a redraw following the note"
+   },
+   "B": {
+    "means": "already handled / ignore the note",
+    "action": "mark the note handled / ignore it"
+   }
+  },
+  "RM_Contagion/Sparkleech/note": {
+   "decisionsFile": "Transient/biome_ffar/contagion_sheet_2026-10-04.decisions.json",
+   "sheetId": "contagion_sheet_2026-10-04",
+   "row": "RM_Sparkleech",
+   "kind": "note",
+   "conflictLines": [
+    "RM_Sparkleech: note not enacted — 'why is that showing blue?' (art or def edit? `--mark-done RM_Sparkleech` when done)"
+   ],
+   "A": {
+    "means": "redraw it per the note",
+    "action": "queue a redraw following the note"
+   },
+   "B": {
+    "means": "already handled / ignore the note",
+    "action": "mark the note handled / ignore it"
+   }
+  },
+  "RM_Stillsand/Krayt Dragon/failed": {
+   "decisionsFile": "Transient/biome_ffar/deep_desert_sheet_2026-10-04.decisions.json",
+   "sheetId": "deep_desert_sheet_2026-10-04",
+   "row": "RSW_KraytDragon",
+   "kind": "failed",
+   "conflictLines": [
+    "RSW_KraytDragon: job stillsand_s2_RSW_KraytDragon_v3_south failed after 3 re-files — needs its spec looked at, not another retry"
+   ],
+   "A": {
+    "means": "rewrite the prompt and re-file",
+    "jobs": [
+     "stillsand_s2_RSW_KraytDragon_v3_south"
+    ],
+    "action": "rewrite the prompt and re-file the failed job(s)"
+   },
+   "B": {
+    "means": "drop the redraw",
+    "action": "drop the redraw"
+   }
+  },
+  "RM_Stillsand/Kreetle/kept": {
+   "decisionsFile": "Transient/biome_ffar/deep_desert_sheet_2026-10-04.decisions.json",
+   "sheetId": "deep_desert_sheet_2026-10-04",
+   "row": "RSW_Kreetle",
+   "kind": "kept",
+   "conflictLines": [
+    "RSW_Kreetle: KreetleArtOverride/swanimals/Kreetle/Kreetle_east.png holds 4276ef985969, owner-kept on leaningscrub_sheet_2026-10-05.decisions.json; pick I not installed"
+   ],
+   "A": {
+    "means": "keep the current one",
+    "letter": "I",
+    "action": "keep the protected current picture"
+   },
+   "B": {
+    "means": "install the new pick",
+    "letter": "I",
+    "action": "install the new pick (column I); release the keep"
+   },
+   "keptBy": [
+    "leaningscrub_sheet_2026-10-05.decisions.json"
+   ]
+  },
+  "RM_Stillsand/Vozzik/del": {
+   "decisionsFile": "Transient/biome_ffar/deep_desert_sheet_2026-10-04.decisions.json",
+   "sheetId": "deep_desert_sheet_2026-10-04",
+   "row": "RSW_Vozzik",
+   "kind": "del",
+   "conflictLines": [
+    "RSW_Vozzik: ✕ a629e6f73237 not purged — live at src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Vozzik/RM_Vozzik_south.png",
+    "RSW_Vozzik: ✕ f398a29e7916 not purged — live at src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Vozzik/RM_Vozzik_east.png",
+    "RSW_Vozzik: ✕ ade25a4b9d3a not purged — live at src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Vozzik/RM_Vozzik_north.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e",
+     "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
+     "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e",
+     "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
+     "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_LongShade/Great Devourer/tier": {
+   "decisionsFile": "Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json",
+   "sheetId": "desert_sheet_2026-10-04",
+   "row": "RM_GreatDevourer",
+   "kind": "tier",
+   "conflictLines": [],
+   "A": {
+    "means": "Star Wars level only",
+    "action": "Star Wars level only: RSW_GreatDevourer is the one def; remove/hide the plain RM_ row"
+   },
+   "B": {
+    "means": "plain mod level",
+    "action": "plain mod level: RM_GreatDevourer is the one def; RSW_ row dropped"
+   },
+   "rows": [
+    "RM_GreatDevourer",
+    "RSW_GreatDevourer"
+   ]
+  },
+  "RM_LongShade/Nerf/amb": {
+   "decisionsFile": "Transient/biome_ffar/desert_sheet_2026-10-04.decisions.json",
+   "sheetId": "desert_sheet_2026-10-04",
+   "row": "RSW_Nerf",
+   "kind": "amb",
+   "conflictLines": [
+    "RSW_Nerf: pick E is a by-name render and the row has 3 graphics; it does not say which one it replaces — nothing installed for it"
+   ],
+   "A": {
+    "means": "replaces the main picture",
+    "letter": "E",
+    "action": "column E replaces the row's main picture"
+   },
+   "B": {
+    "means": "tell me which one",
+    "letter": "E",
+    "action": "owner will say which graphic; read the notes box"
+   },
+   "graphics": [
+    "swanimals/Nerf/Nerf_f",
+    "swanimals/Nerf/Nerf_j",
+    "swanimals/Nerf/Nerf_m"
+   ]
+  },
+  "RM_FeverWood/Halquin/kept": {
+   "decisionsFile": "Transient/biome_ffar/feverwood_sheet_2026-10-05.decisions.json",
+   "sheetId": "feverwood_sheet_2026-10-05",
+   "row": "RM_Halquin",
+   "kind": "kept",
+   "conflictLines": [
+    "RM_Halquin: FeverWood/Things/Plant/RM_Halquin/RM_Halquin_a.png holds 25b911d827a8, owner-kept on feverwood_sheet_2026-10-05.decisions.json; pick B not installed"
+   ],
+   "A": {
+    "means": "keep the current one",
+    "letter": "B",
+    "action": "keep the protected current picture"
+   },
+   "B": {
+    "means": "install the new pick",
+    "letter": "B",
+    "action": "install the new pick (column B); release the keep"
+   },
+   "keptBy": [
+    "feverwood_sheet_2026-10-05.decisions.json"
+   ]
+  },
+  "RM_FeverWood/Maulith/kept": {
+   "decisionsFile": "Transient/biome_ffar/feverwood_sheet_2026-10-05.decisions.json",
+   "sheetId": "feverwood_sheet_2026-10-05",
+   "row": "RM_Maulith",
+   "kind": "kept",
+   "conflictLines": [
+    "RM_Maulith: FeverWood/Things/Plant/RM_Maulith/RM_Maulith_a.png holds 25b911d827a8, owner-kept on feverwood_sheet_2026-10-05.decisions.json; pick B not installed"
+   ],
+   "A": {
+    "means": "keep the current one",
+    "letter": "B",
+    "action": "keep the protected current picture"
+   },
+   "B": {
+    "means": "install the new pick",
+    "letter": "B",
+    "action": "install the new pick (column B); release the keep"
+   },
+   "keptBy": [
+    "feverwood_sheet_2026-10-05.decisions.json"
+   ]
+  },
+  "RM_GelatinousSlime/Bellows/purgedpick": {
+   "decisionsFile": "Transient/biome_ffar/gelatinousslime_sheet_2026-10-05.decisions.json",
+   "sheetId": "gelatinousslime_sheet_2026-10-05",
+   "row": "RM_Plant_Bellows",
+   "kind": "purgedpick",
+   "conflictLines": [],
+   "A": {
+    "means": "pick a different one",
+    "letter": "B",
+    "action": "owner picks a different column"
+   },
+   "B": {
+    "means": "redraw it",
+    "action": "queue a redraw"
+   }
+  },
+  "RM_GelatinousSlime/Readerbloom/purgedpick": {
+   "decisionsFile": "Transient/biome_ffar/gelatinousslime_sheet_2026-10-05.decisions.json",
+   "sheetId": "gelatinousslime_sheet_2026-10-05",
+   "row": "RM_Plant_Readerbloom",
+   "kind": "purgedpick",
+   "conflictLines": [],
+   "A": {
+    "means": "pick a different one",
+    "letter": "B",
+    "action": "owner picks a different column"
+   },
+   "B": {
+    "means": "redraw it",
+    "action": "queue a redraw"
+   }
+  },
+  "RM_GelatinousSlime/Dwommo/note": {
+   "decisionsFile": "Transient/biome_ffar/gelatinousslime_sheet_2026-10-05.decisions.json",
+   "sheetId": "gelatinousslime_sheet_2026-10-05",
+   "row": "RM_Dwommo",
+   "kind": "note",
+   "conflictLines": [
+    "RM_Dwommo: note not enacted — 'floater' (art or def edit? `--mark-done RM_Dwommo` when done)"
+   ],
+   "A": {
+    "means": "redraw it per the note",
+    "action": "queue a redraw following the note"
+   },
+   "B": {
+    "means": "already handled / ignore the note",
+    "action": "mark the note handled / ignore it"
+   }
+  },
+  "RM_Greentide/Beldon/stale": {
+   "decisionsFile": "Transient/biome_ffar/greentide_sheet_2026-10-05.decisions.json",
+   "sheetId": "greentide_sheet_2026-10-05",
+   "row": "RSW_Beldon",
+   "kind": "stale",
+   "conflictLines": [
+    "RSW_Beldon: letter(s) H, J were clicked before the sheet's columns were rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done for this row; re-confirm it on the current sheet"
+   ],
+   "A": {
+    "means": "re-pick it on the new sheet",
+    "letters": [
+     "H",
+     "J"
+    ],
+    "action": "owner re-picks on the current sheet (say which column in the notes)"
+   },
+   "B": {
+    "means": "leave the current art",
+    "action": "leave the current art"
+   },
+   "oldSnapshotRev": "2156f3913"
+  },
+  "RM_Greentide/Diggerpede/del": {
+   "decisionsFile": "Transient/biome_ffar/greentide_sheet_2026-10-05.decisions.json",
+   "sheetId": "greentide_sheet_2026-10-05",
+   "row": "RSW_Diggerpede",
+   "kind": "del",
+   "conflictLines": [
+    "RSW_Diggerpede: ✕ 7bc9334c5148 not purged — live at src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Diggerpede/Diggerpede_south.png",
+    "RSW_Diggerpede: ✕ 376552e5deb8 not purged — live at src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Diggerpede/Diggerpede_east.png",
+    "RSW_Diggerpede: ✕ 096c653bf1d7 not purged — live at src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Diggerpede/Diggerpede_north.png",
+    "RSW_Diggerpede: ✕ bec67d675dbe not purged — live at src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Gristle/RM_Gristle_south.png",
+    "RSW_Diggerpede: ✕ 8dd840148f9a not purged — live at src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Gristle/RM_Gristle_east.png",
+    "RSW_Diggerpede: ✕ 8115c00d64c1 not purged — live at src/RimMandrake/Greentide/Textures/Things/Pawn/Animal/RM_Gristle/RM_Gristle_north.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "096c653bf1d76c6bf9770388199759ff1086b338fd846a3642debf7201a71803",
+     "376552e5deb86a0392df7f7728e9cf1fb35e0f83fc3a1805bb008969a67825c4",
+     "7bc9334c51484d8adbbc52c23c5f3ed8feda63932dc064cdb3f523ece7ac65e8",
+     "8115c00d64c143589e68944996a9e709cd44bb8c92da430910ad4e90893262b7",
+     "8dd840148f9ac32d719335e21571ea299cc99ce83b1f58b8a97bbdac2e7ffb0f",
+     "bec67d675dbedc49df0d46f72cf9b21ed0c36e5eb56f4499c3e4d197e60d9d4c"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "096c653bf1d76c6bf9770388199759ff1086b338fd846a3642debf7201a71803",
+     "376552e5deb86a0392df7f7728e9cf1fb35e0f83fc3a1805bb008969a67825c4",
+     "7bc9334c51484d8adbbc52c23c5f3ed8feda63932dc064cdb3f523ece7ac65e8",
+     "8115c00d64c143589e68944996a9e709cd44bb8c92da430910ad4e90893262b7",
+     "8dd840148f9ac32d719335e21571ea299cc99ce83b1f58b8a97bbdac2e7ffb0f",
+     "bec67d675dbedc49df0d46f72cf9b21ed0c36e5eb56f4499c3e4d197e60d9d4c"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_Greentide/Fambaa/del": {
+   "decisionsFile": "Transient/biome_ffar/greentide_sheet_2026-10-05.decisions.json",
+   "sheetId": "greentide_sheet_2026-10-05",
+   "row": "RSW_Fambaa",
+   "kind": "del",
+   "conflictLines": [
+    "RSW_Fambaa: ✕ 7f0dd6333392 not purged — owner-kept (feverwood_sheet_2026-10-05.decisions.json)",
+    "RSW_Fambaa: ✕ 105e206407cf not purged — owner-kept (feverwood_sheet_2026-10-05.decisions.json)",
+    "RSW_Fambaa: ✕ c9a3a0d102da not purged — owner-kept (feverwood_sheet_2026-10-05.decisions.json)"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "105e206407cfe8e172a12a6e93ac7705b7aab61bf4122864128668593e61abfe",
+     "7f0dd63333922a65b0550b221d682597cae7735adf3d5b0d9b40aba3304b4370",
+     "c9a3a0d102da77808d92c660a69c2666681f2af45ef0cd7c09c1213dba56e5b9"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "105e206407cfe8e172a12a6e93ac7705b7aab61bf4122864128668593e61abfe",
+     "7f0dd63333922a65b0550b221d682597cae7735adf3d5b0d9b40aba3304b4370",
+     "c9a3a0d102da77808d92c660a69c2666681f2af45ef0cd7c09c1213dba56e5b9"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_Greentide/Gelagrub/del": {
+   "decisionsFile": "Transient/biome_ffar/greentide_sheet_2026-10-05.decisions.json",
+   "sheetId": "greentide_sheet_2026-10-05",
+   "row": "RSW_Gelagrub",
+   "kind": "del",
+   "conflictLines": [
+    "RSW_Gelagrub: ✕ 6abd2d80da8a not purged — owner-kept (feverwood_sheet_2026-10-05.decisions.json)",
+    "RSW_Gelagrub: ✕ 80f34fa32f88 not purged — owner-kept (feverwood_sheet_2026-10-05.decisions.json)",
+    "RSW_Gelagrub: ✕ 06c241a95ee0 not purged — owner-kept (feverwood_sheet_2026-10-05.decisions.json)"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "06c241a95ee0ac436e7a9a31692d3049195f798e0fe5cff95214fe6d792dede2",
+     "6abd2d80da8a09c3271501a8d3e370b8776f1b844797a968b8d78f91f3ce3ce3",
+     "80f34fa32f8850459378fab90f39a9189372d75e869456f49b097ce8d20925d3"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "06c241a95ee0ac436e7a9a31692d3049195f798e0fe5cff95214fe6d792dede2",
+     "6abd2d80da8a09c3271501a8d3e370b8776f1b844797a968b8d78f91f3ce3ce3",
+     "80f34fa32f8850459378fab90f39a9189372d75e869456f49b097ce8d20925d3"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_Greentide/Hawkbat/del": {
+   "decisionsFile": "Transient/biome_ffar/greentide_sheet_2026-10-05.decisions.json",
+   "sheetId": "greentide_sheet_2026-10-05",
+   "row": "RSW_Hawkbat",
+   "kind": "del",
+   "conflictLines": [
+    "RSW_Hawkbat: ✕ f3d943c350c1 not purged — live at src/RimStarWars/HawkbatArtOverride/Textures/swanimals/Hawkbat/Hawkbat_j_south.png",
+    "RSW_Hawkbat: ✕ 66bc6b13db61 not purged — live at src/RimStarWars/HawkbatArtOverride/Textures/swanimals/Hawkbat/Hawkbat_j_east.png",
+    "RSW_Hawkbat: ✕ 0a1878e64116 not purged — live at src/RimStarWars/HawkbatArtOverride/Textures/swanimals/Hawkbat/Hawkbat_j_north.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "0a1878e64116550c660809ebc0fa8ef685e91a91b362f39d1517122053e3ec43",
+     "66bc6b13db614549528fc043b84cb2222562fe74470d8b35f377cac780e457f2",
+     "f3d943c350c13ff14c199af6738213b8b961b140a0fea123728a86a5242dbd72"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "0a1878e64116550c660809ebc0fa8ef685e91a91b362f39d1517122053e3ec43",
+     "66bc6b13db614549528fc043b84cb2222562fe74470d8b35f377cac780e457f2",
+     "f3d943c350c13ff14c199af6738213b8b961b140a0fea123728a86a5242dbd72"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_Greentide/Mott/del": {
+   "decisionsFile": "Transient/biome_ffar/greentide_sheet_2026-10-05.decisions.json",
+   "sheetId": "greentide_sheet_2026-10-05",
+   "row": "RSW_Mott",
+   "kind": "del",
+   "conflictLines": [
+    "RSW_Mott: ✕ d6cc815ed757 not purged — owner-kept (2026-10-07_greentide_sheet_2026-10-05.decisions.json)",
+    "RSW_Mott: ✕ 228ee4391696 not purged — owner-kept (2026-10-07_greentide_sheet_2026-10-05.decisions.json)",
+    "RSW_Mott: ✕ 84f8df890d71 not purged — owner-kept (2026-10-07_greentide_sheet_2026-10-05.decisions.json)"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "228ee43916961855ab8a5d6b1087459b8a6e1ed6165ef66a312c7862a0e10af7",
+     "84f8df890d71177b6474349015a56df958f84191f8a5a60eaa2fb9301386c3a3",
+     "d6cc815ed7575d3f83f8c04a425a64650aca393185f80b406674ef90b0e6c7b3"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "228ee43916961855ab8a5d6b1087459b8a6e1ed6165ef66a312c7862a0e10af7",
+     "84f8df890d71177b6474349015a56df958f84191f8a5a60eaa2fb9301386c3a3",
+     "d6cc815ed7575d3f83f8c04a425a64650aca393185f80b406674ef90b0e6c7b3"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_Greentide/Peko Peko/amb": {
+   "decisionsFile": "Transient/biome_ffar/greentide_sheet_2026-10-05.decisions.json",
+   "sheetId": "greentide_sheet_2026-10-05",
+   "row": "RSW_PekoPeko",
+   "kind": "amb",
+   "conflictLines": [
+    "RSW_PekoPeko: pick N is a by-name render and the row has 3 graphics; it does not say which one it replaces — nothing installed for it"
+   ],
+   "A": {
+    "means": "replaces the main picture",
+    "letter": "N",
+    "action": "column N replaces the row's main picture"
+   },
+   "B": {
+    "means": "tell me which one",
+    "letter": "N",
+    "action": "owner will say which graphic; read the notes box"
+   },
+   "graphics": [
+    "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_",
+    "swanimals/PekoPeko/PekoPeko_f",
+    "swanimals/PekoPeko/PekoPeko_m"
+   ]
+  },
+  "RM_Greentide/Peko Peko/del": {
+   "decisionsFile": "Transient/biome_ffar/greentide_sheet_2026-10-05.decisions.json",
+   "sheetId": "greentide_sheet_2026-10-05",
+   "row": "RSW_PekoPeko",
+   "kind": "del",
+   "conflictLines": [
+    "RSW_PekoPeko: ✕ b64f05d78665 not purged — live at src/RimStarWars/PekoPekoArtOverride/Textures/swanimals/PekoPeko/PekoPeko_m_south.png",
+    "RSW_PekoPeko: ✕ 6e10195a6185 not purged — live at src/RimStarWars/PekoPekoArtOverride/Textures/swanimals/PekoPeko/PekoPeko_m_east.png",
+    "RSW_PekoPeko: ✕ bc1c95fc5e39 not purged — live at src/RimStarWars/PekoPekoArtOverride/Textures/swanimals/PekoPeko/PekoPeko_m_north.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "6e10195a61852caed7575a0070cc3b4775dc6f4c6ddfcc8b31b67e7d5fe9603b",
+     "b64f05d78665c7b8de078112810c61e7e69659ead2116e644f5580430952d6e3",
+     "bc1c95fc5e3919aa84b710bacb8dd3b2935d80b12ad914ee78fca4517f51a134"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "6e10195a61852caed7575a0070cc3b4775dc6f4c6ddfcc8b31b67e7d5fe9603b",
+     "b64f05d78665c7b8de078112810c61e7e69659ead2116e644f5580430952d6e3",
+     "bc1c95fc5e3919aa84b710bacb8dd3b2935d80b12ad914ee78fca4517f51a134"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_GreySea/Corrik/note": {
+   "decisionsFile": "Transient/biome_ffar/greysea_sheet_2026-10-05.decisions.json",
+   "sheetId": "greysea_sheet_2026-10-05",
+   "row": "RM_Corrik",
+   "kind": "note",
+   "conflictLines": [
+    "RM_Corrik: note not enacted — \"This doesn't look like anything?\" (art or def edit? `--mark-done RM_Corrik` when done)"
+   ],
+   "A": {
+    "means": "redraw it per the note",
+    "action": "queue a redraw following the note"
+   },
+   "B": {
+    "means": "already handled / ignore the note",
+    "action": "mark the note handled / ignore it"
+   }
+  },
+  "RM_LeaningScrub/Durrok/stale": {
+   "decisionsFile": "Transient/biome_ffar/leaningscrub_sheet_2026-10-05.decisions.json",
+   "sheetId": "leaningscrub_sheet_2026-10-05",
+   "row": "RM_Durrok",
+   "kind": "stale",
+   "conflictLines": [
+    "RM_Durrok: letter(s) A were clicked before the sheet's columns were rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done for this row; re-confirm it on the current sheet"
+   ],
+   "A": {
+    "means": "re-pick it on the new sheet",
+    "letters": [
+     "A"
+    ],
+    "action": "owner re-picks on the current sheet (say which column in the notes)"
+   },
+   "B": {
+    "means": "leave the current art",
+    "action": "leave the current art"
+   },
+   "oldSnapshotRev": "ea76df0e4"
+  },
+  "RM_LeaningScrub/Mullgoth/stale": {
+   "decisionsFile": "Transient/biome_ffar/leaningscrub_sheet_2026-10-05.decisions.json",
+   "sheetId": "leaningscrub_sheet_2026-10-05",
+   "row": "RM_Mullgoth",
+   "kind": "stale",
+   "conflictLines": [
+    "RM_Mullgoth: letter(s) A were clicked before the sheet's columns were rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done for this row; re-confirm it on the current sheet"
+   ],
+   "A": {
+    "means": "re-pick it on the new sheet",
+    "letters": [
+     "A"
+    ],
+    "action": "owner re-picks on the current sheet (say which column in the notes)"
+   },
+   "B": {
+    "means": "leave the current art",
+    "action": "leave the current art"
+   },
+   "oldSnapshotRev": "ea76df0e4"
+  },
+  "RM_LeaningScrub/Hoard Venomvine/noslot": {
+   "decisionsFile": "Transient/biome_ffar/leaningscrub_sheet_2026-10-05.decisions.json",
+   "sheetId": "leaningscrub_sheet_2026-10-05",
+   "row": "RM_HoardVenomvine",
+   "kind": "noslot",
+   "conflictLines": [
+    "RM_HoardVenomvine: pick J Things/Plant/RM_Venomvine.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)"
+   ],
+   "A": {
+    "means": "create our own override so it ships",
+    "letters": [
+     "J"
+    ],
+    "action": "create our own override texture slot so the pick ships"
+   },
+   "B": {
+    "means": "drop the pick",
+    "action": "drop the pick"
+   }
+  },
+  "RM_Miasma/Blixus/failed": {
+   "decisionsFile": "Transient/biome_ffar/miasma_sheet_2026-10-05.decisions.json",
+   "sheetId": "miasma_sheet_2026-10-05",
+   "row": "RSW_Blixus",
+   "kind": "failed",
+   "conflictLines": [
+    "RSW_Blixus: job miasma_canon_blixus_v1_north failed after 3 re-files — needs its spec looked at, not another retry",
+    "RSW_Blixus: job miasma_canon_blixus_v1_south failed after 3 re-files — needs its spec looked at, not another retry",
+    "RSW_Blixus: job miasma_canon_blixus_v1_swim_east failed after 3 re-files — needs its spec looked at, not another retry"
+   ],
+   "A": {
+    "means": "rewrite the prompt and re-file",
+    "jobs": [
+     "miasma_canon_blixus_v1_north",
+     "miasma_canon_blixus_v1_south",
+     "miasma_canon_blixus_v1_swim_east"
+    ],
+    "action": "rewrite the prompt and re-file the failed job(s)"
+   },
+   "B": {
+    "means": "drop the redraw",
+    "action": "drop the redraw"
+   }
+  },
+  "RM_Miasma/Opee Sea Killer Juv/failed": {
+   "decisionsFile": "Transient/biome_ffar/miasma_sheet_2026-10-05.decisions.json",
+   "sheetId": "miasma_sheet_2026-10-05",
+   "row": "RSW_OpeeSeaKillerJuv",
+   "kind": "failed",
+   "conflictLines": [
+    "RSW_OpeeSeaKillerJuv: job miasma_canon_opeejuv_v2_south failed after 3 re-files — needs its spec looked at, not another retry"
+   ],
+   "A": {
+    "means": "rewrite the prompt and re-file",
+    "jobs": [
+     "miasma_canon_opeejuv_v2_south"
+    ],
+    "action": "rewrite the prompt and re-file the failed job(s)"
+   },
+   "B": {
+    "means": "drop the redraw",
+    "action": "drop the redraw"
+   }
+  },
+  "RM_Miasma/Mantrap/noslot": {
+   "decisionsFile": "Transient/biome_ffar/miasma_sheet_2026-10-05.decisions.json",
+   "sheetId": "miasma_sheet_2026-10-05",
+   "row": "AA_Mantrap",
+   "kind": "noslot",
+   "conflictLines": [
+    "AA_Mantrap: pick E Things/Pawn/Animal/AA_Mantrap/AA_Mantrap.png has no slot in any of our mods (donor art? needs an override texture or a def texPath)"
+   ],
+   "A": {
+    "means": "create our own override so it ships",
+    "letters": [
+     "E"
+    ],
+    "action": "create our own override texture slot so the pick ships"
+   },
+   "B": {
+    "means": "drop the pick",
+    "action": "drop the pick"
+   }
+  },
+  "RM_RustCathedral/Vozzik/del": {
+   "decisionsFile": "Transient/biome_ffar/rustcathedral_sheet_2026-10-05.decisions.json",
+   "sheetId": "rustcathedral_sheet_2026-10-05",
+   "row": "RSW_Vozzik",
+   "kind": "del",
+   "conflictLines": [
+    "RSW_Vozzik: ✕ a629e6f73237 not purged — live at src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Vozzik/RM_Vozzik_south.png",
+    "RSW_Vozzik: ✕ f398a29e7916 not purged — live at src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Vozzik/RM_Vozzik_east.png",
+    "RSW_Vozzik: ✕ ade25a4b9d3a not purged — live at src/RimMandrake/Stillsand/Textures/Things/Pawn/Animal/RM_Vozzik/RM_Vozzik_north.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e",
+     "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
+     "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e",
+     "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
+     "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_TheScald/Noohm/del": {
+   "decisionsFile": "Transient/biome_ffar/thescald_sheet_2026-10-05.decisions.json",
+   "sheetId": "thescald_sheet_2026-10-05",
+   "row": "RM_Noohm",
+   "kind": "del",
+   "conflictLines": [
+    "RM_Noohm: ✕ 92592a786b3e not purged — live at src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Sorruth/RM_Sorruth.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_TheScald/Shulla/del": {
+   "decisionsFile": "Transient/biome_ffar/thescald_sheet_2026-10-05.decisions.json",
+   "sheetId": "thescald_sheet_2026-10-05",
+   "row": "RM_Shulla",
+   "kind": "del",
+   "conflictLines": [
+    "RM_Shulla: ✕ 92592a786b3e not purged — live at src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Sorruth/RM_Sorruth.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_TheSump/Dredgel/del": {
+   "decisionsFile": "Transient/biome_ffar/thesump_sheet_2026-10-05.decisions.json",
+   "sheetId": "thesump_sheet_2026-10-05",
+   "row": "RM_Dredgel",
+   "kind": "del",
+   "conflictLines": [
+    "RM_Dredgel: ✕ 2ca18c6ede1b not purged — live at src/RimMandrake/TheSump/Textures/Things/Pawn/Animal/RM_Dredgel/RM_Dredgel_east.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_TwilightSea/Dancing Skresh/stale": {
+   "decisionsFile": "Transient/biome_ffar/twilightsea_sheet_2026-10-05.decisions.json",
+   "sheetId": "twilightsea_sheet_2026-10-05",
+   "row": "RM_DancingSkresh",
+   "kind": "stale",
+   "conflictLines": [
+    "RM_DancingSkresh: letter(s) A were clicked before the sheet's columns were rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done for this row; re-confirm it on the current sheet"
+   ],
+   "A": {
+    "means": "re-pick it on the new sheet",
+    "letters": [
+     "A"
+    ],
+    "action": "owner re-picks on the current sheet (say which column in the notes)"
+   },
+   "B": {
+    "means": "leave the current art",
+    "action": "leave the current art"
+   },
+   "oldSnapshotRev": "db122e7ce"
+  },
+  "RM_TwilightSea/Gripping Terror/stale": {
+   "decisionsFile": "Transient/biome_ffar/twilightsea_sheet_2026-10-05.decisions.json",
+   "sheetId": "twilightsea_sheet_2026-10-05",
+   "row": "RM_GrippingTerror",
+   "kind": "stale",
+   "conflictLines": [
+    "RM_GrippingTerror: letter(s) A were clicked before the sheet's columns were rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done for this row; re-confirm it on the current sheet"
+   ],
+   "A": {
+    "means": "re-pick it on the new sheet",
+    "letters": [
+     "A"
+    ],
+    "action": "owner re-picks on the current sheet (say which column in the notes)"
+   },
+   "B": {
+    "means": "leave the current art",
+    "action": "leave the current art"
+   },
+   "oldSnapshotRev": "db122e7ce"
+  },
+  "RM_TwilightSea/Hollu/del": {
+   "decisionsFile": "Transient/biome_ffar/twilightsea_sheet_2026-10-05.decisions.json",
+   "sheetId": "twilightsea_sheet_2026-10-05",
+   "row": "RM_Hollu",
+   "kind": "del",
+   "conflictLines": [
+    "RM_Hollu: ✕ aa3ee7b59ba2 not purged — live at src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Hollu/RM_Hollu_south.png",
+    "RM_Hollu: ✕ 38823bb69505 not purged — live at src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Hollu/RM_Hollu_east.png",
+    "RM_Hollu: ✕ 6c9626f9fbc6 not purged — live at src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Hollu/RM_Hollu_north.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "38823bb69505fa9ddfd8e27ea4fb1c5d580723d81cc442a21729129354cea015",
+     "6c9626f9fbc6dc4d4bb510223060a494cc61c4198c4548bfe8d1f6f4b06d593e",
+     "aa3ee7b59ba2a46649d550d9de6270e2db113674dde93e147158050fcb540027"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "38823bb69505fa9ddfd8e27ea4fb1c5d580723d81cc442a21729129354cea015",
+     "6c9626f9fbc6dc4d4bb510223060a494cc61c4198c4548bfe8d1f6f4b06d593e",
+     "aa3ee7b59ba2a46649d550d9de6270e2db113674dde93e147158050fcb540027"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_TwilightSea/Loohn/del": {
+   "decisionsFile": "Transient/biome_ffar/twilightsea_sheet_2026-10-05.decisions.json",
+   "sheetId": "twilightsea_sheet_2026-10-05",
+   "row": "RM_Loohn",
+   "kind": "del",
+   "conflictLines": [
+    "RM_Loohn: ✕ 92592a786b3e not purged — live at src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Sorruth/RM_Sorruth.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_TwilightSea/Lunoowa/del": {
+   "decisionsFile": "Transient/biome_ffar/twilightsea_sheet_2026-10-05.decisions.json",
+   "sheetId": "twilightsea_sheet_2026-10-05",
+   "row": "RM_Lunoowa",
+   "kind": "del",
+   "conflictLines": [
+    "RM_Lunoowa: ✕ 92592a786b3e not purged — live at src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Sorruth/RM_Sorruth.png",
+    "RM_Lunoowa: ✕ e9546fb2d655 not purged — live at src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa_north.png",
+    "RM_Lunoowa: ✕ 7e4dcc9b12fd not purged — live at src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa_east.png",
+    "RM_Lunoowa: ✕ 077c92d255c5 not purged — live at src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa_south.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "077c92d255c5b7cdb110e59a9eca7e567c8844b43f2ee08d3d4c4b61a0c5886d",
+     "7e4dcc9b12fd6479269001510d53a2d2e0058828cd24a67e5662f7a8178d8a57",
+     "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
+     "e9546fb2d655fcc8fbf9d0460a66e441392772c48b1042522a413d4aed029e6d"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "077c92d255c5b7cdb110e59a9eca7e567c8844b43f2ee08d3d4c4b61a0c5886d",
+     "7e4dcc9b12fd6479269001510d53a2d2e0058828cd24a67e5662f7a8178d8a57",
+     "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
+     "e9546fb2d655fcc8fbf9d0460a66e441392772c48b1042522a413d4aed029e6d"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_TwilightSea/Noolim/del": {
+   "decisionsFile": "Transient/biome_ffar/twilightsea_sheet_2026-10-05.decisions.json",
+   "sheetId": "twilightsea_sheet_2026-10-05",
+   "row": "RM_Noolim",
+   "kind": "del",
+   "conflictLines": [
+    "RM_Noolim: ✕ 92592a786b3e not purged — live at src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Sorruth/RM_Sorruth.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_TwilightSea/Weloon/del": {
+   "decisionsFile": "Transient/biome_ffar/twilightsea_sheet_2026-10-05.decisions.json",
+   "sheetId": "twilightsea_sheet_2026-10-05",
+   "row": "RM_Weloon",
+   "kind": "del",
+   "conflictLines": [
+    "RM_Weloon: ✕ 92592a786b3e not purged — live at src/RimMandrake/TerminalBiomes/Textures/Things/Pawn/Animal/RM_Sorruth/RM_Sorruth.png"
+   ],
+   "A": {
+    "means": "keep it, ignore the delete",
+    "shas": [
+     "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+    ],
+    "action": "drop the delete: keep these pictures"
+   },
+   "B": {
+    "means": "swap in a replacement first, then delete it",
+    "shas": [
+     "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+    ],
+    "action": "install a replacement for these, then delete them"
+   }
+  },
+  "RM_Warscar/Bileworm/stale": {
+   "decisionsFile": "Transient/biome_ffar/warscar_sheet_2026-10-05.decisions.json",
+   "sheetId": "warscar_sheet_2026-10-05",
+   "row": "RM_Bileworm",
+   "kind": "stale",
+   "conflictLines": [
+    "RM_Bileworm: letter(s) A were clicked before the sheet's columns were rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done for this row; re-confirm it on the current sheet"
+   ],
+   "A": {
+    "means": "re-pick it on the new sheet",
+    "letters": [
+     "A"
+    ],
+    "action": "owner re-picks on the current sheet (say which column in the notes)"
+   },
+   "B": {
+    "means": "leave the current art",
+    "action": "leave the current art"
+   },
+   "oldSnapshotRev": "b7065dc1d"
+  },
+  "RM_Warscar/Electric Gryllotalpa/stale": {
+   "decisionsFile": "Transient/biome_ffar/warscar_sheet_2026-10-05.decisions.json",
+   "sheetId": "warscar_sheet_2026-10-05",
+   "row": "RM_ElectricGryllotalpa",
+   "kind": "stale",
+   "conflictLines": [
+    "RM_ElectricGryllotalpa: letter(s) A were clicked before the sheet's columns were rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done for this row; re-confirm it on the current sheet"
+   ],
+   "A": {
+    "means": "re-pick it on the new sheet",
+    "letters": [
+     "A"
+    ],
+    "action": "owner re-picks on the current sheet (say which column in the notes)"
+   },
+   "B": {
+    "means": "leave the current art",
+    "action": "leave the current art"
+   },
+   "oldSnapshotRev": "b7065dc1d"
+  },
+  "RM_Warscar/Electric Tick/stale": {
+   "decisionsFile": "Transient/biome_ffar/warscar_sheet_2026-10-05.decisions.json",
+   "sheetId": "warscar_sheet_2026-10-05",
+   "row": "RM_ElectricTick",
+   "kind": "stale",
+   "conflictLines": [
+    "RM_ElectricTick: letter(s) A were clicked before the sheet's columns were rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done for this row; re-confirm it on the current sheet"
+   ],
+   "A": {
+    "means": "re-pick it on the new sheet",
+    "letters": [
+     "A"
+    ],
+    "action": "owner re-picks on the current sheet (say which column in the notes)"
+   },
+   "B": {
+    "means": "leave the current art",
+    "action": "leave the current art"
+   },
+   "oldSnapshotRev": "b7065dc1d"
+  },
+  "RM_Warscar/Juggernaut Beetle/stale": {
+   "decisionsFile": "Transient/biome_ffar/warscar_sheet_2026-10-05.decisions.json",
+   "sheetId": "warscar_sheet_2026-10-05",
+   "row": "RM_JuggernautBeetle",
+   "kind": "stale",
+   "conflictLines": [
+    "RM_JuggernautBeetle: letter(s) A were clicked before the sheet's columns were rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done for this row; re-confirm it on the current sheet"
+   ],
+   "A": {
+    "means": "re-pick it on the new sheet",
+    "letters": [
+     "A"
+    ],
+    "action": "owner re-picks on the current sheet (say which column in the notes)"
+   },
+   "B": {
+    "means": "leave the current art",
+    "action": "leave the current art"
+   },
+   "oldSnapshotRev": "b7065dc1d"
+  },
+  "RM_Webwork/Tooke Trap  Wild/failed": {
+   "decisionsFile": "Transient/biome_ffar/webwork_sheet_2026-10-05.decisions.json",
+   "sheetId": "webwork_sheet_2026-10-05",
+   "row": "Plant_TookeTrap_Wild",
+   "kind": "failed",
+   "conflictLines": [
+    "Plant_TookeTrap_Wild: job webwork_tooketrap_redo_v2 failed after 3 re-files — needs its spec looked at, not another retry"
+   ],
+   "A": {
+    "means": "rewrite the prompt and re-file",
+    "jobs": [
+     "webwork_tooketrap_redo_v2"
+    ],
+    "action": "rewrite the prompt and re-file the failed job(s)"
+   },
+   "B": {
+    "means": "drop the redraw",
+    "action": "drop the redraw"
+   }
+  }
+ }
+}

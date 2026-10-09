@@ -1,0 +1,12 @@
+{
+  "posture": "whitelist",
+  "criterion": "Not ranked: grouped by biome. The pre-selected letter is my least-destructive suggestion, not a decision.",
+  "sheetId": "sheet_conflicts_review_2026-10-09",
+  "reviewStatus": {
+    "state": "prefill",
+    "by": null,
+    "at": null,
+    "evidence": "generated; no human has picked"
+  },
+  "decisions": {}
+}
