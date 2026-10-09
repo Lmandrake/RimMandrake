@@ -36,14 +36,14 @@ Read from `src/RimMandrake/Utils/artpipe/{artpiped,fill_queue,common,artreg}.py`
 
 The plan's §2.4 row named only the four queue dirs. `registry.jsonl`/`throughput.jsonl`/`art_status.*`
 move too because the daemon writes them on every job: left tracked, the daemon's own clone (FOUNDRY's)
-would be permanently dirty and every FOUNDRY publish would race it. **Cost: `registry.jsonl` holds owner
-verdicts (via `apply_verdicts.py`) and is no longer in git.** Its last tracked copy stays in history;
+would be permanently dirty and every FOUNDRY publish would race it. **Cost: `registry.jsonl` is no longer in git** (it holds
+generation telemetry only; owner verdicts live in the art ledger). Its last tracked copy stays in history;
 follow-up: a periodic snapshot of `registry.jsonl` somewhere durable (not filed by this pass).
 
 ## 3. Other readers/writers (all repointed to the resolver)
 
-- artpipe package: `artpiped.py`, `fill_queue.py`, `artreg.py`, `console.py`, `make_verdict_sheet.py`,
-  `build_flora_legibility_sheet.py`, `apply_verdicts.py` (via artreg) — all read `common.*`.
+- artpipe package: `artpiped.py`, `fill_queue.py`, `artreg.py`, `console.py`,
+  `build_flora_legibility_sheet.py` — all read `common.*`.
 - `src/RimMandrake/LanternDeeps/{wire_art,build_art_sheet,build_species_sheet}.py` — hardcoded
   `REPO_ROOT/infrastructure/artpipe/{_artsrc,done,failed}`.
 - `infrastructure/dashboards/hub/{regen_hub,hub_check,build_standalone}.py` — `art_status.json`.
