@@ -126,12 +126,13 @@ one thin vertical line above it.
   there is no art for it.
 
 ## Must show
-- [ ] Small domed body slung between four long, wide-splayed, multi-jointed legs
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): chassis, finish/colour layout and a negative, each checkable on a 256px sprite. Grounded in the sourced dimensions and plating, the Geonosis film frame and the from-above concept plate, as described in the visual brief.*
+- [ ] CHASSIS: no torso and no head: a small domed body slung between four long, wide-splayed, multi-jointed legs, splayed to roughly 1.5x the body width (not tucked in as short stubs); reads as a wide, low, four-pointed star with a dark ball in the middle
 - [ ] Needle antenna rising straight up from the dome
 - [ ] Stubby cannon barrel projecting forward from the face, short and blunt (not a long thin needle)
-- [ ] Two large red photoreceptors in raised bezels plus a row of three small red lamps between them
-- [ ] Gray plating
-- [ ] Legs splayed to roughly 1.5× the body width, not tucked in as short stubs
+- [ ] Two large red photoreceptors in raised bezels set wide on the dome, plus a row of three small red lamps between them
+- [ ] FINISH / COLOUR LAYOUT: gray plating (the warm ochre of the Geonosis frame is dust and light, not plating); the five red eye points the strongest colour cue
+- [ ] NEGATIVE: not a grey ball with bumps (legs too short); not a full-size spider droid; not smaller than a human (canon 1.98 m tall, 3.05 m wide)
 
 ## Engine limits
 No `colorChannels` block — this sprite ships in the colour it was drawn in and cannot be tinted via the def; a colour correction would require a repaint.

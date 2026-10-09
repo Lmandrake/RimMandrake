@@ -145,12 +145,12 @@ identifiable only by ears. Given that the round forehead discs are the species' 
 female signature, that is the art gap to close.
 
 ## Must show
-- [ ] Skin ranges from pale flesh tone to bright saturated orange-red/vermilion — never brown
-- [ ] Males: large horns (sweeping up-and-outward or up-and-back), bald head, visible pointed teeth
-- [ ] Females: small, smooth, round, dark reddish-brown raised discs flush on the forehead — not horns, not a smooth brow
-- [ ] Females: a full head of vividly-coloured hair (e.g. purple/violet or white/silver), not brown
-- [ ] Pointed ears standing out from the skull on both sexes
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the infobox male/female pair, Tress Hacnua and Burg, as described in the visual brief.*
+- [ ] BODY PLAN: ordinary humanoid build; males bald with two LARGE horns rising from the top of the skull (sweeping up-and-outward or up-and-back) and visible pointed teeth; females with a full head of hair at shoulder length or shorter; pointed ears standing out from the skull on both sexes
+- [ ] COLOUR LAYOUT: skin ranges from pale flesh tone to bright saturated orange-red/vermilion over face and body, never brown; female hair vividly coloured (e.g. purple/violet or white/silver), not brown; horns either skin-toned paling to cream at the tips or a hard dark grey-brown
+- [ ] Females: small, smooth, round, dark reddish-brown raised discs flush on the forehead, above and between the brows (not horns, not a smooth brow)
 - [ ] Freckled/mottled skin on the cheeks and forehead is an acceptable female detail
+- [ ] NEGATIVE: not a red-tinted human (a male without large horns, or a female without forehead discs and pointed ears, fails); not a brown-skinned Devaronian; female forehead bumps never rendered as short pointed horns
 
 ## Engine limits
 none known

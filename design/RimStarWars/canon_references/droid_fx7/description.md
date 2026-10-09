@@ -142,11 +142,13 @@ blue-grey barrel wearing a crown of rings, with spider-thin arms hanging out of 
   tooltips.
 
 ## Must show
-- [ ] Legless, tapered vertical cylinder body, widest at a flared circular base pedestal
-- [ ] Steel blue-grey plating, not neutral grey
-- [ ] Dense vertical ribbing over the lower body (the folded arm bundle)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): chassis, finish/colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon description and reference images as described in the visual brief.*
+- [ ] CHASSIS: legless, a tapered vertical cylinder body, widest at a flared circular base pedestal and narrowing as it rises; no legs, not a biped
 - [ ] Stack of horizontal banded rings near the top, capped by a small domed sensor turret
+- [ ] Dense vertical ribbing over the lower body (the folded arm bundle)
 - [ ] At least one clawed instrument arm projecting past the body's outline
+- [ ] FINISH / COLOUR LAYOUT: steel blue-grey plating over the whole drum, not neutral grey
+- [ ] NEGATIVE: not a neutral grey canister with every arm flush inside the outline; not the FX-9 (no squat near-black body with a row of red lamps); not a legged biped
 
 ## Engine limits
 The `skin` colour channel is set to identity white (`RGBA(255,255,255)`), a no-op tint — colour cannot be corrected through the def as it stands; the canon steel blue-grey requires a repaint.

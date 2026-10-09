@@ -141,12 +141,13 @@ a B2 grapple droid (the tall blue-grey figure at right), which is **not** a B1-A
 read its colour as this droid's.
 
 ## Must show
-- [ ] Tan/beige base plating with rust-orange accent panels, not blue-grey/slate blue
-- [ ] Two long swept blade-like wings projecting past the shoulders
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): chassis, finish/colour layout and a negative, each checkable on a 256px sprite. Grounded in the Revenge of the Sith game infobox render (look target) and the concept-art plate (anatomy only), as described in the visual brief.*
+- [ ] CHASSIS: a B1-derived humanoid droid with spindly B1-like limbs and spindly double-jointed legs, bulk concentrated in a wide flared trapezoidal shoulder yoke rather than in the limbs; two long swept blade-like wings projecting well past the shoulders
+- [ ] Head: an elongated ovoid with two small dark eye slits, recessed under the shoulder yoke (not the widest part of the silhouette)
+- [ ] FINISH / COLOUR LAYOUT: tan/beige base plating over the body with rust-orange accent panels, most visible on the shoulder yoke, wing leading edges and the weapon pod; not blue-grey/slate blue
 - [ ] Four glowing blue-white thruster nozzles at the wing roots
-- [ ] Wide flared trapezoidal shoulder yoke, with bulk concentrated in the shoulders rather than the limbs
 - [ ] Arm-mounted blaster pod with a lit blue circular lens on the forearm
-- [ ] Two small dark eye slits in an elongated ovoid head, recessed under the shoulder yoke
+- [ ] NEGATIVE: not a plain wingless B1 with a free-standing head (the current donor); not a droid with a jetpack strapped on its back (thrust is in the wing roots); not a blue-grey B2 grapple droid; not B2-bulky in the arms and legs
 
 ## Engine limits
 none known

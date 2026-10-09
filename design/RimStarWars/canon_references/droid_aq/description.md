@@ -194,13 +194,13 @@ Separatist amphibious asset stranded where its whole design is pointless — but
 carry the sprite.
 
 ## Must show
-- [ ] Pale grey-white plating with teal/blue-green accent panels, not solid grey or solid blue
-- [ ] Bright red visor slit/lens visible in the small polygonal head
-- [ ] Wide swept shoulder yoke projecting past the body over a narrow tapering torso
-- [ ] Small polygonal head recessed between the shoulders, not projecting above them
-- [ ] Elongated legs with large splayed feet
-- [ ] Retractable cannon/barrel visible on the right wrist
-- [ ] Realistic rendering: brushed weathered steel plating, real metal specular and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): chassis, finish/colour layout and a negative, each checkable on a 256px sprite. Grounded in the Clone Wars CGI infobox turnaround, the swim-mode render and the Legion miniatures photograph, as described in the visual brief.*
+- [ ] CHASSIS: a tall bipedal battle droid (2.83 m, mostly leg): a wide swept shoulder yoke projecting well past the body on both sides, over a narrow tapering segmented torso; elongated legs ending in large splayed feet
+- [ ] Small polygonal head recessed between the shoulders, not projecting above them, with a bright red visor slit/lens
+- [ ] FINISH / COLOUR LAYOUT: pale grey-white plating over the whole body with teal/blue-green (ice-blue) accent panels and trim lines along the shoulder yoke, forearms, shins and around the head; dark gunmetal joints and hands; not solid grey or solid blue
+- [ ] Retractable cannon/barrel visible on the right wrist (an asymmetry between the arms)
+- [ ] Realistic rendering: brushed weathered steel plating, real metal specular and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a dark charcoal/gunmetal black droid (the current donor); not a plain B2 super battle droid (no recessed polygonal head, no swept yoke, short legs); not the different aquatic battle droid of Glee Anselm
 
 ## Engine limits
 No `colorChannels` block or mask file on this chassis — colour is baked directly into the PNG, so correcting the colour requires a repaint (new art), not a def edit.

@@ -111,12 +111,12 @@ copper joints are the single most distinctive BX colour cue and the repo already
   the cheapest variant art in this whole batch.
 
 ## Must show
-- [ ] Near-black (or light-gray) body plating, not the B1's tan/bone
-- [ ] Copper/burnt-orange accent segments at shoulder, elbow, and knee joints
-- [ ] Compact, smooth, rounded helmet-like head with no long muzzle/snout
-- [ ] Two pale white photoreceptors
-- [ ] Small red dot on the chest
-- [ ] Realistic rendering: worn, chipped painted metal with real specular and edge wear, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): chassis, finish/colour layout and a negative, each checkable on a 256px sprite. Grounded in the animated infobox render (anatomy and paint scheme) and the photoreal ND-5 *Outlaws* render (materials only), as described in the visual brief.*
+- [ ] CHASSIS: a slim, human-proportioned upright biped (reads like an athletic humanoid): flat armoured chest plate, segmented ribbed abdomen, long straight legs, thin skeletal forearms with three-fingered claws
+- [ ] Compact, smooth, rounded helmet-like head on a short neck, with no long muzzle/snout (compact enough to fit inside a clone helmet), carrying two pale white photoreceptors
+- [ ] FINISH / COLOUR LAYOUT: near-black (or light-gray) body plating, not the B1's tan/bone; copper/burnt-orange accent segments at the shoulder, elbow and knee joints; a small red dot on the chest
+- [ ] Realistic rendering: worn, chipped painted metal with real specular and edge wear, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a B1 (no long forward-projecting skull head, no tan plating, no hunch); not ND-5's personal kit (no long olive coat, belt, holster or copper patchwork on a generic BX)
 
 ## Engine limits
 none known

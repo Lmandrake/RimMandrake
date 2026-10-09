@@ -43,13 +43,13 @@ and give the body a longer, lower, more lizard-like silhouette with a visibly
 scaled hide.
 
 ## Must show
-- [ ] Scaly, reptilian, elongated low-slung body — not a rounded, blobby, seal-like silhouette
-- [ ] Muted, dusty olive-green to grey-brown hide (between the ANH puppet and the CGI profile), not bright yellow-green
-- [ ] Long heavy tail carried low
-- [ ] Broad, heavy, blunt-snouted head with a wide mouth line
-- [ ] Short, thick, bowed legs built to carry a rider or pack saddle
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the CGI infobox profile and the ANH live-action dewback, and the `## ruling` below (owner ruling 2026-09-14: "Follow #4 closest", i.e. the ANH live-action `wookieepedia_behindthemagic.jpg`).*
+- [ ] BODY PLAN: a scaly, reptilian, elongated low-slung four-legged body with a deep belly, on short, thick, bowed legs with blunt clawed toes (built to carry a rider or pack saddle); a long heavy tapering tail carried low; head held forward at about back height
+- [ ] COLOUR LAYOUT: muted, dusty olive-green to grey-brown hide over the whole body (between the ANH puppet and the CGI profile), not bright yellow-green; no legible back fur (subtle at most)
+- [ ] Broad, heavy, blunt-snouted head with a wide mouth line and small eyes under a heavy brow
 - [ ] Dense small pebbled scale texture all over, with thick folded skin at neck and legs
-- [ ] Realistic rendering: natural pebbled reptile-hide texture and desert lighting, no outlines, no cartoon shading
+- [ ] Realistic rendering: natural pebbled reptile-hide texture and desert lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a rounded, blobby, seal- or manatee-like silhouette; not a smooth, unscaled body; not short-tailed. A pale/white base on the sprite may be a colour mask (owner ruling 2026-09-14: "I think the Donor white shading means it can come in a variety of colors or something, Rimworld seems to do this sometimes.")
 
 ## Engine limits
 none known

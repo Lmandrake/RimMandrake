@@ -38,12 +38,14 @@ Realistic sources added/kept:
 - `donor_current_sprite.png` (our own sprite): tan/khaki quadruped with small clawed limbs, dark spots, gator-like head — body plan agrees with the concept sheet, colour does not.
 
 ## Must show
-- [ ] Long, low crocodilian quadruped body with short splayed clawed limbs and a very long tapering eel-like tail
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Jedi: Fallen Order concept sheet as described in the visual brief and the `## ruling` below (owner ruling 2026-09-14: "#2 for coloration and glowing-seeming spots. But much less cartoonish, more like seriousness of #3.").*
+- [ ] BODY PLAN: a long, low crocodilian quadruped body with short splayed clawed limbs and a very long tapering eel-like tail, the tail making up a large share of the total length; head held low and forward
 - [ ] Narrow toothy crocodile/gharial snout with fangs projecting outside the jaw
-- [ ] Dark olive-to-slate scaly hide with scattered glowing yellow-green bioluminescent spots
-- [ ] Dorsal row of short spines and a pale ridged belly
+- [ ] COLOUR LAYOUT: dark olive-to-slate scaly hide over the back, flanks and tail, with scattered glowing yellow-green bioluminescent spots; a pale ridged belly underneath, the lightest area of the body
+- [ ] Dorsal row of short spines along the back
 - [ ] Shown as an aquatic ambush predator, partially submerged in murky swamp water
-- [ ] Realistic rendering: wet scaly reptile hide and natural lighting, no outlines, no cartoon shading
+- [ ] Realistic rendering: wet scaly reptile hide and natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not the pale bone-white limbless serpent of *The Mandalorian and Grogu*; not a tan/khaki gator (the donor's colour); not flat animated Clone Wars colour (take only its colour and spots, never its shading)
 
 ## Engine limits
 none known
