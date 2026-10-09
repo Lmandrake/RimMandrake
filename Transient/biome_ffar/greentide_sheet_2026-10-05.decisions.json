@@ -76,7 +76,7 @@
       "variantsAt": "2026-10-09T05:16:28.393Z"
     },
     "RM_CanopySwinger": {
-      "at": "2026-10-09T05:09:20.591Z",
+      "at": "2026-10-09T05:31:31.377Z",
       "decidedAt": "2026-10-09T05:09:17.040Z",
       "decision": "B",
       "note": "",
@@ -84,6 +84,12 @@
         "_byname": "B"
       },
       "prefill": "A",
+      "purge": [
+        "510643fd7bfd04798820c5d3b6620c4a31894b42bc5904775896e1cfe08be803",
+        "e24a8933e9aa23c320b649387a4d448cdf8c835ddf85a9c6788eac554110ca23",
+        "84f4f83864130b6375d0d6fb92242a38039d39d48cead52cea247fdc7079d37b"
+      ],
+      "purgeTouched": true,
       "variants": [],
       "variantsAt": "2026-10-09T05:09:20.591Z"
     },
@@ -553,7 +559,7 @@
       "variantsDefault": true
     },
     "RSW_Diggerpede": {
-      "at": "2026-10-09T05:11:14.990Z",
+      "at": "2026-10-09T05:32:02.199Z",
       "decidedAt": "2026-10-09T05:11:14.990Z",
       "decision": "C",
       "note": "",
@@ -564,7 +570,10 @@
       "purge": [
         "7bc9334c51484d8adbbc52c23c5f3ed8feda63932dc064cdb3f523ece7ac65e8",
         "376552e5deb86a0392df7f7728e9cf1fb35e0f83fc3a1805bb008969a67825c4",
-        "096c653bf1d76c6bf9770388199759ff1086b338fd846a3642debf7201a71803"
+        "096c653bf1d76c6bf9770388199759ff1086b338fd846a3642debf7201a71803",
+        "bec67d675dbedc49df0d46f72cf9b21ed0c36e5eb56f4499c3e4d197e60d9d4c",
+        "8dd840148f9ac32d719335e21571ea299cc99ce83b1f58b8a97bbdac2e7ffb0f",
+        "8115c00d64c143589e68944996a9e709cd44bb8c92da430910ad4e90893262b7"
       ],
       "purgeTouched": true,
       "variants": [
@@ -573,7 +582,7 @@
       "variantsAt": "2026-10-09T05:11:09.953Z"
     },
     "RSW_Dragonsnake": {
-      "at": "2026-10-09T05:09:57.200Z",
+      "at": "2026-10-09T05:31:38.927Z",
       "decidedAt": "2026-10-09T05:09:38.369Z",
       "decision": "E",
       "note": "",
@@ -584,7 +593,10 @@
       "purge": [
         "ad6234d7754c0b5b160b62b0105c55dfba0157ff687e37bfa2b394285101c920",
         "84e46121ae3a69bf065c3dc3ba689e85849a97fd2f988060ba8514907910d7a6",
-        "aa131c8fc296372d74e831f17a165410bba11d9085dc244b4e4ac94b96fa3303"
+        "aa131c8fc296372d74e831f17a165410bba11d9085dc244b4e4ac94b96fa3303",
+        "08140c07400d11aa34099ebeb616d3e5803c74ca44763c4d3d80f182f4ea9959",
+        "18d02e6b5b74a6f97a96643106041af00413f14719f68220e6ccb42124981124",
+        "2a584e2ef256491a78b7b7a9beb092ef11b7fa63eabbb16eee3c5e54c77978fa"
       ],
       "purgeTouched": true,
       "variants": [],
@@ -596,7 +608,7 @@
       "prefill": "A"
     },
     "RSW_Fambaa": {
-      "at": "2026-10-09T05:10:24.418Z",
+      "at": "2026-10-09T05:31:48.778Z",
       "decidedAt": "2026-10-09T05:10:19.429Z",
       "decision": "G",
       "note": "",
@@ -609,7 +621,10 @@
       "purge": [
         "c7080ff1dae25dab5ab0fbbd4cc44a40fbffe8cfe6600b521732717e11c40ce2",
         "5d0edfeb870f0171851002821e5083236219cb4ff746f10f575d6c8cab11f38f",
-        "8aeaa19be489fb9df4034f95ff5d77857c903f46c6a8235e7f106660b6e75cb1"
+        "8aeaa19be489fb9df4034f95ff5d77857c903f46c6a8235e7f106660b6e75cb1",
+        "7f0dd63333922a65b0550b221d682597cae7735adf3d5b0d9b40aba3304b4370",
+        "105e206407cfe8e172a12a6e93ac7705b7aab61bf4122864128668593e61abfe",
+        "c9a3a0d102da77808d92c660a69c2666681f2af45ef0cd7c09c1213dba56e5b9"
       ],
       "purgeTouched": true,
       "variants": [
@@ -618,11 +633,17 @@
       "variantsAt": "2026-10-09T05:10:21.807Z"
     },
     "RSW_Gelagrub": {
-      "at": "2026-10-09T05:10:35.177Z",
+      "at": "2026-10-09T05:31:53.560Z",
       "decidedAt": "2026-10-09T05:10:30.404Z",
       "decision": "B",
       "note": "",
       "prefill": "A",
+      "purge": [
+        "6abd2d80da8a09c3271501a8d3e370b8776f1b844797a968b8d78f91f3ce3ce3",
+        "80f34fa32f8850459378fab90f39a9189372d75e869456f49b097ce8d20925d3",
+        "06c241a95ee0ac436e7a9a31692d3049195f798e0fe5cff95214fe6d792dede2"
+      ],
+      "purgeTouched": true,
       "variants": [],
       "variantsAt": "2026-10-09T05:10:32.732Z"
     },
@@ -632,7 +653,7 @@
       "prefill": "A"
     },
     "RSW_Hawkbat": {
-      "at": "2026-10-09T05:12:17.075Z",
+      "at": "2026-10-09T05:32:14.827Z",
       "decidedAt": "2026-10-09T05:11:38.831Z",
       "decision": "J",
       "note": "Get rid of all this crappy art and follow the purple and tan canon art very closely. NOT a bird. Flyer.",
@@ -656,14 +677,13 @@
         "7afd895597a11a30544db11328d2a8a892e1ac294afdda86f661639e51a6c250",
         "32577df702bb3bdf7e279f22d42bd251656f801f4385d401962ff1b90353d7a9",
         "0500f7f1b1fc6839a56911b3e6a8058c4fe9a91072d311145494add2c5cb3192",
-        "79bee452fc3c2aad03fca0e0621382c146d954095d704af598ff8b7fab577e1e"
+        "79bee452fc3c2aad03fca0e0621382c146d954095d704af598ff8b7fab577e1e",
+        "d9f99592a4ac558dd830abd769eecbbb96419afbe4963a5b4a268f6c637aa82c",
+        "0bb53f50e818c6a580e0a41055e78df4e06720c020bd15e0e97153fc6cbe9dcc",
+        "ec6f18d180242f266b89e12c6853eef8758217837e9bbdc13fccff72eaa88e54"
       ],
       "purgeTouched": true,
       "variants": [
-        "A",
-        "B",
-        "C",
-        "D",
         "G",
         "H",
         "J",
@@ -677,7 +697,7 @@
         "R",
         "S"
       ],
-      "variantsAt": "2026-10-09T05:12:04.838Z"
+      "variantsAt": "2026-10-09T05:32:14.827Z"
     },
     "RSW_Hssiss": {
       "decision": "A",
@@ -888,10 +908,10 @@
     "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet",
     "state": "prefill"
   },
-  "savedAt": "2026-10-08T22:19:22-0700",
+  "savedAt": "2026-10-08T22:32:15-0700",
   "savedBy": "review-sheet-sidecar",
   "sheetId": "greentide_sheet_2026-10-05",
   "snapshot": "infrastructure/state/art/sheets/greentide_sheet_2026-10-05.snapshot.json",
   "snapshotId": "609a9324173ab3ab",
-  "writeCount": 372
+  "writeCount": 391
 }
