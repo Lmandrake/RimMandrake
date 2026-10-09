@@ -126,6 +126,12 @@ History, summarised from the article's own two sections:
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `AQ-series battle droid`, `Aqua droid/Legends`, `Images of aqua droids` — every screen image is The Clone Wars / Gungan Attack 3D animation; no live-action, photoreal game or databank render exists).** The images below are animated/stylised; render this droid realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
+Removed 2026-10-08: the two Clone Wars battle frames `wookieepedia_kamino_siege.png` and `wookieepedia_tamson_moncala.png` (low-detail scene shots, the second tinted blue by water). Kept: the Clone Wars CGI turnaround (`wookieepedia_infobox.png`) and swim-mode render, plus a **photograph of the painted physical Star Wars: Legion miniatures** (`wookieepedia_legion_miniatures.png`) — the only real-object depiction. The miniature agrees with the render on silhouette and colour: brushed pale silver-grey plating, **pale ice-blue trim lines** along the panel edges of the shoulder yoke, forearms and shins, dark gunmetal joints and hands, red lens. Read the metal as real weathered brushed steel, not the render's soft airbrushed gradients.
+
 🔴 **The repo sprite is far too DARK, and it has none of the blue.** This is the headline
 finding, and it is a repaint.
 
@@ -138,10 +144,7 @@ finding, and it is a repaint.
 - 🔑 **The infobox and the body text are reconcilable, not contradictory** (both cite the
   same episode, "ARC Troopers"): the droid is **light grey plating with teal-blue accent
   panels.** Read together with the images, that is the answer — not "grey" and not "blue."
-  ⚠️ Caveat worth stating: `wookieepedia_tamson_moncala.png` reads *overwhelmingly* blue, but
-  that is **ambient underwater lighting**, not plating — the surface shot
-  (`wookieepedia_kamino_siege.png`) shows the same droids reading pale grey in daylight.
-  Trust the two clean renders over either battle frame.
+  Underwater battle frames read overwhelmingly blue from the water lighting, not the plating; the infobox render and the Legion miniature both show pale grey with ice-blue trim.
 - The repo sprite (`donor_current_sprite.png`) is **dark charcoal / gunmetal**, several stops
   darker than any canon reference, with **zero teal or blue anywhere**. It reads as a black
   droid. Correcting it means lightening the body substantially **and** adding the teal accent
@@ -197,6 +200,7 @@ carry the sprite.
 - [ ] Small polygonal head recessed between the shoulders, not projecting above them
 - [ ] Elongated legs with large splayed feet
 - [ ] Retractable cannon/barrel visible on the right wrist
+- [ ] Realistic rendering: brushed weathered steel plating, real metal specular and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 No `colorChannels` block or mask file on this chassis — colour is baked directly into the PNG, so correcting the colour requires a repaint (new art), not a def edit.
@@ -216,10 +220,6 @@ No `colorChannels` block or mask file on this chassis — colour is baked direct
   `/tmp/aq_infobox_small.png`; the full-size original is kept here as the reference asset.
 - https://static.wikia.nocookie.net/starwars/images/6/6d/AquaDroid-TCWs4BR1.png
   (File:AquaDroid-TCWs4BR1.png, 1000×400) → `wookieepedia_swimming_mode.png`
-- https://static.wikia.nocookie.net/starwars/images/5/5d/BattleOfKamino-ARCT.png
-  (File:BattleOfKamino-ARCT.png, 1920×816) → `wookieepedia_kamino_siege.png`
-- https://static.wikia.nocookie.net/starwars/images/1/1b/Tamson_WW.png
-  (File:Tamson WW.png, 1920×816) → `wookieepedia_tamson_moncala.png`
 - Named in the article but **not fetched this pass**:
   https://starwars.fandom.com/wiki/Aqua_droid/Legends (the Legends counterpart),
   https://starwars.fandom.com/wiki/Aquatic_battle_droid (the different, similarly-named
@@ -231,23 +231,17 @@ No `colorChannels` block or mask file on this chassis — colour is baked direct
 
 ## Candidate images
 
-- `wookieepedia_infobox.png` (**1850×2740 — downscale before viewing**) — the article infobox:
+- `wookieepedia_infobox.png` (**1850×2740 — downscale before viewing**) — The Clone Wars CGI (animated) model render, file `Aqua droid-SW Card Trader.png` — https://static.wikia.nocookie.net/starwars/images/e/e9/Aqua_droid-SW_Card_Trader.png — the article infobox:
   full-body three-quarter render on transparent background, standing/land mode. **Pale
   grey-white plating**, wide swept ridged shoulder yoke, small polygonal head recessed
   between the shoulders with a **red visor slit**, narrow segmented torso, very long legs,
   large splayed feet, a cylindrical cannon housing on one forearm. **The primary colour and
   proportion authority.**
-- `wookieepedia_swimming_mode.png` (1000×400) — the **swimming-mode** render: head retracted,
+- `wookieepedia_swimming_mode.png` (1000×400) — The Clone Wars (animated) promo render, file `AquaDroid-TCWs4BR1.png` — https://static.wikia.nocookie.net/starwars/images/6/6d/AquaDroid-TCWs4BR1.png — the **swimming-mode** render: head retracted,
   body horizontal and streamlined, arms folded back, feet folded into propeller blades. Shows
   the **teal / blue-green accent panels** most clearly, plus the red lens. **The only
   reference for the second silhouette, and the blue-accent authority.**
-- `wookieepedia_kamino_siege.png` (1920×816) — wide shot of aqua droids on a Tipoca City
-  landing platform in daylight. Low per-droid detail, but the **best evidence that the
-  plating reads pale grey in surface light**, and shows the standing stance in numbers.
-- `wookieepedia_tamson_moncala.png` (1920×816) — Riff Tamson leading aqua droids underwater at
-  Mon Cala. ⚠️ **Partial negative reference for colour**: everything reads blue because the
-  scene is lit through water. Useful for massed underwater posture only; Tamson himself
-  (foreground, a Karkarodon) is not a droid.
+- `wookieepedia_legion_miniatures.png` (1800×1850) — photograph of the painted physical Star Wars: Legion *Aqua Droids Unit Expansion* miniatures (real object, not animation); file `SWQ136-Miniatures1.png` — https://static.wikia.nocookie.net/starwars/images/d/de/SWQ136-Miniatures1.png/revision/latest?cb=20250705204524 . Best evidence for real metal materials and the ice-blue trim lines.
 - `donor_current_sprite.png` (320×320) — the shipping repo sprite
   (`Textures/JDS/Things/AQ_Battle_Droid_south.png`, byte-identical). **Dark charcoal, no
   mask, no colour channels** — colour is baked in. Correct swept-shoulder silhouette and

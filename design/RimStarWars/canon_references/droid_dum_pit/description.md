@@ -81,6 +81,11 @@ Sections read in full: infobox, lead, Characteristics, History, Behind the scene
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+Realism pass 2026-10-08: the Clone Wars animated render `wookieepedia_reddish_clonewars.png` (flat airbrushed orange-copper, green-washed brim) was deleted. Added two realistic references: `wookieepedia_pair_carrying.png` (photoreal *Phantom Menace*-model render of two pit droids hauling a podracer engine — **the new colour authority**: weathered **brick-red / oxide-red** paint, scuffed through to bare metal at the edges, dark recessed lens in a short barrel pod) and `wookieepedia_stack_tpm.jpg` (*Phantom Menace* visual-dictionary photo of the practical-effect design: two pit droids stacked, one **cream with brown-orange** panels — pit droid colour schemes vary per unit). The realistic droids read **more angular and spindly** than the animated one: thin skeletal limbs, not chunky rounded blocks.
+
+
 **Overall shape and proportion — the whole read at sprite scale.** Canon is a **spindly
 skeletal biped, roughly a metre tall, whose head is a wide flat flared cone — a conical
 hat, or an arrowhead — much wider than the body beneath it.** Under the brim, at the front,
@@ -105,8 +110,7 @@ balanced on two sticks**, with two hairlines above it.
   them: with the brim, they are the whole signature.
 - ✅ **Tint colour is a good canon match.** `RGBA(112,68,55)` is a mid rust-brown; every
   reference image shows weathered coppery-brown/rust plating (`wookieepedia_infobox.png` is
-  a dusty grey-brown, `wookieepedia_reddish_clonewars.png` is a distinctly reddish-copper
-  brown). **Judge this sprite tinted; the raw PNG is white and misleading.**
+  a dusty grey-brown, `wookieepedia_pair_carrying.png` a weathered brick/oxide red). **Judge this sprite tinted; the raw PNG is white and misleading.**
 - ✅ **Def scale is roughly right.** `baseBodySize` 0.75 against a canon **1.19 m** versus a
   human's ~1.8 m (ratio ≈ 0.66) — slightly generous but defensible, and unlike the DSD1 it
   is not a contradiction. `MoveSpeed` 5.2 (fast) agrees with the sourced "sense of urgency".
@@ -139,6 +143,7 @@ balanced on two sticks**, with two hairlines above it.
 - [ ] Rust-brown/copper weathered plating tint
 - [ ] Long thin arms hanging clear of the body, ending in three-fingered claws
 - [ ] Long legs with prominent ball knee-joints and broad flat splayed feet
+- [ ] Realistic rendering: chipped, weathered painted metal worn to bare steel at edges, real lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -151,8 +156,10 @@ none known
   tagged `{{Expand|all sections}}` by the wiki.
 - https://static.wikia.nocookie.net/starwars/images/2/21/PitDroid-AG.png →
   `wookieepedia_infobox.png` (480×1340; Fandom served WebP, re-saved as PNG locally)
-- https://static.wikia.nocookie.net/starwars/images/a/ac/DUM-series_pit_droid.png →
-  `wookieepedia_reddish_clonewars.png` (620×1185; same conversion)
+- https://static.wikia.nocookie.net/starwars/images/8/81/PitDroids-WiaW05.png/revision/latest?cb=20241225053919 →
+  `wookieepedia_pair_carrying.png` (860×1420)
+- https://static.wikia.nocookie.net/starwars/images/6/68/Pitdroidstack_wsmi.jpg/revision/latest?cb=20071214144757 →
+  `wookieepedia_stack_tpm.jpg` (470×800)
 - https://static.wikia.nocookie.net/starwars/images/8/81/PitDroid-Db.png →
   `wookieepedia_with_wrench.png` (510×700; same conversion)
 - Repo defs: `src/RimStarWars/Droidworks/Defs/Races_OuterRim.xml`,
@@ -165,15 +172,14 @@ none known
 
 ## Candidate images
 
-- `wookieepedia_infobox.png` (480×1340) — the article infobox: full-length three-quarter
+- `wookieepedia_infobox.png` (480×1340) — photoreal render (file `PitDroid-AG.png`, https://static.wikia.nocookie.net/starwars/images/2/21/PitDroid-AG.png) — the article infobox: full-length three-quarter
   render on transparent background. **The proportion authority.** Shows the wide flared cone
   head, the single dark lens on a forward stalk, two whip antennae, the tiny boxy chest, the
   long thin arms with three-fingered claws hanging past the hips, ball knees and broad
   splayed feet. Dusty grey-brown plating.
-- `wookieepedia_reddish_clonewars.png` (620×1185) — captioned by the wiki "a reddish colored
-  pit droid during the Clone Wars". **The best colour reference**: distinctly reddish-copper
-  brown with a pale green-grey wash on the crown. Supports the def's rust-brown tint.
-- `wookieepedia_with_wrench.png` (510×700) — a pit droid inspecting equipment while holding
+- `wookieepedia_pair_carrying.png` (860×1420) — photoreal render, two pit droids carrying a podracer engine; file `PitDroids-WiaW05.png` — https://static.wikia.nocookie.net/starwars/images/8/81/PitDroids-WiaW05.png/revision/latest?cb=20241225053919 . **Colour authority**: weathered brick/oxide red, chipped to metal. Supports the def's rust-brown tint.
+- `wookieepedia_stack_tpm.jpg` (470×800) — *The Phantom Menace* visual-dictionary photo, two pit droids stacked, cream-and-orange scheme; file `Pitdroidstack wsmi.jpg` — https://static.wikia.nocookie.net/starwars/images/6/68/Pitdroidstack_wsmi.jpg/revision/latest?cb=20071214144757 . Shows per-unit colour variation and the limb proportions in action.
+- `wookieepedia_with_wrench.png` (510×700) — photoreal render (file `PitDroid-Db.png`, https://static.wikia.nocookie.net/starwars/images/8/81/PitDroid-Db.png) — a pit droid inspecting equipment while holding
   a power wrench. Shows the working posture and the claw hand gripping a tool.
 - `donor_current_sprite.png` (256×256) — repo `DUM_south`, top-down. **Judge tinted**
   `RGBA(112,68,55)`; the raw file is white greyscale. Best of the three frames.

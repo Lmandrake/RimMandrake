@@ -91,6 +91,11 @@ gladiatorial arena champion.
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+Realism pass 2026-10-08: the comic panel `wookieepedia_deployed_in_show.png` (a flat inked Clone Wars comic, mislabelled "in-show frame" — it showed orange-brown shells) was deleted and replaced by a **live-action *Phantom Menace* film still**, `wookieepedia_film_tpm.png`. The film still agrees with the two photoreal renders and makes the true finish plain: **dark gunmetal / blackened steel arms, spine and legs with heavy grime, a deep oxblood-maroon bronzium belly sphere and maroon-edged hip and shoulder plates**, and three small red photoreceptor lamps (two on stalks under the head plate, one on the shoulder bar). It reads **much darker and colder than "bronze-brown"** — the bronze is only in the belly ball and plate edges. `wookieepedia_sharpshooter.png` is The Clone Wars animated render and is kept only because it is the sole depiction of that variant; treat it as anatomy-only, not a look target.
+
+
 🔴 **Answering the question directly: every droideka asset in this repo depicts the
 DEPLOYED three-legged form. The rolled-up ball form does not exist on disk in any
 donor, in any direction, for either chassis.** Since the ball is canonically the
@@ -111,9 +116,6 @@ tread surface. Nothing about the deployed sprite can be reused for the ball.
   assembly**, thin double-jointed arms ending in **paired cannon barrels**, a **spherical
   belly**, hip shield plates, and three long thin legs with hooked claw feet. Height sits
   in the legs and the arched shell, not in a torso.
-- `wookieepedia_deployed_in_show.png` (Rex facing droidekas, in-show frame) confirms the
-  deployed stance and the head-forward arch at a distance, in show lighting rather than a
-  clean render.
 - `wookieepedia_cutaway.png` shows a droideka **with its deflector shield up** — a
   translucent bubble around the whole deployed droid. Nothing in the repo art depicts the
   shield at all.
@@ -149,8 +151,9 @@ tread surface. Nothing about the deployed sprite can be reused for the ball.
 - [ ] Deployed (upright) form only — arched dorsal shell, spherical lower body, three splayed clawed legs
 - [ ] Three red photoreceptors on the head/stalk assembly
 - [ ] Two arm-mounted cannons held out to the sides
-- [ ] Dark bronze-brown (bronzium) plating, not white/light grey
+- [ ] Dark grimy gunmetal limbs and spine with an oxblood-bronze belly sphere and maroon-edged plates, not white/light grey
 - [ ] Sharpshooter variant: flat crescent back-shield, two large red photoreceptors on a horizontal bar, single long sniper barrel, pale green-grey body with yellow trim
+- [ ] Realistic rendering: grimy weathered metal with real specular and film lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -177,7 +180,7 @@ none known
   https://starwars.fandom.com/wiki/Ultra_Droideka
 - https://static.wikia.nocookie.net/starwars/images/9/9d/Droideka-SWE.png (File:Droideka-SWE.png → `wookieepedia_infobox_deployed.png`)
 - https://static.wikia.nocookie.net/starwars/images/7/75/Droideka-USC.png (File:Droideka-USC.png → `wookieepedia_cutaway.png`)
-- https://static.wikia.nocookie.net/starwars/images/5/53/Rex-vs-droidekas.png (File:Rex-vs-droidekas.png → `wookieepedia_deployed_in_show.png`)
+- https://static.wikia.nocookie.net/starwars/images/3/3f/P60-TPM.png/revision/latest?cb=20130126041955 (File:P60-TPM.png → `wookieepedia_film_tpm.png`)
 - https://static.wikia.nocookie.net/starwars/images/2/23/SniperDroideka-TCWCEJtB.png (File:SniperDroideka-TCWCEJtB.png → `wookieepedia_sharpshooter.png`)
 
 ⚠️ **Not sourceable this pass**: the `Droideka` article's own image set contains **no
@@ -187,13 +190,12 @@ owner wants the ball authored, a further image hunt is owed.
 
 ## Candidate images
 
-- `wookieepedia_infobox_deployed.png` — the article infobox: full-body three-quarter render
+- `wookieepedia_infobox_deployed.png` — photoreal film-model render, file `Droideka-SWE.png` (https://static.wikia.nocookie.net/starwars/images/9/9d/Droideka-SWE.png) — the article infobox: full-body three-quarter render
   of a **deployed** droideka on transparent background. The proportion authority.
-- `wookieepedia_cutaway.png` — the same deployed droideka **with its deflector shield
+- `wookieepedia_cutaway.png` — photoreal render, file `Droideka-USC.png` (https://static.wikia.nocookie.net/starwars/images/7/75/Droideka-USC.png) — the same deployed droideka **with its deflector shield
   bubble raised**. The only reference here for the shield.
-- `wookieepedia_deployed_in_show.png` — in-show frame of Captain Rex facing droidekas;
-  deployed form at combat distance in show lighting.
-- `wookieepedia_sharpshooter.png` — the Droideka Sharpshooter infobox render. **Negative
+- `wookieepedia_film_tpm.png` — *The Phantom Menace* live-action film still, deployed droideka in the Trade Federation ship corridor, upper body and belly sphere; file `P60-TPM.png` — https://static.wikia.nocookie.net/starwars/images/3/3f/P60-TPM.png/revision/latest?cb=20130126041955 . **Colour and material authority.**
+- `wookieepedia_sharpshooter.png` — the Droideka Sharpshooter infobox render (**The Clone Wars, animated** — kept as the only depiction of this variant; file `SniperDroideka-TCWCEJtB.png`, https://static.wikia.nocookie.net/starwars/images/2/23/SniperDroideka-TCWCEJtB.png). **Negative
   reference for the repo's Sharpshooter sprite**: it shows how different the canon
   Sharpshooter is (flat crescent back shield, two eyes, long single barrel, pale
   green-grey).

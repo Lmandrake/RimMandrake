@@ -76,6 +76,12 @@ recalls that as a battle droid he cared only about following orders and destroyi
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**The only photoreal BX on record is ND-5, a heavily modified BX from *Star Wars Outlaws*** (`wookieepedia_nd5_outlaws.png`, official game visual-guide render). Every standard-BX screen image is The Clone Wars animation (category `Images of BX-series droid commandos`, both article pages and the StarWars.com databank searched — the databank image is Clone Wars too). So: **take the materials and lighting from ND-5, the standard torso and paint scheme from the animated infobox render** (`wookieepedia_infobox.png`, kept as anatomy-only negative reference — do not copy its painted-texture cartoon shading).
+
+What the realistic ND-5 render shows that the animated one does not: **worn, chipped, scratched grey-mauve painted metal** with bare metal at the edges, **copper-orange joint caps that read as real anodised/painted metal**, a hard-edged faceted head with a raised seam ridge, **two flat round white photoreceptors** and a recessed slotted mouth grille, thin skeletal forearms with three-fingered claws, segmented ribbed abdomen. ⚠️ ND-5 is NOT standard: his long olive coat, belt and holster, rebuilt plate chest and the copper patchwork are personal modifications — do not put them on a generic BX.
+
 **The repo sprite matches canon well, including a detail a text prompt would miss.**
 `donor_current_sprite.png` (JDS, 128×128, top-down) shows a **near-black body with
 copper/brown accents at the shoulder, elbow and knee joints**, a compact rounded head with
@@ -110,6 +116,7 @@ copper joints are the single most distinctive BX colour cue and the repo already
 - [ ] Compact, smooth, rounded helmet-like head with no long muzzle/snout
 - [ ] Two pale white photoreceptors
 - [ ] Small red dot on the chest
+- [ ] Realistic rendering: worn, chipped painted metal with real specular and edge wear, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -128,7 +135,8 @@ none known
 
 ## Candidate images
 
-- `wookieepedia_infobox.png` — the article infobox: full-body render of a BX commando in a
+- `wookieepedia_nd5_outlaws.png` — *Star Wars Outlaws* photoreal render of ND-5, a modified BX-series droid commando (game CGI, photoreal); file `ND5full-OutlawsVCG.png` — https://static.wikia.nocookie.net/starwars/images/8/89/ND5full-OutlawsVCG.png/revision/latest?cb=20241119145328. Material/lighting authority; coat and chest are his own modifications.
+- `wookieepedia_infobox.png` — **The Clone Wars animated render, anatomy-only**; file `CommandoDroid-TCWCEJtB.png` — https://static.wikia.nocookie.net/starwars/images/2/27/CommandoDroid-TCWCEJtB.png — the article infobox: full-body render of a BX commando in a
   running/lunging pose holding a rifle, on transparent background. Authority for the
   copper joint accents, white slit photoreceptors, red chest dot, compact head and slim
   human proportions.
