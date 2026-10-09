@@ -28,7 +28,22 @@ def check(name, cond, detail=""):
         FAILS.append(name)
 
 
+def _memoise_dump_defs():
+    """Parse each def-dump type file ONCE per process. validation.dump_defs is a bare json.load, and every chain()
+    below calls it for ThingDef twice (dump_names + the weapon-tag bar): ~22 parses of a 387 MB file, ~4.7 s each,
+    were ~100 of this test's ~105 s (audit 2026-10-08). dump_names() calls the module global, so rebinding
+    V.dump_defs reaches it too. Rows are only read downstream, never mutated, so sharing the list is safe."""
+    real, memo = V.dump_defs, {}
+
+    def cached(def_type):
+        if def_type not in memo:
+            memo[def_type] = real(def_type)
+        return memo[def_type]
+    V.dump_defs = cached
+
+
 def main():
+    _memoise_dump_defs()
     roots, pack, dump = V.load_patch_roots(), V.pack_def_names(), V.dump_names()
     if dump is None:
         # a synthetic dump keeps the defName-literal rules exercised on a machine with no def dump
@@ -137,7 +152,8 @@ def main():
                           ("X: carries MayRequire on a whole operation", "patch_files_wellformed_and_no_inert_mayrequire"),
                           ("weather def W is defined but never attached (dead content)", "weather_defs_are_all_attached_with_real_names_and_positive_commonality"),
                           ("X: value names RSW_Q, which nobody defines", "patch_xpath_literals_and_values_name_loaded_defs_or_are_guarded")):
-        check("chain: %r reddens %s" % (finding[:28], comp), chain(finding).get(comp) == "FAIL", chain(finding))
+        red = chain(finding)
+        check("chain: %r reddens %s" % (finding[:28], comp), red.get(comp) == "FAIL", red)
     if dump_is_real:
         got = chain(dis_extra=("RSW_Ghost", "Whatever", ["Z"]))
         check("chain: a disarmed campaign kind reddens the weapon-tag bar", got["weapon_tag_index_leaves_no_core_or_campaign_kind_disarmed"] == "FAIL", got)
