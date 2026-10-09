@@ -61,6 +61,12 @@ namespace RimMandrake.LongShade
         /// <summary>LONGSHADE_MIDDENS_DESIGN_1: vrekka tending a heap adds layers back (the regrowth).</summary>
         public static bool middenRegrowthEnabled = true;
 
+        /// <summary>LONGSHADE_MIDDENS_SPENT_BUILD_1: map generation seeds old heaps at the down-sun end of small rocks.</summary>
+        public static bool middenMapgenEnabled = true;
+
+        /// <summary>LONGSHADE_MIDDENS_SPENT_BUILD_1: mirrak and gulloth patches carry a visible "unnaturally clean" patch.</summary>
+        public static bool cleanPatchTellEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -71,6 +77,8 @@ namespace RimMandrake.LongShade
             Scribe_Values.Look(ref shipfallCommonsEnabled, "shipfallCommonsEnabled", true);
             Scribe_Values.Look(ref middenVrekkaBuildEnabled, "middenVrekkaBuildEnabled", true);
             Scribe_Values.Look(ref middenRegrowthEnabled, "middenRegrowthEnabled", true);
+            Scribe_Values.Look(ref middenMapgenEnabled, "middenMapgenEnabled", true);
+            Scribe_Values.Look(ref cleanPatchTellEnabled, "cleanPatchTellEnabled", true);
         }
 
         private static Vector2 settingsScroll;
@@ -126,10 +134,16 @@ namespace RimMandrake.LongShade
             list.CheckboxLabeled("Vrekka build midden heaps", ref middenVrekkaBuildEnabled,
                 "A vrekka with no heap nearby starts one on a shaded, unroofed cell outside your home "
               + "area. Heaps already on the map stay either way. Off: no new heaps appear.");
-            list.CheckboxLabeled("Middens regrow while vrekka tend them", ref middenRegrowthEnabled,
-                "Vrekka visit their heap and add to it, a layer every few days, up to four. Searched "
-              + "heaps build back up only this way, so killing or driving off the vrekka stops it. "
-              + "Off: a searched heap stays empty.");
+            list.CheckboxLabeled("Vrekka tend unsearched heaps", ref middenRegrowthEnabled,
+                "Vrekka visit a heap nobody has searched and pile on another layer every few days, up to "
+              + "four; each layer is worth more when you search. A searched heap is spent for good. "
+              + "Off: heaps stay as they are.");
+            list.CheckboxLabeled("Old middens at the lee of rocks when the map is made", ref middenMapgenEnabled,
+                "New Long Shade maps start with a few old heaps at the down-sun end of small rock "
+              + "outcrops. Changes the generated map (worldgen-affecting). Off: only vrekka-built heaps.");
+            list.CheckboxLabeled("Clean-patch tell", ref cleanPatchTellEnabled,
+                "A patch of shade that a mirrak or gulloth lairs in is marked on the ground as "
+              + "'unnaturally clean', with an inspect line. Changes the generated map (worldgen-affecting).");
             list.GapLine();
 
             list.Label("Shade-seeking wander and contact venom");

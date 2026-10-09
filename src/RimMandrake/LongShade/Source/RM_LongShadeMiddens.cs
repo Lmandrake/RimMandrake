@@ -11,11 +11,13 @@ namespace RimMandrake.LongShade
     // ════════════════════════════════════════════════════════════════════
     // LONGSHADE_MIDDENS_DESIGN_1 — the lee-side middens.
     //
-    // Owner rulings 2026-10-03 (question card, recorded on the item):
-    //   * a midden is a HEAP that regrows over weeks and can be re-searched;
+    // Owner rulings by question card, 2026-10-08 (supersede the 2026-10-03 regrow model):
+    //   * a midden is a heap a colonist searches ONCE, Odyssey Building_Crate style, and it is SPENT afterwards;
     //   * searching yields VANILLA items only (no sample item);
-    //   * the vrekka is in and BUILDS the heaps — kill or drive them off and
-    //     the middens stop regrowing.
+    //   * the vrekka is in and tends the heaps — it piles layers onto an unsearched heap (a richer find)
+    //     and builds new ones in the lee; kill or drive them off and no new heaps appear;
+    //   * mapgen seeds old heaps at the down-sun end of rocks (RM_GenStep_Middens);
+    //   * study progress is NOT wired (unruled, SHADECRAFT_LESSONS_DESIGN_1).
     //
     // Shape copied from SHRUBLAND_SCRAPNEST_BIRDS_1 (SWBestiary's
     // CompScrapHoarder / JobGiver_HoardScrap): a BuildingNaturalBase heap no
@@ -106,8 +108,11 @@ namespace RimMandrake.LongShade
 
         public CompProperties_RM_MiddenHeap Props => (CompProperties_RM_MiddenHeap)props;
 
+        /// <summary>True once searched: a spent heap yields nothing, takes no tending and cannot be searched again.</summary>
+        public bool spent;
+
         public bool CanTendNow =>
-            RM_LongShadeKernel.CanTendNow(layers, Props.maxLayers, Find.TickManager.TicksGame, lastTendTick, Props.tendCooldownTicks);
+            !spent && RM_LongShadeKernel.CanTendNow(layers, Props.maxLayers, Find.TickManager.TicksGame, lastTendTick, Props.tendCooldownTicks);
 
         public void Tend()
         {
@@ -132,6 +137,8 @@ namespace RimMandrake.LongShade
             }
             layers = 0;
             progress = 0f;
+            spent = true;
+            searchWanted = false;
         }
 
         public override void PostExposeData()
@@ -141,10 +148,12 @@ namespace RimMandrake.LongShade
             Scribe_Values.Look(ref progress, "rmMiddenProgress", 0f);
             Scribe_Values.Look(ref lastTendTick, "rmMiddenLastTend", -999999);
             Scribe_Values.Look(ref searchWanted, "rmMiddenSearchWanted", false);
+            Scribe_Values.Look(ref spent, "rmMiddenSpent", false);
         }
 
         public override string CompInspectStringExtra()
         {
+            if (spent) return "Searched: nothing left.";
             StringBuilder sb = new StringBuilder();
             sb.Append("Layers: ").Append(layers).Append(" / ").Append(Props.maxLayers);
             int since = Find.TickManager.TicksGame - lastTendTick;
@@ -163,12 +172,13 @@ namespace RimMandrake.LongShade
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
             foreach (Gizmo g in base.CompGetGizmosExtra()) yield return g;
+            if (spent) yield break;
             yield return new Command_Toggle
             {
                 defaultLabel = "Search midden",
-                defaultDesc = "A miner digs through the heap whenever it holds at least one layer, and takes "
-                    + "what the wind and the vrekka piled there. Searching flattens it; it only builds back up "
-                    + "while vrekka keep tending it.",
+                defaultDesc = "A miner digs through the heap once, whenever it holds at least one layer, and takes "
+                    + "what the wind and the vrekka piled there. Each layer is worth more; a searched heap is spent. "
+                    + "Vrekka add layers to a heap nobody has searched yet.",
                 icon = TexCommand.Attack,
                 isActive = () => searchWanted,
                 toggleAction = delegate { searchWanted = !searchWanted; }
@@ -209,6 +219,8 @@ namespace RimMandrake.LongShade
             {
                 Thing h = heaps[i];
                 if (!h.Spawned) continue;
+                RM_CompMiddenHeap hc = h.TryGetComp<RM_CompMiddenHeap>();
+                if (hc == null || hc.spent) continue; // a spent heap is nobody's: the vrekka starts a fresh one (still capped per map)
                 float d = h.Position.DistanceTo(pawn.Position);
                 spawned.Add(h);
                 dist.Add(d);
@@ -324,7 +336,7 @@ namespace RimMandrake.LongShade
         public override Job JobOnThing(Pawn pawn, Thing t, bool forced = false)
         {
             RM_CompMiddenHeap c = t.TryGetComp<RM_CompMiddenHeap>();
-            if (c == null || !c.searchWanted || c.layers < 1) return null;
+            if (c == null || c.spent || !c.searchWanted || c.layers < 1) return null;
             if (t.IsForbidden(pawn) || !pawn.CanReserve(t, 1, -1, null, forced)) return null;
             return JobMaker.MakeJob(RM_LongShadeMiddenDefOf.RM_SearchMidden, t);
         }
@@ -349,7 +361,7 @@ namespace RimMandrake.LongShade
             fin.initAction = delegate
             {
                 RM_CompMiddenHeap c = job.GetTarget(TargetIndex.A).Thing?.TryGetComp<RM_CompMiddenHeap>();
-                if (c == null || !c.parent.Spawned || c.layers < 1) return;
+                if (c == null || !c.parent.Spawned || c.spent || c.layers < 1) return;
                 c.Search(pawn);
                 pawn.skills?.Learn(SkillDefOf.Mining, 100f);
             };

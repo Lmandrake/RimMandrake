@@ -57,6 +57,16 @@ namespace RimMandrake.LongShade
             return !anyHeapInRange && existingHeaps < maxHeapsPerMap;
         }
 
+        /// <summary>Rock cells within <paramref name="radius"/> (square) of (x,z), the cell itself included: a big mass counts high, a lone outcrop low.</summary>
+        public static int RockNeighbourCount(int x, int z, int radius, Func<int, int, bool> isRock)
+        {
+            int n = 0;
+            for (int dx = -radius; dx <= radius; dx++)
+                for (int dz = -radius; dz <= radius; dz++)
+                    if (isRock(x + dx, z + dz)) n++;
+            return n;
+        }
+
         /// <summary>A new heap's cell is acceptable when it is at least the spacing from every existing heap.</summary>
         public static bool SpacingOk(float distanceToExisting, float minSpacing)
         {

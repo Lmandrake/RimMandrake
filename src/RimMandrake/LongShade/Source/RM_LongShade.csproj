@@ -63,6 +63,8 @@
     <Compile Include="RM_ShipfallCommons.cs" />
     <!-- LONGSHADE_MIDDENS_DESIGN_1: midden heaps, vrekka building/tending, colonist search. -->
     <Compile Include="RM_LongShadeMiddens.cs" />
+    <!-- LONGSHADE_MIDDENS_SPENT_BUILD_1: midden seeding GenStep + clean-patch tell. -->
+    <Compile Include="RM_LongShadeMiddenMapgen.cs" />
   </ItemGroup>
 
   <ItemGroup>
