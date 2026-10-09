@@ -1,0 +1,56 @@
+[
+ {
+  "id": "cauldronfix_bedbug_v2",
+  "target_def": "AA_BedBug",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "owner_note": "Redo based on (b) render, make much more alien (six eyes that glow red) with a wicked-looking stabbing proboscis",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo based on (b) render, make much more alien (six eyes that glow red) with a wicked-looking stabbing proboscis\" The attached image IS the (b) render he named: keep its body plan and painted style as the starting point, then make it far more alien. RimWorld sprite of the bedbug, painterly vanilla-RimWorld house style; redraw it.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/29/2900a6a7dcf8f0e76df5a094d4a66ada6e5a12450aa3e393130d38d2b8a8614d.png"
+  ],
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "biome_neutral": true
+ },
+ {
+  "id": "cauldronfix_neebray_v2",
+  "target_def": "RSW_Neebray",
+  "canon": "neebray",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "owner_note": "Try again? No canon redo?",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Try again? No canon redo?\" A CANON redo: draw the neebray from the attached canon reference and the canon brief, not from the old in-game sprite. RimWorld sprite of the neebray, painterly vanilla-RimWorld house style; redraw it.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "biome_neutral": true
+ },
+ {
+  "id": "cauldronfix_silooth_v2",
+  "target_def": "Silooth",
+  "canon": "silooth",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "owner_note": "make this 8 cells wide. Follow canon more closely. Make sure we add the acid-spitting.",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"make this 8 cells wide. Follow canon more closely. Make sure we add the acid-spitting.\" Draw the adult silooth from the attached canon reference and the canon brief: a bantha-sized armoured war-beetle that fills the canvas, drawn in game at 8 cells wide; acid drips from its jaws. RimWorld sprite of the silooth, painterly vanilla-RimWorld house style; redraw it.",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "drawsize": 8.0,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "biome_neutral": true
+ }
+]

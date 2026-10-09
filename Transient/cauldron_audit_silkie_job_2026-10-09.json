@@ -1,0 +1,21 @@
+[
+ {
+  "id": "cauldronfix_giantcrownedsilkie_v2",
+  "target_def": "AA_GiantCrownedSilkie",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "owner_note": "Good start, but make it more alien and the silk yet more trailing and flowing off its body all the way to the ground. / It's ok to start with either. I like the color of the donor and the flowing silk of the new one.",
+  "prompt": "Owner's notes, verbatim, override everything below: \"Good start, but make it more alien and the silk yet more trailing and flowing off its body all the way to the ground.\" and \"It's ok to start with either. I like the color of the donor and the flowing silk of the new one.\" The attached image holds TWO pictures of this same creature side by side. LEFT = the donor sprite: take its COLOUR PALETTE exactly (sky-blue bare head and neck, grey crest, red wattle and throat streaks, dark slate-grey body plumage). RIGHT = the newer render: take its long flowing silk, which must trail off the body all the way down to the ground and pool there. Then make the whole creature more alien than either picture. RimWorld sprite of the giant crowned silkie, painterly vanilla-RimWorld house style; redraw it.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/94/943cddc564a0127c00c24ae15c17afc440f8cb0368a450eab546b7bbbbe95f99.png"
+  ],
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "biome_neutral": true
+ }
+]
