@@ -745,7 +745,11 @@ def _build_suite():
     def _mark_proof(t, hours):
         r = t.bridge_call("jawa/static_call", type="RimMandrake.Scarlands.RM_WarscarMark", method="ProofAccrue",
                           args="current|%d" % hours)
-        return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+        txt = str((r or {}).get("result", "")) or "no result: %r" % (r,)
+        if txt.startswith("REFUSED: no free colonist"):
+            # A site fact (no colonist on this map), not a mod failure: UNMEASURED (suite.py maps the prefix).
+            raise ExpectationFailed("UNMEASURED: " + txt)
+        return txt
 
     @suite.chain("warscar_mark")
     def warscar_mark(t):
@@ -804,7 +808,10 @@ def _build_suite():
                 txt = _snap_proof(t, "ProofStage", "current|" + sev)
                 if t.session is None:
                     return
-                if " armed 1" not in txt or want_stage not in txt or want not in txt:
+                # "armed N" is the map-wide Sweep count: earlier proof chatraks stay armed on the map (read 3 live,
+                # 2026-10-08), so >=1 plus the pawn's own stage text is the claim, never exactly 1.
+                armed_n = re.search(r" armed (\d+)", txt)
+                if not armed_n or int(armed_n.group(1)) < 1 or want_stage not in txt or want not in txt:
                     raise ExpectationFailed("severity %s: wanted %r and %r: %s" % (sev, want_stage, want, txt))
         with t.component("clean_chatrak_never_armed", toggle="snapEnabled"):
             txt = _snap_proof(t, "ProofClean", "current")
