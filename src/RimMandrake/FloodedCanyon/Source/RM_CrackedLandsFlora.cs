@@ -50,6 +50,7 @@ namespace RimMandrake.FloodedCanyon
         }
     }
 
+    [RimMandrake.Shared.PatchFeature("RM_ZennaqLightningPatch", typeof(RM_FloodedCanyonSettings), "zennaqLightningPullEnabled")]
     [HarmonyPatch(typeof(WeatherEvent_LightningStrike), nameof(WeatherEvent_LightningStrike.DoStrike))]
     public static class RM_ZennaqLightningPatch
     {

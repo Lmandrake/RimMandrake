@@ -15,6 +15,7 @@ namespace RimMandrake.StarWars.SWBestiary
     //
     // Returning false skips the original; the method's Job return stays null,
     // which is exactly "this pawn found no ordinary food to seek".
+    [RimMandrake.Shared.PatchFeature("Patch_JobGiver_GetFood_TryGiveJob", typeof(RSW_BeastMechanicsSettings), "metalEatingEnabled")]
     [HarmonyPatch(typeof(JobGiver_GetFood), "TryGiveJob")]
     public static class Patch_JobGiver_GetFood_TryGiveJob
     {

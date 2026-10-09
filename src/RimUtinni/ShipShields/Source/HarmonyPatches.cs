@@ -32,6 +32,7 @@ namespace RimMandrake.Utinni.ShipShields
     // just ours) is a separate, larger call the survey deliberately left
     // for a follow-up rather than quietly patching vanilla's own systems
     // here.
+    [RimMandrake.Shared.PatchFeature("Patch_CompProjectileInterceptor_CheckIntercept", typeof(ShipShieldsSettings), "bubbleSlowPassThroughEnabled")]
     [HarmonyPatch(typeof(CompProjectileInterceptor), nameof(CompProjectileInterceptor.CheckIntercept))]
     public static class Patch_CompProjectileInterceptor_CheckIntercept
     {

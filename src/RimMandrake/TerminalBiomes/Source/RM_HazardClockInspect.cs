@@ -11,6 +11,7 @@ namespace RimMandrake.TerminalBiomes
     //   a grav engine           -> crust cells still on the deck (Grey Sea only).
     // Text only. One postfix on ThingWithComps.GetInspectString (Building overrides call down into it); every branch
     // is gated on the setting and returns at once for anything that is not one of the three.
+    [RimMandrake.Shared.PatchFeature("RM_Patch_HazardClockInspect", typeof(RM_TerminalBiomesSettings), "hazardClockInspectEnabled")]
     [HarmonyPatch(typeof(ThingWithComps), nameof(ThingWithComps.GetInspectString))]
     public static class RM_Patch_HazardClockInspect
     {

@@ -9,6 +9,7 @@ namespace RimMandrake.KeelHoist
 {
     // Tether lock (design §2d). Building_GravEngine.CanLaunch is not virtual (RimSage-read), so a postfix: the ship
     // refuses to launch while a keel hoist standing on its substructure has its cable down.
+    [RimMandrake.Shared.PatchFeature("Patch_GravEngine_TetherLock", typeof(KeelHoistSettings), "tetherLock")]
     [HarmonyPatch(typeof(Building_GravEngine), nameof(Building_GravEngine.CanLaunch))]
     public static class Patch_GravEngine_TetherLock
     {
