@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Materials by Job</title>
+<style>
+:root{
+  --bg:#24170f; --panel:#33221a; --panel2:#3f2a1d; --line:#5a3e2a; --ink:#f3e4c8; --dim:#c7ad88; --faint:#8d7458;
+  --orange:#e08a2e; --mustard:#d9ae3f;
+  --best:#7d9a3a; --good:#c9a13a; --fair:#c4702c; --poor:#9a3d2b; --refused:#1a110b; --na:#2b1d15;
+  --o-local:#8a9a3b; --o-anc:#b5682e; --o-emp:#8f8a85; --o-trade:#c49a2e; --o-bench:#7a5c9a; --o-herd:#4f8a7a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 "Trebuchet MS","Segoe UI",sans-serif;padding:20px 16px 60px}
+h1{font-family:Georgia,serif;font-weight:normal;font-size:30px;margin:0 0 4px;color:var(--mustard);letter-spacing:.5px}
+h2{font-family:Georgia,serif;font-weight:normal;color:var(--orange);font-size:22px;margin:34px 0 10px;border-bottom:3px double var(--line);padding-bottom:4px}
+.sub{color:var(--dim);margin:0 0 16px;max-width:1100px}
+.stripe{height:8px;background:linear-gradient(90deg,#7d4a1e 0 20%,#c4702c 20% 40%,#d9ae3f 40% 60%,#8a9a3b 60% 80%,#5a3e2a 80%);border-radius:4px;margin:6px 0 18px}
+.bar{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:0 0 14px;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:5}
+.toggle{display:inline-flex;border:2px solid var(--orange);border-radius:22px;overflow:hidden}
+.toggle button{background:transparent;color:var(--ink);border:0;padding:8px 18px;font:inherit;font-weight:bold;cursor:pointer}
+.toggle button.on{background:var(--orange);color:#24170f}
+.mode-note{color:var(--dim);max-width:640px}
+.legend{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-block;padding:2px 9px;border-radius:10px;font-size:12px;font-weight:bold;color:#1e130c;white-space:nowrap}
+.g-best{background:var(--best)} .g-good{background:var(--good)} .g-fair{background:var(--fair)} .g-poor{background:var(--poor);color:var(--ink)}
+.g-refused{background:var(--refused);color:#e07a5f;border:1px dashed #e07a5f} .g-na{background:var(--na);color:var(--faint)}
+.o-local{background:var(--o-local)} .o-anc{background:var(--o-anc)} .o-emp{background:var(--o-emp)} .o-trade{background:var(--o-trade)} .o-bench{background:var(--o-bench);color:var(--ink)} .o-herd{background:var(--o-herd)}
+.wrap{overflow-x:auto;border:2px solid var(--line);border-radius:10px;background:var(--panel)}
+table{border-collapse:separate;border-spacing:0;min-width:1500px}
+th,td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);vertical-align:top}
+thead th{background:var(--panel2);position:sticky;top:0;padding:8px 6px;font-size:14px;text-align:center;min-width:104px}
+thead th .origins{display:flex;flex-direction:column;gap:3px;margin-top:6px;align-items:center}
+thead th .origins .chip{font-size:10.5px;padding:1px 6px}
+th.job,td.job{position:sticky;left:0;background:var(--panel2);text-align:left;min-width:190px;max-width:210px;padding:8px 10px;z-index:2}
+thead th.job{z-index:4}
+td.job b{display:block;font-size:14.5px}
+td.job span{color:var(--dim);font-size:12px}
+tr.grp td{background:#4a3020;color:var(--mustard);font-family:Georgia,serif;font-size:15px;padding:5px 10px;letter-spacing:1px;text-transform:uppercase}
+td.c{padding:6px;font-size:12px;line-height:1.25;min-width:104px}
+td.c .w{display:block;font-weight:bold;font-size:12.5px;border-radius:5px;padding:2px 5px;margin-bottom:3px;text-align:center}
+td.c .e{color:var(--ink)}
+td.c.na{background:var(--na)} td.c.na .e{color:var(--faint)}
+td.c.refused{background:repeating-linear-gradient(135deg,#1d130d 0 8px,#22160f 8px 16px)}
+td.c.refused .e{color:#d88a73}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.card{background:var(--panel);border:1px solid var(--line);border-left:6px solid var(--orange);border-radius:8px;padding:10px 12px}
+.card h3{margin:0 0 4px;font-family:Georgia,serif;font-weight:normal;color:var(--mustard);font-size:18px}
+.card .src{color:var(--dim);font-size:13px;margin-top:6px}
+.card .verb{color:var(--orange);font-weight:bold;font-size:13px}
+ol.q{max-width:1000px;padding-left:22px} ol.q li{margin:7px 0}
+ol.q li b{color:var(--mustard)}
+.foot{color:var(--faint);font-size:12px;margin-top:30px}
+@media (max-width:700px){h1{font-size:23px} .bar{position:static}}
+</style></head>
+<body>
+<h1>Canon materials: what each one is good for</h1>
+<div class="stripe"></div>
+<p class="sub">Rows are <b>jobs</b>, columns are <b>materials</b>. Each cell says how good that material is at that job, and what that means in plain words. Origin chips under each material say where a Jawa clan gets it. Steel, plasteel and durasteel numbers are MEASURED from today's defs (Core, the Armoury); every other number is a proposal. Flip the switch to feel the difference between soft preferences and hard refusals. Design: <code>D:\Luke\dev\RimMandrake\design\RimMandrake\canon_materials_design_2026-10-09.md</code></p>
+
+<div class="bar">
+  <div class="toggle" role="group" aria-label="Mode">
+    <button id="bPref" class="on">Preference</button><button id="bExcl">Exclusive</button>
+  </div>
+  <div class="mode-note" id="modeNote"></div>
+</div>
+<div class="legend" id="legend" style="margin-bottom:12px"></div>
+
+<div class="wrap"><table id="m"></table></div>
+
+<h2>Where each material comes from</h2>
+<div class="legend" style="margin-bottom:12px">
+  <span class="chip o-local">local mine</span><span class="chip o-anc">salvage — ancient</span><span class="chip o-emp">salvage — Empire</span><span class="chip o-trade">trade-only / trade</span><span class="chip o-bench">bench-made</span><span class="chip o-herd">herds</span>
+</div>
+<div class="cards" id="cards"></div>
+
+<h2>Still open</h2>
+<ol class="q">
+  <li><b>Preference or exclusive?</b> Can any metal do any job with soft penalties, or do jobs refuse the wrong material outright? (the switch above)</li>
+  <li><b>Plasteel supply:</b> salvage and trade only, or also a costly bench recipe later?</li>
+  <li><b>Durasteel supply:</b> local zersium + steel alloy in a few industrial biomes, or salvage and trade only?</li>
+  <li><b>Unused materials</b> (phrik, transparisteel, stygium, coaxium…): reserve their defs now, or only when something uses them?</li>
+  <li><b>Ancient vs Empire incompatibility:</b> <b>I1</b> two part standards + crafted adapters (the adapter is the rare-material hack) · <b>I2</b> mix freely but each foreign part adds breakdowns and inefficiency · <b>I3</b> Empire parts can't go in ancient builds at all — strip them to raw materials.</li>
+</ol>
+<p class="foot">Ruled already: plasteel is its own canon material; durasteel becomes our new <code>RSW_Durasteel</code> and every donor durasteel converts into it; duranium and doonium are mostly salvage, rare trade, required for large ships and machines; materials serve recovery, refit, repair and the occasional rare-material hack. 2026-10-09.</p>
+
+<script>
+const MATS=[
+ {k:"steel",n:"Steel",o:["local"],verb:"Baseline",src:"Not a canon material; RimWorld's own metal. Iron is mined everywhere by deep drill."},
+ {k:"plasteel",n:"Plasteel",o:["anc","emp","trade"],verb:"Shape",src:"Canon 'hard material': Vader's helmet parts, M3 blast shields, B1 battle droids, bone sleeves (Queen's Peril; Rise of the Separatists)."},
+ {k:"durasteel",n:"Durasteel",o:["anc","emp","trade"],verb:"Hold",src:"Canon metal alloy, 'more resistant than standard steel': ship plating, buildings, crates; zersium ore critical to it. New def: RSW_Durasteel."},
+ {k:"plastoid",n:"Plastoid",o:["emp","bench"],verb:"Seal",src:"Canon armour plastic of clone and stormtrooper armour; vulnerable to blaster fire (Rebels: The Visual Guide)."},
+ {k:"duranium",n:"Duranium",o:["anc","trade"],verb:"Brace",src:"Canon military plating stronger than titanium; Grievous's body, MagnaGuard frames."},
+ {k:"doonium",n:"Doonium",o:["anc","emp","trade"],verb:"Contain",src:"Canon heavy metal for starship construction; with dolovite shielded the Death Star's hypermatter reactor."},
+ {k:"beskar",n:"Beskar",o:["anc"],verb:"Protect",src:"Canon Mandalorian iron; armour that stops blaster bolts and resists lightsabers; found only on Mandalorian worlds."},
+ {k:"cortosis",n:"Cortosis",o:["anc","trade"],verb:"Disrupt",src:"Canon rare ore that absorbs energy and can short a lightsaber; brittle and porous raw (The Acolyte)."},
+ {k:"phrik",n:"Phrik",o:["local","anc"],verb:"Parry",src:"Canon lightsaber-resistant alloy; electrostaffs, Sidious's sabers; mined on Gromas and Tatooine (Mos Algo)."},
+ {k:"transp",n:"Transparisteel",o:["emp","local"],verb:"Observe",src:"Canon transparent alloy for windows and canopies, can be blaster-proof; lommite ore is a major component."},
+ {k:"bronzium",n:"Bronzium",o:["bench","trade"],verb:"Decorate",src:"Canon bronze-coloured alloy for statues, decorative finishes, some armour."},
+ {k:"kyber",n:"Kyber",o:["local"],verb:"Focus",src:"Canon Force-attuned crystal; lightsabers; superweapon cores. Ours: Lantern Deeps only."},
+ {k:"stygium",n:"Stygium",o:["emp","trade"],verb:"Conceal",src:"Canon crystal that powers cloaking devices (TIE Phantom, the Scimitar)."},
+ {k:"aurodium",n:"Aurodium",o:["trade"],verb:"Wealth",src:"Canon yellow metal rarer than gold; currency standard on Cantonica, jewellery."},
+ {k:"coaxium",n:"Coaxium",o:["trade"],verb:"Extend",src:"Canon hyperfuel mined on Kessel; raw coaxium explodes unless kept cold (Solo)."}
+];
+const OL={local:["o-local","local mine"],anc:["o-anc","salvage-ancient"],emp:["o-emp","salvage-Empire"],trade:["o-trade","trade"],bench:["o-bench","bench"],herd:["o-herd","herds"]};
+// trade-only materials get a distinct label
+const TRADE_ONLY=new Set(["aurodium","coaxium"]);
+const GW={B:"Best",G:"Good",F:"Fair",P:"Poor"};
+// JOBS: [group, name, hint, {mat:[grade, effect]}]
+const J=[
+ ["Structure"],
+ ["Walls & floors","colony buildings",{
+   steel:["G","baseline: 1× HP, normal build speed, cheap"],
+   plasteel:["P","2.8× HP but 2.2× build time and ~5× steel's price: a waste of shell stock"],
+   durasteel:["B","3× steel HP, normal build speed; shrugs off heat and blunt hits"],
+   plastoid:["P","fast and cheap but flimsy; blaster bolts chew through it"],
+   duranium:["F","very strong, but too rare to spend on walls"],
+   doonium:["P","heavy and rare; wasted outside a reactor"],
+   beskar:["P","squanders a relic metal on masonry"],
+   transp:["G","see-through wall, about steel's HP (proposed); costly"],
+   bronzium:["F","about steel's HP; looks handsome (beauty +)"]}],
+ ["Blast doors & vaults","doors, vault walls, safes",{
+   steel:["F","ordinary door: opens fast, breaks fast"],
+   plasteel:["F","light door, quick to swing; 2.8× HP but slow to make"],
+   durasteel:["B","3× HP, heavy, the canon blast door"],
+   plastoid:["P","a cupboard door, not a blast door"],
+   duranium:["G","near-unbreakable but slow to open (proposed)"],
+   cortosis:["F","vault lining that blocks energy cutters (proposed)"],
+   beskar:["P","absurd use of an heirloom"]}],
+ ["Windows & canopies","see-through walls, cockpits",{
+   transp:["B","clear and blaster-proof; the only real window"],
+   plastoid:["P","cloudy viewport; cracks under fire"],
+   plasteel:["P","not transparent; a shuttered port only"]}],
+ ["Ships & machines"],
+ ["Ship hull plating","gravship and ancient-hull skins",{
+   steel:["F","works, but heavy hull, low HP"],
+   plasteel:["F","light hull; shell sections and panels, slow to fit"],
+   durasteel:["B","the canon hull: 3× HP, heat-resistant re-entry skin"],
+   duranium:["G","armoured warship plate; rare (proposed +50% hull HP)"],
+   doonium:["F","heavy; only around the core"],
+   plastoid:["P","won't hold pressure or fire"]}],
+ ["Large frames","factories, big droids, ship spars",{
+   steel:["P","sags at scale: large builds cap out (proposed)"],
+   durasteel:["F","fine for cladding, not the spine"],
+   duranium:["B","REQUIRED frame for large ships and machines (owner rule)"],
+   doonium:["P","too heavy for a frame"],
+   plasteel:["P","too light; flexes"]}],
+ ["Reactor & ship cores","power plants, gravship core, shielding",{
+   steel:["P","leaks radiation; short core life (proposed)"],
+   durasteel:["F","holds the casing, not the core"],
+   doonium:["B","REQUIRED core shielding for large reactors (owner rule)"],
+   duranium:["F","structural ring around the core"],
+   kyber:["G","superweapon-class focus; rare relic builds only"],
+   cortosis:["F","damps power surges (proposed)"]}],
+ ["Heavy turret mounts","turbolasers, emplacements",{
+   steel:["F","baseline mount, slow traverse"],
+   durasteel:["G","sturdy mount, 3× HP"],
+   duranium:["B","heavy-gun mount; the big guns need it (proposed)"],
+   plasteel:["P","too light to brace recoil"]}],
+ ["Electronics & housings","control boxes, sensor shells",{
+   steel:["F","works; conducts where it shouldn't"],
+   plasteel:["B","insulated, precise housings (E1's role)"],
+   plastoid:["G","cheap sealed casing"],
+   cortosis:["F","shields a box from ion/EMP (proposed)"],
+   aurodium:["F","contacts and trim; mostly prestige"]}],
+ ["Droids & bodies"],
+ ["Droid shells","chassis and casings",{
+   steel:["F","heavy droid, average HP"],
+   plasteel:["B","canon B1 bodies: light, strong, fast droids"],
+   durasteel:["G","tanky war droid, slow (heavier)"],
+   plastoid:["F","cheap labour droids, fragile"],
+   duranium:["G","MagnaGuard-class frames; rare"],
+   beskar:["P","a wasteful vanity droid"]}],
+ ["Prosthetics & implants","limbs, bone sleeves, masks",{
+   steel:["P","heavy limb: small move penalty (proposed)"],
+   plasteel:["B","canon bone sleeves and masks: light, strong, body-safe"],
+   durasteel:["F","strong but heavy limb"],
+   plastoid:["F","cheap cosmetic limb, breaks"],
+   duranium:["G","Grievous-grade combat limb; rare"]}],
+ ["Personal kit"],
+ ["Armour plates","worn plate armour",{
+   steel:["F","sharp 0.9×, blunt 0.45×, heavy"],
+   plasteel:["G","sharp 1.14×, light: the best common plate"],
+   durasteel:["F","blunt and heat good (0.6×, 1.0×) but sharp only 0.8× and heavy"],
+   plastoid:["G","cheap mass armour; weak to blaster bolts"],
+   beskar:["B","top armour: stops bolts, resists sabers"],
+   cortosis:["F","only as weave: absorbs energy hits"],
+   duranium:["F","strong but far too heavy to wear"],
+   bronzium:["P","ceremonial armour"]}],
+ ["Sealed suits & helmets","tox, gas, vacuum",{
+   plastoid:["B","the sealed trooper suit: gas and toxin proof as a suit"],
+   plasteel:["G","sealed helmet shells and masks"],
+   steel:["P","won't seal"],
+   cortosis:["F","helmet that hides thoughts from Force users"],
+   beskar:["G","sealed Mandalorian helmet; rare"]}],
+ ["Shields","blast shields, personal shields",{
+   plasteel:["B","canon M3 blast shield: stops rifle fire and shrapnel"],
+   durasteel:["G","heavy riot shield"],
+   cortosis:["G","absorbs blaster bolts (energy shield)"],
+   steel:["F","basic shield"],
+   plastoid:["P","stops shrapnel, not bolts"],
+   beskar:["G","near-unbreakable; heirloom"]}],
+ ["Melee weapons","blades, staffs",{
+   steel:["F","baseline damage"],
+   plasteel:["G","fast swings (0.8× cooldown)"],
+   durasteel:["F","heavy hitting, slow"],
+   phrik:["B","lightsaber-resistant staffs and blades"],
+   beskar:["G","saber-resistant, but weapons of it are taboo for some"],
+   cortosis:["G","shorts out a lightsaber on contact"],
+   bronzium:["P","ceremonial"]}],
+ ["Ranged weapon parts","barrels, cells, foci",{
+   steel:["F","basic barrel"],
+   durasteel:["G","heat-tolerant barrel: longer bursts (proposed)"],
+   plasteel:["G","light stock and frame"],
+   kyber:["B","lightsaber focus; super-weapons"],
+   cortosis:["P","drinks the bolt it should fire"]}],
+ ["Rare systems"],
+ ["Stealth & cloaking","cloaks, cloaking fields",{
+   stygium:["B","the only cloaking crystal"],
+   cortosis:["F","hides a pawn from Force sense"]}],
+ ["Range & hyperdrive","gravship range, fuel",{
+   coaxium:["B","trade-only hyperfuel: big gravship range; explodes if warm"],
+   doonium:["F","drive shielding"],
+   aurodium:["P","only to pay for fuel"]}],
+ ["Art, furniture & wealth","statues, finishes, jewellery",{
+   bronzium:["B","statues and finishes: high beauty, cheap"],
+   aurodium:["B","jewellery and coin: highest value, trade-only"],
+   steel:["P","plain"],
+   plasteel:["F","clean modern look"],
+   beskar:["G","Mandalorian heirloom pieces"]}]
+];
+let mode="pref";
+function chips(m){return m.o.map(o=>{let [c,l]=OL[o];if(o==="trade"&&TRADE_ONLY.has(m.k))l="trade-ONLY";return `<span class="chip ${c}">${l}</span>`}).join("")}
+function render(){
+  const t=document.getElementById("m");
+  let h=`<thead><tr><th class="job">Job</th>`+MATS.map(m=>`<th>${m.n}<div class="origins">${chips(m)}</div></th>`).join("")+`</tr></thead><tbody>`;
+  for(const r of J){
+    if(r.length===1){h+=`<tr class="grp"><td colspan="${MATS.length+1}">${r[0]}</td></tr>`;continue}
+    const [name,hint,cells]=r;
+    h+=`<tr><td class="job"><b>${name}</b><span>${hint}</span></td>`;
+    for(const m of MATS){
+      const c=cells[m.k];
+      if(!c){h+=`<td class="c na"><span class="w g-na">—</span><span class="e">${mode==="pref"?"not a material for this":"refused"}</span></td>`;continue}
+      const [g,e]=c;
+      if(mode==="excl"&&(g==="F"||g==="P")){
+        h+=`<td class="c refused"><span class="w g-refused">Refused</span><span class="e">the bill won't accept ${m.n.toLowerCase()}</span></td>`;
+      }else{
+        const cls={B:"g-best",G:"g-good",F:"g-fair",P:"g-poor"}[g];
+        const word=mode==="excl"?(g==="B"?"Best":"Allowed"):GW[g];
+        h+=`<td class="c"><span class="w ${cls}">${word}</span><span class="e">${e}</span></td>`;
+      }
+    }
+    h+=`</tr>`;
+  }
+  t.innerHTML=h+`</tbody>`;
+  document.getElementById("modeNote").innerHTML= mode==="pref"
+   ? "<b>Preference:</b> any listed material may do any job; the wrong one just costs you (weaker, heavier, slower, pricier). The player decides."
+   : "<b>Exclusive:</b> only Best/Good materials are accepted; Fair and Poor become hard refusals. Compare how many choices survive per row.";
+  document.getElementById("legend").innerHTML= mode==="pref"
+   ? `<span class="chip g-best">Best</span><span class="chip g-good">Good</span><span class="chip g-fair">Fair — works, costs you</span><span class="chip g-poor">Poor — works badly</span><span class="chip g-na">— not this material's kind of job</span>`
+   : `<span class="chip g-best">Best</span><span class="chip g-good">Allowed</span><span class="chip g-refused">Refused</span><span class="chip g-na">— not this material's kind of job</span>`;
+  document.getElementById("bPref").classList.toggle("on",mode==="pref");
+  document.getElementById("bExcl").classList.toggle("on",mode==="excl");
+}
+document.getElementById("bPref").onclick=()=>{mode="pref";render()};
+document.getElementById("bExcl").onclick=()=>{mode="excl";render()};
+document.getElementById("cards").innerHTML=MATS.map(m=>`<div class="card"><h3>${m.n}</h3><div class="verb">${m.verb}</div><div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px">${chips(m)}</div><div class="src">${m.src}</div></div>`).join("");
+render();
+</script>
+</body></html>

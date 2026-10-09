@@ -1,12 +1,26 @@
 # CANON_MATERIALS_DESIGN_1 — canon Star Wars materials: what they are for and where they come from
 
 2026-10-09. **Draft for the owner's review.** Nothing here is ruled except the lines marked RULED.
+The jobs × materials layout he asked for is `Transient/canon_materials_jobs_layout_2026-10-09.html`.
 Item: `CANON_MATERIALS_DESIGN_1` (parent `MINERALS_WHERE_THEY_BELONG_1`). Placement numbers live in
 `design/RimMandrake/mineral_abundance_registry_2026-10-03.csv`; this doc decides *roles* and *channels*,
 the registry carries the amounts.
 
 ## 0. What is already ruled (do not reopen)
 
+- RULED, owner typed 2026-10-09 07:05, on what materials serve: *"1+3. Having some materials only be tradable
+  connects you to the greater Star Wars universe. And having a planet mining out every possible interesting
+  mineral makes no sense, so salvage routes make a great deal of sense. But your comment about FOR THIS GAME,
+  it's mostly about recovery, refiting, repair, and occasionally hacking together something that requires some
+  of these rare materials. A planet filled with old broken salvage from massive mining companies and ANCIENT
+  war fleets. And trying to make one of those ancient ships actually fly: hard enough! But then there's the
+  shiny new Empire with all of its modern tech side-by-side, and you can salvage there stuff too, but the
+  systems aren't greatly compatible."* ⇒ the governing loop of §0a.
+- RULED 2026-10-09 by question card: durasteel becomes a **new def of ours, `RSW_Durasteel`**, and every donor
+  durasteel converts into it (§3.0).
+- OPEN, owner 2026-10-09 07:05, on whether material jobs are preferences or exclusive: *"Need to see the
+  different jobs laid out and materials to choose from before I can get a feel for this"* — answered by the
+  layout page above, not yet ruled.
 - RULED, owner typed 2026-10-09: *"Apparently Plasteel is already Star Wars canon, I didn't know that, so we
   should not equate it with any other Star Wars material. Please redo the canon materials analysis you did
   but without my equivalence requirement for plasteel: let it be its own thing."* ⇒ **plasteel is its own
@@ -18,6 +32,47 @@ the registry carries the amounts.
   build large ship and machine types such as factories.)
 - RULED 2026-09-25 typed: components and plasteel are never mined from rock; salvage is a major source of
   advanced materials.
+
+## 0a. The governing loop (RULED above)
+
+Materials in this game serve **recovery, refit and repair**, plus the **occasional hack** that needs a rare
+material. Everything else follows from that:
+
+- **Salvage routes, not planet mining.** The planet does not hold every interesting mineral. Local mines give
+  the basics (iron for steel, a few home-biome ores, Lantern Deeps kyber); the advanced and rare materials are
+  pulled from wrecks.
+- **Trade-only materials tie the colony to the galaxy.** A small set (coaxium, aurodium, corusca, chromium)
+  never appears on the planet at all: the only way to get them is a trader or the Bazaar. That is a feature,
+  not a gap.
+- **The rare-material hack is the peak moment.** Most work is patching things back together with durasteel,
+  plasteel and components; a few repairs and refits need one stack of duranium, doonium, cortosis or beskar,
+  and finding it is the expedition.
+- **The flagship goal:** make one of the ancient ships actually fly. It should be hard.
+
+### 0b. Two salvage eras
+
+| | **Ancient** | **Imperial** |
+|---|---|---|
+| what it is | wrecks of massive mining companies and ANCIENT war fleets, long dead and buried | the shiny new Empire's modern tech, alive and deployed beside the old |
+| where | Warscar troves, the Rust Cathedral, buried hulls, derelict mining rigs, B1 droid fields | crashed Imperial craft, outposts, patrol debris, orbital wreck salvage |
+| typical yield | durasteel plate, plasteel droid shells, duranium frames, doonium reactor shielding, beskar and cortosis relics, phrik | plastoid armour, modern durasteel, plasteel housings, stygium (cloaking), transparisteel canopies, modern components |
+| condition | heavily degraded; much is scrap, the rest needs restoration | mostly intact, but built to a different standard |
+| canon flavour | Clone War B1s are plasteel; MagnaGuard frames are duranium; capital-ship cores are doonium-shielded | stormtrooper armour is plastoid; TIE Phantoms cloak with stygium; Death Star hull and core used doonium |
+
+### 0c. "The systems aren't greatly compatible" — three ways to make that mechanical
+
+Materials (durasteel, plasteel, …) are era-neutral: a plate is a plate. The incompatibility lives in
+**parts** — components, assemblies, ship systems — which carry their era.
+
+| | **I1 — Two standards + adapters** | **I2 — Mismatch penalty** | **I3 — Strip to raw** |
+|---|---|---|---|
+| rule | Parts come in two families (Ancient, Imperial). A machine or ship system is built to one standard and accepts only its family. Mixing needs a crafted **adapter** (bench work + a rare material, e.g. cortosis or chromium). | Mixing is allowed, but each foreign-era part in a machine adds **mismatch**: more breakdowns, lower efficiency, slower repairs. Zero mismatch = full performance. | Imperial parts cannot be installed in ancient builds at all. They are either used whole in Imperial-pattern builds, or broken down to raw materials at a reduced yield. |
+| feels like | real engineering; the adapter IS the occasional rare-material hack | tinkering with a cobbled ship that mostly works | two separate economies on one planet; scrap is the bridge |
+| ancient ship flight | needs ancient parts, or Imperial parts each paying for an adapter | possible with any parts, but a fully mixed ship is fragile | needs ancient parts; Imperial salvage only feeds it as raw stock |
+| cost to build | two part families + adapter defs + a standard tag per consumer | one stat (mismatch) + a breakdown hook; parts still need an era tag | cheapest: deconstruction yields and recipe filters only |
+| risk | doubles the component catalogue | penalty math is invisible unless surfaced in the UI | Imperial salvage may feel pointless to an ancient-ship player |
+
+Not yet chosen; it is open question 5 in §5.
 
 ## 1. Inventory — canon materials the game supports today
 
@@ -164,6 +219,11 @@ Plastoid, plasteel and durasteel are the three a player meets first, and canon s
 
 ## 3. Three candidate designs (kept alive deliberately)
 
+The owner's loop ruling (§0a) settles the question these designs were kept apart on: materials serve
+**recovery and refit** (D3's provenance, E2's restoration), with trade-only materials as the tie to the galaxy
+(E3's one surviving idea) and E1's assemblies as the way rare materials enter a build. D1 and D2 remain below
+as the record of what was weighed; their per-material jobs feed the layout page.
+
 The six origin channels every design draws from: **L** local biome mining (vein, nodule, crystal — via
 the registry), **S** salvage (wrecks, Rust Cathedral, Warscar troves, crashed ships, B1 droid remains, Odyssey
 orbital debris and mech-ship chunks), **A** asteroid mining (Odyssey `AsteroidMiningSite` / `Asteroid` space
@@ -180,17 +240,23 @@ limited **F** recipe (steel + chemfuel at the fabrication bench: a composite is 
 never A**: the 2026-09-25 ruling and canon agree, and Odyssey's `MineablePlasteel` asteroid scatter is patched
 out with the other rock sources.
 
-**Durasteel** is no longer anyone's rename target, so it needs **one** canonical def. Three dispositions:
+**Durasteel is a new def of ours, `RSW_Durasteel`** (RULED by card 2026-10-09). It is canon Star Wars, so it
+sits in the RimStarWars tier (`RSW_`, packageId `mandrake.rsw.*`) per `design/NAMING_SCHEME_PLAN.md`.
+Starting stats: `KOTOR_AlloyDurasteel`'s (§1a — heavy, high HP, blunt- and heat-resistant), with GPT's caveat
+that its sharp armor power below steel's is either raised to steel's or presented as deliberate. Every donor
+durasteel converts into it:
 
-| | keep | `OuterRim_Durasteel` | `LKDurasteel_Ore` | `KOTOR_MineableDurasteel` |
-|---|---|---|---|---|
-| **(a) consolidate on ours** | `KOTOR_AlloyDurasteel` (Armoury, ours, already stuff with slag, smelt and ship-chunk chain) | conversion recipe 1:1 into ours; its deep/mining producers zeroed; its recipes redirected | retires with its mod (registry already retires LK Mineable Outer Rim) | zeroed, or re-used as the zersium vein if local ore is chosen (Q4) |
-| **(b) new `RSW_Durasteel`** | a fresh def in the canon tier, `RSW_` per the naming grammar | conversion recipe | retires with its mod | zeroed |
-| **(c) leave as found** | all three donors stay; only mining stops | stays | stays until its mod goes | zeroed |
+| donor def | what happens |
+|---|---|
+| `KOTOR_AlloyDurasteel` (Armoury, ours) | stops being produced; its slag, smelt and ship-chunk recipes yield `RSW_Durasteel` instead; loose stacks convert 1:1 |
+| `KotORChunk_durasteel`, `ShipChunk_durasteel` | their smelt/deconstruct yields point at `RSW_Durasteel` |
+| `OuterRim_Durasteel` | conversion recipe 1:1; its mining and deep-drill producers zeroed; recipes that consume it redirected |
+| `LKDurasteel_Ore` | ore, not alloy: measure what it is before choosing a yield; retires with its mod |
+| `KOTOR_MineableDurasteel` | stops generating; kept loadable for saves. If local zersium ore is chosen (§5 Q3), that is a **new** vein, never this def repurposed |
 
-(a) is the least work and keeps saves loading; (b) is the cleanest name but migrates `KOTOR_AlloyDurasteel`
-too (four defs instead of three); (c) leaves two "durasteel" stacks side by side and is listed only so the
-choice is visible. All three keep old defNames loadable until stack and save migration is done.
+Migration duties (GPT, §4): loose-stack conversion does not migrate built walls, worn gear, bills or saved
+filters, so each donor def stays loadable — with a compatibility def shipped once its mod is retired — until
+the save that carries it is replaced. Item to file when built: `RSW_DURASTEEL_CONSOLIDATION_1`.
 
 ### Design 1 — "The ladder" (a material is a TIER)
 
@@ -262,7 +328,7 @@ thinner per material, and it adds several new local ores that each need a biome 
 - Plasteel and durasteel are **two** materials on opposite axes (Shape vs Hold, light vs heavy); neither
   converts into the other, and no recipe treats them as substitutes.
 - Plasteel is never mined; it comes from salvage first and trade second.
-- Durasteel ends as one canonical def (§3.0); the donors stop being produced.
+- Durasteel ends as one canonical def, `RSW_Durasteel` (§3.0); the donors convert into it and stop being produced.
 - Duranium and doonium are salvage-first, rare trade, and gate large machines/ships (owner rule).
 - Beskar is salvage-only and personal-armor-only.
 - Kyber stays Lantern Deeps; tibanna stays beldon herds.
@@ -290,10 +356,6 @@ caveats on stack mass and stuff armor powers.
   filters, and retiring a donor mod needs shipped compatibility defs. Do not silently repurpose
   `KOTOR_MineableDurasteel` as zersium: existing deposits would change meaning; add a new vein instead.
 
-**Donor durasteels:** picks **(a)**, keep `KOTOR_AlloyDurasteel` as the one durasteel and record its prefix as
-a legacy naming exception. (b) is worth it only if the canon tier must not depend on the Armoury; (c) is a
-temporary compatibility state at best.
-
 **Its critique of ours:** D1 should gate *projects* (duranium frame + doonium containment + durasteel
 cladding + plasteel control/droid assemblies), not universal superiority. D2's exclusivity is artificial at
 the edges (durasteel and duranium both claim turret mounts) and many verbs need new systems; launch only
@@ -317,23 +379,18 @@ into trade rewards unless distinct demand appears. Do not promote name-only agri
 
 ## 5. Recommendation and what the owner decides
 
-All six designs stay live (D1–D3 here, E1–E3 from GPT). They differ on one question only the owner can
-answer: **what do materials mainly serve — building a capable colony (D1, D2, E1), being Jawas who recover
-and refit (D3, E2), or trading into a wider economy (E3)?**
-
-**Recommendation: D3's provenance identity, built with E1's assemblies.** Plasteel and durasteel are both
-everyday salvage, told apart by what they rebuild: plasteel for droids, prosthetics, shields and worn
-plating (Shape), durasteel for walls, blast doors, hulls and vaults (Hold), plastoid for sealed suits (Seal).
-Large builds take a durasteel shell, a plasteel housing, a duranium frame and a doonium core, so all four have
-a job in the same machine without competing. Plasteel comes from salvage and trade, with a costly bench recipe
-only as a late fallback; never from rock or asteroids. Durasteel consolidates on `KOTOR_AlloyDurasteel`
-(disposition a), `OuterRim_Durasteel` converts into it, `LKDurasteel_Ore` retires with its mod. Phrik,
+**Recommendation, under the ruled loop:** D3's provenance identity with E2's restoration as the main reward
+and E1's assemblies for the rare-material hacks. Plasteel and durasteel are both everyday salvage, told apart
+by what they rebuild: plasteel for droids, prosthetics, shields and worn plating (Shape), `RSW_Durasteel` for
+walls, blast doors, hulls and vaults (Hold), plastoid for sealed suits (Seal). Large builds and ancient-ship
+refits take a durasteel shell, a plasteel housing, a duranium frame and a doonium core, so all four have a job
+in the same machine without competing. Coaxium, aurodium, corusca and chromium are trade-only. Phrik,
 transparisteel, stygium, coaxium and carbonite wait for a working consumer; quadanium folds into durasteel.
 
-Owner questions, card-ready:
-1. Base loop: build a capable colony (D1/D2/E1), recover-and-refit Jawas (D3/E2), or trade economy (E3)?
-2. Durasteel's one def: keep our `KOTOR_AlloyDurasteel` (a), make a new `RSW_Durasteel` (b), or let donors coexist for now (c)?
-3. Plasteel vs durasteel jobs: preferences with free choice of stuff, or exclusive (walls refuse plasteel, armor refuses durasteel)?
-4. Plasteel supply: salvage and trade only, or also a costly bench recipe later?
-5. Local durasteel: a zersium + steel alloy in a few industrial biomes, or salvage and trade only?
-6. New materials (phrik, transparisteel, coaxium…): only once a working consumer exists, or reserve their defs now?
+Still open, card-ready (the layout page lists them under the matrix):
+1. Plasteel and durasteel jobs: **preferences** (any metal allowed, soft penalties) or **exclusive** (walls
+   refuse plasteel, armour refuses durasteel)? The owner rules after seeing the layout page.
+2. Plasteel supply: salvage and trade only, or also a costly bench recipe later?
+3. Durasteel supply: local zersium + steel alloy in a few industrial biomes, or salvage and trade only?
+4. Unused materials (phrik, transparisteel, coaxium…): reserve their defs now, or only when something uses them?
+5. Era incompatibility (§0c): I1 two standards + adapters, I2 mismatch penalty, or I3 strip to raw?
