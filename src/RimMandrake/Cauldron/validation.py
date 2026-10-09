@@ -1195,8 +1195,11 @@ def _harvest_one(t, col, tree, rect):
     x, z = tree["x"], tree["z"]
     t.bridge_call("jawa/designate_batch", action="add", designation="HarvestPlant", rect="%d,%d,1,1" % (x, z))
     r = t.bridge_call("jawa/ordered_job", pawnId=col, jobDef="Harvest", targetAId=tree["id"],
-                      queue=True, waitTicks=60)
-    _ok(r, "ordered_job(Harvest)")
+                      queue=False, waitTicks=60)
+    # queue=False interrupts a wandering colonist (GoForWalk on the second harvest, 2026-10-08 live: queued behind the
+    # walk it never started). A job the bridge ACCEPTED is enough; the wood landing below is the real proof.
+    if not (isinstance(r, dict) and (r.get("success") is not False or r.get("accepted"))):
+        _fail("ordered_job(Harvest) failed: %r" % (r,))
     for _ in range(5):
         t.wait_ticks(1000)
         if _stack_total(t, "WoodLog", _rs(rect)) > before:
