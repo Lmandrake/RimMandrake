@@ -48,6 +48,9 @@
 
   <ItemGroup>
     <Compile Include="Kernel\RM_LongShadeKernel.cs" />
+    <Compile Include="Kernel\RM_ShadeExtrasKernel.cs" />
+    <!-- LONGSHADE_SHADE_EXTRAS_1: tollok ticks, lure awning, stampede for your roof. -->
+    <Compile Include="RM_ShadeExtras.cs" />
     <Compile Include="RM_LongShadeMod.cs" />
     <!-- LONGSHADE_RULED_CONTENT_1 Q6 — the dewfringe's shade-boundary spawn
          gate. Needs Harmony (WildPlantSpawner.CalculatePlantsWhichCanGrowAt

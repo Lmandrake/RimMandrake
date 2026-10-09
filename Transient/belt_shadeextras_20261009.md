@@ -8,3 +8,5 @@
 - harrok: (pending)
 - Jawa return: (pending)
 - joining water rite: (pending)
+- kernel + csproj started (tollok/lure/stampede)
+- C#/XML for tollok, lure, stampede written; building

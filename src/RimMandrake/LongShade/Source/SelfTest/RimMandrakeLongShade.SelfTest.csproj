@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Compile Include="..\Kernel\RM_LongShadeKernel.cs" />
+    <Compile Include="..\Kernel\RM_ShadeExtrasKernel.cs" />
     <Compile Include="LongShadeFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

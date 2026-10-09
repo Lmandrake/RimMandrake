@@ -445,6 +445,51 @@ namespace RimMandrake.LongShade.SelfTest
             return fails;
         }
 
+        // ════════════════════════ extras ═══════════════════════
+        private static List<string> Extras(int n, int seed0)
+        {
+            var fails = new List<string>();
+            for (int s = seed0; s < seed0 + n && fails.Count < 4; s++)
+            {
+                Cases++;
+                var r = new Random(s * 104729 + 11);
+                try
+                {
+                    float deep = (float)(0.3 + r.NextDouble() * 0.6), sh = (float)r.NextDouble(), roof = r.Next(2) == 0 ? 0f : (float)r.NextDouble(), gear = r.Next(2) == 0 ? 0f : (float)r.NextDouble();
+                    bool wild = RM_LongShadeKernel.WildDeepShade(sh, roof, gear, deep);
+                    Check(wild == (sh >= deep && roof <= 0.01f && gear <= 0.01f), "WildDeepShade disagrees with its definition");
+                    if (roof > 0.01f || gear > 0.01f) Check(!wild, "built shade read as wild (tollok must never infest built shade)");
+                    int dwell = 0, thr = r.Next(250, 6000), step = 250; float sev = 0f; bool everGain = false; int sinceMove = 0;
+                    for (int k = 0; k < 80; k++)
+                    {
+                        Steps++;
+                        bool stay = r.Next(8) != 0;
+                        dwell = RM_LongShadeKernel.TollokDwell(dwell, stay, step);
+                        sinceMove = stay ? sinceMove + step : 0;
+                        Check(dwell == sinceMove, "dwell " + dwell + " != time since last move " + sinceMove);
+                        float g = RM_LongShadeKernel.TollokGain(dwell, thr, 0.04f, sev);
+                        Check(g >= 0f && sev + g <= 1.0001f, "gain pushes severity past 1");
+                        if (dwell < thr) Check(g == 0f, "gain before the dwell threshold");
+                        else { everGain = true; Check(g > 0f || sev >= 1f, "no gain past the threshold"); }
+                        sev += g;
+                    }
+                    if (everGain) Check(sev > 0f, "infestation never started");
+                    int herd = r.Next(0, 20), hot = herd == 0 ? 0 : r.Next(0, herd + 1), minHerd = r.Next(2, 10); float frac = (float)(0.2 + r.NextDouble() * 0.7);
+                    bool ready = RM_LongShadeKernel.StampedeReady(herd, hot, minHerd, frac);
+                    Check(ready == (herd >= minHerd && herd > 0 && (float)hot / herd >= frac), "StampedeReady disagrees with its definition");
+                    Check(!RM_LongShadeKernel.StampedeReady(herd, herd + 1, 0, 0f), "overheated count above herd size accepted");
+                    int max = r.Next(100, 9000), t = r.Next(0, 12000);
+                    Check(RM_LongShadeKernel.StampedeContinues(true, t, max) == (t < max), "stampede timeout wrong");
+                    Check(!RM_LongShadeKernel.StampedeContinues(false, t, max), "a cooled animal keeps running");
+                    var shades = new List<float>(); int expect = 0; float cut = (float)r.NextDouble();
+                    for (int k = 0, m = r.Next(0, 30); k < m; k++) { float v = (float)r.NextDouble(); shades.Add(v); if (v >= cut) expect++; }
+                    Check(RM_LongShadeKernel.ShelterCount(shades, cut) == expect, "ShelterCount disagrees with a plain count");
+                }
+                catch (Exception e) { fails.Add("extras seed " + s + ": " + e.Message); }
+            }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -459,6 +504,7 @@ namespace RimMandrake.LongShade.SelfTest
                 ("graves", () => Graves(N(5000), S(1))),
                 ("ladder", () => Ladder(N(4000), S(1))),
                 ("commons", () => Commons(N(600), S(1))),
+                ("extras", () => Extras(N(4000), S(1))),
             };
             foreach (var f in fam)
             {

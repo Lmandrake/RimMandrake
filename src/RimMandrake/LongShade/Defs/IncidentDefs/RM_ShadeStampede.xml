@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LONGSHADE_STAMPEDE_ROOF_1 (ideation F3). Fires only on the Long Shade, only when a herd is overheated and the home area has a roof. PROVISIONAL. -->
+<Defs>
+  <IncidentDef>
+    <defName>RM_ShadeStampede</defName>
+    <label>stampede for your roof</label>
+    <category>Misc</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimMandrake.LongShade.IncidentWorker_RM_ShadeStampede</workerClass>
+    <baseChance>1.2</baseChance>
+    <earliestDay>6</earliestDay>
+    <minRefireDays>8</minRefireDays>
+    <allowedBiomes><li>RM_LongShade</li></allowedBiomes>
+  </IncidentDef>
+</Defs>
