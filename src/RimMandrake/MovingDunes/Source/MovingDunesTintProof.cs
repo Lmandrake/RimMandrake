@@ -53,5 +53,87 @@ namespace RimMandrake.MovingDunes
                 return "ERROR " + e.GetType().Name + ": " + e.Message;
             }
         }
+
+        /// <summary>type=RimMandrake.MovingDunes.RM_DunesProof method=ProofTintLayer args="r,g,b" (default 0.6,0.4,0.3) ->
+        /// "tint=.. shader=.. color=.. fallback=..": builds the material through the SHIPPED SectionLayer_DuneSand.BuildMaterial
+        /// (MaterialColor mode) and reports shader name, material colour (or n/a) and whether the Map/Transparent fallback was taken.
+        /// The throwaway material is destroyed unless pooled. Read-only.</summary>
+        public static string ProofTintLayer(string args)
+        {
+            try
+            {
+                float[] c = { 0.6f, 0.4f, 0.3f };
+                if (!string.IsNullOrEmpty(args) && args != "-")
+                {
+                    string[] p = args.Split(',');
+                    for (int i = 0; i < 3 && i < p.Length; i++)
+                    {
+                        c[i] = float.Parse(p[i].Trim(), CultureInfo.InvariantCulture);
+                    }
+                }
+                Color tint = new Color(c[0], c[1], c[2], 1f);
+                bool fallback;
+                Material m = SectionLayer_DuneSand.BuildMaterial(tint, DuneTintMode.MaterialColor, out fallback);
+                string res = "tint=" + Fmt(tint) + " shader=" + m.shader.name + " hasColor=" + m.HasProperty("_Color")
+                    + " color=" + (m.HasProperty("_Color") ? Fmt(m.color) : "n/a") + " fallback=" + fallback
+                    + " vanillaShader=" + MatBases.Sand.shader.name;
+                if (!fallback)
+                {
+                    Object.Destroy(m);
+                }
+                return res;
+            }
+            catch (System.Exception e)
+            {
+                return "ERROR " + e.GetType().Name + ": " + e.Message;
+            }
+        }
+
+        /// <summary>type=RimMandrake.MovingDunes.RM_DunesProof method=ProofTintLive args="" -> reads the sand material the
+        /// current map's built SectionLayer_DuneSand layers actually hold: counts layers, and reports shader/colour/fallback of the
+        /// first one that has built a material. Read-only (reflection over MapDrawer sections).</summary>
+        public static string ProofTintLive(string unused)
+        {
+            try
+            {
+                Map map = Find.CurrentMap;
+                if (map == null) return "ERROR no current map";
+                var sections = HarmonyLib.AccessTools.Field(typeof(MapDrawer), "sections").GetValue(map.mapDrawer) as System.Array;
+                var layersF = HarmonyLib.AccessTools.Field(typeof(Section), "layers");
+                if (sections == null || layersF == null) return "ERROR reflection failed sections=" + (sections != null) + " layers=" + (layersF != null);
+                int layers = 0, built = 0, fb = 0;
+                string first = "none";
+                foreach (object o in sections)
+                {
+                    var sec = o as Section;
+                    if (sec == null) continue;
+                    var list = layersF.GetValue(sec) as List<SectionLayer>;
+                    if (list == null) continue;
+                    foreach (SectionLayer l in list)
+                    {
+                        var d = l as SectionLayer_DuneSand;
+                        if (d == null) continue;
+                        layers++;
+                        bool f;
+                        Material m = d.ProofLiveMaterial(out f);
+                        if (m == null) continue;
+                        built++;
+                        if (f) fb++;
+                        if (first == "none")
+                            first = "shader=" + m.shader.name + " color=" + (m.HasProperty("_Color") ? Fmt(m.color) : "n/a") + " fallback=" + f;
+                    }
+                }
+                return "duneLayers=" + layers + " builtMaterial=" + built + " fallbackLayers=" + fb + " first{" + first + "}";
+            }
+            catch (System.Exception e)
+            {
+                return "ERROR " + e.GetType().Name + ": " + e.Message;
+            }
+        }
+
+        private static string Fmt(Color c)
+        {
+            return c.r.ToString("0.###", CultureInfo.InvariantCulture) + "," + c.g.ToString("0.###", CultureInfo.InvariantCulture) + "," + c.b.ToString("0.###", CultureInfo.InvariantCulture);
+        }
     }
 }
