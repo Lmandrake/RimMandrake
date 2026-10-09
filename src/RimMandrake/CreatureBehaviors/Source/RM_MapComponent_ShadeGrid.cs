@@ -105,7 +105,8 @@ namespace RimMandrake.CreatureBehaviors
 		private float[] glareFloor;
 
 		private RM_SunPathCustomizer pathCustomizer;
-		private readonly List<RM_SunPathCustomizer> retiredCustomizers = new List<RM_SunPathCustomizer>();
+		// STILLSAND_NATIVE_CRASH_1: retired by game tick, never by rebuild count (RM_DeferredDisposal.cs).
+		private readonly RM_DeferredDisposal<RM_SunPathCustomizer> retiredCustomizers = new RM_DeferredDisposal<RM_SunPathCustomizer>();
 
 		// SHADE_GEAR_FAMILY_1 (RM_ShadeGear.cs). gearShade: pitched gear
 		// (tent footprints, shield lees), kind-resolved, rebuilt with the rest
@@ -306,11 +307,7 @@ namespace RimMandrake.CreatureBehaviors
 			RM_SunHeatPatches.Unregister(map);
 			pathCustomizer?.Dispose();
 			pathCustomizer = null;
-			for (int i = 0; i < retiredCustomizers.Count; i++)
-			{
-				retiredCustomizers[i].Dispose();
-			}
-			retiredCustomizers.Clear();
+			retiredCustomizers.DisposeAll();
 			lightSources.Clear();
 			anyLight = false;
 		}
@@ -318,6 +315,7 @@ namespace RimMandrake.CreatureBehaviors
 		public override void MapComponentTick()
 		{
 			base.MapComponentTick();
+			retiredCustomizers.DisposeDue(Find.TickManager.TicksGame);
 			if (!RM_CreatureBehaviorsSettings.shadeGridEnabled)
 			{
 				return; // mod option: shade grid disabled — ShadeAt reports full sun everywhere
@@ -925,19 +923,18 @@ namespace RimMandrake.CreatureBehaviors
 			}
 		}
 
-		/// <summary>Old customizers are disposed one rebuild later, never at
-		/// once: a queued path request may still hold one, and its grid job
-		/// reads the array off the main thread.</summary>
+		/// <summary>Old customizers are disposed RetireAfterTicks GAME TICKS
+		/// later (MapComponentTick), never at once and never "one rebuild
+		/// later": a queued path request may still hold one, and its Burst
+		/// grid job reads the array on a worker thread until the next tick's
+		/// PathFinderTick completes it. Two rebuilds in one tick (a direct
+		/// Recompute from Solar Mirrors/LongShade plus our own) used to free
+		/// an array mid-job and crash the game natively (STILLSAND_NATIVE_CRASH_1).</summary>
 		private void RetireCustomizer()
 		{
-			for (int i = 0; i < retiredCustomizers.Count; i++)
-			{
-				retiredCustomizers[i].Dispose();
-			}
-			retiredCustomizers.Clear();
 			if (pathCustomizer != null)
 			{
-				retiredCustomizers.Add(pathCustomizer);
+				retiredCustomizers.Retire(pathCustomizer, Find.TickManager?.TicksGame ?? 0);
 				pathCustomizer = null;
 			}
 		}

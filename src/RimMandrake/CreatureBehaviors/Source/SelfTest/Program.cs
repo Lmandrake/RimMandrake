@@ -91,8 +91,82 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
             return OutdoorC + RM_SunHeatMath.HeatOffset(ex, 30f, 1f, f, 70f);
         }
 
+        // STILLSAND_NATIVE_CRASH_1: a model of vanilla 1.6's path job lifecycle against a
+        // customizer retirement policy. Tick T: MapPreTick completes the jobs scheduled at T-1,
+        // then schedules jobs for every request pushed during T-1 (each reading its request's
+        // customizer on a worker thread until T+1's MapPreTick); then pawns push requests
+        // carrying the CURRENT customizer; then MapPostTick runs `rebuildsAt(T)` rebuilds.
+        // Returns how many times a running job's customizer was disposed under it.
+        private sealed class FakeCustomizer : IDisposable
+        {
+            public bool Disposed;
+            public void Dispose() { Disposed = true; }
+        }
+
+        private static int UseAfterFreeCount(Func<int, int> rebuildsAt, bool oldPolicy, int ticks)
+        {
+            var current = new FakeCustomizer();
+            var deferred = new RM_DeferredDisposal<FakeCustomizer>();
+            var oldRetired = new List<FakeCustomizer>();
+            var pushed = new List<FakeCustomizer>();
+            var running = new List<FakeCustomizer>();
+            int hits = 0;
+            for (int t = 1; t <= ticks; t++)
+            {
+                running.Clear();                 // PathFinderTick: ForceCompleteScheduledJobs
+                running.AddRange(pushed);        // ...then schedule last tick's requests
+                pushed.Clear();
+                pushed.Add(current);             // pawns tick: requests carry the current grid
+                if (!oldPolicy) deferred.DisposeDue(t); // MapComponentTick head
+                for (int r = 0; r < rebuildsAt(t); r++)  // MapPostTick: RebuildHeatLayers
+                {
+                    if (oldPolicy)
+                    {
+                        foreach (var c in oldRetired) c.Dispose();
+                        oldRetired.Clear();
+                        oldRetired.Add(current);
+                    }
+                    else
+                    {
+                        deferred.Retire(current, t);
+                    }
+                    current = new FakeCustomizer();
+                    foreach (var j in running) if (j.Disposed) hits++;
+                }
+                foreach (var j in running) if (j.Disposed) hits++;
+            }
+            return hits;
+        }
+
         private static int Main()
         {
+            Case("path customizer retirement: no Burst grid job ever reads a disposed sun-cost array (STILLSAND_NATIVE_CRASH_1)", () =>
+            {
+                // Map open on Stillsand: our own requested rebuild plus a direct Recompute from
+                // Solar Mirrors/LongShade in the same tick, then again the next tick.
+                Func<int, int> burst = t => t <= 3 ? 2 : (t % 7 == 0 ? 1 : 0);
+                Func<int, int> everyTick = t => 1;
+                // Sanity probe: the model must SEE the bug under the old "one rebuild later" policy.
+                Assert(UseAfterFreeCount(burst, true, 200) > 0,
+                    "the model cannot see the old policy's use-after-free, so its zero below would prove nothing");
+                Assert(UseAfterFreeCount(everyTick, true, 200) > 0,
+                    "old policy with one rebuild per tick read no freed array: the model is blind");
+                Assert(UseAfterFreeCount(burst, false, 500) == 0, "tick-based retirement freed an array a job was reading (burst)");
+                Assert(UseAfterFreeCount(everyTick, false, 500) == 0, "tick-based retirement freed an array a job was reading (every tick)");
+                Assert(UseAfterFreeCount(t => 5, false, 500) == 0, "tick-based retirement freed an array a job was reading (5 per tick)");
+                var d = new RM_DeferredDisposal<FakeCustomizer>(1);
+                Assert(d.RetireAfterTicks >= 2, "RetireAfterTicks below the 2-tick floor was accepted");
+                var a = new FakeCustomizer();
+                var q = new RM_DeferredDisposal<FakeCustomizer>();
+                q.Retire(a, 100);
+                q.DisposeDue(100 + q.RetireAfterTicks - 1);
+                Assert(!a.Disposed, "disposed before RetireAfterTicks elapsed");
+                q.DisposeDue(50);
+                Assert(!a.Disposed && q.Count == 1, "a clock that went backwards disposed early");
+                q.DisposeDue(100 + q.RetireAfterTicks);
+                Assert(a.Disposed && q.Count == 0, "not disposed once RetireAfterTicks elapsed (leak)");
+            });
+
             Case("wild leave: a Chill native (comfy -150..-30) on a 15 C map is TooWarm (CHILL_CREATURES_VANISH_1)", () =>
             {
                 Assert(RM_WildLeaveMath.Classify(15f, -150f, -30f, 15f, -160f, -20f, false) == RM_WildLeaveReason.TooWarm,
