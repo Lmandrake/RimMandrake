@@ -24,7 +24,7 @@ import floor  # noqa: E402
 import report  # noqa: E402
 import runner  # noqa: E402
 import status  # noqa: E402
-from suite import Suite, TestContext, PASS, FAIL, UNMEASURED  # noqa: E402
+from suite import Suite, TestContext, PASS, FAIL, UNMEASURED, ExpectationFailed  # noqa: E402
 from rimdrive import UNVERIFIED  # noqa: E402
 from rimdrive.session import Session  # noqa: E402
 
@@ -119,6 +119,32 @@ def t_chain_failure_marks_downstream_unmeasured_and_continues():
          not result["all_green"])
     check("chain: the failing component was handed to on_finding",
          len(result["findings"]) == 1 and result["findings"][0].name == "second_fails")
+
+
+def t_script_declared_unmeasured_is_not_a_fail():
+    suite = Suite("t_mod")
+
+    @suite.chain("c1")
+    def c1(t):
+        with t.component("needs_fresh_map", beyond_toggle=True):
+            raise ExpectationFailed("UNMEASURED: needs a FRESH Scald map")
+        with t.component("real_fail", beyond_toggle=True):
+            raise ExpectationFailed("defs missing")
+
+    result = runner.run_suite(suite, _fake_session())
+    verdicts = [c["verdict"] for c in result["chains"][0]["components"]]
+    check("unmeasured: a script-declared UNMEASURED is UNMEASURED, not FAIL", verdicts[0] == UNMEASURED, verdicts)
+    check("unmeasured: it files no finding", result["findings"] == [], result["findings"])
+    # control: a plain ExpectationFailed still FAILs
+    suite2 = Suite("t_mod")
+
+    @suite2.chain("c1")
+    def c2(t):
+        with t.component("plain", beyond_toggle=True):
+            raise ExpectationFailed("defs missing")
+
+    r2 = runner.run_suite(suite2, _fake_session())
+    check("unmeasured control: a plain ExpectationFailed is still FAIL", r2["chains"][0]["components"][0]["verdict"] == FAIL)
 
 
 def t_unverified_write_taints_pass_but_is_not_a_failure():
@@ -568,6 +594,7 @@ TESTS = [
     t_floor_met_when_every_toggle_has_a_component,
     t_chain_happy_path_is_pass,
     t_chain_failure_marks_downstream_unmeasured_and_continues,
+    t_script_declared_unmeasured_is_not_a_fail,
     t_unverified_write_taints_pass_but_is_not_a_failure,
     t_expect_pawn_despawned,
     t_expect_log_contains,

@@ -626,6 +626,12 @@ class _ComponentCtx(object):
                 c.detail += " [evidence: %s]" % ", ".join(c.surprises["evidence"])
             self.ctx.upstream_failed = True
             self.ctx.upstream_reason = "a surprise ended this chain earlier: " + c.detail[:200]
+        elif exc is not None and exc_type is ExpectationFailed and str(exc).startswith("UNMEASURED"):
+            # The script itself says it could not measure (e.g. needs a fresh map): that is no finding against the mod.
+            c.verdict = UNMEASURED
+            c.detail = "%s: %s" % (exc_type.__name__, exc)
+            self.ctx.upstream_failed = True
+            self.ctx.upstream_reason = "an UNMEASURED component ended this chain earlier: " + c.detail[:200]
         elif exc is not None:
             c.verdict = FAIL
             c.detail = "%s: %s" % (exc_type.__name__, exc)
