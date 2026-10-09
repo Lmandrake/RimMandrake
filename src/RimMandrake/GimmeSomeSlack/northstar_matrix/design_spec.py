@@ -300,6 +300,13 @@ def aerial_spec(r, k):
                       "the floor part (battery, stubs, heater) is built and checked today"]}, sc
 
 
+def hose_max_length(L):
+    """PROVISIONAL (GIMMESOMESLACK_HOSE_BEND_TRACE_1): the nozzle faces west and every scene's end lies east, so the laid hose
+    is the straight lead-out + a full-radius U-turn + the run; offline that needs about L+10 cells (L6 16, L14 23, L24 33). The old
+    ceil(L*1.3) left L6/L14 refused ('route too long') once lead-out landed, and before it read as the 0.19-cell U-turn."""
+    return int(math.ceil(L * 1.3)) + 14
+
+
 def hose_spec(r, k):
     L = r["Le"]
     W, H = L + 8, 9 if r["Ro"] != "corner" else L // 2 + 9
@@ -324,7 +331,7 @@ def hose_spec(r, k):
     foot = {(a[0] + i, a[1] - j) for i in (0, 1) for j in (0, 1)}
     assert not foot & {tuple(p) for p in walls + water}, "hose reel footprint overlaps a wall/water cell"
     assert tuple(b) not in foot, "hose free end inside the reel footprint"
-    ops.append({"op": "debug_hose", "a": gc(a), "b": gc(b), "maxLength": int(math.ceil(L * 1.3)),
+    ops.append({"op": "debug_hose", "a": gc(a), "b": gc(b), "maxLength": hose_max_length(L),
                 "fluid": {"water": "RM_Liquid_FreshWater", "tar": None, "chemfuel": None}[r["Fl"]], "fluid_key": r["Fl"],
                 "force_state": "Filling" if r["St"] == "Filling50" else r["St"]})
     # HoseMath: VisibleWidth = FlatVisible 0.38 + PlumpExtra 0.085 * plumpAmount(1) * eased; Filling50 is read half way
