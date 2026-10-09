@@ -2024,3 +2024,38 @@ X10_canal_fire         PASS                burning >=3 run cells ok, no flame of
 T0n_fluid_switch_refused PASS                set_active_fluid Tar after classification+fill: success=False, activeFluidRaw RM_Fluid_Water
 E9_log_budget          PASS                0 FlowWorks errors, 0 ledger imbalances, exactly 1 sanctioned conservation exception; 0 other error lines []
 Z_settings_restored    PASS                13 touched settings back to shipped defaults
+[rimbridge_client] jawa/mod_settings_field -> UNCHECKED: tools/list failed ('NoneType' object has no attribute 'sendall')
+[rimbridge_client] jawa/static_call -> UNCHECKED: tools/list failed ('NoneType' object has no attribute 'sendall')
+Traceback (most recent call last):
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\acc_biomes\run_live_suite.py", line 25, in <module>
+    summary = runner.run_suite(suite, s, debug=dbg, mod=mod)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\runner.py", line 523, in run_suite
+    fn(t)
+    ~~^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\FlowWorks\northstar\extensions.py", line 847, in toggle_refill
+    x0, z0 = _prep_plot(t, "E")
+             ~~~~~~~~~~^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\FlowWorks\northstar\extensions.py", line 124, in _prep_plot
+    rs = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_NorthstarProofs", method="ProofResetRect",
+                       args="%d;%d;%d;%d" % (x0 - b, z0 - b, PW + 2 * b, PH + 2 * b))
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\modcheck\suite.py", line 381, in bridge_call
+    r = self.session.call(tool, **params)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\rimdrive\session.py", line 220, in call
+    r = self._rb.call(tool, params)
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\rimbridge_client.py", line 549, in call
+    return self._request("tools/call", {"name": tool, "arguments": params or {}})
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\rimbridge_client.py", line 413, in _request
+    self._send({
+    ~~~~~~~~~~^^
+        "v": GABP_VERSION,
+        ^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        "params": params or {},
+        ^^^^^^^^^^^^^^^^^^^^^^^
+    })
+    ^^
+  File "\\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\Utils\rimbridge_client.py", line 360, in _send
+    self.sock.sendall(head + body)
+    ^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'sendall'
