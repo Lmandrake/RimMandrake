@@ -32,6 +32,8 @@ namespace RimMandrake.HugeThings
         private readonly Dictionary<long, int> lastMoveTick = new Dictionary<long, int>();
         private bool initialized;
         private bool mutating;
+        // PLANT_FOOTPRINT_HARDENING_1 (A3.11): blockers are relabelled only after a claim, a free, a spawn or a removal.
+        private bool ownershipChanged;
 
         public MapComponent_HugeFootprints(Map map) : base(map) { }
 
@@ -64,6 +66,7 @@ namespace RimMandrake.HugeThings
             List<long> freed = new List<long>();
             ledger.Remove(c.OwnerId, freed);
             Open(freed);
+            ownershipChanged = true;
             RelabelOwners();
         }
 
@@ -100,15 +103,31 @@ namespace RimMandrake.HugeThings
             foreach (Building_TrunkBlocker b in extra) Despawn(b);
             List<int> ids = new List<int>(comps.Keys);
             ids.Sort();
-            foreach (int id in ids) Take(comps[id]);
+            // PLANT_FOOTPRINT_HARDENING_1 (A2.3): one bad owner must not abort map init; each is isolated, logged once, skipped.
+            foreach (int id in ids) TryTake(comps[id]);
             dirty.Clear();
             List<long> stray = new List<long>();
             foreach (long k in realized.Keys) if (!ledger.IsClaimed(k)) stray.Add(k);
             Open(stray);
             foreach (long k in ledger.Claimed) if (!realized.ContainsKey(k)) pending.Add(k);
             initialized = true;
+            ownershipChanged = true;
             RealizePending();
             RelabelOwners();
+        }
+
+        private bool TryTake(CompHugeFootprint c)
+        {
+            try
+            {
+                Take(c);
+                return true;
+            }
+            catch (System.Exception e)
+            {
+                Log.ErrorOnce("[RimMandrake.HugeThings] footprint refresh failed for " + c.parent + ": " + e, c.OwnerId ^ 0x4875);
+                return false;
+            }
         }
 
         public override void MapComponentTick()
@@ -120,24 +139,13 @@ namespace RimMandrake.HugeThings
             {
                 int id = dirty.Min;
                 dirty.Remove(id);
-                if (comps.TryGetValue(id, out CompHugeFootprint c))
-                {
-                    try
-                    {
-                        Take(c);
-                    }
-                    catch (System.Exception e)
-                    {
-                        Log.ErrorOnce("[RimMandrake.HugeThings] footprint refresh failed for " + c.parent + ": " + e, id ^ 0x4875);
-                    }
-                }
+                if (comps.TryGetValue(id, out CompHugeFootprint c)) TryTake(c);
                 n++;
             }
-            if (n > 0 || (pending.Count > 0 && (Find.TickManager.TicksGame + map.uniqueID) % PendingRetryInterval == 0))
-            {
+            // A3.11: realize only when something can have changed, and relabel only when ownership did.
+            if ((n > 0 && pending.Count > 0) || (pending.Count > 0 && (Find.TickManager.TicksGame + map.uniqueID) % PendingRetryInterval == 0))
                 RealizePending();
-                RelabelOwners();
-            }
+            if (ownershipChanged) RelabelOwners();
         }
 
         /// <summary>Take a plant's current desired cells into the ledger; free what it no longer wants.</summary>
@@ -147,7 +155,9 @@ namespace RimMandrake.HugeThings
             List<long> want = c.DesiredKeys();
             List<long> keep = new List<long>(want.Count);
             foreach (long k in want) if (Cell(k).InBounds(map)) keep.Add(k);
+            HashSet<long> before = new HashSet<long>(ledger.CellsOf(c.OwnerId));
             ledger.Set(c.OwnerId, keep, claimed, freed);
+            if (!before.SetEquals(ledger.CellsOf(c.OwnerId))) ownershipChanged = true;   // A3.11: this owner's claims moved
             Open(freed);
             foreach (long k in claimed) if (!realized.ContainsKey(k)) pending.Add(k);
             c.MarkTaken();
@@ -161,6 +171,7 @@ namespace RimMandrake.HugeThings
                 if (realized.TryGetValue(k, out Building_TrunkBlocker b))
                 {
                     realized.Remove(k);
+                    ownershipChanged = true;
                     Despawn(b);
                 }
             }
@@ -180,51 +191,83 @@ namespace RimMandrake.HugeThings
             }
         }
 
-        /// <summary>Plan and spawn pending cells, plant by plant (lowest id first), each against its fixed window.</summary>
+        /// <summary>Plan and spawn pending cells, plant by plant (lowest id first), each against its fixed window.
+        /// PLANT_FOOTPRINT_HARDENING_1: only owners that HAVE a pending cell are visited (A3.11); each owner is isolated (A2.3);
+        /// cells spawn in the planner's acceptance order and an owner's batch stops at its first failure (A3.3); item moves and
+        /// the plan are iterated until no refused source holds a destination (C3.2).</summary>
         private void RealizePending()
         {
             if (pending.Count == 0) return;
+            SortedSet<int> owners = new SortedSet<int>();
+            foreach (long k in pending) foreach (int o in ledger.OwnersOf(k)) owners.Add(o);
+            if (owners.Count == 0) return;
             List<long> roots = new List<long>();
             foreach (CompHugeFootprint c in comps.Values) roots.Add(Key(c.parent.Position));
-            List<int> ids = new List<int>(comps.Keys);
-            ids.Sort();
-            foreach (int id in ids)
+            foreach (int id in owners)
             {
-                CompHugeFootprint c = comps[id];
-                List<long> mine = new List<long>();
-                foreach (long k in ledger.CellsOf(id)) if (pending.Contains(k)) mine.Add(k);
-                if (mine.Count == 0) continue;
-                CellBox window = Planner.Window(c.MaxKeys(), Key(c.parent.Position));
-                Dictionary<long, CellFlags> flags = Flags(window);
-                Dictionary<long, List<long>> moves = PlanItemMoves(mine, flags);
-                foreach (long k in moves.Keys) flags[k] &= ~CellFlags.Item;   // movable: plan it as if clear
-                List<long> ok = Planner.Plan(mine, roots, k => flags.TryGetValue(k, out CellFlags f) ? f : CellFlags.Passable, window);
-                foreach (long k in ok)
+                if (!comps.TryGetValue(id, out CompHugeFootprint c)) continue;
+                try
                 {
-                    if (moves.TryGetValue(k, out List<long> dests) && !MoveItems(k, dests)) continue;
-                    if (Spawn(k)) flags[k] = CellFlags.None;
+                    RealizeOwner(id, c, roots);
+                }
+                catch (System.Exception e)
+                {
+                    Log.ErrorOnce("[RimMandrake.HugeThings] realizing the footprint of " + c.parent + " failed: " + e, id ^ 0x5245);
                 }
             }
+        }
+
+        private void RealizeOwner(int id, CompHugeFootprint c, List<long> roots)
+        {
+            List<long> mine = new List<long>();
+            foreach (long k in ledger.CellsOf(id)) if (pending.Contains(k)) mine.Add(k);
+            if (mine.Count == 0) return;
+            mine.Sort();
+            CellBox window = Planner.Window(c.MaxKeys(), Key(c.parent.Position));
+            Dictionary<long, CellFlags> flags = Flags(window);
+            Dictionary<long, List<long>> moves = PlanItemMoves(mine, flags, roots, window, out List<long> ok);
+            Planner.RealizeInOrder(ok, k =>
+            {
+                if (moves.TryGetValue(k, out List<long> dests) && !MoveItems(k, dests)) return false;
+                if (!Spawn(k)) return false;
+                flags[k] = CellFlags.None;
+                return true;
+            });
         }
 
         /// <summary>Owner ruling 2026-10-07 21:08: for each wanted cell held ONLY by items (no pawn, nothing protected), a
         /// destination per item in the nearest free valid cell outside every footprint, preferring the source's own storage;
         /// at most once per PendingRetryInterval per cell. Cells whose items do not all fit are left out (they stay open).</summary>
-        private Dictionary<long, List<long>> PlanItemMoves(List<long> mine, Dictionary<long, CellFlags> flags)
+        private Dictionary<long, List<long>> PlanItemMoves(List<long> mine, Dictionary<long, CellFlags> flags, List<long> roots, CellBox window,
+                                                           out List<long> accepted)
         {
-            Dictionary<long, int> counts = new Dictionary<long, int>();
-            if (!RM_HugeThingsSettings.PlantItemPushActive) return new Dictionary<long, List<long>>();   // Mod Settings: cell stays open
-            int now = Find.TickManager.TicksGame;
-            foreach (long k in mine)
+            List<long> Plan(Dictionary<long, List<long>> mv)
             {
-                if (!flags.TryGetValue(k, out CellFlags f) || f != (CellFlags.Passable | CellFlags.Item)) continue;
-                if (lastMoveTick.TryGetValue(k, out int t) && now - t < PendingRetryInterval) continue;
-                if (HoldsQuestItem(Cell(k))) continue;   // A3.6: never move a quest thing; the cell is deferred (stays open)
-                counts[k] = Cell(k).GetItemCount(map);
+                return Planner.Plan(mine, roots, k =>
+                {
+                    if (!flags.TryGetValue(k, out CellFlags f)) return CellFlags.Passable;
+                    return mv.ContainsKey(k) ? f & ~CellFlags.Item : f;   // movable: plan it as if clear
+                }, window);
             }
-            if (counts.Count == 0) return new Dictionary<long, List<long>>();
-            return ItemMover.Assign(counts, Capacity, k => ledger.IsClaimed(k),
-                                    (src, k) => Cell(src).GetSlotGroup(map) == Cell(k).GetSlotGroup(map));
+            Dictionary<long, int> counts = new Dictionary<long, int>();
+            if (RM_HugeThingsSettings.PlantItemPushActive)   // Mod Settings off: the cell stays open
+            {
+                int now = Find.TickManager.TicksGame;
+                foreach (long k in mine)
+                {
+                    if (!flags.TryGetValue(k, out CellFlags f) || f != (CellFlags.Passable | CellFlags.Item)) continue;
+                    if (lastMoveTick.TryGetValue(k, out int t) && now - t < PendingRetryInterval) continue;
+                    if (HoldsQuestItem(Cell(k))) continue;   // A3.6: never move a quest thing; the cell is deferred (stays open)
+                    counts[k] = Cell(k).GetItemCount(map);
+                }
+            }
+            if (counts.Count == 0)
+            {
+                accepted = Plan(new Dictionary<long, List<long>>());
+                return new Dictionary<long, List<long>>();
+            }
+            return ItemMover.AssignAndPlan(counts, Capacity, k => ledger.IsClaimed(k),
+                                           (src, k) => Cell(src).GetSlotGroup(map) == Cell(k).GetSlotGroup(map), Plan, out accepted);
         }
 
         /// <summary>How many more items cell k takes; -1 when it is no place for an item at all.</summary>
@@ -300,6 +343,7 @@ namespace RimMandrake.HugeThings
             {
                 realized[k] = b;   // recorded even after an exception mid-spawn, so it can never become a ghost
                 pending.Remove(k);
+                ownershipChanged = true;
                 return true;
             }
             return false;
@@ -375,6 +419,7 @@ namespace RimMandrake.HugeThings
         /// <summary>Each blocker answers to its cell's primary owner (lowest thing id among its claimants).</summary>
         private void RelabelOwners()
         {
+            ownershipChanged = false;
             foreach (KeyValuePair<long, Building_TrunkBlocker> kv in realized)
             {
                 int id = ledger.PrimaryOwner(kv.Key);

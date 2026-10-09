@@ -480,6 +480,20 @@ namespace RimMandrake.HugeThings.SelfTest
                 bool Served(bool[] pass, bool[] reach) => new[] { 1, -1, W2, -W2 }.Any(d => pass[ri + d] && reach[ri + d]);
                 if (Served(p0, r0)) Check(Served(p1, r1), "the root lost every reachable open neighbour (cannot be cut)");
             }
+            // PLANT_FOOTPRINT_HARDENING_1 (A3.3): every PREFIX of the acceptance order is safe to close on its own (a realizer that
+            // stops at its first failure leaves only a prefix), and RealizeInOrder stops at an injected failure.
+            if (acc.Count > 1)
+            {
+                int cut = r.Next(1, acc.Count);
+                bool[] pp = Board(new HashSet<long>(acc.Take(cut)), out _, out _);
+                bool[] rp = Flood(pp, W2, H2);
+                for (int i = 0; i < pp.Length; i++)
+                    if (pp[i] && r0[i]) Check(rp[i], "the first " + cut + " of " + acc.Count + " accepted cells, closed alone, cut a cell off: acceptance order is not a dependency order");
+                var done = new List<long>();
+                int fail = r.Next(0, acc.Count);
+                int n = Planner.RealizeInOrder(acc, k => { if (done.Count == fail) return false; done.Add(k); return true; });
+                Check(n == fail && done.SequenceEqual(acc.Take(fail)), "RealizeInOrder did not stop at the first failure (" + n + " realized, failure at " + fail + ")");
+            }
             // order independence
             var shuffled = wanted.OrderBy(_ => r.Next()).ToList();
             List<long> acc2 = Planner.Plan(shuffled, roots, g.At, win);
@@ -626,12 +640,22 @@ namespace RimMandrake.HugeThings.SelfTest
             var counts = new Dictionary<long, int>();
             foreach (long k in claimed)
                 if (g.At(k) == (CellFlags.Passable | CellFlags.Item)) counts[k] = items[k];
-            var moves = ItemMover.Assign(counts, Cap, k => claimedSet.Contains(k), (a, b) => ((K.KeyX(a) ^ K.KeyX(b)) & 1) == 0);
             var flags = new Dictionary<long, CellFlags>();
             foreach (long k in cap.Keys) flags[k] = g.At(k);
-            foreach (long k in moves.Keys) flags[k] &= ~CellFlags.Item;
             CellBox win = Planner.Window(claimed, root);
-            List<long> acc = Planner.Plan(claimed, new List<long> { root }, k => flags.TryGetValue(k, out CellFlags f) ? f : CellFlags.Passable, win);
+            // PLANT_FOOTPRINT_HARDENING_1 (C3.2): assign and plan iterate (as production does) until no source the planner refuses
+            // still holds destinations; liveness: every source keeping a move is accepted.
+            List<long> PlanWith(Dictionary<long, List<long>> mv)
+                => Planner.Plan(claimed, new List<long> { root }, k =>
+                   {
+                       if (!flags.TryGetValue(k, out CellFlags f)) return CellFlags.Passable;
+                       return mv.ContainsKey(k) ? f & ~CellFlags.Item : f;
+                   }, win);
+            var moves = ItemMover.AssignAndPlan(counts, Cap, k => claimedSet.Contains(k), (a, b) => ((K.KeyX(a) ^ K.KeyX(b)) & 1) == 0,
+                                                PlanWith, out List<long> acc);
+            var accHas = new HashSet<long>(acc);
+            foreach (long src in moves.Keys) Check(accHas.Contains(src), "a source the planner refused still holds item destinations (starves others)");
+            foreach (long k in moves.Keys) flags[k] &= ~CellFlags.Item;
             var landed = new Dictionary<long, int>();
             foreach (long k in acc)
             {

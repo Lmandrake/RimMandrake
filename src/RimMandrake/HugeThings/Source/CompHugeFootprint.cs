@@ -190,11 +190,11 @@ namespace RimMandrake.HugeThings
             selectCache.Clear();
         }
 
-        /// <summary>Plants only TickLong (Plant never overrides Tick); growth changes there, so that is where a change is
-        /// noticed. Harvest is caught by a PlantCollected postfix (HugeThingsCore).</summary>
-        public override void CompTickLong()
+        /// <summary>PLANT_FOOTPRINT_HARDENING_1 (A3.8): 1.6 Plant.TickInterval calls Plant.TickLong every 2000 ticks, and Plant.TickLong
+        /// runs base.TickLong() (the comps) BEFORE it adds growth, so a CompTickLong check read last period's growth. The check
+        /// runs from a Plant.TickLong postfix instead (HugeThingsCore). Harvest is caught by a PlantCollected postfix.</summary>
+        public void Notify_PlantTickedLong()
         {
-            base.CompTickLong();
             if (Changed()) parent.Map?.GetComponent<MapComponent_HugeFootprints>()?.MarkDirty(this);
         }
     }
