@@ -956,9 +956,10 @@
 		     QUEUED in pending/ under RM_GreatDevourer_{east,north,south}, not yet
 		     rendered) — this def is intentionally magenta until that job clears.
 		     BLOCKED, art owed. Never repoint back at AA_ art to hide the magenta. -->
+		<!-- Owner 2026-10-04 (desert sheet, RM_GreatDevourer row): "This is NOT Canon ... It is now a life stage of the Sarlacc ... Remove the canon association". Relabelled to match RSW_GreatDevourer (sarlacc seeker, Stage I). Tier (RSW per this row vs "Not SW" on the RSW row, 2026-10-08) is unresolved. -->
 		<defName>RM_GreatDevourer</defName>
-		<label>great devourer</label>
-		<description>Great Devourers are armoured worms known for their unquenchable appetite. Once a Great Devourer arrives, it will proceed to gorge itself on small prey, and total ecosystem collapse is almost a certainty.\n\nLuckily, they won't attack large creatures, including humans, unless provoked. Their whole name is in fact a pun, since they are not very resilient and are easily dispatched. They have however slow regenerative capabilities.</description>
+		<label>sarlacc seeker</label>
+		<description>A young sarlacc in its questing stage: an armoured worm, a mouth with a body behind it, that swims the sand on the water it was born with. It gorges on small prey to top that reserve up, and where one hunts the small life of a region can collapse. It wanders until it finds rich food and a water source worth claiming, then sinks, roots, and becomes the pit that every desert traveller learns to fear. Desert tribes call it the seeker.\n\nIt will not attack large creatures, humans included, unless provoked. Its armour is thinner than it looks, and it heals slowly.</description>
 		<statBases>
 			<MoveSpeed>2.8</MoveSpeed>
 			<ComfyTemperatureMin>-5</ComfyTemperatureMin>
@@ -1047,7 +1048,7 @@
 
 	<PawnKindDef ParentName="AnimalKindBase">
 		<defName>RM_GreatDevourer</defName>
-		<label>great devourer</label>
+		<label>sarlacc seeker</label>
 		<race>RM_GreatDevourer</race>
 		<combatPower>200</combatPower>
 		<ecoSystemWeight>1</ecoSystemWeight>
