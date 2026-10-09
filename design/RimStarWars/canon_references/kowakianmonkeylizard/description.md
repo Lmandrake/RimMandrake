@@ -35,12 +35,13 @@ Removed: the tiny stylised Galaxy of Heroes portrait (Pilf Mukmuk, `PilfMukmukRe
 - **Hands and feet**: long spindly fingers and long bird-like toes ending in sharp curved claws.
 
 ## Must show
-- [ ] Spindly stick limbs, pot belly, small stooped biped (about 70 cm), long thin curling tail
-- [ ] Wrinkled leathery tan-to-pinkish skin in loose folds on face, neck and belly
-- [ ] Wide hooked glossy blue-grey parrot beak, fleshy lips, small close-set yellow eyes under a heavy brow
-- [ ] Two huge floppy thin leathery ears sweeping back to curled points
-- [ ] Sparse wispy ginger-brown hair: crown tuft, jaw tufts and a shaggy shoulder ruff
-- [ ] Realistic rendering: natural wrinkled skin and hair texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Salacious B. Crumb puppet and *Mandalorian* images (the target), the Outlaws render and the Legends text, as described in the visual brief.*
+- [ ] BODY PLAN: a small stooped or perched biped (about 70 cm) with spindly stick arms and legs, narrow shoulders, a round pot belly and a long thin whip-like tail that curls behind; a small head; long spindly fingers and long bird-like toes ending in sharp curved claws
+- [ ] COLOUR LAYOUT: wrinkled leathery tan-to-pinkish-beige skin in loose folds on the face, neck and belly; sparse wispy ginger-brown hair as a crown tuft, jaw tufts and a shaggy shoulder ruff; beak glossy blue-grey to slate-green, the darkest element of the face; lips pinkish; eyes yellow
+- [ ] Head: a wide hooked glossy parrot-like beak in place of a nose, fleshy lips over a toothless mouth, small close-set yellow eyes under a heavy frowning brow
+- [ ] Two huge floppy thin leathery ears sweeping back to curled points, wider than the head
+- [ ] Realistic rendering: natural wrinkled skin and hair texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a monkey (no furry body, no primate nose) and not a parrot (no wings, no full feather coat); not the blue-ruffed, orange-crested, yellow-bellied CG colour variant as the base form; not a cartoon imp
 
 ## Engine limits
 not yet assessed

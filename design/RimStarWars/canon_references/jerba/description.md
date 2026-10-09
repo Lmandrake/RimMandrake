@@ -32,12 +32,13 @@ All three agree:
 **The current donor sprite (`donor_current_sprite.png`) is the shared Bantha art (`Bantha_east`)**: smooth dark brown, large curled ram horns, no fur texture. That disagrees with canon: jerbas are explicitly shaggy, with short ridged horns. Dedicated jerba art must have a visibly shaggier coat and smaller horns (owner: "NOT the Bantha picture").
 
 ## Must show
-- [ ] Long, shaggy, unkempt coat hanging in ragged locks, visibly longer and stringier than a bantha's, almost yak/goat-like
-- [ ] Huge gaping mouth with a blunt, slightly undershot lower jaw and visible teeth
-- [ ] Long drooping ears plus a pair of short ridged horns curving back from the crown, not large curled ram-spiral horns
-- [ ] Coat colour reddish-brown to dark brown
-- [ ] Sturdy hump-shouldered quadruped with a long hairy tail, clearly not a recolour of bantha art
-- [ ] Realistic rendering: natural shaggy fur texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's three-image consensus and the `## ruling` below.*
+- [ ] BODY PLAN: a sturdy, hump-shouldered four-legged pack animal; long narrow cow/goat-like head on a forward-thrust neck; legs fringed with hair down to small dark hooves; a long sweeping tail of hair
+- [ ] COAT: long, shaggy, unkempt fur hanging in ragged stringy locks down the flanks, belly and hindquarters, visibly longer and stringier than a bantha's, almost yak/goat-like, with a crest of spiky hair along the spine (owner ruling 2026-09-14: "Definitely shaggy, huge mouth, long ears. Confirmed.")
+- [ ] COLOUR LAYOUT: reddish-brown to dark dusty brown coat over the whole body, with paler greyer highlights through the hair; hooves dark
+- [ ] Head: a huge gaping mouth with a blunt, slightly undershot lower jaw and visible teeth; long drooping ears; a pair of SHORT ridged horns curving back and up from the crown
+- [ ] Realistic rendering: natural shaggy fur texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a bantha and not a recolour of bantha art (owner ruling 2026-09-14: "NOT the Bantha picture") — no smooth coat, no large curled ram-spiral horns; not a plain cow or goat (no short sleek coat, no small mouth)
 
 ## Engine limits
 none known

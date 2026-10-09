@@ -104,13 +104,12 @@ are the six-eye cluster and flower organ (current canon) or the long
 mantis-like neck-appendage (KOTOR/Legends) — neither has a cross marking.
 
 ## Must show
-- [ ] Base colour is warm yellow/gold/tan-brown — no blue anywhere on the body
-- [ ] If depicting the current-canon "netcaster" design: six black eyes in a tight cluster above a six-petaled flower organ
-- [ ] If depicting the current-canon "netcaster" design: spoon-shaped body (narrow at top, wider toward the rear) with dark horizontal banding across the abdomen
-- [ ] If depicting the KOTOR/Legends design: a long, upward-curving segmented neck ending in a small mantis-like head, with no flower organ and no eye cluster
-- [ ] Four long, thin, multi-jointed legs (true of both design lineages)
-- [ ] Not confused with Wyyyschokk — no blue-grey body and no abdomen cross marking
-- [ ] Realistic rendering: natural chitin texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the current-canon netcaster text and images (infobox, rear view, Clone Wars clip) and the `## ruling` below, which picked the netcaster design (owner ruling 2026-09-14: "more like that. Same as 2 and 3."; the visual brief records this as keeping the Clone Wars netcaster clip and the netcaster design).*
+- [ ] BODY PLAN: a spider-like arthropod with FOUR long, thin, multi-jointed segmented legs ending in claws surrounded by petal-shaped flaps; a spoon-shaped body, narrow at the top and wider toward the rear
+- [ ] COLOUR LAYOUT: warm yellow/gold/tan-brown chitin over the whole body, no blue anywhere; darker off-colour horizontal stripes circling the abdomen; an orange/red flower organ on the front; black eyes
+- [ ] Six black eyes in a tight cluster (two groups of three) above a six-petaled flower organ on the head/upper body
+- [ ] Realistic rendering: natural chitin texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not the Wyyyschokk — no blue-grey body and no abdomen cross marking; not an eight-legged generic spider; not the KOTOR/Legends long-necked mantis design (no upward-curving segmented neck with a small mantis head)
 
 ## Engine limits
 none known

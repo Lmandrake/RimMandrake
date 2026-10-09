@@ -85,12 +85,13 @@ two features the infobox names as the species' distinctions.** Note also that
 xenotype's own gene list does not include them.
 
 ## Must show
-- [ ] Skin reads desaturated grey-green to olive (a mud-green, not bright green), with darker mottling in the creases
-- [ ] Heavy bony brow shelf runs straight across above the eyes and projects forward far enough to shadow them completely
-- [ ] Underbite: the lower jaw juts forward past the upper, with two small tusk-like teeth visible at the mouth corners, pointing up
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon infobox text and the three images (infobox Barada, live-action raider, Don Klatoo), which agree.*
+- [ ] BODY PLAN: fully humanoid, thickset labourer build within human proportions (heavy, not a giant); bald cranium; a jowly, heavily wrinkled pug/dog-like face with a short, broad, slightly upturned muzzle; usually in ordinary spacer/labourer workwear (tunic, bandolier, trousers, boots)
+- [ ] COLOUR LAYOUT: skin desaturated grey-green to olive (a mud-green, not bright green) over head and hands, with darker mottling in the creases and a slightly warmer, browner cast on the high points of the face; eyes small and dark
+- [ ] Heavy bony brow shelf runs straight across above the eyes and projects forward far enough to shadow them completely; small, dark, deep-set eyes lost under it
+- [ ] Underbite: the lower jaw juts forward past the upper, with two small tusk-like teeth visible at the mouth corners, pointing up, always visible
 - [ ] Deep jowl folds run along the jaw line from below the ear to the chin
-- [ ] Small, dark, deep-set eyes lost under the brow shelf
-- [ ] Bald cranium — no hair on any of the three sourced individuals
+- [ ] NEGATIVE: not a human with a green tint (no flat brow, no normal jaw, no hair) and not a generic alien tough without the brow shelf and underbite; not a monstrous giant or a bright-green orc
 
 ## Engine limits
 none known

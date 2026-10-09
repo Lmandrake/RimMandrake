@@ -25,12 +25,12 @@ The krykna exists only in *Star Wars Rebels*. Deleted: the second Rebels CG rend
 - **Other canon facts** (https://starwars.fandom.com/wiki/Krykna): skin gray, eyes black, blaster-resistant but eyes vulnerable, webs produced, repelled by sensor beacons, feeds on dokma; the Force can calm them (Kanan in "The Holocrons of Fate"), so they are hard to tame, not untamable.
 
 ## Must show
-- [ ] Small flat face slung low with a cluster of round black bead eyes and a beaked mouth with two short fangs
-- [ ] Huge egg-shaped pale abdomen rising tall behind the head
-- [ ] Six very long, spindly, bone-like many-jointed legs with knobby joints, each ending in a single sharp dark claw
-- [ ] Pale bone-white to grey skin, dry and stony-looking, with faint veins and green-grey tint at joints
-- [ ] Clearly larger than a human
-- [ ] Realistic rendering: natural dry, pitted hide texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon text, the *Rebels* CG render `canon_1` (anatomy) and the McQuarrie painting `canon_4` (realistic texture), as described in the visual brief.*
+- [ ] BODY PLAN: a spider-like creature, clearly larger than a human (2 m tall), with a small flat head-front slung low between the legs and a huge bulbous egg-shaped abdomen rising tall and upright behind it; SIX very long, spindly, bone-like many-jointed legs with knobby swollen joints, sprawling far wider than the body is long, each ending in a single sharp dark claw
+- [ ] COLOUR LAYOUT: pale bone-white / ivory to grey (pinkish-beige allowed) skin over body and legs, with faint vein lines and cracks on the abdomen and a green-grey tint at the joints; eyes black; claws dark
+- [ ] Small flat face with a cluster of four round black bead eyes (two pairs) and a beaked mouth with two short curved fanged pedipalps beside it
+- [ ] Realistic rendering: natural dry, pitted hide texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not an eight-legged spider (six legs; the pedipalps are mouthparts) and not a hairy tarantula or shiny black chitin; not the smooth, evenly lit plastic look of the *Rebels* render
 
 ## Engine limits
 not yet assessed

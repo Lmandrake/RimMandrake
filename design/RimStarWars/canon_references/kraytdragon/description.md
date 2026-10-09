@@ -41,13 +41,13 @@ Four images (two canon, two Legends) that show three clearly different looks, so
 - **Size:** the two images give no scale object. Canon text for the leviathan form gives 184 m length and 28.68 m height (see Sourced text); the Legends figure of about 45 m is a different-continuity creature and must not be applied to the leviathan.
 
 ## Must show
-- [ ] Long serpentine lizard body with a very long muscular neck and a long tail that curls up with a spiked ridge (canon render)
-- [ ] Sand-tan / desert-brown rough wrinkled hide with a paler cream underside, not green or blue
-- [ ] Huge wedge head with a wide mouth packed with rows of conical white teeth and a long tongue
-- [ ] Small hooked horn or barb on the side of the head; no big brow horns (those are Legends only)
-- [ ] Many short, thick clawed limbs in clustered banks along the body (leviathan variant: sixteen limbs; four-legged only for the Legends type)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon pair (`canon_1` *Mandalorian* render, `canon_2` spit frame) and the canon leviathan text, which the visual brief names as the shipping design.*
+- [ ] BODY PLAN: a long serpentine lizard body with a very long muscular neck, a thick body and a long tail that curls up carrying a spiked ridge; many short, thick limbs in clustered banks along the body (leviathan variant: sixteen limbs), each with 4–5 curved dark claws
+- [ ] COLOUR LAYOUT: sand-tan / desert-brown rough, dry, wrinkled hide over the back and flanks with rock-and-sand texture, a paler cream-grey underside; teeth white; no bright colours, not green or blue
+- [ ] Huge wedge head with a wide mouth packed with rows of conical white teeth and a long tongue; a small hooked horn or barb on the side of the head
 - [ ] Short bony dorsal spikes down the neck and back
 - [ ] Able to show a yellow-green acid spray from the mouth when attacking
+- [ ] NEGATIVE: not the Legends four-legged crocodile-dragon (no four-legs-only body, no big upswept brow horns, no green-olive or blue-grey hide); not a winged dragon
 
 ## Engine limits
 not yet assessed

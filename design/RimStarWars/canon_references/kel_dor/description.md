@@ -99,13 +99,14 @@ silhouette. Nothing in either image contradicts "tall"; nothing in either image 
 "typically of the same weight as Humans" says.
 
 ## Must show
-- [ ] Two long, pale ivory tusks curving downward and outward from the sides of the mouth — fully hidden by the mask when worn
-- [ ] Bald, bulbous, high-domed cranium in warm orange-tan, with deep engraved furrows/crevasses over the crown and cheeks
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon infobox (equipment, hands), the Legends unmasked comic (lower face), the prosthetic photo and the two paintings (dome, furrows, lobes, hue), as described in the visual brief.*
+- [ ] BODY PLAN: tall, lean humanoid in a narrow silhouette, usually in long, heavy, full-length robes with wide sleeves; bald, bulbous, high-domed cranium; hands with three fingers and a thumb (four digits total) and dark, sharply pointed claws
+- [ ] COLOUR LAYOUT: glossy leathery skin warm orange-tan to deep copper (females may read redder, rust-copper) over the whole dome, with deep engraved furrows/crevasses across the crown and cheeks; tusks pale ivory; claws dark; mask tan/bone (mask colour may vary by individual)
 - [ ] Clusters of fleshy, pebbled, irregular lobes on each side of the head where ears would be — not smooth pointed flaps
-- [ ] No projecting nose — a fluted mass of vertical folds runs down to the mouth
-- [ ] When masked, a single tan/bone-coloured rigid plate combining two dark angular goggle lenses and a central snouted respirator plate, with decorative side flanges
-- [ ] Hands show three fingers and a thumb (four digits total) with dark, sharply pointed claws
-- [ ] Realistic rendering: glossy, leathery, deeply furrowed skin like the film prosthetic, natural lighting, no outlines, no comic inking
+- [ ] Unmasked face: two long, pale ivory tusks curving downward and outward from the sides of the mouth; small dark close-set eyes under heavy furrowed brows; no projecting nose — a fluted mass of vertical folds runs down to the mouth (all of this fully hidden by the mask when worn)
+- [ ] When masked, a single tan/bone-coloured rigid plate combining two dark angular goggle lenses and a central snouted respirator plate, with decorative side flanges; the top of the dome and the side lobes stay visible around it
+- [ ] Realistic rendering: glossy, leathery, deeply furrowed skin like the film prosthetic, natural lighting, no outlines, no comic inking (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a human face under the dome (no human eyes, nose or teeth — the prosthetic photo's lower face is the actor's); not a generic gaunt head with smooth pointed ear flaps; not a five-fingered hand
 
 ## Engine limits
 none known

@@ -106,13 +106,15 @@ legitimate to draw, and the *anatomy* below must exist under the mask regardless
 with Legends' 1.6–1.8 m / 80 kg.
 
 ## Must show
-- [ ] Deep brick-red / rust-red matte skin, crossed by darker striations and scar-like channels over the brow, temples and cheeks
-- [ ] Two large, wide-set yellow eyes with vertical slit pupils under a heavy arched brow ridge
-- [ ] No projecting nose — a broad, flat, faceted plate between and below the eyes, with two nostril slits running up toward the eyes
-- [ ] Two long, pale ivory tusks curving up and outward from the lower jaw, framing the mouth
-- [ ] When masked, the mask reads bone-white/cream (not red) — an animal-skull mask with dark angular eye sockets and hanging fangs
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the sourced text (canon + Legends), `wookieepedia_unmasked_face.jpg` for the face and `wookieepedia_legends_negas_painted.jpg` for mask, skin and dress, as described in the visual brief.*
+- [ ] BODY PLAN: humanoid, tall-ish, lean and long-limbed, upright, with long thin arms ending in clawed hands; not heavy or oversized (Legends 1.6–1.8 m); head an elongated wedge in profile with a long forward-tapering lower muzzle; feet bare, broad and clawed
+- [ ] COLOUR LAYOUT: deep brick-red / rust-red matte skin (dark earthy brick, not bright scarlet), crossed by darker striations and scar-like channels over the brow, temples and cheeks, and bare on the arms, hands and legs; yellow eyes the brightest thing in the face; tusks pale ivory; cloak and wrappings light sand/cream (rust-red cloth is a variant, not the norm)
+- [ ] Face: two large, wide-set yellow eyes with vertical slit pupils under a heavy arched brow ridge; no projecting nose — a broad, flat, faceted plate between and below the eyes with two nostril slits running up toward the eyes
+- [ ] Two long, pale ivory tusks curving up and outward from the lower jaw, framing the mouth (the tusks are FACE, not mask)
 - [ ] Large, elongated, pointed, triangular bat-like ear flaps
-- [ ] Realistic rendering: matte natural skin, bone and cloth textures and lighting, no outlines, no comic inking or flat colour
+- [ ] When masked, the mask reads bone-white/cream (not red) — an animal-skull mask with dark angular eye sockets and hanging fangs, only the slitted golden eyes and tusks of the face visible
+- [ ] Realistic rendering: matte natural skin, bone and cloth textures and lighting, no outlines, no comic inking or flat colour (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a human with red tint (no projecting nose, no human ears); not General Grievous's cyborg body or faceplate; not a red-cloth-wrapped figure with no skin showing; no hair on the head
 
 ## Engine limits
 none known

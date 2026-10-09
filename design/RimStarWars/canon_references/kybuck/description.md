@@ -43,12 +43,13 @@ Three images; the canon one (animated render, file `Kybucks-LaD.png`) differs a 
 - **Size:** canon plate shows them roughly head-high above the grass, deer-sized; Legends mounts are horse-sized.
 
 ## Must show
-- [ ] Two hoofed legs as the standing/walking posture in canon art (small forelimbs held up), not a horse stance
-- [ ] Pair of dark, ridged horns curving back (down-curving for the Shili form shown, up-curving for Kashyyyk)
-- [ ] Slender, long-necked antelope/goat build with a golden-tan short coat (Shili) or dark brown (Kashyyyk)
-- [ ] Small pointed muzzle with large upright leaf-shaped ears
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon text and the canon *Tales of the Jedi* render `canon_1` (the Shili form), which the visual brief says to trust for the canon animal; one population is drawn consistently.*
+- [ ] BODY PLAN: a slender, deer-sized antelope/goat-like animal standing and walking upright on TWO hoofed hind legs, small forelimbs held up and tucked; a long thin neck; a small head with a small pointed muzzle and large upright leaf-shaped ears — not a horse stance
+- [ ] COLOUR LAYOUT: short coat golden-tan/caramel (Shili form) or dark brown (Kashyyyk form) over the body, with a paler chest tuft; horns dark red-brown; nose dark; eye large amber
+- [ ] Pair of dark, ridged horns curving back (down-curving at the tips for the Shili form, up-curving for the Kashyyyk form)
 - [ ] Narrow beard/tuft hanging from the chin on the Shili form; none on the Kashyyyk form
-- [ ] Realistic rendering: natural short-haired coat and horn texture and lighting, no outlines, no cartoon shading
+- [ ] Realistic rendering: natural short-haired coat and horn texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a four-legged horse/yak riding mount (the Legends look: no bushy tail, no heavy mane, no saddle, no horse-sized bulk); not a tauntaun
 
 ## Engine limits
 not yet assessed

@@ -39,11 +39,13 @@ LEGENDS (a 3D render and an ink-and-wash sheet showing laa eating a yobshrimp).
 - **Size**: no cue; small fish by context (eats yobshrimp).
 
 ## Must show
-- [ ] Deep rounded fish body with a very large swept-back fan tail, upper lobe dark teal and lower lobe pale cream
-- [ ] Long forward-pointing snout with thick pale pucker lips (red-tinted in canon)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon *Jedi: Survivor* render and the two Legends images, which the visual brief says to trust over the canon prose on colour.*
+- [ ] BODY PLAN: a small, chunky, deep-bellied fish — a rounded pot-belly in front tapering into a slim tail root and a very large, long, swept-back fan tail; a tall pointed dorsal fin, big wing-like pectoral fins and small ventral fins; the head dips down to a long forward-pointing snout
+- [ ] COLOUR LAYOUT: teal/blue-green back with orange-red speckles or bars; pale peach-cream belly; tail fin upper lobe dark teal and lower lobe pale cream; lips pale peach, red-tinted in canon; bulb lure glowing orange
+- [ ] Long forward-pointing snout with thick fleshy pucker lips (kissing-mouth look)
 - [ ] Two long thin whip filaments, one trailing from the top of the head and one dangling from the chin ending in a small glowing orange bulb
-- [ ] Teal/blue-green back with orange-red speckles or bars, pale peach-cream belly
-- [ ] Large round eye and big wing-like pectoral fin
+- [ ] Large round eye
+- [ ] NEGATIVE: not a mostly-orange goldfish (the images are teal-green with a peach belly) and not a slim torpedo-shaped fish; no missing head filaments
 
 ## Engine limits
 not yet assessed
