@@ -358,6 +358,8 @@ class Index:
         self.purged = {}                       # sha -> purge event
         self.rejected = defaultdict(list)      # sha -> [rejected events: bytes an owner redo/reject named]
         self.snapshots = []
+        self.bindings = defaultdict(list)      # sha -> [binding events: a job's target_def tied a render to a subject]
+        self.bindings_by_subject = defaultdict(list)
         for ev in self.events:
             self._take(ev)
 
@@ -385,6 +387,9 @@ class Index:
             self.rejected[ev["sha"]].append(ev)
         elif t == "snapshot":
             self.snapshots.append(ev)
+        elif t == "binding":
+            self.bindings[ev["sha"]].append(ev)
+            self.bindings_by_subject[ev["subject"]].append(ev)
 
     def _fold_live(self, ev):
         key = (ev["mod"], ev["rel"])

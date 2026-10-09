@@ -265,9 +265,20 @@ def step_artpipe(budget=480):
         extra = {"job": d.name, "facing": man.get("facing") or "?", "prompt": (man.get("prompt") or "")[:300],
                  "derive_from": man.get("derive_from"), "style": (man.get("style_notes") or "")[:120],
                  "item": man.get("rimflow_item_id"), "collected_to": dest.get(d.name)}
+        # bind at birth (ART_SUBJECT_RESOLVER_1 §5.2): the job's own record names its subject
+        tdef, inst = man.get("target_def"), man.get("install_to") or man.get("target_texpath")
+        if tdef:
+            extra["target_def"] = tdef
+        if inst:
+            extra["install_to"] = inst
         _variant(w, sha=sha, b=b, kind="artpipe", loc=f"_artsrc/{d.name}/{p.name}", rel=rel,
                  date=(man.get("created") or time.strftime("%Y-%m-%d", time.localtime(p.stat().st_mtime)))[:10],
                  extra=extra)
+        if tdef:    # a variant already in the ledger never gains fields (same id), so the subject is its own event
+            w.add({"type": "binding", "id": L.det_id("binding", "job", sha, d.name, tdef), "sha": sha, "job": d.name,
+                   "subject": tdef, "originals": list(man.get("target_original") or []),
+                   "texpath": man.get("target_texpath") or inst, "confidence": "bound",
+                   "evidence": f"job {d.name} target_def {tdef}"})
         n += 1
         if i % 300 == 299:
             w.flush(); _phsave()
