@@ -12,6 +12,7 @@ the depth/fill primitive (`RM_ExcavationDepth` on `RM_MapComponent_Excavation`, 
 `RM_LiquidBody`).
 
 ## must be true
+- Thick liquids creep (THICK_LIQUID_CREEP_1): with `thickCreepEnabled` a tar or slime fill front advances one cell per moving pulse down a 40-cell channel, where with it off the front crosses the whole channel in one pulse; water is unaffected; the pulse ledger stays balanced and the kernel still equals the oracle (3000 scenes). → UNCOVERED live: proven offline by `selftest_flowworks_stock.py` case `THICK_LIQUID_CREEP_1_front_speed_down_a_40_cell_channel` (control: creep off races, 40 of 40) and `selftest_flowworks_kernel_oracle.py`; the in-game front speed needs a tar channel on a bridge map
 - `RM_DigCanal` designation exists and `RM_DigCanalJob`/`RM_DigCanalWorkGiver` drive a colonist to actually dig it (`JobDriver_DigCanal`, `WorkGiver_DigCanal`).
 - A flooded cell's *underlying* terrain is recoverable — `TerrainGrid.TopTerrainAt` (what remains once the flood drains) must differ from the temporary flood terrain and must not itself be destroyed. `Flood_FlowWorks.SpreadOneTile` writes `SetTempTerrain` + `QueueRemoveTerrain`, never `SetTerrain`, and the flood terrains deliberately carry no `tempTerrain.destroysFloors`.
 - A flood that is walled in before its volume runs out destroys itself at `ExpiryTick` = `spawnedTick + 2 * FloodingTicks` rather than ticking into every save.

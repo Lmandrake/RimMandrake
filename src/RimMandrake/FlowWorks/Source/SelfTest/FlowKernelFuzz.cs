@@ -318,6 +318,46 @@ namespace RimMandrake.FlowWorks.SelfTest
 				: $"BROKEN: separate={separate} channelOk={ok} reverseOk={sameReverse} (channel {w.k.fill[chan]}/{w.k.depth[chan]} {w.cellFluid[chan]})";
 		}
 
+		/// <summary>How far (cells down a 40-cell channel off a limitless source) the fill front is after N pulses.</summary>
+		public static int FrontAfter(Fluid f, bool creep, int pulses, out float worstImbalance)
+		{
+			var w = new ArrayWorld(42, 1);
+			w.natural[0] = true; w.terrainFluid[0] = f;
+			w.BodyAt(0, 1f, true);
+			var seeds = new List<int>();
+			for (int x = 1; x <= 40; x++) { w.k.depth[x] = 1; seeds.Add(x); }
+			w.k.viscosityEnabled = true;
+			w.k.creepEnabled = creep;
+			worstImbalance = 0f;
+			for (int p = 0; p < pulses; p++) { w.Pulse(seeds); worstImbalance = Math.Max(worstImbalance, w.k.worstImbalance); }
+			int front = 0;
+			for (int x = 1; x <= 40; x++) if (w.k.fill[x] > 0) front = x;
+			return front;
+		}
+
+		/// <summary>THICK_LIQUID_CREEP_1 (FL-2): measures how fast the front travels down a 40-cell channel. Control: with creep OFF a
+		/// tar front races the whole channel on its first moving pulse (this is the defect). With creep ON tar advances one cell per
+		/// moving pulse (stride 6: at most pulses/6 + 1 cells), slime slower still, and water is exactly as fast as before.</summary>
+		public static string FrontSpeed()
+		{
+			var tar = ArrayWorld.Tar;
+			var slime = new Fluid { name = "slime", tpt = 480 };
+			int tarOff = FrontAfter(tar, false, 30, out float e1);
+			int tarOn = FrontAfter(tar, true, 30, out float e2);
+			int slimeOn = FrontAfter(slime, true, 48, out float e3);
+			int waterOff = FrontAfter(ArrayWorld.Water, false, 10, out float e4);
+			int waterOn = FrontAfter(ArrayWorld.Water, true, 10, out float e5);
+			bool controlRaces = tarOff >= 40;                 // the old behaviour must be visible, or the fixture proves nothing
+			bool tarCrawls = tarOn >= 1 && tarOn <= 30 / 6 + 1;
+			bool slimeCrawls = slimeOn >= 1 && slimeOn <= 48 / 8 + 1;
+			bool waterSame = waterOff == waterOn && waterOn > 0;
+			bool balanced = Math.Max(Math.Max(e1, e2), Math.Max(e3, Math.Max(e4, e5))) <= 0.001f;
+			string line = $"front after 30 pulses: tar creep-off {tarOff}, tar creep-on {tarOn}; slime after 48: {slimeOn}; water after 10: off {waterOff} on {waterOn}";
+			return controlRaces && tarCrawls && slimeCrawls && waterSame && balanced
+				? "OK: " + line
+				: $"BROKEN: controlRaces={controlRaces} tarCrawls={tarCrawls} slimeCrawls={slimeCrawls} waterSame={waterSame} balanced={balanced} ({line})";
+		}
+
 		/// <summary>A channel touching both pools takes the fluid of whichever fills it first and never mixes after.</summary>
 		public static string ChannelTouchingBothNeverMixes()
 		{

@@ -1083,6 +1083,7 @@ namespace RimMandrake.FlowWorks
 			flowKernel.flowPerPulse = RimMandrakeFlowWorksSettings.FlowPerPulse;
 			flowKernel.edgeSinksEnabled = RimMandrakeFlowWorksSettings.edgeSinksEnabled;
 			flowKernel.viscosityEnabled = RimMandrakeFlowWorksSettings.viscosityEnabled;
+			flowKernel.creepEnabled = RimMandrakeFlowWorksSettings.viscosityEnabled && RimMandrakeFlowWorksSettings.thickCreepEnabled;
 			pulseSeeds.Clear();
 			foreach (IntVec3 seed in excavatedCells)
 			{

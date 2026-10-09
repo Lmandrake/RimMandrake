@@ -205,6 +205,9 @@ namespace RimMandrake.FlowWorks
         // FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 VISCOSITY (PROVISIONAL stride = ticksPerTile / 60): a viscous fluid's level
         // moves only every Nth pulse (tar 6, slime 8, oil 3), so its fill front lags water's.
         public static bool viscosityEnabled = true;
+        // THICK_LIQUID_CREEP_1: a thick liquid's fill front moves one cell per moving pulse (a cell that just received it cannot
+        // pass it on in the same pulse). Needs viscosityEnabled. PROVISIONAL: one cell per moving pulse.
+        public static bool thickCreepEnabled = true;
 
         // ══════════════════════════════════════════════════════════════════
         // LIQUID_BOTTLE_LOOP_1 — FILL / USE / DIRTY / WASH.
@@ -398,6 +401,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref flowDoorsSealedFromPitEnabled, "flowDoorsSealedFromPitEnabled", true);
             Scribe_Values.Look(ref sluiceLetsBigThroughEnabled, "sluiceLetsBigThroughEnabled", true);
             Scribe_Values.Look(ref viscosityEnabled, "viscosityEnabled", true);
+            Scribe_Values.Look(ref thickCreepEnabled, "thickCreepEnabled", true);
             // ── LIQUID_BOTTLE_LOOP_1 (see the block above; kept contiguous) ─
             Scribe_Values.Look(ref bottleLoopEnabled, "bottleLoopEnabled", true);
             Scribe_Values.Look(ref bottleDirtyStageEnabled, "bottleDirtyStageEnabled", true);
@@ -884,6 +888,10 @@ namespace RimMandrake.FlowWorks
                 "Tar, slime and oil creep along a channel: each level waits several pulses before it moves "
               + "on (oil 3, tar 6, slime 8 pulses to water's 1), so a tar channel fills far behind a water "
               + "one dug beside it. Off: every liquid flows at water's pace.");
+            list.CheckboxLabeled("Thick liquids creep one cell at a time", ref thickCreepEnabled,
+                "Needs 'Thick liquids flow slower'. On: tar, slime and blood advance one cell each time they move, "
+              + "so a long channel fills at its stated speed instead of all at once on one pulse. Water is not "
+              + "affected. Off: a thick liquid that reaches a cell can pass on to the next in the same pulse.");
 
             list.CheckboxLabeled("Pit covers give way under enough weight", ref trapTriggerEnabled,
                 "An armed cover over a pit drops whoever stands on it once their combined mass passes "
