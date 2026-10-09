@@ -114,7 +114,7 @@ body.still *{animation:none!important}
 <body>
 <div id="app">
   <div class="stripes" id="stripes"></div>
-  <div class="tb pywebview-drag-region" id="tb">
+  <div class="tb" id="tb">
     <span class="mark">pulse<small>rimflow</small></span>
     <span class="sp"></span>
     <span id="clock"></span>
@@ -123,7 +123,7 @@ body.still *{animation:none!important}
     <button class="btn" id="bcol" title="Collapse to the strip">▾</button>
   </div>
   <div class="body" id="body"><div class="empty">Waiting for the first pulse from WSL…</div></div>
-  <div class="strip pywebview-drag-region" id="strip">
+  <div class="strip" id="strip">
     <div class="pills" id="pills"></div>
     <button class="btn" id="bexp" title="Expand" style="display:none">▴</button>
   </div>
@@ -131,6 +131,10 @@ body.still *{animation:none!important}
 <script>
 const API = (location.protocol === 'http:' ? '' : 'http://127.0.0.1:8765');
 const $ = id => document.getElementById(id);
+for (const id of ['tb','strip']) $(id).addEventListener('mousedown', e => {
+  if (e.button !== 0 || e.target.closest('button,a,input')) return;
+  const a = api(); if (a && a.start_drag) a.start_drag();
+});
 const api = () => (window.pywebview && window.pywebview.api) || null;
 let snap = null, lastMsg = 0, seenKeys = new Set(), firstPaint = true, showAllDone = false, es = null;
 const pref = JSON.parse(localStorageGet('pulse.pref') || '{}');

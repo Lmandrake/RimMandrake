@@ -231,6 +231,7 @@ class Api:
         self._window = None
         self._toasted = load(TOASTED, {})
         self._lock = threading.Lock()
+        self._dragging = False
 
     def open(self, target):
         target = str(target or "")
@@ -269,6 +270,15 @@ class Api:
             pass
         return True
 
+    def start_drag(self):
+        """Mousedown on the title bar/strip. Manual move: no activation, so focus is never stolen
+        (pywebview's own drag region fails on a no-activate window)."""
+        hwnd = window_of_pid(os.getpid())
+        if hwnd and not self._dragging:
+            self._dragging = True
+            threading.Thread(target=drag_loop, args=(hwnd, self), daemon=True).start()
+        return bool(hwnd)
+
     def set_collapsed(self, collapsed):
         """The ONLY resize: his click on collapse/expand. Data updates never move or resize it."""
         hwnd = window_of_pid(os.getpid())
@@ -280,6 +290,25 @@ class Api:
                 set_size(hwnd, WIDTH, COLLAPSED_H if collapsed else EXPANDED_H)
             except Exception as e:
                 log(f"resize failed: {e}")
+
+
+def drag_loop(hwnd, api):
+    """Follow the cursor while the left button is held; SWP_NOACTIVATE|NOSIZE|NOZORDER only."""
+    try:
+        pt = wintypes.POINT()
+        user32.GetCursorPos(ctypes.byref(pt))
+        r = rect(hwnd)
+        dx, dy = r.left - pt.x, r.top - pt.y
+        t_end = time.time() + 120
+        while user32.GetAsyncKeyState(0x01) & 0x8000 and time.time() < t_end:
+            user32.GetCursorPos(ctypes.byref(pt))
+            user32.SetWindowPos(hwnd, None, pt.x + dx, pt.y + dy, 0, 0, 0x0001 | 0x0004 | 0x0010 | 0x0200)
+            time.sleep(0.008)
+        remember(hwnd)
+    except Exception as e:
+        log(f"drag failed: {type(e).__name__}: {e}")
+    finally:
+        api._dragging = False
 
 
 def raise_toast(title, body):
