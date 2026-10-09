@@ -47,7 +47,24 @@ namespace RimMandrake.FlowWorks
 		// equal cells of a sourceless channel restarted its clock on every hop and never burned out (live 2026-10-05:
 		// a 6-cell tar run held 3 cells alight at 7,000 ticks with the burn cut to 1,200 ticks a level). Not saved: on
 		// load a moving level restarts its clock once, as before.
+		// LIQUID_FIRE_QUEUE_ORIGIN_1: a carried accumulator now remembers WHEN it was left and WHICH liquid, so a
+		// later, unrelated ignition near the spot (or of another liquid) does not inherit stale burn progress.
 		private readonly Dictionary<int, int> carriedAcc = new Dictionary<int, int>();
+		private readonly Dictionary<int, int> carriedTick = new Dictionary<int, int>();
+		private readonly Dictionary<int, FluidDef> carriedFluid = new Dictionary<int, FluidDef>();
+		private readonly Dictionary<int, FluidDef> burningFluid = new Dictionary<int, FluidDef>();   // not saved
+		// PROVISIONAL (auto-decided 2026-10-09, LIQUID_FIRE_QUEUE_ORIGIN_1): carried burn progress expires after 600 ticks.
+		private const int CarriedExpiryTicks = 600;
+		// LIQUID_FIRE_QUEUE_ORIGIN_1: the front's own detonations, keyed by blast centre: the source hops the
+		// lighting cell had, so the async Explosion's cells inherit the front's reach instead of restarting at 0.
+		private readonly Dictionary<int, int> blastHops = new Dictionary<int, int>();
+		private readonly Dictionary<int, bool> blastFromSource = new Dictionary<int, bool>();
+		private readonly Dictionary<int, int> blastTick = new Dictionary<int, int>();
+		private const int BlastMemoryTicks = 300;
+		// LIQUID_FIRE_QUEUE_ORIGIN_1: the pending front is keyed by cell, so an earlier offer for an already-pending
+		// cell (a direct flame beside a slow fuse) advances it in O(1). Saved as the three legacy lists.
+		private Dictionary<int, int> pendDueOf = new Dictionary<int, int>();
+		private Dictionary<int, int> pendHopsOf = new Dictionary<int, int>();
 		private List<int> pendCell = new List<int>();
 		private List<int> pendDue = new List<int>();
 		private List<int> pendHops = new List<int>();
@@ -60,15 +77,23 @@ namespace RimMandrake.FlowWorks
 		private List<int> hopsKeys;
 		private List<int> hopsValues;
 		private readonly List<int> scratch = new List<int>();
-		private readonly HashSet<int> pendingSet = new HashSet<int>();
+		private readonly List<int> dueScratch = new List<int>();
 
 		public int BurningCount => burning.Count;
-		public int PendingCount => pendCell.Count;
+		public int PendingCount => pendDueOf.Count;
 		public float BurnedLevelsTotal => burnedLevelsTotal;
 		public bool IsBurning(Map map, IntVec3 c) => c.InBounds(map) && burning.ContainsKey(map.cellIndices.CellToIndex(c));
 
 		public void ExposeData()
 		{
+			if (Scribe.mode == LoadSaveMode.Saving)
+			{
+				pendCell.Clear(); pendDue.Clear(); pendHops.Clear();
+				foreach (KeyValuePair<int, int> kv in pendDueOf)
+				{
+					pendCell.Add(kv.Key); pendDue.Add(kv.Value); pendHops.Add(pendHopsOf.TryGetValue(kv.Key, out int hh) ? hh : 0);
+				}
+			}
 			Scribe_Collections.Look(ref burning, "burning", LookMode.Value, LookMode.Value, ref burningKeys, ref burningValues);
 			Scribe_Collections.Look(ref hopsOf, "hops", LookMode.Value, LookMode.Value, ref hopsKeys, ref hopsValues);
 			Scribe_Collections.Look(ref pendCell, "pendCell", LookMode.Value);
@@ -85,8 +110,11 @@ namespace RimMandrake.FlowWorks
 				{
 					pendCell = new List<int>(); pendDue = new List<int>(); pendHops = new List<int>();
 				}
-				pendingSet.Clear();
-				foreach (int i in pendCell) pendingSet.Add(i);
+				pendDueOf.Clear(); pendHopsOf.Clear();
+				for (int k = 0; k < pendCell.Count; k++)
+				{
+					OfferPending(pendCell[k], pendDue[k], pendHops[k]);
+				}
 			}
 		}
 
@@ -152,13 +180,39 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			int i = map.cellIndices.CellToIndex(c);
-			if (burning.ContainsKey(i) || pendingSet.Contains(i) || BurnableFluidAt(map, ex, c) == null
-				|| IsSmothered(map, c))
+			if (burning.ContainsKey(i))
 			{
 				return;
 			}
-			pendCell.Add(i); pendDue.Add(due); pendHops.Add(hops);
-			pendingSet.Add(i);
+			if (pendDueOf.ContainsKey(i))
+			{
+				OfferPending(i, due, hops);   // already validated when first queued; an earlier offer advances it
+				return;
+			}
+			if (BurnableFluidAt(map, ex, c) == null || IsSmothered(map, c))
+			{
+				return;
+			}
+			OfferPending(i, due, hops);
+		}
+
+		/// <summary>Keep the earliest due for a cell, and the smallest hops (the nearer origin binds reach).</summary>
+		private void OfferPending(int i, int due, int hops)
+		{
+			if (pendDueOf.TryGetValue(i, out int oldDue))
+			{
+				if (due < oldDue) pendDueOf[i] = due;
+				if (hops < pendHopsOf[i]) pendHopsOf[i] = hops;
+				return;
+			}
+			pendDueOf[i] = due;
+			pendHopsOf[i] = hops;
+		}
+
+		private void RemovePending(int i)
+		{
+			pendDueOf.Remove(i);
+			pendHopsOf.Remove(i);
 		}
 
 		// ── the per-tick-interval walk ────────────────────────────────────
@@ -171,7 +225,8 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			nextCheckTick = now + CheckInterval;
-			if (burning.Count == 0 && pendCell.Count == 0)
+			PruneMemory(now);
+			if (burning.Count == 0 && pendDueOf.Count == 0)
 			{
 				return;
 			}
@@ -196,16 +251,25 @@ namespace RimMandrake.FlowWorks
 			while (progressed && guard++ < 10000)
 			{
 				progressed = false;
-				for (int k = 0; k < pendCell.Count; k++)
+				dueScratch.Clear();
+				foreach (KeyValuePair<int, int> kv in pendDueOf)
 				{
-					if (pendDue[k] > now)
+					if (kv.Value <= now)
+					{
+						dueScratch.Add(kv.Key);
+					}
+				}
+				// deterministic order: earliest due first, then cell index
+				dueScratch.Sort((a, b) => pendDueOf[a] != pendDueOf[b] ? pendDueOf[a].CompareTo(pendDueOf[b]) : a.CompareTo(b));
+				for (int k = 0; k < dueScratch.Count; k++)
+				{
+					int i = dueScratch[k];
+					if (!pendDueOf.TryGetValue(i, out int due))
 					{
 						continue;
 					}
-					int i = pendCell[k], due = pendDue[k], hops = pendHops[k];
-					pendCell.RemoveAt(k); pendDue.RemoveAt(k); pendHops.RemoveAt(k);
-					pendingSet.Remove(i);
-					k--;
+					int hops = pendHopsOf[i];
+					RemovePending(i);
 					IntVec3 c = map.cellIndices.IndexToCell(i);
 					FluidDef fluid = BurnableFluidAt(map, ex, c);
 					// Foam laid after the cell was queued cancels the queued light (GPT FlowWorks review #14).
@@ -213,7 +277,7 @@ namespace RimMandrake.FlowWorks
 					{
 						continue;
 					}
-					Ignite(map, c, i, hops);
+					Ignite(map, c, i, hops, fluid, now);
 					progressed = true;
 					if (fluid.fireKind == RM_FluidFireKind.Detonation && detonations < MaxDetonationsPerCheck
 						&& ((c.x + c.z) % 3 == 0))
@@ -221,6 +285,9 @@ namespace RimMandrake.FlowWorks
 						// PROVISIONAL: one blast per ~3 cells of front, capped per check, driven from here (Phase 6:
 						// "drive them centrally; do not spawn a Thing per cell").
 						detonations++;
+						blastHops[i] = hops;
+						blastFromSource[i] = ex.IsSourceCell(c);
+						blastTick[i] = now;
 						GenExplosion.DoExplosion(c, map, 1.9f, DamageDefOf.Flame, null);
 					}
 					bool cIsSource = ex.IsSourceCell(c);
@@ -248,20 +315,21 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
-		private void Ignite(Map map, IntVec3 c, int i, int hops)
+		private void Ignite(Map map, IntVec3 c, int i, int hops, FluidDef fluid, int now)
 		{
-			int acc = TakeCarried(i);
+			int acc = TakeCarried(i, fluid, now);
 			for (int d = 0; d < 4; d++)
 			{
 				IntVec3 n = c + GenAdj.CardinalDirections[d];
 				if (n.InBounds(map))
 				{
-					int a = TakeCarried(map.cellIndices.CellToIndex(n));
+					int a = TakeCarried(map.cellIndices.CellToIndex(n), fluid, now);
 					if (a > acc) acc = a;
 				}
 			}
 			burning[i] = acc;
 			hopsOf[i] = hops;
+			burningFluid[i] = fluid;
 			EnsureFlame(map, c);
 		}
 
@@ -285,6 +353,8 @@ namespace RimMandrake.FlowWorks
 					if (fluid == null && burning.TryGetValue(i, out int moving))
 					{
 						carriedAcc[i] = moving;
+						carriedTick[i] = now;
+						carriedFluid[i] = burningFluid.TryGetValue(i, out FluidDef bf) ? bf : null;
 					}
 					Extinguish(map, c, i, false);
 					continue;
@@ -434,6 +504,11 @@ namespace RimMandrake.FlowWorks
 		/// <summary>An explosion touched <paramref name="c"/>: smother (firefoam) or light (flame, bomb).</summary>
 		public void NotifyExplosionAt(Map map, RM_MapComponent_Excavation ex, IntVec3 c, DamageDef dam)
 		{
+			NotifyExplosionAt(map, ex, c, dam, IntVec3.Invalid);
+		}
+
+		public void NotifyExplosionAt(Map map, RM_MapComponent_Excavation ex, IntVec3 c, DamageDef dam, IntVec3 center)
+		{
 			if (dam == null || !c.InBounds(map))
 			{
 				return;
@@ -450,16 +525,8 @@ namespace RimMandrake.FlowWorks
 				{
 					Extinguish(map, c, i, false);
 				}
-				if (pendingSet.Contains(i))
-				{
-					// a foam blast also cancels a light still travelling toward this cell (GPT FlowWorks review #14)
-					int k = pendCell.IndexOf(i);
-					if (k >= 0)
-					{
-						pendCell.RemoveAt(k); pendDue.RemoveAt(k); pendHops.RemoveAt(k);
-					}
-					pendingSet.Remove(i);
-				}
+				// a foam blast also cancels a light still travelling toward this cell (GPT FlowWorks review #14)
+				RemovePending(i);
 				return;
 			}
 			if (!RimMandrakeFlowWorksSettings.canalFireEnabled || !RimMandrakeFlowWorksSettings.explosionIgnitesLiquidEnabled
@@ -467,7 +534,52 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			TryQueue(map, ex, c, Find.TickManager.TicksGame, 0);
+			int blastHopsHere = 0;
+			if (center.IsValid && center.InBounds(map))
+			{
+				// LIQUID_FIRE_QUEUE_ORIGIN_1: a blast the front itself set off carries the front's source hops; a
+				// source cell reached through it counts its distance from the blast, and past sourceFireReach it
+				// does not light. Any other blast is a direct ignition, hops 0, as before.
+				int ci = map.cellIndices.CellToIndex(center);
+				if (blastHops.TryGetValue(ci, out int bh) && ex.IsSourceCell(c))
+				{
+					int dist = System.Math.Max(System.Math.Abs(c.x - center.x), System.Math.Abs(c.z - center.z));
+					blastHopsHere = (blastFromSource[ci] ? bh : 0) + System.Math.Max(1, dist);
+					if (!RM_FireMath.SourceHopAllowed(blastHopsHere, RimMandrakeFlowWorksSettings.SourceFireReach))
+					{
+						return;
+					}
+				}
+			}
+			TryQueue(map, ex, c, Find.TickManager.TicksGame, blastHopsHere);
+		}
+
+		private void PruneMemory(int now)
+		{
+			if (blastTick.Count > 0)
+			{
+				scratch.Clear();
+				foreach (KeyValuePair<int, int> kv in blastTick)
+				{
+					if (now - kv.Value > BlastMemoryTicks) scratch.Add(kv.Key);
+				}
+				foreach (int k in scratch)
+				{
+					blastTick.Remove(k); blastHops.Remove(k); blastFromSource.Remove(k);
+				}
+			}
+			if (carriedTick.Count > 0)
+			{
+				scratch.Clear();
+				foreach (KeyValuePair<int, int> kv in carriedTick)
+				{
+					if (now - kv.Value > CarriedExpiryTicks) scratch.Add(kv.Key);
+				}
+				foreach (int k in scratch)
+				{
+					carriedTick.Remove(k); carriedAcc.Remove(k); carriedFluid.Remove(k);
+				}
+			}
 		}
 
 		// ── flames ────────────────────────────────────────────────────────
@@ -482,12 +594,14 @@ namespace RimMandrake.FlowWorks
 			GenSpawn.Spawn(def, c, map);
 		}
 
-		private int TakeCarried(int i)
+		private int TakeCarried(int i, FluidDef fluid, int now)
 		{
 			if (carriedAcc.TryGetValue(i, out int a))
 			{
-				carriedAcc.Remove(i);
-				return a;
+				bool fresh = carriedTick.TryGetValue(i, out int t) && now - t <= CarriedExpiryTicks;
+				bool same = !carriedFluid.TryGetValue(i, out FluidDef cf) || cf == null || cf == fluid;
+				carriedAcc.Remove(i); carriedTick.Remove(i); carriedFluid.Remove(i);
+				return fresh && same ? a : 0;
 			}
 			return 0;
 		}
@@ -496,6 +610,7 @@ namespace RimMandrake.FlowWorks
 		{
 			burning.Remove(i);
 			hopsOf.Remove(i);
+			burningFluid.Remove(i);
 			ThingDef def = RimMandrakeFlowWorks_DefOf.RM_LiquidFlame;
 			Thing flame = def != null ? map.thingGrid.ThingAt(c, def) : null;
 			if (flame != null && flame.Spawned)
@@ -517,13 +632,14 @@ namespace RimMandrake.FlowWorks
 			{
 				Extinguish(map, map.cellIndices.IndexToCell(i), i, false);
 			}
-			pendCell.Clear(); pendDue.Clear(); pendHops.Clear(); pendingSet.Clear();
-			carriedAcc.Clear();
+			pendCell.Clear(); pendDue.Clear(); pendHops.Clear(); pendDueOf.Clear(); pendHopsOf.Clear();
+			carriedAcc.Clear(); carriedTick.Clear(); carriedFluid.Clear(); burningFluid.Clear();
+			blastHops.Clear(); blastFromSource.Clear(); blastTick.Clear();
 		}
 
 		public string Report()
 		{
-			return "FIRE burning " + burning.Count + " | front pending " + pendCell.Count
+			return "FIRE burning " + burning.Count + " | front pending " + pendDueOf.Count
 				+ " | burned levels " + burnedLevelsTotal.ToString("F0");
 		}
 	}
@@ -562,7 +678,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			ex.LiquidFire.NotifyExplosionAt(map, ex, c, explosion.damType);
+			ex.LiquidFire.NotifyExplosionAt(map, ex, c, explosion.damType, explosion.Position);
 		}
 	}
 
