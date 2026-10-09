@@ -83,13 +83,14 @@ rather than **domed and proud of the skull**. The respirator is a separate gene
 (`RSW_HeadAttachment_gandmask`), so its absence here is expected.
 
 ## Must show
-- [ ] Underneath any mask/respirator: a smooth chitinous insect skull — elongated, backward-sweeping cranium with heavy folded/wrinkled plating, no hair, no nose, no external ears
-- [ ] Two enormous domed compound eyes set on the SIDES of the head (lateral, not front-set), pale/glassy/faceted, canonically silver
-- [ ] A small, complex, faceted central face with mandible-like structures where a nose/mouth would be — no lips
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_gand_fdev.png` (reference of record), the NEGAS painting, the ESB still, the maskless comic panel (anatomy only) and the canon text.*
+- [ ] BODY PLAN: stocky, barrel-chested humanoid with short thick limbs; thick blunt few-fingered hands (canon: three-fingered, two-toed); underneath any mask a smooth chitinous insect skull, elongated and sweeping backward, with heavy folded/wrinkled plating; no hair, no nose, no external ears
+- [ ] COLOUR LAYOUT: warm tan/ochre/khaki-brown over head and body; the eye domes pale, glassy, silver with a golden cast, the lightest element of the head
+- [ ] Eyes: two enormous domed compound eyes set on the SIDES of the head (lateral, not front-set), occupying much of the skull's width and standing proud of it
+- [ ] A small, complex, faceted central face with mandible-like structures where a nose/mouth would be, no lips; if a respirator is worn it may cover only this mouth area, leaving the chitin head bare
 - [ ] Body surface reads as segmented and seamed with visible plate joints, not skin
-- [ ] Stocky, barrel-chested build with short, thick limbs
-- [ ] Warm tan/ochre/khaki-brown colouring — not dark green or slate red
-- [ ] Realistic rendering: hard wrinkled chitin with real specular sheen under natural light, no outlines, no comic shading
+- [ ] Realistic rendering: hard wrinkled chitin with real specular sheen under natural light, no outlines, no comic shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not "a guy in a gas mask" (the bare chitin head and lateral eyes must read), not a front-eyed insect or human face, not dark green or slate red, not small or lanky
 
 ## Engine limits
 none known — the donor head is a greyscale mask correctly runtime-tinted by the skin

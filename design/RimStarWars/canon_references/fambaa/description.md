@@ -50,12 +50,14 @@ What the realistic renders show:
 **Where the deleted images disagreed**: the pencil plate showed a much brighter yellow-green hide with a white belly and reddish eyes, and a lankier upright browsing pose; the comic icon showed dark saturated olive with warty spots. The realistic renders are duller olive-khaki with fine pebbled scales — trust them.
 
 ## Must show
-- [ ] Broad, heavy, low-slung quadruped with thick pillar legs, short forward neck and long tapering tail
-- [ ] Olive-khaki to greenish-tan hide with a fine raised pebbly scale pattern and darker mottling
-- [ ] Paler grey-cream underside, throat and inner legs
-- [ ] Broad blunt head with a wide mouth, small upper fangs and a short tusk jutting up from each side of the lower jaw; yellow-amber eye
-- [ ] Broad feet with short blunt dark claws
-- [ ] Realistic rendering: natural pebbled reptile hide and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three realistic CGI images (`factfile`, `shieldgenerator`, `herd`) and the canon text.*
+- [ ] BODY PLAN: a broad, heavy, low-slung sauropod/iguana-like quadruped with a deep chest; a short thick neck held forward and low; four thick pillar legs with heavy wrinkled skin folds at the joints; a long tapering tail
+- [ ] COLOUR LAYOUT: olive-khaki to greenish-tan hide over back and flanks with darker olive mottling; paler grey-cream underside, throat and inner legs
+- [ ] Hide: a fine raised pebbly/cobbled scale pattern (gila-monster or crocodile-belly texture), not smooth skin
+- [ ] Head: broad, blunt and heavy-browed with a wide lipless mouth, small fangs at the front of the upper jaw and a short tusk jutting up from each side of the lower jaw; yellow-amber eye
+- [ ] Feet: broad elephant-like feet with short blunt dark claws
+- [ ] Realistic rendering: natural pebbled reptile hide and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a two-legged dinosaur, not a long-necked upright browser, not a smooth-skinned hippo or elephant; not the deleted plate's bright yellow-green with white belly and reddish eyes
 
 ## Engine limits
 none known

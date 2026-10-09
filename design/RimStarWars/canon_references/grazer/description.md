@@ -22,12 +22,14 @@ Viewed `wookieepedia_legends_1.webp` (Field-Guide-style illustration, both forms
 - The prose says nothing about spots, spikes or horns; the image does. Trust the image on appearance. It is a Legends image.
 
 ## Must show
-- [ ] Four-legged, heavy, quadruped grazing herbivore (not a biped, not a predator)
-- [ ] Leopard-style rosette/spot pattern in tan, gold and brown on the flank
-- [ ] Wild form clearly leaner than the domestic one (the whole point of "feral")
-- [ ] Row of small spikes/scutes along the neck and spine, bumpy horned face
-- [ ] Short thin tail, small ears
-- [ ] Realistic rendering: natural thick wrinkled hide with real rosette pigment and lighting, no outlines, no watercolour or cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_legends_1.webp` (the only image, domestic left / wild right) and the Legends text; the def is the WILD form.*
+- [ ] BODY PLAN: a four-legged grazing herbivore (not a biped, not a predator); the wild form clearly leaner than the domestic one (Legends: "Wild grazers were significantly leaner"): a long, low body on thin legs with blunt hooves, not the domestic's spherical barrel on short thick legs
+- [ ] COLOUR LAYOUT: densely spotted tan, gold and brown leopard-style rosettes over the whole flank; red eye
+- [ ] A row of small spikes/scutes along the neck and spine
+- [ ] A bumpy, horned face; small ears
+- [ ] Short thin tail ending in a tuft
+- [ ] Realistic rendering: natural thick wrinkled hide with real rosette pigment and lighting, no outlines, no watercolour or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not the fat domestic grazer (no near-spherical body, no floppy ears, no white underside dominating), not a leopard or other cat (hooves, spine scutes, horned face), not a plain unspotted cow or nerf
 
 ## Engine limits
 none known

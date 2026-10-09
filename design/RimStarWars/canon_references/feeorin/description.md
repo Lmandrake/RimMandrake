@@ -57,12 +57,13 @@ file is not it, and the species' one defining feature (the tendril mass) has no 
 here at all. Do not treat this as evidence about anything except that art is owed.
 
 ## Must show
-- [ ] Thick head-tails sweeping back from the crown of a bald skull and hanging over the shoulders (two to several in the realistic depictions; a dozen in the canon comic)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three realistic Legends images (KotOR CG bust, TFU2 Tarko-se, UAA painting), the canon comic kept as tendril-count reference, and the canon/Legends text.*
+- [ ] BODY PLAN: humanoid, big, broad-shouldered, thick-limbed and visibly powerful; a bald ridged skull with thick head-tails sweeping back from the crown and hanging over the shoulders (two to several in the realistic depictions; a dozen in the canon comic)
+- [ ] COLOUR LAYOUT: leathery skin of one colour over head and body in the slate blue-grey/teal to olive-green range (mauve-purple also attested); head-tails the same skin, not hair
 - [ ] Short thick fleshy barbels/tendrils hanging from the chin and jaw
-- [ ] Heavily ridged, craggy face: heavy furrowed brow, deep vertical/diagonal cheek creases, heavy jaw, small deep-set eyes
-- [ ] Leathery skin in the blue-grey/teal to olive-green range (mauve-purple also attested)
-- [ ] Big, broad-shouldered, thick-limbed, visibly powerful build
-- [ ] Realistic rendering: leathery wrinkled skin under natural lighting, no outlines, no comic shading
+- [ ] Heavily ridged, craggy face: heavy furrowed brow, deep vertical/diagonal cheek creases, broad flat nose ridge, wide downturned mouth, heavy jaw, small deep-set eyes
+- [ ] Realistic rendering: leathery wrinkled skin under natural lighting, no outlines, no comic shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a Nautolan (no smooth slender face, no dense mass of slim head-tendrils, face is craggy and barbelled), not a human with a skin tint, not a lean or slight build; no hair
 
 ## Engine limits
 none known — the entry records no shader or mask constraint for this head; the current

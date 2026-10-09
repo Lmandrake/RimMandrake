@@ -46,13 +46,13 @@ Gelagrubs were favored mounts on Felucia and similar worlds because of their abi
   splotches. The deleted painted plate added spiky green dorsal ridges on the flanks -- not seen in canon or film; omit them.
 
 ## Must show
-- [ ] Fat soft caterpillar/grub body, blunt headless-looking front with no neck, tapering to a smaller rump
-- [ ] Two round black eyes stacked vertically on the side of the wrinkled brow, above a wide drooping lipless mouth
-- [ ] Rows of short thick soft leg-stumps under a low-hung belly
-- [ ] Dark teal/grey-green skin with a glossy translucent segmented bright-blue back
-- [ ] Smooth wet gelatinous skin, no fur and no hard shell (larval form)
-- [ ] Large enough to carry a mounted armoured humanoid on its back
-- [ ] Realistic rendering: wet translucent gelatinous skin and natural lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both realistic images (`canon_1` Databank CGI, `legends_1` ROTS film still), both showing the larval/mount form, and the canon/Legends text.*
+- [ ] BODY PLAN: a fat, soft caterpillar/grub body, long and low, with a blunt rounded front and no neck, tapering to a smaller rump; rows of short thick soft leg-stumps (not jointed) under a low-hung, almost dragging belly; large enough to carry a mounted armoured humanoid on its back
+- [ ] COLOUR LAYOUT: dark teal/grey-green flanks, head and underside; the back a contiguous segmented ridge of glossy translucent bright cobalt-blue panels, the brightest element
+- [ ] Face: a bulbous front with a wide drooping lipless mouth at the bottom and two round black eyes stacked vertically on the side of a raised, wrinkled brow mound
+- [ ] Smooth, wet, gelatinous, semi-translucent skin with a glossy sheen; no fur and no hard shell (larval form)
+- [ ] Realistic rendering: wet translucent gelatinous skin and natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a hard-shelled beetle (that is the adult, shown in no image), not a jointed-legged insect; no spiky green dorsal ridges and no saturated blue-purple back with lime flanks (the deleted painted plate)
 
 ## Engine limits
 not yet assessed

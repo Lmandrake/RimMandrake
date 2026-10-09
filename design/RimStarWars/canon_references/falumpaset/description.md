@@ -30,13 +30,15 @@ A breed of falumpaset was also native to the jungle world of Onderon. They were 
 - **Size**: very large, a body deeper than a person's height (the Gungan rider in `canon_2` sits well above head height).
 
 ## Must show
-- [ ] Barrel body on long thick legs, sloping neck, head carried low
-- [ ] Greyish-tan to brown finely wrinkled hide with scattered dark spots
-- [ ] Small head with droopy pendulous lip, small ears, no horns
-- [ ] Broad splayed dark feet, darker lower legs
-- [ ] Short thin tail with a small tuft
-- [ ] Huge size relative to a person
-- [ ] Realistic rendering: natural wrinkled elephant-like hide and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both realistic CGI images (`canon_1`, `canon_2`) and the canon text.*
+- [ ] BODY PLAN: a huge barrel-bodied, heavy-rumped quadruped on disproportionately long, thick legs; a long thick neck sloping DOWN from the shoulders so the smallish head is carried low; high back, sagging camel/paleo-mammal profile; short thin tail ending in a small tuft
+- [ ] COLOUR LAYOUT: greyish-tan to mid-brown hide over the whole body with scattered dark brown-grey spots/blotches on flanks, back and rump; lighter belly; legs darkening toward the lower joint and feet
+- [ ] Hide: finely wrinkled and near-hairless like an elephant or rhino (a little coarse hair only at the neck and leg joints)
+- [ ] Head: small, with a droopy pendulous upper lip, small round ears, small heavy-lidded eyes and a flattened muzzle; no horns, no tusks
+- [ ] Feet: heavy, broad, splayed stumpy feet with a few blunt toe tips
+- [ ] Size: very large, body deeper than a person is tall (canon height 3 m)
+- [ ] Realistic rendering: natural wrinkled elephant-like hide and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a hippo (no huge gaping mouth, no short stumpy legs), not a camel (no hump, no fur coat), not a fambaa or other reptile (no scales, no tusks or horns); no chocolate "stocking" lower legs from the deleted Legends plate
 
 ## Engine limits
 not yet assessed

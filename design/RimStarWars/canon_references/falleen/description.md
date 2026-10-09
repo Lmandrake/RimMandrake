@@ -151,16 +151,15 @@ skull-ridge art on disk at all** — the facial ridges ride the generic
 is the wrong idiom (texture, not plates).
 
 ## Must show
-Colour-shifting skin is the species' defining trait and canon (the current-canon
-article) never mentions it at all — the checklist below follows the Legends text and,
-above all, the images, per this library's own rule.
-- [ ] Resting state: green skin over an ordinary human face, hue varying individual to individual from bright yellow-green to muted grey-green
-- [ ] Shifted state: a complete repaint to fully saturated orange-red across the whole head and face — not a blush or flush on green skin, the same anatomy in a different hue
-- [ ] Skull ridges read as raised, structural scaled plates forming a crest silhouette — not a bumpy skin texture
-- [ ] Long hair (usually very dark, sometimes white) gathered and pulled back into a ponytail or braids
-- [ ] Sleek, symmetrical, narrow, angular face; lean and upright build, never bulky
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action, NEGAS, UAA and Xizor colour-shift images, and the Legends text (the colour shift is Legends-only; canon never mentions it).*
+- [ ] BODY PLAN: ordinary humanoid build, lean and upright, never bulky; a sleek, symmetrical, narrow, angular human face (straight nose, thin lips, high cheekbones)
+- [ ] COLOUR LAYOUT (resting): green skin all over, hue varying individual to individual from bright yellow-green to muted grey-green; skull ridges and dorsal plates darker (olive or reddish-brown) than the skin
+- [ ] COLOUR LAYOUT (shifted): a complete repaint to fully saturated orange-red across the whole head and face, same anatomy in a different hue, not a blush or flush on green skin
+- [ ] Skull ridges: raised, structural scaled plates over the crown and brow forming a crest silhouette, not a bumpy skin texture
 - [ ] A column of overlapping segmented dorsal plates running from the back of the skull down the spine
-- [ ] Realistic rendering: smooth real skin with a slight sheen and hard scaled crest plates under natural lighting, no outlines, no cartoon shading
+- [ ] Long hair (usually very dark, sometimes white) gathered and pulled back into a ponytail or braids (live-action: from a bald crown)
+- [ ] Realistic rendering: smooth real skin with a slight sheen and hard scaled crest plates under natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a plain human with a green tint (the crest plates and dorsal column must read), not a monster or lizard-faced reptile, and the red state is never a greenish face with red cheeks
 
 ## Engine limits
 Each skin state (mottled green, or solid red) is a single flat hue and is individually

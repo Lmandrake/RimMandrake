@@ -139,15 +139,15 @@ will **not** tint it from the skin gene. The head renders off-white/grey on a
 pale-brown body.
 
 ## Must show
-Two canon races (lanky Otolla, heavy Ankura) look genuinely different — items below note
-where they diverge rather than averaging them.
-- [ ] A long, broad, flattened duckbill muzzle projecting well forward of the skull
-- [ ] Otolla: eyes on short mobile stalks rising above the skull. Ankura: hooded eyes with no stalks
-- [ ] Haillu: long pendulous leathery ear-flaps hanging from the sides of the head — long and prominent on Otolla, short and covered on Ankura
-- [ ] Leathery, mottled, matte skin with darker blotching over knees/thighs/shoulders and a paler ventral surface — not smooth or scaly
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the two infobox CGI renders (`otolla_warrior`, `ankura_boss_nass`), the live-action Tarpals still and the canon text. Two canon races (lanky Otolla, heavy Ankura) look genuinely different: lines note where they diverge rather than averaging them.*
+- [ ] BODY PLAN: tall humanoid with a long, broad, flattened duckbill muzzle projecting well forward of the skull. Otolla: extremely lanky, long thin arms, very long bandy legs bowing outward, narrow chest. Ankura: heavy, rotund, short-limbed, wide barrel torso, thick jowls, shorter blunter bill
+- [ ] Eyes: Otolla, two separate mobile pods on short stalks rising from the top of the skull, well above and behind the bill. Ankura: hooded eyes with no stalks
+- [ ] Haillu: long pendulous leathery strap-like ear-flaps hanging from the sides of the head to the shoulder or below on Otolla; short and covered on Ankura
+- [ ] COLOUR LAYOUT: leathery, mottled, matte skin, darker blotching over knees, thighs and shoulders and a paler ventral surface; base hue varies (tan-olive with orange highlights, saturated green; canon also cites brown, orange, pink, purple, white); not smooth or scaly
 - [ ] Three broad, splayed toes per foot; hands with four long digits
 - [ ] No hair anywhere on the head or face
-- [ ] Realistic rendering: matte leathery mottled skin under natural light as in the *Phantom Menace* CGI, no outlines, no cartoon shading
+- [ ] Realistic rendering: matte leathery mottled skin under natural light as in the *Phantom Menace* CGI, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a duck-faced human with a skin tint (the bill, eye stalks and haillu must read on Otolla), not a frog or lizard (no smooth or scaly skin, no wide frog mouth), not stone-age primitive gear
 
 ## Engine limits
 - **The shipped head cannot show any skin colour at all.** Both Gungan `HeadTypeDef`s set

@@ -97,14 +97,14 @@ and inner), **no crown lobes**, **no wattle** and **no snout**. This is the
 highest-value correction in this entry.
 
 ## Must show
-This is a caste species with two distinct canon appearances — do not average them; a
-sprite should target one caste deliberately.
-- [ ] Warrior caste: gaunt, skeletal build — thin limbs with visible joint knobs, digitigrade legs, clawed three-toed feet
-- [ ] Warrior caste: one pair of long, narrow, translucent brown-red wings folded down the back — wings are earned/caste-specific, not universal (drones are born wingless)
-- [ ] Two sets of mandibles (outer and inner) used for gesture-communication
-- [ ] Elite caste: a broad, flaring, mitre-like crown of two flattened upswept lobes, deeply wrinkled leathery hide, and a long pendulous chin wattle
-- [ ] Eyes are small, dark, narrow and deep-set under hooded brow folds — never large, round, white-sclera eyes
-- [ ] Chitin colour can be dark orange-brown, mottled tan-olive-grey, or dusty mauve-pink depending on individual/caste — not one fixed hue
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_sunfac_swctp.png` (warrior), `wookieepedia_poggle_geo.jpg` (elite) and the canon text; the Whitlatch concept art is design history only. This is a caste species with two distinct canon appearances: do not average them; a sprite should target one caste deliberately.*
+- [ ] BODY PLAN (warrior caste, the default): human-height (canon 1.7 m) but gaunt and skeletal: extremely thin limbs with visible joint knobs and elbow spurs, a narrow ribbed thorax, digitigrade legs with long shins, clawed feet with three forward toes; an elongated forward-jutting head with a long down-curved snout
+- [ ] Wings (warrior caste only): ONE pair of long, narrow, translucent brown-red wings folded down the back to about knee height; drones are born wingless, so wings are earned and caste-specific, not universal
+- [ ] BODY PLAN (elite caste): a broad, flaring, mitre-like crown of two flattened upswept lobes far wider than the face, deeply wrinkled sagging leathery hide, and a long pendulous chin wattle hanging onto the chest
+- [ ] COLOUR LAYOUT: one chitin/hide tone over the whole body, varying by individual/caste: dark orange-brown, mottled tan-brown with olive and grey blooms (warrior), or dusty mauve-pink with olive-grey (elite); not one fixed hue
+- [ ] Eyes: small, dark, narrow and deep-set under hooded brow folds, never large, round, white-sclera eyes
+- [ ] Two sets of mandibles (outer and inner) at the mouth, used for gesture-communication
+- [ ] NEGATIVE: not a fish/amphibian head with googly white-sclera eyes (the current donor sprite), not the concept art's smooth conical head with big almond eyes and three or four pairs of dragonfly wings; not small or short (gaunt, not small)
 
 ## Engine limits
 none known
