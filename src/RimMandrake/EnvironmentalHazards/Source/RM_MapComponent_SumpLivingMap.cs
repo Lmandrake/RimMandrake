@@ -93,7 +93,26 @@ namespace RimMandrake.EnvironmentalHazards
             return ok;
         }
 
-        public static bool IsTarLiquid(TerrainDef t) => t != null && (t.defName == "RM_TarShallow" || t.defName == "RM_TarDeep");
+        // EH-5: the tar terrains come from FlowWorks' RM_Liquid_Tar entry (terrainSuite), falling back to the
+        // historical names only when the entry is absent, so a renamed terrain or a second tar liquid cannot
+        // silently break the beast, the belch or this component.
+        private static TerrainDef tarShallowCache, tarDeepCache;
+        private static bool tarResolved;
+
+        private static void ResolveTar()
+        {
+            if (tarResolved) return;
+            tarResolved = true;
+            RimMandrake.FlowWorks.LiquidTypes.LiquidDef liq =
+                DefDatabase<RimMandrake.FlowWorks.LiquidTypes.LiquidDef>.GetNamedSilentFail("RM_Liquid_Tar");
+            tarShallowCache = liq?.terrainSuite?.shallow ?? DefDatabase<TerrainDef>.GetNamedSilentFail("RM_TarShallow");
+            tarDeepCache = liq?.terrainSuite?.deep ?? DefDatabase<TerrainDef>.GetNamedSilentFail("RM_TarDeep");
+        }
+
+        public static TerrainDef TarShallow { get { ResolveTar(); return tarShallowCache; } }
+        public static TerrainDef TarDeep { get { ResolveTar(); return tarDeepCache; } }
+
+        public static bool IsTarLiquid(TerrainDef t) => t != null && (t == TarShallow || t == TarDeep);
         public static bool IsTarGlass(TerrainDef t) => t != null && t.defName == "RM_TarGlass";
 
         public override void MapComponentTick()

@@ -97,6 +97,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (now % 250 == (map.uniqueID * 7 + 31) % 250)
             {
                 Watchdog();
+                OwnerMismatchSweep();
                 RoofSweep();
                 PollFallen();
                 FallenGroundCheck();
@@ -272,6 +273,20 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         }
 
         public bool AnchorLive(CompAerialAnchor a) => NetOf(a) is PowerNet n && n.HasActivePowerSource;
+
+        /// <summary>GS-5: coil any wire whose two ends belong to different owners (a pole was claimed or captured).</summary>
+        public int OwnerMismatchSweep()
+        {
+            if (!AerialSettings.enabled || !AerialSettings.cutWiresOnOwnerChange) return 0;
+            int cut = 0;
+            foreach (CompAerialAnchor a in Anchors.ToList())
+            {
+                foreach (CompAerialAnchor o in a.links.Select(l => l.other).Where(o => o != null && CompAerialAnchor.FactionKey(o.parent) != CompAerialAnchor.FactionKey(a.parent)).ToList())
+                    if (CompAerialAnchor.Unlink(a, o)) cut++;
+            }
+            if (cut > 0) Messages.Message("Wires between poles of different owners were taken down and coiled.", MessageTypeDefOf.NeutralEvent, false);
+            return cut;
+        }
 
         public int PollFallen()
         {

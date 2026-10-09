@@ -49,6 +49,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static int fallenWireKnockback = 2;
         /// <summary>WIRE_DOWN_ALERT_1: an Alert lists anchors with a cut or fallen wire, click to jump to it.</summary>
         public static bool wireDownAlert = true;
+        /// <summary>GOS GS-5: when a pole changes owner, wires to the other owner's poles are coiled (a captured pole never fuses two grids).</summary>
+        public static bool cutWiresOnOwnerChange = true;
 
         public override void ExposeData()
         {
@@ -70,6 +72,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref fallenWireIgnites, "fallenWireIgnites", true);
             Scribe_Values.Look(ref fallenWireKnockback, "fallenWireKnockback", 2);
             Scribe_Values.Look(ref wireDownAlert, "wireDownAlert", true);
+            Scribe_Values.Look(ref cutWiresOnOwnerChange, "cutWiresOnOwnerChange", true);
         }
 
         public static void ResetToDefaults()
@@ -91,6 +94,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             fallenWireIgnites = true;
             fallenWireKnockback = 2;
             wireDownAlert = true;
+            cutWiresOnOwnerChange = true;
         }
 
         public static float Range => Mathf.Clamp(maxSpan, 4f, 40f);
@@ -174,6 +178,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             l.CheckboxLabeled("Alert when a wire is cut or lying on the ground", ref AerialSettings.wireDownAlert,
                 "An alert lists each anchor with a cut or fallen wire; clicking it jumps to the anchor, where Re-string cut wires lives. " +
                 "Applies now.");
+            l.CheckboxLabeled("Claiming a pole cuts wires to the other owner", ref AerialSettings.cutWiresOnOwnerChange,
+                "When a pole changes hands, its wires to poles of a different owner are coiled, so capturing one enemy pole never fuses your grid with theirs. " +
+                "Power-tap clamps are the one way to draw from another grid. Applies now.");
             l.GapLine();
             l.CheckboxLabeled("Allow power-tap clamps on other factions' grids", ref AerialSettings.tapsEnabled,
                 "A clamp bitten onto someone else's conduit quietly drains their grid into yours, one way: the grids never merge.");
