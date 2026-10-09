@@ -108,6 +108,9 @@ namespace RimMandrake.TerminalBiomes
         public static RM_GameComponent_GreyCrust Instance;
 
         private HashSet<int> salted = new HashSet<int>();
+        // TB-2: ids not found on the last daily check. A door mid-flight on the gravship (or minified)
+        // is off every loaded map at midnight; it is dropped only after missing two checks in a row.
+        private HashSet<int> missedOnce = new HashSet<int>();
         public bool firstDoorLetterSent;
 
         public RM_GameComponent_GreyCrust(Game game)
@@ -163,18 +166,43 @@ namespace RimMandrake.TerminalBiomes
                         alive.Add(b.thingIDNumber);
                     }
                 }
+                foreach (Thing m in map.listerThings.ThingsInGroup(ThingRequestGroup.MinifiedThing))
+                {
+                    if (m is MinifiedThing mt && mt.InnerThing is Building_Door)
+                    {
+                        alive.Add(mt.InnerThing.thingIDNumber);
+                    }
+                }
             }
-            salted.RemoveWhere(id => !alive.Contains(id));
+            if (missedOnce == null)
+            {
+                missedOnce = new HashSet<int>();
+            }
+            HashSet<int> missedNow = new HashSet<int>();
+            foreach (int id in salted)
+            {
+                if (!alive.Contains(id))
+                {
+                    missedNow.Add(id);
+                }
+            }
+            salted.RemoveWhere(id => missedNow.Contains(id) && missedOnce.Contains(id));
+            missedOnce = missedNow;
         }
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Collections.Look(ref salted, "saltedDoorIds", LookMode.Value);
+            Scribe_Collections.Look(ref missedOnce, "saltedDoorMissedOnce", LookMode.Value);
             Scribe_Values.Look(ref firstDoorLetterSent, "firstDoorLetterSent", false);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && salted == null)
             {
                 salted = new HashSet<int>();
+            }
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && missedOnce == null)
+            {
+                missedOnce = new HashSet<int>();
             }
         }
     }

@@ -223,6 +223,11 @@ namespace RimMandrake.TerminalBiomes
 
         private bool IsChannelBed(IntVec3 c)
         {
+            if (RM_TerminalBiomesSettings.twilightWellAvoidsCurrent
+                && map.GetComponent<RM_MapComponent_ChannelCurrent>()?.HasCurrent(c) == true)
+            {
+                return true; // TB-3: the current's own saved lane map, not only the (unbuilt) terrain tag
+            }
             TerrainDef terrain = c.GetTerrain(map);
             return terrain != null && terrain.tags != null && terrain.tags.Contains("RM_ChannelBed");
         }

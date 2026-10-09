@@ -209,6 +209,7 @@ namespace RimMandrake.TerminalBiomes
         public static bool seekGlowDrawnToDeepfire = true;
         public static bool greyLampWatcherEnabled = true;
         public static bool greyLampGiantEnabled = true;
+        public static bool twilightWellAvoidsCurrent = true;
         public static float greyLampGiantBurnHours = 8f;
         public static float greyLampGiantMinRadius = 12f;
         private static bool GreyActive => masterEnabled && greySeaEnabled;
@@ -268,6 +269,7 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref seekGlowDrawnToDeepfire, "seekGlowDrawnToDeepfire", true);
             Scribe_Values.Look(ref greyLampWatcherEnabled, "greyLampWatcherEnabled", true);
             Scribe_Values.Look(ref greyLampGiantEnabled, "greyLampGiantEnabled", true);
+            Scribe_Values.Look(ref twilightWellAvoidsCurrent, "twilightWellAvoidsCurrent", true);
             Scribe_Values.Look(ref greyLampGiantBurnHours, "greyLampGiantBurnHours", 8f);
             Scribe_Values.Look(ref greyLampGiantMinRadius, "greyLampGiantMinRadius", 12f);
         }
@@ -512,6 +514,8 @@ namespace RimMandrake.TerminalBiomes
               + "watches (it never enters, never attacks, leaves when approached). Three quarters "
               + "of the way, fresh scrape-sign appears in the silt at the light's edge. These are the "
               + "warnings: switch the lamp off and its clock is gone.");
+            list.CheckboxLabeled("Wells keep out of the current's lanes", ref twilightWellAvoidsCurrent,
+                "On: a twilight well never opens in the middle of a current lane (TB-3). Off: any standable cell may host one.");
             list.CheckboxLabeled("The giant breaks bright lamps", ref greyLampGiantEnabled,
                 "A powered lamp at least as bright as the radius below, left burning without a break "
               + "for the hours below, reads to the reefback as a rival's mark. It comes and breaks that "
