@@ -80,14 +80,15 @@ large, numbering two to four." Longtail kind: "unusually long tails with an odd 
 "flared frills along its body." Size: 30% smaller than the shipped gorg. A swimming graphic is wanted.
 
 ## Must show
-- [ ] Every variant: small, squat or newt-like amphibian with a very wide mouth
-- [ ] Variants differ in SHAPE, not only colour (lobed four-eyed head / hammer head / spiky back / fin tail / long tail)
-- [ ] Purple four-eyed variant, if used: violet-purple with teal/cream highlights, two swept-back head lobes, four small eyes
-- [ ] Film variant, if used: long thin tail and dark spots on tan/brown (or green) skin
-- [ ] Webbed or long-toed splayed feet
-- [ ] (owner-supplied 2026-10-04) Two legs only, webbed AND clawed feet; long tongue; smooth slick soft wet skin, NOT scaled or dry; NOT frog-like (amphibious lizard)
-- [ ] (owner-supplied 2026-10-04) Many varied looks: purple wide-wedge heads, narrow shapes, green, spotted, striped; eyes small or large, two to four
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the film-prop images; variant shapes from the two illustrations.*
+- [ ] BODY PLAN: a SMALL, soft, flattened amphibious-lizard body (head + trunk + tail, or a pear-shaped trunk for the bulbous variants), limbs splayed out sideways from the body, with webbed AND clawed feet on both front and hind limbs; head wide and flat, as wide as or wider than the neck, with a mouth running the full width of the head
+- [ ] COLOUR LAYOUT: one base body colour per animal (grey-green, ochre/tan, olive, lime, purple, pale cream or salmon) carrying a pattern that covers the whole back and limbs evenly (dark spots or stripes), with a paler belly/throat; no single solid flat colour
+- [ ] Smooth, slick, semi-glossy wet skin with soft wrinkles at the joints: NOT scales, NOT dry or warty
+- [ ] Variants differ in SHAPE, not only colour: at least one of long thin tail (film gorg), wide wedge/lobed head with 3-4 eyes in a row (purple variant), hammer head, spiky dorsal ridge, fin-tipped tail
+- [ ] Long tongue available as a feature (film gorg: long red tongue out of the wide mouth)
+- [ ] (owner-supplied 2026-10-04, verbatim) "They do NOT look like frogs, more like amphibious lizards with smooth slick skin." "Eyes can be small or large, numbering two to four." "All of them are small."
 - [ ] Realistic rendering: soft slick wet amphibian skin like the TPM film props, natural lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a frog (no upright sitting frog pose, no big folded jumping hind legs), not a scaled lizard or gecko, not a toad (no warts), not bigger than a cat
 
 ## Engine limits
 - A single-channel tint mask cannot express the purple-with-teal iridescence, the spots, or a

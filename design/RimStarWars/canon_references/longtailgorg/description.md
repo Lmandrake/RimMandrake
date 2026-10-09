@@ -31,10 +31,13 @@ four-legged with long splayed clawed toes and bulging eyes.
 The two film-derived images agree on tan/brown spotted; the green is the figure's palette.
 
 ## Must show
-- [ ] Long thin tail, roughly body length
-- [ ] Frog-like wide head with bulging eyes
-- [ ] Dark spots over a tan/brown (film) or green (figure) body
-- [ ] Sprawled four-legged stance with long splayed toes
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all three images plus the owner's longtail words recorded in `../gorg/description.md`.*
+- [ ] BODY PLAN: a small, low, flattened lizard-shaped amphibian: wide flat frog-like head, short trunk, four limbs splayed out sideways with long spread clawed toes, and a tail at least as long as head+body
+- [ ] Tail is the defining feature: long, thin, and (owner 2026-10-04, verbatim) "unusually long tails with an odd flat tail spread horizontally": flattened/widened toward the tip, not a round whip
+- [ ] COLOUR LAYOUT: dark round spots spread evenly over the whole back, limbs and tail on a lighter base (tan/ochre in film, lime-green on the figure), belly paler and unspotted or lightly spotted
+- [ ] Large bulging eyes on top of the wide head; mouth spans the head's full width (long red tongue optional)
+- [ ] Smooth slick wet amphibian skin, not scaled
+- [ ] NEGATIVE: not a frog (no sitting frog pose, no big folded jump legs), not a newt with a short tail, not a scaled gecko or salamander with a round tapering tail
 
 ## Engine limits
 - Spot pattern needs art; a tint mask cannot draw it.

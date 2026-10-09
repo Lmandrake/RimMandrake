@@ -1442,3 +1442,6 @@
 {"seat":"BENCH","event":"claim","id":"ART_SHEET_DONOR_JOIN_GAPS_1","ts":"2026-10-09T10:34:51Z","tsn":1791542091788143589}
 {"seat":"BENCH","event":"start","id":"ART_SHEET_DONOR_JOIN_GAPS_1","ts":"2026-10-09T10:34:51Z","tsn":1791542091998013647}
 {"seat":"BENCH","event":"implemented","id":"ART_SHEET_DONOR_JOIN_GAPS_1","sha":"c6e6be2c0d94","ref":"origin/main","criteria":[],"ts":"2026-10-09T10:34:52Z","tsn":1791542092848159193}
+{"seat":"BENCH","event":"lease","id":"CANON_ENTRY_BRIEFS_OWED_1","action":"take","token":"BENCH.pid34774.e3d65c30","expires":"2026-10-09T11:20:38Z","ts":"2026-10-09T10:35:38Z","tsn":1791542138497162705}
+{"seat":"BENCH","event":"claim","id":"CANON_ENTRY_BRIEFS_OWED_1","ts":"2026-10-09T10:35:38Z","tsn":1791542138708766684}
+{"seat":"BENCH","event":"start","id":"CANON_ENTRY_BRIEFS_OWED_1","ts":"2026-10-09T10:35:38Z","tsn":1791542138917410700}

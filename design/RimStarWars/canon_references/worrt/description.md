@@ -29,15 +29,17 @@ Four images, very consistent: a big warty toad.
 - **Size:** 1.5 m tall per the text; it looks bigger than a human torso in the puppet shot.
 
 ## Must show
-- [ ] Squat, toad-like body hunched forward, supported on long, thin, strong forelimbs with big long-fingered hands
-- [ ] Very wide, thick-lipped, downturned mouth in a broad flat head with no neck
-- [ ] Large bulging heavy-lidded eyes (orange, amber or yellow-green) with a ridged brow patch between them
-- [ ] Two long, thin, curved palp stalks rising from the top of the head
-- [ ] Row of conical horn-like spikes around the head, over the shoulders and down the arms
-- [ ] Rough warty skin, brown as a baseline (olive-green and rose-tan variants), with a big round belly that can show bright yellow when full
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all four images.*
+- [ ] BODY PLAN: a squat round-bellied toad sitting upright and leaning forward, its weight on two long thin spidery FORELIMBS planted wide in front with big splayed long-fingered hands; hind legs folded out of sight under the belly; head sits directly on the body, no neck
+- [ ] COLOUR LAYOUT: one dominant body colour (brown baseline; olive-green or rose-tan acceptable as in `canon_1`/`canon_2`), with the belly/throat a visibly PALER yellow-ochre or tan, and the head/shoulder spikes a darker or more orange-brown tone than the skin
+- [ ] Very wide, thick-lipped, downturned mouth spanning nearly the full width of the head
+- [ ] Two large bulging heavy-lidded eyes on top of the head (orange, amber or yellow-green) with a horizontally ridged brow plate between them
+- [ ] Two long thin curved antenna-like palp stalks rising from the crown, plus a ring of short conical spikes around the head, shoulders and down the arms
+- [ ] Skin covered in warts/tubercles, not smooth
+- [ ] NEGATIVE: not a plain frog or toad: no smooth skin, no long jumping hind legs visible, no tail, and the arms are clearly longer and thinner than any frog's
 
 ## Engine limits
-not yet assessed
+- Paler belly against a darker back and differently-toned spikes is a per-region colour layout: it needs art, a single-channel tint mask cannot draw it.
 
 ## Source URLs
 - https://starwars.fandom.com/wiki/Worrt (canon; wikitext pulled via the API 2026-10-04)

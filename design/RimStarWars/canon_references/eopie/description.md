@@ -38,12 +38,14 @@ What the realistic images show:
 **The current donor sprite (`donor_current_sprite.png`) gets the colour roughly right but the shape is wrong**: a rounded legless blob with a stubby trunk, none of the tall thin-legged camel silhouette.
 
 ## Must show
-- [ ] Pale skin tone — cream, grey-lavender or pinkish-grey — never brown
-- [ ] Camel-like body on four tall thin legs ending in broad splayed pads with thick blunt claw-toes
-- [ ] Long forward-thrust horizontal neck and a drooping trunk-like snout with a rounded pink tip
-- [ ] One large heavy-lidded eye set well back on each side of the head
-- [ ] Smooth, finely wrinkled leathery hide with no visible fur
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both images.*
+- [ ] BODY PLAN: four tall, very thin, stilt-like legs (leg length clearly greater than body depth) under a short barrel body that is higher at the haunches; a long neck thrust FORWARD roughly level with the back (not raised upright); a long head that ends in a drooping trunk-like snout pointing down-forward
+- [ ] COLOUR LAYOUT: pale all over (cream-white, grey-lavender or pinkish-grey); legs and flanks mottled slightly darker grey; snout tip pink; never brown
+- [ ] Feet: wide flat splayed pads with 3-4 thick blunt toes, elephant-like, visibly broader than the thin legs above them; knobbly bumps at the knees
+- [ ] One large heavy-lidded eye set far back on each side of the long head
+- [ ] Smooth, finely wrinkled leathery hide with no visible fur (a few sparse bristles on the head only)
 - [ ] Realistic rendering: natural wrinkled leathery skin texture and lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a camel (no hump, no fur, no upright S-neck, no split hooves); not an elephant or tapir (no tusks, no big ears, no stocky pillar legs); not a legless or short-legged blob
 
 ## Engine limits
 none known
