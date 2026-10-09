@@ -1,6 +1,6 @@
 {
  "biome": "RM_Greentide",
- "built": "2026-10-08T19:47:14-0700",
+ "built": "2026-10-08T20:22:46-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
  "loadOrder": "live ModsConfig.xml: 614 active",
@@ -213,20 +213,26 @@
     },
     "B": {
      "single": "0ada983635227a01c8a44583df62f210f414f9b8895af85d2ead38919b3129e9"
+    },
+    "C": {
+     "single": "bf9f274ae20ab816dd2762fd7da96d6384045b44b154aa597d47342036a3a79f"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Cundral/RM_Cundral_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "our deployed art (render rm_cundral_v1) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapfin_RM_Cundral_v1"
+    "B": "render gapfin_RM_Cundral_v1",
+    "C": "render regen_gt_cundral_varb_v1"
    },
    "res": "Things/Plant/RM_Cundral/RM_Cundral_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "cundral"
   },
@@ -311,20 +317,26 @@
     },
     "B": {
      "single": "2db7bf15b49501be33e65d87976d0d227c9a85581110dfbc4cabf3823c336316"
+    },
+    "C": {
+     "single": "977ff6a47752b6083212e5653076219367ea95d0da75edc88a08d333792e8edb"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Gorbeleth/RM_Gorbeleth_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "our deployed art (render rm_gorbeleth_v1) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapfin_RM_Gorbeleth_v1"
+    "B": "render gapfin_RM_Gorbeleth_v1",
+    "C": "render regen_gt_gorbeleth_varb_v1"
    },
    "res": "Things/Plant/RM_Gorbeleth/RM_Gorbeleth_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "gorbeleth"
   },
@@ -335,20 +347,26 @@
     },
     "B": {
      "single": "f9394a1832fa01fa9f50cee484dee8134dc787585860a45eb647790adcadb974"
+    },
+    "C": {
+     "single": "647642c7cf209cc1dfcddcfe2846d4cf12834394b047099aa906e2b0cfdefb25"
     }
    },
    "graphic_of": {
     "A": "_byname",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "render rm_greatbole_v1",
-    "B": "render regen_gt_greatbole_varb_v1"
+    "B": "render regen_gt_greatbole_varb_v1",
+    "C": "render regen_gt_greatbole_varc_v1"
    },
    "res": null,
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "greatbole"
   },
@@ -887,7 +905,7 @@
     "A": "our deployed art (render rm_thalquith_v1) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Thalquith_v1",
     "C": "render regen_gt_thalquith_varb_v1",
-    "D": "render regen_gt_thalquith_varc_v1 \u2014 failed canon check"
+    "D": "render regen_gt_thalquith_varc_v1"
    },
    "res": "Things/Plant/RM_Thalquith/RM_Thalquith_a",
    "reserved": [
@@ -928,23 +946,29 @@
     },
     "C": {
      "single": "4ad3b93de9af0a60d67763cc97d6370edb05c3214c31df75a3680b24b4d69241"
+    },
+    "D": {
+     "single": "5c0bcec8497f4587bf6fa36edfdbb18bd5addf985a7c98c39300f6e19cd21647"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Tumbel/RM_Tumbel_a",
     "B": "_byname",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "our deployed art (render rm_tumbel_v1) \u2014 RimMandrake: Baroque Biomes",
     "B": "render gapfin_RM_Tumbel_v1",
-    "C": "render regen_gt_tumbel_varc_v1"
+    "C": "render regen_gt_tumbel_varc_v1",
+    "D": "render regen_gt_tumbel_varb_v1"
    },
    "res": "Things/Plant/RM_Tumbel/RM_Tumbel_a",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "tumbel"
   },
@@ -1021,20 +1045,26 @@
     },
     "B": {
      "single": "37877187f8133a185c1dc132f373d2f7134aba74fc9e2977a97cc7e2f24be9a6"
+    },
+    "C": {
+     "single": "505e05f9113ddc4fa6505eceb68fc65d4d80ad5b41682c36caece8c1e6213b6a"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Veluthar/RM_Veluthar_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Greentide",
-    "B": "render regen_gt_veluthar_varc_v1"
+    "B": "render regen_gt_veluthar_varc_v1",
+    "C": "render regen_gt_veluthar_varb_v1"
    },
    "res": "Things/Plant/RM_Veluthar/RM_Veluthar_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "veluthar"
   },
@@ -1571,24 +1601,39 @@
      "east": "3850909de68ee991cdbd44e88eb3ffeb2d70af037475a0118bbcd2712757111d",
      "north": "b3e30f80a4206309653e35710a55fb0d79a2003354716645fc0823a32ca1d775",
      "south": "f1cc492b887c26331d7165732adc2dd0e8274da1a1d46ae6699be5c2721cfa42"
+    },
+    "E": {
+     "east": "6d7499417366d60597d4f0d69e3faf226142178d72d3ff6a1add9f11ae7016d4",
+     "north": "72145c0126cc95f3d299f5be219914d141ade7e6bc286dce949b02ed373a2228",
+     "south": "6ebfafc37cbee0418392bde46f4401a2f1b2b23c9964db763f697084339bffc6"
+    },
+    "F": {
+     "east": "4b4350425edb6c35c2059ff192215bf76b3d54170a6fa0ebac822019e1f6def8",
+     "south": "656c748fad1cbeab9bd0d0aa48db448e1a30b169cd823daa7433f617bf165652"
     }
    },
    "graphic_of": {
     "A": "swanimals/Dragonsnake/Dragonsnake",
     "B": "swanimals/Dragonsnake/Dragonsnake",
-    "D": "swanimals/Dragonsnake/Dragonsnake_Swimming"
+    "D": "swanimals/Dragonsnake/Dragonsnake_Swimming",
+    "E": "swanimals/Dragonsnake/Dragonsnake",
+    "F": "swanimals/Dragonsnake/Dragonsnake"
    },
    "labels": {
     "A": "IN GAME \u2014 DragonsnakeArtOverride",
     "B": "history DragonsnakeArtOverride 2026-09-11",
-    "D": "IN GAME \u2014 SWBestiary"
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "render regen_gt_canon_dragonsnake_v1",
+    "F": "render regen_gt_canon_dragonsnake_v1_swim \u2014 failed canon check"
    },
    "res": "swanimals/Dragonsnake/Dragonsnake",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F"
    ],
    "subject_key": "dragonsnake"
   },
@@ -2052,7 +2097,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
     "D": "render regen_gt_canon_klorslug_v1",
-    "E": "render regen_gt_canon_klorslug_juv_v1"
+    "E": "render regen_gt_canon_klorslug_juv_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Klorslug/Klorslug",
    "reserved": [
@@ -2144,7 +2189,7 @@
     "C": "IN GAME \u2014 SWBestiary",
     "D": "render regen_gt_canon_mott_f_swim_v1",
     "E": "render regen_gt_canon_mott_f_v1",
-    "F": "render regen_gt_canon_mott_m_swim_v1 \u2014 failed canon check",
+    "F": "render regen_gt_canon_mott_m_swim_v1",
     "G": "render regen_gt_canon_mott_m_v1"
    },
    "res": "swanimals/Mott/Mott_f",
@@ -2326,7 +2371,7 @@
     "K": "render regen_gt_pekopeko_flying_f_1_v1",
     "L": "render regen_gt_pekopeko_flying_f_2_v1 \u2014 failed canon check",
     "M": "render regen_gt_pekopeko_flying_f_3_v1",
-    "N": "render regen_gt_pekopeko_flying_f_4_v1 \u2014 failed canon check",
+    "N": "render regen_gt_pekopeko_flying_f_4_v1",
     "O": "render regen_gt_pekopeko_flying_m_1_v1"
    },
    "res": "swanimals/PekoPeko/PekoPeko_f",
@@ -2408,13 +2453,15 @@
      "north": "335e7c919ba15bc6a9f499df86ce249304c000e4996ffd08c15c77459c605350",
      "south": "3713dcf7f1c90ca94fd7facfd396f5329b11ba647d0a29ff1378d73a4968388d"
     },
-    "E": {
-     "north": "5fd33f77bfa07c29286311a05162be018799a7eba28143de26b61c63dd07b094"
-    },
     "F": {
      "east": "319a9d0a07c3f0dbe060e1dc38b55e98b1904a34eab5b9041fda230a2a0c485b",
      "north": "7c010de897bf89f38df87914d5583c4cae8fb5fe3e2ef4d7ac91093560db027f",
      "south": "9234254e26038b048656eeb66a7aecb0501e86b80b5112243966fd9c0d3df863"
+    },
+    "G": {
+     "east": "7f87b2dde7d7a9c898fdd1d119986c6a01dd913182774c7451100fbeb4e37e1e",
+     "north": "5fd33f77bfa07c29286311a05162be018799a7eba28143de26b61c63dd07b094",
+     "south": "3be9ad845f817b75cef8a1d4106557f6a4fe7edcb81a96632edfc73dc0e429eb"
     }
    },
    "graphic_of": {
@@ -2422,16 +2469,16 @@
     "B": "swanimals/ShiroTrap/ShiroTrap_i",
     "C": "swanimals/ShiroTrap/ShiroTrap_j",
     "D": "swanimals/ShiroTrap/ShiroTrap",
-    "E": "swanimals/ShiroTrap/ShiroTrap",
-    "F": "swanimals/ShiroTrap/ShiroTrap"
+    "F": "swanimals/ShiroTrap/ShiroTrap",
+    "G": "swanimals/ShiroTrap/ShiroTrap"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
     "C": "IN GAME \u2014 SWBestiary",
     "D": "render regen_gt_canon_shirotrap_i_v1",
-    "E": "render regen_gt_canon_shirotrap_j_v1",
-    "F": "render regen_gt_canon_shirotrap_v1"
+    "F": "render regen_gt_canon_shirotrap_v1",
+    "G": "render regen_gt_canon_shirotrap_j_v1"
    },
    "res": "swanimals/ShiroTrap/ShiroTrap",
    "reserved": [
@@ -2440,7 +2487,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "subject_key": "shirotrap"
   },
@@ -2632,5 +2680,5 @@
   }
  },
  "sheetId": "greentide_sheet_2026-10-05",
- "snapshotId": "f9083b9a64d3cf6d"
+ "snapshotId": "00a60d5ea6265e31"
 }

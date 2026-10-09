@@ -1,6 +1,6 @@
 {
  "biome": "RM_FeverWood",
- "built": "2026-10-08T19:46:09-0700",
+ "built": "2026-10-08T20:21:30-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
  "loadOrder": "live ModsConfig.xml: 614 active",
@@ -349,25 +349,27 @@
      "north": "434ede4062cc7b315305e0c514c16d499738f81c0d2ce2572dcbbbc0d9b62a91",
      "south": "b1ea569c7f64bf0c458b0c60b9dddbdd95a6a25191b26de39c26105f35e1c201"
     },
-    "C": {
+    "D": {
+     "east": "d23c5e72dcbfd3219e4c9700ea840afb4d6d8d3f94f17c2ed897aa252b93f275",
      "north": "3942472ed0880ee41eeec3c161989eb24f5ae0d774fa9d071b1eb14953de4622"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Drommath/RM_Drommath",
     "B": "Things/Pawn/Animal/RM_Drommath/RM_Drommath",
-    "C": "Things/Pawn/Animal/RM_Drommath/RM_Drommath"
+    "D": "Things/Pawn/Animal/RM_Drommath/RM_Drommath"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
     "B": "render feverwood_drommath",
-    "C": "render regen_fw_drommath_v2"
+    "D": "render regen_fw_drommath_v2"
    },
    "res": "Things/Pawn/Animal/RM_Drommath/RM_Drommath",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "drommath"
   },
@@ -766,23 +768,29 @@
     },
     "C": {
      "single": "1074ebb5b2d20a039cf60119bb043aad69f7bd4d16fc23ee585ad40d329a4dcb"
+    },
+    "D": {
+     "single": "578bc1a66e9d407e70bef2a3d992d36cb430d2d68ca4521ab575a5b1e0ac7716"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Seepril/RM_Seepril_a",
     "B": "_byname",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
     "B": "render feverwood_plant_seepril",
-    "C": "render regen_fw_seepril_varc_v1"
+    "C": "render regen_fw_seepril_varc_v1",
+    "D": "render regen_fw_seepril_varb_v1"
    },
    "res": "Things/Plant/RM_Seepril/RM_Seepril_a",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "seepril"
   },
@@ -1214,26 +1222,32 @@
     },
     "D": {
      "single": "3b1846bf06ccfe96d8588383975716220bcb9b7cae9aba98dd7860e2ff18ddfb"
+    },
+    "E": {
+     "single": "02dca1297abcb8dc5eecae740d7b6f40d686418617ed257d7bc8ec184af33634"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Wanlith/RM_Wanlith_a",
     "B": "_byname",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
     "B": "render feverwood_plant_wanlith",
     "C": "render regen_fw_wanlith_v2b",
-    "D": "render regen_fw_wanlith_v2c"
+    "D": "render regen_fw_wanlith_v2c",
+    "E": "render regen_fw_wanlith_v2a"
    },
    "res": "Things/Plant/RM_Wanlith/RM_Wanlith_a",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "wanlith"
   },
@@ -1807,5 +1821,5 @@
   }
  },
  "sheetId": "feverwood_sheet_2026-10-05",
- "snapshotId": "e49828b10e7af1f8"
+ "snapshotId": "73f3beb2e01fd643"
 }
