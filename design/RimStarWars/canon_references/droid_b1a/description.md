@@ -78,6 +78,11 @@ this droid has no recorded manufacturer, despite being a B-series derivative.
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+Realism check 2026-10-08: this droid exists only in the *Revenge of the Sith* (2005) video game — Wookieepedia holds exactly three images of it (`Images of B1-A air battle droids`, page searched). `wookieepedia_infobox.png` is that game's realistically textured model (weathered tan metal, rust-orange panels, not cel-shaded) and is the **look target**. `wookieepedia_concept_art.jpg` is **inked line-art with flat colour — use it for anatomy only** (wing booms, back thrusters, three views), never for its outlines or flat shading. Render as real weathered painted metal under natural light.
+
+
 🔴 **The repo colour is wrong, and it is wrong in a way that is one line to fix.** The def
 tints this chassis **pale blue-grey over slate blue** — `skin` channel
 `first = RGBA(146,148,172,255)`, `second = RGBA(65,107,127,255)`
