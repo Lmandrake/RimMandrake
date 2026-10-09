@@ -168,35 +168,9 @@ def canon_entry(*names: str) -> dict:
 VARIANT_WORDS = {"alpha", "juv", "juvenile", "feral", "mature", "elder", "young", "adult", "baby", "calf", "pup", "wild"}
 
 
-NO_SOURCE = CANON / "NO_SOURCE.json"
-
-
-def _no_source() -> tuple[set, dict]:
-    try:
-        d = json.loads(NO_SOURCE.read_text())
-    except (OSError, ValueError):
-        return set(), {}
-    unlinked = {k.lower(): v for k, v in (d.get("not_canon_linked") or {}).items()}
-    for k, v in (d.get("owner_ours") or {}).items():
-        if not k.startswith("_"):
-            unlinked.setdefault(re.sub(r"^(RM_|RSW_|RUT_)", "", k).lower(), v)
-    return {n.lower() for n in d.get("no_source", [])}, unlinked
-
-
-def canon_state(key: str) -> str:
-    """The row tag when no canon entry matched. Only Star Wars-tier rows get one; our own RM_/RUT_ inventions
-    get nothing (they are not meant to be canon)."""
-    if not key.startswith("RSW_"):
-        return ""
-    stem = TIER_RE.sub("", key).lower()
-    stem2 = re.sub(r"^plant_|_wild$", "", stem)
-    nos, unlinked = _no_source()
-    for s_ in (stem, stem2):
-        if s_ in unlinked:
-            return "not canon-linked — " + unlinked[s_]
-        if s_ in nos:
-            return "invented creature — searched Wookieepedia + SWTOR wiki, no canon source exists; judge on its own"
-    return "canon not yet checked"
+def canon_state(key: str, world: "S.World | None" = None) -> str:
+    """The row tag when no canon entry matched (subject.canon_status: ART_SUBJECT_RESOLVER_1)."""
+    return S.canon_status(key, world or _world())
 
 
 def canon_base(key: str, label: str = "", census_entries: dict | None = None) -> tuple[dict, str]:
