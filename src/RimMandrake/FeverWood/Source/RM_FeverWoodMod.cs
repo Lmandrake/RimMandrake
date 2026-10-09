@@ -98,6 +98,9 @@ namespace RimMandrake.FeverWood
         /// withdraws every limb already up and also holds back fire-forced (oil-boil) emergences while it lasts.
         /// Off: fouling only stops new ambient spawns, as before.</summary>
         public static bool foulingWithdrawsLimbs = true;
+        /// <summary>FEVERWOOD_WATER_TOPOLOGY_SERVICE_1: the Great Emergence's pool-size threshold is read against one
+        /// connected pool, and it rises there. Off: the map-wide registered-cell count, any cell.</summary>
+        public static bool tentaclePoolsAreClusters = true;
 
         /// <summary>How many RM_RadioactiveSuppressant charges one "foul
         /// the pool" job consumes. INVENTED default: 5.</summary>
@@ -176,6 +179,9 @@ namespace RimMandrake.FeverWood
         /// "if only ONE arrives, that is bad" (§5) rules out both 0 and 1;
         /// a coin flip is the simplest number that keeps both outcomes real.</summary>
         public static float twoFrontLureSecondWaveChance = 0.5f;
+        /// <summary>TWO_FRONT_BAIT_TARGETING_1: raiders first run at the staked bait, and the second wave enters
+        /// opposite the first wave's ACTUAL entry. Off: plain assault from the stake-derived edges.</summary>
+        public static bool twoFrontLureTrueFronts = true;
 
         /// <summary>Delay range (hours) from the first wave's arrival to the
         /// second wave's, so the two can never land on the same tick —
@@ -212,6 +218,9 @@ namespace RimMandrake.FeverWood
 
         /// <summary>FEVERWOOD_KURRETH_COLUMN_RAIDBACK_1: the raid-back quest after a theft (camp site, then the hive).</summary>
         public static bool kurrethColumnEnabled = true;
+        /// <summary>KURRETH_THEFT_PER_COLUMN_1: thefts are grouped by the column (lord) that made them, one letter and
+        /// one raid-back quest per column, once that column has left. Off: the old single 10-second window.</summary>
+        public static bool kurrethTheftPerColumn = true;
         public static float kurrethColumnDays = 4f;
         public static float kurrethHiveHoldDays = 15f;
 
@@ -270,6 +279,7 @@ namespace RimMandrake.FeverWood
             base.ExposeData();
             Scribe_Values.Look(ref tentacleBestiaryEnabled, "tentacleBestiaryEnabled", true);
             Scribe_Values.Look(ref foulingWithdrawsLimbs, "foulingWithdrawsLimbs", true);
+            Scribe_Values.Look(ref tentaclePoolsAreClusters, "tentaclePoolsAreClusters", true);
             Scribe_Values.Look(ref tentacleAmbientMtbHours, "tentacleAmbientMtbHours", 6f);
             Scribe_Values.Look(ref tentacleGreatEmergenceEnabled, "tentacleGreatEmergenceEnabled", true);
             Scribe_Values.Look(ref tentacleGreatEmergencePoolSizeThreshold, "tentacleGreatEmergencePoolSizeThreshold", 24);
@@ -293,6 +303,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref twoFrontLureEnabled, "twoFrontLureEnabled", true);
             Scribe_Values.Look(ref twoFrontLureRaidMtbHours, "twoFrontLureRaidMtbHours", 6f);
             Scribe_Values.Look(ref twoFrontLureSecondWaveChance, "twoFrontLureSecondWaveChance", 0.5f);
+            Scribe_Values.Look(ref twoFrontLureTrueFronts, "twoFrontLureTrueFronts", true);
             Scribe_Values.Look(ref twoFrontLureSecondWaveMinHours, "twoFrontLureSecondWaveMinHours", 2f);
             Scribe_Values.Look(ref twoFrontLureSecondWaveMaxHours, "twoFrontLureSecondWaveMaxHours", 8f);
             Scribe_Values.Look(ref twoFrontLureThreatPointsMultiplier, "twoFrontLureThreatPointsMultiplier", 0.6f);
@@ -303,6 +314,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref brathekBoresWood, "brathekBoresWood", true);
             Scribe_Values.Look(ref antTheftEnabled, "antTheftEnabled", true);
             Scribe_Values.Look(ref kurrethColumnEnabled, "kurrethColumnEnabled", true);
+            Scribe_Values.Look(ref kurrethTheftPerColumn, "kurrethTheftPerColumn", true);
             Scribe_Values.Look(ref kurrethColumnDays, "kurrethColumnDays", 4f);
             Scribe_Values.Look(ref kurrethHiveHoldDays, "kurrethHiveHoldDays", 15f);
             Scribe_Values.Look(ref oilBoilEnabled, "oilBoilEnabled", true);
@@ -363,8 +375,11 @@ namespace RimMandrake.FeverWood
               + "attack: several limbs rising together with the eye itself. Driving off or killing the "
               + "eye ends the whole attack. There is no protection against this beyond seeing it coming "
               + "— no maturity gate, no wealth floor. Off: the eye never spawns on this map at all.");
-            list.Label("Pool must register at least this many water cells: " + tentacleGreatEmergencePoolSizeThreshold);
+            list.Label("Pool must register at least this many connected water cells: " + tentacleGreatEmergencePoolSizeThreshold);
             tentacleGreatEmergencePoolSizeThreshold = (int)list.Slider(tentacleGreatEmergencePoolSizeThreshold, 4f, 80f);
+            list.CheckboxLabeled("Pool size means one connected pool", ref tentaclePoolsAreClusters,
+                "On: the threshold above must be met by a single connected pool, and the Great Emergence rises there. "
+              + "Off: all registered water on the map is counted together, so many small ponds can qualify.");
             list.Label("Ordinary encounters that must accumulate at a qualifying pool first: " + tentacleGreatEmergencePressureThreshold);
             tentacleGreatEmergencePressureThreshold = (int)list.Slider(tentacleGreatEmergencePressureThreshold, 0f, 30f);
             list.Label("Chance per roll, once eligible, that it fires (roughly 1/50 by default): "
@@ -426,6 +441,9 @@ namespace RimMandrake.FeverWood
             twoFrontLureRaidMtbHours = list.Slider(twoFrontLureRaidMtbHours, 1f, 24f);
             list.Label("Chance a second wave follows the first: " + twoFrontLureSecondWaveChance.ToString("0.00"));
             twoFrontLureSecondWaveChance = list.Slider(twoFrontLureSecondWaveChance, 0f, 1f);
+            list.CheckboxLabeled("Lure raiders go for the bait from two real fronts", ref twoFrontLureTrueFronts,
+                "On: each wave first runs at the staked bait, and a second wave enters from the side opposite where the "
+              + "first actually came in. Off: they assault the colony directly, from edges worked out from the stake.");
             list.Label("Second-wave delay range (hours): " + twoFrontLureSecondWaveMinHours.ToString("0.0")
                 + " - " + twoFrontLureSecondWaveMaxHours.ToString("0.0"));
             twoFrontLureSecondWaveMinHours = list.Slider(twoFrontLureSecondWaveMinHours, 0.5f, 12f);
@@ -462,6 +480,10 @@ namespace RimMandrake.FeverWood
               + "reaches one while no kurreth stands guard close by cuts it free. Not reached in time, the column goes "
               + "on to its hive: if a hive lies under the map they were taken from, they are carried bound into its "
               + "deepest chamber for a while, then lost. Off: a stolen animal is simply gone with the column.");
+            list.CheckboxLabeled("One theft letter per kurreth column", ref kurrethTheftPerColumn,
+                "On: each column that carries animals off gets its own letter and raid-back quest, sent once that column "
+              + "has left the map, naming the edge IT left by. Off: every theft within about ten seconds of the first is "
+              + "lumped into one letter.");
             list.Label("Days before the column reaches its hive: " + kurrethColumnDays.ToString("0.0"));
             kurrethColumnDays = list.Slider(kurrethColumnDays, 1f, 15f);
             list.Label("Days the animals last bound in the hive: " + kurrethHiveHoldDays.ToString("0.0"));
