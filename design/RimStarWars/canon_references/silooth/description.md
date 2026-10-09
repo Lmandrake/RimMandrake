@@ -40,12 +40,12 @@ Two Wookieepedia images agree with each other; the donor does not read as the sa
   rusty orange is safe.
 
 ## Must show
-- [ ] Six legs (visibly more than four), long and jointed, ending in curved claws
-- [ ] Orange-tan to rust-brown segmented chitin armour, spiked along the carapace
-- [ ] Head at the front with a wide jagged yellowish-toothed jaw and two big forward-reaching mandibles
-- [ ] Yellow or orange eye
-- [ ] Bantha-sized bulk, reading as a tank-like warbeast, not a small beetle
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the two Wookieepedia images (`wookieepedia_silooth_bos.png` for anatomy, `wookieepedia_silooth.jpg`) and the Legends text.*
+- [ ] BODY PLAN: bantha-sized armoured beetle reading as a tank-like warbeast, not a small beetle: six legs (visibly more than four), long, thin and jointed in a tall spidery stance, ending in curved scythe-like claws; a tall spiked carapace swept up like a shell; head at the front of the carapace
+- [ ] COLOUR LAYOUT: orange-tan to rust-brown segmented chitin armour over the whole body, with rows of darker spikes along the carapace; yellow or orange eye; yellowish teeth
+- [ ] Head: wide jagged yellowish-toothed jaw and two big forward-reaching mandibles
 - [ ] No wings, no fur, no tail of note
+- [ ] NEGATIVE: not the donor's squat short-legged plated dome (no tucked-away legs, no missing mandibles), not a spider (chitin carapace and mandibled head, not a hairy round body)
 
 ## Engine limits
 none known. (Acid spray is an attack effect, not drawable.)

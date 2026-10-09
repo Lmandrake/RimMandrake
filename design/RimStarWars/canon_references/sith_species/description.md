@@ -147,13 +147,14 @@ original species never had. Sek'nos Rath is the sourced **five-digit** Sith, i.e
 the trait is not unique to Zuguruk in practice.
 
 ## Must show
-- [ ] A tall, lean, upright engineer/artisan silhouette (tabard, leggings, greaves, boots, forearm bracer) — not a warrior's build
-- [ ] Skin read as crimson to obsidian per the sourced text — trust the prose over the two colour-distorted plates (sepia parchment wash; violet lighting), and use the realistic JMGD painting's crimson-to-red-tan as the hue anchor instead
-- [ ] Bald, high-domed cranium with a broad flat nose and heavy brow; no cranial horn is visible in any reference
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_zuguruk_bookofsith.jpg` and `wookieepedia_three_sith_castes.jpg` for structure, the realistic JMGD painting for hue, and the Zuguruk / Sith (species) text (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.").*
+- [ ] BODY PLAN: a tall, lean, upright humanoid in an engineer/artisan silhouette (tabard, leggings, greaves, boots, forearm bracer) — not a warrior's build; bald, high-domed cranium with a broad flat nose and heavy brow; no cranial horn is visible in any reference
+- [ ] COLOUR LAYOUT: skin read as crimson to obsidian per the sourced text — trust the prose over the two colour-distorted plates (sepia parchment wash; violet lighting), and use the realistic JMGD painting's crimson-to-red-tan as the hue anchor instead
 - [ ] The right hand shows five ordinary-proportioned digits, not elongated ones — the one Zuguruk-exclusive trait
 - [ ] Paired cheek tendrils hanging from high cheekbones down past the jaw are canonical but not uniform — some individuals in the same reference image are smooth-faced with no visible tendrils
 - [ ] Heavy vertical bony ridging down the forehead/cheeks and a long bony chin appear on some individuals, not all — facial sharpness is variable across the caste
 - [ ] Realistic rendering: natural painted-skin texture and lighting, no outlines, no comic ink or cartoon shading
+- [ ] NEGATIVE: not a brown, orange or tan-skinned Sith (the sepia plate is not the skin colour), not the hybrid SWTOR Sith Pureblood look, not a hulking Massassi warrior
 
 ## Engine limits
 none known

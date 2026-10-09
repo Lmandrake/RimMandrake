@@ -36,13 +36,15 @@ adult qormots fighting in a forest and a small young one at lower right.
 - **Size cues**: the adult towers over the young; no scale reference; prose says "stocky".
 
 ## Must show
-- [ ] Stocky, heavy-bodied forest creature that can rear up on its hind legs
-- [ ] Dense splayed fan of long straight quills over the spine, rump and flanks
-- [ ] Elongated tapering snout with a curved tip and a fanged mouth
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends prose and the single ink illustration as the visual brief reads it; rendered realistically per owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using."*
+- [ ] BODY PLAN: stocky, heavy, barrel-bodied quadruped with a thick neck, short thick limbs and a stubby tail, able to rear up on strong hind legs
+- [ ] Quills: a dense splayed fan of long straight quills over the spine, rump and flanks — the signature silhouette
+- [ ] Head: elongated tapering snout with a curved tip and a fanged mouth
 - [ ] Single eye in the middle of the forehead (prose only; not visible in the drawing -- verify with a better image)
-- [ ] Broad clawed hands and feet; bare, wrinkled, paler belly
-- [ ] Colour is OWED: no coloured image was found in this library and the prose gives none
+- [ ] Broad clawed hands and feet; bare, wrinkled, paler belly with quills only on the back and sides
+- [ ] COLOUR LAYOUT: belly paler than the back; body colour is OWED: no coloured image was found in this library and the prose gives none — do not invent one
 - [ ] Realistic rendering: natural keratin quills and wrinkled hide texture and lighting, no outlines, no ink hatching
+- [ ] NEGATIVE: not a porcupine or hedgehog (quills never cover the belly; the snout is long and fanged), not two eyes in place of the single forehead eye
 
 ## Engine limits
 not yet assessed

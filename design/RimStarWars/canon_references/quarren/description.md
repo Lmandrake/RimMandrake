@@ -101,13 +101,14 @@ found for the Nikto facespines it should not be assumed.** Nothing on disk suppl
 the long pointed nails.
 
 ## Must show
-- [ ] Long, pointed, pale claw-like nails extending well past the fingertips — not suction-cup tips
-- [ ] Two large, wide, leaf-shaped ear-fins projecting horizontally outward and slightly back from the sides of the head, as wide as the head itself
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three-Quarren infobox photo (reference of record) and the live-action stills the visual brief names (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.").*
+- [ ] BODY PLAN: upright humanoid biped; head is a tall, smooth, bald cranial dome coming to a rounded point at the crown — narrow and peaked — with two large, wide, leaf-shaped ear-fins projecting horizontally outward and slightly back from the sides of the head, as wide as the head itself, so the head reads as a broad triangle
 - [ ] Four thick, fleshy jaw tentacles hanging from below the mouth like a curling beard, reaching to about the collarbone
-- [ ] A tall, smooth cranial dome coming to a rounded point at the crown — narrow and peaked, distinct from the Mon Calamari's broader dome
 - [ ] Small eyes set close together and high on the face, much smaller than a Mon Calamari's
-- [ ] Mottled tan/ochre/pinkish-brown skin — not the infobox's saturated orange or purple
+- [ ] COLOUR LAYOUT: mottled tan/ochre/pinkish-brown skin with darker mottling in the creases and on the tentacles — not the infobox's saturated orange or purple
+- [ ] Long, pointed, pale claw-like nails extending well past the fingertips — not suction-cup tips
 - [ ] Realistic rendering: natural moist prosthetic-skin texture and lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a Mon Calamari (no broad rounded dome, no large side-set eyes, no bare chin without tentacles), not a human with a tint
 
 ## Engine limits
 none known

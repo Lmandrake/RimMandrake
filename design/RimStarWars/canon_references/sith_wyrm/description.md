@@ -14,11 +14,14 @@ Viewed both images.
 - Both agree: purple, spined, serpent-like, enormous. Trust the images; the prose gives no appearance at all.
 
 ## Must show
-- [ ] Limbless, segmented serpent/worm body, purple to violet with pale pink-cream underside
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both Legends images (Book of Sith, *Jedi Academy Training Manual*) and the `## ruling` below (owner 2026-10-05: "Note the four eyes and extremely serpentine body and unique coloration. Follow the canon art closely. 50% bigger.").*
+- [ ] BODY PLAN: limbless, extremely serpentine segmented serpent/worm body, coiled in loops, tail ending in a small bulb; colossal scale relative to a person or building (owner ruling 2026-10-05: "50% bigger")
+- [ ] COLOUR LAYOUT: purple to violet body with a dark indigo dorsal band and pale pink-cream underside belly plates; cream-yellow jaw — the canon art's own colouring (owner ruling 2026-10-05: "unique coloration. Follow the canon art closely.")
 - [ ] Row of sharp spikes along back and tail, bigger around the neck/head
-- [ ] Flared spiked head with a huge fanged mouth
+- [ ] Flared, cobra-hood-like spiked head with a huge fanged mouth
+- [ ] Four eyes on the head (owner ruling 2026-10-05: "Note the four eyes")
 - [ ] A long thin feeler/tentacle off the snout
-- [ ] Colossal scale relative to a person or building
+- [ ] NEGATIVE: not a plain snake or legged dragon (no limbs, no wings, no smooth unsegmented body), not a green or brown serpent
 
 ## Engine limits
 Colossal size cannot be shown at the 1-tile creature scale; treat as a large-body-size animal. No other known limit.

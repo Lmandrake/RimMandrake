@@ -312,13 +312,15 @@ the digitigrade legs, the tridactyl clawed hands, or the crest-sheathing hood.
   foot detail is clawed and, per the images, digitigrade.
 
 ## Must show
-- [ ] Tall, backswept, blade- or fin-like cranial crest coming to a point — not a rounded dome
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends text and the painted RPG illustrations the visual brief makes lead references, with the KOTOR renders for anatomy only (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.").*
+- [ ] BODY PLAN: lean, gracile, long-limbed humanoid with a narrow torso, hairless; head topped by a tall, backswept, blade- or fin-like cranial crest coming to a point — not a rounded dome
 - [ ] Eyes on short lateral stalks projecting horizontally out of each side of the head, forward-facing with a visible iris and eyelid, both visible in a front view outside the skull's width
 - [ ] A narrow vertical wedge face between the stalks, with a small, low, downturned mouth and small nostril slits — not a wide, thick-lipped mouth
 - [ ] Digitigrade legs — long shank, backward-angled hock, standing on clawed toes with the heel clear of the ground — not ordinary human plantigrade legs
 - [ ] Three-digit (tridactyl) hands and feet with pale, bone-coloured claws
-- [ ] Grey / grey-pink mottled skin (painted references), not the KOTOR renders' olive-green gloss
+- [ ] COLOUR LAYOUT: grey / grey-pink mottled skin with darker speckling over the arms and shoulders (painted references), not the KOTOR renders' olive-green gloss; eyes reddish to amber-gold
 - [ ] Realistic rendering: natural moist amphibian-skin texture and lighting, no outlines, no cartoon or low-poly game shading
+- [ ] NEGATIVE: not a Mon Calamari (no rounded dome, no wide mouth, eyes on stalks not set in the skull), not a human with a tint
 
 ## Engine limits
 none known

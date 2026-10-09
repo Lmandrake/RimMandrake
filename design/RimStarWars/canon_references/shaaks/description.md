@@ -40,12 +40,14 @@ A similar species could be found on the planet Alzoc III, with longer fur to sui
 - **Size**: the canon infobox gives a height of 1.80 m (Databank; the Legends infobox gives 1.5 m). The body is several times the leg height; the plate shows pups at about one-fifth size.
 
 ## Must show
-- [ ] Giant egg-shaped body balanced on four short thin weak-looking legs
-- [ ] Small low-slung head on a short neck with a tapering droopy snout, dark red eye
-- [ ] Muted mauve-to-grey-brown leathery hide with faint soft paler mottling across the back (film), not bold swirls
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the *Attack of the Clones* film still the visual brief makes the target (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using."), with the painted plates for shape only.*
+- [ ] BODY PLAN: giant egg- or balloon-shaped body — one smooth domed back, belly bulging low — balanced on four short thin weak-looking legs placed close under the body; body several times the leg height
+- [ ] Head: small low-slung head on a short thick neck, carried low, with a long tapering droopy snout; small dark red eye ringed with wrinkles
+- [ ] COLOUR LAYOUT: muted mauve-to-grey-brown leathery hide all over, with faint soft paler mottling across the back only (film), not bold swirls
 - [ ] Small flat splayed three-toed feet
 - [ ] Smooth bare skin with deep neck and leg folds
 - [ ] Realistic rendering: matte, finely wrinkled hippo-like hide and natural daylight, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a hippo or pig (no thick legs, no broad blunt muzzle), not the stylised render's bold cream-and-brown swirl marbling, no fur
 
 ## Engine limits
 not yet assessed

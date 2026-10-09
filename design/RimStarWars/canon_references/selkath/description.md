@@ -139,12 +139,14 @@ change. There is **no Selkath body art on disk**, so the short stature, the claw
 paddle feet are unrepresented.
 
 ## Must show
-- [ ] Large smooth-domed head sloping forward into a broad blunt snout with two nostril pits — manta/hammerhead-like, wider than tall
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Peex Curando (*The Acolyte*), its painted design art, the KotOR concept painting and the Legends text (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.").*
+- [ ] BODY PLAN: slender, short (1.5 m) humanoid with narrow sloping shoulders under a large, heavy, forward-thrust head; long thin arms with long thin fingers; large splayed paddle-like feet with broad flattened toes
+- [ ] Head: large smooth-domed head sloping forward into a broad blunt snout with two nostril pits — manta/hammerhead-like, wider than tall
 - [ ] Two thick fleshy cephalic lobes hanging straight down from the mouth corners to below the chin
 - [ ] Small amber-brown eyes set far back on the SIDES of the head
-- [ ] Slate blue-grey skin divided into irregular polygonal plates by pale cracks; pale tan, deeply wrinkled throat and neck — never one flat colour, never maroon blotches
-- [ ] Slender, short (1.5 m) body with long thin fingers and large splayed paddle-like feet with broad flattened toes
+- [ ] COLOUR LAYOUT: slate blue-grey skin divided into irregular polygonal plates by pale cracks over cranium and snout; pale tan, deeply wrinkled throat and neck — never one flat colour, never maroon blotches
 - [ ] Realistic rendering: natural prosthetic-skin texture and lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not the animated *Clone Wars* Selkath (no maroon blotches on grey-pink, no small black game-render eyes), not a bulky build, not a human with a tint
 
 ## Engine limits
 The head is built from single-channel greyscale tint masks (`RSW_Head_selkath` + `fishyjowls` attachment), so a skin-colour gene cannot produce the reticulated/blotched camouflage patterning — that needs a second render node or a baked variant, which is new art, not a colour change.

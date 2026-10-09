@@ -67,12 +67,14 @@ exists and is a small tuft, but it is wired to `RSW_Hair_rodian`, a hair gene, n
 to the head — it is not the bony crest.)
 
 ## Must show
-- [ ] Very large glossy BLACK (or very dark violet) hemispherical eyes, wet and reflective, bulging past the skull profile
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action heads the visual brief names (`officer_mando`, `child_bobf`, `scam_victim_mando`, `greedo_unmasked`) and the canon text (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.").*
+- [ ] BODY PLAN: slender humanoid; domed head tapering forward into a conical snout ending in a small puckered pursed-lipped mouth; pointed swept-back ears at the sides of the head below the antennae
 - [ ] Two stalked, cupped saucer-dish antennae on top of the head, with a crest of small fleshy spines between and behind them
-- [ ] A tapering conical snout ending in a small puckered pursed-lipped mouth
-- [ ] Green (olive to blue-green) skin, densely pebbled and ridged over the cranium; pointed swept-back ears at the sides
+- [ ] Very large glossy BLACK (or very dark violet) hemispherical eyes, wet and reflective, bulging past the skull profile — the darkest element of the head
+- [ ] COLOUR LAYOUT: green (olive to blue-green) skin, densely pebbled and ridged over the cranium, finer and smoother on the snout; ears and antennae may go yellow-ochre against the green
 - [ ] Long fingers with suction-cup tips; ordinary galactic clothing
 - [ ] Realistic rendering: natural rubbery prosthetic-skin texture and lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not the game render's look (no pale lavender-white eyes, no two blunt temple nubs in place of saucer antennae), not a human with a tint
 
 ## Engine limits
 none known — the glossy black eye sheen, the saucer-dish antennae, the dorsal spine crest, and the suction-cup digits are all missing art, not a pipeline limitation.

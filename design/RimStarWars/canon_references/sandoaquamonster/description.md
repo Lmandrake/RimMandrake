@@ -33,11 +33,12 @@ Four images (canon render and film frame, two Legends sketches). The three that 
 - **Size:** 160 to 200 m long per the text. The film frame shows it holding opee sea killers (themselves 20 m) in one hand as if they were crayfish.
 
 ## Must show
-- [ ] Massive, heavy-shouldered body with a long thick neck and a long muscular tapering tail ending in a broad horizontal fluke
-- [ ] Broad flat head with a very wide grinning mouth, tiny eyes and cheek frills or short spikes
-- [ ] Four powerful limbs ending in broad webbed hands and feet with large dark claws; forelimbs able to grasp
-- [ ] Smooth leathery skin, mottled grey-brown to dark blue-grey with a paler belly, with no scales or fur
-- [ ] Reads as a half-whale, half-reptile from the canon images, not a fish, not a plain whale, and NOT a giant feline (see ruling)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three whole-animal images the visual brief reads (`canon_1`, `canon_2`, `legends_1`/`legends_2`) and the `## ruling` below.*
+- [ ] BODY PLAN: massive, heavy-shouldered body with a long thick neck, four powerful limbs, and a long muscular tapering tail ending in a broad horizontal fluke; reads as half-whale, half-reptile
+- [ ] Head: broad and flat, as wide as the neck, with a very wide grinning mouth, tiny eyes and cheek frills or short spikes
+- [ ] Limbs end in broad webbed hands and feet with large dark claws; forelimbs are grasping hands with long fingers and curved talons
+- [ ] COLOUR LAYOUT: smooth leathery skin, mottled grey-brown to dark blue-grey on the back and sides, with a paler belly; no scales or fur
+- [ ] NEGATIVE: not a fish, not a plain whale, and NOT a giant feline (owner ruling 2026-10-05: "look carefully at the canon art. It is NOT a giant feline thing.")
 
 ## Engine limits
 not yet assessed

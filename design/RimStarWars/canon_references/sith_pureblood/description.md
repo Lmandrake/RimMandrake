@@ -92,12 +92,13 @@ from the Feeorin**. Nothing in this repo lets canon be compared against the spri
 that actually appears in game.
 
 ## Must show
-- [ ] Saturated red skin (deep crimson to red-tan), a pinker variant allowed
-- [ ] Yellow-gold or pale glowing eyes under a heavy bony brow
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the realistic painted art the visual brief keeps (`wookieepedia_massassi_and_kissai_jmgd.jpg` as reference of record, the Sorcerer of Tund) and the Kissai text (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.").*
+- [ ] BODY PLAN: near-human face and build (1.8 m) for the priest caste — distinctly less monstrous than the spiked, hulking Massassi warrior caste
+- [ ] COLOUR LAYOUT: saturated red skin (deep crimson to red-tan) on face and every visible body part, a pinker variant allowed; yellow-gold or pale glowing eyes under a heavy bony brow
 - [ ] Fleshy tendrils hanging from the cheeks/jaw and chin
-- [ ] Near-human face and build for the priest caste — distinctly less monstrous than the spiked Massassi warrior caste
 - [ ] Hooded robes and gold-trimmed regalia for priests
 - [ ] Realistic rendering: natural painted-skin texture and lighting, no outlines, no comic ink or cartoon shading
+- [ ] NEGATIVE: not a Massassi (no hulking spiked body, no long dreadlock-like tendril mane), not a Sith King's regalia, not a human with red paint (tendrils and bony brow must read)
 
 ## Engine limits
 none known
