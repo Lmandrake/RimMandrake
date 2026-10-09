@@ -196,6 +196,7 @@
   <RitualBehaviorDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
     <defName>RUT_TheReturnBehavior</defName>
     <durationTicks>3000</durationTicks>
+    <roles /><!-- Dialog_BeginRitual.CreateRitualRoleAssignments foreach-es behavior.def.roles; null NREs the rite start -->
     <spectatorsLabel>Pourers</spectatorsLabel>
     <spectatorGerund>pour</spectatorGerund>
     <stages>

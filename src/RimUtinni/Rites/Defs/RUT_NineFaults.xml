@@ -95,6 +95,7 @@
   <RitualBehaviorDef MayRequire="mandrake.rm.ninefold,Ludeon.RimWorld.Ideology">
     <defName>RUT_NineFaultsBehavior</defName>
     <durationTicks>2500</durationTicks>
+    <roles /><!-- Dialog_BeginRitual.CreateRitualRoleAssignments foreach-es behavior.def.roles; null NREs the rite start -->
     <spectatorsLabel>Witnesses</spectatorsLabel>
     <spectatorGerund>witness</spectatorGerund>
     <stages>
