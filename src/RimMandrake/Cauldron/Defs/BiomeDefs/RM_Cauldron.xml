@@ -139,11 +139,9 @@
     </baseWeatherCommonalities>
     <wildAnimals>
       <RM_Suush>0.2</RM_Suush>  <!-- suush - the Cauldron's own floating drifter, SUUSH_CAULDRON_DRIFTER_1 -->
-      <GR_Beetlefleet MayRequire="vanillaexpanded.vgeneticse">0.7</GR_Beetlefleet>  <!-- beetlefleet - small-shelled, keep -->
-      <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet - small, keep -->
-      <AA_OcularJelly MayRequire="sarg.alphaanimals">0.5</AA_OcularJelly>  <!-- ocular jelly - small, keep -->
-      <AM_Dryad_Corruptor MayRequire="sarg.alphamemes">0.4</AM_Dryad_Corruptor>  <!-- corruptor dryad - small, keep -->
-      <AM_Dryad_Tumorous MayRequire="sarg.alphamemes">0.4</AM_Dryad_Tumorous>  <!-- tumorous dryad - small, keep -->
+      <GR_Beetlefleet MayRequire="vanillaexpanded.vgeneticse">0.7</GR_Beetlefleet>  <!-- garsulix (donor "beetlefleet", renamed in Cauldron_Rename.xml) -->
+      <AM_Dryad_Corruptor MayRequire="sarg.alphamemes">0.4</AM_Dryad_Corruptor>  <!-- rhossak (donor "corruptor dryad", renamed in UtinniPatches Cauldron_Rename.xml) -->
+      <AM_Dryad_Tumorous MayRequire="sarg.alphamemes">0.4</AM_Dryad_Tumorous>  <!-- galled rhossak (donor "tumorous dryad", renamed in Cauldron_Rename.xml) -->
       <Visceral MayRequire="mlie.horrors">0.35</Visceral>  <!-- visceral - medium-pred, keep -->
       <AA_BedBug MayRequire="sarg.alphaanimals">0.3</AA_BedBug>  <!-- bedbug - small-pred, keep -->
       <AA_CrystalMit MayRequire="sarg.alphaanimals">0.15</AA_CrystalMit>  <!-- crystalmit - small, keep -->
@@ -164,7 +162,7 @@
     <wildPlants>
       <RM_TwistingThornwood>0.6</RM_TwistingThornwood>  <!-- twisting thornwood - tree -->
       <RM_CrystalFlower>0.5</RM_CrystalFlower>  <!-- crystal flower -->
-      <RM_TreeMartyr>0.5</RM_TreeMartyr>  <!-- martyr tree - tree -->
+      <RM_TreeMartyr>0.5</RM_TreeMartyr>  <!-- sarrowan - tree (was "martyr tree"; renamed on the Cauldron sheet 2026-10-09) -->
       <RM_BloodBouquet>0.4</RM_BloodBouquet>  <!-- blood bouquet -->
       <RM_RavenNettle>0.4</RM_RavenNettle>  <!-- raven nettle -->
       <RM_GiantAgariTox>0.3</RM_GiantAgariTox>  <!-- agaritox - tree -->

@@ -196,6 +196,12 @@
       <RM_Danglemaw>0.12</RM_Danglemaw>  <!-- danglemaw - the ambusher -->
       <RM_Gorekite>0.08</RM_Gorekite>  <!-- gorekite - apex of the canopy air -->
       <RM_SparkleechGrub>0.05</RM_SparkleechGrub>  <!-- sparkleech grub - the-thieves (grub) -->
+      <!-- Moved here from the Cauldron by the owner's Cauldron sheet notes 2026-10-09 ("This belongs in the Contagion,
+           not here... move." / "This creature should be moved to the Contagion."): two donor rows re-admitted on
+           his word, after Wave A's donor-out ruling above. Their art is ours (OcularJellyArtOverride; the aerofleet
+           redraw is queued). -->
+      <AA_OcularJelly MayRequire="sarg.alphaanimals">0.5</AA_OcularJelly>  <!-- zhool (Contagion_Rename.xml) -->
+      <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet: a floating ball of gas, an unfortunate visitor become infected -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

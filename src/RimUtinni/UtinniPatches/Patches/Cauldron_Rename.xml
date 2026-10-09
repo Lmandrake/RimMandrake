@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Cauldron_Rename.xml            RimUtinni Patches — new file 2026-10-09
+
+       The owner's Cauldron art sheet (Transient/biome_ffar/cauldron_sheet_2026-10-04.decisions.json),
+       rows ruled 2026-10-09: three donor creatures get a new name and description written from the art he
+       picked (now shipped by our own *ArtOverride mods). Invented exotic names, not canon IP.
+         AM_Dryad_Corruptor  "Recreate name and description from art, but art is good."       -> rhossak
+         AM_Dryad_Tumorous   "Regenerate name and description but art is good, a tumorous
+                              version of the above creature."                                  -> galled rhossak
+         GR_Beetlefleet      "this is a hideous creature now named Garsulix that Hungers ..."  -> garsulix
+       LABEL/DESCRIPTION ONLY; no defName, stat or art field is touched. Gate pattern of Contagion_Rename.xml.
+       These supersede the unapplied drafts "tessik" / "tumorous tessik" / "skibbex" in
+       design/Jawa/worldbuilding/biomes/noncanon_beast_names_poison_miasma_desert_scar_rot_dune_waste_cracked.md. -->
+
+  <!-- ============== AM_Dryad_Corruptor -> rhossak ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AM_Dryad_Corruptor"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AM_Dryad_Corruptor"]/label</xpath>
+          <value><label>rhossak</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AM_Dryad_Corruptor"]/description</xpath>
+          <value><description>A stag-shaped thing grown rather than born: its legs, flanks and branching crown are bundles of living root, wound tight and still slowly twisting. Along its back it carries swollen seed-husks that split as they ripen, showing wet red seed packed like teeth. Where a rhossak lies down to rest, the ground around it sprouts; three of them standing together long enough can root a whole new grove. Herds keep well clear of one.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AM_Dryad_Corruptor"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AM_Dryad_Corruptor"]/label</xpath>
+      <value><label>rhossak</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AM_Dryad_Tumorous -> galled rhossak ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AM_Dryad_Tumorous"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AM_Dryad_Tumorous"]/label</xpath>
+          <value><label>galled rhossak</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AM_Dryad_Tumorous"]/description</xpath>
+          <value><description>A rhossak whose root-flesh has turned on itself. Pale, fleshy galls bloom across its trunk-body, its legs and even its antlers, under a skin of hanging moss, and new ones push up faster than old ones slough away. It is slower and gentler than its seed-bearing kin and carries no seed at all. The galls are edible: a meat substitute of questionable origin that nobody asks about twice.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AM_Dryad_Tumorous"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AM_Dryad_Tumorous"]/label</xpath>
+      <value><label>galled rhossak</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== GR_Beetlefleet -> garsulix ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="GR_Beetlefleet"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Beetlefleet"]/label</xpath>
+          <value><label>garsulix</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Beetlefleet"]/description</xpath>
+          <value><description>A hideous thing that hungers. A floating, chitinous, insect-like ball of gas: a swollen, veined sac held up by its own lift, plated over the top and hung beneath with hooked legs and a working mouth. It drifts ever closer, slowly but surely, intent on devouring your flesh. Its gas burns; a garsulix that dies close by takes you with it.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="GR_Beetlefleet"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="GR_Beetlefleet"]/label</xpath>
+      <value><label>garsulix</label></value>
+    </match>
+  </Operation>
+</Patch>
