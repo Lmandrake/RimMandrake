@@ -45,9 +45,18 @@ Not in the game anywhere (checked: 0 defs in `src/`; installed-mod sweep in §1a
 lommite, aurodium, chromium, quadanium, coaxium, impervium, thorilide, dolovite, corusca, carbonite,
 hyperbaride, laminanium, ultrachrome, alusteel, neutronium, ferrocarbon.
 
-### 1a. Installed-mod sweep
+### 1a. Beyond `src/`
 
-PENDING (scan of both mod roots running).
+The active-set picture is the 2026-10-03 registry inventory (def dump of the live mod set): canon materials
+from other active mods are Outer Rim - Core (beskar, pure beskar, durasteel, tibanna) and LK mineables
+(beskar ore, durasteel ore). A sweep of every *installed* (incl. inactive) mod's Defs for the canon names was
+started and did not finish inside this pass over the slow `/mnt/c` mount — **UNMEASURED** for inactive mods.
+
+**Measured leak relevant to the minerals rulings (2026-10-09):** Odyssey's own asteroid generation
+(`Data/Odyssey/Defs/MapGeneration/SpaceMapGenerator.xml`, `GeneratedLocations.xml`) names `MineablePlasteel`,
+`MineableGold`, `MineableSilver`, `MineableUranium`, `MineableJade` and `MineableComponentsIndustrial`. So
+asteroid maps mine plasteel (= durasteel after the rename) and components from rock, which the 2026-09-25
+ruling forbids, unless the minerals work patches it. GPT raised the same point independently.
 
 ## 2. Canon — what each material is for (Wookieepedia, canon pages, pulled 2026-10-09)
 
@@ -163,10 +172,90 @@ a mechanical job), and it adds several new local ores that each need a biome sit
 - Beskar is salvage-only and personal-armor-only.
 - Kyber stays Lantern Deeps; tibanna stays beldon herds.
 
-## 4. GPT review
+## 4. GPT review (gpt-6.1-sol, high effort, 2026-10-09)
 
-PENDING
+Full answer: `design/RimMandrake/canon_materials_gpt_consult_2026-10-09.md`. Its main points:
 
-## 5. Recommendation and questions for the owner
+**Corrections it says apply to every design:**
+- Duranium and doonium should **not** come from asteroid seams. Under the owner's "made offworld" ruling they
+  are finished material recovered from wrecks, including orbital wrecks, with rare trade second. (Design 1's
+  and Design 2's "A" for doonium is withdrawn on this point.)
+- No naturally generated precious metals or gems in orbit.
+- Renaming plasteel is not enough. Surface veins, deep resources, meteorites, asteroid generation and donor
+  mineables must all be patched (see §1a).
+- A cheap local zersium → durasteel chain would make salvage irrelevant. Keep it only as a deliberately
+  limited alternative.
+- Large factories and ships should need **both** duranium (frame) and doonium (containment), with neither
+  convertible into the other. Illustrative cost only: factory = 80 durasteel + 20 duranium + 6 doonium + 8
+  components.
+- **Ground salvage must supply the first construction quantities** before orbit is needed, or progression
+  locks itself.
 
-PENDING
+**Its critique of ours:**
+- **D1 (ladder):** clearest to learn, but the tiers read as "better metal". Repair: make the tiers about
+  access, and use duranium and doonium as fixed recipe ingredients.
+- **D2 (one job each):** best base for orthogonal materials, but 15 inventories bring too many shortages and
+  dead consumers. Repair: a material is switched on only once a working consumer exists.
+- **D3 (provenance):** strongest Jawa identity, but knowing where something comes from does not tell you what
+  to build. Repair: give every resource a verb, and put both required alloys in ground wrecks.
+- *"The recurring danger is adding a material to justify a biome, then adding a building to justify the
+  material."*
+
+**Its three designs:**
+
+| | D4 — fixed recipe functions | D5 — recover and refit (Jawa workshop) | D6 — expedition logistics |
+|---|---|---|---|
+| idea | advanced alloys are recipe ingredients, not universal stuff | progress = dismantling identifiable wrecks and refitting gear | construction buys capability; renewable supplies set how far the clan can travel |
+| roster | durasteel Build, duranium Brace, doonium Contain, beskar Protect, cortosis Disrupt, plastoid Seal, bronzium Decorate, kyber Focus, stygium Conceal, tibanna Charge, baradium Demolish (11) | D4 minus bronzium, plus phrik Parry (Stillsand), carbonite Preserve; origins named by wreck part (machine chassis → duranium, reactor assembly → doonium) (12) | D4 plus transparisteel Observe (lommite), rhydonium Burn, coaxium Extend (optional gravship range booster; chemfuel flight stays), carbonite Preserve (14) |
+| best for | delivery and readable recipes | scavenger identity | Odyssey nomad play |
+| weakness | little processing or logistics | refitting needs condition/UI work | heaviest chore load |
+
+**Its overlap and roster rulings (advice only):**
+- Fold into durasteel: quadanium, alusteel, ferrocarbon.
+- Do not add: impervium, laminanium, ultrachrome, neutronium.
+- Avoid intermediate ores (zersium, lommite) unless processing is a chosen loop.
+- Defer: dolovite, hyperbaride, thorilide, agrinium.
+- Aurodium, corusca and chromium only as named valuables (home-biome only). Keep silver as currency and gold's
+  vanilla roles.
+- Phrik, transparisteel, carbonite and coaxium are conditional, each on a real consumer: saber-parry, sight
+  through walls, portable stasis, range booster.
+- Beskar's weapon taboo belongs to the Children of the Watch. Armor-only for Jawas is a design choice, not
+  universal canon.
+- Mechanics: keep the `Plasteel` defName and rename only its label. Avoid giving specialist materials
+  `stuffProps` `Metallic`, because that leaks them into every wall and weapon. Cortosis, phrik and stygium
+  need real C# effects; armor factors alone cannot short out a lightsaber.
+
+**Its ranking (for review priority, not elimination):** D4, D5, D2, D6, D3, D1. It asks that all six stay
+available until the owner chooses which play loop the campaign emphasises.
+
+Unchecked GPT claims: it cites Ludeon's Odyssey blog and a GitHub data mirror. The asteroid point was
+re-measured here (§1a) and holds. The gravship fuel-tank `Chemfuel` filter is **UNMEASURED** by us.
+
+## 5. Recommendation and what the owner decides
+
+All six designs stay live. They split along **one question that only the owner can answer: which play loop
+should materials serve?**
+
+| if the campaign is mainly about… | pick | consequence |
+|---|---|---|
+| building a colony that becomes capable | **D4** (or D1 for the gentlest learning curve) | ~11 materials, mostly recipe ingredients; cheapest to build |
+| being Jawas: wrecks, scrap, refitted heirlooms | **D5** (or D3 for the biome-exploration flavour) | wreck types become the content; refit system is real C# work |
+| travelling: gravship range, volatile cargo, herds | **D6** | most materials and chores; leans hardest on Odyssey |
+| a rich specialist crafting map | **D2** | most consumers to build; switch a material on only with its consumer |
+
+**FOUNDRY's recommendation:** use **D5's identity with D4's discipline**. Durasteel, duranium, doonium,
+beskar, cortosis, plastoid, kyber, stygium, tibanna and baradium form the core 10. Each is a fixed
+ingredient with one verb, and each is sourced the way D5 says: by recognisable wreck part, so a salvaged
+machine chassis gives duranium and a reactor assembly gives doonium. Ground wrecks supply the first lots.
+Phrik, transparisteel, carbonite and coaxium are a **second wave**, each switched on only when its consumer
+(parry, windows that matter, portable stasis, range booster) is built. Aurodium, corusca and chromium are
+named valuables only. Fold quadanium into durasteel and drop the rest of §2's stubs.
+
+Decisions for the joint sitting (none are rulings yet):
+1. Which play loop (table above), and so which design is the base?
+2. Should duranium **and** doonium both be required for large builds (frame + containment), or is one enough?
+3. Phrik: worth a saber-parry mechanic (Stillsand, canon Tatooine source), or fold it into durasteel?
+4. Should local precursor ores exist (zersium → durasteel, lommite → transparisteel), or stay abstract in
+   recipes?
+5. Beskar: armor-only for everyone, or weapons allowed outside the Children of the Watch?
+6. The Odyssey asteroid leak (§1a): patch it under the minerals work (it mines plasteel and components)?
