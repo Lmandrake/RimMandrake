@@ -15,6 +15,7 @@
     </graphicData>
     <size>(3,3)</size>
     <rotatable>false</rotatable>
+    <tickerType>Rare</tickerType>
     <altitudeLayer>Building</altitudeLayer>
     <passability>Standable</passability>
     <fillPercent>0.1</fillPercent>

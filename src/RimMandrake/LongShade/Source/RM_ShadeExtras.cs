@@ -135,6 +135,13 @@ namespace RimMandrake.LongShade
     {
         private bool registeredOff;
 
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            // the shade-gear comp re-registers the awning on every spawn, so the next rare tick must re-evaluate the toggle
+            registeredOff = false;
+        }
+
         public override void CompTickRare()
         {
             base.CompTickRare();
@@ -355,7 +362,7 @@ namespace RimMandrake.LongShade
                 {
                     Pawn prey = things[i] as Pawn;
                     if (prey == null || prey == pawn || prey.Dead) continue;
-                    bool resting = !prey.pather.MovingNow || prey.Downed;
+                    bool resting = prey.pather == null || !prey.pather.MovingNow || prey.Downed;
                     if (!RM_LongShadeKernel.HarrokCanStrike(resting, prey.BodySize, Props.maxPreyBodySize, now, lastStrike, Props.cooldownTicks)) continue;
                     lastStrike = now;
                     float amount = Props.strikeDamageRange.RandomInRange;
@@ -523,6 +530,8 @@ namespace RimMandrake.LongShade
             RM_MapComponent_CrawlerHull hull = map.GetComponent<RM_MapComponent_CrawlerHull>();
             Faction clan = FindClan();
             if (hull == null || clan == null) return false;
+            // find the entry cell BEFORE generating pawns: a failed find afterwards would leave them unspawned in the world pawn pool
+            if (!RCellFinder.TryFindRandomPawnEntryCell(out IntVec3 entry, map, CellFinder.EdgeRoadChance_Friendly)) return false;
             PawnGroupMakerParms gp = new PawnGroupMakerParms
             {
                 groupKind = PawnGroupKindDefOf.Peaceful,
@@ -532,7 +541,6 @@ namespace RimMandrake.LongShade
             };
             List<Pawn> pawns = PawnGroupMakerUtility.GeneratePawns(gp, false).ToList();
             if (pawns.Count == 0) return false;
-            if (!RCellFinder.TryFindRandomPawnEntryCell(out IntVec3 entry, map, CellFinder.EdgeRoadChance_Friendly)) return false;
             for (int i = 0; i < pawns.Count; i++)
             {
                 IntVec3 c = CellFinder.RandomClosewalkCellNear(entry, map, 4);
