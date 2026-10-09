@@ -34,6 +34,9 @@ namespace RimMandrake.EnvironmentalHazards
         // every gas Thing on the map pays it.
         public int tickIntervalTicks = 120;
 
+        // SCREEN_STOPS_SPORES_1: an aerosol screen's dome stops this gas. Set false for a gas that is not a particulate.
+        public bool stoppedByAerosolScreen = true;
+
         // Damage dealt to each affected pawn standing in the cell. Null
         // means "no direct damage" — the hediff and plant paths still run.
         public DamageDef damageDef;

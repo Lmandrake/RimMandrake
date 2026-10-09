@@ -134,6 +134,7 @@ def _living_map_findings(comp_src=None, dread_src=None, mod_src=None):
 # map_mechanics wiring: (component, Mod Settings toggle, Source file that must consult it in a branch, defs that must resolve live)
 MECHANICS = (
     ("gas_emitters", "gasEmittersEnabled", "CompActiveGasEmitter.cs", ()),
+    ("gas_screened_by_aerosol_screen", "screenStopsSporesEnabled", "Gas_Damaging.cs", ()),
     ("periodic_area_attack", "areaAttacksEnabled", "HediffComp_PeriodicAreaAttack.cs", ()),
     ("environmental_weather", "environmentalDamageEnabled", "GameCondition_EnvironmentalWeather.cs", ()),
     ("scaled_explosion_death_action", "scaledExplosionsEnabled", "DeathActionWorker_ScaledExplosion.cs", ()),

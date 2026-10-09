@@ -26,6 +26,8 @@ namespace RimMandrake.EnvironmentalHazards
     //   2. gasEffectsEnabled — Gas_Damaging / Gas_Transmuting. Off: a gas
     //      cloud (however it got there) sits and expires without damaging,
     //      afflicting or transmuting anything.
+    //      screenStopsSporesEnabled (SCREEN_STOPS_SPORES_1) — inside an aerosol
+    //      screen's dome (Scarlands) Gas_Damaging does nothing either.
     //   3. areaAttacksEnabled — HediffComp_PeriodicAreaAttack. Off: a
     //      carrier with the hediff stops pulsing damage; the hediff itself
     //      is untouched.
@@ -367,6 +369,8 @@ namespace RimMandrake.EnvironmentalHazards
     {
         public static bool gasEmittersEnabled = true;
         public static bool gasEffectsEnabled = true;
+        // SCREEN_STOPS_SPORES_1: a Scarlands aerosol screen also stops damaging gas (spore clouds) inside its dome.
+        public static bool screenStopsSporesEnabled = true;
         public static bool areaAttacksEnabled = true;
         public static bool latentHazardArmingEnabled = true;
         public static bool environmentalDamageEnabled = true;
@@ -464,6 +468,7 @@ namespace RimMandrake.EnvironmentalHazards
             base.ExposeData();
             Scribe_Values.Look(ref gasEmittersEnabled, "gasEmittersEnabled", true);
             Scribe_Values.Look(ref gasEffectsEnabled, "gasEffectsEnabled", true);
+            Scribe_Values.Look(ref screenStopsSporesEnabled, "screenStopsSporesEnabled", true);
             Scribe_Values.Look(ref areaAttacksEnabled, "areaAttacksEnabled", true);
             Scribe_Values.Look(ref latentHazardArmingEnabled, "latentHazardArmingEnabled", true);
             Scribe_Values.Look(ref environmentalDamageEnabled, "environmentalDamageEnabled", true);
@@ -577,6 +582,9 @@ namespace RimMandrake.EnvironmentalHazards
                 "Vents/plants/creatures built to periodically release gas stop releasing it.");
             list.CheckboxLabeled("Gas damage and transmuting", ref gasEffectsEnabled,
                 "A gas cloud no longer hurts, afflicts, or transforms plants it drifts over.");
+            list.CheckboxLabeled("Aerosol screens stop spore clouds", ref screenStopsSporesEnabled,
+                "On: inside the dome of a Scarlands aerosol screen, damaging gas (spore clouds included) does nothing to pawns or "
+              + "plants, as toxic fallout does not. Needs that mod and its screen switched on. Off: gas ignores screens.");
             list.CheckboxLabeled("Periodic area attacks", ref areaAttacksEnabled,
                 "A hediff built to pulse area damage around its carrier stops pulsing.");
             list.CheckboxLabeled("Latent hazard arming", ref latentHazardArmingEnabled,
