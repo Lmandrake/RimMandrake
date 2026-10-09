@@ -102,6 +102,27 @@ acked2 = pc.classify_oom(mem, {"oom:rm-harness.slice": {"at": NOW - 250}}, NOW)
 check("ack after the last kill silences it", next(r for r in acked2 if r["who"] == "HARNESS")["acked"] is True)
 check("a NEW kill after the ack re-raises it", next(r for r in acked if r["who"] == "HARNESS")["acked"] is False)
 
+# --- kernel OOM: planted containment test vs real kills (coordinator 2026-10-08 20:55) --
+KLOG = [
+    f"{NOW-500:.6f} Archmagi kernel: memory: usage 131072kB, limit 131072kB, failcnt 22",
+    f"{NOW-500:.6f} Archmagi kernel: oom-kill:constraint=CONSTRAINT_MEMCG,nodemask=(null),cpuset=/,mems_allowed=0,oom_memcg=/user.slice/user-1000.slice/user@1000.service/rm.slice/rm-harness.slice/rm-harness-23-2.scope,task_memcg=/user.slice/user-1000.slice/user@1000.service/rm.slice/rm-harness.slice/rm-harness-23-2.scope,task=python3,pid=30448,uid=1000",
+    f"{NOW-500:.6f} Archmagi kernel: Memory cgroup out of memory: Killed process 30448 (python3) total-vm:147136kB, anon-rss:119552kB, file-rss:6428kB",
+    f"{NOW-400:.6f} Archmagi kernel: memory: usage 6291456kB, limit 6291456kB, failcnt 21",
+    f"{NOW-400:.6f} Archmagi kernel: oom-kill:constraint=CONSTRAINT_MEMCG,oom_memcg=/rm.slice/rm-harness.slice/rm-harness-9-2.scope,task_memcg=/rm.slice/rm-harness.slice/rm-harness-9-2.scope,task=python3,pid=28305,uid=1000",
+    f"{NOW-300:.6f} Archmagi kernel: memory: usage 1048576kB, limit 1048576kB, failcnt 21",
+    f"{NOW-300:.6f} Archmagi kernel: oom-kill:constraint=CONSTRAINT_MEMCG,oom_memcg=/claude.slice/claude-seats.slice/claude-seat-BENCH-12.scope/claude-code-bash,task_memcg=/claude.slice/claude-seats.slice/claude-seat-BENCH-12.scope/claude-code-bash,task=python3,pid=28104,uid=1000",
+]
+kk = pc.parse_kernel_oom(KLOG)
+check("kernel log parses three kills with caps", [k["limit_kb"] for k in kk] == [131072, 6291456, 1048576], kk)
+check("kill classes: planted bomb / real harness test / seat", [pc.kill_class(k) for k in kk] == ["planted", "harness_test", "seat"],
+      [pc.kill_class(k) for k in kk])
+kr = {r["key"]: r for r in pc.classify_kernel_oom(kk, {}, NOW)}
+check("the planted containment test is NEVER red or amber", kr["oom:planted"]["kind"] == "idle", kr.get("oom:planted"))
+check("a real harness test kill is a contained warning, not red", kr["oom:harness_test"]["kind"] == "warn", kr.get("oom:harness_test"))
+check("a seat tool-cgroup kill is red", kr["oom:seat:BENCH"]["kind"] == "red", kr.get("oom:seat:BENCH"))
+check("planted kills only -> no alarm at all",
+      all(r["kind"] == "idle" for r in pc.classify_kernel_oom(kk[:1] * 30, {}, NOW)))
+
 # --- subagent running signal ---------------------------------------------------------
 end = {"type": "assistant", "message": {"stop_reason": "end_turn"}}
 mid = {"type": "user", "message": {"content": [{"type": "tool_result"}]}}
