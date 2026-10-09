@@ -55,7 +55,8 @@ import time
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+# RM_SELFTEST_REPO_ROOT exists for the runner's own fixture selftests only (a fake repo in scratch).
+REPO_ROOT = Path(os.environ.get("RM_SELFTEST_REPO_ROOT") or Path(__file__).resolve().parents[3]).resolve()
 PER_TEST_TIMEOUT_S = 240
 # A test that legitimately outlasts that (one that walks every deployed mod on
 # the drvfs mount) declares its own cap in its first 40 lines, e.g.
@@ -385,7 +386,7 @@ def admit(est: int) -> bool:
     return _slice_in_use() + pending + est <= _HARNESS["max"] - HEADROOM
 
 
-def _run_capped(path: Path, timeout: int, cap: int = 0, est: int = 0):
+def _run_capped(path: Path, timeout: int, cap: int = 0, est: int = 0, env=None):
     """subprocess.run, but a timeout kills the child's whole scope / PROCESS GROUP.
 
     Plain subprocess.run(timeout=) kills only the direct child; a grandchild (a grep,
@@ -397,7 +398,7 @@ def _run_capped(path: Path, timeout: int, cap: int = 0, est: int = 0):
     argv, cwd = special() if special else ([sys.executable, str(path)], REPO_ROOT)
     if _HARNESS:
         argv = _scope_argv(cap, timeout, argv)
-    p = subprocess.Popen(argv, cwd=cwd, text=True,
+    p = subprocess.Popen(argv, cwd=cwd, text=True, env=env,
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                          start_new_session=True)
     _RUNNING[p.pid] = est
@@ -482,11 +483,37 @@ def classify(rc: int, out: str, rep=None, cap: int = 0) -> tuple[str, str]:
     return "FAIL", f"rc {rc}"
 
 
+# Evidence context for skip-when-unchanged (suite_evidence.py); None when skipping is off.
+_EVID = None
+
+
 def run_one(path: Path, cap: int = 0, est: int = 0) -> tuple[Path, str, float, str]:
+    """(path, state, seconds, detail), recording evidence for an eligible test (PASS writes a record,
+    anything else deletes it)."""
+    ev = _EVID
+    rel = _rel(path)
+    if ev is None or not rel or path not in ev["eligible"]:
+        return _run_one(path, cap, est)
+    _SEQ[0] += 1
+    tdir = Path(os.environ.get("RM_SELFTEST_CACHE_DIR") or STATE_DIR) / "trace" / f"{os.getpid()}-{_SEQ[0]}"
+    E = ev["mod"]
+    try:
+        r = _run_one(path, cap, est, env=ev["store"].trace_env(tdir))
+        if r[1] == "PASS":
+            ok, why = ev["store"].record(rel, tdir, r[2])
+            (ev["recorded"] if ok else ev["unrecorded"]).append((rel, why))
+        else:
+            ev["store"].forget(rel)
+        return r
+    finally:
+        E.clear_trace(tdir)
+
+
+def _run_one(path: Path, cap: int = 0, est: int = 0, env=None) -> tuple[Path, str, float, str]:
     """(path, state, seconds, detail). detail's first line is the reason for any non-PASS."""
     start = time.monotonic()
     try:
-        proc, rep = _run_capped(path, per_test_timeout(path), cap, est)
+        proc, rep = _run_capped(path, per_test_timeout(path), cap, est, env)
         elapsed = time.monotonic() - start
         out = proc.stdout + proc.stderr
         tail = out.strip().splitlines()[-40:]
@@ -525,6 +552,9 @@ def _parser():
     ap.add_argument("--tier", choices=TIERS + ("all",), default="default",
                     help="default: every unit test (deployed-tier tests print SKIPPED). deployed: only the "
                          "live-install checks — run after a deploy, a game update or a mod subscribe. all: both")
+    ap.add_argument("--full", "--no-skip", dest="full", action="store_true",
+                    help="run every selected test even where an evidence record says its inputs are unchanged "
+                         "(still records fresh evidence on PASS)")
     return ap
 
 
@@ -675,6 +705,20 @@ def _suite(args) -> int:
     # its peak reserved and a near-whole-pen cap: its isolation was only ever about memory,
     # and admission now provides that (serial tail was ~200 s of a ~6 min run).
     # SEQUENTIAL_ISOLATED is about CPU timing, so it still runs alone at the end.
+    # Skip-when-unchanged: only on evidence (suite_evidence.py). Decided before anything runs.
+    global _EVID
+    import suite_evidence as E
+    store = E.Store(REPO_ROOT, STATE_DIR)
+    elig = {t: why for t in tests if _rel(t) and (why := E.eligible(t, _head(t)))}
+    _EVID = {"store": store, "eligible": elig, "recorded": [], "unrecorded": [], "mod": E}
+    reused = []
+    if not args.full:
+        keep = []
+        for t in tests:
+            ok, why = store.unchanged(_rel(t)) if t in elig else (False, "")
+            (reused.append((t, why)) if ok else keep.append(t))
+        tests = keep
+
     ISOLATED = SEQUENTIAL_ISOLATED | (set() if _HARNESS else MEMORY_HEAVY)
     pooled = [t for t in tests if t.name not in ISOLATED]
     isolated = [t for t in tests if t.name in ISOLATED]
@@ -692,7 +736,7 @@ def _suite(args) -> int:
         # Live line per finished test (flushed) so a long run is never silent.
         results.append(r)
         print(f"[{len(results)}/{total}] {r[1]:10s} {r[2]:6.1f}s  "
-              f"{r[0].relative_to(REPO_ROOT)}", file=sys.stderr, flush=True)
+              f"{_show(r[0])}", file=sys.stderr, flush=True)
 
     if _HARNESS:
         # Admission-gated pool: start the first queued test (slowest-first) whose
@@ -732,9 +776,23 @@ def _suite(args) -> int:
             PEAKS_FILE.write_text(json.dumps({**load_peaks(), **_PEAK_SEEN}, indent=0, sort_keys=True))
         except OSError:
             pass
-    skipped = [(path, "SKIPPED", 0.0, why) for path, why in excluded + off_tier]
+    skipped = [(path, "SKIPPED", 0.0, why) for path, why in excluded + off_tier + reused]
+    _evidence_summary(_EVID, reused, len(elig), args.full)
     return report(results, skipped, len(tests) + len(skipped), wall_elapsed, contain_note,
                   ISOLATED, args.timings)
+
+
+def _evidence_summary(ev, reused, n_elig, full) -> None:
+    unrec = ev["unrecorded"]
+    print(f"evidence: {n_elig} eligible, {len(reused)} SKIPPED as unchanged"
+          + (" (--full: records ignored)" if full else "")
+          + f", {len(ev['recorded'])} PASS recorded, {len(unrec)} PASS not recordable — runner {ev['mod'].RUNNER_VERSION}")
+    if unrec:
+        why = {}
+        for rel, w in unrec:
+            why.setdefault(w if len(w) < 90 else w[:90] + "...", []).append(rel)
+        for w, rels in sorted(why.items(), key=lambda kv: -len(kv[1])):
+            print(f"  not recordable ({len(rels)}): {w}: " + ", ".join(sorted(rels)[:6]) + (" ..." if len(rels) > 6 else ""))
 
 
 def _show(p: Path) -> str:
