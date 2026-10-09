@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 using Verse.AI;
 
@@ -254,7 +255,9 @@ namespace RimMandrake.EnvironmentalHazards
                 }
 
                 CompProperties_StationEater props = eater?.Props;
-                float damage = props?.eatDamagePerHit ?? 60f;
+                // hazardDamageMultiplier scales every damage amount (RM_EnvironmentalHazardsMod item 9).
+                float damage = (props?.eatDamagePerHit ?? 60f)
+                    * Mathf.Max(0f, RM_EnvironmentalHazardsSettings.hazardDamageMultiplier);
                 DamageDef damageDef = props?.eatDamageDef ?? DamageDefOf.Crush;
                 ticksUntilNextBite += props?.ticksPerBite ?? 180;
                 if (ticksUntilNextBite < 1)

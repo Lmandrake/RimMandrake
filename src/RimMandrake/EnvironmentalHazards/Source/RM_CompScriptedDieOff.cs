@@ -158,8 +158,17 @@ namespace RimMandrake.EnvironmentalHazards
             if (GenRadial.RadialCellsAround(parent.Position, Props.spreadRadius, useCenter: false)
                 .TryRandomElement(CellOk, out IntVec3 cell))
             {
-                GenSpawn.Spawn(spreadDef, cell, map);
+                Thing child = GenSpawn.Spawn(spreadDef, cell, map);
+                // The outbreak ends as a whole: a copy of this comp's own kind inherits this one's age, so the
+                // lineage shares one absolute expiry instead of every generation rerolling a fresh lifetime.
+                child?.TryGetComp<RM_CompScriptedDieOff>()?.InheritAge(ticksSinceSpawn);
             }
+        }
+
+        private void InheritAge(int parentAgeTicks)
+        {
+            ticksSinceSpawn = Mathf.Max(ticksSinceSpawn, parentAgeTicks);
+            ScheduleNextSpread();
         }
 
         private void DieNow()
