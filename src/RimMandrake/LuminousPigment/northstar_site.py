@@ -12,7 +12,7 @@ SETTINGS = "RimMandrake.LuminousPigment.LuminousPigmentSettings"
 BOOLS = ("shoreMatsEnabled", "deepfireStackGlows", "glowTankEnabled", "paintingEnabled", "floorsPaintable",
          "wallsPaintable", "furniturePaintable", "apparelPaintable", "weaponsPaintable", "wornLightEnabled",
          "stylingStationLacquer", "combatPenaltiesEnabled", "artQualityBump", "cuisineEnabled",
-         "hediffGlowEnabled", "godsReact", "ishkoIdolPaintable", "statusEnabled", "ranklessColoniesEnjoyIt")
+         "hediffGlowEnabled", "godsReact", "ishkoIdolPaintable", "statusEnabled")
 NUMBERS = {"matLifeDays": 1.0, "matChillKillTemp": 10.0, "deepfireMarketValue": 90.0, "maxCoats": 3.0,
            "tankPowerGraceHours": 6.0, "pressYield": 2.0, "pressPower": 150.0, "costWallCell": 1.0,
            "costApparel": 3.0, "godDeltaDiminishAfter": 10.0}

@@ -18,7 +18,6 @@ namespace RimMandrake.LuminousPigment
             if (!LuminousPigmentSettings.statusEnabled) return ThoughtState.Inactive;
             bool titled = SumptuaryUtility.IsTitled(p);
             if (titled != RequireTitled) return ThoughtState.Inactive;
-            if (!RequireTitled && !SumptuaryUtility.RanklessColonyThoughtAllowed()) return ThoughtState.Inactive;
 
             int stage = RM_DeepfireRules.ScoreStage(SumptuaryUtility.DisplayScoreFor(p));
             return stage < 0 ? ThoughtState.Inactive : ThoughtState.ActiveAtStage(stage);

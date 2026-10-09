@@ -99,15 +99,5 @@ namespace RimMandrake.LuminousPigment
             if (role != null && (role.def.leaderRole || role.def == PreceptDefOf.IdeoRole_Moralist)) return true;
             return false;
         }
-
-        // Spec §4.1: "A colony with neither DLC has no titled pawns;
-        // ranklessColoniesEnjoyIt (default on) then lets every pawn take the
-        // wearer's pleasure." With the setting off and neither DLC active,
-        // there is no "who else" for the engine's status comparison to mean
-        // anything, so the wearer's own pleasure thought is suppressed too.
-        public static bool RanklessColonyThoughtAllowed()
-        {
-            return RM_DeepfireRules.RanklessAllowed(LuminousPigmentSettings.ranklessColoniesEnjoyIt, ModsConfig.RoyaltyActive, ModsConfig.IdeologyActive);
-        }
     }
 }

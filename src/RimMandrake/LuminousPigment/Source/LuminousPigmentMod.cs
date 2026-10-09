@@ -126,7 +126,6 @@ namespace RimMandrake.LuminousPigment
         public static int offenceThreshold = 2;
         public static float moodScale = 1.0f;
         public static float opinionAboveStation = -15f;
-        public static bool ranklessColoniesEnjoyIt = true;
         public static int goodwillPerImpressedVisit = DeepfireStatusDefaults.GoodwillPerImpressedVisit;
 
         public override void ExposeData()
@@ -211,7 +210,6 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref offenceThreshold, "offenceThreshold", 2);
             Scribe_Values.Look(ref moodScale, "moodScale", 1.0f);
             Scribe_Values.Look(ref opinionAboveStation, "opinionAboveStation", -15f);
-            Scribe_Values.Look(ref ranklessColoniesEnjoyIt, "ranklessColoniesEnjoyIt", true);
             Scribe_Values.Look(ref goodwillPerImpressedVisit, "goodwillPerImpressedVisit", DeepfireStatusDefaults.GoodwillPerImpressedVisit);
         }
 
@@ -411,10 +409,6 @@ namespace RimMandrake.LuminousPigment
             moodScale = list.Slider(moodScale, 0f, 3f);
             list.Label("Opinion penalty for wearing above one's station: " + opinionAboveStation.ToString("0"));
             opinionAboveStation = list.Slider(opinionAboveStation, -40f, 0f);
-            list.CheckboxLabeled("Colonies with no Royalty or Ideology still enjoy it", ref ranklessColoniesEnjoyIt,
-                "On (default): with neither DLC active nobody can be titled, so the engine degrades " +
-                "to a plain 'nice clothes' mood for everyone. Off: with neither DLC active, nobody " +
-                "gets a thought at all.");
             list.Label("Goodwill per impressed visitor: " + goodwillPerImpressedVisit.ToString());
             goodwillPerImpressedVisit = Mathf.RoundToInt(list.Slider(goodwillPerImpressedVisit, 0f, 10f));
 

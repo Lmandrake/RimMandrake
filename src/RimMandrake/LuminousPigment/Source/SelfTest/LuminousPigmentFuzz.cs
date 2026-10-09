@@ -342,19 +342,14 @@ namespace RimMandrake.LuminousPigment.SelfTest
                     int want = s <= 0 ? -1 : (s <= 2 ? 0 : (s <= 4 ? 1 : 2));
                     Check(RM_DeepfireRules.ScoreStage(s) == want, $"ScoreStage({s}) = {RM_DeepfireRules.ScoreStage(s)} want {want}");
                 }
-                for (int m = 0; m < 32; m++)
+                for (int m = 0; m < 16; m++)
                 {
-                    bool en = (m & 1) != 0, titled = (m & 2) != 0, req = (m & 4) != 0, rk = (m & 8) != 0; int score = (m & 16) != 0 ? 4 : 0;
-                    int got = RM_DeepfireRules.WearerThoughtStage(en, titled, req, rk, score);
-                    int want = !en ? -1 : (titled != req ? -1 : (!req && !rk ? -1 : (score <= 0 ? -1 : 1)));
-                    Check(got == want, $"WearerThoughtStage({en},{titled},{req},{rk},{score}) = {got} want {want}");
+                    bool en = (m & 1) != 0, titled = (m & 2) != 0, req = (m & 4) != 0; int score = (m & 8) != 0 ? 4 : 0;
+                    int got = RM_DeepfireRules.WearerThoughtStage(en, titled, req, score);
+                    int want = !en ? -1 : (titled != req ? -1 : (score <= 0 ? -1 : 1));
+                    Check(got == want, $"WearerThoughtStage({en},{titled},{req},{score}) = {got} want {want}");
                     bool offence = RM_DeepfireRules.WearsAboveStation(en, titled, req, score, 2);
                     Check(offence == (en && titled && !req && score >= 2), "WearsAboveStation truth table");
-                }
-                for (int m = 0; m < 8; m++)
-                {
-                    bool a = (m & 1) != 0, b = (m & 2) != 0, c = (m & 4) != 0;
-                    Check(RM_DeepfireRules.RanklessAllowed(a, b, c) == (a || b || c), "RanklessAllowed truth table");
                 }
                 int low = 2 + r.Next(4), high = low + 1 + r.Next(6);
                 for (int sc = 0; sc < 20; sc++)
