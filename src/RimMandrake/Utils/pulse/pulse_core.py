@@ -339,7 +339,7 @@ def classify_oom(mem_events: list[dict], acks: dict, now: float) -> list[dict]:
         when = time.strftime("%H:%M", time.localtime(last_t))
         tail = f" · {n_new} new" if fresh and n_new != n_all else ""
         text = (f"OOM kill · {who.lower() if who == 'HARNESS' else who}"
-                + (f" @{gb} GB" if gb is not None else "") + f" · latest {when}"
+                + (f" @{gb} GB" if gb is not None else "")
                 + (f" · ×{n_all} today" if n_all > 1 else "") + tail)
         r = _red(inc, who, text, last_t, {}, src="memwatch", count=n_all,
                  toasted=any(e.get("toast") for _, e in (fresh or ks[-1:])),
@@ -389,7 +389,7 @@ def classify_ledger(ledger: list[dict], since: float, now: float) -> tuple[list[
     for iid, (t, e) in owner_needs.items():
         if now - t < 14 * 86400:
             rows.append(_row(f"needs:{iid}", "review", (e.get("seat") or "").upper(),
-                             f"{iid} awaits your ruling — {short(e.get('reason') or titles.get(iid) or '', 60)}", t,
+                             f"{iid} — {short(e.get('reason') or titles.get(iid) or '', 70)}", t,
                              src="ledger"))
     # one line per thing: a later event on the same key replaces the earlier line
     dedup: dict[str, dict] = {}
