@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared;
 
 namespace RimMandrake.LuminousPigment
 {
@@ -17,6 +18,15 @@ namespace RimMandrake.LuminousPigment
     // proxy has nothing left to do, so it is a no-op here.
     public class DeepfireLightProxy : ThingWithComps
     {
+        // LIGHT_LEDGER_ONE_1 / DEEPFIRE_WORLD_LIGHT_1: every deepfire light says so in the shared light ledger, so other
+        // mods can treat it as deepfire (the Abyss Dark spares it, glow-seekers are drawn to it) without referencing this
+        // assembly. Runs on every spawn, so a fresh proxy is tagged before its first radius is set.
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
+        {
+            base.SpawnSetup(map, respawningAfterLoad);
+            LightLedger.Tag(GetComp<CompGlower>(), "deepfire");
+        }
+
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
             if (Destroyed) return;
@@ -119,6 +129,8 @@ namespace RimMandrake.LuminousPigment
             private readonly Pawn pawn;
             private readonly HediffDef def;
 
+            public Pawn Pawn => pawn;
+
             public PawnHediffKey(Pawn p, HediffDef d)
             {
                 pawn = p;
@@ -197,9 +209,11 @@ namespace RimMandrake.LuminousPigment
             CompGlower glower = e.Proxy.TryGetComp<CompGlower>();
             if (glower != null)
             {
+                // the colour setter re-registers a lit glower itself; the radius is this light's BASE in the shared
+                // light ledger (LIGHT_LEDGER_ONE_1), which re-registers on a real change
                 glower.GlowColor = ci;
-                glower.GlowRadius = radius;
-                glower.ForceRegister(map);
+                LightLedger.SetBase(glower, radius);
+                if (fresh && key is PawnHediffKey hk) LightLedger.SetCarrier(glower, hk.Pawn);
                 e.LastColor = ci;
                 e.LastRadius = radius;
             }

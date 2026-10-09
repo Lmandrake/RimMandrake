@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared;
 
 namespace RimMandrake.LuminousPigment
 {
@@ -162,6 +163,7 @@ namespace RimMandrake.LuminousPigment
 
         private void SetMovingLight(WornKey key, IntVec3 cell, Color color, float radius)
         {
+            bool moved = false;
             if (!entries.TryGetValue(key, out LightEntry e) || e.Proxy == null || e.Proxy.Destroyed)
             {
                 Thing proxy = ThingMaker.MakeThing(DeepfireDefOf.RM_DeepfireWornLightProxy);
@@ -173,14 +175,20 @@ namespace RimMandrake.LuminousPigment
             {
                 e.Proxy.Position = cell;
                 e.Cell = cell;
+                moved = true;
             }
 
             CompGlower glower = e.Proxy.TryGetComp<CompGlower>();
             if (glower != null)
             {
+                // LIGHT_LEDGER_ONE_1: radius as the light ledger's base; the pawn as its carrier, so another mod can ask
+                // "is this pawn carrying a light" (DEEPFIRE_WORLD_LIGHT_1 d: no lacquer cloak while glowing)
                 glower.GlowColor = new ColorInt(color);
-                glower.GlowRadius = radius;
-                glower.ForceRegister(map);
+                LightLedger.SetBase(glower, radius);
+                LightLedger.SetCarrier(glower, key.Pawn);
+                // a moved light re-registers at its new cell even when neither colour nor radius changed
+                // (GlowLight caches its position at registration)
+                if (moved) glower.ForceRegister(map);
             }
         }
 
