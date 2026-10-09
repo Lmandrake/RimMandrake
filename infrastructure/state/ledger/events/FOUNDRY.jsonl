@@ -4502,3 +4502,15 @@
 {"seat":"FOUNDRY","event":"implemented","id":"STILLSAND_LOOKUP_CACHE_1","sha":"95b539b9ec60","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:11:49Z","tsn":1791526309346899918}
 {"seat":"FOUNDRY","event":"implemented","id":"ZUURRIK_OFF_FINISH_SWARM_1","sha":"95b539b9ec60","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:11:51Z","tsn":1791526311099734282}
 {"seat":"FOUNDRY","event":"drop","id":"RANKLESS_DLC_SETTING_REMOVE_1","reason":"stale-drop: grep -i rankless|royalty|ideology over LuminousPigment/Source finds no setting, field or RanklessAllowed (row cited a removed setting)","ts":"2026-10-09T06:12:00Z","tsn":1791526320868321892}
+{"seat":"FOUNDRY","event":"lease","id":"PIGMENT_SETTINGS_LABELS_FIX_1","action":"take","token":"FOUNDRY.pid28229.a8f529a3","expires":"2026-10-09T06:57:40Z","ts":"2026-10-09T06:12:40Z","tsn":1791526360845302933}
+{"seat":"FOUNDRY","event":"claim","id":"PIGMENT_SETTINGS_LABELS_FIX_1","ts":"2026-10-09T06:12:41Z","tsn":1791526361133780643}
+{"seat":"FOUNDRY","event":"start","id":"PIGMENT_SETTINGS_LABELS_FIX_1","ts":"2026-10-09T06:12:41Z","tsn":1791526361455924272}
+{"seat":"FOUNDRY","event":"implemented","id":"PIGMENT_SETTINGS_LABELS_FIX_1","sha":"0b23fe5a48f2","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:12:42Z","tsn":1791526362536912100}
+{"seat":"FOUNDRY","event":"lease","id":"SCARLANDS_PARTNER_STATUS_LINE_1","action":"take","token":"FOUNDRY.pid28231.021450c2","expires":"2026-10-09T06:57:43Z","ts":"2026-10-09T06:12:43Z","tsn":1791526363743861943}
+{"seat":"FOUNDRY","event":"claim","id":"SCARLANDS_PARTNER_STATUS_LINE_1","ts":"2026-10-09T06:12:44Z","tsn":1791526364005329116}
+{"seat":"FOUNDRY","event":"start","id":"SCARLANDS_PARTNER_STATUS_LINE_1","ts":"2026-10-09T06:12:44Z","tsn":1791526364256559319}
+{"seat":"FOUNDRY","event":"implemented","id":"SCARLANDS_PARTNER_STATUS_LINE_1","sha":"0b23fe5a48f2","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:12:45Z","tsn":1791526365228156158}
+{"seat":"FOUNDRY","event":"lease","id":"LONGSHADE_JAWA_RETURN_1","action":"take","token":"FOUNDRY.pid28233.47162970","expires":"2026-10-09T06:57:49Z","ts":"2026-10-09T06:12:49Z","tsn":1791526369395274211}
+{"seat":"FOUNDRY","event":"claim","id":"LONGSHADE_JAWA_RETURN_1","ts":"2026-10-09T06:12:49Z","tsn":1791526369646037432}
+{"seat":"FOUNDRY","event":"start","id":"LONGSHADE_JAWA_RETURN_1","ts":"2026-10-09T06:12:49Z","tsn":1791526369882356507}
+{"seat":"FOUNDRY","event":"implemented","id":"LONGSHADE_JAWA_RETURN_1","sha":"bf56a983e7c2","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:12:50Z","tsn":1791526370855089337}

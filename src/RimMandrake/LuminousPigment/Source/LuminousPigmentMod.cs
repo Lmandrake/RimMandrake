@@ -709,23 +709,31 @@ namespace RimMandrake.LuminousPigment
         // multiplier of its own) -- same shape as opinionAboveStation below,
         // just per-stage. Only mood thoughts are scaled; RM_WearsAboveStation
         // is opinion-based and already has its own dedicated setting.
-        private static readonly float[] TitledMoodBase = { 3f, 5f, 8f };
-        private static readonly float[] CommonMoodBase = { 1f, 2f, 3f };
-        private static readonly float[] SawCommonerMoodBase = { -3f };
-        private static readonly float[] BedroomMoodBase = { 4f, 6f };
+        // Baselines are captured from the loaded defs on first apply (before any scaling), so an XML
+        // edit or another mod's patch is respected instead of overwritten by copies (belt LP-6).
+        private static readonly Dictionary<string, float[]> moodBaselines = new Dictionary<string, float[]>();
 
         private static void ApplyStatusMoodScale()
         {
-            ApplyMoodScaleTo("RM_WearingDeepfireTitled", TitledMoodBase);
-            ApplyMoodScaleTo("RM_WearingDeepfireCommon", CommonMoodBase);
-            ApplyMoodScaleTo("RM_SawCommonerInDeepfire", SawCommonerMoodBase);
-            ApplyMoodScaleTo("RM_DeepfireBedroom", BedroomMoodBase);
+            ApplyMoodScaleTo("RM_WearingDeepfireTitled");
+            ApplyMoodScaleTo("RM_WearingDeepfireCommon");
+            ApplyMoodScaleTo("RM_SawCommonerInDeepfire");
+            ApplyMoodScaleTo("RM_DeepfireBedroom");
         }
 
-        private static void ApplyMoodScaleTo(string defName, float[] baseValues)
+        private static void ApplyMoodScaleTo(string defName)
         {
             ThoughtDef def = DefDatabase<ThoughtDef>.GetNamedSilentFail(defName);
             if (def?.stages == null) return;
+            if (!moodBaselines.TryGetValue(defName, out float[] baseValues))
+            {
+                baseValues = new float[def.stages.Count];
+                for (int i = 0; i < baseValues.Length; i++)
+                {
+                    baseValues[i] = def.stages[i] != null ? def.stages[i].baseMoodEffect : 0f;
+                }
+                moodBaselines[defName] = baseValues;
+            }
             for (int i = 0; i < def.stages.Count && i < baseValues.Length; i++)
             {
                 if (def.stages[i] != null)
