@@ -1,117 +1,151 @@
 {
- "biome": "RM_GelatinousSlime",
- "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
- "decidedCount": 12,
- "decisions": {
-  "RM_Dwommo": {
-   "at": "2026-10-06T03:16:30.682Z",
-   "decision": "A",
-   "note": "floater",
-   "prefill": "A"
+  "biome": "RM_GelatinousSlime",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 12,
+  "decisions": {
+    "RM_Dwommo": {
+      "at": "2026-10-06T03:16:30.682Z",
+      "decision": "A",
+      "note": "floater",
+      "prefill": "A"
+    },
+    "RM_Fubbum": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Gappo": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_GappoGreater": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_GappoLesser": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Gelatid": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Glurro": {
+      "at": "2026-10-06T03:18:05.705Z",
+      "decidedAt": "2026-10-06T03:18:00.697Z",
+      "decision": "hold",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:18:05.705Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "Don't need this, cut it and its ability.",
+          "when": "2026-10-09T01:20:07-0700"
+        }
+      ],
+      "prefill": "A"
+    },
+    "RM_Plant_Bellows": {
+      "at": "2026-10-06T03:19:22.134Z",
+      "decidedAt": "2026-10-06T03:19:22.134Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "purge": [
+        "bf9373f689fdb2913e30e005cbd8cef2bd1d99d3567d40a5fb6160f61e827ea8"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Plant_Readerbloom": {
+      "at": "2026-10-06T03:19:27.436Z",
+      "decidedAt": "2026-10-06T03:19:26.430Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "purge": [
+        "914e38677a20be4e72eed09b27ef41768a3c882a7e30746117ea9a938ce5ce1d"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Plant_SlimeGrass": {
+      "at": "2026-10-06T03:19:58.680Z",
+      "decidedAt": "2026-10-06T03:19:58.680Z",
+      "decision": "C",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:19:58.680Z",
+          "followed_by": [
+            "slime_slimegrass_var_b",
+            "slime_slimegrass_var_c",
+            "slime_slimegrass_var_d"
+          ],
+          "note": "add variations",
+          "when": "2026-10-09T01:20:07-0700"
+        }
+      ],
+      "prefill": "A",
+      "purge": [
+        "a488242e9afdf9e575cb601763a53bbb573f4a983e27dfa3cc1e96cb92b12c0f",
+        "04e365a819c107a124d380810bd62ff8f15ab6c036636d4b081c5b725adebc3a"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Plant_Thumbstalk": {
+      "at": "2026-10-06T03:20:10.137Z",
+      "decidedAt": "2026-10-06T03:20:04.804Z",
+      "decision": "B",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:20:10.137Z",
+          "followed_by": [
+            "slime_thumbstalk_var_b",
+            "slime_thumbstalk_var_c",
+            "slime_thumbstalk_var_d"
+          ],
+          "note": "add variations",
+          "when": "2026-10-09T01:20:07-0700"
+        }
+      ],
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "purge": [
+        "bf9373f689fdb2913e30e005cbd8cef2bd1d99d3567d40a5fb6160f61e827ea8"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Titanoslime": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    }
   },
-  "RM_Fubbum": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": "2026-10-05T20:21:00-0700",
+    "by": "owner (Lukas)",
+    "evidence": "sidecar savedBy review-sheet-sidecar, writeCount 15, savedAt 2026-10-05T20:20:10-0700; 8 decided rows carry an owner 'at' stamp (4 untouched prefill A accepted); owner typed 'Slime sheet done' (BENCH relay)",
+    "state": "ruled"
   },
-  "RM_Gappo": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RM_GappoGreater": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RM_GappoLesser": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RM_Gelatid": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RM_Glurro": {
-   "at": "2026-10-06T03:18:05.705Z",
-   "decidedAt": "2026-10-06T03:18:00.697Z",
-   "decision": "hold",
-   "note": "Don't need this, cut it and its ability.",
-   "prefill": "A"
-  },
-  "RM_Plant_Bellows": {
-   "at": "2026-10-06T03:19:22.134Z",
-   "decidedAt": "2026-10-06T03:19:22.134Z",
-   "decision": "A",
-   "note": "",
-   "picks": {
-    "_byname": "B"
-   },
-   "prefill": "A",
-   "purge": [
-    "bf9373f689fdb2913e30e005cbd8cef2bd1d99d3567d40a5fb6160f61e827ea8"
-   ],
-   "purgeTouched": true
-  },
-  "RM_Plant_Readerbloom": {
-   "at": "2026-10-06T03:19:27.436Z",
-   "decidedAt": "2026-10-06T03:19:26.430Z",
-   "decision": "A",
-   "note": "",
-   "picks": {
-    "_byname": "B"
-   },
-   "prefill": "A",
-   "purge": [
-    "914e38677a20be4e72eed09b27ef41768a3c882a7e30746117ea9a938ce5ce1d"
-   ],
-   "purgeTouched": true
-  },
-  "RM_Plant_SlimeGrass": {
-   "at": "2026-10-06T03:19:58.680Z",
-   "decidedAt": "2026-10-06T03:19:58.680Z",
-   "decision": "C",
-   "note": "add variations",
-   "prefill": "A",
-   "purge": [
-    "a488242e9afdf9e575cb601763a53bbb573f4a983e27dfa3cc1e96cb92b12c0f",
-    "04e365a819c107a124d380810bd62ff8f15ab6c036636d4b081c5b725adebc3a"
-   ],
-   "purgeTouched": true
-  },
-  "RM_Plant_Thumbstalk": {
-   "at": "2026-10-06T03:20:10.137Z",
-   "decidedAt": "2026-10-06T03:20:04.804Z",
-   "decision": "B",
-   "note": "add variations",
-   "picks": {
-    "_byname": "B"
-   },
-   "prefill": "A",
-   "purge": [
-    "bf9373f689fdb2913e30e005cbd8cef2bd1d99d3567d40a5fb6160f61e827ea8"
-   ],
-   "purgeTouched": true
-  },
-  "RM_Titanoslime": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  }
- },
- "posture": "pick-one",
- "reviewStatus": {
-  "at": "2026-10-05T20:21:00-0700",
-  "by": "owner (Lukas)",
-  "evidence": "sidecar savedBy review-sheet-sidecar, writeCount 15, savedAt 2026-10-05T20:20:10-0700; 8 decided rows carry an owner 'at' stamp (4 untouched prefill A accepted); owner typed 'Slime sheet done' (BENCH relay)",
-  "state": "ruled"
- },
- "savedAt": "2026-10-05T20:20:10-0700",
- "savedBy": "review-sheet-sidecar",
- "sheetId": "gelatinousslime_sheet_2026-10-05",
- "snapshot": "infrastructure/state/art/sheets/gelatinousslime_sheet_2026-10-05.snapshot.json",
- "snapshotId": "a9b381d8897cf9b5",
- "writeCount": 15
+  "savedAt": "2026-10-05T20:20:10-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "gelatinousslime_sheet_2026-10-05",
+  "snapshot": "infrastructure/state/art/sheets/gelatinousslime_sheet_2026-10-05.snapshot.json",
+  "snapshotId": "a9b381d8897cf9b5",
+  "writeCount": 15
 }

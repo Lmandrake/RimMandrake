@@ -1,60 +1,96 @@
 {
- "biome": "RM_NightsideIce",
- "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
- "decidedCount": 4,
- "decisions": {
-  "AA_ShockGoat": {
-   "at": "2026-10-06T02:03:29.851Z",
-   "decidedAt": "2026-10-06T02:03:21.972Z",
-   "decision": "redo",
-   "note": "More alien, less goat like. Look at donor art closely. ",
-   "prefill": "A"
+  "biome": "RM_NightsideIce",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 4,
+  "decisions": {
+    "AA_ShockGoat": {
+      "at": "2026-10-06T02:03:29.851Z",
+      "decidedAt": "2026-10-06T02:03:21.972Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T02:03:29.851Z",
+          "followed_by": [
+            "nightsideice_shockgoat_v1_east",
+            "nightsideice_shockgoat_v1_north",
+            "nightsideice_shockgoat_v1_south"
+          ],
+          "note": "More alien, less goat like. Look at donor art closely. ",
+          "when": "2026-10-09T01:20:35-0700"
+        }
+      ],
+      "prefill": "A"
+    },
+    "RSW_CaveLemming": {
+      "at": "2026-10-06T02:03:15.126Z",
+      "decidedAt": "2026-10-06T02:02:46.346Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T02:03:15.126Z",
+          "followed_by": [
+            "nightsideice_cavelemming_v1_east",
+            "nightsideice_cavelemming_v1_north",
+            "nightsideice_cavelemming_v1_south"
+          ],
+          "note": "Make it small, silkily furred, with long flowing tassles of silky fur trailing behind it in an alien manner.",
+          "when": "2026-10-09T01:20:35-0700"
+        }
+      ],
+      "prefill": "A",
+      "purge": [
+        "bd446d6bce804db2673b57b6c164bce5018f1444c2bf261e0b54834e26a5cc6b",
+        "9acaf96bc5dc1d938bde54e2eb673c32b5d0633864617f9cfdf7898ec263db54",
+        "b9f6559efb95f15fead851773008793243d820c9d123a7792bca283bf60d1b75"
+      ],
+      "purgeTouched": true
+    },
+    "RSW_Wampa": {
+      "at": "2026-10-06T02:02:33.683Z",
+      "decidedAt": "2026-10-06T02:02:33.683Z",
+      "decision": "B",
+      "note": "",
+      "picks": {
+        "swanimals/Wampa/Wampa_j": "C"
+      },
+      "prefill": "A"
+    },
+    "Tauntaun": {
+      "at": "2026-10-06T02:03:56.593Z",
+      "decidedAt": "2026-10-06T02:03:39.311Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T02:03:56.593Z",
+          "followed_by": [
+            "nightsideice_tauntaun_v1_east",
+            "nightsideice_tauntaun_v1_north",
+            "nightsideice_tauntaun_v1_south"
+          ],
+          "note": "Follow the canon art CLOSELY.",
+          "when": "2026-10-09T01:20:35-0700"
+        }
+      ],
+      "picks": {
+        "swanimals/Tauntaun/Tauntaun_j": "C"
+      },
+      "prefill": "A"
+    }
   },
-  "RSW_CaveLemming": {
-   "at": "2026-10-06T02:03:15.126Z",
-   "decidedAt": "2026-10-06T02:02:46.346Z",
-   "decision": "redo",
-   "note": "Make it small, silkily furred, with long flowing tassles of silky fur trailing behind it in an alien manner.",
-   "prefill": "A",
-   "purge": [
-    "bd446d6bce804db2673b57b6c164bce5018f1444c2bf261e0b54834e26a5cc6b",
-    "9acaf96bc5dc1d938bde54e2eb673c32b5d0633864617f9cfdf7898ec263db54",
-    "b9f6559efb95f15fead851773008793243d820c9d123a7792bca283bf60d1b75"
-   ],
-   "purgeTouched": true
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": "2026-10-05T19:10:00-0700",
+    "by": "owner (Lukas)",
+    "evidence": "sidecar savedBy review-sheet-sidecar, writeCount 14, savedAt 2026-10-05T19:03:57-0700; 4 of 4 decided rows carry an owner 'at' stamp; owner typed 'the sleeping ice sheet is done' (BENCH relay)",
+    "state": "ruled"
   },
-  "RSW_Wampa": {
-   "at": "2026-10-06T02:02:33.683Z",
-   "decidedAt": "2026-10-06T02:02:33.683Z",
-   "decision": "B",
-   "note": "",
-   "picks": {
-    "swanimals/Wampa/Wampa_j": "C"
-   },
-   "prefill": "A"
-  },
-  "Tauntaun": {
-   "at": "2026-10-06T02:03:56.593Z",
-   "decidedAt": "2026-10-06T02:03:39.311Z",
-   "decision": "redo",
-   "note": "Follow the canon art CLOSELY.",
-   "picks": {
-    "swanimals/Tauntaun/Tauntaun_j": "C"
-   },
-   "prefill": "A"
-  }
- },
- "posture": "pick-one",
- "reviewStatus": {
-  "at": "2026-10-05T19:10:00-0700",
-  "by": "owner (Lukas)",
-  "evidence": "sidecar savedBy review-sheet-sidecar, writeCount 14, savedAt 2026-10-05T19:03:57-0700; 4 of 4 decided rows carry an owner 'at' stamp; owner typed 'the sleeping ice sheet is done' (BENCH relay)",
-  "state": "ruled"
- },
- "savedAt": "2026-10-05T19:03:57-0700",
- "savedBy": "review-sheet-sidecar",
- "sheetId": "nightsideice_sheet_2026-10-05",
- "snapshot": "infrastructure/state/art/sheets/nightsideice_sheet_2026-10-05.snapshot.json",
- "snapshotId": "5d9f13d8190e2ea6",
- "writeCount": 14
+  "savedAt": "2026-10-05T19:03:57-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "nightsideice_sheet_2026-10-05",
+  "snapshot": "infrastructure/state/art/sheets/nightsideice_sheet_2026-10-05.snapshot.json",
+  "snapshotId": "5d9f13d8190e2ea6",
+  "writeCount": 14
 }

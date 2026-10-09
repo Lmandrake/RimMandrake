@@ -7,7 +7,17 @@
       "at": "2026-10-08T03:45:19.380Z",
       "decidedAt": "2026-10-08T03:44:00.201Z",
       "decision": "B",
-      "note": "Rename the Fermatalis. Keep the mechanic. Rewrite the description. A significant creature for Star Wars Cuisine: it induces fermentation of almost anything and massively accelerates it. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:45:19.380Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Rename the Fermatalis. Keep the mechanic. Rewrite the description. A significant creature for Star Wars Cuisine: it induces fermentation of almost anything and massively accelerates it. ",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -23,7 +33,19 @@
       "at": "2026-10-08T03:49:08.929Z",
       "decidedAt": "2026-10-08T03:48:57.811Z",
       "decision": "redo",
-      "note": "Rename Siezer. Make it have a MASSIVE head half the size of its relatively reduced body. Do not make it an alligator, more like a toothy lock-jawed whale with flippers that pushes itself through the mud. Avoid crocodile or aligator! Make it alien. Try again. Ignore the special toxin/disease stuff.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:49:08.929Z",
+          "followed_by": [
+            "miasma_siezer_v1_east",
+            "miasma_siezer_v1_north",
+            "miasma_siezer_v1_south"
+          ],
+          "note": "Rename Siezer. Make it have a MASSIVE head half the size of its relatively reduced body. Do not make it an alligator, more like a toothy lock-jawed whale with flippers that pushes itself through the mud. Avoid crocodile or aligator! Make it alien. Try again. Ignore the special toxin/disease stuff.",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "570aa3b9f4ab75df14f9accfbad24d5970ed1067745e453591487a850293617e",
@@ -60,7 +82,22 @@
       "at": "2026-10-08T03:51:24.071Z",
       "decidedAt": "2026-10-08T03:49:47.096Z",
       "decision": "E",
-      "note": "Based on E, regenerate ALL art for this. A terrifying single-mouthed thing with fang-like thorns around its mouth, no arms, root-like lets pulling itself along hungrily. Needs both calm, closed-mouth, sessile-like imagery with head hung like a ripe pod... and then that same pod reared up horrifying into a huge gaping maw and actively writing tentacles. Totally rewrite description. Rename it as a Lastvine.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:51:24.071Z",
+          "followed_by": [
+            "miasma_lastvine_calm_v1_east",
+            "miasma_lastvine_calm_v1_north",
+            "miasma_lastvine_calm_v1_south",
+            "miasma_lastvine_reared_v1_east",
+            "miasma_lastvine_reared_v1_north",
+            "miasma_lastvine_reared_v1_south"
+          ],
+          "note": "Based on E, regenerate ALL art for this. A terrifying single-mouthed thing with fang-like thorns around its mouth, no arms, root-like lets pulling itself along hungrily. Needs both calm, closed-mouth, sessile-like imagery with head hung like a ripe pod... and then that same pod reared up horrifying into a huge gaping maw and actively writing tentacles. Totally rewrite description. Rename it as a Lastvine.",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "59a2c8a46e141443c9c041a8cce36f63f9ce2b0efa9a71a562b55cd8ea5c53ca",
@@ -112,7 +149,17 @@
       "at": "2026-10-08T03:53:47.528Z",
       "decidedAt": "2026-10-08T03:53:44.781Z",
       "decision": "hold",
-      "note": "cut from this biome",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:53:47.528Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "cut from this biome",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -140,7 +187,17 @@
       "at": "2026-10-08T03:59:36.222Z",
       "decidedAt": "2026-10-08T03:59:32.645Z",
       "decision": "redo",
-      "note": "less cartoon like",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:59:36.222Z",
+          "followed_by": [
+            "miasma_aphreen_v2"
+          ],
+          "note": "less cartoon like",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -165,7 +222,18 @@
       "at": "2026-10-08T03:59:51.015Z",
       "decidedAt": "2026-10-08T03:59:47.095Z",
       "decision": "redo",
-      "note": "less cartoonish",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:59:51.015Z",
+          "followed_by": [
+            "miasma_braskeen_closed_v2",
+            "miasma_braskeen_open_v2"
+          ],
+          "note": "less cartoonish",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -270,7 +338,18 @@
     "RM_Nogtyl": {
       "at": "2026-10-08T04:01:04.746Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:01:04.746Z",
+          "followed_by": [
+            "miasma_nogtyl_varb_v1",
+            "miasma_nogtyl_varc_v1"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [],
       "variantsDefault": true
@@ -278,7 +357,18 @@
     "RM_Nyssolet": {
       "at": "2026-10-08T04:00:56.430Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:00:56.430Z",
+          "followed_by": [
+            "miasma_nyssolet_varb_v1",
+            "miasma_nyssolet_varc_v1"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -299,7 +389,19 @@
       "at": "2026-10-08T04:01:33.281Z",
       "decidedAt": "2026-10-08T04:01:20.990Z",
       "decision": "redo",
-      "note": "Too plain, more alien swamp, add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:01:33.281Z",
+          "followed_by": [
+            "miasma_ommolyn_v2a",
+            "miasma_ommolyn_v2b",
+            "miasma_ommolyn_v2c"
+          ],
+          "note": "Too plain, more alien swamp, add variants",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -309,7 +411,18 @@
     "RM_Pallasheen": {
       "at": "2026-10-08T04:01:37.533Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:01:37.533Z",
+          "followed_by": [
+            "miasma_pallasheen_varb_v1",
+            "miasma_pallasheen_varc_v1"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -334,7 +447,18 @@
     "RM_Sarrash": {
       "at": "2026-10-08T04:01:43.734Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:01:43.734Z",
+          "followed_by": [
+            "miasma_sarrash_varb_v1",
+            "miasma_sarrash_varc_v1"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -349,7 +473,17 @@
     "RM_SiltLampreyJuv": {
       "at": "2026-10-08T03:59:08.557Z",
       "decision": "A",
-      "note": "Rename a Gillclamper, redo description.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:59:08.557Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Rename a Gillclamper, redo description.",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -359,7 +493,18 @@
     "RM_Thessamor": {
       "at": "2026-10-08T04:01:54.845Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:01:54.845Z",
+          "followed_by": [
+            "miasma_thessamor_varb_v1",
+            "miasma_thessamor_varc_v1"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -374,7 +519,18 @@
     "RM_Thrannock": {
       "at": "2026-10-08T04:02:00.826Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:02:00.826Z",
+          "followed_by": [
+            "miasma_thrannock_varb_v1",
+            "miasma_thrannock_varc_v1"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -384,7 +540,18 @@
     "RM_Ullavess": {
       "at": "2026-10-08T04:02:03.445Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:02:03.445Z",
+          "followed_by": [
+            "miasma_ullavess_varb_v1",
+            "miasma_ullavess_varc_v1"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -394,7 +561,18 @@
     "RM_Vellamine": {
       "at": "2026-10-08T04:02:05.857Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:02:05.857Z",
+          "followed_by": [
+            "miasma_vellamine_varb_v1",
+            "miasma_vellamine_varc_v1"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -405,7 +583,19 @@
       "at": "2026-10-08T04:02:16.334Z",
       "decidedAt": "2026-10-08T04:02:09.932Z",
       "decision": "redo",
-      "note": "too simple, try again, add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:02:16.334Z",
+          "followed_by": [
+            "miasma_velluric_v2a",
+            "miasma_velluric_v2b",
+            "miasma_velluric_v2c"
+          ],
+          "note": "too simple, try again, add variants",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -415,7 +605,18 @@
     "RM_Wessaline": {
       "at": "2026-10-08T04:02:23.973Z",
       "decision": "A",
-      "note": "add variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:02:23.973Z",
+          "followed_by": [
+            "miasma_wessaline_varb_v1",
+            "miasma_wessaline_varc_v1"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -522,7 +723,19 @@
       "at": "2026-10-08T03:56:59.656Z",
       "decidedAt": "2026-10-08T03:56:56.088Z",
       "decision": "redo",
-      "note": "follow canon precisely",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:56:59.656Z",
+          "followed_by": [
+            "miasma_canon_laajuv_v2_east",
+            "miasma_canon_laajuv_v2_north",
+            "miasma_canon_laajuv_v2_south"
+          ],
+          "note": "follow canon precisely",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -553,7 +766,19 @@
       "at": "2026-10-08T03:54:43.202Z",
       "decidedAt": "2026-10-08T03:54:36.863Z",
       "decision": "redo",
-      "note": "Follow canon image precisely",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:54:43.202Z",
+          "followed_by": [
+            "miasma_canon_opeejuv_v1_east",
+            "miasma_canon_opeejuv_v2_north",
+            "miasma_canon_opeejuv_v2_south"
+          ],
+          "note": "Follow canon image precisely",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -564,7 +789,19 @@
       "at": "2026-10-08T03:52:41.271Z",
       "decidedAt": "2026-10-08T03:51:55.939Z",
       "decision": "redo",
-      "note": "Rename to Hell's Lantern. Venomous and slow. Redo description and art.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:52:41.271Z",
+          "followed_by": [
+            "miasma_hellslantern_v1_east",
+            "miasma_hellslantern_v1_north",
+            "miasma_hellslantern_v1_south"
+          ],
+          "note": "Rename to Hell's Lantern. Venomous and slow. Redo description and art.",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -585,7 +822,17 @@
       "at": "2026-10-08T03:58:29.638Z",
       "decidedAt": "2026-10-08T03:58:26.906Z",
       "decision": "hold",
-      "note": "not SW tier",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:58:29.638Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "not SW tier",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -624,7 +871,19 @@
       "at": "2026-10-08T03:56:31.693Z",
       "decidedAt": "2026-10-08T03:56:16.526Z",
       "decision": "redo",
-      "note": "Follow canon precisely.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:56:31.693Z",
+          "followed_by": [
+            "miasma_canon_vornskyr_v2_east",
+            "miasma_canon_vornskyr_v2_north",
+            "miasma_canon_vornskyr_v2_south"
+          ],
+          "note": "Follow canon precisely.",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "9ab9b55048bab254edb252697db9bff742606bff5011e6badf2316f2a311fe17",
@@ -657,7 +916,19 @@
       "at": "2026-10-08T03:57:17.769Z",
       "decidedAt": "2026-10-08T03:57:11.007Z",
       "decision": "redo",
-      "note": "follow purple canon precisely",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:57:17.769Z",
+          "followed_by": [
+            "miasma_canon_yobshrimpjuv_v1_east",
+            "miasma_canon_yobshrimpjuv_v1_north",
+            "miasma_canon_yobshrimpjuv_v2_south"
+          ],
+          "note": "follow purple canon precisely",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -668,7 +939,19 @@
       "at": "2026-10-08T03:58:02.898Z",
       "decidedAt": "2026-10-08T03:57:58.872Z",
       "decision": "redo",
-      "note": "follow red canon precisely",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:58:02.898Z",
+          "followed_by": [
+            "miasma_canon_zakkeg_v2_east",
+            "miasma_canon_zakkeg_v2_north",
+            "miasma_canon_zakkeg_v2_south"
+          ],
+          "note": "follow red canon precisely",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "3e8f3a5b7d85896128f646853cca4efc3035e92d9ef78d47d1a8c1aa8a618a1b",
@@ -693,7 +976,17 @@
       "at": "2026-10-08T03:41:51.341Z",
       "decidedAt": "2026-10-08T03:41:28.247Z",
       "decision": "B",
-      "note": "Picture good, rewrite the description please and rename. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:41:51.341Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Picture good, rewrite the description please and rename. ",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -704,7 +997,19 @@
       "at": "2026-10-08T03:55:02.659Z",
       "decidedAt": "2026-10-08T03:54:53.044Z",
       "decision": "redo",
-      "note": "I like the bulbous butt, but make it sickly green please",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T03:55:02.659Z",
+          "followed_by": [
+            "miasma_swarmling_green_v2_south",
+            "miasma_swarmling_green_v2_east",
+            "miasma_swarmling_green_v2_north"
+          ],
+          "note": "I like the bulbous butt, but make it sickly green please",
+          "when": "2026-10-09T01:20:26-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"

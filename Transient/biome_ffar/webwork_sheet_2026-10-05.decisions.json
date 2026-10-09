@@ -32,7 +32,17 @@
       "at": "2026-10-07T14:21:20.144Z",
       "decidedAt": "2026-10-07T14:20:16.404Z",
       "decision": "redo",
-      "note": "No viable art, try again. A strangely stubby trunk with almost translucent bladders for water, with swirls of spiral-like leaves hanging down like a willow from above in a great cataphony of differing greens. Thick, mangrove-like roots.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:21:20.144Z",
+          "followed_by": [
+            "webwork_brimlock_redo_v2"
+          ],
+          "note": "No viable art, try again. A strangely stubby trunk with almost translucent bladders for water, with swirls of spiral-like leaves hanging down like a willow from above in a great cataphony of differing greens. Thick, mangrove-like roots.",
+          "when": "2026-10-09T01:21:49-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
@@ -45,7 +55,17 @@
       "at": "2026-10-07T14:15:12.356Z",
       "decidedAt": "2026-10-07T14:14:19.662Z",
       "decision": "B",
-      "note": "Needs regen of the East facing",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:15:12.356Z",
+          "followed_by": [
+            "webwork_cravvet_east_regen_v3_east"
+          ],
+          "note": "Needs regen of the East facing",
+          "when": "2026-10-09T01:21:49-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "164c8ac583bc5a8a9e41e5c25ea6c99d610e07f3ebdc403248b2b04964ecc342"
@@ -60,7 +80,17 @@
       "at": "2026-10-07T14:22:27.113Z",
       "decidedAt": "2026-10-07T14:21:51.846Z",
       "decision": "redo",
-      "note": "Huge flat leaves held up high on stilt-like stems. Like lilly pads grown straight up out of the ground above you to the scale of a tree. Make it twice as big.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:22:27.113Z",
+          "followed_by": [
+            "webwork_dulloth_redo_v2"
+          ],
+          "note": "Huge flat leaves held up high on stilt-like stems. Like lilly pads grown straight up out of the ground above you to the scale of a tree. Make it twice as big.",
+          "when": "2026-10-09T01:21:49-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },
@@ -100,7 +130,17 @@
       "at": "2026-10-07T14:24:12.891Z",
       "decidedAt": "2026-10-07T14:23:21.874Z",
       "decision": "redo",
-      "note": "Make this much richer and less cartoonish. Eager, visceral flytrap-like mouths, one shown already fed, on muscular stalks. Streaked with dull red in a few places.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:24:12.891Z",
+          "followed_by": [
+            "webwork_kessaroth_redo_v2"
+          ],
+          "note": "Make this much richer and less cartoonish. Eager, visceral flytrap-like mouths, one shown already fed, on muscular stalks. Streaked with dull red in a few places.",
+          "when": "2026-10-09T01:21:49-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
@@ -115,7 +155,19 @@
       "at": "2026-10-07T14:25:10.696Z",
       "decidedAt": "2026-10-07T14:24:27.340Z",
       "decision": "redo",
-      "note": "Much more realistic, this is a big graphic. Variants please. Read the description. Make it 50% bigger.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:25:10.696Z",
+          "followed_by": [
+            "webwork_kollavane_redo_v2a",
+            "webwork_kollavane_redo_v2b",
+            "webwork_kollavane_redo_v2c"
+          ],
+          "note": "Much more realistic, this is a big graphic. Variants please. Read the description. Make it 50% bigger.",
+          "when": "2026-10-09T01:21:49-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },
@@ -129,7 +181,19 @@
       "at": "2026-10-07T14:26:13.160Z",
       "decidedAt": "2026-10-07T14:25:31.440Z",
       "decision": "B",
-      "note": "Make this twice as big and DANGEROUS. Redo to be less cartoonish. Variants. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:26:13.160Z",
+          "followed_by": [
+            "webwork_norrveth_redo_v2a",
+            "webwork_norrveth_redo_v2b",
+            "webwork_norrveth_redo_v2c"
+          ],
+          "note": "Make this twice as big and DANGEROUS. Redo to be less cartoonish. Variants. ",
+          "when": "2026-10-09T01:21:49-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -151,7 +215,17 @@
       "at": "2026-10-07T14:29:01.457Z",
       "decidedAt": "2026-10-07T14:28:29.027Z",
       "decision": "redo",
-      "note": "This needs a full redo. Small graveyard-like flowers meant to be a sober ceremony to the death of this biome. No need for new state machine building.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:29:01.457Z",
+          "followed_by": [
+            "webwork_pellareth_redo_v2"
+          ],
+          "note": "This needs a full redo. Small graveyard-like flowers meant to be a sober ceremony to the death of this biome. No need for new state machine building.",
+          "when": "2026-10-09T01:21:49-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },
@@ -214,7 +288,19 @@
       "at": "2026-10-07T14:18:48.156Z",
       "decidedAt": "2026-10-07T14:18:03.559Z",
       "decision": "redo",
-      "note": "Keep this aesthetic: an awkward, nervous, bone-pale runner on stilt legs (only two) with eerily long very thin arms. Keep the strange almost elopee head you have here. Keep the alien vibe. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:18:48.156Z",
+          "followed_by": [
+            "webwork_skennet_redo_v3_east",
+            "webwork_skennet_redo_v3_north",
+            "webwork_skennet_redo_v3_south"
+          ],
+          "note": "Keep this aesthetic: an awkward, nervous, bone-pale runner on stilt legs (only two) with eerily long very thin arms. Keep the strange almost elopee head you have here. Keep the alien vibe. ",
+          "when": "2026-10-09T01:21:49-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "2a343638d43a1f9d5bc58e635a17dc2e93df3b2464466aaf2e34f8aaf6ef6663",
@@ -273,7 +359,17 @@
       "at": "2026-10-07T14:33:20.521Z",
       "decidedAt": "2026-10-07T14:33:14.863Z",
       "decision": "redo",
-      "note": "More realistic, less cartoonish",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:33:20.521Z",
+          "followed_by": [
+            "webwork_varrisk_redo_v2"
+          ],
+          "note": "More realistic, less cartoonish",
+          "when": "2026-10-09T01:21:49-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -284,7 +380,19 @@
       "at": "2026-10-07T14:19:44.935Z",
       "decidedAt": "2026-10-07T14:18:54.899Z",
       "decision": "B",
-      "note": "Regenerate to focus as a line of little creatures as you have in the North facing. But make them mite-orange.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:19:44.935Z",
+          "followed_by": [
+            "webwork_vennick_redo_v3_east",
+            "webwork_vennick_redo_v3_north",
+            "webwork_vennick_redo_v3_south"
+          ],
+          "note": "Regenerate to focus as a line of little creatures as you have in the North facing. But make them mite-orange.",
+          "when": "2026-10-09T01:21:49-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"

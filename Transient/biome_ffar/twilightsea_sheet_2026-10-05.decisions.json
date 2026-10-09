@@ -1,618 +1,688 @@
 {
- "biome": "RM_TwilightSea",
- "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
- "decidedCount": 34,
- "decisions": {
-  "AA_Aerofleet": {
-   "at": "2026-10-07T13:50:08.362Z",
-   "decidedAt": "2026-10-07T13:50:08.362Z",
-   "decision": "B",
-   "note": "",
-   "prefill": "A",
-   "variants": [
-    "B"
-   ],
-   "variantsDefault": true
+  "biome": "RM_TwilightSea",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 34,
+  "decisions": {
+    "AA_Aerofleet": {
+      "at": "2026-10-07T13:50:08.362Z",
+      "decidedAt": "2026-10-07T13:50:08.362Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Aluun": {
+      "at": "2026-10-07T13:51:00.963Z",
+      "decidedAt": "2026-10-07T13:51:00.963Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-07T13:50:32.846Z"
+    },
+    "RM_AluunCatch": {
+      "at": "2026-10-07T14:09:02.170Z",
+      "decidedAt": "2026-10-07T14:09:02.170Z",
+      "decision": "C",
+      "note": "",
+      "picks": {
+        "_byname": "C"
+      },
+      "prefill": "A",
+      "variants": [
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-07T14:08:58.462Z"
+    },
+    "RM_DancingSkresh": {
+      "at": "2026-10-07T13:57:34.547Z",
+      "carriedAt": "2026-10-07",
+      "carriedBy": "BENCH helper: renamed/moved row (owner note: \"The existing (B) render should be made into its own new creature: The Dancing Skresh\")",
+      "carriedFrom": "RM_Hollu",
+      "decidedAt": "2026-10-07T13:54:23.985Z",
+      "decision": "A",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T13:57:34.547Z",
+          "followed_by": [
+            "twilightsea_hollu_redo_v3_east",
+            "twilightsea_hollu_redo_v3_north",
+            "twilightsea_hollu_redo_v3_south"
+          ],
+          "note": "No. The existing (B) render should be made into its own new creature: The Dancing Skresh, new description. But this Hollu is supposed to be a section of almost stained glass-like waveglass, the beautifully colored transparent organism that covers much of the topside ocean. It is a curved-in piece of this sheet in its final life stage.",
+          "when": "2026-10-09T01:21:31-0700"
+        }
+      ]
+    },
+    "RM_GrippingTerror": {
+      "at": "2026-10-06T03:52:23.384Z",
+      "carriedAt": "2026-10-07",
+      "carriedBy": "BENCH helper: renamed/moved row (owner note: \"Rename this to the Gripping Terror and move it to the Twilight Sea\")",
+      "carriedFrom": "RSW_ElderSando on thescald_sheet_2026-10-05",
+      "decidedAt": "2026-10-06T03:51:49.515Z",
+      "decision": "A",
+      "note": "Rename this to the Gripping Terror and move it to the Twilight Sea. It does not belong in the Scald. RimMandrake tier. "
+    },
+    "RM_Hollu": {
+      "at": "2026-10-07T13:57:34.547Z",
+      "decidedAt": "2026-10-07T13:54:23.985Z",
+      "decision": "B",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T13:57:34.547Z",
+          "followed_by": [
+            "twilightsea_hollu_redo_v3_east",
+            "twilightsea_hollu_redo_v3_north",
+            "twilightsea_hollu_redo_v3_south"
+          ],
+          "note": "No. The existing (B) render should be made into its own new creature: The Dancing Skresh, new description. But this Hollu is supposed to be a section of almost stained glass-like waveglass, the beautifully colored transparent organism that covers much of the topside ocean. It is a curved-in piece of this sheet in its final life stage.",
+          "when": "2026-10-09T01:21:31-0700"
+        }
+      ],
+      "prefill": "A",
+      "purge": [
+        "5bdbedfd4adcfae2040ddb80803e0d1b16b479c115927179e9d47ed5710fea3e",
+        "aa3ee7b59ba2a46649d550d9de6270e2db113674dde93e147158050fcb540027",
+        "38823bb69505fa9ddfd8e27ea4fb1c5d580723d81cc442a21729129354cea015",
+        "6c9626f9fbc6dc4d4bb510223060a494cc61c4198c4548bfe8d1f6f4b06d593e"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T13:57:34.547Z"
+    },
+    "RM_HolluCatch": {
+      "agentInference": {
+        "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
+        "basis": "catch is the same species as RM_Hollu; RM_Hollu picked B -> Dancing Skresh; Hollu itself redone as waveglass; column redo is the same render family",
+        "by": "agent (BENCH)",
+        "not_owner_ruling": true,
+        "pick": "redo"
+      },
+      "at": "2026-10-07T14:09:52.045Z",
+      "decision": "redo",
+      "note": "See related notes above.",
+      "prefill": "A",
+      "prefillDecision": "A",
+      "purge": [
+        "2dfa2bc60692842ed2bb54dbede9d1c63e52ca25956b216836287fce1139296a"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-07T14:09:52.045Z"
+    },
+    "RM_HoolimbrePlant": {
+      "at": "2026-10-07T14:05:45.904Z",
+      "decidedAt": "2026-10-07T14:05:45.904Z",
+      "decision": "B",
+      "note": "",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:05:19.174Z"
+    },
+    "RM_Kellu": {
+      "at": "2026-10-07T13:57:23.566Z",
+      "decidedAt": "2026-10-07T13:57:13.072Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "D"
+      ],
+      "variantsAt": "2026-10-07T13:57:23.566Z"
+    },
+    "RM_KelluCatch": {
+      "agentInference": {
+        "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
+        "basis": "catch is the same species as RM_Kellu; RM_Kellu picked B; column D is the same render family",
+        "by": "agent (BENCH)",
+        "not_owner_ruling": true,
+        "pick": "D"
+      },
+      "at": "2026-10-07T14:09:50.044Z",
+      "cardRuling": {
+        "at": "2026-10-07T15:05:00-0700",
+        "by": "owner",
+        "note": "Ratifies the agent inference; not an owner quote.",
+        "pick": "D",
+        "via": "decision taken by question card"
+      },
+      "decision": "D",
+      "note": "see related notes above",
+      "prefill": "A",
+      "prefillDecision": "A",
+      "variants": [
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-07T14:09:50.044Z"
+    },
+    "RM_Lanternwhale": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Liiru": {
+      "at": "2026-10-07T13:58:05.487Z",
+      "decidedAt": "2026-10-07T13:57:55.417Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "D"
+      ],
+      "variantsAt": "2026-10-07T13:58:05.487Z"
+    },
+    "RM_LiiruCatch": {
+      "agentInference": {
+        "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
+        "basis": "catch is the same species as RM_Liiru; RM_Liiru picked B; column D is the same render family",
+        "by": "agent (BENCH)",
+        "not_owner_ruling": true,
+        "pick": "D"
+      },
+      "at": "2026-10-07T14:09:48.473Z",
+      "cardRuling": {
+        "at": "2026-10-07T15:05:00-0700",
+        "by": "owner",
+        "note": "Ratifies the agent inference; not an owner quote.",
+        "pick": "D",
+        "via": "decision taken by question card"
+      },
+      "decision": "D",
+      "note": "see related notes above",
+      "prefill": "A",
+      "prefillDecision": "A",
+      "variants": [
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-07T14:09:48.473Z"
+    },
+    "RM_Loohn": {
+      "at": "2026-10-07T13:58:28.779Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "C"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Lunoowa": {
+      "at": "2026-10-07T14:00:08.976Z",
+      "decidedAt": "2026-10-07T13:59:14.522Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:00:08.976Z",
+          "followed_by": [
+            "twilightsea_lunoowa_redo_v1_east",
+            "twilightsea_lunoowa_redo_v1_north",
+            "twilightsea_lunoowa_redo_v1_south"
+          ],
+          "note": "Supposed to be beautiful multihued waveglass-sheet-like object with trailing filaments, drifting like a bottom dweller... no legs.",
+          "when": "2026-10-09T01:21:31-0700"
+        }
+      ],
+      "prefill": "A",
+      "purge": [
+        "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
+        "e9546fb2d655fcc8fbf9d0460a66e441392772c48b1042522a413d4aed029e6d",
+        "7e4dcc9b12fd6479269001510d53a2d2e0058828cd24a67e5662f7a8178d8a57",
+        "077c92d255c5b7cdb110e59a9eca7e567c8844b43f2ee08d3d4c4b61a0c5886d"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-07T14:00:03.773Z"
+    },
+    "RM_Murrol": {
+      "at": "2026-10-07T14:01:25.550Z",
+      "decidedAt": "2026-10-07T14:01:15.729Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "55bae416cb7777a8751b0481123ca08fd92d6abc05f7d0624b0ab1a01731a67c",
+        "e3003ab20638c8d281b2198db6a749c5a3a40da03972badfad759386a33d58fc",
+        "cc458c0d2bb8e1fe27ce0118ffa9551c3ee0b7eee8b4cd578b397f0b47490bf2",
+        "a625dd504fb2b631be883c220ce392ad77a3d5a488757a0848fdef706c213a19"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:01:25.550Z"
+    },
+    "RM_MurrolCatch": {
+      "agentInference": {
+        "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
+        "basis": "catch is the same species as RM_Murrol; RM_Murrol picked B; column D is the same render family",
+        "by": "agent (BENCH)",
+        "not_owner_ruling": true,
+        "pick": "D"
+      },
+      "at": "2026-10-07T14:09:46.719Z",
+      "cardRuling": {
+        "at": "2026-10-07T15:05:00-0700",
+        "by": "owner",
+        "note": "Ratifies the agent inference; not an owner quote.",
+        "pick": "D",
+        "via": "decision taken by question card"
+      },
+      "decision": "D",
+      "note": "see related notes above",
+      "prefill": "A",
+      "prefillDecision": "A",
+      "variants": [
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-07T14:09:46.719Z"
+    },
+    "RM_Niim": {
+      "at": "2026-10-07T14:02:10.588Z",
+      "decidedAt": "2026-10-07T14:01:42.990Z",
+      "decision": "B",
+      "note": "Old art (a) can be kept for fishing elsewhere, but (B) belongs here now.",
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:02:10.588Z"
+    },
+    "RM_NiimCatch": {
+      "agentInference": {
+        "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
+        "basis": "catch is the same species as RM_Niim; RM_Niim picked B; column D is the same render family",
+        "by": "agent (BENCH)",
+        "not_owner_ruling": true,
+        "pick": "D"
+      },
+      "at": "2026-10-07T14:10:15.926Z",
+      "cardRuling": {
+        "at": "2026-10-07T15:05:00-0700",
+        "by": "owner",
+        "note": "Ratifies the agent inference; not an owner quote.",
+        "pick": "D",
+        "via": "decision taken by question card"
+      },
+      "decision": "D",
+      "note": "see notes above",
+      "prefill": "A",
+      "prefillDecision": "A",
+      "variants": [
+        "A",
+        "C",
+        "D"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Noolim": {
+      "at": "2026-10-07T14:02:29.867Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "C"
+      ],
+      "variantsDefault": true
+    },
+    "RM_NoolimCatch": {
+      "at": "2026-10-07T14:10:39.886Z",
+      "decidedAt": "2026-10-07T14:10:39.886Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "954fbe4a974a41ded512cbf81f3c1ea8069040cd4208c6f6ee77fc72e52ca69f"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-07T14:10:29.673Z"
+    },
+    "RM_NoothelmPlant": {
+      "at": "2026-10-07T14:07:20.406Z",
+      "decidedAt": "2026-10-07T14:06:09.438Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:07:20.406Z",
+          "followed_by": [
+            "twilightsea_noothelm_redo_v1_south"
+          ],
+          "note": "Needs to look like seaweed growing a single golden bulb. But keep art (b) for a new plant in the Sump. It's pretty. Make something new with Star Wars cuisine implications.",
+          "when": "2026-10-09T01:21:31-0700"
+        }
+      ],
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "B"
+      ],
+      "variantsAt": "2026-10-07T14:05:37.801Z"
+    },
+    "RM_Nuudal": {
+      "at": "2026-10-07T14:03:03.128Z",
+      "decidedAt": "2026-10-07T14:02:57.346Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "9ad77b19928cec68514764457b1a8ff241d10c0b40466f32a19d9824958064e5"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsDefault": true
+    },
+    "RM_NuudalCatch": {
+      "at": "2026-10-07T14:10:53.088Z",
+      "decidedAt": "2026-10-07T14:10:53.088Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-07T14:10:48.490Z"
+    },
+    "RM_Oobo": {
+      "at": "2026-10-07T14:03:45.594Z",
+      "decidedAt": "2026-10-07T14:03:39.064Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "accd71f021bb2568ce16531581fb4d77a51ca1eb84e4b80a8474a4b4c611a4e8"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsDefault": true
+    },
+    "RM_OoboCatch": {
+      "agentInference": {
+        "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
+        "basis": "catch is the same species as RM_Oobo; RM_Oobo picked B; column D is the same render family",
+        "by": "agent (BENCH)",
+        "not_owner_ruling": true,
+        "pick": "D"
+      },
+      "at": "2026-10-07T14:10:59.562Z",
+      "cardRuling": {
+        "at": "2026-10-07T15:05:00-0700",
+        "by": "owner",
+        "note": "Ratifies the agent inference; not an owner quote.",
+        "pick": "D",
+        "via": "decision taken by question card"
+      },
+      "decision": "D",
+      "note": "",
+      "prefill": "A",
+      "prefillDecision": "A",
+      "variants": [
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-07T14:10:59.562Z"
+    },
+    "RM_Pallu": {
+      "at": "2026-10-07T14:04:06.802Z",
+      "decidedAt": "2026-10-07T14:04:01.783Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "40b271f052c558df343e5d39cab44c570bfd36189167df3bf1969001ff6ef823"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsDefault": true
+    },
+    "RM_PalluCatch": {
+      "agentInference": {
+        "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
+        "basis": "catch is the same species as RM_Pallu; RM_Pallu picked B; column D is the same render family",
+        "by": "agent (BENCH)",
+        "not_owner_ruling": true,
+        "pick": "D"
+      },
+      "at": "2026-10-07T14:11:16.483Z",
+      "cardRuling": {
+        "at": "2026-10-07T15:05:00-0700",
+        "by": "owner",
+        "note": "Ratifies the agent inference; not an owner quote.",
+        "pick": "D",
+        "via": "decision taken by question card"
+      },
+      "decision": "D",
+      "note": "",
+      "prefill": "A",
+      "prefillDecision": "A",
+      "variants": [
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-07T14:11:16.483Z"
+    },
+    "RM_SaltBladeTwilight": {
+      "at": "2026-10-07T14:08:41.604Z",
+      "decidedAt": "2026-10-07T14:07:55.164Z",
+      "decision": "B",
+      "note": "This sounds like something from the Grey sea, not twilight. Move it there, and change the description to be less solitary since there are many other things on the Grey sea floor.",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsDefault": true
+    },
+    "RM_Tikkarr": {
+      "at": "2026-10-07T14:04:29.936Z",
+      "decidedAt": "2026-10-07T14:04:29.936Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "420df41324d7b7afed7bbe55de141dfcc70725346223b2bbecdcd0617f42770f"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "B",
+        "D"
+      ],
+      "variantsDefault": true
+    },
+    "RM_TikkarrCatch": {
+      "agentInference": {
+        "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
+        "basis": "catch is the same species as RM_Tikkarr; RM_Tikkarr picked B; column D is the same render family",
+        "by": "agent (BENCH)",
+        "not_owner_ruling": true,
+        "pick": "D"
+      },
+      "at": "2026-10-07T14:11:26.058Z",
+      "cardRuling": {
+        "at": "2026-10-07T15:05:00-0700",
+        "by": "owner",
+        "note": "Ratifies the agent inference; not an owner quote.",
+        "pick": "D",
+        "via": "decision taken by question card"
+      },
+      "decision": "D",
+      "note": "",
+      "prefill": "A",
+      "prefillDecision": "A",
+      "variants": [
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-07T14:11:26.058Z"
+    },
+    "RM_Weloon": {
+      "at": "2026-10-07T14:04:40.501Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "C"
+      ],
+      "variantsDefault": true
+    },
+    "RM_WeloonCatch": {
+      "agentInference": {
+        "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
+        "basis": "catch is the same species as RM_Weloon; RM_Weloon picked A (kept, in game); column C is the same render family",
+        "by": "agent (BENCH)",
+        "not_owner_ruling": true,
+        "pick": "C"
+      },
+      "cardRuling": {
+        "at": "2026-10-07T15:05:00-0700",
+        "by": "owner",
+        "note": "Ratifies the agent inference; not an owner quote.",
+        "pick": "C",
+        "via": "decision taken by question card"
+      },
+      "decision": "C",
+      "note": "",
+      "prefill": "A",
+      "prefillDecision": "A"
+    },
+    "RSW_Faa": {
+      "at": "2026-10-07T13:54:14.732Z",
+      "decidedAt": "2026-10-07T13:51:33.605Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T13:54:14.732Z",
+          "followed_by": [
+            "twilightsea_faa_canon_redo_v1_east",
+            "twilightsea_faa_canon_redo_v1_north",
+            "twilightsea_faa_canon_redo_v1_south"
+          ],
+          "note": "Follow canon closely. However, existing fish images can be remade into a new fish: Scaa Lumsigh for fishing in the Greentide rivers. Move this image to that fishing source, then regen Faa scalefish according to canon",
+          "when": "2026-10-09T01:21:31-0700"
+        }
+      ],
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    },
+    "RSW_Lanternwhale": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RSW_Mee": {
+      "at": "2026-10-07T14:00:47.879Z",
+      "decidedAt": "2026-10-07T14:00:26.180Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:00:47.879Z",
+          "followed_by": [
+            "twilightsea_mee_canon_redo_v1_east",
+            "twilightsea_mee_canon_redo_v2_north",
+            "twilightsea_mee_canon_redo_v2_south"
+          ],
+          "note": "Again, move this fish art to the Greentide rivers as fishable, and redo this according to Canon carefully. ",
+          "when": "2026-10-09T01:21:31-0700"
+        }
+      ],
+      "prefill": "A",
+      "variants": [
+        "A"
+      ],
+      "variantsDefault": true
+    }
   },
-  "RM_Aluun": {
-   "at": "2026-10-07T13:51:00.963Z",
-   "decidedAt": "2026-10-07T13:51:00.963Z",
-   "decision": "B",
-   "note": "",
-   "prefill": "A",
-   "variants": [
-    "B",
-    "C"
-   ],
-   "variantsAt": "2026-10-07T13:50:32.846Z"
-  },
-  "RM_AluunCatch": {
-   "at": "2026-10-07T14:09:02.170Z",
-   "decidedAt": "2026-10-07T14:09:02.170Z",
-   "decision": "C",
-   "note": "",
-   "picks": {
-    "_byname": "C"
-   },
-   "prefill": "A",
-   "variants": [
-    "C",
-    "D"
-   ],
-   "variantsAt": "2026-10-07T14:08:58.462Z"
-  },
-  "RM_Hollu": {
-   "at": "2026-10-07T13:57:34.547Z",
-   "decidedAt": "2026-10-07T13:54:23.985Z",
-   "decision": "B",
-   "note": "No. The existing (B) render should be made into its own new creature: The Dancing Skresh, new description. But this Hollu is supposed to be a section of almost stained glass-like waveglass, the beautifully colored transparent organism that covers much of the topside ocean. It is a curved-in piece of this sheet in its final life stage.",
-   "prefill": "A",
-   "purge": [
-    "5bdbedfd4adcfae2040ddb80803e0d1b16b479c115927179e9d47ed5710fea3e",
-    "aa3ee7b59ba2a46649d550d9de6270e2db113674dde93e147158050fcb540027",
-    "38823bb69505fa9ddfd8e27ea4fb1c5d580723d81cc442a21729129354cea015",
-    "6c9626f9fbc6dc4d4bb510223060a494cc61c4198c4548bfe8d1f6f4b06d593e"
-   ],
-   "purgeTouched": true,
-   "variants": [
-    "B"
-   ],
-   "variantsAt": "2026-10-07T13:57:34.547Z"
-  },
-  "RM_HolluCatch": {
-   "agentInference": {
-    "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
-    "basis": "catch is the same species as RM_Hollu; RM_Hollu picked B -> Dancing Skresh; Hollu itself redone as waveglass; column redo is the same render family",
-    "by": "agent (BENCH)",
-    "not_owner_ruling": true,
-    "pick": "redo"
-   },
-   "at": "2026-10-07T14:09:52.045Z",
-   "decision": "redo",
-   "note": "See related notes above.",
-   "prefill": "A",
-   "prefillDecision": "A",
-   "purge": [
-    "2dfa2bc60692842ed2bb54dbede9d1c63e52ca25956b216836287fce1139296a"
-   ],
-   "purgeTouched": true,
-   "variants": [
-    "C",
-    "D"
-   ],
-   "variantsAt": "2026-10-07T14:09:52.045Z"
-  },
-  "RM_HoolimbrePlant": {
-   "at": "2026-10-07T14:05:45.904Z",
-   "decidedAt": "2026-10-07T14:05:45.904Z",
-   "decision": "B",
-   "note": "",
-   "picks": {
-    "_byname": "B"
-   },
-   "prefill": "A",
-   "variants": [
-    "B"
-   ],
-   "variantsAt": "2026-10-07T14:05:19.174Z"
-  },
-  "RM_Kellu": {
-   "at": "2026-10-07T13:57:23.566Z",
-   "decidedAt": "2026-10-07T13:57:13.072Z",
-   "decision": "B",
-   "note": "",
-   "prefill": "A",
-   "variants": [
-    "A",
-    "B",
-    "D"
-   ],
-   "variantsAt": "2026-10-07T13:57:23.566Z"
-  },
-  "RM_KelluCatch": {
-   "agentInference": {
-    "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
-    "basis": "catch is the same species as RM_Kellu; RM_Kellu picked B; column D is the same render family",
-    "by": "agent (BENCH)",
-    "not_owner_ruling": true,
-    "pick": "D"
-   },
-   "at": "2026-10-07T14:09:50.044Z",
-   "decision": "D",
-   "note": "see related notes above",
-   "prefill": "A",
-   "prefillDecision": "A",
-   "variants": [
-    "B",
-    "C",
-    "D"
-   ],
-   "variantsAt": "2026-10-07T14:09:50.044Z",
-   "cardRuling": {
-    "pick": "D",
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": "2026-10-07T14:15:00Z",
     "by": "owner",
-    "via": "decision taken by question card",
-    "at": "2026-10-07T15:05:00-0700",
-    "note": "Ratifies the agent inference; not an owner quote."
-   }
+    "evidence": "owner typed: Done with Twilight Sea sheet. You will have to infer some selections of the fish catches from the choices made above it. Accept, delete, wire in, etc. each of these as needed.",
+    "state": "ruled"
   },
-  "RM_Lanternwhale": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RM_Liiru": {
-   "at": "2026-10-07T13:58:05.487Z",
-   "decidedAt": "2026-10-07T13:57:55.417Z",
-   "decision": "B",
-   "note": "",
-   "prefill": "A",
-   "variants": [
-    "A",
-    "B",
-    "D"
-   ],
-   "variantsAt": "2026-10-07T13:58:05.487Z"
-  },
-  "RM_LiiruCatch": {
-   "agentInference": {
-    "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
-    "basis": "catch is the same species as RM_Liiru; RM_Liiru picked B; column D is the same render family",
-    "by": "agent (BENCH)",
-    "not_owner_ruling": true,
-    "pick": "D"
-   },
-   "at": "2026-10-07T14:09:48.473Z",
-   "decision": "D",
-   "note": "see related notes above",
-   "prefill": "A",
-   "prefillDecision": "A",
-   "variants": [
-    "B",
-    "C",
-    "D"
-   ],
-   "variantsAt": "2026-10-07T14:09:48.473Z",
-   "cardRuling": {
-    "pick": "D",
-    "by": "owner",
-    "via": "decision taken by question card",
-    "at": "2026-10-07T15:05:00-0700",
-    "note": "Ratifies the agent inference; not an owner quote."
-   }
-  },
-  "RM_Loohn": {
-   "at": "2026-10-07T13:58:28.779Z",
-   "decision": "A",
-   "note": "",
-   "prefill": "A",
-   "purge": [
-    "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
-   ],
-   "purgeTouched": true,
-   "variants": [
-    "A",
-    "C"
-   ],
-   "variantsDefault": true
-  },
-  "RM_Lunoowa": {
-   "at": "2026-10-07T14:00:08.976Z",
-   "decidedAt": "2026-10-07T13:59:14.522Z",
-   "decision": "redo",
-   "note": "Supposed to be beautiful multihued waveglass-sheet-like object with trailing filaments, drifting like a bottom dweller... no legs.",
-   "prefill": "A",
-   "purge": [
-    "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
-    "e9546fb2d655fcc8fbf9d0460a66e441392772c48b1042522a413d4aed029e6d",
-    "7e4dcc9b12fd6479269001510d53a2d2e0058828cd24a67e5662f7a8178d8a57",
-    "077c92d255c5b7cdb110e59a9eca7e567c8844b43f2ee08d3d4c4b61a0c5886d"
-   ],
-   "purgeTouched": true,
-   "variants": [
-    "C"
-   ],
-   "variantsAt": "2026-10-07T14:00:03.773Z"
-  },
-  "RM_Murrol": {
-   "at": "2026-10-07T14:01:25.550Z",
-   "decidedAt": "2026-10-07T14:01:15.729Z",
-   "decision": "B",
-   "note": "",
-   "prefill": "A",
-   "purge": [
-    "55bae416cb7777a8751b0481123ca08fd92d6abc05f7d0624b0ab1a01731a67c",
-    "e3003ab20638c8d281b2198db6a749c5a3a40da03972badfad759386a33d58fc",
-    "cc458c0d2bb8e1fe27ce0118ffa9551c3ee0b7eee8b4cd578b397f0b47490bf2",
-    "a625dd504fb2b631be883c220ce392ad77a3d5a488757a0848fdef706c213a19"
-   ],
-   "purgeTouched": true,
-   "variants": [
-    "B"
-   ],
-   "variantsAt": "2026-10-07T14:01:25.550Z"
-  },
-  "RM_MurrolCatch": {
-   "agentInference": {
-    "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
-    "basis": "catch is the same species as RM_Murrol; RM_Murrol picked B; column D is the same render family",
-    "by": "agent (BENCH)",
-    "not_owner_ruling": true,
-    "pick": "D"
-   },
-   "at": "2026-10-07T14:09:46.719Z",
-   "decision": "D",
-   "note": "see related notes above",
-   "prefill": "A",
-   "prefillDecision": "A",
-   "variants": [
-    "B",
-    "C",
-    "D"
-   ],
-   "variantsAt": "2026-10-07T14:09:46.719Z",
-   "cardRuling": {
-    "pick": "D",
-    "by": "owner",
-    "via": "decision taken by question card",
-    "at": "2026-10-07T15:05:00-0700",
-    "note": "Ratifies the agent inference; not an owner quote."
-   }
-  },
-  "RM_Niim": {
-   "at": "2026-10-07T14:02:10.588Z",
-   "decidedAt": "2026-10-07T14:01:42.990Z",
-   "decision": "B",
-   "note": "Old art (a) can be kept for fishing elsewhere, but (B) belongs here now.",
-   "prefill": "A",
-   "variants": [
-    "B"
-   ],
-   "variantsAt": "2026-10-07T14:02:10.588Z"
-  },
-  "RM_NiimCatch": {
-   "agentInference": {
-    "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
-    "basis": "catch is the same species as RM_Niim; RM_Niim picked B; column D is the same render family",
-    "by": "agent (BENCH)",
-    "not_owner_ruling": true,
-    "pick": "D"
-   },
-   "at": "2026-10-07T14:10:15.926Z",
-   "decision": "D",
-   "note": "see notes above",
-   "prefill": "A",
-   "prefillDecision": "A",
-   "variants": [
-    "A",
-    "C",
-    "D"
-   ],
-   "variantsDefault": true,
-   "cardRuling": {
-    "pick": "D",
-    "by": "owner",
-    "via": "decision taken by question card",
-    "at": "2026-10-07T15:05:00-0700",
-    "note": "Ratifies the agent inference; not an owner quote."
-   }
-  },
-  "RM_Noolim": {
-   "at": "2026-10-07T14:02:29.867Z",
-   "decision": "A",
-   "note": "",
-   "prefill": "A",
-   "purge": [
-    "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
-   ],
-   "purgeTouched": true,
-   "variants": [
-    "A",
-    "C"
-   ],
-   "variantsDefault": true
-  },
-  "RM_NoolimCatch": {
-   "at": "2026-10-07T14:10:39.886Z",
-   "decidedAt": "2026-10-07T14:10:39.886Z",
-   "decision": "C",
-   "note": "",
-   "prefill": "A",
-   "purge": [
-    "954fbe4a974a41ded512cbf81f3c1ea8069040cd4208c6f6ee77fc72e52ca69f"
-   ],
-   "purgeTouched": true,
-   "variants": [
-    "C"
-   ],
-   "variantsAt": "2026-10-07T14:10:29.673Z"
-  },
-  "RM_NoothelmPlant": {
-   "at": "2026-10-07T14:07:20.406Z",
-   "decidedAt": "2026-10-07T14:06:09.438Z",
-   "decision": "redo",
-   "note": "Needs to look like seaweed growing a single golden bulb. But keep art (b) for a new plant in the Sump. It's pretty. Make something new with Star Wars cuisine implications.",
-   "picks": {
-    "_byname": "B"
-   },
-   "prefill": "A",
-   "variants": [
-    "B"
-   ],
-   "variantsAt": "2026-10-07T14:05:37.801Z"
-  },
-  "RM_Nuudal": {
-   "at": "2026-10-07T14:03:03.128Z",
-   "decidedAt": "2026-10-07T14:02:57.346Z",
-   "decision": "B",
-   "note": "",
-   "prefill": "A",
-   "purge": [
-    "9ad77b19928cec68514764457b1a8ff241d10c0b40466f32a19d9824958064e5"
-   ],
-   "purgeTouched": true,
-   "variants": [
-    "A",
-    "B",
-    "C",
-    "D"
-   ],
-   "variantsDefault": true
-  },
-  "RM_NuudalCatch": {
-   "at": "2026-10-07T14:10:53.088Z",
-   "decidedAt": "2026-10-07T14:10:53.088Z",
-   "decision": "C",
-   "note": "",
-   "prefill": "A",
-   "variants": [
-    "B",
-    "C",
-    "D"
-   ],
-   "variantsAt": "2026-10-07T14:10:48.490Z"
-  },
-  "RM_Oobo": {
-   "at": "2026-10-07T14:03:45.594Z",
-   "decidedAt": "2026-10-07T14:03:39.064Z",
-   "decision": "B",
-   "note": "",
-   "prefill": "A",
-   "purge": [
-    "accd71f021bb2568ce16531581fb4d77a51ca1eb84e4b80a8474a4b4c611a4e8"
-   ],
-   "purgeTouched": true,
-   "variants": [
-    "A",
-    "B",
-    "C",
-    "D"
-   ],
-   "variantsDefault": true
-  },
-  "RM_OoboCatch": {
-   "agentInference": {
-    "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
-    "basis": "catch is the same species as RM_Oobo; RM_Oobo picked B; column D is the same render family",
-    "by": "agent (BENCH)",
-    "not_owner_ruling": true,
-    "pick": "D"
-   },
-   "at": "2026-10-07T14:10:59.562Z",
-   "decision": "D",
-   "note": "",
-   "prefill": "A",
-   "prefillDecision": "A",
-   "variants": [
-    "B",
-    "C",
-    "D"
-   ],
-   "variantsAt": "2026-10-07T14:10:59.562Z",
-   "cardRuling": {
-    "pick": "D",
-    "by": "owner",
-    "via": "decision taken by question card",
-    "at": "2026-10-07T15:05:00-0700",
-    "note": "Ratifies the agent inference; not an owner quote."
-   }
-  },
-  "RM_Pallu": {
-   "at": "2026-10-07T14:04:06.802Z",
-   "decidedAt": "2026-10-07T14:04:01.783Z",
-   "decision": "B",
-   "note": "",
-   "prefill": "A",
-   "purge": [
-    "40b271f052c558df343e5d39cab44c570bfd36189167df3bf1969001ff6ef823"
-   ],
-   "purgeTouched": true,
-   "variants": [
-    "A",
-    "B",
-    "C",
-    "D"
-   ],
-   "variantsDefault": true
-  },
-  "RM_PalluCatch": {
-   "agentInference": {
-    "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
-    "basis": "catch is the same species as RM_Pallu; RM_Pallu picked B; column D is the same render family",
-    "by": "agent (BENCH)",
-    "not_owner_ruling": true,
-    "pick": "D"
-   },
-   "at": "2026-10-07T14:11:16.483Z",
-   "decision": "D",
-   "note": "",
-   "prefill": "A",
-   "prefillDecision": "A",
-   "variants": [
-    "B",
-    "C",
-    "D"
-   ],
-   "variantsAt": "2026-10-07T14:11:16.483Z",
-   "cardRuling": {
-    "pick": "D",
-    "by": "owner",
-    "via": "decision taken by question card",
-    "at": "2026-10-07T15:05:00-0700",
-    "note": "Ratifies the agent inference; not an owner quote."
-   }
-  },
-  "RM_SaltBladeTwilight": {
-   "at": "2026-10-07T14:08:41.604Z",
-   "decidedAt": "2026-10-07T14:07:55.164Z",
-   "decision": "B",
-   "note": "This sounds like something from the Grey sea, not twilight. Move it there, and change the description to be less solitary since there are many other things on the Grey sea floor.",
-   "picks": {
-    "_byname": "B"
-   },
-   "prefill": "A",
-   "variants": [
-    "A",
-    "B"
-   ],
-   "variantsDefault": true
-  },
-  "RM_Tikkarr": {
-   "at": "2026-10-07T14:04:29.936Z",
-   "decidedAt": "2026-10-07T14:04:29.936Z",
-   "decision": "B",
-   "note": "",
-   "prefill": "A",
-   "purge": [
-    "420df41324d7b7afed7bbe55de141dfcc70725346223b2bbecdcd0617f42770f"
-   ],
-   "purgeTouched": true,
-   "variants": [
-    "A",
-    "B",
-    "D"
-   ],
-   "variantsDefault": true
-  },
-  "RM_TikkarrCatch": {
-   "agentInference": {
-    "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
-    "basis": "catch is the same species as RM_Tikkarr; RM_Tikkarr picked B; column D is the same render family",
-    "by": "agent (BENCH)",
-    "not_owner_ruling": true,
-    "pick": "D"
-   },
-   "at": "2026-10-07T14:11:26.058Z",
-   "decision": "D",
-   "note": "",
-   "prefill": "A",
-   "prefillDecision": "A",
-   "variants": [
-    "B",
-    "C",
-    "D"
-   ],
-   "variantsAt": "2026-10-07T14:11:26.058Z",
-   "cardRuling": {
-    "pick": "D",
-    "by": "owner",
-    "via": "decision taken by question card",
-    "at": "2026-10-07T15:05:00-0700",
-    "note": "Ratifies the agent inference; not an owner quote."
-   }
-  },
-  "RM_Weloon": {
-   "at": "2026-10-07T14:04:40.501Z",
-   "decision": "A",
-   "note": "",
-   "prefill": "A",
-   "purge": [
-    "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
-   ],
-   "purgeTouched": true,
-   "variants": [
-    "A",
-    "C"
-   ],
-   "variantsDefault": true
-  },
-  "RM_WeloonCatch": {
-   "agentInference": {
-    "authorised_by": "owner typed: You will have to infer some selections of the fish catches from the choices made above it.",
-    "basis": "catch is the same species as RM_Weloon; RM_Weloon picked A (kept, in game); column C is the same render family",
-    "by": "agent (BENCH)",
-    "not_owner_ruling": true,
-    "pick": "C"
-   },
-   "decision": "C",
-   "note": "",
-   "prefill": "A",
-   "prefillDecision": "A",
-   "cardRuling": {
-    "pick": "C",
-    "by": "owner",
-    "via": "decision taken by question card",
-    "at": "2026-10-07T15:05:00-0700",
-    "note": "Ratifies the agent inference; not an owner quote."
-   }
-  },
-  "RSW_Faa": {
-   "at": "2026-10-07T13:54:14.732Z",
-   "decidedAt": "2026-10-07T13:51:33.605Z",
-   "decision": "redo",
-   "note": "Follow canon closely. However, existing fish images can be remade into a new fish: Scaa Lumsigh for fishing in the Greentide rivers. Move this image to that fishing source, then regen Faa scalefish according to canon",
-   "prefill": "A",
-   "variants": [
-    "A"
-   ],
-   "variantsDefault": true
-  },
-  "RSW_Lanternwhale": {
-   "decision": "A",
-   "note": "",
-   "prefill": "A"
-  },
-  "RSW_Mee": {
-   "at": "2026-10-07T14:00:47.879Z",
-   "decidedAt": "2026-10-07T14:00:26.180Z",
-   "decision": "redo",
-   "note": "Again, move this fish art to the Greentide rivers as fishable, and redo this according to Canon carefully. ",
-   "prefill": "A",
-   "variants": [
-    "A"
-   ],
-   "variantsDefault": true
-  },
-  "RM_DancingSkresh": {
-   "decision": "A",
-   "note": "No. The existing (B) render should be made into its own new creature: The Dancing Skresh, new description. But this Hollu is supposed to be a section of almost stained glass-like waveglass, the beautifully colored transparent organism that covers much of the topside ocean. It is a curved-in piece of this sheet in its final life stage.",
-   "decidedAt": "2026-10-07T13:54:23.985Z",
-   "at": "2026-10-07T13:57:34.547Z",
-   "carriedFrom": "RM_Hollu",
-   "carriedAt": "2026-10-07",
-   "carriedBy": "BENCH helper: renamed/moved row (owner note: \"The existing (B) render should be made into its own new creature: The Dancing Skresh\")"
-  },
-  "RM_GrippingTerror": {
-   "decision": "A",
-   "note": "Rename this to the Gripping Terror and move it to the Twilight Sea. It does not belong in the Scald. RimMandrake tier. ",
-   "decidedAt": "2026-10-06T03:51:49.515Z",
-   "at": "2026-10-06T03:52:23.384Z",
-   "carriedFrom": "RSW_ElderSando on thescald_sheet_2026-10-05",
-   "carriedAt": "2026-10-07",
-   "carriedBy": "BENCH helper: renamed/moved row (owner note: \"Rename this to the Gripping Terror and move it to the Twilight Sea\")"
-  }
- },
- "posture": "pick-one",
- "reviewStatus": {
-  "at": "2026-10-07T14:15:00Z",
-  "by": "owner",
-  "evidence": "owner typed: Done with Twilight Sea sheet. You will have to infer some selections of the fish catches from the choices made above it. Accept, delete, wire in, etc. each of these as needed.",
-  "state": "ruled"
- },
- "savedAt": "2026-10-07T07:11:26-0700",
- "savedBy": "review-sheet-sidecar",
- "sheetId": "twilightsea_sheet_2026-10-05",
- "snapshot": "infrastructure/state/art/sheets/twilightsea_sheet_2026-10-05.snapshot.json",
- "snapshotId": "7895159b61713c86",
- "writeCount": 171
+  "savedAt": "2026-10-07T07:11:26-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "twilightsea_sheet_2026-10-05",
+  "snapshot": "infrastructure/state/art/sheets/twilightsea_sheet_2026-10-05.snapshot.json",
+  "snapshotId": "7895159b61713c86",
+  "writeCount": 171
 }
