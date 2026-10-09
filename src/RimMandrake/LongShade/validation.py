@@ -47,6 +47,31 @@ def shipped_defs():
 
 
 SHIPPED = shipped_defs()
+COMPOSE = os.path.join(HERE, "..", "Biomes.compose.json")
+
+
+def loaded_host_package(compose_path=COMPOSE):
+    """The packageId that carries Long Shade at runtime: the compose manifest's host, when it composes LongShade.
+    Composed members (mandrake.rm.longshade) never load as packages; their defs and types live in the host."""
+    import json
+    m = json.load(open(compose_path, encoding="utf-8"))
+    if not any(e.get("source") == "LongShade" for e in m.get("entries", [])):
+        return None
+    return m["about"]["packageId"].lower()
+
+
+def gate_findings(mayrequire, compose_path=COMPOSE):
+    """Findings for a MayRequire gate on a def whose worker class ships in the Long Shade assembly. The gate must name
+    the package that exists at runtime (the compose host), not the folded member id (sitting 2 proved live that a
+    member id never loads, so the def would be silently dropped)."""
+    host = loaded_host_package(compose_path)
+    if host is None:
+        return ["cannot be checked: %s does not compose LongShade" % os.path.basename(compose_path)]
+    ids = [x.strip().lower() for x in (mayrequire or "").split(",") if x.strip()]
+    if host not in ids:
+        return ["MayRequire %r does not name the loaded host package %s (class ships inside it; a folded-member id never loads)"
+                % (mayrequire, host)]
+    return []
 
 
 def settings_fields():
@@ -349,8 +374,8 @@ def extras_problems():
         cn2 = ((inc2.findtext("workerClass") if inc2 is not None else "") or "").split(".")[-1]
         if inc2 is None or "class %s" % cn2 not in src:
             bad.append("RUT_JawaReturnTow workerClass not found in RM_ShadeExtras.cs")
-        elif inc2.get("MayRequire") != "mandrake.rm.longshade":
-            bad.append("RUT_JawaReturnTow lost MayRequire mandrake.rm.longshade (class absent without the Long Shade)")
+        elif gate_findings(inc2.get("MayRequire")):
+            bad.extend("RUT_JawaReturnTow " + f for f in gate_findings(inc2.get("MayRequire")))
         elif not [e.text for e in inc2.findall("modExtensions/li/factionPrefixes/li")]:
             bad.append("RUT_JawaReturnTow names no claimant faction prefix")
     if "jawaReturnEnabled" not in wk_src(src, "IncidentWorker_RM_HullTow"):
