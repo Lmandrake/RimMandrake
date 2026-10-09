@@ -121,6 +121,7 @@ namespace RimMandrake.LuminousPigment
             {
                 PollWornPositions();
             }
+            if (ticks % VisibilityInterval == 0) NightVisibilityPulse();   // DEEPFIRE_WORLD_LIGHT_1 (c)
         }
 
         public void PollWornPositions()

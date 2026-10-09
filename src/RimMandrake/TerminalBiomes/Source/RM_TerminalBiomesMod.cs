@@ -204,6 +204,9 @@ namespace RimMandrake.TerminalBiomes
         // radius, only after the hours of continuous burn, telegraphed by the
         // watcher (50%) and scrape-sign (75%); a dark lamp loses its clock.
         public static bool greyLampDrawnEnabled = true;
+        // DEEPFIRE_WORLD_LIGHT_1 (a), owner card 2026-10-08: glow-seekers are drawn to deepfire light of any owner
+        // (painted floors, glowing pawns, the glow tank). They bask at it; they never graze it.
+        public static bool seekGlowDrawnToDeepfire = true;
         public static bool greyLampWatcherEnabled = true;
         public static bool greyLampGiantEnabled = true;
         public static float greyLampGiantBurnHours = 8f;
@@ -262,6 +265,7 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref greyHullCrustSaltSnowMultiplier, "greyHullCrustSaltSnowMultiplier", 2f);
             Scribe_Values.Look(ref greyHullCrustBerthMultiplier, "greyHullCrustBerthMultiplier", 1.5f);
             Scribe_Values.Look(ref greyLampDrawnEnabled, "greyLampDrawnEnabled", true);
+            Scribe_Values.Look(ref seekGlowDrawnToDeepfire, "seekGlowDrawnToDeepfire", true);
             Scribe_Values.Look(ref greyLampWatcherEnabled, "greyLampWatcherEnabled", true);
             Scribe_Values.Look(ref greyLampGiantEnabled, "greyLampGiantEnabled", true);
             Scribe_Values.Look(ref greyLampGiantBurnHours, "greyLampGiantBurnHours", 8f);
@@ -500,6 +504,9 @@ namespace RimMandrake.TerminalBiomes
             list.CheckboxLabeled("Small things drawn to the light", ref greyLampDrawnEnabled,
                 "Litter-pickers, salt crabs and the pink immu come and linger in a lit area. "
               + "Harmless; the busiest ground on the map is around your lamps.");
+            list.CheckboxLabeled("Light-seekers are drawn to deepfire", ref seekGlowDrawnToDeepfire,
+                "Creatures that seek out light also come to deepfire light (painted floors, glowing pawns, the glow tank), "
+              + "whoever it belongs to. They linger at it and never eat it. Needs Luminous Pigment. Safe mid-game.");
             list.CheckboxLabeled("The watcher and the scrape-sign", ref greyLampWatcherEnabled,
                 "Halfway to the giant's hours, a fessk comes to the edge of a bright lamp's light and "
               + "watches (it never enters, never attacks, leaves when approached). Three quarters "

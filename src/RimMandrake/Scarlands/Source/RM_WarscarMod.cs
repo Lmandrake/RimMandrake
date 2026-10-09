@@ -66,6 +66,7 @@ namespace RimMandrake.Scarlands
         public static bool chotrixDragEnabled = true;        // WARSCAR_CHOTRIX_SIGNS_1: drags its kill to cover, furrowing the film
         public static bool lacquerCloakEnabled = true;       // lacquered cloaks grant still-and-unseen invisibility
         public static float lacquerSeenRadius = 15f;         // a hostile with sight within this many cells "sees" the wearer
+        public static bool lacquerDeniedWhileGlowing = true; // DEEPFIRE_WORLD_LIGHT_1 (d): a pawn carrying a light (deepfire glow) cannot vanish
 
         // WARSCAR_FREE_TIER_BODY_1 toggles. Species rows apply at startup (restart needed).
         public static bool enableChatrak = true;
@@ -188,6 +189,7 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref chotrixDragEnabled, "chotrixDragEnabled", true);
             Scribe_Values.Look(ref lacquerCloakEnabled, "lacquerCloakEnabled", true);
             Scribe_Values.Look(ref lacquerSeenRadius, "lacquerSeenRadius", 15f);
+            Scribe_Values.Look(ref lacquerDeniedWhileGlowing, "lacquerDeniedWhileGlowing", true);
             Scribe_Values.Look(ref enableChatrak, "enableChatrak", true);
             Scribe_Values.Look(ref enableTetchik, "enableTetchik", true);
             Scribe_Values.Look(ref enablePallbearer, "enablePallbearer", true);
@@ -333,6 +335,8 @@ namespace RimMandrake.Scarlands
                 "A cloak made with cloak lacquer makes the wearer invisible while standing still and unseen. Permanent; never expires.");
             list.Label("Lacquer: seen within " + lacquerSeenRadius.ToString("0") + " cells by a hostile with line of sight");
             lacquerSeenRadius = list.Slider(lacquerSeenRadius, 3f, 40f);
+            list.CheckboxLabeled("A glowing wearer cannot hide", ref lacquerDeniedWhileGlowing,
+                "A pawn giving off light (deepfire on the skin or on the clothes) cannot vanish under a lacquered cloak until the glow is gone. Needs Luminous Pigment. Safe mid-game.");
             list.GapLine();
 
             list.CheckboxLabeled("The Settling (calm-triggered war fallout)", ref settlingEnabled,

@@ -3,6 +3,7 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared;
 using Verse.AI;
 
 namespace RimMandrake.Scarlands
@@ -267,7 +268,10 @@ namespace RimMandrake.Scarlands
             base.CompTick();
             Pawn w = Wearer;
             if (w == null || !w.Spawned || !parent.IsHashIntervalTick(Props.checkIntervalTicks)) return;
-            bool want = RM_WarscarSettings.lacquerCloakEnabled && !w.Downed && !w.Dead && IsStill(w) && !Seen(w);
+            // DEEPFIRE_WORLD_LIGHT_1 (d): a pawn carrying a lit light (a deepfire glow, read from the shared light ledger)
+            // cannot vanish, and one that starts glowing while hidden is revealed on the next check
+            bool glowing = RM_WarscarSettings.lacquerDeniedWhileGlowing && LightLedger.CarriesLitLight(w);
+            bool want = RM_WarscarSettings.lacquerCloakEnabled && !w.Downed && !w.Dead && !glowing && IsStill(w) && !Seen(w);
             Hediff h = w.health.hediffSet.GetFirstHediffOfDef(Props.hediff);
             if (want && h == null) w.health.AddHediff(HediffMaker.MakeHediff(Props.hediff, w));
             else if (!want && h != null) { w.GetInvisibilityComp()?.BecomeVisible(instant: false); w.health.RemoveHediff(h); }

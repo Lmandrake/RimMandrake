@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using RimWorld;
 using Verse;
+using RimMandrake.Shared;
 using Verse.AI;
 
 namespace RimMandrake.TerminalBiomes
@@ -41,12 +42,13 @@ namespace RimMandrake.TerminalBiomes
                 return null;
             }
 
-            Thing best = FindBrightestPlayerGlower(pawn, ext);
+            Thing best = FindBrightestPlayerGlower(pawn, ext, out bool deepfire);
             if (best == null)
             {
                 return null;
             }
-            if (ext.mode == "drawn")
+            // DEEPFIRE_WORLD_LIGHT_1 (a): drawn to deepfire, never grazing it (a fed-out proxy would only respawn)
+            if (ext.mode == "drawn" || deepfire)
             {
                 JobDef bask = DefDatabase<JobDef>.GetNamedSilentFail("RM_BaskInGlow");
                 return bask == null ? null : JobMaker.MakeJob(bask, best);
@@ -68,22 +70,36 @@ namespace RimMandrake.TerminalBiomes
         // Map-wide scan: the population of things carrying a live CompGlower
         // on one map is a handful of lamps, not thousands of things, so this
         // is cheap even at this JobGiver's own rare-fire rate (gated above by
-        // seekChancePerCheck).
-        private static Thing FindBrightestPlayerGlower(Pawn pawn, RM_SeekGlowExtension ext)
+        // seekChancePerCheck). DEEPFIRE_WORLD_LIGHT_1 (a): a lit deepfire light
+        // counts whoever owns it — its proxies are factionless — read from the
+        // shared light ledger's "deepfire" tag (LuminousPigment sets it).
+        private static Thing FindBrightestPlayerGlower(Pawn pawn, RM_SeekGlowExtension ext, out bool bestIsDeepfire)
         {
             Map map = pawn.Map;
             List<Thing> allThings = map.listerThings.AllThings;
             Thing best = null;
+            bestIsDeepfire = false;
             float bestRadius = ext.minGlowRadiusToTarget;
+            bool deepfireDraws = RM_TerminalBiomesSettings.seekGlowDrawnToDeepfire;
             for (int i = 0; i < allThings.Count; i++)
             {
                 Thing t = allThings[i];
-                if (t.Faction != Faction.OfPlayer)
+                bool player = t.Faction == Faction.OfPlayer;
+                if (!player && !deepfireDraws)
                 {
                     continue;
                 }
                 CompGlower glower = t.TryGetComp<CompGlower>();
-                if (glower == null || glower.GlowRadius <= bestRadius || (ext.mode == "drawn" && !glower.Glows))
+                if (glower == null || glower.GlowRadius <= bestRadius)
+                {
+                    continue;
+                }
+                bool deepfire = deepfireDraws && LightLedger.HasTag(glower, "deepfire");
+                if (!player && !deepfire)
+                {
+                    continue;
+                }
+                if ((ext.mode == "drawn" || deepfire) && !glower.Glows)
                 {
                     continue;
                 }
@@ -93,6 +109,7 @@ namespace RimMandrake.TerminalBiomes
                 }
                 best = t;
                 bestRadius = glower.GlowRadius;
+                bestIsDeepfire = deepfire;
             }
             return best;
         }

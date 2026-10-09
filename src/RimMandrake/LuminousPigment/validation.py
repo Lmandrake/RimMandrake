@@ -50,7 +50,7 @@ from modcheck import Suite, ExpectationFailed
 suite = Suite("LuminousPigment")
 suite.toggles = [
     "shoreMatsEnabled", "matLifeDays", "matChillKillTemp",
-    "pressGate", "deepfireMarketValue", "deepfireStackGlows",
+    "pressGate", "deepfireMarketValue", "deepfireStackGlows", "deepfireNightVisibility",
     "glowTankEnabled", "tankPowerGraceHours", "tankNeedsWater",
     "paintingEnabled", "maxCoats", "floorsPaintable", "wallsPaintable", "furniturePaintable",
     "apparelPaintable", "weaponsPaintable", "wornLightEnabled", "stylingStationLacquer",
@@ -1615,11 +1615,13 @@ def _flip(t, comp, field):
 def toggle_flips(t):
     """Write + read-back only. The behaviour behind each of these is not drivable through the bridge today
     (the walk's UNCOVERED lines say why): shore spawn needs map generation; the floor and Ishko-idol toggles
-    gate the Designator's own accept path, which the bridge bypasses; hediffGlowEnabled needs a cooked dish."""
+    gate the Designator's own accept path, which the bridge bypasses; hediffGlowEnabled needs a cooked dish;
+    deepfireNightVisibility needs a dark sky on a home map and the Visibility mod (DEEPFIRE_WORLD_LIGHT_1, owed live)."""
     _flip(t, "shore_mats_setting_flips", "shoreMatsEnabled")
     _flip(t, "floors_paintable_setting_flips", "floorsPaintable")
     _flip(t, "ishko_idol_setting_flips", "ishkoIdolPaintable")
     _flip(t, "hediff_glow_setting_flips", "hediffGlowEnabled")
+    _flip(t, "deepfire_night_visibility_setting_flips", "deepfireNightVisibility")
 
 
 # ====================================================================== settings round trip (every scalar field)
