@@ -12,6 +12,10 @@ Owner, typed 2026-10-09, verbatim, answering minerals design §7 Q3 (duranium/do
 
 (Earlier typed ruling 2026-10-03 on MINERALS_WHERE_THEY_BELONG_1: duranium and doonium both salvage- and trader-available, pretty rare, made offworld, required to build large ship and machine types.)
 
+Owner, typed 2026-10-09, verbatim (reverses the 2026-10-03 card that renamed plasteel to durasteel):
+
+> "Apparently Plasteel is already Star Wars canon, I didn't know that, so we should not equate it with any other Star Wars material. Please redo the canon materials analysis you did but without my equivalence requirement for plasteel: let it be its own thing. Then regenerate the analyses."
+
 Parent: MINERALS_WHERE_THEY_BELONG_1 (`design/RimMandrake/minerals_where_they_belong_design_2026-10-02.md`).
 
 ## criteria

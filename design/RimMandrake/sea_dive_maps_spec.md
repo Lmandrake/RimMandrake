@@ -398,10 +398,9 @@ looking at the floor before the next. Art owed per step is filed as it appears �
     droids ARE in — lying on the sea floor, NOT inside the ship** (typed: *"The dormant droids are a
     great idea, but it's just on the sea floor, NOT in the ship."*). **Other wreckage scattered
     around is a must** (typed).
-15. **Plasteel is renamed Durasteel** in the Star Wars/Utinni layer (card; free `RM_` mods keep
-    plasteel). `KOTOR_AlloyDurasteel` already exists, so the owner asked which canon metals
-    (Beskar, Doonium, Duranium) exist before choosing — **open**, and it belongs to
-    `MINERALS_WHERE_THEY_BELONG_1`, not this spec.
+15. **Plasteel stays plasteel** — it is its own canon Star Wars material (owner typed 2026-10-09),
+    never equated with durasteel. Which canon metals exist and what each is for belongs to
+    `CANON_MATERIALS_DESIGN_1` (`canon_materials_design_2026-10-09.md`), not this spec.
 
 #### 7b. The Scald floor, second sitting — owner, 2026-09-25 16:31–16:47 (`SEA_DIVE_MAPS_BUILD_1` notes)
 
@@ -500,7 +499,7 @@ referent.
 ### 8.3 Minerals and nodules — the first worked example for `MINERALS_WHERE_THEY_BELONG_1`
 
 This section allocates minerals to **one** biome. The planet-wide allocation (which biome gets
-which ore, the plasteel→Durasteel rename, canon-metal collisions) belongs to
+which ore, canon-metal collisions) belongs to
 `MINERALS_WHERE_THEY_BELONG_1`; the Scald is its **first worked example** and that item should
 copy this table's columns (mineral · form · where on the floor · tier · def status) for every
 other biome rather than re-deriving them.

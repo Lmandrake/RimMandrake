@@ -1,185 +1,85 @@
 # GPT consult (gpt-6.1-sol, high) on canon_materials_design_2026-10-09.md — 2026-10-09, verbatim answer
 
-**Keep all three originals alive, but revise their acquisition rules before comparing them.** Their strongest ideas are complementary: D1 explains progression, D2 explains recipes, and D3 explains exploration. None yet fully specifies a playable economy.
+Regenerated after the owner ruled plasteel its own canon material (no plasteel = durasteel equivalence). Question file: asked for a check of the plasteel/durasteel/plastoid split, the donor-durasteel dispositions, critique and repair of D1–D3, three designs of its own kept alive, roster advice, a review ranking, and card-ready owner questions.
 
-I’m treating your supplied canon summaries as evidence. Mechanical effects below are proposals, not claims that the installed mods already implement them.
+The split is viable, but **separate identities do not yet produce separate gameplay**. Keep Core `Plasteel`; consolidate durasteel independently; give plastoid sealed-equipment consumers. Several claims need qualification, and D3 currently contradicts the ruled sourcing of doonium.
 
-**Corrections common to all six designs**
+This review accepts the supplied measurements; it does not claim to have tested the live mod set.
 
-| Issue | Required treatment |
-|---|---|
-| Duranium/doonium asteroid seams | Remove from these proposals. Under the fixed offworld-manufacture ruling, recover finished material from **orbital wrecks: S**, not asteroid rock: A. Keep rare trade secondary. |
-| Precious materials in orbit | No naturally generated asteroid gold, aurodium, corusca, or other precious gems. Imported cargo remains trade/salvage, not a deposit. |
-| Vanilla mining | Patch surface veins, deep resources, meteorites, asteroid generation, and donor mineables. Renaming plasteel alone leaves forbidden sources intact. |
-| Zersium → durasteel | Ore refining does not literally mine finished durasteel, but cheap local production could make salvage irrelevant. Omit that chain in the lean options; retain it only as a deliberately limited alternative. |
-| Large factories/ships | Require **both duranium and doonium**, with distinct jobs. Research or plentiful durasteel cannot substitute for either. |
-| First access | Ground salvage must provide the first construction quantities before orbital access becomes necessary. Otherwise progression can lock itself. |
+**The split: what breaks in play**
 
-Odyssey explicitly supplies asteroid plasteel/gold, chemfuel flight, gravcores, and gravlite panels. Those systems need deliberate reconciliation with this campaign. [Ludeon’s Odyssey overview](https://ludeon.com/blog/2025/06/odyssey-preview-2-gravships-and-space/)
-
-**1. Critique of the originals**
-
-| Design | Strongest feature | What breaks in play | Concrete repair |
-|---|---|---|---|
-| **D1 — Ladder** | Clearest progression; easiest onboarding and smallest initial consumer set. | **Economy:** random salvage gates can stall production. **Balance:** unrestricted stuff turns duranium/doonium into competing superior metals. **Dead content:** “saber-proof weapon” does little without weapon destruction/parrying. **Cost:** deceptively cheap until apex effects need code. **Legibility:** tiers imply universal superiority. | Make tiers describe **access**, not interchangeable performance. Duranium/doonium become fixed recipe ingredients. Guarantee early salvage quantities. Label beskar, cortosis, and phrik by function rather than “apex.” |
-| **D2 — One job each** | Best foundation for orthogonality and readable recipes. | **Economy:** fifteen inventories plus vanilla resources create many simultaneous shortages. **Dead content:** windows, radiation shielding, cloaking, stasis, and premium fuel need real consumers. **Balance:** plastoid competes with existing protective apparel; cortosis can eclipse beskar. **Cost:** highest concentration of special systems. **Legibility:** several rows still own multiple jobs. | Require a working consumer before activating each material. Split passive armor from active energy disruption. Keep silver as currency. Remove precursor ores unless processing itself is enjoyable. |
-| **D3 — Provenance** | Strongest Jawa identity and strongest reason to explore distinct places. | **Economy:** orbit-only doonium creates a possible access loop; traders can bypass exploration. **Dead content:** hyperbaride/dolovite lack concrete demand. **Balance:** mobile colonies may harvest every biome without meaningful commitment. **Cost:** biome deposits, salvage objects, site rewards, and processing chains multiply definitions/art. **Legibility:** knowing where something comes from does not explain what to build. | Give every resource a functional verb alongside provenance. Put both required alloys in ground wrecks. Differentiate wreck types by recoverable contents. Give asteroid mining useful industrial outputs without forbidden precious/advanced seams. |
-
-**The recurring danger is adding a material to justify a biome, then adding a building to justify the material.** A biome can instead offer unusual salvage, hazards, fauna, quest sites, or resource abundance.
-
-**2. Three additional designs**
-
-Channels: **L** home-biome mining, **S** salvage—including orbital wrecks, **A** asteroid mining, **T** trade, **H** beldon herds. **C(inputs)** means colony processing of those inputs, not a sixth natural source. Rarity describes practical availability, not geological concentration.
-
-All three retain vanilla steel, silver, gold, uranium, components, chemfuel, gravcores, and gravlite roles unless explicitly changed below. Omitted donor materials receive compatibility handling rather than becoming unexplained loot.
-
-**D4 — Fixed recipe functions: the manageable campaign**
-
-Materials mostly buy permanent capabilities. Advanced alloys are ingredients, not universal stuff choices.
-
-| Material | Chief use: verb | Origin channel(s) | Rarity |
-|---|---|---|---|
-| Durasteel | Build | S, T | Uncommon |
-| Duranium | Brace | S, rare T | Rare; construction-sized lots |
-| Doonium | Contain | S, rare T | Rare; small essential lots |
-| Beskar | Protect | S | Exceptional |
-| Cortosis | Disrupt | S, rare T | Rare |
-| Plastoid | Seal | C(chemfuel), S, T | Common after research |
-| Bronzium | Decorate | C(steel + recovered alloy), T | Common after research |
-| Kyber | Focus | L: Lantern Deeps | Rare |
-| Stygium | Conceal | S, rare T | Exceptional |
-| Tibanna | Charge | H | Renewable; husbandry-limited |
-| Baradium | Demolish | C(chemfuel + industrial inputs), T | Uncommon |
-
-**Best for:** implementation discipline and readable recipes.  
-**Weakness:** less emphasis on processing and cargo logistics. Stygium stays inactive until concealment actually works.
-
-**D5 — Recover and refit: the Jawa workshop**
-
-Progress comes from dismantling identifiable objects and rebuilding equipment. Materials arrive in useful lots rather than arbitrary scattered units; refitting preserves much of their value.
-
-| Material | Chief use: verb | Origin channel(s) | Rarity |
-|---|---|---|---|
-| Durasteel | Rebuild | S, T | Uncommon |
-| Duranium | Mount | S: machine chassis, rare T | Rare |
-| Doonium | Contain | S: reactor assemblies, rare T | Rare |
-| Beskar | Protect | S: recovered armor | Exceptional |
-| Cortosis | Interrupt | S: specialized gear, rare T | Rare |
-| Phrik | Parry | L: Stillsand, S, rare T | Rare |
-| Plastoid | Seal | S: armor plates; C(chemfuel), T | Uncommon |
-| Kyber | Focus | L: Lantern Deeps | Rare |
-| Stygium | Hide | S: cloak assemblies, rare T | Exceptional |
-| Tibanna | Charge | H | Renewable |
-| Baradium | Breach | C(industrial inputs), T | Uncommon |
-| Carbonite | Preserve | C(industrial inputs), T | Uncommon |
-
-**Best for:** scavenger identity, recognizable wreck rewards, and heirloom equipment.  
-**Weakness:** refitting needs condition handling, bills/UI, and exploit-resistant recovery. Phrik earns its place only with an implemented saber-parry interaction; carbonite needs a preservation consumer beyond ordinary refrigeration.
-
-**D6 — Expedition logistics: the traveling clan**
-
-Construction establishes capability; renewable supplies determine how long the clan can operate away from home. This is the option that intentionally accepts more systems and cargo management.
-
-| Material | Chief use: verb | Origin channel(s) | Rarity |
-|---|---|---|---|
-| Durasteel | Repair | S, T | Uncommon |
-| Duranium | Brace | S, rare T | Rare |
-| Doonium | Contain | S, rare T | Rare |
-| Beskar | Protect | S | Exceptional |
-| Cortosis | Disrupt | S, rare T | Rare |
-| Plastoid | Seal | C(chemfuel), S, T | Common |
-| Transparisteel | Observe | C(L: home-biome lommite + durasteel), S, T | Uncommon |
-| Kyber | Focus | L: Lantern Deeps | Rare |
-| Stygium | Conceal | S, rare T | Exceptional |
-| Tibanna | Charge | H | Renewable |
-| Rhydonium | Burn | L: designated nonprecious home biome, S, T | Locally common |
-| Coaxium | Extend | A: raw feedstock; T: refined fuel | Rare |
-| Carbonite | Preserve | C(industrial inputs), T | Uncommon |
-| Baradium | Breach | C(industrial inputs), T | Uncommon |
-
-**Best for:** Odyssey travel, beldon husbandry, dangerous cargo, and expedition planning.  
-**Weakness:** largest ongoing management burden. Keep ordinary chemfuel flight available; coaxium powers an optional range booster, avoiding “need orbital fuel to reach orbit.” Durasteel repair consumption requires an explicit repair system.
-
-For all three, asteroid mining can remain worthwhile through **iron, permitted industrial minerals such as uranium, and vacstone processing**. Advanced wreck recovery nearby remains S.
-
-**3. Remaining overlaps and roster decisions**
-
-| Overlap | Split or merge |
-|---|---|
-| Durasteel ↔ duranium | Durasteel supplies bulk fabrication. Duranium is a mandatory load-bearing ingredient in designated large machines/ships. Do not advertise duranium as better general armor. |
-| Duranium ↔ doonium | Frames versus reactor/power containment. Large powered assemblies require both; neither converts into the other. |
-| Beskar ↔ cortosis | Beskar gives passive personal protection. Cortosis gives a narrow active disruption effect with cooldown/limits, not superior universal armor. |
-| Beskar ↔ phrik | Armor versus defensive weapon behavior. Without parrying or saber interaction, fold phrik’s weapon recipes into durasteel and postpone its resource. |
-| Cortosis ↔ stygium | Energy/Force interference versus concealment. Thought-hiding helmets blur this boundary; give cortosis one selected ability rather than every canon effect. |
-| Bronzium ↔ gold/aurodium/chromium/corusca | Bronzium can be affordable decoration. Gold remains costly prestige. Other luxury materials should be named valuables or commission goods, not four competing beauty stuffs. |
-| Tibanna ↔ rhydonium ↔ coaxium ↔ chemfuel | Tibanna: weapons. Rhydonium: dirty fuel feedstock. Chemfuel: everyday engine/generator fuel. Coaxium: optional specialized booster. Drop tibanna coolant demand unless a cooling system exists. |
-| Doonium ↔ uranium/dolovite | Doonium is construction hardware, not fuel. Uranium retains ammunition/nuclear roles. Dolovite adds little unless a distinct thermal-liner consumer exists. |
-| Carbonite ↔ freezer/cryptosleep | Require portable, powered-down preservation or special cargo transport. “Another freezer” does not earn a material. |
-| Transparisteel ↔ existing walls | A transparent sprite is insufficient. Observation must have an actual sight/interaction benefit while preserving airtightness. |
-
-| Decision | Materials | Reason |
+| Issue | Failure in play | Concrete repair |
 |---|---|---|
-| **Fold into durasteel** | Three donor durasteels; quadanium, alusteel, ferrocarbon | One bulk advanced metal; retain names in salvage descriptions where useful. |
-| **Do not add standalone now** | Impervium, laminanium, ultrachrome, neutronium | Additional durability tiers or repair effects without a sufficiently distinct consumer. |
-| **Avoid extra intermediate inventories** | Zersium, lommite | Keep only if ore processing is a chosen gameplay loop. Otherwise abstract them into recipes/source descriptions. |
-| **Defer** | Dolovite, hyperbaride, thorilide, agrinium | Biome flavor, “valuable,” or a name-bearing module does not establish demand. Thorilide needs meaningful shock absorption; agrinium needs a distinct implemented hazard role. |
-| **Use as valuables, if desired** | Aurodium, corusca, chromium | Home-biome deposits only; special buyer/commission demand can distinguish them without another stuff system. |
-| **Separate economy** | Spice | Drug recipes, addiction and traders; do not count it as industrial orthogonalization. |
-| **Conditional additions** | Phrik, transparisteel, carbonite, coaxium | Each needs the consumer described above. |
+| **Stuff eligibility** | Plasteel’s `Metallic` category permits ordinary metallic stuff uses. If durasteel shares it, players can still build plasteel walls and wear durasteel armor. Labels cannot enforce “Shape/Hold.” | Keep generic construction permissive if these are preferences. For exclusive campaign jobs, use restricted stuff categories or fixed ingredient lists; adding a special category while retaining generic `Metallic` does not exclude generic consumers. |
+| **Mass** | `statBases/Mass` measures resource-stack weight. Plasteel’s 0.25 versus durasteel’s 0.675 does **not itself** make finished armor lighter or heavier. The principal carried-gear distinction may disappear. | Give dedicated gear explicit masses, or add appropriate stuff mass factors. Weight alone also does not establish a movement penalty. Core plasteel stats can remain unchanged if dedicated products supply the distinction. [Game stat calculation](https://raw.githubusercontent.com/Chillu1/RimWorldDecompiled/master/RimWorld/StatWorker.cs). |
+| **Armor numbers** | The listed armor values are stuff armor powers, not universal final armor ratings. Fixed-cost armor, implants and droids need not inherit them. Heat protection also does not necessarily resist donor blasters. | Relabel §1a with the actual stat names; inspect each consumer’s stuff-effect multiplier and each blaster’s damage category. Test finished products against representative weapons. [Stuff armor calculation](https://raw.githubusercontent.com/Chillu1/RimWorldDecompiled/master/RimWorld/StatPart_Stuff.cs). |
+| **Durasteel’s advantage** | Its HP factor is only about 7% above plasteel’s, although it costs substantially less and takes less work. Its sharp armor power is below steel’s. “More resistant than steel” will disappoint against sharp-category gunfire. | Describe it as economical structural toughness. Either raise its sharp protection to at least steel’s or explicitly present the blunt/heat specialization as campaign balancing. |
+| **Plastoid sealing** | Making a helmet or wall from plastoid cannot automatically create gas, toxin or vacuum protection. A plastoid club should not confer environmental resistance. | Put protection on sealed suits, helmets and their equipment rules. Separate apparel protection from Odyssey building airtightness. Verify plastoid’s actual categories and stats; they were not measured here. |
 
-**No entirely new canon name earns a mandatory resource slot yet.** The missed opportunity is mechanical: existing name-only agrinium and research-only baradium deserve consumer audits before expanding the roster.
+**Recipe substitution needs two separate audits.** Keep fixed `Plasteel` costs where the consumer needs plasteel; redirect only identified durasteel references. Then audit generic stuff recipes and broad ingredient filters, which can admit both materials despite the statement that no recipe substitutes them. Fixed-cost advanced components and implants need explicit recipe decisions; input material stats do not automatically transfer into their products.
 
-Beskar’s weapon taboo is specifically attributed to the Children of the Watch in your evidence. Jawa armor-only use is a defensible design restriction, not a universal canon prohibition.
+**Salvage needs composition, not name-based conversion.** `ShipChunk_durasteel` yielding plasteel is not inherently impossible—a wreck contains several materials—but its loot should explain that: durasteel plating, plasteel shells, components. Give B1 remains plasteel recovery without also paying the same shell through corpse processing and another wreck recipe. Audit smelting, shredding and deconstruction separately. Fabrication and recovery yields must prevent profitable material loops; cheap steel–chemfuel plasteel can otherwise erase scavenging scarcity.
 
-**4. RimWorld hooks and collisions**
+**Odyssey requires an explicit allowlist.** Remove forbidden entries from both measured generation paths; zeroing ordinary mineable commonality alone may leave explicitly selected deposits. Audit surface veins, deep deposits, meteorites, quests and donor generators too. Orbital wreck salvage remains **S**, distinct from asteroid mining **A**. Gold, silver, jade and new precious commodities must obey their approved home-biome placement; “space” is not automatically a permitted home. Preserve legacy mineable defs for saves without permitting fresh generation.
 
-Prefer fixed ingredients for specialized materials. Giving something `stuffProps.categories = Metallic` exposes it to many unintended walls, furniture, weapons, and apparel.
+**Canon fidelity**
 
-Vanilla definitions distinguish material `statBases` such as `StuffPower_Armor_Sharp` from `stuffProps.statFactors` such as `MaxHitPoints`, and include `stuffProps.isAirtight`. Preserve that distinction. [Material XML](https://raw.githubusercontent.com/GAarsin/Rimworld_Data/master/Core/Defs/ThingDefs_Items/Items_Resource_Stuff.xml)
+The supplied examples support three distinct identities. They do **not** establish every proposed property:
 
-| Material | Concrete hooks | Collision / implementation caution |
+- **Plasteel’s polymer–metal formulation is presented in the document’s Legends evidence.** §§2a/2c should identify “composite,” exceptional lightness and formability as campaign interpretations unless a canon source explicitly establishes them. “Shape” can mean precision fabrication, consistent with slow working; “easy to shape” would contradict the measured work factor.
+- **Plastoid’s vacuum capability is overstated as a material property.** Complete stormtrooper equipment includes survival systems; bare plating does not establish a spacesuit. [Official stormtrooper description](https://www.starwars.com/databank/stormtroopers).
+- **“Lightsaber-proof” phrik is too absolute.** Use “lightsaber-resistant.” Likewise, cortosis thought concealment should not become blanket immunity to Force powers.
+- **Beskar’s weapon prohibition is a cultural restriction, not universal canon.** Its armor-only campaign role is legitimate, but canon also includes weapons and forge tools. Cortosis fragility supports specialization, not a universal strength ladder. [Official metals comparison](https://www.starwars.com/news/the-acolyte-cortosis-the-mandalorian-beskar).
+- Coaxium’s cold-chain hazard should specify **raw** coaxium; distinguish refinement from fuel consumption. Asteroid sourcing and gravship-range effects are campaign proposals. [Official coaxium description](https://www.starwars.com/databank/coaxium).
+- Zersium being critical to durasteel does not establish that it is the sole ingredient. Use zersium **plus steel** in a deliberately invented alloying recipe.
+
+**Donor dispositions**
+
+| Choice | Judgment | Save and tier consequences |
 |---|---|---|
-| Durasteel | Keep **`Plasteel` defName**, rename label; retain baseline Metallic stuff/stats; redirect donor recipes, costs and salvage outputs. | Remove mining/deep sources separately. Patch duplicate items, not just labels. |
-| Duranium | Fixed building `costList`; ingredients in large-droid fabrication recipes; research prerequisites on factories/heavy machinery. | Components still represent mechanisms/electronics. No generic Metallic category required. |
-| Doonium | Fixed reactor, large-engine and factory power-module costs; advanced-power/gravtech research. | Do not replace gravcores or uranium with it. Radiation shielding needs an actual hazard system. |
-| Beskar | Dedicated armor recipes or restricted armor stuff category; high armor stuff powers where supported; controlled reforging recipe. | Quality and coverage remain important. Heat armor does not automatically mean blaster/saber immunity. Ideology relics make good heirloom rewards. |
-| Cortosis | Fixed ingredients in specialized gear; explicit damage/ability interaction, cooldown or charge component. | Generic armor factors cannot implement saber shorting. Low psychic sensitivity is not equivalent to hiding thoughts. |
-| Phrik | Restricted melee recipes; parry/saber-interaction component. | Higher weapon hit points alone rarely supplies the intended combat role. |
-| Plastoid | Fixed vac/tox suit recipes; final apparel `VacuumResistance`, `ToxicEnvironmentResistance`, coverage and insulation. | Avoid granting full protection through every plastoid hat. Keep medicine inputs out of cheap mass armor. |
-| Bronzium | Restricted decorative stuff; `Beauty` offsets/factors, modest HP and work costs. | Cheap beauty can trivialize room requirements. Avoid simultaneously making it efficient combat stuff. |
-| Transparisteel/lommite | Window/canopy building costs, airtight behavior, explicit sight rules; optional refining recipe. | Ordinary metal walls already seal rooms. Transparency requires more than artwork. |
-| Kyber | Existing crystal recipes, Force research/abilities, Lantern-only placement. | Audit synthetic crystal recipes and generic reward/trader pools so they do not bypass the fixed source. |
-| Stygium | Cloak component affecting detection/targeting; specialist research. | Invisibility must affect enemy behavior. A signal jammer hook alone is access clearance, not tactical cloaking. |
-| Tibanna | Beldon animal-production component; consolidate item/pipe definitions; charge-consuming blaster component or reload system. | Vanilla shooting does not automatically consume gas. Renewable output needs feed, herd size and production limits. |
-| Rhydonium | Refining bills into chemfuel or dedicated industrial fuel filters; explosion/toxic effects if implemented. | Direct universal fuel substitution makes it redundant with chemfuel. |
-| Coaxium | Dedicated booster/tank, consumption and range behavior; optional refrigeration hazard component. | A fuel filter change alone does not establish premium efficiency or range. |
-| Carbonite | Processing recipe and portable preservation/stasis container; explicit contents/state handling. | Must handle prisoners, spoilage and volatile cargo separately; do not replace Anomaly containment rules by implication. |
-| Baradium | Detonator, mining-charge and demolition recipes/projectiles; explosives research. | Split directed demolition from uranium ammunition and chemfuel incendiaries. |
-| Optional luxuries | Restricted decorative recipes, named quest commissions, specialist buyer stock; home-biome placement. | Keep **silver as trade currency**. Preserve gold’s existing recipe, Royalty and tribute relationships unless deliberately patched. |
+| **(a) Keep `KOTOR_AlloyDurasteel`** | **My pick:** existing stuff identity and processing chain minimize disruption. | Retains existing references to our alloy. Record its prefix as a legacy naming exception and assign clear tier ownership. Moving ownership must preserve availability and dependency order. |
+| **(b) Create `RSW_Durasteel`** | Worthwhile if canon-tier dependency independence requires it; cosmetic naming alone is insufficient. | Requires migrating our existing alloy as well as donor stock and references. A clean prefix does not supply migration. |
+| **(c) Leave donors** | Useful only as a temporary compatibility state. | Duplicate stacks, filters, stats and recipe eligibility persist; disabling mining does not stop trade, salvage or generated equipment. |
 
-Odyssey tank definitions filter for `Chemfuel`; thrusters have `GravshipRange` effects, while extenders/power cells use gravcores. Add alloy costs alongside those roles rather than treating every engine-related resource as interchangeable. [Gravship XML](https://raw.githubusercontent.com/GAarsin/Rimworld_Data/master/Odyssey/Defs/ThingDefs_Buildings/Buildings_Gravship.xml)
+For **all three**, “old defs remain loadable” requires shipping compatibility definitions after donor-mod retirement. Loose-stack conversion recipes do not migrate building/gear `Stuff`, inventories, unfinished items, bills or saved filters. A save can load while retaining a fragmented economy.
 
-A concrete starting recipe might be **factory: 80 durasteel + 20 duranium + 6 doonium + 8 industrial components**—illustrative quantities for testing, not settled balance. Apply the same frame/containment distinction to large ships. Preserve Biotech chips and other specialized gates alongside material requirements.
+Treat ore and alloy separately: verify what `LKDurasteel_Ore` actually represents before choosing conversion yields. Do not silently repurpose `KOTOR_MineableDurasteel` as zersium: existing deposits would change meaning. Prefer a new zersium vein with the old def retained as compatibility content.
 
-| Economy hook | Recommended implementation |
-|---|---|
-| Quest rewards | Authored early salvage contracts supplying construction quantities; later rewards follow wreck type. Quests award salvage access, not unsourced kyber. |
-| Trader stock | Explicit `TraderKindDef.stockGenerators`: common durasteel, occasional specialist goods, rare small duranium/doonium lots. Beskar remains salvage-only; tibanna production remains herd-based. |
-| Recovery | Control deconstruction fractions, destruction leavings and smelting outputs together. Rebuilding must never generate net material. |
-| Wealth/balance | Essential stockpiles should not become huge raid-wealth liabilities before they provide combat capability. Avoid free replacement alloy on every repeated incident. |
-| Art/definitions | Reuse existing metal artwork/tints where appropriate. Spend new art on recognizable wrecks, herd products and unique consumers; each raw/refined/scrap form otherwise multiplies bills, filters and compatibility work. |
+**Repairs to the three existing designs**
 
-**5. Ranking all six for the owner**
+| Design | Main critique | Concrete repair |
+|---|---|---|
+| **D1: ladder** | Duranium and doonium become numerical upgrades; “apex” hides three different combat behaviors. Its iron wording also obscures the ruled everywhere-iron deep drilling. | Make tiers gate **projects**, not universal superiority: duranium frames plus doonium reactor containment for appropriate large builds, with durasteel cladding and plasteel control/droid assemblies. Present beskar, phrik and cortosis as specialties. Clarify surface versus deep iron placement. |
+| **D2: one job each** | Exclusivity is artificial: durasteel and duranium overlap at turret mounts, while many unique verbs require new systems. Transparisteel needs actual visibility behavior; coaxium needs a range hook. | Allow shared structural projects with different required parts. Give each launch material a named implemented consumer before adding it; defer unsupported verbs. Begin with the trio, ruled duranium/doonium and established kyber/tibanna systems. |
+| **D3: provenance** | Origins are attractive but uses remain vague. Doonium in the A/T endgame contradicts salvage-first, rare trade; gravship-gated supplies can prevent building the first gravship. | Return doonium to offworld-manufactured **S first, rare T**, with orbital wrecks counted as S. Give every local ore one consumer and guarantee an accessible ground salvage route for first-ship necessities. |
 
-Ranks assume the rule corrections above; they indicate review priority, not elimination.
+Also fix the shared introduction: it names “five” channels before adding F. There are six.
 
-| Rank | Design | Best for | Why put it forward |
-|---:|---|---|---|
-| **1** | **D4 — Fixed recipe functions** | Deliverable, legible campaign | Strong orthogonality with the fewest speculative systems. |
-| **2** | **D5 — Recover and refit** | Jawa identity | Most distinctive scavenging loop; worthwhile if refitting receives real development effort. |
-| **3** | **D2 — One job each** | Rich specialist crafting | Strong conceptual map; consumer and compatibility costs need trimming. |
-| **4** | **D6 — Expedition logistics** | Odyssey-centered nomad play | Best travel economy; highest risk of cargo and refueling chores. |
-| **5** | **D3 — Provenance** | Biome exploration | Excellent world-placement model, but needs explicit functions and fewer token ores. |
-| **6** | **D1 — Ladder** | Onboarding and progression pacing | Useful access model; weakest fit to the requested differences in kind. |
+**Three additional designs remain alive**
 
-Put **D4, D5, and D6 beside the three originals**, with their different commitments visible: permanent construction capability, recovered equipment, or expedition supplies. Keep all six available until the owner chooses which play loop the campaign should emphasize.
+For these proposals, the common roster is **steel, plasteel, durasteel, plastoid, duranium, doonium, beskar, cortosis, kyber, tibanna and existing rhydonium**. Common channels: steel from L iron; plastoid F/S; duranium/doonium S with rare T; beskar S; cortosis S/T; kyber L Lantern Deeps; tibanna H; rhydonium its existing manufactured fuel chain.
+
+| Alternative | Roster and placement | Origin channels | Main weakness |
+|---|---|---|---|
+| **E1: assemblies** | Common roster only. Materials cooperate within machines: **durasteel** outer structure, **plasteel** insulated housings/droid shells, duranium frame, doonium containment. Most rare metals are fixed ingredients rather than universal stuff. | Durasteel S/T, optional L zersium→F alloying; plasteel S/T and limited F. Reclaimed assemblies can be dismantled or installed directly. | Intermediate assemblies add bills and stockpile complexity; recipes can become shopping lists. |
+| **E2: restoration** | Common roster plus **phrik and stygium**. The main reward is damaged equipment. **Plasteel** repairs droids and personal equipment; **durasteel** repairs doors, turrets and hulls. Rare materials restore specialist relic functions. | Plasteel/durasteel predominantly S, backed by T; phrik S/L Stillsand, stygium S/T. Existing-item restoration dominates new manufacture. | Players may feel denied creative construction; requires a substantial damaged-item catalogue. |
+| **E3: industrial contracts** | Common roster plus **bronzium and aurodium**. **Durasteel** supports bulk construction orders; **plasteel** supports precision droid/prosthetic orders. Material demand follows buyers and contracts rather than progression or exclusive verbs. | Durasteel S/T plus optional local alloying; plasteel S/T, limited F. Bronzium F/T; aurodium T and approved home-biome traces. Duranium/doonium remain salvage-first. | Contract tuning can turn scavenging into repetitive quota work; purchase backstops may dominate expeditions. |
+
+These are different governing loops: assembling systems, restoring finds, and supplying an economy.
+
+**Roster discipline and review priority**
+
+Fold **functions**, not canon identities: omit separate quadanium/alusteel/ferrocarbon commodities while durasteel covers ordinary structure. Duranium and doonium remain separate and required.
+
+Defer transparisteel/lommite until windows work; stygium until cloaking works; coaxium/carbonite until fuel and preservation systems exist. Defer chromium, thorilide and dolovite until named consumers justify them. Fold hyperbaride, corusca and aurodium’s wealth function into existing trade rewards unless distinct demand warrants separate stacks. Bronzium can remain a small decorative branch.
+
+Do not add the rejected exotic-metal list or promote agrinium/zersium name-only equipment into commodities merely because names exist.
+
+Resolve generation leaks, recipe eligibility, migration and first-ship access first. **Design review order only:** D3 → E1 → D2 → E2 → D1 → E3, based on scavenger fit, clarity and implementation uncertainty. This is not a design selection.
+
+1. Durasteel identity: **(a) legacy def** | **(b) new canon-tier def** | **(c) temporary donor coexistence**?
+2. Material roles: **preferred uses with generic freedom** | **exclusive campaign consumers**?
+3. Plasteel supply: **salvage/trade only** | **salvage/trade plus costly fabrication**?
+4. Local durasteel: **zersium–steel alloying** | **salvage/trade only**?
+5. New commodities: **implemented consumer required first** | **reserve selected dormant defs now**?
+6. Next prototype: **D1** | **D2** | **D3** | **E1** | **E2** | **E3**?
