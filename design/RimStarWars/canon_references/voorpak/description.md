@@ -26,6 +26,10 @@ A Quermian diplomat of the New Republic had a pet voorpak.
 During Roan Novachez's second year at the Jedi academy on Coruscant, the students were given the opportunity to care for a pet voorpak named Voorpee, on loan from the Naboo Zoo. The voorpak returned in the next school year. This particular voorpak enjoyed eating insects.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia pageimages Voorpak and Voorpak/Legends, catimages "Images of voorpaks"; only Forces of Destiny animation, Galaxy of Creatures animation, Ultimate Adversaries and Wildlife of Star Wars illustrations, and Jedi Academy cartoons exist).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
 Four images: one canon (Buggles, a pet voorpak from Star Wars Resistance, "Secrets and Holograms") and three Legends. All show a **fluffy ball on thin legs**; none shows a normal quadruped.
 - **Silhouette:** a **round, puffball body, about the size of a head**, with a face on the front and a **set of thin, long, stick-like legs** poking out underneath. The Legends art shows the legs as **spindly, jointed, spider-like or bird-like, with small clawed feet** (`legends_2` and `legends_3`: six to eight visible stick legs; the text says six). `canon_1` shows the same ball standing on tall ostrich-like legs with big splayed three-toed claws, so it is larger than a pet that can be "lifted"; treat the legs as long and thin in all versions.
 - **Head:** the face sits on the front of the ball, no neck. Large round **eyes with a coloured mask-like ring or patch around them** (pink-purple/magenta rings in `legends_2` and `legends_3`; a dusky red-brown ring in `canon_1`; yellow patches in `legends_1`), irises blue, lavender or green. A small **pointed pink-brown nose**, a wide smile, and **small needle teeth** in the open mouth (visible in `legends_1`, `legends_2`).
@@ -39,6 +43,7 @@ Four images: one canon (Buggles, a pet voorpak from Star Wars Resistance, "Secre
 - [ ] Large round eyes ringed with a coloured mask-like patch, a small pointed nose and a wide smile with tiny needle teeth
 - [ ] Two small tufts, ear stalks or bud-tipped stalks on top of the head
 - [ ] Hand-sized pet creature (kept small despite the long legs)
+- [ ] Realistic rendering: natural fluffy fur and thin jointed legs under natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed

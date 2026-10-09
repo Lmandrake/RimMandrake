@@ -43,39 +43,37 @@ one-word/two-word naming collision is flagged here so a future pass does not
 mistake the lore-only Chiss reference for a design target.
 
 ## Visual brief
-Only one candidate image was found (`wookieepedia_alienarchive.jpg`, credited
-to *Star Wars: Alien Archive*) — a stylized game-guide illustration in
-flight, wings fully spread:
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 
-- **Body/plumage**: warm **golden/tan-brown** feathers overall, matching the
-  "golden-colored" text exactly, with **dark brown-to-black barred/banded
-  markings** across the underside of both wings and a dark patch across the
-  chest/belly.
-- **Head**: a **bald, blue-gray, vulture-like head and upper neck** (no
-  feathers) with a hooked, reddish-tipped beak shown open — this reads much
-  more vulture/condor-like than songbird-like, despite the "whisper" naming
-  suggesting something delicate.
-- **Legs/feet**: blue-gray legs and talons matching the head color, four
-  sharp curved claws per foot, visible and prominent in the flight pose.
-  Long, thin feathered tail trailing behind.
-- **Silhouette**: broad swept wings, lean raptor-proportioned body — reads
-  as a bird of prey silhouette; the wiki text says it hunts and eats fish and weeds
-  and does not describe it as a scavenger, despite the vulture-like head.
+The hatched *Alien Archive* illustration (`wookieepedia_alienarchive.jpg`) was deleted 2026-10-08. The target is now
+**`wookieepedia_bf2_render.png`**, the photoreal *Star Wars Battlefront II* (canon, video game) model of the bird in
+flight. `wookieepedia_woswfg_legends.jpg` is a naturalistic Legends painting from *The Wildlife of Star Wars* and
+disagrees on wing type (below).
 
-**Net read**: golden-tan plumage with dark wing banding, bald blue-gray
-vulture-style head and legs, red beak tip — a raptor/vulture-shaped bird,
-not a songbird. Single-source image, but it agrees closely with the sourced
-text's "golden-colored" description, so treat it as reliable.
+From the Battlefront II render (realistic):
+- **Plumage**: warm golden-tan to honey-brown feathers over the body and long broad wings, with soft darker brown
+  shading along the feather tracts and paler tips; the coat is fairly even — **no strong black barring** is visible.
+- **Head and neck**: a bald, blue-grey, vulture-like head and a long thin bare blue-grey neck, held stretched forward
+  in flight; a long slim pale orange-tan beak.
+- **Tail**: a very long, thin, trailing tail streamer of golden feathers, longer than the body.
+- **Silhouette**: a lean, long-necked, long-winged soaring bird, closer to a heron or crane than a stocky raptor.
+- **Disagreement (loud)**: the deleted *Alien Archive* drawing showed heavy dark banding under the wings, a dark belly
+  patch, a hooked red-tipped beak and big blue-grey talons; the realistic render shows none of that banding, a
+  slimmer straighter beak and the legs tucked out of sight. Follow the render.
+- **Legends painting** (`woswfg_legends`): same bald blue-grey head and long neck, but **pterosaur-like membrane
+  wings** in bright orange-yellow and an open toothed beak. It is Legends; use it for head and neck only, never the
+  wings.
 
 ## Must show
-- [ ] Golden/tan-brown body plumage overall
-- [ ] Dark brown-to-black barred/banded markings across the underside of both wings and a dark chest/belly patch
-- [ ] Bald, blue-gray, vulture-like head and upper neck (no feathers on the head), with a hooked beak carrying a reddish tip
-- [ ] Blue-gray legs and talons, with four sharp curved claws per foot
-- [ ] Broad swept wings on a lean, raptor-proportioned body — a bird-of-prey/vulture silhouette, not a songbird
+- [ ] Warm golden-tan to honey-brown feathered body and long broad wings, without heavy black barring
+- [ ] Bald blue-grey vulture-like head on a long, thin, bare blue-grey neck stretched forward
+- [ ] Long, slim, pale orange-tan beak
+- [ ] A very long, thin, trailing golden tail streamer, longer than the body
+- [ ] Lean, long-necked soaring silhouette (heron/crane-like), not a stocky raptor
+- [ ] Realistic rendering: natural feather texture and soft natural lighting, no outlines, no ink hatching or cartoon shading
 
 ## Engine limits
-none known — only one candidate image exists for this species and no donor sprite could be obtained at all (creature art ships packed in Unity AssetBundles, not loose files), so there is nothing on disk to test against a rendering-pipeline constraint.
+none known — no donor sprite could be obtained at all (creature art ships packed in Unity AssetBundles, not loose files), so there is nothing on disk to test against a rendering-pipeline constraint.
 
 ## Source URLs
 - https://starwars.fandom.com/wiki/Whisperbird (current canon, one-word
@@ -83,7 +81,8 @@ none known — only one candidate image exists for this species and no donor spr
   2026-09-13)
 - https://starwars.fandom.com/wiki/Whisper_bird (current canon, two-word
   title — the actual golden bird species; wikitext pulled 2026-09-13)
-- https://static.wikia.nocookie.net/starwars/images/1/19/Whisper_Bird-Alien_Archive.jpg
+- https://static.wikia.nocookie.net/starwars/images/7/75/WhisperBird-BFII.png
+- https://static.wikia.nocookie.net/starwars/images/0/08/WhisperBird-woswfg.jpg
 - Donor mod `mlie.starwarsanimalcollection` — `About.xml` confirms
   packageId `Mlie.StarWarsAnimalCollection`, GitHub mirror
   `github.com/emipa606/StarWarsAnimalCollection`; its `Textures/` folder
@@ -93,17 +92,9 @@ none known — only one candidate image exists for this species and no donor spr
   Whisperbird was located this pass.
 
 ## Candidate images
-- `wookieepedia_alienarchive.jpg` — flying whisper bird, golden-tan
-  plumage with dark banded wing markings, bald blue-gray vulture-like head
-  with red beak tip, blue-gray taloned legs. **Only candidate found; best
-  and only color/body-plan reference.**
-- **No donor-mod (`mlie.starwarsanimalcollection`) sprite included** — same
-  AssetBundle-packaging finding as prior waves; revisit if the mod is ever
-  installed locally or a labeled preview surfaces.
-- No additional candidate images found this pass beyond the one above —
-  searches for the current-canon `Whisperbird` (Chiss board-game piece) also
-  turned up no illustrations, consistent with that article having no
-  physical description to illustrate.
+- `wookieepedia_bf2_render.png` — canon page `Whisper bird`; *Star Wars Battlefront II* photoreal video-game model in flight. **Primary reference.** File `WhisperBird-BFII.png` — https://static.wikia.nocookie.net/starwars/images/7/75/WhisperBird-BFII.png/revision/latest?cb=20260920153411
+- `wookieepedia_woswfg_legends.jpg` — Legends; *The Wildlife of Star Wars: A Field Guide* naturalistic painting, two birds in flight and a head study. Head/neck only; its membrane wings disagree with canon. File `WhisperBird-woswfg.jpg` — https://static.wikia.nocookie.net/starwars/images/0/08/WhisperBird-woswfg.jpg/revision/latest?cb=20070124223418
+- **No donor-mod (`mlie.starwarsanimalcollection`) sprite included** — creature art ships packed in AssetBundles.
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

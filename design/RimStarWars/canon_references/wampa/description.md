@@ -18,6 +18,17 @@ A visually similar "cousin species," the Mogu,
 exists on the warmer world of Koboh but is a distinct species.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+The illustrated comic cover (`comic_cover_agesolo.jpg`) was deleted 2026-10-08. Every remaining reference is
+LIVE-ACTION *The Empire Strikes Back* (practical suit): `wookieepedia_esb_fullbody.png` (full standing body in the ice
+cave, the clearest anatomy), `wookieepedia_esb_onearm.png` (the wounded wampa's head and shoulders, wet matted fur and
+blood), `wookieepedia_infobox_esb.jpg` (the ruled image) and `wookieepedia_unused_concept.jpg` (unused suit, close-up).
+From the live-action stills: a huge, heavy, upright ape/yeti with long, thick, shaggy cream-white fur that hangs in
+clumps and parts over the limbs; a broad short-snouted face of dark grey-black bare skin with deep-set small dark eyes
+and a jutting lower jaw of uneven fangs; two short dark ram-like horns curling down beside the face; long arms with
+dark claws. Fur reads warm cream, not pure white, and is matted and dirty-pink with blood where it fed.
+
 The candidate images broadly agree on white shaggy fur, black facial
 features, and a heavyset ape/bear-like posture with prominent claws — but
 they diverge on stance and menace level. The ESB-era infobox still (practical
@@ -25,11 +36,9 @@ suit, bound and hoisted by rope, arms raised) and the unused behind-the-scenes
 still (the wiki captions it "an early, unused wampa costume design", so it is design evidence, not final on-screen anatomy; the released ESB footage takes priority) (screaming close-up, fangs bared, blood-streaked claws and muzzle) both
 show a **bipedal, ape/yeti-like posture** with long shaggy white fur, dark
 bald-looking facial skin around the eyes/muzzle, small dark eyes, and visible
-sharp claws and fangs — genuinely frightening, not cute. The official comic
-cover art (Luke dangling, wampa lunging with jaws open) confirms the same
-white-furred, black-eyed, fanged, roughly humanoid-postured predator, plus
-visible small horns on the head silhouette matching the "small cranial horns"
-in the text.
+sharp claws and fangs — genuinely frightening, not cute. The live-action full-body
+still confirms small dark curled horns on the head matching the "small cranial
+horns" in the text.
 
 **The current donor sprite (`donor_current_sprite.png`) disagrees in body
 plan, not just detail**: it is drawn as a **quadrupedal**, bear/dog-like
@@ -49,6 +58,7 @@ prominently for the owner's ruling.
 - [ ] Dark, bald-looking bare skin confined to around the eyes/muzzle only
 - [ ] Visible sharp claws and fangs
 - [ ] Small cranial horns visible on the head silhouette
+- [ ] Realistic rendering: natural shaggy cream-white fur with clumping and natural snow-cave lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known — the donor sprite's disagreement (a quadrupedal, four-legged grazing-animal silhouette with brown blotching and no claws or horns) is recorded as a wrong body-plan/pose choice for a regen to correct, not as a rendering-pipeline constraint.
@@ -59,13 +69,13 @@ none known — the donor sprite's disagreement (a quadrupedal, four-legged grazi
   2026-09-13)
 - https://static.wikia.nocookie.net/starwars/images/d/d0/SkywalkerWampa.jpg (infobox art — practical suit still from *The Empire Strikes Back*, bound/hoisted)
 - https://static.wikia.nocookie.net/starwars/images/7/70/Wampa_unused_btm.jpg (unused behind-the-scenes/promotional still — close-up snarl, claws and blood detail)
-- https://static.wikia.nocookie.net/starwars/images/2/2c/GreatestMomentsTextless-AgeSolo1.png (official comic cover art — Luke dangling, wampa lunging)
 
 ## Candidate images
 - `donor_current_sprite.png` — this repo's current shipped sprite (SWBestiary mod, east-facing base variant), quadrupedal white body with brown face blotching, no claws/horns visible
 - `wookieepedia_infobox_esb.jpg` — ESB practical-suit still, bipedal, arms raised, ropes/rigging visible (production still, not in-universe view, but shows the canonical suit design)
 - `wookieepedia_unused_concept.jpg` — unused behind-the-scenes close-up, snarling face, bared fangs, blood-streaked claws and muzzle
-- `comic_cover_agesolo.jpg` — official comic cover art, wampa lunging at a dangling Luke Skywalker, clean modern illustrated take on the same design
+- `wookieepedia_esb_fullbody.png` — *The Empire Strikes Back* live-action, full standing wampa in the ice cave holding a tauntaun limb; file `Wampa-BOSWI11.png` — https://static.wikia.nocookie.net/starwars/images/a/ac/Wampa-BOSWI11.png/revision/latest?cb=20241228061749
+- `wookieepedia_esb_onearm.png` — *The Empire Strikes Back* live-action, the wounded wampa's head and shoulders; file `OneArm-ESB.png` — https://static.wikia.nocookie.net/starwars/images/0/02/OneArm-ESB.png/revision/latest?cb=20130320014431
 
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox_esb.jpg`
