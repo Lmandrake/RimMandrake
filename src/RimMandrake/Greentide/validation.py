@@ -161,9 +161,9 @@ def ladder_sim(p, fractions):
 # --------------------------------------------------------------------------- the spine (GREENTIDE_BASE_PORT_BUILD_1)
 
 SPINE_DEFS = [("WeatherDef", "RM_RoilWeather"), ("WeatherDef", "RM_BreaklightClear"),
-              ("GameConditionDef", "RM_RoilLock"), ("GameConditionDef", "RM_GreentideWetBulbLock"),
+              ("GameConditionDef", "RM_RoilLock"),
               ("GameConditionDef", "RM_BreaklightCondition"), ("IncidentDef", "RM_Breaklight"),
-              ("IncidentDef", "RM_GreatboleFruitfall"), ("HediffDef", "RM_WetBulbOverwhelm"),
+              ("IncidentDef", "RM_GreatboleFruitfall"),
               ("HediffDef", "RM_DryAirAversion"), ("ThingDef", "RM_DryAirBlower"),
               ("ThingDef", "RM_GreatboleHeartwood"), ("ThingDef", "RM_GreatboleCore"),
               ("ThingDef", "RM_GreatboleTrunkSegment"), ("ThingDef", "RM_GreatboleDeadHusk"),
@@ -188,9 +188,10 @@ def spine_findings(biome_root=None, defs=None):
         if cls not in ext:
             bad.append("RM_Greentide lacks %s" % cls.split(".")[-1])
     conds = [li.text for li in gt.findall("biomeMapConditions/li")]
-    for c in ("RM_RoilLock", "RM_GreentideWetBulbLock"):
-        if c not in conds:
-            bad.append("RM_Greentide biomeMapConditions lacks %s" % c)
+    if "RM_RoilLock" not in conds:
+        bad.append("RM_Greentide biomeMapConditions lacks RM_RoilLock")
+    if "RM_GreentideWetBulbLock" in conds:
+        bad.append("RM_Greentide still lists the deleted wet-bulb condition (WETBULB_FOLD_INTO_HEAT_1)")
     if gt.find("baseWeatherCommonalities/RM_RoilWeather") is None:
         bad.append("RM_Greentide weather table lacks RM_RoilWeather")
     if gt.findtext("modExtensions/li/heartwoodThing") != "RM_GreatboleHeartwood":

@@ -5,12 +5,10 @@ using Verse;
 
 namespace RimMandrake.EnvironmentalHazards
 {
-    // HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1. RM_WetBulbProtection (this
-    // mod) and RM_SheenProtection (TheRot,
+    // HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1. RM_SheenProtection (TheRot,
     // MayRequire mandrake.rm.environmentalhazards so it can never be loaded
-    // without this mod) are "Apparel"-category StatDefs summed at runtime by
-    // HazardTargeting.SumApparelStat/RM_GameCondition_WetBulb's own private
-    // copy — that machinery works and is untouched here.
+    // without this mod) is an "Apparel"-category StatDef summed at runtime by
+    // HazardTargeting.SumApparelStat — that machinery works and is untouched here.
     //
     // The gap is upstream of it: JobGiver_OptimizeApparel.ApparelScoreRaw
     // (the vanilla AI's "how good is this garment" score, confirmed by
@@ -41,8 +39,11 @@ namespace RimMandrake.EnvironmentalHazards
     // FIX: postfix ApparelScoreRaw and add each hazard-protection stat's
     // value straight onto the score, plus ArmorRating_Heat, which IS the
     // Scald steam clock's protection stat since SCALD_FOLD_INTO_HEAT_1 (one
-    // kind of heat, decision taken by question card 2026-10-08), the same
-    // weight class as
+    // kind of heat, decision taken by question card 2026-10-08), and
+    // Insulation_Heat / InsulationHeatScoreDivisor, which is what answers the
+    // Greentide's wet-bulb heat since WETBULB_FOLD_INTO_HEAT_1 (vanilla's
+    // scorer reads Insulation_Cold only, and only when the pawn needs warmth).
+    // All in the same weight class as
     // ArmorRating_Sharp/Blunt two lines above it in that method — a boil-suit
     // now reads as better apparel unconditionally, the same way body armor
     // does, rather than only when some detector decides the pawn "needs" it.
@@ -52,6 +53,11 @@ namespace RimMandrake.EnvironmentalHazards
         // Looked up once by name rather than via a [DefOf]-bound field: TheRot
         // may not be installed, and an unresolved DefOf field would throw at
         // startup instead of quietly reading as "not present".
+        // PROVISIONAL: 40 C of heat insulation scores like 1.0 of armor, so the
+        // sealed suit (~25 C in cloth) scores about what its old 0.6 wet-bulb
+        // protection did.
+        private const float InsulationHeatScoreDivisor = 40f;
+
         private static readonly StatDef SheenProtectionStat =
             DefDatabase<StatDef>.GetNamedSilentFail("RM_SheenProtection");
 
@@ -94,7 +100,7 @@ namespace RimMandrake.EnvironmentalHazards
             try
             {
                 float bonus = ap.GetStatValue(StatDefOf.ArmorRating_Heat)
-                            + ap.GetStatValue(RM_HazardApparelScoringStatDefOf.RM_WetBulbProtection);
+                            + ap.GetStatValue(StatDefOf.Insulation_Heat) / InsulationHeatScoreDivisor;
 
                 if (SheenProtectionStat != null)
                 {
@@ -107,17 +113,6 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 Log.WarningOnce("[RM EnvironmentalHazards] hazard-apparel-scoring: " + e.Message, 0x485341);
             }
-        }
-    }
-
-    [DefOf]
-    public static class RM_HazardApparelScoringStatDefOf
-    {
-        public static StatDef RM_WetBulbProtection;
-
-        static RM_HazardApparelScoringStatDefOf()
-        {
-            DefOfHelper.EnsureInitializedInCtor(typeof(RM_HazardApparelScoringStatDefOf));
         }
     }
 }

@@ -151,9 +151,6 @@
     <Compile Include="RM_GenStep_ScatterPools.cs" />
     <Compile Include="RM_GroundRefusalBiomeExtension.cs" />
     <Compile Include="RM_GenStep_GroundRefusal.cs" />
-    <Compile Include="RM_WetBulbExtension.cs" />
-    <Compile Include="RM_GameCondition_WetBulb.cs" />
-    <Compile Include="RM_MapComponent_DryRooms.cs" />
     <Compile Include="RM_CompDryFieldEmitter.cs" />
     <Compile Include="RM_FellableTreeExtension.cs" />
     <Compile Include="RM_TreeFallUtility.cs" />

@@ -54,7 +54,7 @@ doctrine):
      to recover the suit, the welded tooling and RM_HalfExtractedCore, a reactor core that doses
      everyone near it until it is locked in a cask bay.
   3. Terrain-survival wiring: RM_HazardousTerrainProtection (a summed apparel stat, same shape as
-     this repo's RM_WetBulbProtection) and RM_MapComponent_HazardousTerrainImmersion, a general
+     TheRot's RM_SheenProtection) and RM_MapComponent_HazardousTerrainImmersion, a general
      hazard engine (not warcasket-specific — any apparel granting the stat helps, on any map) that
      applies RM_TerrainImmersionHazard to a pawn standing on deep/non-walkable water terrain
      without enough protection. Scoped deliberately to non-walkable ("must swim") water only —

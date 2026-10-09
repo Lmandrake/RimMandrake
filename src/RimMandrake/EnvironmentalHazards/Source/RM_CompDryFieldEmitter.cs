@@ -10,7 +10,6 @@ namespace RimMandrake.EnvironmentalHazards
     //     ...
     //     <comps>
     //       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_DryFieldEmitter">
-    //         <dryRoomHoldTicks>15000</dryRoomHoldTicks>
     //         <animalRepelRadius>3</animalRepelRadius>
     //         <animalRepelArcDegrees>90</animalRepelArcDegrees>
     //         <aversionHediff>RM_DryAirAversion</aversionHediff>
@@ -20,11 +19,10 @@ namespace RimMandrake.EnvironmentalHazards
     public class CompProperties_DryFieldEmitter : CompProperties
     {
         // INVENTED (greentide_kit_spec.md M2): "when it runs out of fuel,
-        // the green notices within hours" — ~6 in-game hours of grant per
-        // active refresh (CompTickRare cadence, 250 ticks, keeps re-granting
-        // the full duration while the blower runs, so this only matters
-        // once it stops).
-        public int dryRoomHoldTicks = 15000;
+        // the green notices within hours" — ~6 in-game hours of plant
+        // suppression per active refresh (every 250 ticks while the blower
+        // runs, so this only matters once it stops).
+        public int suppressHoldTicks = 15000;
 
         // INVENTED (kit spec, piece 2's own named values, reused for piece 3
         // — the animal-repel arc — since the spec ties both to "a doorway
@@ -64,16 +62,14 @@ namespace RimMandrake.EnvironmentalHazards
     }
 
     // GREENTIDE_MECHANICS_2 M2 build (greentide_kit_spec.md "M2. The dry-air
-    // blower"). Three pieces per the spec's own numbering; #2 is a
-    // documented no-op this pass (see SuppressPlantGrowth below), #1 and #3
-    // are built for real.
+    // blower"). Two pieces: plant-growth suppression over the doorway arc
+    // (SuppressPlantGrowth) and the wild-animal repel (RepelAnimals). Its old
+    // first piece, drying the room to stop the wet-bulb clock, was deleted
+    // with that clock (WETBULB_FOLD_INTO_HEAT_1): Greentide heat is vanilla
+    // heat, and an enclosed room already takes no felt-heat offset.
     //
-    // CompTickRare (vanilla's own 250-tick cadence) is used deliberately for
-    // both remaining pieces rather than a hand-rolled counter: it matches
-    // the spec's own "periodic scan (interval 250 ticks)" for piece 3
-    // exactly, and re-granting the room-dry duration at the same cadence
-    // (piece 1) is a harmless simplification — more frequent refresh only
-    // ever extends the grant, never shortens it.
+    // Runs every 250 ticks (the spec's own "periodic scan (interval 250
+    // ticks)") from CompTick, because the blower is a Normal-ticker building.
     public class RM_CompDryFieldEmitter : ThingComp
     {
         public CompProperties_DryFieldEmitter Props => (CompProperties_DryFieldEmitter)props;
@@ -98,7 +94,6 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
-            KeepRoomDry();
             SuppressPlantGrowth();
             RepelAnimals();
         }
@@ -131,30 +126,15 @@ namespace RimMandrake.EnvironmentalHazards
             return true;
         }
 
-        // Piece 1: "dries the room ... registers its room (via
-        // Thing.GetRoom()) in RM_MapComponent_DryRooms, which M1's
-        // condition reads." See RM_MapComponent_DryRooms's own header for
-        // why this re-registers every active tick rather than once at spawn.
-        private void KeepRoomDry()
-        {
-            Room room = parent.GetRoom();
-            if (room == null)
-            {
-                return;
-            }
-
-            parent.Map?.GetComponent<RM_MapComponent_DryRooms>()?.KeepDry(room, Props.dryRoomHoldTicks);
-        }
-
         // Piece 2: "repels encroachment: writes suppression into the
         // EXPLOSIVE_PLANT_GROWTH_1 engine's suppression grid over a doorway
         // arc." WIRED 2026-09-26: that grid now exists
         // (mandrake.rm.explosivegrowth); the write goes through
         // RM_ExplosiveGrowthSuppressionBridge by reflection, so without that
         // mod this is still a no-op. Same arc as RepelAnimals (the spec ties
-        // both to one doorway arc), each cell suppressed for dryRoomHoldTicks
+        // both to one doorway arc), each cell suppressed for suppressHoldTicks
         // and re-granted every active rare tick — so when the blower stops,
-        // "the green notices within hours", exactly as the room-dry grant does.
+        // "the green notices within hours".
         private void SuppressPlantGrowth()
         {
             Map map = parent.Map;
@@ -176,7 +156,7 @@ namespace RimMandrake.EnvironmentalHazards
                 {
                     continue;
                 }
-                RM_ExplosiveGrowthSuppressionBridge.Suppress(map, cell, 0, Props.dryRoomHoldTicks);
+                RM_ExplosiveGrowthSuppressionBridge.Suppress(map, cell, 0, Props.suppressHoldTicks);
             }
         }
 

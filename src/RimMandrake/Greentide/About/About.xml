@@ -62,8 +62,8 @@ Ships the four v1 mechanics the owner ruled MUST ship together, not deferred
      volume-ramp API). Carried by the dhollollo (RM_Dhollock).
 
 The spine (GREENTIDE_BASE_PORT_BUILD_1, moved down from the campaign tier, RUT_ to RM_): the Roil
-(RM_RoilWeather forced by the permanent RM_RoilLock), wet-bulb overwhelm (RM_GreentideWetBulbLock,
-RM_WetBulbOverwhelm), Breaklight (RM_Breaklight, RM_BreaklightCondition, RM_BreaklightClear), the dry-air
+(RM_RoilWeather forced by the permanent RM_RoilLock), wet-bulb heat as vanilla heat (the ambient
+felt-heat offset; vanilla Heatstroke), Breaklight (RM_Breaklight, RM_BreaklightCondition, RM_BreaklightClear), the dry-air
 blower (RM_DryAirBlower, RM_DryAirAversion), root causeways (RM_RootCauseway) and the living greatbole
 landmark (RM_GreatboleHeartwood, RM_GreatboleCore and its harvest ladder, RM_GreatboleTrunkSegment,
 RM_GreatboleDeadHusk, RM_ToxinSealedFloor, RM_GreatboleFruitfall). Mechanism classes are in

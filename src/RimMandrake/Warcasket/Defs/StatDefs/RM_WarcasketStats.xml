@@ -5,11 +5,10 @@
   RM_HazardousTerrainProtection: the apparel stat RM_MapComponent_
   HazardousTerrainImmersion sums across a pawn's worn apparel via
   RimMandrake.EnvironmentalHazards.HazardTargeting.SumApparelStat, same
-  shape and same reasoning as this repo's own RM_WetBulbProtection.xml
-  (EnvironmentalHazards mod) - an "Apparel"-category StatDef has no
+  shape and same reasoning as TheRot's RM_SheenProtection.xml - an "Apparel"-category StatDef has no
   vanilla auto-aggregation onto a pawn stat, so any consumer summing one
   across a worn outfit does it itself. ParentName="ArmorRatingBase" for
-  the same reason RM_WetBulbProtection uses it (category Apparel,
+  the same reason RM_SheenProtection uses it (category Apparel,
   defaultBaseValue 0, minValue 0, hideAtValue 0 inherited unedited);
   maxValue capped to 1 since this is read as a 0..1 protection fraction.
 -->

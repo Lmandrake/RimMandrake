@@ -4,8 +4,7 @@
 
   Apparel-summed protection stat for RM_SheenCoating's exposure clock (owner
   card 5, RULED 2026-09-17: "gear only slows the exposure clock, never full
-  immunity"). Shape cribbed directly from
-  src/RimMandrake/EnvironmentalHazards/Defs/StatDefs/RM_WetBulbProtection.xml
+  immunity"). Shape
   (ParentName="ArmorRatingBase", maxValue overridden to 1, no StatPart_Stuff
   since no vendored Stuff in this repo grants it - apparel carries it via a
   flat statBases entry, same reasoning that file gives).

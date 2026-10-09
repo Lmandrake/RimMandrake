@@ -104,14 +104,11 @@ namespace RimMandrake.EnvironmentalHazards
     //      causeway network is painted on any map generated while it is
     //      off. Maps already generated keep whatever network they already
     //      have.
-    //  20. wetBulbOverwhelmEnabled — RM_GameCondition_WetBulb
-    //      (GREENTIDE_MECHANICS_2 M1). Off: a biome carrying the wet-bulb
-    //      condition stops ramping the overwhelm hediff on anyone at all.
     //  21. dryAirBlowerEnabled — RM_CompDryFieldEmitter
     //      (GREENTIDE_MECHANICS_2 M2). Off: a built dry-air blower stops
-    //      drying its room (M1's clock keeps running there) and stops
-    //      repelling wild animals from its doorway arc; it still draws
-    //      power/fuel and pushes heat like any running machine.
+    //      holding back plant growth and repelling wild animals in its
+    //      doorway arc; it still draws power/fuel and pushes heat like any
+    //      running machine.
     //  22. treeFallEnabled — RM_TreeFallUtility.FellTree (GREENTIDE_MECHANICS_2
     //      M6). Single choke point for all three fellers: off means a
     //      cracking giant tree stops rolling/warning, the Shatterer's own
@@ -348,7 +345,7 @@ namespace RimMandrake.EnvironmentalHazards
     //      no later pass has to retrofit MOD_OPTIONS_RETROFIT_1 onto it.
     //  57. hazardApparelAIAwarenessEnabled — RM_Patch_HazardApparelScoring
     //      (HAZARD_PROTECTION_STATS_UNSEEN_BY_AI_1). Off: JobGiver_
-    //      OptimizeApparel scores a boil-suit/wet-bulb/Sheen garment exactly
+    //      OptimizeApparel scores heat-armor/heat-insulation/Sheen garments exactly
     //      as vanilla would (i.e. blind to those three stats again) — no
     //      pawn will pick one up unprompted. On (default): the AI's own
     //      apparel score gains each stat's value, the same weight class as
@@ -384,7 +381,6 @@ namespace RimMandrake.EnvironmentalHazards
         // lines up — it never names a bole or a biome.
         public static float livingRegrowthRateMultiplier = 1f;
         public static bool rootCausewaysEnabled = true;
-        public static bool wetBulbOverwhelmEnabled = true;
         public static bool dryAirBlowerEnabled = true;
         public static bool treeFallEnabled = true;
         public static bool breaklightEnabled = true;
@@ -472,7 +468,6 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref livingRegrowthEnabled, "livingRegrowthEnabled", true);
             Scribe_Values.Look(ref livingRegrowthRateMultiplier, "livingRegrowthRateMultiplier", 1f);
             Scribe_Values.Look(ref rootCausewaysEnabled, "rootCausewaysEnabled", true);
-            Scribe_Values.Look(ref wetBulbOverwhelmEnabled, "wetBulbOverwhelmEnabled", true);
             Scribe_Values.Look(ref dryAirBlowerEnabled, "dryAirBlowerEnabled", true);
             Scribe_Values.Look(ref treeFallEnabled, "treeFallEnabled", true);
             Scribe_Values.Look(ref breaklightEnabled, "breaklightEnabled", true);
@@ -612,11 +607,8 @@ namespace RimMandrake.EnvironmentalHazards
             list.CheckboxLabeled("Root causeway network (WORLDGEN-AFFECTING)", ref rootCausewaysEnabled,
                 "A biome built to paint a causeway network stops painting one on any map generated while "
               + "this is off. Maps already generated keep whatever network they already have.");
-            list.CheckboxLabeled("Wet-bulb overwhelm", ref wetBulbOverwhelmEnabled,
-                "A biome built to overwhelm pawns with saturated heat stops ramping that hediff on "
-              + "anyone at all.");
-            list.CheckboxLabeled("Dry-air blower drying and animal repel", ref dryAirBlowerEnabled,
-                "A built dry-air blower stops drying its room and stops repelling wild animals from its "
+            list.CheckboxLabeled("Dry-air blower plant and animal repel", ref dryAirBlowerEnabled,
+                "A built dry-air blower stops holding back plant growth and repelling wild animals in its "
               + "doorway arc; it still draws power/fuel and pushes heat like any running machine.");
             list.CheckboxLabeled("Tree fall (crack, shatter, gnaw)", ref treeFallEnabled,
                 "A cracking giant tree stops rolling and warning, a hazard aura built to shatter trees "
@@ -761,7 +753,7 @@ namespace RimMandrake.EnvironmentalHazards
               + "visible effect yet on any install — the hook is armed but the suppression system it "
               + "feeds hasn't shipped.");
             list.CheckboxLabeled("Hazard apparel AI awareness", ref hazardApparelAIAwarenessEnabled,
-                "Colonists stop factoring scald-steam/wet-bulb/Sheen protection into their own apparel "
+                "Colonists stop factoring heat armor, heat insulation and Sheen protection into their own apparel "
               + "choice, so nobody picks up a boil-suit unprompted — you're back to a manual outfit "
               + "policy for hazard gear. The gear's actual protection is unaffected either way.");
             list.CheckboxLabeled("Sump living map", ref sumpLivingMapEnabled,

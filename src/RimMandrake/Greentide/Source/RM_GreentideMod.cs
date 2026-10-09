@@ -140,7 +140,7 @@ namespace RimMandrake.Greentide
         public static bool fruitfallEnabled = true;
         // GREATBOLE_HARVEST_LADDER_1 thresholds, read by RM_CompGreatboleHarvestLadder (moved here from
         // the campaign's UtinniPatchesSettings with the comp). Grub breeding is not duplicated: it is
-        // RM_CreatureBehaviorsSettings.verminBreedingEnabled. Breaklight, wet-bulb, living boles and
+        // RM_CreatureBehaviorsSettings.verminBreedingEnabled. Breaklight, living boles and
         // root causeways are already live toggles in the Environmental Hazards Kit's screen; this screen
         // names them rather than adding a second switch on the same wire.
         public static float greatboleShakingThreshold = 0.40f;
@@ -387,7 +387,7 @@ namespace RimMandrake.Greentide
               + "mined-open cell just west of the heart) and direct its dryads; colony buildings near it do NOT "
               + "weaken the connection. Expected: its dryads will fight the fruit's grubs, which stay hostile in "
               + "every configuration. Takes effect the next time the game starts.");
-            list.Label("Breaklight, wet-bulb overwhelm, the dry-air blower's field, living greatbole placement and "
+            list.Label("Breaklight, the dry-air blower's field, living greatbole placement and "
               + "root causeways are switched in the Environmental Hazards Kit's settings.");
 
             lastContentHeight = list.CurHeight + 20f;

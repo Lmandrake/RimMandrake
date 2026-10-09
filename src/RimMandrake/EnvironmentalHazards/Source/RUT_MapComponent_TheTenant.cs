@@ -206,7 +206,7 @@ namespace RimMandrake.EnvironmentalHazards
             // Snapshot: Strike() can DeSpawn a wild animal, and a despawn
             // mutates AllPawnsSpawned — same caution GameCondition_
             // EnvironmentalWeather/RM_GameCondition_WeatherPulse/
-            // RM_GameCondition_WetBulb/GameCondition_ArmLatentHazard already
+            // GameCondition_ArmLatentHazard already
             // take in this sibling assembly. Without it, a struck pawn's
             // despawn shifts the live list and the pawn that shifted into
             // its slot is silently skipped for this pass.
