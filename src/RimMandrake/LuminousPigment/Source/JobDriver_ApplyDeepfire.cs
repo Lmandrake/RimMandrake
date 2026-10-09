@@ -48,7 +48,14 @@ namespace RimMandrake.LuminousPigment
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             if (!pawn.Reserve(Target, job, 1, -1, null, errorOnFailed)) return false;
-            return pawn.Reserve(DeepfireStack, job, job.count, -1, null, errorOnFailed);
+            // PIGMENT_JOB_PAYMENT_ALLOCATION_1: reserve job.count units (the old call passed the count as maxPawns and
+            // reserved the whole stack). If the stack picked at order time no longer has room, re-resolve it now.
+            if (!pawn.CanReserve(DeepfireStack, DeepfireCostUtility.StackShareMaxPawns, job.count))
+            {
+                Thing other = DeepfireCostUtility.FindNearbyDeepfire(pawn, job.count, forced: true);
+                if (other != null) job.SetTarget(TargetIndex.B, other);
+            }
+            return pawn.Reserve(DeepfireStack, job, DeepfireCostUtility.StackShareMaxPawns, job.count, null, errorOnFailed);
         }
 
         protected override IEnumerable<Toil> MakeNewToils()
@@ -77,8 +84,14 @@ namespace RimMandrake.LuminousPigment
                 workDone += pawn.GetStatValue(StatDefOf.WorkSpeedGlobal) * delta;
                 if (workDone >= WorkTicks)
                 {
+                    // PIGMENT_JOB_PAYMENT_ALLOCATION_1: the coat lands only when the carried deepfire covers its cost.
+                    int cost = DeepfireCostUtility.CostFor(Target);
+                    if (!DeepfireCostUtility.TryPayCarried(pawn, cost))
+                    {
+                        EndJobWith(JobCondition.Incompletable);
+                        return;
+                    }
                     pawn.skills?.Learn(SkillDefOf.Artistic, ArtisticXP);
-                    pawn.carryTracker.CarriedThing?.Destroy();
 
                     CompDeepfire comp = Target.TryGetComp<CompDeepfire>();
                     comp?.AddCoat();

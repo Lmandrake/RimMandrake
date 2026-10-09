@@ -45,18 +45,41 @@ namespace RimMandrake.LuminousPigment
                 return;
             }
 
-            foreach (Pawn pawn in map.mapPawns.FreeColonistsAndPrisonersSpawned)
+            if (!LuminousPigmentSettings.matDiscoveryByEyeOrHand)
             {
-                if (pawn.Position.DistanceTo(parent.Position) <= SightRadius)
+                foreach (Pawn pawn in map.mapPawns.FreeColonistsAndPrisonersSpawned)
                 {
-                    gc.matSeen = true;
-                    checkedAlready = true;
-                    Messages.Message(
-                        "Crowncarpet on the shore -- a rainbow bacterial mat, source of the pigment called deepfire.",
-                        parent, MessageTypeDefOf.NeutralEvent, false);
+                    if (pawn.Position.DistanceTo(parent.Position) <= SightRadius)
+                    {
+                        checkedAlready = MarkSeen(parent);
+                        return;
+                    }
+                }
+                return;
+            }
+            // MAT_DISCOVERY_SIGHT_RULE_1 PROVISIONAL (auto-decided 2026-10-09): a free colonist (never a prisoner)
+            // within the radius WITH line of sight. Harvest/haul of fresh mat is the other route (CompMatVitality).
+            foreach (Pawn pawn in map.mapPawns.FreeColonistsSpawned)
+            {
+                if (pawn.Position.DistanceTo(parent.Position) <= SightRadius
+                    && GenSight.LineOfSight(pawn.Position, parent.Position, map, skipFirstCell: true))
+                {
+                    checkedAlready = MarkSeen(parent);
                     return;
                 }
             }
+        }
+
+        /// <summary>The one discovery: sets matSeen and says so once. Returns true.</summary>
+        public static bool MarkSeen(Thing at)
+        {
+            GameComponent_Deepfire gc = GameComponent_Deepfire.Instance;
+            if (gc == null || gc.matSeen) return true;
+            gc.matSeen = true;
+            Messages.Message(
+                "Crowncarpet on the shore -- a rainbow bacterial mat, source of the pigment called deepfire.",
+                at, MessageTypeDefOf.NeutralEvent, false);
+            return true;
         }
     }
 }

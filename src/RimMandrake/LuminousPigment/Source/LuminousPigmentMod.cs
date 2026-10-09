@@ -36,6 +36,10 @@ namespace RimMandrake.LuminousPigment
     public class LuminousPigmentSettings : ModSettings
     {
         public static bool shoreMatsEnabled = true;
+        // MAT_DISCOVERY_SIGHT_RULE_1 PROVISIONAL (auto-decided 2026-10-09): the sighting needs a free colonist with
+        // line of sight, and harvesting/holding fresh mat also counts. Off: the old any-colonist-or-prisoner-within-
+        // 20-cells rule.
+        public static bool matDiscoveryByEyeOrHand = true;
         public static float shoreMatChance = 0.006f;
         public static float matLifeDays = 1.0f;
         public static float matChillKillTemp = 10f;
@@ -153,6 +157,7 @@ namespace RimMandrake.LuminousPigment
             RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref shoreMatsEnabled, "shoreMatsEnabled", true);
+            Scribe_Values.Look(ref matDiscoveryByEyeOrHand, "matDiscoveryByEyeOrHand", true);
             Scribe_Values.Look(ref shoreMatChance, "shoreMatChance", 0.006f);
             Scribe_Values.Look(ref matLifeDays, "matLifeDays", 1.0f);
             Scribe_Values.Look(ref matChillKillTemp, "matChillKillTemp", 10f);
@@ -283,6 +288,9 @@ namespace RimMandrake.LuminousPigment
                 "On (default): a rare wild patch of crowncarpet may appear on any ocean shore "
                 + "when a new map generates. Off: crowncarpet only grows wherever a biome's own "
                 + "roster places it (e.g. the Scald, with the Utinni patch). Affects new maps only.");
+            list.CheckboxLabeled("Mat sighting needs a colonist's eyes (or hands)", ref matDiscoveryByEyeOrHand,
+                "On: the deepfire research unlocks when a free colonist actually sees crowncarpet (within 20 cells, line of "
+              + "sight) or brings in fresh mat. Off: any colonist or prisoner within 20 cells counts, walls or not.");
             list.Label("Shore mat rarity: " + shoreMatChance.ToString("0.000"));
             shoreMatChance = list.Slider(shoreMatChance, 0f, 0.05f);
             list.GapLine();
@@ -541,6 +549,8 @@ namespace RimMandrake.LuminousPigment
         // Applies every def-level (non-live-read) setting. matLifeDays,
         // matChillKillTemp and shoreMatChance/shoreMatsEnabled are read
         // LIVE by their consumers and need no def rewrite.
+        private static List<ResearchProjectDef> pressPrereqsShipped;
+
         public static void ApplySettings()
         {
             ThingDef press = ThingDef.Named("RM_DeepfirePress");
@@ -553,14 +563,22 @@ namespace RimMandrake.LuminousPigment
             if (research != null)
             {
                 research.baseCost = LuminousPigmentSettings.pressResearchCost;
-                if (Current.Game != null && LuminousPigmentSettings.pressGate == PressGate.Buildable && !research.IsFinished)
-                {
-                    Find.ResearchManager?.FinishProject(research, doCompletionDialog: false);
-                }
             }
 
             if (press != null)
             {
+                // PRESS_GATE_BUILDABLE_RESEARCH_1: "Buildable" lifts the PRESS's own research prerequisite instead of
+                // finishing RM_DeepfireRefining in whatever game happens to be loaded. Finishing it was permanent
+                // (switching back to Research left it done) and unlocked the glow tank too. A def-level change
+                // applies to every game, loaded or not; the research itself is untouched.
+                if (pressPrereqsShipped == null)
+                {
+                    pressPrereqsShipped = press.researchPrerequisites == null ? new List<ResearchProjectDef>()
+                        : new List<ResearchProjectDef>(press.researchPrerequisites);
+                }
+                press.researchPrerequisites = LuminousPigmentSettings.pressGate == PressGate.Buildable
+                    ? null
+                    : new List<ResearchProjectDef>(pressPrereqsShipped);
                 press.designationCategory = (LuminousPigmentSettings.pressGate == PressGate.Unbuildable)
                     ? null
                     : DesignationCategoryDefOf.Production;
@@ -652,7 +670,7 @@ namespace RimMandrake.LuminousPigment
             List<Map> maps = Find.Maps;
             for (int i = 0; i < maps.Count; i++)
             {
-                MapComponent_DeepfireLights.Get(maps[i])?.RebuildAllClustering();
+                MapComponent_DeepfireLights.Get(maps[i])?.RefreshAllLights(); // DEEPFIRE_SETTINGS_LIGHT_REFRESH_1
             }
         }
 

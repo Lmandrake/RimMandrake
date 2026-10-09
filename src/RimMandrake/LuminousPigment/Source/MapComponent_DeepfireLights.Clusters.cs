@@ -224,6 +224,32 @@ namespace RimMandrake.LuminousPigment
             });
         }
 
+        /// <summary>DEEPFIRE_SETTINGS_LIGHT_REFRESH_1: after a settings change, every light this mod owns on this map
+        /// re-reads the current radius/intensity: building clusters (rebuilt), coated loose items, worn-gear proxies,
+        /// and the RM_Deepfire stack glowers whose CompProperties_Glower ApplySettings mutates in place.</summary>
+        public void RefreshAllLights()
+        {
+            RebuildAllClustering();
+            List<Thing> haulables = map.listerThings.ThingsInGroup(ThingRequestGroup.HaulableEver);
+            for (int i = 0; i < haulables.Count; i++)
+            {
+                CompDeepfire comp = haulables[i].TryGetComp<CompDeepfire>();
+                if (comp != null && comp.coats > 0 && haulables[i].Spawned) comp.RefreshLight();
+            }
+            tmpWornPawns.Clear();
+            tmpWornPawns.AddRange(wornPawns.Keys);
+            for (int i = 0; i < tmpWornPawns.Count; i++) RefreshWornPawn(tmpWornPawns[i]);
+            wornSweptOnce = false; // next tick sweeps every pawn again (picks up gear that just became able to glow)
+            ThingDef deepfire = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Deepfire");
+            if (deepfire == null) return;
+            List<Thing> stacks = map.listerThings.ThingsOfDef(deepfire);
+            for (int i = 0; i < stacks.Count; i++)
+            {
+                CompGlower g = stacks[i].TryGetComp<CompGlower>();
+                if (g != null && g.Glows && stacks[i].Spawned) g.ForceRegister(map); // only a lit glower is re-registered
+            }
+        }
+
         private void RegisterCoatedIn(List<Building> buildings)
         {
             if (buildings == null) return;
