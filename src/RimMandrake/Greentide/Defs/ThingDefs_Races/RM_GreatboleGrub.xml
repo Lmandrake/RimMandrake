@@ -193,21 +193,21 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <texPath>Things/Pawn/Animal/RM_GreatboleGrub/RM_GreatboleGrub</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.7</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <texPath>Things/Pawn/Animal/RM_GreatboleGrub/RM_GreatboleGrub</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.85</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp</texPath>
+          <texPath>Things/Pawn/Animal/RM_GreatboleGrub/RM_GreatboleGrub</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.0</drawSize>
         </bodyGraphicData>

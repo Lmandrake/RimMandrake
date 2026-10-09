@@ -4,7 +4,7 @@
   wander and shade-hop of RM_ShadePerception) it reads as real shade; it is NEVER written to the shade grid, so it cools
   nobody. Lure heat-driven predators into a killbox or pen. Mirrak hide (RM_ShadeClothExtension.shadeBonus) is the most
   convincing. Research-gated; Mod Settings: Creature Behaviors decoyShadeEnabled.
-  ART: placeholder reuses the shade tent texture (PROVISIONAL); own art is owed.
+  ART: own render (artpipe 2026-10-09).
 -->
 <Defs>
   <ThingDef ParentName="BuildingBase">
@@ -12,7 +12,7 @@
     <label>decoy shade tarp</label>
     <description>A painted cloth stretched flat on four pegs, dark enough from a distance to pass for the shadow of a rock. It gives no cooling to anyone who stands under it, but anything that hunts for shade will see it as shade.\n\nMirrak hide makes the most convincing decoy.</description>
     <graphicData>
-      <texPath>Things/Building/RM_ShadeGear/RM_ShadeTent</texPath>
+      <texPath>Things/Building/RM_DecoyShadeTarp</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(3,3)</drawSize>
     </graphicData>

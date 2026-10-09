@@ -98,8 +98,7 @@
 			<MarketValue>9.0</MarketValue>
 		</statBases>
 		<graphicData>
-			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
-			<color>(163,81,36)</color>
+			<texPath>Things/Item/Resource/RM_EggGulloth</texPath>
 		</graphicData>
 		<comps>
 			<li Class="CompProperties_Hatcher">
@@ -115,8 +114,7 @@
 		<label>gulloth egg (unfert.)</label>
 		<description>An unfertilized gulloth egg: a leathery canteen of a shell. It can be eaten raw, but it is better cooked, and disgusting either way.</description>
 		<graphicData>
-			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
-			<color>(163,81,36)</color>
+			<texPath>Things/Item/Resource/RM_EggGulloth</texPath>
 		</graphicData>
 		<tradeability>Sellable</tradeability>
 		<statBases>
