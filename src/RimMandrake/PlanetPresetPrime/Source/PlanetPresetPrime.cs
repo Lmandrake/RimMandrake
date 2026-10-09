@@ -25,7 +25,7 @@ namespace RimMandrake.PlanetPresetPrime
         static PlanetPresetPrimeMod()
         {
             Harmony h = new Harmony("mandrake.rm.planetpresetprime");
-            h.PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(h, Assembly.GetExecutingAssembly(), "RimMandrake.PlanetPresetPrime");
 
             // A mod that writes nothing at load is indistinguishable from a mod that
             // failed to load at all - that is JAWABENCH_HAS_NO_INIT_LINE_1, filed on

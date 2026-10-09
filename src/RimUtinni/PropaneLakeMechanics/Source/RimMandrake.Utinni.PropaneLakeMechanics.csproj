@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <Compile Include="PropaneLakeMechanicsDefOf.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="PropaneLakeMechanicsSettings.cs" />
     <Compile Include="PropaneLakeMechanicsMod.cs" />
     <Compile Include="MapComponent_GasSaturationTracker.cs" />

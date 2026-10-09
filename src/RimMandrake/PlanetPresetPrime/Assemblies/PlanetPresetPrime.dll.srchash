@@ -1,0 +1,4 @@
+# project: RimMandrake/PlanetPresetPrime/Source/PlanetPresetPrime.csproj
+# dll: 7026cd5624686c6102743446a3aee7b93f27832794cc1b6d99a807528ad51ead
+bae06ddaf0b1fef428d98b9fa35c6cdcb30f4a11f307f07abeec7492f5ef7d32 PlanetPresetPrime.cs
+f6f72891d9f0143e997d984694c695350fe8a9eddadfaf6cccca59b89624d4bb ../../_Shared/HarmonyResilience/PatchApplier.cs

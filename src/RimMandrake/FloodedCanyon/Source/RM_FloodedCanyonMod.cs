@@ -328,7 +328,7 @@ namespace RimMandrake.FloodedCanyon
         {
             settings = GetSettings<RM_FloodedCanyonSettings>();
             // CRACKEDLANDS_GPT_ENRICHMENT_1 §2: the tarruq hush (RM_TarruqHushPatch).
-            new HarmonyLib.Harmony("mandrake.rm.biomes.floodedcanyon").PatchAll(typeof(RM_FloodedCanyonMod).Assembly);
+            RimMandrake.Shared.PatchApplier.Apply(new HarmonyLib.Harmony("mandrake.rm.biomes.floodedcanyon"), typeof(RM_FloodedCanyonMod).Assembly, "RimMandrake.FloodedCanyon");
         }
 
         public override string SettingsCategory()
