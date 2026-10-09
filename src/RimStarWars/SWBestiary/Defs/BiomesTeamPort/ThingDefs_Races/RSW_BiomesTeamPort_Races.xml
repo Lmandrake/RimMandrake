@@ -1511,8 +1511,13 @@ copied verbatim from the donor mods' own Textures trees.
       <ComfyTemperatureMax>57</ComfyTemperatureMax>
       <FilthRate>2</FilthRate>
       <Wildness>0.55</Wildness>
+      <MaxFlightTime>10</MaxFlightTime>
+      <FlightCooldown>5</FlightCooldown>
     </statBases>
     <race>
+      <flightStartChanceOnJobStart>0.1</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
       <body>RSW_MothLike</body>
       <leatherDef>RSW_CrystalChitin</leatherDef>
       <herdAnimal>false</herdAnimal>

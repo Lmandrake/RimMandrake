@@ -171,8 +171,13 @@
       <ComfyTemperatureMax>57</ComfyTemperatureMax>
       <FilthRate>4</FilthRate>
       <Wildness>0.55</Wildness>
+      <MaxFlightTime>10</MaxFlightTime>
+      <FlightCooldown>5</FlightCooldown>
     </statBases>
     <race>
+      <flightStartChanceOnJobStart>0.1</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
       <body>RM_MothLike</body>
       <leatherDef>RM_GrayChitin</leatherDef>
       <herdAnimal>true</herdAnimal>
