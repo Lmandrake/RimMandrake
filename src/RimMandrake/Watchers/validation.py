@@ -2,7 +2,8 @@
 ruling 2026-09-30: its own mod, not folded into a biome mod; so no Biomes.compose.json entry).
 
 WATCHER_CREATURES_MOD_1: the kit core (extension, injected comp, hidden hediff, sign, watch job,
-medium lock, geophone hook, flush order, settings) and the first member, the piinnok (design
+medium lock, geophone hook, death action + remains, alarm ripple, settings) and the first member,
+the piinnok (design
 design/RimMandrake/watcher_creatures_kit_design_2026-10-02.md §2-§9; owner card rulings 2026-10-03).
 Run:
 
@@ -11,9 +12,14 @@ Run:
 Offline: `python3 src/RimMandrake/Watchers/validation.py` runs static_checks() only.
 The optional non-body cues (gas, heat, fire, steam, shade, buried, light; owner ruling 2026-10-08)
 are per-member data under RM_WatcherExtension.cues, each behind its own toggle.
+Owner rulings 2026-10-08 (DEATH card): no flushing; a hidden watcher cannot be targeted, a visible one
+is an ordinary target; almost no damage kills one, and area damage (fire, explosions, acid) reaches a
+hidden one because the hidden hediff never despawns it; death leaves small sad remains; a bounded
+alarm ripple spreads to about 5 neighbours (its own toggle).
 Not proven here (no bridge run yet; each live component says what it needs): the hide/sign cycle,
-the facing, the geophone, the flush and bolt. Every one is provable by a STATE read (hediff on the
-pawn, sign Thing on the cell, pawn.Rotation, CurJobDef), never by screenshot.
+the facing, the geophone, area death while hidden, the remains, the ripple, save/load repair. Every
+one is provable by a STATE read (hediff on the pawn, sign Thing on the cell, pawn.Rotation,
+CurJobDef, Dead, things on the cell), never by screenshot.
 """
 import os
 import re
@@ -26,7 +32,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.normpath(os.path.join(HERE, ".."))
 NS = "RimMandrake.Watchers."
 suite = Suite("Watchers")
-suite.toggles = ["watchersEnabled", "hideAndFlinch", "turnToFace", "stayOnMedium", "geophone", "flushMarksHunt",
+suite.toggles = ["watchersEnabled", "hideAndFlinch", "turnToFace", "stayOnMedium", "geophone", "alarmRipple",
                  "flinchRadiusScale", "emergeDelayScale", "maxActivePerMap",
                  "cueGas", "cueHeat", "cueFire", "cueSteam", "cueShade", "cueBuried", "cueLight"]
 # The optional non-body cues (owner ruling 2026-10-08, "Full set"): kind -> (toggle, what a live proof needs).
@@ -44,10 +50,8 @@ CUES = {
 
 MEMBERS = {"RM_Piinnok": "RM_DeepSand"}   # race -> its ONE medium (Q9 / Q1 ruling)
 NEEDLES = ("mandrake.rm.watchers", "RimMandrake.Watchers", "RM_Watcher", "RM_Piinnok", "[Watchers]")
-OWN_DEFS = ["JobDef/RM_WatcherWatch", "JobDef/RM_WatcherRelocate", "JobDef/RM_WatcherFlush",
-            "DesignationDef/RM_WatcherFlushMark", "HediffDef/RM_WatcherHidden", "ThinkTreeDef/RM_Watchers",
-            "WorkGiverDef/RM_WatcherFlush", "ThingDef/RM_WatcherSign_SandDimple", "ThingDef/RM_Piinnok",
-            "PawnKindDef/RM_Piinnok"]
+OWN_DEFS = ["JobDef/RM_WatcherWatch", "JobDef/RM_WatcherRelocate", "HediffDef/RM_WatcherHidden", "ThinkTreeDef/RM_Watchers",
+            "ThingDef/RM_WatcherSign_SandDimple", "ThingDef/RM_Piinnok", "PawnKindDef/RM_Piinnok", "ThingDef/RM_WatcherRemains_Piinnok"]
 
 
 @suite.chain("load")
@@ -90,11 +94,29 @@ def behaviour(t):
             ("geophone_sinks_field", "geophone",
              "needs a submerged sand swimmer of body size >= 2.5 moved within 14 of a watching piinnok: it hides "
              "with no pawn inside 6 (needs mandrake.rm.biomes for the swimmer and RM_SandSwimUtility)"),
-            ("flush_bolts_and_marks_hunt", "flushMarksHunt",
-             "needs a hidden piinnok, its sign given RM_WatcherFlushMark, a hunter: hunter runs RM_WatcherFlush, "
-             "piinnok CurJobDef Flee, hediff and sign gone, Hunt designation on it"),
-            ("hunt_order_sinks_peeker", None,
-             "needs a watching piinnok given a Hunt designation: it hides and the designation is removed")):
+            ("hunt_order_dropped_when_it_hides", None,
+             "needs a watching piinnok given a Hunt designation and a hunter: while visible the hunter may shoot it; a colonist "
+             "stepping inside 6 sends it under and the Hunt designation is gone the same step (the hunt job fails)"),
+            ("aoe_kills_hidden", None,
+             "needs three hidden piinnok (RM_WatcherHidden on each): a frag grenade / GenExplosion Bomb on one, a Fire started on "
+             "another's cell, an acid spray (Proj_Acid) on the third: each Dead, no RM_WatcherSign naming it left on the map"),
+            ("hidden_not_targetable", None,
+             "needs a hidden piinnok and a drafted colonist: no attack order can target it (FloatMenu/Verb.CanHitTargetFrom); "
+             "a visible one is targeted and killed by one hit"),
+            ("death_leaves_remains", None,
+             "needs a piinnok killed (visible or hidden): no Corpse of RM_Piinnok, one RM_WatcherRemains_Piinnok on or by its cell, "
+             "no RM_WatcherSign whose owner is it, no RM_WatcherHidden visible on anything"),
+            ("alarm_ripple_bounded", "alarmRipple",
+             "needs 8 watching piinnok within 6 cells of each other and a colonist stepped beside one: that one hides, then at most "
+             "5 others hide over the next ~3 s with no colonist inside their flinch radius, and nothing more after 10 s; with "
+             "alarmRipple off only the approached one hides"),
+            ("save_load_repairs_signs", None,
+             "needs a hidden piinnok saved and reloaded: exactly one sign naming it after load; a sign whose owner was killed "
+             "or is no longer in its watch job is gone within 250 ticks"),
+            ("lifecycle_full", None,
+             "the piinnok full lifecycle on one map: spawn on RM_DeepSand, watch, hide + sign, emerge, interrupted job (drafted "
+             "tame / forced job), hunger emerge, injury, AOE death while hidden, save/load, medium loss (off deep sand -> "
+             "RM_WatcherRelocate), settings off (watchersEnabled false -> no hide, no sign)")):
         with t.component(comp, toggle=tog, beyond_toggle=tog is None):
             if t._guard():
                 raise ExpectationFailed("UNMEASURED: " + why)
@@ -194,9 +216,13 @@ def static_checks():
         if tt.findtext("insertTag") != "Animal_PreWander" or nodes != [NS + "RM_JobGiver_Watch", NS + "RM_JobGiver_WanderInMedium"]:
             bad.append("RM_Watchers think tree must insert at Animal_PreWander: watch, then wander-in-medium")
 
-    patch = open(os.path.join(HERE, "Patches", "RM_Watchers_OrdersDesignator.xml"), encoding="utf-8").read()
-    if 'DesignationCategoryDef[defName="Orders"]/specialDesignatorClasses' not in patch or NS + "RM_Designator_Flush" not in patch:
-        bad.append("Flush designator is not patched into Orders")
+    # Owner ruling 2026-10-08: watchers cannot be flushed. No flush machinery may come back.
+    for dp, _dns, fns in os.walk(HERE):
+        if "SelfTest" in dp or "Assemblies" in dp:
+            continue
+        for fn in fns:
+            if fn.endswith((".cs", ".xml")) and re.search(r"Flush|boltTicks|Bolting", open(os.path.join(dp, fn), encoding="utf-8").read()):
+                bad.append("flush machinery survives in %s (watchers cannot be flushed, 2026-10-08)" % fn)
 
     # Members.
     for race, medium in MEMBERS.items():
@@ -228,6 +254,12 @@ def static_checks():
             bad.append("%s needs race waterSeeker true + waterCellCost (vanilla wander refuses avoidWander deep sand otherwise)" % race)
         if not _grep_src_defs(medium, "TerrainDef"):
             bad.append("%s medium %s is defined nowhere under src/RimMandrake" % (race, medium))
+        rd = ext.findtext("remainsDef")
+        if not rd or ("ThingDef", rd) not in d:
+            bad.append("%s has no remainsDef of this mod (every member owes a death asset, 2026-10-08)" % race)
+        bhs = float(td.findtext("race/baseHealthScale") or "1")
+        if not 150 * bhs <= float(ext.findtext("maxLethalDamage") or "5"):
+            bad.append("%s dies at %g damage, above its maxLethalDamage (almost no damage destroys a watcher)" % (race, 150 * bhs))
         for li in td.findall("butcherProducts/*"):
             if not _grep_src_defs(li.tag, "ThingDef"):
                 bad.append("%s butchers to %s, defined nowhere under src/RimMandrake" % (race, li.tag))

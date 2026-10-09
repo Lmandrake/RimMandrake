@@ -27,7 +27,7 @@ namespace RimMandrake.Watchers
             // would re-issue it: a hide/emerge loop every ~60 ticks whenever food is out of reach.
             // It only ever watches (and so only ever hides) on its medium.
             if (!RM_WatcherKernel.WatchGiverPre(true, RM_WatchersSettings.watchersEnabled, true, false, false, true,
-                    comp != null, comp != null && comp.Bolting, RM_WatcherUtility.OnMedium(pawn, ext),
+                    comp != null, RM_WatcherUtility.OnMedium(pawn, ext),
                     RM_WatchersSettings.hideAndFlinch, RM_WatchersSettings.turnToFace,
                     pawn.needs?.food != null, pawn.needs?.food != null ? pawn.needs.food.CurLevelPercentage : 1f,
                     ext.emergeWhenFoodBelow))

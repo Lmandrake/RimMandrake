@@ -40,7 +40,8 @@
     <Compile Include="RM_JobGiver_Watch.cs" />
     <Compile Include="RM_JobDriver_Watch.cs" />
     <Compile Include="RM_JobGiver_WanderInMedium.cs" />
-    <Compile Include="RM_Flush.cs" />
+    <Compile Include="RM_WatcherDeath.cs" />
+    <Compile Include="RM_WatcherAlarm.cs" />
     <Compile Include="Kernel\RM_WatcherKernel.cs" />
   </ItemGroup>
 

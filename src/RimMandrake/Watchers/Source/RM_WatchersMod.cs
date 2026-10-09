@@ -14,7 +14,7 @@ namespace RimMandrake.Watchers
         public static bool turnToFace = true;
         public static bool stayOnMedium = true;
         public static bool geophone = true;
-        public static bool flushMarksHunt = true;
+        public static bool alarmRipple = true;       // owner ruling 2026-10-08: the bounded alarm ripple has its own toggle
         public static float flinchRadiusScale = 1f;   // PROVISIONAL range 0.5-2 (design §6 gives 3-12 cells around 6)
         public static float emergeDelayScale = 1f;    // PROVISIONAL range 0.25-3 (design §6: "1-3 h, slider")
         public static int maxActivePerMap = 40;       // design §6 default; PROVISIONAL range 5-200
@@ -37,7 +37,7 @@ namespace RimMandrake.Watchers
             Scribe_Values.Look(ref turnToFace, "turnToFace", true);
             Scribe_Values.Look(ref stayOnMedium, "stayOnMedium", true);
             Scribe_Values.Look(ref geophone, "geophone", true);
-            Scribe_Values.Look(ref flushMarksHunt, "flushMarksHunt", true);
+            Scribe_Values.Look(ref alarmRipple, "alarmRipple", true);
             Scribe_Values.Look(ref flinchRadiusScale, "flinchRadiusScale", 1f);
             Scribe_Values.Look(ref emergeDelayScale, "emergeDelayScale", 1f);
             Scribe_Values.Look(ref maxActivePerMap, "maxActivePerMap", 40);
@@ -73,8 +73,8 @@ namespace RimMandrake.Watchers
                     "RM_Watchers_Setting_Medium_Tip".Translate());
                 list.CheckboxLabeled("RM_Watchers_Setting_Geophone".Translate(), ref geophone,
                     "RM_Watchers_Setting_Geophone_Tip".Translate());
-                list.CheckboxLabeled("RM_Watchers_Setting_FlushHunt".Translate(), ref flushMarksHunt,
-                    "RM_Watchers_Setting_FlushHunt_Tip".Translate());
+                list.CheckboxLabeled("RM_Watchers_Setting_Alarm".Translate(), ref alarmRipple,
+                    "RM_Watchers_Setting_Alarm_Tip".Translate());
                 list.GapLine();
                 list.Label("RM_Watchers_Setting_CuesHeader".Translate());
                 list.CheckboxLabeled("RM_Watchers_Setting_CueGas".Translate(), ref cueGas, "RM_Watchers_Setting_CueGas_Tip".Translate());

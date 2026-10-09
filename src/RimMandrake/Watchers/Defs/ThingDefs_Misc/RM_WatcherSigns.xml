@@ -4,7 +4,7 @@
 
   The readable sign a hidden watcher leaves on its cell (owner ruling 2026-09-30). Ethereal: never
   blocks, never wipes a plant (GenSpawn.SpawningWipes), never hauled or cleaned. Selectable, so the
-  player can read it and give it the Flush order.
+  player can read it. Ticks Rare to remove itself when it is an orphan or a duplicate (RM_WatcherSign).
 
   RM_WatcherSign_SandDimple   the piinnok's. ART PLACEHOLDER: vanilla Things/Filth/Grainy (the sand
                               filth's own textures) tinted sand. Its own small sprite is owed
@@ -20,14 +20,14 @@
     <useHitPoints>false</useHitPoints>
     <selectable>true</selectable>
     <rotatable>false</rotatable>
-    <tickerType>Never</tickerType>
+    <tickerType>Rare</tickerType>
     <drawGUIOverlay>false</drawGUIOverlay>
   </ThingDef>
 
   <ThingDef ParentName="RM_WatcherSignBase">
     <defName>RM_WatcherSign_SandDimple</defName>
     <label>sand dimple</label>
-    <description>A small round dimple in the sand, too neat to be wind. Something is just under it, and it was looking at you a moment ago. Give the Flush order and a hunter will walk over and make it bolt.</description>
+    <description>A small round dimple in the sand, too neat to be wind. Something is just under it, and it was looking at you a moment ago. Nothing can aim at it down there.</description>
     <graphicData>
       <texPath>Things/Filth/Grainy</texPath>
       <graphicClass>Graphic_Random</graphicClass>

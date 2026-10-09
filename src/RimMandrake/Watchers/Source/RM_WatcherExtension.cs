@@ -41,8 +41,15 @@ namespace RimMandrake.Watchers
         /// <summary>Chance a think-tree pass skips the watch and wanders on its medium instead.</summary>
         public float wanderChance = 0.15f;
 
-        /// <summary>After a flush it bolts this long, cannot hide, and can be hunted.</summary>
-        public int boltTicks = 1200;
+        /// <summary>The fragility ceiling (owner ruling 2026-10-08: "Should take almost no damage to destroy them"). The startup audit
+        /// logs an error when an adult of the race would survive more than this much damage (150 x race baseHealthScale).</summary>
+        public float maxLethalDamage = 5f;
+
+        /// <summary>What it leaves when it dies (owner ruling 2026-10-08: "Remains are of highly dubious value and kind of sad"). Set: the
+        /// corpse is replaced by remainsCount of this item. Null: the ordinary corpse stays. Every member owes one (its death asset).</summary>
+        public ThingDef remainsDef;
+
+        public int remainsCount = 1;
 
         /// <summary>Hidden and this hungry: it comes up so it can feed.</summary>
         public float emergeWhenFoodBelow = 0.25f;
@@ -68,9 +75,13 @@ namespace RimMandrake.Watchers
             }
             foreach (string err in RM_WatcherKernel.ConfigErrors(hiddenHediff != null, signDef != null,
                 signDef != null && typeof(RM_WatcherSign).IsAssignableFrom(signDef.thingClass), flinchRadius, watchRadius,
-                hideTicks.min, hideTicks.max, maxWatchTicks, boltTicks, wanderChance, emergeWhenFoodBelow, geophoneMinBodySize))
+                hideTicks.min, hideTicks.max, maxWatchTicks, wanderChance, emergeWhenFoodBelow, geophoneMinBodySize, maxLethalDamage))
             {
                 yield return "RM_WatcherExtension: " + err;
+            }
+            if (remainsDef != null && remainsCount <= 0)
+            {
+                yield return "RM_WatcherExtension: remainsCount must be positive when remainsDef is set";
             }
             if (cues != null)
             {

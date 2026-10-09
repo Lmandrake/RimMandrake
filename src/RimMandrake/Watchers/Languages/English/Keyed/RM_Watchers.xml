@@ -11,8 +11,8 @@
   <RM_Watchers_Setting_Medium_Tip>Each watcher lives on one kind of ground (the piinnok: deep sand), wanders only there, and walks back when it ends up elsewhere, tame or wild. Off: they may wander off it. Either way they only ever hide on their own ground.</RM_Watchers_Setting_Medium_Tip>
   <RM_Watchers_Setting_Geophone>Lenses sink for buried giants</RM_Watchers_Setting_Geophone>
   <RM_Watchers_Setting_Geophone_Tip>A piinnok hides when something large swims under the sand nearby, so a whole field going dark warns you. Needs the sand swimmers of RimMandrake: Baroque Biomes. Off: they ignore what moves underground.</RM_Watchers_Setting_Geophone_Tip>
-  <RM_Watchers_Setting_FlushHunt>Flushing marks for hunting</RM_Watchers_Setting_FlushHunt>
-  <RM_Watchers_Setting_FlushHunt_Tip>When your hunter flushes a hiding watcher, it is marked for hunting while it bolts. Off: it just runs, and you mark it yourself if you are quick.</RM_Watchers_Setting_FlushHunt_Tip>
+  <RM_Watchers_Setting_Alarm>Alarm spreads to neighbours</RM_Watchers_Setting_Alarm>
+  <RM_Watchers_Setting_Alarm_Tip>When a watcher ducks from something close, or dies, a few nearby watchers duck too, one after another, in a short wave that dies out within a few seconds. Off: each watcher only reacts for itself.</RM_Watchers_Setting_Alarm_Tip>
   <RM_Watchers_Setting_CuesHeader>Other things they hide from (each creature reacts only to its own):</RM_Watchers_Setting_CuesHeader>
   <RM_Watchers_Setting_CueGas>Gas</RM_Watchers_Setting_CueGas>
   <RM_Watchers_Setting_CueGas_Tip>Watchers that hide from gas (such as toxic gas from vents) go under while it hangs over them. Off: they ignore gas.</RM_Watchers_Setting_CueGas_Tip>
@@ -33,10 +33,6 @@
   <RM_Watchers_Setting_MaxActive>Most watchers watching at once per map: {0}</RM_Watchers_Setting_MaxActive>
   <RM_Watchers_ReportHidden>hiding.</RM_Watchers_ReportHidden>
   <RM_Watchers_SignInspect>A {0} is hiding just under here.</RM_Watchers_SignInspect>
-  <RM_Watchers_InspectBolting>Flushed, running.</RM_Watchers_InspectBolting>
-  <RM_Watchers_HuntSank>The {0} sank out of sight. You cannot hunt one where it hides: give its dimple the Flush order, and hunt it while it runs.</RM_Watchers_HuntSank>
-  <RM_Watchers_Bolts>The {0} bolts from its hiding place!</RM_Watchers_Bolts>
-  <RM_Watchers_DesignatorFlush>Flush</RM_Watchers_DesignatorFlush>
-  <RM_Watchers_DesignatorFlushDesc>Mark a hiding creature's sign (a dimple in the sand) to be flushed. A hunter walks over, it bolts, and while it runs it can be hunted.</RM_Watchers_DesignatorFlushDesc>
-  <RM_Watchers_MustDesignateSign>Must designate the sign of a hiding creature.</RM_Watchers_MustDesignateSign>
+  <RM_Watchers_InspectAlarmed>Startled by a neighbour.</RM_Watchers_InspectAlarmed>
+  <RM_Watchers_HuntSank>The {0} sank out of sight, and the hunt order with it: nothing can aim at one while it hides. Fire, a blast or acid over the spot will still reach it.</RM_Watchers_HuntSank>
 </LanguageData>

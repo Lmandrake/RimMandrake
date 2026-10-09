@@ -8,8 +8,6 @@ namespace RimMandrake.Watchers
     {
         public static JobDef RM_WatcherWatch;
         public static JobDef RM_WatcherRelocate;
-        public static JobDef RM_WatcherFlush;
-        public static DesignationDef RM_WatcherFlushMark;
         public static HediffDef RM_WatcherHidden;
 
         static RM_WatchersDefOf()

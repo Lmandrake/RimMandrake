@@ -9,7 +9,7 @@ namespace RimMandrake.Watchers
 {
     /// <summary>
     /// WATCHER_CREATURES_MOD_1. The shared queries and the two state changes (hide, emerge), so the
-    /// job, the comp and the flush all ask and do the identical thing.
+    /// job, the comp and the death handler all ask and do the identical thing.
     /// </summary>
     public static class RM_WatcherUtility
     {
@@ -183,40 +183,22 @@ namespace RimMandrake.Watchers
             return false;
         }
 
-        /// <summary>Q4 (ruled 2026-10-03, flush only): the flusher reached the sign. The watcher comes
-        /// up and bolts; while it bolts it cannot hide and can be hunted.</summary>
-        public static void Flush(Pawn watcher, Pawn flusher)
+        /// <summary>Every sign on the map owned by this pawn goes, with any order on it (death, orphan repair).</summary>
+        public static void RemoveSignsOf(Pawn pawn, Map map, ThingDef signDef)
         {
-            if (watcher == null || !watcher.Spawned || watcher.Dead)
+            if (map == null || signDef == null)
             {
                 return;
             }
-            RM_CompWatcher comp = watcher.GetComp<RM_CompWatcher>();
-            RM_WatcherExtension ext = comp?.Ext;
-            if (ext == null)
+            List<Thing> things = map.listerThings.ThingsOfDef(signDef);
+            for (int i = things.Count - 1; i >= 0; i--)
             {
-                return;
+                if (things[i] is RM_WatcherSign s && s.owner == pawn && !s.Destroyed)
+                {
+                    map.designationManager.RemoveAllDesignationsOn(s);
+                    s.Destroy();
+                }
             }
-            comp.boltUntilTick = Find.TickManager.TicksGame + ext.boltTicks;
-            // Starting the flee ends the watch job, whose finish action removes the hediff and the sign.
-            IntVec3 dest = CellFinderLoose.GetFleeDest(watcher, new List<Thing> { flusher }, 16f);
-            Job flee = JobMaker.MakeJob(JobDefOf.Flee, dest, flusher);
-            flee.locomotionUrgency = LocomotionUrgency.Sprint;
-            watcher.jobs.StartJob(flee, JobCondition.InterruptForced);
-            if (IsHidden(watcher, ext))
-            {
-                RM_WatcherSign none = null;
-                Emerge(watcher, ext, ref none, true);
-            }
-            Map map = watcher.Map;
-            // Designator_Hunt's own faction rule (RimSage 1.6): never mark a tamed or humanlike-faction animal.
-            if (RM_WatcherKernel.FlushMarksHunt(RM_WatchersSettings.flushMarksHunt, flusher.Faction == Faction.OfPlayer,
-                    watcher.Faction != null, watcher.Faction != null && watcher.Faction.def.humanlikeFaction,
-                    map.designationManager.DesignationOn(watcher, DesignationDefOf.Hunt) != null))
-            {
-                map.designationManager.AddDesignation(new Designation(watcher, DesignationDefOf.Hunt));
-            }
-            Messages.Message("RM_Watchers_Bolts".Translate(watcher.LabelShort), watcher, MessageTypeDefOf.NeutralEvent, false);
         }
     }
 }

@@ -7,7 +7,11 @@
                      what stops the whole pawn draw and its selection (InvisibilityUtility.
                      IsHiddenFromPlayer, PawnRenderer, ThingSelectionUtility; RimSage 1.6), so the
                      cell's readable sign is a separate Thing (RM_WatcherSign). Applied and removed
-                     only by RM_JobDriver_Watch; RM_CompWatcher removes an orphan.
+                     only by RM_JobDriver_Watch; RM_CompWatcher removes an orphan, and the death
+                     action takes it off the corpse. It hides without despawning, so area damage
+                     (fire, explosions, acid) still reaches the pawn (owner ruling 2026-10-08).
+                     recoverFromDisruptedTicks 0: a hit it survives does not force it into view
+                     (HediffComp_Invisibility.ForcedVisible); burning or downed still does.
 -->
 <Defs>
 
@@ -21,7 +25,7 @@
       <li Class="HediffCompProperties_Invisibility">
         <visibleToPlayer>false</visibleToPlayer>
         <fadeDurationTicks>20</fadeDurationTicks>
-        <recoverFromDisruptedTicks>300</recoverFromDisruptedTicks>
+        <recoverFromDisruptedTicks>0</recoverFromDisruptedTicks>
         <affectedByDisruptor>false</affectedByDisruptor>
       </li>
     </comps>
