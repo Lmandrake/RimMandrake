@@ -59,28 +59,40 @@
             <value><baseBodySize>8.2</baseBodySize></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="BMT_Thrumbungus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>5.12</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="BMT_Thrumbungus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>8.20</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="BMT_Thrumbungus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>9.84</drawSize></value>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/PawnKindDef[defName="RSW_Thrumbungus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/PawnKindDef[defName="RSW_Thrumbungus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+            <value><drawSize>5.12</drawSize></value>
+          </match>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>Defs/ThingDef[defName="BMT_Thrumbungus"]/race/baseBodySize</xpath>
+          <xpath>Defs/PawnKindDef[defName="RSW_Thrumbungus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>Defs/ThingDef[defName="BMT_Thrumbungus"]/race/baseBodySize</xpath>
-            <value><baseBodySize>8.2</baseBodySize></value>
+            <xpath>Defs/PawnKindDef[defName="RSW_Thrumbungus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+            <value><drawSize>8.20</drawSize></value>
           </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>Defs/ThingDef[defName="BMT_Thrumbungus"]/race</xpath>
-            <value><baseBodySize>8.2</baseBodySize></value>
-          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/PawnKindDef[defName="RSW_Thrumbungus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>Defs/PawnKindDef[defName="RSW_Thrumbungus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+            <value><drawSize>9.84</drawSize></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="RSW_Thrumbungus"]/race</xpath>
+          <match Class="PatchOperationConditional">
+            <xpath>Defs/ThingDef[defName="RSW_Thrumbungus"]/race/baseBodySize</xpath>
+            <match Class="PatchOperationReplace">
+              <xpath>Defs/ThingDef[defName="RSW_Thrumbungus"]/race/baseBodySize</xpath>
+              <value><baseBodySize>8.2</baseBodySize></value>
+            </match>
+            <nomatch Class="PatchOperationAdd">
+              <xpath>Defs/ThingDef[defName="RSW_Thrumbungus"]/race</xpath>
+              <value><baseBodySize>8.2</baseBodySize></value>
+            </nomatch>
+          </match>
         </li>
         <!-- 🔴 AA_Behemoth IS A PROMOTION, NOT A SHRINK. Owner, 2026-08-24, on seeing the
              redraw in game: "Behemoth (forsakendragon) is so cool it really deserves to be
