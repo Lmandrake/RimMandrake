@@ -36,6 +36,9 @@ namespace RimMandrake.EnvironmentalHazards
     public class RM_MapComponent_GradientAxis : MapComponent
     {
         private float[] salinity;
+        // Per cell: forward shove that survived the clamp; surgeRequested: total forward shove asked for.
+        private float[] surgeApplied;
+        private float surgeRequested;
 
         // M2's shift-in-progress state. Scribed so a save mid-surge
         // doesn't silently forget it.
@@ -92,6 +95,10 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 salinity = new float[n];
             }
+            if (surgeApplied == null || surgeApplied.Length != n)
+            {
+                surgeApplied = new float[n];
+            }
         }
 
         public float SalinityAt(IntVec3 c)
@@ -102,6 +109,21 @@ namespace RimMandrake.EnvironmentalHazards
                 return 0f;
             }
             return salinity[map.cellIndices.CellToIndex(c)];
+        }
+
+        private float SurgeAppliedAt(IntVec3 c)
+        {
+            EnsureGrid();
+            return c.InBounds(map) ? surgeApplied[map.cellIndices.CellToIndex(c)] : 0f;
+        }
+
+        private void SetSurgeAppliedAt(IntVec3 c, float v)
+        {
+            EnsureGrid();
+            if (c.InBounds(map))
+            {
+                surgeApplied[map.cellIndices.CellToIndex(c)] = RM_AxisKernel.Clamp01(v);
+            }
         }
 
         public void SetSalinityAt(IntVec3 c, float value)
@@ -172,6 +194,10 @@ namespace RimMandrake.EnvironmentalHazards
             int step = RM_AxisKernel.StepTicks(UpdateIntervalTicks, shiftTicksRemaining);
             float deltaThisStep = RM_AxisKernel.StepDelta(shiftDeltaRemaining, step, shiftTicksRemaining);
 
+            if (!shiftIsRecede && deltaThisStep > 0f)
+            {
+                surgeRequested += deltaThisStep;
+            }
             ApplyDeltaToAllCells(deltaThisStep);
 
             shiftDeltaRemaining -= deltaThisStep;
@@ -183,6 +209,8 @@ namespace RimMandrake.EnvironmentalHazards
                 shiftDeltaRemaining = 0f;
                 if (shiftIsRecede)
                 {
+                    surgeRequested = 0f;
+                    System.Array.Clear(surgeApplied, 0, surgeApplied.Length);
                     lastRecedeCompletedTick = Find.TickManager.TicksGame;
                 }
             }
@@ -206,7 +234,17 @@ namespace RimMandrake.EnvironmentalHazards
             foreach (IntVec3 c in map.AllCells)
             {
                 int idx = map.cellIndices.CellToIndex(c);
-                float newSalinity = RM_AxisKernel.Apply(salinity[idx], delta);
+                float oldSalinity = salinity[idx];
+                float cellDelta = delta;
+                if (shiftIsRecede && delta < 0f)
+                {
+                    cellDelta = delta * RM_AxisKernel.AppliedFraction(surgeApplied[idx], surgeRequested);
+                }
+                float newSalinity = RM_AxisKernel.Apply(oldSalinity, cellDelta);
+                if (!shiftIsRecede && delta > 0f)
+                {
+                    surgeApplied[idx] += newSalinity - oldSalinity;
+                }
                 salinity[idx] = newSalinity;
 
                 if (ext != null)
@@ -287,6 +325,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref shiftIsRecede, "shiftIsRecede", false);
             Scribe_Values.Look(ref lastRecedeCompletedTick, "lastRecedeCompletedTick", -1);
             Scribe_Values.Look(ref updateCooldown, "updateCooldown", 0);
+            Scribe_Values.Look(ref surgeRequested, "surgeRequested", 0f);
 
             // The per-cell salinity grid itself — closed this pass
             // (MIASMA_MECHANICS_1 continuation, 2026-09-26). Every prior
@@ -309,6 +348,11 @@ namespace RimMandrake.EnvironmentalHazards
                 c => RM_AxisKernel.Quantize(SalinityAt(c)),
                 (c, val) => SetSalinityAt(c, RM_AxisKernel.Dequantize(val)),
                 "salinity");
+            MapExposeUtility.ExposeUshort(
+                map,
+                c => RM_AxisKernel.Quantize(SurgeAppliedAt(c)),
+                (c, val) => SetSurgeAppliedAt(c, RM_AxisKernel.Dequantize(val)),
+                "surgeApplied");
         }
     }
 }

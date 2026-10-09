@@ -9,3 +9,5 @@
 - ELDER_TRADE_TRANSACTIONAL_PAYOUT_1 built
 - ELDER implemented 207338b7d
 - CHILL_SUIT_SHELTER_RULE_1 built
+- SUIT implemented ac713095a
+- AXIS_SURGE_CLAMP_DRIFT_1 built (fuzz PASS)

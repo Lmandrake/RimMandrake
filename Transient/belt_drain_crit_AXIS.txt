@@ -1,0 +1,1 @@
+A1 L1: Miasma surge on a map with salinity near 1.0: after the recede completes no cell is fresher than its pre-surge value plus residual share of what it actually gained. Save/load mid-cycle keeps surgeApplied. PROVISIONAL.

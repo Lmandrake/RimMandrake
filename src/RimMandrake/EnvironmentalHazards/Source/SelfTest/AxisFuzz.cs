@@ -239,6 +239,18 @@ namespace RimMandrake.EnvironmentalHazards.SelfTest
         public static List<string> Quant(int n, int baseSeed)
         {
             var fails = new List<string>();
+            // AXIS_SURGE_CLAMP_DRIFT_1: a saturated cell recedes only what it really gained
+            {
+                Cases++;
+                float start = 0.95f, total = 0.10f, resid = 0.2f;
+                float afterFwd = RM_AxisKernel.Apply(start, total);
+                float applied = afterFwd - start;
+                float rec = RM_AxisKernel.RecedeDelta(total, resid) * RM_AxisKernel.AppliedFraction(applied, total);
+                float end = RM_AxisKernel.Apply(afterFwd, rec);
+                float want = start + applied * resid;
+                if (Math.Abs(end - want) > 1e-5f) fails.Add($"clamp drift: saturated cell {start} -> {afterFwd} -> {end}, expected {want}");
+                if (end < start - 1e-6f) fails.Add($"clamp drift: saturated cell receded below its start ({end} < {start})");
+            }
             for (int q = 0; q <= ushort.MaxValue; q++)
             {
                 Cases++;
