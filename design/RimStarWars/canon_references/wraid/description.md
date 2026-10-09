@@ -40,12 +40,13 @@ sand, and an older Galaxies-era wraid on a Tatooine dune with Mos Eisley behind)
 - **Size cues**: no scale reference; prose says "large". The head alone is bigger than the hind legs.
 
 ## Must show
-- [ ] Gorilla-like knuckle-walking stance on two enormous pillar-thick forearms with big knuckle-pads and a few big curved claws
-- [ ] Two small thin hind legs, much smaller than the forelegs, kept folded behind
-- [ ] Huge low blocky flat-topped wrinkled head with no visible neck, wide mouth with small sharp teeth and tiny deep-set eyes
-- [ ] Pinkish-red to maroon (prose, SWG) or orange-gold (SWTOR) tough bumpy scaly hide, with darker olive-brown forearms
-- [ ] Short stout hump-shouldered body slung low
-- [ ] Realistic rendering: natural thick reptilian hide and muscle under harsh desert daylight, no stylised-game smoothing or cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of both Legends game renders, the Legends prose, and the owner's 2026-10-08 realism ruling.*
+- [ ] BODY PLAN: a gorilla-like knuckle-walker: two enormous pillar-thick forelegs, as thick as the body, ending in big knuckle-pads and a few big curved claws; two small thin hind legs, much smaller, kept folded behind; a short stout hump-shouldered body slung low; the head and arms dominate the silhouette
+- [ ] COLOUR LAYOUT: pinkish-red to maroon hide (prose, SWG), or orange-gold (SWTOR), on body and face; darker olive-brown forearms/legs; tan claws
+- [ ] Head: huge, low, blocky, flat-topped wrinkled helmet-like skull nearly as wide as the shoulders, plated brow, no visible neck, a wide horizontal mouth with small sharp teeth, tiny deep-set eyes
+- [ ] Tough wrinkled, bumpy, scaly hide with small scales on the arms and head folds
+- [ ] Realistic rendering: natural thick reptilian hide and muscle under harsh desert daylight, no stylised-game smoothing or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a gorilla or ape (no fur, reptilian scaly hide, huge boxy head), not a normal four-legged lizard with equal-sized legs
 
 ## Engine limits
 not yet assessed

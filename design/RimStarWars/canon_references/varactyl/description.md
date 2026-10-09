@@ -36,11 +36,13 @@ Four images: the canon page's infobox image `Varactyl DK.png` (a saddled CG rend
 - **Disagreement**: Legends says orange-brown males; no image shows one. The prose of 'crests and feather ridges, blue and green' matches the images.
 
 ## Must show
-- [ ] Sprawling lizard body with splayed elbows, long neck, very long thick tail, horse-sized
-- [ ] Green to teal scaly skin, paler yellow-green throat and belly
-- [ ] Ruff of long teal-blue and green feathers around the back of the head and a feathered ridge down spine and tail with a tuft at the tip
-- [ ] Beaked bird-like head with a tan hooked armoured beak plate
-- [ ] Huge five-toed clawed climbing feet
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of all four images (the Revenge of the Sith frame as anchor) and the canon/Legends size text.*
+- [ ] BODY PLAN: a giant sprawling lizard-like quadruped, far larger than a horse: elbows and knees bent out to the sides like a monitor lizard, a long deep barrel body, a long neck rising to a bird-like head, and a very long thick tail held curved up or trailing
+- [ ] COLOUR LAYOUT: green to teal scaly skin over the back and flanks (darker olive-green acceptable, as in the film frame), paler yellow-green on the throat and belly; feathers teal-blue and green; beak tan-yellow horn colour, contrasting with the green head
+- [ ] Feathers: a ruff of long stiff teal-blue and green feathers fanned around the back of the head and neck, and a ridge of shorter feathery spines running down the spine and along the top of the tail to a feathery tuft at the tip
+- [ ] Head: beaked, bird-like, with a tan hooked armoured beak plate and brow cap
+- [ ] Feet: huge splayed five-toed climbing feet with long curved claws
+- [ ] NEGATIVE: not a horse-sized lizard or an upright theropod by default (sprawling four-legged stance, giant scale), not a bird (scaly body, four legs), not the orange-brown Legends male colouring
 
 ## Engine limits
 not yet assessed

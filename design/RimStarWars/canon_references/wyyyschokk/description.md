@@ -27,11 +27,13 @@ canon-brief agent's brown-spider render is the negative example this library
 exists to prevent from recurring.
 
 ## Must show
-- [ ] Blue-grey body (not brown)
-- [ ] Bold yellow-orange cross marking on the abdomen (the single most identifying feature — a render without it is not a Wyyyschokk)
-- [ ] Spiky bristle tufts
-- [ ] Blue-black legs
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the `## ruling` below (owner visual correction 2026-09-13, confirmed 2026-09-14 on `wookieepedia_jfo_infobox.jpg`) and that image's caption.*
+- [ ] BODY PLAN: a gigantic spider (taller than 2 m): a big rounded abdomen behind a head with mandibles, on long jointed clawed spider legs
+- [ ] COLOUR LAYOUT: blue-grey body (not brown); blue-black legs; a bold yellow-orange cross marking down the centre of the abdomen as the brightest element; black bristle tufts; black eyes (owner ruling 2026-09-13: "blue-grey body, yellow-orange abdomen cross, spiky bristle tufts, blue-black legs, clustered black eyes")
+- [ ] Bold yellow-orange cross marking on the abdomen (the single most identifying feature — a render without it is not a Wyyyschokk; the ruling: "a regen without the abdomen cross fails review")
+- [ ] Spiky bristle tufts, around the rim of the abdomen
 - [ ] Clustered black eyes (a tight cluster, roughly eight, above the mandibles)
+- [ ] NEGATIVE: not a generic brown hairy spider (the 2026-09-13 brown-spider render is the named negative example), not a tarantula without the cross
 
 ## Engine limits
 none known — no donor mod sprite could be obtained at all (creature art ships packed in Unity AssetBundles, not loose files), so there is nothing on disk to test against a rendering-pipeline constraint.

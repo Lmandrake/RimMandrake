@@ -106,13 +106,13 @@ directional shaggy coat over the body**, the retractable claws, or the lighter
 face mask.
 
 ## Must show
-- [ ] Long, shaggy, directional coat that falls downward and outward, longest at the shoulders, upper arms, chest and thighs — not a uniform plush
-- [ ] Face reads as a lighter-coloured, short-haired mask distinct from the darker body coat
-- [ ] Coat colour is mid warm brown (or grey-brown) with darker roots and lighter tips
-- [ ] Plantigrade legs — a long flat sole with five toes, not digitigrade
-- [ ] Prognathous muzzle/jaw with large canines visible under the beard
-- [ ] Retractable claws that sheath into the finger, not permanently protruding talons
-- [ ] Realistic rendering: natural long shaggy hair texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the anatomy plate, the full-body infobox image and the live-action references, and the owner's 2026-10-08 realism ruling.*
+- [ ] BODY PLAN: a very tall (2.2-2.5 m), heavy humanoid, much broader through the shoulders than a human, long arms relative to the torso; plantigrade legs on a long flat sole with five toes (not digitigrade); a prognathous muzzle/jaw with large canines under the beard
+- [ ] COLOUR LAYOUT: coat mid warm brown (or grey-brown) with darker roots and lighter tips over the whole body; the face a LIGHTER, short-haired mask (eyes small, dark and close-set, nose a broad flat dark pad) distinct from the darker body coat; paler chest
+- [ ] Long, shaggy, directional coat that falls downward and outward, longest at the shoulders, upper arms, chest and thighs, shorter on the face and backs of the hands — not a uniform plush
+- [ ] Claws are retractable, sheathed in the fingers: no permanently protruding talons on the hands
+- [ ] Realistic rendering: natural long shaggy hair texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a bear, ape or werewolf (no digitigrade legs, no talons, no flat ape face), not a uniform plush fur-ball with no face mask, not a human in a fur suit with a flat face
 
 ## Engine limits
 none known — the donor sprite is one of the better ones in the library (a dedicated Wookiee head with the right big, brown, fur-skinned build); the entry attributes the missing beard, directional coat, claws and face mask to gene choices (`Hair_BaldOnly` forcing every Wookiee beardless) and absent art, not to a pipeline constraint.

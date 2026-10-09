@@ -65,12 +65,13 @@ From the Battlefront II render (realistic):
   wings.
 
 ## Must show
-- [ ] Warm golden-tan to honey-brown feathered body and long broad wings, without heavy black barring
-- [ ] Bald blue-grey vulture-like head on a long, thin, bare blue-grey neck stretched forward
-- [ ] Long, slim, pale orange-tan beak
-- [ ] A very long, thin, trailing golden tail streamer, longer than the body
-- [ ] Lean, long-necked soaring silhouette (heron/crane-like), not a stocky raptor
-- [ ] Realistic rendering: natural feather texture and soft natural lighting, no outlines, no ink hatching or cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of `wookieepedia_bf2_render.png` (the *Battlefront II* render, primary) and the owner's 2026-10-08 realism ruling.*
+- [ ] BODY PLAN: a lean, long-necked, long-winged soaring bird, heron/crane-like rather than a stocky raptor: long broad feathered wings, a long thin bare neck held stretched forward, and a very long, thin trailing tail streamer longer than the body
+- [ ] COLOUR LAYOUT: warm golden-tan to honey-brown feathers over body and wings, soft darker brown along the feather tracts and paler tips, no heavy black barring and no dark belly patch; the bald head and bare neck blue-grey, contrasting with the golden body; tail streamer golden
+- [ ] Head: bald, vulture-like, with a long, slim, straight pale orange-tan beak (not hooked, not red-tipped)
+- [ ] Wings are feathered bird wings, never pterosaur-like membrane wings
+- [ ] Realistic rendering: natural feather texture and soft natural lighting, no outlines, no ink hatching or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not an eagle or hawk (no stocky build, no hooked beak, no big talons on show), not a vulture (long thin neck and golden coat, long tail streamer), not the Legends membrane-winged orange creature
 
 ## Engine limits
 none known — no donor sprite could be obtained at all (creature art ships packed in Unity AssetBundles, not loose files), so there is nothing on disk to test against a rendering-pipeline constraint.

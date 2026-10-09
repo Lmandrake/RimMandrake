@@ -36,12 +36,12 @@ Four images: CANON (the *Star Wars: Galactic Atlas* illustration, file `Woolaman
 - **Size**: not quantified in canon or in the images. Legends gives a height of 0.8-1.4 metres (Galaxy Guide 2; https://starwars.fandom.com/wiki/Woolamander/Legends); the troop numbers 20 in the Legends text.
 
 ## Must show
-- [ ] Rotund pot-bellied seated body, hunched shoulders, very long arms hanging well below the branch, short thin legs
-- [ ] Blue fur with a cream-white chest and belly, orange, red and yellow face patches, mandrill-like flat monkey face
-- [ ] Long dark curved claws on hands and feet
-- [ ] Very long thin bare cord-like tail ending in a rainbow-striped (red, yellow, blue) fan or bulb of fur
-- [ ] Arboreal pose, perched on a branch
-- [ ] Realistic rendering: natural primate fur and bare-skin face under natural forest light, no outlines, no cartoon or map-illustration shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the canon *Galactic Atlas* illustration and the matching Legends plate, the canon prose, and the owner's 2026-10-08 realism ruling.*
+- [ ] BODY PLAN: an ape/sloth-like arboreal primate perched on a branch: rotund pot-bellied seated body, hunched shoulders, heavy dropped head, very long arms hanging well below the branch (much longer than the legs), short thin legs; long dark curved claws on hands and feet
+- [ ] COLOUR LAYOUT: slate-to-cornflower blue fur on arms, back and head; a cream-white chest and belly patch banded with blue; orange-red and yellow patches on the face and shoulders; a flat mandrill-like face with a bare yellow-orange brow and red cheek/nose stripes
+- [ ] Tail: a very long, thin, bare cord-like tail hanging far below the animal (longer than the arms), ending in a rainbow-striped (red, yellow, blue) fan or bulb of fur
+- [ ] Realistic rendering: natural primate fur and bare-skin face under natural forest light, no outlines, no cartoon or map-illustration shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a plain monkey or sloth (blue fur, rainbow tail tuft, arms far longer than legs), not a bushy-tailed squirrel/lemur tail, not the skreeg concept sketch
 
 ## Engine limits
 not yet assessed

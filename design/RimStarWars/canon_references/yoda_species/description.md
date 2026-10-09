@@ -175,12 +175,14 @@ under `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`, not here.
 Nothing in this repo compares canon against the sprite the player sees.
 
 ## Must show
-- [ ] Adult skin is a mid, slightly desaturated sage-green with a yellow-olive cast — not bright lime, and not the infant's paler cool grey-green
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of `wookieepedia_yoda_infobox.jpg` (reference of record), `wookieepedia_grogu.jpg` (infant) and `wookieepedia_yaddle.jpg` (female), and the canon appearance text.*
+- [ ] BODY PLAN: a very small humanoid (adult about 0.66 m, child-sized), very short legs relative to the torso with a slight forward stoop, a broad flat face; ears enormous and broad-based, held nearly horizontal (sweeping out and slightly back), wider than the head is tall, tapering to a fine point
+- [ ] COLOUR LAYOUT: adult skin a mid, slightly desaturated sage-green with a yellow-olive cast — not bright lime, and not the infant's paler cool grey-green; male hair a sparse wispy white tuft on crown and ear roots; claws dark horn-coloured
 - [ ] Adult scalp, forehead and backs of the hands carry a dense network of fine wrinkles and low ridges
-- [ ] Ears are enormous, broad-based, held nearly horizontal (sweeping out and slightly back), wider than the head is tall, tapering to a fine point
 - [ ] Eyes are modest in size (not huge or black), heavily hooded, brownish-green with a clearly visible iris, pupil and white sclera
 - [ ] Three thick, stubby fingers per hand ending in dark horn-coloured claws, and three broad clawed toes per bare foot
 - [ ] Females (per the Yaddle reference) show long, thick hair falling past the shoulders, in contrast to males' sparse wispy white hair
+- [ ] NEGATIVE: not an adult with Grogu's infant face (huge near-black eyes), not a goblin or elf with upright ears, not a green-tinted human, no pig/trotter hands
 
 ## Engine limits
 none known — there is no `donor_current_sprite.png` for this species (it renders from generic mod genes whose art lives only in the deployed mod folder outside this repo), so there is nothing on disk here to test against a rendering-pipeline constraint.

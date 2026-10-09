@@ -54,12 +54,13 @@ From the live-action images:
 - **Size cues**: prose says about two metres; the canyon still reads dog-sized or larger.
 
 ## Must show
-- [ ] Large, lean, hunched rat-like quadruped with a long body, bigger than a big dog
-- [ ] Scruffy, thin, patchy dusty brown-grey fur over wrinkled lumpy pinkish-grey skin, darker mottling on the back
-- [ ] Long snout, tall pointed tufted ears, small dull reddish eyes, wispy chin tuft
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the live-action *Book of Boba Fett* images (`canon_1`, `canon_3`) and the owner's 2026-10-08 realism ruling.*
+- [ ] BODY PLAN: a large, lean, hunched rat-like quadruped, long-bodied and low, bigger than a big dog, with a very long thin naked tail as long as the body; may sit up on its haunches like a rat
+- [ ] COLOUR LAYOUT: scruffy, thin, patchy dusty brown-grey to tan fur over wrinkled lumpy pinkish-grey skin, darker mottling down the back; tail pale grey and ringed; paws dark
+- [ ] Head: long rat-like snout with a small dark nose, tall pointed ears with tufted tips, small dull reddish eyes, a pale wispy chin tuft
 - [ ] Long-fingered dark clawed hand-like paws
-- [ ] Very long thin hairless ringed pale tail
-- [ ] Realistic rendering: natural mangy fur and wrinkled skin under harsh desert daylight, no outlines, no ink hatching or cartoon shading
+- [ ] Realistic rendering: natural mangy fur and wrinkled skin under harsh desert daylight, no outlines, no ink hatching or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not an ordinary small rat or a sleek-furred rodent (mangy, wrinkled, dog-sized+), not the deleted illustration's grey-black hide with a stiff black spike mohawk, big yellow eyes and long upward fangs, not the Legends golden-furred tusked version
 
 ## Engine limits
 not yet assessed
