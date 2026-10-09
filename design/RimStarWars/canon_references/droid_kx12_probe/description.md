@@ -99,6 +99,10 @@ Deployment and reuse, all from the article:
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `K-X12 probe droid` page images — its sole image is the *KOTOR II* (2004) game model `Drdprobe.jpg`; no other depiction exists).** The images below are animated/stylised; render this droid realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. Read the low-poly chrome as real brushed, scuffed steel with real reflections; give the thin arms real machined joints.
+
 **This is the best canon-to-sprite match of the five chassis in this batch. The silhouette
 is right.** Canon (`wookieepedia_kx12_infobox.jpg`) is a **hovering, legless droid**: a
 smooth **tapered inverted-cone body**, widest at the top and narrowing to a point at the
@@ -147,6 +151,7 @@ colour drives.
 - [ ] Three long, multi-jointed arms radiating outward from the top rim, ending in pointed claw graspers
 - [ ] Small barrel/blaster appendage projecting from the bottom tip
 - [ ] Pale neutral grey-green (chrome-silver) body with red photoreceptor lens dots
+- [ ] Realistic rendering: brushed, scuffed real steel with real reflections and machined joints, no outlines, no low-poly game shading
 
 ## Engine limits
 none known

@@ -172,6 +172,11 @@ designer, creator, `firstmade`, `retired`.
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+Realism pass 2026-10-08: the one animated image, *The Clone Wars* Renown GNK (`wookieepedia_clonewars_renown.png`, a smooth plain-faced brown-grey box with a glowing amber panel), was deleted. The three remaining images are all the **practical prop** (studio photo, Tatooine location photo, *Phantom Menace* Mos Espa still) and they stand on their own. ⚠️ **Where the animated and real versions disagreed:** the cartoon is a clean, smooth, near-featureless box; the real prop is **rough, heavily weathered, sun-bleached tan-grey with dense greeblies, bolt rows, dials and a coloured stripe**, and its indicator lamps are **small red/green lights, not a big glowing amber panel**. Follow the prop.
+
+
 **Canon appearance is remarkably stable across four references spanning 1977 prop
 photography to a 2013 animated series.** A GNK is a **walking crate**: a **boxy body of
 stacked rectangular blocks**, wider at the bottom, encrusted with greeblies (knobs, dials,
@@ -180,11 +185,10 @@ legs** that end in **flat, angular, splayed grey feet**. There is **no head, no 
 lens, no neck** — the indicator panel on the upper front face is the only "face" it has.
 Every reference agrees on all of that.
 
-**Colour, across the four references:** weathered **grey-beige to warm tan-brown**, heavily
+**Colour, across the three realistic references:** weathered **grey-beige to warm tan-brown**, heavily
 scuffed and dust-toned, with the **feet a distinctly cooler/darker grey** than the body. The
 Legends prop photo adds a **yellow stripe** running across the front at the mid-body seam and
-**small green and red indicator lamps** in the panel; the Clone Wars render is a darker
-**brown-grey** with a lit **amber/orange** indicator panel. The canon article separately
+**small green and red indicator lamps** in the panel. The canon article separately
 records a **grey** GNK (Jabba's Palace). So: dusty neutral warm grey-tan is the safe centre,
 and the model is canonically repainted/weathered per unit.
 
@@ -198,13 +202,12 @@ distinct band across the upper rim** (with the indicator panel masked black, so 
 base texture and can never be tinted). Setting `first` and `second` to the identical RGBA
 means that upper band renders exactly like the body and the two-tone construction is
 invisible. Canon puts real tonal separation right there — the prop's stacked upper block and
-its yellow seam stripe, the Clone Wars unit's darker upper cowl. **This is a free correction:
+its yellow seam stripe. **This is a free correction:
 one RGBA value, no art change, and it recovers a canon cue the art already supports.**
 
 🔴 **The indicator panel is never lit in the wired sprite.** In `GNK_southm.png` the panel is
 **masked black**, so it renders as flat base-texture grey regardless of the def. Canon lights
-it in every reference that shows it in colour — **green + red lamps** on the prop, **amber /
-orange** in the Clone Wars render. An unlit panel is the one thing that makes the repo gonk
+it in every reference that shows it in colour — **green + red lamps** on the prop. An unlit panel is the one thing that makes the repo gonk
 read as scrap rather than as a working power droid, and it is the only emissive detail canon
 gives this chassis.
 
@@ -214,7 +217,7 @@ recessed panel carrying a **lit warm-amber lamp and a lit blue lamp**, two grill
 **two legs visible below the body** — noticeably more detail and more canon-correct
 lighting than the 256×256 wired OuterRim frame, which is a plain box with a small grey panel
 and **no legs visible at all**. Two caveats before promoting it: its **blue lamp has no canon
-support** (canon lamps are amber/orange, green and red — never blue), and its legs read as
+support** (the real prop's lamps are green and red — never blue), and its legs read as
 smooth columns rather than the canon **ribbed accordion bellows**. Worth the owner's
 attention as a swap candidate, with the blue lamp recoloured.
 
@@ -234,8 +237,9 @@ gonk out of raid-point selection, matching the Legends infobox `armament = None`
 - [ ] Boxy body of stacked rectangular blocks, wider at the bottom, covered in greeblies (knobs, dials, bolt rows)
 - [ ] Two short ribbed accordion-bellows legs ending in flat, angular, splayed grey feet
 - [ ] No head, no arms, no lens, no neck — only an indicator panel as the "face"
-- [ ] Lit indicator panel with green/red or amber/orange lamps
+- [ ] Small indicator panel with red and green lamps
 - [ ] Warm neutral grey-tan weathered colour, with the feet a cooler/darker grey than the body
+- [ ] Realistic rendering: rough sun-bleached weathered prop surface with real grime and daylight, no outlines, no cartoon shading
 
 ## Engine limits
 Both `skin` colour channels are set to the identical value (`RGBA(138,136,125,255)`), so the mask's separate upper-rim band renders exactly like the body — no two-tone is available from the def as it stands.
@@ -261,8 +265,6 @@ Both `skin` colour channels are set to the identical value (`RGBA(138,136,125,25
   (File:Gonkpromo.jpg, 290×406) → `wookieepedia_legends_promo.jpg`
 - https://static.wikia.nocookie.net/starwars/images/5/52/Gonk1.jpg
   (File:Gonk1.jpg, 274×446) → `wookieepedia_mos_espa.jpg`
-- https://static.wikia.nocookie.net/starwars/images/5/53/RenownGNK-PoNR.png
-  (File:RenownGNK-PoNR.png, 540×720) → `wookieepedia_clonewars_renown.png`
 - Named in the articles but **not fetched this pass**:
   https://starwars.fandom.com/wiki/EG-6_power_droid/Legends (the droid the GNK knocks off),
   https://starwars.fandom.com/wiki/Power_droid, `4B-EG-6`, `Gonky (Clone Force 99)`,
@@ -274,22 +276,18 @@ Both `skin` colour channels are set to the identical value (`RGBA(138,136,125,25
 
 ## Candidate images
 
-- `wookieepedia_legends_promo.jpg` (290×406) — the **Legends article infobox**: a studio photo
+- `wookieepedia_legends_promo.jpg` (290×406) — file `Gonkpromo.jpg`, https://static.wikia.nocookie.net/starwars/images/d/d7/Gonkpromo.jpg — the **Legends article infobox**: a studio photo
   of the physical prop, three-quarter rear-ish view on a plain grey background. Weathered
   tan-grey stacked boxes, dense greeblies, knobs and dials, small **green and red indicator
   lamps**, a **yellow stripe** across the front mid-seam, **ribbed accordion legs** and
   **flat angular grey feet** with a trailing cable. **The detail and construction authority
   for this chassis** — the clearest of the four.
-- `wookieepedia_canon_databank.png` (540×720) — the **canon article infobox**, Databank image:
+- `wookieepedia_canon_databank.png` (540×720) — location photo of the prop, file `GNKpowerdroid-DB.png`, https://static.wikia.nocookie.net/starwars/images/c/c4/GNKpowerdroid-DB.png — the **canon article infobox**, Databank image:
   a GNK on Tatooine sand in daylight, three-quarter. Sun-bleached pale tan body, cooler grey
   feet. Confirms the desert-world palette and the *in situ* read; low on fine detail.
-- `wookieepedia_mos_espa.jpg` (274×446) — a GNK in **Mos Espa**, near-profile. Grey-green-brown
+- `wookieepedia_mos_espa.jpg` (274×446) — live-action still, file `Gonk1.jpg`, https://static.wikia.nocookie.net/starwars/images/5/52/Gonk1.jpg — a GNK in **Mos Espa**, near-profile. Grey-green-brown
   weathering, clearest view of the **accordion bellows legs and splayed feet** in motion. The
   best leg reference.
-- `wookieepedia_clonewars_renown.png` (540×720) — the *Renown* GNK from *The Clone Wars*
-  ("Point of No Return"). Darker **brown-grey** animated design with a **lit amber/orange
-  indicator panel** on the upper front face. **The lit-panel authority**, and evidence that
-  the design is stable across media. ⚠️ Another droid is partly visible at right — not a GNK.
 - `donor_current_sprite_outerrim.png` (256×256) — the **wired** repo sprite
   (`Textures/OuterRim/Droid/GNK_south.png`, byte-identical). Greyscale / two-channel masked;
   judge tinted with `RGBA(138,136,125)` on **both** channels. Plain box, small **unlit** grey

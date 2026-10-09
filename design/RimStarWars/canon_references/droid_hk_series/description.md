@@ -133,6 +133,12 @@ under this repo chassis is a filing convenience, not a canon relationship. Do no
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `HK-series assassin droid`, `HK-47`, `HK Guardian Droid` pages and their images — every image is *KOTOR*/*KOTOR II*/*SWTOR*/*Galaxies* game art or a guide-book render; the droid has no live-action or photoreal-game appearance).** The images below are animated/stylised; render this droid realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
+Of the three, **`wookieepedia_hk01_prototype.jpg` (the *Essential Guide* CGI render) is the most realistic and is now the look target**: real scuffed, rust-streaked copper-orange metal with dark gunmetal joints, ribbed knee and neck cylinders, a black mesh vocabulator grille down the face, glowing amber eyes. The tiny KOTOR HK-47 frame and the SWTOR HK-51 are stylised game art — use them only for silhouette and the HK-51 variant's markings.
+
 **The two donor sprite sets on disk are different chassis and should not be treated as one
 look.**
 
@@ -181,6 +187,7 @@ Against the canon images the sprite silhouette is **broadly right and specifical
 - [ ] Narrow, vertically elongated, faceted wedge skull with a pronounced brow ridge and two photoreceptors set close together
 - [ ] HK-51 variant: weathered olive-grey-brown plating with orange striping/wear, not overall orange
 - [ ] HK-51 variant: lit circular chest emblem and visible weapon hardpoints on both forearms
+- [ ] Realistic rendering: scuffed, rust-streaked real metal with real specular and lighting, no outlines, no game/cartoon shading
 
 ## Engine limits
 none known
@@ -202,12 +209,12 @@ none known
 ## Candidate images
 - `wookieepedia_hk47.jpg` (276×368) — HK-47 in-game render, three-quarter view, holding a
   rifle across the body. Rust-red/copper plating, glowing yellow-orange eyes, faceted wedge
-  head. **The primary colour reference for this chassis.**
+  head. Stylised *KOTOR* (2003) game render; file `HK-47.png` — https://static.wikia.nocookie.net/starwars/images/3/37/HK-47.png . Colour agrees with HK-01; silhouette only.
 - `wookieepedia_hk51.jpg` (847×949) — an HK-51 unit, front three-quarter, SWTOR render.
   Weathered olive-grey plating with orange wear striping, lit circular chest emblem, forearm
-  hardpoints, glowing yellow eyes. Shows how far the HK-51 look diverges from HK-47's.
+  hardpoints, glowing yellow eyes. Shows how far the HK-51 look diverges from HK-47's. Stylised *SWTOR* game art; file `HK-51.png` — https://static.wikia.nocookie.net/starwars/images/3/3a/HK-51.png .
 - `wookieepedia_hk01_prototype.jpg` (600×1415) — HK-01, the prototype, from
-  `The New Essential Guide to Droids`. Full-length illustration plate.
+  `The New Essential Guide to Droids`. Full-length CGI render, the most realistic depiction — **look target**; file `HK01-NEGTD.png` — https://static.wikia.nocookie.net/starwars/images/4/41/HK01-NEGTD.png .
 - `donor_current_sprite.png` / `donor_current_sprite_head.png` (512×512 each) — the KotOR
   donor body and head, **greyscale/maskable**; must be judged tinted with the def's
   `RGBA(200,100,50)` / `RGBA(255,105,65)` channels, not as raw grey.
