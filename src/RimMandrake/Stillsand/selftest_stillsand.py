@@ -454,11 +454,24 @@ class Fake(object):
         warn = self.on("horizonWarningsEnabled") or "horizon_ignores_toggle" in self.b
         if warn and "no_horizon_letter" not in self.b:
             self.letter("Dust on the horizon: north-west")
-        if warn and "horizon_instant" not in self.b:
+        if warn:
+            self.warned_fires = getattr(self, "warned_fires", 0) + 1
+        if warn and self.warned_fires == 2:
+            # the second warned fire is the turned-back path: this site's vanilla refuses the group at the
+            # delayed fire (validation.py's note), so no one arrives and the retry window ends in a letter
+            if self.on("dustSettledLetterEnabled") and "no_settled_letter" not in self.b:
+                self.sched.append((self.ticks + int(hours * 2500) + 2500,
+                                   lambda: self.letter("The dust settled: the caravan turned back")))
+        elif warn and "horizon_instant" not in self.b:
             self.sched.append((self.ticks + int(hours * 2500), lambda: self.add_pawn("Trader", 5, 5, "Guild")))
         else:
             self.add_pawn("Trader", 5, 5, "Guild")
         return {"success": True, "fired": True, "blockedByDialog": False}
+
+    def t_static_call(self, type=None, method=None, args=None, **k):
+        if type.endswith("RM_GaleTakenProof") and method == "Registered":
+            return {"success": True, "result": "GALETAKEN registered=%s" % ("gale_not_taker" not in self.b)}
+        return {"success": False, "message": "fake: unknown static %s.%s" % (type, method)}
 
     def t_window_list_close(self, **k):
         return {"success": True}
@@ -710,6 +723,8 @@ BREAKS = {
     "no_horizon_letter": ["horizon.horizon_warns_then_arrives"],
     "horizon_instant": ["horizon.horizon_warns_then_arrives"],
     "horizon_ignores_toggle": ["horizon.horizon_toggle_off_vanilla"],
+    "no_settled_letter": ["horizon.horizon_dust_settled_letter"],
+    "gale_not_taker": ["gale.gale_carry_is_a_taker_of_the_shared_service"],
     "caves_ignore_toggle": ["caves.genstep_off_no_cave_line"],
     "skeleton_ignores_toggle": ["caves.skeleton_placement_off_none"],
     "log_error": ["log.log_clean"],
