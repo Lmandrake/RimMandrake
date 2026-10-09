@@ -375,10 +375,10 @@ namespace RimMandrake.Stillsand
 
         private void WearStructures(Map map, RM_DuneGaleExtension ext, int interval)
         {
-            // MTB per sampled cell, scaled up by the share of the map not sampled, so a map's
-            // light structures wear at the stated MTB however big the map is.
+            // Roofs are sampled (a few random cells per interval); light buildings are rolled one by one at
+            // the stated MTB, so the wear rate does not depend on how big the map is (sampling the building
+            // by cell capped each cell at samples/N per interval, ~25x slower than the stated MTB).
             int samples = Math.Max(1, ext.structureSamplesPerInterval);
-            float perCellShare = map.cellIndices.NumGridCells / (float)samples;
             List<IntVec3> stripped = null;
             for (int i = 0; i < samples; i++)
             {
@@ -389,19 +389,23 @@ namespace RimMandrake.Stillsand
                 {
                     RoofCollapserImmediate.DropRoofInCells(c, map);
                     (stripped ??= new List<IntVec3>()).Add(c);
+                }
+            }
+            List<Thing> buildings = map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial).ToList();
+            for (int i = 0; i < buildings.Count; i++)
+            {
+                Building b = buildings[i] as Building;
+                if (b == null || !b.Spawned || b.Map != map || b.def.building == null || b.def.building.isNaturalRock
+                    || !b.def.useHitPoints || b.MaxHitPoints > ext.lightBuildingMaxHitPoints)
+                {
                     continue;
                 }
+                RoofDef roof = b.Position.GetRoof(map);
                 if (roof != null && roof.isThickRoof)
                 {
                     continue;
                 }
-                Building b = c.GetEdifice(map);
-                if (b == null || b.def.building == null || b.def.building.isNaturalRock || !b.def.useHitPoints
-                    || b.MaxHitPoints > ext.lightBuildingMaxHitPoints)
-                {
-                    continue;
-                }
-                if (Rand.MTBEventOccurs(ext.structureMtbHours / perCellShare, GenDate.TicksPerHour, interval))
+                if (Rand.MTBEventOccurs(ext.structureMtbHours, GenDate.TicksPerHour, interval))
                 {
                     b.TakeDamage(new DamageInfo(DamageDefOf.Scratch, ext.structureDamage.RandomInRange));
                 }
