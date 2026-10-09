@@ -22,9 +22,9 @@ Telos IV for ecosystem restoration, where their population exploded and
 caused ecological damage.
 
 ## Visual brief
-Three images agree closely and reinforce each other — this is a
-well-corroborated design across very different art styles (game concept art,
-in-game 3D render, and a comic panel):
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The *Tales of the Jedi* comic panel (`wookieepedia_totj_comic.jpg`) was deleted. No live-action or photoreal cannok exists (searched: `Images of cannoks` — KOTOR II game captures, its concept art, and the comic). The primary reference is the painted KOTOR II concept art `wookieepedia_conceptart_kotor2.jpg`; the low-poly KOTOR II game model `wookieepedia_infobox.jpg` is kept ONLY because it alone shows the two stalked eyes — use it for anatomy, never for its flat game texturing. Render the cannok as a real animal: wet, wrinkled, warty amphibian skin.
+
+The two remaining images agree closely:
 - **Squat, bloated, toad-like body** posture confirmed in both the KOTOR2
   concept sketch and the in-game render.
 - **Color**: dull tan/khaki/olive-yellow-green mottled hide on the back and
@@ -32,7 +32,7 @@ in-game 3D render, and a comic panel):
   both the concept art and the in-game render. Matches "mottled yellow-green"
   closely.
 - **Spiked dorsal ridge**: a fan/row of thin pointed spines running from the
-  crown of the head down the back — present in all three images, most
+  crown of the head down the back — present in both images, most
   dramatic in the concept art (long thin quills radiating off the skull) and
   the in-game render (shorter spikes continuing down a segmented back plus
   a spiked tail tip).
@@ -46,9 +46,6 @@ in-game 3D render, and a comic panel):
 - **Legs/feet**: thick, stocky legs ending in clawed toes are visible in the
   in-game render; the "4 tridactyl feet" detail is a bit harder to confirm
   precisely at this resolution but is consistent with what's visible.
-- The comic panel (*Tales of the Jedi*, first appearance) only shows a
-  cropped close-up of a toothy tan head with the same spike-fringe and
-  needle teeth — consistent with, not contradicting, the other two.
 
 Overall this is a strongly consistent design across sources: squat toad/frog-
 like quadruped, mottled tan-olive hide, pale belly, fringe of dorsal spines,
@@ -69,6 +66,8 @@ add the stalked-eye detail rather than a single flat eye.
 - [ ] Wide, low-slung jaw lined with many small sharp teeth
 - [ ] Two eyes on short stalks that read independently, not a single flat eye
 
+- [ ] Realistic rendering: natural wet, wrinkled, warty amphibian skin texture and lighting, no outlines, no cartoon or low-poly shading
+
 ## Engine limits
 none known
 
@@ -77,7 +76,6 @@ none known
   MediaWiki API `action=parse&prop=wikitext` endpoint, 2026-09-13)
 - https://starwars.fandom.com/wiki/File:Cannok-ConceptArt-KOTOR2.jpg
 - https://starwars.fandom.com/wiki/File:Cannok.jpg
-- https://starwars.fandom.com/wiki/File:CannokTOTJ.jpg
 
 ## Candidate images
 - `donor_current_sprite.png` — this repo's current shipped sprite (SWBestiary
@@ -88,14 +86,10 @@ none known
   background): squat wrinkled olive-tan body, fan of long thin quills off
   the skull/back, single large deep eye socket, wide toothy mouth, thick
   clawed legs.
-- `wookieepedia_infobox.jpg` — the in-game KOTOR2 3D model render (white
+- `wookieepedia_infobox.jpg` — the in-game KOTOR2 3D model render (stylised low-poly game; anatomy only) (white
   background), the page's primary infobox image: olive-khaki mottled hide,
   pale/white belly, two eyes on visible stalks, spiked dorsal ridge
   continuing onto a spiked tail, wide fanged mouth, four thick clawed legs.
-- `wookieepedia_totj_comic.jpg` — cropped panel from *Tales of the Jedi* 1
-  (the species' October 1993 comic-book debut; release date per https://starwars.fandom.com/wiki/Tales_of_the_Jedi_1): close-up of a tan toothy head with
-  the same dorsal spine fringe and needle teeth, alongside an unrelated
-  creature's tongue/tentacle in the foreground.
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

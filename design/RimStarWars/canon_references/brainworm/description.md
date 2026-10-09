@@ -23,6 +23,10 @@ Brain worms were worm-like parasites from Geonosis that had the capability of co
 Legends infobox length: approximately 0.5 m.
 
 ## Visual brief
+**Animation-only canon — no realistic source found (searched: `Images of brain worms`, `Brain worm` and `Brain worm/Legends` page images; every depiction is The Clone Wars "Brain Invaders" or a Twilight of the Republic game image).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Both Clone Wars images are kept (`canon_1` for anatomy, `canon_2` for scale against a clone's face). Read them as a real parasitic worm: moist, glistening segmented skin like a real nematode or ribbon worm.
+
 Both images are CANON (The Clone Wars, infobox render and the "snorting worms" frame).
 - **Form**: a legless, limbless, eyeless-looking worm, a long smooth muscular tube, thickest at the head end and tapering to a whip-thin tail; carried in a wavy S-curve in the infobox render.
 - **Colour/pattern**: mustard-yellow to olive-gold body with a dark olive-green dorsal stripe running along the length; orange-brown banded patches and small orange spikes/ridges along the fore body; tail tip fades to a thin rust-orange filament with fine banding.
@@ -37,6 +41,8 @@ Both images are CANON (The Clone Wars, infobox render and the "snorting worms" f
 - [ ] Orange-brown banding and small orange dorsal nubs along the fore body
 - [ ] Pointed cone-shaped head with no visible eyes
 - [ ] Small: about a forearm long, finger-thick, glossy and moist
+
+- [ ] Realistic rendering: natural moist, glistening segmented worm skin and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
