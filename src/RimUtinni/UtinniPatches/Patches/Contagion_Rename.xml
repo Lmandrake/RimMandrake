@@ -128,7 +128,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AA_InfectedAerofleet"]/description</xpath>
-          <value><description>A bulloo whose hide has blistered from too long in the valley's haze, its hydrogen float now carrying a payload of spore rather than the clean gas its kin drift on. It rides the updraft same as any bulloo, bouncing off whatever gets in its way — until the sun catches it, and it pops.</description></value>
+          <value><description>An unfortunate visitor. A bulloo is nothing but a floating ball of gas: no feet, no limbs worth the name, only a swollen sac and a fringe of trailing feelers beneath it. This one drifted into the Contagion on the wind and caught what lives there. The sickness has worked into its skin, which is now a blistered, red-veined mass, and it fills the sac with spore in place of the clean gas its kin ride on. It still drifts where the air takes it and bumps into whatever is in the way. Burst one and the spore goes with it.</description></value>
         </li>
       </operations>
     </match>

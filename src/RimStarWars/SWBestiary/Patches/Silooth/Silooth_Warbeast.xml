@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Silooth_Warbeast.xml: the silooth as the canon Sith warbeast. Owner, Cauldron sheet 2026-10-09:
+  "make this 8 cells wide. Follow canon more closely. Make sure we add the acid-spitting."
+  Canon (design/RimStarWars/canon_references/silooth/): bantha-sized, tank-like armoured beetle.
+
+  1. SIZE. The donor PawnKindDef (mlie.starwarsanimalcollection) draws the adult at 3.0 and the juvenile
+     stage at 2.0. The adult now draws at 8.0 (spans ~8 cells), the juvenile stage at 5.0, shadows scaled
+     with them; the larva (Silooth_j, his kept pick C) is untouched. Graphic only: baseBodySize/health are
+     NOT changed here (doubling ceiling fields breaks melee damage; that is a separate balance call).
+  2. ACID SPIT. The donor's SW_AcidSpew is swapped for RSW_SiloothAcidSpit (Defs/AbilityDefs/), identical
+     except aiCanUse true, so a wild silooth actually spits when it fights. SW_AcidSpew stays its trainable.
+-->
+<Patch>
+  <!-- adult -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="Silooth"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+    <value><drawSize>8.0</drawSize></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="Silooth"]/lifeStages/li[3]/bodyGraphicData/shadowData/volume</xpath>
+    <value><volume>(2.6, 1.6, 1.3)</volume></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="Silooth"]/lifeStages/li[3]/dessicatedBodyGraphicData/drawSize</xpath>
+    <value><drawSize>8.0</drawSize></value>
+  </Operation>
+  <!-- juvenile stage -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="Silooth"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+    <value><drawSize>5.0</drawSize></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="Silooth"]/lifeStages/li[2]/bodyGraphicData/shadowData/volume</xpath>
+    <value><volume>(1.7, 1.4, 0.9)</volume></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="Silooth"]/lifeStages/li[2]/dessicatedBodyGraphicData/drawSize</xpath>
+    <value><drawSize>5.0</drawSize></value>
+  </Operation>
+  <!-- acid spit the AI will use -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>/Defs/PawnKindDef[defName="Silooth"]/abilities/li[text()="SW_AcidSpew"]</xpath>
+    <value><li>RSW_SiloothAcidSpit</li></value>
+  </Operation>
+</Patch>
