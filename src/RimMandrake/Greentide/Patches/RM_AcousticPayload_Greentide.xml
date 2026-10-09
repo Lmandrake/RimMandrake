@@ -46,15 +46,6 @@
                 <li>RM_SkerrelGall</li>
               </thingDefs>
             </li>
-            <li>
-              <label>something lying in wait</label>
-              <reading>A long, still body in the undergrowth that does not move when the pulse goes by.</reading>
-              <color>(1, 0.4, 0.3)</color>
-              <weight>2</weight>
-              <pawnRaces>
-                <li>RM_Sytheclaw</li>
-              </pawnRaces>
-            </li>
           </targets>
         </li>
       </value>
