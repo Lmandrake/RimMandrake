@@ -29,10 +29,11 @@ Shaaks were one of the few species that, if infected with the Blue Shadow Virus,
 A similar species could be found on the planet Alzoc III, with longer fur to suit the frigid climate. To intimidate the local food commissioner, crime lord Tyber Zann killed several prize shaaks so that he would control most of Alzoc III's food market.
 
 ## Visual brief
-Four images: CANON (Visual Encyclopedia CG render; a watercolour bestiary sketch) and LEGENDS (a painted infobox plate and a cutaway anatomy of a pregnant female). All agree on the shape.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Removed: `wookieepedia_canon_1.webp` (the stylised *Visual Encyclopedia* / Card Trader render with bold cream swirl marbling). Added: `wookieepedia_canon_3.webp`, an *Attack of the Clones* film still of a shaak grazing in a Naboo meadow — **the target**. Also kept: a watercolour bestiary sketch (canon), the realistic NEGAS painted plate and the Field Guide cutaway of a pregnant female (Legends). All agree on the shape.
+**Where the film disagrees with the removed render: the live-action shaak is a muted mauve-to-grey-brown with only faint, soft paler mottling across the back — not bold cream-and-brown swirls.** Its hide is dull, matte and finely wrinkled like a hippo's.
 - **Silhouette**: an enormous, egg- or balloon-shaped body, far larger than its legs; the back is one smooth dome rising from a small neck and sloping to a rounded rear, bulging low in the belly. The animal rests on four thin, short, weak-looking legs hanging from the underside, placed close under the front half; it reads as a giant blob on stilts and carries its head low, grazing nose-down.
-- **Head and neck**: small, long-faced, low-slung head on a short thick neck, a long tapering snout like a young hadrosaur or tapir with a droopy muzzle; small eye ringed with wrinkles; the CG render has a deep red eye (agrees with 'dark red eyes'); small ears or none visible.
-- **Colour/pattern**: brown to orange-tan leathery skin (agree with 'brown leathery skin'), with variants: the CG render has patchy cream and brown marbling, large irregular cream swirls and brown blotches; the sketch has burnt-orange horizontal stripes with pale blue-white dashes along the spine; the plate is sandy-gold with cream dash-like streaks over the shoulder and flank. Treat the marbling or the creamy streaks as the pattern; colour varies by plate.
+- **Head and neck**: small, long-faced, low-slung head on a short thick neck, a long tapering snout like a young hadrosaur or tapir with a droopy muzzle; small eye ringed with wrinkles; the text gives 'dark red eyes'; the film still shows a small dark eye; small ears or none visible.
+- **Colour/pattern**: brown to orange-tan leathery skin (agree with 'brown leathery skin'), with variants: the film still is muted mauve-grey-brown with faint paler mottling on the back (the anchor); the sketch has burnt-orange horizontal stripes with pale blue-white dashes along the spine; the plate is sandy-gold with cream dash-like streaks over the shoulder and flank. Follow the film: muted brown with soft, faint paler mottling; the painted plates' brighter orange/gold is secondary.
 - **Skin**: smooth with deep wrinkled folds around the neck and legs, bare hide, no fur, small round spots near the legs.
 - **Legs/feet**: thin tapering legs ending in small, flat three-toed splayed feet with tiny claws or nails, jointed at an odd backward angle.
 - **Cutaway (Legends)**: shows a huge internal cavity packed with several unborn young in separate chambers; not needed for the sprite. Wild shaaks are said (Legends text) to be less bulbous.
@@ -41,9 +42,10 @@ Four images: CANON (Visual Encyclopedia CG render; a watercolour bestiary sketch
 ## Must show
 - [ ] Giant egg-shaped body balanced on four short thin weak-looking legs
 - [ ] Small low-slung head on a short neck with a tapering droopy snout, dark red eye
-- [ ] Brown/orange-tan leathery hide with cream marbling or pale streaks along the back and flank
+- [ ] Muted mauve-to-grey-brown leathery hide with faint soft paler mottling across the back (film), not bold swirls
 - [ ] Small flat splayed three-toed feet
 - [ ] Smooth bare skin with deep neck and leg folds
+- [ ] Realistic rendering: matte, finely wrinkled hippo-like hide and natural daylight, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -53,7 +55,7 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Shaak/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Shaak`; wiki caption: infobox image. File: `Shaak-TVE.png` — https://static.wikia.nocookie.net/starwars/images/9/99/Shaak-TVE.png/revision/latest?cb=20251028035757
+- `wookieepedia_canon_3.webp` — CANON, *Attack of the Clones* live-action film still, a shaak grazing on Naboo; **target**. File: `Shaak AotC.png` — https://static.wikia.nocookie.net/starwars/images/c/cb/Shaak_AotC.png/revision/latest?cb=20180626205233
 - `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Shaak/Legends`; wiki caption: infobox image. File: `ShaakNEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/c/c9/ShaakNEGAS.jpg/revision/latest?cb=20061126070858
 - `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Shaak/Legends`; wiki caption: Anatomy of a pregnant Shaak.. File: `Shaak anatomy.jpg` — https://static.wikia.nocookie.net/starwars/images/5/5f/Shaak_anatomy.jpg/revision/latest?cb=20251130144301
 - `wookieepedia_canon_2.webp` — CANON page `Shaak`; wiki caption: A shaak sketch done by Ardis San Tekka.. File: `Shaak-BestiaryVol1.png` — https://static.wikia.nocookie.net/starwars/images/9/93/Shaak-BestiaryVol1.png/revision/latest?cb=20250701100950
