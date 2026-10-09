@@ -137,7 +137,7 @@ namespace RimMandrake.EnvironmentalHazards
                 {
                     IntVec3 c = CellFinder.RandomCell(map);
                     TerrainDef t = c.GetTerrain(map);
-                    if (t == null || t.defName != "RM_TarDeep" || !c.Standable(map) && c.GetFirstBuilding(map) != null)
+                    if (t == null || t != RM_MapComponent_SumpLivingMap.TarDeep || !c.Standable(map) && c.GetFirstBuilding(map) != null)
                     {
                         continue;
                     }

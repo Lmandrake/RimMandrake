@@ -95,7 +95,7 @@ namespace RimMandrake.EnvironmentalHazards
                 return false;
             }
             TerrainDef terrain = c.GetTerrain(map);
-            return terrain != null && (terrain.defName == "RM_TarDeep" || terrain.defName == "RM_TarShallow");
+            return RM_MapComponent_SumpLivingMap.IsTarLiquid(terrain);
         }
     }
 }

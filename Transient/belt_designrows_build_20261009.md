@@ -7,3 +7,4 @@
 - CB-1, CB-4 pushed 6ce1d9009; CB-2 reconciled c46d8afb1.
 - TB-3 TWILIGHT_WELL_AVOIDS_CURRENT_1: WellLedger.IsChannelBed asks ChannelCurrent.HasCurrent (toggle). built.
 - TB-2 SALT_TRAVELS_WITH_DOOR_1: two-strike prune + minified doors (grace, not literal on-door salt; no toggle). built.
+- GS-5 POLE_OWNER_CHANGE_DROPS_WIRES_1: OwnerMismatchSweep built (toggle). EH-5 HAZARD_TAR_TERRAIN_FROM_LIQUIDS_1: LiquidDef-derived tar terrains built.
