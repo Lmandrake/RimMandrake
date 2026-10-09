@@ -658,6 +658,27 @@ if Suite is not None:
         "needs a biome roster with a flight-capable animal (map.Biome.AllWildAnimals); a plain biome has none: run on an "
         "RM_FloodedCanyon map", "recedeMigrantsEnabled")
 
+    @suite.chain("peakstorm_dust_reversal")
+    def peakstorm_dust_reversal(t):
+        """CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1: while Peakstorm Light stands, the sky overlay's dust direction
+        factor reaches -1 (reversed) and returns to +1. A STATE read of the overlay, never a screenshot."""
+        with _comp(t, "overlay_direction_reverses", toggle="peakstormDustReversalEnabled"):
+            if _live(t):
+                seen = set()
+                for _ in range(10):
+                    r = t.bridge_call("jawa/static_call", type="RimMandrake.FloodedCanyon.RM_PeakstormDustProof",
+                                      method="ProofState", args="")
+                    res = str((r or {}).get("result", ""))
+                    if "weather=RM_PeakstormLight" not in res:
+                        _unmeasured(t, "needs Peakstorm Light standing on the current map; proof said %r" % res[:120])
+                        break
+                    m = dict(kv.split("=", 1) for kv in res.split(" ") if "=" in kv)
+                    seen.add(m.get("reversed"))
+                    t.wait_ticks(270)   # a 2400-tick period sampled across the 300-tick reversal window
+                else:
+                    if seen != {"True", "False"}:
+                        _fail("dust direction never both reversed and drifted forward across 10 samples: %r" % sorted(seen))
+
     @suite.chain("settings_restored")
     def settings_restored(t):
         """LAST: every field is back at its shipped (parsed) default; a leaked arm would corrupt the next run."""

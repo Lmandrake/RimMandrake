@@ -25,6 +25,7 @@
     <Compile Include="..\Kernel\RM_FloodKernel.cs" />
     <Compile Include="..\Kernel\RM_RefugeKernel.cs" />
     <Compile Include="..\Kernel\RM_PanKernel.cs" />
+    <Compile Include="..\Kernel\RM_DustKernel.cs" />
     <Compile Include="..\Kernel\RM_CanyonRulesKernel.cs" />
     <Compile Include="FloodedCanyonFuzz.cs" />
     <Compile Include="Program.cs" />

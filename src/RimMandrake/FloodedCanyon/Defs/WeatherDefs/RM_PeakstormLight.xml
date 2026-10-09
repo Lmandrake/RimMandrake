@@ -7,7 +7,7 @@
   construction - ban 5)."
 
   ZERO PRECIPITATION BY CONSTRUCTION: no rainRate / snowRate (WeatherDef
-  defaults both to 0), no overlay/workers, and the only event maker is
+  defaults both to 0), no precipitation overlay (only the dust-drift sheet below), and the only event maker is
   RM_WeatherEvent_DistantFlicker - a subclass of vanilla
   WeatherEvent_LightningFlash (read via RimSage 2026-09-29) at reduced
   brightness. The base class's FireEvent plays SoundDefOf.Thunder_OffMap:
@@ -23,8 +23,10 @@
 
   Wind: "cool, wet-clay air pushes through the slots" - windSpeedFactor 1.6
   (TUNED: noticeably gusty, short of a storm's). The dust that briefly
-  REVERSES is not expressible in a WeatherDef (no mote direction field);
-  owed to CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1.
+  REVERSES is not expressible in a WeatherDef (no mote direction field), so
+  <overlayClasses> carries RM_WeatherOverlay_PeakstormDust, which drifts a dust
+  sheet one way and swings it back at intervals (CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1).
+  Zero precipitation still holds: an overlay draws, it does not make rain.
 
   Flood coupling (RM_MapComponent_CanyonFlood): while this weather stands,
   the flood clock rolls ONCE per cycle (TUNED 0.6) to pull its next flood
@@ -42,6 +44,9 @@
     </ambientSounds>
     <durationRange>10000~30000</durationRange>
     <windSpeedFactor>1.6</windSpeedFactor>
+    <overlayClasses>
+      <li>RimMandrake.FloodedCanyon.RM_WeatherOverlay_PeakstormDust</li>
+    </overlayClasses>
     <eventMakers>
       <li>
         <averageInterval>900</averageInterval>
