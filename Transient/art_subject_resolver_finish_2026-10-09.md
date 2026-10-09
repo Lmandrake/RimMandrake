@@ -1,3 +1,6 @@
 # ART_SUBJECT_RESOLVER_1 finish notes 2026-10-09
 Started from 76a1f7c1f. Order: (1) backfill target_def, (2) legacy index, (3) name-logic retirement.
 - step1 code: backfill.step_artpipe now reads target_def/install_to/target_original and emits idempotent 'binding' events (Index.bindings); selftest_backfill_bind.py. Live run pending.
+- step1 live: `art.py backfill artpipe` ran: 2,020 new events (variants + bindings from target_def). Committed c536fc6d3.
+- step2: art/render_subjects.py + `art.py backfill subjects` (derived index infrastructure/state/art/render_subjects.json, gitignored, regenerable; job files untouched). 4,743 render variants: bound/binding 1912, bound/byte-join 1295, bound/collected 40, bound/dhash-join 60, name-matched/token 649, AMBIGUOUS 102, UNRESOLVED 686. Owner-rulings join (spec step 3.2) has nothing to read: all 11k imported rulings are legacy-unresolved with no sha. Token matcher checked against the 1,912 target_def truths: 1426 agree, 26 "disagree" (all donor-original vs our port name, same creature: SW_X vs RM_X), 183 ambiguous, 277 none. Binding events for single-subject results written idempotently (second run 0).
+- NOTE "2,860 unbound": spec figure is stale; now 788 (ambiguous+unresolved) lack any subject.

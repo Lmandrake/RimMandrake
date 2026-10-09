@@ -328,3 +328,4 @@ infrastructure/state/art/git_backfill_done.txt
 Transient/**/.gatecheck_*/
 Transient/**/*.gate.tmp.html
 Transient/**/*.gate.tmp.json
+infrastructure/state/art/render_subjects.json
