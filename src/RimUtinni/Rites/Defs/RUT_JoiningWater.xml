@@ -67,6 +67,7 @@
   <RitualBehaviorDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
     <defName>RUT_JoiningWaterBehavior</defName>
     <durationTicks>2000</durationTicks>
+    <roles /><!-- Dialog_BeginRitual.CreateRitualRoleAssignments foreach-es behavior.def.roles; null NREs the rite start -->
     <spectatorsLabel>Joined hands</spectatorsLabel>
     <spectatorGerund>join hands</spectatorGerund>
     <stages>
