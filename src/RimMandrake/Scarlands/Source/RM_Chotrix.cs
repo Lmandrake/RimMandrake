@@ -168,9 +168,9 @@ namespace RimMandrake.Scarlands
             {
                 Pawn t = all[i];
                 if (t == pawn || t.Dead || t.Downed || !t.Spawned) continue;
-                if (!IsPreyKind(t, pr, night) || !IsLone(t, pr)) continue;
                 float d = (t.Position - pawn.Position).LengthHorizontalSquared;
-                if (d >= bestD) continue;
+                if (d >= bestD) continue; // distance first: IsLone walks every pawn (belt SC-4)
+                if (!IsPreyKind(t, pr, night) || !IsLone(t, pr)) continue;
                 if (!pawn.CanReach(t, PathEndMode.Touch, Danger.Deadly)) continue;
                 best = t; bestD = d;
             }
