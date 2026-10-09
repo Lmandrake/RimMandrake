@@ -147,11 +147,25 @@ namespace RimMandrake.EnvironmentalHazards
                     pawn.TakeDamage(new DamageInfo(ext.damageDef, ext.damageAmount * mult, ext.armorPenetration, -1f));
                 }
 
-                if (ext.hediffToApply != null && ext.hediffSeverityPerInterval != 0f && !pawn.Dead)
+                if (ext.hediffToApply != null && ext.hediffSeverityPerInterval != 0f && !pawn.Dead
+                    && !CarriesOtherTagged(pawn, ext))
                 {
                     HealthUtility.AdjustSeverity(pawn, ext.hediffToApply, ext.hediffSeverityPerInterval * mult);
                 }
             }
+        }
+
+        private static bool CarriesOtherTagged(Pawn pawn, EnvironmentalWeatherExtension ext)
+        {
+            if (string.IsNullOrEmpty(ext.skipHediffIfCarryingOtherTagged)) return false;
+            List<Hediff> hs = pawn.health?.hediffSet?.hediffs;
+            if (hs == null) return false;
+            for (int i = 0; i < hs.Count; i++)
+            {
+                HediffDef d = hs[i].def;
+                if (d != ext.hediffToApply && d.tags != null && d.tags.Contains(ext.skipHediffIfCarryingOtherTagged)) return true;
+            }
+            return false;
         }
 
         // MIASMA_MECHANICS_1 M4 build. See EnvironmentalWeatherExtension.
