@@ -17,6 +17,10 @@ Strills had gold-colored eyes, gray tongues, and sharp claws. Their wide mouths 
 Canon note: the canon page rests on *The Mandalorian Visual Guide* (the Armorer's winter fur mantle; "Chapter 1: The Mandalorian" shows the fur only, not a living strill). Canon gives no anatomy; six legs and the membranes are Legends. Source: https://starwars.fandom.com/wiki/Strill
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia pageimages Strill and Strill/Legends, catimages "Images of strills", title search "strill"; the only live-action trace is the Armorer's strill-fur mantle in The Mandalorian, which shows no living animal).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
 Viewed 2026-10-04. Both images are LEGENDS (the canon page has no image, only "thick brown fur in
 winter"). Image 1 is a comic painting of a strill stalking in front of a Mandalorian; image 2 is
 a pencil sketch of Lord Mirdalan sitting. They show two different looks.
@@ -45,6 +49,7 @@ a pencil sketch of Lord Mirdalan sitting. They show two different looks.
 - [ ] Very long thin whip-like tail
 - [ ] Brown to tan colouring (canon prose: thick brown winter fur; Legends prose: gold or grey-tan)
 - [ ] Six legs, fur and glide membranes are text-only and not shown in either image -- not required until a better image exists
+- [ ] Realistic rendering: natural leathery skin and fur texture with soft natural lighting, no ink outlines, no comic shading
 
 ## Engine limits
 not yet assessed

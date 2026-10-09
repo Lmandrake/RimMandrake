@@ -21,6 +21,10 @@ Tee-muss were a species of domesticated farm animals native to the jungle planet
 Verified additions: canon infobox colour tan and brown, quadruped, non-sentient, origin Onderon; battle mounts on Florrum ("A Necessary Bond"), nysillin farm animals on Felucia ("Bounty Hunters"), Onderon ("A War on Two Fronts"); Krennic's gloves were of tee-muss *calf* hide (*Rogue One: The Ultimate Visual Guide*; hide colour not stated). Legends infobox: class ungulate, tan skin, brown hair, "Proboscid", "Odd toes"; Legends prose: four-legged odd-toed ungulate, short proboscis, **two tusks on the lower jaw**, long ears bent outward and pointing downward when threatened -- https://starwars.fandom.com/wiki/Tee-muss/Legends. The text never mentions horn nubs, a mane or a hump.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia pageimages Tee-muss and Tee-muss/Legends, catimages "Images of tee-muss"; only The Clone Wars render and a stylised Star Wars: Hunters avatar exist).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
 One CANON image (`wookieepedia_canon_1`, a Clone Wars CG render of a tee-muss in riding harness with a blue-skinned rider). It differs from a camel mainly by the head.
 - **Silhouette**: a long-legged, deep-chested camel- or llama-like ungulate: slender long legs with knobby knees, a deep ribcage, a short level back, an arched neck carried forward and slightly down; a long thin tail ending in a dark tuft/brush hanging to the hock.
 - **Coat**: tan to light sandy-brown short, mottled hide with a patchy lighter and darker blotch pattern; a ragged mane of longer, shaggy, darker-gold fur running along the top of the neck and the back from the shoulders to the withers.
@@ -35,6 +39,7 @@ One CANON image (`wookieepedia_canon_1`, a Clone Wars CG render of a tee-muss in
 - [ ] Blunt wrinkled head with a short trunk-like nose boss, small horn nubs and a hooked dark lower tusk
 - [ ] Long wide pointed dark ears bent back and out
 - [ ] Two broad cream-coloured hooved toes on each foot
+- [ ] Realistic rendering: natural mottled hide, coarse mane hair and hoof keratin under natural lighting, no outlines, no Clone Wars shading
 
 ## Engine limits
 not yet assessed

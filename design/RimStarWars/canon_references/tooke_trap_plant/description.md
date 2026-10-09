@@ -28,7 +28,11 @@ Ecology, also Legends:
 - It is eaten by **clodhoppers** (`../clodhopper/`).
 
 ## Visual brief
-All three images agree on the body plan:
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia pageimages Tooke-trap plant and Tooke-trap plant/Legends, catimages "Images of Tooke-trap plants"; only a Field Guide painting, a Gungan Frontier sprite and a LEGO render exist).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
+Both images agree on the body plan (the LEGO toy render was deleted 2026-10-08 as a cartoon duplicate):
 - a low **rosette of broad, pointed, veined leaves**, eight on the mature plant;
 - one or more **long, thin, curving stalks** rising from the centre;
 - each stalk ending in a **toothed "mouth" pod**, a hinged jaw lined with long, thin, inward-curving spines, like a
@@ -46,7 +50,6 @@ Size: a small plant, roughly knee-high to waist-high, judging by tooke prey and 
 The images:
 - **Image 1** (Legends field-guide painting) is the strongest reference, with one stalk and mouth.
 - **Image 2** (*Gungan Frontier* sprite) shows **two** stalks and mouths, which confirms the one-to-four-stalk range.
-- **Image 3** (LEGO) shows the same plan in toy form. Use it only for confirmation, never for style.
 
 ## Must show
 - [ ] Low rosette of broad, pointed leaves, sage/cream with red veins and edges
@@ -55,6 +58,7 @@ The images:
 - [ ] Stalk and mouth are brown-maroon/rust, distinct from the green leaves
 - [ ] Small cluster of round dark-red knobs at the mouth
 - [ ] Reads as a small plant (knee-to-waist height), not a tree
+- [ ] Realistic rendering: natural waxy leaf and fleshy pod texture under natural light, like a real carnivorous plant photograph, no ink outlines, no toy or cartoon shading
 
 ## Engine limits
 - A plant is a single static sprite: the mouth cannot open or snap. Show it open and agape.
@@ -72,8 +76,6 @@ The images:
   and a cream/sage leaf rosette with red veins. **Primary reference.**
 - `tooke_trap_wookieepedia_2.png`: *Gungan Frontier* in-game sprite. Two stalks and mouths over a pale leaf rosette.
   It confirms more than one stalk.
-- `tooke_trap_wookieepedia_3_lego.png`: LEGO render. The same plan (rosette, curving stalk, toothed pod, knobs on top)
-  in toy form. Use it to confirm the plan only.
 
 ## Webwork notes (for WEBWORK_FLORA_ROSTER_1)
 - Canon home is a **swamp** on Naboo. In the Webwork it is a donor row (`Plant_TookeTrap_Wild`), so per the
