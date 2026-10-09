@@ -4,3 +4,4 @@
 - unsure (fix committed, live re-run not done; left open): FLOWWORKS_TANK_LOOP_ROW_WRONG_1, FLOWWORKS_PIT_OCCUPANT_HIDDEN_BY_LIP_1, STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1, STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1
 - kept: ~60 checked by helpers (all 33 GPT-review findings still present at HEAD); old Aug-Sep program items (ASSAILANT_DUNGEON, BIOME_WORLD_SWITCH partial, OCULAR_OVERDRIVE, STATUE umbrella, COLD_LOAD_RUN_SHEET_4, VANILLA_BEAST_EXCISION etc) skimmed, all genuinely live
 - not reached: ~150 items (helpers 0,2,3,4 still running at stop)
+- closed MUDSWALLOW_PARENTHOLDER_GUARD_1 (c78842824): passing L2 verify; GIMMESOMESLACK_NORTHSTAR_VALIDATE_1 unsure (owner-only)
