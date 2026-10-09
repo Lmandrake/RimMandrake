@@ -306,6 +306,10 @@ namespace RimMandrake.LuminousPigment
             {
                 pressGate = PressGate.Unbuildable;
             }
+            list.Label("Press research cost: " + pressResearchCost.ToString("0") + " points");
+            pressResearchCost = Mathf.Round(list.Slider(pressResearchCost, 100f, 3000f) / 50f) * 50f;
+            list.Label("Press work per batch: " + pressWorkAmount.ToString("0") + " work units");
+            pressWorkAmount = Mathf.Round(list.Slider(pressWorkAmount, 300f, 6000f) / 50f) * 50f;
             list.Label("Deepfire per batch (4 fresh mat + fixative): " + pressYield.ToString());
             pressYield = Mathf.RoundToInt(list.Slider(pressYield, 1f, 6f));
             list.Label("Press power draw: " + pressPower.ToString("0") + " W");
@@ -330,6 +334,12 @@ namespace RimMandrake.LuminousPigment
             RM_LuminousSettingsReadouts.ResetButton(list, "GlowTank");
             list.CheckboxLabeled("GlowTank buildable", ref glowTankEnabled,
                 "Off: the GlowTank does not appear in the build menu. Existing tanks keep working.");
+            list.Label("Days for the tank culture to ripen: " + tankGrowDays.ToString("0.0"));
+            tankGrowDays = Mathf.Round(list.Slider(tankGrowDays, 3f, 40f) * 2f) / 2f;
+            list.Label("Cultured crowncarpet per harvest: " + tankYield.ToString());
+            tankYield = Mathf.RoundToInt(list.Slider(tankYield, 1f, 6f));
+            list.Label("GlowTank power draw: " + tankPower.ToString("0") + " W");
+            tankPower = Mathf.Round(list.Slider(tankPower, 50f, 600f) / 10f) * 10f;
             list.Label("Power outage before it kills the culture: " + (tankPowerGraceHours <= 0f ? "Never" : tankPowerGraceHours.ToString("0") + " h"));
             tankPowerGraceHours = list.Slider(tankPowerGraceHours, 0f, 48f);
             list.CheckboxLabeled("Tank needs ocean water (FlowWorks)", ref tankNeedsWater,
