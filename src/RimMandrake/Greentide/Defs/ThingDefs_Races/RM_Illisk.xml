@@ -27,7 +27,7 @@
         </capacities>
         <power>6</power>
         <cooldownTime>1.1</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
       </li>
     </tools>
     <comps>
