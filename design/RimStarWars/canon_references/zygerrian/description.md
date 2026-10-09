@@ -67,11 +67,16 @@ They **favoured cruel methods of control, like electro-whips**.
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** No live-action Zygerrian exists (searched `Images of Zygerrians`: *Clone Wars*/*Bad Batch* CGI, comics and sourcebook paintings). Deleted: `wookieepedia_dartsdnar_tcwcejtb.png` (*Clone Wars* Darts D'Nar) and `wookieepedia_zygerriansareback_tbb.png` (*Bad Batch* wide shot). Added two realistic paintings: `wookieepedia_zygerrian_slaver_painting.jpg` (*Friends Like These* / *Knowledge and Defense* art — a snarling furred slaver with an electro-whip) and `wookieepedia_zygerrian_slave_auction_painting.jpg` (*Scum and Villainy* — a street of Zygerrian slavers leading chained captives). 🔑 **These paintings are now the look to render**: real fur, natural light. `wookieepedia_zygerrian_atai_molec.jpg` and `wookieepedia_zygerrians_swe.png` (*Clone Wars* CGI) are **kept only as animated, anatomy-only references** — the first is the sole image of the ear-horn spurs and bare pale face, the second the sole image of the female form; do not copy their shading.
+
+**What the realistic paintings show:** warm **brown fur covering the face and skull**, thicker as sideburn/cheek ruffs and a mane at the back; **tall, upright, pointed cat-like ears with dark inner fur**, rising well above the crown; **pale, almost human eyes** under a heavy furrowed brow; a near-human nose and mouth that opens on **long upper and lower fangs**; **long curved claws** on the fingers; lean humanoid build in dark leather and cloth slaver rig; the **electro-whip** as signature weapon. In the auction painting several individuals are much barer-faced and paler, so the furred-to-bare range in the text holds.
+
+
 🔴 **The def gives Zygerrians RED skin. Canon gives exactly one skin colour — "Light" —
 and not one of the four references shows red skin. This is the loudest error in this
 batch.**
 
-**`wookieepedia_zygerrian_atai_molec.jpg` is the single most informative reference**
+**`wookieepedia_zygerrian_atai_molec.jpg`** (animated, anatomy-only — the only image of the ear-horns)
 (Prime Minister Atai Molec, captioned on the wiki as *"displaying his species'
 traditional features"* — *Clone Wars* CGI, bust):
 
@@ -90,7 +95,7 @@ traditional features"* — *Clone Wars* CGI, bust):
 - **Pale blue eyes**, deep-set under a heavy, permanently scowling brow ridge.
   Flat feline nose, thin down-turned mouth.
 
-**`wookieepedia_zygerrians_swe.png`** (the canon infobox image: three Zygerrians, full
+**`wookieepedia_zygerrians_swe.png`** (the canon infobox image, *Clone Wars* CGI — animated, anatomy-only: three Zygerrians, full
 body) confirms the constants and shows the variation:
 
 - **All three have the huge upright pointed ears**, swept up and out, with darker
@@ -105,18 +110,7 @@ body) confirms the constants and shows the variation:
 - One carries a large curved blade; all wear layered leather-and-cloth rig with tall
   boots.
 
-**`wookieepedia_dartsdnar_tcwcejtb.png`** (Darts D'Nar) is the **furred** end of the
-range: **warm brown fur over the face and skull with a darker brown mane**, dark ear
-tips, **visible long fangs**, prominent chin spurs, **amber/orange eyes**, and a
-notably heavier, more muscular build. He carries the **electro-whip** the text names.
-Together with Atai Molec this brackets the species: **fully furred brown at one end,
-bare pale pink at the other, ears-plus-brow-plus-chin-spurs constant across both.**
-
-**`wookieepedia_zygerriansareback_tbb.png`** is a wide *Bad Batch* environment shot —
-several Zygerrian slavers with lit electro-whips on a **rocky, dusty landscape**
-(matching the canon `rocky` habitat). **Low appearance detail**; its value is the
-**ear silhouette read at distance** (still unmistakable) and the electro-whips in use.
-Do not draw face detail from it.
+The **furred** end of the range is now carried by the realistic slaver painting (brown fur over face and skull, mane, long fangs, claws, electro-whip); the deleted animated Darts D'Nar showed the same with amber eyes and a heavier build.
 
 **`donor_current_sprite.png` is the weakest donor art in this batch.** It is the
 `RSW_Ears_BigCat` attachment and it is a **tiny 2.4 KB asset** consisting of two small
@@ -149,7 +143,7 @@ black-outlined triangular cat ears. Against the references:
   def already ships; nothing implements it.
 - ⚠️ **`Hair_BaldOnly` + `Beard_NoBeardOnly` fight the canon fur.** Canon lists **five
   hair colours** (blue, brown, gray, pink, red) and Legends states **males grow bands
-  of fur on their cheeks**; Darts D'Nar is fully furred with a mane. Forcing every
+  of fur on their cheeks**; the realistic slaver painting is fully furred with a mane. Forcing every
   Zygerrian bald and beardless loses the furred half of the species' range. (The chin
   spurs are correctly handled separately by `RSW_Beard_chinspines` — see below.)
 - ⚠️ **`Outland_AcceleratedMaturation` and `Outland_AcceleratedPregnancy` are weakly
@@ -158,7 +152,7 @@ black-outlined triangular cat ears. Against the references:
   accelerated life cycle, and it also means **no longevity gene is warranted** either
   way. Nothing sourced about gestation.
 - ⚠️ **Eye set is incomplete**: `Outland_Eye_LightBlue` ✅ (canon blue; Atai Molec's
-  pale blue) and `Outland_Eye_Yellow` ✅ (canon gold; Darts D'Nar's amber) are both
+  pale blue) and `Outland_Eye_Yellow` ✅ (canon gold; the deleted Darts D'Nar's amber) are both
   right, but canon also lists **green, purple and silver**.
 - ⚠️ **`Turn_Gene_Certain`, `Turn_Gene_Duelist` and `Turn_Gene_HighBeautyStandard` are
   unsourced.** Nothing in either article supports them.
@@ -179,6 +173,7 @@ black-outlined triangular cat ears. Against the references:
 - [ ] Each ear carries a dark grey-black horn spur on its leading edge
 - [ ] Three bony grey spurs project downward from the chin (male-only; females have smooth cheeks)
 - [ ] Long fangs jut from the jaw and claws extend from the hands
+- [ ] Realistic rendering: natural fur and skin texture and lighting as in the paintings, no outlines, no cartoon shading
 
 ## Engine limits
 none known — every finding recorded here (red rather than "Light" skin, an undersized cat-ear attachment, missing ear-horns, missing fangs and claws) is attributed to specific gene/def choices, not to a rendering-pipeline constraint.
@@ -196,11 +191,9 @@ none known — every finding recorded here (red rather than "Light" skin, an und
   later sections were cut. Anything below Biology is UNREAD, not absent.)
 - https://static.wikia.nocookie.net/starwars/images/9/91/AtaiMolecHS-SWE.png → `wookieepedia_zygerrian_atai_molec.jpg` (saved with a `.jpg` name; the source file is a PNG)
 - `wookieepedia_zygerrians_swe.png` corresponds to `File:Zygerrians-SWE.png` (the
-  infobox image, shared by both the canon and Legends articles);
-  `wookieepedia_dartsdnar_tcwcejtb.png` to `File:DartsDNar-TCWCEJtB.png`; and
-  `wookieepedia_zygerriansareback_tbb.png` to `File:ZygerriansAreBack-TBB.png`. All
-  three were already on disk from an earlier pass and were verified against the
-  articles' own file lists this pass.
+  infobox image, shared by both the canon and Legends articles).
+- https://static.wikia.nocookie.net/starwars/images/5/58/ZygerrianSlaver-KaD.jpg/revision/latest?cb=20150516060422 (File:ZygerrianSlaver-KaD.jpg → `wookieepedia_zygerrian_slaver_painting.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/c/cb/ZygerrianSlaveAuction-SaV.png/revision/latest?cb=20200529020711 (File:ZygerrianSlaveAuction-SaV.png → `wookieepedia_zygerrian_slave_auction_painting.jpg`)
 - NOT fetched this pass: https://www.starwars.com/databank/zygerria (the
   `{{Databank|zygerria}}` citation used for origin and for the empire's history).
   Print sources cited and not read: *Galaxy at War* (the only source for **1.7 m,
@@ -211,22 +204,10 @@ none known — every finding recorded here (red rather than "Light" skin, an und
 
 ## Candidate images
 
-- `wookieepedia_zygerrian_atai_molec.jpg` — **the reference of record for the head.**
-  Prime Minister Atai Molec, captioned by the wiki as displaying his species'
-  traditional features. Settles the **enormous ridged upright ears**, the **dark horn
-  on each ear**, the **three downward bony chin spurs**, the heavy scowling brow, the
-  pale blue eyes, and **pale pink-mauve bare facial skin**.
-- `wookieepedia_zygerrians_swe.png` — **the reference of record for the body and for
-  sexual dimorphism.** The infobox image: three Zygerrians, full body, transparent
-  background. Shows the ears on all three, pale tan to grey-brown colouring, lean
-  1.7 m builds, and a **male with chin spurs and cheek fur beside a female with
-  neither**.
-- `wookieepedia_dartsdnar_tcwcejtb.png` — Darts D'Nar, the **fully-furred brown** end
-  of the range, with a mane, visible **long fangs**, chin spurs, amber eyes, a heavier
-  build, and the canonical **electro-whip**.
-- `wookieepedia_zygerriansareback_tbb.png` — a wide *Bad Batch* shot of slavers with
-  electro-whips on rocky terrain. **Low appearance detail**; useful for the ear
-  silhouette at distance and for the `rocky` habitat. Do not read face detail from it.
+- `wookieepedia_zygerrian_slaver_painting.jpg` — **the reference of record for the look.** Realistic painted art (*Friends Like These* / *Knowledge and Defense*), file `ZygerrianSlaver-KaD.jpg`: a furred Zygerrian slaver mid-lash with an electro-whip — brown face fur, tall pointed ears, fangs, claws — https://static.wikia.nocookie.net/starwars/images/5/58/ZygerrianSlaver-KaD.jpg/revision/latest?cb=20150516060422
+- `wookieepedia_zygerrian_slave_auction_painting.jpg` — realistic painted art (*Scum and Villainy*), file `ZygerrianSlaveAuction-SaV.png`: Zygerrian slavers with whips leading chained captives down a street — ears, furred and barer faces, slaver rig — https://static.wikia.nocookie.net/starwars/images/c/cb/ZygerrianSlaveAuction-SaV.png/revision/latest?cb=20200529020711
+- `wookieepedia_zygerrian_atai_molec.jpg` — **animated (*Clone Wars* CGI), anatomy-only.** Prime Minister Atai Molec: the only image of the **dark horn spur on each ear**, the three downward bony chin spurs and **pale pink-mauve bare facial skin**.
+- `wookieepedia_zygerrians_swe.png` — **animated (*Clone Wars* CGI), anatomy-only.** The infobox image: three Zygerrians full body; the only image showing a **female (smooth cheeks, no chin spurs)** beside a male.
 - `donor_current_sprite.png` — the repo's `RSW_Ears_BigCat` attachment. 🔴 **The
   weakest donor asset in this batch**: two small flat triangular cat ears, **far too
   small, no ear-horns, no internal ridging, no cupped shell.**

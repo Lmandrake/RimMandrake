@@ -49,6 +49,8 @@ was **a grove of Wookiees**.
   Agaburry, Tyvokka, Gungi).
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: `wookieepedia_youngling_animated.jpg` (*Clone Wars* Gungi). Added live-action: `wookieepedia_lumpy_juvenile_holiday.jpg` (Lumpy, a Wookiee child, *The Star Wars Holiday Special*) to replace the juvenile reference, and `wookieepedia_wookiee_roar_rots.jpg` (*Revenge of the Sith*, a Kashyyyk war host with a Wookiee roaring in front) for population hue range. All remaining images are realistic.
+
 🔑 **`wookieepedia_anatomy_diagram.jpg` is the most useful single image in this
 whole library so far, because it shows the body UNDER the fur — which is precisely
 what a text-only prompt cannot invent.** It is a sepia anatomical study plate
@@ -70,15 +72,17 @@ never states:
   the Wookiee substantially taller and much broader through the shoulders — a
   direct scale reference, consistent with the 2.23–2.54 m infobox range.
 
-From the full-body reference and the animated youngling:
+From the full-body reference, the live-action juvenile and the *Revenge of the Sith* host:
 - **The coat is long, shaggy and directional** — it falls, and it falls *downward
   and outward*, longest at the shoulders, upper arms, chest and thighs, shorter on
   the face and the backs of the hands. It is not uniform plush. The water-shedding
   property in the text is visible as this directional fall.
 - **Colour is a mid warm brown with darker roots and lighter tips**, with a paler
-  muzzle/face mask and a paler chest. The animated youngling (Gungi) is a much
-  cooler grey-brown with a distinctly lighter face — so within-species hue
-  variation is wide, and the **face is reliably lighter than the body** in both.
+  muzzle/face mask and a paler chest. The *Revenge of the Sith* host runs from dark umber
+  through reddish-chestnut to grey-brown and pale tawny, so within-species hue
+  variation is wide. The juvenile Lumpy is a glossy mid-brown with golden-blond
+  tips, a fluffier, shorter coat and a small face; the **face is lighter than the
+  body** on adult and child alike.
 - **The face is the exception to the coat**: eyes, nose and mouth sit in a
   short-haired mask, so the face reads as a face rather than a fur ball. Eyes are
   small, dark and set close; the nose is a broad flat dark pad.
@@ -108,6 +112,7 @@ face mask.
 - [ ] Plantigrade legs — a long flat sole with five toes, not digitigrade
 - [ ] Prognathous muzzle/jaw with large canines visible under the beard
 - [ ] Retractable claws that sheath into the finger, not permanently protruding talons
+- [ ] Realistic rendering: natural long shaggy hair texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known — the donor sprite is one of the better ones in the library (a dedicated Wookiee head with the right big, brown, fur-skinned build); the entry attributes the missing beard, directional coat, claws and face mask to gene choices (`Hair_BaldOnly` forcing every Wookiee beardless) and absent art, not to a pipeline constraint.
@@ -119,7 +124,8 @@ none known — the donor sprite is one of the better ones in the library (a dedi
   101,371 chars, 2026-09-15)
 - https://static.wikia.nocookie.net/starwars/images/b/b6/WookieeAnatomyDiagram-TSotW.png (File:WookieeAnatomyDiagram-TSotW.png → wookieepedia_anatomy_diagram.jpg)
 - https://static.wikia.nocookie.net/starwars/images/1/1e/Chewbacca-Fathead.png (File:Chewbacca-Fathead.png, the infobox image → wookieepedia_infobox_fullbody.jpg)
-- https://static.wikia.nocookie.net/starwars/images/2/2a/Gungi-TCWs5BR1.png (File:Gungi-TCWs5BR1.png → wookieepedia_youngling_animated.jpg)
+- https://static.wikia.nocookie.net/starwars/images/7/72/Lumpy.jpg (File:Lumpy.jpg → wookieepedia_lumpy_juvenile_holiday.jpg)
+- https://static.wikia.nocookie.net/starwars/images/4/40/WookieeRoar.png (File:WookieeRoar.png → wookieepedia_wookiee_roar_rots.jpg)
 - NOT fetched this pass: https://www.starwars.com/databank/wookiee (official Databank).
 
 ## Candidate images
@@ -134,10 +140,8 @@ none known — the donor sprite is one of the better ones in the library (a dedi
   adult male on a transparent background at very high resolution. Settles the
   directional shaggy fall of the coat, the mid-warm-brown-with-lighter-face
   palette, the short-haired face mask, and the single-shoulder bandolier.
-- `wookieepedia_youngling_animated.jpg` — Gungi, an animated Wookiee youngling.
-  Stylized, so treat line as the artist's; its value is showing the within-species
-  hue range (much cooler grey-brown) and confirming the lighter-face-than-body rule
-  across media and age.
+- `wookieepedia_lumpy_juvenile_holiday.jpg` — live-action, *The Star Wars Holiday Special*, file `Lumpy.jpg` (424×504): Lumpy, a Wookiee child — juvenile proportions, fluffier glossy brown coat with blond tips, lighter face — https://static.wikia.nocookie.net/starwars/images/7/72/Lumpy.jpg/revision/latest?cb=20081120010113
+- `wookieepedia_wookiee_roar_rots.jpg` — live-action/realistic CGI, *Revenge of the Sith*, file `WookieeRoar.png` (1440×810): a roaring Wookiee before the Kashyyyk war host — the population's coat-colour range — https://static.wikia.nocookie.net/starwars/images/4/40/WookieeRoar.png/revision/20141206190806
 
 ## ruling
 (empty — owner has not reviewed this race yet)

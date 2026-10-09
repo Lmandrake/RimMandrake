@@ -79,6 +79,8 @@ tones including **red, yellow and orange.** Personality: proud, strong, confiden
 believing nothing was truly impossible.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Checked 2026-10-08: the face, horn and skin references here are already realistic — live-action prosthetic Eeth Koth, the photoreal *Battlefront II* female render and a photoreal Darth Maul render. The one animated image, `wookieepedia_iridonian_skeleton.jpg` (*Clone Wars* X-ray of Eeth Koth), is **kept only as an animated, structure-only reference** because it is the sole image showing the horns as bone rooted in the skull; never copy its look.
+
 **The Iridonian face, from `wookieepedia_iridonian_eeth_koth.jpg`** — the Iridonian article's own
 infobox image, and therefore the reference of record for this def:
 - 🔑 **A crown of SHORT, BLUNT, CREAM-IVORY horns** — roughly seven readable — running in an arc
@@ -110,7 +112,7 @@ article's own infobox, a *Battlefront*-era game render of a female Zabrak):
   horn crown recurs across individuals and media** — it is the species trait, and it is *always*
   paler than the skin.
 
-**`wookieepedia_iridonian_skeleton.jpg`** — an in-show X-ray of Eeth Koth's skull, and the most
+**`wookieepedia_iridonian_skeleton.jpg`** (animated, *Clone Wars* — structure only) — an in-show X-ray of Eeth Koth's skull, and the most
 useful single frame here for an artist: 🔑 **the horns are BONE, real cranial projections rising
 out of the skull itself** — five clear spikes across the crown plus lateral ones — not skin
 growths, not ornaments, not attachments. So a Zabrak horn must read as **rigid and bone-coloured,
@@ -182,6 +184,7 @@ difference is checkable.
 - [ ] Fine, hairline-weight dark tattoo lines on the chin and lower cheeks in a symmetric pattern — not bold blocks
 - [ ] Horns read as rigid, bone-coloured cranial projections rooted directly in the skull (real cranial projections, not skin growths or attachments)
 - [ ] Hair may be long, straight and black (as on the canonical male Eeth Koth) OR bald — not forced bald on every male
+- [ ] Realistic rendering: natural skin, bone-horn and hair texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known — every finding recorded for this def (forced male baldness, grey as the only hair colour, no second-heart gene) is a gene/def choice, not a rendering-pipeline constraint; the existing `RSW_Headbone_zabrak` horn gene and `RSW_FacialRidges_iridonian` tattoo gene are both recorded as well-matched art.
@@ -224,7 +227,7 @@ none known — every finding recorded for this def (forced male baldness, grey a
   bald** Zabrak. Independent confirmation of the horn crown and human proportions from a
   different medium and a different individual, and evidence that **bald is equally attested.**
   Game-engine art, so treat exact hue as the renderer's.
-- `wookieepedia_iridonian_skeleton.jpg` — an in-show X-ray of Eeth Koth's skull. **The reference
+- `wookieepedia_iridonian_skeleton.jpg` — **animated (*Clone Wars* CGI), structure-only.** An in-show X-ray of Eeth Koth's skull. **The reference
   that settles that the horns are BONE**, rooted in the cranium. Low-fidelity, near-monochrome,
   and useful for structure only — not for colour, and it does not resolve the second heart.
 - `wookieepedia_dathomirian_maul.jpg` — 🔴 **kept and labelled as a CONTRAST reference, not a

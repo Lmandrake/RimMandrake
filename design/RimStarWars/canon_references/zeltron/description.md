@@ -62,6 +62,9 @@ reading of emotion** (Legends only); **skin deepens in colour with anger** (cano
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** No live-action or photoreal Zeltron exists (searched `Images of Zeltrons`: comics, Marvel UK covers, *History of the Mandalorians* comic art, one *Legacy Era Campaign Guide* painting). Deleted: the inked Legends comic plate `wookieepedia_legends_dani.jpg`. 🔑 **The painted portrait `wookieepedia_legends_female.jpg` is now the look to render** — coral-red skin with real light modelling on a human face. The canon infobox comic `wookieepedia_dani_comic_infobox.jpg` is **kept only as an animated/comic reference for the canon's pink-magenta hair**, which no realistic image shows; do not copy its flat comic fill. Render a Zeltron as a real human with naturally pigmented pink-to-crimson skin under natural light.
+
+
 🔑 **Zeltrons are a colour problem, not a shape problem.** Every reference shows a
 fully human silhouette, human face, human proportions. Unlike the Kaminoan in this same
 batch, nothing structural needs changing — **the entire read is skin hue, hair hue, and
@@ -70,18 +73,14 @@ the relationship between the two.**
 **The canonical range is wider than either single image, and the two images bracket it:**
 
 - `wookieepedia_dani_comic_infobox.jpg` — the canon infobox image, full figure, comic
-  linework. Skin is a **bright rose-magenta**, fairly saturated and even, with cooler
+  linework (comic — hair-colour evidence only). Skin is a **bright rose-magenta**, fairly saturated and even, with cooler
   magenta shadow. Hair is a **matching magenta-pink**, worn long.
-- `wookieepedia_legends_dani.jpg` — the Legends infobox image, full figure, painted comic
-  style. Skin is a **deeper, warmer coral/salmon-red** with distinctly red shadow
-  modelling, several steps darker and less pink than the canon image. Hair is **dark
-  brown, near-black**.
 - `wookieepedia_legends_female.jpg` — a Legends portrait. Skin is **mid coral-red**, and
   it usefully shows the hue **holding up on a rendered face with real modelling** rather
   than flat comic fill; hair is **very dark blue-black**.
 
 So the Legends infobox's **"light pink to deep crimson"** is the honest description, and
-the three images sit at rose-magenta, mid-coral and deep coral respectively. ⚠️ **A
+the two remaining images sit at rose-magenta (comic) and mid coral-red (painting); the deleted Legends comic plate showed deep coral. ⚠️ **A
 single fixed pink is wrong; the species needs a range**, and the canon note that **anger
 deepens the red** means the palette has a *direction* built into it.
 
@@ -89,11 +88,11 @@ deepens the red** means the palette has a *direction* built into it.
 purple, brown** — and the image directly beside that list shows **magenta-pink hair**.
 Trusting the image, as this library does on appearance: **pink/magenta hair is
 canonical**, and Legends independently lists pink, red, blue, silver and white as well.
-The dark-haired Legends figures show the other pole. **Hair hue is not tied to skin hue**
-— the canon figure matches hair to skin, both Legends figures contrast dark hair against
+The dark-haired Legends portrait shows the other pole. **Hair hue is not tied to skin hue**
+— the canon figure matches hair to skin, the Legends portrait contrasts dark hair against
 red skin, and both readings are supported.
 
-**Face and features**, consistent across all three: entirely human — human eyes with
+**Face and features**, consistent across both images: entirely human — human eyes with
 ordinary sclera and iris, human nose, human mouth, human ears, no markings, no crests, no
 non-human anatomy of any kind. The Legends portrait shows **dark lips and dark brows**
 against the red skin, which is the only "extra" contrast feature any image offers.
@@ -144,6 +143,7 @@ lands on a **gene choice**.
 - [ ] Hair may either match the skin hue (pink/magenta) or contrast as dark black/near-black — both are valid, hair hue is not tied to skin hue
 - [ ] Human, slim, athletic build at ordinary human height (no structural or body-size change)
 - [ ] Dark lips and dark brows may read as a contrast feature against the red skin
+- [ ] Realistic rendering: natural human skin texture with real pink-to-crimson pigment and lighting, no outlines, no comic flat fill
 
 ## Engine limits
 - Canon's dynamic feature — skin deepens to a darker red when the character is angry — is recorded in the entry as possibly not expressible: RimWorld's skin-colour gene assigns a fixed tone per pawn, with no mechanism to recolor skin at runtime based on mood or emotional state.
@@ -162,8 +162,6 @@ lands on a **gene choice**.
 - https://static.wikia.nocookie.net/starwars/images/2/27/DaniGammill-DuelOfTheReprobates.png
   (File:DaniGammill-DuelOfTheReprobates.png, the canon infobox image →
   `wookieepedia_dani_comic_infobox.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/e/eb/Zeltron.jpg
-  (File:Zeltron.jpg, the Legends infobox image → `wookieepedia_legends_dani.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/4/44/Zeltron_Female.jpg
   (File:Zeltron Female.jpg, captioned "A female Zeltron" in the Legends Biology section →
   `wookieepedia_legends_female.jpg`)
@@ -175,17 +173,12 @@ lands on a **gene choice**.
 
 ## Candidate images
 
-- `wookieepedia_dani_comic_infobox.jpg` — **the canon reference of record**, and the only
+- `wookieepedia_dani_comic_infobox.jpg` — **comic, hair-colour evidence only**; the only
   canon image the article offers. Full figure, comic linework: bright rose-magenta skin,
   matching magenta-pink hair, entirely human proportions and features. **Its main value
   is that it contradicts its own infobox's hair list** (which omits pink), which is the
   finding this library exists to catch.
-- `wookieepedia_legends_dani.jpg` — the Legends infobox plate, same character in the
-  original continuity. **The deep end of the skin range**: warm coral-red with red shadow
-  modelling, against dark brown hair. Legends design, so a variant — but the range it
-  establishes is confirmed by the prose in both articles.
-- `wookieepedia_legends_female.jpg` — Legends portrait, painted rather than inked. Kept
-  because it is the only reference showing **red Zeltron skin with real light modelling
+- `wookieepedia_legends_female.jpg` — **the reference of record for the look.** Legends portrait (*Legacy Era Campaign Guide*), realistic painting, file `Zeltron Female.jpg` — https://static.wikia.nocookie.net/starwars/images/4/44/Zeltron_Female.jpg — the only reference showing **red Zeltron skin with real light modelling
   on a face**, which is what a sprite has to survive; also shows dark lips and brows as
   the natural contrast features. Small and low-resolution — supporting evidence only.
 - `donor_current_sprite.png` — the repo's `Xenotype_Zeltron` UI icon, kept only to record
