@@ -328,6 +328,7 @@
 				</bodyGraphicData>
 				<swimmingGraphicData>
 					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
 					<drawSize>1.8</drawSize>
 				</swimmingGraphicData>
 			</li>
@@ -339,6 +340,7 @@
 				</bodyGraphicData>
 				<swimmingGraphicData>
 					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
 					<drawSize>2</drawSize>
 				</swimmingGraphicData>
 			</li>
@@ -349,6 +351,7 @@
 				</bodyGraphicData>
 				<swimmingGraphicData>
 					<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
 					<drawSize>3.5</drawSize>
 				</swimmingGraphicData>
 			</li>
