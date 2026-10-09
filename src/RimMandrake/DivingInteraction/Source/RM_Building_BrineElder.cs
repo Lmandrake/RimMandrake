@@ -63,8 +63,6 @@ namespace RimMandrake.DivingInteraction
         private const float DischargeRadius = 9.5f; // just past the pool margin (GenStep's PoolMarginRadius 8.6f)
         private const float SparkChanceAtFullCharge = 0.35f; // per rare tick, once charge has crossed the tell threshold
         private const float TellThreshold = 0.5f;
-        private const float JacketDisturbanceRadius = 12f;
-
         private float charge;
         private int ticksSinceLastDischarge = MinGapTicks; // ready to fire the first time it is disturbed
 

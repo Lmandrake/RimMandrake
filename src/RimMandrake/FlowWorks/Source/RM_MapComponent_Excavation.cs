@@ -1305,6 +1305,10 @@ namespace RimMandrake.FlowWorks
 
 		private void ApplyFillTerrain(IntVec3 c, FluidDef fluid)
 		{
+			if (fluid == null)
+			{
+				return;
+			}
 			int i = map.cellIndices.CellToIndex(c);
 			byte d = depthGrid[i];
 			byte f = fillGrid[i];
