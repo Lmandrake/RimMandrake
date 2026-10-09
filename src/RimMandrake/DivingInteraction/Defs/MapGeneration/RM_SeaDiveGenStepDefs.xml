@@ -34,6 +34,14 @@
     <genStep Class="RimMandrake.DivingInteraction.GenStep_SeaFloorFauna" />
   </GenStepDef>
 
+  <!-- GREYSEA_FLOOR_FLORA_ZERO_1: re-assert the floor biome's copied densities after Map Designer's in-generation
+       reset, before Plants (900). Listed on the RM_SeabedLayer floor generators. -->
+  <GenStepDef>
+    <defName>RM_SeabedLifeReassert</defName>
+    <order>890</order>
+    <genStep Class="RimMandrake.DivingInteraction.GenStep_SeabedLifeReassert" />
+  </GenStepDef>
+
   <!-- SEABED_FAUNA_SINGLE_SEEDER_1: vanilla Animals (same order, 1200) gated by seabedSingleSeederEnabled.
        Used on the RM_SeabedLayer floor generators in place of Animals. -->
   <GenStepDef>

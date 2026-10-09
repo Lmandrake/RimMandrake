@@ -35,6 +35,7 @@
     </modExtensions>
     <genSteps>
       <li>ElevationFertility</li>
+      <li>RM_SeabedLifeReassert</li>
       <li>RM_SeaFloorTerrain</li>
       <li>RM_ScaldVentField</li>
       <li>RM_ScaldReturnGallery</li>
@@ -54,6 +55,7 @@
     <isUnderground>false</isUnderground>
     <genSteps>
       <li>ElevationFertility</li>
+      <li>RM_SeabedLifeReassert</li>
       <li>RM_SeaFloorTerrain</li>
       <li>RM_GreySeaScatterPillars</li>
       <li>RM_GreySeaScatterDomes</li>
@@ -81,6 +83,7 @@
     <isUnderground>false</isUnderground>
     <genSteps>
       <li>ElevationFertility</li>
+      <li>RM_SeabedLifeReassert</li>
       <li>RM_SeaFloorTerrain</li>
       <li>RM_WreckField_TwilightFloor</li>
       <li>RM_SeaFloorFauna</li>
@@ -108,6 +111,7 @@
     </modExtensions>
     <genSteps>
       <li>ElevationFertility</li>
+      <li>RM_SeabedLifeReassert</li>
       <li>RM_SeaFloorTerrain</li>
       <li>RM_SeaFloorFauna</li>
       <li>RM_ChillReturnComb</li>
