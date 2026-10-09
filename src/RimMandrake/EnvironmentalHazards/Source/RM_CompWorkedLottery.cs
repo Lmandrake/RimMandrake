@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.EnvironmentalHazards
@@ -260,12 +261,17 @@ namespace RimMandrake.EnvironmentalHazards
             // variant Building_TrapExplosive itself cribs (surfacing intact
             // for the disarm interaction above) is content/placement work
             // for the full build, not this spike's engine-fact question.
+            DamageDef trapDamage = Props.trapDamageDef ?? DamageDefOf.Bomb;
+            // hazardDamageMultiplier scales every damage amount (RM_EnvironmentalHazardsMod item 9).
+            int trapAmount = Mathf.RoundToInt(trapDamage.defaultDamage
+                * Mathf.Max(0f, RM_EnvironmentalHazardsSettings.hazardDamageMultiplier));
             GenExplosion.DoExplosion(
                 parent.Position,
                 parent.Map,
                 Props.trapExplosionRadius,
-                Props.trapDamageDef ?? DamageDefOf.Bomb,
-                parent);
+                trapDamage,
+                parent,
+                damAmount: trapAmount);
         }
 
         public override string CompInspectStringExtra()
