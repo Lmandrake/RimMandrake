@@ -166,36 +166,6 @@
    "status": "queued"
   },
   {
-   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow_north.png",
-   "sha256": "ab6fe7dddc74a1009565ca33f527f6ffbb5b1bae58fd09ab3ad13b6a6c173489",
-   "added": "2026-10-07",
-   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
-   "job": [
-    "regen_fw_chellow_flying_1_v1_east",
-    "regen_fw_chellow_flying_1_v1_north",
-    "regen_fw_chellow_flying_1_v1_south",
-    "regen_fw_chellow_flying_2_v1_east",
-    "regen_fw_chellow_flying_2_v1_north",
-    "regen_fw_chellow_flying_2_v1_south"
-   ],
-   "status": "queued"
-  },
-  {
-   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow_south.png",
-   "sha256": "ab6fe7dddc74a1009565ca33f527f6ffbb5b1bae58fd09ab3ad13b6a6c173489",
-   "added": "2026-10-07",
-   "texPath": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
-   "job": [
-    "regen_fw_chellow_flying_1_v1_east",
-    "regen_fw_chellow_flying_1_v1_north",
-    "regen_fw_chellow_flying_1_v1_south",
-    "regen_fw_chellow_flying_2_v1_east",
-    "regen_fw_chellow_flying_2_v1_north",
-    "regen_fw_chellow_flying_2_v1_south"
-   ],
-   "status": "queued"
-  },
-  {
    "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith_east.png",
    "sha256": "7b680fb69d0dfe616c14bdbd4d59ada529c87fc76930326a6776b4d0125aba74",
    "added": "2026-10-07",
@@ -537,18 +507,6 @@
    "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
   },
   {
-   "path": "src/RimMandrake/Webwork/Textures/Things/Plant/RM_Brennoth/RM_Brennoth_a.png",
-   "sha256": "e34a12a61138f08702a603b800ade9755b25848ad0cbdc0b91989b02ef65e7ab",
-   "added": "2026-10-07",
-   "texPath": "Things/Plant/RM_Brennoth/RM_Brennoth_a",
-   "job": [
-    "webwork_brennoth_real_v1a",
-    "webwork_brennoth_real_v1b",
-    "webwork_brennoth_real_v1c"
-   ],
-   "status": "queued"
-  },
-  {
    "path": "src/RimMandrake/Webwork/Textures/Things/Plant/RM_Dulloth/RM_Dulloth_a.png",
    "sha256": "8f512995cc23679dd2a83b73c538968e49afb8124c4106e7bb41c1242c9d63ce",
    "added": "2026-10-07",
@@ -569,30 +527,6 @@
     "webwork_kollavane_redo_v2c"
    ],
    "status": "rendered 2026-10-07, awaiting his review"
-  },
-  {
-   "path": "src/RimMandrake/Webwork/Textures/Things/Plant/RM_Ruddreth/RM_Ruddreth_a.png",
-   "sha256": "590add898a7791919c445fd564571aa137236a68563c64bcaf0ea7f340734702",
-   "added": "2026-10-07",
-   "texPath": "Things/Plant/RM_Ruddreth/RM_Ruddreth_a",
-   "job": [
-    "webwork_ruddreth_real_v1a",
-    "webwork_ruddreth_real_v1b",
-    "webwork_ruddreth_real_v1c"
-   ],
-   "status": "queued"
-  },
-  {
-   "path": "src/RimMandrake/Webwork/Textures/Things/Plant/RM_Sorrivel/RM_Sorrivel_a.png",
-   "sha256": "b8b5856ddaaabd7071c518459fd6071aef4c136fbd2fad2247b0276ce16d37d1",
-   "added": "2026-10-07",
-   "texPath": "Things/Plant/RM_Sorrivel/RM_Sorrivel_a",
-   "job": [
-    "webwork_sorrivel_real_v1a",
-    "webwork_sorrivel_real_v1b",
-    "webwork_sorrivel_real_v1c"
-   ],
-   "status": "queued"
   },
   {
    "path": "src/RimStarWars/Bacta/Textures/Things/Item/Bacta/RSW_BactaPatch.png",
