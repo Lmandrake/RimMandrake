@@ -92,6 +92,7 @@ The dune gale and dust devils
 - With `emergenceEnabled` off the gale uncovers nothing. → gale.gale_emergence_off_quiet
 - A dust devil moves and then disappears on its own within 3000 ticks, leaving no thing behind. → devil.devil_moves_and_expires
 - With `dustDevilsEnabled` off the dust-devil incident cannot fire. → devil.devil_toggle_off_refuses
+- The gale's carry-off is a taker of FlowWorks' shared hold-and-return service (kind `gale`): the service holds the pawn, writes the carry/return letters, leaves a ground trace where it was taken and brings it back from the downwind edge (TAKEN_BY_LAND_SERVICE_1; the river is the other taker). → gale.gale_carry_is_a_taker_of_the_shared_service (the take itself: UNCOVERED: a random event on a crest, see the next line)
 - Abrasion, carry-and-return, static, seeding and the emergence rows' individual toggles. → UNCOVERED: random events on a crest or an MTB; the four toggles `abrasionEnabled`, `carryEnabled`, `staticEnabled`, `seedingEnabled` are checked read/write only → settings.abrasionEnabled_roundtrip, settings.carryEnabled_roundtrip, settings.staticEnabled_roundtrip, settings.seedingEnabled_roundtrip
 
 Event creatures

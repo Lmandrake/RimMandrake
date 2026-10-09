@@ -1815,6 +1815,16 @@ def gale_chain(t):
             if off is not False:
                 _fail("galeEnabled is off and RM_DuneGale still reports canFireNow=%r" % off)
 
+    with _comp(t, "gale_carry_is_a_taker_of_the_shared_service", toggle="carryEnabled"):
+        # TAKEN_BY_LAND_SERVICE_1: the gale's carry-off rides FlowWorks' shared hold-and-return service (kind "gale").
+        if _live(t):
+            r = t.bridge_call("jawa/static_call", type=NS + "RM_GaleTakenProof", method="Registered", args="-")
+            res = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+            if not isinstance(r, dict) or r.get("success") is False or not res.startswith("GALETAKEN"):
+                _unmeasured(t, "static_call RM_GaleTakenProof.Registered did not answer: %s" % str(r)[:200])
+            if "registered=True" not in res:
+                _fail("the gale is not registered as a taker of the shared service: %s" % res)
+
     with _comp(t, "gale_phases_and_aftermath", toggle="emergenceEnabled"):
         if _live(t):
             clear = _exposure(_sun(t, "%d,%d" % (x, z)), x, z)

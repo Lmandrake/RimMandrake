@@ -34,6 +34,8 @@ namespace RimMandrake.FlowWorks.Rivers
 		public static bool washOffMapEdge = true;
 		public static float washedAwayMinDays = 1f;   // PROVISIONAL
 		public static float washedAwayMaxDays = 3f;   // PROVISIONAL
+		// TAKEN_BY_LAND_SERVICE_1: a ground trace at the spot a pawn was taken (every taker that uses the service).
+		public static bool takenByLandTraceEnabled = true;
 		// Owner card 1: colonists path around strong water to bridges/fords (drafted still go).
 		public static bool pathfinderAvoidsCurrents = true;
 		// Owner card 2: being swept bruises and can make a pawn drop what it carries.
@@ -92,6 +94,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			Scribe_Values.Look(ref washOffMapEdge, "washOffMapEdge", true);
 			Scribe_Values.Look(ref washedAwayMinDays, "washedAwayMinDays", 1f);
 			Scribe_Values.Look(ref washedAwayMaxDays, "washedAwayMaxDays", 3f);
+			Scribe_Values.Look(ref takenByLandTraceEnabled, "takenByLandTraceEnabled", true);
 			Scribe_Values.Look(ref pathfinderAvoidsCurrents, "pathfinderAvoidsCurrents", true);
 			Scribe_Values.Look(ref crossingHazardsEnabled, "crossingHazardsEnabled", true);
 			Scribe_Values.Look(ref bruiseChancePerStep, "bruiseChancePerStep", 0.15f);
@@ -169,6 +172,9 @@ namespace RimMandrake.FlowWorks.Rivers
 				RM_RiversSettings.washedAwayMaxDays = Mathf.Max(RM_RiversSettings.washedAwayMinDays,
 					l.Slider(RM_RiversSettings.washedAwayMaxDays, 0.25f, 15f));
 			}
+			l.CheckboxLabeled("A trace marks where someone was taken", ref RM_RiversSettings.takenByLandTraceEnabled,
+				"When the river (or the dune gale) takes a pawn away, a drag mark is left on the ground where they stood, so no one "
+			  + "vanishes without a readable sign. Needs Creature Behaviors for the mark. Off: no mark, the letter still comes.");
 			l.CheckboxLabeled("Colonists avoid strong water", ref RM_RiversSettings.pathfinderAvoidsCurrents,
 				"Undrafted colonists route around moving water to bridges and fords. Drafted orders still go "
 			  + "where they are told. Takes effect after a restart.");

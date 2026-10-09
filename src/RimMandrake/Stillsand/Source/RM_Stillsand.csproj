@@ -72,6 +72,7 @@
          the horizon warning (a Harmony prefix on Storyteller.TryFire) and their settings -->
     <Compile Include="RM_GiantSkeletons.cs" />
     <Compile Include="RM_HorizonWarning.cs" />
+    <Compile Include="RM_GaleTakenPolicy.cs" />
     <Compile Include="RM_SkeletonSettings.cs" />
     <!-- STILLSAND_GLASS_LENS_CHAIN_1: sun-fed work tables (Harmony, see below) -->
     <Compile Include="RM_SunPowered.cs" />
@@ -115,6 +116,9 @@
   <PropertyGroup Condition="'$(EnvironmentalHazardsDll)' == ''">
     <EnvironmentalHazardsDll>$(MSBuildThisFileDirectory)..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</EnvironmentalHazardsDll>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(FlowWorksDll)' == ''">
+    <FlowWorksDll>$(MSBuildThisFileDirectory)..\..\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll</FlowWorksDll>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(CreatureBehaviorsDll)' == ''">
     <CreatureBehaviorsDll>$(MSBuildThisFileDirectory)..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</CreatureBehaviorsDll>
   </PropertyGroup>
@@ -146,6 +150,10 @@
     </Reference>
     <Reference Include="RimMandrake.EnvironmentalHazards">
       <HintPath>$(EnvironmentalHazardsDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrakeFlowWorks">
+      <HintPath>$(FlowWorksDll)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="RimMandrake.CreatureBehaviors">

@@ -209,6 +209,8 @@
     <Compile Include="Rivers\RM_RiverWorks.cs" />
     <Compile Include="Rivers\RM_MapComponent_RiverCurrent.cs" />
     <Compile Include="Rivers\RM_WorldComponent_SweptAway.cs" />
+    <Compile Include="TakenByLand\RM_TakenByLandKernel.cs" />
+    <Compile Include="TakenByLand\RM_TakenByLand.cs" />
     <Compile Include="Rivers\RM_RiverWorksProof.cs" />
     <Compile Include="Rivers\RM_Weir.cs" />
     <Compile Include="Rivers\RM_SiltTrapAndDrift.cs" />

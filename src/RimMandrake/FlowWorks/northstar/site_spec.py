@@ -67,6 +67,7 @@ SETTINGS = {
         "liquidHeatPushEnabled": True, "liquidHeatStrength": 1.0,                                 # LIQUID_HEAT_PUSH_1 (PROVISIONAL)
         "pitDrowningEnabled": True, "pitDrowningRateMultiplier": 1.0, "poisonFillEnabled": True,   # PIT_FILL_EFFECTS_1
         "viscosityEnabled": True,          # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (PROVISIONAL stride)
+        "thickCreepEnabled": True,         # THICK_LIQUID_CREEP_1: a thick front moves one cell per moving pulse
         "bottleLoopEnabled": True, "bottleDirtyStageEnabled": True,
         "tankLoopEnabled": True, "tankCapacityMultiplier": 1.0,
         "liquidDrillingEnabled": True, "drillYieldChanceMultiplier": 1.0, "drillUnitsPerCycle": 1.0,
@@ -92,7 +93,7 @@ SETTINGS = {
         "riverWorksEnabled": True, "surfaceCurrentEnabled": True, "currentStrength": 1.0, "centreTicksPerCell": 45.0,
         "marginTicksPerCell": 90.0, "itemDriftFactor": 2.0, "scaleWithRiverSize": True, "floodSurgeEnabled": True,
         "countSeasonalFloods": True, "countTorrentialRainFloods": True, "carryAnimals": True, "carryStrangers": True,
-        "carryItems": True, "washOffMapEdge": True, "washedAwayMinDays": 1.0, "washedAwayMaxDays": 3.0,
+        "carryItems": True, "washOffMapEdge": True, "washedAwayMinDays": 1.0, "washedAwayMaxDays": 3.0, "takenByLandTraceEnabled": True,
         "pathfinderAvoidsCurrents": True, "crossingHazardsEnabled": True, "bruiseChancePerStep": 0.15,
         "dropChancePerStep": 0.25, "fordsEnabled": True, "bankWorksEnabled": True, "wearRateMultiplier": 1.0,
         "breachEnabled": True, "breachHpFraction": 0.5, "stakeSnapTicksPerCell": 150.0, "stakeLineLevee": True,
