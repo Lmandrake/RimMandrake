@@ -30,22 +30,23 @@ Reeks were usually found in herds and resided in the mossy grasslands and were v
 While reeks were not terribly fast, they were intelligent. If given patient, gentle training, they could make excellent pack animals.
 
 ## Visual brief
-Entry covers the reek (the slug names the Iridonian subspecies, but no image is Iridonia-specific; the Legends page says mottling identifies subspecies in general, but its Iridonian section specifies gray skin, sharper and longer tattooed horns and tougher hide). Four images: one canon render, three Legends.
-- **Silhouette (all four agree):** a massive, low-slung, rhino/triceratops-like quadruped. Sprawling, wide-set, splayed stance with thick, columnar front legs and a hunched, domed back; head carried low and forward. Short, thick neck. Big three-toed feet with heavy blunt claws/hooves.
-- **Horns (the defining feature):** one tall single central horn rising from the nose/brow (curved slightly back, long as the head or longer), plus **two big cheek horns that curve out and forward from the sides of the lower face/jaw like tusks**. Horns are pale cream/bone with a darker base; in the SWTOR-style render (`legends_3`) the nose horn is black.
-- **Colour:** disagreement between sources, which matches the text (skin colour depends on diet and subspecies). `canon_1` and `legends_2` show the **meat-fed red form**: a bright blood-red knobbly head and neck/shoulders against a dark olive-brown body and legs. `legends_1` is an all-brown/rust-red form with pale legs. `legends_3` is a grey-lilac hide with black wart-studs and green glowing patches (Rakghoul-plague-infected, per its caption: do not use as a base colour). Base form per text and Legends: brown. Sprites need a brown base and a red aggressive variant.
-- **Skin:** thick, leathery and knobbly: rows of small raised nodules or bumps across the back and shoulders (olive-yellow bumps in `canon_1`, rusty armour-like scales in `legends_1`), wrinkled folds on the legs.
-- **Face:** deep-set small eyes under a heavy brow, wrinkled snout, wide mouth with a hanging lower lip and blunt teeth; in `canon_1` there is a metal nose ring (Petranaki Arena-bred; not a base trait).
-- **Size:** `legends_2` shows a Lannik rider on its back (shoulder reaches well above a human); herd animals appear behind. Big as a rhino or bigger.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The stylised SWTOR game render (the grey, green-glowing Rakghoul-plague reek) was deleted. What remains is realistic: `canon_1` (the Attack of the Clones CGI creature, Visual Dictionary cut-out), `canon_2` (Attack of the Clones film still, Geonosis arena) and two realistic painted Legends illustrations (`legends_1`, `legends_2`). The entry covers the reek; the slug names the Iridonian subspecies, but no image is Iridonia-specific (the Legends text gives Iridonian reeks gray skin, sharper, longer tattooed horns and tougher hide).
+- **Silhouette (all agree):** a massive, low-slung, rhino/triceratops-like quadruped. Sprawling, wide-set stance with thick, columnar, heavily wrinkled legs and a hunched, domed back; head carried low and forward on a short thick neck. Big blunt-clawed feet.
+- **Horns (the defining feature):** one tall single central horn rising from the nose/brow (curved slightly back, as long as the head or longer), plus **two big cheek horns that curve out and forward from the sides of the lower face like tusks**. Horns are pale cream/bone, darker at the base.
+- **Colour:** the film creature (`canon_1`, `canon_2`) is the **meat-fed red form**: a blood-red to pinkish-red knobbly head, neck and shoulder frill against a dull olive-grey-brown body and legs. `legends_1` is an all-brown/rust-red form with paler legs. Base form per the text: brown (skin colour depends on diet and subspecies). Sprites need a brown base and a red aggressive variant.
+- **Skin:** thick, leathery and knobbly: rows of raised rounded nodules across the back and shoulders (olive-yellow in the film creature), deep wrinkled folds on the legs, elephant-like texture.
+- **Face:** small deep-set eyes under a heavy brow, wrinkled snout, wide mouth with a hanging lower lip; in `canon_1`/`canon_2` there is a metal nose ring (arena-bred; not a base trait).
+- **Size:** `legends_2` shows a Lannik rider on its back; the film creature dwarfs the arena droids. Big as a rhino or bigger.
 - No tail is visible in any image.
 
 ## Must show
 - [ ] Massive low, hunched quadruped with a sprawling wide-set stance and thick columnar legs
 - [ ] One tall central nose/brow horn plus two thick cheek horns curving out and forward from the lower face
-- [ ] Thick knobbly, leathery hide with rows of raised bumps over the back and shoulders
-- [ ] Brown base colour, with a red-headed meat-fed variant (red knobbly head, neck and shoulders, dark body)
+- [ ] Thick knobbly, leathery hide with rows of raised bumps over the back and shoulders and wrinkled legs
+- [ ] Brown base colour, with a red-headed meat-fed variant (red knobbly head, neck and shoulders, olive-grey body)
 - [ ] Heavy brow with small deep-set eyes, wrinkled snout and a hanging lower lip
-- [ ] Big three-toed feet with blunt claws
+- [ ] Realistic rendering: natural leathery hide texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -55,10 +56,10 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Reek/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Reek`; wiki caption: infobox image. File: `Reek SWCT.png` — https://static.wikia.nocookie.net/starwars/images/2/2a/Reek_SWCT.png/revision/latest?cb=20230405000022
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Reek/Legends`; wiki caption: infobox image. File: `Reek NEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/c/c5/Reek_NEGAS.jpg/revision/latest?cb=20090709063850
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Reek/Legends`; wiki caption: A Lannik rides with a herd of reeks.. File: `ReekSurfer-SS.png` — https://static.wikia.nocookie.net/starwars/images/0/01/ReekSurfer-SS.png/revision/latest?cb=20240118060312
-- `wookieepedia_legends_3.webp` — LEGENDS page (non-canon continuity) `Reek/Legends`; wiki caption: A reek infected with the Rakghoul plague. File: `Rakghoul Plague Infected Reek.png` — https://static.wikia.nocookie.net/starwars/images/8/85/Rakghoul_Plague_Infected_Reek.png/revision/latest?cb=20120424070509
+- `wookieepedia_canon_1.webp` — CANON, Attack of the Clones CGI creature (realistic), Visual Dictionary / Card Trader cut-out; file `Reek SWCT.png` — https://static.wikia.nocookie.net/starwars/images/2/2a/Reek_SWCT.png/revision/latest?cb=20230405000022
+- `wookieepedia_canon_2.webp` — CANON, Attack of the Clones film still (live-action/realistic CGI), reek charging in the Geonosis arena; file `Reek.jpg` — https://static.wikia.nocookie.net/starwars/images/8/8e/Reek.jpg/revision/latest?cb=20091202161701
+- `wookieepedia_legends_1.webp` — LEGENDS, realistic painted illustration, The New Essential Guide to Alien Species; file `Reek NEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/c/c5/Reek_NEGAS.jpg/revision/latest?cb=20090709063850
+- `wookieepedia_legends_2.webp` — LEGENDS, realistic painted illustration, a Lannik rides with a herd of reeks (Savage Spirits); file `ReekSurfer-SS.png` — https://static.wikia.nocookie.net/starwars/images/0/01/ReekSurfer-SS.png/revision/latest?cb=20240118060312
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
