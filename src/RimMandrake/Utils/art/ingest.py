@@ -56,9 +56,30 @@ def ts(x):
     return d if d.tzinfo else d.replace(tzinfo=_dt.timezone.utc)
 
 
-def stale_letter_rows(doc: dict, ruled: dict | None, now: dict) -> dict:
+def _same_pictures_at_click(row: str, v: dict, letter: str, click, now_cols: dict, versions) -> bool:
+    """True when, in the snapshot current at click time, this letter (on this row, or on the row it was carried from)
+    named exactly the same picture shas per facing as the current snapshot does. Anything unknown is False."""
+    if click is None or not versions:
+        return False
+    cur = None
+    for b, d in versions:                       # oldest first; the newest one built at or before the click
+        if b and b <= click:
+            cur = d
+    if cur is None or letter not in now_cols or not now_cols[letter]:
+        return False
+    for name in (row, v.get("carriedFrom")):
+        col = (((cur.get("rows") or {}).get(name) or {}).get("columns") or {}).get(letter) if name else None
+        if col:
+            return col == now_cols[letter]
+    return False
+
+
+def stale_letter_rows(doc: dict, ruled: dict | None, now: dict, versions=None) -> dict:
     """{row: [letters]} whose used letter the RULED snapshot never had (so letter_mismatches could not verify it) while
-    the row was last clicked BEFORE the current snapshot was built: a rebuild in between may have re-pointed it."""
+    the row was last clicked BEFORE the current snapshot was built: a rebuild in between may have re-pointed it.
+    A letter is exempt when the snapshot current at click time (`versions`: [(built, snapshot)] oldest first, or a
+    callable returning that) resolves it to exactly the same picture shas per facing as the current snapshot
+    (a renamed row's decision is looked up under its `carriedFrom` name). Anything else stays stale."""
     if not ruled:
         return {}
     built = ts(now.get("built"))
@@ -73,7 +94,12 @@ def stale_letter_rows(doc: dict, ruled: dict | None, now: dict) -> dict:
             continue
         clicks = [c for c in (ts(v.get(k)) for k in ("decidedAt", "at", "variantsAt")) if c]
         if built is None or not clicks or max(clicks) < built:
-            out[row] = absent
+            if callable(versions):
+                versions = versions()
+            click = max(clicks) if clicks else None
+            absent = [l for l in absent if not _same_pictures_at_click(row, v, l, click, nc, versions)]
+            if absent:
+                out[row] = absent
     return out
 
 
@@ -218,7 +244,7 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
             return {"ok": False, "error": "decisions were made against a different snapshot of this sheet and these "
                                           "letters now name different pictures: "
                                           + ", ".join(f"{r}:{l}" for r, l in bad[:20])}
-        stale = stale_letter_rows(doc, ruled, snap)
+        stale = stale_letter_rows(doc, ruled, snap, versions=lambda: L.snapshot_versions(snap_path))
     idx = L.Index()
     w = L.Writer({e["id"] for e in idx.events})
     cks = known_content(idx.events)

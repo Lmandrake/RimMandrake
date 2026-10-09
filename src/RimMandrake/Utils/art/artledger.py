@@ -798,6 +798,39 @@ def decision_letters(v: dict) -> set[str]:
     return {x for x in out if isinstance(x, str) and len(x) == 1 and x in SHEET_LETTERS}
 
 
+def snapshot_versions(snap_path: Path) -> list[tuple]:
+    """[(built datetime, snapshot dict)] for the file on disk and every git revision of it, oldest first."""
+    import subprocess
+    import datetime as _dt
+    snap_path = Path(snap_path)
+
+    def _ts(x):
+        try:
+            d = _dt.datetime.fromisoformat(str(x).replace("Z", "+00:00"))
+        except ValueError:
+            return None
+        return d if d.tzinfo else d.replace(tzinfo=_dt.timezone.utc)
+    docs = []
+    if snap_path.is_file():
+        docs.append(json.loads(snap_path.read_text()))
+    try:
+        rel = snap_path.resolve().relative_to(REPO_ROOT).as_posix()
+        revs = subprocess.run(["git", "-C", str(REPO_ROOT), "log", "--format=%H", "--", rel],
+                              capture_output=True, text=True, check=True).stdout.split()
+    except (ValueError, subprocess.CalledProcessError, OSError):
+        revs = []
+    for h in revs:
+        r = subprocess.run(["git", "-C", str(REPO_ROOT), "show", f"{h}:{rel}"], capture_output=True, text=True)
+        if r.returncode:
+            continue
+        try:
+            docs.append(json.loads(r.stdout))
+        except ValueError:
+            continue
+    out = [(_ts(d.get("built")), d) for d in docs]
+    return sorted((x for x in out if x[0]), key=lambda x: x[0])
+
+
 def letter_mismatches(decisions: dict, ruled: dict, now: dict) -> list[tuple[str, str]]:
     """(row, letter) pairs whose set differs between the RULED snapshot and NOW, over used letters only.
     A letter the ruled snapshot never had is not checked (nothing was ruled through it)."""
