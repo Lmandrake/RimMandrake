@@ -193,8 +193,20 @@ namespace RimMandrake.FlowWorks
 						{
 							continue;   // never draw the cover over a pawn standing at ground level or on the lip
 						}
-						Matrix4x4 m = Matrix4x4.TRS(new Vector3(left, y, a), Quaternion.identity, new Vector3(right - left, 1f, b - a));
-						Graphics.DrawMesh(mesh, m, mat, 0);
+						// FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1: a window through the cover at the occupant, at every depth
+						float l1 = left, r1 = right, l2 = 0f, r2 = 0f;
+						int pieces = 1;
+						if (RimMandrakeFlowWorksSettings.pitLipOccupantCutEnabled)
+						{
+							float cw = 0.5f * Mathf.Max(0.1f, RimMandrakeFlowWorksSettings.pitLipOccupantCutWidth);
+							pieces = RM_WallFaceMath.CutCoverSpan(left, right, dp.x - cw, dp.x + cw, out l1, out r1, out l2, out r2);
+						}
+						for (int pc = 0; pc < pieces; pc++)
+						{
+							float pl = pc == 0 ? l1 : l2, pr = pc == 0 ? r1 : r2;
+							Matrix4x4 m = Matrix4x4.TRS(new Vector3(pl, y, a), Quaternion.identity, new Vector3(pr - pl, 1f, b - a));
+							Graphics.DrawMesh(mesh, m, mat, 0);
+						}
 					}
 				}
 			}

@@ -26,7 +26,7 @@ Drawing only — no flow, fire or pit mechanic changes. Every feature has a Mod 
 ## assumptions (PROVISIONAL, chosen so as not to stall — owner judges on the sheet/map)
 
 - A1 D3 face = vanilla wall face height (MEASURED ~0.25 cell from Wall_Atlas_Smooth/Rock_Atlas), D4 taller.
-- A2 Pawn sink unchanged (0.3/level); the near lip hides 85% (a ghost stays so a D4 pawn can be found).
+- A2 Pawn sink unchanged (0.3/level); the near lip hides 85% of a sunk pawn's sides, but a 1-cell window (PROVISIONAL, Mod Setting) is cut through the cover at the occupant at every depth so it stays visible (owner ruling 2026-10-09, `FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1`).
 - A3 Face material = ground beside the face, not the rock under the soil.
 - A4 No flow direction in the ripples (the canal engine keeps no per-cell flow vector).
 - A5 Scorch persists until refilled/filled in, else fades over 20 days (x3 in rain, unroofed); 0 = never.

@@ -1464,6 +1464,19 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_WallFaceMath.OccludedBand(11f, 10.2f, 10.9f, out _, out float b2) && b2 < 11f, "a pawn wholly below is covered to its top");
             });
 
+            Case("LipOcclusion_occupant_cut", () =>
+            {
+                // FLOWWORKS_PIT_OCCUPANT_LIP_CUT_1: window of 1 cell around the occupant at x=5.5, cover piece 4.9..6.1
+                int n = RM_WallFaceMath.CutCoverSpan(4.9f, 6.1f, 5f, 6f, out float l1, out float r1, out float l2, out float r2);
+                Assert(n == 2, "a window inside the piece leaves two flanks");
+                AssertClose(r1, 5f, "left flank stops at the window"); AssertClose(l2, 6f, "right flank starts after it");
+                Assert(RM_WallFaceMath.CutCoverSpan(5.2f, 5.8f, 5f, 6f, out _, out _, out _, out _) == 0, "a piece wholly inside the window vanishes (occupant uncovered)");
+                Assert(RM_WallFaceMath.CutCoverSpan(7f, 8f, 5f, 6f, out float a, out float b, out _, out _) == 1 && a == 7f && b == 8f, "a piece clear of the window stays whole");
+                Assert(RM_WallFaceMath.CutCoverSpan(5.5f, 7f, 5f, 6f, out float c, out float d, out _, out _) == 1 && c == 6f && d == 7f, "a piece half in the window keeps its far side");
+                // can-fail: the uncut cover would be the whole piece (what an occupant at D4 saw before the ruling)
+                Assert(!(n == 1 && l1 == 4.9f && r1 == 6.1f), "can-fail: the cut changes the cover");
+            });
+
             Case("StockReload_index_rebuild_rule", () =>
             {
                 Assert(RM_StockMath.NeedsIndexRebuild(true, 0, 0), "dirty after load always rebuilds");
