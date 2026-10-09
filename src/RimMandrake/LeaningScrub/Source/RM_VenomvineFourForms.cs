@@ -73,11 +73,11 @@ namespace RimMandrake.LeaningScrub
             base.CompTickLong();
             if (parent.Map == null || !RM_WindCalendar.On(RM_LeaningScrubSettings.stranglerEnabled)) return;
             if (!RM_FourFormsKernel.Wraps(true, Growth, Props.minGrowth)) return;
-            if (!IsWrappable(target) || !target.Position.AdjacentTo8WayOrInside(parent.Position))
+            if (!IsWrappable(target) || !parent.Position.AdjacentTo8WayOrInside(target))
             {
-                target = FindTarget();
-                wrap = 0f;
-                trimCalled = false;
+                Thing found = FindTarget();
+                if (found != target) { wrap = 0f; trimCalled = false; }
+                target = found;
                 if (target == null) return;
             }
             wrap = RM_FourFormsKernel.WrapProgress(wrap, Props.wrapStep);
@@ -209,7 +209,12 @@ namespace RimMandrake.LeaningScrub
             GenSpawn.Spawn(awake, pos, map);
             awake.Growth = Mathf.Max(growth, 0.5f);
             DamageDef venom = DefDatabase<DamageDef>.GetNamedSilentFail("RM_VenomvineScratch");
-            foreach (Pawn p in GenRadial.RadialDistinctThingsAround(pos, map, Props.wakeRadius, true))
+            List<Pawn> hit = new List<Pawn>();
+            foreach (Thing t in GenRadial.RadialDistinctThingsAround(pos, map, Props.wakeRadius, true))
+            {
+                if (t is Pawn hp) hit.Add(hp);
+            }
+            foreach (Pawn p in hit)
             {
                 if (venom != null && !p.Dead && !p.Flying) p.TakeDamage(new DamageInfo(venom, Props.wakeDamage, 0.05f, -1f, awake));
             }
@@ -251,8 +256,10 @@ namespace RimMandrake.LeaningScrub
             {
                 RM_CompSleeper s = tmp[i];
                 if (s.parent == null || !s.parent.Spawned) continue;
-                foreach (Pawn p in GenRadial.RadialDistinctThingsAround(s.parent.Position, map, s.Props.wakeRadius, true))
+                foreach (Thing t in GenRadial.RadialDistinctThingsAround(s.parent.Position, map, s.Props.wakeRadius, true))
                 {
+                    Pawn p = t as Pawn;
+                    if (p == null) continue;
                     if (RM_FourFormsKernel.Wakes(on, true, p.BodySize, s.Props.minBodySize, p.Flying, p.Dead))
                     {
                         s.Wake(p);
