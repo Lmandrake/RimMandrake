@@ -1,0 +1,54 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css">
+<style>
+body{width:1500px;height:1000px;overflow:hidden;background:radial-gradient(900px 600px at 70% 20%,#3a2819,#160e09);display:flex;gap:56px;padding:44px 50px}
+.left{width:520px;color:var(--muted);font-size:15.5px;line-height:1.55}
+.left h1{font-family:'Fraunces',serif;color:var(--cream);font-size:42px;line-height:1.1;margin-bottom:14px}
+.left p{margin-bottom:12px}.left b{color:var(--mustard)}
+.page{width:600px;background:#f1e2c4;color:#2b1d12;border-radius:6px;box-shadow:0 30px 80px #000b;overflow:hidden;position:relative}
+.page .stripes{height:10px}
+.mast{padding:20px 30px 12px;border-bottom:3px double #2b1d12;display:flex;align-items:baseline}
+.mast h2{font-family:'Fraunces',serif;font-size:38px;font-weight:700;letter-spacing:-.5px}
+.mast .d{margin-left:auto;font-family:'IBM Plex Mono';font-size:12px;text-align:right;color:#6b513a}
+.lede{padding:14px 30px 10px;font-family:'Fraunces',serif;font-size:19px;line-height:1.35}
+.lede b{color:#a8321d}
+.blk{margin:8px 22px;border-radius:10px;padding:10px 14px}
+.blk h3{font-family:'IBM Plex Mono';font-size:11px;letter-spacing:2.5px;margin-bottom:6px}
+.red{background:#a8321d;color:#fbeedd}.red h3{color:#ffd1b8}
+.amb{background:#e9b443;color:#2b1d12}.amb h3{color:#5a3a06}
+.plain h3{color:#8b5a2b}
+.it{display:flex;gap:10px;align-items:baseline;padding:4px 0;font-size:14px;line-height:1.35}
+.it .t{font-family:'IBM Plex Mono';font-size:11.5px;width:42px;flex:none;opacity:.75}
+.it .x{flex:1}
+.it a{color:#8b3a17;border-bottom:1px solid #8b3a1755;font-size:12.5px;font-family:'IBM Plex Mono'}
+.red a{color:#ffe0c2;border-color:#ffe0c255}.amb a{color:#5a2a06}
+.ck{font-family:'IBM Plex Mono';font-size:12px;color:#5f7a2a;width:14px;flex:none}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+.foot{position:absolute;bottom:0;left:0;right:0;padding:10px 30px;border-top:1px solid #2b1d1233;font-family:'IBM Plex Mono';font-size:11px;color:#6b513a;display:flex}
+.btn{margin-left:auto;background:#2b1d12;color:#f1e2c4;border-radius:6px;padding:3px 10px}
+</style></head><body>
+<div class="left"><h1>B · The Return Ledger</h1>
+<p>Not a live window: a <b>page that is written for you when you come back</b>. Type <b>"I'm back"</b> (or open the link on your phone) and it is regenerated from the ledger, the session files, memwatch and artpipe for the hours you were gone.</p>
+<p>It reads like a morning paper. First a <b>two-sentence lede</b>, then <b>what broke</b>, then <b>what is waiting for you</b> with the oldest first, then <b>what finished</b>, each with a link to its report, sheet or save.</p>
+<p>It is published as a private claude.ai Artifact at <b>one fixed URL</b>, so the same page works on the phone and on the desktop. Each item has a checkbox; ticking it records that you have seen it, and the next edition leaves seen items out.</p>
+<p>There is nothing that has to keep running. If nobody asks for the page it is simply not written, so there is no stale view to go out of date.</p></div>
+<div class="page"><div class="stripes"></div>
+<div class="mast"><h2>While You Were Away</h2><span class="d">Thu 8 Oct · 16:30 → 19:42<br>edition 41 · 3h 12m</span></div>
+<div class="lede">FOUNDRY shipped <b>four items</b> and the game stayed up throughout. One selftest was <b>killed for memory</b>. BENCH has been <b>waiting 14 minutes</b> on a question only you can answer.</div>
+<div class="blk red"><h3>● BROKE</h3>
+ <div class="it"><span class="t">19:13</span><span class="x">OOM kill in the selftest harness (6.0 GB cap). Second time today, same test.</span><a>events</a></div></div>
+<div class="blk amb"><h3>◐ WAITING ON YOU</h3>
+ <div class="it"><span class="t">14m</span><span class="x">BENCH: question card on Greentide herd sizes</span><a>open window</a></div>
+ <div class="it"><span class="t">2d</span><span class="x">10 new Miasma rows await your art ruling</span><a>sheet</a></div>
+ <div class="it"><span class="t">3d</span><span class="x">WreckedMachines north star needs re-validating</span><a>item</a></div></div>
+<div class="blk plain"><h3>✓ FINISHED</h3><div class="cols">
+ <div class="it"><span class="ck">✓</span><span class="x">Donor plant override verified live, 56 species <a>report</a></span></div>
+ <div class="it"><span class="ck">✓</span><span class="x">Quarantine reviewed and purged <a>commit</a></span></div>
+ <div class="it"><span class="ck">✓</span><span class="x">Wasteland fixtures: A3 and A4 pass <a>json</a></span></div>
+ <div class="it"><span class="ck">✓</span><span class="x">Scald folded into vanilla heat <a>checks</a></span></div>
+ <div class="it"><span class="ck">✓</span><span class="x">FlowWorks engine-off schedule <a>commit</a></span></div>
+ <div class="it"><span class="ck">✓</span><span class="x">JawaBench DLL redeployed <a>log</a></span></div></div></div>
+<div class="blk plain"><h3>▶ STILL RUNNING</h3>
+ <div class="it"><span class="t">3h</span><span class="x">Artpipe Greentide redraws: 32 of 187, about 3 hours left</span></div>
+ <div class="it"><span class="t">4m</span><span class="x">FOUNDRY building FlowWorks</span></div></div>
+<div class="foot">52 items queued for BENCH · 106 filed today · seen ✓ syncs to the ledger<span class="btn">mark all seen</span></div>
+</div></body></html>
