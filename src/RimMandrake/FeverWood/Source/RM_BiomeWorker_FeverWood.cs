@@ -36,10 +36,9 @@ namespace RimMandrake.FeverWood
 
 		public override float GetScore(BiomeDef biome, Tile tile, PlanetTile planetTile)
 		{
-			if (!RM_FeverWoodSettings.naturalPlacementEnabled)
-			{
-				return 0f;
-			}
+			// PROVISIONAL (auto-decided 2026-10-09, FEVERWOOD_NATURAL_TOGGLE_1): the
+			// inert naturalPlacementEnabled gate was removed with its setting;
+			// generatesNaturally=false means this is never called for placement.
 			if (tile == null || tile.WaterCovered)
 			{
 				return -100f;

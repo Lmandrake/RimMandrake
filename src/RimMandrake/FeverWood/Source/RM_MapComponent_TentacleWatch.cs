@@ -95,6 +95,9 @@ namespace RimMandrake.FeverWood
         };
 
         private int blockedUntilTick;
+        // FOUL_POOL_SUPPRESSION_SCOPE_1: the chemical fouling's own window, kept apart from blockedUntilTick so a
+        // fire-forced emergence (which deliberately ignores the ordinary cooldown) can still respect it.
+        private int chemSuppressedUntilTick;
         private bool permanentlyKilled;
         private bool porterAngeredForever;
         private int sentinelCount;
@@ -410,6 +413,12 @@ namespace RimMandrake.FeverWood
             {
                 return 0;
             }
+            // PROVISIONAL (auto-decided 2026-10-09, FOUL_POOL_SUPPRESSION_SCOPE_1): a fouled pool stays down even
+            // when fire boils its edge — the chemical suppression outranks the fire trigger while it lasts.
+            if (RM_FeverWoodSettings.foulingWithdrawsLimbs && Find.TickManager.TicksGame < chemSuppressedUntilTick)
+            {
+                return 0;
+            }
             List<IntVec3> pools = PoolCells();
             if (pools.Count == 0)
             {
@@ -474,9 +483,22 @@ namespace RimMandrake.FeverWood
         public void SuppressPoolWithRadioactiveMaterial(int ticks)
         {
             blockedUntilTick = RM_PoolKernel.Extend(blockedUntilTick, RM_PoolKernel.Until(Find.TickManager.TicksGame, ticks));
-            Messages.Message(
-                "The pool's water clouds and stills. Whatever lives beneath it is driven down by the fouling — no tentacles, and no trickle of scavenged goods, until the material diffuses away.",
-                new TargetInfo(map.Center, map), MessageTypeDefOf.PositiveEvent);
+            chemSuppressedUntilTick = RM_PoolKernel.Extend(chemSuppressedUntilTick, RM_PoolKernel.Until(Find.TickManager.TicksGame, ticks));
+            // PROVISIONAL (auto-decided 2026-10-09, FOUL_POOL_SUPPRESSION_SCOPE_1): fouling withdraws the limbs
+            // already up, so the message's "no tentacles" is true; switch off to keep the old new-spawns-only scope.
+            if (RM_FeverWoodSettings.foulingWithdrawsLimbs)
+            {
+                DespawnAllLimbs();
+                Messages.Message(
+                    "The pool's water clouds and stills. Whatever lives beneath it is driven down by the fouling — every tentacle withdraws, none rises (not even to fire), and no trickle of scavenged goods comes up until the material diffuses away.",
+                    new TargetInfo(map.Center, map), MessageTypeDefOf.PositiveEvent);
+            }
+            else
+            {
+                Messages.Message(
+                    "The pool's water clouds and stills. No new tentacles will rise, and no trickle of scavenged goods comes up, until the material diffuses away — but any limb already up stays up.",
+                    new TargetInfo(map.Center, map), MessageTypeDefOf.PositiveEvent);
+            }
         }
 
         public void DriveOffAllLimbs(int ticks)
@@ -607,6 +629,7 @@ namespace RimMandrake.FeverWood
         {
             base.ExposeData();
             Scribe_Values.Look(ref blockedUntilTick, "blockedUntilTick", 0);
+            Scribe_Values.Look(ref chemSuppressedUntilTick, "chemSuppressedUntilTick", 0);
             Scribe_Values.Look(ref permanentlyKilled, "permanentlyKilled", false);
             Scribe_Values.Look(ref porterAngeredForever, "porterAngeredForever", false);
             Scribe_Values.Look(ref encounterPressure, "encounterPressure", 0);
