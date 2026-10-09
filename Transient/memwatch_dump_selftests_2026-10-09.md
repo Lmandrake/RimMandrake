@@ -1,0 +1,3 @@
+# memwatch + dump selftests, 2026-10-09
+1. selftest_memwatch: REAL memwatch defect. host_sample passed through PowerShell `{}` (null Measure-Object) as rw_ws/rw_private/rw_peak_ws; host_update then compared dict > int. Fixed in memwatch.py (non-numbers -> None) + regression assert; CLI test now passes --no-host (as intended, no live powershell in selftest).
+2. selftest_utinnipatches_dump: RUT_JawaReturnTow exists; 9b48689f2 (2026-10-09) fixed its MayRequire to mandrake.rm.biomes so it now loads, but the load-14 dump predates it. Dump stale; refresh.py needs the game -> not run. Filed item for FOUNDRY.
