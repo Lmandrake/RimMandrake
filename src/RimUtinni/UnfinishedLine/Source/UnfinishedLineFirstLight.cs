@@ -22,8 +22,8 @@ namespace RimMandrake.Utinni.UnfinishedLine
     ///                                  (Q4=A: the Geonosian Alliance arc is separate but linked; it reads
     ///                                  empireNoticedHive).
     ///
-    /// Where the run happens: the site choice is UNFINISHED_LINE_SITE_CHOICE_1 (blocked on the owner), so until it
-    /// lands the strike comes to your colony, the Jawa who built the line (the design's site B shape) and the
+    /// Where the run happens: the chosen site is stored (UNFINISHED_LINE_SITE_CHOICE_1) but its defence-site variant is
+    /// owed (UNFINISHED_LINE_SITE_BEATS_1), so meanwhile the strike comes to your colony and the
     /// failure is "the strike still holds your colony this long after the run ends" (holdDays) rather than the
     /// line core's destruction (the core building is P6, which Q1=A did not order).
     /// </summary>

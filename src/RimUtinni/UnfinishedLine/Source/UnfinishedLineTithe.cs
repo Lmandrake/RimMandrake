@@ -25,9 +25,9 @@ namespace RimMandrake.Utinni.UnfinishedLine
     ///                              is what the load dialog (TransporterUtility), the carry float menu (IsAllowedNow) and
     ///                              JobDriver_EnterTransporter all ask (decompiled 1.6), so one postfix covers every route.
     ///
-    /// Where: the site choice is UNFINISHED_LINE_SITE_CHOICE_1 (blocked), so, like beats 3 and 5, the beat happens at your
+    /// Where: the chosen site is stored (UNFINISHED_LINE_SITE_CHOICE_1) but the per-site delivery is owed (UNFINISHED_LINE_SITE_BEATS_1), so, like beats 3 and 5, the beat happens at your
     /// colony: an Enclave shuttle collects the tithe and the hands. The design's caravan-to-the-site TradeRequests (sites
-    /// A/C/D) and monument blueprint (site B) wait on that ruling.
+    /// A/C/D) wait on UNFINISHED_LINE_SITE_BEATS_1; the monument blueprint (site B) is cut.
     /// All numbers PROVISIONAL (Mod Settings).
     /// </summary>
     public static class LineTithe

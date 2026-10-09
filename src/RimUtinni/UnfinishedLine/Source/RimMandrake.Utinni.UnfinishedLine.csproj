@@ -49,6 +49,7 @@
     <Compile Include="UnfinishedLineFirstLight.cs" />
     <Compile Include="UnfinishedLineTithe.cs" />
     <Compile Include="UnfinishedLineWorld.cs" />
+    <Compile Include="UnfinishedLineSite.cs" />
   </ItemGroup>
 
 

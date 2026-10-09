@@ -44,6 +44,11 @@
     <defName>RUT_LineEnvoyHarmed</defName>
     <label>harmed the envoy under a brokered truce</label>
   </HistoryEventDef>
+  <!-- UNFINISHED_LINE_SITE_CHOICE_1 -->
+  <HistoryEventDef>
+    <defName>RUT_LineSiteChosen</defName>
+    <label>chose where the line stands</label>
+  </HistoryEventDef>
   <!-- UNFINISHED_LINE_CORES_BEAT_1 -->
   <HistoryEventDef>
     <defName>RUT_LineCoresDelivered</defName>
