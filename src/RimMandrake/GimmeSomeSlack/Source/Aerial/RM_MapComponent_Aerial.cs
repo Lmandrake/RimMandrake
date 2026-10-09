@@ -24,6 +24,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private readonly HashSet<CompAerialAnchor> anchors = new HashSet<CompAerialAnchor>();
         private readonly HashSet<CompPowerTap> taps = new HashSet<CompPowerTap>();
         private readonly List<CompAerialAnchor> pendingAuto = new List<CompAerialAnchor>();
+        /// <summary>The tick each queued anchor was queued: a pole that never gets a faction (a map-gen ruin) gives up after
+        /// <see cref="AutoLinkGiveUpTicks"/> instead of keeping the per-tick queue pass alive for the whole game.</summary>
+        private readonly Dictionary<CompAerialAnchor, int> pendingSince = new Dictionary<CompAerialAnchor, int>();
+        private const int AutoLinkGiveUpTicks = 600;
         private readonly Dictionary<long, SpanMesh> meshes = new Dictionary<long, SpanMesh>();
         private readonly Dictionary<int, bool> anchorLive = new Dictionary<int, bool>();
         private readonly Dictionary<FallenCord, List<FallenLay>> lays = new Dictionary<FallenCord, List<FallenLay>>();
@@ -47,12 +51,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         {
             anchors.Remove(a);
             pendingAuto.Remove(a);
+            pendingSince.Remove(a);
             anchorLive.Remove(a.thingIDNumber);
             DirtyCell(a.Position);
         }
         public void Register(CompPowerTap t) => taps.Add(t);
         public void Deregister(CompPowerTap t) => taps.Remove(t);
-        public void QueueAutoLink(CompAerialAnchor a) { if (!pendingAuto.Contains(a)) pendingAuto.Add(a); }
+        public void QueueAutoLink(CompAerialAnchor a) { if (!pendingAuto.Contains(a)) { pendingAuto.Add(a); pendingSince[a] = Find.TickManager.TicksGame; } }
         public bool IsAutoLinkPending(CompAerialAnchor a) => pendingAuto.Contains(a);
 
         public void Notify_SpansChanged() => ClearSpanMeshes();      // local drops re-sign themselves every frame (DrawLocalDrops)
@@ -206,9 +211,18 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             map.GetComponent<RM_MapComponent_ConduitRuns>()?.ProcessPending();      // a new pole adopts its run's look first
             foreach (CompAerialAnchor a in pendingAuto.ToList())
             {
-                if (!a.Spawned) { pendingAuto.Remove(a); continue; }
-                if (a.Faction == null) continue;                       // build_batch may set the faction a moment later
+                if (!a.Spawned) { pendingAuto.Remove(a); pendingSince.Remove(a); continue; }
+                if (a.Faction == null)                                 // build_batch may set the faction a moment later
+                {
+                    if (!pendingSince.TryGetValue(a, out int since) || Find.TickManager.TicksGame - since > AutoLinkGiveUpTicks)
+                    {
+                        pendingAuto.Remove(a);
+                        pendingSince.Remove(a);
+                    }
+                    continue;
+                }
                 pendingAuto.Remove(a);
+                pendingSince.Remove(a);
                 if (!AerialSettings.enabled || !AerialSettings.autoLink) continue;
                 // stage 2 (design 2.3): auto-link only links to a run of the SAME look; linking two looks by hand is a bridge
                 string look = StylePicker.LookOfThing(a.parent);
