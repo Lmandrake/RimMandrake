@@ -25,12 +25,12 @@ It was the second-largest predator on Naboo, larger than the opee sea killer, be
 Their stomachs could expand to accommodate larger prey, resulting in some colos looking bloated.
 
 ## Visual brief
-Four images; the two canon-page pieces and the two Legends pieces differ in rendering but agree on the body plan.
-- **Overall silhouette:** a very long, flat, eel/serpent body — a thick crocodilian head and neck at one end, tapering back into a long ribbon tail. In the 3D render (`legends_1`, Legends) the body is a rippling band whose back is brown-olive and whose belly is darker grey, with a fin-like flat paddle at the tail end. In the canon illustration (`canon_1`) the body is coiled in a U: olive-green back, paler blue-grey underside.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The inked comic-style canon infobox illustration (`wookieepedia_canon_1.webp`, coiled olive-green U with a red open mouth) was deleted. The realistic references are the *Phantom Menace* CGI model: `wookieepedia_legends_1.webp` (adult, the film's 3D render, Star Wars Encyclopedia / Card Trader) and `wookieepedia_canon_2.webp` (infant, Visual Dictionary render). The painted watercolour `legends_2` stays only to confirm the glow band. Where the deleted illustration differed (plain olive with no spots, small tucked claws, bright red mouth), follow the film render: khaki-brown spotted hide, large forward claws, dark toothy mouth.
+- **Overall silhouette:** a very long, flat, eel/serpent body — a thick crocodilian head and neck at one end, tapering back into a long ribbon tail. In the 3D render (`legends_1`, Legends) the body is a rippling band whose back is brown-olive and whose belly is darker grey, with a fin-like flat paddle at the tail end.
 - **Head:** a crocodile/alligator head with a long snout, a row of large fangs at the front (white/cream, curved), a red-pink open mouth and tongue, and a yellow eye with a black slit pupil set high on a bony brow. The Legends render adds a toothy lower jaw with mandible-like pincers hanging off it.
-- **Claws:** a pair of jointed, clawed arm-like appendages immediately behind the head, ending in curved talons (large in `legends_1`, small and tucked in `canon_1`). The text says these shove food into the mouth.
-- **Bioluminescence:** a glowing cyan/teal fringe runs along the edge between back and belly, plus a row of glowing teal nodules/studs down the spine and flanks (`canon_1`, `legends_1`).
-- **Skin:** olive to khaki-brown, finely textured, with scattered dark blue-black spots along the flank (`legends_1`, `canon_2`) — canon_1 is plain olive with no spots.
+- **Claws:** a pair of jointed, clawed arm-like appendages immediately behind the head, ending in curved talons (large in `legends_1`). The text says these shove food into the mouth.
+- **Bioluminescence:** a glowing cyan/teal fringe runs along the edge between back and belly, plus a row of glowing teal nodules/studs down the spine and flanks (`legends_1`).
+- **Skin:** olive to khaki-brown, finely textured, with scattered dark blue-black spots along the flank (`legends_1`, `canon_2`).
 - **Infant (`canon_2`, canon, a baby):** a smooth tan-olive torpedo with a pale belly, blue flank spots, small yellow eye and a short croc snout; claws only just visible. Not a different species, just a juvenile: no glow fringe.
 - **Painted watercolour (`legends_2`, Legends):** shows opee sea killers escaping from the stomach; the colo is grey-brown with a blue-striped glow band down the body, spines along the back, toothy head with small claws. Useful only to confirm the glow band and the spiny back.
 - **Disagreement:** the prose says "flat eel-like" and "serpentine and spine-studded"; images agree, but the canon text says "serpentine and spine-studded" and the Legends text says nodules; whether the spine studs read as small nodules or sharp spikes in the images is my reading and is not settled by the text. Size: canon gives 40 m long (not shown by the images); Legends text: second-largest predator in Naboo's seas, bigger than an opee sea killer.
@@ -43,6 +43,8 @@ Four images; the two canon-page pieces and the two Legends pieces differ in rend
 - [ ] Olive to khaki-brown back with dark blue-black flank spots, paler grey-blue belly
 - [ ] Mandible-like jaw appendages (Legends render) kept subtle, not required in canon art
 
+- [ ] Realistic rendering: natural wet, finely textured eel/crocodilian skin and underwater lighting, no outlines, no cartoon shading
+
 ## Engine limits
 not yet assessed
 
@@ -51,9 +53,8 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Colo_claw_fish/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Colo claw fish`; wiki caption: infobox image. File: `Colo claw fish.png` — https://static.wikia.nocookie.net/starwars/images/b/b2/Colo_claw_fish.png/revision/latest?cb=20200427012945
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Colo claw fish/Legends`; wiki caption: infobox image. File: `ColoClawFish-SWE.png` — https://static.wikia.nocookie.net/starwars/images/f/fd/ColoClawFish-SWE.png/revision/latest?cb=20251028033043
-- `wookieepedia_canon_2.webp` — CANON page `Colo claw fish`; wiki caption: An infant colo claw fish. File: `BabyColoClawFish-SWCT.png` — https://static.wikia.nocookie.net/starwars/images/8/8c/BabyColoClawFish-SWCT.png/revision/latest?cb=20251117040512
+- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Colo claw fish/Legends`; wiki caption: infobox image; *The Phantom Menace* realistic CGI model render. File: `ColoClawFish-SWE.png` — https://static.wikia.nocookie.net/starwars/images/f/fd/ColoClawFish-SWE.png/revision/latest?cb=20251028033043
+- `wookieepedia_canon_2.webp` — CANON page `Colo claw fish`; wiki caption: An infant colo claw fish; realistic CGI render (Episode I Visual Dictionary). File: `BabyColoClawFish-SWCT.png` — https://static.wikia.nocookie.net/starwars/images/8/8c/BabyColoClawFish-SWCT.png/revision/latest?cb=20251117040512
 - `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Colo claw fish/Legends`; wiki caption: Young opee sea killers chewing their way out of a colo's stomach.. File: `Colo3-woswfg.jpg` — https://static.wikia.nocookie.net/starwars/images/4/4d/Colo3-woswfg.jpg/revision/latest?cb=20070130192705
 
 ## ruling

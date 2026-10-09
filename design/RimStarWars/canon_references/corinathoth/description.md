@@ -19,6 +19,10 @@ canon artwork of its own.
 Legends page (https://starwars.fandom.com/wiki/Corinathoth/Legends, from *Empire* 16 and *The Complete Star Wars Encyclopedia*): non-sentient quadrupeds, height "gigantic", mass "massive", skin orange with brown spots, multihorned, short tail, habitat plains, diet herbivore. "Massive, slow-moving herbivores", harmless; General Ziering's expedition met a herd lumbering across the plains of Maridun. Herbivory is a Legends statement, not canon (being hunted by the Amanin does not itself imply it).
 
 ## Visual brief
+**Animation-only canon — no realistic source found (searched: `Corinathoth` and `Corinathoth/Legends` page images, wiki title search; the only image is a panel from the *Empire* 16 comic).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Read the comic panel as a real large herbivore: thick, wrinkled, rhino/elephant-like hide with real weight and wear.
+
 **Important caveat: no canon-continuity artwork of a Corinathoth is identified on the page.**
 The only image found — and the only one Wookieepedia itself illustrates the
 species with — is explicitly captioned "A Star Wars Legends depiction of a
@@ -48,6 +52,8 @@ mottling) rather than a confirmed mismatch to fix.
 - [ ] Bony head frill with multiple horns
 - [ ] Warm orange/tan hide mottled with darker rust-brown patches
 - [ ] Visibly smaller young present within a herd context (if depicting a herd)
+
+- [ ] Realistic rendering: natural thick wrinkled hide texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known

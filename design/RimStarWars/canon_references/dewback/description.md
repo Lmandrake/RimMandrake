@@ -26,31 +26,30 @@ the original version, replaced by a CGI version in the 1997 Special Edition), *T
 *Rebels* "Twin Suns", and *The Mandalorian* "Chapter 5: The Gunslinger".
 
 ## Visual brief
-The candidate images agree with each other and are unambiguous: dewbacks are
-**green**, scaly, reptilian, with an elongated low-slung lizard body, a long
-heavy tail, a broad blunt-snouted head with a wide mouth, and short thick legs
-built for a rider or pack saddle on the back. The Kenobi-riding image and the
-sandtrooper close-up both show visible raised/pebbled scale texture and a
-warm olive-green to yellow-green hide, darker/more mottled toward the back
-ridge. No image shows back "fur" clearly — the Wookieepedia text mentions
-partial back fur but none of the candidate images make it legible; treat that
-detail as present-but-subtle rather than a bold visual feature.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The smooth, cartoon-shaded Star Wars Insider illustration of Obi-Wan riding a bright yellow-green dewback (`wookieepedia_kenobi_screencap.jpg`) was deleted. The remaining references are realistic: `wookieepedia_infobox.jpg` (realistic CGI side profile, the image this entry's ruling picked) and `wookieepedia_behindthemagic.jpg` (*A New Hope* live-action practical dewback with a sandtrooper rider, the ruling's "#4").
+
+What they show:
+- **Body:** elongated, heavy, low-slung lizard body on short, thick, bowed legs with blunt clawed toes; a long, heavy, tapering tail dragging low; a deep belly.
+- **Head:** broad, heavy, blunt-snouted head with a wide closed mouth line and small eyes under a heavy brow.
+- **Hide:** dense small pebbled/raised scales over the whole body, thick folded skin at the neck and legs. 🔴 **Colour differs between the two realistic sources:** the CGI infobox is a dusty **grey-brown / taupe**, while the ANH live-action puppet reads **olive to yellow-green** in sunlight. The deleted cartoon was bright yellow-green — do not use that saturation. Aim for a muted, dusty olive-to-grey-brown desert reptile.
+- No back "fur" is legible in any image; treat the text's partial back fur as subtle at most.
 
 **The current donor sprite (`donor_current_sprite.png`) disagrees with canon
 in two clear ways**: it is rendered in flat **grey/white**, not green, and it
 has a rounded, blobby, almost seal-like silhouette with no scale texture and
 no elongated tail — closer to a cartoon manatee than the long low reptile
-in every reference image. Any regen should correct the color to green/olive
+in every reference image. Any regen should correct the color to dusty olive/grey-brown
 and give the body a longer, lower, more lizard-like silhouette with a visibly
 scaled hide.
 
 ## Must show
 - [ ] Scaly, reptilian, elongated low-slung body — not a rounded, blobby, seal-like silhouette
-- [ ] Warm olive-green to yellow-green hide, darker/more mottled toward the back ridge
-- [ ] Long heavy tail
-- [ ] Broad, blunt-snouted head with a wide mouth
-- [ ] Short, thick legs built to carry a rider or pack saddle
-- [ ] Visible raised/pebbled scale texture
+- [ ] Muted, dusty olive-green to grey-brown hide (between the ANH puppet and the CGI profile), not bright yellow-green
+- [ ] Long heavy tail carried low
+- [ ] Broad, heavy, blunt-snouted head with a wide mouth line
+- [ ] Short, thick, bowed legs built to carry a rider or pack saddle
+- [ ] Dense small pebbled scale texture all over, with thick folded skin at neck and legs
+- [ ] Realistic rendering: natural pebbled reptile-hide texture and desert lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -65,9 +64,8 @@ none known
 
 ## Candidate images
 - `donor_current_sprite.png` — this repo's current shipped sprite (SWBestiary mod, east-facing base variant), grey/white, non-scaly, blob-shaped
-- `wookieepedia_infobox.jpg` — Wookieepedia infobox render, full side profile, green scaly hide, long tail, clearly reptilian body plan
-- `wookieepedia_kenobi_screencap.jpg` — Obi-Wan Kenobi riding a dewback (Star Wars Insider #211 art), shows saddle/tack placement and head shape
-- `wookieepedia_behindthemagic.jpg` — sandtrooper close-up astride a dewback, shows scale texture and eye/head detail against blue sky
+- `wookieepedia_infobox.jpg` — Wookieepedia infobox realistic CGI render, full side profile, green scaly hide, long tail, clearly reptilian body plan
+- `wookieepedia_behindthemagic.jpg` — *A New Hope* live-action practical dewback (Star Wars: Behind the Magic), sandtrooper close-up astride a dewback, shows scale texture and eye/head detail against blue sky
 
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox.jpg`
