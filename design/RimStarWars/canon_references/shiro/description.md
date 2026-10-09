@@ -52,12 +52,14 @@ Source cited throughout: *The Wildlife of Star Wars: A Field Guide* (2001).
 - `shirotrap_legends.jpg` and `shirotrap_retracted_legends.jpg` show the symbiotic **shiro-trap**, a separate entry (`shirotrap`). A carnivorous plant roots in the shell ridges: a rosette of broad red-and-cream leaves, with long stalks ending in toothed red trap-mouths. In the retracted plate the animal's head, a flat green snout with a red eye, pokes out from under the rosette. Here the shell and skin are mottled moss-green and brown.
 
 ## Must show
-- [ ] High domed carapace of tall overlapping backswept ridged plates ending in blunt wavy spines
-- [ ] Four thick columnar elephant-like wrinkled legs holding the body high, not stubby turtle legs
-- [ ] Long thick striped neck ending in a long flat duck-billed snout, with small raised red eyes on top
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `shiros_group_legends.jpg`, the target picked in the `## ruling` below (owner, 2026-09-14), rendered realistically per owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using."*
+- [ ] BODY PLAN: a shelled four-legged reptile standing high on four thick columnar elephant-like wrinkled legs, body well clear of the ground, not stubby turtle legs; long thick horizontal neck in front, long level tail behind
+- [ ] Shell: high domed carapace of tall overlapping backswept ridged plates ending in blunt wavy spines, like a frilled crest running the length of the back
+- [ ] Head: long flat duck-billed snout at the end of the neck, with small raised red eyes on top
 - [ ] Long level tail with a row of small spikes along the top
-- [ ] Muted olive-to-moss-green shell and neck with yellow-green ridge highlights, greyer legs
+- [ ] COLOUR LAYOUT: muted olive-to-moss-green shell and neck with yellow-green ridge highlights; yellow-green and olive stripes along the neck; greyer, wrinkled legs
 - [ ] Realistic rendering: natural horny shell plates and wrinkled reptile hide, natural lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a turtle or tortoise (no low stubby legs, no smooth round shell, no beaked turtle head), not the bright clean-green *Disney Infinity* toy, and not a shiro-trap (no plant rosette in the shell — owner ruling 2026-09-14: the Shiro-Trap "could be its own creature")
 
 ## Engine limits
 none known

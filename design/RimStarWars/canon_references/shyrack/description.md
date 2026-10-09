@@ -38,12 +38,14 @@ Legends extras: appearances include *Knights of the Old Republic*, *KOTOR II*, *
   leathery wings, no feathers.
 
 ## Must show
-- [ ] Bat/pterosaur-like flier with a heavy bulbous body and two large leathery bat wings with dark bony struts and purple membrane
-- [ ] Eyeless head: blunt wrinkled domed skin with deep folds and a toothed mouth, no eyes at all
-- [ ] Long thin hind legs with large hooked dark talons
-- [ ] Thin sinuous tail
-- [ ] Tan/pinkish-flesh body with blue-violet limbs
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the single realistic *Jedi Academy Training Manual* painting the visual brief makes the target and the Legends text (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.").*
+- [ ] BODY PLAN: hunched, ungainly bat/pterosaur-like flier: a heavy bulbous pot-bellied body hanging below two large leathery bat wings; no forelegs separate from the wings; long thin hind legs hanging down; a thin sinuous tail curving up behind
+- [ ] Wings: large leathery bat-type wings with dark brown-black bony struts and thin purple membrane; no feathers
+- [ ] Eyeless head: blunt wrinkled domed skin with deep folds, a tiny snout and a toothed mouth, no eyes at all
+- [ ] Long thin hind legs ending in large hooked dark talons
+- [ ] COLOUR LAYOUT: tan/pinkish-flesh body and head, blue-violet limbs, purple wing membrane, dark wing struts
 - [ ] Realistic rendering: natural wrinkled skin and translucent leathery wing membrane, natural lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not an ordinary bat (no visible eyes, no furry body, no sleek build), not a feathered bird
 
 ## Engine limits
 not yet assessed

@@ -98,12 +98,14 @@ from a spice-cartel species; flagged as invented rather than wrong.
 **`donor_current_sprite.png`** (`.../Heads/Pyke/Normal_south.png`, 512×512 greyscale tint mask) has the tall tapered spike cranium of the animated design and no barbels, mouth or snout — it now disagrees with the live-action target on the head silhouette as well as the missing features.
 
 ## Must show
-- [ ] Pale grey-blue wrinkled skin with large, glossy, solid black slanted almond eyes set wide
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action *Book of Boba Fett* images the visual brief names (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic.").*
+- [ ] BODY PLAN: humanoid, slim build; head is a compact rounded skull wrapped in a snug seamed cap or cowl — no tall spiked bare dome
+- [ ] COLOUR LAYOUT: pale grey-blue wrinkled skin on the face; large, glossy, solid black slanted almond eyes set wide on a broad flat brow, the darkest element of the face
 - [ ] Broad bulbous drooping fish-like snout with flat nostril folds over a small down-turned mouth
 - [ ] Two fleshy pinkish barbels hanging down from the snout/upper lip to about chin length
-- [ ] Compact rounded skull wrapped in a snug seamed cap or cowl — no tall spiked bare dome
 - [ ] Layered rough robes or gold-trimmed status coats; any respirator face plate (goggles + side tubes) is worn gear
 - [ ] Realistic rendering: natural prosthetic-skin texture and lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not the animated *Clone Wars* Pyke (no towering tapered bare cranium, no barbel-less mouthless face), not a human with a tint
 
 ## Engine limits
 none known — the donor head is a correctly-tinted greyscale mask; the missing barbels, mouth and ear flaps are absent art, not a pipeline limitation.

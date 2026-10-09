@@ -70,12 +70,14 @@ no text/image conflict here, and no blue-grey coloration in any of them.
   is mutually consistent.
 
 ## Must show
-- [ ] Long, gently S-curved neck rising to a triangular head
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the two film stills the visual brief makes the target (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using."), corroborated by the painted art and Ellingson concepts.*
+- [ ] BODY PLAN: huge four-legged saurian on thick, heavily columnar legs ending in broad clawed/hoofed feet; a long, gently S-curved neck rising to a triangular head; a short thick tail
 - [ ] A rhino/ceratopsian-style pointed nose horn or nasal ridge, with a beaked, slightly downturned mouth
 - [ ] Two large, wing-like skin-flap "ears" fanning out and back from the head/neck like a frill
-- [ ] Thick, heavily columnar legs (four) ending in broad clawed/hoofed feet, with deeply wrinkled/creased skin and scattered wart-like bumps
-- [ ] Muted dark olive-to-brownish-grey coloration — not saturated brown, not blue-grey — with darker striping/banding on the neck and back and a paler cream-to-tan underside
+- [ ] Deeply wrinkled/creased skin, especially at the neck and leg joints, with scattered wart-like bumps
+- [ ] COLOUR LAYOUT: muted dark olive-to-brownish-grey coloration — not saturated brown, not blue-grey — with darker striping/banding on the neck and back and a paler cream-to-tan underside and inner ear
 - [ ] Realistic rendering: natural heavy wrinkled pachyderm-like hide texture and desert-sun lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a brachiosaurus or plain sauropod (no long tail, no small earless head), not an elephant (no trunk, no tusks)
 
 ## Engine limits
 none known

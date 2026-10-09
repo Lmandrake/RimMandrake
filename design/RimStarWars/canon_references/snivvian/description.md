@@ -106,13 +106,15 @@ icon. So there is nothing on disk to compare canon against, and `donor_current_s
 is absent by fact, not by oversight.
 
 ## Must show
-- [ ] Broad, flat, forward-projecting muzzle carrying two enormous rounded nostrils on its front face — the largest feature of the face, bigger than the eyes
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the practical-mask photos (the target), the Ankeefo render and the KOTORCG portrait the visual brief keeps (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.").*
+- [ ] BODY PLAN: short, stocky, wide-shouldered humanoid with a thick neck and no waist; a large blunt head with a broad, flat, forward-projecting muzzle; small, rounded, low-set ears close to the skull
+- [ ] Two enormous rounded nostrils on the muzzle's flat front face — the largest feature of the face, bigger than the eyes
 - [ ] Heavy, protruding lower jaw with a thick lower lip, giving a mouth line that curves upward at the corners into a lopsided grin
 - [ ] Small, deep-set eyes placed high and wide under a heavily wrinkled, shelf-like brow
-- [ ] Leathery, wrinkled, hairless facial skin — never a smooth face
+- [ ] COLOUR LAYOUT: leathery, wrinkled, hairless facial skin (pinkish-tan to grey-brown or mid-brown — hue may vary) — never a smooth face; hair on the head only (wispy brown, grey mane, or near-bald), no body fur
 - [ ] Where tusks appear, they are small, rise from the lower jaw at the mouth corners, and curve upward — never downward boar tusks, upper-jaw tusks, or present on every individual
-- [ ] Short, stocky, wide-shouldered build with a thick neck and no waist
 - [ ] Realistic rendering: natural leathery practical-mask skin texture and lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a pig-faced Gamorrean or a boar (no large or downward tusks, no pointed ears), not a furred animal, not a human with a tint
 
 ## Engine limits
 none known
