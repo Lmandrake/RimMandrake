@@ -25,6 +25,10 @@ mentioned in current Disney canon only much later, in the 2017 novel
 *Aftermath: Empire's End*. (A "Six-Card Gizka Limit" game also shares the name in canon; Disney Infinity 3.0 gizka are non-canon.) Canon page: https://starwars.fandom.com/wiki/Gizka ; diet, pest behaviour, domestication, quest resolutions: https://starwars.fandom.com/wiki/Gizka/Legends
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Gizka` and `Gizka/Legends` page images, "Images of gizka" category — every depiction is the 2003 *Knights of the Old Republic* game model, its painted concept art, a *Disney Infinity 3.0* toy figure, or a Wizards.com card illustration).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. The owner's own KOTOR reference images (`owner_reference_*`) remain the authority for body plan (his 2026-09-16 ruling below); take the anatomy from them and give it real scaly reptile skin, like a small living theropod-shaped lizard, not low-poly game texture.
+
 Judged against the owner's two supplied reference images
 (`owner_reference_sideview.jpg`, `owner_reference_card.jpg`, both of the
 KOTOR in-game model — owner ruling below). Gizka is a **small bipedal
@@ -59,6 +63,7 @@ entry.
 - [ ] TWO modest-sized eyes on the sides of the head — a front (south) view shows both; never a single central cyclops eye, never huge bulging frog eyes
 - [ ] Scaly mottled hide in tan, warm orange-brown and olive patches — not a flat colour
 - [ ] Roughly knee-height or smaller — a vermin-scale creature, not a large animal
+- [ ] Realistic rendering: natural scaly reptile skin and lighting, no outlines, no cartoon shading, no low-poly game look
 
 ## Engine limits
 none known

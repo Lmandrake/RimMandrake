@@ -26,36 +26,24 @@ painting of the kaadu (the creature that was ultimately reassigned to the
 Gungans of Naboo instead).
 
 ## Visual brief
-The candidate images agree closely with each other and diverge sharply from
-the donor sprite's color. Eopies read as **pale — cream, dusty tan, or a
-pinkish-grey** skin tone in the candidate images (the canon article gives no skin colour; Legends lists brown, pale and white). The body plan is unmistakably
-camel-like: a long, low-slung barrel body on four thin legs, each ending in
-small clawed/hoofed toes, topped by a genuinely elongated **trunk-like
-snout** (more tapir/small-elephant trunk than a simple long muzzle) with one
-large dark eye set well back on the head. None of the images show visible fur
-or hair — the hide reads smooth-to-leathery, not woolly. Every reference shows
-the eopie loaded with practical tan/brown leather cargo saddlebags and woven
-wicker panniers strapped across its back and neck, which is core to its
-in-universe role as a pack animal, though that's harness/tack rather than a
-body feature. The stylized "EOPIES!" cartoon thumbnail is a much lower-fidelity
-source (flat shading, exaggerated cartoon eyes) but still agrees on the pale
-tan color and the long trunk-snout silhouette, so it corroborates rather than
-contradicts the higher-fidelity images.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The cartoon Star Wars Kids "EOPIES!" thumbnail (`wookieepedia_herd.jpg`) was deleted. Every remaining image is the realistic prequel-era CGI/puppet design: `wookieepedia_infobox.png` (Official Star Wars Fact File render) and `wookieepedia_screencap.jpg` (front and side model sheet).
 
-**The current donor sprite (`donor_current_sprite.png`) gets the color
-roughly right** — it's a similar pale dusty pink-grey — **but the shape is
-wrong**: it's a rounded, legless blob with a stubby trunk-snout, no visible
-legs, no saddle/pack gear, and none of the long low camel-backed silhouette
-every reference image shows. Any regen should keep the pale skin tone but
-give the body a longer, lower quadruped silhouette with visible legs and the
-distinctive trunk-like snout reading clearly against the body.
+What the realistic images show:
+- **Skin:** smooth, finely wrinkled, leathery hide with no fur — pale grey-lavender to pinkish-grey on the infobox/fact-file render, cream-white on the model sheet, mottled darker grey on the legs and flanks with knot-like bumps at the joints. (The canon article gives no colour; Legends lists brown, pale and white.)
+- **Body:** camel-like — tall thin legs (taller than the old brief's "low-slung" wording implied), a barrel body sloping from high haunches, a long forward-thrust horizontal neck.
+- **Head:** a long drooping trunk-like snout ending in a rounded pink-tipped nose; one large amber-to-dark eye with heavy wrinkled lids set well back on each side; a few sparse bristles on top of the head.
+- **Feet:** broad splayed pads with three or four thick blunt claw-toes, wrinkled like an elephant's foot.
+- **Tack:** leather saddlebags, wicker panniers and a rope bridle in every image — harness, not body.
+
+**The current donor sprite (`donor_current_sprite.png`) gets the colour roughly right but the shape is wrong**: a rounded legless blob with a stubby trunk, none of the tall thin-legged camel silhouette.
 
 ## Must show
-- [ ] Pale skin tone — cream, dusty tan, or pinkish-grey — never brown
-- [ ] Long, low-slung, camel-like barrel body on four thin legs with small clawed/hoofed toes
-- [ ] Elongated trunk-like snout (closer to a tapir or small elephant trunk than a simple long muzzle)
-- [ ] One large dark eye set well back on the head
-- [ ] Smooth-to-leathery hide with no visible fur or hair
+- [ ] Pale skin tone — cream, grey-lavender or pinkish-grey — never brown
+- [ ] Camel-like body on four tall thin legs ending in broad splayed pads with thick blunt claw-toes
+- [ ] Long forward-thrust horizontal neck and a drooping trunk-like snout with a rounded pink tip
+- [ ] One large heavy-lidded eye set well back on each side of the head
+- [ ] Smooth, finely wrinkled leathery hide with no visible fur
+- [ ] Realistic rendering: natural wrinkled leathery skin texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -66,13 +54,11 @@ none known
   2026-09-13)
 - https://static.wikia.nocookie.net/starwars/images/1/11/Eopie-FFp67.png (Wookieepedia infobox render — full profile with saddle/pannier gear)
 - https://static.wikia.nocookie.net/starwars/images/f/f7/Eopie.jpg (on-set/production photo comparison of two eopies, front and side view, cream/tan skin)
-- https://static.wikia.nocookie.net/starwars/images/c/ce/Eopies.jpg (stylized "EOPIES!" SW Kids YouTube thumbnail — lower-fidelity cartoon style but corroborates color and trunk-snout silhouette)
 
 ## Candidate images
 - `donor_current_sprite.png` — this repo's current shipped sprite (SWBestiary mod, `Eopie_east` base variant), pale pinkish-grey blob with stubby trunk, no visible legs or pack gear
-- `wookieepedia_infobox.png` — Wookieepedia infobox render, full profile, pale grey-pink hide, elongated trunk-snout, wicker/leather cargo panniers on back
-- `wookieepedia_screencap.jpg` — two eopies front/side, cream-tan skin, camel-like low body, laden with saddlebags and a bridle/lead line
-- `wookieepedia_herd.jpg` — stylized cartoon still (SW Kids "EOPIES!" video thumbnail), lower fidelity but agrees on pale tan color and trunk-snout shape, shows big prominent eyes
+- `wookieepedia_infobox.png` — REALISTIC render (infobox; *The Official Star Wars Fact File* Part 67), full profile, pale grey-pink hide, trunk-snout, panniers; file `Eopie-FFp67.png` — https://static.wikia.nocookie.net/starwars/images/1/11/Eopie-FFp67.png/revision/latest?cb=20221017052712
+- `wookieepedia_screencap.jpg` — REALISTIC model sheet, front and side, cream-white hide, saddlebags and bridle (same image as file `Eopie.jpg`, *Episode I Insider's Guide*) — https://static.wikia.nocookie.net/starwars/images/f/f7/Eopie.jpg/revision/latest?cb=20081009000836
 
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_infobox.png`

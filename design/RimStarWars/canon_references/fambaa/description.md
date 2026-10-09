@@ -35,62 +35,27 @@ page URL was not tried after the API route worked cleanly) 2026-09-13.
   animators.
 
 ## Visual brief
-Unlike the Wyyyschokk and Peko-peko cases this library exists to catch,
-**text and images agree closely here** — there is no dramatic
-undersell/misread to flag. All four candidate images converge on the same
-palette family the text names (brown/green):
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: the comic/ink infobox icon (`wookieepedia_infobox.jpg`, `Fambaa.png`, *Alien Archive*) and the Legends pencil-and-wash plate (`wookieepedia_fieldguide.jpg`, *Wildlife of Star Wars*). Every remaining image is the realistic *Phantom Menace* CGI design:
 
-- `wookieepedia_fieldguide.jpg` (*Wildlife of Star Wars: A Field Guide*
-  painted illustration — a LEGENDS source: the Legends article cites it, the canon article does not) shows the clearest "wild, unburdened" baseline: two
-  fambaas browsing a tree, **yellow-green to khaki scaled hide** with
-  darker olive mottling, a pale cream/white underside and inner legs, a
-  long tapering cartilage tail, a single curved tusk jutting from the lower
-  jaw, and reddish-orange eyes. This is the best single reference for
-  natural skin pattern and body proportions (long low body, thick
-  pillar-like legs, broad splayed toes).
-- `wookieepedia_shieldgenerator.jpg` (`FambaaShield-SWE.png`, an official
-  encyclopedia-style CG render pair) directly depicts the canon Battle of
-  Naboo role: two fambaas side by side, each saddled with a red-brown
-  leather harness and carrying one half of the deflector shield generator
-  (a dish-shaped emitter on the left animal, a smaller focusing/receiver
-  rig on the right). Skin here reads as smoother, **tan-olive/khaki**
-  mottled hide — same family as the field guide painting, just smoother
-  and less saturated.
-- `wookieepedia_herd.jpg` (`Fambaas-SWE.jpg`) is the same CG render pair as
-  `wookieepedia_shieldgenerator.jpg`, just re-cropped/re-composited on a
-  green background rather than white — treat it as a duplicate confirming
-  the tan-olive coloring and harness/shield-generator rigging, not an
-  independent sighting.
-- `wookieepedia_infobox.jpg` (`Fambaa.png`, the current wiki infobox art —
-  comic/ink-illustration style) shows a **darker, more saturated olive
-  green** warty/bumpy hide than the other three images, a wide tusked
-  mouth, and the round dish shield-generator component strapped to its
-  back. It is stylistically the outlier (flat comic inking vs. painted or
-  CG-rendered elsewhere) but is still squarely in the same green-to-olive
-  family the text names — a style difference, not a color contradiction.
+- `wookieepedia_factfile.webp` (`Fambaa-FF47.png`, *Official Star Wars Fact File* 47) — a single fambaa, three-quarter front view, carrying the shield-generator dish. The clearest anatomy reference.
+- `wookieepedia_shieldgenerator.jpg` (`FambaaShield-SWE.png`) and `wookieepedia_herd.jpg` (`Fambaas-SWE.jpg`, the same render pair on green) — two fambaas side by side in the Battle of Naboo shield role.
 
-**One minor, worth-flagging disagreement**: the sourced infobox eye color
-is "Yellow" (cited to the film itself), but the *Field Guide* painting
-gives the fambaa reddish-orange eyes. Neither the shield-generator CG
-renders nor the flat infobox icon show eye color clearly enough to
-arbitrate. Treat eye color as **uncertain between yellow and
-reddish-orange**; do not commit to one without a clearer source.
+What the realistic renders show:
+- **Body**: a broad, heavy, low-slung sauropod/iguana-like quadruped with a deep chest, short thick neck held forward and low, thick pillar legs with heavy wrinkled skin folds at the joints, and a long tapering tail.
+- **Hide**: olive-khaki to greenish-tan, covered in a fine raised pebbly/cobbled scale pattern (like a gila monster or crocodile belly) with darker olive mottling; paler grey-cream underside, throat and inner legs.
+- **Head**: broad, blunt, heavy-browed head with a wide lipless mouth; small fangs at the front of the upper jaw and **a short tusk jutting up from each side of the lower jaw**; a **yellow-amber eye** with a dark pupil (this settles the old yellow-vs-reddish-orange uncertainty — the reddish-orange eye was only in the deleted pencil plate).
+- **Feet**: broad elephant-like feet with short blunt dark claws.
+- **Tack (military role)**: red-brown leather saddle harness and head bridle carrying shield-generator hardware.
 
-**Net read**: a broad, low-slung, thick-legged quadruped with mottled
-brown-to-olive-green reptilian/amphibian hide, pale cream underside, a
-tusked wide mouth, a long tapering tail, and (in its canon military role) a
-red-brown leather saddle harness carrying shield-generator hardware. No
-text/image mismatch on the core color family — brown-and-green is
-confirmed by every candidate image, just at different saturations and
-stylizations.
+**Where the deleted images disagreed**: the pencil plate showed a much brighter yellow-green hide with a white belly and reddish eyes, and a lankier upright browsing pose; the comic icon showed dark saturated olive with warty spots. The realistic renders are duller olive-khaki with fine pebbled scales — trust them.
 
 ## Must show
-- [ ] Broad, low-slung, thick pillar-like-legged quadruped body
-- [ ] Mottled brown-to-olive-green reptilian/amphibian hide
-- [ ] Pale cream/white underside and inner legs
-- [ ] Long, tapering cartilage tail
-- [ ] A single curved tusk jutting from the lower jaw
-- [ ] Broad feet with wide, splayed toes
+- [ ] Broad, heavy, low-slung quadruped with thick pillar legs, short forward neck and long tapering tail
+- [ ] Olive-khaki to greenish-tan hide with a fine raised pebbly scale pattern and darker mottling
+- [ ] Paler grey-cream underside, throat and inner legs
+- [ ] Broad blunt head with a wide mouth, small upper fangs and a short tusk jutting up from each side of the lower jaw; yellow-amber eye
+- [ ] Broad feet with short blunt dark claws
+- [ ] Realistic rendering: natural pebbled reptile hide and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -127,31 +92,10 @@ none known
   primary source and should be disregarded.
 
 ## Candidate images
-- `wookieepedia_infobox.jpg` — current Wookieepedia infobox art (comic/ink
-  style): dark saturated olive-green warty hide, tusked mouth, shield
-  generator dish strapped to its back via harness.
-- `wookieepedia_fieldguide.jpg` — "Wildlife of Star Wars: A Field Guide"
-  painted illustration, two fambaas browsing a tree in the wild (no
-  harness): yellow-green/khaki scaled hide, pale cream underside, single
-  curved tusk, reddish-orange eyes, long tapering cartilage tail. **Best
-  reference for natural body plan and hide pattern.**
-- `wookieepedia_shieldgenerator.jpg` — official CG render pair in canon
-  military rig: tan-olive mottled hide, red-brown leather saddle harness,
-  each animal carrying one half of the deflector shield generator (dish
-  emitter / receiver rig). **Best reference for the canon shield-carrier
-  role.**
-- `wookieepedia_herd.jpg` — the same CG render pair as
-  `wookieepedia_shieldgenerator.jpg`, re-cropped on a green background;
-  redundant confirmation, not an independent sighting.
-- **No donor-mod (`mlie.starwarsanimalcollection`) sprite included** — the
-  mod is not present on this machine, its current 1.6 release packs all
-  creature art in Asset Bundles rather than loose textures (confirmed from
-  the mod's own workshop description), and no labeled preview screenshot of
-  a Fambaa specifically was found. Revisit if the mod is ever installed
-  locally or a labeled preview surfaces.
-- **No film still included** — genuine search effort made (see Source
-  URLs) but no usable Phantom Menace battle-scene frame grab was found this
-  pass.
+- `wookieepedia_factfile.webp` — REALISTIC CGI (*Official Star Wars Fact File* 47 / Encyclopedia), single fambaa with shield dish; file `Fambaa-FF47.png` — https://static.wikia.nocookie.net/starwars/images/3/33/Fambaa-FF47.png/revision/latest?cb=20230927033404
+- `wookieepedia_shieldgenerator.jpg` — REALISTIC CGI render pair, shield-generator role; file `FambaaShield-SWE.png` — https://static.wikia.nocookie.net/starwars/images/e/e3/FambaaShield-SWE.png
+- `wookieepedia_herd.jpg` — the same REALISTIC render pair on a green background (redundant confirmation); file `Fambaas-SWE.jpg` — https://static.wikia.nocookie.net/starwars/images/8/8f/Fambaas-SWE.jpg
+- **No donor-mod (`mlie.starwarsanimalcollection`) sprite included** — that mod packs creature art in Asset Bundles; no labelled Fambaa preview was found.
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

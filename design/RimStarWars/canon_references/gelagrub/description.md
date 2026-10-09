@@ -23,28 +23,27 @@ When a gelagrub pupated, the adult emerged as a hard-shelled ground creature, no
 Gelagrubs were favored mounts on Felucia and similar worlds because of their ability to protect their riders. Once a rider had sufficiently bonded with a domesticated gelagrub, it treated the rider as an extension of its own body, going out of its way to avoid hazards and using its own natural defenses to protect its rider.
 
 ## Visual brief
-Viewed 2026-10-04. Image 1 is canon (Databank render with a clone trooper rider); images 2 and 3 are
-LEGENDS (Revenge of the Sith film still, and a painted plate). All three show the LARVAL/mount form.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The saturated painted Legends plate (`wookieepedia_legends_2.webp`, `Gelagrub-GAW.jpg`) was deleted. Both remaining images are realistic: `canon_1` is the photoreal Databank CGI render with a clone trooper rider; `legends_1` is a *Revenge of the Sith* live-action film still on Felucia. Both show the LARVAL/mount form.
 - **Silhouette**: a fat, soft, caterpillar/grub-like slug. Long low barrel body, blunt rounded front
   with NO neck, tapering to a smaller rump. Sized so a full armoured trooper sits on its back like a
   saddle-beast (roughly dewback/bantha-pony scale, per the riders).
 - **Head/face**: the front end is a bulbous face with a wide, drooping, lipless mouth (open, dark
   inside) at the bottom and TWO round black eyes stacked vertically on the side of the head (one above
-  the other, per Legends text, confirmed in all three images; they sit on a raised, wrinkled brow
+  the other, per Legends text, confirmed in both images; they sit on a raised, wrinkled brow
   mound). Wrinkled leathery folds around the mouth and brow.
 - **Legs**: stubby, thick, soft cylindrical leg-stumps in rows under the belly (canon image shows
   roughly four/five visible per side, short and blob-ended, not jointed); the body hangs low, almost
   dragging.
 - **Back/colour**: dark teal-green to grey-green flanks and head, with the back a segmented ridge of
-  glossy, translucent BLUE panels (bright cobalt/electric blue in canon and film images; blue-purple
-  with bright lime-green highlights in the painted plate). Underside and face greener/greyer.
-  Painted plate is far more saturated than the render; canon render is the target.
+  glossy, translucent BLUE panels (bright cobalt/electric blue in both the render and the film still).
+  Underside and face greener/greyer. (The deleted painted plate showed a far more saturated
+  blue-purple back with lime-green flanks — do not use that.)
 - **Texture**: smooth, wet, gelatinous, semi-translucent skin with a glossy sheen over the blue back;
   wrinkles at the face; no hair, no hard shell (the hard mirrored carapace belongs to the adult form,
   NOT shown in any image).
 - **Prose vs images**: canon prose says "five pairs of legs" and "dark green with blue splotches";
   images show dark green with a large contiguous glossy blue segmented back, not scattered
-  splotches. The painted plate adds spiky green dorsal ridges on the flanks -- not seen in canon or film.
+  splotches. The deleted painted plate added spiky green dorsal ridges on the flanks -- not seen in canon or film; omit them.
 
 ## Must show
 - [ ] Fat soft caterpillar/grub body, blunt headless-looking front with no neck, tapering to a smaller rump
@@ -53,6 +52,7 @@ LEGENDS (Revenge of the Sith film still, and a painted plate). All three show th
 - [ ] Dark teal/grey-green skin with a glossy translucent segmented bright-blue back
 - [ ] Smooth wet gelatinous skin, no fur and no hard shell (larval form)
 - [ ] Large enough to carry a mounted armoured humanoid on its back
+- [ ] Realistic rendering: wet translucent gelatinous skin and natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -64,7 +64,6 @@ not yet assessed
 ## Candidate images
 - `wookieepedia_canon_1.webp` — CANON page `Gelagrub`; wiki caption: infobox image. File: `Gelagrub-Databank.png` — https://static.wikia.nocookie.net/starwars/images/1/10/Gelagrub-Databank.png/revision/latest?cb=20221224060041
 - `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Gelagrub/Legends`; wiki caption: A clone trooper riding a gelagrub on Felucia.. File: `Gelagrub-ROTS.png` — https://static.wikia.nocookie.net/starwars/images/7/77/Gelagrub-ROTS.png/revision/latest?cb=20221229021617
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Gelagrub/Legends`; wiki caption: A gelagrub being ridden by a clone trooper. File: `Gelagrub-GAW.jpg` — https://static.wikia.nocookie.net/starwars/images/1/16/Gelagrub-GAW.jpg/revision/latest?cb=20131207070809
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

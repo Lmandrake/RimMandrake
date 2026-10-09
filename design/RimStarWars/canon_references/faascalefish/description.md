@@ -19,8 +19,7 @@ The faa, or faynaa, as they were known to the Gungan species, were fast-moving, 
 The species' thin frames allowed faa to inhabit thin crevices in underwater rocks, from which they could catch prey that hid in the crags. The deep swamp was also where faa preferred to reproduce, producing up to twelve offspring at a time.
 
 ## Visual brief
-Viewed 2026-10-04. Image 1 is canon (Jedi Survivor render, "big-mouth faa"); images 2 and 3 are
-LEGENDS (a 3D render, and a pencil-and-wash sketch sheet of a school).
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The Legends pencil-and-wash school sketch (`wookieepedia_legends_2.webp`, `Faynaas-woswfg.jpg`) was deleted. The two images kept are both realistic: `canon_1` is the photoreal *Jedi: Survivor* "big-mouth faa" render; `legends_1` is a realistic CGI render (StarWars.com / Naboo Creature Database). They agree on everything below; render with real wet fish skin and fine scales, not the sketch's line work.
 - **Silhouette**: a deep, tall, laterally compressed head-and-body that is almost all head, tapering
   abruptly to a thin stalk-like tail peduncle ending in a large paddle/fan tail. Reads as tadpole-
   or boxfish-like, with the body mass forward.
@@ -33,7 +32,7 @@ LEGENDS (a 3D render, and a pencil-and-wash sketch sheet of a school).
   big fan with radiating dark ribs, orange-white. Dorsal: a low crest along the top of the head.
 - **Colour**: graduated orange (deeper orange on back, paler cream-peach on belly and tail) with
   vertical BLUE-VIOLET stripes/bands and blue dot-speckle behind the eye, and blue spikes on the
-  brow in the canon render. All three images agree on orange with blue bands.
+  brow in the canon render. Both images agree on orange with blue bands.
 - **Texture**: fine small scales visible (Legends render), smooth wet sheen in canon render.
 - **Size cues**: none in images; Legends text says medium size.
 - **Prose vs images**: canon prose says "wide, flat head with a narrow midsection" -- images show a
@@ -48,6 +47,7 @@ LEGENDS (a 3D render, and a pencil-and-wash sketch sheet of a school).
 - [ ] Graduated orange body (paler cream-peach belly and tail) with vertical blue-violet stripes and blue speckle
 - [ ] Small pectoral fins low on the cheek; low crest along the top of the head
 - [ ] Blue spikes on the brow and chin (canon render only; optional if sprite is too small)
+- [ ] Realistic rendering: wet fish skin with fine scales and natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -59,7 +59,6 @@ not yet assessed
 ## Candidate images
 - `wookieepedia_canon_1.webp` — CANON page `Faa`; wiki caption: infobox image. File: `BigMouthFaa-JediSurvivor.png` — https://static.wikia.nocookie.net/starwars/images/7/76/BigMouthFaa-JediSurvivor.png/revision/latest?cb=20250123014603
 - `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Faa/Legends`; wiki caption: infobox image. File: `Faa scalefish.png` — https://static.wikia.nocookie.net/starwars/images/d/d3/Faa_scalefish.png/revision/latest?cb=20220930160412
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Faa/Legends`; wiki caption: A school of faa. File: `Faynaas-woswfg.jpg` — https://static.wikia.nocookie.net/starwars/images/b/bd/Faynaas-woswfg.jpg/revision/latest?cb=20070117193330
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

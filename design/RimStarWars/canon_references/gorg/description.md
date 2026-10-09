@@ -28,6 +28,12 @@ Natural predators included worrts, which the gorgs themselves were somewhat simi
 Gorgs were also known to be mutated by bio-engineers. One such mutation resulted in the successful growth of a chubafly: a colorful gorg but with wings that made it capable of flying.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Realism target = the live-action *Phantom Menace* / *Return of the Jedi* puppets and props**: `owner_canon_gorgs_1.webp` and the new `wookieepedia_canon_2.webp` (TPM film stills, Mos Espa gorg stall — Jar Jar snatching a gorg with his tongue, a dozen gorgs hanging by their feet), `wookieepedia_legends_2.webp` (TPM set photo of the spotted prop), `wookieepedia_canon_1.webp` (photographed prop figure), `wookieepedia_legends_3.webp` (ROTJ film still). These show what realism means here: soft, slick, semi-glossy amphibian skin with fine wrinkles at the joints, real wet sheen, muted naturalistic colours — grey-green, ochre with dark brown spots, olive with yellow stripes, pale cream, salmon-pink and lilac with purple spots — long splayed clawed toes, long thin tails.
+
+⚠️ **Kept on purpose, ILLUSTRATION ONLY:** `wookieepedia_legends_1.webp` (*Wildlife of Star Wars* painting) and `wookieepedia_nl_gorgs1.webp` (TPM market concept painting) are stylised pencil-and-watercolour art. They stay only because they are the sole evidence for variant SHAPES 1–5 below (four-eyed lobed head, hammer head, spiky back, fin tail), which no realistic image shows. Use them for anatomy only; render every variant with the film props' wet realistic skin and muted colour, never their saturated watercolour, ink outlines or cartoon grin.
+
 🔑 **Gorg is an UMBRELLA TERM covering several amphibian species, each with its own legitimate look** (owner, 2026-10-04: there
 are many kinds, all equally considered gorg). The canon page calls "gorg" "a general term used
 for several species of amphibians"; Legends names "long-tailed, three-eyed, and four-eyed
@@ -81,6 +87,7 @@ large, numbering two to four." Longtail kind: "unusually long tails with an odd 
 - [ ] Webbed or long-toed splayed feet
 - [ ] (owner-supplied 2026-10-04) Two legs only, webbed AND clawed feet; long tongue; smooth slick soft wet skin, NOT scaled or dry; NOT frog-like (amphibious lizard)
 - [ ] (owner-supplied 2026-10-04) Many varied looks: purple wide-wedge heads, narrow shapes, green, spotted, striped; eyes small or large, two to four
+- [ ] Realistic rendering: soft slick wet amphibian skin like the TPM film props, natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 - A single-channel tint mask cannot express the purple-with-teal iridescence, the spots, or a
@@ -97,10 +104,11 @@ large, numbering two to four." Longtail kind: "unusually long tails with an odd 
 ## Candidate images
 - `owner_canon_gorgs_1.webp` — OWNER-SUPPLIED 2026-10-04: film still, gorgs hanging at the Mos Espa market (source: Facebook CDN link in the Long Shade sheet note)
 - `wookieepedia_canon_1.webp` — CANON page `Gorg`; wiki caption: infobox image. File: `Gorg tongue.png` — https://static.wikia.nocookie.net/starwars/images/c/ce/Gorg_tongue.png/revision/latest?cb=20221122050031
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Gorg/Legends`; wiki caption: infobox image. File: `Gorg-WoSW.png` — https://static.wikia.nocookie.net/starwars/images/d/da/Gorg-WoSW.png/revision/latest?cb=20230904021132
+- `wookieepedia_canon_2.webp` — LIVE-ACTION still, *Episode I The Phantom Menace*: Jar Jar snatches a gorg with his tongue at the Mos Espa gorg stall, many hanging gorgs in view. File: `JarJarGragra-TPM.jpg` — https://static.wikia.nocookie.net/starwars/images/c/cb/JarJarGragra-TPM.jpg/revision/latest?cb=20260730020320
+- `wookieepedia_legends_1.webp` — ILLUSTRATION (stylised, anatomy only) — LEGENDS page (non-canon continuity) `Gorg/Legends`; wiki caption: infobox image. File: `Gorg-WoSW.png` — https://static.wikia.nocookie.net/starwars/images/d/da/Gorg-WoSW.png/revision/latest?cb=20230904021132
 - `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Gorg/Legends`; wiki caption: A gorg for sale in Mos Espa. File: `Gorg db.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a2/Gorg_db.jpg/revision/latest?cb=20071124191517
 - `wookieepedia_legends_3.webp` — LEGENDS page (non-canon continuity) `Gorg/Legends`; wiki caption: Jabba the Hutt consumed gorgs live. File: `Longtailfrog.jpg` — https://static.wikia.nocookie.net/starwars/images/9/91/Longtailfrog.jpg/revision/latest?cb=20060620041238
-- `wookieepedia_nl_gorgs1.webp` — DUTCH Wookieepedia (nl) `Gorg` page illustration, four gorg varieties hanging for sale (TPM market). File: `Gorgs1.jpg` — https://static.wikia.nocookie.net/starwars/images/1/11/Gorgs1.jpg/revision/latest?cb=20070503175729&path-prefix=nl
+- `wookieepedia_nl_gorgs1.webp` — ILLUSTRATION (stylised, anatomy only) — DUTCH Wookieepedia (nl) `Gorg` page illustration, four gorg varieties hanging for sale (TPM market). File: `Gorgs1.jpg` — https://static.wikia.nocookie.net/starwars/images/1/11/Gorgs1.jpg/revision/latest?cb=20070503175729&path-prefix=nl
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
