@@ -78,14 +78,16 @@ burrow and root; hatched from eggs as **tadpoles**.
 
 ## Visual brief
 
-The three references are all high-fidelity 3D/render sources, and they were chosen to
-cover **both races and both sexes** — which matters more here than for any other species
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Deleted: the *Clone Wars* render of the female Otolla Peppi Bow (`wookieepedia_otolla_female_peppi_bow.jpg`). Added: the live-action *Phantom Menace* still of Captain Tarpals riding a kaadu in Otoh Gunga (`wookieepedia_tarpals_tpm.png`). The two infobox images are *Phantom Menace*-era realistic CGI renders and stay. 🔴 **No realistic image of a female Gungan remains**: the pink skin, purple eyes and tied-back haillu below came from the deleted animated render and are now text/cite-level only.
+
+The references cover **both races** — which matters more here than for any other species
 in this batch, because the two races do not look alike.
 
 🔴 **The single skin gene in the def cannot represent this species.** Across the three
 images the skin is **mottled tan-olive with orange highlights** (Otolla male),
 **saturated mid-green** (Ankura male), and **strong magenta-pink with pale belly
-patches** (Otolla female) — and the infobox cites **six** colours with sources. The
+patches** (Otolla female, animated only — deleted) — and the infobox cites **six** colours with sources. The
 Gungan palette is genuinely wide, and the def picks one narrow brown.
 
 **Common to all three:**
@@ -94,11 +96,12 @@ Gungan palette is genuinely wide, and the def picks one narrow brown.
   species' primary silhouette feature.
 - 🔑 **Eyes on short stalks — two separate mobile pods rising from the top of the
   skull**, each with a visible lid, well above and behind the bill. On the Otolla male
-  they are amber-yellow; on the Otolla female **purple**. This is the second silhouette
+  they are amber-yellow; on the (animated, deleted) Otolla female **purple**. This is the second silhouette
   feature and the one a text prompt never gets right.
 - 🔑 **Haillu: long pendulous ear-flaps hanging from the sides of the head**, leathery
   and strap-like, reaching to the shoulder or below. On the male they hang loose over a
-  head-cloth; on the female they are **tied back into a long tail** — so they are
+  head-cloth (Tarpals, live-action, wears his under a helmet with the haillu hanging behind); on the
+  animated female they were **tied back into a long tail** — so they are
   handled like hair even though they are ears. Confirms "most prominent in the Otolla."
 - **Skin is leathery and mottled**, matte, with darker blotching over knees, thighs and
   shoulders and a paler ventral surface. Not smooth and not scaly.
@@ -108,7 +111,7 @@ Gungan palette is genuinely wide, and the def picks one narrow brown.
   not visible on any of these three individuals.)
 
 **Otolla vs Ankura, which the def does not distinguish at all:**
-- **Otolla** (`wookieepedia_otolla_warrior.jpg`, `..._peppi_bow.jpg`): **extremely
+- **Otolla** (`wookieepedia_otolla_warrior.jpg`, `wookieepedia_tarpals_tpm.png`): **extremely
   lanky** — long thin arms, very long bandy legs that bow outward and flare at the
   calf, narrow chest, no visible musculature. The 2 m / 75 kg figure clearly describes
   *this* race. Prominent bill, eyes on stalks, long haillu.
@@ -144,6 +147,7 @@ where they diverge rather than averaging them.
 - [ ] Leathery, mottled, matte skin with darker blotching over knees/thighs/shoulders and a paler ventral surface — not smooth or scaly
 - [ ] Three broad, splayed toes per foot; hands with four long digits
 - [ ] No hair anywhere on the head or face
+- [ ] Realistic rendering: matte leathery mottled skin under natural light as in the *Phantom Menace* CGI, no outlines, no cartoon shading
 
 ## Engine limits
 - **The shipped head cannot show any skin colour at all.** Both Gungan `HeadTypeDef`s set
@@ -219,9 +223,8 @@ where they diverge rather than averaging them.
   (File:Gungan warrior.png — the infobox **`option1=Otolla`** image → `wookieepedia_otolla_warrior.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/9/9c/BossNassFull-SWE.png
   (File:BossNassFull-SWE.png — the infobox **`option2=Ankura`** image, Boss Rugor Nass → `wookieepedia_ankura_boss_nass.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/a/af/PeppiBowFull-TCWCEJtB.png
-  (File:PeppiBowFull-TCWCEJtB.png — wiki caption *"Peppi Bow, a female Otolla Gungan
-  shaak herder"* → `wookieepedia_otolla_female_peppi_bow.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/8/8d/Captain_Tarpals.png/revision/latest?cb=20130121203445
+  (File:Captain Tarpals.png → `wookieepedia_tarpals_tpm.png`)
 - `https://www.starwars.com/databank/gungan` — **cited by the article but NOT fetched
   this pass.** Several biology facts above (hardy lungs, the bill, the tongue) carry the
   Databank as their underlying reference; only Wookieepedia's transcription was read.
@@ -240,10 +243,7 @@ where they diverge rather than averaging them.
   no stalks**, short blunt bill, haillu short and covered. Essential, because it shows
   the def represents only one of the two canon races and only one of the six skin
   colours.
-- `wookieepedia_otolla_female_peppi_bow.jpg` — a **female Otolla** (Peppi Bow) from *The
-  Clone Wars*. Confirms the sourced **pink** skin and **purple** eyes on the same body
-  plan, shows the **haillu tied back like a ponytail**, and gives the female build:
-  even more attenuated than the male, with no other sexual dimorphism visible.
+- `wookieepedia_tarpals_tpm.png` — live-action *The Phantom Menace* still, Captain Roos Tarpals (Otolla) in armour on a kaadu in Otoh Gunga: lanky build, bill, haillu; file `Captain Tarpals.png` — https://static.wikia.nocookie.net/starwars/images/8/8d/Captain_Tarpals.png/revision/latest?cb=20130121203445
 - `donor_current_sprite.png` — real Gungan mod art
   (`.../Heads/Gungan/Male_Normal_south.png`). Shape-wise the best donor in this batch —
   it has the bill and the eye stalks — but it is a **measured pure-greyscale mask that
