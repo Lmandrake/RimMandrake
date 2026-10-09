@@ -11,8 +11,19 @@ change ships the moment the service sees it; this launcher only owns the window.
   - toasts for new red / amber incidents are raised HERE with CREATE_NO_WINDOW, never from
     a WSL service (a service-launched powershell.exe steals focus — memwatch note).
   - probes RimWorldWin64.exe every 30 s and posts it to the spine.
-Autostart: a shortcut in the Startup folder (install_autostart.py). Single instance.
+Autostart: the 'RimFlow Pulse' scheduled task (install_autostart.ps1, logon + every 10 min).
+Single instance, with a watchdog: a new launch that finds the mutex held checks whether the
+holder's window still answers (SendMessageTimeout WM_NULL); a hung or windowless holder is
+killed by PID and replaced, a healthy one is left alone (exit 0, no flicker). The running
+widget also watches itself: GUI thread unanswering for 60 s -> dump all stacks to the log and
+relaunch (at most 3 times an hour).
+
+🔴 js_api objects must keep every non-API attribute UNDERSCORED. pywebview's get_functions()
+walks every public attribute of js_api recursively on a worker thread; a public `window`
+attribute led it into the WinForms form's .NET object graph and wedged the GUI thread
+(widget 'Not Responding', 2026-10-08, measured with py-spy).
 """
+import faulthandler
 import ctypes
 import json
 import os
@@ -75,11 +86,127 @@ def save(path, obj):
     os.replace(tmp, path)
 
 
+TITLE = "RimFlow Pulse"
+PIDFILE = os.path.join(APPDIR, "lantern.pid")
+RELAUNCHES = os.path.join(APPDIR, "relaunches.json")
+k32 = ctypes.windll.kernel32
+k32.CreateMutexW.restype = ctypes.c_void_p
+k32.OpenProcess.restype = ctypes.c_void_p
+k32.TerminateProcess.argtypes = [ctypes.c_void_p, ctypes.c_uint]
+k32.CloseHandle.argtypes = [ctypes.c_void_p]
+k32.WaitForSingleObject.argtypes = [ctypes.c_void_p, ctypes.c_uint]
+user32.FindWindowW.restype = ctypes.c_void_p
+user32.SendMessageTimeoutW.argtypes = [ctypes.c_void_p, ctypes.c_uint, ctypes.c_void_p, ctypes.c_void_p,
+                                       ctypes.c_uint, ctypes.c_uint, ctypes.c_void_p]
+user32.GetWindowThreadProcessId.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+EnumProc = ctypes.WINFUNCTYPE(ctypes.c_bool, ctypes.c_void_p, ctypes.c_void_p)
+user32.EnumWindows.argtypes = [EnumProc, ctypes.c_void_p]
+user32.GetWindowTextW.argtypes = [ctypes.c_void_p, ctypes.c_wchar_p, ctypes.c_int]
+
+
+def window_of_pid(pid):
+    """The widget's top-level window owned by `pid` (enumerated, never via .NET)."""
+    found = []
+
+    def cb(h, _):
+        p = wintypes.DWORD()
+        user32.GetWindowThreadProcessId(h, ctypes.byref(p))
+        if p.value == pid:
+            buf = ctypes.create_unicode_buffer(64)
+            user32.GetWindowTextW(h, buf, 64)
+            if buf.value == TITLE:
+                found.append(h)
+                return False
+        return True
+    user32.EnumWindows(EnumProc(cb), None)
+    return found[0] if found else None
+
+
+def answers(hwnd, ms=3000):
+    """True if the window's thread pumps messages within `ms` (what Windows calls Responding)."""
+    res = ctypes.c_size_t()
+    # WM_NULL, SMTO_ABORTIFHUNG|SMTO_BLOCK
+    return bool(user32.SendMessageTimeoutW(hwnd, 0, None, None, 0x0002 | 0x0001, ms, ctypes.byref(res)))
+
+
+k32.QueryFullProcessImageNameW.argtypes = [ctypes.c_void_p, ctypes.c_uint, ctypes.c_wchar_p, ctypes.c_void_p]
+
+
+def kill(pid):
+    """Kill by PID, only if that PID is still a python process (a recycled PID is left alone)."""
+    h = k32.OpenProcess(0x0001 | 0x00100000 | 0x1000, False, pid)  # TERMINATE|SYNCHRONIZE|QUERY_LIMITED
+    if not h:
+        return False
+    try:
+        buf, n = ctypes.create_unicode_buffer(1024), wintypes.DWORD(1024)
+        k32.QueryFullProcessImageNameW(h, 0, buf, ctypes.byref(n))
+        if not os.path.basename(buf.value).lower().startswith("python"):
+            log(f"watchdog: pid={pid} is {buf.value!r}, not python: not killing")
+            return False
+        k32.TerminateProcess(h, 7)
+        k32.WaitForSingleObject(h, 5000)
+        return True
+    finally:
+        k32.CloseHandle(h)
+
+
+def take_mutex():
+    h = k32.CreateMutexW(None, False, "Local\\RimFlowPulseLantern")
+    return h, k32.GetLastError() == 183  # ERROR_ALREADY_EXISTS
+
+
 def single_instance():
-    h = ctypes.windll.kernel32.CreateMutexW(None, False, "Local\\RimFlowPulseLantern")
-    if ctypes.windll.kernel32.GetLastError() == 183:  # ERROR_ALREADY_EXISTS
+    """Hold the mutex; replace a hung or windowless holder; leave a healthy one alone."""
+    h, taken = take_mutex()
+    if not taken:
+        return h
+    info = load(PIDFILE, {})
+    pid, started = info.get("pid"), info.get("t", 0)
+    hwnd = window_of_pid(pid) if pid else None
+    if not hwnd:  # no/stale pid file: find the holder by its window title
+        h2 = user32.FindWindowW(None, TITLE)
+        if h2:
+            p = wintypes.DWORD()
+            user32.GetWindowThreadProcessId(h2, ctypes.byref(p))
+            if p.value != pid:
+                pid, hwnd, started = p.value, h2, 0
+    if hwnd and answers(hwnd):
+        sys.exit(0)  # healthy: the 10-minute task re-run is a no-op
+    if not hwnd and time.time() - started < 90:
+        log(f"holder pid={pid} has no window yet ({int(time.time() - started)} s old): leaving it")
         sys.exit(0)
-    return h
+    log(f"watchdog: holder pid={pid} {'is NOT RESPONDING' if hwnd else 'has no window'}: killing it")
+    k32.CloseHandle(h)
+    if pid:
+        kill(pid)
+    for _ in range(20):
+        h, taken = take_mutex()
+        if not taken:
+            return h
+        k32.CloseHandle(h)
+        time.sleep(0.5)
+    log("watchdog: mutex still held after kill; giving up this run")
+    sys.exit(0)
+
+
+def relaunch_self(reason):
+    """Hung GUI thread: dump stacks, start a fresh copy, die. Capped at 3 an hour (no flicker loops)."""
+    now = time.time()
+    recent = [t for t in load(RELAUNCHES, []) if now - t < 3600]
+    try:
+        with open(LOG, "a", encoding="utf-8") as fh:
+            fh.write(time.strftime("%Y-%m-%d %H:%M:%S ") + f"self-watchdog: {reason}; stacks:\n")
+            faulthandler.dump_traceback(file=fh, all_threads=True)
+    except OSError:
+        pass
+    if len(recent) < 3:
+        save(RELAUNCHES, recent + [now])
+        log("self-watchdog: relaunching")
+        subprocess.Popen([sys.executable, os.path.abspath(__file__)], creationflags=0x00000008 | 0x00000200,
+                         close_fds=True)  # DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP
+    else:
+        log("self-watchdog: 3 relaunches this hour; exiting and leaving it to the scheduled task")
+    os._exit(3)
 
 
 FALLBACK = """<!doctype html><html><head><meta charset="utf-8"><style>
@@ -99,10 +226,11 @@ if(r.ok)location.href='http://127.0.0.1:8765/';}catch(e){}},5000);</script></bod
 
 
 class Api:
+    # 🔴 every non-API attribute is _underscored: pywebview walks public attributes recursively
     def __init__(self):
-        self.window = None
-        self.toasted = load(TOASTED, {})
-        self.lock = threading.Lock()
+        self._window = None
+        self._toasted = load(TOASTED, {})
+        self._lock = threading.Lock()
 
     def open(self, target):
         target = str(target or "")
@@ -127,13 +255,13 @@ class Api:
             return False
 
     def toast(self, key, title, body):
-        with self.lock:
-            if key in self.toasted:
+        with self._lock:
+            if key in self._toasted:
                 return False
-            self.toasted[key] = time.time()
+            self._toasted[key] = time.time()
             cutoff = time.time() - 7 * 86400
-            self.toasted = {k: v for k, v in self.toasted.items() if v > cutoff}
-            save(TOASTED, self.toasted)
+            self._toasted = {k: v for k, v in self._toasted.items() if v > cutoff}
+            save(TOASTED, self._toasted)
         threading.Thread(target=raise_toast, args=(str(title), str(body)), daemon=True).start()
         try:
             post("/api/metric", {"m": "toast", "key": str(key)})
@@ -143,7 +271,7 @@ class Api:
 
     def set_collapsed(self, collapsed):
         """The ONLY resize: his click on collapse/expand. Data updates never move or resize it."""
-        hwnd = hwnd_of(self.window) if self.window else None
+        hwnd = window_of_pid(os.getpid())
         st = load(STATE, {})
         st["collapsed"] = bool(collapsed)
         save(STATE, st)
@@ -185,13 +313,6 @@ def alive():
         return True
     except Exception:
         return False
-
-
-def hwnd_of(window):
-    try:
-        return int(window.native.Handle.ToInt64())
-    except Exception:
-        return user32.FindWindowW(None, "RimFlow Pulse")
 
 
 HWND_TOPMOST = ctypes.c_void_p(-1)
@@ -243,7 +364,7 @@ def set_size(hwnd, w_log, h_log):
     if y + h > wa.bottom:          # grew past the bottom of the screen: slide up, never off-screen
         y = max(wa.top, wa.bottom - h)
     # SWP_NOACTIVATE|SWP_NOOWNERZORDER, HWND_TOPMOST
-    user32.SetWindowPos(hwnd, HWND_TOPMOST, x, y, w, h, 0x0010 | 0x0200)
+    user32.SetWindowPos(hwnd, HWND_TOPMOST, x, y, w, h, 0x0010 | 0x0200 | 0x4000)  # +SWP_ASYNCWINDOWPOS
 
 
 def place_initial(hwnd):
@@ -253,10 +374,11 @@ def place_initial(hwnd):
     x, y = st.get("px"), st.get("py")
     if x is not None and wa.left - w // 2 < x < wa.right - 40 and wa.top <= y < wa.bottom - 40:
         if abs(r.left - x) <= 4 and abs(r.top - y) <= 4:
+            log(f"restored at {r.left},{r.top} (size {w}x{h})")
             return                     # created where he left it: do not touch it
     else:
         x, y = wa.right - w - 24, wa.bottom - h - 24
-    user32.SetWindowPos(hwnd, HWND_TOPMOST, int(x), int(y), 0, 0, 0x0001 | 0x0010 | 0x0200)
+    user32.SetWindowPos(hwnd, HWND_TOPMOST, int(x), int(y), 0, 0, 0x0001 | 0x0010 | 0x0200 | 0x4000)
     log(f"placed at {x},{y} (work area {wa.left},{wa.top},{wa.right},{wa.bottom}, size {w}x{h})")
 
 
@@ -271,7 +393,7 @@ def remember(hwnd):
 
 def pin(hwnd):
     # HWND_TOPMOST, SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_NOOWNERZORDER
-    user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0200)
+    user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0200 | 0x4000)
 
 
 def round_corners(hwnd):
@@ -280,18 +402,39 @@ def round_corners(hwnd):
 
 
 def background(window):
+    """Worker thread. Touches the window only through Win32 (async SetWindowPos, SendMessageTimeout),
+    never through pywebview/.NET properties, so it can neither block nor be blocked by the GUI thread."""
+    log("stage: background thread up")
     hwnd = None
+    t0 = time.time()
     down_since = None
     last_heal = 0
     last_probe = 0
+    hung_since = None
+    loaded_logged = False
     while True:
         try:
             if not hwnd:
-                hwnd = hwnd_of(window)
+                hwnd = window_of_pid(os.getpid())
                 if hwnd:
+                    log(f"stage: window hwnd={hwnd} after {time.time() - t0:.1f} s")
                     round_corners(hwnd)
                     place_initial(hwnd)
+                elif time.time() - t0 > 90:
+                    relaunch_self("no window after 90 s")
             if hwnd:
+                if answers(hwnd, 2000):
+                    if hung_since:
+                        log(f"GUI thread answering again after {time.time() - hung_since:.0f} s")
+                    hung_since = None
+                else:
+                    hung_since = hung_since or time.time()
+                    log(f"GUI thread not answering ({time.time() - hung_since:.0f} s)")
+                    if time.time() - hung_since > 60:
+                        relaunch_self("GUI thread not answering for 60 s")
+                if not loaded_logged and window.events.loaded.is_set():
+                    loaded_logged = True
+                    log(f"stage: page loaded + js api ready after {time.time() - t0:.1f} s")
                 pin(hwnd)
                 remember(hwnd)  # games and fullscreen apps drop topmost; re-pin without activating
             ok = alive()
@@ -299,7 +442,7 @@ def background(window):
             if ok:
                 if down_since:
                     log("spine back")
-                    if window.get_current_url() in (None, "", "about:blank") or "127.0.0.1" not in (window.get_current_url() or ""):
+                    if hung_since is None and (window.get_current_url() in (None, "", "about:blank") or "127.0.0.1" not in (window.get_current_url() or "")):
                         window.load_url(URL)
                 down_since = None
                 if now - last_probe > 30:
@@ -322,7 +465,13 @@ def background(window):
 
 
 def main():
+    log(f"stage: launch pid={os.getpid()} exe={sys.executable}")
     _mutex = single_instance()  # noqa: F841 (held for the process lifetime)
+    save(PIDFILE, {"pid": os.getpid(), "t": time.time()})
+    try:
+        faulthandler.enable(open(os.path.join(APPDIR, "crash.log"), "a", encoding="utf-8"), all_threads=True)
+    except OSError:
+        pass
     api = Api()
     st = load(STATE, {})
     h0 = COLLAPSED_H if st.get("collapsed") else EXPANDED_H
@@ -336,9 +485,9 @@ def main():
         win = webview.create_window("RimFlow Pulse", URL, **kw)
     else:
         win = webview.create_window("RimFlow Pulse", html=FALLBACK, **kw)
-    api.window = win
+    api._window = win
 
-    log(f"start pid={os.getpid()}")
+    log(f"stage: mutex held, window created (pos={pos or 'default'}, h={h0}); starting GUI loop")
     webview.start(background, (win,), private_mode=False,
                   storage_path=os.path.join(APPDIR, "webview"))
 
