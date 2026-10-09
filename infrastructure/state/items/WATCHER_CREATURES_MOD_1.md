@@ -55,9 +55,9 @@ Mod Settings toggle per feature; every DLC is assumed present.
   camera and just watched and rotated to watch, then always pulled away when approached would be
   hilarious and very Star Wars."* The Watcher is a camera stalk; design in pitch §5.
 - **Grey Sea:** *"That is not a watcher, that's its own creepy thing. Add an independent watcher
-  that hides in place."* The fessk is off the list; the member is the new drossik.
+  that hides in place."* The fessk is off the list; the member is the new Saltgaze.
 - **Contagion:** *"Of course it can get another creature. Just make one."* The member is the new
-  illuvek.
+  Unblinking.
 
 ## owner ruling (third card, 2026-10-08, typed)
 
