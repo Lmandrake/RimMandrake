@@ -98,6 +98,16 @@
          exactly one terrain (RUT_ScaldMargin), already in this mod. -->
     <wildPlants>
       <RM_Crowncarpet>0.4</RM_Crowncarpet>
+      <!-- SCALD_UNDERWATER_FLORA_1 (2026-10-08): the seven Route A understorey flora
+           (RM_ScaldUnderstorey.xml), commonalities from the design pass. Glasskelle and
+           Pulsebead are Route B (vent GenStep), deliberately not here. -->
+      <RM_Simmerlace>0.9</RM_Simmerlace>
+      <RM_Threshreed>0.6</RM_Threshreed>
+      <RM_Foamgorse>0.7</RM_Foamgorse>
+      <RM_Vekkfan>0.6</RM_Vekkfan>
+      <RM_Seepcandle>0.5</RM_Seepcandle>
+      <RM_Kettlewick>0.5</RM_Kettlewick>
+      <RM_Thurlsponge>0.4</RM_Thurlsponge>
     </wildPlants>
 
     <!-- FISH_BESTIARY_BUILD_1 / SEA_FLOOR_AND_CATCH_PASS_1 — the margin
