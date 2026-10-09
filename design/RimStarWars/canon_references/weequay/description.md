@@ -27,9 +27,11 @@ their hair long.
 - **Weequays could also be Force-sensitive.**
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: `wookieepedia_two_weequays.jpg` (*Clone Wars* CGI, Hondo Ohnaka and a crewman). Added `wookieepedia_weequay_rotj_still.jpg`, a *Return of the Jedi* production still of the skiff guards beside Luke and Han — several live-action Weequays full-body, confirming the putty hide, topknots and workwear across individuals. Everything remaining is live-action.
+
 🔴 **The six-colour skin list ("blue, brown, gray, pink, red, yellow") badly
 misdescribes the canonical Weequay, and every image agrees against it.** The
-full-body reference costume, the two-Weequay image and the live-action bartender
+full-body reference costume, the *Return of the Jedi* skiff still and the live-action bartender
 all show a **desaturated putty grey-brown** — the colour of dried clay or weathered
 leather. There is no blue, red or yellow Weequay in any of the three images. Treat
 the colour list as a menu of rare individual variation and the canonical hue as
@@ -64,7 +66,7 @@ Also from the images:
   spacer/guard workwear**. A Weequay should read as a person in workwear with a
   cracked-leather head and one topknot; the species has no costume of its own.
 - The **live-action bartender** confirms hue and furrowing in a modern production
-  and shows the topknot again; the **two-Weequay** image confirms that the topknot
+  and shows the topknot again; the *Return of the Jedi* skiff still (`wookieepedia_weequay_rotj_still.jpg`) confirms that the topknot
   and the furrowed hide recur across individuals rather than being one character's
   makeup.
 
@@ -88,6 +90,7 @@ on disk supplies the cracked-hide surface texture either.**
 - [ ] Bald, high, domed cranium with one thick coarse topknot/ponytail growing from the back of the skull and hanging forward past the chest
 - [ ] Small, dark, deep-set eyes under a heavy creased brow
 - [ ] Small nodules/bumps scattered along the jaw (not true, tall horns)
+- [ ] Realistic rendering: natural cracked-leather prosthetic texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known — the donor evidence shows the jaw nodules and grey-brown skin are already wired via existing genes; the missing topknot is attributed to the `Hair_BaldOnly` gene forcing every Weequay bald, and the missing cracked-hide texture to an absent head sprite, not to a pipeline constraint.
@@ -98,7 +101,7 @@ none known — the donor evidence shows the jaw nodules and grey-brown skin are 
   `https://starwars.fandom.com/api.php?action=parse&page=Weequay&format=json&prop=wikitext`,
   31,517 chars, 2026-09-15)
 - https://static.wikia.nocookie.net/starwars/images/5/54/PagettiRook-RotJAVA.png (File:PagettiRook-RotJAVA.png, the infobox image → wookieepedia_infobox_fullbody.jpg)
-- https://static.wikia.nocookie.net/starwars/images/1/17/Weequays.png (File:Weequays.png → wookieepedia_two_weequays.jpg)
+- https://static.wikia.nocookie.net/starwars/images/6/65/WeequayLuke-ST.jpg (File:WeequayLuke-ST.jpg → wookieepedia_weequay_rotj_still.jpg)
 - https://static.wikia.nocookie.net/starwars/images/7/73/WeequayBartenderMando.png (File:WeequayBartenderMando.png → wookieepedia_bartender_liveaction.jpg)
 - NOT fetched this pass: https://www.starwars.com/databank/weequay (official Databank).
 
@@ -109,9 +112,7 @@ none known — the donor evidence shows the jaw nodules and grey-brown skin are 
   against the colour list, the whole-face cracked-hide furrowing, the bald dome, the
   single heavy topknot falling forward over the shoulder, the sunken dark eyes, the
   flat broad nose, the jaw nodules, and the ordinary leather-jerkin workwear.
-- `wookieepedia_two_weequays.jpg` — two Weequays together; shows the topknot and
-  the furrowed hide recurring across individuals, which is what makes them species
-  traits rather than one character's makeup.
+- `wookieepedia_weequay_rotj_still.jpg` — live-action *Return of the Jedi* production still, file `WeequayLuke-ST.jpg` (1600×1200): several Weequay skiff guards full-body beside Luke and Han — the hide, topknots and workwear recur across individuals — https://static.wikia.nocookie.net/starwars/images/6/65/WeequayLuke-ST.jpg/revision/latest?cb=20100114145741
 - `wookieepedia_bartender_liveaction.jpg` — a live-action Weequay from the
   Mandalorian era; independent modern-production confirmation of hue, furrowing and
   topknot.

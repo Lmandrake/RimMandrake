@@ -68,66 +68,20 @@ the canon article frames mind control as a rumour *caused by* their social skill
 
 ## Visual brief
 
-🔴 **This is the species where lighting has to be subtracted, and doing so changes the
-answer.** Umbara is a world of eternal twilight and every screencap is drenched in
-coloured ambient light. Three canon images plus one Legends plate, compared against each
-other:
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted, both *Clone Wars*: `wookieepedia_mee_deechi_face.jpg` (Mee Deechi close-up) and `wookieepedia_militia_soldier.jpg` (militia trooper). Added live-action: `wookieepedia_sly_moore_still.jpg` — Sly Moore, the Umbaran aide of Palpatine (*Attack of the Clones* / *Revenge of the Sith*), a costume-and-makeup portrait under even light. The canon infobox (`wookieepedia_senator_infobox.jpg`, an Umbaran senator from *Revenge of the Sith*) and the realistic Legends painting remain.
 
-**The two heavily-lit sources, and what they are NOT evidence of:**
+**Skin, from the evenly lit realistic images:** **very pale, desaturated, chalky white with a cool lavender-to-bluish cast** — near-white on Sly Moore with lilac-grey shading in the hollows, a little more violet on the infobox senator, blue-lavender in the Legends painting. Not grey-sickly, not green. (The green-teal face of the deleted militia trooper was Umbara's ambient light, not skin.)
 
-- `wookieepedia_militia_soldier.jpg` (Clone Wars, Umbaran militia trooper) shows a face
-  whose lit side is **frankly green-teal**. ⛔ That is battlefield lighting from
-  Umbara's own glow, not skin. Nothing in either article gives Umbarans green skin.
-- `wookieepedia_mee_deechi_face.jpg` (Clone Wars close-up, Senate chamber) shows a face
-  reading **near-white/cool cream** on the lit side against an almost black background —
-  the opposite bias, blown out toward white.
+**Face:**
+- **Gaunt and hollow-cheeked**, high hard cheekbones, long narrow jaw, prominent brow, high bald dome on Sly Moore and the senator.
+- **Eyes:** 🔴 live-action Sly Moore's eyes are **very pale, almost colourless grey-white irises with small dark pupils**, deep-set and ringed by **smoky lavender-grey shadow** around the sockets — so "colourless" is close to right in live action, but there is still a pupil. Never a blank solid-white eye.
+- **Eye-socket shading:** soft smoky lavender-grey around the eyes (Sly Moore). ⚠️ The **hard-edged domino-mask grey band** the old brief made the species' identifying mark came only from the deleted animated Deechi and militia images — **live action shows soft shadowing, not a graphic band.**
+- **Lips:** pale, slightly greyed, close to skin tone.
+- **No eyebrows, no facial hair.**
 
-**The well-lit illustration is the colour reference of record.**
-`wookieepedia_senator_infobox.jpg` (the canon infobox, a painted full-figure with even
-lighting) shows the true value: **a very pale desaturated skin with a distinct
-LAVENDER/lilac-violet cast** — pink-violet rather than blue, and definitely not grey and
-not green. `wookieepedia_negas_legends.jpg` agrees, reading pale with a **blue-lavender**
-cast. So the infobox's "pale and bluish" is directionally right but reads **violet** in
-the art, and the two coloured screencaps must not be sampled for skin at all.
+**Hair.** Canon text: "Although Umbarans did have hair, some of them either were bald or shaved their heads." Every remaining image is **bald**; the silver-white slicked-back hair was the deleted animated Deechi — hair is now sourced in text only.
 
-**What survives the lighting subtraction — i.e. is real pigment, present in both a lit
-illustration and a dim screencap:**
-
-- **Gaunt, emaciated face**: hollow cheeks under high hard cheekbones, a long narrow
-  jaw tapering to a pointed chin, prominent brow. Both sources.
-- **Grey markings around the eye sockets are REAL, and they are graphic.** On Deechi
-  they form a solid dark-grey band across both eyes like a domino mask, with a wedge
-  running down the temple and outer cheek — a hard-edged marking, not shading. This is
-  the species' most usable identifying mark at sprite scale. ⚠️ Note the disagreement:
-  they are **strongly present on Deechi and on the militia trooper, but nearly absent on
-  the well-lit infobox senator**, so treat the marking as varying by individual (or by
-  the show's design vs the illustrator's) rather than universal.
-- **Dark grey lips.** Deechi's mouth is markedly darker than the surrounding skin. The
-  infobox senator's is only slightly so.
-- **No eyebrows and no visible facial hair** on any of the four figures.
-
-**Eyes — where "colorless" oversells it.** The prose says colourless eyes and the
-infobox lists white as one option, but **no image shows a blank white eye.** The infobox
-senator has a **pale violet iris with a clearly visible darker pupil**; Deechi has a
-**light olive/hazel iris with a dark pupil**, catching a warm rim light. The eyes are
-**low-saturation and pale, with normal human structure** — sclera, iris, pupil — not
-featureless. A solid-white eye is the failure mode a text prompt produces from the word
-"colorless", and it is not what the references show.
-
-**Hair.** ⚠️ **Umbarans have hair and it is a real feature.** Deechi wears **silver-white
-hair, thick and slicked straight back** from a high hairline; the militia trooper is
-helmeted; the infobox senator and the Legends figure are **bald**. Canon says plainly:
-"Although Umbarans did have hair, some of them either were bald or shaved their heads."
-So the species is a **mix**, and silver-white slicked-back hair is as canonical as bald.
-
-**Build and dress.** Tall and **slender**, long-limbed, narrow-shouldered, with long
-slim five-fingered hands (Deechi's are visible and read as spidery). Ordinary human
-proportion and posture otherwise — this is a **near-human**, so unlike the Kaminoan
-the silhouette needs no structural change; the read is entirely **colour, markings,
-gauntness and hair.** Costume in three of the four images is a **voluminous
-high-collared robe or cloak** with a raised standing collar framing the head — that
-matches the canonical shadow cloak and is worth carrying into apparel rather than
-anatomy.
+**Build and dress.** Tall, slender, long-limbed, narrow-shouldered near-human; long slim hands. Costume is a **voluminous high-collared robe or cloak** whose raised standing collar frames the head (Sly Moore's shaggy grey-white fur-textured shadow cloak with white inner collar; the senator's pale robes).
 
 **`donor_current_sprite.png` is a UI icon, not pawn art, and is weak evidence** — the
 Umbaran-specific texture on disk is only
@@ -142,8 +96,8 @@ correction below lands on a *gene choice*, not on new art.
 🔴 **Repo def versus canon — three findings.**
 
 1. **`Hair_BaldOnly` + `Beard_NoBeardOnly` forces every Umbaran bald, and canon says
-   they have hair.** The article's sentence is explicit, and the Senate-era Umbaran the
-   audience actually knows — Mee Deechi — has a full head of silver-white hair. Baldness
+   they have hair.** The article's sentence is explicit, and the animated Senate-era Umbaran Mee Deechi
+   has a full head of silver-white hair (image deleted 2026-10-08; the text still stands). Baldness
    is *one* canonical option, not the species.
 2. **`Skin_LightGray` is the wrong direction.** Canon says "pale and bluish"; the
    evenly-lit reference art reads **pale lavender-violet**. Grey is the one value that
@@ -167,12 +121,12 @@ all** on `RSW_RimMandrakeKaminoan`, though the Kaminoan canon infobox lists it a
 species' sole distinction.
 
 ## Must show
-- [ ] Skin is a pale, desaturated lavender/lilac-violet (from the evenly-lit infobox), not grey and not green (battlefield-lit screencaps are not evidence of skin colour)
-- [ ] Gaunt, emaciated face: hollow cheeks, high hard cheekbones, a long narrow jaw tapering to a pointed chin, prominent brow
-- [ ] Dark-grey, hard-edged domino-style markings around the eye sockets are an available option (varies by individual — strongly present on some, nearly absent on others)
-- [ ] Eyes are pale/low-saturation but structurally normal, with a visible iris and pupil — never a blank solid-white eye
-- [ ] Hair is a real option, either silver-white and slicked straight back OR bald — not forced bald on every individual
-- [ ] Tall, slender, long-limbed, narrow-shouldered near-human build with no structural change from human
+- [ ] Skin is a very pale, desaturated chalky white with a cool lavender-to-bluish cast — not grey, not green
+- [ ] Gaunt face: hollow cheeks, high hard cheekbones, long narrow jaw, prominent brow, no eyebrows
+- [ ] Eyes very pale, near-colourless grey-white irises with small dark pupils, deep-set in soft smoky lavender-grey sockets — never a blank solid-white eye
+- [ ] Bald high dome is the image-attested look; hair is a text-sourced option, not forced either way
+- [ ] Tall, slender near-human build; voluminous high-collared shadow cloak framing the head
+- [ ] Realistic rendering: natural pale skin and makeup texture under even light, no outlines, no cartoon shading
 
 ## Engine limits
 none known — every finding in this entry (forced baldness, grey rather than violet skin, solid-white rather than structured eyes) is attributed to a specific gene choice (`Hair_BaldOnly`, `Skin_LightGray`, `Outland_Eye_White`) on a species built entirely from generic genes, not to a rendering-pipeline constraint.
@@ -189,12 +143,8 @@ none known — every finding in this entry (forced baldness, grey rather than vi
 - https://static.wikia.nocookie.net/starwars/images/b/bd/Umbaran_Republic_Senator_RotS.png
   (File:Umbaran Republic Senator RotS.png, the canon infobox image →
   `wookieepedia_senator_infobox.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/6/6f/Deechi_speaks.png
-  (File:Deechi speaks.png, captioned "Mee Deechi, a male Umbaran" in the Biology
-  section → `wookieepedia_mee_deechi_face.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/3/3e/UmbaranSoldier-MF61.png
-  (File:UmbaranSoldier-MF61.png, the Society section's Umbaran militia image →
-  `wookieepedia_militia_soldier.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/b/b7/SlyMooreStare-OP.png
+  (File:SlyMooreStare-OP.png, Sly Moore costume portrait → `wookieepedia_sly_moore_still.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/a/a7/Umbaran_NEGAS.jpg
   (File:Umbaran NEGAS.jpg, the Legends infobox image → `wookieepedia_negas_legends.jpg`)
 - NOT fetched this pass: https://www.starwars.com/databank/umbaran. The canon article
@@ -204,19 +154,10 @@ none known — every finding in this entry (forced baldness, grey rather than vi
 ## Candidate images
 
 - `wookieepedia_senator_infobox.jpg` — **the colour reference of record.** The canon
-  infobox: a full-length painted Umbaran senator under even, neutral light. This is the
-  only source that shows the skin without a coloured ambient wash, and it reads pale
+  infobox: a full-length Umbaran senator (*Revenge of the Sith*) under even, neutral light; skin reads pale
   **lavender-violet**. Also settles the slender near-human build, the bald option, the
   pale violet iris with a visible pupil, and the high-collared shadow-cloak silhouette.
-- `wookieepedia_mee_deechi_face.jpg` — **the reference of record for the face markings
-  and for hair.** Clone Wars close-up: the hard-edged grey eye-socket mask, the dark
-  lips, the gaunt cheekbones and pointed chin, and thick silver-white slicked-back
-  hair. ⚠️ Dim, near-monochrome environment — **do not sample skin value from this
-  image.**
-- `wookieepedia_militia_soldier.jpg` — full-body militia trooper, useful for the armoured
-  silhouette and for confirming the eye markings recur on a second individual.
-  ⛔ **Negative reference for colour**: the green-teal face is Umbara's ambient light,
-  and reading it as skin colour is exactly the mistake this entry exists to prevent.
+- `wookieepedia_sly_moore_still.jpg` — **the reference of record for the face.** Live-action costume/makeup portrait of Sly Moore (prequel trilogy), file `SlyMooreStare-OP.png` (999×1259): chalky pale skin, bald dome, near-colourless pale eyes with small pupils in smoky lavender sockets, high shaggy grey cloak collar — https://static.wikia.nocookie.net/starwars/images/b/b7/SlyMooreStare-OP.png/revision/latest?cb=20211214041804
 - `wookieepedia_negas_legends.jpg` — Legends infobox plate. Corroborates the
   pale-with-blue-lavender cast and the gaunt bald head under even lighting, and shows a
   tiered shadow-cloak garment. Legends design, so treat as supporting, not primary.
