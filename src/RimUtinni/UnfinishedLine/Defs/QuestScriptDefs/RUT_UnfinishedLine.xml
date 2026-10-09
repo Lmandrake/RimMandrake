@@ -346,6 +346,10 @@ The patterns were the Hive's memory, and the line was the Enclaves' only way to 
           <change>15</change>
           <reason>RUT_LineCountFineParts</reason>
         </li>
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_LineFlag">
+          <inSignal>WorkFine</inSignal>
+          <flag>countFine</flag>
+        </li>
         <li Class="QuestNode_End">
           <inSignal>WorkFine</inSignal>
           <outcome>Success</outcome>
@@ -363,6 +367,10 @@ The patterns were the Hive's memory, and the line was the Enclaves' only way to 
           <faction>$enclaveFaction</faction>
           <change>10</change>
           <reason>RUT_LineCountHonestParts</reason>
+        </li>
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_LineFlag">
+          <inSignal>WorkHonest</inSignal>
+          <flag>countHonest</flag>
         </li>
         <li Class="QuestNode_End">
           <inSignal>WorkHonest</inSignal>
@@ -383,6 +391,10 @@ The patterns were the Hive's memory, and the line was the Enclaves' only way to 
           <change>5</change>
           <reason>RUT_LineCountWornParts</reason>
         </li>
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_LineFlag">
+          <inSignal>WorkShoddy</inSignal>
+          <flag>countShoddy</flag>
+        </li>
         <li Class="QuestNode_End">
           <inSignal>WorkShoddy</inSignal>
           <outcome>Success</outcome>
@@ -400,6 +412,10 @@ The patterns were the Hive's memory, and the line was the Enclaves' only way to 
           <faction>$enclaveFaction</faction>
           <change>-5</change>
           <reason>RUT_LineCountNeglected</reason>
+        </li>
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_LineFlag">
+          <inSignal>WorkNeglected</inSignal>
+          <flag>countNeglected</flag>
         </li>
         <li Class="QuestNode_End">
           <inSignal>WorkNeglected</inSignal>
@@ -470,9 +486,10 @@ The patterns were the Hive's memory, and the line was the Enclaves' only way to 
   </QuestScriptDef>
 
   <!--
-    BEAT 2 — "The Envoy" (design §2.2), UNFINISHED_LINE_ENVOY_BEAT_1. The site choice that closes this
-    beat in the design is split out to UNFINISHED_LINE_SITE_CHOICE_1 (blocked on BENCH: Q1 was ruled
-    A, no player-owned line, which leaves the design's site B "your colony" unexplained).
+    BEAT 2 — "The Envoy" (design §2.2), UNFINISHED_LINE_ENVOY_BEAT_1. The beat closes with the
+    site choice (UNFINISHED_LINE_SITE_CHOICE_1): a ChoiceLetter offering A (foundry ruin), C (Enclave ground) and
+    D (the Ore Seams). Site B "your colony" is cut (owner, 2026-10-08, with Q1=A: no player-owned line). The
+    choice is stored on GameComponent_RUT_UnfinishedLine.lineSite; beats 3-5 read it (EffectiveSite).
 
     SPEC: ask - host the Hive's envoy (a foundry engineer and an aristocrat of the Hive, both its
                  overseers) and their two Enclave escorts at your colony for 4 days.
@@ -615,6 +632,10 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
           <change>10</change>
           <reason>RUT_LineEnvoyEscorted</reason>
         </li>
+        <!-- UNFINISHED_LINE_SITE_CHOICE_1: where the line stands. A, C or D; site B (your colony) is cut. -->
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_SiteChoice">
+          <inSignal>VisitDone</inSignal>
+        </li>
         <li Class="QuestNode_End">
           <inSignal>VisitDone</inSignal>
           <outcome>Success</outcome>
@@ -718,8 +739,9 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
           reward - cores to an Enclave courier: Hive +10, Enclaves +10, beat 4. Sold: silver, Empire goodwill,
                    and the parent chain fails with both peoples hostile.
           deadline - 12 days, the quest's own shown timer, stopped when the cores are home.
-    DELIVERY: the design delivers the cores "to the chosen site"; the site choice is UNFINISHED_LINE_SITE_CHOICE_1
-    (blocked), so until it lands an Enclave courier collects them from your colony.
+    DELIVERY: the design delivers the cores "to the chosen site"; the chosen site (A, C or D; GameComponent_RUT_UnfinishedLine.lineSite,
+    UNFINISHED_LINE_SITE_CHOICE_1) is stored, but the delivery at that site is owed (UNFINISHED_LINE_SITE_BEATS_1), so
+    an Enclave courier collects them from your colony meanwhile.
     The site's machinery is C#: SitePartWorker_RUT_FoundryRuin (cores), GenStep_RUT_FoundryRuin (hall + pack),
     QuestPart_RUT_PatternCores (home watch, broker, freed droids), QuestPart_RUT_SignalParent (the sell-out
     reaches the parent).
@@ -897,10 +919,10 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
                     crafter dies on the line: Fail, Hive -10 and Enclaves -10.
           reward - the crafter comes home with Crafting experience; the line is assembled, and beat 5 follows.
           deadline - 20 days (Mod Setting) to load the shuttle, the quest's own shown timer; then the 10-day lend.
-    WHERE: the site choice is UNFINISHED_LINE_SITE_CHOICE_1 (blocked), so, like beats 3 and 5, the beat happens at your
-    colony: ONE Enclave shuttle (Script_PawnLend's shape: QuestNode_ShuttleDelay + Util_TransportShip_Pickup) carries the
+    WHERE: the chosen site is stored (UNFINISHED_LINE_SITE_CHOICE_1) but the per-site delivery is owed
+    (UNFINISHED_LINE_SITE_BEATS_1), so, like beats 3 and 5, the beat happens at your colony: ONE Enclave shuttle (Script_PawnLend's shape: QuestNode_ShuttleDelay + Util_TransportShip_Pickup) carries the
     tithe as its requiredItems and the crafter as its one required colonist. The design's caravan TradeRequests to the site
-    (sites A/C/D) and monument blueprint (site B) wait on that ruling. The skill floor is a Harmony postfix on
+    (sites A/C/D) wait on UNFINISHED_LINE_SITE_BEATS_1. The monument blueprint (site B) is cut. The skill floor is a Harmony postfix on
     CompShuttle.IsAllowed scoped to this shuttle (UnfinishedLineTithe.cs). The lend goes to the Hive, or to the Enclaves
     while the Hive is hostile to you.
   -->
@@ -1090,8 +1112,8 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
                     stands and the spine offers the beat again.
           reward - the epic parent completes: the epilogue on RUT_UnfinishedLine.
           deadline - the run's length (Mod Setting, 2 days), then the hold window.
-    WHERE: the site choice is UNFINISHED_LINE_SITE_CHOICE_1 (blocked), so until it lands the strike comes to your
-    colony (the design's site B shape) and the line core (P6, not ordered under Q1=A) is not what can be lost.
+    WHERE: the chosen site is stored (UNFINISHED_LINE_SITE_CHOICE_1) but its defence-site variant is owed
+    (UNFINISHED_LINE_SITE_BEATS_1), so meanwhile the strike comes to your colony and the line core (P6, not ordered under Q1=A) is not what can be lost.
     Ends on BOTH the run finishing AND the strike broken (QuestNode_RUT_PassAll): a lord whose pawns are all
     dead, downed-and-taken or fled sends strike.AllEnemiesDefeated (Lord.Destroy, decompiled 1.6).
   -->

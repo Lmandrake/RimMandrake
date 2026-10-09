@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UNFINISHED_LINE_SITE_CHOICE_1: the site offer (the ChoiceLetter fallback; a reward-less QuestPart_Choice is UNMEASURED). -->
+<Defs>
+  <LetterDef ParentName="CustomChoiceLetterBase">
+    <defName>RUT_LineSiteOffer</defName>
+    <letterClass>RimMandrake.Utinni.UnfinishedLine.ChoiceLetter_RUT_LineSite</letterClass>
+  </LetterDef>
+</Defs>

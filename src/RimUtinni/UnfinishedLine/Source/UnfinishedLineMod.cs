@@ -46,6 +46,14 @@ namespace RimMandrake.Utinni.UnfinishedLine
         public static bool empireStrikesEnabled = true;
         public static float lineHeatPerDay = 1f;
         public static int strikeHeatThreshold = 30;
+        // UNFINISHED_LINE_SITE_CHOICE_1 (all PROVISIONAL): extra goodwill on top of the envoy beat's +10 / +15
+        public static bool siteChoiceEnabled = true;
+        public static int siteAEnclaveDelta = 5;
+        public static int siteAHiveDelta = 5;
+        public static int siteCEnclaveDelta = 10;
+        public static int siteCHiveDelta = -10;
+        public static int siteDEnclaveDelta = -15;
+        public static int siteDHiveDelta = 10;
 
         public override void ExposeData()
         {
@@ -83,6 +91,13 @@ namespace RimMandrake.Utinni.UnfinishedLine
             Scribe_Values.Look(ref empireStrikesEnabled, "empireStrikesEnabled", true);
             Scribe_Values.Look(ref lineHeatPerDay, "lineHeatPerDay", 1f);
             Scribe_Values.Look(ref strikeHeatThreshold, "strikeHeatThreshold", 30);
+            Scribe_Values.Look(ref siteChoiceEnabled, "siteChoiceEnabled", true);
+            Scribe_Values.Look(ref siteAEnclaveDelta, "siteAEnclaveDelta", 5);
+            Scribe_Values.Look(ref siteAHiveDelta, "siteAHiveDelta", 5);
+            Scribe_Values.Look(ref siteCEnclaveDelta, "siteCEnclaveDelta", 10);
+            Scribe_Values.Look(ref siteCHiveDelta, "siteCHiveDelta", -10);
+            Scribe_Values.Look(ref siteDEnclaveDelta, "siteDEnclaveDelta", -15);
+            Scribe_Values.Look(ref siteDHiveDelta, "siteDHiveDelta", 10);
         }
 
         private static Vector2 scroll = Vector2.zero;
@@ -192,6 +207,21 @@ namespace RimMandrake.Utinni.UnfinishedLine
             lineHeatPerDay = Mathf.Round(list.Slider(lineHeatPerDay, 0f, 5f) * 10f) / 10f;
             list.Label("Heat before a strike can come: " + strikeHeatThreshold);
             strikeHeatThreshold = Mathf.RoundToInt(list.Slider(strikeHeatThreshold, 5f, 120f));
+
+            list.GapLine();
+            list.Label("Where the line stands (end of beat 2)");
+            list.CheckboxLabeled("Offer the choice of where the line stands", ref siteChoiceEnabled,
+                "On: a letter at the end of beat 2 lets you choose the foundry ruin, Enclave ground or the Ore Seams. Off: the ruin (A) is chosen for you. "
+              + "The line never stands at your colony.");
+            list.Label("Foundry ruin: extra Enclave goodwill " + siteAEnclaveDelta + ", Hive " + siteAHiveDelta);
+            siteAEnclaveDelta = Mathf.RoundToInt(list.Slider(siteAEnclaveDelta, -30f, 30f));
+            siteAHiveDelta = Mathf.RoundToInt(list.Slider(siteAHiveDelta, -30f, 30f));
+            list.Label("Enclave ground: extra Enclave goodwill " + siteCEnclaveDelta + ", Hive " + siteCHiveDelta);
+            siteCEnclaveDelta = Mathf.RoundToInt(list.Slider(siteCEnclaveDelta, -30f, 30f));
+            siteCHiveDelta = Mathf.RoundToInt(list.Slider(siteCHiveDelta, -30f, 30f));
+            list.Label("The Ore Seams: extra Enclave goodwill " + siteDEnclaveDelta + ", Hive " + siteDHiveDelta);
+            siteDEnclaveDelta = Mathf.RoundToInt(list.Slider(siteDEnclaveDelta, -30f, 30f));
+            siteDHiveDelta = Mathf.RoundToInt(list.Slider(siteDHiveDelta, -30f, 30f));
 
             viewHeight = list.CurHeight + 20f;
             list.End();

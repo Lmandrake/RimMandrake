@@ -308,7 +308,7 @@ namespace RimMandrake.Utinni.UnfinishedLine
 
     /// <summary>RUT_FoundryStrike: an ordinary enemy raid by the strike faction (the Empire when it is hostile, as in
     /// First Light), possible only once line heat reaches the threshold, weighted by how far past it the heat runs.
-    /// It comes to your colony: where the line stands (UNFINISHED_LINE_SITE_CHOICE_1) is not built yet.</summary>
+    /// It comes to your colony: the per-site variant is owed (UNFINISHED_LINE_SITE_BEATS_1).</summary>
     public class IncidentWorker_RUT_FoundryStrike : IncidentWorker_RaidEnemy
     {
         public override float ChanceFactorNow(IIncidentTarget target)

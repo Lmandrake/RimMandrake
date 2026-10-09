@@ -24,7 +24,7 @@ from modcheck import Suite, ExpectationFailed  # noqa: E402
 
 suite = Suite("UnfinishedLine")
 suite.toggles = ["chainEnabled", "brokeredTruceEnabled", "coreBrokerEnabled", "lendSkillGateEnabled",
-                 "lineInWorldEnabled", "empireStrikesEnabled"]
+                 "lineInWorldEnabled", "empireStrikesEnabled", "siteChoiceEnabled"]
 
 PROOF = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineProof"
 SETTINGS_TYPE = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSettings"
@@ -419,3 +419,21 @@ def world(t):
             w("heat 0")
         if t._guard() and "strikeReady=False" not in text:
             raise ExpectationFailed("empireStrikesEnabled OFF but a strike is ready: %s" % text)
+
+
+@suite.chain("site_choice")
+def site_choice(t):
+    """UNFINISHED_LINE_SITE_CHOICE_1 (owner 2026-10-08): site B (your colony) is CUT; A, C, D only, stored on the
+    game component. Non-mutating: the live proof never picks a real site. First poke owed: ProofChoose("") after a
+    forced Envoy success, read the letter in the stack, click an option, read ProofSite -- a visual/stack step."""
+    with t.component("only_a_c_d_offered", toggle="siteChoiceEnabled"):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSiteProof", method="ProofSite")
+        text = str((r or {}).get("result", ""))
+        if t._guard() and "options=ACD" not in text:
+            raise ExpectationFailed("site options are not exactly A, C, D: %s" % text)
+    with t.component("site_b_is_refused", beyond_toggle=True):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSiteProof",
+                          method="ProofChoose", args="B")
+        text = str((r or {}).get("result", ""))
+        if t._guard() and not text.startswith("REFUSED"):
+            raise ExpectationFailed("site B was accepted: %s" % text)

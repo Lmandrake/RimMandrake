@@ -53,6 +53,8 @@ namespace RimMandrake.Utinni.UnfinishedLine
 
         public static LetterDef RUT_CoreBrokerOffer;
 
+        public static LetterDef RUT_LineSiteOffer;
+
         public static HistoryEventDef RUT_LineCoresSoldToEmpire;
 
         public static HistoryEventDef RUT_LineWildDroidFreed;

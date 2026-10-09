@@ -27,6 +27,13 @@ namespace RimMandrake.Utinni.UnfinishedLine
         public bool empireNoticedHive;        // Q4=A: the Geonosian Alliance arc's "the Empire has caught wind"
         public bool lineCompleted;
 
+        // UNFINISHED_LINE_SITE_CHOICE_1: where the line stands (A, C or D; "" until chosen) and beat 1's grade.
+        public string lineSite = "";
+        public string beat1Grade = "";
+
+        /// <summary>What beats 3-5 read: the choice, or A (neutral ground) while it is still unmade.</summary>
+        public string EffectiveSite => lineSite.NullOrEmpty() ? LineSites.A : lineSite;
+
         public void SetFlag(string flag)
         {
             switch (flag)
@@ -34,6 +41,10 @@ namespace RimMandrake.Utinni.UnfinishedLine
                 case "constructionBranchOpen": constructionBranchOpen = true; break;
                 case "empireNoticedHive": empireNoticedHive = true; break;
                 case "lineCompleted": lineCompleted = true; break;
+                case "countFine": beat1Grade = "Fine"; break;
+                case "countHonest": beat1Grade = "Honest"; break;
+                case "countShoddy": beat1Grade = "Shoddy"; break;
+                case "countNeglected": beat1Grade = "Neglected"; break;
                 default: Log.Warning("[UnfinishedLine] unknown line flag " + flag); break;
             }
         }
@@ -89,6 +100,8 @@ namespace RimMandrake.Utinni.UnfinishedLine
             Scribe_Values.Look(ref constructionBranchOpen, "constructionBranchOpen", false);
             Scribe_Values.Look(ref empireNoticedHive, "empireNoticedHive", false);
             Scribe_Values.Look(ref lineCompleted, "lineCompleted", false);
+            Scribe_Values.Look(ref lineSite, "lineSite", "");
+            Scribe_Values.Look(ref beat1Grade, "beat1Grade", "");
         }
     }
 
