@@ -105,6 +105,11 @@ self-declared incomplete.
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+Realism pass 2026-10-08: deleted the three cartoon images — `wookieepedia_buzzdroid_tools.jpg` and `wookieepedia_buzzdroid_on_starfighter.jpg` (*The Clone Wars* animation) and `wookieepedia_markone.jpg` (*Thrawn* comic panel; canon says the Mark One looks near-identical anyway). Added two *Revenge of the Sith* live-action frames: `wookieepedia_film_closeup.jpg` (a buzz droid on a starfighter hull, close) and `wookieepedia_film_on_wing.png` (buzz droids clambering over a Jedi starfighter wing beside R4-P17 — the canonical in-flight context and scale against a hull). With the photoreal infobox render they show: **shell outer faces a pale cream-khaki to olive with dark stepped/crenellated panel bands, scuffed and scratched; shell insides a dark hexagonal honeycomb**; the **central body is weathered mid-grey metal over black** (lighter than "near-black" — the animated version was darker and browner); thin black limbs with silver joints; glowing red lens cluster.
+
+
 🔴 **Answering the question directly: the repo sprite shows the DEPLOYED form — shell split into
 two open hemispheres held up like wings, limbs and eye exposed. The folded sphere does not exist
 on disk in any direction.** This is the same class of gap as the droideka's missing ball, and
@@ -136,11 +141,7 @@ form.** What it shows:
   spider-like.
 - Overall palette: **near-black body and limbs, olive-khaki shells, red eyes.** No bright metal.
 
-`wookieepedia_buzzdroid_tools.jpg` is the article's "well equipped for sabotage and mayhem"
-plate — a second view of the same deployed configuration, and the reference for the tool heads
-specifically. `wookieepedia_buzzdroid_on_starfighter.jpg` shows them **in their actual canon
-context — clinging to the hull of Skywalker's Eta-2 in flight** — which is the one thing a
-RimWorld pawn can never depict.
+`wookieepedia_film_on_wing.png` shows them **in their actual canon context — clambering over a Jedi starfighter wing in flight** — which is the one thing a RimWorld pawn can never depict.
 
 **What the repo sprite shows, and it is a strong match:**
 
@@ -177,9 +178,10 @@ RimWorld pawn can never depict.
 
 ## Must show
 - [ ] Deployed form only: two shell halves opened wide and held high to each side, outer faces mottled olive-khaki with dark grey ribbing
-- [ ] Compact dark near-black central body with a thin whip antenna rising from the top
+- [ ] Compact weathered grey-and-black central body with a thin whip antenna rising from the top
 - [ ] Multiple red photoreceptors (a cluster, not a single eye) on the body's front face
 - [ ] Six or more long thin multi-jointed black limbs splayed forward, with distinguishable tool heads (saw disc, drill, pincer)
+- [ ] Realistic rendering: scratched, weathered real metal shells and limbs, real lighting, no outlines, no cartoon shading
 
 ## Engine limits
 `skinShader` is `Cutout` with no colour channel and no mask — the PNG's own pixels are the shipping appearance, so a colour correction requires a repaint, not a def edit.
@@ -193,12 +195,10 @@ RimWorld pawn can never depict.
   (1,988 chars, **read in full**; the article is a `{{Droid-stub}}`)
 - https://static.wikia.nocookie.net/starwars/images/4/4d/BuzzDroidDetail-SWE.png
   (File:BuzzDroidDetail-SWE.png → `wookieepedia_buzzdroid_detail.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/a/af/BuzzDroid-TCWCEJtB.png
-  (File:BuzzDroid-TCWCEJtB.png → `wookieepedia_buzzdroid_tools.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/1/1a/AhsokaEta2.png
-  (File:AhsokaEta2.png → `wookieepedia_buzzdroid_on_starfighter.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/4/47/MarkOnePistoekaSabotageDroid-Thrawn2.png
-  (File:MarkOnePistoekaSabotageDroid-Thrawn2.png → `wookieepedia_markone.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/6/60/Buzzdroid-green.jpg/revision/latest?cb=20091201181441
+  (File:Buzzdroid-green.jpg → `wookieepedia_film_closeup.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/5/53/R4-P17_Buzz_Droids.png/revision/latest?cb=20130117050252
+  (File:R4-P17 Buzz Droids.png → `wookieepedia_film_on_wing.png`)
 - Named in the articles, **not fetched this pass**:
   https://starwars.fandom.com/wiki/Discord_missile ·
   https://starwars.fandom.com/wiki/Colicoid_Creation_Nest ·
@@ -207,23 +207,17 @@ RimWorld pawn can never depict.
   `src/RimStarWars/Droidworks/Source/gen_droidworks_defs.py` — do not hand-edit)
 
 ⚠️ **Not sourceable this pass:** no image of the **folded sphere** was found in either
-article's image set — all four images show the deployed form or the droid attached to a hull. So
+article's image set — every image shows the deployed form or the droid attached to a hull. So
 the sphere's exact appearance is asserted here **only from prose** ("encased in armored shells",
 "popped open", "0.25 meter diameter in sphere mode"). If the owner wants the sphere authored, a
 further image hunt is owed — the same debt the droideka entry records for its ball form.
 
 ## Candidate images
 
-- `wookieepedia_buzzdroid_detail.jpg` (1300×1300) — the article infobox: full deployed buzz droid
+- `wookieepedia_buzzdroid_detail.jpg` (1300×1300) — photoreal render, file `BuzzDroidDetail-SWE.png` (https://static.wikia.nocookie.net/starwars/images/4/4d/BuzzDroidDetail-SWE.png) — the article infobox: full deployed buzz droid
   on transparent background, shells open. **The proportion, limb-count and colour authority.**
-- `wookieepedia_buzzdroid_tools.jpg` (1015×770) — "well equipped for sabotage and mayhem";
-  second deployed view. **The reference for the individual tool heads** (saw, drill, pincer).
-- `wookieepedia_buzzdroid_on_starfighter.jpg` (1485×800) — buzz droids clinging to Anakin
-  Skywalker's Eta-2 at Cato Neimoidia. The canonical *context*, and evidence for scale relative
-  to a starfighter hull.
-- `wookieepedia_markone.jpg` (416×274) — the **Mark One** infobox image from *Thrawn* 2. Small
-  and comic-styled; **weak evidence for appearance**, and canon says the Mark One is anyway
-  near-indistinguishable from later models except for the doonium shell.
+- `wookieepedia_film_closeup.jpg` (1600×1200) — *Revenge of the Sith* live-action frame, a buzz droid on a starfighter hull lit green by a laser; file `Buzzdroid-green.jpg` — https://static.wikia.nocookie.net/starwars/images/6/60/Buzzdroid-green.jpg/revision/latest?cb=20091201181441 . Material and shell-pattern reference (ignore the green cast).
+- `wookieepedia_film_on_wing.png` (1920×816) — *Revenge of the Sith* live-action frame, buzz droids on a Jedi starfighter wing beside R4-P17; file `R4-P17 Buzz Droids.png` — https://static.wikia.nocookie.net/starwars/images/5/53/R4-P17_Buzz_Droids.png/revision/latest?cb=20130117050252 . Canonical context and scale against a hull.
 - `donor_current_sprite.png` (256×256) — repo JDS sprite, `south`/top-down, **deployed form**.
   Judge literally: `skinShader` is `Cutout`, no tint applied.
 - `donor_body_east.png` (256×256) — the profile frame.

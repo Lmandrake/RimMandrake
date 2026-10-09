@@ -106,6 +106,11 @@ except the Appearances/Sources listings.
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+Realism check 2026-10-08 (searched: both LR-57 pages, `Images of LR-57 combat droids`): **the only realistic depiction is `wookieepedia_lr57_bd513_carlac.jpg`, the *Star Wars: Destiny* painted card art** of Battle droid 513 — a modified unit. The stock droid exists only as *The Clone Wars* animated render (`wookieepedia_lr57_infobox.jpg`), **kept as anatomy-only reference** because nothing realistic shows the unmodified legs and arms. **Take the look from the painting:** heavy, pitted, rust-streaked dark bronze-brown metal, a deep-ribbed barrel body with real cast-iron weight, a **glowing red-orange main photoreceptor** with two small red lamps under it (the animated render shows it dull brown and unlit — the realistic art disagrees; see the eye note below), real-world snow and cold blue light. Take the proportions and the stock limbs from the animated render, never its smooth airbrushed shading.
+
+
 🔴 **Canon and Legends disagree on both the plating colour and the gun count, and the repo has
 picked the canon side of one and neither side of the other.**
 
@@ -181,6 +186,7 @@ strange — this droid is not humanoid.** What it shows:
 - [ ] Two long thin cannon arms projecting from the rear/underside, each ending in a fine double muzzle, projecting past the body's width
 - [ ] Two very long, whip-thin antennae rising vertically from the top of the cylinder
 - [ ] Warm mid-brown plating with darker brown shadow and rust-orange band accents
+- [ ] Realistic rendering: pitted, rust-streaked heavy cast metal with real lighting, no outlines, no cartoon shading
 
 ## Engine limits
 `skinShader` is `Cutout` with no colour channel and no mask — the PNG's own pixels are the shipping appearance, so a colour correction requires a repaint, not a def edit.
@@ -204,11 +210,11 @@ strange — this droid is not humanoid.** What it shows:
 
 ## Candidate images
 
-- `wookieepedia_lr57_infobox.jpg` (885×1160) — the infobox render, full body three-quarter on
-  transparent background. **The proportion and colour authority**: horizontal cylinder body,
+- `wookieepedia_lr57_infobox.jpg` (885×1160) — *The Clone Wars* **animated** infobox render (file `RetailCaucusDroid-TCWCEJtB.png`, https://static.wikia.nocookie.net/starwars/images/c/ce/RetailCaucusDroid-TCWCEJtB.png/revision/latest?cb=20241006203845), full body three-quarter on
+  transparent background. **Proportion authority only — anatomy-only, not the look target**: horizontal cylinder body,
   end-cap face, two double-barrelled cannon arms, two whip antennae, backward-jointed legs,
   weathered brown with rust banding.
-- `wookieepedia_lr57_bd513_carlac.jpg` (1008×887) — **Battle droid 513**, a *modified* LR-57,
+- `wookieepedia_lr57_bd513_carlac.jpg` (1008×887) — *Star Wars: Destiny* realistic painted card art (file `LR-57CombatDroid-AoN.png`, https://static.wikia.nocookie.net/starwars/images/7/7a/LR-57CombatDroid-AoN.png/revision/latest?cb=20190718035100); **the material and lighting target** — **Battle droid 513**, a *modified* LR-57,
   fighting Death Watch on Carlac. **Weak evidence for the stock chassis and label it as such**:
   this unit has an LM-432 crab droid leg and a B1 arm grafted on. Strong evidence for the
   salvage-hybrid look.
