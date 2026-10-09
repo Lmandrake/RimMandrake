@@ -1,0 +1,119 @@
+{
+  "success": true,
+  "message": "7 of 7 def(s) resolved",
+  "requested": 7,
+  "foundCount": 7,
+  "notFound": [],
+  "malformed": [],
+  "fieldsAsked": [
+    "label",
+    "description",
+    "letterText"
+  ],
+  "defs": [
+    {
+      "requested": "IncidentDef/PsychicDrone",
+      "found": true,
+      "defName": "PsychicDrone",
+      "defType": "IncidentDef",
+      "label": "a disturbance in the Force",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "label": "a disturbance in the Force"
+      }
+    },
+    {
+      "requested": "IncidentDef/PsychicSoothe",
+      "found": true,
+      "defName": "PsychicSoothe",
+      "defType": "IncidentDef",
+      "label": "the Force at peace",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "label": "the Force at peace"
+      }
+    },
+    {
+      "requested": "GameConditionDef/PsychicDrone",
+      "found": true,
+      "defName": "PsychicDrone",
+      "defType": "GameConditionDef",
+      "label": "a disturbance in the Force",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "letterText": "Every {0} colonist feels a wave of anxiety and anger!\n\nSome distant darkness in the Force is stirring. A disturbance presses on this site, tuned to only affect {0}s. For a few days, some people's mood will be quite a bit worse.\n\nThe disturbance level is {1}.",
+        "label": "a disturbance in the Force",
+        "description": "A great disturbance ripples through the Force, pressing on minds and driving people towards insanity."
+      }
+    },
+    {
+      "requested": "GameConditionDef/PsychicSoothe",
+      "found": true,
+      "defName": "PsychicSoothe",
+      "defType": "GameConditionDef",
+      "label": "the Force at peace",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "letterText": "Every {0} colonist smiles with contentment!\n\nThe Force is at peace over this site, tuned to only affect {0}s. For a few days, some people's mood will be quite a bit better.",
+        "label": "the Force at peace",
+        "description": "The Force settles into stillness over this site, calming minds and steadying hearts."
+      }
+    },
+    {
+      "requested": "GameConditionDef/PsychicDroner",
+      "found": true,
+      "defName": "PsychicDroner",
+      "defType": "GameConditionDef",
+      "label": "dark-side droner",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "letterText": "A dark-side droner has begun affecting this region.",
+        "label": "dark-side droner",
+        "description": "A dark-side droner tuned to the {0} gender is driving {0}s mad."
+      }
+    },
+    {
+      "requested": "GameConditionDef/PsychicSuppression",
+      "found": true,
+      "defName": "PsychicSuppression",
+      "defType": "GameConditionDef",
+      "label": "Force suppression field",
+      "modName": "Royalty",
+      "packageId": "ludeon.rimworld.royalty",
+      "fields": {
+        "letterText": "A Force-suppression field has begun reducing the consciousness of {0}s across the whole region. The effect is modulated by an individual's psychic sensitivity.",
+        "label": "Force suppression field",
+        "description": "A Force-suppression field is affecting {0}s and reducing their consciousness. The effect is modulated by an individual's psychic sensitivity.\n\n<i><color=#66E0E4FF>Royalty</color></i>"
+      }
+    },
+    {
+      "requested": "IncidentDef/PsychicEmanatorShipPartCrash",
+      "found": true,
+      "defName": "PsychicEmanatorShipPartCrash",
+      "defType": "IncidentDef",
+      "label": "ship part crash (Sith relic)",
+      "modName": "Core",
+      "packageId": "ludeon.rimworld",
+      "fields": {
+        "letterText": "A large piece of an ancient ship has crashed nearby.\n\nYour colonists can feel it in the back of their mind through the Force, exhorting unspeakable acts. A Sith relic is aboard, and it whispers to anyone near. It is not friendly.\n\nDestroy it as soon as possible. But beware - it will probably defend itself.",
+        "label": "ship part crash (Sith relic)"
+      }
+    }
+  ],
+  "ticksGame": -1,
+  "operation": {
+    "OperationId": "op_bb8cdc9211a040328a76e86969288787",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 584
+  },
+  "state": {
+    "programState": "Entry",
+    "hasCurrentGame": false
+  }
+}
