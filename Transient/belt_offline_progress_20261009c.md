@@ -7,3 +7,6 @@ Every `doing` item is leased/other. Rites share unbuilt machinery (GrantRite, ow
 ## 1. LANTERNDEEPS_ANSWERING_RITE_BUILD_1
 Built offline: RM_Answering.cs + kernel + RUT_Answering.xml + hediffs + 3 Mod Settings + fuzz units. LanternDeeps lint OK, fuzz units OK, winbuild OK.
 Selftests 349/352 (1 pre-existing unrelated FAIL: selftest_items_glob_live, 4 terminal items with prose still in items/).
+
+## 2. WEEPINGSTONES_REFUSED_TOLL_RITE_1 - BLOCKED (reason on ledger): needs a quest-site map design; WaterTruce is biome-keyed.
+## 3. SUMP_SINKING_RITE_BUILD_1 - not started: first C# in Rites, two UNMEASURED raid/Empire hooks (RimSage), shared RUT_ImperialHoldOff with SUMP_EFFIGY_RITE_BUILD_1. Left ready.
