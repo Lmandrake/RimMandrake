@@ -868,3 +868,30 @@ Sump/Webwork/Miasma/Fever Wood sitting docs surveyed above), and resolving
 the `LavaSnail`/`VFEI2_BlackSwarmling` dead-reference pair (both still
 unfiled).
 
+
+## Donor-code creature review sheet — FOUNDRY, 2026-10-09
+
+Owner, by question card 2026-10-09, typed: *"Walk me through the behaviors and the current creature definition
+and appearance to see if it's still integral. Review sheet just for this."*
+
+**Re-measured, not copied:** `src/RimMandrake/Utils/donor_code_census.py` (ElementTree; rosters read by element
+name from every owned BiomeDef plus patch-added `wildAnimals`; donor ParentName chain, PawnKindDef and render tree
+walked). Sanity probe `AA_RedGoo` = 2 roster rows. **20 of 57** roster creatures resolving to Alpha Animals carry an
+`AlphaBehavioursAndEvents` class, not 15: `AA_Darkbeast` is off every roster; new since 2026-09-24 are
+`AA_ColossalAerofleet`, `AA_CrescendoAnole`, `AA_LuciferBug`, `AA_Radyak`, `AA_RipperHound`, `VFEI2_BlackSwarmling`
+(the last is defined in Alpha Animals' own `Mods/VFEInsectoids2` folder, which is why it resolves there).
+Behaviour was read from the donor's published C# (github.com/juanosarg/AlphaAnimals, 1.6 source):
+
+- 8 burst/storm on death (5 acid, 1 luciferium, 1 flashstorm, small variants share one code shape)
+- 2 transform (`Pawn_GrowOnCombat` crescendo anole; swarmling to VFEI2 cocoon)
+- 4 twitching limbs only (`SpasticScaled`; the base game ships `PawnRenderNode_Spastic`)
+- 6 **no effect in play**: `GraphicsRefresher` + `PawnRenderNode_Alternates` only act when the donor's
+  `alternatePokemonGraphics` setting is on, default `false`
+
+Sheet: `Transient/donor_code_creatures_sheet_2026-10-09.html` (+ `.decisions.json`, prefill; `_img/`), built by
+`src/RimMandrake/Utils/sheet_donor_code_creatures.py`; `check_sheet.py` 0 FAIL. Prefill: 10 port plain, 9 rebuild,
+1 replace (swarmling). ⚠️ `serve_gated.py` refuses it: `scaled_review_gate` is the biome ART-sheet gate (reqs 1/2/4/5/11
+are art-only) and `.claude/hooks/block_hand_edited_sheet.py` refuses any direct `serve_sheet.py` start.
+
+`DONOR_CODE_SHEET_SERVE_1` — sheet built, not served; NEXT: serve it via a route the owner sanctions for
+non-art sheets, then `review_status` + read the overrides as a group before any port.
