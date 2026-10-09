@@ -1,206 +1,213 @@
-[wl-note] Player.log scan: {"lines": 2438, "hits": [], "game-wide config/xref lines (instrument probe)": 18}
-[wl] 21:56:14 player_log_names_no_wasteland_error PASS 
-[wl] 21:56:14 resolve_probe_sees_absence PASS 
-[wl] 21:56:14 defs_resolve_BiomeDef PASS 
-[wl] 21:56:14 defs_resolve_FleckDef PASS 
-[wl] 21:56:14 defs_resolve_GenStepDef PASS 
-[wl] 21:56:14 defs_resolve_HediffDef PASS 
-[wl] 21:56:14 defs_resolve_IncidentDef PASS 
-[wl] 21:56:14 defs_resolve_JobDef PASS 
-[wl] 21:56:14 defs_resolve_LetterDef PASS 
-[wl] 21:56:14 defs_resolve_PawnKindDef PASS 
-[wl] 21:56:14 defs_resolve_QuestScriptDef PASS 
-[wl] 21:56:14 defs_resolve_SoundDef PASS 
-[wl] 21:56:14 defs_resolve_TerrainDef PASS 
-[wl] 21:56:15 defs_resolve_ThingDef PASS 
-[wl] 21:56:15 defs_resolve_ThinkTreeDef PASS 
-[wl] 21:56:15 defs_resolve_WeatherDef PASS 
-[wl] 21:56:15 defs_resolve_WorkGiverDef PASS 
-[wl] 21:56:15 settings_source_parse_floor PASS 
-[wl] 21:56:15 default_ambientDoseEnabled PASS 
-[wl] 21:56:15 default_ambientDoseMultiplier PASS 
-[wl] 21:56:15 default_ashFallPollutionEnabled PASS 
-[wl] 21:56:15 default_brineDepositsEnabled PASS 
-[wl] 21:56:15 default_caskBayPerCell PASS 
-[wl] 21:56:15 default_caskLaunchCheckEnabled PASS 
-[wl] 21:56:15 default_caskLeakSeverity PASS 
-[wl] 21:56:15 default_caskLeaksEnabled PASS 
-[wl] 21:56:15 default_caskProcessingEnabled PASS 
-[wl] 21:56:15 default_caskProcessingPerDay PASS 
-[wl] 21:56:15 default_caskReburialEnabled PASS 
-[wl] 21:56:15 default_cinderfeltGerminationEnabled PASS 
-[wl] 21:56:15 default_cinderwireEmpEnabled PASS 
-[wl] 21:56:15 default_gripperSpawnsCarrying PASS 
-[wl] 21:56:15 default_gripperTheftEnabled PASS 
-[wl] 21:56:15 default_gripperTheftMtbHours PASS 
-[wl] 21:56:15 default_middenshellEnabled PASS 
-[wl] 21:56:15 default_middenshellGrabEnabled PASS 
-[wl] 21:56:15 default_middenshellLureEnabled PASS 
-[wl] 21:56:15 default_middenshellLureRange PASS 
-[wl] 21:56:15 default_middenshellOmenHours PASS 
-[wl] 21:56:15 default_middenshellProcessionEnabled PASS 
-[wl] 21:56:15 default_middenshellStepTicks PASS 
-[wl] 21:56:15 default_middenshellTrailEnabled PASS 
-[wl] 21:56:15 default_namedStormPhasesEnabled PASS 
-[wl] 21:56:15 default_namedStormWarningFactor PASS 
-[wl] 21:56:15 default_processorGatherEnabled PASS 
-[wl] 21:56:15 default_processorUnpolluteEnabled PASS 
-[wl] 21:56:15 default_radiothermalHeatEnabled PASS 
-[wl] 21:56:15 default_stormDoseEnabled PASS 
-[wl] 21:56:15 default_stormDoseMultiplier PASS 
-[wl] 21:56:15 default_tippingEnabled PASS 
-[wl] 21:56:15 default_wastelandEnabled PASS 
-[wl] 21:56:15 roundtrip_probe_finds_fields PASS 
-[wl] 21:56:15 ambientDoseEnabled_round_trips PASS 
-[wl] 21:56:15 ambientDoseMultiplier_round_trips PASS 
-[wl] 21:56:15 ashFallPollutionEnabled_round_trips PASS 
-[wl] 21:56:15 brineDepositsEnabled_round_trips PASS 
-[wl] 21:56:15 caskBayPerCell_round_trips PASS 
-[wl] 21:56:15 caskLaunchCheckEnabled_round_trips PASS 
-[wl] 21:56:15 caskLeakSeverity_round_trips PASS 
-[wl] 21:56:15 caskLeaksEnabled_round_trips PASS 
-[wl] 21:56:15 caskProcessingEnabled_round_trips PASS 
-[wl] 21:56:15 caskProcessingPerDay_round_trips PASS 
-[wl] 21:56:16 caskReburialEnabled_round_trips PASS 
-[wl] 21:56:16 cinderfeltGerminationEnabled_round_trips PASS 
-[wl] 21:56:16 cinderwireEmpEnabled_round_trips PASS 
-[wl] 21:56:16 gripperSpawnsCarrying_round_trips PASS 
-[wl] 21:56:16 gripperTheftEnabled_round_trips PASS 
-[wl] 21:56:16 gripperTheftMtbHours_round_trips PASS 
-[wl] 21:56:16 middenshellEnabled_round_trips PASS 
-[wl] 21:56:16 middenshellGrabEnabled_round_trips PASS 
-[wl] 21:56:16 middenshellLureEnabled_round_trips PASS 
-[wl] 21:56:16 middenshellLureRange_round_trips PASS 
-[wl] 21:56:16 middenshellOmenHours_round_trips PASS 
-[wl] 21:56:16 middenshellProcessionEnabled_round_trips PASS 
-[wl] 21:56:16 middenshellStepTicks_round_trips PASS 
-[wl] 21:56:16 middenshellTrailEnabled_round_trips PASS 
-[wl] 21:56:16 namedStormPhasesEnabled_round_trips PASS 
-[wl] 21:56:16 namedStormWarningFactor_round_trips PASS 
-[wl] 21:56:16 processorGatherEnabled_round_trips PASS 
-[wl] 21:56:16 processorUnpolluteEnabled_round_trips PASS 
-[wl] 21:56:17 radiothermalHeatEnabled_round_trips PASS 
-[wl] 21:56:17 stormDoseEnabled_round_trips PASS 
-[wl] 21:56:17 stormDoseMultiplier_round_trips PASS 
-[wl] 21:56:17 tippingEnabled_round_trips PASS 
-[wl] 21:56:17 wastelandEnabled_round_trips PASS 
-[wl] 21:56:17 biome_probe_ready PASS 
-[wl] 21:56:17 biome_flags_and_densities PASS 
+[wl-note] Player.log scan: {"lines": 304, "hits": [], "game-wide config/xref lines (instrument probe)": 18}
+[wl] 12:10:38 player_log_names_no_wasteland_error PASS 
+[wl] 12:10:38 resolve_probe_sees_absence PASS 
+[wl] 12:10:38 defs_resolve_BiomeDef PASS 
+[wl] 12:10:38 defs_resolve_FleckDef PASS 
+[wl] 12:10:38 defs_resolve_GenStepDef PASS 
+[wl] 12:10:38 defs_resolve_HediffDef PASS 
+[wl] 12:10:38 defs_resolve_IncidentDef PASS 
+[wl] 12:10:38 defs_resolve_JobDef PASS 
+[wl] 12:10:39 defs_resolve_LetterDef PASS 
+[wl] 12:10:39 defs_resolve_PawnKindDef PASS 
+[wl] 12:10:39 defs_resolve_QuestScriptDef PASS 
+[wl] 12:10:39 defs_resolve_SoundDef PASS 
+[wl] 12:10:39 defs_resolve_TerrainDef PASS 
+[wl] 12:10:39 defs_resolve_ThingDef PASS 
+[wl] 12:10:39 defs_resolve_ThinkTreeDef PASS 
+[wl] 12:10:39 defs_resolve_WeatherDef PASS 
+[wl] 12:10:39 defs_resolve_WorkGiverDef PASS 
+[wl] 12:10:39 settings_source_parse_floor PASS 
+[wl] 12:10:39 default_ambientDoseEnabled PASS 
+[wl] 12:10:39 default_ambientDoseMultiplier PASS 
+[wl] 12:10:39 default_ashFallPollutionEnabled PASS 
+[wl] 12:10:39 default_brineDepositsEnabled PASS 
+[wl] 12:10:39 default_caskBayPerCell PASS 
+[wl] 12:10:39 default_caskLaunchCheckEnabled PASS 
+[wl] 12:10:39 default_caskLeakSeverity PASS 
+[wl] 12:10:39 default_caskLeaksEnabled PASS 
+[wl] 12:10:39 default_caskProcessingEnabled PASS 
+[wl] 12:10:40 default_caskProcessingPerDay PASS 
+[wl] 12:10:40 default_caskReburialEnabled PASS 
+[wl] 12:10:40 default_cinderfeltGerminationEnabled PASS 
+[wl] 12:10:40 default_cinderwireEmpEnabled PASS 
+[wl] 12:10:40 default_gripperSpawnsCarrying PASS 
+[wl] 12:10:40 default_gripperTheftEnabled PASS 
+[wl] 12:10:40 default_gripperTheftMtbHours PASS 
+[wl] 12:10:40 default_middenshellEnabled PASS 
+[wl] 12:10:40 default_middenshellGrabEnabled PASS 
+[wl] 12:10:40 default_middenshellLureEnabled PASS 
+[wl] 12:10:40 default_middenshellLureRange PASS 
+[wl] 12:10:40 default_middenshellOmenHours PASS 
+[wl] 12:10:40 default_middenshellProcessionEnabled PASS 
+[wl] 12:10:40 default_middenshellStepTicks PASS 
+[wl] 12:10:40 default_middenshellTrailEnabled PASS 
+[wl] 12:10:40 default_namedStormPhasesEnabled PASS 
+[wl] 12:10:40 default_namedStormWarningFactor PASS 
+[wl] 12:10:40 default_processorGatherEnabled PASS 
+[wl] 12:10:40 default_processorUnpolluteEnabled PASS 
+[wl] 12:10:40 default_radiothermalHeatEnabled PASS 
+[wl] 12:10:41 default_stormDoseEnabled PASS 
+[wl] 12:10:41 default_stormDoseMultiplier PASS 
+[wl] 12:10:41 default_tippingEnabled PASS 
+[wl] 12:10:41 default_wastelandEnabled PASS 
+[wl] 12:10:41 roundtrip_probe_finds_fields PASS 
+[wl] 12:10:41 ambientDoseEnabled_round_trips PASS 
+[wl] 12:10:41 ambientDoseMultiplier_round_trips PASS 
+[wl] 12:10:42 ashFallPollutionEnabled_round_trips PASS 
+[wl] 12:10:42 brineDepositsEnabled_round_trips PASS 
+[wl] 12:10:42 caskBayPerCell_round_trips PASS 
+[wl] 12:10:42 caskLaunchCheckEnabled_round_trips PASS 
+[wl] 12:10:43 caskLeakSeverity_round_trips PASS 
+[wl] 12:10:43 caskLeaksEnabled_round_trips PASS 
+[wl] 12:10:43 caskProcessingEnabled_round_trips PASS 
+[wl] 12:10:44 caskProcessingPerDay_round_trips PASS 
+[wl] 12:10:44 caskReburialEnabled_round_trips PASS 
+[wl] 12:10:44 cinderfeltGerminationEnabled_round_trips PASS 
+[wl] 12:10:45 cinderwireEmpEnabled_round_trips PASS 
+[wl] 12:10:45 gripperSpawnsCarrying_round_trips PASS 
+[wl] 12:10:45 gripperTheftEnabled_round_trips PASS 
+[wl] 12:10:45 gripperTheftMtbHours_round_trips PASS 
+[wl] 12:10:46 middenshellEnabled_round_trips PASS 
+[wl] 12:10:46 middenshellGrabEnabled_round_trips PASS 
+[wl] 12:10:46 middenshellLureEnabled_round_trips PASS 
+[wl] 12:10:47 middenshellLureRange_round_trips PASS 
+[wl] 12:10:47 middenshellOmenHours_round_trips PASS 
+[wl] 12:10:47 middenshellProcessionEnabled_round_trips PASS 
+[wl] 12:10:48 middenshellStepTicks_round_trips PASS 
+[wl] 12:10:48 middenshellTrailEnabled_round_trips PASS 
+[wl] 12:10:48 namedStormPhasesEnabled_round_trips PASS 
+[wl] 12:10:48 namedStormWarningFactor_round_trips PASS 
+[wl] 12:10:49 processorGatherEnabled_round_trips PASS 
+[wl] 12:10:49 processorUnpolluteEnabled_round_trips PASS 
+[wl] 12:10:49 radiothermalHeatEnabled_round_trips PASS 
+[wl] 12:10:50 stormDoseEnabled_round_trips PASS 
+[wl] 12:10:50 stormDoseMultiplier_round_trips PASS 
+[wl] 12:10:50 tippingEnabled_round_trips PASS 
+[wl] 12:10:51 wastelandEnabled_round_trips PASS 
+[wl] 12:10:51 biome_probe_ready PASS 
+[wl] 12:10:51 biome_flags_and_densities PASS 
 [wl-note] wild animals rows not asserted (their donor mod is not on this tier): []
-[wl] 21:56:17 wild_animals_wired PASS 
+[wl] 12:10:51 wild_animals_wired PASS 
 [wl-note] wild plants rows not asserted (their donor mod is not on this tier): []
-[wl] 21:56:17 wild_plants_wired PASS 
-[wl] 21:56:17 probe_states_are_honest_and_no_donor_rows PASS 
-[wl] 21:56:17 biome_extension_opts_into_the_storm_layer PASS 
-[wl] 21:56:17 cinderwire_storm_is_not_on_the_weather_list PASS 
+[wl] 12:10:51 wild_plants_wired PASS 
+[wl] 12:10:51 probe_states_are_honest_and_no_donor_rows PASS 
+[wl] 12:10:51 biome_extension_opts_into_the_storm_layer PASS 
+[wl] 12:10:51 cinderwire_storm_is_not_on_the_weather_list PASS 
 [wl-note] rain rows read: {"ToxRain": 0.0, "Rain": 0.0, "RainyThunderstorm": 0.0}
-[wl] 21:56:17 no_rain_of_any_kind PASS 
-[wl] 21:56:17 dune_field_binding_on_the_biome PASS 
-[wl] 21:56:17 dune_weather_binding_on_the_ash_storm PASS 
-[wl] 21:56:17 dune_material_def_exists PASS 
-[wl] 21:56:17 brine_scatters_registered_on_the_biome PASS 
-[wl] 21:56:17 site_ready_flyer PASS 
-[wl] 21:56:17 grimewing_can_ever_fly PASS 
-[wl] 21:56:17 ground_creature_cannot_fly_control PASS 
-[wl] 21:56:17 site_ready_ash UNMEASURED UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
-[wl] 21:56:17 ash_storm_doses_an_unroofed_pawn UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 ash_fall_pollutes_the_ground UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 ash_storm_end_germinates_cinderfelt UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 site_ready_ash_off UNMEASURED UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
-[wl] 21:56:17 dose_off_means_no_buildup UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 fall_off_means_no_pollution UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 germination_off_means_no_cinderfelt UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 site_ready_halo UNMEASURED UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
-[wl] 21:56:17 warning_message_arrives UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 dose_is_held_during_the_warning UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 unleashed_message_arrives UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 dose_begins_after_the_warning UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 site_ready_cinderwire UNMEASURED UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
-[wl] 21:56:17 warning_message_arrives UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 dose_is_held_during_the_warning UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 unleashed_message_arrives UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 dose_begins_after_the_warning UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 site_ready_phases_off UNMEASURED UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
-[wl] 21:56:17 no_warning_message_when_off UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 dose_starts_at_once_when_off UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 site_ready_smolderback UNMEASURED UNMEASURED: the control room is already 36.71156 C, at or past the heat pusher's 26 C cap, so a heating effect cannot be told from none
-[wl] 21:56:17 smolderback_doses_its_own_room UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 dose_stays_in_its_room UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 smolderback_heats_its_own_room UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 dose_off_stops_dosing UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 heat_off_stops_heating UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:17 master_switch_off_stops_dosing UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 21:56:21 site_ready_processors PASS 
-[wl] 21:56:21 polluted_ground_is_feed_ground FAIL ExpectationFailed: a sloghog standing on polluted ground reads 'off feed ground: slow': Male sloghog, age 6 of New Arrivals | Bezoar growth: 0.14% (off feed ground: slow) | Wandering.
-[wl] 21:56:21 clean_ground_is_slow_ground PASS 
-[wl] 21:56:21 sootgrazer_is_a_soot_brick_press_on_polluted_ground FAIL ExpectationFailed: a sootgrazer on polluted ground reads 'off feed ground: slow': Male sootgrazer, age 4 of New Arrivals | Soot brick press: 0.22% (off feed ground: slow) | Wandering.
-[wl] 21:56:21 gather_places_RM_ContaminantBezoar UNMEASURED UNMEASURED: animal_resource_force could not resolve the resource def: {}
-[wl] 21:56:21 gather_places_RM_SootBrick UNMEASURED UNMEASURED: animal_resource_force could not resolve the resource def: {}
-[wl] 21:56:21 gather_off_hides_the_growth_pane PASS 
-[wl] 21:56:21 site_ready_gripper PASS 
-[wl-note] gripper's starting haul: "Female, age 2 | Gripping: Steel x4"
-[wl] 21:56:21 wild_gripper_spawns_carrying_scrap PASS 
-[wl] 21:56:51 steal_swaps_scrap_for_gold FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
-[wl] 21:57:21 hurt_gripper_drops_its_haul FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
-[wl] 21:57:22 theft_off_gripper_spawns_empty_handed PASS 
-[wl] 21:57:22 spawns_carrying_off_gripper_spawns_empty_handed PASS 
-[wl] 21:57:52 tamed_gripper_never_steals FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
-[wl] restore gripperTheftEnabled failed: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
-[wl] 21:59:42 site_ready_flora PASS 
-[wl-note] WoodLog stacks: [22]
-[wl] 21:59:42 harvest_yields_WoodLog_from_RM_VaultRoot PASS 
+[wl] 12:10:51 no_rain_of_any_kind PASS 
+[wl] 12:10:51 dune_field_binding_on_the_biome PASS 
+[wl] 12:10:51 dune_weather_binding_on_the_ash_storm PASS 
+[wl] 12:10:51 dune_material_def_exists PASS 
+[wl] 12:10:51 brine_scatters_registered_on_the_biome PASS 
+[wl] 12:10:52 site_ready_flyer PASS 
+[wl] 12:10:52 grimewing_can_ever_fly PASS 
+[wl] 12:10:52 ground_creature_cannot_fly_control PASS 
+[wl] 12:10:53 site_ready_ash PASS 
+[wl-note] ToxicBuildup after 600 ticks of ash storm: 0.0229790639
+[wl] 12:11:53 ash_storm_doses_an_unroofed_pawn PASS 
+[wl-note] cells polluted by 3000 ticks of ash fall: {"cellsChanged": 41, "everPollutable": 28848}
+[wl] 12:12:33 ash_fall_pollutes_the_ground PASS 
+[wl-note] RM_Cinderfelt before/after: [2, 13]
+[wl] 12:12:45 ash_storm_end_germinates_cinderfelt PASS 
+[wl] 12:12:46 site_ready_ash_off PASS 
+[wl] 12:13:47 dose_off_means_no_buildup PASS 
+[wl] 12:14:17 fall_off_means_no_pollution PASS 
+[wl] 12:14:29 germination_off_means_no_cinderfelt PASS 
+[wl] 12:14:30 site_ready_halo PASS 
+[wl] 12:14:31 warning_message_arrives PASS 
+[wl] 12:14:38 dose_is_held_during_the_warning PASS 
+[wl] 12:14:42 unleashed_message_arrives PASS 
+[wl] 12:15:42 dose_begins_after_the_warning PASS 
+[wl] 12:15:43 site_ready_cinderwire PASS 
+[wl] 12:15:44 warning_message_arrives PASS 
+[wl] 12:15:51 dose_is_held_during_the_warning PASS 
+[wl] 12:15:54 unleashed_message_arrives PASS 
+[wl] 12:16:54 dose_begins_after_the_warning PASS 
+[wl] 12:16:55 site_ready_phases_off PASS 
+[wl] 12:16:56 no_warning_message_when_off PASS 
+[wl] 12:17:56 dose_starts_at_once_when_off PASS 
+[wl] 12:18:57 site_ready_smolderback PASS 
+[wl-note] ToxicBuildup in the smolderback's room after 900 ticks: 0.006031528
+[wl] 12:18:58 smolderback_doses_its_own_room PASS 
+[wl] 12:18:58 dose_stays_in_its_room PASS 
+[wl-note] room temperature with / without the smolderback: [26.8549747, 12.1651869]
+[wl] 12:18:58 smolderback_heats_its_own_room PASS 
+[wl] 12:19:58 dose_off_stops_dosing PASS 
+[wl] 12:20:13 heat_off_stops_heating PASS 
+[wl] 12:21:13 master_switch_off_stops_dosing PASS 
+[wl] 12:21:26 site_ready_processors PASS 
+[wl] 12:21:26 polluted_ground_is_feed_ground PASS 
+[wl] 12:21:26 clean_ground_is_slow_ground PASS 
+[wl] 12:21:26 sootgrazer_is_a_soot_brick_press_on_polluted_ground PASS 
+[wl] 12:21:27 gather_places_RM_ContaminantBezoar PASS 
+[wl] 12:21:27 gather_places_RM_SootBrick PASS 
+[wl] 12:21:27 gather_off_hides_the_growth_pane PASS 
+[wl] 12:21:27 site_ready_gripper PASS 
+[wl-note] gripper's starting haul: "Male, age 3 | Gripping: Steel x3"
+[wl] 12:21:27 wild_gripper_spawns_carrying_scrap PASS 
+[wl] 12:22:44 steal_swaps_scrap_for_gold PASS 
+[wl] 12:22:45 hurt_gripper_drops_its_haul PASS 
+[wl] 12:22:45 theft_off_gripper_spawns_empty_handed PASS 
+[wl] 12:22:46 spawns_carrying_off_gripper_spawns_empty_handed PASS 
+[wl] 12:23:54 tamed_gripper_never_steals UNMEASURED UNMEASURED: ordered_job refused to order the tamed gripper: {'success': False, 'accepted': True, 'interruptibleBefore': True, 'requestedJobDef': 'RM_GripperSteal', 'afterJobDef': 'GotoWander', 'nowRunningRequested': False, 'ticksElapsed': 0, 'pausedDuringWait': True, 'queueLength': 0, 'note': "Job w
+[wl] 12:26:11 site_ready_flora PASS 
+[wl-note] WoodLog stacks: [24]
+[wl] 12:26:12 harvest_yields_WoodLog_from_RM_VaultRoot PASS 
 [wl-note] RawBerries stacks: []
-[wl] 21:59:42 harvest_yields_RawBerries_from_RM_Pusberry FAIL ExpectationFailed: no RawBerries after a forced harvest of a grown RM_Pusberry (harvestedThingDef is wired in the def; the yield never arrived)
-[wl-note] RawPotatoes stacks: []
-[wl] 21:59:42 harvest_yields_RawPotatoes_from_RM_Boilbulb FAIL ExpectationFailed: no RawPotatoes after a forced harvest of a grown RM_Boilbulb (harvestedThingDef is wired in the def; the yield never arrived)
-[wl-note] Chemfuel stacks: [3]
-[wl] 21:59:42 harvest_yields_Chemfuel_from_RM_Wartshrub PASS 
-[wl] 21:59:43 site_ready_brine PASS 
-[wl] 21:59:43 scatter_places_RM_BrineDeposit_Tekk PASS 
-[wl] 21:59:43 scatter_places_RM_BrineDeposit_Drazz PASS 
-[wl] 21:59:43 scatter_places_RM_BrineDeposit_BrinePlate PASS 
-[wl] 21:59:43 RM_BrineDeposit_Tekk_mines_to_RM_Tekk PASS 
-[wl] 21:59:43 RM_BrineDeposit_Drazz_mines_to_RM_Drazz PASS 
-[wl] 21:59:43 RM_BrineDeposit_BrinePlate_mines_to_RM_BrinePlate PASS 
-[wl] 22:00:13 raw_brineleech_gives_brine_shock FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
-[wl] 22:00:48 site_ready_casks PASS 
-[wl] 22:00:48 intact_cask_is_inert PASS 
+[wl] 12:26:12 harvest_yields_RawBerries_from_RM_Pusberry FAIL ExpectationFailed: no RawBerries after a forced harvest of a grown RM_Pusberry (harvestedThingDef is wired in the def; the yield never arrived)
+[wl-note] RawPotatoes stacks: [4]
+[wl] 12:26:12 harvest_yields_RawPotatoes_from_RM_Boilbulb PASS 
+[wl-note] Chemfuel stacks: [5]
+[wl] 12:26:12 harvest_yields_Chemfuel_from_RM_Wartshrub PASS 
+[wl] 12:26:12 site_ready_brine PASS 
+[wl] 12:26:12 scatter_places_RM_BrineDeposit_Tekk PASS 
+[wl] 12:26:12 scatter_places_RM_BrineDeposit_Drazz PASS 
+[wl] 12:26:13 scatter_places_RM_BrineDeposit_BrinePlate PASS 
+[wl] 12:26:13 RM_BrineDeposit_Tekk_mines_to_RM_Tekk PASS 
+[wl] 12:26:13 RM_BrineDeposit_Drazz_mines_to_RM_Drazz PASS 
+[wl] 12:26:13 RM_BrineDeposit_BrinePlate_mines_to_RM_BrinePlate PASS 
+[wl] 12:27:31 raw_brineleech_gives_brine_shock PASS 
+[wl] 12:27:44 site_ready_casks PASS 
+[wl] 12:27:45 intact_cask_is_inert PASS 
 [wl-note] leak message still on the live list: true
-[wl] 22:00:48 breached_cask_leaks_loudly PASS 
-[wl] 22:00:48 leaking_drains_the_stored_dose PASS 
-[wl] 22:00:52 leaks_off_makes_a_breached_cask_inert PASS 
-[wl] 22:00:52 breached_cask_text_does_not_claim_a_bay_that_is_not_there PASS 
-[wl] 22:00:52 site_ready_bay PASS 
-[wl] 22:00:52 bay_readout_shows_capacity_integrity_and_launch_safety PASS 
-[wl] 22:00:56 bay_holds_a_breached_cask_without_leaking PASS 
-[wl] 22:01:01 shot_up_bay_leaks_loudly PASS 
-[wl] 22:01:02 unpowered_bay_says_so_and_power_clears_it PASS 
-[wl] 22:01:02 can_launch_postfix_is_installed PASS 
-[wl] 22:01:02 site_ready_middenshell UNMEASURED UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
-[wl] 22:01:02 middenshell_is_twenty_cells_wide UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:02 wake_flattens_buildings_and_swallows_items UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:02 crawl_leaves_trail_filth UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:02 trail_off_leaves_no_new_filth UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:02 off_stands_still_and_on_resumes UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:02 ambient_aura_doses_a_pawn_beside_it UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:02 on_again_resumes_the_crawl UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:02 killed_body_hardens_into_a_quarry UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:03 site_ready_procession UNMEASURED UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
-[wl] 22:01:03 incident_can_fire_on_a_wasteland_map UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:03 incident_is_blocked_when_the_body_is_switched_off UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:03 omen_letter_and_creeping_metal UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:03 body_arrives_already_crossing UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:03 procession_trail_is_laid_and_trail_off_stops_it UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:03 procession_off_arrives_at_once_without_a_route UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:03 site_ready_tipping UNMEASURED UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its error, if any, is in northstar_site.LAST_SITE_ERROR)
-[wl] 22:01:03 pad_reads_unlicensed_without_a_contract UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:03 quest_fires_and_is_ongoing UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:03 pad_reads_licensed_with_a_contract UNMEASURED upstream failed -- this chain's state is meaningless
-[wl] 22:01:03 tipping_off_refuses_the_offer UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 12:27:45 breached_cask_leaks_loudly PASS 
+[wl] 12:27:45 leaking_drains_the_stored_dose PASS 
+[wl] 12:27:57 leaks_off_makes_a_breached_cask_inert PASS 
+[wl] 12:27:57 breached_cask_text_does_not_claim_a_bay_that_is_not_there PASS 
+[wl] 12:27:57 site_ready_bay PASS 
+[wl] 12:27:58 bay_readout_shows_capacity_integrity_and_launch_safety PASS 
+[wl] 12:28:09 bay_holds_a_breached_cask_without_leaking PASS 
+[wl] 12:28:21 shot_up_bay_leaks_loudly PASS 
+[wl] 12:28:27 unpowered_bay_says_so_and_power_clears_it PASS 
+[wl] 12:28:27 can_launch_postfix_is_installed PASS 
+[wl] 12:28:57 site_ready_middenshell FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[wl] 12:28:57 middenshell_is_twenty_cells_wide UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] restore middenshellEnabled failed: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[wl] 12:29:57 wake_flattens_buildings_and_swallows_items UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 12:29:57 crawl_leaves_trail_filth UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 12:30:21 trail_off_leaves_no_new_filth UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 12:30:21 off_stands_still_and_on_resumes UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 12:30:21 ambient_aura_doses_a_pawn_beside_it UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 12:30:21 on_again_resumes_the_crawl UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 12:30:21 killed_body_hardens_into_a_quarry UNMEASURED upstream failed -- this chain's state is meaningless
+[wl] 12:30:22 site_ready_procession PASS 
+[wl] 12:30:22 incident_can_fire_on_a_wasteland_map PASS 
+[wl] 12:30:23 incident_is_blocked_when_the_body_is_switched_off PASS 
+[wl-note] omen letter names the edge: false
+[wl] 12:30:32 omen_letter_and_creeping_metal PASS 
+[wl] 12:31:10 body_arrives_already_crossing PASS 
+[wl] 12:31:25 procession_trail_is_laid_and_trail_off_stops_it PASS 
+[wl] 12:31:55 procession_off_arrives_at_once_without_a_route FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[wl] restore middenshellOmenHours failed: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[wl] 12:32:56 site_ready_tipping PASS 
+[wl] 12:32:56 pad_reads_unlicensed_without_a_contract PASS 
+[wl] 12:32:56 quest_fires_and_is_ongoing PASS 
+[wl] 12:32:56 pad_reads_licensed_with_a_contract PASS 
+[wl] 12:32:57 tipping_off_refuses_the_offer PASS 
 ensure_playing_map: playing
-SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Wasteland_20261008T050104Z.html
+SHEET \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\Wasteland_20261008T193257Z.html
 CHAIN log_clean None {"name": "log_clean", "situational": null, "modal_check": null}
-    {"name": "player_log_names_no_wasteland_error", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "Player.log scan", "result": {"lines": 2438, "hits": [], "game-wide config/xref lines (instrument probe)": 18}}], "sc
+    {"name": "player_log_names_no_wasteland_error", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "Player.log scan", "result": {"lines": 304, "hits": [], "game-wide config/xref lines (instrument probe)": 18}}], "scr
 CHAIN defs_resolve None {"name": "defs_resolve", "situational": null, "modal_check": null}
     {"name": "resolve_probe_sees_absence", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 2 def(s) resolved; 1 not found", "requested": 2, "fo
     {"name": "defs_resolve_BiomeDef", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "not
@@ -303,91 +310,91 @@ CHAIN patches_landed None {"name": "patches_landed", "situational": null, "modal
     {"name": "dune_material_def_exists", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foundCount": 1, "
     {"name": "brine_scatters_registered_on_the_biome", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "fou
 CHAIN flyer_state None {"name": "flyer_state", "situational": null, "modal_check": null}
-    {"name": "site_ready_flyer", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 0 thing(s) across 841 cell(s).", "cellsExamined": 84
-    {"name": "grimewing_can_ever_fly", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_flight", "result": {"success": true, "action": "report", "count": 1, "pawns": [{"pawn": "RM_Grimewing56522"
+    {"name": "site_ready_flyer", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 740 thing(s) across 841 cell(s).", "cellsExamined": 
+    {"name": "grimewing_can_ever_fly", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_flight", "result": {"success": true, "action": "report", "count": 1, "pawns": [{"pawn": "RM_Grimewing126455
     {"name": "ground_creature_cannot_fly_control", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_flight", "result": {"success": true, "action": "report", "count": 1, "pawns": [{"pawn": "RM_Scu
 CHAIN storm_ash_on None {"name": "storm_ash_on", "situational": null, "modal_check": null}
-    {"name": "site_ready_ash", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its e
-    {"name": "ash_storm_doses_an_unroofed_pawn", "toggle": "stormDoseEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [],
-    {"name": "ash_fall_pollutes_the_ground", "toggle": "ashFallPollutionEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": 
-    {"name": "ash_storm_end_germinates_cinderfelt", "toggle": "cinderfeltGerminationEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "ch
+    {"name": "site_ready_ash", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 25391, "tileValid": true, "mapId": 2, "sizeX": 250, "sizeZ": 250, "cellCo
+    {"name": "ash_storm_doses_an_unroofed_pawn", "toggle": "stormDoseEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(3571) -> 3571 real tick(s) over 6 call(s)", "result": {"success": true, "stepId": "step_d034ce
+    {"name": "ash_fall_pollutes_the_ground", "toggle": "ashFallPollutionEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(2400) -> 2400 real tick(s) over 4 call(s)", "result": {"success": true, "stepId": "step_089
+    {"name": "ash_storm_end_germinates_cinderfelt", "toggle": "cinderfeltGerminationEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/weather_set", "result": {"success": true, "before": "RM_WastelandAshStorm
 CHAIN storm_ash_off None {"name": "storm_ash_off", "situational": null, "modal_check": null}
-    {"name": "site_ready_ash_off", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; i
-    {"name": "dose_off_means_no_buildup", "toggle": "stormDoseEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows
-    {"name": "fall_off_means_no_pollution", "toggle": "ashFallPollutionEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [
-    {"name": "germination_off_means_no_cinderfelt", "toggle": "cinderfeltGerminationEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "ch
+    {"name": "site_ready_ash_off", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 25391, "tileValid": true, "mapId": 2, "sizeX": 250, "sizeZ": 250, "ce
+    {"name": "dose_off_means_no_buildup", "toggle": "stormDoseEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(3571) -> 3571 real tick(s) over 6 call(s)", "result": {"success": true, "stepId": "step_2d6663684f794
+    {"name": "fall_off_means_no_pollution", "toggle": "ashFallPollutionEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(1800) -> 1800 real tick(s) over 3 call(s)", "result": {"success": true, "stepId": "step_7b64
+    {"name": "germination_off_means_no_cinderfelt", "toggle": "cinderfeltGerminationEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/weather_set", "result": {"success": true, "before": "RM_WastelandAshStorm
 CHAIN named_storm_halo None {"name": "named_storm_halo", "situational": null, "modal_check": null}
-    {"name": "site_ready_halo", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; its 
-    {"name": "warning_message_arrives", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "
-    {"name": "dose_is_held_during_the_warning", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints
-    {"name": "unleashed_message_arrives", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [],
-    {"name": "dose_begins_after_the_warning", "toggle": "stormDoseEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "s
+    {"name": "site_ready_halo", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 25391, "tileValid": true, "mapId": 2, "sizeX": 250, "sizeZ": 250, "cellC
+    {"name": "warning_message_arrives", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(40) -> 40 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_172955cf88b1
+    {"name": "dose_is_held_during_the_warning", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(420) -> 420 real tick(s) over 2 call(s)", "result": {"success": true, "stepId": "step_57
+    {"name": "unleashed_message_arrives", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(200) -> 200 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_c8574c2f
+    {"name": "dose_begins_after_the_warning", "toggle": "stormDoseEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(3571) -> 3571 real tick(s) over 6 call(s)", "result": {"success": true, "stepId": "step_8fd017315
 CHAIN named_storm_cinderwire None {"name": "named_storm_cinderwire", "situational": null, "modal_check": null}
-    {"name": "site_ready_cinderwire", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map
-    {"name": "warning_message_arrives", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "
-    {"name": "dose_is_held_during_the_warning", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints
-    {"name": "unleashed_message_arrives", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [],
-    {"name": "dose_begins_after_the_warning", "toggle": "stormDoseEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "s
+    {"name": "site_ready_cinderwire", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 25391, "tileValid": true, "mapId": 2, "sizeX": 250, "sizeZ": 250, 
+    {"name": "warning_message_arrives", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(40) -> 40 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_280aa6207353
+    {"name": "dose_is_held_during_the_warning", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(420) -> 420 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_b0
+    {"name": "unleashed_message_arrives", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(200) -> 200 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_a8dae56e
+    {"name": "dose_begins_after_the_warning", "toggle": "stormDoseEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(3571) -> 3571 real tick(s) over 6 call(s)", "result": {"success": true, "stepId": "step_f3d694e04
 CHAIN named_storm_phases_off None {"name": "named_storm_phases_off", "situational": null, "modal_check": null}
-    {"name": "site_ready_phases_off", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map
-    {"name": "no_warning_message_when_off", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [
-    {"name": "dose_starts_at_once_when_off", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": 
+    {"name": "site_ready_phases_off", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 25391, "tileValid": true, "mapId": 2, "sizeX": 250, "sizeZ": 250, 
+    {"name": "no_warning_message_when_off", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(40) -> 40 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_4c4d701d
+    {"name": "dose_starts_at_once_when_off", "toggle": "namedStormPhasesEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(3571) -> 3571 real tick(s) over 6 call(s)", "result": {"success": true, "stepId": "step_e08
 CHAIN smolderback_room None {"name": "smolderback_room", "situational": null, "modal_check": null}
-    {"name": "site_ready_smolderback", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the control room is already 36.71156 C, at or past the heat pusher's 26 C cap, so a heating effect cannot be told from none", "evidence":
-    {"name": "smolderback_doses_its_own_room", "toggle": "ambientDoseEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [],
-    {"name": "dose_stays_in_its_room", "toggle": "ambientDoseEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows"
-    {"name": "smolderback_heats_its_own_room", "toggle": "radiothermalHeatEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints"
-    {"name": "dose_off_stops_dosing", "toggle": "ambientDoseEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows":
-    {"name": "heat_off_stops_heating", "toggle": "radiothermalHeatEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "s
-    {"name": "master_switch_off_stops_dosing", "toggle": "wastelandEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "
+    {"name": "site_ready_smolderback", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 0 thing(s) across 841 cell(s); 4 pawn(s) left 
+    {"name": "smolderback_doses_its_own_room", "toggle": "ambientDoseEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "16 pawn(s).", "pawns": [{"id": "RM_
+    {"name": "dose_stays_in_its_room", "toggle": "ambientDoseEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_pawns", "result": {"success": true, "message": "16 pawn(s).", "pawns": [{"id": "RM_Scabspin
+    {"name": "smolderback_heats_its_own_room", "toggle": "radiothermalHeatEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/room_get", "result": {"success": true, "message": "1 distinct room(s) over 1 cell(s
+    {"name": "dose_off_stops_dosing", "toggle": "ambientDoseEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_health", "result": {"success": true, "action": "remove", "didWhat": "removed ToxicBuildup", 
+    {"name": "heat_off_stops_heating", "toggle": "radiothermalHeatEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/room_get", "result": {"success": true, "message": "1 distinct room(s) over 1 cell(s).", "ce
+    {"name": "master_switch_off_stops_dosing", "toggle": "wastelandEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/pawn_health", "result": {"success": false, "message": "Pawn has no hediff 'ToxicBuildup'."
 CHAIN processor_animals None {"name": "processor_animals", "situational": null, "modal_check": null}
-    {"name": "site_ready_processors", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 0 thing(s) across 841 cell(s); 4 pawn(s) left a
-    {"name": "polluted_ground_is_feed_ground", "toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: a sloghog standing on polluted ground reads 'off feed ground: slow': Male sloghog, age 6 of New Arrivals | Bezoar growth: 0.14% 
-    {"name": "clean_ground_is_slow_ground", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 5028 examined.", "matched": 
-    {"name": "sootgrazer_is_a_soot_brick_press_on_polluted_ground", "toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: a sootgrazer on polluted ground reads 'off feed ground: slow': Male sootgrazer, age 4 of New Arrivals | Soo
-    {"name": "gather_places_RM_ContaminantBezoar", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: animal_resource_force could not resolve the resource def: {}", "evidence": [{"call": "bridge_call jawa/map_info", "result": {
-    {"name": "gather_places_RM_SootBrick", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: animal_resource_force could not resolve the resource def: {}", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success
+    {"name": "site_ready_processors", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 0 thing(s) across 841 cell(s); 5 pawn(s) left a
+    {"name": "polluted_ground_is_feed_ground", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 37371 examined.", "matche
+    {"name": "clean_ground_is_slow_ground", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 37371 examined.", "matched":
+    {"name": "sootgrazer_is_a_soot_brick_press_on_polluted_ground", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 3737
+    {"name": "gather_places_RM_ContaminantBezoar", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 25391, "tileValid": true, "mapId": 2, "sizeX": 250, "
+    {"name": "gather_places_RM_SootBrick", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 25391, "tileValid": true, "mapId": 2, "sizeX": 250, "sizeZ": 
     {"name": "gather_off_hides_the_growth_pane", "toggle": "processorGatherEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Wasteland.RM_WastelandSettings, {'processorGatherEnabled': False})", "resul
 CHAIN gripper None {"name": "gripper", "situational": null, "modal_check": null}
     {"name": "site_ready_gripper", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 0 thing(s) across 841 cell(s); 4 pawn(s) left alon
-    {"name": "wild_gripper_spawns_carrying_scrap", "toggle": "gripperSpawnsCarrying", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 48
-    {"name": "steal_swaps_scrap_for_gold", "toggle": "gripperTheftEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound", "eviden
-    {"name": "hurt_gripper_drops_its_haul", "toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound", "evidence": [], "screen
+    {"name": "wild_gripper_spawns_carrying_scrap", "toggle": "gripperSpawnsCarrying", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 37
+    {"name": "steal_swaps_scrap_for_gold", "toggle": "gripperTheftEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [{"id": "Gold127688", "def": "Gold", "l
+    {"name": "hurt_gripper_drops_its_haul", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/damage", "result": {"success": true, "message": "Damaged 1 thing(s) with Blunt 1.", "damageDef": "Blunt", "
     {"name": "theft_off_gripper_spawns_empty_handed", "toggle": "gripperTheftEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Wasteland.RM_WastelandSettings, {'gripperTheftEnabled': False})", "result
     {"name": "spawns_carrying_off_gripper_spawns_empty_handed", "toggle": "gripperSpawnsCarrying", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Wasteland.RM_WastelandSettings, {'gripperSpawnsCarrying': Fal
-    {"name": "tamed_gripper_never_steals", "toggle": "gripperTheftEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound", "eviden
+    {"name": "tamed_gripper_never_steals", "toggle": "gripperTheftEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: ordered_job refused to order the tamed gripper: {'success': False, 'accepted': True, 'interruptibleBefore': True, 'r
 CHAIN flora_harvest None {"name": "flora_harvest", "situational": null, "modal_check": null}
     {"name": "site_ready_flora", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 0 thing(s) across 841 cell(s); 8 pawn(s) left alone.
-    {"name": "harvest_yields_WoodLog_from_RM_VaultRoot", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [{"id": "WoodLog56768", "def": "WoodLog", 
+    {"name": "harvest_yields_WoodLog_from_RM_VaultRoot", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [{"id": "WoodLog127719", "def": "WoodLog",
     {"name": "harvest_yields_RawBerries_from_RM_Pusberry", "toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: no RawBerries after a forced harvest of a grown RM_Pusberry (harvestedThingDef is wired in the def; the yield never 
-    {"name": "harvest_yields_RawPotatoes_from_RM_Boilbulb", "toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "ExpectationFailed: no RawPotatoes after a forced harvest of a grown RM_Boilbulb (harvestedThingDef is wired in the def; the yield neve
-    {"name": "harvest_yields_Chemfuel_from_RM_Wartshrub", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [{"id": "Chemfuel56793", "def": "Chemfuel
+    {"name": "harvest_yields_RawPotatoes_from_RM_Boilbulb", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [{"id": "RawPotatoes127728", "def": "Ra
+    {"name": "harvest_yields_Chemfuel_from_RM_Wartshrub", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/list_things", "result": {"success": true, "things": [{"id": "Chemfuel127729", "def": "Chemfue
 CHAIN brine_deposits None {"name": "brine_deposits", "situational": null, "modal_check": null}
-    {"name": "site_ready_brine", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 0 thing(s) across 841 cell(s); 4 pawn(s) left alone.
+    {"name": "site_ready_brine", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 0 thing(s) across 841 cell(s); 9 pawn(s) left alone.
     {"name": "scatter_places_RM_BrineDeposit_Tekk", "toggle": "brineDepositsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/scatter_at", "result": {"success": true, "genStepDef": "RM_ScatterWastelandBrineT
     {"name": "scatter_places_RM_BrineDeposit_Drazz", "toggle": "brineDepositsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/scatter_at", "result": {"success": true, "genStepDef": "RM_ScatterWastelandBrine
     {"name": "scatter_places_RM_BrineDeposit_BrinePlate", "toggle": "brineDepositsEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/scatter_at", "result": {"success": true, "genStepDef": "RM_ScatterWasteland
     {"name": "RM_BrineDeposit_Tekk_mines_to_RM_Tekk", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "foun
     {"name": "RM_BrineDeposit_Drazz_mines_to_RM_Drazz", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requested": 1, "fo
     {"name": "RM_BrineDeposit_BrinePlate_mines_to_RM_BrinePlate", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/get_defs", "result": {"success": true, "message": "1 of 1 def(s) resolved", "requeste
-    {"name": "raw_brineleech_gives_brine_shock", "toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound", "evidence": [{"cal
+    {"name": "raw_brineleech_gives_brine_shock", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/spawn_pawn", "result": {"success": true, "message": "Spawned 1/1 Colonist in faction PlayerColony.", "
 CHAIN cask_leaks None {"name": "cask_leaks", "situational": null, "modal_check": null}
-    {"name": "site_ready_casks", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 0 thing(s) across 841 cell(s); 5 pawn(s) left alone.
-    {"name": "intact_cask_is_inert", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 4922 examined.", "matched": 1, "exa
-    {"name": "breached_cask_leaks_loudly", "toggle": "caskLeaksEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 4922 examined."
-    {"name": "leaking_drains_the_stored_dose", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 4922 examined.", "matched
+    {"name": "site_ready_casks", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 0 thing(s) across 841 cell(s); 6 pawn(s) left alone.
+    {"name": "intact_cask_is_inert", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 37258 examined.", "matched": 1, "ex
+    {"name": "breached_cask_leaks_loudly", "toggle": "caskLeaksEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 37258 examined.
+    {"name": "leaking_drains_the_stored_dose", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 37258 examined.", "matche
     {"name": "leaks_off_makes_a_breached_cask_inert", "toggle": "caskLeaksEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Wasteland.RM_WastelandSettings, {'caskLeaksEnabled': False})", "result": tru
     {"name": "breached_cask_text_does_not_claim_a_bay_that_is_not_there", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], "surprises": null}
 CHAIN cask_bay None {"name": "cask_bay", "situational": null, "modal_check": null}
-    {"name": "site_ready_bay", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 0 thing(s) across 841 cell(s); 2 pawn(s) left alone.",
-    {"name": "bay_readout_shows_capacity_integrity_and_launch_safety", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 4
+    {"name": "site_ready_bay", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/destroy_batch", "result": {"success": true, "message": "Destroyed 0 thing(s) across 841 cell(s); 5 pawn(s) left alone.",
+    {"name": "bay_readout_shows_capacity_integrity_and_launch_safety", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 3
     {"name": "bay_holds_a_breached_cask_without_leaking", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/set_thing_props", "result": {"success": true, "thing": "Waste cask (30%)", "changed": ["hitPo
     {"name": "shot_up_bay_leaks_loudly", "toggle": "caskLeaksEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/set_thing_props", "result": {"success": true, "thing": "Sealed cask bay (23%)", "changed": ["hit
-    {"name": "unpowered_bay_says_so_and_power_clears_it", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 4953 examined.
+    {"name": "unpowered_bay_says_so_and_power_clears_it", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 37265 examined
 CHAIN launch_check_patch None {"name": "launch_check_patch", "situational": null, "modal_check": null}
     {"name": "can_launch_postfix_is_installed", "toggle": "caskLaunchCheckEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/harmony_patches", "result": {"success": true, "typeName": "RimWorld.Building_GravEn
 CHAIN middenshell_body None {"name": "middenshell_body", "situational": null, "modal_check": null}
-    {"name": "site_ready_middenshell", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland ma
+    {"name": "site_ready_middenshell", "toggle": null, "beyond_toggle": false, "verdict": "FAIL", "detail": "RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound", "evidence": [{"call": "bridg
     {"name": "middenshell_is_twenty_cells_wide", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [], 
     {"name": "wake_flattens_buildings_and_swallows_items", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "sh
     {"name": "crawl_leaves_trail_filth", "toggle": "middenshellTrailEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], 
@@ -397,17 +404,17 @@ CHAIN middenshell_body None {"name": "middenshell_body", "situational": null, "m
     {"name": "on_again_resumes_the_crawl", "toggle": "middenshellEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "sh
     {"name": "killed_body_hardens_into_a_quarry", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": [],
 CHAIN middenshell_procession None {"name": "middenshell_procession", "situational": null, "modal_check": null}
-    {"name": "site_ready_procession", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map
-    {"name": "incident_can_fire_on_a_wasteland_map", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": 
-    {"name": "incident_is_blocked_when_the_body_is_switched_off", "toggle": "middenshellEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [],
-    {"name": "omen_letter_and_creeping_metal", "toggle": "middenshellProcessionEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpo
-    {"name": "body_arrives_already_crossing", "toggle": "middenshellProcessionEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoi
-    {"name": "procession_trail_is_laid_and_trail_off_stops_it", "toggle": "middenshellTrailEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": 
-    {"name": "procession_off_arrives_at_once_without_a_route", "toggle": "middenshellProcessionEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequence
+    {"name": "site_ready_procession", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 25391, "tileValid": true, "mapId": 2, "sizeX": 250, "sizeZ": 250, 
+    {"name": "incident_can_fire_on_a_wasteland_map", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/fire_incident", "result": {"success": true, "message": "RM_MiddenshellArrives canFireNow=True (dry
+    {"name": "incident_is_blocked_when_the_body_is_switched_off", "toggle": "middenshellEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "set_setting(RimMandrake.Wasteland.RM_WastelandSettings, {'middenshellEnabled': False})
+    {"name": "omen_letter_and_creeping_metal", "toggle": "middenshellProcessionEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/fire_incident", "result": {"success": true, "message": "RM_MiddenshellArrives 
+    {"name": "body_arrives_already_crossing", "toggle": "middenshellProcessionEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(2200) -> 2200 real tick(s) over 4 call(s)", "result": {"success": true, "stepId": "st
+    {"name": "procession_trail_is_laid_and_trail_off_stops_it", "toggle": "middenshellTrailEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(500) -> 500 real tick(s) over 1 call(s)", "result": {"success": true, "s
+    {"name": "procession_off_arrives_at_once_without_a_route", "toggle": "middenshellProcessionEnabled", "beyond_toggle": false, "verdict": "FAIL", "detail": "RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call
 CHAIN rite_of_tipping None {"name": "rite_of_tipping", "situational": null, "modal_check": null}
-    {"name": "site_ready_tipping", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "UNMEASURED: the current map's biome is 'RM_Stillsand', not RM_Wasteland: this mechanic is biome-gated (northstar_site.preflight builds a Wasteland map; i
-    {"name": "pad_reads_unlicensed_without_a_contract", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows
-    {"name": "quest_fires_and_is_ongoing", "toggle": "tippingEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows"
-    {"name": "pad_reads_licensed_with_a_contract", "toggle": null, "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "shows": []
-    {"name": "tipping_off_refuses_the_offer", "toggle": "tippingEnabled", "beyond_toggle": false, "verdict": "UNMEASURED", "detail": "upstream failed -- this chain's state is meaningless", "evidence": [], "screenshots": [], "sequences": [], "checkpoints": [], "sho
-ALL_GREEN False FINDINGS 8
+    {"name": "site_ready_tipping", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/map_info", "result": {"success": true, "tile": 25391, "tileValid": true, "mapId": 2, "sizeX": 250, "sizeZ": 250, "ce
+    {"name": "pad_reads_unlicensed_without_a_contract", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 29 examined.", "
+    {"name": "quest_fires_and_is_ongoing", "toggle": "tippingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/fire_quest", "result": {"success": true, "message": "RM_Quest_RiteOfTipping available as quest 0
+    {"name": "pad_reads_licensed_with_a_contract", "toggle": null, "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "bridge_call jawa/inspect_string", "result": {"success": true, "message": "1 thing(s) inspected, 29 examined.", "match
+    {"name": "tipping_off_refuses_the_offer", "toggle": "tippingEnabled", "beyond_toggle": false, "verdict": "PASS", "detail": "", "evidence": [{"call": "wait_ticks(2) -> 2 real tick(s) over 1 call(s)", "result": {"success": true, "stepId": "step_09ae2bb92316466db
+ALL_GREEN False FINDINGS 3
