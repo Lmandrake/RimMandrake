@@ -23,7 +23,7 @@ public class InstantHealingDrug
         // assembly-wide PatchAll() here would double-patch those too. Scoped
         // to this mod's own patch class to preserve the original, narrower
         // effect (see the same fix in SelfHediffVerb.cs / HarmonyPatches.cs).
-        new Harmony("kaitorisenkou.InstantHealingDrug").CreateClassProcessor(typeof(TCED_TryGiveJob_Patch)).Patch();
+        RimMandrake.Shared.PatchApplier.Apply(new Harmony("kaitorisenkou.InstantHealingDrug"), typeof(InstantHealingDrug).Assembly, "InstantHealingDrug", "InstantHealingDrug");
         Log.Message("[InstantHealingDrug] Harmony patch complete!");
         VerbSelfHediffType = AccessTools.TypeByName("SelfHediffVerb.Verb_SelfHediff");
         if (VerbSelfHediffType != null)

@@ -15,7 +15,7 @@ public class SelfHediffVerb
         // assembly-wide PatchAll() here would double-patch that unrelated
         // class too. Scoped to this mod's own patch class to preserve the
         // original, narrower effect.
-        new Harmony("kaitorisenkou.SelfHediffVerb").CreateClassProcessor(typeof(Patch_VerbEquipmentSource)).Patch();
+        RimMandrake.Shared.PatchApplier.Apply(new Harmony("kaitorisenkou.SelfHediffVerb"), typeof(SelfHediffVerb).Assembly, "SelfHediffVerb", "SelfHediffVerb");
         Log.Message("[SelfHediffVerb] Harmony patch complete!");
     }
 }

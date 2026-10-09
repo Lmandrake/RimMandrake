@@ -11,7 +11,7 @@ public class JumppackForMeleeAI
         Log.Message("[JumppackForMeleeAI]Now Active");
         // See InstantHealingDrug.cs / SelfHediffVerb.cs for why this is scoped
         // to the one patch class rather than a bare assembly-wide PatchAll().
-        new Harmony("kaitorisenkou.JumppackForMeleeAI").CreateClassProcessor(typeof(Patch_JobGiver_AIFightEnemy)).Patch();
+        RimMandrake.Shared.PatchApplier.Apply(new Harmony("kaitorisenkou.JumppackForMeleeAI"), typeof(JumppackForMeleeAI).Assembly, "JumppackForMeleeAI", "JumppackForMeleeAI");
         Log.Message("[JumppackForMeleeAI]Harmony patch complete!");
     }
 }
