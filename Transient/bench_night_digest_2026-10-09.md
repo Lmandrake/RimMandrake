@@ -16,7 +16,12 @@ Everything below is committed and pushed. Nothing is deployed. Every change wait
    - Six sheets are unruled (cauldron, floodedcanyon, theforge, therot, wasteland, weepingstones).
 7. **Facing audit.** Dredgel v2 renders are done and await your pick: `D:\Luke\dev\RimMandrake\Transient\facing_coherence_backlog_2026-10-09.md`. Flat placeholder squares are still live for Murrelith and Drommath (both your redos; their new renders await your pick) and Chellow east. For Chellow, choose: finish the beakless v2 set (it needs a new north) or derive an east from the beaked south now in game. Thavrik and Sorruth are cut, as you ruled: `D:\Luke\dev\RimMandrake\Transient\flat_square_art_check_2026-10-09.md`
 8. **Name lists drafted for 22 of the 23 species with no namer.** They are canon names first, then a few invented ones marked as such. Ugnaught is the most visible. `D:\Luke\dev\RimMandrake\Transient\species_name_lists_draft_2026-10-09.md`
-9. **Venomvine sitting run-sheet** is ready for next session. Seven forms share one texture: `D:\Luke\dev\RimMandrake\Transient\venomvine_sitting_runsheet_2026-10-09.md`
+9. **Code review of tonight's C#.** One crash bug was fixed (7723bd5f4). Small calls for you:
+   - Thurlsponge is a deep-floor plant but grows on the shallow tiles beside wrecks.
+   - Gloamurn can never charge on the seabed-layer Twilight map.
+   - The Anomaly suppression has no Mod Settings toggle.
+   `D:\Luke\dev\RimMandrake\Transient\night_csharp_review_2026-10-09.md`
+10. **Venomvine sitting run-sheet** is ready for next session. Seven forms share one texture: `D:\Luke\dev\RimMandrake\Transient\venomvine_sitting_runsheet_2026-10-09.md`
 
 ## Done overnight
 - **Species abilities:** your card rulings are applied. 31 genes were removed across 14 races (87888849a).
