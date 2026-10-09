@@ -108,7 +108,11 @@ decision list):
 
 ## Visual brief
 
-All five references agree closely and are much more specific than the prose:
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: the stylised *Ahsoka* (novel) painting `wookieepedia_ahsoka_art.jpg` and the *Rebels* Hera/Ahsoka frame `wookieepedia_two_kinds_of_lekku.jpg`. Added two live-action stills of Ahsoka Tano (Rosario Dawson, *The Mandalorian* ch. 13): `wookieepedia_ahsoka_liveaction_mando.jpg` and `wookieepedia_ahsoka_headshot_mando.jpg`. `wookieepedia_kiros_male_and_female.jpg` (*Clone Wars* CGI) is **kept only as an animated, anatomy-only reference for the male form**, which no realistic image shows. The live-action Shaak Ti and Ahsoka are the target: real skin, matte prosthetic montrals/lekku with soft painted bands, natural light.
+
+🔴 **Where live-action differs from the deleted animation:** live-action Ahsoka's skin is a **muted warm terracotta/rust-brown**, not the cartoon's bright orange; her montral/lekku bands are a **soft desaturated slate blue-teal on cream**, not saturated blue; her facial markings are **cream-white brow arcs and cheek chevrons with a dark diamond-ornamented headband**, worn matte. The montrals in live action are **shorter and more upright** relative to the head than the animated ones (about two-thirds of head height on Ahsoka; Shaak Ti's are taller).
+
+The realistic references agree closely and are much more specific than the prose:
 
 - **Montrals are two thick, hollow, upward-and-outward-sweeping cones**, rising well above
   the crown — in `wookieepedia_shaakti_montrals.jpg` and
@@ -118,13 +122,13 @@ All five references agree closely and are much more specific than the prose:
 - 🔴 **The banding is the single most load-bearing visual fact, and it is bold.** Every
   reference shows **dark transverse chevron/V bands on a pale cream-to-white base**, on
   both montrals *and* lekku. On Shaak Ti the bands are near-black on off-white and read as
-  clean chevrons pointing up the montral; on Ahsoka
-  (`wookieepedia_ahsoka_art.jpg`, `wookieepedia_two_kinds_of_lekku.jpg`) they are **blue**
-  on white; on the Kiros pair they are grey-brown on cream. **The base is always pale and
+  clean chevrons pointing up the montral; on live-action Ahsoka
+  (`wookieepedia_ahsoka_liveaction_mando.jpg`) they are **slate blue-teal**
+  on cream; on the Kiros pair they are grey-brown on cream. **The base is always pale and
   the bands always dark and transverse** — the hue of the bands varies, the arrangement
   does not. A plain unbanded montral is the failure mode.
 - **The pale montral/lekku base is NOT the skin colour.** Shaak Ti is a saturated red with
-  cream-and-black montrals; Ahsoka is orange with white-and-blue montrals; the Kiros male
+  cream-and-black montrals; Ahsoka is terracotta-brown with cream-and-slate-blue montrals; the Kiros male
   is ochre-yellow with cream-and-brown. In every case the appendages are far paler than
   the body. **Two colour regions are required.**
 - **The two forward lekku descend a long way.** On Shaak Ti they pass the shoulders, run
@@ -135,17 +139,14 @@ All five references agree closely and are much more specific than the prose:
   shows two, but a north-facing one should show the third.
 - **Montrals and lekku read as one continuous structure**, which is exactly the Legends
   "appearance of wearing a headdress" line: the lekku emerge from the montral bases beside
-  the jaw rather than from separate roots. `wookieepedia_two_kinds_of_lekku.jpg` is the
-  decisive image here because it puts a Twi'lek and a Togruta side by side: **Hera
-  Syndulla's two lekku are smooth, unmarked and the same green as her skin, and she has no
-  montrals at all; Ahsoka's are pale, banded, and fused into a montral headdress.** If a
-  sprite gets these two species confused, this is the image that settles it.
+  the jaw rather than from separate roots. (A Twi'lek has smooth, unmarked, skin-coloured lekku and
+  no montrals — see the `twilek` entry — never draw the two alike.)
 - **White facial pigment is a patterned mask, not a wash.** Shaak Ti: large white patches
   enclosing both eyes and the forehead against a red central face-mask, plus two small red
   brow bars. Ahsoka: white brow markings, white cheek chevrons, and a dark diamond on the
   forehead. `wookieepedia_negas_legends.jpg` shows a third, swirlier pattern. **The pattern
   is individual; the presence of white is not.**
-- **Male vs. female, from `wookieepedia_kiros_male_and_female.jpg`** (the wiki's own caption
+- **Male vs. female, from `wookieepedia_kiros_male_and_female.jpg`** (*Clone Wars* CGI — animated, anatomy-only) (the wiki's own caption
   is "A male and female Togruta"): the male's montrals carry **extra forward-hooking
   points** — visibly more branched, confirming the prose — and his lekku are shorter; the
   female's lekku are very long. The male is **ochre-yellow**, the female **near-white with
@@ -191,6 +192,7 @@ by an arch, with two short tapering points at the sides.** Judged against the re
 - [ ] The two forward lekku descend well past the shoulders, at least to the chest (not stopping at jaw level)
 - [ ] A third, thicker posterior lek is present at the rear base of the skull, visible from a rear-facing (north) view
 - [ ] Face carries a patterned white marking (pattern varies by individual, but white presence is constant)
+- [ ] Realistic rendering: natural skin and matte prosthetic-appendage texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known — the montral texture's missing banding, the lekku stopping at jaw level, and the absent third lek are recorded in the entry as gaps in the existing art asset and the def's colour-gene pool (no pale hair-colour option feeds the montral tint), not as something the rendering pipeline is unable to express.
@@ -264,6 +266,8 @@ Reported, not fixed. `RimMandrakeXenotypes.xml` is generated — do not edit it.
   complete). Also the source of the Togruta/Twi'lek comparison image.
 - https://starwars.fandom.com/wiki/Montral — pulled (17,026 chars); it is a short article
   and adds nothing beyond the species pages.
+- https://static.wikia.nocookie.net/starwars/images/5/5e/DawsonAhsoka_farewell.png (File:DawsonAhsoka farewell.png → `wookieepedia_ahsoka_liveaction_mando.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/3/3e/AhsokaHS-TMCh13.png (File:AhsokaHS-TMCh13.png → `wookieepedia_ahsoka_headshot_mando.jpg`)
 - Databank: the canon infobox cites `{{Databank|togruta}}` →
   https://www.starwars.com/databank/togruta. **NOT fetched this pass.**
 - ⚠️ **Image provenance is inferred, not byte-verified.** The images in this directory were
@@ -274,11 +278,8 @@ Reported, not fixed. `RimMandrakeXenotypes.xml` is generated — do not edit it.
   - `wookieepedia_kiros_male_and_female.jpg` → **File:KirosTogruta-TCWs4BR2.png** (confident:
     the wiki's caption for this file is "A male and female Togruta" and the image is exactly
     that)
-  - `wookieepedia_ahsoka_art.jpg` → **File:AhsokaArtCropped.png** (confident)
   - `wookieepedia_negas_legends.jpg` → **File:Togruta_NEGAS.jpg**, the Legends infobox image
     (confident; NEGAS = *The New Essential Guide to Alien Species*)
-  - `wookieepedia_two_kinds_of_lekku.jpg` → **File:Two_kinds_of_lekku.jpg**, from the Lekku
-    article (confident — it is the only such file there)
   - `wookieepedia_shaakti_montrals.jpg` → probably **File:Shaak_Ti_Card_Trader.png** (the
     Montral article's only image) — **not confirmed**
   - `wookieepedia_infobox_shaakti.jpg` → **filename is misleading and the source is
@@ -297,16 +298,11 @@ Reported, not fixed. `RimMandrakeXenotypes.xml` is generated — do not edit it.
   **lekku length**: the two forward lekku run the whole chest and taper to points near the
   waist. Also shows ordinary five-fingered human hands and red skin continuing down the
   neck and arms.
-- `wookieepedia_two_kinds_of_lekku.jpg` — **the disambiguation image.** Hera Syndulla
-  (Twi'lek) beside Ahsoka Tano (Togruta) in one frame: smooth unmarked skin-coloured lekku
-  and no montrals, versus pale blue-banded lekku fused to montrals. The single most useful
-  image in this directory for preventing the two species being drawn alike.
-- `wookieepedia_kiros_male_and_female.jpg` — a *Clone Wars* render of a male carrying a
+- `wookieepedia_ahsoka_liveaction_mando.jpg` — live-action, *The Mandalorian* ch. 13, file `DawsonAhsoka farewell.png`: Ahsoka head and shoulders in a grey cloak — terracotta skin, cream/slate-blue banded montrals and forward lekku, white facial markings, headband — https://static.wikia.nocookie.net/starwars/images/5/5e/DawsonAhsoka_farewell.png/revision/20201129192625
+- `wookieepedia_ahsoka_headshot_mando.jpg` — live-action, *The Mandalorian* ch. 13, file `AhsokaHS-TMCh13.png`: frontal Ahsoka to the waist — lekku length to mid-chest, bare shoulders showing skin colour — https://static.wikia.nocookie.net/starwars/images/3/3e/AhsokaHS-TMCh13.png/revision/latest?cb=20201129161947
+- `wookieepedia_kiros_male_and_female.jpg` — **animated (*Clone Wars* CGI), anatomy-only.** A male carrying a
   female. The evidence for **male montrals being more branched**, for female lekku being
   longer, and for the **yellow and white skin colours the repo def omits**.
-- `wookieepedia_ahsoka_art.jpg` — a painted Ahsoka. Stylised (treat line and palette as the
-  artist's), but shows a third distinct white facial-marking pattern and blue-on-white
-  banding, supporting "the pattern is individual, the presence of white is not."
 - `wookieepedia_negas_legends.jpg` — the Legends infobox plate, a painted Togruta woman in
   robes. **Legends, so weaker evidence for current canon**, but it independently shows the
   pale-base/dark-band montrals, long banded forward lekku, and a fourth marking pattern.
