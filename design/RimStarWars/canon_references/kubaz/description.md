@@ -85,12 +85,12 @@ boots (infobox), courier armour with helmet and satchels (courier). A Kubaz read
 which fits the spy/informant fiction.
 
 ## Must show
-- [ ] Long, tapering, tubular snout projecting forward and angling downward from the mid-face, lighter mauve/grey-pink than the rest of the head, with a pattern of dark pits/pores along its underside and flanks
-- [ ] Eyes are never visible — always behind separate strapped goggles/eyewear (lens tint can vary between individuals)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon infobox painting (reference of record), the courier image and the Legends Alien Archive image, which agree, as described in the visual brief.*
+- [ ] BODY PLAN: tall, narrow, upright humanoid biped with no hunch or bulk, usually in concealing dress (hooded cloak, or layered jacket with bandolier and tall boots); a long, tapering, stiff tubular snout projecting forward and angling downward from the mid-face, roughly as long as the rest of the head is tall, ending in a blunt open tip; long, thin, spindly fingers with prominent knuckles, where hands are visible
+- [ ] COLOUR LAYOUT: two-tone head — mottled dark olive/greenish-grey cranium and skin (nearly black in shadow) against a lighter mauve/grey-pink snout; the snout's underside and flanks carry a regular pattern of dark pits/pores; the brow crest pale; bare hands pale sage-green
+- [ ] Eyes are never visible — always behind separate strapped goggles/eyewear (lens tint can vary between individuals: red, amber or dark)
 - [ ] Crest of stiff, spiky, pale (near-white, silver, or pale lavender-green) bristles standing up from the brow and running back over the crown — not black
-- [ ] Two-tone head: dark greenish-grey cranium against a lighter mauve-grey snout
-- [ ] Tall, narrow, upright biped build with no hunch or bulk
-- [ ] Long, thin, spindly fingers with prominent knuckles, where hands are visible
+- [ ] NEGATIVE: not a human with a nose prosthetic (no bare eyes, no human eyebrows, no bald head) and not an elephant (the snout is stiff and conical, never a coiling trunk); not hunched or bulky
 
 ## Engine limits
 none known

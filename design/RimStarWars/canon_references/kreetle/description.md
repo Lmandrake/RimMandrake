@@ -57,13 +57,13 @@ sides (five pairs per the text; three pairs as actually modeled in
 a scavenger/pest-scale creature, not anything human-sized.
 
 ## Must show
-- [ ] Low, domed, segmented/ribbed shell (pillbug or hermit-crab silhouette)
-- [ ] Shell colour reddish-brown to maroon
-- [ ] Mottled tan/gold head with dark reddish spots
-- [ ] Dark, curved mandibles/tusks at the front
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends text and the owner-ruled infobox plate (`## ruling`, owner 2026-09-13: `wookieepedia_infobox.jpg`), corroborated for colour by the two *Republic Commando* screenshots.*
+- [ ] BODY PLAN: a small, low, floor-hugging arthropod under a domed, segmented/ribbed shell (pillbug or hermit-crab silhouette); head at the front; many short jointed legs along both sides of the body (five pairs per the text)
+- [ ] COLOUR LAYOUT: shell reddish-brown to maroon over the whole back; head mottled tan/gold with dark reddish spots; mandibles dark; eyes bright yellow, the brightest element
+- [ ] Dark, curved mandibles/tusks at the front of the head
 - [ ] Bright yellow eyes
-- [ ] Many short jointed legs along the sides of the body
-- [ ] Realistic rendering: natural glossy chitin texture and lighting, no outlines, no cartoon shading
+- [ ] Realistic rendering: natural glossy chitin texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a tall-legged spider or a long-bodied centipede (legs short, body low and domed); not an olive/khaki shell (the deleted Galaxies render); not human-sized
 
 ## Engine limits
 none known

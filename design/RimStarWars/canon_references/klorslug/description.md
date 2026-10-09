@@ -24,12 +24,13 @@ Removed: the canon Marvel comic panel (`FettKlorslug-StolenHope.png`, orange car
 - `legends_2` (Alien Anthology) shows a k'lor'slug facing a Kirithin; it is not obvious which creature is the k'lor'slug (probably the armoured brown segmented body with a clawed limb in the foreground). Low-confidence evidence.
 
 ## Must show
-- [ ] Long thick tubular segmented worm body, ringed and creased like a real earthworm, rearing up in an arch
-- [ ] Pink to dusky rose skin (live-action and prose), not orange
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon prose, the live-action *A New Hope* dejarik still and the SWTOR concept painting, as described in the visual brief.*
+- [ ] BODY PLAN: a long, thick, tubular segmented worm body, ringed and creased like a real earthworm or sea cucumber, rearing up in a tall arch with a hunched raised front; a long banded tail tapering behind; about 2 m tall when reared
+- [ ] COLOUR LAYOUT: pink to dusky rose-magenta skin over the whole body (live-action and prose); claws a darker, glossier contrast
 - [ ] Round suction-cup maw ringed with sharp teeth at the blunt front end
-- [ ] Many limbs ending in large curved claws
-- [ ] About 2 m tall when reared, tapering tail behind
-- [ ] Realistic rendering: natural wet, wrinkled skin texture and lighting, no outlines, no cartoon shading
+- [ ] Many limbs along the sides ending in large curved claws
+- [ ] Realistic rendering: natural wet, wrinkled skin texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not orange (the deleted comic colour) and not a smooth legless snake or plain earthworm (it has many clawed limbs and a toothed sucker maw); no eyes-and-jaws dragon head
 
 ## Engine limits
 not yet assessed

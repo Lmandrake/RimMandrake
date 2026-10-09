@@ -28,12 +28,13 @@ Both images are LEGENDS comic art (*Star Wars* (1998) #24-26), rendered in brigh
 - **Disagreement**: eye colour (red in text, yellow in art) and tooth colour (black in text, pale in art); trust the images.
 
 ## Must show
-- [ ] Heavy theropod biped with long strong hind legs, small clawed forearms, thick straight tail as counterbalance
-- [ ] Bright cobalt/cyan-blue skin with dark black tiger-like stripes over the body, neck and tail
-- [ ] Long boxy crocodilian head with a heavy brow, a yellow-pale slit-pupil eye and a row of pale spade teeth
-- [ ] Hooked pale-grey claws on all limbs
-- [ ] Head carried low and forward in a running posture
-- [ ] Realistic rendering: natural scaled reptile hide texture and lighting, no outlines, no comic flat colour or ink shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends text and the two Legends comic frames, as described in the visual brief (which says to trust the images on eye and tooth colour).*
+- [ ] BODY PLAN: a large, heavy, deep-bodied theropod-style biped (about 3 m tall, 4 m long): long powerful hind legs with three forward toes, small short forearms, a thick tail carried out straight and level behind as a counterbalance, and a thick neck with the head carried low and forward in a running posture
+- [ ] COLOUR LAYOUT: bright cobalt/cyan-blue scaled hide over the whole body (light blue flesh under cobalt scales), with black tiger-like transverse stripes over the neck, back, flanks, tail and thighs; a lavender iridescence on the scales at the top of the skull (prose); claws and teeth pale grey-white
+- [ ] Long boxy crocodilian head with a heavy brow, a yellow-pale slit-pupil eye and a row of widely spaced pale spade-shaped teeth along the jaw
+- [ ] Hooked pale-grey claws on all limbs (three on each forearm; big curved claws on the hind toes)
+- [ ] Realistic rendering: natural scaled reptile hide texture and lighting, no outlines, no comic flat colour or ink shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a green or brown tyrannosaur (blue, striped) and not a four-legged lizard; not a flat cartoon-cyan comic look
 
 ## Engine limits
 not yet assessed

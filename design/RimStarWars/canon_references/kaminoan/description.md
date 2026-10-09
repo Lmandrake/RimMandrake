@@ -141,13 +141,14 @@ the almond black eyes, and a tapering lower face. What is wrong:
   resolution for the detail above is low.
 
 ## Must show
-- [ ] Neck is roughly 1.7–2× the length of the head and the figure towers over a human, the extra height almost all neck — not a human head-on-neck
-- [ ] Skin is pale grey with a lavender/blue or green-blue cast, not flat white
-- [ ] Lips are a saturated pink/mauve accent against the otherwise pale, grey body
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action *Attack of the Clones* frames (Lama Su, Taun We, and the two full-body frames) as described in the visual brief.*
+- [ ] BODY PLAN: slender, towering humanoid; a bare neck roughly 1.7–2× the length of the head, attached at the rear/underside of the skull bird-like, so the figure towers over a human with the extra height almost all neck; oblong head, bulbous behind and keeled on top, tapering downward-forward to a narrow rounded chin; long slender arms hanging to mid-thigh with large hands and long fingers; narrow flat torso; no external ears
+- [ ] COLOUR LAYOUT: skin pale grey with a lavender/blue or green-blue cast (not flat white), brightest across the crown; lips the one saturated colour on the body, a pink/mauve accent; eyes black with a pale disc
 - [ ] Eyes are enormous, almond-shaped, upswept at the outer corner, with a solid glossy black sclera and a large pale grey-white iris/pupil disc — not a plain black dot
 - [ ] There is a small keeled nose with two downward-facing nostrils, and a small closed mouth with full pink lips — the face is not featureless
-- [ ] Realistic rendering: fine wrinkled pale skin, soft natural lighting as in the live-action film, no outlines, no cartoon shading
 - [ ] Male has a low fore-aft fin crest plus small rear ridges on the crown; female has a smooth crestless cranium (any head-crescent ornament is worn jewellery, not anatomy)
+- [ ] Realistic rendering: fine wrinkled pale skin, soft natural lighting as in the live-action film, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a human with a pale tint or a human head-on-neck (no short neck, no ears, no hair); not a featureless grey alien (nose and lips present); not stick-thin skeletal limbs; no Legends whisker filaments
 
 ## Engine limits
 - The neck-to-head-to-height proportion above (neck ≈ 2× head length; head+neck ≈ 20% of

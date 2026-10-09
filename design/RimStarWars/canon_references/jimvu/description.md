@@ -18,11 +18,13 @@ One image (canon page, file `Jimvu-woswfg.jpg`, pencil and watercolour plate). I
 - **Size:** the text says "large"; the plate gives no size cue. The predator dwarfs them in the image.
 
 ## Must show
-- [ ] Slender, lean runner's body with a long curved neck and a long thin tail
-- [ ] Small bird-like head with a long pointed, hooked beak-like snout
-- [ ] Row of short blunt purple knobs/spikes along the back of the head and down the neck
-- [ ] Pale blue-teal to lilac skin with irregular purple-violet blotches and a cream-tan belly
-- [ ] Six thin sinewy legs ending in clawed three-toed feet (leg count from text; the plate does not resolve it)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends text and the single Field Guide plate as described in the visual brief.*
+- [ ] BODY PLAN: a slender, lean, deer/ostrich-proportioned runner's torso carried angled forward; a long curving neck holding a small head up; a long thin tail curling up behind; SIX thin, sinewy, lizard-like legs ending in big clawed three-toed feet (leg count from the text; the plate does not resolve it)
+- [ ] COLOUR LAYOUT: pale blue-teal to lilac-blue skin on the back and flanks covered in irregular purple-violet blotches; belly and underside cream/olive-tan; beak cream-yellow; neck knobs purple
+- [ ] Head: small and bird-like, with a long pointed beak-like snout hooked at the tip
+- [ ] A row of short blunt purple knobs/spikes along the back of the head and down the neck
+- [ ] Smooth thin skin: no scales, no fur, no feathers
+- [ ] NEGATIVE: not a bird (no wings, no feathers) and not a four-legged deer or lizard (six legs); no horns, no armour plates, no dark furred coat (that is the veermok in the plate)
 
 ## Engine limits
 not yet assessed
