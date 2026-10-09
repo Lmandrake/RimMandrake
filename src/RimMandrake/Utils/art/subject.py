@@ -406,6 +406,31 @@ def resolve_canon(name: str, world: World | None = None, originals=()) -> dict:
             "images": [], "must_show": "", "evidence": "", "searched": searched}
 
 
+def canon_status(name: str, world: World | None = None) -> str:
+    """The tag for a Star Wars-tier subject with NO canon entry, from canon_references/NO_SOURCE.json: 'not
+    canon-linked — why', 'invented creature — ...', or 'canon not yet checked'. '' for our own RM_/RUT_ inventions
+    (not meant to be canon) and for non-RSW names."""
+    if not name.startswith("RSW_"):
+        return ""
+    w = world or World()
+    try:
+        d = json.loads((w.canon_root / "NO_SOURCE.json").read_text())
+    except (OSError, ValueError):
+        d = {}
+    unlinked = {k.lower(): v for k, v in (d.get("not_canon_linked") or {}).items()}
+    for k, v in (d.get("owner_ours") or {}).items():
+        if not k.startswith("_"):
+            unlinked.setdefault(re.sub(r"^(RM_|RSW_|RUT_)", "", k).lower(), v)
+    nos = {n.lower() for n in d.get("no_source", [])}
+    keys = list(dict.fromkeys([TIER_RE.sub("", name).lower(), *[j.lower() for j in join_stems(name)]]))
+    for k in keys:
+        if k in unlinked:
+            return "not canon-linked — " + unlinked[k]
+        if k in nos:
+            return "invented creature — searched Wookieepedia + SWTOR wiki, no canon source exists; judge on its own"
+    return "canon not yet checked"
+
+
 # ─────────────────────────────────────────────────────────────── art ──
 
 def _role(fam: str) -> str:

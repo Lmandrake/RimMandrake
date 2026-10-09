@@ -63,6 +63,7 @@ def fixture(tmp: Path) -> S.World:
         (canon / slug / "description.md").write_text(f"# {slug}\n\n## Must show\n- legs\n")
         (canon / slug / "wookieepedia_canon_1.webp").write_bytes(b"x")
         (canon / slug / "donor_current_sprite.png").write_bytes(b"x")
+    (canon / "NO_SOURCE.json").write_text(json.dumps({"no_source": ["Vellak"], "not_canon_linked": {"Wraidling": "own cast"}}))
     (canon / "tibi").mkdir()
     (canon / "tibi" / "description.md").write_text(
         "# tibi\n\n**defName**: `Tibi` (donor: X; `MayRequire` on the donor, no `RSW_` twin)\n\n## Must show\n- fins\n")
@@ -104,6 +105,10 @@ def fixture_tests(w: S.World):
 
     check("Tibi" in w.canon_index and "MayRequire" not in w.canon_index and "RSW_" not in w.canon_index,
           "canon index: defNames come from before the first parenthetical, not from prose backticks", sorted(w.canon_index))
+    check(S.canon_status("RSW_Vellak", w).startswith("invented creature") and
+          S.canon_status("RSW_Wraidling", w) == "not canon-linked — own cast" and
+          S.canon_status("RSW_Unknownthing", w) == "canon not yet checked" and S.canon_status("RM_Vellak", w) == "",
+          "canon_status: NO_SOURCE tags for RSW_ only, 'not yet checked' otherwise, nothing for RM_")
     ours, orig = w.identify("Wraid")
     check(ours == "RSW_Wraid" and "Wraid" in orig, "identity: a donor name maps to our defName and stays an original", (ours, orig))
     r = S.resolve("Wraid", w)
