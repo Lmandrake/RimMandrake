@@ -27,12 +27,16 @@ Always on the hunt for their next meal, they were surprisingly intelligent creat
 Young gutkurrs were referred as gutkurr chicks. They were small enougth that could wonder around Ryloth markets, though parents warned their children to not touch them.
 
 ## Visual brief
-All four images are Clone Wars CGI (two on the CANON page, two on the Legends page; the Legends frames show the same design). They agree, and they disagree with the Legends prose in two places (see end).
-- **Silhouette**: a hunched, bipedal-leaning predator that also drops onto its forelimbs; a big domed, rounded shell on the back, a heavy low head slung forward beneath the shell front, long strong hind legs, short thin forearms ending in hooks. In the Legends frame it stands crouched over a prone trooper, shell above shoulder height and head near the ground.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Gutkurr` and `Gutkurr/Legends` page images, "Images of gutkurrs" category — everything is *The Clone Wars* CGI, LEGO, or one *Galaxy at War* painted plate).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. Three Clone Wars episode frames (`canon_2` `Gutkurr pair.jpg`, `legends_1` `GutkurrsFeed-IoR.png`, `legends_2` `Gutkurr attack.jpg`) were deleted as weaker duplicates of the same design. Kept: `canon_1` (clean TCW bestiary render, best anatomy) and the new `wookieepedia_galaxyatwar.jpg` (*Galaxy at War* painted plate — the most naturalistic depiction: a heavier, darker rust-brown beast with a lumpy spiked hide, a huge fanged maw and hooked claws, lit by harsh desert sun, a clone trooper behind for scale). Render with real weathered chitin and hide like a giant beetle crossed with a predator, natural light — not the TCW CGI's smooth clay look.
+
+The description below was written from the Clone Wars CGI and holds for both kept images.
+- **Silhouette**: a hunched, bipedal-leaning predator that also drops onto its forelimbs; a big domed, rounded shell on the back, a heavy low head slung forward beneath the shell front, long strong hind legs, short thin forearms ending in hooks. In the Clone Wars episode frames (since deleted) it stood crouched over a prone trooper, shell above shoulder height and head near the ground.
 - **Carapace**: a smooth, scute-plated, tortoise-like or beetle-like dome over the back and shoulders, rust-orange to tan-brown with weathered pale patches/stains, edges flaring out like a skirt; rows of cream-coloured thorn spikes in lines down the back and the sides of the shell, with a spiny ridge toward the rear/neck.
 - **Underparts/limbs**: lighter yellow-orange belly and thighs; darker maroon-brown forearms and lower legs; legs jointed insect-like with segmented plated lower limbs ending in single large curved black-brown talon hooks. A segmented, ridged, tapering tail with a tip hook in the infobox render.
 - **Head**: a wide, flat armoured head with a blunt mask-plate brow, deep-set RED eyes, two long curved front fangs/mandible hooks flanking the nose, a wide jaw lined with rows of small pale teeth, a dark red mouth interior.
-- **Size**: clearly larger than a clone trooper in the frames; the Legends infobox gives approx. 2 m high (canon prose says only "considerably taller than an average humanoid").
+- **Size**: clearly larger than a clone trooper (Galaxy at War plate; deleted episode frames); the Legends infobox gives approx. 2 m high (canon prose says only "considerably taller than an average humanoid").
 - **Disagreement**: the prose says arms are short and thin (images: yes, thin hooked forelimbs). The prose says "long hind legs, fast" (images: yes). Nothing contradicts. Young gutkurrs (chicks) are not shown anywhere; in frame 3 (small ones on prey) the small individuals in the background look like juveniles or smaller adults at a distance and cannot be confirmed.
 
 ## Must show
@@ -42,6 +46,7 @@ All four images are Clone Wars CGI (two on the CANON page, two on the Legends pa
 - [ ] Flat armoured head with red eyes, two long curved front fangs and a wide toothed jaw
 - [ ] Segmented, ridged, tapering tail
 - [ ] Larger than a human (about 2 m tall)
+- [ ] Realistic rendering: natural weathered chitin and hide with real lighting, no outlines, no smooth clay-CGI or cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -51,10 +56,8 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Gutkurr/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Gutkurr`; wiki caption: infobox image. File: `Gutkurr TCW.png` — https://static.wikia.nocookie.net/starwars/images/0/0d/Gutkurr_TCW.png/revision/latest?cb=20211115055327
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Gutkurr/Legends`; wiki caption: A pair of gutkurrs feed on a dead can-cell. File: `GutkurrsFeed-IoR.png` — https://static.wikia.nocookie.net/starwars/images/2/2f/GutkurrsFeed-IoR.png/revision/latest?cb=20121005033119
-- `wookieepedia_canon_2.webp` — CANON page `Gutkurr`; wiki caption: A pair of gutkurrs. File: `Gutkurr pair.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b3/Gutkurr_pair.jpg/revision/latest?cb=20110921012038
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Gutkurr/Legends`; wiki caption: A gutkurr attacks a clone trooper.. File: `Gutkurr attack.jpg` — https://static.wikia.nocookie.net/starwars/images/c/c4/Gutkurr_attack.jpg/revision/latest?cb=20100504171858
+- `wookieepedia_galaxyatwar.jpg` — PAINTED ILLUSTRATION (*Galaxy at War*), most naturalistic depiction; file `Gutkurr-GAW.jpg` — https://static.wikia.nocookie.net/starwars/images/4/4b/Gutkurr-GAW.jpg/revision/latest?cb=20110112154804
+- `wookieepedia_canon_1.webp` — ANIMATED (*The Clone Wars* CGI, *Monsters of The Clone Wars* bestiary) — CANON page `Gutkurr`; wiki caption: infobox image. File: `Gutkurr TCW.png` — https://static.wikia.nocookie.net/starwars/images/0/0d/Gutkurr_TCW.png/revision/latest?cb=20211115055327
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

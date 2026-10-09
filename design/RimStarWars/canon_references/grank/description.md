@@ -38,51 +38,18 @@ Naboo**, sourced entirely to *The Wildlife of Star Wars: A Field Guide*
   image question for this creature.
 
 ## Visual brief
-With the infobox text fields empty, the two Wookieepedia illustrations and
-the donor mod's own icon are the *only* source of color/detail — and they
-corroborate each other reasonably well, though the two wiki images likely
-share a common source (both appear to be illustrations tied to the 2001
-*Field Guide*, not independent photographic/film evidence, so treat this as
-one strong consistent illustration tradition rather than triangulated proof):
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
 
-- `wookieepedia_infobox.webp` (the field-guide-style infobox illustration,
-  full-body profile view): a low-slung, digitigrade **quadruped** with a
-  **reddish-brown to maroon back and flanks**, a **lighter grey-tan
-  underside, throat, and legs**, a long tapering rat-like tail, and an
-  elongated snout packed with **large interlocking jagged teeth** — visible
-  even with the jaw mostly closed, which is clearly the source of the
-  "saw-toothed" name. Small **red eyes**, a pair of short blunt horn-like
-  spikes near the nose, and a wispy fringe of hair-like bristles along the
-  belly and backs of the legs (consistent with the text's "sensed vibrations
-  through hair").
-- `wookieepedia_coruscant_scene.webp` (an adult and juvenile grank scavenging
-  from a tipped-over trash can on Coruscant, with a small unrelated
-  yellow/cream creature nearby): confirms the same **reddish-brown/maroon
-  dorsal coloring fading to tan-grey underneath**, the same twin nose-horns,
-  and shows the mouth **open**, revealing a genuinely saw-like double row of
-  jagged white teeth — the strongest single view of the "saw-toothed"
-  name. Also shows faint **darker mottled spotting** on the flank of the
-  adult, consistent with a reptilian/scaled hide rather than a furred one
-  (matching "Reptomammal"). Both the adult and the smaller juvenile share
-  identical coloring — no juvenile/adult color difference visible.
-- `steam_workshop_roster_grid.jpg` (Steam Workshop preview screenshot from
-  the donor mod's current 1.6 listing, id `3497316713` — a 12-creature
-  roster grid; Grank is the bottom-right tile, clearly labeled "GRANK"): the
-  mod's own flat-vector icon art, drawn by the mod author (no evidence it is independent of the same Field Guide art),
-  **also lands on a maroon/wine-red back with a tan/cream belly, snout
-  underside, and open mouth showing white fangs**, a long thin down-curving
-  tail, and a small ear/horn nub — i.e. the mod author converged on
-  essentially the same reddish-brown-over-tan palette as the two Wookieepedia
-  illustrations, (not independent evidence of canon anatomy).
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Saw-toothed grank` page images, "Images of saw-toothed granks" category — every file is either *Wildlife of Star Wars* watercolour or a 640x480 *Gungan Frontier* (1999) game screen).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. The donor mod's flat-vector roster icon (`steam_workshop_roster_grid.jpg`) was deleted. The nearest thing to realistic is `wookieepedia_gunganfrontier.jpg`, a small pre-rendered CGI model (brown, heavy-headed, open saw-toothed jaw) — low resolution, use it for mass and proportion. The two watercolours carry the detail.
 
-**No disagreement found between text and images** (the text is simply silent
-on color, so there is nothing to contradict), **and no disagreement between
-the three images either** — infobox illustration, Coruscant-scene
-illustration, and the donor mod's own icon all agree: reddish-brown/maroon
-dorsal coloring over a lighter tan-grey underside/throat, an elongated jaw
-with prominent saw-like interlocking teeth, a pair of small nose-horns, and a
-long thin tail. Render toward that reddish-brown-over-tan palette with the
-oversized jagged teeth as the creature's single most distinctive feature.
+What the images show (watercolours `infobox`, `coruscant_scene`; CGI `gunganfrontier`):
+- **Body**: a heavy, low-slung digitigrade quadruped, deep-chested and big-headed, with a long tapering rat-like tail; the CGI model reads bulkier and more theropod-like than the lean watercolour.
+- **Colour**: reddish-brown to maroon back and flanks fading to a lighter tan-grey underside, throat and legs; faint darker mottling on the adult's flank. The CGI is a plainer mid-brown.
+- **Head**: elongated heavy snout packed with large interlocking jagged white teeth, visible even with the jaw closed and a double saw-row when open; small red eyes; a pair of short horn-like spikes near the nose (watercolours only).
+- **Hair**: a wispy fringe of bristles along the belly and the backs of the legs (watercolours; the text says it senses vibrations through hair).
+- A smaller juvenile with the same features appears in `coruscant_scene`.
+
+Render as a real animal: leathery reptomammal hide with sparse coarse bristles, wet teeth, natural light — not watercolour wash.
 
 ## Must show
 - [ ] Low-slung, digitigrade quadruped with a long, tapering, rat-like tail
@@ -91,6 +58,7 @@ oversized jagged teeth as the creature's single most distinctive feature.
 - [ ] Small red eyes
 - [ ] A pair of short, blunt, horn-like spikes near the nose
 - [ ] A wispy fringe of hair-like bristles along the belly and backs of the legs
+- [ ] Realistic rendering: natural leathery hide with coarse bristles and lighting, no outlines, no watercolour or cartoon shading
 
 ## Engine limits
 none known
@@ -114,27 +82,9 @@ none known
   yielded a labeled Grank image)
 
 ## Candidate images
-- `wookieepedia_infobox.webp` — Wookieepedia infobox illustration, full-body
-  profile: reddish-brown/maroon back, tan-grey underside, saw-toothed jaw,
-  twin nose-horns, red eyes. Source: Wookieepedia (`Saw-toothed grank`
-  article, "The Wildlife of Star Wars: A Field Guide" style art).
-- `wookieepedia_coruscant_scene.webp` — Wookieepedia in-article scene
-  illustration: adult + juvenile grank scavenging a Coruscant trash bin,
-  mouth open showing the double row of saw-like teeth, same
-  reddish-brown/tan coloring with darker flank mottling. Source: Wookieepedia
-  (`Saw-toothed grank` article).
-- `steam_workshop_roster_grid.jpg` — Steam Workshop preview screenshot (donor
-  mod `mlie.starwarsanimalcollection`, current 1.6 listing id
-  `3497316713`): a 12-creature roster grid; bottom-right tile is labeled
-  "GRANK" and shows the mod's own flat-vector icon art for it (maroon back,
-  tan belly/snout, open fanged mouth, thin down-curved tail). This IS a
-  donor-mod screenshot specifically showing a Grank — found on the current
-  (1.6) Workshop listing's screenshot gallery, not the legacy listing. It is
-  the mod's promotional roster-icon art, not a screenshot of the actual
-  in-game AssetBundle-rendered sprite (which could not be obtained — the
-  mod's current release packs creature textures inside Unity AssetBundles,
-  and the mod is not installed/vendored anywhere on this machine or in this
-  repo), but it is a genuine donor-mod depiction of this specific creature.
+- `wookieepedia_infobox.webp` — WATERCOLOUR ILLUSTRATION (*Wildlife of Star Wars: A Field Guide*), full-body profile: reddish-brown/maroon back, tan-grey underside, saw-toothed jaw, twin nose-horns, red eyes. File `Saw-toothed grank.jpg`.
+- `wookieepedia_coruscant_scene.webp` — WATERCOLOUR ILLUSTRATION (*Wildlife of Star Wars*): adult + juvenile scavenging a Coruscant trash bin, mouth open on the double row of saw teeth. File `Saw-toothed granks on Coruscant.jpg`.
+- `wookieepedia_gunganfrontier.jpg` — GAME pre-rendered CGI (*Star Wars Episode I: The Gungan Frontier*, 1999), small but the only 3D depiction; file `SawToothedGank-GunganFrontierOrganism.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a3/SawToothedGank-GunganFrontierOrganism.jpg/revision/latest?cb=20260927230556
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

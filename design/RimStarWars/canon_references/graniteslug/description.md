@@ -18,6 +18,10 @@ The granite slug was a silica parasite native to the planet Coruscant that left 
 Introduced to the Coruscant undercity in 335 BBY by the Republic to clear garbage, which grew both slug and predator populations (*The Jedi Academy Sourcebook*); diet silicavorous (*The Wildlife of Star Wars: A Field Guide*).
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Granite slug` and `Granite slug/Legends` page images, "Images of granite slugs" category — only two files exist: the *Wildlife of Star Wars* watercolour and a *Jedi Academy Sourcebook* ink drawing).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. Think of a real nudibranch or sea slug: wet, glistening mucus-coated skin, translucent fleshy papillae, a real slime sheen; no ink outlines.
+
 Both images are LEGENDS (Legends page only; the canon page has no image), and they disagree strongly with each other. The prose gives almost nothing visual (a small slug, two mouths, acid trails).
 - **`legends_1` (colour illustration, infobox):** a long, low slug, roughly caterpillar/sea-slug shaped. Body is ochre-orange banded with large blue-teal ringed blotches (concentric spots) running in rows down the flanks. The back carries a dense crest of short fleshy, teal-tipped papillae/fronds, tallest over the hump of the midsection. A pale grey-white foot/belly runs underneath. The head end has three or four thin, tall stalks (eye stalks and tentacle stalks, with trumpet-like flared tips; one points forward and up, others curl) and a small spiky-ringed mouth at the front. The tail end curls upward and finishes in a second spiky starburst-shaped ring of tentacles around an opening, which the earlier reviewer read as the "second mouth" the canon prose mentions (an interpretation: no source caption places either mouth). A trail of yellow-green slime sits behind.
 - **`legends_2` (black-and-white ink drawing):** a plain, smooth, fat, tapered slug with two short eye stalks tipped with dark knobs, a faint mottled/plated skin pattern and no frond crest, shown over a spreading black slime trail. Far simpler than `legends_1`; no second mouth visible.
@@ -31,6 +35,7 @@ Both images are LEGENDS (Legends page only; the canon page has no image), and th
 - [ ] Head with thin eye and tentacle stalks and a small spiky-ringed mouth
 - [ ] Tail end curling up into a starburst ring of tentacles around a second mouth
 - [ ] Wet slime trail left behind the body
+- [ ] Realistic rendering: wet glistening sea-slug skin and natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -40,8 +45,8 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Granite_slug/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Granite slug/Legends`; wiki caption: infobox image. File: `Granite Slugs.jpg` — https://static.wikia.nocookie.net/starwars/images/8/8e/Granite_Slugs.jpg/revision/latest?cb=20060716110722
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Granite slug/Legends`; wiki caption: A granite slug.. File: `Granite slug.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b1/Granite_slug.jpg/revision/latest?cb=20080930173501
+- `wookieepedia_legends_1.webp` — WATERCOLOUR ILLUSTRATION (*Wildlife of Star Wars*) — LEGENDS page (non-canon continuity) `Granite slug/Legends`; wiki caption: infobox image. File: `Granite Slugs.jpg` — https://static.wikia.nocookie.net/starwars/images/8/8e/Granite_Slugs.jpg/revision/latest?cb=20060716110722
+- `wookieepedia_legends_2.webp` — INK DRAWING (*Jedi Academy Sourcebook*) — LEGENDS page (non-canon continuity) `Granite slug/Legends`; wiki caption: A granite slug.. File: `Granite slug.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b1/Granite_slug.jpg/revision/latest?cb=20080930173501
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

@@ -12,6 +12,10 @@ Disambiguation: "grazer" also names unrelated animals (Grazer (Ammuud), Grazer (
 Sources cited: The Illustrated Star Wars Universe, Star Wars Encyclopedia, The Wildlife of Star Wars: A Field Guide, The Complete Star Wars Encyclopedia, The Essential Atlas.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Grazer (Alderaan)` page images, "Images of grazers" category, a site search for "grazer Alderaan" — the only depiction is the *Wildlife of Star Wars* watercolour below).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. Think of a real hippo/rhino-scale herbivore: thick wrinkled hide with real leopard-rosette pigment, real hooves and horn, natural light, no ink outlines or watercolour wash.
+
 Viewed `wookieepedia_legends_1.webp` (Field-Guide-style illustration, both forms side by side).
 - **Domestic (left):** enormous, nearly spherical barrel body on short thick legs, white underside with large tan/gold leopard-style blotches on the back, small head hung low, floppy flat ears, wrinkled trunk-like snout and a few small horn knobs, short thin tail.
 - **Wild (right):** much smaller and leaner, long low body, densely spotted tan-and-brown leopard rosettes over the whole flank, a ridge of small spikes/scutes along the spine and neck, a horned/bumpy face with a red eye, small ears, thin tail ending in a tuft, thin legs with blunt hooves.
@@ -23,6 +27,7 @@ Viewed `wookieepedia_legends_1.webp` (Field-Guide-style illustration, both forms
 - [ ] Wild form clearly leaner than the domestic one (the whole point of "feral")
 - [ ] Row of small spikes/scutes along the neck and spine, bumpy horned face
 - [ ] Short thin tail, small ears
+- [ ] Realistic rendering: natural thick wrinkled hide with real rosette pigment and lighting, no outlines, no watercolour or cartoon shading
 
 ## Engine limits
 none known
@@ -31,7 +36,7 @@ none known
 - https://starwars.fandom.com/wiki/Grazer_(Alderaan) (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_legends_1.webp` — LEGENDS; infobox `Grazers.jpg`, domestic left / wild right — https://static.wikia.nocookie.net/starwars/images/0/0e/Grazers.jpg/revision/latest?cb=20070110190617
+- `wookieepedia_legends_1.webp` — WATERCOLOUR ILLUSTRATION (*Wildlife of Star Wars*), LEGENDS; infobox `Grazers.jpg`, domestic left / wild right — https://static.wikia.nocookie.net/starwars/images/0/0e/Grazers.jpg/revision/latest?cb=20070110190617
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

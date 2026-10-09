@@ -48,6 +48,10 @@ brief — it may exist in some other source, but no citation for it turned up
 in the pages pulled here, so it is not asserted as fact.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+⚠️ **RULING-CONFLICT, kept deliberately:** the owner's 2026-09-14 ruling below picks the *Wildlife of Star Wars* watercolour `wookieepedia_legends_infobox.jpg` (and notes the hooks on the wings and feet), so it stays. `wookieepedia_legends_juvenile.jpg` (same watercolour book) also stays — it is the only image of the green juvenile and the molt. No realistic winged hawk-bat exists: the only realistic depiction is the canon *Hyperspace Lounge* prop photo (`wookieepedia_current_canon_infobox.jpg`), a wingless-looking perched purple-black creature (searched: `Hawk-bat`, `Hawk-bat/Legends`, "Images of hawk-bats"). Take the body plan and colours from the ruled watercolour, but render them like a real animal — leathery translucent wing membrane with visible veins, real skin texture, natural light — not watercolour wash or ink outline. The prop photo is the material reference for realistic skin (slick, finely wrinkled, dark violet).
+
 This is a stronger case of text/image (and current-canon/Legends) disagreement
 than usual, and three of the four candidate images line up with each other
 against the fourth:
@@ -98,6 +102,7 @@ library's own rule about disagreement.
 - [ ] Long tail present
 - [ ] Ribbed wing membrane structure with clawed wingtips
 - [ ] Reads as a pterosaur-like reptavian, not the slug/larva-bodied current-canon outlier
+- [ ] Realistic rendering: leathery veined wing membrane, real skin texture and natural lighting, no outlines, no watercolour or cartoon shading
 
 ## Engine limits
 none known
@@ -120,14 +125,13 @@ none known
   which `donor_mod_workshop_icon.jpg` is cropped from.
 
 ## Candidate images
-- `wookieepedia_current_canon_infobox.jpg` — current-canon Hyperspace Lounge
-  prop photo: bulky violet/near-black slug-bodied creature, small horns,
+- `wookieepedia_current_canon_infobox.jpg` — REAL prop photo, current-canon Hyperspace Lounge: bulky violet/near-black slug-bodied creature, small horns,
   clawed forelimbs, no visible wings in this pose. Outlier — do not use for
   color.
-- `wookieepedia_legends_infobox.jpg` — Legends Field Guide illustration:
+- `wookieepedia_legends_infobox.jpg` — WATERCOLOUR ILLUSTRATION (owner-ruled), Legends Field Guide:
   purple-topped/cream-gold-bottomed membrane wings, beaked head with small
   horn. **Best single color/body-plan reference.**
-- `wookieepedia_legends_juvenile.jpg` — Legends Field Guide illustration of
+- `wookieepedia_legends_juvenile.jpg` — WATERCOLOUR ILLUSTRATION (only juvenile/molt image), Legends Field Guide of
   two individuals: shows the green-juvenile-to-purple/gold-adult skin
   transformation described in the sourced text, plus a second pale
   gray-white flying adult with a red eye.
