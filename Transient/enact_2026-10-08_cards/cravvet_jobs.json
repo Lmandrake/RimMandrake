@@ -1,0 +1,18 @@
+[
+ {
+  "id": "regen_wb_cravvet_east_v4",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Cravvet",
+  "priority": 0,
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east"
+  ],
+  "biome_neutral": true,
+  "owner_note": "Redraw the east facing in the style of his other Cravvet picks (south/north of RM_Cravvet_v2) (owner card 2026-10-08).",
+  "prompt": "RimWorld game animal sprite, EAST (side) view: the cravvet, a knuckle-shaped armoured scuttler, mud-dark, squat and domed, head down, jaws built for cracking bone and broken chitin, parked and still. Same individual, palette, edge treatment, painted style and scale as the attached accepted south-facing render; show it in clean profile facing right.",
+  "style_notes": "squat domed sheller silhouette, mud-dark; head-down parked posture; painterly vanilla-RimWorld animal art style",
+  "derive_from": "RM_Cravvet_v2_south"
+ }
+]

@@ -90,9 +90,9 @@
 
 
 	<ThingDef ParentName="EggFertBase">
-		<defName>RM_EggGreatDevourerFertilized</defName>
-		<label>sarlacc seeker egg (fert.)</label>
-		<description>A fertilized sarlacc seeker egg: a leathery canteen of a shell. If all goes well it hatches into a seeker, the questing stage of a sarlacc.</description>
+		<defName>RM_EggGullothFertilized</defName>
+		<label>gulloth egg (fert.)</label>
+		<description>A fertilized gulloth egg: a leathery canteen of a shell. If all goes well it hatches into a gulloth.</description>
 		<tradeability>None</tradeability>
 		<statBases>
 			<MarketValue>9.0</MarketValue>
@@ -104,16 +104,16 @@
 		<comps>
 			<li Class="CompProperties_Hatcher">
 				<hatcherDaystoHatch>8</hatcherDaystoHatch>
-				<hatcherPawn>RM_GreatDevourer</hatcherPawn>
+				<hatcherPawn>RM_Gulloth</hatcherPawn>
 			</li>
 		</comps>
 	</ThingDef>
 
 
 	<ThingDef ParentName="EggUnfertBase">
-		<defName>RM_EggGreatDevourerUnfertilized</defName>
-		<label>sarlacc seeker egg (unfert.)</label>
-		<description>An unfertilized sarlacc seeker egg: a leathery canteen of a shell. It can be eaten raw, but it is better cooked, and disgusting either way.</description>
+		<defName>RM_EggGullothUnfertilized</defName>
+		<label>gulloth egg (unfert.)</label>
+		<description>An unfertilized gulloth egg: a leathery canteen of a shell. It can be eaten raw, but it is better cooked, and disgusting either way.</description>
 		<graphicData>
 			<texPath>Things/Item/Resource/AA_EggBeetle</texPath>
 			<color>(163,81,36)</color>

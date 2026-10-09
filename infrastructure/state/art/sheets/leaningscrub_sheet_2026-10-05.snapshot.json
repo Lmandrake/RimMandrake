@@ -1,9 +1,9 @@
 {
  "biome": "RM_LeaningScrub",
- "built": "2026-10-08T20:23:50-0700",
+ "built": "2026-10-08T20:59:11-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 16 mods \u2014 a test list): 614 active",
  "rows": {
   "Plant_Brambles": {
    "columns": {
@@ -2942,6 +2942,9 @@
     },
     "F": {
      "single": "a40d640de1a837182556a3d5d8424ccc4f5882ac380672e464137d67c7de02d9"
+    },
+    "G": {
+     "single": "2974c33073f656ac0d191d401eae147f1b70bc4efbe6e51e45efadf5c9e7bd01"
     }
    },
    "graphic_of": {
@@ -2950,7 +2953,8 @@
     "C": "Things/Plant/RM_WildHealroot",
     "D": "Things/Plant/RM_WildHealroot",
     "E": "Things/Plant/RM_WildHealroot",
-    "F": "Things/Plant/RM_WildHealroot"
+    "F": "Things/Plant/RM_WildHealroot",
+    "G": "Things/Plant/RM_WildHealroot"
    },
    "labels": {
     "A": "our deployed art (render rut_wildhealroot) \u2014 RimMandrake: Baroque Biomes",
@@ -2958,7 +2962,8 @@
     "C": "render leaningscrub_wildhealroot_b_v1_single",
     "D": "render leaningscrub_wildhealroot_c_v1_single",
     "E": "render gapfin_RM_WildHealroot_v1",
-    "F": "render ls3_wildhealroot_a_v1"
+    "F": "render ls3_wildhealroot_a_v1",
+    "G": "render ls3_wildhealroot_b_v1"
    },
    "res": "Things/Plant/RM_WildHealroot",
    "reserved": [
@@ -2967,7 +2972,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "subject_key": "wildhealroot"
   },
@@ -3335,11 +3341,6 @@
   },
   "RSW_Eopie": {
    "columns": {
-    "B": {
-     "east": "305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42",
-     "north": "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b",
-     "south": "0b1cf5fc262da4bc2b3fe3720a01174c512178ad880612b236c4ef5780e23898"
-    },
     "E": {
      "east": "a09be00a01b0e678a672509bf7a3e91bca22b6cba3ee08d449a183424dd1740a",
      "north": "9c8546658cda26e4000d85f0c61297ceb4362061edc263d7354ae44b9289182f",
@@ -3357,13 +3358,11 @@
     }
    },
    "graphic_of": {
-    "B": "swanimals/Eopie/Eopie",
     "E": "swanimals/Eopie/Eopie",
     "H": "swanimals/Eopie/Eopie_j",
     "I": "swanimals/Eopie/Eopie"
    },
    "labels": {
-    "B": "history Jawa_Patches 2026-08-24",
     "E": "IN GAME \u2014 SWBestiary",
     "H": "IN GAME \u2014 SWBestiary",
     "I": "render regen_c17_eopie_v1"
@@ -3447,12 +3446,13 @@
      "north": "e1a279f3f7b97604dc32abf68e631f13f14bf3280e33633b14beabf098c55787",
      "south": "a315db2be98a6aa4482a998f4586e60abb8a81e9f6685d62dabceb005554f004"
     },
-    "L": {
-     "south": "46077ead0db6e3bfd296fd6b7d5f428b5ba4f1096f7b1ff3218690b7e6a71f4b"
-    },
     "M": {
      "north": "800d7cd1b29909f713a280f37d4dd8ef677ede24d3cc590106c0d1fb0a34da19",
      "south": "8cb579917bbd330348e771d54a717cb79092a24b639dedbb3a6f8c9223089c4d"
+    },
+    "N": {
+     "north": "79e4bb33a29dea67a500572c7131d9bd1e4118e4668b96b564810b7782666aa6",
+     "south": "46077ead0db6e3bfd296fd6b7d5f428b5ba4f1096f7b1ff3218690b7e6a71f4b"
     }
    },
    "graphic_of": {
@@ -3465,8 +3465,8 @@
     "I": "swanimals/FrilledGorg/FrilledGorg_Swimming",
     "J": "swanimals/FrilledGorg/FrilledGorg_j",
     "K": "swanimals/FrilledGorg/FrilledGorg_j_Swimming",
-    "L": "swanimals/FrilledGorg/FrilledGorg",
-    "M": "swanimals/FrilledGorg/FrilledGorg"
+    "M": "swanimals/FrilledGorg/FrilledGorg",
+    "N": "swanimals/FrilledGorg/FrilledGorg"
    },
    "labels": {
     "B": "IN GAME \u2014 SWBestiary",
@@ -3478,8 +3478,8 @@
     "I": "IN GAME \u2014 SWBestiary",
     "J": "IN GAME \u2014 SWBestiary",
     "K": "IN GAME \u2014 SWBestiary",
-    "L": "render regen_ls_canon_frilledgorg_i_v1",
-    "M": "render regen_ls_canon_frilledgorg_k_v1"
+    "M": "render regen_ls_canon_frilledgorg_k_v1",
+    "N": "render regen_ls_canon_frilledgorg_i_v1"
    },
    "res": "swanimals/FrilledGorg/FrilledGorg",
    "reserved": [
@@ -3495,7 +3495,8 @@
     "J",
     "K",
     "L",
-    "M"
+    "M",
+    "N"
    ],
    "subject_key": "frilledgorg"
   },
@@ -4029,15 +4030,6 @@
     "D": {
      "east": "1d245186f819d1f87223940a7ed8fb116b1c3b4efc67d3e6018ff732d7c2d3bc"
     },
-    "E": {
-     "east": "1d245186f819d1f87223940a7ed8fb116b1c3b4efc67d3e6018ff732d7c2d3bc",
-     "north": "d572e6c95de39a6dcf6d1356a0f0f40393440c1fa7c3119a07387e8f1802c0f6",
-     "south": "5a6fb8d87f02fa978ccb72f2eb07d78675e0c1b241186a83df04e7d8c14906b1"
-    },
-    "F": {
-     "north": "d572e6c95de39a6dcf6d1356a0f0f40393440c1fa7c3119a07387e8f1802c0f6",
-     "south": "5a6fb8d87f02fa978ccb72f2eb07d78675e0c1b241186a83df04e7d8c14906b1"
-    },
     "G": {
      "east": "0fc449cd1a610b485a2b74bff317fcdd5a2153cef30b172afafa65dabd58db84"
     },
@@ -4047,25 +4039,26 @@
     },
     "I": {
      "east": "6fc48b05110086984347a622977d08a281fb50b269b8de314b8c8e7145c198cc"
+    },
+    "J": {
+     "east": "72e9c7c74a7fc281bb4bf875a80e825fb5d7aa04f080f77051b33f52b5e93fdc"
     }
    },
    "graphic_of": {
     "B": "swanimals/Lothcat/Lothcat_m",
     "D": "swanimals/Lothcat/Lothcat_f",
-    "E": "swanimals/Lothcat/Lothcat_f",
-    "F": "swanimals/Lothcat/Lothcat_f",
     "G": "_byname",
     "H": "_byname",
-    "I": "_byname"
+    "I": "_byname",
+    "J": "_byname"
    },
    "labels": {
     "B": "IN GAME \u2014 SWBestiary",
-    "D": "render leaningscrub_lothcat_v1 \u2014 failed canon check",
-    "E": "IN GAME \u2014 SWBestiary",
-    "F": "history SWBestiary 2026-09-17",
+    "D": "IN GAME \u2014 SWBestiary",
     "G": "render regen_c17_lothcat_v2 \u2014 failed canon check",
     "H": "render regen_ls2_canon_lothcat_v1",
-    "I": "render regen_c17_lothcat_v3"
+    "I": "render regen_c17_lothcat_v3 \u2014 failed canon check",
+    "J": "render regen_c17_lothcat_v4 \u2014 failed canon check"
    },
    "res": "swanimals/Lothcat/Lothcat_f",
    "reserved": [
@@ -4077,7 +4070,8 @@
     "F",
     "G",
     "H",
-    "I"
+    "I",
+    "J"
    ],
    "subject_key": "lothcat"
   },
@@ -4295,19 +4289,29 @@
     },
     "E": {
      "single": "91e1a9ba8e2148684717e55044d79c13106ca192a9a13527d9282b0dc6a0fa5c"
+    },
+    "F": {
+     "single": "8f416c92e7a7a3f448e52217a7daa052f325bef55c77b28829cb7fe4ac0d6904"
+    },
+    "G": {
+     "single": "f475685d0cf992dda88ff157f323312d1d4bc64c98ea8d11670df70329490042"
     }
    },
    "graphic_of": {
     "A": "swplants/Nysillin",
     "C": "_byname",
     "D": "_byname",
-    "E": "_byname"
+    "E": "_byname",
+    "F": "_byname",
+    "G": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "C": "render leaningscrub_nysyllin_wild_c_v1_single \u2014 failed canon check",
     "D": "render leaningscrub_nysyllin_wild_a_v1_single \u2014 failed canon check",
-    "E": "render leaningscrub_nysyllin_wild_b_v1_single \u2014 failed canon check"
+    "E": "render leaningscrub_nysyllin_wild_b_v1_single \u2014 failed canon check",
+    "F": "render ls3_nysyllin_a_v1",
+    "G": "render ls3_nysyllin_b_v1"
    },
    "res": "swplants/Nysillin",
    "reserved": [
@@ -4315,7 +4319,9 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "nysyllin_wild"
   },
@@ -5118,5 +5124,5 @@
   }
  },
  "sheetId": "leaningscrub_sheet_2026-10-05",
- "snapshotId": "e1211f0bba46c660"
+ "snapshotId": "ac3fa7ad9eafa71b"
 }

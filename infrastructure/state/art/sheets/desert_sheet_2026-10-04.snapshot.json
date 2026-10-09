@@ -1,9 +1,9 @@
 {
  "biome": "RM_LongShade",
- "built": "2026-10-08T20:20:33-0700",
+ "built": "2026-10-08T20:55:53-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 16 mods \u2014 a test list): 614 active",
  "rows": {
   "JOE_Landopus": {
    "columns": {
@@ -140,26 +140,32 @@
      "east": "84c7b04e13c4b92b4f049cec0469db27aceec97fe401aa8b6df2ecc0b30f9089",
      "north": "155924019db846c4e25ca3fa73d94a85b5d97ff289d6ec9fab4196781ccd8b80",
      "south": "0d83dbca211e9727a4e71708504f67b4dc15d125de62a2de8985d75784ba00e0"
+    },
+    "E": {
+     "east": "385777199150dbe63c056c7392708814ab235cb5f90ed65e5ee3ad2e36a620a4"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
     "B": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
     "C": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
-    "D": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra"
+    "D": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
+    "E": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra"
    },
    "labels": {
     "A": "render RM_Dakkra",
     "B": "render ls_regen_RM_Dakkra_down_v1",
     "C": "render ls_regen_RM_Dakkra_rest_v1",
-    "D": "IN GAME \u2014 LongShade"
+    "D": "IN GAME \u2014 LongShade",
+    "E": "render regen_ls_x_dakkra_moving_v1 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "dakkra"
   },
@@ -342,7 +348,7 @@
     "A": "Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer"
    },
    "labels": {
-    "A": "IN GAME \u2014 LongShade"
+    "A": "render RM_GreatDevourer"
    },
    "res": "Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer",
    "reserved": [
@@ -1624,7 +1630,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "history Jawa_Patches 2026-08-24",
+    "B": "shipped, shadowed \u2014 StarWarsPatches",
     "F": "IN GAME \u2014 SWBestiary",
     "G": "IN GAME \u2014 SWBestiary",
     "I": "render regen_c17_eopie_v1"
@@ -1768,12 +1774,13 @@
      "north": "d636eff2bdbc00feb04893601a3ca70a03aefeeb978e6634c1ae8be9516abd4f",
      "south": "83de19e5b2f24752d9ae91bddbdcac23009f2f41120d6f65c73a8e61685e0b05"
     },
-    "N": {
-     "south": "46077ead0db6e3bfd296fd6b7d5f428b5ba4f1096f7b1ff3218690b7e6a71f4b"
-    },
     "O": {
      "north": "800d7cd1b29909f713a280f37d4dd8ef677ede24d3cc590106c0d1fb0a34da19",
      "south": "8cb579917bbd330348e771d54a717cb79092a24b639dedbb3a6f8c9223089c4d"
+    },
+    "P": {
+     "north": "79e4bb33a29dea67a500572c7131d9bd1e4118e4668b96b564810b7782666aa6",
+     "south": "46077ead0db6e3bfd296fd6b7d5f428b5ba4f1096f7b1ff3218690b7e6a71f4b"
     }
    },
    "graphic_of": {
@@ -1787,8 +1794,8 @@
     "J": "swanimals/FrilledGorg/FrilledGorg",
     "K": "swanimals/FrilledGorg/FrilledGorg",
     "M": "swanimals/FrilledGorg/FrilledGorg",
-    "N": "swanimals/FrilledGorg/FrilledGorg",
-    "O": "swanimals/FrilledGorg/FrilledGorg"
+    "O": "swanimals/FrilledGorg/FrilledGorg",
+    "P": "swanimals/FrilledGorg/FrilledGorg"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
@@ -1801,8 +1808,8 @@
     "J": "render longshade_rsw_frilledgorg_v4 \u2014 failed canon check",
     "K": "render longshade_rsw_frilledgorg_v5 \u2014 failed canon check",
     "M": "render longshade_rsw_frilledgorg_v6 \u2014 failed canon check",
-    "N": "render regen_ls_canon_frilledgorg_i_v1",
-    "O": "render regen_ls_canon_frilledgorg_k_v1"
+    "O": "render regen_ls_canon_frilledgorg_k_v1",
+    "P": "render regen_ls_canon_frilledgorg_i_v1"
    },
    "res": "swanimals/FrilledGorg/FrilledGorg",
    "reserved": [
@@ -1820,7 +1827,8 @@
     "L",
     "M",
     "N",
-    "O"
+    "O",
+    "P"
    ],
    "subject_key": "frilledgorg"
   },
@@ -2559,6 +2567,11 @@
     "F": {
      "north": "63c389c1b0d5300a721483b0bc2428e169f1ecf6196aaa2f6c3b703c8d5bbd7b",
      "south": "223bb34ad09d5034bdea9077a82de18c194c82ef6a0a5392876775b0f1039df7"
+    },
+    "G": {
+     "east": "effceaee76228b401f0a77e1fb330c01a71c6509d2358315b6a3aa7732d98c7d",
+     "north": "1c040b3b4348a24809fc0ceabad92ec685af7abd071be1b61265323077068347",
+     "south": "f7a05f8e5dc75d7ddd190539287610efc2d01e9bcfbda131d1c1d60fbc62e217"
     }
    },
    "graphic_of": {
@@ -2566,14 +2579,16 @@
     "B": "swanimals/Nerf/Nerf_j",
     "C": "swanimals/Nerf/Nerf_m",
     "E": "_byname",
-    "F": "_byname"
+    "F": "_byname",
+    "G": "swanimals/Nerf/Nerf_m"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
-    "C": "IN GAME \u2014 SWBestiary",
+    "C": "history SWBestiary 2026-09-17",
     "E": "render longshade_rsw_nerf_v1 \u2014 failed canon check",
-    "F": "render regen_ls_canon_nerf_v1 \u2014 failed canon check"
+    "F": "render regen_ls_canon_nerf_v1 \u2014 failed canon check",
+    "G": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Nerf/Nerf_f",
    "reserved": [
@@ -2582,7 +2597,8 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
    ],
    "subject_key": "nerf"
   },
@@ -3161,19 +3177,25 @@
      "east": "6a35577644c24efbde61eb255afe01f4458996eb9a7f985e4dcf90641b3236a7",
      "north": "c9f44d94cf509f7101141b037c31e2a2bfaf2509d9b1604f2eb06299af90079f",
      "south": "804c52af4177af18f8c08f5b2b49e125a359432b79804348df6b19e60fc75023"
+    },
+    "F": {
+     "north": "b3600cfd024208877ac9b8ff5725d9007f57f259e070e1a481ec0c501adfdc1b",
+     "south": "fd49c0d7bca64f7b3fa5a5ccbcb909860f2452fa3bad251009a0d5879fb59e3c"
     }
    },
    "graphic_of": {
     "A": "swanimals/TeeMuss/TeeMuss",
     "C": "swanimals/TeeMuss/TeeMuss",
     "D": "swanimals/TeeMuss/TeeMuss",
-    "E": "swanimals/TeeMuss/TeeMuss"
+    "E": "swanimals/TeeMuss/TeeMuss",
+    "F": "swanimals/TeeMuss/TeeMuss"
    },
    "labels": {
     "A": "history SWBestiary 2026-09-18",
     "C": "render longshade_rsw_teemuss_v1 \u2014 failed canon check",
     "D": "render regen_ls_canon_teemuss_v1",
-    "E": "IN GAME \u2014 SWBestiary"
+    "E": "IN GAME \u2014 SWBestiary",
+    "F": "render regen_ls_canon_teemuss_v1_ns"
    },
    "res": "swanimals/TeeMuss/TeeMuss",
    "reserved": [
@@ -3181,7 +3203,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "teemuss"
   },
@@ -3342,9 +3365,9 @@
     "C": "IN GAME \u2014 SWBestiary",
     "D": "IN GAME \u2014 Uvak_Flying_",
     "E": "render regen_ls_canon_uvak_flying_1_v1 \u2014 failed canon check",
-    "F": "render regen_ls_canon_uvak_flying_2_v1",
+    "F": "render regen_ls_canon_uvak_flying_2_v1 \u2014 failed canon check",
     "G": "render regen_ls_canon_uvak_flying_3_v1",
-    "H": "render regen_ls_canon_uvak_flying_4_v1"
+    "H": "render regen_ls_canon_uvak_flying_4_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Uvak/Uvak",
    "reserved": [
@@ -3652,5 +3675,5 @@
   }
  },
  "sheetId": "desert_sheet_2026-10-04",
- "snapshotId": "26ced1042aea0e20"
+ "snapshotId": "63da9ac4aee0b7e1"
 }

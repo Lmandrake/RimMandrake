@@ -1,9 +1,9 @@
 {
  "biome": "RM_FeverWood",
- "built": "2026-10-08T20:21:30-0700",
+ "built": "2026-10-08T20:56:53-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 16 mods \u2014 a test list): 614 active",
  "rows": {
   "Plant_HydenockTree_Wild": {
    "columns": {
@@ -93,6 +93,9 @@
     },
     "E": {
      "single": "e97d1ba86c72bf807bf45dd5a30925ea9dc7d714d9f04d1f12dc41a86a7c5638"
+    },
+    "F": {
+     "single": "864cfa059aa560a975c7bb01ac0a61744a319acc8b761c91bda8c28f171c1784"
     }
    },
    "graphic_of": {
@@ -100,14 +103,16 @@
     "B": "_byname",
     "C": "_byname",
     "D": "_byname",
-    "E": "_byname"
+    "E": "_byname",
+    "F": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
     "B": "render feverwood_plant_ammeth",
     "C": "render regen_fw_ammeth_v2a \u2014 failed canon check",
     "D": "render regen_fw_ammeth_v2b",
-    "E": "render regen_fw_ammeth_v2c"
+    "E": "render regen_fw_ammeth_v2c",
+    "F": "render regen_fw_ammeth_own_v1"
    },
    "res": "Things/Plant/RM_Ammeth/RM_Ammeth_a",
    "reserved": [
@@ -115,7 +120,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "ammeth"
   },
@@ -171,10 +177,6 @@
      "east": "4bea7cc97d37e73fa56ee297826dabc3e41d7c4aa8cfb0d67dd6934e7b0dc795",
      "north": "a5b3b1310e7c8e853c5d1ec66b6ff2f689ccd274725a331fdba7bee96405d8c9"
     },
-    "F": {
-     "east": "67d2084620894fa6b406d0605ee3de5f3624a71e740a2e9ffdd322c8a695bab2",
-     "south": "074588836b7ab23c920b4bb003b9759b94a6ae6ecc30b6bf0fef44f5fe8fee3f"
-    },
     "G": {
      "east": "cadcef7c69acac288d577a3eb040032439722bf5778b9084e6961467bb357c8a",
      "north": "2fb4b191c8c3f34a42b56582faa8f7cc6002611af10256bbd79b8acb6d9b7a1e",
@@ -184,6 +186,11 @@
      "east": "ab6fe7dddc74a1009565ca33f527f6ffbb5b1bae58fd09ab3ad13b6a6c173489",
      "north": "47b6358f423419407d6f3a5f63fada2be1c978fa1910bd264318d08f0b090756",
      "south": "c840dac0441be38e353f195f60b678081a837ba289c0074473342ae405b643b9"
+    },
+    "I": {
+     "east": "67d2084620894fa6b406d0605ee3de5f3624a71e740a2e9ffdd322c8a695bab2",
+     "north": "33e80a44727257586e3d4ee08e1df7cfd8caafb5f5d5f342337a9efb9736a503",
+     "south": "074588836b7ab23c920b4bb003b9759b94a6ae6ecc30b6bf0fef44f5fe8fee3f"
     }
    },
    "graphic_of": {
@@ -192,9 +199,9 @@
     "C": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
     "D": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
     "E": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
-    "F": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
     "G": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
-    "H": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow"
+    "H": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
+    "I": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow"
    },
    "labels": {
     "A": "history FeverWood 2026-09-26",
@@ -202,9 +209,9 @@
     "C": "render regen_fw_chellow_flying_1_v1",
     "D": "render regen_fw_chellow_flying_2_v1",
     "E": "render regen_fw_chellow_flying_3_v1",
-    "F": "render regen_fw_chellow_flying_4_v1",
     "G": "render regen_fw_chellow_v2 \u2014 failed canon check",
-    "H": "IN GAME \u2014 FeverWood"
+    "H": "IN GAME \u2014 FeverWood",
+    "I": "render regen_fw_chellow_flying_4_v1"
    },
    "res": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
    "reserved": [
@@ -215,7 +222,8 @@
     "E",
     "F",
     "G",
-    "H"
+    "H",
+    "I"
    ],
    "subject_key": "chellow"
   },
@@ -456,26 +464,32 @@
     },
     "D": {
      "single": "17a42bb03ec4c8ac9d40ae50b4bdc0ba1c408a9ec326c62643448883cd492395"
+    },
+    "E": {
+     "single": "ae93752b0f3a496ce363cf413d05a275144dfa20f762fbd3e4608f934cfd5d15"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Halquin/RM_Halquin_a",
     "B": "_byname",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
     "B": "render feverwood_plant_halquin",
     "C": "render regen_fw_halquin_varb_v1",
-    "D": "render regen_fw_halquin_varc_v1"
+    "D": "render regen_fw_halquin_varc_v1",
+    "E": "render regen_fw_halquin_own_v1"
    },
    "res": "Things/Plant/RM_Halquin/RM_Halquin_a",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "halquin"
   },
@@ -512,26 +526,32 @@
     },
     "D": {
      "single": "a5f8b3ad6217ee552af6b74d8c1c0c2f84ee234d6e4ea80c688e6ff5d1f7f322"
+    },
+    "E": {
+     "single": "039820f5b619fe0b6d4e92bf2c465c54f9026558f040ef1f5b54712724df5947"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Maulith/RM_Maulith_a",
     "B": "_byname",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
     "B": "render feverwood_plant_maulith",
     "C": "render regen_fw_maulith_varb_v1",
-    "D": "render regen_fw_maulith_varc_v1"
+    "D": "render regen_fw_maulith_varc_v1",
+    "E": "render regen_fw_maulith_own_v1"
    },
    "res": "Things/Plant/RM_Maulith/RM_Maulith_a",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "maulith"
   },
@@ -735,26 +755,32 @@
     },
     "D": {
      "single": "292e3896c6f8521f1b4c435519b6f35044875083502aa7fcb020922847e9ca27"
+    },
+    "E": {
+     "single": "cf4283985c8ceb3d070af84ec38f092d91852ca4c4f6e7d1604e19f44ddd48a5"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Plennith/RM_Plennith_a",
     "B": "_byname",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
     "B": "render feverwood_plant_plennith",
     "C": "render regen_fw_plennith_varb_v1",
-    "D": "render regen_fw_plennith_varc_v1"
+    "D": "render regen_fw_plennith_varc_v1",
+    "E": "render regen_fw_plennith_own_v1"
    },
    "res": "Things/Plant/RM_Plennith/RM_Plennith_a",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "plennith"
   },
@@ -1183,6 +1209,9 @@
     },
     "E": {
      "single": "e9e2d2d2552cff9c62d5253dd8de94998bcc208f630ee0e7e0680c9e6cb72851"
+    },
+    "F": {
+     "single": "7812bdecfb3d163137c1ba7f8fde486e51a2f68a4e410d942918f6367649f90b"
     }
    },
    "graphic_of": {
@@ -1190,14 +1219,16 @@
     "B": "_byname",
     "C": "_byname",
     "D": "_byname",
-    "E": "_byname"
+    "E": "_byname",
+    "F": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
     "B": "render feverwood_plant_verrow",
     "C": "render regen_fw_verrow_v2a",
     "D": "render regen_fw_verrow_v2b",
-    "E": "render regen_fw_verrow_v2c"
+    "E": "render regen_fw_verrow_v2c",
+    "F": "render regen_fw_verrow_own_v1"
    },
    "res": "Things/Plant/RM_Verrow/RM_Verrow_a",
    "reserved": [
@@ -1205,7 +1236,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "verrow"
   },
@@ -1821,5 +1853,5 @@
   }
  },
  "sheetId": "feverwood_sheet_2026-10-05",
- "snapshotId": "73f3beb2e01fd643"
+ "snapshotId": "b52c7704504a1919"
 }

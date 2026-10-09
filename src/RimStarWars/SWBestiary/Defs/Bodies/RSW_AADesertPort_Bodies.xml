@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   AA_JOE_DESERT_PORT_BATCH_1 - support bodies/body parts for the Alpha Animals
-  desert port (RSW_GreatDevourer; RSW_MatureFleshbeast and its body were cut 2026-10-05).
+  desert port (its RSW_GreatDevourer user was retired 2026-10-08, now RM_Gulloth in LongShade; RSW_MatureFleshbeast and its body were cut 2026-10-05).
 
   Source mod: Alpha Animals (`sarg.alphaanimals`, workshop 1541721856),
   1.6/Defs/Bodies/Bodies_WormWithArmor.xml,

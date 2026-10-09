@@ -6,7 +6,7 @@
   RM_MatureFleshbeastBody and its RM_JellyfishTentacle part were deleted with
   the creature 2026-10-05, LONGSHADE_SHEET_STRUCTURAL_RULINGS_1 cut). Originally (moved from
   src/RimStarWars/SWBestiary/Defs/Bodies/RSW_AADesertPort_Bodies.xml,
-  RSW_WormWithArmor -> RM_GreatDevourerBody and RSW_TentacledQuadrupedEyeless
+  RSW_WormWithArmor -> RM_GullothBody and RSW_TentacledQuadrupedEyeless
   -> RM_MatureFleshbeastBody) plus the small BodyPartDefs each one owns
   exclusively (the worm's four body segments, the echolocation organ shared
   only between these two bodies, the tentacle part used six times by the
@@ -78,7 +78,7 @@
 
 
 	<BodyDef>
-		<defName>RM_GreatDevourerBody</defName>
+		<defName>RM_GullothBody</defName>
 		<label>worm with armor</label>
 		<corePart>
 			<def>SnakeBody</def>
