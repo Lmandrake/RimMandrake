@@ -31,9 +31,9 @@ together two earlier docs, which stay as provenance:
   camera and just watched and rotated to watch, then always pulled away when approached would be
   hilarious and very Star Wars."* The Watcher is a camera stalk. Design: §5.
 - **Grey Sea:** *"That is not a watcher, that's its own creepy thing. Add an independent watcher
-  that hides in place."* The fessk is not a member. The Grey Sea's member is the drossik (§3.2).
+  that hides in place."* The fessk is not a member. The Grey Sea's member is the Saltgaze (§3.2).
 - **Contagion:** *"Of course it can get another creature. Just make one."* The Contagion's member
-  is a new creature, the illuvek (§3.2). The sheet's ban 3 does not bar it.
+  is a new creature, the Unblinking (§3.2). The sheet's ban 3 does not bar it.
 
 **The owner's death card, 2026-10-08 (typed):** *"Watchers can't be flushed. They just won't. Many
 damage types will take them out like fire explosions acid l, mostly aoe. Should take almost no
@@ -117,7 +117,7 @@ geophone rule). Each kind has its own Mod Settings toggle. The decision is the V
 | `steam` | a listed Thing (a steam devil) within `radius` | `listerThings`; `RM_SteamDevil` (TerminalBiomes) as data | hveshk (Scald) |
 | `shade` | shade on its cell below `minShade` (a shade-dweller stays under in the sun) | CreatureBehaviors' `RM_MapComponent_ShadeGrid.ShadeAt` by reflection while that grid is active; the roof and the sky otherwise (night = shade) | ennuk (Long Shade) |
 | `buried` | a pawn carrying a listed hediff within `radius` | the murrek's own `RM_MurrekBuried` hediff, named as data | kuvvel (Blue Desert) |
-| `light` | its cell's ground glow at or above `minGlow` | vanilla `GlowGrid.GroundGlowAt` | skeyr (Abyss); illuvek (Contagion) |
+| `light` | its cell's ground glow at or above `minGlow` | vanilla `GlowGrid.GroundGlowAt` | skeyr (Abyss); Unblinking (Contagion) |
 
 All cue numbers on members are PROVISIONAL and are set at each biome's sitting.
 
@@ -252,12 +252,12 @@ roster. Each member is added at its biome's own sitting.
 | Abyss | **skeyr** | NEW | `RM_EtchHollow` | light | a fog-crevice sitter whose pale throat-pouch is all that shows; it ducks from carried light | `RM_EtchHollow` is the Abyss's own terrain (the Etchcap grows only there). Existing alternative: **`RM_Durrgak`**, "works the black glass … with a patient, shy care". But it is a mobile sorter, and a watcher would lose that behaviour. |
 | Cauldron (poison forest) | **ulvoss** | NEW | `RM_CauldronSoil` | gas (tox) | a vent-crust sitter peering from chemical-vent holes, its vent hole drawn into its peek art | chem-resistant hide |
 | Blue Desert | **kuvvel** | NEW | `Ice` | buried (`RM_MurrekBuried`) | a drift-sitter with one eyestalk above the ice-sand | Goes under for a buried murrek nearby: the murrek hides with its own hediff, which the sand-swim geophone cannot see, so this is the `buried` cue. |
-| Contagion | **illuvek** | NEW | `GU_AlienSandFine` (donor terrain, `MayRequire`) | light | an eye the goo budded and never finished: a lidded globe on a stub of red tissue in the wet sand, which sinks into the goo when light comes | The owner lifted ban 3 for it (2026-10-08). The light cue keeps it inside ban 2 (no UV-immune native): it goes under before a Burn, as the ocular jellies sink. On death it leaves a dried tissue remnant that is not food (ban 4). |
+| Contagion | **Unblinking** | NEW | `GU_AlienSandFine` (donor terrain, `MayRequire`) | light | an eye the goo budded and never finished: a lidded globe on a stub of red tissue in the wet sand, which sinks into the goo when light comes | The owner lifted ban 3 for it (2026-10-08). The light cue keeps it inside ban 2 (no UV-immune native): it goes under before a Burn, as the ocular jellies sink. On death it leaves a dried tissue remnant that is not food (ban 4). |
 | Cracked Lands (`RM_FloodedCanyon`) | **tarruq** `RM_Tarruq` | E | `Soil` (the clay pan) | — | "goes silent and climbs when the cracks begin to fill", the biome's second warning | "Crack" is not a terrain, so the clay is the binding. The kit adds the visible half of its hush. **Survival outranks the watch:** at its sitting it owes a gate that ends the watch job and refuses a new one while `RM_MapComponent_CanyonFlood.TarruqSilenced` holds, so a watch never pins it on a filling crack. Today only the silence is built (`RM_TarruqHushPatch`); the climb is not. |
 | Fever Wood | **phennu** | NEW | `SoilRich` | — | a soft six-eyed thing; only the eye-ring shows | Lives on the root floor; the knot-hole it peeks from is drawn into its peek art. |
 | Forge | **zhaskel** | NEW | `CooledLava` | — | an ember-dark plated sitter in cooled-crust fissures | never in lava (ban 1). `CooledLava` is in the biome's own def. |
 | Greentide | **wennoq** | NEW | `SoilRich` | — | a small leaf-sitter that unrolls to look | Lives on the floor; its leaf-roll is drawn into its peek art. Shiro is not this member (note S). Can be tamed. |
-| Grey Sea | **drossik** | NEW | `RM_SeaFloorGround` | — | a grey eye-cup on a short stem in the sediment that turns to follow a diver, then folds flat and is a pebble | Hides in place, and seldom moves (a low `wanderChance`). `RM_SeaFloorGround` is the one shared floor terrain, and `RM_SeabedFloorLife` copies the Grey Sea cast onto it. **Sea rule:** fish-sized, so it owes a floor def **and** a `fishTypes` catch. `RM_Thollim` is not taken: its own text says it notices nothing and moves "only downward", so making it watch would rewrite a creature. |
+| Grey Sea | **Saltgaze** | NEW | `RM_SeaFloorGround` | — | a grey eye-cup on a short stem in the sediment that turns to follow a diver, then folds flat and is a pebble | Hides in place, and seldom moves (a low `wanderChance`). `RM_SeaFloorGround` is the one shared floor terrain, and `RM_SeabedFloorLife` copies the Grey Sea cast onto it. **Sea rule:** fish-sized, so it owes a floor def **and** a `fishTypes` catch. `RM_Thollim` is not taken: its own text says it notices nothing and moves "only downward", so making it watch would rewrite a creature. |
 | Lantern Deeps | **thrennick** | NEW | `RM_LanternstoneFloor` | — | a wall-foot sitter that sinks for anything big in the dark | No glow (ban 6). The Lantern Deeps sheet has a host-and-injection rule (§0), and this row is subject to it. |
 | Miasma | **lussaq** | NEW | `Mud` | — | a six-legged root-sitter whose eye-fan is banded like the rainbow flora | The Miasma's own member (Shiro is not one, note S). `RM_Bozzuga` ("half-sunk … only its eyes showing") is an ambush predator, not shy, so it is not taken. |
 | the Chill (propane lakes) | **pralq** | NEW | `RM_SolidPropane` [W] | heat | a frost-crust sitter at the lake margin that flinches from warmth | Can never be transported (R-H10). `animalDensity` is 0.08 (`RM_TheChill.xml`). |
@@ -280,11 +280,11 @@ roster. Each member is added at its biome's own sitting.
 
 - 27 shipping biomes, one member each.
 - **2 existing primaries:** the piinnok (built) and the tarruq.
-- **25 new**: the 22 names of the first pitch, the Watcher (Rust Cathedral), the illuvek
-  (Contagion) and the drossik (Grey Sea). The illuvek and the drossik had zero hits in `src/`,
+- **25 new**: the 22 names of the first pitch, the Watcher (Rust Cathedral), the Unblinking
+  (Contagion) and the Saltgaze (Grey Sea). The Unblinking and the Saltgaze had zero hits in `src/`,
   `design/` and `infrastructure/state/items` and zero Wookieepedia search results on 2026-10-08
   (probes: `korrum` 62 files; `dewback` 10 results).
-- **8 members carry an optional cue** (§1.3): ennuk, skeyr, ulvoss, kuvvel, illuvek, pralq,
+- **8 members carry an optional cue** (§1.3): ennuk, skeyr, ulvoss, kuvvel, Unblinking, pralq,
   ttekku, hveshk. The piinnok carries the geophone.
 - **3 existing alternatives** for the owner to weigh at their sittings: the durrgak, the grellik
   and the ivvol.
