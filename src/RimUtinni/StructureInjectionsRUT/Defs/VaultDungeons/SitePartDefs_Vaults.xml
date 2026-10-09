@@ -65,6 +65,35 @@
   </GenStepDef>
 
   <SitePartDef>
+    <defName>RUT_VaultSite_Type2_Sealed</defName>
+    <label>Forsaken vault (breached, sealed)</label>
+    <description>A Forsaken vault torn open from the inside, then closed again by the thing that got out. The inner door is plugged with flesh.</description>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/AncientStructure</expandingIconTexture>
+    <minMapSize>(325,1,325)</minMapSize>
+    <wantsThreatPoints>false</wantsThreatPoints>
+    <gravShipsCanLandOn>true</gravShipsCanLandOn>
+    <considerEnteringAsAttack>true</considerEnteringAsAttack>
+    <forceExitAndRemoveMapCountdownDurationDays>4</forceExitAndRemoveMapCountdownDurationDays>
+    <tags>
+      <li>RUT_Vault</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_VaultSite_Type2_Sealed</defName>
+    <linkWithSite>RUT_VaultSite_Type2_Sealed</linkWithSite>
+    <order>400</order>
+    <genStep Class="KCSG.GenStep_CustomStructureGen">
+      <fullClear>true</fullClear>
+      <clearFogInRect>false</clearFogInRect>
+      <structureLayoutDefs>
+        <li>RUT_VaultType2_FleshWeaponLoose_Sealed</li>
+      </structureLayoutDefs>
+    </genStep>
+  </GenStepDef>
+
+  <SitePartDef>
     <defName>RUT_VaultSite_Type3</defName>
     <label>Forsaken vault (frozen)</label>
     <description>A Forsaken vault, dark and frost-locked. Nothing in it is switched on. Nothing in it is dead.</description>

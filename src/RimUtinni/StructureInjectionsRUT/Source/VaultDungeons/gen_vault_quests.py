@@ -185,7 +185,7 @@ VAULTS = [
          left=("You came out of Deadstone. The ship, which has its own memory of what was "
                "loosed there, offers no comment - only a direction: the deep dark, past the "
                "last of the refugee lights, where the cold kept something else.")),
-    dict(id="V5", slug="Slough", tile=37, vtype=2, rating=3,
+    dict(id="V5", slug="Slough", tile=37, vtype=2, variant="sealed", rating=3,
          place="the Slough", region="exactly on the terminator",
          name="The Vault That Fell: Slough",
          desc=("A second breach, from the other side of the world - a vault in the Slough, on "
@@ -223,6 +223,10 @@ SITEPARTS = [
     dict(vtype=2, defName="RUT_VaultSite_Type2", layout="RUT_VaultType2_FleshWeaponLoose",
          label="Forsaken vault (breached)",
          desc="A Forsaken vault torn open from the inside. What killed the defenders is still multiplying.",
+         icon="World/WorldObjects/Expanding/AncientStructure"),
+    dict(vtype=2, variant="sealed", defName="RUT_VaultSite_Type2_Sealed", layout="RUT_VaultType2_FleshWeaponLoose_Sealed",
+         label="Forsaken vault (breached, sealed)",
+         desc="A Forsaken vault torn open from the inside, then closed again by the thing that got out. The inner door is plugged with flesh.",
          icon="World/WorldObjects/Expanding/AncientStructure"),
     dict(vtype=3, defName="RUT_VaultSite_Type3", layout="RUT_VaultType3_FrozenRakata",
          label="Forsaken vault (frozen)",
@@ -297,10 +301,10 @@ def end(outcome, in_signal=None, indent=8, listen=None):
     return s
 
 
-def site_setup(tile, vtype):
+def site_setup(tile, vtype, variant=None):
     """Fixed-tile site generation: the one sequence, shared by all six."""
     faction = SITE_FACTION[vtype]
-    part = next(s["defName"] for s in SITEPARTS if s["vtype"] == vtype)
+    part = next(s["defName"] for s in SITEPARTS if s["vtype"] == vtype and s.get("variant") == variant)
     xml = f"""        <li Class="QuestNode_GetMap">
           <canBeSpace>true</canBeSpace>
         </li>
@@ -374,7 +378,7 @@ def vault_quest(v):
           <tag>{tag}</tag>
         </li>
 
-{site_setup(v['tile'], v['vtype'])}
+{site_setup(v['tile'], v['vtype'], v.get('variant'))}
         <!-- Accepted: the ship remembers where it is. No inSignal = fires on accept. -->
 {letter("The ship remembers", f"The reading gave a place. The ship gave a name it has not said aloud in an age. There is a Forsaken vault {v['region']}, and now there is a mark on your map where the short ones did not put one.")}
         <!-- Arrival. -->
@@ -758,7 +762,7 @@ def siteparts_xml():
   </SitePartDef>
 
   <GenStepDef>
-    <defName>RUT_GenStep_VaultSite_Type{s['vtype']}</defName>
+    <defName>RUT_GenStep_VaultSite_Type{s['vtype']}{'_' + s['variant'].capitalize() if s.get('variant') else ''}</defName>
     <linkWithSite>{s['defName']}</linkWithSite>
     <order>400</order>
     <genStep Class="KCSG.GenStep_CustomStructureGen">

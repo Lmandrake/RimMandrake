@@ -15,12 +15,14 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
     {
         public static bool warLabCraterEnabled = true;
         public static bool ashfallCommandCodesEnabled = true;
+        public static bool fleshSealEnabled = true;
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref warLabCraterEnabled, "warLabCraterEnabled", true);
             Scribe_Values.Look(ref ashfallCommandCodesEnabled, "ashfallCommandCodesEnabled", true);
+            Scribe_Values.Look(ref fleshSealEnabled, "fleshSealEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -37,6 +39,10 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
                 "Redeeming the Rakatan command codes from the Ashfall Research Base sets the "
               + "flag whichever war-lab gate check consults to open its shielding. Off: "
               + "redeeming the codes does nothing (the item is still consumed).");
+
+            list.CheckboxLabeled("Flesh seal on the Slough vault door", ref fleshSealEnabled,
+                "The Slough vault's inner door is plugged with flesh that nothing but a slime chunk "
+              + "dissolves. Off: the plug dissolves as the vault is built, so the door is simply open.");
 
             list.End();
         }

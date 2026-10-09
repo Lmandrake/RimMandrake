@@ -54,6 +54,11 @@
     <thing>GTbc_TheSingularityCannon</thing>
   </KCSG.SymbolDef>
   <KCSG.SymbolDef>
+    <defName>RUT_Symbol_VaultFleshSeal</defName>
+    <thing>RUT_VaultFleshSeal</thing>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+  </KCSG.SymbolDef>
+  <KCSG.SymbolDef>
     <defName>RUT_Symbol_VaultHeart</defName>
     <thing>RUT_VaultHeart</thing>
     <spawnPartOfFaction>false</spawnPartOfFaction>

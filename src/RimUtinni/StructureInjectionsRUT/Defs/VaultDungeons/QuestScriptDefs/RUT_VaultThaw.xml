@@ -551,7 +551,7 @@ No loot. Survival, and the shape of what happened.</li>
           <tile>$siteTile</tile>
           <faction>$siteFaction</faction>
           <sitePartDefs>
-            <li>RUT_VaultSite_Type2</li>
+            <li>RUT_VaultSite_Type2_Sealed</li>
           </sitePartDefs>
           <storeSitePartsParamsAs>sitePartsParams</storeSitePartsParamsAs>
         </li>
