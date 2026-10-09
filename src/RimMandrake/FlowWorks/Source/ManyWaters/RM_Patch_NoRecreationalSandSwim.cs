@@ -45,6 +45,7 @@ namespace RimMandrake.FlowWorks.ManyWaters
     // second [StaticConstructorOnStartup] needed here.
     // ════════════════════════════════════════════════════════════════════
     [HarmonyPatch(typeof(JoyGiver_GoSwimming), nameof(JoyGiver_GoSwimming.TryGiveJob))]
+    [RimMandrake.Shared.PatchFeature("No recreational swimming in sand")]
     public static class RM_Patch_JoyGiver_GoSwimming_NoSandSwim
     {
         [HarmonyPostfix]

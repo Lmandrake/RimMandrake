@@ -224,6 +224,7 @@ namespace RimMandrake.FlowWorks.Pits
     /// grenades, mortars) AND fire/incendiary; EMP, smoke, stun, firefoam and tox gas do not (harmsHealth false). The
     /// whole deck springs and everyone standing on it falls. FlowWorks' own rule, so it holds without Explosive Knockback.</summary>
     [HarmonyPatch(typeof(DamageWorker), nameof(DamageWorker.ExplosionAffectCell))]
+    [RimMandrake.Shared.PatchFeature("Blasts break pit covers", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "blastsBreakPitCovers")]
     public static class RM_Patch_ExplosionBreaksPitCover
     {
         public static void Postfix(Explosion explosion, IntVec3 c)
@@ -271,6 +272,7 @@ namespace RimMandrake.FlowWorks.Pits
     /// <summary>A covered superdeep cell costs what the cover costs to cross, not the hole's 300: the
     /// engine takes the MAX of terrain and thing costs, so only a postfix can lower it.</summary>
     [HarmonyPatch(typeof(PathGrid), nameof(PathGrid.CalculatedCostAt))]
+    [RimMandrake.Shared.PatchFeature("Pit covers are walkable at their own cost")]
     public static class RM_Patch_PathGrid_PitCoverCost
     {
         public static void Postfix(PathGrid __instance, IntVec3 c, ref int __result)

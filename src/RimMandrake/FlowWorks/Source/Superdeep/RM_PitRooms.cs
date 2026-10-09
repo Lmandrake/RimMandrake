@@ -291,6 +291,7 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>Patch 1a: remember the root's side before the region flood fill runs.</summary>
 	[HarmonyPatch(typeof(RegionMaker), "FloodFillAndAddCells")]
+	[RimMandrake.Shared.PatchFeature("An enclosed pit is its own room", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepRoomsEnabled")]
 	public static class RM_Patch_RegionMaker_FloodSide
 	{
 		[HarmonyPrefix]
@@ -315,6 +316,7 @@ namespace RimMandrake.FlowWorks
 	/// <summary>Patch 1b: the flood fill's cell predicate (a compiler-generated lambda) refuses a
 	/// cell on the other side of the pit wall.</summary>
 	[HarmonyPatch]
+	[RimMandrake.Shared.PatchFeature("An enclosed pit is its own room", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepRoomsEnabled")]
 	public static class RM_Patch_RegionMaker_FloodPredicate
 	{
 		private static MethodBase target;
@@ -371,6 +373,7 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>Patch 2: link spans stop at the pit wall (see SweepExpectedType).</summary>
 	[HarmonyPatch(typeof(RegionMaker), "SweepInTwoDirectionsAndTryToCreateLink")]
+	[RimMandrake.Shared.PatchFeature("An enclosed pit is its own room", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepRoomsEnabled")]
 	public static class RM_Patch_RegionMaker_LinkSweep
 	{
 		[HarmonyPrefix]
@@ -406,6 +409,7 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>Patch 3a: a district never straddles the pit wall.</summary>
 	[HarmonyPatch(typeof(RegionTraverser), nameof(RegionTraverser.FloodAndSetDistricts))]
+	[RimMandrake.Shared.PatchFeature("An enclosed pit is its own room", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepRoomsEnabled")]
 	public static class RM_Patch_RegionTraverser_Districts
 	{
 		[HarmonyPrefix]
@@ -437,6 +441,7 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>Patch 3b: new-region grouping (the step before districts) honours the wall too.</summary>
 	[HarmonyPatch(typeof(RegionTraverser), nameof(RegionTraverser.FloodAndSetNewRegionIndex))]
+	[RimMandrake.Shared.PatchFeature("An enclosed pit is its own room", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepRoomsEnabled")]
 	public static class RM_Patch_RegionTraverser_NewIndex
 	{
 		[HarmonyPrefix]
@@ -465,6 +470,7 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>Patch 4: "same type" neighbours are also same-side neighbours.</summary>
 	[HarmonyPatch(typeof(Region), nameof(Region.NeighborsOfSameType), MethodType.Getter)]
+	[RimMandrake.Shared.PatchFeature("An enclosed pit is its own room", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepRoomsEnabled")]
 	public static class RM_Patch_Region_NeighborsOfSameType
 	{
 		[HarmonyPostfix]
@@ -491,6 +497,7 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>Patch 5: two districts on opposite sides of the wall are never one room.</summary>
 	[HarmonyPatch(typeof(RegionAndRoomUpdater), "ShouldBeInTheSameRoom")]
+	[RimMandrake.Shared.PatchFeature("An enclosed pit is its own room", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepRoomsEnabled")]
 	public static class RM_Patch_RoomUpdater_SameRoom
 	{
 		[HarmonyPostfix]
@@ -507,6 +514,7 @@ namespace RimMandrake.FlowWorks
 	/// <summary>Lip service: a warden (or doctor) doing a prison job on someone in a pit walks to
 	/// the lip, never into the pit ("no you don't have to go down and enter the room").</summary>
 	[HarmonyPatch(typeof(Pawn_PathFollower), nameof(Pawn_PathFollower.StartPath))]
+	[RimMandrake.Shared.PatchFeature("Wardens work from the lip", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "wardenFromLipEnabled")]
 	public static class RM_Patch_PathFollower_LipService
 	{
 		[HarmonyPrefix]

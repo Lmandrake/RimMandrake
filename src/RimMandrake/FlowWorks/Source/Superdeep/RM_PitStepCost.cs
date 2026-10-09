@@ -29,6 +29,7 @@ namespace RimMandrake.FlowWorks
 	/// perceivedStatic=true, the debug inspector an invalid prevCell).
 	/// </summary>
 	[HarmonyPatch(typeof(PathGrid), nameof(PathGrid.CalculatedCostAt))]
+	[RimMandrake.Shared.PatchFeature("Normal walking along a pit floor", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitWalkNormalEnabled")]
 	public static class RM_Patch_PitStepCost
 	{
 		[HarmonyPrefix]

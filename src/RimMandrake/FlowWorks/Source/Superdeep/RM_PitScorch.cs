@@ -199,6 +199,7 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>Marks a cut scorched the moment RM_LiquidFire puts a cell out as SPENT (burned dry).</summary>
 	[HarmonyPatch(typeof(RM_LiquidFire), "Extinguish")]
+	[RimMandrake.Shared.PatchFeature("Burned-dry cuts look scorched", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitScorchEnabled")]
 	public static class RM_Patch_ScorchOnSpent
 	{
 		[HarmonyPostfix]

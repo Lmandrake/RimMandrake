@@ -150,6 +150,7 @@ namespace RimMandrake.FlowWorks
 	}
 
 	[HarmonyPatch(typeof(RoomTempTracker), "NoRoofEqualizationTempChangePerInterval")]
+	[RimMandrake.Shared.PatchFeature("Open-pit exposure", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitExposureEnabled")]
 	public static class RM_Patch_PitRoomCoupling
 	{
 		private static readonly AccessTools.FieldRef<RoomTempTracker, Room> roomField =

@@ -316,6 +316,8 @@ namespace RimMandrake.FlowWorks
 
         public override void ExposeData()
         {
+            // HARMONY_PATCH_RESILIENCE_1: a feature switched off by a failed patch is saved with the player's own value.
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref depthEngineEnabled, "depthEngineEnabled", true);
             Scribe_Values.Look(ref pulseIntervalTicks, "pulseIntervalTicks", 250f);
@@ -427,6 +429,7 @@ namespace RimMandrake.FlowWorks
             Machinery.Logistics.RM_BloodDrawSettings.ExposeData();
             Machinery.Kits.RM_KitSettings.ExposeData();
             Quarry.RM_QuarrySettings.ExposeData();
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -445,6 +448,7 @@ namespace RimMandrake.FlowWorks
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             Text.Font = GameFont.Medium;
             list.Label("Excavation and flow");
@@ -1082,6 +1086,7 @@ namespace RimMandrake.FlowWorks
         public override void DoSettingsWindowContents(Rect inRect)
         {
             settings.DoWindowContents(inRect);
+            RimMandrake.Shared.PatchApplier.ReforceOff();
         }
     }
 }

@@ -30,10 +30,16 @@ Extension chain liquid_heat (DRAFT, never run live): kinds / warms-and-chills / 
 run_selftests: only FAIL besides mine was Utils/art/selftest_placeholder_lint.py (stale art allowlist; not this work).
 
 ## Stage 3: HARMONY_PATCH_RESILIENCE_1 helper + FlowWorks adoption
-(pending)
+LIQUID_HEAT_PUSH_1 published f90610cd5, `rimflow implemented` -> built (owes A1 L1, A2/A3 L2). Follow-up filed:
+BOILING_ICY_CANAL_FLUIDS_1.
+Shared applier src/RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs (per-class try/catch, [PatchFeature] names the
+feature + setting, forced off for the session but saved with the player's value, red notice in settings, census line).
+FlowWorks adopted: PatchAll gone, 30/30 classes carry [PatchFeature] (28 with a setting). winbuild OK.
 
 ## Stage 4: patch-target lint + selftest
-(pending)
+Utils/lint_harmony_targets.py (dnfile over game + our DLLs; cached) + selftest (every verdict both ways, real-index sanity
+probe, NO_FEATURE mutation). All of src/: 408 targets, 402 OK, 0 missing, 4 unresolved (Vehicle Framework), 2 dynamic.
+run_selftests GREEN 344/346 (2 skipped).
 
 ## Stage 5: publish + rimflow implemented
 (pending)
