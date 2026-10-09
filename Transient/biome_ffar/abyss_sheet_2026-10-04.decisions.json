@@ -65,7 +65,17 @@
       "at": "2026-10-06T03:03:05.672Z",
       "decidedAt": "2026-10-06T03:02:54.821Z",
       "decision": "C",
-      "note": "Regenerate description to match image. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:03:05.672Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Regenerate description to match image. ",
+          "when": "2026-10-09T01:24:12-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "eefa39c16fa233eb8087adebf901f78acb70f4a4fababc1031687eeee82729e5",
@@ -348,7 +358,17 @@
       "at": "2026-10-06T03:09:29.885Z",
       "decidedAt": "2026-10-06T03:09:26.161Z",
       "decision": "B",
-      "note": "Looks good. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:09:29.885Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Looks good. ",
+          "when": "2026-10-09T01:24:12-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },
@@ -521,7 +541,17 @@
       "at": "2026-10-06T03:04:12.817Z",
       "decidedAt": "2026-10-06T03:03:45.884Z",
       "decision": "C",
-      "note": "Regenerate description based on image",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:04:12.817Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Regenerate description based on image",
+          "when": "2026-10-09T01:24:12-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Durrgak": {
@@ -565,7 +595,17 @@
       "carriedFrom": "AB_GiantSeptimum",
       "decidedAt": "2026-10-06T03:09:26.161Z",
       "decision": "A",
-      "note": "Looks good. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:09:29.885Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Looks good. ",
+          "when": "2026-10-09T01:24:12-0700"
+        }
+      ],
       "picks": {}
     },
     "RM_GiantGlowGlobe": {
@@ -678,7 +718,17 @@
       "carriedFrom": "AA_Darkbeast",
       "decidedAt": "2026-10-06T03:02:54.821Z",
       "decision": "A",
-      "note": "Regenerate description to match image. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:03:05.672Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Regenerate description to match image. ",
+          "when": "2026-10-09T01:24:12-0700"
+        }
+      ],
       "purge": [
         "eefa39c16fa233eb8087adebf901f78acb70f4a4fababc1031687eeee82729e5",
         "d9c8fc71d136f4c67fe81eade19a209ffaa97942c0114ed5da7714832a6a34d1",
@@ -766,7 +816,17 @@
       "at": "2026-10-06T03:00:35.361Z",
       "decidedAt": "2026-10-06T03:00:31.199Z",
       "decision": "C",
-      "note": "Match description to image. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:00:35.361Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Match description to image. ",
+          "when": "2026-10-09T01:24:12-0700"
+        }
+      ],
       "picks": {
         "_byname": "C"
       },
@@ -803,7 +863,17 @@
       "at": "2026-10-05T14:22:05.797Z",
       "decidedAt": "2026-10-05T14:22:01.812Z",
       "decision": "hold",
-      "note": "doesn't belong here. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T14:22:05.797Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "doesn't belong here. ",
+          "when": "2026-10-09T01:24:12-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Wickwood": {
