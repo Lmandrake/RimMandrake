@@ -4522,3 +4522,11 @@
 {"seat":"FOUNDRY","event":"claim","id":"DEEPFIRE_COMMONER_SCAN_CACHE_1","ts":"2026-10-09T06:13:38Z","tsn":1791526418367675215}
 {"seat":"FOUNDRY","event":"start","id":"DEEPFIRE_COMMONER_SCAN_CACHE_1","ts":"2026-10-09T06:13:38Z","tsn":1791526418609958308}
 {"seat":"FOUNDRY","event":"implemented","id":"DEEPFIRE_COMMONER_SCAN_CACHE_1","sha":"96ea3bbd2d71","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:13:39Z","tsn":1791526419710289229}
+{"seat":"FOUNDRY","event":"lease","id":"ELDER_NOVELTY_KEY_ALIAS_1","action":"take","token":"FOUNDRY.pid28273.3e4823f0","expires":"2026-10-09T06:59:31Z","ts":"2026-10-09T06:14:31Z","tsn":1791526471423631508}
+{"seat":"FOUNDRY","event":"claim","id":"ELDER_NOVELTY_KEY_ALIAS_1","ts":"2026-10-09T06:14:31Z","tsn":1791526471661790699}
+{"seat":"FOUNDRY","event":"start","id":"ELDER_NOVELTY_KEY_ALIAS_1","ts":"2026-10-09T06:14:31Z","tsn":1791526471914267701}
+{"seat":"FOUNDRY","event":"implemented","id":"ELDER_NOVELTY_KEY_ALIAS_1","sha":"23fe8f2f2301","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:14:32Z","tsn":1791526472948330832}
+{"seat":"FOUNDRY","event":"lease","id":"WARSCAR_BIOME_CHECKLIST_1","action":"take","token":"FOUNDRY.pid28274.4123d595","expires":"2026-10-09T06:59:33Z","ts":"2026-10-09T06:14:33Z","tsn":1791526474086677475}
+{"seat":"FOUNDRY","event":"claim","id":"WARSCAR_BIOME_CHECKLIST_1","ts":"2026-10-09T06:14:34Z","tsn":1791526474323799170}
+{"seat":"FOUNDRY","event":"start","id":"WARSCAR_BIOME_CHECKLIST_1","ts":"2026-10-09T06:14:34Z","tsn":1791526474573180878}
+{"seat":"FOUNDRY","event":"implemented","id":"WARSCAR_BIOME_CHECKLIST_1","sha":"23fe8f2f2301","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:14:35Z","tsn":1791526475666693545}
