@@ -1,6 +1,7 @@
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared;
 
 namespace RimMandrake.EnvironmentalHazards
 {
@@ -15,9 +16,8 @@ namespace RimMandrake.EnvironmentalHazards
     // in full this pass): GlowColor's setter (SetGlowColorInternal)
     // de-registers/re-registers the glower itself, so assigning it is
     // sufficient; GlowRadius's setter only stores the override and does
-    // NOT re-register — ForceRegister(map) is called explicitly below
-    // whenever the radius actually changes, matching CompGlower's own public
-    // API for exactly this case.
+    // NOT re-register — the radius goes through the light ledger
+    // (LIGHT_LEDGER_ONE_1), which re-registers a lit lamp on a real change.
     public class RM_Comp_WarblingGlow : ThingComp
     {
         // Per-instance tick offset so multiple lamps/statues on one map
@@ -50,11 +50,15 @@ namespace RimMandrake.EnvironmentalHazards
             cachedSiblingComps = true;
         }
 
+        private const string WarbleOwner = "eh.warble";
+
         public override void CompTick()
         {
             if (!RM_EnvironmentalHazardsSettings.warblingGlowEnabled)
             {
-                return; // mod option: warbling gaslight animation disabled
+                // mod option: warbling gaslight animation disabled — let go of the pulse once
+                if (glowerCache != null && parent.IsHashIntervalTick(250)) LightLedger.ClearMul(glowerCache, WarbleOwner);
+                return;
             }
 
             EnsureSiblingComps();
@@ -109,18 +113,17 @@ namespace RimMandrake.EnvironmentalHazards
 
             // Radius: driven by the SECOND wave (different period) so the
             // light doesn't just get brighter and bigger in lockstep — it
-            // dances rather than simply breathing.
-            float baseRadius = glowProps.glowRadius;
-            float newRadius = Mathf.Max(0.1f, baseRadius * (1f + waveSecondary * p.radiusPulseFraction * qualityScale));
-            if (!Mathf.Approximately(newRadius, glowerCache.GlowRadius))
-            {
-                glowerCache.GlowRadius = newRadius; // plain field write, no re-register
-            }
+            // dances rather than simply breathing. LIGHT_LEDGER_ONE_1: a
+            // multiplier in the light ledger around whatever else sizes this
+            // lamp (the Dark, the aurora, a sipper), never a write over them.
+            LightLedger.SetMul(glowerCache, WarbleOwner,
+                Mathf.Max(0.05f, 1f + waveSecondary * p.radiusPulseFraction * qualityScale));
 
-            // Set radius first, then colour: CompGlower's GlowColor setter
-            // de/re-registers the glower once, and only while it should be
-            // lit. The old trailing ForceRegister registered a second time
-            // per update and re-lit an unpowered or flicked-off lamp.
+            // Radius first (the ledger re-registers only a LIT lamp), then
+            // colour: CompGlower's GlowColor setter de/re-registers the glower
+            // once, and only while it should be lit. A trailing ForceRegister
+            // registered a second time per update and re-lit an unpowered or
+            // flicked-off lamp.
             glowerCache.GlowColor = new ColorInt(newColor);
         }
 
