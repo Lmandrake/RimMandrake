@@ -214,19 +214,71 @@ namespace RimMandrake.FlowWorks
 			int cells = map.cellIndices.NumGridCells;
 			if (depthGrid == null || depthGrid.Length != cells)
 			{
+				WarnWrongSizedGrid("depth", depthGrid, cells);
 				depthGrid = new byte[cells];
 			}
 			if (fillGrid == null || fillGrid.Length != cells)
 			{
+				WarnWrongSizedGrid("fill", fillGrid, cells);
 				fillGrid = new byte[cells];
 			}
 			if (fluidGrid == null || fluidGrid.Length != cells)
 			{
+				WarnWrongSizedGrid("fluid", fluidGrid, cells);
 				fluidGrid = new byte[cells];
 			}
 			if (fluidPalette == null)
 			{
 				fluidPalette = new List<FluidDef>();
+			}
+		}
+
+		/// <summary>EXCAVATION_LOAD_SANITY_REPAIR_1: a grid of the wrong size is zeroed; say so, once per grid. A null
+		/// grid is the normal first-load case and stays silent.</summary>
+		private void WarnWrongSizedGrid(string which, byte[] old, int cells)
+		{
+			if (old != null && RimMandrakeFlowWorksSettings.excavationLoadRepairEnabled)
+			{
+				Log.Warning("[RimMandrake.FlowWorks] excavation " + which + " grid had " + old.Length + " cells but the map has "
+					+ cells + "; it was reset to empty.");
+			}
+		}
+
+		/// <summary>EXCAVATION_LOAD_SANITY_REPAIR_1 (FL-3). Runs once per map load after the lost-fluid report:
+		/// clamps D to 0..4 and F to 0..D, clears fluid keys past the palette, then drops palette entries no cell
+		/// uses (null entries included) and remaps the grid, so a long campaign never exhausts the 254 keys.
+		/// One log line when anything changed.</summary>
+		internal void RepairLoadedGrids()
+		{
+			if (!RimMandrakeFlowWorksSettings.excavationLoadRepairEnabled || depthGrid == null)
+			{
+				return;
+			}
+			RM_ExcavationSanityMath.Report r = RM_ExcavationSanityMath.Repair(depthGrid, fillGrid, fluidGrid,
+				fluidPalette.Count, RM_ExcavationDepth.MaxDepth);
+			int dropped = 0;
+			bool[] used = RM_ExcavationSanityMath.KeysInUse(fluidGrid, fluidPalette.Count);
+			byte[] remap;
+			int newCount = RM_ExcavationSanityMath.BuildCompaction(used, out remap);
+			if (newCount < fluidPalette.Count)
+			{
+				List<FluidDef> compact = new List<FluidDef>(newCount);
+				for (int k = 1; k < used.Length; k++)
+				{
+					if (used[k])
+					{
+						compact.Add(fluidPalette[k - 1]);
+					}
+				}
+				RM_ExcavationSanityMath.ApplyRemap(fluidGrid, remap);
+				dropped = fluidPalette.Count - newCount;
+				fluidPalette = compact;
+			}
+			if (r.Total > 0 || dropped > 0)
+			{
+				Log.Message("[RimMandrake.FlowWorks] excavation load repair: " + r.depthClamped + " depth, " + r.fillClamped
+					+ " fill, " + r.fluidKeyCleared + " fluid key(s) fixed; " + dropped + " unused palette entr"
+					+ (dropped == 1 ? "y" : "ies") + " dropped.");
 			}
 		}
 
@@ -394,6 +446,7 @@ namespace RimMandrake.FlowWorks
 			}
 			stock.RebuildIndex(map);
 			ReportLostPaletteFluids();
+			RepairLoadedGrids();
 			SyncFluidIdentity();
 			// SUPERDEEP_HOLDER_RETIRE_1: a save written while the holder Thing
 			// existed carries RM_SuperdeepPit Things; the def is gone, so the

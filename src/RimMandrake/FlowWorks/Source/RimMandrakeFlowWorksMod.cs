@@ -103,6 +103,8 @@ namespace RimMandrake.FlowWorks
         public static bool refillEnabled = true;
         public static bool rainFillsExcavationsEnabled = true;
         public static bool edgeSinksEnabled = true;
+        // EXCAVATION_LOAD_SANITY_REPAIR_1: clamp/repair the dig grids and compact the liquid list on map load.
+        public static bool excavationLoadRepairEnabled = true;
         public static float sourceBudgetMultiplier = 1f;
         public static float minLimitlessBodyCells = 50f;
         public static float refillRateMultiplier = 1f;
@@ -347,6 +349,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref refillEnabled, "refillEnabled", true);
             Scribe_Values.Look(ref rainFillsExcavationsEnabled, "rainFillsExcavationsEnabled", true);
             Scribe_Values.Look(ref edgeSinksEnabled, "edgeSinksEnabled", true);
+            Scribe_Values.Look(ref excavationLoadRepairEnabled, "excavationLoadRepairEnabled", true);
             Scribe_Values.Look(ref sourceBudgetMultiplier, "sourceBudgetMultiplier", 1f);
             Scribe_Values.Look(ref minLimitlessBodyCells, "minLimitlessBodyCells", 50f);
             Scribe_Values.Look(ref refillRateMultiplier, "refillRateMultiplier", 1f);
@@ -438,6 +441,46 @@ namespace RimMandrake.FlowWorks
 
         private static Vector2 scrollPosition = Vector2.zero;
 
+        // FLOWWORKS_SETTINGS_SCOPE_RESET_1 (FL-5): defaults are snapshotted when the type initialises, which is
+        // before any save is read, so "reset" restores the shipped value even after ExposeData has overwritten it.
+        private static readonly System.Collections.Generic.Dictionary<string, object> shippedDefaults = CaptureDefaults();
+
+        private static System.Collections.Generic.Dictionary<string, object> CaptureDefaults()
+        {
+            var d = new System.Collections.Generic.Dictionary<string, object>();
+            foreach (System.Reflection.FieldInfo f in typeof(RimMandrakeFlowWorksSettings).GetFields(
+                System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static))
+            {
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float))
+                {
+                    d[f.Name] = f.GetValue(null);
+                }
+            }
+            return d;
+        }
+
+        /// <summary>Resets the named fields to their shipped values.</summary>
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                object v;
+                System.Reflection.FieldInfo f = typeof(RimMandrakeFlowWorksSettings).GetField(n);
+                if (f != null && shippedDefaults.TryGetValue(n, out v))
+                {
+                    f.SetValue(null, v);
+                }
+            }
+        }
+
+        private static void DrawSectionReset(Listing_Standard list, string[] names)
+        {
+            if (list.ButtonText("Reset this section to defaults"))
+            {
+                ResetFields(names);
+            }
+        }
+
         public void DoWindowContents(Rect inRect)
         {
             // Raised from 900 when the unproven-mechanics section landed, and
@@ -447,8 +490,8 @@ namespace RimMandrake.FlowWorks
             // to. Anyone adding a block here raises this number in the same
             // edit or their block is invisible. (+2000 for the Rivers section; +2400 for the
             // tanker / sluice-gate / blood / quarry sections, 2026-10-05; +500 for liquid looks / pit outline /
-            // pit shadow; +150 for hot and icy liquid, 2026-10-08.)
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 10950f);
+            // pit shadow; +150 for hot and icy liquid, 2026-10-08; +400 for per-section reset buttons.)
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 11350f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -456,6 +499,7 @@ namespace RimMandrake.FlowWorks
 
             Text.Font = GameFont.Medium;
             list.Label("Excavation and flow");
+            DrawSectionReset(list, new[] { "depthEngineEnabled", "digToDepthEnabled", "pulseIntervalTicks", "flowPerPulse" });
             Text.Font = GameFont.Small;
 
             list.CheckboxLabeled("Depth engine", ref depthEngineEnabled,
@@ -498,6 +542,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Unproven mechanics — OFF by default");
+            DrawSectionReset(list, new[] { "liquidCorrosionEnabled", "liquidIgnitionEnabled" });
             Text.Font = GameFont.Small;
             list.Label("These came in with the liquid-types merge and have never run inside a "
                      + "live game. They are off because that is what has actually shipped, not "
@@ -521,6 +566,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Stock, recession and drainage");
+            DrawSectionReset(list, new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "refillEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "edgeSinksEnabled" });
             Text.Font = GameFont.Small;
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -550,7 +596,8 @@ namespace RimMandrake.FlowWorks
                      + " canal cells per source cell");
             sourceBudgetMultiplier = list.Slider(sourceBudgetMultiplier, 0.2f, 5f);
             list.Label("The trade the whole stock model turns on. Lower makes water precious and "
-                     + "a canal a real commitment; higher makes ponds generous.");
+                     + "a canal a real commitment; higher makes ponds generous. Applies to ponds the map "
+                     + "finds from now on (new ponds only): a pond already tracked keeps its stock.");
 
             list.CheckboxLabeled("Big bodies are limitless", ref stickyLimitlessEnabled,
                 "A body that touches the map edge and is large enough is treated as fed from "
@@ -592,6 +639,11 @@ namespace RimMandrake.FlowWorks
             list.Label("How fast heavy rain fills an open trench. At the default a downpour takes "
                      + "roughly an in-game hour to add one level.");
 
+            list.CheckboxLabeled("Repair dig data on load", ref excavationLoadRepairEnabled,
+                "When a map loads, depth is held to 0-4, liquid never exceeds depth, and liquids "
+              + "no cell uses are dropped from the map's list (one log line says what changed). "
+              + "Takes effect the next time a map loads. Off: saves load exactly as stored.");
+
             list.CheckboxLabeled("Map-edge sinks drain", ref edgeSinksEnabled,
                 "A channel dug into the strip along the map edge is a drain: liquid reaching it "
               + "leaves the map. It is not destroyed — it goes where an edge-touching lake's "
@@ -602,6 +654,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Hot and icy liquid");
+            DrawSectionReset(list, new[] { "liquidHeatPushEnabled", "liquidHeatStrength" });
             Text.Font = GameFont.Small;
             list.CheckboxLabeled("Boiling and icy liquid warm or chill the room they are in", ref liquidHeatPushEnabled,
                 "Boiling water (and any hot liquid) warms the room it stands in, the same way a heater does; icy water "
@@ -618,6 +671,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Burning liquid");
+            DrawSectionReset(list, new[] { "canalFireEnabled", "canalBurnDaysPerLevel", "sourceBurnDaysPerLevel", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled" });
             Text.Font = GameFont.Small;
             list.CheckboxLabeled("Flammable liquid in channels and ponds can be lit", ref canalFireEnabled,
                 "Any fire touching tar (or another burnable liquid) lights it. The fire creeps along the liquid, "
@@ -655,6 +709,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Pits, ladders and shooting");
+            DrawSectionReset(list, new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled" });
             Text.Font = GameFont.Small;
             list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
                      + "Everything shallower is wadeable however full it is: a brimming deep canal is "
@@ -915,6 +970,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Bottles, buckets, barrels: fill, use, wash");
+            DrawSectionReset(list, new[] { "bottleLoopEnabled", "bottleDirtyStageEnabled", "bottleRevertEnabled" });
             Text.Font = GameFont.Small;
             list.Label("An empty container filled at a matching liquid's shore becomes a filled one; "
                      + "drinking or otherwise using one leaves a container behind to deal with. Buckets "
@@ -945,6 +1001,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("The liquid tank");
+            DrawSectionReset(list, new[] { "tankLoopEnabled", "tankCapacityMultiplier", "liquidPumpEnabled" });
             Text.Font = GameFont.Small;
             list.Label("A patched-together scavenger tank: a big fixed store of ONE liquid at a "
                      + "time, filled by pouring a container in and drained by filling a container "
@@ -975,6 +1032,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Drilling and tapping");
+            DrawSectionReset(list, new[] { "liquidDrillingEnabled", "drillYieldChanceMultiplier", "drillUnitsPerCycle" });
             Text.Font = GameFont.Small;
             list.Label("The fourth acquisition route: some maps sit on a liquid you never see "
                      + "the surface of. A drill (powered) or a tap (hand-worked, smaller) pours "
@@ -992,7 +1050,8 @@ namespace RimMandrake.FlowWorks
             drillYieldChanceMultiplier = list.Slider(drillYieldChanceMultiplier, 0.1f, 3f);
             list.Label("Scales every biome's own odds of yielding a drillable liquid at all. "
                      + "1x is what the biome was authored with; raise it to make 'the right "
-                     + "maps' common, lower it to make a real find rare.");
+                     + "maps' common, lower it to make a real find rare. Rolled once when a map is "
+                     + "first surveyed (new maps only); a map you already have keeps its answer.");
 
             list.Gap();
             list.Label("Extraction rate: " + DrillUnitsPerCycle.ToString("F2") + " fill-unit(s) per cycle");
@@ -1007,6 +1066,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Typed bodies of water");
+            DrawSectionReset(list, new[] { "typedLiquidShoresEnabled" });
             Text.Font = GameFont.Small;
             list.Label("Some named seas and lakes on the planet are made of something other "
                      + "than plain water — brine, boiling water, liquid propane. Landing on "
@@ -1025,6 +1085,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Finds while digging");
+            DrawSectionReset(list, new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled" });
             Text.Font = GameFont.Small;
             list.CheckboxLabeled("Digging a canal can turn up minerals", ref digFindsEnabled,
                 "Each time a cell is cut a level deeper there is a small chance of a lump of something the land holds, "
@@ -1050,6 +1111,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Swales");
+            DrawSectionReset(list, new[] { "swaleEnabled", "swaleRateMultiplier" });
             Text.Font = GameFont.Small;
             list.CheckboxLabeled("A watered swale enriches the ground around it", ref swaleEnabled,
                 "On: a swale laid in a dug channel, while its own cell carries water (a fill, a flood "
