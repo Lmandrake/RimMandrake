@@ -294,7 +294,7 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
                 continue
             job = v.get("job", "")
             bound = v.get("res") == res
-            alias = len(S.norm(wl)) >= 4 and S.token_match(job, S.norm(wl))
+            alias = any(len(S.norm(w)) >= 4 and S.token_match(job, S.norm(w)) for w in S.join_stems(parts[-1]))
             if not (bound or alias):
                 continue
             fam = FAM_RE.sub("", job)
@@ -1767,7 +1767,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             graphics.append({"res": res["res"], "role": ROLE_TEXT.get(res.get("role"), res.get("role") or "graphic"),
                              "cols": cols, "prior_raw": p, "joined_by": res.get("joined_by")})
         have = {s for g in graphics for c in g["cols"] for s in c["faces"].values()}
-        words = {_stem(x) for x in [r["key"], r.get("port")] + list(r.get("defNames") or []) if x}
+        words = {w for x in [r["key"], r.get("port")] + list(r.get("defNames") or []) if x for w in S.join_stems(x)}
         words |= {(r.get("label") or "").replace(" ", "")}
         prefixes = [res["res"] for res in (r.get("art") or {}).get("resources") or []
                     if res.get("role") == "flying" and FLIP_RES_RE.match(res["res"] + "1")]
