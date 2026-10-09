@@ -19,7 +19,6 @@ Viewed both images.
 - [ ] COLOUR LAYOUT: purple to violet body with a dark indigo dorsal band and pale pink-cream underside belly plates; cream-yellow jaw — the canon art's own colouring (owner ruling 2026-10-05: "unique coloration. Follow the canon art closely.")
 - [ ] Row of sharp spikes along back and tail, bigger around the neck/head
 - [ ] Flared, cobra-hood-like spiked head with a huge fanged mouth
-- [ ] Four eyes on the head (owner ruling 2026-10-05: "Note the four eyes")
 - [ ] A long thin feeler/tentacle off the snout
 - [ ] NEGATIVE: not a plain snake or legged dragon (no limbs, no wings, no smooth unsegmented body), not a green or brown serpent
 
@@ -36,4 +35,6 @@ Colossal size cannot be shown at the 1-tile creature scale; treat as a large-bod
 ## ruling
 **RULED** (owner, 2026-10-05, Stillsand sheet sitting 2, row `RSW_WarWyrm`, pick C = render `stillsand_regen_RSW_WarWyrm_v2`), verbatim:
 "Note the four eyes and extremely serpentine body and unique coloration. Follow the canon art closely. 50% bigger. "
-Read as: four eyes, an extremely serpentine body and the canon images' own colouring are must-shows; the def's drawSize and bodySize went up by 1.5x for this same note at `a89376420` (sitting 1).
+Read as: an extremely serpentine body and the canon images' own colouring are must-shows; the def's drawSize and bodySize went up by 1.5x for this same note at `a89376420` (sitting 1).
+
+**Narrowed 2026-10-09 — decision taken by question card:** the eye-count requirement is DROPPED; a sith wyrm with any number of eyes passes. The rest of the 2026-10-05 ruling (extremely serpentine body, the canon art's colouring, 50% bigger) stands.

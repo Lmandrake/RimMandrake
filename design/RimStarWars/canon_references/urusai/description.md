@@ -56,4 +56,4 @@ not yet assessed
 - `wookieepedia_canon_2.webp` — CANON page `Urusai`; wiki caption: Urusai had a symbiotic relationship with sarlaccs and kept their teeth and tentacles free of disease.. File: `Urusai-Eopie-Wildlife.png` — https://static.wikia.nocookie.net/starwars/images/b/b6/Urusai-Eopie-Wildlife.png/revision/latest?cb=20260921121515
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**Confirmed 2026-10-09 — decision taken by question card:** the Must show stands unchanged; **four wings always**, on every sprite; no two-winged female variant.

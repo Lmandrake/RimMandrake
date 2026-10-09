@@ -28,20 +28,20 @@ In the wild, nerfs were common prey for predators such as manka cats and taopari
 **Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The nerf has no live-action, puppet or photoreal-CGI depiction anywhere on Wookieepedia (searched: canon + Legends pages, "Images of nerfs", the Alderaan image categories). So the target is the realistic PAINTED art: the Alien Archive plate (`canon_1`), the New Essential Guide plate (`legends_1`) and the Alien Anthology painting of a herd with a herder (`wookieepedia_alienanthology.jpg`). Removed: the Marvel comic panel of nerfs in the Falcon (`canon_2`) and the stylised SWTOR game render of a pale cream/orange/blue variant (`legends_2`) — that colour variant is no longer part of the target.
 - **Silhouette**: heavy, stocky bison-like ungulate, shoulders humped and higher than the rump, big shaggy head carried low, short strong legs ending in dark hooves, thin hairless rope-like tail with a small tuft at the tip (NEGAS plate).
 - **Coat**: coarse, long, thick, curly/shaggy fur forming a heavy mane over shoulders, neck and head. Alien Archive: deep chocolate brown all over. NEGAS: dark chocolate brown with a plum tint. Alien Anthology: rich red-brown mane over a shorter-haired tan-brown hindquarters, like a real bison. Brown in every realistic source.
-- **Horns**: one pair of curved horns sweeping out then up/forward from the sides of the head, dark grey in canon, tan/bone in the NEGAS plate. The canon infobox and Legends text say "four curving horns"; the images show two large ones as the standard.
+- **Horns**: FOUR curving horns (canon infobox and Legends text), sweeping out then up/forward from the sides of the head, dark grey in canon, tan/bone in the NEGAS plate. The images show only two large ones; the owner ruled for the text (question card, 2026-10-09), so a sprite carries two pairs.
 - **Face**: broad dark grey-black muzzle/nose pad, small dark eyes set under the forelock, droopy lower lip.
 - **Size**: 1.3 m at the shoulder (canon infobox, Star Wars Encyclopedia; Legends text agrees); chest-to-shoulder high on the Alien Anthology herder.
 - **Disagreement**: the Legends text says 'antlered'; every image shows bison-style curved horns, not antlers.
 - **Behaviour (canon, https://starwars.fandom.com/wiki/Nerf)**: frightened nerfs shed and expel filthy mucus through nose and mouth; juveniles crave salt; bloodflies pester the Lothal Academy herd. Acidic black spit, male aggression toward young and keen night vision appear only on the Legends page.
 
 ## Must show
-*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three painted plates the visual brief describes (owner ruling 2026-10-08 in the visual brief) and the canon text.*
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three painted plates the visual brief describes (owner ruling 2026-10-08 in the visual brief) and the canon text; the horn count follows the text, not the images (owner question-card decision 2026-10-09).*
 - [ ] BODY PLAN: heavy, stocky, bison-like four-legged ungulate; shoulders humped and higher than the rump; big shaggy head carried low; short strong legs ending in dark hooves; thin hairless rope-like tail with a small tuft at the tip
 - [ ] COLOUR LAYOUT: brown all over — long coarse curly/shaggy fur forming a heavy mane over shoulders, neck and head (deep chocolate to red-brown), hindquarters may be shorter-haired and lighter tan-brown; hooves and muzzle the darkest elements
-- [ ] Horns: one pair of curved horns (dark grey in canon) sweeping out from the sides of the head then up/forward
+- [ ] Horns: FOUR curving horns (two pairs, per the canon infobox and Legends text; owner question-card decision 2026-10-09), dark grey in canon, sweeping out from the sides of the head then up/forward
 - [ ] Face: broad dark grey-black muzzle/nose pad, small dark eyes set under the shaggy forelock
 - [ ] Realistic rendering: natural shaggy fur and hide texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
-- [ ] NEGATIVE: not a deer or elk (no antlers, despite the Legends word "antlered"), not a sheep or goat (no slim legs, no woolly white coat), not the pale cream/orange/blue SWTOR variant
+- [ ] NEGATIVE: not a deer or elk (no antlers, despite the Legends word "antlered"), not a sheep or goat (no slim legs, no woolly white coat), not a two-horned bison (four horns, not one pair), not the pale cream/orange/blue SWTOR variant
 
 ## Engine limits
 not yet assessed
@@ -56,4 +56,4 @@ not yet assessed
 - `wookieepedia_alienanthology.jpg` — LEGENDS, Alien Anthology painting of a nerf herd with a herder (realistic illustration); file `Nerf-aa.jpg` — https://static.wikia.nocookie.net/starwars/images/d/d3/Nerf-aa.jpg/revision/latest?cb=20070118140755
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED 2026-10-09 — decision taken by question card:** nerfs carry **four** curving horns, not one pair (the canon infobox and Legends text over the images).

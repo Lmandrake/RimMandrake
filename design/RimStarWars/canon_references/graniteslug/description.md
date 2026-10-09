@@ -50,4 +50,4 @@ not yet assessed
 - `wookieepedia_legends_2.webp` — INK DRAWING (*Jedi Academy Sourcebook*) — LEGENDS page (non-canon continuity) `Granite slug/Legends`; wiki caption: A granite slug.. File: `Granite slug.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b1/Granite_slug.jpg/revision/latest?cb=20080930173501
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**Confirmed 2026-10-09 — decision taken by question card:** the Must show stands unchanged; the target is the **spotted, frond-crested** slug of `legends_1`, not the plain smooth slug of `legends_2`.

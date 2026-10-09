@@ -57,4 +57,4 @@ not yet assessed
 - `wookieepedia_canon_2.webp` — CANON page `Brain worm`; wiki caption: A clone trooper being infected by a brain worm.. File: `Snorting worms.jpg` — https://static.wikia.nocookie.net/starwars/images/f/f4/Snorting_worms.jpg/revision/latest?cb=20091205060910
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**Confirmed 2026-10-09 — decision taken by question card:** the Must show stands unchanged; size is **forearm-length**, per the canon Clone Wars frame (the 1 m canon infobox and 0.5 m Legends figures stay cited, not targeted).

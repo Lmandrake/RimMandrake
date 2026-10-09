@@ -64,4 +64,4 @@ not yet assessed
 - `wookieepedia_legends_2.webp` — LEGENDS, realistic painted illustration, a Lannik rides with a herd of reeks (Savage Spirits); file `ReekSurfer-SS.png` — https://static.wikia.nocookie.net/starwars/images/0/01/ReekSurfer-SS.png/revision/latest?cb=20240118060312
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**Confirmed 2026-10-09 — decision taken by question card:** the Must show stands unchanged; the target is the **generic reek**: brown base with the red meat-fed variant, not the Iridonian gray subspecies.

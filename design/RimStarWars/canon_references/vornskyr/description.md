@@ -121,3 +121,5 @@ none known — no donor-mod sprite could be obtained at all (creature art ships 
 **RULED** (owner, 2026-09-14, review sheet): `wookieepedia_alienarchive.jpg`
 
 > "#1 and #3 are compatible and correct, the shaggy #2 is rejected as non-canon."
+
+**Confirmed 2026-10-09 — decision taken by question card:** the Must show stands unchanged; **red eyes are the target; yellow eyes are tolerated** (OK, not a failure).

@@ -12,6 +12,8 @@
 Yobshrimp were a species of tiny creature native to the planet Naboo. They were eaten by the seven species of scalefish found in Lake Paonga and in the Naboo Abyss. Tiny yobshrimp lived in the gills of tee scalefish, and were then licked out and eaten by laa scalefish. On the planet Batuu, fishing families cultivated the foreign yobshrimp for consumption, and Yobshrimp Noodle Salad was a dish available at Docking Bay 7 Food and Cargo in Black Spire Outpost on Batuu during the war between the First Order and the Resistance.
 
 **Sourcing notes** The Batuu cultivation statement is cited on the wiki to Galaxy's Edge "official backstory elements" that are not published and can be obtained only verbally from park cast members (weak, not inspectable). The tiny-creature / scalefish / gill relationships come from *Star Wars: Absolutely Everything You Need to Know* (2015), the first canon mention; the species originated in Legends in *The Gungan Frontier* (1999). Canon habitat is the waters of Lake Paonga and the Naboo Abyss; no canon page gives body colour, size or anatomy (https://starwars.fandom.com/wiki/Yobshrimp).
+**Star Wars Bestiary, Vol. 1: Creatures of the Galaxy** (S.T. Bende, illustrated by Iris Compiet, Insight Editions, 5 Nov 2024, ISBN 9798886630985; canon) — searched 2026-10-09 on the owner's question-card decision to integrate it. The book DOES cover the yobshrimp: its Wookieepedia page lists `Yobshrimp` among the organisms it shows (https://starwars.fandom.com/wiki/Star_Wars_Bestiary,_Vol._1:_Creatures_of_the_Galaxy), and the canon `Yobshrimp` page cites it as a source while still carrying the `{{Update}}` banner that names it unintegrated. **Its yobshrimp text and illustration are not reachable on the web:** the wiki pages (Yobshrimp, Tee, Laa, Lake Paonga, Naboo Abyss) add nothing from it, the wiki's `Images from Star Wars Bestiary, Vol. 1` category holds 19 files and none is a yobshrimp, archivum.wiki carries only the food photo, and web searches found no review, preview or artist post showing the entry. The book names no "pale" yobshrimp anywhere that could be found. **So the reading below stays PROVISIONAL** (Legends field-guide plate) until someone reads the physical book.
+
 ### Legends — https://starwars.fandom.com/wiki/Yobshrimp/Legends
 
 A yobshrimp was a carnivorous crustacean native to the shallow waters of Naboo, particularly the area of Lake Paonga. These clawed creatures were considered a dangerous delicacy by the Gungans, due to the fact they were served as a live cocktail.  
@@ -28,7 +30,7 @@ Two images only, and the CANON one is NOT the animal: `wookieepedia_canon_1` is 
 - **Disagreement**: the canon text calls them tiny creatures (the cooked photo is ordinary pink-orange prawn shape); the Legends plate shows purple, crab-like, long-clawed animals; two different looks. Not enough evidence to pick the correct live colour; the plate is the only painting.
 
 ## Must show
-*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the Legends plate (`wookieepedia_legends_1`, the only living-animal evidence); the canon image is a cooked dish and governs only the food item.*
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the Legends plate (`wookieepedia_legends_1`, the only living-animal evidence); the canon image is a cooked dish and governs only the food item. **PROVISIONAL (2026-10-09):** the canon *Star Wars Bestiary, Vol. 1* covers the yobshrimp but its entry could not be read online (see the Bestiary note under Sourced text); re-check this list against the book when it is in hand.*
 - [ ] BODY PLAN: a small crustacean: a flat wedge-shaped shell drawn out to a long sharp pointed rostrum, short stalked eyes, two long thin whip-like antennae trailing and curling from the head, four to five pairs of thin jointed walking legs spread crab-like and ending in small hooked claws, and two much larger raised front arms of long, thin, spiky pincer claws held up and forward (the biggest part of the silhouette)
 - [ ] COLOUR LAYOUT: lilac-purple to violet shell and legs, with darker purple/maroon spots and warty bumps along the shell edges and claws, pale pink-white highlights; eyeballs round and bright green
 - [ ] Pincer claws: flat blade-like scissors with thorn-like projections along them
@@ -39,6 +41,7 @@ Two images only, and the CANON one is NOT the animal: `wookieepedia_canon_1` is 
 not yet assessed
 
 ## Source URLs
+- https://starwars.fandom.com/wiki/Star_Wars_Bestiary,_Vol._1:_Creatures_of_the_Galaxy (book page; wikitext pulled via the API 2026-10-09 — lists Yobshrimp, no text or image of it)
 - https://starwars.fandom.com/wiki/Yobshrimp (canon; wikitext pulled via the API 2026-10-04)
 - https://starwars.fandom.com/wiki/Yobshrimp/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
@@ -47,4 +50,4 @@ not yet assessed
 - `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Yobshrimp/Legends`; wiki caption: infobox image. File: `Yobshrimp.jpg` — https://static.wikia.nocookie.net/starwars/images/f/f1/Yobshrimp.jpg/revision/latest?cb=20180825213749
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**2026-10-09 — decision taken by question card:** consult the *Star Wars Bestiary, Vol. 1* now and act on it. Done the same day: the book's yobshrimp entry is not reachable on the web (see the Bestiary note), so the Legends-plate reading stays in place, marked provisional.

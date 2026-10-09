@@ -49,4 +49,4 @@ not yet assessed
 - `wookieepedia_canon_5.webp` — CANON, *Star Wars: Alien Archive* painted plate (realistic illustration; most realistic source). File: `Puffer pig-AA.png` — https://static.wikia.nocookie.net/starwars/images/d/d2/Puffer_pig-AA.png/revision/latest?cb=20200427022509
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**Confirmed 2026-10-09 — decision taken by question card:** the Must show stands unchanged; horn and spike colour may be **either** pale ivory/bone or dark.
