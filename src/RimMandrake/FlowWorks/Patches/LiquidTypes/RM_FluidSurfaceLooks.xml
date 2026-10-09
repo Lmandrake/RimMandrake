@@ -94,4 +94,35 @@
       </surfaceLook>
     </value>
   </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/RimMandrake.FlowWorks.FluidDef[defName="RM_Fluid_BoilingWater"]</xpath>
+    <value>
+      <surfaceLook>
+        <texture>Terrain/Surfaces/HotSpringRamp</texture>
+        <tint>(0.95,0.98,1.0)</tint>
+        <rippleDensity>1.8</rippleDensity>
+        <rippleIntensity>1.3</rippleIntensity>
+        <fleck>AirPuff</fleck>
+        <fleckChance>0.25</fleckChance>
+        <overlay>false</overlay>
+        <wake>0.0</wake>
+        <bubbles>0.9</bubbles>
+        <bubbleColor>(0.92,0.96,1.0)</bubbleColor>
+        <seeThrough>0.35</seeThrough>
+      </surfaceLook>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/RimMandrake.FlowWorks.FluidDef[defName="RM_Fluid_IcyWater"]</xpath>
+    <value>
+      <surfaceLook>
+        <texture>Terrain/Surfaces/Ice</texture>
+        <tint>(0.82,0.90,0.96)</tint>
+        <rippleDensity>0.4</rippleDensity>
+        <overlay>false</overlay>
+        <wake>0.0</wake>
+        <seeThrough>0.0</seeThrough>
+      </surfaceLook>
+    </value>
+  </Operation>
 </Patch>

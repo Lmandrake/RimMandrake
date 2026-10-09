@@ -131,7 +131,19 @@ def remove_rect_from_home(s, rect):
 
 
 def despawn_pawns_in(s, rect):
-    _ok(s.call("jawa/destroy_batch", rects=rect_str(rect), categories="Pawn"), "destroy_batch(Pawn)")
+    """Kill every living pawn in rect. jawa/destroy_batch never removes pawns
+    (DESTROY_BATCH_NEVER_KILLS_PAWNS_1), so kill each by id with jawa/damage. Returns the count killed."""
+    x, z, w, h = rect
+    r = _ok(s.call("jawa/list_pawns", limit=500), "list_pawns")
+    n = 0
+    for p in r.get("pawns") or []:
+        if p.get("dead") or not p.get("id") or p.get("x") is None or p.get("z") is None:
+            continue
+        if not (x <= p["x"] < x + w and z <= p["z"] < z + h):
+            continue
+        _ok(s.call("jawa/damage", damageDef="Bullet", amount=5000, thingId=p["id"], allowColonists=True), "damage(kill)")
+        n += 1
+    return n
 
 
 # ------------------------------------------------------------------ reads (plan 6.6)
