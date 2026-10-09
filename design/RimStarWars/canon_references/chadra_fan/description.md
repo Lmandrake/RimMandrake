@@ -35,48 +35,47 @@ nocturnality, dark vision, light sensitivity, mechanical aptitude, temperament, 
 combat ability. Anything in that space is inference.
 
 ## Visual brief
-Two canon images, and they disagree about *colour* while agreeing completely about
-*shape* — so shape is the fact and colour is the range.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The smooth stylised game-style render of Shortpaw (`wookieepedia_shortpaw_render.png`) was deleted. Added: a posed promotional costume photograph of Kabe from *A New Hope* (`wookieepedia_kabe_costume.png`), a live-action cantina still of Kabe (`wookieepedia_kabe_anh.jpg`), and Chris Trevas's realistic *New Essential Guide to Alien Species* painting (`wookieepedia_negas_legends.jpg`). The hyperlane-scout painting stays (realistic painted reference art).
+
+All images agree on *shape*; colour is a range.
 
 - **Enormous, tall, upright bat ears** — the largest feature on the body, roughly as
-  tall as the skull itself, pale pink-lilac and thin enough to read as translucent,
-  with visible internal cartilage ridging. On the scout they stand up and outward like
-  a leaf-nosed bat's; on Shortpaw they are set lower and flare sideways. **This is
-  what a Chadra-Fan is, visually.** A merely large-eared human head does not get there.
-- **A short, flat, forward-facing snout ending in a broad pink nose-pad**, not a human
-  nose — pig-like or bat-like, with the nostril openings on the pad's face. It sits
-  proud of the fur.
-- **A small mouth directly under the snout showing two prominent pointed upper
-  incisors** hanging over the lower lip. Rodent teeth, always visible.
-- **Big, round, forward-set eyes filling much of the face** — a juvenile/neotenous
-  proportion. The scout's are **bright saturated blue**; Shortpaw's are small and
-  **black**. Both are canonically sourced colours, so eye colour genuinely varies.
-- **Full body fur, including the face**, thickest as a ruff around the jaw and neck.
-  Bare pink skin only on the ears, the nose-pad and the palms/soles.
-- **Bare feet with long claws** and furry hands — the scout is barefoot with visible
-  claws on splayed toes.
-- 🔴 **The two individuals are completely different colours: warm mid-brown fur
-  (scout) versus cool ash-grey (Shortpaw).** Both are sourced. Do not settle on one.
+  tall as the skull itself, pale pink-lilac and thin, with visible internal ridging and
+  darker veined edges in the costume photo. They stand up and outward like a leaf-nosed
+  bat's. **This is what a Chadra-Fan is, visually.**
+- **A short, flat, forward-facing snout ending in a broad pink pig-like nose-pad**, with the
+  nostril openings on the pad's face, sitting proud of the fur.
+- **A small mouth under the snout showing two prominent upper incisors** — clearly visible
+  on the scout and on Kabe's costume.
+- **Eyes**: the scout painting has big round **bright blue** eyes; 🔴 **live-action Kabe and
+  the NEGAS painting have small, dark, beady eyes** sunk in the fur. The realistic sources
+  favour the small dark eye; the big blue eye is one painting's take.
+- **Full shaggy body fur, including the face**, longest as a ruff around the jaw and neck;
+  bare skin only on the ears, the nose-pad and the palms/soles.
+- **Hands and feet are long-fingered, wrinkled, dark and clawed** — Kabe's costume shows
+  long pale claws on dark leathery fingers; the scout and NEGAS figures are barefoot with
+  long splayed clawed toes.
+- **Colour: warm mid-to-dark brown fur** in every remaining image (the scout, Kabe, NEGAS).
+  The deleted Shortpaw render was the only **ash-grey** individual; grey stays a sourced
+  colour (infobox "gray / tan / light") but no realistic image shows it.
 - **Proportion: a stocky, short-limbed one-metre body with a proportionally huge
-  head.** They read as a child's build with an adult's bearing, and both are dressed as
-  competent adults — khaki field kit with a red pack and headband on the scout, olive
-  fatigues with a beige tactical vest and a **cybernetic left hand** on Shortpaw. That
-  costuming contrast (explorer vs. crime lord) is useful: the species is not a
-  comic-relief critter in either image.
+  head.** Dressed as competent adults — khaki field kit (scout), layered robes (Kabe,
+  NEGAS) — not a comic-relief critter.
 
-⚠️ **There is no `donor_current_sprite.png` in this directory** — unlike the other
-races in this batch, no current mod art was captured for comparison, so nothing here
-validates or invalidates what the mod renders today.
+⚠️ **There is no `donor_current_sprite.png` in this directory** — no current mod art was
+captured for comparison, so nothing here validates or invalidates what the mod renders today.
 
 ## Must show
 - [ ] Enormous, tall, upright bat-like ears, roughly as tall as the skull itself, thin
   enough to read as translucent
 - [ ] Short, flat, forward-facing snout ending in a broad nose-pad (not a human nose)
 - [ ] Small mouth showing two prominent pointed upper incisors hanging over the lower lip
-- [ ] Big, round, forward-set eyes filling much of the face
+- [ ] Small dark eyes set forward in the face fur (live-action); large blue eyes only as a painted variant
 - [ ] Full body fur, with bare skin only on the ears, nose-pad, and palms/soles
 - [ ] Stocky, short-limbed body with a proportionally huge head relative to a roughly
   one-metre stature
+- [ ] Realistic rendering: shaggy natural fur, thin veined skin on the ears, leathery clawed hands, natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -90,8 +89,7 @@ none known
   this one does not. **Verify what `Outland_Ears_Fleef` actually renders** — if it is
   not a very large upright bat ear, the species' single defining feature is absent.
 - 🔴 **No skin-colour gene at all**, so the sourced **gray / tan / light** span is
-  unrepresented; `Furskin` is doing all the work. Grey is what the on-screen Shortpaw
-  actually is.
+  unrepresented; `Furskin` is doing all the work. Grey is a sourced colour (no realistic image of a grey individual remains).
 - 🔴 **`RSW_lifespan_half` is unsourced.** The infobox lifespan field is **empty**.
   Nothing anywhere says Chadra-Fan are short-lived; this is invented and it is exactly
   the kind of number this library exists to stop.
@@ -121,23 +119,16 @@ none known
   17,080 chars, 2026-09-15)
 - File:Hyperlane_Scout_FDCR.png — the infobox image →
   `wookieepedia_hyperlane_scout_fdcr.png`
-- Shortpaw, the *Biology and appearance* inline image (a Chadra-Fan crime lord in the
-  Anoat sector) → `wookieepedia_shortpaw_render.png`
+- File:Kabe-GalacticFiles2018.png → `wookieepedia_kabe_costume.png`; File:Kabe Databank.jpg →
+  `wookieepedia_kabe_anh.jpg`; File:Chadra-Fan NEGAS.jpg → `wookieepedia_negas_legends.jpg`
 - NOT fetched this pass: https://www.starwars.com/databank/chadra-fan (official
   Databank — the source of the 1-metre height and the "rodent" classification).
 
 ## Candidate images
-- `wookieepedia_hyperlane_scout_fdcr.png` — **the reference of record.** The infobox
-  image: a full-body Chadra-Fan hyperlane scout in khaki field kit with a red pack,
-  transparent background, high detail. Settles the tall translucent pink bat ears, the
-  flat pink nose-pad, the two protruding upper incisors, the huge round blue eyes, the
-  warm brown face-and-body fur, and the clawed bare feet. Painted illustration, so
-  brushwork is the artist's; the anatomy is the thing to trust.
-- `wookieepedia_shortpaw_render.png` — Shortpaw, an Anoat-sector crime lord: a second
-  individual in **ash grey** with small black eyes and a cybernetic hand, in olive
-  fatigues and a tactical vest. Its value is proving the head plan recurs while fur and
-  eye colour shift completely, which is what makes the *shape* canonical and the
-  *colour* a range.
+- `wookieepedia_hyperlane_scout_fdcr.png` — the infobox image: a full-body Chadra-Fan hyperlane scout in khaki field kit with a red pack, realistic painted illustration (*Force and Destiny Core Rulebook*). Settles the tall translucent pink bat ears, the flat pink nose-pad, the two protruding upper incisors and the clawed bare feet; its big blue eyes disagree with the live-action dark eyes. File `Hyperlane Scout FDCR.png`.
+- `wookieepedia_kabe_costume.png` — **live-action reference of record**: posed promotional photograph of the *A New Hope* Kabe costume, head and torso: shaggy brown fur, huge veined pink ears, pig-like nose-pad, incisors, dark clawed hands; file `Kabe-GalacticFiles2018.png` — https://static.wikia.nocookie.net/starwars/images/7/7e/Kabe-GalacticFiles2018.png/revision/latest?cb=20251223165557
+- `wookieepedia_kabe_anh.jpg` — live-action *A New Hope* cantina still of Kabe reaching across the bar (dark, profile); file `Kabe Databank.jpg` — https://static.wikia.nocookie.net/starwars/images/2/27/Kabe_Databank.jpg/revision/latest?cb=20151107000426
+- `wookieepedia_negas_legends.jpg` — realistic painted plate by Chris Trevas, *The New Essential Guide to Alien Species* (Legends), full body in robes holding a glass: dark brown fur, small dark eyes, big ears, clawed feet; file `Chadra-Fan NEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/9/9f/Chadra-Fan_NEGAS.jpg/revision/latest?cb=20061204211640
 
 ## ruling
 (empty — owner has not reviewed this race yet)
