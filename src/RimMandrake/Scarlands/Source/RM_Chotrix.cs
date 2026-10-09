@@ -41,6 +41,10 @@ namespace RimMandrake.Scarlands
         // The last pawn it bit, for the drag (WARSCAR_CHOTRIX_SIGNS_1). Not saved: a reload forgets one fresh kill.
         public Pawn lastVictim;
         public bool victimDragged;
+        // CHOTRIX_HUNT_TARGET_REVALIDATE_1: the hunt job JobGiver_ChotrixHunt issued. Only THIS job is ever ended for
+        // company, so defensive melee (any other job) is never cancelled. Not saved: a reload simply stops checking
+        // the one in flight.
+        public Job huntJob;
         public int lastStrikeTick { get { return lastStrike; } }
 
         public CompProperties_Chotrix Props { get { return (CompProperties_Chotrix)props; } }
@@ -80,6 +84,15 @@ namespace RimMandrake.Scarlands
             // (up to 15 s = 900 ticks) cannot outlast this 600-tick window and silently disable the flight.
             if (now - lastStrike < 600 && now >= fleeUntil && p.health.summaryHealth.SummaryHealthPercent < Props.hurtBelow)
                 fleeUntil = now + Props.fleeTicks;
+            if (RM_WarscarSettings.chotrixHuntRevalidate && huntJob != null)
+            {
+                if (p.CurJob != huntJob) huntJob = null;
+                else if (huntJob.targetA.Thing is Pawn prey && prey.Spawned && !JobGiver_ChotrixHunt.IsLone(prey, Props))
+                {
+                    huntJob = null;
+                    p.jobs.EndCurrentJob(JobCondition.InterruptForced);
+                }
+            }
             if (now < revealUntil) return;
             Cloak();
             // Heat shimmer when it runs: the readable sign for an invisible thing.
@@ -149,6 +162,7 @@ namespace RimMandrake.Scarlands
             j.expiryInterval = 900;
             j.checkOverrideOnExpire = true;
             j.locomotionUrgency = LocomotionUrgency.Walk; // stalking; it speeds up only on the bite
+            c.huntJob = j;
             return j;
         }
 

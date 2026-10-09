@@ -39,8 +39,11 @@ namespace RimMandrake.Scarlands
 
         // WARSCAR_OLD_TONGUE_1 toggles.
         public static bool oldTongueEnabled = true;          // inscribed panels generate on new maps
-        public static float oldTonguePanelsPerMap = 3f;      // panel placement attempts per map
-        public static float oldTongueRevealChance = 0.8f;    // chance each attempt actually places a panel
+        public static float oldTonguePanelsPerMap = 3f;      // panels placed per map (a quota, filled from wall-side cells)
+        // PROVISIONAL (auto-decided 2026-10-09, WARSCAR_TUNING_SEMANTICS_1): relabelled, behaviour unchanged. This is
+        // rolled per shuffled wall-side CELL until the quota fills, so it only thins panels on maps with few such
+        // cells; it is not a per-attempt chance (making it one would cut the panels research sets rely on).
+        public static float oldTongueRevealChance = 0.8f;
         public static int oldTongueSkillGate = 8;            // Intellectual needed to transcribe (0 = none)
 
         // WARSCAR_HOSPICE_DESERTERS_1 toggles.
@@ -61,6 +64,7 @@ namespace RimMandrake.Scarlands
 
         // WARSCAR_CHOTRIX_BUILD_1 toggles.
         public static bool chotrixEnabled = true;            // chotrix spawns on new maps and hunts
+        public static bool chotrixHuntRevalidate = true;     // CHOTRIX_HUNT_TARGET_REVALIDATE_1: abandon prey that stops being lone
         public static float chotrixPerMap = 2f;              // up to this many per map (0-2), new maps
         public static float chotrixRevealSeconds = 4f;       // seconds visible after it strikes
         public static bool chotrixDragEnabled = true;        // WARSCAR_CHOTRIX_SIGNS_1: drags its kill to cover, furrowing the film
@@ -94,6 +98,9 @@ namespace RimMandrake.Scarlands
         public static bool warDustEnabled = true;            // film can be swept up for war dust
         public static bool warDustBlightCureEnabled = true;  // growers dust blighted plants with war dust (insecticide)
         public static float ordnancePerMap = 3f;             // buried shells per new map (0-8)
+        // ORDNANCE_TRIGGER_REAL_SHOT_1 PROVISIONAL (auto-decided 2026-10-09): "set off from range" fires the
+        // shooter's real weapon at the shell from 9+ cells (ammo, accuracy, range and min-range all apply).
+        public static bool ordnanceRealShot = true;
 
         // WARSCAR_GEIGER_CHOIR_1 toggles.
         public static bool choirEnabled = true;              // the whole choir (ticks, wind, hum, boil, jar sound)
@@ -218,6 +225,7 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref bloomDanger, "bloomDanger", 1f);
             Scribe_Values.Look(ref catalystEnabled, "catalystEnabled", true);
             Scribe_Values.Look(ref chotrixEnabled, "chotrixEnabled", true);
+            Scribe_Values.Look(ref chotrixHuntRevalidate, "chotrixHuntRevalidate", true);
             Scribe_Values.Look(ref chotrixPerMap, "chotrixPerMap", 2f);
             Scribe_Values.Look(ref chotrixRevealSeconds, "chotrixRevealSeconds", 4f);
             Scribe_Values.Look(ref chotrixDragEnabled, "chotrixDragEnabled", true);
@@ -245,6 +253,7 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref warDustEnabled, "warDustEnabled", true);
             Scribe_Values.Look(ref warDustBlightCureEnabled, "warDustBlightCureEnabled", true);
             Scribe_Values.Look(ref ordnancePerMap, "ordnancePerMap", 3f);
+            Scribe_Values.Look(ref ordnanceRealShot, "ordnanceRealShot", true);
             Scribe_Values.Look(ref choirEnabled, "choirEnabled", true);
             Scribe_Values.Look(ref choirVolume, "choirVolume", 1f);
             Scribe_Values.Look(ref choirTickVolumeCeiling, "choirTickVolumeCeiling", 1f);
@@ -325,7 +334,8 @@ namespace RimMandrake.Scarlands
                 "Panels of an old script stand against ruin walls; reading a full set unlocks research. Affects new maps.");
             list.Label("Panels per map: " + oldTonguePanelsPerMap.ToString("0"));
             oldTonguePanelsPerMap = list.Slider(oldTonguePanelsPerMap, 1f, 8f);
-            list.Label("Panel reveal chance: " + oldTongueRevealChance.ToString("0%"));
+            list.Label("Panel chance per wall-side spot: " + oldTongueRevealChance.ToString("0%")
+                + " (the per-map count above still fills wherever a ruin has enough wall; this only matters on small ruins)");
             oldTongueRevealChance = list.Slider(oldTongueRevealChance, 0.1f, 1f);
             list.Label("Intellectual needed to read a panel: " + oldTongueSkillGate + (oldTongueSkillGate == 0 ? " (no gate)" : ""));
             oldTongueSkillGate = Mathf.RoundToInt(list.Slider(oldTongueSkillGate, 0f, 20f));
@@ -365,6 +375,9 @@ namespace RimMandrake.Scarlands
 
             list.CheckboxLabeled("Chotrix (invisible hunter)", ref chotrixEnabled,
                 "A lean cloaked scavenger hunts lone small animals, and lone pawns at night. It shows when it strikes. Spawning affects new maps.");
+            list.CheckboxLabeled("Chotrix breaks off when prey gains company", ref chotrixHuntRevalidate,
+                "On: a stalking chotrix gives up its prey the moment someone joins it, so it never bites into a group of two. "
+              + "Off: once it picks a lone target it follows through even if others arrive.");
             list.Label("Chotrix per map: up to " + Mathf.RoundToInt(chotrixPerMap) + " (new maps)");
             chotrixPerMap = Mathf.Round(list.Slider(chotrixPerMap, 0f, 2f));
             list.Label("Chotrix visible after a strike: " + chotrixRevealSeconds.ToString("0.0") + " seconds");
@@ -404,6 +417,10 @@ namespace RimMandrake.Scarlands
                 "Growers carry one war dust to each blighted plant and dust it: the blight dies and the plant lives. Off: blight is cut as in vanilla.");
             list.Label("Buried shells per map: up to " + Mathf.RoundToInt(ordnancePerMap) + " (new maps)");
             ordnancePerMap = Mathf.Round(list.Slider(ordnancePerMap, 0f, 8f));
+            list.CheckboxLabeled("Shells are set off by a real shot", ref ordnanceRealShot,
+                "On: \"Set off from range\" sends a colonist whose weapon can reach a safe 9+ cells to really shoot the shell "
+              + "(it can miss, spends a shot, and a shotgun cannot reach). Off: any ranged weapon works and the shell simply "
+              + "goes off after a short aim.");
             list.GapLine();
 
             list.CheckboxLabeled("Geiger choir (Warscar soundscape)", ref choirEnabled,

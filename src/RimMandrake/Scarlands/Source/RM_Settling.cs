@@ -564,6 +564,7 @@ namespace RimMandrake.Scarlands
 
     public class WorkGiver_TriggerOrdnance : WorkGiver_Scanner
     {
+        public const float SafeDistance = 9f;
         public override ThingRequest PotentialWorkThingRequest { get { return ThingRequest.ForDef(RM_SettlingDefOf.RM_BuriedOrdnance); } }
         public override PathEndMode PathEndMode { get { return PathEndMode.OnCell; } }
         public override bool HasJobOnThing(Pawn pawn, Thing t, bool forced = false) { return JobOnThing(pawn, t, forced) != null; }
@@ -573,12 +574,24 @@ namespace RimMandrake.Scarlands
             if (o == null || !o.triggerWanted || t.IsForbidden(pawn) || !pawn.CanReserve(o, 1, -1, null, forced)) return null;
             ThingWithComps gun = pawn.equipment == null ? null : pawn.equipment.Primary;
             if (gun == null || !gun.def.IsRangedWeapon) return null;
+            // ORDNANCE_TRIGGER_REAL_SHOT_1: the shooting cell must suit the weapon's real range and min-range, and a
+            // weapon that cannot reach the safe 9 cells does not qualify at all.
+            float near = SafeDistance, far = 14f;
+            if (RM_WarscarSettings.ordnanceRealShot)
+            {
+                Verb verb = gun.GetComp<CompEquippable>()?.PrimaryVerb;
+                if (verb == null || verb.verbProps == null) return null;
+                near = Mathf.Max(near, verb.verbProps.minRange + 1f);
+                far = Mathf.Min(far, verb.verbProps.range - 0.5f);
+                if (far < near) return null;
+            }
             Map map = pawn.Map;
             IntVec3 best = IntVec3.Invalid;
             float bestDist = 1e9f;
-            foreach (IntVec3 c in GenRadial.RadialCellsAround(o.Position, 14f, false))
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(o.Position, far, false))
             {
-                if (c.DistanceTo(o.Position) < 9f || !c.InBounds(map) || !c.Standable(map)) continue;
+                float dist = c.DistanceTo(o.Position);
+                if (dist < near || dist > far || !c.InBounds(map) || !c.Standable(map)) continue;
                 if (!GenSight.LineOfSight(c, o.Position, map)) continue;
                 float d = c.DistanceToSquared(pawn.Position);
                 if (d >= bestDist || !pawn.CanReach(c, PathEndMode.OnCell, Danger.Some)) continue;
@@ -607,7 +620,21 @@ namespace RimMandrake.Scarlands
             fin.initAction = delegate
             {
                 Building_BuriedOrdnance shell = job.GetTarget(TargetIndex.A).Thing as Building_BuriedOrdnance;
-                if (shell != null) shell.Detonate(pawn);
+                if (shell == null) return;
+                if (!RM_WarscarSettings.ordnanceRealShot)
+                {
+                    shell.Detonate(pawn);
+                    return;
+                }
+                // ORDNANCE_TRIGGER_REAL_SHOT_1 PROVISIONAL (auto-decided 2026-10-09): a real attack from this safe cell.
+                // A hit that takes the shell under its wick threshold (CompExplosive startWickHitPointsPercent) sets
+                // it off; misses spend shots. Never walks closer (endIfCantShootTargetFromCurPos).
+                Job shoot = JobMaker.MakeJob(JobDefOf.AttackStatic, shell);
+                shoot.endIfCantShootTargetFromCurPos = true;
+                shoot.maxNumStaticAttacks = 12;
+                shoot.expiryInterval = 1200;
+                shoot.playerForced = job.playerForced;
+                pawn.jobs.jobQueue.EnqueueFirst(shoot);
             };
             fin.defaultCompleteMode = ToilCompleteMode.Instant;
             yield return fin;

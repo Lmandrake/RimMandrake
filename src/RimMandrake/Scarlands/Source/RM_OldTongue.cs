@@ -157,6 +157,7 @@ namespace RimMandrake.Scarlands
             int placed = 0;
             for (int i = 0; i < cells.Count && placed < target; i++)
             {
+                // WARSCAR_TUNING_SEMANTICS_1: a per-CELL roll until the quota fills (see the setting's comment).
                 if (!Rand.Chance(RM_WarscarSettings.oldTongueRevealChance)) continue;
                 ThingDef kind = kinds[placed % kinds.Count];
                 GenSpawn.Spawn(ThingMaker.MakeThing(kind), cells[i], map);
