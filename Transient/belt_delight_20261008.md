@@ -7,7 +7,7 @@ Offline only. One commit per item.
 DONE `b20a31ffc` — FEVERWOOD_LIMB_LINGER_CAP_1 built; verified not already present (CompTentacleLimb had no lifetime, watch had no cap). Linger 12 h / cap 6 PROVISIONAL, settings toggle + 2 sliders. Owes A1-A3 L1, H1 L4.
 
 ## DI-2 Chill air pump
-pending
+DONE `8ceac720a` — CHILL_AIR_PUMP_1 built. Found Odyssey already ships OxygenPump, so the pump IS that building plus RM_CompChillAirSupply (patch), not a new def/art. Per-provider ledger kernel fuzzed. 300 W / 60 cells-per-pump PROVISIONAL. Owes A1 L1, A2-A4 L2, H1 L4.
 
 ## LP-2 glow tank drinks from pipes
 pending
