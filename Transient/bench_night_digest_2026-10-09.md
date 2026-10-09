@@ -14,7 +14,7 @@ Everything below is committed and pushed. Nothing is deployed. Every change wait
    - Abyss: Durrgak "rename to Sorter", plus 4 conflicts.
    - Deep Desert: 3 Vozzik conflicts.
    - Six sheets are unruled (cauldron, floodedcanyon, theforge, therot, wasteland, weepingstones).
-7. **Facing audit.** Dredgel v2 renders are done and await your pick. Murrelith and Thavrik are KEEP-ruled but are flat solid-colour squares: `D:\Luke\dev\RimMandrake\Transient\facing_coherence_backlog_2026-10-09.md`
+7. **Facing audit.** Dredgel v2 renders are done and await your pick: `D:\Luke\dev\RimMandrake\Transient\facing_coherence_backlog_2026-10-09.md`. Flat placeholder squares are still live for Murrelith (your redo, renders exist), Thavrik (you ruled it no longer needed), Chellow east, Drommath, Ollareth and Sorruth: `D:\Luke\dev\RimMandrake\Transient\flat_square_art_check_2026-10-09.md`
 8. **Venomvine sitting run-sheet** is ready for next session. Seven forms share one texture: `D:\Luke\dev\RimMandrake\Transient\venomvine_sitting_runsheet_2026-10-09.md`
 
 ## Done overnight
