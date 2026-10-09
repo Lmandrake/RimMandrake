@@ -11,6 +11,7 @@ namespace RimMandrake.Abyss
     // Only samples placed on an Abyss map (Info.Maker.Map) are touched: on-camera UI sounds and every other map are
     // left alone. A sample whose def already maps the Dark itself is skipped. PROVISIONAL: cutoff range shared with
     // the gust sounds; judged with the owner present.
+    [RimMandrake.Shared.PatchFeature("Patch_Sample_DarkMuffle", typeof(RM_AbyssSettings), "darkMuffleAllSounds")]
     [HarmonyPatch(typeof(Sample), nameof(Sample.Update))]
     public static class Patch_Sample_DarkMuffle
     {

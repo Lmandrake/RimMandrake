@@ -47,6 +47,7 @@ namespace RimMandrake.Utinni.PlantGrowth
     /// lookups against tables built once at startup: no allocation, no LINQ, no
     /// def-database queries.
     /// </summary>
+    [RimMandrake.Shared.PatchFeature("Patch_Plant_GrowthRate", typeof(PlantGrowthSettings), "growthEnabled")]
     [HarmonyPatch(typeof(Plant), nameof(Plant.GrowthRate), MethodType.Getter)]
     public static class Patch_Plant_GrowthRate
     {

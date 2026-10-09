@@ -49,6 +49,7 @@ namespace RimMandrake.TerminalBiomes
     // verification is owed to a session with the bridge and the owner
     // present, per this repo's own flyer-testing precedent for anything
     // that needs an actual game tick to prove.
+    [RimMandrake.Shared.PatchFeature("RM_Patch_GravEngineLaunchGate", typeof(RM_TerminalBiomesSettings), "TwilightDeckAccumulationActive")]
     [HarmonyPatch(typeof(Building_GravEngine), nameof(Building_GravEngine.CanLaunch))]
     public static class RM_Patch_GravEngineLaunchGate
     {

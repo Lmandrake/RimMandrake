@@ -210,6 +210,7 @@ namespace RimMandrake.Utinni.RiverColors
 
     // Scoped to WorldDrawLayer_Rivers only -- WorldDrawLayer_Roads shares this exact
     // base-class method and must render unmodified.
+    [RimMandrake.Shared.PatchFeature("Patch_WorldDrawLayer_Paths_GeneratePaths", typeof(RiverColorsSettings), "enabled")]
     [HarmonyPatch(typeof(WorldDrawLayer_Paths), nameof(WorldDrawLayer_Paths.GeneratePaths))]
     public static class Patch_WorldDrawLayer_Paths_GeneratePaths
     {

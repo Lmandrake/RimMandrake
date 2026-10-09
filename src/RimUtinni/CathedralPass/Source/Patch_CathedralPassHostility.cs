@@ -24,6 +24,7 @@ namespace RimMandrake.Utinni.CathedralPass
     //     holder or a berserk machine is hostile as vanilla says).
     // Symmetric, because HostileTo is read as symmetric throughout the engine: a
     // one-way exception would leave the clan auto-firing on machines that ignore them.
+    [RimMandrake.Shared.PatchFeature("Patch_CathedralPassHostility", typeof(CathedralPassSettings), "cathedralPassEnabled")]
     [HarmonyPatch(typeof(GenHostility), nameof(GenHostility.HostileTo), new[] { typeof(Thing), typeof(Thing) })]
     public static class Patch_CathedralPassHostility
     {
