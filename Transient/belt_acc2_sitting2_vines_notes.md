@@ -1,0 +1,6 @@
+# Venomvines, sitting 2 (tier acc_20261009b, RM_LeaningScrub map tile 114480)
+- jawa/static_call ProofForm cannot be called with "form|mode": static_call splits args on '|', ProofForm takes ONE string, so the call fails with "No public static ProofForm with 2 params" (validation.py four_forms chain and the three items' verify text are unreachable). Calling with args=<form> alone runs the ON arm (parts.Length<2 means on).
+- strangler on: PASS strangler wrapped (40%, wall 195 -> 180). off arm not reachable -> A1 not recorded.
+- lure on: PASS lure 3 fruit (cap 3). off arm not reachable -> A1 not recorded.
+- sleeper on: PASS sleeper woke into a live stand (no item in this batch).
+- weeper on: FAIL weeper on=True pools=0 (200 forced long ticks, expected ~20). Reproduced; independent natural run: 4 grown weepers, 20000 ticks, weeperEnabled=true, 0 RM_VenomPool. Direct spawn_batch of RM_VenomPool: refused on Soil, SoilRich, Gravel, Sand, MarshyTerrain; accepted on TileGranite and Concrete. Cause: RM_VenomPool and RM_ThornLitter copy vanilla Filth_Trash's placementMask (Terrain, Unnatural), which natural ground refuses (Filth_Slime/Ash/Blood, no mask, place on soil; Filth_Trash/Filth_Sand refuse). Source fix: placementMask removed from both defs (needs redeploy + restart to prove).
