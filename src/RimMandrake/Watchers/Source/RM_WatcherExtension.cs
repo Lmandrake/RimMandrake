@@ -51,6 +51,11 @@ namespace RimMandrake.Watchers
 
         public int remainsCount = 1;
 
+        /// <summary>Extra items that ride the remains (owner 2026-10-08: the piinnok's remains carry its biosilica). Spawned with the
+        /// remains when the corpse is swapped, only when remainsDef is set. Write each as <c>&lt;Def MayRequire="pkg"&gt;n&lt;/Def&gt;</c>; an entry
+        /// whose mod is absent resolves to a null def and is skipped.</summary>
+        public List<ThingDefCountClass> remainsCarries = new List<ThingDefCountClass>();
+
         /// <summary>Hidden and this hungry: it comes up so it can feed.</summary>
         public float emergeWhenFoodBelow = 0.25f;
 

@@ -75,6 +75,9 @@ A piinnok lives only in deep sand and will not stay anywhere else. Nothing can a
         <wanderChance>0.1</wanderChance>        <!-- PROVISIONAL: sessile, it rarely moves -->
         <maxLethalDamage>5</maxLethalDamage>    <!-- owner 2026-10-08: almost no damage destroys it -->
         <remainsDef>RM_WatcherRemains_Piinnok</remainsDef>
+        <remainsCarries>   <!-- owner 2026-10-08: the remains carry its biosilica. Spawned beside the remains on death (C#, not a recipe: MayRequire does not gate a whole Operation/RecipeDef). -->
+          <RM_Biosilica MayRequire="mandrake.rm.biomes">3</RM_Biosilica>   <!-- PROVISIONAL count; no grade above RM_Biosilica exists -->
+        </remainsCarries>
         <emergeWhenFoodBelow>0.25</emergeWhenFoodBelow>
       </li>
       <!-- It strains the deep sand it lives in (the likka likka's shipped filter-feed stack). -->

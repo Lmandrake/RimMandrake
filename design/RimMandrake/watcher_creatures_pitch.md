@@ -166,10 +166,9 @@ The kit needs no new code for any member. Each costs:
 
 **What death leaves:** the watch job removes its own sign; the death worker then removes any other
 sign naming the dead animal, takes the hidden hediff off the corpse's pawn (a hidden pawn draws
-nothing, corpse included), starts an alarm ripple, and swaps the corpse for `remainsDef`: tiny,
-nearly worthless, a little sad. The piinnok's is the **clouded piinnok lens** (RawBad animal
-product, 0.03 nutrition, rots in 2 days). The piinnok no longer butchers to biosilica: its corpse
-is gone. Star Wars cuisine use of remains belongs to the RSW tier later and is not built.
+nothing, corpse included), starts an alarm ripple, and swaps the corpse for `remainsDef`: tiny
+and a little sad. The piinnok's is the **clouded piinnok lens** (RawBad animal
+product, 0.03 nutrition, rots in 2 days). The piinnok's remains carry its biosilica: `remainsCarries` spawns 3 `RM_Biosilica` (PROVISIONAL, `MayRequire` `mandrake.rm.biomes`) beside the remains, because the corpse is gone and cannot be butchered. Star Wars cuisine use of remains belongs to the RSW tier later and is not built.
 
 **Orphan and duplicate signs:** a sign checks itself every rare tick and removes itself unless its
 owner is alive, spawned, in a watch job, and that job holds this very sign
