@@ -354,6 +354,8 @@ namespace RimMandrake.CreatureBehaviors
         public static bool heatDrivenBurstEnabled = true;
         public static float heatDrivenBurstDecayMultiplier = 1f;
         public static bool drumLureEnabled = true;
+        // CREATURE_BEHAVIOR_LAST_OUTCOME_1 (CB-7): ambushers, lures and alarms keep and show their last decision.
+        public static bool lastOutcomeInspectEnabled = true;
         public static float drumLureChanceMultiplier = 1f;
         public static bool shadeStaggerEnabled = true;
         public static float shadeStaggerGerminationMultiplier = 1f;
@@ -485,6 +487,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref heatDrivenBurstEnabled, "heatDrivenBurstEnabled", true);
             Scribe_Values.Look(ref heatDrivenBurstDecayMultiplier, "heatDrivenBurstDecayMultiplier", 1f);
             Scribe_Values.Look(ref drumLureEnabled, "drumLureEnabled", true);
+            Scribe_Values.Look(ref lastOutcomeInspectEnabled, "lastOutcomeInspectEnabled", true);
             Scribe_Values.Look(ref drumLureChanceMultiplier, "drumLureChanceMultiplier", 1f);
             Scribe_Values.Look(ref shadeStaggerEnabled, "shadeStaggerEnabled", true);
             Scribe_Values.Look(ref shadeStaggerGerminationMultiplier, "shadeStaggerGerminationMultiplier", 1f);
@@ -690,6 +693,9 @@ namespace RimMandrake.CreatureBehaviors
             heatDrivenBurstDecayMultiplier = list.Slider(heatDrivenBurstDecayMultiplier, 0.25f, 3f);
             list.GapLine();
 
+            list.CheckboxLabeled("Show each creature's last decision when inspected", ref lastOutcomeInspectEnabled,
+                "Drum-lurers, aquatic ambushers, heat-burst hunters and alarm sources note what they last decided and why "
+              + "(declined, lunge, cooldown...) and show it in the inspect text. Text only; takes effect now. Off: nothing is recorded.");
             list.CheckboxLabeled("Drum-lure ambush", ref drumLureEnabled,
                 "A lure predator stops calling victims closer with a false vibration signal; any "
               + "victim already mid-compulsion is released immediately (they just keep walking "

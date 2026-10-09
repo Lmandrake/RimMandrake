@@ -35,6 +35,21 @@ namespace RimMandrake.CreatureBehaviors
 
         public CompProperties_AquaticAmbusher Props => (CompProperties_AquaticAmbusher)props;
 
+        private RM_LastOutcomeLog outcome;
+
+        /// <summary>CB-7: the last decision, readable by a test (null until the first one).</summary>
+        public RM_LastOutcomeLog Outcome => outcome;
+
+        private void Note(string code) { RM_LastOutcomeLog.Record(ref outcome, code); }
+
+        public override string CompInspectStringExtra() { return RM_LastOutcomeLog.InspectLine(outcome); }
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Deep.Look(ref outcome, "lastOutcome");
+        }
+
         public override void CompTick()
         {
             base.CompTick();
@@ -55,6 +70,7 @@ namespace RimMandrake.CreatureBehaviors
                 // invisibility rather than leaving a submerged pawn stuck
                 // invisible forever once the player turns this off.
                 BecomeVisible(pawn);
+                Note("off");
                 return;
             }
 
@@ -69,16 +85,19 @@ namespace RimMandrake.CreatureBehaviors
             if (target != null)
             {
                 BecomeVisible(pawn);
+                Note("lunge");
                 TriggerLunge(pawn, target);
                 return;
             }
 
             if (submerged)
             {
+                Note("submerged");
                 BecomeInvisible(pawn);
             }
             else
             {
+                Note("surfaced");
                 BecomeVisible(pawn);
             }
         }
