@@ -289,6 +289,17 @@ def step_artpipe(budget=480):
     return {"render_dirs": len(dirs), "renders": n, "new_events": len(w.known) - n0, "secs": round(time.time() - t0)}
 
 
+def step_subjects(budget=480):
+    """Resolve historic renders to a subject (render_subjects.py) and record the single-subject results as
+    idempotent binding events. Reads job records, writes only the ledger shard (+ the derived index)."""
+    import render_subjects as RS
+    res = RS.build()
+    p = L.ledger_dir() / "render_subjects.json"
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(res, indent=0, sort_keys=True))
+    return {"renders": res["renders"], "tally": res["tally"], "new_events": RS.write_bindings(res)}
+
+
 def step_donor(budget=480):
     t0 = time.time()
     ours = {}

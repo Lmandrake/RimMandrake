@@ -54,6 +54,31 @@ def main():
     check(len(idx.bindings_by_subject["RM_Aaa"]) == 1 and va[0]["sha"] in idx.bindings, "Index folds bindings")
     r2 = B.step_artpipe(budget=60)
     check(r2.get("new_events") == 0, f"idempotent ({r2})")
+    # derived subject index: a fixture src + a render with no target_def
+    d = tmp / "src" / "Tier" / "ModX" / "Defs"
+    d.mkdir(parents=True)
+    (d / "d.xml").write_text("<Defs><ThingDef><defName>RM_Zorbex</defName><label>zorbex</label></ThingDef>"
+                             "<ThingDef><defName>RM_Quillback</defName></ThingDef></Defs>")
+    for name, rgb in (("zorbex_v1", (50, 60, 70, 255)), ("mystery_thing_v1", (200, 5, 5, 255))):
+        dd = tmp / "ap" / "_artsrc" / name
+        dd.mkdir(parents=True)
+        (dd / "x.png").write_bytes(png(rgb))
+    B.step_artpipe(budget=60)
+    import render_subjects as RS
+    import subject as S
+    res = RS.build(S.World(src_root=tmp / "src", canon_root=tmp / "nocanon", artpipe_root=tmp / "ap", facts_root=tmp / "nofacts"))
+    e = {v["job"]: v for v in res["entries"].values()}
+    check(e["a_v1"]["resolution"] == "bound" and e["a_v1"]["via"] == "binding", "bound by the job's binding event")
+    check(e["zorbex_v1"]["resolution"] == "name-matched" and e["zorbex_v1"]["subjects"] == ["RM_Zorbex"],
+          f"whole-token family match names one subject ({e['zorbex_v1']})")
+    check(e["mystery_thing_v1"]["resolution"] == "unresolved", "no evidence -> unresolved, not guessed")
+    before = len([x for x in L.read_events() if x.get("type") == "binding"])
+    n1 = RS.write_bindings(res)
+    n2 = RS.write_bindings(res)
+    check(n1 == 1 and n2 == 0 and before + 1 == len([x for x in L.read_events() if x.get("type") == "binding"]),
+          f"derived bindings written once, idempotent ({n1},{n2})")
+    check(not any(p.name.endswith(".json") and "binding" in p.read_text() for p in (tmp / "ap" / "done").glob("*.json")),
+          "no job file in the artpipe state dir was touched")
     return 1 if FAILS else 0
 
 
