@@ -1,0 +1,147 @@
+{
+ "built": "2026-10-09T00:35:09-0700",
+ "rows": {
+  "RM_Cistrel": {
+   "columns": {
+    "A": {
+     "single": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc"
+    },
+    "B": {
+     "single": "f094d1372adeacc2551adb0ae234af2ad0a7ae953e30e43092ea9cdac7777b39"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Cistrel/RM_Cistrel_a",
+    "B": "Things/Plant/RM_Cistrel/RM_Cistrel_a"
+   },
+   "labels": {
+    "A": "IN GAME now",
+    "B": "own render regen_fw_cistrel_own_v1"
+   },
+   "res": "Things/Plant/RM_Cistrel/RM_Cistrel_a",
+   "subject_key": "cistrel"
+  },
+  "RM_LureVenomvine": {
+   "columns": {
+    "A": {
+     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
+    },
+    "B": {
+     "single": "f7016ea0abf5146ccb4709c70801266ad36b9e10afaa7212e5d8cd6c7b6c0849"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_LureVenomvine",
+    "B": "Things/Plant/RM_LureVenomvine"
+   },
+   "labels": {
+    "A": "IN GAME now",
+    "B": "own render RM_LureVenomvine"
+   },
+   "res": "Things/Plant/RM_LureVenomvine",
+   "subject_key": "lurevenomvine"
+  },
+  "RM_Nubrith": {
+   "columns": {
+    "A": {
+     "single": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc"
+    },
+    "B": {
+     "single": "395b4f6b9671dcfa72e7f69caf2436ade763c383abe37bdf62b355a6a20a2b30"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_Nubrith/RM_Nubrith_a",
+    "B": "Things/Plant/RM_Nubrith/RM_Nubrith_a"
+   },
+   "labels": {
+    "A": "IN GAME now",
+    "B": "own render regen_fw_nubrith_own_v1"
+   },
+   "res": "Things/Plant/RM_Nubrith/RM_Nubrith_a",
+   "subject_key": "nubrith"
+  },
+  "RM_SleeperAwakeVenomvine": {
+   "columns": {
+    "A": {
+     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
+    },
+    "B": {
+     "single": "7b3edc00d671c55b27f4afb0eb2ee1a8e828e83f534343d1d66197d32c5693a4"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_SleeperAwakeVenomvine",
+    "B": "Things/Plant/RM_SleeperAwakeVenomvine"
+   },
+   "labels": {
+    "A": "IN GAME now",
+    "B": "own render RM_SleeperAwakeVenomvine"
+   },
+   "res": "Things/Plant/RM_SleeperAwakeVenomvine",
+   "subject_key": "awakenedvenomvine"
+  },
+  "RM_SleeperVenomvine": {
+   "columns": {
+    "A": {
+     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
+    },
+    "B": {
+     "single": "95b386818bb65ed7669ba4d49f4663e1c79794716393bc01d5c5e22ff193563e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_SleeperVenomvine",
+    "B": "Things/Plant/RM_SleeperVenomvine"
+   },
+   "labels": {
+    "A": "IN GAME now",
+    "B": "own render RM_SleeperVenomvine"
+   },
+   "res": "Things/Plant/RM_SleeperVenomvine",
+   "subject_key": "deadvenomvine"
+  },
+  "RM_StranglerVenomvine": {
+   "columns": {
+    "A": {
+     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
+    },
+    "B": {
+     "single": "2fed69278b86c6792a9cd653afe68a8557b867f4eb986e6fc5b017d3da8c159b"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_StranglerVenomvine",
+    "B": "Things/Plant/RM_StranglerVenomvine"
+   },
+   "labels": {
+    "A": "IN GAME now",
+    "B": "own render RM_StranglerVenomvine"
+   },
+   "res": "Things/Plant/RM_StranglerVenomvine",
+   "subject_key": "stranglervenomvine"
+  },
+  "RM_WeeperVenomvine": {
+   "columns": {
+    "A": {
+     "single": "29ae79060e162f6fc7259a748839739ae3472935fbd61ae52058afa4ab11ff96"
+    },
+    "B": {
+     "single": "d300d87173ee568f193416ef8ae39bd48a6d092d0d05efca336629deb46045c2"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RM_WeeperVenomvine",
+    "B": "Things/Plant/RM_WeeperVenomvine"
+   },
+   "labels": {
+    "A": "IN GAME now",
+    "B": "own render RM_WeeperVenomvine"
+   },
+   "res": "Things/Plant/RM_WeeperVenomvine",
+   "subject_key": "weepervenomvine"
+  }
+ },
+ "sheetId": "own_render_keep_sheet_2026-10-09",
+ "snapshotId": "9c8310f783a356c6"
+}
