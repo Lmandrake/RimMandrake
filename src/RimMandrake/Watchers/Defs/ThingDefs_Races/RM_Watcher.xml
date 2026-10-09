@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Watcher.xml        Watchers - WATCHER_CREATURES_MOD_1, the Rust Cathedral's member (pitch §3.2 row, §5)
+
+  Owner rulings 2026-10-08 (question cards, typed):
+    "a little stalk that rose up like a camera and just watched and rotated to watch, then always pulled away when approached"
+    "Eight span is good. But call it literally a 'Watcher.' Only for this biome. And it should be very shy when approached."
+  -> defName RM_Watcher, label "watcher"; eight-step head pan; rise/retract AnimationDefs; very shy (below).
+
+  ONE MEDIUM: RM_RustCathedral_CrackedMetalSoil (mandrake.rm.rustcathedral, MayRequire: this mod stands alone).
+  ONE HOME: the Rust Cathedral. No roster is edited here: the Watcher is admitted at the Rust Cathedral's own sitting.
+
+  SHAPE: the living bolt's (src/RimMandrake/RustCathedral/Defs/ThingDefs_Races/RM_LivingBolt.xml): BaseMechanoidWalker, so mechanoid
+  flesh = never an Animal, never tameable, never meat; its own whole think tree (RM_ThinkTree_Watcher), because the vanilla Mechanoid
+  tree has no insertTag and the kit's Animal_PreWander splice never reaches a mechanoid-fleshed race. Ban 7 (no ordinary wildlife) does
+  not bar it: it is a machine. Hunting: the Hunt designator offers animals only, so it can be shot when drafted and never hunted by
+  order (the bolt's finding); there is no flush (removed from the kit 2026-10-08).
+
+  BAN 1 (the frozen sheet design/Jawa/worldbuilding/biomes/the_rust_cathedral.md §6): the description says what it DOES, never why.
+  No eye of the place, no mind, nothing it reports to, no shared origin with the bolts.
+
+  VERY SHY (pitch §5.7; ALL PROVISIONAL, tune in the live quicktest):
+    flinchRadius 9      the kit default is 6 (the piinnok's): it goes down from further away than any other member.
+    retract 10 ticks    RM_WatcherStalkRetract: snaps down.
+    hideTicks 7500~15000  the piinnok's is 2500~7500: it stays down a long time after the coast is clear.
+    watchRadius 16      it notices you (turns to look) well before it flinches.
+
+  FRAGILE (owner, 2026-10-08 DEATH card: "Should take almost no damage to destroy them"): baseHealthScale 0.03, so an adult dies at
+  4.5 damage, under the kit's maxLethalDamage 5 (RM_WatcherKernel.FragilityErrors); no armour, no heat armour, flammable. PROVISIONAL.
+
+  DEATH: the kit's death action (RM_DeathActionWorker_Watcher) swaps the corpse for remainsDef = RM_WatcherRemains_Watcher, the
+  collapsed camera husk, and starts the alarm ripple. The husk smelts once into 3 steel at an electric smelter (RM_SmeltWatcherHusk),
+  no components. butcherProducts is required non-empty on any mechanoid (RaceProperties config error) and is never reached, because
+  the corpse is replaced; Inherit="False" drops the walker's 15 steel in case a mod keeps the corpse. corpseGraphicData is the same
+  husk picture for the same case (the stalk and head nodes never draw on a dead pawn).
+
+  ART PLACEHOLDERS (vanilla Core turret textures, tinted rust; artpipe jobs queued 2026-10-08, see the item): crawler base, seam hatch,
+  husk; the stalk and head are in RM_Watcher_RenderTree.xml; the seam-glint sign below.
+-->
+<Defs>
+
+  <BodyDef>
+    <defName>RM_WatcherStalkFrame</defName>
+    <label>stalk frame</label>
+    <corePart>
+      <def>MechanicalThoraxCanManipulate</def>
+      <customLabel>base</customLabel>
+      <height>Bottom</height>
+      <depth>Outside</depth>
+      <parts>
+        <li>
+          <def>MechanicalNeck</def>
+          <customLabel>stalk</customLabel>
+          <coverage>0.25</coverage>
+          <height>Middle</height>
+          <parts>
+            <li>
+              <def>MechanicalHead</def>
+              <customLabel>camera head</customLabel>
+              <coverage>0.8</coverage>
+              <height>Top</height>
+              <groups>
+                <li>HeadAttackTool</li>
+              </groups>
+              <parts>
+                <li>
+                  <def>ArtificialBrain</def>
+                  <coverage>0.15</coverage>
+                  <depth>Inside</depth>
+                </li>
+                <li>
+                  <def>SightSensor</def>
+                  <customLabel>lens</customLabel>
+                  <coverage>0.3</coverage>
+                </li>
+              </parts>
+            </li>
+          </parts>
+        </li>
+        <li>
+          <def>Reactor</def>
+          <coverage>0.1</coverage>
+          <depth>Inside</depth>
+        </li>
+      </parts>
+    </corePart>
+  </BodyDef>
+
+  <ThingDef ParentName="BaseMechanoidWalker">
+    <defName>RM_Watcher</defName>
+    <label>watcher</label>
+    <description>A camera on a stalk, about as tall as a boot. It rises out of a seam in the deck plate, turns its lens to follow whatever is moving nearby, and drops back into the seam the moment anyone comes close. Then it stays down for a long while.
+
+Nobody has found the other end of the stalk.
+
+It breaks at almost anything: a blast, a fire, a stray burst. What is left is a crumpled lens on a bent stem, worth a little steel.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>                  <!-- PROVISIONAL: it crawls the seams, it never runs -->
+      <ArmorRating_Blunt>0</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0</ArmorRating_Sharp>
+      <ArmorRating_Heat>0</ArmorRating_Heat>     <!-- fragile: overrides BaseMechanoid's 2 -->
+      <Flammability>0.6</Flammability>           <!-- fragile: overrides BaseMechanoid's 0. PROVISIONAL -->
+      <StaggerDurationFactor>0</StaggerDurationFactor>
+      <BandwidthCost>1</BandwidthCost>
+      <MarketValue>40</MarketValue>              <!-- PROVISIONAL -->
+    </statBases>
+    <uiIconScale>0.45</uiIconScale>
+    <tools>
+      <li>
+        <label>lens housing</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <body>RM_WatcherStalkFrame</body>
+      <baseBodySize>0.1</baseBodySize>
+      <baseHealthScale>0.03</baseHealthScale>   <!-- fragile: 150 x 0.03 = 4.5 damage kills it (kit ceiling 5). PROVISIONAL -->
+      <thinkTreeMain>RM_ThinkTree_Watcher</thinkTreeMain>
+      <renderTree>RM_WatcherStalkTree</renderTree>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>MechanoidFullyFormed</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Mech_Scyther_Wounded</soundWounded>
+          <soundDeath>Pawn_Mech_Scyther_Death</soundDeath>
+        </li>
+      </lifeStageAges>
+      <mechWeightClass>Light</mechWeightClass>
+    </race>
+    <butcherProducts Inherit="False">
+      <Steel>3</Steel>                           <!-- unreached: the death action replaces the corpse (header) -->
+    </butcherProducts>
+    <comps>
+      <li Class="RimMandrake.Watchers.RM_CompProperties_WatcherStalk">
+        <riseAnimation>RM_WatcherStalkRise</riseAnimation>
+        <retractAnimation>RM_WatcherStalkRetract</retractAnimation>
+        <turnDegreesPerTick>4</turnDegreesPerTick>     <!-- PROVISIONAL: a 180-degree pan in 45 ticks -->
+        <idlePauseTicks>150~350</idlePauseTicks>        <!-- TurretTop's idle pause -->
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.Watchers.RM_WatcherExtension">
+        <mediumTerrains>
+          <li MayRequire="mandrake.rm.rustcathedral">RM_RustCathedral_CrackedMetalSoil</li>
+        </mediumTerrains>
+        <flinchRadius>9</flinchRadius>           <!-- PROVISIONAL, very shy: larger than the kit's 6 -->
+        <watchRadius>16</watchRadius>            <!-- PROVISIONAL -->
+        <hideTicks>7500~15000</hideTicks>        <!-- PROVISIONAL, very shy: long re-emerge delay -->
+        <hiddenHediff>RM_WatcherHidden</hiddenHediff>
+        <signDef>RM_WatcherSign_SeamGlint</signDef>
+        <maxWatchTicks>3000</maxWatchTicks>      <!-- PROVISIONAL -->
+        <wanderChance>0.1</wanderChance>         <!-- PROVISIONAL -->
+        <puffScale>0.3</puffScale>
+        <remainsDef>RM_WatcherRemains_Watcher</remainsDef>
+        <remainsCount>1</remainsCount>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="BaseMechanoidKind">
+    <defName>RM_Watcher</defName>
+    <label>watcher</label>
+    <labelPlural>watchers</labelPlural>
+    <race>RM_Watcher</race>
+    <combatPower>5</combatPower>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <!-- PLACEHOLDER: the crawler base (seen only while it walks the seams). -->
+        <bodyGraphicData>
+          <texPath>Things/Building/Mech/TurretMechMini_Base</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <color>(120,84,60)</color>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+        <!-- PLACEHOLDER: the seam hatch, flush with the deck (the still pose; the stalk rises out of it). -->
+        <stationaryGraphicData>
+          <texPath>Things/Building/Security/TurretMini_Base</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <color>(90,70,55)</color>
+          <drawSize>0.4</drawSize>
+        </stationaryGraphicData>
+        <!-- PLACEHOLDER: the collapsed camera husk. -->
+        <corpseGraphicData>
+          <texPath>Things/Building/Mech/TurretMechMini_Top</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <color>(70,60,55)</color>
+          <drawSize>0.4</drawSize>
+        </corpseGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- The readable sign while it is down (pitch §3.3 sign family "seam glint": deck plate). Ethereal, no flush order (flush removed).
+       PLACEHOLDER: vanilla Things/Filth/Grainy tinted steel-bright. -->
+  <ThingDef ParentName="RM_WatcherSignBase">
+    <defName>RM_WatcherSign_SeamGlint</defName>
+    <label>seam glint</label>
+    <description>A bright, clean line in a deck seam, where the rust has been scraped off from below. Something just went down into it.</description>
+    <graphicData>
+      <texPath>Things/Filth/Grainy</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <color>(200,205,215,180)</color>
+      <drawSize>0.45</drawSize>
+    </graphicData>
+  </ThingDef>
+
+  <!-- The remains: the collapsed camera husk (owner, 2026-10-08: remains "of highly dubious value and kind of sad").
+       PLACEHOLDER art: vanilla TurretMechMini_Top, dulled. One-time steel: RM_SmeltWatcherHusk below. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_WatcherRemains_Watcher</defName>
+    <label>watcher husk</label>
+    <description>A camera lens on a bent stem, folded over on itself. The lens is cracked and does not turn any more. A smelter can get a little steel out of it.</description>
+    <graphicData>
+      <texPath>Things/Building/Mech/TurretMechMini_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(70,60,55)</color>
+      <drawSize>0.45</drawSize>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <MarketValue>2</MarketValue>        <!-- PROVISIONAL -->
+      <Mass>0.4</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeability>None</tradeability>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>RM_SmeltWatcherHusk</defName>
+    <label>smelt watcher husk</label>
+    <description>Melt a watcher husk down for the little steel in it.</description>
+    <jobString>Smelting watcher husk.</jobString>
+    <workAmount>300</workAmount>
+    <workSpeedStat>SmeltingSpeed</workSpeedStat>
+    <effectWorking>Smelt</effectWorking>
+    <soundWorking>Recipe_Smelt</soundWorking>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_WatcherRemains_Watcher</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_WatcherRemains_Watcher</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <Steel>3</Steel>                     <!-- PROVISIONAL: small, no components -->
+    </products>
+    <recipeUsers>
+      <li>ElectricSmelter</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>

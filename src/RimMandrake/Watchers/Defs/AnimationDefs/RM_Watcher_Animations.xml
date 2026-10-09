@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Watcher_Animations.xml        Watchers - WATCHER_CREATURES_MOD_1, the Rust Cathedral Watcher (pitch §5.2, §5.6, §5.7)
+
+  The first keyframe AnimationDefs in this repo. Vanilla mechanism (RimSage 1.6): AnimationWorker_Keyframes lerps offset, angle and
+  scale between keyframes, keyed by render-node tag; LoopMode Clamp holds the last frame; LoopMode End reports finished and
+  PawnRenderer.ProcessPostTickVisuals clears it. Played by RM_CompWatcherStalk.Play from the watch job.
+
+  The job does not read AnimationFinished: it times each phase by durationTicks (RM_CompProperties_WatcherStalk.RiseTicks /
+  RetractTicks), so the hidden hediff goes on only once the retract has run its full length (RM_WatcherStalkKernel.Step).
+
+  Durations PROVISIONAL, tune in the live quicktest:
+    rise     40 ticks (~0.7 s): an unhurried, curious extension.
+    retract  10 ticks (~0.17 s): very shy, so it snaps down (owner, 2026-10-08: "very shy when approached"; pitch §5.7 "fast").
+  Offsets are relative to the nodes' drawData (RM_Watcher_RenderTree.xml); the last rise frame equals the static pose.
+-->
+<Defs>
+
+  <AnimationDef>
+    <defName>RM_WatcherStalkRise</defName>
+    <durationTicks>40</durationTicks>
+    <loopMode>Clamp</loopMode>
+    <keyframeParts>
+      <li>
+        <key>RM_WatcherStalk</key>
+        <value>
+          <workerType>AnimationWorker_Keyframes</workerType>
+          <pivot>(0.5,0)</pivot>
+          <keyframes>
+            <li><tick>0</tick><scale>(1,1,0.05)</scale></li>
+            <li><tick>28</tick><scale>(1,1,1.08)</scale></li>
+            <li><tick>40</tick><scale>(1,1,1)</scale></li>
+          </keyframes>
+        </value>
+      </li>
+      <li>
+        <key>RM_WatcherHead</key>
+        <value>
+          <workerType>AnimationWorker_Keyframes</workerType>
+          <keyframes>
+            <li><tick>0</tick><offset>(0,0,-0.55)</offset><scale>(0.5,1,0.5)</scale></li>
+            <li><tick>28</tick><offset>(0,0,0.045)</offset><scale>(1,1,1)</scale></li>
+            <li><tick>40</tick><offset>(0,0,0)</offset><scale>(1,1,1)</scale></li>
+          </keyframes>
+        </value>
+      </li>
+    </keyframeParts>
+  </AnimationDef>
+
+  <AnimationDef>
+    <defName>RM_WatcherStalkRetract</defName>
+    <durationTicks>10</durationTicks>
+    <loopMode>End</loopMode>
+    <keyframeParts>
+      <li>
+        <key>RM_WatcherStalk</key>
+        <value>
+          <workerType>AnimationWorker_Keyframes</workerType>
+          <pivot>(0.5,0)</pivot>
+          <keyframes>
+            <li><tick>0</tick><scale>(1,1,1)</scale></li>
+            <li><tick>10</tick><scale>(1,1,0.03)</scale></li>
+          </keyframes>
+        </value>
+      </li>
+      <li>
+        <key>RM_WatcherHead</key>
+        <value>
+          <workerType>AnimationWorker_Keyframes</workerType>
+          <keyframes>
+            <li><tick>0</tick><offset>(0,0,0)</offset><scale>(1,1,1)</scale></li>
+            <li><tick>10</tick><offset>(0,0,-0.57)</offset><scale>(0.4,1,0.4)</scale></li>
+          </keyframes>
+        </value>
+      </li>
+    </keyframeParts>
+  </AnimationDef>
+
+</Defs>

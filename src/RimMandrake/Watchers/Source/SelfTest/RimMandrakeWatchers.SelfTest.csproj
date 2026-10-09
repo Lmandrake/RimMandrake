@@ -22,7 +22,9 @@
 
   <ItemGroup>
     <Compile Include="..\Kernel\RM_WatcherKernel.cs" />
+    <Compile Include="..\Kernel\RM_WatcherStalkKernel.cs" />
     <Compile Include="WatcherFuzz.cs" />
+    <Compile Include="WatcherStalkFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 
