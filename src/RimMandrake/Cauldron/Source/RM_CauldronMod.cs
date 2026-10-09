@@ -68,6 +68,7 @@ namespace RimMandrake.Cauldron
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref metalYieldEnabled, "metalYieldEnabled", true, true);
@@ -96,6 +97,7 @@ namespace RimMandrake.Cauldron
             Scribe_Values.Look(ref dewfallSaturationEnabled, "dewfallSaturationEnabled", true, true);
             Scribe_Values.Look(ref assayFlecksEnabled, "assayFlecksEnabled", true, true);
             Scribe_Values.Look(ref vexxissPrintsEnabled, "vexxissPrintsEnabled", true, true);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         public void DoWindowContents(Rect inRect)
@@ -109,6 +111,7 @@ namespace RimMandrake.Cauldron
             bool prevSaturation = dewfallSaturationEnabled, prevFlecks = assayFlecksEnabled, prevGrade = assayGradeEnabled,
                  prevYield = metalYieldEnabled;
             list.Begin(viewRect);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.Label("Biome rarity: " + RarityLabel());
             list.Label("At 0 the Cauldron never generates on a new planet. "
@@ -292,6 +295,7 @@ namespace RimMandrake.Cauldron
         public override void DoSettingsWindowContents(Rect inRect)
         {
             settings.DoWindowContents(inRect);
+            RimMandrake.Shared.PatchApplier.ReforceOff();
         }
     }
 }

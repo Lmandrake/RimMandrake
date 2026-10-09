@@ -53,6 +53,7 @@
     <Compile Include="RM_CauldronVents.cs" />
     <Compile Include="RM_CauldronFloraExpansion.cs" />
     <Compile Include="RM_VexxithAcidImmunity.cs" />
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_VexxissPrints.cs" />
     <Compile Include="RM_CauldronDewfallVisuals.cs" />
     <Compile Include="Kernel\RM_VentKernel.cs" />

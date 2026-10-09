@@ -8,14 +8,14 @@ vent-cap liners, an acid-proof door and gravship scab-scrapers. It stays a stron
 
 ## open questions
 
-1. **Acid immunity needs a hook.** Vanilla has `AcidBurn`; nothing in our tree recognizes a
-   material. Making things built of vexxith ignore it needs a Harmony patch on damage application,
-   and the Cauldron assembly is deliberately Harmony-free. Add Harmony to the Cauldron mod, or put
-   the hook in a shared assembly?
+1. **Acid immunity hook: RULED AND BUILT.** Harmony lives in the Cauldron mod (owner card 2026-10-08), applied through the shared `PatchApplier` (`_Shared/HarmonyResilience`), toggle `vexxithAcidImmunityEnabled`.
 2. **Which recipes?** Filter vessels need the Filter-Works (`CAULDRON_MECHANICS_BUILD_1` part 4);
    vent-cap liners need vents (part 3); a vexxith-stuffed vanilla door is already fireproof — is a
    distinct plate-only door wanted? Gravship scab-scrapers sit next to Scabweight, which the owner
    declined (*"None of these thanks"*) — in or out?
-3. **"Poor weapons and walls"** contradicts today's MaxHitPoints 1.6. A dedicated
-   StuffCategoryDef (only the specialized defs accept it) or weaker stat factors? Numbers go to
-   `DESIGN_MATERIALS_REVIEW_1` either way.
+3. **Stance: RULED.** Vexxith stays a strong general material, MaxHitPoints x1.6; there is no "poor for weapons and walls" restriction (owner card 2026-10-08).
+
+## verify
+2026-10-09, numbers PROVISIONAL (parts 1 and 3 only; recipes in Q2 are still open and NOT built):
+- Offline: `src/RimMandrake/Cauldron/selftest_cauldron.py` passes; `RM_Vexxith` statFactors MaxHitPoints 1.6 unchanged.
+- Live (needs bridge): the `RM_VexxithAcidImmunity` chain in `validation.py`, plus the log census line `Harmony: patched N` tagged `RimMandrake.Cauldron` must show the TakeDamage patch applied.
