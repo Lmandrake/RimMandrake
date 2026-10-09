@@ -278,8 +278,8 @@ namespace RimMandrake.LuminousPigment
 
             list.Label("THE PRESS");
             list.Label("How the deepfire press (and its research) is unlocked.");
-            if (list.RadioButton("Research (default) -- gated behind a hidden project, "
-                    + "revealed once a mat is seen", pressGate == PressGate.Research))
+            if (list.RadioButton("Research (default) -- gated behind a locked project, "
+                    + "unlocked once a mat is seen", pressGate == PressGate.Research))
             {
                 pressGate = PressGate.Research;
             }
@@ -315,7 +315,7 @@ namespace RimMandrake.LuminousPigment
             list.Label("THE GLOWTANK");
             list.CheckboxLabeled("GlowTank buildable", ref glowTankEnabled,
                 "Off: the GlowTank does not appear in the build menu. Existing tanks keep working.");
-            list.Label("Power outage before it kills the culture: " + tankPowerGraceHours.ToString("0") + " h");
+            list.Label("Power outage before it kills the culture: " + (tankPowerGraceHours <= 0f ? "Never" : tankPowerGraceHours.ToString("0") + " h"));
             tankPowerGraceHours = list.Slider(tankPowerGraceHours, 0f, 48f);
             list.CheckboxLabeled("Tank needs ocean water (FlowWorks)", ref tankNeedsWater,
                 "On (default), with FlowWorks loaded: the tank drinks salt or boiling water from a FlowWorks "

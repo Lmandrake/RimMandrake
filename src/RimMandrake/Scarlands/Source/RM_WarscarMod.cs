@@ -311,6 +311,10 @@ namespace RimMandrake.Scarlands
             hospiceWalkInFrequency = list.Slider(hospiceWalkInFrequency, 0f, 1f);
             list.GapLine();
 
+            bool flowWorksLoaded = ModLister.GetActiveModWithIdentifier("mandrake.rm.flowworks", true) != null;
+            list.Label("Partner mod FlowWorks (pool terrain): " + (flowWorksLoaded ? "loaded" : "NOT loaded -- no pools will be placed"));
+            bool trackGridLoaded = GenTypes.GetTypeInAnyAssembly("RimMandrake.CreatureBehaviors.RM_MapComponent_TrackGrid") != null;
+            list.Label("Partner mod CreatureBehaviors (footprint track grid): " + (trackGridLoaded ? "loaded" : "NOT loaded -- the Settling leaves no footprints"));
             list.CheckboxLabeled("Rainbow pools", ref poolsEnabled,
                 "Reaction-liquor pools cycle through four phases a day; a tap at the rim draws each phase's reagent. Pool placement affects new maps and needs FlowWorks.");
             list.Label("Pools per map: up to " + Mathf.RoundToInt(poolsPerMap) + " (new maps)");
