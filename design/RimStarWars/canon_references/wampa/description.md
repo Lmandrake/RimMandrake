@@ -53,12 +53,13 @@ a bigger disagreement than the Dewback or Bantha cases and is worth flagging
 prominently for the owner's ruling.
 
 ## Must show
-- [ ] Bipedal, upright, ape/yeti-like posture — not a quadrupedal, on-all-fours stance
-- [ ] Long, shaggy white fur coat, not brown/tan blotching
-- [ ] Dark, bald-looking bare skin confined to around the eyes/muzzle only
-- [ ] Visible sharp claws and fangs
-- [ ] Small cranial horns visible on the head silhouette
-- [ ] Realistic rendering: natural shaggy cream-white fur with clumping and natural snow-cave lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the live-action *Empire Strikes Back* stills, the owner's 2026-10-08 realism ruling and the `## ruling` below.*
+- [ ] BODY PLAN: a huge, heavy, bipedal, upright ape/yeti-like predator (2.5-3 m), long arms ending in dark claws, standing or reaching upright, not on all fours (owner ruling 2026-09-14: "Correct. Giant ape-like predator, capable of standing upright.")
+- [ ] COLOUR LAYOUT: long, thick, shaggy cream-white fur (warm cream, not pure white) over the whole body, hanging in clumps; dark grey-black bare skin confined to the face around the eyes and muzzle; no brown/tan blotching
+- [ ] Face: broad, short-snouted, with small deep-set dark eyes and a jutting lower jaw of uneven sharp fangs
+- [ ] Two small dark ram-like cranial horns curling down beside the face, visible in the head silhouette
+- [ ] Realistic rendering: natural shaggy cream-white fur with clumping and natural snow-cave lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a polar bear or white dog (no quadrupedal grazing stance as in the donor sprite, no long snout), not a cute or cartoon yeti
 
 ## Engine limits
 none known — the donor sprite's disagreement (a quadrupedal, four-legged grazing-animal silhouette with brown blotching and no claws or horns) is recorded as a wrong body-plan/pose choice for a regen to correct, not as a rendering-pipeline constraint.

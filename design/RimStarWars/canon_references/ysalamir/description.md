@@ -30,12 +30,13 @@ The *Rebels* animated frame of Thrawn's ysalamir sculpture (`canon_1`) and the i
 - **Size:** 50 cm per the Legends text, a shoulder-carried pet.
 
 ## Must show
-- [ ] Slim, lizard-like body with a long, thin, prehensile tail that curls
-- [ ] Flat, broad, wedge-shaped snout and head with small eyes (four-eyed in canon text; clear in no image) and short ear-flaps
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the two realistic Legends paintings (`legends_1`, `legends_2`), the canon "four-eyed" text, and the owner's 2026-10-08 realism ruling.*
+- [ ] BODY PLAN: a small (about 50 cm) slim tree-dwelling lizard with a long, thin, prehensile tail that curls, short lizard legs, in a climbing or clinging pose on a tree trunk
+- [ ] COLOUR LAYOUT: golden-tan to amber skin (Legends paintings; bronze/golden-green acceptable per `legends_2`) with a row of dark oval spots/dashes down the back, flanks and along the tail
+- [ ] Head: a flat, broad, wedge-shaped snout and head with small wide-set eyes (four-eyed in canon text; clear in no image) and a short fleshy ear-flap behind each eye
 - [ ] Large, hooked, curved claws that grip tree bark
-- [ ] Golden-tan to amber skin (Legends) with a row of dark oval spots down the back, flanks and tail
-- [ ] Climbing or clinging pose on a tree trunk, small pet size (about 50 cm)
-- [ ] Realistic rendering: natural lizard skin texture and dappled forest light, no outlines, no animated or ink shading
+- [ ] Realistic rendering: natural lizard skin texture and dappled forest light, no outlines, no animated or ink shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not the deleted green, finned, toothy sculpture, not a ground-dwelling stocky lizard or a gecko on open ground
 
 ## Engine limits
 not yet assessed

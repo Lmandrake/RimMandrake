@@ -85,12 +85,13 @@ the four hair-colour genes present alongside it have nothing to colour. **Nothin
 on disk supplies the cracked-hide surface texture either.**
 
 ## Must show
-- [ ] Skin is a desaturated grey-brown putty colour (like dried clay/weathered leather), not blue, red or yellow
-- [ ] Deeply creased, furrowed, cracked-hide texture over the whole face and cranium — a whole-surface texture, not age wrinkles
-- [ ] Bald, high, domed cranium with one thick coarse topknot/ponytail growing from the back of the skull and hanging forward past the chest
-- [ ] Small, dark, deep-set eyes under a heavy creased brow
-- [ ] Small nodules/bumps scattered along the jaw (not true, tall horns)
-- [ ] Realistic rendering: natural cracked-leather prosthetic texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the three live-action images (`wookieepedia_infobox_fullbody.jpg` of record) and the owner's 2026-10-08 realism ruling.*
+- [ ] BODY PLAN: fully humanoid proportions (about 1.9 m), in ordinary spacer/guard workwear; a bald, high, domed cranium with ONE thick coarse topknot/ponytail growing from the back of the skull and hanging forward over the shoulder past the chest
+- [ ] COLOUR LAYOUT: skin a desaturated grey-brown putty (dried clay / weathered leather) on face, cranium and hands, not blue, red or yellow; the topknot dark grey; small dark eyes the darkest points of the face
+- [ ] Deeply creased, furrowed, cracked-hide texture over the whole face and cranium (vertical and radial furrows like cracked mud or bark) — a whole-surface texture, not age wrinkles
+- [ ] Face: small, dark, deep-set eyes under a heavy creased brow; a short broad flattened nose; a wide thin downturned mouth with small nodules/bumps scattered along the jaw (not true, tall horns)
+- [ ] Realistic rendering: natural cracked-leather prosthetic texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a human with a tint or with ordinary long hair, not smooth-skinned, not a fully bald head without the single topknot
 
 ## Engine limits
 none known — the donor evidence shows the jaw nodules and grey-brown skin are already wired via existing genes; the missing topknot is attributed to the `Hair_BaldOnly` gene forcing every Weequay bald, and the missing cracked-hide texture to an absent head sprite, not to a pipeline constraint.

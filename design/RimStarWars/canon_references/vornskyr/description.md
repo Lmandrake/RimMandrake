@@ -77,11 +77,12 @@ anchor (matches infobox exactly) and the other two as showing the plausible
 range of variation (or inconsistent non-canon art), not settled fact.
 
 ## Must show
-- [ ] Quadruped canine/reptile-hybrid predator body with tall pointed ears (bat-like or curved-horn-like)
-- [ ] Long, whip-thin tail ending in a distinct bushy/dark tuft
-- [ ] Narrow snarling muzzle with prominent visible fangs
-- [ ] Red eyes over gray/black skin as the primary colour anchor (the one yellow-eyed image is treated as an outlier, not a settled fact)
-- [ ] Gray-to-black hide or coat — texture ranges from smooth/hairless to shaggier pale fur across the references, so a single fixed coat length is not required
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of `wookieepedia_alienarchive.jpg` (#1) and `wookieepedia_swamp_pack.jpg` (#3), the infobox colours, and the `## ruling` below (owner 2026-09-14: "#1 and #3 are compatible and correct, the shaggy #2 is rejected as non-canon.").*
+- [ ] BODY PLAN: a lean four-legged canine/reptile-hybrid predator, small (about 0.8 m tall), with tall pointed bat-like or curved horn-like ears and a long whip-thin tail ending in a distinct dark bushy tuft
+- [ ] COLOUR LAYOUT: smooth dark-grey to near-black hide over the whole body, the tail tuft black; red eyes the brightest point on the head (infobox and ruled image #1; the yellow-glowing eyes of ruled image #3 are tolerated, not the target)
+- [ ] Hide is smooth and hairless, reptilian-textured: no shaggy coat, no mane (owner ruling 2026-09-14 rejects the shaggy #2)
+- [ ] Narrow snarling muzzle with prominent visible fangs; four clawed digits per paw
+- [ ] NEGATIVE: not a wolf or dog (no fur coat, no bushy dog tail), not the shaggy pale cream/tan maned boar-like build of rejected image #2
 
 ## Engine limits
 none known — no donor-mod sprite could be obtained at all (creature art ships packed in Unity AssetBundles, not loose files), so there is nothing on disk to test against a rendering-pipeline constraint.

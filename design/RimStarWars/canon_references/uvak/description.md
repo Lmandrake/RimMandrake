@@ -41,12 +41,13 @@ From `canon_3` (realistic painting):
   head, the painting shows them at the side.
 
 ## Must show
-- [ ] Wyvern body: heavy scaled torso, strong legs with long curved dark talons, long neck, long tail
-- [ ] Huge leathery bat-style wings with visible finger-bone ribs and a translucent dull pinkish-brown membrane
-- [ ] Large bird-like head with a long deep beak, a wide mouth, a pale bony brow crest and a pale emerald/teal side eye
-- [ ] Muted palette: charcoal pebbled body hide, grey-blue head and neck
-- [ ] Larger than a human, saddle-sized back (one to two riders)
-- [ ] Realistic rendering: natural pebbled reptile hide and membrane translucency under natural light, no outlines, no comic shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of `canon_3` (the realistic painting) and the owner's 2026-10-08 realism ruling.*
+- [ ] BODY PLAN: a heavy, muscular, wyvern-like flying mount larger than a horse: thick scaled torso on strong legs with long curved dark talons, a long mobile neck, a long tail, and huge leathery bat-style wings attached at the shoulders with a wingspan far beyond the body; a saddle-sized back at the base of the neck (one to two riders)
+- [ ] COLOUR LAYOUT: muted throughout: dark charcoal pebbled hide on body and legs; grey-blue head and neck; wing membrane a translucent dull pinkish-brown with darker finger-bone ribs; never the comics' vivid red-orange wings or purple/pink
+- [ ] Head: large rounded BIRD-LIKE head with a long deep beak and a wide mouth, a pale bony brow crest over a single pale emerald/teal eye on each side
+- [ ] Wings: membrane stretched over long visible finger bones, bat-style, not feathered
+- [ ] Realistic rendering: natural pebbled reptile hide and membrane translucency under natural light, no outlines, no comic shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a feathered bird or a dragon with horns (no feathers, no horn crown), not the comic glossy near-black-and-red cartoon look, not a small thin juvenile pterosaur
 
 ## Engine limits
 not yet assessed

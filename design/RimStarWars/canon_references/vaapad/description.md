@@ -41,12 +41,13 @@ the orb and arch (many, visibly more than seven), keep the crown eye cluster. Br
 yellow eyes from the prose are NOT required. Tentacle blur is animation, not drawable.
 
 ## Must show
-- [ ] Dark blue-grey arched body on three heavy limbs (tripod), hunched and low
-- [ ] Translucent blue orb slung beneath the arch as the central "ball"
-- [ ] Dark crown on top carrying a cluster of small red/pink eyes
-- [ ] Many thin whip-like tentacles (at least seven) hanging from orb and body
-- [ ] No wings, no shell plates, no fur, no glassy hydrocarbon look
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both sprites (`wookieepedia_vaapad.jpg`, `donor_current_sprite.png`) and the `## ruling` below.*
+- [ ] BODY PLAN: a thick, arch-shaped body standing on three heavy limbs as a tripod (two forward-reaching arms and one rear leg), hunched low and wider than tall, with a round orb slung beneath the middle of the arch
+- [ ] COLOUR LAYOUT: dark blue-grey body and limbs, pale highlights at the shoulders and where the feet meet the ground; the orb a translucent glowing BLUE, the brightest element; a dark crown on top; NOT brown (owner ruling 2026-10-05: "Try to follow art inspired by the small sprite as well as the MLIE donor art. You can see they seem to agree. Extrapolate from that." — sprites outrank the prose's brown and two yellow eyes)
+- [ ] Eyes: a cluster of small red/pink eye-spots on the dark crown, not two yellow eyes
+- [ ] Many thin whip-like tentacles (visibly more than seven) hanging from the orb and the arch
 - [ ] Realistic rendering: natural wet hide and translucent glowing orb under natural light, no pixel-art or cartoon shading (design itself stays as the 2026-10-05 ruling sets it)
+- [ ] NEGATIVE: not a jellyfish, octopus or plain brown ball (it stands on the tripod arch), no wings, no shell plates, no fur, no glassy hydrocarbon look
 
 ## Engine limits
 none known. (Attack blur is animation and cannot be drawn in a still sprite.)

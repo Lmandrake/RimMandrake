@@ -71,11 +71,12 @@ a generic white fox — and correct the body proportions toward a taller,
 longer-legged stance.
 
 ## Must show
-- [ ] Coat reads as hard, faceted, glass-like crystal shards/spikes standing up off the body — not smooth fur
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of all four images and the `## ruling` below (owner 2026-09-14 ruled `wookieepedia_infobox.jpg` as the reference).*
+- [ ] BODY PLAN: a small fox-like canid with long, thin legs and an upright, almost deer-like stance (taller and leggier than a real fox, not low-slung), a long slender fox muzzle, very large upright triangular ears, and a long tail
+- [ ] COLOUR LAYOUT: grey-blue-white all over, with visible individual crystal facets catching cool light; eyes blue or orange/amber (both appear in the film)
+- [ ] Coat reads as hard, faceted, glass-like crystal shards/spikes standing up off the body, most visible along the spine and shoulders: not smooth fur
 - [ ] Tail is a dense brush of spike-like crystalline points, not a soft fluffy brush
-- [ ] Long, slender fox muzzle with very large, upright, triangular ears
-- [ ] Long, thin legs and an upright, deer-like stance — taller and leggier than a real-world fox, not low-slung
-- [ ] Coat colour is grey-blue-white with visible individual crystal facets
+- [ ] NEGATIVE: not a generic white fox or Arctic fox (no smooth fur with sparkly highlights), not the donor's low-slung, short-legged ferret/rabbit-like body with small ears
 
 ## Engine limits
 none known — the donor sprite's mismatch (a low-slung, short-legged, smoothly-shaded body with no faceted texture at all) is recorded in the entry as an art/silhouette gap to correct in a regen, not as something the pipeline cannot render.

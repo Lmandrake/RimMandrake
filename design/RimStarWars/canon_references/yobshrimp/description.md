@@ -28,11 +28,12 @@ Two images only, and the CANON one is NOT the animal: `wookieepedia_canon_1` is 
 - **Disagreement**: the canon text calls them tiny creatures (the cooked photo is ordinary pink-orange prawn shape); the Legends plate shows purple, crab-like, long-clawed animals; two different looks. Not enough evidence to pick the correct live colour; the plate is the only painting.
 
 ## Must show
-- [ ] Small crustacean: wedge-shaped shell drawn to a long sharp pointed rostrum, stalked green eyes, two long trailing antennae
-- [ ] Lilac-purple shell and legs with dark purple bumps and spots
-- [ ] Several pairs of thin hooked-clawed walking legs
-- [ ] Two raised long spiky pincer-claw arms
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief's reading of the Legends plate (`wookieepedia_legends_1`, the only living-animal evidence); the canon image is a cooked dish and governs only the food item.*
+- [ ] BODY PLAN: a small crustacean: a flat wedge-shaped shell drawn out to a long sharp pointed rostrum, short stalked eyes, two long thin whip-like antennae trailing and curling from the head, four to five pairs of thin jointed walking legs spread crab-like and ending in small hooked claws, and two much larger raised front arms of long, thin, spiky pincer claws held up and forward (the biggest part of the silhouette)
+- [ ] COLOUR LAYOUT: lilac-purple to violet shell and legs, with darker purple/maroon spots and warty bumps along the shell edges and claws, pale pink-white highlights; eyeballs round and bright green
+- [ ] Pincer claws: flat blade-like scissors with thorn-like projections along them
 - [ ] Cooked form (food item only): pale pink-orange C-curled peeled shrimp
+- [ ] NEGATIVE: the living animal is not an ordinary pink-orange prawn and not a lobster or broad-bodied crab (no thick heavy claws, no wide round carapace)
 
 ## Engine limits
 not yet assessed
