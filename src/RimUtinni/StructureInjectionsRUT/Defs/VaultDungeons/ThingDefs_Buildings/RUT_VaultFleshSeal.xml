@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_VaultFleshSeal - GELATINOUSSLIME_VAULT_SEAL_PLUG_1. The Assailant's flesh, grown across the Slough (V5) vault's
+  inner door. Impassable, absorbs all damage (CompFleshSeal), dissolved only by a slime chunk. Not buildable, not
+  deconstructible. Numbers PROVISIONAL. Art: placeholder flesh disc until the artpipe job for this def lands.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_VaultFleshSeal</defName>
+    <label>flesh seal</label>
+    <description>A slick plug of the Assailant's flesh, grown across the door as the vault fell. Fire, blades and blasts leave it as they found it. Whatever made it can be eaten by something of its own kind.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/RUT_VaultFleshSeal/RUT_VaultFleshSeal</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.15,1.15)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <blockWind>true</blockWind>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>9999</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-8</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+    </building>
+    <comps>
+      <li Class="RimMandrake.Utinni.StructureInjectionsRUT.CompProperties_FleshSeal">
+        <dissolverDefNames>
+          <li>RM_TitanoslimeChunk</li>
+        </dissolverDefNames>
+        <dissolveRadius>3.9</dissolveRadius>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

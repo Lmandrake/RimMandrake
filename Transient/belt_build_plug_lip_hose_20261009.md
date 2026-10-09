@@ -14,4 +14,9 @@ LipOcclusion_occupant_cut (134/134); DLL rebuilt. Unoccupied pits untouched (no 
 VISUAL_PRINCIPLES A2 amended.
 
 ## GELATINOUSSLIME_VAULT_SEAL_PLUG_1
-(pending)
+Def RUT_VaultFleshSeal (+ CompFleshSeal: absorbs all damage, dissolves when a Thing named in dissolverDefNames [PROVISIONAL
+RM_TitanoslimeChunk] is within 3.9 cells, or via CompFleshSeal.DissolveAround from the chunk bomb; setting fleshSealEnabled off =
+dissolves at spawn). V5 only: new layout RUT_VaultType2_FleshWeaponLoose_Sealed (plug in the core's S inner door) + sitepart
+RUT_VaultSite_Type2_Sealed, wired to V5 by gen_vault_layouts/gen_vault_quests (V4 unchanged). Art: artpipe find = 0 hits; job
+rut_vaultfleshseal filed (pending); a flat flesh placeholder PNG ships until it lands. DLL rebuilt.
+(lip cut follow-up: northstar site_spec/selftest settings table + toggle count 92->93 updated; full run_selftests: only the 2 pre-existing reds remain, ledger_lint + utinnipatches_dump)

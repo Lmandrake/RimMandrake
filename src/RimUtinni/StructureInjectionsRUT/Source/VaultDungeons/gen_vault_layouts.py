@@ -129,6 +129,9 @@ THING_SYMBOLS = [
      "Type-1 garrison doctrine turret - named explicitly in dungeons_arc_spec.md SS3.3 "
      "('Singularity Cannon class'). Third-party -> needs this wrapper. state=rework, same "
      "caveat as the grav-rail artillery above."),
+    ("RUT_Symbol_VaultFleshSeal", "RUT_VaultFleshSeal",
+     "V5 (Slough) only: the flesh plug across the core's inner door (GELATINOUSSLIME_VAULT_SEAL_PLUG_1). Our own "
+     "ThingDef -> needs this wrapper; spawned factionless."),
     ("RUT_Symbol_VaultHeart", "RUT_VaultHeart",
      "V6 thaw socket (VAULT_THAW_QUEST_FAMILY_1): a dead power plant whose only fuel is "
      "AIPersonaCore - the same core the Assailant complex takes (ruled 2026-09-01). Feeding "
@@ -137,7 +140,7 @@ THING_SYMBOLS = [
 ]
 
 # Symbols that must spawn with NO faction even on a faction-owned site.
-FACTIONLESS_THING_SYMBOLS = {"RUT_Symbol_VaultHeart"}
+FACTIONLESS_THING_SYMBOLS = {"RUT_Symbol_VaultHeart", "RUT_Symbol_VaultFleshSeal"}
 
 SYMBOLDEF_PAWN_TMPL = """  <KCSG.SymbolDef>
     <defName>{defName}</defName>
@@ -338,6 +341,16 @@ def main():
     )
     type2 = render(g2, t2, "RUT_VaultType2_FleshWeaponLoose")
 
+    # Type 2 sealed (V5 Slough only, owner ruling 2026-10-02/10-09): the same vault with a flesh plug in the core's inner
+    # door (the South face of the core ring: row core_r1, middle column), dissolved only by a slime chunk.
+    core_size2 = 11
+    core_r1 = (51 - core_size2) // 2 + core_size2 - 1
+    mid_c = 51 // 2
+    assert g2[core_r1][mid_c] == ".", "inner door cell is not the open door"
+    g2s = [row[:] for row in g2]
+    g2s[core_r1][mid_c] = "RUT_Symbol_VaultFleshSeal"
+    type2s = render(g2s, t2, "RUT_VaultType2_FleshWeaponLoose_Sealed")
+
     # Type 3: frozen Rakata - dark, frost-locked, near-silent garrison ring,
     # the scene at the core. VAULT_THAW_QUEST_FAMILY_1 makes the "frost-locked,
     # no power" state MECHANICAL (the Assailant complex's frozen-first-impact
@@ -372,6 +385,7 @@ def main():
         f.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Defs>\n")
         f.write(type1)
         f.write(type2)
+        f.write(type2s)
         f.write(type3)
         f.write("</Defs>\n")
 
