@@ -137,7 +137,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 int[] r = cmd.Substring(8).Split(',').Select(x => int.Parse(x, CultureInfo.InvariantCulture)).ToArray();
                 rect = new CellRect(r[0], r[1], r[2], r[3]).ClipInsideMap(map);
             }
-            runs.ProcessPending();
+            // GS-6b: a READ. It no longer processes the pending queue first (that hid whatever the queue was meant to
+            // show); the pending count is reported so a stale read is visible, and `cprocess` stays the explicit action.
             RM_MapComponent_CordGraph cg = map.GetComponent<RM_MapComponent_CordGraph>();
             cg.Rebuild();
             // ---- members and their runs

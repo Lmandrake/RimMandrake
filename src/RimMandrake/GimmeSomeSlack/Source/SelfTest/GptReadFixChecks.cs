@@ -39,6 +39,38 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             Check(AerialMath.TapStolenPerTick(500, 1000 * k, 600, k, false, true, 0, false) == 0, "A2 switched-off tap takes 0");
             Check(AerialMath.TapStolenPerTick(500, 1000 * k, 600, k, false, true, 0, true) > 0, "A2 can-fail: the same tap switched on takes power");
 
+
+            // TAP_CONSERVATION_SELFTEST_1 (GS-6a): a multi-tick loop in the engine's own order (net tick reads T, then T++, then the
+            // taps tick at T). What the victim net paid must equal what the taps were credited, once the last debit settles.
+            {
+                double kk = 1.0 / 60000;
+                var ledger = new TapLedger<string>();
+                var legacyTick = new Dictionary<string, int>(); var legacyWd = new Dictionary<string, double>();
+                double credited = 0, paid = 0, legacyPaid = 0;
+                int T = 0;
+                for (int step = 0; step < 400; step++)
+                {
+                    // net tick reads T
+                    paid += ledger.Owed("v", T);
+                    if (legacyTick.TryGetValue("v", out int lt) && lt >= T - 1) legacyPaid += legacyWd["v"];
+                    T++;
+                    bool aWorks = step < 300, bWorks = step % 7 != 0;
+                    foreach (bool works in new[] { aWorks, bWorks })
+                    {
+                        double s = AerialMath.TapStolenPerTick(500, 700 * kk, 0, kk, false, true, ledger.TakenThisTick("v", T), works);
+                        if (s <= 0) continue;
+                        credited += s; ledger.Debit("v", (float)s, T);
+                        double prev = legacyTick.TryGetValue("v", out int pt) && pt == T ? legacyWd["v"] : 0;
+                        legacyTick["v"] = T; legacyWd["v"] = prev + s;
+                    }
+                }
+                paid += ledger.Owed("v", T);        // the final tick settles
+                if (legacyTick.TryGetValue("v", out int lt2) && lt2 >= T - 1) legacyPaid += legacyWd["v"];
+                Check(credited > 0 && Math.Abs(paid - credited) < 1e-6, "GS-6a over 400 ticks the victim paid exactly what the taps were credited");
+                Check(credited <= 400 * 700 * kk + 1e-9, "GS-6a two taps never take more than the victim's surplus in total");
+                Check(legacyPaid > credited + 1e-6, "GS-6a can-fail: the old one-tick grace pays some debit twice");
+            }
+
             // B11: with auto-resume off, NO interrupted order (Deploy, Move, Retract) on a dropped hose resumes unforced
             bool any = false;
             foreach (HosePendingOrder o in new[] { HosePendingOrder.Deploy, HosePendingOrder.Move, HosePendingOrder.Retract })
