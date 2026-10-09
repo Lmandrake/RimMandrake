@@ -4295,3 +4295,4 @@
 {"seat":"FOUNDRY","event":"implemented","id":"CAULDRON_YIELD_HARVEST_ORDER_FAIL_1","sha":"09d32ba8fadc","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:23:32Z","tsn":1791523412018756026}
 {"seat":"FOUNDRY","event":"implemented","id":"SCARLANDS_CHATRAK_SNAP_STAGE_02_1","sha":"e0732bd98adc","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:23:33Z","tsn":1791523413042664140}
 {"seat":"FOUNDRY","event":"implemented","id":"CREATUREBEHAVIORS_TRACKGRID_BRIDGE_TIMEOUT_1","sha":"2d63ed4cd7ad","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:23:41Z","tsn":1791523421397383615}
+{"seat":"FOUNDRY","event":"implemented","id":"GREYSEA_FLOOR_WALKABLE_CHECK_1","sha":"e91148368a5c","ref":"origin/main","criteria":[{"id":"A1","level":"L1","text":"on a generated Grey Sea floor, flooding from the map centre reaches a cell beside every Brine Elder and grey-floor wreck"}],"needs":"bridge","ts":"2026-10-09T05:25:41Z","tsn":1791523541969177946}
