@@ -12,7 +12,7 @@
   🔴 DRAFT TEXT — NOT YET OWNER-APPROVED. Every label/description/letterText
   below is FOUNDRY's first pass at the wording direction the item already
   states (drone = "a disturbance in the Force" pressing on minds; soothe =
-  "the Force at peace"; the psychic ship = a dark-side artifact). Per the
+  "the Force at peace"; the psychic ship = a ship carrying a Sith relic). Per the
   item's own criteria this must go past the owner as a BENCH card BEFORE it
   is deployed to the live Mods folder or the item is closed. This file is
   committed to source only - do not deploy it with deploy_custom_mods.py
@@ -90,7 +90,7 @@
     <xpath>/Defs/IncidentDef[defName="PsychicEmanatorShipPartCrash"]/label</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/IncidentDef[defName="PsychicEmanatorShipPartCrash"]/label</xpath>
-      <value><label>ship part crash (dark side)</label></value>
+      <value><label>ship part crash (Sith relic)</label></value>
     </match>
   </Operation>
 
@@ -98,7 +98,7 @@
     <xpath>/Defs/IncidentDef[defName="PsychicEmanatorShipPartCrash"]/letterLabel</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/IncidentDef[defName="PsychicEmanatorShipPartCrash"]/letterLabel</xpath>
-      <value><letterLabel>Dark-side artifact</letterLabel></value>
+      <value><letterLabel>Sith relic</letterLabel></value>
     </match>
   </Operation>
 
@@ -108,7 +108,7 @@
       <xpath>/Defs/IncidentDef[defName="PsychicEmanatorShipPartCrash"]/letterText</xpath>
       <value><letterText>A large piece of an ancient ship has crashed nearby.
 
-Your colonists can feel it in the back of their mind through the Force, exhorting unspeakable acts. It must have an onboard machine persona touched by the dark side. And this persona is not friendly.
+Your colonists can feel it in the back of their mind through the Force, exhorting unspeakable acts. A Sith relic is aboard, and it whispers to anyone near. It is not friendly.
 
 Destroy it as soon as possible. But beware - it will probably defend itself.</letterText></value>
     </match>
