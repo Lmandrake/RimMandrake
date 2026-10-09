@@ -95,6 +95,9 @@ on_disk = {os.path.basename(f) for f in cs_files}
 for f in sorted(on_disk - listed):
     fail("Source/%s is not in RM_DivingInteraction.csproj (EnableDefaultCompileItems is false: it compiles into nothing)" % f)
 for f in sorted(listed - on_disk):
+    if f.startswith(".."):   # shared file outside Source/: must exist relative to Source/
+        if os.path.exists(os.path.join(MOD, "Source", f.replace("\\", os.sep))):
+            continue
     fail("csproj lists %s but the file does not exist" % f)
 counts["cs files"] = len(on_disk)
 

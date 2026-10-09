@@ -26,6 +26,10 @@ def run(mod, script, plants, keep=()):
     copy = os.path.join(tmp, mod)
     shutil.copytree(os.path.join(SRC, mod), copy, ignore=shutil.ignore_patterns(*[x for x in ("Textures", "Assemblies", "__pycache__", "obj", "bin", "Languages", "About") if x not in keep]))
 
+    shared = os.path.join(SRC, "_Shared")   # csprojs list ../../_Shared/... files; the copy sits one level deeper
+    if os.path.isdir(shared):
+        shutil.copytree(shared, os.path.join(tmp, "_Shared"))
+
     def lint():
         p = subprocess.run([sys.executable, os.path.join(HERE, script), "--mod-dir", copy, "--quiet"], capture_output=True, text=True)
         return p.returncode, p.stdout + p.stderr

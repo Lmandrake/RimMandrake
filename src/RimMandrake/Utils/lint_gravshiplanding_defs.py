@@ -52,8 +52,8 @@ def main(argv):
         E("gl-patch-target", "expected one patch on GenStep_GravshipMarker.Generate, found %s" % attrs)
     if "[HarmonyPostfix]" not in patch_cs:
         E("gl-patch-target", "the patch is not a postfix (the fog grid is only final after the vanilla gen step)")
-    if "PatchAll(Assembly.GetExecutingAssembly())" not in mod_cs:
-        E("gl-patch-target", "the mod never calls PatchAll")
+    if "PatchApplier.Apply(new Harmony(HarmonyId), Assembly.GetExecutingAssembly()" not in mod_cs:
+        E("gl-patch-target", "the mod never calls PatchApplier.Apply")
     if not re.search(r"RevealIfArrival\(map, parms\.gravship != null", patch_cs):
         E("gl-gates-shared", "the postfix does not call RevealIfArrival with parms.gravship != null")
     if proof_cs.count("Patch_GenStep_GravshipMarker_Generate.RevealIfArrival(") < 3:

@@ -59,8 +59,8 @@ def static_checks():
             bad.append("settings field %s has no control in DoWindowContents" % n)
     if 'HarmonyId = "%s"' % HARMONY_ID not in mod:
         bad.append("HarmonyId constant is not %s" % HARMONY_ID)
-    if "PatchAll" not in mod:
-        bad.append("the mod no longer calls PatchAll (the postfix would never attach)")
+    if "PatchApplier.Apply" not in mod:
+        bad.append("the mod no longer calls PatchApplier.Apply (the postfix would never attach)")
     patch = _read("Patch_GenStep_GravshipMarker.cs")
     if "typeof(%s), nameof(%s.%s)" % (PATCH_TYPE, PATCH_TYPE, PATCH_METHOD) not in patch:
         bad.append("postfix no longer targets %s.%s" % (PATCH_TYPE, PATCH_METHOD))

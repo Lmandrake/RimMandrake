@@ -15,7 +15,7 @@ PLANTS = [
     ("harmony id differs from the packageId", M, 'HarmonyId = "mandrake.rm.gravshiplanding"', 'HarmonyId = "mandrake.rm.gravshiplandin"', "gl-harmony-id"),
     ("patch target changed", P, "nameof(GenStep_GravshipMarker.Generate)", "nameof(GenStep_GravshipMarker.GetHashCode)", "gl-patch-target"),
     ("postfix became a prefix", P, "[HarmonyPostfix]", "[HarmonyPrefix]", "gl-patch-target"),
-    ("PatchAll removed", M, "new Harmony(HarmonyId).PatchAll(Assembly.GetExecutingAssembly());", "", "gl-patch-target"),
+    ("PatchApplier.Apply removed", M, "RimMandrake.Shared.PatchApplier.Apply(new Harmony(HarmonyId), Assembly.GetExecutingAssembly(), \"RimMandrake.GravshipLanding\");", "", "gl-patch-target"),
     ("postfix forgets the arrival flag", P, "RevealIfArrival(map, parms.gravship != null,", "RevealIfArrival(map, true,", "gl-gates-shared"),
     ("gate re-implemented outside the kernel", P, "RM_LandingKernel.Enabled(ModsConfig.OdysseyActive, arrival, GravshipLandingSettings.revealOutdoorsBeforeLanding)", "(ModsConfig.OdysseyActive && arrival)", "gl-gates-shared"),
     ("proof stops calling the shipped path", "Source/GravshipLandingProof.cs", "Patch_GenStep_GravshipMarker_Generate.RevealIfArrival(", "Patch_GenStep_GravshipMarker_Generate.RevealIfArrivalX(", "gl-gates-shared"),
