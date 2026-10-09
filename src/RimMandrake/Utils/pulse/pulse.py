@@ -254,7 +254,13 @@ def make_digest(mode: str, since: float | None = None) -> dict:
     path = DIGEST_DIR / f"digest_{stamp}_{mode}.md"
 
     def fmt(ln, md=False):
-        when = time.strftime("%H:%M", time.localtime(ln["t"])) if ln["t"] else "     "
+        if not ln["t"]:
+            when = "     "
+        elif ln["kind"] in ("amber", "amber_soft", "review"):
+            a = time.time() - ln["t"]
+            when = (f"{int(a // 60)}m" if a < 3600 else f"{int(a // 3600)}h" if a < 86400 else f"{int(a // 86400)}d").rjust(5)
+        else:
+            when = time.strftime("%H:%M", time.localtime(ln["t"]))
         link = ln.get("link") or {}
         lv = f"   {link['value']}" if link else ""
         return f"{ln['g']} {when}  {ln['text']}{('  `' + link['value'] + '`') if (md and link) else lv}"

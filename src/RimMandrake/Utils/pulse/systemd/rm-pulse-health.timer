@@ -2,7 +2,7 @@
 Description=RimFlow pulse spine health check, every 2 minutes
 
 [Timer]
-OnBootSec=2min
+OnActiveSec=2min
 OnUnitActiveSec=2min
 
 [Install]

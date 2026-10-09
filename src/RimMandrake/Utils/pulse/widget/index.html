@@ -38,7 +38,7 @@ html,body{height:100%;background:var(--term);color:var(--text);font:12.5px/1.62 
 /* body — the digest-style roster */
 .body{flex:1;overflow-y:auto;padding:8px 0 6px;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
 .body::-webkit-scrollbar{width:6px}.body::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px}
-.row{display:grid;grid-template-columns:18px 48px 1fr auto;align-items:baseline;column-gap:6px;padding:0 12px 0 14px;
+.row{isolation:isolate;display:grid;grid-template-columns:18px 48px 1fr auto;align-items:baseline;column-gap:6px;padding:0 12px 0 14px;
   min-height:20px;white-space:nowrap;position:relative}
 .row .g{text-align:center}
 .row .t{color:var(--dim);font-size:11.5px;text-align:right;padding-right:6px}
@@ -117,7 +117,7 @@ body.still *{animation:none!important}
     <span class="sp"></span>
     <span id="clock"></span>
     <span class="fresh" id="fresh"><i></i><span id="freshtxt">connecting</span></span>
-    <button class="btn" id="bmotion" title="Pause animation">≈</button>
+    <button class="btn" id="bmotion" title="Pause animation">‖</button>
     <button class="btn" id="bcol" title="Collapse to the strip">▾</button>
   </div>
   <div class="body" id="body"><div class="empty">Waiting for the first pulse from WSL…</div></div>
@@ -178,19 +178,19 @@ function render(){
   let h = '';
   if (alarms.length) h += alarms.map(r => rowHTML(r, isNew(r))).join('');
   h += `<div class="sec"><b>now</b></div>` + (now.length ? now.map(r => rowHTML(r, isNew(r))).join('') : `<div class="foot">Nothing running.</div>`);
-  if (review.length) h += `<div class="sec"><b>waiting on your ruling</b> ${review.length}</div>` + review.slice(0, pref.allReview ? 99 : 4).map(r => rowHTML(r, isNew(r))).join('')
-      + (review.length > 4 && !pref.allReview ? `<div class="more" data-more="allReview">+ ${review.length-4} more</div>` : '');
+  if (review.length) h += `<div class="sec"><b>waiting on your ruling</b> ${review.length}</div>` + review.slice(0, pref.allReview ? 99 : 3).map(r => rowHTML(r, isNew(r))).join('')
+      + (review.length > 3 && !pref.allReview ? `<div class="more" data-more="allReview">+ ${review.length-3} more</div>` : '');
   const ds = snap.done_since ? hhmm(snap.done_since) : '';
   const dg = snap.digest;
   h += `<div class="sec"><b>finished since ${ds}</b>${dg ? ` <a class="lk" data-link="${esc(dg.path)}" data-type="path" title="${esc(dg.path)}">digest ${hhmm(dg.at)}</a>` : ''}</div>`;
-  const lim = showAllDone ? 999 : 8;
+  const lim = showAllDone ? 999 : 6;
   h += done.length ? done.slice(0, lim).map(r => rowHTML(r, isNew(r))).join('') : `<div class="foot">Nothing finished yet.</div>`;
   if (done.length > lim) h += `<div class="more" data-more="done">+ ${done.length-lim} more finished</div>`;
   if (acked.length) h += `<div class="sec"><b>acknowledged</b></div>` + acked.map(r => rowHTML(r, false)).join('');
   const c = snap.counts || {};
   h += `<div class="foot">${c.filed||0} filed · ${c.implemented||0} implemented · ${c.closed||0} closed · ${c.verifies||0} verifies · ${c.drops||0} drops</div>`;
   const body = $('body'), st = body.scrollTop;
-  body.innerHTML = h; body.scrollTop = st;
+  body.innerHTML = '<div id="inner">' + h + '</div>'; body.scrollTop = st;
   for (const r of rows) seenKeys.add(r.key + '|' + r.kind);
   renderStrip(isNew); firstPaint = false; fit(); toastNew();
 }
@@ -215,16 +215,24 @@ function tickFresh(){
   renderStrip();
 }
 
+const BOOT_VERSION = { v: null };
+function accept(s){
+  // a new page version on the server: reload once so the widget never runs stale UI code
+  if (s.widget_version && location.protocol === 'http:') {
+    if (BOOT_VERSION.v === null) BOOT_VERSION.v = s.widget_version;
+    else if (s.widget_version !== BOOT_VERSION.v) { location.reload(); return; }
+  }
+  snap = s; render(); tickFresh();
+}
 function connect(){
   try { es && es.close() } catch(e){}
   es = new EventSource(API + '/api/stream');
   es.onmessage = ev => { lastMsg = Date.now(); const s = JSON.parse(ev.data);
-    if (snap && s.widget_version && snap.widget_version && s.widget_version !== snap.widget_version && location.protocol === 'http:') { location.reload(); return; }
-    snap = s; render(); tickFresh(); };
+    accept(s); };
   es.addEventListener('error', () => { /* EventSource retries by itself; the header shows the gap */ });
 }
 // heartbeat comments keep lastMsg fresh only via messages; poll /api/now as a liveness check
-setInterval(async () => { try { const r = await fetch(API + '/api/now', {cache:'no-store'}); if (r.ok) { lastMsg = Date.now(); const s = await r.json(); if (!snap || s.collected_at > snap.collected_at) { snap = s; render(); } } } catch(e){ if (es && es.readyState === 2) connect(); } }, 10000);
+setInterval(async () => { try { const r = await fetch(API + '/api/now', {cache:'no-store'}); if (r.ok) { lastMsg = Date.now(); const s = await r.json(); if (!snap || s.collected_at > snap.collected_at) accept(s); } } catch(e){ if (es && es.readyState === 2) connect(); } }, 10000);
 setInterval(tickFresh, 1000);
 
 async function ack(id, noise){
@@ -249,7 +257,7 @@ let lastH = 0;
 function fit(){ const p = api(); if (!p || !p.fit) return;
   let h;
   if (document.body.classList.contains('collapsed')) h = 3 + 36 + 2;
-  else { const b = $('body'); h = 3 + 31 + 36 + 2 + Math.min(b.scrollHeight, 560); }
+  else { const i = $('inner'); h = 3 + 31 + 36 + 2 + 14 + Math.min(i ? i.offsetHeight : 200, 430); }
   if (Math.abs(h - lastH) > 2) { lastH = h; p.fit(h, document.body.classList.contains('collapsed')); } }
 
 function toastNew(){ const p = api(); if (!p || !p.toast || !snap) return;
