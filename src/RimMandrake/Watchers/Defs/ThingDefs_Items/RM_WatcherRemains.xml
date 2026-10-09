@@ -25,6 +25,7 @@
       <color>(220,225,230)</color>
     </graphicData>
     <rotatable>false</rotatable>
+    <socialPropernessMatters>true</socialPropernessMatters>
     <statBases>
       <MarketValue>0.3</MarketValue>
       <Mass>0.02</Mass>

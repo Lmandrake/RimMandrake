@@ -624,6 +624,14 @@ TIERS["live_20261008"] = {
     "dlc": True,
 }
 
+TIERS["live_20261008b"] = {
+    "why": "FOUNDRY live checks 2026-10-08 (second pass): Watchers + FlowWorks + GimmeSomeSlack + LuminousPigment on the composed biomes mod, "
+           "plus the Utinni patch layer (RUT_ScarlandsMark, RUT_DyingCreep) and Visibility, so every owed L1/L2 read of the day runs on one load.",
+    "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rm.watchers", "mandrake.rm.flowworks",
+             "mandrake.rm.luminouspigment", "mandrake.rut.patches", "mandrake.rm.visibility"],
+    "dlc": True,
+}
+
 TIERS["watchers_live"] = {
     "why": "FOUNDRY live checks 2026-10-08: the Watchers kit (WATCHER_CREATURES_MOD_1) with its one shipped member, the piinnok, "
            "from the composed biomes mod.",
