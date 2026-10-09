@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <Compile Include="..\RM_SkeletonBurialLogic.cs" />
+    <Compile Include="..\Kernel\RM_HorizonMath.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

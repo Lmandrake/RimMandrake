@@ -80,6 +80,7 @@ Skeletons and the horizon
 - With `corpseToSkeletonEnabled` off the corpse stays a corpse. → skeleton.corpse_stays_when_toggle_off
 - A raid or a neutral group about to arrive on the Stillsand is announced by a "Dust on the horizon" letter and arrives `horizonWarningHours` later, not at once. → horizon.horizon_warns_then_arrives
 - With `horizonWarningsEnabled` off it arrives at once with no letter. → horizon.horizon_toggle_off_vanilla
+- A warned group that never arrives (its incident fails or times out) gets a "The dust settled" letter once the queue's retry window is over, the plume standing until then, and one that arrives gets no such letter; `dustSettledLetterEnabled` off leaves only the fading plume (DUST_SETTLED_LETTER_1). → horizon.horizon_dust_settled_letter (timing: offline `selftest_skeleton_burial.py` Horizon checks, RM_HorizonMath)
 - The dust plume at the entry cell, the bone harp's moan, and the skeleton's cast shade. → UNCOVERED: visual and audio; the cast shade is Creature Behaviors' shade grid
 - `boneHarpEnabled` exists, defaults on and is writable. → settings.boneHarpEnabled_roundtrip
 
