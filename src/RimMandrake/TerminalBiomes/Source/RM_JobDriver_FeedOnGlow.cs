@@ -82,13 +82,17 @@ namespace RimMandrake.TerminalBiomes
                 }
                 ticksToNextFeed = Mathf.Max(1, ext.ticksBetweenFeeds);
 
-                float newRadius = Mathf.Max(0f, glower.GlowRadius - ext.glowRadiusLossPerFeed);
-                glower.GlowRadius = newRadius;
-                glower.ForceRegister(target.Map);
+                // LIGHT_LEDGER_ONE_1: graze is its own Scribed modifier, composed with whatever else sizes
+                // this light (a sun-sphere's culture, the Dark, the aurora) instead of overwriting it.
+                RM_MapComponent_GlowGraze graze = target.Map.GetComponent<RM_MapComponent_GlowGraze>();
+                float newRadius = graze != null
+                    ? graze.Graze(target, glower, ext.glowRadiusLossPerFeed)
+                    : glower.GlowRadius;
 
                 if (newRadius <= ext.destroyBelowRadius)
                 {
                     Map map = target.Map;
+                    graze?.Forget(target);
                     TargetInfo info = new TargetInfo(target.Position, map);
                     string label = target.LabelShort;
                     target.Destroy(DestroyMode.Vanish);

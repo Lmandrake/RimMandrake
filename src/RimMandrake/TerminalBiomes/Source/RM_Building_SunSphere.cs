@@ -1,6 +1,7 @@
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared;
 
 namespace RimMandrake.TerminalBiomes
 {
@@ -95,6 +96,10 @@ namespace RimMandrake.TerminalBiomes
             RecomputeVisual();
         }
 
+        // LIGHT_LEDGER_ONE_1: the culture radius is this light's BASE in the light ledger, not the field
+        // itself. A suulk's graze is a separate modifier (RM_MapComponent_GlowGraze), so the 60-tick
+        // culture step no longer erases it (SUN_SPHERE_GRAZE_PERSIST_1). Re-asserted on SpawnSetup,
+        // which also covers a load: the ledger is not saved, the culture stage is.
         private void RecomputeVisual()
         {
             if (glowerComp == null)
@@ -102,15 +107,7 @@ namespace RimMandrake.TerminalBiomes
                 return;
             }
             float factor = RM_SunSphereKernel.Factor(stage, cultureTicks);
-            float newRadius = RM_SunSphereKernel.Radius(factor);
-            if (!Mathf.Approximately(newRadius, glowerComp.GlowRadius))
-            {
-                glowerComp.GlowRadius = newRadius;
-                if (Spawned)
-                {
-                    glowerComp.ForceRegister(Map);
-                }
-            }
+            LightLedger.SetBase(glowerComp, RM_SunSphereKernel.Radius(factor));
         }
 
         // §3.1: "grows crops without any well" — a plant grower placed near
