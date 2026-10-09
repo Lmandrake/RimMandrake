@@ -90,8 +90,12 @@
     <!-- 🔴 RESTATED. PirateBandBase sets this true; R12 says bribable. -->
     <permanentEnemy>false</permanentEnemy>
     <naturalEnemy>false</naturalEnemy>
-    <!-- No caravans. A loot source, not a market. -->
+    <!-- No comms-console trader. (Owner 2026-10-09, WARCASKET_JUNKER_KINDS_BUILD_1: the Junkers DO send
+         trade caravans, both casketed kinds among them - see caravanTraderKinds and the Trader group.) -->
     <canRequestTraders>false</canRequestTraders>
+    <caravanTraderKinds>
+      <li>RUT_Caravan_Junkers</li>
+    </caravanTraderKinds>
 
     <factionNameMaker>NamerFactionSalvagers</factionNameMaker>
     <settlementNameMaker>NamerSettlementPirate</settlementNameMaker>
@@ -222,11 +226,28 @@
           <RUT_Jawa_Junkers_Specialist>2</RUT_Jawa_Junkers_Specialist>
           <RUT_Jawa_Junkers_Leader>1</RUT_Jawa_Junkers_Leader>
           <RSW_DW_Primitive_Junker MayRequire="mandrake.rsw.droidworks">3</RSW_DW_Primitive_Junker>
+          <!-- WARCASKET_JUNKER_KINDS_BUILD_1, weights PROVISIONAL -->
+          <RUT_Jawa_Junkers_CaskedElite>2</RUT_Jawa_Junkers_CaskedElite>
         </options>
+      </li>
+      <li>
+        <kindDef>Trader</kindDef>
+        <traders>
+          <RUT_Jawa_Junkers_CaskedScavenger>1</RUT_Jawa_Junkers_CaskedScavenger>
+        </traders>
+        <guards>
+          <RUT_Jawa_Junkers_CaskedElite>3</RUT_Jawa_Junkers_CaskedElite>
+          <RUT_Jawa_Junkers_CaskedScavenger>5</RUT_Jawa_Junkers_CaskedScavenger>
+        </guards>
+        <carriers>
+          <Muffalo>6</Muffalo>
+        </carriers>
       </li>
       <li>
         <kindDef>Settlement</kindDef>
         <options>
+          <RUT_Jawa_Junkers_CaskedScavenger>3</RUT_Jawa_Junkers_CaskedScavenger>
+          <RUT_Jawa_Junkers_CaskedElite>1</RUT_Jawa_Junkers_CaskedElite>
           <RUT_Jawa_Junkers_Grunt>10</RUT_Jawa_Junkers_Grunt>
           <RUT_Jawa_Junkers_Heavy>3</RUT_Jawa_Junkers_Heavy>
           <RUT_Jawa_Junkers_Specialist>2</RUT_Jawa_Junkers_Specialist>

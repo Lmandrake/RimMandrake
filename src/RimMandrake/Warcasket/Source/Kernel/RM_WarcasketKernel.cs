@@ -174,5 +174,9 @@ namespace RimMandrake.Warcasket
         }
 
         public static int CrackTicks(bool hasTicks, int ticks) { return hasTicks ? ticks : 1200; }
+
+        // ───────────── sealed-corpse scatter ─────────────
+        /// <summary>The scatter runs only with the master switch, the sarcophagus switch and its own switch all on.</summary>
+        public static bool ScatterActive(bool master, bool sarcophagi, bool scatter) { return master && sarcophagi && scatter; }
     }
 }

@@ -46,7 +46,7 @@ from modcheck import Suite, ExpectationFailed
 
 suite = Suite("Warcasket")
 suite.toggles = ["masterEnabled", "compoundFailureEnabled", "terrainImmersionEnabled",
-                 "sarcophagiEnabled", "caskBayShieldingEnabled", "coreDoseEnabled"]
+                 "sarcophagiEnabled", "caskBayShieldingEnabled", "coreDoseEnabled", "sealedCorpseScatterEnabled"]
 
 SETTINGS = "RimMandrake.Warcasket.RM_WarcasketSettings"
 SUIT, JUNKER, BAY, CORE = "RM_Warcasket", "RM_WarcasketJunker", "RM_CaskBay", "RM_HalfExtractedCore"
@@ -813,6 +813,19 @@ def static_checks():
         if fn.endswith(".cs") and 'Compile Include="%s"' % fn not in proj and "EnableDefaultCompileItems" in proj \
                 and 'Compile Include="*.cs"' not in proj:
             bad.append("%s is not in the csproj (compiles into nothing)" % fn)
+    # WARCASKET_JUNKER_KINDS_BUILD_1: both Junker kinds exist, wear the adjusted suit, and the caravan carries both.
+    utp = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Defs")
+    kinds_xml = open(os.path.join(utp, "PawnKindDefs", "RUT_JunkerCaskKinds.xml"), encoding="utf-8").read()
+    fac_xml = open(os.path.join(utp, "FactionDefs", "JawaJunkers.xml"), encoding="utf-8").read()
+    for k in ("RUT_Jawa_Junkers_CaskedScavenger", "RUT_Jawa_Junkers_CaskedElite"):
+        if "<defName>%s</defName>" % k not in kinds_xml:
+            bad.append("junker kind %s missing" % k)
+        if "<%s>" % k not in fac_xml.split('<kindDef>Trader</kindDef>', 1)[-1].split("</pawnGroupMakers>", 1)[0]:
+            bad.append("junker kind %s is not in the Junker trade-caravan group or later groups" % k)
+    if kinds_xml.count(">RM_WarcasketJunker</li>") != 2:
+        bad.append("both junker kinds must require RM_WarcasketJunker (sanity: found %d)" % kinds_xml.count(">RM_WarcasketJunker</li>"))
+    if "RM_GenStep_SealedCorpses" not in open(os.path.join(utp, "..", "Patches", "RUT_JunkerSealedCorpses.xml"), encoding="utf-8").read():
+        bad.append("sealed-corpse GenStep is not registered")
     names = set()
     for dp, _d, files in os.walk(os.path.join(HERE, "Defs")):
         for fn in files:

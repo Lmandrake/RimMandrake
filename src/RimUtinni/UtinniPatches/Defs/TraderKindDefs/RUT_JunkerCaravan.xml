@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARCASKET_JUNKER_KINDS_BUILD_1. The Junker trade caravan: scrap and salvage, plus the cores they
+     cut loose. Owner 2026-10-09: "You can see both [kinds] in their trade caravans." Stock is
+     PROVISIONAL. Wired into RUT_Jawa_Junkers.caravanTraderKinds. -->
+<Defs>
+  <TraderKindDef>
+    <defName>RUT_Caravan_Junkers</defName>
+    <label>Junker salvage caravan</label>
+    <commonality>1</commonality>
+    <stockGenerators>
+      <li Class="StockGenerator_SingleDef"><thingDef>Steel</thingDef><countRange>200~500</countRange></li>
+      <li Class="StockGenerator_SingleDef"><thingDef>ComponentIndustrial</thingDef><countRange>6~16</countRange></li>
+      <li Class="StockGenerator_SingleDef"><thingDef>Chemfuel</thingDef><countRange>80~200</countRange></li>
+      <li Class="StockGenerator_SingleDef" MayRequire="mandrake.rm.warcasket"><thingDef>RM_HalfExtractedCore</thingDef><countRange>0~1</countRange></li>
+      <li Class="StockGenerator_BuyExpensiveSimple" />
+      <li Class="StockGenerator_BuyTradeTag"><tag>Art</tag></li>
+    </stockGenerators>
+  </TraderKindDef>
+</Defs>

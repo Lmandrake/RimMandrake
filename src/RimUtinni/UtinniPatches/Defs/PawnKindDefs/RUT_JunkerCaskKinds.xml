@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WARCASKET_JUNKER_KINDS_BUILD_1. Two Junker pawnkinds in the adjusted warcasket (RM_WarcasketJunker,
+  src/RimMandrake/Warcasket). Owner ruling by question card 2026-10-09, typed verbatim: "there are
+  both kinds. Passive scavengers are often unwillingly done to Junker society members fallen onto
+  rough times and usually irreversible. Elite Hostiles are celebrated members of society who are a
+  bit psychotic and too eager for conflict. You can see both in their trade caravans."
+
+  🔴 EVERY NUMBER HERE IS PROVISIONAL (mine, not ruled): combatPower, money ranges, weights.
+  MayRequire on the suit is a LOAD-SAFETY guard for mandrake.rm.warcasket only (an absent <li> is
+  dropped); the suit is the point of both kinds.
+  Irreversibility of the passive kind is carried by the suit itself: RM_WarcasketJunker is the
+  sarcophagus suit (RM_CompSarcophagusSeal), sealed on its wearer at death. A living lock is not built.
+  Elite temperament ("a bit psychotic, too eager") is flavour in label/description plus the high
+  combat tier; a forced-trait pass is owed once the owner picks the traits.
+-->
+<Defs>
+
+  <!-- A: the passive scavenger. Fallen on hard times and cased against their will. Non-fighter: the
+       faction's haulers, appearing in settlements and on the trade caravans as the traders. -->
+  <PawnKindDef>
+    <defName>RUT_Jawa_Junkers_CaskedScavenger</defName>
+    <label>casketed scavenger</label>
+    <race>Human</race>
+    <defaultFactionDef>RUT_Jawa_Junkers</defaultFactionDef>
+    <combatPower>30</combatPower>
+    <isFighter>false</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <weaponMoney>0~0</weaponMoney>
+    <apparelMoney>0~0</apparelMoney>
+    <initialResistanceRange>6~10</initialResistanceRange>
+    <initialWillRange>0~2</initialWillRange>
+    <apparelRequired>
+      <li MayRequire="mandrake.rm.warcasket">RM_WarcasketJunker</li>
+    </apparelRequired>
+    <itemQuality>Poor</itemQuality>
+    <inventoryOptions>
+      <skipChance>0.2</skipChance>
+      <subOptionsChooseOne>
+        <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
+        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
+        <li><thingDef>Chemfuel</thingDef><countRange>10~35</countRange></li>
+      </subOptionsChooseOne>
+    </inventoryOptions>
+    <apparelDisallowTags>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+    </apparelDisallowTags>
+  </PawnKindDef>
+
+  <!-- B: the elite hostile. A celebrated member of Junker society, a bit psychotic, too eager for
+       conflict. Full fighter in the adjusted suit; Combat raids and the caravan's guards. -->
+  <PawnKindDef>
+    <defName>RUT_Jawa_Junkers_CaskedElite</defName>
+    <label>celebrated warcasket Junker</label>
+    <race>Human</race>
+    <defaultFactionDef>RUT_Jawa_Junkers</defaultFactionDef>
+    <combatPower>110</combatPower>
+    <isFighter>true</isFighter>
+    <useFactionXenotypes>true</useFactionXenotypes>
+    <requiredWorkTags>Violent</requiredWorkTags>
+    <weaponMoney>240~280</weaponMoney>
+    <apparelMoney>0~0</apparelMoney>
+    <initialResistanceRange>14~22</initialResistanceRange>
+    <initialWillRange>3~6</initialWillRange>
+    <weaponTags>
+      <li>SimpleGun</li>
+      <li>KotORRanged_mid</li>
+    </weaponTags>
+    <apparelRequired>
+      <li MayRequire="mandrake.rm.warcasket">RM_WarcasketJunker</li>
+    </apparelRequired>
+    <forceWeaponQuality>Poor</forceWeaponQuality>
+    <itemQuality>Poor</itemQuality>
+    <apparelDisallowTags>
+      <li>ImperialApparel</li>
+      <li>ImperialArmy</li>
+      <li>ImperialOfficer</li>
+      <li>ImperialStormtrooper</li>
+      <li>MNCFactionArmor</li>
+      <li>ORTusken</li>
+      <li>Royal</li>
+      <li>SaV_apparel_jawa</li>
+      <li>SaV_apparel_tusken</li>
+    </apparelDisallowTags>
+  </PawnKindDef>
+
+</Defs>
