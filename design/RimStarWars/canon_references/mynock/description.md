@@ -24,20 +24,21 @@ Some mynocks had yellow eyes, and had shiny spore sacs that could distend. They 
 Mynocks were distantly related to xuvvas. A few (sub)species of mynocks existed, including one that had a normal mouth, rather than a sucker-like one, and another that had blue skin and gave birth to live young. Subspecies of mynocks included the salt mynock and sulfur myno …[truncated by script; rest UNREAD here, not absent]
 
 ## Visual brief
-Four images, consistent on body plan, differing on colour. Both pages call it bat-like; the Legends prose adds "manta ray", which the images do not support.
-- **Silhouette:** a bat/pterosaur layout: **a very small body with huge, broad, leathery membrane wings** (wingspan several times the body), each wing with a thumb-claw at the elbow/wrist and ragged, finger-ribbed edges. A **long, thin, whip-like tail** hangs below the body and ends in a small flare or spade (clear in `canon_1`, `legends_1`, `legends_2`).
-- **Head and mouth (the defining face):** a small head with **two bulging stalk-like eyes** (on small knobs/stalks at the sides of the head) and, between them, **a round sucker-disc mouth ringed with short bristle-like spines/cilia**, the centre showing a darker pit with tiny teeth (`canon_1` drawing, `legends_1` painting). `canon_2` (the Empire Strikes Back film frame, upside down on the Falcon cockpit) shows the same round, bristle-fringed sucker mouth with a pale tooth plate inside, bulbous eye on a stalk to the right, and a wrinkled, knobby, dark neck and body. Tell: a ring of short spines around a round mouth, not a normal beak or snout.
-- **Legs:** small, thin, spindly clawed hind legs, tucked up under the body in flight (`legends_1` shows long dangling talon legs); a mynock clings to a ship by its mouth and feet.
-- **Colour disagreement:** `canon_1` is a flat **rust-orange / copper-brown** with darker brown membranes; `canon_2` (live-action) is **dark olive-brown/black wrinkled leathery hide**; `legends_1` is a **pale straw-yellow/cream** body with olive-tan wings and green eyes; `legends_2` shows yellow-green bodies with **blue-grey wing membranes**. The prose says "black-skinned" (Legends) with some having yellow eyes. Trust the film frame for the canonical live-action look (dark brown to black, wrinkled leathery skin) and treat the other colours as artist choice; a colour range from dark brown through copper is safest.
-- **Size:** canon infobox gives length 1.6 to 2 m and mass 8 kg (Star Wars Bestiary Vol. 1 and Ultimate Star Wars, https://starwars.fandom.com/wiki/Mynock); the infobox does not say whether length is body or overall including wings/tail. Being dwarfed by a ship is not a size measurement.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Removed: the flat-coloured ink illustration from *Alien Archive* (`Mynock-AA.png`, rust-orange). Added: `canon_4`, Terryl Whitlatch's naturalistic painting (*The Official Star Wars Fact File* 75 / *The Wildlife of Star Wars*). The LIVE-ACTION reference is `canon_2` (*The Empire Strikes Back*, a mynock upside down on the Falcon's cockpit window); `legends_1` and `legends_2` are realistic paintings. Both pages call it bat-like; the Legends prose adds "manta ray", which the images do not support.
+- **Silhouette:** a bat/pterosaur layout: **a very small body with huge, broad, leathery membrane wings** (wingspan several times the body), each wing with a thumb-claw at the wrist and ragged, finger-ribbed edges. A **long, thin, whip-like tail** hangs below the body and ends in a small flare or spade (clear in `canon_4`, `legends_1`, `legends_2`).
+- **Head and mouth (the defining face):** a small head with **two bulging eyes on small knobs/stalks** at the sides and, between them, **a round sucker-disc mouth ringed with short bristle-like spines/cilia**, a darker pit with tiny teeth in the centre. The film frame shows exactly this: a round, bristle-fringed sucker mouth with a pale tooth plate inside, a bulbous eye on a stalk, and a wrinkled, knobby, dark neck and body. `canon_4` instead shows an open fanged jaw on the face and the toothed disc as a separate ring on the chest — the film, `legends_1` and the text put the sucker disc AT the mouth; follow them.
+- **Legs:** small, thin, spindly clawed hind legs, tucked up in flight or dangling (`canon_4`, `legends_1`); a mynock clings to a ship by its mouth and feet.
+- **Colour, LOUDLY:** the live-action film creature is **dark olive-brown to black, wrinkled, leathery hide**, and the Legends prose says "black-skinned". The paintings are paler: straw-cream body with tan wings (`canon_4`, `legends_1`), yellow-green with blue-grey membranes (`legends_2`). The deleted Alien Archive plate was rust-orange. Use the film's dark brown-black as the base; pale tan is a variant only.
+- **Size:** canon infobox gives length 1.6 to 2 m and mass 8 kg (Star Wars Bestiary Vol. 1 and Ultimate Star Wars, https://starwars.fandom.com/wiki/Mynock); the infobox does not say whether length is body or overall including wings/tail.
 
 ## Must show
 - [ ] Small body with huge, broad, ragged leathery bat-like wings, each with a thumb-claw
 - [ ] Round sucker-disc mouth ringed with short bristle-like spines, set between the eyes
 - [ ] Two bulging eyes on small stalks or knobs at the sides of the head
 - [ ] Long thin whip-like tail ending in a small flare
-- [ ] Wrinkled, leathery dark-brown to black skin (copper-brown or paler tones only as variants)
-- [ ] Small thin clawed legs, tucked up in flight or gripping a cable or hull
+- [ ] Wrinkled, leathery dark olive-brown to black skin (paler tan only as a variant)
+- [ ] Realistic rendering: natural wrinkled leathery hide and translucent membrane texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -47,10 +48,10 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Mynock/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Mynock`; wiki caption: infobox image. File: `Mynock-AA.png` — https://static.wikia.nocookie.net/starwars/images/9/9c/Mynock-AA.png/revision/latest?cb=20200427023903
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Mynock/Legends`; wiki caption: infobox image. File: `Mynock NEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/f/ff/Mynock_NEGAS.jpg/revision/latest?cb=20081105211310
-- `wookieepedia_canon_2.webp` — CANON page `Mynock`; wiki caption: A mynock attacks the Millennium Falcon.. File: `Mynock.png` — https://static.wikia.nocookie.net/starwars/images/7/74/Mynock.png/revision/latest?cb=20130324025917
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Mynock/Legends`; wiki caption: Mynocks attaching themselves to the hull of a ARC-170 starfighter. File: `Mynock TofG.jpg` — https://static.wikia.nocookie.net/starwars/images/3/35/Mynock_TofG.jpg/revision/latest?cb=20080608085418
+- `wookieepedia_canon_2.webp` — LIVE-ACTION, *The Empire Strikes Back*, a mynock on the Millennium Falcon cockpit (upside down); file `Mynock.png` — https://static.wikia.nocookie.net/starwars/images/7/74/Mynock.png/revision/latest?cb=20130324025917
+- `wookieepedia_canon_4.webp` — Terryl Whitlatch naturalistic painting, *The Official Star Wars Fact File* 75 / *The Wildlife of Star Wars*, full body with wings spread; file `Mynock-FF75.png` — https://static.wikia.nocookie.net/starwars/images/f/f7/Mynock-FF75.png/revision/latest?cb=20231002022735
+- `wookieepedia_legends_1.webp` — LEGENDS, realistic painting (infobox image); file `Mynock NEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/f/ff/Mynock_NEGAS.jpg/revision/latest?cb=20081105211310
+- `wookieepedia_legends_2.webp` — LEGENDS, realistic painting, mynocks attaching to the hull of an ARC-170 starfighter (Threats of the Galaxy); file `Mynock TofG.jpg` — https://static.wikia.nocookie.net/starwars/images/3/35/Mynock_TofG.jpg/revision/latest?cb=20080608085418
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

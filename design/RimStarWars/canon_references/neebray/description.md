@@ -17,16 +17,20 @@ Neebray were flying, limbless creatures which varied greatly in size and habitat
 **Characteristics** On the moon Rugosa, tiny baby neebray flew among the coral forests of the moon's long-dried-up ocean beds as a stop along their interstellar voyage. A moderately large variety had translucent wings, and could be found on a Rishi moon. The gigantic neebray manta lived in the vacuum of space, feeding on stellar gases. They used the Kaliida Nebula as nesting grounds. They also used Veil Nebula as feeding ground, feeding on its stellar gases.
 
 ## Visual brief
-Viewed 2026-10-04. Images 1, 2 and 3 are canon (a baby neebray CGI render; an adult manta illustration
-in a nebula; Yoda holding a baby on Rugosa); image 4 is from the LEGENDS page (giant neebray in the Kaliida Nebula; the scene is from The Clone Wars episode "Shadow of Malevolence", per the wiki's own citation, not Revenge of the Sith; https://starwars.fandom.com/wiki/Neebray/Legends). Two life stages look quite different.
-- **Baby (images 1, 3) -- the ground-world form**: a small, tadpole-like body with a big blunt head
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Neebray` and `Neebray/Legends` page images, `Category:Images of neebrays`; every depiction is The Clone Wars / Rebels animation or a stylised *Homeworlds* illustration).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: the Clone Wars frame of Yoda holding a baby (`Yoda-naturist.png`), a duplicate of what `canon_1` shows. Kept: `canon_1` (Clone Wars baby render), `canon_2` (*Homeworlds* adult manta illustration) and `legends_1` (Clone Wars adult mantas). For a realistic render, read the baby's wings as real translucent fin membrane and its body as wet, smooth amphibian skin, not the show's flat plastic sheen.
+
+Images 1 and 2 are canon (a baby neebray CGI render; an adult manta illustration
+in a nebula); `legends_1` is from the LEGENDS page (giant neebray in the Kaliida Nebula; the scene is from The Clone Wars episode "Shadow of Malevolence", per the wiki's own citation, not Revenge of the Sith; https://starwars.fandom.com/wiki/Neebray/Legends). Two life stages look quite different.
+- **Baby (image 1) -- the ground-world form**: a small, tadpole-like body with a big blunt head
   and no limbs at all, smooth chubby body tapering to a small tail; TWO big translucent butterfly/
   fish-like WINGS on the sides (pale blue-green to blue, finely speckled/shimmering, dark rusty-red
   rim bones), plus two small matching tail fins at the rear. Head: a wide downturned mouth with
   tiny white teeth and a CLUSTER of large round yellow-gold eyes with black pupils (three to
   four visible, bulging over the top and sides of the head). Body: rusty maroon-red head and
-  back, tan-brown belly. Bird-sized (sits on Yoda's hand).
-- **Adult manta (images 2, 4) -- space form**: a huge flattened manta-ray/pterosaur shape with a very
+  back, tan-brown belly. Bird-sized (sat on Yoda's hand in the deleted frame).
+- **Adult manta (`canon_2`, `legends_1`) -- space form**: a huge flattened manta-ray/pterosaur shape with a very
   wide pair of wings (wingspan many times body length), a deep head with a gaping toothed mouth and
   a red inner mouth/tongue; a small cluster of orange eyes on the brow; four-to-six long thin whip
   tendrils trailing below the jaw/body and a pair of smaller tail fins. Colour in canon art: white-
@@ -43,6 +47,7 @@ in a nebula; Yoda holding a baby on Rugosa); image 4 is from the LEGENDS page (g
 - [ ] Rusty maroon-red head and back with a tan-brown paler belly
 - [ ] No legs or arms at all
 - [ ] Adult form (if used): very wide manta wings, gaping toothed mouth, thin whip tendrils below the jaw
+- [ ] Realistic rendering: natural wet amphibian skin and translucent fin-membrane texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -52,10 +57,9 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Neebray/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Neebray`; wiki caption: infobox image. File: `Rugosa neebray.png` — https://static.wikia.nocookie.net/starwars/images/5/51/Rugosa_neebray.png/revision/latest?cb=20170703055512
-- `wookieepedia_canon_2.webp` — CANON page `Neebray`; wiki caption: Adult neebray mantas could grow to become massive in size.. File: `NeebrayManta-Homeworlds.png` — https://static.wikia.nocookie.net/starwars/images/2/25/NeebrayManta-Homeworlds.png/revision/latest?cb=20260926142623
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Neebray/Legends`; wiki caption: Giant neebray mantas in the Kaliida Nebula. File: `Neebray manta.jpg` — https://static.wikia.nocookie.net/starwars/images/9/97/Neebray_manta.jpg/revision/latest?cb=20100422150210
-- `wookieepedia_canon_3.webp` — CANON page `Neebray`; wiki caption: Yoda with a baby neebray on Rugosa. File: `Yoda-naturist.png` — https://static.wikia.nocookie.net/starwars/images/a/a7/Yoda-naturist.png/revision/latest?cb=20220908050817
+- `wookieepedia_canon_1.webp` — CANON, The Clone Wars (3D animation), baby; wiki caption: infobox image. File: `Rugosa neebray.png` — https://static.wikia.nocookie.net/starwars/images/5/51/Rugosa_neebray.png/revision/latest?cb=20170703055512
+- `wookieepedia_canon_2.webp` — CANON, *Homeworlds* illustration (stylised), adult; wiki caption: Adult neebray mantas could grow to become massive in size.. File: `NeebrayManta-Homeworlds.png` — https://static.wikia.nocookie.net/starwars/images/2/25/NeebrayManta-Homeworlds.png/revision/latest?cb=20260926142623
+- `wookieepedia_legends_1.webp` — LEGENDS page, The Clone Wars (3D animation) adults; wiki caption: Giant neebray mantas in the Kaliida Nebula. File: `Neebray manta.jpg` — https://static.wikia.nocookie.net/starwars/images/9/97/Neebray_manta.jpg/revision/latest?cb=20100422150210
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
