@@ -197,6 +197,10 @@ namespace RimMandrake.TerminalBiomes
         public static float greyHullCrustRate = 1f;
         public static float greyHullCrustSaltSnowMultiplier = 2f;
         public static float greyHullCrustBerthMultiplier = 1.5f;
+        // CRUST_NEVER_STRANDS_1 (owner card 2026-10-08): a costly tear-free launch is always on offer on the Grey Sea
+        // floor. PROVISIONAL: 30% of every hull building's max HP (never to death). Off: the gizmo is not offered.
+        public static bool greyTearFreeEnabled = true;
+        public static float greyTearFreeDamage = 0.3f;
         public static bool GreyHullCrustActive => masterEnabled && greySeaEnabled && greyHullCrustEnabled;
 
         // ── GREYSEA_LAMP_RESPONSE_BUILD_1: the Grey answers a player light (Q12) ─
@@ -265,6 +269,8 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref greyHullCrustRate, "greyHullCrustRate", 1f);
             Scribe_Values.Look(ref greyHullCrustSaltSnowMultiplier, "greyHullCrustSaltSnowMultiplier", 2f);
             Scribe_Values.Look(ref greyHullCrustBerthMultiplier, "greyHullCrustBerthMultiplier", 1.5f);
+            Scribe_Values.Look(ref greyTearFreeEnabled, "greyTearFreeEnabled", true);
+            Scribe_Values.Look(ref greyTearFreeDamage, "greyTearFreeDamage", 0.3f);
             Scribe_Values.Look(ref greyLampDrawnEnabled, "greyLampDrawnEnabled", true);
             Scribe_Values.Look(ref seekGlowDrawnToDeepfire, "seekGlowDrawnToDeepfire", true);
             Scribe_Values.Look(ref greyLampWatcherEnabled, "greyLampWatcherEnabled", true);
@@ -499,6 +505,15 @@ namespace RimMandrake.TerminalBiomes
                 list.Label("  Brine-berth speed-up (brine channel or chimney field within 5 cells): "
                     + greyHullCrustBerthMultiplier.ToString("0.0") + "x");
                 greyHullCrustBerthMultiplier = list.Slider(greyHullCrustBerthMultiplier, 1f, 3f);
+                list.CheckboxLabeled("Tear-free launch (always available)", ref greyTearFreeEnabled,
+                    "The gravship engine gains a costly forced launch on the Grey Sea floor: it rips all crust off the hull, "
+                  + "unsalts every door, and damages every hull building. Never needs a working colonist, so crust can never "
+                  + "strand a colony. Off: crust must be chipped off by hand.");
+                if (greyTearFreeEnabled)
+                {
+                    list.Label("  Hull damage per building: " + (greyTearFreeDamage * 100f).ToString("0") + "% of max HP (never lethal)");
+                    greyTearFreeDamage = list.Slider(greyTearFreeDamage, 0.05f, 0.8f);
+                }
             }
             list.GapLine();
 

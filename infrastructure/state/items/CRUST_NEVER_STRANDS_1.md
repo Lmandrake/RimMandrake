@@ -14,3 +14,8 @@ Header: `Crust trap` · Question: *If salt crust on the Grey sea floor can't be 
 2. **Tear-free launch** — a costly forced launch that rips the ship loose and damages the hull. Always an exit; costs repairs.
 3. **Both** — name the blockers first; offer tear-free only when some crust is provably unreachable.
 (Free-text answer always allowed.)
+
+## verify
+Built 2026-10-09 (all numbers PROVISIONAL): engine gizmo "Tear free" on the Grey Sea floor (`RM_GreyTearFree`, TerminalBiomes `RM_GreyHullCrust.cs`); strips hull crust, unsalts doors, damages every hull building by `greyTearFreeDamage` (default 30% of max HP, never lethal). Mod Settings toggle `greyTearFreeEnabled` + damage slider.
+- Offline: `RM_CrustKernel.TearDamage` selftest check (never lethal).
+- Live (needs bridge): `validation.py` chain `grey_hull_crust` calls `RM_GreyHullCrustProof.ProofTearFree` and asserts `crust=0`, `gate=accepted`, `tearFreeOffered=True`. State read, no screenshots.

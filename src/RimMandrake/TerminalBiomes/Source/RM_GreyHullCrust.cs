@@ -419,6 +419,104 @@ namespace RimMandrake.TerminalBiomes
         }
     }
 
+    // ── CRUST_NEVER_STRANDS_1: the costly tear-free launch (owner card 2026-10-08) ──
+    // A gizmo on the grav engine, offered whenever the ship is on the Grey Sea floor with crust or a salted door,
+    // needing no worker and no chipping. Pressing it rips the crust off, unsalts every door and batters every hull
+    // building by greyTearFreeDamage of its max HP (never lethal). Crust is then gone, so the ordinary launch gate opens.
+    public static class RM_GreyTearFree
+    {
+        public static bool Offered(Building_GravEngine engine)
+        {
+            if (engine == null || engine.Map == null || !RM_GreyCrust.Active || !RM_TerminalBiomesSettings.greyTearFreeEnabled)
+            {
+                return false;
+            }
+            return engine.Map.Biome != null && engine.Map.Biome.defName == RM_GreyCrust.GreyBiome;
+        }
+
+        // Returns "crustRemoved=.. doorsFreed=.. damaged=.. hpLost=..". Also the state-read proof hook.
+        public static string Execute(Building_GravEngine engine)
+        {
+            Map map = engine.Map;
+            int crust = 0, doors = 0, damaged = 0, hpLost = 0;
+            ThingDef crustDef = RM_GreyCrust.CrustDef;
+            if (crustDef != null)
+            {
+                foreach (Thing t in map.listerThings.ThingsOfDef(crustDef).Where(t => engine.OnValidSubstructure(t)).ToList())
+                {
+                    t.Destroy(DestroyMode.Vanish);
+                    crust++;
+                }
+            }
+            RM_GameComponent_GreyCrust gc = RM_GameComponent_GreyCrust.Instance;
+            foreach (Building b in map.listerBuildings.allBuildingsColonist.ToList())
+            {
+                if (b is Building_Door d && gc != null && gc.IsSalted(d))
+                {
+                    gc.Unsalt(d);
+                    doors++;
+                }
+            }
+            float frac = RM_TerminalBiomesSettings.greyTearFreeDamage;
+            foreach (IntVec3 c in engine.ValidSubstructure.ToList())
+            {
+                foreach (Thing t in c.GetThingList(map).ToList())
+                {
+                    if (!(t is Building b) || !b.def.useHitPoints || b.Destroyed)
+                    {
+                        continue;
+                    }
+                    int dmg = RM_CrustKernel.TearDamage(b.HitPoints, b.MaxHitPoints, frac);
+                    if (dmg > 0)
+                    {
+                        b.TakeDamage(new DamageInfo(DamageDefOf.Crush, dmg, 999f, -1f, null, null, null, DamageInfo.SourceCategory.ThingOrUnknown, null, false, false));
+                        damaged++;
+                        hpLost += dmg;
+                    }
+                }
+            }
+            map.reachability.ClearCache();
+            RM_MapComponent_GreyHullCrust mc = map.GetComponent<RM_MapComponent_GreyHullCrust>();
+            if (mc != null)
+            {
+                mc.crustDays = 0f;
+            }
+            return "crustRemoved=" + crust + " doorsFreed=" + doors + " damaged=" + damaged + " hpLost=" + hpLost;
+        }
+    }
+
+    [HarmonyPatch(typeof(Building), nameof(Building.GetGizmos))]
+    public static class RM_Patch_GravEngineTearFreeGizmo
+    {
+        [HarmonyPostfix]
+        public static IEnumerable<Gizmo> Postfix(IEnumerable<Gizmo> __result, Building __instance)
+        {
+            foreach (Gizmo g in __result)
+            {
+                yield return g;
+            }
+            if (__instance is Building_GravEngine engine && RM_GreyTearFree.Offered(engine))
+            {
+                yield return new Command_Action
+                {
+                    defaultLabel = "RM_GreyTearFreeLabel".Translate(),
+                    defaultDesc = "RM_GreyTearFreeDesc".Translate((RM_TerminalBiomesSettings.greyTearFreeDamage * 100f).ToString("0")),
+                    icon = TexCommand.ForbidOn,
+                    action = delegate
+                    {
+                        Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
+                            "RM_GreyTearFreeConfirm".Translate(),
+                            delegate
+                            {
+                                Messages.Message("RM_GreyTearFreeDone".Translate(RM_GreyTearFree.Execute(engine)),
+                                    engine, MessageTypeDefOf.NegativeEvent, false);
+                            }, true));
+                    }
+                };
+            }
+        }
+    }
+
     // ── Chipping: one job for crust patches and salted doors ──────────────
     // Crust is Mining work (the statuary's chisel idiom); a salted door is
     // BasicWorker so any colonist trapped inside can always force it (§1.5).
@@ -547,6 +645,19 @@ namespace RimMandrake.TerminalBiomes
             return Report(map, engine, mc);
         }
 
+        // CRUST_NEVER_STRANDS_1: run the tear-free launch on the current map, then re-read the gate (must be accepted).
+        public static string ProofTearFree(string unused)
+        {
+            Map map = Find.CurrentMap;
+            Building_GravEngine engine = RM_GreyCrust.EngineOn(map);
+            if (engine == null)
+            {
+                return "no grav engine on the current map";
+            }
+            string done = RM_GreyTearFree.Execute(engine);
+            return done + " " + Report(map, engine, map.GetComponent<RM_MapComponent_GreyHullCrust>());
+        }
+
         public static string ProofState(string unused)
         {
             Map map = Find.CurrentMap;
@@ -572,7 +683,8 @@ namespace RimMandrake.TerminalBiomes
                 + " rime=" + rime
                 + " saltedDoors=" + salted
                 + " crust=" + mc.CountCrust(engine)
-                + " gate=" + (gate.Accepted ? "accepted" : gate.Reason);
+                + " gate=" + (gate.Accepted ? "accepted" : gate.Reason)
+                + " tearFreeOffered=" + RM_GreyTearFree.Offered(engine);
         }
     }
 }
