@@ -30,6 +30,7 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             StateMachine();
             Wobble();
             LayOpen();
+            MatrixScenes();
             LayAroundWall();
             Install();
             Signals();
@@ -151,6 +152,30 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
         }
 
         // ------------------------------------------------------------------ laying
+
+        /// <summary>GIMMESOMESLACK_HOSE_BEND_TRACE_1: the northstar matrix's straight hose scenes (design_spec.hose_spec) laid
+        /// through the live route (LayAlong, nozzled reel facing west, end east, reel footprint solid). The 2026-10-06 live 0.19
+        /// radii were the pre-lead-out U-turn blend; today the lay keeps the bar, and the old maxLength ceil(L*1.3) is refused.</summary>
+        private static void MatrixScenes()
+        {
+            foreach (int L in new[] { 6, 14, 24 })
+            {
+                int W = L + 8, H = 9;
+                CordWorld w = Open(W + 24, H + 12);
+                const int OX = 12, OZ = 6;
+                var rect = new HoseReelRect(OX + 2, OZ + H - 1 - 4, 2, 2);
+                for (int x = rect.X0; x < rect.X0 + 2; x++) for (int z = rect.Z0; z < rect.Z0 + 2; z++) w.SetBlocked(new Cell(x, z), BlockKind.Device);
+                V2 a = rect.Mouth, b = new Cell(OX + 2 + L, OZ + H - 1 - 4).Centre;
+                var p = new HoseShapeParams { MaxLength = (int)Math.Ceiling(L * 1.3) + 14 };   // = design_spec.hose_max_length
+                HoseLay lay = HoseMath.LayAlong(w, a, new List<Cell>(), b, p, 7, null, rect.Outward);
+                C(lay.Ok && lay.MinBendFlat >= p.MinBendRadius * 0.95 && lay.MinBendPlump >= p.MinBendRadius * 0.95,
+                    "matrix straight L" + L + ": laid, bend radius " + lay.MinBendFlat.ToString("0.00") + "/" + lay.MinBendPlump.ToString("0.00") + " (reason " + lay.Reason + ")");
+                var old = new HoseShapeParams { MaxLength = (int)Math.Ceiling(L * 1.3) };
+                HoseLay refused = HoseMath.LayAlong(w, a, new List<Cell>(), b, old, 7, null, rect.Outward);
+                C(L >= 24 || !refused.Ok, "matrix straight L" + L + " can-fail: the old maxLength ceil(L*1.3) cannot hold the U-turn (ok " + refused.Ok + ")");
+            }
+        }
+
         private static CordWorld Open(int w, int h) => new CordWorld(w, h);
 
         private static double MaxLateral(List<V2> pts, V2 a, V2 b)
