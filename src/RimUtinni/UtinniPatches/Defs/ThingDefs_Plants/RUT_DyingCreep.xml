@@ -56,7 +56,9 @@
       <MaxHitPoints>40</MaxHitPoints>
       <Flammability>0.8</Flammability>
     </statBases>
-    <ingestible></ingestible>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
     <graphicData>
       <texPath>Things/Plant/RUT_DyingCreep</texPath>
       <graphicClass>Graphic_Single</graphicClass>
