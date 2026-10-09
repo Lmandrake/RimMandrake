@@ -18,3 +18,5 @@ AA_GiantCrownedSilkie (UNMEASURED) left alone: owner question.
 | Deploys done now (XML/PNG only, no DLL in plan) | `deploy_custom_mods.py --apply --mod HelixienArtOverride --mod UtinniPatches --mod SWBestiary`: ossrith, aerofleet text, silooth size + spit are in the Mods folder for the next launch. | "Deployed 15 file(s)", VERIFIED in sync. |
 
 The 7 override-mod FAILs (DecayDrake, OcularJelly, Plasmorph, AM_Dryad_Corruptor, AM_Dryad_Tumorous, GR_Beetlefleet, Visceral) are all the mod-list row above. New renders (bedbug, neebray, silooth, silkie) will need his pick when the daemon finishes them.
+
+Selftests (`run_selftests.py`): PASS 350/354, FAIL 2, neither on a path touched here: `selftest_utinnipatches_dump.py` (RUT_DeadCreep / RUT_DyingCreep, newly committed defs not yet in the load-14 dump) and `selftest_acceptance_map.py` (Greentide MOD_OPTIONS_RETROFIT_1 A3 has no criterion A3).
