@@ -409,6 +409,29 @@ namespace RimMandrake.LanternDeeps.SelfTest
             if (SipperKernel.AuroraFactor(false, 1.75f) != 1f) Fail("aurora off still scales a light");
             if (Math.Abs(SipperKernel.AuroraFactor(true, 1.75f) - 1.75f) > 1e-6f) Fail("aurora on does not brighten to x1.75");
             if (Math.Abs(SipperKernel.Take(8f, 100, 1f) - 6f) > 1e-4f) Fail("a crowd of sippers drinks below the 25% floor");
+            // LANTERNDEEPS_ANSWERING_RITE_BUILD_1: the Answering's outcome table
+            var tiers = new[] { AnsweringKernel.TierOf(-1), AnsweringKernel.TierOf(1), AnsweringKernel.TierOf(2), AnsweringKernel.TierOf(3), AnsweringKernel.TierOf(7) };
+            if (tiers[0] != AnsweringKernel.Tier.Poor || tiers[1] != AnsweringKernel.Tier.Fair || tiers[2] != AnsweringKernel.Tier.Good
+                || tiers[3] != AnsweringKernel.Tier.Excellent || tiers[4] != AnsweringKernel.Tier.Excellent) Fail("positivity index to tier");
+            if (AnsweringKernel.TierOf(0) != AnsweringKernel.Tier.Poor || AnsweringKernel.TierOf(int.MinValue) != AnsweringKernel.Tier.Poor) Fail("index 0 or below is not Poor");
+            if (AnsweringKernel.GodDelta(AnsweringKernel.Tier.Poor, 6f, 8f, 10f) != 0f) Fail("a poor Answering moved the god");
+            if (AnsweringKernel.GodDelta(AnsweringKernel.Tier.Fair, 6f, 8f, 10f) != 6f) Fail("fair delta");
+            if (AnsweringKernel.GodDelta(AnsweringKernel.Tier.Excellent, 6f, 8f, 10f) != 10f) Fail("excellent delta");
+            if (AnsweringKernel.GodDelta(AnsweringKernel.Tier.Excellent, 6f, 2f, 1f) < AnsweringKernel.GodDelta(AnsweringKernel.Tier.Fair, 6f, 2f, 1f)) Fail("a better rite paid the god less than a fair one");
+            if (AnsweringKernel.GodDelta(AnsweringKernel.Tier.Fair, -4f, 8f, 10f) != 0f) Fail("a negative setting paid a negative delta");
+            if (!AnsweringKernel.StallsDroid(AnsweringKernel.Tier.Poor) || AnsweringKernel.StallsDroid(AnsweringKernel.Tier.Fair)) Fail("only a poor rite stalls the droid");
+            if (AnsweringKernel.WritesLogLine(AnsweringKernel.Tier.Fair) || !AnsweringKernel.WritesLogLine(AnsweringKernel.Tier.Good) || !AnsweringKernel.WritesLogLine(AnsweringKernel.Tier.Excellent)) Fail("log line tiers");
+            if (AnsweringKernel.NamesNextStone(AnsweringKernel.Tier.Good) || !AnsweringKernel.NamesNextStone(AnsweringKernel.Tier.Excellent)) Fail("next stone tiers");
+            if (AnsweringKernel.PickLine(0, 5) != -1) Fail("empty line table");
+            var rnd = new Random(7);
+            for (int k = 0; k < 2000; k++)
+            {
+                int n = rnd.Next(1, 9); int sd = rnd.Next(int.MinValue, int.MaxValue);
+                int ix = AnsweringKernel.PickLine(n, sd);
+                if (ix < 0 || ix >= n) { Fail("line index " + ix + " out of 0.." + n); break; }
+                if (ix != AnsweringKernel.PickLine(n, sd)) { Fail("line pick not stable for one seed"); break; }
+            }
+            if (!AnsweringKernel.StallHolds(true) || AnsweringKernel.StallHolds(false)) Fail("stall release");
             Steps++;
             return fails;
         }

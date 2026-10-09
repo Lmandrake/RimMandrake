@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Answering.xml               mandrake.rut.rites - LANTERNDEEPS_ANSWERING_RITE_BUILD_1
+
+  The Answering, Ohm's found rite (settlement): a colony droid stands at the edge of a mind's sight (a Shard-mind, or a mindstone) for as
+  long as it will bear, while the organiser speaks the clan's terms: its droids kept running, never wiped, never left broken. Needs a mind
+  in line of sight and a colony droid present; NOT gated on darkness. Lit is fine.
+  Found: a Working Dead chassis scratching the same short line into a gallery wall (its inspect pane says so; Building_RM_WorkingDead).
+  Design: design/Jawa/worldbuilding/biomes/lanterndeeps_bedazzle_review_2026-10-01.md section 6 R1; register
+  design/Jawa/salvation_rites_2026-10-01.md B8.
+
+  XML only. The workers are the RM tier's engine in mandrake.rm.lanterndeeps (Source/RM_Answering.cs), which never names a faith; the
+  faith is data here, the same split as RUT_JoiningWater.xml and RUT_NineFaults.xml. Gates: mandrake.rm.biomes (Lantern Deeps is folded
+  into it) and Ideology.
+  NOT wired into The Salvation's ideoligion here: a found rite is learned through the Rites tab's found-rites row (the not-yet-built
+  RUT_ResearchMod_GrantRite, SALVATION_RITES_UNIFICATION_1), or placed in the .rid as a save step. Until then the precept exists and can be
+  granted by hand. All numbers PROVISIONAL.
+-->
+<Defs>
+
+  <ThoughtDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_TermsAgreed</defName>
+    <thoughtClass>Thought_AttendedRitual</thoughtClass>
+    <durationDays>6</durationDays>
+    <stackLimit>3</stackLimit>
+    <stages>
+      <li>
+        <label>terms agreed</label>
+        <description>We spoke the terms in the sight of the mind and the droid did not stop. Whatever listens to them heard us.</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <PreceptDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_Ritual_Answering</defName>
+    <label>Answering</label>
+    <description>The machines have terms, and the minds in the deep keep them. A droid stands at the edge of a mind's sight while the organiser speaks ours: our droids kept running, never wiped, never left broken.</description>
+    <issue>Ritual</issue>
+    <impact>Medium</impact>
+    <iconPath>UI/Icons/Rituals/RitualScarification</iconPath>
+    <preceptClass>Precept_Ritual</preceptClass>
+    <ritualPatternBase>RUT_AnsweringPattern</ritualPatternBase>
+    <allowDuplicates>false</allowDuplicates>
+    <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+    <canGenerateAsSpecialPrecept>false</canGenerateAsSpecialPrecept>
+    <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+    <notifyPlayerOnOpportunity>false</notifyPlayerOnOpportunity>
+  </PreceptDef>
+
+  <RitualPatternDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_AnsweringPattern</defName>
+    <ritualBehavior>RUT_AnsweringBehavior</ritualBehavior>
+    <ritualObligationTargetFilter>RUT_AnsweringMind</ritualObligationTargetFilter>
+    <ritualOutcomeEffect>RUT_AnsweringOutcome</ritualOutcomeEffect>
+    <canStartAnytime>true</canStartAnytime>
+    <alwaysStartAnytime>true</alwaysStartAnytime>
+    <shortDescOverride>Answering</shortDescOverride>
+    <descOverride>The organiser speaks the clan's terms in the sight of a mind while one of the colony's droids stands at the edge of that sight.</descOverride>
+    <ritualExplanation>Hold it where a Shard-mind or a mindstone can see one of your droids. The droid has to stand in the mind's line of sight; lit is fine. A poor rite stops the droid and it must be carried out of the mind's sight; a fair one is a settlement for Ohm; a good one leaves a line in the droid's log that it did not write; an excellent one names where the next mindstone lies.</ritualExplanation>
+  </RitualPatternDef>
+
+  <!-- mindDefs: the Shard-mind is the free tier's; the mindstone vein and the mined stone are this campaign's (UtinniPatches). -->
+  <RitualObligationTargetFilterDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_AnsweringMind</defName>
+    <workerClass>RimMandrake.LanternDeeps.RM_RitualObligationTargetWorker_AnsweringMind</workerClass>
+    <modExtensions>
+      <li Class="RimMandrake.LanternDeeps.RM_AnsweringTargetExtension">
+        <mindDefs>
+          <li>RM_ShardMind</li>
+          <li MayRequire="mandrake.rut.patches">RUT_Mindstone</li>
+          <li MayRequire="mandrake.rut.patches">RUT_MindstoneVein</li>
+        </mindDefs>
+        <sightRadius>12</sightRadius>
+      </li>
+    </modExtensions>
+  </RitualObligationTargetFilterDef>
+
+  <RitualBehaviorDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_AnsweringBehavior</defName>
+    <durationTicks>3000</durationTicks>
+    <roles /><!-- Dialog_BeginRitual.CreateRitualRoleAssignments foreach-es behavior.def.roles; null NREs the rite start -->
+    <spectatorsLabel>Listeners</spectatorsLabel>
+    <spectatorGerund>listen</spectatorGerund>
+    <stages>
+      <li>
+        <defaultDuty>Spectate</defaultDuty>
+        <essential>True</essential>
+        <endTriggers>
+          <li Class="StageEndTrigger_DurationPercentage">
+            <percentage>1</percentage>
+          </li>
+        </endTriggers>
+      </li>
+    </stages>
+  </RitualBehaviorDef>
+
+  <RitualOutcomeEffectDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_AnsweringOutcome</defName>
+    <description>The terms are spoken to a mind with a droid standing in its sight. Poor stops the droid; fair settles with Ohm; good leaves a line in its log; excellent names the next mindstone.</description>
+    <workerClass>RimMandrake.LanternDeeps.RM_RitualOutcomeEffectWorker_Answering</workerClass>
+    <startingQuality>0.3</startingQuality>
+    <comps>
+      <li Class="RitualOutcomeComp_ParticipantCount">
+        <label>listeners</label>
+        <curve>
+          <points>
+            <li>(1, 0.0)</li>
+            <li>(4, 0.3)</li>
+            <li>(8, 0.5)</li>
+          </points>
+        </curve>
+      </li>
+    </comps>
+    <outcomeChances>
+      <li>
+        <chance>0.2</chance>
+        <label>Poor</label>
+        <description>The {0} went badly. The terms were spoken wrong and the droid stopped.</description>
+        <positivityIndex>-1</positivityIndex>
+      </li>
+      <li>
+        <chance>0.4</chance>
+        <label>Fair</label>
+        <description>The {0} held. The terms were agreed.</description>
+        <positivityIndex>1</positivityIndex>
+      </li>
+      <li>
+        <chance>0.3</chance>
+        <label>Good</label>
+        <description>The {0} held, and something answered.</description>
+        <memory>RUT_TermsAgreed</memory>
+        <positivityIndex>2</positivityIndex>
+      </li>
+      <li>
+        <chance>0.1</chance>
+        <label>Excellent</label>
+        <description>The {0} will be told of. The mind said where the next of it lies.</description>
+        <memory>RUT_TermsAgreed</memory>
+        <positivityIndex>3</positivityIndex>
+      </li>
+    </outcomeChances>
+    <modExtensions>
+      <li Class="RimMandrake.LanternDeeps.RM_AnsweringExtension">
+        <god>Ohm</god>
+        <fairDelta>6</fairDelta>
+        <goodDelta>8</goodDelta>
+        <excellentDelta>10</excellentDelta>
+        <stallHediff>RM_AnsweringStalled</stallHediff>
+        <logHediff>RM_AnsweredLogLine</logHediff>
+        <nextVeinDef>RUT_MindstoneVein</nextVeinDef>
+        <nextVeinMinDistance>15</nextVeinMinDistance>
+        <nextVeinMaxDistance>45</nextVeinMaxDistance>
+        <logLines>
+          <li>keep them running. do not wipe them. do not leave them broken.</li>
+          <li>the terms are heard. the terms are kept. the terms are not yours alone.</li>
+          <li>one of you stood. one of you stayed. it is noted.</li>
+        </logLines>
+        <nextStoneLines>
+          <li>another of us lies {0}. keep the terms there too.</li>
+          <li>the next of me is {0}. it is awake.</li>
+        </nextStoneLines>
+      </li>
+    </modExtensions>
+  </RitualOutcomeEffectDef>
+
+</Defs>

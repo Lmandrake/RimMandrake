@@ -293,7 +293,7 @@ namespace RimMandrake.LanternDeeps
             string mine;
             if (!standing) mine = "Slumped. A thin vein of crystal grows into its open power port.";
             else if (facingLight) mine = "Standing still, turned toward the light.";
-            else mine = "Standing. Working at the rock, at a task nobody assigned.";
+            else mine = "Standing. Working at the rock, at a task nobody assigned. On the wall beside it, one short line scratched over and over, half legible: the cousins' terms.";
             return s.NullOrEmpty() ? mine : s + "\n" + mine;
         }
     }

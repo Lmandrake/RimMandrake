@@ -23,6 +23,7 @@
   <ItemGroup>
     <Compile Include="..\RM_DeepCollapseKernel.cs" />
     <Compile Include="..\RM_SipperLedgerKernel.cs" />
+    <Compile Include="..\RM_AnsweringKernel.cs" />
     <Compile Include="..\..\..\_Shared\LightLedger\LightLedgerKernel.cs" />
     <Compile Include="LanternDeepsFuzz.cs" />
     <Compile Include="Program.cs" />
