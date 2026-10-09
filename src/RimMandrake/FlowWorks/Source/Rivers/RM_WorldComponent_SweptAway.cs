@@ -104,7 +104,7 @@ namespace RimMandrake.FlowWorks.Rivers
 			}
 			if (map == null)
 			{
-				map = Find.AnyPlayerHomeMap;
+				map = SurfaceHomeMap();
 			}
 			if (map == null)
 			{
@@ -163,5 +163,21 @@ namespace RimMandrake.FlowWorks.Rivers
 				Scribe_Values.Look(ref mapId, "mapId", -1);
 			}
 		}
-	}
+
+		// SURFACE_HOME_MAP_HELPER_1: never the sea floor (ship is the only way down). Same test as
+		// EnvironmentalHazards.RM_SurfaceHome; FlowWorks cannot reference that assembly, so it is repeated here.
+		private static Map SurfaceHomeMap()
+		{
+			List<Map> maps = Find.Maps;
+			for (int i = 0; i < maps.Count; i++)
+			{
+				Map m = maps[i];
+				if (m.IsPlayerHome && !(m.Tile.Valid && m.Tile.Layer?.Def?.defName == "RM_SeabedLayer"))
+				{
+					return m;
+				}
+			}
+			return null;
+		}
+}
 }

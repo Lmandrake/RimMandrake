@@ -290,7 +290,7 @@ namespace RimMandrake.WeepingStones
             RM_CondenserWorld w = RM_CondenserWorld.Get();
             if (w != null) { w.buyer = buyer; w.buyerPoolUntilTick = Find.TickManager.TicksGame + SeasonTicks; }
             int payout = 1500;
-            Map home = Find.AnyPlayerHomeMap;
+            Map home = RimMandrake.EnvironmentalHazards.RM_SurfaceHome.AnyPlayerSurfaceHomeMap;
             if (home != null)
             {
                 Thing silver = ThingMaker.MakeThing(ThingDefOf.Silver); silver.stackCount = payout;

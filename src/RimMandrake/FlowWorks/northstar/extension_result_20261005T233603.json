@@ -1,0 +1,2164 @@
+{
+ "chains": [
+  {
+   "name": "bottle_revert",
+   "components": [
+    {
+     "name": "revert_off_holds",
+     "toggle": "bottleRevertEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: hostile_pawns: 3 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat) [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261005T233028\\FlowWorksExtensions__bottle_revert__hostile_pawns__t25984__001.json]",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'bottleRevertEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'bottleRevertEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "hostile_pawns: 3 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+      "hits": [
+       {
+        "detector": "hostile_pawns",
+        "severity": "SURPRISE",
+        "summary": "3 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)"
+       }
+      ],
+      "evidence": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261005T233028\\FlowWorksExtensions__bottle_revert__hostile_pawns__t25984__001.json"
+      ],
+      "screenshots": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261005T233028\\FlowWorksExtensions__bottle_revert__hostile_pawns__t25984__001.png"
+      ]
+     }
+    },
+    {
+     "name": "boiling_bottle_reverts_to_fresh",
+     "toggle": "bottleRevertEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: hostile_pawns: 3 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat) [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\202610",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 600,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261005T233028\\FlowWorksExtensions__bottle_revert__hostile_pawns__t25984__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261005T233028\\FlowWorksExtensions__bottle_revert__hostile_pawns__t25984__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 25984,
+      "detector": "hostile_pawns",
+      "severity": "SURPRISE",
+      "summary": "3 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)"
+     }
+    ],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "dig_finds",
+   "components": [
+    {
+     "name": "finds_off_none",
+     "toggle": "digFindsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'digFindsEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 0 | budget 716 | first-found 0 | last ",
+        "ticksGame": 25984,
+        "operation": {
+         "OperationId": "op_feab74b8657e4e0697a3b721351a2d48",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:30:55.8176399+00:00",
+         "CompletedAtUtc": "2026-10-06T06:30:55.8661645+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "ARMED: the next canal cut rolls with certainty | DIGFINDS finds 0 | budget 716 | first-found 0 | last ",
+        "ticksGame": 25984,
+        "operation": {
+         "OperationId": "op_fb280d5d60f2409287398047592c88af",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:30:55.9175958+00:00",
+         "CompletedAtUtc": "2026-10-06T06:30:55.9662033+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 0,
+        "fill": 0,
+        "isExcavated": false,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 197,
+        "ticksGame": 25984,
+        "operation": {
+         "OperationId": "op_ce377ffdaf4c4fa4b32861833f564843",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:30:56.0167475+00:00",
+         "CompletedAtUtc": "2026-10-06T06:30:56.0664969+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/designate_batch",
+       "result": {
+        "success": true,
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "added": 0,
+        "removed": 0,
+        "alreadyPresent": 1,
+        "alreadyAbsent": 0,
+        "skippedWrongType": 0,
+        "targetType": "Cell",
+        "targetedThings": false,
+        "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+        "onThings": false,
+        "problemCount": 0,
+        "problemListTruncated": false,
+        "problems": [],
+        "totalNow": 1,
+        "ticksGame": 25984,
+        "operation": {
+         "OperationId": "op_430392717f804e6d829f123d634c1db3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/designate-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:30:56.117044+00:00",
+         "CompletedAtUtc": "2026-10-06T06:30:56.1670942+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": null,
+        "requestedJobDef": "RM_DigCanalJob",
+        "afterJobDef": "RM_DigCanalJob",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "plantDefToSow": null,
+        "queueLength": 0,
+        "note": null,
+        "operation": {
+         "OperationId": "op_271f1166417741e4af61cfeb8c0b767d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:30:56.217637+00:00",
+         "CompletedAtUtc": "2026-10-06T06:31:13.3997104+00:00",
+         "DurationMs": 17182,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 0,
+        "fill": 0,
+        "isExcavated": false,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 197,
+        "ticksGame": 26484,
+        "operation": {
+         "OperationId": "op_8970c58ce08d46e5bad27ed1d0d4410b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:31:23.5520425+00:00",
+         "CompletedAtUtc": "2026-10-06T06:31:23.5995903+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 0,
+        "fill": 0,
+        "isExcavated": false,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 197,
+        "ticksGame": 26984,
+        "operation": {
+         "OperationId": "op_56f7dc69a1674544baf23c8124bbb77f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:31:33.7007559+00:00",
+         "CompletedAtUtc": "2026-10-06T06:31:33.749654+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 0,
+        "fill": 0,
+        "isExcavated": false,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 197,
+        "ticksGame": 27484,
+        "operation": {
+         "OperationId": "op_1688f871d697456da0181a2d066d2380",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:31:43.8508425+00:00",
+         "CompletedAtUtc": "2026-10-06T06:31:43.899418+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 27984,
+        "operation": {
+         "OperationId": "op_34f1094067c54f8b9fb91dc5752a05a0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:31:54.0506173+00:00",
+         "CompletedAtUtc": "2026-10-06T06:31:54.0996928+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 0 | budget 716 | first-found 0 | last ",
+        "ticksGame": 27984,
+        "operation": {
+         "OperationId": "op_e413c72b52ef4e85b98830b8e7fdd7dd",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:31:54.1498199+00:00",
+         "CompletedAtUtc": "2026-10-06T06:31:54.199571+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'digFindsEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "cut_turns_up_local_find",
+     "toggle": "digFindsLocalOnly",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'digFindLetterEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 1,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24284,
+          "lookTargets": "Verse.LookTargets"
+         }
+        ],
+        "ticksGame": 27984,
+        "operation": {
+         "OperationId": "op_21e9fc02ba414e2ab68e6ddb29cf30df",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/letter-list",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:31:54.4503351+00:00",
+         "CompletedAtUtc": "2026-10-06T06:31:54.4991826+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 0 | budget 716 | first-found 0 | last ",
+        "ticksGame": 27984,
+        "operation": {
+         "OperationId": "op_4684e56d25b441a9aea469594149b1f9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:31:54.5505448+00:00",
+         "CompletedAtUtc": "2026-10-06T06:31:54.5999288+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "ARMED: the next canal cut rolls with certainty | DIGFINDS finds 0 | budget 716 | first-found 0 | last ",
+        "ticksGame": 27984,
+        "operation": {
+         "OperationId": "op_898b0aa22cd54526a7389c91f7ec6b52",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:31:54.6499434+00:00",
+         "CompletedAtUtc": "2026-10-06T06:31:54.6995544+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 27984,
+        "operation": {
+         "OperationId": "op_0fff6bcf38b8430ba640f16b105ba2fd",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:31:54.7515315+00:00",
+         "CompletedAtUtc": "2026-10-06T06:31:54.7996188+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/designate_batch",
+       "result": {
+        "success": true,
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "added": 1,
+        "removed": 0,
+        "alreadyPresent": 0,
+        "alreadyAbsent": 0,
+        "skippedWrongType": 0,
+        "targetType": "Cell",
+        "targetedThings": false,
+        "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+        "onThings": false,
+        "problemCount": 0,
+        "problemListTruncated": false,
+        "problems": [],
+        "totalNow": 1,
+        "ticksGame": 27984,
+        "operation": {
+         "OperationId": "op_b5c307bcb9d4468bb5bc3fb7f6f1632e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/designate-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:31:54.8502791+00:00",
+         "CompletedAtUtc": "2026-10-06T06:31:54.8999456+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": "RM_EmptyIntoTankJob",
+        "requestedJobDef": "RM_DigCanalJob",
+        "afterJobDef": "RM_DigCanalJob",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "plantDefToSow": null,
+        "queueLength": 0,
+        "note": null,
+        "operation": {
+         "OperationId": "op_6496d4fafdf74049b327e56c1348b4cf",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:31:54.9509968+00:00",
+         "CompletedAtUtc": "2026-10-06T06:32:12.1324822+00:00",
+         "DurationMs": 17181,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 28484,
+        "operation": {
+         "OperationId": "op_f38ab94192294116820f1eaa0154041d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:32:22.2338746+00:00",
+         "CompletedAtUtc": "2026-10-06T06:32:22.2824265+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 28984,
+        "operation": {
+         "OperationId": "op_94f21d42f7b743ed9b1be3a35932308c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:32:32.3830836+00:00",
+         "CompletedAtUtc": "2026-10-06T06:32:32.4326306+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 29484,
+        "operation": {
+         "OperationId": "op_973e03b5a249449a86ac7d8c0f35e288",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:32:42.583733+00:00",
+         "CompletedAtUtc": "2026-10-06T06:32:42.6328448+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 29984,
+        "operation": {
+         "OperationId": "op_845386f7d5c34e5da9778384f04efb1c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:32:52.7339351+00:00",
+         "CompletedAtUtc": "2026-10-06T06:32:52.7824772+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 30484,
+        "operation": {
+         "OperationId": "op_0e3b6acec48043da9e6d37474cbc5a6f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:33:04.6133905+00:00",
+         "CompletedAtUtc": "2026-10-06T06:33:04.6629211+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 1,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 30984,
+        "operation": {
+         "OperationId": "op_70722a3fcb1544dc944d206f2d354002",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:33:14.7635493+00:00",
+         "CompletedAtUtc": "2026-10-06T06:33:14.8121096+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 31484,
+        "operation": {
+         "OperationId": "op_6300951ca2894d18b86dcacbcf3b741d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:33:24.9630971+00:00",
+         "CompletedAtUtc": "2026-10-06T06:33:25.0124377+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 1 | budget 701 | first-found 0 | last Steel x15 @87,89 D=2",
+        "ticksGame": 31484,
+        "operation": {
+         "OperationId": "op_b7bafa84b86346df9e2936b2eca1ccaa",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:33:25.0634857+00:00",
+         "CompletedAtUtc": "2026-10-06T06:33:25.1120292+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 1 | budget 701 | first-found 0 | last Steel x15 @87,89 D=2",
+        "ticksGame": 31484,
+        "operation": {
+         "OperationId": "op_05f9b3ac2b2c4c28b9dacc2de4bafa3f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:33:25.1629194+00:00",
+         "CompletedAtUtc": "2026-10-06T06:33:25.2116504+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 1,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24284,
+          "lookTargets": "Verse.LookTargets"
+         }
+        ],
+        "ticksGame": 31484,
+        "operation": {
+         "OperationId": "op_e82447b9302b49c080a192ac121dcfd8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/letter-list",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:33:25.2632186+00:00",
+         "CompletedAtUtc": "2026-10-06T06:33:25.3123169+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'digFindLetterEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "first_find_sends_letter",
+     "toggle": "digFindLetterEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 1,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24284,
+          "lookTargets": "Verse.LookTargets"
+         }
+        ],
+        "ticksGame": 31484,
+        "operation": {
+         "OperationId": "op_8ff9ec8b877c4fc3812573d368f48cf0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/letter-list",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:33:25.4628381+00:00",
+         "CompletedAtUtc": "2026-10-06T06:33:25.5123777+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "ARMED: the next canal cut rolls with certainty | DIGFINDS finds 1 | budget 701 | first-found 0 | last Steel x15 @87,89 D=2",
+        "ticksGame": 31484,
+        "operation": {
+         "OperationId": "op_03351e5773144e7e9c68a1ac4d03d58f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:33:25.5634304+00:00",
+         "CompletedAtUtc": "2026-10-06T06:33:25.612545+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 31484,
+        "operation": {
+         "OperationId": "op_20ed7f72503c495fb863f1eaecd54b14",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:33:25.6632026+00:00",
+         "CompletedAtUtc": "2026-10-06T06:33:25.712473+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/designate_batch",
+       "result": {
+        "success": true,
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "added": 1,
+        "removed": 0,
+        "alreadyPresent": 0,
+        "alreadyAbsent": 0,
+        "skippedWrongType": 0,
+        "targetType": "Cell",
+        "targetedThings": false,
+        "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+        "onThings": false,
+        "problemCount": 0,
+        "problemListTruncated": false,
+        "problems": [],
+        "totalNow": 1,
+        "ticksGame": 31484,
+        "operation": {
+         "OperationId": "op_fe0dae170b9d4abaa7a85840a8044688",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/designate-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:33:25.7630397+00:00",
+         "CompletedAtUtc": "2026-10-06T06:33:25.8125866+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": "RM_EmptyIntoTankJob",
+        "requestedJobDef": "RM_DigCanalJob",
+        "afterJobDef": "RM_DigCanalJob",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "plantDefToSow": null,
+        "queueLength": 0,
+        "note": null,
+        "operation": {
+         "OperationId": "op_ad3ba82ea58f48a386ba82029aa855b5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:33:25.8626319+00:00",
+         "CompletedAtUtc": "2026-10-06T06:33:43.0459691+00:00",
+         "DurationMs": 17183,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 31984,
+        "operation": {
+         "OperationId": "op_8c82a4ca08c341cbb109d9503a86279f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:33:53.1459319+00:00",
+         "CompletedAtUtc": "2026-10-06T06:33:53.1945091+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 32484,
+        "operation": {
+         "OperationId": "op_ec6a1f838df241f9a5c592758c37fb89",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:34:03.3301235+00:00",
+         "CompletedAtUtc": "2026-10-06T06:34:03.3785484+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 32984,
+        "operation": {
+         "OperationId": "op_678ae3b520cc48cba70b46073053a05a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:34:13.4792491+00:00",
+         "CompletedAtUtc": "2026-10-06T06:34:13.5290547+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 33484,
+        "operation": {
+         "OperationId": "op_e25a0105971f43ae87cfa2a230c1f3ab",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:34:23.6530549+00:00",
+         "CompletedAtUtc": "2026-10-06T06:34:23.6785799+00:00",
+         "DurationMs": 25,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 33984,
+        "operation": {
+         "OperationId": "op_7c30729cd600478b99e813ba54bf5ed5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:34:33.7624602+00:00",
+         "CompletedAtUtc": "2026-10-06T06:34:33.8120568+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 34484,
+        "operation": {
+         "OperationId": "op_116cfed3793e4fb2841aa477d4d06317",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:34:43.9623548+00:00",
+         "CompletedAtUtc": "2026-10-06T06:34:44.0134334+00:00",
+         "DurationMs": 51,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 34984,
+        "operation": {
+         "OperationId": "op_ecc73b78348342c3811f75cbce7de9cb",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:34:54.1125523+00:00",
+         "CompletedAtUtc": "2026-10-06T06:34:54.1621112+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 35484,
+        "operation": {
+         "OperationId": "op_279b61917ecb4f01ba8139dc4abc6224",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:35:04.2629109+00:00",
+         "CompletedAtUtc": "2026-10-06T06:35:04.3114676+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 35984,
+        "operation": {
+         "OperationId": "op_747c10a2a6124793914bc6620c08787e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:35:14.4135833+00:00",
+         "CompletedAtUtc": "2026-10-06T06:35:14.461549+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 3,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 41.0,
+        "overflowDestroyedTotal": 1.0,
+        "excavatedCellCount": 198,
+        "ticksGame": 36484,
+        "operation": {
+         "OperationId": "op_e8426cf1a5e24e4d9b8cf58619e744be",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:35:24.612371+00:00",
+         "CompletedAtUtc": "2026-10-06T06:35:24.6614955+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 2 | budget 679 | first-found 1 | last Steel x22 @87,89 D=3",
+        "ticksGame": 36484,
+        "operation": {
+         "OperationId": "op_dc256ef50a704d349765a14561792a86",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:35:24.7120509+00:00",
+         "CompletedAtUtc": "2026-10-06T06:35:24.7616589+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 2,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 24284,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Found while digging: Steel",
+           "Length": 26,
+           "StrippedLength": 26
+          },
+          "defName": "PositiveEvent",
+          "arrivalTick": 36372,
+          "lookTargets": "Verse.LookTargets"
+         }
+        ],
+        "ticksGame": 36484,
+        "operation": {
+         "OperationId": "op_833f1b5c3c434177867ead8c21171b22",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/letter-list",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:35:24.8132089+00:00",
+         "CompletedAtUtc": "2026-10-06T06:35:24.8613082+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 23,
+    "fed": 0,
+    "ticks_spent": 10500,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 27484,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 27984,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 28484,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 28984,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 29484,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 29984,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 30000,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 30484,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 30984,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 31484,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 31984,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 32484,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 32984,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 33484,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 33984,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 34484,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 34984,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 35484,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 35984,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 36484,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 36484,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [PositiveEvent] Found while digging: Steel"
+     },
+     {
+      "tick": 36484,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 36484,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [PositiveEvent] Found while digging: Steel"
+     }
+    ],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "machinery_hoses",
+   "components": [
+    {
+     "name": "hose_feeds_far_tank",
+     "toggle": "liquidHosesEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 43148 examined.",
+        "matched": 1,
+        "examined": 43148,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank55600",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 122,
+          "z": 89,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty"
+          ],
+          "lowPriority": null,
+          "error": null
+         }
+        ],
+        "ticksGame": 36484,
+        "operation": {
+         "OperationId": "op_88ff050842644ef49c66bd19c4254d2b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:35:32.9536265+00:00",
+         "CompletedAtUtc": "2026-10-06T06:35:33.0021906+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(800) [watched] -> 800 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 800,
+        "requested": 800
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 43140 examined.",
+        "matched": 1,
+        "examined": 43140,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank55600",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 122,
+          "z": 89,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (15 / 300 units)"
+          ],
+          "lowPriority": null,
+          "error": null
+         }
+        ],
+        "ticksGame": 37284,
+        "operation": {
+         "OperationId": "op_088e4a3859014c8b9de79153c73c567d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:35:49.3186568+00:00",
+         "CompletedAtUtc": "2026-10-06T06:35:49.3687199+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "hoses_off_far_tank_idle",
+     "toggle": "liquidHosesEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.Machinery.RM_MachinerySettings, {'liquidHosesEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 43140 examined.",
+        "matched": 1,
+        "examined": 43140,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank55600",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 122,
+          "z": 89,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (15 / 300 units)"
+          ],
+          "lowPriority": null,
+          "error": null
+         }
+        ],
+        "ticksGame": 37284,
+        "operation": {
+         "OperationId": "op_d82cc0c5a3834fc296919d9786126a5a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:35:49.5194244+00:00",
+         "CompletedAtUtc": "2026-10-06T06:35:49.5682102+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(600) [watched] -> 600 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 600,
+        "requested": 600
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 43128 examined.",
+        "matched": 1,
+        "examined": 43128,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank55600",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 122,
+          "z": 89,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Holding: Fresh water (15 / 300 units)"
+          ],
+          "lowPriority": null,
+          "error": null
+         }
+        ],
+        "ticksGame": 37884,
+        "operation": {
+         "OperationId": "op_d7d5fde1aaea41df86a2fddccaf477a5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T06:36:01.3355313+00:00",
+         "CompletedAtUtc": "2026-10-06T06:36:01.3849083+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.Machinery.RM_MachinerySettings, {'liquidHosesEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 4,
+    "fed": 0,
+    "ticks_spent": 1400,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 37884,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     },
+     {
+      "tick": 37884,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Jet: 1 existing hediff(s) worsened"
+     }
+    ],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 337.6,
+ "chains_run": [
+  "bottle_revert",
+  "dig_finds",
+  "machinery_hoses"
+ ]
+}

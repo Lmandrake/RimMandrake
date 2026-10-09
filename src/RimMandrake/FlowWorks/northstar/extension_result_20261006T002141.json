@@ -1,0 +1,5758 @@
+{
+ "chains": [
+  {
+   "name": "pit_fill_effects",
+   "components": [
+    {
+     "name": "pit_fluid_effects_per_cell",
+     "toggle": "pitDrowningEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(1000) [watched] -> 1000 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1000,
+        "requested": 1000
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "FILLFX 3 | Human37751@81,160 D=4 F=4 fluid=RM_Fluid_Water swimmer=False drown=0.347 tox=0.000 burning=False | Human37758@85,160 D=4 F=4 fluid=RM_Fluid_Poison swimmer=False drown=0.360 tox=0.039 burning=False | Human37765@89,160 D=4 F=4 fluid=RM_Fluid_Oil swimmer=False drown=0.360 tox=0.000 burning=False",
+        "ticksGame": 1001,
+        "operation": {
+         "OperationId": "op_c566243037a0434cb23f9e2c600c158c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:11.2306673+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:11.2802648+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "oil_pit_burns_occupant",
+     "toggle": "canalFireEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (89, 0, 160) | FIRE burning 1 | front pending 0 | burned levels 0",
+        "ticksGame": 1001,
+        "operation": {
+         "OperationId": "op_f3d4f8dee831417382b48dedb45bd7d1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:11.3307094+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:11.3796404+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(500) [watched] -> 500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 500,
+        "requested": 500
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "FILLFX 3 | Human37751@81,160 D=4 F=4 fluid=RM_Fluid_Water swimmer=False drown=0.520 tox=0.000 burning=False | Human37758@85,160 D=4 F=4 fluid=RM_Fluid_Poison swimmer=False drown=0.520 tox=0.058 burning=False | Human37765@89,160 D=4 F=4 fluid=RM_Fluid_Oil swimmer=False drown=0.520 tox=0.000 burning=True",
+        "ticksGame": 1501,
+        "operation": {
+         "OperationId": "op_343d2fe749dc48b1bafda7f8341010c4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:21.1972269+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:21.2470778+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human37765",
+          "thingIdNumber": 37765,
+          "name": "Blue Owl",
+          "nameShort": "Owl",
+          "title": "scout",
+          "kindDef": "Pirate",
+          "faction": "TribeRoughNeanderthal",
+          "factionName": "Bookoulbah Union",
+          "gender": "Female",
+          "ageBiologicalYears": 25,
+          "ageChronologicalYears": 25,
+          "developmentalStage": "Adult",
+          "xenotype": "Neanderthal",
+          "ideo": "Ilwaban Sect",
+          "childhood": "CrashBaby32",
+          "adulthood": "Scout59",
+          "headType": "Female_HeavyJawNormal",
+          "bodyType": "Hulk",
+          "hair": "Keeper",
+          "beard": "NoBeard",
+          "position": {
+           "x": 89,
+           "z": 160
+          },
+          "traits": [
+           {
+            "def": "SpeedOffset",
+            "degree": 2,
+            "label": "Jogger",
+            "forced": false
+           },
+           {
+            "def": "PsychicSensitivity",
+            "degree": 1,
+            "label": "Psychically sensitive",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 5,
+            "levelEffective": 1,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 10,
+            "levelEffective": 6,
+            "passion": "Major",
+            "xpSinceLastLevel": -0.8000001,
+            "disabled": false
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 6,
+            "levelEffective": 2,
+            "passion": "Major",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "RM_PitExposure",
+            "part": null,
+            "severity": 0.572000146
+           },
+           {
+            "def": "RM_PitDrowning",
+            "part": null,
+            "severity": 0.520000041
+           },
+           {
+            "def": "Burn",
+            "part": "Shoulder",
+            "severity": 2.92
+           },
+           {
+            "def": "Burn",
+            "part": "Torso",
+            "severity": 2.25
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.476,
+            "pct": 0.476
+           },
+           {
+            "need": "Food",
+            "level": 0.768000066,
+            "pct": 0.768000066
+           },
+           {
+            "need": "Rest",
+            "level": 0.8820336,
+            "pct": 0.8820336
+           }
+          ]
+         }
+        ],
+        "ticksGame": 1501,
+        "operation": {
+         "OperationId": "op_664fea0bcd1647499251be05d33f849e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:21.2987945+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:21.3472096+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 5,
+    "fed": 0,
+    "ticks_spent": 1560,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 600,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Bonnie (Human37744) left the roster"
+     },
+     {
+      "tick": 600,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "3 new error message(s) in the log"
+     },
+     {
+      "tick": 1001,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Bonnie (Human37744) left the roster"
+     },
+     {
+      "tick": 1001,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "3 new error message(s) in the log"
+     },
+     {
+      "tick": 1501,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Bonnie (Human37744) left the roster"
+     },
+     {
+      "tick": 1501,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "3 new error message(s) in the log"
+     },
+     {
+      "tick": 1561,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Bonnie (Human37744) left the roster"
+     },
+     {
+      "tick": 1561,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "3 new error message(s) in the log"
+     },
+     {
+      "tick": 1561,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Bonnie (Human37744) left the roster"
+     },
+     {
+      "tick": 1561,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "3 new error message(s) in the log"
+     }
+    ],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "fire_explosion",
+   "components": [
+    {
+     "name": "explosion_off_does_not_light",
+     "toggle": "explosionIgnitesLiquidEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'explosionIgnitesLiquidEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/map_explosion",
+       "result": {
+        "success": true,
+        "center": {
+         "x": 115,
+         "z": 119
+        },
+        "damType": "Bomb",
+        "radius": 0.9,
+        "damage": "def default (50)",
+        "gas": null,
+        "clampNote": null,
+        "explosiveDamageDefs": [
+         {
+          "def": "Flame",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Burn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Extinguish",
+          "defaultDamage": 999999,
+          "isExplosive": false
+         },
+         {
+          "def": "Bomb",
+          "defaultDamage": 50,
+          "isExplosive": true
+         },
+         {
+          "def": "BombSuper",
+          "defaultDamage": 550,
+          "isExplosive": true
+         },
+         {
+          "def": "Smoke",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "Thump",
+          "defaultDamage": 5,
+          "isExplosive": true
+         },
+         {
+          "def": "Vaporize",
+          "defaultDamage": 800,
+          "isExplosive": false
+         },
+         {
+          "def": "AcidBurn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Stun",
+          "defaultDamage": 20,
+          "isExplosive": false
+         },
+         {
+          "def": "EMP",
+          "defaultDamage": 50,
+          "isExplosive": false
+         },
+         {
+          "def": "ToxGas",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "MechBandShockwave",
+          "defaultDamage": 50,
+          "isExplosive": false
+         },
+         {
+          "def": "ElectricalBurn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "DeadlifeDust",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "NociosphereVaporize",
+          "defaultDamage": 800,
+          "isExplosive": false
+         },
+         {
+          "def": "MiningBomb",
+          "defaultDamage": 50,
+          "isExplosive": true
+         }
+        ],
+        "ticksGame": 1561,
+        "operation": {
+         "OperationId": "op_2d8e758caf4e49ebbd4830e3b058309c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-explosion",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:32.7113011+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:32.7604774+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(250) [watched] -> 250 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 250,
+        "requested": 250
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 33642,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {},
+        "ticksGame": 1811,
+        "message": "NOTHING MATCHED. 33642 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_fb264eef5108454c9f5a09fc458525fd",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:38.3773827+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:38.427073+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'explosionIgnitesLiquidEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "explosion_lights_liquid",
+     "toggle": "explosionIgnitesLiquidEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/map_explosion",
+       "result": {
+        "success": true,
+        "center": {
+         "x": 122,
+         "z": 119
+        },
+        "damType": "EMP",
+        "radius": 0.9,
+        "damage": "def default (50)",
+        "gas": null,
+        "clampNote": null,
+        "explosiveDamageDefs": [
+         {
+          "def": "Flame",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Burn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Extinguish",
+          "defaultDamage": 999999,
+          "isExplosive": false
+         },
+         {
+          "def": "Bomb",
+          "defaultDamage": 50,
+          "isExplosive": true
+         },
+         {
+          "def": "BombSuper",
+          "defaultDamage": 550,
+          "isExplosive": true
+         },
+         {
+          "def": "Smoke",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "Thump",
+          "defaultDamage": 5,
+          "isExplosive": true
+         },
+         {
+          "def": "Vaporize",
+          "defaultDamage": 800,
+          "isExplosive": false
+         },
+         {
+          "def": "AcidBurn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Stun",
+          "defaultDamage": 20,
+          "isExplosive": false
+         },
+         {
+          "def": "EMP",
+          "defaultDamage": 50,
+          "isExplosive": false
+         },
+         {
+          "def": "ToxGas",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "MechBandShockwave",
+          "defaultDamage": 50,
+          "isExplosive": false
+         },
+         {
+          "def": "ElectricalBurn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "DeadlifeDust",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "NociosphereVaporize",
+          "defaultDamage": 800,
+          "isExplosive": false
+         },
+         {
+          "def": "MiningBomb",
+          "defaultDamage": 50,
+          "isExplosive": true
+         }
+        ],
+        "ticksGame": 1811,
+        "operation": {
+         "OperationId": "op_9367bbd616b141f38c12a11b46d9c242",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-explosion",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:38.5782191+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:38.6268994+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/map_explosion",
+       "result": {
+        "success": true,
+        "center": {
+         "x": 129,
+         "z": 119
+        },
+        "damType": "Bomb",
+        "radius": 0.9,
+        "damage": "def default (50)",
+        "gas": null,
+        "clampNote": null,
+        "explosiveDamageDefs": [
+         {
+          "def": "Flame",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Burn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Extinguish",
+          "defaultDamage": 999999,
+          "isExplosive": false
+         },
+         {
+          "def": "Bomb",
+          "defaultDamage": 50,
+          "isExplosive": true
+         },
+         {
+          "def": "BombSuper",
+          "defaultDamage": 550,
+          "isExplosive": true
+         },
+         {
+          "def": "Smoke",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "Thump",
+          "defaultDamage": 5,
+          "isExplosive": true
+         },
+         {
+          "def": "Vaporize",
+          "defaultDamage": 800,
+          "isExplosive": false
+         },
+         {
+          "def": "AcidBurn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Stun",
+          "defaultDamage": 20,
+          "isExplosive": false
+         },
+         {
+          "def": "EMP",
+          "defaultDamage": 50,
+          "isExplosive": false
+         },
+         {
+          "def": "ToxGas",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "MechBandShockwave",
+          "defaultDamage": 50,
+          "isExplosive": false
+         },
+         {
+          "def": "ElectricalBurn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "DeadlifeDust",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "NociosphereVaporize",
+          "defaultDamage": 800,
+          "isExplosive": false
+         },
+         {
+          "def": "MiningBomb",
+          "defaultDamage": 50,
+          "isExplosive": true
+         }
+        ],
+        "ticksGame": 1811,
+        "operation": {
+         "OperationId": "op_e10b71faa81548cea96f80d3c972332b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-explosion",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:38.6784588+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:38.7269975+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(250) [watched] -> 250 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 250,
+        "requested": 250
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 33643,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {},
+        "ticksGame": 2061,
+        "message": "NOTHING MATCHED. 33643 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_aaafb4ba765940a88c6df50e1d0a18ca",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:44.3610574+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:44.4101383+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37781",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 129,
+          "z": 119,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33643,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 2061,
+        "message": "1 of 1 matching thing(s) returned, 33643 examined.",
+        "operation": {
+         "OperationId": "op_bcda15f0892b4f979ad5434eaf7fa5f1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:44.4603555+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:44.5100442+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 3,
+    "fed": 0,
+    "ticks_spent": 500,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "fire_foam",
+   "components": [
+    {
+     "name": "foam_smothers_burning_liquid",
+     "toggle": "foamSmothersLiquidFireEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37782",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 115,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33646,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 2061,
+        "message": "1 of 1 matching thing(s) returned, 33646 examined.",
+        "operation": {
+         "OperationId": "op_c88df372b5de40dfacd546665ceec41c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:52.1604099+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:52.2100638+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37783",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 118,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33646,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 2061,
+        "message": "1 of 1 matching thing(s) returned, 33646 examined.",
+        "operation": {
+         "OperationId": "op_4d8d63026d19471c9e9f106e2654b584",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:52.2603955+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:52.3099918+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37784",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 121,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33646,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 2061,
+        "message": "1 of 1 matching thing(s) returned, 33646 examined.",
+        "operation": {
+         "OperationId": "op_7abec4d273b44b31ad45201560b44dba",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:52.3610292+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:52.4100722+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37785",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 124,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33646,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 2061,
+        "message": "1 of 1 matching thing(s) returned, 33646 examined.",
+        "operation": {
+         "OperationId": "op_3edcb65b050f427ebd8ce2341f83d39e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:52.4606147+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:52.5096585+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/map_explosion",
+       "result": {
+        "success": true,
+        "center": {
+         "x": 115,
+         "z": 122
+        },
+        "damType": "Extinguish",
+        "radius": 0.5,
+        "damage": "def default (999999)",
+        "gas": null,
+        "clampNote": null,
+        "explosiveDamageDefs": [
+         {
+          "def": "Flame",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Burn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Extinguish",
+          "defaultDamage": 999999,
+          "isExplosive": false
+         },
+         {
+          "def": "Bomb",
+          "defaultDamage": 50,
+          "isExplosive": true
+         },
+         {
+          "def": "BombSuper",
+          "defaultDamage": 550,
+          "isExplosive": true
+         },
+         {
+          "def": "Smoke",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "Thump",
+          "defaultDamage": 5,
+          "isExplosive": true
+         },
+         {
+          "def": "Vaporize",
+          "defaultDamage": 800,
+          "isExplosive": false
+         },
+         {
+          "def": "AcidBurn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Stun",
+          "defaultDamage": 20,
+          "isExplosive": false
+         },
+         {
+          "def": "EMP",
+          "defaultDamage": 50,
+          "isExplosive": false
+         },
+         {
+          "def": "ToxGas",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "MechBandShockwave",
+          "defaultDamage": 50,
+          "isExplosive": false
+         },
+         {
+          "def": "ElectricalBurn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "DeadlifeDust",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "NociosphereVaporize",
+          "defaultDamage": 800,
+          "isExplosive": false
+         },
+         {
+          "def": "MiningBomb",
+          "defaultDamage": 50,
+          "isExplosive": true
+         }
+        ],
+        "ticksGame": 2061,
+        "operation": {
+         "OperationId": "op_a594a41c14cf41bf9b848fae58e738f0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-explosion",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:52.5609985+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:52.6097183+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/map_explosion",
+       "result": {
+        "success": true,
+        "center": {
+         "x": 118,
+         "z": 122
+        },
+        "damType": "Extinguish",
+        "radius": 0.5,
+        "damage": "def default (999999)",
+        "gas": null,
+        "clampNote": null,
+        "explosiveDamageDefs": [
+         {
+          "def": "Flame",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Burn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Extinguish",
+          "defaultDamage": 999999,
+          "isExplosive": false
+         },
+         {
+          "def": "Bomb",
+          "defaultDamage": 50,
+          "isExplosive": true
+         },
+         {
+          "def": "BombSuper",
+          "defaultDamage": 550,
+          "isExplosive": true
+         },
+         {
+          "def": "Smoke",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "Thump",
+          "defaultDamage": 5,
+          "isExplosive": true
+         },
+         {
+          "def": "Vaporize",
+          "defaultDamage": 800,
+          "isExplosive": false
+         },
+         {
+          "def": "AcidBurn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Stun",
+          "defaultDamage": 20,
+          "isExplosive": false
+         },
+         {
+          "def": "EMP",
+          "defaultDamage": 50,
+          "isExplosive": false
+         },
+         {
+          "def": "ToxGas",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "MechBandShockwave",
+          "defaultDamage": 50,
+          "isExplosive": false
+         },
+         {
+          "def": "ElectricalBurn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "DeadlifeDust",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "NociosphereVaporize",
+          "defaultDamage": 800,
+          "isExplosive": false
+         },
+         {
+          "def": "MiningBomb",
+          "defaultDamage": 50,
+          "isExplosive": true
+         }
+        ],
+        "ticksGame": 2061,
+        "operation": {
+         "OperationId": "op_ff9c8ea7659249278c38a72bcd2f9083",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-explosion",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:52.6612541+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:52.7102974+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(90) [watched] -> 90 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 90,
+        "requested": 90
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 33645,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {},
+        "ticksGame": 2151,
+        "message": "NOTHING MATCHED. 33645 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_abcfe3176d30487483c2276727341cc1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:55.6608049+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:55.7096628+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 33645,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {},
+        "ticksGame": 2151,
+        "message": "NOTHING MATCHED. 33645 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_0ec1e28c830340148e73c9aa2ac514f9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:55.7609889+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:55.8097522+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37784",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 121,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33645,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 2151,
+        "message": "1 of 1 matching thing(s) returned, 33645 examined.",
+        "operation": {
+         "OperationId": "op_b558a979c5594b00af7813e55bf4b6aa",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:55.8612981+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:55.9099721+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37785",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 124,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33645,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 2151,
+        "message": "1 of 1 matching thing(s) returned, 33645 examined.",
+        "operation": {
+         "OperationId": "op_1772614ce2d141e98d3cbc500a3a853c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:55.9609135+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:56.0095056+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "foam_off_is_inert",
+     "toggle": "foamSmothersLiquidFireEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'foamSmothersLiquidFireEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/map_explosion",
+       "result": {
+        "success": true,
+        "center": {
+         "x": 121,
+         "z": 122
+        },
+        "damType": "Extinguish",
+        "radius": 0.5,
+        "damage": "def default (999999)",
+        "gas": null,
+        "clampNote": null,
+        "explosiveDamageDefs": [
+         {
+          "def": "Flame",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Burn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Extinguish",
+          "defaultDamage": 999999,
+          "isExplosive": false
+         },
+         {
+          "def": "Bomb",
+          "defaultDamage": 50,
+          "isExplosive": true
+         },
+         {
+          "def": "BombSuper",
+          "defaultDamage": 550,
+          "isExplosive": true
+         },
+         {
+          "def": "Smoke",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "Thump",
+          "defaultDamage": 5,
+          "isExplosive": true
+         },
+         {
+          "def": "Vaporize",
+          "defaultDamage": 800,
+          "isExplosive": false
+         },
+         {
+          "def": "AcidBurn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "Stun",
+          "defaultDamage": 20,
+          "isExplosive": false
+         },
+         {
+          "def": "EMP",
+          "defaultDamage": 50,
+          "isExplosive": false
+         },
+         {
+          "def": "ToxGas",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "MechBandShockwave",
+          "defaultDamage": 50,
+          "isExplosive": false
+         },
+         {
+          "def": "ElectricalBurn",
+          "defaultDamage": 10,
+          "isExplosive": false
+         },
+         {
+          "def": "DeadlifeDust",
+          "defaultDamage": 0,
+          "isExplosive": false
+         },
+         {
+          "def": "NociosphereVaporize",
+          "defaultDamage": 800,
+          "isExplosive": false
+         },
+         {
+          "def": "MiningBomb",
+          "defaultDamage": 50,
+          "isExplosive": true
+         }
+        ],
+        "ticksGame": 2151,
+        "operation": {
+         "OperationId": "op_373c622f7e114302acfb413bc0a2f305",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-explosion",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:56.1612236+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:56.2095571+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(90) [watched] -> 90 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 90,
+        "requested": 90
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37784",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 121,
+          "z": 122,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33645,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 10,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 2241,
+        "message": "1 of 1 matching thing(s) returned, 33645 examined.",
+        "operation": {
+         "OperationId": "op_1f6dcd13077d4747862a2844e30b2fdb",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:16:59.1773661+00:00",
+         "CompletedAtUtc": "2026-10-06T07:16:59.2268325+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'foamSmothersLiquidFireEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 3,
+    "fed": 0,
+    "ticks_spent": 180,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "fire_rain",
+   "components": [
+    {
+     "name": "rain_douses_open_fire",
+     "toggle": "rainDousesLiquidFireEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (115, 0, 126) | FIRE burning 1 | front pending 0 | burned levels 0",
+        "ticksGame": 2241,
+        "operation": {
+         "OperationId": "op_20a372345e7e459c9cf3111d3a258517",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:17:08.6274333+00:00",
+         "CompletedAtUtc": "2026-10-06T07:17:08.6778432+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (118, 0, 126) | FIRE burning 2 | front pending 0 | burned levels 0",
+        "ticksGame": 2241,
+        "operation": {
+         "OperationId": "op_dbe85293f5304a3ab6302f81a0c7d325",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:17:08.7273897+00:00",
+         "CompletedAtUtc": "2026-10-06T07:17:08.7769436+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (121, 0, 126) | FIRE burning 3 | front pending 0 | burned levels 0",
+        "ticksGame": 2241,
+        "operation": {
+         "OperationId": "op_342ddf1eb058473493419947f25ea553",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:17:08.8267717+00:00",
+         "CompletedAtUtc": "2026-10-06T07:17:08.8763205+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (124, 0, 126) | FIRE burning 4 | front pending 0 | burned levels 0",
+        "ticksGame": 2241,
+        "operation": {
+         "OperationId": "op_0a1feee6c72642989d1632c5c82f94b4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:17:08.9273684+00:00",
+         "CompletedAtUtc": "2026-10-06T07:17:08.97591+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (127, 0, 126) | FIRE burning 5 | front pending 0 | burned levels 0",
+        "ticksGame": 2241,
+        "operation": {
+         "OperationId": "op_d69bab6d34be46609436164c07a5bdbf",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:17:09.0269643+00:00",
+         "CompletedAtUtc": "2026-10-06T07:17:09.0776317+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (130, 0, 126) | FIRE burning 6 | front pending 0 | burned levels 0",
+        "ticksGame": 2241,
+        "operation": {
+         "OperationId": "op_15ff7c22a7f641379c37672567a713a0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:17:09.1268569+00:00",
+         "CompletedAtUtc": "2026-10-06T07:17:09.1764038+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (115, 0, 129) | FIRE burning 7 | front pending 0 | burned levels 0",
+        "ticksGame": 2241,
+        "operation": {
+         "OperationId": "op_8131c596728a4f8fb1c6c69a5bde8219",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:17:09.22654+00:00",
+         "CompletedAtUtc": "2026-10-06T07:17:09.2760753+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (118, 0, 129) | FIRE burning 8 | front pending 0 | burned levels 0",
+        "ticksGame": 2241,
+        "operation": {
+         "OperationId": "op_b59acab0e81645bda1bc3cee0e64aea0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:17:09.3271516+00:00",
+         "CompletedAtUtc": "2026-10-06T07:17:09.3763226+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (121, 0, 129) | FIRE burning 9 | front pending 0 | burned levels 0",
+        "ticksGame": 2241,
+        "operation": {
+         "OperationId": "op_0347e15ae0f249408144e747ac7f138c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:17:09.4269552+00:00",
+         "CompletedAtUtc": "2026-10-06T07:17:09.4770293+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (124, 0, 129) | FIRE burning 10 | front pending 0 | burned levels 0",
+        "ticksGame": 2241,
+        "operation": {
+         "OperationId": "op_2c06bd515c0f48c395f04c039ce862a7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:17:09.5276412+00:00",
+         "CompletedAtUtc": "2026-10-06T07:17:09.5762666+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (127, 0, 129) | FIRE burning 11 | front pending 0 | burned levels 0",
+        "ticksGame": 2241,
+        "operation": {
+         "OperationId": "op_9d3bfc940ba94823b79b3ed423cf4ebf",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:17:09.6273281+00:00",
+         "CompletedAtUtc": "2026-10-06T07:17:09.6763723+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (130, 0, 129) | FIRE burning 12 | front pending 0 | burned levels 0",
+        "ticksGame": 2241,
+        "operation": {
+         "OperationId": "op_2d94b61df2e34b50a010c7b9aceaebc3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:17:09.7270545+00:00",
+         "CompletedAtUtc": "2026-10-06T07:17:09.7766979+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(3000) [watched] -> 3000 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 3000,
+        "requested": 3000
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37790",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 115,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33658,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 5241,
+        "message": "1 of 1 matching thing(s) returned, 33658 examined.",
+        "operation": {
+         "OperationId": "op_6697ed6d48f147ab91acedf110966397",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:04.9440204+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:04.9925658+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37791",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 118,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33658,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 5241,
+        "message": "1 of 1 matching thing(s) returned, 33658 examined.",
+        "operation": {
+         "OperationId": "op_cccfe969990344328c43870c8ca4c2c7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:05.0442064+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:05.0923527+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37792",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 121,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33658,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 5241,
+        "message": "1 of 1 matching thing(s) returned, 33658 examined.",
+        "operation": {
+         "OperationId": "op_cfbf41e0151d4595987182a3749b13a9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:05.1431757+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:05.1922905+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37793",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 124,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33658,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 5241,
+        "message": "1 of 1 matching thing(s) returned, 33658 examined.",
+        "operation": {
+         "OperationId": "op_1376d3ab47a54efda9186768eba12651",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:05.2434469+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:05.292972+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 33658,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {},
+        "ticksGame": 5241,
+        "message": "NOTHING MATCHED. 33658 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_940c0a08917042e6a36267dd9bbbf83c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:05.3437373+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:05.3922838+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 33658,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {},
+        "ticksGame": 5241,
+        "message": "NOTHING MATCHED. 33658 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_dbbd30eebfd643dabc1b0540afccb806",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:05.4440065+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:05.4931417+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37796",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 115,
+          "z": 129,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33658,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 5241,
+        "message": "1 of 1 matching thing(s) returned, 33658 examined.",
+        "operation": {
+         "OperationId": "op_77896b0bf43643ada7a1eebdccc04749",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:05.5437166+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:05.5927868+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37797",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 118,
+          "z": 129,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33658,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 5241,
+        "message": "1 of 1 matching thing(s) returned, 33658 examined.",
+        "operation": {
+         "OperationId": "op_335d99d314a24b429babffb96f29a74b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:05.6432556+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:05.6933095+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37798",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 121,
+          "z": 129,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33658,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 5241,
+        "message": "1 of 1 matching thing(s) returned, 33658 examined.",
+        "operation": {
+         "OperationId": "op_f7b2c3fb0e9e46ebbec921246fcd83bd",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:05.7435567+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:05.792424+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37799",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 124,
+          "z": 129,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33658,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 5241,
+        "message": "1 of 1 matching thing(s) returned, 33658 examined.",
+        "operation": {
+         "OperationId": "op_1974955cb89d42cfaab7853cc27d8bd4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:05.844835+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:05.8925831+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37800",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 127,
+          "z": 129,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33658,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 5241,
+        "message": "1 of 1 matching thing(s) returned, 33658 examined.",
+        "operation": {
+         "OperationId": "op_4ab3c4957f444dfda3854620528aa818",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:05.9437863+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:05.9924405+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37801",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 130,
+          "z": 129,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33658,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 5241,
+        "message": "1 of 1 matching thing(s) returned, 33658 examined.",
+        "operation": {
+         "OperationId": "op_2abebce1fabb4f7193892c920b83f22e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:06.0436182+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:06.0924147+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rain_off_leaves_fire",
+     "toggle": "rainDousesLiquidFireEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'rainDousesLiquidFireEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (115, 0, 126) | FIRE burning 10 | front pending 0 | burned levels 0",
+        "ticksGame": 5241,
+        "operation": {
+         "OperationId": "op_36a71cb2f174435c9f003210b1acb69d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:06.2446508+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:06.292248+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (118, 0, 126) | FIRE burning 10 | front pending 0 | burned levels 0",
+        "ticksGame": 5241,
+        "operation": {
+         "OperationId": "op_cef640c057ef466ca02a72b9b2845576",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:06.3435307+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:06.393161+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (121, 0, 126) | FIRE burning 10 | front pending 0 | burned levels 0",
+        "ticksGame": 5241,
+        "operation": {
+         "OperationId": "op_de19173cafba4eec86f3cdf9f9d89dc0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:06.4436979+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:06.4932755+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (124, 0, 126) | FIRE burning 10 | front pending 0 | burned levels 0",
+        "ticksGame": 5241,
+        "operation": {
+         "OperationId": "op_0267d05da70b40d4b5c57dc842870994",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:06.5439265+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:06.5929981+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (127, 0, 126) | FIRE burning 11 | front pending 0 | burned levels 0",
+        "ticksGame": 5241,
+        "operation": {
+         "OperationId": "op_e1b1af7758db4c138fa6842d216ce9b7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:06.6439768+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:06.6927171+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofIgnite(System.String)",
+        "result": "LIT (130, 0, 126) | FIRE burning 12 | front pending 0 | burned levels 0",
+        "ticksGame": 5241,
+        "operation": {
+         "OperationId": "op_d3c51b18559b40f6bb2846e9c670bc34",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:06.7437312+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:06.7930373+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(1500) [watched] -> 1500 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 1500,
+        "requested": 1500
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37790",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 115,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33667,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 6741,
+        "message": "1 of 1 matching thing(s) returned, 33667 examined.",
+        "operation": {
+         "OperationId": "op_f61289a046944f2eb9c79d27de43af63",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:35.1101749+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:35.1593894+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37791",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 118,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33667,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 6741,
+        "message": "1 of 1 matching thing(s) returned, 33667 examined.",
+        "operation": {
+         "OperationId": "op_fe77c6c874964213a1909af4f3db0b7c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:35.2101917+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:35.2595067+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37792",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 121,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33667,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 6741,
+        "message": "1 of 1 matching thing(s) returned, 33667 examined.",
+        "operation": {
+         "OperationId": "op_aeed718c30ad4f57b270268a283079e2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:35.3102993+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:35.3582231+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37793",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 124,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33667,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 6741,
+        "message": "1 of 1 matching thing(s) returned, 33667 examined.",
+        "operation": {
+         "OperationId": "op_7f843ae051d0425f954e817c9105d3b8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:35.4111289+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:35.4584618+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37830",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 127,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33667,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 6741,
+        "message": "1 of 1 matching thing(s) returned, 33667 examined.",
+        "operation": {
+         "OperationId": "op_64f492050d114c10af9632beda22c7a0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:35.5101036+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:35.5587361+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_LiquidFlame37831",
+          "def": "RM_LiquidFlame",
+          "label": "Burning liquid",
+          "x": 130,
+          "z": 126,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": -1,
+          "maxHitPoints": -1,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33667,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "RM_LiquidFlame": 1
+        },
+        "ticksGame": 6741,
+        "message": "1 of 1 matching thing(s) returned, 33667 examined.",
+        "operation": {
+         "OperationId": "op_385590dc00ca4b86bcd23d9172af96f8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:35.6102047+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:35.6591543+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'rainDousesLiquidFireEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 9,
+    "fed": 0,
+    "ticks_spent": 4500,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "pit_prison_room",
+   "components": [
+    {
+     "name": "pit_is_its_own_room",
+     "toggle": "superdeepRoomsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofRoom(System.String)",
+        "result": "ROOM split=True pitRoom=True proper=True edge=False prison=False roomsOn=True pitId=33 lipId=12",
+        "ticksGame": 6741,
+        "operation": {
+         "OperationId": "op_3f40ffcbd51c431c9dcb231259f6dfff",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:43.3132011+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:43.3619549+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rooms_off_pit_joins_lip",
+     "toggle": "superdeepRoomsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'superdeepRoomsEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "ticksGame": 6741,
+        "operation": {
+         "OperationId": "op_3f5afc1ad9f9475a9efb3b7cec90e968",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:43.5120667+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:43.6586272+00:00",
+         "DurationMs": 146,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofRoom(System.String)",
+        "result": "ROOM split=False pitRoom=False proper=False edge=True prison=False roomsOn=False pitId=34 lipId=34",
+        "ticksGame": 6741,
+        "operation": {
+         "OperationId": "op_9a280c79e3024323a484538946307f03",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:43.6898078+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:43.7359674+00:00",
+         "DurationMs": 46,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'superdeepRoomsEnabled': True})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "ticksGame": 6741,
+        "operation": {
+         "OperationId": "op_8b95fcaa256c4edb8982c6abce08bbb6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:43.8879557+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:44.0258906+00:00",
+         "DurationMs": 137,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "prisoner_bed_makes_prison_cell",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/build_batch",
+       "result": {
+        "success": true,
+        "placed": 1,
+        "survived": 1,
+        "lostToLaterOps": 0,
+        "failedCount": 0,
+        "failed": [],
+        "displacedCount": 0,
+        "displaced": [],
+        "placeWorkerWarningsCount": 0,
+        "placeWorkerWarnings": [],
+        "qualityIgnoredForDefs": [],
+        "message": "1 placed.",
+        "note": "Walls create NO roof - roof separately. Run jawa/map_commit after the batch.",
+        "things": [
+         {
+          "def": "Bed",
+          "stuff": "WoodLog",
+          "x": 84,
+          "z": 159,
+          "rot": 0,
+          "faction": "PlayerColony",
+          "hitPoints": 91,
+          "maxHitPoints": 91,
+          "quality": "Normal",
+          "destroyed": false
+         }
+        ],
+        "ticksGame": 6741,
+        "operation": {
+         "OperationId": "op_5f4d12bec55e48c183607b02000ea6ed",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/build-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:44.0609873+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:44.1102125+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "Bed37854",
+          "def": "Bed",
+          "label": "Wooden bed (normal)",
+          "x": 84,
+          "z": 159,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 91,
+          "maxHitPoints": 91,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "stuff": "WoodLog",
+          "quality": "Normal"
+         }
+        ],
+        "scanned": 33659,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {
+         "Bed": 1
+        },
+        "ticksGame": 6741,
+        "message": "1 of 1 matching thing(s) returned, 33659 examined.",
+        "operation": {
+         "OperationId": "op_95452e479964455faef5b869b6c79736",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:44.1606872+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:44.2108603+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_bed_owner_type",
+       "result": {
+        "success": true,
+        "mode": "set",
+        "thingId": "Bed37854",
+        "label": "Wooden bed (normal)",
+        "def": "Bed",
+        "ownerTypeBefore": "Colonist",
+        "ownerTypeAfter": "Prisoner",
+        "forPrisonersAfter": true,
+        "medicalBefore": false,
+        "medicalAfter": false,
+        "changed": [
+         "ownerType"
+        ],
+        "alreadyInRequestedState": false,
+        "ownersBefore": 0,
+        "ownersAfter": 0,
+        "faction": "New Arrivals",
+        "roomIsPrisonCell": false,
+        "roomTouchesMapEdge": false,
+        "prisonerIntakeBlockers": [],
+        "ticksGame": 6741,
+        "operation": {
+         "OperationId": "op_65535104b4874edf877058d41b580b17",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-bed-owner-type",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:44.2611784+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:44.3143895+00:00",
+         "DurationMs": 53,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "Void RebuildAllMaps()",
+        "result": "null",
+        "ticksGame": 6741,
+        "operation": {
+         "OperationId": "op_f41b6b296ad54237a77434ea6c777e82",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:44.3471546+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:44.4810559+00:00",
+         "DurationMs": 133,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofRoom(System.String)",
+        "result": "ROOM split=True pitRoom=True proper=True edge=False prison=True roomsOn=True pitId=58 lipId=55",
+        "ticksGame": 6741,
+        "operation": {
+         "OperationId": "op_8109a19804544c3c8c123de8c61f59c7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:44.5183411+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:44.5680088+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "capture_down_from_the_lip",
+     "toggle": "captureDownEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(60) [watched] -> 60 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 60,
+        "requested": 60
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCaptureDown(System.String)",
+        "result": "VERDICT Allowed held=True prisoner=False cell=83,160",
+        "ticksGame": 6801,
+        "operation": {
+         "OperationId": "op_95e9a093d8d14fa58946ae2a7dcce8b1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:47.3856245+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:47.4344031+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_draft",
+       "result": {
+        "success": true,
+        "drafted": true,
+        "fireAtWill": true,
+        "operation": {
+         "OperationId": "op_e534d213fd484e57b12c01bfe9bbe7dc",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-draft",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:47.4849032+00:00",
+         "CompletedAtUtc": "2026-10-06T07:18:47.5341671+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": "Wait_Combat",
+        "requestedJobDef": "RM_CaptureDown",
+        "afterJobDef": "RM_CaptureDown",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "plantDefToSow": null,
+        "queueLength": 0,
+        "note": null,
+        "operation": {
+         "OperationId": "op_ea18f71ef78b476a81638692766bc4ac",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:18:47.5857429+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:04.7842441+00:00",
+         "DurationMs": 17198,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(900) [watched] -> 900 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 900,
+        "requested": 900
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCaptureDown(System.String)",
+        "result": "VERDICT AlreadyPrisoner held=True prisoner=True cell=83,160",
+        "ticksGame": 7701,
+        "operation": {
+         "OperationId": "op_f6ff970e7254459786e7d9ed1186d0a3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:22.2687905+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:22.3174859+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "7 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human442",
+          "name": "Kepler",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 108,
+          "z": 101,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human445",
+          "name": "Ken",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 116,
+          "z": 103,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Donkey2891",
+          "name": "Laura",
+          "kind": "Donkey",
+          "kindDef": "Donkey",
+          "def": "Donkey",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 110,
+          "z": 115,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 1.4,
+          "health": null
+         },
+         {
+          "id": "Human448",
+          "name": "Bracken",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 112,
+          "z": 103,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human37861",
+          "name": "Tony",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "New Arrivals",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 82,
+          "z": 160,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Human37855",
+          "name": "Dinosaur",
+          "kind": "Pirate",
+          "kindDef": "Pirate",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Neanderthal",
+          "xenotypeLabel": "neanderthal",
+          "uniqueXenotype": false,
+          "faction": "TribeRoughNeanderthal",
+          "factionName": "Bookoulbah Union",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 83,
+          "z": 160,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": null
+         },
+         {
+          "id": "Squirrel37868",
+          "name": "Squirrel",
+          "kind": "Squirrel",
+          "kindDef": "Squirrel",
+          "def": "Squirrel",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": null,
+          "factionName": null,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 233,
+          "z": 247,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.2,
+          "health": null
+         }
+        ],
+        "returned": 7,
+        "truncated": 0,
+        "totalOnMap": 7,
+        "ticksGame": 7701,
+        "operation": {
+         "OperationId": "op_abcd370db60e403d9e3edae7be4ad9da",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:22.3698819+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:22.4175207+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "capture_down_off",
+     "toggle": "captureDownEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_pawn",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Pirate in faction TribeRoughNeanderthal.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human37876",
+          "name": "Tasca",
+          "kindRequested": "Pirate",
+          "kindActual": "Pirate",
+          "kindSubstituted": false,
+          "faction": "TribeRoughNeanderthal",
+          "hostile": true,
+          "x": 85,
+          "z": 160,
+          "spawned": true,
+          "xenotype": "Neanderthal",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 7701,
+        "operation": {
+         "OperationId": "op_f8226054ebaa4ff7bd14f8b2903ca126",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:22.4683877+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:22.517774+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_gear",
+       "result": {
+        "success": true,
+        "action": "clear",
+        "displaced": [],
+        "notes": [
+         "equipment destroyed",
+         "apparel destroyed",
+         "inventory destroyed"
+        ],
+        "pawn": {
+         "thingId": "Human37876",
+         "thingIdNumber": 37876,
+         "name": "Tasca Bringa",
+         "nameShort": "Tasca",
+         "title": "budding artist",
+         "kindDef": "Pirate",
+         "faction": "TribeRoughNeanderthal",
+         "factionName": "Bookoulbah Union",
+         "gender": "Female",
+         "ageBiologicalYears": 14,
+         "ageChronologicalYears": 14,
+         "developmentalStage": "Adult",
+         "xenotype": "Neanderthal",
+         "ideo": "Ilwaban Sect",
+         "childhood": "BuddingArtist44",
+         "adulthood": null,
+         "headType": "Female_HeavyJawNormal",
+         "bodyType": "Female",
+         "hair": "ShaveTopBraid",
+         "beard": "NoBeard",
+         "position": {
+          "x": 85,
+          "z": 160
+         },
+         "traits": [
+          {
+           "def": "Psychopath",
+           "degree": 0,
+           "label": "Psychopath",
+           "forced": false
+          },
+          {
+           "def": "Beauty",
+           "degree": -1,
+           "label": "Ugly",
+           "forced": false
+          },
+          {
+           "def": "Pyromaniac",
+           "degree": 0,
+           "label": "Pyromaniac",
+           "forced": false
+          }
+         ],
+         "skills": [
+          {
+           "skill": "Shooting",
+           "levelRaw": 2,
+           "levelEffective": 0,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Melee",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Construction",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Mining",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Cooking",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Plants",
+           "levelRaw": 1,
+           "levelEffective": 1,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Animals",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "Minor",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Crafting",
+           "levelRaw": 0,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Artistic",
+           "levelRaw": 7,
+           "levelEffective": 7,
+           "passion": "Major",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Medicine",
+           "levelRaw": 2,
+           "levelEffective": 2,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Social",
+           "levelRaw": 3,
+           "levelEffective": 0,
+           "passion": "Major",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          },
+          {
+           "skill": "Intellectual",
+           "levelRaw": 2,
+           "levelEffective": 0,
+           "passion": "None",
+           "xpSinceLastLevel": 0.0,
+           "disabled": false
+          }
+         ],
+         "apparel": [],
+         "equipment": [],
+         "hediffs": [],
+         "needs": [
+          {
+           "need": "Mood",
+           "level": 0.5,
+           "pct": 0.5
+          },
+          {
+           "need": "Food",
+           "level": 0.8,
+           "pct": 0.8
+          },
+          {
+           "need": "Rest",
+           "level": 0.983936369,
+           "pct": 0.983936369
+          }
+         ]
+        },
+        "ticksGame": 7701,
+        "operation": {
+         "OperationId": "op_074f65b65be24518b76871094855fef3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-gear",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:22.5689525+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:22.6180636+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(60) [watched] -> 60 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 60,
+        "requested": 60
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'captureDownEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCaptureDown(System.String)",
+        "result": "VERDICT SettingOff held=True prisoner=False cell=85,160",
+        "ticksGame": 7761,
+        "operation": {
+         "OperationId": "op_7119baa7a2aa452197d44d471b8dc2a1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:25.1854099+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:25.2344827+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'captureDownEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "warden_served_from_lip",
+     "toggle": "wardenFromLipEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofLip(System.String)",
+        "result": "LIP serve=True kind=Interact lip=82,160 lipSuperdeep=False dist=2",
+        "ticksGame": 7761,
+        "operation": {
+         "OperationId": "op_c072717d261241489593cd343924c88f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:25.3847301+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:25.4347799+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "warden_lip_off",
+     "toggle": "wardenFromLipEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'wardenFromLipEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofLip(System.String)",
+        "result": "LIP serve=False kind=None",
+        "ticksGame": 7761,
+        "operation": {
+         "OperationId": "op_6cce66164f0747bbacb2d2760dadfb40",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:25.5849622+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:25.634057+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'wardenFromLipEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 5,
+    "fed": 0,
+    "ticks_spent": 1020,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "liquid_pump",
+   "components": [
+    {
+     "name": "pump_unpowered_idle",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(600) [watched] -> 600 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 600,
+        "requested": 600
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPump(System.String)",
+        "result": "PUMP running=False moved=0 pour=False tank=empty:0",
+        "ticksGame": 8361,
+        "operation": {
+         "OperationId": "op_fd1bdcd90a4d4fd38a4ea424325ff925",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:44.4585597+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:44.5091128+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 81,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 24,
+        "ticksGame": 8361,
+        "operation": {
+         "OperationId": "op_8845122b01c4469c9942b2b93402ef98",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:44.558693+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:44.6077222+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 82,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 24,
+        "ticksGame": 8361,
+        "operation": {
+         "OperationId": "op_b0be6acbe4034d5cb67c4c0589be3f53",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:44.658827+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:44.7078795+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 24,
+        "ticksGame": 8361,
+        "operation": {
+         "OperationId": "op_2dfc7ca6c031417d97a4d11f5f2b8706",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:44.7588889+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:44.8079451+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 81,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 24,
+        "ticksGame": 8361,
+        "operation": {
+         "OperationId": "op_19ebc4b24d4645168deb994df57dfcab",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:44.8585417+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:44.9077756+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 82,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 24,
+        "ticksGame": 8361,
+        "operation": {
+         "OperationId": "op_176d43e7adb447c9a185a4c01c93574f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:44.9589211+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:45.0079763+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 24,
+        "ticksGame": 8361,
+        "operation": {
+         "OperationId": "op_71a2939aa17e4b7786156ca29c6315b2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:19:45.0587065+00:00",
+         "CompletedAtUtc": "2026-10-06T07:19:45.1077953+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pump_draws_into_tank",
+     "toggle": "liquidPumpEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(800) [watched] -> 800 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 800,
+        "requested": 800
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPump(System.String)",
+        "result": "PUMP running=True moved=3 pour=False tank=RM_Liquid_FreshWater:15",
+        "ticksGame": 9161,
+        "operation": {
+         "OperationId": "op_0a8afd4643f34629822af530659be27f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:01.2745599+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:01.3243435+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 81,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 24,
+        "ticksGame": 9161,
+        "operation": {
+         "OperationId": "op_fd426325759b40ee9a9cc261bbf55de2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:01.3750705+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:01.424628+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 82,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 1,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 24,
+        "ticksGame": 9161,
+        "operation": {
+         "OperationId": "op_db004e8cc7bc44c1bd824e1e88006ade",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:01.4746685+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:01.5242204+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 24,
+        "ticksGame": 9161,
+        "operation": {
+         "OperationId": "op_d87322dface64b059408e681665e45ad",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:01.5750509+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:01.6246615+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pump_off_idles",
+     "toggle": "liquidPumpEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'liquidPumpEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPump(System.String)",
+        "result": "PUMP running=False moved=3 pour=False tank=RM_Liquid_FreshWater:15",
+        "ticksGame": 9161,
+        "operation": {
+         "OperationId": "op_29e082b97d7a4b51be961c27dc592a26",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:01.7751275+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:01.8241938+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(600) [watched] -> 600 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 600,
+        "requested": 600
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPump(System.String)",
+        "result": "PUMP running=False moved=3 pour=False tank=RM_Liquid_FreshWater:15",
+        "ticksGame": 9761,
+        "operation": {
+         "OperationId": "op_9e065d765cdc41c98de7291e12ec3b6a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:13.3249887+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:13.3740986+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'liquidPumpEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pump_pours_back",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: colonist_injured_unexpectedly: colonist Tony gained 1 new hediff(s) (Bruise); cause_hint=unknown [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__liquid_pump__colonist_injured_unexpectedly__t10361__001.json]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 81,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 0,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 24,
+        "ticksGame": 9761,
+        "operation": {
+         "OperationId": "op_27391702fdfa456bb892b89267e9acf8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:13.5250733+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:13.5748336+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 82,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 1,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 24,
+        "ticksGame": 9761,
+        "operation": {
+         "OperationId": "op_67692eb1893f4eddbc9aabf0ca0ab415",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:13.6251502+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:13.6752578+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 83,
+         "z": 124
+        },
+        "depth": 2,
+        "fill": 2,
+        "isExcavated": true,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 24,
+        "ticksGame": 9761,
+        "operation": {
+         "OperationId": "op_a6d4c41023d044df9399ea353ac81ac4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:13.7248202+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:13.7745068+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPump(System.String)",
+        "result": "PUMP running=True moved=3 pour=True tank=RM_Liquid_FreshWater:15",
+        "ticksGame": 9761,
+        "operation": {
+         "OperationId": "op_637cb9fc488f4f9fb571f14dcaa1dc03",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:13.824594+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:13.8742993+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "colonist_injured_unexpectedly: colonist Tony gained 1 new hediff(s) (Bruise); cause_hint=unknown",
+      "hits": [
+       {
+        "detector": "colonist_injured_unexpectedly",
+        "severity": "SURPRISE",
+        "summary": "colonist Tony gained 1 new hediff(s) (Bruise); cause_hint=unknown"
+       }
+      ],
+      "evidence": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__liquid_pump__colonist_injured_unexpectedly__t10361__001.json"
+      ],
+      "screenshots": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__liquid_pump__colonist_injured_unexpectedly__t10361__001.png"
+      ]
+     }
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 5,
+    "fed": 0,
+    "ticks_spent": 2600,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__liquid_pump__colonist_injured_unexpectedly__t10361__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__liquid_pump__colonist_injured_unexpectedly__t10361__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 8361,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 8961,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 9161,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 9761,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 10361,
+      "detector": "colonist_injured_unexpectedly",
+      "severity": "SURPRISE",
+      "summary": "colonist Tony gained 1 new hediff(s) (Bruise); cause_hint=unknown"
+     },
+     {
+      "tick": 10361,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     }
+    ],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "bottle_revert",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: plot F excavation reset failed: RESET cells=1 levels=8 left=1",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "wall_faces",
+   "components": [
+    {
+     "name": "cuts_draw_wall_faces",
+     "toggle": "excavationWallFacesEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWallFaces(System.String)",
+        "result": "WALLS visible=True verts=76",
+        "ticksGame": 10361,
+        "operation": {
+         "OperationId": "op_2e4d501534b947c1bd21242b2f9913a9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:37.9930958+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:38.0427324+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "wall_faces_off_hidden",
+     "toggle": "excavationWallFacesEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'excavationWallFacesEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWallFaces(System.String)",
+        "result": "WALLS visible=False verts=0",
+        "ticksGame": 10361,
+        "operation": {
+         "OperationId": "op_8c50ef32377340a69d224673e3e4828e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:38.1938132+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:38.2421705+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'excavationWallFacesEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "dig_finds",
+   "components": [
+    {
+     "name": "finds_off_none",
+     "toggle": "digFindsEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: colonist_injured_unexpectedly: colonist Tony gained 4 new hediff(s) (Bruise,Crack); cause_hint=unknown [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t10861__001.json]",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'digFindsEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "DIGFINDS finds 0 | budget unset | first-found 0 | last ",
+        "ticksGame": 10361,
+        "operation": {
+         "OperationId": "op_fa0cf8f7dd47423a86b1676343db51bc",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:45.2791054+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:45.3287956+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofReport(System.String)",
+        "result": "ARMED: the next canal cut rolls with certainty | DIGFINDS finds 0 | budget unset | first-found 0 | last ",
+        "ticksGame": 10361,
+        "operation": {
+         "OperationId": "op_7437c614263f44b3a6d8ec97bf640bf9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:45.3785768+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:45.4286926+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/flowworks_excavation_report",
+       "result": {
+        "success": true,
+        "cell": {
+         "x": 87,
+         "z": 89
+        },
+        "depth": 0,
+        "fill": 0,
+        "isExcavated": false,
+        "isSourceCell": false,
+        "isSinkCell": false,
+        "sinkTransferredTotal": 0.0,
+        "overflowDestroyedTotal": 0.0,
+        "excavatedCellCount": 28,
+        "ticksGame": 10361,
+        "operation": {
+         "OperationId": "op_06211911a72648019ea115de507e7dfb",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/flow-works-excavation-report",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:45.4790235+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:45.527166+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/designate_batch",
+       "result": {
+        "success": true,
+        "action": "add",
+        "designation": "RM_DigCanal",
+        "added": 1,
+        "removed": 0,
+        "alreadyPresent": 0,
+        "alreadyAbsent": 0,
+        "skippedWrongType": 0,
+        "targetType": "Cell",
+        "targetedThings": false,
+        "note": "'RM_DigCanal' is a CELL designation - the rect's cells are designated directly.",
+        "onThings": false,
+        "problemCount": 0,
+        "problemListTruncated": false,
+        "problems": [],
+        "totalNow": 1,
+        "ticksGame": 10361,
+        "operation": {
+         "OperationId": "op_1b32b49fd53c4409bace15df57d1e345",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/designate-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:45.5792427+00:00",
+         "CompletedAtUtc": "2026-10-06T07:20:45.6273225+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": null,
+        "requestedJobDef": "RM_DigCanalJob",
+        "afterJobDef": "RM_DigCanalJob",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "plantDefToSow": null,
+        "queueLength": 0,
+        "note": null,
+        "operation": {
+         "OperationId": "op_341a198bf623453a9667937ae6e282f0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:20:45.6789273+00:00",
+         "CompletedAtUtc": "2026-10-06T07:21:02.895169+00:00",
+         "DurationMs": 17216,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings, {'digFindsEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "colonist_injured_unexpectedly: colonist Tony gained 4 new hediff(s) (Bruise,Crack); cause_hint=unknown",
+      "hits": [
+       {
+        "detector": "colonist_injured_unexpectedly",
+        "severity": "SURPRISE",
+        "summary": "colonist Tony gained 4 new hediff(s) (Bruise,Crack); cause_hint=unknown"
+       }
+      ],
+      "evidence": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t10861__001.json"
+      ],
+      "screenshots": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t10861__001.png"
+      ]
+     }
+    },
+    {
+     "name": "cut_turns_up_local_find",
+     "toggle": "digFindsLocalOnly",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Tony gained 4 new hediff(s) (Bruise,Crack); cause_hint=unknown [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "first_find_sends_letter",
+     "toggle": "digFindLetterEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Tony gained 4 new hediff(s) (Bruise,Crack); cause_hint=unknown [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 500,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t10861__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__dig_finds__colonist_injured_unexpectedly__t10861__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 10861,
+      "detector": "colonist_injured_unexpectedly",
+      "severity": "SURPRISE",
+      "summary": "colonist Tony gained 4 new hediff(s) (Bruise,Crack); cause_hint=unknown"
+     },
+     {
+      "tick": 10861,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     }
+    ],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "machinery_hoses",
+   "components": [
+    {
+     "name": "hose_feeds_far_tank",
+     "toggle": "liquidHosesEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: colonist_injured_unexpectedly: colonist Tony gained 1 new hediff(s) (Crack); cause_hint=unknown [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__machinery_hoses__colonist_injured_unexpectedly__t11461__001.json]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 31202 examined.",
+        "matched": 1,
+        "examined": 31202,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_LiquidTank37923",
+          "defName": "RM_LiquidTank",
+          "label": "liquid tank",
+          "x": 122,
+          "z": 89,
+          "className": "RimMandrake.FlowWorks.LiquidTypes.Building_LiquidTank",
+          "inspect": [
+           "Empty"
+          ],
+          "lowPriority": null,
+          "error": null
+         }
+        ],
+        "ticksGame": 10861,
+        "operation": {
+         "OperationId": "op_f1f788ed0edc4532ad03802120f4619b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:21:20.7774252+00:00",
+         "CompletedAtUtc": "2026-10-06T07:21:20.8260091+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "surprise",
+      "message": "colonist_injured_unexpectedly: colonist Tony gained 1 new hediff(s) (Crack); cause_hint=unknown",
+      "hits": [
+       {
+        "detector": "colonist_injured_unexpectedly",
+        "severity": "SURPRISE",
+        "summary": "colonist Tony gained 1 new hediff(s) (Crack); cause_hint=unknown"
+       }
+      ],
+      "evidence": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__machinery_hoses__colonist_injured_unexpectedly__t11461__001.json"
+      ],
+      "screenshots": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__machinery_hoses__colonist_injured_unexpectedly__t11461__001.png"
+      ]
+     }
+    },
+    {
+     "name": "hoses_off_far_tank_idle",
+     "toggle": "liquidHosesEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Tony gained 1 new hediff(s) (Crack); cause_hint=unknown [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\202610",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 600,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__machinery_hoses__colonist_injured_unexpectedly__t11461__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261006T001545\\FlowWorksExtensions__machinery_hoses__colonist_injured_unexpectedly__t11461__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 11461,
+      "detector": "colonist_injured_unexpectedly",
+      "severity": "SURPRISE",
+      "summary": "colonist Tony gained 1 new hediff(s) (Crack); cause_hint=unknown"
+     },
+     {
+      "tick": 11461,
+      "detector": "health_progression",
+      "severity": "WARN",
+      "summary": "colonist Tony: 2 existing hediff(s) worsened"
+     }
+    ],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "machinery_found_works",
+   "components": [
+    {
+     "name": "works_only_over_ruin",
+     "toggle": "industrialWorksBuildAnywhere",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/build_check",
+       "result": {
+        "success": true,
+        "def": "RM_DesalPlant_Kludged",
+        "stuff": null,
+        "acceptableCells": 0,
+        "tested": 1,
+        "cellsInRect": 1,
+        "truncated": false,
+        "godMode": false,
+        "cells": [
+         {
+          "x": 157,
+          "z": 87,
+          "canPlace": false,
+          "reason": "Must be raised over a wrecked desal plant: Industrial works are found, not built.",
+          "canSpawn": true,
+          "occupants": []
+         }
+        ],
+        "ticksGame": 11461,
+        "operation": {
+         "OperationId": "op_c5b51d6a12974817a836bbaa657667c4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/build-check",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:21:39.2668325+00:00",
+         "CompletedAtUtc": "2026-10-06T07:21:39.316373+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "build_anywhere_on",
+     "toggle": "industrialWorksBuildAnywhere",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.Machinery.RM_MachinerySettings, {'industrialWorksBuildAnywhere': True})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/build_check",
+       "result": {
+        "success": true,
+        "def": "RM_DesalPlant_Kludged",
+        "stuff": null,
+        "acceptableCells": 1,
+        "tested": 1,
+        "cellsInRect": 1,
+        "truncated": false,
+        "godMode": false,
+        "cells": [
+         {
+          "x": 157,
+          "z": 87,
+          "canPlace": true,
+          "reason": null,
+          "canSpawn": true,
+          "occupants": []
+         }
+        ],
+        "ticksGame": 11461,
+        "operation": {
+         "OperationId": "op_109aef70f0f14a51aa06d4e7900231c3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/build-check",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-06T07:21:39.8386439+00:00",
+         "CompletedAtUtc": "2026-10-06T07:21:39.8871797+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.FlowWorks.Machinery.RM_MachinerySettings, {'industrialWorksBuildAnywhere': False})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ruins_mapgen",
+     "toggle": "liquidWorksRuinsEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: worldgen: needs two fresh shore maps",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ruin_stock_mapgen",
+     "toggle": "liquidWorksRuinStockEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: worldgen: needs a fresh shore map",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pipe_adapters",
+     "toggle": "pipeAdaptersEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: VE PipeSystem is on no test list",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000024018790D60>"
+ ],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "anchor": [
+  113,
+  118
+ ],
+ "wall_s": 369.4,
+ "chains_run": [
+  "pit_fill_effects",
+  "fire_explosion",
+  "fire_foam",
+  "fire_rain",
+  "pit_prison_room",
+  "liquid_pump",
+  "bottle_revert",
+  "wall_faces",
+  "dig_finds",
+  "machinery_hoses",
+  "machinery_found_works"
+ ]
+}

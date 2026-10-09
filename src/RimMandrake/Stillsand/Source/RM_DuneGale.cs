@@ -955,7 +955,7 @@ namespace RimMandrake.Stillsand
         private static void Return(RM_GaleCarriedRecord r, float aliveChance)
         {
             Pawn p = r.pawn;
-            Map map = r.map ?? Find.AnyPlayerHomeMap;
+            Map map = r.map ?? RimMandrake.EnvironmentalHazards.RM_SurfaceHome.AnyPlayerSurfaceHomeMap;
             if (p != null && Find.WorldPawns.Contains(p))
             {
                 Find.WorldPawns.RemovePawn(p);
