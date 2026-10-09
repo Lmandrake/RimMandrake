@@ -58,6 +58,8 @@
     <Compile Include="RM_FossilStrata.cs" />
     <Compile Include="RM_CompPanSleeper.cs" />
     <Compile Include="RM_WeatherEvent_DistantFlicker.cs" />
+    <Compile Include="RM_WeatherOverlay_PeakstormDust.cs" />
+    <Compile Include="Kernel\RM_DustKernel.cs" />
     <Compile Include="RM_MapComponent_RecedeAftermath.cs" />
     <Compile Include="RM_TarruqHushPatch.cs" />
     <Compile Include="RM_CrackedLandsFlora.cs" />

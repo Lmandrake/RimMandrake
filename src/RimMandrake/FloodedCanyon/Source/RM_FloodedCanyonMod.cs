@@ -75,6 +75,10 @@ namespace RimMandrake.FloodedCanyon
         // weather commonality, not a setting.
         public static bool peakstormBiasEnabled = true;
 
+        // CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1 — the sky overlay's dust drifts one way and briefly reverses.
+        // Off = it drifts one way only.
+        public static bool peakstormDustReversalEnabled = true;
+
         // §5 — chimes staged by distance-to-flood (three rings across the
         // lead time). Off = the single chime at the start of the lead time.
         public static bool chimeStagingEnabled = true;
@@ -143,6 +147,7 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref muttavaqWaterWakeEnabled, "muttavaqWaterWakeEnabled", true, true);
             Scribe_Values.Look(ref muttavaqDigInEnabled, "muttavaqDigInEnabled", true, true);
             Scribe_Values.Look(ref peakstormBiasEnabled, "peakstormBiasEnabled", true, true);
+            Scribe_Values.Look(ref peakstormDustReversalEnabled, "peakstormDustReversalEnabled", true, true);
             Scribe_Values.Look(ref chimeStagingEnabled, "chimeStagingEnabled", true, true);
             Scribe_Values.Look(ref fiveBeatsEnabled, "fiveBeatsEnabled", true, true);
             Scribe_Values.Look(ref heraldLeadHours, "heraldLeadHours", 2f, true);
@@ -194,6 +199,10 @@ namespace RimMandrake.FloodedCanyon
                 "When the far skyline flickers with a storm on the peaks, the next flood "
                 + "often comes sooner — within two days or so — but not always. The chime still rings first. "
                 + "Never within half a flood period of the last one.");
+
+            list.CheckboxLabeled("Peakstorm dust reverses", ref peakstormDustReversalEnabled,
+                "During peakstorm light the dust haze drifts one way, then every so often (about five seconds "
+                + "in every forty) swings round and flows back the other way. Off means it drifts one way only.");
 
             list.CheckboxLabeled("Five beats before water", ref fiveBeatsEnabled,
                 "Before the chimes: wind threads the slots, the sleeper pans start ticking, "
