@@ -13,7 +13,7 @@
   "facings": [
    "east"
   ],
-  "derive_from": "sketto_fly_master_v1_east",
+  "derive_from": "sketto_fly_master_v3_east",
   "target_texpath": "swanimals/Sketto/Sketto_Flying_1",
   "canon_na": [
    2
@@ -35,7 +35,7 @@
   "facings": [
    "east"
   ],
-  "derive_from": "sketto_fly_master_v1_east",
+  "derive_from": "sketto_fly_master_v3_east",
   "target_texpath": "swanimals/Sketto/Sketto_Flying_2",
   "prompt": "Move ONLY the four wings of the attached sketto; the body, head, fangs, tucked legs, straight tail and fin-tuft must stay exactly where they are, pixel-for-pixel, same colours, same painted texture. Wings pivot at the same shoulder roots as in the attached image. New wing position: all four wings held out LEVEL, spread flat and wide at the middle of the downstroke (east view: wings foreshortened to narrow shapes along the body line, near pair in front of the body, far pair behind; north/south views: wings straight out to both sides, symmetric). Same wing shape, veins and membrane colour as the attached image. No blur, no motion streaks."
  },
@@ -53,7 +53,7 @@
   "facings": [
    "east"
   ],
-  "derive_from": "sketto_fly_master_v1_east",
+  "derive_from": "sketto_fly_master_v3_east",
   "target_texpath": "swanimals/Sketto/Sketto_Flying_3",
   "prompt": "Move ONLY the four wings of the attached sketto; the body, head, fangs, tucked legs, straight tail and fin-tuft must stay exactly where they are, pixel-for-pixel, same colours, same painted texture. Wings pivot at the same shoulder roots as in the attached image. New wing position: all four wings swept fully DOWN at the bottom of the downstroke (east view: near pair hanging below the belly in front of the body, far pair just visible behind it; north/south views: wings angled down and slightly back on both sides, symmetric, tips lower on the canvas than the shoulders). Same wing shape, veins and membrane colour as the attached image. No blur, no motion streaks."
  },
@@ -71,7 +71,7 @@
   "facings": [
    "south"
   ],
-  "derive_from": "sketto_fly_master_v1_south",
+  "derive_from": "sketto_fly_master_v3_south",
   "target_texpath": "swanimals/Sketto/Sketto_Flying_1",
   "canon_na": [
    2
@@ -93,7 +93,7 @@
   "facings": [
    "south"
   ],
-  "derive_from": "sketto_fly_master_v1_south",
+  "derive_from": "sketto_fly_master_v3_south",
   "target_texpath": "swanimals/Sketto/Sketto_Flying_2",
   "prompt": "Move ONLY the four wings of the attached sketto; the body, head, fangs, tucked legs, straight tail and fin-tuft must stay exactly where they are, pixel-for-pixel, same colours, same painted texture. Wings pivot at the same shoulder roots as in the attached image. New wing position: all four wings held out LEVEL, spread flat and wide at the middle of the downstroke (east view: wings foreshortened to narrow shapes along the body line, near pair in front of the body, far pair behind; north/south views: wings straight out to both sides, symmetric). Same wing shape, veins and membrane colour as the attached image. No blur, no motion streaks."
  },
@@ -111,7 +111,7 @@
   "facings": [
    "south"
   ],
-  "derive_from": "sketto_fly_master_v1_south",
+  "derive_from": "sketto_fly_master_v3_south",
   "target_texpath": "swanimals/Sketto/Sketto_Flying_3",
   "prompt": "Move ONLY the four wings of the attached sketto; the body, head, fangs, tucked legs, straight tail and fin-tuft must stay exactly where they are, pixel-for-pixel, same colours, same painted texture. Wings pivot at the same shoulder roots as in the attached image. New wing position: all four wings swept fully DOWN at the bottom of the downstroke (east view: near pair hanging below the belly in front of the body, far pair just visible behind it; north/south views: wings angled down and slightly back on both sides, symmetric, tips lower on the canvas than the shoulders). Same wing shape, veins and membrane colour as the attached image. No blur, no motion streaks."
  },
@@ -129,7 +129,7 @@
   "facings": [
    "north"
   ],
-  "derive_from": "sketto_fly_master_v1_north",
+  "derive_from": "sketto_fly_master_v3_north",
   "target_texpath": "swanimals/Sketto/Sketto_Flying_1",
   "canon_na": [
    2
@@ -151,7 +151,7 @@
   "facings": [
    "north"
   ],
-  "derive_from": "sketto_fly_master_v1_north",
+  "derive_from": "sketto_fly_master_v3_north",
   "target_texpath": "swanimals/Sketto/Sketto_Flying_2",
   "prompt": "Move ONLY the four wings of the attached sketto; the body, head, fangs, tucked legs, straight tail and fin-tuft must stay exactly where they are, pixel-for-pixel, same colours, same painted texture. Wings pivot at the same shoulder roots as in the attached image. New wing position: all four wings held out LEVEL, spread flat and wide at the middle of the downstroke (east view: wings foreshortened to narrow shapes along the body line, near pair in front of the body, far pair behind; north/south views: wings straight out to both sides, symmetric). Same wing shape, veins and membrane colour as the attached image. No blur, no motion streaks."
  },
@@ -169,7 +169,7 @@
   "facings": [
    "north"
   ],
-  "derive_from": "sketto_fly_master_v1_north",
+  "derive_from": "sketto_fly_master_v3_north",
   "target_texpath": "swanimals/Sketto/Sketto_Flying_3",
   "prompt": "Move ONLY the four wings of the attached sketto; the body, head, fangs, tucked legs, straight tail and fin-tuft must stay exactly where they are, pixel-for-pixel, same colours, same painted texture. Wings pivot at the same shoulder roots as in the attached image. New wing position: all four wings swept fully DOWN at the bottom of the downstroke (east view: near pair hanging below the belly in front of the body, far pair just visible behind it; north/south views: wings angled down and slightly back on both sides, symmetric, tips lower on the canvas than the shoulders). Same wing shape, veins and membrane colour as the attached image. No blur, no motion streaks."
  }
