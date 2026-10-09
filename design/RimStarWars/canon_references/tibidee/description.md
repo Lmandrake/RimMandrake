@@ -37,13 +37,13 @@ Page: https://starwars.fandom.com/wiki/Tibidee, fully read.
   says green: images show yellow, trust the images on appearance) and a long tail**.
 
 ## Must show
-- [ ] Giant flat membranous wings, much longer than the body is wide, tapering to pointed tips
-- [ ] Pale white-grey body, mottled on the wings; red or red-brown wing membrane or underside
-- [ ] Round yellow eyes set on the sides of a broad flat head; wide mouth
-- [ ] A long tail (segmented in the Homeworlds art)
-- [ ] Gasbag-plump torso with short blue-grey claws underneath
-- [ ] A flier: drawn in flight, never as a walking animal
-- [ ] Realistic rendering: natural membranous wing skin and pale hide with real lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both images as read in the visual brief (eye colour follows the images, which show yellow, over the prose's green).*
+- [ ] BODY PLAN: a flier drawn in flight, never as a walking animal: giant flat membranous wings much longer than the body is wide, tapering to pointed tips, on a gasbag-plump torso with a broad flat head in front and a long tail behind (segmented in the Homeworlds art)
+- [ ] COLOUR LAYOUT: pale white-grey body, mottled on the wings' upper surface; red or red-brown wing membrane or wing underside; short blue-grey claws under the belly
+- [ ] Round yellow eyes set on the sides of the broad flat head; a wide mouth
+- [ ] Short blue-grey claws tucked under the belly
+- [ ] Realistic rendering: natural membranous wing skin and pale hide with real lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a mynock or a bat (no small leathery body hanging from wings, no dark colouring), not a sleek bird (no feathers, no beak), not a walking/landed animal
 
 ## Engine limits
 none known. (Mating-call frequency attraction is behaviour, not drawable. Flight itself is a stat plus a flip-book; art need not wait for either.)

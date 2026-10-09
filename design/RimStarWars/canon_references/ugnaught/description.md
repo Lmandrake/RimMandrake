@@ -169,12 +169,14 @@ hardest-working species in the galaxy). **Not represented anywhere and the most
 interesting hook in the article: red improves their work productivity.**
 
 ## Must show
-- [ ] Skin is a weathered grey-tan/dun brown (the canon live-action Kuiil), not pink — pink is the Legends-only value
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Kuiil infobox image, the Cloud City still (shape only, never skin) and the `## ruling` below.*
+- [ ] BODY PLAN: a dwarf build — oversized head (about a fifth of total height), barrel chest, broad shoulders, thick short limbs, large hands, short legs; wide, shoulder span close to a third of height
+- [ ] COLOUR LAYOUT: dull pink skin (owner ruling 2026-09-17: "Make it dull pink for Ugnaught. Ruling from canon from movies." — do not re-open on the strength of the grey-tan Kuiil image); deeply wrinkled leathery skin over the whole head, crown included; long hair white, the lightest element
 - [ ] Broad, flat, upturned pig snout occupying the middle third of the face, prominent rather than small, merging into the brow with no bridge
 - [ ] Heavy overhanging brow ridge with a deep vertical furrow, and small, deep-set eyes
-- [ ] Wide, downturned mouth with a protruding lower lip and small blunt lower tusks visible
-- [ ] Long white hair worn only as mutton-chop side-whiskers and a chin beard, with a bald crown — not ordinary short hair
-- [ ] Large, pointed ears standing out from the head, on an oversized-head dwarf build (thick short limbs, barrel chest, broad shoulders)
+- [ ] Wide, downturned mouth with a protruding lower lip and small blunt lower tusks visible; thick jowl folds from the snout past the mouth corners
+- [ ] Long white hair worn only as mutton-chop side-whiskers and a chin beard, with a bald crown — not ordinary short hair; large, pointed ears standing out from the head
+- [ ] NEGATIVE: not a scaled-down human (no human proportions, no small nose, no human skin tone), not a Gamorrean (no green skin, no horns)
 
 ## Engine limits
 none known — the repo has no Ugnaught art of any kind (no head, body, hair or even a species-specific xenotype icon), so there is nothing on disk to test against a rendering constraint; every gap the entry records (skin, snout size, hair length) is a missing or wrong gene choice, not a pipeline limitation.

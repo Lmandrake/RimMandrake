@@ -44,12 +44,14 @@ a pencil sketch of Lord Mirdalan sitting. They show two different looks.
   Fur, six legs and glide-wing membranes are text-only.
 
 ## Must show
-- [ ] Low, muscular, hunched dog/bulldog-like predator with a big head and wide fanged mouth
-- [ ] Loose leathery skin folds along flanks and haunches
-- [ ] Very long thin whip-like tail
-- [ ] Brown to tan colouring (canon prose: thick brown winter fur; Legends prose: gold or grey-tan)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both Legends images (the comic painting above all) and the visual brief's reading; six legs, fur and glide membranes are text-only.*
+- [ ] BODY PLAN: a low-slung, hunched, muscular bulldog/hyena-like predator on four thick limbs, with a thick short neck and a huge head carried low; a very long thin whip-like tail
+- [ ] COLOUR LAYOUT: brown to tan/rosy-brown leathery skin over the whole body (canon prose: thick brown winter fur; Legends prose: gold or grey-tan); fangs ivory, the lightest element
+- [ ] Loose leathery skin folds and pleats draped along the flanks, back and haunches
+- [ ] Wide fanged mouth: large curved ivory fangs jutting from a wide dark mouth
 - [ ] Six legs, fur and glide membranes are text-only and not shown in either image -- not required until a better image exists
-- [ ] Realistic rendering: natural leathery skin and fur texture with soft natural lighting, no ink outlines, no comic shading
+- [ ] Realistic rendering: natural leathery skin and fur texture with soft natural lighting, no ink outlines, no comic shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a plain dog in a smooth coat (no tight skin, no short stubby tail), not a cartoon/comic-shaded creature
 
 ## Engine limits
 not yet assessed

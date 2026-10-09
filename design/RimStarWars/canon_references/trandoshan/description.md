@@ -89,12 +89,14 @@ crown/brow read. **Nothing on disk supplies the plate-scale texture, the visible
 resting teeth, or the clawed three-digit hands and feet.**
 
 ## Must show
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Bossk reference render, the Dokk Strassi live-action still and the Topps illustration (images win over the prose's "smooth" and "long thin arms").*
+- [ ] BODY PLAN: a reptilian humanoid with a broad, heavy reptilian skull, a wide flat muzzle, no external ears and a low ridged crown; arms thick and muscled (never thin by default); three thick digits on hands and feet
+- [ ] COLOUR LAYOUT: warm tan/olive/khaki with a yellow-green cast and brown mottling, darkening on the crown and scale ridges, OR the cooler grey-tan live-action variant — never a flat green; claws dark against the paler scales
 - [ ] Coarse, large, raised, overlapping plate-scale texture, most pronounced on the forearms, backs of the hands, and lower legs/feet — not smooth skin
-- [ ] Warm tan/olive/khaki colour with a yellow-green cast and brown mottling, OR the cooler grey-tan live-action variant — never a flat green
-- [ ] Broad, heavy reptilian skull with a wide flat muzzle, no external ears, and small pointed teeth visible even with the mouth closed
-- [ ] Small, deep-set, orange-red eyes with slit pupils
-- [ ] Three thick digits on hands and feet ending in long, dark, curved claws that contrast against the paler scales
-- [ ] No feathers
+- [ ] Small pointed teeth visible even with the mouth closed
+- [ ] Small, deep-set, orange-red eyes with slit pupils, set well back on the big skull
+- [ ] Hands and feet end in long, dark, curved claws
+- [ ] NEGATIVE: not a smooth-skinned green lizard-man (no smooth skin, no flat green, no large eyes), no feathers
 
 ## Engine limits
 none known — the donor sprite's greyscale mask is correct/expected (the game tints it from the skin-colour gene); the missing plate-scale texture, visible resting teeth and clawed digits are recorded as absent art, not as something the pipeline cannot render.

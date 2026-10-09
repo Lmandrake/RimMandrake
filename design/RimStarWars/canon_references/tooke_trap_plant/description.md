@@ -52,13 +52,13 @@ The images:
 - **Image 2** (*Gungan Frontier* sprite) shows **two** stalks and mouths, which confirms the one-to-four-stalk range.
 
 ## Must show
-- [ ] Low rosette of broad, pointed leaves, sage/cream with red veins and edges
-- [ ] At least one long, thin, curving stalk rising from the centre (one to four allowed)
-- [ ] Each stalk ends in a toothed mouth pod with long, thin, inward-curving spines
-- [ ] Stalk and mouth are brown-maroon/rust, distinct from the green leaves
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both images (the Legends field-guide painting above all).*
+- [ ] BODY PLAN: a small plant (knee-to-waist height): a low rosette of broad, pointed, veined leaves with at least one long, thin, curving stalk rising from the centre (one to four allowed)
+- [ ] COLOUR LAYOUT: leaves sage/olive-green to cream with red-to-rose veins and edges; stalk and mouth brown-maroon/rust, distinct from the green leaves, mouth interior darker; knobs dark red
+- [ ] Each stalk ends in a toothed mouth pod with long, thin, inward-curving spines, like a Venus flytrap stretched into a tube
 - [ ] Small cluster of round dark-red knobs at the mouth
-- [ ] Reads as a small plant (knee-to-waist height), not a tree
-- [ ] Realistic rendering: natural waxy leaf and fleshy pod texture under natural light, like a real carnivorous plant photograph, no ink outlines, no toy or cartoon shading
+- [ ] Realistic rendering: natural waxy leaf and fleshy pod texture under natural light, like a real carnivorous plant photograph, no ink outlines, no toy or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a tree or shrub, not a plain Venus flytrap at ground level (the mouths sit on tall stalks), not a toy/LEGO-like render
 
 ## Engine limits
 - A plant is a single static sprite: the mouth cannot open or snap. Show it open and agape.

@@ -135,11 +135,13 @@ appearance (cream-shrouded female vs. tan-wrapped male) is not represented at
 all, even though the mod does carry a separate `HeadSandF` file.
 
 ## Must show
-- [ ] No skin, face, hair or eye visible on any individual — the mask and wrappings ARE the face
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the male/female/child family render, the Book of Boba Fett live-action tribe still, the McQuarrie concept and the warriors illustration.*
+- [ ] BODY PLAN: a humanoid entirely covered — no skin, face, hair or eye visible on any individual; the mask and wrappings ARE the face, and anything below the mask is cloth, leather strap, pouch or metal
+- [ ] COLOUR LAYOUT: robe/cloth palette spans warm tan-ochre to cold dusty grey-black (live-action sits at the cold end) — not one fixed colour for every individual; masks read pale bone/grey or metal against the cloth
 - [ ] Male: head fully wrapped in bandage-like cloth strips, mask with two round dark lenses in raised metal rims, and a snout-like mouth grille with a projecting central tusk-tube, over a tan/ochre coarse robe with leather chest plates
 - [ ] Female: full-length pale cream/bone/ivory draped hooded shroud covering the entire body, topped by a tall, rigid, metallic domed mask PLATE (not a face-shaped mask) with a narrow eye slit
 - [ ] A ribbed/tubed mouth grille projecting forward and down from the lower face is present on the mask
-- [ ] Robe/cloth palette spans warm tan-ochre to cold dusty grey-black — not one fixed colour for every individual
+- [ ] NEGATIVE: not the donor's plain pale-grey rounded head with two dot eyes (no bare head, no visible face), not a Jawa (no simple brown hood with glowing eyes)
 
 ## Engine limits
 none known — the donor sprite's gap (a plain grey oval with no wrappings, mask, lens rims, grille or throat canister) is recorded as missing head/mask art, not a pipeline constraint; the mod does carry a separate `HeadSandF` file that could carry a distinct female silhouette.

@@ -128,12 +128,13 @@ slits rather than recessed glowing amber. Reasonable art; the defects in this sp
 are in the gene list, not the sprite.
 
 ## Must show
-- [ ] Broad, angular, plated skull with heavy bony ridges over the brow and crown sweeping back into pointed temple flanges
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends text and the martial-arts-master infobox image (the helmet-comparison image is a mask and is not cited for anatomy).*
+- [ ] BODY PLAN: a tall, lean-muscled, long-limbed (rangy) humanoid, not bulky; a broad, angular, plated skull with heavy bony ridges over the brow and crown sweeping back into pointed temple flanges
+- [ ] COLOUR LAYOUT: plate/skin colour reads grey through olive-green over head, neck and limbs, not one flat grey; eyes glowing yellow-amber in dark sockets, the brightest spot on the face
 - [ ] Wedge-shaped face narrowing to a pointed, downturned, beak-like chin/jaw; no visible external nose
-- [ ] Small, deep-set eyes recessed under the brow shelf, glowing yellow-amber
+- [ ] Small, deep-set eyes recessed under the brow shelf (small and hooded, not large)
 - [ ] Long, dark, distinctly clawed fingers
-- [ ] Tall, lean-muscled, long-limbed (rangy) build, not bulky
-- [ ] Plate colour reads grey through olive-green, not one flat grey
+- [ ] NEGATIVE: not a human with a tint (no soft rounded skull, no nose, no round chin), not a heavyweight bruiser build, not a helmeted Mandalorian (draw the face, not the war mask)
 
 ## Engine limits
 none known — the donor sprite's shortfalls (no faceted plate texture, no crown ridges, plain dark-slit eyes instead of glowing amber) are attributed in the entry to the gene list (missing/incomplete attachment genes), not to the rendering pipeline; the head base itself is already runtime-tinted (no `useSkinShader: false`).

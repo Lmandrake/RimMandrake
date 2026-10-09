@@ -186,13 +186,13 @@ by an arch, with two short tapering points at the sides.** Judged against the re
   distinction is not expressed.
 
 ## Must show
-- [ ] Montrals are two thick, hollow cones rising well above the crown — roughly as tall again as the head itself
-- [ ] Montrals and both visible lekku carry dark transverse chevron/band markings on a pale cream-to-white base, not a flat colour
-- [ ] The pale montral/lekku base colour is visibly paler than the body skin colour (two distinct colour regions)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Shaak Ti and Ahsoka images (the target), the Kiros CGI pair for the male form only, and the canon/Legends text.*
+- [ ] BODY PLAN: a humanoid with a near-human face (human eyes and mouth, no visible nose bridge or external ear); two thick, hollow montral cones sweeping up and outward well above the crown — roughly as tall again as the head itself (live-action Ahsoka's shorter, about two-thirds head height) — flowing continuously into the lekku beside the jaw
+- [ ] COLOUR LAYOUT: two distinct colour regions — body skin (red, terracotta-brown, ochre or near-white) and montrals/lekku on a visibly paler cream-to-white base carrying dark transverse chevron/band markings, not a flat colour; face carries a patterned white marking (pattern varies by individual, but white presence is constant)
 - [ ] The two forward lekku descend well past the shoulders, at least to the chest (not stopping at jaw level)
 - [ ] A third, thicker posterior lek is present at the rear base of the skull, visible from a rear-facing (north) view
-- [ ] Face carries a patterned white marking (pattern varies by individual, but white presence is constant)
-- [ ] Realistic rendering: natural skin and matte prosthetic-appendage texture and lighting, no outlines, no cartoon shading
+- [ ] Realistic rendering: natural skin and matte prosthetic-appendage texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a Twi'lek (no smooth unmarked skin-coloured lekku without montrals), not a human with horns (no small horn nubs, no unbanded montrals), not the cartoon's bright orange skin and saturated blue bands
 
 ## Engine limits
 none known — the montral texture's missing banding, the lekku stopping at jaw level, and the absent third lek are recorded in the entry as gaps in the existing art asset and the def's colour-gene pool (no pale hair-colour option feeds the montral tint), not as something the rendering pipeline is unable to express.

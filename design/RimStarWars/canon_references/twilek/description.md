@@ -164,13 +164,13 @@ grey-white head above a coloured body. **I could not settle this from disk — i
 look in game.** Flagging the asymmetry, not asserting the bug.
 
 ## Must show
-- [ ] Two lekku emerging from the crown/back of the skull, smooth and completely unbanded — no transverse stripes
-- [ ] Lekku are the same colour as the facial skin, or only very slightly darker — never a contrasting hue
-- [ ] Any lekku markings read as soft mottled blotches or patches, never regular transverse bands (banding is the Togruta cue, not Twi'lek)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action images (infobox trio, Oola, Hera, the BoBF server) and the realistic Legends painting.*
+- [ ] BODY PLAN: a slim, long-limbed humanoid with a near-human face (human eyes with visible whites, human nose, mouth and lips, no muzzle); two lekku emerging from the crown/back of the skull, thick at the base and tapering steadily to a blunt point, carried down the back or over the chest
+- [ ] COLOUR LAYOUT: lekku are the same colour as the facial skin, or only very slightly darker — never a contrasting hue; skin colour range includes cream/pale/tan individuals, not saturated hues only (olive-green, golden yellow-ochre, orange, blue also attested)
+- [ ] Lekku smooth and completely unbanded — no transverse stripes; any markings read as soft mottled blotches or patches, never regular transverse bands (banding is the Togruta cue, not Twi'lek)
 - [ ] No montrals and no horns anywhere on the head
-- [ ] Face is near-human: human eyes with visible whites, human nose, mouth and lips, no muzzle
-- [ ] Skin colour range includes cream/pale/tan individuals, not saturated hues only
-- [ ] Realistic rendering: natural matte painted-skin texture and lighting, no outlines, no cartoon shading
+- [ ] Realistic rendering: natural matte painted-skin texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a Togruta (no banded lekku, no montrals, no pale contrasting appendages), not a human with tentacle hair, not the glossy saturated cartoon hue
 
 ## Engine limits
 - All four Twi'lek `HeadTypeDef`s set `useSkinShader: false` and the Twi'lek head folder has **zero** `_m.png` mask files (measured) — unlike the Togruta heads, which set the same flag but ship a full mask set. If the heads render untinted for want of a mask, the xenotype's eighteen-gene skin-colour palette cannot reach the face at all, landing a grey-white head above a coloured body. Flagged in the entry as needing one in-game check before it is treated as confirmed.
