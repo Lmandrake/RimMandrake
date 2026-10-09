@@ -180,7 +180,7 @@
     <modExtensions>
       <!-- HAZARD_NATIVE_TAG_1: native to the Scald's steam, steam devils and boiling water exposure. The WATER half
            (RM_OrganicScaldNative) is separate and still required. -->
-      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.biomes">
         <hazardTags><li>Scald</li></hazardTags>
       </li>
     </modExtensions>
@@ -286,7 +286,7 @@
     <modExtensions>
       <!-- HAZARD_NATIVE_TAG_1: native to the Scald's steam, steam devils and boiling water exposure. The WATER half
            (RM_OrganicScaldNative) is separate and still required. -->
-      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.biomes">
         <hazardTags><li>Scald</li></hazardTags>
       </li>
     </modExtensions>
@@ -389,7 +389,7 @@
     <modExtensions>
       <!-- HAZARD_NATIVE_TAG_1: native to the Scald's steam, steam devils and boiling water exposure. The WATER half
            (RM_OrganicScaldNative) is separate and still required. -->
-      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.biomes">
         <hazardTags><li>Scald</li></hazardTags>
       </li>
     </modExtensions>
@@ -491,7 +491,7 @@
     <modExtensions>
       <!-- HAZARD_NATIVE_TAG_1: native to the Scald's steam, steam devils and boiling water exposure. The WATER half
            (RM_OrganicScaldNative) is separate and still required. -->
-      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.biomes">
         <hazardTags><li>Scald</li></hazardTags>
       </li>
     </modExtensions>
@@ -609,7 +609,7 @@
     <modExtensions>
       <!-- HAZARD_NATIVE_TAG_1: native to the Scald's steam, steam devils and boiling water exposure. The WATER half
            (RM_OrganicScaldNative) is separate and still required. -->
-      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.biomes">
         <hazardTags><li>Scald</li></hazardTags>
       </li>
     </modExtensions>
@@ -713,7 +713,7 @@
     <modExtensions>
       <!-- HAZARD_NATIVE_TAG_1: native to the Scald's steam, steam devils and boiling water exposure. The WATER half
            (RM_OrganicScaldNative) is separate and still required. -->
-      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.biomes">
         <hazardTags><li>Scald</li></hazardTags>
       </li>
     </modExtensions>
@@ -819,7 +819,7 @@
     <modExtensions>
       <!-- HAZARD_NATIVE_TAG_1: native to the Scald's steam, steam devils and boiling water exposure. The WATER half
            (RM_OrganicScaldNative) is separate and still required. -->
-      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_HazardNativeExtension" MayRequire="mandrake.rm.biomes">
         <hazardTags><li>Scald</li></hazardTags>
       </li>
     </modExtensions>

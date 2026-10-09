@@ -29,7 +29,7 @@
       <Wildness>1</Wildness>
     </statBases>
     <comps>
-      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_WaterLocked" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_WaterLocked" MayRequire="mandrake.rm.biomes">
         <checkIntervalTicks>60</checkIntervalTicks>
       </li>
     </comps>

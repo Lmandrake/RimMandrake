@@ -11,7 +11,7 @@
 -->
 <Defs>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+  <GenStepDef MayRequire="mandrake.rm.biomes">
     <defName>RM_DesalPlant_RuinScatter</defName>
     <order>760</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
@@ -37,7 +37,7 @@
     </genStep>
   </GenStepDef>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+  <GenStepDef MayRequire="mandrake.rm.biomes">
     <defName>RM_DetoxWorks_RuinScatter</defName>
     <order>760</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
@@ -63,7 +63,7 @@
     </genStep>
   </GenStepDef>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+  <GenStepDef MayRequire="mandrake.rm.biomes">
     <defName>RM_TarRefinery_RuinScatter</defName>
     <order>760</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">
@@ -88,7 +88,7 @@
     </genStep>
   </GenStepDef>
 
-  <GenStepDef MayRequire="mandrake.rm.environmentalhazards">
+  <GenStepDef MayRequire="mandrake.rm.biomes">
     <defName>RM_PumpingStation_RuinScatter</defName>
     <order>760</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_PlacedSetPieces">

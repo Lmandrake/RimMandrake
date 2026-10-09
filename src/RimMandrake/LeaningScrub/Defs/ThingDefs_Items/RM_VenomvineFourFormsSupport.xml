@@ -20,10 +20,6 @@
       <Cleanliness>-4</Cleanliness>
     </statBases>
     <filth>
-      <placementMask>
-        <li>Terrain</li>
-        <li>Unnatural</li>
-      </placementMask>
       <disappearsInDays>6~10</disappearsInDays>
       <cleaningWorkToReduceThickness>45</cleaningWorkToReduceThickness>
       <maxThickness>1</maxThickness>

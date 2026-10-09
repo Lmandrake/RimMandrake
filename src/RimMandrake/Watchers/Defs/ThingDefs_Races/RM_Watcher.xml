@@ -157,7 +157,7 @@ It breaks at almost anything: a blast, a fire, a stray burst. What is left is a 
     <modExtensions>
       <li Class="RimMandrake.Watchers.RM_WatcherExtension">
         <mediumTerrains>
-          <li MayRequire="mandrake.rm.rustcathedral">RM_RustCathedral_CrackedMetalSoil</li>
+          <li MayRequire="mandrake.rm.biomes">RM_RustCathedral_CrackedMetalSoil</li>
         </mediumTerrains>
         <flinchRadius>9</flinchRadius>           <!-- PROVISIONAL, very shy: larger than the kit's 6 -->
         <watchRadius>16</watchRadius>            <!-- PROVISIONAL -->

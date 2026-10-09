@@ -650,7 +650,7 @@ TIERS["acc_20261009b"] = {
            "swbestiary + Utinni/StarWars patch layers, graffiti, rites, wasterun, warcasket) so ~60 skipped criteria and "
            "everything built after the first deploy (Illisk, venomvines, LongShade, WasteRun proof hooks) can be measured.",
     "want": list(TIERS["acc_20261009"]["want"]) + ["mandrake.rsw.bacta", "mandrake.rm.bazaar", "mandrake.rut.empirepursuit", "mandrake.rut.cathedralpass",
-             "mandrake.rsw.swbestiary", "mandrake.rsw.patches", "mandrake.rm.graffiti", "mandrake.rut.rites", "mandrake.rut.wasterun",
+             "mandrake.rsw.swbestiary", "mandrake.rut.ashkarrflora", "sarg.alphaanimals", "mlie.starwarsanimalcollection", "mlie.horrors", "mandrake.rm.graffiti", "mandrake.rut.rites", "mandrake.rut.wasterun",
              "mandrake.rm.warcasket"],
     "dlc": True,
 }
