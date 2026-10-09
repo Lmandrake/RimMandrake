@@ -238,7 +238,7 @@ namespace RimMandrake.Utinni.UnfinishedLine
     {
         static UnfinishedLineHarmony()
         {
-            new Harmony("mandrake.rut.unfinishedline").PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rut.unfinishedline"), Assembly.GetExecutingAssembly(), "RimUtinni.UnfinishedLine");
         }
     }
 

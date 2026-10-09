@@ -83,4 +83,7 @@
          mandrake.rm.injections absent. -->
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
+  </ItemGroup>
 </Project>

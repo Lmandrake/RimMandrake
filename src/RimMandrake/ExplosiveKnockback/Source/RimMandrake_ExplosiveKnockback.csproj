@@ -35,6 +35,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_KnockbackMath.cs" />
     <Compile Include="RM_KnockbackMod.cs" />
     <Compile Include="RM_KnockbackCompat.cs" />

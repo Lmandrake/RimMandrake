@@ -44,6 +44,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="Kernel\RM_SeaKernel.cs" />
     <Compile Include="RM_SeaShoreExtension.cs" />
     <Compile Include="RM_SeaShoreUtility.cs" />

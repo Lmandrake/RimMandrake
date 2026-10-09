@@ -29,7 +29,7 @@ namespace RimMandrake.Inhabited
         static InhabitedMod()
         {
             Harmony harmony = new Harmony(HarmonyId);
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(harmony, Assembly.GetExecutingAssembly(), "RimMandrake.Inhabited");
 
             int patches = harmony.GetPatchedMethods().Count();
             int characters = DefDatabase<CharacterDef>.DefCount;

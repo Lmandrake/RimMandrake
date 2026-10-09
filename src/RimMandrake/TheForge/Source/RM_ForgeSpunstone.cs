@@ -122,7 +122,7 @@ namespace RimMandrake.TheForge
     {
         static RM_TheForgeStartup()
         {
-            new Harmony("mandrake.rm.theforge").PatchAll(typeof(RM_TheForgeStartup).Assembly);
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rm.theforge"), typeof(RM_TheForgeStartup).Assembly, "RimMandrake.TheForge");
             RM_KeelworkUtility.ApplySetting();
         }
     }

@@ -127,7 +127,7 @@ namespace RimMandrake.ExplosiveKnockback
         public RimMandrakeExplosiveKnockbackMod(ModContentPack content) : base(content)
         {
             Settings = GetSettings<RimMandrakeExplosiveKnockbackSettings>();
-            new Harmony("mandrake.rm.explosiveknockback").PatchAll(typeof(RimMandrakeExplosiveKnockbackMod).Assembly);
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rm.explosiveknockback"), typeof(RimMandrakeExplosiveKnockbackMod).Assembly, "RimMandrake.ExplosiveKnockback");
             LongEventHandler.ExecuteWhenFinished(RM_KnockbackCompat.Init);
         }
 

@@ -33,7 +33,7 @@ namespace RimMandrake.LanternDeeps
 		static LanternDeepsHarmony()
 		{
 			Harmony harmony = new Harmony(HarmonyId);
-			harmony.PatchAll(Assembly.GetExecutingAssembly());
+			RimMandrake.Shared.PatchApplier.Apply(harmony, Assembly.GetExecutingAssembly(), "RimMandrake.LanternDeeps");
 		}
 	}
 

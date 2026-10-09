@@ -41,6 +41,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_TheForgeMod.cs" />
     <Compile Include="RM_BiomeWorker_TheForge.cs" />
     <!-- FORGE_CYCLE_MECHANICS_1 -->

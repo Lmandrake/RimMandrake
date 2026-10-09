@@ -244,7 +244,7 @@ namespace RimMandrake.SolarMirrors
         public RM_SolarMirrorsMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_SolarMirrorsSettings>();
-            new Harmony("mandrake.rm.solarmirrors").PatchAll(typeof(RM_SolarMirrorsMod).Assembly);
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rm.solarmirrors"), typeof(RM_SolarMirrorsMod).Assembly, "RimMandrake.SolarMirrors");
         }
 
         public override string SettingsCategory()

@@ -16,7 +16,7 @@ namespace RimMandrake.SeaShores
         static RM_SeaShoresHarmony()
         {
             Harmony harmony = new Harmony(HarmonyId);
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(harmony, Assembly.GetExecutingAssembly(), "RimMandrake.SeaShores");
 
             // WorldGenStep_Mutators.TryAddMutator is private static, so it
             // cannot be reached by attribute.
