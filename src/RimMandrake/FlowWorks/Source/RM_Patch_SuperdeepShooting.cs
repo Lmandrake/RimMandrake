@@ -177,6 +177,29 @@ namespace RimMandrake.FlowWorks
 	[RimMandrake.Shared.PatchFeature("Superdeep shooting rule", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepShootingRuleEnabled")]
 	public static class RM_Patch_AttackTargetFinder_BestAttackTarget
 	{
+		/// <summary>SUPERDEEP_TARGET_VALIDATOR_1: the rule rides the finder's own `validator`, so a forbidden
+		/// candidate is skipped and the finder moves on to its next one. A post-selection null (the postfix
+		/// below, kept only as a safety net for a caller that bypasses the validator) leaves the searcher
+		/// with no target at all even when an allowed one stood next in line.</summary>
+		[HarmonyPrefix]
+		public static void Prefix(IAttackTargetSearcher searcher, ref System.Predicate<Thing> validator)
+		{
+			if (searcher == null || !RM_SuperdeepShooting.RuleAppliesTo(searcher.CurrentEffectiveVerb))
+			{
+				return;
+			}
+			Thing searcherThing = searcher.Thing;
+			if (searcherThing == null || searcherThing.Map == null)
+			{
+				return;
+			}
+			Map map = searcherThing.Map;
+			IntVec3 from = searcherThing.Position;
+			System.Predicate<Thing> inner = validator;
+			validator = t => (inner == null || inner(t))
+				&& (t == null || RM_SuperdeepShooting.PairAllowed(map, from, t.Position));
+		}
+
 		[HarmonyPostfix]
 		public static void Postfix(IAttackTargetSearcher searcher, ref IAttackTarget __result)
 		{
