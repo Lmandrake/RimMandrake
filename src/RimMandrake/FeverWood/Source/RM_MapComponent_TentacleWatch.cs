@@ -209,6 +209,10 @@ namespace RimMandrake.FeverWood
         private void SpawnEncounterAt(IntVec3 seed, List<IntVec3> pools)
         {
             int limbCount = Rand.Chance(0.3f) ? 2 : 1; // INVENTED: "one or two tentacles emerge"
+            // DESIGN_PASS FV-1: an ordinary emergence never pushes the map past the live-limb cap (PROVISIONAL).
+            // The Great Emergence is the set-piece and is exempt. A capped roll still deposits pressure: the
+            // deep stirred, it just had no room to rise.
+            limbCount = RM_PoolKernel.SpawnBudget(CountLimbs(), RM_FeverWoodSettings.tentacleLiveLimbCap, limbCount);
 
             for (int i = 0; i < limbCount; i++)
             {
