@@ -62,11 +62,12 @@ darker brown to near-black along its edge; toothy predator jaw; short legs;
 thick tail; desert/mudflat nesting habitat with a large speckled egg.
 
 ## Must show
-- [ ] Dimetrodon-shaped body: squat, low-slung, thick tail, short stubby legs
-- [ ] Tall, rounded dorsal sail running most of the length of the spine
-- [ ] Tan/khaki-olive base coat with darker brown mottled spots
-- [ ] Sail colored darker brown-to-near-black at its trailing/upper edge, lighter tan at its base
-- [ ] Wide, toothy jaw with visible lower fangs
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_infobox.jpg` (the only image of the animal), the Legends text and the `## ruling` below.*
+- [ ] BODY PLAN: a Dimetrodon-shaped quadruped: squat, low-slung body on four short stubby legs, a thick tail, and a head carried low and forward
+- [ ] Sail: a tall, rounded dorsal sail running most of the length of the spine, the tallest element of the silhouette
+- [ ] COLOUR LAYOUT: olive-green base coat over the body with darker brown mottled spots (owner ruling 2026-09-14: "it's supposed to be olive green, not just brown. That's a sepia picture for some reason. Make it Olive colored."); the sail darker brown to near-black at its trailing/upper edge, lighter at its base where it meets the body
+- [ ] Wide, toothy predator jaw with visible lower fangs
+- [ ] NEGATIVE: not a plain brown/sepia lizard (the body must read olive green), not a dinosaur standing tall on long legs, not a sail-less monitor lizard or crocodile
 
 ## Engine limits
 none known

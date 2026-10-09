@@ -33,13 +33,15 @@ The only CANON image (`wookieepedia_canon_1`) is a loaf and slices of gornt MEAT
 - Gornt meat (canon image): dark reddish-brown, ropy grain with pale fat lines; relevant only for a butchery/meat texture.
 
 ## Must show
-- [ ] Hunched wedge body: tall massive rump and hind legs, short front legs, back sloping to a low head
-- [ ] Smooth grey-green wrinkled hide, no fur
-- [ ] Wide flat catfish-like head with a small horn nub
-- [ ] Long thin whisker-like tendrils around the mouth
-- [ ] Pointed rear peak, no long tail
-- [ ] Meat item (if made): dark red-brown fibrous block
-- [ ] Realistic rendering: natural pebbled, folded hide and lighting, no outlines, no halftone or cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends *Creatures of the Galaxy* plate (`legends_1`, the only living-animal image), the Legends text, and the canon meat photograph (`canon_1`, meat only).*
+- [ ] BODY PLAN: a hunched, wedge-shaped quadruped: tall, massive rump and thick hind legs; front legs much shorter; the back slopes steeply down to a small low head carried near the ground; the rear rises into a pointed tapering peak, no long tail
+- [ ] COLOUR LAYOUT: grey-green hide over the whole body, smooth to slightly pebbled with folds and creases over the shoulders and haunch; no fur
+- [ ] Head: wide, flat, catfish-like, with a broad mouth, small eyes and a single small horn nub on top
+- [ ] Long thin whisker-like tendrils (barbels) trailing from around the mouth
+- [ ] Feet: small clawed forefeet, larger hind feet
+- [ ] Meat item (if made): dark red-brown fibrous block with ropy grain and pale fat lines
+- [ ] Realistic rendering: natural pebbled, folded hide and lighting, no outlines, no halftone or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a pig, boar or rhino (no level back, no equal-length legs, no big horn, no fur); not a kangaroo (walks on all four); no long tail
 
 ## Engine limits
 not yet assessed

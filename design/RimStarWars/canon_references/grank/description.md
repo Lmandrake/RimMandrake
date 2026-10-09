@@ -52,13 +52,14 @@ What the images show (watercolours `infobox`, `coruscant_scene`; CGI `gunganfron
 Render as a real animal: leathery reptomammal hide with sparse coarse bristles, wet teeth, natural light — not watercolour wash.
 
 ## Must show
-- [ ] Low-slung, digitigrade quadruped with a long, tapering, rat-like tail
-- [ ] Reddish-brown to maroon dorsal/back coloring, fading to a lighter tan-grey underside and throat
-- [ ] Elongated snout packed with large interlocking jagged (saw-like) teeth, visible even with the jaw closed
-- [ ] Small red eyes
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the two *Wildlife of Star Wars* watercolours (`infobox`, `coruscant_scene`) for detail and the *Gungan Frontier* CGI for mass and proportion; the Legends text gives no colour at all.*
+- [ ] BODY PLAN: a heavy, low-slung, deep-chested digitigrade quadruped with a big, heavy head on an elongated snout and a long, tapering, rat-like tail
+- [ ] COLOUR LAYOUT: reddish-brown to maroon back and flanks fading to a lighter tan-grey underside, throat and legs; faint darker mottling on the flank; small red eyes
+- [ ] Teeth: the snout packed with large interlocking jagged white saw-like teeth, visible even with the jaw closed (a double saw-row when open)
 - [ ] A pair of short, blunt, horn-like spikes near the nose
-- [ ] A wispy fringe of hair-like bristles along the belly and backs of the legs
-- [ ] Realistic rendering: natural leathery hide with coarse bristles and lighting, no outlines, no watercolour or cartoon shading
+- [ ] A wispy fringe of hair-like bristles along the belly and the backs of the legs
+- [ ] Realistic rendering: natural leathery hide with coarse bristles and lighting, no outlines, no watercolour or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a rat or dog (no full fur coat, no short muzzle with hidden teeth), not a crocodile (no sprawling legs, no armoured scutes)
 
 ## Engine limits
 none known

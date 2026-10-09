@@ -29,13 +29,14 @@ Both images are LEGENDS (Legends page only; the canon page has no image), and th
 - **Trust order:** `legends_1` is the only colour reference and matches the "two mouths" prose; `legends_2` supports a plainer baseline silhouette.
 
 ## Must show
-- [ ] Slug/caterpillar body, low and long, on a pale grey-white foot
-- [ ] Ochre-orange skin with rows of blue-teal ringed (concentric) spots down the flanks
-- [ ] Crest of short teal-tipped fleshy fronds along the back (strongest over the mid-body hump)
-- [ ] Head with thin eye and tentacle stalks and a small spiky-ringed mouth
-- [ ] Tail end curling up into a starburst ring of tentacles around a second mouth
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `legends_1` (the only colour image, which matches the canon "two mouths" prose), with `legends_2` supporting the plain slug baseline; both images are Legends, the canon page has none.*
+- [ ] BODY PLAN: a low, long slug/caterpillar body on a flat foot, with a hump over the mid-body; no legs; head end carrying thin eye and tentacle stalks; tail end curling upward
+- [ ] COLOUR LAYOUT: ochre-orange skin on back and flanks with rows of blue-teal ringed (concentric) spots down the flanks; pale grey-white foot/belly underneath; fronds teal-tipped
+- [ ] Crest of short fleshy teal-tipped fronds/papillae along the back, strongest over the mid-body hump
+- [ ] Two mouths (canon): a small spiky-ringed mouth at the head, and the upcurled tail ending in a starburst ring of tentacles around a second mouth (the second-mouth placement is this entry's reading of `legends_1`, not a caption)
 - [ ] Wet slime trail left behind the body
-- [ ] Realistic rendering: wet glistening sea-slug skin and natural lighting, no outlines, no cartoon shading
+- [ ] Realistic rendering: wet glistening sea-slug skin and natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a plain garden slug or snail (no shell; the spots, frond crest and tail ring must read), not a segmented worm or caterpillar with legs
 
 ## Engine limits
 not yet assessed

@@ -108,12 +108,12 @@ across five pairs; long curling whip-tail; huge (building/vehicle scale) as
 established by the Mandalorian sequence and its ability to swallow a person.
 
 ## Must show
-- [ ] Warm sandy tan/ochre coloring overall (desert camouflage) — no green, blue, or other saturated hue on the living creature
-- [ ] Weathered, cracked, pebbly/nodular hide with a row of low blunt dorsal spikes/ridges down the spine and tail — not smooth scale or glossy plate armor
-- [ ] An enormous elongated jaw packed with many long, narrow, backward-curving conical teeth
-- [ ] Ten legs across five pairs, thick and heavily muscled
-- [ ] A long tail that curls rather than dragging straight
-- [ ] Bright yellow-white acidic venom visible when spitting — the one strong saturated color on an otherwise monochrome-tan creature
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the two Mandalorian images (`wookieepedia_1.jpg`, `mandalorian_still_1.jpg`) and the `## ruling` below, which wins where it differs from the images or the greater-krayt text.*
+- [ ] BODY PLAN: a huge, long, low reptile: an enormously long neck carrying the head far from the body, a large number of thick, heavily muscled short-clawed legs far below a long body (owner ruling 2026-10-05: "Enormously long next and distant head, then a large number of legs far below (7-8 pair)."), and a long tail that curls rather than dragging straight
+- [ ] Head: broad, topped by a shelf-like ramming bone (owner ruling 2026-10-05: "Broad head with a shelf-like ramming bone top."); an enormous elongated jaw packed with many long, narrow, backward-curving conical teeth
+- [ ] COLOUR LAYOUT: warm sandy tan/ochre over the entire body (desert camouflage), no green, blue or other saturated hue on the living creature; bright yellow-white acidic venom when spitting is the one strong saturated colour
+- [ ] Hide: weathered, cracked, pebbly/nodular, rock- or bark-like, with a row of low blunt dorsal spikes/ridges down the spine and tail; not smooth scale or glossy plate armour
+- [ ] NEGATIVE: not a four- or six-legged dragon or crocodile, not a short-necked lizard with the head on the shoulders, not black or saturated-coloured, not the flat olive cartoon of the donor montage icon
 
 ## Engine limits
 none known

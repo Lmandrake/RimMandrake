@@ -56,14 +56,14 @@ Mods folder), so there is no `donor_current_sprite.png` candidate for this
 entry.
 
 ## Must show
-- [ ] Small bipedal dinosaur-like reptile — theropod build, body held HORIZONTAL over two strong hind legs; NOT a frog, NOT a toad, NOT an upright hopper
-- [ ] A thick tapering TAIL extending behind for balance — part of the silhouette in every facing
-- [ ] Tiny vestigial forelimbs tucked against the chest, never weight-bearing
-- [ ] Oversized head with a rounded, blunt, beak-like snout, broad cheeks and a backswept crest at the rear of the skull
-- [ ] TWO modest-sized eyes on the sides of the head — a front (south) view shows both; never a single central cyclops eye, never huge bulging frog eyes
-- [ ] Scaly mottled hide in tan, warm orange-brown and olive patches — not a flat colour
-- [ ] Roughly knee-height or smaller — a vermin-scale creature, not a large animal
-- [ ] Realistic rendering: natural scaly reptile skin and lighting, no outlines, no cartoon shading, no low-poly game look
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the owner's two KOTOR reference images (`owner_reference_sideview.jpg`, `owner_reference_card.jpg`), `kotor_screenshot.jpg`, and the three 2026-09-16 rulings in `## ruling` below.*
+- [ ] BODY PLAN: a small bipedal dinosaur-like reptile with a theropod build: body held HORIZONTAL over two strong hind legs, a thick tapering TAIL extending behind for balance (part of the silhouette in every facing), tiny vestigial forelimbs tucked against the chest and never weight-bearing (owner ruling 2026-09-16: "I see clear references to bipedal and no mention of four legs.")
+- [ ] Head: oversized relative to the body, with a rounded, blunt, beak-like snout, broad fleshy cheeks, a downturned mouth and a backswept crest at the rear of the skull
+- [ ] Eyes: TWO modest-sized eyes, one on each side of the head; a front (south) view shows both (owner ruling 2026-09-16: gizka has TWO eyes); never a single central cyclops eye, never huge bulging frog eyes
+- [ ] COLOUR LAYOUT: scaly hide mottled in tan, warm orange-brown and olive patches over back, flanks and head, never a flat colour; paler skin at the belly and joints
+- [ ] Size: roughly knee-height or smaller, a vermin-scale creature, not a large animal; east/west facings are true side profiles, not top-down
+- [ ] Realistic rendering: natural scaly reptile skin and lighting, no outlines, no cartoon shading, no low-poly game look (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a frog, not a toad, not an upright hopper (owner ruling 2026-09-16: "You just made a frog. I don't want a frog."); not a four-legged sprawling lizard
 
 ## Engine limits
 none known
