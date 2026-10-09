@@ -1,0 +1,1 @@
+Player.log going silent for 17+ min plus a busy CPU is NOT a hung game: 2026-10-08 a helper reported the game hung at 19:23 while the owner found it fully responsive and ./game said 'bridge answers'. Test liveness with ./game (bridge round-trip), never log mtime.
