@@ -1,0 +1,24 @@
+== UtinniPatches
+    -> VERIFIED in sync
+
+Deployed 1 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== Rites
+    -> VERIFIED in sync
+
+Deployed 1 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== FlowWorks
+    -> VERIFIED in sync
+
+Deployed 1 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== Watchers
+    -> VERIFIED in sync
+
+Deployed 1 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+== BIOMES
+    ~  Biomes/TerminalBiomes/Defs/ThingDefs_Races/RM_ScaldFauna.xml
+    ~  Biomes/TerminalBiomes/Defs/ThingDefs_Races/RM_ScaldFloorFauna.xml
+    ~  Biomes/TerminalBiomes/Defs/ThingDefs_Races/RM_ScaldWalker.xml
+    -> VERIFIED in sync
+
+Deployed 10 file(s). RESTART RIMWORLD — defs are only parsed at startup, so reloading a save will not pick these up.
+ALLDONE

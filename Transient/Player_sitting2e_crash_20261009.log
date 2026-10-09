@@ -1,0 +1,836 @@
+Mono path[0] = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Managed'
+Mono config path = 'C:/Program Files (x86)/Steam/steamapps/common/RimWorld/MonoBleedingEdge/etc'
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+Initialize engine version: 2022.3.35f1 (011206c7a712)
+[Subsystems] Discovering subsystems at path C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/UnitySubsystems
+GfxDevice: creating device client; threaded=1; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 5080 (ID=0x2c02)
+    Vendor:   NVIDIA
+    VRAM:     15977 MB
+    Driver:   32.0.15.9186
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  0.114 seconds
+- Finished resetting the current domain, in  0.001 seconds
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.698600 ms
+Command line arguments: -disable-compute-shaders
+RimWorld 1.6.4871 rev591
+Direct3D: detected that using refresh rate causes time drift. Will stop trusting refresh rate until the game window is moved.
+Direct3D: detected that vsync is broken (it does not limit frame rate properly). Delta time will now be calculated using cpu-side time stampling until the game window is moved.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (VanillaExpanded.VFEFactory) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (Dubwise.Rimefeller) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod VFE Factory Integrated Rimefeller Recipes dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (cyberchronicle.rimtalkexperts) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk Expand: AI Storyteller dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (cj.Rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Custom Room Names - RimTalk Addon dependency (costel.CustomRoomNames) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Literature dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cyanobot.toddlers) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod RimTalk - Expand Toddlers dependency (cj.rimtalk) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Large Pawns dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (issaczhuang.muzzleflash) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (issaczhuang.muzzleflash) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Wood's Muzzle Flash for Ancient urban ruins has a dependency (xmb.ancienturbanruins.mo) with empty display name.
+Mod Wood's Muzzle Flash for Ancient urban ruins dependency (xmb.ancienturbanruins.mo) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Mod Forced Xenogerm Implantation dependency (brrainz.harmony) needs to have <downloadUrl> and/or <steamWorkshopUrl> specified.
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001C96078D030.dll
+Fallback handler could not load library C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/MonoBleedingEdge/data-000001C960A4F100.dll
+[RimBridge] STARTUP_TIMING phase=main-thread.initialize durationMs=0 elapsedMs=0
+[RimBridge] Applied essential Harmony patches.
+[RimBridge] Applied 58 optional Harmony patch classes.
+[RimBridge] STARTUP_TIMING phase=harmony.startup-patches durationMs=162 elapsedMs=163
+[RimBridge] STARTUP_TIMING phase=startup.on-mod-constructed durationMs=0 elapsedMs=163
+[RimBridge] STARTUP_TIMING phase=mod-constructor.total durationMs=164 elapsedMs=164
+Tried to get a resource "UI/Commands/TryReconnect" from a different thread. All resources must be loaded in the main thread.
+Tried to get a resource "UI/Designators/Cancel" from a different thread. All resources must be loaded in the main thread.
+[RimMandrake.GimmeSomeSlack] Harmony: patched 26, missing 0
+[RimMandrake.ExplosiveKnockback] Harmony: patched 4, missing 0
+[RimMandrake.GravshipLanding] Harmony: patched 1, missing 0
+[RimMandrake.GravshipLanding] ready.
+[RimMandrake.KeelHoist] Harmony: patched 2, missing 0
+[RimMandrake.KineticArms] Harmony: patched 2, missing 0
+[RimMandrake.Utinni.CathedralPass] Harmony: patched 1, missing 0
+[RimMandrake.Wreckage] Harmony: patched 1, missing 0
+[RimMandrake.Abyss] Harmony: patched 1, missing 0
+[RimMandrake.FeverWood] Harmony: patched 5, missing 0
+[RimMandrake.FloodedCanyon] Harmony: patched 2, missing 0
+[RimMandrake.TerminalBiomes] Harmony: patched 11, missing 0
+[RimMandrake.DivingInteraction] Harmony: patched 10, missing 0
+[RimMandrake.SolarMirrors] Harmony: patched 3, missing 0
+[RimStarWars.SWBestiary.BeastMechanics] Harmony: patched 1, missing 0
+XML error: <bleedRate>0.02</bleedRate> doesn't correspond to any field in type HediffStage. Context: <li><label>feeding</label><minSeverity>0.35</minSeverity><painOffset>0.08</painOffset><bleedRate>0.02</bleedRate></li>
+XML error: <bleedRate>0.05</bleedRate> doesn't correspond to any field in type HediffStage. Context: <li><label>swarming</label><minSeverity>0.75</minSeverity><painOffset>0.15</painOffset><bleedRate>0.05</bleedRate></li>
+XML error: <baseTendDuration>90000</baseTendDuration> doesn't correspond to any field in type HediffCompProperties_TendDuration. Context: <li Class="HediffCompProperties_TendDuration"><baseTendDuration>90000</baseTendDuration></li>
+Could not find a type named BiomesPlus.BiomeWorker_PoisonForest
+Could not find a type named VanillaBiomes.BiomeWorker_Badlands
+Could not find a type named ReGrowthCore.UniversalBiomeWorker
+Could not find a type named BiomeWorker_CypreJungle
+Could not find a type named BiomesPlus.BiomeWorker_Wasteland
+Could not find a type named VanillaBiomes.BiomeWorker_DesertOasis
+XML error: <successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent> doesn't correspond to any field in type QuestNode_End. Context: <li Class="QuestNode_End"><inSignal>EggHatched</inSignal><outcome>Success</outcome><sendStandardLetter>true</sendStandardLetter><successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent></li>
+XML error: <failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent> doesn't correspond to any field in type QuestNode_End. Context: <li Class="QuestNode_End"><inSignal>EggFoundBeforeHatch</inSignal><outcome>Fail</outcome><sendStandardLetter>true</sendStandardLetter><goodwillChangeAmount>-25</goodwillChangeAmount><goodwillChangeFactionOf>$target</goodwillChangeFactionOf><goodwillChangeReason>RUT_HistoryEvent_ReckoningAttempt</goodwillChangeReason><failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent></li>
+XML error: <successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent> doesn't correspond to any field in type QuestNode_End. Context: <li Class="QuestNode_End"><inSignal>EggHatched</inSignal><outcome>Success</outcome><sendStandardLetter>true</sendStandardLetter><successHistoryEvent>RUT_HistoryEvent_EggAssassination</successHistoryEvent></li>
+XML error: <failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent> doesn't correspond to any field in type QuestNode_End. Context: <li Class="QuestNode_End"><inSignal>EggFoundBeforeHatch</inSignal><outcome>Fail</outcome><sendStandardLetter>true</sendStandardLetter><goodwillChangeAmount>-25</goodwillChangeAmount><goodwillChangeFactionOf>$target</goodwillChangeFactionOf><goodwillChangeReason>RUT_HistoryEvent_ReckoningAttempt</goodwillChangeReason><failedOrExpiredHistoryEvent>RUT_HistoryEvent_EggAssassination</failedOrExpiredHistoryEvent></li>
+[RimMandrake: SW — Bestiary] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\SWBestiary\Patches\SeasWaterline\Waterline_Lane1.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/PawnKindDef[defName="AncientSoldierBoss"]/weaponTags/li[text()="IndustrialGunAdvanced"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\AncientArsenal_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="BMT_GreyLady"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_AridGrass"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_CreepStern"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_CrimsonCushion"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/ThingDef[defName="RG_Plant_Dervish"]/statBases) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\BiomeFloraStatAdjustments_Generated.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationSequence(count=60, lastFailedOperation=Verse.PatchOperationReplace(Defs/PawnKindDef[defName="BMT_Thrumbungus"]/lifeStages/li[1]/bodyGraphicData/drawSize)) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\CreatureResize_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeGamorrean"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeHerglic"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeTrandoshan"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeTogorian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeLasat"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeFeeorin"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeSithMassassi"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeAqualish"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeCathar"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeChagrian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeGungan"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeKaleesh"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeKlatoonian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(Defs/XenotypeDef[defName="RSW_RimMandrakeNelvaanian"]/genes/li[text()="BS_GiantWeaponWielder"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\GiantWeaponWielders_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationFindMod(Alpha Animals) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\Ikee_Rename.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="RUT_Jawa_MessImmune"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\JawaMessImmunity.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeHutt"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="MinTemp_SmallDecrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+[RimUtinni Patches (Jawa campaign)] Patch operation Verse.PatchOperationConditional(/Defs/XenotypeDef[defName="RSW_Jawa_Xeno_Gamorrean"]/genes/li[text()="MaxTemp_SmallIncrease"]) failed
+file: C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\UtinniPatches\Patches\XenotypeTolerances_Ashkarr.xml
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_VibroBlade found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Empire_DrillInstructorHeskVaro
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_DLT19XTargetingBlaster found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Empire_TrooperBoAnder
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Bolting
+Could not resolve cross-reference: No Verse.ThingDef named Force_Lightsaber_Inquisitor found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Empire_InquisitorVaunt
+Could not resolve cross-reference to Verse.ThingDef named guy762_Headband_rebreathermask (wanter=apparel)
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_CompositeHelmet (wanter=apparel)
+Could not resolve cross-reference to Verse.ThingDef named guy762_Headband_rebreathermask (wanter=apparel)
+Could not resolve cross-reference to Verse.ThingDef named guy762_MandoHelmet_supercom (wanter=apparelRequired)
+Could not resolve cross-reference: No Verse.ThingDef named DV_MeleeWeapon_SerratedScimitar found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Hutt_MargraveSarrick
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Spiking
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_ShopRepair
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Reassembly
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_PrimitiveFabrication
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Formatting
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_DLT19HeavyBlasterRifle found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Droids_CaptainFourteen
+Could not resolve cross-reference: No Verse.ThingDef named GS_Gaffi found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Tusken_GhurrVex
+Could not resolve cross-reference: No Verse.TerrainDef named CypreJungleMud found to give to RimWorld.BiomeDef RUT_Greentide
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_DLT19HeavyBlasterRifle found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Droids_Wallop
+Could not resolve cross-reference to Verse.ThingDef named OuterRim_StormtrooperHelmet (wanter=apparel)
+Could not resolve cross-reference: No Verse.WeatherDef named RSW_SW_RedFog found to give to RimWorld.WeatherCommonalityRecord RimWorld.WeatherCommonalityRecord
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_CyclerRifle found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Tusken_ShaaNel
+Could not resolve cross-reference to Verse.ThingDef named guy762_TuskenMask (wanter=apparel)
+Could not resolve cross-reference: No Verse.ThingDef named OuterRim_A280Blaster found to give to RimMandrake.Inhabited.CharacterDef Inhabited_Wildsteam_BoKesh
+Could not resolve cross-reference to Verse.ThingDef named guy762_Headband_rebreathermask (wanter=apparel)
+Could not resolve cross-reference: No RimWorld.StatDef named EBSG_SkillLossRate found to give to RimWorld.StatModifier (null stat)
+Could not resolve cross-reference: No RimWorld.ResearchTabDef named RUT_Tree_Unbolting found to give to Verse.ResearchProjectDef RSW_DW_Research_Reboot
+Failed to find Verse.PawnKindDef named VAEWaste_Wasteboar. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxscorpion. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxiguana. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxlion. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxbear. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Toxafox. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Pestigator. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Hydra. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Wasteffalo. There are 1331 defs of this type loaded.
+Failed to find Verse.PawnKindDef named VAEWaste_Wastedeer. There are 1331 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_AttackTree. There are 458 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_AttackSelf. There are 458 defs of this type loaded.
+Failed to find Verse.JobDef named VAEWaste_EatWastepack. There are 458 defs of this type loaded.
+Failed to find Verse.HediffDef named VAEWaste_LongToxflu. There are 689 defs of this type loaded.
+Failed to find Verse.HediffDef named VAEWaste_Toxflu. There are 689 defs of this type loaded.
+Config error in Eclipse: world-targeting incident has a biome restriction list
+Config error in SolarFlare: world-targeting incident has a biome restriction list
+Config error in Aurora: world-targeting incident has a biome restriction list
+Config error in CannibalPirate: has a required meme which is not allowed: Cannibal
+Config error in PirateYttakin: has a required meme which is not allowed: AnimalPersonhood
+Config error in RM_FE_Ash_Trace: burnedDef is flammable
+Config error in RM_FE_Ash_Light: burnedDef is flammable
+Config error in RM_FE_Ground_Sand: burnedDef is flammable
+Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+Config error in RM_FE_Ground_Soil: burnedDef is flammable
+Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+Config error in RUT_Jawa_Homestead_Heavy: Cheapest weapon with one of my weaponTags costs 480 but weaponMoney min is 300, so could end up weaponless.
+Config error in RUT_Jawa_Homestead_Specialist: Cheapest weapon with one of my weaponTags costs 530 but weaponMoney min is 450, so could end up weaponless.
+Config error in RUT_Jawa_DeepDesert_Grunt: Cheapest weapon with one of my weaponTags costs 164.25 but weaponMoney min is 150, so could end up weaponless.
+Config error in RM_SpecimenCabinet: is minifiable but not in any thing category
+Config error in RUT_Jawa_Junkers_Specialist: Cheapest weapon with one of my weaponTags costs 480 but weaponMoney min is 200, so could end up weaponless.
+Config error in RM_SpecimenCabinet: is minifiable but not in any thing category
+Config error in RM_FE_Ash_Trace: burnedDef is flammable
+Config error in RM_FE_Ash_Light: burnedDef is flammable
+Config error in RM_FE_Ground_Sand: burnedDef is flammable
+Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+Config error in RM_FE_Ground_Soil: burnedDef is flammable
+Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+Config error in RM_LureAwning: is not minifiable yet has thing categories (could be confusing in thing filters because it can't be moved/stored anyway)
+Config error in RM_LureAwning: is not minifiable yet has thing categories (could be confusing in thing filters because it can't be moved/stored anyway)
+Config error in RM_Illisk: has tool with linkedBodyPartsGroup Teeth but body Snake has no parts with that group.
+Config error in RM_Illisk: has tool with linkedBodyPartsGroup Teeth but body Snake has no parts with that group.
+Config error in RUT_ShieldGenerator: is minifiable but not in any thing category
+Config error in RUT_ShieldGenerator: is minifiable but not in any thing category
+Failed to find any textures at RotSpecies/Swarmling/Swarmling while constructing Multi(initPath=RotSpecies/Swarmling/Swarmling, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Cannot init Graphic of class Verse.Graphic_Linked
+Could not load Texture2D at 'Things/Item/Resource/ComponentSpacer' for def 'RM_HagglerModule' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/ComponentSpacer' for def 'RM_ManifestDecoder' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/ComponentSpacer' for def 'RM_TransponderScanner' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/ComponentSpacer' for def 'RM_PriceAlmanac' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Plant/RUT_Fuzz
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantA
+Collection cannot init: No textures found at path Things/Item/Fish/RM_SkarrinCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_KarrekCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_VizhikCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_LoomuCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_HulduCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_IvvolCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Ikkal
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Tarrik
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Duul
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Ullo
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Ozhu
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Vobbal
+Collection cannot init: No textures found at path Things/Plant/DosimeterLawn
+Collection cannot init: No textures found at path Things/Plant/VaultRoot
+Collection cannot init: No textures found at path Things/Plant/RM_Scumgrass
+Collection cannot init: No textures found at path Things/Plant/RM_TallScumgrass
+Collection cannot init: No textures found at path Things/Plant/RM_Pusberry
+Collection cannot init: No textures found at path Things/Plant/RM_Boilbulb
+Collection cannot init: No textures found at path Things/Plant/RM_Wartshrub
+Collection cannot init: No textures found at path Things/Plant/RM_Cinderfelt
+Collection cannot init: No textures found at path Things/Item/RM_Etchant
+Collection cannot init: No textures found at path Things/Item/RM_DielectricGel
+Collection cannot init: No textures found at path Things/Item/RM_Etchant
+Collection cannot init: No textures found at path Things/Item/RM_MedicalCoagulant
+Collection cannot init: No textures found at path Things/Item/RM_BloomLiquor
+Collection cannot init: No textures found at path Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods
+Collection cannot init: No textures found at path Things/Item/Fish/RM_ShullaCatch
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RM_FessuCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RM_OdduCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RM_TarnnCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Item/Fish/RM_EeshCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_MuddalCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_KarrashCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_Saal
+Collection cannot init: No textures found at path Things/Item/Fish/RM_BladderboilCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_DossCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_ThuumCatch
+Collection cannot init: No textures found at path Things/Item/Fish/RM_EkkelCatch
+Collection cannot init: No textures found at path Things/Plant/SnakePlant/SnakePlantA
+Collection cannot init: No textures found at path Things/Plant/PincushionPlant/PincushionPlantB
+Collection cannot init: No textures found at path Things/Plant/Echeveria/EcheveriaA
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_OommokSkeleton
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_MuurrokSkeleton
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_GuzzkaSkeleton
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RM_VozzikSkeleton
+Collection cannot init: No textures found at path Things/Item/Fish/RM_CoolantEelCatch
+Collection cannot init: No textures found at path Things/Plant/RM_Braskeen/RM_Braskeen
+Collection cannot init: No textures found at path Things/Plant/RM_Ismerrow/RM_Ismerrow
+Collection cannot init: No textures found at path Things/Item/Plant/RM_UltracactusPad
+Collection cannot init: No textures found at path Things/Item/Meal/RM_VorrelSeedDish
+Could not load Texture2D at 'Things/Item/Resource/RM_SweetlineToken' for def 'RM_SweetlineToken' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FE_ScorchFruit
+Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain
+Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain
+Collection cannot init: No textures found at path Things/Plant/RM_Brakkel/RM_Brakkel_a
+Collection cannot init: No textures found at path Things/Plant/RM_Maddrick/RM_Maddrick_a
+Collection cannot init: No textures found at path Things/Plant/RM_Illurin/RM_Illurin_a
+Could not load Texture2D at 'Things/Item/Plant/RM_YearningFruitHarvested' for def 'RM_YearningFruitHarvested' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilImpression/RM_FossilImpression
+Collection cannot init: No textures found at path Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton
+Failed to find any textures at Animal/RockTroll/RockTroll while constructing Multi(initPath=Animal/RockTroll/RockTroll, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+Collection cannot init: No textures found at path Things/Item/Resource/RM_RadioactiveSuppressant/RM_RadioactiveSuppressant
+Collection cannot init: No textures found at path Things/Item/Resource/RM_ThornbugNectar/RM_ThornbugNectar
+Collection cannot init: No textures found at path Things/Item/Resource/RM_VaulmLacquer/RM_VaulmLacquer
+Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathSap/RM_DrommathSap
+Collection cannot init: No textures found at path Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap
+Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals
+Collection cannot init: No textures found at path Things/Item/Resource/RM_SekkulaathCream/RM_SekkulaathCream
+Collection cannot init: No textures found at path Things/Item/RM_Vexxith/RM_Vexxith
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RSW_KraytSkeleton
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RSW_GreaterKraytSkeleton
+Collection cannot init: No textures found at path Things/Building/GiantSkeleton/RSW_WarWyrmSkeleton
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RSW_MeeCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RSW_FaaCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RSW_LaaCatch' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path swresource/RSW_ZakkroEgg
+Collection cannot init: No textures found at path Things/Item/Resource/Leather/Leather_Plain
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Tubbik' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Zhurr' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Hurrok' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Vhessa' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Fessu' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Krellik' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Oddu' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Oovu' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Could not load Texture2D at 'Things/Item/Resource/MeatFoodRaw/Meat_Small' for def 'RUT_Tarnn' in any active mod or in base resources.
+MatFrom with null sourceTex.
+Collection cannot init: No textures found at path Things/Plant/DosimeterLawn
+Collection cannot init: No textures found at path Things/Plant/VaultRoot
+Could not execute post-long-event action. Exception: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref 69483433]
+  at Verse.Graphic_Linked.get_MatSingle () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Graphic.get_MatNorth () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Graphic.MatAt (Verse.Rot4 rot, Verse.Thing thing) [0x00020] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.BuildableDef.ResolveIcon () [0x00074] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.ThingDef.ResolveIcon () [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.BuildableDef.<PostLoad>b__78_0 () [0x00021] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 
+Alien race successfully completed 280 patches (50 pre, 82 post, 148 trans) with harmony.
+KCSG has Created 7274 symbolDefs for vanilla and DLCs
+[RimMandrake.FlowWorks] Harmony: patched 31, missing 0
+[GimmeSomeSlack] targets: PowerConduit, WaterproofConduit, KCSG_PowerConduit; invisible=True
+[RimMandrake.HugeThings] ready: 9 huge plants, 0 huge pawn races.
+[RimMandrake.TitanicCreatures] ready: 4 patches, 300 races auto-tiered.
+[RimMandrake.Inhabited] Harmony: patched 3, missing 0
+[RimMandrake.Inhabited] ready: 2 patches, 294 characters, 4 places, 0 casts.
+[RimMandrake.Ninefold] subscribed to RimMandrake.Aftermath.ChronicleEvents.
+[RimMandrake.Ninefold] Harmony: patched 31, missing 0
+[RimMandrake.Ninefold] ready: 27 event-hook patches.
+[RimMandrake.Aftermath] Harmony: patched 6, missing 0
+[RimMandrake.Aftermath] ready: 6 battle-recorder patches.
+[RimMandrake.LuminousPigment] Harmony: patched 14, missing 0
+[RimMandrake.PlanetPresetPrime] Harmony: patched 1, missing 0
+[RimMandrake.PlanetPresetPrime] loaded: will prime coverage 1, subdivisions 7. MLP type ABSENT.
+[RimMandrake.RaidRedesigner] Harmony: patched 5, missing 0
+[RimMandrake.RaidRedesigner] mandrake.rm.property not active - BetrayedTrader capture hook skipped.
+[RimMandrake.RaidRedesigner] ready: 5 capture-hook patches.
+[RimMandrake.StarWars.WeatherSuite] loaded — terminator-band and nightside-band geometry checks armed (MapComponent_TerminatorBand, IncidentWorker_NightsideAurora). No Harmony patches: both hooks are ordinary MapComponent/IncidentWorker overrides.
+[RimUtinni.EmpirePursuit] Harmony: patched 3, missing 0
+[Baroque Biomes] roster 30 entries (CreatureBehaviors:0, EnvironmentalHazards:0, Wreckage:0, Abyss:1, BlueDesert:1, Cauldron:1, Contagion:1, FeverWood:1, FloodedCanyon:1, GelatinousSlime:1, Greentide:1, LanternDeeps:1, LeaningScrub:1, LongShade:1, Miasma:1, NightsideIce:1, Pyrelands:1, RustCathedral:1, Stillsand:1, TerminalBiomes:5, TheForge:1, TheRot:1, TheSump:1, Warscar:1, Wasteland:1, Webwork:1, WeepingStones:1, DivingInteraction:6, MovingDunes:0, SeaShores:0); 34 BiomeDef(s) mapped
+[Baroque Biomes] worldgen gate applied (startup): all biomes on
+[RimMandrake.Cauldron] Harmony: patched 1, missing 0
+[RM Cauldron] dewfall variants not on disk yet (no swap for): RM_CrystalFlower, RM_BloodBouquet, RM_RedBugloss, RM_KeeningCordax, RM_GiantToxicFlower
+[RM Cauldron] assay fleck overlays not on disk yet: Things/Plant/RM_AssayFlecks/Flecks_Light, Things/Plant/RM_AssayFlecks/Flecks_Heavy
+[RimMandrake.LanternDeeps] Harmony: patched 4, missing 0
+[RimMandrake.Pyrelands] fulgurite-spawn: armed; strikes on sand-family ground may leave a fulgurite
+[RimMandrake.Pyrelands] fire-tick-ash-scorchfruit: armed; burning cells on scorchable ground may dust loose ash and rarely seed a scorch-fruit pod
+[RimMandrake.Pyrelands] pyrelands-wildplant-allowlist: armed; only RM_FE_ grasses may spawn wild on a Pyrelands map, however a foreign plant reaches the candidate list.
+[RimMandrake.Pyrelands] furnace-beast heat immunity: armed; RM_FurnaceBeast absorbs all Heat-category damage.
+[RimMandrake.Pyrelands] furnace-beast herd world-recall: armed; surviving furnace-beasts rejoin the world when their map is removed.
+[RimMandrake.RustCathedral.Hum] Harmony: patched 12, missing 0
+[RimMandrake.RustCathedral.Walls] Harmony: patched 1, missing 0
+[RimMandrake.TheForge] Harmony: patched 3, missing 0
+[RimMandrake.Scarlands] Harmony: patched 12, missing 0
+[RimMandrake.MovingDunes] sand-holds-on-sand: armed; on a dune-field map, Sand and SoftSand terrain hold depth (water, space and full-fillage buildings still refuse it)
+[RimMandrake.MovingDunes] ambient-decay-suppression: armed; vanilla's -1/180 per-cell-visit sand decay is scaled by the map material's ambientDecayFactor (0 = drifts persist)
+[RimMandrake.MovingDunes] vanilla-sand-layer-suppression: armed; the vanilla sand submesh is disabled on skinned maps so the tinted layer never double-draws
+[RimMandrake.MovingDunes] clear-sand-yield: armed; shovelling drift on a dune field whose biome names a clearYield drops it in proportion to the depth removed
+[RimMandrake.MovingDunes] hide-depths: 3518 items @0.45, 544 plants @0.55, 124 filth @0.2 (of 9017 ThingDefs; defs with their own value untouched).
+[RimMandrake.SeaShores] Harmony: patched 3, missing 0
+[RimMandrake.Utinni.FallLineArrivals] Harmony: patched 1, missing 0
+[RimMandrake.Utinni.ShipShields] Harmony: patched 2, missing 0
+[RimMandrake.Utinni.ShipShields] ready.
+[RimUtinni.UnfinishedLine] Harmony: patched 3, missing 0
+Type Patch_LeaveBehind_Gizmo probably needs a StaticConstructorOnStartup attribute, because it has a field icon of type Texture2D. All assets must be loaded in the main thread.
+Type RM_MapComponent_HullBoltMarks probably needs a StaticConstructorOnStartup attribute, because it has a field mat of type Material. All assets must be loaded in the main thread.
+Type SectionLayer_RM_SkyColumns probably needs a StaticConstructorOnStartup attribute, because it has a field hazeMat of type Material. All assets must be loaded in the main thread.
+Type RM_CapstanTurret probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.
+Type RM_FaceMaterial probably needs a StaticConstructorOnStartup attribute, because it has a field strataTex of type Texture2D. All assets must be loaded in the main thread.
+Type RM_Building_TractionLance probably needs a StaticConstructorOnStartup attribute, because it has a field topGraphic of type Graphic. All assets must be loaded in the main thread.
+Type RM_MapComponent_MirrorLight probably needs a StaticConstructorOnStartup attribute, because it has a field spotMats of type Material[]. All assets must be loaded in the main thread.
+Type RM_GameCondition_Mirage probably needs a StaticConstructorOnStartup attribute, because it has a field bandMat of type Material. All assets must be loaded in the main thread.
+Unloading 5 Unused Serialized files (Serialized files now loaded: 7)
+MVCF successfully applied 0 patches
+[RimMandrake.Pyrelands] growth-stage art: armed for 1 plant def(s)
+Unloading 289 unused Assets to reduce memory usage. Loaded Objects now: 46100.
+Total: 331.255400 ms (FindLiveObjects: 1.734000 ms CreateObjectMapping: 1.869200 ms MarkObjects: 327.089400 ms  DeleteObjects: 0.562200 ms)
+
+[RimBridge] Startup conditions satisfied after play-data load; initializing bridge services.
+[RimBridge] Applied 6 late virtual-input patch classes.
+[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=19 elapsedMs=104179
+[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=1264 elapsedMs=105444
+[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=0 elapsedMs=105444
+[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=105446
+[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=105446
+[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=105446
+[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=105446
+[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=105448
+[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=105451
+[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=105452
+[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=1 elapsedMs=105453
+[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=105456
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=23 elapsedMs=105480
+[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=1300 elapsedMs=105480
+[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=23 elapsedMs=105480
+[RimBridge] GABP server running standalone on port 5174
+[RimBridge] Bridge token: 3bbcea938e434e8d82046f0546a8740f
+Error in WorldGenStep: System.NullReferenceException: Object reference not set to an instance of an object
+[Ref D5A5D0C7]
+  at RimWorld.IdeoFoundation_Deity.FillDeity (RimWorld.IdeoFoundation_Deity+Deity deity) [0x00078] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.IdeoFoundation_Deity.GenerateNewDeity () [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.IdeoFoundation_Deity.GenerateDeities () [0x00056] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.IdeoFoundation_Deity.Init (RimWorld.IdeoGenerationParms parms) [0x00032] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.IdeoGenerator.MakeFixedIdeo (RimWorld.IdeoGenerationParms parms) [0x00010] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionIdeosTracker.ChooseOrGenerateIdeo (RimWorld.IdeoGenerationParms parms) [0x000a0] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.NewGeneratedFaction (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionGeneratorParms parms) [0x0008a] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX OskarPotocki.VEF: Void VEF.Planet.VanillaExpandedFramework_FactionGenerator_NewGeneratedFaction_Patch:Postfix(PlanetLayer layer, FactionGeneratorParms parms, Faction& __result)
+  at RimWorld.FactionGenerator.CreateFactionAndAddToManager (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionDef facDef) [0x00065] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.AddFactionToManager (RimWorld.Planet.PlanetLayer layer, RimWorld.FactionDef facDef) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.InitializeFactions (RimWorld.Planet.PlanetLayer layer, System.Collections.Generic.List`1[T] factions) [0x000b0] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.FactionGenerator.GenerateFactionsIntoWorldLayer (RimWorld.Planet.PlanetLayer layer, System.Collections.Generic.List`1[T] factions) [0x0000d] in <61e4173561894da49d210260257b5097>:0 
+    - POSTFIX mlie.horrors: Void Horrors.FactionGenerator_GenerateFactionsIntoWorldLayer:Postfix()
+  at RimWorld.Planet.WorldGenStep_Factions.GenerateFresh (System.String seed, RimWorld.Planet.PlanetLayer layer) [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at RimWorld.Planet.WorldGenerator.GeneratePlanetLayer (RimWorld.Planet.PlanetLayer layer, System.String seedString, System.Int32 seed) [0x0004f] in <61e4173561894da49d210260257b5097>:0 
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (1 of 1) on tile 97330,0.
+[RimMandrake.Pyrelands] seeded a furnace-beast herd (3 of 3) on tile 87409,0.
+Unloading 3 Unused Serialized files (Serialized files now loaded: 7)
+[PhysX] Initialized MultithreadedTaskDispatcher with 14 workers.
+UnloadTime: 0.750300 ms
+Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 46296.
+Total: 280.040900 ms (FindLiveObjects: 1.552300 ms CreateObjectMapping: 1.739100 ms MarkObjects: 276.673300 ms  DeleteObjects: 0.075800 ms)
+
+Initializing new game with mods:
+  - brrainz.harmony
+  - Ludeon.RimWorld
+  - Ludeon.RimWorld.Royalty
+  - Ludeon.RimWorld.Ideology
+  - Ludeon.RimWorld.Biotech
+  - Ludeon.RimWorld.Anomaly
+  - Ludeon.RimWorld.Odyssey
+  - brrainz.rimbridgeserver
+  - erdelf.HumanoidAlienRaces
+  - Mlie.Horrors
+  - Mlie.StarWarsAnimalCollection
+  - OskarPotocki.VanillaFactionsExpanded.Core
+  - OskarPotocki.VFE.Insectoid2
+  - ray1203.SimpleCameraSetting
+  - sarg.alphaanimals
+  - sarg.alphabiomes
+  - VanillaExpanded.VFEFactory
+  - mandrake.rm.acousticscanner
+  - mandrake.rm.flowworks
+  - mandrake.rm.bazaar
+  - mandrake.rm.gimmesomeslack
+  - mandrake.rm.explosiveknockback
+  - mandrake.rm.graffiti
+  - mandrake.rm.gravshiplanding
+  - mandrake.rm.hugethings
+  - mandrake.rm.inhabited
+  - mandrake.rm.keelhoist
+  - mandrake.rm.kineticarms
+  - mandrake.rm.ninefold
+  - mandrake.rm.aftermath
+  - mandrake.rm.luminouspigment
+  - mandrake.rm.planetpresetprime
+  - mandrake.rm.proximityhatch
+  - mandrake.rm.raidredesigner
+  - mandrake.rm.visibility
+  - mandrake.rm.watchers
+  - mandrake.rm.weathersuite
+  - mandrake.rm.wreckedmachines
+  - mandrake.rsw.bacta
+  - mandrake.rsw.droidworks
+  - mandrake.rsw.trophycraft
+  - mandrake.rut.antiquities
+  - mandrake.rut.ashkarrflora
+  - mandrake.rut.cathedralpass
+  - mandrake.rut.droidrepairjobs
+  - mandrake.rut.empirepursuit
+  - mandrake.rut.rites
+  - mandrake.rm.biomes
+  - mandrake.rm.shipvermin
+  - mandrake.rm.solarmirrors
+  - mandrake.rm.warcasket
+  - mandrake.rsw.swbestiary
+  - mandrake.rut.falllinearrivals
+  - mandrake.rut.patches
+  - mandrake.rut.eggreckoning
+  - mandrake.rut.shipshields
+  - mandrake.rut.unfinishedline
+  - mandrake.rut.wasterun
+[JawaBench] ready: 387 tools, build efe67213abc4
+[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in).
+[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected.
+[JawaBench] event recorder: damage=True kill=True lineage=True
+[JawaBench] context: modSet 58/f11afac8, toolSet 6b317080, defDump ARMED, engine 1.6.4871 rev591
+[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 114999,0 resolved neither a coast nor a lake direction — defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.
+[RimMandrake.StarWars.WeatherSuite] no PlanetGeometryDef loaded — terminator-band and nightside-band checks will always return false. The RimUtinni wiring mod ships the one Ash'karr needs.
+System.Collections.Generic.KeyNotFoundException: The given key '23420' was not present in the dictionary.
+[Ref 8D49B55F]
+ [0x00010] in <51fded79cd284d4d911c5949aff4cb21>:0 
+ [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Collections.Generic.Dictionary`2[TKey,TValue].get_Item (TKey key) [0x0001e] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at RimMandrake.HugeThings.MapComponent_HugeFootprints.RealizePending () [0x0008f] in <456b95908909492faf13e57023c46750>:0 
+  at RimMandrake.HugeThings.MapComponent_HugeFootprints.Reconcile () [0x001d9] in <456b95908909492faf13e57023c46750>:0 
+  at RimMandrake.HugeThings.MapComponent_HugeFootprints.FinalizeInit () [0x00006] in <456b95908909492faf13e57023c46750>:0 
+  at Verse.MapComponentUtility.FinalizeInit (Verse.Map map) [0x00013] in <61e4173561894da49d210260257b5097>:0 
+[Ninefold] front reckoned at landing: Ishko (loudness 0.0)
+[Ninefold] Ozzik satiation +15.0 (research completed: ComplexFurniture) -> 15.0 [Neutral]
+[Ninefold] front FLIPPED mid-map on a violent swing (Ozzik 15.0) -> Ozzik (loudness 15.0)
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): ComplexFurniture) -> 3.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: PassiveCooler) -> 30.0 [Content]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): PassiveCooler) -> 6.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: Stonecutting) -> 45.0 [Content]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): Stonecutting) -> 9.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: ComplexClothing) -> 60.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): ComplexClothing) -> 12.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: Electricity) -> 75.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): Electricity) -> 15.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: NutrientPaste) -> 90.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): NutrientPaste) -> 18.0 [Neutral]
+[Ninefold] Ozzik satiation +15.0 (research completed: AirConditioning) -> 100.0 [Exalted]
+[Ninefold] Ohm satiation +3.0 (research completed (shared input): AirConditioning) -> 21.0 [Content]
+Unloading 0 Unused Serialized files (Serialized files now loaded: 7)
+Could not execute post-long-event action. Exception: System.TypeLoadException: Could not resolve type with token 0100002e from typeref (expected class 'RimMandrake.Property.TakingEvent' in assembly 'RimMandrakeProperty, Version=0.1.0.0, Culture=neutral, PublicKeyToken=null')
+[Ref 83DCA415]
+(wrapper managed-to-native) System.Reflection.MonoMethodInfo.get_method_info(intptr,System.Reflection.MonoMethodInfo&)
+  at System.Reflection.MonoMethodInfo.GetMethodInfo (System.IntPtr handle) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Reflection.RuntimeMethodInfo.GetPseudoCustomAttributes () [0x00002] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.MonoCustomAttrs.GetPseudoCustomAttributes (System.Reflection.ICustomAttributeProvider obj, System.Type attributeType) [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.MonoCustomAttrs.IsDefined (System.Reflection.ICustomAttributeProvider obj, System.Type attributeType, System.Boolean inherit) [0x00032] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Reflection.RuntimeMethodInfo.IsDefined (System.Type attributeType, System.Boolean inherit) [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at System.Attribute.IsDefined (System.Reflection.MemberInfo element, System.Type attributeType, System.Boolean inherit) [0x00088] in <51fded79cd284d4d911c5949aff4cb21>:0 
+  at Verse.GenAttribute.HasAttribute[T] (System.Reflection.MemberInfo memberInfo) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.GenAttribute.TryGetAttribute[T] (System.Reflection.MemberInfo memberInfo, T& customAttribute) [0x00000] in <61e4173561894da49d210260257b5097>:0 
+  at LudeonTK.DebugTabMenu_Actions.InitActions (LudeonTK.DebugActionNode absRoot) [0x00080] in <61e4173561894da49d210260257b5097>:0 
+  at LudeonTK.Dialog_Debug.TrySetupNodeGraph () [0x00040] in <61e4173561894da49d210260257b5097>:0 
+  at LudeonTK.Dialog_Debug.GetNode (System.String path) [0x00006] in <61e4173561894da49d210260257b5097>:0 
+  at LudeonTK.Dialog_DevPalette.EnsureAllNodesValid () [0x00021] in <61e4173561894da49d210260257b5097>:0 
+LudeonTK.Dialog_DevPalette..ctor()
+  at Verse.DebugWindowsOpener.TryOpenOrClosePalette () [0x0000c] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.Game+<>c.<FinalizeInit>b__86_0 () [0x0000f] in <61e4173561894da49d210260257b5097>:0 
+  at Verse.LongEventHandler.ExecuteToExecuteWhenFinished () [0x0007c] in <61e4173561894da49d210260257b5097>:0 
+Faction leader for Ascendant Helix is null.
+Faction leader for Deepwater Compact is null.
+Faction leader for Free Droid Enclaves is null.
+Faction leader for Geonosian Foundry Hive is null.
+Faction leader for Hutt Cartel is null.
+Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 53320.
+Total: 334.498300 ms (FindLiveObjects: 1.693700 ms CreateObjectMapping: 2.032100 ms MarkObjects: 330.685800 ms  DeleteObjects: 0.086400 ms)
+
+[TILEGEN_SILENT_REUSE_1] call #1 thread=1 requesting tile=114480,0 BEFORE GetOrGenerateMap
+[Stillsand] precious cave: granite yardang north-west (241 cells, yardang-shaped), chamber r=3 at (26, 0, 85), mouth (31, 0, 98) (0 deg off the shadow line, facing-away dot 1.00, sun from pinned sun).
+[Stillsand] precious cave roll: RM_PreciousCave_Seep (RM) in the granite yardang at (26, 0, 85) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5, RSW_PreciousCave_KraytDen=0.6, RUT_PreciousCave_DebtCave=0.8]
+[Stillsand] cave place: drip source at (26, 0, 83)
+[RimMandrake.MovingDunes] dune field armed on RM_Stillsand with material RM_Dunes_Sand; wind N, K=321 attempts/batch over 10000 cells.
+[TILEGEN_SILENT_REUSE_1] call #1 thread=1 AFTER GetOrGenerateMap requested=114480,0 got map.Tile=114480,0 map.uniqueID=1 map.Index=1
+[Ninefold] Oomo satiation +8.0 (a marriage, the family grows) -> 8.0 [Neutral]
+[Ninefold] MobUnloo satiation +3.0 (a marriage, a contract struck) -> 3.0 [Neutral]
+[Ninefold] Ozzik satiation +3.0 (a marriage, an act of statecraft) -> 100.0 [Exalted]
+Playing sound RM_SandHiss on camera, but it has sub-sounds in the world.
+Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world.
+Crash!!!
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/Mandrake/AppData/Local/Temp/Ludeon Studios/RimWorld by Ludeon Studios/Crashes
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/Mandrake/AppData/Local/Temp/Ludeon Studios/RimWorld by Ludeon Studios/Crashes
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/Mandrake/AppData/Local/Temp/Ludeon Studios/RimWorld by Ludeon Studios/Crashes
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/Mandrake/AppData/Local/Temp/Ludeon Studios/RimWorld by Ludeon Studios/Crashes
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/Mandrake/AppData/Local/Temp/Ludeon Studios/RimWorld by Ludeon Studios/Crashes
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/Mandrake/AppData/Local/Temp/Ludeon Studios/RimWorld by Ludeon Studios/Crashes
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/Mandrake/AppData/Local/Temp/Ludeon Studios/RimWorld by Ludeon Studios/Crashes
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/Mandrake/AppData/Local/Temp/Ludeon Studios/RimWorld by Ludeon Studios/Crashes
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/Mandrake/AppData/Local/Temp/Ludeon Studios/RimWorld by Ludeon Studios/Crashes
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/Mandrake/AppData/Local/Temp/Ludeon Studios/RimWorld by Ludeon Studios/Crashes
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/Mandrake/AppData/Local/Temp/Ludeon Studios/RimWorld by Ludeon Studios/Crashes
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/Mandrake/AppData/Local/Temp/Ludeon Studios/RimWorld by Ludeon Studios/Crashes
+SymInit: Symbol-SearchPath: '.;C:\Program Files (x86)\Steam\steamapps\common\RimWorld;C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Plugins\x86_64;C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Plugins;C:\Program Files (x86)\Steam\steamapps\common\RimWorld;C:\WINDOWS;C:\WINDOWS\system32;', symOptions: 534, UserName: 'Mandrake'
+OS-Version: 10.0.0
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64.exe:RimWorldWin64.exe (00007FF7ED530000), size: 688128 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 2022.3.35.4614
+C:\WINDOWS\SYSTEM32\ntdll.dll:ntdll.dll (00007FFEA38E0000), size: 2519040 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\KERNEL32.DLL:KERNEL32.DLL (00007FFEA1D10000), size: 831488 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\KERNELBASE.dll:KERNELBASE.dll (00007FFEA0B10000), size: 4202496 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\UnityPlayer.dll:UnityPlayer.dll (00007FFE27D30000), size: 31911936 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 2022.3.35.4614
+C:\WINDOWS\System32\USER32.dll:USER32.dll (00007FFEA3440000), size: 1896448 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\win32u.dll:win32u.dll (00007FFEA0AE0000), size: 159744 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\GDI32.dll:GDI32.dll (00007FFEA1760000), size: 176128 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.8328
+C:\WINDOWS\System32\gdi32full.dll:gdi32full.dll (00007FFEA11F0000), size: 1216512 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\msvcp_win.dll:msvcp_win.dll (00007FFEA1140000), size: 667648 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\ucrtbase.dll:ucrtbase.dll (00007FFEA14A0000), size: 1359872 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\ole32.dll:ole32.dll (00007FFEA2810000), size: 1679360 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\combase.dll:combase.dll (00007FFEA3020000), size: 3690496 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\RPCRT4.dll:RPCRT4.dll (00007FFEA1850000), size: 1146880 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\VERSION.dll:VERSION.dll (00007FFE9A310000), size: 45056 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.1150
+C:\WINDOWS\System32\msvcrt.dll:msvcrt.dll (00007FFEA1790000), size: 692224 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 7.0.26100.9444
+C:\WINDOWS\System32\SHLWAPI.dll:SHLWAPI.dll (00007FFEA1EB0000), size: 417792 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\SETUPAPI.dll:SETUPAPI.dll (00007FFEA2B90000), size: 4747264 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\ADVAPI32.dll:ADVAPI32.dll (00007FFEA1A00000), size: 770048 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\sechost.dll:sechost.dll (00007FFEA1E00000), size: 692224 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\SHELL32.dll:SHELL32.dll (00007FFEA2010000), size: 7962624 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\OLEAUT32.dll:OLEAUT32.dll (00007FFEA1F20000), size: 888832 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\IMM32.dll:IMM32.dll (00007FFEA1AD0000), size: 200704 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\WINMM.dll:WINMM.dll (00007FFE9D520000), size: 221184 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\OPENGL32.dll:OPENGL32.dll (00007FFE18280000), size: 1097728 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\CRYPT32.dll:CRYPT32.dll (00007FFEA0F20000), size: 1564672 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\WS2_32.dll:WS2_32.dll (00007FFEA1970000), size: 524288 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\bcrypt.dll:bcrypt.dll (00007FFEA09D0000), size: 172032 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\WINHTTP.dll:WINHTTP.dll (00007FFE9A070000), size: 1220608 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\HID.DLL:HID.DLL (00007FFE9EDE0000), size: 61440 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\GLU32.dll:GLU32.dll (00007FFE18240000), size: 184320 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\dwmapi.dll:dwmapi.dll (00007FFE9D940000), size: 192512 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\dxcore.dll:dxcore.dll (00007FFE9D8B0000), size: 278528 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll:gameoverlayrenderer64.dll (00007FFE3A1C0000), size: 1798144 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.96.30.42
+C:\WINDOWS\System32\PSAPI.DLL:PSAPI.DLL (00007FFEA1840000), size: 32768 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.8521
+C:\WINDOWS\SYSTEM32\CFGMGR32.dll:CFGMGR32.dll (00007FFEA06D0000), size: 335872 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\kernel.appcore.dll:kernel.appcore.dll (00007FFE9F770000), size: 110592 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\bcryptPrimitives.dll:bcryptPrimitives.dll (00007FFEA1320000), size: 704512 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\system32\uxtheme.dll:uxtheme.dll (00007FFE9D3F0000), size: 688128 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\shcore.dll:shcore.dll (00007FFEA1C10000), size: 1028096 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\windows.storage.dll:windows.storage.dll (00007FFE9E520000), size: 9101312 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\profapi.dll:profapi.dll (00007FFEA0A00000), size: 167936 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll:mono-2.0-bdwgc.dll (00007FFE2C620000), size: 10825728 (result: 0), SymType: '-deferred-', PDB: ''
+C:\WINDOWS\SYSTEM32\iphlpapi.dll:iphlpapi.dll (00007FFE9F0C0000), size: 208896 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\MSCTF.dll:MSCTF.dll (00007FFEA1600000), size: 1421312 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\d3d11.dll:d3d11.dll (00007FFE9BFE0000), size: 2490368 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\dxgi.dll:dxgi.dll (00007FFE9D770000), size: 1290240 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\powrprof.dll:powrprof.dll (00007FFEA0780000), size: 385024 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.3912
+C:\WINDOWS\SYSTEM32\UMPDC.dll:UMPDC.dll (00007FFEA0760000), size: 86016 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.8972
+C:\WINDOWS\SYSTEM32\directxdatabasehelper.dll:directxdatabasehelper.dll (00007FFE9A410000), size: 385024 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvldumdx.dll:nvldumdx.dll (00007FFE993C0000), size: 802816 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 32.0.15.9186
+C:\WINDOWS\SYSTEM32\msasn1.dll:msasn1.dll (00007FFEA0210000), size: 77824 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\cryptnet.dll:cryptnet.dll (00007FFE992C0000), size: 241664 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\cryptbase.dll:cryptbase.dll (00007FFE9FF70000), size: 49152 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\wldp.dll:wldp.dll (00007FFEA0030000), size: 434176 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\drvstore.dll:drvstore.dll (00007FFE990B0000), size: 1548288 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\devobj.dll:devobj.dll (00007FFEA0670000), size: 192512 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\wintrust.dll:wintrust.dll (00007FFEA10B0000), size: 532480 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\imagehlp.dll:imagehlp.dll (00007FFEA36E0000), size: 131072 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.4202
+C:\WINDOWS\SYSTEM32\CRYPTSP.dll:CRYPTSP.dll (00007FFEA01A0000), size: 110592 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\system32\rsaenh.dll:rsaenh.dll (00007FFE9F6D0000), size: 233472 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.7705
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvgpucomp64.dll:nvgpucomp64.dll (00007FFE940C0000), size: 80736256 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 32.0.15.9186
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\Display.NvContainer\NvMessageBus.dll:NvMessageBus.dll (00007FFE88A90000), size: 3551232 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 3.15.3538.9611
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\NvMemMapStoragex.dll:NvMemMapStoragex.dll (00007FFE92D40000), size: 1245184 (result: 0), SymType: '-deferred-', PDB: ''
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvwgf2umx.dll:nvwgf2umx.dll (00007FFE8CB40000), size: 84860928 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 32.0.15.9186
+C:\WINDOWS\system32\nvspcap64.dll:nvspcap64.dll (00007FFDE87F0000), size: 3162112 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 11.0.2.312
+C:\WINDOWS\SYSTEM32\ntmarta.dll:ntmarta.dll (00007FFE9F8A0000), size: 221184 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.7019
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvppex.dll:nvppex.dll (00007FFDE8630000), size: 1798144 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 32.0.15.9186
+C:\WINDOWS\System32\clbcatq.dll:clbcatq.dll (00007FFEA3620000), size: 712704 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 2001.12.10941.16384
+C:\WINDOWS\system32\wbem\wbemprox.dll:wbemprox.dll (00007FFE93580000), size: 73728 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\wbemcomn.dll:wbemcomn.dll (00007FFE98E70000), size: 499712 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.7920
+C:\WINDOWS\system32\wbem\wbemsvc.dll:wbemsvc.dll (00007FFE92000000), size: 86016 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\system32\wbem\fastprox.dll:fastprox.dll (00007FFE92040000), size: 1003520 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\amsi.dll:amsi.dll (00007FFE8C890000), size: 118784 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.7309
+C:\WINDOWS\SYSTEM32\USERENV.dll:USERENV.dll (00007FFE9FDC0000), size: 212992 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.26080.4-0\MpOav.dll:MpOav.dll (00007FFE8C740000), size: 671744 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 4.18.26080.4
+C:\WINDOWS\System32\MMDevApi.dll:MMDevApi.dll (00007FFE91C90000), size: 675840 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\AUDIOSES.DLL:AUDIOSES.DLL (00007FFE6E4F0000), size: 1798144 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\resourcepolicyclient.dll:resourcepolicyclient.dll (00007FFE9DCC0000), size: 81920 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.8115
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Plugins\x86_64\lib_burst_generated.dll:lib_burst_generated.dll (00007FFE88180000), size: 126976 (result: 0), SymType: '-deferred-', PDB: ''
+C:\WINDOWS\SYSTEM32\xinput1_3.dll:xinput1_3.dll (0000000000400000), size: 122880 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 9.18.944.0
+C:\WINDOWS\SYSTEM32\dcomp.dll:dcomp.dll (00007FFE9C250000), size: 2248704 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\Microsoft.Internal.WarpPal.dll:Microsoft.Internal.WarpPal.dll (00007FFE9D080000), size: 106496 (result: 0), SymType: '-deferred-', PDB: ''
+C:\WINDOWS\SYSTEM32\textinputframework.dll:textinputframework.dll (00007FFE7A9D0000), size: 1318912 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Plugins\x86_64\steam_api64.dll:steam_api64.dll (00007FFE81640000), size: 311296 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 6.91.21.57
+C:\Program Files (x86)\Steam\steamclient64.dll:steamclient64.dll (00007FFE064F0000), size: 26726400 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.96.30.42
+C:\Program Files (x86)\Steam\tier0_s64.dll:tier0_s64.dll (00007FFE19860000), size: 3203072 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.96.30.42
+C:\WINDOWS\SYSTEM32\MSWSOCK.dll:MSWSOCK.dll (00007FFE9FD10000), size: 442368 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\Program Files (x86)\Steam\vstdlib_s64.dll:vstdlib_s64.dll (00007FFE18EB0000), size: 798720 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.96.30.42
+C:\WINDOWS\SYSTEM32\Secur32.dll:Secur32.dll (00007FFE9D500000), size: 53248 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.7705
+C:\WINDOWS\SYSTEM32\SSPICLI.DLL:SSPICLI.DLL (00007FFE9FA30000), size: 299008 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\Windows\System32\Windows.UI.dll:Windows.UI.dll (00007FFE84DD0000), size: 1421312 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\Msacm32.DLL:Msacm32.DLL (00007FFE3EEF0000), size: 135168 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.7019
+C:\WINDOWS\SYSTEM32\winmmbase.dll:winmmbase.dll (00007FFE3F410000), size: 225280 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\imaadp32.acm:imaadp32.acm (00007FFE729E0000), size: 57344 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\msadp32.acm:msadp32.acm (00007FFE729C0000), size: 53248 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\msg711.acm:msg711.acm (00007FFE71D90000), size: 45056 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\msgsm32.acm:msgsm32.acm (00007FFE71D70000), size: 61440 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.1882
+C:\Windows\System32\l3codeca.acm:l3codeca.acm (00007FFE71CE0000), size: 118784 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 1.9.0.401
+C:\WINDOWS\SYSTEM32\dbghelp.dll:dbghelp.dll (00007FFE9E0E0000), size: 2408448 (result: 0), SymType: '-deferred-', PDB: '', fileVersion: 10.0.26100.9444
+
+========== OUTPUTTING STACK TRACE ==================
+
+0x00007FFE8819215B (lib_burst_generated) burst.initialize.statics.1ea20e8b028e6da386ce4159b41bc1a3_avx2
+0x00007FFE88191F1F (lib_burst_generated) burst.initialize.statics.b223785fcbdbe4a27e2d3722e3db36c3_avx2
+0x00007FFE881953B7 (lib_burst_generated) 1ea20e8b028e6da386ce4159b41bc1a3
+SymInit: Symbol-SearchPath: '.;C:\Program Files (x86)\Steam\steamapps\common\RimWorld;C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Plugins\x86_64;C:/Program Files (x86)/Steam/steamapps/common/RimWorld/RimWorldWin64_Data/Plugins;C:\Program Files (x86)\Steam\steamapps\common\RimWorld;C:\WINDOWS;C:\WINDOWS\system32;', symOptions: 534, UserName: 'Mandrake'
+OS-Version: 10.0.0
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64.exe:RimWorldWin64.exe (00007FF7ED530000), size: 688128 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64.exe', fileVersion: 2022.3.35.4614
+C:\WINDOWS\SYSTEM32\ntdll.dll:ntdll.dll (00007FFEA38E0000), size: 2519040 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\ntdll.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\KERNEL32.DLL:KERNEL32.DLL (00007FFEA1D10000), size: 831488 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\KERNEL32.DLL', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\KERNELBASE.dll:KERNELBASE.dll (00007FFEA0B10000), size: 4202496 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\KERNELBASE.dll', fileVersion: 10.0.26100.9444
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\UnityPlayer.dll:UnityPlayer.dll (00007FFE27D30000), size: 31911936 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files (x86)\Steam\steamapps\common\RimWorld\UnityPlayer.dll', fileVersion: 2022.3.35.4614
+C:\WINDOWS\System32\USER32.dll:USER32.dll (00007FFEA3440000), size: 1896448 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\USER32.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\win32u.dll:win32u.dll (00007FFEA0AE0000), size: 159744 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\win32u.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\GDI32.dll:GDI32.dll (00007FFEA1760000), size: 176128 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\GDI32.dll', fileVersion: 10.0.26100.8328
+C:\WINDOWS\System32\gdi32full.dll:gdi32full.dll (00007FFEA11F0000), size: 1216512 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\gdi32full.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\msvcp_win.dll:msvcp_win.dll (00007FFEA1140000), size: 667648 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\msvcp_win.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\ucrtbase.dll:ucrtbase.dll (00007FFEA14A0000), size: 1359872 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\ucrtbase.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\ole32.dll:ole32.dll (00007FFEA2810000), size: 1679360 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\ole32.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\combase.dll:combase.dll (00007FFEA3020000), size: 3690496 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\combase.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\RPCRT4.dll:RPCRT4.dll (00007FFEA1850000), size: 1146880 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\RPCRT4.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\VERSION.dll:VERSION.dll (00007FFE9A310000), size: 45056 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\VERSION.dll', fileVersion: 10.0.26100.1150
+C:\WINDOWS\System32\msvcrt.dll:msvcrt.dll (00007FFEA1790000), size: 692224 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\msvcrt.dll', fileVersion: 7.0.26100.9444
+C:\WINDOWS\System32\SHLWAPI.dll:SHLWAPI.dll (00007FFEA1EB0000), size: 417792 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\SHLWAPI.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\SETUPAPI.dll:SETUPAPI.dll (00007FFEA2B90000), size: 4747264 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\SETUPAPI.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\ADVAPI32.dll:ADVAPI32.dll (00007FFEA1A00000), size: 770048 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\ADVAPI32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\sechost.dll:sechost.dll (00007FFEA1E00000), size: 692224 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\sechost.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\SHELL32.dll:SHELL32.dll (00007FFEA2010000), size: 7962624 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\SHELL32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\OLEAUT32.dll:OLEAUT32.dll (00007FFEA1F20000), size: 888832 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\OLEAUT32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\IMM32.dll:IMM32.dll (00007FFEA1AD0000), size: 200704 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\IMM32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\WINMM.dll:WINMM.dll (00007FFE9D520000), size: 221184 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\WINMM.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\OPENGL32.dll:OPENGL32.dll (00007FFE18280000), size: 1097728 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\OPENGL32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\CRYPT32.dll:CRYPT32.dll (00007FFEA0F20000), size: 1564672 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\CRYPT32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\WS2_32.dll:WS2_32.dll (00007FFEA1970000), size: 524288 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\WS2_32.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\bcrypt.dll:bcrypt.dll (00007FFEA09D0000), size: 172032 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\bcrypt.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\WINHTTP.dll:WINHTTP.dll (00007FFE9A070000), size: 1220608 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\WINHTTP.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\HID.DLL:HID.DLL (00007FFE9EDE0000), size: 61440 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\HID.DLL', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\GLU32.dll:GLU32.dll (00007FFE18240000), size: 184320 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\GLU32.dll', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\dwmapi.dll:dwmapi.dll (00007FFE9D940000), size: 192512 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\dwmapi.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\dxcore.dll:dxcore.dll (00007FFE9D8B0000), size: 278528 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\dxcore.dll', fileVersion: 10.0.26100.9278
+C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll:gameoverlayrenderer64.dll (00007FFE3A1C0000), size: 1798144 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files (x86)\Steam\gameoverlayrenderer64.dll', fileVersion: 10.96.30.42
+C:\WINDOWS\System32\PSAPI.DLL:PSAPI.DLL (00007FFEA1840000), size: 32768 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\PSAPI.DLL', fileVersion: 10.0.26100.8521
+C:\WINDOWS\SYSTEM32\CFGMGR32.dll:CFGMGR32.dll (00007FFEA06D0000), size: 335872 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\CFGMGR32.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\kernel.appcore.dll:kernel.appcore.dll (00007FFE9F770000), size: 110592 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\kernel.appcore.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\bcryptPrimitives.dll:bcryptPrimitives.dll (00007FFEA1320000), size: 704512 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\bcryptPrimitives.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\system32\uxtheme.dll:uxtheme.dll (00007FFE9D3F0000), size: 688128 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\system32\uxtheme.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\shcore.dll:shcore.dll (00007FFEA1C10000), size: 1028096 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\shcore.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\windows.storage.dll:windows.storage.dll (00007FFE9E520000), size: 9101312 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\windows.storage.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\profapi.dll:profapi.dll (00007FFEA0A00000), size: 167936 (result: 0), SymType: '-nosymbols-', PDB: 'C:\WINDOWS\SYSTEM32\profapi.dll', fileVersion: 10.0.26100.9444
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll:mono-2.0-bdwgc.dll (00007FFE2C620000), size: 10825728 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files (x86)\Steam\steamapps\common\RimWorld\MonoBleedingEdge\EmbedRuntime\mono-2.0-bdwgc.dll'
+C:\WINDOWS\SYSTEM32\iphlpapi.dll:iphlpapi.dll (00007FFE9F0C0000), size: 208896 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\iphlpapi.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\MSCTF.dll:MSCTF.dll (00007FFEA1600000), size: 1421312 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\MSCTF.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\d3d11.dll:d3d11.dll (00007FFE9BFE0000), size: 2490368 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\d3d11.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\dxgi.dll:dxgi.dll (00007FFE9D770000), size: 1290240 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\dxgi.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\powrprof.dll:powrprof.dll (00007FFEA0780000), size: 385024 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\powrprof.dll', fileVersion: 10.0.26100.3912
+C:\WINDOWS\SYSTEM32\UMPDC.dll:UMPDC.dll (00007FFEA0760000), size: 86016 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\UMPDC.dll', fileVersion: 10.0.26100.8972
+C:\WINDOWS\SYSTEM32\directxdatabasehelper.dll:directxdatabasehelper.dll (00007FFE9A410000), size: 385024 (result: 0), SymType: '-nosymbols-', PDB: 'C:\WINDOWS\SYSTEM32\directxdatabasehelper.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvldumdx.dll:nvldumdx.dll (00007FFE993C0000), size: 802816 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvldumdx.dll', fileVersion: 32.0.15.9186
+C:\WINDOWS\SYSTEM32\msasn1.dll:msasn1.dll (00007FFEA0210000), size: 77824 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\msasn1.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\cryptnet.dll:cryptnet.dll (00007FFE992C0000), size: 241664 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\cryptnet.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\cryptbase.dll:cryptbase.dll (00007FFE9FF70000), size: 49152 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\cryptbase.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\wldp.dll:wldp.dll (00007FFEA0030000), size: 434176 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\wldp.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\drvstore.dll:drvstore.dll (00007FFE990B0000), size: 1548288 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\drvstore.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\devobj.dll:devobj.dll (00007FFEA0670000), size: 192512 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\devobj.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\System32\wintrust.dll:wintrust.dll (00007FFEA10B0000), size: 532480 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\wintrust.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\System32\imagehlp.dll:imagehlp.dll (00007FFEA36E0000), size: 131072 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\imagehlp.dll', fileVersion: 10.0.26100.4202
+C:\WINDOWS\SYSTEM32\CRYPTSP.dll:CRYPTSP.dll (00007FFEA01A0000), size: 110592 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\CRYPTSP.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\system32\rsaenh.dll:rsaenh.dll (00007FFE9F6D0000), size: 233472 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\system32\rsaenh.dll', fileVersion: 10.0.26100.7705
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvgpucomp64.dll:nvgpucomp64.dll (00007FFE940C0000), size: 80736256 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvgpucomp64.dll', fileVersion: 32.0.15.9186
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\Display.NvContainer\NvMessageBus.dll:NvMessageBus.dll (00007FFE88A90000), size: 3551232 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\Display.NvContainer\NvMessageBus.dll', fileVersion: 3.15.3538.9611
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\NvMemMapStoragex.dll:NvMemMapStoragex.dll (00007FFE92D40000), size: 1245184 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\NvMemMapStoragex.dll'
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvwgf2umx.dll:nvwgf2umx.dll (00007FFE8CB40000), size: 84860928 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvwgf2umx.dll', fileVersion: 32.0.15.9186
+C:\WINDOWS\system32\nvspcap64.dll:nvspcap64.dll (00007FFDE87F0000), size: 3162112 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\system32\nvspcap64.dll', fileVersion: 11.0.2.312
+C:\WINDOWS\SYSTEM32\ntmarta.dll:ntmarta.dll (00007FFE9F8A0000), size: 221184 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\ntmarta.dll', fileVersion: 10.0.26100.7019
+C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvppex.dll:nvppex.dll (00007FFDE8630000), size: 1798144 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\DriverStore\FileRepository\nv_dispig.inf_amd64_f4c7a2fd13e0f763\nvppex.dll', fileVersion: 32.0.15.9186
+C:\WINDOWS\System32\clbcatq.dll:clbcatq.dll (00007FFEA3620000), size: 712704 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\clbcatq.dll', fileVersion: 2001.12.10941.16384
+C:\WINDOWS\system32\wbem\wbemprox.dll:wbemprox.dll (00007FFE93580000), size: 73728 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\system32\wbem\wbemprox.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\wbemcomn.dll:wbemcomn.dll (00007FFE98E70000), size: 499712 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\wbemcomn.dll', fileVersion: 10.0.26100.7920
+C:\WINDOWS\system32\wbem\wbemsvc.dll:wbemsvc.dll (00007FFE92000000), size: 86016 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\system32\wbem\wbemsvc.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\system32\wbem\fastprox.dll:fastprox.dll (00007FFE92040000), size: 1003520 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\system32\wbem\fastprox.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\amsi.dll:amsi.dll (00007FFE8C890000), size: 118784 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\amsi.dll', fileVersion: 10.0.26100.7309
+C:\WINDOWS\SYSTEM32\USERENV.dll:USERENV.dll (00007FFE9FDC0000), size: 212992 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\USERENV.dll', fileVersion: 10.0.26100.9278
+C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.26080.4-0\MpOav.dll:MpOav.dll (00007FFE8C740000), size: 671744 (result: 0), SymType: '-exported-', PDB: 'C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.26080.4-0\MpOav.dll', fileVersion: 4.18.26080.4
+C:\WINDOWS\System32\MMDevApi.dll:MMDevApi.dll (00007FFE91C90000), size: 675840 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\System32\MMDevApi.dll', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\AUDIOSES.DLL:AUDIOSES.DLL (00007FFE6E4F0000), size: 1798144 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\AUDIOSES.DLL', fileVersion: 10.0.26100.9444
+C:\WINDOWS\SYSTEM32\resourcepolicyclient.dll:resourcepolicyclient.dll (00007FFE9DCC0000), size: 81920 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\resourcepolicyclient.dll', fileVersion: 10.0.26100.8115
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Plugins\x86_64\lib_burst_generated.dll:lib_burst_generated.dll (00007FFE88180000), size: 126976 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Plugins\x86_64\lib_burst_generated.dll'
+C:\WINDOWS\SYSTEM32\xinput1_3.dll:xinput1_3.dll (0000000000400000), size: 122880 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\xinput1_3.dll', fileVersion: 9.18.944.0
+C:\WINDOWS\SYSTEM32\dcomp.dll:dcomp.dll (00007FFE9C250000), size: 2248704 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\dcomp.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\Microsoft.Internal.WarpPal.dll:Microsoft.Internal.WarpPal.dll (00007FFE9D080000), size: 106496 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\Microsoft.Internal.WarpPal.dll'
+C:\WINDOWS\SYSTEM32\textinputframework.dll:textinputframework.dll (00007FFE7A9D0000), size: 1318912 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\textinputframework.dll', fileVersion: 10.0.26100.9278
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Plugins\x86_64\steam_api64.dll:steam_api64.dll (00007FFE81640000), size: 311296 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Plugins\x86_64\steam_api64.dll', fileVersion: 6.91.21.57
+C:\Program Files (x86)\Steam\steamclient64.dll:steamclient64.dll (00007FFE064F0000), size: 26726400 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files (x86)\Steam\steamclient64.dll', fileVersion: 10.96.30.42
+C:\Program Files (x86)\Steam\tier0_s64.dll:tier0_s64.dll (00007FFE19860000), size: 3203072 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files (x86)\Steam\tier0_s64.dll', fileVersion: 10.96.30.42
+C:\WINDOWS\SYSTEM32\MSWSOCK.dll:MSWSOCK.dll (00007FFE9FD10000), size: 442368 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\MSWSOCK.dll', fileVersion: 10.0.26100.9278
+C:\Program Files (x86)\Steam\vstdlib_s64.dll:vstdlib_s64.dll (00007FFE18EB0000), size: 798720 (result: 0), SymType: '-exported-', PDB: 'C:\Program Files (x86)\Steam\vstdlib_s64.dll', fileVersion: 10.96.30.42
+C:\WINDOWS\SYSTEM32\Secur32.dll:Secur32.dll (00007FFE9D500000), size: 53248 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\Secur32.dll', fileVersion: 10.0.26100.7705
+C:\WINDOWS\SYSTEM32\SSPICLI.DLL:SSPICLI.DLL (00007FFE9FA30000), size: 299008 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\SSPICLI.DLL', fileVersion: 10.0.26100.9278
+C:\Windows\System32\Windows.UI.dll:Windows.UI.dll (00007FFE84DD0000), size: 1421312 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\System32\Windows.UI.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\Msacm32.DLL:Msacm32.DLL (00007FFE3EEF0000), size: 135168 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\Msacm32.DLL', fileVersion: 10.0.26100.7019
+C:\WINDOWS\SYSTEM32\winmmbase.dll:winmmbase.dll (00007FFE3F410000), size: 225280 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\winmmbase.dll', fileVersion: 10.0.26100.9278
+C:\WINDOWS\SYSTEM32\imaadp32.acm:imaadp32.acm (00007FFE729E0000), size: 57344 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\imaadp32.acm', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\msadp32.acm:msadp32.acm (00007FFE729C0000), size: 53248 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\msadp32.acm', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\msg711.acm:msg711.acm (00007FFE71D90000), size: 45056 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\msg711.acm', fileVersion: 10.0.26100.1150
+C:\WINDOWS\SYSTEM32\msgsm32.acm:msgsm32.acm (00007FFE71D70000), size: 61440 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\msgsm32.acm', fileVersion: 10.0.26100.1882
+C:\Windows\System32\l3codeca.acm:l3codeca.acm (00007FFE71CE0000), size: 118784 (result: 0), SymType: '-exported-', PDB: 'C:\Windows\System32\l3codeca.acm', fileVersion: 1.9.0.401
+C:\WINDOWS\SYSTEM32\dbghelp.dll:dbghelp.dll (00007FFE9E0E0000), size: 2408448 (result: 0), SymType: '-exported-', PDB: 'C:\WINDOWS\SYSTEM32\dbghelp.dll', fileVersion: 10.0.26100.9444
+  ERROR: SymGetSymFromAddr64, GetLastError: 'Attempt to access invalid address.' (Address: 00007FFE282AA276)
+0x00007FFE282AA276 (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: 'Attempt to access invalid address.' (Address: 00007FFE282AA592)
+0x00007FFE282AA592 (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: 'Attempt to access invalid address.' (Address: 00007FFE282A714D)
+0x00007FFE282A714D (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: 'Attempt to access invalid address.' (Address: 00007FFE282A7591)
+0x00007FFE282A7591 (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: 'Attempt to access invalid address.' (Address: 00007FFE282A7614)
+0x00007FFE282A7614 (UnityPlayer) (function-name not available)
+  ERROR: SymGetSymFromAddr64, GetLastError: 'Attempt to access invalid address.' (Address: 00007FFE283E5CF1)
+0x00007FFE283E5CF1 (UnityPlayer) (function-name not available)
+0x00007FFEA1D3CD87 (KERNEL32) BaseThreadInitThunk
+0x00007FFEA398CAEC (ntdll) RtlUserThreadStart
+
+========== END OF STACKTRACE ===========
+
+A crash has been intercepted by the crash handler. For call stack and other details, see the latest crash report generated in:
+ * C:/Users/Mandrake/AppData/Local/Temp/Ludeon Studios/RimWorld by Ludeon Studios/Crashes
