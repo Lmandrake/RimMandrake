@@ -56,6 +56,7 @@ _FIELD = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=(?!>)\s*([^;
 DEFAULTS = {"giantPlantsEnabled": True, "plantTrunkEnabled": True, "plantSelectionEnabled": True, "plantTrunkScale": 1.0,
             "plantTrunkDamageEnabled": True, "plantItemPushEnabled": True,
             "giantAnimalsEnabled": True, "pawnHitboxEnabled": True, "pawnHitboxScale": 1.0, "largePawnsFootprintEnabled": True,
+            "largePawnsClearingOff": True,
             "tierThresholdsCustom": False, "tierT1MinBodySize": 4.0, "tierT2MinBodySize": 8.0, "tierT3MinBodySize": 20.0,
             "wakeEnabled": True, "wakeCrushDamageMultiplier": 1.0, "wakeFilthTrailChance": 0.35, "wakeRoofHolingEnabled": True,
             "giantPlantSmashEnabled": True, "giantPlantSmashMinTier": 3, "roofAvoidanceEnabled": True,
@@ -170,7 +171,7 @@ def static_checks():
         if patch not in core:
             bad.append("HugeThingsCore lost its patch on %s: %s" % (patch, why))
     blk = read("Source", "Building_TrunkBlocker.cs")
-    if "p.TakeDamage(dinfo)" not in blk or "absorbed = true" not in blk or "ForwardToPlant(owner, dinfo)" not in blk:
+    if "p.TakeDamage(dinfo)" not in blk or "absorbed = true" not in blk or "ForwardToPlant(owner, dinfo, false)" not in blk:
         bad.append("Building_TrunkBlocker no longer forwards hits to its plant (owner ruling 2026-10-07 20:38)")
     gb = giant_blockers()
     if not gb or min(gb.values()) < 2:
