@@ -171,5 +171,27 @@ def chill_pump():
     finally:
         S.drop_map(mid, 114490)
 
+def piinnok_fire():
+    """WATCHER_CREATURES_MOD_1 D4 fire half: a fire on a hidden piinnok's cell kills it (ruling: fire is one of the AOE kills).
+    Control: a visible muffalo on a fire cell. Fire is re-lit every 30 ticks because a fire on sand dies in ~100 ticks."""
+    with S.Scene("piinnok_fire", 140, 60, 20, 8) as sc:
+        S.call("jawa/set_terrain_batch", ops="RM_DeepSand:%s" % sc.rect, layer="top"); S.call("jawa/map_commit")
+        pk = sc.pawn("RM_Piinnok", 4, 4); pid = sc.colonist(7, 4); mf = sc.pawn("Muffalo", 14, 4)
+        S.call("jawa/set_draft", pawnId=pid, drafted=True)
+        def st(i):
+            pg = (S.call("jawa/pawn_get", pawn=i).get("pawns") or [{}])[0]
+            return dict(id=i, dead=pg.get("dead"), pos=pg.get("position"), hediffs=[(h["def"], h.get("severity")) for h in pg.get("hediffs", [])])
+        rows = []
+        S.run(300); rows.append(dict(tag="settled", piinnok=st(pk), muffalo=st(mf)))
+        for i in range(10):
+            a = st(pk); b = st(mf)
+            if a.get("pos"):
+                x, z = a["pos"]["x"], a["pos"]["z"]; S.call("jawa/map_fire", action="start", rect="%d,%d,1,1" % (x, z), fireSize=1.8)
+            if b.get("pos"):
+                x, z = b["pos"]["x"], b["pos"]["z"]; S.call("jawa/map_fire", action="start", rect="%d,%d,1,1" % (x, z), fireSize=1.8)
+            S.run(30); rows.append(dict(tag="fire%d" % i, piinnok=st(pk), muffalo=st(mf)))
+        S.run(300); rows.append(dict(tag="end", piinnok=st(pk), muffalo=st(mf)))
+        out("piinnok_fire", "WATCHERS_D4_fire", "?", rows)
+
 if __name__ == "__main__":
     globals()[sys.argv[1]](*sys.argv[2:])
