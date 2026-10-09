@@ -114,6 +114,11 @@ namespace RimMandrake.Greentide
         // Owner ruling 2026-10-03: the first-ever reveal pauses the game and explains itself.
         public static bool vurrakFirstRevealPause = true;
 
+        // GREENTIDE_ILLISK_BUILD_1 - the shoal's hide (RM_CompShoalHide). Off: an illisk takes damage like any small animal.
+        // Non-blast factor is PROVISIONAL: 0.04 turns a 12-damage bullet into 0.5.
+        public static bool shoalHideEnabled = true;
+        public static float shoalNonBlastFactor = 0.04f;
+
         // GREENTIDE_STELLOCK_LACE_BUILD_1 (RM_StellockLace.cs). Off: no branch
         // drops and the project is never hidden-then-revealed (the shared
         // found-tech gate, registered in RM_GreentideMod). Made laces still work.
@@ -181,6 +186,8 @@ namespace RimMandrake.Greentide
             Scribe_Values.Look(ref vurrakAmbushEnabled, "vurrakAmbushEnabled", true);
             Scribe_Values.Look(ref vurrakTriggerBodySize, "vurrakTriggerBodySize", 0.6f);
             Scribe_Values.Look(ref vurrakFirstRevealPause, "vurrakFirstRevealPause", true);
+            Scribe_Values.Look(ref shoalHideEnabled, "shoalHideEnabled", true);
+            Scribe_Values.Look(ref shoalNonBlastFactor, "shoalNonBlastFactor", 0.04f);
             Scribe_Values.Look(ref stellockLaceEnabled, "stellockLaceEnabled", true);
             Scribe_Values.Look(ref stellockBranchChance, "stellockBranchChance", 0.125f);
             Scribe_Values.Look(ref stellockLaceHours, "stellockLaceHours", 12f);
@@ -321,6 +328,17 @@ namespace RimMandrake.Greentide
             }
             list.Label("  A lace stops bleeding for: " + stellockLaceHours.ToString("0.#") + " hours");
             stellockLaceHours = list.Slider(stellockLaceHours, 1f, 48f);
+            list.GapLine();
+
+            list.Label("The shoal (the illisk)");
+            list.CheckboxLabeled("Illisk hide", ref shoalHideEnabled,
+                "On: bullets, blades, claws and fists barely scratch an illisk; only blasts hurt it at full strength. "
+              + "Off: an illisk takes damage like any small animal.");
+            if (shoalHideEnabled)
+            {
+                list.Label("  Damage that is not a blast gets through at: " + (shoalNonBlastFactor * 100f).ToString("0") + "%");
+                shoalNonBlastFactor = list.Slider(shoalNonBlastFactor, 0f, 1f);
+            }
             list.GapLine();
 
             list.Label("The false bank (the vurrak)");

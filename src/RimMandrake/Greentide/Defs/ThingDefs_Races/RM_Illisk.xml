@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_ILLISK_BUILD_1 (child of GREENTIDE_TERROR_REPLACEMENT_1). The shoal. Owner card 2026-10-08: MANY small bodies
+     (an area blast hits many), crazy fast, near-immune to bullets and blades, blasts at full damage, COMMON across the
+     Greentide's water. Invented, franchise-free (Q11a); the word for the silhouette never appears in a def (ban 2).
+     The immunity is RM_CompShoalHide (damage scaling by damage def; armour cannot separate a blast from a bullet because
+     Bomb shares the Sharp armour category). Numbers PROVISIONAL.
+     Art: PLACEHOLDER (the dhollock sprite, small). Bespoke art list: infrastructure/artpipe/art_lists/greentide_illisk_2026-10-09.csv.
+     Odyssey water: waterSeeker + waterCellCost 1 as the dhollock; a shoal in a crossing denies it by biting wading colonists. -->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Illisk</defName>
+    <label>illisk</label>
+    <description>A hand-length fish, flat-sided and bruise-green, with a jaw too big for its head and a double row of triangular teeth it never seems to close. One is nothing. They never come singly: a shoal turns together in the green water, crazy fast, and whatever wades in is bitten from every side.\n\nIts hide is the trouble. Bullets and blades hit a body that is mostly slick gristle and flinch away, and a shoal closes over the hole. Only a blast, which hits the water and everything in it at once, kills them in numbers. Bring explosives, or go around.</description>
+    <statBases>
+      <MoveSpeed>7.5</MoveSpeed>
+      <MarketValue>12</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <Wildness>1</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.1</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.Greentide.CompProperties_ShoalHide">
+        <blastDamageDefs>
+          <li>Bomb</li>
+        </blastDamageDefs>
+      </li>
+    </comps>
+    <race>
+      <body>Snake</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>true</predator>
+      <maxPreyBodySize>1.2</maxPreyBodySize>
+      <baseBodySize>0.12</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <trainability>None</trainability>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <lifeExpectancy>6</lifeExpectancy>
+      <manhunterOnTameFailChance>1</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.05</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Illisk</defName>
+    <label>illisk</label>
+    <race>RM_Illisk</race>
+    <combatPower>25</combatPower>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <wildGroupSize>6~12</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhollock/RM_Dhollock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhollock/RM_Dhollock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhollock/RM_Dhollock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
