@@ -429,9 +429,8 @@ namespace, and a future Tyrian-purple-like good hooks it with one `DefModExtensi
   Deepfire-coated furniture in it (walls/floors count 1 per 10 cells).
 - **Rank** (the engine's one judgement, evaluated per pawn, cheapest first): Royalty title
   seniority (`pawn.royalty.MostSeniorTitle`, any title → *titled*) → Ideology role (leader /
-  moral guide → *titled*) → otherwise *common*. A colony with neither DLC has no titled pawns;
-  `ranklessColoniesEnjoyIt` (default on) then lets every pawn take the wearer's pleasure and
-  nobody takes offence — the engine degrades to a plain "nice clothes" thought.
+  moral guide → *titled*) → otherwise *common*. Every player has every DLC, so a no-DLC colony is not a supported
+  configuration and the old `ranklessColoniesEnjoyIt` setting was deleted (LP-3, 2026-10-08).
 - **Thoughts** (ThoughtDefs, all durations/moods are settings):
   - `RM_WearingDeepfire` — situational, stages by display score 1–2 / 3–4 / 5–6: **+3 / +5 / +8**
     mood for *titled* wearers; for *common* wearers **+1 / +2 / +3** (they like it too — the
@@ -657,7 +656,6 @@ Worldgen-affecting settings say so in their label. Grouped as the screen shows t
 | `offenceThreshold` | 2 | commoner display score that offends |
 | `moodScale` | 1.0 (0–3) | multiplies every thought stage |
 | `opinionAboveStation` | −15 | |
-| `ranklessColoniesEnjoyIt` | on | no-DLC behaviour |
 | `goodwillPerImpressedVisit` | 2 (0–10) | |
 
 **Gods** (only shown with Ninefold loaded)

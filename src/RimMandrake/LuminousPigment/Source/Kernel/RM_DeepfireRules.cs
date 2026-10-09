@@ -33,13 +33,11 @@ namespace RimMandrake.LuminousPigment
         public static int RoomScore(int furnitureCoats, int wallCells, int floorCells, int perPoint) { return furnitureCoats + (wallCells + floorCells) / perPoint; }
         // Wearer thought stage by display score bucket 1-2 / 3-4 / 5+; -1 = inactive.
         public static int ScoreStage(int score) { return score <= 0 ? -1 : (score >= 5 ? 2 : (score >= 3 ? 1 : 0)); }
-        public static bool RanklessAllowed(bool ranklessColoniesEnjoyIt, bool royaltyActive, bool ideologyActive) { return ranklessColoniesEnjoyIt || royaltyActive || ideologyActive; }
-        // The four wearer/observer thoughts: a worker serves titled XOR common pawns; the common one needs the rankless gate.
-        public static int WearerThoughtStage(bool statusEnabled, bool titled, bool requireTitled, bool ranklessAllowed, int score)
+        // The four wearer/observer thoughts: a worker serves titled XOR common pawns.
+        public static int WearerThoughtStage(bool statusEnabled, bool titled, bool requireTitled, int score)
         {
             if (!statusEnabled) return -1;
             if (titled != requireTitled) return -1;
-            if (!requireTitled && !ranklessAllowed) return -1;
             return ScoreStage(score);
         }
         public static bool WearsAboveStation(bool statusEnabled, bool selfTitled, bool otherTitled, int otherScore, int threshold)
