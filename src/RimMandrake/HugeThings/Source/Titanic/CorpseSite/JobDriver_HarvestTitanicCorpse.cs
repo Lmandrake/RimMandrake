@@ -50,11 +50,17 @@ namespace RimMandrake.TitanicCreatures
                     Building_TitanicCorpseSite site = Site;
                     if (site != null && !site.Destroyed)
                     {
-                        List<Thing> products = site.HarvestOneSession(pawn);
+                        // CORPSE_SITE_SAFETY_1 (B3.11): commit only what was placed; 1.6 TryPlaceThing can fail with an unspawned
+                        // remainder, which goes back to the pool.
+                        List<Thing> products = site.MakeSessionProducts();
                         foreach (Thing product in products)
                         {
-                            GenPlace.TryPlaceThing(product, pawn.Position, pawn.Map, ThingPlaceMode.Near);
+                            int made = product.stackCount;
+                            bool placed = GenPlace.TryPlaceThing(product, pawn.Position, pawn.Map, ThingPlaceMode.Near);
+                            int remainder = (!placed && !product.Destroyed && !product.Spawned) ? product.stackCount : 0;
+                            site.CommitHarvest(product.def, made - remainder);
                         }
+                        site.FinishSession();
                     }
                     ReadyForNextToil();
                 }

@@ -6,8 +6,8 @@ namespace RimMandrake.TitanicCreatures
 {
     /// <summary>
     /// Card #4's trigger point: the instant a T3 titan's Corpse actually
-    /// spawns onto a map (Verse/Corpse.cs SpawnSetup), swap it for the
-    /// landmark. Firing on SpawnSetup rather than on Pawn.Kill / MakeCorpse
+    /// spawns onto a map (Verse/Corpse.cs SpawnSetup), queue it to become the
+    /// landmark on a later tick (MapComponent_TitanicCorpseSites). Firing on SpawnSetup rather than on Pawn.Kill / MakeCorpse
     /// means this works regardless of which vanilla code path caused the
     /// corpse to appear (death, quest cleanup, debug spawn, ...) - anywhere a
     /// T3 Corpse ends up on a map, it becomes a site instead.
@@ -37,7 +37,8 @@ namespace RimMandrake.TitanicCreatures
             {
                 return;
             }
-            TitanicCorpseSiteUtility.ConvertToSite(__instance, map);
+            // CORPSE_SITE_SAFETY_1 (B3.1): never destroy the corpse inside its own SpawnSetup; queue it for a later tick.
+            map?.GetComponent<MapComponent_TitanicCorpseSites>()?.Enqueue(__instance);
         }
     }
 }
