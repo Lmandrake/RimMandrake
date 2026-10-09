@@ -481,7 +481,8 @@ def keep_ruling(idx: L.Index, row: str, letter: str, sha: str):
     return None
 
 
-def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list[dict] | None = None) -> dict:
+def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list[dict] | None = None,
+               stale: dict | None = None) -> dict:
     doc = json.loads(decisions.read_text())
     snap_path = Path(doc.get("snapshot") or "")
     if not snap_path.is_absolute():
@@ -503,6 +504,11 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
         if not isinstance(v, dict) or not v.get("at"):
             continue
         decided = bool(v.get("decidedAt")) or not v.get("purgeTouched")
+        if row in (stale or {}):
+            P["conflicts"].append(f"{row}: letter(s) {', '.join(stale[row])} were clicked before the sheet's columns were "
+                                  f"rebuilt and cannot be verified against the snapshot he saw — nothing ingested or done "
+                                  f"for this row; re-confirm it on the current sheet")
+            continue
         if is_held(row, holds):
             P["held"].append(row)
             continue
@@ -558,7 +564,12 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                         if live == sha:
                             P["installed_already"].append((row, mod, r))
                             continue
-                        prot = [k for k in idx.protected(live) if (k.get("target") or {}).get("row") != row]
+                        mine_at = I.ts(v.get("at"))
+                        # an owner keep of that live picture from ANOTHER row, or from a LATER ruling on this row in
+                        # another decisions file (re-enacting an old file must not undo his newer pick)
+                        prot = [k for k in idx.protected(live) if (k.get("target") or {}).get("row") != row
+                                or (k.get("via") != I.rel_via(decisions) and mine_at and I.ts(k.get("at"))
+                                    and I.ts(k.get("at")) > mine_at)]
                         if prot:
                             P["conflicts"].append(f"{row}: {mod.rsplit('/', 1)[-1]}/{r} holds {live[:12]}, owner-kept "
                                                   f"on {Path(prot[0].get('via') or '').name or 'another ruling'}; "
@@ -784,7 +795,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
     if not ing.get("ok"):
         return {"ok": False, "error": ing.get("error"), "ingest": ing}
     idx = L.Index()
-    P = build_plan(decisions, holds, idx)
+    P = build_plan(decisions, holds, idx, stale=ing.get("stale_rows"))
     R = {"ok": True, "apply": apply, "ingest_new": ing.get("rulings", 0) + ing.get("rejected", 0),
          "installed": 0, "queued_jobs": 0, "refiled": 0, "purged": 0, "cut_rows": 0, "defs_deleted": 0, "textures_retired": 0,
          "deploy": [], "notes_cleared": [], "conflicts": list(P["conflicts"]), "todo": list(P["todo"]), "plan": P}
@@ -904,30 +915,41 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
 def clear_followed(decisions: Path, followed: dict) -> list[str]:
     """Move each followed note out of its row's `note` into `notes_followed` (his exact words, when, and by what).
     Re-reads the file immediately before writing and only touches a row whose note STILL equals the followed text,
-    so a note he typed meanwhile survives; atomic replace, same JSON layout the sheet's sidecar writes."""
+    so a note he typed meanwhile survives; atomic replace, same JSON layout the sheet's sidecar writes. The bytes are
+    re-read once more just before the replace: if his sidecar saved in between, the merge is redone on the new
+    content (never replaced over it); after 4 lost races it gives up and the note stays open for the next run."""
     import tempfile
     path = Path(decisions)
-    doc = json.loads(path.read_text(encoding="utf-8"))
     when = time.strftime("%Y-%m-%dT%H:%M:%S%z")
-    cleared = []
-    for row, f in sorted(followed.items()):
-        v = (doc.get("decisions") or {}).get(row)
-        raw = f.get("note") or ""
-        if not isinstance(v, dict) or not raw.strip() or (v.get("note") or "").strip() != raw.strip():
-            continue
-        v.setdefault("notes_followed", []).append({"note": v["note"], "at": v.get("at"), "followed_by": f["by"], "when": when})
-        v["note"] = ""
-        cleared.append(row)
-    if not cleared:
-        return []
-    payload = (json.dumps(doc, indent=2, ensure_ascii=False, sort_keys=True) + "\n").encode("utf-8")
-    fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix=".enact-", suffix=".tmp")
-    with os.fdopen(fd, "wb") as fh:
-        fh.write(payload)
-        fh.flush()
-        os.fsync(fh.fileno())
-    os.replace(tmp, path)
-    return cleared
+    for _attempt in range(4):
+        raw = path.read_bytes()
+        doc = json.loads(raw.decode("utf-8"))
+        cleared = []
+        for row, f in sorted(followed.items()):
+            v = (doc.get("decisions") or {}).get(row)
+            txt = f.get("note") or ""
+            if not isinstance(v, dict) or not txt.strip() or (v.get("note") or "").strip() != txt.strip():
+                continue
+            v.setdefault("notes_followed", []).append({"note": v["note"], "at": v.get("at"), "followed_by": f["by"], "when": when})
+            v["note"] = ""
+            cleared.append(row)
+        if not cleared:
+            return []
+        payload = (json.dumps(doc, indent=2, ensure_ascii=False, sort_keys=True) + "\n").encode("utf-8")
+        fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix=".enact-", suffix=".tmp")
+        try:
+            with os.fdopen(fd, "wb") as fh:
+                fh.write(payload)
+                fh.flush()
+                os.fsync(fh.fileno())
+            if path.read_bytes() != raw:
+                continue
+            os.replace(tmp, path)
+            return cleared
+        finally:
+            if os.path.exists(tmp):
+                os.unlink(tmp)
+    return []
 
 
 def mod_of(f) -> str:

@@ -44,6 +44,39 @@ def rel_via(p) -> str:
     return str(p)
 
 
+def ts(x):
+    """An ISO stamp (Z or +HHMM) as an aware datetime, None when absent/unparseable."""
+    import datetime as _dt
+    if not isinstance(x, str) or not x:
+        return None
+    try:
+        d = _dt.datetime.fromisoformat(x.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return d if d.tzinfo else d.replace(tzinfo=_dt.timezone.utc)
+
+
+def stale_letter_rows(doc: dict, ruled: dict | None, now: dict) -> dict:
+    """{row: [letters]} whose used letter the RULED snapshot never had (so letter_mismatches could not verify it) while
+    the row was last clicked BEFORE the current snapshot was built: a rebuild in between may have re-pointed it."""
+    if not ruled:
+        return {}
+    built = ts(now.get("built"))
+    out = {}
+    for row, v in ((doc.get("decisions") or {}).items()):
+        if not isinstance(v, dict) or not v.get("at"):
+            continue
+        rc = ((ruled.get("rows") or {}).get(row) or {}).get("columns") or {}
+        nc = ((now.get("rows") or {}).get(row) or {}).get("columns") or {}
+        absent = sorted(l for l in L.decision_letters(v) if l not in rc and l in nc)
+        if not absent:
+            continue
+        clicks = [c for c in (ts(v.get(k)) for k in ("decidedAt", "at", "variantsAt")) if c]
+        if built is None or not clicks or max(clicks) < built:
+            out[row] = absent
+    return out
+
+
 def content_key(ev: dict):
     """What makes two ruling/rejected events THE SAME decision, whatever path spelled their decisions file:
     the row, column, graphic, verdict and his click time. None = no content identity (fall back to the id)."""
@@ -171,6 +204,8 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
     if not snap_path.is_file():
         return {"ok": False, "error": f"snapshot {snap_path} missing — cannot resolve columns to pictures"}
     snap = json.loads(snap_path.read_text())
+    ruled = None
+    stale: dict = {}
     if doc.get("snapshotId") and snap.get("snapshotId") and doc["snapshotId"] != snap["snapshotId"]:
         # letters are stable across rebuilds: what matters is that every letter the decisions USE still
         # names the same pictures as in the snapshot they were made against (found in git history)
@@ -183,6 +218,7 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
             return {"ok": False, "error": "decisions were made against a different snapshot of this sheet and these "
                                           "letters now name different pictures: "
                                           + ", ".join(f"{r}:{l}" for r, l in bad[:20])}
+        stale = stale_letter_rows(doc, ruled, snap)
     idx = L.Index()
     w = L.Writer({e["id"] for e in idx.events})
     cks = known_content(idx.events)
@@ -201,7 +237,8 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
         return w.add(ev)
 
     out = {"ok": True, "rulings": 0, "purged": 0, "purge_refused": 0, "untouched": 0, "unresolved": []}
-    skip = set(skip_rows)
+    skip = set(skip_rows) | set(stale)
+    out["stale_rows"] = stale
     for row, v in (doc.get("decisions") or {}).items():
         if not isinstance(v, dict) or row in skip:
             continue
@@ -242,7 +279,9 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
             if put(ev):
                 out["rulings"] += 1
             if ev["verdict"] in ("redo", "reject"):
-                for rev in rejected_events(ev, srow):
+                # the pictures IN GAME when he looked = the RULED snapshot's row, not whatever a later rebuild shows
+                rsrow = ((ruled or {}).get("rows") or {}).get(row) or srow
+                for rev in rejected_events(ev, rsrow):
                     if put(rev):
                         out["rejected"] = out.get("rejected", 0) + 1
             # per-biome sheets: a row's extra graphics (swimming, flying …) carry their own pick
