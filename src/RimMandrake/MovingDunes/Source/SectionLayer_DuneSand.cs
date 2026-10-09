@@ -38,6 +38,7 @@ namespace RimMandrake.MovingDunes
         /// shader+texture pair.</summary>
         private Material tintedMat;
         private RM_DuneMaterialDef tintedFor;
+        private bool tintFallback;
 
         public SectionLayer_DuneSand(Section section)
             : base(section)
@@ -64,10 +65,25 @@ namespace RimMandrake.MovingDunes
                 return tintedMat;
             }
             tintedFor = def;
+            tintFallback = false;
             tintedMat = new Material(MatBases.Sand);
             if (def.tintMode == DuneTintMode.MaterialColor)
             {
-                tintedMat.color = def.tint;
+                // MEASURED live 2026-10-09 (DUNES_TINT_GATE_PROOF_1): the Misc/Sand shader (Custom/Snow) declares
+                // no _Color, so Material.color is a silent no-op on it. A non-white tint therefore rides a
+                // Map/Transparent clone of the same texture (that shader multiplies _Color and vertex colour).
+                // Pollution (vertex red) is not representable there, so the fallback layer writes white RGB.
+                bool white = def.tint.r > 0.999f && def.tint.g > 0.999f && def.tint.b > 0.999f;
+                if (tintedMat.HasProperty("_Color"))
+                {
+                    tintedMat.color = def.tint;
+                }
+                else if (!white && MatBases.Sand.mainTexture != null)
+                {
+                    UnityEngine.Object.Destroy(tintedMat);
+                    tintedMat = MaterialPool.MatFrom(new MaterialRequest(MatBases.Sand.mainTexture, ShaderDatabase.Transparent, def.tint));
+                    tintFallback = true;
+                }
             }
             return tintedMat;
         }
@@ -93,6 +109,7 @@ namespace RimMandrake.MovingDunes
             subMesh.Clear(MeshParts.Colors);
 
             bool vertexTint = def.tintMode == DuneTintMode.VertexColor;
+            bool whiteRgb = tintFallback; // tint lives in the material; vertex RGB stays white, only relief lifts it
             byte tintR = ToByte(def.tint.r);
             byte tintG = ToByte(def.tint.g);
             byte tintB = ToByte(def.tint.b);
@@ -149,7 +166,7 @@ namespace RimMandrake.MovingDunes
                         opacityListTmp.Add(Mathf.Clamp01(opacity - relief));
                     }
 
-                    if (!vertexTint)
+                    if (!vertexTint && !whiteRgb)
                     {
                         // Vanilla meaning: red carries the pollution mask, alpha the opacity.
                         for (int n = 0; n < 9; n++)
@@ -177,9 +194,12 @@ namespace RimMandrake.MovingDunes
                         // (design §2 says so explicitly — "red is free on skinned maps")
                         // and the tint, relief-modulated, goes there instead.
                         float lift = Mathf.Clamp(1f + relief * 2f, 0.5f, 1.5f);
-                        byte r = ToByte(tintR / 255f * lift);
-                        byte g = ToByte(tintG / 255f * lift);
-                        byte b = ToByte(tintB / 255f * lift);
+                        float tr = whiteRgb ? 1f : tintR / 255f;
+                        float tg = whiteRgb ? 1f : tintG / 255f;
+                        float tb = whiteRgb ? 1f : tintB / 255f;
+                        byte r = ToByte(tr * lift);
+                        byte g = ToByte(tg * lift);
+                        byte b = ToByte(tb * lift);
                         for (int i = 0; i < 9; i++)
                         {
                             subMesh.colors.Add(new Color32(r, g, b, ToByte(opacityListTmp[i])));
