@@ -19,7 +19,6 @@ its own reading of "no match". None of them calls another; there is no shared re
 | R8 | `artpipe_state.py find` (`artpipe_state.py:73`) | free terms | substring of file **names**, and without `--names-only` substring of **job JSON content** (prompt text) | "0 hit(s)" — a content hit on a prompt that *mentions* the term (Thunderbeast → `crags_ulkhorr`) is printed as a hit |
 | R9 | art ledger `backfill.step_artpipe` (`backfill.py:220`) | every `_artsrc/<job>/` | `collected.jsonl` `job_id → dest` (gives the variant a `res`) | variant stored with **`res = None`** — unbound forever; only R1-alias/R3 can ever surface it again |
 | R10 | `artledger.install*` (`artledger.py:441`) | dest texPath | texPath (durable) | n/a — the *one* durable binding, but only since 2026-10-03 |
-| R11 | `artpipe/make_verdict_sheet.creature_of` | registry `target` | job-id stem with `_rN` stripped | warning, row skipped |
 | R12 | `artreg.derive_target` / `registry.jsonl` | job id | `<asset_key>/<facing>` reconstructed from the job id | — (the asset key is a job-family name, never a defName) |
 | R13 | `canon_census.py`, `check_pseudo_sw_name.py`, `droid_canon_fill.py` | slug | canon dirname | own buckets |
 | R14 | `design/Jawa/worldbuilding/review/round2/decisions_propagated.json` | creature name | owner decisions keyed by the review's own row names | n/a (historic, not consulted by R1-R7) |
@@ -158,7 +157,7 @@ Full per-row detail: re-run with `--json <file>`.
 ### 5.1 One resolver: `src/RimMandrake/Utils/art/subject.py`
 
 One module, and every sheet, census and tool calls it: `art_sheet`, `biome_census`, `artpipe_state find`,
-`make_verdict_sheet`, and the canon tools. It has two entry points:
+and the canon tools. It has two entry points:
 
 ```
 resolve_art(subject) -> [Hit{sha|job, res, kind, confidence, evidence}] + Searched{keys, sources, counts}

@@ -246,8 +246,8 @@ python3 ~/.claude/skills/review-sheets/assets/serve_sheet.py \
 🔑 Re-run `Transient/desert_art_verdict_build_2026-09-20.py` then
 `..._assemble_2026-09-20.py`, in that order, as more of the queue lands.
 
-⚠️ Neither `make_verdict_sheet.py` nor `build_flora_legibility_sheet.py` was reusable —
-both hand-roll a localStorage-only page predating the current
+⚠️ `build_flora_legibility_sheet.py` was not reusable (and `make_verdict_sheet.py`, since removed, was no better) —
+it hand-rolls a localStorage-only page predating the current
 `sheet_template.html`/`check_sheet.py` contract.
 
 ## 🔴 Owner rulings, 2026-09-21 (BENCH, question cards)
