@@ -4,7 +4,7 @@
      Greentide's water. Invented, franchise-free (Q11a); the word for the silhouette never appears in a def (ban 2).
      The immunity is RM_CompShoalHide (damage scaling by damage def; armour cannot separate a blast from a bullet because
      Bomb shares the Sharp armour category). Numbers PROVISIONAL.
-     Art: PLACEHOLDER (the dhollock sprite, small). Bespoke art list: infrastructure/artpipe/art_lists/greentide_illisk_2026-10-09.csv.
+     Art: bespoke (RM_Illisk folder, installed through the art ledger 2026-10-09). Bespoke art list: infrastructure/artpipe/art_lists/greentide_illisk_2026-10-09.csv.
      Odyssey water: waterSeeker + waterCellCost 1 as the dhollock; a shoal in a crossing denies it by biting wading colonists. -->
 <Defs>
 
@@ -86,21 +86,21 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Dhollock/RM_Dhollock</texPath>
+          <texPath>Things/Pawn/Animal/RM_Illisk/RM_Illisk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Dhollock/RM_Dhollock</texPath>
+          <texPath>Things/Pawn/Animal/RM_Illisk/RM_Illisk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.6</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_Dhollock/RM_Dhollock</texPath>
+          <texPath>Things/Pawn/Animal/RM_Illisk/RM_Illisk</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.7</drawSize>
         </bodyGraphicData>
