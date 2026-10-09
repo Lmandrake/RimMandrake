@@ -14,3 +14,4 @@
 - harrok pushed 961f4b4dc; mirror field superseded by SOLAR_MIRRORS_BUILD_1
 - Jawa return pushed bf56a983e; next: joining water rite
 - joining water: Slime engine (JoiningWater.cs, kernel, ring genstep, SharedBurden) written; Rites XML + validation next
+- joining water pushed 081fab578
