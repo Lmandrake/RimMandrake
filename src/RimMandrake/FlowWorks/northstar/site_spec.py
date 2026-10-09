@@ -68,6 +68,7 @@ SETTINGS = {
         "pitDrowningEnabled": True, "pitDrowningRateMultiplier": 1.0, "poisonFillEnabled": True,   # PIT_FILL_EFFECTS_1
         "viscosityEnabled": True,          # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (PROVISIONAL stride)
         "thickCreepEnabled": True,         # THICK_LIQUID_CREEP_1: a thick front moves one cell per moving pulse
+        "excavationLoadRepairEnabled": True,   # EXCAVATION_LOAD_SANITY_REPAIR_1: dig grids repaired and liquid list compacted on load
         "bottleLoopEnabled": True, "bottleDirtyStageEnabled": True,
         "tankLoopEnabled": True, "tankCapacityMultiplier": 1.0,
         "liquidDrillingEnabled": True, "drillYieldChanceMultiplier": 1.0, "drillUnitsPerCycle": 1.0,
