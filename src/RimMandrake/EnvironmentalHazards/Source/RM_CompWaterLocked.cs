@@ -68,6 +68,48 @@ namespace RimMandrake.EnvironmentalHazards
     {
         public CompProperties_WaterLocked Props => (CompProperties_WaterLocked)props;
 
+        // Not saved: after a load the next land check simply issues a fresh recovery walk.
+        private Job recoveryJob;
+
+        private const int RecoverySearchRadius = 40;   // PROVISIONAL (auto-decided 2026-10-09, WARDEN_MOTHER_LAND_RECOVERY_1)
+        private const int RecoveryReachChecks = 12;    // reachability probes per search, nearest water first
+
+        private static bool HeadedForWater(Pawn pawn)
+        {
+            if (pawn.pather == null || !pawn.pather.Moving)
+            {
+                return false;
+            }
+            LocalTargetInfo dest = pawn.pather.Destination;
+            return dest.IsValid && IsWaterCell(dest.Cell, pawn.Map);
+        }
+
+        private static bool TryFindRecoveryCell(Pawn pawn, out IntVec3 found)
+        {
+            found = IntVec3.Invalid;
+            Map map = pawn.Map;
+            int probes = 0;
+            int max = GenRadial.NumCellsInRadius(RecoverySearchRadius);
+            for (int i = 1; i < max; i++)
+            {
+                IntVec3 c = pawn.Position + GenRadial.RadialPattern[i];
+                if (!IsWaterCell(c, map) || !c.Standable(map))
+                {
+                    continue;
+                }
+                if (pawn.CanReach(c, PathEndMode.OnCell, Danger.Deadly))
+                {
+                    found = c;
+                    return true;
+                }
+                if (++probes >= RecoveryReachChecks)
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
         public static bool IsWaterCell(IntVec3 cell, Map map)
         {
             if (map == null || !cell.InBounds(map))
@@ -98,9 +140,28 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
-            // Found on dry ground — stop her right there rather than let her
-            // continue walking further inland toward whatever job she was
-            // mid-executing.
+            // WARDEN_MOTHER_LAND_RECOVERY_1 PROVISIONAL (auto-decided 2026-10-09): the old backstop stopped her
+            // dead every check, including the walk that would have taken her back, so she could be frozen on land
+            // for good. Now a walk already headed for water (ours or any other) is left alone, and anything else
+            // is replaced by a walk to the nearest reachable water cell.
+            if (RM_EnvironmentalHazardsSettings.waterLockedRecoveryWalk)
+            {
+                if (pawn.jobs?.curJob != null && (pawn.jobs.curJob == recoveryJob || HeadedForWater(pawn)))
+                {
+                    return;
+                }
+                if (TryFindRecoveryCell(pawn, out IntVec3 water))
+                {
+                    pawn.pather?.StopDead();
+                    recoveryJob = JobMaker.MakeJob(JobDefOf.Goto, water);
+                    recoveryJob.locomotionUrgency = LocomotionUrgency.Jog;
+                    pawn.jobs?.StartJob(recoveryJob, JobCondition.InterruptForced);
+                    return;
+                }
+            }
+
+            // Found on dry ground with no way back (or recovery switched off) — stop her right there rather
+            // than let her continue walking further inland toward whatever job she was mid-executing.
             pawn.pather?.StopDead();
             if (pawn.jobs?.curJob != null)
             {

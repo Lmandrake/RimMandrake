@@ -1,3 +1,6 @@
+using HarmonyLib;
+using System.Reflection;
+using System;
 using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
@@ -296,7 +299,18 @@ namespace RimMandrake.EnvironmentalHazards
                 vine.parent);
             dinfo.SetBodyRegion(props.bodyHeight, BodyPartDepth.Outside);
 
-            pawn.TakeDamage(dinfo);
+            // CONTACT_VENOM_NONLETHAL_ORDER_1: the additionalHediffs land inside TakeDamage
+            // (PostApplyDamage -> AddHediff -> CheckForStateChange), which kills synchronously, so the
+            // non-lethal clamp has to run INSIDE that call, not after it. The scope arms a narrow prefix.
+            RM_ContactVenomNonLethalPatch.Begin(pawn, damage);
+            try
+            {
+                pawn.TakeDamage(dinfo);
+            }
+            finally
+            {
+                RM_ContactVenomNonLethalPatch.End();
+            }
 
             ApplyLethalityOption(pawn, damage);
         }
@@ -312,7 +326,7 @@ namespace RimMandrake.EnvironmentalHazards
         //
         // Turning the option off never heals anyone: a carrier already past
         // the threshold is not rescued, it is simply no longer pushed further.
-        private static void ApplyLethalityOption(Pawn pawn, DamageDef damage)
+        internal static void ApplyLethalityOption(Pawn pawn, DamageDef damage)
         {
             if (RM_EnvironmentalHazardsSettings.contactVenomLethal)
             {
@@ -395,6 +409,65 @@ namespace RimMandrake.EnvironmentalHazards
                     }
                 }
             }
+        }
+    }
+
+    // CONTACT_VENOM_NONLETHAL_ORDER_1: while a contact-venom scratch is being applied with lethality off, clamp the
+    // venom hediffs just short of lethal immediately before the engine's death checks (AddHediff's
+    // CheckForStateChange and PostApplyDamage's ShouldBeDead). Armed only for the one pawn inside Scratch's
+    // TakeDamage call; every other call through these methods passes straight through.
+    [StaticConstructorOnStartup]
+    public static class RM_ContactVenomNonLethalPatch
+    {
+        private static Pawn scopePawn;
+        private static DamageDef scopeDamage;
+
+        static RM_ContactVenomNonLethalPatch()
+        {
+            try
+            {
+                Harmony harmony = new Harmony("mandrake.rm.environmentalhazards");
+                HarmonyMethod prefix = new HarmonyMethod(typeof(RM_ContactVenomNonLethalPatch), nameof(Prefix));
+                MethodBase check = AccessTools.Method(typeof(Pawn_HealthTracker), "CheckForStateChange");
+                MethodBase post = AccessTools.Method(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.PostApplyDamage));
+                if (check == null || post == null)
+                {
+                    Log.Error("[RM EnvironmentalHazards] contact-venom non-lethal clamp: Pawn_HealthTracker method not found "
+                        + "— with lethality off a scratch can still kill.");
+                    return;
+                }
+                harmony.Patch(check, prefix: prefix);
+                harmony.Patch(post, prefix: prefix);
+            }
+            catch (Exception e)
+            {
+                Log.Error("[RM EnvironmentalHazards] contact-venom non-lethal clamp: patch failed. " + e);
+            }
+        }
+
+        public static void Begin(Pawn pawn, DamageDef damage)
+        {
+            if (RM_EnvironmentalHazardsSettings.contactVenomLethal)
+            {
+                return;
+            }
+            scopePawn = pawn;
+            scopeDamage = damage;
+        }
+
+        public static void End()
+        {
+            scopePawn = null;
+            scopeDamage = null;
+        }
+
+        public static void Prefix(Pawn_HealthTracker __instance)
+        {
+            if (scopePawn == null || __instance?.hediffSet?.pawn != scopePawn)
+            {
+                return;
+            }
+            MapComponent_ContactVenom.ApplyLethalityOption(scopePawn, scopeDamage);
         }
     }
 }

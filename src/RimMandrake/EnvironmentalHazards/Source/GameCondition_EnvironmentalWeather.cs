@@ -262,15 +262,30 @@ namespace RimMandrake.EnvironmentalHazards
             }
         }
 
+        // PROVISIONAL (auto-decided 2026-10-09, ENV_WEATHER_GATE_SCOPE_1): when the owning biome mod's gate is
+        // off, every environmental override below returns its neutral value too (null weather, 0 offset, 1x
+        // densities, outdoor recreation allowed, power on), not only the pawn/cell effects.
+        private EnvironmentalWeatherExtension ContractExt
+        {
+            get
+            {
+                if (RM_EnvironmentalHazardsSettings.weatherGateCoversWholeCondition && !RM_MechanicGates.Enabled(def))
+                {
+                    return null;
+                }
+                return ExtensionInt;
+            }
+        }
+
         public override WeatherDef ForcedWeather()
         {
-            EnvironmentalWeatherExtension ext = ExtensionInt;
+            EnvironmentalWeatherExtension ext = ContractExt;
             return ext != null ? ext.forcedWeather : null;
         }
 
         public override float TemperatureOffset()
         {
-            EnvironmentalWeatherExtension ext = ExtensionInt;
+            EnvironmentalWeatherExtension ext = ContractExt;
             if (ext == null)
             {
                 return 0f;
@@ -316,19 +331,19 @@ namespace RimMandrake.EnvironmentalHazards
 
         public override float AnimalDensityFactor(Map map)
         {
-            EnvironmentalWeatherExtension ext = ExtensionInt;
+            EnvironmentalWeatherExtension ext = ContractExt;
             return ext != null ? ext.animalDensityFactor : 1f;
         }
 
         public override float PlantDensityFactor(Map map)
         {
-            EnvironmentalWeatherExtension ext = ExtensionInt;
+            EnvironmentalWeatherExtension ext = ContractExt;
             return ext != null ? ext.plantDensityFactor : 1f;
         }
 
         public override bool AllowEnjoyableOutsideNow(Map map)
         {
-            EnvironmentalWeatherExtension ext = ExtensionInt;
+            EnvironmentalWeatherExtension ext = ContractExt;
             return ext == null || ext.allowEnjoyableOutside;
         }
 
@@ -336,7 +351,7 @@ namespace RimMandrake.EnvironmentalHazards
         {
             get
             {
-                EnvironmentalWeatherExtension ext = ExtensionInt;
+                EnvironmentalWeatherExtension ext = ContractExt;
                 return ext != null && ext.electricityDisabled;
             }
         }
