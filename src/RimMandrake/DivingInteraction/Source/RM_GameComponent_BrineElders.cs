@@ -70,6 +70,23 @@ namespace RimMandrake.DivingInteraction
                 t => new RM_ElderTileRecord { tile = t, seenKeys = new List<string>() });
         }
 
+        /// <summary>Rollback for a trade whose payout could not be placed (ELDER_TRADE_TRANSACTIONAL_PAYOUT_1).</summary>
+        public void ForgetSeen(int tile, string noveltyKey)
+        {
+            for (int i = 0; i < tileRecords.Count; i++)
+            {
+                if (tileRecords[i] != null && tileRecords[i].tile == tile)
+                {
+                    tileRecords[i].seenKeys?.Remove(noveltyKey);
+                }
+            }
+        }
+
+        public void UnclaimUniqueTreasure(string defName)
+        {
+            grantedUniqueTreasureDefNames.Remove(defName);
+        }
+
         public bool IsUniqueTreasureGranted(string defName)
         {
             return grantedUniqueTreasureDefNames.Contains(defName);

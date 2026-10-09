@@ -140,6 +140,7 @@ namespace RimMandrake.DivingInteraction
             int tile = TileForMap(map);
             RM_GameComponent_BrineElders comp = Current.Game.GetComponent<RM_GameComponent_BrineElders>();
             string key = NoveltyKey(offered);
+            bool wasSeen = comp != null && tile >= 0 && comp.HasSeen(tile, key);
             RM_ElderEconomyKernel.Decision decision = comp != null
                 ? comp.Decide(tile, key, tile >= 0, offered.MarketValue, offered.stackCount, RmUniqueTreasureDefNames,
                     dn => DefDatabase<ThingDef>.GetNamedSilentFail(dn) != null,
@@ -149,8 +150,8 @@ namespace RimMandrake.DivingInteraction
             int silver = decision.Silver;
             ThingDef uniqueTreasure = decision.Treasure == null ? null : DefDatabase<ThingDef>.GetNamedSilentFail(decision.Treasure);
 
-            offered.Destroy(DestroyMode.Vanish);
-
+            // Transactional: the offering is only consumed once the payout has landed. The jacket
+            // must dissolve first (it occupies the delivery cell); that is the Elder reshaping its floor.
             if (jacketToDissolve != null)
             {
                 // Dissolved, not mined: the Elder is reshaping its own
@@ -159,20 +160,35 @@ namespace RimMandrake.DivingInteraction
                 jacketToDissolve.Destroy(DestroyMode.Vanish);
             }
 
-            if (deliveryCell.IsValid && map != null)
+            Thing payout = null;
+            if (uniqueTreasure != null)
             {
-                if (uniqueTreasure != null)
-                {
-                    Thing t = ThingMaker.MakeThing(uniqueTreasure);
-                    GenPlace.TryPlaceThing(t, deliveryCell, map, ThingPlaceMode.Near);
-                }
-                else if (silver > 0)
-                {
-                    Thing silverThing = ThingMaker.MakeThing(ThingDefOf.Silver);
-                    silverThing.stackCount = silver;
-                    GenPlace.TryPlaceThing(silverThing, deliveryCell, map, ThingPlaceMode.Near);
-                }
+                payout = ThingMaker.MakeThing(uniqueTreasure);
             }
+            else if (silver > 0)
+            {
+                payout = ThingMaker.MakeThing(ThingDefOf.Silver);
+                payout.stackCount = silver;
+            }
+            if (payout != null && !GenPlace.TryPlaceThing(payout, deliveryCell, map, ThingPlaceMode.Near))
+            {
+                // Roll back: the specimen is kept, the novelty is still unseen, the treasure still ungranted.
+                if (comp != null)
+                {
+                    if (!wasSeen && tile >= 0)
+                    {
+                        comp.ForgetSeen(tile, key);
+                    }
+                    if (decision.Treasure != null)
+                    {
+                        comp.UnclaimUniqueTreasure(decision.Treasure);
+                    }
+                }
+                payout.Destroy(DestroyMode.Vanish);
+                return new OfferResult(false, false, 0, null);
+            }
+
+            offered.Destroy(DestroyMode.Vanish);
 
             return new OfferResult(true, novel, uniqueTreasure != null ? 0 : silver, uniqueTreasure);
         }
