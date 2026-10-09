@@ -29,8 +29,17 @@ namespace RimMandrake.SeaShores
             }
             else
             {
-                harmony.Patch(tryAdd, prefix: new HarmonyMethod(
-                    typeof(RM_Patch_TryAddMutator), nameof(RM_Patch_TryAddMutator.Prefix)));
+                try
+                {
+                    harmony.Patch(tryAdd, prefix: new HarmonyMethod(
+                        typeof(RM_Patch_TryAddMutator), nameof(RM_Patch_TryAddMutator.Prefix)));
+                }
+                catch (System.Exception e)
+                {
+                    Log.Warning("[RM_SeaShores] TryAddMutator patch failed: " + e.Message + "; "
+                              + "fresh worldgen will lay vanilla coasts beside modded seas. "
+                              + "Existing worlds are still healed on load.");
+                }
             }
         }
     }

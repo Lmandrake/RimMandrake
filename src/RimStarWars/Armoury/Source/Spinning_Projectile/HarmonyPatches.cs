@@ -46,6 +46,6 @@ internal class HarmonyPatches
         // assembly hosts several unrelated [HarmonyPatch] classes with their
         // own entry points (SelfHediffVerb's own PatchAll among them), and a
         // bare PatchAll() here would double-scan and double-patch those too.
-        harmonyPatch.CreateClassProcessor(typeof(PawnRenderUtility_CarryWeaponOpenly_Postfix)).Patch();
+        RimMandrake.Shared.PatchApplier.Apply(harmonyPatch, typeof(HarmonyPatches).Assembly, "Spinning_Projectile", "Spinning_Projectile");
     }
 }
