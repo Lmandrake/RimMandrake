@@ -40,6 +40,13 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static bool tapEvents = true;
         /// <summary>GS-1: a span with both anchors aboard a launching gravship lands still strung.</summary>
         public static bool keepWiresOnGravship = true;
+        /// <summary>FALLEN_WIRE_SHOCK_1: a live fallen wire knocks out whoever touches it, colonists included; lethal
+        /// only to a weak heart (RM_FallenWireShock).</summary>
+        public static bool fallenWireShock = true;
+        /// <summary>FALLEN_WIRE_SHOCK_1 (X-7): a live end lying in spilled fuel can light it.</summary>
+        public static bool fallenWireIgnites = true;
+        /// <summary>Cells a shock throws a pawn back, 0-3. PROVISIONAL.</summary>
+        public static int fallenWireKnockback = 2;
 
         public override void ExposeData()
         {
@@ -57,6 +64,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref tapRate, "tapRate", 500f);
             Scribe_Values.Look(ref tapEvents, "tapEvents", true);
             Scribe_Values.Look(ref keepWiresOnGravship, "keepWiresOnGravship", true);
+            Scribe_Values.Look(ref fallenWireShock, "fallenWireShock", true);
+            Scribe_Values.Look(ref fallenWireIgnites, "fallenWireIgnites", true);
+            Scribe_Values.Look(ref fallenWireKnockback, "fallenWireKnockback", 2);
         }
 
         public static void ResetToDefaults()
@@ -74,6 +84,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             tapRate = 500f;
             tapEvents = true;
             keepWiresOnGravship = true;
+            fallenWireShock = true;
+            fallenWireIgnites = true;
+            fallenWireKnockback = 2;
         }
 
         public static float Range => Mathf.Clamp(maxSpan, 4f, 40f);
@@ -145,6 +158,15 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             l.CheckboxLabeled("Explosions cut wires (the halves hang and spark)", ref AerialSettings.explosionsCut);
             l.CheckboxLabeled("Kinetic blasts (Kinetic Arms push waves) swing wires instead of cutting them", ref AerialSettings.kineticSway,
                 "A push wave never cuts a wire. Off: the wires ignore it.");
+            l.CheckboxLabeled("Live fallen wires shock whoever touches them", ref AerialSettings.fallenWireShock,
+                "Anyone, colonists included, who touches a live wire lying on the ground is thrown back and knocked out for a couple " +
+                "of hours. Only a weak heart (artery blockage, a heart attack, or a damaged heart) is killed. A dead wire is harmless. " +
+                "Applies now.");
+            l.Label("Shock throws the victim back: " + AerialSettings.fallenWireKnockback + " cell(s)");
+            AerialSettings.fallenWireKnockback = Mathf.RoundToInt(l.Slider(AerialSettings.fallenWireKnockback, 0f, 3f));
+            l.CheckboxLabeled("Live fallen wires light spilled fuel", ref AerialSettings.fallenWireIgnites,
+                "A live end lying in spilled chemfuel, or in a burnable Flow Works liquid when that mod is loaded, can set it alight. " +
+                "Applies now.");
             l.GapLine();
             l.CheckboxLabeled("Allow power-tap clamps on other factions' grids", ref AerialSettings.tapsEnabled,
                 "A clamp bitten onto someone else's conduit quietly drains their grid into yours, one way: the grids never merge.");

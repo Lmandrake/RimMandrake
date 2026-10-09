@@ -27,6 +27,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         private readonly Dictionary<long, SpanMesh> meshes = new Dictionary<long, SpanMesh>();
         private readonly Dictionary<int, bool> anchorLive = new Dictionary<int, bool>();
         private readonly Dictionary<FallenCord, List<FallenLay>> lays = new Dictionary<FallenCord, List<FallenLay>>();
+        /// <summary>FALLEN_WIRE_SHOCK_1: cells a live fallen strand lies across (cell index -> its live end), and the live
+        /// ends themselves; rebuilt on the 250-tick sweep. Transient: a load rebuilds them within one sweep.</summary>
+        private readonly Dictionary<int, IntVec3> shockCells = new Dictionary<int, IntVec3>();
+        private readonly List<IntVec3> liveTips = new List<IntVec3>();
+        public int ShockCellCount => shockCells.Count;
 
         public int netRepairs, roofCuts, explosionCuts, autoLinks, watchdogRuns;
         public int lastSwayDraws, lastSpanDraws, lastTopDraws, lastGlowDraws, lastDropDraws;
@@ -95,7 +100,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 RoofSweep();
                 PollFallen();
                 FallenGroundCheck();
+                RM_FallenWireShock.RebuildContacts(this, map, shockCells, liveTips);
+                RM_FallenWireShock.TryIgnite(map, liveTips);
             }
+            if (shockCells.Count > 0 && now % RM_FallenWireShock.CheckInterval == 0)
+                RM_FallenWireShock.CheckPawns(map, shockCells);
             Sparks(now);
             TapSparks(now);
         }
