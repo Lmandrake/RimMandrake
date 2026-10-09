@@ -65,26 +65,41 @@ namespace RimMandrake.MovingDunes
                 return tintedMat;
             }
             tintedFor = def;
-            tintFallback = false;
-            tintedMat = new Material(MatBases.Sand);
-            if (def.tintMode == DuneTintMode.MaterialColor)
+            tintedMat = BuildMaterial(def.tint, def.tintMode, out tintFallback);
+            return tintedMat;
+        }
+
+        /// <summary>The shipped material build, shared with the read-only proof hook (RM_DunesProof.ProofTintLayer) so the
+        /// proof reads the real code path, not a copy of it.</summary>
+        internal static Material BuildMaterial(Color tint, DuneTintMode mode, out bool fallback)
+        {
+            fallback = false;
+            Material mat = new Material(MatBases.Sand);
+            if (mode == DuneTintMode.MaterialColor)
             {
                 // MEASURED live 2026-10-09 (DUNES_TINT_GATE_PROOF_1): the Misc/Sand shader (Custom/Snow) declares
                 // no _Color, so Material.color is a silent no-op on it. A non-white tint therefore rides a
                 // Map/Transparent clone of the same texture (that shader multiplies _Color and vertex colour).
                 // Pollution (vertex red) is not representable there, so the fallback layer writes white RGB.
-                bool white = def.tint.r > 0.999f && def.tint.g > 0.999f && def.tint.b > 0.999f;
-                if (tintedMat.HasProperty("_Color"))
+                bool white = tint.r > 0.999f && tint.g > 0.999f && tint.b > 0.999f;
+                if (mat.HasProperty("_Color"))
                 {
-                    tintedMat.color = def.tint;
+                    mat.color = tint;
                 }
                 else if (!white && MatBases.Sand.mainTexture != null)
                 {
-                    UnityEngine.Object.Destroy(tintedMat);
-                    tintedMat = MaterialPool.MatFrom(new MaterialRequest(MatBases.Sand.mainTexture, ShaderDatabase.Transparent, def.tint));
-                    tintFallback = true;
+                    UnityEngine.Object.Destroy(mat);
+                    mat = MaterialPool.MatFrom(new MaterialRequest(MatBases.Sand.mainTexture, ShaderDatabase.Transparent, tint));
+                    fallback = true;
                 }
             }
+            return mat;
+        }
+
+        /// <summary>Live read: the material the first dune layer on the map actually holds (null when none built yet).</summary>
+        internal Material ProofLiveMaterial(out bool fallback)
+        {
+            fallback = tintFallback;
             return tintedMat;
         }
 
