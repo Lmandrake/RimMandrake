@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_VenomvineFourForms.xml          LEANINGSCRUB_STRANGLER_VINE_1 / _WEEPER_VINE_1 / _SLEEPER_VINE_1 / _LURE_VINE_1
+
+  The four further venomvine forms admitted by the owner's card 2026-10-08
+  (LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1). Strangler wraps a wall or tree and is trimmed; Weeper leaves venom pools
+  that poison the soil; Sleeper looks like dead vine until disturbed; Lure's sweet fruit draws animals to the thicket.
+  Siblings of the six in RM_VenomvineSixForms.xml (same hit points, barrier, venom, smotherable, gate key); mechanics
+  in Source/RM_VenomvineFourForms.cs, one Mod Setting each. Numbers PROVISIONAL.
+  The sleeper is the exception: asleep it carries no venom and no barrier (it is a dead-looking harmless snarl) and
+  wakes into RM_SleeperVenomvineAwake, a plain live stand.
+  Art: each form has its own Graphic_Random folder; each holds the thicket render as an INTERIM picture
+  (the sleeper tints it grey). Bespoke renders owed: see the four items.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_StranglerVenomvine</defName>
+    <label>strangler venomvine</label>
+    <description>Canes thin as cord and long as a rope, no thicker than a wrist anywhere, laid round whatever stands beside them in tight turns. A strangler does not strike. It holds. Along a wall it climbs and tightens, a little more each day, until the mortar gives; round a tree it does not let go until the tree is down. Whoever keeps a wall keeps a pair of cutters for it.</description>
+    <statBases>
+      <MaxHitPoints>550</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_StranglerVenomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>12</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestWork>1400</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
+      </li>
+      <!-- PROVISIONAL: wraps the wall or tree beside it, 10% tighter per half-minute, 6 blunt damage at full wrap. -->
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Strangler">
+        <minGrowth>0.5</minGrowth>
+        <wrapStep>0.1</wrapStep>
+        <fullDamage>6</fullDamage>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>40</yieldCount>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_WeeperVenomvine</defName>
+    <label>weeper venomvine</label>
+    <description>Every cane ends in a slow bead of venom the colour of old tea, and the ground beneath is wet with it. A weeper never stops. Where it has stood a season there is a dark ring of pools, and nothing green grows in the ring. It is not dangerous to pass; it is dangerous to farm beside.</description>
+    <statBases>
+      <MaxHitPoints>550</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_WeeperVenomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>12</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestWork>1400</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
+      </li>
+      <!-- PROVISIONAL: a pool in radius 2 on 10% of half-minute ticks; at most 12 poisoned cells per stand. -->
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Weeper">
+        <minGrowth>0.5</minGrowth>
+        <poolChancePerLongTick>0.1</poolChancePerLongTick>
+        <radius>2</radius>
+        <maxPollutedCells>12</maxPollutedCells>
+        <poolDef>RM_VenomPool</poolDef>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>40</yieldCount>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_SleeperVenomvine</defName>
+    <label>dead venomvine</label>
+    <description>A snarl of grey, dry, dead-looking venomvine, canes brittle and bleached. It looks like what a fire or a smothering leaves behind. It is not. Anything with weight that steps beside it wakes it, and it is alive and black and angry before the foot comes down.</description>
+    <statBases>
+      <MaxHitPoints>550</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_SleeperVenomvine</texPath>
+      <color>(0.62, 0.58, 0.50)</color>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>12</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestWork>300</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <!-- PROVISIONAL: wakes for a grounded body of size 0.5 or more within 1.5 cells; lashes whoever is beside it for 6. -->
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Sleeper">
+        <minBodySize>0.5</minBodySize>
+        <wakeRadius>1.5</wakeRadius>
+        <wakeDamage>6</wakeDamage>
+        <awakeDef>RM_SleeperVenomvineAwake</awakeDef>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>40</yieldCount>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_SleeperVenomvineAwake</defName>
+    <label>awakened venomvine</label>
+    <description>What a sleeper becomes once something has stepped next to it: an ordinary, furious venomvine stand.</description>
+    <statBases>
+      <MaxHitPoints>550</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_SleeperAwakeVenomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>12</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestWork>1400</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>40</yieldCount>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_LureVenomvine</defName>
+    <label>lure venomvine</label>
+    <description>Among the black canes hang fruit as pale and soft as a pearl, and sweet enough to smell from across a field. Every grazer for a mile knows the smell. The fruit is the bait; the thicket is the trap, and what follows the grazers is the rest of the story.</description>
+    <statBases>
+      <MaxHitPoints>550</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_LureVenomvine</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>90</pathCost>
+    <plant>
+      <fertilityMin>0.5</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>12</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.3</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestWork>1400</harvestWork>
+      <allowAutoCut>false</allowAutoCut>
+      <purpose>Misc</purpose>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_ContactVenom">
+        <damageDef>RM_VenomvineScratch</damageDef>
+        <damageAmount>3</damageAmount>
+        <armorPenetration>0.05</armorPenetration>
+        <contactIntervalTicks>2500</contactIntervalTicks>
+        <bodyHeight>Bottom</bodyHeight>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier">
+        <passFreelyBodySize>0.8</passFreelyBodySize>
+        <blockBodySize>1.5</blockBodySize>
+        <threadMoveCost>300</threadMoveCost>
+        <trappedMoveCost>450</trappedMoveCost>
+      </li>
+      <!-- PROVISIONAL: a fruit on the stand's cell when fewer than 3 lie within 3 cells, checked each half-minute. -->
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Lure">
+        <minGrowth>0.5</minGrowth>
+        <fruitCap>3</fruitCap>
+        <reach>3</reach>
+        <fruitDef>RM_LureFruit</fruitDef>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_Smotherable">
+        <yieldCount>40</yieldCount>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
+        <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

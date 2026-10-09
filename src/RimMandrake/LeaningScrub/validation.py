@@ -80,6 +80,9 @@ DEFAULTS = {
     "hoardEnabled": True, "hoardGrowInHours": 4.0, "hoardKeepsDeadGear": True,
     "quenchEnabled": True, "quenchRecoveryDays": 3.0, "swornSparesMarkedEnabled": True,
     "sheddingEnabled": True, "sheddingLength": 8,
+    # the four further forms (RM_VenomvineFourForms.cs; owner card 2026-10-08)
+    "stranglerEnabled": True, "stranglerDamageFactor": 1.0, "stranglerAutoTrim": True,
+    "weeperEnabled": True, "weeperPollutes": True, "sleeperEnabled": True, "lureEnabled": True,
 }
 suite.toggles = sorted(k for k, v in DEFAULTS.items() if isinstance(v, bool))
 
@@ -1349,6 +1352,31 @@ def forms_chain(t):
         for mode, name in (("on", "%s_acts" % form), ("off", "%s_toggle_off" % form)):
             with _comp(t, name, toggle=FORM_TOGGLES[form]):
                 r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_VenomvineFormsProof",
+                                  method="ProofForm", args="%s|%s" % (form, mode))
+                if _live(t):
+                    txt = str((r or {}).get("result") or (r or {}).get("value") or r)
+                    _note(t, "%s proof (%s)" % (form, mode), txt[:300])
+                    if txt.startswith("FAIL"):
+                        _fail("%s (%s): %s" % (form, mode, txt[:400]))
+                    if not txt.startswith("PASS"):
+                        _unmeasured(t, "%s proof did not answer PASS/FAIL: %s" % (form, txt[:200]))
+
+
+# --------------------------------------------------------------------------- chain: the four further forms
+
+FOUR = (("strangler", "stranglerEnabled"), ("weeper", "weeperEnabled"), ("sleeper", "sleeperEnabled"), ("lure", "lureEnabled"))
+
+
+@suite.chain("four_forms")
+def four_forms_chain(t):
+    """Strangler, Weeper, Sleeper, Lure (RM_VenomvineFourForms.cs). RM_FourFormsProof.ProofForm builds each fixture on the
+    current map, drives the SHIPPED comp / sweep with the setting on and then off, reads it back and cleans up. UNCOVERED
+    live: that wild animals actually walk to lure fruit (needs a wild herbivore and hunger; watch it with the owner), and
+    the strangler's cut-back designation being worked by a colonist."""
+    for form, toggle in FOUR:
+        for mode, name in (("on", "%s_acts" % form), ("off", "%s_toggle_off" % form)):
+            with _comp(t, name, toggle=toggle):
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_FourFormsProof",
                                   method="ProofForm", args="%s|%s" % (form, mode))
                 if _live(t):
                     txt = str((r or {}).get("result") or (r or {}).get("value") or r)

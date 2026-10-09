@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_VenomvineFourFormsSupport.xml       LEANINGSCRUB_WEEPER_VINE_1 / LEANINGSCRUB_LURE_VINE_1
+  RM_VenomPool  the weeper's pool: ordinary filth that fades in a week, cleaned by the normal job. The soil poisoning is Biotech pollution (RM_CompWeeper).
+  RM_LureFruit  the lure's sweet fruit: edible by anything that eats fruit (animals included), rots in three days.
+  Art: no render; both borrow a vanilla texture tinted (the RM_ThornLitter precedent). Numbers PROVISIONAL.
+-->
+<Defs>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_VenomPool</defName>
+    <label>venom pool</label>
+    <description>A dark, amber-edged pool of venom wept onto the ground by a weeper venomvine. The soil under it is sick.</description>
+    <graphicData>
+      <texPath>Things/Filth/Grainy</texPath>
+      <color>(176,128,28,200)</color>
+    </graphicData>
+    <statBases>
+      <Beauty>-10</Beauty>
+      <Cleanliness>-4</Cleanliness>
+    </statBases>
+    <filth>
+      <placementMask>
+        <li>Terrain</li>
+        <li>Unnatural</li>
+      </placementMask>
+      <disappearsInDays>6~10</disappearsInDays>
+      <cleaningWorkToReduceThickness>45</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+    </filth>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_LureFruit</defName>
+    <label>lure fruit</label>
+    <description>A pale, soft fruit as sweet as sugar, grown on a lure venomvine. Anything that eats fruit will cross a field for it. It rots in three days.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/PlantFoodRaw/Berries</texPath>
+      <color>(235,225,190)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>2</MarketValue>
+      <Mass>0.02</Mass>
+      <Nutrition>0.05</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

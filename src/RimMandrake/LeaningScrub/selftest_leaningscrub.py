@@ -365,6 +365,14 @@ class Fake(object):
                 n = 1
                 self.new(V.TREE, 5, 5, growth=1.0, stackCount=1)
             return {"success": True, "result": "PLANTED %d" % n}
+        if method == "ProofForm" and type and type.endswith("RM_FourFormsProof"):
+            form, mode = args.split("|")
+            on = self.on(dict(V.FOUR)[form])
+            if mode == "on":
+                acts = on and ("four_%s_never" % form) not in self.broken
+                return {"success": True, "result": "PASS %s" % form if acts else "FAIL: %s did nothing" % form}
+            acts = ("four_%s_ignores_toggle" % form) in self.broken
+            return {"success": True, "result": "FAIL: %s off but it acted" % form if acts else "PASS off %s" % form}
         if method == "ProofForm":
             form, mode = args.split("|")
             on = self.on(V.FORM_TOGGLES[form])
@@ -573,6 +581,14 @@ BREAKS = {
     "no_scratch": "sweetline.scratch_drops_coat",
     "scratch_ignores_toggle": "sweetline.scratch_toggle_off_refused",
     "no_map_step": "sweetline.map_step_plants_one_or_two",
+    "four_strangler_never": "four_forms.strangler_acts",
+    "four_weeper_never": "four_forms.weeper_acts",
+    "four_sleeper_never": "four_forms.sleeper_acts",
+    "four_lure_never": "four_forms.lure_acts",
+    "four_strangler_ignores_toggle": "four_forms.strangler_toggle_off",
+    "four_weeper_ignores_toggle": "four_forms.weeper_toggle_off",
+    "four_sleeper_ignores_toggle": "four_forms.sleeper_toggle_off",
+    "four_lure_ignores_toggle": "four_forms.lure_toggle_off",
     "no_comfort": "sweetline.felt_furniture_comfort",
     "comfort_ignores_toggle": "sweetline.felt_comfort_toggle_off_plain",
     "map_step_ignores_chance": "sweetline.map_step_chance_zero_plants_none",

@@ -109,6 +109,14 @@ namespace RimMandrake.LeaningScrub
         public static float quenchRecoveryDays = 3f;
         public static bool swornSparesMarkedEnabled = true;
         public static bool sheddingEnabled = true;
+        // The four further forms (owner card 2026-10-08). PROVISIONAL numbers; each off: a plain venomvine stand.
+        public static bool stranglerEnabled = true;
+        public static float stranglerDamageFactor = 1f;
+        public static bool stranglerAutoTrim = true;
+        public static bool weeperEnabled = true;
+        public static bool weeperPollutes = true;
+        public static bool sleeperEnabled = true;
+        public static bool lureEnabled = true;
         public static int sheddingLength = 8;
 
         private static Vector2 scroll;
@@ -169,6 +177,13 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref swornSparesMarkedEnabled, "swornSparesMarkedEnabled", true, true);
             Scribe_Values.Look(ref sheddingEnabled, "sheddingEnabled", true, true);
             Scribe_Values.Look(ref sheddingLength, "sheddingLength", 8, true);
+            Scribe_Values.Look(ref stranglerEnabled, "stranglerEnabled", true, true);
+            Scribe_Values.Look(ref stranglerDamageFactor, "stranglerDamageFactor", 1f, true);
+            Scribe_Values.Look(ref stranglerAutoTrim, "stranglerAutoTrim", true, true);
+            Scribe_Values.Look(ref weeperEnabled, "weeperEnabled", true, true);
+            Scribe_Values.Look(ref weeperPollutes, "weeperPollutes", true, true);
+            Scribe_Values.Look(ref sleeperEnabled, "sleeperEnabled", true, true);
+            Scribe_Values.Look(ref lureEnabled, "lureEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -385,6 +400,27 @@ namespace RimMandrake.LeaningScrub
                 list.Label("Length of the thorn V: " + sheddingLength + " cells");
                 sheddingLength = Mathf.RoundToInt(list.Slider(sheddingLength, 2f, 16f));
             }
+            list.CheckboxLabeled("Strangler venomvine wraps walls and trees", ref stranglerEnabled,
+                "A strangler stand wraps the wall or tree beside it and squeezes it a little each half-minute, harder as the wrap tightens. "
+                + "Cutting the stand back stops it.");
+            if (stranglerEnabled)
+            {
+                list.Label("Squeeze strength: " + stranglerDamageFactor.ToString("0.0") + "x");
+                stranglerDamageFactor = Mathf.Round(list.Slider(stranglerDamageFactor, 0.1f, 4f) * 10f) / 10f;
+                list.CheckboxLabeled("  Mark a strangler round your buildings to be cut", ref stranglerAutoTrim,
+                    "On: a strangler wrapped round something of yours is designated for cutting, so colonists trim it.");
+            }
+            list.CheckboxLabeled("Weeper venomvine leaves venom pools", ref weeperEnabled,
+                "A weeper stand sheds a pool of venom now and then on the ground around it.");
+            if (weeperEnabled)
+            {
+                list.CheckboxLabeled("  The pools poison the soil (affects the map)", ref weeperPollutes,
+                    "AFFECTS THE MAP. On: each pool also pollutes the ground under it (Biotech pollution: stunts growth, kills plants), up to a dozen cells per stand. Off: the pool is only filth.");
+            }
+            list.CheckboxLabeled("Sleeper venomvine looks dead until disturbed", ref sleeperEnabled,
+                "A sleeper stand looks like dead venomvine and is harmless to walk past, until a grown body steps next to it: it wakes, lashes whoever is beside it, and becomes a live venomvine stand. Off: it stays a dead-looking vine forever.");
+            list.CheckboxLabeled("Lure venomvine draws animals", ref lureEnabled,
+                "A lure stand hangs sweet fruit low in itself. Wild animals come for it and walk into the thicket.");
 
             viewHeight = list.CurHeight + 20f;
             list.End();
