@@ -5,3 +5,4 @@
 - kept: ~60 checked by helpers (all 33 GPT-review findings still present at HEAD); old Aug-Sep program items (ASSAILANT_DUNGEON, BIOME_WORLD_SWITCH partial, OCULAR_OVERDRIVE, STATUE umbrella, COLD_LOAD_RUN_SHEET_4, VANILLA_BEAST_EXCISION etc) skimmed, all genuinely live
 - not reached: ~150 items (helpers 0,2,3,4 still running at stop)
 - closed MUDSWALLOW_PARENTHOLDER_GUARD_1 (c78842824): passing L2 verify; GIMMESOMESLACK_NORTHSTAR_VALIDATE_1 unsure (owner-only)
+- closed DUMP_REFRESH_JAWARETURNTOW_1 (a2fa67f05), GELATINOUSSLIME_VAULT_SEAL_PLUG_1 (07bd43cb2); THROAT_CASK_ITEM_1 built f6a8a6016 but no criteria filed: left open

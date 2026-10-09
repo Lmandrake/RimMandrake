@@ -4836,3 +4836,5 @@
 {"seat":"FOUNDRY","event":"drop","id":"LONGSHADE_JAWATOW_LIVECHECK_1","reason":"superseded by LONGSHADE_JAWATOW_RECHECK_1 (FAIL was dead MayRequire, fixed cd03da899)","ts":"2026-10-09T20:01:11Z","tsn":1791576071337341290}
 {"seat":"FOUNDRY","event":"drop","id":"GELATINOUSSLIME_JOININGWATER_LIVECHECK_1","reason":"superseded by GELATINOUSSLIME_JOININGWATER_RECHECK_1, which passed","ts":"2026-10-09T20:01:12Z","tsn":1791576072397584312}
 {"seat":"FOUNDRY","event":"close","id":"MUDSWALLOW_PARENTHOLDER_GUARD_1","sha":"c78842824","reason":"ledger shows passing L2 verify run (decay sweep)","ts":"2026-10-09T20:01:37Z","tsn":1791576097024366763}
+{"seat":"FOUNDRY","event":"close","id":"DUMP_REFRESH_JAWARETURNTOW_1","sha":"a2fa67f05","reason":"dump captured; selftest_utinnipatches_dump passes (decay sweep)","ts":"2026-10-09T20:01:57Z","tsn":1791576117514834566}
+{"seat":"FOUNDRY","event":"close","id":"GELATINOUSSLIME_VAULT_SEAL_PLUG_1","sha":"07bd43cb2","reason":"plug building built in 07bd43cb2 on origin/main (decay sweep)","ts":"2026-10-09T20:01:58Z","tsn":1791576118422042975}
