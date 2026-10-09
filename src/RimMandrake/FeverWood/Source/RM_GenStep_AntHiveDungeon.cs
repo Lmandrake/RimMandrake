@@ -121,7 +121,7 @@ namespace RimMandrake.FeverWood
                 }
 
                 if (tenant != null && ext.minDistanceFromRegisteredWater > 0f
-                    && tenant.IsRegisteredWater(candidate))
+                    && TooNearWater(map, tenant, candidate, ext.minDistanceFromRegisteredWater))
                 {
                     continue;
                 }
@@ -172,7 +172,13 @@ namespace RimMandrake.FeverWood
                     }
 
                     if (tenant != null && ext.minDistanceFromRegisteredWater > 0f
-                        && tenant.IsRegisteredWater(candidate))
+                        && TooNearWater(map, tenant, candidate, ext.minDistanceFromRegisteredWater))
+                    {
+                        continue;
+                    }
+
+                    // ANT_HIVE_REAL_GEOMETRY_1: no hop may land on (or double back over) a room already in the chain.
+                    if (RM_FeverWoodSettings.antHiveRealGeometry && OverlapsAny(rooms, candidate, ext.roomRadiusRange.max * 2f))
                     {
                         continue;
                     }
@@ -191,6 +197,55 @@ namespace RimMandrake.FeverWood
             return rooms;
         }
 
+        // ANT_HIVE_REAL_GEOMETRY_1: minDistanceFromRegisteredWater is a real clearance radius now (it used to be read
+        // as a yes/no on the single centre cell). Off = the old centre-cell test.
+        private static bool TooNearWater(Map map, RUT_MapComponent_TheTenant tenant, IntVec3 at, float radius)
+        {
+            if (!RM_FeverWoodSettings.antHiveRealGeometry)
+            {
+                return tenant.IsRegisteredWater(at);
+            }
+            int n = GenRadial.NumCellsInRadius(Mathf.Min(radius, GenRadial.MaxRadialPatternRadius - 1f));
+            for (int i = 0; i < n; i++)
+            {
+                IntVec3 c = at + GenRadial.RadialPattern[i];
+                if (c.InBounds(map) && tenant.IsRegisteredWater(c))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static bool OverlapsAny(List<IntVec3> rooms, IntVec3 candidate, float minDist)
+        {
+            float sq = minDist * minDist;
+            for (int i = 0; i < rooms.Count; i++)
+            {
+                if ((rooms[i] - candidate).LengthHorizontalSquared < sq)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // ANT_HIVE_REAL_GEOMETRY_1: in rock the rooms and tunnels are actually dug out (natural rock removed), so the
+        // hive is enterable rather than floor painted under solid stone. Open-ground walls are a separate, unbuilt
+        // design call.
+        private static void Excavate(Map map, IntVec3 c)
+        {
+            if (!RM_FeverWoodSettings.antHiveRealGeometry)
+            {
+                return;
+            }
+            Building ed = c.GetEdifice(map);
+            if (ed != null && ed.def.building != null && ed.def.building.isNaturalRock)
+            {
+                ed.Destroy(DestroyMode.Vanish);
+            }
+        }
+
         private void PaintRoom(Map map, IntVec3 center, float radius, RoofDef roof, TerrainDef floor)
         {
             foreach (IntVec3 c in GenRadial.RadialCellsAround(center, radius, true))
@@ -200,6 +255,7 @@ namespace RimMandrake.FeverWood
                     continue;
                 }
 
+                Excavate(map, c);
                 map.roofGrid.SetRoof(c, roof);
                 if (floor != null)
                 {
@@ -232,6 +288,7 @@ namespace RimMandrake.FeverWood
                         continue;
                     }
 
+                    Excavate(map, c);
                     map.roofGrid.SetRoof(c, roof);
                     if (floor != null)
                     {

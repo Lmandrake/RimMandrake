@@ -224,6 +224,9 @@ namespace RimMandrake.FeverWood
         /// <summary>KURRETH_LOSS_FINALIZE_1: a lost raid-back takes every unrecovered animal for good in every phase,
         /// and "recovered" needs the animal actually back on a map and out of the kidnappers' hands.</summary>
         public static bool kurrethLossFinalize = true;
+        /// <summary>ANT_HIVE_REAL_GEOMETRY_1 (worldgen): hive rooms keep real water clearance, never overlap, and are
+        /// dug out of natural rock. Off: the old centre-cell water test, overlapping hops, painted-only rooms.</summary>
+        public static bool antHiveRealGeometry = true;
         public static float kurrethColumnDays = 4f;
         public static float kurrethHiveHoldDays = 15f;
 
@@ -319,6 +322,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref kurrethColumnEnabled, "kurrethColumnEnabled", true);
             Scribe_Values.Look(ref kurrethTheftPerColumn, "kurrethTheftPerColumn", true);
             Scribe_Values.Look(ref kurrethLossFinalize, "kurrethLossFinalize", true);
+            Scribe_Values.Look(ref antHiveRealGeometry, "antHiveRealGeometry", true);
             Scribe_Values.Look(ref kurrethColumnDays, "kurrethColumnDays", 4f);
             Scribe_Values.Look(ref kurrethHiveHoldDays, "kurrethHiveHoldDays", 15f);
             Scribe_Values.Look(ref oilBoilEnabled, "oilBoilEnabled", true);
@@ -422,6 +426,10 @@ namespace RimMandrake.FeverWood
               + "generates on a new map; an already-generated one is unaffected.");
             list.Label("Hive frequency multiplier (lower = rarer): " + antHiveChanceMultiplier.ToString("0.00"));
             antHiveChanceMultiplier = list.Slider(antHiveChanceMultiplier, 0f, 3f);
+            list.CheckboxLabeled("Ant hives are really dug (worldgen)", ref antHiveRealGeometry,
+                "On: a new hive keeps its rooms well clear of the pools, never stacks one room on another, and digs its rooms "
+              + "and tunnels out of any rock they cross. Off: the old layout, which could paint a hive under solid rock. "
+              + "Affects new maps only.");
             list.CheckboxLabeled("Ant hive farm chamber (worldgen)", ref antHiveFarmChamberEnabled,
                 "The shallowest hive room keeps a herd of thornbugs the kurreth tend and herd back when "
               + "they stray: the hive is a farm. Off: new hives carry no herd and an existing herd is no "
