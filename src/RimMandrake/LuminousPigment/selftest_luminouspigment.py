@@ -428,7 +428,7 @@ def run(bugs=(), seen=False):
 
 
 # the debug-action chains the fake cannot answer: UNMEASURED by design
-NEEDS_ACTIONS = ("floor_paint/", "first_coat/", "proxy_storage/", "worn_glow/", "styling_lacquer/", "status/", "gods/")
+NEEDS_ACTIONS = ("floor_paint/", "first_coat/", "proxy_storage/", "worn_glow/", "styling_lacquer/", "status/", "gods/", "health_clean/")
 
 
 def main():
@@ -485,7 +485,7 @@ def main():
     keys = set()
     for fn in ast.walk(tree):
         if isinstance(fn, ast.FunctionDef) and fn.name in ("floor_paint", "first_coat", "proxy_storage", "worn_glow",
-                                                           "styling_lacquer", "status", "gods", "_god_check", "_th"):
+                                                           "styling_lacquer", "status", "gods", "health_clean", "_god_check", "_th"):
             for n in ast.walk(fn):
                 if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == "get" \
                         and n.args and isinstance(n.args[0], ast.Constant) and isinstance(n.args[0].value, str):
