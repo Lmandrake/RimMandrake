@@ -1,0 +1,134 @@
+[
+ {
+  "id": "regen_c17_eopie_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Eopie",
+  "prompt": "RimWorld creature sprite of the Star Wars eopie, EAST view: the canon eopie of Tatooine: a tough quadruped mammalian herbivore, ~1.75-2 m tall, rough skin, rock-climbing hooves, trunked mouth. The FIRST attached image is the previous render of this individual (owner-deleted for a redraw): keep species, colouring and scale but redraw it cleanly following the canon reference (second image). One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Eopie/Eopie",
+  "biome_neutral": true,
+  "canon": "eopie",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/30/305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/eopie/wookieepedia_infobox.png"
+  ]
+ },
+ {
+  "id": "regen_c17_eopie_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Eopie",
+  "prompt": "RimWorld creature sprite of the Star Wars eopie, SOUTH view: the canon eopie of Tatooine: a tough quadruped mammalian herbivore, ~1.75-2 m tall, rough skin, rock-climbing hooves, trunked mouth. The FIRST attached image is the previous render of this individual (owner-deleted for a redraw): keep species, colouring and scale but redraw it cleanly following the canon reference (second image). One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Eopie/Eopie",
+  "biome_neutral": true,
+  "canon": "eopie",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/30/305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/eopie/wookieepedia_infobox.png"
+  ]
+ },
+ {
+  "id": "regen_c17_eopie_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Eopie",
+  "prompt": "RimWorld creature sprite of the Star Wars eopie, NORTH view: the canon eopie of Tatooine: a tough quadruped mammalian herbivore, ~1.75-2 m tall, rough skin, rock-climbing hooves, trunked mouth. The FIRST attached image is the previous render of this individual (owner-deleted for a redraw): keep species, colouring and scale but redraw it cleanly following the canon reference (second image). One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Eopie/Eopie",
+  "biome_neutral": true,
+  "canon": "eopie",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/30/305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/eopie/wookieepedia_infobox.png"
+  ]
+ },
+ {
+  "id": "regen_c17_scurrier_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Scurrier",
+  "prompt": "RimWorld creature sprite of the Star Wars scurrier, EAST view: the canon scurrier of Tatooine: a small, agile, scavenging rodent-like desert creature. The FIRST attached image is the previous render of this individual (owner-deleted for a redraw): keep species, colouring and scale but redraw it cleanly following the canon reference (second image). One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Scurrier/Scurrier_m",
+  "biome_neutral": true,
+  "canon": "scurrier",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/3a/3ab62dcb53f0ef25dace8865e42684df6a9039df6b23d510d641d57616bfff82.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/scurrier/wookieepedia_canon_1.webp"
+  ]
+ },
+ {
+  "id": "regen_c17_scurrier_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Scurrier",
+  "prompt": "RimWorld creature sprite of the Star Wars scurrier, SOUTH view: the canon scurrier of Tatooine: a small, agile, scavenging rodent-like desert creature. The FIRST attached image is the previous render of this individual (owner-deleted for a redraw): keep species, colouring and scale but redraw it cleanly following the canon reference (second image). One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Scurrier/Scurrier_m",
+  "biome_neutral": true,
+  "canon": "scurrier",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/3a/3ab62dcb53f0ef25dace8865e42684df6a9039df6b23d510d641d57616bfff82.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/scurrier/wookieepedia_canon_1.webp"
+  ]
+ },
+ {
+  "id": "regen_c17_scurrier_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Scurrier",
+  "prompt": "RimWorld creature sprite of the Star Wars scurrier, NORTH view: the canon scurrier of Tatooine: a small, agile, scavenging rodent-like desert creature. The FIRST attached image is the previous render of this individual (owner-deleted for a redraw): keep species, colouring and scale but redraw it cleanly following the canon reference (second image). One animal, whole body, centred.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and zoologically believable, never cartoonish or cute; one centred subject on a fully transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "north"
+  ],
+  "background": "transparent",
+  "channel": "codex",
+  "priority": 0,
+  "target_texpath": "swanimals/Scurrier/Scurrier_m",
+  "biome_neutral": true,
+  "canon": "scurrier",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/3a/3ab62dcb53f0ef25dace8865e42684df6a9039df6b23d510d641d57616bfff82.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/scurrier/wookieepedia_canon_1.webp"
+  ]
+ }
+]
