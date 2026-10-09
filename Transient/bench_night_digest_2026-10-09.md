@@ -15,7 +15,7 @@ Everything below is committed and pushed. Nothing is deployed. Every change wait
    - Where the plate body comes from. Recommended: built offline from master v3 with the thin legs pasted in. With that, north passes the unchanged gate.
    - A new south/north floor. 0.38 is unreachable with these wings; the most a perfect lock can reach is 0.32–0.34.
    - One south wing2 regen.
-   A tighter wing rule in the lock is being built meanwhile, offline and selftested.
+   The tighter lock wing rule has landed (cb451164f). Option A is prepped offline (56568324e): north passes the gate, south needs a wing2 regen, and east needs a matching leg donor. Picture: `D:\Luke\dev\RimMandrake\Transient\sketto_optionA_2026-10-09.png`
 6. **Sheet leftovers:**
    - Abyss: Durrgak "rename to Sorter", plus 4 conflicts.
    - Deep Desert: 3 Vozzik conflicts.
