@@ -20,14 +20,14 @@ Ysalamiri sank their claws into the Olbio trees on which they lived and drew nut
 Ysalamiri did not actually negate the Force; since all existence was infused with Force energy, this would not be possible. Rather, they projected a bubble inside which users were unable to exert any influence over the Force. A single bubble measured up to 10 meters in diameter; large groups of ysalamiri could extend their collective bubble by kilometers, but only in great numbers.
 
 ## Visual brief
-Four images. The canon image is a stylised sculpture, not a living animal, so the Legends paintings carry the real anatomy.
-- **`canon_1` (Rebels frame, Thrawn's office sculptures):** a **green-grey/khaki sculpted lizard** standing on its hind legs, with a long curling tail and a **sail-like crest of flat, banded dorsal ribs (a stepped fin) running along the back**, a long flat crocodile-like snout full of zigzag jagged teeth, a flat head with **a row of round knobs on top that read as the "four eyes"** (two bumps are clearly visible), forelimbs held out with three-clawed hands. Stylised, geometric, with plated segments; green, brown and yellow per the text.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+The *Rebels* animated frame of Thrawn's ysalamir sculpture (`canon_1`) and the ink-and-wash field-guide sketch (`legends_3`) were deleted 2026-10-08. Canon has no living, realistic depiction (searched catimages "Images of ysalamiri": only Rebels and the Heir to the Empire comics), so the two realistic Legends paintings below are the whole reference.
 - **`legends_1` (painting):** a **gold-tan to amber-orange climbing lizard** clinging to a tree trunk. **A long, flat, broad, almost duck-billed or triangular snout/head** with wide-set, small eyes (two visible on each side, one pair larger), a **short, fleshy ear-flap or frill behind each eye**, a **slim body with a long tail**, and a **row of dark oval spots/dashes down the spine and flanks and along the tail**. The legs are lizard-like with **big, hooked, curved claws that dig into the bark**. Throat loose and wrinkled. The pose is upright, climbing head-up.
 - **`legends_2` (painting, Myrkr):** several **bronze/golden-green, plump, smooth-skinned lizards** wrapped around a tree trunk, with a **long, thin, curling prehensile tail**, a rounded blunt head, small eyes, short limbs with small claws, the body folded flat to the bark; a faint dark ridge or flap along the back. More plump and salamander-like than `legends_1`.
-- **`legends_3` (sketch, with a blue-skinned humanoid):** a **tan-yellow lizard** with darker banding, **draped on a shoulder**, long snout, small horn-like bumps on the brow, a long banded tail wrapping around the arm: shows it is pet-sized.
 - **Fur note:** the Legends text calls ysalamiri *furry* lizard-like creatures with white hair, while the paintings show smooth-looking golden skin; the paintings are the only colour evidence for an implementation, the text is the only anatomy statement.
-- **Disagreement:** `canon_1` is a stylised, **green, finned, toothy** sculpture; the Legends paintings are **golden, smooth, tree-dwelling, toothless-looking lizards**. Trust the Legends paintings for a living animal and `canon_1` only for the "four eyes" detail; the paintings show only two eyes plus a small second pair at most, so the "four-eyed" count is not clear in any of them.
-- **Size:** 50 cm per the Legends text; `legends_3` shows it at roughly the size of a forearm.
+- **Disagreement:** the deleted canon sculpture was green, finned and toothy; the realistic Legends paintings are golden, smooth, tree-dwelling lizards. Follow the paintings. The canon text's "four eyes" is not clearly shown in either painting (one larger and one smaller eye per side at most in `legends_1`).
+- **Size:** 50 cm per the Legends text, a shoulder-carried pet.
 
 ## Must show
 - [ ] Slim, lizard-like body with a long, thin, prehensile tail that curls
@@ -35,6 +35,7 @@ Four images. The canon image is a stylised sculpture, not a living animal, so th
 - [ ] Large, hooked, curved claws that grip tree bark
 - [ ] Golden-tan to amber skin (Legends) with a row of dark oval spots down the back, flanks and tail
 - [ ] Climbing or clinging pose on a tree trunk, small pet size (about 50 cm)
+- [ ] Realistic rendering: natural lizard skin texture and dappled forest light, no outlines, no animated or ink shading
 
 ## Engine limits
 not yet assessed
@@ -44,10 +45,8 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Ysalamiri/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Ysalamiri`; wiki caption: infobox image. File: `Ysalamiri ThroughImperialEyes.jpg` — https://static.wikia.nocookie.net/starwars/images/7/73/Ysalamiri_ThroughImperialEyes.jpg/revision/latest?cb=20210124091506
 - `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Ysalamiri/Legends`; wiki caption: infobox image. File: `YsalamiriEGttF.jpg` — https://static.wikia.nocookie.net/starwars/images/d/dd/YsalamiriEGttF.jpg/revision/latest?cb=20071205213252
 - `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Ysalamiri/Legends`; wiki caption: Ysalamir on Myrkr.. File: `Ysalamiri TotG.jpg` — https://static.wikia.nocookie.net/starwars/images/0/0a/Ysalamiri_TotG.jpg/revision/latest?cb=20080615072125
-- `wookieepedia_legends_3.webp` — LEGENDS page (non-canon continuity) `Ysalamiri/Legends`; wiki caption: A blue-skinned humanoid with his Ysalamir pet.. File: `Blue-skinned exhibitor.png` — https://static.wikia.nocookie.net/starwars/images/2/22/Blue-skinned_exhibitor.png/revision/latest?cb=20130814005823
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
