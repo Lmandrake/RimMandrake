@@ -1,0 +1,22 @@
+[
+ {
+  "id": "regen_c17_lothcat_v2",
+  "target_def": "RSW_Lothcat",
+  "canon": "lothcat",
+  "facings": "east;south;north",
+  "priority": 0,
+  "owner_note": "These are both terrible. Regenerate realistic ones right now at top priority for all three facings.",
+  "channel": "codex",
+  "target_texpath": "swanimals/Lothcat/Lothcat_f",
+  "biome_neutral": true,
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "style_notes": "REALISTIC: painterly naturalistic rendering of a real animal -- believable anatomy, individual fur texture and clumping, believable directional light and soft shadow, matte skin and scale texture on the legs; never cartoon, never cute, never flat, no outlines, no airbrushed or plush-toy look. The two failed renders were bad because they read as glossy airbrushed CGI plush toys: smooth uniform fur, big round doll eyes with bright catchlights, a toothy grin, and stiff stilt legs under a puffed body; avoid all of that -- give a wild, wary, lean animal with irregular patchy markings, small dark eyes, and weighted splayed limbs.",
+  "prompt": "RimWorld creature sprite of the Star Wars canon loth-cat of Lothal: a small, lithe, temperamental feline hunter with sharp teeth and claws, drawn as a real, naturalistic animal. One animal, whole body, centred. Follow the canon Must show list exactly.",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/lothcat/wookieepedia_canon_2.webp"
+  ],
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0
+ }
+]
