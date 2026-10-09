@@ -39,6 +39,7 @@ namespace RimMandrake.SolarMirrors
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref shadeEffect, "shadeEffect", true);
             Scribe_Values.Look(ref glowEffect, "glowEffect", true);
@@ -65,6 +66,7 @@ namespace RimMandrake.SolarMirrors
             Scribe_Values.Look(ref heliographRange, "heliographRange", 12f);
             Scribe_Values.Look(ref dazzle, "dazzle", true);
             Scribe_Values.Look(ref dazzleMaxPenalty, "dazzleMaxPenalty", 0.4f);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         private static Vector2 scrollPosition;
@@ -78,6 +80,7 @@ namespace RimMandrake.SolarMirrors
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.Label("RM_SolarMirrors_Section_Light".Translate());
             list.CheckboxLabeled("RM_SolarMirrors_Setting_Shade".Translate(), ref shadeEffect,

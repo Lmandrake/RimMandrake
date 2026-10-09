@@ -224,6 +224,7 @@ namespace RimMandrake.DivingInteraction
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref masterEnabled, "masterEnabled", true);
             Scribe_Values.Look(ref requireGravEngine, "requireGravEngine", true);
@@ -258,6 +259,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref seabedFloorContentEnabled, "seabedFloorContentEnabled", true);
             Scribe_Values.Look(ref seabedFloorLifeEnabled, "seabedFloorLifeEnabled", true);
             Scribe_Values.Look(ref realFowCompatEnabled, "realFowCompatEnabled", true);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         private static Vector2 settingsScroll;
@@ -270,6 +272,7 @@ namespace RimMandrake.DivingInteraction
             Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
             Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
             list.Begin(settingsView);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.CheckboxLabeled("Sea diving enabled", ref masterEnabled,
                 "Master switch. Off: no RM_SeaDiveHatch anywhere can be entered — the mod is "

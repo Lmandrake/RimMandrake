@@ -145,6 +145,7 @@ namespace RimMandrake.LuminousPigment
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref shoreMatsEnabled, "shoreMatsEnabled", true);
             Scribe_Values.Look(ref shoreMatChance, "shoreMatChance", 0.006f);
@@ -254,6 +255,7 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref moodScale, "moodScale", 1.0f);
             Scribe_Values.Look(ref opinionAboveStation, "opinionAboveStation", -15f);
             Scribe_Values.Look(ref goodwillPerImpressedVisit, "goodwillPerImpressedVisit", DeepfireStatusDefaults.GoodwillPerImpressedVisit);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         private static Vector2 settingsScroll;
@@ -266,6 +268,7 @@ namespace RimMandrake.LuminousPigment
             Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
             Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
             list.Begin(settingsView);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.Label("THE CHAIN");
             RM_LuminousSettingsReadouts.ResetButton(list, "Chain");

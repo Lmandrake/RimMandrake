@@ -34,6 +34,7 @@ namespace RimMandrake.KeelHoist
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref masterEnabled, "masterEnabled", true);
             Scribe_Values.Look(ref requireGravEngine, "requireGravEngine", true);
@@ -54,6 +55,7 @@ namespace RimMandrake.KeelHoist
             Scribe_Values.Look(ref chuteJackpotChance, "chuteJackpotChance", 0.08f);
             Scribe_Values.Look(ref chuteBustChance, "chuteBustChance", 0.1f);
             Scribe_Values.Look(ref chuteHours, "chuteHours", 6f);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         private static Vector2 settingsScroll;
@@ -66,6 +68,7 @@ namespace RimMandrake.KeelHoist
             Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
             Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
             list.Begin(settingsView);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
             list.CheckboxLabeled("Keel hoist enabled", ref masterEnabled,
                 "Shipped default: ON. Off: a keel hoist cannot lower its cable, take cargo or raise its cradle. "
               + "Anything already in transit still arrives.");

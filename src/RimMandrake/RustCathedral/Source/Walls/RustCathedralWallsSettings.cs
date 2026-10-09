@@ -24,17 +24,20 @@ namespace RimMandrake.RustCathedral.Walls
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref wallTiersEnabled, "wallTiersEnabled", true);
             Scribe_Values.Look(ref sacredWallsEnabled, "sacredWallsEnabled", true);
             Scribe_Values.Look(ref sacredWallChanceMultiplier, "sacredWallChanceMultiplier", 1f);
             Scribe_Values.Look(ref livePatternMetalGateEnabled, "livePatternMetalGateEnabled", true);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         public void DoWindowContents(Rect inRect)
         {
             Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
             list.Begin(inRect);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.Label("Worldgen-affecting — applies to new maps only.");
             list.CheckboxLabeled("Cathedral wall tiers (Tiers 1-2)", ref wallTiersEnabled,

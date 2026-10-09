@@ -189,6 +189,7 @@ namespace RimMandrake.Scarlands
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref turretTrackingEnabled, "turretTrackingEnabled", true);
@@ -273,6 +274,7 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
             Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
             if (settlingEndWind < settlingCalmThreshold + SettlingWindGap) settlingEndWind = settlingCalmThreshold + SettlingWindGap;
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         // The Settling's hysteresis: a constant wind between the two thresholds would otherwise start and end it repeatedly.
@@ -289,6 +291,7 @@ namespace RimMandrake.Scarlands
             Widgets.BeginScrollView(inRect, ref scroll, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.Label("Biome rarity: " + RarityLabel());
             list.Label("At 0 Warscar never generates on a new planet. Affects planets "

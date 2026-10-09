@@ -129,6 +129,7 @@ namespace RimMandrake.FloodedCanyon
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref featureInOtherBiomes, "featureInOtherBiomes", false, true);
@@ -162,6 +163,7 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref chimeAnchorsEnabled, "chimeAnchorsEnabled", true, true);
             Scribe_Values.Look(ref mercyLedgesEnabled, "mercyLedgesEnabled", true, true);
             Scribe_Values.Look(ref carvingMemoryEnabled, "carvingMemoryEnabled", true, true);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         public void DoWindowContents(Rect inRect)
@@ -176,6 +178,7 @@ namespace RimMandrake.FloodedCanyon
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.Label("Biome rarity: " + RarityLabel());
             list.Label("At 0 the flooded canyon never generates on a new planet. "

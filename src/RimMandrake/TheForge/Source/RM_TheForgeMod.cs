@@ -108,6 +108,7 @@ namespace RimMandrake.TheForge
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref modEnabled, "modEnabled", true, true);
             Scribe_Values.Look(ref weatherPulseEnabled, "weatherPulseEnabled", true);
@@ -153,6 +154,7 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref dhokkurWallShoveEnabled, "dhokkurWallShoveEnabled", true);
             Scribe_Values.Look(ref dhokkurShoveMode, "dhokkurShoveMode", 0);
             Scribe_Values.Look(ref dhokkurShoveDamagePct, "dhokkurShoveDamagePct", 0.25f);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         public void DoWindowContents(Rect inRect)
@@ -163,6 +165,7 @@ namespace RimMandrake.TheForge
             Widgets.BeginScrollView(inRect, ref scrollPos, viewRect);
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.CheckboxLabeled("The Forge enabled", ref modEnabled,
                 "Master switch. Off: the biome and its defs still load unchanged, but every "
