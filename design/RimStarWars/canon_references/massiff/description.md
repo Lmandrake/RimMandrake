@@ -25,12 +25,14 @@ Removed: the inked-and-coloured arena illustration of two green-grey fighting ma
 - **Text agrees with live-action:** "squat quadruped, canine and reptilian, about one metre high, humped back, brown and grey or grey-green plates, large black or yellow eyes".
 
 ## Must show
-- [ ] Lean, low, dog-sized reptilian quadruped on digitigrade legs, humped back, head carried low, about knee-to-waist high to a human
-- [ ] Crest of dark, thin, backward-raked spines from the back of the head down the neck and spine
-- [ ] Rough armoured plated hide in mottled grey-brown/taupe, paler throat and chest (not fur, not rust-orange)
-- [ ] Short, broad, blunt head with a wide mouth of small pointed teeth and a large round dark or yellow eye (no gharial snout)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action stills (`canon_2`, `canon_3`, `canon_4`, `legends_1`) as described in the visual brief, the sourced text, and the owner ruling in the brief.*
+- [ ] BODY PLAN: a lean, low, dog/hyena-sized reptilian quadruped on digitigrade legs with a humped back and the head carried low; about knee-to-waist high to a human
+- [ ] Spines: a crest of dark, thin, backward-raked spines running from the back of the skull down the neck and spine, tallest at the neck
+- [ ] COLOUR LAYOUT: dull mottled grey-brown/taupe armoured hide of overlapping rough plates with knobbly scutes along the back and shoulders; paler, smoother throat and chest; spines darker than the hide
+- [ ] Head: short, broad and blunt, with a wide mouth of small pointed teeth (pink tongue) and a large round dark or yellow eye; small nostrils at the snout tip
 - [ ] Long toes with big dark curved claws
-- [ ] Realistic rendering: natural scaly, plated reptile hide texture and lighting, no outlines, no cartoon shading
+- [ ] Realistic rendering: natural scaly, plated reptile hide texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a furred dog or hyena, not the Outlaws render (no long narrow gharial-like snout, no rust-orange body with black patches), not a tall lizard
 
 ## Engine limits
 not yet assessed

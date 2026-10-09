@@ -119,12 +119,14 @@ own; it renders from `RSW_Head_Bone` (forcing `RSW_Male_HeavyBoneNormal` /
 sprite.
 
 ## Must show
-- [ ] Massive, heavily muscled, broad-shouldered build that towers over a human (altered form: hunched and crouching)
-- [ ] Saturated crimson-red glossy skin — not blue-grey or violet
-- [ ] Crown of stiff fin-like spikes sweeping back from the skull, plus long hanging tendrils/fronds from brow, cheeks and head
-- [ ] Heavy ridged brow over small sunken glowing eyes; fanged mouth framed by hanging tendrils; pointed folded ears
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three painted references as described in the visual brief, the sourced text, and the owner ruling in the brief.*
+- [ ] BODY PLAN: humanoid giant, massive, heavily muscled and broad-shouldered, clearly towering over a human (sourced 2-3 m); altered Yavin 4 form is the same creature hunched and crouching with clawed limbs
+- [ ] COLOUR LAYOUT: saturated crimson-red glossy skin over the whole body (sourced range crimson to lighter pink or orange), darker red shading in the muscle; glowing eyes the brightest point on the face; bare torso and arms, gold armour or beaded collar worn over them
+- [ ] Head: a crown of stiff fin-like spikes sweeping back from the skull, PLUS long hanging tendril/dreadlock-like fronds falling from the brow, cheeks and back of the head over the shoulders (fins and tendrils together)
+- [ ] Face: a heavy, deeply ridged brow over sunken glowing eyes; a fanged mouth framed by long hanging cheek/chin tendrils; folded bat-like pointed ears
 - [ ] Three clawed digits per hand and per foot (sourced text)
-- [ ] Realistic rendering: real skin, muscle and horn texture with natural lighting, no outlines, no comic inking or flat colour
+- [ ] Realistic rendering: real skin, muscle and horn texture with natural lighting, no outlines, no comic inking or flat colour (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not blue-grey or violet skin (the deleted comics' colourist), not a lean human-sized Sith or a red-tinted human, not a bald hornless brute without fins and tendrils
 
 ## Engine limits
 none known

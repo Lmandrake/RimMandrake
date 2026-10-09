@@ -35,11 +35,13 @@ Four images: CANON infobox render (Visual Encyclopedia) and a tiny blurry film-s
 - **Disagreement**: text says they have 'skin' and sharp claws and small horns on snouts (images agree); Legends says semi-aquatic (no web or aquatic features shown).
 
 ## Must show
-- [ ] Stocky barrel-bodied, stubby-legged tapir/rhino-like quadruped (about 1.1 m shoulder)
-- [ ] Two-tone coat: sage-tan back, orange-rust flanks, cream belly, with cream bands across flanks, rump and legs
-- [ ] Short smooth hair, near-bare wrinkled skin, no mane
-- [ ] Long drooping snout with a small blunt horn at the tip and short pointed ears
-- [ ] Broad clawed toes, very short tail
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon CG render and the Legends painting as described in the visual brief, and the sourced text.*
+- [ ] BODY PLAN: a stocky, low-slung, barrel-bodied tapir/rhino-like quadruped on short stubby legs, with a long level back and a very short stub tail; about 1.1 m at the shoulder
+- [ ] COLOUR LAYOUT: two-tone coat with a pale sage-tan/cream-grey back and rump and warm orange-rust flanks and neck; cream-white bands running horizontally across the flanks and rump and ringing the upper legs; cream belly, throat and cheeks
+- [ ] Coat: short, thin, smooth hair over near-bare skin with fine wrinkles at the joints; no mane or long fur
+- [ ] Head: a long, drooping tapir-like snout with a pale muzzle and thick lower lip, a small blunt horn at the snout tip, two short pointed ears, small dark eyes
+- [ ] Feet: broad toes with claws (three or four visible), tapir-like
+- [ ] NEGATIVE: not a pig or boar (no bristly coat, no tusks, no flat pig snout), not a rhino with a big horn, not a uniformly brown unstriped animal
 
 ## Engine limits
 not yet assessed

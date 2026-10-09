@@ -145,13 +145,13 @@ and equally **nothing carrying the ears or the face markings.**
 - ⚠️ `Beard_NoBeardOnly` — no canon basis found either way.
 
 ## Must show
-- [ ] Cool grey-white to blue-white skin with grey-blue shadows — not warm ivory
-- [ ] RED or red-amber eyes — the only warm colour on the face
-- [ ] Long, narrow, pointed ears swept back and outward, projecting clearly beyond the skull
-- [ ] Thick dark grey-black horizontal bar beneath each eye spanning the cheekbone, with short drip-lines running down from it
-- [ ] Jet-black hair worn as a stiff upright crest/mohawk sweeping back off the crown
-- [ ] Lean, angular, gaunt face — high flat cheekbones, narrow jaw, sunken cheeks, on a tall thin wiry build
-- [ ] Realistic rendering: natural pale skin texture and muscle shading, natural lighting, no outlines, no comic inking or flat colour
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Gallana Venk canon infobox image, the Legends infobox image and the painted cover as described in the visual brief, the sourced text, and the owner ruling in the brief.*
+- [ ] BODY PLAN: a tall, thin, wiry near-human with narrow shoulders and long thin limbs; a lean, angular, gaunt face with high flat cheekbones, narrow jaw and sunken cheeks; long, narrow, pointed ears swept back and outward, projecting clearly beyond the skull
+- [ ] COLOUR LAYOUT: cool grey-white to blue-white skin with grey-blue shadows (not warm ivory); RED or red-amber eyes, the only warm colour on the face; jet-black hair; dark, near-black lips
+- [ ] Face marking: a dark grey-black, hard-edged marking on the cheek/under-eye area, canonically a thick horizontal bar beneath each eye spanning the cheekbone with short drip-lines running down from it (Gallana Venk's; canon says markings are unique to each member)
+- [ ] Jet-black hair worn as a stiff upright crest/mohawk sweeping back off the crown (the canon reference; Legends sources individualistic hair styles)
+- [ ] Realistic rendering: natural pale skin texture and muscle shading, natural lighting, no outlines, no comic inking or flat colour (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a Chiss (blue skin with red eyes, no pointed ears, no face marking), not a Pantoran (no gold tattoos), not a warm-skinned pale human or generic elf, no grey eyes
 
 ## Engine limits
 none known

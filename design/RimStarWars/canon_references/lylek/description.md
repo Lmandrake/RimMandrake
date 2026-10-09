@@ -48,12 +48,13 @@ Removed: the small stylised map-page illustration (canon, `Lylek-SWGA.jpg`), the
   in any image.
 
 ## Must show
-- [ ] Tall spidery insectoid on long stiff spear-like stilt legs, compact torso slung low between them
-- [ ] Jagged ridged carapace of spiked leaf-like plates in olive to moss green, with a paler soft underbelly
-- [ ] Small spiked wedge head with a toothed round maw and small red eyes
-- [ ] Two spiked pincer-arms held up beside the head (they read as extra heads)
-- [ ] Two long thin dark whip-like tentacles with pale undersides looping out from the shoulders, longer than the body
-- [ ] Realistic rendering: natural chitin plate texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the realistic painting (`legends_1`) as described in the visual brief, the sourced text and the owner ruling in the brief.*
+- [ ] BODY PLAN: a tall, spidery insectoid standing high on long stiff spear-like stilt legs (four in the painting) angled out like tripod stakes; a compact torso slung low between them; the front body raised with two pincer-arms held up like a mantis
+- [ ] Head and pincers: a small spiked wedge head on a short upright neck with a gaping toothed round maw and small red eyes; the two spiked pincer-tips held up beside it read as extra heads
+- [ ] Two long thin dark whip-like tentacles with pale undersides looping out from the shoulders/front of the torso, much longer than the body
+- [ ] COLOUR LAYOUT: olive/moss green carapace of jagged ridged spiked leaf-like plates over back, shoulders and legs, darker in the plate recesses; paler grey-cream soft scaly underbelly and joints; tentacles brown-black above, pale beneath; small red eyes
+- [ ] Realistic rendering: natural chitin plate texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a beetle or ordinary spider (no low round body, no smooth shell), no tentacle-less mantis; not the comic's bright yellow-green or the map plate's flat mid-green
 
 ## Engine limits
 not yet assessed

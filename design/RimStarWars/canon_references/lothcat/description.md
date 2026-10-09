@@ -25,12 +25,12 @@ Realistic live-action creature (all images are Ahsoka / Mandalorian stills, `can
 - **Rendering:** warm natural light, soft photographic realism, plush fur, no outlines, no cartoon gloss, no reptile skin.
 
 ## Must show
-- [ ] Dense soft fluffy pale cream-to-oatmeal fur on a plump rounded body, with sparse dark brown spots on the flanks
-- [ ] Two very tall upright pointed ears with dark tufted tips and dark spots
-- [ ] Broad flat face with a wide closed frog-like mouth, heavy drooping jowls, pale chin pouch, small round black eyes set wide
-- [ ] Thin dark grey scaly bird-like legs with long clawed toes, contrasting with the fluffy body
-- [ ] Bushy fluffy tail carried up
-- [ ] Realistic photographic fur rendering: no outlines, no cartoon gloss, no reptile skin
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Ahsoka/Mandalorian stills described in the visual brief and the owner ruling in it.*
+- [ ] BODY PLAN: a small (cat-sized) four-legged animal with a plump rounded fluffy body on thin stilt-like bird legs with long clawed toes; a bushy fluffy tail carried up; a broad flat head topped by two very tall upright pointed ears
+- [ ] COLOUR LAYOUT: dense soft pale cream-to-oatmeal fur over the body, with sparse dark brown spots on the flanks and on the ears; ear tips dark and tufted, pinkish-grey inside; legs thin dark grey and scaly, the darkest part, contrasting with the fluffy pale body; pale chin pouch
+- [ ] Face: broad and flat with a wide CLOSED frog-like mouth, heavy drooping jowls, small round black eyes set wide, small flat nose, fine whiskers
+- [ ] Realistic photographic fur rendering: no outlines, no cartoon gloss, no reptile skin (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using."; earlier he rejected a glossy frog-lizard render with "Nope. Try this." and the live-action Ahsoka puppet photo)
+- [ ] NEGATIVE: not an ordinary house cat (no cat face, no short ears, no furred cat legs), not a glossy frog or lizard, not the animated Rebels cartoon, no open toothy grin
 
 ## Engine limits
 not yet assessed

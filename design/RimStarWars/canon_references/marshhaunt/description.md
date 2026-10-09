@@ -27,11 +27,13 @@ Only ONE image: a LEGENDS illustration by Joe Corroney from the Power of the Jed
 - **Not shown**: legs, tail, mouth, the exact eye arrangement.
 
 ## Must show
-- [ ] Hulking hunched headless silhouette, skull sunk deep between the shoulders, far taller than a person
-- [ ] Peeling, ragged dark grey-green to teal leathery skin mottled with blotches and moss-like trailing strands
-- [ ] A cluster of red berry-like bulbs/eyes at the top where the head should be
-- [ ] Huge dark-clawed forelimbs that hang low
-- [ ] Realistic rendering: natural wet, leathery, moss-hung hide texture and swamp lighting, no outlines, no comic ink shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends sourced text, the single Corroney illustration as described in the visual brief, and the owner ruling in the brief.*
+- [ ] BODY PLAN: a huge, hulking, hunched bipedal mass far taller than a person, whose skull is sunk so deep between the shoulders that the silhouette reads as a humanoid with no head; huge forelimbs hanging low
+- [ ] COLOUR LAYOUT: dull, peeling, ragged dark grey-green to teal leathery skin all over, mottled with darker blotches and pale blue-grey highlights, hung with moss-like trailing strands; red eyes/bulbs on top are the only bright colour
+- [ ] A cluster of red berry-like bulbs/eyes heaped at the top where the head should be
+- [ ] Huge claw-fingered forelimbs ending in raking dark claws
+- [ ] Realistic rendering: natural wet, leathery, moss-hung hide texture and swamp lighting, no outlines, no comic ink shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a swamp troll or ape with a visible head and face, not a quadruped, not flat comic-book teal colouring
 
 ## Engine limits
 not yet assessed

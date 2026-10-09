@@ -130,12 +130,13 @@ What is wrong:
   length as an age cue.
 
 ## Must show
-- [ ] Sallow, pale yellow-green (olive-khaki) skin, not a saturated bluer green
-- [ ] Enormous oval eyes reading as solid glossy black OR a red-amber iris around a dark pupil — either is canonical
-- [ ] Many (on the order of a dozen) tendrils rooted at the crown/back of the skull, hanging down over the shoulders and chest — not flaring outward like a headdress
-- [ ] Tendrils show darker olive spot/blotch patterning along their length
-- [ ] No nose or external nostril structure — a smooth face between the eyes down to a small, wide, thin-lipped mouth
-- [ ] Realistic rendering: moist, finely textured amphibian skin like the live-action makeup, natural lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Kit Fisto images as described in the visual brief, the sourced text, and the owner ruling in the brief.*
+- [ ] BODY PLAN: an ordinary humanoid body (normal shoulders, arms, long-fingered hands, booted feet); a smooth, slightly bulbous hairless skull from whose crown and back sprout many (on the order of a dozen) thick tapering tendrils that hang DOWN over the shoulders and chest like a heavy mane
+- [ ] COLOUR LAYOUT: sallow pale yellow-green (olive-khaki) skin with darker mottling, not a saturated bluer green; the tendrils the same skin carrying rows of darker olive spots/blotches along their length; the eyes the darkest feature
+- [ ] Eyes: enormous oval eyes reading as solid glossy black with no visible sclera or pupil (a red iris is a sourced canon option, not the default)
+- [ ] Face: no nose or external nostril structure, a smooth expanse between the eyes down to a small, wide, thin-lipped mouth
+- [ ] Realistic rendering: moist, finely textured amphibian skin like the live-action makeup, natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a Twi'lek (not two or four lekku, not a human face with a nose), not tendrils flaring out and up like a headdress or crown, not short youngling tendrils, not flat unpatterned tentacles
 
 ## Engine limits
 none known — a pattern (the tendril spotting) can live in a greyscale runtime-tinted mask; the current donor sprite simply has none painted in, which is a missing-art gap, not a pipeline limitation.

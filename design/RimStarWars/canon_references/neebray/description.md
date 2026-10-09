@@ -42,12 +42,13 @@ in a nebula); `legends_1` is from the LEGENDS page (giant neebray in the Kaliida
 - **For RimWorld**: a Tatooine/ground creature is the BABY form (bird-sized, pink-red and translucent-winged).
 
 ## Must show
-- [ ] Limbless chubby tadpole-like body with a big blunt head, a downturned toothy mouth and a cluster of large round yellow-gold eyes (baby form)
-- [ ] Two large translucent speckled blue-green wings with dark red rim bones, plus two small matching rear tail fins
-- [ ] Rusty maroon-red head and back with a tan-brown paler belly
-- [ ] No legs or arms at all
-- [ ] Adult form (if used): very wide manta wings, gaping toothed mouth, thin whip tendrils below the jaw
-- [ ] Realistic rendering: natural wet amphibian skin and translucent fin-membrane texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the baby render (`canon_1`) and the two adult images as described in the visual brief, the sourced text, and the owner ruling in the brief. The ground/Tatooine creature is the BABY form.*
+- [ ] BODY PLAN (baby): a bird-sized, limbless, chubby tadpole-like body with a big blunt head, tapering to a small tail; two big translucent butterfly/fish-like wings on the sides plus two small matching tail fins at the rear; no legs or arms at all
+- [ ] COLOUR LAYOUT: rusty maroon-red head and back, paler tan-brown belly; wings translucent pale blue-green, finely speckled, edged with dark rusty-red rim bones
+- [ ] Head: a wide downturned mouth with tiny white teeth and a cluster of large round yellow-gold eyes with black pupils bulging over the top and sides of the head
+- [ ] Adult form (if used): a huge flattened manta shape with very wide wings, a deep head with a gaping toothed mouth and red inner mouth, a small cluster of eyes on the brow, and thin whip tendrils trailing below the jaw
+- [ ] Realistic rendering: natural wet amphibian skin and translucent fin-membrane texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a bird or bat (no legs, no feathers, no furred body), not a mynock (no clinging limbs), not a flat ray for the baby form, not opaque solid wings
 
 ## Engine limits
 not yet assessed

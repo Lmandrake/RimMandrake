@@ -136,12 +136,13 @@ two lateral eye bulges**, which is the core silhouette. What is wrong:
   headline distinction.
 
 ## Must show
-- [ ] Dome is tall, smooth and rounded, swept back with no spike, crest or point at the crown
-- [ ] Eyes sit on the sides of the head on distinct lateral bulges — large, round, goggle-like, with a big dark pupil and visible pale sclera, not front-set and not tiny dots
-- [ ] Skin is mottled/striped rather than flat — either darker red-brown mottling over a salmon/orange-red base, or a two-tone teal countershading mask around the eyes/dome/limbs
-- [ ] A wide, thin, down-turned mouth sits beneath a pale cream/yellow pendulous chin-and-throat sac
-- [ ] Barbels hang from the chin; small paired nostril slits on a short ridge between the eyes
-- [ ] Realistic rendering: glossy, wet, deeply wrinkled and pitted hide like the live-action masks, natural lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the infobox image, the SWE underwater pair and the live-action Ackbar close-up as described in the visual brief, the sourced text, and the owner ruling in the brief.*
+- [ ] BODY PLAN: ordinary humanoid body, arms and legs (boots allowed); a tall, smooth, rounded dome swept back above the eye line, the tallest part of the silhouette, with no spike, crest or point at the crown; long webbed hands
+- [ ] Eyes sit on the SIDES of the head on distinct lateral bulges: large, round, goggle-like, amber/golden iris with a big dark pupil and visible pale sclera; not front-set, not on stalks, not tiny dots
+- [ ] COLOUR LAYOUT: skin mottled/striped rather than flat: either a salmon/orange-red base with darker red-brown mottling over the dome and back of the skull, or reddish-brown with a teal countershading mask around the eyes/dome and down the limbs; the pale cream/yellow chin-and-throat sac is the lightest area
+- [ ] Face: a wide, thin, down-turned mouth beneath a pale pendulous chin-and-throat sac; barbels hanging from the chin; small paired nostril slits on a short ridge between the eyes
+- [ ] Realistic rendering: glossy, wet, deeply wrinkled and pitted hide like the live-action masks, natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a human with a fish tint (no front-set eyes, no flat face), not a Quarren (no face tentacles), not a pointed or crested dome, not a mouthless head
 
 ## Engine limits
 - **A single flat skin-colour gene cannot produce the mottled/striped pattern or the two-tone
