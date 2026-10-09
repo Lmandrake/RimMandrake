@@ -4655,3 +4655,4 @@
 {"seat":"FOUNDRY","event":"file","id":"LEANINGSCRUB_WEEPER_RECHECK_1","title":"Re-check after fix: LEANINGSCRUB_WEEPER_RECHECK_1","kind":"task","target":"v1","needs":"bridge","spec":"/home/mandrake/.seat-tmp/FOUNDRY/rc/LEANINGSCRUB_WEEPER_RECHECK_1.md","for":"FOUNDRY","ts":"2026-10-09T08:03:57Z","tsn":1791533037705940586}
 {"seat":"FOUNDRY","event":"file","id":"X_TEST_1","title":"t","kind":"task","target":"v1","needs":"bridge","for":"FOUNDRY","ts":"2026-10-09T08:04:01Z","tsn":1791533041667265544}
 {"seat":"FOUNDRY","event":"drop","id":"X_TEST_1","reason":"accidental probe filing","ts":"2026-10-09T08:04:11Z","tsn":1791533051425986223}
+{"seat":"FOUNDRY","event":"file","id":"STILLSAND_NATIVE_CRASH_LIVECHECK_1","title":"Stillsand 100x100 map survives 3000 ticks after sun-cost customizer retirement fix (3cc82af7b)","kind":"bug","target":"v1","needs":"bridge","for":"FOUNDRY","ts":"2026-10-09T08:04:34Z","tsn":1791533074967329014}
