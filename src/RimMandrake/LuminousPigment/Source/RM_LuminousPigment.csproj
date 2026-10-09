@@ -48,6 +48,7 @@
     <Compile Include="..\..\_Shared\LightLedger\LightLedger.cs" Link="Shared\LightLedger.cs" />
     <Compile Include="..\..\_Shared\LightLedger\LightLedgerKernel.cs" Link="Shared\LightLedgerKernel.cs" />
     <Compile Include="LuminousPigmentMod.cs" />
+    <Compile Include="LuminousSettingsReadouts.cs" />
     <Compile Include="GameComponent_Deepfire.cs" />
     <Compile Include="CompMatVitality.cs" />
     <Compile Include="CompMatDiscovery.cs" />
