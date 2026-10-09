@@ -134,10 +134,6 @@
       <Cleanliness>-3</Cleanliness>
     </statBases>
     <filth>
-      <placementMask>
-        <li>Terrain</li>
-        <li>Unnatural</li>
-      </placementMask>
       <!-- PROVISIONAL: "fades on its own over a few days". -->
       <disappearsInDays>3~5</disappearsInDays>
       <cleaningWorkToReduceThickness>35</cleaningWorkToReduceThickness>

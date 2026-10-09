@@ -17,7 +17,7 @@
 -->
 <Defs>
 
-  <ThoughtDef MayRequire="mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology">
+  <ThoughtDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
     <defName>RUT_WeHeldTheWater</defName>
     <thoughtClass>Thought_AttendedRitual</thoughtClass>
     <durationDays>6</durationDays>
@@ -31,7 +31,7 @@
     </stages>
   </ThoughtDef>
 
-  <PreceptDef MayRequire="mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology">
+  <PreceptDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
     <defName>RUT_Ritual_JoiningWater</defName>
     <label>Joining Water</label>
     <description>We are all connected, not so unlike the slime. Worshippers stand in a ring of hand-prints on the Slime, each holding a handful of it, and join hands. What one of us carries for good, all of us carry a little, for a while.</description>
@@ -47,7 +47,7 @@
     <notifyPlayerOnOpportunity>false</notifyPlayerOnOpportunity>
   </PreceptDef>
 
-  <RitualPatternDef MayRequire="mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology">
+  <RitualPatternDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
     <defName>RUT_JoiningWaterPattern</defName>
     <ritualBehavior>RUT_JoiningWaterBehavior</ritualBehavior>
     <ritualObligationTargetFilter>RUT_SlimeHandRing</ritualObligationTargetFilter>
@@ -59,12 +59,12 @@
     <ritualExplanation>Hold it at a ring of hand-prints pressed into hardened slime. At least two people must join. The person carrying the most lasting hurt (scars and chronic conditions; a missing part cannot be shared) sets down a share of each, and everyone else takes a little for a while. Everyone is standing on the Slime, so it is reading them the whole time.</ritualExplanation>
   </RitualPatternDef>
 
-  <RitualObligationTargetFilterDef MayRequire="mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology">
+  <RitualObligationTargetFilterDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
     <defName>RUT_SlimeHandRing</defName>
     <workerClass>RimMandrake.GelatinousSlime.RM_RitualObligationTargetWorker_SlimeHandRing</workerClass>
   </RitualObligationTargetFilterDef>
 
-  <RitualBehaviorDef MayRequire="mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology">
+  <RitualBehaviorDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
     <defName>RUT_JoiningWaterBehavior</defName>
     <durationTicks>2000</durationTicks>
     <spectatorsLabel>Joined hands</spectatorsLabel>
@@ -82,7 +82,7 @@
     </stages>
   </RitualBehaviorDef>
 
-  <RitualOutcomeEffectDef MayRequire="mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology">
+  <RitualOutcomeEffectDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
     <defName>RUT_JoiningWaterOutcome</defName>
     <description>One person's lasting hurts are shared out among the ring as weak, passing ones. A poor rite shares little; an excellent one shares most.</description>
     <workerClass>RimMandrake.GelatinousSlime.RM_RitualOutcomeEffectWorker_JoiningWater</workerClass>
