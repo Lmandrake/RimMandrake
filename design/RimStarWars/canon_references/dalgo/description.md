@@ -86,3 +86,5 @@ none known
 > "Canon shows somthing more like C. We need a high quality version of that. Look at Canon please."
 
 (C = render `pyrelands_dalgo_v1`, a cartoon-register sail-crested orange dalgo.)
+
+**Confirmed 2026-10-09 — decision taken by question card:** the Must show stands unchanged; the crest is a **fan crest sweeping back from the crown**, on the long-legged *Stay on Target* build, not a full dorsal sail.

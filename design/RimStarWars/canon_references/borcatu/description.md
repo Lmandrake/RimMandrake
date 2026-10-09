@@ -37,6 +37,8 @@ for this creature** — same species, two incompatible body plans:
   backward off the haunches/tail — no scale texture at all, smooth mottled
   hide instead.
 
+*Owner decision 2026-10-09 (question card): the Disney Infinity render is the excluded "#3"; the 1994 scaled body is mixed with the donor sprite, so scales are wanted. The paragraph below records the images' disagreement, not the target.*
+
 These are not two angles of the same design — the scaled pangolin-esque body
 and the smooth-hided mottled quadruped cannot both be "the" borcatu. The Legends
 page does say scales ("digging claws, scales, powerful jaws"; "scaly, thick
@@ -52,12 +54,12 @@ pangolin-like) looked nothing like either the donor sprite or the Disney
 Infinity figure.
 
 ## Must show
-*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the `## ruling` below (owner 2026-09-14 picked `donor_current_sprite.png`: "Mix #1 and #2 together to regenerate our own. #3 is HORRIBLE, ignore."), i.e. the donor sprite and the Disney Infinity render, with the 1994 pangolin art set aside.*
-- [ ] BODY PLAN: a small four-legged scavenger with clawed feet; a cat/boar-like head with a fanged mouth and tall pointed ears (or horn-like projections); a long spiked quill/horn projecting backward off the haunches/tail
-- [ ] COLOUR LAYOUT: reddish-brown body, mottled darker all over (the Legends text's camouflaging "mottled, dark skin"); pale claws/toes
-- [ ] Smooth mottled hide, not overlapping pointed pangolin-style scales
-- [ ] Cat/boar-like fanged face with powerful jaws
-- [ ] NEGATIVE: not the 1994 pangolin/armadillo design (no pinecone scales, no whiskered tube snout); not scaled pangolin-grey; not a plain cat or boar (must carry the backward spiked quill)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`) and corrected the same day after the owner's question-card decision on which file is "#3" (see `## ruling`): #1 = the shipped donor sprite, #2 = the 1994 *Creatures of the Galaxy* drawing, #3 = the Disney Infinity render, which is the one excluded. The target mixes #1 and #2: the donor's colour and spiked-tail silhouette on the 1994 scaled body, which the Legends prose also gives ("scaly, thick hide").*
+- [ ] BODY PLAN: a small, low four-legged scavenger with short clawed digging feet and a spiked tail; a strong-jawed, toothed head (either the 1994 long tapering snout or the donor's fanged cat/boar-like face passes)
+- [ ] SCALES: the body is covered in large overlapping pointed scales (the 1994 pinecone/pangolin texture), not a smooth hide
+- [ ] COLOUR LAYOUT: reddish-brown, mottled darker all over (the donor sprite's colour, and the Legends text's camouflaging "mottled, dark skin"); pale claws
+- [ ] Powerful jaws with visible teeth or fangs
+- [ ] NEGATIVE: not the Disney Infinity 3.0 render (no blocky low-poly toy look, no smooth unscaled hide); not a plain cat, boar or armadillo
 
 ## Engine limits
 none known
@@ -86,3 +88,5 @@ none known
 **RULED** (owner, 2026-09-14, review sheet): `donor_current_sprite.png`
 
 > "Appears to be a very rare creature reference image-wise. Mix #1 and #2 together to regenerate our own. #3 is HORRIBLE, ignore."
+
+**Clarified 2026-10-09 — decision taken by question card:** in the 09-14 ruling, "#3 is HORRIBLE" means the **Disney Infinity render**. #1 is the shipped donor sprite and #2 is the 1994 *Creatures of the Galaxy* drawing (the scaly pangolin body); mix those two. Scales are wanted; the Disney blocky render is excluded.

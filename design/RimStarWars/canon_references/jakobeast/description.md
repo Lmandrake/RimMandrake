@@ -47,4 +47,4 @@ not yet assessed
 - `wookieepedia_legends_1.webp` — LEGENDS, ink-and-wash illustration from *The Jedi Path* (stylised, not realistic; best available); file `Jakobeast-TJP.png` — https://static.wikia.nocookie.net/starwars/images/e/e5/Jakobeast-TJP.png/revision/latest?cb=20241010041017
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**Confirmed 2026-10-09 — decision taken by question card:** the Must show stands unchanged; the coat is **grey/white striped** (Legends text and image), not plain canon brown.

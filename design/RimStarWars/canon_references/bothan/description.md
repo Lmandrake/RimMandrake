@@ -274,5 +274,4 @@ have them.
   note the repo already holds unused Bothan snout art under `RSW_Nose_Snout`.
 
 ## ruling
-
-(empty — owner has not reviewed this race yet)
+**Confirmed 2026-10-09 — decision taken by question card:** the Must show stands unchanged; the **Legends look** is the target (Legends body plan, as the Must show states).

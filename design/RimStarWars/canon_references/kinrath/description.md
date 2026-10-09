@@ -58,7 +58,7 @@ neither prior design had.
 ## Visual brief
 **Animation-only canon — no realistic source found (searched: Wookieepedia `Kinrath` and `Kinrath/Legends` page images, `Category:Images of kinrath`; every file is Clone Wars / Bad Batch animation or KOTOR game render).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
 
-**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** This entry's own `## ruling` (2026-09-14) picked the Clone Wars netcaster clip and the netcaster design ("Same as 2 and 3"), so those images and that design are KEPT as ruled; render them as real chitin and real arthropod anatomy. The low-res KOTOR gameplay screenshot was deleted (the clean `Viperkinrath.png` render shows the same Legends design).
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** This entry's own `## ruling` (2026-09-14) picked the Clone Wars netcaster clip and the netcaster design ("Same as 2 and 3"), so those images and that design are KEPT as ruled (and since the 2026-10-09 card decision the KOTOR/Legends long-necked design passes too); render them as real chitin and real arthropod anatomy. The low-res KOTOR gameplay screenshot was deleted (the clean `Viperkinrath.png` render shows the same Legends design).
 
 The remaining images split along the two design lineages above — read them as two related but distinct visual
 targets, not one:
@@ -104,12 +104,12 @@ are the six-eye cluster and flower organ (current canon) or the long
 mantis-like neck-appendage (KOTOR/Legends) — neither has a cross marking.
 
 ## Must show
-*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the current-canon netcaster text and images (infobox, rear view, Clone Wars clip) and the `## ruling` below, which picked the netcaster design (owner ruling 2026-09-14: "more like that. Same as 2 and 3."; the visual brief records this as keeping the Clone Wars netcaster clip and the netcaster design).*
-- [ ] BODY PLAN: a spider-like arthropod with FOUR long, thin, multi-jointed segmented legs ending in claws surrounded by petal-shaped flaps; a spoon-shaped body, narrow at the top and wider toward the rear
-- [ ] COLOUR LAYOUT: warm yellow/gold/tan-brown chitin over the whole body, no blue anywhere; darker off-colour horizontal stripes circling the abdomen; an orange/red flower organ on the front; black eyes
-- [ ] Six black eyes in a tight cluster (two groups of three) above a six-petaled flower organ on the head/upper body
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`), and corrected the same day by the owner's question-card decision (see `## ruling`): the current-canon netcaster (picked 2026-09-14) and the KOTOR/Legends long-necked design BOTH pass. A sprite must match one of the two designs; it need not mix them.*
+- [ ] BODY PLAN, one of two designs: (a) NETCASTER: a spider-like arthropod with FOUR long, thin, multi-jointed segmented legs ending in claws surrounded by petal-shaped flaps, and a spoon-shaped body, narrow at the top and wider toward the rear; or (b) KOTOR/LEGENDS: four extremely long jointed legs with pointed tips and an upward-curving segmented neck ending in a small mantis-like head
+- [ ] COLOUR LAYOUT: warm yellow/gold/tan-brown chitin over the whole body, no blue anywhere; the netcaster carries darker horizontal stripes circling the abdomen and an orange/red flower organ on the front; the KOTOR design carries rust/reddish-brown mottling
+- [ ] Netcaster design only: six black eyes in a tight cluster (two groups of three) above a six-petaled flower organ on the head/upper body
 - [ ] Realistic rendering: natural chitin texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
-- [ ] NEGATIVE: not the Wyyyschokk — no blue-grey body and no abdomen cross marking; not an eight-legged generic spider; not the KOTOR/Legends long-necked mantis design (no upward-curving segmented neck with a small mantis head)
+- [ ] NEGATIVE: not the Wyyyschokk (no blue-grey body, no abdomen cross marking); not an eight-legged generic spider; not a blend that is neither design (e.g. a long mantis neck carrying the flower organ and eye cluster)
 
 ## Engine limits
 none known
@@ -166,3 +166,5 @@ none known
 **RULED** (owner, 2026-09-14, review sheet): `unfinished_tcw_netcasters_conceptclip.png`
 
 > "https://www.starwars-holonet.com/holonet/images/5/5e/16407/crea_kinrath_nc_1.webp more like that. Same as 2 and 3."
+
+**Widened 2026-10-09 — decision taken by question card:** the long-necked KOTOR/Legends design ALSO passes, alongside the netcaster. It is no longer a negative.

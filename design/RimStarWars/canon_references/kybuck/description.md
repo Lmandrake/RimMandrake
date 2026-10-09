@@ -39,17 +39,17 @@ A colony of kybucks was established on Felucia during the battle there by Confed
 Three images; the canon one (animated render, file `Kybucks-LaD.png`) differs a lot from the two Legends ones.
 - **`canon_1` (canon, CGI, Shili):** two kybucks standing upright in tall grass on **two hind legs** (matches the text "stood on two hoofed feet"), forelimbs small and tucked. Light **golden-tan/caramel short coat**, slim torso, **long thin neck**, small head with a pointed muzzle and a **narrow beard/tuft hanging from the chin** (the Shili form), big leaf-shaped upright ears, and **a pair of dark red-brown, ridged, backward-curving horns** (curve downward at the tips, ibex/goat-like). Dark nose, large amber eye. Slender, antelope/gazelle build. The pale chest tuft and the neck ruff are visible on the left animal.
 - **Legends (`legends_2`, `legends_3`):** a **four-legged, horse-sized riding animal** (Yoda's mount): chestnut red-brown or dark brown coat, long bushy tail, sturdy hoofed legs, a thick mane of fur at the neck, short upswept horns or a horned/ridged head-guard worn like a helmet, saddle and harness. `legends_2` (concept/painted) is dark brown with short upswept horns; `legends_3` (toy packaging art) is a shaggy brown beast with big ridged curled horns and a mane. Looks like a horse/yak hybrid.
-- **The images disagree** on stance (biped in canon; the Legends images read as quadruped mounts, but the Legends page gives no limb count and says only "similar in appearance to the tauntauns", so treat the Legends stance as unresolved, not as a separate quadruped design), size and build (slim gazelle vs horse). Trust the canon image for the canon animal. The text also says canon Kashyyyk kybucks have dark-brown fur and upward-curving horns with no chin tufts; Shili ones (shown) have light-brown fur, downward-curving horns and chin tufts. Pick one population and keep it consistent.
+- **The images disagree** on stance (biped in canon; the Legends images read as quadruped mounts, but the Legends page gives no limb count and says only "similar in appearance to the tauntauns", so treat the Legends stance as unresolved, not as a separate quadruped design), size and build (slim gazelle vs horse). Trust the canon image for the canon animal. The text also says canon Kashyyyk kybucks have dark-brown fur and upward-curving horns with no chin tufts; Shili ones (shown) have light-brown fur, downward-curving horns and chin tufts. The owner picked the Kashyyyk population (question card, 2026-10-09): take the body plan from `canon_1` and the colour, horns and chin from the Kashyyyk text.
 - **Size:** canon plate shows them roughly head-high above the grass, deer-sized; Legends mounts are horse-sized.
 
 ## Must show
-*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon text and the canon *Tales of the Jedi* render `canon_1` (the Shili form), which the visual brief says to trust for the canon animal; one population is drawn consistently.*
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`), and set to one population the same day by the owner's question-card decision (see `## ruling`): the target is the **Kashyyyk** population (canon text: dark-brown fur, upward-curving horns, no chin tufts). Body plan comes from the canon *Tales of the Jedi* render `canon_1`; that render shows the Shili form, so its colour, horn curve and chin tuft are NOT the target.*
 - [ ] BODY PLAN: a slender, deer-sized antelope/goat-like animal standing and walking upright on TWO hoofed hind legs, small forelimbs held up and tucked; a long thin neck; a small head with a small pointed muzzle and large upright leaf-shaped ears — not a horse stance
-- [ ] COLOUR LAYOUT: short coat golden-tan/caramel (Shili form) or dark brown (Kashyyyk form) over the body, with a paler chest tuft; horns dark red-brown; nose dark; eye large amber
-- [ ] Pair of dark, ridged horns curving back (down-curving at the tips for the Shili form, up-curving for the Kashyyyk form)
-- [ ] Narrow beard/tuft hanging from the chin on the Shili form; none on the Kashyyyk form
+- [ ] COLOUR LAYOUT: short dark-brown coat over the body (Kashyyyk form); horns darker; nose dark
+- [ ] Pair of ridged horns curving UPWARD
+- [ ] No beard or tuft hanging from the chin
 - [ ] Realistic rendering: natural short-haired coat and horn texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
-- [ ] NEGATIVE: not a four-legged horse/yak riding mount (the Legends look: no bushy tail, no heavy mane, no saddle, no horse-sized bulk); not a tauntaun
+- [ ] NEGATIVE: not the Shili form shown in `canon_1` (no light golden-tan coat, no down-curving horns, no chin tuft); not a four-legged horse/yak riding mount (the Legends look: no bushy tail, no heavy mane, no saddle, no horse-sized bulk); not a tauntaun
 
 ## Engine limits
 not yet assessed
@@ -64,4 +64,4 @@ not yet assessed
 - `wookieepedia_legends_3.webp` — LEGENDS page (non-canon continuity) `Kybuck/Legends`; wiki caption: Yoda's kybuck. File: `Kybuck.jpg` — https://static.wikia.nocookie.net/starwars/images/a/ac/Kybuck.jpg/revision/latest?cb=20100925001139
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**RULED 2026-10-09 — decision taken by question card:** the target is the **Kashyyyk** population: dark brown, up-curving horns, no chin tuft. The Shili form (light brown, down-curving horns, chin tuft) is a negative.

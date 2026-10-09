@@ -30,10 +30,12 @@ long necks and sturdy clawed forelimbs used for foraging — shown here
 foraging on a spiny red-and-cream leafed plant (consistent with the
 Tooke-trap-plant diet note). Juveniles in the same image are smaller, more
 uniformly brown/olive, and lack the vivid red head coloring of adults —
-useful if a juvenile/adult variant is ever wanted. The overall silhouette
-reads as a stocky flightless ground bird (ostrich/cassowary-adjacent), which
-matches the "flightless avian" classification even though the field guide's
-own sourcebook oddly also calls them insects in prose.
+useful if a juvenile/adult variant is ever wanted. The body plan is
+FOUR-LIMBED: the long clawed forelimbs are planted on the ground beside the
+hind legs (the text's "powerful forelegs to forage and hop"), so it is a
+wingless four-limbed forager, not a two-legged ostrich-like bird (owner
+confirmed this reading by question card, 2026-10-09). The field guide's own
+sourcebook classifies it "flightless avian" yet also calls it an insect in prose.
 
 **The current donor sprite** (`donor_current_sprite.png`) is a solid partial
 match: reddish-brown body coloring is right, and there's a pale cream tuft/
@@ -74,4 +76,4 @@ none known
   matches the sourced brown/red skin and blue eye fields closely.
 
 ## ruling
-(empty — owner has not reviewed this creature yet)
+**Confirmed 2026-10-09 — decision taken by question card:** the Must show stands unchanged; the body plan is **four-limbed** (long clawed forelimbs planted on the ground), not a two-legged ostrich-like bird.

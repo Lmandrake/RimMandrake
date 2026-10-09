@@ -209,4 +209,4 @@ none known
 - `wookieepedia_massassi_warrior.jpg` — **pen-and-ink concept, kept for the original-form silhouette only.** Lettered "Massassi Warrior": tall, lean, upright, long bound hair, cheek tendrils, crystal axe. No colour; contradicted by every painting on build. File `MassassiWarrior.jpg` — https://static.wikia.nocookie.net/starwars/images/9/9b/MassassiWarrior.jpg
 
 ## ruling
-(empty — owner has not reviewed this race yet)
+**Confirmed 2026-10-09 — decision taken by question card:** the Must show stands unchanged; eye **size is left open**: sunken glowing eyes pass whether large or small.
