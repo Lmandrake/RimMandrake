@@ -43,6 +43,11 @@ namespace RimMandrake.CreatureBehaviors
     public class RM_CompDrumLure : ThingComp
     {
         private Pawn luredTarget;
+        private int luredSinceTick = -1;
+
+        // CREATURE_JOB_INTERRUPTION_POLICY_1. PROVISIONAL (auto-decided 2026-10-09): a lure that has not closed to
+        // ambush range within 2500 ticks (one in-game hour) breaks, whether or not a marker hediff is configured.
+        private const int LureTimeoutTicks = 2500;
 
         private RM_LastOutcomeLog outcome;
 
@@ -66,6 +71,10 @@ namespace RimMandrake.CreatureBehaviors
 
             if (!(parent is Pawn pawn) || !pawn.Spawned || pawn.Dead || pawn.Map == null || pawn.Downed)
             {
+                if (luredTarget != null)
+                {
+                    ClearLure(removeHediff: true); // a downed/despawned carrier releases its victim
+                }
                 return;
             }
 
@@ -97,6 +106,10 @@ namespace RimMandrake.CreatureBehaviors
 
         private void TickExistingLure(Pawn pawn)
         {
+            if (luredSinceTick < 0)
+            {
+                luredSinceTick = Find.TickManager.TicksGame; // a lure from a save made before the timeout existed
+            }
             if (!StillLured(luredTarget, pawn))
             {
                 ClearLure(removeHediff: true);
@@ -137,6 +150,7 @@ namespace RimMandrake.CreatureBehaviors
             ApplyLuredHediff(target);
             ForceGotoLure(pawn, target);
             luredTarget = target;
+            luredSinceTick = Find.TickManager.TicksGame;
             Note("lure_started");
         }
 
@@ -176,9 +190,14 @@ namespace RimMandrake.CreatureBehaviors
                 return false;
             }
 
-            if (!pawn.HostileTo(candidate))
+            if (!RM_AmbushJobPolicy.IsPrey(pawn, candidate) || !RM_AmbushJobPolicy.MayForceJobOn(candidate))
             {
                 return false;
+            }
+
+            if (!candidate.CanReach(pawn, PathEndMode.Touch, Danger.Deadly))
+            {
+                return false; // no compulsion toward a cell the victim cannot walk to
             }
 
             if (Props.luredHediff != null && candidate.health?.hediffSet.GetFirstHediffOfDef(Props.luredHediff) != null)
@@ -191,7 +210,13 @@ namespace RimMandrake.CreatureBehaviors
 
         private bool StillLured(Pawn candidate, Pawn pawn)
         {
-            if (candidate == null || candidate.Dead || !candidate.Spawned || candidate.Map != pawn.Map)
+            if (candidate == null || candidate.Dead || !candidate.Spawned || candidate.Map != pawn.Map
+                || candidate.Downed || candidate.Drafted || candidate.InMentalState)
+            {
+                return false;
+            }
+
+            if (luredSinceTick >= 0 && Find.TickManager.TicksGame - luredSinceTick > LureTimeoutTicks)
             {
                 return false;
             }
@@ -237,7 +262,7 @@ namespace RimMandrake.CreatureBehaviors
             ClearLure(removeHediff: true);
             BecomeVisible(pawn);
 
-            if (target.Spawned && pawn.Spawned && target.jobs != null && pawn.jobs != null)
+            if (target.Spawned && RM_AmbushJobPolicy.MayForceJobOn(pawn) && target.jobs != null)
             {
                 Job job = JobMaker.MakeJob(JobDefOf.AttackMelee, target);
                 pawn.jobs.StartJob(job, JobCondition.InterruptForced, resumeCurJobAfterwards: false, cancelBusyStances: true);
@@ -256,6 +281,19 @@ namespace RimMandrake.CreatureBehaviors
             }
 
             luredTarget = null;
+            luredSinceTick = -1;
+        }
+
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+        {
+            base.PostDeSpawn(map, mode);
+            ClearLure(removeHediff: true);
+        }
+
+        public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
+        {
+            base.Notify_Killed(prevMap, dinfo);
+            ClearLure(removeHediff: true);
         }
 
         private void BecomeInvisible(Pawn pawn)
@@ -295,6 +333,7 @@ namespace RimMandrake.CreatureBehaviors
         {
             base.PostExposeData();
             Scribe_References.Look(ref luredTarget, "luredTarget");
+            Scribe_Values.Look(ref luredSinceTick, "luredSinceTick", -1);
             Scribe_Deep.Look(ref outcome, "lastOutcome");
         }
     }

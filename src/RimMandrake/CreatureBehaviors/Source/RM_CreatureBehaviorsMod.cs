@@ -396,6 +396,8 @@ namespace RimMandrake.CreatureBehaviors
         public static bool pinnedSunEnabled = true;
         public static float pinnedSunSkyStrength = 1f;
         public static bool falseShadeAmbushEnabled = true;
+        // CREATURE_JOB_INTERRUPTION_POLICY_1 (RM_AmbushJobPolicy): wild ambush predators also take wild animal prey.
+        public static bool ambushWildPreyEnabled = true;
         public static bool sunHeatEnabled = true;
         public static float sunHeatStrength = 1f;
         public static bool directionalShadeEnabled = true;
@@ -525,6 +527,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref pinnedSunEnabled, "pinnedSunEnabled", true);
             Scribe_Values.Look(ref pinnedSunSkyStrength, "pinnedSunSkyStrength", 1f);
             Scribe_Values.Look(ref falseShadeAmbushEnabled, "falseShadeAmbushEnabled", true);
+            Scribe_Values.Look(ref ambushWildPreyEnabled, "ambushWildPreyEnabled", true);
             Scribe_Values.Look(ref sunHeatEnabled, "sunHeatEnabled", true);
             Scribe_Values.Look(ref sunHeatStrength, "sunHeatStrength", 1f);
             Scribe_Values.Look(ref directionalShadeEnabled, "directionalShadeEnabled", true);
@@ -852,6 +855,11 @@ namespace RimMandrake.CreatureBehaviors
                 "On: a flat ambusher lying in the open looks like shade to animals looking for "
               + "shade, and seizes whatever lies down in it. Off: it never strikes and nothing "
               + "mistakes it for shade — it just scavenges the dead.");
+            list.CheckboxLabeled("Ambush predators also hunt wild animals", ref ambushWildPreyEnabled,
+                "On (PROVISIONAL default): a wild lunger, drum-lure, heat-burst or similar ambusher also targets wild "
+              + "animals it could hunt by the game's own prey rules, not only creatures hostile to it. None of these "
+              + "ambushes ever takes over a drafted, berserk or player-ordered creature. Off: they target only "
+              + "creatures hostile to them, so wild prey is ignored.");
             list.GapLine();
 
             list.Label("Sun heat — only on biomes built with it (the Long Shade, the deep desert, "

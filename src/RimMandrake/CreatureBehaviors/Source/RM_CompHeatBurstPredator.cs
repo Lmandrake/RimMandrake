@@ -111,7 +111,7 @@ namespace RimMandrake.CreatureBehaviors
             for (int i = 0; i < pawns.Count; i++)
             {
                 Pawn candidate = pawns[i];
-                if (candidate == pawn || candidate.Dead || !candidate.Spawned || !pawn.HostileTo(candidate))
+                if (!RM_AmbushJobPolicy.IsPrey(pawn, candidate))
                 {
                     continue;
                 }
@@ -128,8 +128,29 @@ namespace RimMandrake.CreatureBehaviors
         private void TryRetreatToShade(Pawn pawn)
         {
             RM_MapComponent_ShadeGrid grid = pawn.Map.GetComponent<RM_MapComponent_ShadeGrid>();
+            if (!RM_AmbushJobPolicy.MayForceJobOn(pawn))
+            {
+                Note("not_interruptible");
+                return;
+            }
             if (grid == null || grid.ShadeAt(pawn.Position) >= Props.retreatShadeThreshold)
             {
+                // CREATURE_JOB_INTERRUPTION_POLICY_1: a fatigued predator in shade does not let a hunt carry it
+                // back into the sun. PROVISIONAL: a hunt or melee job whose target stands in sun is replaced by a
+                // short Wait, re-checked every interval while fatigue lasts.
+                Job hunting = pawn.jobs?.curJob;
+                if (grid != null && hunting != null
+                    && (hunting.def == JobDefOf.PredatorHunt || hunting.def == JobDefOf.AttackMelee)
+                    && hunting.targetA.IsValid && hunting.targetA.Cell.InBounds(pawn.Map)
+                    && grid.ShadeAt(hunting.targetA.Cell) < Props.retreatShadeThreshold)
+                {
+                    Job hold = JobMaker.MakeJob(JobDefOf.Wait);
+                    hold.expiryInterval = System.Math.Max(1, Props.checkIntervalTicks) + 1;
+                    hold.checkOverrideOnExpire = true;
+                    pawn.jobs.StartJob(hold, JobCondition.InterruptForced, resumeCurJobAfterwards: false);
+                    Note("hunt_held_in_shade");
+                    return;
+                }
                 Note("shaded");
                 return; // already shaded enough — sit and let the fatigue tail burn off
             }

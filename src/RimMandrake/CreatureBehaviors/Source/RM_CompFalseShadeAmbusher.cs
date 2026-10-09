@@ -73,6 +73,7 @@ namespace RimMandrake.CreatureBehaviors
     public class RM_CompFalseShadeAmbusher : ThingComp
     {
         private Pawn lastVictim;
+        private IntVec3 seizeCell = IntVec3.Invalid;
 
         public CompProperties_FalseShadeAmbusher Props => (CompProperties_FalseShadeAmbusher)props;
 
@@ -80,6 +81,7 @@ namespace RimMandrake.CreatureBehaviors
         {
             base.PostExposeData();
             Scribe_References.Look(ref lastVictim, "rmFalseShadeLastVictim");
+            Scribe_Values.Look(ref seizeCell, "rmFalseShadeSeizeCell", IntVec3.Invalid);
         }
 
         public override void CompTick()
@@ -100,6 +102,11 @@ namespace RimMandrake.CreatureBehaviors
             }
             bool tame = pawn.Faction != null;
             JobDef cur = pawn.CurJobDef;
+
+            if (LeashBroken(pawn))
+            {
+                return;
+            }
 
             if (IsIdle(cur, tame))
             {
@@ -180,6 +187,7 @@ namespace RimMandrake.CreatureBehaviors
             float angle = (victim.Position - pawn.Position).ToVector3().AngleFlat();
             victim.TakeDamage(new DamageInfo(dmg, Props.strikeDamageRange.RandomInRange, 0f, angle, pawn));
             lastVictim = victim;
+            seizeCell = pawn.Position;
 
             if (victim.Faction == Faction.OfPlayer && victim.Spawned)
             {
@@ -196,6 +204,25 @@ namespace RimMandrake.CreatureBehaviors
                 attack.checkOverrideOnExpire = true;
                 pawn.jobs.StartJob(attack, JobCondition.InterruptForced, resumeCurJobAfterwards: false, cancelBusyStances: true);
             }
+        }
+
+        // CREATURE_JOB_INTERRUPTION_POLICY_1. PROVISIONAL (auto-decided 2026-10-09): the seize's follow-up
+        // AttackMelee is leashed to max(8, 3 x strikeRangeCells) cells from where it seized; past that it lets go.
+        private bool LeashBroken(Pawn pawn)
+        {
+            Job job = pawn.jobs?.curJob;
+            if (!seizeCell.IsValid || job == null || job.def != JobDefOf.AttackMelee)
+            {
+                return false;
+            }
+            float leash = System.Math.Max(8f, Props.strikeRangeCells * 3f);
+            if ((pawn.Position - seizeCell).LengthHorizontalSquared <= leash * leash)
+            {
+                return false;
+            }
+            seizeCell = IntVec3.Invalid;
+            pawn.jobs.EndCurrentJob(JobCondition.InterruptForced);
+            return true;
         }
 
         private bool TryEatVictim(Pawn pawn, JobDef cur)

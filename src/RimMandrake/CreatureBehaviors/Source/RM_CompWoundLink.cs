@@ -29,9 +29,35 @@ namespace RimMandrake.CreatureBehaviors
     {
         private Pawn Victim => (Pawn)parent;
 
+        // WOUNDLINK_INJURY_IDENTITY_1: the injuries present before this DamageInfo, so the fresh injury is the one
+        // this hit added (not any ageTicks==0 injury: two hits in one tick, or a wound mirrored in from kin, used
+        // to be shared again). Transient: set in PostPreApplyDamage, consumed in PostPostApplyDamage.
+        private HashSet<Hediff> preDamageInjuries;
+
+        public override void PostPreApplyDamage(ref DamageInfo dinfo, out bool absorbed)
+        {
+            base.PostPreApplyDamage(ref dinfo, out absorbed);
+            if (absorbed || !(parent is Pawn p) || p.health == null)
+            {
+                preDamageInjuries = null;
+                return;
+            }
+            preDamageInjuries = new HashSet<Hediff>();
+            List<Hediff> hediffs = p.health.hediffSet.hediffs;
+            for (int i = 0; i < hediffs.Count; i++)
+            {
+                if (hediffs[i] is Hediff_Injury)
+                {
+                    preDamageInjuries.Add(hediffs[i]);
+                }
+            }
+        }
+
         public override void PostPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
         {
             base.PostPostApplyDamage(dinfo, totalDamageDealt);
+            HashSet<Hediff> before = preDamageInjuries;
+            preDamageInjuries = null;
 
             if (!RM_CreatureBehaviorsSettings.woundLinkEnabled)
             {
@@ -55,7 +81,11 @@ namespace RimMandrake.CreatureBehaviors
                 return; // no kin tag configured on this race — nothing to share with
             }
 
-            Hediff_Injury freshInjury = FindFreshInjury(victim);
+            if (before == null)
+            {
+                return; // no pre-damage snapshot (absorbed, or damage applied without PreApplyDamage) — share nothing
+            }
+            Hediff_Injury freshInjury = FindFreshInjury(victim, before);
             if (freshInjury == null || freshInjury.Severity < ext.severityGate)
             {
                 return;
@@ -99,19 +129,15 @@ namespace RimMandrake.CreatureBehaviors
             freshInjury.Heal(shareAmount);
         }
 
-        /// <summary>The injury this exact damage event just created: the
-        /// freshest (ageTicks == 0, i.e. added this tick) Hediff_Injury on the
-        /// pawn. PostPostApplyDamage fires synchronously right after the
-        /// hediff is added and before the pawn's own Tick has run again, so
-        /// ageTicks == 0 reliably identifies it regardless of where in the
-        /// tick cycle the hit landed.</summary>
-        private static Hediff_Injury FindFreshInjury(Pawn pawn)
+        /// <summary>The largest injury this exact damage event added: present now, absent from the pre-damage
+        /// snapshot. An injury vanilla merged into an existing one adds no new hediff and is not shared.</summary>
+        private static Hediff_Injury FindFreshInjury(Pawn pawn, HashSet<Hediff> before)
         {
             List<Hediff> hediffs = pawn.health.hediffSet.hediffs;
             Hediff_Injury best = null;
             for (int i = 0; i < hediffs.Count; i++)
             {
-                if (hediffs[i] is Hediff_Injury injury && injury.ageTicks <= 0)
+                if (hediffs[i] is Hediff_Injury injury && !before.Contains(injury))
                 {
                     if (best == null || injury.Severity > best.Severity)
                     {
@@ -162,22 +188,84 @@ namespace RimMandrake.CreatureBehaviors
             return result;
         }
 
-        /// <summary>The equivalent part on a DIFFERENT pawn's body: same
-        /// BodyPartDef, and not already missing/destroyed on that pawn.
-        /// GetNotMissingParts() only enumerates parts still present, so
-        /// "destroyed parts excluded" on the recipient side falls out of this
-        /// for free. Wild and tamed alike: no faction/tame check anywhere in
-        /// this comp.</summary>
+        /// <summary>The equivalent part on a DIFFERENT pawn's body, matched on the body-tree path
+        /// (WOUNDLINK_INJURY_IDENTITY_1): from the root down, each step is (BodyPartDef, ordinal among siblings
+        /// of that def), so a left leg maps to the left leg, never the first leg found. Missing on the recipient
+        /// (absent from GetNotMissingParts) or no such path (a different body plan) returns null. Wild and tamed
+        /// alike: no faction/tame check anywhere in this comp.</summary>
         private static BodyPartRecord FindEquivalentPart(Pawn recipient, BodyPartRecord sourcePart)
         {
-            foreach (BodyPartRecord candidate in recipient.health.hediffSet.GetNotMissingParts())
+            List<BodyPartRecord> chain = new List<BodyPartRecord>();
+            for (BodyPartRecord r = sourcePart; r != null; r = r.parent)
             {
-                if (candidate.def == sourcePart.def)
+                chain.Add(r);
+            }
+            chain.Reverse();
+
+            BodyPartRecord current = recipient.RaceProps?.body?.corePart;
+            if (current == null || chain.Count == 0 || current.def != chain[0].def)
+            {
+                return null;
+            }
+            for (int depth = 1; depth < chain.Count && current != null; depth++)
+            {
+                BodyPartRecord step = chain[depth];
+                int ordinal = SameDefOrdinal(step);
+                current = NthChildOfDef(current, step.def, ordinal);
+            }
+            if (current == null)
+            {
+                return null; // different body plan (e.g. cross-species radius overlap) — skip rather than guess a part
+            }
+            foreach (BodyPartRecord present in recipient.health.hediffSet.GetNotMissingParts())
+            {
+                if (present == current)
                 {
-                    return candidate;
+                    return current;
                 }
             }
-            return null; // different body plan (e.g. cross-species radius overlap) — skip rather than guess a part
+            return null; // that part is already missing on the recipient
+        }
+
+        private static int SameDefOrdinal(BodyPartRecord part)
+        {
+            if (part.parent == null)
+            {
+                return 0;
+            }
+            int n = 0;
+            List<BodyPartRecord> siblings = part.parent.parts;
+            for (int i = 0; i < siblings.Count; i++)
+            {
+                if (siblings[i] == part)
+                {
+                    return n;
+                }
+                if (siblings[i].def == part.def)
+                {
+                    n++;
+                }
+            }
+            return n;
+        }
+
+        private static BodyPartRecord NthChildOfDef(BodyPartRecord parent, BodyPartDef def, int ordinal)
+        {
+            int n = 0;
+            List<BodyPartRecord> children = parent.parts;
+            for (int i = 0; i < children.Count; i++)
+            {
+                if (children[i].def != def)
+                {
+                    continue;
+                }
+                if (n == ordinal)
+                {
+                    return children[i];
+                }
+                n++;
+            }
+            return null;
         }
 
         private static bool MirrorInjury(Pawn recipient, BodyPartRecord sourcePart, HediffDef injuryDef, float severity)
