@@ -402,11 +402,13 @@ def shipped_def_rows(mod_dir=None):
     return out
 
 
-def dump_presence_findings(rows_defs, dump_by_type, active_pkgs, held):
+def dump_presence_findings(rows_defs, dump_by_type, active_pkgs, held, changed_after_dump=None):
     """(checked, skipped dict, findings). A def is LOST when it is not held, its type is dumped, every non-DLC guard
-    package is active (an anyOf guard needs one), and it is absent from the dump. Label drift is a finding too."""
+    package is active (an anyOf guard needs one), and it is absent from the dump. Label drift is a finding too.
+    A def absent from the dump whose file was last committed AFTER the dump was captured is skipped ("changed after dump"):
+    the dump cannot show what was added or re-gated since (e.g. a guard repointed to the host package after capture)."""
     import fnmatch
-    checked, skipped, bad = 0, {"held": 0, "guard inactive": 0, "type not dumped": 0}, []
+    checked, skipped, bad = 0, {"held": 0, "guard inactive": 0, "type not dumped": 0, "changed after dump": 0}, []
     for ty, name, label, pk, rel, is_any in rows_defs:
         if any(fnmatch.fnmatch(rel, g) for g in held):
             skipped["held"] += 1
@@ -421,11 +423,28 @@ def dump_presence_findings(rows_defs, dump_by_type, active_pkgs, held):
             continue
         checked += 1
         row = d.get(name)
-        if row is None:
+        if row is None and changed_after_dump is not None and changed_after_dump(rel):
+            checked -= 1
+            skipped["changed after dump"] += 1
+        elif row is None:
             bad.append("%s %s (%s) is not in the dump" % (ty, name, rel))
         elif label is not None and str(row.get("label")) != label:
             bad.append("%s %s label %r in the dump, %r in the XML" % (ty, name, row.get("label"), label))
     return checked, skipped, bad
+
+
+def changed_after_dump(base):
+    """Predicate rel -> True when the def file's last commit is newer than the dump's capturedUtc (git, run in the mod dir)."""
+    import datetime
+    import subprocess
+    cap = _json.load(open(os.path.join(base, "manifest.json"))).get("capturedUtc")
+    cap_ts = datetime.datetime.strptime(cap, "%Y-%m-%dT%H-%M-%SZ" if "-" in cap[11:] else "%Y-%m-%dT%H:%M:%SZ").replace(
+        tzinfo=datetime.timezone.utc).timestamp()
+
+    def pred(rel):
+        out = subprocess.run(["git", "log", "-1", "--format=%ct", "--", rel], cwd=_MOD_DIR, capture_output=True, text=True).stdout.strip()
+        return bool(out) and int(out) > cap_ts
+    return pred
 
 
 def _dump_inputs():
@@ -462,7 +481,7 @@ def defs_vs_dump_static(t):
         held = held_globs()
         if len(rows_defs) < 300 or len(held) < 5 or "mandrake.rut.patches" not in active or not dump.get("ThingDef"):
             raise ExpectationFailed("blind parse: %d defs, %d hold globs, patches mod active=%s" % (len(rows_defs), len(held), "mandrake.rut.patches" in active))
-        checked, skipped, bad = dump_presence_findings(rows_defs, dump, active, held)
+        checked, skipped, bad = dump_presence_findings(rows_defs, dump, active, held, changed_after_dump(base))
         if checked < 300:
             raise ExpectationFailed("only %d defs were checkable (skipped %s)" % (checked, skipped))
         if bad:

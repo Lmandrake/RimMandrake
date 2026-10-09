@@ -35,19 +35,23 @@ def main():
         dump = None
     held = v.held_globs()
     if dump:
-        checked, skipped, bad = v.dump_presence_findings(rows_defs, dump, active, held)
+        checked, skipped, bad = v.dump_presence_findings(rows_defs, dump, active, held, v.changed_after_dump(base))
         check("sanity probe: >= 300 defs checked, hold globs read, patches mod active", checked >= 300 and len(held) >= 5 and "mandrake.rut.patches" in active, (checked, len(held)))
         check("shipped defs vs the load-14 dump: all %d present with their labels (skipped %s)" % (checked, skipped), bad == [], bad[:3])
         check("held files are named, not passed (>= 5 held, >= 1 inactive guard)", skipped["held"] >= 5 and skipped["guard inactive"] >= 1, skipped)
         ty, name = next((r[0], r[1]) for r in rows_defs if r[0] == "ThingDef" and not r[3] and r[4] not in [] and r[1] in dump["ThingDef"])
         d2 = dict((k, dict(x) if x else x) for k, x in dump.items())
         del d2["ThingDef"][name]
-        got = v.dump_presence_findings(rows_defs, d2, active, held)[2]
+        got = v.dump_presence_findings(rows_defs, d2, active, held, v.changed_after_dump(base))[2]
         check("break: a def dropped from the dump is named (%s)" % name, len(got) == 1 and name in got[0], got)
+        got = v.dump_presence_findings(rows_defs, d2, active, held, lambda rel: True)
+        check("a missing def whose file changed after the dump is skipped, not lost (%s)" % name, got[2] == [] and got[1]["changed after dump"] >= 1, got[1:])
+        got = v.dump_presence_findings(rows_defs, d2, active, held, lambda rel: False)[2]
+        check("break: the same missing def with its file older than the dump is still lost", any(name in b for b in got), got)
         d3 = dict((k, dict(x) if x else x) for k, x in dump.items())
         lab = next(r for r in rows_defs if r[0] == "ThingDef" and r[2] and r[1] in dump["ThingDef"])
         d3["ThingDef"][lab[1]] = dict(d3["ThingDef"][lab[1]], label="something else")
-        got = v.dump_presence_findings(rows_defs, d3, active, held)[2]
+        got = v.dump_presence_findings(rows_defs, d3, active, held, v.changed_after_dump(base))[2]
         check("break: a label that drifted is named (%s)" % lab[1], len(got) == 1 and "label" in got[0], got)
         got = v.dump_presence_findings(rows_defs, d2, active, held + ["*"])[2]
         check("break: a blanket hold glob would hide the loss, so the sanity floor (checked >= 300) is what polices it", v.dump_presence_findings(rows_defs, dump, active, ["*"])[0] == 0)
