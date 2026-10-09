@@ -17,10 +17,9 @@ namespace RimMandrake.Utinni.WasteRun
     {
         public const string QuestScriptDefName = "RUT_WasteRun";
 
-        // Cargo the run disposes of. Biotech's Wastepack and the half-extracted
-        // core are the only waste; nothing else in a cask bay counts. The Stenchlands
-        // Throat cask is NOT listed: its item is still unspecified (WASTE_RUN_STUBS).
-        public static readonly string[] WasteDefNames = { "Wastepack", "RM_HalfExtractedCore" };
+        // Cargo the run disposes of: Biotech's Wastepack, the half-extracted core and the
+        // Glowing Throat's cask (THROAT_CASK_ITEM_1); nothing else in a cask bay counts.
+        public static readonly string[] WasteDefNames = { "Wastepack", "RM_HalfExtractedCore", "RUT_ThroatCask" };
 
         public static bool IsWaste(string defName)
         {
@@ -70,5 +69,37 @@ namespace RimMandrake.Utinni.WasteRun
         {
             return masterEnabled && offerEnabled && wasteStacks > 0 && !runAlreadyActive;
         }
+
+        // ---- THROAT_CASK_ITEM_1 (all thresholds PROVISIONAL, mine, not ruled) ----
+        public const string ThroatCaskDefName = "RUT_ThroatCask";
+
+        // The cask is waste for the run (it joins the cask bay's cargo).
+        public static bool ThroatCaskActive(bool master, bool caskEnabled) { return master && caskEnabled; }
+
+        // Dose factor at a pawn: falls linearly to 0 one cell past the radius; a sealed chamber only mutes it.
+        public static float ThroatDose(float toxicFactor, float dist, float radius, bool shielded, float shieldedFactor)
+        {
+            if (dist > radius) return 0f;
+            float falloff = 1f - dist / (radius + 1f);
+            return toxicFactor * falloff * (shielded ? shieldedFactor : 1f);
+        }
+
+        // Mood stage from ticks the cask has spent in the world: 0 first day, 1 up to 3 days, 2 beyond.
+        public static int NearStage(int ticksPresent)
+        {
+            return ticksPresent < 60000 ? 0 : ticksPresent < 180000 ? 1 : 2;
+        }
+
+        // Die-off chance per rare tick climbs with presence: x1 at start, x4 after 5 days (300000 ticks), capped there.
+        public static float DieOffChance(float baseChance, int ticksPresent)
+        {
+            float growth = 1f + 3f * System.Math.Min(1f, ticksPresent / 300000f);
+            return System.Math.Min(1f, baseChance * growth);
+        }
+
+        public static bool FaultDue(int ticksSinceFault, int interval) { return interval > 0 && ticksSinceFault >= interval; }
+
+        // The burst triggers: the carrier took harm since the last look, or the cask is burning.
+        public static bool ShouldBurst(bool carrierHarmed, bool burning) { return carrierHarmed || burning; }
     }
 }

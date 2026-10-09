@@ -13,6 +13,12 @@ namespace RimMandrake.Utinni.WasteRun
         public static bool entombAssailantsEnabled = true;
         public static bool propaneLakeEnabled = true;
         public static bool slimeExperimentEnabled = true;
+        // THROAT_CASK_ITEM_1 (numbers PROVISIONAL)
+        public static bool throatCaskEnabled = true;
+        public static bool throatRadiationEnabled = true;
+        public static bool throatShipFaultsEnabled = true;
+        public static bool throatBurstEnabled = true;
+        public static bool throatDecayEnabled = true;
 
         public static bool DestinationEnabled(WasteDestination d)
         {
@@ -36,6 +42,11 @@ namespace RimMandrake.Utinni.WasteRun
             Scribe_Values.Look(ref entombAssailantsEnabled, "entombAssailantsEnabled", true);
             Scribe_Values.Look(ref propaneLakeEnabled, "propaneLakeEnabled", true);
             Scribe_Values.Look(ref slimeExperimentEnabled, "slimeExperimentEnabled", true);
+            Scribe_Values.Look(ref throatCaskEnabled, "throatCaskEnabled", true);
+            Scribe_Values.Look(ref throatRadiationEnabled, "throatRadiationEnabled", true);
+            Scribe_Values.Look(ref throatShipFaultsEnabled, "throatShipFaultsEnabled", true);
+            Scribe_Values.Look(ref throatBurstEnabled, "throatBurstEnabled", true);
+            Scribe_Values.Look(ref throatDecayEnabled, "throatDecayEnabled", true);
         }
 
         private static Vector2 scroll;
@@ -65,6 +76,19 @@ namespace RimMandrake.Utinni.WasteRun
                     "Shipped default: ON. A melt that ignites the nightside lake and marks the war lab breached (the lab itself is a stub until ANCIENT_WAR_LAB_1 ships).");
                 list.CheckboxLabeled("Destination: the Slime experiment", ref slimeExperimentEnabled,
                     "Shipped default: ON. The only option that is an experiment rather than a verdict. Results are random and provisional.");
+            }
+            if (masterEnabled)
+            {
+                list.Gap();
+                list.CheckboxLabeled("Throat cask effects enabled", ref throatCaskEnabled,
+                    "Shipped default: ON. Off: the Throat cask is inert cargo (all its numbers are provisional).");
+                if (throatCaskEnabled)
+                {
+                    list.CheckboxLabeled("  Constant radiation", ref throatRadiationEnabled, "Shipped default: ON. A bay mutes the dose, never silences it.");
+                    list.CheckboxLabeled("  Gravship malfunctions while aboard", ref throatShipFaultsEnabled, "Shipped default: ON. One random system fault about every day.");
+                    list.CheckboxLabeled("  Bursts if the carrier is hurt or it burns", ref throatBurstEnabled, "Shipped default: ON.");
+                    list.CheckboxLabeled("  Slow armageddon nearby (die-off, mood)", ref throatDecayEnabled, "Shipped default: ON. Escalates the longer it stays.");
+                }
             }
             viewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
