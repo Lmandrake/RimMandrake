@@ -80,6 +80,16 @@ namespace RimMandrake.FeverWood
         public static int tentacleGreatEmergenceMinLimbs = 3;
         public static int tentacleGreatEmergenceMaxLimbs = 5;
 
+        /// <summary>DESIGN_PASS FV-1: the pool breathes. On: a limb that is not driven off sinks back on its
+        /// own after tentacleLimbLingerHours (porters keep their own deposit exit). Off: limbs stand until
+        /// driven off, the pre-FV-1 behaviour. PROVISIONAL default: on, 12 in-game hours.</summary>
+        public static bool tentacleLimbLingerEnabled = true;
+        public static float tentacleLimbLingerHours = 12f;
+
+        /// <summary>DESIGN_PASS FV-1: most limbs (any kind) that may be up on one map before an ordinary
+        /// emergence is held back; 0 = no cap. The Great Emergence ignores it. PROVISIONAL default: 6.</summary>
+        public static int tentacleLiveLimbCap = 6;
+
         /// <summary>FEVERWOOD_TENTACLE_SETPIECE_TUNING_1 §6f master toggle
         /// for the free-tier Uranium suppression route (RM_RadioactiveSuppressant,
         /// crafted from vanilla Uranium). Off: the item and its recipe still
@@ -265,6 +275,9 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref tentacleGreatEmergenceChance, "tentacleGreatEmergenceChance", 0.02f);
             Scribe_Values.Look(ref tentacleGreatEmergenceMinLimbs, "tentacleGreatEmergenceMinLimbs", 3);
             Scribe_Values.Look(ref tentacleGreatEmergenceMaxLimbs, "tentacleGreatEmergenceMaxLimbs", 5);
+            Scribe_Values.Look(ref tentacleLimbLingerEnabled, "tentacleLimbLingerEnabled", true);
+            Scribe_Values.Look(ref tentacleLimbLingerHours, "tentacleLimbLingerHours", 12f);
+            Scribe_Values.Look(ref tentacleLiveLimbCap, "tentacleLiveLimbCap", 6);
             Scribe_Values.Look(ref tentacleUraniumSuppressionEnabled, "tentacleUraniumSuppressionEnabled", true);
             Scribe_Values.Look(ref tentacleUraniumSuppressantAmountPerUse, "tentacleUraniumSuppressantAmountPerUse", 5);
             Scribe_Values.Look(ref tentacleUraniumSuppressionDurationDays, "tentacleUraniumSuppressionDurationDays", 5f);
@@ -337,6 +350,14 @@ namespace RimMandrake.FeverWood
             list.Label("Ambient sighting frequency (mean hours, lower = more often): "
                 + tentacleAmbientMtbHours.ToString("0.0"));
             tentacleAmbientMtbHours = list.Slider(tentacleAmbientMtbHours, 1f, 24f);
+            list.CheckboxLabeled("Limbs sink back on their own", ref tentacleLimbLingerEnabled,
+                "On: a limb nobody drives off slides back under the water after its linger time, so the "
+              + "pools breathe: limbs rise, wait and sink. A sentinel sinking lets the crown chorus resume. "
+              + "Porters keep their own exit. Off: limbs stand until driven off or severed.");
+            list.Label("Linger time before an undisturbed limb sinks (hours): " + tentacleLimbLingerHours.ToString("0"));
+            tentacleLimbLingerHours = list.Slider(tentacleLimbLingerHours, 1f, 72f);
+            list.Label("Most limbs up on one map at once (0 = no cap; the Great Emergence ignores it): " + tentacleLiveLimbCap);
+            tentacleLiveLimbCap = (int)list.Slider(tentacleLiveLimbCap, 0f, 20f);
             list.GapLine();
             list.CheckboxLabeled("The Great Emergence (rare set-piece)", ref tentacleGreatEmergenceEnabled,
                 "A large pool under real pressure can, rarely, erupt into a distinct and much bigger "

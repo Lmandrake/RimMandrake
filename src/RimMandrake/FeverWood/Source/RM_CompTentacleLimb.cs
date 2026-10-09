@@ -14,6 +14,10 @@ namespace RimMandrake.FeverWood
     //     RETREATS (despawns, short pool cooldown); if severe damage lands
     //     before that window closes it is SEVERED instead (a harvestable
     //     body drops, a full day of respite on the pool).
+    //   - DESIGN_PASS FV-1 (2026-10-08): a linger time after which an
+    //     undisturbed limb sinks back (TickLinger), so feelers and
+    //     sentinels no longer stand forever; the live-limb cap lives in
+    //     RM_MapComponent_TentacleWatch. Numbers PROVISIONAL.
     //   - role behaviour: Snare rides RUT_MapComponent_TheTenant's own
     //     rescue-window mechanism (this item's own "reuse — do not
     //     rebuild" note) rather than a second grab/hold system; Lash fires
@@ -32,6 +36,7 @@ namespace RimMandrake.FeverWood
         private int ticksUntilAction; // shared role timer: lash strikes, snare grips, porter deposit
         private bool porterDeposited;
         private bool sentinelRegistered;
+        private int spawnTick = -1; // DESIGN_PASS FV-1: the linger clock starts when the limb rises
 
         public RM_CompProperties_TentacleLimb Props => (RM_CompProperties_TentacleLimb)props;
 
@@ -40,6 +45,12 @@ namespace RimMandrake.FeverWood
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+
+            // A limb loaded from a save made before FV-1 has no clock yet: it starts its linger now.
+            if (!respawningAfterLoad || spawnTick < 0)
+            {
+                spawnTick = Find.TickManager.TicksGame;
+            }
 
             // Role timers are scribed: only a fresh spawn starts them, a load keeps the saved countdown.
             if (Props.role == RM_TentacleRole.Porter)
@@ -105,6 +116,29 @@ namespace RimMandrake.FeverWood
             }
 
             TickWithdrawalWindow();
+            TickLinger();
+        }
+
+        /// <summary>DESIGN_PASS FV-1: the pool breathes. A limb that has stood up for its linger time slides
+        /// back under on its own: no harvest, no respite, no cooldown (it was not driven off). The porter is
+        /// exempt (its deposit timer is its own exit); a limb already withdrawing from damage finishes that
+        /// ladder instead. A sentinel sinking restores the crown chorus through PostDeSpawn.</summary>
+        private void TickLinger()
+        {
+            if (Props.role == RM_TentacleRole.Porter || !parent.IsHashIntervalTick(250))
+            {
+                return;
+            }
+            if (!RM_PoolKernel.LingerExpired(RM_FeverWoodSettings.tentacleLimbLingerEnabled, spawnTick,
+                    Find.TickManager.TicksGame, RM_PoolKernel.LingerTicks(RM_FeverWoodSettings.tentacleLimbLingerHours),
+                    firstHitTick >= 0))
+            {
+                return;
+            }
+            if (!parent.Destroyed && parent.Spawned)
+            {
+                parent.Destroy(DestroyMode.Vanish);
+            }
         }
 
         /// <summary>Once a limb has taken damage, its withdrawal window
@@ -306,6 +340,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref ticksUntilAction, "ticksUntilAction", 0);
             Scribe_Values.Look(ref porterDeposited, "porterDeposited", false);
             Scribe_Values.Look(ref sentinelRegistered, "sentinelRegistered", false);
+            Scribe_Values.Look(ref spawnTick, "spawnTick", -1);
         }
     }
 }

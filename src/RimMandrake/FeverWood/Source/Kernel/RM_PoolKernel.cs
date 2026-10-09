@@ -67,6 +67,25 @@ namespace RimMandrake.FeverWood
         // The designator and work giver both gate on the same toggle; the job must not spend charges when it is off.
         public static bool FoulingAllowed(bool suppressionOn) { return suppressionOn; }
 
+        // ---- the pool breathes (DESIGN_PASS FV-1) -------------------------------------------------------
+        // A limb that has stood up for its linger time, and is not already withdrawing from damage, sinks back.
+        // lingerTicks <= 0 or the toggle off = limbs stay until driven off (the pre-FV-1 behaviour).
+        public static bool LingerExpired(bool lingerOn, int spawnTick, int now, int lingerTicks, bool withdrawing)
+        {
+            if (!lingerOn || lingerTicks <= 0 || withdrawing || spawnTick < 0) return false;
+            return (long)now - spawnTick >= lingerTicks;
+        }
+
+        // How many of `wanted` new ordinary limbs may rise with `live` already up. cap <= 0 = no cap.
+        public static int SpawnBudget(int live, int cap, int wanted)
+        {
+            if (wanted <= 0) return 0;
+            if (cap <= 0) return wanted;
+            return Math.Max(0, Math.Min(wanted, cap - Math.Max(0, live)));
+        }
+
+        public static int LingerTicks(float hours) { return hours <= 0f ? 0 : (int)Math.Min(int.MaxValue, Math.Round(hours * 2500.0)); }
+
         // ---- sentinel counter -------------------------------------------------------------------------
         public static int SentinelUp(int count, out bool hush)
         {
