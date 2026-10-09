@@ -1,0 +1,17 @@
+[
+ {
+  "id": "enact_c8bcd172_garsulix_north_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "GR_Beetlefleet",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"North facing image needs regen, this is a hideous creature now named Garsulix that Hungers. A floating, hungry, chitinous, insect-like ball of gas that drifts ever closer slowly but surely, intent on devouring your flesh.  Regen description.\" RimWorld sprite of the garsulix (defName GR_Beetlefleet), NORTH facing (seen from behind) only; painterly vanilla-RimWorld house style. Derive it from the attached accepted east render (owner pick B, Cauldron sheet): same individual, same palette, same plated gas-sac body; his rejected north render did not match it.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "North facing image needs regen, this is a hideous creature now named Garsulix that Hungers. A floating, hungry, chitinous, insect-like ball of gas that drifts ever closer slowly but surely, intent on devouring your flesh.  Regen description.",
+  "derive_from": "gapall_GR_Beetlefleet_v1_east",
+  "biome_neutral": true
+ }
+]

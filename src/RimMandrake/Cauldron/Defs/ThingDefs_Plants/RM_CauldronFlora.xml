@@ -13,7 +13,8 @@
       (src/RimMandrake/FloodedCanyon/Defs/ThingDefs_Plants/RM_TwistingThorns.xml),
       which is ALSO wired into RM_FloodedCanyon and diverges there.
       This is this mod's own copy.
-    - RM_TreeMartyr: field-for-field copy of RUT_TreeMartyr, which the twin
+    - RM_TreeMartyr ("sarrowan" — label/description renamed on the owner's
+      Cauldron sheet 2026-10-09; otherwise a field-for-field copy of RUT_TreeMartyr), which the twin
       wires only into PoisonForest — the frozen original stays in place too
       (same file), since RUT_PoisonForest.xml is frozen byte-for-byte and
       must keep resolving its own original defName.
@@ -92,8 +93,8 @@
   <!-- ============== Martyr tree — duplicated from RUT_TreeMartyr ============== -->
   <ThingDef ParentName="TreeBase">
     <defName>RM_TreeMartyr</defName>
-    <label>martyr tree</label>
-    <description>A large yucca-related plant adapted to poisoned soils. It yields a small amount of fibrous material that can be used like wood.</description>
+    <label>sarrowan</label>
+    <description>A spined rosette tree of the poisoned valleys. Its trunk is not wood but a rope of dead leaf-bases, twisted tight around each other year on year until they bear the weight of the living crown. Once a season it raises a single tall stalk of pale, bell-shaped flowers that smell faintly of vinegar. Cut, the twisted trunk gives a small amount of fibrous material that can be used like wood.</description>
     <!-- METAL SECOND YIELD (owner-ruled, both trees; CAULDRON_TREE_METAL_YIELD_1):
          steel beside the wood, scaled by growth. See RM_CompMetalYield. -->
     <comps>
