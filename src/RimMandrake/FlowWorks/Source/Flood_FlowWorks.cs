@@ -281,6 +281,12 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
+			// FLUID_DISABLE_ALL_INPUTS_1: a flood of a liquid switched off in Mod Settings spreads no further;
+			// the cells it already covers stay and recede on their own schedule.
+			if (!RM_MapComponent_Excavation.InputAllowed(fluidDef))
+			{
+				return false;
+			}
 			TerrainDef t = map.terrainGrid.TerrainAt(c);
 			if (t == null || t.IsWater)
 			{
