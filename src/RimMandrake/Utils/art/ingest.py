@@ -278,6 +278,10 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
         dec = (v.get("decision") or "").strip()
         note = open_note(v)
         cols = (srow or {}).get("columns") or {}
+        # his ✕ on a picture of THIS row beats any keep this same row would otherwise record for it: a pick or a
+        # (default) variant column he partly or wholly ✕'d keeps only the pictures he did not ✕ (GR_Beetlefleet:
+        # pick B, ✕ B's north "needs regen"; AA_InfectedAerofleet: redo, default variant B, every B picture ✕'d)
+        xed = {s for s in (v.get("purge") or []) if s}
         if dec and srow and decided:
             ph = placeholder_set(cols[dec].values()) if dec in cols else ""
             if ph:
@@ -290,7 +294,7 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                              f"is a regen request ({L.PLACEHOLDER_RULE})"}
                 out.setdefault("placeholder_redo", []).append(f"{row}:{dec}")
             elif dec in cols:
-                shas = sorted({s for s in cols[dec].values() if s})
+                shas = sorted({s for s in cols[dec].values() if s} - xed)
                 ev = {"type": "ruling", "id": L.det_id("ruling-sheet", via, row, dec, v.get("at")),
                       "target": {"shas": shas, "column": dec, "row": row}, "verdict": "keep", "by": "owner",
                       "said": note, "note": note, "at": v.get("at"), "trust": "ruled", "via": via,
@@ -315,9 +319,11 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                 if pl in cols and pl != dec and placeholder_set(cols[pl].values()):
                     out.setdefault("placeholder_refused", []).append(f"{row}:{g}:{pl} (pick)")
                     continue
+                if pl in cols and pl != dec and not ({s for s in cols[pl].values() if s} - xed):
+                    continue
                 if pl in cols and pl != dec:
                     pev = {**ev, "id": L.det_id("ruling-sheet", via, row, pl, v.get("at")), "verdict": "keep",
-                           "target": {"shas": sorted({s for s in cols[pl].values() if s}), "column": pl,
+                           "target": {"shas": sorted({s for s in cols[pl].values() if s} - xed), "column": pl,
                                       "row": row, "graphic": g}}
                     pev.pop("raw_verdict", None)
                     if put(pev):
@@ -328,9 +334,11 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                 if vl in cols and vl != dec and placeholder_set(cols[vl].values()):
                     out.setdefault("placeholder_refused", []).append(f"{row}:{vl} (variant)")
                     continue
+                if vl in cols and vl != dec and not ({s for s in cols[vl].values() if s} - xed):
+                    continue                    # every picture of that variant column is ✕'d: no keep at all
                 if vl in cols and vl != dec:
                     vev = {"type": "ruling", "id": L.det_id("ruling-sheet", via, row, vl, v.get("variantsAt") or v.get("at")),
-                           "target": {"shas": sorted({s for s in cols[vl].values() if s}), "column": vl,
+                           "target": {"shas": sorted({s for s in cols[vl].values() if s} - xed), "column": vl,
                                       "row": row, "variant_of": dec},
                            "verdict": "keep", "by": "owner", "said": note, "note": note,
                            "at": v.get("variantsAt") or v.get("at"), "trust": "ruled", "via": via,

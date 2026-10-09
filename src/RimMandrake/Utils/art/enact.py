@@ -23,7 +23,9 @@ Without --apply it is a DRY RUN: the full plan is printed and nothing changes. S
               DONE render that is neither live nor purged/rejected is listed as AWAITING OWNER PICK — a row is
               "already handled" only when every job is pending/active or its render shipped or was rejected.
   4 PURGE     every ✕ except protected pictures — live in a mod, owner-kept, or the row's own pick/variants.
-              Those are listed as CONFLICTS, one line each, and are never deleted.
+              Those are listed as CONFLICTS, one line each, and are never deleted. A ✕ on a picture of the row's OWN
+              pick/variant column wins for that picture (it is neither installed nor kept), and a keep that this same
+              row of this same file recorded is released by the purge rather than blocking it.
   5 CUT       a row whose decision is `cut`, or `hold` with a note saying cut / not needed, is removed from
               THIS sheet's biome only (inline BiomeDef rosters and every PatchOperation whose own xpath targets
               it, read as XML elements). Our own defs are then deleted with the products/eggs/meat they alone
@@ -518,6 +520,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
         note = I.open_note(v)        # a note already followed is history, never an open request
         past = I.followed_notes(v)
         names = row_names(row, v, census)
+        xed = {s for s in (v.get("purge") or []) if s}     # his ✕ on this row: purged in step 4, never kept/installed
         # ── 5 cut
         is_cut = decided and (dec == "cut" or (dec == "hold" and CUT_NOTE.search(note or "")))
         if is_cut:
@@ -527,7 +530,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
         if decided and not is_cut and dec != "redo":
             picks, conf = effective_picks(v, srow)
             for letter, c in conf:
-                shas = [x for x in (cols.get(letter) or {}).values() if x]
+                shas = [x for x in (cols.get(letter) or {}).values() if x and x not in xed]
                 protect_here |= set(shas)
                 if shas and all(idx.live_anywhere(x) for x in shas):
                     P["installed_already"] += [(row, idx.live_anywhere(x)[0], letter) for x in shas]
@@ -536,7 +539,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             for g, letter in sorted(picks.items()):
                 lab = (srow.get("labels") or {}).get(letter, "")
                 for facing, sha in sorted((cols.get(letter) or {}).items()):
-                    if not sha:
+                    if not sha or sha in xed:       # he picked the column but ✕'d this facing: step 4 purges it
                         continue
                     protect_here.add(sha)
                     rel = rel_for(g, facing)
@@ -579,7 +582,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                         P["install"].append({"row": row, "mod": mod, "rel": r, "sha": sha, "letter": letter,
                                              "ruling": rul["id"] if rul else None})
             for vl in v.get("variants") or []:
-                protect_here |= {s for s in (cols.get(vl) or {}).values() if s}
+                protect_here |= {s for s in (cols.get(vl) or {}).values() if s and s not in xed}
         # ── 3 queue / 6 todo
         if decided and not is_cut and (dec == "redo" or note):
             at = v.get("at") or ""
@@ -631,14 +634,18 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 P["purged_already"] += 1
                 continue
             live = idx.live_anywhere(sha)
-            kept = idx.protected(sha)
+            kept_all = idx.protected(sha)
+            # a keep minted by THIS row of THIS file (pick or default variant) does not protect a picture the same row
+            # ✕'d: ingest used to record both (fixed there; this releases the keeps it already wrote)
+            kept = [k for k in kept_all if not ((k.get("target") or {}).get("row") == row
+                                                and k.get("via") == I.rel_via(decisions))]
             if live or kept or sha in protect_here:
                 why = (f"live at {live[0]}" if live else
                        f"owner-kept ({Path(kept[0].get('via') or '').name or kept[0]['id']})" if kept else
                        "it is this row's own pick/variant")
                 P["conflicts"].append(f"{row}: ✕ {sha[:12]} not purged — {why}")
                 continue
-            P["purge"].append({"row": row, "sha": sha, "note": note})
+            P["purge"].append({"row": row, "sha": sha, "note": note, "release": bool(kept_all)})
     for c in P["cuts"]:
         c["plan"] = plan_cut(src, biome, c["names"])
     return P
@@ -876,7 +883,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
         for p in P["purge"]:
             try:
                 L.purge(p["sha"], owner_said=p["note"] or f"reject+purge on sheet {sheet}",
-                        via=I.rel_via(decisions), release_keep=False)
+                        via=I.rel_via(decisions), release_keep=bool(p.get("release")))
                 R["purged"] += 1
             except L.Refused as e:
                 R["conflicts"].append(f"{p['row']}: ✕ {p['sha'][:12]} not purged — {e}")
