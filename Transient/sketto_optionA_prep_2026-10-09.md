@@ -19,3 +19,11 @@ Plate pixels never under a wing are byte-identical in every frame (1.0) on all t
 
 ## Reading
 Option A makes the unchanged 0.92 gate pass for north and for south master/wing3. It does not fix the share floor (owner question 2) or south wing2 (one regen). The wing roots at the shoulders are master wing colour inside the plate (a few px).
+
+## East follow-up
+
+`sketto_fly_plate_v3_east` is **FAILED** (artpipe `failed/`, validator verdict fail on canon; only `_artsrc/sketto_fly_plate_v3_east/sketto_fly_plate_v3_east.canon_attempt1.png` exists). Tried that attempt1 PNG as the leg donor anyway (scratch `.../optionA_2026-10-09/east_v3/`): it aligns (shift 1,2; plate 3141 px, 171 leg px pasted), `--search` 8 and 16 give identical results. Frames: master_v3_east, wing2_v1_east, wing3_v1_east.
+- cover (floor 0.92): master v3 **0.946**, wing2 **0.929** (shift -3,6), wing3 **0.531** REJECTED (shift 7,8). Only wing3 fails; wing3_v1 and wing2_v1 east derive from master v2, not v3.
+- locked share (`--min-cover 0`, 4 frames): **0.333** vs floor 0.45; plate-never-under-wing px identical 1.0; all 4 frames also fail the 6 px margin.
+- Legs from the master itself: master as donor keeps its wings (trunk opening cannot separate them): plate 6008 px with wings in it, wing2 0.512, wing3 0.360. Invalid. The master has no wing-free legs to extract with this script.
+- Verdict: east is better than plate v2 east (0.892/0.719) but not passing: wing3 (needs a re-pose from master v3), share, margin. Picture east row updated (attempt1 plate; canon-failed donor, so illustrative only).
