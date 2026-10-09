@@ -63,9 +63,9 @@ suite.toggles = [
 SETTINGS = "RimMandrake.LuminousPigment.LuminousPigmentSettings"
 MOD_ID = "mandrake.rm.luminouspigment"
 LIT = 0.3                       # GlowGrid.GameGlowLitThreshold
-PREFIXES = ("Floor:", "FirstCoat:", "Proxy:", "WornGlow:", "Status:", "GodDeltas:", "LightsOut:")
+PREFIXES = ("Floor:", "FirstCoat:", "Proxy:", "WornGlow:", "Status:", "GodDeltas:", "LightsOut:", "Health:")
 TAGS = ("[DeepfireFloor] ", "[DeepfireFirstCoat] ", "[DeepfireProxy] ", "[DeepfireWorn] ",
-        "[DeepfireStatus] ", "[DeepfireGods] ")
+        "[DeepfireStatus] ", "[DeepfireGods] ", "[DeepfireHealth] ")
 GODS = ("Ishko", "Ohm", "Oomo", "MobUnloo", "Rekko", "TaBaa", "Zizzik", "Shkaar", "Ozzik")
 TRIO = ("MobUnloo", "Rekko", "Zizzik")
 LIKE, ADORE, ISHKO, STATUE, DIMINISHED = 3.0, 8.0, 3.0, 15.0, 1.0   # shipped godDelta* defaults
@@ -213,7 +213,7 @@ def _rect(x, z, w, h):
 PADS = {
     "mat": (-60, -45), "gate": (-60, -30), "glow": (-60, -15), "press": (-60, 0), "tank": (-60, 15),
     "floor": (-30, -45), "coat1": (-30, -30), "proxy": (-30, -15), "paint": (-30, 0), "toggles": (-30, 15),
-    "gods": (0, -45), "status": (0, -30), "worn": (0, -15), "styling": (0, 15), "cuisine": (30, -45),
+    "gods": (0, -45), "status": (0, -30), "worn": (0, -15), "styling": (0, 15), "cuisine": (30, -45), "health": (30, -30),
 }
 
 
@@ -1684,6 +1684,30 @@ def settings_roundtrip(t):
                 if not _same(ty, _raw_get(t, name), old):
                     bad.append("%s: did not restore to %r" % (name, old))
             _chk(t, not bad, "%d of %d fields failed: %s" % (len(bad), len(fields), bad[:5]))
+
+
+@suite.chain("health_clean")
+def health_clean(t):
+    """DEEPFIRE_HEALTH_CHECK_1: the light book agrees with the map. After a floor coat the audit finds lights (sanity
+    probe: a check that finds nothing must first prove it can find something) and zero orphan proxies, zero dead
+    entries, zero pawn lights on the wrong map and zero coated floor cells or things outside every light. Locks in the
+    fixed bugs a regression would reopen: a split keeps its coats (members stay covered), and a departed pawn leaves no
+    light (it would show as a wrong-map pawn light or an orphan proxy). 'A failed paint eats no pigment' is not an
+    invariant of the light book and is not covered here."""
+    x, z = _pad(t, "health")
+    with _comp(t, "light_book_matches_the_map"):
+        _room(t, x, z)
+        _act(t, "Floor: coat 6x6", x, z)
+        h = _act(t, "Health: report", x, z)
+        if _live(t):
+            _chk(t, h.get("found") is True, "the Health action found no light component: %s" % json.dumps(h)[:200])
+            _chk(t, (h.get("trackedLights") or 0) >= 4 and (h.get("proxiesOnMap") or 0) >= 4 and (h.get("coatedFloorCells") or 0) >= 36,
+                 "sanity probe: a coated 6x6 should show lights and coated cells, got %s" % json.dumps(h)[:300])
+            _chk(t, h.get("orphanProxies") == 0 and h.get("deadEntries") == 0,
+                 "orphan proxies=%s dead entries=%s: %s" % (h.get("orphanProxies"), h.get("deadEntries"), h.get("examples")))
+            _chk(t, h.get("wrongMapPawnLights") == 0, "%s pawn light(s) left on the wrong map: %s" % (h.get("wrongMapPawnLights"), h.get("examples")))
+            _chk(t, h.get("uncoveredFloorCells") == 0 and h.get("uncoveredThings") == 0,
+                 "coated members outside their light: floor=%s things=%s %s" % (h.get("uncoveredFloorCells"), h.get("uncoveredThings"), h.get("examples")))
 
 
 @suite.chain("no_new_errors")
