@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <HistoryEventDef>
+    <defName>RUT_WasteRunDroppedOnEmpire</defName>
+    <label>dropped the waste on the Empire</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_WasteRunFrozen</defName>
+    <label>froze the waste on the cold side</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_WasteRunEntombed</defName>
+    <label>entombed the waste on the Assailants</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_WasteRunPropaneIgnited</defName>
+    <label>ignited the propane lake</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_WasteRunSlimeNeutralized</defName>
+    <label>poured the Slime experiment down the Throat and it went quiet</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_WasteRunSlimeBloomed</defName>
+    <label>poured the Slime experiment down the Throat and it answered</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_WasteRunSlimeUnknown</defName>
+    <label>poured the Slime experiment down the Throat with unknown results</label>
+  </HistoryEventDef>
+</Defs>

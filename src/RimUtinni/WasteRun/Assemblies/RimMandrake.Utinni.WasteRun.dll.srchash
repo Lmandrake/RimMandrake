@@ -1,0 +1,5 @@
+# project: RimUtinni/WasteRun/Source/RimMandrake.Utinni.WasteRun.csproj
+# dll: eb92b77e35b1c8a5c2d96a2db3f84fa9f6a305c58c46ee24b5b8a62afa0a58fd
+146cb43291f3920841c4223e8567c2c7adddf7a1c8b4d09559c3a8018097ffe9 WasteRunDisposal.cs
+55ade69c2c7e02ccc3ff540865afcc340b3d11873a113fb3ab3cf7f8e3bc3e85 WasteRunSettings.cs
+e499a2adba65ba839524fd6c41769dfbb1ae4a020c5d67e161a10502de26dc40 WasteRunKernel.cs

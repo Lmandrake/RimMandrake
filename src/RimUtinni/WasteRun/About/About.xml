@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.wasterun</packageId>
+  <name>RimMandrake: Utinni - Waste Run</name>
+  <author>mandrake</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.warcasket</packageId>
+      <displayName>RimMandrake: Warcasket</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rm.warcasket</li>
+  </loadAfter>
+  <description>WARCASKET_WASTE_RUN_REMAINDER_1. The gravship waste run: ONE quest (RUT_WasteRun), offered once a cask bay holds waste, where the destination you choose is the branch. v1 destinations: drop it on the Empire (goodwill collapse), freeze it on the cold side, entomb it on the Assailants, sink it in the propane lakes (records the ignition; the war-lab breach is a stub until ANCIENT_WAR_LAB_1), and the Slime experiment (outcome rolled at quest generation; world effects stubbed). The half-extracted core is only waste to dispose of. All numbers PROVISIONAL. Mod Settings toggle the master switch, the offer and each destination.</description>
+</ModMetaData>

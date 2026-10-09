@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Route 2. Quest root weight is 0 and isRootSpecial, so no ConfigError. baseChance PROVISIONAL.
+       The worker only fires with waste in a cask bay and no run already active. -->
+  <IncidentDef>
+    <defName>RUT_WasteRunOffer</defName>
+    <label>waste run offer</label>
+    <category>GiveQuest</category>
+    <targetTags><li>World</li></targetTags>
+    <workerClass>RimMandrake.Utinni.WasteRun.RUT_IncidentWorker_WasteRunOffer</workerClass>
+    <questScriptDef>RUT_WasteRun</questScriptDef>
+    <baseChance>1.0</baseChance>
+    <minRefireDays>20</minRefireDays>
+  </IncidentDef>
+</Defs>

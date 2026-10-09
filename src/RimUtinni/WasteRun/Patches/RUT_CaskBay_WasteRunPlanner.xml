@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: Warcasket</li></mods>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="RM_CaskBay"]/comps</xpath>
+      <value>
+        <li Class="RimMandrake.Utinni.WasteRun.RUT_CompProperties_WasteRunPlanner" />
+      </value>
+    </match>
+  </Operation>
+</Patch>
