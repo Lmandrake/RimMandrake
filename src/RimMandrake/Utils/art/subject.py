@@ -62,6 +62,18 @@ def words(s: str) -> list[str]:
     return re.findall(r"[A-Z][a-z0-9]*|[a-z0-9]+", (s or "").replace("_", " "))
 
 
+def join_stems(name: str) -> list[str]:
+    """Spellings a render job may carry for ONE subject: the tier-stripped stem and, for a wild-form plant
+    ('RSW_Plant_Nysyllin_Wild' -> 'Nysyllin'), the stem without its trailing Wild. Only Wild: it names the same
+    plant in its wild state, whereas Queen/Alpha/Juv/Feral are different life stages whose art must not be shared."""
+    st = stem(name)
+    out = [st] if st else []
+    b = re.sub(r"[_ ]?Wild$", "", st)
+    if b and b != st:
+        out.append(b)
+    return out
+
+
 def variant_stripped(name: str) -> str:
     """'WraidAlpha' -> 'wraid', 'FaaJuv' -> 'faa'; '' when no variant word was dropped or nothing is left."""
     w = words(stem(name))

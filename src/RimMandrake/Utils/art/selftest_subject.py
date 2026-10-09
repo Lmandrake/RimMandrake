@@ -128,6 +128,20 @@ def fixture_tests(w: S.World):
     check(a["columns"] == [] and a["searched"]["name keys (whole-token)"] and a["searched"]["render families"] > 0,
           "art: none still reports the keys and sources searched", a["searched"])
 
+    # ART_SHEET_DONOR_JOIN_GAPS_1: a wild-form plant's render is filed under the plain name; a life stage's is not shared
+    check(S.join_stems("RSW_Plant_Nysyllin_Wild") == ["Nysyllin_Wild", "Nysyllin"], "join: trailing Wild also tries the bare plant name", S.join_stems("RSW_Plant_Nysyllin_Wild"))
+    check(S.join_stems("RG_Plant_Dervish") == ["Dervish"], "join: donor tier + Plant_ stripped", S.join_stems("RG_Plant_Dervish"))
+    check(S.join_stems("RM_ThozzikQueen") == ["ThozzikQueen"], "join: Queen/Alpha/Feral are NOT dropped (different life stage)", S.join_stems("RM_ThozzikQueen"))
+    import art_sheet as AS  # noqa: E402
+
+    class _Idx:
+        variants = {"s1": [{"kind": "artpipe", "job": "nysyllin_v1_east", "facing": "east"}],
+                    "s2": [{"kind": "artpipe", "job": "thozzik_v1_east", "facing": "east"}]}
+        def is_purged(self, sha): return False
+    got = lambda key: [c["label"] for c in AS.name_render_cols(_Idx(), {x for k in S.join_stems(key) for x in [k]}, [])]
+    check(got("RSW_Plant_Nysyllin_Wild") == ["render nysyllin_v1"], "join: Nysyllin_Wild row shows the nysyllin_v1 render", got("RSW_Plant_Nysyllin_Wild"))
+    check(got("RM_ThozzikQueen") == [], "join: ThozzikQueen row does not show the worker's render", got("RM_ThozzikQueen"))
+
     import fill_queue  # noqa: E402
     b = fill_queue.bind_subject({"id": "x", "target_def": "Wraid"}, world=w)
     check(b["target_def"] == "RSW_Wraid" and "Wraid" in b["target_original"], "bind: donor target maps to ours, keeps the original", b)
