@@ -6,13 +6,6 @@ using Verse.Sound;
 
 namespace RimMandrake.DivingInteraction
 {
-    /// <summary>
-    /// What kind of act against the Chill's seabed garden is being reported to
-    /// RM_MapComponent_ChillGardenDefense.RegisterOffense. DrillAgitation is
-    /// CHILL_WARLAB_ROUTES_1's own future hook and is routed to
-    /// RegisterDrillAgitation internally — see that method's doc comment for
-    /// why it can never escalate to the Tarnn wake.
-    /// </summary>
     // ════════════════════════════════════════════════════════════════════
     // CHILL_GARDEN_DEFENSE_1 — the garden's tiered immune system.
     //

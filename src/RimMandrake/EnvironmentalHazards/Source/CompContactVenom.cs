@@ -93,6 +93,13 @@ namespace RimMandrake.EnvironmentalHazards
             }
             List<Pawn> inside = new List<Pawn>();
             tracker.ColonistsInContact(inside);
+            for (int i = inside.Count - 1; i >= 0; i--)
+            {
+                if (inside[i].Position != parent.Position) // the tracker lists the whole map; keep only this stand's cell
+                {
+                    inside.RemoveAt(i);
+                }
+            }
             if (inside.Count == 0)
             {
                 return null;
