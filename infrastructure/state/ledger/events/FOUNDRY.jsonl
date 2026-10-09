@@ -4269,3 +4269,29 @@
 {"seat":"FOUNDRY","event":"claim","id":"DEEPFIRE_DISHES_ALL_FINE_STOVES_1","ts":"2026-10-09T05:15:42Z","tsn":1791522942147060674}
 {"seat":"FOUNDRY","event":"start","id":"DEEPFIRE_DISHES_ALL_FINE_STOVES_1","ts":"2026-10-09T05:15:42Z","tsn":1791522942354560589}
 {"seat":"FOUNDRY","event":"implemented","id":"DEEPFIRE_DISHES_ALL_FINE_STOVES_1","sha":"be41f62b18ab","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:15:43Z","tsn":1791522943177934170}
+{"seat":"FOUNDRY","event":"implemented","id":"SKETTO_FLIGHT_DRAWSIZE_FIX_1","sha":"14187a2adb88","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:17:21Z","tsn":1791523041782959418}
+{"seat":"FOUNDRY","event":"implemented","id":"GOD_DELTA_DIMINISH_CLAMP_1","sha":"a138f069bffd","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:17:22Z","tsn":1791523042935874925}
+{"seat":"FOUNDRY","event":"drop","id":"FEVERWOOD_UNDECLARED_DEPS_1","reason":"False: Wreckage, CreatureBehaviors and EnvironmentalHazards are composed INTO mandrake.rm.biomes as engine entries in Biomes.compose.json (key Wreckage, group engine); biomes_compose.union_about drops member packageIds from the composed About by design, so none is a missing dependency.","ts":"2026-10-09T05:17:32Z","tsn":1791523052246127995}
+{"seat":"FOUNDRY","event":"implemented","id":"AEROSOL_SCREEN_STATICCTOR_WARN_1","sha":"220d7a7542c0","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:17:43Z","tsn":1791523063483580879}
+{"seat":"FOUNDRY","event":"implemented","id":"DEEPFIRE_FAMILY_SETTINGS_KEYED_1","sha":"65798d5811c6","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:18:17Z","tsn":1791523097392087334}
+{"seat":"FOUNDRY","event":"implemented","id":"GLOW_TANK_SEED_CULTURE_1","sha":"57536f0db552","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:18:47Z","tsn":1791523127260538504}
+{"seat":"FOUNDRY","event":"implemented","id":"WRECKAGE_SCALD_FIELD_MISCLASSIFIED_1","sha":"fddc6471903e","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:19:31Z","tsn":1791523171760665108}
+{"seat":"FOUNDRY","event":"implemented","id":"CLUSTER_LIGHT_MEMBER_COVERAGE_1","sha":"60f715a852da","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:20:13Z","tsn":1791523213265186584}
+{"seat":"FOUNDRY","event":"lease","id":"DUST_DEVIL_ITEM_LOSS_FIX_1","action":"take","token":"FOUNDRY.pid26367.a8f78ed7","expires":"2026-10-09T06:05:51Z","ts":"2026-10-09T05:20:51Z","tsn":1791523251415265034}
+{"seat":"FOUNDRY","event":"claim","id":"DUST_DEVIL_ITEM_LOSS_FIX_1","ts":"2026-10-09T05:20:51Z","tsn":1791523251628249620}
+{"seat":"FOUNDRY","event":"start","id":"DUST_DEVIL_ITEM_LOSS_FIX_1","ts":"2026-10-09T05:20:51Z","tsn":1791523251836767951}
+{"seat":"FOUNDRY","event":"lease","id":"GREYSEA_FLOOR_WALKABLE_CHECK_1","action":"take","token":"FOUNDRY.pid26367.2ce7430e","expires":"2026-10-09T06:05:52Z","ts":"2026-10-09T05:20:52Z","tsn":1791523252704395099}
+{"seat":"FOUNDRY","event":"claim","id":"GREYSEA_FLOOR_WALKABLE_CHECK_1","ts":"2026-10-09T05:20:52Z","tsn":1791523252921465481}
+{"seat":"FOUNDRY","event":"start","id":"GREYSEA_FLOOR_WALKABLE_CHECK_1","ts":"2026-10-09T05:20:53Z","tsn":1791523253131783948}
+{"seat":"FOUNDRY","event":"implemented","id":"GELATINOUSSLIME_SEEKER_MARK_FAILS_1","sha":"220d7a7542c0","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:22:09Z","tsn":1791523329019017614}
+{"seat":"FOUNDRY","event":"implemented","id":"LEANINGSCRUB_BLOOM_TOGGLE_OFF_STILL_FIRES_1","sha":"220d7a7542c0","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:22:10Z","tsn":1791523330057672069}
+{"seat":"FOUNDRY","event":"implemented","id":"RUSTCATHEDRAL_SETTINGS_CROSSBIOME_ROUNDTRIP_1","sha":"220d7a7542c0","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:22:11Z","tsn":1791523331097785231}
+{"seat":"FOUNDRY","event":"implemented","id":"MIASMA_MOTHERS_PRICE_RETURN_SITE_1","sha":"220d7a7542c0","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:22:12Z","tsn":1791523332134158715}
+{"seat":"FOUNDRY","event":"note","id":"CRUST_NEVER_STRANDS_1","text":"Decision taken by question card 2026-10-08: forced (tear-free) launch always available, costly, damages hull; no blocker-naming required. Build it.","ts":"2026-10-09T05:23:18Z","tsn":1791523398877378856}
+{"seat":"FOUNDRY","event":"needs","id":"CRUST_NEVER_STRANDS_1","to":"offline","reason":"ruled by card","ts":"2026-10-09T05:23:19Z","tsn":1791523399772039387}
+{"seat":"FOUNDRY","event":"note","id":"GREENTIDE_ILLISK_BUILD_1","text":"Decision taken by question card 2026-10-08: many bodies in a shoal (area blasts hit many). How 'nearly unkillable' is expressed is still open.","ts":"2026-10-09T05:23:20Z","tsn":1791523400419018474}
+{"seat":"FOUNDRY","event":"note","id":"VEXXITH_CLOSED_LOOP_BUILD_1","text":"Decision taken by question card 2026-10-08: (1) add Harmony to Cauldron for acid immunity (owner overrides Harmony-free rule; use PatchApplier). (3) keep vexxith strong at HP x1.6; drop 'poor weapons and walls'. Q2 (which recipes) still open.","ts":"2026-10-09T05:23:21Z","tsn":1791523401216942914}
+{"seat":"FOUNDRY","event":"implemented","id":"DUST_DEVIL_ITEM_LOSS_FIX_1","sha":"26325d3be3e6","ref":"origin/main","criteria":[{"id":"A1","level":"L1","text":"with a dust devil lifting an item whose landing spot and devil cell both refuse placement, the item is back at its origin and not destroyed"}],"needs":"bridge","ts":"2026-10-09T05:23:26Z","tsn":1791523406966688999}
+{"seat":"FOUNDRY","event":"implemented","id":"CAULDRON_YIELD_HARVEST_ORDER_FAIL_1","sha":"09d32ba8fadc","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:23:32Z","tsn":1791523412018756026}
+{"seat":"FOUNDRY","event":"implemented","id":"SCARLANDS_CHATRAK_SNAP_STAGE_02_1","sha":"e0732bd98adc","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:23:33Z","tsn":1791523413042664140}
+{"seat":"FOUNDRY","event":"implemented","id":"CREATUREBEHAVIORS_TRACKGRID_BRIDGE_TIMEOUT_1","sha":"2d63ed4cd7ad","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:23:41Z","tsn":1791523421397383615}
