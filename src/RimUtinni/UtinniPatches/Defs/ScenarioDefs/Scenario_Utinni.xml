@@ -71,7 +71,7 @@
   and becomes social - whether the colony takes them in turns on whether anyone
   forms a bond, which is the tribe deciding its own membership.
 
-  ⛔ SO DO NOT ADD `ScenPart_DisableIncident` LATER "to finish the def". It was
+  ⛔ (Superseded for Anomaly only, owner 2026-10-08: the Anomaly incidents ARE disabled below.) DO NOT ADD `ScenPart_DisableIncident` for the free-colonist events. It was
   considered and declined on the fiction, not forgotten.
   ⚠️ And the wider test still holds: a ScenPart earns its place only when it
   expresses something no def, biome, weather or difficulty setting can. Banning
@@ -184,6 +184,171 @@
           <def>GameStartDialog</def>
           <text>Nothing is ever truly lost. Only owed, only mislaid, only waiting for a better master.\n\nThe Hutts keep a mountain of the galaxy's discards out here, and this was the oldest thing in it: a hull with no maker's name, too dead to be worth cutting up, squatting in the sand since before the Cartel had a name for the sand. You went in through a seam no Gamorrean could ever fit through. You took nothing. You measured.\n\nThen you put a mind in it.\n\nThe core was ancient and it was empty, and the pattern you pressed into it was Jawa - so that it would listen to Jawa, so that it would want what Jawa want. It woke naming itself nothing: not a god, not the ship, only the old mind of the hull turned to Jawa purpose. The nine are audible through it; it claims to be none of them. It answers to Kolyska. It has not once answered to the name you painted on its flank.\n\nIt is also, at this moment, running its pre-flight sequence out loud, in a language this world has not heard since ages past. Engines thought long dead are turning. Every floodlight in the yard has swung toward the noise.\n\nYou can hear the Gamorreans running.\n\nAsh'karr - the Sundered - is a bad world to be caught on and a worse one to be sold on. The hatch is open. The hull is yours because you woke it, and a thing that could still be made to work was never scrap; it was a sleeping hand, owed its waking.\n\nGet it off the ground.</text>
           <closeSound>GameStartSting</closeSound>
+        </li>
+
+        <!-- ANOMALY_EVENTS_SUPPRESS_UTINNI_1 - owner 2026-10-08: "We're not going to have Anomaly events."
+             One DisableIncident per concrete IncidentDef in Data/Anomaly (40). The Anomaly playstyle is a
+             difficulty setting a scenario cannot force, so this list is the only scenario-level switch.
+             A NEW Anomaly incident added by a game update is NOT covered until listed here. -->
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>UnnaturalDarkness</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>DeathPall</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>MetalhorrorImplantation</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>WarpedObelisk_Mutator</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>WarpedObelisk_Duplicator</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>WarpedObelisk_Abductor</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>Nociosphere</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>PitGate</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>FleshmassHeart</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>CreepJoinerJoin</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>CreepJoinerJoin_Metalhorror</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>BloodRain</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>MysteriousCargoUnnaturalCorpse</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>MysteriousCargoCube</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>MysteriousCargoRevenantSpine</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>GiveQuest_DistressCall</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>RevenantEmergence</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>UnnaturalCorpseArrival</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>GoldenCubeArrival</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>HarbingerTreeProvoked</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>HarbingerTreeSpawn</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>MonolithMigration</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>RefugeePodCrash_Ghoul</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>VoidCuriosity</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>ShamblerSwarm</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>ShamblerSwarmAnimals</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>SmallShamblerSwarm</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>SightstealerSwarm</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>ShamblerAssault</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>GhoulAttack</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>Revenant</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>SightstealerArrival</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>PsychicRitualSiege</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>HateChanters</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>FrenziedAnimals</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>FleshbeastAttack</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>GorehulkAssault</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>DevourerAssault</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>DevourerWaterAssault</incident>
+        </li>
+        <li Class="ScenPart_DisableIncident">
+          <def>DisableIncident</def>
+          <incident>ChimeraAssault</incident>
         </li>
       </parts>
     </scenario>
