@@ -32,9 +32,13 @@ By 19 BBY, however, Yoda had a new kybuck, received as a gift as a token of grat
 A colony of kybucks was established on Felucia during the battle there by Confederate mercenaries, including Vazus Mandrake, who tended to the creatures after the war's end.
 
 ## Visual brief
-Four images; the canon one (CGI render, file `Kybucks-LaD.png`) differs a lot from the three Legends ones.
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Kybuck` and `Kybuck/Legends` page images, `Category:Images of kybucks` (Tales of the Jedi animation, 2003 Clone Wars 2D cartoon, Galaxy of Creatures, sourcebook and toy art)).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: the 2003 *Clone Wars* 2D cartoon frame of Yoda's mount (`YodaKybuck-CW23.jpg`). Kept: the canon *Tales of the Jedi* animated render (`canon_1`, the only canon image; anatomy only) and the two painted Legends images (`legends_2` sourcebook painting, `legends_3` toy-packaging painting). Render the canon animal as a real antelope/goat would look: short, dense coat with real hair texture, real horn keratin.
+
+Three images; the canon one (animated render, file `Kybucks-LaD.png`) differs a lot from the two Legends ones.
 - **`canon_1` (canon, CGI, Shili):** two kybucks standing upright in tall grass on **two hind legs** (matches the text "stood on two hoofed feet"), forelimbs small and tucked. Light **golden-tan/caramel short coat**, slim torso, **long thin neck**, small head with a pointed muzzle and a **narrow beard/tuft hanging from the chin** (the Shili form), big leaf-shaped upright ears, and **a pair of dark red-brown, ridged, backward-curving horns** (curve downward at the tips, ibex/goat-like). Dark nose, large amber eye. Slender, antelope/gazelle build. The pale chest tuft and the neck ruff are visible on the left animal.
-- **Legends (`legends_1`, `legends_2`, `legends_3`):** a **four-legged, horse-sized riding animal** (Yoda's mount): chestnut red-brown or dark brown coat, long bushy tail, sturdy hoofed legs, a thick mane of fur at the neck, short upswept horns or a horned/ridged head-guard worn like a helmet, saddle and harness. `legends_1` (Clone Wars 2D cartoon) is red-brown with ringed striped horns; `legends_2` (concept/painted) is dark brown with short upswept horns; `legends_3` (toy packaging art) is a shaggy brown beast with big ridged curled horns and a mane. Looks like a horse/yak hybrid.
+- **Legends (`legends_2`, `legends_3`):** a **four-legged, horse-sized riding animal** (Yoda's mount): chestnut red-brown or dark brown coat, long bushy tail, sturdy hoofed legs, a thick mane of fur at the neck, short upswept horns or a horned/ridged head-guard worn like a helmet, saddle and harness. `legends_2` (concept/painted) is dark brown with short upswept horns; `legends_3` (toy packaging art) is a shaggy brown beast with big ridged curled horns and a mane. Looks like a horse/yak hybrid.
 - **The images disagree** on stance (biped in canon; the Legends images read as quadruped mounts, but the Legends page gives no limb count and says only "similar in appearance to the tauntauns", so treat the Legends stance as unresolved, not as a separate quadruped design), size and build (slim gazelle vs horse). Trust the canon image for the canon animal. The text also says canon Kashyyyk kybucks have dark-brown fur and upward-curving horns with no chin tufts; Shili ones (shown) have light-brown fur, downward-curving horns and chin tufts. Pick one population and keep it consistent.
 - **Size:** canon plate shows them roughly head-high above the grass, deer-sized; Legends mounts are horse-sized.
 
@@ -44,6 +48,7 @@ Four images; the canon one (CGI render, file `Kybucks-LaD.png`) differs a lot fr
 - [ ] Slender, long-necked antelope/goat build with a golden-tan short coat (Shili) or dark brown (Kashyyyk)
 - [ ] Small pointed muzzle with large upright leaf-shaped ears
 - [ ] Narrow beard/tuft hanging from the chin on the Shili form; none on the Kashyyyk form
+- [ ] Realistic rendering: natural short-haired coat and horn texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -53,8 +58,7 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Kybuck/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Kybuck`; wiki caption: infobox image. File: `Kybucks-LaD.png` — https://static.wikia.nocookie.net/starwars/images/7/74/Kybucks-LaD.png/revision/latest?cb=20221027045931
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Kybuck/Legends`; wiki caption: infobox image. File: `YodaKybuck-CW23.jpg` — https://static.wikia.nocookie.net/starwars/images/4/46/YodaKybuck-CW23.jpg/revision/latest?cb=20100911150534
+- `wookieepedia_canon_1.webp` — CANON, *Tales of the Jedi* "Life and Death" (3D animation); wiki caption: infobox image. File: `Kybucks-LaD.png` — https://static.wikia.nocookie.net/starwars/images/7/74/Kybucks-LaD.png/revision/latest?cb=20221027045931
 - `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Kybuck/Legends`; wiki caption: A tamed Kybuck mount. File: `Kybuck-TCWCG.jpg` — https://static.wikia.nocookie.net/starwars/images/4/41/Kybuck-TCWCG.jpg/revision/latest?cb=20100817145905
 - `wookieepedia_legends_3.webp` — LEGENDS page (non-canon continuity) `Kybuck/Legends`; wiki caption: Yoda's kybuck. File: `Kybuck.jpg` — https://static.wikia.nocookie.net/starwars/images/a/ac/Kybuck.jpg/revision/latest?cb=20100925001139
 
