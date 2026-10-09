@@ -127,6 +127,7 @@ namespace RimMandrake.DivingInteraction
         private bool isChillSeabed;
 
         private float offenseScore;
+        private float escalationScore;
         private float agitationScore;
 
         private int tier1CooldownUntilTick = -1;
@@ -227,6 +228,7 @@ namespace RimMandrake.DivingInteraction
             return new RM_GardenDefenseKernel.State
             {
                 offenseScore = offenseScore,
+                escalationScore = escalationScore,
                 agitationScore = agitationScore,
                 tier1CooldownUntilTick = tier1CooldownUntilTick,
                 tier2CooldownUntilTick = tier2CooldownUntilTick,
@@ -237,6 +239,7 @@ namespace RimMandrake.DivingInteraction
         private void StoreKernelState(RM_GardenDefenseKernel.State st)
         {
             offenseScore = st.offenseScore;
+            escalationScore = st.escalationScore;
             agitationScore = st.agitationScore;
             tier1CooldownUntilTick = st.tier1CooldownUntilTick;
             tier2CooldownUntilTick = st.tier2CooldownUntilTick;
@@ -351,6 +354,7 @@ namespace RimMandrake.DivingInteraction
         {
             base.ExposeData();
             Scribe_Values.Look(ref offenseScore, "offenseScore", 0f);
+            Scribe_Values.Look(ref escalationScore, "escalationScore", 0f);
             Scribe_Values.Look(ref agitationScore, "agitationScore", 0f);
             Scribe_Values.Look(ref tier1CooldownUntilTick, "tier1CooldownUntilTick", -1);
             Scribe_Values.Look(ref tier2CooldownUntilTick, "tier2CooldownUntilTick", -1);
