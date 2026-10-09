@@ -13,10 +13,9 @@
     <label>tollhorn core</label>
     <description>A cut cylinder of soft horn-coral, banded like tree rings: a gold-veined band for every week of standing light above it, a blank one for every dark season. A core sample of the sky. The Compact's well-keeper buys them dearly, and has never once sold one.</description>
     <graphicData>
-      <texPath>Things/Mote/BeamGlow</texPath>
+      <texPath>Things/Item/RM_TollhornCore</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>0.7</drawSize>
-      <color>(205,165,165,255)</color>
+      <drawSize>1.0</drawSize>
     </graphicData>
     <soundInteract>Standard_Drop</soundInteract>
     <soundDrop>Standard_Drop</soundDrop>

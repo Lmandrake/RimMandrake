@@ -45,9 +45,8 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_TwilightSea/RM_Tithemoss</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <colorTwo>(120,150,125)</colorTwo>
       <drawSize>(0.8,0.8)</drawSize>
     </graphicData>
     <plant>
@@ -69,9 +68,8 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RM_TwilightSea/RM_Gloamurn</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <colorTwo>(110,140,115)</colorTwo>
       <drawSize>(0.9,0.9)</drawSize>
     </graphicData>
     <!-- TWILIGHTSEA_FLORA_PASS_1 Route C: lit ONLY while discharging; RM_CompGloamurnBank
@@ -109,9 +107,8 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_TwilightSea/RM_Murkspindle</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <colorTwo>(25,25,32)</colorTwo>
       <drawSize>(0.8,0.8)</drawSize>
     </graphicData>
     <!-- TWILIGHTSEA_FLORA_PASS_1 Route C (ruled to ship 2026-09-27): rots above a glow-grid threshold, sky ignored. -->
@@ -139,9 +136,8 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_TwilightSea/RM_Weircomb</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <colorTwo>(70,50,45)</colorTwo>
       <drawSize>(1.0,1.0)</drawSize>
     </graphicData>
     <comps>
@@ -172,9 +168,8 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RM_TwilightSea/RM_Tollhorn</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <colorTwo>(190,150,150)</colorTwo>
       <drawSize>(1.2,1.2)</drawSize>
     </graphicData>
     <plant>
@@ -201,9 +196,8 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RM_TwilightSea/RM_Hushcoral</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <colorTwo>(190,170,100)</colorTwo>
       <drawSize>(0.7,0.7)</drawSize>
     </graphicData>
     <comps>
@@ -233,9 +227,8 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_TwilightSea/RM_Gleamfloss</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <colorTwo>(225,195,110)</colorTwo>
       <drawSize>(0.5,0.5)</drawSize>
     </graphicData>
     <plant>
@@ -257,9 +250,8 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RM_TwilightSea/RM_Glimmerhusk</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <colorTwo>(55,58,60)</colorTwo>
       <drawSize>(1.1,1.1)</drawSize>
     </graphicData>
     <comps>
@@ -289,9 +281,8 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <texPath>Things/Plant/RM_TwilightSea/RM_Farwick</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <colorTwo>(215,205,170)</colorTwo>
       <drawSize>(0.5,0.5)</drawSize>
     </graphicData>
     <comps>
@@ -324,9 +315,8 @@
       <Nutrition>0</Nutrition>
     </statBases>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
+      <texPath>Things/Plant/RM_TwilightSea/RM_Almslight</texPath>
       <graphicClass>Graphic_Random</graphicClass>
-      <colorTwo>(130,150,115)</colorTwo>
       <drawSize>(1.0,1.0)</drawSize>
     </graphicData>
     <comps>
