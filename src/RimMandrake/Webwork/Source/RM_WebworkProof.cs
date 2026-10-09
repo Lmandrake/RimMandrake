@@ -165,7 +165,9 @@ namespace RimMandrake.Webwork
             ThingDef node = DefDatabase<ThingDef>.GetNamedSilentFail(defName);
             ThingDef weave = DefDatabase<ThingDef>.GetNamedSilentFail("Hyperweave");
             if (node == null || weave == null) return "REFUSED: def missing (" + defName + " / Hyperweave)";
-            if (!CellFinder.TryFindRandomCellNear(map.Center, map, 30, x => x.Standable(map) && x.GetFirstBuilding(map) == null
+            // measured 2026-10-09: a map-centre cell read designatable False (4 of 4); a cell 2-4 from a colonist reads True. Start from the colonist.
+            Pawn nearCol = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
+            if (!CellFinder.TryFindRandomCellNear(nearCol != null ? nearCol.Position : map.Center, map, nearCol != null ? 4 : 30, x => x.Standable(map) && x.GetFirstBuilding(map) == null
                     && GenRadial.RadialCellsAround(x, 3f, true).All(c => c.InBounds(map) && c.GetFirstItem(map) == null), out IntVec3 cell))
                 return "REFUSED: no cell";
             bool wasOn = RM_WebworkSettings.webHarvestEnabled;
