@@ -80,6 +80,7 @@
     <Compile Include="Aerial\CompPowerTap.cs" />
     <Compile Include="Aerial\PlaceWorkers_Aerial.cs" />
     <Compile Include="Aerial\RM_MapComponent_Aerial.cs" />
+    <Compile Include="Aerial\RM_FallenWireShock.cs" />
     <Compile Include="Aerial\SectionLayer_RM_AerialGround.cs" />
     <Compile Include="Aerial\AerialProbe.cs" />
   </ItemGroup>
