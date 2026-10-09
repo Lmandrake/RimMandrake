@@ -70,6 +70,7 @@
     <Compile Include="RM_GameComponent_BrineElders.cs" />
     <Compile Include="RM_ElderTradeUtility.cs" />
     <Compile Include="RM_ElderEconomyKernel.cs" />
+    <Compile Include="RM_SpecimenCabinet.cs" />
     <Compile Include="RM_GardenDefenseKernel.cs" />
     <Compile Include="Dialog_OfferToElder.cs" />
     <Compile Include="RM_CompPoolSentinelSquirt.cs" />

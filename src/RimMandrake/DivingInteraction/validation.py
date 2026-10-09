@@ -321,6 +321,7 @@ TOGGLE_GATES = [
     ("greyPoolSentinelEnabled", ["RM_CompPoolSentinelSquirt.cs"], "grey_pool_sentinel_gates_squirt"),
     ("greyElderDischargeEnabled", ["RM_Building_BrineElder.cs"], "grey_elder_discharge_gates_emp"),
     ("greyElderTradeEnabled", ["RM_Building_BrineElder.cs"], "grey_elder_trade_gates_offer"),
+    ("specimenCabinetEnabled", ["RM_SpecimenCabinet.cs"], "specimen_cabinet_gates_display"),
     ("chillFireBanEnabled", ["RM_ChillFireGate.cs"], "chill_fire_ban_gates_flame"),
     ("chillBoilShroudEnabled", ["RM_MapComponent_ChillBoilShroud.cs"], "chill_boil_shroud_gates_flecks"),
     ("chillHeatedSuitEnabled", ["RM_CompHeatedSuitBattery.cs"], "chill_heated_suit_gates_battery"),

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- SPECIMEN_CABINET_DISPLAY_1: gates RM_SpecimenCabinet. PROVISIONAL cost. -->
+  <ResearchProjectDef>
+    <defName>RM_SpecimenCabinetResearch</defName>
+    <label>specimen cabinet</label>
+    <description>Keeping a find rather than selling it: a glazed cabinet that holds a creature or a stone where everyone can see it.</description>
+    <baseCost>400</baseCost>
+    <techLevel>Medieval</techLevel>
+    <prerequisites><li>ComplexFurniture</li></prerequisites>
+    <researchViewX>1</researchViewX>
+    <researchViewY>0</researchViewY>
+  </ResearchProjectDef>
+</Defs>

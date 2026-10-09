@@ -411,6 +411,13 @@ namespace RimMandrake.DivingInteraction.SelfTest
                 || RM_OxygenLedgerKernel.RoomServed(false, 10, 3, 60) || RM_OxygenLedgerKernel.RoomServed(true, 10, 0, 60) || !RM_OxygenLedgerKernel.RoomServed(true, 99999, 1, 0)
                 || RM_OxygenLedgerKernel.RoomServed(true, 0, 1, 60) || !RM_OxygenLedgerKernel.RoomServed(true, int.MaxValue, 2, int.MaxValue))
                 fails.Add("oxygen units: RoomServed boundaries (capacity pooled, unsealed/no pump/empty never served, 0 = no limit, no overflow)");
+            Cases++; Steps++;
+            if (RM_ElderEconomyKernel.DistinctKinds(new[] { "a", "b", "a", "", null, "c" }) != 3 || RM_ElderEconomyKernel.DistinctKinds(null) != 0
+                || RM_ElderEconomyKernel.CabinetBeauty(0) != 0f || RM_ElderEconomyKernel.CabinetBeauty(-5) != 0f || RM_ElderEconomyKernel.CabinetBeauty(3) != 6f
+                || RM_ElderEconomyKernel.CabinetBeauty(100000) != RM_ElderEconomyKernel.CabinetBeautyCap
+                || RM_ElderEconomyKernel.MuseumMoodStage(0) != -1 || RM_ElderEconomyKernel.MuseumMoodStage(1) != 0 || RM_ElderEconomyKernel.MuseumMoodStage(3) != 0
+                || RM_ElderEconomyKernel.MuseumMoodStage(4) != 1 || RM_ElderEconomyKernel.MuseumMoodStage(10) != 2 || RM_ElderEconomyKernel.MuseumMoodStage(int.MaxValue) != 2)
+                fails.Add("cabinet units: DistinctKinds counts each key once and ignores empties; beauty 0 below one kind and capped; mood stage -1/0/1/2 at 0/1/4/10 kinds");
             return fails;
         }
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPECIMEN_CABINET_DISPLAY_1: the cabinet's display beauty is a StatPart on the Beauty stat (it reads nothing for any other thing). -->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/StatDef[defName="Beauty"]/parts</xpath>
+    <value>
+      <li Class="RimMandrake.DivingInteraction.RM_StatPart_SpecimenBeauty" />
+    </value>
+  </Operation>
+</Patch>

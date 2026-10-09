@@ -92,6 +92,32 @@ namespace RimMandrake.DivingInteraction
             return TryClaim(granted, chosen) ? chosen : null;
         }
 
+        // SPECIMEN_CABINET_DISPLAY_1 (DI-7): the home display counts DISTINCT novelty keys, the same keys the Elder trades on.
+        // PROVISIONAL numbers.
+        public const float CabinetBeautyPerKind = 2f;
+        public const float CabinetBeautyCap = 40f;
+        public static readonly int[] MuseumMoodThresholds = { 1, 4, 10 };
+
+        /// <summary>How many different kinds are on display (empty/null keys ignored; the same key counted once).</summary>
+        public static int DistinctKinds(IEnumerable<string> keys)
+        {
+            if (keys == null) return 0;
+            var seen = new HashSet<string>();
+            foreach (string k in keys) if (!string.IsNullOrEmpty(k)) seen.Add(k);
+            return seen.Count;
+        }
+
+        /// <summary>Beauty a cabinet adds for its kinds; never negative, capped.</summary>
+        public static float CabinetBeauty(int kinds) => kinds <= 0 ? 0f : System.Math.Min(CabinetBeautyCap, kinds * CabinetBeautyPerKind);
+
+        /// <summary>Museum thought stage for the colony's kinds on display: -1 none, else 0..2 by threshold.</summary>
+        public static int MuseumMoodStage(int kinds)
+        {
+            int stage = -1;
+            for (int i = 0; i < MuseumMoodThresholds.Length; i++) if (kinds >= MuseumMoodThresholds[i]) stage = i;
+            return stage;
+        }
+
         public struct Decision
         {
             public bool Novel;
