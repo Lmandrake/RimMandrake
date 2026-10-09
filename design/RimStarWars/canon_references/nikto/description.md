@@ -74,12 +74,14 @@ reference (a Kintan Strider, i.e. a Nikto):
   close-fitting segmented helmet, the face projects forward under it, and the skin is the same **warm putty-tan**.
 
 ## Must show
-- [ ] Cranium covered in a plated carapace — large, hard, overlapping tessellated plate segments, helmet-like, distinct from the softer skin below
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three live-action images the visual brief describes (owner ruling 2026-10-08 in the visual brief) and the infobox.*
+- [ ] BODY PLAN: thickset, broad-shouldered, fully humanoid build; bald head whose cranium is covered in a plated carapace — large, hard, overlapping tessellated plate segments running back over the whole crown like a close-fitting segmented helmet, distinct from the softer skin below; face projects forward under it
+- [ ] COLOUR LAYOUT: skin reads as pale putty-tan/pinkish-tan for a "red" Nikto, not a saturated red; the horns pale, the eyes the darkest element of the face
 - [ ] Two prominent horns curving up and inward from the cheeks/temples, large, pale, tusk-like and symmetrical, rising past eye level
-- [ ] Flat, deeply-creased face with radiating furrows from the eyes and mouth
+- [ ] Flat, deeply-creased face with radiating furrows from the eyes and mouth; a small flat nose with two slit nostrils
 - [ ] Small, dark, deep-set eyes and a wide, down-turned mouth with a heavy protruding lower lip/chin pad
-- [ ] Skin reads as pale putty-tan/pinkish-tan for a "red" Nikto, not a saturated red
-- [ ] Realistic rendering: hard plate and creased-skin textures like the live-action prosthetics, natural lighting, no outlines, no cartoon shading
+- [ ] Realistic rendering: hard plate and creased-skin textures like the live-action prosthetics, natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a human with a tint or a few face spines (the plated crown and big cheek horns must show), not a scarlet-red skin, not the hornless fan-finned mountain Nikto blended in
 
 ## Engine limits
 none known

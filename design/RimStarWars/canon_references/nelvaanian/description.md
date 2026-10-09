@@ -130,12 +130,14 @@ pointed ears, visible canines). Treat it as a **negative reference**: it documen
 the bug, not the species.
 
 ## Must show
-- [ ] Predominantly bare slate blue-grey skin over clearly-defined human musculature — NOT a full wolf pelt ("blue-furred" is misleading); fur only as short scruff on forearms, outer thighs, calves and jaw-line
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all three illustrations (the visual brief) and the Legends infobox.*
+- [ ] BODY PLAN: tall, broad-shouldered, long-armed humanoid in a forward-leaning hunter's stance, clearly-defined human musculature (pectorals, abdominals, deltoids, quadriceps) visible; a wolf-like head with a long, narrow canine/equine muzzle; five-fingered hands and broad plantigrade five-toed feet with black claws
+- [ ] COLOUR LAYOUT: predominantly bare slate blue-grey skin, mid-value and slightly lighter on chest and belly, not saturated blue — NOT a full wolf pelt ("blue-furred" is misleading); fur only as short scruff on forearms, outer thighs, calves and jaw-line; the black mane and black markings are the darkest elements
 - [ ] Long, straight, black mane springing from the crown and running down the nape onto the shoulders
-- [ ] Long, narrow, canine/equine muzzle with a black nose pad and prominent sharp teeth, lower canines visible at rest
-- [ ] Small, dark, close-set eyes deeply recessed under a heavy overhanging brow ridge
+- [ ] Muzzle ends in a black nose pad, with prominent sharp teeth, lower canines visible at rest; small, dark, close-set eyes deeply recessed under a heavy overhanging brow ridge
 - [ ] Large, upright, pointed ears set high and angled outward from the skull, clearly visible past the mane
 - [ ] Bold black geometric spiral/meander body markings around the biceps, shoulders and sternum, present on every individual
+- [ ] NEGATIVE: not a werewolf or wolf in a full pelt (no all-over fur coat), not a Bothan (no rounded muzzle-less face, no small or missing ears), no big eyes
 
 ## Engine limits
 As things stand, the xenotype's `RSW_BothanHead` carries `useSkinShader: false` over its greyscale mask (`Defs/HeadTypeDefs/SW_HeadTypes.xml`), so no skin-colour gene reaches the face — a Nelvaanian pawn renders a blue body with a grey-white, untinted face. This is separate from the head shape being wrong (the Bothan head also lacks the snout and ears); even a correctly-tinted head asset would need this shader flag off to show blue skin on the face.

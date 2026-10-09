@@ -27,13 +27,14 @@ Four canon images (a 3D render, a sketch sheet, a painting beside Lando, the Ali
 - **Inflation (`canon_2`, left sketch):** inflated, the whole body becomes a huge smooth sphere with the head, horns and small limbs tiny at the front edge. The text's measurements (9 m long, 60 cm high) are inconsistent with this, so treat the sphere as the intended form.
 
 ## Must show
-- [ ] Low, fat, barrel-shaped body on short stubby legs, with a big flat blunt head and almost no neck
-- [ ] Short, thick, flexible trunk-like snout hanging down from the middle of the face
-- [ ] Two small heavy-lidded bulging eyes on short fleshy stalks or turrets on top of the head
-- [ ] Pair of short dark curved horns from the crown and a row of small dark spikes down the spine
-- [ ] Soft thick hide in tan, yellow or amber with a blotchy darker polygon or honeycomb pattern on the back
-- [ ] Tiny dark three-toed feet; dog-sized, not pig-sized
-- [ ] Realistic rendering: wrinkled thick elephant-like hide texture and natural lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Alien Archive plate (`canon_5`, skin and anatomy, per the owner ruling 2026-10-08 in the visual brief) with the other three canon images as shape references.*
+- [ ] BODY PLAN: a small (under 1 m long, about half a metre tall — dog-sized, not pig-sized), low, fat, barrel-shaped body on short stubby pillar legs, with a big flat blunt head and almost no neck; tiny dark three-toed feet partly hidden by the body; a short spiky tail ridge
+- [ ] COLOUR LAYOUT: soft, thick hide in brown-tan, tan, yellow or amber, with a blotchy darker polygon or honeycomb pattern over the head and back; eyes blue/teal
+- [ ] Short, thick, flexible wrinkled trunk-like snout hanging down from the middle of the face, ending in a small flared tip
+- [ ] Two small heavy-lidded bulging eyes on short fleshy stalks or turrets on top of the head, giving a sleepy, droopy look
+- [ ] Pair of short curved horns from the crown and a row of small conical spikes down the spine (dark in three sources; pale ivory/bone in the Alien Archive plate)
+- [ ] Realistic rendering: wrinkled thick elephant-like hide texture and natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not an ordinary pig (no pig snout disc — the snout is a hanging trunk; no long legs; no pink skin), not a smooth cartoon blob without wrinkled hide
 
 ## Engine limits
 not yet assessed

@@ -130,11 +130,12 @@ makes the tattoos **clan- and family-specific and only present on some individua
   line (which should stay speculative).
 
 ## Must show
-- [ ] Pale, cool, desaturated periwinkle/ice blue skin — not a saturated primary blue and not teal
-- [ ] Striking gold/yellow eyes
-- [ ] Fully human proportions and features (human nose, ears, hands, build) — appearance work is skin hue, eye colour, facial markings and hair, nothing structural
-- [ ] Where facial tattoos are present, they read as simple, sparse marks — gold is one canonical colour, but light blue-white and more elaborate (non-facial) linework are also canonical; not every Pantoran has them
-- [ ] Head hair (and, on males, facial hair) in white, black, or a pastel shade such as blue or lavender
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Papanoida infobox image (reference of record), the Black Sun close-up and the camping painting.*
+- [ ] BODY PLAN: fully human proportions and features (human nose, ears, hands, build; about 1.65-1.77 m) — appearance work is skin hue, eye colour, facial markings and hair, nothing structural
+- [ ] COLOUR LAYOUT: pale, cool, desaturated periwinkle/ice blue skin over face and body (some individuals a deeper blue) — not a saturated primary blue and not teal; striking gold/yellow eyes
+- [ ] Where facial tattoos are present, they read as simple, sparse marks — gold is one canonical colour (small marks high on the cheekbone/temple), but light blue-white and more elaborate (non-facial) linework are also canonical; not every Pantoran has them
+- [ ] Head hair (and, on males, facial hair) in white, black, or a pastel shade such as blue or lavender; males may be bearded
+- [ ] NEGATIVE: not a Chiss (no red eyes — eye colour is the canonical discriminator), not a human with a strong bright-blue tint, no horns, ridges, lekku or other structural alien features
 
 ## Engine limits
 none known — the current `RSW_PantoranHead` mask already bakes in real gold facial markings correctly, so nothing here needs a shader or asset fix.

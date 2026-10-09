@@ -44,12 +44,13 @@ blue, peacock/macaw-derived bird, not a drab or reptilian-brown one.**
 **Net read: render blue**, as a real bird with real feather structure: peacock/macaw-style plumage, very long trailing tail feathers, clawed wings, a strong hooked nut-cracking beak. The red-orange Toxic mutant is not part of the target.
 
 ## Must show
-- [ ] Peacock/slate-blue wing and tail plumage — not drab, tan, grey or reddish-orange
-- [ ] Yellow/gold patch at the head or throat
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the field-guide plate per the `## ruling` below (owner ruling 2026-09-14: "Follow #3 closely."), the Battlefront II painting, and the owner ruling 2026-10-08 in the visual brief.*
+- [ ] BODY PLAN: a real bird with real feather structure: a long S-curved neck, an elongated hooked beak/skull with a crest at the back of the head, long wings with claws, foldable close to the body, and very long trailing tail feathers — as in the field-guide plate (owner ruling 2026-09-14: "Follow #3 closely.")
+- [ ] COLOUR LAYOUT: peacock/slate-blue wing and tail plumage with pale edging — not drab, tan, grey or reddish-orange; a yellow/gold patch at the head or throat; tail feathers edged pale gold/olive; dark crest at the back of the head
 - [ ] Very long trailing tail feathers with pale gold edging
-- [ ] Long S-curved neck and an elongated hooked beak/skull with a crest at the back of the head
-- [ ] Clawed wings, foldable close to the body
-- [ ] Realistic rendering: natural layered feather texture and lighting, no outlines, no cartoon shading
+- [ ] Strong hooked, nut-cracking beak
+- [ ] Realistic rendering: natural layered feather texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not the red-orange "Toxic peko-peko" mutant, not the untextured grey 3D model colour, not a drab or reptilian-brown creature
 
 ## Engine limits
 none known

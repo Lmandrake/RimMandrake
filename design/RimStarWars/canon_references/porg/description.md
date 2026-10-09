@@ -57,12 +57,12 @@ white belly / dark back split are otherwise correctly captured by the donor
 sprite.
 
 ## Must show
-- [ ] Round, egg/teardrop-shaped body with a disproportionately large head-to-body ratio
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all three images, with the infobox image as the reference per the `## ruling` below (owner ruling 2026-09-13: `wookieepedia_infobox.jpg`).*
+- [ ] BODY PLAN: a small, round, egg/teardrop-shaped bird with a disproportionately large head-to-body ratio; short, furry-looking stub wings held close to the body; thin legs with webbed feet tucked almost entirely under the round belly
+- [ ] COLOUR LAYOUT: white/cream face and underbelly, gray-to-brown mottled back and wings (warm and textured, not flat charcoal), thin orange legs; warm orange-tan cheek/eye patches (males only, per canon)
 - [ ] Huge, black-pupiled eyes dominating the face
 - [ ] Flat, BEAKLESS face — only a small nostril bump, no protruding beak shape
-- [ ] Short, furry-looking stub wings held close to the body
-- [ ] Thin orange legs with webbed feet tucked almost entirely under the round belly
-- [ ] White/cream face and underbelly, gray-to-brown mottled back and wings, warm orange-tan cheek/eye patches
+- [ ] NEGATIVE: not a penguin, puffin or generic chick with a beak (no beak or bill nub at all), not the donor's flat dark-charcoal back with a saturated red-orange cheek blotch
 
 ## Engine limits
 none known
