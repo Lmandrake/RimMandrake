@@ -4040,3 +4040,4 @@
 {"seat":"FOUNDRY","event":"lease","id":"QUARANTINE_REMAINDER_REVIEW_1","action":"take","token":"FOUNDRY.pid20197.b1fd3473","expires":"2026-10-09T02:20:24Z","ts":"2026-10-09T01:35:24Z","tsn":1791509725021410075}
 {"seat":"FOUNDRY","event":"claim","id":"QUARANTINE_REMAINDER_REVIEW_1","ts":"2026-10-09T01:35:25Z","tsn":1791509725217158635}
 {"seat":"FOUNDRY","event":"start","id":"QUARANTINE_REMAINDER_REVIEW_1","ts":"2026-10-09T01:35:25Z","tsn":1791509725412216535}
+{"seat":"FOUNDRY","event":"close","id":"QUARANTINE_REMAINDER_REVIEW_1","sha":"bfd71a00d49d","reason":"quarantine fully reviewed and purged; nothing unique lost","ts":"2026-10-09T01:36:54Z","tsn":1791509814759356262}
