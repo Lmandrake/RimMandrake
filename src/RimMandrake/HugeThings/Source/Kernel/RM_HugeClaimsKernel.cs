@@ -29,6 +29,13 @@ namespace RimMandrake.HugeThings
 
         public IEnumerable<long> Claimed => cellOwners.Keys;
 
+        /// <summary>Every owner claiming a cell (ascending), or none.</summary>
+        public IEnumerable<int> OwnersOf(long cell)
+        {
+            if (cellOwners.TryGetValue(cell, out SortedSet<int> o)) return o;
+            return Array.Empty<int>();
+        }
+
         public IEnumerable<long> CellsOf(int owner)
         {
             if (ownerCells.TryGetValue(owner, out HashSet<long> c)) return c;
@@ -121,7 +128,9 @@ namespace RimMandrake.HugeThings
             List<long> accepted = new List<long>();
             if (wanted == null || wanted.Count == 0) return accepted;
             int minX = window.MinX, minZ = window.MinZ, maxX = window.MaxX, maxZ = window.MaxZ;
-            int w = maxX - minX + 1, h = maxZ - minZ + 1;
+            long lw = (long)maxX - minX + 1, lh = (long)maxZ - minZ + 1;
+            if (lw <= 0 || lh <= 0 || lw * lh > MaxWindowCells) return accepted;   // A3.12: refuse an unbounded window
+            int w = (int)lw, h = (int)lh;
             bool[] pass = new bool[w * h];
             for (int z = 0; z < h; z++)
                 for (int x = 0; x < w; x++)
@@ -183,13 +192,28 @@ namespace RimMandrake.HugeThings
                     }
                 }
             }
-            accepted.Sort((a, b) =>
-            {
-                int za = RM_HugeFootprintKernel.KeyZ(a), zb = RM_HugeFootprintKernel.KeyZ(b);
-                return za != zb ? za.CompareTo(zb) : RM_HugeFootprintKernel.KeyX(a).CompareTo(RM_HugeFootprintKernel.KeyX(b));
-            });
+            // PLANT_FOOTPRINT_HARDENING_1 (A3.3): returned in ACCEPTANCE order, never re-sorted. A cell accepted on a later fixpoint
+            // round depends on cells accepted before it; every prefix of this list is safe to close on its own, so a realizer
+            // must spawn in this order and stop at its first failure (RealizeInOrder).
             return accepted;
         }
+
+        /// <summary>PLANT_FOOTPRINT_HARDENING_1 (A3.3): realize `accepted` in order and stop at the first cell that fails, leaving it and
+        /// everything after it pending (a later cell may depend on it). Returns how many were realized.</summary>
+        public static int RealizeInOrder(IList<long> accepted, Func<long, bool> realize)
+        {
+            int n = 0;
+            for (int i = 0; i < accepted.Count; i++)
+            {
+                if (!realize(accepted[i])) break;
+                n++;
+            }
+            return n;
+        }
+
+        /// <summary>PLANT_FOOTPRINT_HARDENING_1 (A3.12): the largest window Plan will allocate for; a bigger one (bad def data) plans
+        /// nothing rather than allocating w*h unbounded.</summary>
+        public const long MaxWindowCells = 512L * 512L;
 
         private static bool RootServed(int i, bool[] pass, bool[] reach, int w, int h)
         {
@@ -288,6 +312,30 @@ namespace RimMandrake.HugeThings
                 outMoves[src] = dests;
             }
             return outMoves;
+        }
+
+        /// <summary>
+        /// PLANT_FOOTPRINT_HARDENING_1 (C3.2): Assign reserves destinations BEFORE the planner runs, so a source the planner then
+        /// refuses kept its reservation and could starve another source forever. Assign and plan are iterated: a refused source
+        /// is dropped and the rest re-assigned, until every source holding a reservation is one the planner accepts. plan(moves)
+        /// returns the accepted cells for that move set. Terminates: each round removes at least one source.
+        /// </summary>
+        public static Dictionary<long, List<long>> AssignAndPlan(IDictionary<long, int> itemCounts, Func<long, int> capacity,
+                                                                 Func<long, bool> excluded, Func<long, long, bool> preferred,
+                                                                 Func<Dictionary<long, List<long>>, List<long>> plan,
+                                                                 out List<long> accepted)
+        {
+            var counts = new Dictionary<long, int>(itemCounts);
+            while (true)
+            {
+                Dictionary<long, List<long>> moves = Assign(counts, capacity, excluded, preferred);
+                accepted = plan(moves);
+                var ok = new HashSet<long>(accepted);
+                var refused = new List<long>();
+                foreach (long src in moves.Keys) if (!ok.Contains(src)) refused.Add(src);
+                if (refused.Count == 0) return moves;
+                foreach (long src in refused) counts.Remove(src);
+            }
         }
 
         /// <summary>Cells reachable from src over capacity >= 0 ground, nearest first (BFS layers), preferred first within a

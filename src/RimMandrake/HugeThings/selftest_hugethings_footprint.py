@@ -318,7 +318,8 @@ def root_only_giants_are_made_impassable_and_stay_cuttable():
 def items_are_pushed_never_wiped():
     comp = open(os.path.join(HERE, "Source", "MapComponent_HugeFootprints.cs"), encoding="utf-8").read()
     assert "if (c.GetItemCount(map) > 0 || c.GetFirstPawn(map) != null) return false;" in comp, "a blocker could wipe items"
-    assert "ItemMover.Assign(counts, Capacity, k => ledger.IsClaimed(k)" in comp
+    # PLANT_FOOTPRINT_HARDENING_1 (C3.2): Assign now iterates with the planner, still excluding every footprint cell
+    assert "ItemMover.AssignAndPlan(counts, Capacity, k => ledger.IsClaimed(k)" in comp
     assert "Letter" not in comp and "Messages.Message" not in comp, "the push must be quiet"
 
 

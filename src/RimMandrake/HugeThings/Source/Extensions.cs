@@ -48,6 +48,9 @@ namespace RimMandrake.HugeThings
         /// <summary>drawSize.x * visualMax the contact cells were measured at (the full-growth quad side).</summary>
         public float measuredSize = 0f;
 
+        /// <summary>A3.12: the largest drawn side (drawSize.x x visual max) a giant may have before blocking is refused.</summary>
+        public const float MaxDrawExtent = 200f;
+
         public List<HugePlantVariant> variants = new List<HugePlantVariant>();
 
         /// <summary>Below this growth the plant blocks nothing (a young fungus is not yet a wall).</summary>
@@ -75,7 +78,7 @@ namespace RimMandrake.HugeThings
             if (texture == null) return null;
             for (int i = 0; i < variants.Count; i++)
             {
-                if (variants[i].texture == texture) return variants[i];
+                if (variants[i] != null && variants[i].texture == texture) return variants[i];
             }
             return null;
         }
@@ -88,7 +91,7 @@ namespace RimMandrake.HugeThings
             {
                 if (union != null) return union;
                 HashSet<IntVec2> all = new HashSet<IntVec2>();
-                for (int i = 0; i < variants.Count; i++) all.UnionWith(variants[i].contact);
+                for (int i = 0; i < variants.Count; i++) if (variants[i]?.contact != null) all.UnionWith(variants[i].contact);
                 union = new HugePlantVariant { texture = null, contact = new List<IntVec2>(all) };
                 return union;
             }
@@ -102,6 +105,19 @@ namespace RimMandrake.HugeThings
             HashSet<string> names = new HashSet<string>();
             for (int i = 0; i < variants.Count; i++)
             {
+                // PLANT_FOOTPRINT_HARDENING_1 (A3.12): a null <li> variant, and contact cells outside the measured frame
+                // (dx within +-measuredSize/2 of the root column, dz in [0, measuredSize)), are data errors.
+                if (variants[i] == null) { yield return "RM_HugePlantExtension variant " + i + " is null (an empty <li>)"; continue; }
+                if (variants[i].contact == null) { yield return "RM_HugePlantExtension variant " + i + " has a null contact list"; continue; }
+                float half = measuredSize / 2f + 1f;
+                foreach (IntVec2 c in variants[i].contact)
+                {
+                    if (c.x < -half || c.x > half || c.z < 0 || c.z > measuredSize)
+                    {
+                        yield return "RM_HugePlantExtension variant " + variants[i].texture + " contact cell " + c + " is outside its measured frame (size " + measuredSize + ")";
+                        break;
+                    }
+                }
                 if (variants[i].texture.NullOrEmpty()) yield return "RM_HugePlantExtension variant " + i + " has no texture";
                 else if (!names.Add(variants[i].texture)) yield return "RM_HugePlantExtension variant " + variants[i].texture + " is listed twice";
                 Vector2 mn = variants[i].opaqueMin, mx = variants[i].opaqueMax;

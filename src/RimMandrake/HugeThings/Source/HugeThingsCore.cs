@@ -61,6 +61,7 @@ namespace RimMandrake.HugeThings
             else if (ext.variants.Count > 0 && ext.measuredSize > 0f
                      && System.Math.Abs(ext.measuredSize - def.plant.visualSizeRange.max * (def.graphicData?.drawSize.x ?? 1f)) > 0.01f)
                 why = "measuredSize " + ext.measuredSize + " != drawSize.x * visualMax (resized since measuring: rerun the tool)";
+            if (why == null) why = Extensions_DataProblem(def, ext);   // A3.12: data the planner must never see
             ext.blockingSupported = why == null;
             if (why != null)
                 Log.Error("[RimMandrake.HugeThings] " + def.defName + ": " + why + " -- it gets selection only, no ground footprint.");
@@ -71,12 +72,26 @@ namespace RimMandrake.HugeThings
             // never wipes anything on spawn (GenSpawn.SpawningWipes returns false for a Plant). Read at startup, so toggling
             // the footprint setting affects these plants after a restart.
             List<int> counts = new List<int>();
-            foreach (HugePlantVariant v in ext.variants) counts.Add(v.contact.Count);
+            foreach (HugePlantVariant v in ext.variants) counts.Add(v?.contact?.Count ?? 0);
             if (RootRule.RootImpassable(RM_HugeThingsSettings.PlantTrunkActive, ext.blockingSupported, counts))
             {
                 def.passability = Traversability.Impassable;
                 ext.rootImpassable = true;
             }
+        }
+
+        /// <summary>PLANT_FOOTPRINT_HARDENING_1 (A3.12): the extension's ConfigErrors, plus the def's own drawSize and visualSizeRange
+        /// bounds, consulted at runtime: any problem turns blocking off for the def (selection only), so the planner never
+        /// gets an unbounded window.</summary>
+        private static string Extensions_DataProblem(ThingDef def, RM_HugePlantExtension ext)
+        {
+            foreach (string e in ext.ConfigErrors()) return e;
+            float dx = def.graphicData?.drawSize.x ?? 1f;
+            FloatRange vs = def.plant.visualSizeRange;
+            if (!(dx > 0f && dx <= RM_HugePlantExtension.MaxDrawExtent)) return "graphicData.drawSize.x " + dx + " is not in (0, " + RM_HugePlantExtension.MaxDrawExtent + "]";
+            if (!(vs.min > 0f && vs.max >= vs.min && vs.max * dx <= RM_HugePlantExtension.MaxDrawExtent))
+                return "plant.visualSizeRange " + vs + " (x drawSize " + dx + ") is not a positive range within " + RM_HugePlantExtension.MaxDrawExtent;
+            return null;
         }
 
         public static void OptInPawn(ThingDef def, RM_HugePawnExtension ext = null)
@@ -154,17 +169,55 @@ namespace RimMandrake.HugeThings
         }
     }
 
+    /// <summary>PLANT_FOOTPRINT_HARDENING_1 (A3.8): the growth check runs after Plant.TickLong has added this period's growth.</summary>
+    [HarmonyPatch(typeof(Plant), nameof(Plant.TickLong))]
+    public static class Patch_Plant_TickLong
+    {
+        public static void Postfix(Plant __instance)
+        {
+            if (!__instance.def.hasCustomRectForSelector || !__instance.Spawned) return;
+            __instance.GetComp<CompHugeFootprint>()?.Notify_PlantTickedLong();
+        }
+    }
+
     /// <summary>GenUI.ThingsUnderMouse adds a plant twice when its root cell is clicked (once as a cell thing, once through
     /// its custom rect: the duplicate check looks only at the close-pawn list). Drop repeats, keeping the first, so click
     /// cycling reaches everything underneath exactly once (GPT review #12).</summary>
     [HarmonyPatch(typeof(GenUI), nameof(GenUI.ThingsUnderMouse))]
     public static class Patch_GenUI_ThingsUnderMouse
     {
+        // PLANT_FOOTPRINT_HARDENING_1 (A2.6 / C2.8 / D2.5): nothing to do while neither click feature is on, and no allocation for a
+        // short list (the usual case): an in-place O(n^2) pass keeps the first of each repeat.
+        private static HashSet<Thing> seen;
+
         public static void Postfix(List<Thing> __result)
         {
             if (__result == null || __result.Count < 2) return;
-            HashSet<Thing> seen = new HashSet<Thing>();
-            __result.RemoveAll(t => !seen.Add(t));
+            if (!RM_HugeThingsSettings.PlantSelectionActive && !RM_HugeThingsSettings.PawnHitboxActive) return;
+            int n = __result.Count;
+            if (n <= 16)
+            {
+                int w = 0;
+                for (int i = 0; i < n; i++)
+                {
+                    Thing t = __result[i];
+                    bool dup = false;
+                    for (int j = 0; j < w; j++) if (__result[j] == t) { dup = true; break; }
+                    if (!dup) __result[w++] = t;
+                }
+                if (w < n) __result.RemoveRange(w, n - w);
+                return;
+            }
+            if (seen == null) seen = new HashSet<Thing>();
+            seen.Clear();
+            int k = 0;
+            for (int i = 0; i < n; i++)
+            {
+                Thing t = __result[i];
+                if (seen.Add(t)) __result[k++] = t;
+            }
+            if (k < n) __result.RemoveRange(k, n - k);
+            seen.Clear();
         }
     }
 
@@ -242,6 +295,8 @@ namespace RimMandrake.HugeThings
         static HugeThingsStartup()
         {
             PatchNamespace(new Harmony(HarmonyId), typeof(HugeThingsStartup).Namespace);
+            // after every [StaticConstructorOnStartup] (the titan half patches from its own cctor)
+            LongEventHandler.ExecuteWhenFinished(AssertPatchedOnce);
             int plants = 0, pawns = 0;
             foreach (ThingDef td in DefDatabase<ThingDef>.AllDefsListForReading)
             {
@@ -262,6 +317,27 @@ namespace RimMandrake.HugeThings
         /// <summary>The assembly holds two halves (giant plants and pawns here, titans in RimMandrake.TitanicCreatures), each with
         /// its own Harmony id: PatchAll on the assembly from both would patch every method twice. This is PatchAll restricted to
         /// one namespace (Harmony's PatchAll is exactly CreateClassProcessor(type).Patch() over the assembly's types).</summary>
+        /// <summary>PLANT_FOOTPRINT_HARDENING_1 (C4.9 / D2.1): the namespaces PatchNamespace is called with. A [HarmonyPatch] class in
+        /// any other namespace (e.g. moved into a sub-namespace) would silently never load; AssertPatchedOnce reports it.</summary>
+        public static readonly string[] PatchedNamespaces = { "RimMandrake.HugeThings", "RimMandrake.TitanicCreatures" };
+        private static readonly Dictionary<System.Type, int> applied = new Dictionary<System.Type, int>();
+
+        /// <summary>Every [HarmonyPatch] class in this assembly applied exactly once; errors name each one that was not.</summary>
+        public static void AssertPatchedOnce()
+        {
+            int bad = 0;
+            foreach (System.Type t in AccessTools.GetTypesFromAssembly(typeof(HugeThingsStartup).Assembly))
+            {
+                if (!t.IsDefined(typeof(HarmonyPatch), false)) continue;
+                int n = applied.TryGetValue(t, out int c) ? c : 0;
+                if (n == 1) continue;
+                bad++;
+                Log.Error("[RimMandrake.HugeThings] patch class " + t.FullName + " was applied " + n + " times (want exactly 1)" +
+                          (System.Array.IndexOf(PatchedNamespaces, t.Namespace) < 0 ? ": its namespace is not one PatchNamespace covers" : ""));
+            }
+            if (bad == 0) Log.Message("[RimMandrake.HugeThings] all " + applied.Count + " patch classes applied exactly once.");
+        }
+
         public static int PatchNamespace(Harmony harmony, string ns)
         {
             int n = 0;
@@ -273,6 +349,7 @@ namespace RimMandrake.HugeThings
                 // the titanic cctor before InjectWakeComps ran (HUGETHINGS_TITANIC_CCTOR_THROWS_1).
                 if (!t.IsDefined(typeof(HarmonyPatch), false)) continue;
                 harmony.CreateClassProcessor(t).Patch();
+                applied[t] = (applied.TryGetValue(t, out int c) ? c : 0) + 1;
                 n++;
             }
             return n;
