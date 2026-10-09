@@ -84,6 +84,12 @@
     </tools>
     <modExtensions>
       <li Class="RimMandrake.CreatureBehaviors.RM_ShadeSeekingWanderExtension" />
+      <!-- GLOOMCAST_WAKE_RIDERS_1 (owner card 2026-10-08: sollak, now chorn, follows the gloomcast
+           shadow; dung is enough, no new scar). searchRadius 60 copies gennok/tebbra; PROVISIONAL.
+           Toggle: Creature Behaviors "Shadow-following commensals". -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadowFollowerExtension">
+        <searchRadius>60</searchRadius>
+      </li>
     </modExtensions>
     <race>
       <body>QuadrupedAnimalWithHooves</body>
