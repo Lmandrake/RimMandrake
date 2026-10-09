@@ -4,14 +4,6 @@
  "about": "Geometric placeholders shipping on the day the rule was made. This list may only SHRINK (placeholder_lint.py): delete an entry when real art replaces it; never add one. 'job' names the artpipe job(s) that will replace it; status OWED means no job is queued yet.",
  "entries": [
   {
-   "path": "src/RimMandrake/FeverWood/Textures/Things/Building/RM_LureStake/RM_LureStake.png",
-   "sha256": "13880d366b5a6243e20a5fc9e1d4535aa4d08829918bc7082b15c1caf29dac3c",
-   "added": "2026-10-07",
-   "texPath": "Things/Building/RM_LureStake/RM_LureStake",
-   "job": [],
-   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
-  },
-  {
    "path": "src/RimMandrake/FeverWood/Textures/Things/Building/RM_Sekkulaath/RM_Sekkulaath_Feeler.png",
    "sha256": "90b0946106306e0bdd8426e0da87aa7ba451271fb037a336b40a7fb8a47c5b12",
    "added": "2026-10-07",
@@ -24,14 +16,6 @@
    "sha256": "ddb3c5ca75dbc088290436ec19058e61da32708d46d7cfdd2685abe771d8b839",
    "added": "2026-10-07",
    "texPath": "Things/Building/RM_Sekkulaath/RM_Sekkulaath_Lash",
-   "job": [],
-   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
-  },
-  {
-   "path": "src/RimMandrake/FeverWood/Textures/Things/Building/RM_Sekkulaath/RM_Sekkulaath_Porter.png",
-   "sha256": "c85844ab8fcd8539030238a04695dde6f0bcd854f9a6b07d38f7fdf28763ced4",
-   "added": "2026-10-07",
-   "texPath": "Things/Building/RM_Sekkulaath/RM_Sekkulaath_Porter",
    "job": [],
    "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
   },
@@ -64,14 +48,6 @@
    "sha256": "841f952c1c40fd050d31ca80293d6c34ad0e7b38c927be13d17316f4af678797",
    "added": "2026-10-07",
    "texPath": "Things/Building/RUT_FeverTrunkHeartwood/RUT_FeverTrunkHeartwood",
-   "job": [],
-   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
-  },
-  {
-   "path": "src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap.png",
-   "sha256": "a4510839d1b93bfd1336518367a95df753d7a397973fa78d7e166ee925dde326",
-   "added": "2026-10-07",
-   "texPath": "Things/Item/Resource/RM_DrommathBurstSap/RM_DrommathBurstSap",
    "job": [],
    "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
   },
@@ -112,14 +88,6 @@
    "sha256": "0804726e2f5d5679e3ee6bb2021582231e9781909935cc7b0539c3d4302b0b4f",
    "added": "2026-10-07",
    "texPath": "Things/Item/Resource/RM_SeepOil/RM_SeepOil",
-   "job": [],
-   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
-  },
-  {
-   "path": "src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals.png",
-   "sha256": "0941eda9e88bd41f51521396a5f35395c014dd53f1c872c0809068a20d898b78",
-   "added": "2026-10-07",
-   "texPath": "Things/Item/Resource/RM_SekkulaathSpleenChemicals/RM_SekkulaathSpleenChemicals",
    "job": [],
    "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
   },
@@ -221,14 +189,6 @@
     "feverwood_ollareth_south"
    ],
    "status": "rendered earlier, never installed (not ruled on as a replacement)"
-  },
-  {
-   "path": "src/RimMandrake/FeverWood/Textures/Things/Pawn/Animal/RM_Sekkulaath_Juvenile/RM_Sekkulaath_Juvenile.png",
-   "sha256": "ed97049a7c09b91358e835bd6bef0a9d828450a1dab35d3d2f071f2e865d3805",
-   "added": "2026-10-07",
-   "texPath": "Things/Pawn/Animal/RM_Sekkulaath_Juvenile/RM_Sekkulaath_Juvenile",
-   "job": [],
-   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
   },
   {
    "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Ammeth/RM_Ammeth_a.png",
