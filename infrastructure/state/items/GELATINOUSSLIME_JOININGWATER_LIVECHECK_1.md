@@ -1,0 +1,10 @@
+Live check of the Joining Water rite (GELATINOUSSLIME_JOINING_WATER_STANDALONE_1, closed `--none-owed`, never run in game). Code: GelatinousSlime/Source/JoiningWater.cs (GenStep_SlimeHandRing, RM_RitualObligationTargetWorker_SlimeHandRing, RM_RitualOutcomeEffectWorker_JoiningWater, RM_JoiningWaterExtension); defs RM_SlimeHandRing (building, GenStepDef, patch RM_SlimeHandRing_MapGenPatch.xml), HediffDef RM_SharedBurden, rite XML src/RimUtinni/Rites/Defs/RUT_JoiningWater.xml (PreceptDef RUT_Ritual_JoiningWater, requires Ideology). Needs the bridge, Ideology, a Slime map. Hand-ring art is a placeholder (tinted slag).
+
+## criteria
+A map generated on the Slime gets one RM_SlimeHandRing (else Log.Warning "[RM GelatinousSlime] Joining Water: no cell found for the hand ring."). The rite RUT_Ritual_JoiningWater targets it; on completion a pawn's shareable hediff (has severity, not a missing part) is shared: other participants gain a weak RM_SharedBurden at weakFactor 0.5; quality fractions 0.25/0.5/0.7/0.9.
+
+## verify
+1. `jawa/get_defs` defs="HediffDef/RM_SharedBurden" and "ThingDef/RM_SlimeHandRing" and "PreceptDef/RUT_Ritual_JoiningWater" (each a STRING 'DefType/DefName', one call each; read success/foundCount/notFound).
+2. Ring: `jawa/list_things` defName=RM_SlimeHandRing on a generated Slime map; expect count 1. Zero with the warning in `jawa/drain_log` = genuine failure; zero without a Slime map = UNMEASURED. `jawa/run_genstep` genStepDef=RM_SlimeHandRing (the GenStepDef defName) can re-run it on the current map.
+3. Rite: ideoligion must carry the precept (no tool adds a precept known; if none, UNMEASURED). Else `jawa/ritual_start` ritual=RUT_Ritual_JoiningWater targetThingId=<hand ring id> organizer=<pawn>, after giving one participant a shareable injury via `jawa/pawn_health` action=add hediff=<e.g. Scratch>. Then `jawa/pawn_get` on the other participants for RM_SharedBurden.
+UNMEASURED looks like: no Slime map, Ideology/precept not adoptable, ritual_start started=false, or no tool that lists hediffs. Quality fractions are a numeric selftest concern, not live.

@@ -1,0 +1,8 @@
+Live check of the clean-patch tell (LONGSHADE_EMPTY_PATCH_WARNING_1, closed `--none-owed`, never run in game). Needs the bridge and a GENERATED RM_LongShade map. Finding to settle first: the item said "add the tollok to lairRaces" but RM_Tollok is a hediff, not a race, and `RM_GenStep_CleanPatches.lairRaces` in Defs/MapGeneration/RM_LongShade_GenSteps.xml lists only RM_Mirrak and RM_Gulloth. So the static verify the item named could never have been satisfied; the item's true state is "tell reused, tollok not a lair". This check proves the tell, nothing about tollok.
+
+## criteria
+On a freshly generated RM_LongShade map, the gen step RM_GenStep_CleanPatches (order 1250) spawns >=1 `RM_LongShadeCleanPatch` marker near a lairing RM_Mirrak/RM_Gulloth, and a marker's inspect line reads "Unnaturally clean."
+
+## verify
+`jawa/run_genstep` genStepDef=RM_GenStep_CleanPatches on the current map only works on an already-generated RM_LongShade map; read `threw` in the result (empty = ok). Then `jawa/list_things` defName=RM_LongShadeCleanPatch: expect count >= 1 and positions within 12 cells of an RM_Mirrak/RM_Gulloth from `jawa/list_pawns`. Inspect string: no tool known to return it -> UNMEASURED for that line (the comp is trivially `CompInspectStringExtra => props.line`; read XML for the `line` value instead).
+UNMEASURED looks like: biome of `jawa/map_info` is not RM_LongShade; run_genstep returns success:false; zero markers with zero lairing creatures (CreatureBehaviorsActive false skips the step silently, per RM_GenStep_CleanPatches.Generate guard). validation.py already says no tool generates an RM_LongShade map (crawler_road_laid_at_mapgen), so a map must be made with `jawa/world_tile_map_generate` on an RM_LongShade tile first.

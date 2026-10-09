@@ -1,0 +1,10 @@
+Live check of the Jawa return tow (LONGSHADE_JAWA_RETURN_1, closed `--none-owed`, never run in game). C#: IncidentWorker_RM_HullTow + RM_MapComponent_CrawlerHull in LongShade/Source/RM_ShadeExtras.cs; def RUT_JawaReturnTow in src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_JawaReturnTow.xml (MayRequire mandrake.rm.longshade). The hull is registered by RM_LongShadeMapgen (SetHull 25x9). Needs the bridge, a GENERATED RM_LongShade map with the dead crawler, and a non-hostile faction whose def name starts with `RUT_Jawa_`.
+
+## criteria
+After a colonist has stood inside the hull rect, hostiles in it are dead and loose items <= maxLooseItems, `RUT_JawaReturnTow` canFireNow=true; firing spawns a Peaceful group at the map edge under LordJob_VisitColony, then `towTicks` later (15000 default) all faction-less non-rock buildings inside the 25x9 rect are removed, Log.Message "[RM LongShade] Jawa return: hull towed, N buildings removed" prints and the message "The clan has towed the dead sandcrawler away." shows. With jawaReturnEnabled=false canFireNow=false.
+
+## verify
+1. `jawa/get_defs` defs="IncidentDef/RUT_JawaReturnTow" (STRING). notFound -> the Utinni patch layer is not loaded: UNMEASURED.
+2. Hull present: `jawa/list_things` for the wreck defs in LongShade/Defs/ThingDefs_Buildings/RM_CrawlerRoad_Wrecks.xml near the hull; no tool reads hullCenter, so use `jawa/static_call` type=RimMandrake.LongShade.RM_MapComponent_CrawlerHull only if a public static accessor exists (it does not; map component members are instance), so hull presence is UNMEASURED unless a tool is added.
+3. `jawa/fire_incident` incidentDef=RUT_JawaReturnTow dryRun=true after placing a colonist in the hull via `jawa/spawn_pawn`; then `rimworld/step_game_ticks` 16000 and `jawa/drain_log` for the exact string "Jawa return: hull towed".
+UNMEASURED looks like: no generated RM_LongShade map; the faction `RUT_Jawa_*` absent or hostile (FindClan null -> canFireNow false); no log line within 16000 ticks. Likely needs a small bridge probe tool (rimbridge-companion skill) to read RM_MapComponent_CrawlerHull.HasHull/Looted; file that if step 2 is the blocker.

@@ -1,0 +1,51 @@
+[
+ {
+  "id": "RM_LureAwning_v1",
+  "rimflow_item_id": "LONGSHADE_LURE_AWNING_1",
+  "target_def": "RM_LureAwning",
+  "prompt": "RimWorld building, painterly vanilla-RimWorld art style, top-down three-quarter view: a hunter's lure awning, a rough sheet of stretched animal hides pulled taut between four slim wooden poles, sun-bleached tan and rust-brown hide with stitched seams and rope ties, a little darker shaded cloth underside, planted in bare sand. Single object, centered, no background, no cast ground shadow.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 3.0,
+  "facings": [],
+  "style_notes": "Distinct from the cloth RM_ShadeTent: hides not canvas, four visible poles, cruder. About 3x3 cells. No outlines.",
+  "priority": 60,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "RM_SlimeHandRing_v1",
+  "rimflow_item_id": "GELATINOUSSLIME_JOINING_WATER_STANDALONE_1",
+  "target_def": "RM_SlimeHandRing",
+  "prompt": "RimWorld floor feature, painterly vanilla-RimWorld art style, top-down: a ring of hand-prints pressed palms-outward into hardened green-grey slime, about a dozen prints each slightly different in size, glossy dried slime rim around each, a bare dull patch in the middle. Single ring, centered, no background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 3.0,
+  "facings": [],
+  "style_notes": "Ground decal about 3x3 cells; slime colour muted olive-green. No outlines.",
+  "priority": 60,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "RM_Harrok_v1",
+  "rimflow_item_id": "LONGSHADE_HARROK_STILT_1",
+  "target_def": "RM_Harrok",
+  "prompt": "RimWorld animal sprite, painterly vanilla-RimWorld art style, side view facing east: the harrok, an invented desert ambush animal, a pole with a mouth: a lean very tall creature standing motionless on four long thin stilt legs, narrow pale sand-grey body held high above the ground, long thin neck and small head with a hooked beak, hardly any bulk, its long legs casting a thin shadow. Single animal, centered, no background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 2.0,
+  "facings": [
+   "east",
+   "north",
+   "south"
+  ],
+  "style_notes": "Invented creature, no canon source. Tall and spindly, taller than a man, legs about 2/3 of the height. No outlines.",
+  "priority": 60,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ }
+]
