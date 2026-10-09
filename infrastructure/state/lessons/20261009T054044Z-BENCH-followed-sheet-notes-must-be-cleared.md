@@ -1,0 +1,1 @@
+Followed sheet notes must be cleared: art enact now moves a note the moment it is followed (jobs filed/found, --mark-done, cut executed) from the row's note into notes_followed; left in place, a reader re-files it and a stale browser tab re-posts it (serve_gated drops a followed note on save).

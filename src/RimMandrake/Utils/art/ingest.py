@@ -83,6 +83,19 @@ def _note_text(on) -> str:
     return "\n".join(on) if isinstance(on, list) else (on if isinstance(on, str) else "")
 
 
+def followed_notes(v: dict) -> list[str]:
+    """His exact words of every note already followed on this row (kept in `notes_followed`, never in `note`)."""
+    return [str(f.get("note") or "").strip() for f in (v.get("notes_followed") or []) if isinstance(f, dict)
+            if str(f.get("note") or "").strip()]
+
+
+def open_note(v: dict) -> str:
+    """The row's note that is still an OPEN request. A note identical to one already followed is not open: a stale
+    browser tab re-posting it must not fire it a second time (owner, 2026-10-08)."""
+    note = (v.get("note") or "").strip()
+    return "" if note and note in followed_notes(v) else note
+
+
 def check_redo_jobs(doc: dict, jobs: list) -> list[str]:
     """Problems (empty = fine) with the regen jobs queued for a decisions file: each carries the row's note verbatim."""
     rows = doc.get("decisions") or {}
@@ -98,7 +111,7 @@ def check_redo_jobs(doc: dict, jobs: list) -> list[str]:
             problems.append(f"UNMEASURED: job {jid} targets {row!r}, which is not a row of this decisions file")
             continue
         covered.add(row)
-        note = (v.get("note") or "").strip()
+        note = open_note(v)
         if note and note not in _note_text(j.get("owner_note")):
             problems.append(f"job {jid} (row {row}): owner_note does not carry his note verbatim: {note[:60]!r}")
     for row, v in rows.items():
@@ -200,7 +213,7 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
         decided = bool(v.get("decidedAt")) or not v.get("purgeTouched")
         srow = (snap.get("rows") or {}).get(row)
         dec = (v.get("decision") or "").strip()
-        note = (v.get("note") or "").strip()
+        note = open_note(v)
         cols = (srow or {}).get("columns") or {}
         if dec and srow and decided:
             ph = placeholder_set(cols[dec].values()) if dec in cols else ""
