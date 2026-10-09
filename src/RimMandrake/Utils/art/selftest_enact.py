@@ -212,7 +212,8 @@ def main():
         check(cuts["RM_Cut"]["tex_retire"] == ["Things/Pawn/Animal/RM_Cut/RM_Cut"], "cut retires the def's texture")
         check("CONFLICTS (2)" in out and "TODO (1)" in out, "report lists conflicts and TODOs")
 
-        R = E.enact(F["decisions"], apply=True, holds=["vine"], no_deploy=True)
+        JOBS = F["root"] / "jobs_out.json"      # never Transient/ of the real repo
+        R = E.enact(F["decisions"], apply=True, holds=["vine"], no_deploy=True, redo_jobs_out=JOBS)
         check(R["ok"], "apply succeeds")
         check(foo.read_bytes() == L.store_get(shas["new"]), "pick B is installed in the live slot")
         check(not L.store_has(shas["rej"]) and L.store_has(shas["livex"]) and L.store_has(shas["kept"]),
@@ -239,7 +240,42 @@ def main():
               f"redo queued at priority 0 with his note verbatim ({len(jobs)} job file(s))")
         mid = tree_digest(F["root"] / "src") + tree_digest(F["led"]) + tree_digest(F["ap"])
 
-        R2 = E.enact(F["decisions"], apply=True, holds=["vine"], no_deploy=True)
+        # a followed note comes OFF the open notes (owner, 2026-10-08): queued, cut -> notes_followed, his words kept
+        D = json.loads(F["decisions"].read_text())["decisions"]
+        nf = D["RM_Redo"].get("notes_followed") or [{}]
+        check(D["RM_Redo"]["note"] == "" and nf[0].get("note") == "make it scarier" and nf[0].get("followed_by")
+              and nf[0].get("when") and nf[0].get("at"), "a queued note moves to notes_followed (exact words, job ids, when)")
+        check(D["RM_Cut"]["note"] == "" and D["RM_Cut"]["notes_followed"][0]["followed_by"] == ["cut"]
+              and D["RM_Cut"]["notes_followed"][0]["note"] == "Just cut this, not needed", "an executed cut's note is followed by 'cut'")
+        check(D["RM_Note"]["note"] == "make it 0.3 cells" and "notes_followed" not in D["RM_Note"]
+              and D["RM_HeldVine"]["note"] == "hold me", "an un-enacted note and a held row keep their open note")
+        check(D["RM_Foo"]["purge"] and D["RM_Redo"]["decision"] == "redo" and D["RM_Redo"]["at"] == "2026-10-08T10:00:00.000Z",
+              "clearing a note leaves decision, at and picks untouched")
+        check(R["notes_cleared"] and "notes followed, taken off" in E.report(R), "the report names the notes it took off")
+        import ingest as I0
+        stale = dict(D["RM_Redo"], note="make it scarier")       # a stale browser tab re-posting the followed text
+        check(I0.open_note(stale) == "" and I0.open_note(dict(stale, note="make it scarier AND bluer")) != "",
+              "a note identical to a followed one is not open; a new note is")
+        # his new note typed before enact writes survives: clear only rows whose note STILL matches
+        Dm = json.loads(F["decisions"].read_text())
+        Dm["decisions"]["RM_Note"]["note"] = "make it 0.5 cells"
+        F["decisions"].write_text(json.dumps(Dm))
+        got = E.clear_followed(F["decisions"], {"RM_Note": {"note": "make it 0.3 cells", "by": ["mark-done"]}})
+        check(got == [] and json.loads(F["decisions"].read_text())["decisions"]["RM_Note"]["note"] == "make it 0.5 cells",
+              "a note he changed meanwhile is NOT removed")
+        Dm["decisions"]["RM_Note"]["note"] = "make it 0.3 cells"
+        F["decisions"].write_text(json.dumps(Dm))
+        import serve_gated as SGT
+        ops = {"RM_Redo": dict(D["RM_Redo"], note="make it scarier", notes_followed=None),
+               "RM_Foo": {"decision": "B", "note": "fresh"}}
+        ops["RM_Redo"].pop("notes_followed")
+        g = SGT.guard_ops(ops, D)
+        check(g["RM_Redo"]["note"] == "" and g["RM_Redo"]["notes_followed"] == D["RM_Redo"]["notes_followed"]
+              and g["RM_Foo"] == ops["RM_Foo"], "server-side save drops a followed note and keeps the history")
+        check(SGT.guard_ops({"RM_Redo": dict(ops["RM_Redo"], note="new words")}, D)["RM_Redo"]["note"] == "new words",
+              "server-side save keeps a genuinely new note")
+
+        R2 = E.enact(F["decisions"], apply=True, holds=["vine"], no_deploy=True, redo_jobs_out=JOBS)
         zero = (R2["ingest_new"], R2["installed"], R2["queued_jobs"], R2["purged"], R2["cut_rows"], R2["textures_retired"])
         check(zero == (0, 0, 0, 0, 0, 0), f"second --apply is a no-op {zero}")
         check(tree_digest(F["root"] / "src") + tree_digest(F["led"]) + tree_digest(F["ap"]) == mid,
@@ -257,7 +293,7 @@ def main():
             q.startswith("RM_Redo") for q in R5["plan"]["queued_already"]),
             "a failed-only redraw is planned for RE-FILE, not listed as already queued")
         check(E.ruling_status(F["decisions"])["rows"]["RM_Redo"]["state"] == "refiled", "ruling_status: failed, re-filed")
-        R6 = E.enact(F["decisions"], apply=True, holds=["vine"], no_deploy=True)
+        R6 = E.enact(F["decisions"], apply=True, holds=["vine"], no_deploy=True, redo_jobs_out=JOBS)
         check(R6["refiled"] == 1 and (ap / "pending" / f"{jid}.json").exists()
               and not (ap / "failed" / f"{jid}.json").exists()
               and len(list((ap / "_requeued_manifests").glob(f"{jid}.manifest*.json"))) == 1,
@@ -290,6 +326,9 @@ def main():
         R4 = E.enact(F["decisions"], apply=False, holds=["vine"], no_deploy=True)
         check(not R4["todo"] and any(d.startswith("RM_Note") for d in R4["plan"]["done"]),
               "--mark-done records the note as done; later runs list it as done, not TODO")
+        E.enact(F["decisions"], apply=True, holds=["vine"], no_deploy=True, redo_jobs_out=JOBS)
+        D2 = json.loads(F["decisions"].read_text())["decisions"]["RM_Note"]
+        check(D2["note"] == "" and D2["notes_followed"][0]["followed_by"] == ["mark-done"], "a marked-done note is taken off on --apply")
         check(not E.CUT_NOTE.search("variations") and E.CUT_NOTE.search("no longer needed"), "cut-note matcher")
     finally:
         shutil.rmtree(F["root"], ignore_errors=True)

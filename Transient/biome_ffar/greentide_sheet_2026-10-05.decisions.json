@@ -7,7 +7,17 @@
       "at": "2026-10-08T04:42:21.917Z",
       "decidedAt": "2026-10-08T04:41:23.624Z",
       "decision": "B",
-      "note": "Implement its description: it's name is now a Zrrik. Has the odd self-healing ability.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:42:21.917Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Implement its description: it's name is now a Zrrik. Has the odd self-healing ability.",
+          "when": "2026-10-08T22:40:39-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "b9ee87453af03264b350ab76a8bb6ee63dec9e26cab2e87d38b146ce129c3241",
@@ -25,7 +35,18 @@
       "at": "2026-10-09T05:16:50.665Z",
       "decidedAt": "2026-10-08T04:54:00.654Z",
       "decision": "B",
-      "note": "Add much more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T05:16:50.665Z",
+          "followed_by": [
+            "regen_gt_grass_varb_v1",
+            "regen_gt_grass_varc_v1"
+          ],
+          "note": "Add much more realistic variants",
+          "when": "2026-10-08T22:40:39-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B",
@@ -55,7 +76,17 @@
     "RM_Brakkel": {
       "at": "2026-10-09T05:16:18.975Z",
       "decision": "A",
-      "note": "add one more variant",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T05:16:18.975Z",
+          "followed_by": [
+            "regen_gt_brakkel_varb_v1"
+          ],
+          "note": "add one more variant",
+          "when": "2026-10-08T22:40:39-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -96,7 +127,17 @@
     "RM_Cundral": {
       "at": "2026-10-09T05:16:32.542Z",
       "decision": "A",
-      "note": "add one more variant",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T05:16:32.542Z",
+          "followed_by": [
+            "regen_gt_cundral_varb_v1"
+          ],
+          "note": "add one more variant",
+          "when": "2026-10-08T22:40:39-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -108,7 +149,17 @@
     "RM_Dhollock": {
       "at": "2026-10-08T04:43:16.604Z",
       "decision": "A",
-      "note": "Rename to the Dhollollo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:43:16.604Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Rename to the Dhollollo",
+          "when": "2026-10-08T22:40:39-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -141,7 +192,17 @@
     "RM_Gorbeleth": {
       "at": "2026-10-09T05:16:46.018Z",
       "decision": "A",
-      "note": "add one more variant",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T05:16:46.018Z",
+          "followed_by": [
+            "regen_gt_gorbeleth_varb_v1"
+          ],
+          "note": "add one more variant",
+          "when": "2026-10-08T22:40:39-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B",
@@ -313,7 +374,18 @@
       "at": "2026-10-09T05:18:02.905Z",
       "decidedAt": "2026-10-09T05:18:02.905Z",
       "decision": "C",
-      "note": "Add much more realistic variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T05:18:02.905Z",
+          "followed_by": [
+            "regen_gt_sarquin_varb_v1",
+            "regen_gt_sarquin_varc_v1"
+          ],
+          "note": "Add much more realistic variants",
+          "when": "2026-10-08T22:40:39-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -336,7 +408,17 @@
       "at": "2026-10-09T05:15:59.049Z",
       "decidedAt": "2026-10-08T04:51:47.205Z",
       "decision": "hold",
-      "note": "not in this biome",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T05:15:59.049Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "not in this biome",
+          "when": "2026-10-08T22:40:39-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -360,7 +442,17 @@
     "RM_Thurrock": {
       "at": "2026-10-08T04:52:00.898Z",
       "decision": "A",
-      "note": "Redo description",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T04:52:00.898Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Redo description",
+          "when": "2026-10-08T22:40:39-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -656,7 +748,22 @@
       "at": "2026-10-09T05:32:14.827Z",
       "decidedAt": "2026-10-09T05:11:38.831Z",
       "decision": "J",
-      "note": "Get rid of all this crappy art and follow the purple and tan canon art very closely. NOT a bird. Flyer.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T05:32:14.827Z",
+          "followed_by": [
+            "regen_gt_canon_hawkbat_juv_v1_east",
+            "regen_gt_canon_hawkbat_juv_v1_south",
+            "regen_gt_canon_hawkbat_v1_east",
+            "regen_gt_canon_hawkbat_v1_north",
+            "regen_gt_canon_hawkbat_v1_south",
+            "regen_gt_canon_hawkbat_juv_v1_north"
+          ],
+          "note": "Get rid of all this crappy art and follow the purple and tan canon art very closely. NOT a bird. Flyer.",
+          "when": "2026-10-08T22:40:39-0700"
+        }
+      ],
       "picks": {
         "_flip:swanimals/Hawkbat/Hawkbat_Flying_": "G",
         "swanimals/Hawkbat/Hawkbat_j": "F"
@@ -711,7 +818,19 @@
       "at": "2026-10-09T05:32:36.083Z",
       "decidedAt": "2026-10-09T05:12:42.767Z",
       "decision": "F",
-      "note": "follow canon art closley, looks closest to a mantis shape. Study the donor art for geometry info. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T05:32:36.083Z",
+          "followed_by": [
+            "regen_gt_canon_kinrath_v1_east",
+            "regen_gt_canon_kinrath_v1_north",
+            "regen_gt_canon_kinrath_v1_south"
+          ],
+          "note": "follow canon art closley, looks closest to a mantis shape. Study the donor art for geometry info. ",
+          "when": "2026-10-08T22:40:39-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "ac70f1fdede063cc610c8a987dd84200e2f1d4eab7e4413d8c595944969b7479",
@@ -774,7 +893,17 @@
       "at": "2026-10-09T05:32:50.923Z",
       "decidedAt": "2026-10-09T05:13:41.239Z",
       "decision": "",
-      "note": "Use G",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T05:32:50.923Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Use G",
+          "when": "2026-10-08T22:40:39-0700"
+        }
+      ],
       "picks": {
         "swanimals/Mott/Mott_m": "G",
         "swanimals/Mott/Mott_m_Swimming": "C"

@@ -498,7 +498,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
     done_marks = set(done_ev)
     P = {"decisions": decisions, "sheet": sheet, "biome": biome, "held": [], "install": [], "installed_already": [],
          "install_after_ingest": [], "queue": [], "queued_already": [], "refile": [], "awaiting_pick": [], "purge": [], "purged_already": 0,
-         "cuts": [], "todo": [], "done": [], "conflicts": [], "in_game_not_ours": 0}
+         "cuts": [], "todo": [], "done": [], "conflicts": [], "in_game_not_ours": 0, "followed": {}}
     for row, v in (doc.get("decisions") or {}).items():
         if not isinstance(v, dict) or not v.get("at"):
             continue
@@ -509,12 +509,13 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
         srow = (snap.get("rows") or {}).get(row) or {}
         cols = srow.get("columns") or {}
         dec = (v.get("decision") or "").strip()
-        note = (v.get("note") or "").strip()
+        note = I.open_note(v)        # a note already followed is history, never an open request
+        past = I.followed_notes(v)
         names = row_names(row, v, census)
         # ── 5 cut
         is_cut = decided and (dec == "cut" or (dec == "hold" and CUT_NOTE.search(note or "")))
         if is_cut:
-            P["cuts"].append({"row": row, "names": names, "note": note})
+            P["cuts"].append({"row": row, "names": names, "note": note, "raw_note": v.get("note")})
         # ── 2 install
         protect_here = set()
         if decided and not is_cut and dec != "redo":
@@ -573,6 +574,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             at = v.get("at") or ""
             match = [j for j in jobs if job_defs(j) & names and
                      ((note and note in I._note_text(j.get("owner_note"))) or
+                      any(t in I._note_text(j.get("owner_note")) for t in past) or
                       str(j.get("created") or "") >= at[:19])]
             earlier = [j for j in jobs if job_defs(j) & names and j["_state"] in ("pending", "active")
                        and j not in match]
@@ -590,6 +592,9 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     P["awaiting_pick"].append(f"{row}: {len(cj['awaiting'])} render(s) done, not installed — "
                                               + ", ".join(j["id"] for j in cj["awaiting"][:4])
                                               + (" …" if len(cj["awaiting"]) > 4 else ""))
+                carried = [j["id"] for j in match if note and note in I._note_text(j.get("owner_note"))]
+                if carried and not cj["capped"]:
+                    P["followed"][row] = {"note": v.get("note"), "by": carried}
                 if not (cj["refile"] or cj["capped"] or cj["awaiting"]):
                     states = sorted({j["_state"] for j in match})
                     P["queued_already"].append(f"{row}: {len(match)} job(s) {'/'.join(states)}")
@@ -600,6 +605,7 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 P["conflicts"].append(f"{row}: {done_ev[(sheet, row, note)][6:].strip()}")
             elif (sheet, row, note) in done_marks:
                 P["done"].append(f"{row}: {note[:70]}")
+                P["followed"][row] = {"note": v.get("note"), "by": ["mark-done"]}
             else:
                 P["todo"].append(f"{row}: note not enacted — {note[:110]!r} (art or def edit? `--mark-done {row}` when done)")
         # ── 4 purge
@@ -691,7 +697,8 @@ def ruling_status(decisions: Path, idx: L.Index | None = None, jobs: list[dict] 
         elif any(r == row for r, *_ in P["installed_already"]):
             st, detail = "reflected", "your pick is live in game files"
         rows[row] = {"state": st, "detail": detail[:300], "when": when, "decision": (v.get("decision") or "").strip(),
-                     "note": (v.get("note") or "").strip()[:200]}
+                     "note": I.open_note(v)[:200],
+                     "followed": I.followed_notes(v)[-3:]}
     n_ok = sum(1 for r in rows.values() if r["state"] in ("reflected", "redrawn"))
     return {"file": str(decisions), "rows": rows, "total": len(rows), "reflected": n_ok}
 
@@ -774,14 +781,14 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
     P = build_plan(decisions, holds, idx)
     R = {"ok": True, "apply": apply, "ingest_new": ing.get("rulings", 0) + ing.get("rejected", 0),
          "installed": 0, "queued_jobs": 0, "refiled": 0, "purged": 0, "cut_rows": 0, "defs_deleted": 0, "textures_retired": 0,
-         "deploy": [], "conflicts": list(P["conflicts"]), "todo": list(P["todo"]), "plan": P}
+         "deploy": [], "notes_cleared": [], "conflicts": list(P["conflicts"]), "todo": list(P["todo"]), "plan": P}
     touched_mods: set[str] = set()
     sheet = P["sheet"]
     # 6 mark-done
     # --mark-done is a RECORD that a note was enacted by hand, so it is written even on a dry run
     for row in mark_done:
         v = (doc.get("decisions") or {}).get(row) or {}
-        note = (v.get("note") or "").strip()
+        note = I.open_note(v)
         if not note:
             R["conflicts"].append(f"--mark-done {row}: that row carries no note — nothing recorded")
             continue
@@ -793,6 +800,8 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
         R["todo"] = [t for t in R["todo"] if not t.startswith(f"{row}: note not enacted")]
         if new:
             P["done"].append(f"{row}: {note[:70]} (marked now)")
+        if not (done_evidence or "").startswith("OWNER:"):
+            P["followed"][row] = {"note": v.get("note"), "by": ["mark-done"]}
     if not apply:
         R["installed"] = len(P["install"])
         R["queued_jobs"] = len(P["queue"])
@@ -833,6 +842,10 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
             r = subprocess.run(fq, capture_output=True, text=True, cwd=str(L.REPO_ROOT))
             if r.returncode == 0:
                 R["queued_jobs"] = len(rows)
+                for q in P["queue"]:
+                    if q["note"]:
+                        P["followed"][q["row"]] = {"note": q["v"].get("note"),
+                                                   "by": [r["id"] for r in rows if r["target_def"] == q["row"]]}
             else:
                 R["conflicts"].append(f"fill_queue refused {jp.name}: {(r.stderr or r.stdout).strip()[-300:]}")
         # 3b re-file failed jobs
@@ -853,6 +866,8 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
         # 5 cut
         for c in P["cuts"]:
             pl = c["plan"]
+            if c.get("note"):
+                P["followed"][c["row"]] = {"note": c["raw_note"], "by": ["cut"]}
             if not (pl["sites"] or pl["deleted"]):
                 continue
             files = apply_cut(pl)
@@ -870,11 +885,43 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
                         touched_mods.add(mod)
                     except L.Refused as e:
                         R["conflicts"].append(f"{c['row']}: texture {rel} kept — {e}")
+    # 6b a followed note comes OFF the open notes (owner, 2026-10-08)
+    if apply and P["followed"]:
+        R["notes_cleared"] = clear_followed(decisions, P["followed"])
     # 7 deploy
     if not no_deploy:
         R["deploy"] = deploy(touched_mods, dry_run=not apply)
     R["touched_mods"] = sorted(Path(m).name for m in touched_mods)
     return R
+
+
+def clear_followed(decisions: Path, followed: dict) -> list[str]:
+    """Move each followed note out of its row's `note` into `notes_followed` (his exact words, when, and by what).
+    Re-reads the file immediately before writing and only touches a row whose note STILL equals the followed text,
+    so a note he typed meanwhile survives; atomic replace, same JSON layout the sheet's sidecar writes."""
+    import tempfile
+    path = Path(decisions)
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    when = time.strftime("%Y-%m-%dT%H:%M:%S%z")
+    cleared = []
+    for row, f in sorted(followed.items()):
+        v = (doc.get("decisions") or {}).get(row)
+        raw = f.get("note") or ""
+        if not isinstance(v, dict) or not raw.strip() or (v.get("note") or "").strip() != raw.strip():
+            continue
+        v.setdefault("notes_followed", []).append({"note": v["note"], "at": v.get("at"), "followed_by": f["by"], "when": when})
+        v["note"] = ""
+        cleared.append(row)
+    if not cleared:
+        return []
+    payload = (json.dumps(doc, indent=2, ensure_ascii=False, sort_keys=True) + "\n").encode("utf-8")
+    fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix=".enact-", suffix=".tmp")
+    with os.fdopen(fd, "wb") as fh:
+        fh.write(payload)
+        fh.flush()
+        os.fsync(fh.fileno())
+    os.replace(tmp, path)
+    return cleared
 
 
 def mod_of(f) -> str:
@@ -927,6 +974,10 @@ def report(R: dict) -> str:
             L_.append(f"        retire texture {tp}")
     if P["held"]:
         L_.append(f"  held       {len(P['held'])} row(s): {', '.join(P['held'])}")
+    if R.get("notes_cleared"):
+        L_.append(f"  notes followed, taken off the open notes ({len(R['notes_cleared'])}): " + ", ".join(R["notes_cleared"]))
+    elif P["followed"]:
+        L_.append(f"  notes followed ({len(P['followed'])}) — would be taken off the open notes on --apply: " + ", ".join(sorted(P["followed"])))
     if P["done"]:
         L_.append(f"  notes done {len(P['done'])}: " + "; ".join(d.split(':')[0] for d in P["done"]))
     for d in R["deploy"]:

@@ -452,7 +452,7 @@ window.itemBody = it => {
   const masks = it.masks.length ? `<details class="ac-masks"><summary>masks (not judged here — they follow the body pick)</summary><div class="ac-canon-imgs">${it.masks.map(m => `<div class="thumb ac-thumb" data-zoom="${m.t}" data-cap="mask ${esc(m.mod)} ${m.f}"><img src="${m.t}" loading="lazy" alt=""></div>`).join('')}</div></details>` : '';
   return `<div class="ac-body"><div class="effect">${esc(it.effect)}</div>
     <div class="marks">${it.flags.map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${it.contested ? '<span class="mark inferred">⚠ prefill inferred — ' + esc(it.prefillWhy) + '</span>' : '<span class="mark absent">prefill: ' + esc(it.prefillWhy) + '</span>'}</div>
-    ${ctx}${flawed}${rul}
+    ${ctx}${flawed}${rul}${window.artFollowedHtml(d)}
     <div class="ac-grid"><div class="ac-col ac-facings"><div class="ac-head">&nbsp;</div>${facings.map(f => `<div class="ac-cell ac-flabel">${f}</div>`).join('')}</div>${main.map(col).join('')}${canon}</div>
     ${near.length ? `<details class="ac-near"><summary>${near.length} near-duplicate set(s) (dHash ≤ ${it.near} on every facing) — folded, not hidden</summary><div class="ac-grid">${near.map(c => col(c)).join('')}</div></details>` : ''}
     ${masks}</div>`;
@@ -460,6 +460,12 @@ window.itemBody = it => {
 """
 
 COMMON_JS = r"""
+/* Notes he wrote that were already FOLLOWED (enact moves them out of the note box into notes_followed): history, not
+   an open request, so a reload cannot resubmit them. */
+window.artFollowedHtml = d => {
+  const f = (d && d.notes_followed) || [];
+  return f.length ? `<div class="ac-followed" style="font-size:12px;opacity:.75;margin:3px 0">${f.map(x => `followed: “${esc(x.note)}” <span class="sub">(${esc((x.followed_by || []).slice(0, 2).join(', '))}${(x.followed_by || []).length > 2 ? ' …' : ''} · ${esc(String(x.when || '').slice(0, 10))})</span>`).join('<br>')}</div>` : '';
+};
 window.artRepaint = id => {
   const node = document.querySelector(`.row[data-id="${cssEsc(id)}"] .ac-body`);
   const it = byId.get(id);
@@ -1174,7 +1180,7 @@ const _itemBody = it => {
     <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
     ${it.fresh ? `<div class="bs-fresh bs-fresh-${it.fresh.state}">${esc(it.fresh.text)}</div>` : ''}
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
-    ${desc}${links}${elsewhere}${rul}${purgedNote}${noart}</div>
+    ${desc}${links}${elsewhere}${rul}${window.artFollowedHtml(d)}${purgedNote}${noart}</div>
     <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${scaleBlock(it)}${donorAbs}${canon}</div></div>`;
   return re ? `<details class="bs-ruled">${reHead}${inner}</details>` : inner;
 };
