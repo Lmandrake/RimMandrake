@@ -210,6 +210,10 @@ the owner named — gone.
 knows how to give the floor back on drain (`SetTempTerrain` + `QueueRemoveTerrain`); a fill-in is the
 permanent version of the same idea and needs the same care about not laundering the map's terrain.
 
+### 5a. The liquid-unit contract
+
+One unit is a bottle's worth. A bucket is 5 units and a barrel is 25 (`unitsPerBottle` 1, `unitsPerBucket` 5, `unitsPerBarrel` 25 on every `LiquidDef`), and one channel level is one bucket (`RM_PumpMath.TankUnitsPerLevel` = 5), so a pump that moves N levels puts 5N units in a tank. A container's material scales what it holds through `RM_ContainerMaterialMath.ScaledUnits(base, capacityFactor)`, and a fill and the pour that empties it must call it with the same factor, so the tank's loss, the container's contents and the pour's credit are one number. The selftest case `Liquid_unit_contract_roundtrip_conserves` (`FlowWorks/Source/SelfTest/Program.cs`) reads the shipped registry and every shipped `capacityFactor`, carries liquid pump to tank to barrel, bucket and bottle and back, and fails if anything appears or vanishes or the ladder stops being 1/5/25. Anything that moves bulk liquid between maps (the tanker, BAZAAR_BROKER_TAB_1) must convert through these same numbers.
+
 ## 6. The channel-constraint problem
 
 `Flood_FlowWorks` subclasses vanilla's Odyssey `Flood` and inherits its gating: from the seed cell
