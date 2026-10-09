@@ -25,7 +25,7 @@ now the **heat column** of this matrix, unchanged in its numbers.
 | `VacuumResistance` StatDef + `VacuumResistance_Partial/Total` genes | Odyssey | the vacuum hook; exists only with Odyssey ⇒ every reference is `MayRequire="Ludeon.RimWorld.Odyssey"` |
 | `Apparel_GasMask` (Biotech) | RimSage | `ToxicEnvironmentResistance 0.8`, Industrial, 20 steel + 20 chemfuel — the **shape** of a cheap head-worn filter; not a no-air answer (it filters, it does not supply) |
 | `Apparel_Parka`, `Apparel_Tuque` (Core) | RimSage | stuffed cold gear: the cheap cold cell needs **no new def**, only a local material |
-| `HediffCompProperties_EnvironmentalExposure.protectionStat` | Core; used by `RM_SheenProtection` (TheRot), `RM_WetBulbProtection` (EnvironmentalHazards) | the apparel-stat slowdown for any exposure clock — the liquid hook is one more StatDef on this shape |
+| `HediffCompProperties_EnvironmentalExposure.protectionStat` | Core; used by `RM_SheenProtection` (TheRot) | the apparel-stat slowdown for any exposure clock — the liquid hook is one more StatDef on this shape |
 | `RM_Apparel_ScaldWrap`, `RM_Apparel_BoilSuit`, `RM_Apparel_RindCoat` | `scald_steam_and_hazards_spec.md` §5/§5a — shipped; Scald protection is vanilla `ArmorRating_Heat` (`SCALD_FOLD_INTO_HEAT_1`) | the heat column, with numbers already ruled |
 | Royal Rind (`RM_RoyalRind` stuff) | `greatbole_harvest_spec.md` §3b — ruled, unbuilt | *"immune to heat and cold to extreme levels"* (owner) ⇒ the one material that fills **both** temperature cells at the moderate tier; its vacuum use is ruled Odyssey-gated |
 | KotOR flight suits (`guy762_FlightArmor`: `ArmorRating_Heat 0.65`, `Insulation_Cold 20`; `guy762_RebelPilot_suitbox`: `Insulation_Cold 100`) | `src/RimStarWars/Armoury/.../Absorbed_KotorCore_Apparel_SWGenericFlightSuits.xml` | Star Wars **skins** for moderate cells, patch layer only (§4b) |
@@ -43,7 +43,7 @@ beyond a chitin helmet (TheRot) and a pendant (TrophyCraft).
 
 A cell is (tier × axis-end). An item may fill several cells — a sealed suit is sealed against
 liquid *and* vacuum, and its shell insulates — which is why the deluxe set is one set, not four.
-The biome-specific hazard clocks (`RM_WetBulbProtection`, `RM_SheenProtection`, the Miasma's
+The biome-specific hazard clocks (`RM_SheenProtection`, the Miasma's
 owed stat) are **not** a third axis: they are local flavours riding as extra stat offsets on
 whichever local garment the biome makes (§4).
 
@@ -76,7 +76,7 @@ you. Surfacing or standing under any sub-roof cell (an air-bell) heals it.
 | `VacuumResistance` | Odyssey StatDef (MEASURED) | patch, `MayRequire="Ludeon.RimWorld.Odyssey"` | never referenced from a def that must load without Odyssey; every offset is a `PatchOperationAdd` under `MayRequire` |
 | `Insulation_Heat` / `Insulation_Cold` | Core | — | ambient temperature; vanilla heatstroke/hypothermia already scale with it |
 | `ArmorRating_Heat` | Core | — | contact burn (`Burn` has `armorCategory Heat` — Scald spec §4) and the feen's stings |
-| local hazard clocks (`RM_WetBulbProtection`, `RM_SheenProtection`, Miasma owed) | exist / owed | their biomes | ride as offsets on that biome's local garment; not matrix cells |
+| local hazard clocks (`RM_SheenProtection`, Miasma owed) | exist / owed | their biomes | ride as offsets on that biome's local garment; not matrix cells |
 
 Rule: **no item zeroes any clock.** Every `protectionStat` sum clamps at 1 and the clock floors
 at 8% (Scald spec Ban 3, Grey ban 1 spirit).

@@ -123,12 +123,13 @@ a terrestrial animal.**
 
 ## 4b. Survival — the inversion of the desert's problem
 
-At 45 °C in saturated air, sweat does nothing: **wet-bulb overwhelm**. The desert
-kills you dry; the Greentide kills you wet; the same planet demands two opposite
+At 45 °C in saturated air, sweat does nothing: wet-bulb heat, which is vanilla
+heat of the **ambient** kind (shade and roofs do nothing outdoors; heat insulation answers
+it). The desert kills you dry; the Greentide kills you wet; the same planet demands two opposite
 kits, and a Jawa trader sells both.
 
 - **Gear**: wicking/sealed/dry-air equipment, a different protection tree from the
-  desert's shade-and-cooling line.
+  desert's shade-and-cooling line, answered through heat insulation.
 - ⭐ **The elevated-thirst races come home.** The water doctrine's leash (Wookiee,
   Trandoshan, Rodian and kin) comes OFF here — the moisture-hungry species of the
   galaxy congregate in the Greentide, and its settlements hold the planet's densest
@@ -137,10 +138,9 @@ kits, and a Jawa trader sells both.
   and earth — sited in **the habitable band**: far enough from the water that it
   does not cook you, not so far that you desiccate. Thick-walled, innately cool,
   **windows avoided**. *A strange way to live.*
-- ⭐ **The dry-air blower** (owner's machine, three jobs in one): a downward-gushing
+- ⭐ **The dry-air blower** (owner's machine, two jobs in one): a downward-gushing
   curtain of hot dry air over each doorway that (1) repels plant encroachment —
-  dry heat is the one alien thing, (2) repels animals — same instinct, and
-  (3) dries the room behind it, switching off the wet-bulb multiplier. Fueled or
+  dry heat is the one alien thing, and (2) repels animals — same instinct. Fueled or
   powered; when it fails the green notices within hours. Every Greentide structure
   is legible by its shimmering doorways.
 - **Fire is not the tool.** Saturated growth barely burns (low Flammability across
@@ -187,7 +187,7 @@ kits, and a Jawa trader sells both.
 4. 🔴 **No windowed native architecture** — Greentide settlement templates build
    windowless domes with blower doors; a windowed template violates §4b.
 5. 🔴 **No dry ground beyond the band** — the biome's maps do not contain desert
-   terrain pockets that break the wet-bulb rule for free.
+   terrain pockets that break the ambient-heat rule for free.
 6. 🔴 **No safe standing water** — deep water cells always carry Lunger risk;
    a swimmable-safe river reach contradicts §4.
 
@@ -287,7 +287,7 @@ inside an organism that is actively trying to heal you out of it.**
   (door encroachment, light/dark law, visible growth, the extract as its bottled
   invocation).
 - `GREENTIDE_MECHANICS_1` — the biome's own C# kit beyond the growth engine: the
-  wet-bulb condition + gear tags; the dry-air blower; scald damage + steam devils;
+  ambient wet-bulb heat + gear insulation; the dry-air blower; scald damage + steam devils;
   Roil/Breaklight/underlight weathers; churnmud swallow/mire; causeway map-gen;
   the three-feller fall event; Lunger ambush; grazing-suppresses-encroachment;
   silence-ducking audio; **the Greatbole class** (mineable heartwood, regrowth

@@ -65,7 +65,7 @@ stays exactly as shipped.
 | `RUT_SteamDevil` wandering vortex dealing `RUT_Scald` | `TerminalBiomes/Defs/ThingDefs_Misc/RUT_SteamDevil.xml` | shipped |
 | `RM_HediffComp_EnvironmentalExposure` — weather-gated severity clock with `protectionStat`, `minDriveFactor` floor, `immunityHediff`, `immuneThingDefs` | `EnvironmentalHazards/Source/RM_HediffComp_EnvironmentalExposure.cs` | shipped; consumers Miasma, Rot Sheen |
 | `GameCondition_EnvironmentalWeather.carrierHediff` — grants a hediff to every eligible pawn so the comp above can run | `.../GameCondition_EnvironmentalWeather.cs` | shipped |
-| `HazardTargeting.SumApparelStat` + the `RM_WetBulbProtection`/`RM_SheenProtection` stat shape (0..1, summed over worn apparel) | `EnvironmentalHazards/Defs/StatDefs/`, `TheRot/Defs/StatDefs/` | shipped; the chitin spider helmet is the worked gear precedent |
+| `HazardTargeting.SumApparelStat` + the `RM_SheenProtection` stat shape (0..1, summed over worn apparel) | `TheRot/Defs/StatDefs/` | shipped; the chitin spider helmet is the worked gear precedent |
 | `RM_ScaldWalkerChitin` — a Scald-specific plated material already dropping from the dive hunt | `DivingInteraction/Defs/ThingDefs_Items/` | shipped, no consumer recipe |
 | `RM_MechanicGates` + Terminal Biomes' Scald sub-toggles S1/S2/S4/S5/S6 | `EnvironmentalHazards/Source/RM_MechanicGates.cs`, `TerminalBiomes/Source/RM_TerminalBiomesMod.cs` | shipped |
 | Natives `RM_Noohm`, `RM_Shulla` (`ComfyTemperatureMax 95`, plain `AnimalThingBase`) | `TerminalBiomes/Defs/ThingDefs_Races/RM_ScaldFauna.xml` | shipped, burn like anyone |
@@ -281,7 +281,7 @@ by the Greentide build (`greatbole_harvest_spec.md` §9 items 4–5), not by thi
   apparel recipes accept it), rendered from `RM_GreatboleFruit` at the butcher table alongside the
   steaks and seeds. Lives in the Greentide mod (`RM_` tier — the greatbole is franchise-free).
   Carries, as **stuff stat offsets/factors**, the biome-protection stats: heat armor
-  (`StuffPower_Armor_Heat`, which is the Scald's protection), `RM_WetBulbProtection` (`EnvironmentalHazards/Defs/StatDefs/`, exists) and a
+  (`StuffPower_Armor_Heat`, which is the Scald's protection), heat insulation (`StuffEffectMultiplierInsulation_Heat`, the Greentide's wet-bulb answer) and a
   Miasma stat that does **not exist yet** — `RUT_MiasmaExposure.xml` sets no `protectionStat`
   (MEASURED 2026-09-25), so the Miasma gets one in the same shape when rind lands. ⇒ *any* garment made of rind protects,
   scaled by its coverage — one material, three biomes, exactly §3b's promise, and no bespoke

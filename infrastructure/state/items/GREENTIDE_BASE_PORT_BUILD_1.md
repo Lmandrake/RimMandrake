@@ -1,4 +1,4 @@
-# GREENTIDE_BASE_PORT_BUILD_1 — the free tier gets the Greentide's spine: Roil, Breaklight, wet-bulb, the blower, root roads and the living greatbole
+# GREENTIDE_BASE_PORT_BUILD_1 — the free tier gets the Greentide's spine: Roil, Breaklight, the blower, root roads and the living greatbole
 
 Caused by `GREENTIDE_SCORING_SITTING_1` (turn 1). Free tier, `mandrake.rm.greentide` (folds into
 `RimMandrake.Biomes` under `BIOME_MOD_UNIFICATION_1`; build where the Greentide lives on the day you start).
@@ -15,7 +15,7 @@ Siblings, same ruling: `GREENTIDE_FREE_ROSTER_OWNED_1` (the animal list and the 
 ## spec
 
 Most of the C# is **already free-tier** (`src/RimMandrake/EnvironmentalHazards/Source/`:
-`RM_GameCondition_WetBulb`, `RM_WetBulbExtension`, `RM_CompDryFieldEmitter`, `RM_GenStep_LivingBoles`,
+`RM_CompDryFieldEmitter`, `RM_GenStep_LivingBoles`,
 `RM_LivingBoleBiomeExtension`, `RM_CompLivingBoleMarker`, `RM_GenStep_RootCauseways`,
 `RM_RootCausewayBiomeExtension`, `RM_MapComponent_LivingRegrowth`, `RM_MapComponent_RoilVortexSpawner`;
 `src/RimMandrake/Greentide/Source/RM_WeatherOverlay_GreentideRoil.cs`). What sits in the campaign tier is
@@ -24,9 +24,9 @@ the **defs** and two C# files. This item moves them; it designs nothing new.
 1. **Move these defs from `src/RimUtinni/UtinniPatches/Defs/` into the free mod, renamed `RUT_` → `RM_`**
    (the `RUT_` defs are deleted, never kept as aliases; every reference repointed in the same change):
    - weather: `RUT_RoilWeather`, `RUT_BreaklightClear`;
-   - conditions: `RUT_RoilLock`, `RUT_GreentideWetBulbLock`, `RUT_BreaklightCondition`;
+   - conditions: `RUT_RoilLock`, `RUT_BreaklightCondition`;
    - incident: `RUT_Breaklight`, `RUT_GreatboleFruitfall`;
-   - hediffs: `RUT_WetBulbOverwhelm`, `RUT_DryAirAversion`;
+   - hediff: `RUT_DryAirAversion`;
    - building: `RUT_DryAirBlower` (the owner's machine, sheet §4b), research/recipe with it;
    - terrain: `RUT_RootCauseway`; map gen: `RUT_GenStep_LivingBoles`, `RUT_GenStep_RootCauseways`;
    - the mineable greatbole landmark: `RUT_GreatboleHeartwood`, `RUT_GreatboleCore`,
@@ -41,21 +41,21 @@ the **defs** and two C# files. This item moves them; it designs nothing new.
    ⚠️ Class renames break `Class=` references in XML and any saved `IncidentWorker`/comp type names:
    grep the class strings, not only C# call sites.
 3. **Wire everything onto `BiomeDef/RM_Greentide`** (`src/RimMandrake/Greentide/Defs/BiomeDefs/RM_Greentide_Biome.xml`):
-   the Roil weather in `baseWeatherCommonalities`, the roil lock and wet-bulb lock in
+   the Roil weather in `baseWeatherCommonalities`, the roil lock in
    `biomeMapConditions` (or the condition mechanism the twin uses), Breaklight in its incident pool, and
    the `RM_LivingBoleBiomeExtension` and `RM_RootCausewayBiomeExtension` blocks copied from
    `RUT_Greentide.xml`'s `modExtensions` (l.138-186) with their values.
-4. **Delete the two twin-only wiring patches**, `src/RimUtinni/UtinniPatches/Patches/RUT_RoilLock_BiomeWiring.xml`
-   and `RUT_GreentideWetBulbLock_BiomeWiring.xml` (they target `BiomeDef[defName="RUT_Greentide"]`, the frozen
-   twin, so the campaign loses both locks at the repaint with no error; finding 2). The free def now
-   carries the locks, so the campaign inherits them on `RM_Greentide` with no patch at all. Leave the frozen
+4. **Delete the twin-only wiring patch**, `src/RimUtinni/UtinniPatches/Patches/RUT_RoilLock_BiomeWiring.xml`
+   (it targets `BiomeDef[defName="RUT_Greentide"]`, the frozen
+   twin, so the campaign loses the lock at the repaint with no error; finding 2). The free def now
+   carries the lock, so the campaign inherits them on `RM_Greentide` with no patch at all. Leave the frozen
    `RUT_Greentide.xml` def itself alone (it is retired at the painting pass, `BIOME_PAINT_ONCE_AT_THE_END_1`),
    but repoint its `modExtensions` and weather rows at the `RM_` names so it still loads.
 5. **The campaign keeps only re-skins**: if a campaign label or lore line differs from the free one (canon
    flavour), the campaign patches the `RM_` def's label/description. No mechanism copy remains in
    `UtinniPatches` (criteria count it).
 6. **Mod Settings** (`MOD_OPTIONS_RETROFIT_1` law), added to `RM_GreentideMod.cs`: on/off for the Roil,
-   Breaklight, the wet-bulb lock, living boles, root causeways, fruitfall; the blower is a building (no
+   Breaklight, living boles, root causeways, fruitfall; the blower is a building (no
    toggle). Map-generation toggles labelled as such. Defaults = shipped behaviour.
 
 🔴 **Save check before deleting any `RUT_` building/terrain def.** The frozen world save may hold placed
@@ -78,15 +78,14 @@ Deterministic state reads (def dump, `jawa/get_defs` reading `success`/`foundCou
 `[Tool]`s), recorded as cases in the Greentide functional script (`GREENTIDE_FIRST_SCRIPT_1`'s
 `validation.py`):
 - On the free tier list (Greentide without any `mandrake.rut.*` mod): `WeatherDef/RM_RoilWeather`,
-  `RM_BreaklightClear`; `GameConditionDef/RM_RoilLock`, `RM_GreentideWetBulbLock`, `RM_BreaklightCondition`;
-  `IncidentDef/RM_Breaklight`, `RM_GreatboleFruitfall`, `RM_SteamDevilAppears`; `HediffDef/RM_WetBulbOverwhelm`,
-  `RM_DryAirAversion`; `ThingDef/RM_DryAirBlower`, `RM_GreatboleHeartwood`, `RM_GreatboleCore`,
+  `RM_BreaklightClear`; `GameConditionDef/RM_RoilLock`, `RM_BreaklightCondition`;
+  `IncidentDef/RM_Breaklight`, `RM_GreatboleFruitfall`, `RM_SteamDevilAppears`; `HediffDef/RM_DryAirAversion`; `ThingDef/RM_DryAirBlower`, `RM_GreatboleHeartwood`, `RM_GreatboleCore`,
   `RM_GreatboleTrunkSegment`, `RM_GreatboleDeadHusk`, `RM_SteamDevil`; `TerrainDef/RM_RootCauseway` all
   resolve (`foundCount` equals the list length).
 - A repo search (python, over `src/`) for each moved `RUT_` defName and for `class RUT_IncidentWorker_` returns
   0 hits, with a sanity probe (`RM_Krannock`) returning hits.
 - `BiomeDef/RM_Greentide` carries `RM_LivingBoleBiomeExtension` and `RM_RootCausewayBiomeExtension`, the
-  Roil in its weather table, and both locks. No PatchOperation in `src/` has an xpath containing
+  Roil in its weather table and the Roil lock. No PatchOperation in `src/` has an xpath containing
   `defName="RUT_Greentide"` that adds a map condition.
 - On a generated free-tier Greentide test map: at least one `RM_GreatboleHeartwood` and one
   `RM_GreatboleCore` spawned; `RM_RootCauseway` terrain cell count > 0; forcing `RM_RoilWeather` makes it the
@@ -95,14 +94,14 @@ Deterministic state reads (def dump, `jawa/get_defs` reading `success`/`foundCou
 - Mining a heartwood cell advances `RM_CompGreatboleHarvestLadder`'s recorded threshold (read the comp's
   saved field before and after).
 - Campaign tier loaded: the same defs resolve exactly once (no `RUT_` duplicate), and `RM_Greentide`'s
-  `biomeMapConditions` still lists both locks.
+  `biomeMapConditions` still lists the Roil lock.
 - Each Mod Settings toggle off removes exactly its effect (one case per toggle).
 
 ## build (offline, 2026-10-06, FOUNDRY) — live criteria NOT yet run
 
 Moved into `src/RimMandrake/Greentide/` as RM_ defs (RUT_ originals deleted, every live reference repointed):
 `Defs/WeatherDefs/RM_Greentide_Weathers.xml`, `Defs/GameConditionDefs/RM_Greentide_Conditions.xml`,
-`Defs/IncidentDefs/RM_Greentide_Spine_Incidents.xml`, `Defs/HediffDefs/RM_Greentide_WetBulb_Hediffs.xml`,
+`Defs/IncidentDefs/RM_Greentide_Spine_Incidents.xml`, `Defs/HediffDefs/RM_Greentide_DryAir_Hediffs.xml` (holding only `RM_DryAirAversion`),
 `Defs/ThingDefs_Buildings/RM_DryAirBlower.xml`, `Defs/ThingDefs_Buildings/RM_Greatbole_Landmark.xml`,
 `Defs/TerrainDefs/RM_Greentide_SpineTerrains.xml`, `Defs/MapGeneration/RM_Greentide_GenSteps.xml`,
 `Patches/RM_Greentide_GenStep_Register.xml`, both textures, `Source/RM_CompGreatboleHarvestLadder.cs`,
@@ -121,7 +120,7 @@ Decisions taken in the build (not in the spec above):
   (comp field renamed `offendedFactionDef`); `UtinniPatches/Patches/RUT_Greatbole_CampaignBindings.xml` puts back
   `RUT_Hardwood` and `RUT_Jawa_WildsteamClan` so the campaign behaves as before.
 - **Mod Settings**: Greentide gains The Roil (new maps only; removes lock + weather row from the live BiomeDef),
-  Greatbole fruitfall, and the ladder thresholds (moved out of `UtinniPatchesSettings`). Breaklight, wet-bulb, living
+  Greatbole fruitfall, and the ladder thresholds (moved out of `UtinniPatchesSettings`). Breaklight, living
   boles and causeways were already live toggles in the Environmental Hazards Kit; the Greentide screen names them
   instead of adding a second switch on the same wire.
 - The ladder chain moved from `UtinniPatches/validation.py` to `Greentide/validation.py` (+ `spine_static`, and
