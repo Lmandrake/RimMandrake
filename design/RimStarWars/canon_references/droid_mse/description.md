@@ -127,6 +127,11 @@ and guide troops to assigned posts.** From that article:
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+Realism pass 2026-10-08: the one animated image, `wookieepedia_interior.png` (*The Bad Batch* "The Escape" cel-lit cutaway of an opened unit), was deleted — there is no realistic view of an opened MSE-6, so the reprogramming interior is now **unreferenced; do not invent it from the cartoon**. Added `wookieepedia_original_prop.jpg`, a studio photograph of the original *A New Hope* practical prop. It shows the original is **weathered dark charcoal-grey, not pure matte black**: scuffed paint, dust in the greeble panel, rubbery dark wheels. All remaining images are practical props or live-action frames.
+
+
 **Overall shape and proportion — the whole read at sprite scale.** Canon MSE-6 is **a matte
 near-black wedge — a truncated pyramid, a doorstop — sitting on a wider flat skirt, running
 on four small dark wheels tucked half under the body.** It is **markedly longer than it is
@@ -187,6 +192,7 @@ lightbar on top.**
 - [ ] Two comb-like sensor stalk arrays visible on the rear roof
 - [ ] Polished silver-grey trim strip along the base lip
 - [ ] Wheel bulge visible in the east/profile view
+- [ ] Realistic rendering: scuffed matte painted prop surface with real dust and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 Shared texture: `Races_Primitive.xml` reuses graphic path `OuterRim/Droid/MSE`, so editing this sprite changes two races.
@@ -208,8 +214,8 @@ Shared texture: `Races_Primitive.xml` reuses graphic path `OuterRim/Droid/MSE`, 
   abort a session. `sips -Z 1400` a copy to `/tmp` first.)
 - https://static.wikia.nocookie.net/starwars/images/4/46/UMSE-6.png →
   `wookieepedia_on_mandalore.png` (565×462)
-- https://static.wikia.nocookie.net/starwars/images/f/f7/5LInsideMSE6-TheEscape.png →
-  `wookieepedia_interior.png` (583×494)
+- https://static.wikia.nocookie.net/starwars/images/b/b7/MSE-6_btm.jpg/revision/latest?cb=20080318141837 →
+  `wookieepedia_original_prop.jpg` (544×434)
 - **Named in the articles but not fetched this pass:** `MSE-4`, `MSE-5`, `MSE-series` (the
   Legends counterpart), `Polar mouse droid`, `chak-chak`, `command order tray`.
 - Repo defs: `src/RimStarWars/Droidworks/Defs/Races_OuterRim.xml`,
@@ -222,7 +228,7 @@ Shared texture: `Races_Primitive.xml` reuses graphic path `OuterRim/Droid/MSE`, 
 
 ## Candidate images
 
-- `wookieepedia_mse6_infobox.png` (1536×1004) — the MSE-6 article infobox: a practical-prop
+- `wookieepedia_mse6_infobox.png` (1536×1004) — file `MouseDroid-ROStickerBook.png`, https://static.wikia.nocookie.net/starwars/images/b/bb/MouseDroid-ROStickerBook.png — the MSE-6 article infobox: a practical-prop
   photograph, three-quarter front-left, on transparent background. **The proportion, colour and
   detail authority.** Matte near-black truncated-pyramid body on a wider flat skirt; **two
   comb-like arrays of black cylindrical sensor stalks on the roof**; a dense greeble panel on
@@ -232,11 +238,10 @@ Shared texture: `Races_Primitive.xml` reuses graphic path `OuterRim/Droid/MSE`, 
   image, and the evidence that the wiki illustrates the series with an MSE-6. Same prop, larger
   and sharper: the roof stalk arrays and the wheel treads are clearest here. 🔴 **Downscale
   before viewing.**
-- `wookieepedia_on_mandalore.png` (565×462) — an in-show frame on Mandalore. Best reference for
+- `wookieepedia_on_mandalore.png` (565×462) — a live-action frame (file `UMSE-6.png`, https://static.wikia.nocookie.net/starwars/images/4/46/UMSE-6.png). Best reference for
   **how black it actually reads in a dark scene**, for the **four visible wheels below the
   skirt**, and for the **red lightbar** the article sources for these units.
-- `wookieepedia_interior.png` (583×494) — the inside of an MSE-6 chassis (wires, indicator
-  lights, buttons), the reprogramming interface. The only reference for an opened unit.
+- `wookieepedia_original_prop.jpg` (544×434) — studio photograph of the original *A New Hope* practical prop, three-quarter rear-right; file `MSE-6 btm.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b7/MSE-6_btm.jpg/revision/latest?cb=20080318141837 . Weathered charcoal-grey finish, roof stalk arrays, greeble panel, wheels.
 - `donor_current_sprite.png` (256×256) — donor `MSE_south`, top-down. **Judge tinted**
   `RGBA(110,110,110)`; the raw file is near-white. Plain plate, no roof detail.
 - `donor_current_sprite_east.png` (256×256) — donor `MSE_east`. Correctly wide and low; no
