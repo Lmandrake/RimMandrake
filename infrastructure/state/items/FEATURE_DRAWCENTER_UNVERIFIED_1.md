@@ -114,3 +114,7 @@ this pass only illustrates, not implements), and whether to commit the 52 single
 fixes (and the size pass they're layered on) to the canonical save at all.
 `rimflow needs FEATURE_DRAWCENTER_UNVERIFIED_1 --to owner` set accordingly; item left
 in `doing`, not closed.
+
+## APPLIED TO CANONICAL 2026-10-09 (FOUNDRY) - decision taken by question card
+
+Rule ruled: multi-piece regions label on the centroid of their BIGGEST piece (`feature_drawcenter_audit.py --multi-largest`). 52 single-piece fixes plus the 8 multi-piece moves (60 drawCenter tags) written to canonical in the same sitting as the size curve, same backup, binary mode, 17,483,421 B after (delta only from shorter vectors), parses, rest identical.

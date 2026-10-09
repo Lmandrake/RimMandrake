@@ -351,7 +351,7 @@ def apply_fixes(base_path, out_path, ordered):
     for (start_pos, end_pos), feat in zip(positions, ordered):
         out_parts.append(raw[cursor:start_pos])
         current_tag = raw[start_pos:end_pos]
-        if feat["n_pieces"] == 1 and feat["wrong"]:
+        if feat["wrong"] and feat.get("fix_vec") is not None:
             new_str = fmt_raw(vec_to_raw(feat["fix_vec"]))
             new_tag = ("<drawCenter>%s</drawCenter>" % new_str).encode()
             out_parts.append(new_tag)
@@ -378,7 +378,7 @@ def apply_fixes(base_path, out_path, ordered):
 
     mismatches = []
     for feat in ordered:
-        if feat["n_pieces"] == 1 and feat["wrong"]:
+        if feat["wrong"] and feat.get("fix_vec") is not None:
             want = vec_to_raw(feat["fix_vec"])
             got = by_uid.get(feat["uid"])
             if got is None or any(abs(a - b) > 1e-3 for a, b in zip(want, got)):
@@ -507,12 +507,21 @@ def main():
                                     "(default: same as `save`)")
     ap.add_argument("--out", help="NEW .rws path to write fixes to (refused if == --base)")
     ap.add_argument("--report-only", action="store_true")
+    ap.add_argument("--multi-largest", action="store_true",
+                    help="owner ruling 2026-10-09: multi-piece regions label on the "
+                         "centroid of their BIGGEST piece")
     ap.add_argument("--render-dir", help="write review PNGs here")
     ap.add_argument("--json", help="dump the full audit as JSON here (debugging/handoff)")
     args = ap.parse_args()
 
     ordered, tiles_by_uid, geo = build_audit(args.save)
     print_report(ordered)
+
+    if args.multi_largest:
+        for f in ordered:
+            if f["n_pieces"] > 1:
+                f["wrong"] = True
+                f["fix_vec"] = f["candidates"]["centroid_largest"]
 
     if args.json:
         def _ser(f):

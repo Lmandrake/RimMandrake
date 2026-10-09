@@ -112,3 +112,7 @@ never by the number), and whether to commit it to the canonical save at all. Per
 item's own criteria, that decision is not taken here.
 `rimflow needs WORLD_LABEL_SIZE_HIERARCHY_1 --to owner` set accordingly; item left in
 `doing`, not closed.
+
+## APPLIED TO CANONICAL 2026-10-09 (FOUNDRY) - decision taken by question card: approved
+
+Curve (`world_label_curve.py`) written into `CANONICAL_ASHKARR_START_2026-09-12.rws` (re-derived from the CURRENT canonical, not the stale 09-26 slot, which predated biome retirements). Backup `...rws.bak-pre-labelcurve-drawcenter-20261009` (17,483,784 B). 62 tags changed, size delta 0, CR count unchanged, parses, rest of file identical once the two tag kinds are masked. Fall Line stays 26.
