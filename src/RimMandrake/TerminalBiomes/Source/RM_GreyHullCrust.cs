@@ -458,18 +458,22 @@ namespace RimMandrake.TerminalBiomes
                 }
             }
             float frac = RM_TerminalBiomesSettings.greyTearFreeDamage;
+            // A multi-cell building is in the thing list of every cell it covers: hit each building once.
+            HashSet<Thing> hit = new HashSet<Thing>();
             foreach (IntVec3 c in engine.ValidSubstructure.ToList())
             {
                 foreach (Thing t in c.GetThingList(map).ToList())
                 {
-                    if (!(t is Building b) || !b.def.useHitPoints || b.Destroyed)
+                    if (!(t is Building b) || !b.def.useHitPoints || b.Destroyed || !hit.Add(b))
                     {
                         continue;
                     }
                     int dmg = RM_CrustKernel.TearDamage(b.HitPoints, b.MaxHitPoints, frac);
                     if (dmg > 0)
                     {
-                        b.TakeDamage(new DamageInfo(DamageDefOf.Crush, dmg, 999f, -1f, null, null, null, DamageInfo.SourceCategory.ThingOrUnknown, null, false, false));
+                        // Direct HP loss, not TakeDamage: damage multipliers, armour or a building's own on-damage
+                        // reactions could otherwise turn "never lethal" into a destroyed or exploding hull building.
+                        b.HitPoints -= dmg;
                         damaged++;
                         hpLost += dmg;
                     }
