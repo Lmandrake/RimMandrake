@@ -54,8 +54,16 @@ a Nagai wanted to convey."*
 See the visual brief — the images side with red.
 
 ## Visual brief
+**Animation-only canon — no realistic source found (searched: Nagai and Nagai/Legends page images, "Images of Nagai" — comics, RPG line art and painted book covers only; no live-action, no photoreal game).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
 
-🔴 **The def sets `Eyes_Gray`. Canon says red, and THREE of the four images show red
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The weakest image, the robed RPG figure `wookieepedia_nagai_telepath.jpg` (costume only), was removed. The most realistic
+image left is the painted *Unknown Regions* cover (`wookieepedia_nagai_turcov.jpg`): realistic skin is a **cool grey-white
+with real muscle shading**, not the comic's chalky flat blue-white — use it for skin and anatomy, and the comics only for
+the features it does not show (ears, face markings).
+
+
+🔴 **The def sets `Eyes_Gray`. Canon says red, and THREE of the original four images showed red
 or red-amber eyes. This is the headline finding for this species.**
 
 **`wookieepedia_gallanavenk_2025starwars2.png` is the reference of record** (Gallana
@@ -91,12 +99,6 @@ face with severe cheekbones, lean muscular build**, wielding a sword. 🔑 **Its
 read clearly RED-AMBER, not gray** — so even the Legends-era painted art leans toward
 the canon eye colour, and `Eyes_Gray` is supported by a single infobox field against
 the weight of the pictures.
-
-**`wookieepedia_nagai_telepath.jpg`** is **weak evidence and mostly costume**: a
-Legends figure almost entirely enclosed in a wide-brimmed hat and voluminous
-blue/purple robes. The little face that shows is **pale green-white, long, narrow and
-downcast**. It contributes nothing on ears, eyes, markings or build. Keep it as a
-fourth data point on pallor and the long narrow face; do not draw from it.
 
 **There is no `donor_current_sprite.png` in this directory** — no Nagai-specific head
 art was harvested, and the def uses the generic `Outland_SvelteHead` rather than a
@@ -143,12 +145,13 @@ and equally **nothing carrying the ears or the face markings.**
 - ⚠️ `Beard_NoBeardOnly` — no canon basis found either way.
 
 ## Must show
-- [ ] Cold, chalky blue-white skin with grey-blue shadows — not warm ivory
+- [ ] Cool grey-white to blue-white skin with grey-blue shadows — not warm ivory
 - [ ] RED or red-amber eyes — the only warm colour on the face
 - [ ] Long, narrow, pointed ears swept back and outward, projecting clearly beyond the skull
 - [ ] Thick dark grey-black horizontal bar beneath each eye spanning the cheekbone, with short drip-lines running down from it
 - [ ] Jet-black hair worn as a stiff upright crest/mohawk sweeping back off the crown
 - [ ] Lean, angular, gaunt face — high flat cheekbones, narrow jaw, sunken cheeks, on a tall thin wiry build
+- [ ] Realistic rendering: natural pale skin texture and muscle shading, natural lighting, no outlines, no comic inking or flat colour
 
 ## Engine limits
 none known
@@ -162,7 +165,6 @@ none known
 - https://starwars.fandom.com/wiki/Nagai/Legends (**where the substance is**;
   wikitext via `api.php?action=parse&page=Nagai/Legends&...`, 17,361 chars, 2026-09-15)
 - https://static.wikia.nocookie.net/starwars/images/0/02/Nagai-G01p65.jpg → `wookieepedia_nagai_g01p65.jpg`
-- https://static.wikia.nocookie.net/starwars/images/2/29/Nagai_telepath.jpg → `wookieepedia_nagai_telepath.jpg`
 - https://static.wikia.nocookie.net/starwars/images/b/be/Nagai-TURcov.png → `wookieepedia_nagai_turcov.jpg` (saved with a `.jpg` name; the source file is a PNG)
 - `wookieepedia_gallanavenk_2025starwars2.png` corresponds to
   `File:GallanaVenk-2025StarWars2.png`, the canon infobox image. It was already on
@@ -189,9 +191,6 @@ none known
 - `wookieepedia_nagai_turcov.jpg` — a painted Legends cover. Best-lit reference for
   skin (cool grey-white), hair, cheekbone structure and lean musculature — and 🔑
   **its eyes read red-amber, siding with canon against the def's `Eyes_Gray`.**
-- `wookieepedia_nagai_telepath.jpg` — **weak evidence, mostly costume.** A robed and
-  wide-hatted Legends figure; contributes only pallor and the long narrow face. Do
-  not draw appearance conclusions from it.
 
 ## ruling
 

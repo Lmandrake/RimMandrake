@@ -37,10 +37,14 @@ mine let me pick up pheromones from other beings, which I translate into an
 understanding of their emotional states. That's how I know you two… are terrified."*
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Removed: the *Clone Wars* youngling Zatt (`wookieepedia_zattfull_cgswg.png`) and the stylised *Myths & Fables* painting
+(`wookieepedia_nautolan_vengeful_waves.jpg`, tiny blue figures). Added `wookieepedia_kitfisto_closeup_aotc.jpg` (live-action
+*Attack of the Clones* close-up of Kit Fisto). Both references are now the live-action makeup.
 
-**The prose is right but flat; the images add three things it doesn't say — the
-tendrils are patterned, the skin is yellow-green rather than green, and the eyes are
-not solid black in every case.**
+**The prose is right but flat; the live-action images add what it doesn't say — the tendrils are patterned and the
+skin is yellow-green rather than green.** The close-up shows the skin as **moist, finely textured, sallow olive-green
+with darker mottling**, the tendrils thick and rubbery-wet.
 
 **`wookieepedia_kitfisto_detail.png` is the reference of record** (the canon infobox
 image: Kit Fisto, full body, transparent background, live-action costume/makeup):
@@ -62,23 +66,10 @@ image: Kit Fisto, full body, transparent background, live-action costume/makeup)
 - **Otherwise an ordinary humanoid body**: normal shoulders, arms, long-fingered
   greenish hands, and feet that fit ordinary boots.
 
-**`wookieepedia_zattfull_cgswg.png`** (Zatt, a male Nautolan **youngling**, *Clone
-Wars* CGI) is the second reference of record and **corrects two things**:
-
-- 🔑 **The eyes here have a visible RED-AMBER IRIS around a dark pupil**, not solid
-  black. That matches the canon `red` eye-colour cite. **So "solid black" is one
-  option, not the rule** — and the def currently expresses neither colour.
-- **The tendrils are SHORTER and FEWER** than Kit Fisto's, reaching only to the
-  shoulder. This is a **youngling**, so tendril length plausibly reads as age —
-  useful, and consistent with them growing from the head and not regrowing if cut.
-- Same yellow-green skin, with **dark olive spot mottling on the tendrils and
-  shoulders and freckle-like speckling on the cheeks and forearms** — confirming the
-  spotting is a species trait rather than one costume's paint job.
-- **Bare feet are visible**: broad, four-toed, with flat nails. Not flippers.
-
-**`wookieepedia_nautolan_vengeful_waves.jpg`** is a painted *Myths & Fables*
-illustration, kept as a third independent rendering; treat its line and palette as the
-artist's.
+**Red eyes and tendril length (text only now).** Canon lists eye colours **black, brown, red**; the deleted animated
+youngling showed a red-amber iris and shoulder-length tendrils (tendril length plausibly reads as age). No live-action
+image confirms either — the live-action Kit Fisto's eyes are solid black and his tendrils reach the chest. Treat red
+irises and short juvenile tendrils as sourced options, not the look to render by default.
 
 **`donor_current_sprite.png`** is the repo's greyscale art for
 **`RSW_Headbone_nautolan`** — an *attachment*, not a head — and it is a reasonable
@@ -119,7 +110,7 @@ What is wrong:
   show a yellow-green/khaki**, which the sage and viridian greens do not reach.
 - ⚠️ **No eye-colour gene.** `RSW_Eyes_Big` correctly captures the size, but canon
   gives **black, brown, red** — and the two images show one solid-black case and one
-  red-irised case. Eye colour is doing real work for this species.
+  red-irised case (the latter animated, removed 2026-10-08). Eye colour is doing real work for this species.
 - ⚠️ **`AptitudePoor_Construction` and `AptitudePoor_Mining` are unsourced.** Nothing
   in the article suggests either. The one sourced characterisation of the species is
   that **Nautolan society was largely peaceful**.
@@ -144,6 +135,7 @@ What is wrong:
 - [ ] Many (on the order of a dozen) tendrils rooted at the crown/back of the skull, hanging down over the shoulders and chest — not flaring outward like a headdress
 - [ ] Tendrils show darker olive spot/blotch patterning along their length
 - [ ] No nose or external nostril structure — a smooth face between the eyes down to a small, wide, thin-lipped mouth
+- [ ] Realistic rendering: moist, finely textured amphibian skin like the live-action makeup, natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known — a pattern (the tendril spotting) can live in a greyscale runtime-tinted mask; the current donor sprite simply has none painted in, which is a missing-art gap, not a pipeline limitation.
@@ -154,11 +146,9 @@ none known — a pattern (the tendril spotting) can live in a greyscale runtime-
   Cloudflare-walled — wikitext pulled via
   `https://starwars.fandom.com/api.php?action=parse&page=Nautolan&format=json&prop=wikitext`,
   30,438 chars, 2026-09-15)
-- https://static.wikia.nocookie.net/starwars/images/b/b7/VengefulWaves.jpg → `wookieepedia_nautolan_vengeful_waves.jpg`
 - `wookieepedia_kitfisto_detail.png` corresponds to `File:Kitfisto_detail.png` (the
-  canon infobox image) and `wookieepedia_zattfull_cgswg.png` to
-  `File:ZattFull-CGSWG.png`. Both were already on disk from an earlier pass and were
-  verified against the article's own file list this pass.
+  canon infobox image), already on disk from an earlier pass.
+- https://static.wikia.nocookie.net/starwars/images/8/8f/Kit_Smile.jpg/revision/20200715185614 → `wookieepedia_kitfisto_closeup_aotc.jpg`
 - NOT fetched this pass: https://www.starwars.com/databank/nautolan (the article's
   `{{Databank|nautolan}}` citation, and the source of the amphibious, black-eye and
   Glee Anselm claims). Print sources cited by the article and not read:
@@ -172,17 +162,12 @@ none known — a pattern (the tendril spotting) can live in a greyscale runtime-
 
 ## Candidate images
 
-- `wookieepedia_kitfisto_detail.png` — **the reference of record.** The canon infobox
+- `wookieepedia_kitfisto_detail.png` — **the reference of record.** Live-action; the canon infobox
   image: Kit Fisto, full body, transparent background. Settles the sallow yellow-green
   skin, the enormous solid-black oval eyes, the noseless face, and the **many
   crown-rooted, spot-patterned tentacles hanging over the shoulders and chest**.
-- `wookieepedia_zattfull_cgswg.png` — **second reference of record.** Zatt, a Nautolan
-  youngling, *Clone Wars* CGI, full body. Corrects two things: **the eyes can have a
-  red-amber iris rather than being solid black**, and **tendril length varies with
-  age**. Also the best view of skin speckling and of bare four-toed feet.
-- `wookieepedia_nautolan_vengeful_waves.jpg` — a painted *Myths & Fables*
-  illustration. A third independent rendering in a different medium; stylised, so
-  treat line and palette as the artist's.
+- `wookieepedia_kitfisto_closeup_aotc.jpg` — live-action *Attack of the Clones* close-up of Kit Fisto: wet olive skin
+  texture, solid black eyes, noseless face, spotted tendrils over the shoulders. File `Kit Smile.jpg`.
 - `donor_current_sprite.png` — the repo's greyscale `RSW_Headbone_nautolan`
   attachment. Gets the crown-rooted tapering tendrils; **flares them outward like a
   headdress instead of hanging them down the chest, renders them at youngling length,

@@ -36,70 +36,44 @@ Jedi Order included several Mirialans (Luminara Unduli, Cyslin Myr, Katri, Verne
 Rwoh, Barriss Offee, and the fallen Seventh Sister).
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Removed: the flat-shaded Ady Sun'Zee illustration (`wookieepedia_adysunzee_yttransparent.png`) and the stylised game render
+of a green diplomat (`wookieepedia_mirialan_diplomat.png`, formerly the infobox reference). Added two live-action images of
+Luminara Unduli (Mary Oyaya, *Attack of the Clones*): `wookieepedia_luminara_closeup_aotc.jpg` (face close-up) and
+`wookieepedia_luminara_fullbody.png` (full-length promotional still). `wookieepedia_luminaraunduli_swm41.png` (realistic
+painting of Luminara and a second Mirialan) stays.
 
-**The prose says "facial tattoos" and stops. The images are far more specific, and
-the specifics are the whole point of this entry.**
+🔴 **Where live action disagrees with the deleted images:** the cartoon/game references gave a **vivid lime/yellow-green**
+or **lavender** skin. The only live-action Mirialan skin is a **muted yellow-ochre to olive-gold** — a real skin tone
+with a faint green-yellow cast, matte, with natural pores and shading. Treat vivid lime and lavender as the stylised
+extremes of the sourced hue list (blue, brown, green, olive, pink, purple, yellow), not the look to render.
 
-Across all three references the markings are the same *kind* of thing:
+**The prose says "facial tattoos" and stops. The images are specific:**
+- 🔑 **The markings are GEOMETRIC — small diamonds in a lattice/grid**, never curves, script or tribal flourishes. On
+  Luminara the chin carries a **diamond-lattice block** directly below the lower lip; the painting adds forehead and
+  outer-eye marks on the second figure.
+- 🔑 **They are near-black / a darker tone of the skin, never gold.** Gold facial tattoos are the Pantoran feature —
+  the specific cross-contamination to watch for, since both species are in this mod.
+- **Placement:** chin block below the lower lip (most reliable); forehead centre above the brow; outer eye corners and
+  cheekbones.
+- **Lips are darkened** (near-black on Luminara) and eyes are human (Luminara's read deep blue).
+- **Everything else is human**: human proportions, five-fingered hands, human features, no ridges or horns. Both
+  live-action and painted figures wear close head coverings, so the images say little about hair.
 
-- 🔑 **The markings are GEOMETRIC LOZENGES — diamonds, chevrons and diamond-lattice
-  bands — never curves, script or tribal flourishes.** A row or cluster of small
-  diamonds is the motif that recurs in every image.
-- 🔑 **They are rendered in a DARKER TONE OF THE PERSON'S OWN SKIN COLOUR (or
-  near-black), not gold.** A green Mirialan carries dark-green marks; a purple one
-  carries deep-violet marks; a yellow one carries near-black marks. **Gold facial
-  tattoos are the Pantoran feature, and putting them on a Mirialan is the specific
-  cross-contamination to watch for**, since both species are in this same mod.
-- **Placement is consistent**: centre of the forehead above the brow; flanking the
-  outer corners of the eyes and along the cheekbone; and a vertical block or
-  lattice on the chin directly below the lower lip. The chin block and the forehead
-  mark are the two most reliable.
-- **Everything else is human.** Ordinary human proportions, ordinary five-fingered
-  hands, human hair, human eyes, no ridges, no horns, no non-human features
-  whatsoever. Mirialan appearance work is **skin hue plus face markings and nothing
-  else** — which is also exactly what the def's own description claims, and it is
-  correct.
-
-Per-image:
-
-- **`wookieepedia_mirialan_diplomat.png`** (the canon infobox image) is a
-  **vivid yellow-green** Mirialan woman, full body: dark-green diamond marks
-  centred on the forehead, arcs of small marks at the outer eyes and cheekbones, and
-  a diamond cluster on the chin. Green hands, human build. This is the "typical
-  green skin" case.
-- **`wookieepedia_adysunzee_yttransparent.png`** (Ady Sun'Zee, a Mirialan Jedi) is
-  the **purple** case and the clearest close-up: **lavender-violet skin**, with a
-  band of deep-violet chevrons/diamonds across the forehead, diamond clusters
-  at the outer eye corners, and a diamond lattice on the chin and jawline.
-  **Green eyes, violet brows and deep-violet lips.** Stylised comic linework, so
-  treat the outline as the artist's, but the marking vocabulary and placement match
-  the other two exactly.
-- **`wookieepedia_luminaraunduli_swm41.png`** (Luminara Unduli and a second
-  Mirialan, painted) is the **golden-yellow** case: near-black diamond marks in a
-  vertical column on the chin below the lip, plus forehead and outer-eye marks on
-  the second figure. Both wear head coverings, so this image says little about hair.
-  It confirms the marking style survives across a third skin hue and a third
-  art medium.
-
-**`donor_current_sprite.png` — this one is GOOD NEWS and should be recorded as
-such.** It is the greyscale RimWorld head mask behind `RSW_MirialanHead`, and it
-**already carries the canonical markings baked in**: a diamond above the brow,
-a small chevron/diamond cluster between the eyes, and a **diamond-lattice block on
-the chin below the mouth** — precisely the canonical placement. Being greyscale is
-correct and expected for a humanlike head mask (the game tints it at runtime from
-the skin-colour gene), so the absence of colour here is not a defect. The marking
-*geometry*, which is the part text prompts get wrong, is right. The only shortfall
-is that the mark is one fixed pattern shared by every Mirialan pawn, where canon
-says the tattoos **symbolize personal achievements** and therefore differ per
-individual — a variation opportunity, not an error.
+**`donor_current_sprite.png` — this one is GOOD NEWS.** It is the greyscale RimWorld head mask behind
+`RSW_MirialanHead`, and it **already carries the canonical markings baked in**: a diamond above the brow, a small
+chevron/diamond cluster between the eyes, and a **diamond-lattice block on the chin below the mouth**. Greyscale is
+correct for a humanlike head mask (tinted at runtime from the skin-colour gene). The only shortfall is that the mark is
+one fixed pattern shared by every Mirialan, where canon says the tattoos **symbolize personal achievements** and so
+differ per individual — a variation opportunity, not an error.
 
 ## Must show
-- [ ] Facial markings are geometric lozenges — diamonds, chevrons and diamond-lattice bands — never curves, script or tribal flourishes
-- [ ] Markings render in a darker tone of the pawn's own skin colour (or near-black) — never gold (gold is the Pantoran feature and must not be conflated with it)
-- [ ] Marking placement: a mark centred on the forehead above the brow, marks flanking the outer eye corners/cheekbones, and a vertical block or lattice on the chin below the lower lip
-- [ ] Skin hue reads yellow-green (the typical case) or one of the other sourced hues — blue, brown, olive, pink, purple, yellow
-- [ ] Otherwise fully human proportions — five-fingered hands, human hair, human eyes, no ridges or horns
-- [ ] The shipped head graphic already carries the forehead, inter-brow and chin-lattice diamond markings baked in at the correct canonical placement — this is a passing state to confirm, not a defect to fix
+- [ ] Facial markings are geometric — small diamonds in a lattice or grid — never curves, script or tribal flourishes
+- [ ] Markings are near-black or a darker tone of the skin — never gold (gold is the Pantoran feature)
+- [ ] Placement: a diamond-lattice block on the chin below the lower lip, plus forehead and outer-eye/cheekbone marks
+- [ ] Skin is a natural matte yellow-ochre to olive-gold (other sourced hues allowed) — not vivid cartoon lime or lavender
+- [ ] Otherwise fully human proportions and features; darkened lips
+- [ ] Realistic rendering: natural skin texture and lighting as in the live-action film, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -143,10 +117,8 @@ none known
   `https://starwars.fandom.com/api.php?action=parse&page=Mirialan&format=json&prop=wikitext`,
   36,347 chars, 2026-09-15)
 - https://static.wikia.nocookie.net/starwars/images/3/39/LuminaraUnduli-SWM41.png → `wookieepedia_luminaraunduli_swm41.png` (⚠️ this line previously cited the file as `wookieepedia_luminaraunduli_swm41.png` and claimed it was "already on disk under that name... re-verified this pass" — it never was. Corrected 2026-09-16 against the actual directory listing.)
-- `wookieepedia_mirialan_diplomat.png` corresponds to `File:Mirialan_Diplomat.png`,
-  the canon infobox image; `wookieepedia_adysunzee_yttransparent.png` corresponds
-  to `File:AdySunZee-YTtransparent.png`. Both were already on disk from an earlier
-  pass and were verified against the article's own file list this pass.
+- https://static.wikia.nocookie.net/starwars/images/e/eb/Luminara1.jpg/revision/latest?cb=20070322160411 → `wookieepedia_luminara_closeup_aotc.jpg`
+- https://static.wikia.nocookie.net/starwars/images/0/00/LuminaraUnduli-SWE.png/revision/latest?cb=20160912051446 → `wookieepedia_luminara_fullbody.png`
 - NOT fetched this pass: `Star Wars: Alien Archive` (source of the "yellow-green"
   skin line), *Star Wars: The Acolyte: The Visual Guide* (source of the
   centuries lifespan), and *Star Wars: The Visual Encyclopedia* (source of the
@@ -154,22 +126,17 @@ none known
   print sources.
 
 ## Candidate images
-
-- `wookieepedia_mirialan_diplomat.png` — **the reference of record.** The canon
-  infobox image: a full-body vivid yellow-green Mirialan with dark-green geometric
-  face markings on forehead, outer eyes and chin. Best single image for skin hue
-  plus marking placement together.
-- `wookieepedia_adysunzee_yttransparent.png` — Ady Sun'Zee, close-up, **purple**
-  skin with deep-violet chevron/diamond markings, green eyes. **The best view of
-  the marking geometry**; stylised linework, so read the shapes not the rendering.
-- `wookieepedia_luminaraunduli_swm41.png` — Luminara Unduli plus a second
-  Mirialan, painted, **golden-yellow** skin with near-black chin and forehead
-  diamonds. Third hue, third medium, same marking vocabulary — which is what makes
-  the vocabulary canonical rather than one artist's habit.
-- `donor_current_sprite.png` — the repo's own greyscale `RSW_MirialanHead` mask.
-  Kept as a **positive** reference: it already carries canonically-placed
-  forehead, inter-brow and chin-lattice diamond markings. Its limitation is that
-  the pattern is fixed for all Mirialans where canon makes it individual.
+- `wookieepedia_luminara_closeup_aotc.jpg` — **the reference of record.** Live-action *Attack of the Clones* close-up of
+  Luminara Unduli: yellow-ochre skin, near-black diamond-lattice chin tattoo, darkened lips, blue eyes, head covering.
+  File `Luminara1.jpg` — https://static.wikia.nocookie.net/starwars/images/e/eb/Luminara1.jpg/revision/latest?cb=20070322160411
+- `wookieepedia_luminara_fullbody.png` — live-action promotional still (*Encyclopedia*), full length with lightsaber:
+  human build and proportions, chin tattoo. File `LuminaraUnduli-SWE.png` —
+  https://static.wikia.nocookie.net/starwars/images/0/00/LuminaraUnduli-SWE.png/revision/latest?cb=20160912051446
+- `wookieepedia_luminaraunduli_swm41.png` — realistic painting (*Star Wars Magazine* 41) of Luminara and a second
+  Mirialan: golden-yellow skin, near-black chin and forehead diamonds. File `LuminaraUnduli-SWM41.png` —
+  https://static.wikia.nocookie.net/starwars/images/3/39/LuminaraUnduli-SWM41.png
+- `donor_current_sprite.png` — the repo's own greyscale `RSW_MirialanHead` mask. Kept as a **positive** reference: it
+  already carries canonically-placed forehead, inter-brow and chin-lattice diamond markings.
 
 ## ruling
 
