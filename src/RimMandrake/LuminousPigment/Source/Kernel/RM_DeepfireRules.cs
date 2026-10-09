@@ -202,5 +202,24 @@ namespace RimMandrake.LuminousPigment
             float v = Math.Max(r, Math.Max(g, b)) / 255f * groundFactor;
             return Math.Min(maxNonOverlit, v);
         }
+
+        /// <summary>HEDIFF_GLOW_TARGETING_PULSE_1: OtherLightAt with several own lights centred on the evaluated cell
+        /// (worn gear plus glow-hediffs), each taken off the accumulated colour before the ground value is read.</summary>
+        public static float OtherLightAtMany(bool overlit, float accR, float accG, float accB, IList<float> ownR, IList<float> ownG,
+            IList<float> ownB, IList<float> ownRadius, float falloffLerp, float groundFactor, float maxNonOverlit)
+        {
+            if (overlit) return 1f;
+            float r = accR, g = accG, b = accB;
+            for (int i = 0; i < ownRadius.Count; i++)
+            {
+                float t = 1f - 1f / Math.Max(ownRadius[i], 1f);
+                float falloff = t + (1f - t) * falloffLerp;
+                r = Math.Max(0f, r - ownR[i] * falloff);
+                g = Math.Max(0f, g - ownG[i] * falloff);
+                b = Math.Max(0f, b - ownB[i] * falloff);
+            }
+            float v = Math.Max(r, Math.Max(g, b)) / 255f * groundFactor;
+            return Math.Min(maxNonOverlit, v);
+        }
     }
 }

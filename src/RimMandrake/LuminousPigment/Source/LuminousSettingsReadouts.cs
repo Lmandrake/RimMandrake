@@ -28,7 +28,7 @@ namespace RimMandrake.LuminousPigment
                 "floorsPaintable", "wallsPaintable", "furniturePaintable", "apparelPaintable", "weaponsPaintable", "wornLightEnabled",
                 "stylingStationLacquer", "wornLightTickInterval", "glowTargetFactor", "glowDodgePenalty", "combatPenaltiesEnabled",
                 "artQualityBump", "beautyFlat", "beautyPct", "beautySizeCap", "floorBeautyPerCell", "floorRoomBonusPer10", "floorRoomBonusCap" } },
-            { "Cuisine", new[] { "cuisineEnabled", "steerMinSkill", "vermilionMinSkill", "maxFamiliesPerPawn", "hediffGlowEnabled", "familyEnabled" } },
+            { "Cuisine", new[] { "cuisineEnabled", "steerMinSkill", "vermilionMinSkill", "maxFamiliesPerPawn", "hediffGlowEnabled", "hediffGlowFollowsPawn", "hediffGlowInCombat", "familyEnabled" } },
             { "Gods", new[] { "godsReact", "godDeltaLike", "godDeltaAdore", "godDeltaIshko", "godDeltaStatue", "godDeltaDiminishAfter", "ishkoIdolPaintable" } },
             { "Status", new[] { "statusEnabled", "displayCap", "offenceThreshold", "moodScale", "opinionAboveStation", "goodwillPerImpressedVisit" } },
         };

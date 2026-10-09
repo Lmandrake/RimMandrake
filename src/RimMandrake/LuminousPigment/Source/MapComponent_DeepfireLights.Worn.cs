@@ -120,6 +120,7 @@ namespace RimMandrake.LuminousPigment
             else if (ticks % System.Math.Max(1, LuminousPigmentSettings.wornLightTickInterval) == 0)
             {
                 PollWornPositions();
+                PollHediffPositions(); // HEDIFF_GLOW_MOVING_PROXY_1
             }
             if (ticks % VisibilityInterval == 0) NightVisibilityPulse();   // DEEPFIRE_WORLD_LIGHT_1 (c)
         }

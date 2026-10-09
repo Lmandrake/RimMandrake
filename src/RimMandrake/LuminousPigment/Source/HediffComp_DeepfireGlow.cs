@@ -38,14 +38,14 @@ namespace RimMandrake.LuminousPigment
         // an actual bleeding wound (spec: "any bleeding wound").
         public bool onlyWhileBleeding;
 
-        // Pulse-glow only: read by RM_MapComponent_DeepfireLights once it
-        // exists, to reuse RM_Comp_WarblingGlow's value-pulse parameters on
-        // the proxy (spec §6.3 row 12). No effect until then.
-        public bool pulsesWithHeartRate;
+        // PROVISIONAL (auto-decided 2026-10-09, HEDIFF_GLOW_TARGETING_PULSE_1):
+        // the heart-rate pulse flag was declared and read nowhere, so it was
+        // REMOVED with its XML and the pulse claim in the description; a real
+        // pulse is new work, not a missing wire.
 
-        // Hair-glow (1.5x) and the vermilion (1.5x) override the darkness-
-        // targeting multiplier piece 2's (deferred) combat hook will read.
-        // 1 = no override. Harmless data field until that hook ships.
+        // Hair-glow (1.5x) and the vermilion (1.5x) replace the darkness-
+        // targeting multiplier (glowTargetFactor) for this light;
+        // DeepfireDarkness.TargetFactorInDark reads it. 1 = no override.
         public float glowTargetFactorOverride = 1f;
 
         // The vermilion only (spec §6.3 row 14): "cannot be hidden -- Ishko

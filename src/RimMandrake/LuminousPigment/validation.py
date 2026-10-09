@@ -55,7 +55,7 @@ suite.toggles = [
     "paintingEnabled", "maxCoats", "floorsPaintable", "wallsPaintable", "furniturePaintable",
     "apparelPaintable", "weaponsPaintable", "wornLightEnabled", "stylingStationLacquer",
     "combatPenaltiesEnabled", "artQualityBump",
-    "cuisineEnabled", "hediffGlowEnabled",
+    "cuisineEnabled", "hediffGlowEnabled", "hediffGlowFollowsPawn", "hediffGlowInCombat",
     "godsReact", "ishkoIdolPaintable",
     "statusEnabled",
 ]
@@ -1621,6 +1621,8 @@ def toggle_flips(t):
     _flip(t, "floors_paintable_setting_flips", "floorsPaintable")
     _flip(t, "ishko_idol_setting_flips", "ishkoIdolPaintable")
     _flip(t, "hediff_glow_setting_flips", "hediffGlowEnabled")
+    _flip(t, "hediff_glow_follows_setting_flips", "hediffGlowFollowsPawn")    # HEDIFF_GLOW_MOVING_PROXY_1, behaviour owed live
+    _flip(t, "hediff_glow_combat_setting_flips", "hediffGlowInCombat")        # HEDIFF_GLOW_TARGETING_PULSE_1, behaviour owed live
     _flip(t, "deepfire_night_visibility_setting_flips", "deepfireNightVisibility")
 
 
