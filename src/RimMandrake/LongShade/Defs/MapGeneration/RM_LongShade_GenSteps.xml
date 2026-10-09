@@ -65,4 +65,31 @@
     </genStep>
   </GenStepDef>
 
+  <!-- LONGSHADE_MIDDENS_SPENT_BUILD_1. Middens (970): after the Crawler Road and graves, before Animals.
+       CleanPatches (1250): after Animals (1200) so the lairing mirrak/gulloth exist. PROVISIONAL numbers. -->
+  <GenStepDef>
+    <defName>RM_GenStep_Middens</defName>
+    <order>970</order>
+    <genStep Class="RimMandrake.LongShade.RM_GenStep_Middens">
+      <count>2~5</count>
+      <maxRockNeighbours>12</maxRockNeighbours>
+      <leeReach>2</leeReach>
+      <minShade>0.5</minShade>
+      <minSpacing>16</minSpacing>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_GenStep_CleanPatches</defName>
+    <order>1250</order>
+    <genStep Class="RimMandrake.LongShade.RM_GenStep_CleanPatches">
+      <markerDef>RM_LongShadeCleanPatch</markerDef>
+      <lairRaces>
+        <li>RM_Mirrak</li>
+        <li>RM_Gulloth</li>
+      </lairRaces>
+      <patchCapCells>40</patchCapCells>
+    </genStep>
+  </GenStepDef>
+
 </Defs>

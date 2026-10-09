@@ -85,11 +85,12 @@ def static_checks():
     if not float(biome.findtext(".//animalDensity") or 0) > 0:
         bad.append("animalDensity is 0: the roster is dead content")
     gs = ET.parse(os.path.join(HERE, "Defs", "MapGeneration", "RM_LongShade_GenSteps.xml")).getroot()
-    mapgen = open(os.path.join(HERE, "Source", "RM_LongShadeMapgen.cs"), encoding="utf-8").read()
+    mapgen = open(os.path.join(HERE, "Source", "RM_LongShadeMapgen.cs"), encoding="utf-8").read() \
+        + open(os.path.join(HERE, "Source", "RM_LongShadeMiddenMapgen.cs"), encoding="utf-8").read()
     for g in gs.iter("genStep"):
         cls = g.get("Class", "").split(".")[-1]
         if "class %s" % cls not in mapgen:
-            bad.append("gen step class %s not found in RM_LongShadeMapgen.cs" % cls)
+            bad.append("gen step class %s not found in the mapgen sources" % cls)
     if "WildPlantSpawner" not in open(os.path.join(HERE, "Source", "RM_Patch_DewfringeWildSpawnGate.cs"), encoding="utf-8").read():
         bad.append("dewfringe gate no longer patches WildPlantSpawner")
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "LongShade.md")):
@@ -245,6 +246,32 @@ def midden_problems():
         bad.append("Tend() no longer adds layers (regrowth broken): the heap must call RM_LongShadeKernel.Tend, which does layers++")
     if "TicksGame" in heapcls.split("CompTick", 1)[-1] and "CompTick" in heapcls:
         bad.append("heap has a CompTick: regrowth must come only from vrekka tending (ruled)")
+    # 2026-10-08 card: searched ONCE, then spent (Odyssey crate style)
+    if "spent = true;" not in heapcls.split("void Search", 1)[1].split("PostExposeData", 1)[0]:
+        bad.append("Search() no longer marks the heap spent (ruled 2026-10-08: search once)")
+    if "c.spent" not in src.split("class WorkGiver_RM_SearchMidden", 1)[1].split("class JobDriver_RM_SearchMidden", 1)[0]:
+        bad.append("WorkGiver can still offer a spent heap")
+    if "!spent && RM_LongShadeKernel.CanTendNow" not in heapcls:
+        bad.append("a spent heap can be tended again")
+    # mapgen seeding + clean-patch tell: GenStepDefs named in the biome, toggled, lair races named
+    gs = _xml("MapGeneration", "RM_LongShade_GenSteps.xml")
+    for d in ("RM_GenStep_Middens", "RM_GenStep_CleanPatches"):
+        if _def(gs, "GenStepDef", d) is None:
+            bad.append("GenStepDef %s missing" % d)
+    biome = open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_LongShade.xml"), encoding="utf-8").read()
+    for d in ("RM_GenStep_Middens", "RM_GenStep_CleanPatches"):
+        if "<li>%s</li>" % d not in biome:
+            bad.append("%s not in RM_LongShade extraGenSteps" % d)
+    mg = open(os.path.join(HERE, "Source", "RM_LongShadeMiddenMapgen.cs"), encoding="utf-8").read()
+    if "middenMapgenEnabled" not in mg or "cleanPatchTellEnabled" not in mg:
+        bad.append("midden/clean-patch GenSteps lost their Mod Settings gates")
+    cp = _def(gs, "GenStepDef", "RM_GenStep_CleanPatches")
+    if cp is not None:
+        lairs = [e.text for e in cp.iter("li") if e.text]
+        if "RM_Mirrak" not in lairs or "RM_Gulloth" not in lairs:
+            bad.append("clean-patch lairRaces must name RM_Mirrak and RM_Gulloth")
+    if _def(root, "ThingDef", "RM_LongShadeCleanPatch") is None:
+        bad.append("RM_LongShadeCleanPatch marker ThingDef missing")
     return bad
 
 

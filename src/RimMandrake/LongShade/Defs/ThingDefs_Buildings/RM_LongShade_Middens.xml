@@ -2,8 +2,7 @@
 <!--
   RM_LongShade_Middens.xml                         LONGSHADE_MIDDENS_DESIGN_1
 
-  Owner rulings 2026-10-03 (question card): a midden is a heap that regrows over weeks and is
-  re-searched; searching yields VANILLA items only; the vrekka builds the heaps, and killing or
+  Owner rulings 2026-10-03 (question card): a midden is a heap searched once and spent (ruled 2026-10-08); searching yields VANILLA items only; the vrekka builds the heaps, and killing or
   driving them off stops the regrowth. C#: Source/RM_LongShadeMiddens.cs (header there says
   which precedents the shape is copied from: SWBestiary's scrap nest, Scarlands' ordnance search).
 
@@ -76,6 +75,44 @@
           <li><thing>MedicineHerbal</thing><count>1~2</count><weight>0.4</weight></li>
           <li><thing>ComponentIndustrial</thing><count>1~2</count><weight>0.4</weight></li>
         </yields>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- The clean-patch tell. PLACEHOLDER: vanilla sand-filth sprite, pale. Real art queued in artpipe
+       (RM_LongShadeCleanPatch). Selectable, walkable, no collision. -->
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RM_LongShadeCleanPatch</defName>
+    <label>unnaturally clean ground</label>
+    <description>Ground scoured smooth: no drift, no pebbles, no tracks. Something lairs in the shade here and keeps its floor swept.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <graphicData>
+      <texPath>Things/Filth/Sand</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>2.2</drawSize>
+      <color>(232, 220, 196)</color>
+    </graphicData>
+    <drawerType>MapMeshOnly</drawerType>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <passability>Standable</passability>
+    <pathCost>0</pathCost>
+    <fillPercent>0</fillPercent>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="RimMandrake.LongShade.CompProperties_RM_CleanPatchTell">
+        <line>Unnaturally clean.</line>
       </li>
     </comps>
   </ThingDef>

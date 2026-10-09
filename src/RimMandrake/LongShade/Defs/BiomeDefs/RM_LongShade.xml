@@ -249,6 +249,8 @@
     <extraGenSteps>
       <li>RM_GenStep_CrawlerRoad</li>
       <li>RM_GenStep_SunGraves</li>
+      <li>RM_GenStep_Middens</li>
+      <li>RM_GenStep_CleanPatches</li>
     </extraGenSteps>
 
     <allowedPackAnimals>
