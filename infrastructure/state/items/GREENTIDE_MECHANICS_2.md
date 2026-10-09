@@ -10,7 +10,7 @@ on the filing event, and a note left on that item pointing here.
 ## spec
 
 Per `design/Jawa/worldbuilding/biomes/the_greentide.md` (FROZEN, §4b, §4c,
-§5, §7b, §8b): wet-bulb overwhelm + the gear tree · the dry-air blower ·
+§5, §7b, §8b): wet-bulb heat (vanilla ambient heat) + the gear tree · the dry-air blower ·
 Scald damage + steam devils · the Roil (standing ground-fog) + Breaklight ·
 three-feller tree fall · Lunger ambush · churnmud (swallow + mire) · root
 causeways · grazing suppresses encroachment · the silence cue · the
@@ -56,7 +56,7 @@ describing the mechanic as if unbuilt, and states plainly not to re-ship.
 
 **What is genuinely still unbuilt, confirmed by grep (zero hits in `src/`)
 and by the shipped mod's own About.xml, which already lists its own gaps**:
-M1 (wet-bulb + gear), M2 (dry-air blower), M3's steam devil vortex, M4 (Roil
+M3's steam devil vortex, M4 (Roil
 weather — mechanically; a compiling overlay class ships this pass, see
 below), M5's Breaklight weather/light-snap half, M6 (tree fall), M7
 (Lunger), M9 (root causeways), M10 (grazing suppression hook — blocked on
@@ -168,7 +168,7 @@ since that mechanic already shipped before this spike ran.)
 
 ### Not built this pass, explicitly
 
-M1 (wet-bulb + gear, M-effort), M2 (dry-air blower, M-effort), M3's steam
+M3's steam
 devil vortex (M-effort — the damage-type half is done, see reconciliation),
 M4's mechanical half (`RUT_RoilWeather` WeatherDef fields, the
 `EnvironmentalWeather` condition lock — XML/reuse, low-risk, left for the
@@ -207,7 +207,7 @@ stays in `doing`.
 
 ## M1/M2 build pass — 2026-09-14
 
-Full build of M1 (wet-bulb overwhelm + the gear tree) and M2 (the dry-air
+Full build of M1 (wet-bulb heat + the gear tree) and M2 (the dry-air
 blower), per the kit spec's own build order (item 3, "one unit"). Built in
 `src/RimMandrake/EnvironmentalHazards/` (the RM_ mechanism classes, per the
 roster table's own "ruled kit's home" placement) and
@@ -370,32 +370,13 @@ roster/template work per the build brief, capability-only this pass);
 above; no bridge/quicktest verification (none attempted, per scope — no
 game access in this task).
 
-**M1 — wet-bulb overwhelm.** `RM_GameCondition_WetBulb : GameCondition`
-(new) + `RM_WetBulbExtension : DefModExtension` (new) ramp
-`RUT_WetBulbOverwhelm` severity on an interval, cribbing
-`HediffGiver_Heat.OnIntervalPassed`'s `HealthUtility.AdjustSeverity` shape
-per the spec, with the three named gates: (1) gain scaled by
-`max(0, 1 - protection/protectionHoldThreshold)` against the new
-`RM_WetBulbProtection` StatDef, summed across worn apparel by the condition
-itself (an "Apparel"-category stat has no vanilla pawn-level
-auto-aggregation — `ArmorUtility` is the only vanilla reader, and it reads
-per-apparel, not per-pawn); (2) zero gain while `pawn.GetRoom()` reads dry
-in the new `RM_MapComponent_DryRooms` (M2's own registry); (3) species
-exemption via the kit's existing shared `HazardTargeting.Affects`, not a
-fourth bespoke gate. Attached to `RUT_Greentide` via
-`RUT_GreentideWetBulbLock` (GameConditionDef) +
-`RUT_GreentideWetBulbLock_BiomeWiring.xml` (patch). Ships
-`RUT_WetBulbOverwhelm` (HediffDef, 4-stage escalation to collapse, stage
-shape cribbed from vanilla `Heatstroke`), `RM_WetBulbProtection` (StatDef,
-`ParentName="ArmorRatingBase"` crib, same shape `RM_ArmorRating_Scald`
-already established in this mod), and three `RUT_` apparel defs
-(`RUT_WickingWrap` 0.3, `RUT_SealedSuit` 0.6, `RUT_DryHood` 0.2 — stacking
-any two of the heavier pieces already reaches the 0.8 hold threshold). All
-three apparel defs reuse a real, already-shipping vanilla texPath verbatim
-(`Apparel_TribalA`/`Apparel_Vacsuit`/`Apparel_HatHood`, confirmed via
-RimSage raw fetch) — real art on day one, no DEPLOY_HOLD entry needed, 0
-validate_patch.py errors on all three (only the expected "cannot verify a
-packed vanilla texture from here" WARN, not an ERROR).
+**M1 — wet-bulb heat.** There is no wet-bulb condition, hediff or protection stat
+(`WETBULB_FOLD_INTO_HEAT_1`, decision taken by question card 2026-10-08). `RUT_Greentide`
+carries an `RM_SunHeatExtension` of heat kind `ambient` (`heatOffsetC` 12, PROVISIONAL), so
+vanilla `Heatstroke` does the work. Three `RUT_` apparel defs (`RUT_WickingWrap`,
+`RUT_SealedSuit`, `RUT_DryHood`) answer it through vanilla
+`StuffEffectMultiplierInsulation_Heat` (0.8 / 1.4 / 0.5, PROVISIONAL). All three reuse a real,
+already-shipping vanilla texPath verbatim (`Apparel_TribalA`/`Apparel_Vacsuit`/`Apparel_HatHood`).
 
 **M2 — the dry-air blower.** `RUT_DryAirBlower` ThingDef (new building)
 composed of vanilla `CompPowerTrader`/`CompRefuelable`(Chemfuel)/
@@ -404,15 +385,7 @@ composed of vanilla `CompPowerTrader`/`CompRefuelable`(Chemfuel)/
 on `CompTickRare` (vanilla's own 250-tick cadence, matching the spec's own
 named animal-scan interval exactly):
 
-1. **Dries the room** — registers `parent.GetRoom()` into
-   `RM_MapComponent_DryRooms` every active tick rather than once at spawn,
-   because a `Room` object is not durable (vanilla regenerates it on any
-   wall/door change); re-registering on a cadence is self-healing across a
-   geometry change with no spawn/despawn bookkeeping. Dryness is a decaying
-   grant (`dryUntilTick`), not a boolean, so a fuel-starved blower simply
-   stops refreshing it and the room reverts on its own — "the green notices
-   within hours" for free, no explicit stop path.
-2. **Repels encroachment — FLAGGED, not built, exactly as the calling
+1. **Repels encroachment — FLAGGED, not built, exactly as the calling
    brief specified.** Confirmed by grep before this pass started
    (`grep -r "PlantSuppression\|ExplosivePlantGrowth" src/`, zero hits):
    `EXPLOSIVE_PLANT_GROWTH_1`'s suppression grid does not exist anywhere in
@@ -420,7 +393,7 @@ named animal-scan interval exactly):
    documented no-op method with a `TODO(EXPLOSIVE_PLANT_GROWTH_1)` comment
    naming exactly what it should call once that engine ships — building the
    grid itself here would be doing a different item's whole job.
-3. **Repels animals — built for real**, per the spike pass's own
+2. **Repels animals — built for real**, per the spike pass's own
    resolution (`AvoidGrid` confirmed absent as a route; the fallback scan
    is the only one). A 90°-arc, radius-3 scan (both **INVENTED** per the
    spec) applies the new short `RUT_DryAirAversion` hediff (a
@@ -428,9 +401,8 @@ named animal-scan interval exactly):
    the re-trigger cooldown) to non-immune wild animals and starts vanilla
    `MentalStateDefOf.PanicFlee` on them in the same call.
 
-Two new Mod Settings toggles (`wetBulbOverwhelmEnabled`,
-`dryAirBlowerEnabled`), following this mod's existing one-master-switch-
-per-mechanism convention — added as entries 20/21 after the M9/M12 build
+One Mod Settings toggle (`dryAirBlowerEnabled`), following this mod's existing one-master-switch-
+per-mechanism convention — added as an entry after the M9/M12 build
 pass's own 17–19, which landed in this same file concurrently (another
 window, same repo, no file collision: confirmed by reading the live file
 before editing rather than assuming the numbering this item's own spike
@@ -446,25 +418,15 @@ sibling kit's own missing-building-art entries (Scald/Sump/Forge).
 
 **Owed**: M2's plant-suppression write (blocked on `EXPLOSIVE_PLANT_GROWTH_1`
 existing at all — not this item's job to unblock); `RUT_DryAirBlower`'s own
-sprite; M1's `immunePawnKinds`/`immuneThingDefs` lists (empty this pass —
-Greentide's own fauna roster, including which species count as
-"elevated-thirst" or "native", is a follow-on item, same gap M5/M7 already
-carry). No bridge/game access this pass, same posture as the spike.
+sprite; No bridge/game access this pass, same posture as the spike.
 
 ## files (M1/M2 build pass)
 
-- `src/RimMandrake/EnvironmentalHazards/Source/RM_WetBulbExtension.cs` (new)
-- `src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WetBulb.cs` (new)
-- `src/RimMandrake/EnvironmentalHazards/Source/RM_MapComponent_DryRooms.cs` (new)
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_CompDryFieldEmitter.cs` (new)
-- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (2 new settings toggles)
+- `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (1 new settings toggle)
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (4 new `<Compile>` entries)
 - `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
-- `src/RimMandrake/EnvironmentalHazards/Defs/StatDefs/RM_WetBulbProtection.xml` (new)
-- `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_WetBulbOverwhelm.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/HediffDefs/RUT_DryAirAversion.xml` (new)
-- `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_GreentideWetBulbLock.xml` (new)
-- `src/RimUtinni/UtinniPatches/Patches/RUT_GreentideWetBulbLock_BiomeWiring.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Apparel/RUT_WickingWrap.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Apparel/RUT_SealedSuit.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Apparel/RUT_DryHood.xml` (new)
@@ -758,15 +720,7 @@ than new comps, per the spec's own framing of each as a small extension:
   Greentide or Breaklight — so any future dark-biome "clearing event"
   reuses it without new C#, exactly the spec's own "benefits every future
   dark biome with a clearing event" framing.
-- **Wet-bulb pause**: `RM_WetBulbExtension` gained one new field,
-  `pausedByConditions` (`List<GameConditionDef>`, empty/no-op by default) —
-  `RM_GameCondition_WetBulb.RampMap` now checks it before gate 2's per-room
-  dried-room check and idles the WHOLE map's ramp for the tick if any named
-  condition is active (`GameConditionManager.ConditionIsActive`), a genuine
-  gate-4 addition, not a reduced rate. `RUT_GreentideWetBulbLock.xml` is the
-  only config naming `RUT_BreaklightCondition` here — the C# class itself
-  stays kit-agnostic, matching M1's existing data-driven shape rather than
-  hardcoding Breaklight's defName in `RM_GameCondition_WetBulb.cs`.
+- Breaklight's +12 C simply adds vanilla heat; nothing is paused.
 
 `RUT_IncidentWorker_Breaklight` (new class, same RUT_-prefixed-content-in-
 `mandrake.rm.environmentalhazards` precedent `RUT_WeatherOverlay_ScaldSteam`
@@ -778,31 +732,15 @@ pass's own Roil lock are all ungated), a rare incident-fired event has no
 other on/off hook to retrofit `MOD_OPTIONS_RETROFIT_1`'s "master switch per
 mechanism" rule onto.
 
-**Patch-order bug found and fixed in self-review, before commit.**
-`RUT_RoilLock_BiomeWiring.xml` is the SECOND patch to touch
-`RUT_Greentide.xml`'s `biomeMapConditions` node (M1's
-`RUT_GreentideWetBulbLock_BiomeWiring.xml` was first) — PatchOperation order
-between two same-mod files is not something either file controls. The
-existing M1 patch used a bare `PatchOperationConditional` with only a
-`<nomatch>` branch (add-the-whole-node); if this pass's own Roil patch had
-happened to run first, the WetBulb patch's `<nomatch>` branch would have
-silently done nothing on its own turn (node already exists, no `<match>`
-branch to fire), permanently dropping `RUT_GreentideWetBulbLock` from the
-biome with no error and no log. Fixed by adding the symmetric `<match>`
-branch (append-`<li>`) to `RUT_GreentideWetBulbLock_BiomeWiring.xml` itself,
-and writing `RUT_RoilLock_BiomeWiring.xml` with both branches from the
-start — both patches are now correct regardless of load order.
-`validate_patch.py` confirms both files' `<nomatch>` branch is the one that
-actually fires against the live 99-mod load order (alphabetical: M1's file
-sorts before M4's), so this was a latent bug, not a live one — worth fixing
-anyway since load order is not a contract.
+**Patch order.** `RUT_RoilLock_BiomeWiring.xml` writes both a `<match>` (append-`<li>`) and a
+`<nomatch>` (add-the-whole-node) branch on `RUT_Greentide.xml`'s `biomeMapConditions`, so it is
+correct regardless of load order; a bare `PatchOperationConditional` with only a `<nomatch>` branch
+silently does nothing when the node already exists.
 
 **Owed** (explicitly deferred per this item's own scope, not silently
 dropped): M5's "everything scrambles for shade" visible animal AI — a
 seek-shade JobGiver keyed to Breaklight specifically — is flavor-only and
-was NOT built this pass, per the calling brief's own instruction; M1's
-`immunePawnKinds`/`immuneThingDefs` lists remain empty (Greentide's own
-fauna roster, a follow-on item, unchanged by this pass); no art held —
+was NOT built this pass, per the calling brief's own instruction; no art held —
 neither new WeatherDef carries a texPath validate_patch.py can flag, and the
 Roil overlay's own missing texture was already flagged (no DEPLOY_HOLD.txt
 entry needed either way, matching `RUT_WeatherOverlay_ScaldSteam`'s own
@@ -813,8 +751,7 @@ posture as every build pass in this item).
 **Build/validate.** `RM_EnvironmentalHazards.csproj` rebuilds clean, 0
 warnings/0 errors (2 new `<Compile>` entries:
 `RM_GlowMultiplierOverrideExtension.cs`, `RUT_IncidentWorker_Breaklight.cs`;
-4 files edited: `BiomeGlowPatches.cs`, `RM_WetBulbExtension.cs`,
-`RM_GameCondition_WetBulb.cs`, `RM_EnvironmentalHazardsMod.cs` — the last
+2 files edited: `BiomeGlowPatches.cs`, `RM_EnvironmentalHazardsMod.cs` — the last
 gaining settings toggle #23, `breaklightEnabled`). `validate_patch.py`
 against the live 99-active-mod installed set: 0 errors across all 9
 new/changed def/patch files; 2 advisory WARNs, both the expected
@@ -829,20 +766,16 @@ every prior build pass in this item.
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_GlowMultiplierOverrideExtension.cs` (new)
 - `src/RimMandrake/EnvironmentalHazards/Source/RUT_IncidentWorker_Breaklight.cs` (new)
 - `src/RimMandrake/EnvironmentalHazards/Source/BiomeGlowPatches.cs` (glow-override lookup, wired into the postfix)
-- `src/RimMandrake/EnvironmentalHazards/Source/RM_WetBulbExtension.cs` (1 new field, `pausedByConditions`)
-- `src/RimMandrake/EnvironmentalHazards/Source/RM_GameCondition_WetBulb.cs` (gate 4, the dry-air pause)
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazardsMod.cs` (1 new settings toggle, #23)
 - `src/RimMandrake/EnvironmentalHazards/Source/RM_EnvironmentalHazards.csproj` (2 new `<Compile>` entries)
 - `src/RimMandrake/EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll` (rebuilt, 0 warnings/errors)
 - `src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_RoilWeather.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_RoilLock.xml` (new)
 - `src/RimUtinni/UtinniPatches/Patches/RUT_RoilLock_BiomeWiring.xml` (new)
-- `src/RimUtinni/UtinniPatches/Patches/RUT_GreentideWetBulbLock_BiomeWiring.xml` (patch-order bug fix, `<match>` branch added)
 - `src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_Greentide.xml` (M4's `BiomeGlowMultiplierExtension`/`soundsAmbient`; stale header note corrected)
 - `src/RimUtinni/UtinniPatches/Defs/WeatherDefs/RUT_BreaklightClear.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_BreaklightCondition.xml` (new)
 - `src/RimUtinni/UtinniPatches/Defs/IncidentDefs/RUT_Breaklight.xml` (new)
-- `src/RimUtinni/UtinniPatches/Defs/GameConditionDefs/RUT_GreentideWetBulbLock.xml` (M5's `pausedByConditions` wiring)
 
 ## criteria
 
@@ -903,8 +836,8 @@ explicit fallback for this exact race ("if M4 hasn't landed yet when you
 check, wire the plain IncidentDef route only... don't wait on it"). M4 has
 since landed and committed (`6f7f5ff61`) — re-checked after the fact,
 purely for this note: `RUT_RoilLock`'s `conditionClass` is the shared,
-already-ruled `GameCondition_EnvironmentalWeather` (also the Wet Bulb/
-Scald Steam/Miasma locks' own conditionClass), which has no per-tick
+already-ruled `GameCondition_EnvironmentalWeather` (also the Scald Steam/
+Miasma locks' own conditionClass), which has no per-tick
 arbitrary-Thing-spawn hook at all — wiring a rare vortex spawn into it
 would mean extending a widely-reused shared class, not a small addition,
 so it stays owed rather than retrofitted under this pass.

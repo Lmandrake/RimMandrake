@@ -481,7 +481,7 @@ Greentide shape is the template; the others conform to it.
 | section | contents | default |
 |---|---|---|
 | Master | the mod on/off (the biome def still loads; the mechanics stop) | on |
-| Per mechanic | one toggle per mechanic the kit spec names (churnmud, wet-bulb, the Roil, ash fall, the hum, the ladder …) | on |
+| Per mechanic | one toggle per mechanic the kit spec names (churnmud, the Roil, ash fall, the hum, the ladder …) | on |
 | Tuning | the one or two numbers that ARE the experience per mechanic (coverage, severity, rate) | shipped value |
 | **Cross-biome** | `enabled` · `everywhere` · a biome-defName allowlist · coverage — lets the mechanics run on maps whose biome is not this mod's | off |
 | Map-gen note | any toggle that only takes effect on a NEW map is labelled so in the UI (the campaign is a frozen world; nothing here regenerates the planet) | — |

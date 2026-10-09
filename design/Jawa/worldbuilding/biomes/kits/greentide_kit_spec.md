@@ -27,7 +27,7 @@ resolution, one C# implementation per mechanic, tuned per-biome by XML only.
 - `BiomeDef.biomeMapConditions : List<GameConditionDef>` *(verified,
   `Source/RimWorld/BiomeDef.cs:131`)* — vanilla applies a list of permanent
   GameConditions to every map of a biome, from XML alone. This is how the
-  Greentide's standing conditions (wet-bulb, the Roil lock) attach with zero
+  Greentide's standing conditions (the Roil lock) attach with zero
   bespoke bootstrap code.
 - `GameCondition` virtuals *(verified, `Source/RimWorld/GameCondition.cs`)*:
   `ForcedWeather()` (line 345), `TemperatureOffset()`, `AnimalDensityFactor(Map)`,
@@ -36,51 +36,41 @@ resolution, one C# implementation per mechanic, tuned per-biome by XML only.
   with the engine.
 
 Scoreboard: **12 mechanics** · **4 ruled-comp reuses** (EnvironmentalWeather ×2,
-BiomeGlowMultiplier, PeriodicAreaAttack, + ActiveGasEmitter optional) · **9 new
-RM_ classes** (1 L, 6 M, 2 S) · XML-only content on top of all of it.
+BiomeGlowMultiplier, PeriodicAreaAttack, + ActiveGasEmitter optional) · **8 new
+RM_ classes** (1 L, 5 M, 2 S) · XML-only content on top of all of it.
 
 ---
 
-## M1. Wet-bulb overwhelm + the gear tree (§4b)
+## M1. Wet-bulb heat as vanilla heat + the gear tree (§4b)
 
-**Player experience.** At 45 °C in saturated air your pawns cook even under
-shade — a "Wet-bulb overwhelm" hediff ramps toward collapse regardless of roof,
-because sweat does nothing here. Sealed/wicking gear slows it; a blower-dried
-room stops it entirely. The desert's shade-and-cooling kit is useless; the
-trader sells you the other tree.
+**Decision taken by question card 2026-10-08** (`WETBULB_FOLD_INTO_HEAT_1`): the wet-bulb
+mechanic folds into vanilla heat. There is no wet-bulb clock, hediff, protection stat or
+condition class.
 
-**Engine route.** New `RM_GameCondition_WetBulb : GameCondition`, attached via
-`biomeMapConditions` *(verified)*. On interval, ramps severity of a hediff
-(`RUT_WetBulbOverwhelm`, XML: escalating consciousness/moving stages → collapse)
-on every pawn on the map, cribbing the severity-adjust shape of
-`HediffGiver_Heat.OnIntervalPassed` *(verified, `Source/Verse/HediffGiver_Heat.cs`
-— `HealthUtility.AdjustSeverity` driven by ambient temp vs
-`pawn.SafeTemperatureRange()`)* but with three gates the vanilla giver lacks:
-(1) severity gain × `(1 − RM_WetBulbProtection)`, a new `StatDef` summed from
-apparel; (2) zero gain in a "dried" room (registered by M2's blower comp in a
-per-map component); (3) species exemption list (the elevated-thirst races and
-native fauna are immune — XML list on the condition def).
+**Player experience.** At 45 °C in saturated air your pawns cook even under shade, because
+sweat does nothing here. The Greentide's heat kind is **ambient**: shade and roofs do nothing
+outdoors, an enclosed room takes no offset, and only heat insulation answers it. Sealed and
+wicking gear raise the wearer's comfortable maximum; the desert's shade-and-cooling kit is
+useless; the trader sells you the other tree.
 
-*Why not a ruled comp*: `RM_GameCondition_EnvironmentalWeather` damages
-**unroofed** pawns on an interval — wet-bulb is the exact inverse (roof doesn't
-help), is a severity ramp not damage, and needs the stat + dried-room gates.
-A new condition class is honest; it shares no field semantics with the ruled one.
+**Engine route.** The biome's `RM_SunHeatExtension` declares heat kind `ambient` and a felt
+heat offset (`heatOffsetC` 12 °C, PROVISIONAL; the wet-bulb share is folded into it). That
+raises the pawn's felt temperature and vanilla `Heatstroke` (the untouched `HediffGiver_Heat`)
+does the rest. Gear answers through vanilla `StuffEffectMultiplierInsulation_Heat`
+(PROVISIONAL): sealed suit 1.4, wicking wrap 0.8, dry-hood 0.5. The apparel AI scorer
+(`RM_Patch_HazardApparelScoring`) adds `Insulation_Heat`/40. A saved wet-bulb hediff loads as
+vanilla Heatstroke via an alias def.
 
-**Content (RUT_, XML only)**: `RUT_WetBulbOverwhelm` HediffDef;
-`RM_WetBulbProtection` StatDef (RM_ — the desert's opposite-kit gear and any
-future wet biome want it too); 2–3 `RUT_` apparel defs (wicking wrap, sealed
-suit, dry-hood) carrying the stat. **INVENTED**: severity rates (start:
-collapse in ~1.5 in-game days unprotected, indefinite hold at protection ≥0.8);
-stat name.
+**Content (RUT_, XML only)**: 2-3 `RUT_` apparel defs (wicking wrap, sealed suit, dry-hood)
+carrying the insulation values above.
 
-**Effort**: **M** (condition + stat part + room gate). Gear XML: S.
-**v1: ships** — this is the biome's survival thesis.
+**Effort**: **S** (XML values plus the scorer line). **v1: ships** — this is the biome's
+survival thesis.
 
 ## M2. The dry-air blower (§4b)
 
 **Player experience.** A fueled/powered doorway machine gushing hot dry air
-downward: plants stop growing into that doorway, animals shy off, and the room
-behind it reads "dried" — the wet-bulb clock stops indoors. When it runs out of
+downward: plants stop growing into that doorway and animals shy off. When it runs out of
 fuel, the green notices within hours. Every Greentide structure shimmers at the
 door.
 
@@ -89,15 +79,12 @@ comps — `CompPowerTrader`/`CompRefuelable` (XML choice), `CompHeatPusher`
 *(verified, `Source/Verse/CompHeatPusher.cs`)*, `CompFlickable` — plus **one new
 comp**, `RM_CompDryFieldEmitter : ThingComp`:
 
-1. **Dries the room**: registers its room (via `Thing.GetRoom()`) in
-   `RM_MapComponent_DryRooms`, which M1's condition reads. Room-based, so one
-   blower per structure suffices (matches the sheet's "dries the room behind it").
-2. **Repels encroachment**: writes suppression into the
+1. **Repels encroachment**: writes suppression into the
    `EXPLOSIVE_PLANT_GROWTH_1` engine's suppression grid over a doorway arc
    (**INVENTED**: radius 3, 90° arc facing outward). The growth engine is the
    parent item; this kit only defines the write. "Dry heat is the one alien
    thing" — the blower and M8's grazing write into the same grid.
-3. **Repels animals**: **RESOLVED 2026-09-13 (GREENTIDE_MECHANICS_2 spike
+2. **Repels animals**: **RESOLVED 2026-09-13 (GREENTIDE_MECHANICS_2 spike
    pass), against the real 1.6/Odyssey decompile — CONFIRMED ABSENT.**
    `Verse.AI/AvoidGrid.cs` read in full: it is built exclusively from
    `map.listerBuildings.allBuildingsColonist` with `ai_combatDangerous`
@@ -111,8 +98,8 @@ comp**, `RM_CompDryFieldEmitter : ThingComp`:
 *Why not a ruled comp*: nothing ruled touches rooms or the growth grid;
 `RM_CompActiveGasEmitter` emits things, it doesn't suppress them.
 
-**Effort**: **M**. **v1: ships** (load-bearing for M1's dried-room gate; the
-sheet's "fire is not the tool" makes it the only defense line).
+**Effort**: **M**. **v1: ships** (the sheet's "fire is not the tool" makes it the only
+defense line against encroachment).
 
 ## M3. Scald damage + steam devils (§4c)
 
@@ -229,17 +216,17 @@ states this satisfies owner ruling #3 below ("both in v1"). **Still unbuilt:
 the weather/light half** — `RUT_BreaklightClear` WeatherDef, the
 `tempOffset`/duration preset, and the glow-override extension (no
 `GlowMultiplierOverride`-named class exists anywhere in `src/` as of this
-pass) — and the wet-bulb pause hookup (M1 doesn't exist yet either).
+pass) — pass.
 
 **Player experience.** The inversion breaks: the fog blanket lifts at once and
 the biome stands naked under the full +45° sun for a few hours. Temperatures
-spike, the wet-bulb clock pauses but a dry-heat clock starts, accuracy snaps to
+spike, accuracy snaps to
 full — and everything wild heads for shade.
 
 **Engine route.** Reuse ruled **`RM_GameCondition_EnvironmentalWeather`** as a
 rare IncidentDef-triggered condition preset: forces `RUT_BreaklightClear`
-WeatherDef (clear, harsh palette), `tempOffset` +12 °C (**INVENTED** — stacks
-on the ~45 °C ambient into vanilla heatstroke territory via the untouched
+WeatherDef (clear, harsh palette), `tempOffset` +12 °C (**INVENTED** — simply adds vanilla
+heat on the ~45 °C ambient, into heatstroke territory via the untouched
 `HediffGiver_Heat`), duration 3–8 hours (**INVENTED**). Two hookups:
 
 - **Glow override**: the biome's 0.75 multiplier must read 1.0 during
@@ -247,8 +234,6 @@ on the ~45 °C ambient into vanilla heatstroke territory via the untouched
   glow-multiplier postfix checks the map for an active condition carrying
   `RM_GlowMultiplierOverrideExtension` and prefers its value. One extension
   class, benefits every future dark biome with a "clearing" event.
-- **Wet-bulb pause**: M1's condition reads Breaklight's presence and idles
-  (dry air — the multiplier switches off, exactly the sheet's physics).
 - ❓/deferred: "everything scrambles for shade" as visible animal AI (a
   seek-shade JobGiver during the condition) — v1 ships the heat + weather +
   light snap only; the scramble is flavor AI, deferred.
@@ -578,8 +563,7 @@ note that `RM_Gas_Transmuting` could serve a Greentide spread visual belongs to
 
 | Class | For | Effort |
 |---|---|---|
-| `RM_GameCondition_WetBulb` (+ `RM_WetBulbProtection` StatDef part) | M1 | M |
-| `RM_CompDryFieldEmitter` + `RM_MapComponent_DryRooms` | M2 | M |
+| `RM_CompDryFieldEmitter` | M2 | M |
 | `RM_WanderingVortex` (Tornado crib) | M3 | M |
 | `RM_WeatherOverlay_GroundFog` + glow-override extension | M4/M5 | S |
 | `RM_TreeFallUtility` + `RM_CompCrackFall` + gnaw JobGiver | M6 | M |
@@ -594,7 +578,7 @@ All RM_ classes live in the ruled kit's home
 (`src/RimMandrake/EnvironmentalHazards/`, packageId
 `mandrake.rm.environmentalhazards`, per review §4) or a sibling RM_ mod if
 FOUNDRY splits by weight; RUT_ content defs live in the Greentide's content mod.
-Total: 1 L, 6 M, 2 S new (M4's S and M10's S), + 1 M deferred; four ruled-comp
+Total: 1 L, 5 M, 2 S new (M4's S and M10's S), + 1 M deferred; four ruled-comp
 reuses ride `ALPHA_MECHANICS_KIT_1`'s build.
 
 ## Build order
@@ -604,8 +588,8 @@ reuses ride `ALPHA_MECHANICS_KIT_1`'s build.
    `RM_HediffComp_PeriodicAreaAttack` finished shapes.
 2. **M4 Roil + M5 Breaklight** — near-pure reuse; the biome instantly *feels*
    different, and every later live test happens under the right weather/light.
-3. **M1 wet-bulb + M2 blower** — one unit (M1's dried-room gate is M2's
-   component); the survival thesis becomes playable; gear XML alongside.
+3. **M1 wet-bulb heat + M2 blower** — the survival thesis becomes playable; gear XML
+   alongside.
 4. **M3 Scald + steam devil** — Scald def early (M11-adjacent defs reference
    it), vortex after.
 5. **M6 tree fall** — utility first, then crack comp, then the
