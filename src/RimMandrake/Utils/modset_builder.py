@@ -655,6 +655,13 @@ TIERS["acc_20261009b"] = {
     "dlc": True,
 }
 
+TIERS["acc_20261009c"] = {
+    "why": "FOUNDRY acceptance sitting 3 (2026-10-09): acc_20261009b plus the Star Wars races, the Utinni patch layer and the structure injections, "
+           "so a RUT_Jawa_ faction exists and the Long Shade's dead-crawler terminus is placed (LONGSHADE_JAWATOW_RECHECK_1).",
+    "want": list(TIERS["acc_20261009b"]["want"]) + ["mandrake.rsw.starwarsraces", "mandrake.rut.patches", "mandrake.rsw.injections"],
+    "dlc": True,
+}
+
 TIERS["watchers_live"] = {
     "why": "FOUNDRY live checks 2026-10-08: the Watchers kit (WATCHER_CREATURES_MOD_1) with its one shipped member, the piinnok, "
            "from the composed biomes mod.",

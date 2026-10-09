@@ -1396,7 +1396,7 @@ namespace JawaBench.BridgeTools
                                     "on the map that nothing culls, so refusing.");
                     pr.behavior.TryExecuteOn(target, org, pr, null, assignments, true);
                 }
-                catch (Exception e) { return Fail("Starting the ritual threw: " + e.GetType().Name + ": " + e.Message); }
+                catch (Exception e) { var st = e.ToString(); return Fail("Starting the ritual threw: " + e.GetType().Name + ": " + e.Message, new { stack = st.Length > 1800 ? st.Substring(0, 1800) : st }); }
 
                 int after = map.lordManager.lords.Count;
                 return (object)new
