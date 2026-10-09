@@ -57,6 +57,14 @@ namespace RimMandrake.DivingInteraction
             }
         }
 
+        /// <summary>ELDER_TREASURE_PROOF_HOOK_1: jawa/static_call proof read of the treasure pool (ELDER_TREASURE_TAG_TABLE_1.A1).
+        /// Returns "count=N names=a,b,c" (sorted ordinal, the exact table the draw uses). Pure state read.</summary>
+        public static string ProofTreasures(string unused)
+        {
+            string[] t = RmUniqueTreasureDefNames;
+            return "count=" + t.Length + " names=" + string.Join(",", t);
+        }
+
         public static int TileForMap(Map map)
         {
             if (map?.Parent is PocketMapParent pmp && pmp.sourceMap != null)
