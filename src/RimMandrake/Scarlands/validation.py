@@ -15,7 +15,9 @@ round, criterion 2 of the item), the barrel's drawn angle (visual), and the Refi
 construction. Each says UNMEASURED rather than passing.
 
 STATIC (offline) CHECKS: `python3 validation.py` runs `static_checks()` without a game: XML parses, every
-Mod Settings field is Scribed and exposed, the .cs file is in the csproj, the patch targets exist.
+Mod Settings field (derived from the C# initialisers) is Scribed under its own name with the same default and has a
+control, the .cs files are in the csproj, and the patch files carry the expected target TEXT (a text grep, not a
+proof that the xpath resolves against loaded defs; that is the live run's defs_resolve).
 """
 import os
 import re
@@ -25,27 +27,25 @@ import xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
 NS = "RimMandrake.Scarlands."
 SETTINGS_TYPE = NS + "RM_WarscarSettings"
-DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWakeRadius": 12.0,
-            "totchakBiteScale": 1.0, "totchakGrazeDays": 8.0, "turretTrackingEnabled": True, "turretRefitEnabled": True,
-            "oldLineDamageFactor": 1.0, "oldLineCooldownFactor": 1.0,
-            "oldTongueEnabled": True, "oldTonguePanelsPerMap": 3.0, "oldTongueRevealChance": 0.8, "oldTongueSkillGate": 8,
-            "hospiceEnabled": True, "hospiceIntactPerMap": 2, "hospiceStageDays": 1.5, "hospiceFailureChance": 0.08,
-            "hospiceLashOut": True, "hospiceWalkInEnabled": True, "hospiceWalkInFrequency": 1.0,
-            "chotrixEnabled": True, "chotrixPerMap": 2.0, "chotrixRevealSeconds": 4.0, "chotrixDragEnabled": True, "lacquerCloakEnabled": True, "lacquerSeenRadius": 15.0, "lacquerDeniedWhileGlowing": True,
-            "enableChatrak": True, "enableTetchik": True, "enablePallbearer": True, "enableScarRoach": True,
-            "enableWreckLichenSeeder": True, "enableRimclaw": True, "enableBileworm": True, "enableElectricTick": True,
-            "enableElectricGryllotalpa": True, "enableJuggernautBeetle": True,
-            "poolsEnabled": True, "poolsPerMap": 3.0, "poolCycleHours": 24.0, "bloomDanger": 1.0, "catalystEnabled": True,
-            "settlingEnabled": True, "settlingCalmThreshold": 0.35, "settlingCalmHours": 4.0, "settlingEndWind": 0.8,
-            "settlingEndHours": 1.0, "settlingToxicStrength": 1.0, "liftFrontEnabled": True, "warDustEnabled": True,
-            "warDustBlightCureEnabled": True,
-            "ordnancePerMap": 3.0,
-            "choirEnabled": True, "choirVolume": 1.0, "choirTickVolumeCeiling": 1.0, "choirTickDensity": 1.0,
-            "choirWindEnabled": True, "choirReducedRepetition": False, "choirJarWarnings": True,
-            "markEnabled": True, "markAccrualPerDay": 0.3, "markFloorEnabled": True, "markTradeBonusesEnabled": True,
-            "snapEnabled": True, "snapArmingHours": 24.0, "snapStageSpeed": 1.0,
-            "loosenedPanelsEnabled": True, "loosenedPanelsPerMap": 3.0,
-            "bilewormGasEnabled": True}
+def settings_fields():
+    """WARSCAR_VALIDATION_FIDELITY_1: every scalar Mod Settings field and its shipped default, read from the C# field
+    initialisers of RM_WarscarSettings (the hand-kept table this replaces had drifted: it omitted the aerosol, ring,
+    glower, rarity and cross-biome settings)."""
+    src = open(os.path.join(HERE, "Source", "RM_WarscarMod.cs")).read()
+    body = src.split("class RM_WarscarSettings", 1)[1].split("ExposeData", 1)[0]
+    out = {}
+    for typ, name, val in re.findall(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);", re.sub(r"//[^\n]*", "", body)):
+        val = val.strip()
+        if typ == "bool":
+            out[name] = val == "true"
+        elif typ == "int":
+            out[name] = int(val)
+        else:
+            out[name] = float(val.rstrip("fF"))
+    return out
+
+
+DEFAULTS = settings_fields()
 CHOIR_DEFS = ["SoundDef/RM_GeigerTick", "SoundDef/RM_WindOnMetal", "SoundDef/RM_ProjectorHum", "SoundDef/RM_PoolBoil",
               "ThingDef/RM_CapturedTetchik", "ThingDef/RM_TetchikJar", "RecipeDef/RM_MakeTetchikJar"]
 SETTLING_DEFS = ["GameConditionDef/RM_Settling", "ThingDef/RM_Filth_SettledFilm", "ThingDef/RM_WarDust",
@@ -114,9 +114,17 @@ def static_checks():
     """Return a list of failure strings; empty means pass. Needs no game."""
     bad = []
     src = open(os.path.join(HERE, "Source", "RM_WarscarMod.cs")).read()
-    for f in DEFAULTS:
-        if '"%s"' % f not in src:
-            bad.append("settings field %s is not Scribed in RM_WarscarMod.cs" % f)
+    if len(DEFAULTS) < 40:
+        bad.append("settings_fields() read only %d fields from RM_WarscarSettings (parser broken?)" % len(DEFAULTS))
+    for f, dv in DEFAULTS.items():
+        m = re.search(r"Scribe_Values\.Look\(ref %s, \"%s\", ([^)]+)\)" % (f, f), src)
+        if not m:
+            bad.append("settings field %s is not Scribed under its own name in RM_WarscarMod.cs" % f)
+            continue
+        sd = m.group(1).strip()
+        sv = (sd == "true") if isinstance(dv, bool) else (float(sd.rstrip("fF")) if re.match(r"^-?[\d.]+[fF]?$", sd) else None)
+        if sv is not None and sv != dv:
+            bad.append("settings field %s: Scribe default %s differs from its initialiser %r" % (f, sd, dv))
         if not re.search(r"\b%s\b" % f, src.split("DoWindowContents")[1]):
             bad.append("settings field %s has no control in DoWindowContents" % f)
     if 'Compile Include="RM_CompTurretAim.cs"' not in open(os.path.join(HERE, "Source", "RM_Warscar.csproj")).read():
@@ -548,17 +556,30 @@ def _build_suite():
         t.upstream_reason = "UNMEASURED: " + why
         t.upstream_failed = True
 
+    originals = {}
+
     def _set(t, field, value):
+        # WARSCAR_VALIDATION_FIDELITY_1: remember the value the sitting had BEFORE the test touched it, so the
+        # restore puts that back (not the shipped default, which may not be what the owner had set).
+        if t.session is not None and field not in originals:
+            got = t.session.call("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="get", field=field)
+            if not isinstance(got, dict) or got.get("value") is None:
+                raise ExpectationFailed("could not read %s before changing it: %r" % (field, got))
+            originals[field] = str(got.get("value"))
         t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="set", field=field,
                       value=str(value))
 
     def _restore(t, field):
-        if t.session is not None:
-            try:
-                t.session.call("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="set",
-                               field=field, value=str(DEFAULTS[field]))
-            except Exception as ex:
-                print("[warscar] RESTORE FAILED %s: %s" % (field, ex), file=sys.stderr, flush=True)
+        if t.session is None or field not in originals:
+            return
+        want = originals.pop(field)
+        try:
+            t.session.call("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="set", field=field, value=want)
+            back = t.session.call("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="get", field=field)
+        except Exception as ex:
+            raise ExpectationFailed("RESTORE FAILED %s -> %s: %s (the sitting's setting is now wrong)" % (field, want, ex))
+        if str((back or {}).get("value")).lower() != want.lower():
+            raise ExpectationFailed("RESTORE FAILED %s: wanted %s back, reads %r" % (field, want, back))
 
     def _inspect(t, thing_id):
         r = t.bridge_call("jawa/inspect_string", thingIds=thing_id)
