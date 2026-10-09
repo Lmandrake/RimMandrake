@@ -4514,3 +4514,11 @@
 {"seat":"FOUNDRY","event":"claim","id":"LONGSHADE_JAWA_RETURN_1","ts":"2026-10-09T06:12:49Z","tsn":1791526369646037432}
 {"seat":"FOUNDRY","event":"start","id":"LONGSHADE_JAWA_RETURN_1","ts":"2026-10-09T06:12:49Z","tsn":1791526369882356507}
 {"seat":"FOUNDRY","event":"implemented","id":"LONGSHADE_JAWA_RETURN_1","sha":"bf56a983e7c2","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:12:50Z","tsn":1791526370855089337}
+{"seat":"FOUNDRY","event":"lease","id":"SUMPTUARY_MOOD_BASELINE_CAPTURE_1","action":"take","token":"FOUNDRY.pid28250.b2f7d8be","expires":"2026-10-09T06:58:35Z","ts":"2026-10-09T06:13:35Z","tsn":1791526415515098848}
+{"seat":"FOUNDRY","event":"claim","id":"SUMPTUARY_MOOD_BASELINE_CAPTURE_1","ts":"2026-10-09T06:13:35Z","tsn":1791526415750222817}
+{"seat":"FOUNDRY","event":"start","id":"SUMPTUARY_MOOD_BASELINE_CAPTURE_1","ts":"2026-10-09T06:13:35Z","tsn":1791526415986261375}
+{"seat":"FOUNDRY","event":"implemented","id":"SUMPTUARY_MOOD_BASELINE_CAPTURE_1","sha":"96ea3bbd2d71","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:13:37Z","tsn":1791526417015257522}
+{"seat":"FOUNDRY","event":"lease","id":"DEEPFIRE_COMMONER_SCAN_CACHE_1","action":"take","token":"FOUNDRY.pid28250.a4d5aaba","expires":"2026-10-09T06:58:37Z","ts":"2026-10-09T06:13:37Z","tsn":1791526418127668753}
+{"seat":"FOUNDRY","event":"claim","id":"DEEPFIRE_COMMONER_SCAN_CACHE_1","ts":"2026-10-09T06:13:38Z","tsn":1791526418367675215}
+{"seat":"FOUNDRY","event":"start","id":"DEEPFIRE_COMMONER_SCAN_CACHE_1","ts":"2026-10-09T06:13:38Z","tsn":1791526418609958308}
+{"seat":"FOUNDRY","event":"implemented","id":"DEEPFIRE_COMMONER_SCAN_CACHE_1","sha":"96ea3bbd2d71","ref":"origin/main","criteria":[],"ts":"2026-10-09T06:13:39Z","tsn":1791526419710289229}
