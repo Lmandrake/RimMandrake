@@ -168,8 +168,8 @@
         <li>firstName(p=3)-&gt;[NameBith]</li>
         <li>nickName-&gt;[NicknameBith]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameBith]</li>
-        <li>lastGenerated-&gt;[NameBith][maybeHyphen][NameBith]</li>
+        <li>lastGenerated-&gt;[LastNameBith]</li>
+        <li>lastGenerated-&gt;[LastNameBith][maybeHyphen][LastNameBith]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -199,8 +199,8 @@
         <li>firstName(p=3)-&gt;[NameBothan]</li>
         <li>nickName-&gt;[NicknameBothan]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameBothan]</li>
-        <li>lastGenerated-&gt;[NameBothan][maybeHyphen][NameBothan]</li>
+        <li>lastGenerated-&gt;[LastNameBothan]</li>
+        <li>lastGenerated-&gt;[LastNameBothan][maybeHyphen][LastNameBothan]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -230,8 +230,8 @@
         <li>firstName(p=3)-&gt;[NameCathar]</li>
         <li>nickName-&gt;[NicknameCathar]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameCathar]</li>
-        <li>lastGenerated-&gt;[NameCathar][maybeHyphen][NameCathar]</li>
+        <li>lastGenerated-&gt;[LastNameCathar]</li>
+        <li>lastGenerated-&gt;[LastNameCathar][maybeHyphen][LastNameCathar]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -261,8 +261,8 @@
         <li>firstName(p=3)-&gt;[NameChadraFan]</li>
         <li>nickName-&gt;[NicknameChadraFan]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameChadraFan]</li>
-        <li>lastGenerated-&gt;[NameChadraFan][maybeHyphen][NameChadraFan]</li>
+        <li>lastGenerated-&gt;[LastNameChadraFan]</li>
+        <li>lastGenerated-&gt;[LastNameChadraFan][maybeHyphen][LastNameChadraFan]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -292,8 +292,8 @@
         <li>firstName(p=3)-&gt;[NameChiss]</li>
         <li>nickName-&gt;[NicknameChiss]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameChiss]</li>
-        <li>lastGenerated-&gt;[NameChiss][maybeHyphen][NameChiss]</li>
+        <li>lastGenerated-&gt;[LastNameChiss]</li>
+        <li>lastGenerated-&gt;[LastNameChiss][maybeHyphen][LastNameChiss]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -323,8 +323,8 @@
         <li>firstName(p=3)-&gt;[NameDevaronian]</li>
         <li>nickName-&gt;[NicknameDevaronian]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameDevaronian]</li>
-        <li>lastGenerated-&gt;[NameDevaronian][maybeHyphen][NameDevaronian]</li>
+        <li>lastGenerated-&gt;[LastNameDevaronian]</li>
+        <li>lastGenerated-&gt;[LastNameDevaronian][maybeHyphen][LastNameDevaronian]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -354,8 +354,8 @@
         <li>firstName(p=3)-&gt;[NameDuros]</li>
         <li>nickName-&gt;[NicknameDuros]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameDuros]</li>
-        <li>lastGenerated-&gt;[NameDuros][maybeHyphen][NameDuros]</li>
+        <li>lastGenerated-&gt;[LastNameDuros]</li>
+        <li>lastGenerated-&gt;[LastNameDuros][maybeHyphen][LastNameDuros]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -385,8 +385,8 @@
         <li>firstName(p=3)-&gt;[NameEchani]</li>
         <li>nickName-&gt;[NicknameEchani]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameEchani]</li>
-        <li>lastGenerated-&gt;[NameEchani][maybeHyphen][NameEchani]</li>
+        <li>lastGenerated-&gt;[LastNameEchani]</li>
+        <li>lastGenerated-&gt;[LastNameEchani][maybeHyphen][LastNameEchani]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -416,8 +416,8 @@
         <li>firstName(p=3)-&gt;[NameEwok]</li>
         <li>nickName-&gt;[NicknameEwok]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameEwok]</li>
-        <li>lastGenerated-&gt;[NameEwok][maybeHyphen][NameEwok]</li>
+        <li>lastGenerated-&gt;[LastNameEwok]</li>
+        <li>lastGenerated-&gt;[LastNameEwok][maybeHyphen][LastNameEwok]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -447,8 +447,8 @@
         <li>firstName(p=3)-&gt;[NameFalleen]</li>
         <li>nickName-&gt;[NicknameFalleen]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameFalleen]</li>
-        <li>lastGenerated-&gt;[NameFalleen][maybeHyphen][NameFalleen]</li>
+        <li>lastGenerated-&gt;[LastNameFalleen]</li>
+        <li>lastGenerated-&gt;[LastNameFalleen][maybeHyphen][LastNameFalleen]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -478,8 +478,8 @@
         <li>firstName(p=3)-&gt;[NameFeeorin]</li>
         <li>nickName-&gt;[NicknameFeeorin]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameFeeorin]</li>
-        <li>lastGenerated-&gt;[NameFeeorin][maybeHyphen][NameFeeorin]</li>
+        <li>lastGenerated-&gt;[LastNameFeeorin]</li>
+        <li>lastGenerated-&gt;[LastNameFeeorin][maybeHyphen][LastNameFeeorin]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -509,8 +509,8 @@
         <li>firstName(p=3)-&gt;[NameGamorrean]</li>
         <li>nickName-&gt;[NicknameGamorrean]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameGamorrean]</li>
-        <li>lastGenerated-&gt;[NameGamorrean][maybeHyphen][NameGamorrean]</li>
+        <li>lastGenerated-&gt;[LastNameGamorrean]</li>
+        <li>lastGenerated-&gt;[LastNameGamorrean][maybeHyphen][LastNameGamorrean]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -689,8 +689,8 @@
         <li>firstName(p=3)-&gt;[NameIridonian]</li>
         <li>nickName-&gt;[NicknameIridonian]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameIridonian]</li>
-        <li>lastGenerated-&gt;[NameIridonian][maybeHyphen][NameIridonian]</li>
+        <li>lastGenerated-&gt;[LastNameIridonian]</li>
+        <li>lastGenerated-&gt;[LastNameIridonian][maybeHyphen][LastNameIridonian]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -720,8 +720,8 @@
         <li>firstName(p=3)-&gt;[NameJawa]</li>
         <li>nickName-&gt;[NicknameJawa]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameJawa]</li>
-        <li>lastGenerated-&gt;[NameJawa][maybeHyphen][NameJawa]</li>
+        <li>lastGenerated-&gt;[LastNameJawa]</li>
+        <li>lastGenerated-&gt;[LastNameJawa][maybeHyphen][LastNameJawa]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -751,8 +751,8 @@
         <li>firstName(p=3)-&gt;[NameKlatoonian]</li>
         <li>nickName-&gt;[NicknameKlatoonian]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameKlatoonian]</li>
-        <li>lastGenerated-&gt;[NameKlatoonian][maybeHyphen][NameKlatoonian]</li>
+        <li>lastGenerated-&gt;[LastNameKlatoonian]</li>
+        <li>lastGenerated-&gt;[LastNameKlatoonian][maybeHyphen][LastNameKlatoonian]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -782,8 +782,8 @@
         <li>firstName(p=3)-&gt;[NameKubaz]</li>
         <li>nickName-&gt;[NicknameKubaz]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameKubaz]</li>
-        <li>lastGenerated-&gt;[NameKubaz][maybeHyphen][NameKubaz]</li>
+        <li>lastGenerated-&gt;[LastNameKubaz]</li>
+        <li>lastGenerated-&gt;[LastNameKubaz][maybeHyphen][LastNameKubaz]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -813,8 +813,8 @@
         <li>firstName(p=3)-&gt;[NameLasat]</li>
         <li>nickName-&gt;[NicknameLasat]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameLasat]</li>
-        <li>lastGenerated-&gt;[NameLasat][maybeHyphen][NameLasat]</li>
+        <li>lastGenerated-&gt;[LastNameLasat]</li>
+        <li>lastGenerated-&gt;[LastNameLasat][maybeHyphen][LastNameLasat]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -844,8 +844,8 @@
         <li>firstName(p=3)-&gt;[NameMimbanese]</li>
         <li>nickName-&gt;[NicknameMimbanese]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameMimbanese]</li>
-        <li>lastGenerated-&gt;[NameMimbanese][maybeHyphen][NameMimbanese]</li>
+        <li>lastGenerated-&gt;[LastNameMimbanese]</li>
+        <li>lastGenerated-&gt;[LastNameMimbanese][maybeHyphen][LastNameMimbanese]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -875,8 +875,8 @@
         <li>firstName(p=3)-&gt;[NameMiraluka]</li>
         <li>nickName-&gt;[NicknameMiraluka]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameMiraluka]</li>
-        <li>lastGenerated-&gt;[NameMiraluka][maybeHyphen][NameMiraluka]</li>
+        <li>lastGenerated-&gt;[LastNameMiraluka]</li>
+        <li>lastGenerated-&gt;[LastNameMiraluka][maybeHyphen][LastNameMiraluka]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -906,8 +906,8 @@
         <li>firstName(p=3)-&gt;[NameMirialan]</li>
         <li>nickName-&gt;[NicknameMirialan]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameMirialan]</li>
-        <li>lastGenerated-&gt;[NameMirialan][maybeHyphen][NameMirialan]</li>
+        <li>lastGenerated-&gt;[LastNameMirialan]</li>
+        <li>lastGenerated-&gt;[LastNameMirialan][maybeHyphen][LastNameMirialan]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -937,8 +937,8 @@
         <li>firstName(p=3)-&gt;[NameNagai]</li>
         <li>nickName-&gt;[NicknameNagai]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameNagai]</li>
-        <li>lastGenerated-&gt;[NameNagai][maybeHyphen][NameNagai]</li>
+        <li>lastGenerated-&gt;[LastNameNagai]</li>
+        <li>lastGenerated-&gt;[LastNameNagai][maybeHyphen][LastNameNagai]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -968,8 +968,8 @@
         <li>firstName(p=3)-&gt;[NameNautolan]</li>
         <li>nickName-&gt;[NicknameNautolan]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameNautolan]</li>
-        <li>lastGenerated-&gt;[NameNautolan][maybeHyphen][NameNautolan]</li>
+        <li>lastGenerated-&gt;[LastNameNautolan]</li>
+        <li>lastGenerated-&gt;[LastNameNautolan][maybeHyphen][LastNameNautolan]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -999,8 +999,8 @@
         <li>firstName(p=3)-&gt;[NameNeimoidian]</li>
         <li>nickName-&gt;[NicknameNeimoidian]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameNeimoidian]</li>
-        <li>lastGenerated-&gt;[NameNeimoidian][maybeHyphen][NameNeimoidian]</li>
+        <li>lastGenerated-&gt;[LastNameNeimoidian]</li>
+        <li>lastGenerated-&gt;[LastNameNeimoidian][maybeHyphen][LastNameNeimoidian]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1030,8 +1030,8 @@
         <li>firstName(p=3)-&gt;[NameNelvaanian]</li>
         <li>nickName-&gt;[NicknameNelvaanian]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameNelvaanian]</li>
-        <li>lastGenerated-&gt;[NameNelvaanian][maybeHyphen][NameNelvaanian]</li>
+        <li>lastGenerated-&gt;[LastNameNelvaanian]</li>
+        <li>lastGenerated-&gt;[LastNameNelvaanian][maybeHyphen][LastNameNelvaanian]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1061,8 +1061,8 @@
         <li>firstName(p=3)-&gt;[NameNikto]</li>
         <li>nickName-&gt;[NicknameNikto]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameNikto]</li>
-        <li>lastGenerated-&gt;[NameNikto][maybeHyphen][NameNikto]</li>
+        <li>lastGenerated-&gt;[LastNameNikto]</li>
+        <li>lastGenerated-&gt;[LastNameNikto][maybeHyphen][LastNameNikto]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1092,8 +1092,8 @@
         <li>firstName(p=3)-&gt;[NamePantoran]</li>
         <li>nickName-&gt;[NicknamePantoran]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NamePantoran]</li>
-        <li>lastGenerated-&gt;[NamePantoran][maybeHyphen][NamePantoran]</li>
+        <li>lastGenerated-&gt;[LastNamePantoran]</li>
+        <li>lastGenerated-&gt;[LastNamePantoran][maybeHyphen][LastNamePantoran]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1123,8 +1123,8 @@
         <li>firstName(p=3)-&gt;[NameQuarren]</li>
         <li>nickName-&gt;[NicknameQuarren]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameQuarren]</li>
-        <li>lastGenerated-&gt;[NameQuarren][maybeHyphen][NameQuarren]</li>
+        <li>lastGenerated-&gt;[LastNameQuarren]</li>
+        <li>lastGenerated-&gt;[LastNameQuarren][maybeHyphen][LastNameQuarren]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1154,8 +1154,8 @@
         <li>firstName(p=3)-&gt;[NameRodian]</li>
         <li>nickName-&gt;[NicknameRodian]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameRodian]</li>
-        <li>lastGenerated-&gt;[NameRodian][maybeHyphen][NameRodian]</li>
+        <li>lastGenerated-&gt;[LastNameRodian]</li>
+        <li>lastGenerated-&gt;[LastNameRodian][maybeHyphen][LastNameRodian]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1185,8 +1185,8 @@
         <li>firstName(p=3)-&gt;[NameSnivvian]</li>
         <li>nickName-&gt;[NicknameSnivvian]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameSnivvian]</li>
-        <li>lastGenerated-&gt;[NameSnivvian][maybeHyphen][NameSnivvian]</li>
+        <li>lastGenerated-&gt;[LastNameSnivvian]</li>
+        <li>lastGenerated-&gt;[LastNameSnivvian][maybeHyphen][LastNameSnivvian]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1216,8 +1216,8 @@
         <li>firstName(p=3)-&gt;[NameSullustan]</li>
         <li>nickName-&gt;[NicknameSullustan]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameSullustan]</li>
-        <li>lastGenerated-&gt;[NameSullustan][maybeHyphen][NameSullustan]</li>
+        <li>lastGenerated-&gt;[LastNameSullustan]</li>
+        <li>lastGenerated-&gt;[LastNameSullustan][maybeHyphen][LastNameSullustan]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1247,8 +1247,8 @@
         <li>firstName(p=3)-&gt;[NameTogruta]</li>
         <li>nickName-&gt;[NicknameTogruta]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameTogruta]</li>
-        <li>lastGenerated-&gt;[NameTogruta][maybeHyphen][NameTogruta]</li>
+        <li>lastGenerated-&gt;[LastNameTogruta]</li>
+        <li>lastGenerated-&gt;[LastNameTogruta][maybeHyphen][LastNameTogruta]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1278,8 +1278,8 @@
         <li>firstName(p=3)-&gt;[NameTrandoshan]</li>
         <li>nickName-&gt;[NicknameTrandoshan]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameTrandoshan]</li>
-        <li>lastGenerated-&gt;[NameTrandoshan][maybeHyphen][NameTrandoshan]</li>
+        <li>lastGenerated-&gt;[LastNameTrandoshan]</li>
+        <li>lastGenerated-&gt;[LastNameTrandoshan][maybeHyphen][LastNameTrandoshan]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1309,8 +1309,8 @@
         <li>firstName(p=3)-&gt;[NameTwilek]</li>
         <li>nickName-&gt;[NicknameTwilek]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameTwilek]</li>
-        <li>lastGenerated-&gt;[NameTwilek][maybeHyphen][NameTwilek]</li>
+        <li>lastGenerated-&gt;[LastNameTwilek]</li>
+        <li>lastGenerated-&gt;[LastNameTwilek][maybeHyphen][LastNameTwilek]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1340,8 +1340,8 @@
         <li>firstName(p=3)-&gt;[NameUmbaran]</li>
         <li>nickName-&gt;[NicknameUmbaran]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameUmbaran]</li>
-        <li>lastGenerated-&gt;[NameUmbaran][maybeHyphen][NameUmbaran]</li>
+        <li>lastGenerated-&gt;[LastNameUmbaran]</li>
+        <li>lastGenerated-&gt;[LastNameUmbaran][maybeHyphen][LastNameUmbaran]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1371,8 +1371,8 @@
         <li>firstName(p=3)-&gt;[NameWeequay]</li>
         <li>nickName-&gt;[NicknameWeequay]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameWeequay]</li>
-        <li>lastGenerated-&gt;[NameWeequay][maybeHyphen][NameWeequay]</li>
+        <li>lastGenerated-&gt;[LastNameWeequay]</li>
+        <li>lastGenerated-&gt;[LastNameWeequay][maybeHyphen][LastNameWeequay]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1402,8 +1402,8 @@
         <li>firstName(p=3)-&gt;[NameWookiee]</li>
         <li>nickName-&gt;[NicknameWookiee]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameWookiee]</li>
-        <li>lastGenerated-&gt;[NameWookiee][maybeHyphen][NameWookiee]</li>
+        <li>lastGenerated-&gt;[LastNameWookiee]</li>
+        <li>lastGenerated-&gt;[LastNameWookiee][maybeHyphen][LastNameWookiee]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1433,8 +1433,8 @@
         <li>firstName(p=3)-&gt;[NameYoder]</li>
         <li>nickName-&gt;[NicknameYoder]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameYoder]</li>
-        <li>lastGenerated-&gt;[NameYoder][maybeHyphen][NameYoder]</li>
+        <li>lastGenerated-&gt;[LastNameYoder]</li>
+        <li>lastGenerated-&gt;[LastNameYoder][maybeHyphen][LastNameYoder]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1464,8 +1464,8 @@
         <li>firstName(p=3)-&gt;[NameZeltron]</li>
         <li>nickName-&gt;[NicknameZeltron]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameZeltron]</li>
-        <li>lastGenerated-&gt;[NameZeltron][maybeHyphen][NameZeltron]</li>
+        <li>lastGenerated-&gt;[LastNameZeltron]</li>
+        <li>lastGenerated-&gt;[LastNameZeltron][maybeHyphen][LastNameZeltron]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1495,8 +1495,8 @@
         <li>firstName(p=3)-&gt;[NameZygerrian]</li>
         <li>nickName-&gt;[NicknameZygerrian]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameZygerrian]</li>
-        <li>lastGenerated-&gt;[NameZygerrian][maybeHyphen][NameZygerrian]</li>
+        <li>lastGenerated-&gt;[LastNameZygerrian]</li>
+        <li>lastGenerated-&gt;[LastNameZygerrian][maybeHyphen][LastNameZygerrian]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1526,8 +1526,8 @@
         <li>firstName(p=3)-&gt;[NamePureblood]</li>
         <li>nickName-&gt;[NicknamePureblood]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NamePureblood]</li>
-        <li>lastGenerated-&gt;[NamePureblood][maybeHyphen][NamePureblood]</li>
+        <li>lastGenerated-&gt;[LastNamePureblood]</li>
+        <li>lastGenerated-&gt;[LastNamePureblood][maybeHyphen][LastNamePureblood]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
@@ -1555,8 +1555,8 @@
         <li>firstName(p=1)-&gt;[NameSandP]</li>
         <li>firstName(p=3)-&gt;[NameSandP]</li>
         <li>lastName(p=3)-&gt;[lastGenerated]</li>
-        <li>lastGenerated-&gt;[NameSandP]</li>
-        <li>lastGenerated-&gt;[NameSandP][maybeHyphen][NameSandP]</li>
+        <li>lastGenerated-&gt;[LastNameSandP]</li>
+        <li>lastGenerated-&gt;[LastNameSandP][maybeHyphen][LastNameSandP]</li>
       </rulesStrings>
       <rulesRaw>
         <li Class="Rule_File">
