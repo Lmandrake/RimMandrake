@@ -159,10 +159,14 @@ namespace RimMandrake.Stillsand
                     {
                         continue;
                     }
+                    // SS-4: never lose the item. Lift it, try the landing spot, then the devil's cell; if both
+                    // refuse, put it back exactly where it was (that cell was vacated a line ago, so it fits).
+                    IntVec3 origin = t.Position;
                     t.DeSpawn();
-                    if (!GenPlace.TryPlaceThing(t, dest, map, ThingPlaceMode.Near))
+                    if (!GenPlace.TryPlaceThing(t, dest, map, ThingPlaceMode.Near)
+                        && !GenPlace.TryPlaceThing(t, Position, map, ThingPlaceMode.Near))
                     {
-                        GenPlace.TryPlaceThing(t, Position, map, ThingPlaceMode.Near);
+                        GenSpawn.Spawn(t, origin, map);
                     }
                 }
             }
