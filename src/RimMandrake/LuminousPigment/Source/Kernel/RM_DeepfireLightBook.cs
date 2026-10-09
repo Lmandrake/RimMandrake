@@ -85,6 +85,20 @@ namespace RimMandrake.LuminousPigment
         public static bool Clusterable(int blockSizeSetting, bool isBuilding, int sizeX, int sizeZ) { return blockSizeSetting > 1 && isBuilding && sizeX == 1 && sizeZ == 1; }
 
         // The cell nearest the group's centroid (first wins a tie).
+        // A cluster light must reach every member it stands for: radius is at least the farthest member's distance plus this.
+        public const float ClusterCoverage = 0.5f;
+
+        public static float FarthestMemberDistance(IList<int> xs, IList<int> zs, int anchor)
+        {
+            double best = 0;
+            for (int i = 0; i < xs.Count; i++)
+            {
+                double dx = xs[i] - xs[anchor], dz = zs[i] - zs[anchor], d = dx * dx + dz * dz;
+                if (d > best) best = d;
+            }
+            return (float)Math.Sqrt(best);
+        }
+
         public static int AnchorIndex(IList<int> xs, IList<int> zs)
         {
             if (xs.Count == 1) return 0;
@@ -297,6 +311,7 @@ namespace RimMandrake.LuminousPigment
                 float radius = radiusForCoats(kv.Key.Coats);
                 if (g.Xs.Count > 1) radius += radiusBonus;
                 int a = AnchorIndex(g.Xs, g.Zs);
+                radius = Math.Max(radius, FarthestMemberDistance(g.Xs, g.Zs, a) + ClusterCoverage);   // CLUSTER_LIGHT_MEMBER_COVERAGE_1
                 setLight(kv.Key, g.Xs[a], g.Zs[a], g.Color, radius);
                 produced.Add(kv.Key);
             }

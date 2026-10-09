@@ -148,6 +148,9 @@ namespace RimMandrake.LuminousPigment.SelfTest
                     double best = kv.Value.Min(d2), got = d2(new[] { lit.x, lit.z });
                     Check(got <= best + 1e-3, $"group {kv.Key} anchor is not the cell nearest the centroid ({got} vs {best})");
                     float want = rad[kv.Key.Coats] + (kv.Value.Count > 1 ? bonus : 0f);
+                    float far = (float)Math.Sqrt(kv.Value.Max(c => (c[0] - lit.x) * (c[0] - lit.x) + (c[1] - lit.z) * (c[1] - lit.z)));
+                    Check(lit.radius >= far, $"group {kv.Key} light radius {lit.radius} does not reach its farthest member at {far}");
+                    want = Math.Max(want, far + DeepfireLightBook<Th, int>.ClusterCoverage);
                     Check(Near(lit.radius, want, 1e-4f), $"group {kv.Key} radius {lit.radius} want {want} ({kv.Value.Count} cells)");
                     Check((kv.Key.Kind == 0 ? 5000 + lit.color * 9 : 7000 + lit.color * 13) == kv.Key.Color, $"group {kv.Key} colour payload {lit.color} does not match its key");
                     if (kv.Value.Count > 1) MultiGroups++;
