@@ -38,6 +38,7 @@ namespace RimMandrake.Watchers
             Scribe_Values.Look(ref stayOnMedium, "stayOnMedium", true);
             Scribe_Values.Look(ref geophone, "geophone", true);
             Scribe_Values.Look(ref alarmRipple, "alarmRipple", true);
+            RM_WatcherStalkSettings.Expose();   // the Rust Cathedral Watcher's own section
             Scribe_Values.Look(ref flinchRadiusScale, "flinchRadiusScale", 1f);
             Scribe_Values.Look(ref emergeDelayScale, "emergeDelayScale", 1f);
             Scribe_Values.Look(ref maxActivePerMap, "maxActivePerMap", 40);
@@ -93,6 +94,7 @@ namespace RimMandrake.Watchers
                 maxActivePerMap = Mathf.RoundToInt(list.Slider(maxActivePerMap, 5f, 200f));
             }
 
+            RM_WatcherStalkSettings.Draw(list);
             lastContentHeight = list.CurHeight + 12f;
             list.End();
             Widgets.EndScrollView();

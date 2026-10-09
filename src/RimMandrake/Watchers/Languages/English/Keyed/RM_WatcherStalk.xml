@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WATCHER_CREATURES_MOD_1: the Rust Cathedral Watcher's own settings section (RM_WatcherStalkSettings). -->
+<LanguageData>
+  <RM_WatcherStalk_Setting_Header>The Watcher (Rust Cathedral)</RM_WatcherStalk_Setting_Header>
+  <RM_WatcherStalk_Setting_Enabled>Watcher camera stalks</RM_WatcherStalk_Setting_Enabled>
+  <RM_WatcherStalk_Setting_Enabled_Tip>The watcher raises a camera on a stalk out of the deck seams, turns it to follow you, and pulls it down when you come near. Off: it is a small machine that crawls the seams and never looks up.</RM_WatcherStalk_Setting_Enabled_Tip>
+  <RM_WatcherStalk_Setting_Animation>Stalk rises and retracts</RM_WatcherStalk_Setting_Animation>
+  <RM_WatcherStalk_Setting_Animation_Tip>The stalk grows up out of the seam and pulls back into it. Off: it is simply up or down.</RM_WatcherStalk_Setting_Animation_Tip>
+  <RM_WatcherStalk_Setting_Smooth>Smooth head turning</RM_WatcherStalk_Setting_Smooth>
+  <RM_WatcherStalk_Setting_Smooth_Tip>The camera head turns round a few degrees at a time to follow you. Off: it snaps to the nearest of its eight directions.</RM_WatcherStalk_Setting_Smooth_Tip>
+</LanguageData>

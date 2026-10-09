@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Watcher_RenderTree.xml        Watchers - WATCHER_CREATURES_MOD_1, the Rust Cathedral Watcher (pitch §5)
+
+  Vanilla Core's "Animal" PawnRenderTreeDef (the Forge RM_DormantAnimalBody copy, RimSage 2026-09-29) with:
+    - the Body node's worker swapped for RM_PawnRenderNodeWorker_WatcherBase (keeps the seam hatch while the stalk animates;
+      dead = the life stage's corpse picture, the collapsed husk);
+    - two new nodes, RM_WatcherStalk and RM_WatcherHead, which the rise/retract AnimationDefs move by tag.
+
+  GEOMETRY (all PROVISIONAL, tune in the live quicktest). Units are cells relative to the pawn's centre. The stalk's foot pivot is
+  fixed at the bottom of its unit square (RM_PawnRenderNodeWorker_WatcherStalk.PivotFor), so its foot sits at offset.z - 0.5 and
+  its top at offset.z - 0.5 + drawSize.y: offset 0.5 puts the foot on the hatch centre, the top at 0.55. The head is centred at
+  0.6, just over the stalk top. The rise animation starts the stalk at 5% height and the head 0.55 lower; both end at these values,
+  so the static pose (animation off, or after a load) is exactly the rise's last frame.
+
+  ART PLACEHOLDERS (vanilla Core, tinted rust): stalk = TurretMini_Top squeezed thin; head = TurretMechMini_Top turned in 45-degree
+  steps (placeholder mode: no octantTexPaths). When the artpipe head set lands, list its five pictures (N, NE, E, SE, S) under
+  octantTexPaths and the head switches to the eight-picture pan with the west side mirrored.
+-->
+<Defs>
+
+  <PawnRenderNodeTagDef>
+    <defName>RM_WatcherStalk</defName>
+  </PawnRenderNodeTagDef>
+
+  <PawnRenderNodeTagDef>
+    <defName>RM_WatcherHead</defName>
+  </PawnRenderNodeTagDef>
+
+  <PawnRenderTreeDef>
+    <defName>RM_WatcherStalkTree</defName>
+    <root Class="PawnRenderNodeProperties_Parent">
+      <debugLabel>Root</debugLabel>
+      <tagDef>Root</tagDef>
+      <children>
+        <li>
+          <debugLabel>Body</debugLabel>
+          <tagDef>Body</tagDef>
+          <nodeClass>PawnRenderNode_AnimalPart_Body</nodeClass>
+          <workerClass>RimMandrake.Watchers.RM_PawnRenderNodeWorker_WatcherBase</workerClass>
+          <useRottenColor>true</useRottenColor>
+          <children>
+            <li>
+              <debugLabel>Wounds</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayWounds</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>3</baseLayer>
+            </li>
+            <li>
+              <debugLabel>Firefoam</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayFirefoam</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>10</baseLayer>
+            </li>
+          </children>
+        </li>
+        <li Class="RimMandrake.Watchers.RM_PawnRenderNodeProperties_WatcherPart">
+          <debugLabel>Watcher stalk</debugLabel>
+          <tagDef>RM_WatcherStalk</tagDef>
+          <nodeClass>RimMandrake.Watchers.RM_PawnRenderNode_WatcherPart</nodeClass>
+          <workerClass>RimMandrake.Watchers.RM_PawnRenderNodeWorker_WatcherStalk</workerClass>
+          <texPath>Things/Building/Security/TurretMini_Top</texPath>
+          <color>(120,84,60)</color>
+          <drawSize>(0.08,0.55)</drawSize>
+          <overrideMeshSize>(1,1)</overrideMeshSize>
+          <footPivot>(0.5,0)</footPivot>
+          <baseLayer>20</baseLayer>
+          <rotDrawMode>Fresh</rotDrawMode>
+          <drawData>
+            <defaultData>
+              <offset>(0,0,0.5)</offset>
+            </defaultData>
+          </drawData>
+        </li>
+        <li Class="RimMandrake.Watchers.RM_PawnRenderNodeProperties_WatcherPart">
+          <debugLabel>Watcher head</debugLabel>
+          <tagDef>RM_WatcherHead</tagDef>
+          <nodeClass>RimMandrake.Watchers.RM_PawnRenderNode_WatcherPart</nodeClass>
+          <workerClass>RimMandrake.Watchers.RM_PawnRenderNodeWorker_WatcherHead</workerClass>
+          <texPath>Things/Building/Mech/TurretMechMini_Top</texPath>
+          <color>(150,110,80)</color>
+          <drawSize>(0.32,0.32)</drawSize>
+          <overrideMeshSize>(1,1)</overrideMeshSize>
+          <artworkRotation>-90</artworkRotation>
+          <baseLayer>25</baseLayer>
+          <rotDrawMode>Fresh</rotDrawMode>
+          <drawData>
+            <defaultData>
+              <offset>(0,0,0.6)</offset>
+            </defaultData>
+          </drawData>
+        </li>
+      </children>
+    </root>
+  </PawnRenderTreeDef>
+
+</Defs>

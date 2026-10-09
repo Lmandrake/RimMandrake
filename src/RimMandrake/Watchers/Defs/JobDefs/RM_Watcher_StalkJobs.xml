@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WATCHER_CREATURES_MOD_1, the Rust Cathedral Watcher. RM_WatcherStalkWatch: the stalk watch bout (RM_JobDriver_WatcherStalk). -->
+<Defs>
+
+  <JobDef>
+    <defName>RM_WatcherStalkWatch</defName>
+    <driverClass>RimMandrake.Watchers.RM_JobDriver_WatcherStalk</driverClass>
+    <reportString>watching.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+</Defs>

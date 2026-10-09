@@ -599,6 +599,7 @@ namespace RimMandrake.Watchers.SelfTest
                 ("cues", () => Cues(N(6000), S(1))),
                 ("death", () => Death(N(3000), S(1))),
                 ("alarm", () => Alarm(N(4000), S(1))),
+                ("stalk", () => WatcherStalkFuzz.Run(N(3000), S(1))),
             };
             foreach (var f in fam)
             {

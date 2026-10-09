@@ -43,6 +43,11 @@
     <Compile Include="RM_WatcherDeath.cs" />
     <Compile Include="RM_WatcherAlarm.cs" />
     <Compile Include="Kernel\RM_WatcherKernel.cs" />
+    <Compile Include="Kernel\RM_WatcherStalkKernel.cs" />
+    <Compile Include="RM_CompWatcherStalk.cs" />
+    <Compile Include="RM_JobDriver_WatcherStalk.cs" />
+    <Compile Include="RM_WatcherStalkRender.cs" />
+    <Compile Include="RM_WatcherStalkSettings.cs" />
   </ItemGroup>
 
   <ItemGroup>

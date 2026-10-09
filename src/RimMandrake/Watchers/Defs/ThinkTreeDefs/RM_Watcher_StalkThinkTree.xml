@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Watcher_StalkThinkTree.xml        Watchers - WATCHER_CREATURES_MOD_1, the Rust Cathedral Watcher (pitch §5.3)
+
+  The Watcher's whole main tree (race.thinkTreeMain), on the living bolt's shape (RM_ThinkTree_LivingBolt): a mechanoid-fleshed race
+  inherits vanilla "Mechanoid", which has no insertTag, so the kit's Animal_PreWander splice (RM_Watchers) never reaches it.
+  Order:
+    1-2  Despawned / Downed                vanilla subtrees.
+    3    ThinkNode_QueuedJob
+    4    RM_JobGiver_WatcherStalk          the watch bout: rise, pan, retract, hide (RM_JobDriver_WatcherStalk).
+    5    RM_JobGiver_WanderInMedium        the kit's medium lock: wander only on the cracked-metal deck, walk back to it when off it.
+    6    JobGiver_WanderAnywhere           the floor: with the Watcher or the kit switched off, or no medium on the map, it is a small
+                                           machine crawling about.
+    7    JobGiver_IdleError
+-->
+<Defs>
+
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_Watcher</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Despawned</treeDef>
+        </li>
+        <li Class="ThinkNode_Subtree">
+          <treeDef>Downed</treeDef>
+        </li>
+        <li Class="ThinkNode_QueuedJob" />
+        <li Class="RimMandrake.Watchers.RM_JobGiver_WatcherStalk" />
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Idle</tagToGive>
+          <subNodes>
+            <li Class="RimMandrake.Watchers.RM_JobGiver_WanderInMedium" />
+            <li Class="JobGiver_WanderAnywhere">
+              <maxDanger>Deadly</maxDanger>
+            </li>
+          </subNodes>
+        </li>
+        <li Class="JobGiver_IdleError" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>
