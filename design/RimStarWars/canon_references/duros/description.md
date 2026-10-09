@@ -118,12 +118,14 @@ thin fingers.** The variable is hue, which runs **blue → grey-green → jade �
   dome — but the head type the def actually points at is the plain `OR/…/Heads/Duros` one.
 
 ## Must show
-- [ ] Tall, smooth cranium that swells upward and backward well past a human skull, narrowing to a small pinched chin (an inverted-teardrop head) — not a rounded human ovoid
-- [ ] Large almond eyes with a glowing orange-red iris and a horizontal slit pupil
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all four images as described in the visual brief (`wookieepedia_cantina_pair.jpg` as the reference of record) and the canon and Legends text.*
+- [ ] BODY PLAN: humanoid of human proportions and ordinary lean build; the head is the silhouette: a tall, smooth cranium that swells upward and backward well past a human skull, narrowing to a small pinched chin (an inverted-teardrop head), not a rounded human ovoid; long thin tapering fingers, clearly longer than human
+- [ ] COLOUR LAYOUT: one skin hue over head, face and hands, which can be blue, grey-green, jade-green or pale celadon (not blue only); the glowing orange-red eyes are the brightest, warmest element on the face
+- [ ] Large almond eyes, set wide and angled under hooded lids, with a glowing orange-red iris and a horizontal slit pupil
 - [ ] No nose at all — at most a slight vertical ridge and a shallow depression beneath each eye
 - [ ] Lipless mouth: a narrow downturned slit with no lip roll
-- [ ] Totally bald, both sexes
-- [ ] Skin can be blue, grey-green, jade-green or pale celadon — not blue only
+- [ ] Totally bald, both sexes (brow creases/cheek furrows allowed as variation)
+- [ ] NEGATIVE: not a human with a tint (no rounded ovoid head, no nose, no lips, no hair or eyebrows, no small dot eyes); not scaled or reptile-skinned (skin is smooth)
 
 ## Engine limits
 - **The shipped head cannot show any skin colour at all.** `SW_HeadTypes.xml` sets

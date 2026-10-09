@@ -234,12 +234,13 @@ Legends' generators-with-legs framing; and `combatPower 99999` on the PawnKindDe
 gonk out of raid-point selection, matching the Legends infobox `armament = None`.
 
 ## Must show
-- [ ] Boxy body of stacked rectangular blocks, wider at the bottom, covered in greeblies (knobs, dials, bolt rows)
-- [ ] Two short ribbed accordion-bellows legs ending in flat, angular, splayed grey feet
-- [ ] No head, no arms, no lens, no neck — only an indicator panel as the "face"
-- [ ] Small indicator panel with red and green lamps
-- [ ] Warm neutral grey-tan weathered colour, with the feet a cooler/darker grey than the body
-- [ ] Realistic rendering: rough sun-bleached weathered prop surface with real grime and daylight, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three practical-prop images as described in the visual brief and the owner's 2026-10-08 realism ruling.*
+- [ ] CHASSIS: a walking crate, about 1 m tall: a boxy body of stacked rectangular blocks, wider at the bottom, standing on two short ribbed accordion-bellows legs that end in flat, angular, splayed feet; no head, no arms, no lens, no neck
+- [ ] FINISH / COLOUR LAYOUT: weathered, sun-bleached warm neutral grey-tan over the whole body; the feet a cooler/darker grey than the body; a yellow stripe across the front at the mid-body seam (prop); no clean or glossy surface anywhere
+- [ ] Body surface covered in greeblies (knobs, dials, bolt rows)
+- [ ] One small indicator panel on the upper front face as the only "face", with small red and green lamps (not purple, not blue, not a big glowing amber panel)
+- [ ] Realistic rendering: rough sun-bleached weathered prop surface with real grime and daylight, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a smooth, near-featureless cartoon box (the deleted *Clone Wars* look); not a humanoid or wheeled droid (no head, no arms, no wheels); legs are bellows, never smooth columns
 
 ## Engine limits
 Both `skin` colour channels are set to the identical value (`RGBA(138,136,125,255)`), so the mask's separate upper-rim band renders exactly like the body — no two-tone is available from the def as it stands.

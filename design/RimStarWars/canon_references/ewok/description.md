@@ -142,12 +142,13 @@ an Ewok's face — **the pale short-furred muzzle** and the **pale eye-rings** �
 unrepresented.
 
 ## Must show
-- [ ] Short, rounded, pot-bellied torso with no visible neck; short stubby arms/legs; bare plantigrade feet with visible toes
-- [ ] A distinct pale, short-furred muzzle patch around the nose and mouth — the main facial landmark
-- [ ] Small dark button nose
-- [ ] Adult eyes are small, round and dark (not oversized); juveniles instead have proportionally huge, glossy, domed eyes
-- [ ] Round ears set high and wide on the skull (teddy-bear silhouette)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_infobox_three_ewoks.jpg` and `wookieepedia_woklings_juveniles.jpg` as described in the visual brief, and the canon body text.*
+- [ ] BODY PLAN: 1 m furred humanoid, teddy-bear read: short, rounded, pot-bellied torso with no visible neck; large head sitting directly on the shoulders; short stubby arms hanging to about hip level; short legs; bare plantigrade feet with visible toes; round ears set high and wide on the skull; fur covers everything except muzzle, palms and soles
+- [ ] COLOUR LAYOUT: mostly solid-coloured fur over the whole body (brown, solid deep black, or grizzled grey-white; a few striped); a distinct pale, short-furred muzzle patch around the nose and mouth, lighter than the coat — the main facial landmark; optional pale fur rings around the eyes
 - [ ] Fur colour can be solid deep black (with a paler muzzle), not only brown — the black individual is the centre figure of the species' own reference image
+- [ ] Small dark button nose on a very short, blunt muzzle (not canine)
+- [ ] Adult eyes are small, round and dark (not oversized); juveniles instead have proportionally huge, glossy, domed eyes
+- [ ] NEGATIVE: not a bear cub or dog (no long snout, no quadruped stance, no neck); not a Wookiee (not tall, not lanky); not blue- or red-furred
 
 ## Engine limits
 none known — the current gap is missing art (only a round-ears mask exists in the repo,

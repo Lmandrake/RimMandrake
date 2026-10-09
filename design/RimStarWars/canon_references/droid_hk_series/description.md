@@ -183,11 +183,13 @@ Against the canon images the sprite silhouette is **broadly right and specifical
   than a game render.
 
 ## Must show
-- [ ] Rust-red/copper plating (HK-47/HK-series) with glowing yellow-orange photoreceptors
-- [ ] Narrow, vertically elongated, faceted wedge skull with a pronounced brow ridge and two photoreceptors set close together
-- [ ] HK-51 variant: weathered olive-grey-brown plating with orange striping/wear, not overall orange
-- [ ] HK-51 variant: lit circular chest emblem and visible weapon hardpoints on both forearms
-- [ ] Realistic rendering: scuffed, rust-streaked real metal with real specular and lighting, no outlines, no game/cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three images as described in the visual brief (HK-01 render as look target) and the owner's 2026-10-08 realism ruling.*
+- [ ] CHASSIS: lanky, skeletal humanoid biped, "humanoid but starved": a heavier chest over a narrow waist, long thin forearms, exposed piston/cable runs at elbow and knee, splayed multi-jointed clawed hands
+- [ ] FINISH / COLOUR LAYOUT (HK-47/HK-series): rust-red/copper plating over the body with dark gunmetal joints; the glowing yellow-orange photoreceptors are the brightest element
+- [ ] Head: narrow, vertically elongated, faceted wedge skull with a pronounced brow ridge, a flat vertical faceplate (black mesh vocabulator grille down the face) and two photoreceptors set close together
+- [ ] HK-51 variant: weathered olive-grey-brown plating with orange striping/wear, not overall orange; lit circular chest emblem and visible weapon hardpoints on both forearms
+- [ ] Realistic rendering: scuffed, rust-streaked real metal with real specular and lighting, no outlines, no game/cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not C-3PO or a gold protocol droid (no rounded head, no smooth gold plating); not a bulky armoured battle droid (no broad blocky limbs, no blasters built onto the arm ends, which is the later HK-77 look)
 
 ## Engine limits
 none known

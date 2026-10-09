@@ -138,12 +138,13 @@ Canon gives it no visible dataport or probe arm. So there is nothing to correct 
 a behavioural trait with no appearance.
 
 ## Must show
-- [ ] Tapered barrel body, wider at the top, capped by a low domed lid
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_r8009_infobox.jpg` (the sole image) as described in the visual brief, the infobox fields, and the owner's 2026-10-08 realism ruling.*
+- [ ] CHASSIS: a squat, legless-looking tub: a tapered barrel body, wider at the top, capped by a low domed lid; below it a chunky lower chassis block carrying two wide truncated-cone feet splayed out to the sides
 - [ ] Two thin whip antennae rising from the dome
-- [ ] Large dark barrel-lens photoreceptor assembly with a small iridescent light beside it
-- [ ] Two wide truncated-cone feet splayed out to the sides
-- [ ] Warm ochre/rust-orange body colour, not pale sandy yellow
-- [ ] Realistic rendering: sun-faded scratched paint over steel with real dust and daylight, no outlines, no low-poly game shading
+- [ ] Large dark (black) barrel-lens photoreceptor assembly set into the front of the dome rim, with a small iridescent round light beside it
+- [ ] FINISH / COLOUR LAYOUT: barrel body and the cylindrical part of each foot a warm ochre/rust-orange, not pale sandy yellow; domed cap, antennae, lower chassis block and foot caps slate blue-grey (two-tone, element for element); the lens black
+- [ ] Realistic rendering: sun-faded scratched paint over steel with real dust and daylight, no outlines, no low-poly game shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not an R2-style astromech (no white-and-blue finish, no three-leg stance, no hemispherical silver dome); not a single-colour sand-tan tub that vanishes on desert ground
 
 ## Engine limits
 none known

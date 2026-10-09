@@ -186,13 +186,13 @@ lightbar on top.**
   state, the Tagge Corporation gold emblem, or the four-large-wheel Polar mouse droid.
 
 ## Must show
-- [ ] Matte near-black plating (not mid-grey), wedge/box shape with a wider flat skirt
-- [ ] No eyes/photoreceptor visible anywhere — deliberately blank face
-- [ ] Wide, low silhouette much wider than tall (0.54 m by 0.25 m proportions)
-- [ ] Two comb-like sensor stalk arrays visible on the rear roof
-- [ ] Polished silver-grey trim strip along the base lip
-- [ ] Wheel bulge visible in the east/profile view
-- [ ] Realistic rendering: scuffed matte painted prop surface with real dust and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_mse6_infobox.png`, `wookieepedia_on_mandalore.png` and `wookieepedia_original_prop.jpg` as described in the visual brief, the MSE-6 article, and the owner's 2026-10-08 realism ruling.*
+- [ ] CHASSIS: a low wedge/truncated-pyramid box with a sloped front, sitting on a wider flat skirt; wide and low, much longer than tall (0.54 m by 0.25 m proportions); four small dark wheels half-hidden under the body, with a wheel bulge visible in the east/profile view
+- [ ] No head, no eyes/photoreceptor, no arms, no vertical element except the roof sensor combs: a deliberately blank face
+- [ ] Two comb-like arrays of black cylindrical sensor stalks visible on the rear roof
+- [ ] FINISH / COLOUR LAYOUT: matte near-black to weathered dark charcoal plating over the whole body (not mid-grey); a polished silver-grey trim strip along the base lip, the only highlight; (Mandalore units only) a red lightbar on top
+- [ ] Realistic rendering: scuffed matte painted prop surface with real dust and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a plain grey crate or pebble (no blank roof, no mid-grey tint); not the Polar mouse droid (no four large wheels); not an astromech or any droid with a dome, eye or legs
 
 ## Engine limits
 Shared texture: `Races_Primitive.xml` reuses graphic path `OuterRim/Droid/MSE`, so editing this sprite changes two races.

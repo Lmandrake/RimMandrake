@@ -155,12 +155,14 @@ Against `donor_current_sprite.png` (`GE3_body_south`, 512×512) and
   invented part is only the word "labor" as a model name.
 
 ## Must show
-- [ ] Weathered gunmetal/dull pewter plating with green-grey oxidation and brown grime, not gold and not clean
-- [ ] Black ribbed/segmented bellows at the upper arms, waist, upper thighs, and knees against pale hard plates
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_ge3_infobox.jpg` as described in the visual brief (the only appearance evidence) and the owner's 2026-10-08 realism ruling.*
+- [ ] CHASSIS: tall, lean humanoid biped in the C-3PO mould: narrow shoulders, narrow tapered waist, two separated legs ending in broad flat foot pads; five-fingered hands
+- [ ] FINISH / COLOUR LAYOUT: weathered gunmetal/dull pewter plating with green-grey oxidation and brown grime over every hard plate, not gold and not clean; black ribbed/segmented bellows at the upper arms, waist, upper thighs and knees, the darkest elements, alternating with the pale plates
 - [ ] Keeled central breastplate with a vertical seam
-- [ ] Narrow tapered waist and separated legs on a lean humanoid silhouette
-- [ ] Head shows a large circular plate/disc on the crown, wide-set round photoreceptors, and a vertical ribbed grille mouth
-- [ ] Realistic rendering: worn steel with real specular and grime, real rubber bellows, no outlines, no low-poly game shading
+- [ ] Head: narrow faceted skull with a large circular plate/disc on the crown, two wide-set round photoreceptors, and a vertical ribbed grille where the mouth would be
+- [ ] Unarmed (canon armament: none)
+- [ ] Realistic rendering: worn steel with real specular and grime, real rubber bellows, no outlines, no low-poly game shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not C-3PO (no gold, no clean polished plating, no smooth featureless joints); not a cartoon/low-poly KotOR model
 
 ## Engine limits
 The protocol variant (GE3PD) defines no `colorChannels` block of its own and inherits whatever `DW_Family_Protocol` supplies, so its colour cannot be tuned independently of the parent family without adding an override.

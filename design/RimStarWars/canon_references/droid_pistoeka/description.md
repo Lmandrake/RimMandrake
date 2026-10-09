@@ -177,11 +177,13 @@ form.** What it shows:
   per missile)**, **dismantling other droids**, and **being killed by a single hit to the eye.**
 
 ## Must show
-- [ ] Deployed form only: two shell halves opened wide and held high to each side, outer faces mottled olive-khaki with dark grey ribbing
-- [ ] Compact weathered grey-and-black central body with a thin whip antenna rising from the top
-- [ ] Multiple red photoreceptors (a cluster, not a single eye) on the body's front face
-- [ ] Six or more long thin multi-jointed black limbs splayed forward, with distinguishable tool heads (saw disc, drill, pincer)
-- [ ] Realistic rendering: scratched, weathered real metal shells and limbs, real lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_buzzdroid_detail.jpg` and the two *Revenge of the Sith* frames as described in the visual brief, and the owner's 2026-10-08 realism ruling.*
+- [ ] CHASSIS (deployed form only): an insectile spider: two shell halves opened wide and held high to each side like scarab wing cases, a compact narrow central body on the vertical axis with a small domed cap and a thin whip antenna rising from the top, and six or more long thin multi-jointed limbs splayed forward and down
+- [ ] FINISH / COLOUR LAYOUT: shell outer faces mottled pale cream-khaki to olive with dark grey ribbing/stepped panel bands, scuffed and scratched (the only warm colour, and the largest coloured area); shell insides dark (grey mechanism / dark hexagonal honeycomb); central body weathered mid-grey metal over black; limbs thin black with silver joints; no bright metal
+- [ ] Multiple glowing red photoreceptors: a large central red eye with smaller red lenses stacked above and below it on the body's front face (a cluster, not a single eye)
+- [ ] Limbs end in distinguishable tool heads: a toothed circular saw disc, a drill, a pincer/flat pad
+- [ ] Realistic rendering: scratched, weathered real metal shells and limbs, real lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a beetle with open wing cases and stubby legs (limbs must be long, many and tool-tipped); not the folded armoured sphere; not the darker, browner *Clone Wars* cartoon version
 
 ## Engine limits
 `skinShader` is `Cutout` with no colour channel and no mask — the PNG's own pixels are the shipping appearance, so a colour correction requires a repaint, not a def edit.

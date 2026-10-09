@@ -104,11 +104,13 @@ MagnaGuard and match the reference closely.
   body art, so it is not a sprite defect.
 
 ## Must show
-- [ ] Helmet-like crown over two large round red or yellow photoreceptors, with a vertical ribbed grille/muzzle below
-- [ ] Red sensor dot centred on the chest
-- [ ] Heavy pale cloak with a half-hood hanging from the shoulders down past the knees
-- [ ] Visible battle scarring/scuffing and thin exposed cabling at the joints
-- [ ] Hoof-like splayed feet
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_infobox.png` as described in the visual brief and the article's appearance text.*
+- [ ] CHASSIS: tall (1.95 m), lean, long-limbed humanoid droid: rounded shoulder pads, torso tapering to a narrow waist, thin exposed cabling at the joints, hoof-like splayed feet
+- [ ] Heavy pale cloak with a half-hood hanging from the shoulders down past the knees, broadening the outline into a robed figure (canon: Grievous ordered it)
+- [ ] FINISH / COLOUR LAYOUT: plating in one attested colour (black, alabaster, blue or grey; the reference is dark blue-grey plate over a white/alabaster underlayer); a green mumuu marking on the chest panel; a red sensor dot centred on the chest; dull red or yellow eyes
+- [ ] Head: helmet-like crown over two large round photoreceptors, with a vertical ribbed grille/muzzle below; expressionless
+- [ ] Visible battle scarring/scuffing (dents and scars) on the plating
+- [ ] NEGATIVE: not a B1/B2 battle droid or a bare skeletal frame (no tan finish, no uncloaked bare silhouette); not General Grievous (no bone-white skull mask, no four arms)
 
 ## Engine limits
 none known
