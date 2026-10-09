@@ -1,4 +1,5 @@
 using System.Linq;
+using RimWorld;
 using Verse;
 using RimMandrake.HugeThings;
 
@@ -80,7 +81,13 @@ namespace RimMandrake.TitanicCreatures
             {
                 return false;
             }
-            return RM_TitanicKernel.DefQualifies(raceDef.race.baseBodySize, Thresholds.t1MinBodySize,
+            // TITAN_WAKE_FIXES_1 (B3.18 / C3.4): Pawn.BodySize = CurLifeStage.bodySizeFactor * baseBodySize, so qualify on the base times
+            // the largest life-stage factor; a race whose adult stage swells past T1 must carry the comp from the start.
+            float maxFactor = 1f;
+            if (raceDef.race.lifeStageAges != null)
+                foreach (LifeStageAge a in raceDef.race.lifeStageAges)
+                    if (a?.def != null && a.def.bodySizeFactor > maxFactor) maxFactor = a.def.bodySizeFactor;
+            return RM_TitanicKernel.DefQualifies(raceDef.race.baseBodySize, maxFactor, Thresholds.t1MinBodySize,
                 ForceOf(raceDef.GetModExtension<RM_TitanicExtension>()));
         }
 

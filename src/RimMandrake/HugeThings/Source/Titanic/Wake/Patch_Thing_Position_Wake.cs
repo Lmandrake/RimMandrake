@@ -25,9 +25,30 @@ namespace RimMandrake.TitanicCreatures
     [HarmonyPatch(nameof(Thing.Position), MethodType.Setter)]
     internal static class Patch_Thing_Position_Wake
     {
-        private static void Postfix(Thing __instance)
+        // TITAN_WAKE_FIXES_1 (B3.7): the 1.6 setter returns early when the value is unchanged, but a Postfix runs anyway, so the old
+        // position and map are captured here and the wake fires only on a real move on the same map. (B2.4): the settings gate is
+        // read before any per-pawn work, so with the wake off a pawn move costs one static read.
+        internal struct Before
         {
+            public IntVec3 pos;
+            public Map map;
+        }
+
+        private static void Prefix(Thing __instance, out Before __state)
+        {
+            __state = default;
+            if (!RimMandrake.HugeThings.RM_HugeThingsSettings.WakeActive) return;
             if (__instance is Pawn pawn && pawn.Spawned)
+            {
+                __state.pos = pawn.Position;
+                __state.map = pawn.Map;
+            }
+        }
+
+        private static void Postfix(Thing __instance, Before __state)
+        {
+            if (__state.map == null) return;
+            if (__instance is Pawn pawn && pawn.Spawned && pawn.Map == __state.map && pawn.Position != __state.pos)
             {
                 pawn.TryGetComp<CompTitanicWake>()?.Notify_EnteredCell();
             }
