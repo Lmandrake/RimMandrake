@@ -197,10 +197,10 @@ def canon_base(key: str, label: str = "", census_entries: dict | None = None) ->
     RM_ShaleGorgerJuv must not find gorg). Returns (entry, base name) or ({}, '')."""
     if not key.startswith("RSW_"):
         return {}, ""
-    stem = TIER_RE.sub("", key)
-    cands = [re.findall(r"[A-Z][a-z0-9]*|[a-z0-9]+", stem.replace("_", " ")), (label or "").split()]
-    for words in cands:
-        base = [w for w in words if w.lower() not in VARIANT_WORDS]
+    # ART_SUBJECT_RESOLVER_1: the variant vocabulary and word split are subject.py's, not a private copy.
+    for name in (key, label or ""):
+        words = S.words(S.stem(name)) if name == key else (name or "").split()
+        base = [w for w in words if w.lower() not in S.VARIANT_WORDS]
         if not base or len(base) == len(words):
             continue
         name = "".join(base).lower()
