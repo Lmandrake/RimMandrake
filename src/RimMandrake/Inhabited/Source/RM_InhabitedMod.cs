@@ -35,16 +35,19 @@ namespace RimMandrake.Inhabited
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref fateEnabled, "fateEnabled", true);
             Scribe_Values.Look(ref robbedFraction, "robbedFraction", 0.5f);
             Scribe_Values.Look(ref beggarsFromPoolEnabled, "beggarsFromPoolEnabled", true);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         public void DoWindowContents(Rect inRect)
         {
             Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
             list.Begin(inRect);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.CheckboxLabeled("Visited places can break", ref fateEnabled,
                 "An inhabited place you visit can end up looted, abandoned, robbed or harmed "

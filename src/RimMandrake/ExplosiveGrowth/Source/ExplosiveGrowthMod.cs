@@ -75,6 +75,7 @@ namespace RimMandrake.ExplosiveGrowth
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref enabled, "enabled", true);
             Scribe_Values.Look(ref soakMultiplier, "soakMultiplier", 10f);
@@ -101,6 +102,7 @@ namespace RimMandrake.ExplosiveGrowth
             Scribe_Values.Look(ref harvestJackpotEnabled, "harvestJackpotEnabled", true);
             Scribe_Values.Look(ref lastSwingGambleEnabled, "lastSwingGambleEnabled", true);
             Scribe_Values.Look(ref suppressionEnabled, "suppressionEnabled", true);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         private static Vector2 scroll;
@@ -112,6 +114,7 @@ namespace RimMandrake.ExplosiveGrowth
             Widgets.BeginScrollView(inRect, ref scroll, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.CheckboxLabeled("Explosive plant growth enabled", ref enabled,
                 "Off: water never soaks a plant, nothing swells, nothing reaches a top. Plants grow at whatever ambient rate the rest of your mod list gives them.");

@@ -181,6 +181,7 @@ namespace RimMandrake.LanternDeeps
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Collections.Look(ref entranceBiomes, "entranceBiomes", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
@@ -239,6 +240,7 @@ namespace RimMandrake.LanternDeeps
             Scribe_Values.Look(ref answeringRiteEnabled, "answeringRiteEnabled", true);
             Scribe_Values.Look(ref answeringStallEnabled, "answeringStallEnabled", true);
             Scribe_Values.Look(ref answeringNextStoneEnabled, "answeringNextStoneEnabled", true);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         public void DoWindowContents(Rect inRect)
@@ -248,6 +250,7 @@ namespace RimMandrake.LanternDeeps
             Widgets.BeginScrollView(inRect, ref outerScroll, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.CheckboxLabeled("Lantern Deeps enabled", ref lanternDeepsEnabled,
                 "Off: neither entrance (cave-mouth emergence or ruined mineshaft) can ever appear on "

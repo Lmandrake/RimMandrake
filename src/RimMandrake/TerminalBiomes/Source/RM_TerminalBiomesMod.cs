@@ -237,6 +237,7 @@ namespace RimMandrake.TerminalBiomes
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref masterEnabled, "masterEnabled", true);
             Scribe_Values.Look(ref scaldEnabled, "scaldEnabled", true);
@@ -292,6 +293,7 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref hazardClockInspectEnabled, "hazardClockInspectEnabled", true);
             Scribe_Values.Look(ref greyLampGiantBurnHours, "greyLampGiantBurnHours", 8f);
             Scribe_Values.Look(ref greyLampGiantMinRadius, "greyLampGiantMinRadius", 12f);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         public void DoWindowContents(Rect inRect)
@@ -309,6 +311,7 @@ namespace RimMandrake.TerminalBiomes
             Widgets.BeginScrollView(inRect, ref settingsScroll, viewRect);
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.CheckboxLabeled("Mod enabled", ref masterEnabled,
                 "Off: this mod's defs still load (nothing on a saved game silently "

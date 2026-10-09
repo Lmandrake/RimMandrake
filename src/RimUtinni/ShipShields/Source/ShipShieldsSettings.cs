@@ -48,6 +48,7 @@ namespace RimMandrake.Utinni.ShipShields
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref collapseExplosionEnabled, "collapseExplosionEnabled", true);
             Scribe_Values.Look(ref collapseExplosionDamageMultiplier, "collapseExplosionDamageMultiplier", 1f);
@@ -62,6 +63,7 @@ namespace RimMandrake.Utinni.ShipShields
             Scribe_Values.Look(ref landingHazardExposureEnabled, "landingHazardExposureEnabled", true);
             Scribe_Values.Look(ref lavaLandingBurstEnabled, "lavaLandingBurstEnabled", true);
             Scribe_Values.Look(ref lavaLandingBurstDamageMultiplier, "lavaLandingBurstDamageMultiplier", 1f);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         private static Vector2 settingsScroll;
@@ -74,6 +76,7 @@ namespace RimMandrake.Utinni.ShipShields
             Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
             Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
             list.Begin(settingsView);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.CheckboxLabeled("Bubble shield collapse explosion", ref collapseExplosionEnabled,
                 "A bubble-field shield generator explodes when its hit points are driven to zero.");

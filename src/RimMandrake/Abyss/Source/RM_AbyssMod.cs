@@ -85,6 +85,7 @@ namespace RimMandrake.Abyss
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref broodLairEnabled, "broodLairEnabled", true, true);
             Scribe_Values.Look(ref wreckEnabled, "wreckEnabled", true, true);
@@ -117,6 +118,7 @@ namespace RimMandrake.Abyss
             Scribe_Values.Look(ref darkMuffleEnabled, "darkMuffleEnabled", true, true);
             Scribe_Values.Look(ref darkMuffleAllSounds, "darkMuffleAllSounds", true, true);
             Scribe_Values.Look(ref cryptidSignsEnabled, "cryptidSignsEnabled", true, true);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         public void DoWindowContents(Rect inRect)
@@ -126,6 +128,7 @@ namespace RimMandrake.Abyss
             Widgets.BeginScrollView(inRect, ref scroll, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.Label("Biome rarity: " + RarityLabel());
             list.Label("At 0 the Abyss never generates on a new planet. "

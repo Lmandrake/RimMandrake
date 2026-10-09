@@ -265,6 +265,7 @@ namespace RimMandrake.FeverWood
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref naturalPlacementEnabled, "naturalPlacementEnabled", true);
             Scribe_Values.Look(ref tentacleBestiaryEnabled, "tentacleBestiaryEnabled", true);
@@ -319,6 +320,7 @@ namespace RimMandrake.FeverWood
             {
                 broodGiftWeightMultipliers = new Dictionary<string, float>();
             }
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         private static Vector2 scroll;
@@ -330,6 +332,7 @@ namespace RimMandrake.FeverWood
             Widgets.BeginScrollView(inRect, ref scroll, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.Label("Fever Wood");
             list.CheckboxLabeled("Compete for natural placement on generated worlds", ref naturalPlacementEnabled,

@@ -90,6 +90,7 @@ namespace RimMandrake.ExplosiveKnockback
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref enabled, "enabled", true);
             Scribe_Values.Look(ref strength, "strength", 1f);
@@ -116,6 +117,7 @@ namespace RimMandrake.ExplosiveKnockback
             Scribe_Values.Look(ref recoveryWindowTicks, "recoveryWindowTicks", 120);
             Scribe_Values.Look(ref shieldsAbsorbThrow, "shieldsAbsorbThrow", true);
             Scribe_Values.Look(ref shieldDebitPerForce, "shieldDebitPerForce", 10f);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
     }
 
@@ -139,6 +141,7 @@ namespace RimMandrake.ExplosiveKnockback
             Widgets.BeginScrollView(inRect, ref scroll, view);
             var l = new Listing_Standard();
             l.Begin(view);
+            RimMandrake.Shared.PatchApplier.DrawNotice(l);
             l.CheckboxLabeled("Enable explosive knockback", ref RimMandrakeExplosiveKnockbackSettings.enabled,
                 "Every blast throws pawns, items and corpses near it straight away from its centre. Off: vanilla.");
             l.Label("Throw strength: " + RimMandrakeExplosiveKnockbackSettings.strength.ToString("0.00")

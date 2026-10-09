@@ -33,6 +33,7 @@ namespace RimMandrake.Utinni.PlantGrowth
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref growthEnabled, "growthEnabled", true);
             Scribe_Values.Look(ref defaultMultiplier, "defaultMultiplier", PlantGrowthConfig.DEFAULT_MULTIPLIER);
@@ -41,6 +42,7 @@ namespace RimMandrake.Utinni.PlantGrowth
             Scribe_Values.Look(ref minGrowDaysToBoost, "minGrowDaysToBoost", PlantGrowthConfig.MIN_GROW_DAYS_TO_BOOST);
             Scribe_Values.Look(ref wetAmbientMultiplier, "wetAmbientMultiplier", PlantGrowthConfig.WET_AMBIENT_MULTIPLIER);
             Scribe_Values.Look(ref wetAmbientTreeMultiplier, "wetAmbientTreeMultiplier", PlantGrowthConfig.WET_AMBIENT_TREE_MULTIPLIER);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         private static Vector2 settingsScroll;
@@ -53,6 +55,7 @@ namespace RimMandrake.Utinni.PlantGrowth
             Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
             Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
             list.Begin(settingsView);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.CheckboxLabeled("Planetary fast growth enabled", ref growthEnabled,
                 "Off: every plant grows at vanilla speed, everywhere. On by default.");

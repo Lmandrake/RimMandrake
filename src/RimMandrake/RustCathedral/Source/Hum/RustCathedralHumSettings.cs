@@ -94,6 +94,7 @@ namespace RimMandrake.RustCathedral.Hum
 
 		public override void ExposeData()
 		{
+			RimMandrake.Shared.PatchApplier.BeforeExpose();
 			base.ExposeData();
 			Scribe_Values.Look(ref humMechanicEnabled, "humMechanicEnabled", true);
 			Scribe_Values.Look(ref commentaryEnabled, "commentaryEnabled", true);
@@ -121,12 +122,14 @@ namespace RimMandrake.RustCathedral.Hum
 			Scribe_Values.Look(ref hullBoltRealiseDays, "hullBoltRealiseDays", 10f);
 			Scribe_Values.Look(ref hullBoltRevealDays, "hullBoltRevealDays", 5f);
 			Scribe_Values.Look(ref hullBoltPetMemoryEnabled, "hullBoltPetMemoryEnabled", true);
+			RimMandrake.Shared.PatchApplier.AfterExpose();
 		}
 
 		public void DoWindowContents(Rect inRect)
 		{
 			Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
 			list.Begin(inRect);
+			RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
 			list.Label("Live play -- applies to every map immediately, nothing here affects worldgen.");
 			list.CheckboxLabeled("Hum-mood system", ref humMechanicEnabled,

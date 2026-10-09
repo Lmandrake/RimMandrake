@@ -45,17 +45,20 @@ namespace RimMandrake.StarWars.SWBestiary
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref metalEatingEnabled, "metalEatingEnabled", true);
             Scribe_Values.Look(ref innateAbilitiesEnabled, "innateAbilitiesEnabled", true);
             Scribe_Values.Look(ref scrapHoardingEnabled, "scrapHoardingEnabled", true);
             Scribe_Values.Look(ref toxinDependenceEnabled, "toxinDependenceEnabled", true);
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         public void DoWindowContents(Rect inRect)
         {
             Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
             list.Begin(inRect);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.CheckboxLabeled(
                 "Metal-eating creatures",

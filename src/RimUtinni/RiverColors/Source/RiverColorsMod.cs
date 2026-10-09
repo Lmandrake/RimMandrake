@@ -24,6 +24,7 @@ namespace RimMandrake.Utinni.RiverColors
 
         public override void ExposeData()
         {
+            RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref enabled, "enabled", true);
             Scribe_Values.Look(ref headwaterColor, "headwaterColor",
@@ -32,12 +33,14 @@ namespace RimMandrake.Utinni.RiverColors
                 new Color(0x7A / 255f, 0x7A / 255f, 0x2E / 255f));
             Scribe_Values.Look(ref terminusColor, "terminusColor",
                 new Color(0x3D / 255f, 0x4A / 255f, 0x52 / 255f));
+            RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
         public void DoWindowContents(Rect inRect)
         {
             Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
             list.Begin(inRect);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.CheckboxLabeled("Colour rivers by position", ref enabled,
                 "Off: rivers draw with the game's own single flat colour, as if this mod "
