@@ -27,6 +27,9 @@ colony wealth readout is IDENTICAL before/after enabling the engine (the
 read-side guarantee, checked, not assumed). Artifact-gated columns appear only
 when the artifact is carried.
 
+### Exact checks 2026-10-09 (acceptance sitting)
+- A1 CHECK: `jawa/get_defs defs="ThingDef/RM_PriceAlmanac;ThingDef/RM_HagglerModule;ThingDef/RM_ManifestDecoder;ThingDef/RM_TransponderScanner;HediffDef/RM_PriceAlmanacFitted;HediffDef/RM_HagglerModuleFitted;HediffDef/RM_ManifestDecoderFitted;HediffDef/RM_TransponderScannerFitted;RM_BazaarSeedRuleDef/RM_BazaarSeed_DesertWater;RM_BazaarSeedRuleDef/RM_BazaarSeed_BrineSalt;RM_BazaarSeedRuleDef/RM_BazaarSeed_PropaneFuel;RM_BazaarSeedRuleDef/RM_BazaarSeed_BoilingSeaStill" fields="defName"` (seed rules are `RimMandrake.Bazaar.RM_BazaarSeedRuleDef` in TheBazaar/Defs/Economy/RM_BazaarSeedRules.xml; if get_defs rejects the short type name use the full class name). Price store: `jawa/type_probe typeName="RimMandrake.Bazaar.RM_BazaarEconomy"` resolved=true. Settings: `jawa/mod_settings_field typeName="RimMandrake.Bazaar.RM_BazaarSettings" action=list` returns the 7 booleans/fields (economyEnabled, proceduralLocality, intelPriceContext, intelGoodDeals, intelLocalEconomy, intelScarcity, intelModules). `jawa/drain_log limit=400 errorsOnly=True` (or Player.log) filtered for `Bazaar|RM_Bazaar` PASS: success=true, foundCount=12, notFound empty; type_probe resolved=true; list shows all 7 named fields; zero error lines naming the Bazaar. FAIL: success=false (UNMEASURED, not absent), notFound non-empty, or foundCount short, resolved=false (DLL not loaded), fewer than 7 fields, or any error line naming RM_Bazaar*.
+
 ## Watch out
 
 - Depends on BAZAAR_WINDOW_GRID_1; seeding reads WORLDMAP_LIQUID_TAGS_1's

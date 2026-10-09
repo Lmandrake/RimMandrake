@@ -47,3 +47,8 @@ Open:
 - Live: L1/L2 passes (a floor map holds wrecks; jacket ring present; lichen beside a Warscar wreck by state read;
   a careful strip of a Wasteland wreck adds ToxicBuildup; the Long Shade road lays list rows).
 Follow-ups: Cracked Lands recede -> read a list via `RM_WreckFall.Drop`; Fall Line `RUT_FallArrival` onto this worker.
+
+## verify
+
+### Exact checks 2026-10-09 (acceptance sitting)
+- A1 CHECK: Existing chain `Wreckage/validation.py` `defs` (loot tables, scald wrecks, `GenStepDef/RM_WreckField_Scald`) and `load` (drain_log errors naming the mod) cover the RimMandrake half; campaign half: `jawa/get_defs defs="IncidentDef/RM_WreckFall;IncidentDef/RUT_FallLineWreckFall;ThingDef/RUT_FoundrySalvageCache;ThingSetMakerDef/RUT_SalvageLoot_Foundry;ThingSetMakerDef/RUT_SalvageLoot_Imperial;RimMandrake.Wreckage.RM_WreckListDef/RUT_WreckList_FallLine;RimMandrake.Wreckage.RM_WreckWeatheringDef/RUT_WreckWeathering_FallLine;RimMandrake.Wreckage.RM_WreckWeatheringDef/RUT_WreckWeathering_ForgeWarm" fields="defName"` and the RimMandrake loot tables `ThingSetMakerDef/RM_SalvageLoot_Scrap;..._Hull;..._Hull_Rare;..._Tank;..._Tank_Rare;..._Carapace;..._Carapace_Rare;..._Sealed;..._Sealed_Rare;..._GreyShards`. Full per-criterion list: `Transient/l1_manifest.json` row SALVAGE_WRECKAGE_EVERYWHERE_1/A1 (regenerate with `src/RimMandrake/Utils/l1_batch_manifest.py --json <out>`). PASS: every get_defs call success=true with notFound empty; drain_log shows no error naming `RM_Wreck` / `RM_SalvageLoot` / `[Wreckage]`. FAIL: success=false (UNMEASURED, not absent), notFound non-empty, or foundCount short, or an error line naming those needles (the chain `load` NEEDLES list).

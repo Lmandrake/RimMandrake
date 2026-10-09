@@ -38,3 +38,6 @@ Run each criterion at its stated level and record it with `rimflow verify BLOWER
 - L2: one quicktest map via the bridge or modcheck: set up the scenario in the criterion, step ticks, read the state named.
 - L4: owner judgement in a sitting; not a FOUNDRY acceptance task.
 Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.
+
+### Exact checks 2026-10-09 (acceptance sitting)
+- A2 CHECK: Read Player.log (WSL: `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log`) after the load with regex `RM_DryAirBlower|CompProperties_BlowerRoomCooler|CompProperties_TempControl` restricted to lines also matching `Config error|Could not resolve cross-reference|XML error`. Positive control: `jawa/get_defs defs="ThingDef/RM_DryAirBlower" fields="defName"` (needs EnvironmentalHazards + Greentide loaded). PASS: zero matching error lines AND get_defs success=true, foundCount=1 (the def exists, so zero errors is not an absent mod). FAIL: any matching error line, or foundCount=0 (then the list lacked the mod: UNMEASURED, not pass).
