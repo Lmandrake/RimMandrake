@@ -86,6 +86,7 @@ def biome_map(tile, biome, size=100, layer=None, keeper=(50, 50)):
     ids = [str(o["id"]) for o in _tile_objs(tile) if o.get("isSettlement")]
     if ids: call("jawa/world_objects_set", ids=",".join(ids), faction="PlayerColony")
     need(call("jawa/set_current_map", mapId=mid), "set_current_map")
+    call("jawa/kill_hostiles", mapId=mid)        # the generated map arrives with armed non-player pawns that shoot the colonists
     call("jawa/spawn_pawn", kindDef="Colonist", x=keeper[0], z=keeper[1], faction="player", count=1)
     return mid
 

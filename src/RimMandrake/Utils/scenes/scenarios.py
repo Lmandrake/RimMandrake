@@ -90,5 +90,51 @@ def abyss_dark2():
     finally:
         S.drop_map(mid, 114470)
 
+def greentide_heat(hours=6):
+    """WETBULB_FOLD_INTO_HEAT_1 A3: an unprotected colonist outdoors on a Greentide map gains vanilla Heatstroke, one in an enclosed room does not."""
+    mid = S.biome_map(114480, "RM_Greentide")
+    try:
+        with S.Scene("greentide_heat", 10, 20, 24, 12) as sc:
+            sc.weather("Clear")
+            S.call("jawa/game_condition", action="start", condition="HeatWave", durationTicks=40000)
+            sc.time_of_day(12.0)
+            out_p = sc.colonist(2, 2)
+            room = S.Scene("room", 40, 20, 8, 8); room.clear(); room.room()
+            in_p = S.call("jawa/spawn_pawn", kindDef="Colonist", x=44, z=24, faction="player", count=1)["pawns"][0]["id"]
+            for pid in (in_p, out_p):
+                S.call("jawa/set_draft", pawnId=pid, drafted=True)
+            rows = []
+            def rd(tag):
+                d = {}
+                for nm, pid in (("outdoor", out_p), ("enclosed", in_p)):
+                    pg = (S.call("jawa/pawn_get", pawn=pid).get("pawns") or [{}])[0]
+                    d[nm] = dict(hediffs=[(h["def"], h.get("severity")) for h in pg.get("hediffs", []) if h["def"] != "Scarification"], pos=pg.get("position"),
+                                 felt=S.call("jawa/thing_ambient_temp", thing=pid).get("ambient"))
+                return dict(tag=tag, temp_out=sc.temp(10, 6), temp_in=room.temp(4, 4), **d)
+            rows.append(rd("t0"))
+            for h in range(int(hours)):
+                S.run(1) if False else None
+                for pid in (out_p, in_p): S.call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
+                for _ in range(5):
+                    S.run(500); S.call("jawa/kill_hostiles")
+                rows.append(rd("h%d" % (h + 1)))
+            room.clear()
+            out("greentide_heat", "WETBULB_A3", "?", rows)
+    finally:
+        S.drop_map(mid, 114480)
+
+def sealed_suit(stuff="Cloth"):
+    """WETBULB_FOLD_INTO_HEAT_1 A4: the sealed suit raises ComfyTemperatureMax by about 1.4x the stuff's heat insulation."""
+    with S.Scene("sealed_suit", 100, 100, 10, 10) as sc:
+        pid = sc.colonist(3, 3)
+        def comfy(): return [s for s in S.call("jawa/pawn_stats", pawn=pid, stats="ComfyTemperatureMax,Insulation_Heat").get("stats", [])]
+        before = comfy()
+        sc.put("RUT_SealedSuit", 5, 5, stuff=stuff); suit = sc.find("RUT_SealedSuit")
+        r = sc.order(pid, "Wear", a=suit["id"]); S.run(900)
+        after = comfy()
+        ts = S.call("jawa/thing_stats", thing=suit["id"], stats="Insulation_Heat,StuffEffectMultiplierInsulation_Heat")
+        st = S.call("jawa/get_defs", defs="ThingDef/%s" % stuff, fields="stuffProps")
+        out("sealed_suit", "WETBULB_A4", "?", dict(before=before, after=after, suit_stats=ts, order=str(r)[:150], stuff=str(st)[:500]))
+
 if __name__ == "__main__":
     globals()[sys.argv[1]](*sys.argv[2:])
