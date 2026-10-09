@@ -1,0 +1,714 @@
+contained in rm-harness.slice (max 12G), 6 workers
+[1/345] PASS          7.7s  src/RimMandrake/Utils/art/selftest_subject.py
+[2/345] PASS          9.6s  src/RimMandrake/Utils/selftest_handoff.py
+[3/345] PASS         26.4s  src/RimMandrake/HugeThings/selftest_hugethings_footprint.py
+[4/345] PASS         26.3s  src/RimMandrake/Utils/selftest_gimmesomeslack.py
+[5/345] PASS         35.8s  src/RimMandrake/Utils/selftest_longshade_lint.py
+[6/345] PASS         41.5s  src/RimStarWars/BrainWorms/selftest_brainworms.py
+[7/345] PASS         47.4s  src/RimMandrake/Utils/selftest_stillsand_lint.py
+[8/345] PASS         20.2s  src/RimMandrake/Utils/selftest_aftermath_lint.py
+[9/345] PASS         21.5s  src/RimMandrake/Utils/selftest_hugethings_titanic_lint.py
+[10/345] PASS         22.0s  src/RimMandrake/Utils/selftest_explosiveknockback_lint.py
+[11/345] PASS         19.6s  src/RimMandrake/Utils/selftest_nightsideice_lint.py
+[12/345] PASS         20.6s  src/RimMandrake/Utils/selftest_watchers_lint.py
+[13/345] PASS         22.9s  src/RimMandrake/Utils/art/selftest_placeholder_lint.py
+[14/345] PASS         20.9s  src/RimMandrake/Utils/selftest_oasismaker_lint.py
+[15/345] PASS         21.3s  src/RimMandrake/Utils/selftest_wreckage_lint.py
+[16/345] PASS         20.5s  src/RimMandrake/Utils/selftest_kineticarms_lint.py
+[17/345] PASS         20.1s  src/RimMandrake/Utils/artpipe/selftest_artpipe.py
+[18/345] PASS         18.2s  src/RimMandrake/Utils/selftest_structureinjections_lint.py
+[19/345] PASS         17.2s  skills/generating-images/scripts/selftest_codex_image.py
+[20/345] PASS         19.0s  src/RimMandrake/rimflow/selftest_lease.py
+[21/345] PASS         17.8s  src/RimMandrake/Utils/selftest_weathersuite_lint.py
+[22/345] PASS         17.5s  src/RimMandrake/GimmeSomeSlack/northstar_matrix/selftest.py
+[23/345] PASS        111.5s  src/RimMandrake/MandrakePatches/selftest_mandrakepatches.py
+[24/345] PASS         17.9s  src/RimMandrake/Utils/selftest_pyrelands_lint.py
+[25/345] PASS         17.4s  src/RimMandrake/Utils/selftest_flamestatues_lint.py
+[26/345] PASS         18.5s  src/RimMandrake/Utils/selftest_pyrelands_fuzz.py
+[27/345] PASS         17.4s  src/RimMandrake/Utils/selftest_sacredgraffiti_lint.py
+[28/345] PASS         15.5s  src/RimUtinni/AftermathRites/selftest_aftermathrites.py
+[29/345] PASS         16.3s  src/RimMandrake/Utils/modcheck/selftest_watch.py
+[30/345] PASS         16.5s  src/RimMandrake/Utils/selftest_solarmirrors_fuzz.py
+[31/345] PASS         17.4s  src/RimMandrake/Utils/selftest_envhazards_fuzz.py
+[32/345] PASS         15.9s  src/RimUtinni/UtinniPatches/selftest_utinnipatches_dump.py
+[33/345] PASS         17.6s  src/RimMandrake/Utils/selftest_visibility_lint.py
+[34/345] PASS         33.0s  src/RimStarWars/Sarlacc/selftest_longshade_audio.py
+[35/345] PASS         15.0s  src/RimMandrake/Utils/modcheck/selftest_companion_detectors.py
+[36/345] PASS         18.2s  src/RimMandrake/Utils/selftest_wreckedmachines_lint.py
+[37/345] PASS         17.0s  src/RimMandrake/Utils/selftest_seashores_lint.py
+[38/345] PASS         19.0s  src/RimMandrake/Utils/selftest_xmlonly_lint.py
+[39/345] PASS         16.8s  src/RimMandrake/Utils/selftest_acousticscanner_lint.py
+[40/345] PASS         15.9s  src/RimMandrake/Utils/selftest_graffiti_lint.py
+[41/345] PASS         13.7s  src/RimMandrake/Utils/selftest_shipvermin_lint.py
+[42/345] PASS         13.5s  src/RimMandrake/Utils/selftest_property_lint.py
+[43/345] PASS         12.7s  src/RimMandrake/Utils/selftest_gravshiplanding_lint.py
+[44/345] PASS         17.5s  src/RimMandrake/Utils/art/selftest_art.py
+[45/345] PASS         13.6s  src/RimMandrake/Utils/selftest_label_collision_check.py
+[46/345] PASS         13.2s  src/RimMandrake/Utils/selftest_ecosystem_pyramid_check.py
+[47/345] PASS         12.4s  src/RimMandrake/Utils/selftest_raidredesigner_lint.py
+[48/345] PASS         12.1s  src/RimMandrake/Utils/selftest_bazaar_fuzz.py
+[49/345] PASS         12.3s  src/RimMandrake/Utils/selftest_rimdefdump_lint.py
+[50/345] PASS         12.0s  src/RimMandrake/Utils/art/selftest_placeholder_detect.py
+[51/345] PASS         10.4s  src/RimMandrake/GelatinousSlime/selftest_slime_suite.py
+[52/345] PASS         11.1s  src/RimMandrake/Utils/selftest_ninefold_fuzz.py
+[53/345] PASS         10.4s  src/RimMandrake/Utils/selftest_abyss_fuzz.py
+[54/345] PASS         10.5s  src/RimMandrake/Utils/selftest_feverwood_lint.py
+[55/345] PASS         10.1s  src/RimMandrake/Utils/selftest_rustcathedral_attitude_fuzz.py
+[56/345] PASS         23.5s  src/RimMandrake/PlanetPresetPrime/selftest_planetpresetprime.py
+[57/345] PASS          9.5s  src/RimStarWars/StarWarsPatches/selftest_starwarspatches_semantics.py
+[58/345] PASS          9.9s  src/RimMandrake/Utils/selftest_webwork_fuzz.py
+[59/345] PASS          9.8s  src/RimMandrake/Utils/selftest_rustchrome_lint.py
+[60/345] PASS          8.8s  src/RimMandrake/Utils/selftest_cauldron_lint.py
+[61/345] PASS         11.4s  src/RimMandrake/Contagion/selftest_contagion_rattle_sound.py
+[62/345] PASS          7.8s  src/RimMandrake/Utils/selftest_therot_fuzz.py
+[63/345] PASS          8.7s  src/RimMandrake/Utils/selftest_raidredesigner_fuzz.py
+[64/345] PASS         10.0s  src/RimMandrake/Utils/selftest_theforge_lint.py
+[65/345] PASS          8.2s  src/RimMandrake/Utils/selftest_sound_folder_paths.py
+[66/345] PASS          7.9s  src/RimMandrake/Utils/selftest_creaturebehaviors_fuzz.py
+[67/345] PASS         11.0s  src/RimUtinni/Atlas/selftest_atlas.py
+[68/345] PASS          7.8s  src/RimUtinni/MenuShell/selftest_menushell.py
+[69/345] PASS          6.8s  src/RimMandrake/Utils/selftest_longshade_fuzz.py
+[70/345] PASS          7.0s  src/RimMandrake/Utils/selftest_movingdunes_fuzz.py
+[71/345] PASS          6.1s  src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py
+[72/345] PASS          7.5s  src/RimMandrake/FeverWood/selftest_feverwood.py
+[73/345] PASS          5.8s  src/RimMandrake/Utils/selftest_run_selftests_evidence.py
+[74/345] PASS          7.7s  src/RimMandrake/FlowWorks/northstar/selftest_human_review.py
+[75/345] PASS          6.0s  src/RimMandrake/Utils/selftest_hugethings_fuzz.py
+[76/345] PASS          5.5s  src/RimMandrake/Utils/selftest_wasteland_fuzz.py
+[77/345] PASS          5.0s  src/RimMandrake/rimflow/selftest_cli.py
+[78/345] PASS          8.9s  src/RimMandrake/FlowWorks/Source/SelfTest/selftest_flowworks_kernel_oracle.py
+[79/345] PASS          6.5s  src/RimMandrake/Utils/selftest_luminouspigment_fuzz.py
+[80/345] PASS          8.5s  .claude/hooks/selftest_block_blind_scan.py
+[81/345] PASS          7.0s  src/RimMandrake/Utils/selftest_lint_def_type_refs.py
+[82/345] PASS          5.8s  src/RimMandrake/Utils/selftest_theforge_fuzz.py
+[83/345] PASS          5.7s  src/RimStarWars/Bacta/selftest_bacta_mock.py
+[84/345] PASS          9.1s  src/RimMandrake/Utils/selftest_flowworks_stock.py
+[85/345] PASS          4.6s  src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py
+[86/345] PASS          6.7s  src/RimMandrake/Utils/selftest_property_fuzz.py
+[87/345] PASS          9.8s  src/RimMandrake/rimflow/selftest_reconcile.py
+[88/345] PASS          8.3s  src/RimMandrake/Utils/selftest_inhabited_fuzz.py
+[89/345] PASS          6.3s  src/RimMandrake/Utils/selftest_explosivegrowth_fuzz.py
+[90/345] PASS          7.0s  src/RimMandrake/Utils/selftest_floodedcanyon_fuzz.py
+[91/345] PASS          5.7s  src/RimMandrake/Utils/selftest_greentide_fuzz.py
+[92/345] PASS          6.6s  src/RimMandrake/Utils/art/selftest_flyer_lock.py
+[93/345] PASS          7.2s  src/RimMandrake/Utils/selftest_divinginteraction_fuzz.py
+[94/345] PASS         10.1s  src/RimMandrake/RustCathedral/selftest_rustcathedral_borehulk.py
+[95/345] PASS          6.0s  src/RimMandrake/Utils/selftest_droidworks_fuzz.py
+[96/345] PASS          7.6s  src/RimMandrake/rimflow/selftest_built.py
+[97/345] PASS          5.3s  src/RimMandrake/Utils/selftest_terminalbiomes_fuzz.py
+[98/345] PASS          5.1s  src/RimMandrake/Utils/selftest_swbestiary_fuzz.py
+[99/345] PASS          3.6s  src/RimMandrake/Utils/selftest_thesump_fuzz.py
+[100/345] PASS         21.7s  src/RimUtinni/UtinniPatches/selftest_utinnipatches.py
+[101/345] PASS          4.1s  src/RimMandrake/Utils/selftest_feverwood_fuzz.py
+[102/345] PASS          3.9s  src/RimMandrake/Utils/selftest_art_checks.py
+[103/345] PASS          2.4s  src/RimMandrake/Utils/selftest_oracle_fuzz.py
+[104/345] PASS          4.0s  src/RimMandrake/Utils/selftest_leaningscrub_fuzz.py
+[105/345] PASS          4.1s  src/RimMandrake/Utils/selftest_miasma_fuzz.py
+[106/345] PASS          2.9s  src/RimMandrake/Utils/selftest_gelatinousslime_fuzz.py
+[107/345] PASS          4.2s  src/RimMandrake/Utils/mockups/messy_conduit/selftest.py
+[108/345] PASS          2.4s  src/RimMandrake/Utils/selftest_structureinjections_fuzz.py
+[109/345] PASS          3.2s  src/RimMandrake/Utils/selftest_keelhoist_fuzz.py
+[110/345] PASS          4.3s  src/RimMandrake/Utils/selftest_lanterndeeps_fuzz.py
+[111/345] PASS          4.8s  src/RimMandrake/Utils/selftest_check_canon.py
+[112/345] PASS          4.0s  src/RimMandrake/Utils/selftest_kineticarms_fuzz.py
+[113/345] PASS          3.2s  .claude/hooks/selftest_block_shared_tree_merge.py
+[114/345] PASS          3.7s  src/RimMandrake/Utils/selftest_cauldron_fuzz.py
+[115/345] PASS          3.0s  src/RimMandrake/Utils/selftest_oasismaker_fuzz.py
+[116/345] PASS          3.7s  src/RimMandrake/Utils/selftest_droidworks_lint.py
+[117/345] PASS          3.4s  src/RimMandrake/Utils/selftest_therot_lint.py
+[118/345] PASS          3.4s  src/RimMandrake/Utils/selftest_armoury_fuzz.py
+[119/345] PASS          2.7s  src/RimMandrake/Utils/northstar_driver/selftest.py
+[120/345] PASS          3.0s  src/RimMandrake/Utils/selftest_warcasket_fuzz.py
+[121/345] PASS          3.8s  src/RimMandrake/Utils/selftest_nightsideice_fuzz.py
+[122/345] PASS          3.0s  src/RimMandrake/Utils/rimdrive/selftest_obs_events.py
+[123/345] PASS          3.4s  src/RimMandrake/Utils/selftest_empirepursuit_fuzz.py
+[124/345] PASS          3.4s  src/RimMandrake/Utils/selftest_stillsand_fuzz.py
+[125/345] PASS          2.8s  src/RimMandrake/Utils/selftest_contagion_fuzz.py
+[126/345] PASS          3.3s  src/RimMandrake/Utils/selftest_weepingstones_fuzz.py
+[127/345] PASS          3.4s  src/RimMandrake/Utils/selftest_aftermath_fuzz.py
+[128/345] PASS          3.5s  src/RimMandrake/Utils/selftest_graffiti_fuzz.py
+[129/345] PASS          3.6s  src/RimMandrake/Utils/selftest_scarlands_fuzz.py
+[130/345] PASS          3.0s  src/RimMandrake/Utils/selftest_jawarules_fuzz.py
+[131/345] PASS          2.7s  src/RimMandrake/Utils/selftest_abyss_lint.py
+[132/345] PASS          3.6s  src/RimMandrake/Utils/selftest_sun_heat.py
+[133/345] PASS          2.7s  src/RimMandrake/Utils/selftest_acousticscanner_fuzz.py
+[134/345] PASS          2.8s  src/RimMandrake/Utils/selftest_lorestages_fuzz.py
+[135/345] PASS          3.2s  src/RimMandrake/Utils/selftest_lore_stages.py
+[136/345] PASS          2.7s  src/RimMandrake/Utils/selftest_bluedesert_fuzz.py
+[137/345] PASS          2.6s  src/RimMandrake/Utils/selftest_gravshiplanding_fuzz.py
+[138/345] PASS          2.6s  src/RimMandrake/Utils/selftest_miasma_lint.py
+[139/345] PASS          2.3s  src/RimMandrake/Stillsand/selftest_stillsand.py
+[140/345] PASS          2.6s  src/RimMandrake/Utils/selftest_visibility_fuzz.py
+[141/345] PASS          2.7s  src/RimMandrake/FlowWorks/selftest_review_map.py
+[142/345] PASS          3.4s  src/RimMandrake/Utils/selftest_property_fabric.py
+[143/345] PASS          3.4s  src/RimMandrake/Utils/selftest_seashores.py
+[144/345] PASS          3.2s  src/RimMandrake/Utils/selftest_aftermath.py
+[145/345] PASS          3.2s  src/RimMandrake/Utils/selftest_colony_visibility.py
+[146/345] PASS          2.5s  .claude/hooks/selftest_queue_lint.py
+[147/345] PASS          2.6s  src/RimMandrake/Utils/selftest_wreckage_fuzz.py
+[148/345] PASS          3.3s  src/RimMandrake/Utils/selftest_stun_scaling.py
+[149/345] PASS         11.9s  src/RimMandrake/LeaningScrub/selftest_scrub_soundscape.py
+[150/345] PASS          1.9s  src/RimMandrake/Utils/modcheck/selftest_helpers.py
+[151/345] PASS          2.0s  src/RimMandrake/Utils/selftest_memwatch.py
+[152/345] PASS          2.3s  src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py
+[153/345] PASS          2.3s  src/RimMandrake/Utils/selftest_watchers_fuzz.py
+[154/345] PASS          2.2s  src/RimMandrake/Utils/selftest_weathersuite_fuzz.py
+[155/345] PASS          2.2s  src/RimMandrake/Utils/selftest_jawaionweapons_fuzz.py
+[156/345] PASS          2.2s  src/RimMandrake/Utils/selftest_rimdefdump_fuzz.py
+[157/345] PASS          2.1s  src/RimMandrake/Utils/art/selftest_enact.py
+[158/345] PASS          2.0s  src/RimMandrake/Utils/selftest_lightledger.py
+[159/345] PASS          2.2s  src/RimMandrake/Utils/modcheck/selftest_walklint.py
+[160/345] PASS          2.1s  src/RimMandrake/Utils/selftest_hugethings_lint.py
+[161/345] PASS          2.2s  src/RimMandrake/Utils/selftest_publish.py
+[162/345] PASS          2.1s  src/RimMandrake/Utils/selftest_shipvermin_fuzz.py
+[163/345] PASS          2.0s  src/RimMandrake/Utils/selftest_flamestatues_fuzz.py
+[164/345] PASS          2.2s  src/RimStarWars/GizkaStowaway/selftest_gizkastowaway.py
+[165/345] PASS          2.1s  src/RimMandrake/Utils/selftest_proximityhatch_fuzz.py
+[166/345] PASS          2.1s  src/RimMandrake/Utils/selftest_furnace_warmth.py
+[167/345] PASS          2.4s  src/RimMandrake/Utils/selftest_sand_buried_graphic.py
+[168/345] PASS          2.0s  src/RimMandrake/Utils/selftest_precious_caves.py
+[169/345] PASS          1.8s  src/RimMandrake/LuminousPigment/selftest_luminouspigment.py
+[170/345] PASS          2.0s  src/RimMandrake/Utils/selftest_seashores_fuzz.py
+[171/345] PASS          1.9s  src/RimMandrake/Utils/selftest_abyss_brood.py
+[172/345] PASS          1.9s  src/RimMandrake/Utils/selftest_empire_ladder.py
+[173/345] PASS          2.0s  src/RimMandrake/Utils/selftest_track_grid.py
+[174/345] PASS          1.7s  src/RimMandrake/rimflow/selftest_built_old_reader.py
+[175/345] PASS          1.7s  .claude/hooks/selftest_block_canon_contradiction.py
+[176/345] PASS          1.7s  src/RimMandrake/BlueDesert/selftest_bluedesert.py
+[177/345] PASS          2.0s  src/RimMandrake/Wasteland/selftest_wasteland.py
+[178/345] PASS          2.0s  src/RimMandrake/Utils/selftest_ashkarr_settle.py
+[179/345] PASS          2.0s  src/RimMandrake/Utils/selftest_skeleton_burial.py
+[180/345] PASS          1.4s  src/RimMandrake/Utils/selftest_solarmirrors.py
+[181/345] PASS          1.5s  src/RimMandrake/KineticArms/selftest_kineticarms_kernel.py
+[182/345] PASS          1.8s  .claude/hooks/selftest_block_unledgered_texture.py
+[183/345] PASS          1.4s  src/RimMandrake/TheForge/selftest_theforge.py
+[184/345] PASS          1.7s  src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py
+[185/345] PASS          1.6s  src/RimMandrake/Utils/rimplace/selftest.py
+[186/345] PASS          1.1s  src/RimMandrake/Utils/selftest_creaturebehaviors_defs.py
+[187/345] PASS          1.2s  .claude/hooks/selftest_documented_commands.py
+[188/345] PASS          1.4s  src/RimMandrake/Utils/selftest_import_founders.py
+[189/345] FAIL          1.2s  src/RimMandrake/rimflow/selftest_items_glob_live.py
+[190/345] PASS          1.3s  .claude/hooks/selftest_block_dll_source_mismatch.py
+[191/345] PASS          1.8s  src/RimUtinni/PawnFlavor/selftest_pawnflavor_wiring.py
+[192/345] PASS          1.3s  src/RimMandrake/Utils/artpipe/selftest_canon_check.py
+[193/345] PASS          1.0s  skills/generating-rimworld-sprites/scripts/selftest.py
+[194/345] PASS          1.2s  src/RimMandrake/Utils/selftest_acceptance_map.py
+[195/345] PASS          1.0s  src/RimMandrake/Utils/art/selftest_scale_panels.py
+[196/345] PASS          0.9s  src/RimMandrake/Utils/artboard/selftest_live.py
+[197/345] PASS          1.0s  src/RimMandrake/Utils/selftest_run_selftests.py
+[198/345] PASS          0.9s  .claude/hooks/selftest_block_blanket_git_stage.py
+[199/345] PASS          0.7s  src/RimMandrake/Utils/artboard/selftest.py
+[200/345] PASS          0.6s  src/RimMandrake/Utils/modcheck/selftest_clockgate.py
+[201/345] PASS          0.8s  src/RimMandrake/Utils/modcheck/live_queue/selftest_live_queue.py
+[202/345] PASS          0.6s  src/RimMandrake/Utils/selftest_check_doc_links.py
+[203/345] PASS          0.7s  src/RimMandrake/Utils/modcheck/selftest_shipped_defs.py
+[204/345] PASS          0.8s  src/RimStarWars/Armoury/selftest_armoury.py
+[205/345] PASS          0.8s  src/RimMandrake/Utils/selftest_lanterndeeps_lint.py
+[206/345] PASS          0.7s  src/RimMandrake/Utils/selftest_ticker_compat.py
+[207/345] PASS          0.6s  .claude/hooks/selftest_block_forged_owner_said.py
+[208/345] PASS          0.6s  .claude/hooks/selftest_block_hand_edited_sheet.py
+[209/345] PASS          0.6s  .claude/hooks/selftest_block_forged_validation.py
+[210/345] PASS          0.6s  .claude/hooks/selftest_block_peer_messages.py
+[211/345] PASS          0.6s  .claude/hooks/selftest_block_tmpfs_clone.py
+[212/345] PASS          0.5s  .claude/hooks/selftest_warn_close_live_proof_owed.py
+[213/345] PASS          0.5s  src/RimMandrake/Cauldron/selftest_cauldron.py
+[214/345] PASS          0.7s  src/RimMandrake/LeaningScrub/selftest_leaningscrub.py
+[215/345] PASS          0.6s  src/RimMandrake/Pyrelands/selftest_pyrelands_site.py
+[216/345] PASS          0.6s  src/RimMandrake/RustCathedral/selftest_rustcathedral_basefinish.py
+[217/345] PASS          0.5s  src/RimMandrake/Utils/art/selftest_sheet_letters.py
+[218/345] PASS          4.4s  src/RimMandrake/Utils/selftest_lint_harmony_targets.py
+[219/345] PASS          0.6s  src/RimMandrake/Utils/modcheck/selftest_doctor.py
+[220/345] PASS          0.4s  src/RimMandrake/Utils/selftest_scratch_clone.py
+[221/345] PASS          0.7s  src/RimMandrake/Utils/selftest_abyss_brood_static.py
+[222/345] PASS          0.6s  src/RimMandrake/Utils/selftest_lorestages_lint.py
+[223/345] PASS          0.3s  .claude/hooks/selftest_warn_unclosed_queue_item.py
+[224/345] PASS          0.5s  src/RimMandrake/rimflow/selftest_reader_invariant.py
+[225/345] PASS          0.7s  src/RimMandrake/Utils/selftest_one_path_seam.py
+[226/345] PASS          0.4s  src/RimMandrake/MovingDunes/selftest_movingdunes_proofs.py
+[227/345] PASS          0.3s  src/RimMandrake/RustCathedral/selftest_rustcathedral_hullbolts.py
+[228/345] PASS          0.5s  src/RimMandrake/FloodedCanyon/selftest_floodedcanyon_static.py
+[229/345] PASS          0.3s  src/RimMandrake/Utils/modcheck/selftest_results_join.py
+[230/345] PASS          0.4s  src/RimMandrake/Utils/art/selftest_scaled_review_gate.py
+[231/345] PASS          0.4s  src/RimMandrake/Utils/northstar_driver/selftest_judge.py
+[232/345] PASS          0.3s  src/RimMandrake/Utils/northstar_driver/selftest_record_status.py
+[233/345] PASS          0.3s  src/RimMandrake/Utils/selftest_divinginteraction_lint.py
+[234/345] PASS          0.3s  src/RimMandrake/Utils/selftest_frozen_dumps.py
+[235/345] PASS          0.3s  src/RimMandrake/Utils/selftest_ledger_lint.py
+[236/345] PASS          0.3s  src/RimMandrake/Utils/selftest_no_inert_operation_mayrequire.py
+[237/345] PASS          0.4s  src/RimMandrake/Utils/selftest_no_duplicate_defs.py
+[238/345] PASS          0.3s  src/RimMandrake/Utils/selftest_no_patch_under_defs.py
+[239/345] PASS          0.3s  src/RimMandrake/rimflow/selftest_bridge_file_concurrency.py
+[240/345] PASS          0.4s  src/RimMandrake/WeepingStones/selftest_weepingstones.py
+[241/345] PASS          0.3s  src/RimMandrake/rimflow/selftest_bridge_gate.py
+[242/345] PASS          0.4s  src/RimUtinni/ResearchRetag/selftest_researchretag.py
+[243/345] PASS          0.2s  .claude/hooks/selftest_block_worktrees.py
+[244/345] PASS          0.3s  src/RimUtinni/UtinniPatches/selftest_xenotype_cut_spawnsets.py
+[245/345] PASS          0.2s  skills/generating-images/scripts/selftest_codex_grumpiness.py
+[246/345] PASS          0.3s  src/RimUtinni/UtinniPatches/selftest_xenotype_defcut.py
+[247/345] PASS          0.2s  .claude/hooks/selftest_warn_skill_unwired.py
+[248/345] PASS          0.2s  src/RimMandrake/EnvironmentalHazards/selftest_envhazards_livingmap.py
+[249/345] PASS          0.2s  src/RimMandrake/Contagion/selftest_contagion.py
+[250/345] PASS          0.2s  src/RimMandrake/FeverWood/selftest_feverwood_broodcampaign.py
+[251/345] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_extensions.py
+[252/345] PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_player_missions.py
+[253/345] PASS          0.2s  src/RimMandrake/LoreStages/selftest_lorestages_bars.py
+[254/345] PASS          0.2s  src/RimMandrake/GimmeSomeSlack/northstar/selftest_proof_all.py
+[255/345] PASS          0.2s  src/RimMandrake/SeaShores/selftest_seashores_proofs.py
+[256/345] PASS          0.2s  src/RimMandrake/TerminalBiomes/selftest_sea_catch_alive.py
+[257/345] PASS          0.2s  src/RimMandrake/TheSump/selftest_tar_filth_flags.py
+[258/345] PASS          0.2s  src/RimMandrake/Utils/art/selftest_artwrite.py
+[259/345] PASS          0.3s  src/RimMandrake/Utils/art/selftest_ruled_elsewhere.py
+[260/345] PASS          0.2s  src/RimMandrake/Utils/artpipe/selftest_console.py
+[261/345] PASS          0.3s  src/RimMandrake/Utils/artboard/selftest_autofix.py
+[262/345] PASS          0.2s  src/RimMandrake/Utils/artpipe/selftest_artpipe_state.py
+[263/345] PASS          0.2s  src/RimMandrake/Utils/rimbench/selftest.py
+[264/345] PASS          0.3s  src/RimMandrake/Utils/modcheck/selftest_record.py
+[265/345] PASS          0.2s  src/RimMandrake/Utils/selftest_building_class_configerror.py
+[266/345] PASS          0.2s  src/RimMandrake/Utils/selftest_inhabited_lint.py
+[267/345] PASS          0.2s  src/RimMandrake/Utils/selftest_retired_mods.py
+[268/345] PASS          0.3s  src/RimMandrake/Utils/selftest_code_review_status.py
+[269/345] PASS          0.3s  src/RimMandrake/Utils/selftest_proximityhatch_lint.py
+[270/345] PASS          0.3s  src/RimMandrake/rimflow/selftest_concurrency.py
+[271/345] PASS          0.1s  .claude/hooks/selftest_block_agent_without_model.py
+[272/345] PASS          0.1s  src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py
+[273/345] PASS          0.2s  src/RimUtinni/UtinniPatches/selftest_landmark_mutator_rule.py
+[274/345] PASS          0.1s  infrastructure/dashboards/hub/selftest_regen_hub.py
+[275/345] PASS          0.1s  skills/generating-images/scripts/selftest_codex_queue_runner.py
+[276/345] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_rivers.py
+[277/345] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_looks_round.py
+[278/345] PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_playtest_runner.py
+[279/345] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py
+[280/345] PASS          0.1s  src/RimMandrake/FlowWorks/Tools/selftest_liquid_looks.py
+[281/345] PASS          0.1s  src/RimMandrake/GimmeSomeSlack/selftest_human_review.py
+[282/345] PASS          0.1s  src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_playtest_runner.py
+[283/345] PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_swale.py
+[284/345] PASS          0.1s  src/RimMandrake/GravshipLanding/selftest_gravshiplanding.py
+[285/345] PASS          0.1s  src/RimMandrake/HostileFlora/selftest_hostileflora.py
+[286/345] PASS          0.1s  src/RimMandrake/KineticArms/selftest_kineticarms_script.py
+[287/345] PASS          0.1s  src/RimMandrake/KeelHoist/selftest_keelhoist.py
+[288/345] PASS          0.1s  src/RimMandrake/Greentide/selftest_greentide_spine.py
+[289/345] PASS          0.1s  src/RimMandrake/LoadTracer/selftest_loadtracer_static.py
+[290/345] PASS          0.1s  src/RimMandrake/MovingDunes/Source/selftest_moving_dunes_constants.py
+[291/345] PASS          0.1s  src/RimMandrake/Pyrinth/selftest_pyrinth_semantics.py
+[292/345] PASS          0.1s  src/RimMandrake/RustChrome/selftest_rustchrome.py
+[293/345] PASS          0.2s  src/RimMandrake/RaidRedesigner/selftest_raidredesigner_proofs.py
+[294/345] PASS          0.1s  src/RimMandrake/Utils/art/selftest_refresh_sheets.py
+[295/345] PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest.py
+[296/345] PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_bland_world.py
+[297/345] PASS          0.1s  src/RimMandrake/TheRot/Tools/selftest_live_prep.py
+[298/345] PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_mod_static.py
+[299/345] PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_launch_gate.py
+[300/345] PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_jev.py
+[301/345] PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_detectors.py
+[302/345] PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_motion_frames.py
+[303/345] PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_obs_summary.py
+[304/345] PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_northstar.py
+[305/345] PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_reviewmap.py
+[306/345] PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_patch_targets.py
+[307/345] PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_required_checks.py
+[308/345] PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_readline_registry.py
+[309/345] PASS          0.1s  src/RimMandrake/Utils/northstar_driver/selftest_bridge_utilization.py
+[310/345] PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_suite_corrections.py
+[311/345] PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_run_identity.py
+[312/345] PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_vacuity.py
+[313/345] PASS          0.1s  src/RimMandrake/Utils/rimdrive/selftest.py
+[314/345] PASS          0.1s  src/RimMandrake/Utils/northstar_driver/selftest_lint_calls.py
+[315/345] PASS          0.1s  src/RimMandrake/Utils/pulse/selftest_pulse.py
+[316/345] PASS          0.1s  src/RimMandrake/Utils/selftest_canon_census.py
+[317/345] PASS          0.1s  src/RimMandrake/Utils/selftest_broadcast_frame.py
+[318/345] PASS          0.2s  src/RimMandrake/Utils/selftest_about_dependency_urls.py
+[319/345] PASS          0.2s  src/RimMandrake/Utils/selftest_belt_watchdog.py
+[320/345] PASS          0.3s  src/RimMandrake/Utils/selftest_checkers.py
+[321/345] PASS          0.1s  src/RimMandrake/Utils/selftest_codebase_health.py
+[322/345] PASS          0.2s  src/RimMandrake/Utils/selftest_expectations_manifest.py
+[323/345] PASS          0.1s  src/RimMandrake/Utils/selftest_repair_torn_ledger.py
+[324/345] PASS          0.1s  src/RimMandrake/Utils/selftest_queue_staleness_review.py
+[325/345] PASS          0.3s  src/RimMandrake/Utils/selftest_deploy_hold.py
+[326/345] PASS          0.2s  src/RimMandrake/Utils/selftest_retirement_order.py
+[327/345] PASS          0.1s  src/RimMandrake/Utils/selftest_species_skin_rulings.py
+[328/345] PASS          0.2s  src/RimMandrake/Utils/selftest_research_validator.py
+[329/345] PASS          0.2s  src/RimMandrake/Utils/selftest_sound_paths.py
+[330/345] PASS          0.1s  src/RimMandrake/Utils/selftest_unknown_params.py
+[331/345] UNMEASURED    0.2s  src/RimMandrake/bridgetools/selftest_tool_metadata.py
+[332/345] PASS          0.1s  src/RimMandrake/rimflow/selftest_citations_lint.py
+[333/345] PASS          0.2s  src/RimMandrake/Utils/selftest_validate_patch.py
+[334/345] PASS          0.2s  src/RimMandrake/rimflow/selftest_model.py
+[335/345] PASS          0.2s  src/RimMandrake/rimflow/selftest_undocumented_work.py
+[336/345] PASS          0.1s  src/RimMandrake/rimflow/selftest_probe.py
+[337/345] PASS          0.2s  src/RimStarWars/JawaVoice/selftest_jawavoice.py
+[338/345] PASS          0.2s  src/RimStarWars/Armoury/Source/selftest_absorption_generators.py
+[339/345] PASS          0.2s  src/RimStarWars/SWBestiary/selftest_swbestiary.py
+[340/345] PASS          0.2s  src/RimStarWars/StarWarsPatches/selftest_starwarspatches.py
+[341/345] PASS          0.2s  src/RimUtinni/AshkarrFlora/selftest_ashkarrflora.py
+[342/345] PASS          0.2s  src/RimUtinni/RestrainingBolts/selftest_restrainingbolts.py
+[343/345] PASS          0.2s  src/RimUtinni/UnfinishedLine/selftest_unfinishedline_world.py
+[344/345] PASS          0.1s  src/RimUtinni/UtinniPatches/selftest_condenser_slots.py
+[345/345] PASS          0.2s  src/RimMandrake/rimflow/selftest_render.py
+evidence: 94 eligible, 0 SKIPPED as unchanged, 91 PASS recorded, 3 PASS not recordable — runner 27abbad5ac98fc65
+  not recordable (1): reads outside the repo: /mnt/d/Luke/dev/reference/rimworld-decompiled/RimWorld/Building_Gr...: src/RimMandrake/Utils/selftest_longshade_lint.py
+  not recordable (1): reads outside the repo: /mnt/d/Luke/dev/reference/rimworld-decompiled/RimWorld/CompPropert...: src/RimMandrake/Utils/selftest_kineticarms_lint.py
+  not recordable (1): reads outside the repo: /home/mandrake/.cache/rimworld_quests/corpus.json: src/RimMandrake/Utils/selftest_xmlonly_lint.py
+PASS          0.1s  .claude/hooks/selftest_block_agent_without_model.py
+PASS          0.9s  .claude/hooks/selftest_block_blanket_git_stage.py
+PASS          8.5s  .claude/hooks/selftest_block_blind_scan.py
+PASS          1.7s  .claude/hooks/selftest_block_canon_contradiction.py
+PASS          1.3s  .claude/hooks/selftest_block_dll_source_mismatch.py
+PASS          0.6s  .claude/hooks/selftest_block_forged_owner_said.py
+PASS          0.6s  .claude/hooks/selftest_block_forged_validation.py
+PASS          0.6s  .claude/hooks/selftest_block_hand_edited_sheet.py
+PASS          0.6s  .claude/hooks/selftest_block_peer_messages.py
+PASS          3.2s  .claude/hooks/selftest_block_shared_tree_merge.py
+PASS          0.6s  .claude/hooks/selftest_block_tmpfs_clone.py
+PASS          1.8s  .claude/hooks/selftest_block_unledgered_texture.py
+PASS          0.2s  .claude/hooks/selftest_block_worktrees.py
+PASS          1.2s  .claude/hooks/selftest_documented_commands.py
+PASS          2.5s  .claude/hooks/selftest_queue_lint.py
+PASS          0.5s  .claude/hooks/selftest_warn_close_live_proof_owed.py
+PASS          0.2s  .claude/hooks/selftest_warn_skill_unwired.py
+PASS          0.3s  .claude/hooks/selftest_warn_unclosed_queue_item.py
+PASS          0.1s  infrastructure/dashboards/hub/selftest_regen_hub.py
+PASS          0.2s  skills/generating-images/scripts/selftest_codex_grumpiness.py
+PASS         17.2s  skills/generating-images/scripts/selftest_codex_image.py
+PASS          0.1s  skills/generating-images/scripts/selftest_codex_queue_runner.py
+PASS          1.0s  skills/generating-rimworld-sprites/scripts/selftest.py
+PASS          1.7s  src/RimMandrake/BlueDesert/selftest_bluedesert.py
+PASS          0.5s  src/RimMandrake/Cauldron/selftest_cauldron.py
+PASS          0.2s  src/RimMandrake/Contagion/selftest_contagion.py
+PASS         11.4s  src/RimMandrake/Contagion/selftest_contagion_rattle_sound.py
+PASS          0.2s  src/RimMandrake/EnvironmentalHazards/selftest_envhazards_livingmap.py
+PASS          1.7s  src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_kernel.py
+PASS          0.1s  src/RimMandrake/ExplosiveKnockback/selftest_explosiveknockback_script.py
+PASS          7.5s  src/RimMandrake/FeverWood/selftest_feverwood.py
+PASS          0.2s  src/RimMandrake/FeverWood/selftest_feverwood_broodcampaign.py
+PASS          0.5s  src/RimMandrake/FloodedCanyon/selftest_floodedcanyon_static.py
+PASS          8.9s  src/RimMandrake/FlowWorks/Source/SelfTest/selftest_flowworks_kernel_oracle.py
+PASS          0.1s  src/RimMandrake/FlowWorks/Tools/selftest_liquid_looks.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_extensions.py
+PASS          6.1s  src/RimMandrake/FlowWorks/northstar/selftest_flowworks_northstar.py
+PASS          7.7s  src/RimMandrake/FlowWorks/northstar/selftest_human_review.py
+PASS          0.2s  src/RimMandrake/FlowWorks/northstar/selftest_player_missions.py
+PASS          0.1s  src/RimMandrake/FlowWorks/northstar/selftest_playtest_runner.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_cover_breaks.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_looks_round.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_rivers.py
+PASS          0.1s  src/RimMandrake/FlowWorks/selftest_flowworks_swale.py
+PASS          2.7s  src/RimMandrake/FlowWorks/selftest_review_map.py
+PASS         10.4s  src/RimMandrake/GelatinousSlime/selftest_slime_suite.py
+PASS          0.1s  src/RimMandrake/GimmeSomeSlack/northstar/selftest_gss_playtest_runner.py
+PASS          0.2s  src/RimMandrake/GimmeSomeSlack/northstar/selftest_proof_all.py
+PASS         17.5s  src/RimMandrake/GimmeSomeSlack/northstar_matrix/selftest.py
+PASS          0.1s  src/RimMandrake/GimmeSomeSlack/selftest_human_review.py
+PASS          0.1s  src/RimMandrake/GravshipLanding/selftest_gravshiplanding.py
+PASS          0.1s  src/RimMandrake/Greentide/selftest_greentide_spine.py
+PASS          0.1s  src/RimMandrake/HostileFlora/selftest_hostileflora.py
+PASS         26.4s  src/RimMandrake/HugeThings/selftest_hugethings_footprint.py
+PASS          0.1s  src/RimMandrake/KeelHoist/selftest_keelhoist.py
+PASS          1.5s  src/RimMandrake/KineticArms/selftest_kineticarms_kernel.py
+PASS          0.1s  src/RimMandrake/KineticArms/selftest_kineticarms_script.py
+PASS          0.7s  src/RimMandrake/LeaningScrub/selftest_leaningscrub.py
+PASS         11.9s  src/RimMandrake/LeaningScrub/selftest_scrub_soundscape.py
+PASS          0.1s  src/RimMandrake/LoadTracer/selftest_loadtracer_static.py
+PASS          0.2s  src/RimMandrake/LoreStages/selftest_lorestages_bars.py
+PASS          1.8s  src/RimMandrake/LuminousPigment/selftest_luminouspigment.py
+PASS        111.5s  src/RimMandrake/MandrakePatches/selftest_mandrakepatches.py  (heavy lane)
+PASS          0.1s  src/RimMandrake/MovingDunes/Source/selftest_moving_dunes_constants.py
+PASS          0.4s  src/RimMandrake/MovingDunes/selftest_movingdunes_proofs.py
+PASS         23.5s  src/RimMandrake/PlanetPresetPrime/selftest_planetpresetprime.py
+PASS          0.6s  src/RimMandrake/Pyrelands/selftest_pyrelands_site.py
+PASS          0.1s  src/RimMandrake/Pyrinth/selftest_pyrinth_semantics.py
+PASS          0.2s  src/RimMandrake/RaidRedesigner/selftest_raidredesigner_proofs.py
+PASS          0.6s  src/RimMandrake/RustCathedral/selftest_rustcathedral_basefinish.py
+PASS         10.1s  src/RimMandrake/RustCathedral/selftest_rustcathedral_borehulk.py
+PASS          0.3s  src/RimMandrake/RustCathedral/selftest_rustcathedral_hullbolts.py
+PASS          0.1s  src/RimMandrake/RustChrome/selftest_rustchrome.py
+PASS          0.2s  src/RimMandrake/SeaShores/selftest_seashores_proofs.py
+PASS          2.3s  src/RimMandrake/Stillsand/selftest_stillsand.py
+PASS          0.2s  src/RimMandrake/TerminalBiomes/selftest_sea_catch_alive.py
+PASS          1.4s  src/RimMandrake/TheForge/selftest_theforge.py
+PASS          0.1s  src/RimMandrake/TheRot/Tools/selftest_live_prep.py
+PASS          0.2s  src/RimMandrake/TheSump/selftest_tar_filth_flags.py
+PASS         17.5s  src/RimMandrake/Utils/art/selftest_art.py
+PASS          0.2s  src/RimMandrake/Utils/art/selftest_artwrite.py
+PASS          2.1s  src/RimMandrake/Utils/art/selftest_enact.py
+PASS          6.6s  src/RimMandrake/Utils/art/selftest_flyer_lock.py
+PASS         12.0s  src/RimMandrake/Utils/art/selftest_placeholder_detect.py
+PASS         22.9s  src/RimMandrake/Utils/art/selftest_placeholder_lint.py
+PASS          0.1s  src/RimMandrake/Utils/art/selftest_refresh_sheets.py
+PASS          0.3s  src/RimMandrake/Utils/art/selftest_ruled_elsewhere.py
+PASS          1.0s  src/RimMandrake/Utils/art/selftest_scale_panels.py
+PASS          0.4s  src/RimMandrake/Utils/art/selftest_scaled_review_gate.py
+PASS          0.5s  src/RimMandrake/Utils/art/selftest_sheet_letters.py
+PASS          7.7s  src/RimMandrake/Utils/art/selftest_subject.py
+PASS          0.7s  src/RimMandrake/Utils/artboard/selftest.py
+PASS          0.3s  src/RimMandrake/Utils/artboard/selftest_autofix.py
+PASS          0.9s  src/RimMandrake/Utils/artboard/selftest_live.py
+PASS         20.1s  src/RimMandrake/Utils/artpipe/selftest_artpipe.py
+PASS          0.2s  src/RimMandrake/Utils/artpipe/selftest_artpipe_state.py
+PASS          1.3s  src/RimMandrake/Utils/artpipe/selftest_canon_check.py
+PASS          0.2s  src/RimMandrake/Utils/artpipe/selftest_console.py
+PASS          4.2s  src/RimMandrake/Utils/mockups/messy_conduit/selftest.py
+PASS          0.8s  src/RimMandrake/Utils/modcheck/live_queue/selftest_live_queue.py
+PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest.py
+PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_bland_world.py
+PASS          0.6s  src/RimMandrake/Utils/modcheck/selftest_clockgate.py
+PASS         15.0s  src/RimMandrake/Utils/modcheck/selftest_companion_detectors.py
+SKIPPED             src/RimMandrake/Utils/modcheck/selftest_deployed_floor.py  — tier deployed, not run in --tier default (live-install check — run `run_selftests.py --tier deployed` after a deploy, a game update or a mod subscribe/unsubscribe)
+PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_detectors.py
+PASS          0.6s  src/RimMandrake/Utils/modcheck/selftest_doctor.py
+PASS          1.9s  src/RimMandrake/Utils/modcheck/selftest_helpers.py
+PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_jev.py
+PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_launch_gate.py
+PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_mod_static.py
+PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_motion_frames.py
+PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_northstar.py
+PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_obs_summary.py
+PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_patch_targets.py
+PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_readline_registry.py
+PASS          0.3s  src/RimMandrake/Utils/modcheck/selftest_record.py
+PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_required_checks.py
+PASS          0.3s  src/RimMandrake/Utils/modcheck/selftest_results_join.py
+PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_reviewmap.py
+PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_run_identity.py
+PASS          0.7s  src/RimMandrake/Utils/modcheck/selftest_shipped_defs.py
+PASS          0.2s  src/RimMandrake/Utils/modcheck/selftest_suite_corrections.py
+PASS          0.1s  src/RimMandrake/Utils/modcheck/selftest_vacuity.py
+PASS          2.2s  src/RimMandrake/Utils/modcheck/selftest_walklint.py
+PASS         16.3s  src/RimMandrake/Utils/modcheck/selftest_watch.py
+PASS          2.7s  src/RimMandrake/Utils/northstar_driver/selftest.py
+PASS          0.1s  src/RimMandrake/Utils/northstar_driver/selftest_bridge_utilization.py
+PASS          0.4s  src/RimMandrake/Utils/northstar_driver/selftest_judge.py
+PASS          0.1s  src/RimMandrake/Utils/northstar_driver/selftest_lint_calls.py
+PASS          0.3s  src/RimMandrake/Utils/northstar_driver/selftest_record_status.py
+PASS          0.1s  src/RimMandrake/Utils/pulse/selftest_pulse.py
+PASS          0.2s  src/RimMandrake/Utils/rimbench/selftest.py
+PASS          0.1s  src/RimMandrake/Utils/rimdrive/selftest.py
+PASS          3.0s  src/RimMandrake/Utils/rimdrive/selftest_obs_events.py
+PASS          1.6s  src/RimMandrake/Utils/rimplace/selftest.py
+PASS          0.2s  src/RimMandrake/Utils/selftest_about_dependency_urls.py
+PASS          1.9s  src/RimMandrake/Utils/selftest_abyss_brood.py
+PASS          0.7s  src/RimMandrake/Utils/selftest_abyss_brood_static.py
+PASS         10.4s  src/RimMandrake/Utils/selftest_abyss_fuzz.py
+PASS          2.7s  src/RimMandrake/Utils/selftest_abyss_lint.py
+PASS          1.2s  src/RimMandrake/Utils/selftest_acceptance_map.py
+PASS          2.7s  src/RimMandrake/Utils/selftest_acousticscanner_fuzz.py
+PASS         16.8s  src/RimMandrake/Utils/selftest_acousticscanner_lint.py
+PASS          3.2s  src/RimMandrake/Utils/selftest_aftermath.py
+PASS          3.4s  src/RimMandrake/Utils/selftest_aftermath_fuzz.py
+PASS         20.2s  src/RimMandrake/Utils/selftest_aftermath_lint.py
+PASS          3.4s  src/RimMandrake/Utils/selftest_armoury_fuzz.py
+PASS          3.9s  src/RimMandrake/Utils/selftest_art_checks.py
+PASS          2.0s  src/RimMandrake/Utils/selftest_ashkarr_settle.py
+PASS         12.1s  src/RimMandrake/Utils/selftest_bazaar_fuzz.py
+PASS          0.2s  src/RimMandrake/Utils/selftest_belt_watchdog.py
+PASS          2.7s  src/RimMandrake/Utils/selftest_bluedesert_fuzz.py
+PASS          0.1s  src/RimMandrake/Utils/selftest_broadcast_frame.py
+PASS          0.2s  src/RimMandrake/Utils/selftest_building_class_configerror.py
+PASS          0.1s  src/RimMandrake/Utils/selftest_canon_census.py
+PASS          3.7s  src/RimMandrake/Utils/selftest_cauldron_fuzz.py
+PASS          8.8s  src/RimMandrake/Utils/selftest_cauldron_lint.py
+PASS          4.8s  src/RimMandrake/Utils/selftest_check_canon.py
+PASS          0.6s  src/RimMandrake/Utils/selftest_check_doc_links.py
+PASS          0.3s  src/RimMandrake/Utils/selftest_checkers.py
+PASS          0.3s  src/RimMandrake/Utils/selftest_code_review_status.py
+PASS          0.1s  src/RimMandrake/Utils/selftest_codebase_health.py
+PASS          3.2s  src/RimMandrake/Utils/selftest_colony_visibility.py
+PASS          2.8s  src/RimMandrake/Utils/selftest_contagion_fuzz.py
+PASS          1.1s  src/RimMandrake/Utils/selftest_creaturebehaviors_defs.py
+PASS          7.9s  src/RimMandrake/Utils/selftest_creaturebehaviors_fuzz.py
+PASS          0.3s  src/RimMandrake/Utils/selftest_deploy_hold.py
+SKIPPED             src/RimMandrake/Utils/selftest_deployed_biome_refs.py  — tier deployed, not run in --tier default (live-install check — run `run_selftests.py --tier deployed` after a deploy, a game update or a mod subscribe/unsubscribe)
+PASS          7.2s  src/RimMandrake/Utils/selftest_divinginteraction_fuzz.py
+PASS          0.3s  src/RimMandrake/Utils/selftest_divinginteraction_lint.py
+PASS          6.0s  src/RimMandrake/Utils/selftest_droidworks_fuzz.py
+PASS          3.7s  src/RimMandrake/Utils/selftest_droidworks_lint.py
+PASS         13.2s  src/RimMandrake/Utils/selftest_ecosystem_pyramid_check.py
+PASS          1.9s  src/RimMandrake/Utils/selftest_empire_ladder.py
+PASS          3.4s  src/RimMandrake/Utils/selftest_empirepursuit_fuzz.py
+PASS         17.4s  src/RimMandrake/Utils/selftest_envhazards_fuzz.py
+PASS          0.2s  src/RimMandrake/Utils/selftest_expectations_manifest.py
+PASS          6.3s  src/RimMandrake/Utils/selftest_explosivegrowth_fuzz.py
+PASS          4.6s  src/RimMandrake/Utils/selftest_explosiveknockback_fuzz.py
+PASS         22.0s  src/RimMandrake/Utils/selftest_explosiveknockback_lint.py
+PASS          4.1s  src/RimMandrake/Utils/selftest_feverwood_fuzz.py
+PASS         10.5s  src/RimMandrake/Utils/selftest_feverwood_lint.py
+PASS          2.0s  src/RimMandrake/Utils/selftest_flamestatues_fuzz.py
+PASS         17.4s  src/RimMandrake/Utils/selftest_flamestatues_lint.py
+PASS          7.0s  src/RimMandrake/Utils/selftest_floodedcanyon_fuzz.py
+PASS          9.1s  src/RimMandrake/Utils/selftest_flowworks_stock.py
+PASS          0.3s  src/RimMandrake/Utils/selftest_frozen_dumps.py
+PASS          2.1s  src/RimMandrake/Utils/selftest_furnace_warmth.py
+PASS          2.9s  src/RimMandrake/Utils/selftest_gelatinousslime_fuzz.py
+PASS         26.3s  src/RimMandrake/Utils/selftest_gimmesomeslack.py
+PASS          3.5s  src/RimMandrake/Utils/selftest_graffiti_fuzz.py
+PASS         15.9s  src/RimMandrake/Utils/selftest_graffiti_lint.py
+PASS          2.6s  src/RimMandrake/Utils/selftest_gravshiplanding_fuzz.py
+PASS         12.7s  src/RimMandrake/Utils/selftest_gravshiplanding_lint.py
+PASS          5.7s  src/RimMandrake/Utils/selftest_greentide_fuzz.py
+PASS          9.6s  src/RimMandrake/Utils/selftest_handoff.py
+PASS          6.0s  src/RimMandrake/Utils/selftest_hugethings_fuzz.py
+PASS          2.1s  src/RimMandrake/Utils/selftest_hugethings_lint.py
+PASS         21.5s  src/RimMandrake/Utils/selftest_hugethings_titanic_lint.py
+PASS          1.4s  src/RimMandrake/Utils/selftest_import_founders.py
+PASS          8.3s  src/RimMandrake/Utils/selftest_inhabited_fuzz.py
+PASS          0.2s  src/RimMandrake/Utils/selftest_inhabited_lint.py
+PASS          2.2s  src/RimMandrake/Utils/selftest_jawaionweapons_fuzz.py
+PASS          3.0s  src/RimMandrake/Utils/selftest_jawarules_fuzz.py
+PASS          3.2s  src/RimMandrake/Utils/selftest_keelhoist_fuzz.py
+PASS          4.0s  src/RimMandrake/Utils/selftest_kineticarms_fuzz.py
+PASS         20.5s  src/RimMandrake/Utils/selftest_kineticarms_lint.py
+PASS         13.6s  src/RimMandrake/Utils/selftest_label_collision_check.py
+PASS          4.3s  src/RimMandrake/Utils/selftest_lanterndeeps_fuzz.py
+PASS          0.8s  src/RimMandrake/Utils/selftest_lanterndeeps_lint.py
+PASS          4.0s  src/RimMandrake/Utils/selftest_leaningscrub_fuzz.py
+PASS          0.3s  src/RimMandrake/Utils/selftest_ledger_lint.py
+PASS          2.0s  src/RimMandrake/Utils/selftest_lightledger.py
+PASS          7.0s  src/RimMandrake/Utils/selftest_lint_def_type_refs.py
+PASS          4.4s  src/RimMandrake/Utils/selftest_lint_harmony_targets.py
+PASS          6.8s  src/RimMandrake/Utils/selftest_longshade_fuzz.py
+PASS         35.8s  src/RimMandrake/Utils/selftest_longshade_lint.py
+PASS          3.2s  src/RimMandrake/Utils/selftest_lore_stages.py
+PASS          2.8s  src/RimMandrake/Utils/selftest_lorestages_fuzz.py
+PASS          0.6s  src/RimMandrake/Utils/selftest_lorestages_lint.py
+PASS          6.5s  src/RimMandrake/Utils/selftest_luminouspigment_fuzz.py
+PASS          2.0s  src/RimMandrake/Utils/selftest_memwatch.py
+PASS          4.1s  src/RimMandrake/Utils/selftest_miasma_fuzz.py
+PASS          2.6s  src/RimMandrake/Utils/selftest_miasma_lint.py
+PASS          7.0s  src/RimMandrake/Utils/selftest_movingdunes_fuzz.py
+PASS          3.8s  src/RimMandrake/Utils/selftest_nightsideice_fuzz.py
+PASS         19.6s  src/RimMandrake/Utils/selftest_nightsideice_lint.py
+PASS         11.1s  src/RimMandrake/Utils/selftest_ninefold_fuzz.py
+PASS          0.4s  src/RimMandrake/Utils/selftest_no_duplicate_defs.py
+PASS          0.3s  src/RimMandrake/Utils/selftest_no_inert_operation_mayrequire.py
+PASS          0.3s  src/RimMandrake/Utils/selftest_no_patch_under_defs.py
+PASS          3.0s  src/RimMandrake/Utils/selftest_oasismaker_fuzz.py
+PASS         20.9s  src/RimMandrake/Utils/selftest_oasismaker_lint.py
+PASS          0.7s  src/RimMandrake/Utils/selftest_one_path_seam.py
+PASS          2.4s  src/RimMandrake/Utils/selftest_oracle_fuzz.py
+PASS          2.0s  src/RimMandrake/Utils/selftest_precious_caves.py
+PASS          3.4s  src/RimMandrake/Utils/selftest_property_fabric.py
+PASS          6.7s  src/RimMandrake/Utils/selftest_property_fuzz.py
+PASS         13.5s  src/RimMandrake/Utils/selftest_property_lint.py
+PASS          2.1s  src/RimMandrake/Utils/selftest_proximityhatch_fuzz.py
+PASS          0.3s  src/RimMandrake/Utils/selftest_proximityhatch_lint.py
+PASS          2.2s  src/RimMandrake/Utils/selftest_publish.py
+PASS         18.5s  src/RimMandrake/Utils/selftest_pyrelands_fuzz.py
+PASS         17.9s  src/RimMandrake/Utils/selftest_pyrelands_lint.py
+PASS          0.1s  src/RimMandrake/Utils/selftest_queue_staleness_review.py
+PASS          8.7s  src/RimMandrake/Utils/selftest_raidredesigner_fuzz.py
+PASS         12.4s  src/RimMandrake/Utils/selftest_raidredesigner_lint.py
+PASS          0.1s  src/RimMandrake/Utils/selftest_repair_torn_ledger.py
+PASS          0.2s  src/RimMandrake/Utils/selftest_research_validator.py
+PASS          0.2s  src/RimMandrake/Utils/selftest_retired_mods.py
+PASS          0.2s  src/RimMandrake/Utils/selftest_retirement_order.py
+PASS          2.2s  src/RimMandrake/Utils/selftest_rimdefdump_fuzz.py
+PASS         12.3s  src/RimMandrake/Utils/selftest_rimdefdump_lint.py
+PASS          1.0s  src/RimMandrake/Utils/selftest_run_selftests.py
+PASS          5.8s  src/RimMandrake/Utils/selftest_run_selftests_evidence.py
+PASS         10.1s  src/RimMandrake/Utils/selftest_rustcathedral_attitude_fuzz.py
+PASS          9.8s  src/RimMandrake/Utils/selftest_rustchrome_lint.py
+PASS         17.4s  src/RimMandrake/Utils/selftest_sacredgraffiti_lint.py
+PASS          2.4s  src/RimMandrake/Utils/selftest_sand_buried_graphic.py
+PASS          3.6s  src/RimMandrake/Utils/selftest_scarlands_fuzz.py
+PASS          0.4s  src/RimMandrake/Utils/selftest_scratch_clone.py
+PASS          3.4s  src/RimMandrake/Utils/selftest_seashores.py
+PASS          2.0s  src/RimMandrake/Utils/selftest_seashores_fuzz.py
+PASS         17.0s  src/RimMandrake/Utils/selftest_seashores_lint.py
+PASS          2.1s  src/RimMandrake/Utils/selftest_shipvermin_fuzz.py
+PASS         13.7s  src/RimMandrake/Utils/selftest_shipvermin_lint.py
+PASS          2.0s  src/RimMandrake/Utils/selftest_skeleton_burial.py
+PASS          1.4s  src/RimMandrake/Utils/selftest_solarmirrors.py
+PASS         16.5s  src/RimMandrake/Utils/selftest_solarmirrors_fuzz.py
+PASS          8.2s  src/RimMandrake/Utils/selftest_sound_folder_paths.py
+PASS          0.2s  src/RimMandrake/Utils/selftest_sound_paths.py
+PASS          0.1s  src/RimMandrake/Utils/selftest_species_skin_rulings.py
+PASS          3.4s  src/RimMandrake/Utils/selftest_stillsand_fuzz.py
+PASS         47.4s  src/RimMandrake/Utils/selftest_stillsand_lint.py
+PASS          2.4s  src/RimMandrake/Utils/selftest_structureinjections_fuzz.py
+PASS         18.2s  src/RimMandrake/Utils/selftest_structureinjections_lint.py
+PASS          3.3s  src/RimMandrake/Utils/selftest_stun_scaling.py
+PASS          3.6s  src/RimMandrake/Utils/selftest_sun_heat.py
+PASS          5.1s  src/RimMandrake/Utils/selftest_swbestiary_fuzz.py
+PASS          5.3s  src/RimMandrake/Utils/selftest_terminalbiomes_fuzz.py
+PASS          5.8s  src/RimMandrake/Utils/selftest_theforge_fuzz.py
+PASS         10.0s  src/RimMandrake/Utils/selftest_theforge_lint.py
+PASS          7.8s  src/RimMandrake/Utils/selftest_therot_fuzz.py
+PASS          3.4s  src/RimMandrake/Utils/selftest_therot_lint.py
+PASS          3.6s  src/RimMandrake/Utils/selftest_thesump_fuzz.py
+PASS          0.7s  src/RimMandrake/Utils/selftest_ticker_compat.py
+PASS          2.0s  src/RimMandrake/Utils/selftest_track_grid.py
+PASS          0.1s  src/RimMandrake/Utils/selftest_unknown_params.py
+PASS          0.2s  src/RimMandrake/Utils/selftest_validate_patch.py
+PASS          2.6s  src/RimMandrake/Utils/selftest_visibility_fuzz.py
+PASS         17.6s  src/RimMandrake/Utils/selftest_visibility_lint.py
+PASS          3.0s  src/RimMandrake/Utils/selftest_warcasket_fuzz.py
+PASS          5.5s  src/RimMandrake/Utils/selftest_wasteland_fuzz.py
+PASS          2.3s  src/RimMandrake/Utils/selftest_watchers_fuzz.py
+PASS         20.6s  src/RimMandrake/Utils/selftest_watchers_lint.py
+PASS          2.2s  src/RimMandrake/Utils/selftest_weathersuite_fuzz.py
+PASS         17.8s  src/RimMandrake/Utils/selftest_weathersuite_lint.py
+PASS          9.9s  src/RimMandrake/Utils/selftest_webwork_fuzz.py
+PASS          3.3s  src/RimMandrake/Utils/selftest_weepingstones_fuzz.py
+PASS          2.6s  src/RimMandrake/Utils/selftest_wreckage_fuzz.py
+PASS         21.3s  src/RimMandrake/Utils/selftest_wreckage_lint.py
+PASS          2.3s  src/RimMandrake/Utils/selftest_wreckedmachines_fuzz.py
+PASS         18.2s  src/RimMandrake/Utils/selftest_wreckedmachines_lint.py
+PASS         19.0s  src/RimMandrake/Utils/selftest_xmlonly_lint.py
+PASS          2.0s  src/RimMandrake/Wasteland/selftest_wasteland.py
+PASS          0.4s  src/RimMandrake/WeepingStones/selftest_weepingstones.py
+UNMEASURED    0.2s  src/RimMandrake/bridgetools/selftest_tool_metadata.py
+             printed the unmeasured phrase (rc 2)
+             source declares 379 tools (313 at filing time; drift is expected, not a failure)
+             SKIP - no local build at /home/mandrake/.seat-tmp/selftest_clone/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll
+               run: python.exe /home/mandrake/.seat-tmp/selftest_clone/src/RimMandrake/bridgetools/build.py --gm
+               needs the user-local Windows-side .NET SDK (see CLAUDE.md's C# build toolchain note); UNMEASURED, not a pass or a fail
+PASS          0.3s  src/RimMandrake/rimflow/selftest_bridge_file_concurrency.py
+PASS          0.3s  src/RimMandrake/rimflow/selftest_bridge_gate.py
+PASS          7.6s  src/RimMandrake/rimflow/selftest_built.py
+PASS          1.7s  src/RimMandrake/rimflow/selftest_built_old_reader.py
+PASS          0.1s  src/RimMandrake/rimflow/selftest_citations_lint.py
+PASS          5.0s  src/RimMandrake/rimflow/selftest_cli.py
+PASS          0.3s  src/RimMandrake/rimflow/selftest_concurrency.py
+FAIL          1.2s  src/RimMandrake/rimflow/selftest_items_glob_live.py
+             rc 1
+             FAIL  live items/ glob has 1 drifted file(s):
+                     LIQUID_UNIT_CONTRACT_ROUNDTRIP_1.md — ledger state is 'done' (terminal) but prose is still in items/, not items/closed/
+             ok    a deliberately reintroduced drifted file (B-EMP1, state=done) is CAUGHT
+             ok    a live item's prose is not falsely flagged
+             
+             1 FAILED: real_glob_is_clean
+PASS         19.0s  src/RimMandrake/rimflow/selftest_lease.py
+PASS          0.2s  src/RimMandrake/rimflow/selftest_model.py
+PASS          0.1s  src/RimMandrake/rimflow/selftest_probe.py
+PASS          0.5s  src/RimMandrake/rimflow/selftest_reader_invariant.py
+PASS          9.8s  src/RimMandrake/rimflow/selftest_reconcile.py
+PASS          0.2s  src/RimMandrake/rimflow/selftest_render.py  (isolated)
+PASS          0.2s  src/RimMandrake/rimflow/selftest_undocumented_work.py
+PASS          0.2s  src/RimStarWars/Armoury/Source/selftest_absorption_generators.py
+PASS          0.8s  src/RimStarWars/Armoury/selftest_armoury.py
+PASS          5.7s  src/RimStarWars/Bacta/selftest_bacta_mock.py
+PASS         41.5s  src/RimStarWars/BrainWorms/selftest_brainworms.py
+PASS          2.2s  src/RimStarWars/GizkaStowaway/selftest_gizkastowaway.py
+PASS          0.2s  src/RimStarWars/JawaVoice/selftest_jawavoice.py
+PASS          0.2s  src/RimStarWars/SWBestiary/selftest_swbestiary.py
+PASS         33.0s  src/RimStarWars/Sarlacc/selftest_longshade_audio.py
+PASS          0.2s  src/RimStarWars/StarWarsPatches/selftest_starwarspatches.py
+PASS          9.5s  src/RimStarWars/StarWarsPatches/selftest_starwarspatches_semantics.py  (heavy lane)
+PASS         15.5s  src/RimUtinni/AftermathRites/selftest_aftermathrites.py
+PASS          0.2s  src/RimUtinni/AshkarrFlora/selftest_ashkarrflora.py
+PASS         11.0s  src/RimUtinni/Atlas/selftest_atlas.py
+PASS          7.8s  src/RimUtinni/MenuShell/selftest_menushell.py
+PASS          1.8s  src/RimUtinni/PawnFlavor/selftest_pawnflavor_wiring.py
+PASS          0.4s  src/RimUtinni/ResearchRetag/selftest_researchretag.py
+PASS          0.2s  src/RimUtinni/RestrainingBolts/selftest_restrainingbolts.py
+PASS          0.2s  src/RimUtinni/UnfinishedLine/selftest_unfinishedline_world.py
+PASS          0.1s  src/RimUtinni/UtinniPatches/selftest_condenser_slots.py
+PASS          0.2s  src/RimUtinni/UtinniPatches/selftest_landmark_mutator_rule.py
+PASS         21.7s  src/RimUtinni/UtinniPatches/selftest_utinnipatches.py
+PASS         15.9s  src/RimUtinni/UtinniPatches/selftest_utinnipatches_dump.py  (heavy lane)
+PASS          0.3s  src/RimUtinni/UtinniPatches/selftest_xenotype_cut_spawnsets.py
+PASS          0.3s  src/RimUtinni/UtinniPatches/selftest_xenotype_defcut.py
+
+PASS 343/347  FAIL 1/347  UNMEASURED 1/347  CRASH 0/347  SKIPPED 2/347  (wall 296.8s) — contained in rm-harness.slice (max 12G), 6 workers
+🔴 UNMEASURED (1/347) — did NOT run their check; not failures, and NOT passes: src/RimMandrake/bridgetools/selftest_tool_metadata.py
+FAIL (1/347): src/RimMandrake/rimflow/selftest_items_glob_live.py
+RESULT: RED (green = FAIL 0 and CRASH 0)
