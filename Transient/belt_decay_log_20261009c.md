@@ -1,0 +1,6 @@
+# belt decay log 20261009c
+- closed GPT_FULL_REVIEW_TOP10_1 (ad7a73581), LONGSHADE_PATCH_LIVECHECK_1 (efe67213a), DUNES_TINT_RENDER_RECHECK_1 (bbc284a6d), GELATINOUSSLIME_JOININGWATER_RECHECK_1 (af95c91e6), LEANINGSCRUB_WEEPER_RECHECK_1 (bbc284a6d), STILLSAND_NATIVE_CRASH_LIVECHECK_1 (3cc82af7b): evidence in ledger reason
+- dropped LONGSHADE_JAWATOW_LIVECHECK_1, GELATINOUSSLIME_JOININGWATER_LIVECHECK_1: superseded by RECHECK items
+- unsure (fix committed, live re-run not done; left open): FLOWWORKS_TANK_LOOP_ROW_WRONG_1, FLOWWORKS_PIT_OCCUPANT_HIDDEN_BY_LIP_1, STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1, STILLSAND_LOOMMA_SUNSTRUCK_SHADE_1
+- kept: ~60 checked by helpers (all 33 GPT-review findings still present at HEAD); old Aug-Sep program items (ASSAILANT_DUNGEON, BIOME_WORLD_SWITCH partial, OCULAR_OVERDRIVE, STATUE umbrella, COLD_LOAD_RUN_SHEET_4, VANILLA_BEAST_EXCISION etc) skimmed, all genuinely live
+- not reached: ~150 items (helpers 0,2,3,4 still running at stop)
