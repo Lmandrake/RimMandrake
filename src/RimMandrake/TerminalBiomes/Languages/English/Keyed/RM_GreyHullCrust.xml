@@ -7,4 +7,9 @@
   <RM_GreyCrustDoorInspect>Salted shut — chip it free to open</RM_GreyCrustDoorInspect>
   <RM_GravEngineCannotLaunchGreyCrust>Salt crust jackets the hull — {0} patches must be chipped off before launching</RM_GravEngineCannotLaunchGreyCrust>
 
+  <!-- CRUST_NEVER_STRANDS_1 -->
+  <RM_GreyTearFreeLabel>Tear free</RM_GreyTearFreeLabel>
+  <RM_GreyTearFreeDesc>Rip the ship loose of the Grey Sea's salt: all hull crust is torn off, every salted door is wrenched free, and every building on the hull takes {0}% of its hit points in damage. Needs no worker and cannot be blocked. Then launch as usual.</RM_GreyTearFreeDesc>
+  <RM_GreyTearFreeConfirm>Tear the ship free? All crust is ripped off and every building on the hull is badly damaged (never destroyed). You will need repairs.</RM_GreyTearFreeConfirm>
+  <RM_GreyTearFreeDone>The hull screams free of the salt. {0}</RM_GreyTearFreeDone>
 </LanguageData>

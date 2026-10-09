@@ -519,6 +519,7 @@ namespace RimMandrake.TerminalBiomes.SelfTest
                 }
                 Check(RM_CrustKernel.CrustChance(5f) == 0.1f && Near(RM_CrustKernel.CrustChance(15f), 1f, 1e-6f) && Near(RM_CrustKernel.CrustChance(10f), 0.55f, 1e-5f) && RM_CrustKernel.CrustChance(0f) == 0.1f && Near(RM_CrustKernel.CrustChance(99f), 1f, 1e-6f), "CrustChance ramp");
                 Check(RM_CrustKernel.CrustCap(0) == 1 && RM_CrustKernel.CrustCap(2) == 1 && RM_CrustKernel.CrustCap(3) == 1 && RM_CrustKernel.CrustCap(9) == 3 && RM_CrustKernel.CrustCap(100) == 33, "CrustCap");
+                Check(RM_CrustKernel.TearDamage(100, 100, 0.3f) == 30 && RM_CrustKernel.TearDamage(10, 100, 0.8f) == 9 && RM_CrustKernel.TearDamage(1, 100, 0.5f) == 0, "TearDamage never lethal");
                 Check(RM_CrustKernel.Multiplier(2f, false, 9f, false, 9f) == 2f && RM_CrustKernel.Multiplier(2f, true, 3f, true, 5f) == 30f, "Multiplier");
             }
             catch (Exception e) when (!(e is OutOfMemoryException)) { return e.Message + where; }

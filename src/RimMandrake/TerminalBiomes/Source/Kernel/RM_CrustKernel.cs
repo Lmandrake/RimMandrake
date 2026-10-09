@@ -28,6 +28,14 @@ namespace RimMandrake.TerminalBiomes
             return 0.1f + 0.9f * ramp;
         }
 
+        // CRUST_NEVER_STRANDS_1: the tear-free launch damages a hull building by `fraction` of its max HP, never to death
+        // (it leaves at least 1 HP) so the rip costs repairs but cannot delete the base.
+        public static int TearDamage(int hp, int maxHp, float fraction)
+        {
+            int d = (int)Math.Round(maxHp * (double)fraction);
+            return Math.Max(0, Math.Min(d, hp - 1));
+        }
+
         public static int CrustCap(int hullCells) { return Math.Max(1, hullCells / 3); }
 
         // One pass: advance the clock, then report what is due. A rime roll is made only once rime is possible and the crust

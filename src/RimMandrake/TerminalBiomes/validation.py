@@ -751,6 +751,12 @@ if Suite is not None:
                     m = dict(kv.split("=", 1) for kv in res.split(" ") if "=" in kv)
                     if int(m.get("rime", 0)) < 1 or int(m.get("crust", 0)) < 1 or m.get("gate") == "accepted":
                         _fail("16 effective days did not rime + crust + gate the hull: %r" % res)
+                    # CRUST_NEVER_STRANDS_1: the tear-free launch must always clear the gate.
+                    r = t.bridge_call("jawa/static_call", type="RimMandrake.TerminalBiomes.RM_GreyHullCrustProof",
+                                      method="ProofTearFree", args="")
+                    res = str((r or {}).get("result", ""))
+                    if "gate=accepted" not in res or "crust=0" not in res or "tearFreeOffered=True" not in res:
+                        _fail("tear-free launch did not clear crust and open the gate: %r" % res)
 
     @suite.chain("grey_lamp_response")
     def grey_lamp_response(t):
