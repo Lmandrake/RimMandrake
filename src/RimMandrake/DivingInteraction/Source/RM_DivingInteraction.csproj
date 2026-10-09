@@ -51,6 +51,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_Alerts_DangerClock.cs" />
     <Compile Include="RM_DivingSettings.cs" />
     <Compile Include="RM_ElderTreasureExtension.cs" />

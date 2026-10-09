@@ -529,7 +529,7 @@ namespace RimMandrake.FeverWood
             settings = GetSettings<RM_FeverWoodSettings>();
             // FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1 — this mod's only Harmony
             // patch so far (RM_Patch_SapSuckerMishandle).
-            new HarmonyLib.Harmony("mandrake.rm.feverwood").PatchAll(typeof(RM_FeverWoodMod).Assembly);
+            RimMandrake.Shared.PatchApplier.Apply(new HarmonyLib.Harmony("mandrake.rm.feverwood"), typeof(RM_FeverWoodMod).Assembly, "RimMandrake.FeverWood");
             // FEVERWOOD_HIVE_SEALED_PASSAGES_1: the hive answers its own alarms.
             RimMandrake.CreatureBehaviors.RM_ReactionEvents.AlarmAnnounced += RM_HiveSealing.OnAlarm;
             // FEVERWOOD_HIVE_PARASITE_CHAMBER_1: an alarm sends the glomvar into a feeding frenzy.

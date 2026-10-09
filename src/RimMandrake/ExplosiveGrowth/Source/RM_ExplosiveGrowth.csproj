@@ -41,6 +41,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_GrowthTop.cs" />
     <Compile Include="Kernel\RM_ExplosiveGrowthKernel.cs" />
     <Compile Include="RM_ExplosiveGrowthProof.cs" />

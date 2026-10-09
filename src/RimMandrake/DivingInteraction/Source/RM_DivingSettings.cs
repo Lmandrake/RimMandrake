@@ -513,7 +513,7 @@ namespace RimMandrake.DivingInteraction
             // here rides a vanilla extension point (ThingComp/MapComponent/
             // GenStep) and needs no patch, same rule PropaneLakeMechanics'
             // own csproj documents for its one Harmony patch.
-            new Harmony("mandrake.rm.divinginteraction").PatchAll();
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rm.divinginteraction"), typeof(RM_DivingSettings).Assembly, "RimMandrake.DivingInteraction");
         }
 
         public override string SettingsCategory()

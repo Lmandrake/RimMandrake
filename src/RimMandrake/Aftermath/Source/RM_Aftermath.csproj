@@ -47,6 +47,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="Kernel\RM_AftermathKernel.cs" />
     <Compile Include="ChronicleEvent.cs" />
     <Compile Include="ChronicleEvents.cs" />

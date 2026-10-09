@@ -26,7 +26,7 @@ namespace RimMandrake.RaidRedesigner
             // PatchAll only ever sees the seven Property-independent capture
             // hooks: Patch_CaravanRobbed carries no [HarmonyPatch] attribute,
             // so PatchAll's attribute scan never touches PropertyEngine.
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(harmony, Assembly.GetExecutingAssembly(), "RimMandrake.RaidRedesigner");
 
             if (ModsConfig.IsActive(PropertyPackageId))
             {

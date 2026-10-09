@@ -18,7 +18,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
     {
         static RSW_GizkaHarmony()
         {
-            new Harmony("mandrake.rsw.gizkastowaway").PatchAll();
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rsw.gizkastowaway"), typeof(RSW_GizkaHarmony).Assembly, "RimMandrake.GizkaStowaway");
         }
     }
 

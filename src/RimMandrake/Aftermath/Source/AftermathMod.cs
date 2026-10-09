@@ -16,7 +16,7 @@ namespace RimMandrake.Aftermath
         static AftermathMod()
         {
             Harmony harmony = new Harmony(HarmonyId);
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(harmony, Assembly.GetExecutingAssembly(), "RimMandrake.Aftermath");
 
             int patches = harmony.GetPatchedMethods().Count();
             Log.Message("[RimMandrake.Aftermath] ready: " + patches + " battle-recorder patches.");
