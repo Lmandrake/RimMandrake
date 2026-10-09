@@ -69,52 +69,15 @@ Role and behaviour — the substance of the caste:
   be dark-side.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** No live-action, photoreal or film depiction of the Sith species exists (Wookieepedia's `Images of Sith (species)` holds only SWTOR game portraits, comics and sourcebook paintings; `Kissai` has no image category). The two ink/comic images were deleted: `wookieepedia_jatm_sith_group.jpg` (*Jedi Academy Training Manual* plate, file `Massassi-JATM.jpg` — also the Kissai infobox, though named for the Massassi) and `wookieepedia_kissai_infobox_variant.jpg` (comic panel `Kissai_1.jpg`). What remains is **realistic painted art only**: the *Journal of Master Gnost-Dural* timeline painting of both castes (`wookieepedia_massassi_and_kissai_jmgd.jpg`, new), the *Book of Sith* Sith King Adas, and the Sorcerer of Tund painting.
 
-🔴 **The single most important visual finding: Wookieepedia's Kissai infobox image
-is a MASSASSI image.** The `Kissai` article's infobox is
-`[[File:Massassi-JATM.jpg]]` — the same file the `Sith (species)/Legends` article
-captions **"The priestly Kissai and warrior Massassi castes"** and the `Massassi`
-article also uses. So the wiki does not have a Kissai-only reference image either.
-Anyone building Kissai art from "the Wookieepedia Kissai picture" is building from a
-picture of two castes at once, and the file is *named* for the other one.
-
-**`wookieepedia_jatm_sith_group.jpg`** (`File:Massassi-JATM.jpg`, 473×690, from the
-*Jedi Academy Training Manual*) is nonetheless the best available image and it is a
-strong one on the shared anatomy:
-
-- **Saturated blood-red skin** across the whole figure, and the same red on the
-  background figure — the hue reference the prose asks for.
-- **Glowing white/blank eyes with no visible iris or pupil**, set under a heavy
-  brow. (The prose says *yellow*; this artist rendered them white-hot. Canon's
-  species eye-colour list does include **white**, so this is inside canon rather
-  than against it — but the yellow is far better attested.)
-- 🔑 **Extremely long horizontal cheek tendrils** sweeping out sideways from the
-  cheekbones, well past the width of the head — nearly whisker-like, not the short
-  chin-goatee that "chin tendrils" suggests. **This is the read to hit**, and it is
-  the feature a text-only prompt gets wrong: the tendrils come off the **cheekbones**
-  and are **long**.
-- **Dark, near-black facial markings** radiating around the eyes and across the
-  cheeks — read as either pigmentation or ritual marking; the text does not say
-  which, so treat as costume rather than skin.
-- **Heavy hooded robe with a gold ornamental headband** and broad gold-patterned
-  stole panels down the front — the priestly dress. The head itself is fully hooded,
-  so **crown shape, cranial horns and baldness are not visible in this image.**
-
-**`wookieepedia_kissai_infobox_variant.jpg`** (`File:Kissai_1.jpg`, 336×449, comic
-panel) is the only file on the Kissai page actually named for the caste, and it adds
-real detail the JATM plate hides:
-
-- **Pink-mauve rather than deep crimson skin** — matching the sourced line that
-  "some members of the species retained more pink shades of skin tone in adulthood."
-- **White eyes with small dark pupils** under a pronounced hard bony brow ridge.
-- 🔑 **Tendrils in TWO places**: a pair on the cheeks/jowls *and* a **single heavy
-  central chin tendril** hanging below the mouth. Both are **decorated with metal
-  rings/clasps** — the cheek tendrils carry hooked ornaments and the chin tendril a
-  ring. Ornamented tendrils are a priest-caste dressing cue and cheap to reproduce.
-- **A dark diamond/lozenge marking on the centre of the forehead**, plus a smaller
-  one above it — ritual marking, not anatomy.
-- **Deeply furrowed, weathered skin texture** across the cheeks.
-- Hooded again, so no crown information.
+**What the painted references show (render it this way — natural skin, real light, not comic ink):**
+- **Saturated red skin**, from deep brick-crimson to a warmer red-tan; some individuals pinker (sourced: "some members … retained more pink shades of skin tone in adulthood").
+- **Eyes:** yellow-gold to glowing pale under a heavy bony brow (painted art); canon's colour list includes yellow and white.
+- **Facial tendrils:** fleshy tendrils hang from the cheeks/jaw and chin — in the JMGD painting short and goatee-like on the human-proportioned priest/noble figure, long, many and dreadlock-like on the Massassi warrior beside him. ⚠️ The old brief's "very long horizontal cheek tendrils sweeping sideways" came from the deleted JATM ink plate; **no remaining realistic image shows that sideways sweep** — treat it as one illustrator's reading.
+- **The priestly caste is the most human-proportioned**: a near-human face and build (JMGD centre figure: dark hair, goatee tendrils, gold pauldrons), set against the hulking spiked Massassi.
+- **Dress:** heavy hooded robes and gold-trimmed regalia for priests (Sorcerer of Tund), gold ornamented pauldrons and armour (JMGD).
+- ⚠️ The ornamented ring-clasped tendrils, forehead lozenge markings and pink-mauve comic palette were all sourced from the deleted comic panel and are **no longer supported by an image** — the pink variant stays sourced in text.
 
 **`wookieepedia_sith_king_adas.jpg`** (`File:SithKingAdas-BoSSFtDS.png`, 1122×1526)
 is the highest-resolution Sith figure available and belongs here as calibration —
@@ -129,11 +92,12 @@ from the Feeorin**. Nothing in this repo lets canon be compared against the spri
 that actually appears in game.
 
 ## Must show
-- [ ] Saturated blood-red skin (deep crimson), with a pink-mauve variant also attested for some individuals
-- [ ] Eyes read as glowing white/blank with no visible iris or pupil in one reference, or white with small dark pupils in another — not simply a flat yellow disc
-- [ ] Long, horizontal cheek tendrils sweeping outward from the cheekbones, extending well past the width of the head — not a short chin-goatee
-- [ ] A single heavy central chin tendril hanging below the mouth, in addition to the paired cheek tendrils, at least sometimes ring/clasp-ornamented
-- [ ] Fully hooded priestly robes with gold trim — crown, cranial horns and baldness are not settled by any reference image, since every one is hooded
+- [ ] Saturated red skin (deep crimson to red-tan), a pinker variant allowed
+- [ ] Yellow-gold or pale glowing eyes under a heavy bony brow
+- [ ] Fleshy tendrils hanging from the cheeks/jaw and chin
+- [ ] Near-human face and build for the priest caste — distinctly less monstrous than the spiked Massassi warrior caste
+- [ ] Hooded robes and gold-trimmed regalia for priests
+- [ ] Realistic rendering: natural painted-skin texture and lighting, no outlines, no comic ink or cartoon shading
 
 ## Engine limits
 none known
@@ -191,24 +155,13 @@ but:
   2026-09-15. Shared anatomy and the caste hierarchy.
 - https://starwars.fandom.com/wiki/Sith_(species) — canon article, 7,414 chars,
   2026-09-15. Source of the Sorcerers of Tund line.
-- https://static.wikia.nocookie.net/starwars/images/1/1f/Massassi-JATM.jpg → `wookieepedia_jatm_sith_group.jpg` (473×690) — **the Kissai article's own infobox image, named for the Massassi.**
-- https://static.wikia.nocookie.net/starwars/images/0/02/Kissai_1.jpg → `wookieepedia_kissai_infobox_variant.jpg` (336×449)
 - https://static.wikia.nocookie.net/starwars/images/6/63/Sorcerer_of_Tund_EGF.jpg → `wookieepedia_sorcerer_of_tund.jpg` (777×1000)
 - https://static.wikia.nocookie.net/starwars/images/e/ef/SithKingAdas-BoSSFtDS.png → `wookieepedia_sith_king_adas.jpg` (1122×1526)
+- https://static.wikia.nocookie.net/starwars/images/8/8d/Massassi_and_Kissai.jpg → `wookieepedia_massassi_and_kissai_jmgd.jpg` (1182×626)
 - NOT fetched: no `starwars.com/databank` page exists for Kissai; not attempted.
 
 ## Candidate images
-- `wookieepedia_jatm_sith_group.jpg` — **the reference of record, with a caveat.**
-  The Kissai article's infobox image, but the file is `Massassi-JATM.jpg` and the
-  species article captions it as showing **both** the Kissai and Massassi castes.
-  Settles: saturated blood-red skin, glowing pupil-less eyes, **very long horizontal
-  cheek tendrils**, dark radiating facial markings, hooded gold-trimmed priestly
-  robes. Head crown not visible.
-- `wookieepedia_kissai_infobox_variant.jpg` — the only file named for the caste.
-  Adds the **pink-mauve skin variant**, **metal rings ornamenting the tendrils**, a
-  **separate central chin tendril below the paired cheek ones**, a forehead lozenge
-  marking, and heavy skin furrowing. Comic linework, so treat palette as the
-  artist's.
+- `wookieepedia_massassi_and_kissai_jmgd.jpg` — **the reference of record.** Realistic painted timeline art, *The Journal of Master Gnost-Dural* / Timeline 12, file `Massassi and Kissai.jpg`: red Sith of both castes together — near-human priest/noble with goatee tendrils and gold pauldrons beside a spiked, tendril-maned Massassi — https://static.wikia.nocookie.net/starwars/images/8/8d/Massassi_and_Kissai.jpg/revision/20180817170438
 - `wookieepedia_sorcerer_of_tund.jpg` — the Sorcerers of Tund, **founded by Sith
   priests** per the canon article. Useful for the priestly-order costume read.
   ⚠️ **Weak evidence on anatomy**: the figure is heavily robed and masked, and the
