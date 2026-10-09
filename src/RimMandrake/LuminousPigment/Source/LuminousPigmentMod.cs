@@ -48,6 +48,10 @@ namespace RimMandrake.LuminousPigment
 
         public static float deepfireMarketValue = 90f;
         public static bool deepfireStackGlows = true;
+        // DEEPFIRE_WORLD_LIGHT_1 (c), owner card 2026-10-08: deepfire lights raise Colony Visibility at night (Visibility mod).
+        // PROVISIONAL: 0.05 per lit light per hour, at most 2 per hour.
+        public static bool deepfireNightVisibility = true;
+        public static float deepfireVisibilityPerLight = 0.05f;
 
         public static bool glowTankEnabled = true;
         public static float tankGrowDays = 12f;
@@ -146,6 +150,8 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref pressPower, "pressPower", 150f);
             Scribe_Values.Look(ref deepfireMarketValue, "deepfireMarketValue", 90f);
             Scribe_Values.Look(ref deepfireStackGlows, "deepfireStackGlows", true);
+            Scribe_Values.Look(ref deepfireNightVisibility, "deepfireNightVisibility", true);
+            Scribe_Values.Look(ref deepfireVisibilityPerLight, "deepfireVisibilityPerLight", 0.05f);
             Scribe_Values.Look(ref glowTankEnabled, "glowTankEnabled", true);
             Scribe_Values.Look(ref tankGrowDays, "tankGrowDays", 12f);
             Scribe_Values.Look(ref tankYield, "tankYield", 2);
@@ -275,6 +281,11 @@ namespace RimMandrake.LuminousPigment
             list.CheckboxLabeled("A deepfire stockpile glows", ref deepfireStackGlows,
                 "On (default): a stack of refined deepfire gives off a faint light on its own -- "
                 + "the mod's first tell in a dark room.");
+            list.CheckboxLabeled("Deepfire light shows the colony at night", ref deepfireNightVisibility,
+                "On (default): each hour of darkness, every lit deepfire light on a home map raises Colony Visibility a little. "
+                + "Needs the Visibility mod; without it this does nothing. Safe mid-game.");
+            list.Label("Visibility per lit light per dark hour: " + deepfireVisibilityPerLight.ToString("0.00") + " (at most 2 an hour)");
+            deepfireVisibilityPerLight = list.Slider(deepfireVisibilityPerLight, 0f, 0.5f);
             list.GapLine();
 
             list.Label("THE GLOWTANK");

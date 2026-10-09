@@ -95,6 +95,7 @@
          checkbox, the darkness-targeting combat hooks, dev proof actions. -->
     <Compile Include="DeepfireWornGlow.cs" />
     <Compile Include="MapComponent_DeepfireLights.Worn.cs" />
+    <Compile Include="MapComponent_DeepfireLights.Visibility.cs" />
     <Compile Include="JobDriver_LacquerWornItem.cs" />
     <Compile Include="DeepfireCombatPatches.cs" />
     <Compile Include="DeepfireStylingStationPatches.cs" />

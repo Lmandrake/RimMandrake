@@ -31,7 +31,7 @@ DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWake
             "oldTongueEnabled": True, "oldTonguePanelsPerMap": 3.0, "oldTongueRevealChance": 0.8, "oldTongueSkillGate": 8,
             "hospiceEnabled": True, "hospiceIntactPerMap": 2, "hospiceStageDays": 1.5, "hospiceFailureChance": 0.08,
             "hospiceLashOut": True, "hospiceWalkInEnabled": True, "hospiceWalkInFrequency": 1.0,
-            "chotrixEnabled": True, "chotrixPerMap": 2.0, "chotrixRevealSeconds": 4.0, "chotrixDragEnabled": True, "lacquerCloakEnabled": True, "lacquerSeenRadius": 15.0,
+            "chotrixEnabled": True, "chotrixPerMap": 2.0, "chotrixRevealSeconds": 4.0, "chotrixDragEnabled": True, "lacquerCloakEnabled": True, "lacquerSeenRadius": 15.0, "lacquerDeniedWhileGlowing": True,
             "enableChatrak": True, "enableTetchik": True, "enablePallbearer": True, "enableScarRoach": True,
             "enableWreckLichenSeeder": True, "enableRimclaw": True, "enableBileworm": True, "enableElectricTick": True,
             "enableElectricGryllotalpa": True, "enableJuggernautBeetle": True,
