@@ -1,0 +1,32 @@
+staging src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBench.BridgeTools.csproj -> D:\Luke\dev\_rmbuild\JawaBench
+  src/RimMandrake/bridgetools/JawaBench.BridgeTools/
++ dotnet.exe build D:\Luke\dev\_rmbuild\JawaBench\src\RimMandrake\bridgetools\JawaBench.BridgeTools\JawaBench.BridgeTools.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  JawaBench.BridgeTools -> D:\Luke\dev\_rmbuild\JawaBench\src\RimMandrake\bridgetools\artifacts\BridgeTools\JawaBench\JawaBench.BridgeTools.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.82
+
+bundle contents (/home/mandrake/rm/foundry/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench):
+  JawaBench.BridgeTools.dll                 4156928 B
+
+OK: bundle ships only JawaBench.BridgeTools.dll
+
+*** GM TOOLS INCLUDED - this build can act on the player. ***
+  jawa/fire_incident       in DLL
+  jawa/send_letter         in DLL
+
+deploy plan
+  from : /home/mandrake/rm/foundry/src/RimMandrake/bridgetools/artifacts/BridgeTools/JawaBench/JawaBench.BridgeTools.dll
+  to   : /mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll
+  state: differs -- built from a DIFFERENT COMMIT (expected after any commit)
+         game copy : b708d661fcc1
+         this build: efe67213abc4
+         The build is deterministic per commit, so this alone does NOT mean
+         the tool code changed. Deploy to make them agree.
+
+deployed. RimBridgeServer only discovers companions at startup, so this does nothing until RimWorld restarts.

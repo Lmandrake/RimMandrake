@@ -1,0 +1,1393 @@
+# ACCEPTANCE for FOUNDRY — built work by the cheapest level it owes
+(game UP, bridge FOUNDRY)
+
+## L1  — 57 items, needs bridge on the minimal list
+MOD_OPTIONS_RETROFIT_1   [built, owner FOUNDRY, BLOCKED]  Superb mod-options support across ALL our mods: retrofit every shipped RimMandrake/RimStarWars/RimUtinni mod with Mod Settings toggles for its major behaviors; standing requirement on every future mod
+    built:    25015622e8a1 on origin/main at 2026-10-07T04:24:28Z, level reached L0
+    owes:     A1 L1, A2 L2, A3 L2
+      A1     L1         On a full-list load Mod Settings opens for each of our mods with no red errors.
+      A2     L2         For each mod toggling a feature off provably disables it live or at next map-gen on a quicktest map with no er
+      A3     L2         The Greentide churnmud feature works in a non-Greentide biome when opted in.
+JAWA_SWIM_HOOD_KEEP_1   [built, owner FOUNDRY]  URGENT (owner, chat 2026-09-25: Jawa must never be seen without a hood): swimming Jawa lose their hood because vanilla 1.6 swim rendering clears the Headgear/Clothes render flags (PawnRenderer.ParallelGetPreRenderResults, MEASURED). Harmony postfix restores headgear for Jawa only. Being built; deploy at next game-down.
+    built:    cd444fe8c917 on origin/main at 2026-10-07T04:24:52Z, level reached L0
+    owes:     A1 L1, A2 L2, A3 L4
+      A1     L1         the deployed JawaRules DLL state-read shows Apparel_Head.CanDrawNow true for a swimming Jawa wearing a hood
+      A2     L2         the swim gauntlet shows the hood kept while the Jawa swims
+      A3     L4         owner decides whether the fallback hood tint is acceptable
+MOVING_DUNES_BUILD_1   [built, owner FOUNDRY, BLOCKED]  Build the dunes engine per MOVING_DUNES_DESIGN.md v2 (model=opus, ~1.1-1.4k lines): Werner transport on Odyssey sandGrid, source/sink edges, DuneMaterialDef skins, burial caches + BuryThingsAt API — GATED on the shader-tint quicktest the design names
+    built:    111152187777 on origin/main at 2026-10-07T04:24:56Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L1, A4 L3
+      A1     L2         sand persists and moves downwind on a live map
+      A2     L2         a burial cache is revealed as a dune moves off it
+      A3     L1         the shader tint gate (MaterialColor vs VertexColor) is resolved by a live load
+      A4     L3         cache art PNG is delivered and evaluated
+LIVE_ROUND2_FIXES_PROOF_1   [built, owner FOUNDRY]  Prove the three live-round-2 fixes in game (beam, soorrak loop log, rimplace stuff)
+    built:    f591714e56f9 on origin/main at 2026-10-07T04:25:30Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L1
+      A1     L2         On a Stillsand quicktest a muffalo targeted by the MirrorBeam gets Burn after the cast, its currentJob is UseV
+      A2     L2         A soorrak captured over 2500 ticks yields an [RM CreatureBehaviors] instant job loop log line recorded into SO
+      A3     L1         Player.log after the WhisperSarlaccSign genstep shows 0 MakeThing stuff=null errors.
+LASSO_CHERRYPICKER_REMOVAL_1   [built, owner FOUNDRY]  Remove lassos: Cherry Picker cut AM_LassoCloth + Melee Animation lasso spawning off
+    built:    fff5f1964bb9 on origin/main at 2026-10-07T04:25:51Z, level reached L0
+    owes:     A1 L1, A2 L1, A3 L2, A4 L2
+      A1     L1         The live CherryPicker config is reconciled (2133 unrecognised cuts) and cherrypicker_swap --ship --apply succe
+      A2     L1         Melee Animation LassoSpawnChance is set to 0.
+      A3     L2         On a full-list load no lasso is craftable and none appears on pawns.
+      A4     L2         On a full-list load no MeleeAnimation errors appear in Player.log.
+FORCE_DISTURBANCE_REFLAVOR_1   [built, owner FOUNDRY]  Reflavor vanilla psychic assault/drone storm events as disturbances in the Force at the RimStarWars tier
+    built:    2ff4e04f2c9b on origin/main at 2026-10-07T04:26:53Z, level reached L0
+    owes:     A1 L1, A2 L2, A3 L4
+      A1     L1         after deploy, the patched psychic event defs resolve live with Force-flavoured label and letter text and no va
+      A2     L2         a live quicktest of each surveyed psychic storm or condition event shows Force-flavoured label and letter text
+      A3     L4         the owner has seen and approved the replacement wording
+EMPIRE_ESCALATION_LADDER_1   [built, owner FOUNDRY]  Empire escalation ladder: evadable probes first, new raid kinds per rung, until you move
+    built:    0179380c78fc on origin/main at 2026-10-07T06:26:16Z, level reached L0
+    owes:     A4 L1, A5 L2, A6 L2, A7 L2, A8 L2, A9 L2, A10 L4
+      A4     L1         all six RUT_EmpireRungDef load with rungIndex/kind (validation chain ladder_rungs_resolve) and no ConfigErrors
+      A5     L2         quicktest probe rung: a probe drops >=40 cells out, transmits after ~2h LOS (ladder climbs to spotter), self-d
+      A6     L2         quicktest spotter/strike/breach: spotter call completes on 6h LOS and fails when downed; repelled strike holds
+      A7     L2         quicktest cordon: Empire siege camp builds despite canSiege=false, ion volley EMPs the engine and pushes coold
+      A8     L2         quicktest bombardment: 24h telegraph ring drawn, Bombardment lands on the marked area, endless waves follow; l
+      A9     L2         storyteller spacing: an unforced Empire raid inside 2 days of a ladder contact is refused; launch resets the n
+KINETIC_BLAST_WEAPONS_1   [validated, owner OWNER]  Design + commission a range of projectile kinetic-blast weapons; thump cannons throw farther
+    built:    1865274938b6 on origin/main at 2026-10-07T07:06:56Z, level reached L1
+    owes:     EK.scenes18 L2, EK.config L2, EK.guards L2, EK.reload L2, EK.feel L4, KA.load L1, KA.scenes18 L2, KA.new6 L2, KA.cords L2, KA.temple L2, KA.shield L2, KA.feel L4
+      EK.scenes18 L2         the 18 v1 scenes still PASS after the 2026-10-06 config/guard/shield change
+      EK.config L2         lookup_projectile, lookup_zero_wins, impact_factor, body_override PASS
+      EK.guards L2         immunity_window and shield_counter PASS
+      EK.reload L2         recovery-window stamps survive a save/reload (no scene yet)
+      EK.feel L4         owner watches a blast and a shield belt: reads right
+      KA.load L1         explosiveknockback tier + kineticarms loads, no red error; fleck and ruins maker resolve
+WEEPINGSTONES_CONDENSER_QUESTS_1   [built, owner FOUNDRY]  Walking condenser quests: Hutt capture for the Arena, or Moisture Farmers keep it free vs Blackstar fame hunters
+    built:    1ed0cb8a32f0 on origin/main at 2026-10-07T08:41:25Z, level reached L0
+    owes:     C3 L2, C4 L2, C5 L2, C6 L1
+      C3     L2         each quest fires from the dev quest menu on a quicktest with a debug-spawned condenser crab
+      C4     L2         capture branch removes the crab with a letter and ends the walking condenser's world state
+      C5     L2         keep-free branch spawns hunters; a strike at the pool triggers retribution; success letter and goodwill
+      C6     L1         free mod alone shows no Hutt/Blackstar/canon string; campaign loaded, the slots resolve to the Hutt Cartel, Ho
+RUSTCATHEDRAL_BASE_FINISH_BUILD_1   [validated, owner FOUNDRY]  Rust Cathedral: line-cycle, hum reading, living coolant eels, overhead-sun heat, cooked strays, mynocks
+    built:    adbeaa6498de on origin/main at 2026-10-07T09:02:33Z, level reached L1
+    owes:     A4 L1, A5 L2, A6 L2, A7 L2, A8 L2, A9 L2, A10 L3
+      A4     L1         with mandrake.rsw.swbestiary loaded RM_RustCathedral merged wildAnimals contains RSW_Mynock (read as elements)
+      A5     L2         on a Cathedral test map firing RM_LineCycle lowers the attitude band by one where band 1-3 (worst unchanged, b
+      A6     L2         hum reading: a colonist with RM_HumReader makes RM_HumReading.Readout non-empty, removing it empties it; RM_Ga
+      A7     L2         eels: on a canal-water Cathedral map RM_CoolantEel count > 0 and every eel stands on water after 5000 ticks; n
+      A8     L2         strays: dessicated corpses within 8 cells of the edge > 0 with the toggle on, 0 off; no live pawn from the Gen
+      A9     L2         each new Mod Settings toggle off removes exactly its effect
+CATHEDRAL_MECHANOID_PASS_VERBS_1   [built, owner FOUNDRY, BLOCKED]  GRANT/REVOKE mechanoid-pass instrument, scoped Harmony hostility exception (C#, row-3)
+    built:    a8060cea4b6a on origin/main at 2026-10-07T13:52:02Z, level reached L0
+    owes:     A1 L1, A2 L2
+      A1     L1         minimal-list read finds the CathedralPass mod, pass hediff and scoped Hostility patch loading clean
+      A2     L2         with the pass hediff mechanoids on a Cathedral map are not hostile, and nothing changes off Cathedral maps (GM
+BAZAAR_PRICE_ENGINE_1   [built, owner FOUNDRY, BLOCKED]  The Bazaar slice 2: read-side RM_BazaarEconomy (worldTag-seeded buckets, history ring, drift+clamp) + intel layers L0-L4 + the three found artifacts — model: opus
+    built:    4f5fc9937641 on origin/main at 2026-10-07T13:52:06Z, level reached L0
+    owes:     A1 L1, A2 L2
+      A1     L1         minimal-list read finds the price store, seed rules, intel gates and columns, 7 settings loading clean
+      A2     L2         Tradeable.GetPriceFor postfix is inert outside a Bazaar window and shifts prices inside one (needs BAZAAR_WIND
+NINEFOLD_FAVOUR_ODDS_BUILD_1   [built, owner FOUNDRY]  Build Nine Faults (fresh-find rite, Rekko to Zizzik), the Left Behind transfer (Ohm to Ta'Baa), the god-favour odds-shift def type with incident and weather hooks, the fresh-find mark, and Mod Settings; spec design/Jawa/nine_faults_permanent_rite_2026-10-01.md
+    built:    aa93c306a169 on origin/main at 2026-10-07T13:52:13Z, level reached L0
+    owes:     A1 L1, A2 L2
+      A1     L1         minimal-list read finds the favour tilt def and table, offerings and Nine Faults rite defs loading clean
+      A2     L2         on a quicktest map an offering shifts the favour odds and the Nine Faults rite runs (satiation-bank payment an
+SALVAGE_WRECKAGE_EVERYWHERE_1   [built, owner FOUNDRY]  Salvage wreckage across the planet: wreck families (hulls, tanks, frames, speeders...) scattered in every biome, biome-appropriate weathering, deconstruct-for-salvage loot. Scald wrecks are the worked example.
+    built:    938558741d6f on origin/main at 2026-10-07T13:52:14Z, level reached L0
+    owes:     A1 L1, A2 L2, A3 L2, A4 L4
+      A1     L1         minimal-list read finds the wreck families, wreck fields for steps 3-4 and 6, jackets, Forge cache loot and Fa
+      A2     L2         on a quicktest map wreck fields scatter by density class per biome, careful deconstruct pays tiered loot, and 
+      A3     L2         the wreck-fall incident (step 5) fires from debug and drops a wreck
+      A4     L4         owner reviews wreck art in game (wave-2 renders queued, not all installed)
+WARCASKET_DEPENDENCY_DOWNLOAD_URL_1   [built, owner FOUNDRY]  Warcasket About.xml biomes dependency lacks downloadUrl
+    built:    cd7dad6232b6 on origin/main at 2026-10-08T02:52:09Z, level reached L0
+    owes:     A2 L1
+      A2     L1         Player.log shows no "needs to have <downloadUrl>" line for any of our mods
+SURFACE_HOME_MAP_HELPER_1   [built, owner FOUNDRY]  X-1: one helper returns a surface home map (skips RM_SeabedLayer); swap the five Find.AnyPlayerHomeMap call sites
+    built:    99b1619d9d83 on origin/main at 2026-10-09T02:21:26Z, level reached L0
+    owes:     A1 L1
+      A1     L1         with a sea-floor map open as a player home, a gale/swept-away/condenser/navigator return lands on a surface ho
+PARENTAL_ENRAGE_FACTION_GUARD_1   [built, owner FOUNDRY]  CB-2: FindGuardian matches faction (tame defends tame, wild defends wild); shared per-intruder cooldown per nursery
+    built:    c46d8afb106d on origin/main at 2026-10-09T02:21:29Z, level reached L0
+    owes:     A1 L1
+      A1     L1         three calves, one wild adult, one intruder: exactly one adult enrages; a tame adult never guards a wild calf n
+ELDER_TREASURE_TAG_TABLE_1   [built, owner FOUNDRY]  DI-1: Elder treasure found by a def marker instead of RmUniqueTreasureDefNames; author the three RUT canon treasures
+    built:    9874d03868e2 on origin/main at 2026-10-09T02:21:30Z, level reached L0
+    owes:     A1 L1
+      A1     L1         DefDatabase lists RM_ElderSealedRelic and RM_ElderUnknownWeapon as Elder treasures and an Elder offer can stil
+FEVERWOOD_LIMB_LINGER_CAP_1   [built, owner FOUNDRY]  FV-1: tentacle limbs sink back after a linger time and a per-map cap; settings for both
+    built:    b20a31ffc898 on origin/main at 2026-10-09T02:21:58Z, level reached L0
+    owes:     A1 L1, A2 L1, A3 L1, H1 L4
+      A1     L1         on a Fever Wood map with the bestiary on, a spawned feeler despawns after the linger time with no pool cooldow
+      A2     L1         with the cap at 1 and one limb standing, an ordinary emergence spawns nothing and encounter pressure still ris
+      A3     L1         a sentinel sinking on linger restores the biome ambient (ChorusSilenced reads false)
+      H1     L4         the owner judges the linger time and cap in a sitting (PROVISIONAL until then)
+TICKER_NEVER_FIRES_FIX_1   [validated, owner FOUNDRY]  5 comps the new ticker lint says never tick: RUT_DyingCreep (CompTick on a Long plant), RM_Skylight WarblingGlow, RM_Webwork_Web AdhesiveSlick (Never + CompTick), RM_Webwork_NestWall EggClutchRelay, RM_DryAirBlower DryFieldEmitter (Normal + CompTickRare); verify each in source then fix
+    built:    40553e46e9d1 on origin/main at 2026-10-09T02:28:16Z, level reached L1
+    owes:     A1 L1, A4 L1
+      A1     L1         a spawned RUT_DyingCreep spreads and then dies into RUT_DeadCreep filth within its lifetime hours
+      A4     L1         a powered, fuelled RM_DryAirBlower registers its room in RM_MapComponent_DryRooms
+GLOW_TANK_LIQUID_FEED_1   [validated, owner FOUNDRY]  LP-2: glow tank drinks salt or boiling water from a FlowWorks pipe network; settings toggle 'tank needs water'
+    built:    041c0142b750 on origin/main at 2026-10-09T02:32:36Z, level reached L2
+    owes:     A1 L1, A2 L2, H1 L4
+      A1     L1         with FlowWorks and LuminousPigment loaded, a seeded GlowTank on no net reads "Dry: growth paused"
+      A2     L2         a salt-water tank beside it is drawn down one unit at a time and the crop grows; switching the setting off rem
+      H1     L4         the owner judges the drink rate (PROVISIONAL until then)
+LIGHT_LEDGER_ONE_1   [validated, owner FOUNDRY]  X-3/TB-5: one light ledger; every GlowRadius writer registers a modifier (10 files, 6 mods); fixes SUN_SPHERE_GRAZE_PERSIST_1 and TWILIGHT_WELL_LIGHT_STATE_1 at the root
+    built:    259886e38628 on origin/main at 2026-10-09T03:07:26Z, level reached L1
+    owes:     A2 L1, A3 L1, A4 L1, A5 L1
+      A2     L1         a suulk grazing a mature sun-sphere: the sphere's GlowRadius stays reduced across 60-tick culture steps and ac
+      A3     L1         on a Twilight floor map, SetLidDarkDimming(true) holds every open well at 0.1 through a waning step, a well op
+      A4     L1         in the Abyss Dark a lamp a krizzak is feeding on is shrunk by BOTH (radius = base x dark share x krizzak share
+      A5     L1         a lanternstone under the aurora with sippers on it reads def x 1.75 x sipper share, and returns to def x 1.75 
+DEEPFIRE_WORLD_LIGHT_1   [built, owner FOUNDRY]  X-9 (card ruled): glow-seekers drawn to deepfire, deepfire raises night visibility, glowing pawn cannot use lacquer cloak, Abyss Dark deliberately cannot swallow deepfire
+    built:    33c64f524ad8 on origin/main at 2026-10-09T03:07:27Z, level reached L0
+    owes:     A1 L1, A2 L1, A3 L1, A4 L1
+      A1     L1         a grey-sea "drawn" creature (or the suulk) on a map with a deepfire-painted floor and no player lamp walks to 
+      A2     L1         in the Abyss Dark a deepfire floor proxy and the glow tank keep their full GlowRadius while a vanilla lamp bes
+      A3     L1         with the Visibility mod active, an hour of darkness on a home map with N lit deepfire lights raises shipVisibi
+      A4     L1         a pawn wearing a lacquered cloak and carrying deepfire glow (worn coat or Cuisine hediff) never gains the invi
+HARMONY_PATCH_RESILIENCE_1   [validated, owner FOUNDRY]  X-5: shared per-class Harmony patch helper (try/catch, failed feature named, setting greyed) plus offline patch-target lint; FL-4 and LP-8 are the per-mod halves
+    built:    d5a1163d40ee on origin/main at 2026-10-09T03:17:06Z, level reached L1
+    owes:     A2 L1
+      A2     L1         a test build with one patch target deliberately renamed logs exactly that feature as switched off, every other
+DUST_DEVIL_ITEM_LOSS_FIX_1   [built, owner FOUNDRY]  SS-4: dust devil finds landing spot before lifting an item
+    built:    26325d3be3e6 on origin/main at 2026-10-09T05:23:26Z, level reached L0
+    owes:     A1 L1
+      A1     L1         with a dust devil lifting an item whose landing spot and devil cell both refuse placement, the item is back at
+GREYSEA_FLOOR_WALKABLE_CHECK_1   [built, owner FOUNDRY]  DI-6: final walkability pass after Grey Sea floor decoration
+    built:    e91148368a5c on origin/main at 2026-10-09T05:25:41Z, level reached L0
+    owes:     A1 L1
+      A1     L1         on a generated Grey Sea floor, flooding from the map centre reaches a cell beside every Brine Elder and grey-f
+CRUST_NEVER_STRANDS_1   [built, owner FOUNDRY]  TB-6: crust can never strand a colony on the Grey sea floor; owner card on 'tear free' launch
+    built:    537de78abc0e on origin/main at 2026-10-09T05:30:38Z, level reached L0
+    owes:     A2 L1
+      A2     L1         on a Grey Sea floor map with crust, ProofTearFree clears crust, gate=accepted, tearFreeOffered=True
+GLOOMCAST_WAKE_RIDERS_1   [built, owner FOUNDRY]  Gloomcast shadow: which small grazers actively follow it, and whether feeding leaves a scar distinct from dung
+    built:    bd8b75455d30 on origin/main at 2026-10-09T05:30:39Z, level reached L0
+    owes:     A2 L1
+      A2     L1         spawned follower within 60 cells of a gloomcast gets the follow job (state read)
+UNFINISHED_LINE_SITE_CHOICE_1   [built, owner FOUNDRY, BLOCKED]  Unfinished Line site choice (where the line stands, A-D) offered at the end of beat 2 and carried to beats 3-5; BLOCKED on BENCH/owner: Q1=A ruled no player-owned line, so does site B 'your colony' stay or go
+    built:    8261ce36b72f on origin/main at 2026-10-09T05:53:01Z, level reached L0
+    owes:     A2 L1, A3 L1
+      A2     L1         site stored on GameComponent_RUT_UnfinishedLine.lineSite with EffectiveSite default A; beats 3-5 do not yet re
+      A3     L1         beat 1 grade recorded via LineFlag count* flags on beat1Grade and shown in the letter text; live read owed
+WARCASKET_WASTE_RUN_REMAINDER_1   [built, owner FOUNDRY, BLOCKED]  Cask-bay follow-ons: five waste-run destinations, Stenchlands cask item, Junker pawnkind wearing the warcasket, what the half-extracted core is for
+    built:    5a96f8f9fd00 on origin/main at 2026-10-09T06:01:28Z, level reached L0
+    owes:     A1 L1, A2 L2
+      A1     L1         RUT_WasteRun, RUT_WasteRunOffer, seven history events resolve via jawa/get_defs and RM_CaskBay carries RUT_Com
+      A2     L2         with waste in a cask bay the incident fires the quest, the bay command appears, and each of the five destinati
+SCALD_BERTH_HULL_FACES_1   [built, owner FOUNDRY]  DivingInteraction: Berth heat should count exterior hull faces only
+    built:    4f5cf2ff74aa on origin/main at 2026-10-09T06:03:54Z, level reached L0
+    owes:     A1 L1
+      A1     L1         Scald floor map, two rooms sharing an interior wall: after the ramp, total berth heat of the pair equals one r
+LEANINGSCRUB_STRANGLER_VINE_1   [built, owner FOUNDRY]  Strangler venomvine: wraps a wall or tree, damages it, and is trimmed
+    built:    a6af3395762d on origin/main at 2026-10-09T06:03:58Z, level reached L0
+    owes:     A2 L1
+      A2     L1         live behaviour owed (see item verify)
+LEANINGSCRUB_WEEPER_VINE_1   [built, owner FOUNDRY]  Weeper venomvine: leaves venom pools that poison the soil (pollution)
+    built:    a6af3395762d on origin/main at 2026-10-09T06:03:59Z, level reached L0
+    owes:     A2 L1
+      A2     L1         live behaviour owed (see item verify)
+LEANINGSCRUB_LURE_VINE_1   [built, owner FOUNDRY]  Lure venomvine: sweet fruit draws animals into the thicket
+    built:    a6af3395762d on origin/main at 2026-10-09T06:04:00Z, level reached L0
+    owes:     A2 L1
+      A2     L1         live behaviour owed (see item verify)
+GARDEN_ESCALATION_PROGRESS_FIX_1   [built, owner FOUNDRY]  DivingInteraction: Garden defense: tier-1 resets tier-2 progress; Tarnn wake repeats
+    built:    78c60c7ba0d8 on origin/main at 2026-10-09T06:04:41Z, level reached L0
+    owes:     A1 L1
+      A1     L1         Chill floor, offend with kills at the tier-1 cadence: arcs fire, then the Tarnn wake fires once escalation rea
+ELDER_TRADE_TRANSACTIONAL_PAYOUT_1   [built, owner FOUNDRY]  DivingInteraction: Make the Brine Elder trade commit only after the payout lands
+    built:    207338b7d4d8 on origin/main at 2026-10-09T06:05:36Z, level reached L0
+    owes:     A1 L1
+      A1     L1         Grey Sea floor, Elder with no placeable cell for the payout: offer is refused, specimen kept, novelty still no
+CHILL_SUIT_SHELTER_RULE_1   [built, owner FOUNDRY]  DivingInteraction: Heated suit drain/recharge uses roof and straight-line distance
+    built:    ac713095a774 on origin/main at 2026-10-09T06:06:06Z, level reached L0
+    owes:     A1 L1
+      A1     L1         Chill floor: wearer in a roofed but cold space still drains; wearer in a warm room drains nothing; charger beh
+AXIS_SURGE_CLAMP_DRIFT_1   [built, owner FOUNDRY]  EnvironmentalHazards: Gradient surge recede over-corrects saturated cells
+    built:    4cbb47ae9280 on origin/main at 2026-10-09T06:07:29Z, level reached L0
+    owes:     A1 L1
+      A1     L1         Miasma surge on a map with salinity near 1.0: after the recede completes no cell is fresher than its pre-surge
+WARBLING_GLOW_BASELINE_1   [built, owner FOUNDRY]  EnvironmentalHazards: Warbling gaslight overwrites player colour and leaves its last frame when disabled
+    built:    7833c0b0ebeb on origin/main at 2026-10-09T06:08:06Z, level reached L0
+    owes:     A1 L1
+      A1     L1         Warbling lamp with a player-picked glow colour: after warbling the colour oscillates around the picked colour,
+UNFINISHED_LINE_SITE_BEATS_1   [built, owner FOUNDRY]  Beats 3-5 run at the chosen site (A/C/D): caravan tithe, defence-site First Light variant
+    built:    cb9c8ea20e97 on origin/main at 2026-10-09T06:09:08Z, level reached L0
+    owes:     A2 L1, A3 L1
+      A2     L1         ProofSiteBeats resolves steward/lend/ally for A, C and D (bridge)
+      A3     L1         ProofSendAllies on a throwaway map brings friendly defenders who fight beside the colony (bridge, owner watchi
+EXCAVATION_LOAD_SANITY_REPAIR_1   [built, owner FOUNDRY]  FL-3: Excavation grid sanity repair on load and palette compaction
+    built:    86fc29d967d1 on origin/main at 2026-10-09T06:17:24Z, level reached L0
+    owes:     A1 L1
+      A1     L1         loading a map with dug canals in the minimal list logs no 'excavation load repair' warning and canals still fl
+FLOWWORKS_SETTINGS_SCOPE_RESET_1   [built, owner FOUNDRY]  FL-5: FlowWorks settings say when each takes effect plus per-section reset
+    built:    86fc29d967d1 on origin/main at 2026-10-09T06:17:25Z, level reached L0
+    owes:     A1 L1
+      A1     L1         Mod Settings > FlowWorks shows a 'Reset this section to defaults' button under every section heading and the s
+HAZARD_CLOCK_INSPECT_LINES_1   [built, owner FOUNDRY]  TB-4: Inspect lines for Grey lamp burn time, twilight well phase, grav engine crust count
+    built:    022f1d9e3c46 on origin/main at 2026-10-09T06:18:41Z, level reached L0
+    owes:     A1 L1, A2 L1
+      A1     L1         in a Grey Sea map inspecting a powered bright lamp that has been lit shows 'Burning steadily for <period>' and
+      A2     L1         inspecting a twilight well skylight shows opening / stands / waning with time left, and a grav engine on the G
+TAP_CONSERVATION_SELFTEST_1   [built, owner FOUNDRY]  GS-6: Multi-tick power-tap conservation selftest and read-only conduit probe
+    built:    5824cab50ab7 on origin/main at 2026-10-09T06:20:47Z, level reached L0
+    owes:     A1 L1
+      A1     L1         after a bridge save+load, cstyles read twice in a row returns the same pending count and members (the read no 
+CREATURE_BEHAVIOR_LAST_OUTCOME_1   [built, owner FOUNDRY]  CB-7: Ambushers, lures and alarms record last outcome
+    built:    61a5b6b76da8 on origin/main at 2026-10-09T06:21:54Z, level reached L0
+    owes:     A1 L1, A2 L1
+      A1     L1         on a quicktest map, spawn a drum-lurer and a hostile pawn in range; inspecting the lurer shows 'Last decision:
+      A2     L1         a saved and reloaded game keeps the last-decision code on a reaction source and the aquatic ambusher (Scribe_D
+CREATURE_BEHAVIORS_CONFIGERRORS_1   [built, owner FOUNDRY]  CB-6: CreatureBehaviors: content naming a missing food, item or hediff reports a red error at load via ConfigErrors
+    built:    e774e4e8666f on origin/main at 2026-10-09T06:25:11Z, level reached L0
+    owes:     A1 L1
+      A1     L1         on a minimal-list load with CreatureBehaviors plus Greentide, Stillsand and LongShade, Player.log shows no Con
+DUNE_MOVED_EVENT_1   [built, owner FOUNDRY]  SS-5: MovingDunes announces "this sand actually moved"; singing dunes and the quake warning listen to it instead of guessing from a requested move
+    built:    47353706b2c7 on origin/main at 2026-10-09T06:28:18Z, level reached L0
+    owes:     A1 L1, A2 L2
+      A1     L1         on a minimal list with MovingDunes and Stillsand on a Stillsand map, RM_DuneEvents.Raised climbs while the dun
+      A2     L2         on a Stillsand quicktest map a slab shed from a cell plays RM_DuneSong at least once in ten in-game minutes of
+HAZARD_NATIVE_TAG_1   [built, owner FOUNDRY]  TB-1/X-4: One "born here" tag: a creature names the hazards it is native to and HazardTargeting.Affects honours it everywhere (steam, steam devil, boiling water, current, hydrocarbon)
+    built:    964769c4d281 on origin/main at 2026-10-09T06:30:33Z, level reached L0
+    owes:     A1 L1
+      A1     L1         on a minimal list with EnvironmentalHazards and TerminalBiomes, a Scald native (RM_ScaldWalker) standing in RU
+PATCHAPPLIER_FORCED_MISS_PROBE_1   [built, owner FOUNDRY]  Debug hook so an acceptance criterion can be state-read: PATCHAPPLIER_FORCED_MISS_PROBE_1
+    built:    d99ab07c52d9 on origin/main at 2026-10-09T06:32:31Z, level reached L0
+    owes:     A1 L1
+      A1     L1         jawa/static_call type=RimMandrake.ExplosiveKnockback.RM_PatchApplierProbe method=Probe returns patched=0 missi
+ELDER_TREASURE_PROOF_HOOK_1   [built, owner FOUNDRY]  Debug hook so an acceptance criterion can be state-read: ELDER_TREASURE_PROOF_HOOK_1
+    built:    f0a40050e51e on origin/main at 2026-10-09T06:32:33Z, level reached L0
+    owes:     A1 L1
+      A1     L1         jawa/static_call type=RimMandrake.DivingInteraction.RM_ElderTradeUtility method=ProofTreasures returns count>=
+FEVERWOOD_LIMB_PROOF_HOOK_1   [built, owner FOUNDRY]  Debug hook so an acceptance criterion can be state-read: FEVERWOOD_LIMB_PROOF_HOOK_1
+    built:    56d71f272dc8 on origin/main at 2026-10-09T06:32:36Z, level reached L0
+    owes:     A1 L1
+      A1     L1         jawa/static_call type=RimMandrake.FeverWood.RM_FeverWoodProof method=ProofLimbs on a FeverWood quicktest map r
+SWIM_HOOD_CANDRAW_PROOF_1   [built, owner FOUNDRY]  Debug hook so an acceptance criterion can be state-read: SWIM_HOOD_CANDRAW_PROOF_1
+    built:    f8a8faad39a1 on origin/main at 2026-10-09T06:32:38Z, level reached L0
+    owes:     A1 L1
+      A1     L1         with a hooded Jawa swimming on a quicktest map (guy762_JawaHood worn), jawa/static_call type=RimMandrake.StarW
+DUNES_TINT_GATE_PROOF_1   [built, owner FOUNDRY]  Debug hook so an acceptance criterion can be state-read: DUNES_TINT_GATE_PROOF_1
+    built:    d15df5865d89 on origin/main at 2026-10-09T06:32:41Z, level reached L0
+    owes:     A1 L1
+      A1     L1         jawa/static_call type=RimMandrake.MovingDunes.RM_DunesProof method=ProofTint returns a shader name, hasColorPr
+SETTINGS_OPEN_SMOKE_HOOK_1   [built, owner FOUNDRY]  Debug hook so an acceptance criterion can be state-read: SETTINGS_OPEN_SMOKE_HOOK_1
+    built:    1b7fbe441f61 on origin/main at 2026-10-09T06:32:43Z, level reached L0
+    owes:     A1 L1, A2 L1
+      A1     L1         after a game-down companion deploy (build.py --gm --apply), jawa/static_call type=JawaBench.BridgeTools.JawaBe
+      A2     L1         jawa/map_comp_read comp=TentacleWatch members=encounterPressure,sentinelCount on a FeverWood quicktest map ret
+WASTE_RUN_SIGNAL_DEBUG_HOOK_1   [built, owner FOUNDRY]  Bridge hook to press a Command_Action / send a quest signal so the waste run can be state-read
+    built:    061bda171dc7 on origin/main at 2026-10-09T06:32:45Z, level reached L0
+    owes:     A1 L1, A2 L2
+      A1     L1         on a quicktest map with an RM_CaskBay holding waste and an Ongoing RUT_WasteRun quest, jawa/static_call type=R
+      A2     L2         method=ProofPress args=DropOnEmpire returns signal=Quest<id>.WasteDest_DropOnEmpire, wasteAfter=0 and the ques
+LUMINOUS_PIGMENT_SETTINGS_READOUTS_1   [built, owner FOUNDRY]  LP-5: LuminousPigment settings show what numbers mean: glow-family odds at cook-skill levels, hours of light per coat, reset per section
+    built:    ddaa542ceff8 on origin/main at 2026-10-09T06:33:34Z, level reached L0
+    owes:     A1 L1
+      A1     L1         opening the LuminousPigment settings screen in game shows the steer odds line (0% / x% / 100% at skill 6 / 12 
+SETTINGS_SCREEN_KIT_1   [built, owner FOUNDRY]  X-12: Shared settings-screen kit: collapsible sections, search box, per-section reset, and a "now / new maps only" tag per control
+    built:    c9b019870fc2 on origin/main at 2026-10-09T06:40:06Z, level reached L0
+    owes:     A5 L1
+      A5     L1         FlowWorks screen shows collapsible sections, search and per-section reset via the kit (Verse drawer and adopti
+
+## L2  — 138 items, needs bridge on the minimal list
+BACTA_REVIVAL_MECHANIC_1   [built, owner FOUNDRY, BLOCKED]  Bacta revival of the recently dead (owner ruling: works on dead bodies IF retrieved within a few hours): corpse-freshness window, tank accepts fresh corpse, revives minus brain/mental damage which stays unhealed; vanilla ResurrectionUtility as the base; settings toggle + window tunable
+    built:    dff008054f9f on origin/main at 2026-10-07T04:23:51Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2
+      A1     L2         On a quicktest map the revival WorkGiver fires automatically on a suitable corpse rather than only when forced
+      A2     L2         A corpse that died of vital-organ loss is revived and then dies again, and the outcome matches the owner desig
+      A3     L2         After TryResurrect clears wounds, the tank does not eject the patient with a 'nothing to heal' result.
+CATHEDRAL_STAGE_HUM_BRIDGE_1   [built, owner FOUNDRY]  Stage-to-hum-baseline bridge lane into RM_BiomeAttitudeDef (C#, row-3)
+    built:    afabb8dd3222 on origin/main at 2026-10-07T04:23:52Z, level reached L0
+    owes:     A1 L2, A2 L2
+      A1     L2         On a quicktest map, setting the cathedral stage to WARY or TOLERATED holds the hum band ceiling and shows reco
+      A2     L2         After save and load the baseline hum state persists unchanged.
+CRACKEDLANDS_ENRICHMENT_QUICKTEST_1   [built, owner FOUNDRY]  Quicktest-prove the Cracked Lands enrichment tranche by state reads: five beats, peakstorm odds, recede feast cohort/migrants, salvage decay
+    built:    a222f3d36708 on origin/main at 2026-10-07T04:23:53Z, level reached L0
+    owes:     A1 L2, A2 L2
+      A1     L2         On an RM_FloodedCanyon quicktest map the five beats, peakstorm, recede feast and salvage run through the behav
+      A2     L2         Four proofs triggered via dev actions each show their expected result (including RM_IrqitFloodBorn and tarruqS
+DROIDWORKS_FACE_RENDER_DEFAULT_HUMAN_1   [built, owner FOUNDRY]  Droidworks races (G2 included) show a default human face despite RSW_DW_HeadType_Blank — AlienRace head-render gap, not a def error
+    built:    8d4f6fe39410 on origin/main at 2026-10-07T04:23:54Z, level reached L0
+    owes:     A1 L2, A2 L2
+      A1     L2         A live-spawned G2 droid shows no human face with useFactionXenotypes=false.
+      A2     L2         Other Droidworks races are spawned live and none gain or lose a face unexpectedly (blast radius of the fix).
+FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1   [validated, owner FOUNDRY, BLOCKED]  Feral-race crash-survivor pawnkind + permanent mental-scar hediff + capture-to-slave wiring
+    built:    60b4468c5a5f on origin/main at 2026-10-07T04:23:54Z, level reached L2
+    owes:     A3 L2
+      A3     L2         A captured-to-slave feral survivor keeps the scar and a memwipe cannot remove it.
+FORGE_ENRICHMENT_QUICKTEST_1   [validated, owner FOUNDRY]  Quicktest-prove the Forge enrichment tranche on a Forge map: keel brace fuel saving, spunstone reveal, phase voices, dhuvvox clock
+    built:    774d5c76491f on origin/main at 2026-10-07T04:23:56Z, level reached L2
+    owes:     A3 L2, A4 L2
+      A3     L2         Forge voice stingers play for each phase.
+      A4     L2         The dhuvvox run clock and seal count are unchanged by the slowing effect.
+HUTT_SLAVE_PIT_TEST_SITE_1   [built, owner FOUNDRY]  Hutt slave pit at a small stand-alone test site: sell slaves, prisoners and downed beasts for silver; sealed oubliette liftable only after conquest; needs GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1 (animation optional, last)
+    built:    186d24833d62 on origin/main at 2026-10-07T04:23:59Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2
+      A1     L2         A peaceful landing at the Hutt slave pit site succeeds on a quicktest map (blocked while GRAVSHIP_PEACEFUL_SET
+      A2     L2         A slave, prisoner or downed beast can be sold for silver to the pit buyer.
+      A3     L2         The oubliette is unreachable until conquest, after which the hoist lift works.
+MINDSTONE_MATRIX_KINDLED_BUILD_1   [validated, owner FOUNDRY]  Mindstone matrix + the Kindled's first making: RUT_Mindstone + head casing at the reassembly harness -> RUT_MindstoneMatrix -> RSW_DW_Head_Mindstone; harness head filter + KindForHeadDef accept it; wipe/spike immunity; split from LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1
+    built:    721e81866383 on origin/main at 2026-10-07T04:24:01Z, level reached L1
+    owes:     A2 L2, A3 GREEN-MIN
+      A2     L2         The gauntlet of mine, recipes, assemble, then wipe refusal passes on a quicktest map.
+      A3     GREEN-MIN  The mindstone north star bars pass on the minimal list.
+SCALD_WATER_AGITATION_FLECKS_1   [validated, owner FOUNDRY]  Scald wreck shadowData fix + ambient water-agitation ripple mechanism (margin calm / shallow light / deep heavy)
+    built:    d23e31584628 on origin/main at 2026-10-07T04:24:03Z, level reached L1
+    owes:     A2 L2, A3 L4
+      A2     L2         Light and heavy ripples appear and the water margin stays calm on a quicktest map.
+      A3     L4         The owner looks at the wreck shadows and the agitation and approves them.
+SUMP_WALKWAYS_1   [built, owner FOUNDRY]  Sump walkways, two tiers: duckboards (cheap, foul with tar, burn) and glasswalk (never fouls, never full speed) with cap + rare harmless pratfalls
+    built:    e2fbf310fe11 on origin/main at 2026-10-07T04:24:06Z, level reached L0
+    owes:     A2 L2, A3 L2, A4 L2
+      A2     L2         Duckboards foul and slow pawns walking on them.
+      A3     L2         Glasswalk caps speed near 80 percent and causes slip stagger.
+      A4     L2         Both floors are placeable and glasswalk works aboard a gravship.
+TILE_STRUCTURE_DESIGNS_1   [built, owner FOUNDRY]  Make and improve the promise/whisper structure designs per the roster (22+22): rimplace templates + GenStep_RimplacePlan responder (VERIFY terrain/roof ordering); coverage lint = no promise without responder
+    built:    0460033c53f6 on origin/main at 2026-10-07T04:24:06Z, level reached L0
+    owes:     A1 L2
+      A1     L2         A quicktest shows the live terrain and roof ordering of injected structures is correct (sole closure bar).
+VAULT_THAW_QUEST_FAMILY_1   [validated, owner FOUNDRY]  Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
+    built:    4102beeba6fa on origin/main at 2026-10-07T04:24:07Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L2, A5 L2, A6 L4
+      A2     L2         The V6 quest runs on a quicktest map.
+      A3     L2         The V1 garrison appears as designed.
+      A4     L2         Quest gating works and the vault is inert on arrival.
+      A5     L2         The Reclamation quest runs through.
+      A6     L4         The owner reviews the design row and the letters.
+WASTELAND_GPT_ENRICHMENT_1   [validated, owner FOUNDRY]  Wasteland enrichment (GPT consult 2026-09-30, owner-picked by card): named storms (Deadlight Halo, Cinderwire Storm), Middenshell Procession, Sealed Cask Bay (ship), Rite of Tipping (paid dumping)
+    built:    9e0526efd244 on origin/main at 2026-10-07T04:24:08Z, level reached L2
+    owes:     A1 L2, A4 L2
+      A1     L2         Named storms fire on a quicktest map.
+      A4     L2         The Rite of Tipping runs through.
+WORLDMAP_LIQUID_TAGS_1   [built, owner FOUNDRY]  worldTag authoring pass on the frozen map (builds on LIQUID_BIOMES_MAP_1) + landing GenStep repaints shores to the tagged liquid — model: opus
+    built:    91092390a870 on origin/main at 2026-10-07T04:24:10Z, level reached L0
+    owes:     A1 L2
+      A1     L2         On a landing quicktest of the canonical Ash'karr save, each of the four biomes' shores is repainted to its tag
+BACTA_TANK_CORE_1   [built, owner FOUNDRY]  Bacta Tank core: RSW mod skeleton, tank building, trade-scarce fluid on the LiquidDef registry, CompBactaImmersion healing comp, research, full Mod Settings (owner-ruled spec in item file)
+    built:    325e35117e56 on origin/main at 2026-10-07T04:24:12Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2, A4 L2, A5 L2, A6 L3
+      A1     L2         On a quicktest map a pawn missing an organ (kidney) and a pawn with a brain injury are not restored by the tan
+      A2     L2         A pawn with an infected wound in the tank gets the infection-assist effect at the tuned rate.
+      A3     L2         A scarred pawn's old scar erases after the tuned immersion time.
+      A4     L2         Tank fluid level drains with use and blocks further use at zero.
+      A5     L2         Each of the 6 Mod Settings toggles, when switched off, disables exactly its effect.
+      A6     L3         The tank art showing the pawn suspended in the tank is evaluated and accepted alongside BACTA_TANK_ART_1.
+CAULDRON_ENRICHMENT_LIVE_PROOF_1   [validated, owner FOUNDRY]  Quicktest-prove the offline-built Cauldron enrichment: assay grade line, vexxiss poisoned-water letter, nettles on toxic shores
+    built:    e04968bdb24c on origin/main at 2026-10-07T04:24:14Z, level reached L2
+    owes:     A4 L2
+      A4     L2         With all three toggles off none of the assay string, letter or nettle spawning happens.
+CRACKEDLANDS_FIVE_BEATS_AUDIO_1   [built, owner FOUNDRY]  Bespoke audio for the five beats (6 SoundDefs on vanilla-clip placeholders) + the tarruq's call; owner: audio source
+    built:    33222b7f3d7f on origin/main at 2026-10-07T04:24:15Z, level reached L0
+    owes:     A1 L2, A2 L4
+      A1     L2         DebugStateReport shows tarruqSilenced=True from beat 3 until the recede.
+      A2     L4         In a joint session with the owner each of the five beats is audibly distinct and the tarruq calls on an ordina
+DROIDWORKS_FORMAT_TIERS_1   [built, owner FOUNDRY]  Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
+    built:    b81a023b888b on origin/main at 2026-10-07T04:24:16Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2, A4 L2, A5 L2, A6 L2
+      A1     L2         A mindless droid formatted to the Power tier is mindless with only the Power behaviour (box 2).
+      A2     L2         Formatting a sapient droid down breaks it as the sapient-break case specifies (box 3).
+      A3     L2         A blank-tier droid is inert (box 4).
+      A4     L2         CompDWFormatTier applies the tier hediff correctly on spawn or format (box 5).
+      A5     L2         The three format recipes are gated to the correct droid tiers (box 6).
+      A6     L2         Deformatting a sapient droid applies the deformat goodwill penalty and thought (box 7).
+FORGE_KEELWORK_REMAINDER_1   [built, owner FOUNDRY]  Floatstone keelwork remainder: glassy ring at launch, brace art, and whether payload means substructure support
+    built:    0c61fb1d4fb1 on origin/main at 2026-10-07T04:24:20Z, level reached L0
+    owes:     A1 L2, A2 L3, A3 L4
+      A1     L2         The keel ring sound plays once per linked brace at launch on a quicktest map.
+      A2     L3         The keel brace and ring art is evaluated for style fit.
+      A3     L4         The owner confirms or vetoes the ruling that the payload gives no SubstructureSupport.
+LIQUID_BOTTLE_LOOP_1   [built, owner FOUNDRY, BLOCKED]  Bottles as real items: fill/use/dirty/wash loop (dirty behind a toggle, default ON), revert-on-bottle for boiling/icy, blood rots to hemopack
+    built:    5dfaf7c79cf4 on origin/main at 2026-10-07T04:24:25Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2
+      A1     L2         On a quicktest map a bottle is filled from a shore, drunk, becomes dirty and is washed back to empty, confirmi
+      A2     L2         A boiling bottle becomes fresh and a blood bottle rots on schedule with the hemopack recipe beating the clock.
+      A3     L2         With settings off no dirty bottles appear anywhere and the loop remains whole.
+SURFACE_RIVER_WEIRS_1   [validated, owner FOUNDRY]  Port the weir / bank-works / breach system to ordinary surface river tiles (owner-typed 2026-09-26): weir, silt-trap, stake-line, hopper, and the untended-weir-meets-flood breach cascade on normal rivers
+    built:    eab81a09523d on origin/main at 2026-10-07T04:24:35Z, level reached L1
+    owes:     A2 L2, A3 GREEN-MIN
+      A2     L2         The live proof rows for current, fords, flood surge, wash-off, weir, levee, silt trap, ferry and drift pass on
+      A3     GREEN-MIN  The RiverWorks walk passes on the minimal list.
+WASTELAND_MECHANICS_BUILD_1   [validated, owner FOUNDRY, BLOCKED]  Build the Wasteland mechanics: 20-cell Middenshell on TitanicCreatures, processor gatherable comps, ambient-dose comp, three storm WeatherDefs + MovingDunes exhumation, pollution-first dose layer
+    built:    7746d57c190a on origin/main at 2026-10-07T04:24:39Z, level reached L2
+    owes:     A3 L2, A4 L2, A5 L2
+      A3     L2         A penned Sloghog on polluted ground produces a bezoar.
+      A4     L2         A Smolderback heats and doses a closed room.
+      A5     L2         When an ash storm ends cinderfelt appears on the fresh fall and the exhumation re-deal fires via the MovingDun
+FEVERWOOD_BOUGH_SOIL_TERRAIN_1   [validated, owner FOUNDRY]  The crown cannot grow anything: boughway is fertility 0, so bough-soil is owed
+    built:    63c77494edf7 on origin/main at 2026-10-07T04:24:47Z, level reached L1
+    owes:     A2 L2, A3 L4
+      A2     L2         the eight crown flora roster rows actually root and grow on RUT_BoughSoil in a quicktest map
+      A3     L4         owner confirms the provisional fertility 1.4 and the footprint
+FORGE_MECHANICS_1   [built, owner FOUNDRY]  Forge C# kit: boiling-rain weather (scald, flash cycle, flash-interval growth), beldon herds + tibanna harvest, vapor-column flight layer, foundry tower dungeon shell, Contagion die-off ring, geothermal industry - spec the_forge.md
+    built:    cc741b6e4aa7 on origin/main at 2026-10-07T04:24:48Z, level reached L0
+    owes:     A2 L2, A3 L2
+      A2     L2         scald gear-gate quicktest shows damage when unroofed and ungeared and none when geared or roofed
+      A3     L2         F4 portal-chaining quicktest chains portals as designed
+GM_BLACKBOARD_SHADOW_M4_1   [built, owner FOUNDRY]  Build M4: Imperial Heat + orbital-detection timer + dark-tile pause as a Python shadow-mode state machine
+    built:    bdc930b326d2 on origin/main at 2026-10-07T04:24:49Z, level reached L0
+    owes:     A1 L2, A2 L2
+      A1     L2         a live kyber sale raises Heat in the gm_blackboard_shadow log
+      A2     L2         the Cathedral-ground signal appears in the shadow log in a live run
+LIQUID_INDUSTRY_SETPIECES_1   [validated, owner FOUNDRY]  Found industrial liquid works via the shared scatterer: desal, detox, tar refinery, pumping station — wreck-tier, never player-buildable in campaign
+    built:    3e473f37c0d6 on origin/main at 2026-10-07T04:24:53Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L2, A5 L3
+      A2     L2         forced set-piece spawns place each ruin set piece near liquid on a quicktest map
+      A3     L2         each wrecked piece repairs and converts as designed and none appears in the build menu
+      A4     L2         jawa/list_things per slot confirms every set piece is present
+      A5     L3         Opus evaluation of the set-piece art once textures exist
+STILLSAND_GEOPHONE_1   [validated, owner FOUNDRY]  Stillsand biosilica geophone: rumble markers from the sand-swim query
+    built:    e653c27de718 on origin/main at 2026-10-07T04:25:03Z, level reached L1
+    owes:     A2 L2, A3 L3
+      A2     L2         a submerged swimmer within the geophone radius shows the bearing and size-class marker
+      A3     L3         Opus evaluation of the geophone art once the registered art job lands
+TERMINALBIOMES_REVIEW_FIXES_1   [built, owner FOUNDRY]  TerminalBiomes 29-file review fix wave: 2 dead tickerType mechanisms (vaulisk lure never springs, mobile glower never runs), 6 more BUGs, 6 RISKs, 4 NITs - findings are sonnet evidence, verify each
+    built:    08760ee35956 on origin/main at 2026-10-07T04:25:05Z, level reached L0
+    owes:     A2 L2, A3 L2
+      A2     L2         the lure springs in a live quicktest
+      A3     L2         the mobile glower moves in a live quicktest
+TREE_GRAPHICS_OWNERSHIP_1   [built, owner FOUNDRY, BLOCKED]  Own tree art at our scales: generate custom tree graphics (sweetline trees first — huge, ancient); remove tree-mod rescaling of our designs
+    built:    0d42dd16adc3 on origin/main at 2026-10-07T04:25:06Z, level reached L0
+    owes:     A1 L2, A2 L3, A3 L4
+      A1     L2         RUT_SweetlineTree spawns and the BetterTrees-immunity log check passes
+      A2     L3         Opus evaluation of the 14-variant rotation scale and look
+      A3     L4         owner looks at the sweetline tree variants in game
+WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1   [built, owner FOUNDRY]  Pilgrim journals as Antiquities artifacts: catalogue at the Reading Station also advances the Scarlands ladder, one route not two (WARSCAR_PILGRIM_CAMPS_1 spec 4)
+    built:    5b878efc9d39 on origin/main at 2026-10-07T04:25:09Z, level reached L0
+    owes:     A2 L2, A3 L4
+      A2     L2         cataloguing the Pilgrim journal once advances the Scarlands ladder live
+      A3     L4         owner answers the three open questions on the journal
+WEBWORK_DEAD_GIANT_BUILD_1   [built, owner FOUNDRY]  Webwork giant: wrapped urraveth skeleton, read bone by bone, loaded bones creak and collapse
+    built:    cfdba9344878 on origin/main at 2026-10-07T04:25:11Z, level reached L0
+    owes:     A2 L2, A3 GREEN-MIN, A4 L3
+      A2     L2         all RM_Urraveth_Remains pieces spawn, can be read, and the creak gauntlet runs
+      A3     GREEN-MIN  the Webwork north-star bars pass on the minimal list
+      A4     L3         Opus evaluation of the Urraveth remains art
+WRECKED_DISTILLATION_MODULE_1   [validated, owner FOUNDRY]  WreckedMachines ship Distillation module: clean water from distillable rows (not oil), rate per repair tier
+    built:    3e473f37c0d6 on origin/main at 2026-10-07T04:25:12Z, level reached L1
+    owes:     A2 L2, A3 L3
+      A2     L2         salt water converts to fresh, tar is refused, and tier rates differ
+      A3     L3         Opus evaluation of the replacement art for the placeholders
+ARMOURY_JUMPPACK_INVALID_IL_1   [built, owner FOUNDRY]  Armoury JumppackForMeleeAI transpiler on JobGiver_AIFightEnemy.TryGiveJob throws InvalidProgramException at load; the patch never applies (belt Armoury 3 FAIL)
+    built:    618463ba1e11 on origin/main at 2026-10-07T04:25:14Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2, A4 L2
+      A1     L2         On a live quicktest map the Player.log contains no InvalidProgramException from the jump pack code.
+      A2     L2         Harmony's patch list shows the jump pack patch applied.
+      A3     L2         Raiders with jump packs are seen to jump, with ranged timing treated as provisional.
+      A4     L2         The Armoury belt recheck that previously failed now passes.
+BELT_WATER_HARNESS_1   [built, owner FOUNDRY]  Bland-map water cell helper: Miasma return proof and Greentide vurrak need water; paint via set_terrain_batch in bland_world
+    built:    a1b4b594340e on origin/main at 2026-10-07T04:25:16Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2
+      A1     L2         A live run of SUITE_WATER on Miasma proves the return behaviour passes with a painted pond.
+      A2     L2         A live run of SUITE_WATER on Greentide proves the vurrak chains pass with a painted pond.
+      A3     L2         After the run the pond is restored to the original bland world state.
+DROIDWORKS_WIPE_SEVERITY_1   [validated, owner FOUNDRY]  Memory wipe: 7-day severe relearning debuff, service-record reset, permanent accreting hardware quirks
+    built:    07db73738de2 on origin/main at 2026-10-07T04:25:22Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 GREEN-MIN
+      A2     L2         On a quicktest map a wiped droid stumbles across the seven days of the hediff.
+      A3     L2         After the hediff ends the droid still carries its quirk, and a second wipe adds a second quirk rather than rep
+      A4     GREEN-MIN  The Droidworks north-star bars covering wipe severity pass on the minimal list.
+FEVERWOOD_RM_CAST_COMPLETION_1   [validated, owner FOUNDRY]  Fever Wood: build the seven ratified creatures; the skreth brood as the free second front of the lure
+    built:    5833cced4d1f on origin/main at 2026-10-07T04:25:23Z, level reached L1
+    owes:     A4 L2, A5 L2, A6 L2
+      A4     L2         With the Shokk brood absent a live read of the TwoFrontLure second-wave faction returns RM_FactionDef_SkrethBr
+      A5     L2         A live Faction.HostileTo read shows the skreth brood and kurreth swarm factions hostile to each other.
+      A6     L2         Each of the seven texPaths resolves so a spawned pawn's graphic is not the error material.
+FORGE_SPUNSTONE_SOURCES_1   [validated, owner FOUNDRY]  Spunstone bonding remainder: foundry salvage as a study source, and what the high-speed doors and advanced structural parts are
+    built:    3666db8a64b4 on origin/main at 2026-10-07T04:25:26Z, level reached L1
+    owes:     A2 L2, A3 L3, A4 GREEN-MIN
+      A2     L2         On a quicktest map studying the salvage cache unlocks the floatstone door and spunstone hull.
+      A3     L3         Art for the door, hull and salvage cache is evaluated by Opus and fits the style, noting RUT_FoundrySalvageCac
+      A4     GREEN-MIN  The TheForge north-star bars for these sources pass on the minimal list.
+GREENTIDE_HUMMING_GROVE_1   [built, owner FOUNDRY]  A grove that hums at differing pitches as you walk through it
+    built:    c9add991c3f5 on origin/main at 2026-10-07T04:25:28Z, level reached L0
+    owes:     A1 L2, A2 L4
+      A1     L2         A deterministic state read shows the ProximitySoundscape layer count tracks the player's proximity to Thalquit
+      A2     L4         The owner hears the grove hum change as he walks through it, with no obtrusive pop when layers change, in a sa
+PIT_TEMPERATURE_SOFTENING_1   [validated, owner FOUNDRY]  Pit temperature couples hard to ambient and wears down resistance; Exposed Prisoner thought
+    built:    5025f7d9aac8 on origin/main at 2026-10-07T04:25:33Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L2, A5 GREEN-MIN, A6 L4
+      A2     L2         At desert noon an unroofed pit's temperature moves faster than a roofed twin.
+      A3     L2         An occupant's resistance falls faster in the pit than in a normal prison cell.
+      A4     L2         A compassionate colonist gets the RM_ExposedPrisoner thought and a psychopath does not.
+      A5     GREEN-MIN  The FlowWorks north-star bars for pit exposure pass on the minimal list.
+      A6     L4         The owner judges the provisional mood number reads as cruel at the right strength.
+RIVER_STEAM_ANIMATION_1   [built, owner FOUNDRY, BLOCKED]  Animated steam rising from the rivers (Pyrelands weather visual)
+    built:    02bddd769d9f on origin/main at 2026-10-07T04:25:34Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L4
+      A1     L2         On a live Pyrelands-biome map steam puffs rise near river cells at a non-spammy rate with the reworked shape a
+      A2     L2         On a non-Pyrelands map rivers stay silent so the biome gate holds.
+      A3     L4         The owner judges the steam shape and motion against the reference photo.
+SCARLANDS_MECHANICS_2   [validated, owner FOUNDRY]  The Scarlands C# kit build: Scarlands mark hediff+severity floor, plated-grazer scaria onset, Forgotten Sentinel defend-only AI, pre-sprung danger dressing (PrefabDef hp field, zero C#) — spec scarlands_kit_spec.md; mynock ship-infestation (board/breed/eat/hunt-out) already shipped by SHIP_VERMIN_MOD_1/WRECKAGE_VERMIN_SPAWN_1, RC4 hediff fields already shipped by MIASMA_MECHANICS_1
+    built:    52c8c982c936 on origin/main at 2026-10-07T04:25:35Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L2, A5 L2, A6 L3
+      A2     L2         On a Scarlands quicktest map the mark severity floor holds.
+      A3     L2         Scaria incubation onset occurs as designed.
+      A4     L2         A sentinel never pursues beyond its defended perimeter.
+      A5     L2         Pre-sprung hazards are present on the map.
+      A6     L3         The placeholder Mech_Pikeman kind and prefab art are evaluated by Opus and replaced as owed.
+STILLSAND_PRECIOUS_CAVES_LIVE_1   [validated, owner FOUNDRY]  Precious caves: ten live Stillsand quicktest maps
+    built:    6236731d649b on origin/main at 2026-10-07T04:25:37Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L2, A5 L2, A6 L4
+      A2     L2         Across ten RM_Stillsand quicktest maps with rock at least eight carry a shade-mouth cave facing away from the 
+      A3     L2         A guzzka lair spawns the guzzka on its clutch.
+      A4     L2         No cave is generated outside rock.
+      A5     L2         The Rock island letter fires once on the home map and names the outcrop and bearing.
+      A6     L4         The owner looks at the caves in game.
+WARSCAR_RAINBOW_POOLS_1   [validated, owner FOUNDRY, BLOCKED]  Warscar rainbow pools: reaction-liquor registry row, phase cycle with colour-blind icons, tap and four reagents, journal and phase reader, glower crust as phase catalyst
+    built:    f19973a4d571 on origin/main at 2026-10-07T04:25:39Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L2, A5 L4
+      A2     L2         A quicktest Warscar map holds 1 to 3 reaction pools.
+      A3     L2         Drawing from each phase yields its reagent, and drawing the bloom phase injures the drawer.
+      A4     L2         With glower crust the phase holds and yield doubles, and without it the phase cycles.
+      A5     L4         The owner looks at the pool tint and icons.
+WYYYSCHOKK_FANG_PENDANT_1   [validated, owner FOUNDRY]  Wyyyschokk fang pendant: hunt trophy apparel, bravery social thoughts with Wildsteam/Blackstar/Deep Tribe (defNames VERIFY), trade good everywhere
+    built:    caa1f043d63a on origin/main at 2026-10-07T04:25:41Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L2, A5 GREEN-MIN, A6 L3
+      A2     L2         Butchering a wyyyschokk (RM_Ollathrix) yields fangs and the pendant can be crafted.
+      A3     L2         Observers of a listed faction show an opinion delta from the pendant and observers of an unlisted faction do n
+      A4     L2         The pendant sells to a vanilla trader and coexists with other neck-slot apparel.
+      A5     GREEN-MIN  The TrophyCraft north-star bars for the pendant pass on the minimal list.
+      A6     L3         The fang and pendant art is evaluated by Opus.
+CAULDRON_VENT_ENRICHMENT_HOOKS_1   [validated, owner FOUNDRY]  Cauldron enrichment pieces that hang on vents: weather vent multipliers + vent-local exposure + falter, vexxiss vent-drinking, vent-keyed gardens
+    built:    79b013e59fa5 on origin/main at 2026-10-07T04:25:44Z, level reached L2
+    owes:     A3 L2, A4 L2
+      A3     L2         Vent-keyed flowers appear around vents on the Cauldron map.
+      A4     L2         The ventsEnabled, ventGardensEnabled and vexxissDrinksVentsEnabled settings toggles each disable their feature
+FLOWWORKS_PIT_FALL_ONLY_FORCED_1   [built, owner FOUNDRY]  Pit falls only when forced/blown in; enemies also when concealed
+    built:    790fd4e8df65 on origin/main at 2026-10-07T04:25:47Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 GREEN-MIN
+      A1     L2         On a quicktest map a forced or blown colonist falls into a pit via OnForcedDescent.
+      A2     L2         An enemy under concealed pit cover falls in per the gauntlet expectations.
+      A3     GREEN-MIN  The FlowWorks pit north-star bars pass on the minimal list.
+LONGSHADE_BEDAZZLE_CONTENT_1   [built, owner FOUNDRY, BLOCKED]  Long Shade bedazzle content: wire the finished-but-unwired art (7 magenta creatures + vorrel family), five filler defs, qorrax rename, glitter-bird/pirrik dedupe, gloomcast own art, AA texture deps, mirrak def, maidenbloom + review-gated fills
+    built:    dab5a10c484d on origin/main at 2026-10-07T04:25:52Z, level reached L0
+    owes:     A1 L3, A2 L3, A3 L2, A4 L4
+      A1     L3         The shadespire art is redone as RM_Shadespire_c and evaluated.
+      A2     L3         Gloomcast_Dessicated art is replaced (no longer a Horax copy) and evaluated.
+      A3     L2         After compose deploy the LongShade atlas shows no magenta in game.
+      A4     L4         The owner looks at the LongShade content and re-tints as desired.
+MESSYCONDUIT_REVIEW_ROUND1_1   [built, owner FOUNDRY]  MessyConduit human review round 1: 10 findings from the owner at the review map (Star Wars style art, stations 4,5,6,7,9,10,12, plug-in-here marker, poles follow style)
+    built:    50b906466e72 on origin/main at 2026-10-07T04:25:53Z, level reached L0
+    owes:     A1 L2, A2 GREEN-MIN, A3 L3, A4 L4
+      A1     L2         Live, bracket placement, pileArt and poleTex behave correctly in GimmeSomeSlack.
+      A2     GREEN-MIN  modcheck for GimmeSomeSlack moves from DRAFT-CHECKLIST to a passing run.
+      A3     L3         Wall-bracket art is produced per the look and evaluated.
+      A4     L4         The owner re-reviews round 2.
+MYCOID_COLOSSUS_LIVE_LOOK_1   [built, owner FOUNDRY]  MYCOID_COLOSSUS_LIVE_LOOK_1
+    built:    1ea5c3f07944 on origin/main at 2026-10-07T04:25:54Z, level reached L0
+    owes:     A1 L3, A2 L2, A3 L4
+      A1     L3         AA_MycoidColossus spawned live is read at all three facings by facing name, with no bare-path fallback masking
+      A2     L2         The colossus size changes as expected on north-height when it turns.
+      A3     L4         The owner looks at the colossus in game.
+SOLAR_HEAT_EXPOSURE_1   [built, owner FOUNDRY, BLOCKED]  Planet-wide sun heat: sun exposure feeds VANILLA heat (no new heat kind), per-biome heat kind (overhead sun / low sun / steam), directional shade grid, sun-cost pathing, rest-dash-rest animal behaviour, dash-radius ring; Long Shade is first consumer
+    built:    cea416ce3958 on origin/main at 2026-10-07T04:25:57Z, level reached L0
+    owes:     A2 L2, A3 L4
+      A2     L2         On a quicktest map sun exposure feeds vanilla heatstroke and each biome's heat kind behaves as declared.
+      A3     L4         The owner watches and tunes the rest-dash behaviour.
+STILLSAND_SAND_SIEVE_CHORE_1   [validated, owner FOUNDRY]  Stillsand sand sieve as a pawn chore: glass sand to fine sand with a carried sieve (feasible, no building)
+    built:    b8acc0dc0532 on origin/main at 2026-10-07T04:25:58Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L3
+      A2     L2         A pawn carrying a sieve sifts sand without being ordered.
+      A3     L2         A pawn without a sieve is never offered the sift job.
+      A4     L3         RM_SandSieve art has landed from the artpipe job and is evaluated.
+UNFINISHED_LINE_TITHE_BEAT_1   [built, owner FOUNDRY]  Unfinished Line beat 4 The Tithe and the Hands: scaled material tithe to the site + lend a Crafting 8 colonist 10 days
+    built:    490988350831 on origin/main at 2026-10-07T04:26:00Z, level reached L0
+    owes:     A2 L2
+      A2     L2         The tithe beat gauntlet passes: tithe is taken, a lent colonist returns after 10 days, and a lent colonist's d
+WARSCAR_TOTCHAK_WAKES_1   [validated, owner FOUNDRY]  Warscar totchak: dormant in the Last Line, demolition wake, eats ruin walls then player walls, lies down again
+    built:    455e8e147926 on origin/main at 2026-10-07T04:26:01Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L2, A5 L3
+      A2     L2         A totchak placed in a wall run wakes within 12 cells and a letter fires.
+      A3     L2         The totchak gnaws ruin before player structures.
+      A4     L2         The totchak returns to dormancy after waking.
+      A5     L3         Totchak creature art is produced and evaluated.
+WEBWORK_TRACTION_LANCE_BUILD_1   [validated, owner FOUNDRY]  Traction lance: capstan sibling on one shared pull, learnable at Webwork or Sump, fabric tether
+    built:    598dec613f2d on origin/main at 2026-10-07T04:26:01Z, level reached L1
+    owes:     A3 L2, A4 L3
+      A3     L2         The gauntlet passes for pull, wall, friendly, ollathrix-shade, stuff, research and settings behaviour.
+      A4     L3         The traction lance art installs are produced and evaluated.
+CHILL_DIVE_DENSITY_SAMPLER_1   [built, owner FOUNDRY]  Chill dive spawns obey density (not one-of-each); number set on a live walk with the owner, leaning 2-4 (Q6)
+    built:    bcf4cca56d0d on origin/main at 2026-10-07T04:26:04Z, level reached L0
+    owes:     A1 L2, A2 L4
+      A1     L2         A generated Chill sea-floor map reads exactly 3 native animals by live state read.
+      A2     L4         The owner tunes the provisional chillDiveAnimalCount on a live walk.
+DEEPS_FAUNA_MECHANICS_1   [built, owner FOUNDRY]  Deeps creature mechanics from the fauna verdicts: Grabber hold-and-crush, Soulchime psychic stun + tamed soothe aura, Drinker fluid sacks + dies on warm-iron blood
+    built:    0e0fa8beff84 on origin/main at 2026-10-07T04:26:05Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2
+      A1     L2         The grapple comp is observed landing a hit on a live target in a quicktest.
+      A2     L2         The drinker sac comps are observed firing live.
+      A3     L2         The soulchime stun and soothe comps and shard armor are observed taking effect live.
+FLOWWORKS_VISUAL_PRINCIPLES_1   [validated, owner FOUNDRY]  FlowWorks look: owner's five visual rules (deep cuts as walls, dirt/stone faces, moving water, tar as liquid, scorched pit)
+    built:    1574825407e5 on origin/main at 2026-10-07T04:26:08Z, level reached L1
+    owes:     A2 L2, A3 L3, A4 L4
+      A2     L2         State-read rows confirm the visual-principle components (wall face depth, face material, liquid surface, pit s
+      A3     L3         An Opus evaluation of captured FlowWorks visuals judges them against the visual principles.
+      A4     L4         The owner judges the FlowWorks look on a live map.
+GREENTIDE_STELLOCK_LACE_BUILD_1   [validated, owner FOUNDRY]  Stellock lace: study a self-sealing branch, craft a cartridge that stops all bleeding on a pawn anywhere
+    built:    598dec613f2d on origin/main at 2026-10-07T04:26:10Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L2, A5 L2, A6 L2, A7 GREEN-MIN, A8 L3
+      A2     L2         Felling a roster tree drops the Stellock branch via the drop comp.
+      A3     L2         Study of the found tech unhides the research as expected via RM_CompFoundTechStudy.
+      A4     L2         The bleed factor reads 0 in the Laced stage and then greater than 0 afterwards.
+      A5     L2         The mechanism works outside Greentide on a non-Greentide use.
+      A6     L2         Each of the mod settings toggles disables its feature live.
+      A7     GREEN-MIN  The Greentide north-star bars pass on the minimal list.
+LEANINGSCRUB_ENRICHMENT_QUICKTEST_1   [validated, owner FOUNDRY]  Quicktest-prove dripping regrow, crown mob, runway bloom, named sweetline trees by state read
+    built:    b7f5f96b0094 on origin/main at 2026-10-07T04:26:11Z, level reached L1
+    owes:     A2 L2, A3 GREEN-MIN
+      A2     L2         Checks 1 to 5 pass by state read on a quicktest map, including the stall and gale chains that were UNMEASURED.
+      A3     GREEN-MIN  The LeaningScrub north-star rerun on the minimal list passes.
+LONGSHADE_ENRICHMENT_QUICKTEST_1   [built, owner FOUNDRY]  Quicktest the Long Shade enrichment: gloomcast moving shade, camera heat soundscape, Shipfall Commons, grove hum
+    built:    24bf0e9b8f7e on origin/main at 2026-10-07T04:26:12Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2, A4 L2, A5 L4
+      A1     L2         The gloomcast moving shade layer moves live on a quicktest map.
+      A2     L2         The Shipfall Commons ladder works live and survives save and load.
+      A3     L2         The Greentide grove layers work live.
+      A4     L2         Player.log shows no red errors from these features during the run.
+      A5     L4         The owner listens to the heat soundscape (placeholder audio) and approves.
+RUST_CATHEDRAL_MECHANICS_1   [validated, owner FOUNDRY]  Rust Cathedral C# kit: hum-mood system (attitude value, layered tones, bolt-dance display, droid commentary, hysteresis wiring), deep-drill response event (never described), wall-tier mining defs, living bolts as mechanical wildlife, eel-fishing consequences - spec the_rust_cathedral.md
+    built:    93d35e461ebf on origin/main at 2026-10-07T04:26:16Z, level reached L1
+    owes:     A2 L2, A3 GREEN-MIN, A4 L3, A5 L4
+      A2     L2         A whole-kit quicktest shows the Harmony patches bind, the coolant eel fishing interval scan runs, and the cath
+      A3     GREEN-MIN  The RustCathedral north-star bars pass on the minimal list.
+      A4     L3         An Opus evaluation judges the living bolt dance look.
+      A5     L4         The owner looks at the bolt dance.
+SEA_DIVE_FLOOR_TERRAIN_1   [built, owner FOUNDRY, BLOCKED]  Gravship dive floors ignore the seas' terrain bands: GenStep_SeaFloorTerrain paints one constant terrain (RM_SeaFloorGround / RM_ChillIceBedrock) on every cell, so floor flora habitat tags never exist on the map a player dives to; make it read each sea's terrainsByFertility (or a per-sea floor band)
+    built:    02a9a6bdd420 on origin/main at 2026-10-07T04:26:17Z, level reached L0
+    owes:     A1 L2, A2 L2
+      A1     L2         Scald sea-floor plants spawn from a real Scald-temperature tile, shown by rerunning prove_sea_dive_floor.py.
+      A2     L2         Chill sea-floor plants spawn from a real Chill-temperature tile, shown by rerunning prove_sea_dive_floor.py.
+STILLSAND_CAVE_AS_PLACE_1   [validated, owner FOUNDRY]  Stillsand cave: preservation, drip, biosilica walls, tribal mark
+    built:    d55891d0151c on origin/main at 2026-10-07T04:26:18Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L3, A5 L4
+      A2     L2         A corpse placed in a Stillsand cave does not rot.
+      A3     L2         The lens-grotto walls are mineable and yield RM_Biosilica.
+      A4     L3         An Opus evaluation judges the wall and glyph art, currently placeholders.
+      A5     L4         The owner hears the cave drip and approves.
+STILLSAND_SUN_LANCE_1   [validated, owner FOUNDRY]  Stillsand sun lance: heliostat mirror turret that heats and never ignites
+    built:    77249dbc9121 on origin/main at 2026-10-07T04:26:19Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L3
+      A2     L2         The sun lance damages a target and starts no fire.
+      A3     L2         The sun lance does nothing to targets in shade or during a gale.
+      A4     L3         An Opus evaluation judges the sun lance art.
+WARSCAR_TURRETS_TRACK_1   [validated, owner FOUNDRY]  Warscar turrets still track: verbless aim comp on broken turrets, refit into a working old-line turret
+    built:    ba7d93dccb81 on origin/main at 2026-10-07T04:26:21Z, level reached L1
+    owes:     A2 L2, A3 L2
+      A2     L2         A state read on a quicktest map shows the RM_CompTurretAim aim angle changes as designed.
+      A3     L2         The Refit gizmo yields a turret that fires.
+WEEPINGSTONES_STOCK_JOB_LOOP_1   [built, owner FOUNDRY]  WeepingStones: bland colonists restart RM_StockPoolPen up to 10x per tick (JobGiver_Work) and the stock/net/feed/harvest/cull proofs read job-never-ran
+    built:    0ef6dd60bb3d on origin/main at 2026-10-07T04:26:22Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 GREEN-MIN
+      A1     L2         The job_net, job_stock, job_stock_outside_pen and job_cull checks pass on rerun after the driver fixes.
+      A2     L2         The feed and harvest job chains complete live.
+      A3     GREEN-MIN  The WeepingStones north-star rerun improves on the previous 55 PASS and 7 FAIL.
+DEEPS_FAUNA_MECHANICS_2   [built, owner FOUNDRY]  Deeps fauna mechanics, second pass on DEEPS_FAUNA_MECHANICS_1: grabber-side crush comp + rescue roll, soulchime LoS/damage trigger/psychic-deaf immunity, drinker hydrocarbon-blood extension + fluid-sack gauge + drained-fluids drop
+    built:    57f9ca13adf9 on origin/main at 2026-10-07T04:26:35Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2
+      A1     L2         A bovine beetle spawned beside a colonist applies RM_Grappled and a torso injury, and a hit from a third pawn 
+      A2     L2         A soulchime in line of sight stuns a pawn, and a deaf pawn is immune.
+      A3     L2         A drinker feeding on a gembug gains RM_FluidSacks with observed severity and yield.
+FOOTPRINT_TRACK_GRID_1   [validated, owner FOUNDRY]  One footprint grid for the planet: capped TrackGrid + section layer + cell-entry postfix in CreatureBehaviors, invisible pawns recorded, erase API; Warscar film and Stillsand sand both consume it as XML
+    built:    84a377bf0d83 on origin/main at 2026-10-07T04:26:36Z, level reached L1
+    owes:     A3 L2, A4 L3
+      A3     L2         On a Stillsand map the track_grid chain shows the writer recording prints, the invisible flag honoured, and to
+      A4     L3         The real print art is judged acceptable in style.
+GRAFFITI_NORTHSTAR_TRIAL_1   [built, owner FOUNDRY]  Graffiti north-star trial: pipeline pilot to first GREEN (parent of WIRED/GREEN_MINIMAL/GREEN_FULL/SHIP)
+    built:    541852456e21 on origin/main at 2026-10-07T04:26:37Z, level reached L0
+    owes:     A1 GREEN-MIN, A2 GREEN-FULL, A3 L2, A4 L4
+      A1     GREEN-MIN  The Graffiti northstar passes on the minimal list.
+      A2     GREEN-FULL The Graffiti northstar passes on the full list.
+      A3     L2         The SHIP_1 rung is complete with art, stamp and deploy done.
+      A4     L4         The owner reviews the sheet and gives his word on the hashed-prose correction.
+GREENTIDE_THURROCK_HERD_BUILD_1   [validated, owner FOUNDRY]  The thurrock: tree-felling giant herd on the built Shatterer aura (no moult)
+    built:    598dec613f2d on origin/main at 2026-10-07T04:26:38Z, level reached L1
+    owes:     A3 L2, A4 L2, A5 L2, A6 L3
+      A3     L2         A spawned Thurrock keeps its hediff across save and load.
+      A4     L2         A Thurrock fells trees and the toggle disables the behaviour.
+      A5     L2         Aura wall damage differs between resting and manhunter Thurrocks.
+      A6     L3         Thurrock art is judged acceptable in style.
+NINEFOLD_LOUDNESS_FRONT_1   [built, owner FOUNDRY]  Ninefold owes LOUDNESS and THE FRONT, which canon rules exist and no code computes — MEASURED 2026-09-16: GameComponent_Ninefold's entire public read surface is GetSatiation/GetMood/GetBand/IsUnveiled plus ApplyDelta/TryFirstContact/NotifyViolentDeath/Notify_Launched. No loudness, no front, no change notification, pull-only. canon.yml in_front rules that engagement makes a god LOUDER, the loudest holds actuator priority, the front is reckoned at each LANDING and can flip mid-map on a violent swing — none of that derivation is written. Blocks ATMOSPHERIC_BASE_BUILD_PROGRAM_1 Phase 3 onward, whose territory and tremor are both defined in terms of rank
+    built:    9b98614b35a9 on origin/main at 2026-10-07T04:26:41Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2
+      A1     L2         A scripted gravship landing returns the correct front.
+      A2     L2         A Large event flips the front mid-map.
+      A3     L2         The front is kept across save and reload.
+SEA_FISHABLES_ALIVE_IN_DEPTHS_1   [validated, owner FOUNDRY]  Every fishable in EVERY sea owes a living creature swimming the floor map, not just a catch item - owner ruling 2026-09-26
+    built:    59790a18cda2 on origin/main at 2026-10-07T04:26:43Z, level reached L1
+    owes:     A3 L2, A4 L3
+      A3     L2         A floor census shows every fishable alive on the sea floor.
+      A4     L3         The aluun three-view art is wired and judged acceptable.
+STILLSAND_SUN_LIVE_VERIFY_1   [built, owner FOUNDRY]  Live-verify Stillsand sun from latitude on quicktest maps at two latitudes: no night, shadow length by latitude, roof protects above 55 deg only, far-ring heatstroke within an hour, solar panels full output
+    built:    37bad33986b3 on origin/main at 2026-10-07T04:26:44Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2, A4 L2, A5 L2, A6 L2
+      A1     L2         There is no night and shadow length varies by latitude.
+      A2     L2         A roof protects only above 55 degrees.
+      A3     L2         Shade exposure reads 0.35 and lee reads 0.
+      A4     L2         Far-ring pawns suffer heatstroke.
+      A5     L2         Solar panels produce at full output.
+      A6     L2         Glare, mirage, wind lock and cooling draught each work live.
+WAR_LAB_CRATER_HOOK_1   [built, owner FOUNDRY, BLOCKED]  Ignition->crater world-tile mutation C# hook for the war lab, blocked on LIQUID_BIOMES_MAP_1's frozen footprint
+    built:    5e2f5084ee99 on origin/main at 2026-10-07T04:26:46Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2, A4 L2, A5 L3, A6 L4
+      A1     L2         Igniting the reactor core flips the derived tiles to the crater biome.
+      A2     L2         The crater mutation persists across save and load.
+      A3     L2         The crater fires only once.
+      A4     L2         The hook works while the map is unloaded.
+      A5     L3         A world-map before and after screenshot is judged acceptable.
+      A6     L4         The owner looks at the world-map before and after.
+CATHEDRAL_REGARD_BLACKBOARD_1   [built, owner FOUNDRY]  Cathedral Regard counter + stage machine + exposure pressure on the GM blackboard, shadow-mode first
+    built:    adba3ee9c1da on origin/main at 2026-10-07T04:26:48Z, level reached L0
+    owes:     A2 L2, A3 L2
+      A2     L2         live shadow logs show Regard moves in the stated direction for manners band, Assailant missions, restore choic
+      A3     L2         a crafting consumption of kyber moves no sale counter, resolving the sold-versus-crafted ambiguity
+FLOWWORKS_BUILD_PROGRAM_1   [built, owner FOUNDRY]  FlowWorks - the phased build program for one liquid mod built on excavation depth as the primitive, carrying 27 owner rulings of 2026-09-16, two Desktop-only engine blockers, and the deletions the design requires
+    built:    1574825407e5 on origin/main at 2026-10-07T04:26:52Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 GREEN-MIN, A4 L3, A5 L4
+      A1     L2         each of phases 1-8 quicktests alone on the minimal list, including a terraced run filling bottom-up from a nat
+      A2     L2         no flood leaves the channel, no source fails to run down, and conservation leaks only through a disclosed over
+      A3     GREEN-MIN  the FlowWorks north-star baseline run (FLOWWORKS_NORTHSTAR_BASELINE_RUN_1) is recorded on the minimal list
+      A4     L3         the excavation wall and pit art (EXCAVATION_WALL_ART_1) is evaluated and reads as shipping quality
+      A5     L4         the owner has looked at the FlowWorks result in game and accepts it
+GELATINOUSSLIME_TITAN_CHUNK_BOMB_1   [validated, owner FOUNDRY]  Slime giant: a chunk of the titanoslime is a terrible thrown bioweapon
+    built:    ab069c26eb6a on origin/main at 2026-10-07T04:26:54Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L3
+      A2     L2         a thrown titanoslime chunk drenches a test pawn into slimification on a quicktest map
+      A3     L2         an unused titanoslime chunk shrinks to nothing within its shelf time
+      A4     L3         the chunk art is evaluated against the gelatinousslime_turn1_2026-10-02.csv brief
+HOSTILE_FLORA_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: HostileFlora
+    built:    115b01a836b2 on origin/main at 2026-10-07T04:26:56Z, level reached L0
+    owes:     A2 L2, A3 GREEN-MIN
+      A2     L2         a live northstar_driver run of HostileFlora, including the reaction_cluster chain with a mental-state reader, 
+      A3     GREEN-MIN  every non-pass in the HostileFlora run is classified as harness, site, mod or unmeasured
+LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1   [validated, owner FOUNDRY]  Shed vissler arms draw real scavengers: which species, food or lure job
+    built:    da7f172ae493 on origin/main at 2026-10-07T04:26:57Z, level reached L1
+    owes:     A2 L2, A3 GREEN-MIN
+      A2     L2         a state read of scavenger jobs shows an arm on the ground draws the ruled scavengers
+      A3     GREEN-MIN  the LeaningScrub north-star bar covering the arm and scavengers passes on the minimal list
+MIASMA_MECHANICS_1   [built, owner FOUNDRY]  Miasma C# kit: surge/salt-line system (fresh-brine map axis, storm-driven movement, stranding pools), fever-forged boon tables, miasma weather, warden-mother set-piece placement - spec the_miasma.md
+    built:    8eefb86be998 on origin/main at 2026-10-07T04:26:58Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2
+      A1     L2         M2 surge and salt-line movement is observed moving on a quicktest map in the Miasma biome
+      A2     L2         M3 stranding pools appear and persist after the miasma recedes
+      A3     L2         M6 the warden (RM_WardenMother) never leaves its anchor
+NORTHSTAR_COMPANION_GAPS_1   [validated, owner FOUNDRY]  Companion tools: pawn census (mental state+job), incident-queue peek/selective remove, damage-event ring buffer, holder/stack lineage, pawn roles+lord
+    built:    88f41d25f6ce on origin/main at 2026-10-07T04:26:59Z, level reached L1
+    owes:     A2 L2
+      A2     L2         each of the six tools is proven live on the minimal list returning correct data
+SHIELD_MODS_LEVERAGE_1   [validated, owner FOUNDRY]  Find existing shield mods, study and make compatible; tuned-plasma-field model per shd rulings
+    built:    8193255c7e61 on origin/main at 2026-10-07T04:27:02Z, level reached L1
+    owes:     A2 L2, A3 GREEN-MIN, A4 L3
+      A2     L2         a shield gauntlet on a quicktest map shows bubble, thermal veil, particulate and cryo fields each working
+      A3     GREEN-MIN  the ShipShields north-star bars pass on the minimal list
+      A4     L3         the shield art and placeholder textures are evaluated
+STILLSAND_EVENT_CREATURES_LIVE_1   [built, owner FOUNDRY]  Live-prove the krayt attack and muurrok on a Stillsand quicktest, and live-fire the Long Hunger
+    built:    136c287f50b6 on origin/main at 2026-10-07T04:27:03Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L2, A4 L2, A5 L2, A6 L2
+      A1     L2         a wild krayt still spawns on a Stillsand map
+      A2     L2         RUT_KraytAttack and RM_MuurrokEmergence fire by dev action on a Stillsand quicktest, a pawn of the kind appear
+      A3     L2         the muurrok beam damages a target with no exception in Player.log and does nothing at night or in a Sandstorm
+      A4     L2         a take on sand leaves RM_Filth_DisturbedSand, a drag-mark line and a letter naming the taken, then the leviath
+      A5     L2         the settings panel Stillsand: event creatures lists both incidents
+      A6     L2         The Long Hunger is live-fired once on a Stillsand map
+SUMP_TAR_NASTINESS_1   [validated, owner FOUNDRY]  Sump nastiness mechanics: sticky tar overlay on any terrain, tarred-pawn hediffs, weak solvent craftable in-biome, tar's own reward
+    built:    9432dfc5f15c on origin/main at 2026-10-07T04:27:04Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L2, A5 L2, A6 L2, A7 GREEN-MIN
+      A2     L2         tar can be applied to a non-tar terrain and cleaned off it on a quicktest map
+      A3     L2         a pawn crossing tar picks up the Tarred hediff
+      A4     L2         the ScrubTarred surgery and a weak solvent remove the Tarred hediff
+      A5     L2         the weak solvent is craftable from in-biome materials only and the Bitumen reward loop yields something a colo
+      A6     L2         all four tar features toggle in Mod Settings
+      A7     GREEN-MIN  the TheSump north-star bars covering tar nastiness pass on the minimal list
+VAULT_DUNGEON_BUILD_1   [built, owner FOUNDRY]  Build the six Forsaken vaults: concentric grammar templates, LARGE maps, quicktest-proven
+    built:    247cd6d40f87 on origin/main at 2026-10-07T04:27:06Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L4, A4 L4
+      A1     L2         type 2 vault proof is run with the third-party symbol mods on the tier
+      A2     L2         the LARGE size check of each vault template is run on a quicktest map
+      A3     L4         the owner hand-finishes the six sites and world_commit lands them
+      A4     L4         the owner reads the V6 wake, loot and leave text and letters and accepts them as plainly brutal with the ship-
+FORGE_WHITE_PLUME_FRONTS_1   [validated, owner FOUNDRY]  White plume fronts: moving quench-steam fronts that obscure shooters, soak ground, raise vanilla heatstroke; vapour-adapted exempt
+    built:    09ccb3ca555e on origin/main at 2026-10-07T06:26:19Z, level reached L1
+    owes:     A3 L2, A4 L2, A5 L2, A7 L4
+      A3     L2         A plume front moves off crusted cells on a quicktest map.
+      A4     L2         A plume front obscures ranged attacks.
+      A5     L2         RM_CompVaporDrifter creatures are unharmed by the fronts.
+      A7     L4         The owner reviews and accepts or overrides the four builder-chosen answers.
+UNFINISHED_LINE_WORLD_FOUNDRY_1   [validated, owner FOUNDRY]  Unfinished Line runs in the world (Q1=A): Enclave regrowth, Foundry-grade frames/parts in Enclave stock, volunteer free droids, line heat -> Imperial strikes; never heads, no player building
+    built:    863f9089fc67 on origin/main at 2026-10-07T06:37:20Z, level reached L1
+    owes:     A4 L2, A5 L2, A6 L2
+      A4     L2         modcheck chain 'world' on a save with the Enclaves allied: stand -> runs=True; volunteer offered; Enclave trad
+      A5     L2         accept the volunteer: one droid joins the player with no bolt/wipe hediff; bolting it flips betrayed=True, cos
+      A6     L2         settlement regrowth: an Enclave settlement map generated while the line runs gets more defenders than baseline
+GRAVSHIP_ACOUSTIC_SCANNER_1   [validated, owner FOUNDRY]  Gravship acoustic scanner (owner, 2026-09-30, from the Cracked Lands Belly Sounder): grounded ship fires a sounding pulse that reveals broad bands of hidden things, with a per-biome payload in EVERY biome
+    built:    27962f76b3a1 on origin/main at 2026-10-07T06:49:41Z, level reached L1
+    owes:     A2 L2, A3 L4
+      A2     L2         a landed gravship's pulse works on a Cracked Lands map and on a Stillsand map and the reading is always banded
+      A3     L4         the owner judges the per-biome payload feel across the 62 biome payloads
+RUSTCATHEDRAL_BOREHULK_GIANT_BUILD_1   [validated, owner FOUNDRY]  Rust Cathedral giant: the borehulk, a colossal peaceful mining droid with a worn-out drill (three drill states)
+    built:    38b18d07ca93 on origin/main at 2026-10-07T07:32:18Z, level reached L1
+    owes:     A3 L2, A4 L2, A5 L2, A6 L2, A7 L4
+      A3     L2         chance 1 -> exactly one borehulk on a Rust Cathedral map on a non-sacred cell; chance 0 -> none; other biome -
+      A4     L2         spawned borehulk reads comp Worn, faction null; harmed 2500 ticks it never starts an attack job, mental state 
+      A5     L2         lowest hum band -> wait/freeze job; band restored -> moves within 2500 ticks
+      A6     L2         30000 ticks Worn -> 0 mined cells, RM_BorehulkGrind played >= 1 (comp counter); each Mod Settings toggle off r
+      A7     L4         Worn art installed (south failed in artpipe) and Unbitted/Restored edits swap the body graphic per comp state
+STILLSAND_SKELETONS_REMAINDER_1   [validated, owner FOUNDRY]  Stillsand skeletons remainder: tracks on the footprint grid + dune eraser, dune burial, skeleton/skull art wiring, giant bone yield, ribs shadow, giant horizon warnings, live proof
+    built:    225fd2245dd1 on origin/main at 2026-10-07T07:46:25Z, level reached L1
+    owes:     A3 L2, A4 L2, A5 L3
+      A3     L2         on a Stillsand quicktest, sandGrid.SetDepth 0.7 over a skeleton footprint then UpdateBurial() reads Buried, ha
+      A4     L2         a dev herd migration on a Stillsand map raises "Dust on the horizon", is delayed by horizonWarningHours, and P
+      A5     L3         a buried skeleton reads sand-tinted to the eye (provisional 0.6/0.3 thresholds judged against real dune drift)
+ABYSS_LIGHTFALL_BROOD_WRECK_1   [validated, owner FOUNDRY]  Lightfall's bottom: the dragons' brood and the wreck that repairs your ship
+    built:    6f4ca76604ae on origin/main at 2026-10-07T08:11:31Z, level reached L1
+    owes:     A9 L2, A10 L2, A11 L2, A12 L2, A13 L3
+      A9     L2         a generated map on an RM_BroodLair/Lightfall tile holds the sleeping brood-mother, eggs, bone field and wreck
+      A10    L2         a salvage bill completes at the wreck, spends stock and raises the meter; a refused part's fit gizmo shows the
+      A11    L2         an egg hatched with a great bone aboard the gravship bonds; without one it hatches wild; a stolen egg calls a 
+      A12    L2         past the line she wakes as RM_SummAllRender, manhunter, taking ~3% damage
+      A13    L3         joint session with the owner judges landscape scale, alien-beast feel and where the greed line sits
+RUSTCATHEDRAL_HULL_BOLTS_BUILD_1   [validated, owner FOUNDRY]  Hull bolts: living bolts ride the ship for good as hull pets and the Cathedral's ears; reveal and dilemma
+    built:    c5b3085d6b6d on origin/main at 2026-10-07T09:23:49Z, level reached L1
+    owes:     A2 L2, A3 L2, A4 L2, A5 L2, A6 L2, A7 L2, A8 L2, A9 L2
+      A2     L2         launch from a Rust Cathedral test map with living bolts within 4 cells, count forced 2: exactly 2 RM_HullBolt 
+      A3     L2         -80C and +90C for 10,000 ticks each: no Hypothermia/Heatstroke/ToxicBuildup on any hull bolt; Flame and EMP da
+      A4     L2         with a hull bolt aboard, selling one RM_BoltShedCuriosity adds one ledger entry at the configured weight and e
+      A5     L2         landing on a Rust Cathedral map with ledger T raises starting irritation by min(T, cap) and the ledger reads e
+      A6     L2         at hullBoltRealiseDays the mark set covers each hull bolt's cell and its inspect string carries the cold line
+      A7     L2         free tier: the dilemma letter fires once, only after a hum reader is on the map and a tell occurs
+FEVERWOOD_BROOD_RANSOM_1   [validated, owner FOUNDRY]  Fever Wood giant story: ransom of its young (world tally, release gift, young cask trade, Sporefall tank)
+    built:    81f3604502d8 on origin/main at 2026-10-07T09:43:18Z, level reached L2
+    owes:     A3 L2, A4 L2, A6 L2, A7 L2
+      A3     L2         tally - quicktest map with 2 occupied tanks + 1 cask reads 3 (+1 Sporefall while unfreed); after Return to the
+      A4     L2         gift - young released into a Fever Wood pool gives exactly one RM_DeepGiftLoot thing within 6 cells in 2,500 t
+      A6     L2         Sporefall - visiting Sporefall places RUT_SporefallDisplayTank owned by the Wildsteam; Free the young drops Wi
+      A7     L2         Wildsteam settlement/caravan trader stock can carry RM_SekkulaathYoungCask at Expensive; non-Wildsteam outland
+MESSYCONDUIT_CABLE_PILE_LOOK_1   [built, owner FOUNDRY]  Cable and hose pile look: power strips always have cables plugged in, cables read as one flowing run except at nodes/strips/joiners (like the T junction box), hose brass ends never lie across other hoses, only as sealed joiners between lengths
+    built:    8bab86bebddd on origin/main at 2026-10-07T10:02:05Z, level reached L0
+    owes:     A2 L2, A3 L2, A4 L4
+      A2     L2         on a quicktest map with two hose reels where the newer hose's free end rests on the older hose's body, the hos
+      A3     L2         a hose crossing another at a bend draws no joiner on the crossing (probe joints vs drawn count), and a joiner 
+      A4     L4         owner looks at a junction pile, a Modern strip pile and two crossing hoses on a review map and rules the look 
+BILEWORM_CORPSE_ROT_1   [built, owner FOUNDRY]  Bileworm: corpses near it rot fast into corpse bile it drinks; colonists nearby feel the stench (description already promises it; VEF comps dropped at the port)
+    built:    aef4566f7fa1 on origin/main at 2026-10-07T10:45:58Z, level reached L0
+    owes:     A2 L2
+      A2     L2         on a quicktest map a fresh corpse beside a spawned bileworm dissolves into corpse bile within a day; a nearby 
+WARSCAR_CHOTRIX_SIGNS_1   [validated, owner FOUNDRY, BLOCKED]  Chotrix readable signs: track-grid prints and dragged-kill marks (needs FOOTPRINT_TRACK_GRID_1), tetchik silence ring (needs WARSCAR_GEIGER_CHOIR_1); CompChotrix.All and SilenceRadius are the hooks
+    built:    13030f7928fc on origin/main at 2026-10-07T13:51:27Z, level reached L1
+    owes:     A2 L2, A3 L4
+      A2     L2         on a quicktest map a walking chotrix leaves chotrix print tracks and a kill leaves a drag mark that a colonist
+      A3     L4         owner judges the chotrix print art (currently a placeholder copy; real art owed)
+WARSCAR_AEROSOL_SCREEN_1   [validated, owner FOUNDRY, BLOCKED]  Warscar projectors and aerosol screen: lift ShipShields particulate core to RM, broad polluted-biome screen balanced by cost, live/dead rings, salvageable working generators, ship wakes the line, glower shielding
+    built:    c283093c9141 on origin/main at 2026-10-07T13:52:01Z, level reached L1
+    owes:     A2 L2
+      A2     L2         inside a dome no toxic buildup occurs in fallout, ToxRain, RM_Settling or Wasteland ash (needs a building that
+FORGE_DHOKKUR_WAYS_1   [validated, owner FOUNDRY]  Dhokkur ways: outcrop disguise clues, rain-wake groan, path memory on glass-polished tracks, walls shoved not annihilated
+    built:    ca4f97aca476 on origin/main at 2026-10-07T13:52:03Z, level reached L1
+    owes:     A2 L2, A3 L4
+      A2     L2         on a quicktest map a waking dhokkur plays the stone groan, leaves a polished trail that persists across cycles
+      A3     L4         owner rules the two open questions (shove behaviour, whether tracks fade) and judges bespoke trail and gutter 
+GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1   [validated, owner FOUNDRY]  The greatbole's song, thermal sanctuary, pilgrims, and the two opt-in crossovers
+    built:    196c6f89565f on origin/main at 2026-10-07T13:52:04Z, level reached L1
+    owes:     A2 L2, A3 L2
+      A2     L2         on a quicktest map a planted seed grows only when watered, and the greatbole core now ticks so the harvest lad
+      A3     L2         with the dryad servants setting on, the crossover works; with it off (default) nothing changes
+RUSTCATHEDRAL_GOODWILL_FLOOR_1   [validated, owner FOUNDRY]  Rust Cathedral hum reads a permanent-enemy faction's goodwill: calm bands may be unreachable
+    built:    510d305aa383 on origin/main at 2026-10-07T13:52:04Z, level reached L1
+    owes:     A2 L2
+      A2     L2         calm_bands_reachable PASSES live; the worst-band drain, eel catch cost and drill response move the standing va
+RAKATAN_ARCHOTECH_MACHINES_1   [validated, owner FOUNDRY]  Design session with the owner: extend Wrecked Machines into the core Rakatan tech trait - robust, survives, degrades gracefully; mobile structures included; archotech officially reinterpreted as Rakatan Ancient technology, found as sacred loot the ship loves and heals over time
+    built:    a292bdd8bdfb on origin/main at 2026-10-07T13:52:05Z, level reached L1
+    owes:     A2 L2, A3 L4
+      A2     L2         dev-spawned machines run, degrade gracefully and heal per grade on a quicktest map
+      A3     L4         owner reviews the Rakatan design (component source, ruin wrecks, turrets and art are not built yet)
+FLOWWORKS_CONTAINER_MATERIALS_1   [validated, owner BENCH]  Bottles and barrels are made from a material the player picks (stuffable + per-material recipes at matching stations)
+    built:    3fd6c2f38a0c on origin/main at 2026-10-07T13:52:14Z, level reached L1
+    owes:     A2 L2, A3 L4
+      A2     L2         material survives fill, wash and pour into a tank; metal and wood containers refuse acid, plasteel holds it; s
+      A3     L4         owner judges the stuff-tinted container art (greyscale renders queued)
+FLOWWORKS_LADDER_RAISE_LOWER_1   [built, owner BENCH]  Pit ladder has two player-toggled states (raised/lowered); entering a pit from the top descends a lowered ladder
+    built:    169e004f6576 on origin/main at 2026-10-07T13:52:15Z, level reached L0
+    owes:     A1 L2, A2 L4
+      A1     L2         the toggle, haul and raised_hold runner scenes pass again on the flowworks tier (passed live 2026-10-06 per co
+      A2     L4         owner confirms the raised and lowered ladder art (raised variant owed)
+PIT_LIP_OCCLUDES_OUTSIDE_1   [built, owner BENCH]  Pit-lip occlusion quad paints ground over a pawn standing OUTSIDE the pit (Muffalo south of pit, owner-spotted 2026-10-06)
+    built:    a100d8e2e5c7 on origin/main at 2026-10-07T13:52:16Z, level reached L0
+    owes:     A1 L2
+      A1     L2         a depth-4 pawn on a pit south row stays inside the opening and the muffalo lip cover spans the real sprite
+GREENTIDE_BASE_PORT_BUILD_1   [validated, owner FOUNDRY]  Greentide free tier gets Roil, Breaklight, wet-bulb, dry-air blower, root causeways and living greatbole (RUT_ to RM_)
+    built:    5ac6686e683c on origin/main at 2026-10-07T13:52:22Z, level reached L1
+    owes:     A4 L2
+      A4     L2         a Greentide quicktest map loads with the save aliases, steam devil and toxin sealed floor working
+SHIPVERMIN_FREE_TIER_BEASTS_1   [validated, owner FOUNDRY]  ShipVermin free tier gets its own beasts; Star Wars bestiary patches canon in when active
+    built:    a33f7ffaf017 on origin/main at 2026-10-07T23:39:31Z, level reached L1
+    owes:     A3 L2, A4 L4
+      A3     L2         with swbestiary loaded the canon creatures take the same four nest slots
+      A4     L4         owner approves the free-tier beast list and the art
+MOVINGDUNES_WATER_BANKS_SAND_1   [built, owner FOUNDRY]  MovingDunes: sand hopping onto water banks on the shore (owner card: water banks the sand)
+    built:    01108c97cf1e on origin/main at 2026-10-08T02:26:18Z, level reached L0
+    owes:     A2 L2
+      A2     L2         on a dune map with a lake downwind, sand piles on the shore and the lake cells stay at depth 0 over a storm
+DEAD_OR_INERT_SETTINGS_1   [built, owner FOUNDRY]  Settings the def lints found unwired: wire or delete per mod (Scarlands, EmpirePursuit done; TerminalBiomes, Wasteland open)
+    built:    c76c4119cddd on origin/main at 2026-10-08T02:52:17Z, level reached L0
+    owes:     A2 L2
+      A2     L2         Warscar cross-biome opt-in seeds wreck-lichen on an opted-in biome map; rarity 0 leaves no RM_Warscar tile on 
+TILE_TEMP_CACHE_RESET_TOOL_1   [built, owner FOUNDRY]  JawaBench: world_tile_set (or a new jawa/tile_cache_reset) nulls Tile.cachedMinTemp/cachedMaxTemp/hillinessLabelCached by reflection, so a retiled temperature reaches CanEverPlantAt and plant growth without a reload
+    built:    ac8b24b82bae on origin/main at 2026-10-08T02:55:15Z, level reached L0
+    owes:     A1 L2
+      A1     L2         after a temperature retile, jawa/world_cache_audit includeTemps shows stale caches, jawa/world_tile_cache_rese
+BRIDGE_LOCK_CROSS_CLONE_RACE_1   [built, owner FOUNDRY]  rimflow bridge take can't see the other clone's unpushed take: BENCH and FOUNDRY both held the bridge 2026-10-07 10:47/10:48Z and FOUNDRY killed two BENCH loads
+    built:    6fc532dbe498 on origin/main at 2026-10-08T02:58:47Z, level reached L0
+    owes:     A3 L2
+      A3     L2         next real two-window session: a BENCH take blocks a FOUNDRY take without a push in between
+SOLAR_MIRRORS_BUILD_1   [validated, owner FOUNDRY]  Solar Mirrors to deploy-ready: ancient Long Shade mirror field, dust, concentration heat, greenhouse, heliograph, dazzle, full settings, shade probe, art
+    built:    f22b94f8451d on origin/main at 2026-10-08T05:16:17Z, level reached L1
+    owes:     A3 L2, A4 L2, A5 L2, A6 L2, A7 L2, A8 L4
+      A3     L2         a mirror aimed at a shaded cell lowers ShadeAt and raises ExposureAt there (read by `jawa/shade_probe`); a wal
+      A4     L2         a generated Long Shade map carries an ancient field whose solver report reads solvable with an unsolved start;
+      A5     L2         dust from a sandstorm lowers a mirror's delivered light; a cleaning job restores it.
+      A6     L2         a beam through a glazed aperture into a roofed room warms it; the furnace lit indoors warms its room.
+      A7     L2         the heliograph opens comms with a friendly faction in range by day and refuses at night.
+      A8     L4         with the owner watching, the lit patch reads as light inside a rendered shadow and the herd re-routes.
+BIOME_ARRIVAL_LETTERS_ALL_1   [validated, owner FOUNDRY]  X-6/FV-5: arrival letter per biome that has had its sitting, starting with Fever Wood; names heat kind and answering gear
+    built:    4b1b7c63c94a on origin/main at 2026-10-09T02:41:25Z, level reached L1
+    owes:     A2 L2, H1 L4
+      A2     L2         a gravship landing on a Fever Wood map raises the letter once; a second landing does not
+      H1     L4         the owner reviews and edits the ten placeholder texts
+WETBULB_FOLD_INTO_HEAT_1   [validated, owner FOUNDRY]  EH-1 (card ruled FOLD): wet-bulb feeds vanilla heatstroke; retire RM_WetBulbOverwhelm/RM_WetBulbProtection; wicking/sealed gear answers via vanilla heat stats, like SCALD_FOLD_INTO_HEAT_1
+    built:    6e6a23f3823f on origin/main at 2026-10-09T02:48:19Z, level reached L2
+    owes:     A2 L2, A3 L2, H1 L4
+      A2     L2         on the live full tier, Player.log has no cross-reference or config error naming the deleted defs after deployi
+      A3     L2         live, an unprotected colonist outdoors on a Greentide map gains vanilla Heatstroke, and one in an enclosed roo
+      H1     L4         the owner judges the 12 C offset and the gear values in a sitting (PROVISIONAL until then)
+FALLEN_WIRE_SHOCK_1   [validated, owner FOUNDRY]  GS-2+X-7 (card ruled): live fallen wire knocks out and throws back a little, lethal only with weak-heart/heart-damage hediffs; shocks colonists too; can ignite spilled fuel; Mod Settings toggles
+    built:    6d208adca36f on origin/main at 2026-10-09T02:55:52Z, level reached L2
+    owes:     A5 L2, H1 L4
+      A5     L2         live, a live end lying in a chemfuel puddle starts a fire within a few sweeps; with FlowWorks, one lying in ca
+      H1     L4         the owner judges the knockback, knock-out length and ignition chance in a sitting (PROVISIONAL until then)
+LIQUID_HEAT_PUSH_1   [validated, owner FOUNDRY]  FL-1/X-8: boiling and icy liquid push vanilla heat per pulse (cold flag beside hot, capped, toggle and slider); feeds pit softening and Scald shores
+    built:    f90610cd547f on origin/main at 2026-10-09T03:01:21Z, level reached L2
+    owes:     A3 L2
+      A3     L2         an open boiling patch identifies hot but reads outdoor, and the outdoor temperature beside it is unchanged
+BLOWER_ROOM_COOLER_1   [validated, owner FOUNDRY]  Dry-air blower becomes a special room cooler: never heats a room, cools the room behind it; power and strength in Mod Settings (decision taken by question card 2026-10-08)
+    built:    d2454e533222 on origin/main at 2026-10-09T03:52:59Z, level reached L2
+    owes:     A3 L2, H1 L4
+      A3     L2         live, a powered fuelled blower built into the wall of an enclosed room, front facing out, lowers that room tow
+      H1     L4         the owner judges strength 14 and draw 250 W in a sitting (PROVISIONAL until then)
+LAUNCH_HELD_COLONIST_WARNING_1   [validated, owner FOUNDRY]  Gravship launch confirmation names any colonist held inside something (brine jacket, Hwelgrue, Titanoslime) so the player can free them first (decision taken by question card 2026-10-08)
+    built:    d2454e533222 on origin/main at 2026-10-09T03:52:59Z, level reached L1
+    owes:     A3 L2, A4 L2
+      A3     L2         live, a colonist sealed in a brine jacket (or swallowed by a Hwelgrue) is named in the gravship launch confirm
+      A4     L2         live, with the setting off the dialog is vanilla
+WIRE_DOWN_ALERT_1   [built, owner FOUNDRY]  GS-4: 'wire down' alert listing cut/fallen overhead spans, jump-to + re-string; toggle
+    built:    b7cf5f95ed5d on origin/main at 2026-10-09T04:53:42Z, level reached L0
+    owes:     A1 L2
+      A1     L2         probe alert lists the anchors of a cut span (down>=2, enabled) and is empty after restring; wireDownAlert=fals
+DECOY_SHADE_TARP_1   [validated, owner FOUNDRY]  CB-8: decoy shade tarp read as shade by heat-driven predators, no cooling; mirrak-hide variant; research-gated, toggle
+    built:    058a62402245 on origin/main at 2026-10-09T04:55:28Z, level reached L1
+    owes:     A2 L2
+      A2     L2         a shade-seeking animal paths to a placed decoy tarp and the shade grid reads 0 under it (art owed: tent textur
+SPECIMEN_CABINET_DISPLAY_1   [built, owner FOUNDRY]  DI-7: specimen cabinet displaying novel finds (Elder NoveltyKey), beauty + museum mood; research-gated, toggle
+    built:    eb27402f1cfc on origin/main at 2026-10-09T04:58:00Z, level reached L0
+    owes:     A2 L2
+      A2     L2         a placed cabinet holding two distinct corpses reads Beauty +4 and the colony gets RM_SpecimenMuseum stage 0 (a
+THICK_LIQUID_CREEP_1   [built, owner FOUNDRY]  FL-2: cap fill-front hops per pulse so tar/slime/blood creep at stated speed; 40-cell front-speed fixture
+    built:    37cef4b3d498 on origin/main at 2026-10-09T05:00:06Z, level reached L0
+    owes:     A2 L2
+      A2     L2         a tar channel on a bridge map fills at the stated speed in game
+SHIP_TOW_LINE_1   [validated, owner FOUNDRY]  X-13/CB-9: generalise tether pull Pawn->Thing so a ship tow line drags wrecks/carcasses home
+    built:    ca1f07384d9a on origin/main at 2026-10-09T05:02:31Z, level reached L1
+    owes:     A3 L2
+      A3     L2         a placed winch drags a wreck chunk home one cell per reel interval (art owed: capstan base placeholder; KeelHo
+DUST_SETTLED_LETTER_1   [built, owner FOUNDRY]  SS-3: horizon-warning group that never arrives gets a 'the dust settled' letter; plume lasts until real arrival
+    built:    e60e5519bddd on origin/main at 2026-10-09T05:04:09Z, level reached L0
+    owes:     A2 L2
+      A2     L2         horizon.horizon_dust_settled_letter on a Stillsand map (a never-arriving warned group gets the letter, an arri
+SCREEN_STOPS_SPORES_1   [validated, owner FOUNDRY]  X-11: particulate/aerosol screen also stops spore clouds (Gas_Damaging asks IsPositionScreened)
+    built:    584f9cdce8ad on origin/main at 2026-10-09T05:05:12Z, level reached L1
+    owes:     A2 L2
+      A2     L2         a spore cloud next to a built Scarlands aerosol screen does nothing inside the dome and still hurts outside it
+VERMIN_EAT_BREEDING_FOOD_1   [validated, owner FOUNDRY]  CB-3: breeding vermin consume food per litter; unreachable food does not count
+    built:    7d265847c849 on origin/main at 2026-10-09T05:06:45Z, level reached L1
+    owes:     A3 L2
+      A3     L2         a grub litter shrinks the fruit pile by the setting and a walled-off pile starves the breeder (tune verminLitt
+CREATURE_ALARM_ORIGIN_SHARE_1   [built, owner FOUNDRY]  CB-1: disturbed creature reserves its own alarm share before propagation
+    built:    6ce1d9009102 on origin/main at 2026-10-09T05:11:06Z, level reached L0
+    owes:     A1 L2
+      A1     L2         disturbed Kurreth rallies even when neighbours would exhaust the budget (live check owed)
+DUNG_HATCH_WILDLIFE_CAP_1   [built, owner FOUNDRY]  CB-4: dung-hatched young respect the map wildlife limit
+    built:    6ce1d9009102 on origin/main at 2026-10-09T05:11:06Z, level reached L0
+    owes:     A1 L2
+      A1     L2         on a full-ecosystem map a shade whale dung trail spawns no young (live check owed)
+TWILIGHT_WELL_AVOIDS_CURRENT_1   [built, owner FOUNDRY]  TB-3: twilight wells avoid the current lane map
+    built:    c4cf38958c35 on origin/main at 2026-10-09T05:12:02Z, level reached L0
+    owes:     A1 L2
+      A1     L2         live check owed (see ## verify)
+SALT_TRAVELS_WITH_DOOR_1   [built, owner FOUNDRY]  TB-2: door salt stored on the door, survives flight/minify
+    built:    c4cf38958c35 on origin/main at 2026-10-09T05:12:04Z, level reached L0
+    owes:     A1 L2
+      A1     L2         live check owed (see ## verify)
+POLE_OWNER_CHANGE_DROPS_WIRES_1   [built, owner FOUNDRY]  GS-5: pole ownership change drops wires to other owner poles
+    built:    6df20043144b on origin/main at 2026-10-09T05:13:07Z, level reached L0
+    owes:     A1 L2
+      A1     L2         live check owed (see ## verify)
+HAZARD_TAR_TERRAIN_FROM_LIQUIDS_1   [built, owner FOUNDRY]  EH-5: hazard code reads tar terrains from FlowWorks liquid defs, not literals
+    built:    6df20043144b on origin/main at 2026-10-09T05:13:09Z, level reached L0
+    owes:     A1 L2
+      A1     L2         live check owed (see ## verify)
+DANGER_CLOCK_ALERTS_1   [built, owner FOUNDRY]  DI-4: alerts for heated-suit low/empty and brine-encased smother clock
+    built:    c71eb0dca16b on origin/main at 2026-10-09T05:14:16Z, level reached L0
+    owes:     A1 L2
+      A1     L2         live check owed (see ## verify)
+TAKEN_BY_LAND_SERVICE_1   [validated, owner FOUNDRY]  X-10: one 'taken by the land, comes back later' service for gale carry + swept-away, with ground trace
+    built:    8748a6d93d19 on origin/main at 2026-10-09T05:15:11Z, level reached L1
+    owes:     A3 L2
+      A3     L2         a pawn swept off the river edge and a pawn carried off by a gale each get a letter, a drag mark where they sto
+PROMISED_GIFT_NEVER_LOST_1   [built, owner FOUNDRY]  FV-2: owed deep-gifts not dequeued before ransom setting / placement checks
+    built:    303ee207bed5 on origin/main at 2026-10-09T05:15:38Z, level reached L0
+    owes:     A1 L2
+      A1     L2         live check owed (see ## verify)
+LONGSHADE_MIDDENS_SPENT_BUILD_1   [built, owner FOUNDRY]  Long Shade middens: spent-once heaps, mapgen seeding at rock lee ends, clean-patch tell
+    built:    1ee692c06b37 on origin/main at 2026-10-09T05:37:06Z, level reached L0
+    owes:     A1 L2, A2 L2, A3 L3
+      A1     L2         new Long Shade map has 2-5 midden heaps at the down-sun end of small rocks; searching one yields vanilla items
+      A2     L2         mirrak/gulloth shade patches show an "Unnaturally clean." inspect line on a ground marker
+      A3     L3         midden and clean-patch art installed from artpipe (RM_LongShadeMidden, RM_LongShadeCleanPatch)
+ENVHAZARDS_HAZARD_CLOCK_READOUTS_1   [built, owner FOUNDRY]  EH-4: EnvironmentalHazards: show the hazard clocks (venomvine contact and next scratch, wet-bulb ramp, warm ground, tar-beast wake) on hover or as a near-source alert
+    built:    621da5d9ac9c on origin/main at 2026-10-09T06:32:11Z, level reached L0
+    owes:     A1 L2
+      A1     L2         on a quicktest map with a thorn stand, a colonist walking into it shows the alert Thorn venom with next scratc
+DEEPFIRE_HEALTH_CHECK_1   [built, owner FOUNDRY]  LP-9: Deepfire health check: debug action listing orphan light proxies, pawn lights on the wrong map and cluster members outside their light, plus validation lines locking in the fixed bugs
+    built:    f788cd14ec70 on origin/main at 2026-10-09T06:35:34Z, level reached L0
+    owes:     A1 L2
+      A1     L2         on a quicktest map with a coated 6x6 floor and a coated walker, the Deepfire Health: report debug action retur
+SCARLANDS_RELOAD_MIDSTATE_1   [built, owner FOUNDRY]  SC-5: Scarlands: save-and-reload checks for half-finished states (settling sweep mid-way, ring repair parts in a hauler, cradle mid-wake, pool mid-phase, chotrix mid-drag)
+    built:    fc1ca80e8c56 on origin/main at 2026-10-09T06:37:22Z, level reached L0
+    owes:     A1 L2
+      A1     L2         on a Warscar quicktest map with each of the five half-finished scenes arranged (sweep under way, ring repair h
+
+## GREEN-MIN  — 54 items, needs bridge on the minimal list
+FLOWWORKS_NORTHSTAR_BASELINE_RUN_1   [built, owner FOUNDRY]  FlowWorks trial: first live BASELINE run on the minimal tier, timed, verify recorded
+    built:    fb68e4020365 on origin/main at 2026-10-07T04:23:55Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  Each failed component from the FlowWorks baseline run has a recorded finding.
+      A3     GREEN-MIN  The committed live run results are confirmed to match the item's acceptance.
+GELATINOUS_SLIME_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: GelatinousSlime
+    built:    2a85fd309345 on origin/main at 2026-10-07T04:23:57Z, level reached L0
+    owes:     A2 GREEN-MIN
+      A2     GREEN-MIN  A recorded live driver run of the GelatinousSlime north star on the minimal list produced a results JSON, and 
+GRAVSHIP_LANDING_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: GravshipLanding
+    built:    036f8ba10a1f on origin/main at 2026-10-07T04:23:58Z, level reached L0
+    owes:     A2 GREEN-MIN
+      A2     GREEN-MIN  A recorded live driver run of the GravshipLanding north star on the minimal list produced a results JSON, and 
+LEANING_SCRUB_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: LeaningScrub
+    built:    18669c79a5c8 on origin/main at 2026-10-07T04:24:00Z, level reached L0
+    owes:     A2 GREEN-MIN
+      A2     GREEN-MIN  A recorded live driver run of the LeaningScrub north star on the minimal list produced a results JSON, and eac
+STILLSAND_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: Stillsand
+    built:    a6f9a0139b05 on origin/main at 2026-10-07T04:24:05Z, level reached L0
+    owes:     A2 GREEN-MIN
+      A2     GREEN-MIN  A recorded live driver run of the Stillsand north star on the minimal list produced a results JSON, and each F
+ABYSS_FIRST_SCRIPT_1   [validated, owner FOUNDRY]  First north-star script: Abyss
+    built:    e44b4d2e63ef on origin/main at 2026-10-07T04:24:11Z, level reached GREEN-MIN
+    owes:     A1 GREEN-MIN
+      A1     GREEN-MIN  A live northstar_driver run of the Abyss validation script on the smallest tier that loads the mod completes a
+GIZKA_STOWAWAY_FIRST_SCRIPT_1   [validated, owner FOUNDRY]  First north-star script: GizkaStowaway
+    built:    4130b0d6179c on origin/main at 2026-10-07T04:24:21Z, level reached GREEN-MIN
+    owes:     A1 GREEN-MIN, A3 GREEN-MIN
+      A1     GREEN-MIN  A live northstar_driver run of the GizkaStowaway validation script on the smallest tier that loads the mod com
+      A3     GREEN-MIN  modcheck status for GizkaStowaway reads GREEN with a current hash after the re-run.
+PYRINTH_FIRST_SCRIPT_1   [validated, owner FOUNDRY]  First north-star script: Pyrinth
+    built:    df8e3b7f33b3 on origin/main at 2026-10-07T04:24:31Z, level reached GREEN-MIN
+    owes:     A3 GREEN-MIN
+      A3     GREEN-MIN  A live northstar_driver run of the Pyrinth validation script on the smallest tier that loads the mod completes
+SCARLANDS_FIRST_SCRIPT_1   [validated, owner FOUNDRY]  First north-star script: Scarlands
+    built:    ba7d93dccb81 on origin/main at 2026-10-07T04:24:32Z, level reached GREEN-MIN
+    owes:     A2 GREEN-MIN
+      A2     GREEN-MIN  A live northstar_driver run of the Scarlands validation script on the smallest tier that loads the mod complet
+SHIP_VERMIN_FIRST_SCRIPT_1   [validated, owner FOUNDRY]  First north-star script: ShipVermin
+    built:    411fe0d0ca93 on origin/main at 2026-10-07T04:24:33Z, level reached GREEN-MIN
+    owes:     A2 GREEN-MIN
+      A2     GREEN-MIN  A live northstar_driver run of the ShipVermin validation script on the smallest tier that loads the mod comple
+TITANIC_CREATURES_FIRST_SCRIPT_1   [validated, owner FOUNDRY]  First north-star script: TitanicCreatures
+    built:    f1269cd75fed on origin/main at 2026-10-07T04:24:36Z, level reached GREEN-MIN
+    owes:     A2 GREEN-MIN
+      A2     GREEN-MIN  A live northstar_driver run of the TitanicCreatures validation script on the smallest tier that loads the mod 
+WARCASKET_FIRST_SCRIPT_1   [validated, owner FOUNDRY]  First north-star script: Warcasket
+    built:    0516a3d46ea8 on origin/main at 2026-10-07T04:24:38Z, level reached GREEN-MIN
+    owes:     A2 GREEN-MIN
+      A2     GREEN-MIN  A live northstar_driver run of the Warcasket validation script on the smallest tier that loads the mod complet
+CREATURE_BEHAVIORS_FIRST_SCRIPT_1   [validated, owner FOUNDRY]  First north-star script: CreatureBehaviors
+    built:    b398167660d7 on origin/main at 2026-10-07T04:24:44Z, level reached L2
+    owes:     A3 GREEN-MIN
+      A3     GREEN-MIN  the CreatureBehaviors validation script passes on the minimal list with every non-pass classified
+OASIS_MAKER_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: OasisMaker
+    built:    d86360412176 on origin/main at 2026-10-07T04:24:57Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  a live run of the OasisMaker validation script on a staged pad produces a results JSON in Transient/northstar
+      A3     GREEN-MIN  the debug-action path and Granite_Rough pad assumptions are confirmed or classified in the results
+RIVER_COLORS_FIRST_SCRIPT_1   [validated, owner FOUNDRY]  First north-star script: RiverColors
+    built:    f5b3f4bc9d26 on origin/main at 2026-10-07T04:24:58Z, level reached GREEN-MIN
+    owes:     A2 GREEN-MIN
+      A2     GREEN-MIN  one live driver run of the RiverColors validation script on the minimal list produces a results JSON in Transi
+SCARLANDS_LADDER_FIRST_SCRIPT_1   [validated, owner FOUNDRY]  First north-star script: ScarlandsLadder
+    built:    68676a8465d4 on origin/main at 2026-10-07T04:24:59Z, level reached GREEN-MIN
+    owes:     A2 GREEN-MIN
+      A2     GREEN-MIN  one live driver run of the ScarlandsLadder validation script on the minimal list produces a results JSON in Tr
+SHOKKWEAVE_ECONOMY_FIRST_SCRIPT_1   [validated, owner FOUNDRY]  First north-star script: ShokkweaveEconomy
+    built:    f5b3f4bc9d26 on origin/main at 2026-10-07T04:25:01Z, level reached GREEN-MIN
+    owes:     A2 GREEN-MIN
+      A2     GREEN-MIN  one live driver run of the ShokkweaveEconomy validation script on the minimal list produces a results JSON in 
+FLOWWORKS_NORTHSTAR_TRIAL_1   [built, owner FOUNDRY]  FlowWorks north-star trial: VALIDATED -> WIRED -> GREEN-minimal -> GREEN-full -> SHIPPED
+    built:    4f76420cb616 on origin/main at 2026-10-07T04:25:25Z, level reached L0
+    owes:     A1 GREEN-MIN, A2 GREEN-FULL, A3 L4, A4 GREEN-MIN
+      A1     GREEN-MIN  BASELINE_RUN_1 and GREEN_MINIMAL_1 pass live on the minimal list for FlowWorks.
+      A2     GREEN-FULL GREEN_FULL_1 runs on the full list and modcheck status FlowWorks prints GREEN re-derived, after the stale hash
+      A3     L4         SHIP_1 shipped gaps are each closed or parked by the owner's word.
+      A4     GREEN-MIN  The six bars that fail by design for unbuilt features are recorded as classified findings rather than hidden.
+GRAFFITI_IMPERIAL_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: GraffitiImperial
+    built:    47459656b4ae on origin/main at 2026-10-07T04:25:27Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  One live northstar driver run of GraffitiImperial on the minimal list completes with a results JSON, proving t
+      A3     GREEN-MIN  Every FAIL in that run is classified as harness, site, mod or unmeasured.
+KYBER_TRADE_PLOT_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: KyberTradePlot
+    built:    f5b3f4bc9d26 on origin/main at 2026-10-07T04:25:29Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  One live northstar run of KyberTradePlot on the minimal list completes with a results JSON, settling quest gen
+      A3     GREEN-MIN  Every FAIL in that run is classified as harness, site, mod or unmeasured.
+MOVING_DUNES_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: MovingDunes
+    built:    d86360412176 on origin/main at 2026-10-07T04:25:32Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  One live northstar run of MovingDunes on the minimal list completes with a results JSON, settling the debug-ac
+      A3     GREEN-MIN  Every FAIL in that run is classified as harness, site, mod or unmeasured.
+SHOKK_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: Shokk
+    built:    dfeabbacecf1 on origin/main at 2026-10-07T04:25:36Z, level reached L0
+    owes:     A3 GREEN-MIN, A4 GREEN-MIN
+      A3     GREEN-MIN  One live northstar run of Shokk completes with a results JSON.
+      A4     GREEN-MIN  Every FAIL in that run is classified as harness, site, mod or unmeasured.
+TERMINAL_BIOMES_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: TerminalBiomes
+    built:    d1a92626aa5f on origin/main at 2026-10-07T04:25:37Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  One live northstar run of TerminalBiomes completes with a results JSON in Transient/northstar.
+      A3     GREEN-MIN  Every FAIL in that run is classified as harness, site, mod or unmeasured.
+WEBWORK_FIRST_SCRIPT_1   [validated, owner FOUNDRY]  First north-star script: Webwork
+    built:    654ec4f3e952 on origin/main at 2026-10-07T04:25:40Z, level reached GREEN-MIN
+    owes:     A3 GREEN-MIN
+      A3     GREEN-MIN  The one FAIL from the earlier 21P/1F retile run is classified as harness, site, mod or unmeasured.
+FEVER_WOOD_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: FeverWood
+    built:    6c34f761aeca on origin/main at 2026-10-07T04:25:46Z, level reached L0
+    owes:     A1 GREEN-MIN, A2 GREEN-MIN
+      A1     GREEN-MIN  A fresh live run of the FeverWood validation script on the minimal list leaves modcheck status no longer RED w
+      A2     GREEN-MIN  Every FAIL from that run is classified.
+GRAFFITI_NORTHSTAR_BRIDGE_TOOLS_1   [validated, owner FOUNDRY]  JawaBench tools the Graffiti trial cannot fake: thing_graphic, spawn_variant, running_mods, glow_at, site_state
+    built:    eae2f68f243c on origin/main at 2026-10-07T04:25:49Z, level reached L1
+    owes:     A2 GREEN-MIN
+      A2     GREEN-MIN  The Graffiti north-star trial runs using these tools.
+GREENTIDE_RAID_ANT_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: GreentideRaidAnt
+    built:    f5b3f4bc9d26 on origin/main at 2026-10-07T04:25:50Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  One live run of the validation script on the minimal list produces a results JSON.
+      A3     GREEN-MIN  Every non-passing bar, including directed assault, faction hidden and butchery, is classified.
+PROPANE_LAKE_MECHANICS_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: PropaneLakeMechanics
+    built:    f5b3f4bc9d26 on origin/main at 2026-10-07T04:25:54Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  One live north-star run on the minimal list produces a results JSON.
+      A3     GREEN-MIN  Every non-passing bar from that run is classified.
+SCAVENGER_EVENTS_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: ScavengerEvents
+    built:    f5b3f4bc9d26 on origin/main at 2026-10-07T04:25:56Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  One live run of the validation script on the minimal list produces a results JSON.
+      A3     GREEN-MIN  Every non-pass from that run is classified.
+THE_BAZAAR_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: TheBazaar
+    built:    411fe0d0ca93 on origin/main at 2026-10-07T04:25:59Z, level reached L0
+    owes:     A2 GREEN-MIN
+      A2     GREEN-MIN  One live run of the TheBazaar validation script on the minimal list is performed.
+BLUE_DESERT_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: BlueDesert
+    built:    a847b82bd9b6 on origin/main at 2026-10-07T04:26:03Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  One live driver run of BlueDesert validation.py on the minimal list produces a results JSON.
+      A3     GREEN-MIN  Every FAIL in that results JSON is classified as harness, site, mod or unmeasured.
+GRAFFITI_NORTHSTAR_GREEN_MINIMAL_1   [built, owner FOUNDRY]  Graffiti: GREEN on MINIMAL+graffiti via fast driver, owner sheet review
+    built:    541852456e21 on origin/main at 2026-10-07T04:26:09Z, level reached L0
+    owes:     A1 GREEN-MIN, A2 L4
+      A1     GREEN-MIN  The Graffiti north-star run on the minimal list plus Graffiti only passes.
+      A2     L4         The owner reviews the result via modcheck review.
+THE_FORGE_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: TheForge
+    built:    0a4d07e98607 on origin/main at 2026-10-07T04:26:20Z, level reached L0
+    owes:     A1 GREEN-MIN, A2 GREEN-MIN
+      A1     GREEN-MIN  One live run of TheForge validation.py on the minimal list is recorded as a results JSON.
+      A2     GREEN-MIN  Every finding in that run is classified.
+UTINNI_DISCOVERY_ACHIEVEMENTS_1   [built, owner FOUNDRY]  Utinni discovery achievements mod: surfaces every discoverable and unique mod capability so players know to find and play with it; no rewards (optional small rewards in Mod Settings)
+    built:    b972b32cc242 on origin/main at 2026-10-07T04:26:20Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 L3, A4 L4
+      A2     GREEN-MIN  The first live run of the Atlas north-star validation on the minimal list passes, beyond the mock green.
+      A3     L3         An Opus evaluation judges the Atlas plate and lamp art.
+      A4     L4         The owner reviews the Atlas tab, the riddles and the lore leaves.
+ASSAILANT_SALVAGE_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: AssailantSalvage
+    built:    478b504aa811 on origin/main at 2026-10-07T04:26:23Z, level reached L0
+    owes:     A1 GREEN-MIN, A2 GREEN-MIN
+      A1     GREEN-MIN  one live northstar run of the AssailantSalvage validation script on the smallest mod list that loads it is rec
+      A2     GREEN-MIN  every non-passing step in that run is classified as harness, site, mod or unmeasured, with none hidden.
+BRAIN_WORMS_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: BrainWorms
+    built:    ee4333246eac on origin/main at 2026-10-07T04:26:24Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  one live northstar run of the BrainWorms validation script on the smallest mod list that loads it is recorded 
+      A3     GREEN-MIN  every non-passing step in that run is classified as harness, site, mod or unmeasured, with none hidden.
+ENVIRONMENTAL_HAZARDS_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: EnvironmentalHazards
+    built:    ec8fed3efaff on origin/main at 2026-10-07T04:26:26Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  one live northstar run of the EnvironmentalHazards validation script on the smallest mod list that loads it is
+      A3     GREEN-MIN  every non-passing step in that run is classified as harness, site, mod or unmeasured, with none hidden.
+FLOODED_CANYON_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: FloodedCanyon
+    built:    13f3e3845093 on origin/main at 2026-10-07T04:26:27Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  one live northstar run of the FloodedCanyon validation script on the smallest mod list that loads it is record
+      A3     GREEN-MIN  every non-passing step in that run is classified as harness, site, mod or unmeasured, with none hidden.
+FUNGAL_SOIL_TRADE_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: FungalSoilTrade
+    built:    f5b3f4bc9d26 on origin/main at 2026-10-07T04:26:28Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  one live northstar run of the FungalSoilTrade validation script on the smallest mod list that loads it is reco
+      A3     GREEN-MIN  every non-passing step in that run is classified as harness, site, mod or unmeasured, with none hidden.
+LONG_SHADE_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: LongShade
+    built:    115b01a836b2 on origin/main at 2026-10-07T04:26:29Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  one live northstar run of the LongShade validation script on the smallest mod list that loads it is recorded w
+      A3     GREEN-MIN  every non-passing step in that run is classified as harness, site, mod or unmeasured, with none hidden.
+MIASMA_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: Miasma
+    built:    2bb0abac4e7f on origin/main at 2026-10-07T04:26:30Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  one live northstar run of the Miasma validation script on the smallest mod list that loads it is recorded with
+      A3     GREEN-MIN  every non-passing step in that run is classified as harness, site, mod or unmeasured, with none hidden.
+RUST_CATHEDRAL_ROACHES_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: RustCathedralRoaches
+    built:    f5b3f4bc9d26 on origin/main at 2026-10-07T04:26:32Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  one live northstar run of the RustCathedral validation script on the smallest mod list that loads it is record
+      A3     GREEN-MIN  every non-passing step in that run is classified as harness, site, mod or unmeasured, with none hidden.
+THE_ROT_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: TheRot
+    built:    df8e3b7f33b3 on origin/main at 2026-10-07T04:26:33Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  one live northstar run of the TheRot validation script on the smallest mod list that loads it is recorded with
+      A3     GREEN-MIN  every non-passing step in that run is classified as harness, site, mod or unmeasured, with none hidden.
+WEEPING_STONES_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: WeepingStones
+    built:    718016cbf527 on origin/main at 2026-10-07T04:26:34Z, level reached L0
+    owes:     A1 GREEN-MIN, A2 GREEN-MIN
+      A1     GREEN-MIN  one live northstar run of the WeepingStones validation script on the smallest mod list that loads it is record
+      A2     GREEN-MIN  every non-passing step in that run is classified as harness, site, mod or unmeasured, with none hidden.
+BACTA_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: Bacta
+    built:    ae74fb66395c on origin/main at 2026-10-07T04:26:47Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  one live northstar_driver run of Bacta on the smallest tier that loads it is recorded with its results JSON in
+      A3     GREEN-MIN  every non-pass in the Bacta run is classified as harness, site, mod or unmeasured and none is hidden
+CONTAGION_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: Contagion
+    built:    a771da970287 on origin/main at 2026-10-07T04:26:49Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  one live northstar_driver run of Contagion on the smallest tier that loads it is recorded with its results JSO
+      A3     GREEN-MIN  every non-pass in the Contagion run is classified as harness, site, mod or unmeasured and none is hidden
+DIVING_INTERACTION_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: DivingInteraction
+    built:    d278a8f8b496 on origin/main at 2026-10-07T04:26:50Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  a live northstar_driver run of DivingInteraction via the driver (beyond the Grey-floor run) is recorded with i
+      A3     GREEN-MIN  every non-pass in the DivingInteraction run is classified as harness, site, mod or unmeasured
+EXPLOSIVE_GROWTH_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: ExplosiveGrowth
+    built:    9739a6002d7e on origin/main at 2026-10-07T04:26:51Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  one live northstar_driver run of ExplosiveGrowth on the smallest tier that loads it is recorded with its resul
+      A3     GREEN-MIN  every non-pass in the ExplosiveGrowth run is classified as harness, site, mod or unmeasured and none is hidden
+LORE_STAGES_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: LoreStages
+    built:    ec8fed3efaff on origin/main at 2026-10-07T04:26:57Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  one live northstar_driver run of LoreStages (offline_mechanism chain only, as no bridge tool drives SetStage) 
+      A3     GREEN-MIN  every non-pass in the LoreStages run is classified as harness, site, mod or unmeasured
+PYRELANDS_GREEN_MINIMAL_1   [built, owner FOUNDRY]  Pyrelands north star GREEN on the pyrelands tier (pre-flight gates, 2-ring scratch sites, K-pooled census)
+    built:    63d1771f1d6c on origin/main at 2026-10-07T04:27:00Z, level reached L0
+    owes:     A1 GREEN-MIN, A2 GREEN-MIN, A3 GREEN-MIN
+      A1     GREEN-MIN  a live Pyrelands run on the pyrelands tier passes every bar at its plan predicate with evidence HTML and summa
+      A2     GREEN-MIN  the 30 C control site run is recorded alongside the 50 C sites
+      A3     GREEN-MIN  rimflow verify PYRELANDS_GREEN_MINIMAL_1 is recorded with result and config pyrelands-tier and the evidence pa
+SARLACC_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: Sarlacc
+    built:    dfeabbacecf1 on origin/main at 2026-10-07T04:27:01Z, level reached L0
+    owes:     A3 GREEN-MIN, A4 GREEN-MIN
+      A3     GREEN-MIN  one live northstar_driver run of Sarlacc is recorded with its results JSON
+      A4     GREEN-MIN  every FAIL in the Sarlacc run is classified as harness, site, mod or unmeasured
+WASTELAND_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: Wasteland
+    built:    36f3552789ca on origin/main at 2026-10-07T04:27:06Z, level reached L0
+    owes:     A1 GREEN-MIN, A2 GREEN-MIN, A3 GREEN-MIN
+      A1     GREEN-MIN  a live northstar_driver run of Wasteland via a composed route that can find the biome is recorded with its res
+      A2     GREEN-MIN  every FAIL in the Wasteland run is classified as harness, site, mod or unmeasured
+      A3     GREEN-MIN  the 154 components never run live are each measured in the run or marked unmeasured
+WILDSTEAM_EGG_BOUNTY_FIRST_SCRIPT_1   [built, owner FOUNDRY]  First north-star script: WildsteamEggBounty
+    built:    f5b3f4bc9d26 on origin/main at 2026-10-07T04:27:07Z, level reached L0
+    owes:     A2 GREEN-MIN, A3 GREEN-MIN
+      A2     GREEN-MIN  one live northstar_driver run of WildsteamEggBounty on the smallest tier that loads it is recorded with its re
+      A3     GREEN-MIN  every non-pass in the WildsteamEggBounty run is classified as harness, site, mod or unmeasured and none is hid
+THE_SUMP_FIRST_SCRIPT_1   [validated, owner FOUNDRY]  First north-star script: TheSump
+    built:    6f81a6ebbe05 on origin/main at 2026-10-07T06:26:19Z, level reached L1
+    owes:     A3 GREEN-MIN, A4 GREEN-MIN
+      A3     GREEN-MIN  one live northstar_driver run of TheSump is recorded with its results JSON
+      A4     GREEN-MIN  every FAIL in the TheSump run is classified as harness, site, mod or unmeasured
+
+## GREEN-FULL  — 5 items, needs bridge + the FULL list (one cold load covers the group)
+FLOWWORKS_NORTHSTAR_GREEN_FULL_1   [built, owner FOUNDRY]  FlowWorks north star GREEN on the full mod list
+    built:    4f76420cb616 on origin/main at 2026-10-07T04:24:19Z, level reached L0
+    owes:     A1 GREEN-FULL, A2 GREEN-FULL
+      A1     GREEN-FULL After a cold load on the full mod list, modcheck status for FlowWorks reads GREEN, with GREEN-MIN passed first
+      A2     GREEN-FULL The mod list is restored to its prior state after the full-list run.
+CUT_FALLOUT_GENERATED_DATA_1   [built, owner FOUNDRY]  Load C fallout from the Caverns + Polluted Lands cuts (MEASURED 2026-09-19, Transient/harvest_loadC_triage_2026-09-19.md): ~90 new patch failures and 95 of 105 Scribe lines. Fix: (a) regenerate UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml via design/Jawa/fauna/animal_tolerances.py (592 BMT_ entries) once cast_assignment.csv/BiomeCast purge lands; (b) purge BMT_ plant refs on the flora side (biome_flora.py/plant_pool.csv feeding RUT_FeverWood.xml, RUT_Greentide.xml, BiomeFlora_Ashkarr.xml); (c) one-time clean of Config/Mod_3532608331_DeepStorageMod.xml (96 dead BMT_/TYR_ li); (d) guard-or-delete Armoury's Absorbed_Kotorweapons_BiomesCaverns_Patch_KotORCrystalFormationInjector.xml. LanternDeeps itself: 0 hits
+    built:    f2db9fb563d9 on origin/main at 2026-10-07T04:25:20Z, level reached L0
+    owes:     A1 GREEN-FULL, A2 L4
+      A1     GREEN-FULL A cold load of the full list shows the patch-failure count in Player.log dropped compared with before the cut.
+      A2     L4         The owner or a keyboard session confirms the live Windows DeepStorage settings config file (c) is cleaned.
+ARMOURY_PROJECTILE_DAMAGE_TOOL_1   [validated, owner FOUNDRY]  Bridge tool reading projectile damageAmountBase (private) so Armoury's ranged ladder can be asserted live
+    built:    f7a8a86024e1 on origin/main at 2026-10-07T04:26:02Z, level reached L1
+    owes:     A2 GREEN-FULL
+      A2     GREEN-FULL The ranged_ladder_landed north-star bar passes live on the full mod list.
+FULL_LOAD_RESIDUE_TRIAGE_1   [built, owner FOUNDRY]  Full-list load residue beyond the FlowWorks water fix: RSW patch failures, RSW_*Juv config errors, TYR Scribe refs
+    built:    72995c875c09 on origin/main at 2026-10-07T04:26:09Z, level reached L0
+    owes:     A1 GREEN-FULL
+      A1     GREEN-FULL A fresh full-list cold load harvest shows zero patch failures and a reduced config-error count versus the prio
+PYRELANDS_GREEN_FULL_1   [built, owner FOUNDRY]  Pyrelands north star GREEN on the full list (fresh full-list mapgen on a scratch save, never quicktest)
+    built:    35e4e96d7dd2 on origin/main at 2026-10-07T04:26:42Z, level reached L0
+    owes:     A1 GREEN-FULL, A2 GREEN-FULL
+      A1     GREEN-FULL A scratch full-list save with fresh mapgen passes census bars 1, 2 and 4.
+      A2     GREEN-FULL rimflow verify --config full-latest passes for Pyrelands.
+
+## L3  — 9 items, needs bridge + an Opus evaluator
+LEANINGSCRUB_SWEETLINE_VISITORS_1   [validated, owner FOUNDRY]  Sweetline travellers camp and pilgrims leave tokens: who, mapgen or incident, token def
+    built:    92e3af792857 on origin/main at 2026-10-07T04:26:40Z, level reached L2
+    owes:     A2 L3, A3 L4
+      A2     L3         RM_SweetlineToken art exists and is judged acceptable in style.
+      A3     L4         The owner vetoes or accepts the open design calls.
+UTINNI_WORLDMAP_FLIGHT_ICON_1   [validated, owner FOUNDRY]  Replace the gravship's world-map flight icon with a Utinni-specific sprite: vanilla WorldObjectDef Gravship draws World/WorldObjects/Expanding/Gravship (expandingIcon) and World/WorldObjects/Caravan (texture); patch both to our art under the RUT_ tier, sized for expandingIconDrawSize 1.35
+    built:    770a328edb40 on origin/main at 2026-10-07T04:26:45Z, level reached L1
+    owes:     A2 L3, A3 L4
+      A2     L3         The icon style is judged acceptable.
+      A3     L4         The owner looks at the globe in flight and approves the icon.
+CAULDRON_ENRICHMENT_VISUALS_1   [validated, owner FOUNDRY]  Cauldron enrichment visuals: dewfall chemical beads, dewfall plant saturation, assay flecks on old trees, vexxiss mineral-ringed footprints
+    built:    6f81a6ebbe05 on origin/main at 2026-10-07T06:26:18Z, level reached L1
+    owes:     A2 L3, A3 L4
+      A2     L3         Opus evaluation finds the Cauldron enrichment visuals consistent with the ruled art colour law
+      A3     L4         owner looks at the Cauldron enrichment visuals in game and accepts them
+ABYSS_SHEET_DONOR_PORT_1   [validated, owner FOUNDRY]  Abyss sheet 2026-10-05: port 17 donor rows to owned RM_ defs under new names, wire the ruled art
+    built:    627a6aea5b3a on origin/main at 2026-10-07T10:34:27Z, level reached L1
+    owes:     A5 L3
+      A5     L3         art draws on a quicktest spawn, all facings
+RUSTCATHEDRAL_SHEET_ART_REDO_1   [built, owner FOUNDRY]  Rust Cathedral sheet: LivingBolt redo art, roach size, installs
+    built:    67623b0fb139 on origin/main at 2026-10-07T10:37:25Z, level reached L0
+    owes:     A2 L3
+      A2     L3         redo bolt draws on a quicktest spawn, all facings
+LANTERNDEEPS_SHEET_ART_REDO_1   [built, owner FOUNDRY]  Lantern Deeps art sheet 2026-10-05: eye repaints, blinker redo, plant variants to install on return
+    built:    f3cbef0314a7 on origin/main at 2026-10-07T10:37:26Z, level reached L0
+    owes:     A3 L3
+      A3     L3         eye-repaint creatures draw without eyes on a quicktest spawn
+NIGHTSIDEICE_SHEET_ART_REDO_1   [built, owner FOUNDRY]  Nightside Ice sheet: redo art and Tauntaun canon wiring
+    built:    67623b0fb139 on origin/main at 2026-10-07T10:37:26Z, level reached L0
+    owes:     A2 L3
+      A2     L3         lemming, shock goat and tauntaun draw the new art on a quicktest spawn
+WARSCAR_SHEET_DONOR_PORT_1   [validated, owner FOUNDRY]  Warscar donor rows: ruled art picks wait for owned defs
+    built:    17a29e813b7c on origin/main at 2026-10-07T10:37:38Z, level reached L1
+    owes:     A3 L3
+      A3     L3         each draws its ruled art on a quicktest spawn
+GRAVSHIP_WIRES_SURVIVE_LAUNCH_1   [validated, owner FOUNDRY]  GS-1: overhead wires with both ends aboard stay strung through gravship launch (treat WillReplace as in-transit); one-end wires coil with a message
+    built:    9401f7a736f2 on origin/main at 2026-10-09T02:18:15Z, level reached L1
+    owes:     A3 L3
+      A3     L3         joint live flight with the owner watching: two masts linked on the ship land with the span still drawn and bot
+
+-> rimflow verify <ID> --criterion <C> --result pass|fail --config <min-13|full-…> --evidence <path>
