@@ -3,6 +3,7 @@
 
     python3 serve_gated.py --no-open --sheet <x_sheet_date>.html --decisions <x_sheet_date>.decisions.json
 
+A sheet that declares `sheet-kind: non-art` takes the checked non-art route (nonart_sheet.py) instead of a stamp.
 Same arguments as the review-sheets skill's serve_sheet.py (it is exec'd after the check). A sheet that never passed
 `scaled_review_gate` (no stamp), or was edited after it (stamp mismatch), is REFUSED with exit 4 and nothing starts.
 Stamp: `python3 scaled_review_gate.py check <sheet> --stamp` (stamps only a passing sheet).
@@ -14,6 +15,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import scaled_review_gate as SG  # noqa: E402
+import nonart_sheet as NA  # noqa: E402
 
 SERVE = Path.home() / ".claude" / "skills" / "review-sheets" / "assets" / "serve_sheet.py"
 READ_ONLY = ("--status", "--selftest", "--help", "-h")
@@ -76,6 +78,23 @@ def main(argv: list[str]) -> int:
         print(f"REFUSED serve_gated: {p} does not exist", file=sys.stderr)
         return 4
     ok, msg = SG.verify_stamp(p.read_text())
+    if not ok and NA.declares_nonart(p.read_text()):
+        # Non-art route (owner card 2026-10-09): only a sheet that DECLARES non-art, carries no art stamp, is not a biome_ffar
+        # sheet, and passes check_sheet + the decisions schema. An art sheet never reaches this; see nonart_sheet.verify.
+        dpath = None
+        for i, a in enumerate(argv):
+            if a == "--decisions" and i + 1 < len(argv):
+                dpath = argv[i + 1]
+            elif a.startswith("--decisions="):
+                dpath = a.split("=", 1)[1]
+        if not dpath:
+            print("REFUSED serve_gated: non-art sheet needs --decisions to be checked", file=sys.stderr)
+            return 4
+        ok, msg = NA.verify(p, Path(dpath))
+        if not ok:
+            print(f"REFUSED serve_gated: {p.name}: non-art route: {msg}", file=sys.stderr)
+            return 4
+        return serve_with_followed_guard(argv)
     if not ok:
         print(f"REFUSED serve_gated: {p.name}: {msg}.\nBuild it with art_sheet.py --biome <RM_X> (gated), or stamp a sheet that "
               f"passes with `scaled_review_gate.py check {p.name} --stamp`.", file=sys.stderr)
