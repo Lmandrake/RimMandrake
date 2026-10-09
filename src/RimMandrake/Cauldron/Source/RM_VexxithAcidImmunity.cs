@@ -35,7 +35,10 @@ namespace RimMandrake.Cauldron
     {
         static RM_VexxithAcidImmunity()
         {
-            new Harmony("mandrake.rm.cauldron.vexxith").PatchAll(typeof(RM_VexxithAcidImmunity).Assembly);
+            // Shared per-class resilience (HARMONY_PATCH_RESILIENCE_1): a game update that renames Thing.TakeDamage switches
+            // THIS feature's Mod Settings toggle off for the session instead of throwing out of PatchAll.
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rm.cauldron.vexxith"),
+                typeof(RM_VexxithAcidImmunity).Assembly, "RimMandrake.Cauldron");
         }
 
         public static bool IsAcid(DamageDef def)
@@ -53,6 +56,7 @@ namespace RimMandrake.Cauldron
     }
 
     [HarmonyPatch(typeof(Thing), nameof(Thing.TakeDamage))]
+    [RimMandrake.Shared.PatchFeature("Vexxith acid immunity", typeof(RM_CauldronSettings), nameof(RM_CauldronSettings.vexxithAcidImmunityEnabled))]
     public static class Patch_Thing_TakeDamage_VexxithAcid
     {
         public static bool Prefix(Thing __instance, DamageInfo dinfo, ref DamageWorker.DamageResult __result)
