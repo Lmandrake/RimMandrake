@@ -16,29 +16,19 @@ Hssiss inhabited caves, swamps, marshes, and wetlands and were usually at the to
 Dark Lizards were a species of hssiss.
 
 ## Visual brief
-Viewed 2026-10-04. All four images are Legends-continuity illustrations (the page is Legends-tagged), and they are four DIFFERENT artists' takes and they
-disagree on colour: (1) infobox colour illustration, (2) comic panel (Ktriss, Great Bogga's pet),
-(3) a dark-scaled painted/rendered hssiss, (4) a painted dark-side-nebula scene. Image 1 is the
-cleanest and matches the prose; use it as the target.
-- **Silhouette**: a heavy, long-bodied lizard like a giant iguana/komodo crossed with a crocodile;
-  low, quadrupedal, sprawling stance with muscular thighs, long thick tail (prose: 3 m body plus a 1 m tail, so the tail is about a third of the body length). Image 3 crouches lower and more raptor-like.
-- **Spikes (loud)**: a continuous double row of conical/serrated spikes runs down the back and
-  the whole tail (image 1: spiky segmented ridge, tail ringed with spike rows; image 2: a dark
-  comb of spines down back and tail) and climbs up the neck into a crest of tall spines behind the
-  head -- matching the prose. A few small horn-like spikes sit on the snout and forelimbs.
-- **Head**: wedge-shaped, crocodilian jaws, a row of many sharp teeth (very prominent, bared in
-  images 2 and 4), small eyes (image 1: red-ringed pale eye), small horns/tusk-spikes above the nose
-  and at the jaw corner; pale throat.
-- **Limbs**: strong legs with large, long curved claws on each toe (long pale claws in image 1,
-  black scythe claws in image 3).
-- **Colour (images disagree)**: image 1 and 2 = bright to olive GREEN scaly hide with a pale
-  cream/grey underside, and in image 1 a salmon-red throat/dewlap (image 1 only); image 3 = very dark
-  blue-grey-black scales with a copper/red underbelly; image 4 = dark green with pale cream spines.
-  Prose says green scaly hide -- green is the majority and canon-prose-backed; image 3 is the outlier.
-- **Size cues**: prose says 3 m body plus 1 m tail; the comic panel shows one beside a hutt and a
-  humanoid and it is roughly humanoid-length-plus. Not a giant.
-- **Prose vs images**: tail "stretched up onto their necks" is clearer in images as a spike ridge
-  running from tail tip over the back to the neck. Invisibility/Force abilities are not depicted.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Hssiss` page images, "Images of hssiss" category — everything is *Tales of the Jedi* / *Splinter of the Mind's Eye* comics, sourcebook paintings, the *Book of Sith* illustration and one *KOTOR II* promotional render).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. Deleted: the *Tales of the Jedi* comic panel (`canon_2`, `Ktriss1.jpg`) and the loose *Dark Side Sourcebook* nebula painting (`canon_4`, `Siss.jpg`). Kept (both Legends-continuity art):
+- `canon_1` (`Hssiss-BoS.png`, *Book of Sith* detailed coloured illustration) — the anatomy target, matching the prose.
+- `canon_3` (`HssissKOTORII.jpg`, *KOTOR II* promotional render) — the most naturalistic image: glossy, heavy, plated scales with real specular highlights. Use it as the MATERIAL reference for realistic scale texture, not for colour.
+
+- **Silhouette**: a heavy, long-bodied lizard like a giant iguana/komodo crossed with a crocodile; low, quadrupedal, sprawling stance with muscular thighs, long thick tail (prose: 3 m body plus a 1 m tail). `canon_3` crouches lower and more raptor-like.
+- **Spikes (loud)**: a continuous row of conical/serrated spikes runs down the back and the whole tail, climbing the neck into a crest of tall spines behind the head; a few small horn-like spikes on the snout and forelimbs.
+- **Head**: wedge-shaped crocodilian jaws with many sharp teeth, small eyes (`canon_1`: red-ringed pale eye), small horns/tusk-spikes above the nose and at the jaw corner; pale throat.
+- **Limbs**: strong legs with large, long curved claws on each toe (long pale claws in `canon_1`, black scythe claws in `canon_3`).
+- **Colour (images disagree)**: `canon_1` = bright green scaly hide with a pale cream/grey underside and a salmon-red throat/dewlap; `canon_3` = very dark blue-grey-black scales with a copper-red underbelly. The prose says green — use green, tone it down from the illustration's bright lime to a natural olive-green.
+- **Size**: prose says 3 m body plus 1 m tail; roughly humanoid-length-plus. Not a giant.
+- Invisibility/Force abilities are not depicted.
 
 ## Must show
 - [ ] Heavy sprawling quadrupedal lizard (iguana/komodo build) with a thick tail about as long as the body
@@ -46,7 +36,8 @@ cleanest and matches the prose; use it as the target.
 - [ ] Green scaly hide (olive to bright green) with a paler cream underside
 - [ ] Wedge-shaped crocodilian head with many sharp bared teeth and small horn-spikes on the snout
 - [ ] Large long curved claws on all four feet
-- [ ] Red/salmon throat dewlap (image 1 only; optional)
+- [ ] Red/salmon throat dewlap (`canon_1` only; optional)
+- [ ] Realistic rendering: natural glossy reptile scales and lighting, no outlines, no comic or cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -55,10 +46,8 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Hssiss (canon; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Hssiss`; wiki caption: infobox image. File: `Hssiss-BoS.png` — https://static.wikia.nocookie.net/starwars/images/1/10/Hssiss-BoS.png/revision/latest?cb=20241010035441
-- `wookieepedia_canon_2.webp` — CANON page `Hssiss`; wiki caption: Ktriss, the pet hssiss of Great Bogga.. File: `Ktriss1.jpg` — https://static.wikia.nocookie.net/starwars/images/f/f3/Ktriss1.jpg/revision/latest?cb=20190407005141
-- `wookieepedia_canon_3.webp` — CANON page `Hssiss`; wiki caption: A Hssiss. File: `HssissKOTORII.jpg` — https://static.wikia.nocookie.net/starwars/images/d/da/HssissKOTORII.jpg/revision/latest?cb=20090511160917
-- `wookieepedia_canon_4.webp` — CANON page `Hssiss`; wiki caption: A Hssiss. File: `Siss.jpg` — https://static.wikia.nocookie.net/starwars/images/6/67/Siss.jpg/revision/latest?cb=20091028235002
+- `wookieepedia_canon_1.webp` — ILLUSTRATION (*Book of Sith*), anatomy target — CANON page `Hssiss`; wiki caption: infobox image. File: `Hssiss-BoS.png` — https://static.wikia.nocookie.net/starwars/images/1/10/Hssiss-BoS.png/revision/latest?cb=20241010035441
+- `wookieepedia_canon_3.webp` — GAME promotional render (*KOTOR II*), most naturalistic scales — CANON page `Hssiss`; wiki caption: A Hssiss. File: `HssissKOTORII.jpg` — https://static.wikia.nocookie.net/starwars/images/d/da/HssissKOTORII.jpg/revision/latest?cb=20090511160917
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
