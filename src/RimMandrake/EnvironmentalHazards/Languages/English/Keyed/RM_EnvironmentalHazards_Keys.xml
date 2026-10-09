@@ -11,6 +11,10 @@
 -->
 <LanguageData>
 
+  <!-- ENVHAZARDS_HAZARD_CLOCK_READOUTS_1: contact-venom clock text and alert. -->
+  <RM_VenomContactClock>{0}: next scratch in {1}</RM_VenomContactClock>
+  <RM_VenomContactAlert>Thorn venom: {0} in contact</RM_VenomContactAlert>
+
   <RM_IgniteMoat>Ignite moat</RM_IgniteMoat>
   <RM_IgniteMoatDesc>Light the poured tar moat. Fire spreads along every connected tar cell — poured or natural — at a staggered pace. Burnt tar is spent; re-pour to re-arm.</RM_IgniteMoatDesc>
   <RM_MoatIgniting>Igniting, cells queued</RM_MoatIgniting>

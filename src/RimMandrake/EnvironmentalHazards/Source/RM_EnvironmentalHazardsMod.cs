@@ -417,6 +417,7 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool mirrorPoolsEnabled = true;
         public static bool leachmossEnabled = true;
         public static bool contactVenomEnabled = true;
+        public static bool hazardClockReadoutsEnabled = true;
         public static float contactVenomScratchMultiplier = 1f;
         // SUMP_TAR_BEAST_BUILD_1 - RM_CompTarBeast / RM_JobGiver_TarBeastEat / RM_CompBulgePumpWake.
         public static bool tarBeastEnabled = true;
@@ -509,6 +510,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref mirrorPoolsEnabled, "mirrorPoolsEnabled", true);
             Scribe_Values.Look(ref leachmossEnabled, "leachmossEnabled", true);
             Scribe_Values.Look(ref contactVenomEnabled, "contactVenomEnabled", true);
+            Scribe_Values.Look(ref hazardClockReadoutsEnabled, "hazardClockReadoutsEnabled", true);
             Scribe_Values.Look(ref contactVenomScratchMultiplier, "contactVenomScratchMultiplier", 1f);
             Scribe_Values.Look(ref tarBeastEnabled, "tarBeastEnabled", true);
             Scribe_Values.Look(ref tarBeastPace, "tarBeastPace", 1f);
@@ -706,6 +708,9 @@ namespace RimMandrake.EnvironmentalHazards
                 "A plant built to scratch whoever stands in it goes inert — it still grows, still "
               + "slows movement and can still be cut, it just never scratches. Clocks already "
               + "running freeze rather than reset, so turning this back on resumes.");
+            list.CheckboxLabeled("Show contact-venom clocks", ref hazardClockReadoutsEnabled,
+                "A thorn stand's inspect text says who stands in it and when the next scratch lands, and a small alert "
+              + "shows the same while a colonist is in contact. Text only: it changes nothing else. Applies now.");
             list.CheckboxLabeled("Contact venom can kill", ref contactVenomLethal,
                 "On: staying in a thorn stand long enough is fatal. Off: the venom still hurts and "
               + "disables, but is always held just short of killing. Turning this off does not heal "

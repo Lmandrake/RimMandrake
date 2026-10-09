@@ -50,6 +50,7 @@
     <Compile Include="..\..\_Shared\LightLedger\LightLedgerKernel.cs" Link="Shared\LightLedgerKernel.cs" />
     <Compile Include="HazardTargeting.cs" />
     <Compile Include="RM_HazardNativeExtension.cs" />
+    <Compile Include="RM_Alert_VenomContactClock.cs" />
     <Compile Include="RM_AxisKernel.cs" />
     <Compile Include="RM_PoolKernel.cs" />
     <Compile Include="RM_EnvironmentalHazardsMod.cs" />

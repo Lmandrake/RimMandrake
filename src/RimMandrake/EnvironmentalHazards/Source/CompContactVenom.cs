@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
@@ -75,6 +76,37 @@ namespace RimMandrake.EnvironmentalHazards
         {
             base.PostDeSpawn(map, mode);
             Deregister(map);
+        }
+
+        /// <summary>ENVHAZARDS_HAZARD_CLOCK_READOUTS_1: on the stand, say who is in it and when the next scratch lands.</summary>
+        public override string CompInspectStringExtra()
+        {
+            if (!RM_EnvironmentalHazardsSettings.hazardClockReadoutsEnabled || !RM_EnvironmentalHazardsSettings.contactVenomEnabled
+                || parent.Map == null)
+            {
+                return null;
+            }
+            MapComponent_ContactVenom tracker = parent.Map.GetComponent<MapComponent_ContactVenom>();
+            if (tracker == null)
+            {
+                return null;
+            }
+            List<Pawn> inside = new List<Pawn>();
+            tracker.ColonistsInContact(inside);
+            if (inside.Count == 0)
+            {
+                return null;
+            }
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            for (int i = 0; i < inside.Count && i < 3; i++)
+            {
+                if (i > 0)
+                {
+                    sb.Append("\n");
+                }
+                sb.Append("RM_VenomContactClock".Translate(inside[i].LabelShortCap, tracker.TicksToNextScratch(inside[i]).ToStringTicksToPeriod()));
+            }
+            return sb.ToString();
         }
 
         private void Register(Map map)
