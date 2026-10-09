@@ -25,22 +25,22 @@ Kowakian monkey-lizards were rarely found off their homeworld, although it was n
 Each monkey-lizard had tufts of thick hair growing around their neck, resembling a ruff, on the tops of their heads, and at corners of their jawbones. Some also had a tuft at the tip of the tai …[truncated by script; rest UNREAD here, not absent]
 
 ## Visual brief
-Four images: two CANON (a detailed CG infobox render, and a small game portrait of a red individual named Pilf Mukmuk) and two LEGENDS (an infobox plate and a Unknown Aliens-style painting, plus a concept painting). Canon and Legends agree on the body plan; the canon text adds feathers, which only the CG render and game portrait show.
-- **Silhouette**: a thin-limbed, pot-bellied biped about 70 cm tall (Legends text), stooped or perched, long stalk arms and legs, narrow shoulders, a round belly, a thin whip-like tail that curls up behind (prehensile in poses).
-- **Head**: small and triangular, dominated by a wide, hooked, glossy dark-brown or black parrot-like beak, no nose, a wide red-lipped mouth that opens to a toothless pink-red interior, small close-set yellow eyes, a pale white/grey striped or scaly face mask in the canon render.
-- **Ears**: two enormous, floppy, backward-sweeping ears, narrowing to thin curved points, often longer than the head (clearly larger than the face in every image), yellow on the inside with a blue-grey edge in the CG render, sometimes torn or pierced.
-- **Colour, canon CG**: blue-grey feathery/hairy ruff (a bib of fluffy blue plumage around the shoulders), a bright orange crest tuft on the top of the head, a bright yellow-gold belly and thighs, yellow-edged blue-grey forearms and a blue-grey tail; blue-grey toes with long dark red-brown claws. The canon text lists red, blue, yellow, brown, green, purple and orange individuals, so colour varies by individual.
-- **Colour, Legends**: warm tan-brown skin with a dark brown ruff of hair at the neck and jaw corners and a ratty tuft on the head (infobox, vine-swinging pose), or a pale green-tan body with a rusty hair ruff and long dark ear rims (concept). The game portrait is a rust-red individual with a green ruff and a green crest.
-- **Hands and feet**: long spindly fingers and long, three-toed (plus a hind toe) bird-like feet ending in sharp curved claws.
-- **Disagreement**: the Legends images show furry hair, not feathers; the canon render shows feathery blue plumage and a hair-like crest. The beak, ears, belly and spindly build are common to all.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Removed: the tiny stylised Galaxy of Heroes portrait (Pilf Mukmuk, `PilfMukmukRelic-SWGoH.png`). Added the LIVE-ACTION reference: Salacious B. Crumb, the Return of the Jedi puppet, is a Kowakian monkey-lizard — `canon_5` (studio photo of the puppet's head and shoulders) and `canon_2` (behind-the-scenes photo of the full puppet with performer Tim Rose, black-and-white); `canon_4` (The Mandalorian, a live-action Kowakian roasting on a spit, whole-body anatomy); `canon_3` (Star Wars Outlaws photoreal game render, crop of its creature-codex screen); plus the existing realistic `canon_1` (Tales from the Galaxy's Edge CG render) and two realistic Legends paintings.
+- **Silhouette**: a thin-limbed, pot-bellied biped about 70 cm tall (Legends text), stooped or perched, long stalk arms and legs, narrow shoulders, a round belly, a thin whip-like tail that curls behind (prehensile).
+- **Head**: small, with heavy wrinkled skin; dominated by a wide, hooked, glossy parrot-like beak, a wide fleshy-lipped mouth that opens to a toothless pink interior, small close-set yellow eyes under a heavy frowning brow.
+- **Ears**: two enormous, floppy, backward-sweeping ears, thin and leathery, narrowing to curled points, wider than the head, sometimes torn.
+- **LIVE-ACTION look (the target)**: wrinkled, leathery **tan-to-pinkish-beige skin** in loose folds on the face, neck and belly; **sparse wispy ginger-brown hair** — a scruffy tuft on the crown, tufts at the jaw corners and a shaggy ruff around the shoulders; the **beak is blue-grey to slate-green and glossy**, the lips pinkish. The Outlaws render agrees (ochre-tan skin, dark hair ruff).
+- **Where they disagree, LOUDLY**: the canon Galaxy's Edge CG render (`canon_1`) shows a **blue-grey feathery ruff, an orange crest and a bright yellow belly**; the live-action puppet has none of that — it is tan skin with ginger hair. Prefer the live-action look as the base; the text allows many colour individuals (red, blue, yellow, brown, green, purple, orange), so the blue/yellow CG one is a colour variant, not the base form.
+- **Hands and feet**: long spindly fingers and long bird-like toes ending in sharp curved claws.
 
 ## Must show
 - [ ] Spindly stick limbs, pot belly, small stooped biped (about 70 cm), long thin curling tail
-- [ ] Small triangular head with a wide hooked dark parrot beak, red lips, close-set yellow eyes
-- [ ] Two huge floppy backward-sweeping ears, thin and pointed
-- [ ] A ruff of fluffy feathers/hair around the neck and shoulders and a tuft or crest on top of the head
-- [ ] Long clawed bird-like toes and spindly clawed fingers
-- [ ] Body colour as a distinct individual variant (canon CG: blue ruff, yellow belly and thighs, orange crest)
+- [ ] Wrinkled leathery tan-to-pinkish skin in loose folds on face, neck and belly
+- [ ] Wide hooked glossy blue-grey parrot beak, fleshy lips, small close-set yellow eyes under a heavy brow
+- [ ] Two huge floppy thin leathery ears sweeping back to curled points
+- [ ] Sparse wispy ginger-brown hair: crown tuft, jaw tufts and a shaggy shoulder ruff
+- [ ] Realistic rendering: natural wrinkled skin and hair texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -50,10 +50,13 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Kowakian_monkey-lizard/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Kowakian monkey-lizard`; wiki caption: infobox image. File: `KowakianMonkeyLizard-TGE.png` — https://static.wikia.nocookie.net/starwars/images/0/0d/KowakianMonkeyLizard-TGE.png/revision/latest?cb=20221111025309
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Kowakian monkey-lizard/Legends`; wiki caption: infobox image. File: `Kowakian NEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/8/86/Kowakian_NEGAS.jpg/revision/latest?cb=20061129193617
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Kowakian monkey-lizard/Legends`; wiki caption: A Kowakian monkey-lizard. File: `Monkey-lizard UA.jpg` — https://static.wikia.nocookie.net/starwars/images/c/c9/Monkey-lizard_UA.jpg/revision/latest?cb=20080926135112
-- `wookieepedia_canon_2.webp` — CANON page `Kowakian monkey-lizard`; wiki caption: Pilf Mukmuk, a red Kowakian monkey-lizard. File: `PilfMukmukRelic-SWGoH.png` — https://static.wikia.nocookie.net/starwars/images/2/24/PilfMukmukRelic-SWGoH.png/revision/latest?cb=20251003043830
+- `wookieepedia_canon_1.webp` — CANON, Tales from the Galaxy's Edge CG render (realistic; blue/yellow colour individual); file `KowakianMonkeyLizard-TGE.png` — https://static.wikia.nocookie.net/starwars/images/0/0d/KowakianMonkeyLizard-TGE.png/revision/latest?cb=20221111025309
+- `wookieepedia_canon_2.webp` — LIVE-ACTION, Return of the Jedi: Salacious B. Crumb puppet with performer Tim Rose, full body, black-and-white (Star Wars Insider 222); file `TimRoseandSalacious B. Crumb.png` — https://static.wikia.nocookie.net/starwars/images/2/2b/TimRoseandSalacious_B._Crumb.png/revision/latest?cb=20231101134918
+- `wookieepedia_canon_3.webp` — Star Wars Outlaws photoreal game render, cropped from the creature-codex screen; file `MonkeyLizard-OutlawsCreatures.jpg` — https://static.wikia.nocookie.net/starwars/images/f/fd/MonkeyLizard-OutlawsCreatures.jpg/revision/latest?cb=20250314014512
+- `wookieepedia_canon_4.webp` — LIVE-ACTION, The Mandalorian Chapter 1, a Kowakian roasting on a spit (whole-body anatomy); file `Roasted Kowakian The Mandalorian.png` — https://static.wikia.nocookie.net/starwars/images/4/4d/Roasted_Kowakian_The_Mandalorian.png/revision/latest?cb=20220206063434
+- `wookieepedia_canon_5.webp` — LIVE-ACTION, Return of the Jedi: studio photo of the Salacious B. Crumb puppet's head and shoulders (Behind the Magic / Visual Archive); file `SalaciousBCrumb-Db.png` — https://static.wikia.nocookie.net/starwars/images/d/d1/SalaciousBCrumb-Db.png/revision/20250314034304
+- `wookieepedia_legends_1.webp` — LEGENDS, realistic painted plate, The New Essential Guide to Alien Species; file `Kowakian NEGAS.jpg` — https://static.wikia.nocookie.net/starwars/images/8/86/Kowakian_NEGAS.jpg/revision/latest?cb=20061129193617
+- `wookieepedia_legends_2.webp` — LEGENDS, realistic painting, Ultimate Adversaries; file `Monkey-lizard UA.jpg` — https://static.wikia.nocookie.net/starwars/images/c/c9/Monkey-lizard_UA.jpg/revision/latest?cb=20080926135112
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
