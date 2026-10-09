@@ -32,13 +32,10 @@
     <defName>RUT_ContagionRingScatter</defName>
     <order>968</order>
     <genStep Class="RimMandrake.EnvironmentalHazards.RM_GenStep_EdgeBandFilth">
-      <!-- LOAD_ERRORS_DEF_FIELDS_1 2026-09-30: RUT_DeadCreep is RotSporeKit (retired,
-           not in the canonical mod list) and this field had no MayRequire, so it
-           dangled a cross-reference on every load. No mandrake.rm.therot equivalent
-           exists to repoint to (checked this pass), so gated instead — the scatter
-           simply does not run without RotSporeKit. Overlaps
-           ROTSPOREKIT_MAYREQUIRE_ORPHANED_1, which owns the fuller retirement sweep. -->
-      <filthDef MayRequire="mandrake.rut.rotsporekit">RUT_DeadCreep</filthDef>
+      <!-- RUT_DeadCreep ships in this same mod (Defs/ThingDefs_Items/RUT_DeadCreep.xml), so
+           the field needs no gate. It used to carry MayRequire="mandrake.rut.rotsporekit" (a
+           retired packageId nothing provides), which made this scatter step never run. -->
+      <filthDef>RUT_DeadCreep</filthDef>
       <biomes>
         <li>RUT_TheForge</li>
       </biomes>
