@@ -136,6 +136,13 @@ namespace RimMandrake.LuminousPigment
         public static float opinionAboveStation = -15f;
         public static int goodwillPerImpressedVisit = DeepfireStatusDefaults.GoodwillPerImpressedVisit;
 
+        // LUMINOUS_PIGMENT_SETTINGS_READOUTS_1: the shipped defaults, captured when the type initialises (the static
+        // initialisers above have run, no settings file has been read), so "reset this section" can restore them.
+        static LuminousPigmentSettings()
+        {
+            RM_LuminousSettingsReadouts.CaptureDefaults(typeof(LuminousPigmentSettings));
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -261,6 +268,7 @@ namespace RimMandrake.LuminousPigment
             list.Begin(settingsView);
 
             list.Label("THE CHAIN");
+            RM_LuminousSettingsReadouts.ResetButton(list, "Chain");
             list.CheckboxLabeled("Wild crowncarpet on ocean shores", ref shoreMatsEnabled,
                 "On (default): a rare wild patch of crowncarpet may appear on any ocean shore "
                 + "when a new map generates. Off: crowncarpet only grows wherever a biome's own "
@@ -270,6 +278,7 @@ namespace RimMandrake.LuminousPigment
             list.GapLine();
 
             list.Label("Fresh crowncarpet's clock: " + matLifeDays.ToString("0.00") + " days");
+            list.Label("That is " + RM_LuminousSettingsReadouts.MatLifeHours(matLifeDays).ToString("0") + " hours from harvest to death.");
             list.Label("How long a harvested mat survives before it dies on its own.");
             matLifeDays = list.Slider(matLifeDays, 0.25f, 5f);
             list.Label("Dies at once below: " + matChillKillTemp.ToString("0") + "C");
@@ -277,6 +286,7 @@ namespace RimMandrake.LuminousPigment
             list.GapLine();
 
             list.Label("THE PRESS");
+            RM_LuminousSettingsReadouts.ResetButton(list, "Press");
             list.Label("How the deepfire press (and its research) is unlocked.");
             if (list.RadioButton("Research (default) -- gated behind a locked project, "
                     + "unlocked once a mat is seen", pressGate == PressGate.Research))
@@ -300,6 +310,7 @@ namespace RimMandrake.LuminousPigment
             list.GapLine();
 
             list.Label("DEEPFIRE");
+            RM_LuminousSettingsReadouts.ResetButton(list, "Deepfire");
             list.Label("Market value per jar: " + deepfireMarketValue.ToString("0"));
             deepfireMarketValue = list.Slider(deepfireMarketValue, 10f, 500f);
             list.CheckboxLabeled("A deepfire stockpile glows", ref deepfireStackGlows,
@@ -313,6 +324,7 @@ namespace RimMandrake.LuminousPigment
             list.GapLine();
 
             list.Label("THE GLOWTANK");
+            RM_LuminousSettingsReadouts.ResetButton(list, "GlowTank");
             list.CheckboxLabeled("GlowTank buildable", ref glowTankEnabled,
                 "Off: the GlowTank does not appear in the build menu. Existing tanks keep working.");
             list.Label("Power outage before it kills the culture: " + (tankPowerGraceHours <= 0f ? "Never" : tankPowerGraceHours.ToString("0") + " h"));
@@ -327,6 +339,7 @@ namespace RimMandrake.LuminousPigment
             list.GapLine();
 
             list.Label("PAINTING");
+            RM_LuminousSettingsReadouts.ResetButton(list, "Painting");
             list.CheckboxLabeled("Painting enabled", ref paintingEnabled,
                 "Off: the designator and WorkGiver stop accepting new deepfire jobs. Existing coats " +
                 "keep glowing.");
@@ -406,6 +419,7 @@ namespace RimMandrake.LuminousPigment
             list.GapLine();
 
             list.Label("CUISINE");
+            RM_LuminousSettingsReadouts.ResetButton(list, "Cuisine");
             list.CheckboxLabeled("Deepfire dishes", ref cuisineEnabled,
                 "Off: every deepfire recipe disappears from the cookery bill list. Existing glow " +
                 "hediffs on pawns who already ate one are unaffected.");
@@ -418,6 +432,9 @@ namespace RimMandrake.LuminousPigment
             list.CheckboxLabeled("Glow-hediffs give off light", ref hediffGlowEnabled,
                 "Off: the stat/mood effects of every glow-hediff family still apply, but none of " +
                 "them light up.");
+            list.Label(RM_LuminousSettingsReadouts.SteerOddsLine("Steered dish", steerMinSkill));
+            list.Label(RM_LuminousSettingsReadouts.SteerOddsLine("Vermilion dish", vermilionMinSkill));
+            list.Label(RM_LuminousSettingsReadouts.PlainOddsLine(familyEnabled));
             list.Label("Families available to roll or steer toward:");
             for (int i = 0; i < DeepfireFamilies.All.Count; i++)
             {
@@ -428,6 +445,7 @@ namespace RimMandrake.LuminousPigment
             list.GapLine();
 
             list.Label("GODS (Ninefold)");
+            RM_LuminousSettingsReadouts.ResetButton(list, "Gods");
             list.CheckboxLabeled("Gods react to deepfire", ref godsReact,
                 "Off: no Ninefold satiation deltas from deepfire at all. Inert with Ninefold absent " +
                 "regardless of this setting.");
@@ -447,6 +465,7 @@ namespace RimMandrake.LuminousPigment
             list.GapLine();
 
             list.Label("STATUS (the purple engine)");
+            RM_LuminousSettingsReadouts.ResetButton(list, "Status");
             list.CheckboxLabeled("Sumptuary reactions", ref statusEnabled,
                 "Off: no status thoughts from deepfire goods at all.");
             list.Label("Display score cap: " + displayCap.ToString());
