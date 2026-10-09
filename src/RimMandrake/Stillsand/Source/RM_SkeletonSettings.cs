@@ -23,6 +23,7 @@ namespace RimMandrake.Stillsand
         public static bool horizonWarningsEnabled = true;
         public static float horizonWarningHours = 3f;
         public static bool horizonPassersEnabled = true;
+        public static bool dustSettledLetterEnabled = true;
         public static bool duneBurialEnabled = true;
 
         public override void ExposeData()
@@ -36,6 +37,7 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref horizonWarningsEnabled, "horizonWarningsEnabled", true);
             Scribe_Values.Look(ref horizonWarningHours, "horizonWarningHours", 3f);
             Scribe_Values.Look(ref horizonPassersEnabled, "horizonPassersEnabled", true);
+            Scribe_Values.Look(ref dustSettledLetterEnabled, "dustSettledLetterEnabled", true);
             Scribe_Values.Look(ref duneBurialEnabled, "duneBurialEnabled", true);
         }
 
@@ -93,6 +95,10 @@ namespace RimMandrake.Stillsand
                 list.CheckboxLabeled("  ...and wandering giants", ref horizonPassersEnabled,
                     "Herd migrations and passing giants (thrumbo-style passes) are seen coming too: the same letter, "
                     + "plume and bearing, and they really enter from that bearing. Off: they arrive unannounced.");
+                list.CheckboxLabeled("  ...and tell me when it settles", ref dustSettledLetterEnabled,
+                    "If a group announced by dust on the horizon never arrives, a short letter says the dust settled and "
+                    + "they turned back. The plume stays up until the group really arrives or the wait runs out. Off: the "
+                    + "plume just fades.");
             }
             settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();

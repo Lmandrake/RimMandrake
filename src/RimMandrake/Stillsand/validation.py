@@ -80,6 +80,7 @@ SETTINGS = {
                                  "corpseToSkeletonEnabled": True, "corpseToSkeletonDays": 15.0,
                                  "boneHarpEnabled": True, "horizonWarningsEnabled": True,
                                  "horizonWarningHours": 3.0, "horizonPassersEnabled": True,
+                                 "dustSettledLetterEnabled": True,
                                  "duneBurialEnabled": True},
     NS + "RM_StillsandEventsSettings": {"mirrorBeamEnabled": True, "hornEnabled": True,
                                         "hornAnswerChance": 0.15, "denQuestEnabled": True},
@@ -2074,6 +2075,31 @@ def horizon_chain(t):
                 _fail("the warned group never arrived after the warning delay, while vanilla fires the same "
                       "incident at once (queue rows %r)" % mine)
             _STATE["horizon_new"] = list(late)
+
+    with _comp(t, "horizon_dust_settled_letter", toggle="dustSettledLetterEnabled"):
+        # DUST_SETTLED_LETTER_1 (SS-3). A warned group that never arrives gets a "The dust settled" letter once the queue's
+        # 1 h retry window is past (RM_HorizonMath); one that arrives gets none. The failure path is real on this site:
+        # vanilla refuses TraderCaravanArrival here (see the note above), so the fire below tends to exercise it.
+        if _live(t):
+            before = _letters(t)
+            ids1 = set(_foreign(t))
+            with _setting(t, "horizonWarningHours", 0.5):
+                r = t.bridge_call("jawa/storyteller_fire", incidentDef="TraderCaravanArrival", dryRun=False)
+                _close_dialogs(t, r)
+                if not (r or {}).get("fired"):
+                    _unmeasured(t, "the neutral group could not be fired: %s" % str(r)[:200])
+                for _ in range(11):      # 0.5 h warning + 1 h retry window + grace = 4000 ticks; 5500 waited
+                    t.wait_ticks(500)
+            arrived = set(_foreign(t)) - ids1
+            new = _new_letters(before, _letters(t))
+            settled = [l for l in new if l[0].startswith("The dust settled")]
+            _note(t, "arrived pawns / settled letters", [len(arrived), [l[0] for l in settled]])
+            if arrived and settled:
+                _fail("the warned group arrived AND a 'The dust settled' letter came")
+            if not arrived and not settled:
+                _fail("the warned group never arrived and no 'The dust settled' letter came")
+            if arrived:
+                _unmeasured(t, "the group arrived, so only 'no false letter' was proven; the turned-back path was not exercised")
 
     with _comp(t, "horizon_toggle_off_vanilla", toggle="horizonWarningsEnabled"):
         if _live(t):

@@ -67,7 +67,8 @@ namespace RimMandrake.Stillsand
                 harmony.Patch(entryCell,
                     prefix: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(EntryCellPrefix)));
                 harmony.Patch(tryFire,
-                    prefix: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(TryFirePrefix)));
+                    prefix: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(TryFirePrefix)),
+                    postfix: new HarmonyMethod(typeof(RM_HorizonWarningPatches), nameof(TryFirePostfix)));
             }
             catch (Exception e)
             {
@@ -158,10 +159,22 @@ namespace RimMandrake.Stillsand
             int delay = Mathf.Max(1, Mathf.RoundToInt(RM_SkeletonSettings.horizonWarningHours * GenDate.TicksPerHour));
             int fireTick = Find.TickManager.TicksGame + delay;
             Find.Storyteller.incidentQueue.Add(fi.def, fireTick, fi.parms, GenDate.TicksPerHour);
-            RM_MapComponent_HorizonPlume.For(map)?.Add(fi.parms.spawnCenter, fireTick);
+            RM_MapComponent_HorizonPlume.For(map)?.Add(fi.parms.spawnCenter, fireTick, fi.def.defName, Bearing(map.Center, fi.parms.spawnCenter));
             SendLetter(fi.def, fi.parms, map);
             __result = true;
             return false;
+        }
+
+        /// <summary>DUST_SETTLED_LETTER_1: a queued fire that went through means the announced group really arrived, so
+        /// its plume ends now (not at a fixed tick) and no "turned back" letter is owed.</summary>
+        public static void TryFirePostfix(FiringIncident fi, bool queued, bool __result)
+        {
+            if (!queued || !__result || fi?.parms == null || fi.def == null || !(fi.parms.target is Map map)
+                || !fi.parms.spawnCenter.IsValid)
+            {
+                return;
+            }
+            RM_MapComponent_HorizonPlume.For(map)?.Notify_Arrived(fi.def.defName, fi.parms.spawnCenter);
         }
 
         /// <summary>Which incidents the horizon shows. Public for the selftest's
@@ -221,11 +234,15 @@ namespace RimMandrake.Stillsand
         }
     }
 
-    /// <summary>The dust plume at the entry cell, rising until arrival.</summary>
+    /// <summary>The dust plume at the entry cell, rising until the group really arrives. DUST_SETTLED_LETTER_1: the
+    /// plume stands through the queue's retry window (RM_HorizonMath.PlumeUntil); if the group never arrives it goes out
+    /// with a "the dust settled" letter. Entries from older saves carry no def name and just burn out quietly.</summary>
     public class RM_MapComponent_HorizonPlume : MapComponent
     {
         private List<IntVec3> cells = new List<IntVec3>();
-        private List<int> untilTicks = new List<int>();
+        private List<int> untilTicks = new List<int>();   // the announced fire tick
+        private List<string> defNames = new List<string>();
+        private List<string> bearings = new List<string>();
 
         public RM_MapComponent_HorizonPlume(Map map) : base(map)
         {
@@ -235,10 +252,36 @@ namespace RimMandrake.Stillsand
 
         public int ActiveCount => cells.Count;
 
-        public void Add(IntVec3 cell, int untilTick)
+        /// <summary>Session counter for a dev/bridge read: groups that turned back. Never saved.</summary>
+        public static int TurnedBackCount;
+
+        public void Add(IntVec3 cell, int fireTick, string defName = null, string bearing = null)
         {
             cells.Add(cell);
-            untilTicks.Add(untilTick);
+            untilTicks.Add(fireTick);
+            defNames.Add(defName ?? "");
+            bearings.Add(bearing ?? "");
+        }
+
+        private void RemoveAt(int i)
+        {
+            cells.RemoveAt(i);
+            untilTicks.RemoveAt(i);
+            defNames.RemoveAt(i);
+            bearings.RemoveAt(i);
+        }
+
+        /// <summary>The announced group went through: end its plume.</summary>
+        public void Notify_Arrived(string defName, IntVec3 cell)
+        {
+            for (int i = cells.Count - 1; i >= 0; i--)
+            {
+                if (RM_HorizonMath.Matches(defNames[i], cells[i].x, cells[i].z, defName, cell.x, cell.z))
+                {
+                    RemoveAt(i);
+                    return;
+                }
+            }
         }
 
         public override void MapComponentTick()
@@ -250,10 +293,18 @@ namespace RimMandrake.Stillsand
             int now = Find.TickManager.TicksGame;
             for (int i = cells.Count - 1; i >= 0; i--)
             {
-                if (now >= untilTicks[i])
+                bool tracked = defNames[i].Length > 0;
+                if (tracked ? now > RM_HorizonMath.PlumeUntil(untilTicks[i]) : now >= untilTicks[i])
                 {
-                    cells.RemoveAt(i);
-                    untilTicks.RemoveAt(i);
+                    if (tracked && RM_SkeletonSettings.dustSettledLetterEnabled && RM_HorizonMath.TurnedBack(now, untilTicks[i], false))
+                    {
+                        TurnedBackCount++;
+                        Find.LetterStack.ReceiveLetter("The dust settled: " + bearings[i],
+                            "The dust on the horizon, bearing " + bearings[i] + ", has settled. Whoever it was never came: "
+                            + "they turned back, or lost their way on the sand.",
+                            LetterDefOf.NeutralEvent, new TargetInfo(cells[i], map));
+                    }
+                    RemoveAt(i);
                     continue;
                 }
                 Vector3 loc = cells[i].ToVector3Shifted() + new Vector3(Rand.Range(-2f, 2f), 0f, Rand.Range(-2f, 2f));
@@ -266,6 +317,8 @@ namespace RimMandrake.Stillsand
             base.ExposeData();
             Scribe_Collections.Look(ref cells, "plumeCells", LookMode.Value);
             Scribe_Collections.Look(ref untilTicks, "plumeUntil", LookMode.Value);
+            Scribe_Collections.Look(ref defNames, "plumeDefs", LookMode.Value);
+            Scribe_Collections.Look(ref bearings, "plumeBearings", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 cells = cells ?? new List<IntVec3>();
@@ -275,6 +328,13 @@ namespace RimMandrake.Stillsand
                     cells.Clear();
                     untilTicks.Clear();
                 }
+                // Saves from before this item carry no def names: pad them as untracked (quiet burn-out).
+                defNames = defNames ?? new List<string>();
+                bearings = bearings ?? new List<string>();
+                while (defNames.Count < cells.Count) defNames.Add("");
+                while (bearings.Count < cells.Count) bearings.Add("");
+                if (defNames.Count > cells.Count) defNames.RemoveRange(cells.Count, defNames.Count - cells.Count);
+                if (bearings.Count > cells.Count) bearings.RemoveRange(cells.Count, bearings.Count - cells.Count);
             }
         }
     }
