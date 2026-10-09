@@ -402,6 +402,9 @@ namespace RimMandrake.CreatureBehaviors
         public static bool shadeTentEnabled = true;
         public static bool decoyShadeEnabled = true;
         // SHIP_TOW_LINE_1: the salvage winch (RM_CompSalvageWinch). PROVISIONAL numbers.
+        // VERMIN_EAT_BREEDING_FOOD_1: a food-gated breeder eats the pile it breeds on, and food it cannot walk to does not count. PROVISIONAL.
+        public static bool verminBreedingEatsFood = true;
+        public static int verminLitterFoodUnits = 3;
         public static bool salvageWinchEnabled = true;
         public static float salvageWinchRange = 15f;
         public static float salvageWinchMaxMass = 400f;
@@ -524,6 +527,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref parasolShadeEnabled, "parasolShadeEnabled", true);
             Scribe_Values.Look(ref shadeTentEnabled, "shadeTentEnabled", true);
             Scribe_Values.Look(ref decoyShadeEnabled, "decoyShadeEnabled", true);
+            Scribe_Values.Look(ref verminBreedingEatsFood, "verminBreedingEatsFood", true);
+            Scribe_Values.Look(ref verminLitterFoodUnits, "verminLitterFoodUnits", 3);
             Scribe_Values.Look(ref salvageWinchEnabled, "salvageWinchEnabled", true);
             Scribe_Values.Look(ref salvageWinchRange, "salvageWinchRange", 15f);
             Scribe_Values.Look(ref salvageWinchMaxMass, "salvageWinchMaxMass", 400f);
@@ -928,6 +933,15 @@ namespace RimMandrake.CreatureBehaviors
             list.CheckboxLabeled("Decoy shade tarps fool shade-seekers", ref decoyShadeEnabled,
                 "On: a decoy shade tarp reads as shade to animals looking for shade (mirrak hide is the most "
                 + "convincing) though it cools no one. Off: it is an ordinary awning and fools nothing.");
+            list.CheckboxLabeled("Breeding vermin eat what they breed on", ref verminBreedingEatsFood,
+                "On: a breeder that needs a food pile (the greatbole grubs and their fruit) uses some of it up with every litter, and "
+              + "food it cannot walk to (behind a wall or a shut-off door) does not count. Clear the food and the infestation starves. "
+              + "Off: the pile is never used up and any pile in range counts.");
+            if (verminBreedingEatsFood)
+            {
+                list.Label("Food eaten per litter: " + verminLitterFoodUnits);
+                verminLitterFoodUnits = Mathf.RoundToInt(list.Slider(verminLitterFoodUnits, 1f, 20f));
+            }
             list.CheckboxLabeled("Salvage winch hooks heavy objects", ref salvageWinchEnabled,
                 "On: a salvage winch can be ordered to hook a wreck chunk, a carcass or a downed beast within reach "
               + "and drag it home beside the winch, cell by cell. Off: winches do nothing and drop what they hold.");

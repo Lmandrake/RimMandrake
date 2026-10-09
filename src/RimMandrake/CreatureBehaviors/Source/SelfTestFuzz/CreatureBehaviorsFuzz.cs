@@ -539,6 +539,39 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
             return fails;
         }
 
+        /// <summary>VERMIN_EAT_BREEDING_FOOD_1: the litter's take. Property check: never takes more than needed, more than a stack holds,
+        /// from an empty or negative stack, and takes nearest-first (a later stack is touched only when every earlier one is emptied).</summary>
+        public static List<string> VerminFood(int n, int seed)
+        {
+            var fails = new List<string>();
+            var r = new Random(seed);
+            for (int i = 0; i < n; i++)
+            {
+                int len = r.Next(0, 9);
+                var stacks = new List<int>();
+                for (int k = 0; k < len; k++) stacks.Add(r.Next(-3, 40));
+                int need = r.Next(-2, 60);
+                int[] take = RM_VerminFoodMath.Plan(stacks, need);
+                Cases++; Steps++;
+                int total = RM_VerminFoodMath.Total(take);
+                int avail = stacks.Where(x => x > 0).Sum();
+                string bad = null;
+                if (take.Length != stacks.Count) bad = "length";
+                else if (total != Math.Max(0, Math.Min(need, avail))) bad = $"total {total} != min(need {need}, avail {avail})";
+                else for (int k = 0; k < take.Length && bad == null; k++)
+                {
+                    if (take[k] < 0 || take[k] > Math.Max(0, stacks[k])) bad = $"stack {k} take {take[k]} of {stacks[k]}";
+                    else if (take[k] > 0 && k + 1 < take.Length && take.Skip(k + 1).Any(x => x > 0) && take[k] < stacks[k]) bad = $"stack {k} not emptied before a later stack was touched";
+                }
+                if (bad != null) { fails.Add($"vermin-food seed {seed} case {i}: {bad} | stacks [{string.Join(",", stacks)}] need {need}"); if (fails.Count > 5) break; }
+            }
+            Cases++; Steps++;
+            if (RM_VerminFoodMath.Total(RM_VerminFoodMath.Plan(new[] { 2, 5 }, 4)) != 4 || RM_VerminFoodMath.Plan(new[] { 2, 5 }, 4)[0] != 2 || RM_VerminFoodMath.Total(RM_VerminFoodMath.Plan(new[] { 1 }, 3)) != 1
+                || RM_VerminFoodMath.Plan(null, 3).Length != 0)
+                fails.Add("vermin-food units: nearest stack emptied first, a short pile gives what it has, null is empty");
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -553,6 +586,7 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
                 ("patch", () => PatchGraphFuzz.Patch(N(3000), S(1))),
                 ("dash", () => PatchGraphFuzz.Dash(N(4000), S(1))),
                 ("winch", () => Winch(N(20000), S(1))),
+                ("vermin-food", () => VerminFood(N(20000), S(1))),
             };
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             foreach (var f in fam)

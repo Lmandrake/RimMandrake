@@ -171,6 +171,7 @@
     <Compile Include="RM_PinnedSunPatches.cs" />
     <Compile Include="RM_FalseShade.cs" />
     <Compile Include="RM_SalvageWinchRules.cs" />
+    <Compile Include="RM_VerminFoodMath.cs" />
     <Compile Include="RM_CompSalvageWinch.cs" />
     <Compile Include="RM_CompFalseShadeAmbusher.cs" />
     <Compile Include="RM_ShadeClothExtension.cs" />

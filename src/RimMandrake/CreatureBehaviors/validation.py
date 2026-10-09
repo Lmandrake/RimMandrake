@@ -337,6 +337,7 @@ MECHANICS = [
     ("aquaticAmbushEnabled", ["RM_CompAquaticAmbusher", "RM_JobDriver_LungeAttack"],
      ["JobDef/RM_LungeAttack", "HediffDef/RM_AquaticAmbushInvisibility", "HediffDef/RM_LungeSpeedBurst"]),
     ("parentalEnrageEnabled", ["RM_CompParentalEnrage"], ["MentalStateDef/RM_ParentalEnrage"]),
+    ("verminBreedingEatsFood", ["RM_CompVerminBreeder", "RM_VerminFoodMath"], []),
     ("salvageWinchEnabled", ["RM_CompSalvageWinch", "RM_CompProperties_SalvageWinch", "RM_SalvageWinchRules"],
      ["ThingDef/RM_SalvageWinch", "ResearchProjectDef/RM_SalvageWinch"]),
     ("decoyShadeEnabled", ["RM_CompDecoyShade", "RM_FalseShadeExtension", "RM_MapComponent_FalseShade"],
