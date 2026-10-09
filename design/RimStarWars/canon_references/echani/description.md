@@ -65,9 +65,11 @@ freedom of movement. A Mandalorian mercenary was **disgusted** at their "light" 
 held a long rivalry with the Mandalorians.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The stylised *Hero's Guide* training illustration (`wookieepedia_echani_practice.jpg`) was deleted. No realistic replacement exists (searched: Echani and Echani/Legends page images, the empty "Images of Echani" category, Thyrsian/Sun Guard pages; the species has no live-action or photoreal depiction). The two remaining images are painted art: Raskta Lsu (realistic painting) and the KOTOR II painted promotional portrait of Brianna.
 
-There are only three usable references and **no full-body reference exists in this
-directory** — all three are portraits or stylised. Say so rather than over-reading them.
+There are only two usable references and **no full-body reference exists in this
+directory** — both are portraits. Say so rather than over-reading them.
 
 **`wookieepedia_legends_infobox_raskta.jpg`** (the Legends infobox, Raskta Lsu, painted):
 - **Skin is cool pale with a distinct blue-grey cast** — not a warm human pale. In the
@@ -88,19 +90,11 @@ and **dark brows**, and light eyes. ⚠️ **The article states Brianna is *half
 is legitimately a blended reference; read her as the warm end of "light skin," not as the
 species centre.
 
-**`wookieepedia_echani_practice.jpg`** (stylised illustration of Echani training beneath a
-Royal Guard helm) is the best behavioural reference in the set:
-- Two figures in **mirrored, symmetrical, near-identical poses** — the "indistinguishable
-  siblings" and "combat as conversation" ideas made visual in one image.
-- **Chalk-white to pale-grey skin, short white hair**, human proportions.
-- 🔑 **They are training in minimal clothing** — bare arms and legs, dark shorts, **wraps at
-  the forearms and shins, and sandals.** This matches "trained in minimal clothing" and
-  "eschewed heavy armor" exactly, and it is the strongest apparel cue for how an Echani pawn
-  should be dressed.
+The deleted illustration was the only picture of Echani **training in minimal clothing** (bare arms and legs, forearm/shin wraps, sandals) and in **mirrored identical poses**; both points remain sourced in the text ("trained in minimal clothing", "eschewed heavy armor", indistinguishable siblings) but are no longer illustrated.
 
-🔑 **Reading across all three: the constants are silver-white hair, dark eyebrows, light eyes,
+🔑 **Reading across both: the constants are silver-white hair, dark eyebrows, light eyes,
 and ordinary human anatomy. The variable is how cold the pale is — blue-grey chalk to warm
-human light.** And **none of the three shows a Thyrsian**, so the dark-skinned half of the
+human light.** And **neither shows a Thyrsian**, so the dark-skinned half of the
 species has no image here at all.
 
 **There is no `donor_current_sprite.png` — no Echani pawn art exists in this repo.** The
@@ -117,12 +111,13 @@ better shape than the pawn side.
 ## Must show
 Honest framing: no full-body reference exists, only portraits/stylised art, and no
 Thyrsian (dark-skinned subspecies) image was obtainable — this checklist covers only the
-pale-morph Echani the three available images actually show.
+pale-morph Echani the two available images actually show.
 - [ ] Long, loose silver-white hair
 - [ ] Dark eyebrows (not white) over the white hair
 - [ ] Pale, light-coloured eyes
 - [ ] Skin ranges from cool blue-grey chalk-pale to a warm light human tone — not one fixed hue
 - [ ] Ordinary human facial structure and anatomy — no non-human feature
+- [ ] Realistic rendering: real human skin and hair texture under natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known — no Echani head, face or body art exists in the repo at all to check against a
@@ -144,9 +139,7 @@ shader or mask limit; the xenotype currently points at vanilla's generic Baselin
   (File:Raskta Lsu.jpg, the Legends infobox → `wookieepedia_legends_infobox_raskta.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/9/97/Handmaidenpromo.jpg
   (File:Handmaidenpromo.jpg, Brianna → `wookieepedia_handmaiden_brianna.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/d/d2/Echanipractice.jpg
-  (File:Echanipractice.jpg → `wookieepedia_echani_practice.jpg`)
-- ⚠️ All three served as **WebP** despite `.jpg` extensions; re-encoded to real JPEG locally.
+- ⚠️ Both served as **WebP** despite `.jpg` extensions; re-encoded to real JPEG locally.
 - NOT fetched this pass: no starwars.com Databank page was attempted (the species is
   Legends-dominant and unlikely to have one).
 
@@ -158,9 +151,6 @@ shader or mask limit; the xenotype currently points at vanilla's generic Baselin
 - `wookieepedia_handmaiden_brianna.jpg` — the **warm** end of "light skin," same silver-white
   hair and dark brows. ⚠️ **Half-Echani by the article's own text** — a blended reference,
   labelled accordingly.
-- `wookieepedia_echani_practice.jpg` — stylised, and the best **behaviour and dress**
-  reference: mirrored identical poses, chalk-white skin, short white hair, minimal training
-  clothing with forearm/shin wraps and sandals.
 - ⛔ **No Thyrsian image was obtainable** — the subspecies page carries no infobox image. The
   dark-skinned half of the species is unillustrated here.
 - ⛔ **No `donor_current_sprite.png`** — no Echani pawn art exists in this repo.
@@ -197,7 +187,7 @@ shader or mask limit; the xenotype currently points at vanilla's generic Baselin
    attested and this is minor — but silver is the specific cite.
 7. ⚠️ **`Beauty_Pretty` + `Turn_Gene_HighBeautyStandard` and `AptitudePoor_Animals` are
    unsourced.** Nothing found addresses Echani beauty or animal handling.
-8. ⚠️ **Dark eyebrows over white hair are visible in two of the three images** and are not
+8. ⚠️ **Dark eyebrows over white hair are visible in both images** and are not
    expressible through `Hair_SnowWhite` alone. Worth noting for whoever authors the art.
 9. ⚠️ **`iconPath` is vanilla `UI/Icons/Xenotypes/Baseliner`** — the Echani have no xenotype
    icon of their own, unlike the other four in this batch, which all point at
