@@ -93,8 +93,7 @@
     <label>krellik</label>
     <description>A crab-thing plated in hydrocarbon frost, each plate a clear crystal grown from the fuel snow and shed and regrown nightly, so a krellik is always half new. It walks the solid propane at the lake's edge and the floor beneath, picking at the crystal flora's fallen fragments, and it is the one thing on the shore the Frostmite will not eat — the shell is too cold even for that. Cracked, the plates ring like glass. The meat inside is dense and oily and takes fire the moment it dries.</description>
     <graphicData>
-      <!-- TEMPORARY: vanilla small-meat sprite until phfix_RM_KrellikCatch_a/_b paints its own (Things/Item/Fish/RM_KrellikCatch); was borrowing Things/Pawn/Animal/RM_Krellik/RM_Krellik. -->
-      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <texPath>Things/Item/Fish/RM_KrellikCatch</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -141,8 +140,7 @@
     <label>oovu</label>
     <description>A bell of frozen hydrocarbon jelly that rides at the surface of the fuel where the snow lands, catching it — a floating cup with a crystal rim, tipping and righting, faintly green under the aurora because the aurora is the only light. It has no sting; it has almost nothing. Netted it is a bell of propane with a frost crust, and the shore-folk keep them for the lamp, not the pot: an oovu on a wire burns steadily for an hour.</description>
     <graphicData>
-      <!-- TEMPORARY: vanilla small-meat sprite until phfix_RM_OovuCatch_a/_b paints its own (Things/Item/Fish/RM_OovuCatch); was borrowing Things/Pawn/Animal/RM_Oovu/RM_Oovu. -->
-      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <texPath>Things/Item/Fish/RM_OovuCatch</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>

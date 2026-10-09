@@ -22,12 +22,10 @@
     <thingClass>Building</thingClass>
     <category>Building</category>
     <altitudeLayer>Building</altitudeLayer>
-    <!-- PLACEHOLDER: vanilla slag-chunk sprites, tinted. Real art owed (see header). -->
     <graphicData>
-      <texPath>Things/Item/Chunk/ChunkSlag</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Building/RM_LongShadeMidden</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.4</drawSize>
-      <color>(150, 128, 100)</color>
     </graphicData>
     <drawerType>MapMeshOnly</drawerType>
     <rotatable>false</rotatable>
@@ -89,10 +87,9 @@
     <category>Building</category>
     <altitudeLayer>FloorEmplacement</altitudeLayer>
     <graphicData>
-      <texPath>Things/Filth/Sand</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Building/RM_LongShadeCleanPatch</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2.2</drawSize>
-      <color>(232, 220, 196)</color>
     </graphicData>
     <drawerType>MapMeshOnly</drawerType>
     <rotatable>false</rotatable>
