@@ -41,6 +41,9 @@ Every surveyed psychic storm/condition event shows Force-flavoured label +
 letter text in a live quicktest; no vanilla "psychic drone" string reaches the
 player from the patched set.
 
+### Exact checks 2026-10-09 (acceptance sitting)
+- A1 CHECK: Requires `mandrake.rsw.patches` (StarWarsPatches) active. `jawa/get_defs defs="IncidentDef/PsychicDrone;IncidentDef/PsychicSoothe;GameConditionDef/PsychicDrone;GameConditionDef/PsychicSoothe;GameConditionDef/PsychicDroner;GameConditionDef/PsychicSuppression;IncidentDef/PsychicEmanatorShipPartCrash" fields="label,description,letterText"`. Targets are the xpaths in `src/RimStarWars/StarWarsPatches/Patches/PsychicToForceDisturbance.xml`; donor rows (VEE_*, VREA_PsychicStorm) exist only if that donor is loaded. PASS: success=true, foundCount=7; PsychicDrone label reads `a disturbance in the Force` and PsychicSoothe `the Force at peace`; each patched letterText/description contains `Force`; no vanilla `psychic drone` wording left in those fields. FAIL: a label still vanilla (a PatchOperationConditional that missed its xpath fails silently, so the live value is the only evidence), success=false (UNMEASURED), or notFound non-empty.
+
 ## criteria
 
 Owner has seen and approved the replacement text; mechanics measurably

@@ -111,3 +111,8 @@ Deterministic state reads through `jawa/get_defs` (reading `success`/`foundCount
   `<li>`) contains `RSW_Mynock`; with `mandrake.rsw.swbestiary` absent the patch applies nothing and the
   log has no error.
 - Each Mod Settings toggle off removes exactly its effect (one case per toggle).
+
+## verify
+
+### Exact checks 2026-10-09 (acceptance sitting)
+- A4 CHECK: `jawa/biome_probe biomes="RM_RustCathedral" find="RSW_Mynock"` (reads the RESOLVED runtime animal list, so it sees patch-added rows that `get_defs` on the BiomeDef cannot; JawaBenchTerrainTools.cs). Needs `mandrake.rsw.swbestiary` active. Control in the same call: `find="RSW_Mynock,RM_CathedralRoach"` where the roach is an inline row that must read `spawning`. PASS: findResults: RSW_Mynock state `spawning` and the control `spawning`; success=true. FAIL: RSW_Mynock `absent` (patch missed its xpath, which logs nothing) or `zeroed`, or the control not `spawning` (then the probe read the wrong biome: UNMEASURED).

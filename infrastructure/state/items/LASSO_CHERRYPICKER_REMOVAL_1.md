@@ -11,6 +11,9 @@ Owner, typed, 2026-10-01 (Sump turn 1): *"Remove lasso's from the game, but keep
 ## verify
 - A full-list load: no lasso craftable or on any spawned pawn; no Melee Animation errors in `Player.log`; melee animations still play.
 
+### Exact checks 2026-10-09 (acceptance sitting)
+- A2 CHECK: No bridge needed, runs at game-down. Read `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_2944488802_*.xml` (Melee Animation, workshop id 2944488802, found by its About.xml name) for `<LassoSpawnChance>0</LassoSpawnChance>`. Measured 2026-10-08: that file does not exist in the Config folder, so the setting has never been written. PASS: the file exists and `<LassoSpawnChance>` reads 0 (or preset NoLassos applied). FAIL: file absent or the element absent or non-zero: the default spawn chance is live. Absence is a FAIL, not a pass.
+
 ## Progress (FOUNDRY belt builder, 2026-10-04)
 - ✅ SHIP profile (`infrastructure/state/cherrypicker/CherryPicker.SHIP.xml`) now cuts `ThingDef/AM_LassoCloth` plus the
   three generated recipes `Make_AM_LassoCloth/Devilstrand/Hyperwave` (all three lassos inherit `AM_LassoBaseMakeable`'s
