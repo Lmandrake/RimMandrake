@@ -4224,3 +4224,15 @@
 {"seat":"FOUNDRY","event":"file","id":"SALT_TRAVELS_WITH_DOOR_1","title":"TB-2: door salt stored on the door, survives flight/minify","kind":"task","target":"v1","needs":"offline","spec":"design/RimMandrake/gpt_reviews/DESIGN_PASS_2026-10-08.md","for":"FOUNDRY","ts":"2026-10-09T05:08:51Z","tsn":1791522531284011826}
 {"seat":"FOUNDRY","event":"file","id":"TWILIGHT_WELL_AVOIDS_CURRENT_1","title":"TB-3: twilight wells avoid the current lane map","kind":"task","target":"v1","needs":"offline","spec":"design/RimMandrake/gpt_reviews/DESIGN_PASS_2026-10-08.md","for":"FOUNDRY","ts":"2026-10-09T05:08:52Z","tsn":1791522532141405609}
 {"seat":"FOUNDRY","event":"file","id":"SEND_HOME_NEVER_SEABED_1","title":"X-1: shared helper so send-home never picks a sea-floor map","kind":"task","target":"v1","needs":"offline","spec":"design/RimMandrake/gpt_reviews/DESIGN_PASS_2026-10-08.md","for":"FOUNDRY","ts":"2026-10-09T05:08:53Z","tsn":1791522533057432835}
+{"seat":"FOUNDRY","event":"lease","id":"CREATURE_ALARM_ORIGIN_SHARE_1","action":"take","token":"FOUNDRY.pid26098.76cb384d","expires":"2026-10-09T05:55:53Z","ts":"2026-10-09T05:10:53Z","tsn":1791522654005931911}
+{"seat":"FOUNDRY","event":"claim","id":"CREATURE_ALARM_ORIGIN_SHARE_1","ts":"2026-10-09T05:10:54Z","tsn":1791522654220853292}
+{"seat":"FOUNDRY","event":"start","id":"CREATURE_ALARM_ORIGIN_SHARE_1","ts":"2026-10-09T05:10:54Z","tsn":1791522654438129347}
+{"seat":"FOUNDRY","event":"lease","id":"DUNG_HATCH_WILDLIFE_CAP_1","action":"take","token":"FOUNDRY.pid26098.009e2999","expires":"2026-10-09T05:55:55Z","ts":"2026-10-09T05:10:55Z","tsn":1791522655561837722}
+{"seat":"FOUNDRY","event":"claim","id":"DUNG_HATCH_WILDLIFE_CAP_1","ts":"2026-10-09T05:10:55Z","tsn":1791522655765882315}
+{"seat":"FOUNDRY","event":"start","id":"DUNG_HATCH_WILDLIFE_CAP_1","ts":"2026-10-09T05:10:55Z","tsn":1791522655985547969}
+{"seat":"FOUNDRY","event":"lease","id":"HERD_DEFENDS_OWN_YOUNG_1","action":"take","token":"FOUNDRY.pid26099.aba964d8","expires":"2026-10-09T05:55:56Z","ts":"2026-10-09T05:10:56Z","tsn":1791522657108466261}
+{"seat":"FOUNDRY","event":"claim","id":"HERD_DEFENDS_OWN_YOUNG_1","ts":"2026-10-09T05:10:57Z","tsn":1791522657316308487}
+{"seat":"FOUNDRY","event":"start","id":"HERD_DEFENDS_OWN_YOUNG_1","ts":"2026-10-09T05:10:57Z","tsn":1791522657530740194}
+{"seat":"FOUNDRY","event":"implemented","id":"CREATURE_ALARM_ORIGIN_SHARE_1","sha":"6ce1d9009102","ref":"origin/main","criteria":[{"id":"A1","level":"L2","text":"disturbed Kurreth rallies even when neighbours would exhaust the budget (live check owed)"}],"needs":"bridge","ts":"2026-10-09T05:11:06Z","tsn":1791522666037530378}
+{"seat":"FOUNDRY","event":"implemented","id":"DUNG_HATCH_WILDLIFE_CAP_1","sha":"6ce1d9009102","ref":"origin/main","criteria":[{"id":"A1","level":"L2","text":"on a full-ecosystem map a shade whale dung trail spawns no young (live check owed)"}],"needs":"bridge","ts":"2026-10-09T05:11:06Z","tsn":1791522666917771000}
+{"seat":"FOUNDRY","event":"implemented","id":"HERD_DEFENDS_OWN_YOUNG_1","sha":"c46d8afb106d","ref":"origin/main","criteria":[],"ts":"2026-10-09T05:11:07Z","tsn":1791522667804409296}
