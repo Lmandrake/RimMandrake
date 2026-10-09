@@ -359,6 +359,10 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref tier1CooldownUntilTick, "tier1CooldownUntilTick", -1);
             Scribe_Values.Look(ref tier2CooldownUntilTick, "tier2CooldownUntilTick", -1);
             Scribe_Values.Look(ref agitationCooldownUntilTick, "agitationCooldownUntilTick", -1);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && escalationScore < offenseScore)
+            {
+                escalationScore = offenseScore; // old saves have no escalation pool; it can never be below the tier-1 pool
+            }
         }
     }
 }
