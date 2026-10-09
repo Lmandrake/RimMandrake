@@ -7,7 +7,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import selftest_modpack_lint as H  # noqa: E402
+import modpack_lint_harness as H  # noqa: E402
 
 PLANTS = [
     ("type typo in a comp Class=", "Defs/ThingDefs_Buildings/RM_SekkulaathTank.xml", 'Class="RimMandrake.FeverWood.RM_CompProperties_CapturedSpecimen"', 'Class="RimMandrake.FeverWood.RM_CompProperties_CapturedSpecimn"', "class-resolves"),

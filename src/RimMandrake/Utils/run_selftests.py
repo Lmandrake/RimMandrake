@@ -369,7 +369,16 @@ def _run_capped(path: Path, timeout: int, cap: int = 0, est: int = 0):
             os.killpg(p.pid, signal.SIGKILL)
         except OSError:
             pass
-        p.communicate()
+        try:
+            # Bounded: a descendant that escaped the group can still hold the pipe, and an
+            # unbounded communicate() here hung the whole runner (audit §7).
+            p.communicate(timeout=15)
+        except subprocess.TimeoutExpired:
+            for f in (p.stdout, p.stderr):
+                try:
+                    f.close()
+                except OSError:
+                    pass
         raise
     finally:
         _RUNNING.pop(p.pid, None)
@@ -377,56 +386,87 @@ def _run_capped(path: Path, timeout: int, cap: int = 0, est: int = 0):
     return subprocess.CompletedProcess(p.args, p.returncode, out, err), rep
 
 
+# --- verdicts ------------------------------------------------------------------------
+# Every result is exactly ONE of these. A run is green only if FAIL + CRASH == 0 (and
+# nothing was dropped); UNMEASURED never fails a run but is always listed by name, and
+# is never a PASS — a check that could not run proved nothing (owner card 2026-10-08).
+#   PASS        exit 0, the unmeasured phrase never printed, no cap kill
+#   FAIL        the test ran to a verdict and the verdict is failure
+#   UNMEASURED  the test printed UNMEASURED_PHRASE (at ANY exit code) and no FAIL line
+#   CRASH       no verdict was reached: signal death, timeout, memory-cap kill, an
+#               uncaught non-assertion exception, or a harness error/refusal. The
+#               reason is the detail's first line (CRASH_REASONS).
+#   SKIPPED     not run: excluded by name, outside the selected tier, or reused from
+#               an evidence record (step 4) — always printed with its reason.
+STATES = ("PASS", "FAIL", "UNMEASURED", "CRASH", "SKIPPED")
+# The last traceback in the output ends in "<ExcType>: msg" or a bare "<ExcType>".
+_EXC_LINE = re.compile(r"^(?:[\w.]+\.)?(\w+(?:Error|Exception|Interrupt|Exit|Warning)|KeyboardInterrupt)\b(?::|$)", re.M)
+
+
+def classify(rc: int, out: str, rep=None, cap: int = 0) -> tuple[str, str]:
+    """(state, reason) for a finished child. Pure: no I/O, so the runner's own selftest
+    can pin every branch. `out` is stdout+stderr; `rep` the memory-pen wrapper report."""
+    if rep is not None and rep.get("oom_kill"):
+        return "CRASH", (f"memory cap: oom_kill={rep['oom_kill']} in its scope, peak "
+                         f"{(rep.get('peak') or 0) / GiB:.2f} GiB, cap {(rep.get('cap') or cap) / GiB:.2f} GiB, rc {rc}")
+    if rc < 0 or rc in (137, 139):
+        # A signal death is never a verdict — not even when the child had already
+        # printed the unmeasured phrase (it used to fall through into UNMEASURED).
+        sig = -rc if rc < 0 else rc - 128
+        return "CRASH", (f"signal {sig} (rc={rc}) - SIGKILL(9) is almost always the OOM killer; "
+                         "rerun this test alone before believing it is a real failure")
+    # rc != 0: the old guard, unchanged — any FAIL in the output means the non-zero exit
+    # may be a real failure, so the phrase may not launder it. rc == 0: nothing claimed a
+    # failure, so the phrase alone decides.
+    if UNMEASURED_PHRASE in out and (rc == 0 or "FAIL" not in out):
+        # Exit code is NOT consulted: a test that prints the phrase and exits 0 skipped
+        # the very check it exists for, so it is not a pass (selftest_deployed_biome_refs.py
+        # did exactly that). The FAIL guard keeps an unmeasured sub-check from masking a
+        # genuine failure in the same output.
+        return "UNMEASURED", "printed the unmeasured phrase" + (" and exited 0" if rc == 0 else f" (rc {rc})")
+    if rc == 0:
+        return "PASS", ""
+    tb = out.rfind("Traceback (most recent call last)")
+    if tb >= 0:
+        m = None
+        for m in _EXC_LINE.finditer(out[tb:]):
+            pass
+        exc = m.group(1) if m else "?"
+        if exc not in ("AssertionError", "SystemExit"):
+            return "CRASH", f"uncaught {exc} (rc {rc}) - the test died before reaching a verdict"
+    return "FAIL", f"rc {rc}"
+
+
 def run_one(path: Path, cap: int = 0, est: int = 0) -> tuple[Path, str, float, str]:
+    """(path, state, seconds, detail). detail's first line is the reason for any non-PASS."""
     start = time.monotonic()
     try:
         proc, rep = _run_capped(path, per_test_timeout(path), cap, est)
         elapsed = time.monotonic() - start
+        out = proc.stdout + proc.stderr
+        tail = out.strip().splitlines()[-40:]
         if _HARNESS:
             if not rep:
-                return path, "ERROR", elapsed, ("contained run gave no wrapper report (rc "
+                return path, "CRASH", elapsed, ("harness error: contained run gave no wrapper report (rc "
                                                 f"{proc.returncode}): {proc.stderr.strip()[-400:]}")
             if not rep.get("ok"):
-                return path, "PLACEMENT", elapsed, (f"refused to run: landed in {rep.get('placement')}, "
-                                                    f"not {HARNESS_SLICE}")
+                return path, "CRASH", elapsed, (f"harness refused to run it: landed in {rep.get('placement')}, "
+                                                f"not {HARNESS_SLICE}")
             if rep.get("peak"):
                 _PEAK_SEEN[_rel(path)] = rep["peak"]
-            if rep.get("oom_kill"):
-                # Never a pass, even at rc 0: something in its scope died to the cap.
-                tail = (proc.stdout + proc.stderr).strip().splitlines()[-20:]
-                return path, "KILLED", elapsed, "\n".join(tail + [
-                    f"KILLED by memory cap: oom_kill={rep['oom_kill']} in its scope, "
-                    f"peak {rep.get('peak', 0) / GiB:.2f} GiB, cap {(rep.get('cap') or cap) / GiB:.2f} GiB, "
-                    f"rc {proc.returncode}"])
-        if proc.returncode == 0:
-            return path, "PASS", elapsed, ""
-        out = proc.stdout + proc.stderr
-        rc = proc.returncode
-        if rc < 0 or rc in (137, 139):  # killed by a signal: say so, never a silent FAIL
-            sig = -rc if rc < 0 else rc - 128
-            out += (f"\nKILLED by signal {sig} (rc={rc}) - SIGKILL(9) is almost always the OOM "
-                    "killer; rerun this test alone before believing it is a real failure")
-        tail = out.strip().splitlines()[-40:]
-        # UNMEASURED is not FAILED. A child that could not run at all — no
-        # Windows-side dotnet.exe here, no live game — says so with the phrase
-        # below and exits non-zero, and printing that identically to a real
-        # failure is how a suite stops being read (11 red of 57 on macOS,
-        # 6 of them unrunnable). The `FAIL` guard is what keeps an unmeasured
-        # sub-check from masking a genuine failure in the same file:
-        # selftest_codebase_health.py PASSES while discussing UNMEASURED, so the
-        # verdict is read from the child's OUTPUT and exit code, never its source.
-        if UNMEASURED_PHRASE in out and "FAIL" not in out:
-            return path, "UNMEASURED", elapsed, "\n".join(tail)
-        return path, "FAIL", elapsed, "\n".join(tail)
+        state, why = classify(proc.returncode, out, rep if _HARNESS else None, cap)
+        if state == "PASS":
+            return path, "PASS", elapsed, ("" if out.strip() else "silent: printed nothing at all")
+        return path, state, elapsed, "\n".join([why] + tail[-20 if state == "CRASH" else -40:])
     except subprocess.TimeoutExpired:
         elapsed = time.monotonic() - start
-        return path, "TIMEOUT", elapsed, f"exceeded {per_test_timeout(path)}s"
+        return path, "CRASH", elapsed, f"timeout: exceeded {per_test_timeout(path)}s"
     except Exception as exc:  # harness-side failure: OSError, ENOMEM, bad interpreter
         # Never let this escape into as_completed — one raised future would abort the
         # whole loop and print NO summary at all, which is the truncation this file
         # exists to prevent. Report it as a named non-PASS instead.
         elapsed = time.monotonic() - start
-        return path, "ERROR", elapsed, f"{type(exc).__name__}: {exc}"
+        return path, "CRASH", elapsed, f"harness error: {type(exc).__name__}: {exc}"
 
 
 def main() -> int:
@@ -460,6 +500,11 @@ def main() -> int:
 
     if args.only:
         want = {Path(o).resolve() for o in args.only}
+        absent = sorted(str(w) for w in want if not w.is_file())
+        if absent:
+            # A typo used to yield a green 0/0 (audit §6): naming nothing is an error.
+            print("--only names no such file: " + ", ".join(absent))
+            return 1
         tests = [t for t in tests if t.resolve() in want]
         # a file outside discovery (e.g. a planted fixture) is still run when named
         tests += sorted(w for w in want if w.is_file() and w not in {t.resolve() for t in tests})
@@ -537,57 +582,81 @@ def main() -> int:
             PEAKS_FILE.write_text(json.dumps({**load_peaks(), **_PEAK_SEEN}, indent=0, sort_keys=True))
         except OSError:
             pass
-    results.sort(key=lambda r: str(r[0]))
-    passed = [r for r in results if r[1] == "PASS"]
-    unmeasured = [r for r in results if r[1] == "UNMEASURED"]
-    timed_out = [r for r in results if r[1] == "TIMEOUT"]
-    capkilled = [r for r in results if r[1] == "KILLED"]
-    failed = [r for r in results if r[1] not in ("PASS", "UNMEASURED", "TIMEOUT", "KILLED")]
+    skipped = [(path, "SKIPPED", 0.0, why) for path, why in excluded]
+    return report(results, skipped, len(tests) + len(skipped), wall_elapsed, contain_note,
+                  ISOLATED, args.timings)
 
-    for path, status, elapsed, detail in results:
-        rel = path.relative_to(REPO_ROOT)
-        note = "  (isolated)" if path.name in ISOLATED else (
+
+def _show(p: Path) -> str:
+    try:
+        return str(p.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(p)
+
+
+def report(results, skipped, discovered, wall_elapsed, contain_note, isolated=frozenset(),
+           timings=False) -> int:
+    """Print every result and the per-state N/N; return the exit code. Green iff
+    FAIL + CRASH == 0 and every discovered test is accounted for."""
+    allr = sorted(results + skipped, key=lambda r: str(r[0]))
+    by = {s: [r for r in allr if r[1] == s] for s in STATES}
+    for path, status, elapsed, detail in allr:
+        note = "  (isolated)" if path.name in isolated else (
             "  (heavy lane)" if path.name in MEMORY_HEAVY else "")
-        print(f"{status:8s} {elapsed:6.1f}s  {rel}{note}")
+        if status == "SKIPPED":
+            print(f"{status:10s} {'':6s}   {_show(path)}  — {detail}")
+            continue
+        print(f"{status:10s} {elapsed:6.1f}s  {_show(path)}{note}")
         if status != "PASS" and detail:
             for line in detail.splitlines():
-                print(f"           {line}")
-
-    for path, why in excluded:
-        print(f"{'SKIPPED':8s} {'':6s}   {path.relative_to(REPO_ROOT)}  — {why}")
+                print(f"             {line}")
+    _write_last_run(allr, wall_elapsed)
 
     # Denominator is what was DISCOVERED, not what came back — so a dropped result
-    # shrinks the numerator and shows, instead of shrinking both and reading green.
-    print(f"\n{len(passed)}/{len(tests)} passed  (wall {wall_elapsed:.1f}s, "
-          f"{len(excluded)} skipped, {len(unmeasured)} unmeasured, {len(timed_out)} timeout, "
-          f"{len(capkilled)} killed-by-cap, {len(failed)} failed) — {contain_note}")
-    if args.timings:
+    # shrinks every numerator and shows, instead of shrinking both and reading green.
+    n = discovered
+    counts = "  ".join(f"{s} {len(by[s])}/{n}" for s in STATES)
+    green = not by["FAIL"] and not by["CRASH"] and len(allr) == n
+    print(f"\n{counts}  (wall {wall_elapsed:.1f}s) — {contain_note}")
+    if timings:
         for path, status, elapsed, _ in sorted(results, key=lambda r: -r[2])[:10]:
-            print(f"  slow: {elapsed:6.1f}s {status:8s} {path.relative_to(REPO_ROOT)}")
-    if unmeasured:
-        print(f"UNMEASURED ({len(unmeasured)}) — could not run here, NOT failures: "
-              + ", ".join(str(p.relative_to(REPO_ROOT)) for p, *_ in unmeasured))
+            print(f"  slow: {elapsed:6.1f}s {status:10s} {_show(path)}")
+    silent = [r for r in by["PASS"] if r[3].startswith("silent")]
+    if silent:
+        print(f"SILENT PASS ({len(silent)}) — exited 0 printing NOTHING; check each is a real test: "
+              + ", ".join(_show(p) for p, *_ in silent))
+    if by["UNMEASURED"]:
+        print(f"🔴 UNMEASURED ({len(by['UNMEASURED'])}/{n}) — did NOT run their check; not failures, "
+              "and NOT passes: " + ", ".join(_show(p) for p, *_ in by["UNMEASURED"]))
+    if by["CRASH"]:
+        print(f"CRASH ({len(by['CRASH'])}/{n}) — reached no verdict: " + ", ".join(
+            f"{_show(p)} [{d.splitlines()[0].split(':')[0] if d else '?'}]" for p, _, _, d in by["CRASH"]))
+    if by["FAIL"]:
+        print(f"FAIL ({len(by['FAIL'])}/{n}): " + ", ".join(_show(p) for p, *_ in by["FAIL"]))
+    if len(allr) != n:
+        print(f"DROPPED: discovered {n} selftests but only {len(allr)} results came back "
+              "— the sweep is NOT a clean signal")
+    print("RESULT: " + ("GREEN" if green else "RED") + " (green = FAIL 0 and CRASH 0)")
+    return 0 if green else 1
 
-    if len(results) != len(tests):
-        print(f"DROPPED: discovered {len(tests)} runnable selftests but only "
-              f"{len(results)} results came back — the sweep is NOT a clean signal")
-        return 1
 
-    if capkilled:
-        print("KILLED BY MEMORY CAP (%d) — NOT passes; their scope's OOM killer fired: " % len(capkilled)
-              + ", ".join(str(p.relative_to(REPO_ROOT)) for p, *_ in capkilled))
-    killed = [r for r in results if "KILLED by signal" in r[3]]
-    if killed:
-        print("KILLED (%d) - died on a signal (rc 137 = SIGKILL, usually the OOM killer), NOT real assertion failures; "
-              "rerun alone: " % len(killed) + ", ".join(str(p.relative_to(REPO_ROOT)) for p, *_ in killed))
-    if timed_out:
-        print("TIMEOUT (%d) — NOT passes, exceeded their cap: " % len(timed_out)
-              + ", ".join(str(p.relative_to(REPO_ROOT)) for p, *_ in timed_out))
-    if failed or timed_out or capkilled:
-        if failed:
-            print("FAILED: " + ", ".join(str(p.relative_to(REPO_ROOT)) for p, *_ in failed))
-        return 1
-    return 0
+STATE_DIR = Path(os.environ.get("RM_SELFTEST_STATE_DIR", Path.home() / ".local/state/rm-selftests"))
+
+
+def _write_last_run(allr, wall) -> None:
+    """Machine-readable copy of the run (a program reads it, so it is not in the repo)."""
+    if os.environ.get("RM_SELFTEST_NESTED"):
+        return
+    try:
+        STATE_DIR.mkdir(parents=True, exist_ok=True)
+        tmp = STATE_DIR / f".last_run.{os.getpid()}.json"
+        tmp.write_text(json.dumps({"repo": str(REPO_ROOT), "wall": round(wall, 1), "at": time.time(),
+                                   "results": [{"path": _show(p), "state": s, "secs": round(e, 2),
+                                                "reason": (d.splitlines()[0] if d else "")}
+                                               for p, s, e, d in allr]}, indent=0))
+        os.replace(tmp, STATE_DIR / "last_run.json")
+    except OSError:
+        pass
 
 
 if __name__ == "__main__":

@@ -23,10 +23,12 @@ Checks (each names itself in the output):
   defname-unique    duplicate defName within a def type
   texpath-resolves  texPath whose folder exists in this mod's Textures but whose file does not
 """
+import glob
+import hashlib
 import os
+import pickle
 import re
 import sys
-import glob
 import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -50,34 +52,112 @@ class Cls:
         self.name, self.ns, self.base, self.abstract, self.fields, self.path = name, ns, base, abstract, fields, path
 
 
-def scan_csharp(root):
-    """name -> Cls for every class in every .cs under root (namespace-qualified names also indexed)."""
-    classes = {}
+def _scan_text(p, txt):
+    """[(name, ns, base, abstract, sorted fields, bases)] for every class in one .cs file's text."""
+    txt = strip_comments(txt)
+    ns = re.search(r"\bnamespace\s+([\w.]+)", txt)
+    ns = ns.group(1) if ns else ""
+    rows = []
+    for m in re.finditer(r"\b((?:public|internal|abstract|static|sealed|partial)\s+)*(class|interface)\s+(\w+)(?:\s*:\s*([^{]+?))?\s*(?:where[^{]*)?\{", txt):
+        mods = m.group(0)
+        name = m.group(3)
+        bases = [b.strip().split("<")[0].split(".")[-1] for b in (m.group(4) or "").split(",") if b.strip()]
+        # fields = everything declared between this class's opening brace and its end (nested depth tracked)
+        depth, i = 1, m.end()
+        while i < len(txt) and depth:
+            c = txt[i]
+            depth += (c == "{") - (c == "}")
+            i += 1
+        body = txt[m.end():i - 1]
+        fields = set(re.findall(r"\bpublic\s+(?!static\b|const\b|override\b|virtual\b|abstract\b|class\b)[\w<>\[\],.? ]+?\s+(\w+)\s*(?:=[^;]*)?;", body))
+        fields |= set(re.findall(r"\bpublic\s+(?!static\b|override\b|virtual\b|abstract\b)[\w<>\[\],.? ]+?\s+(\w+)\s*\{\s*get;\s*(?:private\s+|protected\s+)?set;", body))
+        rows.append((name, ns, bases[0] if bases else None, "abstract" in mods.split("class")[0], sorted(fields), bases))
+    return rows
+
+
+# Per-file scan results keyed by the file's CONTENT hash. In-process always; on disk too when the
+# selftest runner sets RM_SELFTEST_CACHE_DIR (one dir per suite run, on ext4): the ~30 per-mod lint
+# selftests run ~500 lints, and every one used to re-scan all of src/'s C# (~0.9 of a ~1.1 s lint).
+_SCAN_MEMO = {}
+_CACHE_FILE = (os.path.join(os.environ["RM_SELFTEST_CACHE_DIR"], "lint_csharp_scan.pickle")
+               if os.environ.get("RM_SELFTEST_CACHE_DIR") else None)
+_CACHE_VERSION = 1   # bump whenever _scan_text's output changes meaning
+
+
+def _load_cache():
+    if _CACHE_FILE and not _SCAN_MEMO:
+        try:
+            with open(_CACHE_FILE, "rb") as f:
+                ver, memo = pickle.load(f)
+            if ver == _CACHE_VERSION:
+                _SCAN_MEMO.update(memo)
+        except (OSError, ValueError, EOFError, pickle.UnpicklingError):
+            pass
+
+
+def _save_cache(added):
+    if not (_CACHE_FILE and added):
+        return
+    try:
+        merged = {}
+        try:
+            with open(_CACHE_FILE, "rb") as f:
+                ver, merged = pickle.load(f)
+            if ver != _CACHE_VERSION:
+                merged = {}
+        except (OSError, ValueError, EOFError, pickle.UnpicklingError):
+            merged = {}
+        merged.update(_SCAN_MEMO)
+        tmp = "%s.%d.tmp" % (_CACHE_FILE, os.getpid())
+        with open(tmp, "wb") as f:
+            pickle.dump((_CACHE_VERSION, merged), f, protocol=pickle.HIGHEST_PROTOCOL)
+        os.replace(tmp, _CACHE_FILE)
+    except OSError:
+        pass
+
+
+def _cs_files(root, exclude=None):
+    out = []
+    ex = os.path.join(os.path.abspath(exclude), "") if exclude else None
     for p in glob.glob(os.path.join(root, "**", "*.cs"), recursive=True):
         if os.sep + "obj" + os.sep in p or os.sep + "bin" + os.sep in p or os.sep + "SelfTest" + os.sep in p:
             continue
-        txt = strip_comments(open(p, encoding="utf-8-sig", errors="replace").read())
-        ns = re.search(r"\bnamespace\s+([\w.]+)", txt)
-        ns = ns.group(1) if ns else ""
-        for m in re.finditer(r"\b((?:public|internal|abstract|static|sealed|partial)\s+)*(class|interface)\s+(\w+)(?:\s*:\s*([^{]+?))?\s*(?:where[^{]*)?\{", txt):
-            mods = m.group(0)
-            name = m.group(3)
-            bases = [b.strip().split("<")[0].split(".")[-1] for b in (m.group(4) or "").split(",") if b.strip()]
-            # fields = everything declared between this class's opening brace and its end (nested depth tracked)
-            body, depth, i = [], 1, m.end()
-            while i < len(txt) and depth:
-                c = txt[i]
-                depth += (c == "{") - (c == "}")
-                i += 1
-            body = txt[m.end():i - 1]
-            fields = set(re.findall(r"\bpublic\s+(?!static\b|const\b|override\b|virtual\b|abstract\b|class\b)[\w<>\[\],.? ]+?\s+(\w+)\s*(?:=[^;]*)?;", body))
-            fields |= set(re.findall(r"\bpublic\s+(?!static\b|override\b|virtual\b|abstract\b)[\w<>\[\],.? ]+?\s+(\w+)\s*\{\s*get;\s*(?:private\s+|protected\s+)?set;", body))
-            c = Cls(name, ns, bases[0] if bases else None, "abstract" in mods.split("class")[0], fields, p)
-            c.bases = bases
+        if ex and os.path.abspath(p).startswith(ex):
+            continue
+        out.append(p)
+    return out
+
+
+def scan_files(paths):
+    """name -> Cls for the classes of these .cs files (first file in order wins a name, as before)."""
+    _load_cache()
+    added = 0
+    classes = {}
+    for p in paths:
+        raw = open(p, "rb").read()
+        key = hashlib.sha1(raw).hexdigest()
+        rows = _SCAN_MEMO.get(key)
+        if rows is None:
+            rows = _SCAN_MEMO[key] = _scan_text(p, raw.decode("utf-8-sig", errors="replace"))
+            added += 1
+        for name, ns, base, abstract, fields, bases in rows:
+            c = Cls(name, ns, base, abstract, set(fields), p)
+            c.bases = list(bases)
             classes.setdefault(name, c)
             if ns:
                 classes.setdefault(ns + "." + name, c)
+    _save_cache(added)
     return classes
+
+
+def scan_csharp(root, exclude=None):
+    """name -> Cls for every class in every .cs under root (namespace-qualified names also indexed),
+    leaving out files under `exclude`."""
+    return scan_files(_cs_files(root, exclude))
+
+
+def _under(p, root):
+    return os.path.abspath(p).startswith(os.path.join(os.path.abspath(root), ""))
 
 
 def chain(classes, c):
@@ -115,7 +195,15 @@ def run(argv, mod_name, settings_cls, mod_file, csproj_name, label, extra=None, 
     W = lambda chk, msg: warns.append(f"WARN  {chk}: {msg}")
 
     our = scan_csharp(os.path.join(mod, "Source"))
-    allc = scan_csharp(SRC)
+    # Overlay with REPLACEMENT semantics: the mod's own classes come from the dir being linted
+    # (a planted-defect copy, or the real mod) and the mod's ORIGINAL Source is left out of the
+    # background. Before 2026-10-08 allc was scanned from the real src/, so a plant that renamed or
+    # deleted a class in the copy still resolved against the untouched original (audit §6).
+    real_mod = os.path.join(SRC, mod_name)
+    is_copy = os.path.realpath(mod) != os.path.realpath(real_mod)
+    allc = dict(our)
+    for k, v in scan_csharp(SRC, exclude=real_mod).items():
+        allc.setdefault(k, v)
     defs_xml = sorted(glob.glob(os.path.join(mod, "Defs", "**", "*.xml"), recursive=True))
     patch_xml = sorted(glob.glob(os.path.join(mod, "Patches", "**", "*.xml"), recursive=True))
     sanity = {"xml": len(defs_xml) + len(patch_xml), "classes": len([k for k in our if "." not in k])}
@@ -235,6 +323,8 @@ def run(argv, mod_name, settings_cls, mod_file, csproj_name, label, extra=None, 
             if other_defs is None:
                 other_defs = set()
                 for xp in glob.glob(os.path.join(SRC, "*", "Defs", "**", "*.xml"), recursive=True):
+                    if is_copy and _under(xp, real_mod):
+                        continue   # the copy's own defs are `defnames`; the original's must not mask a plant
                     other_defs |= set(re.findall(r"<defName>([^<]+)</defName>", open(xp, encoding="utf-8-sig", errors="replace").read()))
             where = "another RimMandrake mod" if n in other_defs else "any RimMandrake mod's Defs (may be generated at runtime)"
             if silent and n in other_defs:
@@ -299,7 +389,10 @@ def run(argv, mod_name, settings_cls, mod_file, csproj_name, label, extra=None, 
                 E("settings-scribed", f"code reads {settings_cls}.{m} which is not a declared field")
 
     # a class named by any XML anywhere in src (a campaign patch in another mod) is wired
-    for xp in glob.glob(os.path.join(REPO, "src", "**", "*.xml"), recursive=True):
+    wired_xml = glob.glob(os.path.join(REPO, "src", "**", "*.xml"), recursive=True)
+    if is_copy:   # replacement semantics again: the copy's XML stands in for the original mod's
+        wired_xml = [x for x in wired_xml if not _under(x, real_mod)] + glob.glob(os.path.join(mod, "**", "*.xml"), recursive=True)
+    for xp in wired_xml:
         if os.sep + "obj" + os.sep in xp:
             continue
         xt = open(xp, encoding="utf-8-sig", errors="replace").read()

@@ -49,11 +49,26 @@ CASES = (
     ("plain_fail.py", "print('assertion blew up')\nraise SystemExit(1)\n", "FAIL",
      "a non-zero child with no phrase is a FAIL"),
 
-    # Exit code alone is not the signal: a child may print the phrase while
-    # succeeding (selftest_codebase_health.py does exactly this, as a test
-    # ABOUT unmeasured semantics), and it must stay a PASS.
-    ("phrase_but_green.py", f"print('this test is about {UNMEASURED_PHRASE}')\n", "PASS",
-     "a child that PASSES while quoting the phrase is still a PASS"),
+    # Owner card 2026-10-08: exit 0 is not enough. A child that prints the phrase
+    # and exits 0 skipped its own check (selftest_deployed_biome_refs.py did), so it
+    # is UNMEASURED — never a PASS.
+    ("phrase_but_green.py", f"print('live dir absent — {UNMEASURED_PHRASE}')\n", "UNMEASURED",
+     "a child that exits 0 after printing the phrase is UNMEASURED, not PASS"),
+
+    # A signal death is CRASH even if the phrase was printed first (it used to fall
+    # through into UNMEASURED and read green).
+    ("phrase_then_sigkill.py",
+     f"import os, signal\nprint('{UNMEASURED_PHRASE}', flush=True)\nos.kill(os.getpid(), signal.SIGKILL)\n",
+     "CRASH", "a signal death after the phrase is CRASH"),
+
+    ("uncaught.py", "print('starting')\n{}['missing']\n", "CRASH",
+     "an uncaught KeyError never reached a verdict: CRASH"),
+
+    ("asserts.py", "assert 1 == 2, 'wrong'\n", "FAIL",
+     "a failed assert is a verdict: FAIL"),
+
+    ("sysexit_msg.py", "raise SystemExit('FAIL counted 3, wanted 4')\n", "FAIL",
+     "SystemExit with a message is a verdict: FAIL"),
 )
 
 with tempfile.TemporaryDirectory() as tmp:
@@ -62,6 +77,42 @@ with tempfile.TemporaryDirectory() as tmp:
         p.write_text(body)
         _, status, _, _ = run_one(p)
         eq(status, want, what)
+
+# classify() is pure: pin the branches the fixtures above cannot reach cheaply.
+C = rs.classify
+eq(C(0, "ok")[0], "PASS", "rc 0, plain output")
+eq(C(0, "x", {"oom_kill": 1, "peak": 1, "cap": 2})[0], "CRASH", "a cap kill at rc 0 is CRASH")
+eq(C(137, "")[0], "CRASH", "rc 137 is a signal CRASH")
+eq(C(1, UNMEASURED_PHRASE + "\nFAILED 2")[0], "FAIL", "rc 1 + phrase + FAIL text stays FAIL")
+eq(C(0, UNMEASURED_PHRASE + "\nFAIL x")[0], "UNMEASURED", "rc 0 + phrase is UNMEASURED whatever else printed")
+eq(C(1, "Traceback (most recent call last):\n  File x\nAssertionError: no")[0], "FAIL", "AssertionError is FAIL")
+eq(C(1, "Traceback (most recent call last):\n  File x\nmodule.SomeError: no")[0], "CRASH", "other exception is CRASH")
+
+# report(): green iff FAIL+CRASH == 0, per-state N/N, UNMEASURED never green-washes a FAIL.
+import contextlib, io
+def _rep(states):
+    rows = [(Path(f"/x/t{i}.py"), s, 0.1, "why") for i, s in enumerate(states)]
+    buf = io.StringIO()
+    os.environ["RM_SELFTEST_NESTED"] = "1"   # do not overwrite the real last_run.json
+    try:
+        with contextlib.redirect_stdout(buf):
+            rc = rs.report([r for r in rows if r[1] != "SKIPPED"], [r for r in rows if r[1] == "SKIPPED"],
+                           len(rows), 0.0, "fixture")
+    finally:
+        os.environ.pop("RM_SELFTEST_NESTED", None)
+    return rc, buf.getvalue()
+rc, out = _rep(["PASS", "UNMEASURED", "SKIPPED"])
+eq(rc, 0, "PASS+UNMEASURED+SKIPPED is green")
+eq("UNMEASURED 1/3" in out and "SKIPPED 1/3" in out and "PASS 1/3" in out, True, "explicit N/N per state")
+eq("UNMEASURED (1/3)" in out, True, "UNMEASURED is listed loudly")
+eq(_rep(["PASS", "CRASH"])[0], 1, "a CRASH makes the run red")
+eq(_rep(["PASS", "FAIL", "UNMEASURED"])[0], 1, "a FAIL makes the run red")
+
+# --only naming a file that does not exist is an error, never a green 0/0.
+import subprocess as _sp
+r = _sp.run([sys.executable, rs.__file__, "--only", "/nonexistent/selftest_nope.py"],
+            capture_output=True, text=True, env={**os.environ, "RM_SELFTEST_NO_HARNESS": "1", "RM_SELFTEST_NESTED": "1"})
+eq((r.returncode, "no such file" in r.stdout), (1, True), "--only on a missing path is rc 1")
 
 # The memory pen's report line: stripped from stderr, parsed, and only that line.
 err, rep = rs._split_marker("real stderr\n" + rs._MARKER + '{"ok": true, "oom_kill": 2}\nmore\n')
@@ -79,8 +130,8 @@ if harness:
             bomb = Path(tmp) / "bomb.py"
             bomb.write_text("hog = [b'x' * (64 << 20) for _ in range(8)]\n")  # 512 MiB
             _, status, _, detail = run_one(bomb, cap=128 << 20, est=0)
-            eq(status, "KILLED", "a test over its cap is KILLED-by-cap")
-            eq("KILLED by memory cap" in detail, True, "KILLED detail names the cap")
+            eq(status, "CRASH", "a test over its cap is CRASH")
+            eq(detail.startswith("memory cap"), True, "CRASH detail names the memory cap")
             ok = Path(tmp) / "ok.py"
             ok.write_text("print(open('/proc/self/cgroup').read())\n")
             _, status, _, _ = run_one(ok, cap=256 << 20, est=0)
@@ -94,7 +145,7 @@ if harness:
                             sys.executable, "-c", "print('TEST RAN')"], capture_output=True, text=True)
         eq((r.returncode, "TEST RAN" in r.stdout), (rs._PLACEMENT_RC, False),
            "wrapper outside rm-harness.slice refuses and never runs the test")
-    pen_note = "memory pen: cap kill reads KILLED, small test PASSes in the pen"
+    pen_note = "memory pen: cap kill reads CRASH, small test PASSes in the pen"
 else:
     print(f"memory pen probe failed ({why}) — those checks are UNMEASURED here")
 
@@ -103,5 +154,5 @@ if FAILS:
     for f in FAILS:
         print("  " + f)
     sys.exit(1)
-print("ok  selftest_run_selftests.py — UNMEASURED/FAIL classification, "
+print("ok  selftest_run_selftests.py — PASS/FAIL/UNMEASURED/CRASH classification, report N/N, "
       "and the guard that stops an unmeasured child masking a real failure; " + pen_note)

@@ -12,7 +12,7 @@ import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import selftest_modpack_lint as H  # noqa: E402
+import modpack_lint_harness as H  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 RULES = os.path.join(REPO, "src", "RimUtinni", "AftermathRites", "Defs")

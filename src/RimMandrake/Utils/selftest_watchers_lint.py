@@ -7,7 +7,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import selftest_modpack_lint as H  # noqa: E402
+import modpack_lint_harness as H  # noqa: E402
 
 R = "Defs/ThingDefs_Races/RM_Piinnok.xml"
 K = "Source/Kernel/RM_WatcherKernel.cs"

@@ -7,7 +7,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import selftest_modpack_lint as H  # noqa: E402
+import modpack_lint_harness as H  # noqa: E402
 
 W = "Defs/RM_WreckWeatheringDefs/RM_WreckWeatherings.xml"
 S = "Defs/ThingSetMakerDefs/RM_SalvageLoot.xml"

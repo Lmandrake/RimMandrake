@@ -7,7 +7,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import selftest_modpack_lint as H  # noqa: E402
+import modpack_lint_harness as H  # noqa: E402
 
 W = "Defs/ThingDefs/RM_KineticArms_Weapons.xml"
 B = "Defs/ThingDefs/RM_KineticArms_Buildings.xml"
