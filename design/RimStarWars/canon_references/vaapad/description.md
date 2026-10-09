@@ -22,6 +22,10 @@ and Jedi Equipment, 2020). Canon gives no colour, eye, tentacle or size informat
 above physical text is Legends.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia pageimages Vaapad and Vaapad/Legends, catimages "Images of vaapads"; the only depiction is the Galactic Battlegrounds sprite sheet).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. The owner's 2026-10-05 ruling (below) fixes the DESIGN on these sprites and stands unchanged; only the rendering is to be realistic.
+
 Two images, and they agree: `wookieepedia_vaapad.jpg` (Force Commander sprite sheet, 350x250,
 six poses) and `donor_current_sprite.png` (the MLIE / Star Wars Animal Collection Vapaad,
 128x128, copied from `design/Jawa/fauna/sprites/Vapaad.png`). Both show:
@@ -42,6 +46,7 @@ yellow eyes from the prose are NOT required. Tentacle blur is animation, not dra
 - [ ] Dark crown on top carrying a cluster of small red/pink eyes
 - [ ] Many thin whip-like tentacles (at least seven) hanging from orb and body
 - [ ] No wings, no shell plates, no fur, no glassy hydrocarbon look
+- [ ] Realistic rendering: natural wet hide and translucent glowing orb under natural light, no pixel-art or cartoon shading (design itself stays as the 2026-10-05 ruling sets it)
 
 ## Engine limits
 none known. (Attack blur is animation and cannot be drawn in a still sprite.)
