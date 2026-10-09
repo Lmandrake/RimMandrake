@@ -34,19 +34,28 @@ namespace RimMandrake.DivingInteraction
         private const float DissolveSearchRadius = 12f;
         private const int WideDeliverySearchRadius = 40; // fallback scan if nothing dry stands within DissolveSearchRadius
 
-        // Candidate pool for "one of each, per world". RM_ tier only —
-        // Q11a routes the three canon treasures (lightsaber, pre-Republic
-        // navcore, droid brain) through the Utinni patch layer, which is
-        // expected to append its own defNames to an Elder treasure table
-        // by patch, not by editing this array. Kept as a plain list rather
-        // than a def-driven query because there is no shared
-        // ThingCategoryDef/tag for "Elder treasure" yet — see the header of
-        // RM_ElderTreasures.xml before adding a third RM_ entry here.
-        private static readonly string[] RmUniqueTreasureDefNames =
+        // Candidate pool for "one of each, per world": every ThingDef carrying RM_ElderTreasureExtension
+        // (ELDER_TREASURE_TAG_TABLE_1). RM_ treasures are marked in TerminalBiomes; the canon treasures are
+        // marked by the Utinni patch layer on their own RUT_ defs. Sorted by defName so the draw is stable.
+        private static string[] treasureDefNames;
+        private static string[] RmUniqueTreasureDefNames
         {
-            "RM_ElderSealedRelic",
-            "RM_ElderUnknownWeapon",
-        };
+            get
+            {
+                if (treasureDefNames == null)
+                {
+                    var names = new List<string>();
+                    List<ThingDef> all = DefDatabase<ThingDef>.AllDefsListForReading;
+                    for (int i = 0; i < all.Count; i++)
+                    {
+                        if (all[i].HasModExtension<RM_ElderTreasureExtension>()) names.Add(all[i].defName);
+                    }
+                    names.Sort(string.CompareOrdinal);
+                    treasureDefNames = names.ToArray();
+                }
+                return treasureDefNames;
+            }
+        }
 
         public static int TileForMap(Map map)
         {
