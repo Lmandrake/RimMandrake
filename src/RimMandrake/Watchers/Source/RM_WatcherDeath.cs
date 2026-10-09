@@ -46,6 +46,19 @@ namespace RimMandrake.Watchers
                 remains.stackCount = ext.remainsCount;
                 corpse.Destroy();
                 GenPlace.TryPlaceThing(remains, cell, map, ThingPlaceMode.Near);
+                if (ext.remainsCarries != null)
+                {
+                    foreach (ThingDefCountClass carry in ext.remainsCarries)
+                    {
+                        if (carry?.thingDef == null || carry.count <= 0)
+                        {
+                            continue;
+                        }
+                        Thing extra = ThingMaker.MakeThing(carry.thingDef);
+                        extra.stackCount = carry.count;
+                        GenPlace.TryPlaceThing(extra, cell, map, ThingPlaceMode.Near);
+                    }
+                }
             }
         }
     }

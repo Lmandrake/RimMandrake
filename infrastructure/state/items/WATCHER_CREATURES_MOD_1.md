@@ -76,7 +76,7 @@ Mod Settings toggle per feature; every DLC is assumed present.
   an ordinary target; fragility audited (adult dies at <= `maxLethalDamage` 5); the death action
   swaps the corpse for `remainsDef` (piinnok: clouded piinnok lens) and clears every sign.
   **Owed later, not built here:** Star Wars cuisine use of remains belongs to the RSW tier. The
-  piinnok's biosilica yield went with its corpse; if it should come back, it rides the remains.
+  piinnok's remains carry its biosilica (owner 2026-10-08, typed: *"remains carry it"*): `remainsCarries` on `RM_WatcherExtension`, 3 `RM_Biosilica` (PROVISIONAL, MayRequire `mandrake.rm.biomes`) spawned beside the remains.
 - **Alarm ripple** (same card, decision by question card): yes, bounded: about 5, delays, hop/age/
   distance limits, expiring event ids, its own toggle. Built 2026-10-08 (`RM_WatcherAlarm`).
 - Decision by question card: the piinnok lifecycle proof and the Rust Cathedral Watcher are built in

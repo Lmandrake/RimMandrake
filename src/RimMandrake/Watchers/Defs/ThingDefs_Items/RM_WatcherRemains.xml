@@ -5,7 +5,7 @@
   What a watcher leaves when it dies (owner ruling 2026-10-08, DEATH card, typed: "Remains are of highly
   dubious value and kind of sad. But they could easily become Star Wars cuisine ingredients."). The kit's
   death action (RM_DeathActionWorker_Watcher) swaps the corpse for RM_WatcherExtension.remainsDef. Tiny,
-  nearly worthless, edible at a pinch, no leather. Star Wars cuisine use belongs to the RSW tier and is
+  edible at a pinch, no leather. The piinnok's carry its biosilica (RM_WatcherExtension.remainsCarries, spawned beside the item). Star Wars cuisine use belongs to the RSW tier and is
   NOT built here.
 
   RM_WatcherRemains_Piinnok   ART PLACEHOLDER: the vanilla desiccated hermit-crab body (the piinnok's own
@@ -17,7 +17,7 @@
   <ThingDef ParentName="OrganicProductBase">
     <defName>RM_WatcherRemains_Piinnok</defName>
     <label>clouded piinnok lens</label>
-    <description>A small dome of glass-clear flesh gone milky, now that nothing looks out of it. It is still faintly warm. There is barely a mouthful on it, and nobody who has eaten one recommends it.</description>
+    <description>A small dome of glass-clear flesh gone milky, now that nothing looks out of it. It is still faintly warm. There is barely a mouthful on it, and nobody who has eaten one recommends it. Fine glass grains are left where the lens was.</description>
     <graphicData>
       <texPath>Things/Pawn/Animal/HermitCrab/Dessicated_HermitCrabA</texPath>
       <graphicClass>Graphic_Multi</graphicClass>

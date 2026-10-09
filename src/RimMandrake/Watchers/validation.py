@@ -105,7 +105,7 @@ def behaviour(t):
              "a visible one is targeted and killed by one hit"),
             ("death_leaves_remains", None,
              "needs a piinnok killed (visible or hidden): no Corpse of RM_Piinnok, one RM_WatcherRemains_Piinnok on or by its cell, "
-             "no RM_WatcherSign whose owner is it, no RM_WatcherHidden visible on anything"),
+             "no RM_WatcherSign whose owner is it, no RM_WatcherHidden visible on anything; and (with mandrake.rm.biomes loaded) 3 RM_Biosilica on or by the same cell"),
             ("alarm_ripple_bounded", "alarmRipple",
              "needs 8 watching piinnok within 6 cells of each other and a colonist stepped beside one: that one hides, then at most "
              "5 others hide over the next ~3 s with no colonist inside their flinch radius, and nothing more after 10 s; with "
