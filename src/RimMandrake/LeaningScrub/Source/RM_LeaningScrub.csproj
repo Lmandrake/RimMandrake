@@ -78,6 +78,8 @@
     <Compile Include="Kernel\RM_BlazeKernel.cs" />
     <Compile Include="Kernel\RM_GuardianKernel.cs" />
     <Compile Include="Kernel\RM_FormsKernel.cs" />
+    <Compile Include="Kernel\RM_FourFormsKernel.cs" />
+    <Compile Include="RM_VenomvineFourForms.cs" />
     <Compile Include="Kernel\RM_CoatKernel.cs" />
   </ItemGroup>
 

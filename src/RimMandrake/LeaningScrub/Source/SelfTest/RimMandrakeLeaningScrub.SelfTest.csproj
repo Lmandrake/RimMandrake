@@ -28,6 +28,8 @@
     <Compile Include="..\Kernel\RM_GuardianKernel.cs" />
     <Compile Include="..\Kernel\RM_FormsKernel.cs" />
     <Compile Include="..\Kernel\RM_CoatKernel.cs" />
+    <Compile Include="..\Kernel\RM_FourFormsKernel.cs" />
+    <Compile Include="LeaningScrubFourFormsCheck.cs" />
     <Compile Include="LeaningScrubFuzz.cs" />
     <Compile Include="LeaningScrubFuzz2.cs" />
     <Compile Include="Program.cs" />
