@@ -206,6 +206,28 @@ namespace RimMandrake.TitanicCreatures.SelfTest
                         Check(RM_TitanicKernel.LeavesFilth(tier, true) == (tier >= 1), "LeavesFilth(true) wrong");
                         Check(!RM_TitanicKernel.LeavesFilth(tier, false), "rubble without a roll");
                     }
+                    // TITAN_ROOF_AVOIDANCE_1: an anchor is excluded exactly when the footprint placed there overlaps thick roof.
+                    {
+                        int mw = r.Next(3, 20), mh = r.Next(3, 20), fs = r.Next(1, 5);
+                        int omin = -((fs - 1) / 2), omax = omin + fs - 1;   // Large Pawns-style square about the anchor
+                        int ozmin = -((fs - 1) / 2) + (r.Next(2) == 0 ? 0 : 1) - 1, ozmax = ozmin + fs - 1;
+                        var thick = new bool[mw * mh];
+                        for (int i = 0; i < thick.Length; i++) thick[i] = r.Next(6) == 0;
+                        var mark = new bool[mw * mh];
+                        RM_TitanicKernel.MarkRoofExcluded(mw, mh, thick, omin, ozmin, omax, ozmax, mark);
+                        for (int az = 0; az < mh; az++)
+                            for (int ax = 0; ax < mw; ax++)
+                            {
+                                bool hit = false;
+                                for (int dz = ozmin; dz <= ozmax && !hit; dz++)
+                                    for (int dx = omin; dx <= omax && !hit; dx++)
+                                    {
+                                        int x = ax + dx, z = az + dz;
+                                        if (x >= 0 && z >= 0 && x < mw && z < mh && thick[z * mw + x]) hit = true;
+                                    }
+                                Check(mark[az * mw + ax] == hit, $"roof exclusion at anchor {ax},{az} (footprint {fs}) is {mark[az * mw + ax]}, footprint-overlap says {hit}");
+                            }
+                    }
                     // TITAN_WAKE_FIXES_1 (B3.6): a multi-cell thing listed in every cell of the footprint is struck once per step.
                     {
                         int things = r.Next(1, 8), cellsN = r.Next(1, 17);

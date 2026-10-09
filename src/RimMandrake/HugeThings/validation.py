@@ -21,7 +21,7 @@ CHAINS
   defs_resolve       every def under Defs/ (parsed from the XML) resolves; a control name reads notFound.
   settings_roundtrip every `public static` bool/int/float of RM_HugeThingsSettings, numerically compared.
   harmony            Thing.get_CustomRectForSelector carries a postfix owned by mandrake.rm.hugethings.
-  harmony_titans     the four titan patches carry a patch owned by mandrake.rm.titaniccreatures (the Harmony id string the
+  harmony_titans     the five titan patches carry a patch owned by mandrake.rm.titaniccreatures (the Harmony id string the
                      titan half kept on purpose: it is a patch owner name, not a packageId).
   trunk              a full-grown brommok timber (RM_Nogtyl) gets one of its variants' measured contact counts and none south of
                      it; a young one none; `plantTrunkEnabled` off clears them; cutting the plant removes them.
@@ -66,6 +66,7 @@ DEFAULTS = {"giantPlantsEnabled": True, "plantTrunkEnabled": True, "plantSelecti
             "corpseSiteWorkHoursPerSession": 1.0}
 PATCHES = [("Thing", "set_Position", "Patch_Thing_Position_Wake.cs"),
            ("Pawn_PathFollower", "CostToMoveIntoCell", "Patch_ThickRoofAvoidance.cs"),
+           ("PathGridDoorsBlockedJob", "Execute", "Patch_ThickRoofAvoidance.cs"),
            ("Corpse", "SpawnSetup", "Patch_CorpseSiteConversion.cs"),
            ("Pawn", "ButcherProducts", "Patch_ButcherYieldCurve.cs")]
 
@@ -631,8 +632,9 @@ def _build_suite():
                  "needs a bodySize >= 20 corpse and several harvest work sessions"),
                 ("butcher_yield_curve_reduces_t1_t2_yield", "yieldCurveEnabled",
                  "needs a butcher job on a tiered corpse compared with an untiered same-mass control"),
-                ("thick_roof_slows_a_titan", "roofAvoidanceEnabled",
-                 "needs an overhead-mountain roof and a step-cost read; the harmony_titans chain proves the patch is attached only"),
+                ("thick_roof_route_excluded", "roofAvoidanceEnabled",
+                 "needs a roofed corridor shortcut beside an open detour (the titan must take the detour every time) and a titan "
+                 "spawned under rock that walks out; offline: titanic fuzz `crush` checks the footprint-overlap exclusion"),
                 ("custom_tiers_move_the_ladder", "tierThresholdsCustom", "a startup-read setting: needs a restart between two loads"),
                 ("large_pawns_footprint_bridge", "largePawnsFootprintEnabled",
                  "soft reflection into neku.largepawns at startup; needs that mod loaded and a multi-cell OccupiedRect read"),
