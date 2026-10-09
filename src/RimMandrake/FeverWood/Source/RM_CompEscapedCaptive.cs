@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using RimWorld;
 using Verse.AI;
 using Verse;
@@ -155,6 +156,7 @@ namespace RimMandrake.FeverWood
                 Job job = JobMaker.MakeJob(JobDefOf.Goto, dest);
                 job.locomotionUrgency = LocomotionUrgency.Walk;
                 pawn.jobs.StartJob(job, JobCondition.InterruptForced);
+                nextSearchTick = Find.TickManager.TicksGame + 600; // FEVERWOOD_WATER_TOPOLOGY_SERVICE_1: no re-scan every check
             }
         }
 
@@ -165,7 +167,7 @@ namespace RimMandrake.FeverWood
             IntVec3 other = IntVec3.Invalid;
             foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(new TargetInfo(pos, map)))
             {
-                if (c.InBounds(map) && RM_DeepGift.IsFeverWoodPool(c, map))
+                if (c.InBounds(map) && Touches(pos, c, map) && RM_DeepGift.IsFeverWoodPool(c, map))
                 {
                     return c;
                 }
@@ -180,7 +182,7 @@ namespace RimMandrake.FeverWood
             }
             foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(new TargetInfo(pos, map)))
             {
-                if (c.InBounds(map) && c.GetTerrain(map).IsWater)
+                if (c.InBounds(map) && Touches(pos, c, map) && c.GetTerrain(map).IsWater)
                 {
                     other = c;
                     break;
@@ -189,13 +191,28 @@ namespace RimMandrake.FeverWood
             return other;
         }
 
-        /// <summary>Nearest reachable standable cell on or beside water,
-        /// Fever Wood pools first.</summary>
+        /// <summary>FEVERWOOD_WATER_TOPOLOGY_SERVICE_1 (#10): a diagonal neighbour only counts when the corner is
+        /// open, the same rule a pawn's own diagonal step obeys, so it never "arrives" at water through a wall.</summary>
+        private static bool Touches(IntVec3 from, IntVec3 to, Map map)
+        {
+            if (from.x == to.x || from.z == to.z)
+            {
+                return true;
+            }
+            return new IntVec3(to.x, 0, from.z).Walkable(map) && new IntVec3(from.x, 0, to.z).Walkable(map);
+        }
+
+        private const int MaxWalkCandidates = 24;
+        private const int MaxFloodCells = 4000;
+
+        /// <summary>Nearest reachable standable cell on or beside water, Fever Wood pools first.
+        /// FEVERWOOD_WATER_TOPOLOGY_SERVICE_1: when the nearest body of water is enclosed, its whole connected
+        /// water is ruled out and the next-nearest BODY is tried, instead of stranding the creature on one pick.</summary>
         private static IntVec3 WalkTarget(Pawn pawn)
         {
             Map map = pawn.Map;
-            IntVec3 bestPool = IntVec3.Invalid, bestOther = IntVec3.Invalid;
-            float poolD = float.MaxValue, otherD = float.MaxValue;
+            var pools = new List<IntVec3>();
+            var others = new List<IntVec3>();
             foreach (IntVec3 c in map.AllCells)
             {
                 TerrainDef t = c.GetTerrain(map);
@@ -203,33 +220,58 @@ namespace RimMandrake.FeverWood
                 {
                     continue;
                 }
-                float d = (c - pawn.Position).LengthHorizontalSquared;
-                if (RM_DeepGift.IsFeverWoodPool(c, map))
-                {
-                    if (d < poolD) { poolD = d; bestPool = c; }
-                }
-                else if (d < otherD)
-                {
-                    otherD = d; bestOther = c;
-                }
+                (RM_DeepGift.IsFeverWoodPool(c, map) ? pools : others).Add(c);
             }
-            IntVec3 target = bestPool.IsValid ? bestPool : bestOther;
-            if (!target.IsValid)
+            IntVec3 from = pawn.Position;
+            foreach (List<IntVec3> list in new[] { pools, others })
             {
-                return IntVec3.Invalid;
-            }
-            if (target.Standable(map) && pawn.CanReach(target, PathEndMode.OnCell, Danger.Deadly))
-            {
-                return target;
-            }
-            foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(new TargetInfo(target, map)))
-            {
-                if (c.InBounds(map) && c.Standable(map) && pawn.CanReach(c, PathEndMode.OnCell, Danger.Deadly))
+                list.Sort((a, b) => (a - from).LengthHorizontalSquared.CompareTo((b - from).LengthHorizontalSquared));
+                var ruledOut = new HashSet<IntVec3>();
+                int tried = 0;
+                for (int i = 0; i < list.Count && tried < MaxWalkCandidates; i++)
                 {
-                    return c;
+                    IntVec3 target = list[i];
+                    if (ruledOut.Contains(target))
+                    {
+                        continue;
+                    }
+                    tried++;
+                    if (target.Standable(map) && pawn.CanReach(target, PathEndMode.OnCell, Danger.Deadly))
+                    {
+                        return target;
+                    }
+                    foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(new TargetInfo(target, map)))
+                    {
+                        if (c.InBounds(map) && c.Standable(map) && Touches(c, target, map) && pawn.CanReach(c, PathEndMode.OnCell, Danger.Deadly))
+                        {
+                            return c;
+                        }
+                    }
+                    FloodWater(target, map, ruledOut); // this body is enclosed from here: skip the rest of it
                 }
             }
             return IntVec3.Invalid;
+        }
+
+        private static void FloodWater(IntVec3 start, Map map, HashSet<IntVec3> into)
+        {
+            var queue = new Queue<IntVec3>();
+            if (into.Add(start))
+            {
+                queue.Enqueue(start);
+            }
+            while (queue.Count > 0 && into.Count < MaxFloodCells)
+            {
+                IntVec3 c = queue.Dequeue();
+                for (int d = 0; d < 4; d++)
+                {
+                    IntVec3 n = c + GenAdj.CardinalDirections[d];
+                    if (n.InBounds(map) && n.GetTerrain(map)?.IsWater == true && into.Add(n))
+                    {
+                        queue.Enqueue(n);
+                    }
+                }
+            }
         }
 
         private void ArriveReleased(Pawn pawn, IntVec3 water)

@@ -315,31 +315,69 @@ namespace RimMandrake.FeverWood
             return laid;
         }
 
+        // KURRETH_THEFT_PER_COLUMN_1: a column's thefts are finalized together once the column (its lord) is gone,
+        // or this long after its last theft if the lord lingers. PROVISIONAL (auto-decided 2026-10-09).
+        private const int ColumnLingerTimeoutTicks = 2500;
+
         public override void MapComponentTick()
         {
-            if (letterAt < 0 || Find.TickManager.TicksGame < letterAt)
+            if (!RM_FeverWoodSettings.kurrethTheftPerColumn)
+            {
+                if (letterAt < 0 || Find.TickManager.TicksGame < letterAt)
+                {
+                    return;
+                }
+                letterAt = -1;
+                if (pending.Count > 0)
+                {
+                    Finalize(new List<Theft>(pending));
+                    pending.Clear();
+                }
+                return;
+            }
+            if (pending.Count == 0 || Find.TickManager.TicksGame % 60 != 0)
             {
                 return;
             }
-            letterAt = -1;
+            int now = Find.TickManager.TicksGame;
+            foreach (IGrouping<int, Theft> g in pending.GroupBy(t => t.lordId < 0 ? -t.tick - 1 : t.lordId).ToList())
+            {
+                int last = g.Max(t => t.tick);
+                if (now - last < LetterDelayTicks)
+                {
+                    continue;
+                }
+                int lordId = g.First().lordId;
+                bool lordAlive = lordId >= 0 && map.lordManager.lords.Any(l => l.loadID == lordId && l.ownedPawns.Count > 0);
+                if (lordAlive && now - last < ColumnLingerTimeoutTicks)
+                {
+                    continue;
+                }
+                List<Theft> group = g.ToList();
+                pending.RemoveAll(group.Contains);
+                Finalize(group);
+            }
             if (pending.Count == 0)
             {
-                return;
+                letterAt = -1;
             }
-            string names = pending.Select(t => t.victim?.LabelShort ?? "an animal").ToCommaList(true);
-            string dir = RM_KurrethTheftUtility.Direction(pending[pending.Count - 1].exitCell, map);
+        }
+
+        private void Finalize(List<Theft> group)
+        {
+            string names = group.Select(t => t.victim?.LabelShort ?? "an animal").ToCommaList(true);
+            string dir = RM_KurrethTheftUtility.Direction(group[group.Count - 1].exitCell, map);
             string text = "The kurreth did not come to kill. They have carried off " + names + ", alive, and the column "
                           + "left the map to the " + dir + ". A trail of slime leads off the edge there.\n\n"
                           + "A stolen animal is not dead: the kurreth keep what they take.";
             // FEVERWOOD_KURRETH_COLUMN_RAIDBACK_1: the raid-back quest (camp site, then the hive).
-            Quest column = RM_KurrethColumnUtility.TryStartColumnQuest(map, pending.Select(t => t.victim).ToList());
+            Quest column = RM_KurrethColumnUtility.TryStartColumnQuest(map, group.Select(t => t.victim).ToList());
             if (column != null)
             {
                 text += " This column has made camp a few tiles off; the quest marks it.";
             }
-            Find.LetterStack.ReceiveLetter("Carried off: " + pending.Count + (pending.Count == 1 ? " animal" : " animals"),
-                text, LetterDefOf.NegativeEvent, new LookTargets(pending[pending.Count - 1].exitCell, map), null, column);
-            pending.Clear();
+            Find.LetterStack.ReceiveLetter("Carried off: " + group.Count + (group.Count == 1 ? " animal" : " animals"),
+                text, LetterDefOf.NegativeEvent, new LookTargets(group[group.Count - 1].exitCell, map), null, column);
         }
 
         public override void ExposeData()

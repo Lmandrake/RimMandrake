@@ -110,6 +110,9 @@ namespace RimMandrake.FeverWood
         private const int GiftCheckIntervalTicks = 250;
 
         private List<IntVec3> poolCellsCache;
+        // FEVERWOOD_WATER_TOPOLOGY_SERVICE_1: the registered water split into 4-connected pools, built with the cell
+        // cache (daily). "A large pool" is one connected cluster, not the map-wide count of tiny ones.
+        private List<List<IntVec3>> poolClustersCache = new List<List<IntVec3>>();
         private int poolCacheBuiltTick = -999999;
 
         public bool PermanentlyKilled => permanentlyKilled;
@@ -210,8 +213,65 @@ namespace RimMandrake.FeverWood
         /// model, is what this item builds.</summary>
         private bool GreatEmergenceEligible(List<IntVec3> pools)
         {
-            return RM_PoolKernel.GreatEligible(pools.Count, RM_FeverWoodSettings.tentacleGreatEmergencePoolSizeThreshold,
+            // FEVERWOOD_WATER_TOPOLOGY_SERVICE_1: the threshold is read against the LARGEST connected pool (the
+            // header's "a cluster qualifies"); off = the old map-wide registered-cell count.
+            int size = RM_FeverWoodSettings.tentaclePoolsAreClusters ? LargestClusterSize() : pools.Count;
+            return RM_PoolKernel.GreatEligible(size, RM_FeverWoodSettings.tentacleGreatEmergencePoolSizeThreshold,
                 encounterPressure, RM_FeverWoodSettings.tentacleGreatEmergencePressureThreshold);
+        }
+
+        private int LargestClusterSize()
+        {
+            int best = 0;
+            for (int i = 0; i < poolClustersCache.Count; i++)
+            {
+                best = System.Math.Max(best, poolClustersCache[i].Count);
+            }
+            return best;
+        }
+
+        /// <summary>A seed cell inside a connected pool at least `threshold` cells big, or Invalid.</summary>
+        private IntVec3 SeedInLargePool()
+        {
+            int threshold = System.Math.Max(1, RM_FeverWoodSettings.tentacleGreatEmergencePoolSizeThreshold);
+            List<List<IntVec3>> big = poolClustersCache.FindAll(k => k.Count >= threshold);
+            if (big.Count == 0)
+            {
+                return IntVec3.Invalid;
+            }
+            List<IntVec3> pool = big[Rand.Range(0, big.Count)];
+            return pool[Rand.Range(0, pool.Count)];
+        }
+
+        private static List<List<IntVec3>> BuildClusters(List<IntVec3> cells)
+        {
+            var left = new HashSet<IntVec3>(cells);
+            var clusters = new List<List<IntVec3>>();
+            var queue = new Queue<IntVec3>();
+            foreach (IntVec3 start in cells)
+            {
+                if (!left.Remove(start))
+                {
+                    continue;
+                }
+                var cluster = new List<IntVec3> { start };
+                queue.Enqueue(start);
+                while (queue.Count > 0)
+                {
+                    IntVec3 c = queue.Dequeue();
+                    for (int d = 0; d < 4; d++)
+                    {
+                        IntVec3 n = c + GenAdj.CardinalDirections[d];
+                        if (left.Remove(n))
+                        {
+                            cluster.Add(n);
+                            queue.Enqueue(n);
+                        }
+                    }
+                }
+                clusters.Add(cluster);
+            }
+            return clusters;
         }
 
         private void SpawnEncounter(List<IntVec3> pools)
@@ -257,7 +317,11 @@ namespace RimMandrake.FeverWood
         /// pressure that made it eligible.</summary>
         private void SpawnGreatEmergence(List<IntVec3> pools)
         {
-            IntVec3 seed = pools[Rand.Range(0, pools.Count)];
+            IntVec3 seed = RM_FeverWoodSettings.tentaclePoolsAreClusters ? SeedInLargePool() : IntVec3.Invalid;
+            if (!seed.IsValid)
+            {
+                seed = pools[Rand.Range(0, pools.Count)];
+            }
 
             int minLimbs = UnityEngine.Mathf.Max(1, RM_FeverWoodSettings.tentacleGreatEmergenceMinLimbs);
             int maxLimbs = UnityEngine.Mathf.Max(minLimbs, RM_FeverWoodSettings.tentacleGreatEmergenceMaxLimbs);
@@ -374,6 +438,7 @@ namespace RimMandrake.FeverWood
 
             poolCacheBuiltTick = Find.TickManager.TicksGame;
             poolCellsCache = new List<IntVec3>();
+            poolClustersCache = new List<List<IntVec3>>();
 
             RUT_MapComponent_TheTenant tenant = map.GetComponent<RUT_MapComponent_TheTenant>();
             if (tenant == null)
@@ -388,6 +453,7 @@ namespace RimMandrake.FeverWood
                     poolCellsCache.Add(c);
                 }
             }
+            poolClustersCache = BuildClusters(poolCellsCache);
             return poolCellsCache;
         }
 

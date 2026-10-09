@@ -1,3 +1,4 @@
+using Verse.AI;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -50,6 +51,9 @@ namespace RimMandrake.FeverWood
         private int pendingSecondWaveTick = -1;
         private string pendingSecondWaveFactionDefName;
         private IntVec3 pendingSecondWaveOrigin;
+        // TWO_FRONT_BAIT_TARGETING_1: where the first wave ACTUALLY entered (the edge finder can fall back to any
+        // edge), so the second wave comes from the opposite side of that, not of the stake.
+        private IntVec3 firstWaveEntry = IntVec3.Invalid;
 
         private static readonly Dictionary<FactionDef, Faction> HiddenFactionCache = new Dictionary<FactionDef, Faction>();
 
@@ -197,6 +201,10 @@ namespace RimMandrake.FeverWood
             // edge FACING AWAY from the first wave's origin, so the two
             // fronts genuinely converge instead of filing in side by side.
             IntVec3 focusDelta = isSecondWave ? (map.Center - origin) : (origin - map.Center);
+            if (isSecondWave && firstWaveEntry.IsValid && RM_FeverWoodSettings.twoFrontLureTrueFronts)
+            {
+                focusDelta = map.Center - firstWaveEntry; // PROVISIONAL (auto-decided 2026-10-09, TWO_FRONT_BAIT_TARGETING_1)
+            }
             Rot4 edgeDir = Rot4.FromAngleFlat(focusDelta.AngleFlat);
             if (!CellFinder.TryFindRandomEdgeCellWith(c => c.Walkable(map) && !c.Fogged(map), map, edgeDir, CellFinder.EdgeRoadChance_Hostile, out IntVec3 spawnCenter)
                 && !CellFinder.TryFindRandomEdgeCellWith(c => c.Walkable(map), map, CellFinder.EdgeRoadChance_Hostile, out spawnCenter))
@@ -217,6 +225,29 @@ namespace RimMandrake.FeverWood
                 ? new RM_LordJob_KurrethTheft()
                 : (LordJob)new LordJob_AssaultColony(faction, canKidnap: false, canTimeoutOrFlee: false, canSteal: false);
             LordMaker.MakeNewLord(faction, lordJob, map, pawns);
+            if (!isSecondWave)
+            {
+                firstWaveEntry = spawnCenter;
+            }
+
+            // TWO_FRONT_BAIT_TARGETING_1 PROVISIONAL (auto-decided 2026-10-09): the message says they converge on the
+            // lure, so each raider's first order is to run at it; the lord's own assault/theft duty takes over once
+            // that walk ends or something overrides it (a fight on the way).
+            if (RM_FeverWoodSettings.twoFrontLureTrueFronts && origin.IsValid && origin.InBounds(map))
+            {
+                foreach (Pawn p in pawns)
+                {
+                    IntVec3 near = CellFinder.RandomClosewalkCellNear(origin, map, 4);
+                    if (p.Spawned && p.jobs != null && p.CanReach(near, PathEndMode.OnCell, Danger.Deadly))
+                    {
+                        Job go = JobMaker.MakeJob(JobDefOf.Goto, near);
+                        go.locomotionUrgency = LocomotionUrgency.Jog;
+                        go.expiryInterval = 5000;
+                        go.checkOverrideOnExpire = true;
+                        p.jobs.StartJob(go, JobCondition.InterruptForced);
+                    }
+                }
+            }
 
             Messages.Message(
                 isSecondWave
@@ -255,6 +286,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref pendingSecondWaveTick, "pendingSecondWaveTick", -1);
             Scribe_Values.Look(ref pendingSecondWaveFactionDefName, "pendingSecondWaveFactionDefName");
             Scribe_Values.Look(ref pendingSecondWaveOrigin, "pendingSecondWaveOrigin");
+            Scribe_Values.Look(ref firstWaveEntry, "firstWaveEntry", IntVec3.Invalid);
             // activeLures is deliberately NOT scribed — every RM_CompLureStake
             // re-announces itself via Notify_LureStaked on its own
             // PostSpawnSetup(respawningAfterLoad: true), rebuilding this
