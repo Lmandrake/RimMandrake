@@ -29,3 +29,11 @@ being off does not stop it), each wet hot or icy cell pushes vanilla heat into i
 - A1 L1: FlowWorks and TerminalBiomes load on the live list with no config error; the six RUT_ScaldWater terrains carry RM_LiquidHeatExtension
 - A2 L2: extension chain liquid_heat (northstar/extensions.py, DRAFT): a roofed hut over boiling water reads warmer than a plain-water twin, an icy one colder, the boiling hut never passes 50 C, and with the setting off its lead stops growing
 - A3 L2: an open boiling patch identifies hot but reads outdoor, and the outdoor temperature beside it is unchanged
+
+## verify
+
+Run each criterion at its stated level and record it with `rimflow verify LIQUID_HEAT_PUSH_1 --criterion <ID> --result pass|fail|partial --config <list> --evidence <path>`:
+- L0: offline build, selftest/fuzz/lint (already run at implementation).
+- L1: one minimal-list load, read Player.log for config/cross-reference errors and the specific line, or one spawn-and-read bridge probe.
+- L2: one quicktest map via the bridge or modcheck: set up the scenario in the criterion, step ticks, read the state named.
+Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.

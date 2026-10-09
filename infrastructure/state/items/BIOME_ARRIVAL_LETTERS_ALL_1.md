@@ -27,3 +27,12 @@ MayRequire naming the folded `mandrake.rm.environmentalhazards` would silently d
 - A1 L1: the ten BiomeDefs load with the extension on the live list (no config errors)
 - A2 L2: a gravship landing on a Fever Wood map raises the letter once; a second landing does not
 - H1 L4: the owner reviews and edits the ten placeholder texts
+
+## verify
+
+Run each criterion at its stated level and record it with `rimflow verify BIOME_ARRIVAL_LETTERS_ALL_1 --criterion <ID> --result pass|fail|partial --config <list> --evidence <path>`:
+- L0: offline build, selftest/fuzz/lint (already run at implementation).
+- L1: one minimal-list load, read Player.log for config/cross-reference errors and the specific line, or one spawn-and-read bridge probe.
+- L2: one quicktest map via the bridge or modcheck: set up the scenario in the criterion, step ticks, read the state named.
+- L4: owner judgement in a sitting; not a FOUNDRY acceptance task.
+Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.

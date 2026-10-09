@@ -33,3 +33,11 @@ one-kind-of-heat ruling (CLAUDE.md "One kind of heat"; `SOLAR_HEAT_EXPOSURE_1`,
 - A4 L2: live, the sealed suit raises the wearer's ComfyTemperatureMax by roughly 1.4x the stuff's heat insulation
 - H1 L4: the owner judges the 12 C offset and the gear values in a sitting (PROVISIONAL until then)
 Answered: the blower's heat push is gone; it is a room cooler that never heats (`BLOWER_ROOM_COOLER_1`).
+
+## verify
+
+Run each criterion at its stated level and record it with `rimflow verify WETBULB_FOLD_INTO_HEAT_1 --criterion <ID> --result pass|fail|partial --config <list> --evidence <path>`:
+- L0: offline build, selftest/fuzz/lint (already run at implementation).
+- L2: one quicktest map via the bridge or modcheck: set up the scenario in the criterion, step ticks, read the state named.
+- L4: owner judgement in a sitting; not a FOUNDRY acceptance task.
+Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.

@@ -21,3 +21,11 @@ sentinel muted the crown chorus for good. Built at `b20a31ffc`:
 - A2 L1: with the cap at 1 and one limb standing, an ordinary emergence spawns nothing and encounter pressure still rises
 - A3 L1: a sentinel sinking on linger restores the biome ambient (ChorusSilenced reads false)
 - H1 L4: the owner judges the linger time and cap in a sitting (PROVISIONAL until then)
+
+## verify
+
+Run each criterion at its stated level and record it with `rimflow verify FEVERWOOD_LIMB_LINGER_CAP_1 --criterion <ID> --result pass|fail|partial --config <list> --evidence <path>`:
+- L0: offline build, selftest/fuzz/lint (already run at implementation).
+- L1: one minimal-list load, read Player.log for config/cross-reference errors and the specific line, or one spawn-and-read bridge probe.
+- L4: owner judgement in a sitting; not a FOUNDRY acceptance task.
+Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.

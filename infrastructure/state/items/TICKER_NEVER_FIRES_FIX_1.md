@@ -13,3 +13,10 @@ Published 40553e46e. `lint_ticker_compat.py` reports 0 ERROR (was 5).
 - A3 L1: a pawn standing in an RM_Webwork_Web cell gains RM_Webwork_Slick
 - A4 L1: a powered, fuelled RM_DryAirBlower suppresses plant growth and repels a wild animal in its doorway arc (RM_MapComponent_DryRooms was deleted by WETBULB_FOLD_INTO_HEAT_1)
 - A5 L1: a nest wall with a living Ollathrix places an egg clutch after its relay interval
+
+## verify
+
+Run each criterion at its stated level and record it with `rimflow verify TICKER_NEVER_FIRES_FIX_1 --criterion <ID> --result pass|fail|partial --config <list> --evidence <path>`:
+- L0: offline build, selftest/fuzz/lint (already run at implementation).
+- L1: one minimal-list load, read Player.log for config/cross-reference errors and the specific line, or one spawn-and-read bridge probe.
+Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.

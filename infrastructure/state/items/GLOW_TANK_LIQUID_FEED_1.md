@@ -27,3 +27,12 @@ Not built: the spec's other route, an orthogonally adjacent salt/boiling liquid 
 - A2 L2: a salt-water tank beside it is drawn down one unit at a time and the crop grows; switching the setting off removes the line
 - A3 L2: a fresh-water or brine tank beside it does not feed it
 - H1 L4: the owner judges the drink rate (PROVISIONAL until then)
+
+## verify
+
+Run each criterion at its stated level and record it with `rimflow verify GLOW_TANK_LIQUID_FEED_1 --criterion <ID> --result pass|fail|partial --config <list> --evidence <path>`:
+- L0: offline build, selftest/fuzz/lint (already run at implementation).
+- L1: one minimal-list load, read Player.log for config/cross-reference errors and the specific line, or one spawn-and-read bridge probe.
+- L2: one quicktest map via the bridge or modcheck: set up the scenario in the criterion, step ticks, read the state named.
+- L4: owner judgement in a sitting; not a FOUNDRY acceptance task.
+Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.

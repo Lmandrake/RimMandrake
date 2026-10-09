@@ -6,3 +6,9 @@ Owner answered 'Queue all' on a question card 2026-10-08 (decision taken by ques
 | DI-7 | A specimen cabinet at home. Novel finds (a new creature's corpse, a new mineral) can be displayed instead of sold to the Elder. Each new kind on display adds beauty and a small museum mood. The player chooses between selling to the Elder and keeping it. | A shelf building that reuses the Elder's novelty key to count distinct kinds; research-gated, with a settings toggle. | M | low | DivingInteraction (NoveltyKey), CreatureBehaviors (`RM_CompResearchSpecimens` could also grant research) | no specimen or museum building in src (grep: only a PawnFlavor thought patch and WarLab containment props); the novelty kernel is pure (`RM_ElderEconomyKernel`) |
 
 Every invented number is PROVISIONAL. Every feature gets a Mod Settings toggle; names follow the three-tier scheme.
+
+## verify
+
+Record each owed criterion with `rimflow verify SPECIMEN_CABINET_DISPLAY_1 --criterion <ID> --result pass|fail|partial --config <list> --evidence <path>`:
+- A2 (L2): a placed cabinet holding two distinct corpses reads Beauty +4 and the colony gets RM_SpecimenMuseum stage 0 (a
+Evidence is the Player.log line or bridge state read the criterion names.
