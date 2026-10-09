@@ -208,26 +208,8 @@ life**."
 
 ## Visual brief
 
-🔴 **START HERE: two of the three images this directory already held are ones the
-wiki explicitly rejects as depictions of this species. They must not be used for
-appearance, and they were the images most likely to be trusted, because they are
-the only two in modern-canon comic art.**
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** No live-action or photoreal Rakata exists (Wookieepedia carries no REAL-labelled image for `Rakatan`, `Rakata` or `Rakata/Legends`; only KOTOR/SWTOR game art and comics). The three comic panels were deleted: `wookieepedia_comic_closeup.jpg` and `wookieepedia_poe_dameron_comic.jpg` (both wiki-disowned — a mislabelled Mon Calamari and Lucasfilm's "generic alien extra #3457") and `wookieepedia_warrior_combat.jpg` (TUR comic). 🔑 **The realistic painted RPG illustrations are now the lead references:** `wookieepedia_group_weapons.jpg` (*The Unknown Regions*) for head, skin and class, and `wookieepedia_ancient_empire_art.jpg` (*Journal of Master Gnost-Dural*) for dress and digitigrade legs. The KOTOR renders (`legends_infobox`, `temple_group`) and the SWTOR bust (`profile_game_render`) are kept as **stylised-game anatomy references only** — they uniquely show the whole body on one figure and the temple — render the species realistically (moist mottled amphibian skin, natural light), not in their dated low-poly gloss.
 
-- **`wookieepedia_comic_closeup.jpg`** (File:RakatanOnMonCala-2015StarWars48.jpg)
-  sits under the article's own **"Inconsistencies"** heading: an "unidentified
-  **Mon Calamari** from the script… was **mistakenly depicted** as a member of
-  the Rakatan species." Looking at it, that is exactly what it is — the dome is
-  **short, rounded and tapered forward**, the eyes are **big round yellow Mon Cal
-  eyes on wide cheek bulges** rather than on stalks, the **mouth is wide and
-  thick-lipped**, the skin is salmon-orange, and there are drawn forehead wrinkle
-  lines. Every one of those reads is wrong for a Rakata. ⛔ Reference only as a
-  negative example.
-- **`wookieepedia_poe_dameron_comic.jpg`** (File:Rakata-PoeDameron7.png) is under
-  the same heading. Lucasfilm Story Group's **Matt Martin**, quoted on the page:
-  "I don't even remember that dude and I'm pretty sure I would have remembered
-  approving a Rakata. He's '**generic alien extra #3457**' as far as I'm
-  concerned." The page states their species "**remained unspecified**." ⛔ Not
-  evidence about this species.
 - **`wookieepedia_profile_game_render.jpg`** (File:Rakata_profile.png) is
   legitimate — it is the image the Legends article uses in its own *Biology and
   appearance* section — but it is only **290×290** and cropped to the bust, so it
@@ -265,8 +247,7 @@ trust.** `wookieepedia_legends_infobox.jpg` and `wookieepedia_temple_group.png`
 (both KOTOR-era 3D renders) are **olive to yellow-green with a pale cream
 ventral**; `wookieepedia_group_weapons.jpg` is **grey to grey-pink, mottled, with
 darker speckling over the arms and shoulders**; `wookieepedia_ancient_empire_art.jpg`
-is a **cool sage grey-green**; `wookieepedia_warrior_combat.jpg` is
-**grey-lavender**. 🔑 **Default to grey / grey-brown / reddish-grey** — that is
+is a **cool sage grey-green**. 🔑 **Default to grey / grey-brown / reddish-grey** — that is
 the sourced skin of "the dominant lineage of those that survived the ancient
 plague," i.e. of every Rakata anyone could actually meet — and treat the
 olive-green of the two game renders as one game's palette. Eyes read **reddish to
@@ -281,7 +262,7 @@ forearms**. That last detail is the priest class's "electronic control devices o
 their forearms" made visible, and the whole image is the best available reference
 for the Empire at its height rather than its ruin. The warrior read is separate:
 **segmented dark-red/maroon plastoid plate with vambraces and a heavy boxy belt**
-(`wookieepedia_group_weapons.jpg`, `wookieepedia_warrior_combat.jpg`), with
+(`wookieepedia_group_weapons.jpg`), with
 curved pale blades and a long slender polearm — and the primitive tribals in the
 same painting wear only **leather strapping over a bare torso** and carry a
 broad-bladed hafted **axe** and a bulbous mechanical **rifle**.
@@ -336,7 +317,8 @@ the digitigrade legs, the tridactyl clawed hands, or the crest-sheathing hood.
 - [ ] A narrow vertical wedge face between the stalks, with a small, low, downturned mouth and small nostril slits — not a wide, thick-lipped mouth
 - [ ] Digitigrade legs — long shank, backward-angled hock, standing on clawed toes with the heel clear of the ground — not ordinary human plantigrade legs
 - [ ] Three-digit (tridactyl) hands and feet with pale, bone-coloured claws
-- [ ] `wookieepedia_comic_closeup.jpg` and `wookieepedia_poe_dameron_comic.jpg` are wiki-disowned/misattributed images (a mislabelled Mon Calamari and Lucasfilm's "generic alien extra #3457") and must not be used as appearance references
+- [ ] Grey / grey-pink mottled skin (painted references), not the KOTOR renders' olive-green gloss
+- [ ] Realistic rendering: natural moist amphibian-skin texture and lighting, no outlines, no cartoon or low-poly game shading
 
 ## Engine limits
 none known
@@ -362,11 +344,8 @@ none known
 - https://static.wikia.nocookie.net/starwars/images/8/86/Rakata_kotor.jpg (File:Rakata_kotor.jpg, the Legends infobox image, 448×720 → `wookieepedia_legends_infobox.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/a/a3/Rakata-TUR.jpg (File:Rakata-TUR.jpg, *The Unknown Regions*, 578×600 → `wookieepedia_group_weapons.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/0/0e/Infinite_Empire_JMGD.jpg (File:Infinite_Empire_JMGD.jpg, *The Journal of Master Gnost-Dural*, 1412×820 → `wookieepedia_ancient_empire_art.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/f/f0/TURSluissiRakata.jpg (File:TURSluissiRakata.jpg, 362×393 → `wookieepedia_warrior_combat.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/b/b8/RakataTemple.png (File:RakataTemple.png, 876×550 → `wookieepedia_temple_group.png`)
 - https://static.wikia.nocookie.net/starwars/images/4/45/Rakata_profile.png (File:Rakata_profile.png, 290×290 → `wookieepedia_profile_game_render.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/f/f3/RakatanOnMonCala-2015StarWars48.jpg (File:RakatanOnMonCala-2015StarWars48.jpg → `wookieepedia_comic_closeup.jpg`) ⛔ **the wiki's own "Inconsistencies" section calls this a mistaken depiction of a Mon Calamari**
-- https://static.wikia.nocookie.net/starwars/images/d/d7/Rakata-PoeDameron7.png (File:Rakata-PoeDameron7.png → `wookieepedia_poe_dameron_comic.jpg`) ⛔ **"generic alien extra #3457", species unspecified per Lucasfilm Story Group**
 - **NOT fetched this pass**: no `starwars.com/databank` page for this species was
   attempted or located — the Rakata are a Legends-heavy species with a stub canon
   page, so a Databank entry may not exist. Treated as absent, not as checked.
@@ -378,14 +357,11 @@ none known
   them, not the books'.
 
 ## Candidate images
-- `wookieepedia_legends_infobox.jpg` — **the reference of record.** File:Rakata_kotor.jpg, the Legends infobox: a full-body KOTOR game render at 448×720 on black. The only image that settles the whole body at once — backswept pointed cranial crest, lateral eyestalks, small downturned mouth, **digitigrade clawed legs**, three-digit clawed hands, lean long-limbed build, and the warrior kit (pale asymmetric shoulder-drape, segmented maroon chest harness, heavy boxy belt).
+- `wookieepedia_legends_infobox.jpg` — **stylised KOTOR game render, anatomy only** (kept because it is the only single full-body figure). File:Rakata_kotor.jpg, the Legends infobox: a full-body KOTOR game render at 448×720 on black. The only image that settles the whole body at once — backswept pointed cranial crest, lateral eyestalks, small downturned mouth, **digitigrade clawed legs**, three-digit clawed hands, lean long-limbed build, and the warrior kit (pale asymmetric shoulder-drape, segmented maroon chest harness, heavy boxy belt).
 - `wookieepedia_group_weapons.jpg` — **the best colour and class reference.** File:Rakata-TUR.jpg, a painted illustration from *The Unknown Regions* showing four Rakata together in a red rocky landscape. Independent of the game renders, and the one that agrees with the sourced **grey / grey-pink mottled** skin of the surviving dominant lineage. Shows armoured warrior, uniformed mid-caste, and two lightly-clad tribals with a hafted axe and a bulbous rifle side by side — the class split made visual.
 - `wookieepedia_ancient_empire_art.jpg` — **the highest-value image for anything other than the naked body.** File:Infinite_Empire_JMGD.jpg, 1412×820, from *The Journal of Master Gnost-Dural*: a dozen-plus Rakata in ceremonial dress inside a monumental hall at the Empire's height. The only reference showing **crest-sheathing hoods**, banded robes and **forearm vambraces** (the priest class's forearm control devices), and the only good look at Rakatan **architecture**. Also the clearest multi-figure confirmation of the digitigrade leg.
-- `wookieepedia_temple_group.png` — File:RakataTemple.png, 876×550: a 3D render of Rakata outside the **Temple of the Ancients** on Lehon. Second independent confirmation of the digitigrade leg and the crest, plus a long slender polearm (a shocklance read) and a stepped ziggurat with a ribbed spire for ruin design.
-- `wookieepedia_warrior_combat.jpg` — File:TURSluissiRakata.jpg, 362×393: a comic panel of a Rakatan warrior under blaster fire with a curved blade. Stylized, so treat line and palette as the artist's; its value is a third independent rendering of the crest (here large, pale and visibly ridged) and the lateral eyestalks, in a medium that is neither game render nor painting.
+- `wookieepedia_temple_group.png` — **stylised KOTOR game render, anatomy/architecture only.** File:RakataTemple.png, 876×550: a 3D render of Rakata outside the **Temple of the Ancients** on Lehon. Second independent confirmation of the digitigrade leg and the crest, plus a long slender polearm (a shocklance read) and a stepped ziggurat with a ribbed spire for ruin design.
 - `wookieepedia_profile_game_render.jpg` — File:Rakata_profile.png, 290×290: the bust used in the Legends *Biology and appearance* section. Legitimate but small and cropped; settles the head only. Superseded for whole-body purposes by `wookieepedia_legends_infobox.jpg`.
-- `wookieepedia_comic_closeup.jpg` — ⛔ **negative reference only.** File:RakatanOnMonCala-2015StarWars48.jpg, from *Star Wars* (2015) 48. The wiki's own *Inconsistencies* section states the script called for a **Mon Calamari** and the Rakatan depiction was a mistake, and the drawing bears that out (rounded forward-tapered dome, big round eyes on cheek bulges, wide thick-lipped mouth). Kept because knowing what the wrong face looks like is useful; **do not draw from it**.
-- `wookieepedia_poe_dameron_comic.jpg` — ⛔ **negative reference only.** File:Rakata-PoeDameron7.png, from *Poe Dameron* 7. Lucasfilm Story Group's Matt Martin: "generic alien extra #3457… just some mysterious background guy"; the page states the species "remained unspecified." **Not evidence about the Rakata.**
 - `donor_current_sprite.png` — the mod's current Rakatan head, `Normal_south.png` (one head, no variants). A greyscale runtime-tinted mask that does land the tall cranium and lateral eyestalks but gives the crest no backsweep or point, draws the eyestalks as plain balls, and has no mouth.
 
 ## ruling

@@ -99,67 +99,25 @@ flavour note the owner may want, not a defect. `RSW_Head_selkath` and `RSW_Beard
 are real, dedicated Selkath art.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted: the two *Clone Wars* Mantu renders (`wookieepedia_infobox_mantu_canon.jpg`, `wookieepedia_mantu_detail_encyclopedia.jpg`) and the two KotOR game renders (`wookieepedia_legends_infobox_kotor_fullbody.jpg`, `wookieepedia_legends_headshot.jpg`). The gap the old entry named is now closed: **Peex Curando from *The Acolyte* is the first live-action Selkath** (`wookieepedia_peex_curando_acolyte.jpg`), backed by its painted design art (`wookieepedia_peex_curando_concept_acolyte.jpg`) and the realistic KotOR concept painting (`wookieepedia_legends_concept_art.jpg`).
 
-**Read it as a HAMMERHEAD, or as the article says, an "anthropomorphic sting ray" — a
-slender humanoid body carrying a broad, laterally-flattened head that is much wider than the
-shoulders are deep.** All four reference images agree closely on this, across a 20-year gap
-in art styles, so the shape is stable.
+**Read it as an "anthropomorphic sting ray" — a slender humanoid body under a broad, heavy, forward-thrust head.**
 
-**Head — the whole species:**
-- **A broad, flattened, dome-crowned skull that spreads sideways into two large downward-
-  hanging CEPHALIC LOBES flanking the mouth.** The lobes are the defining feature. They hang
-  like heavy soft jowls or a moustache of flesh, curving forward and down past the jaw line,
-  and in `wookieepedia_legends_concept_art.jpg` the near lobe reaches below the chin. Legends
-  says Selkath **stroke them while talking** — they are soft, mobile tissue, not bone.
-- **The crown sweeps up and back into a low crest**, widest across the top, narrowing toward
-  the front — a hammerhead cephalofoil profile.
-- **The mouth sits at the front-underside between the lobes**: a small, wide, lipless slit,
-  in a slightly protruding beak-like snout. In the KotOR render small teeth are visible.
-- **Eyes are small, dark/black, and set far apart on the SIDES of the head**, at the outer
-  base of the crest — placed like a fish's, not a primate's. From straight ahead you see
-  little of them; from three-quarters, one. **Small eyes on a very wide head is the
-  proportion to hit.**
-- **Skin pattern is the second most important read, and it is NOT flat.** Legends says the
-  skin was *"patterned for underwater camouflage"* and the images show exactly that:
-  `wookieepedia_legends_infobox_kotor_fullbody.jpg` has a **reticulated, net-like dark
-  tracery** over a pale blue-grey cranium; `wookieepedia_infobox_mantu_canon.jpg` has
-  **irregular maroon/dark-red blotches** over pale grey-pink, running onto the hands too.
-  **A single-colour Selkath is the failure mode.**
-- **There is no nose** — at most a pair of small nostril slits above the mouth. **No hair
-  anywhere.** No external ears.
-- **The neck is short and heavily creased/folded** where the head meets the shoulders.
-- ⚠️ **The female head-tendrils are textually canon (Legends) and NOT VISIBLE in any image
-  in this set** — every figure here reads as male or unspecified. Treat the tendrils as
-  sourced but visually unconfirmed, and note they would sit on the **back** of the head,
-  i.e. a RimWorld `_north` feature.
+**Head, from the live-action prosthetic (trust it on appearance):**
+- **A large smooth-domed cranium that slopes forward and down into a broad blunt snout** — in profile like a manta's head or a hammerhead's rounded nose, wider than it is tall.
+- **Two thick fleshy cephalic lobes hang straight down from the corners of the mouth**, like soft walrus tusks of flesh, reaching below the chin. Soft, mobile tissue (Legends: Selkath stroke them while talking).
+- **Two nostril pits on the front of the snout**; a wide lipless mouth beneath them, hidden between the lobes.
+- **Eyes are small, set far back on the SIDES of the head** — amber-brown with a dark pupil in live action (the old "black" came from game renders), deep-set in a wrinkled socket.
+- 🔴 **Skin pattern — where the realistic and animated versions disagree loudly:** the live-action skin is **slate blue-grey divided into irregular polygonal plates by a network of pale cracks**, like turtle skin or dried mud, over the whole cranium and snout. The deleted *Clone Wars* Mantu had **maroon blotches on grey-pink** — that look is gone. The KotOR concept and the Acolyte design art agree with a blue-grey to blue-green base with darker mottling/tracery. **A single flat colour is still the failure mode.**
+- **The throat and neck underside are pale tan-beige and deeply wrinkled/folded**, contrasting with the grey plated head. No hair, no external ears.
+- ⚠️ **The female head-tendrils are textually canon (Legends) and still NOT VISIBLE in any image in this set.**
 
 **Body:**
-- **Slender and narrow**, at **1.5 m distinctly short** — the head is a large fraction of the
-  total silhouette. Shoulders are narrow and sloping; there is no chest bulk.
-- **Arms are long and thin**, and **the hands are the second sourced feature**: long tapering
-  fingers ending in **long, curved, pale claws** (the venom talons). In the KotOR render the
-  claws are as long as the last finger joint.
-- 🔑 **The feet are large, splayed and paddle-like, with two or three broad flattened toes
-  ending in blunt hooflike claws** — clearly a swimmer's foot, and visible bare in both
-  full-body images even when the leg is booted. **This is a distinctive silhouette element
-  that prose never mentions and that a text-only prompt will never produce.**
-- Posture is slightly stooped and forward-leaning, head carried low.
+- **Slender and narrow, distinctly short (Legends: 1.5 m)**, head a large fraction of the silhouette; narrow sloping shoulders.
+- **Long thin arms, long tapering grey fingers** (claws sourced in Legends; hidden by gloves in the concept painting).
+- 🔑 **Large splayed paddle-like feet with two or three broad flattened toes** — visible bare below the leg wraps in the Acolyte design art and in the KotOR concept. A swimmer's foot; keep it visible.
 
-**Body vs. clothing** — every Selkath in this set is dressed, and the outfit is *functional*
-(canon: misting vents to keep the skin moist):
-- `wookieepedia_infobox_mantu_canon.jpg` (Mantu, canon): the **grey-and-orange plated
-  bodysuit, shoulder caps, ribbed orange midriff band, belt with pouches, thigh holster,
-  knee pads and boots** are all worn. **Bare skin: the head and the hands only** — and the
-  hands' maroon blotching matches the head, which is how you can tell where the glove ends.
-- `wookieepedia_legends_infobox_kotor_fullbody.jpg`: **plated chest panel, dark bodysuit,
-  forearm bracers and tall boots** are worn; **the head, the hands and the bare splayed feet
-  are skin.** Note the boots stop above the ankle **precisely so the paddle feet stay
-  free** — that is a costume design decision responding to the anatomy, and it is a good
-  argument for keeping the feet visible.
-- `wookieepedia_legends_concept_art.jpg`: **black-and-cream bodysuit with a black chest
-  plate/harness and gloves.** 🔴 The **stiff upright collar rising behind the head is part of
-  the garment, not a fin or a frill** — it is easy to mistake for anatomy, and it is not.
-  The gloves also hide the claws entirely.
+**Body vs. clothing:** Peex wears **layered taupe/oatmeal Jedi-style robes with a crossed tunic and cloth belt** (the Acolyte design art adds wrapped leggings and a woven orange belt); the KotOR concept wears a black-and-cream bodysuit whose **stiff upright collar behind the head is garment, not a fin**.
 
 **`donor_current_sprite.png` is a COMPOSITE I assembled, not a single file**, and it is
 included because the head alone is misleading: it is
@@ -181,12 +139,12 @@ change. There is **no Selkath body art on disk**, so the short stature, the claw
 paddle feet are unrepresented.
 
 ## Must show
-- [ ] Broad, flattened, dome-crowned skull spreading into two large, downward-hanging cephalic lobes flanking the mouth — soft, mobile, moustache-like
-- [ ] Crown sweeps up and back into a low hammerhead-style crest, widest across the top
-- [ ] Small, dark eyes set far apart on the SIDES of the head, at the outer base of the crest — fish-like placement, not forward-facing like a primate's
-- [ ] Skin carries a reticulated net-like dark tracery, or irregular maroon/dark-red blotches over a pale base — never a single flat colour
-- [ ] Long, curved, pale claws on tapering fingers; large, splayed, paddle-like feet with two or three broad flattened toes ending in blunt hooflike claws
-- [ ] Slender, distinctly short (1.5 m) body with narrow, sloping shoulders and no chest bulk
+- [ ] Large smooth-domed head sloping forward into a broad blunt snout with two nostril pits — manta/hammerhead-like, wider than tall
+- [ ] Two thick fleshy cephalic lobes hanging straight down from the mouth corners to below the chin
+- [ ] Small amber-brown eyes set far back on the SIDES of the head
+- [ ] Slate blue-grey skin divided into irregular polygonal plates by pale cracks; pale tan, deeply wrinkled throat and neck — never one flat colour, never maroon blotches
+- [ ] Slender, short (1.5 m) body with long thin fingers and large splayed paddle-like feet with broad flattened toes
+- [ ] Realistic rendering: natural prosthetic-skin texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 The head is built from single-channel greyscale tint masks (`RSW_Head_selkath` + `fishyjowls` attachment), so a skin-colour gene cannot produce the reticulated/blotched camouflage patterning — that needs a second render node or a baked variant, which is new art, not a colour change.
@@ -201,44 +159,18 @@ The head is built from single-channel greyscale tint masks (`RSW_Head_selkath` +
   `…&page=Selkath/Legends&…` (24,332 chars, 2026-09-15). **Source of the ONLY height
   (1.5 m) and lifespan (up to 100 years) figures, the sting-ray/cephalic-lobe anatomy, the
   camouflage patterning, the female head-tendrils and the venom-tipped claws.**
-- https://static.wikia.nocookie.net/starwars/images/e/e7/Mantu-TCWCEJtB.png
-  (File:Mantu-TCWCEJtB.png, the **canon** infobox image →
-  `wookieepedia_infobox_mantu_canon.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/5/59/Selkath_KotOR.png
-  (File:Selkath_KotOR.png, the **Legends** infobox image →
-  `wookieepedia_legends_infobox_kotor_fullbody.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/e/e9/Selkath_concept.png
   (File:Selkath_concept.png → `wookieepedia_legends_concept_art.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/4/43/Selkath.png
-  (File:Selkath.png → `wookieepedia_legends_headshot.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/0/03/MantuDetail-SWE.png
-  (File:MantuDetail-SWE.png → `wookieepedia_mantu_detail_encyclopedia.jpg`)
-- NOT fetched this pass: no image of **Peex Curando** from *The Acolyte* was retrieved, so
-  **the first live-action Selkath is not represented in this set.** Worth a later pass — it
-  would be the highest-fidelity reference available and could settle the female tendrils and
-  the skin patterning. Also not fetched: `File:Selkath_female.jpg`, which the Legends article
-  captions *"A female Selkath and her distinctive head-tendrils"* — it was resolved
-  (318×402) but not downloaded, and **it is the one image that would confirm the tendrils.**
-  Both are named here so the gap is actionable rather than invisible.
+- https://static.wikia.nocookie.net/starwars/images/8/83/PeexCurando-DayEpisodeGuide.jpg
+  (File:PeexCurando-DayEpisodeGuide.jpg, live-action *The Acolyte* → `wookieepedia_peex_curando_acolyte.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/1/16/PeexCurando-ArtOfAcolyte.png
+  (File:PeexCurando-ArtOfAcolyte.png, *The Art of Star Wars: The Acolyte* → `wookieepedia_peex_curando_concept_acolyte.jpg`)
+- NOT fetched: `File:Selkath_female.jpg` (318×402, a *Dawn of the Jedi* comic panel) — the one image that would show the female tendrils, but it is a comic, so it was left out under the realism ruling.
 
 ## Candidate images
-- `wookieepedia_legends_infobox_kotor_fullbody.jpg` — **the reference of record.** The
-  Legends infobox image, full standing figure at 500×1230: settles the hammerhead crest, the
-  hanging cephalic lobes, the beak-like mouth with teeth, the side-set black eye, the
-  **reticulated camouflage patterning**, the long curved fingertip claws, and the **large
-  splayed paddle feet.** A game render (KotOR-era), so treat surface finish as the engine's.
-- `wookieepedia_infobox_mantu_canon.jpg` — **the reference of record for CANON**, since it
-  is the canon article's own infobox image. Mantu in full armour: pale grey-pink skin with
-  **maroon blotch patterning** carried onto the hands, and a clean read of the lobes in
-  three-quarter view. Everything below the neck is armour.
-- `wookieepedia_legends_concept_art.jpg` — 800×1300 concept art, the best read of the
-  **crest sweeping up and back** and of the lobes at full length. ⚠️ The upright collar
-  behind the head is costume, not anatomy, and the gloves hide the claws. Concept art, so it
-  is design intent rather than final appearance.
-- `wookieepedia_legends_headshot.jpg` — a head-and-shoulders view; useful as a second angle
-  on the lobes and mouth, adds nothing the two above do not.
-- `wookieepedia_mantu_detail_encyclopedia.jpg` — an encyclopedia detail crop of Mantu.
-  Redundant with the canon infobox image; kept for completeness.
+- `wookieepedia_peex_curando_acolyte.jpg` — **the reference of record.** Live-action, *The Acolyte*: Peex Curando head and shoulders — cracked polygonal blue-grey head skin, hanging lobes, nostril pits, amber side eye, wrinkled tan throat, robes; file `PeexCurando-DayEpisodeGuide.jpg` — https://static.wikia.nocookie.net/starwars/images/8/83/PeexCurando-DayEpisodeGuide.jpg/revision/latest?cb=20250606035059
+- `wookieepedia_peex_curando_concept_acolyte.jpg` — realistic painted design art, *The Art of Star Wars: The Acolyte*: full-body Peex in robes, splayed paddle feet visible; file `PeexCurando-ArtOfAcolyte.png` (286×421) — https://static.wikia.nocookie.net/starwars/images/1/16/PeexCurando-ArtOfAcolyte.png/revision/latest?cb=20260227034340
+- `wookieepedia_legends_concept_art.jpg` — realistic KotOR concept painting, 800×1300: full figure, crest/snout profile, lobes at full length, splayed feet; the collar is costume. File `Selkath concept.png` — https://static.wikia.nocookie.net/starwars/images/e/e9/Selkath_concept.png
 
 ## ruling
 (empty — owner has not reviewed this race yet)

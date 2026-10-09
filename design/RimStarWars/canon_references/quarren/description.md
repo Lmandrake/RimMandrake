@@ -44,6 +44,8 @@ While Quarrenese was their native language, they could also speak fluent Galacti
 Basic Standard.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The comic panel `wookieepedia_ink_spit_comic.jpg` (Calgriz spitting ink at Maul) was deleted; the ink ability is now sourced from text only. Two live-action stills were added: `wookieepedia_drunk.jpg` (a staggering Quarren in a Tatooine street, *The Mandalorian*-era live action) and `wookieepedia_pirate.jpg` (a full-body Quarren pirate in long dark coat). Both agree with the costume photo below on ear-fins, tentacle beard and peaked dome; the live-action skin reads **mauve-pink to salmon-brown with darker mottling**, slightly pinker than the promo photo — still not saturated orange or purple.
+
 The reference image is three Quarren in costume side by side, and it corrects the
 prose in two places.
 
@@ -105,6 +107,7 @@ the long pointed nails.
 - [ ] A tall, smooth cranial dome coming to a rounded point at the crown — narrow and peaked, distinct from the Mon Calamari's broader dome
 - [ ] Small eyes set close together and high on the face, much smaller than a Mon Calamari's
 - [ ] Mottled tan/ochre/pinkish-brown skin — not the infobox's saturated orange or purple
+- [ ] Realistic rendering: natural moist prosthetic-skin texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -116,7 +119,6 @@ none known
   40,080 chars, 2026-09-15)
 - https://static.wikia.nocookie.net/starwars/images/1/15/The_Quarren.png (File:The_Quarren.png, the infobox image → wookieepedia_infobox_three_quarren.jpg)
 - https://static.wikia.nocookie.net/starwars/images/9/97/Quarren_-_SW_Battlefront.png (File:Quarren_-_SW_Battlefront.png → wookieepedia_game_render.jpg)
-- https://static.wikia.nocookie.net/starwars/images/9/92/CalgrizMaul-2017DarthMaul2.png (File:CalgrizMaul-2017DarthMaul2.png → wookieepedia_ink_spit_comic.jpg)
 - NOT fetched this pass: https://www.starwars.com/databank/quarren (official Databank).
 
 ## Candidate images
@@ -130,10 +132,8 @@ none known
   costume's choice.
 - `wookieepedia_game_render.jpg` — a game render of a Quarren; independent
   confirmation of ear-fin and tentacle geometry from a different production.
-- `wookieepedia_ink_spit_comic.jpg` — a comic panel of the Quarren Calgriz **spitting
-  ink** at Darth Maul in combat. The only image in this entry showing the defensive
-  ink ability in use; stylized, so treat as an action reference rather than a palette
-  reference.
+- `wookieepedia_drunk.jpg` — live-action still, file `Drunk Quarren.png`: a pinkish Quarren staggering with a drink, full upper body, ear-fins and tentacles — https://static.wikia.nocookie.net/starwars/images/e/e3/Drunk_Quarren.png/revision/latest?cb=20230330171125
+- `wookieepedia_pirate.jpg` — live-action still, file `AQuarrenPirate.png`: full-body Quarren pirate in a long dark coat with a blaster (dim lighting) — https://static.wikia.nocookie.net/starwars/images/a/a1/AQuarrenPirate.png/revision/latest?cb=20250221191523
 
 ## ruling
 (empty — owner has not reviewed this race yet)

@@ -212,7 +212,7 @@ opens straight into *History*), and all their biology lives on `/Legends`.
 
 **Mislabelled-image check done**: md5-compared every file in `mon_calamari/` against
 every file in `rakata/` — **no overlap**, so the known-bad
-`File:RakatanOnMonCala-2015StarWars48.jpg` (held in `rakata/` as
+`File:RakatanOnMonCala-2015StarWars48.jpg` (formerly held in `rakata/` — deleted 2026-10-08 — as
 `wookieepedia_comic_closeup.jpg`) has not leaked in. Recorded in the Mon Calamari
 entry, along with the note that the Mon Calamari article *legitimately* cites
 *Star Wars* (2015) 48 for the "green" skin colour — so that issue number in a

@@ -83,87 +83,27 @@ well — **missing beige and the teal-with-pink-accents variant.** The three
 from a spice-cartel species; flagged as invented rather than wrong.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** The *Clone Wars* trio (`wookieepedia_tall_cranium_masked.jpg`) and the comic capo panel (`wookieepedia_syndicate_capo_comic.jpg`) were deleted. The target is now the live-action *Book of Boba Fett* prosthetic look (`infobox_unmasked_piscine`, `capo_bobf`, `boss_bobf`, `traveler_bobf`, `courier_bobf`), with the painted concept sheet and the photoreal *Outlaws* render as supporting evidence.
 
-🔴 **The single thing this entry exists to settle: on a Pyke, THE BIG PALE DOME IS OFTEN A
-HOOD, AND THE FISH FACE IS USUALLY NOT A MASK. Prose gets this exactly backwards.** The
-canon text says masks are *"frequently worn,"* which invites an artist to draw the whole head
-as a helmet — but the article's **own infobox image is named `File:Pykes_are_fish.png`** and
-shows bare piscine faces, and the concept art shows the cranium's covering peeling back to
-reveal bare skin. Getting this wrong produces either a robot-looking helmet-head or a naked
-skull with no cowl.
+**What the live-action heads show (trust these on appearance):**
+- **Skin:** pale grey-blue to slate grey, matte-to-slightly-moist, with fine wrinkling around the eyes and snout. Gorak Palas (*Outlaws*) is a more saturated blue-violet; same anatomy.
+- **Eyes:** large, glossy, solid BLACK almond eyes, slanted and set wide on a broad flat brow. (Concept art paints them amber-brown; screen is black.)
+- **Snout:** a broad, bulbous, drooping fish-like snout/upper lip with wide flat nostril folds, overhanging a small down-turned mouth.
+- **Barbels:** two fleshy, pinkish, tapering tendrils hang DOWN FROM THE SNOUT / upper lip (not from the jaw corners as the old brief said), roughly chin length, curving outward; on the capo they are thick and fleshy.
+- 🔴 **Cranium — where live-action and animation disagree loudly:** on screen the head is **compact and rounded, wrapped tight in a fitted leather-look cap/cowl with seams**; there is **no towering pale veined dome**. The tall tapered bare cranium exists only in the concept sheet (`wookieepedia_concept_art.jpg`, under a cowl) and in the deleted *Clone Wars* art. Render the live-action proportion: a large rounded skull hidden under a snug cap, not an elongated spike.
+- **Masks are worn gear:** the courier (`courier_bobf`) wears a rust-orange respirator face plate with goggles and twin side breathing tubes under a pointed hood — this is the "mask" of canon, and it covers only the face.
+- **Clothing:** layered dull-brown/olive rough-woven robes, dark tunics with a single vertical ochre stripe, belts and holsters for soldiers; status Pykes wear rich blue or black gold-trimmed coats with high collars and epaulette-like trim (`boss_bobf`, Gorak Palas).
+- **Build:** humanoid, average height in live action, gloved hands; Gorak Palas shows a heavy, thick-set variant.
 
-**What is BODY (skin), settled from `wookieepedia_concept_art.jpg` — a three-panel character
-design sheet, the most diagnostic image in the set:**
-- **The cranium is bare skin: pale white-blue, smooth, glossy, and faintly VEINED**, swelling
-  up and back from the brow into a **tapered point at the top-rear.** Fine blue-purple
-  capillary tracery is visible across it. It is anatomy, not a shell.
-- **The face is undersized and sits low on the front of that skull** — canon's "undersized
-  face," and the whole reason the species reads as unsettling.
-- **Eyes are large, slanted, almond-shaped and set wide**, amber-brown in the concept art,
-  black in *The Book of Boba Fett*, magenta in the comic. **Large relative to the face, small
-  relative to the skull.**
-- **A pair of fleshy, tapering BARBELS hangs down from the corners of the jaw** — soft
-  whisker-like appendages, roughly the length of the chin. **These are flesh, they hang and
-  move, and they are present on both the concept-art head and the *Outlaws* and *Boba Fett*
-  faces.** They are the species' most distinctive soft feature and the easiest thing for a
-  text-only prompt to miss entirely.
-- **The mouth is a broad, down-turned lipless slit** low on the face. The concept art's
-  right-hand panel shows it **gaping open with rows of small teeth** and a fleshy interior —
-  so it does open wide.
-- **Small pointed ear-fin flaps** sit at each side of the head, at about eye level.
-- **The neck**: **long and sinuous** on the tall form; **short and bloated** on the piscine
-  form — canon says both, and `wookieepedia_gorak_palas_outlaws.jpg` is the short-necked one.
-- **Skin colour, from the images:** pale white-blue and grey (concept art, *Boba Fett*),
-  saturated **blue-violet** (Gorak Palas). No image in this set shows beige or the
-  teal-with-pink variant.
-- **Body build:** the tall form is **narrow, elongated and stooped** (`…concept_art.jpg`
-  centre panel; `…syndicate_capo_comic.jpg`), with long thin arms and long slender fingers.
-  The short-necked form can be **heavy and thick-set** — Gorak Palas is visibly obese.
-
-**What is CLOTHING, and this is where prose blurs:**
-
-| Feature | Body | Clothing / gear |
-|---|---|---|
-| Pale, tapered, veined cranium | ✅ **skin** | |
-| Mottled dark-green/grey textured covering over the back and sides of the skull, with scalloped flanges at the nape | | ✅ **a fitted cowl/hood.** The concept-art side panels show it wrapping the skull and leaving the face bare |
-| Snug leather-look **skullcap** over the crown (Gorak Palas, and the *Boba Fett* group) | | ✅ **cap** |
-| Large slanted eyes, jaw barbels, ear flaps, down-turned mouth | ✅ **skin** | |
-| Cream/bone **face plate with goggles and a vertical breathing tube** (the right-hand figures in `…unmasked_piscine.jpg`; the *Clone Wars* trio; the comic capo) | | ✅ **respirator mask** — this is the "mask" of the canon text, and it covers only the FACE |
-| Layered robes, wide-shouldered mantles, gold-trimmed coats, ruff collars, brooches, bracelets | | ✅ garments — status dress, varies per individual |
-| Armour plates, pauldrons, greaves, boots (*Clone Wars* guards) | | ✅ armour |
-
-- 🔑 **`wookieepedia_infobox_unmasked_piscine.jpg` contains BOTH states in one frame**, which
-  is why it is the reference of record: the four foreground figures show **bare grey piscine
-  faces** (big black eyes, bulbous snout, hanging barbels, ear flaps) under **cloth caps**,
-  while the two figures at the right wear **actual cream respirator masks with mouth tubes
-  over hooded heads.** Compare them side by side and the body/clothing line is unmistakable.
-- ⚠️ **One honest uncertainty, flagged rather than guessed:** in
-  `wookieepedia_tall_cranium_masked.jpg` (*The Clone Wars*) the tall pale dome could be read
-  as either a bare cranium or a helmet/hood. By analogy with the concept art — same design
-  lineage, hood over bare skull — **it most likely reads as a hood over the cranium, with the
-  goggles and mouth tube as separate worn gear.** That is an **inference, not a sourced
-  fact.** The face plate is definitely worn.
-
-**`donor_current_sprite.png` is `.../Heads/Pyke/Normal_south.png` (512×512, RGBA) — a
-greyscale tint mask** (correct for a RimWorld humanlike head; colour comes from the skin
-gene). **This is real, dedicated Pyke art and it is the best donor sprite in this batch.**
-What it gets right, and it gets the hard part right: **a tall tapered cranium with a small
-pale face pushed down to the bottom of it**, plus two thin slanted eyes — the
-oversized-cranium/undersized-face proportion, which is the species' defining trait, is
-actually there. What is **missing**: **no jaw barbels** (the species' most distinctive soft
-feature); **no mouth**; **no ear flaps**; the taper comes to a **sharp point at the top**
-rather than sweeping up-and-back; and the two small prongs at the base of the head read as
-jaw hardware rather than as the hanging barbels they should be. It also cannot show the
-**long sinuous neck**, and there is **no Pyke body art on disk**, so the lanky proportion is
-unrepresented. `Normal_east.png` and `Normal_north.png` exist alongside it.
+**`donor_current_sprite.png`** (`.../Heads/Pyke/Normal_south.png`, 512×512 greyscale tint mask) has the tall tapered spike cranium of the animated design and no barbels, mouth or snout — it now disagrees with the live-action target on the head silhouette as well as the missing features.
 
 ## Must show
-- [ ] Pale white-blue, smooth, glossy, faintly veined cranium swelling up and back into a backswept, tapered point — bare skin, not a helmet
-- [ ] An undersized face sitting low on the front of that skull
-- [ ] Large, slanted, almond-shaped eyes (colour may be blue, magenta, purple, amber-brown or black)
-- [ ] Fleshy, tapering barbels hanging from both corners of the jaw
-- [ ] A broad, down-turned, lipless mouth slit, with small pointed ear-fin flaps at each side of the head near eye level
-- [ ] Two body forms exist: a tall, lanky, sinuous-necked form, and a short-necked, bloated, piscine form — a fitted cowl over the cranium and a separate respirator face mask (goggles + mouth tube) are both worn gear, not the Pyke's own face
+- [ ] Pale grey-blue wrinkled skin with large, glossy, solid black slanted almond eyes set wide
+- [ ] Broad bulbous drooping fish-like snout with flat nostril folds over a small down-turned mouth
+- [ ] Two fleshy pinkish barbels hanging down from the snout/upper lip to about chin length
+- [ ] Compact rounded skull wrapped in a snug seamed cap or cowl — no tall spiked bare dome
+- [ ] Layered rough robes or gold-trimmed status coats; any respirator face plate (goggles + side tubes) is worn gear
+- [ ] Realistic rendering: natural prosthetic-skin texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known — the donor head is a correctly-tinted greyscale mask; the missing barbels, mouth and ear flaps are absent art, not a pipeline limitation.
@@ -182,10 +122,6 @@ none known — the donor head is a correctly-tinted greyscale mask; the missing 
   (File:Pyke-concept.jpg, concept art → `wookieepedia_concept_art.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/5/5c/GorakPalas-Outlaws.png
   (File:GorakPalas-Outlaws.png, *Star Wars Outlaws* → `wookieepedia_gorak_palas_outlaws.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/a/a5/Pykes.png
-  (File:Pykes.png, *The Clone Wars* → `wookieepedia_tall_cranium_masked.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/2/26/PykeSyndicateCapo-SWQ04.png
-  (File:PykeSyndicateCapo-SWQ04.png → `wookieepedia_syndicate_capo_comic.jpg`)
 - Not used: `File:Unlimited-LomPyke.png`, captioned on the article *"Examples of two forms of
   the Pyke species' body"* — it is a trading-card render (526×478) and was resolved but not
   downloaded this pass. **Worth a later pass: it is the wiki's own side-by-side of the two
@@ -193,27 +129,13 @@ none known — the donor head is a correctly-tinted greyscale mask; the missing 
 - NOT fetched this pass: a `starwars.com/databank` Pyke species page was not attempted.
 
 ## Candidate images
-- `wookieepedia_infobox_unmasked_piscine.jpg` — **the reference of record.** The canon
-  infobox image (1480×810, live-action *Book of Boba Fett*), and the file the wiki itself
-  named `Pykes_are_fish.png`. Shows the **short-necked piscine form's bare faces** — grey,
-  big black eyes, bulbous snout, hanging jaw barbels, ear flaps under a fitted cap — **and**,
-  in the same frame, two genuinely **masked** figures for comparison. This single image
-  settles the body-versus-clothing question.
-- `wookieepedia_concept_art.jpg` — **the reference of record for the head's anatomy.** A
-  three-panel design sheet: two large head studies (mouth closed, then gaping with teeth)
-  plus a full-figure. Settles that the **cranium is bare veined skin under a cloth cowl**,
-  and gives the cleanest read of the barbels, the slanted eyes and the undersized face.
-  Concept art, so treat it as design intent rather than final screen appearance.
-- `wookieepedia_gorak_palas_outlaws.jpg` — the **short-necked, heavy-set** variant in
-  game-render quality: blue-violet skin, scarring around one eye, barbels, skullcap, and a
-  gold-trimmed teal coat with a ruff collar. Waist-up. Best colour reference in the set.
-- `wookieepedia_tall_cranium_masked.jpg` — *The Clone Wars* trio, full figures: the **tall
-  form's** proportions, long limbs, armour and boots. ⚠️ **Whether its pale dome is cranium
-  or hood is not settled by this image** (see the flag above); stylised animation, so treat
-  the palette as the show's.
-- `wookieepedia_syndicate_capo_comic.jpg` — a comic panel of a masked Pyke capo leaning on a
-  rail: useful only for **posture and the magenta eye colour**, since the whole head is
-  covered by cowl and respirator. Weakest of the set.
+- `wookieepedia_infobox_unmasked_piscine.jpg` — live-action, *The Book of Boba Fett*; canon infobox image, file `Pykes are fish.png`: bare-faced Pykes under caps beside two respirator-masked ones — https://static.wikia.nocookie.net/starwars/images/a/a8/Pykes_are_fish.png
+- `wookieepedia_capo_bobf.jpg` — live-action, *Book of Boba Fett* ch. 7; Pyke capo head and shoulders, clearest face/barbels; file `PykeCapo-BoBFCh7.png` — https://static.wikia.nocookie.net/starwars/images/1/10/PykeCapo-BoBFCh7.png/revision/latest?cb=20220212021257
+- `wookieepedia_traveler_bobf.jpg` — live-action, *Book of Boba Fett* ch. 2; Pyke traveller close-up, cap and barbels; file `PykeTraveler-TribesOfTatooine.png` — https://static.wikia.nocookie.net/starwars/images/b/b1/PykeTraveler-TribesOfTatooine.png/revision/20220126041016
+- `wookieepedia_boss_bobf.jpg` — live-action, *Book of Boba Fett* ch. 3; seated Pyke boss in blue gold-trimmed coat; file `Unidentified Pyke boss.png` — https://static.wikia.nocookie.net/starwars/images/0/0e/Unidentified_Pyke_boss.png/revision/20220128051458
+- `wookieepedia_courier_bobf.jpg` — live-action, *Book of Boba Fett* ch. 6; masked Pyke courier, respirator plate and soldier robes; file `PykeCourier-BoBFCh6.png` — https://static.wikia.nocookie.net/starwars/images/a/ad/PykeCourier-BoBFCh6.png/revision/latest?cb=20220204031206
+- `wookieepedia_concept_art.jpg` — realistic painted concept sheet (design intent, not final screen look): cowled bare veined cranium, open and closed mouth; file `Pyke-concept.jpg` — https://static.wikia.nocookie.net/starwars/images/e/ea/Pyke-concept.jpg
+- `wookieepedia_gorak_palas_outlaws.jpg` — photoreal game render, *Star Wars Outlaws*; Gorak Palas, heavy-set blue-violet variant; file `GorakPalas-Outlaws.png` — https://static.wikia.nocookie.net/starwars/images/5/5c/GorakPalas-Outlaws.png
 
 ## ruling
 (empty — owner has not reviewed this race yet)
