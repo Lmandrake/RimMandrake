@@ -82,6 +82,13 @@
           <nodeClass>RimMandrake.Watchers.RM_PawnRenderNode_WatcherPart</nodeClass>
           <workerClass>RimMandrake.Watchers.RM_PawnRenderNodeWorker_WatcherHead</workerClass>
           <texPath>Things/Building/Mech/TurretMechMini_Top</texPath>
+          <octantTexPaths>
+            <li>Things/Pawn/RM_Watcher/RM_Watcher_Head_N</li>
+            <li>Things/Pawn/RM_Watcher/RM_Watcher_Head_NE</li>
+            <li>Things/Pawn/RM_Watcher/RM_Watcher_Head_E</li>
+            <li>Things/Pawn/RM_Watcher/RM_Watcher_Head_SE</li>
+            <li>Things/Pawn/RM_Watcher/RM_Watcher_Head_S</li>
+          </octantTexPaths>
           <color>(150,110,80)</color>
           <drawSize>(0.32,0.32)</drawSize>
           <overrideMeshSize>(1,1)</overrideMeshSize>
