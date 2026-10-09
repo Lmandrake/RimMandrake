@@ -1,0 +1,135 @@
+[
+ {
+  "id": "enact_be511e0a_bedbug_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_BedBug",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo based on (b) render, make much more alien (six eyes that glow red) with a wicked-looking stabbing proboscis\" RimWorld sprite of the bedbug, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Redo based on (b) render, make much more alien (six eyes that glow red) with a wicked-looking stabbing proboscis",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/44/44b8d1279abb53d1964c3ff4e3d0f0a8a52232a407a61016b61627681257a529.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_f2b850a2_crystalmit_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_CrystalMit",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"No, try again. It should be a truly alien crystal creature that seems like a tangle of crystals, connective tissue, and claw-like manipulators.\" RimWorld sprite of the crystalmit, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "No, try again. It should be a truly alien crystal creature that seems like a tangle of crystals, connective tissue, and claw-like manipulators.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/26/26a6604f2f9180e3cf604527e42049b5b3aaf3250727cf3cfefbdd681370b89c.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_4d78432e_giantcrownedsilkie_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_GiantCrownedSilkie",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good start, but make it more alien and the silk yet more trailing and flowing off its body all the way to the ground.\" RimWorld sprite of the giantcrownedsilkie, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Good start, but make it more alien and the silk yet more trailing and flowing off its body all the way to the ground.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/25/254ee2f5f0b0f45414564917866fcfe1e4ed2e729c64eabeb9b5bd6c4f1093cd.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_d3c59886_infectedaerofleet_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_InfectedAerofleet",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"No, it is based on a floating ball of gas... no feet. This creature should be moved to the Contagion. An unfortunate visitor become infected. Redo description.\" RimWorld sprite of the infectedaerofleet, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "No, it is based on a floating ball of gas... no feet. This creature should be moved to the Contagion. An unfortunate visitor become infected. Redo description.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/47/477b909d4b575756a025139662a96534912672c0f784d085bcdef602611ea8f6.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_f3decf4d_radyak_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_Radyak",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good start, more alien please. Rename and regen description.\" RimWorld sprite of the radyak, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Good start, more alien please. Rename and regen description.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/55/55853e80245af4c0e1faaaa5be45cd72bf1227f88bb3633c8a324a8a3506057c.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_cabe4675_neebray_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Neebray",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Try again? No canon redo?\" RimWorld sprite of the neebray, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Try again? No canon redo?",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/9a/9af38d3cb719c83277c9191da79217d6ebe2382cae9d6c244de821460dc121b2.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_7a2b5db5_silooth_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Silooth",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"make this 8 cells wide. Follow canon more closely. Make sure we add the acid-spitting.\" RimWorld sprite of the silooth, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "make this 8 cells wide. Follow canon more closely. Make sure we add the acid-spitting.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/0f/0f73e9092f41ee7beac27c033f2fbb3968a4c041438f872e682cecc713be7252.png"
+  ],
+  "biome_neutral": true
+ }
+]
