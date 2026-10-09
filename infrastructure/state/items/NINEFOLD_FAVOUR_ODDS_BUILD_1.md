@@ -21,3 +21,8 @@ Done when: each piece works offline-testable per the spec, nothing in the world 
 - Mod Settings (`RM_NinefoldMod.cs`): favour toggle + strength slider, offerings toggle.
 
 Still owed: a live check of every piece; adding `RUT_Ritual_NineFaults` to The Salvation's ideo (.rid/save); the value ramp 200..3000 silver is UNTUNED; the §⑦ satiation-bank payment and the `CompBreakdownable.DoBreakdown` hook are not built (the bank does not exist in `GameComponent_Ninefold`).
+
+## verify
+
+### Exact checks 2026-10-09 (acceptance sitting)
+- A1 CHECK: `jawa/get_defs` with defs = ";".join of `RM_GodFavourTiltDef/<n>` for every `<defName>` in `src/RimMandrake/Ninefold/Defs/RM_GodFavourTilts.xml` (20 rows; the Sandstorm row carries MayRequire Odyssey, always present since all DLCs load) plus `PreceptDef/RUT_Ritual_NineFaults;RitualPatternDef/RUT_NineFaultsPattern;RitualBehaviorDef/RUT_NineFaultsBehavior;RitualOutcomeEffectDef/RUT_NineFaultsOutcome;RitualObligationTargetFilterDef/RUT_FreshFind;TaleDef/RUT_GaveTheNineFaults;ThoughtDef/RUT_GaveTheFirstSpark` (src/RimUtinni/Rites/Defs/RUT_NineFaults.xml). Settings: `jawa/mod_settings_field typeName="RimMandrake.Ninefold.RM_NinefoldSettings" action=get field="favourOddsEnabled"`. Needs Ninefold and mandrake.rut.rites active. PASS: success=true, foundCount=27, notFound empty (20 tilts + 7); favourOddsEnabled reads true; no ConfigError naming RM_Tilt_ or RUT_NineFaults in drain_log. FAIL: success=false (UNMEASURED, not absent), notFound non-empty, or foundCount short (a tilt def whose god/incident name did not resolve logs a ConfigError and is dropped), or the setting field is rejected.

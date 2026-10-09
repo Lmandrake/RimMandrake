@@ -31,6 +31,9 @@ within the vanilla hysteresis bounds, no manhunt/raid behavior introduced
 (arc §8 seed 4); war-lab access unchanged with pass held; grant/revoke driven
 purely by blackboard verbs over the bridge.
 
+### Exact checks 2026-10-09 (acceptance sitting)
+- A1 CHECK: `jawa/get_defs defs="HediffDef/RUT_CathedralPass;BiomeDef/RM_RustCathedral;BiomeDef/RUT_RustCathedral" fields="defName"`. Patch armed: `jawa/harmony_patches typeName="GenHostility" methodName="HostileTo"` lists a postfix whose owner is `mandrake.rut.cathedralpass` (Patch_CathedralPassHostility.cs; applied by PatchApplier tag `RimMandrake.Utinni.CathedralPass`). Setting: `jawa/mod_settings_field typeName="RimMandrake.Utinni.CathedralPass.CathedralPassSettings" action=get field="cathedralPassEnabled"`. Log: `[RimMandrake.Utinni.CathedralPass] Harmony: patched N, missing 0`. PASS: success=true, foundCount=3, notFound empty; harmony_patches shows the postfix; census line with missing 0; cathedralPassEnabled reads true. FAIL: success=false (UNMEASURED, not absent), notFound non-empty, or foundCount short, no postfix on HostileTo (silent non-arm), or the census line shows missing>=1 or `Harmony patch failed`.
+
 ## criteria
 Both verbs callable from the GM layer; Harmony scope reviewed (mark-clean
 path); no behavior off Cathedral maps.

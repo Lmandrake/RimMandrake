@@ -69,3 +69,8 @@ Risk for L2: the camp only gets built if the raid holds a pawn with Construction
 enabled (`LordToil_Siege.CanBeBuilder`); titled Empire pawns may have these disabled, and the
 artillery is any `Artillery_BaseDestroyer` ThingDef in the mod set. Whether the camp actually
 builds for the Empire is unproven until a live cordon.
+
+## verify
+
+### Exact checks 2026-10-09 (acceptance sitting)
+- A4 CHECK: Existing chain `ladder_rungs_resolve` in `src/RimUtinni/EmpirePursuit/validation.py`; the bare call it makes: `jawa/get_defs defs="RUT_EmpireRungDef/RUT_EmpireRung_Probe;RUT_EmpireRungDef/RUT_EmpireRung_Spotter;RUT_EmpireRungDef/RUT_EmpireRung_Strike;RUT_EmpireRungDef/RUT_EmpireRung_Cordon;RUT_EmpireRungDef/RUT_EmpireRung_Breach;RUT_EmpireRungDef/RUT_EmpireRung_Bombardment" fields="rungIndex,kind"`; plus drain_log filtered for `RUT_EmpireRung`. PASS: success=true, six rows with rungIndex 1..6 and kind Probe, Spotter, Strike, Cordon, Breach, Bombardment in that order; zero ConfigErrors naming RUT_EmpireRung. FAIL: success=false (UNMEASURED), a row missing (NextRungDef would skip it silently), rungIndex/kind mismatch, or a ConfigError.

@@ -32,3 +32,6 @@ Run each criterion at its stated level and record it with `rimflow verify LAUNCH
 - L1: one minimal-list load, read Player.log for config/cross-reference errors and the specific line, or one spawn-and-read bridge probe.
 - L2: one quicktest map via the bridge or modcheck: set up the scenario in the criterion, step ticks, read the state named.
 Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.
+
+### Exact checks 2026-10-09 (acceptance sitting)
+- A2 CHECK: Read Player.log for the literal `[RM EnvironmentalHazards] launch held-colonist warning`. Patch is a [StaticConstructorOnStartup] in `EnvironmentalHazards/Source/RM_Patch_LaunchHeldColonistWarning.cs` that logs ONLY on failure (no success line). Positive control: `jawa/harmony_patches typeName="GravshipUtility" methodName="PreLaunchConfirmation"` must list a postfix with owner `mandrake.rm.environmentalhazards`. PASS: zero lines containing the literal AND harmony_patches shows the postfix (postfixCount>=1, owner mandrake.rm.environmentalhazards). FAIL: any line containing `NOT armed` or `not found`, or the postfix is absent from harmony_patches (silent non-arm; harmonyError set means the instrument is blind: UNMEASURED).
