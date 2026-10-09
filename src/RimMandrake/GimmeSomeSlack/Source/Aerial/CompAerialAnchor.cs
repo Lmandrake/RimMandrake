@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -187,11 +188,11 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             base.PostDeSpawn(map, mode);
             bool killed = mode == DestroyMode.KillFinalize || mode == DestroyMode.KillFinalizeLeavingsOnly;
             var spans = links.Where(l => l.other != null).Select(l => (l.other.thingIDNumber, l.state)).ToList();
-            RemovalPlan plan = AerialMath.PlanRemoval(thingIDNumber, killed, spans);
-            var partners = links.Where(l => l.other != null).Select(l => l.other).ToList();
+            HashSet<int> aboard = mode == DestroyMode.WillReplace ? GravshipAboardIds() : null;
+            RemovalPlan plan = AerialMath.PlanRemoval(thingIDNumber, killed, spans, aboard);
+            var partners = links.Where(l => l.other != null && !plan.Kept.Contains(l.other.thingIDNumber)).Select(l => l.other).ToList();
             foreach (CompAerialAnchor p in partners)
             {
-                SpanLink mine = LinkTo(p);
                 p.links.RemoveAll(l => l.other == this);
                 if (plan.Fallen.Any(f => f.Survivor == p.thingIDNumber) && p.Spawned)
                     p.fallen.Add(new FallenCord
@@ -204,7 +205,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 // a cut half lying at the survivor stays (it is the survivor's own cable now)
                 foreach (FallenCord f in p.fallen) if (f.cutPartner == thingIDNumber) f.cutPartner = -1;
             }
-            links.Clear();
+            if (plan.Grounded.Count > 0) NotifyGroundedAtLaunch(plan.Grounded.Count);
+            // GS-1: spans to partners flying with us are kept. Cable lying at our foot is cleared either way: its
+            // 'toward' cell is a map cell, meaningless after the ship lands somewhere else.
+            links.RemoveAll(l => l.other == null || !plan.Kept.Contains(l.other.thingIDNumber));
             fallen.Clear();
             RM_MapComponent_Aerial comp = map?.GetComponent<RM_MapComponent_Aerial>();
             comp?.Deregister(this, map);
@@ -215,6 +219,48 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 if (!debugSkipReseed) Reseed(p);
                 comp?.DirtyGround(p);
             }
+            comp?.Notify_SpansChanged();
+        }
+
+        /// <summary>GS-1 (decompiled 1.6, GravshipUtility.GenerateGravship): the engine sets generatingGravship and
+        /// Current.Game.Gravship, then despawns every ship thing with DestroyMode.WillReplace and respawns the SAME
+        /// instances on landing. Non-null only inside that despawn loop, with the setting on: the anchor ids aboard.</summary>
+        private static HashSet<int> GravshipAboardIds()
+        {
+            if (!AerialSettings.keepWiresOnGravship || !GravshipUtility.generatingGravship) return null;
+            Gravship g = Current.Game?.Gravship;
+            if (g == null) return null;
+            if (aboardCacheFor != g)
+            {
+                aboardCacheFor = g;
+                aboardCache = new HashSet<int>(g.Things.Where(t => Of(t) != null).Select(t => t.thingIDNumber));
+            }
+            return aboardCache;
+        }
+
+        private static Gravship aboardCacheFor;
+        private static HashSet<int> aboardCache;
+        private static int groundedMessageTick = -1;
+
+        private static void NotifyGroundedAtLaunch(int n)
+        {
+            int now = Find.TickManager?.TicksGame ?? 0;
+            if (groundedMessageTick == now) return;     // one message per launch, not one per anchor
+            groundedMessageTick = now;
+            Messages.Message("Overhead wires to anchors left on the ground were taken down and coiled at launch.", MessageTypeDefOf.NeutralEvent, false);
+        }
+
+        /// <summary>GS-1: called once every ship thing has landed (GravshipPlacementUtility.PostSwapMap); both ends of a
+        /// kept span now stand on the new map, so the nets are rebuilt and the spans redrawn.</summary>
+        public override void PostSwapMap()
+        {
+            base.PostSwapMap();
+            if (!Spawned) return;
+            links.RemoveAll(l => l.other == null || l.other.parent.Destroyed);
+            if (links.Count == 0) return;
+            Reseed(this);
+            RM_MapComponent_Aerial comp = Map.GetComponent<RM_MapComponent_Aerial>();
+            comp?.DirtyGround(this);
             comp?.Notify_SpansChanged();
         }
 
