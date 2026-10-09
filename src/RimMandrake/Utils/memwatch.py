@@ -287,7 +287,8 @@ def host_sample(runner=run_powershell) -> dict:
             return {"unmeasured": "counters missing in powershell output"}
     except ValueError:
         return {"unmeasured": "powershell output not JSON"}
-    return {k: d.get(k) for k in HOST_FIELDS}
+    # PowerShell serialises a null Measure-Object result as {} (RimWorld not running); only numbers are readings.
+    return {k: (d.get(k) if isinstance(d.get(k), (int, float)) else None) for k in HOST_FIELDS}
 
 
 def host_due(hstate: dict, now: float) -> bool:

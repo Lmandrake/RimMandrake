@@ -46,6 +46,8 @@ def host_tests():
     bad = memwatch.host_sample(lambda ps: None)
     ok("unmeasured" in bad and "committed" not in bad, "failed powershell -> UNMEASURED marker, no zeros")
     ok("unmeasured" in memwatch.host_sample(lambda ps: "garbage"), "non-JSON output -> UNMEASURED")
+    nb = memwatch.host_sample(lambda ps: '{"committed":1,"limit":2,"avail_mb":3,"rw_ws":{}}')
+    ok(nb.get("rw_ws") is None and nb["committed"] == 1, "PowerShell {} for a null reading -> None, not a dict")
     ok("unmeasured" in memwatch.host_sample(lambda ps: "{}"), "JSON without counters -> UNMEASURED")
     with tempfile.TemporaryDirectory() as t:
         t = Path(t)
@@ -143,7 +145,7 @@ def main():
         lines = (state / "events.jsonl").read_text().splitlines()
         ok(all(json.loads(x)["ts"] for x in lines), f"events.jsonl parses ({len(lines)} lines)")
 
-        ok(memwatch.main(["--root", str(seats), "--tmpfs", str(tmpfs), "--state-dir", str(state), "--no-toast"]) == 0,
+        ok(memwatch.main(["--root", str(seats), "--tmpfs", str(tmpfs), "--state-dir", str(state), "--no-toast", "--no-host"]) == 0,
            "CLI runs")
     host_tests()
     print(f"{'FAIL' if FAILS else 'PASS'} selftest_memwatch: {len(FAILS)} failure(s)")
