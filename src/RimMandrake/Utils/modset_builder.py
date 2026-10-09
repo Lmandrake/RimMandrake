@@ -414,6 +414,13 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rm.warcasket"],  # BAROQUE_BIOMES_WAVE2_FOLD_1: environmentalhazards+wasteland folded
         "dlc": True,
     },
+    "wasterun": {
+        "why": "Live-verify WARCASKET_WASTE_RUN_REMAINDER_1: RUT_WasteRun generates, "
+               "the RM_CaskBay gains the waste-run command, and each destination "
+               "signal ends the quest on its own branch.",
+        "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rm.warcasket", "mandrake.rut.wasterun"],
+        "dlc": True,
+    },
     "shrublandfauna": {
         "why": "The union of `beastmechanics` and `desertplants`: one load that can "
                "answer SHRUBLAND_GIANT_ENRAGE_1 (RSW_ShrublandGiant + "
@@ -629,6 +636,12 @@ TIERS["live_20261008b"] = {
            "plus the Utinni patch layer (RUT_ScarlandsMark, RUT_DyingCreep) and Visibility, so every owed L1/L2 read of the day runs on one load.",
     "want": [BRIDGE, "mandrake.rm.gimmesomeslack", "mandrake.rm.biomes", "mandrake.rm.watchers", "mandrake.rm.flowworks",
              "mandrake.rm.luminouspigment", "mandrake.rut.patches", "mandrake.rm.visibility"],
+    "dlc": True,
+}
+
+TIERS["acc_20261009"] = {
+    "why": "FOUNDRY acceptance 2026-10-09: sitting 1/2 union of acc_l1x, acc_harness, acc_biomes, live_20261008b, kineticarms, explosiveknockback, flowworks and every converted mod with its own packageId.",
+    "want": ["brrainz.rimbridgeserver", "mandrake.rm.acousticscanner", "mandrake.rm.aftermath", "mandrake.rm.biomes", "mandrake.rm.explosiveknockback", "mandrake.rm.flowworks", "mandrake.rm.gimmesomeslack", "mandrake.rm.gravshiplanding", "mandrake.rm.hugethings", "mandrake.rm.inhabited", "mandrake.rm.keelhoist", "mandrake.rm.kineticarms", "mandrake.rm.luminouspigment", "mandrake.rm.ninefold", "mandrake.rm.planetpresetprime", "mandrake.rm.proximityhatch", "mandrake.rm.raidredesigner", "mandrake.rm.shipvermin", "mandrake.rm.solarmirrors", "mandrake.rm.visibility", "mandrake.rm.watchers", "mandrake.rm.wreckedmachines", "mandrake.rsw.droidworks", "mandrake.rsw.trophycraft", "mandrake.rut.eggreckoning", "mandrake.rut.falllinearrivals", "mandrake.rut.patches", "mandrake.rut.shipshields", "mandrake.rut.unfinishedline"],
     "dlc": True,
 }
 

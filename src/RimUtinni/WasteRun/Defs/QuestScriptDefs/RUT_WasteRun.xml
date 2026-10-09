@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_WasteRun - WARCASKET_WASTE_RUN_REMAINDER_1. THE SPEC (rimworld-quests skill, section 2):
+    ask       dispose of every wastepack and half-extracted core in the ship's cask bays
+    reason    the Junkers' tipping fee is gone and the casks are doses waiting to happen
+    choice    five destinations (wasteland.md section 10), each a verdict; the destination IS the branch
+    failure   30 days and no choice: the window lapses, the waste stays, the quest fails
+    reward    none by design: disposal is its own consequence
+    deadline  OFFER 6-10 days; after acceptance a shown 30-day timer
+  Owner decisions by question card 2026-10-08: ONE quest, destination = the branch; the
+  half-extracted core is waste only (no fuel, no Hutt sale).
+  HOW THE CHOICE IS MADE: the cask bay gains a command (RUT_CompWasteRunPlanner) while this
+  quest is Ongoing; picking a destination destroys all cask-bay waste and sends the signal
+  Quest<id>.WasteDest_<Name>. No vanilla XML node lets a player choose.
+  FIRING: route 2, IncidentDef RUT_WasteRunOffer (root weight 0, isRootSpecial).
+  ALL NUMBERS PROVISIONAL. STUBS (filed as items): flight to the destination is not required,
+  the Throat cask and Junker warcasket are not involved, the war-lab breach and Slime results
+  only record history events.
+-->
+<Defs>
+  <QuestScriptDef>
+    <defName>RUT_WasteRun</defName>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <isRootSpecial>true</isRootSpecial>
+    <expireDaysRange>6~10</expireDaysRange>
+    <defaultChallengeRating>1</defaultChallengeRating>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The waste run</li>
+        <li>questName->Where the casks go</li>
+      </rulesStrings>
+    </questNameRules>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->Your cask bays hold waste that cannot stay and cannot be left: wastepacks, and reactor cores cut half-free of the ruins that powered them. The ship can carry it anywhere. There is nowhere it can be taken that is not somebody's problem.\n\nAccept, then open any cask bay and choose where it goes. You can drop it on the Empire, freeze it on the cold side, entomb it on the Assailants, sink it in the propane lakes, or pour the Slime experiment down the Throat. Each is a verdict, none can be taken back, and the window closes in [windowTicks_duration].</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <root Class="QuestNode_Sequence">
+      <nodes>
+        <li Class="QuestNode_GetMap" />
+        <li Class="RimMandrake.Utinni.WasteRun.RUT_QuestNode_GetFactionByDef">
+          <storeAs>empire</storeAs>
+          <factionDefName>Empire</factionDefName>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>windowTicks</name>
+          <value>$(30*60000)</value>
+        </li>
+        <li Class="QuestNode_Delay">
+          <delayTicks>$windowTicks</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <inspectString TKey="InspectStringWasteWindow">Window closes in: {0}</inspectString>
+          <outSignalComplete>WasteWindowLapsed</outSignalComplete>
+        </li>
+
+        <li Class="QuestNode_Signal">
+          <inSignal>WasteDest_DropOnEmpire</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_ChangeFactionGoodwill">
+                <faction>$empire</faction>
+                <change>-100</change>
+                <ensureHostile>true</ensureHostile>
+                <reason>RUT_WasteRunDroppedOnEmpire</reason>
+              </li>
+              <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunDroppedOnEmpire</historyDef></li>
+              <li Class="QuestNode_Letter">
+                <label TKey="L_WasteDest_DropOnEmpire">Dropped on the Empire</label>
+                <letterDef>NegativeEvent</letterDef>
+                <text TKey="T_WasteDest_DropOnEmpire">The casks fell on Imperial ground in the grey of the morning. It was called sanitation in the manifest. The Empire will not read it that way, and no one on the ship will pretend to be surprised.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Success</outcome>
+                <sendStandardLetter>false</sendStandardLetter>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_Signal">
+          <inSignal>WasteDest_FreezeColdSide</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunFrozen</historyDef></li>
+              <li Class="QuestNode_Letter">
+                <label TKey="L_WasteDest_FreezeColdSide">Frozen on the cold side</label>
+                <letterDef>NeutralEvent</letterDef>
+                <text TKey="T_WasteDest_FreezeColdSide">The waste is on the cold side now, sealed in ice that has not moved in an age. It will keep. Someone will find it, in a generation or a thousand years, and it will be the hands that did this they remember.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Success</outcome>
+                <sendStandardLetter>false</sendStandardLetter>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_Signal">
+          <inSignal>WasteDest_EntombAssailants</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunEntombed</historyDef></li>
+              <li Class="QuestNode_Letter">
+                <label TKey="L_WasteDest_EntombAssailants">Entombed on the Assailants</label>
+                <letterDef>NeutralEvent</letterDef>
+                <text TKey="T_WasteDest_EntombAssailants">It was the Rakatan solution: the worst thing on the planet buried in the second worst thing, and sealed. You did it knowing better. The Assailants, still stirring, are not the only ones who will carry it.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Success</outcome>
+                <sendStandardLetter>false</sendStandardLetter>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_Signal">
+          <inSignal>WasteDest_IgnitePropaneLake</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunPropaneIgnited</historyDef></li>
+              <li Class="QuestNode_Letter">
+                <label TKey="L_WasteDest_IgnitePropaneLake">Sunk in the propane lake</label>
+                <letterDef>NeutralEvent</letterDef>
+                <text TKey="T_WasteDest_IgnitePropaneLake">The core went down into cryogenic propane and the lake caught. It burned for days on the nightside, a sustained melt a long way from anyone. Something under that lake may now be open that was not before.\n\n(The war lab itself is not yet built; the breach is recorded and waits.)</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Success</outcome>
+                <sendStandardLetter>false</sendStandardLetter>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_Signal">
+          <inSignal>WasteDest_SlimeExperiment</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <!-- PROVISIONAL: the outcome is rolled once at quest generation (a runtime roll needs
+                   a C# QuestPart). Each outcome only records a history event; the world effects
+                   below the Throat are a stub (WASTE_RUN_SLIME_RESULTS_1). -->
+              <li Class="QuestNode_RandomNode">
+                <nodes>
+              <li Class="QuestNode_Sequence">
+                <selectionWeight>1</selectionWeight>
+                <nodes>
+              <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunSlimeNeutralized</historyDef></li>
+                  <li Class="QuestNode_Letter">
+                    <label TKey="L_Slime_RUT_WasteRunSlimeNeutralized">The pit went quiet</label>
+                    <letterDef>NeutralEvent</letterDef>
+                    <text TKey="T_Slime_RUT_WasteRunSlimeNeutralized">The slime went down the Throat in a long grey rope and the sounds below stopped. Nobody can say whether the pit is dead or only holding its breath.</text>
+                  </li>
+                </nodes>
+              </li>
+              <li Class="QuestNode_Sequence">
+                <selectionWeight>1</selectionWeight>
+                <nodes>
+              <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunSlimeBloomed</historyDef></li>
+                  <li Class="QuestNode_Letter">
+                    <label TKey="L_Slime_RUT_WasteRunSlimeBloomed">The pit answered</label>
+                    <letterDef>NeutralEvent</letterDef>
+                    <text TKey="T_Slime_RUT_WasteRunSlimeBloomed">What you poured did not die. The Throat is breathing differently, and the readings have not come back the same.</text>
+                  </li>
+                </nodes>
+              </li>
+              <li Class="QuestNode_Sequence">
+                <selectionWeight>1</selectionWeight>
+                <nodes>
+              <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunSlimeUnknown</historyDef></li>
+                  <li Class="QuestNode_Letter">
+                    <label TKey="L_Slime_RUT_WasteRunSlimeUnknown">Nothing you can measure</label>
+                    <letterDef>NeutralEvent</letterDef>
+                    <text TKey="T_Slime_RUT_WasteRunSlimeUnknown">The slime is gone and the Throat has said nothing. Whatever happened is happening below your instruments.</text>
+                  </li>
+                </nodes>
+              </li>
+                </nodes>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Success</outcome>
+                <sendStandardLetter>false</sendStandardLetter>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <inSignal>WasteWindowLapsed</inSignal>
+          <label TKey="L_WasteLapsed">The window closed</label>
+          <letterDef>NegativeEvent</letterDef>
+          <text TKey="T_WasteLapsed">Nobody decided, so nothing was done. The casks are still in your hold, and the run is off.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>WasteWindowLapsed</inSignal>
+          <outcome>Fail</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+      </nodes>
+    </root>
+  </QuestScriptDef>
+</Defs>
