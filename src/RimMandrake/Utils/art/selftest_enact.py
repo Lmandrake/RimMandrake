@@ -212,6 +212,51 @@ def main():
         check(cuts["RM_Cut"]["tex_retire"] == ["Things/Pawn/Animal/RM_Cut/RM_Cut"], "cut retires the def's texture")
         check("CONFLICTS (2)" in out and "TODO (1)" in out, "report lists conflicts and TODOs")
 
+        # a LATER owner keep of the live picture on this row (another decisions file) must not be undone by re-enacting this one
+        evf = F["led"] / "events" / "TEST.jsonl"
+        evtxt = evf.read_text()
+        evf.write_text(evtxt + json.dumps({"type": "ruling", "id": "newerkeep", "target": {"shas": [shas["old"]], "row": "RM_Foo", "column": "A"},
+                                           "verdict": "keep", "by": "owner", "trust": "ruled", "at": "2026-10-09T00:00:00Z",
+                                           "via": "later_sheet.decisions.json", "subject_key": "foo"}) + "\n")
+        Pn = E.build_plan(F["decisions"], ["vine"])
+        check(not Pn["install"] and any("RM_Foo" in c and "owner-kept" in c for c in Pn["conflicts"]),
+              "a pick is not installed over a LATER same-row owner keep from another file (CONFLICT)")
+        evf.write_text(evtxt)
+        Pe = E.build_plan(F["decisions"], ["vine"])
+        check(len(Pe["install"]) == 1, "...and with that later keep gone the pick installs again")
+        # stale letters: a used letter the ruled snapshot never had, clicked before the current snapshot was built
+        import ingest as I
+        ruled = {"rows": {"R": {"columns": {"A": {"east": "1"}}}}}
+        now = {"built": "2026-10-09T10:00:00-0700", "rows": {"R": {"columns": {"A": {"east": "1"}, "F": {"east": "2"}}}}}
+        d_old = {"decisions": {"R": {"decision": "F", "at": "2026-10-09T16:00:00.000Z"}}}
+        d_new = {"decisions": {"R": {"decision": "F", "at": "2026-10-09T18:30:00.000Z"}}}
+        check(I.stale_letter_rows(d_old, ruled, now) == {"R": ["F"]}, "letter new since the ruled snapshot, clicked before the rebuild: stale")
+        check(I.stale_letter_rows(d_new, ruled, now) == {}, "...clicked after the rebuild: fine")
+        check(I.stale_letter_rows({"decisions": {"R": {"decision": "A", "at": "2026-10-09T16:00:00Z"}}}, ruled, now) == {},
+              "a letter the ruled snapshot had is left to letter_mismatches")
+        P_st = E.build_plan(F["decisions"], ["vine"], stale={"RM_Foo": ["B"]})
+        check(not P_st["install"] and any(c.startswith("RM_Foo: letter(s) B") for c in P_st["conflicts"]), "a stale row is a CONFLICT and does nothing")
+        # clear_followed: a sidecar save landing between read and replace is merged over, never lost
+        cf = F["root"] / "cf.json"
+        cf.write_text(json.dumps({"decisions": {"X": {"note": "do it", "at": "a"}, "Y": {"note": "", "decision": "A"}}}))
+        real_fsync, hit = E.os.fsync, []
+        def racing_fsync(fd):
+            if not hit:
+                hit.append(1)
+                d = json.loads(cf.read_text())
+                d["decisions"]["Y"]["decision"] = "B"
+                cf.write_text(json.dumps(d))
+            return real_fsync(fd)
+        E.os.fsync = racing_fsync
+        try:
+            got = E.clear_followed(cf, {"X": {"note": "do it", "by": ["j1"]}})
+        finally:
+            E.os.fsync = real_fsync
+        dcf = json.loads(cf.read_text())["decisions"]
+        check(got == ["X"] and dcf["Y"]["decision"] == "B" and dcf["X"]["note"] == "" and dcf["X"]["notes_followed"][0]["note"] == "do it",
+              "clear_followed redoes its merge when his save lands mid-write (his edit survives)")
+        check(not list(F["root"].glob(".enact-*.tmp")), "clear_followed leaves no temp file")
+
         JOBS = F["root"] / "jobs_out.json"      # never Transient/ of the real repo
         R = E.enact(F["decisions"], apply=True, holds=["vine"], no_deploy=True, redo_jobs_out=JOBS)
         check(R["ok"], "apply succeeds")
