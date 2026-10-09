@@ -272,6 +272,13 @@
         <lightsourceShineIntensity>1</lightsourceShineIntensity>
         <shadowStrength>1</shadowStrength>
       </li>
+      <!-- BIOME_ARRIVAL_LETTERS_ALL_1 (DESIGN_PASS X-6/FV-5): PLACEHOLDER text drafted by an agent from this biome's
+           own description, always-true list and shipped mechanics, flagged for the owner's review
+           (Transient/arrival_letters_draft_20261008.md). RM tier: plain reads, no narrator. Heat line follows heatKind. -->
+      <li Class="RimMandrake.EnvironmentalHazards.RM_BiomeArrivalLetterExtension" MayRequire="mandrake.rm.biomes">
+        <letterLabel>The Stillsand</letterLabel>
+        <letterText>The sun here never moves, so nothing tracks it: everything owns a shadow, is buried, or carries its own. Do not spill blood on the sand. Water poured out here makes things bloom. Where the sun sits low a roof does nothing: only a lee shadow helps, a rock or a sun shield to stand behind. Nearer the point under the sun, where it stands high, a roof works again. A parasol barely helps out on the low-sun sand.</letterText>
+      </li>
     </modExtensions>
     <!-- SALVAGE_WRECKAGE_EVERYWHERE_1: the wreck field (Wreckage engine). -->
     <extraGenSteps>
