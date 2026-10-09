@@ -105,7 +105,7 @@ namespace RimMandrake.Abyss
             public float baseline;                // the def's own glowRadius
             public bool shrunkKnown;              // the Dark's remembered-baseline entry exists
             public float shrunkBaseline;
-            public bool kPresent;                 // the krizzak dimming entry exists (IsDimmed)
+            public bool kPresent;                 // the krizzak dimming entry exists (IsDimmed); the Dark no longer reads it (light ledger)
             public float kOriginal;
             public int kLastFed;
         }

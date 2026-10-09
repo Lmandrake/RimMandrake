@@ -253,6 +253,13 @@ def check(cfg, inp):
     compiled_by_proj = {}
     for cproj, t in inp.csproj.items():
         incl = re.findall(r'<Compile Include="([^"]+)"', t)
+        # A source linked from OUTSIDE the mod (the shared light ledger, LIGHT_LEDGER_ONE_1: "..\..\_Shared\...") is not
+        # one of this mod's files: check it exists where it points, and keep it out of the on-disk comparison.
+        outside = [x for x in incl if x.replace("\\", "/").startswith("../../")]
+        for x in outside:
+            if not os.path.exists(os.path.normpath(os.path.join(os.path.dirname(cproj), x.replace("\\", "/")))):
+                findings.append(("CSPROJ_DANGLING", cproj, 0, "linked Compile entry %s names no file" % x))
+        incl = [x for x in incl if x not in outside]
         compiled_by_proj[cproj] = (set(os.path.basename(x.replace("\\", "/")) for x in incl if "*" not in x),
                                    any("*" in x for x in incl))
 

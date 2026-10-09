@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared;
 using Verse.AI;
 using Verse.Sound;
 
@@ -41,8 +42,6 @@ namespace RimMandrake.Abyss
 
         private bool wasUnveiling;
         private bool initialised;
-        private readonly Dictionary<CompGlower, float> shrunk = new Dictionary<CompGlower, float>();
-        private readonly List<CompGlower> scratch = new List<CompGlower>();
 
         public RM_MapComponent_Dark(Map map) : base(map) { }
 
@@ -154,41 +153,36 @@ namespace RimMandrake.Abyss
 
         // ── lamplight ────────────────────────────────────────────────
 
+        // LIGHT_LEDGER_ONE_1: the Dark's share of a lamp is the "abyss.dark" multiplier in the shared light ledger, so it
+        // composes with a krizzak feeding on the same lamp, the aurora, a warbling flame — none of them steps aside or
+        // undoes another any more. The per-lamp rule (shrink toward the floor in the Dark, slack, restore when it is gone)
+        // is still RM_DarkKernel.DarkLampPass, run in the Dark's own view of the lamp: radius = what everything else
+        // leaves it × the Dark's share.
+        private const string DarkOwner = "abyss.dark";
+
         private void LampPass()
         {
-            var krizzak = map.GetComponent<RM_MapComponent_KrizzakDimming>();
             bool on = Active;
             List<Thing> bld = map.listerThings.ThingsInGroup(ThingRequestGroup.BuildingArtificial);
             for (int i = 0; i < bld.Count; i++)
             {
                 CompGlower g = bld[i].TryGetComp<CompGlower>();
                 if (g == null) continue;
-                // the per-lamp rule (shrink toward the floor in the Dark, restore when it is gone, leave a krizzak's lamp alone)
-                // is RM_DarkKernel.DarkLampPass; this only reads the lamp in and writes it back
-                var lamp = new RM_DarkKernel.Lamp
+                // DEEPFIRE_WORLD_LIGHT_1 (b): deliberately cannot swallow deepfire
+                if (RM_AbyssSettings.darkSparesDeepfire && LightLedger.HasTag(g, "deepfire"))
                 {
-                    radius = g.GlowRadius,
-                    baseline = g.Props.glowRadius,
-                    kPresent = krizzak != null && krizzak.IsDimmed(g)
-                };
-                if (shrunk.TryGetValue(g, out float shrunkBaseline)) { lamp.shrunkKnown = true; lamp.shrunkBaseline = shrunkBaseline; }
-                float darkness = on && g.Glows && !lamp.kPresent ? DarknessAt(map, bld[i].Position) : 0f;
-                bool changed = RM_DarkKernel.DarkLampPass(ref lamp, g.Glows, on, darkness, RM_AbyssSettings.darkStrength);
-                if (lamp.shrunkKnown) shrunk[g] = lamp.shrunkBaseline; else shrunk.Remove(g);
-                if (changed)
-                {
-                    g.GlowRadius = lamp.radius;
-                    g.ForceRegister(map);
+                    LightLedger.ClearMul(g, DarkOwner);
+                    continue;
                 }
-            }
-            // forget lamps that left the map
-            if (shrunk.Count == 0) return;
-            scratch.Clear();
-            scratch.AddRange(shrunk.Keys);
-            for (int i = 0; i < scratch.Count; i++)
-            {
-                CompGlower g = scratch[i];
-                if (g.parent == null || !g.parent.Spawned) shrunk.Remove(g);
+                float baseline = LightLedger.ScaledExceptMul(g, DarkOwner);
+                float share = LightLedger.Get(g, "mul:" + DarkOwner, 1f);
+                var lamp = new RM_DarkKernel.Lamp { radius = baseline * share, baseline = baseline };
+                if (share < 0.999f) { lamp.shrunkKnown = true; lamp.shrunkBaseline = baseline; }
+                float darkness = on && g.Glows ? DarknessAt(map, bld[i].Position) : 0f;
+                if (RM_DarkKernel.DarkLampPass(ref lamp, g.Glows, on, darkness, RM_AbyssSettings.darkStrength))
+                {
+                    LightLedger.SetMul(g, DarkOwner, baseline > 0f ? lamp.radius / baseline : 1f);
+                }
             }
         }
 

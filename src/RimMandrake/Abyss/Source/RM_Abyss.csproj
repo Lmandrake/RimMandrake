@@ -39,6 +39,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- LIGHT_LEDGER_ONE_1: the shared light ledger, compiled into this assembly (design/RimMandrake/light_ledger_design.md) -->
+    <Compile Include="..\..\_Shared\LightLedger\LightLedger.cs" Link="Shared\LightLedger.cs" />
+    <Compile Include="..\..\_Shared\LightLedger\LightLedgerKernel.cs" Link="Shared\LightLedgerKernel.cs" />
     <Compile Include="RM_AbyssMod.cs" />
     <Compile Include="RM_AbyssBiome.cs" />
     <Compile Include="RM_GustController.cs" />

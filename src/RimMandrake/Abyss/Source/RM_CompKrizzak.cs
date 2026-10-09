@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared;
 using Verse.AI;
 
 namespace RimMandrake.Abyss
@@ -74,11 +75,16 @@ namespace RimMandrake.Abyss
         }
     }
 
+    // LIGHT_LEDGER_ONE_1: a krizzak's bite is the "abyss.krizzak" multiplier in the shared light ledger, composed with the
+    // Dark and everything else on the lamp (before this the two took turns: the Dark skipped a lamp a krizzak held).
+    // The arithmetic is still RM_DarkKernel.Krizzak*, run in normalised units: kOriginal 1, radius = the bite's share.
+    // Not saved, as before: a reload gives the light back and a krizzak still sitting on it bites again.
     public class RM_MapComponent_KrizzakDimming : MapComponent
     {
         private const int RecoverInterval = 250;
+        private const string Owner = "abyss.krizzak";
 
-        private class Entry { public float original; public int lastFed; }
+        private class Entry { public int lastFed; }
         private readonly Dictionary<CompGlower, Entry> dimmed = new Dictionary<CompGlower, Entry>();
         private readonly List<CompGlower> scratch = new List<CompGlower>();
 
@@ -86,19 +92,19 @@ namespace RimMandrake.Abyss
 
         public bool IsDimmed(CompGlower g) { return dimmed.ContainsKey(g); }
 
-        private RM_DarkKernel.Lamp LampOf(CompGlower g, Entry e)
+        private static RM_DarkKernel.Lamp LampOf(CompGlower g, Entry e)
         {
             return new RM_DarkKernel.Lamp
             {
-                radius = g.GlowRadius,
+                radius = e != null ? LightLedger.Get(g, "mul:" + Owner, 1f) : 1f,
                 kPresent = e != null,
-                kOriginal = e != null ? e.original : 0f,
+                kOriginal = e != null ? 1f : 0f,
                 kLastFed = e != null ? e.lastFed : 0
             };
         }
 
-        // The dimming arithmetic (feed floor, recovery pace, when an entry is spent) is RM_DarkKernel.Krizzak*; these read a lamp
-        // in, call it, and write the radius and the entry back.
+        // The dimming arithmetic (feed floor, recovery pace, when an entry is spent) is RM_DarkKernel.Krizzak*; these read
+        // the bite's share in, call it, and write the share and the entry back.
         public bool AtFloor(CompGlower g, float minFraction)
         {
             dimmed.TryGetValue(g, out Entry e);
@@ -112,12 +118,10 @@ namespace RimMandrake.Abyss
             RM_DarkKernel.Lamp lamp = LampOf(g, e);
             bool shrank = RM_DarkKernel.KrizzakFeed(ref lamp, Find.TickManager.TicksGame, fraction, minFraction);
             if (e == null) { e = new Entry(); dimmed[g] = e; }
-            e.original = lamp.kOriginal;
             e.lastFed = lamp.kLastFed;
             if (shrank)
             {
-                g.GlowRadius = lamp.radius;
-                g.ForceRegister(map);
+                LightLedger.SetMul(g, Owner, lamp.radius);
                 RM_MapComponent_AbyssSoundscape.LampClatter(map, g.parent);   // ABYSS_SOUNDSCAPE_BUILD_1
             }
         }
@@ -131,15 +135,11 @@ namespace RimMandrake.Abyss
             foreach (CompGlower g in scratch)
             {
                 Entry e = dimmed[g];
-                if (g.parent == null || !g.parent.Spawned) { dimmed.Remove(g); continue; }
+                if (g.parent == null || !g.parent.Spawned) { LightLedger.ClearMul(g, Owner); dimmed.Remove(g); continue; }
                 RM_DarkKernel.Lamp lamp = LampOf(g, e);
                 RM_DarkKernel.KrizzakRecover(ref lamp, now);
-                if (lamp.radius != g.GlowRadius)
-                {
-                    g.GlowRadius = lamp.radius;
-                    g.ForceRegister(map);
-                }
-                if (!lamp.kPresent) dimmed.Remove(g);
+                if (!lamp.kPresent) { LightLedger.ClearMul(g, Owner); dimmed.Remove(g); }
+                else LightLedger.SetMul(g, Owner, lamp.radius);
             }
         }
     }
