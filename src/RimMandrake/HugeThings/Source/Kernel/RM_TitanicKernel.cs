@@ -179,5 +179,25 @@ namespace RimMandrake.TitanicCreatures
         {
             return Math.Max(0, Math.Min(remaining, perSession));
         }
+
+        /// <summary>
+        /// TITAN_ROOF_AVOIDANCE_1 (B3.5 / D3.1 / D1.4): the anchor cells a titan's route must not use, because its footprint there
+        /// (anchor + [offMinX..offMaxX] x [offMinZ..offMaxZ]) would overlap a thick-roofed cell. thick[i] is cell i = z*w + x of a
+        /// w x h map. Every anchor within the footprint's reach of a thick cell is marked once in `outMark`.
+        /// </summary>
+        public static void MarkRoofExcluded(int w, int h, bool[] thick, int offMinX, int offMinZ, int offMaxX, int offMaxZ, bool[] outMark)
+        {
+            for (int i = 0; i < thick.Length; i++)
+            {
+                if (!thick[i]) continue;
+                int x = i % w, z = i / w;
+                // anchor a covers x when a.x + offMinX <= x <= a.x + offMaxX
+                int ax0 = Math.Max(0, x - offMaxX), ax1 = Math.Min(w - 1, x - offMinX);
+                int az0 = Math.Max(0, z - offMaxZ), az1 = Math.Min(h - 1, z - offMinZ);
+                for (int az = az0; az <= az1; az++)
+                    for (int ax = ax0; ax <= ax1; ax++)
+                        outMark[az * w + ax] = true;
+            }
+        }
     }
 }

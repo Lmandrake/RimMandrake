@@ -39,8 +39,8 @@
   <RM_HugeThings_Smash>  The biggest titans smash giant plants</RM_HugeThings_Smash>
   <RM_HugeThings_Smash_Desc>A titan at or above the smash tier damages every giant plant whose trunk it brushes, once per step, until the plant falls and the way opens. Smaller titans treat giant trunks as walls and go around. Off: every titan goes around.</RM_HugeThings_Smash_Desc>
   <RM_HugeThings_SmashTier>    Smash tier: T{0} and larger</RM_HugeThings_SmashTier>
-  <RM_HugeThings_RoofAvoid>Slowed under overhead mountain</RM_HugeThings_RoofAvoid>
-  <RM_HugeThings_RoofAvoid_Desc>A titan crossing a cell under overhead mountain moves very slowly. Off: it moves like any other pawn.</RM_HugeThings_RoofAvoid_Desc>
+  <RM_HugeThings_RoofAvoid>Titans never path under overhead mountain</RM_HugeThings_RoofAvoid>
+  <RM_HugeThings_RoofAvoid_Desc>A titan never chooses a route that would put any part of its body under overhead mountain (thick rock roof); a destination only reachable that way is out of its reach. One already under rock walks out by the least-roofed way, slowly. Off: it paths like any other pawn.</RM_HugeThings_RoofAvoid_Desc>
   <RM_HugeThings_Yield>Reduced butcher yield on titans</RM_HugeThings_Yield>
   <RM_HugeThings_Yield_Desc>A T1 or T2 titan butchers for somewhat less meat and leather per body size than a same-mass ordinary animal would. Off: full vanilla yield.</RM_HugeThings_Yield_Desc>
   <RM_HugeThings_YieldFloor>  Minimum yield floor: {0}% of normal</RM_HugeThings_YieldFloor>
