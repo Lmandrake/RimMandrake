@@ -28,7 +28,9 @@ from modcheck import Suite, ExpectationFailed
 
 suite = Suite("WasteRun")
 suite.toggles = ["masterEnabled", "offerEnabled", "dropOnEmpireEnabled", "freezeColdSideEnabled",
-                 "entombAssailantsEnabled", "propaneLakeEnabled", "slimeExperimentEnabled"]
+                 "entombAssailantsEnabled", "propaneLakeEnabled", "slimeExperimentEnabled",
+                 "throatCaskEnabled", "throatRadiationEnabled", "throatShipFaultsEnabled",
+                 "throatBurstEnabled", "throatDecayEnabled"]
 SETTINGS = "RimMandrake.Utinni.WasteRun.WasteRunSettings"
 QUEST = "RUT_WasteRun"
 HISTORY = ["RUT_WasteRunDroppedOnEmpire", "RUT_WasteRunFrozen", "RUT_WasteRunEntombed",
@@ -56,7 +58,7 @@ def settings_fields():
 
 @suite.chain("defs_and_load")
 def defs_and_load(t):
-    shipped = ["QuestScriptDef/%s" % QUEST, "IncidentDef/RUT_WasteRunOffer"] + ["HistoryEventDef/%s" % h for h in HISTORY]
+    shipped = ["QuestScriptDef/%s" % QUEST, "ThingDef/RUT_ThroatCask", "ThoughtDef/RUT_ThroatCaskNear", "IncidentDef/RUT_WasteRunOffer"] + ["HistoryEventDef/%s" % h for h in HISTORY]
     with t.component("defs_resolve"):
         r = t.bridge_call("jawa/get_defs", defs=";".join(shipped), fields="defName")
         if _live(t):

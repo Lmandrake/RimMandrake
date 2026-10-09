@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  THROAT_CASK_ITEM_1. The Glowing Throat's hauled payload. Owner ruling by question card 2026-10-09,
+  option (1), typed verbatim: "(1) and constantly emitting terrible radiation. Extremely dangerous to
+  be near, even with a specially sealed chamber. Ship malfunctions while it's onboard repeatedly.
+  Feels like it's slowly causing armaggeddon just having it nearby."
+
+  🔴 EVERY NUMBER BELOW AND IN RUT_CompProperties_ThroatCask IS PROVISIONAL (mine, not ruled):
+  mass 60, market value 12000, dose, radii, fault interval, die-off, mood stages.
+  Joins the RM_HazardCasks category, so the lead-lined cask bay admits it (a bay only MUTES the dose).
+  ART: none yet. The core's render stands in; real art is owed (THROAT_CASK_ITEM_1).
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_ThroatCask</defName>
+    <label>Throat cask</label>
+    <description>A sealed cask hauled out of the Glowing Throat. It is never quiet: it gives off a deep, constant radiation that no wall fully stops, and the ground around it, and the ship carrying it, slowly start to come apart. Whoever is hauling it is either very well paid or already dead. It is worth a fortune to the right buyer, and next to nothing at a Junker toll gate.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_HalfExtractedCore/RM_HalfExtractedCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.4</drawSize>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <tickerType>Rare</tickerType>
+    <useHitPoints>true</useHitPoints>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <tradeability>Sellable</tradeability>
+    <techLevel>Industrial</techLevel>
+    <thingCategories>
+      <li>RM_HazardCasks</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <MarketValue>12000</MarketValue>
+      <Mass>60</Mass>
+      <Flammability>0.4</Flammability>
+      <Beauty>-60</Beauty>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <comps>
+      <li Class="RimMandrake.Utinni.WasteRun.RUT_CompProperties_ThroatCask">
+        <doseRadius>14</doseRadius>
+        <toxicFactor>6</toxicFactor>
+        <shieldedDoseFactor>0.35</shieldedDoseFactor>
+        <faultIntervalTicks>60000</faultIntervalTicks>
+        <moodRadius>15</moodRadius>
+        <dieOffRadius>15</dieOffRadius>
+        <dieOffChancePerRare>0.05</dieOffChancePerRare>
+        <burstRadius>7</burstRadius>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThoughtDef>
+    <defName>RUT_ThroatCaskNear</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>0.3</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>something wrong nearby</label>
+        <description>The air tastes of metal. Something here is badly wrong.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+      <li>
+        <label>the world is ending nearby</label>
+        <description>Everything near that cask is dying. We are next.</description>
+        <baseMoodEffect>-9</baseMoodEffect>
+      </li>
+      <li>
+        <label>slow armageddon</label>
+        <description>It has been killing this place for days, and nobody will move it.</description>
+        <baseMoodEffect>-15</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

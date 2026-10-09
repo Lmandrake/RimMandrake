@@ -28,6 +28,7 @@
     <Compile Include="WasteRunSettings.cs" />
     <Compile Include="WasteRunDisposal.cs" />
     <Compile Include="WasteRunProof.cs" />
+    <Compile Include="ThroatCask.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
