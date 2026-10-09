@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_JoiningWater.xml               mandrake.rut.rites - GELATINOUSSLIME_JOINING_WATER_STANDALONE_1
+
+  The Joining Water, Oomo's fifth found rite ("the cap"): the clan stands in a ring of hand-prints pressed into hardened slime,
+  each holding a handful of raw slime, and joins hands. One person's lasting hurts are set down, and the rest of the ring takes a
+  little of each, weakly and for a while. "The uncomfortable truth that we are all connected, not so unlike the slime."
+  Owner, typed 2026-10-02; ruled 2026-10-08 that it STANDS ALONE: a self-contained found rite at the Slime, no quest chain.
+  Design: design/Jawa/worldbuilding/biomes/gelatinousslime_bedazzle_review_2026-10-02.md section 6/8; register
+  design/Jawa/salvation_rites_2026-10-01.md B16. The god is Oomo (question card, 2026-10-02 14:44 PDT), and the hurt-spreading
+  is a power, ruled an exception to the register's cohesion-only rule.
+
+  XML only. Every worker is the RM tier's engine in mandrake.rm.gelatinousslime (Source/JoiningWater.cs), which never names a faith;
+  the faith is data here, the same split as RUT_NineFaults.xml. Gates: mandrake.rm.gelatinousslime and Ideology.
+  Not wired into The Salvation's ideoligion here: adding the precept to the campaign ideo is a .rid / save step.
+  All numbers PROVISIONAL.
+-->
+<Defs>
+
+  <ThoughtDef MayRequire="mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology">
+    <defName>RUT_WeHeldTheWater</defName>
+    <thoughtClass>Thought_AttendedRitual</thoughtClass>
+    <durationDays>6</durationDays>
+    <stackLimit>3</stackLimit>
+    <stages>
+      <li>
+        <label>we held the water</label>
+        <description>We stood in the ring with the slime in our hands, and for a while there was no telling which of us was which. Nobody carried it alone.</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <PreceptDef MayRequire="mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology">
+    <defName>RUT_Ritual_JoiningWater</defName>
+    <label>Joining Water</label>
+    <description>We are all connected, not so unlike the slime. Worshippers stand in a ring of hand-prints on the Slime, each holding a handful of it, and join hands. What one of us carries for good, all of us carry a little, for a while.</description>
+    <issue>Ritual</issue>
+    <impact>Medium</impact>
+    <iconPath>UI/Icons/Rituals/RitualScarification</iconPath>
+    <preceptClass>Precept_Ritual</preceptClass>
+    <ritualPatternBase>RUT_JoiningWaterPattern</ritualPatternBase>
+    <allowDuplicates>false</allowDuplicates>
+    <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+    <canGenerateAsSpecialPrecept>false</canGenerateAsSpecialPrecept>
+    <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+    <notifyPlayerOnOpportunity>false</notifyPlayerOnOpportunity>
+  </PreceptDef>
+
+  <RitualPatternDef MayRequire="mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology">
+    <defName>RUT_JoiningWaterPattern</defName>
+    <ritualBehavior>RUT_JoiningWaterBehavior</ritualBehavior>
+    <ritualObligationTargetFilter>RUT_SlimeHandRing</ritualObligationTargetFilter>
+    <ritualOutcomeEffect>RUT_JoiningWaterOutcome</ritualOutcomeEffect>
+    <canStartAnytime>true</canStartAnytime>
+    <alwaysStartAnytime>true</alwaysStartAnytime>
+    <shortDescOverride>Joining Water</shortDescOverride>
+    <descOverride>Worshippers join hands in a ring of hand-prints on the Slime, each holding some of it, and one person's lasting hurts are shared out among them as weak, passing ones.</descOverride>
+    <ritualExplanation>Hold it at a ring of hand-prints pressed into hardened slime. At least two people must join. The person carrying the most lasting hurt (scars and chronic conditions; a missing part cannot be shared) sets down a share of each, and everyone else takes a little for a while. Everyone is standing on the Slime, so it is reading them the whole time.</ritualExplanation>
+  </RitualPatternDef>
+
+  <RitualObligationTargetFilterDef MayRequire="mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology">
+    <defName>RUT_SlimeHandRing</defName>
+    <workerClass>RimMandrake.GelatinousSlime.RM_RitualObligationTargetWorker_SlimeHandRing</workerClass>
+  </RitualObligationTargetFilterDef>
+
+  <RitualBehaviorDef MayRequire="mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology">
+    <defName>RUT_JoiningWaterBehavior</defName>
+    <durationTicks>2000</durationTicks>
+    <spectatorsLabel>Joined hands</spectatorsLabel>
+    <spectatorGerund>join hands</spectatorGerund>
+    <stages>
+      <li>
+        <defaultDuty>Spectate</defaultDuty>
+        <essential>True</essential>
+        <endTriggers>
+          <li Class="StageEndTrigger_DurationPercentage">
+            <percentage>1</percentage>
+          </li>
+        </endTriggers>
+      </li>
+    </stages>
+  </RitualBehaviorDef>
+
+  <RitualOutcomeEffectDef MayRequire="mandrake.rm.gelatinousslime,Ludeon.RimWorld.Ideology">
+    <defName>RUT_JoiningWaterOutcome</defName>
+    <description>One person's lasting hurts are shared out among the ring as weak, passing ones. A poor rite shares little; an excellent one shares most.</description>
+    <workerClass>RimMandrake.GelatinousSlime.RM_RitualOutcomeEffectWorker_JoiningWater</workerClass>
+    <startingQuality>0.3</startingQuality>
+    <comps>
+      <li Class="RitualOutcomeComp_ParticipantCount">
+        <label>joined hands</label>
+        <curve>
+          <points>
+            <li>(1, 0.0)</li>
+            <li>(4, 0.3)</li>
+            <li>(8, 0.5)</li>
+          </points>
+        </curve>
+      </li>
+    </comps>
+    <outcomeChances>
+      <li>
+        <chance>0.2</chance>
+        <label>Poor</label>
+        <description>The {0} went badly. The hands slipped and little was shared.</description>
+        <positivityIndex>-1</positivityIndex>
+      </li>
+      <li>
+        <chance>0.4</chance>
+        <label>Fair</label>
+        <description>The {0} held. The hurt was shared.</description>
+        <positivityIndex>1</positivityIndex>
+      </li>
+      <li>
+        <chance>0.3</chance>
+        <label>Good</label>
+        <description>The {0} held, and everyone felt it.</description>
+        <memory>RUT_WeHeldTheWater</memory>
+        <positivityIndex>2</positivityIndex>
+      </li>
+      <li>
+        <chance>0.1</chance>
+        <label>Excellent</label>
+        <description>The {0} will be told of. There was no telling which of us was which.</description>
+        <memory>RUT_WeHeldTheWater</memory>
+        <positivityIndex>3</positivityIndex>
+      </li>
+    </outcomeChances>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_JoiningWaterExtension">
+        <poorFraction>0.25</poorFraction>
+        <fairFraction>0.5</fairFraction>
+        <goodFraction>0.7</goodFraction>
+        <excellentFraction>0.9</excellentFraction>
+        <weakFactor>0.5</weakFactor>
+        <sharedBurden>RM_SharedBurden</sharedBurden>
+      </li>
+    </modExtensions>
+  </RitualOutcomeEffectDef>
+
+</Defs>

@@ -26,6 +26,7 @@ CASES = {
     "nodry": ["drying_biomes_tagged"],
     "nostep": ["visitor_genstep_registered"],
     "nofarmstep": ["farm_ruins_genstep_registered"],
+    "noringstep": ["joining_water_wired"],
     "defaultswrong": ["settings_defaults"],
     "noexpose": ["exposure_applies_on_slime"],
     "growfast": ["growth_rate_on_slime"],

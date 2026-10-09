@@ -21,7 +21,7 @@ DEFAULTS = {"rarityFactor": "1", "flavorEntryRecorded": "True", "flavorReadMarks
             "preferHigherPriorityArchive": "True", "titanoslimeReversible": "False",
             "titanoslimeMaxStage": "5", "titanoslimeSheds": "True",
             "slimificationEnabled": "True", "slimificationClockDays": "7", "fieldConversionEnabled": "True",
-            "fieldConversionRate": "1", "farmRuinsEnabled": "True", "visitorsEnabled": "True", "visitorArrivalRate": "1", "gappoChannels": "True", "fubbumHunts": "True", "dwommoFlies": "True", "pitSolvent": "True", "sealBreach": "True", "chunkBomb": "True", "chunkShelfDays": "1.5", "archiveResurrection": "True"}
+            "fieldConversionRate": "1", "farmRuinsEnabled": "True", "joiningWaterEnabled": "True", "visitorsEnabled": "True", "visitorArrivalRate": "1", "gappoChannels": "True", "fubbumHunts": "True", "dwommoFlies": "True", "pitSolvent": "True", "sealBreach": "True", "chunkBomb": "True", "chunkShelfDays": "1.5", "archiveResurrection": "True"}
 TITAN_STAGES = [0, 0, 1, 2, 1, 0, 2, 1, 0, 0, 1, 2, 0, 1, 0, 2]
 
 
@@ -150,7 +150,7 @@ class SlimeSim(object):
             if typ == "ThingDef" and el is not None and el.find("statBases/MaxFlightTime") is not None:
                 fl["statBases"] = {"MaxFlightTime": 0 if "noflight" in self.f else float(el.findtext("statBases/MaxFlightTime"))}
             if typ == "MapGeneratorDef":
-                fl["genSteps"] = ["TerrainGen"] + ([] if "nostep" in self.f else ["RM_SlimeVisitorSeed"]) + ([] if "nofarmstep" in self.f else ["RM_SlimeFarmRuins"])
+                fl["genSteps"] = ["TerrainGen"] + ([] if "nostep" in self.f else ["RM_SlimeVisitorSeed"]) + ([] if "nofarmstep" in self.f else ["RM_SlimeFarmRuins"]) + ([] if "noringstep" in self.f else ["RM_SlimeHandRing"])
             if typ.endswith("GeneArchiveDef"):
                 tg, rg = self.archive()
                 fl.update(priority=0, targetGenes=tg, riderGenes=rg)

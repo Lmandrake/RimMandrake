@@ -50,7 +50,7 @@ FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": Tru
           "preferHigherPriorityArchive": True, "titanoslimeReversible": False,
           "titanoslimeMaxStage": 5, "titanoslimeSheds": True,
           "slimificationEnabled": True, "slimificationClockDays": 7, "fieldConversionEnabled": True,
-          "fieldConversionRate": 1, "farmRuinsEnabled": True, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "pitSolvent": True, "sealBreach": True, "chunkBomb": True, "chunkShelfDays": 1.5, "archiveResurrection": True}
+          "fieldConversionRate": 1, "farmRuinsEnabled": True, "joiningWaterEnabled": True, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "pitSolvent": True, "sealBreach": True, "chunkBomb": True, "chunkShelfDays": 1.5, "archiveResurrection": True}
 suite.toggles = list(FIELDS)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -650,6 +650,21 @@ def defs_static(t):
             if nf2:
                 _fail("farm ruin ingredients missing live: %s" % nf2)
 
+    with _comp(t, "joining_water_wired", toggle="joiningWaterEnabled"):
+        if t._guard():
+            # GELATINOUSSLIME_JOINING_WATER_STANDALONE_1: the ring's GenStep is registered, and the ring, the weak hediff and the
+            # rite's own defs (when the campaign layer is loaded) resolve. The rite's quality/spread needs a ritual, so it is UNMEASURED here.
+            rows, nf = _defs(t, ["MapGeneratorDef/Base_Player"], fields="genSteps")
+            row = rows.get("MapGeneratorDef/Base_Player")
+            gs = (row.get("fields") or {}).get("genSteps") if row else None
+            if not isinstance(gs, list):
+                _unmeasured(t, "genSteps not serialisable")
+            if "RM_SlimeHandRing" not in gs:
+                _fail("RM_SlimeHandRing not in Base_Player.genSteps (MapGen patch matched nothing)")
+            rows2, nf2 = _defs(t, ["ThingDef/RM_SlimeHandRing", "HediffDef/RM_SharedBurden"])
+            if nf2:
+                _fail("Joining Water defs missing live: %s" % nf2)
+
     with _comp(t, "gene_archive_resolves", toggle="preferHigherPriorityArchive"):
         if t._guard():
             rows, nf = _defs(t, ["RimMandrake.GelatinousSlime.GeneArchiveDef/RM_Archive_Default"], fields="priority,targetGenes,riderGenes")
@@ -1183,5 +1198,5 @@ def settings_flip(t):
                        ("titanoslimeReversible", True), ("preferHigherPriorityArchive", False),
                        ("slimificationEnabled", False), ("slimificationClockDays", 2),
                        ("fieldConversionEnabled", False), ("fieldConversionRate", 4),
-                       ("farmRuinsEnabled", False), ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("pitSolvent", False), ("sealBreach", False), ("chunkBomb", False), ("chunkShelfDays", 3), ("archiveResurrection", False)):
+                       ("farmRuinsEnabled", False), ("joiningWaterEnabled", False), ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("pitSolvent", False), ("sealBreach", False), ("chunkBomb", False), ("chunkShelfDays", 3), ("archiveResurrection", False)):
         _flip(t, "%s_setting_flips" % field, field, off)
