@@ -13,7 +13,8 @@ All 2026-10-03, recorded on the item (`rimflow show MINERALS_WHERE_THEY_BELONG_1
   future normalization process. It should not be binary yes/no presence but some unitful definition of
   abundance that can be reasoned about by the user to intelligently set it."* He also invited being
   talked out of absorbing other mineral/gem mods.
-- Plasteel is renamed **durasteel**; the three donor durasteels retire into it (card).
+- Plasteel stays **plasteel**, its own canon material (owner typed 2026-10-09; it reversed the 2026-10-03
+  card that renamed it durasteel). Durasteel's one def and the donors' fate: `canon_materials_design_2026-10-09.md` §3.0.
 - TYPED: **duranium and doonium are made**: rare, salvage- and trader-available, made offworld,
   REQUIRED to build large ship and machine types (like factories).
 - Deep drill: **iron plus home-biome deposits only** (card).
@@ -113,7 +114,7 @@ Mineral-relevant hits, plus every mod the def dump shows adding a mineral:
 | LK Mineable Resources Outer Rim (`leutiankane.mineablesor`) | yes | 4 veins of Outer Rim beskar/durasteel/hypertech | C1, 4 XML files, no C# | none | **retire the mod** (canon metals are salvage-only; it has no other content) |
 | [ZAV] Glowstone (`zav.glowstoneforked`) | yes | glowstone vein, lights | C1/C3, XML only | none | **control** (no licence ⇒ cannot legally absorb anyway) |
 | Biomes! Fossils (`biomesteam.biomesfossils`) | yes | amber, fossils | C1/C3, 3 DLLs | CC BY(-?) per LICENSE.md | control |
-| Outer Rim - Core | yes | beskar, pure beskar, durasteel, tibanna, hypertech | C3 deep, extractors | — | control; durasteel retires into ours (ruling) |
+| Outer Rim - Core | yes | beskar, pure beskar, durasteel, tibanna, hypertech | C3 deep, extractors | — | control; its durasteel's fate is `canon_materials_design_2026-10-09.md` §3.0 |
 | Jawa Armoury Rebalance (ours) | yes | 10 KotOR materials | C1, C3 | ours | already ours; zero C1, set salvage/trade rows |
 | RimMandrake: Pyrinth (ours) | yes | pyrinth | gated C1, C3 | ours | **already absorbed** — the orange gem the owner named |
 | Vanilla Mining Outpost Patch | yes | adds modded ores to VOE mining outposts | XML | none | C7 consumer: registry row `outpost` |
@@ -129,7 +130,7 @@ rewrites those weights and filters those draws controls every material from ever
 mods added next year, the moment they get a CSV row. Absorbing a mod buys control of the *thing
 itself* (name, art, stats, recipes), which is only wanted for:
 
-1. materials we are renaming or merging (durasteel ← plasteel + three donors; duranium/doonium new);
+1. materials we are consolidating or adding (one durasteel from three donors; duranium/doonium new);
 1a. a small subset whose port retires a substantial integration burden, with licence provenance per
     file (candidate: Biomes! Fossils' amber/fossil seams, at the Flooded Canyon sitting);
 2. a donor whose only content is a leak (LK Mineable Outer Rim → simply removed from the list);
@@ -301,7 +302,7 @@ Stored as **sparse absolute overrides** (only the cells a player edited, as valu
 deltas — GPT 3.5), so a registry update still reaches every cell he did not touch. Existing maps keep
 their placed deposits; changed vein settings apply to new maps, deep/quarry pools rebuild live.
 
-**Save compatibility.** Old defNames (plasteel, donor durasteels, donor beskars) are kept loadable until
+**Save compatibility.** Old defNames (donor durasteels, donor beskars) are kept loadable until
 stack, stuff and deep-grid migration is done; nothing is deleted in the first build.
 
 ## 8. Normalization process fit
@@ -373,5 +374,5 @@ behaviour on a biome with no quarryable minerals (recommended: local rock chunks
 | R3 | surface adapter: per-biome GenStep with stochastic lump counts + rock diagnostic | M |
 | R4 | deep adapter (prefix) and quarry adapter (transpiler) | S each |
 | R5 | MineralsFramework, meteorite, mineral-rich mutator, long-range scanner, VOE outpost adapters | M |
-| R6 | durasteel rename + donor merge; duranium/doonium defs and the large-build requirement | M |
+| R6 | durasteel donor consolidation (plasteel untouched); duranium/doonium defs and the large-build requirement | M |
 | R7 | first functional script: stated vs placed EPM across seeds per biome; deep/quarry draws never leave the local pool; master toggle restores vanilla | S |

@@ -305,14 +305,12 @@ on the starting map's region. UNMEASURED today; W6 must land with or before W2.
   little of the "random outcrop" you called absurd.
 - (C) No natural gold or silver at all; salvage and trade only. Strongest flavour, harshest economy.
 
-**Q2. Plasteel's name, now that three "durasteel" materials already exist** (Outer Rim's, the
-KotOR alloy in our Armoury, and the Outer Rim mining ore).
-- **(A, recommended) Rename vanilla plasteel to "durasteel" and retire the three donor durasteels**
-  into it with conversion recipes. One material, a canon name, nothing to explain. Costs a
-  migration pass on any recipe that names the donor defs.
-- (B) Keep plasteel as plasteel; the donor durasteels stay as salvage curiosities. Least work;
-  two "super-metals" side by side.
-- (C) Leave everything as it is now and only stop the mining. No naming decision at all.
+**Q2. Plasteel and durasteel — RULED: plasteel stands alone.** The 2026-10-03 card answer (rename
+plasteel to durasteel, merge the donors into it) was **reversed by the owner, typed 2026-10-09**:
+*"Apparently Plasteel is already Star Wars canon, I didn't know that, so we should not equate it with any
+other Star Wars material."* Plasteel keeps its name and is its own canon material (never mined, per the
+2026-09-25 ruling); durasteel is a separate material. What the three donor durasteels become, and each
+material's job, is decided in `design/RimMandrake/canon_materials_design_2026-10-09.md`.
 
 **Q3. Duranium and doonium do not exist in any mod we load.** Make them?
 - **(A, recommended) No. Beskar is the one canon salvage metal**, found only in troves and wrecks.
