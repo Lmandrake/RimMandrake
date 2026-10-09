@@ -18,7 +18,7 @@ namespace RimMandrake.LuminousPigment
         static HarmonyBootstrap()
         {
             Harmony harmony = new Harmony("mandrake.rm.luminouspigment");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(harmony, Assembly.GetExecutingAssembly(), "RimMandrake.LuminousPigment");
         }
     }
 

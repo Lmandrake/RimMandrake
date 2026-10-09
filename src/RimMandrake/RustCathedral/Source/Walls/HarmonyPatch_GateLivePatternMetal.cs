@@ -20,7 +20,7 @@ namespace RimMandrake.RustCathedral.Walls
 	{
 		static RustCathedralWallsMod()
 		{
-			new Harmony("mandrake.rut.rustcathedralwalls").PatchAll();
+			RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rut.rustcathedralwalls"), typeof(RustCathedralWallsMod).Assembly, "RimMandrake.RustCathedral.Walls");
 		}
 	}
 

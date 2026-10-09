@@ -128,7 +128,7 @@ namespace RimMandrake.Scarlands
     [StaticConstructorOnStartup]
     public static class RM_ChotrixPatches
     {
-        static RM_ChotrixPatches() { new Harmony("mandrake.rm.warscar.chotrix").PatchAll(typeof(RM_ChotrixPatches).Assembly); }
+        static RM_ChotrixPatches() { RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rm.warscar.chotrix"), typeof(RM_ChotrixPatches).Assembly, "RimMandrake.Scarlands"); }
     }
 
     // Hunts lone small animals, calves of the listed species, and lone pawns at night. Never a group of two or more.
