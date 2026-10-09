@@ -32,3 +32,7 @@ Current.Game.Gravship.Things; kept links survive on both ends; grounded spans co
 CompAerialAnchor.PostSwapMap (new): after landing, prune dead links, Reseed, redraw. Setting: AerialSettings.keepWiresOnGravship
 (default on). Selftests: AerialSelfTest.GravshipLaunch, 6 checks. winbuild OK; selftest_gimmesomeslack 824/824.
 Live criterion owed: one joint flight with both masts aboard -> span lands strung and powered; one mast left behind -> coiled + message.
+
+## Step 4-6
+GS-1 published 9401f7a73; rimflow GRAVSHIP_WIRES_SURVIVE_LAUNCH_1 implemented -> built (owes A2 L1 load check, A3 L3 joint flight).
+HOLDER_SAFETY_LAUNCH_1: no build (vanilla records held colonists lost with a letter). Ledger note with symbols; design doc rows DI-3/X-2 corrected; closed.
