@@ -147,19 +147,52 @@
       "carriedFrom": "RSW_Durrok",
       "decidedAt": "2026-10-06T01:10:57.258Z",
       "decision": "A",
-      "note": "Change the description to match the image, get inspired."
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:11:14.274Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Change the description to match the image, get inspired.",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ]
     },
     "RM_Dustflutter": {
       "at": "2026-10-06T01:11:49.945Z",
       "decision": "A",
-      "note": "Make this 0.3 cells wide and in great numbers",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:11:49.945Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Make this 0.3 cells wide and in great numbers",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Fuzz": {
       "at": "2026-10-06T01:29:33.443Z",
       "decidedAt": "2026-10-06T01:29:30.889Z",
       "decision": "B",
-      "note": "variations",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:29:33.443Z",
+          "followed_by": [
+            "leaningscrub_fuzz_b_v1_single",
+            "leaningscrub_fuzz_c_v1_single",
+            "ls3_fuzz_a_v1",
+            "ls3_fuzz_b_v1"
+          ],
+          "note": "variations",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Fuzzrunner": {
@@ -225,7 +258,17 @@
       "at": "2026-10-08T15:06:56.786Z",
       "decidedAt": "2026-10-08T15:06:38.262Z",
       "decision": "J",
-      "note": "Keep all of these for now, Venomvine is a mechanic as well as graphics, so we will need to reason about this during Bench settings. Nice job.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T15:06:56.786Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Keep all of these for now, Venomvine is a mechanic as well as graphics, so we will need to reason about this during Bench settings. Nice job.",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "cef3eb92543ad01b9925c3487416f88ceb78e9724008dbdb2fb6f9fd9bc61a92",
@@ -259,7 +302,17 @@
       "carriedFrom": "RSW_Mullgoth",
       "decidedAt": "2026-10-06T01:20:56.151Z",
       "decision": "A",
-      "note": "Redo description to match image",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:21:09.534Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Redo description to match image",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "purge": [
         "c61acfc2341494de1a3dba6431fe31e787f03f236e7ff5e7ee855a5dbfb8b534",
         "745882d99a2216e009a242cbc387523a70e11dabdb488d10b2115b8f6199f6c7",
@@ -283,7 +336,22 @@
       "at": "2026-10-08T05:50:01.597Z",
       "decidedAt": "2026-10-08T05:50:01.597Z",
       "decision": "redo",
-      "note": "STOP USING THIS GRAPHIC AND MAKE VENOMVINE!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:50:01.597Z",
+          "followed_by": [
+            "0vv_quench_venomvine_spent_v1",
+            "0vv_quench_venomvine_spent_v2",
+            "0vv_quench_venomvine_v1",
+            "0vv_quench_venomvine_v2",
+            "0vv_quench_venomvine_v3",
+            "0vv_quench_venomvine_v4"
+          ],
+          "note": "STOP USING THIS GRAPHIC AND MAKE VENOMVINE!",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [],
       "variantsDefault": true
@@ -292,7 +360,22 @@
       "at": "2026-10-08T05:50:10.175Z",
       "decidedAt": "2026-10-08T05:50:03.914Z",
       "decision": "redo",
-      "note": "STOP USING THIS GRAPHIC AND MAKE VENOMVINE!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:50:10.175Z",
+          "followed_by": [
+            "0vv_rearing_venomvine_reared_v1",
+            "0vv_rearing_venomvine_reared_v2",
+            "0vv_rearing_venomvine_v1",
+            "0vv_rearing_venomvine_v2",
+            "0vv_rearing_venomvine_v3",
+            "0vv_rearing_venomvine_v4"
+          ],
+          "note": "STOP USING THIS GRAPHIC AND MAKE VENOMVINE!",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [],
       "variantsDefault": true
@@ -324,7 +407,17 @@
       "carriedFrom": "RSW_Skorra",
       "decidedAt": "2026-10-06T01:24:39.849Z",
       "decision": "hold",
-      "note": "Just cut this, not needed"
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:24:44.300Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "Just cut this, not needed",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ]
     },
     "RM_Surrik": {
       "decision": "A",
@@ -334,7 +427,20 @@
     "RM_Tanglefuzz": {
       "at": "2026-10-06T01:29:26.392Z",
       "decision": "A",
-      "note": "variations",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:29:26.392Z",
+          "followed_by": [
+            "leaningscrub_tanglefuzz_b_v1_single",
+            "leaningscrub_tanglefuzz_c_v1_single",
+            "ls3_tanglefuzz_a_v1",
+            "ls3_tanglefuzz_b_v1"
+          ],
+          "note": "variations",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Thornhold": {
@@ -367,14 +473,41 @@
     "RM_TwitcherVenomvine": {
       "at": "2026-10-06T01:29:37.337Z",
       "decision": "A",
-      "note": "variations",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:29:37.337Z",
+          "followed_by": [
+            "0vv_twitcher_venomvine_v1",
+            "0vv_twitcher_venomvine_v2",
+            "leaningscrub_twitchervenomvine_b_v1_single",
+            "leaningscrub_twitchervenomvine_c_v1_single"
+          ],
+          "note": "variations",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_VenomvineThicket": {
       "at": "2026-10-06T01:29:52.003Z",
       "decidedAt": "2026-10-06T01:29:44.849Z",
       "decision": "B",
-      "note": "variations",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:29:52.003Z",
+          "followed_by": [
+            "0vv_thicket_venomvine_v1",
+            "0vv_thicket_venomvine_v2",
+            "0vv_thicket_venomvine_v3",
+            "leaningscrub_venomvinethicket_b_v1_single",
+            "leaningscrub_venomvinethicket_c_v1_single"
+          ],
+          "note": "variations",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "picks": {
         "_byname": "C"
       },
@@ -409,21 +542,66 @@
     "RM_Whipfuzz": {
       "at": "2026-10-06T01:29:56.386Z",
       "decision": "A",
-      "note": "variations",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:29:56.386Z",
+          "followed_by": [
+            "leaningscrub_whipfuzz_b_v1_single",
+            "leaningscrub_whipfuzz_c_v1_single",
+            "ls3_whipfuzz_a_v1",
+            "ls3_whipfuzz_b_v1"
+          ],
+          "note": "variations",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_WildHealroot": {
       "at": "2026-10-06T01:30:06.411Z",
       "decidedAt": "2026-10-06T01:30:01.776Z",
       "decision": "redo",
-      "note": "more realistic and special, variations",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:30:06.411Z",
+          "followed_by": [
+            "leaningscrub_wildhealroot_a_v1_single",
+            "leaningscrub_wildhealroot_b_v1_single",
+            "leaningscrub_wildhealroot_c_v1_single",
+            "ls3_wildhealroot_a_v1",
+            "ls3_wildhealroot_b_v1"
+          ],
+          "note": "more realistic and special, variations",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Zellik": {
       "at": "2026-10-08T15:05:22.019Z",
       "decidedAt": "2026-10-08T05:48:20.689Z",
       "decision": "B",
-      "note": "Make this more alien",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T15:05:22.019Z",
+          "followed_by": [
+            "leaningscrub_zellik_v1_east",
+            "leaningscrub_zellik_v1_north",
+            "leaningscrub_zellik_v1_south",
+            "regen_ls2_x_zellik_v2_east",
+            "regen_ls2_x_zellik_v2_north",
+            "regen_ls2_x_zellik_v2_south",
+            "regen_ls2_x_zellik_v3_east",
+            "regen_ls2_x_zellik_v3_north",
+            "regen_ls2_x_zellik_v3_south"
+          ],
+          "note": "Make this more alien",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "cb02dbceb61521d6136c71bb965690eba9564a5045a45e59f04f3270aaa0117a",
@@ -531,7 +709,19 @@
       "at": "2026-10-06T01:08:25.822Z",
       "decidedAt": "2026-10-06T01:07:31.296Z",
       "decision": "redo",
-      "note": "Make it a reverse teardrop-shape with a small angry-looking pair of eyes at the tip, covered in odd quills like a pale green porcupine. Tiny feet protrude to force it forward though the sand. Alien. Change description.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:08:25.822Z",
+          "followed_by": [
+            "leaningscrub_chikka_v1_east",
+            "leaningscrub_chikka_v1_north",
+            "leaningscrub_chikka_v1_south"
+          ],
+          "note": "Make it a reverse teardrop-shape with a small angry-looking pair of eyes at the tip, covered in odd quills like a pale green porcupine. Tiny feet protrude to force it forward though the sand. Alien. Change description.",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "1c241278983478bae22d75c3174c1e6d71fbfb04cf6d9f68ade92305f677df02",
@@ -544,7 +734,22 @@
       "at": "2026-10-08T05:38:41.153Z",
       "decidedAt": "2026-10-08T05:38:35.714Z",
       "decision": "redo",
-      "note": "D is close, but please make it less cute now",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:38:41.153Z",
+          "followed_by": [
+            "regen_ls2_canon_convor_v2_east",
+            "regen_ls2_canon_convor_v2_north",
+            "regen_ls2_canon_convor_v2_south",
+            "regen_ls2_canon_convor_v3_east",
+            "regen_ls2_canon_convor_v3_north",
+            "regen_ls2_canon_convor_v3_south"
+          ],
+          "note": "D is close, but please make it less cute now",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "picks": {
         "swanimals/Convor/Convor_f": "C"
       },
@@ -586,7 +791,17 @@
       "at": "2026-10-06T01:11:14.274Z",
       "decidedAt": "2026-10-06T01:10:57.258Z",
       "decision": "B",
-      "note": "Change the description to match the image, get inspired.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:11:14.274Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Change the description to match the image, get inspired.",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RSW_Eopie": {
@@ -729,7 +944,18 @@
       "at": "2026-10-08T15:00:46.289Z",
       "decidedAt": "2026-10-08T05:40:42.426Z",
       "decision": "E",
-      "note": "Follow canon PRECISELY, look at the parent image. Make North and South now.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T15:00:46.289Z",
+          "followed_by": [
+            "regen_ls2_canon_grank_v1_north",
+            "regen_ls2_canon_grank_v1_south"
+          ],
+          "note": "Follow canon PRECISELY, look at the parent image. Make North and South now.",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "22ad3baae555ac68a29ef6fec9d4c65c3a98c3a51a46d74b3429037fd6842e4c",
@@ -776,7 +1002,17 @@
       "at": "2026-10-06T01:16:28.362Z",
       "decidedAt": "2026-10-06T01:16:25.575Z",
       "decision": "hold",
-      "note": "no longer needed",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:16:28.362Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "no longer needed",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RSW_Iriaz": {
@@ -835,7 +1071,17 @@
       "at": "2026-10-08T15:01:28.711Z",
       "decidedAt": "2026-10-08T05:42:01.751Z",
       "decision": "J",
-      "note": "Should be only 0.3 cell",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T15:01:28.711Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Should be only 0.3 cell",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "picks": {
         "swanimals/Kreetle/Kreetle_j": "H"
       },
@@ -868,7 +1114,22 @@
       "at": "2026-10-08T05:42:47.826Z",
       "decidedAt": "2026-10-06T01:19:05.368Z",
       "decision": "redo",
-      "note": "Almost there, but you missed the canon bone plate on top of its head mounted to its horns. YOU GOTTA GET THE HEAD BONE ARRANGEMENT! A SOLID BONE PLATE THING!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:42:47.826Z",
+          "followed_by": [
+            "regen_ls2_canon_kybuck_v2_east",
+            "regen_ls2_canon_kybuck_v2_north",
+            "regen_ls2_canon_kybuck_v2_south",
+            "regen_ls2_canon_kybuck_v3_east",
+            "regen_ls2_canon_kybuck_v3_north",
+            "regen_ls2_canon_kybuck_v3_south"
+          ],
+          "note": "Almost there, but you missed the canon bone plate on top of its head mounted to its horns. YOU GOTTA GET THE HEAD BONE ARRANGEMENT! A SOLID BONE PLATE THING!",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "0129197a5cb8c08bb4dd95f809caf84d5de4c3cdbb0350a4f2c74a1bb559fbde",
@@ -914,7 +1175,18 @@
       "at": "2026-10-08T15:01:52.283Z",
       "decidedAt": "2026-10-08T05:43:03.673Z",
       "decision": "D",
-      "note": "Now just north and south. Less cartoonish please",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T15:01:52.283Z",
+          "followed_by": [
+            "regen_ls2_canon_lothcat_v1_north",
+            "regen_ls2_canon_lothcat_v1_south"
+          ],
+          "note": "Now just north and south. Less cartoonish please",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "picks": {
         "_byname": "D",
         "swanimals/Lothcat/Lothcat_m": "B"
@@ -995,7 +1267,17 @@
       "at": "2026-10-06T01:21:09.534Z",
       "decidedAt": "2026-10-06T01:20:56.151Z",
       "decision": "B",
-      "note": "Redo description to match image",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:21:09.534Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Redo description to match image",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "c61acfc2341494de1a3dba6431fe31e787f03f236e7ff5e7ee855a5dbfb8b534",
@@ -1056,7 +1338,18 @@
       "at": "2026-10-08T15:07:44.617Z",
       "decidedAt": "2026-10-06T01:30:14.544Z",
       "decision": "redo",
-      "note": "Ok, now make a realistic version based on this, two variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T15:07:44.617Z",
+          "followed_by": [
+            "ls3_nysyllin_a_v1",
+            "ls3_nysyllin_b_v1"
+          ],
+          "note": "Ok, now make a realistic version based on this, two variants",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "3105b6b801ac592bf39c17c086011c3241ccd24c33cc1388eb4f75723f9cd5c4"
@@ -1099,7 +1392,19 @@
       "at": "2026-10-08T15:03:11.387Z",
       "decidedAt": "2026-10-08T05:44:33.839Z",
       "decision": "C",
-      "note": "Please make a more realistic variant now based on this version.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T15:03:11.387Z",
+          "followed_by": [
+            "ls3_pufferpig_v1_east",
+            "ls3_pufferpig_v1_north",
+            "ls3_pufferpig_v1_south"
+          ],
+          "note": "Please make a more realistic variant now based on this version.",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "6d29685ba9396ed84f084d26f1ad717886c40ac4e6f488657ee6dee08221e28e",
@@ -1119,7 +1424,19 @@
       "at": "2026-10-08T15:03:34.063Z",
       "decidedAt": "2026-10-08T05:44:54.421Z",
       "decision": "C",
-      "note": "Please make a more realistic version based on this version to consider",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T15:03:34.063Z",
+          "followed_by": [
+            "ls3_qormot_v1_east",
+            "ls3_qormot_v1_north",
+            "ls3_qormot_v1_south"
+          ],
+          "note": "Please make a more realistic version based on this version to consider",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "6405d03dca9bfef8db707764618836625bf32c91a5d0204049dd088b167cbbd8",
@@ -1139,7 +1456,19 @@
       "at": "2026-10-08T15:03:55.500Z",
       "decidedAt": "2026-10-06T01:23:01.702Z",
       "decision": "B",
-      "note": "Please make one variant based on this version and canon to consider",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T15:03:55.500Z",
+          "followed_by": [
+            "ls3_ronto_v1_east",
+            "ls3_ronto_v1_north",
+            "ls3_ronto_v1_south"
+          ],
+          "note": "Please make one variant based on this version and canon to consider",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "9bb6a0c62dc1418e776597fe8991b82624badc6a18704e167b276f0c48c279dc",
@@ -1167,7 +1496,22 @@
       "at": "2026-10-08T05:45:52.535Z",
       "decidedAt": "2026-10-08T05:45:34.274Z",
       "decision": "redo",
-      "note": "Redo to canon very carefully.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:45:52.535Z",
+          "followed_by": [
+            "regen_ls2_x_scrapnestbird_v2_east",
+            "regen_ls2_x_scrapnestbird_v2_north",
+            "regen_ls2_x_scrapnestbird_v2_south",
+            "regen_ls2_x_scrapnestbird_v3_east",
+            "regen_ls2_x_scrapnestbird_v3_north",
+            "regen_ls2_x_scrapnestbird_v3_south"
+          ],
+          "note": "Redo to canon very carefully.",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -1232,7 +1576,39 @@
       "at": "2026-10-08T05:46:25.383Z",
       "decidedAt": "2026-10-08T05:46:25.383Z",
       "decision": "B",
-      "note": "Yes, now do North and South",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:46:25.383Z",
+          "followed_by": [
+            "sketto_fly_master_v3_east",
+            "sketto_fly_master_v3_north",
+            "sketto_fly_master_v3_south",
+            "sketto_fly_plate_v1_north",
+            "sketto_fly_plate_v1_south",
+            "sketto_fly_plate_v2_north",
+            "sketto_fly_wing2_v1_east",
+            "sketto_fly_wing2_v1_north",
+            "sketto_fly_wing3_v1_north",
+            "leaningscrub_sketto_v2_north",
+            "leaningscrub_sketto_v2_south",
+            "sketto_fly_master_v1_east",
+            "sketto_fly_master_v1_north",
+            "sketto_fly_master_v1_south",
+            "sketto_fly_master_v2_east",
+            "sketto_fly_master_v2_north",
+            "sketto_fly_master_v2_south",
+            "sketto_fly_plate_v1_east",
+            "sketto_fly_plate_v2_east",
+            "sketto_fly_plate_v2_south",
+            "sketto_fly_wing2_v1_south",
+            "sketto_fly_wing3_v1_east",
+            "sketto_fly_wing3_v1_south"
+          ],
+          "note": "Yes, now do North and South",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "756bae622ab3d1be35ee73c681cd7474cee83877dc39b44e0ebb88ccf5bd747d",
@@ -1252,7 +1628,17 @@
       "at": "2026-10-06T01:24:44.300Z",
       "decidedAt": "2026-10-06T01:24:39.849Z",
       "decision": "hold",
-      "note": "Just cut this, not needed",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:24:44.300Z",
+          "followed_by": [
+            "cut"
+          ],
+          "note": "Just cut this, not needed",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RSW_Strill": {
@@ -1279,14 +1665,42 @@
     "RSW_TunnelSnake": {
       "at": "2026-10-06T01:27:57.861Z",
       "decision": "A",
-      "note": "RimMandrake tier",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T01:27:57.861Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "RimMandrake tier",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RSW_Urusai": {
       "at": "2026-10-08T15:04:53.980Z",
       "decidedAt": "2026-10-08T05:47:02.044Z",
       "decision": "C",
-      "note": "Redo to canon imagery",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T15:04:53.980Z",
+          "followed_by": [
+            "leaningscrub_urusai_v1_east",
+            "leaningscrub_urusai_v1_north",
+            "leaningscrub_urusai_v1_south",
+            "regen_ls2_canon_urusai_v2_east",
+            "regen_ls2_canon_urusai_v2_north",
+            "regen_ls2_canon_urusai_v2_south",
+            "regen_ls2_canon_urusai_v3_east",
+            "regen_ls2_canon_urusai_v3_north",
+            "regen_ls2_canon_urusai_v3_south"
+          ],
+          "note": "Redo to canon imagery",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "6a747e6205d11b738bc84058531b6485a7f1c27c4fe34e03b9cdaee3a01d072e",
@@ -1357,7 +1771,30 @@
       "at": "2026-10-08T05:48:02.009Z",
       "decidedAt": "2026-10-08T05:47:46.665Z",
       "decision": "F",
-      "note": "Good! Now north, south, and flying frames",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-08T05:48:02.009Z",
+          "followed_by": [
+            "regen_ls2_canon_whisperbird_flying_1_v1_east",
+            "regen_ls2_canon_whisperbird_flying_1_v1_north",
+            "regen_ls2_canon_whisperbird_flying_1_v1_south",
+            "regen_ls2_canon_whisperbird_flying_2_v1_east",
+            "regen_ls2_canon_whisperbird_flying_2_v1_north",
+            "regen_ls2_canon_whisperbird_flying_2_v1_south",
+            "regen_ls2_canon_whisperbird_flying_3_v1_east",
+            "regen_ls2_canon_whisperbird_flying_3_v1_north",
+            "regen_ls2_canon_whisperbird_flying_3_v1_south",
+            "regen_ls2_canon_whisperbird_flying_4_v1_east",
+            "regen_ls2_canon_whisperbird_flying_4_v1_north",
+            "regen_ls2_canon_whisperbird_flying_4_v1_south",
+            "regen_ls2_canon_whisperbird_v1_north",
+            "regen_ls2_canon_whisperbird_v1_south"
+          ],
+          "note": "Good! Now north, south, and flying frames",
+          "when": "2026-10-09T01:15:06-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "05d180675dea6c60656c6a44da57d97c2b8e915aaf6c938e9fa30f3f76977f16",
