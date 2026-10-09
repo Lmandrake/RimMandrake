@@ -61,6 +61,8 @@ An in-universe epigraph, from an explorer: *"The Aqualish people are not fond of
   Anthropologists trace the rage streak to the species' earliest evolution.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The comic-style canon infobox illustration (`wookieepedia_infobox.jpg`, File:Aqualish.png) was deleted and replaced by live-action stills of the same Ponda Baba look (`wookieepedia_ponda_baba_rogueone.jpg`) and a second *Book of Boba Fett* individual (`wookieepedia_garfalaquox_bobf.png`). The Legends Quara/Aquala line art is kept ONLY as animated/negative reference for the Aquala flipper anatomy, which no realistic image shows.
 
 🔴 **The canon infobox line "identifiable by round black eyes and fur" undersells one thing
 and overstates another. The eyes are right and are the strongest single read. The "fur" is
@@ -101,18 +103,13 @@ armed):
 - Rough woven brown-tan robes; background individuals in orange. Holds a blaster
   two-handed, competently.
 
-**`wookieepedia_infobox.jpg`** — the canon infobox illustration (Ponda Baba archetype;
-comic-style ink and colour):
-- **Dark olive-grey to near-black skin.** This is the "Black"/"Gray" end of the colour list.
-- **A dense, bushy, dark full beard covering the entire lower face, cheeks and jaw and
-  spilling onto the chest** — this *is* the "fur around their cheeks" read, and it is
-  substantial: a facial mane, not sideburns. **It disagrees with the live-action piece**,
-  which has bare cheeks and a side mane. Both are canon; the *arrangement* of fur is
-  therefore individual/variant, while the bald crown and the eyes are not.
-- **Two thick pale-pink tusks** emerging out of the dark beard — maximum value contrast,
-  which is what makes them read.
-- Two eyes. Gloved hands (so digit count is not evidence here). Red jacket, dark trousers,
-  boots. Stocky, upright, human-proportioned build.
+**`wookieepedia_ponda_baba_rogueone.jpg`** — live-action Ponda Baba (with Dr. Evazan) in *Rogue One*, the classic *A New Hope* mask:
+- **Dark slate-grey to near-black skin**, smooth bald domed crown — the "Black"/"Gray" end of the colour list.
+- **A dense, dark, shaggy beard covering the cheeks, jaw and lower face** — this *is* the "fur around their cheeks" read. **It disagrees with the *Book of Boba Fett* individuals**, which have bare cheeks and a side mane. Both are canon live-action; the *arrangement* of fur is individual/variant, while the bald crown and the eyes are not.
+- **Two thick, pale fleshy-pink tusks** hanging out of the dark beard — maximum value contrast. Glossy black domed eyes with a pale rim.
+- Red-orange jacket over a white shirt, ordinary human build. (The deleted infobox illustration showed the same design; nothing it showed is lost.)
+
+**`wookieepedia_garfalaquox_bobf.png`** — live-action *Book of Boba Fett* "Chapter 4" Aqualish at a dinner (Garfalaquox scene): pale grey-tan wrinkled skin, glossy black eyes, long pale ochre joined tusks, a pale side mane, and a second Aqualish behind — corroborates the crime-family palette and mane in a second shot.
 
 **`wookieepedia_politicians.jpg` — the four-eyed Ualaq, and a strong negative on "fur."**
 Live-action Separatist/Republic Aqualish senators:
@@ -139,8 +136,8 @@ plus small lower pair), **a full ginger-tan cheek-and-jaw mane**, pale cream tus
 **green five-fingered hands**. Stocky and broad-shouldered. Legends, and its saturated green
 is the least corroborated colour across the canon set — treat the green as one book's take.
 
-**`wookieepedia_quara_and_aquala_legends.jpg` — the one image that settles the subspecies
-hands.** Legends line art, a male **Quara** (left) beside a female **Aquala** (right):
+**`wookieepedia_quara_and_aquala_legends.jpg` — KEPT AS ANIMATED/NEGATIVE REFERENCE, anatomy only: the one image that settles the subspecies
+hands.** Legends line art (not a style target), a male **Quara** (left) beside a female **Aquala** (right):
 - **Quara**: stocky, jacketed and booted, bald crown, dark cheek fur, tusks, and hands that
   are **clawed digits fringed with fur**.
 - **Aquala**: strikingly **gaunt and long-limbed**, a longer narrower face with hanging fur
@@ -238,8 +235,6 @@ colour most worth getting right.
   Pulled via
   `https://starwars.fandom.com/api.php?action=parse&page=Aqualish/Legends&format=json&prop=wikitext`
   (status 200, 33,772 chars, 2026-09-15).
-- https://static.wikia.nocookie.net/starwars/images/d/d3/Aqualish.png (File:Aqualish.png,
-  the canon infobox image → `wookieepedia_infobox.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/9/92/AqualishAttack-BoBFCE.png
   (File:AqualishAttack-BoBFCE.png → `wookieepedia_crime_family_bobf.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/6/6f/Gorothin_Vagger.png
@@ -265,10 +260,8 @@ colour most worth getting right.
   and the closest match to this campaign's setting. Settles dusty grey-tan weathered skin,
   the long pale side mane with bare cheeks, blunt joined ochre tusks, glossy domed black
   eyes, and five-fingered hands. 2184×2069 px.
-- `wookieepedia_infobox.jpg` — the canon infobox illustration (Ponda Baba archetype).
-  Comic-style, so treat line and palette as the artist's. Value: the **dark near-black
-  skin** option and the **full dark cheek beard** arrangement, which contradicts the
-  live-action mane. 386×817 px.
+- `wookieepedia_ponda_baba_rogueone.jpg` — live-action *Rogue One*, Ponda Baba beside Dr. Evazan: dark near-black skin, full dark cheek beard, pale pink tusks; file `PondaEvazan.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a2/PondaEvazan.jpg/revision/latest?cb=20170402092052
+- `wookieepedia_garfalaquox_bobf.png` — live-action *The Book of Boba Fett* "Chapter 4", grey-tan Aqualish with side mane; file `GarfalaquoxAgrees-BoBFCh4.png` — https://static.wikia.nocookie.net/starwars/images/b/b5/GarfalaquoxAgrees-BoBFCh4.png/revision/latest?cb=20220130042131
 - `wookieepedia_politicians.jpg` — live-action Aqualish senators. **The four-eyed Ualaq
   reference, and the strongest evidence that Aqualish can be entirely furless.** Also
   confirms **three-digit hands** and **red-mauve skin**. 1380×748 px.
@@ -279,7 +272,7 @@ colour most worth getting right.
   painting. Four eyes, full ginger cheek mane, five green fingers. **Its saturated
   olive-green is the least corroborated colour across the canon set** — one book's take.
   1800×2650 px.
-- `wookieepedia_quara_and_aquala_legends.jpg` — Legends line art comparing a Quara and an
+- `wookieepedia_quara_and_aquala_legends.jpg` — **animated/negative reference, anatomy only.** Legends line art comparing a Quara and an
   Aquala. **The only image that shows the Aquala's digitless flippers and gaunt elongated
   build**, which is the single most buildable subspecies distinction. Line art only, so no
   colour evidence. 1062×1384 px.

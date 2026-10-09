@@ -89,6 +89,8 @@ canon gives at all is the **growled speech**.
   in the full-Bothan description mentions a tail at all.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The inked comic panel `wookieepedia_bothan_legends_um.jpg` (*Ultimate Missions*) was deleted. No live-action or photoreal Bothan exists in canon or Legends (searched: Bothan and Bothan/Legends page images, "Images of Bothans" — only stylised Galaxies/SWTOR/Battlefront 2005 game models — and the StarWars.com Databank, which has no Bothan image). Added two realistic paintings: Borsk Fey'lya from the *Agents of Deception* cover and a *Star Wars Galaxies* concept painting. All remaining species art is realistic painted Legends illustration.
 
 ⚠️ **Everything in this section describes Legends art, because that is all that exists. None
 of it is canon-supported, and the first image is canon actively rejecting it.**
@@ -127,22 +129,14 @@ design the repo has effectively adopted:
 - Wears an elaborate merchant/spy outfit: red-brown coat, gold-yellow tabard with hanging
   ornaments, bracers, belt pouches, cuffed boots. Costume is individual, not species.
 
-**`wookieepedia_bothan_legends_um.jpg`** — a Legends comic panel of a Bothan running from an
-explosion. **Disagrees with the NEGAS painting on the felid/canid balance:**
-- **Much more FELINE/LEONINE** — a **short broad muzzle** rather than the long tapering one,
-  a flatter face, and a **spiky upright mane** framing the whole head like a lion's.
-- **Fur is a bright orange-tan** with cream on the muzzle and throat — considerably more
-  saturated than the naturalistic NEGAS coat.
-- **Ears are smaller and more cat-like**, set higher and less dramatically tall.
-- **Dark eyes, dark nose, furred hands** with digits.
-- **No tail visible** here either.
-- Green tunic, bracers, belt. Comic-stylised, so treat line and palette as the artist's.
-- 🔑 **Taken together, the two Legends images differ on muzzle length, ear size, mane shape
-  and coat saturation while agreeing on: full-body fur, pointed ears, a projecting muzzle
-  with a dark nose, a mane, dark eyes, furred digited hands, no tail, and a short stocky
-  build.** That intersection is the most defensible target — and it is precisely the
-  "canine, feline, and equine mixture" the text describes, realised differently by each
-  artist.
+**`wookieepedia_borsk_feylya_aod_legends.jpg`** — realistic painted cover art, *Agents of Deception* (Legends), Borsk Fey'lya standing arms folded in a ship interior:
+- **Long tapering equine/canine muzzle with a dark nose**, a **neat pale-cream beard and moustache** along the jaw, and **tall pointed ears** standing up and out with pinkish interiors — agrees with NEGAS.
+- **Fur is a naturalistic warm tan-to-cream**, short on the face, lighter on the muzzle; a short swept-back crown mane.
+- Small dark eyes under a modest brow; ordinary humanoid build in a blue-grey uniform.
+
+**`wookieepedia_swg_concept_legends.jpg`** — realistic painted *Star Wars Galaxies* concept (*From Pencil to Pixel*), a Bothan bust in profile:
+- 🔴 **The more FELINE/LEONINE read**: a shorter, broader lion-like muzzle and a **very long flowing tawny-brown mane** past the shoulders, braided with ornaments, a full beard, and tall pointed ears. Tan fur, naturalistic.
+- 🔑 **Together the three paintings differ on muzzle length and mane length while agreeing on: full fur, tall pointed ears, a projecting muzzle with a dark nose, a beard, a mane, dark eyes, and a humanoid build.** That intersection is the safest target — the "canine, feline, and equine mixture" the text describes. (The deleted comic panel made the same feline point in saturated orange; the realistic concept painting makes it in natural tan, and there is no evidence for the comic's saturated orange.)
 
 **`donor_current_sprite.png` — right on fur, wrong on the silhouette.** It is
 `OR/Things/Pawn/Humanlike/Heads/Bothan/Male_Bothan_south.png`, the head drawn by
@@ -174,10 +168,11 @@ disowned-art record impose even in the absence of a canon look.
   for any physical trait, since none exists
 - [ ] If communication is represented at all, it is by growls (the one sourced canon
   physical/behavioural fact) — expressed as behaviour/flavour, not as a visual feature
-- [ ] No tail is present — both available Legends references and the Legends text agree
+- [ ] No tail is present — the available Legends paintings and the Legends text agree
   the tail belongs only to Bothan/other-species hybrids, never to a full-blooded Bothan
 - [ ] If a beard or facial fur is shown, it can appear on either sex — Legends states
   explicitly that both males and females sport beards, so it is not a male-only marker
+- [ ] Realistic rendering: naturalistic tan fur with visible direction and length, no outlines, no cartoon or comic shading
 
 ## Engine limits
 `useSkinShader: false` is set over the Bothan head's greyscale mask, so no skin/fur-colour
@@ -255,8 +250,6 @@ have them.
   `wookieepedia_canon_bothans_xed_out.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/8/81/Bothan-NEGAS.png
   (File:Bothan-NEGAS.png, the Legends infobox image → `wookieepedia_negas_legends.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/a/a1/Bothan_UM.jpg (File:Bothan UM.jpg →
-  `wookieepedia_bothan_legends_um.jpg`)
 - Image URLs were resolved through the Fandom imageinfo API
   (`action=query&prop=imageinfo&iiprop=url`) rather than guessed.
 - **NOT fetched this pass:** `https://www.starwars.com/databank/` has no Bothan species entry
@@ -280,11 +273,8 @@ have them.
   wet nose, the tall outward-standing pointed ears, tan-brown directional fur, the long
   blond-tan mane, the jaw beard, furred digited hands, no tail, and a short stocky
   short-legged build.** ⚠️ Legends only — not canon-supported. 585×1260 px.
-- `wookieepedia_bothan_legends_um.jpg` — a Legends comic panel. **Kept because it disagrees
-  usefully**: a much more **feline/leonine** read — short broad muzzle, spiky lion mane,
-  smaller cat ears, saturated orange-tan coat. Its disagreement with the NEGAS painting is
-  itself the sourced "canine, feline and equine mixture," and their intersection is the safer
-  target. Comic-stylised. 370×585 px.
+- `wookieepedia_borsk_feylya_aod_legends.jpg` — realistic painted cover, *Agents of Deception* (Legends), Borsk Fey'lya, long muzzle, tall ears, tan fur, cream beard; file `BorskFeylya-AgentsOfDeception.jpg` — https://static.wikia.nocookie.net/starwars/images/1/19/BorskFeylya-AgentsOfDeception.jpg/revision/latest?cb=20160511052041
+- `wookieepedia_swg_concept_legends.jpg` — realistic painted *Star Wars Galaxies* concept (*From Pencil to Pixel*, Legends), leonine Bothan bust with long tawny mane; file `BothanConcept.jpg` — https://static.wikia.nocookie.net/starwars/images/9/9f/BothanConcept.jpg/revision/latest?cb=20090516005412
 - `donor_current_sprite.png` — `Bothan/Male_Bothan_south.png`, the head from
   `RSW_BothanHead`. A runtime-tinted greyscale mask, so colour absence is expected. Right on
   the jaw fur ruff and dark nose; **wrong in having no forward muzzle and no ears** — and
