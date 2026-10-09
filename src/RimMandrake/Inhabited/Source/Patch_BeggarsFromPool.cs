@@ -41,6 +41,7 @@ namespace RimMandrake.Inhabited
     /// </summary>
     [HarmonyPatch(typeof(QuestGen_Pawns), nameof(QuestGen_Pawns.GeneratePawn),
         new[] { typeof(Quest), typeof(PawnGenerationRequest), typeof(bool) })]
+    [RimMandrake.Shared.PatchFeature("Beggars from pool", typeof(RM_InhabitedSettings), "beggarsFromPoolEnabled")]
     public static class Patch_QuestGen_Pawns_GeneratePawn
     {
         /// <summary>

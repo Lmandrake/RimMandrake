@@ -16,6 +16,7 @@ namespace RimMandrake.SolarMirrors
     /// dark). It never brightens the rendered ground; RM_MapComponent_MirrorLight draws that.
     /// PROVISIONAL: glow + light, capped at 1, so the Long Shade's 0.8 sky reads 1.0 in a beam.</summary>
     [HarmonyPatch(typeof(GlowGrid), nameof(GlowGrid.GroundGlowAt))]
+    [RimMandrake.Shared.PatchFeature("Mirror glow", typeof(RM_SolarMirrorsSettings), "glowEffect")]
     public static class RM_Patch_GlowGrid_GroundGlowAt
     {
         public static void Postfix(IntVec3 c, bool ignoreSky, Map ___map, ref float __result)
@@ -61,6 +62,7 @@ namespace RimMandrake.SolarMirrors
     /// SAME vanilla felt-temperature offset CreatureBehaviors gives plain sun, capped by the biome's maxHeatOffsetC.
     /// Never a new kind of heat or a new hediff. Runs after CreatureBehaviors' postfix on the same getter.</summary>
     [HarmonyPatch(typeof(Thing), nameof(Thing.AmbientTemperature), MethodType.Getter)]
+    [RimMandrake.Shared.PatchFeature("Mirror concentration heat", typeof(RM_SolarMirrorsSettings), "concentrationHeat")]
     public static class RM_Patch_Thing_AmbientTemperature_Concentration
     {
         [HarmonyPriority(Priority.Low)]

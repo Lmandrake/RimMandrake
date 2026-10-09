@@ -98,6 +98,7 @@ namespace RimMandrake.TheForge
     // so the braces still stand on the departing map. One ring per linked, active brace,
     // each a little higher so four braces chord instead of stacking into one hit.
     [HarmonyPatch(typeof(GravshipUtility), nameof(GravshipUtility.GenerateGravship))]
+    [RimMandrake.Shared.PatchFeature("Forge keel ring", typeof(RM_TheForgeSettings), "keelRingEnabled")]
     public static class RM_Patch_KeelRing
     {
         public static void Prefix(Building_GravEngine engine)

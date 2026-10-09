@@ -238,6 +238,7 @@ namespace RimMandrake.TheForge
 
     // The heat half: vanilla HediffGiver_Heat reads pawn.AmbientTemperature, so a front is just hotter air.
     [HarmonyPatch(typeof(Thing), nameof(Thing.AmbientTemperature), MethodType.Getter)]
+    [RimMandrake.Shared.PatchFeature("Forge plume heat", typeof(RM_TheForgeSettings), "plumeHeatEnabled")]
     public static class RM_Patch_Plume_AmbientTemperature
     {
         public static void Postfix(Thing __instance, ref float __result)

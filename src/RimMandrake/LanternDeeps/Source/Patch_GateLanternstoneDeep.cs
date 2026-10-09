@@ -9,6 +9,7 @@ namespace RimMandrake.LanternDeeps
 	// map. Same shape and same substitute as RustCathedral's HarmonyPatch_GateLivePatternMetal: off the Deeps
 	// the pick becomes steel, which is the planet-wide deep resource.
 	[HarmonyPatch(typeof(CompDeepScanner), "ChooseLumpThingDef")]
+	[RimMandrake.Shared.PatchFeature("Lanternstone deep gate", typeof(LanternDeepsSettings), "lanternstoneDeepGateEnabled")]
 	public static class Patch_GateLanternstoneDeep
 	{
 		public const string HomeBiomeDefName = "RM_LanternDeeps";

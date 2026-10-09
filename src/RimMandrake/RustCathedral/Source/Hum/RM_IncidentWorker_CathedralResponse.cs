@@ -236,6 +236,7 @@ namespace RimMandrake.RustCathedral.Hum
 	// Every other map in the game is untouched: the gate is one biome-defName
 	// comparison and falls straight through.
 	[HarmonyPatch(typeof(IncidentWorker_DeepDrillInfestation), "CanFireNowSub")]
+	[RimMandrake.Shared.PatchFeature("Cathedral drill response", typeof(RustCathedralHumSettings), "drillResponseEnabled")]
 	public static class HarmonyPatch_CathedralResponse_GateVanillaInfestation
 	{
 		public static void Postfix(IncidentParms parms, ref bool __result)

@@ -14,6 +14,7 @@ namespace RimMandrake.LuminousPigment
     // TotalEstimatedHitChance -- the number the shot actually rolls on
     // (Yayo's Combat 3 still calls HitReportFor, per the spec's §8).
     [HarmonyPatch(typeof(ShotReport), nameof(ShotReport.HitReportFor))]
+    [RimMandrake.Shared.PatchFeature("Deepfire combat penalties", typeof(LuminousPigmentSettings), "combatPenaltiesEnabled")]
     public static class Patch_ShotReport_HitReportFor
     {
         internal static readonly AccessTools.StructFieldRef<ShotReport, float> FactorFromTargetSize =
@@ -33,6 +34,7 @@ namespace RimMandrake.LuminousPigment
     // The labelled readout line. Vanilla already prints the changed
     // "Target size" line; this adds the named reason under it.
     [HarmonyPatch(typeof(ShotReport), nameof(ShotReport.GetTextReadout))]
+    [RimMandrake.Shared.PatchFeature("Deepfire combat penalties", typeof(LuminousPigmentSettings), "combatPenaltiesEnabled")]
     public static class Patch_ShotReport_GetTextReadout
     {
         private static readonly AccessTools.StructFieldRef<ShotReport, TargetInfo> TargetField =

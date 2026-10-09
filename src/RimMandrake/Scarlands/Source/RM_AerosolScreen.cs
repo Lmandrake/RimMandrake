@@ -252,6 +252,7 @@ namespace RimMandrake.Scarlands
 
     // Readable sign (spec 10): pawns standing in a screened cell say so on inspect.
     [HarmonyPatch(typeof(Pawn), nameof(Pawn.GetInspectString))]
+    [RimMandrake.Shared.PatchFeature("Aerosol screen", typeof(RM_WarscarSettings), "aerosolScreenEnabled")]
     public static class RM_AerosolScreenPatches_PawnInspect
     {
         public static void Postfix(Pawn __instance, ref string __result)

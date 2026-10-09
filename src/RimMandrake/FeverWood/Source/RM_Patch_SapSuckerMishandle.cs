@@ -22,6 +22,7 @@ namespace RimMandrake.FeverWood
     // ignored — "Do not ship a random chance of refusal" (fauna roster §2).
     // The comp's own cooldown is shared with the damage trigger.
     [HarmonyPatch(typeof(Pawn_MindState), "CheckStartMentalStateBecauseRecruitAttempted")]
+    [RimMandrake.Shared.PatchFeature("Sap sucker mishandle refusal", typeof(RM_FeverWoodSettings), "sapSuckerMishandleRefusalEnabled")]
     public static class RM_Patch_SapSuckerMishandle
     {
         public static void Postfix(Pawn_MindState __instance, Pawn tamer)
