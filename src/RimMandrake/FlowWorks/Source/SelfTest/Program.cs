@@ -1222,6 +1222,65 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_PumpMath.CyclesToFill(300) == 60 && RM_PumpMath.CyclesToFill(1) == 1 && RM_PumpMath.CyclesToFill(0) == 0, "cycles to fill round up");
             });
 
+            // ── LIQUID_UNIT_CONTRACT_ROUNDTRIP_1: units cross every system join without appearing or vanishing ──
+            Case("Liquid_unit_contract_roundtrip_conserves", () =>
+            {
+                string dir = AppContext.BaseDirectory;
+                string defs = null;
+                for (int up = 0; up < 12 && dir != null; up++)
+                {
+                    string cand = System.IO.Path.Combine(dir, "FlowWorks", "Defs", "LiquidTypes");
+                    if (System.IO.Directory.Exists(cand)) { defs = cand; break; }
+                    cand = System.IO.Path.Combine(dir, "Defs", "LiquidTypes");
+                    if (System.IO.Directory.Exists(cand)) { defs = cand; break; }
+                    dir = System.IO.Path.GetDirectoryName(dir);
+                }
+                Assert(defs != null, "FlowWorks Defs/LiquidTypes not found above the test binary");
+                var reg = System.Xml.Linq.XDocument.Load(System.IO.Path.Combine(defs, "LiquidDefs", "RM_LiquidDefRegistry.xml"));
+                var bottles = System.Xml.Linq.XDocument.Load(System.IO.Path.Combine(defs, "ThingDefs", "RM_LiquidBottles_Base.xml"));
+                var liquids = new List<(int bottle, int bucket, int barrel)>();
+                foreach (var d in reg.Descendants("bottled"))
+                {
+                    int Get(string n, int dflt) { var e = d.Descendants(n).FirstOrDefault(); return e == null ? dflt : int.Parse(e.Value.Trim()); }
+                    liquids.Add((Get("unitsPerBottle", 1), Get("unitsPerBucket", 5), Get("unitsPerBarrel", 25)));
+                }
+                Assert(liquids.Count >= 9, "sanity probe: registry should list its liquids, found " + liquids.Count);
+                var factors = new List<float> { 1f };
+                foreach (var e in bottles.Descendants("capacityFactor"))
+                    factors.Add(float.Parse(e.Value.Trim(), System.Globalization.CultureInfo.InvariantCulture));
+                Assert(factors.Count > 3 && factors.Any(f => f != 1f), "sanity probe: container materials should carry non-1 factors");
+
+                foreach (var l in liquids)
+                {
+                    // the contract: a channel level is a bucket; a barrel is five buckets; a bucket is five bottles
+                    Assert(l.bucket == RM_PumpMath.TankUnitsPerLevel, "unitsPerBucket " + l.bucket + " != TankUnitsPerLevel");
+                    Assert(l.barrel == 5 * l.bucket && l.bucket == 5 * l.bottle, "bottle/bucket/barrel ladder broke: " + l.bottle + "/" + l.bucket + "/" + l.barrel);
+                }
+                foreach (var l in liquids)
+                foreach (float f in factors)
+                {
+                    int pumped = 12 * RM_PumpMath.TankUnitsPerLevel;     // pond -> canal -> pump: 12 levels
+                    int tank = pumped, held = 0;
+                    foreach (int baseUnits in new[] { l.barrel, l.bucket, l.bottle })
+                    {
+                        int units = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);
+                        while (tank >= units) { tank -= units; held += units; }
+                    }
+                    Assert(tank + held == pumped, "fill leg created or lost liquid at factor " + f);
+                    // pour back: each container returns exactly what it took (same ScaledUnits call both ways)
+                    foreach (int baseUnits in new[] { l.bottle, l.bucket, l.barrel })
+                    {
+                        int units = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(baseUnits, f);
+                        while (held >= units) { held -= units; tank += units; }
+                    }
+                    Assert(held == 0 && tank == pumped, "round trip did not return the pumped liquid at factor " + f + " (held " + held + ", tank " + tank + ")");
+                }
+                // can-fail: a mutated factor on the pour leg must break conservation
+                int fill = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(25, 1.2f);
+                int pour = RimMandrake.FlowWorks.LiquidTypes.RM_ContainerMaterialMath.ScaledUnits(25, 0.8f);
+                Assert(fill != pour, "mutation probe: unequal factors must change the units, else this test cannot fail");
+            });
+
             // ── Liquid machinery: converter cycle arithmetic ──
             Case("Converter_cycle_math", () =>
             {
