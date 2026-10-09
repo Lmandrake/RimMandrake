@@ -329,6 +329,20 @@ def main():
         E.enact(F["decisions"], apply=True, holds=["vine"], no_deploy=True, redo_jobs_out=JOBS)
         D2 = json.loads(F["decisions"].read_text())["decisions"]["RM_Note"]
         check(D2["note"] == "" and D2["notes_followed"][0]["followed_by"] == ["mark-done"], "a marked-done note is taken off on --apply")
+        # a leftover "redo" letter on a row whose note was carried out must NOT re-queue it; a NEW note must
+        dd = json.loads(F["decisions"].read_text())
+        dd["decisions"]["RM_Note"]["decision"] = "redo"
+        F["decisions"].write_text(json.dumps(dd))
+        P8 = E.build_plan(F["decisions"])["queue"]
+        check(not any(q["row"] == "RM_Note" for q in P8), "redo + note already followed (notes_followed) is not re-queued")
+        dd["decisions"]["RM_Note"]["note"] = "a brand new note"
+        F["decisions"].write_text(json.dumps(dd))
+        P9 = E.build_plan(F["decisions"])["queue"]
+        check(any(q["row"] == "RM_Note" for q in P9), "redo + a NEW typed note does queue")
+        dd["decisions"]["RM_Note"]["note"] = "make it 0.3 cells"
+        F["decisions"].write_text(json.dumps(dd))
+        P10 = E.build_plan(F["decisions"])
+        check(not any(q["row"] == "RM_Note" for q in P10["queue"]), "redo + note whose mark-done event exists is not re-queued")
         check(not E.CUT_NOTE.search("variations") and E.CUT_NOTE.search("no longer needed"), "cut-note matcher")
     finally:
         shutil.rmtree(F["root"], ignore_errors=True)
