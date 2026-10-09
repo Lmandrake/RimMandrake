@@ -102,12 +102,14 @@ No live-action or photoreal Herglic exists (searched: Herglic and Herglic/Legend
 **`donor_current_sprite.png` is `.../Heads/Herglic/Herglic_south.png` (512×512, RGBA) — a greyscale tint mask,** correct for a RimWorld humanlike head (colour comes from the skin-colour gene). It gets right a large domed neckless head with a low brow lobe, two angled eyes set low and two nostril dots. **Missing: there is no mouth at all** — the wide lipless mouth-line is the species' most-cited feature; no blowhole (`_north`); eyes set high-central rather than wide and low. 🔴 A single-channel tint mask cannot produce the orca countershading, and it cannot produce the glossy specular sheen either — that needs baked shading in the head art. There is **no Herglic body art on disk**, so the "extremely wide" proportion is unrepresented.
 
 ## Must show
-- [ ] Head is a single smooth bulbous forward-swept dome with a blunt rostrum, no neck and no chin
-- [ ] Wide lipless mouth-line spanning most of the head's width over a heavy rounded lower-lip pouch
-- [ ] Small eyes set low and wide under heavy brows, near the mouth-line corners
-- [ ] Glossy wet-looking charcoal-to-black skin (dark purple allowed) with specular highlights — not matte, not pale lavender
-- [ ] Body enormously wide, barrel-chested and hunched, head carried low before huge rounded shoulders; human-scale height
-- [ ] Realistic rendering: smooth wet whale-like skin texture and natural lighting, no outlines, no cartoon flat colour
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon/Legends text and the four painted Legends images named in the visual brief.*
+- [ ] BODY PLAN: humanoid biped of human-scale height (1.7–2.2 m) but enormously wide: barrel-chested and hunched forward, head carried low in front of huge rounded shoulders, thick arms ending in broad paddle hands, short thick column legs
+- [ ] Head: a whale's head worn as a face — one smooth bulbous dome sweeping forward into a blunt rounded rostrum, with no neck and no chin; no external ears
+- [ ] Mouth: a wide lipless mouth-line spanning most of the head's width over a heavy rounded lower-lip pouch
+- [ ] Eyes small, set low and wide under heavy brows, near the corners of the mouth-line
+- [ ] COLOUR LAYOUT: glossy wet-looking charcoal-to-black skin all over (dark purple allowed) with specular highlights — not matte, not pale lavender; the orca pattern (white eye-patches, white throat and jaw) is only a canon variant
+- [ ] Realistic rendering: smooth wet whale-like skin texture and natural lighting, no outlines, no cartoon flat colour (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a fat human with a tint (no nose, no chin, no neck, no hair), not a giant twice human height; not a fish or Mon Calamari (no fins, no goggle eyes on the sides)
 
 ## Engine limits
 - A single-channel tint mask (the current head sprite's approach) cannot express the orca

@@ -74,13 +74,13 @@ sourced text and the images to flag this time; both images and both
 text tiers reinforce the same creature.
 
 ## Must show
-- [ ] Low-slung, spider/mantis-like body carried on four long, jointed, skeletal-looking legs
-- [ ] Legs are tan/gold with dark brown horizontal banding stripes
-- [ ] Hind legs markedly longer and more muscular than the front legs (reared, leaping-insect stance)
-- [ ] Small, blunt head held low and forward between the front legs, with a wide toothy mouth
-- [ ] Glowing red eye(s)
-- [ ] No wings and no shiny chitinous segmentation — reads as a bony/skeletal arthropod, not a beetle
-- [ ] Realistic rendering: natural weathered matte exoskeleton and lighting, no outlines, no smooth clay-CGI or cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both remaining images (`wookieepedia_infobox.jpg`, `wookieepedia_mounted_screenshot.jpg`) and the Legends text.*
+- [ ] BODY PLAN: a low-slung, spider/mantis-like arthropod body carried on exactly four long, jointed, skeletal-looking legs ending in pads; hind legs markedly longer (Legends: roughly twice the front legs) and more muscular than the front legs
+- [ ] Head: small and blunt, held low and forward between the front legs, with a wide mouth lined with visible sharp teeth
+- [ ] COLOUR LAYOUT: legs tan/gold with dark brown horizontal banding stripes over a gray-white bone-toned undertone on the segments; eye(s) red, the one saturated accent on the head
+- [ ] Surface: no wings and no shiny chitinous segmentation — a bony/skeletal arthropod with a matte exoskeleton
+- [ ] Realistic rendering: natural weathered matte exoskeleton and lighting, no outlines, no smooth clay-CGI or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a shiny beetle or six/eight-legged spider (four legs only), not a reptile or mammal mount (no fur, no scales, no horse/lizard head), no wings
 
 ## Engine limits
 none known

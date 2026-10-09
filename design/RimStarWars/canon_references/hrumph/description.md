@@ -36,13 +36,14 @@ Four watercolour/pencil illustrations (canon Bestiary pair, Legends pair) plus o
 - Size: 3 to 4 m tall at the shoulder per prose; no scale object appears in the images.
 
 ## Must show
-- [ ] Cool grey-lavender / blue-grey hide (not tan) with purple-blue spots, denser toward the spine, pale belly
-- [ ] Row of short dark indigo cartilaginous spikes along the spine and shoulders
-- [ ] Four long, straight horns sweeping up and back from the brow: pale with blue streaks and black tips
-- [ ] Hooked black-purple beak under a magenta/purple crest, small round blue eyes high on the face
-- [ ] Heavy, broad, humped-back quadruped build with a low head and thick neck
-- [ ] White shaggy-furred feet with dark claws, and a long white tail with a purple streak
-- [ ] Realistic rendering: natural thick wrinkled hide, keratin horns and lighting, no outlines, no watercolour or cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the four watercolours (detail) and `wookieepedia_gunganfrontier.jpg` (mass and stance), per the visual brief.*
+- [ ] BODY PLAN: a heavy, broad-backed, short-legged quadruped built like a rhino/ankylosaur: humped, arched back rising from a low head on a thick neck, sturdy pillar limbs, and a long thin tail drooping to the ground
+- [ ] Horns: four long, straight horns sweeping up and back from the brow (two upper, two lower, slightly splayed), as long as the head or longer; large soft ears tucked in among them
+- [ ] COLOUR LAYOUT: cool grey-lavender / blue-grey hide (not tan) with purple-blue spots that thicken toward the spine; belly pale/white; horns pale cream-white with blue streaks and black tips; tail white with a purple streak; feet white and shaggy-furred with dark claws
+- [ ] Back spines: a row of short dark indigo cartilaginous spikes/studs along the spine, clustered over the shoulder hump
+- [ ] Face: a hooked black-to-dark-purple beak under a magenta/purple crest, with small round blue eyes set high and forward
+- [ ] Realistic rendering: natural thick wrinkled hide, keratin horns and lighting, no outlines, no watercolour or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a deer, antelope or goat (no long slim legs, no branching antlers, no mammal muzzle — it has a beak); not a tan-skinned animal; not a plain unspotted grey rhino
 
 ## Engine limits
 not yet assessed

@@ -27,12 +27,14 @@ No live-action or photoreal jakobeast exists: canon has only fur (Rise of Skywal
 - **Size**: the text says roughly bantha-sized.
 
 ## Must show
-- [ ] Huge shaggy bantha-sized quadruped, shoulders high, thick pillar legs and a thick tail
-- [ ] Grey-and-white coat with vertical dark stripes (Legends image; canon prose says brown, no image supports it)
-- [ ] Two long thick curved ivory tusks from the lower jaw sweeping up and forward
-- [ ] Two ribbed dark horns sweeping back and curling from the crown
-- [ ] Broad dark leathery nose and snarling cat/boar-like face with a shaggy white beard
-- [ ] Realistic rendering: natural fur, hide and horn texture and lighting, no outlines, no cartoon or ink shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends text and `legends_1` (*The Jedi Path* plate, the only image); canon prose says only "brown-furred".*
+- [ ] BODY PLAN: a huge, stocky, bantha-sized quadruped: tall shaggy high shoulders sloping to a rounder rump, deep chest, thick fur-feathered pillar legs on broad padded feet with short dark claws, and a thick tapering tail curling along the ground
+- [ ] COLOUR LAYOUT: long shaggy pale-grey to white coat with vertical dark grey-brown stripes down the flanks and tail; a ridge of banded dark/white bristles along the spine; a shaggy white beard/ruff around the jaw (Legends image and text; canon prose says brown, no image supports it)
+- [ ] Tusks: two long thick curved IVORY tusks from the lower jaw, sweeping up and forward past the face
+- [ ] Horns: two ribbed dark horns sweeping back and curling from the crown
+- [ ] Face: snarling cat/boar-like face with a broad dark leathery nose, wide mouth and small rounded ears
+- [ ] Realistic rendering: natural fur, hide and horn texture and lighting, no outlines, no cartoon or ink shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a bantha (no spiral ram horns, no flat slit mouth), not a tiger or other big cat (four pillar legs, tusks and back-swept horns), not a plain unstriped yak or musk ox
 
 ## Engine limits
 not yet assessed

@@ -22,12 +22,12 @@ One Legends-page image (`wookieepedia_canon_1`, the infobox render). It is small
 - **Size**: small ("small amphibians" in text), pet-sized; neither the image nor the text gives a measurement or scale reference.
 
 ## Must show
-- [ ] Squat round body, hunched upright on thick hind legs
-- [ ] Slate blue-grey skin, paler belly
-- [ ] Large fish-like head with wide mouth and big round golden eye
-- [ ] Ruffled tan-gold dorsal fin/frill running from the head down the back
-- [ ] Small clawed front paws, finned back end
-- [ ] Pet-sized, small
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends prose and the single small infobox render `wookieepedia_canon_1`.*
+- [ ] BODY PLAN: a small, pet-sized, squat round-bodied amphibian crouched upright on its haunches on thick hind legs with webbed/finned feet, a large head, short forelimbs ending in a few clawed toes, and a tail fin
+- [ ] Head: large, deep and fish-like, with a wide mouth and downturned lip and one big round golden-orange eye with a dark pupil on each side; a small pointed spike at the back of the brow and one near the nose
+- [ ] Fin: a ruffled, translucent tan-gold dorsal fin/frill from the back of the head down the spine (image only; prose says only "finned hindquarters")
+- [ ] COLOUR LAYOUT: slate blue-grey to blue-green smooth skin over the body, paler throat/belly; fins tan-gold; eyes golden-orange
+- [ ] NEGATIVE: not a plain green frog or toad (no green skin, no fin-less smooth back), not a fish without legs, not a large animal
 
 ## Engine limits
 not yet assessed

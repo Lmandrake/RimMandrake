@@ -103,12 +103,14 @@ overlay with no south variant and no tail at all. **The legless, tail-propelled
 body plan — the species' single most defining feature — is not represented.**
 
 ## Must show
-- [ ] Legless body: the torso rears upright on a long, tapering, flattened tail that lies along the ground
-- [ ] Hide deeply furrowed and glistening wet, with heavy horizontal folds across brow, jowls and belly
-- [ ] Darker dorsal surfaces (olive-brown to grey-olive) over a paler tan/orange-brown belly and face, blended not hard-edged
-- [ ] Enormously wide, thin-lipped, down-turned mouth spanning the full width of the head; no neck, jowls run into the belly
-- [ ] Small orange/amber eyes with horizontal slit pupils under heavy shelf-like brow ridges
-- [ ] Realistic rendering: live-action puppet skin texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action/photoreal adult references (Jabba render, ROTJ puppet, Rotta) and the canon prose, per the visual brief.*
+- [ ] BODY PLAN: a massive legless slug: the torso rears upright and the mass sits on a long, tapering, dorsoventrally flattened tail that lies along the ground behind the body; short thick arms set high on the chest ending in broad hands with three thick blunt digits
+- [ ] Head: broad and flat with NO neck — heavy jowl/chin folds stacked under the jaw run continuously into the belly folds
+- [ ] Mouth: enormously wide, thin-lipped and down-turned, spanning the full width of the head (the widest feature of the face), with a broad flat nose with two slit nostrils above it
+- [ ] Eyes: small orange/amber eyes with horizontal slit pupils, set high and wide under heavy shelf-like brow ridges
+- [ ] COLOUR LAYOUT: darker dorsal surfaces (crown, back, outsides of the arms, tail) olive-brown to grey-olive, over a paler tan/orange-brown belly, chest, jaw underside and face, blended through a mottled band rather than hard-edged; whole hide deeply furrowed and glistening wet, with heavy horizontal folds across brow, jowls and belly
+- [ ] Realistic rendering: live-action puppet skin texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a fat human or humanoid with legs (no legs, no neck), not a flat single-colour green or tan slug, not dry matte skin; an adult is not a Huttlet (no oversized head and eyes)
 
 ## Engine limits
 none known — the head-mask colour findings above belong on the skin-colour gene, not on the

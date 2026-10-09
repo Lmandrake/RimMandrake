@@ -26,12 +26,13 @@ The jamel exists only in unfinished Clone Wars material (*Crystal Crisis*). The 
 - **Size**: the back rises about a head above a clone trooper's height.
 
 ## Must show
-- [ ] Tall spindly legs with visible knees; hump/arched back; long drawn-out neck with a small head carried low
-- [ ] Golden-yellow ochre hide with darker orange-brown vertical stripes over the back, blue-grey mottling over the hump
-- [ ] Pinkish-red snout and head cap, pale blue-grey ring around a large round eye, small brow nubs, neck flaps
-- [ ] Long heavy tapering tail carried low behind, pale underside
-- [ ] Rises above a person's head height
-- [ ] Realistic rendering: natural hide texture with skin folds and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon prose and the two Pat Presley concept sheets (`canon_2`, `canon_3`).*
+- [ ] BODY PLAN: a tall, long-legged quadruped taller than a person (back about a head above a trooper): tall spindly pillar legs with visible knees, front legs a bit shorter than the hind so the back rises to a big hump/arched sail over the shoulders and back; a long drawn-out neck hung forward carrying a small head low; a long heavy tapering tail held low and straight out behind
+- [ ] COLOUR LAYOUT: golden-yellow to ochre hide; darker orange-brown vertical stripes over the hump and flanks, with blue-grey(-green) mottling over the hump; pale cream belly and tail underside; reddish-brown feet
+- [ ] Head: narrow and drawn-out, with a pinkish-red snout and red face cap, a pale blue-grey ring around a large round eye, small brow nubs, and neck flaps behind the head
+- [ ] Feet: splayed two-to-three-toed dark red-brown feet with small claws
+- [ ] Realistic rendering: natural hide texture with skin folds and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a plain real camel (it has a long heavy tail, stripes and a red snout), not a giraffe or horse (no mane, no hooves); no harness or saddle as part of the animal
 
 ## Engine limits
 not yet assessed

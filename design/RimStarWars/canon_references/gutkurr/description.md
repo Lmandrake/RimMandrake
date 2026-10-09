@@ -40,13 +40,13 @@ The description below was written from the Clone Wars CGI and holds for both kep
 - **Disagreement**: the prose says arms are short and thin (images: yes, thin hooked forelimbs). The prose says "long hind legs, fast" (images: yes). Nothing contradicts. Young gutkurrs (chicks) are not shown anywhere; in frame 3 (small ones on prey) the small individuals in the background look like juveniles or smaller adults at a distance and cannot be confirmed.
 
 ## Must show
-- [ ] Hunched posture, long strong hind legs, short thin forearms ending in large curved black talons
-- [ ] Domed rust-orange/tan carapace with weathered pale patches and rows of cream thorn spikes down the back
-- [ ] Lighter yellow-orange belly/thighs, darker maroon-brown limbs
-- [ ] Flat armoured head with red eyes, two long curved front fangs and a wide toothed jaw
-- [ ] Segmented, ridged, tapering tail
-- [ ] Larger than a human (about 2 m tall)
-- [ ] Realistic rendering: natural weathered chitin and hide with real lighting, no outlines, no smooth clay-CGI or cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the visual brief (written from `canon_1`, holding for `wookieepedia_galaxyatwar.jpg`) and the owner ruling in it.*
+- [ ] BODY PLAN: a hunched, bipedal-leaning predator larger than a human (about 2 m): long strong insect-jointed hind legs, short thin forearms ending in large curved black-brown talon hooks, a big domed shell over the back and shoulders, a heavy low head slung forward beneath the shell front, and a segmented, ridged, tapering tail
+- [ ] Carapace: a scute-plated, tortoise/beetle-like dome whose edges flare out like a skirt, with rows of cream thorn spikes in lines down the back and the sides of the shell
+- [ ] COLOUR LAYOUT: shell rust-orange to tan-brown with weathered pale patches; belly and thighs lighter yellow-orange; forearms and lower legs darker maroon-brown; spikes cream, the lightest element
+- [ ] Head: wide, flat and armoured, with deep-set RED eyes, two long curved front fangs flanking the nose, and a wide jaw lined with small pale teeth
+- [ ] Realistic rendering: natural weathered chitin and hide with real lighting, no outlines, no smooth clay-CGI or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a tortoise or plain beetle on four legs (it stands hunched on long hind legs), not an upright humanoid, not a smooth-shelled unspined bug; not the flat-shaded Clone Wars cartoon look
 
 ## Engine limits
 not yet assessed
