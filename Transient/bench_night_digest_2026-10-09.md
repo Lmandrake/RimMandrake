@@ -33,7 +33,7 @@ Everything below is committed and pushed. Nothing is deployed. Every change wait
 
 - **Weather-stones own art is done and awaits your pick** (Condenser water, Karrek paste, Seep stone): `D:\Luke\dev\_artpipe\_artsrc\wsart_RM_CondenserWater\wsart_RM_CondenserWater.png` and the two siblings.
 
-- **Cartoonish-era art still in game: 70 textures owed a re-ruling** (9 canon creatures; 28 already have a painterly re-render). Another 15 you have kept since. `D:\Luke\dev\RimMandrake\Transient\cartoonish_era_art_census_2026-10-09.md`
+- **Cartoonish-era art still in game: 70 textures owed a re-ruling** (9 canon creatures; 28 already have a painterly re-render). Another 15 you have kept since. **13 verified swap pairs, cartoonish beside painterly, on one phone image:** `D:\Luke\dev\RimMandrake\Transient\painterly_swap_candidates_2026-10-09.png`. `D:\Luke\dev\RimMandrake\Transient\cartoonish_era_art_census_2026-10-09.md`
 
 ## Done overnight
 - **Species abilities:** your card rulings are applied. 31 genes were removed across 14 races (87888849a).
