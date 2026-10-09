@@ -202,6 +202,35 @@ namespace RimMandrake.EnvironmentalHazards
             }
         }
 
+        /// <summary>ENVHAZARDS_HAZARD_CLOCK_READOUTS_1: ticks until this pawn's next scratch while it stands in a
+        /// stand and holds a running clock; -1 when it is not in contact. Read only, changes nothing.</summary>
+        public int TicksToNextScratch(Pawn pawn)
+        {
+            if (pawn == null || !pawn.Spawned || !armedCells.ContainsKey(pawn.Position))
+            {
+                return -1;
+            }
+            int index = IndexOf(pawn);
+            if (index < 0)
+            {
+                return -1;
+            }
+            return Mathf.Max(0, nextScratchTicks[index] - Find.TickManager.TicksGame);
+        }
+
+        /// <summary>Pawns of the player's faction standing in a stand with a running clock, for the readouts.</summary>
+        public void ColonistsInContact(List<Pawn> into)
+        {
+            for (int i = 0; i < contactPawns.Count; i++)
+            {
+                Pawn p = contactPawns[i];
+                if (p != null && p.Faction == Faction.OfPlayer && TicksToNextScratch(p) >= 0)
+                {
+                    into.Add(p);
+                }
+            }
+        }
+
         private int IndexOf(Pawn pawn)
         {
             for (int i = 0; i < contactPawns.Count; i++)
