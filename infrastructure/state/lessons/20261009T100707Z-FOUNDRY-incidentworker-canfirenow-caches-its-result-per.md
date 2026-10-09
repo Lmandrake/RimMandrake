@@ -1,0 +1,1 @@
+IncidentWorker.CanFireNow caches its result per worker per game tick, forced calls included: a dry run re-asked in the same tick replays the first answer. Advance the game (S.run(5)) between dry runs. (2026-10-09)

@@ -1,0 +1,1 @@
+land.sh (old) replayed the SHARED HEAD onto origin/main and could publish another agent's half-finished commits; the hardened src/RimMandrake/Utils/land.sh takes an explicit sha or -m <msg> <paths> and builds from a temp index on origin/main. From a private clone set LAND_REPO=<clone>. (2026-10-09)

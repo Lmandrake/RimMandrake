@@ -1,0 +1,1 @@
+A RitualBehaviorDef without <roles /> cannot start from the UI or the tool: three Utinni rites were unstartable until sitting 3. Also git reset --hard is hook-blocked in the clone: use git reset --soft origin/main then git reset -q, then restore stale paths with git checkout -- <paths>. (2026-10-09)
