@@ -5,6 +5,7 @@
 // Keep it free of Verse/RimWorld/UnityEngine/HarmonyLib (a `using Verse;` here breaks the self-test build, which is the guard rail).
 // Tiers are ints (None 0, T1 1, T2 2, T3 3) so they order with the same comparisons the enum TitanicTier gives.
 using System;
+using System.Collections.Generic;
 
 namespace RimMandrake.TitanicCreatures
 {
@@ -22,7 +23,25 @@ namespace RimMandrake.TitanicCreatures
         /// <summary>The player-facing tier ladder is only meaningful when 0 &lt; T1 &lt; T2 &lt; T3.</summary>
         public static bool ThresholdsValid(float t1, float t2, float t3)
         {
-            return t1 > 0f && t1 < t2 && t2 < t3;
+            // B3.19 / C3.6 / D3.3: an infinite or NaN rung is never a ladder (NaN fails every comparison already; inf T3 did not).
+            return Finite(t1) && Finite(t2) && Finite(t3) && t1 > 0f && t1 < t2 && t2 < t3;
+        }
+
+        public static bool Finite(float v) => !float.IsNaN(v) && !float.IsInfinity(v);
+
+        /// <summary>HUGETHINGS_SETTINGS_HARDENING_1 (B3.19): a Scribe-loaded or edited float setting, forced finite and into its slider
+        /// range; a NaN/infinite value falls back to the shipped default (itself clamped, so a bad default cannot escape either).</summary>
+        public static float SaneSetting(float v, float min, float max, float fallback)
+        {
+            if (!Finite(v)) v = fallback;
+            if (!Finite(v)) v = min;
+            return Clamp(v, min, max);
+        }
+
+        /// <summary>Integer setting into its slider range.</summary>
+        public static int SaneSetting(int v, int min, int max)
+        {
+            return v < min ? min : (v > max ? max : v);
         }
 
         /// <summary>Def-level: could any pawn of this race ever be tiered (decides the comp auto-attach).</summary>
@@ -31,6 +50,29 @@ namespace RimMandrake.TitanicCreatures
             if (force == ForceOut) return false;
             if (force == ForceIn) return true;
             return baseBodySize >= t1;
+        }
+
+        /// <summary>TITAN_WAKE_FIXES_1 (B3.18 / C3.4): Pawn.BodySize is lifestage.bodySizeFactor x baseBodySize, so a race qualifies on its
+        /// base times the LARGEST factor any of its life stages reaches (a factor below 1 never shrinks the test below the base).</summary>
+        public static bool DefQualifies(float baseBodySize, float maxLifeStageFactor, float t1, int force)
+        {
+            float f = Finite(maxLifeStageFactor) && maxLifeStageFactor > 1f ? maxLifeStageFactor : 1f;
+            return DefQualifies(baseBodySize * f, t1, force);
+        }
+
+        /// <summary>TITAN_WAKE_FIXES_1 (B3.6): a multi-cell thing is registered in every cell it covers, so a footprint scan sees it once per
+        /// covered cell. Each thing comes back once, in first-seen order, so one titan step strikes it once.</summary>
+        public static List<T> UniqueInOrder<T>(IEnumerable<IEnumerable<T>> cells) where T : class
+        {
+            var seen = new HashSet<T>();
+            var outList = new List<T>();
+            foreach (IEnumerable<T> cell in cells)
+            {
+                if (cell == null) continue;
+                foreach (T t in cell)
+                    if (t != null && seen.Add(t)) outList.Add(t);
+            }
+            return outList;
         }
 
         /// <summary>Runtime tier of one pawn: bodySize ladder, force-out wins, force-in floors at T1.</summary>

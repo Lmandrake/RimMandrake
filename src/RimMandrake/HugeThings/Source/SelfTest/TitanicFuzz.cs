@@ -81,6 +81,34 @@ namespace RimMandrake.TitanicCreatures.SelfTest
                     }
                     // ruled footprints: T1 2x2, T2 3x3, T3 4x4 (Large Pawns' hard ceiling); an untiered size never reaches Large Pawns
                     Check(RM_TitanicKernel.FootprintSize(1) == 2 && RM_TitanicKernel.FootprintSize(2) == 3 && RM_TitanicKernel.FootprintSize(3) == 4, "footprints are not 2/3/4");
+                    // TITAN_WAKE_FIXES_1 (B3.18 / C3.4): base and life-stage factor fuzzed independently. Any pawn whose CURRENT size
+                    // (base x a stage factor no larger than the race's max) is tiered must belong to a race that qualifies for the comp.
+                    for (int k = 0; k < 16; k++)
+                    {
+                        float bse = F(r, 0.1f, t3 * 1.2f), maxF = r.Next(4) == 0 ? F(r, 0.1f, 1f) : F(r, 1f, 4f);
+                        float stage = F(r, 0.05f, Math.Max(maxF, 1f));
+                        if (stage > maxF && maxF >= 1f) stage = maxF;
+                        if (maxF < 1f) stage = Math.Min(stage, 1f);
+                        int now = RM_TitanicKernel.TierFor(bse * stage, t1, t2, t3, 0);
+                        bool qual = RM_TitanicKernel.DefQualifies(bse, maxF, t1, 0);
+                        Check(!(now != 0 && !qual), $"life stage x{stage} (max {maxF}) on base {bse} is tier {now} but the race does not qualify for the wake comp");
+                        Check(qual == (bse * Math.Max(maxF, 1f) >= t1), "DefQualifies(base, factor) is not base x max(factor, 1) >= T1");
+                        Check(RM_TitanicKernel.DefQualifies(bse, maxF, t1, -1) == false && RM_TitanicKernel.DefQualifies(bse, maxF, t1, 1), "force ignored with a life-stage factor");
+                    }
+                    // HUGETHINGS_SETTINGS_HARDENING_1 (B3.19 / C3.6 / D3.3): hostile Scribe values (NaN, +-inf, negative, zero, huge) end sane.
+                    Check(!RM_TitanicKernel.ThresholdsValid(t1, t2, float.PositiveInfinity) && !RM_TitanicKernel.ThresholdsValid(float.NaN, t2, t3)
+                          && !RM_TitanicKernel.ThresholdsValid(t1, float.PositiveInfinity, float.PositiveInfinity), "ThresholdsValid accepts an infinite or NaN rung");
+                    foreach (float bad in new[] { float.NaN, float.PositiveInfinity, float.NegativeInfinity, -F(r, 0f, 1e6f), 0f, F(r, 0f, 1e9f) })
+                    {
+                        float lo = F(r, 0f, 5f), hi = lo + F(r, 0.01f, 50f), dflt = F(r, lo, hi);
+                        float got = RM_TitanicKernel.SaneSetting(bad, lo, hi, dflt);
+                        Check(RM_TitanicKernel.Finite(got) && got >= lo && got <= hi, $"SaneSetting({bad}) = {got} outside [{lo},{hi}]");
+                        if (!RM_TitanicKernel.Finite(bad)) Check(got == dflt, $"non-finite {bad} did not fall back to the default");
+                        Check(RM_TitanicKernel.Finite(RM_TitanicKernel.SaneSetting(bad, lo, hi, float.NaN)), "a NaN default escaped");
+                        int ib = float.IsNaN(bad) ? 0 : (int)Math.Max(int.MinValue / 2, Math.Min(int.MaxValue / 2, bad));
+                        int ig = RM_TitanicKernel.SaneSetting(ib, 1, 50);
+                        Check(ig >= 1 && ig <= 50, $"int SaneSetting({ib}) = {ig}");
+                    }
                 }
                 catch (Exception e) { fails.Add($"tier seed {seed}: {e.Message}"); }
             }
@@ -177,6 +205,24 @@ namespace RimMandrake.TitanicCreatures.SelfTest
                         Check(!RM_TitanicKernel.LeavesFilth(0, true), "an untiered pawn left rubble");
                         Check(RM_TitanicKernel.LeavesFilth(tier, true) == (tier >= 1), "LeavesFilth(true) wrong");
                         Check(!RM_TitanicKernel.LeavesFilth(tier, false), "rubble without a roll");
+                    }
+                    // TITAN_WAKE_FIXES_1 (B3.6): a multi-cell thing listed in every cell of the footprint is struck once per step.
+                    {
+                        int things = r.Next(1, 8), cellsN = r.Next(1, 17);
+                        var objs = Enumerable.Range(0, things).Select(_ => new object()).ToList();
+                        var cells = new List<List<object>>();
+                        var want = new List<object>();
+                        for (int ci = 0; ci < cellsN; ci++)
+                        {
+                            var cell = new List<object>();
+                            foreach (object o in objs) if (r.Next(3) == 0) { cell.Add(o); if (!want.Contains(o)) want.Add(o); }
+                            cells.Add(cell);
+                        }
+                        cells.Add(new List<object>(objs.Count > 0 ? new[] { objs[0], objs[0] } : new object[0]));
+                        if (objs.Count > 0 && !want.Contains(objs[0])) want.Add(objs[0]);
+                        List<object> got = RM_TitanicKernel.UniqueInOrder<object>(cells);
+                        Check(got.Count == got.Distinct().Count(), "a multi-cell thing was struck more than once in one step");
+                        Check(got.SequenceEqual(want), "UniqueInOrder lost a thing or changed first-seen order");
                     }
                 }
                 catch (Exception e) { fails.Add($"crush seed {seed}: {e.Message}"); }

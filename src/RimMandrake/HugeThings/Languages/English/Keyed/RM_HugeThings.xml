@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <!-- Mod Settings (HUGETHINGS_SETTINGS_HARDENING_1). {0} is the slider's current value. -->
+  <RM_HugeThings_SettingsCategory>Huge Things</RM_HugeThings_SettingsCategory>
+  <RM_HugeThings_GiantPlants>Giant plants</RM_HugeThings_GiantPlants>
+  <RM_HugeThings_GiantPlantsEnabled>Giant plants behave like their size</RM_HugeThings_GiantPlantsEnabled>
+  <RM_HugeThings_GiantPlantsEnabled_Desc>Master switch for everything below in this section. Off: every huge plant is an ordinary one-cell plant, as in vanilla (a giant that is solid on its own cell stays so until a restart).</RM_HugeThings_GiantPlantsEnabled_Desc>
+  <RM_HugeThings_PlantTrunk>Solid where they touch the ground</RM_HugeThings_PlantTrunk>
+  <RM_HugeThings_PlantTrunk_Desc>A huge plant blocks the cells where its stem, roots or body meet the ground (measured from its art), so pawns walk around it and nothing can be built inside it; its overhanging cap stays walkable. A giant whose art touches the ground only in its own cell becomes solid on that cell (restart). Off: every plant is one walk-through cell, as in vanilla.</RM_HugeThings_PlantTrunk_Desc>
+  <RM_HugeThings_PlantTrunkScale>  Ground footprint size: {0}x</RM_HugeThings_PlantTrunkScale>
+  <RM_HugeThings_PlantTrunkDamage>  Trunk hits damage the plant</RM_HugeThings_PlantTrunkDamage>
+  <RM_HugeThings_PlantTrunkDamage_Desc>A shot or blast that hits a trunk cell damages the giant once per projectile, beam or blast. Trunks give partial cover either way. Off: the trunk soaks the hit and the plant is unharmed.</RM_HugeThings_PlantTrunkDamage_Desc>
+  <RM_HugeThings_PlantItemPush>  Push items out of a growing trunk</RM_HugeThings_PlantItemPush>
+  <RM_HugeThings_PlantItemPush_Desc>When a trunk grows over a cell holding only items, the items are moved gently to the nearest free cell (their own stockpile first). Off: that cell simply stays open until it is clear.</RM_HugeThings_PlantItemPush_Desc>
+  <RM_HugeThings_PlantSelection>Click anywhere on a huge plant's picture to select it</RM_HugeThings_PlantSelection>
+  <RM_HugeThings_PlantSelection_Desc>Off: a huge plant can only be selected on the one cell it grows from.</RM_HugeThings_PlantSelection_Desc>
+  <RM_HugeThings_GiantAnimals>Giant animals</RM_HugeThings_GiantAnimals>
+  <RM_HugeThings_GiantAnimalsEnabled>Giant animals behave like their size</RM_HugeThings_GiantAnimalsEnabled>
+  <RM_HugeThings_GiantAnimalsEnabled_Desc>Master switch for everything below in this section: click hitboxes, size tiers, the destruction wake, roofs, giant-plant smashing, butcher yield and the corpse site. Off: every creature behaves as in vanilla.</RM_HugeThings_GiantAnimalsEnabled_Desc>
+  <RM_HugeThings_PawnHitbox>Click anywhere on a huge animal to select it</RM_HugeThings_PawnHitbox>
+  <RM_HugeThings_PawnHitbox_Desc>A huge creature can be selected by clicking anywhere on its drawn body. Off: only near its middle.</RM_HugeThings_PawnHitbox_Desc>
+  <RM_HugeThings_PawnHitboxScale>  Hitbox size: {0}x</RM_HugeThings_PawnHitboxScale>
+  <RM_HugeThings_LargePawnsFootprint>Multi-cell footprint from Large Pawns (restart)</RM_HugeThings_LargePawnsFootprint>
+  <RM_HugeThings_LargePawnsFootprint_Desc>When Large Pawns is loaded, its size ladder is set to the tiers below so a titan occupies 2x2, 3x3 or 4x4 cells. Off: Large Pawns keeps its own settings. Without Large Pawns every titan is one cell either way.</RM_HugeThings_LargePawnsFootprint_Desc>
+  <RM_HugeThings_TierCustom>Custom size tiers (restart)</RM_HugeThings_TierCustom>
+  <RM_HugeThings_TierCustom_Desc>A creature is a titan by its body size: T1 heavy, T2 colossal, T3 titanic. Off: the shipped tiers (4 / 8 / 20). Which races carry the wake is decided at startup, so a race newly crossing T1 needs a restart.</RM_HugeThings_TierCustom_Desc>
+  <RM_HugeThings_TierT1>  T1 from body size {0}</RM_HugeThings_TierT1>
+  <RM_HugeThings_TierT2>  T2 from body size {0}</RM_HugeThings_TierT2>
+  <RM_HugeThings_TierT3>  T3 from body size {0}</RM_HugeThings_TierT3>
+  <RM_HugeThings_TierInvalid>  These must rise T1 &lt; T2 &lt; T3; until they do, the shipped tiers are used.</RM_HugeThings_TierInvalid>
+  <RM_HugeThings_Wake>Destruction wake</RM_HugeThings_Wake>
+  <RM_HugeThings_Wake_Desc>A titan crushes crates and plants, breaches walls and leaves rubble as it walks. Off: no wake damage; it walks through everything harmlessly, and none of the wake options below apply.</RM_HugeThings_Wake_Desc>
+  <RM_HugeThings_WakeDamage>  Crush damage: {0}x</RM_HugeThings_WakeDamage>
+  <RM_HugeThings_WakeRubble>  Rubble chance per footprint cell: {0}%</RM_HugeThings_WakeRubble>
+  <RM_HugeThings_WakeRoof>  Colossal titans hole thin roofs</RM_HugeThings_WakeRoof>
+  <RM_HugeThings_WakeRoof_Desc>T2 and larger tear out constructed and thin rock roofs as they pass. Overhead mountain is never removed.</RM_HugeThings_WakeRoof_Desc>
+  <RM_HugeThings_Smash>  The biggest titans smash giant plants</RM_HugeThings_Smash>
+  <RM_HugeThings_Smash_Desc>A titan at or above the smash tier damages every giant plant whose trunk it brushes, once per step, until the plant falls and the way opens. Smaller titans treat giant trunks as walls and go around. Off: every titan goes around.</RM_HugeThings_Smash_Desc>
+  <RM_HugeThings_SmashTier>    Smash tier: T{0} and larger</RM_HugeThings_SmashTier>
+  <RM_HugeThings_RoofAvoid>Slowed under overhead mountain</RM_HugeThings_RoofAvoid>
+  <RM_HugeThings_RoofAvoid_Desc>A titan crossing a cell under overhead mountain moves very slowly. Off: it moves like any other pawn.</RM_HugeThings_RoofAvoid_Desc>
+  <RM_HugeThings_Yield>Reduced butcher yield on titans</RM_HugeThings_Yield>
+  <RM_HugeThings_Yield_Desc>A T1 or T2 titan butchers for somewhat less meat and leather per body size than a same-mass ordinary animal would. Off: full vanilla yield.</RM_HugeThings_Yield_Desc>
+  <RM_HugeThings_YieldFloor>  Minimum yield floor: {0}% of normal</RM_HugeThings_YieldFloor>
+  <RM_HugeThings_CorpseSite>T3 corpse becomes a harvest site</RM_HugeThings_CorpseSite>
+  <RM_HugeThings_CorpseSite_Desc>The largest tier's corpse becomes a standing landmark, harvested over several work sessions with the yield slowly spoiling, instead of being butchered at once. Off: it butchers like any ordinary corpse.</RM_HugeThings_CorpseSite_Desc>
+  <RM_HugeThings_CorpseMeat>  Meat per harvest session: {0}</RM_HugeThings_CorpseMeat>
+  <RM_HugeThings_CorpseLeather>  Leather per harvest session: {0}</RM_HugeThings_CorpseLeather>
+  <RM_HugeThings_CorpseHours>  Work hours per session: {0}</RM_HugeThings_CorpseHours>
+  <RM_HugeThings_CorpseMeatSpoil>  Meat spoilage per day: {0}%</RM_HugeThings_CorpseMeatSpoil>
+  <RM_HugeThings_CorpseLeatherSpoil>  Leather spoilage per day: {0}%</RM_HugeThings_CorpseLeatherSpoil>
+</LanguageData>

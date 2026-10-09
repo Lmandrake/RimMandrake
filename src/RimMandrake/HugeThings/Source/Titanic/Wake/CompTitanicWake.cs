@@ -16,7 +16,8 @@ namespace RimMandrake.TitanicCreatures
         public void Notify_EnteredCell()
         {
             Pawn pawn = parent as Pawn;
-            if (pawn == null || !pawn.Spawned || pawn.Map == null)
+            // TITAN_WAKE_FIXES_1 (B3.8): no ground wake while airborne (1.6 Pawn.Flying).
+            if (pawn == null || !pawn.Spawned || pawn.Map == null || pawn.Flying)
             {
                 return;
             }
