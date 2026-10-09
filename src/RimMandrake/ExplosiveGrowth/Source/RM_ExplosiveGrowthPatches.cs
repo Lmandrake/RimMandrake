@@ -48,6 +48,7 @@ namespace RimMandrake.ExplosiveGrowth
     /// multiplied once, not twice.
     /// </summary>
     [HarmonyPatch(typeof(Plant), nameof(Plant.GrowthRate), MethodType.Getter)]
+    [RimMandrake.Shared.PatchFeature("Explosive growth soak", typeof(ExplosiveGrowthSettings), "enabled")]
     public static class RM_Patch_Plant_GrowthRate_Soak
     {
         [HarmonyPostfix]
@@ -72,6 +73,7 @@ namespace RimMandrake.ExplosiveGrowth
     /// print throws.
     /// </summary>
     [HarmonyPatch(typeof(Plant), nameof(Plant.Print))]
+    [RimMandrake.Shared.PatchFeature("Explosive growth overgrown print", typeof(ExplosiveGrowthSettings), "enabled")]
     public static class RM_Patch_Plant_Print_Overgrown
     {
         [HarmonyPrefix]
@@ -105,6 +107,7 @@ namespace RimMandrake.ExplosiveGrowth
     /// anything else is left untinted rather than broken.
     /// </summary>
     [HarmonyPatch(typeof(Plant), nameof(Plant.Graphic), MethodType.Getter)]
+    [RimMandrake.Shared.PatchFeature("Explosive growth hue shift", typeof(ExplosiveGrowthSettings), "hueShiftEnabled")]
     public static class RM_Patch_Plant_Graphic_Hue
     {
         // "Wrong": a bruised violet for ordinary plants, raw red for the
@@ -143,6 +146,7 @@ namespace RimMandrake.ExplosiveGrowth
     /// before the top yields swollen produce, up to double at full charge.
     /// 🄸 INVENTED scale.</summary>
     [HarmonyPatch(typeof(Plant), nameof(Plant.YieldNow))]
+    [RimMandrake.Shared.PatchFeature("Harvest jackpot", typeof(ExplosiveGrowthSettings), "harvestJackpotEnabled")]
     public static class RM_Patch_Plant_YieldNow_Jackpot
     {
         [HarmonyPostfix]
@@ -162,6 +166,7 @@ namespace RimMandrake.ExplosiveGrowth
     /// set it off instead. Ruling 7: trigger/weaponize stay unreliable, so this
     /// is a real chance, not a safe button.</summary>
     [HarmonyPatch(typeof(Plant), nameof(Plant.PlantCollected))]
+    [RimMandrake.Shared.PatchFeature("Explosive growth last-swing gamble", typeof(ExplosiveGrowthSettings), "enabled")]
     public static class RM_Patch_Plant_PlantCollected_Gamble
     {
         /// <summary>The last swing's chance to set it off (0 below the tremble or with the gamble off).

@@ -385,6 +385,7 @@ namespace RimMandrake.TheForge
     // higher and prey out on the open ash well lower, beyond its own forage range. Vanilla BestPawnToHunt still picks, through this
     // public scoring function, so reachability, fences and the rest of vanilla's rules are untouched.
     [HarmonyPatch(typeof(FoodUtility), nameof(FoodUtility.GetPreyScoreFor))]
+    [RimMandrake.Shared.PatchFeature("Forge sky column hunt", typeof(RM_TheForgeSettings), "skyColumnHuntEnabled")]
     public static class RM_Patch_ColumnPreyScore
     {
         public const float InColumnBonus = RM_SkyKernel.InColumnBonus;

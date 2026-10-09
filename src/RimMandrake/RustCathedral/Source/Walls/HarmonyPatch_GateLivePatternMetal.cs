@@ -25,6 +25,7 @@ namespace RimMandrake.RustCathedral.Walls
 	}
 
 	[HarmonyPatch(typeof(CompDeepScanner), "ChooseLumpThingDef")]
+	[RimMandrake.Shared.PatchFeature("Live pattern metal gate", typeof(RustCathedralWallsSettings), "livePatternMetalGateEnabled")]
 	public static class HarmonyPatch_GateLivePatternMetal
 	{
 		private const string LivePatternMetalDefName = "RM_LivePatternMetal";

@@ -178,6 +178,7 @@ namespace RimMandrake.LuminousPigment
     // really went through (__result && actuallyTraded -- Ninefold's own
     // gate).
     [HarmonyPatch(typeof(TradeDeal), nameof(TradeDeal.TryExecute))]
+    [RimMandrake.Shared.PatchFeature("Deepfire gods react", typeof(LuminousPigmentSettings), "godsReact")]
     public static class Patch_TradeDeal_DeepfireSold
     {
         [HarmonyPrefix]

@@ -55,6 +55,7 @@ namespace RimMandrake.DivingInteraction
     // reflection-based hook already in this codebase.
     // ════════════════════════════════════════════════════════════════════
     [HarmonyPatch(typeof(SkyManager), "SkyManagerUpdate")]
+    [RimMandrake.Shared.PatchFeature("Chill drowned aurora", typeof(RM_DivingSettings), "chillDrownedAuroraEnabled")]
     public static class Patch_ChillDrownedAurora
     {
         private static readonly FieldInfo MapField = AccessTools.Field(typeof(SkyManager), "map");

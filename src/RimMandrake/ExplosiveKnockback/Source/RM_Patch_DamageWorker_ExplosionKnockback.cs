@@ -13,6 +13,7 @@ namespace RimMandrake.ExplosiveKnockback
     /// review row F10's probe regex RM_Patch_\w*(Knockback|Blowback|Stagger) on purpose.
     /// </summary>
     [HarmonyPatch(typeof(DamageWorker), "ExplosionDamageThing")]
+    [RimMandrake.Shared.PatchFeature("Explosive knockback", typeof(RimMandrakeExplosiveKnockbackSettings), "enabled")]
     public static class RM_Patch_DamageWorker_ExplosionKnockback
     {
         public static float ForceOf(DamageDef def)

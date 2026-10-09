@@ -37,6 +37,7 @@ namespace RimMandrake.DivingInteraction
     // nothing at all.
     // ════════════════════════════════════════════════════════════════════
     [HarmonyPatch]
+    [RimMandrake.Shared.PatchFeature("RealFoW compat", typeof(RM_DivingSettings), "realFowCompatEnabled")]
     public static class Patch_RealFoWStaleHearing
     {
         private const string WatcherTypeName = "RimWorldRealFoW.CompFieldOfViewWatcher";
