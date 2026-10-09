@@ -372,8 +372,14 @@ namespace RimMandrake.FlowWorks
 		/// covers the footprint. Order (§5): fewest same-body wet neighbours
 		/// first, tie-broken by greatest distance from the centroid, then by
 		/// cell index — fully deterministic, so the order survives a save and is
-		/// identical on every machine. That thins the body from its shallow edge
-		/// and never fragments it.</summary>
+		/// identical on every machine. That thins the body from its shallow edge.
+		///
+		/// LIQUID_RECESSION_TOPOLOGY_1: neighbours are counted within THIS body
+		/// only (another body or fluid touching it no longer props a cell up), a
+		/// cell whose removal would split the body is passed over (a local 3x3
+		/// test, then a bounded whole-body check, see <see cref="PickRecedeCell"/>),
+		/// and the live set and neighbour counts are built once per pulse and
+		/// updated per removal instead of rescanning the footprint ×8 each time.</summary>
 		private void Recede(Map map, RM_LiquidBody body, FluidDef fluid, RM_MapComponent_Excavation owner)
 		{
 			float perCell = body.PerCellVolume;
@@ -381,12 +387,38 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			int supported = RM_StockMath.SupportedCells(body.stock, perCell);
-			int guard = 0;
+			int supported = RM_StockMath.SupportedCellsKeepingLast(body.stock, perCell, RimMandrakeFlowWorksSettings.recedeKeepsLastCell);
+			if (body.ActiveCellCount <= supported)
+			{
+				return;
+			}
 			IntVec3 centroid = Centroid(body);   // body.cells is fixed for the whole loop: compute once
+			Dictionary<IntVec3, int> live = new Dictionary<IntVec3, int>(body.cells.Count);
+			for (int i = 0; i < body.cells.Count; i++)
+			{
+				IntVec3 c = body.cells[i];
+				if (owner.IsSourceCell(c))
+				{
+					live[c] = 0;   // already receded, dug into or filled in cells are not live
+				}
+			}
+			List<IntVec3> keys = new List<IntVec3>(live.Keys);
+			for (int i = 0; i < keys.Count; i++)
+			{
+				int n = 0;
+				for (int d = 0; d < 8; d++)
+				{
+					if (live.ContainsKey(keys[i] + GenAdj.AdjacentCells[d]))
+					{
+						n++;
+					}
+				}
+				live[keys[i]] = n;
+			}
+			int guard = 0;
 			while (body.ActiveCellCount > supported && body.ActiveCellCount > 0 && guard++ < 64)
 			{
-				IntVec3 pick = PickRecedeCell(map, body, owner, centroid);
+				IntVec3 pick = PickRecedeCell(map, body, live, centroid);
 				if (!pick.IsValid)
 				{
 					return;
@@ -405,42 +437,121 @@ namespace RimMandrake.FlowWorks
 					return;
 				}
 				body.receded.Add(pick);
+				live.Remove(pick);
+				for (int d = 0; d < 8; d++)
+				{
+					IntVec3 n = pick + GenAdj.AdjacentCells[d];
+					if (live.TryGetValue(n, out int cnt))
+					{
+						live[n] = cnt - 1;
+					}
+				}
 			}
 		}
 
-		private IntVec3 PickRecedeCell(Map map, RM_LiquidBody body, RM_MapComponent_Excavation owner, IntVec3 centroid)
+		// Ring order N, NE, E, SE, S, SW, W, NW — RM_StockMath.LocalRemovalKeepsConnected's bit order.
+		private static readonly IntVec3[] RingOffsets =
+		{
+			new IntVec3(0, 0, 1), new IntVec3(1, 0, 1), new IntVec3(1, 0, 0), new IntVec3(1, 0, -1),
+			new IntVec3(0, 0, -1), new IntVec3(-1, 0, -1), new IntVec3(-1, 0, 0), new IntVec3(-1, 0, 1),
+		};
+
+		private const int GlobalSplitChecks = 4;
+
+		private IntVec3 PickRecedeCell(Map map, RM_LiquidBody body, Dictionary<IntVec3, int> live, IntVec3 centroid)
 		{
 			IntVec3 best = IntVec3.Invalid;
 			int bestNeighbours = int.MaxValue;
 			int bestDist = -1;
 			int bestIndex = int.MaxValue;
-			for (int i = 0; i < body.cells.Count; i++)
+			List<IntVec3> unsafeLocal = null;
+			foreach (KeyValuePair<IntVec3, int> kv in live)
 			{
-				IntVec3 c = body.cells[i];
-				if (!owner.IsSourceCell(c))
-				{
-					continue; // already receded, or dug into, or filled in
-				}
-				int neighbours = 0;
-				for (int d = 0; d < 8; d++)
-				{
-					IntVec3 n = c + GenAdj.AdjacentCells[d];
-					if (n.InBounds(map) && owner.IsSourceCell(n))
-					{
-						neighbours++;
-					}
-				}
+				IntVec3 c = kv.Key;
 				int dist = (c - centroid).LengthHorizontalSquared;
 				int idx = map.cellIndices.CellToIndex(c);
-				if (RM_StockMath.PrefersCandidate(neighbours, dist, idx, bestNeighbours, bestDist, bestIndex))
+				if (!RM_StockMath.PrefersCandidate(kv.Value, dist, idx, bestNeighbours, bestDist, bestIndex))
 				{
-					bestNeighbours = neighbours;
-					bestDist = dist;
-					bestIndex = idx;
-					best = c;
+					continue;
+				}
+				if (!RM_StockMath.LocalRemovalKeepsConnected(RingMask(live, c)))
+				{
+					if (unsafeLocal == null) unsafeLocal = new List<IntVec3>();
+					unsafeLocal.Add(c);
+					continue;
+				}
+				bestNeighbours = kv.Value;
+				bestDist = dist;
+				bestIndex = idx;
+				best = c;
+			}
+			if (best.IsValid || unsafeLocal == null)
+			{
+				return best;
+			}
+			// Every candidate failed the local test (a one-wide ring or snake): a local split can still
+			// close around a longer path, so check a few of the best candidates against the whole body.
+			unsafeLocal.Sort((a, b) =>
+			{
+				int ia = map.cellIndices.CellToIndex(a), ib = map.cellIndices.CellToIndex(b);
+				if (RM_StockMath.PrefersCandidate(live[a], (a - centroid).LengthHorizontalSquared, ia,
+					live[b], (b - centroid).LengthHorizontalSquared, ib)) return -1;
+				return a == b ? 0 : 1;
+			});
+			int before = ComponentCount(live, IntVec3.Invalid);
+			for (int i = 0; i < unsafeLocal.Count && i < GlobalSplitChecks; i++)
+			{
+				if (ComponentCount(live, unsafeLocal[i]) <= before)
+				{
+					return unsafeLocal[i];
 				}
 			}
-			return best;
+			// Nothing sheds without a split this pulse: hold the shape rather than fragment it.
+			return IntVec3.Invalid;
+		}
+
+		private static int RingMask(Dictionary<IntVec3, int> live, IntVec3 c)
+		{
+			int mask = 0;
+			for (int k = 0; k < 8; k++)
+			{
+				if (live.ContainsKey(c + RingOffsets[k]))
+				{
+					mask |= 1 << k;
+				}
+			}
+			return mask;
+		}
+
+		/// <summary>8-way components of the live set with <paramref name="without"/> left out.</summary>
+		private static int ComponentCount(Dictionary<IntVec3, int> live, IntVec3 without)
+		{
+			HashSet<IntVec3> seen = new HashSet<IntVec3>();
+			Queue<IntVec3> q = new Queue<IntVec3>();
+			int comps = 0;
+			foreach (IntVec3 s in live.Keys)
+			{
+				if (s == without || seen.Contains(s))
+				{
+					continue;
+				}
+				comps++;
+				seen.Add(s);
+				q.Enqueue(s);
+				while (q.Count > 0)
+				{
+					IntVec3 c = q.Dequeue();
+					for (int d = 0; d < 8; d++)
+					{
+						IntVec3 n = c + GenAdj.AdjacentCells[d];
+						if (n != without && live.ContainsKey(n) && seen.Add(n))
+						{
+							q.Enqueue(n);
+						}
+					}
+				}
+			}
+			return comps;
 		}
 
 		/// <summary>Refill puts cells back in REVERSE order, so the body breathes
@@ -455,7 +566,7 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			int supported = RM_StockMath.SupportedCells(body.stock, perCell);
+			int supported = RM_StockMath.SupportedCellsKeepingLast(body.stock, perCell, RimMandrakeFlowWorksSettings.recedeKeepsLastCell);
 			int guard = 0;
 			while (body.receded.Count > 0 && body.ActiveCellCount < supported && guard++ < 64)
 			{

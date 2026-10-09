@@ -321,6 +321,26 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("SupportedCells_with_no_per_cell_volume_is_zero_not_a_crash", () =>
                 Assert(RM_StockMath.SupportedCells(10f, 0f) == 0, "divide-by-zero guard"));
 
+            Case("SupportedCellsKeepingLast_keeps_one_cell_while_any_stock_remains", () =>
+            {
+                Assert(RM_StockMath.SupportedCellsKeepingLast(2f, 5f, true) == 1, "2 of 5 units must keep the last cell drawable");
+                Assert(RM_StockMath.SupportedCellsKeepingLast(2f, 5f, false) == 0, "setting off: plain floor");
+                Assert(RM_StockMath.SupportedCellsKeepingLast(0f, 5f, true) == 0, "a truly empty body still recedes fully");
+                Assert(RM_StockMath.SupportedCellsKeepingLast(12f, 5f, true) == 2, "above one cell it is the plain floor");
+            });
+
+            Case("LocalRemovalKeepsConnected_detects_a_bridge_cell", () =>
+            {
+                // ring bits: 0 N, 1 NE, 2 E, 3 SE, 4 S, 5 SW, 6 W, 7 NW
+                Assert(!RM_StockMath.LocalRemovalKeepsConnected((1 << 0) | (1 << 4)), "N and S only: centre is a bridge");
+                Assert(!RM_StockMath.LocalRemovalKeepsConnected((1 << 2) | (1 << 6)), "E and W only: centre is a bridge");
+                Assert(RM_StockMath.LocalRemovalKeepsConnected((1 << 0) | (1 << 2)), "N and E touch diagonally");
+                Assert(RM_StockMath.LocalRemovalKeepsConnected((1 << 0) | (1 << 1) | (1 << 2) | (1 << 3) | (1 << 4)), "a full east half stays one group");
+                Assert(RM_StockMath.LocalRemovalKeepsConnected(1 << 5), "a single neighbour is an end cell");
+                Assert(RM_StockMath.LocalRemovalKeepsConnected(0), "an isolated cell");
+                Assert(!RM_StockMath.LocalRemovalKeepsConnected((1 << 1) | (1 << 5)), "opposite diagonals are split");
+            });
+
             Case("Recession_order_prefers_FEWEST_neighbours_first", () =>
                 Assert(RM_StockMath.PrefersCandidate(2, 0, 0, 5, 999, 0),
                     "§5: fewest same-liquid neighbours first — that thins the body from its shallow edge "
