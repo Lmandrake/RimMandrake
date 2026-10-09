@@ -799,7 +799,7 @@
     <statBases>
       <MaxHitPoints>85</MaxHitPoints>
       <Nutrition>0.2</Nutrition>
-      <Flammability>40</Flammability>
+      <Flammability>1</Flammability>
     </statBases>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown</texPath>
