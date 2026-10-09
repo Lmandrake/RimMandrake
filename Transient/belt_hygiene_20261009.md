@@ -18,3 +18,4 @@
 - EH-7, SC-4, SS-1, SS-2 built (Scarlands, EnvironmentalHazards, Stillsand)
 - LP-4, SC-3 built; LP-3 stale-dropped (setting already gone)
 - LP-6, LP-7 built
+- DI-5, SC-2 built

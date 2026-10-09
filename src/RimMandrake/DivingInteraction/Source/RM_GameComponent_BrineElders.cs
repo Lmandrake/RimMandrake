@@ -133,6 +133,55 @@ namespace RimMandrake.DivingInteraction
             {
                 seenKeys = new List<string>();
             }
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                RemapRenamedKeys();
+            }
+        }
+
+        // A def renamed through an RM_DefAliasDef (e.g. RSW_ -> RM_ in a biome sitting) must not read as
+        // new to the Elder again: remap "Lifeform:/Xenotype:/Material:" keys by the same alias table (belt DI-5).
+        // EnvironmentalHazards owns the table; reached by reflection, absent = keys untouched.
+        private void RemapRenamedKeys()
+        {
+            System.Type patches = GenTypes.GetTypeInAnyAssembly("RimMandrake.EnvironmentalHazards.RM_DefAliasPatches");
+            System.Reflection.MethodInfo resolve = patches?.GetMethod("Resolve", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static);
+            if (resolve == null || seenKeys == null)
+            {
+                return;
+            }
+            for (int i = 0; i < seenKeys.Count; i++)
+            {
+                string key = seenKeys[i];
+                int colon = key == null ? -1 : key.IndexOf(':');
+                if (colon <= 0)
+                {
+                    continue;
+                }
+                System.Type defType;
+                switch (key.Substring(0, colon))
+                {
+                    case "Lifeform": defType = typeof(PawnKindDef); break;
+                    case "Xenotype": defType = typeof(RimWorld.XenotypeDef); break;
+                    case "Material": defType = typeof(ThingDef); break;
+                    default: continue;
+                }
+                string to = resolve.Invoke(null, new object[] { defType, key.Substring(colon + 1) }) as string;
+                if (to == null)
+                {
+                    continue;
+                }
+                string remapped = key.Substring(0, colon + 1) + to;
+                if (seenKeys.Contains(remapped))
+                {
+                    seenKeys.RemoveAt(i);
+                    i--;
+                }
+                else
+                {
+                    seenKeys[i] = remapped;
+                }
+            }
         }
     }
 }

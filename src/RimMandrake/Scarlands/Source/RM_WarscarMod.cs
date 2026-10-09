@@ -133,7 +133,40 @@ namespace RimMandrake.Scarlands
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
         public static float crossBiomeCoverage = 1f;
-        private static string biomeListBuffer;
+        private static Vector2 biomeScroll = Vector2.zero;
+        private static List<BiomeDef> biomesSorted;
+
+        // Checklist replaces the free-text box, where a typo silently matched nothing (belt SC-2).
+        // Names already in the stored list that are not real biomes are kept untouched.
+        private static void DrawBiomeChecklist(Rect outRect)
+        {
+            if (biomesSorted == null)
+            {
+                biomesSorted = new List<BiomeDef>(DefDatabase<BiomeDef>.AllDefsListForReading);
+                biomesSorted.Sort((x, y) => string.Compare(x.LabelCap.ToString(), y.LabelCap.ToString(), System.StringComparison.OrdinalIgnoreCase));
+            }
+            List<string> sel = new List<string>();
+            if (!crossBiomeBiomeList.NullOrEmpty())
+                foreach (string part in crossBiomeBiomeList.Split(',', ';')) { string t = part.Trim(); if (t.Length > 0) sel.Add(t); }
+            const float rowH = 24f;
+            Rect view = new Rect(0f, 0f, outRect.width - 16f, biomesSorted.Count * rowH);
+            Widgets.BeginScrollView(outRect, ref biomeScroll, view);
+            float y = 0f;
+            bool changed = false;
+            foreach (BiomeDef b in biomesSorted)
+            {
+                bool was = sel.Contains(b.defName), now = was;
+                Widgets.CheckboxLabeled(new Rect(0f, y, view.width, rowH), b.LabelCap + " (" + b.defName + ")", ref now);
+                if (now != was)
+                {
+                    if (now) sel.Add(b.defName); else sel.RemoveAll(n => n == b.defName);
+                    changed = true;
+                }
+                y += rowH;
+            }
+            Widgets.EndScrollView();
+            if (changed) crossBiomeBiomeList = string.Join(", ", sel.ToArray());
+        }
 
         public static bool IsWarscar(BiomeDef biome) { return biome != null && biome.defName == "RM_Warscar"; }
 
@@ -480,10 +513,8 @@ namespace RimMandrake.Scarlands
                 list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere, "Apply to any non-Warscar biome. Off: only the biomes named below.");
                 if (!crossBiomeEverywhere)
                 {
-                    if (biomeListBuffer == null) biomeListBuffer = crossBiomeBiomeList;
-                    list.Label("  Biome defNames, comma-separated (e.g. TemperateForest, AridShrubland):");
-                    biomeListBuffer = list.TextEntry(biomeListBuffer);
-                    crossBiomeBiomeList = biomeListBuffer;
+                    list.Label("  Tick the biomes (stored as a defName list):");
+                    DrawBiomeChecklist(list.GetRect(180f));
                 }
                 list.Label("  Wreck-lichen intensity on those maps: " + (crossBiomeCoverage * 100f).ToString("0") + "%");
                 crossBiomeCoverage = list.Slider(crossBiomeCoverage, 0f, 1f);
