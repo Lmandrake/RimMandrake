@@ -507,6 +507,7 @@ namespace RimMandrake.LongShade
             foreach (Faction f in Find.FactionManager.AllFactionsVisible)
             {
                 if (f.IsPlayer || f.defeated || f.HostileTo(Faction.OfPlayer) || f.def.defName == null) continue;
+                if (!f.def.pawnGroupMakers.Any(m => m.kindDef == PawnGroupKindDefOf.Peaceful || m.kindDef == PawnGroupKindDefOf.Combat)) continue;
                 for (int i = 0; i < ext.factionPrefixes.Count; i++)
                 {
                     if (f.def.defName.StartsWith(ext.factionPrefixes[i])) return f;
@@ -532,9 +533,17 @@ namespace RimMandrake.LongShade
             if (hull == null || clan == null) return false;
             // find the entry cell BEFORE generating pawns: a failed find afterwards would leave them unspawned in the world pawn pool
             if (!RCellFinder.TryFindRandomPawnEntryCell(out IntVec3 entry, map, CellFinder.EdgeRoadChance_Friendly)) return false;
+            bool hasPeaceful = false, hasCombat = false;
+            foreach (PawnGroupMaker pgm in clan.def.pawnGroupMakers)
+            {
+                if (pgm.kindDef == PawnGroupKindDefOf.Peaceful) hasPeaceful = true;
+                else if (pgm.kindDef == PawnGroupKindDefOf.Combat) hasCombat = true;
+            }
+            int choice = RM_LongShadeKernel.ClanGroupChoice(hasPeaceful, hasCombat);
+            if (choice < 0) return false;
             PawnGroupMakerParms gp = new PawnGroupMakerParms
             {
-                groupKind = PawnGroupKindDefOf.Peaceful,
+                groupKind = choice == 0 ? PawnGroupKindDefOf.Peaceful : PawnGroupKindDefOf.Combat,
                 tile = map.Tile,
                 faction = clan,
                 points = Mathf.Max(200f, 120f * Ext.arrivalPawns),

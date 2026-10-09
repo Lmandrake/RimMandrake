@@ -70,6 +70,13 @@ namespace RimMandrake.LongShade
         }
 
         // ================================================================= Jawa return (I5)
+        /// <summary>Which pawn group a returning clan arrives as: 0 = Peaceful, 1 = Combat (non-hostile visitors), -1 = the faction can field neither.
+        /// Seven of the eight RUT_Jawa_* factions declare no Peaceful group maker, so asking for Peaceful alone generated nobody.</summary>
+        public static int ClanGroupChoice(bool hasPeaceful, bool hasCombat)
+        {
+            return hasPeaceful ? 0 : (hasCombat ? 1 : -1);
+        }
+
         /// <summary>The hull counts as looted once a colonist has been inside, nothing hostile is left in it and at most maxItems loose items remain.</summary>
         public static bool HullLooted(bool entered, int hostilesInside, int itemsInside, int maxItems)
         {

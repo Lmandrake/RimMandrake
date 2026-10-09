@@ -499,6 +499,7 @@ namespace RimMandrake.LongShade.SelfTest
                     Check(RM_LongShadeKernel.InHullRect(cx, cz, cx, cz, hw2, hh), "the hull centre is outside its own rect");
                     bool ent = r.Next(2) == 0; int hos = r.Next(0, 3), itm = r.Next(0, 6), mx = r.Next(0, 4);
                     Check(RM_LongShadeKernel.HullLooted(ent, hos, itm, mx) == (ent && hos == 0 && itm <= mx), "HullLooted disagrees with its definition");
+                    Check(RM_LongShadeKernel.ClanGroupChoice(true, r.Next(2) == 0) == 0 && RM_LongShadeKernel.ClanGroupChoice(false, true) == 1 && RM_LongShadeKernel.ClanGroupChoice(false, false) == -1, "ClanGroupChoice disagrees with its definition");
                     int st = r.Next(-1, 5000), nw = r.Next(0, 20000), tw = r.Next(1, 15000);
                     Check(RM_LongShadeKernel.TowDone(st, nw, tw) == (st >= 0 && nw - st >= tw), "TowDone disagrees with its definition");
                     Check(!RM_LongShadeKernel.TowDone(-1, 999999, 1), "a clan that never arrived finishes towing");
