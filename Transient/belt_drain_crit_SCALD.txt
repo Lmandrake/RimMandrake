@@ -1,0 +1,1 @@
+A1 L1: Scald floor map, two rooms sharing an interior wall: after the ramp, total berth heat of the pair equals one room with the same exterior faces (internal wall adds nothing). PROVISIONAL: HeatPerBorderCellPerTick 0.04 needs live retune.

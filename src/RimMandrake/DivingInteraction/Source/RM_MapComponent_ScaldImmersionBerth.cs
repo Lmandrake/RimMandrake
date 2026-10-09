@@ -6,7 +6,7 @@ using Verse;
 namespace RimMandrake.DivingInteraction
 {
     // SCALD_IMMERSION_BERTH_1 — the Scald's ship-touch voice (owner sitting 2026-10-02, Q2).
-    // A parked ship's rooms slowly heat. The heat load scales with a room's hull border, so a
+    // A parked ship's rooms slowly heat. The heat load scales with a room's EXTERIOR hull faces (border cells touching open lake; internal walls add nothing; HeatPerBorderCellPerTick PROVISIONAL, retune live), so a
     // compact ship is cheap to cool and a sprawling one is not. It uses vanilla room temperature,
     // vanilla coolers and vanilla power. It NEVER seals doors and NEVER gates launch: this
     // component touches nothing but room temperature.
@@ -61,6 +61,40 @@ namespace RimMandrake.DivingInteraction
             return r < 0f ? 0f : (r > 1f ? 1f : r);
         }
 
+        /// <summary>Pure count: border cells that touch an exterior cell. Internal walls add nothing, so
+        /// subdividing a fixed hull cannot raise its heat load (SCALD_BERTH_HULL_FACES_1).</summary>
+        public static int CountExterior(IEnumerable<IntVec3> border, System.Func<IntVec3, bool> isExterior)
+        {
+            int n = 0;
+            foreach (IntVec3 b in border)
+            {
+                bool hit = isExterior(b);
+                for (int d = 0; d < 4 && !hit; d++)
+                {
+                    hit = isExterior(b + GenAdj.CardinalDirections[d]);
+                }
+                if (hit)
+                {
+                    n++;
+                }
+            }
+            return n;
+        }
+
+        private int ExteriorHullFaces(Room room)
+        {
+            Map m = map;
+            return CountExterior(room.BorderCellsCardinal, c =>
+            {
+                if (!c.InBounds(m))
+                {
+                    return false;
+                }
+                Room r = c.GetRoom(m);
+                return r != null && r != room && (r.UsesOutdoorTemperature || r.PsychologicallyOutdoors);
+            });
+        }
+
         public override void MapComponentTick()
         {
             if (!isScaldFloor || Find.TickManager.TicksGame % SweepInterval != 0)
@@ -90,7 +124,7 @@ namespace RimMandrake.DivingInteraction
                     heatingSince = now;
                 }
                 float ramp = Ramp(heatingSince, now);
-                int border = room.BorderCellsCardinal.Count();
+                int border = ExteriorHullFaces(room);
                 float energy = border * HeatPerBorderCellPerTick * SweepInterval
                     * RM_DivingSettings.scaldBerthIntensity * ramp;
                 if (energy > 0f)

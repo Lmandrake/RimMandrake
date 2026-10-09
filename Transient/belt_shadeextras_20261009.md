@@ -1,0 +1,10 @@
+# Shade extras build log 2026-10-09
+- filed all 8 items (LONGSHADE_EMPTY_PATCH_WARNING_1, LURE_AWNING, STAMPEDE_ROOF, TOLLOK_TICKS, MIRROR_FIELD, HAROK_STILT, JAWA_RETURN, GELATINOUSSLIME_JOINING_WATER_STANDALONE_1)
+- empty patch warning: reuse clean-patch tell, add tollok to lairRaces
+- lure awnings: (pending)
+- stampede for your roof: (pending)
+- tollok ticks: (pending)
+- mirror field: (pending)
+- harrok: (pending)
+- Jawa return: (pending)
+- joining water rite: (pending)
