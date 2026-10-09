@@ -8,7 +8,7 @@
   Guarded by MayRequire on the whole def: the worker class does not exist without the Long Shade. All numbers PROVISIONAL.
 -->
 <Defs>
-  <IncidentDef MayRequire="mandrake.rm.longshade">
+  <IncidentDef MayRequire="mandrake.rm.biomes">
     <defName>RUT_JawaReturnTow</defName>
     <label>a clan returns for the crawler</label>
     <category>Misc</category>
