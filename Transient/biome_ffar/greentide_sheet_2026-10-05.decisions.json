@@ -1,7 +1,7 @@
 {
   "biome": "RM_Greentide",
   "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
-  "decidedCount": 65,
+  "decidedCount": 64,
   "decisions": {
     "AA_BloodShrimp": {
       "at": "2026-10-08T04:42:21.917Z",
@@ -22,65 +22,82 @@
       "variantsDefault": true
     },
     "Plant_Grass": {
-      "at": "2026-10-08T04:54:02.174Z",
+      "at": "2026-10-09T05:16:50.665Z",
       "decidedAt": "2026-10-08T04:54:00.654Z",
       "decision": "B",
       "note": "Add much more realistic variants",
       "prefill": "A",
       "variants": [
-        "B"
+        "B",
+        "C",
+        "D",
+        "E"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:16:50.665Z"
     },
     "Plant_TallGrass": {
-      "at": "2026-10-08T04:55:02.397Z",
+      "at": "2026-10-09T05:18:10.679Z",
       "decidedAt": "2026-10-08T04:55:00.408Z",
       "decision": "B",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
         "B",
-        "C"
+        "C",
+        "D",
+        "E",
+        "F",
+        "G",
+        "H"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:18:09.034Z"
     },
     "RM_Brakkel": {
-      "at": "2026-10-08T04:53:04.908Z",
+      "at": "2026-10-09T05:16:18.975Z",
       "decision": "A",
       "note": "add one more variant",
       "prefill": "A",
       "variants": [
         "A",
-        "B"
+        "B",
+        "C"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:16:18.975Z"
     },
     "RM_Brunnock": {
+      "at": "2026-10-09T05:16:28.393Z",
       "decision": "A",
       "note": "",
-      "prefill": "A"
-    },
-    "RM_CanopySwinger": {
-      "at": "2026-10-09T02:44:36.465Z",
-      "decidedAt": "2026-10-09T02:44:18.603Z",
-      "decision": "A",
-      "note": "Please select the newly rendered elongated Ookala image you showed me",
-      "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
-    },
-    "RM_Cundral": {
-      "at": "2026-10-08T04:53:24.123Z",
-      "decision": "A",
-      "note": "add one more variant",
       "prefill": "A",
       "variants": [
         "A",
         "B"
       ],
-      "variantsAt": "2026-10-08T04:53:24.123Z"
+      "variantsAt": "2026-10-09T05:16:28.393Z"
+    },
+    "RM_CanopySwinger": {
+      "at": "2026-10-09T05:09:20.591Z",
+      "decidedAt": "2026-10-09T05:09:17.040Z",
+      "decision": "B",
+      "note": "",
+      "picks": {
+        "_byname": "B"
+      },
+      "prefill": "A",
+      "variants": [],
+      "variantsAt": "2026-10-09T05:09:20.591Z"
+    },
+    "RM_Cundral": {
+      "at": "2026-10-09T05:16:32.542Z",
+      "decision": "A",
+      "note": "add one more variant",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-09T05:16:32.542Z"
     },
     "RM_Dhollock": {
       "at": "2026-10-08T04:43:16.604Z",
@@ -104,54 +121,63 @@
       "variantsAt": "2026-10-08T04:55:42.031Z"
     },
     "RM_Ghemmel": {
-      "at": "2026-10-08T04:53:39.022Z",
+      "at": "2026-10-09T05:16:42.860Z",
       "decision": "A",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "A"
+        "A",
+        "B",
+        "C"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:16:39.713Z"
     },
     "RM_Gorbeleth": {
-      "at": "2026-10-08T04:53:56.702Z",
+      "at": "2026-10-09T05:16:46.018Z",
       "decision": "A",
       "note": "add one more variant",
       "prefill": "A",
       "variants": [
-        "B"
+        "B",
+        "C"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:16:46.018Z"
     },
     "RM_Greatbole": {
-      "at": "2026-10-08T04:54:07.662Z",
+      "at": "2026-10-09T05:16:58.473Z",
       "decision": "A",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "A"
+        "A",
+        "B",
+        "C"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:16:54.624Z"
     },
     "RM_Illurin": {
-      "at": "2026-10-08T04:54:12.329Z",
+      "at": "2026-10-09T05:17:04.935Z",
       "decision": "A",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "A"
+        "A",
+        "B",
+        "C"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:17:02.632Z"
     },
     "RM_Kaddrath": {
-      "at": "2026-10-08T04:54:19.255Z",
+      "at": "2026-10-09T05:17:10.333Z",
       "decision": "A",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "A"
+        "A",
+        "B",
+        "C"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:17:08.502Z"
     },
     "RM_Karrun": {
       "at": "2026-10-08T04:55:58.253Z",
@@ -181,65 +207,77 @@
       "variantsAt": "2026-10-08T04:56:03.979Z"
     },
     "RM_Maddrick": {
-      "at": "2026-10-08T04:54:24.996Z",
+      "at": "2026-10-09T05:17:14.211Z",
       "decision": "A",
-      "note": "add one more variant",
+      "note": "",
       "prefill": "A",
       "variants": [
         "A",
-        "B"
+        "B",
+        "C"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:17:12.599Z"
     },
     "RM_Mirrelbole": {
-      "at": "2026-10-08T04:54:33.115Z",
+      "at": "2026-10-09T05:17:19.471Z",
       "decision": "A",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "B"
+        "B",
+        "C",
+        "D"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:17:18.024Z"
     },
     "RM_Mourvel": {
-      "at": "2026-10-08T04:54:40.609Z",
+      "at": "2026-10-09T05:17:26.214Z",
       "decision": "A",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "B"
+        "B",
+        "C",
+        "D"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:17:24.056Z"
     },
     "RM_Nemmer": {
-      "at": "2026-10-08T04:54:43.968Z",
+      "at": "2026-10-09T05:17:33.044Z",
       "decision": "A",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "A"
+        "B",
+        "C"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:17:31.011Z"
     },
     "RM_Phorrik": {
-      "at": "2026-10-08T04:54:47.113Z",
+      "at": "2026-10-09T05:17:40.109Z",
       "decision": "A",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "B"
+        "A",
+        "B",
+        "C",
+        "D"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:17:38.616Z"
     },
     "RM_Quathis": {
-      "at": "2026-10-08T04:54:49.295Z",
+      "at": "2026-10-09T05:17:46.485Z",
       "decision": "A",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "B"
+        "A",
+        "B",
+        "C",
+        "D"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:17:45.055Z"
     },
     "RM_Saava": {
       "at": "2026-10-08T04:56:09.390Z",
@@ -253,24 +291,30 @@
       "variantsAt": "2026-10-08T04:56:08.075Z"
     },
     "RM_Sarnstilt": {
-      "at": "2026-10-08T04:54:53.023Z",
+      "at": "2026-10-09T05:17:52.839Z",
       "decision": "A",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "B"
+        "A",
+        "B",
+        "C",
+        "D"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:17:51.346Z"
     },
     "RM_Sarquin": {
-      "at": "2026-10-08T04:54:55.630Z",
-      "decision": "A",
+      "at": "2026-10-09T05:18:02.905Z",
+      "decidedAt": "2026-10-09T05:18:02.905Z",
+      "decision": "C",
       "note": "Add much more realistic variants",
       "prefill": "A",
       "variants": [
-        "B"
+        "A",
+        "C",
+        "D"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:18:00.787Z"
     },
     "RM_Skorra": {
       "decision": "A",
@@ -283,10 +327,10 @@
       "prefill": "A"
     },
     "RM_Sytheclaw": {
-      "at": "2026-10-08T04:51:52.472Z",
+      "at": "2026-10-09T05:15:59.049Z",
       "decidedAt": "2026-10-08T04:51:47.205Z",
       "decision": "hold",
-      "note": "This should not be in this biome",
+      "note": "not in this biome",
       "prefill": "A",
       "variants": [
         "A",
@@ -295,16 +339,17 @@
       "variantsDefault": true
     },
     "RM_Thalquith": {
-      "at": "2026-10-08T04:55:11.396Z",
+      "at": "2026-10-09T05:18:20.232Z",
       "decidedAt": "2026-10-08T04:55:08.901Z",
       "decision": "B",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "A",
-        "B"
+        "B",
+        "C",
+        "D"
       ],
-      "variantsAt": "2026-10-08T04:55:11.396Z"
+      "variantsAt": "2026-10-09T05:18:20.232Z"
     },
     "RM_Thurrock": {
       "at": "2026-10-08T04:52:00.898Z",
@@ -317,26 +362,34 @@
       "variantsDefault": true
     },
     "RM_Tumbel": {
-      "at": "2026-10-08T04:55:17.239Z",
+      "at": "2026-10-09T05:18:26.659Z",
       "decision": "A",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
         "A",
-        "B"
+        "B",
+        "C",
+        "D"
       ],
-      "variantsAt": "2026-10-08T04:55:15.965Z"
+      "variantsAt": "2026-10-09T05:18:25.230Z"
     },
     "RM_Tuun": {
-      "at": "2026-10-08T04:56:17.971Z",
-      "decidedAt": "2026-10-08T04:56:15.755Z",
-      "decision": "redo",
-      "note": "More alien",
+      "at": "2026-10-09T05:19:21.832Z",
+      "decidedAt": "2026-10-09T05:19:16.160Z",
+      "decision": "D",
+      "note": "",
       "prefill": "A",
-      "variants": [
-        "B"
+      "purge": [
+        "26272ed49b6f677eeba769031c59a4d4393537ea04724350d0a5d38f6893580c"
       ],
-      "variantsAt": "2026-10-08T04:56:11.212Z"
+      "purgeTouched": true,
+      "variants": [
+        "C",
+        "D",
+        "E"
+      ],
+      "variantsAt": "2026-10-09T05:19:20.008Z"
     },
     "RM_Uvva": {
       "at": "2026-10-08T04:56:27.656Z",
@@ -350,19 +403,26 @@
       "variantsAt": "2026-10-08T04:56:25.174Z"
     },
     "RM_Veluthar": {
-      "at": "2026-10-08T04:55:19.689Z",
-      "decision": "A",
-      "note": "Add much more realistic variants",
-      "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
-    },
-    "RM_Vurmeloth": {
+      "at": "2026-10-09T05:18:40.960Z",
       "decision": "A",
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "variants": [
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-09T05:18:40.960Z"
+    },
+    "RM_Vurmeloth": {
+      "at": "2026-10-09T05:18:45.222Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsAt": "2026-10-09T05:18:45.222Z"
     },
     "RM_Vurrak": {
       "decision": "A",
@@ -370,19 +430,22 @@
       "prefill": "A"
     },
     "RM_Wollick": {
-      "at": "2026-10-08T04:55:28.911Z",
+      "at": "2026-10-09T05:18:51.957Z",
       "decision": "A",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "B"
+        "A",
+        "B",
+        "C",
+        "D"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:18:50.314Z"
     },
     "RM_Yammeth": {
-      "at": "2026-10-08T04:52:53.441Z",
+      "at": "2026-10-09T05:16:14.186Z",
       "decision": "A",
-      "note": "Flier, so get those graphics ready",
+      "note": "",
       "prefill": "A",
       "purge": [],
       "purgeTouched": true,
@@ -392,15 +455,17 @@
       "variantsAt": "2026-10-08T04:52:40.430Z"
     },
     "RM_YearningFruit": {
-      "at": "2026-10-08T04:55:34.511Z",
+      "at": "2026-10-09T05:18:57.666Z",
       "decidedAt": "2026-10-08T04:55:34.511Z",
       "decision": "B",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "B"
+        "B",
+        "C",
+        "D"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:18:54.855Z"
     },
     "RM_Zeev": {
       "at": "2026-10-08T04:56:31.021Z",
@@ -414,15 +479,17 @@
       "variantsAt": "2026-10-08T04:56:29.711Z"
     },
     "RM_Zhorrel": {
-      "at": "2026-10-08T04:55:38.000Z",
+      "at": "2026-10-09T05:19:02.854Z",
       "decidedAt": "2026-10-08T04:55:38.000Z",
       "decision": "B",
-      "note": "Add much more realistic variants",
+      "note": "",
       "prefill": "A",
       "variants": [
-        "B"
+        "B",
+        "C",
+        "D"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:19:01.075Z"
     },
     "RSW_Beldon": {
       "at": "2026-10-09T02:36:16.765Z",
@@ -466,14 +533,17 @@
       "prefill": "A"
     },
     "RSW_Dalgo": {
-      "at": "2026-10-08T04:42:59.078Z",
+      "at": "2026-10-09T05:09:28.475Z",
       "decision": "A",
       "note": "",
       "prefill": "A",
       "purge": [
         "01701e6929f442a7af8bb4e475c2cf777cb83245541a4f640f179b3ed2fd208d",
         "59600ba22d28a0d6dfd1a17bfa443a560368b3cffc4a96648b8102f8e20638f4",
-        "5fbbc26d986460617ff6994ebb504f98c8b3b280ff6f3303fa47828697141998"
+        "5fbbc26d986460617ff6994ebb504f98c8b3b280ff6f3303fa47828697141998",
+        "cb0f2dfa7a1c974d20a5fadd6c55b561bcc32bf866b9997555e8a895c4ab15e4",
+        "002e2f698d87a21626bb963cca4e225c0d2f0d73cfcc5dc95d01697db823f204",
+        "1964cc764f572ca1b7a07774ab481787e769f72cd941ffb688ef792eb45e4b5c"
       ],
       "purgeTouched": true,
       "variants": [
@@ -483,21 +553,30 @@
       "variantsDefault": true
     },
     "RSW_Diggerpede": {
-      "at": "2026-10-08T04:43:54.533Z",
-      "decidedAt": "2026-10-08T04:43:35.673Z",
-      "decision": "redo",
-      "note": "Rename the Gristle, make it realistic",
+      "at": "2026-10-09T05:11:14.990Z",
+      "decidedAt": "2026-10-09T05:11:14.990Z",
+      "decision": "C",
+      "note": "",
+      "picks": {
+        "_byname": "B"
+      },
       "prefill": "A",
-      "variants": [
-        "A"
+      "purge": [
+        "7bc9334c51484d8adbbc52c23c5f3ed8feda63932dc064cdb3f523ece7ac65e8",
+        "376552e5deb86a0392df7f7728e9cf1fb35e0f83fc3a1805bb008969a67825c4",
+        "096c653bf1d76c6bf9770388199759ff1086b338fd846a3642debf7201a71803"
       ],
-      "variantsDefault": true
+      "purgeTouched": true,
+      "variants": [
+        "C"
+      ],
+      "variantsAt": "2026-10-09T05:11:09.953Z"
     },
     "RSW_Dragonsnake": {
-      "at": "2026-10-08T04:44:31.524Z",
-      "decidedAt": "2026-10-08T04:44:21.031Z",
-      "decision": "redo",
-      "note": "follow the middle white canon on a black background",
+      "at": "2026-10-09T05:09:57.200Z",
+      "decidedAt": "2026-10-09T05:09:38.369Z",
+      "decision": "E",
+      "note": "",
       "picks": {
         "swanimals/Dragonsnake/Dragonsnake_Swimming": "D"
       },
@@ -508,12 +587,8 @@
         "aa131c8fc296372d74e831f17a165410bba11d9085dc244b4e4ac94b96fa3303"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B",
-        "D"
-      ],
-      "variantsDefault": true
+      "variants": [],
+      "variantsAt": "2026-10-09T05:09:52.461Z"
     },
     "RSW_Falumpaset": {
       "decision": "A",
@@ -521,9 +596,10 @@
       "prefill": "A"
     },
     "RSW_Fambaa": {
-      "at": "2026-10-08T04:44:50.557Z",
-      "decision": "A",
-      "note": "see notes from Feverwood",
+      "at": "2026-10-09T05:10:24.418Z",
+      "decidedAt": "2026-10-09T05:10:19.429Z",
+      "decision": "G",
+      "note": "",
       "picks": {
         "swanimals/Fambaa/Fambaa_Swimming": "D",
         "swanimals/Fambaa/Fambaa_j": "E",
@@ -537,23 +613,18 @@
       ],
       "purgeTouched": true,
       "variants": [
-        "A",
-        "B",
-        "D",
-        "E",
-        "F"
+        "B"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:10:21.807Z"
     },
     "RSW_Gelagrub": {
-      "at": "2026-10-08T04:45:05.324Z",
-      "decision": "A",
-      "note": "see notes from feverwood",
+      "at": "2026-10-09T05:10:35.177Z",
+      "decidedAt": "2026-10-09T05:10:30.404Z",
+      "decision": "B",
+      "note": "",
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "variants": [],
+      "variantsAt": "2026-10-09T05:10:32.732Z"
     },
     "RSW_Gizka": {
       "decision": "A",
@@ -561,24 +632,52 @@
       "prefill": "A"
     },
     "RSW_Hawkbat": {
-      "at": "2026-10-08T04:46:29.376Z",
-      "decidedAt": "2026-10-08T04:45:51.855Z",
-      "decision": "redo",
+      "at": "2026-10-09T05:12:17.075Z",
+      "decidedAt": "2026-10-09T05:11:38.831Z",
+      "decision": "J",
       "note": "Get rid of all this crappy art and follow the purple and tan canon art very closely. NOT a bird. Flyer.",
       "picks": {
         "_flip:swanimals/Hawkbat/Hawkbat_Flying_": "G",
         "swanimals/Hawkbat/Hawkbat_j": "F"
       },
       "prefill": "A",
+      "purge": [
+        "f3d943c350c13ff14c199af6738213b8b961b140a0fea123728a86a5242dbd72",
+        "66bc6b13db614549528fc043b84cb2222562fe74470d8b35f377cac780e457f2",
+        "0a1878e64116550c660809ebc0fa8ef685e91a91b362f39d1517122053e3ec43",
+        "1c4c4469265ef5f688089c3f965eb2ad37aa7a6a286ee6fb27b2a5a21f062bbf",
+        "9e907167b6681779dd9af34764827a3ab9365e901ef8e3c8792766a45038526c",
+        "c726ee6b94b160bafa486d3c167ac3ae08c62de7bd31a2c38633e2984d1ee39c",
+        "0e30c9f82de94bf2cc3c5f758eda6673bb579a31f25e79f905c0428010042fd5",
+        "eefdc184e0cf4835d7a64288d3ae8a08044502cb383be9ba457793793a1b786c",
+        "480039bb2a2745e2bc26a020f1f25d1eeda0a85cd6882a05749147f7fb9f0473",
+        "4cf09882b15596da1674bc5ffe481a646a82952def4fc9d35442e1bb2671c9e8",
+        "2baefff4cc344b92a99562b20218d5036fe0fcdbdad9f2a7ee83b31eeb610e29",
+        "7afd895597a11a30544db11328d2a8a892e1ac294afdda86f661639e51a6c250",
+        "32577df702bb3bdf7e279f22d42bd251656f801f4385d401962ff1b90353d7a9",
+        "0500f7f1b1fc6839a56911b3e6a8058c4fe9a91072d311145494add2c5cb3192",
+        "79bee452fc3c2aad03fca0e0621382c146d954095d704af598ff8b7fab577e1e"
+      ],
+      "purgeTouched": true,
       "variants": [
         "A",
         "B",
         "C",
         "D",
         "G",
-        "H"
+        "H",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:12:04.838Z"
     },
     "RSW_Hssiss": {
       "decision": "A",
@@ -589,9 +688,9 @@
       "prefill": "A"
     },
     "RSW_Kinrath": {
-      "at": "2026-10-08T04:48:19.036Z",
-      "decidedAt": "2026-10-08T04:47:43.253Z",
-      "decision": "redo",
+      "at": "2026-10-09T05:12:47.530Z",
+      "decidedAt": "2026-10-09T05:12:42.767Z",
+      "decision": "F",
       "note": "follow canon art closley, looks closest to a mantis shape. Study the donor art for geometry info. ",
       "prefill": "A",
       "purge": [
@@ -600,7 +699,10 @@
         "3fc86e6157d8b9b6a55f27f07d51563292b84fce0812c692715f55f8075f5f1b",
         "7b03cf3076b405e5b8beebf0f4156dd3d4b46f56f5c34461d281bb1699b3228b",
         "66640308151aca479ad48034514a4e1fd10bb0b5c96d366634bf52dd5f80761a",
-        "9b7f3788c7cb569f2068cc0ae6801ad1f6a4b5d762d435cd289443ded88340b0"
+        "9b7f3788c7cb569f2068cc0ae6801ad1f6a4b5d762d435cd289443ded88340b0",
+        "2c2a86f8ce0180242cb369658185fcdfb0ea71a3ec34c940061eef620881baf2",
+        "8f307c24cd8c3ee502bb63772f55ee173894bbba7c9c649c5779860222580769",
+        "fb4f8c33d8c2cdae8679597ec5078755f02a967c5da32d4eab9e08a48d4c20fd"
       ],
       "purgeTouched": true,
       "variants": [
@@ -611,47 +713,51 @@
       "variantsDefault": true
     },
     "RSW_Klorslug": {
-      "at": "2026-10-08T04:47:05.111Z",
-      "decidedAt": "2026-10-08T04:46:44.866Z",
-      "decision": "redo",
-      "note": "Follow the canon art precisely, the red and white one ",
+      "at": "2026-10-09T05:12:36.649Z",
+      "decidedAt": "2026-10-09T05:12:29.069Z",
+      "decision": "D",
+      "note": "",
       "picks": {
         "swanimals/Klorslug/Klorslug_j": "B"
       },
       "prefill": "A",
       "variants": [
-        "A",
-        "B"
+        "E"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:12:36.649Z"
     },
     "RSW_Lylek": {
-      "at": "2026-10-08T04:48:45.864Z",
-      "decidedAt": "2026-10-08T04:48:42.179Z",
-      "decision": "redo",
-      "note": "follow canon closely",
+      "at": "2026-10-09T05:12:57.803Z",
+      "decidedAt": "2026-10-09T05:12:53.536Z",
+      "decision": "B",
+      "note": "",
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "variants": [],
+      "variantsAt": "2026-10-09T05:12:57.803Z"
     },
     "RSW_Mott": {
-      "at": "2026-10-08T04:49:09.546Z",
-      "decidedAt": "2026-10-08T04:49:00.944Z",
-      "decision": "redo",
-      "note": "follow canon closely, kinda like a dog hippo rhino or something",
+      "at": "2026-10-09T05:13:52.363Z",
+      "decidedAt": "2026-10-09T05:13:41.239Z",
+      "decision": "",
+      "note": "Use G",
       "picks": {
-        "swanimals/Mott/Mott_m": "B",
+        "swanimals/Mott/Mott_m": "G",
         "swanimals/Mott/Mott_m_Swimming": "C"
       },
       "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C"
+      "purge": [
+        "cf341707bfd23bea40c11796b999353dd0eec0b827f922d5ea430aa41970da81",
+        "3a679aee4f96e6af1030998b1229c776ecfa0262bc39a028e245ed82ebdb3c2b",
+        "c3b40e08fcedd485a91b5f15756bcef9993ed53b9fff1e39b1e9b6e77b095026",
+        "b7901e7fb133145887111be9b7b0d9abcdf184f35cb2229474a202e8e93f9c31",
+        "b66624dd60755be102a2159d36ba7c65d9db797133e2eb8d1f4b538fe57664ca",
+        "4ddc73e1fcec0c0956d437058a3eec33689268d6ce5d90e5936a56c272a9ec39",
+        "0a277f2695a77f01cf939eeb5336453134ab52916d319bdcea2ecbb7b6b1756f",
+        "7073bde4dcb7a35ab82d86500cdb557b3548b1aff76e2abab6bef8b5f2a1e898"
       ],
-      "variantsDefault": true
+      "purgeTouched": true,
+      "variants": [],
+      "variantsAt": "2026-10-09T05:13:52.363Z"
     },
     "RSW_Nuna": {
       "decision": "A",
@@ -662,24 +768,47 @@
       "prefill": "A"
     },
     "RSW_PekoPeko": {
-      "at": "2026-10-08T04:49:53.110Z",
-      "decidedAt": "2026-10-08T04:49:44.066Z",
-      "decision": "redo",
-      "note": "kill all this terrible art. Follow the canon very closely. Flyer.",
+      "at": "2026-10-09T05:15:15.840Z",
+      "decidedAt": "2026-10-09T05:15:02.728Z",
+      "decision": "N",
+      "note": "",
       "picks": {
+        "_byname": "N",
         "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_": "E",
         "swanimals/PekoPeko/PekoPeko_m": "D"
       },
       "prefill": "A",
+      "purge": [
+        "7fdd43738c8a59d743c8762083dfb005b095770049e12c0d89a98c7cea91a46c",
+        "0c7ca701265dcd06ae0af521bdc97eb1f758e502e7321a9d2802958668f4cfd7",
+        "5bbd836d361411536ebd3037a04b49e30e8af5696bd59370752cdda7ae89791e",
+        "cbf21a0e099872f5e9185dab6b342040ade308e31892fe3d3a411d652a8ffbe5",
+        "b64f05d78665c7b8de078112810c61e7e69659ead2116e644f5580430952d6e3",
+        "6e10195a61852caed7575a0070cc3b4775dc6f4c6ddfcc8b31b67e7d5fe9603b",
+        "bc1c95fc5e3919aa84b710bacb8dd3b2935d80b12ad914ee78fca4517f51a134",
+        "712ddd1948be5b39c15d3b7f0bf5e095a7651590b4341e7c84924a2d201aba19",
+        "24e8ee7592e46d8e4e971bc9dc45a9b837fc4cb52ab68fcd90293d14d559e1ae",
+        "4f15df4489a22e0afc6bf9eb5b5e545ae40f1c0d2dc91d778137d77cefb32fad",
+        "3c4e66776032c8c14b9612a5feaf64ec528bd3ea934a67c61c6c94fdd2d3753e",
+        "6a34a41101d65681c9292aec9c49b4ee6be4aa4d2efbd341b09e673c02fbc13d",
+        "1f9b99f665984816e866647d1d8878f8e30c996ceed33798474c755b514222e2",
+        "0d3777504e2ca79c1dfc58fe578f2929606a0d6324f1bf822290607628b002b3",
+        "6855698c904ac3ab43db08f881b3e34282f3cc0518249fafe8e9975df9cd65a9",
+        "5b581ad7604066eb48c61c0f9d0b89312f5ba6e7587e60d5119adcdc6c48f521",
+        "0660e51905d24db249eb1f96129f8f208f4c4a54a6dd6c74570b7d4881047a1d",
+        "08618e7a429ad9ee583358f22bb843a5830941acfbb454e76017e37c65136ee0",
+        "8f7b797f93b8bb5d4b2ec6050e0178a029977275c28d47265276fb283f431c00"
+      ],
+      "purgeTouched": true,
       "variants": [
-        "A",
-        "B",
         "E",
         "F",
-        "G",
-        "H"
+        "K",
+        "L",
+        "M",
+        "O"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:15:15.840Z"
     },
     "RSW_Shiro": {
       "at": "2026-10-08T04:50:24.447Z",
@@ -699,21 +828,20 @@
       "variantsAt": "2026-10-08T04:50:24.447Z"
     },
     "RSW_ShiroTrap": {
-      "at": "2026-10-08T04:50:54.251Z",
-      "decidedAt": "2026-10-08T04:50:31.082Z",
-      "decision": "redo",
-      "note": "This is a shiro with a plant on it... canon. Go for it. Look at the Shiro, then the Trap plant, then put them together. ",
+      "at": "2026-10-09T05:15:38.891Z",
+      "decidedAt": "2026-10-09T05:15:26.335Z",
+      "decision": "F",
+      "note": "",
       "picks": {
         "swanimals/ShiroTrap/ShiroTrap_i": "B",
         "swanimals/ShiroTrap/ShiroTrap_j": "C"
       },
       "prefill": "A",
       "variants": [
-        "A",
-        "B",
-        "C"
+        "D",
+        "G"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-09T05:15:36.176Z"
     },
     "RSW_Whisperbird": {
       "decision": "A",
@@ -733,10 +861,13 @@
       "prefill": "B"
     },
     "VFEI2_Swarmling": {
-      "at": "2026-10-08T04:51:36.205Z",
-      "decidedAt": "2026-10-08T04:51:32.553Z",
-      "decision": "redo",
-      "note": "redo description. Rename it to Saluksis, make it yet more alien",
+      "at": "2026-10-09T05:15:49.344Z",
+      "decidedAt": "2026-10-09T05:15:48.148Z",
+      "decision": "C",
+      "note": "",
+      "picks": {
+        "_byname": "C"
+      },
       "prefill": "A",
       "purge": [
         "58fe0732b61fa39a1e17a81cb256e9e12dffe8d32b95acb228cae8b4f116259c",
@@ -757,10 +888,10 @@
     "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet",
     "state": "prefill"
   },
-  "savedAt": "2026-10-08T19:44:37-0700",
+  "savedAt": "2026-10-08T22:19:22-0700",
   "savedBy": "review-sheet-sidecar",
   "sheetId": "greentide_sheet_2026-10-05",
   "snapshot": "infrastructure/state/art/sheets/greentide_sheet_2026-10-05.snapshot.json",
   "snapshotId": "609a9324173ab3ab",
-  "writeCount": 186
+  "writeCount": 372
 }
