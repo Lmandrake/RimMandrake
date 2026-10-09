@@ -69,6 +69,10 @@ namespace RimMandrake.DivingInteraction
         // display adds beauty to the cabinet and, colony-wide, a small museum mood. Off: the cabinet is plain storage.
         public static bool specimenCabinetEnabled = true;
 
+        // GREYSEA_FLOOR_WALKABLE_CHECK_1 (DI-6), worldgen-affecting: after the Grey Sea floor is decorated, remove the
+        // scatter pieces that wall the Elder or a wreck off from the landing zone. Off: the floor generates as before.
+        public static bool greyFloorWalkCheckEnabled = true;
+
         // CHILL_FIRE_BAN_1, 2026-09-27. "There's no oxygen down in the sea
         // floor so it's not explosive" — no flame works on the Chill
         // seabed pocket map (fire spawns, campfires/torches, fuel-burning
@@ -228,6 +232,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref greyElderDischargeEnabled, "greyElderDischargeEnabled", true);
             Scribe_Values.Look(ref greyElderTradeEnabled, "greyElderTradeEnabled", true);
             Scribe_Values.Look(ref specimenCabinetEnabled, "specimenCabinetEnabled", true);
+            Scribe_Values.Look(ref greyFloorWalkCheckEnabled, "greyFloorWalkCheckEnabled", true);
             Scribe_Values.Look(ref chillFireBanEnabled, "chillFireBanEnabled", true);
             Scribe_Values.Look(ref chillAirPumpEnabled, "chillAirPumpEnabled", true);
             Scribe_Values.Look(ref chillAirPumpWatts, "chillAirPumpWatts", 300f);
@@ -387,6 +392,12 @@ namespace RimMandrake.DivingInteraction
                   + "every Grey Sea tile keeps its own memory, so travelling to another tile finds "
                   + "a market that has never seen your find. Off: the Elder's trade gizmo "
                   + "disappears; nothing already recorded is lost.");
+
+                list.Gap();
+                list.CheckboxLabeled("Grey Sea: keep the Elder and wrecks reachable (affects world generation)", ref greyFloorWalkCheckEnabled,
+                    "Shipped default: ON. After the floor is decorated, a last pass removes the salt pillars, "
+                  + "domes, chimneys, crystals or statuary that wall the Elder or a wreck off from where the "
+                  + "ship lands. Affects only newly generated Grey Sea floors. Off: the floor generates as before.");
 
                 list.Gap();
                 list.CheckboxLabeled("Specimen cabinet: keep finds on display", ref specimenCabinetEnabled,

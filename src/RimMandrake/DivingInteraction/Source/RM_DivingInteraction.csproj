@@ -61,6 +61,7 @@
     <Compile Include="GenStep_SeaFloorFauna.cs" />
     <Compile Include="GenStep_PlaceSeaDiveExit.cs" />
     <Compile Include="GenStep_GreySeaFloorDressing.cs" />
+    <Compile Include="GenStep_GreySeaWalkCheck.cs" />
     <Compile Include="RM_BrineEncasement.cs" />
     <Compile Include="BrineEncasementUtility.cs" />
     <Compile Include="MapComponent_BrineCrystallisation.cs" />
