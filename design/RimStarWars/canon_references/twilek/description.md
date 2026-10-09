@@ -113,49 +113,36 @@ commit:
 
 ## Visual brief
 
-- 🔑 **Two lekku, from the crown, smooth and completely unbanded — this is the whole species
-  read, and it is the thing most often drawn wrong.** Every reference agrees: the lekku
-  emerge from the top/back of the skull, are as thick as a forearm at the base, taper
-  steadily to a blunt point, and have **no transverse stripes**.
-  `wookieepedia_two_kinds_of_lekku.jpg` is the decisive image, because it puts Hera Syndulla
-  (Twi'lek) and Ahsoka Tano (Togruta) in one frame: **Hera's lekku are smooth and exactly
-  the same green as her face; Ahsoka's are pale with bold blue bands and fused to montrals.**
-  🔴 **A banded Twi'lek lek is a Togruta lek. A Twi'lek has no montrals and no horns at all.**
-- **The lekku are the same colour as the skin, or very slightly darker.** Not a contrasting
-  colour. `wookieepedia_numa_youngling.jpg` shows the maximum: a teal child whose lekku are a
-  slightly deeper blue-teal than her face, with a soft darker line along the upper edge.
-- **Markings, where they exist, are soft blotches or applied tattoos — never bands.** Aayla
-  Secura (`wookieepedia_aayla_secura.jpg`) carries **irregular pale blue-grey mottled
-  spots** scattered along both lekku. That is the one canon "patterned lekku" look in this
-  directory, and it is nothing like Togruta banding.
-- **Carriage genuinely varies and a sprite has to pick one.** Aayla: over the shoulders and
-  down past the waist. Numa: straight down the back. The Legends plate
-  (`wookieepedia_negas_legends.jpg`): swept **up and over** the crown, then curling out.
-  Bib Fortuna in `wookieepedia_infobox_twileks.jpg`: **draped around the neck and across the
-  torso.** The Ryloth crowd shows several at once. *For a top-down RimWorld sprite,
-  "down the back or over the chest" is the only carriage that reads at that scale.*
-- ⚠️ **The ears are where the prose, the def and the images all diverge, so trust the
-  images.** `wookieepedia_oola.jpg` (live-action Oola, green) shows the female cone plainly:
-  a **large, pale, trumpet-shaped cone protruding sideways from each side of the head, pale
-  pink at the mouth of the cone and clearly a different colour from the green skin** — a big,
-  unmissable feature. But `wookieepedia_aayla_secura.jpg` and
-  `wookieepedia_numa_youngling.jpg` are **both female and both have small swept-back
-  *pointed* ears, no cones at all**, and so does the female in the Legends plate. So the
-  cone is **not** a reliable female marker — it is one of two female ear forms. The orange
-  female in `wookieepedia_infobox_twileks.jpg` (seen in profile) has a large flat **disc**
-  over the ear which may be a headpiece rather than anatomy.
-- **Skin: saturated, unmarked, and the pale/cream end of the range is heavily used.**
-  `wookieepedia_innocents_of_ryloth.jpg` is the best population sample in this directory — a
-  crowd of ordinary Ryloth villagers — and it runs **teal, mid-blue, pale powder-blue,
-  grey-blue, and a large number of cream/tan/ochre individuals**. The infobox trio is
-  **orange, pale cream (Bib Fortuna), and blue (Aayla)**. 🔴 **Cream/pale/tan is not an edge
-  case; it is roughly a third of every crowd shot here** — which matters because the repo def
-  has no pale or grey option (below).
-- **Faces are otherwise near-human**: human eyes with visible whites, human nose, human
-  mouth and lips, no muzzle. Oola and Aayla both have ordinary five-fingered hands. Build is
-  slim and long-limbed. Bib Fortuna's is the one exception — a heavy body **and a tall domed
-  cranium** that the lekku emerge from, which fits the Legends "obesity is affluence" and
-  "ear flaps enlarge to store fat" notes.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Deleted, all animated: `wookieepedia_two_kinds_of_lekku.jpg` and `wookieepedia_hera_syndulla.jpg` (*Rebels*), `wookieepedia_aayla_secura.jpg`, `wookieepedia_innocents_of_ryloth.jpg` and `wookieepedia_numa_youngling.jpg` (*Clone Wars*). Added live-action: `wookieepedia_hera_liveaction_empire.jpg` (Mary Elizabeth Winstead as Hera, *Ahsoka* promo) and `wookieepedia_female_server_bobf.jpg` (a Twi'lek server, *The Book of Boba Fett* ch. 6). With the live-action infobox trio and Oola, plus the realistic Legends painting, every remaining image is realistic.
+
+- 🔑 **Two lekku, from the crown/back of the skull, smooth and unbanded — the whole species
+  read.** Every realistic image agrees: thick as a forearm at the base, tapering steadily to
+  a blunt point, **no transverse stripes**. Live-action Hera's lekku are **the same matte
+  olive-green as her face**, emerging under a leather pilot's cap. 🔴 **A banded lek is a
+  Togruta lek. A Twi'lek has no montrals and no horns at all** (see the `togruta` entry).
+- **The lekku are the same colour as the skin, or very slightly darker** — in live action
+  the skin is a real painted-skin tone (olive-green Hera, golden yellow-ochre server, orange
+  and blue in the infobox), matte with natural skin texture, not the glossy saturated
+  cartoon hue.
+- **Markings, where they exist, are soft blotches or applied tattoos — never bands.** The
+  mottled-spot Aayla evidence was the deleted *Clone Wars* render; no remaining image shows
+  natural lekku mottling, so treat it as sourced in prose only.
+- **Carriage varies:** down the back (Hera, Oola), forward over the shoulders and down the
+  chest (server), swept up over the crown (Legends painting), coiled round neck and torso
+  (Bib Fortuna). *For a top-down RimWorld sprite, "down the back or over the chest" reads.*
+- ⚠️ **Ears:** live-action Oola (`wookieepedia_oola.jpg`) shows the female cone plainly — a
+  **large, pale pink trumpet-shaped cone protruding sideways from each side of the head**,
+  distinct from the green skin. Live-action Hera's ears are hidden by her cap's earphones;
+  the server's are under a headdress. The old "small pointed ears, no cones" counter-evidence
+  came from the deleted animated images, so the cone is now the only image-attested female
+  ear form.
+- **Skin range:** the infobox trio runs **orange, pale cream (Bib Fortuna), blue (Aayla)**;
+  Hera is olive-green, the server golden-yellow. Pale/cream is image-attested (Bib Fortuna)
+  and textually common; the old crowd-shot "roughly a third" figure came from the deleted
+  animated crowd and is withdrawn.
+- **Faces are near-human**: human eyes with visible whites (Hera's are blue), human nose,
+  mouth and lips, no muzzle; slim long-limbed build — Bib Fortuna the heavy, tall-domed
+  exception.
 
 ### The repo's art
 `donor_current_sprite.png` is `Female_Normal_south.png`. It is much better than the Togruta
@@ -183,6 +170,7 @@ look in game.** Flagging the asymmetry, not asserting the bug.
 - [ ] No montrals and no horns anywhere on the head
 - [ ] Face is near-human: human eyes with visible whites, human nose, mouth and lips, no muzzle
 - [ ] Skin colour range includes cream/pale/tan individuals, not saturated hues only
+- [ ] Realistic rendering: natural matte painted-skin texture and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 - All four Twi'lek `HeadTypeDef`s set `useSkinShader: false` and the Twi'lek head folder has **zero** `_m.png` mask files (measured) — unlike the Togruta heads, which set the same flag but ship a full mask set. If the heads render untinted for want of a mask, the xenotype's eighteen-gene skin-colour palette cannot reach the face at all, landing a grey-white head above a coloured body. Flagged in the entry as needing one in-game check before it is treated as confirmed.
@@ -199,7 +187,7 @@ Reported, not fixed. `RimMandrakeXenotypes.xml` is generated — do not edit it.
    **white/pale** — leaving the def with 18 skin genes covering only 6 of the 13 canon
    colour families (yellow, green, blue, purple, pink/magenta, orange). Pale/cream is the
    visually costly omission: it is Bib Fortuna's colour, it is in the article's own infobox
-   image, and it is about a third of the Ryloth crowd shot.
+   image, and (per the now-deleted animated crowd shot) common in crowds.
 2. **🔴 `Turn_Gene_FrailDigestion` is the exact inverse of the species' documented
    adaptation.** Legends: *"Twi'leks possessed **multiple stomachs**, an unusual trait that
    **enabled them to eat almost any food**"* — an evolved response to famine on Ryloth.
@@ -218,8 +206,8 @@ Reported, not fixed. `RimMandrakeXenotypes.xml` is generated — do not edit it.
    *"the males have pointed human ears and females have cone shaped hearing organs
    instead."* Canon: male ears have **lobes resembling those of humans** (not "pointed"),
    and the cone is *"customarily"* female — **some males have cones too**, so "instead" is
-   too strong. And the references break it further: Aayla Secura and Numa are both female
-   with small pointed ears and no cones. The description also omits that some individuals
+   too strong. (The deleted animated Aayla Secura and Numa images also showed females with
+   small pointed ears and no cones.) The description also omits that some individuals
    have **four** lekku, and its phrase *"smooth, patterned lekku"* is self-contradictory —
    though "smooth" is the correct and important half.
 5. **`Outland_Blood_Magenta` is unsourced.** No blood colour for Twi'leks was found in the
@@ -278,47 +266,22 @@ Reported, not fixed. `RimMandrakeXenotypes.xml` is generated — do not edit it.
   names declared in the wikitext:
   - `wookieepedia_infobox_twileks.jpg` → **File:Twileks.png**, the canon infobox image
     (confident)
-  - `wookieepedia_innocents_of_ryloth.jpg` → **File:Innocents_of_Ryloth.jpg** (confident)
-  - `wookieepedia_numa_youngling.jpg` → **File:Numa-SWE.png**; the wiki's caption for this
-    file is "Numa, a Twi'lek youngling" (confident)
   - `wookieepedia_oola.jpg` → **File:Oola2.png** (confident)
   - `wookieepedia_negas_legends.jpg` → **File:TwilekNEGAS.png**, the Legends infobox plate
     (confident)
-  - `wookieepedia_two_kinds_of_lekku.jpg` → **File:Two_kinds_of_lekku.jpg**, from the Lekku
-    article (confident — the only such file there)
-  - `wookieepedia_aayla_secura.jpg` → probably **File:Aayla SWSB.png**, the only Aayla file
-    in the Twi'lek articles — **not confirmed**; the image is a *Clone Wars*-style CGI render
-  - `wookieepedia_hera_syndulla.jpg` → **File:HeraSyndulla.png** or
-    **File:HeraSyndulla-EmpireMagazine.png**; both are cited in the article and **which one
-    this is was not established**
+- https://static.wikia.nocookie.net/starwars/images/4/47/HeraSyndulla-EmpireMagazine.png (File:HeraSyndulla-EmpireMagazine.png → `wookieepedia_hera_liveaction_empire.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/7/77/TwilekFemaleServer-FromTheDesertComesAStranger.png (File:TwilekFemaleServer-FromTheDesertComesAStranger.png → `wookieepedia_female_server_bobf.jpg`)
 
 ## Candidate images
-- `wookieepedia_two_kinds_of_lekku.jpg` — **the reference of record, and the reason this
-  directory matters.** Hera Syndulla (Twi'lek) and Ahsoka Tano (Togruta) in one frame:
-  smooth unmarked skin-coloured lekku and no montrals, versus pale blue-banded lekku fused
-  to montrals. Settles the one confusion that would ruin either sprite. (The same file is in
-  `../togruta/`, deliberately.)
+- `wookieepedia_hera_liveaction_empire.jpg` — **the reference of record.** Live-action Hera Syndulla (*Ahsoka*, Empire magazine promo), file `HeraSyndulla-EmpireMagazine.png` (2625×3500): matte olive-green skin, smooth unbanded lek down the back, blue eyes, near-human face — https://static.wikia.nocookie.net/starwars/images/4/47/HeraSyndulla-EmpireMagazine.png/revision/latest?cb=20230712123609
+- `wookieepedia_female_server_bobf.jpg` — live-action, *The Book of Boba Fett* ch. 6, file `TwilekFemaleServer-FromTheDesertComesAStranger.png`: golden-yellow female, both lekku forward over the shoulders and down the chest — https://static.wikia.nocookie.net/starwars/images/7/77/TwilekFemaleServer-FromTheDesertComesAStranger.png/revision/20220121061730
 - `wookieepedia_infobox_twileks.jpg` — the canon infobox: three Twi'leks side by side —
   **orange** female in profile, **pale cream** heavy-set male (Bib Fortuna, lekku coiled
   round the neck and torso, tall domed cranium), **blue** female (Aayla, Rutian). One image
   that establishes the colour spread, both build extremes, and two carriage styles.
-- `wookieepedia_innocents_of_ryloth.jpg` — **the population sample.** A *Clone Wars* crowd of
-  ordinary Ryloth villagers, male and female, kneeling. Teal, mid-blue, powder-blue,
-  grey-blue and many **cream/tan** individuals; all with two smooth unbanded lekku worn down
-  the back. The best evidence that the repo def's missing pale/grey range is a common look,
-  not an edge case.
 - `wookieepedia_oola.jpg` — live-action Oola, green. **The clearest look at the cone-shaped
   ear**: large pale trumpet cones protruding sideways, distinctly paler than the skin. Also
   shows lekku emerging from the crown and running down the back.
-- `wookieepedia_aayla_secura.jpg` — a CGI Aayla mid-lightsaber-swing. The evidence for
-  **mottled/spotted lekku markings** (irregular pale blotches, *not* bands) and for full
-  adult lekku length past the waist. Note she is female with **small pointed ears and no
-  cones**, which is what breaks the tidy dimorphism claim.
-- `wookieepedia_numa_youngling.jpg` — a teal Twi'lek child. Shows that a juvenile already
-  has proportionally long lekku, worn down the back, slightly deeper in hue than the face,
-  with a soft dark upper edge — and, again, small pointed ears on a female.
-- `wookieepedia_hera_syndulla.jpg` — a green Twi'lek in her own right; complements the
-  comparison image with a full look at the best-known modern Twi'lek.
 - `wookieepedia_negas_legends.jpg` — the Legends infobox plate, a blue Rutian female with a
   blaster. **Legends, so weaker evidence for current canon**, but it is the clearest image of
   the fourth carriage style (lekku swept **up over the crown** and curling outward), of lekku
