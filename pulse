@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # pulse — the away dashboard's spine. `./pulse back` = the "I'm back" digest.
-#   ./pulse back | since [--since ISO] | collect | metrics | ack <incident> [--noise]
+#   ./pulse back | since [--since 3h|90m|2d|17:30|ISO] | collect | metrics | ack <incident> [--noise]
 # see src/RimMandrake/Utils/pulse/pulse.py
 P="$(dirname "$(readlink -f "$0")")/src/RimMandrake/Utils/pulse/pulse.py"
 if [ "$1" = "back" ]; then shift; exec python3 "$P" since --back "$@"; fi

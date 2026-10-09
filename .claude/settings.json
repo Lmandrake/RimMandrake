@@ -190,6 +190,12 @@
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/bench_mode.py\" 2>/dev/null || true",
             "timeout": 10,
             "statusMessage": "Checking whether he is at the bench"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/src/RimMandrake/Utils/pulse/hooks/im_back_hook.py\" 2>/dev/null || true",
+            "timeout": 20,
+            "statusMessage": "Since-you-left digest"
           }
         ]
       }
