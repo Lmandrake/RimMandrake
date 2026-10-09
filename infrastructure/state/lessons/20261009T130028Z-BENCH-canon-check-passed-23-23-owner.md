@@ -1,0 +1,1 @@
+canon_check passed 23/23 owner-rejected renders (99.3% overall pass): Must-show lines are presence tests a wrong animal satisfies; it never compares body plan to the canon image. A canon PASS is not evidence a render is right (Transient/canon_check_leniency_2026-10-09.md).
