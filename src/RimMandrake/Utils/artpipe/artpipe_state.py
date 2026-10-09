@@ -40,7 +40,8 @@ STAGE_RANK = {"pending": 0, "active": 1, "done": 2, "failed": 2}
 UNION_JSONL = ("registry.jsonl", "throughput.jsonl")
 PLAIN_DIRS = ("_artsrc", "_withdrawn", "logs")
 SEARCH_DIRS = ("pending", "active", "done", "failed", "_withdrawn")
-SEARCH_FILES = ("registry.jsonl", "art_status.json")
+# art_status.json is a pure render of registry.jsonl (+throughput), so searching it only double-counts.
+SEARCH_FILES = ("registry.jsonl",)
 # The PRE-MIGRATION artpipe tree (the old Rimworld repo). Its _artsrc holds ~2241
 # renders that never moved to the state dir; r31 found wireable art there that
 # `find` could not see. Searched by `find` unless --no-legacy.

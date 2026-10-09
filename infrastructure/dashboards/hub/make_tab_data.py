@@ -8,7 +8,7 @@ file: top-level `generatedAt` (ISO-8601 UTC) + `source` {path, sha256_12} of
 the artifact it was derived from — the shell's freshness lamp and
 hub_check.py both read exactly these fields.
 
-Art tab: infrastructure/artpipe/art_status.json already meets the contract
+Art tab: <artpipe state dir>/art_status.json already meets the contract
 (generatedAt + sourceFingerprint) and is published directly, not copied here.
 """
 import hashlib
