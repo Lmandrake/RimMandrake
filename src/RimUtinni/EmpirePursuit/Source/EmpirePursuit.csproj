@@ -49,6 +49,7 @@
     <Compile Include="Settings.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="HarmonyPatches.cs" />
+    <Compile Include="AnomalySuppression.cs" />
     <Compile Include="EmpireLadderMath.cs" />
     <Compile Include="Kernel\EmpireLadderKernel.cs" />
     <Compile Include="RUT_EmpireRungDef.cs" />
