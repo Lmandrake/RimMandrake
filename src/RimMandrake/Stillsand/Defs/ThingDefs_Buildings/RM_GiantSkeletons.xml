@@ -28,7 +28,7 @@
     <tickerType>Normal</tickerType>
     <graphicData>
       <texPath>Things/Building/RubblePile</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <color>(232,224,204)</color>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
@@ -76,6 +76,7 @@
     <size>(7,3)</size>
     <graphicData>
       <texPath>Things/Building/GiantSkeleton/RM_OommokSkeleton</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(255,255,255)</color>
       <drawSize>(8,4)</drawSize>
     </graphicData>
@@ -94,6 +95,7 @@
     <size>(7,3)</size>
     <graphicData>
       <texPath>Things/Building/GiantSkeleton/RM_MuurrokSkeleton</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(255,255,255)</color>
       <drawSize>(8,4)</drawSize>
     </graphicData>
@@ -118,6 +120,7 @@
     <size>(3,3)</size>
     <graphicData>
       <texPath>Things/Building/GiantSkeleton/RM_GuzzkaSkeleton</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(255,255,255)</color>
       <drawSize>(4,4)</drawSize>
     </graphicData>
@@ -135,6 +138,7 @@
     <size>(3,3)</size>
     <graphicData>
       <texPath>Things/Building/GiantSkeleton/RM_VozzikSkeleton</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(255,255,255)</color>
       <drawSize>(4,4)</drawSize>
     </graphicData>

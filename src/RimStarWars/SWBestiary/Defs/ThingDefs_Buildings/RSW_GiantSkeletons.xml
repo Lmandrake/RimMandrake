@@ -19,6 +19,7 @@
     <size>(7,3)</size>
     <graphicData>
       <texPath>Things/Building/GiantSkeleton/RSW_KraytSkeleton</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(255,255,255)</color>
       <drawSize>(8,4)</drawSize>
     </graphicData>
@@ -48,6 +49,7 @@
     <size>(9,4)</size>
     <graphicData>
       <texPath>Things/Building/GiantSkeleton/RSW_GreaterKraytSkeleton</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(255,255,255)</color>
       <drawSize>(10,5)</drawSize>
     </graphicData>
@@ -77,6 +79,7 @@
     <size>(7,3)</size>
     <graphicData>
       <texPath>Things/Building/GiantSkeleton/RSW_WarWyrmSkeleton</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(255,255,255)</color>
       <drawSize>(8,4)</drawSize>
     </graphicData>
