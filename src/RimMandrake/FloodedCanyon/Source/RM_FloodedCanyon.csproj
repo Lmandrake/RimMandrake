@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <Compile Include="RM_FloodedCanyonDefOf.cs" />
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_FloodedCanyonMod.cs" />
     <Compile Include="RM_BiomeWorker_FloodedCanyon.cs" />
     <Compile Include="RM_MapComponent_CanyonFlood.cs" />

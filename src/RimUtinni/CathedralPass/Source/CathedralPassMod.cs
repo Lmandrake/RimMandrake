@@ -35,7 +35,7 @@ namespace RimMandrake.Utinni.CathedralPass
         public CathedralPassMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<CathedralPassSettings>();
-            new Harmony("mandrake.rut.cathedralpass").PatchAll();
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rut.cathedralpass"), typeof(CathedralPassMod).Assembly, "RimMandrake.Utinni.CathedralPass");
         }
 
         public override string SettingsCategory()

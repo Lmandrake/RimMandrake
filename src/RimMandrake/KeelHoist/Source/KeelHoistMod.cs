@@ -131,7 +131,7 @@ namespace RimMandrake.KeelHoist
         public KeelHoistMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<KeelHoistSettings>();
-            new Harmony(HarmonyId).PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony(HarmonyId), Assembly.GetExecutingAssembly(), "RimMandrake.KeelHoist");
         }
 
         public override string SettingsCategory() => "Keel Hoist";

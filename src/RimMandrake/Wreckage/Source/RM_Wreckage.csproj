@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <Compile Include="RM_WreckageMod.cs" />
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_CompSalvageLoot.cs" />
     <Compile Include="RM_Patch_DeconstructSalvager.cs" />
     <Compile Include="RM_WreckWeathering.cs" />

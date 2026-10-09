@@ -19,7 +19,7 @@ namespace RimMandrake.Utinni.PlantGrowth
                 return;
             }
 
-            new Harmony("mandrake.rut.plantgrowth").PatchAll();
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rut.plantgrowth"), System.Reflection.Assembly.GetExecutingAssembly(), "RimMandrake.Utinni.PlantGrowth");
 
             Log.Message(string.Format(
                 "[RimMandrake.Utinni.PlantGrowth] scaling {0} plant defs (default x{1}, tree x{2}), " +

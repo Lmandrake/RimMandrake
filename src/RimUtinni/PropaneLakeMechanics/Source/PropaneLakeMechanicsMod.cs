@@ -11,7 +11,7 @@ namespace RimMandrake.Utinni.PropaneLakeMechanics
 		public PropaneLakeMechanicsMod(ModContentPack content) : base(content)
 		{
 			Settings = GetSettings<PropaneLakeMechanicsSettings>();
-			new Harmony("mandrake.rut.propanelakemechanics").PatchAll();
+			RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rut.propanelakemechanics"), typeof(PropaneLakeMechanicsMod).Assembly, "RimMandrake.Utinni.PropaneLakeMechanics");
 		}
 
 		public override void DoSettingsWindowContents(Rect inRect)

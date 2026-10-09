@@ -92,7 +92,7 @@ namespace RimMandrake.KineticArms
         public RimMandrakeKineticArmsMod(ModContentPack content) : base(content)
         {
             Settings = GetSettings<RimMandrakeKineticArmsSettings>();
-            new Harmony("mandrake.rm.kineticarms").PatchAll(typeof(RimMandrakeKineticArmsMod).Assembly);
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rm.kineticarms"), typeof(RimMandrakeKineticArmsMod).Assembly, "RimMandrake.KineticArms");
             LongEventHandler.ExecuteWhenFinished(Capture);
         }
 

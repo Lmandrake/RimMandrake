@@ -1,0 +1,5 @@
+# project: RimUtinni/RiverColors/Source/RimMandrake.Utinni.RiverColors.csproj
+# dll: 630a8afbd07462b512385a8ee0cd66b47698923f0d5a70d0a0f1de8ae052604e
+36010c77bc9e1ea0b453736c6b797f83ffc54458de40ac5df2ece25a8b39a24f HarmonyPatch_RiverColors.cs
+a7c6915fd1fb4620dc188911619fc7a79ef4bfad6fa961932c700d05fb6433bb RiverColorsMod.cs
+f6f72891d9f0143e997d984694c695350fe8a9eddadfaf6cccca59b89624d4bb ../../../RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs

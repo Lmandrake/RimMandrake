@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <Compile Include="GenStep_ScatterFungalGround.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="MapComponent_RotFungalDistress.cs" />
     <Compile Include="FungalSoilTradeOptions.cs" />
   </ItemGroup>

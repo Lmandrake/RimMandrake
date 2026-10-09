@@ -47,6 +47,7 @@
 
   <ItemGroup>
     <Compile Include="PlanetPresetPrime.cs" />
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
   </ItemGroup>
 
   <ItemGroup>

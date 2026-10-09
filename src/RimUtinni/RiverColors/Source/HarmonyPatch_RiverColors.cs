@@ -63,7 +63,7 @@ namespace RimMandrake.Utinni.RiverColors
         static RiverColorsHarmonyLoader()
         {
             Harmony h = new Harmony("mandrake.rut.rivercolors");
-            h.PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(h, Assembly.GetExecutingAssembly(), "RimMandrake.Utinni.RiverColors");
             Log.Message("[RimMandrake.Utinni.RiverColors] loaded: WorldDrawLayer_Rivers "
                       + "will draw the headwater/jungle/terminus gradient.");
         }

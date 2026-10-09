@@ -114,7 +114,7 @@ namespace RimMandrake.Wreckage
             // the shared gate registry is always co-present (the same reasoning
             // as RM_TerminalBiomesMod's unconditional registration).
             RegisterMechanicGates();
-            new Harmony("mandrake.rm.wreckage").PatchAll(typeof(RM_WreckageMod).Assembly);
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rm.wreckage"), typeof(RM_WreckageMod).Assembly, "RimMandrake.Wreckage");
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]

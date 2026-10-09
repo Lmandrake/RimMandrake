@@ -55,7 +55,7 @@ namespace RimMandrake.Utinni.FallLineArrivals
 
         static FallLineArrivalsHarmony()
         {
-            new Harmony(HarmonyId).PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony(HarmonyId), Assembly.GetExecutingAssembly(), "RimMandrake.Utinni.FallLineArrivals");
         }
     }
 

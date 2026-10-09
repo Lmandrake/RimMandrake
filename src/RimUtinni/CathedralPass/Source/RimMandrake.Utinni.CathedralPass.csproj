@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <Compile Include="CathedralPassMod.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="CathedralPass.cs" />
     <Compile Include="Patch_CathedralPassHostility.cs" />
     <Compile Include="CathedralPassDebugActions.cs" />

@@ -35,7 +35,7 @@ namespace RimMandrake.GravshipLanding
         public GravshipLandingMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<GravshipLandingSettings>();
-            new Harmony(HarmonyId).PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony(HarmonyId), Assembly.GetExecutingAssembly(), "RimMandrake.GravshipLanding");
             Log.Message("[RimMandrake.GravshipLanding] ready.");
         }
 

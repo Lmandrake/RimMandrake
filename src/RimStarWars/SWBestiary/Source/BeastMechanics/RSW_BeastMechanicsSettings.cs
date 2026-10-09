@@ -92,7 +92,7 @@ namespace RimMandrake.StarWars.SWBestiary
         public RSW_BeastMechanicsMod(ModContentPack content) : base(content)
         {
             GetSettings<RSW_BeastMechanicsSettings>();
-            new Harmony("mandrake.rsw.swbestiary.beastmechanics").PatchAll();
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rsw.swbestiary.beastmechanics"), typeof(RSW_BeastMechanicsMod).Assembly, "RimStarWars.SWBestiary.BeastMechanics");
         }
 
         public override string SettingsCategory()

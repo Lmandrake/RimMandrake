@@ -13,7 +13,7 @@ namespace RimMandrake.Utinni.ShipShields
         static ShipShieldsMod()
         {
             Harmony harmony = new Harmony(HarmonyId);
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(harmony, Assembly.GetExecutingAssembly(), "RimMandrake.Utinni.ShipShields");
             Log.Message("[RimMandrake.Utinni.ShipShields] ready.");
         }
     }

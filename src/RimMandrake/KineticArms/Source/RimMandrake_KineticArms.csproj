@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <Compile Include="RM_KineticMath.cs" />
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_KineticArmsMod.cs" />
     <Compile Include="RM_DamageWorker_KineticOnly.cs" />
     <Compile Include="RM_Projectile_KineticBolt.cs" />

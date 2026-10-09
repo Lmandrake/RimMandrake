@@ -246,7 +246,7 @@ namespace RimMandrake.Abyss
         public RM_AbyssMod(ModContentPack content) : base(content)
         {
             settings = GetSettings<RM_AbyssSettings>();
-            new HarmonyLib.Harmony("mandrake.rm.abyss").PatchAll();
+            RimMandrake.Shared.PatchApplier.Apply(new HarmonyLib.Harmony("mandrake.rm.abyss"), typeof(RM_AbyssMod).Assembly, "RimMandrake.Abyss");
         }
 
         public override string SettingsCategory()

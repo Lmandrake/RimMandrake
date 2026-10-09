@@ -60,7 +60,7 @@ namespace RimMandrake.Utinni.FungalSoilTrade
 		static FungalSoilTradeMod()
 		{
 			Harmony harmony = new Harmony("mandrake.rut.fungalsoiltrade");
-			harmony.PatchAll(Assembly.GetExecutingAssembly());
+			RimMandrake.Shared.PatchApplier.Apply(harmony, Assembly.GetExecutingAssembly(), "RimMandrake.Utinni.FungalSoilTrade");
 			Log.Message("[RimMandrake.Utinni.FungalSoilTrade] loaded: digging RUT_MineableFungalGround "
 					  + "on the Rot will build distress and can call in its fauna.");
 		}
