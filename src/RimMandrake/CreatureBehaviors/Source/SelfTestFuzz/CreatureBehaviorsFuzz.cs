@@ -516,6 +516,29 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
             return fails;
         }
 
+        /// <summary>SHIP_TOW_LINE_1: what a winch may hook. Property check against an independent restatement of the spec: a
+        /// refusal exists exactly when a rule is broken, hostile or standing pawns are never hookable, and every refusal
+        /// carries a reason.</summary>
+        public static List<string> Winch(int n, int seed)
+        {
+            var fails = new List<string>();
+            var r = new Random(seed);
+            for (int i = 0; i < n; i++)
+            {
+                bool corpse = r.Next(3) == 0, pawn = r.Next(3) == 0, downedAnimal = r.Next(2) == 0, item = r.Next(2) == 0;
+                float mass = (float)(r.NextDouble() * 1000), max = (float)(r.NextDouble() * 800), dist = (float)(r.NextDouble() * 60), range = (float)(r.NextDouble() * 40);
+                string got = RM_SalvageWinchRules.RefusalFor(corpse, pawn, downedAnimal, item, mass, max, dist, range);
+                bool shouldRefuse = (pawn && !downedAnimal) || (!pawn && !corpse && !item) || dist > range || mass > max;
+                Cases++; Steps++;
+                if ((got != null) != shouldRefuse) { fails.Add($"winch seed {seed} case {i}: refusal={got ?? "null"} but should refuse={shouldRefuse} (corpse {corpse} pawn {pawn} downedAnimal {downedAnimal} item {item} mass {mass} max {max} dist {dist} range {range})"); if (fails.Count > 5) break; }
+            }
+            Cases++; Steps++;
+            if (RM_SalvageWinchRules.RefusalFor(true, false, false, false, 10f, 400f, 5f, 15f) != null || RM_SalvageWinchRules.RefusalFor(false, true, true, false, 100f, 400f, 5f, 15f) != null
+                || RM_SalvageWinchRules.RefusalFor(false, true, false, false, 1f, 400f, 1f, 15f) == null || RM_SalvageWinchRules.RefusalFor(false, false, false, true, 401f, 400f, 1f, 15f) == null)
+                fails.Add("winch units: corpse and downed beast hookable, standing pawn and overweight item refused");
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -529,6 +552,7 @@ namespace RimMandrake.CreatureBehaviors.FuzzSelfTest
                 ("swim", () => Swim(N(4000), S(1))),
                 ("patch", () => PatchGraphFuzz.Patch(N(3000), S(1))),
                 ("dash", () => PatchGraphFuzz.Dash(N(4000), S(1))),
+                ("winch", () => Winch(N(20000), S(1))),
             };
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             foreach (var f in fam)

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SHIP_TOW_LINE_1 (design pass X-13 / CB-9). A hand-ordered winch that hooks a wreck chunk, a carcass or a downed beast
+  within reach and drags it home beside itself. Not the capstan: it never fights, never ropes pawns on its own, and has its
+  own comp (RimMandrake.CreatureBehaviors.RM_CompSalvageWinch), so the capstan's tether save keys are untouched. Unpowered:
+  a crank and a ratchet. Pairs with KeelHoist's vertical lift: the winch brings it to the ship's foot, the hoist raises it.
+  Mod Settings: Creature Behaviors salvageWinch*. ART: placeholder reuses the capstan base (PROVISIONAL); own art is owed.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SalvageWinch</defName>
+    <label>salvage winch</label>
+    <description>A crank winch on a ratcheted drum with a heavy iron hook. Order it to hook a wreck chunk, a carcass or a downed beast within reach and it drags the load home along the ground, cell by cell, until it rests beside the drum. It cannot lift, cannot pull a standing creature, and refuses what is too heavy.</description>
+    <graphicData>
+      <texPath>Things/Building/CapstanTurret/RM_CapstanTurret_Base</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <size>(2,2)</size>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.4</fillPercent>
+    <castEdgeShadows>true</castEdgeShadows>
+    <tickerType>Normal</tickerType>
+    <rotatable>false</rotatable>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>2200</WorkToBuild>
+      <Flammability>0.4</Flammability>
+      <Mass>50</Mass>
+      <Beauty>-5</Beauty>
+    </statBases>
+    <costList>
+      <Steel>90</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SalvageWinch" />
+    </comps>
+    <designationCategory>Misc</designationCategory>
+    <researchPrerequisites>
+      <li>RM_SalvageWinch</li>
+    </researchPrerequisites>
+    <constructEffect>ConstructMetal</constructEffect>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+  </ThingDef>
+</Defs>

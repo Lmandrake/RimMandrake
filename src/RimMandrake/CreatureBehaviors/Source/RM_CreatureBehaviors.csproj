@@ -170,6 +170,8 @@
     <Compile Include="RM_MapComponent_PinnedSun.cs" />
     <Compile Include="RM_PinnedSunPatches.cs" />
     <Compile Include="RM_FalseShade.cs" />
+    <Compile Include="RM_SalvageWinchRules.cs" />
+    <Compile Include="RM_CompSalvageWinch.cs" />
     <Compile Include="RM_CompFalseShadeAmbusher.cs" />
     <Compile Include="RM_ShadeClothExtension.cs" />
     <!-- SOLAR_HEAT_EXPOSURE_1 tranche 1: heat kinds, directional grid, sun heat, sun pathing, sun-load bar -->
