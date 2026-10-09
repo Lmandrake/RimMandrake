@@ -139,8 +139,10 @@ kits, and a Jawa trader sells both.
   does not cook you, not so far that you desiccate. Thick-walled, innately cool,
   **windows avoided**. *A strange way to live.*
 - ⭐ **The dry-air blower** (owner's machine, two jobs in one): a downward-gushing
-  curtain of hot dry air over each doorway that (1) repels plant encroachment —
-  dry heat is the one alien thing, and (2) repels animals — same instinct. Fueled or
+  curtain of dry air over each doorway that (1) repels plant encroachment —
+  dryness is the one alien thing, and (2) repels animals — same instinct. It is
+  also a special room cooler for the room behind it, never a heater
+  (`BLOWER_ROOM_COOLER_1`, decision taken by question card 2026-10-08). Fueled or
   powered; when it fails the green notices within hours. Every Greentide structure
   is legible by its shimmering doorways.
 - **Fire is not the tool.** Saturated growth barely burns (low Flammability across

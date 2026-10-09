@@ -5,7 +5,7 @@ Seeded action sequences (surge / recede / overwrite / save-load of the salinity 
 over the production kernels, with design invariants checked after every step, plus oracle checks of every grid primitive. Same wrapper shape as selftest_gimmesomeslack.py: the project
 is built through winbuild.stage_build (dotnet.exe is Windows-native), then run.
 
-    python3 src/RimMandrake/Utils/selftest_bazaar_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only axis|quant|prim|pool]
+    python3 src/RimMandrake/Utils/selftest_bazaar_fuzz.py [--fuzz-scale F] [--fuzz-seed N] [--fuzz-only axis|quant|prim|pool|cooler|held]
 
 A failing case is shrunk and printed as `family seed N: message | actions`; --fuzz-seed N replays it.
 """

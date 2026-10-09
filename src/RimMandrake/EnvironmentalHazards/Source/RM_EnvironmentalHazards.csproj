@@ -155,6 +155,8 @@
     <Compile Include="RM_GroundRefusalBiomeExtension.cs" />
     <Compile Include="RM_GenStep_GroundRefusal.cs" />
     <Compile Include="RM_CompDryFieldEmitter.cs" />
+    <Compile Include="RM_CompBlowerRoomCooler.cs" />
+    <Compile Include="RM_RoomCoolerKernel.cs" />
     <Compile Include="RM_FellableTreeExtension.cs" />
     <Compile Include="RM_TreeFallUtility.cs" />
     <Compile Include="RM_CompCrackFall.cs" />
@@ -211,6 +213,7 @@
     <Compile Include="RM_BiomeArrivalLetterExtension.cs" />
     <Compile Include="RM_GameComponent_BiomeArrivalLetters.cs" />
     <Compile Include="RM_Patch_GravshipArrivalLetter.cs" />
+    <Compile Include="RM_Patch_LaunchHeldColonistWarning.cs" />
     <Compile Include="RM_Patch_GrazingSuppressionHook.cs" />
     <Compile Include="RM_ExplosiveGrowthSuppressionBridge.cs" />
     <Compile Include="RM_Patch_HazardApparelScoring.cs" />

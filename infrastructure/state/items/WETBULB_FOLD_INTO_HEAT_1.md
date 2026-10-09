@@ -32,8 +32,4 @@ one-kind-of-heat ruling (CLAUDE.md "One kind of heat"; `SOLAR_HEAT_EXPOSURE_1`,
 - A3 L2: live, an unprotected colonist outdoors on a Greentide map gains vanilla Heatstroke, and one in an enclosed room does not
 - A4 L2: live, the sealed suit raises the wearer's ComfyTemperatureMax by roughly 1.4x the stuff's heat insulation
 - H1 L4: the owner judges the 12 C offset and the gear values in a sitting (PROVISIONAL until then)
-
-## open question
-
-The dry-air blower still pushes heat (`CompHeatPusher` 12/s) into the room behind it, which under
-vanilla heat makes that room hotter. Whether to keep, cut or invert it is the owner's call.
+Answered: the blower's heat push is gone; it is a room cooler that never heats (`BLOWER_ROOM_COOLER_1`).

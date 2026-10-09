@@ -25,6 +25,8 @@
   <ItemGroup>
     <Compile Include="..\RM_AxisKernel.cs" />
     <Compile Include="..\RM_PoolKernel.cs" />
+    <Compile Include="..\RM_RoomCoolerKernel.cs" />
+    <Compile Include="CoolerFuzz.cs" />
     <Compile Include="AxisFuzz.cs" />
     <Compile Include="PoolFuzz.cs" />
     <Compile Include="Program.cs" />

@@ -11,7 +11,7 @@
   <HediffDef>
     <defName>RM_DryAirAversion</defName>
     <label>dry-air aversion</label>
-    <description>A blast of bone-dry heat off a dry-air blower — uncomfortable enough that a wild animal wants nothing more to do with wherever it came from.</description>
+    <description>A blast of bone-dry air off a dry-air blower — uncomfortable enough that a wild animal wants nothing more to do with wherever it came from.</description>
     <hediffClass>HediffWithComps</hediffClass>
     <isBad>false</isBad>
     <comps>

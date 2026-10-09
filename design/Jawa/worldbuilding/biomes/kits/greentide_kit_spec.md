@@ -69,15 +69,21 @@ survival thesis.
 
 ## M2. The dry-air blower (§4b)
 
-**Player experience.** A fueled/powered doorway machine gushing hot dry air
+**Player experience.** A fueled/powered doorway machine gushing dry air
 downward: plants stop growing into that doorway and animals shy off. When it runs out of
 fuel, the green notices within hours. Every Greentide structure shimmers at the
-door.
+door. It is also **a special room cooler** (`BLOWER_ROOM_COOLER_1`, decision taken by
+question card 2026-10-08; owner typed *"Just add this as a special kind of room cooler. No
+one wants a room heater in that biome..."*): it cools the enclosed room behind it toward
+its target temperature and **never heats any room** — no hot exhaust side. With wet-bulb
+folded into vanilla heat (M1), cooling the room is the blower's whole climate role; it has
+no separate "dry room" state.
 
-**Engine route.** `RUT_DryAirBlower` ThingDef (building) composed of vanilla
-comps — `CompPowerTrader`/`CompRefuelable` (XML choice), `CompHeatPusher`
-*(verified, `Source/Verse/CompHeatPusher.cs`)*, `CompFlickable` — plus **one new
-comp**, `RM_CompDryFieldEmitter : ThingComp`:
+**Engine route.** `RM_DryAirBlower` ThingDef (Greentide, building) composed of vanilla
+comps — `CompPowerTrader`/`CompRefuelable` (XML choice), `CompTempControl` (target
+gizmo), `CompFlickable` — plus two of ours: `RM_CompBlowerRoomCooler` (cools the room
+behind, strength and power draw in Mod Settings, PROVISIONAL 14 heat/s and 250 W) and
+`RM_CompDryFieldEmitter : ThingComp` over the doorway arc in front:
 
 1. **Repels encroachment**: writes suppression into the
    `EXPLOSIVE_PLANT_GROWTH_1` engine's suppression grid over a doorway arc
@@ -600,7 +606,7 @@ reuses ride `ALPHA_MECHANICS_KIT_1`'s build.
 8. **M7 Lunger comp** — independent; slot anywhere after 2, before roster pass.
 9. **M10 grazing hook** — with/after `EXPLOSIVE_PLANT_GROWTH_1` (its grid must
    exist; M2's suppression write shares the dependency — if the growth engine
-   slips, M2 ships with the write stubbed and the room-dry + heat halves live).
+   slips, M2 ships with the write stubbed and the room cooling and animal repel live).
 10. **M11 silence cue** — v1.1, after a source read of `Sustainer` volume.
 
 Cross-item dependencies restated: `EXPLOSIVE_PLANT_GROWTH_1` (M2, M10),
