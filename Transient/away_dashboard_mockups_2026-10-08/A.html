@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="common.css">
+<style>
+body{width:1500px;height:950px;overflow:hidden;position:relative;
+ background:radial-gradient(1200px 700px at 30% 40%,#3b2a1e,#140d08)}
+.term{position:absolute;background:#0f0b08ee;border:1px solid #3a2a1d;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#7d6a58;padding:34px 16px 16px;line-height:1.6;filter:blur(1.2px)}
+.term:before{content:attr(data-t);position:absolute;top:0;left:0;right:0;height:26px;background:#2a1d14;border-radius:8px 8px 0 0;padding:5px 12px;color:#a88d70;font-size:12px}
+.caption{position:absolute;left:40px;bottom:30px;width:760px;color:var(--muted);font-size:15px;line-height:1.5}
+.caption h1{font-family:'Fraunces',serif;color:var(--cream);font-size:40px;font-weight:700;margin-bottom:6px}
+.caption b{color:var(--mustard)}
+/* widget */
+.w{position:absolute;right:46px;top:40px;width:470px;border-radius:18px;background:linear-gradient(180deg,#3a281bf2,#24180ff5);
+ border:1px solid #6b4c34;box-shadow:0 30px 80px #000c,0 0 0 1px #000,inset 0 1px 0 #ffffff14;overflow:hidden}
+.w .stripes{height:6px}
+.hd{display:flex;align-items:center;gap:12px;padding:14px 18px 10px}
+.hd .t{font-family:'Fraunces',serif;font-size:24px;font-weight:700;letter-spacing:.5px}
+.hd .s{margin-left:auto;font-family:'IBM Plex Mono';font-size:12px;color:var(--muted);text-align:right}
+.pin{font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:10px;padding:1px 7px}
+.alarm{margin:4px 14px 8px;border-radius:12px;padding:10px 14px;display:flex;gap:12px;align-items:center;font-size:14px}
+.alarm.red{background:linear-gradient(90deg,#6a1e12,#43170e);border:1px solid #d2462e;box-shadow:0 0 22px #d2462e66}
+.alarm.amb{background:linear-gradient(90deg,#5a3d0c,#3a2a10);border:1px solid #f2a516;box-shadow:0 0 18px #f2a51644}
+.alarm .k{font-family:'IBM Plex Mono';font-weight:600;font-size:12px;letter-spacing:1px}
+.alarm .r{margin-left:auto;font-family:'IBM Plex Mono';font-size:12px;color:#f3e4c7aa}
+.sec{padding:6px 18px 2px;font-family:'IBM Plex Mono';font-size:11px;letter-spacing:2px;color:var(--orange)}
+.row{display:flex;gap:11px;align-items:center;padding:7px 18px;font-size:13.5px;border-top:1px solid #ffffff08}
+.row .who{font-family:'IBM Plex Mono';font-size:11px;color:var(--muted);width:62px;flex:none}
+.row .txt{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .t2{font-family:'IBM Plex Mono';font-size:11px;color:var(--dim)}
+.row .lk{font-size:12px}
+.row.done .txt{color:#d8ccb4}
+.chip{font-family:'IBM Plex Mono';font-size:10.5px;padding:1px 6px;border-radius:6px;background:#9aab5f22;color:var(--avocado);border:1px solid #9aab5f55}
+.foot{display:flex;gap:16px;padding:10px 18px 14px;margin-top:6px;border-top:1px solid var(--line);font-family:'IBM Plex Mono';font-size:11.5px;color:var(--muted)}
+.foot b{color:var(--cream)}
+.bar{height:4px;border-radius:2px;background:#ffffff12;margin-top:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--avocado))}
+</style></head><body>
+<div class="term" data-t="AGENT FOUNDRY — claude" style="left:40px;top:40px;width:620px;height:360px">● implemented SCALD_FOLD_INTO_HEAT_1<br>  ⎿ verify L2 A5 pass  Transient/belt_live_checks4_20261008.md<br>● Bash(python3 src/RimMandrake/Utils/winbuild.py FlowWorks)<br>  ⎿ Build succeeded. 0 warnings<br>✻ Cogitating… (4m 12s · ↓ 18.2k tokens)</div>
+<div class="term" data-t="AGENT BENCH — claude" style="left:120px;top:300px;width:640px;height:300px">● Read(design/RimMandrake/biome_mod_architecture.md)<br>╭─ Which canon herd sizes should the Greentide use? ─────╮<br>│ ○ Small packs (2–4)      ○ Large herds (8–20)          │<br>│ ○ Leave as donor values                                 │<br>╰─────────────────────────────────────────────────────────╯</div>
+<div class="w">
+ <div class="stripes"></div>
+ <div class="hd"><span class="dot d-run"></span><span class="t">Lantern</span><span class="pin">📌 on top</span>
+  <span class="s">Thu 19:42<br>away 3h 10m</span></div>
+ <div class="alarm red"><span class="dot d-red"></span><span><span class="k">OOM KILL</span><br>rm-harness: selftest killed at 6.0 GB</span><span class="r">19:13 · 2× today</span></div>
+ <div class="alarm amb"><span class="dot d-amb"></span><span><span class="k">WAITING ON YOU · 14m</span><br>BENCH asks: Greentide herd sizes?</span><span class="r">jump ↗</span></div>
+ <div class="sec">NOW</div>
+ <div class="row"><span class="dot d-run"></span><span class="who">FOUNDRY</span><span class="txt">Building FlowWorks for engine-off schedule</span><span class="t2">4m</span></div>
+ <div class="row"><span class="dot d-run"></span><span class="who">ARTPIPE</span><span class="txt">Greentide redraws <span class="t2">· 6 running · 155 left</span><div class="bar"><i style="width:17%"></i></div></span><span class="t2">~3h</span></div>
+ <div class="row"><span class="dot d-run"></span><span class="who">GAME</span><span class="txt">RimWorld UP · bridge held by FOUNDRY</span><span class="t2">1h20</span></div>
+ <div class="row"><span class="dot d-idle"></span><span class="who">HESTIA</span><span class="txt">idle since 08:56</span><span class="t2">10h</span></div>
+ <div class="sec">FINISHED WHILE YOU WERE AWAY</div>
+ <div class="row done"><span class="dot d-done"></span><span class="who">BENCH</span><span class="txt">Donor plant override verified live — 56 species</span><a class="lk">report</a></div>
+ <div class="row done"><span class="dot d-done"></span><span class="who">FOUNDRY</span><span class="txt">Quarantine reviewed and purged</span><span class="chip">closed</span></div>
+ <div class="row done"><span class="dot d-done"></span><span class="who">FOUNDRY</span><span class="txt">Wasteland live fixtures — A3, A4 pass</span><a class="lk">json</a></div>
+ <div class="row done"><span class="dot d-done"></span><span class="who">FOUNDRY</span><span class="txt">Scald folded into vanilla heat</span><a class="lk">checks</a></div>
+ <div class="row done"><span class="dot d-done"></span><span class="who">ARTPIPE</span><span class="txt">Miasma sheet: 10 new rows await your ruling</span><a class="lk">sheet</a></div>
+ <div class="foot"><span><b>12</b> done</span><span><b>1</b> waiting</span><span><b>1</b> alarm</span><span style="margin-left:auto">ack all ⌫</span></div>
+</div>
+<div class="caption"><h1>A · The Lantern</h1>A small <b>always-on-top</b> window pinned to a screen corner (Edge in app mode, set topmost). Alarms sit at the top and pulse until you acknowledge them. Below them is <b>one line per thing running right now</b>. Finished work slides down into "while you were away", each line with a link to what it produced. Fed by a local service in WSL that polls the session files, the ledger, memwatch and artpipe every few seconds.</div>
+</body></html>

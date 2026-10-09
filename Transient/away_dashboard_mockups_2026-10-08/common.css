@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+:root{
+  --bg:#1e140d; --bg2:#2a1c12; --panel:#34241a; --panel2:#3f2c1f; --line:#5a412e;
+  --cream:#f3e4c7; --muted:#b89c7c; --dim:#8a705a;
+  --orange:#e2803c; --mustard:#e0aa3e; --avocado:#9aab5f; --teal:#5f9c9a;
+  --rust:#d2462e; --amber:#f2a516;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--cream);font-family:'IBM Plex Sans',DejaVu Sans,sans-serif}
+.mono{font-family:'IBM Plex Mono',DejaVu Sans Mono,monospace}
+.serif{font-family:'Fraunces',DejaVu Serif,serif}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;flex:none}
+.d-run{background:var(--teal);box-shadow:0 0 0 3px #5f9c9a33,0 0 12px #5f9c9a}
+.d-done{background:var(--avocado)}
+.d-red{background:var(--rust);box-shadow:0 0 0 4px #d2462e44,0 0 18px #ff5a3c}
+.d-amb{background:var(--amber);box-shadow:0 0 0 4px #f2a51644,0 0 16px #ffbf3c}
+.d-idle{background:var(--dim)}
+.stripes{background:repeating-linear-gradient(90deg,var(--rust) 0 34px,var(--orange) 34px 68px,var(--mustard) 68px 102px,var(--avocado) 102px 136px)}
+a{color:var(--mustard);text-decoration:none;border-bottom:1px dotted #e0aa3e88}
