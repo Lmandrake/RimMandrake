@@ -7,7 +7,20 @@
 Every trader kind EXCEPT the three below still cannot stock it (Hyperweave stays `Sellable`, `tradeTags` empty; the 11 kinds in the history below remain closed). The exceptions go through one custom generator, `RimMandrake.Utinni.ShokkweaveEconomy.StockGenerator_RareShokkweave` (`chance` per stock roll, then `countRange`), because the strip makes every vanilla generator refuse the def:
 - Wildsteam: new `RUT_Caravan_Wildsteam_Weavers` (Wildsteam owned no kind; shared Outlander kinds stay stripped), appended to the faction's `caravanTraderKinds`. chance 0.33, 1~3 units.
 - Hutt Cartel: its own `RUT_Caravan_HuttCartel_EggMarket` and `RUT_Caravan_HuttCartel_Captives`, chance 0.125, 1~2 units. (The Czerka/HuttGalleon kinds are NOT Hutt Cartel kinds and stay stripped.)
-Files: `src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveRareTraderStock.xml`, `Defs/TraderKindDefs/RUT_Wildsteam_Caravan.xml`, `Source/StockGenerator_RareShokkweave.cs` (DLL rebuilt, not deployed). Validated offline only; live trader generation unproven.
+Files: `src/RimUtinni/ShokkweaveEconomy/Patches/ShokkweaveRareTraderStock.xml`, `Defs/TraderKindDefs/RUT_Wildsteam_Caravan.xml`, `Source/StockGenerator_RareShokkweave.cs` (DLL rebuilt, not deployed). **Status: UNPROVEN LIVE** (decision taken by question card 2026-10-09: marked as such, not closed as proven). Validated offline only; neither the Wildsteam 0.33 roll nor the Hutt Cartel 0.125 roll has been observed in live trader generation.
+
+## 2026-10-09 (FOUNDRY, belt set5) — three rulings enacted; 4th route BUILT `6c1f40e9d`, live check filed as `CREEP_WEB_HARVEST_LIVE_1`
+
+**Rulings (decision taken by question card 2026-10-09):**
+- (a) **Trader strip: source proof ACCEPTED.** The 11-kind source-verified mechanism proof (2026-09-18 pass below) stands; no companion live-roll tool is owed.
+- (b) **Border creep-web harvest job: BUILD, with a live check.** Done below.
+- (c) **The two rare-trader exceptions are UNPROVEN LIVE** (see RULE above) — honest status, not proven.
+
+**FrontCreep RE-MEASURED: BUILT.** `RM_MapComponent_FrontCreep` (mandrake.rm.creaturebehaviors) reads `RM_FrontCreepExtension` off a neighbouring tile's biome and scatters `RM_Webwork_Anchor`/`_Web`/`_Gutter` inward from that edge; `RM_Webwork` carries the extension (`952295316`, WEBWORK_BASE_PORT_BUILD_1, which also deleted the `RUT_` structures and moved their yields to the free tier as thrixweave). The old "FrontCreep unbuilt" line is false. Its own advance on a real border map has never been watched live (Webwork `validation.py` lists `front_creep_advances` UNMEASURED).
+
+**Built (in mandrake.rm.webwork, where the nodes, the emergent comp and the settings live):** the colonist job is **vanilla Deconstruct**, no new WorkGiver/JobDriver. Anchor and sheet web get `building.alwaysDeconstructible` + `claimable false` (source: without it a null-faction natural building is still deconstructible via `ClaimableBy`, so the toggle would be a lie) + `WorkToBuild` 300/200 + new `RM_CompHarvestYield` (drops 3/2 Hyperweave on `DestroyMode.Deconstruct`; vanilla deconstruct leavings refund the cost list, which these have none of). All three nodes now carry `RM_CompProperties_EmergentSpawnOnDestroy` (base 3%), which counts `Deconstruct` as a harvest (still never `KillFinalize`). Toggle `RM_WebworkSettings.webHarvestEnabled` (startup gate flips `alwaysDeconstructible`; the comp also refuses at runtime). Proof methods `RM_WebworkProof.ProofHarvest` / `ProofHarvestDesignate` / `ProofHarvestRead`; Webwork `validation.py` gains the `creep_web_harvest` component and static checks. `lint_webwork_defs.py` WARN "no def attaches the emergent comp" was an instrument bug (matched only `">`, not a self-closing element) — fixed. Offline: build 0 errors, Webwork lint 0/0, webwork fuzz OK, static checks pass except a pre-existing finding not from this change (`RM_CompSalvageWinch.cs` second-pull, SHIP_TOW_LINE_1).
+
+**Live check NOT run:** the game was RUNNING at check time, and a new DLL cannot deploy under a running game. Filed `CREEP_WEB_HARVEST_LIVE_1` (needs deploy) with exact steps and deciding strings.
 
 ## 2026-09-24 (FOUNDRY, sixth pass) — wake-up fix RE-PARSE confirmed live; full behavioral proof deferred, canonical map is mid-encounter
 
