@@ -97,6 +97,10 @@ owner makes here is authorship, not correction.
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `GE3-series protocol droid` page, `Images of GE3-series protocol droids` — every image is a *Knights of the Old Republic* / *KOTOR II* 2003-04 game model; no live-action, photoreal game or databank depiction exists).** The images below are animated/stylised; render this droid realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. Concretely: read the low-poly KOTOR promo model's painted-on texture as real worn pewter-grey steel with real specular, and the flat-shaded dark bands as real black rubber bellows.
+
 **This is the chassis where the sprite is most faithful and the canon prose is most useless.**
 The article gives **no plating colour and no dimensions at all**, so `wookieepedia_ge3_infobox.jpg`
 is the *only* appearance evidence, and it must be trusted outright.
@@ -156,6 +160,7 @@ Against `donor_current_sprite.png` (`GE3_body_south`, 512×512) and
 - [ ] Keeled central breastplate with a vertical seam
 - [ ] Narrow tapered waist and separated legs on a lean humanoid silhouette
 - [ ] Head shows a large circular plate/disc on the crown, wide-set round photoreceptors, and a vertical ribbed grille mouth
+- [ ] Realistic rendering: worn steel with real specular and grime, real rubber bellows, no outlines, no low-poly game shading
 
 ## Engine limits
 The protocol variant (GE3PD) defines no `colorChannels` block of its own and inherits whatever `DW_Family_Protocol` supplies, so its colour cannot be tuned independently of the parent family without adding an override.
@@ -174,7 +179,7 @@ The protocol variant (GE3PD) defines no `colorChannels` block of its own and inh
   `src/RimStarWars/Droidworks/Defs/Races_Families.xml`
 
 ## Candidate images
-- `wookieepedia_ge3_infobox.jpg` (544×792) — the `{{DroidSeries}}` infobox image
+- `wookieepedia_ge3_infobox.jpg` (544×792) — *Knights of the Old Republic* promotional game render (stylised 2003 game CGI), file `CzerkaDroid.jpg` — https://static.wikia.nocookie.net/starwars/images/4/48/CzerkaDroid.jpg — the `{{DroidSeries}}` infobox image
   (`File:CzerkaDroid.jpg`), a KotOR model render on flat grey, full body, three-quarter view
   with the right hand raised in a presenting gesture. **The only appearance evidence that
   exists for this chassis**, and therefore authoritative on colour: weathered gunmetal/pewter
