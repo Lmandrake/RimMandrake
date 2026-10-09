@@ -1,9 +1,9 @@
 {
  "biome": "RM_FeverWood",
- "built": "2026-10-08T06:53:30-0700",
+ "built": "2026-10-08T19:46:09-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 35 mods \u2014 a test list): 614 active",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "Plant_HydenockTree_Wild": {
    "columns": {
@@ -179,6 +179,11 @@
      "east": "cadcef7c69acac288d577a3eb040032439722bf5778b9084e6961467bb357c8a",
      "north": "2fb4b191c8c3f34a42b56582faa8f7cc6002611af10256bbd79b8acb6d9b7a1e",
      "south": "c951d459de4dd1ec1a9404c8da3ac8f3033bc957cac227a63406a10281673fd0"
+    },
+    "H": {
+     "east": "ab6fe7dddc74a1009565ca33f527f6ffbb5b1bae58fd09ab3ad13b6a6c173489",
+     "north": "47b6358f423419407d6f3a5f63fada2be1c978fa1910bd264318d08f0b090756",
+     "south": "c840dac0441be38e353f195f60b678081a837ba289c0074473342ae405b643b9"
     }
    },
    "graphic_of": {
@@ -188,16 +193,18 @@
     "D": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
     "E": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
     "F": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
-    "G": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow"
+    "G": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
+    "H": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow"
    },
    "labels": {
-    "A": "IN GAME \u2014 FeverWood",
+    "A": "history FeverWood 2026-09-26",
     "B": "render feverwood_chellow",
     "C": "render regen_fw_chellow_flying_1_v1",
     "D": "render regen_fw_chellow_flying_2_v1",
     "E": "render regen_fw_chellow_flying_3_v1",
     "F": "render regen_fw_chellow_flying_4_v1",
-    "G": "render regen_fw_chellow_v2 \u2014 failed canon check"
+    "G": "render regen_fw_chellow_v2 \u2014 failed canon check",
+    "H": "IN GAME \u2014 FeverWood"
    },
    "res": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
    "reserved": [
@@ -207,7 +214,8 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
    ],
    "subject_key": "chellow"
   },
@@ -1045,26 +1053,32 @@
     },
     "D": {
      "single": "5c3bc904cb1471e933aa8c0fa16b21e9ecd158486c6d9ea36bef530255e917bf"
+    },
+    "E": {
+     "single": "171c247b1462905f28300bea42dfe3247a803c386dafda8dafb59cb41bdf4b3a"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Tullick/RM_Tullick_a",
     "B": "_byname",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
     "B": "render feverwood_plant_tullick",
     "C": "render regen_fw_tullick_v2a",
-    "D": "render regen_fw_tullick_v2b"
+    "D": "render regen_fw_tullick_v2b",
+    "E": "render regen_fw_tullick_v2c"
    },
    "res": "Things/Plant/RM_Tullick/RM_Tullick_a",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "tullick"
   },
@@ -1075,20 +1089,38 @@
     },
     "B": {
      "single": "84b3241627677cbc345bedb09c221eb47f6177fa620250b29731b18f311795c5"
+    },
+    "C": {
+     "single": "c05885f5702d18669e09a1325093820fdf39f51e8f42f93580609c9a186fdb13"
+    },
+    "D": {
+     "single": "ba80d50ad11334c88da716c9863a2c48bced5b909344c70ca1869d3a0388fd36"
+    },
+    "E": {
+     "single": "0db1b3c5b3c7f9fb7a4a07a724cb9d2ccc72d45f814f95c570c9d9e200901778"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Varnoth/RM_Varnoth_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_varnoth"
+    "B": "render feverwood_plant_varnoth",
+    "C": "render regen_fw_varnoth_v2a",
+    "D": "render regen_fw_varnoth_v2b",
+    "E": "render regen_fw_varnoth_v2c"
    },
    "res": "Things/Plant/RM_Varnoth/RM_Varnoth_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "varnoth"
   },
@@ -1134,20 +1166,38 @@
     },
     "B": {
      "single": "93370c52b55c9be05d5ba9c453f6e0704fba10e644ecd549e19becbc97c297a3"
+    },
+    "C": {
+     "single": "791e47b02a1e36f36acbb8886d322eaa3978b25ce2b89e43a016dbcc656f2900"
+    },
+    "D": {
+     "single": "f87823ac8e3db676d21a008ad4d6c3b8d18dc6442c7bb7dc23a7bb3e1def8bd8"
+    },
+    "E": {
+     "single": "e9e2d2d2552cff9c62d5253dd8de94998bcc208f630ee0e7e0680c9e6cb72851"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Verrow/RM_Verrow_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_verrow"
+    "B": "render feverwood_plant_verrow",
+    "C": "render regen_fw_verrow_v2a",
+    "D": "render regen_fw_verrow_v2b",
+    "E": "render regen_fw_verrow_v2c"
    },
    "res": "Things/Plant/RM_Verrow/RM_Verrow_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "verrow"
   },
@@ -1158,20 +1208,32 @@
     },
     "B": {
      "single": "64b79ee921506142353ffd6fc334db172b0746512a7863bab4151d1fa3f69f74"
+    },
+    "C": {
+     "single": "22fe337cc7c247f19a345ebbc3d886d7e1311490c9b49a47095ccc3a25da6687"
+    },
+    "D": {
+     "single": "3b1846bf06ccfe96d8588383975716220bcb9b7cae9aba98dd7860e2ff18ddfb"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Wanlith/RM_Wanlith_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
-    "B": "render feverwood_plant_wanlith"
+    "B": "render feverwood_plant_wanlith",
+    "C": "render regen_fw_wanlith_v2b",
+    "D": "render regen_fw_wanlith_v2c"
    },
    "res": "Things/Plant/RM_Wanlith/RM_Wanlith_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "wanlith"
   },
@@ -1219,6 +1281,16 @@
      "4_east": "4458dc8bcef509555c53722d444141ea54edee1d44b125ed95453b5df6f413fd",
      "4_north": "360ca5fb897f01bf78417491f298b232e150794946e649576c7c68aa2b51f524",
      "4_south": "a8dd1f199a5b1a7b2e6c0d63cde5aa3f10c61e21f2b6906316dc82a8beb890e8"
+    },
+    "F": {
+     "east": "d1f7c87906618d48004a8794f7ca6af9a4c85c0fb7e2cb65f7520aec4debbb87",
+     "north": "2161e64b279cefeadb45863b3640d13bc20a8fab1839bb3b1a0285f16038cfaf",
+     "south": "2fc80191c68997f2051b0d4ea71a9d57707f75c3d1fcc47fa9a80579050cf87b"
+    },
+    "G": {
+     "east": "d01bc774a48caa84b3973f2f82550dc733dd0bcbc3e9bc61ebe431f52cf5e9cf",
+     "north": "39b4b2c0a9e55bbe48776c730e74f6b77fd4defe2ce8b2feb78284acdc84b95c",
+     "south": "406350d7d732d766987e8c37f47d7931d2758f435525d28d7652653a93fe36a9"
     }
    },
    "graphic_of": {
@@ -1226,14 +1298,18 @@
     "B": "swanimals/Convor/Convor",
     "C": "swanimals/Convor/Convor_f",
     "D": "_flip:swanimals/Convor/Convor_Flying_",
-    "E": "_flip:swanimals/Convor/Convor_Flying_"
+    "E": "_flip:swanimals/Convor/Convor_Flying_",
+    "F": "swanimals/Convor/Convor",
+    "G": "swanimals/Convor/Convor"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render leaningscrub_convor_v1",
     "C": "IN GAME \u2014 SWBestiary",
     "D": "IN GAME \u2014 Convor_f_Flying_",
-    "E": "IN GAME \u2014 Convor_Flying_"
+    "E": "IN GAME \u2014 Convor_Flying_",
+    "F": "render regen_ls2_canon_convor_v2",
+    "G": "render regen_ls2_canon_convor_v3"
    },
    "res": "swanimals/Convor/Convor",
    "reserved": [
@@ -1241,7 +1317,9 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "convor"
   },
@@ -1485,20 +1563,50 @@
     },
     "B": {
      "single": "c7c380ec9133a3b9bd9adc0ca7cd89392881508f2eba754d0983f37c40713e04"
+    },
+    "C": {
+     "single": "d79e1c50d2428558689edca01f9ca223928692fbb4dfbd2c6f9757c031f16518"
+    },
+    "D": {
+     "single": "c4b22950f0abae61c07b6757792291c8e3fb6654736893daefeab09770d38f52"
+    },
+    "E": {
+     "single": "d374c387ba027c5ea6fa0bc7d930f4f9f2f98542c3120e1d41e56d9b23781cec"
+    },
+    "F": {
+     "single": "2c2ade8a6b934617a022ed25666f8c76b220d0db8a6cfccd5cdbda416e0f8d83"
+    },
+    "G": {
+     "single": "281b6baf86ac2e09b77af4781045f5bd56010c0b89b8527cc981f4c92faca5bc"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RSW_Plant_Chakroot_Wild",
-    "B": "Things/Plant/RSW_Plant_Chakroot_Wild"
+    "B": "Things/Plant/RSW_Plant_Chakroot_Wild",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname",
+    "G": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: SW \u2014 Bestiary",
-    "B": "render sheet_redo_RSW_Plant_Chakroot_Wild_v1"
+    "B": "render sheet_redo_RSW_Plant_Chakroot_Wild_v1",
+    "C": "render gate_gap_chakroot_v1",
+    "D": "render longshade_rsw_chakroot_v1",
+    "E": "render longshade_rsw_chakroot_v2",
+    "F": "render longshade_rsw_chakroot_v3",
+    "G": "render longshade_rsw_chakroot_v4"
    },
    "res": "Things/Plant/RSW_Plant_Chakroot_Wild",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
    ],
    "subject_key": "chakroot_wild"
   },
@@ -1527,23 +1635,39 @@
      "4_east": "12df68eaf8171fbc804d2648b748bb05cafdbfaabd34fd0924c7a345a38ab4f3",
      "4_north": "b9d2a0ce0c59f796782a6e969034c63db2c6e65b43c9f3be653789496f07045d",
      "4_south": "bc7477d3efad691737fd0547b5e52977f796150d5d103abb1338b71fe5bb2b1d"
+    },
+    "D": {
+     "east": "944216b8afd98a8288cfdd37c4d8e16388473cf2fb4a25fc3b8dd1aeb1280884",
+     "north": "9b11cc87e23c301da6382e7c8d73b7280927c640f1907f74a52ccf5ed2b091bc",
+     "south": "32dc4792a176c8e4cab72ef432f80e62a790fbb46b828ef7c629cb3e3cf9a9ca"
+    },
+    "E": {
+     "east": "366e9da123988f562655563eafbaaccdf1f1c8a99b79e0ae26586ba379927afd",
+     "north": "0fc81f4fce7d693f2a97e1efaf34c931f6aebf9bfdd512d70aa187ec496cd448",
+     "south": "449a5954fa8bda799b76c13e73a048e4992b9ac5a6259d6d86601c23072c7b9f"
     }
    },
    "graphic_of": {
     "A": "swanimals/Urusai/Urusai",
     "B": "swanimals/Urusai/Urusai",
-    "C": "_flip:swanimals/Urusai/Urusai_Flying_"
+    "C": "_flip:swanimals/Urusai/Urusai_Flying_",
+    "D": "swanimals/Urusai/Urusai",
+    "E": "swanimals/Urusai/Urusai"
    },
    "labels": {
-    "A": "history SWBestiary 2026-09-18",
+    "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
-    "C": "IN GAME \u2014 Urusai_Flying_"
+    "C": "IN GAME \u2014 Urusai_Flying_",
+    "D": "render regen_ls2_canon_urusai_v2",
+    "E": "render regen_ls2_canon_urusai_v3"
    },
    "res": "swanimals/Urusai/Urusai",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "urusai"
   },
@@ -1585,6 +1709,30 @@
      "east": "6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235",
      "north": "e6f8baecbe4afac09be50947a57824d354564c9e221dbf7b4d473eff5001b3fe",
      "south": "669d1d32882758ba004624bcc560f3779ea8e8d757a84b8e83f806a1d8519800"
+    },
+    "G": {
+     "east": "cfbef2bcdeb097facae3eca05f3d791ec6c314edcb43200d7bef82dfd8fbca7b",
+     "north": "1901d1e16aa3f7bd26d8edbe3cc5da773fcc864a55eb4c228cc774e8b6d21b8b",
+     "south": "560c5d43580364b7067f6204298c7be10de1d6233e23e75d8bc616f25143f60a"
+    },
+    "H": {
+     "east": "e6c2c63e3f9c769f926256bb18d5e4c1d43b5b0331a2aaa5632e860e33044084",
+     "north": "c19216898050d4f426edb2526f8b55de2706f20878c81ef452413b60199f9713",
+     "south": "a65f0c17bb6e0503a4e76236267656e53a6e2b1b551b2835b78ea5bbcfd5d936"
+    },
+    "I": {
+     "east": "d9e083e2e93074a99dd7e06c27dd59b2a9361844b5c6ea924e616632ae7e391b",
+     "north": "4418d65507ee0c029465496fc6ada3d3ec9e5f1edb221da9c3357243eb2758cb",
+     "south": "2fa1bf0802767a0d3b1285cd77f59970564aca4e4c9c2b0efb73678495ed245d"
+    },
+    "J": {
+     "east": "31a609a26eda7cabaacfe4a830d756e7e704ee54d6a28fbf208906da0dec28a2",
+     "north": "4bbb5e39e3a5622cd21e808e4932ce8d3ad32735b322b80a8b9afc4964d075db",
+     "south": "694a9ba42cde6e8cb552a5f7fb38e949be235d7a39789bced8258240d1b695a9"
+    },
+    "K": {
+     "north": "b4f2fbec36e3ded5c1bda32426a273f180220d0ca8f0a78ccf0c93e9cb8d7477",
+     "south": "435070b47c32a2e90213a44832691f3a5b46587455d609175a122667743097eb"
     }
    },
    "graphic_of": {
@@ -1593,7 +1741,12 @@
     "C": "swanimals/Whisperbird/Whisperbird",
     "D": "swanimals/Whisperbird/Whisperbird",
     "E": "_flip:swanimals/Whisperbird/Whisperbird_Flying_",
-    "F": "swanimals/Whisperbird/Whisperbird"
+    "F": "swanimals/Whisperbird/Whisperbird",
+    "G": "swanimals/Whisperbird/Whisperbird",
+    "H": "swanimals/Whisperbird/Whisperbird",
+    "I": "swanimals/Whisperbird/Whisperbird",
+    "J": "swanimals/Whisperbird/Whisperbird",
+    "K": "swanimals/Whisperbird/Whisperbird"
    },
    "labels": {
     "A": "history WhisperbirdArtOverride 2026-09-20",
@@ -1601,7 +1754,12 @@
     "C": "render canon_whisperbird_v1",
     "D": "history WhisperbirdArtOverride 2026-09-13",
     "E": "IN GAME \u2014 Whisperbird_Flying_",
-    "F": "IN GAME \u2014 WhisperbirdArtOverride"
+    "F": "IN GAME \u2014 WhisperbirdArtOverride",
+    "G": "render regen_ls2_canon_whisperbird_flying_1_v1",
+    "H": "render regen_ls2_canon_whisperbird_flying_2_v1",
+    "I": "render regen_ls2_canon_whisperbird_flying_3_v1",
+    "J": "render regen_ls2_canon_whisperbird_flying_4_v1",
+    "K": "render regen_ls2_canon_whisperbird_v1"
    },
    "res": "swanimals/Whisperbird/Whisperbird",
    "reserved": [
@@ -1610,7 +1768,12 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K"
    ],
    "subject_key": "whisperbird"
   },

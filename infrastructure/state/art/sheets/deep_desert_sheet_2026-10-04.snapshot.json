@@ -1,9 +1,9 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-08T06:51:24-0700",
+ "built": "2026-10-08T19:44:31-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 35 mods \u2014 a test list): 614 active",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "RM_Aurrok": {
    "columns": {
@@ -595,22 +595,30 @@
      "east": "6ee2d4db937f2f892d2aec3770984955d3d7f49da8db6ca8444e7626ef49eaf3",
      "north": "479f5b09e93f7f08c953e4bcd78c419860808cff5ecded5070911bb31ee205ce",
      "south": "67b953ccfee8d320b24f44a40fead25362827e6ac476ee1da4737766e4ed48f2"
+    },
+    "E": {
+     "east": "2216a69e240624340eca100a8afa9a242fe39d0b387a8a144be0ee7e502a3b8c",
+     "north": "3b556e674543276dbefc611e35e6ab0fb42b0599f5af304fbff591d8aff44f16",
+     "south": "f452aebb9cc850d7514065ab44cfa8f8de21c1b446fede3fb1db445ed037ec85"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
-    "D": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga"
+    "D": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
+    "E": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga"
    },
    "labels": {
     "A": "IN GAME \u2014 LongShade",
-    "D": "render longshade_rsw_ulgga_v1"
+    "D": "render longshade_rsw_ulgga_v1",
+    "E": "render enact_6fe353e8_ulgga_v1"
    },
    "res": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "ulgga"
   },
@@ -959,16 +967,6 @@
   },
   "RSW_Kreetle": {
    "columns": {
-    "A": {
-     "east": "5336ed954b9d0bde5145fab2e4e0331c01214fbc39d31f4d68d50f94c3d8ef4c",
-     "north": "2a051dc12dfd8cd97473dea28010bb9152be424a0700087c0c60764c9a11cb7e",
-     "south": "f0a167b6ad5f2ee0b6dba6a7d7c0683ec9282ce61fd17906f4b52d842a1acf2f"
-    },
-    "D": {
-     "east": "e9657aa9c5a87f3a63204189dd787b792237ba0cb535b8fcc59839bae374bb4e",
-     "north": "2a051dc12dfd8cd97473dea28010bb9152be424a0700087c0c60764c9a11cb7e",
-     "south": "54b3b5929300b30db237b46a1dc9f168f6341e1b3496c250ffbbf749d6f8e4f8"
-    },
     "F": {
      "east": "e8115f1353694ff615cea90dabaf55d3726e48fbe9f52a2baeed6a93202974e1",
      "north": "ef71eb0b897ff469b3eb3a154bccbd4dfbdeb2d6cc2ef0339f696c57fa0e91d8",
@@ -986,23 +984,25 @@
      "east": "4276ef9859691a613dce4845c1ef91ab932c841f9aee7469b6a2b7e8d1b0ca33",
      "north": "96b0d7a35b521b922dfd6ac4f29d5b27c7f4250b0b3ee5c853eb9bf90b362ef6",
      "south": "1db929490093e68e4670815c344d155c3af8616fb500b6708774f99ea54e2fe5"
+    },
+    "L": {
+     "east": "5336ed954b9d0bde5145fab2e4e0331c01214fbc39d31f4d68d50f94c3d8ef4c",
+     "south": "f0a167b6ad5f2ee0b6dba6a7d7c0683ec9282ce61fd17906f4b52d842a1acf2f"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Kreetle/Kreetle",
-    "D": "swanimals/Kreetle/Kreetle",
     "F": "swanimals/Kreetle/Kreetle_j",
     "I": "swanimals/Kreetle/Kreetle",
     "J": "swanimals/Kreetle/Kreetle",
-    "K": "swanimals/Kreetle/Kreetle"
+    "K": "swanimals/Kreetle/Kreetle",
+    "L": "swanimals/Kreetle/Kreetle"
    },
    "labels": {
-    "A": "history KreetleArtOverride 2026-09-20",
-    "D": "history KreetleArtOverride 2026-09-11",
     "F": "IN GAME \u2014 SWBestiary",
     "I": "render leaningscrub_kreetle_v1",
     "J": "render leaningscrub_kreetle_v1 \u2014 failed canon check",
-    "K": "IN GAME \u2014 KreetleArtOverride"
+    "K": "IN GAME \u2014 KreetleArtOverride",
+    "L": "history KreetleArtOverride 2026-09-20"
    },
    "res": "swanimals/Kreetle/Kreetle",
    "reserved": [
@@ -1016,7 +1016,8 @@
     "H",
     "I",
     "J",
-    "K"
+    "K",
+    "L"
    ],
    "subject_key": "kreetle"
   },
@@ -1118,11 +1119,6 @@
   },
   "RSW_Scurrier": {
    "columns": {
-    "A": {
-     "east": "4013c85c85c10160455c2bb2dba89d8c5070b6a59a0775c2b3cea9d15371045e",
-     "north": "5f001366df915888909ce053457caf791efda3e7f795cc0e7f61bc8b024de9eb",
-     "south": "dfd4730c213079542f1516e29add5e2852036cf59ff84055bf691499930ee5c3"
-    },
     "B": {
      "east": "3ab62dcb53f0ef25dace8865e42684df6a9039df6b23d510d641d57616bfff82",
      "north": "c46bacb303eb525dd52a91d108072a7283c41c04b37f42faead8dffa4b2e2424",
@@ -1137,19 +1133,24 @@
      "east": "932391c6be270b100b5eda76bd76d26e92738bda0e2140775ef75816bcb1eda9",
      "north": "531761298c19aa92e458d12ae52d76aaef121fc9a5d374568825f66448dc2926",
      "south": "70961ccef88ed8960dc9ac969e19749bec7f28129a1c9414f7af39b2cd13ad21"
+    },
+    "H": {
+     "east": "47575af1c9897b4eea716230832e9abd2df40a28b037ecef3d39dad442e244b1",
+     "north": "371a40754ca0d8be577d332e88c30faa55f5cd9752d2fe2683d73393de108bf1",
+     "south": "056a0859b11d95e47a477697c099a54723a708d2992612e14127f411bcce3fc7"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Scurrier/Scurrier_f",
     "B": "swanimals/Scurrier/Scurrier_m",
-    "E": "swanimals/Scurrier/Scurrier_f",
-    "G": "_byname"
+    "E": "_byname",
+    "G": "swanimals/Scurrier/Scurrier_f",
+    "H": "_byname"
    },
    "labels": {
-    "A": "history SWBestiary 2026-09-18",
     "B": "IN GAME \u2014 SWBestiary",
-    "E": "IN GAME \u2014 SWBestiary",
-    "G": "render stillsand_s2_RSW_Scurrier_v3 \u2014 failed canon check"
+    "E": "render stillsand_regen_RSW_Scurrier_v2",
+    "G": "IN GAME \u2014 SWBestiary",
+    "H": "render regen_c17_scurrier_v1"
    },
    "res": "swanimals/Scurrier/Scurrier_f",
    "reserved": [
@@ -1159,7 +1160,8 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
    ],
    "subject_key": "scurrier"
   },
@@ -1232,5 +1234,5 @@
   }
  },
  "sheetId": "deep_desert_sheet_2026-10-04",
- "snapshotId": "4475817683b648ff"
+ "snapshotId": "8a0556e0992f8af4"
 }
