@@ -25,7 +25,9 @@ namespace RimMandrake.TerminalBiomes
     //   >= 100%: the reefback answers — the map's own, or one walks in — and
     //       breaks that lamp, then a walked-in giant leaves.
     // A lamp it cannot reach (inside a closed hull: animals do not open doors)
-    // is never answered — "never the ship".
+    // is never answered — "never the ship" — but is re-checked, so a hull left
+    // open later is. A failed or interrupted answer retries after a cooldown
+    // (GREY_LAMP_ANSWER_RETRY_1).
     public class RM_MapComponent_GreyLampWatch : MapComponent
     {
         public const int Interval = 250;
@@ -36,6 +38,13 @@ namespace RimMandrake.TerminalBiomes
         private HashSet<int> walkedIn = new HashSet<int>();
         private HashSet<int> warnedWatch = new HashSet<int>(); // lamps whose watcher warning was actually delivered
         private int nextWatchOrderTick;
+        // GREY_LAMP_ANSWER_RETRY_1: an answer is only final when the lamp is broken (it is then Killed, and the burn
+        // book forgets it). Until then: lamp id -> the giant sent (thingIDNumber), and lamp id -> the tick a failed or
+        // interrupted answer may be retried.
+        private Dictionary<int, int> dispatched = new Dictionary<int, int>();
+        private Dictionary<int, int> retryAfter = new Dictionary<int, int>();
+        // PROVISIONAL (auto-decided 2026-10-09, GREY_LAMP_ANSWER_RETRY_1): a failed answer retries after 6 in-game hours.
+        public const int AnswerRetryCooldownTicks = 6 * 2500;
 
         public RM_MapComponent_GreyLampWatch(Map map) : base(map)
         {
@@ -75,6 +84,8 @@ namespace RimMandrake.TerminalBiomes
                 lamps.Scraped.Clear();
                 lamps.Answered.Clear();
                 warnedWatch.Clear();
+                dispatched.Clear();
+                retryAfter.Clear();
                 return;
             }
             Advance(Interval);
@@ -97,6 +108,7 @@ namespace RimMandrake.TerminalBiomes
             }
             lamps.Advance(litNow, ticks, ThresholdTicks, RM_TerminalBiomesSettings.GreyLampWatcherActive, RM_TerminalBiomesSettings.GreyLampGiantActive,
                 id => TryWatch(buildings[id], glowers[id]), id => LayScrapeSign(buildings[id], glowers[id]), id => TryAnswer(buildings[id]));
+            PruneAnswerState();
             SendHomeIdleGiants();
         }
 
@@ -192,12 +204,37 @@ namespace RimMandrake.TerminalBiomes
         }
 
         // ── 100%: the giant answers ─────────────────────────────────────────
+        // Returns true only to latch the lamp as answered for good, which no longer happens: a running break job is
+        // waited on, a failed or interrupted one is retried after a cooldown, and success removes the lamp itself.
         private bool TryAnswer(Building lamp)
         {
             ThingDef giantDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Reefback");
             JobDef breakJob = DefDatabase<JobDef>.GetNamedSilentFail("RM_BreakGlow");
             if (giantDef == null || breakJob == null)
             {
+                return false;
+            }
+            int id = lamp.thingIDNumber;
+            int now = Find.TickManager.TicksGame;
+            if (dispatched.TryGetValue(id, out int giantId))
+            {
+                Pawn sent = map.mapPawns.AllPawnsSpawned.FirstOrDefault(p => p.thingIDNumber == giantId);
+                if (sent != null && sent.CurJobDef == breakJob && sent.CurJob.targetA.Thing == lamp)
+                {
+                    return false; // on its way: wait
+                }
+                dispatched.Remove(id); // interrupted, killed, or gave up, and the lamp still burns
+                retryAfter[id] = now + AnswerRetryCooldownTicks;
+                return false;
+            }
+            if (retryAfter.TryGetValue(id, out int after) && now < after)
+            {
+                return false;
+            }
+            if (!ReachableFromOutside(lamp))
+            {
+                // Inside a closed hull: the light is the ship's, and the ship is never the target. Nothing walks in;
+                // checked again each step, so a hull left open later is answered.
                 return false;
             }
             Pawn giant = map.mapPawns.AllPawnsSpawned
@@ -207,23 +244,60 @@ namespace RimMandrake.TerminalBiomes
                 giant = WalkIn("RM_Reefback");
                 if (giant == null)
                 {
+                    retryAfter[id] = now + AnswerRetryCooldownTicks;
                     return false;
                 }
             }
             if (!giant.CanReach(lamp, PathEndMode.Touch, Danger.Deadly))
             {
-                // Inside a closed hull: the light is the ship's, and the ship is
-                // never the target. The giant goes back to the murk.
                 if (WalkedIn(giant))
                 {
                     SendAway(giant);
                 }
-                return true;
+                retryAfter[id] = now + AnswerRetryCooldownTicks;
+                return false;
             }
             giant.jobs.StartJob(JobMaker.MakeJob(breakJob, lamp), JobCondition.InterruptForced);
+            if (giant.CurJobDef != breakJob)
+            {
+                retryAfter[id] = now + AnswerRetryCooldownTicks; // the job failed at once
+                return false;
+            }
+            dispatched[id] = giant.thingIDNumber;
             Find.LetterStack.ReceiveLetter("RM_GreyLampGiantLabel".Translate(), "RM_GreyLampGiantText".Translate(lamp.LabelShort),
                 LetterDefOf.ThreatSmall, new LookTargets(giant, lamp));
-            return true;
+            return false;
+        }
+
+        /// <summary>A door-less animal path from the map edge to a cell beside the lamp.</summary>
+        private bool ReachableFromOutside(Building lamp)
+        {
+            TraverseParms tp = TraverseParms.For(TraverseMode.NoPassClosedDoors, Danger.Deadly);
+            foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(lamp))
+            {
+                if (c.InBounds(map) && c.Standable(map) && map.reachability.CanReachMapEdge(c, tp))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>Drop retry state of lamps the burn book has forgotten (dark, broken, gone).</summary>
+        private void PruneAnswerState()
+        {
+            if (dispatched.Count == 0 && retryAfter.Count == 0)
+            {
+                return;
+            }
+            foreach (int k in dispatched.Keys.ToList())
+            {
+                if (!lamps.Lit.ContainsKey(k)) dispatched.Remove(k);
+            }
+            foreach (int k in retryAfter.Keys.ToList())
+            {
+                if (!lamps.Lit.ContainsKey(k)) retryAfter.Remove(k);
+            }
         }
 
         private Pawn WalkIn(string kindName)
@@ -285,6 +359,8 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Collections.Look(ref walkedIn, "walkedIn", LookMode.Value);
             Scribe_Values.Look(ref nextWatchOrderTick, "nextWatchOrderTick", 0);
             Scribe_Collections.Look(ref warnedWatch, "warnedWatch", LookMode.Value);
+            Scribe_Collections.Look(ref dispatched, "answerDispatched", LookMode.Value, LookMode.Value);
+            Scribe_Collections.Look(ref retryAfter, "answerRetryAfter", LookMode.Value, LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 lamps.Lit = lamps.Lit ?? new Dictionary<int, int>();
@@ -293,6 +369,8 @@ namespace RimMandrake.TerminalBiomes
                 lamps.Answered = lamps.Answered ?? new HashSet<int>();
                 walkedIn = walkedIn ?? new HashSet<int>();
                 warnedWatch = warnedWatch ?? new HashSet<int>();
+                dispatched = dispatched ?? new Dictionary<int, int>();
+                retryAfter = retryAfter ?? new Dictionary<int, int>();
             }
         }
     }

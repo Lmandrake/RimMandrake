@@ -10,7 +10,8 @@ namespace RimMandrake.TerminalBiomes
     // arrests it intact." Build-time simplification, flagged: "push it in
     // (a job)" ships here as a Gizmo on the float itself rather than a new
     // WorkGiver/JobDriver — loading is likewise automatic (nearby loose
-    // haulables within one cell) rather than a separate load UI. Once
+    // haulables within one cell) rather than a separate load UI. Launching
+    // pushes it onto an adjacent current cell (CARGO_FLOAT_LAUNCH_PUSH_1). Once
     // launched, this Thing is category Item, not Building, so
     // RM_MapComponent_ChannelCurrent's normal item-drift path (half the
     // pawn rate, per §1.3) picks it up with NO special-casing on the
@@ -113,11 +114,31 @@ namespace RimMandrake.TerminalBiomes
             {
                 return;
             }
-            List<Thing> here = new List<Thing>(Position.GetThingList(Map));
-            for (int i = 0; i < here.Count; i++)
+            // CARGO_FLOAT_LAUNCH_PUSH_1: the float has to go INTO the current. On a current cell it rides from where it
+            // is; on the bank it is pushed onto an adjacent current cell; with neither, it refuses before loading.
+            RM_MapComponent_ChannelCurrent current = Map.GetComponent<RM_MapComponent_ChannelCurrent>();
+            if (!TryFindLaunchCell(current, out IntVec3 launch))
             {
-                Thing t = here[i];
-                if (t != this && t.Spawned && t.def.EverHaulable && !(t is Pawn))
+                Messages.Message("RM_CargoFloatNoCurrent".Translate(), new TargetInfo(Position, Map), MessageTypeDefOf.RejectInput, historical: false);
+                return;
+            }
+            // "within one cell" (the header's promise): its own cell and the eight around it.
+            List<Thing> near = new List<Thing>();
+            foreach (IntVec3 c in GenAdj.CellsOccupiedBy(this))
+            {
+                near.AddRange(c.GetThingList(Map));
+            }
+            foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(this))
+            {
+                if (c.InBounds(Map))
+                {
+                    near.AddRange(c.GetThingList(Map));
+                }
+            }
+            for (int i = 0; i < near.Count; i++)
+            {
+                Thing t = near[i];
+                if (t != this && t.Spawned && t.def.EverHaulable && !(t is Pawn) && !(t is RM_Thing_CargoFloat))
                 {
                     IntVec3 from = t.Position;
                     t.DeSpawn(DestroyMode.Vanish);
@@ -131,7 +152,37 @@ namespace RimMandrake.TerminalBiomes
             if (!loaded)
             {
                 Messages.Message("RM_CargoFloatEmpty".Translate(), MessageTypeDefOf.RejectInput, historical: false);
+                return;
             }
+            if (launch != Position)
+            {
+                Position = launch; // the push: the item-drift scan registers it on its next pass
+            }
+        }
+
+        /// <summary>Its own cell when that already carries current; else an adjacent standable current cell that is
+        /// neither the sink nor held by a weir. False when there is none.</summary>
+        private bool TryFindLaunchCell(RM_MapComponent_ChannelCurrent current, out IntVec3 cell)
+        {
+            cell = IntVec3.Invalid;
+            if (current == null || !RM_TerminalBiomesSettings.ChannelCurrentActive)
+            {
+                return false;
+            }
+            if (current.HasCurrent(Position) && !current.IsSinkCell(Position) && !current.IsArrestedCell(Position))
+            {
+                cell = Position;
+                return true;
+            }
+            foreach (IntVec3 c in GenAdj.CellsAdjacent8Way(this).InRandomOrder())
+            {
+                if (c.InBounds(Map) && c.Standable(Map) && current.HasCurrent(c) && !current.IsSinkCell(c) && !current.IsArrestedCell(c))
+                {
+                    cell = c;
+                    return true;
+                }
+            }
+            return false;
         }
 
         public override void ExposeData()

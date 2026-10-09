@@ -14,8 +14,9 @@
   <RM_ChannelSunkLostText>The current took {0} down to the sink and did not give them back. The river keeps what it wants.</RM_ChannelSunkLostText>
 
   <RM_CargoFloatLoadLaunch>Load and launch downstream</RM_CargoFloatLoadLaunch>
-  <RM_CargoFloatLoadLaunchDesc>Load every loose haulable thing on this float's own cell and set it drifting down the channel. It rides the current whole; a weir arrests it intact, and even the sink cannot spoil what it carries.</RM_CargoFloatLoadLaunchDesc>
+  <RM_CargoFloatLoadLaunchDesc>Load every loose haulable thing on or right beside this float and push it into the current next to it, to drift down the channel. It rides the current whole; a weir arrests it intact, and even the sink cannot spoil what it carries.</RM_CargoFloatLoadLaunchDesc>
   <RM_CargoFloatEmpty>Nothing loose here to load.</RM_CargoFloatEmpty>
+  <RM_CargoFloatNoCurrent>There is no current beside this float to push it into. Build it on the bank, right next to a channel.</RM_CargoFloatNoCurrent>
   <RM_CargoFloatArrived>A cargo float has come to rest at {0}.</RM_CargoFloatArrived>
 
 </LanguageData>
