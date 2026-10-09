@@ -1,0 +1,15 @@
+staging src/RimMandrake/LeaningScrub/Source/RM_LeaningScrub.csproj -> D:\Luke\dev\_rmbuild\LeaningScrub
+  src/RimMandrake/LeaningScrub/Source/
+  src/RimMandrake/CreatureBehaviors/Assemblies/
+  src/RimMandrake/EnvironmentalHazards/Assemblies/
++ dotnet.exe build D:\Luke\dev\_rmbuild\LeaningScrub\src\RimMandrake\LeaningScrub\Source\RM_LeaningScrub.csproj -c Release
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  RM_LeaningScrub -> D:\Luke\dev\_rmbuild\LeaningScrub\src\RimMandrake\LeaningScrub\Assemblies\RimMandrake.LeaningScrub.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:02.50
+BUILT src/RimMandrake/LeaningScrub/Assemblies/RimMandrake.LeaningScrub.dll (source efe67213abc4+dirty)
