@@ -1,0 +1,24 @@
+[
+ {
+  "id": "regen_c17_lothcat_v3",
+  "target_def": "RSW_Lothcat",
+  "canon": "lothcat",
+  "facings": "east;south;north",
+  "priority": 0,
+  "owner_note": "Nope. Try this. (photo: live-action Loth-cat) / \"That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic.\"",
+  "channel": "codex",
+  "target_texpath": "swanimals/Lothcat/Lothcat_f",
+  "biome_neutral": true,
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "style_notes": "LIVE-ACTION PUPPET REALISM (Ahsoka). The v2 glossy spotted frog-lizard was rejected as too reptilian and animated. Warm natural light, soft photographic realism, plush fur, no outlines, no cartoon gloss, no reptile skin.",
+  "prompt": "RimWorld creature sprite of the Star Wars canon loth-cat, as the live-action puppet from the Ahsoka series. One animal, whole body, centred. Realistic live-action creature: dense, soft, fluffy pale cream-to-oatmeal fur over a plump rounded body, sparse dark brown spots on the flanks and tall ears; two very tall upright pointed ears with tufted tips and dark spot markings, pinkish-grey inner ear; broad flat face with a wide closed frog-like mouth and heavy drooping lips/jowls, pale chin pouch, small round black eyes set wide, a small flat nose; whiskers; a bushy fluffy tail carried up; thin dark grey scaly bird-like legs with long clawed toes, contrasting with the fluffy body. Warm natural light, soft photographic realism -- plush fur, no outlines, no cartoon gloss, no reptile skin. Follow the canon Must show list exactly.",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/lothcat/wookieepedia_canon_2.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/lothcat/wookieepedia_canon_3.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/lothcat/wookieepedia_canon_4.webp"
+  ],
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "drawsize": 1.0
+ }
+]
