@@ -25,13 +25,13 @@ Yavin 4 runyips were a different species. They had claws on their toes which the
 Natural predators of the Yavin 4 runyip include a number of species, including piranha beetles (in which its only escape is to dive underwater), as well as aquatic gundarks.
 
 ## Visual brief
-Four images: CANON (a *Star Wars Battlefront II* (2017) concept/map illustration labelled RUNYIP, and a motion-blurred game still of one running through water), LEGENDS (a painted plate of the Yavin 4 runyip, and a black-and-white drawing of a DIFFERENT species, the Tran Mariel runyip). The Legends text itself says two unrelated species share the name; use the Yavin 4 (canon) animal. (The canon page also indexes a "Tran Mariel runyip" subspecies via *Solo: A Star Wars Story The Official Guide*, which does not make the older Legends Tran Mariel art canon.)
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Removed: `wookieepedia_canon_1.webp` (the flat *Galactic Atlas* map illustration) and `wookieepedia_legends_2.webp` (a black-and-white drawing of the unrelated Tran Mariel runyip — long ears, bifurcated trunk, no stripes; do NOT use that species). No live-action runyip exists (searched: canon and Legends pages, "Images of runyips"; a *Battlefront II* gameplay screenshot was rejected — the runyips are specks). The two remaining images: `wookieepedia_legends_1.webp`, Terryl Whitlatch's realistic naturalist painting of the Yavin 4 runyip (*The Wildlife of Star Wars: A Field Guide*) — **the target** — and `wookieepedia_canon_2.webp`, a photoreal but motion-blurred *Battlefront II* (2017) still of one running through water (canon; confirms pale tan with dark banding at rump and tail). The removed Galactic Atlas art showed the same striped, antlered design, so the look does not change.
 - **Silhouette**: a squat, heavy, rhino/tapir-like quadruped with a huge barrel body, a high rounded hump over the shoulders and a sagging belly, short thick legs with broad padded feet, and a hanging tail with a tuft at the end. The head is held low and nose-down while rooting, long, pig-like or tapir-like.
 - **Pattern/colour**: a whitish-cream coat with bold black-brown (dark brown in the plate) tiger- or zebra-like vertical stripes over the back, flanks and rear legs; the shoulder and neck are a solid darker patch; creamy belly and underside; legs below the knees are darkest. The motion-blur game still shows pale tan with dark banding at the rump and tail.
 - **Head**: a long, flexible, pig-like snout, a down-turned wrinkled snout with a thick lower lip and a pale muzzle; small eyes; two very long, tall, branching ANTLERS rise straight up from the back of the skull like a stag's, flat and palmate with a few short tines, as tall as the head and neck combined, pale brown in the plate (the text says shed annually).
 - **Feet**: broad feet with several toes, and a claw on the front toes (text); the plate shows pale claws on the foreleg.
 - **Tail**: a long tapering tail with a tuft of hair at the tip hanging to the ground.
-- **Disagreement**: the Tran Mariel runyip (Legends 2) has long ears, a long bifurcated trunk and no stripes, so do NOT use it; the Yavin 4 text 'brown and white fur' matches the striped images.
+- **Disagreement**: the Tran Mariel runyip is a different animal (long ears, bifurcated trunk, no stripes) — do NOT use it; the Yavin 4 text 'brown and white fur' matches the striped images.
 
 ## Must show
 - [ ] Squat barrel-bodied rhino-tapir shape, high shoulder, sagging belly, short thick legs, head held low
@@ -40,6 +40,7 @@ Four images: CANON (a *Star Wars Battlefront II* (2017) concept/map illustration
 - [ ] Two tall branching antlers rising straight up from the back of the skull
 - [ ] Broad padded multi-toed feet with front claws
 - [ ] Long tail with a tuft at the tip
+- [ ] Realistic rendering: natural short striped fur, wrinkled snout skin and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -49,10 +50,8 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Runyip/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Runyip`; wiki caption: infobox image. File: `Runyip canon.png` — https://static.wikia.nocookie.net/starwars/images/c/cc/Runyip_canon.png/revision/latest?cb=20160927095205
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Runyip/Legends`; wiki caption: infobox image. File: `YavinRunyip.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b0/YavinRunyip.jpg/revision/latest?cb=20070110182227
-- `wookieepedia_canon_2.webp` — CANON page `Runyip`; wiki caption: A running runyip. File: `Running runyip-BFII.jpg` — https://static.wikia.nocookie.net/starwars/images/6/62/Running_runyip-BFII.jpg/revision/latest?cb=20170716173816
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Runyip/Legends`; wiki caption: A runyip from Tran Mariel.. File: `Runyip.jpg` — https://static.wikia.nocookie.net/starwars/images/c/c0/Runyip.jpg/revision/latest?cb=20081029145636
+- `wookieepedia_legends_1.webp` — LEGENDS, *The Wildlife of Star Wars: A Field Guide* (Terryl Whitlatch), realistic naturalist painting of the Yavin 4 runyip; **target**. File: `YavinRunyip.jpg` — https://static.wikia.nocookie.net/starwars/images/b/b0/YavinRunyip.jpg/revision/latest?cb=20070110182227
+- `wookieepedia_canon_2.webp` — CANON, *Star Wars Battlefront II* (2017) photoreal game still, a runyip running through water (motion-blurred). File: `Running runyip-BFII.jpg` — https://static.wikia.nocookie.net/starwars/images/6/62/Running_runyip-BFII.jpg/revision/latest?cb=20170716173816
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

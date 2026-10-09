@@ -34,8 +34,10 @@ Eisley street shot below is a 1997 Special-Edition VFX addition composited
 into the Tatooine scene, not a practical 1977 creature.
 
 ## Visual brief
-All four candidate images agree closely and reinforce each other — there is
-no text/image conflict here, and no blue-grey coloration in any of the four.
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Removed: `wookieepedia_infobox.jpg` (the flat inked *Alien Archive* illustration). Added: `film_still_r3t2.jpg` (*A New Hope* Special Edition, a ronto rearing in a Mos Eisley street as a swoop passes; full body, raised forelegs, rider and pack on its back) and `wookieepedia_negas.jpg` (realistic *New Essential Guide to Alien Species* painting of a saddled ronto with a Jawa rider). **The two film stills are the target**: grey-brown, heavily wrinkled hide; the realistic sources agree with the paintings on shape.
+
+The candidate images agree closely and reinforce each other — there is
+no text/image conflict here, and no blue-grey coloration in any of them.
 
 - **Body plan**: long, gently S-curved sauropod-like neck rising to a
   triangular head; a distinct rhino/ceratopsian-style pointed nose horn or
@@ -46,10 +48,9 @@ no text/image conflict here, and no blue-grey coloration in any of the four.
   columnar legs (four), each ending in broad clawed/hoofed feet, and a
   short thick tail. Skin is deeply wrinkled/creased, especially at the neck
   and leg joints, with rounded wart-like or pebbly bumps scattered over the
-  body (visible in both the infobox art and the concept sketches).
+  body (visible in the film stills and the concept sketches).
 - **Color**: consistently a muted, dark olive-to-brownish-grey — NOT
-  saturated brown, NOT blue-grey. The infobox illustration reads darkest
-  (near-black-brown with ochre/tan wart highlights); the "Suns of Fortune"
+  saturated brown, NOT blue-grey. The "Suns of Fortune"
   painted art and the film still both show a lighter, more olive-grey-green
   skin tone with darker striping/banding on the neck and back, and a paler,
   cream-to-tan underside/inner-ear color. Treat the **film still
@@ -57,9 +58,7 @@ no text/image conflict here, and no blue-grey coloration in any of the four.
   actual on-screen VFX creature all other art derives from/matches, and its
   olive-grey-green with darker banding is corroborated by the painted
   Suns of Fortune art (same hue family, just more saturated/painterly).
-  The monochrome-ish infobox illustration is stylized/inked and should be
-  read for silhouette and skin texture (wrinkles, warts, ear-flap shape),
-  not for exact hue.
+  The NEGAS painting reads paler, a warm grey with cream highlights.
 - **Scale/use**: every image with human/humanoid figures for scale (film
   still, concept sketches) confirms the "huge" text description — a ronto
   towers well over a standing human, consistent with the ~4-5m/16ft quoted
@@ -76,6 +75,7 @@ no text/image conflict here, and no blue-grey coloration in any of the four.
 - [ ] Two large, wing-like skin-flap "ears" fanning out and back from the head/neck like a frill
 - [ ] Thick, heavily columnar legs (four) ending in broad clawed/hoofed feet, with deeply wrinkled/creased skin and scattered wart-like bumps
 - [ ] Muted dark olive-to-brownish-grey coloration — not saturated brown, not blue-grey — with darker striping/banding on the neck and back and a paler cream-to-tan underside
+- [ ] Realistic rendering: natural heavy wrinkled pachyderm-like hide texture and desert-sun lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -85,7 +85,8 @@ none known
   direct-fetch blocking)
 - https://starwars.fandom.com/api.php?action=parse&page=Ronto&format=json&prop=wikitext
   (wikitext source used for all sourced text above)
-- https://starwars.fandom.com/wiki/File:Ronto.png (infobox illustration)
+- https://starwars.fandom.com/wiki/File:R3-T2-Ronto-ANH.png (film still, rearing ronto)
+- https://starwars.fandom.com/wiki/File:Ronto_NEGAS.jpg (NEGAS painting)
 - https://starwars.fandom.com/wiki/File:Enraged_Ronto-Suns-of-Fortune.jpg
   (painted art from *Suns of Fortune*, an enraged/reared ronto with tack)
 - https://starwars.fandom.com/wiki/File:Ronto_in_Mos_Eisley.png (film still,
@@ -107,10 +108,6 @@ sprite was obtainable this pass; all candidate images below are
 Wookieepedia canon references, not mod screenshots.
 
 ## Candidate images
-- `wookieepedia_infobox.jpg` — the species infobox illustration: inked/
-  painted art, dark olive-brown, full body side-ish view, wrinkled skin with
-  wart-like bumps, ear-flaps fanned back, nose horn, beak mouth, clawed feet.
-  Source: File:Ronto.png (Wookieepedia infobox).
 - `suns_of_fortune_enraged.jpg` — painted illustration of a rearing/enraged
   ronto with bridle and cargo saddle, olive-green-grey skin with darker
   neck banding, cream underside. Source: *Suns of Fortune* sourcebook art,

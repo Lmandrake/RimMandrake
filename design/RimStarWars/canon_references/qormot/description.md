@@ -12,6 +12,8 @@ Qormots were omnivorous forest creatures from the planet Yeshocq's southern hemi
 Qormots were relatively docile during most of Yeshocq's thirteen-month year, only showing aggression if rival qormots or predators encroached on the territory of their small prides. When they were roused, however, they could be quite fierce. During the mating season in late autumn, their ferocity increased, making any creature who strayed into qormot territory a likely target. This included other qormots, as the females violently battled one another for access to choice breeding grounds.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Qormot` page images, title search "qormot"; the only depiction anywhere is the *Creatures of the Galaxy* RPG ink illustration).** The image below is a stylised black-and-white ink drawing; render this creature realistically anyway — real-world anatomy, materials and lighting, not the drawing's ink hatching or exaggerated proportions.
 Viewed 2026-10-04. The single image is from the Legends page (a black-and-white ink illustration, infobox): two
 adult qormots fighting in a forest and a small young one at lower right.
 - **LOUD DISAGREEMENT / unclear**: the prose says "stocky quadrupeds" with "a single eye in the
@@ -40,6 +42,7 @@ adult qormots fighting in a forest and a small young one at lower right.
 - [ ] Single eye in the middle of the forehead (prose only; not visible in the drawing -- verify with a better image)
 - [ ] Broad clawed hands and feet; bare, wrinkled, paler belly
 - [ ] Colour is OWED: no coloured image was found in this library and the prose gives none
+- [ ] Realistic rendering: natural keratin quills and wrinkled hide texture and lighting, no outlines, no ink hatching
 
 ## Engine limits
 not yet assessed
@@ -48,7 +51,7 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Qormot (canon; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.webp` — CANON page `Qormot`; wiki caption: infobox image. File: `Qormot.jpg` — https://static.wikia.nocookie.net/starwars/images/5/5a/Qormot.jpg/revision/latest?cb=20080830075705
+- `wookieepedia_canon_1.webp` — CANON page `Qormot`; wiki caption: infobox image (*Creatures of the Galaxy*, black-and-white ink illustration, stylised). File: `Qormot.jpg` — https://static.wikia.nocookie.net/starwars/images/5/5a/Qormot.jpg/revision/latest?cb=20080830075705
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
