@@ -143,7 +143,6 @@
       <AA_InfectedAerofleet MayRequire="sarg.alphaanimals">0.5</AA_InfectedAerofleet>  <!-- infected aerofleet - small, keep -->
       <AA_OcularJelly MayRequire="sarg.alphaanimals">0.5</AA_OcularJelly>  <!-- ocular jelly - small, keep -->
       <AM_Dryad_Corruptor MayRequire="sarg.alphamemes">0.4</AM_Dryad_Corruptor>  <!-- corruptor dryad - small, keep -->
-      <AM_Dryad_Ocular MayRequire="sarg.alphamemes">0.4</AM_Dryad_Ocular>  <!-- ocular dryad - small, keep -->
       <AM_Dryad_Tumorous MayRequire="sarg.alphamemes">0.4</AM_Dryad_Tumorous>  <!-- tumorous dryad - small, keep -->
       <Visceral MayRequire="mlie.horrors">0.35</Visceral>  <!-- visceral - medium-pred, keep -->
       <AA_BedBug MayRequire="sarg.alphaanimals">0.3</AA_BedBug>  <!-- bedbug - small-pred, keep -->
@@ -159,9 +158,7 @@
       <!-- CAULDRON_RULED_CONTENT_1: owner-ruled donor imports (Alpha Animals, Q9 inline). Wired and kept on purpose:
            overrides the frozen sheet's no-grazer / ban-9 lines. Do not "fix" them back out. -->
       <AA_Plasmorph MayRequire="sarg.alphaanimals">0.1</AA_Plasmorph>  <!-- plasmorph -->
-      <AA_LuciferBug MayRequire="sarg.alphaanimals">0.15</AA_LuciferBug>  <!-- lucifer bug -->
       <AA_Radyak MayRequire="sarg.alphaanimals">0.1</AA_Radyak>  <!-- radyak -->
-      <AA_RipperHound MayRequire="sarg.alphaanimals">0.08</AA_RipperHound>  <!-- ripper hound -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

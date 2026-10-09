@@ -63,7 +63,6 @@
           <RSW_Mynock>0.2</RSW_Mynock>
           <RSW_GraniteSlug>0.15</RSW_GraniteSlug>
           <!-- MULTI-HOMED ON PURPOSE - see file header. -->
-          <RSW_Screecher>0.35</RSW_Screecher>
           <RSW_VentStalker>0.25</RSW_VentStalker>
           <!-- CAULDRON_RULED_CONTENT_1: owner-ruled imports, wired and kept
                on purpose (overrides the frozen sheet's no-grazer line for
