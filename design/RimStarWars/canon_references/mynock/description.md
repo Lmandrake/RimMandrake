@@ -33,12 +33,13 @@ Removed: the flat-coloured ink illustration from *Alien Archive* (`Mynock-AA.png
 - **Size:** canon infobox gives length 1.6 to 2 m and mass 8 kg (Star Wars Bestiary Vol. 1 and Ultimate Star Wars, https://starwars.fandom.com/wiki/Mynock); the infobox does not say whether length is body or overall including wings/tail.
 
 ## Must show
-- [ ] Small body with huge, broad, ragged leathery bat-like wings, each with a thumb-claw
-- [ ] Round sucker-disc mouth ringed with short bristle-like spines, set between the eyes
-- [ ] Two bulging eyes on small stalks or knobs at the sides of the head
-- [ ] Long thin whip-like tail ending in a small flare
-- [ ] Wrinkled, leathery dark olive-brown to black skin (paler tan only as a variant)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the ESB film frame (`canon_2`) and the three paintings.*
+- [ ] BODY PLAN: bat layout — a small narrow body with NO visible neck, two huge finger-ribbed membrane wings (span several times the body length) that are the forelimbs, two small thin clawed hind legs, and a long thin whip tail hanging below, ending in a small flare/spade
+- [ ] Face: a round sucker-disc mouth ringed with short bristles, occupying most of the front of the small head, flanked by two bulging eyes on short knobs at the sides
+- [ ] COLOUR LAYOUT: body and head the darkest part (dark olive-brown to black, wrinkled); wing membranes the same hue or slightly lighter and translucent where thin; bristle ring and inner tooth plate paler. Pale straw/tan all over only as a variant
+- [ ] Wing edges ragged between the finger ribs, with a thumb-claw at each wrist
 - [ ] Realistic rendering: natural wrinkled leathery hide and translucent membrane texture and lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a dragon, wyvern or pterosaur (no long neck, no beak, no crest, no jaw-forward head); not a bird (no feathers); not a manta ray; no snout or muzzle — the face is a round sucker
 
 ## Engine limits
 not yet assessed

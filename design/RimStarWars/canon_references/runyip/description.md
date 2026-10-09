@@ -34,13 +34,14 @@ Natural predators of the Yavin 4 runyip include a number of species, including p
 - **Disagreement**: the Tran Mariel runyip is a different animal (long ears, bifurcated trunk, no stripes) — do NOT use it; the Yavin 4 text 'brown and white fur' matches the striped images.
 
 ## Must show
-- [ ] Squat barrel-bodied rhino-tapir shape, high shoulder, sagging belly, short thick legs, head held low
-- [ ] Whitish coat with bold dark brown/black vertical stripes over back, flanks and rump; dark solid shoulder
-- [ ] Long flexible down-turned snout with thick lip
-- [ ] Two tall branching antlers rising straight up from the back of the skull
-- [ ] Broad padded multi-toed feet with front claws
-- [ ] Long tail with a tuft at the tip
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `legends_1` (the only clear image; `canon_2` is motion-blurred).*
+- [ ] BODY PLAN: a heavy barrel-bodied quadruped built like a tapir crossed with a rhino: body longer than tall, a rounded hump over the shoulders higher than the rump, sagging belly, four short thick legs, head carried LOW (snout near the ground) on a short neck
+- [ ] Two tall branching stag-like antlers rising straight up from the back of the skull, together as tall as head and neck combined — the tallest point of the animal
+- [ ] COLOUR LAYOUT: whitish-cream ground; bold dark brown vertical stripes over the back, flanks, rump and upper hind legs; neck and shoulders a solid darker brown patch; belly cream; lower legs darkest
+- [ ] Long flexible down-turned pig/tapir snout with a thick lower lip and pale muzzle
+- [ ] Long tail ending in a tuft that hangs near the ground; broad padded feet with pale front claws
 - [ ] Realistic rendering: natural short striped fur, wrinkled snout skin and lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a zebra, horse or deer (no long slim legs, no horse head, no upright neck); not an unstriped rhino or tapir; no nose horn; not the long-eared trunked Tran Mariel runyip
 
 ## Engine limits
 not yet assessed

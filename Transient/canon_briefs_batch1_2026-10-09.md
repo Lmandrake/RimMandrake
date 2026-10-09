@@ -27,3 +27,13 @@
 - voorpak: DONE (neckless fur ball on bare stick legs, white-front layout, not mammal/bird/spider; old "hand-sized" line contradicted the brief's sourced 60 cm and was replaced)
 - sketto: DONE (dragonfly-built reptile, four separate insect wings, see-through wing layout, not dragon/wyvern/bat)
 - shirotrap: DONE (stacked reptile + rosette + trap stalks, three colour zones, not plant-alone or mossy turtle)
+- scurrier: DONE (skinny horizontal runner, tubular ears, disc nose, grey-back/pink-under layout, not furry rodent/kangaroo)
+- runyip: DONE (low-headed humped barrel, upright antlers tallest, cream+vertical stripes with dark shoulder, not zebra/deer/rhino)
+- mynock: DONE (bat layout no neck, sucker-disc face, dark body layout, not dragon/pterosaur/bird/manta)
+
+## Batch 1 result
+15 entries retrofitted. NEXT batch by roster visibility: jamel, graniteslug, falumpaset, wraid, varactyl, uvak, urusai,
+teemuss, sith_wyrm, shyrack, shaaks, paleyobshrimp, opeeseakiller, nerf, lylek, laascalefish, kwi, krykna, kraytdragon ...
+(ranking script: python over src/**/*{Biome,WildAnimals}*.xml matching `<defName` elements). Also owed library-wide:
+6 species with no Must show (bothan, defel, echani, falleen, geonosian, gungan) and wyyyschokk with no visual brief.
+Note: jamel/canon_3 is 2160px wide — downscale before viewing.
