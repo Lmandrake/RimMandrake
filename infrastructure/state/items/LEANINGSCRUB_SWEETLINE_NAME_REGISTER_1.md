@@ -4,12 +4,9 @@ From `LEANINGSCRUB_GPT_ENRICHMENT_1` part 3 ("Each sweetline tree gets a generat
 and names come from `RM_NamerSweetlineTree`
 (`src/RimMandrake/LeaningScrub/Defs/RulePackDefs/RM_LeaningScrub_Namers.xml`).
 
-That vocabulary is a **PLACEHOLDER**. No ruling sets how these trees are named. Its words come only
-from shipped descriptions and `arid_shrubland.md` §4 (silver, grey, wool, giants, road, line, wind,
-leaning). The output reads like "the Silver Mark" or "Sweetline of the Giants".
+## ruling — decision taken by question card, 2026-10-09
 
-## open question (owner)
-
-**What register should sweetline tree names have?** Plain English landmark names (current), invented
-exotic words (as the cast uses), or names after people or events? Once he rules, replace the
-rulesStrings and keep the defName. Trees already named in a save keep their Scribed name.
+Plain English landmark names ("the Silver Mark", "Waymark of the Giants", "Where the Wind Turned"). No coined words. The
+`RM_NamerSweetlineTree` rulesStrings were rewritten the same day with a widened list (adjectives, landmarks, tree nouns,
+walkers, deeds); defName unchanged. Trees already named in a save keep their Scribed name. To widen further, extend the lists
+in `src/RimMandrake/LeaningScrub/Defs/RulePackDefs/RM_LeaningScrub_Namers.xml`. Not yet seen in game (offline only).
