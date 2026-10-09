@@ -93,6 +93,16 @@ namespace RimMandrake.CreatureBehaviors
 			// double-spending the event's shared budget on itself.
 			evt.TryMarkActivated(parent);
 
+			// CB-1 (CREATURE_ALARM_ORIGIN_SHARE_1): the disturbed source answers
+			// first, so neighbours it wakes cannot spend the shared budget
+			// before the origin's own response has taken its share.
+			if (RM_CreatureBehaviorsSettings.alarmOriginRespondsFirst)
+			{
+				Props.response?.Respond(evt, parent);
+				(Props.propagation ?? RM_ReactionPropagationRule_None.Instance).Propagate(evt, parent);
+				return;
+			}
+
 			(Props.propagation ?? RM_ReactionPropagationRule_None.Instance).Propagate(evt, parent);
 
 			Props.response?.Respond(evt, parent);

@@ -235,6 +235,11 @@ namespace RimMandrake.CreatureBehaviors
 				return;
 			}
 
+			if (RM_CreatureBehaviorsSettings.dungHatchRespectsWildlifeCap && map.wildAnimalSpawner.AnimalEcosystemFull)
+			{
+				return; // CB-4: same ceiling as vanilla's wild spawner
+			}
+
 			PawnKindDef kind = PickSeedWildlife(map);
 			if (kind == null)
 			{

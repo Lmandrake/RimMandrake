@@ -7,3 +7,8 @@ Filed from `design/RimMandrake/gpt_reviews/DESIGN_PASS_2026-10-08.md` (remaining
 | CB-4 | Young animals that hatch from dung respect the map's wildlife limit, the same as vanilla's spawner, so a shade whale's dung trail cannot fill the map. | Gate SeedYoungCreature on `map.wildAnimalSpawner.AnimalEcosystemFull`. | S | low | CreatureBehaviors (consumer: shade whale, DESERT_SHADE_WHALE_FILTERFEED_1) | `RM_CompDungSeeder.cs:230-257`: chance roll only, no population ceiling; same gate already used in `BlueDesert/Source/RM_MurrekDrift.cs:409` |
 
 Every invented number is PROVISIONAL. Every feature gets a Mod Settings toggle; names follow the three-tier scheme.
+
+## verify
+
+- Offline: build clean; SeedYoungCreature returns early when `map.wildAnimalSpawner.AnimalEcosystemFull` and `dungHatchRespectsWildlifeCap` is on.
+- L2 (owed, bridge): on a full-ecosystem map a shade whale dung trail spawns no young.
