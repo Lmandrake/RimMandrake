@@ -1,12 +1,13 @@
 // Approach B for LanternDeeps: seeded random ACTION SEQUENCES over the two Verse-free kernels the mod calls,
 //   DeepCollapseState<T>  (the collapse-warning machine: pending windows, released, forced) and
-//   SipperLedger<G>       (the Sippers' glow-radius ledger against the aurora's own writes).
+//   SipperKernel + the shared LightLedgerKernel (the Sippers' and the aurora's shares of one light, composed).
 // The model (roofs, the vanilla roof buffer and resolver, glower radii) is this file's own; every decision comes from the
 // production kernel. A failing sequence is shrunk by delta debugging and printed as `family seed N: message | actions`.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using RimMandrake.Shared;
 
 namespace RimMandrake.LanternDeeps.SelfTest
 {
@@ -244,24 +245,33 @@ namespace RimMandrake.LanternDeeps.SelfTest
         }
 
         // ===================================================================== family: sipper
+        // The sippers ("mul:ld.sipper") and the aurora ("mul:ld.aurora") as two writers into ONE light-ledger entry,
+        // composed by the production LightLedgerKernel. A reset models a load: the ledger is not saved, so every
+        // modifier is gone until its owner re-asserts it (the aurora every 250 ticks, the sippers every pass).
 
         private sealed class Glow
         {
             public float def, radius;
             public bool spawned = true, lit = true;
-            public int registers;
-            public bool touchedByAurora, touchedExternally;
+            public readonly Dictionary<string, float> mods = new Dictionary<string, float>();
         }
 
         private sealed class SipperWorld
         {
-            public SipperLedger<Glow> ledger = new SipperLedger<Glow>();
             public List<Glow> gs = new List<Glow>();
+            public HashSet<Glow> drinking = new HashSet<Glow>();
             public Dictionary<Glow, int> sippers = new Dictionary<Glow, int>();
             public bool aurora;
             public float mult = 1.75f;
             public float cells = 0.1f;
             public bool enabled = true;
+        }
+
+        private static void Write(Glow g, string key, float v)
+        {
+            LightLedgerKernel.Set(g.mods, key, v);
+            float want = LightLedgerKernel.Compute(g.def, g.mods);
+            if (LightLedgerKernel.NeedsWrite(g.radius, want)) g.radius = want;
         }
 
         private static SipperWorld MakeSipper(int seed)
@@ -273,19 +283,35 @@ namespace RimMandrake.LanternDeeps.SelfTest
             return w;
         }
 
+        // RM_MapComponent_Sippers.Pass, with the production kernel and the production composition.
         private static int SipperPass(SipperWorld w)
         {
+            int changed = 0;
             var counts = new Dictionary<Glow, int>();
             if (w.enabled)
                 foreach (var g in w.gs)
                     if (g.lit && g.spawned && w.sippers.TryGetValue(g, out int n) && n > 0) counts[g] = n;
-            return w.ledger.Pass(counts, w.cells, g => g.radius, (g, r) => g.radius = r, g => g.spawned, g => g.lit, g => g.registers++);
+            foreach (var kv in counts)
+            {
+                float before = kv.Key.radius;
+                Write(kv.Key, "mul:ld.sipper", SipperKernel.Factor(LightLedgerKernel.ScaledExcept(kv.Key.def, kv.Key.mods, "mul:ld.sipper"), kv.Value, w.cells));
+                w.drinking.Add(kv.Key);
+                if (kv.Key.radius != before) changed++;
+            }
+            foreach (var g in w.drinking.ToList())
+            {
+                if (counts.ContainsKey(g)) continue;
+                w.drinking.Remove(g);
+                float before = g.radius;
+                Write(g, "mul:ld.sipper", 1f);
+                if (g.radius != before) changed++;
+            }
+            return changed;
         }
 
         private static void AuroraApply(SipperWorld w, bool on)
         {
-            foreach (var g in w.gs)
-                if (SipperLedger<Glow>.AuroraWant(g.radius, g.def, w.mult, on, out float want)) { g.radius = want; g.touchedByAurora = true; g.registers++; }
+            foreach (var g in w.gs) Write(g, "mul:ld.aurora", SipperKernel.AuroraFactor(on, w.mult));
         }
 
         private static void SipperStep(SipperWorld w, Act a)
@@ -304,17 +330,22 @@ namespace RimMandrake.LanternDeeps.SelfTest
                 case 2: w.aurora = true; AuroraApply(w, true); break;
                 case 3: AuroraApply(w, w.aurora); break;                         // the condition's 250-tick Apply while it storms (or its End when off)
                 case 4: w.aurora = false; AuroraApply(w, false); break;
-                case 5: g.radius = g.def; g.touchedExternally = true; break;     // CompGlower re-init (a reload, a reset)
+                case 5: // a load: vanilla and the ledger both forget; owners re-assert on their next write
+                    foreach (var x in w.gs) { x.mods.Clear(); x.radius = x.def; }
+                    w.drinking.Clear();
+                    break;
                 case 6: g.spawned = !g.spawned; break;
                 case 7: g.lit = !g.lit; break;
                 case 8: w.enabled = !w.enabled; break;
-                case 9: // everyone leaves; the aurora is not touched
+                case 9: // everyone leaves, then the aurora's own re-assert
                     foreach (var x in w.gs.ToList()) w.sippers[x] = 0;
-                    SipperPass(w); SipperPass(w); passed = true;
-                    // honesty: a glower that only the ledger ever touched is back to its def radius
+                    SipperPass(w); AuroraApply(w, w.aurora); passed = true;
+                    // honesty: with no sipper left, every light reads exactly its def radius times the aurora's share
                     foreach (var x in w.gs)
-                        if (x.spawned && !x.touchedByAurora && !x.touchedExternally && !w.ledger.drunk.ContainsKey(x))
-                            Check(Math.Abs(x.radius - x.def) < 1e-3f, $"after every sipper left a glower reads {x.radius}, its def radius is {x.def}");
+                    {
+                        float want = x.def * SipperKernel.AuroraFactor(w.aurora, w.mult);
+                        Check(Math.Abs(x.radius - want) < 0.011f, $"after every sipper left a glower reads {x.radius}, expected {want}");
+                    }
                     break;
             }
             // universal bounds
@@ -322,22 +353,28 @@ namespace RimMandrake.LanternDeeps.SelfTest
             {
                 Check(x.radius > 0f && !float.IsNaN(x.radius), "glow radius " + x.radius);
                 Check(x.radius <= x.def * w.mult + 1e-3f, $"glow radius {x.radius} above the aurora's {x.def * w.mult}");
-                Check(x.radius >= SipperLedger<Glow>.Floor * x.def - 1e-3f, $"glow radius {x.radius} below the floor {SipperLedger<Glow>.Floor * x.def}");
+                // the floor holds at EVERY step, not only after a pass: the share is a proportion
+                float other = LightLedgerKernel.ScaledExcept(x.def, x.mods, "mul:ld.sipper");
+                Check(x.radius >= SipperKernel.Floor * other - 0.011f, $"glow radius {x.radius} below the floor {SipperKernel.Floor * other} between passes");
             }
             if (passed)
             {
-                // a second pass over unchanged inputs changes nothing (the ledger is idempotent)
+                // a second pass over unchanged inputs changes nothing (no oscillation)
                 var snap = w.gs.Select(x => x.radius).ToList();
                 int changed = SipperPass(w);
                 Check(changed == 0 && snap.SequenceEqual(w.gs.Select(x => x.radius)), "a repeated pass changed a radius again (it oscillates)");
-                // a glower with sippers and no foreign write reads exactly def minus the clamped reduction
                 foreach (var x in w.gs)
-                    if (w.enabled && x.lit && x.spawned && w.sippers.TryGetValue(x, out int n) && n > 0 && !x.touchedByAurora && !x.touchedExternally)
+                {
+                    float scaled = LightLedgerKernel.ScaledExcept(x.def, x.mods, "mul:ld.sipper");
+                    // right after a pass no light is below the sippers' floor of whatever scales it now
+                    Check(x.radius >= SipperKernel.Floor * scaled - 0.011f, $"glow radius {x.radius} below the floor {SipperKernel.Floor * scaled}");
+                    // a drunk light reads exactly its scaled radius minus the clamped share, whatever else wrote first
+                    if (w.enabled && x.lit && x.spawned && w.sippers.TryGetValue(x, out int n) && n > 0)
                     {
-                        float want = x.def - Math.Min(x.def * (1f - SipperLedger<Glow>.Floor), n * w.cells);
-                        // the cells-per-sipper setting can change between passes; only the latest pass defines the reading
-                        Check(Math.Abs(x.radius - want) < 0.06f, $"glower with {n} sippers reads {x.radius}, expected {want}");
+                        float want = scaled - SipperKernel.Take(scaled, n, w.cells);
+                        Check(Math.Abs(x.radius - want) < 0.011f, $"glower with {n} sippers reads {x.radius}, expected {want}");
                     }
+                }
             }
         }
 
@@ -368,9 +405,10 @@ namespace RimMandrake.LanternDeeps.SelfTest
             var m2 = new List<int> { 4 }; bool fresh = s.Filter(m2, 700, 900);
             if (fresh || s.due[4] != 1000) Fail("re-marking a pending cell moved its deadline to " + s.due[4]);
             if (m2.Count != 0) Fail("re-marking a pending cell left it in the vanilla buffer");
-            // aurora write rule
-            if (SipperLedger<object>.AuroraWant(5f, 5f, 1.75f, false, out float w0) || w0 != 5f) Fail("aurora off rewrote an untouched glower");
-            if (!SipperLedger<object>.AuroraWant(5f, 5f, 1.75f, true, out float w1) || Math.Abs(w1 - 8.75f) > 1e-4f) Fail("aurora on does not brighten to x1.75");
+            // aurora share and sipper floor
+            if (SipperKernel.AuroraFactor(false, 1.75f) != 1f) Fail("aurora off still scales a light");
+            if (Math.Abs(SipperKernel.AuroraFactor(true, 1.75f) - 1.75f) > 1e-6f) Fail("aurora on does not brighten to x1.75");
+            if (Math.Abs(SipperKernel.Take(8f, 100, 1f) - 6f) > 1e-4f) Fail("a crowd of sippers drinks below the 25% floor");
             Steps++;
             return fails;
         }

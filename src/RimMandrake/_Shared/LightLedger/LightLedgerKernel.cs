@@ -53,6 +53,21 @@ namespace RimMandrake.Shared
         }
 
         /// <summary>
+        /// The radius before subtractions and caps, leaving out one modifier: what an owner whose share is a
+        /// PROPORTION (the sippers) scales against without counting itself.
+        /// </summary>
+        public static float ScaledExcept(float defaultBase, IDictionary<string, float> mods, string fullKey)
+        {
+            if (mods == null) return Math.Max(0f, defaultBase);
+            float r = mods.TryGetValue(Base, out float b) ? b : defaultBase;
+            foreach (KeyValuePair<string, float> kv in mods)
+            {
+                if (kv.Key != fullKey && kv.Key.StartsWith(Mul, StringComparison.Ordinal)) r *= kv.Value;
+            }
+            return r < 0f ? 0f : r;
+        }
+
+        /// <summary>
         /// Writes one modifier; the neutral value removes the key instead (mul 1, sub 0, cap below 0), so a
         /// light every effect has let go of carries an empty dictionary and reads as its plain base.
         /// Returns true when the dictionary changed.

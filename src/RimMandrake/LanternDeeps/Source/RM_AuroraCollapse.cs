@@ -3,6 +3,7 @@ using System.Linq;
 using HarmonyLib;
 using RimWorld;
 using Verse;
+using RimMandrake.Shared;
 using Verse.Sound;
 
 namespace RimMandrake.LanternDeeps
@@ -98,6 +99,8 @@ namespace RimMandrake.LanternDeeps
         }
 
         // on: lanternstone at glowMultiplier x its own radius, Cleavers quickened. off: restored.
+        private const string AuroraOwner = "ld.aurora";
+
         public static int Apply(Map map, RM_DeepAuroraExtension ext, bool on)
         {
             int changed = 0;
@@ -110,13 +113,12 @@ namespace RimMandrake.LanternDeeps
                     {
                         continue;
                     }
-                    if (SipperLedger<CompGlower>.AuroraWant(g.GlowRadius, g.Props.glowRadius, ext.glowMultiplier, on, out float want))
+                    // LIGHT_LEDGER_ONE_1: a multiplier in the shared light ledger, so the aurora scales whatever
+                    // the lanternstone is now (sipped, dimmed) and ending it gives back only its own share.
+                    float before = g.GlowRadius;
+                    LightLedger.SetMul(g, AuroraOwner, SipperKernel.AuroraFactor(on, ext.glowMultiplier));
+                    if (g.GlowRadius != before)
                     {
-                        g.GlowRadius = want;
-                        if (g.Glows)
-                        {
-                            g.ForceRegister(map);
-                        }
                         changed++;
                     }
                 }

@@ -4,6 +4,7 @@ using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using RimMandrake.Shared;
 using Verse.AI;
 
 namespace RimMandrake.LanternDeeps
@@ -249,13 +250,16 @@ namespace RimMandrake.LanternDeeps
         private const int Interval = 300;
         private static readonly FieldInfo LitGlowersField = typeof(GlowGrid).GetField("litGlowers", BindingFlags.Instance | BindingFlags.NonPublic);
 
-        // The radius ledger (what we wrote, how much we took, when to give it back) lives in RM_SipperLedgerKernel.cs.
-        private readonly SipperLedger<CompGlower> ledger = new SipperLedger<CompGlower>();
+        // LIGHT_LEDGER_ONE_1: what the sippers take is the "ld.sipper" multiplier in the shared light ledger, composed
+        // with the aurora, the Dark and anything else on the light. The share itself is SipperKernel.Factor. Not saved:
+        // the next pass (every 300 ticks) re-asserts it from where the sippers sit.
+        private const string Owner = "ld.sipper";
+        private readonly HashSet<CompGlower> drinking = new HashSet<CompGlower>();
         private ThingDef sipperDef;
 
         public RM_MapComponent_Sippers(Map map) : base(map) { }
 
-        public int DrunkCount => ledger.DrunkCount;
+        public int DrunkCount => drinking.Count;
 
         public static IEnumerable<CompGlower> LitGlowers(Map map)
         {
@@ -300,9 +304,25 @@ namespace RimMandrake.LanternDeeps
                     if (n > 0) counts[g] = n;
                 }
             }
-            return ledger.Pass(counts, LanternDeepsSettings.sipperCellsPerSipper,
-                g => g.GlowRadius, (g, r) => g.GlowRadius = r,
-                g => g.parent != null && g.parent.Spawned, g => g.Glows, g => g.ForceRegister(map));
+            int changed = 0;
+            foreach (KeyValuePair<CompGlower, int> kv in counts)
+            {
+                CompGlower g = kv.Key;
+                float before = g.GlowRadius;
+                LightLedger.SetMul(g, Owner, SipperKernel.Factor(LightLedger.ScaledExceptMul(g, Owner), kv.Value, LanternDeepsSettings.sipperCellsPerSipper));
+                drinking.Add(g);
+                if (g.GlowRadius != before) changed++;
+            }
+            // a light whose sippers left (or that went dark, or off the map) gets its share back
+            foreach (CompGlower g in drinking.ToList())
+            {
+                if (counts.ContainsKey(g)) continue;
+                drinking.Remove(g);
+                float before = g.GlowRadius;
+                LightLedger.ClearMul(g, Owner);
+                if (g.GlowRadius != before) changed++;
+            }
+            return changed;
         }
     }
 

@@ -132,6 +132,11 @@ on_disk = {os.path.basename(f) for f in cs_files}
 for f in sorted(on_disk - listed):
     fail("Source/%s is not in RM_LanternDeeps.csproj (EnableDefaultCompileItems is false: it compiles into nothing)" % f)
 for f in sorted(listed - on_disk):
+    # a linked shared source (the light ledger, LIGHT_LEDGER_ONE_1) is checked where it actually lives
+    if f.startswith(".."):
+        if not os.path.exists(os.path.normpath(os.path.join(MOD, "Source", f.replace("\\", "/")))):
+            fail("csproj links %s but the file does not exist" % f)
+        continue
     fail("csproj lists %s but the file does not exist" % f)
 counts["cs files"] = len(on_disk)
 
