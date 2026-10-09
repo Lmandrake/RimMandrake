@@ -20,3 +20,8 @@ runs ahead of the shade hop. Two parts of the picked line are unruled content:
 ## criteria
 
 - The owner answers both. Then wire the named followers' extension, and the scar if one is wanted.
+
+## verify
+Ruled by card 2026-10-08; built 2026-10-09: `RM_ShadowFollowerExtension` (searchRadius 60, PROVISIONAL) on `RM_Chorn` (ex-sollak), `RM_Gennok`, `RM_Tebbra` in `RM_LongShade_Fillers.xml`. No new scar; dung (`RM_Filth_Gloomcast`) is enough. Toggle: Creature Behaviors "Shadow-following commensals".
+- Offline: all three ThingDefs carry the extension (grep `RM_ShadowFollowerExtension` in the Fillers file = 3 + Pirrik).
+- Live (owed, needs bridge): a spawned chorn/gennok/tebbra within 60 cells of a gloomcast gets the follow job (job-state read, not a screenshot).
