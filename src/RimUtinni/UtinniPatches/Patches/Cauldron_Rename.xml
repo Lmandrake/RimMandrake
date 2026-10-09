@@ -9,6 +9,10 @@
          AM_Dryad_Tumorous   "Regenerate name and description but art is good, a tumorous
                               version of the above creature."                                  -> galled rhossak
          GR_Beetlefleet      "this is a hideous creature now named Garsulix that Hungers ..."  -> garsulix
+         AA_Radyak           "Good start, more alien please. Rename and regen description."   -> ossrith
+                             (written from the redo render enact_f3decf4d_radyak_v1: bone-white hide,
+                             skull-plated face, a ridge of green crystal down the spine; the crystal
+                             harvest the donor def ships is kept in the text, since its comp is unchanged)
        LABEL/DESCRIPTION ONLY; no defName, stat or art field is touched. Gate pattern of Contagion_Rename.xml.
        These supersede the unapplied drafts "tessik" / "tumorous tessik" / "skibbex" in
        design/Jawa/worldbuilding/biomes/noncanon_beast_names_poison_miasma_desert_scar_rot_dune_waste_cracked.md. -->
@@ -82,6 +86,48 @@
     <match Class="PatchOperationReplace">
       <xpath>/Defs/PawnKindDef[defName="GR_Beetlefleet"]/label</xpath>
       <value><label>garsulix</label></value>
+    </match>
+  </Operation>
+
+  <!-- ============== AA_Radyak -> ossrith ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_Radyak"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Radyak"]/label</xpath>
+          <value><label>ossrith</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Radyak"]/description</xpath>
+          <value><description>A grazer that eats poison and wears it. The ossrith's hide is bone-white plate over a lean, long-legged frame, and its face is a bare mask of bone with deep black sockets where the eyes sit. What it cannot digest from the Cauldron's tainted grass it pushes outward: hard green crystal that breaks up through the plates along its spine in a jagged ridge, thickest on old bulls. It is placid, and it feeds in herds without fear of anything. The crystal can be broken off periodically and refined into uranium at a chemfuel refinery, which is the only reason anyone stands near one long.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_Radyak"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_Radyak"]/label</xpath>
+          <value><label>ossrith</label></value>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/PawnKindDef[defName="AA_Radyak"]/lifeStages/li[1]/label</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/PawnKindDef[defName="AA_Radyak"]/lifeStages/li[1]/label</xpath>
+            <value><label>ossrith calf</label></value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/PawnKindDef[defName="AA_Radyak"]/lifeStages/li[1]/labelPlural</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/PawnKindDef[defName="AA_Radyak"]/lifeStages/li[1]/labelPlural</xpath>
+            <value><labelPlural>ossrith calves</labelPlural></value>
+          </match>
+        </li>
+      </operations>
     </match>
   </Operation>
 </Patch>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_SiloothAcidSpit: the silooth's acid spit, as a WILD creature actually uses it.
+  Owner, Cauldron sheet 2026-10-09 (Silooth row): "make this 8 cells wide. Follow canon more closely.
+  Make sure we add the acid-spitting."
+
+  The donor (mlie.starwarsanimalcollection) already hands Silooth `SW_AcidSpew`, but that AbilityDef has no
+  `<aiCanUse>`, so it defaults to false and Ability.AICanTargetNow() refuses on line one: a wild or hostile
+  silooth never spits, and only a tamed one does, on a player click. (Decompiled 1.6: Ability.cs 396-398;
+  JobGiver_AIFightEnemy reads Pawn_AbilityTracker.AICastableAbilities, which is what a self-defending or
+  fighting animal runs. JobGiver_Manhunter does NOT read abilities, so a manhunting silooth still only bites.)
+
+  Copied from the donor's SW_AcidSpew, changed only where the canon warbeast asks for it: aiCanUse true, a
+  longer reach (12.9 vs 8.9) for a creature drawn eight cells wide, and a bigger splash (24 cells vs 18).
+  The spray itself is vanilla Biotech `Proj_Acid` + `AcidSpray_Directional` (CompProperties_AbilitySprayLiquid),
+  the same comp vanilla Odyssey's SludgeSpew uses. Training still goes through the donor's `SW_AcidSpew`
+  TrainableDef (mlie.starwarsanimalcollection is a hard dependency of this mod).
+  Wired by Patches/Silooth/Silooth_Warbeast.xml.
+-->
+<Defs>
+  <AbilityDef>
+    <defName>RSW_SiloothAcidSpit</defName>
+    <label>acid spit</label>
+    <description>Spit a gout of stomach acid across the target area. The acid clings to whatever it hits and burns it.</description>
+    <iconPath>UI/Abilities/Ability_AnimalAcidSpray</iconPath>
+    <cooldownTicksRange>2500</cooldownTicksRange>
+    <aiCanUse>true</aiCanUse>
+    <displayOrder>300</displayOrder>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <warmupStartSound>AcidSpray_Warmup</warmupStartSound>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <requireLineOfSight>true</requireLineOfSight>
+      <range>12.9</range>
+      <warmupTime>0.5</warmupTime>
+      <soundCast>AcidSpray_Resolve</soundCast>
+      <targetParams>
+        <canTargetLocations>true</canTargetLocations>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetBuildings>true</canTargetBuildings>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>SW_AcidSpew</trainableDef>
+        <aiCanCastWithoutTrainable>true</aiCanCastWithoutTrainable>
+      </li>
+      <li Class="CompProperties_AbilitySprayLiquid">
+        <projectileDef>Proj_Acid</projectileDef>
+        <numCellsToHit>24</numCellsToHit>
+        <sprayEffecter>AcidSpray_Directional</sprayEffecter>
+      </li>
+    </comps>
+  </AbilityDef>
+</Defs>
