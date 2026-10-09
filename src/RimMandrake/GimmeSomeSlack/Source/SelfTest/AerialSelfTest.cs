@@ -276,6 +276,26 @@ namespace RimMandrake.GimmeSomeSlack.SelfTest
             C(d.Reseed.Count == 3 && d.Fallen.Count == 0, "dismantle: partners re-seeded, cable coiled (nothing falls)");
             C(AerialMath.PlanRemoval(1, true, new List<(int, SpanState)>()).Reseed.Count == 0, "an unlinked anchor re-seeds nothing");
             C(AerialMath.ReseedOnLinkChange(5, 9).OrderBy(x => x).SequenceEqual(new[] { 5, 9 }), "link/unlink/cut re-seeds both ends");
+            GravshipLaunch();
+        }
+
+        /// <summary>GS-1: a gravship launch despawns every ship thing with DestroyMode.WillReplace (decompiled 1.6,
+        /// GravshipUtility.GenerateGravship). A span with both ends aboard is kept; a span to the ground comes down coiled.</summary>
+        private static void GravshipLaunch()
+        {
+            var spans = new List<(int, SpanState)> { (2, SpanState.Up), (3, SpanState.Up), (4, SpanState.Cut) };
+            var aboard = new HashSet<int> { 1, 2, 4 };
+            RemovalPlan g = AerialMath.PlanRemoval(1, false, spans, aboard);
+            C(g.Kept.OrderBy(x => x).SequenceEqual(new[] { 2, 4 }), "launch: spans to anchors aboard (up or cut) are kept (" + string.Join(",", g.Kept) + ")");
+            C(g.Grounded.SequenceEqual(new[] { 3 }) && g.Reseed.SequenceEqual(new[] { 3 }), "launch: the span to the grounded anchor comes down and only it is re-seeded");
+            C(g.Fallen.Count == 0, "launch: nothing falls (the grounded half is coiled, nothing died)");
+            // both ends despawn in an unspecified order: whichever goes first, neither drops the shared span
+            RemovalPlan first = AerialMath.PlanRemoval(2, false, new List<(int, SpanState)> { (1, SpanState.Up) }, aboard);
+            C(first.Kept.SequenceEqual(new[] { 1 }) && first.Grounded.Count == 0 && first.Reseed.Count == 0, "launch: the other end, despawning first, keeps the span too");
+            RemovalPlan off = AerialMath.PlanRemoval(1, false, spans, null);
+            C(off.Kept.Count == 0 && off.Reseed.Count == 3, "setting off / no launch: today's behaviour, every span taken down");
+            RemovalPlan boom = AerialMath.PlanRemoval(1, true, spans, aboard);
+            C(boom.Kept.Count == 0 && boom.Fallen.Count == 2, "killed during a launch: spans fall exactly as any kill");
         }
 
         private static void Watchdog()

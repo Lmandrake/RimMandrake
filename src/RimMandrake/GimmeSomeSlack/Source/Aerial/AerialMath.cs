@@ -43,6 +43,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// <summary>Every anchor whose net must be rebuilt (the despawn gap, design 2.2).</summary>
         public List<int> Reseed = new List<int>();
         public List<FallenSpec> Fallen = new List<FallenSpec>();
+        /// <summary>GS-1: partners flying with this anchor on the same gravship; their span is kept, not taken down.</summary>
+        public List<int> Kept = new List<int>();
+        /// <summary>GS-1: partners left on the ground while this anchor flies off; their span was taken down and coiled.</summary>
+        public List<int> Grounded = new List<int>();
     }
 
     /// <summary>A watchdog read: the net id at each end of a span (-1 = no net).</summary>
@@ -215,12 +219,23 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         /// onto its survivor as a floor cord; a CUT span already lies at the survivor, so nothing new falls.
         /// Dismantled: the cable is coiled, nothing falls.
         /// </summary>
-        public static RemovalPlan PlanRemoval(int id, bool killed, IList<(int, SpanState)> spans)
+        public static RemovalPlan PlanRemoval(int id, bool killed, IList<(int, SpanState)> spans) => PlanRemoval(id, killed, spans, null);
+
+        /// <summary>aboard: non-null while this anchor is being lifted onto a gravship (DeSpawn WillReplace inside
+        /// GravshipUtility.GenerateGravship); it holds the partners flying with it. A span to one of them is kept
+        /// (both ends land together, the comp objects survive the flight); a span to a partner left behind is taken
+        /// down and coiled (never dropped: nothing died).</summary>
+        public static RemovalPlan PlanRemoval(int id, bool killed, IList<(int, SpanState)> spans, ICollection<int> aboard)
         {
             var plan = new RemovalPlan();
             foreach ((int partner, SpanState st) in spans)
             {
                 if (partner == id) continue;
+                if (aboard != null && !killed)
+                {
+                    if (aboard.Contains(partner)) { if (!plan.Kept.Contains(partner)) plan.Kept.Add(partner); continue; }
+                    if (!plan.Grounded.Contains(partner)) plan.Grounded.Add(partner);
+                }
                 if (!plan.Reseed.Contains(partner)) plan.Reseed.Add(partner);
                 if (killed && st == SpanState.Up) plan.Fallen.Add(new FallenSpec { Survivor = partner, TowardDead = true });
             }

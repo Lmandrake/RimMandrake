@@ -38,6 +38,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static float tapRate = 500f;
         /// <summary>Raise TapEvents.Drained for consequence systems (none built yet: alerts/raids are a later design).</summary>
         public static bool tapEvents = true;
+        /// <summary>GS-1: a span with both anchors aboard a launching gravship lands still strung.</summary>
+        public static bool keepWiresOnGravship = true;
 
         public override void ExposeData()
         {
@@ -54,6 +56,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref tapsEnabled, "tapsEnabled", true);
             Scribe_Values.Look(ref tapRate, "tapRate", 500f);
             Scribe_Values.Look(ref tapEvents, "tapEvents", true);
+            Scribe_Values.Look(ref keepWiresOnGravship, "keepWiresOnGravship", true);
         }
 
         public static void ResetToDefaults()
@@ -70,6 +73,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             tapsEnabled = true;
             tapRate = 500f;
             tapEvents = true;
+            keepWiresOnGravship = true;
         }
 
         public static float Range => Mathf.Clamp(maxSpan, 4f, 40f);
@@ -135,6 +139,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     AerialSettings.sway = m;
             l.Label("Sway strength: " + AerialSettings.swayStrength.ToString("0.0") + "x");
             AerialSettings.swayStrength = l.Slider(AerialSettings.swayStrength, 0f, 2f);
+            l.CheckboxLabeled("Wires strung between two anchors on a gravship stay up through the flight", ref AerialSettings.keepWiresOnGravship,
+                "On: a wire with both anchors aboard lands still strung and still carrying power; a wire to an anchor left on the ground " +
+                "is taken down and coiled at launch, with a message. Off: every wire on the ship is taken down and coiled at launch.");
             l.CheckboxLabeled("Explosions cut wires (the halves hang and spark)", ref AerialSettings.explosionsCut);
             l.CheckboxLabeled("Kinetic blasts (Kinetic Arms push waves) swing wires instead of cutting them", ref AerialSettings.kineticSway,
                 "A push wave never cuts a wire. Off: the wires ignore it.");
