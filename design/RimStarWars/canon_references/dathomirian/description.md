@@ -96,52 +96,22 @@ two famous exceptions are attributed to **training**, not to blood. Anything mod
 Dathomirians as innately strong psykers overshoots the source.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Deleted: the *Clone Wars*-style infobox pair (`wookieepedia_dathomirian_infobox.jpg`), the stylised *Shatterpoint* wallpaper (`wookieepedia_dathomirian_wallpaper.jpg`) and the *Clone Wars* five-Nightsister render (`wookieepedia_nightsisters.jpg`). Added: live-action Maul (*Solo* promotional photograph, `wookieepedia_maul_live_action.png`), the live-action Nightsister Great Mothers from *Ahsoka* "Part Six" (`wookieepedia_great_mothers_ahsoka.jpg`), and the photoreal *Jedi: Survivor* Nightsister Merrin (`wookieepedia_merrin_jedi_survivor.png`). The *Jedi: Fallen Order* Nightbrother and the Talzin painting are photoreal/realistic and stay.
 
-**`wookieepedia_dathomirian_infobox.jpg`** (`File:Dathomiri.png`, 1100×1200) is the
-**reference of record** and it is exactly the right image for this species, because
-it shows a male and a female side by side:
+**`wookieepedia_maul_live_action.png` — male reference of record** (live-action, Ray Park's Maul, *Solo* promo):
+- **Skin is a deep blood-red** — the sourced *rare* red male — with **matte black tattoo striping** in bold symmetric bands over the whole face and scalp: black around the eyes and down the nose, black lips and chin, branching black bands over the crown. Real skin texture and wrinkles show through the paint.
+- 🔑 **A ring of short conical horns around the crown** — about ten, from high on the brow round the sides of the skull to behind the ears, with one centred on the brow. 🔴 **The horns are pale bone/ivory-tan with darker bases, NOT dark** as the old brief (from the animated images) said.
+- **Eyes yellow-orange with red rims**, bald, no hair.
+- The red is skin plus black tattoo; it is not the commoner orange/yellow male. 🔴 **No realistic image of a yellow or orange male exists in this entry** — the deleted *Shatterpoint* wallpaper was the only yellow male. The sourced "commonly orange or yellow" stands on text alone.
 
-- **Female (left)**: **bone-white to pale pearl-grey skin**, completely **hairless
-  and hornless**, a narrow long skull, dark eyes, and **soft dusky-grey shading
-  around the eye sockets and over the brow** — the "subtle tattoos in contrast to her
-  pale skin," and it reads as smudged pigment, not as ink line-work. Lean, long-limbed
-  build. Costume is dark leather with red panels.
-- **Male (right)**: **warm red-orange skin** with **black striping radiating across
-  the face** and, on the crown, **a ring of short dark horns** encircling the top of
-  the skull rather than projecting forward. **Yellow eyes.** Bald. Bulkier than the
-  female through chest and shoulders. So the two sexes differ in **skin hue, horns,
-  marking style and build** all at once.
+**`wookieepedia_great_mothers_ahsoka.jpg` — female reference of record** (live-action, three Nightsister Great Mothers on Peridea):
+- **Chalk-white to bone-pale skin** with **dark grey-black markings** — lines down the forehead and around the eyes and mouth, smudged and soft-edged. Aged faces, dark lips.
+- 🔑 **The red is entirely CLOTH** — tall pointed red hoods and heavy layered red robes. The skin underneath is white. **A "red Nightsister" is a garment, not a pigment** — this is where a text-only prompt fails hardest.
+- No horns.
 
-**`wookieepedia_dathomirian_wallpaper.jpg`** (`File:Shatterpoint-Dathomirianwallpaper.png`,
-1002×1602, captioned by the wiki *"Examples of male and female Dathomiri"*) widens the
-palette and confirms the sourced fields:
-
-- **Foreground male: saturated golden-YELLOW skin with heavy black striping and a
-  full crown of dark horns.** This is the "commonly orange or yellow" male the text
-  describes and the corrective to assuming every male Dathomirian is Maul-red.
-- **Background female: grey-green skin with bold black facial markings** — a
-  Talzin-type. Her markings are **much less subtle** than the infobox female's, so
-  "subtle" is a tendency, not a rule.
-- **A third figure, a bald male with pale skin in red robes** — again showing the
-  **red is the garment.**
-
-**`wookieepedia_nightsisters.jpg`** (`File:Nightsisters-SWE.jpg`, 936×704, five
-Nightsisters together) is the single most useful image for the (c) distinction, and
-🔴 **this is where a text-only prompt fails hardest:**
-
-- **Every one of the five has chalk-white to cool bone-grey skin.** None is
-  red-skinned.
-- 🔑 **The red is entirely CLOTH** — strips of red and rust-orange fabric wound in
-  spirals up the legs and arms, red hoods, red bodices, red wraps. From a distance the
-  whole group reads red; the skin underneath is white. **A "red Nightsister" is a
-  wrapping, not a pigment.**
-- **Dark grey markings radiating from the eyes** across the cheekbones and temples on
-  every face, kohl-like and soft-edged — consistent with clay-and-ash pigment.
-- **Hair varies as sourced**: platinum-white bobs, white braids, dark hair under
-  hoods.
-- **Eyes are pale with warm red or amber irises** on several — inside the sourced list.
-- ⛔ **No horns on any of the five**, confirming the females-only-hornless rule.
-- Build: uniformly **slender and long-limbed.**
+**`wookieepedia_merrin_jedi_survivor.png`** — photoreal game CGI, the Nightsister Merrin, head and shoulders:
+- **Pale cool grey-white skin**, **fine dark-grey line tattoos** arcing from the eyes across the cheekbones and temples (soft, thin, not bold), **dark plum lips**, short **ash-grey hair**, grey eyes. Hornless. The "subtle tattoos in contrast to pale skin" exactly — and evidence that females have hair.
 
 **`wookieepedia_nightbrother_archer.jpg`** (`File:NightbrotherArcher.png`, 2560×2560,
 the highest-resolution image in this entry) is the best male reference and it carries
@@ -181,12 +151,13 @@ this repo** — they live in the deployed mod folder under
 canon against the sprite the player sees.
 
 ## Must show
-- [ ] Female: bone-white to pale pearl-grey skin, hairless and hornless
-- [ ] Male: warm red-orange, golden-yellow, or (rarely) red skin, with black striping and a ring of short, stubby horns encircling the crown (not two forward-facing devil horns)
+- [ ] Female: bone-white to pale pearl-grey skin, hornless (hair optional — Merrin has ash-grey hair)
+- [ ] Male: orange, golden-yellow, or (rarely) deep red skin, with black striping and a ring of short conical pale bone-tan horns encircling the crown (not two forward-facing devil horns)
 - [ ] Male natural striping runs across the face, scalp, chest, shoulders and arms, not just the face
 - [ ] Female markings read as soft, smudged grey/dark tattoo shading in contrast to pale skin, not bold ink line-work (though bolder-marked females are also attested)
 - [ ] Nightsister red is cloth — strips of red/rust fabric wound over chalk-white to bone-grey skin, never a skin pigment
 - [ ] Horns present only on males; females are hornless
+- [ ] Realistic rendering: real skin texture under the pigment and tattoos, natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known — no species-specific shader or mask constraint is recorded for this head in the entry or brief (no `donor_current_sprite.png` exists in-repo to check against).
@@ -211,8 +182,8 @@ does not follow it:
   recognisable thing about a Dathomirian male — has no gene, and neither do the
   females' subtle tattoos. This is the largest gap in the def.
 - 🔴 **`Hair_Gray` is the only hair gene, and it applies to both sexes.** Canon gives
-  females **"various" hair types** (the images show platinum-white, white braids and
-  dark hair) and gives males **no hair colour at all** — the males are consistently
+  females **"various" hair types** (Merrin shows ash-grey hair; the earlier animated
+  images showed platinum-white and dark hair) and gives males **no hair colour at all** — the males are consistently
   bald. `Outland_BaldMale` is present, which is right; forcing every female to grey
   hair is not.
 - 🔴 **No two-hearts, endurance or carnivore gene.** *Two hearts letting them "go
@@ -261,31 +232,18 @@ does not follow it:
   is corroborated by the article body and by every image.
 - `Nightsister` and `Nightbrother` are both **redirects** (26 and 27 chars) — no
   separate species-appearance article to pull.
-- https://static.wikia.nocookie.net/starwars/images/d/d2/Dathomiri.png → `wookieepedia_dathomirian_infobox.jpg` (1100×1200)
-- https://static.wikia.nocookie.net/starwars/images/9/9c/Shatterpoint-Dathomirianwallpaper.png → `wookieepedia_dathomirian_wallpaper.jpg` (1002×1602)
-- https://static.wikia.nocookie.net/starwars/images/4/40/Nightsisters-SWE.jpg → `wookieepedia_nightsisters.jpg` (936×704)
+- https://static.wikia.nocookie.net/starwars/images/8/89/MaulHS_SWI185.png/revision/latest?cb=20181108061212 → `wookieepedia_maul_live_action.png` (645×860)
+- https://static.wikia.nocookie.net/starwars/images/1/13/GreatMothers.jpg/revision/latest?cb=20230920231101 → `wookieepedia_great_mothers_ahsoka.jpg` (1409×754)
+- https://static.wikia.nocookie.net/starwars/images/f/fb/Merrin_SWJediSurvivor.png/revision/latest?cb=20230429082518 → `wookieepedia_merrin_jedi_survivor.png` (1333×2072)
 - https://static.wikia.nocookie.net/starwars/images/7/72/NightbrotherArcher.png → `wookieepedia_nightbrother_archer.jpg` (2560×2560)
 - https://static.wikia.nocookie.net/starwars/images/5/5d/Mother_Talzin_SWDL.png → `wookieepedia_mother_talzin.jpg` (1440×1800)
 
 ## Candidate images
-- `wookieepedia_dathomirian_infobox.jpg` — **the reference of record.** Male and
-  female side by side; settles the whole dimorphism in one frame: hornless pale-grey
-  hairless female with soft grey eye-shading, versus horn-ringed red-orange male with
-  black facial striping and yellow eyes.
-- `wookieepedia_nightbrother_archer.jpg` — **best male reference**, and the only image
-  that lets **natural striping** and **applied paint** be told apart (dark contour
-  stripes with a chalk-white sigil laid over them). Best view of the horn **ring**.
-  ⚠️ Its dusty brown-grey skin is outside the three sourced male colours — treat the
-  hue as this game's art direction, not as canon.
-- `wookieepedia_nightsisters.jpg` — 🔑 **the image that corrects the most common error.**
-  Five Nightsisters, all chalk-white-skinned; **all the red is cloth.** Confirms
-  hornless females, varied hair, and soft grey radiating eye-markings.
-- `wookieepedia_dathomirian_wallpaper.jpg` — wiki-captioned "Examples of male and
-  female Dathomiri." Confirms the **yellow** male (the commonest sourced colour) and a
-  grey-green boldly-marked female, i.e. "subtle" is a tendency, not a rule.
-- `wookieepedia_mother_talzin.jpg` — **negative reference.** Nightsister Clan Mother:
-  her elongated skull, ornament horns and green-grey pallor are one individual plus
-  regalia, not a species baseline.
+- `wookieepedia_maul_live_action.png` — **male reference of record.** Live-action Maul, *Solo* promotional photograph (*Star Wars Insider* 185): red skin, black tattoo striping, ring of pale bone-tan horns, yellow eyes; file `MaulHS SWI185.png` — https://static.wikia.nocookie.net/starwars/images/8/89/MaulHS_SWI185.png/revision/latest?cb=20181108061212
+- `wookieepedia_great_mothers_ahsoka.jpg` — **female reference of record.** Live-action *Ahsoka* "Part Six", three Nightsister Great Mothers: chalk-white skin, dark smudged markings, all the red is cloth; file `GreatMothers.jpg` — https://static.wikia.nocookie.net/starwars/images/1/13/GreatMothers.jpg/revision/latest?cb=20230920231101
+- `wookieepedia_merrin_jedi_survivor.png` — photoreal game CGI, *Star Wars Jedi: Survivor*, Merrin head and shoulders: pale grey skin, fine grey line tattoos, ash-grey hair; file `Merrin SWJediSurvivor.png` — https://static.wikia.nocookie.net/starwars/images/f/fb/Merrin_SWJediSurvivor.png/revision/latest?cb=20230429082518
+- `wookieepedia_nightbrother_archer.jpg` — photoreal game CGI, *Star Wars Jedi: Fallen Order* Nightbrother: the only image that lets **natural striping** and **applied paint** be told apart, and the best view of the horn **ring**. ⚠️ Its dusty brown-grey skin is outside the three sourced male colours; file `NightbrotherArcher.png` — https://static.wikia.nocookie.net/starwars/images/7/72/NightbrotherArcher.png
+- `wookieepedia_mother_talzin.jpg` — **negative reference.** Realistic painting of the Nightsister Clan Mother: her elongated skull, ornament horns and green-grey pallor are one individual plus regalia, not a species baseline; file `Mother_Talzin_SWDL.png` — https://static.wikia.nocookie.net/starwars/images/5/5d/Mother_Talzin_SWDL.png
 
 ## ruling
 (empty — owner has not reviewed this race yet)

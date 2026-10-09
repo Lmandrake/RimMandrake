@@ -82,8 +82,10 @@ The Legends quote makes the concealment concrete and mechanical:
 > concern." — an unidentified Defel
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Deleted: the two comic panels `wookieepedia_glahst_ombra.jpg` (*Doctor Aphra*) and `wookieepedia_male_female_pair.jpg` (Shoto Eyefire and consort). Added: a studio photograph of the *A New Hope* Arleil Schous mask (`wookieepedia_schous_mask_prop.png`, the clearest look at the real anatomy) and a lit promotional set photograph (`wookieepedia_defel_set_photo.png`). The Galaxy Guide 4 ink plate is kept ONLY as line-art/negative reference for showing both modes on one body; it is not a style target.
 
-🔴 **This species has TWO appearances and the five references split cleanly between
+🔴 **This species has TWO appearances and the references split cleanly between
 them. Rendering one and calling it the Defel is the failure mode.** They look almost
 nothing alike, and the difference is not "lighter or darker fur" — it is whether the
 figure has *internal detail at all*.
@@ -119,20 +121,18 @@ a depiction of partial absorption, it is the clearest available statement of wha
 two states look like on the same anatomy, and it is the image to hand anyone drawing
 this species.
 
-`wookieepedia_glahst_ombra.jpg` (the canon female mercenary, from *Doctor Aphra*) is the
-third data point and it **does not agree with pure black**: the face is a **dark
-desaturated teal / blue-black**, not neutral, with **glowing orange-red eyes** and a
-wide mouth of **long white triangular fangs**, under a hood. So in comic rendering the
-absorbed state is given a **cool blue-green cast** rather than being pure black. If a
-single palette must be chosen for the wraith state, **very dark desaturated
-blue-green-black with a red-orange eye glow** covers both this and the cantina still;
-pure neutral black covers only the still.
+The deleted *Doctor Aphra* comic gave the absorbed state a cool teal/blue-black cast with orange-red eyes; no realistic image supports that tint, so **the wraith state is near-neutral black with red eyes**, as in the live-action still.
 
 ### Mode 2 — seen properly. A shaggy canine biped.
 
-`wookieepedia_ultimate_alien_anthology.jpg` and the right half of the Galaxy Guide
-plate agree closely, and `wookieepedia_male_female_pair.jpg` (a comic panel with a
-male and a female together) is consistent with them:
+**`wookieepedia_schous_mask_prop.png` — the realistic reference of record for the lit state** (studio photograph of the *A New Hope* Arleil Schous mask) and **`wookieepedia_defel_set_photo.png`** (the same costume lit on set):
+- 🔴 **Fur is a shaggy, coarse, GREY-BROWN** — mixed grey, taupe and dark brown strands, long and lank around the face and hanging below the jaw. Cooler and greyer than the warm brown of the UAA painting.
+- **A bare, fleshy, wrinkled pinkish-brown muzzle** with a broad flat nose and flared nostrils — a bat/boar snout, not a dog's furred muzzle.
+- **A wide mouth of uneven, crooked, yellowed and white fangs** — two long white upper canines among shorter stained teeth.
+- **Small red eyes** sunk in the fur, and **two tall, pointed, dark leathery ears** standing erect from the top of the head.
+
+`wookieepedia_ultimate_alien_anthology.jpg` (realistic painting) and the right half of the Galaxy Guide
+plate agree with the mask on structure:
 
 - **Warm mid-to-dark brown shaggy fur** over the whole body, longer and tufted at the
   shoulders, elbows, cheeks and ears.
@@ -156,13 +156,8 @@ male and a female together) is consistent with them:
   are lean, long-limbed and gaunt. This is a genuine prose-versus-image disagreement;
   on the library's rule, **trust the images on appearance** — draw a lean, long-armed,
   hunched biped, and treat "nearly as wide" as a stat-block artifact.
-- `wookieepedia_male_female_pair.jpg` renders both sexes as **greyish-brown furred
-  canine humanoids with red eyes**, the female distinguished only by gold jewellery.
-  🔑 **No anatomical sexual dimorphism is depicted or described anywhere** — unlike the
+- 🔑 **No anatomical sexual dimorphism is depicted or described anywhere** — unlike the
   Chagrian or Devaronian, there is nothing to build a male/female art split around.
-  Note also the small **dark silhouetted figure standing in the doorway** in the
-  background of that panel, which reads as a Defel in the wraith state and is a nice
-  demonstration of the two modes appearing in one frame.
 
 **The ultraviolet colouring is a fact you can use, and no image shows it.** No
 reference here depicts a Defel under UV — yellow-to-blue fur, green snout, orange
@@ -184,12 +179,13 @@ appearance so much as evidence that the appearance has not been attempted.
 ## Must show
 Honest framing: the species' whole art inventory on disk is four tiny fangs, so this
 checklist is testable only against the reference images, not against any existing sprite.
-- [ ] Wraith state: a featureless, near-black or very-dark desaturated blue-green-black void with no visible fur strands, muscle or shading — light does not roll off it
+- [ ] Wraith state: a featureless near-black void with no visible fur strands, muscle or shading — light does not roll off it
 - [ ] Wraith state: two glowing red (or orange-red) eyes and a mouth of bared, sharp, pale fangs are the only clearly resolved features
-- [ ] Seen-properly state: warm mid-to-dark brown shaggy fur, longer/tufted at shoulders, elbows, cheeks and ears
+- [ ] Seen-properly state: coarse shaggy grey-brown to brown fur, long and lank around the face, with a bare fleshy wrinkled snout and crooked fangs
 - [ ] Two tall, pointed, erect ears tufted at the tips — present in every reference image in both states
 - [ ] Long arms reaching to or below the knee, ending in large hooked, cream/bone-coloured claws
 - [ ] Stooped, hunched, forward-leaning posture with the head carried low, never upright and human
+- [ ] Realistic rendering: real coarse fur and wet fleshy snout texture under natural light, no outlines, no cartoon or ink shading
 
 ## Engine limits
 none known — the entry records that no head, body, fur, ear, or claw art exists in the repo
@@ -261,12 +257,10 @@ distance-based), `Eyes_Red`, `Ears_Pointed`, `Furskin`, `RSW_Nose_Dog`,
 - https://static.wikia.nocookie.net/starwars/images/b/b1/Defel-UAA.png —
   File:Defel-UAA.png, *Ultimate Alien Anthology*, the **Legends infobox image** →
   `wookieepedia_ultimate_alien_anthology.jpg`
-- https://static.wikia.nocookie.net/starwars/images/c/cf/GlahstOmera-2016DoctorAphra15.png —
-  File:GlahstOmera-2016DoctorAphra15.png, *Doctor Aphra* (2016) 15 →
-  `wookieepedia_glahst_ombra.jpg`
-- https://static.wikia.nocookie.net/starwars/images/d/d8/Shoto_Eyefire_and_consort.png —
-  File:Shoto_Eyefire_and_consort.png, a male and female Defel →
-  `wookieepedia_male_female_pair.jpg`
+- https://static.wikia.nocookie.net/starwars/images/e/e3/SchousMask-Chronicles.png/revision/latest?cb=20230206144422 —
+  File:SchousMask-Chronicles.png, *Star Wars Chronicles* prop photograph → `wookieepedia_schous_mask_prop.png`
+- https://static.wikia.nocookie.net/starwars/images/6/65/Defel.png/revision/latest?cb=20201016170908 —
+  File:Defel.png, promotional set photograph → `wookieepedia_defel_set_photo.png`
 - Not fetched this pass: no `https://www.starwars.com/databank/defel` page is cited by
   the article; the canon infobox's citations are to *Star Wars: Absolutely Everything
   You Need to Know*, *A New Hope*, and IDW/Marvel comics, all print.
@@ -281,23 +275,17 @@ distance-based), `Eyes_Red`, `Ears_Pointed`, `Furskin`, `RSW_Nose_Dog`,
   state.** The canon infobox image: Arleil Schous in the cantina, a featureless black
   shape with two glowing red eyes and bared pale fangs, with a single warm rim-light
   edge betraying shaggy fur. This is the appearance the species is *for*.
-- `wookieepedia_galaxy_guide_4.jpg` — **the most useful image here.** A B&W ink plate
+- `wookieepedia_galaxy_guide_4.jpg` — **line art, kept as negative/anatomy-only reference** (not a style target). A B&W ink plate
   showing one body with the left side rendered as a solid black void and the right side
   as fully-hatched shaggy fur: both modes, same anatomy, one frame. Also the clearest
   read on the hooked claws, the fanged muzzle, the erect tufted ears and the hunched
   long-armed posture.
-- `wookieepedia_ultimate_alien_anthology.jpg` — the **Legends infobox image**: a
+- `wookieepedia_ultimate_alien_anthology.jpg` — the **Legends infobox image**, realistic painting: a
   full-body brown-furred Defel in kit. Best reference for fur colour, limb proportion
   and claw shape, and the only image confirming **the visor**. ⚠️ Because the visor
   covers the eyes, this image is **not** evidence about eye colour.
-- `wookieepedia_glahst_ombra.jpg` — the canon female mercenary from *Doctor Aphra*.
-  Comic rendering, so treat line and palette as the artist's; its value is showing the
-  absorbed state as **dark blue-green-black with an orange-red eye glow** rather than
-  neutral black, and confirming the long white fangs.
-- `wookieepedia_male_female_pair.jpg` — a comic panel with a male and a female Defel
-  together, plus a wraith-state Defel silhouetted in the doorway behind them. Kept
-  because it establishes that **no anatomical dimorphism is depicted**, and because it
-  shows both modes in one panel.
+- `wookieepedia_schous_mask_prop.png` — **realistic reference of record for the lit state.** Studio photograph of the *A New Hope* Arleil Schous mask (*Star Wars Chronicles*): grey-brown shaggy fur, bare wrinkled snout, crooked fangs, red eyes, tall leathery ears; file `SchousMask-Chronicles.png` — https://static.wikia.nocookie.net/starwars/images/e/e3/SchousMask-Chronicles.png/revision/latest?cb=20230206144422
+- `wookieepedia_defel_set_photo.png` — promotional set photograph of the same costume, lit, head and shoulders in a jacket; file `Defel.png` — https://static.wikia.nocookie.net/starwars/images/6/65/Defel.png/revision/latest?cb=20201016170908
 - `donor_current_sprite.png` — the repo's own art, and **weak evidence**:
   `SWX/Pawn/HeadAttachments/defel/teeth_south.png` is four tiny greyscale fangs and,
   with its `_east` sibling, is the complete inventory of Defel art on disk. Documents
