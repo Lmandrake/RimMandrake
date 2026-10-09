@@ -24,6 +24,7 @@
   <ItemGroup>
     <Compile Include="..\RM_GardenDefenseKernel.cs" />
     <Compile Include="..\RM_ElderEconomyKernel.cs" />
+    <Compile Include="..\RM_OxygenLedgerKernel.cs" />
     <Compile Include="DivingFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

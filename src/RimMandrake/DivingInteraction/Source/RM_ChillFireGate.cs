@@ -6,9 +6,10 @@ namespace RimMandrake.DivingInteraction
     // CHILL_FIRE_BAN_1 — "So there's no oxygen down in the sea floor so
     // it's not explosive." (owner, 2026-09-27, typed verbatim). Total ban
     // on ignition at the bottom of the Chill, everywhere EXCEPT:
-    //   (a) a cell some future mechanism has marked oxygenated
-    //       (RM_MapComponent_ChillOxygenation — this is the hook
-    //       CHILL_WARLAB_ROUTES_1 hangs its burn routes on), or
+    //   (a) a cell marked oxygenated (RM_MapComponent_ChillOxygenation —
+    //       written by a running Odyssey oxygen pump in a sealed room,
+    //       RM_CompChillAirSupply, and the hook CHILL_WARLAB_ROUTES_1
+    //       hangs its burn routes on), or
     //   (b) a Thing whose def carries RM_SelfOxidizingExtension — Fuselight
     //       (CHILL_FLORA_BUILD_1, not yet built) is the one example, but
     //       this checks a DefModExtension flag, never a defName, so

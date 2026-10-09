@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  DESIGN_PASS DI-2 / CHILL_AIR_PUMP_1. Odyssey's oxygen pump carries air down on the Chill seabed: the
+  owner-named exception to CHILL_FIRE_BAN_1 ("fire exists below only where someone pumps air down").
+  RM_CompChillAirSupply does nothing on any other map. All DLC is assumed (owner 2026-09-25/26); the
+  FindMod guard is load safety only. Numbers live in Mod Settings and are PROVISIONAL.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Odyssey</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="OxygenPump"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.DivingInteraction.RM_CompProperties_ChillAirSupply" />
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="OxygenPump"]/description</xpath>
+          <value>
+            <description>A small wall-mounted unit that releases oxygen into the surrounding room, allowing enclosed areas to repressurize in space. Essential for long stays in orbit. On the floor of the Chill, where there is no oxygen to burn, a running pump fills its sealed room with enough air for a stove, a heater or a torch to light.</description>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>

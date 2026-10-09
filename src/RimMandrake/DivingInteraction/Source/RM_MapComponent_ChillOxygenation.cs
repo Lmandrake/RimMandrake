@@ -5,6 +5,10 @@ namespace RimMandrake.DivingInteraction
 {
     // ════════════════════════════════════════════════════════════════════
     // CHILL_FIRE_BAN_1 — the oxygenated-zone OVERRIDE INTERFACE.
+    // 2026-10-08 (DESIGN_PASS DI-2): the pump now exists. It is Odyssey's own
+    // oxygen pump carrying RM_CompChillAirSupply, which writes through
+    // SetProviderCells/ClearProvider below (per-provider counts). The
+    // manual SetCellOxygenated set remains for scripted routes.
     // "Fire exists below only where someone pumps air down — this is the
     // hook the war-lab burn routes hang on" (CHILL_WARLAB_ROUTES_1, not
     // this item's job to consume). This component IS that hook: nothing
@@ -32,13 +36,52 @@ namespace RimMandrake.DivingInteraction
     {
         private HashSet<IntVec3> oxygenatedCells = new HashSet<IntVec3>();
 
+        // DESIGN_PASS DI-2 (CHILL_AIR_PUMP_1): cells covered by live air providers (RM_CompChillAirSupply on the
+        // Odyssey oxygen pump), counted per provider so overlapping pumps never cancel. Deliberately NOT scribed:
+        // every pump re-registers on its first rare tick after load, so a saved count could only double up.
+        private readonly RM_OxygenLedgerKernel providers = new RM_OxygenLedgerKernel();
+
+        public void SetProviderCells(Thing provider, IEnumerable<IntVec3> cells)
+        {
+            if (provider == null)
+            {
+                return;
+            }
+            List<int> idx = new List<int>();
+            if (cells != null)
+            {
+                foreach (IntVec3 c in cells)
+                {
+                    if (c.InBounds(map))
+                    {
+                        idx.Add(map.cellIndices.CellToIndex(c));
+                    }
+                }
+            }
+            providers.Set(provider.thingIDNumber, idx);
+        }
+
+        public void ClearProvider(Thing provider)
+        {
+            if (provider != null)
+            {
+                providers.Clear(provider.thingIDNumber);
+            }
+        }
+
+        public int ProviderCount => providers.ProviderCount;
+
         public RM_MapComponent_ChillOxygenation(Map map) : base(map)
         {
         }
 
         public bool IsCellOxygenated(IntVec3 c)
         {
-            return oxygenatedCells.Contains(c);
+            if (oxygenatedCells.Contains(c))
+            {
+                return true;
+            }
+            return c.InBounds(map) && providers.Covered(map.cellIndices.CellToIndex(c));
         }
 
         public void SetCellOxygenated(IntVec3 c, bool oxygenated)
@@ -70,7 +113,7 @@ namespace RimMandrake.DivingInteraction
             }
         }
 
-        public int OxygenatedCellCount => oxygenatedCells.Count;
+        public int OxygenatedCellCount => oxygenatedCells.Count + providers.CoveredCellCount;
 
         public override void ExposeData()
         {
