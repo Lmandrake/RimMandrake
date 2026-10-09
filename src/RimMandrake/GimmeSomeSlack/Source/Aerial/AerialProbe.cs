@@ -59,6 +59,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (cmd.StartsWith("reinstall:")) return StyleProbeAerial.Reinstall(map, cmd.Substring(10));
             if (cmd.StartsWith("copy:")) return StyleProbeAerial.Copy(map, cmd.Substring(5));
             if (cmd == "watchdog") return Ok(cmd, "\"repairs\":" + comp.Watchdog() + ",\"netRepairs\":" + comp.netRepairs);
+            if (cmd == "alert") { var d = Alert_WireDown.Down(map); return Ok(cmd, "\"down\":" + d.Count + ",\"enabled\":" + B(AerialSettings.wireDownAlert) + ",\"ids\":[" + string.Join(",", d.Select(a => a.thingIDNumber.ToString(CultureInfo.InvariantCulture))) + "]"); }
             if (cmd == "poll") return Ok(cmd, "\"flips\":" + comp.PollFallen());
             if (cmd == "defaults") { AerialSettings.ResetToDefaults(); AerialSettings.Apply(); return Ok(cmd, ""); }
             if (cmd.StartsWith("net:")) return Net(map, cmd.Substring(4));

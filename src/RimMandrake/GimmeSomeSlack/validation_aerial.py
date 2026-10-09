@@ -291,10 +291,17 @@ def run_live(args):
           {"cuts": ce.get("cuts"), "spansCut": cx.get("spansCut"), "halves": halves, "nets": nx,
            "m2Live": ax.get(M2, {}).get("fallenLive"), "m3Live": ax.get(M3, {}).get("fallenLive")})
     res["screenshots"].append(B.shot("aerial_03_explosion_cut_halves", (AX0 + 10, AZ0, 20, 10)))
+    # WIRE_DOWN_ALERT_1: the alert's culprit set is the cut halves' anchors; switched off it reports inactive
+    al = B.ap("alert")
+    B.ap("set:wireDownAlert=false"); al_off = B.ap("alert"); B.ap("set:wireDownAlert=true")
+    V.row(rows, "M15a_wire_down_alert_lists_cut", "PASS" if al.get("down", 0) >= 2 and al.get("enabled") is True and al_off.get("enabled") is False else "FAIL", "MOD",
+          {"down": al.get("down"), "ids": al.get("ids"), "enabledOff": al_off.get("enabled")})
     rs = B.ap("restring:%d,%d" % (i2, i3)) if i2 else {}
     B.ticks(3)
     nrs = nets(B.ap("census"))
     V.row(rows, "M15b_restring_rejoins", "PASS" if rs.get("done") and nrs["m1"] == nrs["m3"] != -1 else "FAIL", "MOD", {"nets": nrs})
+    al2 = B.ap("alert")
+    V.row(rows, "M15c_wire_down_alert_clears_on_restring", "PASS" if rs.get("done") and al2.get("down") == 0 else "FAIL", "MOD", {"down": al2.get("down")})
 
     # ---------------------------------------------------------------- sway (motion is NOT a bar; state proxy only)
     B.ap("set:sway=CPU")

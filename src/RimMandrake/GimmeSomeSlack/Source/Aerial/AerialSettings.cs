@@ -47,6 +47,8 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static bool fallenWireIgnites = true;
         /// <summary>Cells a shock throws a pawn back, 0-3. PROVISIONAL.</summary>
         public static int fallenWireKnockback = 2;
+        /// <summary>WIRE_DOWN_ALERT_1: an Alert lists anchors with a cut or fallen wire, click to jump to it.</summary>
+        public static bool wireDownAlert = true;
 
         public override void ExposeData()
         {
@@ -67,6 +69,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             Scribe_Values.Look(ref fallenWireShock, "fallenWireShock", true);
             Scribe_Values.Look(ref fallenWireIgnites, "fallenWireIgnites", true);
             Scribe_Values.Look(ref fallenWireKnockback, "fallenWireKnockback", 2);
+            Scribe_Values.Look(ref wireDownAlert, "wireDownAlert", true);
         }
 
         public static void ResetToDefaults()
@@ -87,6 +90,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             fallenWireShock = true;
             fallenWireIgnites = true;
             fallenWireKnockback = 2;
+            wireDownAlert = true;
         }
 
         public static float Range => Mathf.Clamp(maxSpan, 4f, 40f);
@@ -166,6 +170,9 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             AerialSettings.fallenWireKnockback = Mathf.RoundToInt(l.Slider(AerialSettings.fallenWireKnockback, 0f, 3f));
             l.CheckboxLabeled("Live fallen wires light spilled fuel", ref AerialSettings.fallenWireIgnites,
                 "A live end lying in spilled chemfuel, or in a burnable Flow Works liquid when that mod is loaded, can set it alight. " +
+                "Applies now.");
+            l.CheckboxLabeled("Alert when a wire is cut or lying on the ground", ref AerialSettings.wireDownAlert,
+                "An alert lists each anchor with a cut or fallen wire; clicking it jumps to the anchor, where Re-string cut wires lives. " +
                 "Applies now.");
             l.GapLine();
             l.CheckboxLabeled("Allow power-tap clamps on other factions' grids", ref AerialSettings.tapsEnabled,
