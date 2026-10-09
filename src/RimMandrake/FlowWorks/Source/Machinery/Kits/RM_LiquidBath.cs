@@ -116,6 +116,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 
 	/// <summary>No liquid to hand: the bill is not started now, and the "cannot do" reason says what it needs.</summary>
 	[HarmonyPatch(typeof(Bill_Production), nameof(Bill_Production.ShouldDoNow))]
+	[RimMandrake.Shared.PatchFeature("Liquid bath recipes", typeof(RimMandrake.FlowWorks.Machinery.Kits.RM_KitSettings), "liquidBathRecipesEnabled")]
 	public static class RM_Patch_LiquidBathShouldDoNow
 	{
 		public static void Postfix(Bill_Production __instance, ref bool __result)
@@ -131,6 +132,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 
 	/// <summary>A finished bill draws its units from the tank it used (ground is not drawn down).</summary>
 	[HarmonyPatch(typeof(Bill_Production), nameof(Bill_Production.Notify_IterationCompleted))]
+	[RimMandrake.Shared.PatchFeature("Liquid bath recipes", typeof(RimMandrake.FlowWorks.Machinery.Kits.RM_KitSettings), "liquidBathRecipesEnabled")]
 	public static class RM_Patch_LiquidBathCompleted
 	{
 		public static void Postfix(Bill_Production __instance)

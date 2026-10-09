@@ -428,6 +428,7 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>The hard per-move floor (seam 1).</summary>
 	[HarmonyPatch(typeof(Pawn_PathFollower), "TryEnterNextPathCell")]
+	[RimMandrake.Shared.PatchFeature("Superdeep pits trap", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepCaptureEnabled")]
 	public static class RM_Patch_PathFollower_SuperdeepFloor
 	{
 		private const int RerouteCooldown = 60;
@@ -481,6 +482,7 @@ namespace RimMandrake.FlowWorks
 	/// <summary>The reachability veto (seam 2), outside the region cache.</summary>
 	[HarmonyPatch(typeof(Reachability), nameof(Reachability.CanReach),
 		new[] { typeof(IntVec3), typeof(LocalTargetInfo), typeof(PathEndMode), typeof(TraverseParms) })]
+	[RimMandrake.Shared.PatchFeature("Superdeep pits trap", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepCaptureEnabled")]
 	public static class RM_Patch_Reachability_SuperdeepVeto
 	{
 		[HarmonyPostfix]
@@ -514,6 +516,7 @@ namespace RimMandrake.FlowWorks
 
 	[HarmonyPatch(typeof(Reachability), nameof(Reachability.CanReachMapEdge),
 		new[] { typeof(IntVec3), typeof(TraverseParms) })]
+	[RimMandrake.Shared.PatchFeature("Superdeep pits trap", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepCaptureEnabled")]
 	public static class RM_Patch_Reachability_SuperdeepMapEdge
 	{
 		[HarmonyPostfix]
@@ -533,6 +536,7 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>"Jump into pit": warn + confirm; strands the jumper.</summary>
 	[HarmonyPatch(typeof(Pawn), nameof(Pawn.GetGizmos))]
+	[RimMandrake.Shared.PatchFeature("Superdeep pits trap", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepCaptureEnabled")]
 	public static class RM_Patch_Pawn_JumpIntoPitGizmo
 	{
 		[HarmonyPostfix]

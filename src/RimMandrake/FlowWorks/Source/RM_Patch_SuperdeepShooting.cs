@@ -22,15 +22,17 @@ namespace RimMandrake.FlowWorks
 	// fill per shot. The check below is two grid reads and an abs-compare.
 	// ════════════════════════════════════════════════════════════════════
 
-	/// <summary>Harmony bootstrap. Pattern copied (not its constants) from the
-	/// sibling <c>RM_FloodedCanyonHarmony</c> in
-	/// src/RimMandrake/FloodedCanyon/Source/RM_Patch_Plant_GrowthRate.cs.</summary>
+	/// <summary>Harmony bootstrap for every [HarmonyPatch] class in this assembly, through the shared per-class applier
+	/// (src/RimMandrake/_Shared/HarmonyResilience/PatchApplier.cs).</summary>
 	[StaticConstructorOnStartup]
 	public static class RM_FlowWorksHarmony
 	{
 		static RM_FlowWorksHarmony()
 		{
-			new Harmony("mandrake.rm.flowworks").PatchAll();
+			// HARMONY_PATCH_RESILIENCE_1: one class at a time, so a game update that breaks one patch switches off
+			// that feature (its [PatchFeature] setting) instead of every patch after it. Logs "patched N, missing X".
+			RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rm.flowworks"), typeof(RM_FlowWorksHarmony).Assembly,
+				"RimMandrake.FlowWorks");
 		}
 	}
 
@@ -111,6 +113,7 @@ namespace RimMandrake.FlowWorks
 	/// <c>public virtual bool Verb.CanHitTargetFrom(IntVec3 root, LocalTargetInfo targ)</c>,
 	/// Verse/Verb.cs:710.</summary>
 	[HarmonyPatch(typeof(Verb), nameof(Verb.CanHitTargetFrom))]
+	[RimMandrake.Shared.PatchFeature("Superdeep shooting rule", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepShootingRuleEnabled")]
 	public static class RM_Patch_Verb_CanHitTargetFrom
 	{
 		[HarmonyPrefix]
@@ -171,6 +174,7 @@ namespace RimMandrake.FlowWorks
 	/// ruling 23 does not authorise.
 	/// </summary>
 	[HarmonyPatch(typeof(AttackTargetFinder), nameof(AttackTargetFinder.BestAttackTarget))]
+	[RimMandrake.Shared.PatchFeature("Superdeep shooting rule", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepShootingRuleEnabled")]
 	public static class RM_Patch_AttackTargetFinder_BestAttackTarget
 	{
 		[HarmonyPostfix]

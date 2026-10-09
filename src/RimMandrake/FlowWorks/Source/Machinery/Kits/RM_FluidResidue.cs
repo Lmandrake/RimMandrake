@@ -66,6 +66,7 @@ namespace RimMandrake.FlowWorks.Machinery.Kits
 	}
 
 	[HarmonyPatch(typeof(TerrainGrid), nameof(TerrainGrid.RemoveTempTerrain))]
+	[RimMandrake.Shared.PatchFeature("Drained liquid leaves residue", typeof(RimMandrake.FlowWorks.Machinery.Kits.RM_KitSettings), "fluidResidueEnabled")]
 	public static class RM_Patch_FluidResidueOnDrain
 	{
 		private static readonly AccessTools.FieldRef<TerrainGrid, Map> MapOf = AccessTools.FieldRefAccess<TerrainGrid, Map>("map");

@@ -20,6 +20,7 @@ namespace RimMandrake.FlowWorks
 	/// Harmony bootstrap: RM_FlowWorksHarmony's PatchAll() in RM_Patch_SuperdeepShooting.cs.
 	/// </summary>
 	[HarmonyPatch(typeof(Pawn_DrawTracker), nameof(Pawn_DrawTracker.DrawPos), MethodType.Getter)]
+	[RimMandrake.Shared.PatchFeature("Pawns sink into dug channels", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitDepthDrawOffsetEnabled")]
 	public static class RM_Patch_PitDepthDrawOffset
 	{
 		private static readonly AccessTools.FieldRef<Pawn_DrawTracker, Pawn> PawnRef =
@@ -134,6 +135,7 @@ namespace RimMandrake.FlowWorks
 	/// vanilla's flight shadow (that branch is not ours: a flier is above the pit). Setting off, or no sink: vanilla.
 	/// </summary>
 	[HarmonyPatch(typeof(PawnRenderer), "DrawShadowInternal")]
+	[RimMandrake.Shared.PatchFeature("No ground shadow in a cut", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "pitHidesShadowEnabled")]
 	public static class RM_Patch_PitHidesShadow
 	{
 		private static readonly AccessTools.FieldRef<PawnRenderer, Pawn> PawnOf =

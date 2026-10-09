@@ -530,6 +530,7 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>The trigger: any vanilla Fire that spawns (not a reload) offers its cell and neighbours.</summary>
 	[HarmonyPatch(typeof(Fire), nameof(Fire.SpawnSetup))]
+	[RimMandrake.Shared.PatchFeature("Burning liquid", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "canalFireEnabled")]
 	public static class RM_Patch_FireLightsLiquid
 	{
 		public static void Postfix(Fire __instance, Map map, bool respawningAfterLoad)
@@ -545,6 +546,7 @@ namespace RimMandrake.FlowWorks
 
 	/// <summary>Explosions: flame/bomb blasts light liquid in every cell they touch; firefoam smothers.</summary>
 	[HarmonyPatch(typeof(DamageWorker), nameof(DamageWorker.ExplosionAffectCell))]
+	[RimMandrake.Shared.PatchFeature("Explosions light burnable liquid", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "explosionIgnitesLiquidEnabled")]
 	public static class RM_Patch_ExplosionLightsLiquid
 	{
 		public static void Postfix(Explosion explosion, IntVec3 c)

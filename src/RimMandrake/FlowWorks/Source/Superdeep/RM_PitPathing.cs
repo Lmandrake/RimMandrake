@@ -299,6 +299,7 @@ namespace RimMandrake.FlowWorks
 	/// Mirrors vanilla GenerateNewPathRequest (cachedReturningToCell, lastPathedTargetPosition stay
 	/// keyed on the REAL destination, so arrival and NeedNewPath still judge the real target).</summary>
 	[HarmonyPatch(typeof(Pawn_PathFollower), "GenerateNewPathRequest")]
+	[RimMandrake.Shared.PatchFeature("Superdeep pits trap", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepCaptureEnabled")]
 	public static class RM_Patch_PathFollower_PitRoute
 	{
 		[HarmonyPrefix]
@@ -332,6 +333,7 @@ namespace RimMandrake.FlowWorks
 	/// <summary>Walked-step marker for the descent detector: a pawn whose own path follower moved it
 	/// into a superdeep cell walked; any other arrival is forced (FLOWWORKS_PIT_FALL_ONLY_FORCED_1).</summary>
 	[HarmonyPatch(typeof(Pawn_PathFollower), "TryEnterNextPathCell")]
+	[RimMandrake.Shared.PatchFeature("Superdeep pits trap", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepCaptureEnabled")]
 	public static class RM_Patch_PathFollower_WalkedStep
 	{
 		[HarmonyPrefix]
@@ -359,6 +361,7 @@ namespace RimMandrake.FlowWorks
 	/// compares spawned positions, never sees it land. Landing in an open pit from outside it is a
 	/// forced descent.</summary>
 	[HarmonyPatch(typeof(PawnFlyer), "RespawnPawn")]
+	[RimMandrake.Shared.PatchFeature("Superdeep pits trap", typeof(RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings), "superdeepCaptureEnabled")]
 	public static class RM_Patch_PawnFlyer_LandInPit
 	{
 		[HarmonyPrefix]
