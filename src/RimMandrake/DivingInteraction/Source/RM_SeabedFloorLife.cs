@@ -128,6 +128,20 @@ namespace RimMandrake.DivingInteraction
         }
     }
 
+    // GREYSEA_FLOOR_FLORA_ZERO_1. Map Designer (zylle.mapdesigner) writes its startup snapshot of every biome's
+    // densities back INSIDE GetOrGenerateMap ("[Map Designer] Applying settings"), after RM_SeabedSiteParent.ChooseFor's
+    // Reassert, so the first floor map generated with plant and animal density 0 (sitting 2026-10-08). This step
+    // re-asserts the floor biome's densities after that write and before Plants (900) and the animal steps run.
+    public class GenStep_SeabedLifeReassert : GenStep
+    {
+        public override int SeedPart => 8362351;
+
+        public override void Generate(Map map, GenStepParams parms)
+        {
+            RM_SeabedFloorLife.Reassert(map?.Biome);
+        }
+    }
+
     [HarmonyPatch(typeof(Game), nameof(Game.FinalizeInit))]
     public static class Patch_SeabedFloorLifeReassert
     {
