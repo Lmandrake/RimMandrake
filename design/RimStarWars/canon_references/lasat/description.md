@@ -92,12 +92,13 @@ From the live-action images:
   Lasat with more human proportions. Constants: ears, muzzle, brow, bulk. Variables: hue, marking, beard.
 
 ## Must show
-- [ ] Dense, shaggy, slightly matted grey-violet to mauve fur with soft blended darker streaks on brow, muzzle and limbs — not hard cartoon tiger bands, not a flat single colour
-- [ ] Ears enormous, pointed, set high and wide, swept outward/upward, pinkish-mauve inside
-- [ ] Deep heavy muzzle with a furrowed brow ridge, broad flat nose, green-yellow eyes, dark shaggy beard and cheek chops
-- [ ] Massive shoulders and chest, long heavy arms, very large dark clawed hands; clearly bigger than a human
-- [ ] Digitigrade legs with big splayed clawed toes
-- [ ] Realistic rendering: natural fur and wrinkled skin texture with soft natural lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Zeb images described in the visual brief and the owner ruling in it.*
+- [ ] BODY PLAN: humanoid, clearly bigger than a human (a full head taller, about twice as broad); massive shoulders and chest tapering to a narrower waist; long heavy arms ending in very large dark clawed hands; digitigrade legs with big splayed clawed toes (rig compromise per Engine limits)
+- [ ] Head: a deep heavy muzzle, not a flat face, with a furrowed brow ridge, broad flat nose and wide mouth; green-yellow eyes forward-set under the brow
+- [ ] Ears enormous, pointed, set high and wide, swept outward/upward, pinkish-mauve inside (the loudest silhouette feature after the shoulders)
+- [ ] COLOUR LAYOUT: dense, shaggy, slightly matted grey-violet to mauve fur over the body; soft blended darker violet-grey streaks on the brow, nose bridge and limbs; a dark shaggy beard and cheek chops; wrinkled mauve-purple facial skin showing through
+- [ ] Realistic rendering: natural fur and wrinkled skin texture with soft natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not the Rebels cartoon (no hard-edged charcoal tiger bands on a flat single colour), not the Legends Lasat (not a gaunt, hairless, huge-eyed, plantigrade goblin), not a cat/Cathar face, not a human with a purple tint
 
 ## Engine limits
 - **Striping cannot be expressed by a single-channel tint mask.** A banded/patterned coat

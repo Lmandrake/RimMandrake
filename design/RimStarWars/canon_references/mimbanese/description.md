@@ -87,12 +87,13 @@ limb thickness and shoulder width in all three references. **Nothing reads gaunt
 emaciated.**
 
 ## Must show
-- [ ] Two large, round, protuberant, pale-blue eyes with no eyelid fold (a dark orbital rim, not goggle bezels) — a lidless read, not a masked one
-- [ ] Two rows of short horns above the brows, forming a serrated crown/V shape across the forehead
-- [ ] Broad, flattened, downward-tapering snout with paired nostril openings, no prominent mouth
-- [ ] Smooth, domed, hairless cranium with no visible ears
-- [ ] Face skin reads a saturated salmon/brick red (which can weather toward brown or grey), distinct from any similarly-red clothing worn over it
-- [ ] Silhouette buried in an enormous ragged ghillie cape of dried reeds/straw over slat plates, with ammunition bandoliers — not bare skin on display
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three Solo-era costume photographs as described in the visual brief and the sourced text.*
+- [ ] BODY PLAN: ordinary humanoid proportions (upright, human height, normal limb thickness and shoulder width); smooth, domed, hairless cranium with no visible ears; a broad, flattened, downward-tapering snout with paired nostril openings at its tip and no prominent mouth
+- [ ] Eyes: two large, round, protuberant pale-blue eyes set wide, with no eyelid fold and a dark orbital rim right round each (a lidless read, not goggle bezels, not a mask)
+- [ ] Two rows of short horns above the brows: a dark serrated crown of short spikes running in a V across the forehead above each eye
+- [ ] COLOUR LAYOUT: face skin a saturated salmon/brick red (may weather toward brown or grey), mottled and streaked with dried mud; the face is the only bare skin, distinct from any similarly red clothing worn over the body
+- [ ] Silhouette buried in an enormous ragged ghillie cape of dried reeds/straw bundles hanging from shoulders, back and limbs, over wooden slat plates, with ammunition bandoliers; the camouflage layer bigger than the body
+- [ ] NEGATIVE: not a Tusken Raider (no blank wrapped head with two black dot eyes), not a masked or goggled human, not gaunt or thin, not red skin painted over the whole body
 
 ## Engine limits
 none known

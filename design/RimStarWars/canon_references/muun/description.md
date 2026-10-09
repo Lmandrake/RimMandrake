@@ -146,12 +146,12 @@ because it is a head sprite on a standard RimWorld body, **the long-legged narro
 silhouette — half of what makes a Muun a Muun — is not represented at all.**
 
 ## Must show
-- [ ] Cranium is a tall, smooth, hairless dome sweeping up and back, roughly doubling the head's height above the brow — not a forward-bulging egg or a plain sphere
-- [ ] Skin is mottled pale grey-pink with darker freckles/blotches and fine creases — not flat pink
-- [ ] Small, dark, deep-set eyes under heavy hooded lids, with no visible brow ridge
-- [ ] Long, shallow, nearly bridgeless nose running to small nostrils above a small, thin-lipped, down-turned mouth
-- [ ] Small, flat ear disc set low and far back on the side of the head
-- [ ] Very long, thin legs under a slim waist, giving an overall gaunt, narrow, vertical silhouette (ribs and sternum visible, no chest musculature, when unclothed)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the San Hill close-up, the Arden Beckwith full figure and the mud-bath still as described in the visual brief, and the sourced text.*
+- [ ] BODY PLAN: a very tall, gaunt, narrow, vertical humanoid (just under 2 m): very long thin legs under a slim waist, thin arms with long thin fingers (last two fingers markedly shorter), a long thin tendon-lined neck the head sits on like a stalk; when unclothed, ribs and sternum visible, bony collarbones, no chest musculature, no prominent breasts
+- [ ] Head: a tall, smooth, hairless cranium sweeping up and BACK, roughly doubling the head's height above the brow, with the face compressed into the lower third
+- [ ] COLOUR LAYOUT: skin mottled pale grey-pink, with irregular darker freckles/blotches over the cranium and cheeks, fine vertical creases down the cheeks and long horizontal creases across the brow; small dark eyes the darkest feature
+- [ ] Face: small, dark, deep-set eyes under heavy hooded lids with no visible brow ridge; a long, shallow, nearly bridgeless nose to small nostrils above a small, thin-lipped, down-turned mouth; a small flat ear disc set low and far back on the side of the head
+- [ ] NEGATIVE: not a thin bald human (the skull must sweep up and back), not a forward-bulging egg or plain sphere head, not flat untextured pink skin; a green collar band is clothing, not a throat sac
 
 ## Engine limits
 - **The long-legged, narrow body silhouette — half of what makes a Muun a Muun — cannot be

@@ -46,12 +46,12 @@ dark rhino" read is already well aligned with canon — this is one of the
 better-matching donors found in this pass.
 
 ## Must show
-- [ ] Heavily built, low-slung, rhinoceros-like quadruped entirely covered in thick, shaggy, matted wool/fur — not bare grey skin
-- [ ] Fur reads dark muddy brown throughout, lighter/dirtier where mud has dried and packed in, darker toward the legs and underside
-- [ ] Single large, thick, gently curved frontal horn in a contrasting pale ivory/bone-tan against the dark fur
-- [ ] Wide, lipless head with a visible row of blunt, slightly serrated teeth in an undershot jaw
-- [ ] Small, dark, close-set eyes
-- [ ] Four short, thick, stump-like legs supporting a low, heavy, rhino-proportioned body
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three Mandalorian production stills as described in the visual brief, and the sourced text.*
+- [ ] BODY PLAN: a heavily built, low-slung, rhinoceros-proportioned quadruped on four short, thick, stump-like legs, with a heavy low body and a wide head carrying one large frontal horn
+- [ ] COLOUR LAYOUT: thick, shaggy, matted wool/fur over the entire body reading dark muddy brown, lighter/dirtier where mud has dried and packed in, darker toward the legs and underside; the horn pale ivory/bone-tan, the lightest element, contrasting sharply with the dark fur
+- [ ] Horn: a single large, thick, gently curved frontal horn
+- [ ] Head: wide and lipless, with a visible row of blunt, slightly serrated teeth in an undershot jaw; small dark close-set eyes; creased, mud-caked bare hide around the eyes and mouth
+- [ ] NEGATIVE: not a bare grey-skinned rhino (the coat is fur, not hide), not a bison or ox (no bovine build, no paired horns), not a two-horned animal
 
 ## Engine limits
 none known

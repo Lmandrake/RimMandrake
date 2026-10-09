@@ -68,12 +68,13 @@ one fixed pattern shared by every Mirialan, where canon says the tattoos **symbo
 differ per individual — a variation opportunity, not an error.
 
 ## Must show
-- [ ] Facial markings are geometric — small diamonds in a lattice or grid — never curves, script or tribal flourishes
-- [ ] Markings are near-black or a darker tone of the skin — never gold (gold is the Pantoran feature)
-- [ ] Placement: a diamond-lattice block on the chin below the lower lip, plus forehead and outer-eye/cheekbone marks
-- [ ] Skin is a natural matte yellow-ochre to olive-gold (other sourced hues allowed) — not vivid cartoon lime or lavender
-- [ ] Otherwise fully human proportions and features; darkened lips
-- [ ] Realistic rendering: natural skin texture and lighting as in the live-action film, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action Luminara Unduli images and the painting as described in the visual brief, the sourced text, and the owner ruling in the brief.*
+- [ ] BODY PLAN: fully human proportions and features (near-human): human build, five-fingered hands, human face; no ridges, horns, lekku or crest
+- [ ] COLOUR LAYOUT: skin a natural matte yellow-ochre to olive-gold with a faint green-yellow cast (other sourced hues allowed); lips darkened (near-black); facial markings near-black or a darker tone of the skin, never gold
+- [ ] Facial markings are geometric, small diamonds in a lattice or grid, never curves, script or tribal flourishes
+- [ ] Placement: a diamond-lattice block on the chin directly below the lower lip (the most reliable mark), plus forehead-centre and outer-eye/cheekbone marks
+- [ ] Realistic rendering: natural skin texture and lighting as in the live-action film, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a Pantoran (no gold facial tattoos), not vivid cartoon lime-green or lavender skin, not a plain human with no chin tattoo
 
 ## Engine limits
 none known

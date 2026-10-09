@@ -30,12 +30,14 @@ Three images: one CANON (the Complete Visual Dictionary New Edition illustration
 - **Saddle**: the CG render has a saddle and footrests on the back, which belong to the rider rig.
 
 ## Must show
-- [ ] Domed, plated, tick-like dark carapace with no tail, ridged segment edges
-- [ ] Six long thin stilt-like jointed legs splayed wide, body held high off the ground
-- [ ] Charcoal-black to maroon-purple glossy hide with lava-orange rim light
-- [ ] Wrinkled low head with large round red/orange eyes and an elephant-trunk-like proboscis with small mandibles
-- [ ] Leg ends with a pointed claw or a blunt two-toed hoof
-- [ ] Mount sized: a rider sits on its back, back about waist-to-chest height
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the sourced text and the visual brief (one canon and two Legends images, which agree).*
+- [ ] BODY PLAN: a squat, domed, egg/tick-shaped armoured body that is hump-backed and ends abruptly behind with no tail, held high off the ground on six long thin stilt-like jointed legs splayed wide to the sides like a spider's (four prominent, two smaller front legs tucked under the face); leg span about twice the body width
+- [ ] Carapace: smooth glossy overlapping dark plates running over the back from the neck, with ridged segment edges
+- [ ] COLOUR LAYOUT: charcoal-black to maroon-purple glossy hide over body and legs alike (legs the same dark colour as the body); large round glowing red/orange eyes are the brightest element; lava-orange rim light on the edges
+- [ ] Head: bulbous, heavily wrinkled, set low and forward under the carapace, with an elephant-trunk-like segmented proboscis and small curved mandibles at its sides; no antennae
+- [ ] Leg ends taper to a single pointed claw or a blunt two-toed hoof; knobby joints
+- [ ] Mount sized: a rider sits on its back, back about waist-to-chest height of a person
+- [ ] NEGATIVE: not a beetle or flea crawling low on short legs (belly well off the ground), no tail, no antennae, not brightly coloured
 
 ## Engine limits
 not yet assessed
