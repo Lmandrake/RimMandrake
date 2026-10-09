@@ -141,7 +141,6 @@
       <li>Make_ComponentSpacerGF</li>
       <li>Make_GravlitePanelGF</li>
       <li>Make_GravcoreGF</li>
-      <li>Copy_AIPersonaCoreGF</li>
     </recipes>
   </ThingDef>
 
@@ -404,61 +403,6 @@
     <displayPriority>25</displayPriority>
   </RecipeDef>
 
-  <RecipeDef>
-    <defName>Copy_AIPersonaCoreGF</defName>
-    <label>copy AI persona core</label>
-    <description>Replicate an AI Persona Core.</description>
-    <jobString>Making copy an AI Persona Core.</jobString>
-    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
-    <effectWorking>GravForgePulse</effectWorking>
-    <soundWorking>Recipe_Machining</soundWorking>
-    <workAmount>7200</workAmount>
-    <ingredients>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>AIPersonaCore</li>
-          </thingDefs>
-        </filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>EmptyAICore</li>
-          </thingDefs>
-        </filter>
-        <count>1</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>Gold</li>
-          </thingDefs>
-        </filter>
-        <count>0.5</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <thingDefs>
-        <li>AIPersonaCore</li>
-        <li>EmptyAICore</li>
-        <li>Gold</li>
-      </thingDefs>
-    </fixedIngredientFilter>
-    <products>
-      <AIPersonaCore>2</AIPersonaCore>
-    </products>
-    <skillRequirements>
-      <Crafting>6</Crafting>
-      <Intellectual>14</Intellectual>
-    </skillRequirements>
-    <workSkill>Intellectual</workSkill>
-    <researchPrerequisite>
-      <li>GravTuning</li>
-    </researchPrerequisite>
-    <displayPriority>440</displayPriority>
-  </RecipeDef>
 
   <!-- effects -->
   <EffecterDef>
