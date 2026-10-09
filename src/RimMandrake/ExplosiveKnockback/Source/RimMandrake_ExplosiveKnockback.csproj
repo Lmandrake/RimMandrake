@@ -43,6 +43,7 @@
     <Compile Include="RM_MapComponent_Knockback.cs" />
     <Compile Include="RM_PawnFlyerPatches.cs" />
     <Compile Include="RM_KnockbackProof.cs" />
+    <Compile Include="RM_PatchApplierProbe.cs" />
   </ItemGroup>
 
   <ItemGroup>
