@@ -475,7 +475,10 @@ def resolve_art(name: str, world: World | None = None, originals=()) -> dict:
             why = f"job target_def {t['target_def']}"
         elif names & set(t["target_original"]):
             why = f"job target_original {sorted(names & set(t['target_original']))[0]}"
-        elif t["res"] and t["res"] in tps:
+        elif t["res"] and t["res"] in tps and not (
+                t["target_def"] and w.tex_by_def.get(t["target_def"], tps) != set(w.tex_by_def.get(ours, tps))):
+            # a texPath SHARED with another def (Meat_Small) is not ownership: a job whose own target_def names a
+            # different def, with a different texPath set, is that def's picture, not this one's
             why = f"job targets texPath {t['res']}"
         if why:
             bound_jobs.add(jid)
