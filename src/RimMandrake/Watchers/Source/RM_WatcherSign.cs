@@ -33,7 +33,7 @@ namespace RimMandrake.Watchers
 
         public override void TickRare()
         {
-            base.TickRare();
+            // No base.TickRare(): Verse.Thing.TickRare throws NotImplementedException (only ThingWithComps overrides it).
             if (Spawned && !StillValid)
             {
                 Map.designationManager.RemoveAllDesignationsOn(this);

@@ -82,6 +82,16 @@
           <coverage>0.1</coverage>
           <depth>Inside</depth>
         </li>
+        <!-- A body with no MovingLimbCore part has no Moving capacity, so Pawn_HealthTracker.ShouldBeDowned is always true and the
+             pawn generator rejects it ("Generated downed pawn", measured live 2026-10-08: RM_Watcher could not spawn in any faction).
+             The crawler is the seam-crawling base the description names. -->
+        <li>
+          <def>MechanicalLeg</def>
+          <customLabel>crawler</customLabel>
+          <coverage>0.1</coverage>
+          <height>Bottom</height>
+          <depth>Outside</depth>
+        </li>
       </parts>
     </corePart>
   </BodyDef>
