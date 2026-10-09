@@ -9,3 +9,7 @@ Filed from the 2026-10-09 acceptance-check pass (Transient/belt_acceptance_check
 ## verify
 
 A state read through `jawa/static_call` on a loaded quicktest map returns the named fields; the owning acceptance criterion records the result.
+
+## note
+
+Built 2026-10-09 (source 1b7fbe441): JawaBenchSettingsSmoke and jawa/map_comp_read are in the companion SOURCE only; the companion DLL is NOT deployed - a game-down window must run `build.py --gm --apply` before either answers. Hediff lists already exist as jawa/pawn_health, inspect strings as jawa/inspect_string.
