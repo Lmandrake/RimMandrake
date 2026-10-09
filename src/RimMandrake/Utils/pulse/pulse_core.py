@@ -350,6 +350,108 @@ def classify_oom(mem_events: list[dict], acks: dict, now: float) -> list[dict]:
     return rows
 
 
+# ---------------------------------------------------------------- kernel OOM (the precise source)
+# memwatch only sees "rm-harness.slice: oom_kill +1". The kernel log names the exact scope and
+# its cap, which is what separates the runner's PLANTED containment test from a real kill:
+# selftest_run_selftests.py runs a 512 MiB bomb under a 128 MiB cap on every runner selftest
+# (MEASURED 2026-10-08: 37 of today's 39 kernel OOM kills were that bomb).
+PLANTED_CAP_KB = 131072
+
+
+def read_kernel_oom(since_secs: int = RED_WINDOW_SECS) -> list[dict]:
+    import subprocess
+    r = subprocess.run(["journalctl", "-k", "--since", f"-{since_secs}s", "--no-pager", "-o", "short-unix",
+                        "-g", "oom-kill:|memory: usage|Killed process"],
+                       capture_output=True, text=True, timeout=20)
+    if r.returncode not in (0, 1):
+        raise RuntimeError(f"journalctl rc {r.returncode}: {r.stderr.strip()[:120]}")
+    return parse_kernel_oom(r.stdout.splitlines())
+
+
+def parse_kernel_oom(lines: list[str]) -> list[dict]:
+    import re
+    out, limit = [], None
+    for ln in lines:
+        parts = ln.split(" ", 1)
+        try:
+            t = float(parts[0])
+        except (ValueError, IndexError):
+            continue
+        m = re.search(r"memory: usage \d+kB, limit (\d+)kB", ln)
+        if m:
+            limit = int(m.group(1))
+            continue
+        m = re.search(r"oom-kill:.*?oom_memcg=([^,]+),task_memcg=([^,]+),task=([^,]+),pid=(\d+)", ln)
+        if m:
+            memcg = re.sub(r"^/user\.slice/user-\d+\.slice/user@\d+\.service", "", m.group(1))
+            out.append({"t": t, "limit_kb": limit, "memcg": memcg, "task": m.group(3), "pid": int(m.group(4))})
+            limit = None
+            continue
+        m = re.search(r"Killed process (\d+) .*?anon-rss:(\d+)kB", ln)
+        if m and out and out[-1]["pid"] == int(m.group(1)):
+            out[-1]["anon_kb"] = int(m.group(2))
+    return out
+
+
+def kill_class(k: dict) -> str:
+    """planted | harness_test | seat"""
+    mc = k.get("memcg") or ""
+    if "rm-harness" in mc:
+        return "planted" if k.get("limit_kb") == PLANTED_CAP_KB else "harness_test"
+    return "seat"
+
+
+def today_window(now: float) -> float:
+    """'today' = since local midnight, but never less than 6 h (a 23:50 kill still shows at 00:10)."""
+    lt = time.localtime(now)
+    midnight = time.mktime((lt.tm_year, lt.tm_mon, lt.tm_mday, 0, 0, 0, 0, 0, -1))
+    return min(midnight, now - 6 * 3600)
+
+
+def classify_kernel_oom(kills: list[dict], acks: dict, now: float) -> list[dict]:
+    import re
+    groups: dict[str, list] = {}
+    start = today_window(now)
+    for k in kills:
+        if k["t"] < start:
+            continue
+        c = kill_class(k)
+        if c == "seat":
+            m = re.search(r"claude-seat-([A-Za-z0-9_]+)-\d+\.scope", k["memcg"])
+            who = m.group(1).upper() if m else "SEAT"
+            groups.setdefault(f"seat:{who}", []).append(k)
+        else:
+            groups.setdefault(c, []).append(k)
+    rows = []
+    for g, ks in groups.items():
+        ks.sort(key=lambda k: k["t"])
+        last = ks[-1]
+        n = len(ks)
+        cap = f"{(last.get('limit_kb') or 0) / 1048576:.1f} GB cap" if last.get("limit_kb") else "its cap"
+        if g == "planted":
+            rows.append(_row("oom:planted", "idle", "HARNESS",
+                             f"memory pen proven · planted 128 MiB test killed as designed ×{n} today", last["t"],
+                             src="kernel"))
+            continue
+        inc = f"oom:{g}"
+        ack_at = (acks.get(inc) or {}).get("at", 0)
+        fresh = [k for k in ks if k["t"] > ack_at]
+        if g == "harness_test":
+            text = f"a selftest hit {cap} and was killed (contained)" + (f" · ×{n} today" if n > 1 else "")
+            r = _row(inc, "warn", "HARNESS", text, last["t"], src="kernel", incident=inc, count=n)
+        else:
+            who = g.split(":", 1)[1]
+            where = "tool cgroup" if last["memcg"].endswith("claude-code-bash") else "window"
+            text = f"OOM kill · {who} {where} at {cap}" + (f" · ×{n} today" if n > 1 else "")
+            r = _row(inc, "red", who, text, last["t"], src="kernel", incident=inc, count=n,
+                     toasted_elsewhere=True)   # memwatch toasts seat kills itself
+        r["acked"] = not fresh
+        r["toast_key"] = f"{inc}@{int(last['t'])}"
+        r["link"] = {"type": "path", "value": win_path(str(MEMWATCH_EVENTS)), "label": "events"}
+        rows.append(r)
+    return rows
+
+
 def current_items(ledger: list[dict], now: float) -> dict:
     """seat -> the item it most recently started/claimed and has not closed (12 h)."""
     cur: dict[str, tuple[str, float]] = {}
@@ -420,14 +522,14 @@ def classify_game(probe: dict | None, bridge: str | None, now: float) -> list[di
     return [_row("game", "run" if running else "idle", "GAME", txt, (probe or {}).get("at", now), src="probe")]
 
 
-KIND_ORDER = {"red": 0, "amber": 1, "amber_soft": 2, "stuck": 3, "run": 4, "review": 5, "idle": 6, "done": 7}
+KIND_ORDER = {"red": 0, "amber": 1, "amber_soft": 2, "warn": 2.5, "stuck": 3, "run": 4, "review": 5, "idle": 6, "done": 7}
 
 
 def order_rows(rows: list[dict]) -> list[dict]:
     def k(r):
         acked = 1 if r.get("acked") else 0
         base = KIND_ORDER.get(r["kind"], 9)
-        if r["kind"] in ("red", "amber", "amber_soft") and acked:
+        if r["kind"] in ("red", "amber", "amber_soft", "warn") and acked:
             base = 6.5               # acked alarms drop below the live roster, still visible
         return (base, -(r.get("since") or 0) if r["kind"] in ("done", "red") else (r.get("since") or 0))
     return sorted(rows, key=k)
@@ -445,6 +547,8 @@ def build_strip(rows: list[dict]) -> list[dict]:
             pills.append({"kind": "amber", "text": f"◐ {r['who']}", "since": r["since"]})
         elif r["kind"] == "amber_soft":
             pills.append({"kind": "amber_soft", "text": f"◑ {r['who']}", "since": r["since"]})
+        elif r["kind"] == "warn":
+            pills.append({"kind": "warn", "text": "◆ test kill"})
     for r in rows:
         if r["kind"] == "run":
             label = r["who"].lower() if r["who"] in ("ART", "GAME") else r["who"]
@@ -463,14 +567,16 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
                                             state.get("seen", {}), items, acks, now)
     since = state.get("done_since") or (now - DONE_WINDOW_SECS)
     lrows, counts = classify_ledger(raw.get("ledger", []), since, now)
-    rows = (classify_oom(raw.get("memwatch", []), acks, now) + srows + lrows
+    oom = (classify_kernel_oom(raw["kernel_oom"], acks, now) if raw.get("kernel_oom") is not None
+           else classify_oom(raw.get("memwatch", []), acks, now))   # memwatch only when the kernel log is unreadable
+    rows = (oom + srows + lrows
             + classify_artpipe(raw.get("artpipe", {}), now, raw.get("at", {}).get("artpipe", now))
             + classify_game(raw.get("probe"), raw.get("bridge"), now))
     rows = order_rows(rows)
     # metrics: alarm transitions (question age, red open)
     open_prev = state.get("open", {})
     open_now = {r["incident"]: {"kind": r["kind"], "since": r["since"], "who": r["who"]}
-                for r in rows if r.get("incident") and r["kind"] in ("red", "amber", "amber_soft")}
+                for r in rows if r.get("incident") and r["kind"] in ("red", "amber", "amber_soft", "warn")}
     for inc, o in open_now.items():
         if inc not in open_prev:
             events.append({"m": "alarm_open", "id": inc, **o})
@@ -484,6 +590,6 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
         "v": 1, "collected_at": now, "rows": rows, "strip": build_strip(rows), "counts": counts,
         "done_since": since, "sources": raw.get("source_status", {}),
         "tally": {k: sum(1 for r in rows if r["kind"] == k and not r.get("acked"))
-                  for k in ("red", "amber", "amber_soft", "run", "done", "review")},
+                  for k in ("red", "amber", "amber_soft", "warn", "run", "done", "review")},
     }
     return snap, new_state, events

@@ -89,6 +89,7 @@ class Collector:
         self.artpipe: dict = {}
         self.ledger_cache: dict = {}
         self.prev_kinds: dict = {}
+        self.kernel: dict = {}
 
     def _ledger(self) -> list[dict]:
         sig = []
@@ -121,6 +122,12 @@ class Collector:
         raw["sessions"] = sessions
         raw["extras"] = src("subagents", lambda: {s.get("sessionId"): pc.session_extras(s.get("sessionId"), now)
                                                   for s in sessions if s.get("alive")}) or {}
+        if now - self.kernel.get("at", 0) > 20:
+            k = src("kernel", pc.read_kernel_oom)
+            self.kernel = {"at": now, "kills": k}
+        else:
+            status["kernel"] = self.snapshot.get("sources", {}).get("kernel", {"ok": True, "at": now})
+        raw["kernel_oom"] = self.kernel.get("kills")
         raw["memwatch"] = src("memwatch", lambda: pc.read_jsonl_tail(pc.MEMWATCH_EVENTS, 2 << 20)) or []
         raw["ledger"] = src("ledger", self._ledger) or []
         a = src("artpipe", lambda: pc.read_artpipe(pc.ARTPIPE_DIR, self.artpipe, now))
@@ -235,7 +242,7 @@ def make_digest(mode: str, since: float | None = None) -> dict:
         if r["kind"] == "red" and r["since"] >= since - 3600:
             lines.append({"g": "✖", "kind": "red", "t": r["since"], "text": r["text"], "link": r.get("link")})
     for r in snap["rows"]:
-        if r["kind"] in ("amber", "amber_soft", "review"):
+        if r["kind"] in ("amber", "amber_soft", "review", "warn"):
             lines.append({"g": "◐" if r["kind"] != "review" else "◇", "kind": r["kind"], "t": r["since"],
                           "text": r["text"], "link": r.get("link")})
     for r in sorted((r for r in snap["rows"] if r["kind"] == "done"), key=lambda r: r["since"]):

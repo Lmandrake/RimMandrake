@@ -33,11 +33,23 @@ TOASTED = os.path.join(APPDIR, "toasted.json")
 LOG = os.path.join(APPDIR, "lantern.log")
 NOWIN = 0x08000000  # CREATE_NO_WINDOW
 WIDTH = 580
+EXPANDED_H = 400
+COLLAPSED_H = 41
 ALLOWED_PREFIXES = ("D:\\Luke\\dev\\", "C:\\Users\\Mandrake\\", "\\\\wsl.localhost\\Ubuntu\\",
                     "https://github.com/Lmandrake/", "https://claude.ai/")
 
 user32 = ctypes.windll.user32
 dwm = ctypes.windll.dwmapi
+# 64-bit handles: declare types, or ctypes truncates HMONITOR/HWND to a 32-bit int
+user32.MonitorFromWindow.restype = ctypes.c_void_p
+user32.MonitorFromWindow.argtypes = [ctypes.c_void_p, ctypes.c_uint]
+user32.GetMonitorInfoW.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+user32.SetWindowPos.argtypes = [ctypes.c_void_p, ctypes.c_void_p, ctypes.c_int, ctypes.c_int,
+                                ctypes.c_int, ctypes.c_int, ctypes.c_uint]
+user32.GetWindowRect.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+user32.GetDpiForWindow.argtypes = [ctypes.c_void_p]
+user32.SetThreadDpiAwarenessContext.restype = ctypes.c_void_p
+user32.SetThreadDpiAwarenessContext.argtypes = [ctypes.c_void_p]
 
 
 def log(msg):
@@ -68,12 +80,6 @@ def single_instance():
     if ctypes.windll.kernel32.GetLastError() == 183:  # ERROR_ALREADY_EXISTS
         sys.exit(0)
     return h
-
-
-def work_area():
-    r = wintypes.RECT()
-    user32.SystemParametersInfoW(0x30, 0, ctypes.byref(r), 0)  # SPI_GETWORKAREA
-    return r.left, r.top, r.right, r.bottom
 
 
 FALLBACK = """<!doctype html><html><head><meta charset="utf-8"><style>
@@ -135,20 +141,17 @@ class Api:
             pass
         return True
 
-    def fit(self, height, collapsed=False):
-        w = self.window
-        if not w:
-            return
-        h = int(max(41, min(int(height), 660)))
+    def set_collapsed(self, collapsed):
+        """The ONLY resize: his click on collapse/expand. Data updates never move or resize it."""
+        hwnd = hwnd_of(self.window) if self.window else None
         st = load(STATE, {})
-        try:
-            # keep the BOTTOM edge where it is, so the strip stays put when the body grows
-            if st.get("anchor_bottom") is not None:
-                y = int(st["anchor_bottom"]) - h
-                w.move(int(st.get("x", w.x)), max(0, y))
-            w.resize(WIDTH, h)
-        except Exception as e:
-            log(f"fit failed: {e}")
+        st["collapsed"] = bool(collapsed)
+        save(STATE, st)
+        if hwnd:
+            try:
+                set_size(hwnd, WIDTH, COLLAPSED_H if collapsed else EXPANDED_H)
+            except Exception as e:
+                log(f"resize failed: {e}")
 
 
 def raise_toast(title, body):
@@ -191,9 +194,84 @@ def hwnd_of(window):
         return user32.FindWindowW(None, "RimFlow Pulse")
 
 
+HWND_TOPMOST = ctypes.c_void_p(-1)
+
+
+class RECT(ctypes.Structure):
+    _fields_ = [("left", ctypes.c_long), ("top", ctypes.c_long), ("right", ctypes.c_long), ("bottom", ctypes.c_long)]
+
+
+class MONITORINFO(ctypes.Structure):
+    _fields_ = [("cbSize", ctypes.c_ulong), ("rcMonitor", RECT), ("rcWork", RECT), ("dwFlags", ctypes.c_ulong)]
+
+
+def physical():
+    """All geometry in PHYSICAL pixels, whatever thread we are on (per-monitor v2)."""
+    try:
+        user32.SetThreadDpiAwarenessContext(ctypes.c_void_p(-4))
+    except Exception:
+        pass
+
+
+def scale(hwnd):
+    try:
+        return max(1.0, user32.GetDpiForWindow(hwnd) / 96.0)
+    except Exception:
+        return 1.0
+
+
+def rect(hwnd):
+    physical()
+    r = RECT()
+    user32.GetWindowRect(hwnd, ctypes.byref(r))
+    return r
+
+
+def work(hwnd):
+    physical()
+    mi = MONITORINFO()
+    mi.cbSize = ctypes.sizeof(MONITORINFO)
+    user32.GetMonitorInfoW(user32.MonitorFromWindow(hwnd, 2), ctypes.byref(mi))
+    return mi.rcWork
+
+
+def set_size(hwnd, w_log, h_log):
+    sc = scale(hwnd)
+    r, wa = rect(hwnd), work(hwnd)
+    w, h = int(w_log * sc), int(h_log * sc)
+    x, y = r.left, r.top
+    if y + h > wa.bottom:          # grew past the bottom of the screen: slide up, never off-screen
+        y = max(wa.top, wa.bottom - h)
+    # SWP_NOACTIVATE|SWP_NOOWNERZORDER, HWND_TOPMOST
+    user32.SetWindowPos(hwnd, HWND_TOPMOST, x, y, w, h, 0x0010 | 0x0200)
+
+
+def place_initial(hwnd):
+    st = load(STATE, {})
+    wa, r = work(hwnd), rect(hwnd)
+    w, h = r.right - r.left, r.bottom - r.top
+    x, y = st.get("px"), st.get("py")
+    if x is not None and wa.left - w // 2 < x < wa.right - 40 and wa.top <= y < wa.bottom - 40:
+        if abs(r.left - x) <= 4 and abs(r.top - y) <= 4:
+            return                     # created where he left it: do not touch it
+    else:
+        x, y = wa.right - w - 24, wa.bottom - h - 24
+    user32.SetWindowPos(hwnd, HWND_TOPMOST, int(x), int(y), 0, 0, 0x0001 | 0x0010 | 0x0200)
+    log(f"placed at {x},{y} (work area {wa.left},{wa.top},{wa.right},{wa.bottom}, size {w}x{h})")
+
+
+def remember(hwnd):
+    r = rect(hwnd)
+    st = load(STATE, {})
+    sc = scale(hwnd)
+    if (st.get("px"), st.get("py"), st.get("scale")) != (r.left, r.top, sc):
+        st.update({"px": r.left, "py": r.top, "scale": sc})
+        save(STATE, st)
+
+
 def pin(hwnd):
     # HWND_TOPMOST, SWP_NOMOVE|SWP_NOSIZE|SWP_NOACTIVATE|SWP_NOOWNERZORDER
-    user32.SetWindowPos(hwnd, -1, 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0200)
+    user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, 0x0002 | 0x0001 | 0x0010 | 0x0200)
 
 
 def round_corners(hwnd):
@@ -212,8 +290,10 @@ def background(window):
                 hwnd = hwnd_of(window)
                 if hwnd:
                     round_corners(hwnd)
+                    place_initial(hwnd)
             if hwnd:
-                pin(hwnd)  # games and fullscreen apps drop topmost; re-pin without activating
+                pin(hwnd)
+                remember(hwnd)  # games and fullscreen apps drop topmost; re-pin without activating
             ok = alive()
             now = time.time()
             if ok:
@@ -244,14 +324,13 @@ def background(window):
 def main():
     _mutex = single_instance()  # noqa: F841 (held for the process lifetime)
     api = Api()
-    l, t, r, b = work_area()
     st = load(STATE, {})
-    h0 = int(st.get("h", 360))
-    x = int(st.get("x", r - WIDTH - 16))
-    y = int(st.get("y", b - h0 - 16))
-    if not (l - WIDTH < x < r and t - 20 < y < b):  # monitor layout changed: back on screen
-        x, y = r - WIDTH - 16, b - h0 - 16
-    kw = dict(width=WIDTH, height=h0, x=x, y=y, frameless=True, easy_drag=False, on_top=True,
+    h0 = COLLAPSED_H if st.get("collapsed") else EXPANDED_H
+    sc = float(st.get("scale") or 1.0)
+    pos = {}
+    if st.get("px") is not None:   # restore where he left it, in the units pywebview takes (logical)
+        pos = {"x": int(st["px"] / sc), "y": int(st["py"] / sc)}
+    kw = dict(width=WIDTH, height=h0, **pos, frameless=True, easy_drag=False, on_top=True,
               focus=False, resizable=False, background_color="#140e0a", shadow=True, js_api=api)
     if alive():
         win = webview.create_window("RimFlow Pulse", URL, **kw)
@@ -259,14 +338,7 @@ def main():
         win = webview.create_window("RimFlow Pulse", html=FALLBACK, **kw)
     api.window = win
 
-    def moved(x, y):
-        s = load(STATE, {})
-        s.update({"x": x, "y": y, "h": win.height, "anchor_bottom": y + win.height})
-        save(STATE, s)
-    win.events.moved += moved
-    st.setdefault("anchor_bottom", y + h0)
-    save(STATE, {**st, "x": x, "y": y})
-    log(f"start pid={os.getpid()} at {x},{y}")
+    log(f"start pid={os.getpid()}")
     webview.start(background, (win,), private_mode=False,
                   storage_path=os.path.join(APPDIR, "webview"))
 
