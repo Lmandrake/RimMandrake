@@ -312,7 +312,7 @@ recoverable* — not `KEEP_NOT_LIVE = 0`; several protected alternatives can leg
 | Tool | Fate |
 |---|---|
 | `artpipe/artpipe_state.py collect` | rewired → `art install` per slot (keeps `done/` manifest check) |
-| `artpipe/apply_verdicts.py`, `artreg.py verdict/committed/deployed` | **retired** (never ran: 0 events); `art ingest` replaces it |
+| `artpipe/apply_verdicts.py`, `artreg.py verdict/committed/deployed` | **deleted** (never ran: 0 events; verbs removed 2026-10-09); `art ingest` replaces it |
 | `artpipe/make_verdict_sheet.py`, per-sheet builders (e.g. `Transient/desert_art_review_build_2026-10-03.py`) | **retired** for creature/plant art → `art sheet` |
 | `art_status.json` | becomes a projection of the ledger or is deleted |
 | `registry.jsonl` | telemetry only (generated/queued/withdrawn) |
