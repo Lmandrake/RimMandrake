@@ -272,6 +272,8 @@ namespace RimMandrake.CreatureBehaviors
     //      per piece: parasolShadeEnabled / shadeTentEnabled /
     //      sunShieldEnabled. Off: that piece casts no shade into the grid
     //      and is ordinary gear (still craftable, still wearable/buildable).
+    //      decoyShadeEnabled — RM_DecoyShadeTarp (DECOY_SHADE_TARP_1,
+    //      RM_CompDecoyShade): reads as shade to seekers, cools no one.
     //  41. Shade hopping (SOLAR_HEAT_EXPOSURE_1 §5/§6, RM_ShadeHop.cs) —
     //      sun-heat maps only, and never where shade does not help (steam,
     //      volcanic). shadeHopEnabled — wild animals rest in shade, pause at
@@ -398,6 +400,7 @@ namespace RimMandrake.CreatureBehaviors
         public static bool sunLoadBarEnabled = true;
         public static bool parasolShadeEnabled = true;
         public static bool shadeTentEnabled = true;
+        public static bool decoyShadeEnabled = true;
         public static bool sunShieldEnabled = true;
         public static bool shadeHopEnabled = true;
         public static float shadeHopRangeMultiplier = 1f;
@@ -515,6 +518,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref sunLoadBarEnabled, "sunLoadBarEnabled", true);
             Scribe_Values.Look(ref parasolShadeEnabled, "parasolShadeEnabled", true);
             Scribe_Values.Look(ref shadeTentEnabled, "shadeTentEnabled", true);
+            Scribe_Values.Look(ref decoyShadeEnabled, "decoyShadeEnabled", true);
             Scribe_Values.Look(ref sunShieldEnabled, "sunShieldEnabled", true);
             Scribe_Values.Look(ref shadeHopEnabled, "shadeHopEnabled", true);
             Scribe_Values.Look(ref shadeHopRangeMultiplier, "shadeHopRangeMultiplier", 1f);
@@ -912,6 +916,9 @@ namespace RimMandrake.CreatureBehaviors
             list.CheckboxLabeled("Shade tents cast shade", ref shadeTentEnabled,
                 "On: a pitched shade tent shades the ground under it. Strong under an overhead sun, "
                 + "weak under a low one. Off: it casts no shade.");
+            list.CheckboxLabeled("Decoy shade tarps fool shade-seekers", ref decoyShadeEnabled,
+                "On: a decoy shade tarp reads as shade to animals looking for shade (mirrak hide is the most "
+                + "convincing) though it cools no one. Off: it is an ordinary awning and fools nothing.");
             list.CheckboxLabeled("Sun shields cast shade", ref sunShieldEnabled,
                 "On: a standing sun shield throws shade on its far side from the sun. The one piece "
                 + "that works under a low sun; only modest under an overhead one. Off: it casts no shade.");
