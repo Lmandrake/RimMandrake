@@ -1,0 +1,19 @@
+# RimFlow pulse spine — AWAY_DASHBOARD_BUILD_1. Collector loop (5 s) + HTTP/SSE on
+# 127.0.0.1:8765 for the floating widget (src/RimMandrake/Utils/pulse/widget/lantern.pyw).
+# Install:  cp src/RimMandrake/Utils/pulse/systemd/rm-pulse* ~/.config/systemd/user/
+#           systemctl --user daemon-reload
+#           systemctl --user enable --now rm-pulse.service rm-pulse-health.timer rm-pulse-digest.timer
+[Unit]
+Description=RimFlow pulse spine (away dashboard collector + server)
+After=default.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/pulse/pulse.py daemon
+Restart=always
+RestartSec=5
+Nice=10
+MemoryMax=256M
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,8 @@
+# Restarts rm-pulse.service if it answers but its snapshot stopped advancing (a hang, not a crash).
+[Unit]
+Description=RimFlow pulse spine health check
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/mandrake/rm/bench/src/RimMandrake/Utils/pulse/pulse.py health --restart
+TimeoutStartSec=30s
