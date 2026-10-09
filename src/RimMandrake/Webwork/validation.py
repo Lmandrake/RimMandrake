@@ -16,7 +16,8 @@ CHAINS
   nest_egg_state      the nest wall carries the relay comp, the clutch mines to the egg, the egg is inert contraband
                       with NO hatcher comp (ban 1), the ollathrix is dormant-capable with the turret comp.
   scald_binding       the sun-scald hediff resolves to the CreatureBehaviors class (hard dependency).
-  map_mechanics       nest placement at mapgen, the 20-30 day re-lay, emergent spawn on destroy, sun-scald in sun,
+  map_mechanics       nest placement at mapgen, the 20-30 day re-lay, emergent spawn on destroy, the creep-web
+                      harvest (Deconstruct -> thrixweave + emergent spawn), sun-scald in sun,
                       loom spit: UNMEASURED, each says what it needs.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
@@ -77,6 +78,14 @@ def _base_port_findings():
         else:
             if "<Hyperweave>" not in m.group(1) or "RM_CompProperties_SenseWebNode" not in m.group(1):
                 bad.append("RM_Webwork_%s needs a thrixweave killedLeavings and a sense-web comp" % n)
+            if "RM_CompProperties_EmergentSpawnOnDestroy" not in m.group(1):
+                bad.append("RM_Webwork_%s carries no emergent-spawn comp (a cut has no teeth)" % n)
+            if n != "Gutter" and not ("RimMandrake.Webwork.RM_CompProperties_HarvestYield" in m.group(1)
+                                      and "<yield>Hyperweave</yield>" in m.group(1)
+                                      and "<alwaysDeconstructible>true</alwaysDeconstructible>" in m.group(1)
+                                      and "<claimable>false</claimable>" in m.group(1)):
+                bad.append("RM_Webwork_%s is not a colonist-harvestable node (alwaysDeconstructible, claimable false, "
+                           "RM_CompProperties_HarvestYield of Hyperweave)" % n)
             if not os.path.isfile(os.path.join(HERE, "Textures", "Things", "Building", "Natural", "RM_Webwork_%s.png" % n)):
                 bad.append("RM_Webwork_%s has no texture" % n)
     if "RM_Webwork_Slick" not in txt(os.path.join("Defs", "HediffDefs", "RM_WebworkSlick.xml")):
@@ -511,6 +520,23 @@ def _build_suite():
             text = _wp(t, "ProofEmergent", "true|1|0|Vanish")
             if _live(t) and "spawned 0" not in text:
                 raise ExpectationFailed("multiplier 0 still spawned: %s" % text)
+        with t.component("creep_web_harvest", toggle="webHarvestEnabled"):
+            # SHOKKWEAVE_SOLE_SOURCE_1: designator + WorkGiver accept the node, a Deconstruct drops the silk, and a
+            # sure chance (multiplier 34 on base 0.03) spawns the emergent ollathrix. The ticked colonist walk is
+            # ProofHarvestDesignate/ProofHarvestRead (bridge item), not this chain.
+            text = _wp(t, "ProofHarvest", "true|RM_Webwork_Anchor|34")
+            if _live(t):
+                if not text.startswith("HARVEST"):
+                    _unmeasured(t, "ProofHarvest gave no answer: %r" % text[:160]); return
+                if not ("designatable True" in text and "workgiver True" in text and "yield 3" in text
+                        and "weaveNear 0->3" in text and "spawned 1" in text):
+                    raise ExpectationFailed("cutting an anchor line did not designate/yield 3/spawn: %s" % text)
+            text = _wp(t, "ProofHarvest", "true|RM_Webwork_Web|0")
+            if _live(t) and not ("yield 2" in text and "spawned 0" in text):
+                raise ExpectationFailed("cutting a sheet web did not yield 2 (or spawned at multiplier 0): %s" % text)
+            off = _wp(t, "ProofHarvest", "false|RM_Webwork_Anchor|0")
+            if _live(t) and not ("designatable False" in off and "yield 0" in off):
+                raise ExpectationFailed("webHarvestEnabled off still lets a colonist cut web for silk: %s" % off)
         with t.component("webwork_competes_for_tiles", toggle="generateOnWorldgen"):
             if _live(t):
                 _unmeasured(t, "worldgen-affecting and inert on the frozen world (CLAUDE.md: no worldgen feature); no map can exercise it")

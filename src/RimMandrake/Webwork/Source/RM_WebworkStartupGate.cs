@@ -6,6 +6,7 @@ namespace RimMandrake.Webwork
 {
 	/// <summary>
 	/// WEBWORK_BASE_PORT_BUILD_1. Startup-time application of the Webwork's two settings-gated mechanisms.
+	/// 3. The creep-web harvest (webHarvestEnabled): ApplyWebHarvest.
 	/// Runs once after defs load (so a change needs a restart, and the settings say so).
 	/// 1. The thrixweave sole-source strip, moved down from the campaign tier (SHOKKWEAVE_SOLE_SOURCE_1):
 	///    tradeability All -> Sellable (TraderCanSell() is false for Sellable, which closes every stock route
@@ -25,6 +26,23 @@ namespace RimMandrake.Webwork
 				ApplyThrixweaveStrip(DefDatabase<ThingDef>.GetNamedSilentFail("Hyperweave"));
 			}
 			ApplyFront(DefDatabase<BiomeDef>.GetNamedSilentFail("RM_Webwork"));
+			ApplyWebHarvest();
+		}
+
+		/// <summary>SHOKKWEAVE_SOLE_SOURCE_1: webHarvestEnabled off withdraws the Deconstruct route from the two silk
+		/// nodes (the gutter keeps it: cutting one out is the traction-lance specimen route, not this setting's).</summary>
+		public static readonly string[] HarvestNodeDefNames = { "RM_Webwork_Anchor", "RM_Webwork_Web" };
+
+		public static void ApplyWebHarvest()
+		{
+			foreach (string n in HarvestNodeDefNames)
+			{
+				ThingDef d = DefDatabase<ThingDef>.GetNamedSilentFail(n);
+				if (d?.building != null)
+				{
+					d.building.alwaysDeconstructible = RM_WebworkSettings.webHarvestEnabled;
+				}
+			}
 		}
 
 		public static void ApplyThrixweaveStrip(ThingDef weave)

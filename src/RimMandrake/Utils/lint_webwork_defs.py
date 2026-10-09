@@ -328,7 +328,7 @@ def main(argv):
     if "SelfTest" in proj:
         E("ww-kernel-pure", "the SelfTest folder is compiled into the mod assembly")
     attached = [p for p in glob.glob(os.path.join(SRC, "*", "*", "Defs", "**", "*.xml"), recursive=True)
-                if "RM_CompProperties_EmergentSpawnOnDestroy\">" in read(p)]
+                if re.search(r"Class=\"RimMandrake\.Webwork\.RM_CompProperties_EmergentSpawnOnDestroy\"\s*/?>", read(p))]
     if not attached:
         W("ww-kernel-pure", "no def attaches RM_CompProperties_EmergentSpawnOnDestroy: the emergent-spawn settings gate nothing yet (SHOKKWEAVE_SOLE_SOURCE_1)")
     for p in attached:

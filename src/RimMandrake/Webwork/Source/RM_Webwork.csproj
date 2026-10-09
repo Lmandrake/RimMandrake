@@ -42,6 +42,7 @@
     <Compile Include="RM_BiomeWorker_Webwork.cs" />
     <Compile Include="RM_WebworkMod.cs" />
     <Compile Include="RM_CompEmergentSpawnOnDestroy.cs" />
+    <Compile Include="RM_CompHarvestYield.cs" />
     <Compile Include="RM_GenStep_WebworkNest.cs" />
     <Compile Include="RM_CompEggClutchRelay.cs" />
     <Compile Include="RM_WebworkStartupGate.cs" />
