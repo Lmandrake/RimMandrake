@@ -132,7 +132,17 @@
     "RM_Gnashling": {
       "at": "2026-10-06T05:18:45.103Z",
       "decision": "A",
-      "note": "make this bodysize 1",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:18:45.103Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "make this bodysize 1",
+          "when": "2026-10-09T07:20:04-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Gorekite": {
@@ -313,7 +323,17 @@
     "RM_Shambles": {
       "at": "2026-10-06T05:21:14.604Z",
       "decision": "A",
-      "note": "this belongs in the Rot, not here. Why tinted green?",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:21:14.604Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "this belongs in the Rot, not here. Why tinted green?",
+          "when": "2026-10-09T07:20:04-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Skinflap": {

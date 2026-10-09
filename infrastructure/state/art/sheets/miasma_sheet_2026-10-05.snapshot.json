@@ -1,9 +1,9 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-10-08T21:00:15-0700",
+ "built": "2026-10-09T07:37:29-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 16 mods \u2014 a test list): 614 active",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "AA_DecayDrake": {
    "columns": {
@@ -1368,25 +1368,36 @@
      "north": "688166e543ea79c5a5c3aa116c72fd2d9d29932231d3d10013d13304f6425653",
      "south": "1fb5431b22c195b528daac6ac2250a9f42661ccc7cbc7a91228245eea8351997"
     },
-    "C": {
-     "east": "cfff7e093d512a1038939c33fea3242455b54908155b4cba5e62bc9e730ead66"
+    "D": {
+     "east": "cfff7e093d512a1038939c33fea3242455b54908155b4cba5e62bc9e730ead66",
+     "north": "f8d7f0fdbb8449365d32aa74f81a784d5e86510b7f549c2c741181f135a2961b",
+     "south": "4372d608cbccf75215316f929093aea459c758dbebc0684df3d776e13f48641d"
+    },
+    "E": {
+     "east": "c212ee08bcb35e33e7ed9695db67db021cca5d16ed50236dea38aca889611b9b",
+     "north": "bca041ce2e2531f6df6a6b000d5eff2efdfb71a6a706e7602a3f14066b9aa6bf",
+     "south": "3e25e3e6f44576525accaae6521e72243b22be0c78316000651c73837bc0b0ed"
     }
    },
    "graphic_of": {
     "A": "swanimals/Blixus/Blixus",
     "B": "swanimals/Blixus/Blixus_Swimming",
-    "C": "swanimals/Blixus/Blixus"
+    "D": "swanimals/Blixus/Blixus",
+    "E": "swanimals/Blixus/Blixus"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
-    "C": "render miasma_canon_blixus_v1 \u2014 failed canon check"
+    "D": "render miasma_canon_blixus_v1 \u2014 failed canon check",
+    "E": "render miasma_canon_blixus_v1_swim \u2014 failed canon check"
    },
    "res": "swanimals/Blixus/Blixus",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "blixus"
   },
@@ -1670,20 +1681,26 @@
     },
     "B": {
      "east": "631315d13ca73aace3ca0239ec5a48b7f0c00b1cb4e45195aeab7f1dd318dc35"
+    },
+    "C": {
+     "north": "50d60820da908fe01d756e26663d04444847b25d516708025c863f0559289a8b"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render miasma_canon_opeejuv_v1"
+    "B": "render miasma_canon_opeejuv_v1",
+    "C": "render miasma_canon_opeejuv_v2 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "opeeseakillerjuv"
   },
@@ -2122,27 +2139,42 @@
      "east": "18b9a987ab8183d2b2cb432046736016e137b0f7414a5d1a73ec93ce473804b8",
      "north": "bda1ecd6c34bc0db1c31355485600dccc22619fa8498a03827722575bf4c0f9c",
      "south": "2e61bd2f76e84da257775976427b0a80fffe64762de5de680c8e696ca5993111"
+    },
+    "D": {
+     "east": "a6100b1c2102ebdb444cfcdeb9fa8c5c21958aa6d79097fa29f1c76df20a4b6a",
+     "north": "df52e3736d2984f6ca6ff3122cdd77011f26275eb7c1f62e0875688c6c7e1418",
+     "south": "5376e2b5135e2d9695b133f28e8f219de07d36adc55a5ddeb4e5cbb0bef13772"
+    },
+    "E": {
+     "east": "855fd0d57f8dcb42ae64cf040e81e3f89128e8b4a2bb8454f816a9f6b33d00bd",
+     "north": "c398689ba78ec5b915301bfdf1bd3e90781a44a589dd2f67252e4f56d43e161c"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/Swarmling/Swarmling",
     "B": "Things/Pawn/Animal/Swarmling/Swarmling",
-    "C": "_byname"
+    "C": "Things/Pawn/Animal/Swarmling/Swarmling",
+    "D": "Things/Pawn/Animal/Swarmling/Swarmling",
+    "E": "Things/Pawn/Animal/Swarmling/Swarmling"
    },
    "labels": {
     "A": "IN GAME \u2014 Vanilla Factions Expanded - Insectoids 2",
     "B": "render rot_swarmling_v2",
-    "C": "render regen_gt_saluksis_v2"
+    "C": "shipped, not loaded \u2014 SwarmlingArtOverride",
+    "D": "render miasma_swarmling_green_v2",
+    "E": "render miasma_swarmling_green_v3"
    },
    "res": "Things/Pawn/Animal/Swarmling/Swarmling",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "swarmling"
   }
  },
  "sheetId": "miasma_sheet_2026-10-05",
- "snapshotId": "7232c24229ffc4bf"
+ "snapshotId": "603c01998d27e8d6"
 }

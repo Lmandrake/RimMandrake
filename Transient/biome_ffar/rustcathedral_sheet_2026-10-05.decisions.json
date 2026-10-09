@@ -24,7 +24,17 @@
       "at": "2026-10-06T02:17:33.661Z",
       "decidedAt": "2026-10-06T02:17:28.561Z",
       "decision": "A",
-      "note": "smaller than a rat",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T02:17:33.661Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "smaller than a rat",
+          "when": "2026-10-09T07:21:45-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_CoolantEelCatch": {

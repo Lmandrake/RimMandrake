@@ -50,3 +50,18 @@ All paths are the Windows mirror `D:\Luke\dev\RimMandrake\...`.
 | `D:\Luke\dev\RimMandrake\Transient\canon_mustshow_sample_compare_2026-10-09.html` | NOT | Desktop decisions export is 15 x keep, nothing to enact; no rows left to decide | 0 |
 | `D:\Luke\dev\RimMandrake\Transient\belt_bridge5_review\FlowWorks_owner_review.html` | NOT | not an art sheet; 0 owner clicks | n/a |
 | `D:\Luke\dev\RimMandrake\Transient\mc_matrix_live_20261002\review.html, mineral_numbers_review_2026-10-03.html, longshade_*_review/fills, lantern_deeps_strange_life, art_review*, bulk_art_misroute, deeps_*, desert_family/verdict, port_*, rot_*, stoneback_identity, twilight_deep_sitting, contagion_cast_art_review, deepfire_pigment, landmark_density (about 24 legacy pre-ledger sheets, 09-06..10-03)` | NOT | legacy: enact refuses (no snapshot or prefill); not current review surfaces, many ruled or retired in September; none verified as processed | unverified |
+
+## Update after the enact pass (2026-10-09, later)
+
+Ran `art.py enact --apply` on the 18 biome sheets that had unprocessed decisions, then `refresh_sheets.py --force` (all 27 biome sheets rebuilt, gate passed). Applied: 1 install (Kreetle J, KreetleArtOverride, deploy already in sync), 9 failed redraws re-filed, ~25 followed notes cleared. Everything else is a conflict/TODO/stale click and went to `D:\Luke\dev\RimMandrake\Transient\sheet_conflicts_for_owner_2026-10-09.md`.
+Re-check dry run (conflicts / TODO / stale-click rows):
+
+| sheet | verdict now |
+|---|---|
+| thechill | FINISHED (0 / 0 / 0), rebuilt after last save |
+| greysea | NOT: 1 TODO (RM_Corrik note) |
+| gelatinousslime | NOT: 2 conflicts, 1 TODO |
+| rustcathedral, thescald, thesump, webwork, feverwood, desert, blue_desert, contagion | NOT: owner file items only (1-5 conflicts each; blue_desert 4 TODO, contagion 5 TODO) |
+| deep_desert, miasma, leaningscrub, warscar, twilightsea, abyss, greentide | NOT: conflicts/TODO/stale clicks listed in the owner file |
+
+Caveat: the rebuild changed column sets, so old letter-clicks on `abyss`, `greentide`, `leaningscrub`, `twilightsea`, `warscar` now read as stale (decisions files left unrewritten by design) and are listed as "re-pick". Rows still awaiting a pick (rendered, not chosen) are NOT conflicts and are not in the owner file; they remain on each sheet.

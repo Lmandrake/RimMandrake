@@ -236,7 +236,17 @@
     "RM_Oovu": {
       "at": "2026-10-06T13:16:09.003Z",
       "decision": "A",
-      "note": "Good!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T13:16:09.003Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Good!",
+          "when": "2026-10-09T07:22:12-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_OovuCatch": {
@@ -267,7 +277,17 @@
     "RM_Tarnn": {
       "at": "2026-10-06T13:16:32.747Z",
       "decision": "A",
-      "note": "Good!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T13:16:32.747Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Good!",
+          "when": "2026-10-09T07:22:12-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_TarnnCatch": {

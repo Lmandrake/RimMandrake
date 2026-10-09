@@ -62,7 +62,17 @@
       "at": "2026-10-06T03:14:25.538Z",
       "decidedAt": "2026-10-04T23:42:36.375Z",
       "decision": "B",
-      "note": "Keep B & C as valid variants.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:14:25.538Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Keep B & C as valid variants.",
+          "when": "2026-10-09T07:19:53-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "49c80e23debcaec53455882319587b1fcb38f79f5057e1d7786927d6cb0bcd48"
@@ -172,7 +182,17 @@
     "RM_Palefloss": {
       "at": "2026-10-05T14:37:26.890Z",
       "decision": "A",
-      "note": "All three are valid variants, keep",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T14:37:26.890Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "All three are valid variants, keep",
+          "when": "2026-10-09T07:19:53-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -301,7 +321,17 @@
       "at": "2026-10-06T03:13:37.129Z",
       "decidedAt": "2026-10-06T03:13:18.395Z",
       "decision": "G",
-      "note": "Nice job! ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:13:37.129Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Nice job! ",
+          "when": "2026-10-09T07:19:53-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "f31b5019fc5052940411751ec9f6996c5eefff02c44b19f6992d98e070b3c803",

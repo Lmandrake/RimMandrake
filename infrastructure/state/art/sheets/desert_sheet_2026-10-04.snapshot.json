@@ -1,9 +1,9 @@
 {
  "biome": "RM_LongShade",
- "built": "2026-10-09T05:04:58-0700",
+ "built": "2026-10-09T07:30:56-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 68 mods \u2014 a test list): 614 active",
  "rows": {
   "JOE_Landopus": {
    "columns": {
@@ -3114,6 +3114,9 @@
      "east": "fe8246947e142bb041fb40f8ff21172fefd40ad6334003d8ed1b019519530bef",
      "north": "0cc2c5f4c9771a65928c4c0a24b7263eed6fea6b9d50042cb6c5279395d05b41",
      "south": "f5ec5c5402cc67642d10975c6ff9ac05781206f83604c993ebbbb74c35766ed8"
+    },
+    "S": {
+     "south": "40ee6b01b79293c446967758dfed13e85446a422d393135b2344e74984eaf9ab"
     }
    },
    "graphic_of": {
@@ -3132,7 +3135,8 @@
     "O": "swanimals/Sketto/Sketto",
     "P": "swanimals/Sketto/Sketto",
     "Q": "swanimals/Sketto/Sketto",
-    "R": "swanimals/Sketto/Sketto"
+    "R": "swanimals/Sketto/Sketto",
+    "S": "swanimals/Sketto/Sketto"
    },
    "labels": {
     "A": "history SWBestiary 2026-09-18",
@@ -3148,9 +3152,10 @@
     "M": "render sketto_fly_wing2_v1 \u2014 failed canon check",
     "N": "render sketto_fly_wing3_v1 \u2014 failed canon check",
     "O": "render sketto_fly_plate_v2 \u2014 failed canon check",
-    "P": "render sketto_fly_plate_v3",
+    "P": "render sketto_fly_plate_v3 \u2014 failed canon check",
     "Q": "render regen_ls_canon_sketto_flying_1_v1",
-    "R": "render regen_ls_canon_sketto_flying_4_v1"
+    "R": "render regen_ls_canon_sketto_flying_4_v1",
+    "S": "render sketto_fly_wing2_v2 \u2014 failed canon check"
    },
    "res": "swanimals/Sketto/Sketto",
    "reserved": [
@@ -3171,7 +3176,8 @@
     "O",
     "P",
     "Q",
-    "R"
+    "R",
+    "S"
    ],
    "subject_key": "sketto"
   },

@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheChill",
- "built": "2026-10-07T23:13:13-0700",
+ "built": "2026-10-09T07:40:21-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 35 mods \u2014 a test list): 614 active",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "RM_ChillStillbloom": {
    "columns": {
@@ -90,20 +90,32 @@
     },
     "B": {
      "single": "234ce9d91841bc4c78caff7179979eefe44ddf2e1d7888bfd3dbd7d3ba94387f"
+    },
+    "C": {
+     "single": "acfb712e8b1eae26ee5fc7df33ee195ecbd9e9d9185120fbe5845e60aec456d9"
+    },
+    "D": {
+     "single": "8127f2dc57c0b9d037e82ae0829506fbc4f920e251b9a54b0dd500f4b86ed1fc"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Fessu/RM_Fessu",
-    "B": "Things/Pawn/Animal/RM_Fessu/RM_Fessu"
+    "B": "Things/Pawn/Animal/RM_Fessu/RM_Fessu",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "render propanelake_fessu",
-    "B": "IN GAME \u2014 TerminalBiomes"
+    "B": "IN GAME \u2014 TerminalBiomes",
+    "C": "render phfix_RM_FessuCatch_a",
+    "D": "render phfix_RM_FessuCatch_b"
    },
    "res": "Things/Pawn/Animal/RM_Fessu/RM_Fessu",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "fessucatch"
   },
@@ -356,20 +368,32 @@
     },
     "B": {
      "single": "7b33f5dd73f39861cb42d27d4f278631ec89ded48f9dc09e259c8b5c6beed394"
+    },
+    "C": {
+     "single": "a31e71ea8a1b61eb0feaf3881c6579e9c1d484e27fc123114fc7ab08f5c75902"
+    },
+    "D": {
+     "single": "f9ce4c298e2380533006bc70b16cdad5572ba1eafcd20b460c60c3f9bbb17ee1"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Krellik/RM_Krellik",
-    "B": "Things/Pawn/Animal/RM_Krellik/RM_Krellik"
+    "B": "Things/Pawn/Animal/RM_Krellik/RM_Krellik",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "render propanelake_krellik",
-    "B": "IN GAME \u2014 TerminalBiomes"
+    "B": "IN GAME \u2014 TerminalBiomes",
+    "C": "render phfix_RM_KrellikCatch_a",
+    "D": "render phfix_RM_KrellikCatch_b"
    },
    "res": "Things/Pawn/Animal/RM_Krellik/RM_Krellik",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "krellikcatch"
   },
@@ -395,17 +419,29 @@
    "columns": {
     "A": {
      "single": "8c80b89d35ca4f1a4be36eaf27f98b89911fdbb04ca7970ff5421386f2a6ac9c"
+    },
+    "B": {
+     "single": "314e74c680b51cf3e468e1b5c0c34329f33f1fc064bc29693bfa63709fc1e8cb"
+    },
+    "C": {
+     "single": "77f398a9fafbcf51d0b5f0bd44f08ccf44da69c05f3289dbd634b972520b70d5"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Oddu/RM_Oddu"
+    "A": "Things/Pawn/Animal/RM_Oddu/RM_Oddu",
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render phfix_RM_OdduCatch_a",
+    "C": "render phfix_RM_OdduCatch_b"
    },
    "res": "Things/Pawn/Animal/RM_Oddu/RM_Oddu",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "odducatch"
   },
@@ -489,17 +525,29 @@
    "columns": {
     "A": {
      "single": "9dd1b5a83aaf105b13ccb04d7733949b0a10d0ad2fc5d47c17963ede925ce876"
+    },
+    "B": {
+     "single": "f4ce11cc4bb3cc6ab831f3081f443e3d48acd9f96be7145ae590a0dc2e390258"
+    },
+    "C": {
+     "single": "90e5d25583fe950c722f7abbc1426a5d4f16c2c3c5af218d1a933ea941c28728"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Oovu/RM_Oovu"
+    "A": "Things/Pawn/Animal/RM_Oovu/RM_Oovu",
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render phfix_RM_OovuCatch_a",
+    "C": "render phfix_RM_OovuCatch_b"
    },
    "res": "Things/Pawn/Animal/RM_Oovu/RM_Oovu",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "oovucatch"
   },
@@ -597,17 +645,29 @@
    "columns": {
     "A": {
      "single": "4e2ae6d94bcf41ed1258af08fae0a4e0133dc93eeb7758bc595b4fcd11c62cd2"
+    },
+    "B": {
+     "single": "bf12084b6f708661be1f87687595bc62d5ae1feaba9fcfe9eddd88916cadbdd9"
+    },
+    "C": {
+     "single": "7c66083cb93f8abf6c476a9e29dd2ab970bd6b0e61b951aa6d221a4774673d28"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Tarnn/RM_Tarnn"
+    "A": "Things/Pawn/Animal/RM_Tarnn/RM_Tarnn",
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes"
+    "A": "IN GAME \u2014 TerminalBiomes",
+    "B": "render phfix_RM_TarnnCatch_a",
+    "C": "render phfix_RM_TarnnCatch_b"
    },
    "res": "Things/Pawn/Animal/RM_Tarnn/RM_Tarnn",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "tarnncatch"
   },
