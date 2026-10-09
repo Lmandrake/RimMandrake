@@ -401,6 +401,11 @@ namespace RimMandrake.CreatureBehaviors
         public static bool parasolShadeEnabled = true;
         public static bool shadeTentEnabled = true;
         public static bool decoyShadeEnabled = true;
+        // SHIP_TOW_LINE_1: the salvage winch (RM_CompSalvageWinch). PROVISIONAL numbers.
+        public static bool salvageWinchEnabled = true;
+        public static float salvageWinchRange = 15f;
+        public static float salvageWinchMaxMass = 400f;
+        public static float salvageWinchReelSpeed = 1f;
         public static bool sunShieldEnabled = true;
         public static bool shadeHopEnabled = true;
         public static float shadeHopRangeMultiplier = 1f;
@@ -519,6 +524,10 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref parasolShadeEnabled, "parasolShadeEnabled", true);
             Scribe_Values.Look(ref shadeTentEnabled, "shadeTentEnabled", true);
             Scribe_Values.Look(ref decoyShadeEnabled, "decoyShadeEnabled", true);
+            Scribe_Values.Look(ref salvageWinchEnabled, "salvageWinchEnabled", true);
+            Scribe_Values.Look(ref salvageWinchRange, "salvageWinchRange", 15f);
+            Scribe_Values.Look(ref salvageWinchMaxMass, "salvageWinchMaxMass", 400f);
+            Scribe_Values.Look(ref salvageWinchReelSpeed, "salvageWinchReelSpeed", 1f);
             Scribe_Values.Look(ref sunShieldEnabled, "sunShieldEnabled", true);
             Scribe_Values.Look(ref shadeHopEnabled, "shadeHopEnabled", true);
             Scribe_Values.Look(ref shadeHopRangeMultiplier, "shadeHopRangeMultiplier", 1f);
@@ -919,6 +928,18 @@ namespace RimMandrake.CreatureBehaviors
             list.CheckboxLabeled("Decoy shade tarps fool shade-seekers", ref decoyShadeEnabled,
                 "On: a decoy shade tarp reads as shade to animals looking for shade (mirrak hide is the most "
                 + "convincing) though it cools no one. Off: it is an ordinary awning and fools nothing.");
+            list.CheckboxLabeled("Salvage winch hooks heavy objects", ref salvageWinchEnabled,
+                "On: a salvage winch can be ordered to hook a wreck chunk, a carcass or a downed beast within reach "
+              + "and drag it home beside the winch, cell by cell. Off: winches do nothing and drop what they hold.");
+            if (salvageWinchEnabled)
+            {
+                list.Label("Winch reach: " + salvageWinchRange.ToString("0") + " cells");
+                salvageWinchRange = Mathf.Round(list.Slider(salvageWinchRange, 5f, 40f));
+                list.Label("Heaviest load: " + salvageWinchMaxMass.ToString("0") + " kg");
+                salvageWinchMaxMass = Mathf.Round(list.Slider(salvageWinchMaxMass, 50f, 2000f) / 10f) * 10f;
+                list.Label("Reel speed: " + salvageWinchReelSpeed.ToString("0.0") + "x");
+                salvageWinchReelSpeed = list.Slider(salvageWinchReelSpeed, 0.3f, 3f);
+            }
             list.CheckboxLabeled("Sun shields cast shade", ref sunShieldEnabled,
                 "On: a standing sun shield throws shade on its far side from the sun. The one piece "
                 + "that works under a low sun; only modest under an overhead one. Off: it casts no shade.");
