@@ -225,6 +225,22 @@ def back_since(now: float) -> float:
     return now - 12 * 3600
 
 
+def parse_since(v: str) -> float:
+    """How far back: a duration ("3h", "90m", "2d", "1h30m"), a clock time today ("17:30"), or ISO."""
+    import re as _re
+    v = v.strip().lower()
+    m = _re.fullmatch(r"(?:(\d+)d)?\s*(?:(\d+)h)?\s*(?:(\d+)m)?", v)
+    if m and any(m.groups()):
+        d, h, mi = (int(x or 0) for x in m.groups())
+        return time.time() - (d * 86400 + h * 3600 + mi * 60)
+    m = _re.fullmatch(r"(\d{1,2}):(\d{2})", v)
+    if m:
+        lt = time.localtime()
+        t = time.mktime((lt.tm_year, lt.tm_mon, lt.tm_mday, int(m[1]), int(m[2]), 0, 0, 0, -1))
+        return t if t <= time.time() else t - 86400
+    return pc.iso_to_epoch(v)
+
+
 def make_digest(mode: str, since: float | None = None) -> dict:
     now = time.time()
     state = load_state()
@@ -431,7 +447,7 @@ def main(argv=None) -> int:
         print(" | ".join(p["text"] for p in snap["strip"]))
     elif args.cmd == "since":
         mode = "back" if args.back else "scheduled" if args.scheduled else "manual"
-        since = pc.iso_to_epoch(args.since) if args.since else None
+        since = parse_since(args.since) if args.since else None
         d = make_digest(mode, since)
         if not args.quiet:
             print(d["text"])
