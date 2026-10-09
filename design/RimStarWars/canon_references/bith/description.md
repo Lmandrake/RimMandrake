@@ -91,6 +91,8 @@ trade for basic necessities.
   and **incubated for a year.**
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The stylised flat-colour "Bith brute" illustration (`wookieepedia_bith_brute.jpg`, File:BithBrute-ALT.png) was deleted. Added: the official StarWars.com Databank live-action still of the Mos Eisley cantina band (`starwars_databank_cantina_band.jpg`). The remaining paintings are realistic painted reference art and the Doikk Na'ts image is a costume photograph.
 
 **Every reference agrees closely on the head and disagrees on the body.** The head is the
 species; the body is not fixed.
@@ -137,17 +139,13 @@ infobox painting, a seated Bith musician playing a Kloo horn in a black band jac
 - **Body is slight and thin**, seated, human-proportioned limbs.
 - Bone-cream skin, faint speckling on the crown.
 
-**`wookieepedia_bith_brute.jpg` — the image that breaks the "thin Bith" assumption.** A
-"Bith brute hired out to provide muscle," in stylised flat-colour illustration:
-- 🔴 **The body is TALL, broad-shouldered and heavy** — a bouncer's build, not a musician's.
-  Since this individual exists in canon, **a Bith is not necessarily thin**, and locking the
-  species to a thin body denies a canonical role.
-- **Bright pale pink skin** — the "Pink" cite, and the most saturated skin in the set.
-- Same head in every respect: bulbous creased cranium, two black glossy eyes, vertical
-  midface folds, small mouth, no ears.
-- Fur-collared bomber jacket, fingerless glove, a baton over the shoulder, a horn in hand.
-  Stylised, so treat line weight and palette as the artist's; the **proportions** are the
-  finding.
+**`starwars_databank_cantina_band.jpg` — the live-action reference of record** (StarWars.com Databank, *A New Hope* cantina band, five Bith):
+- **Pale bone-cream to pale peach skin**, smooth and slightly waxy, with fine creasing over the cranium — no pink saturation, no dark tones.
+- The **huge backward-swelling bald cranium with the central vertical furrow**, the large glossy black lidless eyes set low, and the wrinkled vertical midface folds above a small pursed mouth — identical on every individual.
+- **Long, thin, pale, knuckly fingers** wrapped around the instruments; slight, narrow-shouldered bodies in black high-collared suits.
+- Lit by smoky warm cantina light — the realistic texture target: soft latex-like skin with real specular sheen on the eyes.
+
+The deleted "Bith brute" illustration was the only image of a **tall, heavy, bouncer-build, bright pink** Bith. That individual is still a sourced canon fact (a brute hired for muscle), so **a Bith is not necessarily thin** — but no realistic image shows that build, and its saturated pink is no longer evidenced by any image here.
 
 **`wookieepedia_doikk_nats_musician.jpg`** — Doikk Na'ts, the canonical cantina-band Bith,
 from *The Visual Dictionary*. Held as a fourth corroboration of the same head.
@@ -179,6 +177,7 @@ correct low-and-wide placement, and **pale midface folds** below the eyes. Three
 - [ ] Small, thin-lipped, closed mouth with no fangs or visible teeth
 - [ ] No visible ears; skin reads pale (cream, bone, pale pink, or pale tan) — never dark
   or brown
+- [ ] Realistic rendering: soft pale waxy skin with fine creasing and glossy wet-looking eyes under natural light, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -248,8 +247,7 @@ as wrong. Encoding weak immunity ships that in-universe prejudice as fact.
   (status 200, 36,330 chars, 2026-09-15).
 - https://static.wikia.nocookie.net/starwars/images/8/8e/SWA47_art_Bith.png
   (File:SWA47 art Bith.png, the canon infobox image → `wookieepedia_infobox.jpg`)
-- https://static.wikia.nocookie.net/starwars/images/d/d2/BithBrute-ALT.png
-  (File:BithBrute-ALT.png → `wookieepedia_bith_brute.jpg`)
+- https://www.starwars.com/databank/bith (og:image → `starwars_databank_cantina_band.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/2/24/Bith-NEGAS.png
   (File:Bith-NEGAS.png, the Legends infobox image → `wookieepedia_negas_legends.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/3/39/DoikkNats-TVD.jpg
@@ -273,10 +271,7 @@ as wrong. Encoding weak immunity ships that in-universe prejudice as fact.
   painting, a seated Bith musician with a Kloo horn. **The best hand reference in the set**:
   long spidery pale fingers with broad pads and prominent nails. Also the most extreme
   cranium. Legends, so its bone-cream palette is one book's take. 1150×1850 px.
-- `wookieepedia_bith_brute.jpg` — **the important counter-reference.** A canon "Bith brute
-  hired out to provide muscle": **tall, broad and heavy**, in bright pale pink. Proves the
-  species is not locked to a thin build. Stylised flat-colour illustration, so treat line
-  and palette as the artist's. 1800×1273 px.
+- `starwars_databank_cantina_band.jpg` — **live-action reference of record**: StarWars.com Databank still of the *A New Hope* cantina band (five Bith, masks and hands in smoky light) — https://lumiere-a.akamaihd.net/v1/images/bith_998c8489.jpeg
 - `wookieepedia_doikk_nats_musician.jpg` — Doikk Na'ts, the cantina-band Bith, from *The
   Visual Dictionary*. A fourth independent corroboration of the same head. 669×1644 px.
 - `donor_current_sprite.png` — `Bith/Normal_south.png`, the head from `RSW_BithHead`. A
