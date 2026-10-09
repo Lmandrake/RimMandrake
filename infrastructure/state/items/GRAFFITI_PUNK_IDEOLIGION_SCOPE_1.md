@@ -140,9 +140,8 @@ leaves the player's own sigil alone.
 ## criteria
 
 Done means, in order:
-1. The owner has ruled the forks below (or said "recommendations stand"),
-   and this file records the rulings by card — until then the item is a
-   design draft and no build item is filed from it.
+1. The owner has ruled forks F1–F10 and this file records the rulings by
+   card — DONE 2026-10-09.
 2. A build item (`GRAFFITI_SCOPE_BUILD_1`-shaped, FOUNDRY) exists carrying
    the ruled v1 slice with the RM/RUT seam test as its review criterion.
 3. `mandrake.rm.graffiti` ships the ruled v1 slice: `Filth_Mark`, form axis,
@@ -156,14 +155,39 @@ Done means, in order:
 5. `design/Jawa/graffiti_spec.md` §2/§5 and this design doc are reconciled
    in one edit — wrong lines deleted, not banner-superseded.
 
+## rulings 2026-10-09
+
+Decision taken by question card, 2026-10-09: **accept every recommendation of
+the ten forks** in `design/RM_GRAFFITI_SCOPE_WIDENING.md` §7 (which now states
+each ruling).
+- **F1** murals = `Building`-class wall attachment with `CompArt` — **v2**.
+- **F2** sigil tiers **A + C** in v1; tier B not in v1.
+- **F3** raid tagging on the way **out** only; visitors **v2**.
+- **F4** going-over ships **v1** (no explicit recommendation; the design's lean).
+- **F5** asemic letterforms only — no real words in art.
+- **F6** full designator + bill.
+- **F7** own-faction and Devotional marks protected from auto-clean; a forced clean overrides.
+- **F8** `Sacred → Devotional`, `Cant → Code` in the RM enum now.
+- **F9** settlement GenStep **v2**.
+- **F10** the three shipped marks are the `Glyph`-form / `Code`-category default
+  members; `RM_Graffiti_WarningGlyph` carries `breachLure`.
+
+Build state against the ruled v1 slice (waves 1–3, 2026-09-24/25, re-read
+2026-10-09): built — `Filth_Mark`, form axis, renamed enum, `GraffitiPool`,
+designator + workgiver, raid-exit tagger, relation-keyed reactions,
+going-over, scrub protection, tier-A sigil composite, 27 tier-C glyph defs,
+RUT seam stub (in `SacredGraffiti`); every one of the 43 mark texPaths
+resolves on disk. Owed, filed as build items caused by this one:
+`GRAFFITI_RULING_CONFORMANCE_1` (F10 category, stale fork numbers in
+source), `GRAFFITI_SIGIL_COVERAGE_CHECK_1` (verify step 3),
+`GRAFFITI_SIGIL_FRAMES_ART_1` (the two missing frames),
+`GRAFFITI_V1_LIVE_PROOF_1` (design §6 live rows + soft-Ideology load),
+`GRAFFITI_PUNK_ART_REVIEW_1` (owner look at the rendered set, criterion 3).
+
 ## Open questions for the owner
 
-Forks F1–F10 in `design/RM_GRAFFITI_SCOPE_WIDENING.md` §7 stand as written
-(recommendations: murals as a `CompArt` building in v2 · sigil tiers A+C ·
-raid tagging on exit only · going-over in v1 · asemic letterforms · full
-designator · protect own+Devotional from auto-clean · rename `Sacred→Devotional`,
-`Cant→Code` · GenStep v2 · the shipped glyphs get mechanics). The ones a
-design pass genuinely cannot pick, plus what this pass added:
+Forks F1–F10 are ruled (see `## rulings 2026-10-09`). The questions below are
+the ones a design pass genuinely could not pick:
 
 1. **Art register reference — RULED: NYC subway wildstyle and UK stencil**
    (owner 2026-09-25: *"One and two and we already ruled this."*). The
