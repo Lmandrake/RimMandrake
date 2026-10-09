@@ -80,7 +80,7 @@ DECLARED_ROWS = {
                "M13d_refusals", "M13e_hostile_mast_not_autolinked", "R1_span_altitude_above_pawns_below_blueprints",
                "R2_spans_and_heads_drawn", "M14_gap_control_without_fix", "M14a_remove_middle_both_ends_resolve",
                "M14b_dead_pole_drops_live_and_dead_cords", "M14c_live_tip_glows", "M15_explosion_cuts_span",
-               "M15b_restring_rejoins", "R3_sway_proxy", "M19_tap_drains_one_way", "M19n_taps_off_control"],
+               "M15a_wire_down_alert_lists_cut", "M15b_restring_rejoins", "M15c_wire_down_alert_clears_on_restring", "R3_sway_proxy", "M19_tap_drains_one_way", "M19n_taps_off_control"],
     "hose": ["H1b_install_validity", "H2_hose_laid_as_hose_cord", "H6_plump_within_transition",
              "H7_no_flicker_fast_toggle", "H8_collapse_after_release", "H9_stiffness_setting"],
     "maze": ["M1_open_maze_short_route", "M2_gap_walled_reroutes", "M3_length_cap_install",
