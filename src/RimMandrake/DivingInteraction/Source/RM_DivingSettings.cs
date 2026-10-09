@@ -65,6 +65,10 @@ namespace RimMandrake.DivingInteraction
         // leave it), so re-enabling later never un-values anything.
         public static bool greyElderTradeEnabled = true;
 
+        // SPECIMEN_CABINET_DISPLAY_1 (DI-7): a home specimen cabinet. Each distinct kind (the Elder's novelty key) on
+        // display adds beauty to the cabinet and, colony-wide, a small museum mood. Off: the cabinet is plain storage.
+        public static bool specimenCabinetEnabled = true;
+
         // CHILL_FIRE_BAN_1, 2026-09-27. "There's no oxygen down in the sea
         // floor so it's not explosive" — no flame works on the Chill
         // seabed pocket map (fire spawns, campfires/torches, fuel-burning
@@ -221,6 +225,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref greyPoolSentinelEnabled, "greyPoolSentinelEnabled", true);
             Scribe_Values.Look(ref greyElderDischargeEnabled, "greyElderDischargeEnabled", true);
             Scribe_Values.Look(ref greyElderTradeEnabled, "greyElderTradeEnabled", true);
+            Scribe_Values.Look(ref specimenCabinetEnabled, "specimenCabinetEnabled", true);
             Scribe_Values.Look(ref chillFireBanEnabled, "chillFireBanEnabled", true);
             Scribe_Values.Look(ref chillAirPumpEnabled, "chillAirPumpEnabled", true);
             Scribe_Values.Look(ref chillAirPumpWatts, "chillAirPumpWatts", 300f);
@@ -379,6 +384,12 @@ namespace RimMandrake.DivingInteraction
                   + "every Grey Sea tile keeps its own memory, so travelling to another tile finds "
                   + "a market that has never seen your find. Off: the Elder's trade gizmo "
                   + "disappears; nothing already recorded is lost.");
+
+                list.Gap();
+                list.CheckboxLabeled("Specimen cabinet: keep finds on display", ref specimenCabinetEnabled,
+                    "Shipped default: ON. A specimen cabinet holds creature corpses, chunks and raw materials; "
+                  + "each different kind on display adds beauty to the cabinet and a small museum mood to the "
+                  + "colony. Off: the cabinet is plain storage with no beauty or mood from what it holds.");
 
                 list.Gap();
                 list.CheckboxLabeled("The Chill: no fire on the seabed", ref chillFireBanEnabled,

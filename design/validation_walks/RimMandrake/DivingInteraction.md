@@ -7,6 +7,7 @@ status-hint: the sea-floor planet layer (RM_SeabedLayer), one floor biome + gene
 Sources: `Defs/PlanetLayerDefs/` (RM_SeabedLayer, RM_SeabedFloorBiomes), `Defs/MapGeneration/` (RM_SeabedGenerators, RM_SeaDiveGenerators), `Source/RM_SeabedSiteParent.cs`, `Patches/RM_SeabedFloorBiomeWiring.xml`, TerminalBiomes `RM_GreySea.xml` and `RM_GreySeaFloorScatter.xml`.
 
 ## must be true
+- A specimen cabinet (SPECIMEN_CABINET_DISPLAY_1) counts each distinct Elder novelty key once, adds beauty per kind (capped) and a museum mood stage at 1/4/10 kinds, and `specimenCabinetEnabled` turns all of it off. → toggle_gates.specimen_cabinet_gates_display (offline: kernel units in `selftest_divinginteraction_fuzz.py` family oxygen; the live beauty/mood read-back: UNCOVERED: needs a placed cabinet with a spawned corpse, filed with the item)
 - Each terminal sea's surface biome names its own floor biome, and every floor biome exists. → per_sea_floor_biomes.floor_biomes_defined, per_sea_floor_biomes.sea_biomes_name_their_floor
 - Each floor biome names a layer generator carrying its hatch twin's content, never roofed, with no exit. → seabed_floor_generators.floor_biomes_name_layer_generators, seabed_floor_generators.layer_generators_match_hatch_content, seabed_floor_generators.live_floor_generates_sea_content
 - Each floor holds its sea's temperature and carries the sea's flora and cast at startup. → seabed_floor_ambient_carryover.floor_temperature_matches_hatch, seabed_floor_ambient_carryover.floor_biomes_carry_sea_life

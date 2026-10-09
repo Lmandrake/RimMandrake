@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SPECIMEN_CABINET_DISPLAY_1 (design pass DI-7). A glazed cabinet for novel finds. Stores corpses (not large ones), chunks
+  and raw materials; each distinct kind adds beauty to the cabinet (RM_StatPart_SpecimenBeauty) and the colony a small
+  museum mood (RM_SpecimenMuseum). Items stored in it do not decay (preventDeteriorationOnTop) but corpses still rot,
+  so keep it cold. Research-gated. Mod Settings: Diving Interaction specimenCabinetEnabled.
+  ART: placeholder reuses the vanilla Shelf texture (PROVISIONAL); own art is owed.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SpecimenCabinet</defName>
+    <label>specimen cabinet</label>
+    <description>A glazed shelf for the finds worth keeping: the corpse of a creature nobody has seen before, a stone of an unknown kind. Each different kind on display adds to its beauty, and a colony with a collection to look at is a little happier for it. The Brine Elders pay for novelty; the cabinet is for those who would rather keep it.</description>
+    <thingClass>Building_Storage</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Furniture/Shelf</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3,2)</drawSize>
+    </graphicData>
+    <size>(2,1)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.4</fillPercent>
+    <pathCost>50</pathCost>
+    <castEdgeShadows>true</castEdgeShadows>
+    <defaultPlacingRot>South</defaultPlacingRot>
+    <rotatable>true</rotatable>
+    <designationCategory>Furniture</designationCategory>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
+    <surfaceType>Item</surfaceType>
+    <canOverlapZones>false</canOverlapZones>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>30</costStuffCount>
+    <costList>
+      <Steel>10</Steel>
+    </costList>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Mass>10</Mass>
+      <WorkToBuild>700</WorkToBuild>
+      <Flammability>0.8</Flammability>
+      <Beauty>2</Beauty>
+    </statBases>
+    <researchPrerequisites>
+      <li>RM_SpecimenCabinetResearch</li>
+    </researchPrerequisites>
+    <inspectorTabs>
+      <li>ITab_Storage</li>
+    </inspectorTabs>
+    <building>
+      <preventDeteriorationOnTop>true</preventDeteriorationOnTop>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <maxItemsInCell>1</maxItemsInCell>
+      <blueprintClass>Blueprint_Storage</blueprintClass>
+      <fixedStorageSettings>
+        <filter>
+          <disallowNotEverStorable>true</disallowNotEverStorable>
+          <categories>
+            <li>Corpses</li>
+            <li>Chunks</li>
+            <li>ResourcesRaw</li>
+          </categories>
+          <specialFiltersToDisallow>
+            <li>AllowLargeCorpses</li>
+          </specialFiltersToDisallow>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <priority>Preferred</priority>
+        <filter>
+          <categories>
+            <li>Corpses</li>
+            <li>Chunks</li>
+          </categories>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <comps>
+      <li Class="CompProperties">
+        <compClass>RimMandrake.DivingInteraction.RM_CompSpecimenCabinet</compClass>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>
