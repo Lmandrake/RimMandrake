@@ -136,5 +136,40 @@ def sealed_suit(stuff="Cloth"):
         st = S.call("jawa/get_defs", defs="ThingDef/%s" % stuff, fields="stuffProps")
         out("sealed_suit", "WETBULB_A4", "?", dict(before=before, after=after, suit_stats=ts, order=str(r)[:150], stuff=str(st)[:500]))
 
+def chill_pump():
+    """CHILL_AIR_PUMP_1 A2/A3/A4 on a Chill seabed map (RM_SeabedLayer under a RM_TheChill surface tile): a fuelled stove lights only
+    while a live pump serves its sealed roofed room. MEASURED: spawn_batch'd OxygenPumps never join a power net (Not connected to power),
+    so 'switched on/off' is jawa/power_net forcePowerOn, which the comp reads as power.PowerOn (Live)."""
+    mid = S.biome_map(114490, "RM_TheChill", layer="RM_SeabedLayer", surface_biome="RM_TheChill")
+    rows = []
+    def rd(sc, stove, tag, pumps):
+        d = dict(tag=tag, stove_pushes_heat=S.call("jawa/comp_read", thing=stove["id"], comp="HeatPusher", members="ShouldPushHeatNow").get("values"),
+                 pumps=[(t["x"], t["z"], S.call("jawa/comp_read", thing=t["id"], comp="ChillAirSupply", members="Live").get("values", {}).get("Live")) for t in pumps])
+        if pumps: d["pump_inspect"] = sc.inspect(pumps[0]["id"])[-230:]
+        rows.append(d)
+    try:
+        with S.Scene("chill_pump", 20, 20, 8, 8) as sc:
+            sc.room()
+            sc.put("OxygenPump", 2, 2); sc.put("OxygenPump", 2, 4); sc.put("FueledStove", 5, 4)
+            pid = sc.colonist(4, 6); sc.put("WoodLog", 5, 2, n=50)
+            stove = sc.find("FueledStove"); logs = S.call("jawa/list_things", defName="WoodLog", rect=sc.rect)["things"]
+            sc.order(pid, "Refuel", a=stove["id"], b=logs[0]["id"], count=50); S.run(900)
+            pumps = S.call("jawa/list_things", defName="OxygenPump", rect=sc.rect)["things"]
+            a, b = pumps[0], pumps[1]
+            def setp(t, on):
+                r = sc.power_on(t["id"], on); return r.get("powerOnAfter")
+            rd(sc, stove, "no_pump_on", pumps)
+            rows.append(dict(note="pump1_on", after=setp(a, True))); S.run(600); rd(sc, stove, "A2_pump1_on", pumps)
+            rows.append(dict(note="pump1_off", after=setp(a, False))); S.run(600); rd(sc, stove, "A2_pump1_off", pumps)
+            rows.append(dict(note="both_on", after=(setp(a, True), setp(b, True)))); S.run(600); rd(sc, stove, "A3_two_on", pumps)
+            rows.append(dict(note="one_off", after=setp(a, False))); S.run(600); rd(sc, stove, "A3_one_off", pumps)
+            rows.append(dict(note="both_off", after=setp(b, False))); S.run(600); rd(sc, stove, "A3_both_off", pumps)
+            # A4: an unroofed room: strip the roof over the interior and switch one pump on
+            rows.append(dict(note="unroof_and_on", after=setp(a, True), roof=str(S.call("jawa/set_roof_batch", ops="%d,%d,6,6" % (sc.x + 1, sc.z + 1), roofDef="none"))[:120])); S.run(600)
+            rd(sc, stove, "A4_unroofed_pump_on", pumps)
+            out("chill_pump", "CHILL_A2_A3_A4", "?", rows)
+    finally:
+        S.drop_map(mid, 114490)
+
 if __name__ == "__main__":
     globals()[sys.argv[1]](*sys.argv[2:])
