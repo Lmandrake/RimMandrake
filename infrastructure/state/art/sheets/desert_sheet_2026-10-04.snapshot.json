@@ -1,6 +1,6 @@
 {
  "biome": "RM_LongShade",
- "built": "2026-10-08T19:45:25-0700",
+ "built": "2026-10-08T20:20:33-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
  "loadOrder": "live ModsConfig.xml: 614 active",
@@ -987,12 +987,6 @@
   },
   "RM_Venomvine": {
    "columns": {
-    "C": {
-     "single": "cef3eb92543ad01b9925c3487416f88ceb78e9724008dbdb2fb6f9fd9bc61a92"
-    },
-    "D": {
-     "single": "7d25c383afb7a51b0a1c59f6300de9055027c427823b7122140d21a0c05e4ff6"
-    },
     "E": {
      "single": "c5890ae7240d668f080f134300fa291193de050c8daa3815403d6e3d6b96e833"
     },
@@ -1112,11 +1106,12 @@
     },
     "r": {
      "single": "88343d995cd89529176468d78096fd1d9e90e030d079ce4d16eb762e888d100c"
+    },
+    "s": {
+     "single": "51e6c5549f56e99eb6fb4287d3e9bc65d0e64e8f47c40eb11fb1dd47649d5248"
     }
    },
    "graphic_of": {
-    "C": "Things/Plant/RM_Venomvine",
-    "D": "Things/Plant/RM_Venomvine",
     "E": "Things/Plant/RM_Venomvine",
     "F": "Things/Plant/RM_Venomvine",
     "G": "Things/Plant/RM_Venomvine",
@@ -1156,11 +1151,10 @@
     "o": "Things/Plant/RM_Venomvine",
     "p": "Things/Plant/RM_Venomvine",
     "q": "Things/Plant/RM_Venomvine",
-    "r": "Things/Plant/RM_Venomvine"
+    "r": "Things/Plant/RM_Venomvine",
+    "s": "Things/Plant/RM_Venomvine"
    },
    "labels": {
-    "C": "render 0vv_crown_venomvine_v1",
-    "D": "render 0vv_crown_venomvine_v2",
     "E": "render 0vv_desert_venomvine_v1",
     "F": "render 0vv_desert_venomvine_v2",
     "G": "render 0vv_desert_venomvine_v3",
@@ -1200,7 +1194,8 @@
     "o": "render 0vv_walking_venomvine_v1",
     "p": "render 0vv_walking_venomvine_v2",
     "q": "render 0vv_walking_venomvine_v3",
-    "r": "render 0vv_walking_venomvine_v4"
+    "r": "render 0vv_walking_venomvine_v4",
+    "s": "render 0vv_desert_venomvine_v4"
    },
    "res": "Things/Plant/RM_Venomvine",
    "reserved": [
@@ -1247,7 +1242,8 @@
     "o",
     "p",
     "q",
-    "r"
+    "r",
+    "s"
    ],
    "subject_key": "venomvine"
   },
@@ -1907,7 +1903,7 @@
     "L": "render longshade_rsw_gorg_v5 \u2014 failed canon check",
     "N": "render longshade_rsw_gorg_swim_v1 \u2014 failed canon check",
     "O": "render longshade_rsw_gorg_v2 \u2014 failed canon check",
-    "P": "render regen_ls_canon_gorg_l_v1 \u2014 failed canon check"
+    "P": "render regen_ls_canon_gorg_l_v1"
    },
    "res": "swanimals/Gorg/Gorg",
    "reserved": [
@@ -2812,7 +2808,7 @@
    },
    "labels": {
     "F": "IN GAME \u2014 RontoArtOverride",
-    "G": "render ls3_ronto_v1 \u2014 failed canon check"
+    "G": "render ls3_ronto_v1"
    },
    "res": "swanimals/Ronto/Ronto",
    "reserved": [
@@ -3176,7 +3172,7 @@
    "labels": {
     "A": "history SWBestiary 2026-09-18",
     "C": "render longshade_rsw_teemuss_v1 \u2014 failed canon check",
-    "D": "render regen_ls_canon_teemuss_v1 \u2014 failed canon check",
+    "D": "render regen_ls_canon_teemuss_v1",
     "E": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/TeeMuss/TeeMuss",
@@ -3346,9 +3342,9 @@
     "C": "IN GAME \u2014 SWBestiary",
     "D": "IN GAME \u2014 Uvak_Flying_",
     "E": "render regen_ls_canon_uvak_flying_1_v1 \u2014 failed canon check",
-    "F": "render regen_ls_canon_uvak_flying_2_v1 \u2014 failed canon check",
-    "G": "render regen_ls_canon_uvak_flying_3_v1 \u2014 failed canon check",
-    "H": "render regen_ls_canon_uvak_flying_4_v1 \u2014 failed canon check"
+    "F": "render regen_ls_canon_uvak_flying_2_v1",
+    "G": "render regen_ls_canon_uvak_flying_3_v1",
+    "H": "render regen_ls_canon_uvak_flying_4_v1"
    },
    "res": "swanimals/Uvak/Uvak",
    "reserved": [
@@ -3656,5 +3652,5 @@
   }
  },
  "sheetId": "desert_sheet_2026-10-04",
- "snapshotId": "ecdb557a625e37a6"
+ "snapshotId": "26ced1042aea0e20"
 }

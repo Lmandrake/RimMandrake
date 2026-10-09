@@ -1,6 +1,6 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-10-08T19:49:43-0700",
+ "built": "2026-10-08T20:24:53-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
  "loadOrder": "live ModsConfig.xml: 614 active",
@@ -1197,23 +1197,29 @@
     },
     "C": {
      "single": "e902dd9ec5360b43cec399120f65fe40cb4e11a1cd62ee0b213e83e4f967316a"
+    },
+    "D": {
+     "single": "63041a303cbc4dc05700164bf46071fef9dcf185559233b490a306fe5ff64f95"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_Velluric/RM_Velluric_a",
     "B": "_byname",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Miasma",
     "B": "render miasma_velluric_v2a",
-    "C": "render miasma_velluric_v2b"
+    "C": "render miasma_velluric_v2b",
+    "D": "render miasma_velluric_v2c"
    },
    "res": "Things/Plant/RM_Velluric/RM_Velluric_a",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "velluric"
   },
