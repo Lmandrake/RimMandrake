@@ -1371,3 +1371,4 @@
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-09T04:51:01Z","tsn":1791521461348192608}
 {"seat":"BENCH","event":"note","id":"CANON_HERD_LORE_ARBITRATION_1","text":"Decision taken by question card 2026-10-08 21:55: settle each creature at its biome's group-size walk (BIOME_GROUP_SIZE_WALK_1), not as one list.","ts":"2026-10-09T04:56:35Z","tsn":1791521795877679250}
 {"seat":"BENCH","event":"note","id":"LEANINGSCRUB_VENOMVINE_SITTING_1","text":"Decision taken by question card 2026-10-08 21:55: sitting deferred to next session.","ts":"2026-10-09T04:56:36Z","tsn":1791521796793496700}
+{"seat":"BENCH","event":"note","id":"FLYER_STABLE_BODY_GATE_1","text":"Decision taken by question card 2026-10-08 21:58: sketto_fly_master_v3_east LOCKED; S/N v3 must pass canon_check first. Stage 2 east filed (plate/wing2/wing3 v1_east from v3_east); stage2_plates_wings.json derive_from bumped to v3.","ts":"2026-10-09T04:59:23Z","tsn":1791521963681675452}
