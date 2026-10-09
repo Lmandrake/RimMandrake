@@ -17,8 +17,12 @@ import random
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-if HERE not in sys.path:
-    sys.path.insert(0, HERE)
+if HERE in sys.path:
+    sys.path.remove(HERE)
+sys.path.insert(0, HERE)   # front always: Utils/scenes (a package) must not shadow this directory's scenes.py
+_m = sys.modules.get("scenes")
+if _m is not None and os.path.dirname(os.path.abspath(getattr(_m, "__file__", "") or "")) != HERE:
+    del sys.modules["scenes"]
 import scenes as S  # noqa: E402
 
 AXES = [
