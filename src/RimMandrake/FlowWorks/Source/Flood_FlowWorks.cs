@@ -264,7 +264,7 @@ namespace RimMandrake.FlowWorks
 					frontier.RemoveAt(pick);
 					continue;
 				}
-				PlaceFluid(map, target);
+				PlaceFluid(map, target, excavation);
 				return;
 			}
 		}
@@ -323,8 +323,32 @@ namespace RimMandrake.FlowWorks
 		/// underGrid permanently (TerrainGrid.SetTempTerrain, Verse/TerrainGrid.cs:418)
 		/// and RemoveTempTerrain never puts it back, which is the exact damage
 		/// this ruling removes.</summary>
-		private void PlaceFluid(Map map, IntVec3 c)
+		private void PlaceFluid(Map map, IntVec3 c, RM_MapComponent_Excavation excavation)
 		{
+			// FLOOD_DRIVER_OWNERSHIP_CONTRACT_1: an excavated cell belongs to the depth engine. Writing the
+			// flood's temp terrain there gave the cell two owners — the engine's ApplyFillTerrain stripped it
+			// (floodTerrain counts as engine-owned), and this release's queued removal later stripped the
+			// engine's own fill. So the release goes through the driver API instead, and a Refused (liquid
+			// switched off, or another liquid standing) means hands off — never a fallback terrain write.
+			if (RimMandrakeFlowWorksSettings.legacyFloodViaEngineEnabled && excavation != null && excavation.IsExcavated(c))
+			{
+				RM_MapComponent_Excavation.DriverFillOutcome outcome =
+					excavation.TrySetDriverFillOutcome(c, excavation.DepthAt(c), fluidDef);
+				if (outcome == RM_MapComponent_Excavation.DriverFillOutcome.Applied)
+				{
+					placedCells.Add(c);
+					placedLookup.Add(c);
+					frontier.Add(c);
+					floodedTileCount++;
+					remainingVolume -= fluidDef.volumePerTile;
+					return;
+				}
+				if (outcome == RM_MapComponent_Excavation.DriverFillOutcome.Refused)
+				{
+					placedLookup.Add(c);   // never offered again; spends no volume
+					return;
+				}
+			}
 			int recedeStagger = Mathf.Max(0, estimatedFloodedTiles - floodedTileCount);
 			map.terrainGrid.SetTempTerrain(c, fluidDef.floodTerrain);
 			map.tempTerrain.QueueRemoveTerrain(c, spawnedTick + FloodingTicks + fluidDef.floodedTicks + recedeStagger);
