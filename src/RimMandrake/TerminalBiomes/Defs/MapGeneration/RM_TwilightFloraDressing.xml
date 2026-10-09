@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Carrier GenStepDef for RM_GenStep_TwilightFloraDressing (Source/RM_TwilightFloraBehaviour.cs),
+  TWILIGHTSEA_FLORA_PASS_1 Route B: tithemoss beside wild hoolimbre/noothelm hosts. Order 905 is
+  after the vanilla Plants step (900), so the hosts exist. Runs on no map by itself:
+  Patches/RM_TwilightFloraDressing_Register.xml adds it to both Twilight floor generators.
+-->
+<Defs>
+  <GenStepDef>
+    <defName>RM_TwilightFloraDressing</defName>
+    <order>905</order>
+    <genStep Class="RimMandrake.TerminalBiomes.RM_GenStep_TwilightFloraDressing" />
+  </GenStepDef>
+</Defs>

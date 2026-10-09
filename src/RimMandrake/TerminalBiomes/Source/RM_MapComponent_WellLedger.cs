@@ -195,6 +195,7 @@ namespace RimMandrake.TerminalBiomes
         {
             well.noiseSeed = Rand.Range(0, 1000000);
             well.skylightThing = SpawnSkylight(well.position);
+            RM_TwilightWellFlora.OnWellOpened(map, well.position); // TWILIGHTSEA_FLORA_PASS_1 Route B
         }
 
         private void Closed(WellRecord well)
@@ -204,6 +205,28 @@ namespace RimMandrake.TerminalBiomes
                 well.skylightThing.Destroy(DestroyMode.Vanish);
             }
             well.skylightThing = null;
+            List<IntVec3> others = new List<IntVec3>();
+            foreach (WellRecord w in wells)
+            {
+                if (w != well && w.stage != WellStage.Closed) others.Add(w.position);
+            }
+            RM_TwilightWellFlora.OnWellClosed(map, well.position, others); // TWILIGHTSEA_FLORA_PASS_1 Route B
+        }
+
+        /// <summary>TWILIGHTSEA_FLORA_PASS_1: a lid-dark day is in progress (every open well held near dark).</summary>
+        public bool LidDark => lidDark;
+
+        /// <summary>TWILIGHTSEA_FLORA_PASS_1: the cell is inside the current light radius of a well that is not closed.</summary>
+        public bool IsUnderOpenWell(IntVec3 c)
+        {
+            foreach (WellRecord w in wells)
+            {
+                if (w.stage == WellStage.Closed) continue;
+                CompGlower g = w.skylightThing?.TryGetComp<CompGlower>();
+                float r = g != null ? g.GlowRadius : RM_WellKernel.BaseRadius;
+                if (c.DistanceTo(w.position) <= r) return true;
+            }
+            return false;
         }
 
         private Thing SpawnSkylight(IntVec3 cell)

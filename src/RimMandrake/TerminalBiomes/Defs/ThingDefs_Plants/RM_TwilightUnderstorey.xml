@@ -13,12 +13,13 @@
 
   ROUTE A (in RM_TwilightSea.xml <wildPlants>, shorthand form): Almslight,
   Weircomb (terrain-gated), Murkspindle, Gloamurn, Glimmerhusk, Hushcoral.
-  ROUTE B (NOT in wildPlants; needs the dressing genstep, OWED): Tithemoss,
+  ROUTE B (NOT in wildPlants; placed by Source/RM_TwilightFloraBehaviour.cs): Tithemoss,
   Tollhorn, Gleamfloss, Farwick (+ hushcoral rings at Compact stakes).
 
-  OWED, deliberately not built here (C#, not defs): gloamurn's charge/discharge
-  glower, hushcoral's entrained pulse, murkspindle's wilt-above-glow comp, the
-  Route B genstep extension. Where a design glow was a steady radius it ships
+  Route B placement and the gloamurn/murkspindle comps are built in
+  Source/RM_TwilightFloraBehaviour.cs (2026-10-09). STILL OWED (C#): hushcoral's
+  entrained pulse and its Compact stake rings, farwick's breathing bud pulse,
+  gloamurn's charged-only harvest gate, weircomb's current-stepped brightness. Where a design glow was a steady radius it ships
   as a plain CompProperties_Glower (glow grid only, per the light-economy
   pass sec 1.4); gloamurn ships with none (its glow is discharge-only).
   Nothing here is a harvestable lamp SKU: yields go to EXISTING items
@@ -33,7 +34,7 @@
 -->
 <Defs>
 
-  <!-- 1. RM_TITHEMOSS - tax. Route B. Route B only: attachment overlay on wild/Compact lamp hosts, never the player's clipped lamps, never on a vaulisk lure. No glow of its own. Cut-only weeding job, no yield. Host-adjacency placement needs the dressing genstep (owed). -->
+  <!-- 1. RM_TITHEMOSS - tax. Route B. Route B only: attachment overlay on wild/Compact lamp hosts, never the player's clipped lamps, never on a vaulisk lure. No glow of its own. Cut-only weeding job, no yield. Placed beside wild hoolimbre/noothelm by RM_GenStep_TwilightFloraDressing. -->
   <ThingDef ParentName="RM_TwilightFloorFloraBase">
     <defName>RM_Tithemoss</defName>
     <label>tithemoss</label>
@@ -57,7 +58,7 @@
     </plant>
   </ThingDef>
 
-  <!-- 2. RM_GLOAMURN - bank. Route A. Charge/discharge glower (glow 2.5 gold, breathing, only while discharging) is a small C# comp, OWED; no glower here until it exists (a static glow would make it a permanent lamp, against the design). -->
+  <!-- 2. RM_GLOAMURN - bank. Route A. Glow 2.5 gold only while discharging (RM_CompGloamurnBank charges under an open well). The breathing pulse and a charged-only harvest gate are not built. -->
   <ThingDef ParentName="RM_TwilightFloorFloraBase">
     <defName>RM_Gloamurn</defName>
     <label>gloamurn</label>
@@ -73,6 +74,15 @@
       <colorTwo>(110,140,115)</colorTwo>
       <drawSize>(0.9,0.9)</drawSize>
     </graphicData>
+    <!-- TWILIGHTSEA_FLORA_PASS_1 Route C: lit ONLY while discharging; RM_CompGloamurnBank
+         (Source/RM_TwilightFloraBehaviour.cs) gates this glower through IThingGlower. -->
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>2.5</glowRadius>
+        <glowColor>(255,214,130,0)</glowColor>
+      </li>
+      <li Class="RimMandrake.TerminalBiomes.RM_CompProperties_GloamurnBank" />
+    </comps>
     <plant>
       <growDays>10</growDays>
       <harvestWork>200</harvestWork>
@@ -88,7 +98,7 @@
     </plant>
   </ThingDef>
 
-  <!-- 3. RM_MURKSPINDLE - refuse. Route A. No glow. The wilt-above-glow comp (ruled to ship 2026-09-27) is a small C# comp, OWED; the def is complete without it. -->
+  <!-- 3. RM_MURKSPINDLE - refuse. Route A. No glow. Wilts above a glow-grid threshold (RM_CompWiltAboveGlow). -->
   <ThingDef ParentName="RM_TwilightFloorFloraBase">
     <defName>RM_Murkspindle</defName>
     <label>murkspindle</label>
@@ -104,6 +114,10 @@
       <colorTwo>(25,25,32)</colorTwo>
       <drawSize>(0.8,0.8)</drawSize>
     </graphicData>
+    <!-- TWILIGHTSEA_FLORA_PASS_1 Route C (ruled to ship 2026-09-27): rots above a glow-grid threshold, sky ignored. -->
+    <comps>
+      <li Class="RimMandrake.TerminalBiomes.RM_CompProperties_WiltAboveGlow" />
+    </comps>
     <plant>
       <growDays>6</growDays>
       <maxMeshCount>1</maxMeshCount>
@@ -147,7 +161,7 @@
     </plant>
   </ThingDef>
 
-  <!-- 5. RM_TOLLHORN - record. Route B. Route B only: seeded on well-recurrence ground by the dressing genstep (owed). No glow; inert to the lightweb on purpose. -->
+  <!-- 5. RM_TOLLHORN - record. Route B. Route B only: seeded under each skylight as it opens (RM_TwilightWellFlora), so stands accumulate where wells recur. No glow; inert to the lightweb on purpose. -->
   <ThingDef ParentName="RM_TwilightFloorFloraBase">
     <defName>RM_Tollhorn</defName>
     <label>tollhorn</label>
@@ -208,7 +222,7 @@
     </plant>
   </ThingDef>
 
-  <!-- 7. RM_GLEAMFLOSS - inhabit. Route B. Route B only: shaft cells, seeded/killed by the well-ledger (owed). No glower (the skylight's 6.0 covers it). No yield (ruled: no gilt item). -->
+  <!-- 7. RM_GLEAMFLOSS - inhabit. Route B. Route B only: shaft cells, seeded/killed by the well-ledger (RM_TwilightWellFlora). No glower (the skylight's 6.0 covers it). No yield (ruled: no gilt item). -->
   <ThingDef ParentName="RM_TwilightFloorFloraBase">
     <defName>RM_Gleamfloss</defName>
     <label>gleamfloss</label>
@@ -264,7 +278,7 @@
     </plant>
   </ThingDef>
 
-  <!-- 9. RM_FARWICK - carry. Route B. Route B only: runner placement (4-8 cell run from shaft rims), breathing pulse and die-with-the-well are OWED; this def is the bud. -->
+  <!-- 9. RM_FARWICK - carry. Route B. Route B only: the bud is placed at the end of a 4-8 cell run from a shaft rim and dies when its home well closes (RM_TwilightWellFlora); the breathing pulse is not built. This def is the bud. -->
   <ThingDef ParentName="RM_TwilightFloorFloraBase">
     <defName>RM_Farwick</defName>
     <label>farwick</label>
