@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Verse;
 
 namespace RimMandrake.CreatureBehaviors
@@ -78,5 +79,29 @@ namespace RimMandrake.CreatureBehaviors
         {
             compClass = typeof(RM_CompDrumLure);
         }
-    }
+    
+        public override IEnumerable<string> ConfigErrors(ThingDef parentDef)
+        {
+            foreach (string err in base.ConfigErrors(parentDef))
+            {
+                yield return err;
+            }
+
+            // CREATURE_BEHAVIORS_CONFIGERRORS_1: report only.
+            string owner = parentDef != null ? parentDef.defName : "?";
+            if (luredHediff == null)
+            {
+                yield return "RM_CompProperties_DrumLure on " + owner
+                             + " has no luredHediff, so no victim can ever be lured.";
+            }
+            if (checkIntervalTicks <= 0)
+            {
+                yield return "RM_CompProperties_DrumLure on " + owner + " checkIntervalTicks must be > 0.";
+            }
+            if (lureChancePerScan < 0f || lureChancePerScan > 1f)
+            {
+                yield return "RM_CompProperties_DrumLure on " + owner + " lureChancePerScan must be between 0 and 1.";
+            }
+        }
+}
 }
