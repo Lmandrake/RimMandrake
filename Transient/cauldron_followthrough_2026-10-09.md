@@ -26,5 +26,13 @@ One line per TODO/conflict from `art.py enact` (8eaa2b252): what was done, evide
 ## Enact bug
 - ROOT CAUSE: on --apply, step 1 ingest wrote owner KEEP rulings for the row's own pick column (GR_Beetlefleet: pick B incl. B-north 1353dead) and for a DEFAULT variant column on a redo row (AA_InfectedAerofleet: variants [B], variantsDefault, all three B pictures ✕'d) — ruling ids 0bc5d894264bbaa0b3c6, f23447ec2a9ccf1a612b. Step 4 then read those fresh keeps as protection. The dry run never writes ingest, so it planned the purges: dry ≠ apply.
 - FIX: ingest.py drops ✕'d shas of the same row from pick/picks/variant keeps (a wholly ✕'d column gets no keep); enact.py never installs or protects a same-row ✕'d picture, and a keep minted by the same row of the same decisions file no longer blocks that row's ✕ (purge releases it). Selftest `src/RimMandrake/Utils/art/selftest_enact_selfpurge.py` (fails 8/10 on the pre-fix code, passes 10/10 after).
+- AA_InfectedAerofleet ✕ ×3 and GR_Beetlefleet ✕ ×1: purged by `art.py enact … --apply` with the fixed code (4 purged; 7 already purged in total).
+
+## Final state
+- `--mark-done` AA_OcularJelly, AM_Dryad_Corruptor, AM_Dryad_Tumorous, GR_Beetlefleet, RM_TreeMartyr (evidence = the renames commit); notes moved to notes_followed by the --apply.
+- Sheet rebuilt with `refresh_sheets.py --only cauldron --force` (snapshot e949b3f6e0e3427d). Enact dry run after the rebuild: TODO 0, CONFLICTS 0.
+- Deploy: 6 override mods + SWBestiary + UtinniPatches deployed; `--compose biomes` (Cauldron/Contagion defs and tree textures) SKIPPED because RimWorld is running and its plan writes a DLL — owed at the next shutdown. The 6 new override mods are not in ModsConfig yet (same as earlier override mods: the mod list owns that).
+- `run_selftests.py`: GREEN, 352/354 pass, 0 fail, 2 skipped.
 
 ## Legacy unqueued
+- See `Transient/legacy_unqueued_rulings_2026-10-09.md`: 229 legacy rows ruled replace/redo with no artpipe job after the ruling (15 files). Neebray cause: legacy file has no snapshot -> ingest/enact refuse it; and `replace` normalises to `replace-donor`, which no tool queues.

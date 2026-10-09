@@ -133,7 +133,17 @@
       "at": "2026-10-09T14:23:53.321Z",
       "decidedAt": "2026-10-09T14:23:33.353Z",
       "decision": "B",
-      "note": "This belongs in the Contagion, not here... move.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T14:23:53.321Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "This belongs in the Contagion, not here... move.",
+          "when": "2026-10-09T07:56:59-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -202,7 +212,17 @@
       "at": "2026-10-09T14:13:54.054Z",
       "decidedAt": "2026-10-09T14:13:54.054Z",
       "decision": "B",
-      "note": "Recreate name and description from art, but art is good.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T14:13:54.054Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Recreate name and description from art, but art is good.",
+          "when": "2026-10-09T07:56:59-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -234,7 +254,17 @@
       "at": "2026-10-09T14:14:52.615Z",
       "decidedAt": "2026-10-09T14:14:37.070Z",
       "decision": "B",
-      "note": "Regenerate name and description but art is good, a tumorous version of the above creature.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T14:14:52.615Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Regenerate name and description but art is good, a tumorous version of the above creature.",
+          "when": "2026-10-09T07:56:59-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -245,7 +275,17 @@
       "at": "2026-10-09T14:20:22.135Z",
       "decidedAt": "2026-10-09T14:18:54.361Z",
       "decision": "B",
-      "note": "North facing image needs regen, this is a hideous creature now named Garsulix that Hungers. A floating, hungry, chitinous, insect-like ball of gas that drifts ever closer slowly but surely, intent on devouring your flesh.  Regen description.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T14:20:22.135Z",
+          "followed_by": [
+            "enact_c8bcd172_garsulix_north_v1_north"
+          ],
+          "note": "North facing image needs regen, this is a hideous creature now named Garsulix that Hungers. A floating, hungry, chitinous, insect-like ball of gas that drifts ever closer slowly but surely, intent on devouring your flesh.  Regen description.",
+          "when": "2026-10-09T07:56:59-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "1353dead6d575173a214df2274499364dd8835498c89c3e6485ebf5ca8d02559"
@@ -372,7 +412,17 @@
       "at": "2026-10-09T14:34:48.104Z",
       "decidedAt": "2026-10-09T14:34:36.298Z",
       "decision": "B",
-      "note": "Redo name and description",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T14:34:48.104Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Redo name and description",
+          "when": "2026-10-09T07:56:59-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"

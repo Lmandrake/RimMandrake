@@ -1,9 +1,9 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-09T07:28:27-0700",
+ "built": "2026-10-09T08:04:19-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 68 mods \u2014 a test list): 614 active",
+ "loadOrder": "live ModsConfig.xml: 614 active",
  "rows": {
   "AA_BedBug": {
    "columns": {
@@ -16,20 +16,28 @@
      "east": "2900a6a7dcf8f0e76df5a094d4a66ada6e5a12450aa3e393130d38d2b8a8614d",
      "north": "13d24f1217a05ac42bed89e44764903fe35615b13f06701ec97042ca12d8613f",
      "south": "96e5cdc8131a488a93f8ddbbbbc01b6d085b48c65bfdee00f0cb2333ba236b9c"
+    },
+    "C": {
+     "east": "ba60f423cd55f02804b67c8a2118b7b5cf2d9ec67ea714873b5cca475f90baa4",
+     "north": "d26ea30a5fcc5b8543f064b5c950c35ce55f46bdbbba7f63ea08c178a9ddae8e",
+     "south": "1dbbf3b2b67e52bc51bd4735fef9a45577ecd18905dd71225e50e9bcae66e12f"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
-    "B": "Things/Pawn/Animal/AA_BedBug/AA_BedBug"
+    "B": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
+    "C": "Things/Pawn/Animal/AA_BedBug/AA_BedBug"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_BedBug_v1"
+    "B": "render gapall_AA_BedBug_v1",
+    "C": "render enact_be511e0a_bedbug_v1"
    },
    "res": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "bedbug"
   },
@@ -44,20 +52,28 @@
      "east": "624dc66dd8a8beeac8c8815a531cd5035a0994de72be15e187a765bbb5cdeea0",
      "north": "c0ef85c2210c8d324c56f6a1ab060867dcf2281be8c981a412a43c72be139f94",
      "south": "918f4a66a4a40fdd3b1ff546d2f7ba1be6ca1a16af8cadd96f5a27eda3fbae00"
+    },
+    "C": {
+     "east": "c50de4b85c204bb94ca2098e994761c973c3990f693f0cb71218f7863ca1872c",
+     "north": "cb2c786fc2ec6a02b76ab8ae14281f4d815f113b5ce80c4dafbc757917092c3b",
+     "south": "b9ac78abe816592c882096f888e9e947be6b03b007232d7e54f4c1873e5e4417"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
-    "B": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit"
+    "B": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
+    "C": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_CrystalMit_v1"
+    "B": "render gapall_AA_CrystalMit_v1",
+    "C": "render enact_f2b850a2_crystalmit_v1"
    },
    "res": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "crystalmit"
   },
@@ -115,6 +131,11 @@
      "east": "a4ddb93ff7a8d1e732fca5017a48313a49da2afbe78491c75a921e87b7d04674",
      "north": "89ea6036368716bbb780cd7cb9bd619ff6ee60fd92dc23e007bbaa38d346964d",
      "south": "1ddd2f062ca2c1e92927e3360a7a7f6ddb336745903e912e7ba4b0a9a8c2b9de"
+    },
+    "F": {
+     "east": "d9eb4a4c1dec738cd3f4a4d7fde27de8984a9c782da5fc17f2f9f9ac05cf9738",
+     "north": "ee62ed5065eaaa97d8a49f1ceb43453dd07fbec6da1e1d9cf0f34626c956380c",
+     "south": "ca753c575412496f9044c8ede46d56d79c0097051c06f556bd5a6931692cd414"
     }
    },
    "graphic_of": {
@@ -122,14 +143,16 @@
     "B": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie",
     "C": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_baby",
     "D": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female",
-    "E": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female_baby"
+    "E": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female_baby",
+    "F": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_GiantCrownedSilkie_v1",
     "C": "IN GAME \u2014 Alpha Animals",
     "D": "IN GAME \u2014 Alpha Animals",
-    "E": "IN GAME \u2014 Alpha Animals"
+    "E": "IN GAME \u2014 Alpha Animals",
+    "F": "render enact_4d78432e_giantcrownedsilkie_v1"
    },
    "res": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie",
    "reserved": [
@@ -137,7 +160,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "giantcrownedsilkie"
   },
@@ -180,20 +204,28 @@
      "east": "599eeebbc85351789ecaab578c250a648a2159448d39c9cf4822674964080027",
      "north": "2208d36dc81c2c093af8672bd9b6ba8cc014eda4927d56752866eefbd10aa2cf",
      "south": "eece65af2cc46106d247c3f17187599c591de4e5ac4c84e8973e273894f481d3"
+    },
+    "C": {
+     "east": "1dd849ff0dffd6ad766e1cd5edf6cc014ae0fcf52e9e8290c8370ba0d1546c1d",
+     "north": "128efb45392ad7cb1f5fcbe89248c9c26c2ded8c7ac578bd83e511945a43d388",
+     "south": "28ecec6feecab1f0315d2f5a24d2a3ff649c4d3205d58f8a171df10d25bf4c4e"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet",
-    "B": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet"
+    "B": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet",
+    "C": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_InfectedAerofleet_v1"
+    "B": "render gapall_AA_InfectedAerofleet_v1",
+    "C": "render enact_d3c59886_infectedaerofleet_v1"
    },
    "res": "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "infectedaerofleet"
   },
@@ -244,7 +276,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_OcularJelly_v1"
+    "B": "shipped, not loaded \u2014 OcularJellyArtOverride"
    },
    "res": "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly",
    "reserved": [
@@ -272,7 +304,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_Plasmorph_v1"
+    "B": "shipped, not loaded \u2014 PlasmorphArtOverride"
    },
    "res": "Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph",
    "reserved": [
@@ -302,26 +334,34 @@
      "east": "cf3a74e2cea78cfd8001d03d9cba54e409f17566e15c50058b91addec18e40c8",
      "north": "1f49f70893fdf4f8981ab4f0dfa0b171f31c2e174ff01830f96adae064c9cbaa",
      "south": "37b2340d40f6b1b47e0c4494be0434a55680d447c41391f766c14c3c93188bd5"
+    },
+    "E": {
+     "east": "18e3d4499f2208cd0c359977e6cc54c0b07dececf89265e21b99006a80382e8d",
+     "north": "b1091560b8a2d6a174975590b6ee26815e9d28eb0d625d47f252453f21dbd880",
+     "south": "29324572952ff4f7b912d78f0c57e28349fd4243626feb2cc6f6c9207318d1b8"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Radyak/AA_Radyak_baby",
     "B": "Things/Pawn/Animal/AA_Radyak/AA_Radyak_female",
     "C": "Things/Pawn/Animal/AA_Radyak/AA_Radyak_male",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "IN GAME \u2014 Alpha Animals",
     "C": "IN GAME \u2014 Alpha Animals",
-    "D": "render gapall_AA_Radyak_v1"
+    "D": "render gapall_AA_Radyak_v1",
+    "E": "render enact_f3decf4d_radyak_v1"
    },
    "res": "Things/Pawn/Animal/AA_Radyak/AA_Radyak_baby",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "radyak"
   },
@@ -372,7 +412,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Memes",
-    "B": "render gapall_AM_Dryad_Corruptor_v1"
+    "B": "shipped, not loaded \u2014 DryadCorruptorArtOverride"
    },
    "res": "Things/Pawn/Animal/AM_Dryad_Corruptor/AM_Dryad_Corruptor",
    "reserved": [
@@ -428,7 +468,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Memes",
-    "B": "render gapall_AM_Dryad_Tumorous_v1"
+    "B": "shipped, not loaded \u2014 DryadTumorousArtOverride"
    },
    "res": "Things/Pawn/Animal/AM_Dryad_Tumorous/AM_Dryad_Tumorous",
    "reserved": [
@@ -448,20 +488,33 @@
      "east": "15cd4c22ef0553b094931f85cc21e00473270dde5a6aad31e1fa0ecbcee76e82",
      "north": "1353dead6d575173a214df2274499364dd8835498c89c3e6485ebf5ca8d02559",
      "south": "77647aabd55332acb80ffb981e0540e1c971feb6ce332118f317aeec2c1d0871"
+    },
+    "C": {
+     "east": "15cd4c22ef0553b094931f85cc21e00473270dde5a6aad31e1fa0ecbcee76e82",
+     "south": "77647aabd55332acb80ffb981e0540e1c971feb6ce332118f317aeec2c1d0871"
+    },
+    "D": {
+     "north": "69d3d9b67fa6692eb7bf52aa14b333e57e2e2a06584589fc4ee128ab29fec9fc"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
-    "B": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet"
+    "B": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
+    "C": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Vanilla Genetics Expanded",
-    "B": "render gapall_GR_Beetlefleet_v1"
+    "B": "render gapall_GR_Beetlefleet_v1",
+    "C": "shipped, not loaded \u2014 BeetlefleetArtOverride",
+    "D": "render enact_c8bcd172_garsulix_north_v1"
    },
    "res": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "gr_beetlefleet"
   },
@@ -476,11 +529,11 @@
    },
    "graphic_of": {
     "A": "Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a",
-    "B": "_byname"
+    "B": "Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a"
    },
    "labels": {
-    "A": "IN GAME \u2014 Cauldron",
-    "B": "render bloodbouquet_v3"
+    "A": "history Cauldron 2026-10-03",
+    "B": "IN GAME \u2014 Cauldron"
    },
    "res": "Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a",
    "reserved": [
@@ -500,11 +553,11 @@
    },
    "graphic_of": {
     "A": "Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a",
-    "B": "_byname"
+    "B": "Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a"
    },
    "labels": {
-    "A": "IN GAME \u2014 Cauldron",
-    "B": "render crystalflower_v3"
+    "A": "history Cauldron 2026-10-03",
+    "B": "IN GAME \u2014 Cauldron"
    },
    "res": "Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a",
    "reserved": [
@@ -612,11 +665,11 @@
    },
    "graphic_of": {
     "A": "Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a",
-    "B": "_byname"
+    "B": "Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a"
    },
    "labels": {
-    "A": "IN GAME \u2014 Cauldron",
-    "B": "render gianttoxicflower_v3"
+    "A": "history Cauldron 2026-10-03",
+    "B": "IN GAME \u2014 Cauldron"
    },
    "res": "Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a",
    "reserved": [
@@ -1056,20 +1109,26 @@
      "4_east": "4dc2530034706a30ab520a5362fbe64f17fbefa6bb65886a5ee2507b129adcd7",
      "4_north": "a3902f829ec722c7c2a8497cdd1463c596f5b27daeee0e6d0b75417f5cf100a9",
      "4_south": "96e821fca416fa241c828624e9f3f0ae64c58b80fdb03f4f7a8ca4f9ff2bea3f"
+    },
+    "C": {
+     "east": "0d49459b2320aa52c322a12f4ac96e769ef8f6823646d59cc2b6fda019a02a37"
     }
    },
    "graphic_of": {
     "A": "swanimals/Neebray/Neebray",
-    "B": "_flip:swanimals/Neebray/Neebray_Flying_"
+    "B": "_flip:swanimals/Neebray/Neebray_Flying_",
+    "C": "swanimals/Neebray/Neebray"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "IN GAME \u2014 Neebray_Flying_"
+    "B": "IN GAME \u2014 Neebray_Flying_",
+    "C": "render enact_cabe4675_neebray_v1"
    },
    "res": "swanimals/Neebray/Neebray",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "neebray"
   },
@@ -1151,24 +1210,17 @@
      "east": "bef5081ec5f93526632eef147fad04cab129990b76fe641edc141d57ea8a2c41",
      "north": "e2a32b171d67d4bfc9a52f9be012764d42ccbdae2353d5e3938483339ca54368",
      "south": "4b122f0c7957b34fceb768dcd3647aebcab4f1226e03cadb34e1e69e9d52dd7f"
-    },
-    "D": {
-     "east": "9a89a904bff14d577e843ae5f2c77a26ce17e9cd73534917dccd8e13e40cab8e",
-     "north": "0acf8db94c0d1bbe99a7f65514195706be71a256798cc1f5cc679fcd29c56580",
-     "south": "478166e4e7ce77b5afb665777dd37ea4dd38236f7b4306f4064900baa5052334"
     }
    },
    "graphic_of": {
     "A": "swanimals/Kinrath/Kinrath",
     "B": "swanimals/Kinrath/Kinrath",
-    "C": "swanimals/Kinrath/Kinrath",
-    "D": "swanimals/Kinrath/Kinrath"
+    "C": "swanimals/Kinrath/Kinrath"
    },
    "labels": {
     "A": "IN GAME \u2014 KinrathArtOverride",
     "B": "render kinrath_netcaster_v2",
-    "C": "render kinrath_netcaster_v3",
-    "D": "history KinrathArtOverride 2026-09-20"
+    "C": "render kinrath_netcaster_v3"
    },
    "res": "swanimals/Kinrath/Kinrath",
    "reserved": [
@@ -1195,23 +1247,29 @@
      "east": "2197f6d30fa69035d0005acb6c3e8e3742df0a68a48b1008faad81c166023da2",
      "north": "d6b2d941d5b6270750f9f2fd77bcaddae96f08393e6780e2356691f6ad4055cf",
      "south": "ee548abc64e34a583295b675d8b882fe1a2b097acf02a8bc5cd5ab816f3c1ccf"
+    },
+    "D": {
+     "east": "f37125db3a04bec19684ccb9de1b6b2e7818669ed13adbcd5a3f63cee4e8f6c5"
     }
    },
    "graphic_of": {
     "A": "swanimals/Silooth/Silooth",
     "B": "swanimals/Silooth/Silooth",
-    "C": "swanimals/Silooth/Silooth_j"
+    "C": "swanimals/Silooth/Silooth_j",
+    "D": "swanimals/Silooth/Silooth"
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Silooth_v1",
-    "C": "IN GAME \u2014 mlie.starwarsanimalcollection"
+    "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
+    "D": "render enact_7a2b5db5_silooth_v1"
    },
    "res": "swanimals/Silooth/Silooth",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "silooth"
   },
@@ -1246,7 +1304,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.horrors",
-    "B": "render gapall_Visceral_v1",
+    "B": "shipped, not loaded \u2014 VisceralArtOverride",
     "C": "IN GAME \u2014 mlie.horrors",
     "D": "IN GAME \u2014 mlie.horrors"
    },
@@ -1261,5 +1319,5 @@
   }
  },
  "sheetId": "cauldron_sheet_2026-10-04",
- "snapshotId": "55c4254b730defc3"
+ "snapshotId": "e949b3f6e0e3427d"
 }
