@@ -48,7 +48,7 @@ namespace RimMandrake.TerminalBiomes
 
         public override void Generate(Map map, GenStepParams parms)
         {
-            if (map?.Biome == null || map.Biome.defName != "RM_TwilightSea")
+            if (map?.Biome == null || !(map.Biome.defName == "RM_TwilightSea" || map.Biome.defName == "RM_SeabedFloor_TwilightSea"))
             {
                 return;
             }

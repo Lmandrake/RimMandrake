@@ -799,7 +799,7 @@ if Suite is not None:
         with _comp(t, "ladder_rime_door_crust_gate", toggle="greyHullCrustEnabled"):
             if _live(t):
                 r = t.bridge_call("jawa/static_call", type="RimMandrake.TerminalBiomes.RM_GreyHullCrustProof",
-                                  method="ProofState", args="")
+                                  method="ProofState", args="0")
                 res = str((r or {}).get("result", ""))
                 if not res.startswith("crustDays="):
                     _unmeasured(t, "needs a parked gravship on an RM_GreySea floor map (seabed layer); proof said %r" % res[:120])
@@ -812,7 +812,7 @@ if Suite is not None:
                         _fail("16 effective days did not rime + crust + gate the hull: %r" % res)
                     # CRUST_NEVER_STRANDS_1: the tear-free launch must always clear the gate.
                     r = t.bridge_call("jawa/static_call", type="RimMandrake.TerminalBiomes.RM_GreyHullCrustProof",
-                                      method="ProofTearFree", args="")
+                                      method="ProofTearFree", args="0")
                     res = str((r or {}).get("result", ""))
                     if "gate=accepted" not in res or "crust=0" not in res or "tearFreeOffered=True" not in res:
                         _fail("tear-free launch did not clear crust and open the gate: %r" % res)

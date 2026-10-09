@@ -47,7 +47,7 @@ namespace RimMandrake.TerminalBiomes
             {
                 return CrustLine(engine, map);
             }
-            if (t is Building && map.Biome != null && map.Biome.defName == RM_GreyCrust.GreyBiome)
+            if (t is Building && RM_GreyCrust.IsGreyMap(map))
             {
                 return LampLine(t, map);
             }
@@ -87,7 +87,7 @@ namespace RimMandrake.TerminalBiomes
 
         public static string CrustLine(Building_GravEngine engine, Map map)
         {
-            if (!RM_GreyCrust.Active || map.Biome == null || map.Biome.defName != RM_GreyCrust.GreyBiome)
+            if (!RM_GreyCrust.Active || !RM_GreyCrust.IsGreyMap(map))
             {
                 return null;
             }
