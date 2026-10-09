@@ -134,9 +134,8 @@
       <li>ResourcesRaw</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <texPath>Things/Item/Resource/RM_GreatboleSeed</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <color>(120, 60, 130)</color>
       <drawSize>0.5</drawSize>
     </graphicData>
     <statBases>
