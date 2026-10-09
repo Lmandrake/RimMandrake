@@ -87,7 +87,7 @@ namespace RimMandrake.EnvironmentalHazards
             }
 
             float lastMax = -1f;
-            for (int i = 0; i < waterBands.Count; i++)
+            for (int i = 0; waterBands != null && i < waterBands.Count; i++)
             {
                 RM_GradientAxisWaterBand band = waterBands[i];
                 if (band == null)

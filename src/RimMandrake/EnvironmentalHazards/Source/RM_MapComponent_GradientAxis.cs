@@ -191,6 +191,7 @@ namespace RimMandrake.EnvironmentalHazards
         // snapshot of the whole grid.
         private void TickShift()
         {
+            EnsureGrid();
             int step = RM_AxisKernel.StepTicks(UpdateIntervalTicks, shiftTicksRemaining);
             float deltaThisStep = RM_AxisKernel.StepDelta(shiftDeltaRemaining, step, shiftTicksRemaining);
 

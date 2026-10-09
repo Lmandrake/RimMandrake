@@ -526,7 +526,7 @@ namespace RimMandrake.LuminousPigment
             if (research != null)
             {
                 research.baseCost = LuminousPigmentSettings.pressResearchCost;
-                if (LuminousPigmentSettings.pressGate == PressGate.Buildable && !research.IsFinished)
+                if (Current.Game != null && LuminousPigmentSettings.pressGate == PressGate.Buildable && !research.IsFinished)
                 {
                     Find.ResearchManager?.FinishProject(research, doCompletionDialog: false);
                 }

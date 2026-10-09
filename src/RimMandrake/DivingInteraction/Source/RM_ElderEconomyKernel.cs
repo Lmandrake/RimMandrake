@@ -30,7 +30,7 @@ namespace RimMandrake.DivingInteraction
         {
             for (int i = 0; i < records.Count; i++)
             {
-                if (records[i].Tile == tile)
+                if (records[i] != null && records[i].Tile == tile)
                 {
                     return records[i];
                 }
