@@ -647,11 +647,11 @@ TIERS["acc_20261009"] = {
 
 TIERS["acc_20261009b"] = {
     "why": "FOUNDRY acceptance sitting 2 (2026-10-09): acc_20261009 plus the mods sitting 1 lacked (bacta, bazaar, empirepursuit, cathedralpass, "
-           "swbestiary + Utinni/StarWars patch layers, graffiti, rites, wasterun, warcasket, divinginteraction, rustcathedral) so ~60 skipped criteria and "
+           "swbestiary + Utinni/StarWars patch layers, graffiti, rites, wasterun, warcasket) so ~60 skipped criteria and "
            "everything built after the first deploy (Illisk, venomvines, LongShade, WasteRun proof hooks) can be measured.",
     "want": list(TIERS["acc_20261009"]["want"]) + ["mandrake.rsw.bacta", "mandrake.rm.bazaar", "mandrake.rut.empirepursuit", "mandrake.rut.cathedralpass",
              "mandrake.rsw.swbestiary", "mandrake.rsw.patches", "mandrake.rm.graffiti", "mandrake.rut.rites", "mandrake.rut.wasterun",
-             "mandrake.rm.warcasket", "mandrake.rm.divinginteraction", "mandrake.rm.rustcathedral"],
+             "mandrake.rm.warcasket"],
     "dlc": True,
 }
 
