@@ -36,6 +36,20 @@ became particularly adept at designing advanced environmental and life-support s
 precisely because of its own physiological needs.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+Added realistic references: `wookieepedia_plo_koon_prosthetic_unmasked.jpg` (behind-the-scenes photo, *Star Wars
+Insider* 117, of actor Alan Ruscoe in the Plo Koon prosthetic head with the mask off), `wookieepedia_male_female_painted.png`
+(realistic painting of a male and a female Kel Dor, *Force and Destiny Core Rulebook*) and
+`wookieepedia_tarast_voon_painted.png` (realistic painted Kel Dor Jedi, *Force and Destiny Beginner Game*). Nothing was
+deleted: **the comic `wookieepedia_unmasked_legends.jpg` is kept as the ONLY image of the true unmasked lower face
+(tusks, mouth, eyes)** — no realistic one exists (searched: Kel Dor and Kel Dor/Legends page images, "Images of Kel
+Dors", "Images of Plo Koon"). Render that anatomy realistically, never in its inked style.
+
+🔴 **What the prosthetic photo does and does not show.** It is the real film makeup: it confirms the **deeply
+furrowed, glossy orange-tan dome, the heavy brow, and the pebbled, cratered side-lobe clusters** in physical
+material. But **below the brow it is the actor's own human face** — human eyes, nose and smiling teeth. Do NOT take
+the eyes, nose or mouth from it; those come from the comic (small dark eyes, no nose, tusks).
+
 🔴 **The single most important thing in this entry: the tusks are FACE, not equipment.**
 `wookieepedia_unmasked_legends.jpg` (Plo Koon with the mask off) shows **two long, pale
 ivory tusks curving downward and outward from the sides of the mouth** — they are part of the
@@ -69,13 +83,16 @@ What the **equipment** is, from `wookieepedia_infobox_masked_plo_koon.jpg`:
   panel). The **canon** article contains **only masked images** — both `Plokoon_detail.png`
   and `Steadfast-WotF.png` are masked. So the face described above is the best available
   reference but is not canon-sourced, and it is drawn in a flat comic style; treat proportion
-  as reliable and exact hue as the colourist's.
+  as reliable and exact hue as the colourist's. The realistic prosthetic and the two paintings agree with it on the
+  dome, furrows and lobes, and give the hue as **warm orange-tan to deep copper**, the skin glossy and leathery.
+- The female in `wookieepedia_male_female_painted.png` is **redder (rust-copper)** and her side lobes hang lower,
+  like braided masses; her mask is dark metal rather than bone — mask colour varies by individual.
 
 **Hands.** The masked reference settles them: **long, slender, clawed digits — three fingers
 and a thumb — with dark, sharply pointed claws**, held together in the render so the count is
 readable. Matches the sourced "three fingers and a thumb."
 
-**Body and dress.** `wookieepedia_vacuum_survival.jpg` (a card-art piece) and the infobox both
+**Body and dress.** `wookieepedia_vacuum_survival.jpg` (a card-art piece), the two paintings and the infobox all
 put the Kel Dor in **long, heavy, full-length robes with wide sleeves**, tall and narrow in
 silhouette. Nothing in either image contradicts "tall"; nothing in either image supports a
 *heavy* build — the read is tall and lean, which is what the 1.4–2 m Legends range plus
@@ -88,6 +105,7 @@ silhouette. Nothing in either image contradicts "tall"; nothing in either image 
 - [ ] No projecting nose — a fluted mass of vertical folds runs down to the mouth
 - [ ] When masked, a single tan/bone-coloured rigid plate combining two dark angular goggle lenses and a central snouted respirator plate, with decorative side flanges
 - [ ] Hands show three fingers and a thumb (four digits total) with dark, sharply pointed claws
+- [ ] Realistic rendering: glossy, leathery, deeply furrowed skin like the film prosthetic, natural lighting, no outlines, no comic inking
 
 ## Engine limits
 none known
@@ -139,16 +157,28 @@ none known
   **Legends** article → `wookieepedia_unmasked_legends.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/7/71/Steadfast-WotF.png (File:Steadfast-WotF.png
   → `wookieepedia_vacuum_survival.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/f/f9/Alan-PloKoon-Ruscoe_SWI117.jpg/revision/latest?cb=20100725024234
+  (File:Alan-PloKoon-Ruscoe SWI117.jpg → `wookieepedia_plo_koon_prosthetic_unmasked.jpg`)
+- https://static.wikia.nocookie.net/starwars/images/2/2b/KelDorMaleFemale.png/revision/latest?cb=20230108230203
+  (File:KelDorMaleFemale.png → `wookieepedia_male_female_painted.png`)
+- https://static.wikia.nocookie.net/starwars/images/a/a1/Tarast_Voon.png/revision/latest?cb=20160306224103
+  (File:Tarast Voon.png → `wookieepedia_tarast_voon_painted.png`)
 - NOT fetched this pass: https://www.starwars.com/databank/plo-koon (a species-level Databank
   page for Kel Dor was not attempted; the canon article cites this Databank entry for the
   leathery hide and the vacuum tolerance).
 
 ## Candidate images
-- `wookieepedia_unmasked_legends.jpg` — 🔑 **the reference of record for the FACE**, and the
-  only unmasked Kel Dor found in either continuity. Settles the tusks, the furrowed dome, the
-  side lobe clusters, the small dark eyes and the absent nose. **Legends, and comic-styled** —
-  proportions trustworthy, hue is the colourist's.
-- `wookieepedia_infobox_masked_plo_koon.jpg` — the canon infobox: full-body Plo Koon on white,
+- `wookieepedia_unmasked_legends.jpg` — **animated/comic, kept for lower-face anatomy only.** Legends comic panel
+  (File:PloKoonUnmasked-STD.jpg), the only true unmasked Kel Dor face: tusks, small dark eyes, absent nose. Not a
+  rendering-style target.
+- `wookieepedia_plo_koon_prosthetic_unmasked.jpg` — **the realistic reference for the dome, furrows and side lobes.**
+  Behind-the-scenes photo (*Star Wars Insider* 117) of Alan Ruscoe in the Plo Koon prosthetic, mask off. The eyes,
+  nose and teeth are the actor's — ignore them.
+- `wookieepedia_male_female_painted.png` — realistic painting, *Force and Destiny Core Rulebook*: masked male in
+  robes and masked rust-copper female in a dark suit with a staff — sexual variation, dress, four-digit clawed hands.
+- `wookieepedia_tarast_voon_painted.png` — realistic painting, *Force and Destiny Beginner Game*: masked Kel Dor Jedi,
+  silver mask, copper furrowed dome and lobes, clawed hands.
+- `wookieepedia_infobox_masked_plo_koon.jpg` — live-action, the canon infobox: full-body Plo Koon on white,
   robed. **The reference of record for the EQUIPMENT** (goggle lenses + respirator plate +
   side flanges + crown strap) and for the **four-digit clawed hand**, which is unobstructed here.
 - `wookieepedia_vacuum_survival.jpg` — card art illustrating the vacuum-tolerance line. Small,

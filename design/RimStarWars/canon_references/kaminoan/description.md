@@ -58,17 +58,18 @@ psychic trait, and no combat capability anywhere in either article — the speci
 their limbs are *frail*.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+The Clone Wars-model infobox plate (`wookieepedia_kaminoans_group.jpg`) was removed. Proportions are now taken from
+two live-action *Attack of the Clones* frames: `wookieepedia_taun_we_fullbody_aotc.png` (Taun We standing beside
+Jango Fett, Boba and Obi-Wan) and `wookieepedia_kaminoans_fullbody_aotc.png` (Lama Su and Taun We walking with
+Obi-Wan). The animated plate exaggerated the stick-thin arms; in live action the body is slender but not skeletal.
 
-🔑 **The neck and head shape are the whole read, and the repo art has neither.** Four
-images, two of them live-action reference plates, agree closely.
+🔑 **The neck and head shape are the whole read, and the repo art has neither.**
 
-**Silhouette proportions, measured off `wookieepedia_kaminoans_group.jpg`** (the
-Clone Wars two-figure plate, 505×1180, transparent background). On the right-hand
-female: crown of head ≈ y45, chin ≈ y115, shoulder line ≈ y250, feet ≈ y1100. So
-against a standing height of ~1055 px the **head is ~7% and the bare neck ~13%** —
-**the neck is close to twice the length of the head**, and head-plus-neck is roughly
-**a fifth of total standing height.** That is the number to hit. A human head-on-neck
-is nothing like it.
+**Silhouette proportions, measured off `wookieepedia_taun_we_fullbody_aotc.png`** (live-action, 1920×824): head
+≈ 50 px crown-to-chin, bare neck ≈ 85 px chin-to-collar — **the neck is roughly 1.7× the length of the head** — and
+her head rides well above Obi-Wan's and Jango's: a Kaminoan **towers over humans** (Legends ~2.1–2.2 m), and the
+extra height is almost all neck. A human head-on-neck is nothing like it.
 
 **Skin is NOT white.** The canon infobox says "White" and every image disagrees in the
 same direction:
@@ -79,7 +80,7 @@ same direction:
 - `wookieepedia_taun_we_female.jpg` (live-action, AotC): distinctly **grey with a
   green-blue cast** — noticeably darker and cooler than Lama Su, so hue varies between
   individuals.
-- `wookieepedia_kaminoans_group.jpg`: **grey-mauve**, consistent with the above.
+- The full-body AotC frames read **pale grey to grey-white** under Kamino's bright, flat interior light.
 - ⚠️ **Lips are the one saturated colour on the whole body: a clear pink/mauve**, on
   both live-action heads. A flat monochrome Kaminoan is wrong; the mouth is a colour
   accent.
@@ -107,7 +108,7 @@ summary gets wrong:
 - **The neck attaches at the rear/underside of the skull, bird-like**, not under the
   centre of the jaw, and carries visible ringed/wrinkled skin.
 
-**Body, from the group plate.** Arms **very long and thin**, hanging past the hip;
+**Body, from the live-action full-body frames.** Arms **long and slender**, hanging to mid-thigh;
 hands large relative to the forearm with **long slender fingers** (four visible digits
 plus thumb, all elongated) — the `ElongatedFingers` gene is well founded. Torso
 narrow and flat. Robes hide the legs in every image found, so the **digitigrade
@@ -140,11 +141,12 @@ the almond black eyes, and a tapering lower face. What is wrong:
   resolution for the detail above is low.
 
 ## Must show
-- [ ] Neck is close to twice the length of the head; head-plus-neck reads as roughly a fifth of standing height — not a human head-on-neck
+- [ ] Neck is roughly 1.7–2× the length of the head and the figure towers over a human, the extra height almost all neck — not a human head-on-neck
 - [ ] Skin is pale grey with a lavender/blue or green-blue cast, not flat white
 - [ ] Lips are a saturated pink/mauve accent against the otherwise pale, grey body
 - [ ] Eyes are enormous, almond-shaped, upswept at the outer corner, with a solid glossy black sclera and a large pale grey-white iris/pupil disc — not a plain black dot
 - [ ] There is a small keeled nose with two downward-facing nostrils, and a small closed mouth with full pink lips — the face is not featureless
+- [ ] Realistic rendering: fine wrinkled pale skin, soft natural lighting as in the live-action film, no outlines, no cartoon shading
 - [ ] Male has a low fore-aft fin crest plus small rear ridges on the crown; female has a smooth crestless cranium (any head-crescent ornament is worn jewellery, not anatomy)
 
 ## Engine limits
@@ -162,7 +164,11 @@ the almond black eyes, and a tapering lower face. What is wrong:
   (25,785 chars, 2026-09-15). Source of the 2.2 m / 65–70 kg / 80-year figures, the
   mother-of-pearl skin note and the digitigrade stance.
 - https://static.wikia.nocookie.net/starwars/images/5/5f/Kaminoans-SWHC31.png
-  (File:Kaminoans-SWHC31.png, the canon infobox image → `wookieepedia_kaminoans_group.jpg`)
+  (File:Kaminoans-SWHC31.png, the canon infobox image — removed 2026-10-08 as animated-model art)
+- https://static.wikia.nocookie.net/starwars/images/6/62/JangoFettsApartment-CGSWG.png/revision/20250127013547
+  (File:JangoFettsApartment-CGSWG.png → `wookieepedia_taun_we_fullbody_aotc.png`)
+- https://static.wikia.nocookie.net/starwars/images/d/dc/Kenobi-Visits-Kamino.png/revision/latest?cb=20210516171856
+  (File:Kenobi-Visits-Kamino.png → `wookieepedia_kaminoans_fullbody_aotc.png`)
 - https://static.wikia.nocookie.net/starwars/images/7/73/Lama_Su.jpg
   (File:Lama Su.jpg, infobox of the Lama Su article → `wookieepedia_lama_su_male.jpg`)
 - https://static.wikia.nocookie.net/starwars/images/9/9c/TaunWe.jpg
@@ -185,11 +191,11 @@ the almond black eyes, and a tapering lower face. What is wrong:
   Same source and fidelity: smooth crestless cranium, cooler green-grey skin (proving
   hue varies between individuals), pink lips, and the beaded head-band that is
   *jewellery* rather than anatomy.
-- `wookieepedia_kaminoans_group.jpg` — the canon infobox plate, two full-length figures
-  on a transparent background, one crested and one not. **The measurement source for
-  the neck-to-head-to-height proportions**, and for the long thin arms and elongated
-  fingers. Clone Wars animated style, so treat surface finish as the show's, not the
-  species'.
+- `wookieepedia_taun_we_fullbody_aotc.png` — **the reference of record for proportions.** Live-action
+  *Attack of the Clones*: Taun We standing full-length beside Jango Fett, Boba and Obi-Wan — neck-to-head ratio,
+  height over humans, slender arms, long robe. File `JangoFettsApartment-CGSWG.png`.
+- `wookieepedia_kaminoans_fullbody_aotc.png` — live-action *Attack of the Clones*: Lama Su (dark robe) and Taun We
+  walking with Obi-Wan in the Tipoca City corridor — both sexes full-length, gait. File `Kenobi-Visits-Kamino.png`.
 - `wookieepedia_negas_legends.jpg` — Legends design, full body. Kept as a **variant,
   not a target**: it adds whisker-like head filaments and a warmer grey-tan skin that
   the live-action version does not have. Useful only to show what NOT to copy if
