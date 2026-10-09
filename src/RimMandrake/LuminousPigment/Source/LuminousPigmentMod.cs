@@ -202,11 +202,35 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref vermilionMinSkill, "vermilionMinSkill", 14);
             Scribe_Values.Look(ref maxFamiliesPerPawn, "maxFamiliesPerPawn", 3);
             Scribe_Values.Look(ref hediffGlowEnabled, "hediffGlowEnabled", true);
-            List<bool> familyEnabledList = new List<bool>(familyEnabled);
-            Scribe_Collections.Look(ref familyEnabledList, "familyEnabled", LookMode.Value);
-            if (familyEnabledList != null && familyEnabledList.Count == familyEnabled.Length)
+            // Saved by stable family key (the disabled ones), so adding or reordering families never resets or moves a toggle.
+            // The positional "familyEnabled" list of older settings files is read only to migrate, and is never written again.
+            List<string> familyDisabledKeys = new List<string>();
+            if (Scribe.mode == LoadSaveMode.Saving)
             {
-                familyEnabled = familyEnabledList.ToArray();
+                for (int i = 0; i < familyEnabled.Length && i < DeepfireFamilies.All.Count; i++)
+                {
+                    if (!familyEnabled[i]) familyDisabledKeys.Add(DeepfireFamilies.All[i].key);
+                }
+            }
+            Scribe_Collections.Look(ref familyDisabledKeys, "familyDisabledKeys", LookMode.Value);
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+            {
+                List<bool> legacyList = null;
+                Scribe_Collections.Look(ref legacyList, "familyEnabled", LookMode.Value);
+                bool[] loaded = NewFamilyEnabledArray();
+                if (familyDisabledKeys != null)
+                {
+                    foreach (string key in familyDisabledKeys)
+                    {
+                        int idx = DeepfireFamilies.IndexOf(key);
+                        if (idx >= 0) loaded[idx] = false;
+                    }
+                    familyEnabled = loaded;
+                }
+                else if (legacyList != null && legacyList.Count == loaded.Length)
+                {
+                    familyEnabled = legacyList.ToArray();
+                }
             }
 
             Scribe_Values.Look(ref godsReact, "godsReact", true);
