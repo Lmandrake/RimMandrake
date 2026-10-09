@@ -337,6 +337,12 @@ namespace RimMandrake.Stillsand
                 while (bearings.Count < cells.Count) bearings.Add("");
                 if (defNames.Count > cells.Count) defNames.RemoveRange(cells.Count, defNames.Count - cells.Count);
                 if (bearings.Count > cells.Count) bearings.RemoveRange(cells.Count, bearings.Count - cells.Count);
+                // an empty string can round-trip through the save as null: tick reads defNames[i].Length
+                for (int i = 0; i < cells.Count; i++)
+                {
+                    if (defNames[i] == null) defNames[i] = "";
+                    if (bearings[i] == null) bearings[i] = "";
+                }
             }
         }
     }

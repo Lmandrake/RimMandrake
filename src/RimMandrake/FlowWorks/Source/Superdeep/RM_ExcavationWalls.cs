@@ -399,13 +399,18 @@ namespace RimMandrake.FlowWorks
 		/// <summary>The smoke halo on undug ground round a burned cut: per vertex, the distance to the nearest burned
 		/// cell within two cells, turned into soot coverage whose reach the lobe noise sets — lumpy, uneven, darkest
 		/// at the lip.</summary>
+		// scratch for ScorchHalo, reused for every cell of this section's regeneration (every entry is rewritten before use)
+		private readonly IntVec3[] haloCells = new IntVec3[25];
+		private readonly float[] haloStr = new float[25];
+		private readonly Color32[,] haloGrid = new Color32[7, 7];
+
 		private void ScorchHalo(Map map, RM_PitScorch scorch, IntVec3 c, float y)
 		{
 			// burned cells within reach, with their strength
 			float best = 0f;
 			int nb = 0;
-			IntVec3[] cells = new IntVec3[25];
-			float[] str = new float[25];
+			IntVec3[] cells = haloCells;
+			float[] str = haloStr;
 			for (int dx = -2; dx <= 2; dx++)
 			{
 				for (int dz = -2; dz <= 2; dz++)
@@ -426,7 +431,7 @@ namespace RimMandrake.FlowWorks
 				return;
 			}
 			const int N = 6;
-			Color32[,] g = new Color32[N + 1, N + 1];
+			Color32[,] g = haloGrid;
 			for (int i = 0; i <= N; i++)
 			{
 				for (int j = 0; j <= N; j++)

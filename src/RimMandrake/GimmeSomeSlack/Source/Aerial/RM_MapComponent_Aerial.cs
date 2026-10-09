@@ -53,6 +53,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             pendingAuto.Remove(a);
             pendingSince.Remove(a);
             anchorLive.Remove(a.thingIDNumber);
+            lastTerminals.Remove(a.thingIDNumber);
             DirtyCell(a.Position);
         }
         public void Register(CompPowerTap t) => taps.Add(t);
@@ -522,11 +523,20 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
         public static List<Thing> LocalConnections(CompAerialAnchor a)
         {
             var r = new List<Thing>();
+            LocalConnections(a, r);
+            return r;
+        }
+
+        /// <summary>As <see cref="LocalConnections(CompAerialAnchor)"/> but fills a caller-owned list (cleared first): the
+        /// per-frame drop drawing reuses one.</summary>
+        public static void LocalConnections(CompAerialAnchor a, List<Thing> r)
+        {
+            r.Clear();
             CompPower pc = a.PowerComp;
             if (pc?.connectChildren != null)
                 foreach (CompPower c in pc.connectChildren)
                     if (c?.parent != null && c.parent.Spawned && !r.Contains(c.parent)) r.Add(c.parent);
-            if (!a.Spawned) return r;
+            if (!a.Spawned) return;
             foreach (IntVec3 adj in GenAdj.CellsAdjacentCardinal(a.parent))
             {
                 if (!adj.InBounds(a.Map)) continue;
@@ -539,8 +549,10 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                     r.Add(t);
                 }
             }
-            return r;
         }
+
+        private readonly List<Thing> devsScratch = new List<Thing>();
+        private readonly List<(int, double)> termScratch = new List<(int, double)>();
 
         /// <summary>Each local connection is a drop wire from the device's CENTROID up to the pole terminal
         /// AerialMath.AssignTerminals gave it (spread over the crossarm, shared only when there are more devices than
@@ -552,17 +564,21 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (!AerialSettings.enabled || AerialMaterials.Span == null) return;
             dropUsed.Clear();
             float under = AltitudeLayer.SmallWire.AltitudeFor(), over = SpanAltitude;
+            CellRect near = view.ExpandedBy(6);
+            List<Thing> devs = devsScratch;
             foreach (CompAerialAnchor a in Anchors)
             {
-                if (!view.ExpandedBy(6).Contains(a.Position)) continue;
-                List<Thing> devs = LocalConnections(a);
+                if (!near.Contains(a.Position)) continue;
+                LocalConnections(a, devs);
                 if (devs.Count == 0) { lastTerminals.Remove(a.thingIDNumber); continue; }
                 List<P2> tips = a.InsulatorTips();
                 if (tips.Count == 0) continue;
                 AerialMaterials.LookMats lm = AerialMaterials.For(AerialMaterials.LookOf(a));
                 if (lm.Span == null) continue;
                 Vector3 bp = a.BasePoint;
-                Dictionary<int, int> term = AerialMath.AssignTerminals(devs.Select(d => (d.thingIDNumber, (double)(d.TrueCenter().x - bp.x))).ToList(), tips.Count);
+                termScratch.Clear();
+                for (int di = 0; di < devs.Count; di++) termScratch.Add((devs[di].thingIDNumber, (double)(devs[di].TrueCenter().x - bp.x)));
+                Dictionary<int, int> term = AerialMath.AssignTerminals(termScratch, tips.Count);
                 lastTerminals[a.thingIDNumber] = term;
                 foreach (Thing d in devs)
                 {
