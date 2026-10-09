@@ -4670,3 +4670,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-09T09:22:39Z","tsn":1791537759463087494}
 {"seat":"FOUNDRY","event":"file","id":"NINEFAULTS_RITE_START_RECHECK_1","title":"Nine Faults rite starts via ritual_start after the roles fix","kind":"task","target":"v1","needs":"bridge","for":"FOUNDRY","ts":"2026-10-09T09:24:51Z","tsn":1791537891926082242}
 {"seat":"FOUNDRY","event":"file","id":"THERETURN_RITE_START_RECHECK_1","title":"The Return rite starts via ritual_start after the roles fix","kind":"task","target":"v1","needs":"bridge","for":"FOUNDRY","ts":"2026-10-09T09:24:52Z","tsn":1791537892806389815}
+{"seat":"FOUNDRY","event":"lease","id":"LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1","action":"take","token":"FOUNDRY.pid36577.ca421e57","expires":"2026-10-09T13:35:12Z","ts":"2026-10-09T12:50:12Z","tsn":1791550212950751750}
+{"seat":"FOUNDRY","event":"reconcile","id":"LEANINGSCRUB_VENOMVINE_FORMS_PITCH_1","verdict":"complete","sha":"12aa60316 b7f5f96b0 a6af33957","ts":"2026-10-09T12:50:35Z","tsn":1791550235871773194}
