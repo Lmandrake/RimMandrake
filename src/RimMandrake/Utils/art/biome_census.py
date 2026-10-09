@@ -328,25 +328,8 @@ def stem(dn):
 # ───────────────────────────────────────────────────────────────── canon ──
 
 def canon_index():
-    """defName -> slug, from the generated INDEX.md table."""
-    out = {}
-    p = CANON / "INDEX.md"
-    if not p.exists():
-        return out
-    for line in p.read_text().splitlines():
-        m = re.match(r"\|\s*\[([^\]]+)\]\([^)]*\)\s*\|\s*[^|]*\|\s*([^|]*)\|", line)
-        if m:
-            for dn in re.findall(r"[A-Za-z0-9_]+", m.group(2)):
-                out.setdefault(dn, m.group(1))
-    # entries newer than the generated INDEX.md: their own "**defName**: `X`" line
-    for d in sorted(CANON.iterdir()):
-        f = d / "description.md"
-        if d.is_dir() and f.exists():
-            for line in f.read_text(errors="replace").splitlines()[:12]:
-                if line.lower().startswith("**defname"):
-                    for dn in re.findall(r"`([A-Za-z0-9_]+)`", line):
-                        out.setdefault(dn, d.name)
-    return out
+    """defName -> slug: subject.py's reader (ART_SUBJECT_RESOLVER_1), not a private copy."""
+    return S_.World().canon_index
 
 
 def canon_info(slug_dir: Path, match):
