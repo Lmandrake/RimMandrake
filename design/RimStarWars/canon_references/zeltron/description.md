@@ -138,12 +138,13 @@ lands on a **gene choice**.
    lifespan**, which happens to match RimWorld baseline anyway.
 
 ## Must show
-- [ ] Skin ranges from rose-magenta through mid-coral to deep coral-red — a range, not one fixed pink
-- [ ] Fully human face and proportions: human eyes, nose, mouth and ears, no markings, crests or non-human anatomy
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon and Legends text and both images as described in the visual brief (the painted Legends portrait is the look of record).*
+- [ ] BODY PLAN: fully human, slim, athletic build at ordinary human height (no structural or body-size change); fully human face — human eyes, nose, mouth and ears, no markings, crests or non-human anatomy
+- [ ] COLOUR LAYOUT: skin evenly pigmented over face and body, somewhere in the range rose-magenta through mid-coral to deep coral-red/crimson — a range, not one fixed pink; the skin hue is the whole read
 - [ ] Hair may either match the skin hue (pink/magenta) or contrast as dark black/near-black — both are valid, hair hue is not tied to skin hue
-- [ ] Human, slim, athletic build at ordinary human height (no structural or body-size change)
 - [ ] Dark lips and dark brows may read as a contrast feature against the red skin
-- [ ] Realistic rendering: natural human skin texture with real pink-to-crimson pigment and lighting, no outlines, no comic flat fill
+- [ ] Realistic rendering: natural human skin texture with real pink-to-crimson pigment and lighting, no outlines, no comic flat fill (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a pale human with a faint pink tint (the red/pink skin must read at a glance); not a marked or crested alien (no tattoos, horns, crests or altered anatomy)
 
 ## Engine limits
 - Canon's dynamic feature — skin deepens to a darker red when the character is angry — is recorded in the entry as possibly not expressible: RimWorld's skin-colour gene assigns a fixed tone per pawn, with no mechanism to recolor skin at runtime based on mood or emotional state.

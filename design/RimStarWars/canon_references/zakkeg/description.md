@@ -70,12 +70,14 @@ be assumed. All of this is Legends (appearance reference only); canon
 Liana Kor Databank entry.
 
 ## Must show
-- [ ] Stegosaur-like reptilian quadruped with a jagged spiked ridge running along the spine from head to tail
-- [ ] Thick, knobbed/bumpy armored hide over the whole body
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends text, both game renders as described in the visual brief, and the `## ruling` below (juvenile render chosen).*
+- [ ] BODY PLAN: a huge, low-slung, stocky reptilian quadruped ("built like a Baragwin battle tank"), stegosaur-like, on four heavy, thick taloned/clawed legs; low head carried forward; a tapered tail
+- [ ] COLOUR LAYOUT: rust-red/copper-brown as the primary colour over the whole body (owner ruling 2026-09-14 chose `wookieepedia_kotor2_juvenile.png`, the rust-red render, matching the sourced "huge, red lizard"); a darker brown-black variant is attested but unconfirmed as a separate life stage
+- [ ] A jagged spiked ridge running along the spine from head to tail
+- [ ] Thick, knobbed/bumpy armoured hide over the whole body
 - [ ] Low-slung reptilian head with visible fangs/teeth and small eyes
-- [ ] Four heavy, thick, clawed legs on a stocky body ("battle tank" scale)
-- [ ] Rust-red/copper-brown as the primary colour anchor (a darker brown-black variant is attested but unconfirmed as a separate life stage)
-- [ ] Realistic rendering: natural knobbly armoured hide under natural daylight, no low-poly or stylised-game shading
+- [ ] Realistic rendering: natural knobbly armoured hide under natural daylight, no low-poly or stylised-game shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a smooth-skinned lizard or crocodile (no smooth scales, no missing dorsal spikes), not a slim long-legged predator; not a low-poly game model
 
 ## Engine limits
 none known — no donor-mod sprite could be obtained at all (creature art ships packed in Unity AssetBundles, not loose files), so there is nothing on disk to test against a rendering-pipeline constraint.
