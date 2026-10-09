@@ -20,6 +20,7 @@ namespace RimMandrake.Ninefold
     // pawn instigator) reads as melee. This is a SIBLING postfix to
     // Patch_BattleResolved and does not touch its Sh'kaar base delta.
     [HarmonyPatch(typeof(Pawn), nameof(Pawn.Kill))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: KillManner")]
     public static class Patch_KillManner
     {
         [HarmonyPostfix]

@@ -67,6 +67,7 @@ namespace RimMandrake.Ninefold
     // matching the doc's "melee feeds the escalation meter hard, ranged only
     // a little" scaling without inventing a fourth magnitude tier.
     [HarmonyPatch(typeof(Pawn_HealthTracker), "MakeDowned")]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: PawnDowned")]
     public static class Patch_PawnDowned
     {
         [HarmonyPostfix]

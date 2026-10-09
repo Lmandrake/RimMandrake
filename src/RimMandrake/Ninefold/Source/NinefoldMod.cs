@@ -26,7 +26,7 @@ namespace RimMandrake.Ninefold
         static NinefoldMod()
         {
             Harmony harmony = new Harmony(HarmonyId);
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            RimMandrake.Shared.PatchApplier.Apply(harmony, Assembly.GetExecutingAssembly(), "RimMandrake.Ninefold");
 
             int patches = harmony.GetPatchedMethods().Count();
             Log.Message("[RimMandrake.Ninefold] ready: " + patches + " event-hook patches.");

@@ -19,6 +19,7 @@ namespace RimMandrake.Ninefold
     // age, disease with no attacker, scripted death) -- the standard
     // modding-wide proxy for "died violently" at this exact API.
     [HarmonyPatch(typeof(Pawn), nameof(Pawn.Kill))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: BattleResolved")]
     public static class Patch_BattleResolved
     {
         [HarmonyPostfix]

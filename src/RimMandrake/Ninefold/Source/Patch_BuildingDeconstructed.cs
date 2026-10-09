@@ -37,6 +37,7 @@ namespace RimMandrake.Ninefold
     // filtering -- a frame takes the instant branch above and never reaches
     // this postfix, per the same reachability note.
     [HarmonyPatch(typeof(JobDriver_Deconstruct), "FinishedRemoving")]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: BuildingDeconstructed")]
     public static class Patch_BuildingDeconstructed
     {
         [HarmonyPostfix]

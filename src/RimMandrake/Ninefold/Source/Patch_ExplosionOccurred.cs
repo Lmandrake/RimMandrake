@@ -14,6 +14,7 @@ namespace RimMandrake.Ninefold
     // passes through. Gated on radius so a stray micro-explosion (e.g. a single
     // spark effect) does not count as an ordnance event.
     [HarmonyPatch(typeof(GenExplosion), nameof(GenExplosion.DoExplosion))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: ExplosionOccurred")]
     public static class Patch_ExplosionOccurred
     {
         [HarmonyPostfix]

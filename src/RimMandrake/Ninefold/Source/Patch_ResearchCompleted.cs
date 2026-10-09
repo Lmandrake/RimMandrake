@@ -26,6 +26,7 @@ namespace RimMandrake.Ninefold
     // so a re-entrant call on an already-finished project (Harmony can also
     // re-run a Postfix on recursive self-calls) doesn't double-count.
     [HarmonyPatch(typeof(ResearchManager), nameof(ResearchManager.FinishProject))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: ResearchCompleted")]
     public static class Patch_ResearchCompleted
     {
         [HarmonyPrefix]

@@ -133,6 +133,7 @@ namespace RimMandrake.Ninefold
     // IncidentDef, IIncidentTarget)". RimSage-verified 2026-10-06: protected,
     // non-virtual, returns Mathf.Max(0, chance) — patched by name.
     [HarmonyPatch(typeof(StorytellerComp), "IncidentChanceFinal")]
+    [RimMandrake.Shared.PatchFeature("Favour tilts the odds", typeof(RM_NinefoldSettings), "favourOddsEnabled")]
     public static class Patch_FavourIncidentChance
     {
         [HarmonyPostfix]
@@ -147,6 +148,7 @@ namespace RimMandrake.Ninefold
     // RimSage-verified 2026-10-06: private, reads the decider's private
     // `map` field — patched by name, map read through a field ref.
     [HarmonyPatch(typeof(WeatherDecider), "CurrentWeatherCommonality")]
+    [RimMandrake.Shared.PatchFeature("Favour tilts the odds", typeof(RM_NinefoldSettings), "favourOddsEnabled")]
     public static class Patch_FavourWeatherCommonality
     {
         private static readonly AccessTools.FieldRef<WeatherDecider, Map> MapRef =

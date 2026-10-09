@@ -34,6 +34,7 @@ namespace RimMandrake.Ninefold
 
     // ---- transport pods / shuttles -----------------------------------------
     [HarmonyPatch(typeof(CompLaunchable), nameof(CompLaunchable.TryLaunch))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: TransporterLaunched")]
     public static class Patch_TransporterLaunched
     {
         // TryLaunch has several early-return failure paths (unspawned, no
@@ -114,6 +115,7 @@ namespace RimMandrake.Ninefold
     // it is still false when this Postfix runs and would never fire.
     [HarmonyPatch(typeof(WorldComponent_GravshipController),
                   nameof(WorldComponent_GravshipController.InitiateTakeoff))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: GravshipLaunched")]
     public static class Patch_GravshipLaunched
     {
         [HarmonyPrefix]

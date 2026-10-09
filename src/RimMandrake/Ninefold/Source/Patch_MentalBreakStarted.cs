@@ -38,6 +38,7 @@ namespace RimMandrake.Ninefold
     // animal's manhunter state or a hostile raider's berserk is not the
     // clan's "wrong spark," it is theirs.
     [HarmonyPatch(typeof(MentalStateHandler), nameof(MentalStateHandler.TryStartMentalState))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: MentalBreakStarted")]
     public static class Patch_MentalBreakStarted
     {
         private static HashSet<MentalStateDef> breakStateDefs;
@@ -65,6 +66,7 @@ namespace RimMandrake.Ninefold
     // `MentalBreakWorker.TryStart`, which every `mentalState`-carrying break
     // also runs through and would double-count).
     [HarmonyPatch(typeof(MentalBreakWorker_Catatonic), nameof(MentalBreakWorker_Catatonic.TryStart))]
+    [RimMandrake.Shared.PatchFeature("Ninefold event hook: CatatonicBreakStarted")]
     public static class Patch_CatatonicBreakStarted
     {
         [HarmonyPostfix]
