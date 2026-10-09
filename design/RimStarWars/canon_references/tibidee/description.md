@@ -16,6 +16,10 @@ Imperial forces (https://starwars.fandom.com/wiki/Tibidee; Canon, Rebels, first 
 Page: https://starwars.fandom.com/wiki/Tibidee, fully read.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia pageimages Tibidee and Tibidee/Legends, catimages "Images of tibidees"; only Rebels-era Card Trader CG and Homeworlds painted cartoon art exist).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
 - `wookieepedia_tibidee_sw_card_trader.png` (1940x1520, 3D render): a **manta-ray-like flier**
   seen from the front-below: **very long narrow swept wings** tapering to points, mottled
   **pale grey-white** upper surface with a pale stripe, a dark under-edge with a **red-brown
@@ -39,6 +43,7 @@ Page: https://starwars.fandom.com/wiki/Tibidee, fully read.
 - [ ] A long tail (segmented in the Homeworlds art)
 - [ ] Gasbag-plump torso with short blue-grey claws underneath
 - [ ] A flier: drawn in flight, never as a walking animal
+- [ ] Realistic rendering: natural membranous wing skin and pale hide with real lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known. (Mating-call frequency attraction is behaviour, not drawable. Flight itself is a stat plus a flip-book; art need not wait for either.)

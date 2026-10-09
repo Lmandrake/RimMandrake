@@ -15,6 +15,10 @@ Page: https://starwars.fandom.com/wiki/Snoruuk/Legends, fully read (1,675 chars)
 Snoruuk mushrooms were a species of **red** mushroom native to Gamorr and edible by Gamorreans. By 228 BBY the Hutt Churo grew them (with coolsap shrubs) in a greenhouse laboratory on Nal Hutta to see whether they could thrive in its swamps (*The High Republic: Beware the Nameless*); a Gamorrean guard ate them. They could be made into a sauce for Ithorian Garden Loaf. First appearance: Galaxy's Edge (Docking Bay 7). Canon says nothing about movement, rings or rooting.
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia pageimages Snoruuk/Legends and Snoruuk mushroom, title search "snoruuk"; the only depiction is one ink drawing from The Essential Guide to Planets and Moons).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
 - `wookieepedia_snoruuk.jpg` (717x465, black-and-white ink drawing): a **cluster of seven
   mushrooms** of different sizes: **domed caps with scalloped gill-fringed rims, thick stalks
   with a flared foot, and round blister-like spots on both cap and stalk**. No faces, legs or
@@ -31,6 +35,7 @@ Snoruuk mushrooms were a species of **red** mushroom native to Gamorr and edible
 - [ ] Shown as one of a group of several (a ring of 5 to 30), not a lone plant, where the format allows
 - [ ] No face, no limbs, no eyes
 - [ ] Colour is free (canon gives none); the donor's red cap with tan stalk is acceptable
+- [ ] Realistic rendering: natural fungal flesh, matte cap texture and soft natural lighting, no ink outlines, no cartoon shading
 
 ## Engine limits
 none known. (Ring formation and tap-herding are behaviour. Rooting in winter is a state, not a sprite.)
