@@ -62,3 +62,10 @@ git add/commit <explicit paths>  →  git pull --rebase origin main  →  git pu
 
 - The old shared tree's worktrees, branches and stashes were drained into `archive/*` tags on origin (reachable, not accepted into main) plus `refs/rescue/*`; see `git_migration_drain_2026-10-02.md`. `git tag -l 'archive/*'` lists them.
 - Never merge in a tree others write; there is no such tree any more — each clone has one writer.
+
+## Landing when `pull --rebase` is refused (land.sh)
+
+When peers' unstaged edits make `pull --rebase` refuse, use `/home/mandrake/.seat-tmp/land.sh` (tracked copy and README:
+`src/RimMandrake/Utils/land.sh`, `land_README.md`). `land.sh <sha> <path>...` replays that one commit; `land.sh -m "<msg>" <path>...`
+builds it in a temp index from origin/main. It refuses no-sha, paths outside the list, and anything already on origin/main, never
+touches the shared index, and prints `PUBLISHED <sha>`. Never run it without an explicit sha or paths.
