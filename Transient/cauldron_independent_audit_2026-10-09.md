@@ -106,3 +106,51 @@ decided/picked/variant letter). Doers' log not trusted; every verdict below is f
   AM_Dryad_Ocular, RSW_Screecher — outside this sheet's scope (RM_Cauldron).
 - 7 redo rows have finished renders AWAITING OWNER PICK (BedBug, CrystalMit, Silkie, Aerofleet, Radyak, Neebray
   east, Silooth east) plus the garsulix north.
+
+## Re-audit (2026-10-09 09:15, after c09fdaea5 / 0917fe9a2 / acc91cb8f)
+
+**Result on the 16 prior FAIL/UNMEASURED rows: 13 PASS · 0 PASS-PENDING-RESTART · 3 FAIL · 0 UNMEASURED.** 5 prior PASS rows
+spot-checked: 5 still PASS, no regression. Primary evidence only; the doers' log was not trusted, and it is wrong in one place (see FAIL block).
+
+State found: another window ran the composed biomes deploy (with the prune) between 09:00 and 09:03 and relaunched RimWorld at ~09:01
+(a cold load was in progress, Player.log not yet past load, no `Bridge token`). `deploy_custom_mods.py --compose biomes` is now "Everything in sync (3244 files)";
+`MartyrTree_b.png` and `TwistingThornwood_b.png` are gone from the game folder. So the biomes deploy is DONE, not pending.
+
+Method: ModsConfig.xml activeMods parsed with ElementTree (622); each texPath resolved across active mods in load order (last wins) and hashed;
+art ledger `art.py status`; artpipe job JSON + manifests read in `D:\Luke\dev\_artpipe`; `validate_patch.py` (Data + workshop + Mods as --defs);
+`art.py enact` dry run: CONFLICTS 0, TODO 0, 3 failed Silooth jobs would be re-filed, 6 rows AWAITING OWNER PICK.
+
+### Rows that were FAIL / UNMEASURED
+
+| Row | Verdict | Evidence |
+|---|---|---|
+| AA_BedBug | PASS | `cauldronfix_bedbug_v2` east/north/south done; `canon_reference` = `_artstore/29/2900a6a7…` which the sheet HTML lists as letter **B** (his named render); prompt says "The attached image IS the (b) render he named", note verbatim incl. six glowing red eyes + stabbing proboscis; manifest east/south graded pass. Old v1 withdrawn. Awaiting his pick. |
+| AA_DecayDrake | PASS | Override mod at index 410, loadAfter sarg.alphaanimals at 407; resolved winner for AA_DecayDrake_east = override `ba98737e…`, = src = deployed. Active in the cold load that started after the 08:54 ModsConfig edit; in-game load not yet confirmable. |
+| AA_Helixien | PASS | `HelixienArtOverride` at 411 after sarg.alphaanimals 407, loadAfter correct; 3 facings `7778ee23…/fb0a4cae…/7dec0571…` = the Scarlands `RM_Bileworm_*` B shas, = deployed; resolves as winner over donor (`fb72d818…`). Caveat: the ledger has no Cauldron-specific B ruling (decision B == prefill B); the install cites the Warscar keep. |
+| AA_InfectedAerofleet | **FAIL** | Moves/✕/redo job unchanged and PASS (RM_Contagion deployed: Aerofleet present, absent from RM_Cauldron). New "no feet … unfortunate visitor" description is correct in `src` (c09fdaea5) but the DEPLOYED `UtinniPatches/Patches/Contagion_Rename.xml` (mtime 2026-10-07 22:20, differs from src at line 131) still carries the old "blistered bulloo" text. |
+| AA_OcularJelly | PASS | Override at 408 after 407; winner `57a29333…` = src = deployed over donor `b3c58819…`; move to Contagion deployed (roster parse). |
+| AA_Plasmorph | PASS | Override at 409; winner `d45640c2…` over donor `dd3688a8…`. |
+| AA_Radyak | **FAIL** | Rename to **ossrith** + new description exist in `src` (validate_patch: 0 errors, each op 1 match) but the DEPLOYED `UtinniPatches/Patches/Cauldron_Rename.xml` is the older 5,227-byte copy with no Radyak block (mtime 08:51:19), so the game loads "radyak". |
+| AM_Dryad_Corruptor | PASS | Override at 53 after sarg.alphamemes 52; winner `77b4614d…` over donor `6ed0e7bb…`; rename "rhossak" is in the deployed Cauldron_Rename.xml block that predates the Radyak add (unchanged). |
+| AM_Dryad_Tumorous | PASS | Override at 54; winner `6b077510…` over donor `125790b7…`. |
+| GR_Beetlefleet | PASS | Override at 503 after vanillaexpanded.vgeneticse 502; east/south winners `15cd4c22…/77647aab…` over donor `0beaebad…/aa08a14b…`; north ✕ purged; garsulix north render `enact_c8bcd172…` still done. |
+| RM_TreeMartyr | PASS | Game `MartyrTree_a.png` = `c6190158…` = src (B); `_b` pruned, folder holds only `_a`; sarrowan def in the in-sync compose. |
+| RM_TwistingThornwood | PASS | Game `TwistingThornwood_a.png` = `d92285d8…` = src (B); `_b` pruned. |
+| RSW_Neebray | PASS | `cauldronfix_neebray_v2` east/north/south done (the 3 old failed jobs withdrawn); `target_canon neebray`, `canon_reference` = the 3 `canon_references/neebray/*.webp` images, prompt "A CANON redo … not from the old in-game sprite", note verbatim; manifest graded 5, all pass. Flying B pick unchanged. Awaiting his pick. |
+| Silooth | **FAIL** | (1) Art: `cauldronfix_silooth_v2` east **failed again** (canon check: "legs remain thick and compact rather than long, thin"), north/south `master_failed`; they sit in `failed/`, not pending, and the enact dry run would re-file them. Intent is right (canon refs, canvas 512, drawsize 8.0, note verbatim) but there is no render. (2) Def: `Silooth_Warbeast.xml` drawSize adult 3→8, juvenile 2→5; validate_patch 0 errors, 7/7 ops 1 match against the donor's `lifeStages/li[3]`/`li[2]` and `abilities/li[SW_AcidSpew]`; `RSW_SiloothAcidSpit` parses, field names match vanilla Odyssey `SludgeSpew` (`aiCanUse true`, `CompProperties_AbilitySprayLiquid`), swapped into `abilities`. Correct in src, but **neither new file is deployed**: `SWBestiary/Defs/AbilityDefs/RSW_SiloothAcidSpit.xml` and `Patches/Silooth/Silooth_Warbeast.xml` are absent from the game Mods folder. |
+| AA_GiantCrownedSilkie | PASS | Was UNMEASURED. His typed answer settles the reference: `cauldronfix_giantcrownedsilkie_v2` done ×3, `canon_reference` = one side-by-side (LOOKED: left donor with blue head/grey crest/red wattle, right the flowing-silk render), prompt names donor palette + silk to the ground + both notes verbatim. Picks C/D/E are in-game donor columns, unchanged. Awaiting his pick. |
+
+### Why the three FAILs are deploy regressions, not missing work
+The fixes log says "Deployed 15 file(s), VERIFIED in sync" for UtinniPatches + SWBestiary + HelixienArtOverride. Now: Cauldron_Rename.xml mtime 08:51:19 with the pre-fix content, Contagion_Rename.xml is the 10-07 copy, SWBestiary lacks the 2 new files. Something deployed UtinniPatches from a clone without c09fdaea5 after the doers' deploy (the foundry clone sits at 985bf6b18). Dry runs now: UtinniPatches `~ Patches/Cauldron_Rename.xml`, `~ Patches/Contagion_Rename.xml`; SWBestiary `+ Defs/AbilityDefs/RSW_SiloothAcidSpit.xml`, `+ Patches/Silooth/Silooth_Warbeast.xml`; exactly those 4, nothing else. They are XML only and the game is loading, so they will count as PASS-PENDING-RESTART once this is run, with the game closed or at the next launch:
+`python3 src/RimMandrake/Utils/deploy_custom_mods.py --apply --mod UtinniPatches --mod SWBestiary` (from a clone at or after acc91cb8f; do NOT run from foundry before it pulls). Silooth art also needs the 3 failed jobs re-filed (`art.py enact … --apply`) and a canon-passing render.
+
+### Prior PASS rows, spot-checked
+| Row | Verdict | Evidence |
+|---|---|---|
+| RM_BloodBouquet | PASS | Game file `e49e6550…` = ledger LIVE B. |
+| RM_Suush | PASS | 3 facings `84463d0f/11b91823/9316d677` = ledger LIVE = game. |
+| RSW_VentStalker | PASS | SWBestiary east/north/south `bef5081e/e2a32b17/4b122f0c` = ledger LIVE C, protected. |
+| RSW_Skalder | PASS | Body `14213f8c…` and swimming `086e7012…` east = ledger LIVE in the game folder. |
+| AA_LuciferBug / RSW_Screecher cuts | PASS | Parsed deployed RM_Cauldron roster (16 animals) and Contagion (23): absent from both; `WildAnimals_Cauldron.xml` names no Screecher element. |
+
+Also checked: the owner's other notes for the 6 override mods and Helixien are unchanged and `loadAfter` in each About.xml names its donor package; every override sits AFTER its donor in activeMods (dryad ×2 53,54 vs 52; visceral 157 vs 156; ocular/plasmorph/decaydrake/helixien 408–411 vs 407; beetlefleet 503 vs 502). The mod-list edit is a game-side file (not in git); the game launch read it only if it started after 08:54, which the log timing supports but a mod-list line in Player.log has not yet confirmed.
