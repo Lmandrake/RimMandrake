@@ -173,7 +173,8 @@ _SOCKET = []
 
 def _shared_socket():
     if not _SOCKET:
-        sys.path.insert(0, V.UTILS)
+        if V.UTILS not in sys.path:
+            sys.path.append(V.UTILS)   # append: Utils/scenes (a package) must not shadow northstar_matrix/scenes.py
         import rimbridge_client as rb  # noqa: E402
         host, port, token = rb.resolve_endpoint()
         s = rb.RimBridge(host=host, port=port, token=token, timeout=600.0)
