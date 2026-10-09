@@ -3,6 +3,7 @@
 Everything below is committed and pushed. Nothing is deployed. Every change waits for the next restart, which FOUNDRY holds.
 
 ## Needs you (ranked)
+0. **Overnight renders to judge: one phone-readable image of 32 done renders.** `D:\Luke\dev\RimMandrake\Transient\morning_art_contact_2026-10-09.png` (status per group: `D:\Luke\dev\RimMandrake\Transient\morning_art_outcomes_2026-10-09.md`)
 1. **Hawkbat flying master, east.** It passed canon 7/7. OK it so the south/north masters and wing frames can follow: `D:\Luke\dev\_artpipe\_artsrc\hawkbat_fly_master_v1_east\hawkbat_fly_master_v1_east.png`
 2. **The canon check passes wrong art.** It passed 23 of the 23 renders you rejected. The likely fix is tighter Must-show lines in the canon entries, and those entries are yours to edit. The stricter v2 grader didn't clearly beat v1 when tested, so it's committed but switched off. `D:\Luke\dev\RimMandrake\Transient\canon_check_leniency_2026-10-09.md`, `D:\Luke\dev\RimMandrake\Transient\canon_check_v2_prototype_2026-10-09.md`
 3. **Design drafts to review:**
