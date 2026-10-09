@@ -14,3 +14,6 @@ ILLISK_LIVE_CHECK_1 filed (bridge). Other tonight items (SITE_CHOICE, four vines
 
 ## Task 2 DONE
 RM_SleeperVenomvine 0.01 in RM_LeaningScrub wildPlants, pushed 1bbca61ef. Item already implemented earlier (live criteria remain), so no new implemented event.
+
+## Task 3 DONE
+UNFINISHED_LINE_SITE_BEATS_1 implemented cb9c8ea20 (lend faction + site allies + site named; caravan delivery and defence-site map NOT built, L1 owed).
