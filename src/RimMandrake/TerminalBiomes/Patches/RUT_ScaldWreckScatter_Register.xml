@@ -12,6 +12,8 @@
   Base_Player; the RUT_ScaldShallow terrain validator still confines placement.
   Nested Conditionals: skip if the biome is not loaded; append to an existing
   extraGenSteps node, else create one.
+  SCALD_UNDERWATER_FLORA_1 (2026-10-09): RM_ScaldThurlspongeWrecks (order 966) rides beside it
+  in the same lists: thurlsponge ringing each wreck the field placed.
 -->
 <Patch>
 
@@ -23,6 +25,7 @@
         <xpath>/Defs/BiomeDef[defName="RM_TheScald"]/extraGenSteps</xpath>
         <value>
           <li>RM_WreckField_Scald</li>
+          <li>RM_ScaldThurlspongeWrecks</li>
         </value>
       </match>
       <nomatch Class="PatchOperationAdd">
@@ -30,6 +33,7 @@
         <value>
           <extraGenSteps>
             <li>RM_WreckField_Scald</li>
+            <li>RM_ScaldThurlspongeWrecks</li>
           </extraGenSteps>
         </value>
       </nomatch>
@@ -44,6 +48,7 @@
         <xpath>/Defs/BiomeDef[defName="RUT_TheScald"]/extraGenSteps</xpath>
         <value>
           <li>RM_WreckField_Scald</li>
+          <li>RM_ScaldThurlspongeWrecks</li>
         </value>
       </match>
       <nomatch Class="PatchOperationAdd">
@@ -51,6 +56,7 @@
         <value>
           <extraGenSteps>
             <li>RM_WreckField_Scald</li>
+            <li>RM_ScaldThurlspongeWrecks</li>
           </extraGenSteps>
         </value>
       </nomatch>

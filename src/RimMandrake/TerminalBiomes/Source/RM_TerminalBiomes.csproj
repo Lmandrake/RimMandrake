@@ -86,6 +86,7 @@
     <!-- TWILIGHT_LIGHT_ECONOMY_1 -->
     <Compile Include="RM_MapComponent_WellLedger.cs" />
     <Compile Include="RM_TwilightFloraBehaviour.cs" />
+    <Compile Include="RM_ScaldThurlspongeWrecks.cs" />
     <Compile Include="RM_CompGlowerMobile.cs" />
     <Compile Include="RM_CompCageCropSnapshot.cs" />
     <Compile Include="RM_Building_SunSphere.cs" />

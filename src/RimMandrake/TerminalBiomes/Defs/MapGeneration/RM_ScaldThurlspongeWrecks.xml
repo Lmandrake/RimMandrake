@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Carrier GenStepDef for RM_GenStep_ScaldThurlspongeWrecks (Source/RM_ScaldThurlspongeWrecks.cs),
+  SCALD_UNDERWATER_FLORA_1: thurlsponge on the cells touching each RUT_ScaldWreck*. Order 966 is
+  right after the Wreckage engine's RM_WreckField_Scald (965), so the wrecks exist. Runs on no map
+  by itself: Patches/RUT_ScaldWreckScatter_Register.xml adds it to the Scald biomes' extraGenSteps.
+-->
+<Defs>
+  <GenStepDef>
+    <defName>RM_ScaldThurlspongeWrecks</defName>
+    <order>966</order>
+    <genStep Class="RimMandrake.TerminalBiomes.RM_GenStep_ScaldThurlspongeWrecks" />
+  </GenStepDef>
+</Defs>
