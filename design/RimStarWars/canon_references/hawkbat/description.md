@@ -96,13 +96,13 @@ target — flagging it here rather than quietly dropping it, per this
 library's own rule about disagreement.
 
 ## Must show
-- [ ] Wing membrane violet-purple on the dorsal side fading to cream/pale-gold on the ventral side
-- [ ] Small forward-curling horn-like growth on the forehead
-- [ ] Hooked beak, not a flat bird beak
-- [ ] Long tail present
-- [ ] Ribbed wing membrane structure with clawed wingtips
-- [ ] Reads as a pterosaur-like reptavian, not the slug/larva-bodied current-canon outlier
-- [ ] Realistic rendering: leathery veined wing membrane, real skin texture and natural lighting, no outlines, no watercolour or cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends sourced text, `wookieepedia_legends_infobox.jpg` and the `## ruling` below.*
+- [ ] BODY PLAN: a pterosaur-like reptavian flier: two broad leathery membrane wings stretched over ribbed wing-bones (wingspan about 1.5x body height), a small head with a hooked beak, and a long tail
+- [ ] Hooks: clawed hooks at the wingtips and on the feet (owner ruling 2026-09-14: "Notable hooks on end of wings and "feet"")
+- [ ] COLOUR LAYOUT: wing membrane violet-purple on the dorsal (upper) side fading to cream/pale-gold on the ventral (under) side; adult body purplish yellow-gray
+- [ ] Hooked beak (not a flat bird beak) with a small forward-curling horn-like growth on the forehead
+- [ ] Realistic rendering: leathery veined wing membrane, real skin texture and natural lighting, no outlines, no watercolour or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a feathered bird or hawk (no feathers), not a furry mammal bat; not the wingless slug/larva-bodied current-canon prop outlier; not the green juvenile colouring
 
 ## Engine limits
 none known

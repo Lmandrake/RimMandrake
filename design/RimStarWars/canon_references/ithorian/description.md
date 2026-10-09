@@ -94,13 +94,14 @@ live and where most of the species' silhouette is. Whatever is done here, that c
 should be documented rather than hidden.
 
 ## Must show
-- [ ] Long, thick, muscular neck rising from the shoulders and curving forward and down, carrying the head out in front of the chest
-- [ ] Head is a T-shaped hammer crossbar with eyes at the extreme outer ends, on protruding lateral pods
-- [ ] Twin mouths on the sides of the neck (not on the face) — a large oval opening ringed with plate-like teeth partway down the neck
-- [ ] Leathery, deeply wrinkled/creased skin, especially across the crossbar and along the neck
-- [ ] Thick, short, blunt, few-digited hands and broad three-toed feet — not elongated fingers
-- [ ] Palette is an earth tone (olive-tan/ochre to mid-brown) — never blue
-- [ ] Realistic rendering: fine pebbled, wrinkled leathery hide and natural lighting as on the live-action costume, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action references (Mok Shaiz ×3, the costume profile `wookieepedia_ithorian_swtve.jpg`) and the canon text.*
+- [ ] BODY PLAN: humanoid, bulky and heavy through the torso with relatively short legs and a stooped, forward-leaning stance; a long, thick, muscular neck (as thick as the torso) rises from the shoulders and curves FORWARD and DOWN, carrying the head out in front of the chest
+- [ ] Head: a T-shaped hammer crossbar, wider than deep, with large glossy dark eyes at the extreme outer ends on protruding lateral pods; the front of the neck carries a broad smooth downward-hanging fleshy lobe and NO mouth on the face
+- [ ] Twin mouths on the SIDES of the neck — a large oval opening ringed with plate-like teeth partway down the neck
+- [ ] Hands thick, short, blunt and few-digited; feet broad and splayed with three thick toes — not elongated fingers
+- [ ] COLOUR LAYOUT: earth-tone skin all over (olive-tan/yellow-ochre to mid-brown) — never blue; leathery, deeply wrinkled/creased hide, heaviest across the crossbar and along the neck
+- [ ] Realistic rendering: fine pebbled, wrinkled leathery hide and natural lighting as on the live-action costume, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a human with a hammer-shaped head (no upright human neck, no mouth on the face, no long slender fingers); not a hammerhead shark-man; not blue or grey
 
 ## Engine limits
 - A RimWorld head sprite cannot carry the forward-curving neck, which is where both mouths

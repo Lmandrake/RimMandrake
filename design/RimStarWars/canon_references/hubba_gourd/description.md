@@ -15,9 +15,12 @@ Viewed `wookieepedia_legends_1.webp` (Fact File illustration): one elongated, ri
 - Matches the prose "elongated, yellowish, tough-skinned". The image does not show crystals; the prose does. There is also a Legends comic panel of green unripe gourds (not saved).
 
 ## Must show
-- [ ] Tough, ribbed, elongated or round gourd, grows in rock recesses, not on a tall plant
-- [ ] Yellow when ripe, green when unripe
-- [ ] Tiny glittering crystals on the husk (prose only)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends prose and `wookieepedia_legends_1.webp`.*
+- [ ] BODY PLAN: a low gourd lying in a rock recess / cliff shadow — the fruit IS the plant; no tall stalk, no tree, no leafy vine canopy (the sources give no leaves or stems)
+- [ ] Fruit shape: a tough, ribbed melon-like gourd, elongated (pointed oval) or round, with a rough lumpy skin
+- [ ] COLOUR LAYOUT: ripe fruit yellow to orange-yellow with rust-brown patches; unripe fruit green
+- [ ] Tiny glittering reflective crystals on the husk (prose only; not in the image)
+- [ ] NEGATIVE: not a smooth-skinned melon or pumpkin, not fruit hanging from a tall plant or tree, not a leafy crop
 
 ## Engine limits
 none known

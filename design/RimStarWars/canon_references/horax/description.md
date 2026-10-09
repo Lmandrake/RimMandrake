@@ -81,13 +81,13 @@ images agree with each other and with both text tiers — there is nothing to
 flag as a text/image mismatch this time.
 
 ## Must show
-- [ ] Deep blue, heavily wrinkled hide
-- [ ] Large tan/beige horns sweeping up and out from the snout in a wide V
-- [ ] Orange/yellow eyes
-- [ ] Multiple long saber-like fangs visible in the upper and lower jaw
-- [ ] Thick clawed limbs
-- [ ] Spiked/clubbed tail visible as a distinct feature
-- [ ] Realistic rendering: natural heavily wrinkled hide, keratin horns and lighting, no outlines, no flat-animation shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon/Legends text, `wookieepedia_infobox_cw_horax.jpg` (head, horns, fangs, forepaws) and `wookieepedia_tail_attack.jpg` (tail).*
+- [ ] BODY PLAN: a massive four-legged reptile on thick clawed limbs with pale tan claws, a heavy horned head, and a long segmented tail ending in a spiked club that reads as a distinct weapon
+- [ ] Horns: large tan/beige horns sweeping up and out from the SNOUT in a wide V (snout horns, not brow horns)
+- [ ] Fangs: multiple long saber-like fangs in the upper and lower jaw, visible outside the mouth even when it is mostly closed
+- [ ] COLOUR LAYOUT: deep blue, heavily wrinkled hide over the whole body; horns, claws and tail spikes pale tan/beige, the lightest elements; eyes orange/yellow
+- [ ] Realistic rendering: natural heavily wrinkled hide, keratin horns and lighting, no outlines, no flat-animation shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a rhino, dinosaur or dragon in green/grey/brown (it is BLUE), no wings, not a biped; not a horn on the forehead only; not a plain tapering tail without the spiked club
 
 ## Engine limits
 none known

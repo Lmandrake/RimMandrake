@@ -111,13 +111,14 @@ the hood with a black void interior, the hem grammar, the crossed bandoliers —
 art gap in the roster.
 
 ## Must show
-- [ ] Hood interior reads as a flat, featureless, opaque black void — no visible face, muzzle, chin or nose, only the two glowing eyes
-- [ ] Eyes are ovoid, close-set, no visible pupil or sclera structure, glowing yellow OR red-orange (either is correct)
-- [ ] Robe colour falls in the warm-brown to cold-dusty-grey-brown range, not bright saturated orange
-- [ ] Cowl is a soft fabric hood pulled forward over the brow, not a rigid cone
-- [ ] Hands are always covered — leather gloves or frayed cloth mitts — never bare skin
-- [ ] Gear worn as crossed bandoliers over the chest with pouches/tools, not a single belt
-- [ ] Realistic rendering: coarse dusty woven-cloth robe texture and natural desert lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three live-action images (four-figure costume reference, off-world Mandalorian-era individual, *A New Hope* tall Jawas) and the canon text.*
+- [ ] BODY PLAN: a short humanoid (about 1 m) that reads SHORT and WIDE, not a scaled-down human: a floor-length robe in a bell shape, roughly as wide as it is tall from the waist down, with a frayed/fringed hem; a soft fabric hood pulled forward over the brow (peaked or slumped), not a rigid cone
+- [ ] Face: the hood interior is a flat, featureless, opaque black void — no visible face, muzzle, chin or nose, only the two glowing eyes
+- [ ] Eyes: two ovoid, close-set glowing lamps with no visible pupil or sclera, glowing yellow OR red-orange (either is correct)
+- [ ] COLOUR LAYOUT: robe in the warm-brown to cold-dusty-grey-brown range (russet under desert sun), not bright saturated orange; hood interior black; the glowing eyes the brightest element
+- [ ] Hands always covered — dark leather gloves or frayed cloth mitts — never bare skin; gear worn as crossed bandoliers over the chest with pouches and tools, not a single belt
+- [ ] Realistic rendering: coarse dusty woven-cloth robe texture and natural desert lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a dark-skinned face inside the hood, not a wizard in a stiff cone hat, not a rodent or furry animal with an exposed pelt; not a bright orange robe
 
 ## Engine limits
 none known — the missing hood/robe/bandolier art is a content gap (no sprite exists yet),

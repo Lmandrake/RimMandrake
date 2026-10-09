@@ -31,13 +31,14 @@ Dark Lizards were a species of hssiss.
 - Invisibility/Force abilities are not depicted.
 
 ## Must show
-- [ ] Heavy sprawling quadrupedal lizard (iguana/komodo build) with a thick tail about as long as the body
-- [ ] Double row of conical spikes running from the tail tip along the back and rising into a spiky crest on the neck behind the head
-- [ ] Green scaly hide (olive to bright green) with a paler cream underside
-- [ ] Wedge-shaped crocodilian head with many sharp bared teeth and small horn-spikes on the snout
-- [ ] Large long curved claws on all four feet
-- [ ] Red/salmon throat dewlap (`canon_1` only; optional)
-- [ ] Realistic rendering: natural glossy reptile scales and lighting, no outlines, no comic or cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Legends prose, `canon_1` (anatomy and colour) and `canon_3` (scale material only), per the visual brief.*
+- [ ] BODY PLAN: a heavy, long-bodied, low sprawling four-legged lizard (giant iguana/komodo crossed with a crocodile): muscular thighs, belly near the ground, and a long thick tail (prose: 3 m body plus a 1 m tail)
+- [ ] Spikes: rows of conical/serrated spikes running down the whole tail and back and climbing the neck into a crest of tall spines behind the head
+- [ ] Head: wedge-shaped crocodilian jaws with many sharp bared teeth, small eyes, and small horn-spikes above the nose and at the jaw corner
+- [ ] Large, long curved claws on all four feet
+- [ ] COLOUR LAYOUT: natural olive-green to green scaly hide on back, flanks and tail; paler cream underside; a red/salmon throat dewlap (`canon_1` only; optional)
+- [ ] Realistic rendering: natural glossy reptile scales and lighting, no outlines, no comic or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a winged or upright dragon (it is a low sprawling lizard, no wings), not a smooth-backed crocodile without the spine row; not the dark blue-black `canon_3` colouring; not a giant
 
 ## Engine limits
 not yet assessed

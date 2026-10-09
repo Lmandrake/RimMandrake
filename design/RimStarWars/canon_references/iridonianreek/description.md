@@ -41,12 +41,14 @@ The stylised SWTOR game render (the grey, green-glowing Rakghoul-plague reek) wa
 - No tail is visible in any image.
 
 ## Must show
-- [ ] Massive low, hunched quadruped with a sprawling wide-set stance and thick columnar legs
-- [ ] One tall central nose/brow horn plus two thick cheek horns curving out and forward from the lower face
-- [ ] Thick knobbly, leathery hide with rows of raised bumps over the back and shoulders and wrinkled legs
-- [ ] Brown base colour, with a red-headed meat-fed variant (red knobbly head, neck and shoulders, olive-grey body)
-- [ ] Heavy brow with small deep-set eyes, wrinkled snout and a hanging lower lip
-- [ ] Realistic rendering: natural leathery hide texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `canon_1`, `canon_2` (film creature), `legends_1`, `legends_2` and the canon/Legends text.*
+- [ ] BODY PLAN: a massive, low-slung rhino/triceratops-like quadruped: sprawling wide-set stance on thick columnar, heavily wrinkled legs with big blunt-clawed feet; a hunched, domed back; head carried low and forward on a short thick neck
+- [ ] Horns: one tall central horn rising from the nose/brow (curved slightly back, as long as the head or longer) plus two thick cheek horns curving out and forward from the sides of the lower face like tusks; horns pale cream/bone, darker at the base
+- [ ] Hide: thick, leathery and knobbly, with rows of raised rounded bumps over the back and shoulders and deep wrinkled folds on the legs
+- [ ] COLOUR LAYOUT: brown base colour all over (diet sets the hue; the Legends Iridonian subspecies is gray), with a red-headed meat-fed variant: blood-red knobbly head, neck and shoulders against a dull olive-grey-brown body and legs
+- [ ] Face: heavy brow with small deep-set eyes, wrinkled snout, wide mouth with a hanging lower lip
+- [ ] Realistic rendering: natural leathery hide texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a plain one-horned rhino (the two forward cheek tusks are required), not a bull or ox (no long legs, no upright horns from the crown); not the grey green-glowing Rakghoul-plague game reek
 
 ## Engine limits
 not yet assessed

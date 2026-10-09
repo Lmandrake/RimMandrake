@@ -113,14 +113,14 @@ male/female × 3 facings and `*m.png` masks):
   horns are consistently a paler, cooler cream against reddish-tan skin.
 
 ## Must show
-- [ ] Broad, smooth, backswept helmet-like domed cranium, wider than a human skull at the temples
-- [ ] Two down-curved horns emerging at the temples, curving forward and down past the jaw
-- [ ] Horns are a paler, cooler hue (cream-grey) than the skin — not the same colour as the face
-- [ ] Deep leathery furrows across the brow and down the cheeks
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the two Saesee Tiin film photographs (reference of record) and the Legends infobox painting, per the visual brief.*
+- [ ] BODY PLAN: humanoid of ordinary human build and height; the breadth is in the head and hands — a broad, smooth, backswept helmet-like domed cranium wider than a human skull at the temples, and large thick blunt hands with fleshy tapering digits visibly bigger than a human hand
+- [ ] Horns: two long, thick, tapering horns emerging at the temples and curving forward and DOWN past the jaw toward chest level, framing the head as separate structures — the largest element of the silhouette
+- [ ] COLOUR LAYOUT: warm tan/peach-brown skin with pink undertones (live-action norm; reddish-mauve only as a variant); horns a paler, cooler cream-grey with reddish-brown streaking — NOT the same colour as the face
+- [ ] Deep leathery furrows: heavy horizontal creases across the brow and long vertical folds down the cheeks
 - [ ] Completely hairless — no hair, no eyebrows, no beard
-- [ ] Large, thick, blunt hands with fleshy tapering digits, visibly bigger than a human hand
-- [ ] Warm tan/peach-brown skin (live-action norm), reddish-mauve only as a variant
-- [ ] Realistic rendering: natural leathery skin texture and lighting as on the film costume, no outlines, no cartoon shading
+- [ ] Realistic rendering: natural leathery skin texture and lighting as on the film costume, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a horned human with a tint (no plain ovoid skull, no hair, no smooth face), not a Devaronian or Zabrak (horns curve DOWN from the temples, never up from the crown); not red-skinned by default
 
 ## Engine limits
 - The head texture is pure greyscale and its tint mask uses only the red channel (green
