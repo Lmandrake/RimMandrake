@@ -105,6 +105,9 @@
     <tradeTags>
       <li>ExoticMisc</li>
     </tradeTags>
+    <modExtensions>
+      <li Class="RimMandrake.DivingInteraction.RM_ElderTreasureExtension" />
+    </modExtensions>
   </ThingDef>
 
   <!-- ==================================================================
@@ -195,6 +198,9 @@
         <cooldownTime>2</cooldownTime>
       </li>
     </tools>
+    <modExtensions>
+      <li Class="RimMandrake.DivingInteraction.RM_ElderTreasureExtension" />
+    </modExtensions>
   </ThingDef>
 
 </Defs>

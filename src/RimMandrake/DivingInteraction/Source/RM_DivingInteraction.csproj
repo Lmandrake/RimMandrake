@@ -52,6 +52,7 @@
 
   <ItemGroup>
     <Compile Include="RM_DivingSettings.cs" />
+    <Compile Include="RM_ElderTreasureExtension.cs" />
     <Compile Include="RM_SeaDiveHatch.cs" />
     <Compile Include="PlaceWorker_NeedsGravEngine.cs" />
     <Compile Include="GenStep_SeaFloorTerrain.cs" />
