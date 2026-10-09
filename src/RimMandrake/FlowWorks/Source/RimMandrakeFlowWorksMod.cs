@@ -475,10 +475,7 @@ namespace RimMandrake.FlowWorks
 
         private static void DrawSectionReset(Listing_Standard list, string[] names)
         {
-            if (list.ButtonText("Reset this section to defaults"))
-            {
-                ResetFields(names);
-            }
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
         }
 
         public void DoWindowContents(Rect inRect)
