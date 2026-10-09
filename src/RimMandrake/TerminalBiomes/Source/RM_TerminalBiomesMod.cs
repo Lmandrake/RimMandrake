@@ -180,6 +180,11 @@ namespace RimMandrake.TerminalBiomes
         public static float twilightSunSphereGraceDays = 3f;
         public static bool twilightChartsAgeEnabled = true;
 
+        // TWILIGHTSEA_FLORA_PASS_1: Route B placement (tithemoss/tollhorn/gleamfloss/farwick) and the light comps (gloamurn, murkspindle).
+        public static bool twilightFloraDressingEnabled = true;
+        public static bool twilightFloraLightCompsEnabled = true;
+        public static bool TwilightFloraDressingActive => masterEnabled && twilightSeaEnabled && twilightFloraDressingEnabled;
+        public static bool TwilightFloraLightCompsActive => masterEnabled && twilightSeaEnabled && twilightFloraLightCompsEnabled;
         public static bool TwilightWellDriftActive => masterEnabled && twilightSeaEnabled && twilightWellDriftEnabled;
         // No dedicated toggle of its own (it's a buildable, not a spawned
         // mechanism) — but the mod's own master/biome switches must still
@@ -267,6 +272,8 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref twilightCagesPassableBeneath, "twilightCagesPassableBeneath", true);
             Scribe_Values.Look(ref twilightSunSphereGraceDays, "twilightSunSphereGraceDays", 3f);
             Scribe_Values.Look(ref twilightChartsAgeEnabled, "twilightChartsAgeEnabled", true);
+            Scribe_Values.Look(ref twilightFloraDressingEnabled, "twilightFloraDressingEnabled", true);
+            Scribe_Values.Look(ref twilightFloraLightCompsEnabled, "twilightFloraLightCompsEnabled", true);
             Scribe_Values.Look(ref greyHullCrustEnabled, "greyHullCrustEnabled", true);
             Scribe_Values.Look(ref greyHullCrustRate, "greyHullCrustRate", 1f);
             Scribe_Values.Look(ref greyHullCrustSaltSnowMultiplier, "greyHullCrustSaltSnowMultiplier", 2f);
@@ -424,6 +431,13 @@ namespace RimMandrake.TerminalBiomes
             twilightSunSphereGraceDays = list.Slider(twilightSunSphereGraceDays, 0.5f, 10f);
             list.CheckboxLabeled("Charts age", ref twilightChartsAgeEnabled,
                 "Off: a well-chart's forecast never marks itself stale.");
+            list.CheckboxLabeled("Floor flora placement (Route B)", ref twilightFloraDressingEnabled,
+                "Tithemoss on wild lamp-plants at map generation; gleamfloss, farwick buds and tollhorn seeded "
+              + "when a skylight opens, and floss and buds dying when it closes. Off: those four only appear if "
+              + "something else places them. Affects map generation.");
+            list.CheckboxLabeled("Floor flora light behaviour", ref twilightFloraLightCompsEnabled,
+                "Gloamurn banks a well's light and glows only after the well closes; murkspindle wilts in strong "
+              + "light. Off: gloamurn stays dark and murkspindle ignores light.");
             list.GapLine();
 
             list.Label("THE TWILIGHT SEA'S CHANNEL CURRENT (TWILIGHT_CHANNEL_CURRENT_1)");
