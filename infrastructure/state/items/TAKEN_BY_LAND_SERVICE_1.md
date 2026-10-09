@@ -13,3 +13,6 @@ Record each owed criterion with `rimflow verify TAKEN_BY_LAND_SERVICE_1 --criter
 - A2 (L1): taken_by_land.service_has_river_policy_and_trace_setting reads river policy registered and the trace setting;
 - A3 (L2): a pawn swept off the river edge and a pawn carried off by a gale each get a letter, a drag mark where they sto
 Evidence is the Player.log line or bridge state read the criterion names.
+
+### Exact checks 2026-10-09 (acceptance sitting)
+- A2 CHECK: Existing chain `taken_by_land` in `src/RimMandrake/FlowWorks/northstar/extensions_rivers.py`; the bare call: `jawa/static_call type="RimMandrake.FlowWorks.Rivers.RM_RiverWorksProof" method="ProofTaken" args="-"` (source `FlowWorks/Source/Rivers/RM_RiverWorksProof.cs`, pure state read, needs a loaded game with the World component). PASS: result string `TAKEN river=True gale=<B> traceSetting=<True|False> traces=<N> pending=<N>` with river=True, traceSetting True or False, pending>=0; gale=True only if Stillsand is loaded (otherwise report, not fail). FAIL: river=False, traceSetting missing or not a bool, pending negative, or result starting `UNMEASURED no taken-by-land component` (no world loaded: UNMEASURED, never a pass).

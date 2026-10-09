@@ -43,3 +43,8 @@ drain 10 damage-equivalents per point of force. New proof scenes are written, no
 - KA.complex L2: ruins_loot scene reports complexes=True (all three ancient-complex tables carry RM_ThingSetMaker_KineticComplex)
 - KA.shield L2: a repulsor hit on a shield-belted raider: not thrown, belt drained (EK shield_counter via KA)
 - KA.feel L4: owner: a repulsor line reads as a moving wall; a kicker mine at a pit lip as an ejection gate
+
+## verify
+
+### Exact checks 2026-10-09 (acceptance sitting)
+- EK.load CHECK: Load tier `explosiveknockback` (`modset_builder.py`; mods: bridge, FlowWorks, GimmeSomeSlack, ExplosiveKnockback). Player.log (WSL `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log`): regex `\[RimMandrake\.ExplosiveKnockback\] Harmony: patched (\d+), missing (\d+)` (PatchApplier.Apply in `ExplosiveKnockback/Source/RM_KnockbackMod.cs`), then `jawa/drain_log limit=400 errorsOnly=True` filtered for `ExplosiveKnockback|RM_Knockback`. PASS: one census line, missing 0, patched >=1; zero error lines naming the mod. FAIL: no census line (assembly not loaded or Apply not reached), missing >=1, `Harmony patch failed`, or an error line naming the mod.

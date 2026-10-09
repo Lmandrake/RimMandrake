@@ -8,6 +8,9 @@ Warcasket About.xml (src/RimStarWars or src/RimMandrake Warcasket; find with mea
 ## verify
 Deploy (compose biomes where relevant) and read Player.log after a load, or grep the log from the last run.
 
+### Exact checks 2026-10-09 (acceptance sitting)
+- A2 CHECK: Offline twin: `python3 src/RimMandrake/Utils/selftest_about_dependency_urls.py`. Live: Player.log (WSL `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log`): regex `needs to have <downloadUrl>` over the whole log of a load on a list that includes Warcasket and the composed biomes (a previous run was recorded `partial`, so read the run evidence `Transient/belt_acc_biomes_20261008.md` for what was missing). Sanity probe: the log must contain `Harmony` lines (proves the read saw a real log). PASS: zero matches for the regex; the offline selftest prints its pass line. FAIL: any match (the line names the offending mod), or the log lacks the sanity probe lines (wrong/old log: UNMEASURED).
+
 ## criteria
 A1: Warcasket About.xml dependency carries the repo's standard downloadUrl/steamWorkshopUrl.
 A2: Player.log shows no "needs to have <downloadUrl>" line for Warcasket; no_warcasket_log_errors PASSes.

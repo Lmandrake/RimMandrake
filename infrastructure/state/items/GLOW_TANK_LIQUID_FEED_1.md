@@ -36,3 +36,6 @@ Run each criterion at its stated level and record it with `rimflow verify GLOW_T
 - L2: one quicktest map via the bridge or modcheck: set up the scenario in the criterion, step ticks, read the state named.
 - L4: owner judgement in a sitting; not a FOUNDRY acceptance task.
 Evidence is the Player.log line or bridge read the criterion names; a screenshot is not evidence of state.
+
+### Exact checks 2026-10-09 (acceptance sitting)
+- A1 CHECK: Existing component `glowtank/water_gate_dry_tank_pauses` in `LuminousPigment/validation.py` (chain `glowtank`). Raw: `jawa/spawn_batch ops="RM_GlowTank:<x>,<z>"` on a roofed cleared pad, power it on, `jawa/mod_settings_field` set `tankNeedsWater`=True, advance 500 ticks, then `jawa/inspect_string thingIds=<tank id>`. Needs FlowWorks + LuminousPigment active. PASS: the inspect text contains `Dry: growth paused`; with tankNeedsWater=False after another 500 ticks it does not. FAIL: text lacks the line with the setting True; text says `not needed (FlowWorks not loaded)` (UNMEASURED: FlowWorks absent); or the line persists with the setting False.
