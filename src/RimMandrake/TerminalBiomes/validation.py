@@ -840,7 +840,7 @@ if Suite is not None:
     def settings_restored(t):
         """LAST: every field is back at the value it held BEFORE the run (snapshot), not the shipped default; a leaked
         arm would corrupt the next run and a failed restore is a failure, not a printed line."""
-        with _comp(t, "all_settings_restored_to_prior_values", beyond_toggle=True):
+        with _comp(t, "all_settings_at_shipped_defaults", beyond_toggle=True):
             if _live(t):
                 want = {f: _SNAP.get(f, _sv(d)) for f, (ty, d) in SD.items()}
                 bad = [(f, _get(t, f), want[f]) for f in SD if not _same(_get(t, f), want[f])]
