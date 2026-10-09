@@ -127,7 +127,7 @@ namespace RimMandrake.EnvironmentalHazards
 
         private static bool Eligible(Pawn pawn, ArmLatentHazardExtension ext)
         {
-            if (!HazardTargeting.Affects(pawn, ext.affects, ext.immuneThingDefs, ext.immunePawnKinds))
+            if (!HazardTargeting.Affects(pawn, ext.affects, ext.immuneThingDefs, ext.immunePawnKinds, ext.nativeTag))
             {
                 return false;
             }

@@ -207,7 +207,7 @@ namespace RimMandrake.EnvironmentalHazards
                 // are filtered — buildings, plants and items are not a
                 // species question and keep taking the hit.
                 if (t is Pawn pawn
-                    && !HazardTargeting.Affects(pawn, ext.affects, ext.immuneThingDefs, ext.immunePawnKinds))
+                    && !HazardTargeting.Affects(pawn, ext.affects, ext.immuneThingDefs, ext.immunePawnKinds, ext.nativeTag))
                 {
                     continue;
                 }

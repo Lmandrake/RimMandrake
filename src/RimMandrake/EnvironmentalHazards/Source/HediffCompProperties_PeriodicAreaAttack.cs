@@ -87,6 +87,9 @@ namespace RimMandrake.EnvironmentalHazards
         public PawnTargetKind affects = PawnTargetKind.All;
 
         public List<ThingDef> immuneThingDefs;
+
+        /// <summary>HAZARD_NATIVE_TAG_1: a pawn whose race carries RM_HazardNativeExtension listing this tag is not affected (replaces hand-kept immuneThingDefs lists). Null: no tag gate.</summary>
+        public string nativeTag;
         public List<PawnKindDef> immunePawnKinds;
 
         // Optional debris left behind, rolled once per burst at a random

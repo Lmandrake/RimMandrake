@@ -12,9 +12,18 @@ namespace RimMandrake.EnvironmentalHazards
     // duplication the source review flagged in the donor family).
     public static class HazardTargeting
     {
+        // Four-argument form kept for assemblies compiled against it (Warcasket).
         public static bool Affects(Pawn pawn, PawnTargetKind kind,
                                    List<ThingDef> immuneThingDefs,
                                    List<PawnKindDef> immunePawnKinds)
+        {
+            return Affects(pawn, kind, immuneThingDefs, immunePawnKinds, null);
+        }
+
+        public static bool Affects(Pawn pawn, PawnTargetKind kind,
+                                   List<ThingDef> immuneThingDefs,
+                                   List<PawnKindDef> immunePawnKinds,
+                                   string nativeTag)
         {
             if (pawn == null || !pawn.Spawned || pawn.Dead)
             {
@@ -30,6 +39,11 @@ namespace RimMandrake.EnvironmentalHazards
             }
 
             if (immuneThingDefs != null && immuneThingDefs.Contains(pawn.def))
+            {
+                return false;
+            }
+
+            if (!nativeTag.NullOrEmpty() && RM_HazardNativeExtension.IsNativeTo(pawn.def, nativeTag))
             {
                 return false;
             }

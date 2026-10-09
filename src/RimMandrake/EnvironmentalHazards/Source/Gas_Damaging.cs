@@ -118,7 +118,7 @@ namespace RimMandrake.EnvironmentalHazards
 
                 if (t is Pawn pawn)
                 {
-                    if (HazardTargeting.Affects(pawn, ext.affects, ext.immuneThingDefs, ext.immunePawnKinds))
+                    if (HazardTargeting.Affects(pawn, ext.affects, ext.immuneThingDefs, ext.immunePawnKinds, ext.nativeTag))
                     {
                         AffectPawn(pawn, ext);
                     }

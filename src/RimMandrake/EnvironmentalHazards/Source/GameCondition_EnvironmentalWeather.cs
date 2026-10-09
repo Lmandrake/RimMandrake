@@ -123,7 +123,7 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 Pawn pawn = pawns[i];
 
-                if (!HazardTargeting.Affects(pawn, ext.affects, ext.immuneThingDefs, ext.immunePawnKinds))
+                if (!HazardTargeting.Affects(pawn, ext.affects, ext.immuneThingDefs, ext.immunePawnKinds, ext.nativeTag))
                 {
                     continue;
                 }
