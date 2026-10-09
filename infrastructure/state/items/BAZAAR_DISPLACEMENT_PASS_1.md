@@ -36,31 +36,15 @@ ModsConfig.xml diff shows exactly the two deactivations and nothing else.
 - Do this against the FULL list, not the minimal harness list — the trap that
   produced the modsconfig-stale-list false root cause before.
 
-## state — MEASURED 2026-09-20 (BENCH)
+## ruling — decision taken by question card, 2026-10-09
 
-**The gate on this item is not close to met. Do not work it.**
+Retire Trade UI Revised (`hobtook.tradeui`) and Vanilla Trading Expanded (`vanillaexpanded.vanillatradingexpanded`) NOW and use
+vanilla trading until The Bazaar ships; the slice-1/2 precondition above no longer gates this. Measured the same day: no installed
+About.xml names either as a dependency or loadAfter, and nothing in `src/` references them (only the old `.rid`/`.xtp`
+ideoligion exports and GimmeSomeSlack northstar result JSON mention the names).
 
-- The Bazaar is **one commit deep** (`ebde5ad1c`, slice 1, "plugin defs only").
-  `grep -rn "WindowStack" src/RimMandrake/TheBazaar/Source/` returns only
-  comments saying the intercept is absent; the mod ships **no `[HarmonyPatch]`
-  code at all** (its own `.csproj` says so). `RM_Window_Bazaar` is an inert
-  `Dialog_Trade` subclass nothing substitutes in.
-- `BAZAAR_WINDOW_GRID_1` (slice 1) is still `doing`. Slices 2–5
-  (`BAZAAR_PRICE_ENGINE_1`, `BAZAAR_HAGGLE_DUEL_1`, `BAZAAR_BROKER_TAB_1`,
-  `BAZAAR_BANTER_LINES_1`) are all **BLOCKED**, each on the one below it.
-- `mandrake.rm.bazaar` is **deployed to the Mods folder but absent from the
-  active list** (parsed, not scanned: 617 active mods, 2026-09-20). It does not
-  load.
-- `hobtook.tradeui` (idx 330) and `vanillaexpanded.vanillatradingexpanded` are
-  both active.
+Prepared (nothing live touched): `infrastructure/state/modlists/ModsConfig.FULL.CANDIDATE_NO_TRADEUI_VTE.xml` = `FULL.LATEST`
+minus exactly those two ids (614 -> 612). Still owed, needs the game down: copy it over the live `ModsConfig.xml` (the live file
+is currently the 67-mod minimal list), then run the VTE unwind rehearsal in `## spec` on a COPY of the save before he plays it
+(wealth/raid-point step, Scribe warnings for the missing VTE components).
 
-⇒ Retiring them now would remove the working trade UI and leave vanilla's.
-The item's own precondition — "slices 1–2 live-proven AND their useful
-behaviors absorbed" — is unmet at slice 1.
-
-### Correction
-
-The `## verify` line read "exactly the **three** deactivations". It is **two**:
-`hobtook.tradeui` and `vanillaexpanded.vanillatradingexpanded`. Utility Columns
-is explicitly kept, and TradeHelper is already inactive — measured absent from
-the 617 — so neither is a deactivation.

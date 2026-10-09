@@ -7,13 +7,12 @@
   keyword, r_name, and the engine title-cases the result, leaving "the", "of" and
   similar small words lower case mid-name).
 
-  DRAFT REGISTER, not yet ruled: LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1.
-  Source of the vocabulary and its rules:
-  design/Jawa/worldbuilding/biomes/leaningscrub_sweetline_name_register_2026-10-03.md
-  Three patterns, the road-folk's register: a coined tree-name alone, a coined
-  name with a plain-speech epithet, and an event name. Every coined word passed
-  check_pseudo_sw_name.py and a Wookieepedia search sweep (2026-10-03). The RM
-  tier carries no canon name; keep it so. Replace the lists, keep the defName.
+  REGISTER RULED 2026-10-09 (question card): plain English landmark names, the
+  way travellers name a tree on a road: "the Silver Mark", "Giants' Waymark",
+  "Where the Wind Turned". No coined words. LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1.
+  Patterns: [adj] [landmark]; [landmark] of the [walker]; the [adj] [tree];
+  Where the [walker] [deed]. The RM tier carries no canon name; keep it so.
+  Replace the lists to widen them, keep the defName.
 -->
 <Defs>
 
@@ -21,74 +20,113 @@
     <defName>RM_NamerSweetlineTree</defName>
     <rulePack>
       <rulesStrings>
-        <li>r_name(p=4)->[coined]</li>
-        <li>r_name(p=2)->[coined] the [epithet]</li>
-        <li>r_name->Old [coined]</li>
+        <li>r_name(p=4)->[adj] [landmark]</li>
+        <li>r_name(p=3)->[landmark] of the [walker]</li>
+        <li>r_name(p=2)->The [adj] [tree]</li>
         <li>r_name(p=2)->Where the [walker] [deed]</li>
+        <li>r_name(p=1)->[adj] [adj2] [landmark]</li>
 
-        <li>coined->Barraun</li>
-        <li>coined->Barrumo</li>
-        <li>coined->Dolmara</li>
-        <li>coined->Dolmaun</li>
-        <li>coined->Dolmumo</li>
-        <li>coined->Dolmond</li>
-        <li>coined->Gomara</li>
-        <li>coined->Gomol</li>
-        <li>coined->Gomaun</li>
-        <li>coined->Gomumo</li>
-        <li>coined->Gomond</li>
-        <li>coined->Hulol</li>
-        <li>coined->Hulaun</li>
-        <li>coined->Hulumo</li>
-        <li>coined->Hulond</li>
-        <li>coined->Lomara</li>
-        <li>coined->Lomol</li>
-        <li>coined->Lomaun</li>
-        <li>coined->Lomumo</li>
-        <li>coined->Morrara</li>
-        <li>coined->Morrol</li>
-        <li>coined->Morraun</li>
-        <li>coined->Morrumo</li>
-        <li>coined->Morrond</li>
-        <li>coined->Ombrara</li>
-        <li>coined->Ombrol</li>
-        <li>coined->Ombraun</li>
-        <li>coined->Ombrumo</li>
-        <li>coined->Ombrond</li>
-        <li>coined->Rhunara</li>
-        <li>coined->Rhunol</li>
-        <li>coined->Rhunaun</li>
-        <li>coined->Rhunumo</li>
-        <li>coined->Rhunond</li>
-        <li>coined->Ulbara</li>
-        <li>coined->Ulbol</li>
-        <li>coined->Ulbaun</li>
-        <li>coined->Ulbumo</li>
-        <li>coined->Ulbond</li>
-        <li>coined->Audara</li>
-        <li>coined->Audol</li>
-        <li>coined->Audumo</li>
-        <li>coined->Audond</li>
-        <li>coined->Belara</li>
-        <li>coined->Belol</li>
-        <li>coined->Belaun</li>
-        <li>coined->Belumo</li>
-        <li>coined->Gaurol</li>
-        <li>coined->Gaurumo</li>
-        <li>coined->Gaurond</li>
+        <li>adj->Silver</li>
+        <li>adj->Grey</li>
+        <li>adj->Wool</li>
+        <li>adj->Sweet</li>
+        <li>adj->Leaning</li>
+        <li>adj->Old</li>
+        <li>adj->Patient</li>
+        <li>adj->Unburnt</li>
+        <li>adj->Far-Seen</li>
+        <li>adj->Rubbed</li>
+        <li>adj->Lonely</li>
+        <li>adj->Last</li>
+        <li>adj->First</li>
+        <li>adj->Windward</li>
+        <li>adj->Dry</li>
+        <li>adj->Pale</li>
+        <li>adj->Broad</li>
+        <li>adj->Crooked</li>
+        <li>adj->Bent</li>
+        <li>adj->Tall</li>
+        <li>adj->Low</li>
+        <li>adj->Long</li>
+        <li>adj->Salt</li>
+        <li>adj->Dust</li>
+        <li>adj->Ash</li>
+        <li>adj->Copper</li>
+        <li>adj->Bone</li>
+        <li>adj->Hollow</li>
+        <li>adj->Quiet</li>
+        <li>adj->Sheltered</li>
+        <li>adj->Steady</li>
+        <li>adj->Whispering</li>
+        <li>adj->Rust</li>
+        <li>adj->Sun-Bleached</li>
+        <li>adj->Road</li>
+        <li>adj->Northern</li>
+        <li>adj->Southern</li>
+        <li>adj->Eastern</li>
+        <li>adj->Western</li>
+        <li>adj->Midway</li>
+        <li>adj->Narrow</li>
 
-        <li>epithet->Leaner</li>
-        <li>epithet->Patient</li>
-        <li>epithet->Unburnt</li>
-        <li>epithet->Far-Seen</li>
-        <li>epithet->Woolgiver</li>
-        <li>epithet->Rubbed</li>
-        <li>epithet->Grey</li>
-        <li>epithet->Waymark</li>
+        <li>adj2->Wind</li>
+        <li>adj2->Road</li>
+        <li>adj2->Water</li>
+        <li>adj2->Shade</li>
+        <li>adj2->Mile</li>
+        <li>adj2->Rest</li>
+        <li>adj2->Sun</li>
+        <li>adj2->Dusk</li>
+        <li>adj2->Dawn</li>
+        <li>adj2->Storm</li>
 
-        <li>walker->Giant</li>
+        <li>landmark->Mark</li>
+        <li>landmark->Waymark</li>
+        <li>landmark->Sentinel</li>
+        <li>landmark->Line</li>
+        <li>landmark->Marker</li>
+        <li>landmark->Post</li>
+        <li>landmark->Crossing</li>
+        <li>landmark->Rest</li>
+        <li>landmark->Lookout</li>
+        <li>landmark->Wayfinder</li>
+        <li>landmark->Beacon</li>
+        <li>landmark->Shade</li>
+        <li>landmark->Stand</li>
+        <li>landmark->Watcher</li>
+        <li>landmark->Guide</li>
+        <li>landmark->Tree</li>
+        <li>landmark->Lean</li>
+        <li>landmark->Signpost</li>
+        <li>landmark->Milestone</li>
+        <li>landmark->Gatepost</li>
+
+        <li>tree->Leaner</li>
+        <li>tree->Waymark</li>
+        <li>tree->Woolgiver</li>
+        <li>tree->Watcher</li>
+        <li>tree->Sentinel</li>
+        <li>tree->Wayfinder</li>
+        <li>tree->Stander</li>
+        <li>tree->Shade-Giver</li>
+        <li>tree->Roadkeeper</li>
+        <li>tree->Marker</li>
+        <li>tree->Sweetline</li>
+        <li>tree->Sleeper</li>
+        <li>tree->Elder</li>
+        <li>tree->Pointer</li>
+
         <li>walker->Giants</li>
+        <li>walker->Giant</li>
         <li>walker->Wind</li>
+        <li>walker->Road</li>
+        <li>walker->Wanderers</li>
+        <li>walker->Caravans</li>
+        <li>walker->Herders</li>
+        <li>walker->Travellers</li>
+        <li>walker->Dust</li>
+        <li>walker->Dusk</li>
+        <li>walker->Old Ones</li>
+        <li>walker->Sheep</li>
 
         <li>deed->Knelt</li>
         <li>deed->Slept</li>
@@ -96,6 +134,15 @@
         <li>deed->Waited</li>
         <li>deed->Lay Down</li>
         <li>deed->Stood Still</li>
+        <li>deed->Rested</li>
+        <li>deed->Passed</li>
+        <li>deed->Looked Back</li>
+        <li>deed->Bowed</li>
+        <li>deed->Fell Silent</li>
+        <li>deed->Stopped</li>
+        <li>deed->Gathered</li>
+        <li>deed->Turned Back</li>
+        <li>deed->Drank</li>
       </rulesStrings>
     </rulePack>
   </RulePackDef>

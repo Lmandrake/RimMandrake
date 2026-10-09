@@ -1,0 +1,15 @@
+[
+ {
+  "id": "RM_Swale_v3",
+  "rimflow_item_id": "SWALE_CANAL_ART_REFERENCE_1",
+  "target_def": "RM_Swale",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "background": "opaque",
+  "priority": 40,
+  "facings": [],
+  "prompt": "RimWorld terrain tile, seen straight down: one cell of a canal, filled edge to edge by a flat slate and steel blue-grey water surface with a faint soft diagonal ripple, set flush into the ground, exactly the look of a live FlowWorks canal cell. No walls standing up, no cast shadow, no rounded banks, no object centred on a background. Only a very thin strip of dry cracked grey-white clay at the two long edges as the bank, nothing else, no stonework, no weep-holes, no green. The tile must repeat seamlessly left-right and top-bottom.",
+  "style_notes": "visual target is the live FlowWorks canal shot 2026-09-30 (Transient/swale_canal_reference_2026-09-30/swale_canal_crop_2x.png): flat blue-grey live water, crisp cell-stepped edges, top-down, full-bleed, seamless on all four edges, terrain not structure; bank art only where the Cracked Lands need one (thin cracked-clay edge); realistic painted illustration, matte, never cartoonish, no outlines. Owner ruling by question card 2026-10-09: match the canal, not the brown v2.",
+  "biome_register": "Cracked Lands: hard dry light, cracked-clay grey-white ground."
+ }
+]
