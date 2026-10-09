@@ -39,7 +39,7 @@
     <tickerType>Rare</tickerType>
     <useHitPoints>true</useHitPoints>
     <healthAffectsPrice>true</healthAffectsPrice>
-    <tradeability>Sellable</tradeability>
+    <tradeability>All</tradeability>
     <techLevel>Industrial</techLevel>
     <statBases>
       <MaxHitPoints>200</MaxHitPoints>
