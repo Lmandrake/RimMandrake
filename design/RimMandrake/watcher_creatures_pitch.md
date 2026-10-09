@@ -1,8 +1,7 @@
 # Watcher creatures — the full pitch (WATCHER_CREATURES_MOD_1)
 
-Status: the shape is RULED (owner, question cards 2026-10-08). One question remains open: how
-the Rust Cathedral's camera-stalk head turns (§4, feasibility in §5). The kit carries the full
-optional cue set (§1.3).
+Status: the shape is RULED (owner, question cards 2026-10-08); no question is open. The kit carries
+the full optional cue set (§1.3), the death rules and the alarm ripple (§1.6).
 No roster is edited by this item: each member is admitted or cut at its own biome's sitting.
 
 ## 0. What this doc is
@@ -36,6 +35,13 @@ together two earlier docs, which stay as provenance:
 - **Contagion:** *"Of course it can get another creature. Just make one."* The Contagion's member
   is a new creature, the illuvek (§3.2). The sheet's ban 3 does not bar it.
 
+**The owner's death card, 2026-10-08 (typed):** *"Watchers can't be flushed. They just won't. Many
+damage types will take them out like fire explosions acid l, mostly aoe. Should take almost no
+damage to destroy them. Remains are of highly dubious value and kind of sad. But they could easily
+become Star Wars cuisine ingredients."* And, by the same card, **the alarm ripple: yes, bounded** (a
+short local wave of about 5 creatures, with delays, hop/age/distance limits, expiring event ids so it
+cannot loop, its own Mod Settings toggle). Built: §1.6.
+
 **Other facts every row below rests on:**
 
 1. **The kit is built** (`src/RimMandrake/Watchers`; first build `0d480998d`). It has not been run
@@ -65,7 +71,9 @@ is quiet. The rulings set the rest:
 - **Every biome** has one member.
 - **The piinnok** lives on deep sand only and has two pictures.
 - **A tamed member stays on its medium.**
-- **Hunting is flush-only.**
+- **No flushing.** A hidden watcher cannot be targeted or lured out; a visible one is an ordinary
+  target. Almost no damage kills one, and area damage (fire, explosions, acid) reaches it even
+  while it hides (§1.6).
 
 ### 1.2 What is built, and the prior art each piece reuses
 
@@ -74,7 +82,7 @@ with **one `DefModExtension` in XML**, and the comp is injected for it.
 
 | kit piece (built) | what it does | prior art it copies (path) |
 |---|---|---|
-| `RM_WatcherExtension` | all per-member numbers: `mediumTerrains`, `flinchRadius` 6, `watchRadius` 14, `hideTicks` 2500~7500, `hiddenHediff`, `signDef`, `geophoneMinBodySize`, `boltTicks`, `emergeWhenFoodBelow`, and the optional `cues` block | `RM_BurrowOnFireExtension` (`src/RimMandrake/Pyrelands/Source/`) |
+| `RM_WatcherExtension` | all per-member numbers: `mediumTerrains`, `flinchRadius` 6, `watchRadius` 14, `hideTicks` 2500~7500, `hiddenHediff`, `signDef`, `geophoneMinBodySize`, `emergeWhenFoodBelow`, `maxLethalDamage` 5, `remainsDef`, and the optional `cues` block | `RM_BurrowOnFireExtension` (`src/RimMandrake/Pyrelands/Source/`) |
 | `RM_JobGiver_Watch` + `RM_JobDriver_Watch` | one toil holds watch / flinch / hidden. `handlingFacing` + `FaceTarget` give the tracking. **One finish action removes the hediff and the sign on every exit** | `RM_JobDriver_Burrow` + `RM_JobGiver_BurrowOnFire` (Pyrelands): the same finish-action guarantee |
 | `RM_WatcherHidden` hediff | `HediffComp_Invisibility` (`visibleToPlayer false`): nothing draws, and it is not valid prey | `RM_MurrekDrift` / `RM_JobDriver_MurrekBurrow` (`src/RimMandrake/BlueDesert/Source/RM_MurrekDrift.cs`); `RM_SandSwim_Hediffs.xml` |
 | `RM_WatcherSign` + `RM_WatcherSign_SandDimple` | the readable sign: "no animal vanishes without a sign". Ethereal, so it spawns on ground and water alike | the first pitch named Anomaly's `PitBurrow` as the vanilla shape |
@@ -82,8 +90,9 @@ with **one `DefModExtension` in XML**, and the comp is injected for it.
 | `RM_CompWatcher` + startup injection | the medium backstop (found off its medium → walk back; nothing reachable → live as a plain animal that never hides), the orphan guard (a hidden hediff with no job holding it is removed), and the startup **water audit** (§1.4) | `RM_CompWaterLocked` (`src/RimMandrake/EnvironmentalHazards/Source/`); `RM_SandSwimStartup` |
 | geophone | a submerged sand-swimmer at or above a body size, within `watchRadius`, sends it under. Bound by reflection, so the kit runs without CreatureBehaviors | `RM_SandSwimUtility.SubmergedSwimmersNear` ("§8, the piinnok hook", `RM_CompSandSwim.cs`) |
 | `RM_WatcherCues` + `RM_WatcherCueUtility` | the seven optional non-body cues (§1.3) | see §1.3 |
-| `RM_Designator_Flush` / `RM_WorkGiver_Flush` / `RM_JobDriver_Flush` | the only hunting route: the flusher reaches the sign, and the watcher comes up and bolts (huntable for `boltTicks`) | the murrek's dig-the-drift |
-| `RM_WatchersSettings` | the master toggle, plus hide, face, medium lock, geophone, one toggle per cue kind, radius, delay and a per-map cap | the 2026-09-12 Mod Settings rule |
+| `RM_DeathActionWorker_Watcher` (`RM_WatcherDeath.cs`) | the death transition: no sign outlives its animal, the hidden hediff comes off the corpse, a ripple starts, and the corpse becomes the member's `remainsDef` | vanilla `DeathActionWorker_Vanish` (swaps the corpse on death) |
+| `RM_WatcherAlarm` (map component) | the bounded alarm ripple (§1.6) | none: new |
+| `RM_WatchersSettings` | the master toggle, plus hide, face, medium lock, geophone, alarm ripple, one toggle per cue kind, radius, delay and a per-map cap | the 2026-09-12 Mod Settings rule |
 
 **The Brine Crown** (`RM_BrineCrown`, `src/RimMandrake/TerminalBiomes/Defs/ThingDefs_Plants/RM_GreySeaFlora.xml`,
 ruled 2026-09-26) is the fourth piece of prior art the item names. Its two-state retraction is
@@ -134,8 +143,45 @@ The kit needs no new code for any member. Each costs:
 - one race + PawnKind def, with `RM_WatcherExtension` (and `<cues>` where §3.2 names one);
 - one sign ThingDef (sand dimple exists; the others are new: hole, ripple ring, crust pock);
 - art: a still peek pose (`stationaryGraphicData`) with its hole, knot or casing drawn in, the
-  whole creature moving (`bodyGraphicData`), a desiccated corpse, and the sign;
+  whole creature moving (`bodyGraphicData`), the sign, and its **death asset**: the remains item
+  (`remainsDef`) that replaces its corpse. Every member owes one, the Watcher included (a
+  collapsed camera husk);
 - one roster row, added at that biome's own sitting, never by this item.
+
+### 1.6 Death, fragility and the alarm ripple (built 2026-10-08)
+
+**How a hidden watcher dies** (RimSage, decompiled 1.6, read 2026-10-08):
+
+| symbol read | what it says | consequence |
+|---|---|---|
+| `HediffComp_Invisibility`, `InvisibilityUtility` | hiding is a hediff; the pawn is never despawned | it stays in the thing grid |
+| `DamageWorker.ExplosionAffectCell` / `ExplosionDamageThing` | every non-Mote, non-Ethereal thing in each cell takes the blast; invisibility is not read | explosions kill hidden watchers |
+| `Fire.DoComplexCalcs` / `DoFireDamage` | a fire of size 0.4 or more attaches to and damages the pawns in its cell | fire kills hidden watchers |
+| `Projectile_Liquid.DoImpact` (acid spray, `Proj_Acid`, `AcidBurn`) | every thing in each cell hit takes the damage | acid kills hidden watchers |
+| `Verb.CanHitTargetFrom`, `Toils_Combat.FollowAndMeleeAttack`, `JobDriver_AttackStatic`, `FoodUtility` (prey), `ThingSelectionUtility`, `GenUI` | a hostile verb refuses an invisible target, melee and static attacks give up on one, predators skip one, the player can neither select nor click one | direct attacks cannot target it |
+| `JobDriver_Hunt` (FailOn a missing Hunt designation) with `Verb.CanHitTargetFrom` (invisibility only refused to a HOSTILE caster) | a player hunter would keep shooting a hidden animal while its Hunt order stands | the watch job removes the Hunt order the moment it goes under |
+| `HediffComp_Invisibility.Notify_PawnPostApplyDamage` | a hit forces the pawn visible for `recoverFromDisruptedTicks` | `RM_WatcherHidden` sets it to 0, so a survivor stays hidden (burning or downed still shows it) |
+| `Pawn_HealthTracker.LethalDamageThreshold` = 150 x `Pawn.HealthScale` (= life stage factor x race `baseHealthScale`) | the damage that kills | **fragility**: every member's adult must die at or below `maxLethalDamage` (5); the startup audit logs an error otherwise. The piinnok: `baseHealthScale` 0.02, dies at 3 |
+| `Pawn.Kill` (DeSpawn -> `jobs.StopAll`, then `RaceProps.DeathActionWorker.PawnDied`) | the watch job's finish action runs, then the race's death action gets the corpse | **the death transition** lives in one worker, injected on every member whose death action is vanilla's default |
+
+**What death leaves:** the watch job removes its own sign; the death worker then removes any other
+sign naming the dead animal, takes the hidden hediff off the corpse's pawn (a hidden pawn draws
+nothing, corpse included), starts an alarm ripple, and swaps the corpse for `remainsDef`: tiny,
+nearly worthless, a little sad. The piinnok's is the **clouded piinnok lens** (RawBad animal
+product, 0.03 nutrition, rots in 2 days). The piinnok no longer butchers to biosilica: its corpse
+is gone. Star Wars cuisine use of remains belongs to the RSW tier later and is not built.
+
+**Orphan and duplicate signs:** a sign checks itself every rare tick and removes itself unless its
+owner is alive, spawned, in a watch job, and that job holds this very sign
+(`RM_WatcherKernel.SignValid`). That repairs a sign left by a load, a death, or a doubled spawn.
+
+**The alarm ripple** (`RM_WatcherAlarm`, decisions `RM_WatcherKernel.AlarmPick` / `AlarmLive` /
+`AlarmDeliverTick`, fuzz family `alarm`): a watcher that goes under for a body or the geophone, or
+dies, starts an event with a new id. Each pass reaches the nearest awake, visible watchers within
+8 cells of the one passing it on and 12 of the origin, each 15–60 ticks later; at most 5 in all,
+2 passes deep, and nothing after 600 ticks. A reached watcher stays under for 300 ticks and is never
+reached again by that event; going under because of an alarm never starts a new one, so it cannot
+loop. Its own toggle, "Alarm spreads to neighbours". Numbers PROVISIONAL.
 
 ## 2. Q9 — can a pawn's look vary with the terrain under it?
 
@@ -207,27 +253,27 @@ roster. Each member is added at its biome's own sitting.
 | Abyss | **skeyr** | NEW | `RM_EtchHollow` | light | a fog-crevice sitter whose pale throat-pouch is all that shows; it ducks from carried light | `RM_EtchHollow` is the Abyss's own terrain (the Etchcap grows only there). Existing alternative: **`RM_Durrgak`**, "works the black glass … with a patient, shy care". But it is a mobile sorter, and a watcher would lose that behaviour. |
 | Cauldron (poison forest) | **ulvoss** | NEW | `RM_CauldronSoil` | gas (tox) | a vent-crust sitter peering from chemical-vent holes, its vent hole drawn into its peek art | chem-resistant hide |
 | Blue Desert | **kuvvel** | NEW | `Ice` | buried (`RM_MurrekBuried`) | a drift-sitter with one eyestalk above the ice-sand | Goes under for a buried murrek nearby: the murrek hides with its own hediff, which the sand-swim geophone cannot see, so this is the `buried` cue. |
-| Contagion | **illuvek** | NEW | `GU_AlienSandFine` (donor terrain, `MayRequire`) | light | an eye the goo budded and never finished: a lidded globe on a stub of red tissue in the wet sand, which sinks into the goo when light comes | The owner lifted ban 3 for it (2026-10-08). The light cue keeps it inside ban 2 (no UV-immune native): it goes under before a Burn, as the ocular jellies sink. It dissolves to goo on death and is not food (ban 4). |
-| Cracked Lands (`RM_FloodedCanyon`) | **tarruq** `RM_Tarruq` | E | `Soil` (the clay pan) | — | "goes silent and climbs when the cracks begin to fill", the biome's second warning | "Crack" is not a terrain, so the clay is the binding. The kit adds the visible half of its hush. Its flood behaviour is unchanged. |
+| Contagion | **illuvek** | NEW | `GU_AlienSandFine` (donor terrain, `MayRequire`) | light | an eye the goo budded and never finished: a lidded globe on a stub of red tissue in the wet sand, which sinks into the goo when light comes | The owner lifted ban 3 for it (2026-10-08). The light cue keeps it inside ban 2 (no UV-immune native): it goes under before a Burn, as the ocular jellies sink. On death it leaves a dried tissue remnant that is not food (ban 4). |
+| Cracked Lands (`RM_FloodedCanyon`) | **tarruq** `RM_Tarruq` | E | `Soil` (the clay pan) | — | "goes silent and climbs when the cracks begin to fill", the biome's second warning | "Crack" is not a terrain, so the clay is the binding. The kit adds the visible half of its hush. **Survival outranks the watch:** at its sitting it owes a gate that ends the watch job and refuses a new one while `RM_MapComponent_CanyonFlood.TarruqSilenced` holds, so a watch never pins it on a filling crack. Today only the silence is built (`RM_TarruqHushPatch`); the climb is not. |
 | Fever Wood | **phennu** | NEW | `SoilRich` | — | a soft six-eyed thing; only the eye-ring shows | Lives on the root floor; the knot-hole it peeks from is drawn into its peek art. |
 | Forge | **zhaskel** | NEW | `CooledLava` | — | an ember-dark plated sitter in cooled-crust fissures | never in lava (ban 1). `CooledLava` is in the biome's own def. |
 | Greentide | **wennoq** | NEW | `SoilRich` | — | a small leaf-sitter that unrolls to look | Lives on the floor; its leaf-roll is drawn into its peek art. Shiro is not this member (note S). Can be tamed. |
-| Grey Sea | **drossik** | NEW | `RM_SeaFloorGround` | — | a grey eye-cup on a short stem in the sediment that turns to follow a diver, then folds flat and is a pebble | Hides in place: it never leaves its cell. `RM_SeaFloorGround` is the one shared floor terrain, and `RM_SeabedFloorLife` copies the Grey Sea cast onto it. **Sea rule:** fish-sized, so it owes a floor def **and** a `fishTypes` catch. `RM_Thollim` is not taken: its own text says it notices nothing and moves "only downward", so making it watch would rewrite a creature. |
+| Grey Sea | **drossik** | NEW | `RM_SeaFloorGround` | — | a grey eye-cup on a short stem in the sediment that turns to follow a diver, then folds flat and is a pebble | Hides in place, and seldom moves (a low `wanderChance`). `RM_SeaFloorGround` is the one shared floor terrain, and `RM_SeabedFloorLife` copies the Grey Sea cast onto it. **Sea rule:** fish-sized, so it owes a floor def **and** a `fishTypes` catch. `RM_Thollim` is not taken: its own text says it notices nothing and moves "only downward", so making it watch would rewrite a creature. |
 | Lantern Deeps | **thrennick** | NEW | `RM_LanternstoneFloor` | — | a wall-foot sitter that sinks for anything big in the dark | No glow (ban 6). The Lantern Deeps sheet has a host-and-injection rule (§0), and this row is subject to it. |
 | Miasma | **lussaq** | NEW | `Mud` | — | a six-legged root-sitter whose eye-fan is banded like the rainbow flora | The Miasma's own member (Shiro is not one, note S). `RM_Bozzuga` ("half-sunk … only its eyes showing") is an ambush predator, not shy, so it is not taken. |
 | the Chill (propane lakes) | **pralq** | NEW | `RM_SolidPropane` [W] | heat | a frost-crust sitter at the lake margin that flinches from warmth | Can never be transported (R-H10). `animalDensity` is 0.08 (`RM_TheChill.xml`). |
-| Pyrelands | **ttekku** | NEW | `RM_FE_Ash_Heavy` | fire | an ash-hole sitter that pops up after a fire passes | "ttekku up" means the ground is safe to walk. `RM_Ashwallow` is the sibling burrow-on-fire grazer and stays separate. |
-| Rot | **mollugh** | NEW | `RM_TheRotSoilRich` | — | a fungus/animal that pulls itself under its own cap | Lives on the rot soil; its cap is drawn into its peek art. Ban 2 fits. Existing alternative: **`RM_Grellik`**, "the growth hides it among the caps". But it is vermin that breeds back, so a hide-and-flush pest is a design risk. |
+| Pyrelands | **ttekku** | NEW | `RM_FE_Ash_Heavy` | fire | an ash-hole sitter that pops up after a fire passes | Its fire cue says the fire has passed, nothing more: it does not sense lingering heat, so its text must not promise safe ground. `RM_Ashwallow` is the sibling burrow-on-fire grazer and stays separate. |
+| Rot | **mollugh** | NEW | `RM_TheRotSoilRich` | — | a fungus/animal that pulls itself under its own cap | Lives on the rot soil; its cap is drawn into its peek art. Ban 2 fits. Existing alternative: **`RM_Grellik`**, "the growth hides it among the caps". But it is vermin that breeds back, so a hiding pest that breeds back is a design risk. |
 | Rust Cathedral | **Watcher** (`RM_Watcher`) | NEW (machine) | `RM_RustCathedral_CrackedMetalSoil` | — | a little camera stalk that rises out of a deck seam, turns its head to follow you, and pulls back down into the seam when you come near. **Very shy:** see 5.7 | **Mechanical wildlife on the living-bolt shape** (not organic, not tameable, not butcherable into meat), so ban 7 does not bar it. Its text never says why it watches (ban 1). The stalk animation and head tracking are §5. The rise/track behaviour belongs to this biome's Watcher only; no other member uses it. |
 | Scald | **hveshk** | NEW | `RUT_ScaldMargin` [W] | steam (`RM_SteamDevil`) | a sinter-rim sitter on the shore, never in the boil (ban 4) | The margin is named in `RM_TheScald.xml`. Not fish-sized and not on the floor, so it owes no catch def. |
-| Sump | **thossa** | NEW | `RM_TarShallow` [W] | — | only its eye-blister breaks the tar surface | "thossa gone" means the tar is unsafe to cross. Laid: UNMEASURED (the Sump's own fauna cite `RM_TarShallow`). |
+| Sump | **thossa** | NEW | `RM_TarShallow` [W] | — | only its eye-blister breaks the tar surface | Laid: UNMEASURED (the Sump's own fauna cite `RM_TarShallow`). It carries no hazard cue, so its text makes no claim about the tar. |
 | Twilight Sea | **yennith** | NEW | `RM_SeaFloorGround` | — | a fan of three eyestalks from a silt tube | **Sea rule:** fish-sized, so it owes a floor def **and** a `fishTypes` catch. `RM_Kellu` ("hiding in the fronds by day") is a mobile hunter, so it is not taken. |
 | Warscar (Scarlands) | **okkash** | NEW | `AncientMegastructure` | — | peeks from under the edge of a fused-glass plate | That is the only terrain `RM_Warscar` names; the plate edge is drawn into its peek art. It goes down when a Sentinel patrol passes (a body cue). |
 | Wastes | **haddoq** | NEW | `VolcanoSoil` | — | peeks from the mouth of a spent ordnance casing | Lives on the volcanic soil; the casing is drawn into its peek art. Never the headline threat (ban 3). |
 | Webwork | **qellith** | NEW | `SoilRich` | — | a thread-hermit that peers out of an old cocoon | Lives on the floor; the cocoon is drawn into its peek art. Goes down for a Wyyyschokk: an early spider warning. |
 | Weeping Stones | **ommeth** | NEW | `SoftSand` | — | a pool-rim sitter whose comb is the sign it leaves | Never ambushes at water (ban 5). The comb is the **sign Thing**, because a hidden pawn draws nothing (§2). Existing alternative: **`RM_Ivvol`**, "the ridge surfaces, the eyes count", a stocked-pool floor-thing; a pool is a water terrain, so it fits the ruled media if chosen at the sitting. |
 | Slime | **uuloq** | NEW | `RM_Slime_Liquid` | — | a nodule in the slime body; a bubble-eye breaks the surface | jelly food; no sentience read (ban 1). The slime liquid is Standable and not Water-tagged. |
-| Sleeping Ice | **hessarn** | NEW | `Ice` | — | a seam-grazer that turns a heat-pit face toward warm bodies and draws down | Thermal sensing reads as its body cue. It retracts in place and never flees (bans 7/8). |
+| Sleeping Ice | **hessarn** | NEW | `Ice` | — | a seam-grazer that turns a heat-pit face toward warm bodies and draws down | Thermal sensing reads as its body cue. It retracts in place rather than running (bans 7/8). |
 
 `[W]` = an `IsWater` terrain: §1.4 applies.
 
@@ -275,7 +321,7 @@ The item's third criterion ("one member per biome proven on a quicktest map") is
 ## 4. Questions for the owner
 
 Ruled, so not asked again: hide in place + sign; the flinch cue; standalone mod; one medium each,
-ground or water; the piinnok's ground, pictures, taming and hunting; all biomes; the full cue set;
+ground or water; the piinnok's ground, pictures and taming; no flushing, fragility, sad remains and the bounded alarm ripple; all biomes; the full cue set;
 the Rust Cathedral's member is a machine camera stalk named literally "Watcher", with an eight-step head pan and very shy behaviour (this biome only); the fessk is not a watcher; the Contagion
 gets a new creature.
 
@@ -330,7 +376,7 @@ Rust Cathedral only, very shy.**
 
 | piece | path | what it lends |
 |---|---|---|
-| The whole kit: watch, flinch, hide, sign, flush, medium lock, cues | `src/RimMandrake/Watchers` | the behaviour. The owner's "always pulled away when approached" is the kit's flinch, unchanged |
+| The whole kit: watch, flinch, hide, sign, death, alarm ripple, medium lock, cues | `src/RimMandrake/Watchers` | the behaviour. The owner's "always pulled away when approached" is the kit's flinch, unchanged |
 | A custom animal body worker that picks a graphic state per draw | `src/RimMandrake/TheForge/Source/RM_PawnRenderNodeWorker_DormantBody.cs` + `TheForge/Defs/PawnRenderTreeDefs/RM_DormantAnimalBody.xml` | the pattern for choosing a head picture by look direction (the eight-step pan), and a working custom `PawnRenderTreeDef` in our tree |
 | A Harmony postfix that swaps an animal into its alternate graphic slot | `src/RimMandrake/CreatureBehaviors/Source/RM_SandBuriedGraphic.cs` | not needed here; listed so nobody rebuilds it |
 | The living bolt: a mechanoid-fleshed wild creature with its **own whole think tree** | `src/RimMandrake/RustCathedral/Defs/ThingDefs_Races/RM_LivingBolt.xml`, `RustCathedral/Defs/ThinkTreeDefs/RM_ThinkTree_LivingBolt.xml` | the def shape for a machine creature. **Important:** a mechanoid-fleshed race is never an Animal, so the kit's `Animal_PreWander` splice never reaches it. The Watcher needs its own small tree listing `RM_JobGiver_Watch` and `RM_JobGiver_WanderInMedium`, as the bolt has its own. No kit C# changes for that |
@@ -349,8 +395,8 @@ Frozen sheet: `design/Jawa/worldbuilding/biomes/the_rust_cathedral.md` §6.
 
 - **Ban 7, no ordinary wildlife** ("nothing organic spawns here that isn't §4's short list"). The
   Watcher is not organic. It follows the living bolts' precedent exactly: mechanical "wildlife",
-  mechanoid flesh, not tameable, not butchered into meat. Its only yield is a component or steel,
-  as the bolt's `butcherProducts`.
+  mechanoid flesh, not tameable, not butchered into meat. What it leaves is its death asset, a
+  collapsed camera husk of dubious salvage value (the kit's `remainsDef`).
 - **Ban 1, no §GM truth in player text.** Its description says what it **does** and never **why**.
   It must not say it is the place's eye, belongs to the mind, reports to anything, or shares the
   bolts' origin (the bolts' origin is named in ban 1). That is the obvious joke to reach for, and
@@ -358,7 +404,7 @@ Frozen sheet: `design/Jawa/worldbuilding/biomes/the_rust_cathedral.md` §6.
   found the other end of the stalk."
 - **Bans 2–6** don't touch it: no droid-mercy text, no hunting Sentinels, no settlement, no acid,
   no drill explanation.
-- Every other kit rule stands: hide in place, a readable sign in the seam, flush-only hunting.
+- Every other kit rule stands: hide in place, a readable sign in the seam, no flushing, fragile.
 
 ### 5.5 Art owed
 
@@ -369,9 +415,9 @@ Frozen sheet: `design/Jawa/worldbuilding/biomes/the_rust_cathedral.md` §6.
 | head, by look direction | 5 | 8 directions from 5 drawn (the three west-side ones mirror) |
 | moving body (a small crawler base for relocating along the seams) | 3 | north / east / south |
 | sign (seam glint) | 1 | the readable mark while it is down |
-| corpse | 0 | a mechanoid-fleshed race has none, as with the living bolt |
+| collapsed camera husk (its remains) | 1 | the death asset every member owes; the kit swaps it in for the corpse |
 
-Total: about **11–12 sprites.** All are small (the bolt draws at 0.1),
+Total: about **12–13 sprites.** All are small (the bolt draws at 0.1),
 which suits the artpipe. **No flight is involved, so the no-unattended-flyer-test rule doesn't
 apply.** A live quicktest proof with screenshots is allowed.
 
@@ -410,11 +456,11 @@ Rust Cathedral's own sitting, like every member.
 ### 5.7 Shyness (owed design parameter; numbers PROVISIONAL)
 
 Owner, 2026-10-08, typed: *"it should be very shy when approached."* The Watcher is the shyest
-member of the kit: it hides from a small distance, drops fast, and stays down a long time.
+member of the kit: it notices from far off, drops fast, and stays down a long time.
 
 | parameter | direction | provisional value |
 |---|---|---|
-| flinch radius | small: it notices and pulls back before anything gets close | PROVISIONAL, tune in the quicktest |
+| flinch radius | **larger** than the kit's: it pulls back while a pawn is still far away | PROVISIONAL, tune in the quicktest |
 | retract speed | fast: a short *retract* animation | PROVISIONAL |
 | re-emerge delay | long: it stays down well after the pawn has left | PROVISIONAL |
 

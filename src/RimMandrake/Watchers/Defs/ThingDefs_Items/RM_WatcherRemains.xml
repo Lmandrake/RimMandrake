@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_WatcherRemains.xml        Watchers - WATCHER_CREATURES_MOD_1
+
+  What a watcher leaves when it dies (owner ruling 2026-10-08, DEATH card, typed: "Remains are of highly
+  dubious value and kind of sad. But they could easily become Star Wars cuisine ingredients."). The kit's
+  death action (RM_DeathActionWorker_Watcher) swaps the corpse for RM_WatcherExtension.remainsDef. Tiny,
+  nearly worthless, edible at a pinch, no leather. Star Wars cuisine use belongs to the RSW tier and is
+  NOT built here.
+
+  RM_WatcherRemains_Piinnok   ART PLACEHOLDER: the vanilla desiccated hermit-crab body (the piinnok's own
+                              stand-in), drawn small and milky. Its own sprite (a clouded lens dome) is owed
+                              with the piinnok's art job.
+-->
+<Defs>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RM_WatcherRemains_Piinnok</defName>
+    <label>clouded piinnok lens</label>
+    <description>A small dome of glass-clear flesh gone milky, now that nothing looks out of it. It is still faintly warm. There is barely a mouthful on it, and nobody who has eaten one recommends it.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Animal/HermitCrab/Dessicated_HermitCrabA</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>0.4</drawSize>
+      <color>(220,225,230)</color>
+    </graphicData>
+    <rotatable>false</rotatable>
+    <statBases>
+      <MarketValue>0.3</MarketValue>
+      <Mass>0.02</Mass>
+      <Nutrition>0.03</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.05</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawBad</preferability>
+      <foodType>AnimalProduct</foodType>
+    </ingestible>
+    <thingCategories>
+      <li>AnimalProductRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

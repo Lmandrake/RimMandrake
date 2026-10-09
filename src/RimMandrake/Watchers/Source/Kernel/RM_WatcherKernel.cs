@@ -1,6 +1,7 @@
 // Verse-free kernel of the Watchers mod: the watch job's step state machine, the nearest-pawn scan, the think-tree gates (watch giver,
-// relocate-to-medium), the hide-duration and flinch-radius arithmetic, the flush hunt-mark rule and the extension's config validation.
-// RM_JobDriver_Watch, RM_WatcherUtility, RM_JobGiver_Watch, RM_CompWatcher, RM_WatcherExtension and RM_WatcherUtility.Flush call these with
+// relocate-to-medium), the hide-duration and flinch-radius arithmetic, the extension's config validation, the fragility rule, the sign's
+// validity rule and the bounded alarm ripple.
+// RM_JobDriver_Watch, RM_WatcherUtility, RM_JobGiver_Watch, RM_CompWatcher, RM_WatcherExtension, RM_WatcherSign and RM_WatcherAlarm call these with
 // the same expressions; SelfTest/WatcherFuzz.cs compiles this file alone. Keep it free of Verse/RimWorld/UnityEngine/HarmonyLib
 // (a `using Verse;` here breaks the self-test build, which is the guard rail).
 using System;
@@ -8,8 +9,8 @@ using System.Collections.Generic;
 
 namespace RimMandrake.Watchers
 {
-    /// <summary>What one 30-tick step of the watch job decided. The driver applies the flags in a fixed order: DropHunt, Hide, RestoreSign,
-    /// Emerge, Face, then the End flags last.</summary>
+    /// <summary>What one 30-tick step of the watch job decided. The driver applies the flags in a fixed order: DropHunt, Hide (and
+    /// RaiseAlarm with it), RestoreSign, Emerge, Face, then the End flags last.</summary>
     [Flags]
     public enum StepFlags
     {
@@ -22,11 +23,18 @@ namespace RimMandrake.Watchers
         Emerge = 32,
         ResetWatchClock = 64,
         Face = 128,
+        /// <summary>This hide was caused by a body or the geophone (not a cue, not a neighbour's alarm): start a new alarm ripple.</summary>
+        RaiseAlarm = 256,
     }
 
     public struct StepIn
     {
-        public bool watchersEnabled, onMedium, hidden, hideAndFlinch, turnToFace, hasNearest, inFlinch, geophone, hunted, signMissing, hungry;
+        public bool watchersEnabled, onMedium, hidden, hideAndFlinch, turnToFace, hasNearest, inFlinch, geophone, signMissing, hungry;
+        /// <summary>A Hunt designation is on it. It never sends it under (a visible watcher is an ordinary target, owner ruling 2026-10-08);
+        /// it is dropped the moment the watcher is under, because a hidden watcher cannot be targeted.</summary>
+        public bool huntMarked;
+        /// <summary>A neighbour's alarm ripple reached it and has not lapsed: it goes under and stays under like a cue.</summary>
+        public bool alarmed;
         /// <summary>Any of the member's optional non-body cues holds (RM_WatcherKernel.Cues != None): it sends it under and keeps it
         /// under, exactly like the geophone.</summary>
         public bool cue;
@@ -46,10 +54,11 @@ namespace RimMandrake.Watchers
             StepFlags f = StepFlags.None;
             if (!s.hidden)
             {
-                if (s.hideAndFlinch && (s.inFlinch || s.geophone || s.cue || s.hunted))
+                if (s.hideAndFlinch && (s.inFlinch || s.geophone || s.cue || s.alarmed))
                 {
                     f |= StepFlags.Hide;
-                    if (s.hunted) f |= StepFlags.DropHunt;
+                    if (s.huntMarked) f |= StepFlags.DropHunt;
+                    if (s.inFlinch || s.geophone) f |= StepFlags.RaiseAlarm;
                     return f;
                 }
                 if (s.turnToFace && s.hasNearest) f |= StepFlags.Face;
@@ -57,11 +66,12 @@ namespace RimMandrake.Watchers
                 return f;
             }
             if (s.signMissing) f |= StepFlags.RestoreSign;
-            if (!s.hideAndFlinch || s.hungry || (s.now >= s.hiddenUntil && !s.inFlinch && !s.geophone && !s.cue))
+            if (!s.hideAndFlinch || s.hungry || (s.now >= s.hiddenUntil && !s.inFlinch && !s.geophone && !s.cue && !s.alarmed))
             {
                 f |= StepFlags.Emerge | StepFlags.ResetWatchClock;
                 if (s.hungry) f |= StepFlags.EndSucceeded;
             }
+            else if (s.huntMarked) f |= StepFlags.DropHunt;
             return f;
         }
 
@@ -98,12 +108,12 @@ namespace RimMandrake.Watchers
         /// <summary>The cheap gates of the think-tree watch giver (evaluated first, so the random roll and the map-wide active-watcher scan only run
         /// for an animal that could actually start a watch).</summary>
         public static bool WatchGiverPre(bool hasExt, bool watchersEnabled, bool spawned, bool downed, bool inMentalState, bool hasMap,
-            bool hasComp, bool bolting, bool onMedium, bool hideAndFlinch, bool turnToFace, bool hasFoodNeed, float foodPercent,
+            bool hasComp, bool onMedium, bool hideAndFlinch, bool turnToFace, bool hasFoodNeed, float foodPercent,
             float emergeWhenFoodBelow)
         {
             if (!hasExt || !watchersEnabled) return false;
             if (!spawned || downed || inMentalState || !hasMap) return false;
-            if (!hasComp || bolting) return false;
+            if (!hasComp) return false;
             if (!onMedium) return false;
             if (!hideAndFlinch && !turnToFace) return false;
             if (hasFoodNeed && foodPercent < emergeWhenFoodBelow) return false;
@@ -118,32 +128,25 @@ namespace RimMandrake.Watchers
 
         /// <summary>The whole giver decision (Pre then CapOk).</summary>
         public static bool WatchGiverAllows(bool hasExt, bool watchersEnabled, bool spawned, bool downed, bool inMentalState, bool hasMap,
-            bool hasComp, bool bolting, bool onMedium, bool hideAndFlinch, bool turnToFace, bool hasFoodNeed, float foodPercent,
+            bool hasComp, bool onMedium, bool hideAndFlinch, bool turnToFace, bool hasFoodNeed, float foodPercent,
             float emergeWhenFoodBelow, bool wanderRoll, int activeWatchers, int maxActivePerMap)
         {
-            return WatchGiverPre(hasExt, watchersEnabled, spawned, downed, inMentalState, hasMap, hasComp, bolting, onMedium, hideAndFlinch,
+            return WatchGiverPre(hasExt, watchersEnabled, spawned, downed, inMentalState, hasMap, hasComp, onMedium, hideAndFlinch,
                 turnToFace, hasFoodNeed, foodPercent, emergeWhenFoodBelow) && WatchGiverCapOk(wanderRoll, activeWatchers, maxActivePerMap);
         }
 
         /// <summary>The 250-tick comp check: should an idle off-medium watcher be sent looking for its medium.</summary>
         public static bool ShouldSeekMedium(bool watchersEnabled, bool stayOnMedium, bool hasMedium, bool downed, bool inMentalState,
-            bool bolting, bool noMediumReachable, bool onMedium, bool hasCurrentJob, bool currentJobIsIdle)
+            bool noMediumReachable, bool onMedium, bool hasCurrentJob, bool currentJobIsIdle)
         {
-            if (!watchersEnabled || !stayOnMedium || !hasMedium || downed || inMentalState || bolting || noMediumReachable || onMedium) return false;
+            if (!watchersEnabled || !stayOnMedium || !hasMedium || downed || inMentalState || noMediumReachable || onMedium) return false;
             if (hasCurrentJob && !currentJobIsIdle) return false;
             return true;
         }
 
-        /// <summary>A flush marks the bolting watcher for hunting only for a player flusher, only if the setting is on, only for an animal
-        /// of no humanlike faction (Designator_Hunt's own rule), and never twice.</summary>
-        public static bool FlushMarksHunt(bool flushMarksHuntSetting, bool flusherIsPlayer, bool watcherHasFaction, bool watcherFactionHumanlike, bool alreadyMarked)
-        {
-            return flushMarksHuntSetting && flusherIsPlayer && (!watcherHasFaction || !watcherFactionHumanlike) && !alreadyMarked;
-        }
-
         /// <summary>Config errors of an RM_WatcherExtension (empty list = sound).</summary>
         public static List<string> ConfigErrors(bool hasHiddenHediff, bool hasSignDef, bool signClassOk, float flinchRadius, float watchRadius,
-            int hideMin, int hideMax, int maxWatchTicks, int boltTicks, float wanderChance, float emergeWhenFoodBelow, float geophoneMinBodySize)
+            int hideMin, int hideMax, int maxWatchTicks, float wanderChance, float emergeWhenFoodBelow, float geophoneMinBodySize, float maxLethalDamage)
         {
             var e = new List<string>();
             if (!hasHiddenHediff) e.Add("hiddenHediff is null (it could never hide)");
@@ -151,11 +154,98 @@ namespace RimMandrake.Watchers
             else if (!signClassOk) e.Add("signDef thingClass is not RM_WatcherSign");
             if (flinchRadius <= 0f || watchRadius < flinchRadius) e.Add("need 0 < flinchRadius <= watchRadius");
             if (hideMin <= 0 || hideMax < hideMin) e.Add("hideTicks range invalid");
-            if (maxWatchTicks <= 0 || boltTicks <= 0) e.Add("maxWatchTicks and boltTicks must be positive");
+            if (maxWatchTicks <= 0) e.Add("maxWatchTicks must be positive");
             if (wanderChance < 0f || wanderChance > 1f) e.Add("wanderChance must be a probability in 0..1");
             if (emergeWhenFoodBelow < 0f || emergeWhenFoodBelow > 1f) e.Add("emergeWhenFoodBelow must be a food fraction in 0..1 (above 1 it would never watch at all)");
             if (geophoneMinBodySize < 0f) e.Add("geophoneMinBodySize must not be negative (0 turns the geophone off)");
+            if (!(maxLethalDamage > 0f)) e.Add("maxLethalDamage must be positive (it is the fragility ceiling every member is audited against)");
             return e;
+        }
+
+        // ------------------------------------------------------------------ fragility (owner ruling 2026-10-08, DEATH card)
+        // "Should take almost no damage to destroy them." The engine kills a pawn whose summed injury severity reaches
+        // Pawn_HealthTracker.LethalDamageThreshold = 150 x Pawn.HealthScale, and HealthScale = life stage healthScaleFactor x race
+        // baseHealthScale (RimSage, decompiled 1.6). The audit reads the adult (factor 1), the sturdiest stage.
+
+        public const float LethalDamagePerHealthScale = 150f;
+
+        public static float LethalDamage(float baseHealthScale, float lifeStageHealthFactor)
+        {
+            return LethalDamagePerHealthScale * baseHealthScale * lifeStageHealthFactor;
+        }
+
+        /// <summary>Errors of the startup fragility audit (empty = fragile enough).</summary>
+        public static List<string> FragilityErrors(float baseHealthScale, float maxLethalDamage)
+        {
+            var e = new List<string>();
+            float lethal = LethalDamage(baseHealthScale, 1f);
+            if (!(lethal <= maxLethalDamage))
+                e.Add("an adult dies at " + lethal + " damage, above maxLethalDamage " + maxLethalDamage
+                    + " (owner ruling 2026-10-08: almost no damage destroys a watcher; lower race baseHealthScale)");
+            return e;
+        }
+
+        // ------------------------------------------------------------------ the sign's validity (orphan and duplicate repair)
+        /// <summary>A sign stands only while its owner is alive, spawned, in the watch job, and that job's sign is this one. Anything else is an
+        /// orphan (owner dead, gone, or out of the job) or a duplicate (the job holds another sign), and the sign removes itself.</summary>
+        public static bool SignValid(bool hasOwner, bool ownerSpawned, bool ownerDead, bool ownerInWatchJob, bool jobSignIsThis)
+        {
+            return hasOwner && ownerSpawned && !ownerDead && ownerInWatchJob && jobSignIsThis;
+        }
+
+        // ------------------------------------------------------------------ the alarm ripple (owner ruling 2026-10-08: yes, bounded)
+        // A watcher that goes under for a body or the geophone, or dies, starts an alarm event. The event reaches at most maxCount others in
+        // total, each a short delay after the one that passed it on, at most maxHops passes from the origin, only within hopRadius of the one
+        // passing it on and maxDistFromOrigin of where it began, and never after maxAgeTicks. Each event id is new; a watcher reached by an
+        // event is never reached by it again, and a watcher going under because of an alarm never starts a new event. So it cannot loop.
+
+        public struct AlarmLimits
+        {
+            public int maxCount, maxHops, maxAgeTicks, minDelayTicks, maxDelayTicks, holdTicks;
+            public float hopRadius, maxDistFromOrigin;
+        }
+
+        /// <summary>The shipped limits (PROVISIONAL numbers; the ruling fixed "about 5", delays, and hop/age/distance limits).</summary>
+        public static AlarmLimits DefaultAlarmLimits()
+        {
+            return new AlarmLimits { maxCount = 5, maxHops = 2, maxAgeTicks = 600, minDelayTicks = 15, maxDelayTicks = 60, holdTicks = 300,
+                hopRadius = 8f, maxDistFromOrigin = 12f };
+        }
+
+        /// <summary>Is the event still live at this tick.</summary>
+        public static bool AlarmLive(int now, int startTick, AlarmLimits L)
+        {
+            return now - startTick < L.maxAgeTicks;
+        }
+
+        /// <summary>Which candidates one pass of the event reaches, nearest to the passer first. hop = how many passes have already
+        /// happened before this one (0 at the origin). reachedSoFar = how many watchers the event has already reached. Distances are squared.
+        /// eligible = an awake visible watcher in its watch job (a hidden, dead or busy one is skipped, not counted).</summary>
+        public static List<int> AlarmPick(IList<float> distSqFromPasser, IList<float> distSqFromOrigin, IList<bool> eligible, IList<bool> alreadyReached,
+            int hop, int reachedSoFar, int now, int startTick, AlarmLimits L)
+        {
+            var picked = new List<int>();
+            if (!AlarmLive(now, startTick, L) || hop >= L.maxHops) return picked;
+            int room = L.maxCount - reachedSoFar;
+            if (room <= 0) return picked;
+            float hopSq = L.hopRadius * L.hopRadius, originSq = L.maxDistFromOrigin * L.maxDistFromOrigin;
+            var order = new List<int>();
+            for (int i = 0; i < distSqFromPasser.Count; i++)
+            {
+                if (!eligible[i] || alreadyReached[i]) continue;
+                if (distSqFromPasser[i] > hopSq || distSqFromOrigin[i] > originSq) continue;
+                order.Add(i);
+            }
+            order.Sort((a, b) => distSqFromPasser[a] != distSqFromPasser[b] ? distSqFromPasser[a].CompareTo(distSqFromPasser[b]) : a.CompareTo(b));
+            for (int k = 0; k < order.Count && picked.Count < room; k++) picked.Add(order[k]);
+            return picked;
+        }
+
+        /// <summary>When a pass lands: a rolled delay in [minDelayTicks, maxDelayTicks] after the passer was reached (rolled01 in [0,1]).</summary>
+        public static int AlarmDeliverTick(int passerTick, float rolled01, AlarmLimits L)
+        {
+            float r = rolled01 < 0f ? 0f : rolled01 > 1f ? 1f : rolled01;
+            return passerTick + L.minDelayTicks + (int)(r * (L.maxDelayTicks - L.minDelayTicks));
         }
 
         // ------------------------------------------------------------------ optional non-body cues (owner ruling 2026-10-08: "Full set")

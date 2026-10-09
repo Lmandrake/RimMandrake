@@ -64,8 +64,23 @@ Mod Settings toggle per feature; every DLC is assumed present.
 - **Rust Cathedral Watcher:** *"Eight span is good. But call it literally a 'Watcher.' Only for
   this biome. And it should be very shy when approached."* Head turn = the eight-step pan; the
   creature's name and label are literally "Watcher" (defName `RM_Watcher`, `RM_` tier); the stalk
-  rise/track behaviour is for the Rust Cathedral only, not kit-wide; shyness (small flinch radius,
-  fast hide, long re-emerge delay) is an owed parameter, numbers PROVISIONAL (pitch §5.7).
+  rise/track behaviour is for the Rust Cathedral only, not kit-wide; shyness (a larger flinch radius,
+  fast retraction, long re-emerge delay) is an owed parameter, numbers PROVISIONAL (pitch §5.7).
+
+## owner ruling (death card, 2026-10-08, typed)
+
+- **Death:** *"Watchers can't be flushed. They just won't. Many damage types will take them out like
+  fire explosions acid l, mostly aoe. Should take almost no damage to destroy them. Remains are of
+  highly dubious value and kind of sad. But they could easily become Star Wars cuisine ingredients."*
+  Built 2026-10-08 (pitch §1.6): flush removed; a hidden watcher cannot be targeted, a visible one is
+  an ordinary target; fragility audited (adult dies at <= `maxLethalDamage` 5); the death action
+  swaps the corpse for `remainsDef` (piinnok: clouded piinnok lens) and clears every sign.
+  **Owed later, not built here:** Star Wars cuisine use of remains belongs to the RSW tier. The
+  piinnok's biosilica yield went with its corpse; if it should come back, it rides the remains.
+- **Alarm ripple** (same card, decision by question card): yes, bounded: about 5, delays, hop/age/
+  distance limits, expiring event ids, its own toggle. Built 2026-10-08 (`RM_WatcherAlarm`).
+- Decision by question card: the piinnok lifecycle proof and the Rust Cathedral Watcher are built in
+  parallel.
 
 ## criteria
 

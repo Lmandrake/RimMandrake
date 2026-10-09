@@ -11,10 +11,13 @@ namespace RimMandrake.Watchers
     ///             Pawn.DrawNonHumanlikeStationaryGraphic, the hermit-crab rule) and turns to face
     ///             the nearest pawn that is not its own kind.
     ///   Flinch:   a non-own-kind pawn within the flinch radius, the geophone, any optional cue the
-    ///             member carries (RM_WatcherCues: gas, heat, fire, steam, shade, buried, light), or a Hunt order on
-    ///             it (hunting is flush-only, Q4) -> puff, hidden hediff on, sign on the cell.
+    ///             member carries (RM_WatcherCues: gas, heat, fire, steam, shade, buried, light), or a
+    ///             neighbour's alarm ripple (RM_WatcherAlarm) -> puff, hidden hediff on, sign on the cell. A body
+    ///             or the geophone also starts a new ripple. A Hunt order on it comes off as it goes under:
+    ///             a hidden watcher cannot be targeted (owner ruling 2026-10-08, no flushing); area damage
+    ///             (fire, explosions, acid) still reaches it, because the hediff hides it without despawning it.
     ///   Hidden:   comes back up after the hide delay once nothing is inside the flinch radius
-    ///             and the geophone and every cue are quiet; or at once if hungry (then the job ends so it can feed).
+    ///             and the geophone, every cue and any alarm are quiet; or at once if hungry (then the job ends so it can feed).
     /// The job also ends when it is off its medium, after maxWatchTicks of watching, or when the
     /// settings switch it off. The toil's finish action removes the hediff and the sign on EVERY
     /// exit (end, interrupt, damage, capture, death), so the hidden state never outlives the job
@@ -28,6 +31,16 @@ namespace RimMandrake.Watchers
         private int hiddenUntilTick = -1;
         private int watchStartTick = -1;
         private RM_WatcherSign sign;
+
+        /// <summary>The one sign this job holds while hidden. RM_WatcherSign removes itself when it is not this (orphan or duplicate).
+        /// Virtual: a member's own watch driver derived from this one (the Rust Cathedral Watcher's stalk) holds its own sign.</summary>
+        public virtual RM_WatcherSign Sign => sign;
+
+        /// <summary>Is this pawn in a watch job (the kit's or a member's own driver derived from it).</summary>
+        public static bool InWatchJob(Pawn p)
+        {
+            return p?.jobs?.curDriver is RM_JobDriver_Watch;
+        }
 
         public override void ExposeData()
         {
@@ -94,20 +107,22 @@ namespace RimMandrake.Watchers
             bool onMedium = RM_WatcherUtility.OnMedium(pawn, ext);
             // Short-circuit order kept: the scans only run once the watch is known to continue.
             Pawn nearest = null;
-            bool inFlinch = false, geo = false, cue = false, hunted = false, hungry = false;
+            bool inFlinch = false, geo = false, cue = false, huntMarked = false, hungry = false, alarmed = false;
             if (RM_WatchersSettings.watchersEnabled && onMedium)
             {
                 nearest = RM_WatcherUtility.NearestOther(pawn, ext, out inFlinch);
                 geo = RM_WatcherUtility.GeophoneFires(pawn, ext);
                 cue = RM_WatcherCueUtility.CuesNow(pawn, ext) != CueKind.None;
-                hunted = !hidden && map.designationManager.DesignationOn(pawn, DesignationDefOf.Hunt) != null;
+                huntMarked = map.designationManager.DesignationOn(pawn, DesignationDefOf.Hunt) != null;
                 hungry = pawn.needs?.food != null && pawn.needs.food.CurLevelPercentage < ext.emergeWhenFoodBelow;
+                RM_CompWatcher comp = pawn.GetComp<RM_CompWatcher>();
+                alarmed = RM_WatchersSettings.alarmRipple && comp != null && comp.Alarmed;
             }
             StepFlags f = RM_WatcherKernel.DecideStep(new StepIn
             {
                 watchersEnabled = RM_WatchersSettings.watchersEnabled, onMedium = onMedium, hidden = hidden,
                 hideAndFlinch = RM_WatchersSettings.hideAndFlinch, turnToFace = RM_WatchersSettings.turnToFace,
-                hasNearest = nearest != null, inFlinch = inFlinch, geophone = geo, cue = cue, hunted = hunted,
+                hasNearest = nearest != null, inFlinch = inFlinch, geophone = geo, cue = cue, huntMarked = huntMarked, alarmed = alarmed,
                 signMissing = hidden && (sign == null || sign.Destroyed), hungry = hungry,
                 now = now, hiddenUntil = hiddenUntilTick, watchStart = watchStartTick, maxWatchTicks = ext.maxWatchTicks,
             });
@@ -116,20 +131,25 @@ namespace RimMandrake.Watchers
                 EndJobWith(JobCondition.InterruptForced);
                 return;
             }
+            if ((f & StepFlags.DropHunt) != 0)
+            {
+                // A hidden watcher cannot be targeted (owner ruling 2026-10-08). The Hunt order is what keeps a player hunter
+                // shooting at it (Verb.CanHitTargetFrom only refuses an invisible target to a HOSTILE caster; JobDriver_Hunt fails
+                // as soon as the designation is gone), so the order comes off.
+                map.designationManager.TryRemoveDesignationOn(pawn, DesignationDefOf.Hunt);
+            }
             if ((f & StepFlags.Hide) != 0)
             {
-                if ((f & StepFlags.DropHunt) != 0)
-                {
-                    // Flush-only (Q4, 2026-10-03): a peeking watcher cannot be hunted. It sinks
-                    // and the order comes off, saying how to get it.
-                    map.designationManager.TryRemoveDesignationOn(pawn, DesignationDefOf.Hunt);
-                }
                 sign = RM_WatcherUtility.Hide(pawn, ext);
                 hidden = true;
                 hiddenUntilTick = RM_WatcherKernel.HiddenUntil(now, ext.hideTicks.RandomInRange, RM_WatchersSettings.emergeDelayScale);
                 if ((f & StepFlags.DropHunt) != 0)
                 {
                     Messages.Message("RM_Watchers_HuntSank".Translate(pawn.LabelShort), sign, MessageTypeDefOf.RejectInput, false);
+                }
+                if ((f & StepFlags.RaiseAlarm) != 0)
+                {
+                    RM_WatcherAlarm.Raise(pawn, map);
                 }
                 return;
             }

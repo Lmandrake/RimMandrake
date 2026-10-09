@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- WATCHER_CREATURES_MOD_1. RM_WatcherWatch: the watch cycle (RM_JobDriver_Watch).
      RM_WatcherRelocate: vanilla JobDriver_Goto under its own def, so the medium backstop can tell
-     its own walk home from any other goto. RM_WatcherFlush: a hunter walking to a sign to make the
-     watcher bolt (RM_JobDriver_Flush). -->
+     its own walk home from any other goto. -->
 <Defs>
 
   <JobDef>
@@ -16,12 +15,6 @@
     <defName>RM_WatcherRelocate</defName>
     <driverClass>JobDriver_Goto</driverClass>
     <reportString>heading back to its ground.</reportString>
-  </JobDef>
-
-  <JobDef>
-    <defName>RM_WatcherFlush</defName>
-    <driverClass>RimMandrake.Watchers.RM_JobDriver_Flush</driverClass>
-    <reportString>flushing TargetA.</reportString>
   </JobDef>
 
 </Defs>

@@ -28,13 +28,14 @@ namespace RimMandrake.Watchers
         private const int CheckInterval = RM_WatcherKernel.CheckInterval;
         private const int NoMediumRecheckTicks = RM_WatcherKernel.NoMediumRecheckTicks;
 
-        public int boltUntilTick = -1;
         public int noMediumUntilTick = -1;
+        /// <summary>A neighbour's alarm ripple holds it under until this tick (RM_WatcherAlarm).</summary>
+        public int alarmUntilTick = -1;
         private RM_WatcherExtension ext;
 
         public RM_WatcherExtension Ext => ext ?? (ext = parent.def.GetModExtension<RM_WatcherExtension>());
 
-        public bool Bolting => Find.TickManager.TicksGame < boltUntilTick;
+        public bool Alarmed => Find.TickManager.TicksGame < alarmUntilTick;
 
         public bool NoMediumReachable => Find.TickManager.TicksGame < noMediumUntilTick;
 
@@ -44,8 +45,8 @@ namespace RimMandrake.Watchers
         public override void PostExposeData()
         {
             base.PostExposeData();
-            Scribe_Values.Look(ref boltUntilTick, "rmWatcherBoltUntil", -1);
             Scribe_Values.Look(ref noMediumUntilTick, "rmWatcherNoMediumUntil", -1);
+            Scribe_Values.Look(ref alarmUntilTick, "rmWatcherAlarmUntil", -1);
         }
 
         public override void CompTick()
@@ -62,14 +63,14 @@ namespace RimMandrake.Watchers
                 return;
             }
             JobDef cur = pawn.CurJobDef;
-            if (cur != RM_WatchersDefOf.RM_WatcherWatch && RM_WatcherUtility.IsHidden(pawn, e))
+            if (!RM_JobDriver_Watch.InWatchJob(pawn) && RM_WatcherUtility.IsHidden(pawn, e))
             {
                 RM_WatcherSign none = null;
                 RM_WatcherUtility.Emerge(pawn, e, ref none, false);
-                RemoveStraySigns(pawn, e);
+                RM_WatcherUtility.RemoveSignsOf(pawn, pawn.Map, e.signDef);
             }
             if (!RM_WatcherKernel.ShouldSeekMedium(RM_WatchersSettings.watchersEnabled, RM_WatchersSettings.stayOnMedium, e.HasMedium,
-                    pawn.Downed, pawn.InMentalState, Bolting, NoMediumReachable, RM_WatcherUtility.OnMedium(pawn, e),
+                    pawn.Downed, pawn.InMentalState, NoMediumReachable, RM_WatcherUtility.OnMedium(pawn, e),
                     cur != null, cur != null && IdleJobs.Contains(cur.defName)))
             {
                 return;
@@ -86,26 +87,9 @@ namespace RimMandrake.Watchers
             }
         }
 
-        private static void RemoveStraySigns(Pawn pawn, RM_WatcherExtension e)
-        {
-            if (e.signDef == null)
-            {
-                return;
-            }
-            List<Thing> things = pawn.Map.listerThings.ThingsOfDef(e.signDef);
-            for (int i = things.Count - 1; i >= 0; i--)
-            {
-                if (things[i] is RM_WatcherSign s && s.owner == pawn && !s.Destroyed)
-                {
-                    pawn.Map.designationManager.RemoveAllDesignationsOn(s);
-                    s.Destroy();
-                }
-            }
-        }
-
         public override string CompInspectStringExtra()
         {
-            return Bolting ? "RM_Watchers_InspectBolting".Translate().ToString() : null;
+            return Alarmed ? "RM_Watchers_InspectAlarmed".Translate().ToString() : null;
         }
     }
 
@@ -130,7 +114,13 @@ namespace RimMandrake.Watchers
                 {
                     def.comps.Add(new RM_CompProperties_Watcher());
                 }
-                AuditMedium(def, def.GetModExtension<RM_WatcherExtension>());
+                RM_WatcherExtension ext = def.GetModExtension<RM_WatcherExtension>();
+                AuditMedium(def, ext);
+                RM_WatcherDeath.InstallDeathAction(def, ext);
+                foreach (string err in RM_WatcherKernel.FragilityErrors(def.race.baseHealthScale, ext.maxLethalDamage))
+                {
+                    Log.Error("[Watchers] " + def.defName + ": " + err);
+                }
             }
         }
 

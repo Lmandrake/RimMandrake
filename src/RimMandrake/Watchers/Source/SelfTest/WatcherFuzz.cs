@@ -1,14 +1,17 @@
 // Approach B for Watchers: seeded fuzz over the Verse-free kernel the mod calls (../Kernel/RM_WatcherKernel.cs):
 //   step    the watch job simulated tick by tick against random worlds (creatures drifting in and out of the flinch circle, geophone pings,
-//           hunt orders, hunger, losing the medium): sign iff hidden, a hunt order never survives a peek, a hungry hidden watcher emerges and
-//           ends the same step, a quiet watcher always finishes, hiding lasts at least its roll; plus every StepIn combination against a
-//           truth table written as nested predicates
+//           hunt orders, neighbour alarms, hunger, losing the medium): sign iff hidden, a hunt order never sends it under and never survives
+//           a step that leaves it hidden, a hungry hidden watcher emerges and ends the same step, a quiet watcher always finishes, hiding lasts
+//           at least its roll, only a body or the geophone raises an alarm; plus every StepIn combination against a nested-predicate table
 //   scan    nearest-creature scan against brute force (ties, the watch edge, the flinch edge, radius metamorphics)
-//   gates   every think-tree gate (watch giver, seek-medium backstop, flush hunt mark) exhaustively against an independent restatement,
+//   gates   every think-tree gate (watch giver, seek-medium backstop) exhaustively against an independent restatement,
 //           plus the cross-gate property that the giver never starts a watch that the first step would end for hunger
 //   config  RM_WatcherExtension.ConfigErrors against a restatement, the shipped piinnok values accepted, each single break reported
-// A failing case prints `family seed N: message`; --fuzz-seed N replays it. PROVISIONAL numbers (watch 14, flinch 6, hide 2500~7500, boltTicks
-// 1200, wander 0.1) are design-draft tuning; the properties hold for any valid values.
+//   death   the fragility rule (150 x baseHealthScale against maxLethalDamage) and the sign validity rule (orphan / duplicate repair)
+//   alarm   the bounded ripple simulated on random fields of watchers: never more than maxCount reached, never past maxHops or the origin
+//           distance or the hop radius, never after maxAge, never the same watcher twice, always terminates, and reaches someone when it can
+// A failing case prints `family seed N: message`; --fuzz-seed N replays it. PROVISIONAL numbers (watch 14, flinch 6, hide 2500~7500,
+// wander 0.1, the alarm limits) are design-draft tuning; the properties hold for any valid values.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,7 +23,8 @@ namespace RimMandrake.Watchers.SelfTest
     internal static class WatcherFuzz
     {
         public static long CueHides, CueFires;
-        public static long Cases, Steps, Hides, Emerges, HungryEmerges, Succeeded, Interrupted, HuntSinks, SignRestores;
+        public static long Cases, Steps, Hides, Emerges, HungryEmerges, Succeeded, Interrupted, HuntSinks, SignRestores, AlarmHides, AlarmRaises;
+        public static long RipplesRun, RippleReaches, RipplesCapped, SignVerdicts;
         private static void Check(bool ok, string msg) { if (!ok) throw new Exception(msg); }
         private static float F(Random r, float lo, float hi) { return lo + (float)r.NextDouble() * (hi - lo); }
 
@@ -29,22 +33,24 @@ namespace RimMandrake.Watchers.SelfTest
         {
             // nested-predicate restatement of the ruled behaviour
             if (!(s.watchersEnabled && s.onMedium)) return StepFlags.EndInterrupted;
-            bool flinched = s.hideAndFlinch && (s.inFlinch || s.geophone || s.cue || s.hunted);
+            bool flinched = s.hideAndFlinch && (s.inFlinch || s.geophone || s.cue || s.alarmed);
             if (!s.hidden)
             {
-                if (flinched) return StepFlags.Hide | (s.hunted ? StepFlags.DropHunt : 0);
+                if (flinched) return StepFlags.Hide | (s.huntMarked ? StepFlags.DropHunt : 0) | (s.inFlinch || s.geophone ? StepFlags.RaiseAlarm : 0);
                 StepFlags f = 0;
                 if (s.turnToFace && s.hasNearest) f |= StepFlags.Face;
                 if (s.now - s.watchStart >= s.maxWatchTicks) f |= StepFlags.EndSucceeded;
                 return f;
             }
             StepFlags g = s.signMissing ? StepFlags.RestoreSign : 0;
-            bool calm = s.now >= s.hiddenUntil && !s.inFlinch && !s.geophone && !s.cue;
-            if (s.hungry || !s.hideAndFlinch || calm)
+            bool calm = s.now >= s.hiddenUntil && !s.inFlinch && !s.geophone && !s.cue && !s.alarmed;
+            bool up = s.hungry || !s.hideAndFlinch || calm;
+            if (up)
             {
                 g |= StepFlags.Emerge | StepFlags.ResetWatchClock;
                 if (s.hungry) g |= StepFlags.EndSucceeded;
             }
+            if (!up && s.huntMarked) g |= StepFlags.DropHunt;   // stays under: nothing may keep aiming at it
             return g;
         }
 
@@ -54,14 +60,15 @@ namespace RimMandrake.Watchers.SelfTest
             // exhaustive truth table first (all booleans x the time relations)
             try
             {
-                for (int m = 0; m < (1 << 12); m++)
+                for (int m = 0; m < (1 << 13); m++)
                     for (int tc = 0; tc < 4; tc++)
                     {
                         var s = new StepIn
                         {
                             watchersEnabled = (m & 1) != 0, onMedium = (m & 2) != 0, hidden = (m & 4) != 0, hideAndFlinch = (m & 8) != 0,
                             turnToFace = (m & 16) != 0, hasNearest = (m & 32) != 0, inFlinch = (m & 64) != 0, geophone = (m & 128) != 0,
-                            hunted = (m & 256) != 0, signMissing = (m & 512) != 0, hungry = (m & 1024) != 0, cue = (m & 2048) != 0,
+                            huntMarked = (m & 256) != 0, signMissing = (m & 512) != 0, hungry = (m & 1024) != 0, cue = (m & 2048) != 0,
+                            alarmed = (m & 4096) != 0,
                             now = 10000, hiddenUntil = tc == 0 ? 9999 : tc == 1 ? 10000 : 10001, watchStart = tc == 3 ? 10000 - 2500 : 10000 - 2499, maxWatchTicks = 2500,
                         };
                         Cases++; Steps++;
@@ -84,7 +91,7 @@ namespace RimMandrake.Watchers.SelfTest
                     int hiddenSince = -1, rolled = 0; bool ended = false;
                     double hunger = F(r, 0f, 1f); float below = F(r, 0.1f, 0.5f);
                     // the world: a creature that wanders in and out of the flinch circle
-                    double nearDist = F(r, 0f, 30f); bool geoPending = false; int quietFor = 0; int cueRun = 0;
+                    double nearDist = F(r, 0f, 30f); bool geoPending = false; int quietFor = 0; int cueRun = 0; int alarmRun = 0;
                     for (int t = 0; t < 400 && !ended; t++)
                     {
                         Steps++; now += RM_WatcherKernel.StepInterval;
@@ -92,7 +99,8 @@ namespace RimMandrake.Watchers.SelfTest
                         bool hasNearest = nearDist <= 14.0; bool inFlinch = nearDist <= 6.0;
                         geoPending = r.Next(40) == 0;
                         bool cuePending = cueRun > 0 ? (--cueRun > 0) : (r.Next(120) == 0 && (cueRun = 1 + r.Next(40)) > 0);   // a cue that holds for a while (sun, a fire)
-                        if (!hidden && r.Next(60) == 0) { hunted = true; }
+                        bool alarmPending = alarmRun > 0 ? (--alarmRun > 0) : (r.Next(90) == 0 && (alarmRun = 1 + r.Next(10)) > 0);   // a neighbour's alarm hold
+                        if (r.Next(hidden ? 400 : 60) == 0) { hunted = true; }   // the player marks a visible one; rarely a mark lands on a hidden one (another mod)
                         hunger = Math.Max(0, Math.Min(1, hunger + F(r, -0.02f, 0.012f)));
                         bool hungry = hunger < below;
                         bool onMedium = r.Next(300) != 0 || t == 0;
@@ -102,7 +110,7 @@ namespace RimMandrake.Watchers.SelfTest
                         var s = new StepIn
                         {
                             watchersEnabled = enabled, onMedium = onMedium, hidden = hidden, hideAndFlinch = hideAndFlinch, turnToFace = turn,
-                            hasNearest = hasNearest, inFlinch = inFlinch, geophone = geoPending, cue = cuePending, hunted = hunted && !hidden, signMissing = signMissing, hungry = hungry,
+                            hasNearest = hasNearest, inFlinch = inFlinch, geophone = geoPending, cue = cuePending, alarmed = alarmPending, huntMarked = hunted, signMissing = signMissing, hungry = hungry,
                             now = now, hiddenUntil = hiddenUntil, watchStart = watchStart, maxWatchTicks = maxWatch,
                         };
                         StepFlags f = RM_WatcherKernel.DecideStep(s);
@@ -116,17 +124,22 @@ namespace RimMandrake.Watchers.SelfTest
                             Check(!enabled || !onMedium, "interrupted although enabled and on its medium");
                             Interrupted++; ended = true; break;     // the finish action emerges it (RM_WatcherUtility.Emerge)
                         }
+                        Check(!((f & StepFlags.RaiseAlarm) != 0 && (f & StepFlags.Hide) == 0), "RaiseAlarm without a hide");
+                        Check(!((f & StepFlags.DropHunt) != 0 && !hunted), "dropped a hunt order that was not there");
                         if ((f & StepFlags.Hide) != 0)
                         {
-                            Check(hideAndFlinch && (inFlinch || geoPending || cuePending || (hunted && !hidden)), "hid without a reason");
-                            if (cuePending && !inFlinch && !geoPending && !hunted) CueHides++;
+                            Check(hideAndFlinch && (inFlinch || geoPending || cuePending || alarmPending), "hid without a reason (a hunt order is not one)");
+                            Check(((f & StepFlags.RaiseAlarm) != 0) == (inFlinch || geoPending), "an alarm raised by a cue/alarm, or a body/geophone hide that raised none");
+                            if ((f & StepFlags.RaiseAlarm) != 0) AlarmRaises++;
+                            if (cuePending && !inFlinch && !geoPending && !alarmPending) CueHides++;
+                            if (alarmPending && !inFlinch && !geoPending && !cuePending) AlarmHides++;
                             hidden = true; signThere = true; hiddenSince = now; rolled = hideMin + r.Next(hideMax - hideMin + 1);
                             hiddenUntil = RM_WatcherKernel.HiddenUntil(now, rolled, scale); Hides++;
                             if ((f & StepFlags.DropHunt) != 0) { hunted = false; HuntSinks++; }
-                            else Check(!hunted, "peeked while hunted but the hunt order was not dropped");
+                            Check(!hunted, "went under with a hunt order still on it (a hidden watcher must not be targetable)");
                             continue;
                         }
-                        Check(!(hunted && !hidden && hideAndFlinch), "a visible watcher is hunted although the peek rule should have hidden it");
+                        if ((f & StepFlags.DropHunt) != 0) { hunted = false; HuntSinks++; }
                         if ((f & StepFlags.RestoreSign) != 0) { signThere = true; SignRestores++; }
                         if ((f & StepFlags.Emerge) != 0)
                         {
@@ -136,6 +149,7 @@ namespace RimMandrake.Watchers.SelfTest
                             Check(!(inFlinch && hideAndFlinch && !hungry), "emerged while a creature stood in the flinch circle");
                             Check(!(geoPending && hideAndFlinch && !hungry), "emerged while the geophone was pinging");
                             Check(!(cuePending && hideAndFlinch && !hungry), "emerged while a cue still held");
+                            Check(!(alarmPending && hideAndFlinch && !hungry), "emerged while a neighbour's alarm still held");
                             hidden = false; signThere = false; watchStart = now; Emerges++;
                             if (hungry) { Check((f & StepFlags.EndSucceeded) != 0, "hungry emerge did not end the job (hide/emerge loop)"); HungryEmerges++; }
                         }
@@ -144,6 +158,7 @@ namespace RimMandrake.Watchers.SelfTest
                             Check(signThere || (f & StepFlags.RestoreSign) != 0, "hidden watcher left with no sign");
                         }
                         Check(!hidden || signThere, "sign missing while hidden after the step");
+                        Check(!(hidden && hunted), "a hunt order survived a step that left it hidden");
                         if (!hidden) Check(!signThere, "sign left standing on a visible watcher");
                         if ((f & StepFlags.EndSucceeded) != 0) { Succeeded++; ended = true; }
                         quietFor++;
@@ -179,7 +194,7 @@ namespace RimMandrake.Watchers.SelfTest
 
         private static string Describe(StepIn s)
         {
-            return $"en={s.watchersEnabled} med={s.onMedium} hid={s.hidden} hf={s.hideAndFlinch} face={s.turnToFace} near={s.hasNearest} flinch={s.inFlinch} geo={s.geophone} cue={s.cue} hunted={s.hunted} nosign={s.signMissing} hungry={s.hungry} until={s.hiddenUntil} start={s.watchStart}";
+            return $"en={s.watchersEnabled} med={s.onMedium} hid={s.hidden} hf={s.hideAndFlinch} face={s.turnToFace} near={s.hasNearest} flinch={s.inFlinch} geo={s.geophone} cue={s.cue} alarm={s.alarmed} hunt={s.huntMarked} nosign={s.signMissing} hungry={s.hungry} until={s.hiddenUntil} start={s.watchStart}";
         }
 
         // ---------------------------------------------------------------- scan
@@ -231,53 +246,46 @@ namespace RimMandrake.Watchers.SelfTest
             var fails = new List<string>();
             try
             {
-                // watch giver: exhaustive over 11 booleans x food relation x active relation
-                for (int m = 0; m < (1 << 11); m++)
+                // watch giver: exhaustive over 10 booleans x food relation x active relation
+                for (int m = 0; m < (1 << 10); m++)
                     foreach (int foodRel in new[] { 0, 1, 2 })       // below, equal, above the emerge threshold
                         foreach (int actRel in new[] { 0, 1, 2 })    // below, equal, above the cap
                         {
                             bool hasExt = (m & 1) != 0, en = (m & 2) != 0, spawned = (m & 4) != 0, downed = (m & 8) != 0, mental = (m & 16) != 0,
-                                 hasMap = (m & 32) != 0, hasComp = (m & 64) != 0, bolting = (m & 128) != 0, onMed = (m & 256) != 0, hf = (m & 512) != 0, turn = (m & 1024) != 0;
+                                 hasMap = (m & 32) != 0, hasComp = (m & 64) != 0, onMed = (m & 128) != 0, hf = (m & 256) != 0, turn = (m & 512) != 0;
                             foreach (bool hasFood in new[] { false, true })
                                 foreach (bool roll in new[] { false, true })
                                 {
                                     float thr = 0.25f, food = foodRel == 0 ? 0.1f : foodRel == 1 ? 0.25f : 0.9f;
                                     int cap = 40, act = actRel == 0 ? 10 : actRel == 1 ? 40 : 90;
                                     Cases++; Steps++;
-                                    bool got = RM_WatcherKernel.WatchGiverAllows(hasExt, en, spawned, downed, mental, hasMap, hasComp, bolting, onMed, hf, turn, hasFood, food, thr, roll, act, cap);
-                                    bool want = hasExt && en && spawned && !downed && !mental && hasMap && hasComp && !bolting && onMed && (hf || turn)
+                                    bool got = RM_WatcherKernel.WatchGiverAllows(hasExt, en, spawned, downed, mental, hasMap, hasComp, onMed, hf, turn, hasFood, food, thr, roll, act, cap);
+                                    bool want = hasExt && en && spawned && !downed && !mental && hasMap && hasComp && onMed && (hf || turn)
                                         && !(hasFood && food < thr) && !roll && act < cap;
                                     Check(got == want, $"WatchGiverAllows mismatch (mask {m}, food {foodRel}, active {actRel}, hasFood {hasFood}, roll {roll}): got {got}, spec {want}");
                                     // cross-gate: the giver never starts a watch whose first hidden step would end for hunger
                                     if (got && hasFood) Check(!(food < thr), "giver started a watch for a pawn below the emerge threshold");
-                                    Check(RM_WatcherKernel.WatchGiverPre(hasExt, en, spawned, downed, mental, hasMap, hasComp, bolting, onMed, hf, turn, hasFood, food, thr)
-                                        == (hasExt && en && spawned && !downed && !mental && hasMap && hasComp && !bolting && onMed && (hf || turn) && !(hasFood && food < thr)), "Pre disagrees with the spec");
-                                    Check(got == (RM_WatcherKernel.WatchGiverPre(hasExt, en, spawned, downed, mental, hasMap, hasComp, bolting, onMed, hf, turn, hasFood, food, thr)
+                                    Check(RM_WatcherKernel.WatchGiverPre(hasExt, en, spawned, downed, mental, hasMap, hasComp, onMed, hf, turn, hasFood, food, thr)
+                                        == (hasExt && en && spawned && !downed && !mental && hasMap && hasComp && onMed && (hf || turn) && !(hasFood && food < thr)), "Pre disagrees with the spec");
+                                    Check(got == (RM_WatcherKernel.WatchGiverPre(hasExt, en, spawned, downed, mental, hasMap, hasComp, onMed, hf, turn, hasFood, food, thr)
                                         && RM_WatcherKernel.WatchGiverCapOk(roll, act, cap)), "Allows is not Pre && CapOk");
                                 }
                         }
                 // seek-medium backstop
-                for (int m = 0; m < (1 << 10); m++)
+                for (int m = 0; m < (1 << 9); m++)
                 {
-                    bool en = (m & 1) != 0, stay = (m & 2) != 0, hasMed = (m & 4) != 0, downed = (m & 8) != 0, mental = (m & 16) != 0, bolting = (m & 32) != 0,
-                         noMed = (m & 64) != 0, onMed = (m & 128) != 0, hasJob = (m & 256) != 0, idle = (m & 512) != 0;
+                    bool en = (m & 1) != 0, stay = (m & 2) != 0, hasMed = (m & 4) != 0, downed = (m & 8) != 0, mental = (m & 16) != 0,
+                         noMed = (m & 32) != 0, onMed = (m & 64) != 0, hasJob = (m & 128) != 0, idle = (m & 256) != 0;
                     Cases++; Steps++;
-                    bool got = RM_WatcherKernel.ShouldSeekMedium(en, stay, hasMed, downed, mental, bolting, noMed, onMed, hasJob, idle);
-                    bool want = en && stay && hasMed && !downed && !mental && !bolting && !noMed && !onMed && (!hasJob || idle);
+                    bool got = RM_WatcherKernel.ShouldSeekMedium(en, stay, hasMed, downed, mental, noMed, onMed, hasJob, idle);
+                    bool want = en && stay && hasMed && !downed && !mental && !noMed && !onMed && (!hasJob || idle);
                     Check(got == want, $"ShouldSeekMedium mask {m}: got {got}, spec {want}");
-                    if (bolting) Check(!got, "a bolting watcher was sent back to its medium mid-flight");
                     if (hasJob && !idle) Check(!got, "the backstop interrupted a non-idle job");
                 }
-                // flush hunt mark
-                for (int m = 0; m < 32; m++)
-                {
-                    bool set = (m & 1) != 0, player = (m & 2) != 0, hasFac = (m & 4) != 0, human = (m & 8) != 0, marked = (m & 16) != 0;
-                    Cases++; Steps++;
-                    bool got = RM_WatcherKernel.FlushMarksHunt(set, player, hasFac, human, marked);
-                    Check(got == (set && player && (!hasFac || !human) && !marked), $"FlushMarksHunt mask {m}");
-                    if (hasFac && human) Check(!got, "a humanlike-faction animal was marked for hunting");
-                    if (marked) Check(!got, "marked twice");
-                }
+                // reaction speed: a colonist sprinting at ~6 cells/s (0.1 cell/tick) gets at most half the default 6-cell flinch radius in
+                // before the next step sees it, so the watcher is gone well before it can be reached ("fast retraction")
+                Cases++; Steps++;
+                Check(RM_WatcherKernel.StepInterval * 0.1f <= 6f / 2f, $"step interval {RM_WatcherKernel.StepInterval} lets an intruder cover over half the flinch radius unseen");
                 // hide duration
                 for (int i = 0; i < 2000; i++)
                 {
@@ -294,6 +302,9 @@ namespace RimMandrake.Watchers.SelfTest
         }
 
         // ---------------------------------------------------------------- config
+        private static List<string> CE(bool hh, bool sd, bool sc, float fl, float wr, int hmin, int hmax, int mw, float wc, float em, float geo, float ml)
+            => RM_WatcherKernel.ConfigErrors(hh, sd, sc, fl, wr, hmin, hmax, mw, wc, em, geo, ml);
+
         private static List<string> Config(int cases, int seed0)
         {
             var fails = new List<string>();
@@ -303,45 +314,167 @@ namespace RimMandrake.Watchers.SelfTest
                 try
                 {
                     // the shipped piinnok must be sound
-                    Check(RM_WatcherKernel.ConfigErrors(true, true, true, 6f, 14f, 2500, 7500, 2500, 1200, 0.1f, 0.25f, 2.5f).Count == 0, "the shipped piinnok values are rejected");
+                    Check(CE(true, true, true, 6f, 14f, 2500, 7500, 2500, 0.1f, 0.25f, 2.5f, 5f).Count == 0, "the shipped piinnok values are rejected");
                     bool hh = r.Next(8) != 0, sd = r.Next(8) != 0, sc = r.Next(8) != 0;
-                    float fl = F(r, -2f, 20f), wr = F(r, -2f, 30f), wc = F(r, -0.5f, 1.5f), em = F(r, -0.5f, 1.5f), geo = F(r, -1f, 5f);
-                    int hmin = r.Next(-100, 8000), hmax = hmin + r.Next(-500, 8000), mw = r.Next(-100, 5000), bt = r.Next(-100, 3000);
-                    var got = RM_WatcherKernel.ConfigErrors(hh, sd, sc, fl, wr, hmin, hmax, mw, bt, wc, em, geo);
+                    float fl = F(r, -2f, 20f), wr = F(r, -2f, 30f), wc = F(r, -0.5f, 1.5f), em = F(r, -0.5f, 1.5f), geo = F(r, -1f, 5f), ml = F(r, -2f, 10f);
+                    int hmin = r.Next(-100, 8000), hmax = hmin + r.Next(-500, 8000), mw = r.Next(-100, 5000);
+                    var got = CE(hh, sd, sc, fl, wr, hmin, hmax, mw, wc, em, geo, ml);
                     int want = 0;
                     if (!hh) want++;
                     if (!sd) want++; else if (!sc) want++;
                     if (fl <= 0f || wr < fl) want++;
                     if (hmin <= 0 || hmax < hmin) want++;
-                    if (mw <= 0 || bt <= 0) want++;
+                    if (mw <= 0) want++;
                     if (wc < 0f || wc > 1f) want++;
                     if (em < 0f || em > 1f) want++;
                     if (geo < 0f) want++;
+                    if (!(ml > 0f)) want++;
                     Check(got.Count == want, $"ConfigErrors reported {got.Count} for a def that has {want} faults: {string.Join(" | ", got)}");
                     // each single break of the good def is reported exactly once
-                    var good = new object[] { true, true, true, 6f, 14f, 2500, 7500, 2500, 1200, 0.1f, 0.25f, 2.5f };
                     var breaks = new (string name, Func<List<string>> run)[]
                     {
-                        ("no hediff", () => RM_WatcherKernel.ConfigErrors(false, true, true, 6f, 14f, 2500, 7500, 2500, 1200, 0.1f, 0.25f, 2.5f)),
-                        ("no sign", () => RM_WatcherKernel.ConfigErrors(true, false, false, 6f, 14f, 2500, 7500, 2500, 1200, 0.1f, 0.25f, 2.5f)),
-                        ("wrong sign class", () => RM_WatcherKernel.ConfigErrors(true, true, false, 6f, 14f, 2500, 7500, 2500, 1200, 0.1f, 0.25f, 2.5f)),
-                        ("flinch beyond watch", () => RM_WatcherKernel.ConfigErrors(true, true, true, 15f, 14f, 2500, 7500, 2500, 1200, 0.1f, 0.25f, 2.5f)),
-                        ("flinch zero", () => RM_WatcherKernel.ConfigErrors(true, true, true, 0f, 14f, 2500, 7500, 2500, 1200, 0.1f, 0.25f, 2.5f)),
-                        ("hide range reversed", () => RM_WatcherKernel.ConfigErrors(true, true, true, 6f, 14f, 7500, 2500, 2500, 1200, 0.1f, 0.25f, 2.5f)),
-                        ("hide min zero", () => RM_WatcherKernel.ConfigErrors(true, true, true, 6f, 14f, 0, 7500, 2500, 1200, 0.1f, 0.25f, 2.5f)),
-                        ("no watch time", () => RM_WatcherKernel.ConfigErrors(true, true, true, 6f, 14f, 2500, 7500, 0, 1200, 0.1f, 0.25f, 2.5f)),
-                        ("no bolt time", () => RM_WatcherKernel.ConfigErrors(true, true, true, 6f, 14f, 2500, 7500, 2500, 0, 0.1f, 0.25f, 2.5f)),
-                        ("wander above 1", () => RM_WatcherKernel.ConfigErrors(true, true, true, 6f, 14f, 2500, 7500, 2500, 1200, 1.2f, 0.25f, 2.5f)),
-                        ("wander negative", () => RM_WatcherKernel.ConfigErrors(true, true, true, 6f, 14f, 2500, 7500, 2500, 1200, -0.1f, 0.25f, 2.5f)),
-                        ("emerge threshold above 1", () => RM_WatcherKernel.ConfigErrors(true, true, true, 6f, 14f, 2500, 7500, 2500, 1200, 0.1f, 1.5f, 2.5f)),
-                        ("geophone negative", () => RM_WatcherKernel.ConfigErrors(true, true, true, 6f, 14f, 2500, 7500, 2500, 1200, 0.1f, 0.25f, -1f)),
+                        ("no hediff", () => CE(false, true, true, 6f, 14f, 2500, 7500, 2500, 0.1f, 0.25f, 2.5f, 5f)),
+                        ("no sign", () => CE(true, false, false, 6f, 14f, 2500, 7500, 2500, 0.1f, 0.25f, 2.5f, 5f)),
+                        ("wrong sign class", () => CE(true, true, false, 6f, 14f, 2500, 7500, 2500, 0.1f, 0.25f, 2.5f, 5f)),
+                        ("flinch beyond watch", () => CE(true, true, true, 15f, 14f, 2500, 7500, 2500, 0.1f, 0.25f, 2.5f, 5f)),
+                        ("flinch zero", () => CE(true, true, true, 0f, 14f, 2500, 7500, 2500, 0.1f, 0.25f, 2.5f, 5f)),
+                        ("hide range reversed", () => CE(true, true, true, 6f, 14f, 7500, 2500, 2500, 0.1f, 0.25f, 2.5f, 5f)),
+                        ("hide min zero", () => CE(true, true, true, 6f, 14f, 0, 7500, 2500, 0.1f, 0.25f, 2.5f, 5f)),
+                        ("no watch time", () => CE(true, true, true, 6f, 14f, 2500, 7500, 0, 0.1f, 0.25f, 2.5f, 5f)),
+                        ("wander above 1", () => CE(true, true, true, 6f, 14f, 2500, 7500, 2500, 1.2f, 0.25f, 2.5f, 5f)),
+                        ("wander negative", () => CE(true, true, true, 6f, 14f, 2500, 7500, 2500, -0.1f, 0.25f, 2.5f, 5f)),
+                        ("emerge threshold above 1", () => CE(true, true, true, 6f, 14f, 2500, 7500, 2500, 0.1f, 1.5f, 2.5f, 5f)),
+                        ("geophone negative", () => CE(true, true, true, 6f, 14f, 2500, 7500, 2500, 0.1f, 0.25f, -1f, 5f)),
+                        ("fragility ceiling zero", () => CE(true, true, true, 6f, 14f, 2500, 7500, 2500, 0.1f, 0.25f, 2.5f, 0f)),
+                        ("fragility ceiling NaN", () => CE(true, true, true, 6f, 14f, 2500, 7500, 2500, 0.1f, 0.25f, 2.5f, float.NaN)),
                     };
                     foreach (var b in breaks) Check(b.run().Count == 1, $"single break '{b.name}' reported {b.run().Count} errors");
                     // edges that must stay valid
-                    Check(RM_WatcherKernel.ConfigErrors(true, true, true, 14f, 14f, 1, 1, 1, 1, 0f, 0f, 0f).Count == 0, "boundary values rejected");
-                    Check(RM_WatcherKernel.ConfigErrors(true, true, true, 14f, 14f, 1, 1, 1, 1, 1f, 1f, 0f).Count == 0, "boundary values (1.0) rejected");
+                    Check(CE(true, true, true, 14f, 14f, 1, 1, 1, 0f, 0f, 0f, 0.001f).Count == 0, "boundary values rejected");
+                    Check(CE(true, true, true, 14f, 14f, 1, 1, 1, 1f, 1f, 0f, 1000f).Count == 0, "boundary values (1.0) rejected");
                 }
                 catch (Exception e) { fails.Add($"config seed {seed}: {e.Message}"); }
+            }
+            return fails;
+        }
+
+        // ---------------------------------------------------------------- death (fragility + sign validity)
+        private static List<string> Death(int cases, int seed0)
+        {
+            var fails = new List<string>();
+            try
+            {
+                // the shipped piinnok: baseHealthScale 0.02 dies at 3, under its ceiling 5
+                Check(Math.Abs(RM_WatcherKernel.LethalDamage(0.02f, 1f) - 3f) < 1e-4f, "piinnok lethal damage is not 150 x 0.02");
+                Check(RM_WatcherKernel.FragilityErrors(0.02f, 5f).Count == 0, "the shipped piinnok fails the fragility audit");
+                Check(RM_WatcherKernel.FragilityErrors(0.02f, RM_WatcherKernel.LethalDamage(0.02f, 1f)).Count == 0, "dying exactly at the ceiling fails the audit (the edge is inclusive)");
+                Check(RM_WatcherKernel.FragilityErrors(0.3f, 5f).Count == 1, "the old piinnok (0.3, dies at 45) passes the fragility audit");
+                Check(RM_WatcherKernel.FragilityErrors(1f, 5f).Count == 1, "an ordinary-health animal passes the fragility audit");
+                for (int c = 0; c < cases; c++)
+                {
+                    var r = new Random(seed0 + c); Cases++; Steps++;
+                    float bhs = F(r, 0f, 2f), ml = F(r, 0.01f, 200f), stage = F(r, 0.05f, 1f);
+                    bool bad = RM_WatcherKernel.FragilityErrors(bhs, ml).Count > 0;
+                    Check(bad == !(150f * bhs <= ml), $"fragility verdict for bhs {bhs} ceiling {ml}");
+                    // a younger stage (factor <= 1) is never sturdier than the audited adult
+                    Check(RM_WatcherKernel.LethalDamage(bhs, stage) <= RM_WatcherKernel.LethalDamage(bhs, 1f) + 1e-4f, "a young stage is sturdier than the adult");
+                    // monotone: a sturdier race never passes where a frailer one failed
+                    if (bad) Check(RM_WatcherKernel.FragilityErrors(bhs * 1.5f + 0.001f, ml).Count > 0, "raising health cured a fragility failure");
+                }
+                // sign validity: exhaustive
+                for (int m = 0; m < 32; m++)
+                {
+                    bool own = (m & 1) != 0, sp = (m & 2) != 0, dead = (m & 4) != 0, job = (m & 8) != 0, mine = (m & 16) != 0;
+                    Cases++; Steps++; SignVerdicts++;
+                    bool got = RM_WatcherKernel.SignValid(own, sp, dead, job, mine);
+                    Check(got == (own && sp && !dead && job && mine), $"SignValid mask {m}");
+                    if (dead) Check(!got, "a sign outlived its dead owner");
+                    if (!mine) Check(!got, "a duplicate sign (not the job's own) stood");
+                    if (!job) Check(!got, "an orphan sign (owner out of the watch job) stood");
+                }
+            }
+            catch (Exception e) { fails.Add("death: " + e.Message); }
+            return fails;
+        }
+
+        // ---------------------------------------------------------------- alarm
+        // A field of watchers on a grid; the ripple is driven exactly as RM_WatcherAlarm drives it (a queue of passes ordered by deliver
+        // tick), with independent checks on what it reached.
+        private static List<string> Alarm(int cases, int seed0)
+        {
+            var fails = new List<string>();
+            for (int c = 0; c < cases; c++)
+            {
+                int seed = seed0 + c; var r = new Random(seed); Cases++;
+                try
+                {
+                    var L = RM_WatcherKernel.DefaultAlarmLimits();
+                    if (r.Next(3) == 0)
+                    {
+                        L.maxCount = r.Next(0, 9); L.maxHops = r.Next(0, 5); L.maxAgeTicks = r.Next(1, 1200); L.minDelayTicks = r.Next(0, 80);
+                        L.maxDelayTicks = L.minDelayTicks + r.Next(0, 120); L.hopRadius = F(r, 0.5f, 15f); L.maxDistFromOrigin = F(r, 0.5f, 25f);
+                    }
+                    int n = r.Next(0, 40); int span = 4 + r.Next(30);
+                    var xs = new int[n]; var zs = new int[n]; var elig = new bool[n];
+                    for (int i = 0; i < n; i++) { xs[i] = r.Next(span); zs[i] = r.Next(span); elig[i] = r.Next(5) != 0; }
+                    int ox = r.Next(span), oz = r.Next(span); int start = 1000 + r.Next(100000);
+                    var reachedAt = new int[n]; var hopOf = new int[n]; for (int i = 0; i < n; i++) { reachedAt[i] = -1; hopOf[i] = -1; }
+                    var queue = new List<(int who, int tick, int hop, int px, int pz, int passerTick)>();
+                    int reachedCount = 0; int passes = 0;
+                    void DoPass(int px, int pz, int hop, int passerTick, int now)
+                    {
+                        passes++;
+                        var dp = new List<float>(); var dO = new List<float>(); var el = new List<bool>(); var rc = new List<bool>();
+                        for (int i = 0; i < n; i++)
+                        {
+                            dp.Add((xs[i] - px) * (xs[i] - px) + (zs[i] - pz) * (zs[i] - pz)); dO.Add((xs[i] - ox) * (xs[i] - ox) + (zs[i] - oz) * (zs[i] - oz));
+                            el.Add(elig[i]); rc.Add(reachedAt[i] >= 0);
+                        }
+                        var pick = RM_WatcherKernel.AlarmPick(dp, dO, el, rc, hop, reachedCount, now, start, L);
+                        Check(pick.Distinct().Count() == pick.Count, "picked the same watcher twice in one pass");
+                        for (int k = 0; k < pick.Count; k++)
+                        {
+                            int i = pick[k];
+                            Check(elig[i], "reached an ineligible watcher (hidden, dead or busy)");
+                            Check(reachedAt[i] < 0, "reached a watcher the event had already reached");
+                            Check(dp[i] <= L.hopRadius * L.hopRadius, "reached beyond the hop radius");
+                            Check(dO[i] <= L.maxDistFromOrigin * L.maxDistFromOrigin, "reached beyond the distance from the origin");
+                            if (k > 0) Check(dp[pick[k - 1]] <= dp[i], "a pass did not take the nearest first");
+                            int dt = RM_WatcherKernel.AlarmDeliverTick(passerTick, (float)r.NextDouble(), L);
+                            Check(dt >= passerTick + L.minDelayTicks && dt <= passerTick + L.maxDelayTicks, "a delay outside [minDelay, maxDelay]");
+                            reachedAt[i] = dt; hopOf[i] = hop + 1; reachedCount++;
+                            queue.Add((i, dt, hop + 1, xs[i], zs[i], dt));
+                        }
+                        // liveness: when the pass picked nobody but could have, that is a bug
+                        if (pick.Count == 0 && RM_WatcherKernel.AlarmLive(now, start, L) && hop < L.maxHops && reachedCount < L.maxCount)
+                            for (int i = 0; i < n; i++)
+                                Check(!(elig[i] && reachedAt[i] < 0 && dp[i] <= L.hopRadius * L.hopRadius && dO[i] <= L.maxDistFromOrigin * L.maxDistFromOrigin),
+                                    "a live pass with room skipped a reachable watcher");
+                    }
+                    DoPass(ox, oz, 0, start, start);
+                    int guard = 0;
+                    while (queue.Count > 0)
+                    {
+                        Check(++guard < 10000, "the ripple did not terminate");
+                        int bi = 0; for (int i = 1; i < queue.Count; i++) if (queue[i].tick < queue[bi].tick) bi = i;
+                        var q = queue[bi]; queue.RemoveAt(bi); Steps++;
+                        if (!RM_WatcherKernel.AlarmLive(q.tick, start, L)) continue;   // the event expired before this pass landed: it is dropped
+                        RippleReaches++;
+                        DoPass(q.px, q.pz, q.hop, q.passerTick, q.tick);
+                    }
+                    RipplesRun++;
+                    Check(reachedCount <= Math.Max(0, L.maxCount), $"reached {reachedCount} > maxCount {L.maxCount}");
+                    if (reachedCount == L.maxCount && L.maxCount > 0) RipplesCapped++;
+                    for (int i = 0; i < n; i++) if (hopOf[i] >= 0) Check(hopOf[i] <= L.maxHops, "reached past maxHops");
+                    Check(passes <= 1 + reachedCount, "more passes than reached watchers + the origin");
+                    // nothing lands after the event's age (passes landing late are dropped above, never delivered)
+                    Check(!RM_WatcherKernel.AlarmLive(start + L.maxAgeTicks, start, L) && RM_WatcherKernel.AlarmLive(start + L.maxAgeTicks - 1, start, L) == (L.maxAgeTicks > 0),
+                        "AlarmLive edge is not [start, start + maxAge)");
+                    // a dead event picks nobody
+                    var none = RM_WatcherKernel.AlarmPick(new List<float> { 0f }, new List<float> { 0f }, new List<bool> { true }, new List<bool> { false }, 0, 0, start + L.maxAgeTicks, start, L);
+                    Check(none.Count == 0, "an expired event still reached a watcher");
+                }
+                catch (Exception e) { fails.Add($"alarm seed {seed}: {e.Message}"); }
             }
             return fails;
         }
@@ -464,6 +597,8 @@ namespace RimMandrake.Watchers.SelfTest
                 ("gates", () => Gates()),
                 ("config", () => Config(N(3000), S(1))),
                 ("cues", () => Cues(N(6000), S(1))),
+                ("death", () => Death(N(3000), S(1))),
+                ("alarm", () => Alarm(N(4000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -480,6 +615,8 @@ namespace RimMandrake.Watchers.SelfTest
             {
                 Console.WriteLine($"step reached: hides {Hides}, emerges {Emerges} (hungry {HungryEmerges}), finished {Succeeded}, interrupted {Interrupted}, hunt orders dropped {HuntSinks}, signs restored {SignRestores}");
                 Console.WriteLine($"cues reached: cue-only hides {CueHides}, cue fires {CueFires}");
+                Console.WriteLine($"alarm reached: alarm-only hides {AlarmHides}, alarms raised {AlarmRaises}, ripples {RipplesRun}, passes landed {RippleReaches}, ripples at the cap {RipplesCapped}, sign verdicts {SignVerdicts}");
+                if (AlarmHides == 0 || AlarmRaises == 0 || RippleReaches == 0 || RipplesCapped == 0 || SignVerdicts == 0) { Console.WriteLine("FAIL alarm/death paths never reached (blind)"); ok = false; }
                 if (CueHides == 0 || CueFires == 0) { Console.WriteLine("FAIL cue paths never reached (blind)"); ok = false; }
                 if (Hides == 0 || Emerges == 0 || HungryEmerges == 0 || Succeeded == 0 || Interrupted == 0 || HuntSinks == 0 || SignRestores == 0) { Console.WriteLine("FAIL watcher fuzz never reached a path (blind)"); ok = false; }
             }

@@ -15,11 +15,12 @@
                                              swimmingGraphicData: on deep sand (IsWater) it would win
                                              over the stationary sprite in every state (design §5 trap)
     Q3 tamed always stays on deep sand    -> the kit's medium lock applies to tame and wild alike
-    Q4 hunting is flush-only              -> the kit's Flush order; a Hunt order on a peeking one sinks it
+    Q4 (hunting) superseded 2026-10-08    -> no flushing: a hidden one cannot be targeted, a visible one is an
+                                             ordinary target, area damage kills it either way (owner, DEATH card)
 
   Cross-mod content, each guarded by MayRequire so this mod stands alone:
-    RM_DeepSand (mandrake.rm.flowworks); the filter-feed extension and RM_Biosilica (both ship in
-    mandrake.rm.biomes, where CreatureBehaviors and Stillsand are composed).
+    RM_DeepSand (mandrake.rm.flowworks); the filter-feed extension (ships in mandrake.rm.biomes, where
+    CreatureBehaviors and Stillsand are composed).
 
   🔴 ART PLACEHOLDER: no piinnok art exists (artpipe_state.py find piinnok: 0 hits of 20,592, sanity
   probe hawkbat found; 2026-10-06). These are vanilla Odyssey hermit-crab textures (every DLC is
@@ -34,17 +35,16 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Piinnok</defName>
     <label>piinnok</label>
-    <description>Half the glassy nubs poking out of a deep-sand field are not plants. They are the lenses of piinnok: sessile burrowers whose one exposed organ is a water-clear dome. In a land where nothing tracks the sun, the piinnok is the one thing that tracks anything, and what it tracks is you. Walk past a field and a few glints turn to follow; walk too close and they are gone, leaving only a neat dimple in the sand. They are harmless and good to eat, and a butchered piinnok gives up fine biosilica: its lens was built to see.
+    <description>Half the glassy nubs poking out of a deep-sand field are not plants. They are the lenses of piinnok: sessile burrowers whose one exposed organ is a water-clear dome. In a land where nothing tracks the sun, the piinnok is the one thing that tracks anything, and what it tracks is you. Walk past a field and a few glints turn to follow; walk too close and they are gone, leaving only a neat dimple in the sand. They are harmless, and so fragile that almost anything kills them.
 
 Their real value is as living geophones. When every lens in a field sinks at once and nothing is walking nearby, something large is moving under that sand.
 
-A piinnok lives only in deep sand and will not stay anywhere else. It cannot be hunted where it hides: mark its dimple to be flushed, and hunt it while it runs.</description>
+A piinnok lives only in deep sand and will not stay anywhere else. Nothing can aim at one while it hides, but fire, a blast or acid over its dimple kills it outright. All it leaves is a small clouded lens.</description>
     <statBases>
       <MoveSpeed>1.4</MoveSpeed>            <!-- PROVISIONAL -->
       <MarketValue>30</MarketValue>         <!-- PROVISIONAL -->
       <ComfyTemperatureMin>0</ComfyTemperatureMin>
       <ComfyTemperatureMax>90</ComfyTemperatureMax>
-      <MeatAmount>3</MeatAmount>            <!-- PROVISIONAL -->
       <LeatherAmount>0</LeatherAmount>
       <Wildness>0.9</Wildness>              <!-- PROVISIONAL -->
     </statBases>
@@ -60,9 +60,6 @@ A piinnok lives only in deep sand and will not stay anywhere else. It cannot be 
         <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
       </li>
     </tools>
-    <butcherProducts>
-      <RM_Biosilica MayRequire="mandrake.rm.biomes">3</RM_Biosilica>   <!-- PROVISIONAL count; see open question in the item: no grade above RM_Biosilica exists -->
-    </butcherProducts>
     <modExtensions>
       <li Class="RimMandrake.Watchers.RM_WatcherExtension">
         <mediumTerrains>
@@ -76,7 +73,8 @@ A piinnok lives only in deep sand and will not stay anywhere else. It cannot be 
         <geophoneMinBodySize>2.5</geophoneMinBodySize>
         <maxWatchTicks>2500</maxWatchTicks>     <!-- PROVISIONAL -->
         <wanderChance>0.1</wanderChance>        <!-- PROVISIONAL: sessile, it rarely moves -->
-        <boltTicks>1200</boltTicks>             <!-- PROVISIONAL: the hunt window after a flush -->
+        <maxLethalDamage>5</maxLethalDamage>    <!-- owner 2026-10-08: almost no damage destroys it -->
+        <remainsDef>RM_WatcherRemains_Piinnok</remainsDef>
         <emergeWhenFoodBelow>0.25</emergeWhenFoodBelow>
       </li>
       <!-- It strains the deep sand it lives in (the likka likka's shipped filter-feed stack). -->
@@ -95,7 +93,7 @@ A piinnok lives only in deep sand and will not stay anywhere else. It cannot be 
       <herdAnimal>false</herdAnimal>
       <predator>false</predator>
       <baseBodySize>0.15</baseBodySize>
-      <baseHealthScale>0.3</baseHealthScale>     <!-- PROVISIONAL -->
+      <baseHealthScale>0.02</baseHealthScale>    <!-- owner 2026-10-08 "almost no damage": an adult dies at 150 x 0.02 = 3 damage -->
       <baseHungerRate>0.06</baseHungerRate>      <!-- PROVISIONAL -->
       <foodType>VegetarianRoughAnimal</foodType>
       <useMeatFrom>Megaspider</useMeatFrom>

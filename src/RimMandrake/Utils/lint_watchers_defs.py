@@ -2,11 +2,13 @@
 """Offline lint of the Watchers mod (defs/patches vs C#): the generic lint (lint_mod_defs.py) plus data checks it cannot see.
 
   wk-extension  every race carrying RM_WatcherExtension satisfies the kernel's ConfigErrors rules (0 < flinch <= watch, hide range valid,
-                positive watch/bolt ticks, wanderChance and emergeWhenFoodBelow are probabilities), its hiddenHediff and signDef are defined in
-                this mod, the sign is a RM_WatcherSign thing, and the medium list has no empty entries
+                positive watch ticks, wanderChance and emergeWhenFoodBelow are probabilities, maxLethalDamage positive), its hiddenHediff and
+                signDef are defined in this mod, the sign is a RM_WatcherSign thing, and the medium list has no empty entries
+  wk-death      (owner ruling 2026-10-08) every member names a remainsDef defined in this mod (its death asset), and its race dies at
+                150 x baseHealthScale <= maxLethalDamage (almost no damage destroys it); no flush machinery survives anywhere
   wk-keys       every "RM_Watchers_*".Translate() key used in C# exists in Languages/*/Keyed (the game shows the raw key)
   wk-kernel     the kernel is Verse-free, is listed in the csproj, and the step/check intervals the comp and driver use are the kernel's
-  wk-patch      the Orders-menu patch adds a designator class that exists, and the flush job/work giver/designation names agree with [DefOf]
+  wk-patch      any patch adds only classes that exist, and every [DefOf] field names a def of this mod
 
     python3 src/RimMandrake/Utils/lint_watchers_defs.py [--mod-dir <dir>] [--quiet]
 """
@@ -68,7 +70,7 @@ def main(argv):
             try:
                 fl, wr = float(f("flinchRadius", "6")), float(f("watchRadius", "14"))
                 hmin, hmax = [int(x) for x in f("hideTicks", "2500~7500").split("~")]
-                mw, bt = int(f("maxWatchTicks", "2500")), int(f("boltTicks", "1200"))
+                mw, ml = int(f("maxWatchTicks", "2500")), float(f("maxLethalDamage", "5"))
                 wc, em, geo = float(f("wanderChance", "0.15")), float(f("emergeWhenFoodBelow", "0.25")), float(f("geophoneMinBodySize", "0"))
             except ValueError as e:
                 E("wk-extension", f"{dn}: unparsable number in the watcher extension: {e}")
@@ -77,8 +79,24 @@ def main(argv):
                 E("wk-extension", f"{dn}: need 0 < flinchRadius <= watchRadius, has {fl} / {wr}")
             if hmin <= 0 or hmax < hmin:
                 E("wk-extension", f"{dn}: hideTicks {hmin}~{hmax} invalid")
-            if mw <= 0 or bt <= 0:
-                E("wk-extension", f"{dn}: maxWatchTicks {mw} and boltTicks {bt} must be positive")
+            if mw <= 0:
+                E("wk-extension", f"{dn}: maxWatchTicks {mw} must be positive")
+            if not ml > 0:
+                E("wk-extension", f"{dn}: maxLethalDamage {ml} must be positive")
+            if li.find("boltTicks") is not None:
+                E("wk-death", f"{dn}: boltTicks is flush machinery, removed by the 2026-10-08 ruling (an unknown field fails the def load)")
+            rd = f("remainsDef", "")
+            if not rd:
+                E("wk-death", f"{dn}: no remainsDef (every member owes a death asset, owner ruling 2026-10-08)")
+            elif rd not in defs or defs[rd].tag != "ThingDef":
+                E("wk-death", f"{dn}: remainsDef {rd!r} is not a ThingDef of this mod")
+            if d.tag == "ThingDef":
+                try:
+                    bhs = float(d.findtext("race/baseHealthScale", "1"))
+                except ValueError:
+                    bhs = 1.0
+                if not 150 * bhs <= ml:
+                    E("wk-death", f"{dn}: an adult dies at 150 x {bhs} = {150 * bhs:g} damage, above maxLethalDamage {ml:g} (owner: almost no damage destroys a watcher)")
             if not 0 <= wc <= 1:
                 E("wk-extension", f"{dn}: wanderChance {wc} is not a probability")
             if not 0 <= em <= 1:
@@ -139,7 +157,9 @@ def main(argv):
         if fld not in defs:
             E("wk-patch", f"[DefOf] field {fld} names no def in this mod")
 
-    for k, mn in (("extensions", 1), ("keys", 3), ("defof", 4)):
+    if re.search(r"Flush|boltUntil|Bolting", code):
+        E("wk-death", "flush/bolt machinery survives in the C# (owner ruling 2026-10-08: watchers cannot be flushed)")
+    for k, mn in (("extensions", 1), ("keys", 3), ("defof", 3)):
         if n[k] < mn and not errs:
             print(f"LINT UNMEASURED: wk check {k} saw {n[k]} (< {mn}); a blind lint is not a pass")
             return 2
