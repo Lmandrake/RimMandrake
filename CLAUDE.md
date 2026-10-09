@@ -180,6 +180,7 @@ MEASURED about the live world — the live system is the only instrument for "ri
   that finds nothing must first prove it can find something. ⚠️ Same family as `$R file …` with
   `R="python3 …/cli.py"`, which fails with `no such file or directory: python3 …` because zsh
   passes the whole string as one word.
+  ✅ **Fixed at the root:** `rimflow` and `modcheck` are commands on PATH (`~/.local/bin`) — call them directly; never `R="python3 …"; $R`.
 - ⚠️ **A bare unprefixed defName in a design roster is the CONVENTION, not a defect.** MEASURED
   2026-09-23: **144** such rows across **18 of 29** rosters, 94 creatures — and the live biome XML
   does the same deliberately (`RUT_FeverWood.xml`: `<Urusai MayRequire="mlie.starwarsanimalcollection">`),
