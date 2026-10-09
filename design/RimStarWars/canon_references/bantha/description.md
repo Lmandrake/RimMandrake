@@ -51,13 +51,14 @@ regen should exaggerate the horn spiral and add visible shaggy fur texture,
 especially the hanging beard under the chin.
 
 ## Must show
-- [ ] Heavyset, shaggy, long-haired quadruped body
-- [ ] Pair of large, tightly-curled, ram-like spiraling horns
-- [ ] Hanging beard-like fringe of fur at the chin/chest
-- [ ] A very wide, flat, slit-like mouth running nearly the full width of the muzzle below a broad flat nose (as in `wookieepedia_infobox.jpg`)
-- [ ] Body coat dark brown to near-black
-- [ ] Horns pale ivory/tan/cream, contrasting against the dark coat
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all three images and the `## ruling` below.*
+- [ ] BODY PLAN: a huge, low-slung, mammoth-like quadruped whose whole body is a mound of long hanging fur reaching nearly to the ground, legs mostly hidden by the coat; massive head carried low and forward, about as wide as the shoulders; back higher at the shoulders than the rump (as in the herd screencap)
+- [ ] Horns: a pair of large thick ridged horns that curl out from the top of the head, back and down into a full spiral beside each side of the face (male; females short-horned per the ruling)
+- [ ] COLOUR LAYOUT: dark brown to near-black coat over the entire body; face fur a warmer chestnut; horns pale ivory/cream, the lightest element and contrasting sharply with the dark head
+- [ ] A very wide, flat, slit-like mouth running nearly the full width of the muzzle below a broad flat nose (owner ruling 2026-10-04: "it MUST have that very wide-slit mouth as shown in the canon imagery")
+- [ ] Long beard-like fringe of fur hanging from the chin and chest
 - [ ] Fully fur-covered body with no bare skin visible
+- [ ] NEGATIVE: not a yak, bison or ram (no short coat, no visible slim legs, no narrow goat muzzle, no forward-pointing bison horns); horns are spirals, never straight or antler-like
 
 ## Engine limits
 none known

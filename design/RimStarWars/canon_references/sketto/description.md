@@ -32,11 +32,14 @@ Three images: a canon prop photo (a stuffed sketto from Dok-Ondar's shop on Batu
 - **Size:** 1 m long at most; the swarm in `legends_2` shows many tiny insect prey beside them.
 
 ## Must show
-- [ ] Slim, lean body with a long thin neck and a small narrow wedge-shaped head
-- [ ] Four narrow, long, translucent insect-like wings (two pairs), veined
-- [ ] Very long thin whip-like tail, as long as the body or longer, ending in a small tuft or fan
-- [ ] Mouth full of fangs with two long curved tusk-like fangs hanging from the upper jaw
-- [ ] Four thin spindly clawed legs, held tucked under the body in flight
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all three images.*
+- [ ] BODY PLAN: a dragonfly-built reptile: a thin stick-like body and neck, a tail at least as long as head+body ending in a small fan/tuft, and FOUR separate long narrow wings (two pairs, one behind the other) rising from the shoulders like an insect's; the body is never wider than a wing's width
+- [ ] Wings are insect wings: narrow, elongated, translucent membranes with dark veins, each wing separate (no membrane joining wing to body or legs, no finger bones)
+- [ ] COLOUR LAYOUT: wings the lightest, see-through element (amber-veined in canon, pale blue/yellow with dark blotches in Legends) against a more opaque body; tail with horizontal bands; body colour unsettled between canon's pale cream-pink and Legends olive/blue — either, applied over the whole body
+- [ ] Small narrow wedge head with a fang-filled mouth and two long curved fangs hanging down from the upper jaw
+- [ ] Four thin spindly clawed legs, tucked under the body in flight
+- [ ] Small animal, up to 1 m long including the tail
+- [ ] NEGATIVE: not a dragon, wyvern or bat (no bat/dragon membrane wings, only two wings is a fail, no heavy chest or thick neck); not a bird (no feathers or beak)
 
 ## Engine limits
 not yet assessed

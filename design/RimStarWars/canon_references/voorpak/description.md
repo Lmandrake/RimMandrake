@@ -38,12 +38,14 @@ Four images: one canon (Buggles, a pet voorpak from Star Wars Resistance, "Secre
 - **Size:** canon gives the species as 60 cm tall (infobox) and Buggles as 0.7 m (Ultimate Star Wars); "small enough to be lifted by a humanoid" does not mean palm-sized. `legends_1` shows one in a palm; that is Legends art, not a canon size. `canon_1` is shown larger, relative to its legs, than the Legends art. https://starwars.fandom.com/wiki/Voorpak
 
 ## Must show
-- [ ] Round, fluffy puffball body with no visible neck, soft white fur in canon (golden-buff back, white face and chest in Legends)
-- [ ] Thin, long, stick-like jointed legs (six per the text) ending in small clawed or toed feet
-- [ ] Large round eyes ringed with a coloured mask-like patch, a small pointed nose and a wide smile with tiny needle teeth
-- [ ] Two small tufts, ear stalks or bud-tipped stalks on top of the head
-- [ ] Hand-sized pet creature (kept small despite the long legs)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in all four images.*
+- [ ] BODY PLAN: a single round fur ball with the face set directly on its front (no neck, no separate head, no torso), raised off the ground on multiple thin, bare, jointed stick legs (six per the text; canon shows long ostrich-like legs) that come out from UNDER the ball; legs bare and much thinner than any mammal leg, ending in small splayed clawed toes
+- [ ] COLOUR LAYOUT: white face and chest/throat ruff on the front of the ball; back and top of the ball warmer (pale tan in canon, golden-buff in Legends); a coloured mask-like ring (red-brown, pink or purple) around each eye; legs a darker grey-brown, clearly not furred
+- [ ] Large round eyes, small pointed nose, wide mouth with tiny needle teeth
+- [ ] Two small stalks or tufts on top of the ball (canon: thin pale stalks with small white bud tips)
+- [ ] Size: about 60 cm tall (canon infobox) — small animal, but not palm-sized
 - [ ] Realistic rendering: natural fluffy fur and thin jointed legs under natural lighting, no outlines, no cartoon shading
+- [ ] NEGATIVE: not a four-legged mammal (no furry legs, no neck, no tail); not a bird (no beak, no wings, no feathers); not a spider (the ball is furred with a face, legs never come from the sides of a segmented body)
 
 ## Engine limits
 not yet assessed

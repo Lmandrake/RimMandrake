@@ -25,10 +25,12 @@ Two pencil-and-watercolour concept pieces (images are from the Legends-only Shir
 - **Overall look:** the animal is hidden under the plant, so from above a viewer sees a plant first; the head and legs appear at the bottom edge.
 
 ## Must show
-- [ ] Low, squat armoured animal body (brown tortoise-like shell or green segmented carapace) with short clawed legs and a blunt or hooked snout
-- [ ] Rosette of broad leathery leaves growing from the animal's back like a bromeliad, grey-green to ochre with orange-red and yellow markings
-- [ ] One or more long thin dark-red stalks rising out of the plant, each ending in a ribbed, toothed trap head
-- [ ] Plant covers most of the back so the creature reads as a plant first, with head and legs showing underneath
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in both images.*
+- [ ] BODY PLAN: two stacked parts read top to bottom: (1) a plant rosette of broad leaves fanning out wider than the animal, sitting on (2) a low, squat, four-legged armoured reptile body (tortoise-like domed shell in `canon_1`, or green segmented carapace in `canon_2`), whose head pokes out at the front below the leaves and whose short thick clawed legs show underneath
+- [ ] One to three long thin dark-red stalks rising ABOVE the leaves, each ending in a ribbed, toothed, jaw-like trap head (flytrap-like); the stalks make the creature the tallest at the top
+- [ ] COLOUR LAYOUT: animal body earth-toned (brown/ochre or olive-green) and darkest at the bottom; leaves grey-green to ochre with orange-red edges or blotches and yellow centres; trap stalks and heads dark maroon/red — three distinct colour zones stacked bottom, middle, top
+- [ ] Leaves are broad, pointed and leathery like a bromeliad or agave, not grass, moss or flowers
+- [ ] NEGATIVE: not a plant alone (the reptile body, head and legs must be visible); not a turtle with moss or a few sprigs on it (the rosette must be larger than the shell); not a flower bouquet
 
 ## Engine limits
 not yet assessed
