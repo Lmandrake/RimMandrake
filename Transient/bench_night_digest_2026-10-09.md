@@ -13,6 +13,7 @@ Everything below is committed and pushed. Nothing is deployed. Every change wait
 6. **Sheet leftovers:**
    - Abyss: Durrgak "rename to Sorter", plus 4 conflicts.
    - Deep Desert: 3 Vozzik conflicts.
+   - 35 sheet conflicts that need a decision are sorted into a phone-readable list. Another 78 are benign protections: `D:\Luke\dev\RimMandrake\Transient\art_scripts_rereview_2026-10-09.md`
    - Six sheets are unruled (cauldron, floodedcanyon, theforge, therot, wasteland, weepingstones).
 7. **Facing audit.** Dredgel v2 renders are done and await your pick: `D:\Luke\dev\RimMandrake\Transient\facing_coherence_backlog_2026-10-09.md`. Flat placeholder squares are still live for Murrelith and Drommath (both your redos; their new renders await your pick) and Chellow east. For Chellow, choose: finish the beakless v2 set (it needs a new north) or derive an east from the beaked south now in game. Thavrik and Sorruth are cut, as you ruled: `D:\Luke\dev\RimMandrake\Transient\flat_square_art_check_2026-10-09.md`
 8. **Name lists drafted for 22 of the 23 species with no namer.** They are canon names first, then a few invented ones marked as such. Ugnaught is the most visible. `D:\Luke\dev\RimMandrake\Transient\species_name_lists_draft_2026-10-09.md`
