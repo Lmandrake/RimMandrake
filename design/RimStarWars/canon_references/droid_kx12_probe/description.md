@@ -147,11 +147,13 @@ colour drives.
   projection of the same geometry, not an error.
 
 ## Must show
-- [ ] Tapered inverted-cone body, hovering and legless, narrowing to a point at the bottom
-- [ ] Three long, multi-jointed arms radiating outward from the top rim, ending in pointed claw graspers
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_kx12_infobox.jpg` as described in the visual brief, the article's physical description, and the owner's 2026-10-08 realism ruling.*
+- [ ] CHASSIS: about 1 m tall, nonhumanoid, hovering and legless: a tapered inverted-cone body, widest at the top and narrowing to a point at the bottom
+- [ ] Three long, thin, multi-jointed arms radiating outward from the top rim and sweeping out and down, ending in pointed claw graspers
 - [ ] Small barrel/blaster appendage projecting from the bottom tip
-- [ ] Pale neutral grey-green (chrome-silver) body with red photoreceptor lens dots
-- [ ] Realistic rendering: brushed, scuffed real steel with real reflections and machined joints, no outlines, no low-poly game shading
+- [ ] FINISH / COLOUR LAYOUT: pale neutral grey-green to chrome-silver over the whole body and arms; red photoreceptor lens spots on the lower body (one large, two small), the only non-silver colour; red, never magenta
+- [ ] Realistic rendering: brushed, scuffed real steel with real reflections and machined joints, no outlines, no low-poly game shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not an Imperial probe droid / viper (no black spherical head, no dangling bundle of many arms, no dark finish); not a walker (no legs, no feet)
 
 ## Engine limits
 none known

@@ -162,11 +162,12 @@ point of this chassis.** What it shows, and none of it survives into a RimWorld 
   in-world scale cue, this chassis is undersized relative to its own sourced height.
 
 ## Must show
-- [ ] Near-black plating
-- [ ] Large, smoothly domed dorsal/shoulder carapace with an Imperial crest stencilled on the shoulder plate
-- [ ] Extreme limb length — arms hanging past the knee, legs with prominent exposed ring joints at knee and ankle
-- [ ] Small, smooth, egg-shaped head with two small round pale photoreceptors and a narrow slotted mouth grille
-- [ ] Thin gold arc accent on the shoulder carapace
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_kx_infobox.jpg` and `wookieepedia_kx_stature.jpg` as described in the visual brief, and the article's description. (The forward hunch is not asked for: see `## Engine limits`.)*
+- [ ] CHASSIS: a 2.16 m humanoid with exaggerated proportions: a large, smoothly domed dorsal/shoulder carapace over a comparatively narrow, skeletal torso (the mass is in the shoulders, not the chest); extreme limb length, arms hanging past the knee, legs as long thin tubes with prominent exposed ring joints at knee and ankle; flat splayed foot pads, not boots
+- [ ] FINISH / COLOUR LAYOUT: matte near-black to charcoal plating over the whole body with grey scuffing; an Imperial crest stencilled on the shoulder plate; a thin gold arc accent on the shoulder carapace, the only warm colour
+- [ ] Head: small, smooth, egg-shaped, on a thin neck, the least massive part of the droid, with two small round pale (white, not glowing) photoreceptors set wide and a narrow slotted mouth grille below
+- [ ] Hands long, thin, multi-jointed and splayed, visibly longer-fingered than a human hand
+- [ ] NEGATIVE: not a stormtrooper or human-width armoured figure (no squat broad torso, no white plating, no boots); not a B1/B2 battle droid (no tan or blue-grey finish, no blaster built into the arm)
 
 ## Engine limits
 The forward-hunched stance is the chassis' defining posture and cannot be shown in a top-down sprite — it is structurally unavailable in this art format.

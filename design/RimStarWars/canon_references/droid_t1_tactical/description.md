@@ -232,11 +232,13 @@ for a reference to draw from.
   combat pawn on disk, where canon is emphatic that T-1s **avoid the front lines**.
 
 ## Must show
-- [ ] Visor head: wide flat helmet-like crown with a pair of horizontal slit photoreceptors behind a grille
-- [ ] Large dark vertically-ribbed rectangular grille filling the belly/lower chest
-- [ ] Boxy shoulder plates with visible round joint hubs
-- [ ] Weathered tan/bone plating over dark blue-grey
-- [ ] Realistic rendering: chipped, weathered painted steel with real specular and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_tseries_infobox.jpg` (TA-175) and `wookieepedia_tseries_colour_variants.jpg` as described in the visual brief, the T-series article, and the owner's 2026-10-08 realism ruling. The subject is the T-series tactical droid, not the T1-series utility droid.*
+- [ ] CHASSIS: tall (1.93 m), gaunt, distinctly humanoid droid, narrow everywhere, boxier than a B1: boxy shoulder plates with visible round joint hubs, thin forearms, a hip skirt of plates, very long thin splayed legs flaring slightly at the shin and ending in flat splayed clawed feet (where the frame shows legs)
+- [ ] Visor head: wide flat helmet-like crown with a pair of horizontal slit photoreceptors behind a grille, on a short exposed piston neck (reads as a droid wearing goggles)
+- [ ] Large dark vertically-ribbed rectangular grille filling the belly/lower chest, dominating the front
+- [ ] FINISH / COLOUR LAYOUT: weathered tan/bone plating over dark blue-grey (TA-175 scheme): tan face plate, shoulders and hip skirt, dark blue-grey chest panel and joints, blue-grey wear streaking on the shins; per-unit colour schemes are canon
+- [ ] Realistic rendering: chipped, weathered painted steel with real specular and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not the T1-series utility droid (no squat two-legged drum, no single stalked radar eye, no yellow-and-white); not the ST super tactical droid (no three-eye triangle); not a B1 (no long snout head)
 
 ## Engine limits
 `skinShader` is `Cutout` with no mask and no colour channel, so this chassis cannot roll a colour scheme even though canon states T-1s "often sported varying color schemes."

@@ -181,12 +181,14 @@ strange — this droid is not humanoid.** What it shows:
   patch of disturbed ground.**
 
 ## Must show
-- [ ] Huge horizontal ribbed cylinder occupying roughly the top half of the whole droid, with no separate torso
-- [ ] Flat circular end-cap face carrying one large teardrop photoreceptor plus one small round one below it
-- [ ] Two long thin cannon arms projecting from the rear/underside, each ending in a fine double muzzle, projecting past the body's width
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_lr57_infobox.jpg` (proportions) and `wookieepedia_lr57_bd513_carlac.jpg` (material) as described in the visual brief, the canon body text, and the owner's 2026-10-08 realism ruling.*
+- [ ] CHASSIS: non-humanoid, 2.58 m tall: a huge horizontal ribbed cylinder lying on its side occupies roughly the top half of the whole droid, with no separate torso; a small pelvic drum below and behind it, from which two long, thin, backward-jointed bird legs descend to flat splayed clawed feet (where the frame shows legs)
+- [ ] Two long thin cannon arms projecting from the rear/underside of the cylinder, each ending in a fine double muzzle, projecting past the body's width (the widest feature)
 - [ ] Two very long, whip-thin antennae rising vertically from the top of the cylinder
-- [ ] Warm mid-brown plating with darker brown shadow and rust-orange band accents
-- [ ] Realistic rendering: pitted, rust-streaked heavy cast metal with real lighting, no outlines, no cartoon shading
+- [ ] Face: the flat circular end-cap of the cylinder carrying one large teardrop photoreceptor plus one small round one below it
+- [ ] FINISH / COLOUR LAYOUT: warm mid-brown to dark bronze-brown plating over the whole droid with darker brown shadow and rust-orange band accents; the main photoreceptor red/red-orange (canon sensor: red), the only bright colour
+- [ ] Realistic rendering: pitted, rust-streaked heavy cast metal with real lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a B1/B2 battle droid or any humanoid (no upright torso, no head on a neck, no hands); not a droideka (no wheel/ball form, no tripod legs); not the smooth airbrushed *Clone Wars* render
 
 ## Engine limits
 `skinShader` is `Cutout` with no colour channel and no mask — the PNG's own pixels are the shipping appearance, so a colour correction requires a repaint, not a def edit.

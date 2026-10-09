@@ -152,11 +152,14 @@ geometry** — it is the clearest source for the four-leg arrangement. It is an 
 because it is the only orthographic reference available.
 
 ## Must show
-- [ ] One large main photoreceptor lens plus two smaller secondary lamps (three sensors total)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_t3m4_infobox.jpg` (look target) as described in the visual brief, the article's Characteristics section, and the owner's 2026-10-08 realism ruling.*
+- [ ] CHASSIS: knee-to-thigh-high (0.96 m) utility droid: a toroidal/dome head sitting low and wide over a blocky body with exposed frame trusses; four splayed wheeled legs (front two on rotating joints) ending in heavy wedge/pad feet with wheel housings
+- [ ] Head carries one large main photoreceptor lens (blue/teal, glowing) plus two smaller secondary lamps (yellow/orange/red): three sensors total
 - [ ] Broadcast antenna: thin hooked stalk rising off the back of the dome
-- [ ] Toroidal/dome head sitting low and wide over a blocky body
-- [ ] Brown-and-tan weathered plating, not white/cyan-tinted
-- [ ] Realistic rendering: scuffed, scratched real metal panels with real specular and lighting, no outlines, no game shading
+- [ ] FINISH / COLOUR LAYOUT: heavily weathered brown-and-tan plating with silver/oxidised bronze accents and grime in the panel lines, dome top a dull mauve-brown; not white/cyan-tinted
+- [ ] Jointed multi-function manipulator arm emerging from an open chest bay
+- [ ] Realistic rendering: scuffed, scratched real metal panels with real specular and lighting, no outlines, no game shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not an R2-style astromech (no white-and-blue finish, no cylindrical body, no three-leg stance); not a clean white appliance; not two-legged
 
 ## Engine limits
 Only a single `skin` colour channel is defined — it can drive one hue, so it cannot express canon's two-tone brown-and-silver plating through tinting alone; a second channel or new art would be needed.

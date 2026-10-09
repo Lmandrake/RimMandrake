@@ -198,11 +198,13 @@ The *other* sourced paint scheme ("ornate gold trims", General Kalani) is now re
   are its shipping appearance and it can never roll a colour**, unlike its OuterRim twin.
 
 ## Must show
-- [ ] Three glowing yellow/cream photoreceptors in a triangle arrangement on the head
-- [ ] Tall, lean, humanoid frame with prominent exposed cylindrical joints at shoulder, elbow, hip, knee, and ankle
-- [ ] Broad flat chest plate with vertical ribbing at the sternum
-- [ ] Gold swirling/trim decoration on named-commander units
-- [ ] Realistic rendering: hard-edged machined armour with real specular, edge wear and recessed glowing lenses, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_std_kraken.jpg` (proportions) and the two *Zero Company* frames (look target) as described in the visual brief, the canon article, and the owner's 2026-10-08 realism ruling.*
+- [ ] CHASSIS: tall (1.94 m), lean, distinctly humanoid "armoured athlete": narrow waist, long thin arms and legs with prominent exposed cylindrical joints at shoulder, elbow, hip, knee and ankle, big domed cylindrical shoulder joints, a broad flat chest plate with vertical ribbing at the sternum; long thin segmented hands; flat splayed foot pads, not boots
+- [ ] Head: small, rounded, sitting low between high shoulder plates, with a visor-like brow hood and a narrow faceted vertical faceplate below; exposed piston-like neck struts
+- [ ] Three glowing yellow/amber/cream photoreceptors in a triangle arrangement on the head (two wide, one above and between)
+- [ ] FINISH / COLOUR LAYOUT: one personalised armour colour over the plates (canon varies per unit: green, olive-green, gloss black, blue-grey, tan) over pale grey-white joint hardware; gold swirling/trim decoration on named-commander units
+- [ ] Realistic rendering: hard-edged machined armour with real specular, edge wear and recessed glowing lenses, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a T-series tactical droid (no boxy build, no two-eyed face); not a B1 battle droid (no skinny tan frame, no long snout head); not the matte, soft animated look
 
 ## Engine limits
 The JDS variant's `skinShader` is `Cutout` with no mask and no colour channel, so that sprite's pixels are its shipping appearance and it can never roll a colour — unlike its OuterRim twin, which uses `CutoutComplex` with a three-option palette.

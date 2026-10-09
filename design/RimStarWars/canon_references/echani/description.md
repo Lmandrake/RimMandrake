@@ -109,15 +109,14 @@ precisely what the Legends text credits the Echani with; the gear side of this s
 better shape than the pawn side.
 
 ## Must show
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the two portraits as described in the visual brief, the Legends text, and the owner's 2026-10-08 realism ruling.*
 Honest framing: no full-body reference exists, only portraits/stylised art, and no
 Thyrsian (dark-skinned subspecies) image was obtainable — this checklist covers only the
 pale-morph Echani the two available images actually show.
-- [ ] Long, loose silver-white hair
-- [ ] Dark eyebrows (not white) over the white hair
-- [ ] Pale, light-coloured eyes
-- [ ] Skin ranges from cool blue-grey chalk-pale to a warm light human tone — not one fixed hue
-- [ ] Ordinary human facial structure and anatomy — no non-human feature
-- [ ] Realistic rendering: real human skin and hair texture under natural lighting, no outlines, no cartoon shading
+- [ ] BODY PLAN: ordinary human anatomy, build and facial structure — no non-human feature of any kind (near-human: the only species read is the colour scheme)
+- [ ] COLOUR LAYOUT: long, loose silver-white hair (the lightest element); dark eyebrows (not white) over the white hair; pale, light-coloured (silver) eyes; skin ranging from cool blue-grey chalk-pale to a warm light human tone — not one fixed hue
+- [ ] Realistic rendering: real human skin and hair texture under natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] NEGATIVE: not a plain human with blonde or grey hair (hair is silver-white, eyes silver/pale); not an albino with white brows; no non-human features (no horns, ridges, tinted alien skin)
 
 ## Engine limits
 none known — no Echani head, face or body art exists in the repo at all to check against a
