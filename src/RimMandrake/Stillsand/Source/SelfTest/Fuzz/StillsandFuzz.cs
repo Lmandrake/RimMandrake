@@ -7,6 +7,7 @@
 //              scans and the emergence filter
 //   sun        the sun factor of sun-fed tables, work speed, the solar still's progress clock, corpse yield, the thumper's beat
 //              clock and call selection, the mirror beam's sun and damage
+//   horizon    the announced-group clock (RM_HorizonMath): the plume stands through the retry window, a group turns back only after it
 //   units      exhaustive truth tables for the small decisions
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
@@ -875,6 +876,31 @@ namespace RimMandrake.Stillsand.Fuzz
             return fails;
         }
 
+        /// <summary>DUST_SETTLED_LETTER_1: for any fire tick and any now, an arrived group never turns back; an unarrived one turns back
+        /// exactly when now is past PlumeUntil(fire); the plume never ends before the retry window; the match key is strict.</summary>
+        public static List<string> Horizon(int n, int seed)
+        {
+            var fails = new List<string>();
+            var r = new Random(seed);
+            for (int i = 0; i < n; i++)
+            {
+                int fire = r.Next(0, 5_000_000), now = fire + r.Next(-3000, 9000);
+                bool arrived = r.Next(2) == 0;
+                bool got = RM_HorizonMath.TurnedBack(now, fire, arrived);
+                bool want = !arrived && now > fire + RM_HorizonMath.RetryTicks + RM_HorizonMath.GraceTicks;
+                Cases++; Steps++;
+                if (got != want || RM_HorizonMath.PlumeUntil(fire) < fire + RM_HorizonMath.RetryTicks)
+                {
+                    fails.Add($"horizon seed {seed} case {i}: fire {fire} now {now} arrived {arrived} -> turnedBack {got}, want {want}");
+                    if (fails.Count > 5) break;
+                }
+                int x = r.Next(0, 250), z = r.Next(0, 250);
+                bool m = RM_HorizonMath.Matches("D", x, z, "D", x, z) && !RM_HorizonMath.Matches("D", x, z, "D", x + 1, z) && !RM_HorizonMath.Matches("D", x, z, "E", x, z) && !RM_HorizonMath.Matches("", x, z, "", x, z);
+                if (!m) { fails.Add($"horizon seed {seed} case {i}: match key not strict at {x},{z}"); if (fails.Count > 5) break; }
+            }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -887,6 +913,7 @@ namespace RimMandrake.Stillsand.Fuzz
                 ("ledger", () => Ledger(N(4000), S(1))),
                 ("gale", () => Gale(N(2500), S(1))),
                 ("sun", () => Sun(N(2500), S(1))),
+                ("horizon", () => Horizon(N(8000), S(1))),
                 ("units", () => Units()),
             };
             foreach (var f in fam)

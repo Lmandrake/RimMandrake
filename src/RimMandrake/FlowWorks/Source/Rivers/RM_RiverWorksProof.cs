@@ -132,6 +132,21 @@ namespace RimMandrake.FlowWorks.Rivers
 			return "SWEPT pending=" + w.PendingCount;
 		}
 
+		/// <summary>TAKEN_BY_LAND_SERVICE_1: "TAKEN river=B gale=B traceSetting=B traces=N pending=N" (a state read, no side effect).</summary>
+		public static string ProofTaken(string arg)
+		{
+			RimMandrake.FlowWorks.TakenByLand.RM_WorldComponent_TakenByLand w = Find.World?.GetComponent<RimMandrake.FlowWorks.TakenByLand.RM_WorldComponent_TakenByLand>();
+			if (w == null)
+			{
+				return "UNMEASURED no taken-by-land component";
+			}
+			return "TAKEN river=" + (RimMandrake.FlowWorks.TakenByLand.RM_TakenByLand.PolicyFor("river") != null)
+				+ " gale=" + (RimMandrake.FlowWorks.TakenByLand.RM_TakenByLand.PolicyFor("gale") != null)
+				+ " traceSetting=" + RM_RiversSettings.takenByLandTraceEnabled
+				+ " traces=" + RimMandrake.FlowWorks.TakenByLand.RM_TakenByLand.TracesLeft
+				+ " pending=" + w.PendingCount;
+		}
+
 		private static IntVec3 FindRun(RM_MapComponent_RiverCurrent comp, Map map, int lane, int length)
 		{
 			List<IntVec3> cells = new List<IntVec3>(map.AllCells);

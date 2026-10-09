@@ -38,6 +38,7 @@ using System;
 using System.Collections.Generic;
 using RimMandrake.FlowWorks;
 using RimMandrake.FlowWorks.LiquidTypes;
+using RimMandrake.FlowWorks.TakenByLand;
 
 namespace RimMandrake.FlowWorks.SelfTest
 {
@@ -1540,6 +1541,24 @@ namespace RimMandrake.FlowWorks.SelfTest
             KernelCase("Kernel_limitless_source_fills_its_component", () => FlowKernelFuzz.FillsFromLimitless(2000, 202));
             Console.WriteLine($"kernel total: {FlowKernelFuzz.Cases} scenes, {FlowKernelFuzz.Pulses} pulses, {kernelClock.Elapsed.TotalSeconds:F2} s");
             // Owner rulings 2026-10-06 (design/RimMandrake/flowworks_offline_kernel_B.md): regression guards.
+            // TAKEN_BY_LAND_SERVICE_1 (X-10): the shared hold-and-return decisions, which the river and the dune gale both ride.
+            Case("TAKEN_BY_LAND_SERVICE_1_kernel_decides_return_outcomes_and_schedules", () =>
+            {
+                Assert(RM_TakenByLandKernel.Decide(true, false, false, true) == TakenOutcome.LostMissing, "a missing pawn is lost");
+                Assert(RM_TakenByLandKernel.Decide(false, true, false, true) == TakenOutcome.LostMissing, "a missing map loses the pawn");
+                Assert(RM_TakenByLandKernel.Decide(false, false, true, true) == TakenOutcome.LostDead, "a dead pawn stays lost");
+                Assert(RM_TakenByLandKernel.Decide(false, false, false, true) == TakenOutcome.SpawnAlive, "a good roll comes back alive");
+                Assert(RM_TakenByLandKernel.Decide(false, false, false, false) == TakenOutcome.SpawnThenKill, "a bad roll comes back to die");
+                Assert(!RM_TakenByLandKernel.ShouldScan(0, 250, 250) && !RM_TakenByLandKernel.ShouldScan(3, 251, 250) && RM_TakenByLandKernel.ShouldScan(3, 500, 250), "the book is scanned only when full and on the interval");
+                Assert(RM_TakenByLandKernel.ReturnTick(1000, 1f, 60000) == 61000 && RM_TakenByLandKernel.ReturnTick(1000, 0f, 60000) == 1001, "return tick is days ahead, never before the next tick");
+                Assert(RM_TakenByLandKernel.ReturnTick(int.MaxValue - 5, 10f, 60000) == int.MaxValue, "return tick saturates instead of overflowing");
+                Assert(RM_TakenByLandKernel.IsDue(10, 10) && !RM_TakenByLandKernel.IsDue(11, 10), "due on its tick, not before");
+                Assert(RM_TakenByLandKernel.EarlierEventOnMap(7, 100, 7, 200) && !RM_TakenByLandKernel.EarlierEventOnMap(7, 200, 7, 200) && !RM_TakenByLandKernel.EarlierEventOnMap(8, 100, 7, 200),
+                    "a storm's end returns what an EARLIER event took from THIS map only");
+                var book = new List<int> { 1, 2, 3, 4, 5 };
+                var taken = RM_TakenByLandKernel.TakeWhere(book, x => x % 2 == 0);
+                Assert(taken.Count == 2 && book.Count == 3 && !book.Contains(2) && !book.Contains(4), "TakeWhere removes exactly the picked records");
+            });
             Case("THICK_LIQUID_CREEP_1_front_speed_down_a_40_cell_channel", () =>
             {
                 string r = FlowKernelFuzz.FrontSpeed();

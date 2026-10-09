@@ -26,6 +26,7 @@
     <Compile Include="..\..\Kernel\RM_LedgerKernel.cs" />
     <Compile Include="..\..\Kernel\RM_GaleKernel.cs" />
     <Compile Include="..\..\Kernel\RM_SunKernel.cs" />
+    <Compile Include="..\..\Kernel\RM_HorizonMath.cs" />
     <Compile Include="StillsandFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

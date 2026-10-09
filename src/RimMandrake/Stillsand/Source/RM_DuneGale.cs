@@ -859,7 +859,7 @@ namespace RimMandrake.Stillsand
             return Current.Game?.GetComponent<RM_GameComponent_GaleCarried>();
         }
 
-        public int Count => carried.Count;
+        public int Count => carried.Count + (Find.World?.GetComponent<RimMandrake.FlowWorks.TakenByLand.RM_WorldComponent_TakenByLand>()?.PendingOfKind("gale") ?? 0);
 
         public override void ExposeData()
         {
@@ -873,36 +873,12 @@ namespace RimMandrake.Stillsand
             }
         }
 
+        /// <summary>TAKEN_BY_LAND_SERVICE_1: the carry-off is now a take through the shared FlowWorks service (policy
+        /// RM_GaleTakenPolicy): hold, letters, ground trace and return all live there. This book only drains records saved before it.</summary>
         public void CarryOff(Pawn p, Map map, IntVec3 wind, RM_DuneGaleExtension ext)
         {
-            string bearing = RM_GameCondition_DuneGale.BearingName(wind);
-            bool player = p.Faction == Faction.OfPlayer;
-            string name = p.LabelShortCap;
-            p.ExitMap(false, ToRot4(RM_GaleKernel.ExitEdge(wind.x, wind.z)));
-            if (!Find.WorldPawns.Contains(p))
-            {
-                Log.Warning("[Stillsand] gale carried " + p + " off the map but it is not a world pawn; it cannot come back.");
-            }
-            else
-            {
-                Find.WorldPawns.ForcefullyKeptPawns.Add(p);
-            }
             aliveChance = ext.returnAliveChance;
-            carried.Add(new RM_GaleCarriedRecord
-            {
-                pawn = p,
-                map = map,
-                wind = wind,
-                returnTick = Find.TickManager.TicksGame + Mathf.RoundToInt(ext.returnDays.RandomInRange * GenDate.TicksPerDay),
-                wasPlayer = player,
-                takenTick = Find.TickManager.TicksGame,
-                aliveChance = ext.returnAliveChance,
-            });
-            Find.LetterStack.ReceiveLetter("Carried off: " + name,
-                "The gale took " + name + " off the crest and carried them " + bearing + ", out past the edge of the map.\n\n"
-                + "The wind gives back what it takes. The next gale, or a few days' drift, will bring "
-                + (player ? "them" : "it") + " back in from the " + bearing + " — alive, or not.",
-                player ? LetterDefOf.NegativeEvent : LetterDefOf.NeutralEvent, new LookTargets(new TargetInfo(map.Center, map)));
+            RimMandrake.FlowWorks.TakenByLand.RM_TakenByLand.Take(p, "gale", wind, ext.returnDays.RandomInRange, ext.returnAliveChance);
         }
 
         private static Rot4 ToRot4(RM_Edge e)
@@ -933,6 +909,7 @@ namespace RimMandrake.Stillsand
         /// took (taken at or after <paramref name="galeStartTick"/>) wait for the next one or returnDays.</summary>
         public void ReturnAllFor(Map map, RM_DuneGaleExtension ext, int galeStartTick)
         {
+            Find.World?.GetComponent<RimMandrake.FlowWorks.TakenByLand.RM_WorldComponent_TakenByLand>()?.ReturnEarlierOnMap("gale", map, galeStartTick);
             foreach (RM_GaleCarriedRecord r in RM_GaleKernel.TakeWhere(carried, c => c.map == map && c.takenTick < galeStartTick))
             {
                 SafeReturn(r, r.aliveChance >= 0f ? r.aliveChance : ext.returnAliveChance);

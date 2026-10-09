@@ -28,7 +28,7 @@ SETTINGS = "RimMandrake.FlowWorks.Rivers.RM_RiversSettings"
 suite.toggles = [
     "riverWorksEnabled", "surfaceCurrentEnabled", "scaleWithRiverSize", "floodSurgeEnabled",
     "countSeasonalFloods", "countTorrentialRainFloods", "carryAnimals", "carryStrangers", "carryItems",
-    "washOffMapEdge", "pathfinderAvoidsCurrents", "crossingHazardsEnabled", "fordsEnabled",
+    "washOffMapEdge", "takenByLandTraceEnabled", "pathfinderAvoidsCurrents", "crossingHazardsEnabled", "fordsEnabled",
     "bankWorksEnabled", "breachEnabled", "stakeLineLevee", "weirCatchesFish", "weirCatchesDrift",
     "breachWashesCatch", "siltRichening", "ferryEnabled", "ferryRopeGuidesColonists",
 ]
@@ -89,6 +89,20 @@ def swept(t):
             res = _proof(t, "ProofSwept", "return")
             if not res.startswith("SWEPT pending=0"):
                 raise ExpectationFailed("washed-away pawns could not walk home: %s" % res)
+
+
+@suite.chain("taken_by_land")
+def taken_by_land(t):
+    """TAKEN_BY_LAND_SERVICE_1: the river is a taker of the shared service, the trace setting is readable, and the book answers.
+    The gale (Stillsand) registers its own policy under 'gale'; with Stillsand not loaded that arm is reported, not failed."""
+    with t.component("service_has_river_policy_and_trace_setting", toggle="takenByLandTraceEnabled"):
+        if t._guard():
+            kv = _kv(_proof(t, "ProofTaken"))
+            if kv.get("river") != "True" or kv.get("traceSetting") not in ("True", "False"):
+                raise ExpectationFailed("the shared service has no river policy or its trace setting is unreadable: %r" % kv)
+            if int(kv.get("pending", -1)) < 0:
+                raise ExpectationFailed("the book gave no pending count: %r" % kv)
+            _note(t, "gale taker registered (Stillsand loaded)", kv.get("gale"))
 
 
 def _works(t, method, args=""):

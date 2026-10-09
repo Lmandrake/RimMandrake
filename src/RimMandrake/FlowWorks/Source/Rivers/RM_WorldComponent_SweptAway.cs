@@ -6,6 +6,8 @@ using Verse;
 namespace RimMandrake.FlowWorks.Rivers
 {
 	/// <summary>
+	/// LEGACY since TAKEN_BY_LAND_SERVICE_1: drains records saved before the shared service (TakenByLand/RM_TakenByLand.cs); new
+	/// takes go through the service. Delete once no save holds a record here.
 	/// Owner card 1 (2026-10-03, typed): swept to the map edge = washed away, walks home later,
 	/// WITH a letter saying what happened so the player knows to wait. And the heat ruling's
 	/// "no pawn ever vanishes without a readable sign" — so strangers get a message too.
@@ -22,46 +24,13 @@ namespace RimMandrake.FlowWorks.Rivers
 		{
 		}
 
-		public int PendingCount => records.Count;
+		public int PendingCount => records.Count + (Find.World?.GetComponent<TakenByLand.RM_WorldComponent_TakenByLand>()?.PendingCount ?? 0);
 
+		/// <summary>TAKEN_BY_LAND_SERVICE_1: a pawn washed off the map edge is now taken through the shared service (hold, letter,
+		/// ground trace, return). This book only drains records saved before it.</summary>
 		public static void WashAway(Pawn p)
 		{
-			Map map = p.Map;
-			if (map == null || !p.Spawned)
-			{
-				return;
-			}
-			bool ours = (p.Faction != null && p.Faction.IsPlayer) || (p.HostFaction != null && p.HostFaction.IsPlayer);
-			if (!ours)
-			{
-				Messages.Message(p.LabelShortCap + " was swept off the map by the river.",
-					new LookTargets(p.PositionHeld, map), MessageTypeDefOf.NeutralEvent);
-				p.DeSpawn();
-				Find.WorldPawns.PassToWorld(p, PawnDiscardDecideMode.Decide);
-				return;
-			}
-			RM_WorldComponent_SweptAway comp = Find.World.GetComponent<RM_WorldComponent_SweptAway>();
-			if (comp == null)
-			{
-				return; // cannot hold them: leave the pawn at the edge rather than lose them
-			}
-			float min = RM_RiversSettings.washedAwayMinDays;
-			float max = UnityEngine.Mathf.Max(min, RM_RiversSettings.washedAwayMaxDays);
-			float days = Rand.Range(min, max);
-			int mapId = map.uniqueID;
-			p.DeSpawn();
-			Find.WorldPawns.PassToWorld(p, PawnDiscardDecideMode.KeepForever);
-			comp.records.Add(new SweptRecord
-			{
-				pawn = p,
-				returnTick = Find.TickManager.TicksGame + (int)(days * GenDate.TicksPerDay),
-				mapId = mapId
-			});
-			Find.LetterStack.ReceiveLetter("Swept away: " + p.LabelShortCap,
-				p.LabelShortCap + " was carried off the map by the river's current. "
-			  + p.Possessive().CapitalizeFirst() + " will make " + p.Possessive() + " way back on foot in about "
-			  + days.ToString("F1") + " days, bruised but alive. Wait for them.",
-				LetterDefOf.NegativeEvent);
+			TakenByLand.RM_TakenByLand.Take(p, "river");
 		}
 
 		public override void WorldComponentTick()
@@ -129,6 +98,7 @@ namespace RimMandrake.FlowWorks.Rivers
 
 		public void ReturnAllNow()
 		{
+			Find.World?.GetComponent<TakenByLand.RM_WorldComponent_TakenByLand>()?.ReturnAllNow();
 			for (int i = records.Count - 1; i >= 0; i--)
 			{
 				if (TryReturn(records[i]))
