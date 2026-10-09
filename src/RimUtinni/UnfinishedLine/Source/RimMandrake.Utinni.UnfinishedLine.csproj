@@ -50,6 +50,7 @@
     <Compile Include="UnfinishedLineTithe.cs" />
     <Compile Include="UnfinishedLineWorld.cs" />
     <Compile Include="UnfinishedLineSite.cs" />
+    <Compile Include="UnfinishedLineSiteBeats.cs" />
   </ItemGroup>
 
 

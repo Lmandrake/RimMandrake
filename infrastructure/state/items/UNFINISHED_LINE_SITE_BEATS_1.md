@@ -9,3 +9,10 @@ beat 3 delivers cores at the site; beat 4 sends the tithe as four TradeRequests 
 
 ## verify
 - `python3 src/RimUtinni/UnfinishedLine/validation.py` static pass; live: ProofSite then force beats 3-5 and read ProofChain.
+
+## built 2026-10-09 (offline)
+`UnfinishedLineSiteBeats.cs`: `QuestNode_RUT_LineSiteSetup` (beats 3-5 slate: lineSite/lineSiteName/lineSiteFaction; texts name the site),
+beat 4 lends the crafter to the faction that runs the site (C Enclaves, D Hive, A as before), beat 5 `QuestNode_RUT_SiteAllies` sends that
+faction's defenders (vanilla RaidFriendly, LordJob_AssistColony) when the strike arrives. Mod Settings `siteBeatsEnabled`, `siteAllyPoints` (300), PROVISIONAL.
+NOT built, needs an owner/engine decision: caravan TradeRequests to the site settlement (beat 4) and a separate defence-site map with a line core (beat 5; Q1=A ordered no core building).
+Live: `UnfinishedLineSiteBeatsProof.ProofSiteBeats` (chain `site_beats`), first poke `ProofSendAllies` on a throwaway map.
