@@ -214,6 +214,8 @@
       <RM_QuenchVenomvine>0.03</RM_QuenchVenomvine>
       <RM_SwornVenomvine>0.005</RM_SwornVenomvine>
       <RM_SheddingVenomvine>0.02</RM_SheddingVenomvine>
+      <!-- LEANINGSCRUB_SLEEPER_VINE_1: looks dead until a body of size >= 0.5 passes. PROVISIONAL placement, rare -->
+      <RM_SleeperVenomvine>0.01</RM_SleeperVenomvine>
     </wildPlants>
     <!-- RM_SweetlineTree is a landmark, not scatter: it is NOT in wildPlants. It reaches maps
          only through the RM_SweetlineTrees map step below (owner ruling R13, 2026-10-03: a rare
