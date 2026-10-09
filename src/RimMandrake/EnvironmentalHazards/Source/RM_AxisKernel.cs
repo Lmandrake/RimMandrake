@@ -50,6 +50,16 @@ namespace RimMandrake.EnvironmentalHazards
             return Clamp01(salinity + delta);
         }
 
+        // AXIS_SURGE_CLAMP_DRIFT_1: the share of a cell's forward shove that the clamp actually let through.
+        // A recede step is scaled by it, so a cell that saturated recedes only what it really gained.
+        // requested <= 0 (no forward on record, e.g. an old save) keeps the unscaled recede.
+        public static float AppliedFraction(float applied, float requested)
+        {
+            if (requested <= 1e-9f) return 1f;
+            float f = applied / requested;
+            return f < 0f ? 0f : (f > 1f ? 1f : f);
+        }
+
         // The salt-line fleck band test (strict).
         public static bool InFleckBand(float salinity, float band)
         {
