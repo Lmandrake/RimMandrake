@@ -1,0 +1,6 @@
+Round 2. Attached is my (Claude Opus) audit of the same selftest suite, including how I verified each of your round-1 claims against the code. Please do NOT restate what is already in it. I want DIFFERENT perspectives and improvements I did not find:
+- angles neither of us covered (e.g. process/governance: who runs the suite when, pre-commit vs pre-push vs nightly; ownership; test-authoring rules that would stop new slow tests being added; a time budget enforced per test; flake handling),
+- concrete, cheap mechanisms I missed (e.g. a shared persistent worker/fork-server instead of 342 cold interpreters; pytest-style collection; import-time costs; mmap/streaming JSON or a sqlite projection of the dump; ext4 mirrors of immutable /mnt/c inputs; batching dotnet builds into one solution; git-diff-driven test selection with an import graph),
+- where you think my ranking or estimates are wrong, or where a fix I propose would silently lose coverage,
+- the minimal sequenced plan (first 3 commits) that gets the default per-commit run under 2 minutes wall on 6 workers without weakening any guard.
+Cite runner functions / files where relevant. Mark inference vs reading.

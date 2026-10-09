@@ -1,0 +1,10 @@
+You are auditing a Python selftest suite for speed and redundancy. Repo: a RimWorld modding monorepo run from WSL2 (ext4 clone), with the game install and a 716 MB JSON def dump on /mnt/c (9p drvfs, slow), and C# selftests that must build with Windows dotnet.exe staged on D:. The runner (run_selftests.py, attached) discovers 342 `selftest*.py` files and runs each as its own `python3 <file>` inside a systemd transient scope in a memory-capped slice, 6 workers, longest-first by last recorded time. The suite takes ~300 s wall uncontended (sum of per-test wall ~1886 s) and 30+ min when three suites ran at once on 14 CPUs. Owner wants it as efficient and non-redundant as possible without losing what it guards.
+
+Attached: the runner; an inventory CSV (one row per test: recorded median wall time `t_median` in seconds from 3 runs, peak memory MB, static grep-flag counts for subprocess / python.exe / git / drvfs paths / sleep / def dump / copytree / repo walks, `modpack_harness` = uses the shared planted-defect lint harness, `plants` = planted defects, `under_test`); and ~10 representative slow or family-representative tests with the library code they lean on.
+
+Give me YOUR independent analysis, concretely, citing file + function:
+1. For the slowest tests, the likely root cause of the time, from the code (not guesses from names).
+2. Redundancy: repeated computation across tests or within a test, near-duplicate families that could be parametrised or merged, anything re-proved every run that only needs re-proving when specific files change.
+3. Runner-level improvements: caching/skip-if-unchanged (what exactly should the cache key be, and how to make it SAFE — what would make a cached PASS a lie), tiering (what goes in a default fast tier vs nightly), scheduling, parallelism, measuring.
+4. Anything that should not be in a default per-commit suite at all.
+Rank by expected seconds saved vs effort vs risk of losing coverage. Be specific and quantitative where the CSV allows. Flag where you are inferring rather than reading code.
