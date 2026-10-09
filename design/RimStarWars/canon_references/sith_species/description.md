@@ -81,6 +81,8 @@ Book of Sith depicts him with Human-like, five-fingered hands, while the Sith we
 supposed to be a tridactyl species."*
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** No live-action or photoreal Sith-species depiction exists (searched: `Images of Sith (species)` — SWTOR portraits, comics, sourcebook paintings only; `Images of Massassi`; `Zuguruk`). Deleted: the *Doctor Aphra* 29 comic panel `wookieepedia_canon_sith_aphra29.jpg`, which this entry used as its red-hue anchor. 🔑 **The new hue anchor is the realistic *Journal of Master Gnost-Dural* painting `wookieepedia_massassi_and_kissai_jmgd.jpg`** — red Sith of two castes in natural painted light, skin deep brick-crimson to red-tan. `wookieepedia_sith_youngling.jpg` (comic) is kept **only** as an animated, anatomy-only juvenile reference (no realistic juvenile exists); do not copy its flat comic shading. Render the species realistically: natural skin, real light, no ink outlines.
+
 
 **`wookieepedia_zuguruk_bookofsith.jpg` is the reference of record**, and it is the
 *only* dedicated Zuguruk image in existence. What it shows:
@@ -125,15 +127,13 @@ anatomy — three Sith in dark robes:
   the plate is lit by a magenta-violet sky and colour-shifted throughout. Same
   judgement as above: prose wins on hue, image wins on structure.
 
-**`wookieepedia_canon_sith_aphra29.jpg`** (`File:Sith-2020DoctorAphra29.png`) is the
-**canon-continuity** Sith, and it is the strongest single hue reference: a
-saturated **red-skinned** hooded figure. Note the canon infobox is much thinner than
+The deleted *Doctor Aphra* panel was the only **canon-continuity** Sith image; note the canon infobox is much thinner than
 Legends — skin **red and tan**, distinctions only **tentacles** and **frequent use
 of the dark side**, everything else blank. Canon has no caste system on the page at
 all: the three castes are a **Legends-only** structure. 🔑 **The repo ships a
 Legends taxonomy; that is a design choice the owner should know he has made.**
 
-**`wookieepedia_sith_youngling.jpg`** (`File:Sith_child.png`) confirms the "infants
+**`wookieepedia_sith_youngling.jpg`** (`File:Sith_child.png`, comic — anatomy-only, animated reference) confirms the "infants
 a lighter shade of red" line and shows the juvenile proportions.
 
 **`wookieepedia_sith_pureblood_swtor.jpg`** and
@@ -148,11 +148,12 @@ the trait is not unique to Zuguruk in practice.
 
 ## Must show
 - [ ] A tall, lean, upright engineer/artisan silhouette (tabard, leggings, greaves, boots, forearm bracer) — not a warrior's build
-- [ ] Skin read as crimson to obsidian per the sourced text — trust the prose over the two colour-distorted plates (sepia parchment wash; violet lighting), and use the saturated red canon image as the hue anchor instead
+- [ ] Skin read as crimson to obsidian per the sourced text — trust the prose over the two colour-distorted plates (sepia parchment wash; violet lighting), and use the realistic JMGD painting's crimson-to-red-tan as the hue anchor instead
 - [ ] Bald, high-domed cranium with a broad flat nose and heavy brow; no cranial horn is visible in any reference
 - [ ] The right hand shows five ordinary-proportioned digits, not elongated ones — the one Zuguruk-exclusive trait
 - [ ] Paired cheek tendrils hanging from high cheekbones down past the jaw are canonical but not uniform — some individuals in the same reference image are smooth-faced with no visible tendrils
 - [ ] Heavy vertical bony ridging down the forehead/cheeks and a long bony chin appear on some individuals, not all — facial sharpness is variable across the caste
+- [ ] Realistic rendering: natural painted-skin texture and lighting, no outlines, no comic ink or cartoon shading
 
 ## Engine limits
 none known
@@ -210,7 +211,7 @@ below. Nothing on disk in this repo compares canon against current in-game art.
   2026-09-15. (`page=Sith_species` is a redirect stub of 28 chars.)
 - https://static.wikia.nocookie.net/starwars/images/8/8f/Zugurak.png → `wookieepedia_zuguruk_bookofsith.jpg` (282×490)
 - https://static.wikia.nocookie.net/starwars/images/7/78/ThreeSith-BOS.png → `wookieepedia_three_sith_castes.jpg` (430×243)
-- https://static.wikia.nocookie.net/starwars/images/d/da/Sith-2020DoctorAphra29.png → `wookieepedia_canon_sith_aphra29.jpg` (762×1025)
+- https://static.wikia.nocookie.net/starwars/images/8/8d/Massassi_and_Kissai.jpg → `wookieepedia_massassi_and_kissai_jmgd.jpg` (1182×626)
 - https://static.wikia.nocookie.net/starwars/images/e/e9/Sith_child.png → `wookieepedia_sith_youngling.jpg` (229×262)
 - https://static.wikia.nocookie.net/starwars/images/9/9c/Sith_Pureblood.jpg → `wookieepedia_sith_pureblood_swtor.jpg` (267×608)
 - https://static.wikia.nocookie.net/starwars/images/1/1b/SeknosRath-ForceStorm1.jpg → `wookieepedia_seknos_rath_fivedigit.jpg` (250×296)
@@ -223,9 +224,8 @@ below. Nothing on disk in this repo compares canon against current in-game art.
 - `wookieepedia_three_sith_castes.jpg` — best shared-caste anatomy image: bony
   facial ridging, long bony chin, paired cheek tendrils, bald crowns, and
   within-image variation. **Negative on hue** (violet colour cast).
-- `wookieepedia_canon_sith_aphra29.jpg` — the hue reference: saturated red skin,
-  canon continuity.
-- `wookieepedia_sith_youngling.jpg` — juvenile, lighter red, per the sourced line.
+- `wookieepedia_massassi_and_kissai_jmgd.jpg` — **the hue reference.** Realistic painted timeline art (*Journal of Master Gnost-Dural*), file `Massassi and Kissai.jpg`: crimson-to-red-tan Sith of two castes in natural light — https://static.wikia.nocookie.net/starwars/images/8/8d/Massassi_and_Kissai.jpg/revision/20180817170438
+- `wookieepedia_sith_youngling.jpg` — **comic (animated), anatomy-only**: juvenile, lighter red, per the sourced line; kept because no realistic juvenile exists.
 - `wookieepedia_sith_pureblood_swtor.jpg` — **negative reference.** Hybrid Sith
   Pureblood, not the Red Sith species; canon says Purebloods differ substantially.
 - `wookieepedia_seknos_rath_fivedigit.jpg` — the sourced five-digit non-Zuguruk
