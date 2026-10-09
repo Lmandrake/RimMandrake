@@ -645,6 +645,16 @@ TIERS["acc_20261009"] = {
     "dlc": True,
 }
 
+TIERS["acc_20261009b"] = {
+    "why": "FOUNDRY acceptance sitting 2 (2026-10-09): acc_20261009 plus the mods sitting 1 lacked (bacta, bazaar, empirepursuit, cathedralpass, "
+           "swbestiary + Utinni/StarWars patch layers, graffiti, rites, wasterun, warcasket, divinginteraction, rustcathedral) so ~60 skipped criteria and "
+           "everything built after the first deploy (Illisk, venomvines, LongShade, WasteRun proof hooks) can be measured.",
+    "want": list(TIERS["acc_20261009"]["want"]) + ["mandrake.rsw.bacta", "mandrake.rm.bazaar", "mandrake.rut.empirepursuit", "mandrake.rut.cathedralpass",
+             "mandrake.rsw.swbestiary", "mandrake.rsw.patches", "mandrake.rm.graffiti", "mandrake.rut.rites", "mandrake.rut.wasterun",
+             "mandrake.rm.warcasket", "mandrake.rm.divinginteraction", "mandrake.rm.rustcathedral"],
+    "dlc": True,
+}
+
 TIERS["watchers_live"] = {
     "why": "FOUNDRY live checks 2026-10-08: the Watchers kit (WATCHER_CREATURES_MOD_1) with its one shipped member, the piinnok, "
            "from the composed biomes mod.",
