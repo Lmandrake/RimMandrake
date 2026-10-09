@@ -167,6 +167,10 @@ which is itself a hint that the index row was a poor match for a Separatist-mod 
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia T-series tactical droid canon + Legends pages, `Images of T-series tactical droids`, `Star Wars Zero Company` — every T-series image is *The Clone Wars* animation, comics, Legion card art or a 380px *Battlefront II* (2005) thumbnail; the T1 utility droid exists only as a *KOTOR* model).** The images below are animated/stylised; render this droid realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. Read the animated airbrushed tan as real weathered, chipped painted steel over dark blue-grey metal, the belly grille as real machined slats.
+
 🔴 **The sprite is a good T-series tactical droid and a nonsensical T1-series utility droid.** The
 whole point of this section is that the mismatch is visible at a glance.
 
@@ -232,6 +236,7 @@ for a reference to draw from.
 - [ ] Large dark vertically-ribbed rectangular grille filling the belly/lower chest
 - [ ] Boxy shoulder plates with visible round joint hubs
 - [ ] Weathered tan/bone plating over dark blue-grey
+- [ ] Realistic rendering: chipped, weathered painted steel with real specular and lighting, no outlines, no cartoon shading
 
 ## Engine limits
 `skinShader` is `Cutout` with no mask and no colour channel, so this chassis cannot roll a colour scheme even though canon states T-1s "often sported varying color schemes."
@@ -270,13 +275,13 @@ for a reference to draw from.
 
 ## Candidate images
 
-- `wookieepedia_tseries_infobox.jpg` (1230×3110) — **TA-175**, full-body render on transparent
+- `wookieepedia_tseries_infobox.jpg` (1230×3110) — *The Clone Wars* **animated** render (file `TacticalDroidTrio-BYOR2D2-50.png` per the sweep map) — **TA-175**, full-body render on transparent
   background. **The proportion and colour authority for what this chassis actually is.** 🔴 Over
   2000px: view a `/tmp` downscale, never the original.
-- `wookieepedia_tseries_colour_variants.jpg` (925×765) — the article's "Tactical droids came in a
+- `wookieepedia_tseries_colour_variants.jpg` (925×765) — *The Clone Wars* **animated** render — the article's "Tactical droids came in a
   variety of color schemes" plate, three units together. **Positive reference for palette
   variation**, and the argument for giving this chassis a colour channel.
-- `wookieepedia_t1_series_utility_droid.jpg` (512×640) — the **T1-series utility droid**, the
+- `wookieepedia_t1_series_utility_droid.jpg` (512×640) — *KOTOR* stylised game model — the **T1-series utility droid**, the
   droid `DROIDS_INDEX.md:1650` names. 🔴 **NEGATIVE REFERENCE — do not draw from this.** Kept as
   the evidence for the mismatch finding.
 - `donor_current_sprite.png` (256×256) — repo JDS sprite, `south`/top-down. Judge literally:

@@ -133,11 +133,16 @@ chars) was **read in full.**
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+Realism pass 2026-10-08: both old images were *The Clone Wars* animated renders. Deleted `wookieepedia_std_kalani.jpg`; **kept `wookieepedia_std_kraken.jpg` as anatomy-only** — it is the only full-body view (legs and feet) anywhere. Added two photoreal frames from ***Star Wars: Zero Company*** (2026, Unreal-engine game): `wookieepedia_zerocompany_geryon.png` (super tactical droid Geryon, head and torso) and `wookieepedia_zerocompany_typhon.jpg` (Typhon, head and shoulders). **These are now the look target.** What they show: hard-edged, machined armour plates with real specular and edge wear; a **visor-like brow hood** over **three glowing amber photoreceptors** (two wide, one above, each a recessed lens with a bright core); a faceted vertical faceplate; exposed piston-like neck struts; big domed cylindrical shoulder joints. Two personal schemes again: **Geryon olive-green with bold pale-yellow banding**; **Typhon gloss black with fine engraved gold scrollwork** — the realistic proof that per-unit colour is canon. ⚠️ The animated Kraken reads matte and soft; the realistic units are **glossier, harder-edged and more ornate**.
+
+
 ✅ **Both repo donors get the chassis' one checkable signature right: three photoreceptors.**
 This is the rare case in this library where the sprites agree with canon on the detail that
 matters most, and it is worth saying plainly.
 
-**`wookieepedia_std_kraken.jpg` is the proportion authority.** What it shows:
+**`wookieepedia_std_kraken.jpg` (animated) is the full-body proportion authority only.** What it shows:
 
 - **A tall, lean, distinctly humanoid skeleton** — narrow waist, long thin arms and legs with
   **prominent exposed cylindrical joints at shoulder, elbow, hip, knee and ankle**, and a
@@ -155,9 +160,7 @@ matters most, and it is worth saying plainly.
   clearly built to hold an organic-issue rifle.
 - **Feet are flat splayed pads**, not boots.
 
-`wookieepedia_std_kalani.jpg` is the **Legends infobox image — General Kalani**, and is the
-reference for the *other* sourced paint scheme ("ornate gold trims"). Keep both: **the pair is
-the evidence that this chassis has no single canon colour.**
+The *other* sourced paint scheme ("ornate gold trims", General Kalani) is now represented by the photoreal Typhon's engraved gold on black; Geryon's green-and-yellow shows a third. **The chassis has no single canon colour.**
 
 **What the repo sprites show:**
 
@@ -199,6 +202,7 @@ the evidence that this chassis has no single canon colour.**
 - [ ] Tall, lean, humanoid frame with prominent exposed cylindrical joints at shoulder, elbow, hip, knee, and ankle
 - [ ] Broad flat chest plate with vertical ribbing at the sternum
 - [ ] Gold swirling/trim decoration on named-commander units
+- [ ] Realistic rendering: hard-edged machined armour with real specular, edge wear and recessed glowing lenses, no outlines, no cartoon shading
 
 ## Engine limits
 The JDS variant's `skinShader` is `Cutout` with no mask and no colour channel, so that sprite's pixels are its shipping appearance and it can never roll a colour — unlike its OuterRim twin, which uses `CutoutComplex` with a three-option palette.
@@ -215,9 +219,10 @@ The JDS variant's `skinShader` is `Cutout` with no mask and no colour channel, s
 - https://static.wikia.nocookie.net/starwars/images/1/1d/KrakenFull-BYOR2D2-51.png
   (File:KrakenFull-BYOR2D2-51.png → `wookieepedia_std_kraken.jpg`) — the canon article's infobox
   image
-- https://static.wikia.nocookie.net/starwars/images/1/15/GeneralKalaniFull-SWE.png
-  (File:GeneralKalaniFull-SWE.png → `wookieepedia_std_kalani.jpg`) — the Legends article's
-  infobox image
+- https://static.wikia.nocookie.net/starwars/images/4/4d/Geryon-ZeroCompany.png/revision/latest?cb=20260830182235
+  (File:Geryon-ZeroCompany.png → `wookieepedia_zerocompany_geryon.png`)
+- https://static.wikia.nocookie.net/starwars/images/1/12/Typhon-ZeroCompanyGameplayTrailer.jpg/revision/latest?cb=20260609124921
+  (File:Typhon-ZeroCompanyGameplayTrailer.jpg → `wookieepedia_zerocompany_typhon.jpg`)
 - ⚠️ **Deliberately NOT downloaded:**
   `https://static.wikia.nocookie.net/starwars/images/2/24/SuperTacticalDroid-SWL2024update.png`
   is **3840×2690** — over the 2000px viewing limit in the agent brief. Recorded here so a later
@@ -235,12 +240,11 @@ The JDS variant's `skinShader` is `Cutout` with no mask and no colour channel, s
 
 ## Candidate images
 
-- `wookieepedia_std_kraken.jpg` (1080×1895) — Commander **Kraken**, full-body three-quarter
-  render on transparent background. **The proportion authority**, and the reference for the
+- `wookieepedia_std_kraken.jpg` (1080×1895) — *The Clone Wars* **animated** render, file `KrakenFull-BYOR2D2-51.png` — Commander **Kraken**, full-body three-quarter
+  render on transparent background. **Anatomy-only: the full-body proportion authority**, and the reference for the
   sourced green-with-gold-swirls scheme. Three glowing yellow photoreceptors clearly visible.
-- `wookieepedia_std_kalani.jpg` (700×1170) — General **Kalani**, the Legends infobox render. The
-  reference for the *other* sourced scheme (gold trim). **Kept as a second positive reference
-  precisely because it differs** — canon licenses per-unit colour.
+- `wookieepedia_zerocompany_geryon.png` (1338×1096) — *Star Wars: Zero Company* photoreal game frame, super tactical droid Geryon (olive-green with pale-yellow banding), head and torso; file `Geryon-ZeroCompany.png` — https://static.wikia.nocookie.net/starwars/images/4/4d/Geryon-ZeroCompany.png/revision/latest?cb=20260830182235 . **Look target.**
+- `wookieepedia_zerocompany_typhon.jpg` (1880×1022) — *Star Wars: Zero Company* gameplay-trailer frame, Typhon (gloss black, engraved gold), head and shoulders; file `Typhon-ZeroCompanyGameplayTrailer.jpg` — https://static.wikia.nocookie.net/starwars/images/1/12/Typhon-ZeroCompanyGameplayTrailer.jpg/revision/latest?cb=20260609124921 . Head and lens detail reference.
 - `donor_current_sprite.png` (256×256) — repo **JDS** sprite, `south`/top-down. Judge literally:
   `skinShader` is `Cutout`, no tint applied. **Three photoreceptors present.**
 - `donor_body_east.png` (256×256) — the JDS profile frame.

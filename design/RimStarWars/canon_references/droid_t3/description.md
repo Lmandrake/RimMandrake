@@ -98,6 +98,12 @@ sourcebooks, not on canon description.**
 
 ## Visual brief
 
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `T3-series utility droid` and T3-M4 images — the droid exists only in *KOTOR* / *KOTOR II*; no live-action or photoreal-game depiction).** The images below are animated/stylised; render this droid realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions.
+
+**`wookieepedia_t3m4_infobox.jpg` (the *New Essential Guide to Droids* CGI render) is the most realistic and is the look target**: scuffed, scratched brown-grey and silver panelled metal, a glowing cyan main lens and two orange lamps on the saucer head, heavy wedge feet. The *KOTOR II* render is a stylised game model — silhouette only. The SVG schematic is a line drawing for proportion only.
+
 **🔴 The repo tints this droid the wrong colour, and the def says so in a number.**
 `Races_KotOR.xml:686–697` sets the single `skin` colour channel to **`RGBA(235,255,255,255)`** —
 a near-white, very slightly cyan-tinted off-white. The canon infobox `plating` field is
@@ -150,6 +156,7 @@ because it is the only orthographic reference available.
 - [ ] Broadcast antenna: thin hooked stalk rising off the back of the dome
 - [ ] Toroidal/dome head sitting low and wide over a blocky body
 - [ ] Brown-and-tan weathered plating, not white/cyan-tinted
+- [ ] Realistic rendering: scuffed, scratched real metal panels with real specular and lighting, no outlines, no game shading
 
 ## Engine limits
 Only a single `skin` colour channel is defined — it can drive one hue, so it cannot express canon's two-tone brown-and-silver plating through tinting alone; a second channel or new art would be needed.
@@ -168,12 +175,12 @@ Only a single `skin` colour channel is defined — it can drive one hue, so it c
   `src/RimStarWars/Droidworks/Defs/PawnKinds_KotOR.xml`
 
 ## Candidate images
-- `wookieepedia_t3m4_infobox.jpg` (1135×1200) — the `{{DroidSeries}}` infobox render of T3-M4,
+- `wookieepedia_t3m4_infobox.jpg` (1135×1200) — *New Essential Guide to Droids* CGI render (file `T3M4-NEGD.png`, https://static.wikia.nocookie.net/starwars/images/2/2e/T3M4-NEGD.png), **look target** — the `{{DroidSeries}}` infobox render of T3-M4,
   three-quarter view on white. **The primary colour and detail reference.** Shows the weathered
   brown/tan plating, mauve-brown dome, teal main photoreceptor with two small secondary lamps,
   antenna, four splayed wheeled feet, exposed frame trusses, and a manipulator arm out of the
   chest bay.
-- `wookieepedia_t3m4_kotor2.jpg` (945×945) — T3-M4 in a KotOR II render; a second angle
+- `wookieepedia_t3m4_kotor2.jpg` (945×945) — stylised *KOTOR II* game render (file `T3M4_kotor2.jpg`, https://static.wikia.nocookie.net/starwars/images/2/2e/T3M4_kotor2.jpg), silhouette only — T3-M4 in a KotOR II render; a second angle
   agreeing on colour and on the wheel/leg arrangement.
 - `wookieepedia_t3_schematics.svg` (2406×974 nominal) — orthographic schematic line drawing;
   the clearest reference for the four-leg geometry. **Not viewed** (SVG, oversize) — retained
