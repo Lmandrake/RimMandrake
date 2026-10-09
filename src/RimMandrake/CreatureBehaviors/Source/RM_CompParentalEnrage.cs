@@ -364,7 +364,24 @@ namespace RimMandrake.CreatureBehaviors
 					continue;
 				}
 
+				// CB-2 (design pass 2026-10-08): one intrusion rouses ONE defender per nursery.
+				// An adult of this herd already enraged at this intruder answers for every calf.
+				if (candidate.MentalState is RM_MentalState_ParentalEnrage busy
+				    && busy.Target == intruder
+				    && IsAdult(candidate, ext))
+				{
+					return null;
+				}
+
 				if (candidate.Dead || candidate.Downed || !candidate.Spawned || candidate.InMentalState)
+				{
+					continue;
+				}
+
+				// CB-2: a herd defends its own young only. A tame adult never guards a wild calf
+				// (or the reverse), and never turns on a pawn of its own faction.
+				if (candidate.Faction != young.Faction
+				    || (intruder.Faction != null && intruder.Faction == candidate.Faction))
 				{
 					continue;
 				}
