@@ -24,11 +24,7 @@
              stop burning. The sheet's own designed flora - the fuzz, venomvine -
              is non-flammable by design; this patch retires when they land.
 
-             DONOR BUG, the Rot: BMT_GreyLady ships Flammability 40, against a
-             whole-pool maximum of 1.5. Clamped, not zeroed - it is an ordinary
-             living fungus, and the Rot has no flammability ban.
-
-  11 adjustment(s) across 11 def(s).
+  10 adjustment(s) across 10 def(s).
 
   ⚠️ NESTED conditionals, NOT match-only. Flammability is inherited from PlantBase
   on most of these defs, so the node is absent from the def's own XML and a
@@ -40,30 +36,6 @@
   (MEASURED, review/rosters_residency.py). Re-check that before adding a row.
 -->
 <Patch>
-
-  <!-- BMT_GreyLady.flammability: 40 -> 1   (the_rot.json)
-       donor-bug clamp, 2026-09-09 fix wave: 40 is 26x the pool maximum (1.5) and would make one
-       ingested marsh fungus the most flammable object on the planet. 1.0 is the pool's ordinary
-       living-plant value. No sheet law changes.
-  -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_GreyLady"]/statBases</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="BMT_GreyLady"]/statBases/Flammability</xpath>
-      <match Class="PatchOperationReplace">
-        <xpath>/Defs/ThingDef[defName="BMT_GreyLady"]/statBases/Flammability</xpath>
-        <value><Flammability>1</Flammability></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="BMT_GreyLady"]/statBases</xpath>
-        <value><Flammability>1</Flammability></value>
-      </nomatch>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_GreyLady"]</xpath>
-      <value><statBases><Flammability>1</Flammability></statBases></value>
-    </nomatch>
-  </Operation>
 
   <!-- Plant_Brambles.flammability: 1 -> 0   (arid_shrubland.json)
        arid_shrubland.md §6 ban 9 (frozen): 'No flammable living flora. The native plants resist
