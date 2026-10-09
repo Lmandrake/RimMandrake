@@ -221,6 +221,9 @@ namespace RimMandrake.FeverWood
         /// <summary>KURRETH_THEFT_PER_COLUMN_1: thefts are grouped by the column (lord) that made them, one letter and
         /// one raid-back quest per column, once that column has left. Off: the old single 10-second window.</summary>
         public static bool kurrethTheftPerColumn = true;
+        /// <summary>KURRETH_LOSS_FINALIZE_1: a lost raid-back takes every unrecovered animal for good in every phase,
+        /// and "recovered" needs the animal actually back on a map and out of the kidnappers' hands.</summary>
+        public static bool kurrethLossFinalize = true;
         public static float kurrethColumnDays = 4f;
         public static float kurrethHiveHoldDays = 15f;
 
@@ -315,6 +318,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref antTheftEnabled, "antTheftEnabled", true);
             Scribe_Values.Look(ref kurrethColumnEnabled, "kurrethColumnEnabled", true);
             Scribe_Values.Look(ref kurrethTheftPerColumn, "kurrethTheftPerColumn", true);
+            Scribe_Values.Look(ref kurrethLossFinalize, "kurrethLossFinalize", true);
             Scribe_Values.Look(ref kurrethColumnDays, "kurrethColumnDays", 4f);
             Scribe_Values.Look(ref kurrethHiveHoldDays, "kurrethHiveHoldDays", 15f);
             Scribe_Values.Look(ref oilBoilEnabled, "oilBoilEnabled", true);
@@ -484,6 +488,10 @@ namespace RimMandrake.FeverWood
                 "On: each column that carries animals off gets its own letter and raid-back quest, sent once that column "
               + "has left the map, naming the edge IT left by. Off: every theft within about ten seconds of the first is "
               + "lumped into one letter.");
+            list.CheckboxLabeled("A lost raid-back is lost for good", ref kurrethLossFinalize,
+                "On: when the raid-back fails, every animal not actually brought back is gone for good in every phase (as in "
+              + "the hive), and an animal only counts as rescued once it is unbound on a map and out of the kurreth's hands. "
+              + "Off: the old checks, where an animal still held off-map could count as rescued.");
             list.Label("Days before the column reaches its hive: " + kurrethColumnDays.ToString("0.0"));
             kurrethColumnDays = list.Slider(kurrethColumnDays, 1f, 15f);
             list.Label("Days the animals last bound in the hive: " + kurrethHiveHoldDays.ToString("0.0"));
