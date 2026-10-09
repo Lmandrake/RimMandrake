@@ -64,12 +64,14 @@ validate or invalidate any of the canon findings above; it mainly documents
 that this creature's live sprite still needs to be authored.
 
 ## Must show
-- [ ] Bare, deeply wrinkled, leathery pink-to-flesh-brown skin on the muzzle, jaw and neck (per the Galaxy's Edge prop)
-- [ ] Coarse pale grey-white shaggy mane on the crown and running down the spine
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the Galaxy's Edge prop (face/neck, realistic look wins per the 2026-10-08 owner ruling in the visual brief) and the Bestiary plate (body anatomy).*
+- [ ] BODY PLAN: a canine-like quadruped in a sloped hyena stance: front legs longer and heavier than the hind legs so the back slopes down to the rump; a long thin rat- or lizard-like tail carried low or curled, not a canine brush
+- [ ] COLOUR LAYOUT: muzzle, jaw, throat and neck are bare, deeply wrinkled, leathery pink-to-flesh-brown skin folded in heavy creases (not a furred face); a coarse pale grey-white shaggy mane on the crown, running down the spine as a spiky dorsal ridge; the body coat (shown only in the Bestiary plate) grey with darker stripes
 - [ ] Large, erect, pointed ears with pink/red-toned interior skin
-- [ ] Heavy protruding lower jaw with many uneven yellowed fangs and a chin tusk
-- [ ] Sloped hyena stance: front legs longer/heavier than hind legs; long thin rat-like tail
-- [ ] Realistic rendering: natural wrinkled skin and coarse hair texture and lighting, no outlines, no cartoon shading
+- [ ] Heavy protruding lower jaw with many uneven yellowed fangs and a chin tusk jutting from it
+- [ ] Small, deep-set, dark eyes under a heavy wrinkled brow
+- [ ] Realistic rendering: natural wrinkled skin and coarse hair texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] NEGATIVE: not a dog, wolf or plain hyena (no furred face, no bushy tail, no level back); not the blue-grey cartoon of the deleted animated frame
 
 ## Engine limits
 none known

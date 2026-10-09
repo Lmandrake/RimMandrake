@@ -52,11 +52,12 @@ pangolin-like) looked nothing like either the donor sprite or the Disney
 Infinity figure.
 
 ## Must show
-- [ ] Reddish-brown mottled body colouring, not scaled pangolin-grey
-- [ ] Cat/boar-like fanged face
-- [ ] Tall pointed ears (or horn-like projections)
-- [ ] Long spiked quill/horn projecting backward off the haunches/tail
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the `## ruling` below (owner 2026-09-14 picked `donor_current_sprite.png`: "Mix #1 and #2 together to regenerate our own. #3 is HORRIBLE, ignore."), i.e. the donor sprite and the Disney Infinity render, with the 1994 pangolin art set aside.*
+- [ ] BODY PLAN: a small four-legged scavenger with clawed feet; a cat/boar-like head with a fanged mouth and tall pointed ears (or horn-like projections); a long spiked quill/horn projecting backward off the haunches/tail
+- [ ] COLOUR LAYOUT: reddish-brown body, mottled darker all over (the Legends text's camouflaging "mottled, dark skin"); pale claws/toes
 - [ ] Smooth mottled hide, not overlapping pointed pangolin-style scales
+- [ ] Cat/boar-like fanged face with powerful jaws
+- [ ] NEGATIVE: not the 1994 pangolin/armadillo design (no pinecone scales, no whiskered tube snout); not scaled pangolin-grey; not a plain cat or boar (must carry the backward spiked quill)
 
 ## Engine limits
 none known

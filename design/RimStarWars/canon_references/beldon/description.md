@@ -33,11 +33,13 @@ What `wookieepedia_woswfg.webp` shows:
 The colour question is settled: **orange** (infobox text, the woswfg plate and the donor sprite all agree); the purple was a one-off stylised drawing. The canon 0.8–10 km size is unrenderable at sprite scale (see Engine limits).
 
 ## Must show
-- [ ] Cluster of several rounded, swollen orange-to-peach gas bladders with paler highlights and fine dark speckling, not one smooth balloon
-- [ ] Broad, thin, ragged orange membranous fins projecting from the sides
-- [ ] Reddish-brown knobbly mass under the bladders with a curtain of long thin dark tendrils hanging below
-- [ ] Orange colouring — never purple/lavender
-- [ ] Realistic rendering: natural translucent, moist membrane texture and soft atmospheric lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_woswfg.webp`, the infobox text and both owner rulings in `## ruling` below.*
+- [ ] BODY PLAN: a floating creature with no legs and no head: a lumpy cluster of several rounded, swollen gas bladders, each with a puckered, frilled crown (a bunch of inflated sacs, not one smooth balloon); broad, thin, ragged membranous fins projecting sideways from the cluster; a dense knobbly mass beneath, from which hangs a curtain of long, thin tendrils
+- [ ] COLOUR LAYOUT: bladders orange-to-peach with paler highlights and fine dark speckling; fins orange; the knobbly underside mass reddish-brown, darker than the bladders; hanging tendrils dark, the darkest element
+- [ ] Orange colouring, never purple/lavender (owner ruling 2026-10-08: "Totally ignore the weird purple drawings you currently have as the canon database entry")
+- [ ] Silhouette follows the donor sprite and the woswfg plate it came from (owner ruling 2026-09-14: "I think this is a pretty good rendition of it ... please see that and reproduce it rimworld-style")
+- [ ] Realistic rendering: natural translucent, moist membrane texture and soft atmospheric lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "Please realize that in a much more realistic manner")
+- [ ] NEGATIVE: not a jellyfish or a single smooth balloon (no bell, no one round sac); not an aquatic plant; no legs, eyes or face
 
 ## Engine limits
 The canon 0.8–10 km size range cannot be depicted at gameplay creature-sprite scale; the

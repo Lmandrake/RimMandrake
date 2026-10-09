@@ -36,12 +36,14 @@ What the painting shows: a squat, low-slung, heavy turtle/lizard-like reptile wa
 The colour question is settled toward **olive-green** (the tan/golden-brown version came only from the deleted game render).
 
 ## Must show
-- [ ] Squat, low-slung, heavy reptilian body
-- [ ] Broad blunt turtle-like head with a crest of short pale spikes running back over a thick, moderately long neck
-- [ ] Dark olive/moss-green pebbly-scaled hide with a paler cream-green throat and belly
-- [ ] Thick short legs with large splayed feet and long curved pale claws
-- [ ] Long trailing tail
-- [ ] Realistic rendering: natural pebbly reptile-scale texture and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the realistic painting `bolotaur_wookieepedia_1.jpg` as the visual brief reads it, corroborated by the donor sprite.*
+- [ ] BODY PLAN: a squat, low-slung, heavy four-legged reptile: thick short legs with large splayed feet; a thick, moderately long neck with folded skin under the throat; a broad, blunt, turtle-like head carried forward; a long tail trailing behind; big enough to be ridden
+- [ ] COLOUR LAYOUT: dark olive/moss-green on the back and limbs; paler cream-green throat and belly; short pale spikes along the crest; long pale-tan claws
+- [ ] Crest of short pale spikes running from the head back over the neck
+- [ ] Wide flat mouth with reddish lips/gums under a heavy brow
+- [ ] Hide covered in small rounded pebbly scales
+- [ ] Realistic rendering: natural pebbly reptile-scale texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] NEGATIVE: not a sauropod (neck not long and thin, body not tall); not a turtle (no shell); not the tan/golden-brown of the deleted game render
 
 ## Engine limits
 none known

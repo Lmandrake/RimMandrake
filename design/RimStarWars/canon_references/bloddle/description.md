@@ -16,11 +16,13 @@ Viewed `wookieepedia_canon_1.webp`. It is a low-poly game-model render (Star War
 - The image is the only *visual* reference (the text appearances are *Tatooine Ghost* and *Star Wars Galaxies*, both Legends; the file is a game item model, not proof it shows the growing plant). A bulb with layered papery wrappers, not a leafy plant.
 
 ## Must show
-- [ ] Pale yellow / cream bulb, onion-or-garlic-like
-- [ ] Papery layered outer skin splitting into pointed flaps at the top
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in `wookieepedia_canon_1.webp` (the only image, a game model) as the visual brief reads it; the text gives no size, colour or growth habit.*
+- [ ] BODY PLAN: a single rounded onion-or-garlic-like bulb with layered papery outer skin that splits at the top into stiff, pointed, angular flaps; no stems, leaves or roots shown
+- [ ] COLOUR LAYOUT: pale yellow-cream bulb overall, with tan-orange staining at the top where the papery flaps split
+- [ ] Outer skin reads dry, translucent, veined and papery over a firm cream bulb
 - [ ] No evidence for leaves or flowers: do not invent them as canon
-
-- [ ] Realistic rendering: natural dry papery onion-skin texture and lighting, no outlines, no low-poly facets or cartoon shading
+- [ ] Realistic rendering: natural dry papery onion-skin texture and lighting, no outlines, no low-poly facets or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] NEGATIVE: not a leafy plant, flower or fruit; not a smooth turnip or potato (the papery layered wrappers must read)
 
 ## Engine limits
 The source image is a low-poly 3D render; reuse only its colour and shape.

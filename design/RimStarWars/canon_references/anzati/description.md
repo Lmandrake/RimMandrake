@@ -87,12 +87,14 @@ mask, its lack of colour is correct and expected â€” the game tints at runtime â
 *shape* finding stands. **The species' single defining feature is effectively unrepresented.**
 
 ## Must show
-- [ ] Otherwise fully human face and build: gaunt, hollow cheeks, heavy brow, long lank dark hair
-- [ ] Pale sallow human skin tone (not grey, not bloodless white)
-- [ ] Two smooth fleshy pale pinkish-tan proboscises emerging from the cheeks immediately beside the nostrils, curling out and down
-- [ ] Proboscises the same colour as the skin, blunt-tipped, retractable (absent at rest the face reads human)
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the realistic NEGAS plates (reference of record per the visual brief), with the canon Noto comic for origin point only.*
+- [ ] BODY PLAN: an ordinary lean human build and an entirely human face: gaunt, hollow-cheeked, heavy brow, flat broad nose, thin hard mouth; long, lank, straight dark brown-to-black hair worn loose past the shoulders
+- [ ] COLOUR LAYOUT: pale sallow human skin with warm tan shading over face and hands (not grey, not bloodless white); hair dark; proboscises the same pale pinkish-tan as the skin
+- [ ] Two thick, smooth, fleshy proboscises emerging from the cheeks immediately beside the nostrils, one per side from a small fleshy swelling, curling out and down with a blunt, slightly knobbed tip (realistic plates: reaching about the shoulders, not thin strings to the waist)
+- [ ] Proboscises are retractable: at rest the face reads fully human
 - [ ] Feeding pose reads as a held embrace (both hands cupping the victim's head), not a lunging bite
-- [ ] Realistic rendering: natural skin texture and lighting, no outlines, no comic shading
+- [ ] Realistic rendering: natural skin texture and lighting, no outlines, no comic shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] NEGATIVE: not a blood vampire (no fangs, no bite at the neck); tendrils never on the chin like the borrowed Feeorin mask; not grey-skinned
 
 ## Engine limits
 none known

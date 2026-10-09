@@ -164,15 +164,14 @@ text describes the furred two-eyed pattern** — the mod is internally inconsist
 which Aqualish it is depicting.
 
 ## Must show
-- [ ] Two very large, round, glossy, domed black eyes set wide and low on a bald forehead
-- [ ] Completely bald, smooth, domed crown — never any hair on top
-- [ ] Two thick tusks curving down over the mouth, joined at the top into a two-lobed,
-  blunt, pale muzzle block (not sharp fangs)
-- [ ] No visible nose; nostril-like slits between and below the eyes
-- [ ] Cheek/jaw fur is not species-universal — the four-eyed Ualaq subspecies is entirely
-  hairless while others show a beard or side mane
-- [ ] Hand shape differs by subspecies: Aquala = digitless fins, Quara = five clawed
-  fingers, Ualaq = three-to-five fingered hairless hands
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the live-action stills (Book of Boba Fett crime family = reference of record, Ponda Baba, the senators) and the Legends Quara/Aquala line art for hands only.*
+- [ ] BODY PLAN: humanoid build; a completely bald, smooth, domed crown (never any hair on top); two very large, round, glossy, domed black eyes set wide and low on the bald forehead with a bright highlight (four-eyed Ualaq: a large upper pair plus a smaller lower pair); no visible nose, only nostril-like slits between and below the eyes
+- [ ] Two thick tusks curving DOWN over the mouth, joined at the top into a two-lobed, blunt, pale muzzle block (cream, pale pink or ochre-tan), strongly lighter than the face (not sharp fangs or mandibles)
+- [ ] COLOUR LAYOUT: skin one tone over head and hands, finely wrinkled (campaign target: dusty mottled grey-tan, as the Tatooine crime family; canon range also dark slate-grey, red-mauve, green-tan); the pale tusks are the lightest element of the face; any fur grows from the sides/back of the head or the cheeks, never the crown
+- [ ] Cheek/jaw fur is not species-universal: the four-eyed Ualaq subspecies is entirely hairless, while others show a dark cheek beard (Ponda Baba) or a long pale side-and-back mane with bare cheeks (Book of Boba Fett)
+- [ ] Hand shape differs by subspecies: Aquala = digitless fur-fringed flippers, Quara = five clawed fingers, Ualaq = three-to-five fingered hairless hands
+- [ ] Realistic rendering: natural wrinkled skin texture and lighting, no outlines, no comic shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] NEGATIVE: not a human with a tint (no human eyes, no nose); not a spider-faced alien (no sharp chelicerae or mandibles); not saturated olive-green as the default
 
 ## Engine limits
 none known

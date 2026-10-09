@@ -39,12 +39,12 @@ LEGENDS (a painted plate, and a film-style CGI still of a bogwing in flight in D
   distinguishes them.
 
 ## Must show
-- [ ] Two huge narrow membrane wings, each longer than the body, pointed tips, brown-mauve membrane with dark bone edges
-- [ ] Tiny slim body with long thin neck and small bird-like head with short pointed beak and one round yellow-orange eye
-- [ ] Very long thin straight whip tail trailing well behind the body
-- [ ] Spindly hind legs ending in large splayed 3-toed talons, held down/forward
-- [ ] Teal/blue-green back and limbs over a pale grey-mauve belly (canon colouring), smooth scaleless skin
-- [ ] Reads as a pterosaur-like light flier, not a feathered bird or a bat
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the canon render `wookieepedia_canon_1.webp` (which rules on colour) and the two Legends images for silhouette, as the visual brief reads them.*
+- [ ] BODY PLAN: a pterosaur-like light flier: tiny slim body, long thin neck, small bird-like head with a short pointed beak (not toothy); two huge narrow membrane wings, each longer than the whole body, swept up and back to sharp points; a very long, thin, straight whip tail trailing well behind (about body-plus-neck length or more)
+- [ ] Spindly hind legs ending in large splayed 3-toed talons, held down/forward; thin forelimbs with clawed hands hanging below the wing root, separate from the wing membrane
+- [ ] COLOUR LAYOUT (canon, greater bogwing): teal/blue-green back, neck and legs over a pale grey-mauve belly; brown-mauve wing membrane with dark green leading-edge bones; faint dark banding on tail and body; smooth scaleless skin
+- [ ] Round yellow-orange eye on each side of the head (one visible in profile)
+- [ ] NEGATIVE: not a feathered bird (no feathers, no wide bird tail) and not a bat (no furry body, no bat face); not a toothy dragon or wyvern head
 
 ## Engine limits
 not yet assessed

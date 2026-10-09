@@ -37,14 +37,14 @@ Neither the canon nor the Legends text gives a colour, spiral pores, tusks or ho
 - Captioned: infobox plate (side view) and a mother with pups wearing a ribbed collar (pet context). Prose says amphibian that can stay underwater two hours; images show nothing aquatic but the build.
 
 ## Must show
-- [ ] Rotund barrel body, short stubby legs, low to the ground
-- [ ] Smooth pale blue-grey hide with a lighter cream belly, no fur
-- [ ] Small circular whorl/spiral dimples scattered over back and flanks
-- [ ] Very wide toad-like mouth with a big flat pink tongue lolling out and drool
-- [ ] One or two curved lower tusks/teeth and small half-lidded eyes
-- [ ] Long tapering prehensile tail ending in tiny finger-like nubs
-
-- [ ] Realistic rendering: natural moist, wrinkled rubbery amphibian skin and lighting, no outlines, no cartoon shading
+*Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the two Legends field-guide plates as the visual brief reads them (anatomy only) and the canon tail text.*
+- [ ] BODY PLAN: a stout, rotund, low-slung quadruped (seal/hippo-pup bulk): barrel torso on short stubby legs with small clawed/toed feet; a wide, flat, toad-like head; the hind end tapering into a very long, thick-based prehensile tail (about body length or more) ending in tiny finger-like nubs, carried trailing or curled up
+- [ ] COLOUR LAYOUT: pale powder blue-grey hide over back, flanks and head; lighter cream-white belly and throat; soft warm peach-orange highlights; smooth, wrinkled, rubbery skin with no fur or scales
+- [ ] Small circular whorl/spiral dimples (concentric ring pores) scattered over the back and flanks
+- [ ] Very wide toad-like mouth with a big flat pink-salmon tongue lolling out and strands of drool
+- [ ] One or two curved lower tusks/teeth, small half-lidded eyes under wrinkled brow skin, short horn nubs near the eyes
+- [ ] Realistic rendering: natural moist, wrinkled rubbery amphibian skin and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] NEGATIVE: not a dog, pig or seal (no fur, no flippers, no snout, no short tail); not a frog (has a long fingered tail and stands on four legs)
 
 ## Engine limits
 not yet assessed
