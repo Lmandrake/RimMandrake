@@ -41,47 +41,23 @@ name for a camouflaged/symbiotic Shiro, not a different species.**
 Source cited throughout: *The Wildlife of Star Wars: A Field Guide* (2001).
 
 ## Visual brief
-Four images were retrieved, and they show real disagreement:
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."** Removed: `shirodisneyinfinity.png` (the canon infobox art — a low-poly chibi *Disney Infinity 3.0* toy render). No live-action or photoreal shiro exists (searched: `Shiro`, `Shiro/Legends`, `Shiro-trap` page images; the realistic-labelled files there are unrelated *The Old Republic* scenes). The three remaining images are realistic painted Legends plates, and the owner-ruled `shiros_group_legends.jpg` is **the target**.
 
-- `shirodisneyinfinity.png` (the canon infobox art, *Disney Infinity 3.0*) is
-  a small, stylized, cartoonish render — a rounded green creature on a
-  low-poly Naboo-swamp background. It reads as green-skinned as the infobox
-  text states, but is a low-detail toy/game-art style rather than a
-  naturalistic reference — body plan is hard to read precisely (chibi
-  proportions), though the turtle-like rounded-shell silhouette is visible.
-- `shirotrap_legends.jpg` and `shirotrap_retracted_legends.jpg` (both
-  Legends-era, captioned "a Shiro-trap retracted into its shell") show the
-  animal fully withdrawn — from these alone you mostly see a mottled,
-  earth-toned, dirt-and-plant-covered shell mass, consistent with the "rolls
-  in mud, collects seeds in shell ridges" text. Because the plant/soil
-  disguise is the whole point of a Shiro-trap, these images are **not a
-  clean read of the animal's own skin/shell color** — they show it
-  deliberately camouflaged.
-- `shiros_group_legends.jpg` (captioned as the general Legends infobox image,
-  file `Shiros.jpg`, showing multiple individuals) is the best like-for-like
-  match to the text: a group of hard-shelled, dome-backed reptiles with
-  ridged/spiny shells in duller brown-green earth tones, resting in a muddy
-  swamp setting — consistent with "hard-shelled... native to the Gungan
-  Swamps," "rolled in mud," omnivorous swamp reptile.
-
-**Disagreement**: the canon *Disney Infinity 3.0* art is a bright, clean
-green cartoon creature; the Legends reference images (uncamouflaged group
-shot) read as duller, mud-toned brown-green — but note the Legends text
-itself explicitly says the animals accumulate mud and camouflage, so a
-"clean" green Shiro may simply not appear undirtied in any Legends art.
-**Treat the canon infobox image (`shirodisneyinfinity.png`) as the color
-anchor** (it is the only post-2014 source, but the infobox green skin colour is
-sourced to the same *Disney Infinity 3.0* game, so the image and the infobox are
-one source counted twice, and the page carries a Noncanon banner) — but use the Legends group shot (`shiros_group_legends.jpg`) as
-the anchor for **body plan and shell texture** (hard ridged/spiny dome
-shell, stubby retractable head/legs/tail, turtle-like proportions), since
-the canon art is too low-detail/stylized to read shell texture from.
+- `shiros_group_legends.jpg` (file `Shiros.jpg`, Legends infobox; owner-ruled): a single large shiro in side view.
+  - **Shell**: a high domed carapace built from tall, overlapping, backswept ridged plates that end in blunt wavy spines, like a frilled crest running the length of the back. Olive-green with yellow-green highlights along each ridge.
+  - **Legs**: four thick, columnar, elephant-like legs, wrinkled grey-olive skin, broad round feet with blunt toenails. The body stands **high on these legs**, well clear of the ground. It is not a low, stubby-legged turtle.
+  - **Head and neck**: a long, thick, horizontal neck with yellow-green and olive stripes, ending in a long, flat, duck-billed snout. Two small red eyes sit raised on the top of the snout like a frog's or a hippo's.
+  - **Tail**: long, tapering and held level, with a row of small spikes along the top.
+  - **Colour**: olive to moss green on the shell and neck, greyer and wrinkled on the legs. **Where this disagrees with the removed toy render:** it is muted natural olive, not a bright clean green, and the legs are long.
+- `shirotrap_legends.jpg` and `shirotrap_retracted_legends.jpg` show the symbiotic **shiro-trap**, a separate entry (`shirotrap`). A carnivorous plant roots in the shell ridges: a rosette of broad red-and-cream leaves, with long stalks ending in toothed red trap-mouths. In the retracted plate the animal's head, a flat green snout with a red eye, pokes out from under the rosette. Here the shell and skin are mottled moss-green and brown.
 
 ## Must show
-- [ ] Green skin (per the canon infobox art and text) — treat as the color anchor over the duller mud-toned Legends group shot
-- [ ] Hard, ridged/spiny dome shell covering the back
-- [ ] Stubby, retractable head, legs and tail (turtle-like withdrawal into the shell)
-- [ ] Turtle-like rounded proportions overall — not a smooth or unarmoured body
+- [ ] High domed carapace of tall overlapping backswept ridged plates ending in blunt wavy spines
+- [ ] Four thick columnar elephant-like wrinkled legs holding the body high, not stubby turtle legs
+- [ ] Long thick striped neck ending in a long flat duck-billed snout, with small raised red eyes on top
+- [ ] Long level tail with a row of small spikes along the top
+- [ ] Muted olive-to-moss-green shell and neck with yellow-green ridge highlights, greyer legs
+- [ ] Realistic rendering: natural horny shell plates and wrinkled reptile hide, natural lighting, no outlines, no cartoon shading
 
 ## Engine limits
 none known
@@ -113,17 +89,16 @@ would risk exactly the kind of fabrication this library exists to prevent.
   the same API pattern with `page=Shiro/Legends`, 2026-09-13)
 - https://starwars.fandom.com/wiki/Shiro-trap (Legends "Shiro-trap" symbiosis
   article, confirms Shiro-trap = camouflaged Shiro, not a separate species)
-- https://static.wikia.nocookie.net/starwars/images/1/17/ShiroDisneyInfinity.png (canon infobox art, *Disney Infinity 3.0*)
+- https://static.wikia.nocookie.net/starwars/images/1/17/ShiroDisneyInfinity.png (canon infobox art, *Disney Infinity 3.0* toy render; not kept)
 - https://static.wikia.nocookie.net/starwars/images/d/df/Shiro-trap.jpg (Legends, Shiro-trap camouflaged/retracted)
 - https://static.wikia.nocookie.net/starwars/images/4/42/Shiro-trap_2.jpg (Legends, Shiro-trap retracted into shell, close-up)
 - https://static.wikia.nocookie.net/starwars/images/f/fd/Shiros.jpg (Legends infobox art, group of Shiros)
 - https://steamcommunity.com/sharedfiles/filedetails/?id=3497316713 (donor mod's Steam Workshop page, `mlie.starwarsanimalcollection` 1.6 — roster list confirms "Shiro" and "Shiro-Trap" are both included; no creature-specific screenshot found)
 
 ## Candidate images
-- `shirodisneyinfinity.png` — canon infobox art (*Disney Infinity 3.0*), small stylized green creature, low-poly Naboo swamp backdrop — treat as the color anchor (green skin, per infobox text)
-- `shiros_group_legends.jpg` — Legends infobox art, a group of Shiros in a muddy swamp setting, hard ridged/spiny dome shells, duller brown-green tones — treat as the body-plan/shell-texture anchor
-- `shirotrap_legends.jpg` — Legends "Shiro-trap" image, animal camouflaged/retracted under plant and mud cover, not a clean skin-color read
-- `shirotrap_retracted_legends.jpg` — Legends "Shiro-trap" close-up, fully withdrawn into shell, same camouflage caveat
+- `shiros_group_legends.jpg` — Legends infobox, realistic painted plate of a shiro in side view; **target** (owner-ruled). File `Shiros.jpg` — https://static.wikia.nocookie.net/starwars/images/f/fd/Shiros.jpg
+- `shirotrap_legends.jpg` — Legends, painted plate of a shiro-trap (a shiro with the trap plant rooted in its shell, trap-mouths extended). File `Shiro-trap.jpg` — https://static.wikia.nocookie.net/starwars/images/d/df/Shiro-trap.jpg
+- `shirotrap_retracted_legends.jpg` — Legends, painted plate of a shiro-trap with trap stalks retracted, the shiro's head visible under the leaf rosette. File `Shiro-trap_2.jpg` — https://static.wikia.nocookie.net/starwars/images/4/42/Shiro-trap_2.jpg
 
 ## ruling
 **RULED** (owner, 2026-09-14, review sheet): `shiros_group_legends.jpg`
