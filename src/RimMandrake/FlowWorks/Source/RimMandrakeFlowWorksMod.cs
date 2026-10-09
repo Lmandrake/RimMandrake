@@ -107,6 +107,8 @@ namespace RimMandrake.FlowWorks
         public static bool edgeSinksEnabled = true;
         // EXCAVATION_LOAD_SANITY_REPAIR_1: clamp/repair the dig grids and compact the liquid list on map load.
         public static bool excavationLoadRepairEnabled = true;
+        // PROVISIONAL (auto-decided 2026-10-09, EXCAVATION_LEGACY_MIGRATION_FLAG_1): unrecorded filled-in cells get neighbour terrain.
+        public static bool legacyFillFallbackEnabled = true;
         public static float sourceBudgetMultiplier = 1f;
         public static float minLimitlessBodyCells = 50f;
         public static float refillRateMultiplier = 1f;
@@ -355,6 +357,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref rainFillsExcavationsEnabled, "rainFillsExcavationsEnabled", true);
             Scribe_Values.Look(ref edgeSinksEnabled, "edgeSinksEnabled", true);
             Scribe_Values.Look(ref excavationLoadRepairEnabled, "excavationLoadRepairEnabled", true);
+            Scribe_Values.Look(ref legacyFillFallbackEnabled, "legacyFillFallbackEnabled", true);
             Scribe_Values.Look(ref sourceBudgetMultiplier, "sourceBudgetMultiplier", 1f);
             Scribe_Values.Look(ref minLimitlessBodyCells, "minLimitlessBodyCells", 50f);
             Scribe_Values.Look(ref refillRateMultiplier, "refillRateMultiplier", 1f);
@@ -570,7 +573,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Stock, recession and drainage");
-            DrawSectionReset(list, new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "refillEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "edgeSinksEnabled" });
+            DrawSectionReset(list, new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "refillEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "edgeSinksEnabled" });
             Text.Font = GameFont.Small;
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -652,6 +655,11 @@ namespace RimMandrake.FlowWorks
                 "When a map loads, depth is held to 0-4, liquid never exceeds depth, and liquids "
               + "no cell uses are dropped from the map's list (one log line says what changed). "
               + "Takes effect the next time a map loads. Off: saves load exactly as stored.");
+
+            list.CheckboxLabeled("Old channels fill back to nearby ground", ref legacyFillFallbackEnabled,
+                "A channel dug before FlowWorks recorded what was under it has nothing to restore when "
+              + "you fill it in. It gets the commonest ground around it (soil if there is none) instead "
+              + "of staying an empty trench. Off: such a cell keeps the trench terrain.");
 
             list.CheckboxLabeled("Map-edge sinks drain", ref edgeSinksEnabled,
                 "A channel dug into the strip along the map edge is a drain: liquid reaching it "

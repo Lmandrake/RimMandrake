@@ -84,6 +84,11 @@ namespace RimMandrake.FlowWorks
 
 		private List<TerrainDef> originalTerrainValues;
 
+		/// <summary>EXCAVATION_LEGACY_MIGRATION_FLAG_1: set once the legacy terrain-to-grid rehydration has had
+		/// its one chance on this map. Saved, so an all-zero grid on a later load (every channel filled in)
+		/// is read as "nothing dug", never re-read from leftover channel terrain as a fresh excavation.</summary>
+		private bool legacyRehydrationDone;
+
 		/// <summary>PHASE 4. Stock, budget, classification, recession, refill.
 		/// Held here rather than in a MapComponent of its own so that debits
 		/// land in a defined order relative to the flow that caused them.</summary>
@@ -392,6 +397,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref nextPulseTick, "RM_nextPulseTick", -1);
 			Scribe_Values.Look(ref pulseCount, "RM_pulseCount", 0L);
 			Scribe_Values.Look(ref overflowDestroyedTotal, "RM_overflowDestroyedTotal", 0f);
+			Scribe_Values.Look(ref legacyRehydrationDone, "RM_legacyRehydrationDone", false);
 			// PHASE 4. Everything persistent the stock model adds is scribed
 			// here: the original-terrain record, the bodies (their sticky
 			// classification, stock, capacity, footprint and receded list, via
@@ -434,7 +440,11 @@ namespace RimMandrake.FlowWorks
 		{
 			base.FinalizeInit();
 			EnsureGrids();
-			RehydrateFromTerrainIfEmpty();
+			if (!legacyRehydrationDone)
+			{
+				RehydrateFromTerrainIfEmpty();
+				legacyRehydrationDone = true;
+			}
 			RebuildExcavatedSet();
 			if (originalTerrain == null)
 			{
@@ -905,6 +915,18 @@ namespace RimMandrake.FlowWorks
 			TerrainDef original;
 			if (!originalTerrain.TryGetValue(i, out original) || original == null)
 			{
+				// EXCAVATION_LEGACY_MIGRATION_FLAG_1: a channel dug by a save that predates the record (rehydrated
+				// from terrain) has nothing to restore; leaving channel terrain at D=0 is a dry trench the engine no
+				// longer owns. Hand back the commonest neighbouring natural terrain instead, soil when there is none.
+				if (RimMandrakeFlowWorksSettings.legacyFillFallbackEnabled
+					&& RM_ExcavationDepth.DepthOfDryTerrain(map.terrainGrid.BaseTerrainAt(c)) != RM_ExcavationDepth.Surface)
+				{
+					TerrainDef fallback = FallbackTerrainFor(c);
+					if (fallback != null)
+					{
+						map.terrainGrid.SetTerrain(c, fallback);
+					}
+				}
 				return;
 			}
 			originalTerrain.Remove(i);
@@ -912,6 +934,37 @@ namespace RimMandrake.FlowWorks
 			{
 				map.terrainGrid.SetTerrain(c, original);
 			}
+		}
+
+		// PROVISIONAL (auto-decided 2026-10-09, EXCAVATION_LEGACY_MIGRATION_FLAG_1): fallback for an unrecorded cell is the
+		// commonest non-channel, non-liquid neighbouring base terrain, else Soil (setting legacyFillFallbackEnabled, default on).
+		private TerrainDef FallbackTerrainFor(IntVec3 c)
+		{
+			Dictionary<TerrainDef, int> votes = new Dictionary<TerrainDef, int>();
+			TerrainDef best = null;
+			int bestVotes = 0;
+			for (int d = 0; d < 8; d++)
+			{
+				IntVec3 n = c + GenAdj.AdjacentCells[d];
+				if (!n.InBounds(map))
+				{
+					continue;
+				}
+				TerrainDef t = map.terrainGrid.BaseTerrainAt(n);
+				if (t == null || t.IsWater || RM_ExcavationDepth.DepthOfDryTerrain(t) != RM_ExcavationDepth.Surface)
+				{
+					continue;
+				}
+				int v;
+				votes.TryGetValue(t, out v);
+				votes[t] = ++v;
+				if (v > bestVotes || (v == bestVotes && best != null && string.CompareOrdinal(t.defName, best.defName) < 0))
+				{
+					best = t;
+					bestVotes = v;
+				}
+			}
+			return best ?? TerrainDefOf.Soil;
 		}
 
 		/// <summary>Recession's write: dry one cell of a NATURAL body. The
