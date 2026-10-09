@@ -114,7 +114,7 @@ namespace RimMandrake.Utinni.WasteRun
             if (options.Count > 0) Find.WindowStack.Add(new FloatMenu(options));
         }
 
-        private static void Commit(Quest quest, WasteDestination dest)
+        internal static void Commit(Quest quest, WasteDestination dest)
         {
             if (quest.State != QuestState.Ongoing) return;
             WasteRunDisposal.DisposeAll();
