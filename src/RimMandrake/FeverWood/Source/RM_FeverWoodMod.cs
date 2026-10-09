@@ -23,13 +23,10 @@ namespace RimMandrake.FeverWood
     // ════════════════════════════════════════════════════════════════════
     public class RM_FeverWoodSettings : ModSettings
     {
-        /// <summary>Master switch for this mod's own biome-worker scoring
-        /// (RM_BiomeWorker_FeverWood). Off: the class still exists (the def
-        /// still loads), it just always returns 0 so RM_FeverWood never wins
-        /// natural placement on someone else's generated world. Default ON —
-        /// matches shipped behavior. Irrelevant on the frozen campaign world,
-        /// which places this biome by hand, never by score.</summary>
-        public static bool naturalPlacementEnabled = true;
+        // PROVISIONAL (auto-decided 2026-10-09, FEVERWOOD_NATURAL_TOGGLE_1): the
+        // naturalPlacementEnabled toggle was REMOVED. RM_FeverWood sets
+        // generatesNaturally=false, so the toggle could never place the biome, and
+        // natural worldgen is out permanently (owner, 2026-08-15).
 
         /// <summary>FEVERWOOD_TENTACLE_BESTIARY_1 master toggle. Off: no
         /// ambient tentacle limbs spawn at registered pools at all (the
@@ -97,6 +94,10 @@ namespace RimMandrake.FeverWood
         /// same "inert, not a working feature" posture as this mod's other
         /// toggles. Default ON.</summary>
         public static bool tentacleUraniumSuppressionEnabled = true;
+        /// <summary>FOUL_POOL_SUPPRESSION_SCOPE_1. PROVISIONAL (auto-decided 2026-10-09): fouling a pool
+        /// withdraws every limb already up and also holds back fire-forced (oil-boil) emergences while it lasts.
+        /// Off: fouling only stops new ambient spawns, as before.</summary>
+        public static bool foulingWithdrawsLimbs = true;
 
         /// <summary>How many RM_RadioactiveSuppressant charges one "foul
         /// the pool" job consumes. INVENTED default: 5.</summary>
@@ -267,8 +268,8 @@ namespace RimMandrake.FeverWood
         {
             RimMandrake.Shared.PatchApplier.BeforeExpose();
             base.ExposeData();
-            Scribe_Values.Look(ref naturalPlacementEnabled, "naturalPlacementEnabled", true);
             Scribe_Values.Look(ref tentacleBestiaryEnabled, "tentacleBestiaryEnabled", true);
+            Scribe_Values.Look(ref foulingWithdrawsLimbs, "foulingWithdrawsLimbs", true);
             Scribe_Values.Look(ref tentacleAmbientMtbHours, "tentacleAmbientMtbHours", 6f);
             Scribe_Values.Look(ref tentacleGreatEmergenceEnabled, "tentacleGreatEmergenceEnabled", true);
             Scribe_Values.Look(ref tentacleGreatEmergencePoolSizeThreshold, "tentacleGreatEmergencePoolSizeThreshold", 24);
@@ -335,11 +336,6 @@ namespace RimMandrake.FeverWood
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.Label("Fever Wood");
-            list.CheckboxLabeled("Compete for natural placement on generated worlds", ref naturalPlacementEnabled,
-                "RM_FeverWood is placed by hand on the frozen campaign world and does not need this. "
-              + "On a freshly generated world, this lets it compete for hot, low, humid tiles the way "
-              + "any other biome does. Off: the biome never wins natural placement, but still loads "
-              + "and can be assigned to a tile directly.");
             list.GapLine();
             list.Label("The biome's hazard mechanics (mirror pools, boughway network, the living trunk) "
               + "are not settings-gated yet — they ship from mandrake.rm.environmentalhazards, which has "
@@ -387,6 +383,10 @@ namespace RimMandrake.FeverWood
             tentacleUraniumSuppressantAmountPerUse = (int)list.Slider(tentacleUraniumSuppressantAmountPerUse, 1f, 20f);
             list.Label("Suppression duration (days): " + tentacleUraniumSuppressionDurationDays.ToString("0.0"));
             tentacleUraniumSuppressionDurationDays = list.Slider(tentacleUraniumSuppressionDurationDays, 0.5f, 30f);
+            list.CheckboxLabeled("Fouling withdraws limbs already up", ref foulingWithdrawsLimbs,
+                "On: fouling a pool drives every tentacle already up back under the water, and even a burning "
+              + "pool edge cannot raise one while the fouling lasts. Off: fouling only stops new limbs rising "
+              + "on their own; limbs already up stay, and fire can still force one up.");
             list.GapLine();
             list.CheckboxLabeled("Sekkulaath prison tank", ref sekkulaathTankEnabled,
                 "A buildable containment cell that teaches, produces, and can get out. Off: the "
