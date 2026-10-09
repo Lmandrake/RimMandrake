@@ -19,12 +19,13 @@
 
   <!-- SALVAGE_WRECKAGE_EVERYWHERE_1 (design §4 The Forge row: "Salvage cache (built shell) ... Forge-warm
        x1.0, RUT_FoundrySalvage extra table, gets the §3c comp and art"). The cache is now a child of the
-       shared Carapace wreck family (mandrake.rm.wreckage, composed in mandrake.rm.biomes, which the
-       MayRequire guards): careful deconstruction gives its costList, a Carapace roll and the foundry's own
+       shared Carapace wreck family (mandrake.rm.wreckage, composed in mandrake.rm.biomes). It lives in TerminalBiomes
+       beside RUT_ScaldWrecks.xml because a ParentName cannot cross to a mod loaded later (UtinniPatches sorts
+       before the biomes mod in the live list: 'Could not find parent node' 2026-10-09): careful deconstruction gives its costList, a Carapace roll and the foundry's own
        RUT_SalvageLoot_Foundry roll; smashing gives slag. Everything the old marker set that the family
        would change is restated here: the 1x1 single sprite, pass-through floor heap, tickerType (the
        spunstone-study patch replaces it). Destroyable now, because deconstruction destroys. -->
-  <ThingDef ParentName="RM_WreckFamily_Carapace" MayRequire="mandrake.rm.biomes">
+  <ThingDef ParentName="RM_WreckFamily_Carapace">
     <defName>RUT_FoundrySalvageCache</defName>
     <label>forge-tech salvage</label>
     <description>A heap of scavenged forge-tech, still warm, wedged against the melt channel wall. Whoever, or whatever, stacked it here clearly meant to come back. Deconstruct it carefully for what the foundry made.</description>
