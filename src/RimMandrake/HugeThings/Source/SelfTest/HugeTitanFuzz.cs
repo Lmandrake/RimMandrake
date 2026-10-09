@@ -104,6 +104,31 @@ namespace RimMandrake.HugeThings.SelfTest
                 if (tier < minTier) Check(owners.Count == 0, "a titan below the smash tier smashed");
             }
             foreach (var kv in hits) Check(kv.Value <= steps, "more blows than steps");
+            // PLANT_INTERACTION_GUARDS_1 (A3.7): pellets / burst rounds from one launcher in one tick are separate projectiles and each
+            // lands; the same source as an AREA event lands once.
+            {
+                var d2 = new DamageDedup();
+                int t0 = 5000 + r.Next(1000), pellets = r.Next(2, 9), owner = 7 + r.Next(50);
+                long launcher = r.Next(1, 100000);
+                int landed = 0;
+                for (int i = 0; i < pellets; i++) if (d2.ShouldForward(t0, launcher, owner, false)) landed++;
+                Check(landed == pellets, $"{pellets} same-tick pellets from one launcher landed {landed}");
+                int area = 0;
+                for (int i = 0; i < pellets; i++) if (d2.ShouldForward(t0, launcher, owner, true)) area++;
+                Check(area == 1, $"one area event over {pellets} trunk cells landed {area} times");
+            }
+            // PLANT_INTERACTION_GUARDS_1 (C3.3): the hitbox follows the graphic actually drawn (female / alternate), never smaller than the body.
+            {
+                float bx = 0.5f + (float)r.NextDouble() * 8f, by = 0.5f + (float)r.NextDouble() * 8f;
+                float ax = 0.5f + (float)r.NextDouble() * 12f, ay = 0.5f + (float)r.NextDouble() * 12f;
+                bool has = r.Next(2) == 0;
+                HitboxDraw.Pick(bx, by, has, ax, ay, out float hx, out float hy);
+                Check(hx >= bx && hy >= by, "hitbox narrower than the body graphic");
+                if (has) Check(hx == Math.Max(bx, ax) && hy == Math.Max(by, ay), "a bigger drawn (female/alternate) graphic did not widen the hitbox");
+                else Check(hx == bx && hy == by, "no active graphic changed the hitbox");
+                HitboxDraw.Pick(1f, 1f, true, 3f, 2f, out float fx, out float fy);
+                Check(fx == 3f && fy == 2f, "female graphic 3x2 over a 1x1 body did not set the hitbox");
+            }
             return string.Join(";", hits.OrderBy(kv => kv.Key).Select(kv => kv.Key + ":" + kv.Value));
         }
 

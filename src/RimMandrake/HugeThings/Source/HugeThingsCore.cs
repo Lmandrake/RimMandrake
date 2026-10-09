@@ -95,9 +95,32 @@ namespace RimMandrake.HugeThings
         {
             RM_HugePawnExtension ext = pawn?.def.GetModExtension<RM_HugePawnExtension>();
             if (ext == null || !pawn.Spawned || !RM_HugeThingsSettings.PawnHitboxActive) return null;
-            Vector2 drawn = pawn.ageTracker?.CurKindLifeStage?.bodyGraphicData?.drawSize ?? Vector2.one;
+            Vector2 drawn = ActiveDrawSize(pawn);
             CellRect foot = pawn.OccupiedRect();   // Large Pawns' square when it is loaded, else one cell
             return FootprintMath.PawnHitbox(drawn.x, drawn.y, ext.hitboxFraction, RM_HugeThingsSettings.pawnHitboxScale, foot, pawn.DrawPos.ToIntVec3());
+        }
+
+        /// <summary>PLANT_INTERACTION_GUARDS_1 (C3.3): the drawSize of the graphic 1.6 PawnRenderNode_AnimalPart.GraphicFor actually
+        /// draws (alternate graphic, else femaleGraphicData for a female, else bodyGraphicData), never smaller than the body's.</summary>
+        public static Vector2 ActiveDrawSize(Pawn pawn)
+        {
+            PawnKindLifeStage stage = pawn.ageTracker?.CurKindLifeStage;
+            Vector2 body = stage?.bodyGraphicData?.drawSize ?? Vector2.one;
+            Vector2? active = null;
+            try
+            {
+                if (stage?.bodyGraphicData != null && pawn.TryGetAlternate(out AlternateGraphic ag, out int _) && ag != null)
+                    active = ag.GetGraphic(stage.bodyGraphicData.Graphic)?.drawSize;
+                else if (pawn.gender == Gender.Female && stage?.femaleGraphicData != null)
+                    active = stage.femaleGraphicData.drawSize;
+            }
+            catch (System.Exception e)
+            {
+                Log.ErrorOnce("[RimMandrake.HugeThings] could not resolve " + pawn + "'s drawn graphic; hitbox uses the body graphic: " + e,
+                              pawn.def.shortHash ^ 0x4b17);
+            }
+            HitboxDraw.Pick(body.x, body.y, active.HasValue, active?.x ?? 0f, active?.y ?? 0f, out float x, out float y);
+            return new Vector2(x, y);
         }
 
         public static CellRect Union(CellRect a, CellRect b) => FootprintMath.Union(a, b);
@@ -175,9 +198,12 @@ namespace RimMandrake.HugeThings
     [HarmonyPatch(typeof(DamageWorker), "ExplosionDamageThing")]
     public static class Patch_DamageWorker_ExplosionDamageThing
     {
-        public static bool Prefix(ref Thing t, List<Thing> damagedThings)
+        public static bool Prefix(ref Thing t, List<Thing> damagedThings, List<Thing> ignoredThings)
         {
             if (!(t is Building_TrunkBlocker b)) return true;
+            // PLANT_INTERACTION_GUARDS_1 (C3.10): an ignored blocker stays ignored; vanilla would have skipped it, and after the
+            // swap below it would test the plant instead.
+            if (ignoredThings != null && ignoredThings.Contains(b)) return false;
             if (!damagedThings.Contains(b)) damagedThings.Add(b);
             if (!RM_HugeThingsSettings.PlantTrunkDamageActive) return false;   // Mod Settings: the trunk soaks the blast
             Plant p = b.owner;

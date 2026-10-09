@@ -39,21 +39,24 @@ namespace RimMandrake.HugeThings
         {
             absorbed = true;   // the cell itself never takes damage (it has no hit points to take it with)
             if (!RM_HugeThingsSettings.PlantTrunkDamageActive) return;   // Mod Settings: cover only, the plant is unharmed
-            ForwardToPlant(owner, dinfo);
+            // PLANT_INTERACTION_GUARDS_1 (A3.7): a hit reaching a trunk cell here is a single projectile, beam cell or melee blow
+            // (explosions are rerouted before this by the ExplosionDamageThing prefix), so it is forwarded un-deduplicated.
+            ForwardToPlant(owner, dinfo, false);
         }
 
-        /// <summary>The one damage route into a giant plant from its trunk or from a titan smashing it: once per (tick, source,
-        /// plant), so a beam over several trunk cells, or one titan step brushing several, is one hit. True if it was dealt.</summary>
-        public static bool ForwardToPlant(Plant p, DamageInfo dinfo)
+        /// <summary>The one damage route into a giant plant from its trunk or from a titan smashing it. An AREA event (one titan
+        /// step brushing several trunk cells) lands once per (tick, source, plant); a single projectile always lands
+        /// (PLANT_INTERACTION_GUARDS_1, A3.7). True if it was dealt.</summary>
+        public static bool ForwardToPlant(Plant p, DamageInfo dinfo, bool areaEvent)
         {
             if (p == null || p.Destroyed || !p.Spawned || dinfo.Amount <= 0f) return false;
-            if (!Dedup.ShouldForward(Find.TickManager.TicksGame, SourceKey(dinfo), p.thingIDNumber)) return false;
+            if (!Dedup.ShouldForward(Find.TickManager.TicksGame, SourceKey(dinfo), p.thingIDNumber, areaEvent)) return false;
             p.TakeDamage(dinfo);
             return true;
         }
 
-        /// <summary>A hit's source: instigator, weapon and damage def. Two hits in one tick from the same source on the same
-        /// giant are one hit (a beam crossing several of its cells).</summary>
+        /// <summary>An area event's source: instigator, weapon and damage def. Two area hits in one tick from the same source on
+        /// the same giant are one hit.</summary>
         public static long SourceKey(DamageInfo d)
         {
             unchecked
