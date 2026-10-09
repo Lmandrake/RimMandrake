@@ -1452,23 +1452,37 @@ namespace RimMandrake.FlowWorks
 		/// redraw it. Clamped to 0 &lt;= F &lt;= D, so a driver can never invent
 		/// depth — LAW 1 is unreachable from here.
 		///
-		/// Returns FALSE for a cell this engine does not own (not excavated),
-		/// which is the driver's signal to keep its own behaviour for that cell.
+		/// Returns FALSE for a cell this engine does not own (not excavated), AND for
+		/// an owned cell that refused the write (liquid switched off, or a different
+		/// liquid already standing). Only the first is the signal to keep the
+		/// driver's own behaviour; use <see cref="TrySetDriverFillOutcome"/> to tell
+		/// them apart (FLOOD_DRIVER_OWNERSHIP_CONTRACT_1) — a driver that writes
+		/// terrain after a Refused is writing on a cell this engine owns.
 		/// A caller must record the previous <see cref="FillAt"/> itself if it
 		/// intends to restore it: this engine deliberately keeps no per-driver
 		/// undo stack, because the next pulse may legitimately move that liquid
 		/// somewhere else and a stale undo would resurrect it.</summary>
 		public bool TrySetDriverFill(IntVec3 c, int fill, FluidDef driverFluid = null)
 		{
+			return TrySetDriverFillOutcome(c, fill, driverFluid) == DriverFillOutcome.Applied;
+		}
+
+		/// <summary>FLOOD_DRIVER_OWNERSHIP_CONTRACT_1: what a driver write did. NotOwned = not excavated, the
+		/// driver keeps its own behaviour; Refused = the engine owns the cell and declined (disabled or foreign
+		/// liquid), the driver must leave the cell alone; Applied = written.</summary>
+		public enum DriverFillOutcome { NotOwned, Refused, Applied }
+
+		public DriverFillOutcome TrySetDriverFillOutcome(IntVec3 c, int fill, FluidDef driverFluid = null)
+		{
 			if (!c.InBounds(map))
 			{
-				return false;
+				return DriverFillOutcome.NotOwned;
 			}
 			int i = map.cellIndices.CellToIndex(c);
 			byte d = depthGrid[i];
 			if (d == 0)
 			{
-				return false;
+				return DriverFillOutcome.NotOwned;
 			}
 			if (fill < 0)
 			{
@@ -1479,16 +1493,16 @@ namespace RimMandrake.FlowWorks
 				fill = d;
 			}
 			// Step 2b: a driver claiming a dry cell stamps its fluid (default: the map's); it cannot pour into a cell
-			// already holding a different fluid (fluids never mix) and returns false so the caller can keep its own behaviour.
+			// already holding a different fluid (fluids never mix): Refused, and the caller must leave the cell alone.
 			FluidDef fluid = driverFluid ?? FluidAt(c) ?? ActiveFluid;
 			// FLOWWORKS_REVIEW_LOOKS_ROUND_1: a liquid switched off in Mod Settings never pours into a cut.
 			if (fill > fillGrid[i] && !InputAllowed(fluid))
 			{
-				return false;
+				return DriverFillOutcome.Refused;
 			}
 			if (fill > 0 && !RM_StockMath.FluidsCompatible(fillGrid[i] > 0, FluidAt(c), fluid))
 			{
-				return false;
+				return DriverFillOutcome.Refused;
 			}
 			if (fill > 0 && fillGrid[i] == 0)
 			{
@@ -1503,7 +1517,7 @@ namespace RimMandrake.FlowWorks
 			{
 				ApplyFillTerrain(c, fluid);
 			}
-			return true;
+			return DriverFillOutcome.Applied;
 		}
 
 		/// <summary>Fill an excavated cell to its brim on behalf of a driver —
