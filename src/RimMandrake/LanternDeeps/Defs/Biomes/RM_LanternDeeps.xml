@@ -171,9 +171,6 @@
     </extraGenSteps>
     <wildAnimals>
       <RM_Gembug>0.1</RM_Gembug>
-      <RM_Megapleura>0.1</RM_Megapleura>
-      <RM_FacetMothLarvae>0.05</RM_FacetMothLarvae>
-      <RM_MossBeetleLarvae>0.1</RM_MossBeetleLarvae>
       <RM_BloodropMoth>0.25</RM_BloodropMoth>
       <!-- LANTERNDEEPS_HYDROCARBON_WAVE1_BUILD_1 (the galuush is placed by RM_DeepGaluush, not rostered) -->
       <RM_Drifter>0.25</RM_Drifter>
