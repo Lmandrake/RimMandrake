@@ -572,6 +572,8 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
         # ── 3 queue / 6 todo
         if decided and not is_cut and (dec == "redo" or note):
             at = v.get("at") or ""
+            fulfilled = ((sheet, row, note) in done_marks) if note else \
+                bool(past or any(d[0] == sheet and d[1] == row for d in done_marks))
             match = [j for j in jobs if job_defs(j) & names and
                      ((note and note in I._note_text(j.get("owner_note"))) or
                       any(t in I._note_text(j.get("owner_note")) for t in past) or
@@ -598,6 +600,10 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 if not (cj["refile"] or cj["capped"] or cj["awaiting"]):
                     states = sorted({j["_state"] for j in match})
                     P["queued_already"].append(f"{row}: {len(match)} job(s) {'/'.join(states)}")
+            elif dec == "redo" and fulfilled:
+                # his note on this row was already carried out (mark-done / moved to notes_followed): a leftover
+                # "redo" letter must not re-fire it. Only a NEW open note (not marked done) queues again.
+                P["done"].append(f"{row}: note already carried out — redo not re-queued")
             elif dec == "redo":
                 P["queue"].append({"row": row, "names": names, "note": note, "srow": srow, "v": v})
             elif (sheet, row, note) in done_marks and done_ev[(sheet, row, note)].startswith("OWNER:"):
