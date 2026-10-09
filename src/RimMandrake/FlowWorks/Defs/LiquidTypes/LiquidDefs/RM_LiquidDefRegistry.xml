@@ -109,6 +109,7 @@
       <shallow>RM_WaterBoilingShallow</shallow>
       <deep>RM_WaterBoilingDeep</deep>
     </terrainSuite>
+    <canalFluid>RM_Fluid_BoilingWater</canalFluid>
     <bottled>
       <bottle>RM_Bottle_BoilingWater</bottle>
       <unitsPerBottle>1</unitsPerBottle>
@@ -165,6 +166,7 @@
       <shallow>RM_WaterFrigidShallow</shallow>
       <deep>RM_WaterFrigidDeep</deep>
     </terrainSuite>
+    <canalFluid>RM_Fluid_IcyWater</canalFluid>
     <bottled>
       <bottle>RM_Bottle_IcyWater</bottle>
       <unitsPerBottle>1</unitsPerBottle>

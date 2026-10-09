@@ -274,6 +274,19 @@ def _rect(t, size=PAD_SIZE, dx=0, dz=0):
     return x - half + dx, z - half + dz, size, size
 
 
+def _kill_pawns_in(t, rect):
+    """Kill every living pawn in rect. jawa/destroy_batch NEVER removes pawns (DESTROY_BATCH_NEVER_KILLS_PAWNS_1),
+    so each is killed by id with jawa/damage (allowColonists reaches player pawns); returns the count killed."""
+    r = t.bridge_call("jawa/list_pawns", limit=500, rect=_rs(rect))
+    n = 0
+    for p in ((r or {}).get("pawns") or []):
+        if p.get("dead") or not p.get("id"):
+            continue
+        t.bridge_call("jawa/damage", damageDef="Bullet", amount=5000, thingId=p["id"], allowColonists=True)
+        n += 1
+    return n
+
+
 def _rs(r):
     return "%d,%d,%d,%d" % tuple(r)
 
@@ -1521,7 +1534,7 @@ def fire_chain(t):
         with _comp(t, "fire_warden_toggle_off", toggle="vexxissFireWardenEnabled"):
             if _live(t):
                 t.bridge_call("jawa/map_fire", action="extinguish", rect="%d,%d,16,16" % (x - 4, z - 7))
-                t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="Pawn")
+                _kill_pawns_in(t, _rect(t, PAD_SIZE + 8))
                 with _setting(t, "vexxissFireWardenEnabled", False):
                     ids["b"] = _spawn(t, VEXXISS, x - 6, z)
                     _full(t, ids["b"])
@@ -1569,7 +1582,7 @@ def vents_chain(t):
     ids = {}
 
     def kill_pawns():
-        t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="Pawn")
+        _kill_pawns_in(t, _rect(t, PAD_SIZE + 8))
 
     def vent():
         return _vent_read(t, ids["vent"])

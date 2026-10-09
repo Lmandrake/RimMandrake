@@ -101,4 +101,40 @@
     <rainRefillFactor>3</rainRefillFactor>
     <recededTerrain>Mud</recededTerrain>
   </RimMandrake.FlowWorks.FluidDef>
+
+  <!-- BOILING_ICY_CANAL_FLUIDS_1: hot/cold feed RM_LiquidHeat (FluidDef.hot/cold). ticksPerTile PROVISIONAL (water-thin, 60). -->
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_BoilingWater</defName>
+    <label>boiling water</label>
+    <hot>true</hot>
+    <floodTerrain>RM_Fill_BoilingWater_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_BoilingWater_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_BoilingWater_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_BoilingWater_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>60</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_IcyWater</defName>
+    <label>icy water</label>
+    <cold>true</cold>
+    <floodTerrain>RM_Fill_IcyWater_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_IcyWater_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_IcyWater_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_IcyWater_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>60</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <canalCellsPerSourceCell>5</canalCellsPerSourceCell>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+
 </Defs>

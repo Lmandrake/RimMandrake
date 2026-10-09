@@ -443,6 +443,9 @@ class Fake(object):
                     rows.append({"id": t["id"], "def": t["def"], "hitPointsBefore": before,
                                  "hitPointsAfter": t["hp"]})
             return {"success": bool(rows), "results": rows, "resultCount": len(rows)}
+        if k.get("allowColonists") and float(amount) >= 1000 and thingId in self.pawns:
+            del self.pawns[thingId]
+            return {"success": True}
         p = self.pawns.get(thingId)
         if p and p["kind"] == V.SUUSH:
             hit = damageDef in ("Bullet", "Bomb") and "no_detonate" not in self.broken
@@ -486,7 +489,7 @@ class Fake(object):
             for tid in [i for i, t in self.things.items() if inrect(t["x"], t["z"], rr)]:
                 del self.things[tid]
             self.fires = [f for f in self.fires if not inrect(f[0], f[1], rr)]
-        if categories in ("Pawn", "All"):
+        if categories == "All":
             for pid in [i for i, p in self.pawns.items() if inrect(p["x"], p["z"], rr)]:
                 del self.pawns[pid]
         return {"success": True}

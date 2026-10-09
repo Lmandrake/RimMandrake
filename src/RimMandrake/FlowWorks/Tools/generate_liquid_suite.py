@@ -922,6 +922,7 @@ LIQUID_DEF_ROWS = {
         "viscosityClass": "Water",
         "pH": 7,
         "terrainSuite": {"shallow": "RM_WaterBoilingShallow", "deep": "RM_WaterBoilingDeep"},
+        "canalFluid": "RM_Fluid_BoilingWater",  # BOILING_ICY_CANAL_FLUIDS_1: a pit dug from a boiling pond fills boiling
         "worldTag": "RM_Liquid_BoilingWater",  # frozen world's boiling ocean, LIQUID_BIOMES_MAP_1
         "distillable": True,
         # FLOWWORKS_CONTAINER_MATERIALS_1 (card 2026-10-06 23:45): leather containers refuse hot liquids.
@@ -943,6 +944,7 @@ LIQUID_DEF_ROWS = {
         "damageOnImmersion": {"damageDef": "Frostbite", "amount": 3},
         "corrodesApparel": False,
         "terrainSuite": {"shallow": "RM_WaterFrigidShallow", "deep": "RM_WaterFrigidDeep"},
+        "canalFluid": "RM_Fluid_IcyWater",  # BOILING_ICY_CANAL_FLUIDS_1
         "distillable": True,
         # LIQUID_HEAT_PUSH_1: chills the room it stands in (RM_LiquidHeat), the cold twin of boiling's "hot".
         "cold": True,
@@ -1193,6 +1195,9 @@ FLUID_SURFACE_LOOKS = {
     "RM_Fluid_Astrofuel": dict(_WATER, texture="White", tint="(0.45,0.70,0.80)", rippleDensity=1.4,
                                overlay=True, strength=0.0, sheen=0.25, scale=2.0, speed=0.25, seeThrough=0.25,
                                seeThroughTint="(0.45,0.70,0.80)"),
+    # BOILING_ICY_CANAL_FLUIDS_1: the same looks as the natural boiling / icy bodies (SURFACE_LOOKS).
+    "RM_Fluid_BoilingWater": dict(SURFACE_LOOKS["boiling"], tint="(0.95,0.98,1.0)"),
+    "RM_Fluid_IcyWater":     dict(SURFACE_LOOKS["icy"], tint="(0.82,0.90,0.96)"),
 }
 _LOOK_FIELDS = ("shader", "texture", "mask", "tint", "depthDarken", "flowSpeed", "flowAmplitude", "flowFrequency",
                 "brightness", "spotScale", "spotSpeed", "spotMin", "spotMax", "rippleDensity", "rippleIntensity",

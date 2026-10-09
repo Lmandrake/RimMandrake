@@ -479,4 +479,188 @@
     </tags>
   </TerrainDef>
 
+  <!-- BOILING_ICY_CANAL_FLUIDS_1: boiling and icy water ladders, cloned from blood's tiers (same pathCost/passability);
+       boiling carries RM_WaterBoilingShallow/Deep's burnDamage. Heat comes from FluidDef.hot/cold (RM_LiquidHeat). -->
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_BoilingWater_Trace</defName>
+    <label>shallow boiling water</label>
+    <description>Boiling water standing ankle-to-knee deep. Wading it is easy. Steam stands off the surface and nothing wades in without paying for it.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <burnDamage>3</burnDamage>
+    <burnIntervalTicks>300</burnIntervalTicks>
+    <takeSplashes>true</takeSplashes>
+    <color>(150,205,225)</color>
+    <pathCost>100</pathCost>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_BoilingWater_Half</defName>
+    <label>chest-deep boiling water</label>
+    <description>Boiling water standing chest-deep. Wading it is slow work. Steam stands off the surface and nothing wades in without paying for it.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <burnDamage>3</burnDamage>
+    <burnIntervalTicks>300</burnIntervalTicks>
+    <takeSplashes>true</takeSplashes>
+    <color>(150,205,225)</color>
+    <pathCost>200</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_BoilingWater_Brim</defName>
+    <label>deep boiling water</label>
+    <description>Boiling water standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Steam stands off the surface and nothing wades in without paying for it.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <burnDamage>3</burnDamage>
+    <burnIntervalTicks>300</burnIntervalTicks>
+    <takeSplashes>true</takeSplashes>
+    <color>(150,205,225)</color>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_BoilingWater_Superdeep</defName>
+    <label>very deep boiling water</label>
+    <description>Boiling water filling a very deep pit. Whatever falls in is held there, and the water goes to work on it. Steam stands off the surface and nothing wades in without paying for it.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <burnDamage>3</burnDamage>
+    <burnIntervalTicks>300</burnIntervalTicks>
+    <takeSplashes>true</takeSplashes>
+    <color>(150,205,225)</color>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_IcyWater_Trace</defName>
+    <label>shallow icy water</label>
+    <description>Icy water standing ankle-to-knee deep. Wading it is easy. Cold enough to steal warmth through boots and gloves alike.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(170,215,235)</color>
+    <pathCost>100</pathCost>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_IcyWater_Half</defName>
+    <label>chest-deep icy water</label>
+    <description>Icy water standing chest-deep. Wading it is slow work. Cold enough to steal warmth through boots and gloves alike.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(170,215,235)</color>
+    <pathCost>200</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_IcyWater_Brim</defName>
+    <label>deep icy water</label>
+    <description>Icy water standing deep enough to swim. Crossing it is punishing, but anyone can stand in it. Cold enough to steal warmth through boots and gloves alike.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(170,215,235)</color>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_IcyWater_Superdeep</defName>
+    <label>very deep icy water</label>
+    <description>Icy water filling a very deep pit. Whatever falls in is held there, and the water goes to work on it. Cold enough to steal warmth through boots and gloves alike.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <temporary>true</temporary>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(170,215,235)</color>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+  </TerrainDef>
+
 </Defs>
