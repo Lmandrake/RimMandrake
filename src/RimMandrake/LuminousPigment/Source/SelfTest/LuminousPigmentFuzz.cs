@@ -685,6 +685,48 @@ namespace RimMandrake.LuminousPigment.SelfTest
 
         private static List<string> Cuisine(int n, int baseSeed) { return Family("cuisine", n, baseSeed, RunCuisine); }
 
+        // DESIGN_PASS LP-2: the GlowTank water reserve. A tank on a net that always gives never goes dry; a tank whose
+        // net is dry goes parched within its reserve and recovers on the first unit; the reserve never exceeds 2 units.
+        private static List<string> Water(int n, int baseSeed)
+        {
+            var fails = new List<string>();
+            for (int k = 0; k < n && fails.Count < 5; k++)
+            {
+                Cases++;
+                var r = new Random(baseSeed * 104729 + k);
+                float upd = new[] { 0f, -1f, 0.5f, 4f, 20f, 1e7f }[r.Next(6)];
+                int per = RM_GlowTankWater.TicksPerUnit(upd);
+                int reserve = 0; bool netGives = r.Next(2) == 0; int dryRun = 0;
+                try
+                {
+                    Check(upd > 0f ? per >= 1 : per == 0, $"TicksPerUnit({upd}) = {per}");
+                    for (int st = 0; st < 200; st++)
+                    {
+                        Steps++;
+                        if (r.Next(25) == 0) netGives = !netGives;
+                        reserve = RM_GlowTankWater.Drain(reserve, 250);
+                        if (RM_GlowTankWater.WantsDraw(reserve, per) && netGives) reserve = RM_GlowTankWater.Refill(reserve, per);
+                        bool parched = RM_GlowTankWater.Parched(true, per, reserve);
+                        Check(reserve >= 0 && (per <= 0 || reserve <= 2L * per), $"reserve {reserve} outside [0, 2x{per}]");
+                        if (per <= 0) Check(!parched, "a tank that drinks nothing went parched");
+                        if (netGives && per >= 500) Check(!parched, $"parched on a giving net (per {per}, reserve {reserve})");
+                        Check(!RM_GlowTankWater.Parched(false, per, reserve), "parched with the gate off");
+                        dryRun = parched ? dryRun + 1 : 0;
+                    }
+                }
+                catch (Exception e) { fails.Add($"water seed {k}: {e.Message}"); }
+            }
+            Cases++; Steps++;
+            if (!RM_GlowTankWater.IsOceanLiquid("RM_Liquid_SaltWater") || !RM_GlowTankWater.IsOceanLiquid("RM_Liquid_BoilingWater")
+                || RM_GlowTankWater.IsOceanLiquid("RM_Liquid_Brine") || RM_GlowTankWater.IsOceanLiquid("RM_Liquid_Water") || RM_GlowTankWater.IsOceanLiquid(null))
+                fails.Add("water units: only salt and boiling water count");
+            if (RM_GlowTankWater.GateActive(true, false) || RM_GlowTankWater.GateActive(false, true) || !RM_GlowTankWater.GateActive(true, true))
+                fails.Add("water units: the gate needs the setting AND FlowWorks");
+            if (RM_GlowTankWater.TicksPerUnit(4f) != 15000 || RM_GlowTankWater.Refill(int.MaxValue - 1, int.MaxValue) != int.MaxValue)
+                fails.Add("water units: 4/day = 15000 ticks per unit; Refill saturates");
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -696,6 +738,7 @@ namespace RimMandrake.LuminousPigment.SelfTest
                 ("lights", () => Lights(N(3000), S(1))),
                 ("rules", () => Rules(N(3000), S(1))),
                 ("cuisine", () => Cuisine(N(1500), S(1))),
+                ("water", () => Water(N(2000), S(1))),
             };
             foreach (var f in fam)
             {

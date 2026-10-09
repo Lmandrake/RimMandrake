@@ -49,7 +49,7 @@ VM = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(VM)
 
 DEFAULTS = {"matLifeDays": "1", "matChillKillTemp": "10", "pressGate": "Research", "deepfireMarketValue": "90",
-            "deepfireStackGlows": "True", "glowTankEnabled": "True", "tankPowerGraceHours": "6",
+            "deepfireStackGlows": "True", "glowTankEnabled": "True", "tankPowerGraceHours": "6", "tankNeedsWater": "True",
             "paintingEnabled": "True", "maxCoats": "3", "wallsPaintable": "True", "furniturePaintable": "True",
             "apparelPaintable": "True", "weaponsPaintable": "True", "cuisineEnabled": "True"}
 CLASS_OF = {"Wall": ("wallsPaintable", "Construction"), "Stool": ("furniturePaintable", "Construction"),
@@ -322,6 +322,8 @@ class FakeGame(MockGame):
             lines = ["alive: 24h left"]
         if i and i["d"] == "RM_GlowTank" and not i["seeded"]:
             lines = ["Needs a seed culture: haul one unit of fresh crowncarpet here."]
+        if i and i["d"] == "RM_GlowTank" and self.cond("tankNeedsWater") != "False" and "water_gate_ignored" not in self.bugs:
+            lines = lines + ["Dry: growth paused. Pipe salt or boiling water to it from a FlowWorks liquid tank."]  # LP-2: FlowWorks modelled loaded, no net
         return {"success": True, "things": [{"id": p["thingIds"], "inspect": lines}]}
 
     def t_jawa_mod_settings_field(self, p):
@@ -457,6 +459,7 @@ def main():
         "no_deepfire_glow": "item_glow/stack_glows",
         "press_ignores_power": "press_refine/unpowered_press_refuses",
         "blackout_ignored": "glowtank/blackout_kills_seed",
+        "water_gate_ignored": "glowtank/water_gate_dry_tank_pauses",
         "max_coats_ignored": "paint_pipeline/max_coats_setting",
         "wall_toggle_ignored": "paint_pipeline/walls_paintable_toggle",
         "paint_ignored": "paint_pipeline/glow_colour_follows_paint",

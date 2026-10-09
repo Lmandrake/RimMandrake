@@ -51,7 +51,7 @@ suite = Suite("LuminousPigment")
 suite.toggles = [
     "shoreMatsEnabled", "matLifeDays", "matChillKillTemp",
     "pressGate", "deepfireMarketValue", "deepfireStackGlows",
-    "glowTankEnabled", "tankPowerGraceHours",
+    "glowTankEnabled", "tankPowerGraceHours", "tankNeedsWater",
     "paintingEnabled", "maxCoats", "floorsPaintable", "wallsPaintable", "furniturePaintable",
     "apparelPaintable", "weaponsPaintable", "wornLightEnabled", "stylingStationLacquer",
     "combatPenaltiesEnabled", "artQualityBump",
@@ -957,6 +957,22 @@ def glowtank(t):
                 ins = _call(t, "jawa/inspect_string", thingIds=ids["tank"])
                 _chk(t, "Needs a seed culture" in json.dumps(ins.get("things") or ins, default=str),
                      "a blackout longer than tankPowerGraceHours=0.1 did not kill the seed culture")
+
+    # DESIGN_PASS LP-2 (GLOW_TANK_LIQUID_FEED_1): with FlowWorks loaded, a tank on no liquid net reads "Dry: growth
+    # paused"; the setting off removes the line. FlowWorks absent: the gate never applies, so this cannot be judged.
+    with _comp(t, "water_gate_dry_tank_pauses", toggle="tankNeedsWater"):
+        if _live(t):
+            _power(t, ids["tank"], on=True)
+            with _settings(t, tankNeedsWater="True"):
+                _wait(t, 500)
+                on = json.dumps(_call(t, "jawa/inspect_string", thingIds=ids["tank"]), default=str)
+            if "not needed (FlowWorks not loaded)" in on:
+                _unmeasured(t, "FlowWorks is not loaded on this list, so the water gate cannot apply")
+            _chk(t, "Dry: growth paused" in on, "a GlowTank on no liquid net did not read dry with FlowWorks loaded: %s" % on[:300])
+            with _settings(t, tankNeedsWater="False"):
+                _wait(t, 500)
+                off = json.dumps(_call(t, "jawa/inspect_string", thingIds=ids["tank"]), default=str)
+            _chk(t, "Dry: growth paused" not in off, "tankNeedsWater=False still reads dry")
 
 
 # ================================================================================== chain 8: painting a thing

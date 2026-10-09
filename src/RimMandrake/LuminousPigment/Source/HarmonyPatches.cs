@@ -55,4 +55,28 @@ namespace RimMandrake.LuminousPigment
             }
         }
     }
+
+    // DESIGN_PASS LP-2 (GLOW_TANK_LIQUID_FEED_1): a dry GlowTank pauses its crop. Cheap reject first: only the
+    // cultured crowncarpet def is looked at, and only when it stands in a GlowTank.
+    [HarmonyPatch(typeof(RimWorld.Plant), nameof(RimWorld.Plant.GrowthRate), MethodType.Getter)]
+    public static class Patch_Plant_GrowthRate_GlowTank
+    {
+        private static ThingDef cultured;
+        private static bool looked;
+
+        public static void Postfix(RimWorld.Plant __instance, ref float __result)
+        {
+            if (__result <= 0f) return;
+            if (!looked)
+            {
+                looked = true;
+                cultured = DefDatabase<ThingDef>.GetNamedSilentFail("RM_CrowncarpetCultured");
+            }
+            if (cultured == null || __instance.def != cultured || !__instance.Spawned) return;
+            if (__instance.Position.GetEdifice(__instance.Map) is Building_GlowTank tank && tank.Parched)
+            {
+                __result = 0f;
+            }
+        }
+    }
 }

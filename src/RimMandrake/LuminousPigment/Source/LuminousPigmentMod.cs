@@ -54,6 +54,10 @@ namespace RimMandrake.LuminousPigment
         public static int tankYield = 2;
         public static float tankPower = 180f;
         public static float tankPowerGraceHours = 6f;
+        // DESIGN_PASS LP-2: with FlowWorks loaded, the tank drinks salt or boiling water from a liquid net.
+        // PROVISIONAL: 4 units per day of running.
+        public static bool tankNeedsWater = true;
+        public static float tankWaterUnitsPerDay = 4f;
 
         // Painting (spec §3, §7 "Painting" group) -- DEEPFIRE_MOD_SETTINGS_1.
         // Every one of these is read LIVE at its point of use (the
@@ -147,6 +151,8 @@ namespace RimMandrake.LuminousPigment
             Scribe_Values.Look(ref tankYield, "tankYield", 2);
             Scribe_Values.Look(ref tankPower, "tankPower", 180f);
             Scribe_Values.Look(ref tankPowerGraceHours, "tankPowerGraceHours", 6f);
+            Scribe_Values.Look(ref tankNeedsWater, "tankNeedsWater", true);
+            Scribe_Values.Look(ref tankWaterUnitsPerDay, "tankWaterUnitsPerDay", 4f);
 
             Scribe_Values.Look(ref paintingEnabled, "paintingEnabled", true);
             Scribe_Values.Look(ref maxCoats, "maxCoats", CompDeepfire.MaxCoats);
@@ -276,6 +282,13 @@ namespace RimMandrake.LuminousPigment
                 "Off: the GlowTank does not appear in the build menu. Existing tanks keep working.");
             list.Label("Power outage before it kills the culture: " + tankPowerGraceHours.ToString("0") + " h");
             tankPowerGraceHours = list.Slider(tankPowerGraceHours, 0f, 48f);
+            list.CheckboxLabeled("Tank needs ocean water (FlowWorks)", ref tankNeedsWater,
+                "On (default), with FlowWorks loaded: the tank drinks salt or boiling water from a FlowWorks "
+                + "liquid tank beside it or on a hose run touching it. Dry, its crop stops growing until water "
+                + "arrives; nothing dies of thirst. Brine and fresh water do not count. Without FlowWorks, or "
+                + "off: power and a seed culture are enough.");
+            list.Label("Ocean water drunk per day of running (units): " + tankWaterUnitsPerDay.ToString("0.0"));
+            tankWaterUnitsPerDay = list.Slider(tankWaterUnitsPerDay, 0.5f, 20f);
             list.GapLine();
 
             list.Label("PAINTING");
