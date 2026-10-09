@@ -4862,3 +4862,8 @@
 {"seat":"FOUNDRY","event":"close","id":"NINEFAULTS_RITE_START_RECHECK_1","sha":"b71f58a7e","reason":"live check passed: started 4 participants, ran to outcome, evidence Transient/belt_acc3_nine2_20261009.py","ts":"2026-10-09T20:12:56Z","tsn":1791576776957157954}
 {"seat":"FOUNDRY","event":"close","id":"THERETURN_RITE_START_RECHECK_1","sha":"b71f58a7e","reason":"live check passed: Stillsand map, debt stone + 10 RM_StilledWater, ritual_start 4 participants, 'The Return has begun' then completed, water poured, no NRE; Transient/belt_acc3_return_20261009.py","ts":"2026-10-09T20:13:50Z","tsn":1791576830126699213}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-09T20:15:26Z","tsn":1791576926826824572}
+{"seat":"FOUNDRY","event":"lease","id":"GREY_TWILIGHT_SEABED_BIOME_GATE_1","action":"take","token":"FOUNDRY.pid41705.c2f6dc3d","expires":"2026-10-09T21:01:03Z","ts":"2026-10-09T20:16:03Z","tsn":1791576963318838252}
+{"seat":"FOUNDRY","event":"claim","id":"GREY_TWILIGHT_SEABED_BIOME_GATE_1","ts":"2026-10-09T20:16:03Z","tsn":1791576963541400185}
+{"seat":"FOUNDRY","event":"start","id":"GREY_TWILIGHT_SEABED_BIOME_GATE_1","ts":"2026-10-09T20:16:03Z","tsn":1791576963761600258}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"belt acceptance 3","ts":"2026-10-09T20:16:05Z","tsn":1791576965057313548}
+{"seat":"FOUNDRY","event":"implemented","id":"GREY_TWILIGHT_SEABED_BIOME_GATE_1","sha":"d62a60e0220a","ref":"origin/main","criteria":[{"id":"A1","level":"L1","text":"CRUST_NEVER_STRANDS_1 A2 re-verified on an RM_SeabedSite map (deploy DLL first)"},{"id":"A2","level":"L1","text":"HAZARD_CLOCK_INSPECT_LINES_1 A2 re-verified on an RM_SeabedSite map"}],"needs":"bridge","ts":"2026-10-09T20:16:47Z","tsn":1791577007440405372}
