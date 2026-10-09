@@ -740,8 +740,8 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
                    and the parent chain fails with both peoples hostile.
           deadline - 12 days, the quest's own shown timer, stopped when the cores are home.
     DELIVERY: the design delivers the cores "to the chosen site"; the chosen site (A, C or D; GameComponent_RUT_UnfinishedLine.lineSite,
-    UNFINISHED_LINE_SITE_CHOICE_1) is stored, but the delivery at that site is owed (UNFINISHED_LINE_SITE_BEATS_1), so
-    an Enclave courier collects them from your colony meanwhile.
+    UNFINISHED_LINE_SITE_CHOICE_1) is stored; the courier collects them from your colony and the letter names the site (UNFINISHED_LINE_SITE_BEATS_1).
+    The cores do not travel to a site map: that delivery is NOT built.
     The site's machinery is C#: SitePartWorker_RUT_FoundryRuin (cores), GenStep_RUT_FoundryRuin (hall + pack),
     QuestPart_RUT_PatternCores (home watch, broker, freed droids), QuestPart_RUT_SignalParent (the sell-out
     reaches the parent).
@@ -780,6 +780,9 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
           <storeHiveAs>hiveFaction</storeHiveAs>
           <storeSettlementAs>settlement</storeSettlementAs>
         </li>
+
+        <!-- UNFINISHED_LINE_SITE_BEATS_1: lineSite, lineSiteName, lineSiteFaction from the choice made after beat 2 -->
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_LineSiteSetup" />
 
         <li Class="QuestNode_Set">
           <name>coreTicks</name>
@@ -866,7 +869,7 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
           <inSignal>CoresDelivered</inSignal>
           <label TKey="LetterLabelLineCoresDelivered">The Pattern Cores: carried home</label>
           <letterDef>PositiveEvent</letterDef>
-          <text TKey="LetterTextLineCoresDelivered">An Enclave courier came for the three cores, a hauling droid with an escort that did not take its eyes off the horizon. It signed for each core twice, once for [enclaveFaction_name] and once for [hiveFaction_name].\n\nThe patterns and the means to read them are in one place again for the first time since the company left.</text>
+          <text TKey="LetterTextLineCoresDelivered">An Enclave courier came for the three cores, a hauling droid with an escort that did not take its eyes off the horizon, bound for [lineSiteName]. It signed for each core twice, once for [enclaveFaction_name] and once for [hiveFaction_name].\n\nThe patterns and the means to read them are in one place again for the first time since the company left.</text>
         </li>
         <li Class="QuestNode_ChangeFactionGoodwill">
           <inSignal>CoresDelivered</inSignal>
@@ -919,8 +922,7 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
                     crafter dies on the line: Fail, Hive -10 and Enclaves -10.
           reward - the crafter comes home with Crafting experience; the line is assembled, and beat 5 follows.
           deadline - 20 days (Mod Setting) to load the shuttle, the quest's own shown timer; then the 10-day lend.
-    WHERE: the chosen site is stored (UNFINISHED_LINE_SITE_CHOICE_1) but the per-site delivery is owed
-    (UNFINISHED_LINE_SITE_BEATS_1), so, like beats 3 and 5, the beat happens at your colony: ONE Enclave shuttle (Script_PawnLend's shape: QuestNode_ShuttleDelay + Util_TransportShip_Pickup) carries the
+    WHERE: the chosen site (UNFINISHED_LINE_SITE_CHOICE_1) decides who the crafter is lent to (UNFINISHED_LINE_SITE_BEATS_1: C the Enclaves, D the Hive, A as before). The caravan delivery to the site is NOT built, so the beat happens at your colony: ONE Enclave shuttle (Script_PawnLend's shape: QuestNode_ShuttleDelay + Util_TransportShip_Pickup) carries the
     tithe as its requiredItems and the crafter as its one required colonist. The design's caravan TradeRequests to the site
     (sites A/C/D) wait on UNFINISHED_LINE_SITE_BEATS_1. The monument blueprint (site B) is cut. The skill floor is a Harmony postfix on
     CompShuttle.IsAllowed scoped to this shuttle (UnfinishedLineTithe.cs). The lend goes to the Hive, or to the Enclaves
@@ -942,7 +944,7 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
 
     <questDescriptionRules>
       <rulesStrings>
-        <li>questDescription->The patterns and the cores are in one place again, and still nothing is being built. [hiveFaction_name] have the knowledge and not the means: the company took its stockpiles when it left, and the Hive's workers are too few to run a line that was built for thousands. [enclaveFaction_name] have hands that have never built anything.\n\nSo the line asks the Jawa for both. An Enclave shuttle will land at your colony and wait [titheTicks_duration] to be loaded with the tithe: [titheText]. It will also carry [handsAsk], who will work the line beside the droids for [lendTicks_duration] before coming home.\n\nThe shuttle leaves as soon as it holds both.</li>
+        <li>questDescription->The patterns and the cores are in one place again, and still nothing is being built. [hiveFaction_name] have the knowledge and not the means: the company took its stockpiles when it left, and the Hive's workers are too few to run a line that was built for thousands. [enclaveFaction_name] have hands that have never built anything.\n\nSo the line asks the Jawa for both. An Enclave shuttle will land at your colony and wait [titheTicks_duration] to be loaded with the tithe: [titheText]. It will also carry [handsAsk], who will work the line beside the droids for [lendTicks_duration] before coming home.\n\nThe shuttle leaves as soon as it holds both. The hands are lent to [lendFaction_name], who run the line at [lineSiteName].</li>
         <li>handsAsk(minCrafting==0)->one healthy colonist</li>
         <li>handsAsk(minCrafting>0)->one colonist with Crafting [minCrafting] or better</li>
       </rulesStrings>
@@ -958,6 +960,9 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
           <storeHiveAs>hiveFaction</storeHiveAs>
           <storeSettlementAs>settlement</storeSettlementAs>
         </li>
+
+        <!-- UNFINISHED_LINE_SITE_BEATS_1: lineSite, lineSiteName, lineSiteFaction from the choice made after beat 2 -->
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_LineSiteSetup" />
 
         <!-- titheItems, titheText, titheMass, lendFaction, titheTicks, lendTicks, minCrafting: Mod Settings. TestRun fails
              (the spine waits) while no free colonist reaches the skill floor. -->
@@ -1112,8 +1117,8 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
                     stands and the spine offers the beat again.
           reward - the epic parent completes: the epilogue on RUT_UnfinishedLine.
           deadline - the run's length (Mod Setting, 2 days), then the hold window.
-    WHERE: the chosen site is stored (UNFINISHED_LINE_SITE_CHOICE_1) but its defence-site variant is owed
-    (UNFINISHED_LINE_SITE_BEATS_1), so meanwhile the strike comes to your colony and the line core (P6, not ordered under Q1=A) is not what can be lost.
+    WHERE: the chosen site (UNFINISHED_LINE_SITE_CHOICE_1) names who defends beside you (UNFINISHED_LINE_SITE_BEATS_1:
+    QuestNode_RUT_SiteAllies, a friendly raid from the site's faction). The separate defence-site MAP is NOT built, so the strike comes to your colony and the line core (P6, not ordered under Q1=A) is not what can be lost.
     Ends on BOTH the run finishing AND the strike broken (QuestNode_RUT_PassAll): a lord whose pawns are all
     dead, downed-and-taken or fled sends strike.AllEnemiesDefeated (Lord.Destroy, decompiled 1.6).
   -->
@@ -1133,7 +1138,7 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
 
     <questDescriptionRules>
       <rulesStrings>
-        <li>questDescription->The line is ready. [enclaveFaction_name] and [hiveFaction_name] mean to run it for the first time, and the first run will light the sky over the foundry for [runTicks_duration].\n\nEveryone knows what that means. A light like that is seen from orbit, and [enemyFaction_name] has not forgotten the Geonosians who built its battle station. It will want to know who built this. The answer is the Jawa.\n\nAccept, and the run begins. Hold your colony until the run is done and the strike is broken. If the strike still holds your colony [holdTicks_duration] after the run ends, the first run counts for nothing.</li>
+        <li>questDescription->The line is ready. [enclaveFaction_name] and [hiveFaction_name] mean to run it for the first time, and the first run will light the sky over the foundry for [runTicks_duration].\n\nEveryone knows what that means. A light like that is seen from orbit, and [enemyFaction_name] has not forgotten the Geonosians who built its battle station. It will want to know who built this. The answer is the Jawa.\n\nThe line stands at [lineSiteName], and [lineSiteFaction_name] will send defenders to hold beside you. Accept, and the run begins. Hold your colony until the run is done and the strike is broken. If the strike still holds your colony [holdTicks_duration] after the run ends, the first run counts for nothing.</li>
       </rulesStrings>
     </questDescriptionRules>
 
@@ -1147,6 +1152,9 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
           <storeHiveAs>hiveFaction</storeHiveAs>
           <storeSettlementAs>settlement</storeSettlementAs>
         </li>
+
+        <!-- UNFINISHED_LINE_SITE_BEATS_1: lineSite, lineSiteName, lineSiteFaction from the choice made after beat 2 -->
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_LineSiteSetup" />
 
         <!-- enemyFaction (the Empire when hostile to you), runTicks, strikeDelayTicks, holdTicks: Mod Settings -->
         <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_FirstLightSetup" />
@@ -1164,6 +1172,10 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
           <tag>strike</tag>
           <customLetterLabel TKey="LetterLabelLineFirstLightStrike">First Light: the strike</customLetterLabel>
           <customLetterText TKey="LetterTextLineFirstLightStrike">[enemyFaction_name] saw the light. A strike force is coming for the Jawa who built the line.\n\nHold until the run is done and the strike is broken.</customLetterText>
+        </li>
+        <!-- the site's own faction sends defenders to hold beside you (Mod Setting siteBeatsEnabled) -->
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_SiteAllies">
+          <inSignal>StrikeArrives</inSignal>
         </li>
 
         <li Class="QuestNode_Delay">

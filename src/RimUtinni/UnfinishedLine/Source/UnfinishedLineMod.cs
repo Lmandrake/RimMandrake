@@ -54,6 +54,9 @@ namespace RimMandrake.Utinni.UnfinishedLine
         public static int siteCHiveDelta = -10;
         public static int siteDEnclaveDelta = -15;
         public static int siteDHiveDelta = 10;
+        // UNFINISHED_LINE_SITE_BEATS_1 (PROVISIONAL): beats 4-5 read the chosen site
+        public static bool siteBeatsEnabled = true;
+        public static int siteAllyPoints = 300;
 
         public override void ExposeData()
         {
@@ -98,10 +101,12 @@ namespace RimMandrake.Utinni.UnfinishedLine
             Scribe_Values.Look(ref siteCHiveDelta, "siteCHiveDelta", -10);
             Scribe_Values.Look(ref siteDEnclaveDelta, "siteDEnclaveDelta", -15);
             Scribe_Values.Look(ref siteDHiveDelta, "siteDHiveDelta", 10);
+            Scribe_Values.Look(ref siteBeatsEnabled, "siteBeatsEnabled", true);
+            Scribe_Values.Look(ref siteAllyPoints, "siteAllyPoints", 300);
         }
 
         private static Vector2 scroll = Vector2.zero;
-        private static float viewHeight = 1300f;
+        private static float viewHeight = 1500f;
 
         public void DoWindowContents(Rect inRect)
         {
@@ -222,6 +227,11 @@ namespace RimMandrake.Utinni.UnfinishedLine
             list.Label("The Ore Seams: extra Enclave goodwill " + siteDEnclaveDelta + ", Hive " + siteDHiveDelta);
             siteDEnclaveDelta = Mathf.RoundToInt(list.Slider(siteDEnclaveDelta, -30f, 30f));
             siteDHiveDelta = Mathf.RoundToInt(list.Slider(siteDHiveDelta, -30f, 30f));
+            list.CheckboxLabeled("Beats 4 and 5 follow the chosen site", ref siteBeatsEnabled,
+                "On: the crafter is lent to the faction that runs the chosen site, and that faction sends defenders to hold beside you when the strike comes. "
+              + "Off: beat 4 lends to the Hive and nobody helps in beat 5.");
+            list.Label("Allied defenders in beat 5: " + siteAllyPoints + " points");
+            siteAllyPoints = Mathf.RoundToInt(list.Slider(siteAllyPoints, 100f, 1200f) / 50f) * 50;
 
             viewHeight = list.CurHeight + 20f;
             list.End();

@@ -11,3 +11,6 @@
 
 ## Task 1 DONE
 ILLISK_LIVE_CHECK_1 filed (bridge). Other tonight items (SITE_CHOICE, four vines) were implemented with L1 criteria owed, not none-owed.
+
+## Task 2 DONE
+RM_SleeperVenomvine 0.01 in RM_LeaningScrub wildPlants, pushed 1bbca61ef. Item already implemented earlier (live criteria remain), so no new implemented event.

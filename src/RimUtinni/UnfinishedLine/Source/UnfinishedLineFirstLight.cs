@@ -22,8 +22,8 @@ namespace RimMandrake.Utinni.UnfinishedLine
     ///                                  (Q4=A: the Geonosian Alliance arc is separate but linked; it reads
     ///                                  empireNoticedHive).
     ///
-    /// Where the run happens: the chosen site is stored (UNFINISHED_LINE_SITE_CHOICE_1) but its defence-site variant is
-    /// owed (UNFINISHED_LINE_SITE_BEATS_1), so meanwhile the strike comes to your colony and the
+    /// Where the run happens: the strike comes to your colony, and the chosen site's faction sends defenders to hold beside
+    /// you (UNFINISHED_LINE_SITE_BEATS_1, QuestNode_RUT_SiteAllies). A separate defence-site map is NOT built, so the
     /// failure is "the strike still holds your colony this long after the run ends" (holdDays) rather than the
     /// line core's destruction (the core building is P6, which Q1=A did not order).
     /// </summary>

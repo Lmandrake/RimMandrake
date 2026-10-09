@@ -25,9 +25,9 @@ namespace RimMandrake.Utinni.UnfinishedLine
     ///                              is what the load dialog (TransporterUtility), the carry float menu (IsAllowedNow) and
     ///                              JobDriver_EnterTransporter all ask (decompiled 1.6), so one postfix covers every route.
     ///
-    /// Where: the chosen site is stored (UNFINISHED_LINE_SITE_CHOICE_1) but the per-site delivery is owed (UNFINISHED_LINE_SITE_BEATS_1), so, like beats 3 and 5, the beat happens at your
-    /// colony: an Enclave shuttle collects the tithe and the hands. The design's caravan-to-the-site TradeRequests (sites
-    /// A/C/D) wait on UNFINISHED_LINE_SITE_BEATS_1; the monument blueprint (site B) is cut.
+    /// Where: the chosen site (UNFINISHED_LINE_SITE_CHOICE_1) decides who the hands are lent to (UNFINISHED_LINE_SITE_BEATS_1,
+    /// LineSiteBeats.LendFaction). The caravan TradeRequests to the site's settlement are NOT built, so the beat happens at
+    /// your colony: an Enclave shuttle collects the tithe and the hands. The monument blueprint (site B) is cut.
     /// All numbers PROVISIONAL (Mod Settings).
     /// </summary>
     public static class LineTithe
@@ -76,6 +76,8 @@ namespace RimMandrake.Utinni.UnfinishedLine
         /// Enclaves, who run the line beside it.</summary>
         public static Faction LendFaction()
         {
+            Faction site = LineSiteBeats.LendFaction();
+            if (site != null) return site;
             Faction hive = LineFactions.Hive;
             if (hive != null && !hive.defeated && !hive.HostileTo(Faction.OfPlayer)) return hive;
             return LineFactions.Enclaves;

@@ -24,7 +24,7 @@ from modcheck import Suite, ExpectationFailed  # noqa: E402
 
 suite = Suite("UnfinishedLine")
 suite.toggles = ["chainEnabled", "brokeredTruceEnabled", "coreBrokerEnabled", "lendSkillGateEnabled",
-                 "lineInWorldEnabled", "empireStrikesEnabled", "siteChoiceEnabled"]
+                 "lineInWorldEnabled", "empireStrikesEnabled", "siteChoiceEnabled", "siteBeatsEnabled"]
 
 PROOF = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineProof"
 SETTINGS_TYPE = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSettings"
@@ -262,6 +262,14 @@ def static_checks():
             bad.append("toggle %s is not Scribed" % f)
     if not any(f.endswith(".dll") for f in os.listdir(os.path.join(HERE, "Assemblies"))):
         bad.append("no DLL in Assemblies")
+    # UNFINISHED_LINE_SITE_BEATS_1: beats 3-5 read the site; beat 5 brings the site faction's allies
+    for b in ("RUT_UnfinishedLine_3_Cores", BEAT4, "RUT_UnfinishedLine_5_FirstLight"):
+        q = quests.get(b)
+        if q is None or not [n for n in q.iter("li") if (n.get("Class") or "").endswith("QuestNode_RUT_LineSiteSetup")]:
+            bad.append("%s does not read the chosen site (QuestNode_RUT_LineSiteSetup)" % b)
+    q5 = quests.get("RUT_UnfinishedLine_5_FirstLight")
+    if q5 is None or not [n for n in q5.iter("li") if (n.get("Class") or "").endswith("QuestNode_RUT_SiteAllies")]:
+        bad.append("beat 5 has no QuestNode_RUT_SiteAllies")
     validator = os.path.join(REPO, ".claude", "skills", "rimworld-quests", "scripts", "validate_quest.py")
     if os.path.exists(validator):
         r = subprocess.run([sys.executable, validator, "--dir", os.path.join(HERE, "Defs", "QuestScriptDefs")],
@@ -437,3 +445,15 @@ def site_choice(t):
         text = str((r or {}).get("result", ""))
         if t._guard() and not text.startswith("REFUSED"):
             raise ExpectationFailed("site B was accepted: %s" % text)
+
+
+@suite.chain("site_beats")
+def site_beats(t):
+    """UNFINISHED_LINE_SITE_BEATS_1: beat 4 lends to the faction that runs the chosen site and beat 5 gets that faction's
+    allies. Read-only proof; ProofSendAllies (changes the game) is the first live poke, with the owner or a throwaway map.
+    NOT built and so not proven: caravan delivery to the site settlement, a separate defence-site map."""
+    with t.component("steward_and_allies_resolve", toggle="siteBeatsEnabled"):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSiteBeatsProof", method="ProofSiteBeats")
+        text = str((r or {}).get("result", ""))
+        if t._guard() and (not text.startswith("SITEBEATS ") or "steward=none" in text):
+            raise ExpectationFailed("no steward faction for the chosen site: %s" % text)
