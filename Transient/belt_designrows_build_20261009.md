@@ -9,3 +9,4 @@
 - TB-2 SALT_TRAVELS_WITH_DOOR_1: two-strike prune + minified doors (grace, not literal on-door salt; no toggle). built.
 - GS-5 POLE_OWNER_CHANGE_DROPS_WIRES_1: OwnerMismatchSweep built (toggle). EH-5 HAZARD_TAR_TERRAIN_FROM_LIQUIDS_1: LiquidDef-derived tar terrains built.
 - DI-4 DANGER_CLOCK_ALERTS_1: built (RM_Alerts_DangerClock.cs). X-1 skipped: RM_SurfaceHome already exists, peer in flight.
+- FV-2 PROMISED_GIFT_NEVER_LOST_1 built (pause + retry, no new list record). SC-1 (5b74feefe) and LP-1 (be41f62b1) already built -> implemented.

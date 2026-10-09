@@ -181,13 +181,21 @@ namespace RimMandrake.FeverWood
 
         private void TickPendingGifts()
         {
+            if (!RM_FeverWoodSettings.broodRansomEnabled)
+            {
+                return; // FV-2: gifts owed stay queued while the ransom is off; they arrive when it is switched back on
+            }
             List<KeyValuePair<IntVec3, int>> due = RM_BroodKernel.CollectDue(pendingGiftTicks, pendingGiftCells, pendingGiftRolls,
                 Find.TickManager.TicksGame);
             for (int i = 0; i < due.Count; i++)
             {
-                if (RM_FeverWoodSettings.broodRansomEnabled)
+                List<Thing> placed = RM_DeepGift.Grant(map, due[i].Key, due[i].Value);
+                if (placed == null || placed.Count == 0)
                 {
-                    RM_DeepGift.Grant(map, due[i].Key, due[i].Value);
+                    // FV-2: a failed placement is retried in about an hour, never silently lost
+                    pendingGiftTicks.Add(Find.TickManager.TicksGame + 2500);
+                    pendingGiftCells.Add(due[i].Key);
+                    pendingGiftRolls.Add(due[i].Value);
                 }
             }
         }
