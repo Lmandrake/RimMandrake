@@ -58,6 +58,9 @@ namespace RimMandrake.DivingInteraction
         // any mech) with no warning beyond the charge tell. Off: the Elder
         // never discharges; the trade below is unaffected.
         public static bool greyElderDischargeEnabled = true;
+        // ELDER_DISCHARGE_STUN_LIVING_1: vanilla EMP never stuns flesh, so the discharge stuns living pawns in
+        // its radius explicitly. Off: the discharge stuns mechanoids and breaks shields only.
+        public static bool greyElderStunsLivingEnabled = true;
 
         // The novelty trade (Dialog_OfferToElder / RM_ElderTradeUtility).
         // Off: the Elder's gizmo disappears and nothing can be offered —
@@ -168,6 +171,10 @@ namespace RimMandrake.DivingInteraction
         // dressing flecks, no shock risk. Never strands anyone: the risk
         // this mechanic ADDS simply stops existing when it is off.
         public static bool chillAuroraSurgeEnabled = true;
+        // CHILL_AURORA_UNATTENDED_SOURCE_1: with no surface map loaded above the floor, the aurora reading comes
+        // from a world-level aurora condition or the floor's own aurora nights. Off: it reads 0 until a surface
+        // map above is loaded (the old behaviour).
+        public static bool chillAuroraUnattendedEnabled = true;
 
         // SEA_DIVE_FLOOR_TERRAIN_1, 2026-09-30. Per-sea habitat terrain
         // bands on the dive floor (GenStep_SeaFloorTerrain +
@@ -211,6 +218,10 @@ namespace RimMandrake.DivingInteraction
         // SEABED_FLOOR_AMBIENT_CARRYOVER_1. RESTART-REQUIRED: each sea-floor layer biome takes its sea's
         // flora and cast at startup, so floors grow plants and refill their animals over time.
         public static bool seabedFloorLifeEnabled = true;
+        // SEABED_FAUNA_SINGLE_SEEDER_1. WORLDGEN-AFFECTING: a sea-floor layer map's starting animals come from
+        // RM_SeaFloorFauna alone; vanilla's Animals step is skipped there, and refilling over time is vanilla's
+        // ongoing wild-animal spawner (seabedFloorLifeEnabled). Off: both seeders run, as before.
+        public static bool seabedSingleSeederEnabled = true;
 
         // REALFOW_POCKET_MAP_COMPAT_1, 2026-09-30. Compatibility fix for the
         // third-party Real Fog of War (Patch_RealFoWStaleHearing.cs): stops
@@ -231,6 +242,9 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref greyPoolDefenceEnabled, "greyPoolDefenceEnabled", true);
             Scribe_Values.Look(ref greyPoolSentinelEnabled, "greyPoolSentinelEnabled", true);
             Scribe_Values.Look(ref greyElderDischargeEnabled, "greyElderDischargeEnabled", true);
+            Scribe_Values.Look(ref greyElderStunsLivingEnabled, "greyElderStunsLivingEnabled", true);
+            Scribe_Values.Look(ref chillAuroraUnattendedEnabled, "chillAuroraUnattendedEnabled", true);
+            Scribe_Values.Look(ref seabedSingleSeederEnabled, "seabedSingleSeederEnabled", true);
             Scribe_Values.Look(ref greyElderTradeEnabled, "greyElderTradeEnabled", true);
             Scribe_Values.Look(ref specimenCabinetEnabled, "specimenCabinetEnabled", true);
             Scribe_Values.Look(ref greyFloorWalkCheckEnabled, "greyFloorWalkCheckEnabled", true);
@@ -275,8 +289,11 @@ namespace RimMandrake.DivingInteraction
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
             list.CheckboxLabeled("Sea diving enabled", ref masterEnabled,
-                "Master switch. Off: no RM_SeaDiveHatch anywhere can be entered — the mod is "
-              + "fully inert (existing hatches stay buildable but never open a pocket map).");
+                "Master switch. Off: no dive hatch can be entered, every floor mechanic below stops "
+              + "(defences, discharges, surges, floor light, heat, trade), and newly generated floors get no "
+              + "seeded animals, ruins or terraces. Restart-required parts (floor plants and animal refill) "
+              + "follow it after a restart. A colonist already encased in brine stays encased and keeps "
+              + "smothering until mined out, so switching this off never strands anyone in a jacket.");
 
             if (masterEnabled)
             {
@@ -333,7 +350,8 @@ namespace RimMandrake.DivingInteraction
                     "Shipped default: ON. WORLD-GENERATION setting. A new Scald floor map lays a half-buried "
                   + "Rust Cathedral coolant manifold: probe its five branch outlets, read the gauges, and mark "
                   + "the branch that still returns warm water to open its locker. A wrong mark only jams the "
-                  + "latch for a day. Floors already generated keep what they have. Off: new floors have none.");
+                  + "latch for a day. Floors already generated keep what they have. Off: new floors have none, "
+                  + "and colonists stop probing outlets on galleries that already exist.");
                 list.CheckboxLabeled("The Chill: Return Comb landmark (affects floor generation)", ref chillReturnCombEnabled,
                     "Shipped default: ON. WORLD-GENERATION setting. A new Chill floor map lays the Return Comb: a "
                   + "horseshoe of ice-rock cut by black busbars, the return junction of the unfinished planetary "
@@ -346,6 +364,11 @@ namespace RimMandrake.DivingInteraction
                   + "Scald, the Grey Sea, the Twilight Sea or the Chill finds that sea's own floor: its terrain, "
                   + "vents, ruins, formations and animals. Floors already generated keep what they have. Off: a "
                   + "plain encounter map.");
+                list.CheckboxLabeled("Sea-floor layer: one starting-animal seeder (affects floor generation)", ref seabedSingleSeederEnabled,
+                    "Shipped default: ON. WORLD-GENERATION setting. A new floor's starting animals come only from "
+                  + "the sea's own seeder (on the Chill, the count set below), and the floor then refills slowly over "
+                  + "time. Off: vanilla's animal step also runs at generation, which can start a floor far busier "
+                  + "than the count below. PROVISIONAL.");
                 list.CheckboxLabeled("Sea-floor layer: floors grow their sea's plants and refill their animals (restart)", ref seabedFloorLifeEnabled,
                     "Shipped default: ON. Takes effect after a restart. Each sea floor on the sea-floor layer grows "
                   + "the flora of the sea above it and slowly repopulates with that sea's animals, as the hatch's "
@@ -384,9 +407,15 @@ namespace RimMandrake.DivingInteraction
                 list.CheckboxLabeled("Grey Sea: Brine Elders can discharge", ref greyElderDischargeEnabled,
                     "Shipped default: ON. Each Grey Sea floor's Brine Elder builds a visible charge "
                   + "and, once full, releases a blinding EMP burst on its own — or immediately if "
-                  + "its pool is disturbed (attacked, or a nearby jacket mined). Stuns anyone "
-                  + "nearby and breaks active shields. Off: the Elder never discharges; the trade "
+                  + "its pool is disturbed (attacked, or a nearby jacket mined). Stuns mechanoids "
+                  + "and breaks active shields. Off: the Elder never discharges; the trade "
                   + "below is unaffected either way.");
+                if (greyElderDischargeEnabled)
+                {
+                    list.CheckboxLabeled("Brine Elder discharge stuns living creatures", ref greyElderStunsLivingEnabled,
+                        "Shipped default: ON. Every living creature within the discharge's reach and in sight of the "
+                      + "Elder is stunned for about 5 seconds (PROVISIONAL). Off: only mechanoids are stunned.");
+                }
 
                 list.Gap();
                 list.CheckboxLabeled("Grey Sea: Brine Elders trade on novelty", ref greyElderTradeEnabled,
@@ -473,9 +502,10 @@ namespace RimMandrake.DivingInteraction
 
                 list.Gap();
                 list.CheckboxLabeled("The Chill: drowned aurora floor light", ref chillDrownedAuroraEnabled,
-                    "Shipped default: ON. The seabed's ambient light rises and falls with whichever "
+                    "Shipped default: ON. LIGHT ONLY. The seabed's ambient light rises and falls with whichever "
                   + "aurora is active on the surface far above — a slow violet-teal glow that "
-                  + "ripples, never a fixed brightness. Off: the seabed loses this layer entirely "
+                  + "ripples, never a fixed brightness. Surge storms and the electrojet mast follow the "
+                  + "same aurora whether this is on or off. Off: the seabed loses this light layer "
                   + "(whatever baseline light it would otherwise have is unaffected, never darkened "
                   + "further); Fuselight and Ghostpane's own steady point-glow is unaffected either "
                   + "way, so the floor never goes fully black from toggling this off.");
@@ -488,6 +518,11 @@ namespace RimMandrake.DivingInteraction
                   + "electrical shock hits — survivable if they get indoors promptly, genuinely dangerous "
                   + "if they don't. Off: surges never happen — no power, no dressing, no risk; a built "
                   + "electrojet mast simply sits idle.");
+                list.CheckboxLabeled("The Chill: aurora when no surface map is loaded", ref chillAuroraUnattendedEnabled,
+                    "Shipped default: ON. With no colony map loaded on the surface above (the usual case once the "
+                  + "ship lands below), the floor's aurora follows any world-wide aurora, or else its own aurora "
+                  + "nights: about one evening in three (PROVISIONAL). Off: the floor stays dark and surge-free until a "
+                  + "surface map above is loaded.");
             }
 
             list.Gap();

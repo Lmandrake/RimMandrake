@@ -154,9 +154,13 @@ namespace RimMandrake.DivingInteraction
             }
         }
 
-        private bool Active => isChillSeabed
-            && RM_DivingSettings.masterEnabled
-            && RM_DivingSettings.chillDrownedAuroraEnabled;
+        // DIVING_SETTINGS_CONTRACT_1: sensing is separate from presentation. The intensity is SENSED
+        // whenever either consumer is on (the floor light or the surge storms); chillDrownedAuroraEnabled
+        // turns off only the light, never the surges or the collector that ride the same reading.
+        private static bool SensingWanted => RM_DivingSettings.masterEnabled
+            && (RM_DivingSettings.chillDrownedAuroraEnabled || RM_DivingSettings.chillAuroraSurgeEnabled);
+
+        private bool Sensing => isChillSeabed && SensingWanted;
 
         public override void FinalizeInit()
         {
@@ -178,9 +182,9 @@ namespace RimMandrake.DivingInteraction
             }
             ticksUntilRescan = RescanIntervalTicks;
 
-            if (!RM_DivingSettings.masterEnabled || !RM_DivingSettings.chillDrownedAuroraEnabled)
+            if (!SensingWanted)
             {
-                return; // frozen at its last value while off — Patch_ChillDrownedAurora never reads it while off either
+                return; // frozen at its last value while both consumers are off
             }
 
             float target = RawSurfaceIntensity();
@@ -195,7 +199,10 @@ namespace RimMandrake.DivingInteraction
         /// off-map both simply read 0, same "no caller-side gating needed"
         /// idiom RM_MapComponent_ChillFootprints.TrailDensityAt documents.
         /// </summary>
-        public float CurrentAuroraIntensity => Active ? currentIntensity : 0f;
+        public float CurrentAuroraIntensity => Sensing ? currentIntensity : 0f;
+
+        /// <summary>The floor-light read: CurrentAuroraIntensity, or 0 while the light toggle is off.</summary>
+        public float LightIntensity => RM_DivingSettings.chillDrownedAuroraEnabled ? CurrentAuroraIntensity : 0f;
 
         /// <summary>
         /// Patch_ChillDrownedAurora's own read: the violet-teal SkyTarget
@@ -206,7 +213,7 @@ namespace RimMandrake.DivingInteraction
         /// </summary>
         public SkyTarget ComputeSkyTarget()
         {
-            float t = CurrentAuroraIntensity;
+            float t = LightIntensity;
 
             float ripplePhase = (Find.TickManager.TicksGame % RippleFullCycleTicks) / RippleFullCycleTicks;
             float ripple = (Mathf.Sin(ripplePhase * 2f * Mathf.PI) + 1f) * 0.5f;
@@ -274,7 +281,7 @@ namespace RimMandrake.DivingInteraction
             Map source = SourceMap();
             if (source?.gameConditionManager == null)
             {
-                return 0f;
+                return UnattendedIntensity();
             }
 
             float best = 0f;
@@ -296,6 +303,58 @@ namespace RimMandrake.DivingInteraction
             }
 
             return best;
+        }
+
+        // CHILL_AURORA_UNATTENDED_SOURCE_1. With no surface map loaded above (the normal gravship case) the
+        // floor used to read 0 forever, so the light, the surges and the collector never woke.
+        // PROVISIONAL (auto-decided 2026-10-09, CHILL_AURORA_UNATTENDED_SOURCE_1): first a WORLD-level aurora
+        // condition (Find.World.gameConditionManager) if one is active; otherwise an intrinsic floor schedule:
+        // each in-game day, seeded by tile and day, has a 35% chance of an aurora night whose strength is a
+        // sine envelope over the day's second half, peaking at 0.6-1.0. Toggle: chillAuroraUnattendedEnabled.
+        private const float UnattendedAuroraDayChance = 0.35f;
+
+        private float UnattendedIntensity()
+        {
+            if (!RM_DivingSettings.chillAuroraUnattendedEnabled)
+            {
+                return 0f;
+            }
+
+            GameConditionManager world = Find.World?.gameConditionManager;
+            if (world != null)
+            {
+                float best = 0f;
+                GameCondition vanilla = world.GetActiveCondition(GameConditionDefOf.Aurora);
+                if (vanilla != null)
+                {
+                    best = Mathf.Max(best, vanilla.SkyTargetLerpFactor(map));
+                }
+                GameConditionDef darkDef = DarkAuroraDef;
+                GameCondition dark = darkDef != null ? world.GetActiveCondition(darkDef) : null;
+                if (dark != null)
+                {
+                    best = Mathf.Max(best, dark.SkyTargetLerpFactor(map));
+                }
+                if (best > 0f)
+                {
+                    return best;
+                }
+            }
+
+            int ticks = Find.TickManager.TicksAbs;
+            int day = ticks / GenDate.TicksPerDay;
+            float dayFraction = (ticks % GenDate.TicksPerDay) / (float)GenDate.TicksPerDay;
+            if (dayFraction < 0.5f)
+            {
+                return 0f;
+            }
+            int seed = Gen.HashCombineInt(map.Tile.tileId, day);
+            if (Rand.ValueSeeded(seed) >= UnattendedAuroraDayChance)
+            {
+                return 0f;
+            }
+            float peak = Mathf.Lerp(0.6f, 1f, Rand.ValueSeeded(seed ^ 0x5f3759df));
+            return peak * Mathf.Sin((dayFraction - 0.5f) * 2f * Mathf.PI);
         }
     }
 }

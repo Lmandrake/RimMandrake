@@ -25,12 +25,13 @@ namespace RimMandrake.DivingInteraction
     // the vanilla EMP-grenade mechanism (MEASURED against CompShield and
     // StunHandler: EMP's own DamageDef has causeStun=true and harmsHealth=
     // false, and CompShield.PostPreApplyDamage special-cases DamageDefOf.EMP
-    // to zero the shield and break it). That one call gives "stun living
-    // creatures" (StunHandler applies to any Pawn_StanceTracker, animal or
-    // human), "disable droids" (mechanoids have a stunner too) and "collapse
-    // shields" (CompShield's own EMP branch) for free, using the exact
+    // to zero the shield and break it). That one call gives "disable droids"
+    // and "collapse shields" (CompShield's own EMP branch), using the exact
     // mechanism players already know from EMP grenades — no new hediff, no
-    // Harmony.
+    // Harmony. It does NOT stun flesh: StunHandler.CanBeStunnedByDamage (1.6,
+    // RimSage) accepts EMP only when !pawn.RaceProps.IsFlesh. So "stun living
+    // creatures" is an explicit StunFor on every flesh pawn in the radius
+    // (StunLivingInRadius below, ELDER_DISCHARGE_STUN_LIVING_1).
     //
     // THE TELL: charge builds every TickRare while nothing has disturbed the
     // Elder; past HALF charge it starts throwing electrical-spark flecks
@@ -190,6 +191,36 @@ namespace RimMandrake.DivingInteraction
                 damAmount: DamageDefOf.EMP.defaultDamage,
                 doVisualEffects: true,
                 doSoundEffects: true);
+
+            if (RM_DivingSettings.greyElderStunsLivingEnabled)
+            {
+                StunLivingInRadius();
+            }
+        }
+
+        // PROVISIONAL (auto-decided 2026-10-09, ELDER_DISCHARGE_STUN_LIVING_1): flesh pawns in the
+        // discharge radius with line of sight to the Elder are stunned for 300 ticks (5 s). Vanilla EMP
+        // never stuns flesh; mechanoids keep EMP's own stun from the explosion above.
+        private const int LivingStunTicks = 300;
+
+        private void StunLivingInRadius()
+        {
+            Map map = base.Map;
+            List<Pawn> pawns = new List<Pawn>(map.mapPawns.AllPawnsSpawned);
+            for (int i = 0; i < pawns.Count; i++)
+            {
+                Pawn p = pawns[i];
+                if (p == null || !p.Spawned || p.Map != map || p.Dead || p.Downed || !p.RaceProps.IsFlesh)
+                {
+                    continue;
+                }
+                if (!p.Position.InHorDistOf(base.Position, DischargeRadius)
+                    || !GenSight.LineOfSight(base.Position, p.Position, map, skipFirstCell: true))
+                {
+                    continue;
+                }
+                p.stances?.stunner?.StunFor(LivingStunTicks, this);
+            }
         }
 
         public override IEnumerable<Gizmo> GetGizmos()
