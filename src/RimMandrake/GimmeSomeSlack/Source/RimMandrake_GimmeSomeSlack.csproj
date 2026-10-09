@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="GimmeSomeSlackDefOf.cs" />
     <Compile Include="GimmeSomeSlackMod.cs" />
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="ConduitVisuals.cs" />
     <Compile Include="CordMaterials.cs" />
     <Compile Include="StyleProbe.cs" />

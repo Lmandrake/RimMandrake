@@ -188,7 +188,7 @@ namespace RimMandrake.GimmeSomeSlack
         {
             LegacyMigration.SettingsFiles(content);
             Settings = GetSettings<GimmeSomeSlackSettings>();
-            new Harmony("mandrake.rm.gimmesomeslack").PatchAll(typeof(GimmeSomeSlackMod).Assembly);
+            RimMandrake.Shared.PatchApplier.Apply(new Harmony("mandrake.rm.gimmesomeslack"), typeof(GimmeSomeSlackMod).Assembly, "RimMandrake.GimmeSomeSlack");
         }
 
         public override string SettingsCategory() => "RimMandrake: Gimme Some Slack";
