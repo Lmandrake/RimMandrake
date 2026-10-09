@@ -12,3 +12,6 @@ Done: design/RimMandrake/light_ledger_design.md
 (pending)
 ## Stage 4 — deepfire world-light changes
 (pending)
+
+### Stage 2 done
+Helper `src/RimMandrake/_Shared/LightLedger/` (ledger + kernel), kernel selftest + write lint `src/RimMandrake/Utils/selftest_lightledger.py` (PASS), TerminalBiomes sun-sphere base + Scribed graze (`RM_MapComponent_GlowGraze`). TB built, TB fuzz OK.

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Light ledger offline selftest. Plain net8.0, zero RimWorld/Unity references: ../LightLedgerKernel.cs
+    is the PRODUCTION file every consuming mod compiles. If a `using Verse;` ever lands in it, this build
+    breaks - the guard rail working. Run: python3 src/RimMandrake/Utils/selftest_lightledger.py
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimMandrakeLightLedger.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.Shared.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\LightLedgerKernel.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>
