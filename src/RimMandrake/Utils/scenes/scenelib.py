@@ -67,12 +67,49 @@ def setting(typeName, **kv):
 def rect(x, z, w, h): return "%d,%d,%d,%d" % (x, z, w, h)
 def cell(x, z): return "%d,%d" % (x, z)
 
+def _tile_objs(tile):
+    r = call("jawa/world_objects_get", tiles=str(tile), limit=50)
+    return [o for o in (r.get("objects") or []) if o.get("tile") == tile]
+
+def biome_map(tile, biome, size=100, layer=None, keeper=(50, 50)):
+    """Generate a map of `biome` on `tile` (any free tile), make it current, and return mapId.
+    Pass layer='RM_SeabedLayer' for a sea-floor map. Free it with drop_map(id, tile).
+    MEASURED 2026-10-09, two traps: (1) the generated Settlement has NO faction, so after the map is culled its
+    CheckDefeated NREs every tick, spawning ~1 DestroyedSettlement and a raid letter per 5 ticks (11,587 objects, play_for
+    auto-paused forever); so the settlement is handed to the player faction here and removed by drop_map.
+    (2) an unowned map is culled within ~1000 ticks; a player settlement plus a player colonist keeps it."""
+    quiet()
+    kw = dict(tile=tile, biome=biome, sizeX=size, sizeZ=size)
+    if layer: kw["layer"] = layer
+    r = need(call("jawa/world_tile_map_generate", **kw), "world_tile_map_generate")
+    mid = r["mapId"]
+    ids = [str(o["id"]) for o in _tile_objs(tile) if o.get("isSettlement")]
+    if ids: call("jawa/world_objects_set", ids=",".join(ids), faction="PlayerColony")
+    need(call("jawa/set_current_map", mapId=mid), "set_current_map")
+    call("jawa/spawn_pawn", kindDef="Colonist", x=keeper[0], z=keeper[1], faction="player", count=1)
+    return mid
+
+def drop_map(mid, tile=None, back=0):
+    call("jawa/set_current_map", mapId=back)
+    r = call("jawa/map_drop", mapIndex=mid, notifyPlayer=False)
+    if tile is not None:
+        ids = [str(o["id"]) for o in _tile_objs(tile)]
+        if ids: call("jawa/world_objects_remove", ids=",".join(ids))
+    return r
+
+def quiet():
+    """Storyteller off + incident queue cleared + hostiles killed. MEASURED 2026-10-09: with the storyteller on, a raid letter
+    auto-pauses the game mid-run (play_for returns 'paused externally', run() hangs). Storyteller-off is a static, not saved."""
+    a = call("jawa/site_state", storyteller="off", clearIncidentQueue=True)
+    call("jawa/kill_hostiles")
+    return a
+
 class Scene:
     """A rect of map owned by the scene. Coordinates in methods are relative to (x, z)."""
     def __init__(self, name, x=100, z=100, w=9, h=9):
         self.name, self.x, self.z, self.w, self.h = name, x, z, w, h
         self.pawns = []
-    def __enter__(self): self.clear(); return self
+    def __enter__(self): quiet(); self.clear(); return self
     def __exit__(self, *a): self.teardown()
     def abs(self, dx, dz): return self.x + dx, self.z + dz
     @property
@@ -86,10 +123,11 @@ class Scene:
     def floor(self, terrain, rel=None):
         r = rel or (0, 0, self.w, self.h)
         return call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, rect(self.x + r[0], self.z + r[1], r[2], r[3])), layer="top")
-    def put(self, defName, dx, dz, stuff=None, rot=None):
-        """Spawn one thing at a relative cell."""
+    def put(self, defName, dx, dz, n=None, stuff=None):
+        """Spawn a thing (or n of them / a stack of n) at a relative cell."""
         x, z = self.abs(dx, dz)
-        kw = dict(ops="%s:%d,%d" % (defName, x, z))
+        kw = dict(ops="%s:%d,%d" % (defName, x, z) + (",%d" % n if n else ""))
+        if stuff: kw["stuff"] = stuff
         r = call("jawa/spawn_batch", **kw)
         return need(r, "spawn %s" % defName)
     def power(self, defName="Battery", dx=0, dz=0):
@@ -118,6 +156,29 @@ class Scene:
         return call("jawa/damage", damageDef="Bullet", amount=5000, thingId=tid, allowColonists=True)
     def kill_hostiles(self): return call("jawa/kill_hostiles")
 
+    def grid(self, col=4, gen="WoodFiredGenerator", gx=2, gz=3):
+        """Real power: a generator at (gx,gz) and a conduit column at x=col (z 1..h-2). MEASURED: a conduit touching the
+        generator's east side joins its net; one on its south side did NOT. Put consumers touching the column (x=col+1)."""
+        self.put(gen, gx, gz)
+        for dz in range(1, self.h - 1): self.put("PowerConduit", col, dz)
+        call("jawa/map_commit", power=True, regions=True)
+    def netsize(self, defName):
+        t = self.find(defName)
+        return (call("jawa/power_net", thing=t["id"]).get("net") or {}) if t else None
+    def fuel(self, pid, gen="WoodFiredGenerator", fuel="WoodLog", n=40, ticks=1200):
+        """Spawn fuel beside the pawn and order Refuel on the generator; run until it is accepted."""
+        g = self.find(gen); x, z = g["x"] - self.x, g["z"] - self.z
+        self.put(fuel, 1, self.h - 2, n=n)
+        f = self.find(fuel)
+        r = self.order(pid, "Refuel", a=g["id"], b=f["id"], count=n)
+        run(ticks); return r
+    def heat(self, dx, dz, temp):
+        x, z = self.abs(dx, dz)
+        return call("jawa/room_heat", mode="set", value=temp, x=x, z=z)
+    def comp(self, defName, comp, members):
+        t = self.find(defName)
+        return (call("jawa/comp_read", thing=t["id"], comp=comp, members=members).get("values") if t else None)
+    def weather(self, w): return call("jawa/weather_set", weather=w, lockWeather=True)
     def power_on(self, tid, on=True):
         return call("jawa/power_net", thing=tid, forcePowerOn=bool(on))
     def order(self, pid, jobDef, a=None, b=None, count=None, wait=60):
