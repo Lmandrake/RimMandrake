@@ -355,6 +355,12 @@ namespace RimMandrake.LeaningScrub
             return p;
         }
 
+        // jawa/static_call splits its args on '|', so "<form>|<mode>" arrives as TWO arguments: this overload is what a bridge call reaches.
+        public static string ProofForm(string form, string mode)
+        {
+            return ProofForm((form ?? "") + "|" + (mode ?? "on"));
+        }
+
         public static string ProofForm(string args)
         {
             Map map = Find.CurrentMap;
