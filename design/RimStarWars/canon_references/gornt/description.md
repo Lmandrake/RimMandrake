@@ -19,10 +19,14 @@ The gornt was a domesticated, omnivorous creature native on the world of Hethar;
 **Behavior and history (Legends)**: wild gornts traveled in packs of 10 to 30, half of them young (gorntlings); gornt meat became a standard of Imperial ration packs, and after the Empire annexed Hethar the meat industry declined through loss of genetic variation (*Creatures of the Galaxy*) — https://starwars.fandom.com/wiki/Gornt/Legends . (The Legends text itself calls the gornt both "omnivorous" and "naturally herbivore".)
 
 ## Visual brief
+**Owner ruling 2026-10-08 (verbatim): "That's realistic, not these cartoon versions you keep using. Replace the canon with something more realistic. The web is full of them."**
+
+**Animation-only canon — no realistic source found (searched: Wookieepedia `Gornt` and `Gornt/Legends` page images, "Images of gornts" category, StarWars.com databank `gornt` (generic page only)).** The images below are animated/stylised; render this creature realistically anyway — real-world anatomy, materials and lighting, not the cartoon's flat shading or exaggerated proportions. The only living-animal art is the *Creatures of the Galaxy* comic-style halftone plate (`legends_1`); its black-and-white line-art duplicate (`legends_2`, `Gornt-Creatures.png`) was deleted. The canon meat loaf (`canon_1`) is a real prop photograph. Think of a real hunched, heavy-haunched herbivore with a catfish's barbelled head: dense, slightly pebbled grey-green hide with real skin folds and natural light.
+
 Living-animal description below is a LEGENDS reconstruction (Gornt/Legends art); the only canon image is prepared meat, which does not show raw meat or hide colour.
-The only CANON image (`wookieepedia_canon_1`) is a loaf and slices of gornt MEAT, a dark brown-red, fibrous block. It shows nothing of the animal. Both animal images are LEGENDS (a Databank infobox plate and a Creatures art); they match each other.
+The only CANON image (`wookieepedia_canon_1`) is a loaf and slices of gornt MEAT, a dark brown-red, fibrous block. It shows nothing of the animal. The animal image is LEGENDS (the Databank / *Creatures of the Galaxy* comic plate).
 - **Silhouette**: a hunched, wedge-shaped quadruped. The rump and hind legs are tall and massive; the back slopes steeply down to a low, small head carried near the ground. Front legs are much shorter than the hind legs (agrees with the text). The back end rises into a pointed, tapering peak rather than a tail.
-- **Colour/skin**: smooth, slightly pebbled grey-green hide (the colour plate), pale in the line-art plate; folds and creases over the shoulders and haunch. No fur.
+- **Colour/skin**: smooth, slightly pebbled grey-green hide; folds and creases over the shoulders and haunch. No fur.
 - **Head**: wide, flat, catfish-like head with a broad mouth, small eyes and one small horn nub or ridge on top; long thin whisker-like tendrils (barbels) trail from around the mouth, which the text says it uses to eat. The images show small horn nubs and one on the head, consistent with a single horn.
 - **Limbs**: small clawed forefeet, larger hind feet; thick legs.
 - **Size cue**: about a metre or more long per the text; shown grazing in a forest clearing in herds.
@@ -35,6 +39,7 @@ The only CANON image (`wookieepedia_canon_1`) is a loaf and slices of gornt MEAT
 - [ ] Long thin whisker-like tendrils around the mouth
 - [ ] Pointed rear peak, no long tail
 - [ ] Meat item (if made): dark red-brown fibrous block
+- [ ] Realistic rendering: natural pebbled, folded hide and lighting, no outlines, no halftone or cartoon shading
 
 ## Engine limits
 not yet assessed
@@ -44,9 +49,8 @@ not yet assessed
 - https://starwars.fandom.com/wiki/Gornt/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Gornt/Legends`; wiki caption: infobox image. File: `Gornt-DB.jpg` — https://static.wikia.nocookie.net/starwars/images/1/18/Gornt-DB.jpg/revision/latest?cb=20071123191749
-- `wookieepedia_canon_1.webp` — CANON page `Gornt`; wiki caption: A loaf of gornt meat. File: `Gornt meat.png` — https://static.wikia.nocookie.net/starwars/images/1/13/Gornt_meat.png/revision/latest?cb=20221103060456
-- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Gornt/Legends`; wiki caption: 278x278px. File: `Gornt-Creatures.png` — https://static.wikia.nocookie.net/starwars/images/a/a8/Gornt-Creatures.png/revision/latest?cb=20210219212435
+- `wookieepedia_legends_1.webp` — COMIC-STYLE illustration (*Creatures of the Galaxy*), the only living-animal image — LEGENDS page (non-canon continuity) `Gornt/Legends`; wiki caption: infobox image. File: `Gornt-DB.jpg` — https://static.wikia.nocookie.net/starwars/images/1/18/Gornt-DB.jpg/revision/latest?cb=20071123191749
+- `wookieepedia_canon_1.webp` — REAL prop photograph (*The Force Awakens: The Visual Dictionary*) — CANON page `Gornt`; wiki caption: A loaf of gornt meat. File: `Gornt meat.png` — https://static.wikia.nocookie.net/starwars/images/1/13/Gornt_meat.png/revision/latest?cb=20221103060456
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
