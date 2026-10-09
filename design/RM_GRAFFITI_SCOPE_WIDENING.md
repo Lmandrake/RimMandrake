@@ -1,4 +1,4 @@
-<!-- status: RULED AND BUILT, 2026-09-24 — forks F1-F10's recommendations stand (owner card, 2026-09-24: art register = NYC wildstyle + UK stencil + mystic-abstract blended; ALL 27 vanilla memes get a glyph, no tone exclusions; RM_Graffiti_Stencil_Crown ships FEATURE with an RSW Aurebesh/cog variant). Two build waves landed against this doc's own v1 slice (§5): wave 1 (commits c84a04929/d6a3fe2d3/83afc24f6/bec4e1019/57fd8d17b/2ddf6df03, engine + 8 of 27 meme glyphs) and wave 2 (this pass: the remaining 19 meme glyphs, skill-gating on ThrowUp, the Empire-hostility gate on Stencil_Crown). Ground truth for what exists: src/RimMandrake/Graffiti/ (read in full) and items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md, which is now this doc's own state of record — read that item before this doc for anything that might have moved since a build wave landed. Predecessor spec, still the campaign side's authority: design/Jawa/graffiti_spec.md (§2/§5 reconciled against the real build, 2026-09-24). Vanilla mechanisms cited below were read from RimWorld 1.6 source via RimSage, file and line named; nothing is guessed. Still open (non-blocking placeholders per the item's own text): the Loyalist/Guilty/Collectivist/Individualist/Shipborn glyph-subject mappings, and which of the six GRAFFITI_GENERIC_MARKS_1 review-candidate PNGs become defs. -->
+<!-- status: RULED AND BUILT, 2026-09-24 — forks F1-F10 ruled 2026-10-09 by question card, every recommendation accepted (§7); earlier cards 2026-09-24/25 ruled the art register = NYC wildstyle + UK stencil + mystic-abstract blended; ALL 27 vanilla memes get a glyph, no tone exclusions; RM_Graffiti_Stencil_Crown ships FEATURE with an RSW Aurebesh/cog variant). Two build waves landed against this doc's own v1 slice (§5): wave 1 (commits c84a04929/d6a3fe2d3/83afc24f6/bec4e1019/57fd8d17b/2ddf6df03, engine + 8 of 27 meme glyphs) and wave 2 (this pass: the remaining 19 meme glyphs, skill-gating on ThrowUp, the Empire-hostility gate on Stencil_Crown). Ground truth for what exists: src/RimMandrake/Graffiti/ (read in full) and items/GRAFFITI_PUNK_IDEOLIGION_SCOPE_1.md, which is now this doc's own state of record — read that item before this doc for anything that might have moved since a build wave landed. Predecessor spec, still the campaign side's authority: design/Jawa/graffiti_spec.md (§2/§5 reconciled against the real build, 2026-09-24). Vanilla mechanisms cited below were read from RimWorld 1.6 source via RimSage, file and line named; nothing is guessed. Still open (non-blocking placeholders per the item's own text): the Loyalist/Guilty/Collectivist/Individualist glyph-subject mappings (Shipborn ruled hull-and-star 2026-09-25), and which of the six GRAFFITI_GENERIC_MARKS_1 review-candidate PNGs become defs. -->
 # RM Graffiti — widening the base mod: punk-urban marks and ideoligion sigils
 
 _Owner, verbatim (2026-09-09): "we want the base Graffiti mod to have a wide
@@ -12,7 +12,7 @@ the Utinni modpack for it."_
 surface `mandrake.rm.graffiti` (RM tier, generic, no franchise or campaign
 vocabulary) should grow to, names what is genuinely new mechanically versus
 reskinned, draws the RM/RUT seam so the Salvation follow-on is a content pack
-and not a second engine, and lists the forks the brief does not decide. It
+and not a second engine, and records the owner's rulings on the ten forks the brief did not decide (§7). It
 does not build anything, and it does not touch the three generic marks
 GRAFFITI_GENERIC_MARKS_1 shipped — those are treated as a starting subset
 (§2.4). New defNames use the shipped stem `RM_Graffiti_*`.
@@ -98,8 +98,8 @@ it does. Split it:
 - **`GraffitiCategory`** stays the FUNCTION axis, renamed generic where the
   current names lean campaign: `Devotional` (né Sacred), `Mural`, `Jest`,
   `Taunt`, `Code` (né Cant — "clan-only wayfinding" is a Jawa idea; a
-  raider gang's crew marks are the same mechanism). Fork F8 asks whether the
-  rename is worth the churn.
+  raider gang's crew marks are the same mechanism). Fork F8 ruled the rename
+  (2026-10-09); the enum carries the new names.
 
 Form drives: art conventions, `cleaningWorkToReduceThickness` (a paste peels
 in a fraction of a stencil's scrub), `rainWashes`, whether it can be layered
@@ -135,12 +135,12 @@ styled for that ideoligion", and it works on Filth.**
 - Named deities carry their own `iconPath` and `relatedMeme`
   (`IdeoFoundation_Deity.Deity`, `IdeoFoundation_Deity.cs:13-23`).
 
-Three sigil tiers, cheapest first; the owner picks the v1 tier (fork F2):
+Three sigil tiers, cheapest first; v1 ships A + C (fork F2, ruled 2026-10-09), B is not in v1:
 
 | Tier | Mechanism | Art cost | What it gives |
 |---|---|---|---|
 | **A — Icon sigil** | `Filth_Mark` with `form=Sigil` draws the ideo's own `Icon` texture over a sprayed frame, tinted `DrawColor` → `ideo.ApparelColor` (`Thing.DrawColor` is virtual, `Thing.cs:638`) | **~3 frame textures** (halo, stencil-box, drip-frame) | every ideoligion in the game, generated or authored, has a wall sigil on day one, in its colour, with zero per-ideo art. A Cannibal/Morbid raid's sigil is their skull icon; a Rancher settlement's is their animal icon |
-| **B — Style-variant marks** | RM patches `StyleCategoryDef.thingDefStyles` rows for its own mark defs across the 11 vanilla categories (`Hindu Christian Islamic Buddhist Morbid Totemic Spikecore Rustic Animalist Techist Horaxian`, `Defs/Ideology/StyleCategoryDefs/`); a placer sets `StyleDef` from `ideo.GetStyleFor` | **11 × N** per styled mark def | a Techist "warning" glyph is circuitry; a Totemic one is bone and cord; the same def, the ideo's dialect. Recommend N=2 in v1 (the sigil frame and the territorial tag), never the whole set |
+| **B — Style-variant marks** | RM patches `StyleCategoryDef.thingDefStyles` rows for its own mark defs across the 11 vanilla categories (`Hindu Christian Islamic Buddhist Morbid Totemic Spikecore Rustic Animalist Techist Horaxian`, `Defs/Ideology/StyleCategoryDefs/`); a placer sets `StyleDef` from `ideo.GetStyleFor` | **11 × N** per styled mark def | a Techist "warning" glyph is circuitry; a Totemic one is bone and cord; the same def, the ideo's dialect. Not in v1 (fork F2); if taken later, N=2 (the sigil frame and the territorial tag), never the whole set |
 | **C — Meme-affinity marks** | mark defs declare `requiresAnyMeme` (MayRequire-wrapped `MemeDef` list) and the pool selector (§1.4) only offers them to an ideo holding one | **1 per meme** covered | the content of §3: the glyph a Raider gang, a Blindsight cult, a Tunneler warren leaves is DIFFERENT, not just recoloured |
 
 All three read the ideo of the placing pawn (`pawn.Ideo`) or faction
@@ -171,8 +171,8 @@ Placers, and what is new about each:
 | Spree / Joy | yes | `JobDriver_PaintGraffiti` | becomes pool-driven; skill and mood select Scrawl vs Tag vs ThrowUp |
 | Designator + bill | **new** | ordinary `Designator` + `WorkGiver` + `JobDef`, the same shape as vanilla floor-drawing (`JobDriver_Floordrawing`, the model this driver already cites) | the player verb: pick a mark, pick a wall cell, an Artistic pawn paints it. Murals/Pieces get a bill with `WorkToBuild`-style duration |
 | Ritual outcome | yes (SacredGraffiti) | `RitualOutcomeEffectWorker_PlaceSacredMark` | moves into Graffiti per the consolidation plan; unchanged |
-| **Raid tagging** | **new** | a lord-toil hook on the assault lord's exit/flee transition (`LordToil_ExitMap`, `Verse/AI/Group/LordToil_ExitMap.cs:5`) — the exact transition point is **to be verified in the build**, not assumed here | raiders leave their faction's tag or sigil on an exterior wall on the way out (fork F3 decides in/out/both). This is where "graffiti as seen in urban settlements" becomes a live system: your walls accumulate the marks of everyone who has hit you |
-| **Settlement generation** | **new** | a `GenStep` in the settlement map-gen (this project's Inhabited already ships `GenStep_RimplacePlan`) | an enemy or friendly settlement map is born already tagged in its own ideo's sigils, territorial tags on the approach, warnings at its defences. Fork F9: v1 or later |
+| **Raid tagging** | **new** | a lord-toil hook on the assault lord's exit/flee transition (`LordToil_ExitMap`, `Verse/AI/Group/LordToil_ExitMap.cs:5`) — the exact transition point is **to be verified in the build**, not assumed here | raiders leave their faction's tag or sigil on an exterior wall on the way out (fork F3 ruled: on the way out only; visitors v2). This is where "graffiti as seen in urban settlements" becomes a live system: your walls accumulate the marks of everyone who has hit you |
+| **Settlement generation** | **new** | a `GenStep` in the settlement map-gen (this project's Inhabited already ships `GenStep_RimplacePlan`) | an enemy or friendly settlement map is born already tagged in its own ideo's sigils, territorial tags on the approach, warnings at its defences. v2 (fork F9) |
 | **Visitor / trader** | **new, optional** | on caravan/visitor lord departure | a friendly ideo leaves a small Paste or Tag; pool weight low. Gives the Proselytizer meme something to DO on your walls (§3.2) |
 | Breach reading | yes | `BreachBiasHook` | unchanged; now `breachLure` marks can be raider-placed too, which is a gameplay loop (their taunt lures the next raid to the same door — a gang war on your wall) |
 
@@ -210,7 +210,7 @@ faction.
 - **Form decides decay.** `Paste` sets `filth.disappearsInDays`; `Stencil`
   and `Sigil` do not; `rainWashes` true for Scrawl/Tag, false for Stencil.
   Pure XML per form, already-supported fields.
-- Fork F4 asks whether going-over ships in v1.
+- Going-over ships in v1 (fork F4, ruled 2026-10-09).
 
 ### 1.7 Scrub semantics
 
@@ -248,12 +248,12 @@ scene can read. Each of those is a mechanic above, not a texture. The forms
 in §1.2 are the real-world taxonomy (tag → throw-up → piece; stencil;
 wheat-paste; crossing-out/going-over; crew marks; slogans).
 
-### 2.1 Text policy (fork F5, recommended: asemic)
+### 2.1 Text policy (fork F5, ruled: asemic)
 
 Real graffiti is mostly LETTERS. RimWorld has no in-world script, and any
 English word on a texture is a localisation and a franchise problem (the
 Aurebesh variant is already reserved to RSW in graffiti_spec.md §5).
-Recommended: **asemic letterforms** — throw-ups and tags drawn as
+Ruled: **asemic letterforms** — throw-ups and tags drawn as
 letter-shaped strokes that read as writing and spell nothing. The in-flight
 gen prompt already forbids lettering; this extends it to "forms that look
 like letters". Slogans then live in the inspect text, not the art.
@@ -272,7 +272,7 @@ like letters". Slogans then live in the inspect text, not the art.
 | `RM_Mark_Paste_Flyer` | Paste · Jest | Visitor, Designator | a pasted paper poster, asemic headline; decays in days, peels in rain; small Jest thought; a Proselytizer settlement's visitors leave these |
 | `RM_Mark_Paste_Wanted` | Paste · Taunt | RaidExit, SettlementGen | a torn "wanted"-style poster with a silhouette; hostile marker |
 | `RM_Graffiti_Scratches` / `_TallyMarks` / `_WarningGlyph` (shipped) | Glyph · Code | Designator, SettlementGen | GRAFFITI_GENERIC_MARKS_1's three — wear, tally, hazard; `WarningGlyph` gets `breachLure` as the engine's one generic taunt-funnel example |
-| `RM_Mark_Piece_Base` | Piece · Mural | Designator bill only | the mural placeholder; quality-bearing once fork F1 rules the thingClass |
+| `RM_Mark_Piece_Base` | Piece · Mural | Designator bill only | the mural placeholder; v2: a `Building`-class wall attachment with `CompArt` (fork F1) |
 
 Fourteen assets at the in-flight prompt's cost (one Codex call + validate
 each, per generating-rimworld-sprites) plus three sigil frames for §1.3-A.
@@ -424,13 +424,12 @@ the criterion to review the build against.
   · validator extensions. Estimate: comparable to GRAFFITI_FRAMEWORK_BUILD_1's
   third pass, one focused FOUNDRY session plus one live proof window.
 - **Art**: 14 punk + 3 frames + 8 meme glyphs = **25 assets** via the
-  in-flight pipeline; tier B rows for two defs × 11 categories = 22 more if
-  the owner takes B in v1 (fork F2).
+  in-flight pipeline; tier B is not in v1 (fork F2).
 - **XML**: ~40 ThingDefs, ~10 ThoughtDefs, pool tables, style rows behind
   `MayRequire="Ludeon.RimWorld.Ideology"`.
 - **Deferred to v2 by this design**: settlement `GenStep` (F9), Visitor
   placer, deity sigils beyond tier A, relic/venerated-animal subjects, murals
-  with quality (pending F1), faction memory of insults, cant on the world map.
+  with quality (F1: `CompArt` building), faction memory of insults, cant on the world map.
 
 ---
 
@@ -450,38 +449,24 @@ the hostile tag only when designated.
 
 ---
 
-## 7. Forks for the owner — named, not picked
+## 7. Forks — ruled 2026-10-09 (decision taken by question card: every recommendation accepted)
 
-- **F1 — Murals' thingClass.** `Filth` cannot carry `CompQuality`/`CompArt`.
-  Options: (a) murals become a `Building`-class wall attachment with
-  `CompArt` like sculpture (quality, tale subjects, real art) while every
-  other form stays Filth; (b) drop quality from murals and keep one class;
-  (c) defer murals entirely. Recommendation: (a), v2.
-- **F2 — Sigil tier for v1.** A alone (zero per-ideo art, every ideo covered
-  day one) · A + C (the eight-meme glyph slice) · A + B (two styled defs × 11
-  categories) · all three. Recommendation: A + C.
-- **F3 — Raid tagging: when.** On the way OUT only (flee/exit — the losers'
-  mark, cheap to hook) · on the way IN (a lull toil while assaulting — riskier
-  AI change) · both. And: do friendly visitors/traders tag at all in v1?
-  Recommendation: out only; visitors v2.
-- **F4 — Going-over in v1.** It is one override, but it changes what
-  vanilla `ThickenFilth` means for every mark. Ship v1 or hold.
-- **F5 — Text.** Asemic letterforms only (recommended) · real English slogans
-  in art (localisation debt; RSW Aurebesh reserved) · slogans in inspect text
-  only.
-- **F6 — Player verb.** Full designator + bill (choose mark, choose wall) ·
-  quick-paint job from a gizmo · none in v1 (marks only from sprees, raids,
-  rituals). Recommendation: designator, it is the "wide functionality" the
-  player touches.
-- **F7 — Scrub default.** Protect own-faction and Devotional marks from
-  auto-clean (recommended) · protect all marks · protect nothing (vanilla
-  filth behaviour; the mod cleans itself away).
-- **F8 — Category names.** Rename `Sacred → Devotional`, `Cant → Code` in the
-  RM enum now (cheap, pre-freeze; the enum is serialised by name in
-  `ModExtension` XML only) · keep the graffiti_spec.md names.
-- **F9 — Settlement GenStep.** v1 (settlement maps arrive tagged — the
-  strongest "urban settlement" read, but it touches every settlement map
-  generation and needs its own live proof) · v2.
-- **F10 — The three shipped marks' role.** Confirm they are the `Glyph`/`Code`
-  form's default members with `RM_Graffiti_WarningGlyph` carrying the engine's
-  example `breachLure`, or keep them flavour-only with no mechanics attached.
+- **F1 — Murals' thingClass.** `Filth` cannot carry `CompQuality`/`CompArt`, so murals
+  become a `Building`-class wall attachment with `CompArt` like sculpture (quality, tale
+  subjects, real art); every other form stays Filth. **v2.**
+- **F2 — Sigil tiers in v1: A + C.** Tier A (the ideo's own icon, tinted, in a sprayed
+  frame) and tier C (one glyph per vanilla meme, offered only to ideos holding it). Tier B
+  (`thingDefStyles` rows across the 11 style categories) is not in v1.
+- **F3 — Raid tagging: on the way OUT only** (flee/exit, the losers' mark). Friendly
+  visitors and traders do not tag in v1; the visitor placer is **v2**.
+- **F4 — Going-over ships in v1.** A rival's mark replaces the old one at the cell; the same
+  def still thickens as vanilla filth does.
+- **F5 — Text: asemic letterforms only.** No real English slogans in art.
+- **F6 — Player verb: full designator + bill** (choose mark, choose wall).
+- **F7 — Scrub default: own-faction and Devotional marks are protected from auto-clean.**
+  A forced (player-ordered) clean overrides.
+- **F8 — Category names: `Sacred → Devotional`, `Cant → Code` in the RM enum, now.**
+- **F9 — Settlement GenStep: v2.**
+- **F10 — The three shipped marks** (`RM_Graffiti_Scratches`, `RM_Graffiti_TallyMarks`,
+  `RM_Graffiti_WarningGlyph`) **are the `Glyph`-form / `Code`-category default members**, and
+  `RM_Graffiti_WarningGlyph` carries the engine's example `breachLure`.
