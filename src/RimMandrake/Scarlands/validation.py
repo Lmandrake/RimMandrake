@@ -58,6 +58,58 @@ MARK_DEFS = ["HediffDef/RM_WarscarMark", "ThoughtDef/RM_WarscarMarkThought"]
 NEW_DEFS = ["ThingDef/RM_OldLineTurret", "ThingDef/RM_OldLineTurret_Gun", "ThingDef/RM_OldLineTurret_Bullet"]
 
 
+# SCARLANDS_RELOAD_MIDSTATE_1: save-and-reload of half-finished states. Each row names the state holder, the exact
+# members read BEFORE the save and AFTER the load, and what must hold across the reload. `src` is the C# file the
+# members live in, so static_checks can prove no member name is a typo (a typo would read "missing" on both sides and
+# compare equal). The mid-flight scene is arranged by the sitting; a chain that finds the state NOT mid-flight reads
+# UNMEASURED, never PASS.
+RELOAD_STEPS = [
+    {"key": "settling_sweep_midway", "tool": "jawa/map_comp_read", "comp": "MapComponent_Settling",
+     "members": ("sweepActive", "sweepCellsPerStep", "calmTicks", "windyTicks", "downwind", "buried"),
+     "src": "Source/RM_Settling.cs", "mid": ("sweepActive", "True"),
+     "arrange": "a Settling sweep under way (sweepActive True, cells still buried)",
+     "rule": "every member equal after the reload: the sweep resumes where it stopped"},
+    {"key": "ring_repair_parts_in_hauler", "tool": "jawa/comp_read", "thing": "RM_ProjectorCore", "comp": "WarscarRing",
+     "members": ("cond", "evaluated"), "src": "Source/RM_WarscarRings.cs", "mid": ("cond", None),
+     "arrange": "a ring designated for repair with a hauler carrying the 2 industrial components toward it",
+     "rule": "ring cond and evaluated equal after the reload, and the map's total ComponentIndustrial stack count "
+             "(jawa/list_things) unchanged: parts are neither lost nor duplicated"},
+    {"key": "cradle_mid_wake", "tool": "jawa/inspect_string", "thing": "RM_HospiceCradle",
+     "members": (), "src": "Source/RM_Hospice.cs", "state_fields": ("stage", "partIn", "etchantIn", "ticksLeft", "graceTicks"),
+     "mid": ("stage", None),
+     "arrange": "a hospice cradle past diagnosis and before waking (stage 2-4, partIn True)",
+     "rule": "inspect text (carries the stage label and time left) equal after the reload"},
+    {"key": "pool_mid_phase", "tool": "jawa/inspect_string", "thing": "RM_ReactionPool",
+     "members": (), "src": "Source/RM_ReactionPools.cs", "state_fields": ("offsetTicks", "frozenTicks", "holdStart", "holdUntil"),
+     "mid": ("holdStart", None),
+     "arrange": "a reaction pool on a phase boundary or held by a catalyst (holdUntil in the future)",
+     "rule": "inspect text (phase and time left) equal after the reload"},
+    {"key": "chotrix_mid_drag", "tool": "jawa/comp_read", "thing": "RM_Chotrix", "comp": "Chotrix",
+     "members": ("revealUntil", "fleeUntil", "lastStrike"), "src": "Source/RM_Chotrix.cs", "mid": ("lastStrike", None),
+     "arrange": "a chotrix that has just bitten and is dragging its victim",
+     "rule": "revealUntil, fleeUntil and lastStrike equal after the reload; the drag itself (victimDragged, lastVictim) is "
+             "NOT saved by design, so the chotrix must come back without a stuck drag and with no new Error line"},
+]
+
+
+def reload_step_problems():
+    """Every member a reload step reads exists as a field in the C# that owns the state."""
+    bad = []
+    here = os.path.dirname(os.path.abspath(__file__))
+    if len(RELOAD_STEPS) != 5:
+        bad.append("expected five reload steps, found %d" % len(RELOAD_STEPS))
+    for s in RELOAD_STEPS:
+        path = os.path.join(here, s["src"])
+        if not os.path.isfile(path):
+            bad.append("%s: source %s missing" % (s["key"], s["src"]))
+            continue
+        text = open(path, encoding="utf-8").read()
+        for m in tuple(s["members"]) + tuple(s.get("state_fields", ())):
+            if not re.search(r"\b%s\b" % re.escape(m), text):
+                bad.append("%s: member %s not found in %s" % (s["key"], m, s["src"]))
+    return bad
+
+
 def static_checks():
     """Return a list of failure strings; empty means pass. Needs no game."""
     bad = []
@@ -446,6 +498,7 @@ def static_checks():
     if "<label>deepening mark</label>" not in mark:
         bad.append("the mark has no 'deepening' stage for the panel gate to read")
     bad += bileworm_gas_problems()
+    bad.extend(reload_step_problems())
     return bad
 
 
@@ -881,6 +934,67 @@ def _build_suite():
                 return
             _unmeasured(t, "a caravan carrying RM_TetchikJar receiving the message approaching a polluted tile needs a live world "
                            "with a polluted tile and a caravan on a path")
+
+    @suite.chain("reload_midstate")
+    def reload_midstate(t):
+        import time as _time
+
+        def _reads(step):
+            """Name -> text of every member this step reads, from the live game."""
+            if step["tool"] == "jawa/map_comp_read":
+                r = t.bridge_call("jawa/map_comp_read", comp=step["comp"], members=",".join(step["members"]))
+                return dict((r or {}).get("values") or {}), (r or {}).get("missing") or []
+            if step["tool"] == "jawa/comp_read":
+                r = t.bridge_call("jawa/comp_read", thing=step["thing"], comp=step["comp"], members=",".join(step["members"]))
+                return dict((r or {}).get("values") or {}), (r or {}).get("missing") or []
+            lt = t.bridge_call("jawa/list_things", defs=step["thing"], limit=1)
+            rows = (lt or {}).get("things") or []
+            if not rows:
+                return {}, ["no %s on the current map" % step["thing"]]
+            return {"inspect": _inspect(t, rows[0].get("id"))}, []
+
+        def _components(step):
+            if step["key"] != "ring_repair_parts_in_hauler":
+                return None
+            r = t.bridge_call("jawa/list_things", defs="ComponentIndustrial", limit=100)
+            return sum(int(x.get("stackCount", 1) or 1) for x in (r or {}).get("things") or [])
+
+        def _reload(name):
+            t.bridge_call("rimworld/save_game", saveName=name)
+            _time.sleep(3.0)
+            t.bridge_call("rimworld/load_game_ready", saveName=name)
+            for _ in range(40):
+                mi = t.bridge_call("jawa/map_info")
+                if isinstance(mi, dict) and mi.get("success") is not False and mi.get("size"):
+                    return True
+                _time.sleep(1.0)
+            return False
+
+        for step in RELOAD_STEPS:
+            with t.component(step["key"] + "_survives_save_load", beyond_toggle=True):
+                if t.session is None:
+                    return
+                before, missing = _reads(step)
+                if missing or not before:
+                    _unmeasured(t, "%s: could not read the state before the save (%s); arrange %s" % (step["key"], missing, step["arrange"]))
+                    continue
+                key, want = step["mid"]
+                if key in before and want is not None and str(before[key]) != want:
+                    _unmeasured(t, "%s is not mid-flight (%s = %s, want %s); arrange %s" % (step["key"], key, before[key], want, step["arrange"]))
+                    continue
+                parts_before = _components(step)
+                if not _reload("rmReload_" + step["key"]):
+                    raise ExpectationFailed("%s: the game did not come back after load_game_ready" % step["key"])
+                after, missing2 = _reads(step)
+                if missing2:
+                    raise ExpectationFailed("%s: state unreadable after the reload: %s" % (step["key"], missing2))
+                differs = sorted(k for k in set(before) | set(after) if str(before.get(k)) != str(after.get(k)))
+                if differs:
+                    raise ExpectationFailed("%s: %s changed across the reload (%s). Rule: %s" % (
+                        step["key"], differs, [(k, before.get(k), after.get(k)) for k in differs][:4], step["rule"]))
+                parts_after = _components(step)
+                if parts_before is not None and parts_before != parts_after:
+                    raise ExpectationFailed("%s: ComponentIndustrial total %s -> %s across the reload" % (step["key"], parts_before, parts_after))
 
     # NORTHSTAR_PARTIAL_GAPS_FILL_1 (audit row: "RM_Warscar BiomeDef itself ... biome+flora have no script"):
     # every one of the ~100 shipped defs is loaded live (only 19 were named anywhere above), and the biome's own
