@@ -67,9 +67,21 @@ namespace RimMandrake.LongShade
         /// <summary>LONGSHADE_MIDDENS_SPENT_BUILD_1: mirrak and gulloth patches carry a visible "unnaturally clean" patch.</summary>
         public static bool cleanPatchTellEnabled = true;
 
+        /// <summary>LONGSHADE_TOLLOK_TICKS_1: sitting long in wild deep shade gives the tollok infestation. Built shade is clean.</summary>
+        public static bool tollokTicksEnabled = true;
+
+        /// <summary>LONGSHADE_LURE_AWNING_1: the lure awning casts shade. Off: it is ordinary furniture.</summary>
+        public static bool lureAwningEnabled = true;
+
+        /// <summary>LONGSHADE_STAMPEDE_ROOF_1: the overheated-herd stampede incident.</summary>
+        public static bool stampedeEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref tollokTicksEnabled, "tollokTicksEnabled", true);
+            Scribe_Values.Look(ref lureAwningEnabled, "lureAwningEnabled", true);
+            Scribe_Values.Look(ref stampedeEnabled, "stampedeEnabled", true);
             Scribe_Values.Look(ref modEnabled, "modEnabled", true);
             Scribe_Values.Look(ref dewfringeShadeLineGateEnabled, "dewfringeShadeLineGateEnabled", true);
             Scribe_Values.Look(ref crawlerRoadEnabled, "crawlerRoadEnabled", true);
@@ -144,6 +156,19 @@ namespace RimMandrake.LongShade
             list.CheckboxLabeled("Clean-patch tell", ref cleanPatchTellEnabled,
                 "A patch of shade that a mirrak or gulloth lairs in is marked on the ground as "
               + "'unnaturally clean', with an inspect line. Changes the generated map (worldgen-affecting).");
+            list.GapLine();
+
+            list.Label("Shade extras");
+            list.CheckboxLabeled("Tollok ticks in wild shade", ref tollokTicksEnabled,
+                "Animals and colonists that sit still for an hour in the deep middle of a natural patch pick up "
+              + "tollok ticks: pain, then bleeding. Shade you built (a roof, a tent, a parasol) is clean, so it is worth more. "
+              + "Off: resting in wild shade is free.");
+            list.CheckboxLabeled("Lure awning", ref lureAwningEnabled,
+                "A cheap hide awning on poles that throws a patch of shade where there was none, to draw game within "
+              + "gunshot. Off: the awning casts nothing and is ordinary furniture.");
+            list.CheckboxLabeled("Stampede for your roof", ref stampedeEnabled,
+                "A herd caught out in the heat with every patch full may bolt for the roofed part of your home area "
+              + "and stay until it has cooled. Off: the incident never fires.");
             list.GapLine();
 
             list.Label("Shade-seeking wander and contact venom");

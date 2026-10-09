@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LONGSHADE_LURE_AWNING_1 (ideation N4). A cheap stretched-hide awning on poles, a lure for game. Reuses the shade-gear footprint
+     comp for the shade itself, so it needs no new shade code. Numbers PROVISIONAL.
+     ART OWED: placeholder is the shade tent sprite, tinted. -->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_LureAwning</defName>
+    <label>lure awning</label>
+    <description>Hides stretched on four poles, set where there is no shade at all. Game that has been running in the sun finds it and stops. A hunter's trick: put it one dash from a herd's route and wait with a rifle. It shades its footprint only, and a dakkra may take the tenancy before the game does.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_ShadeGear/RM_ShadeTent</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <color>(176, 140, 96)</color>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0.1</fillPercent>
+    <canOverlapZones>true</canOverlapZones>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <WorkToBuild>400</WorkToBuild>
+      <Flammability>1</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <stuffCategories>
+      <li>Leathery</li>
+    </stuffCategories>
+    <costStuffCount>25</costStuffCount>
+    <costList>
+      <WoodLog>10</WoodLog>
+    </costList>
+    <thingCategories>
+      <li>BuildingsTemperature</li>
+    </thingCategories>
+    <designationCategory>Temperature</designationCategory>
+    <techLevel>Neolithic</techLevel>
+    <building>
+      <destroySound>BuildingDestroyed_Soft_Small</destroySound>
+    </building>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear">
+        <mode>footprint</mode>
+        <shadeDepth>0.7</shadeDepth>
+        <overheadFactor>1</overheadFactor>
+        <lowSunFactor>0.3</lowSunFactor>
+      </li>
+      <li Class="RimMandrake.LongShade.CompProperties_RM_LureAwning" />
+    </comps>
+  </ThingDef>
+</Defs>

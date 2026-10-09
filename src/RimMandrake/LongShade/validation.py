@@ -96,7 +96,7 @@ def static_checks():
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "LongShade.md")):
         bad.append("walk missing")
     for fn in (crawler_road_problems, sun_graves_problems, shipfall_problems, mirrak_problems, vorrel_problems,
-               dewfringe_problems, roster_problems, midden_problems):
+               dewfringe_problems, roster_problems, midden_problems, extras_problems):
         bad.extend(fn())
     return bad
 
@@ -272,6 +272,55 @@ def midden_problems():
             bad.append("clean-patch lairRaces must name RM_Mirrak and RM_Gulloth")
     if _def(root, "ThingDef", "RM_LongShadeCleanPatch") is None:
         bad.append("RM_LongShadeCleanPatch marker ThingDef missing")
+    return bad
+
+
+def extras_problems():
+    """LONGSHADE_SHADE_EXTRAS_1: tollok ticks, lure awning, stampede for your roof; the empty patch warning reuses the clean-patch tell."""
+    bad, src = [], _cs("RM_ShadeExtras.cs")
+    # tollok: hediff, giver gated on both toggles, built shade is never wild
+    hed = _def(_xml("HediffDefs", "RM_Tollok_Hediffs.xml"), "HediffDef", "RM_TollokInfestation")
+    if hed is None:
+        bad.append("HediffDef RM_TollokInfestation missing")
+    elif not any(float(st.findtext("bleedRate") or 0) > 0 for st in hed.findall("stages/li")):
+        bad.append("tollok infestation never bleeds (the owner's pitch is itching then bleeding)")
+    tol = src.split("class RM_MapComponent_Tollok", 1)[1].split("// ───", 1)[0]
+    if "tollokTicksEnabled" not in tol or "modEnabled" not in tol:
+        bad.append("tollok scan no longer gated on modEnabled/tollokTicksEnabled")
+    if "RM_LongShadeKernel.WildDeepShade(" not in tol or "RoofShadeAt" not in tol or "GearShadeAt" not in tol:
+        bad.append("tollok no longer tests roof and gear shade (built shade must be clean)")
+    # lure awning: shade comes from the shade-gear footprint comp; our comp is the toggle
+    aw = _def(_xml("ThingDefs_Buildings", "RM_LureAwning.xml"), "ThingDef", "RM_LureAwning")
+    if aw is None:
+        bad.append("ThingDef RM_LureAwning missing")
+    else:
+        cls = [e.get("Class", "") for e in aw.iter("li")]
+        if "RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear" not in cls:
+            bad.append("lure awning casts no shade (lost RM_CompProperties_ShadeGear)")
+        if "RimMandrake.LongShade.CompProperties_RM_LureAwning" not in cls:
+            bad.append("lure awning lost its toggle comp")
+        if aw.findtext("designationCategory") != "Temperature":
+            bad.append("lure awning is not buildable (no designationCategory)")
+    if "lureAwningEnabled" not in src.split("class RM_CompLureAwning", 1)[1].split("// ───", 1)[0]:
+        bad.append("lure awning comp no longer reads lureAwningEnabled")
+    # stampede: incident def names the worker class; worker is toggle- and biome-gated
+    inc = _def(_xml("IncidentDefs", "RM_ShadeStampede.xml"), "IncidentDef", "RM_ShadeStampede")
+    if inc is None:
+        bad.append("IncidentDef RM_ShadeStampede missing")
+    else:
+        cn = (inc.findtext("workerClass") or "").split(".")[-1]
+        if "class %s" % cn not in src:
+            bad.append("stampede workerClass %s not found in RM_ShadeExtras.cs" % cn)
+        if BIOME not in [e.text for e in inc.findall("allowedBiomes/li")]:
+            bad.append("stampede is not restricted to the Long Shade")
+    wk = src.split("class IncidentWorker_RM_ShadeStampede", 1)[1]
+    if "stampedeEnabled" not in wk.split("CanFireNowSub", 1)[1].split("TryExecuteWorker", 1)[0]:
+        bad.append("stampede CanFireNowSub no longer gates on stampedeEnabled")
+    if "StampedeReady(" not in wk or "RM_LongShadeKernel.StampedeContinues(" not in src:
+        bad.append("stampede lost its kernel tests (herd readiness / release when cooled)")
+    # empty patch warning REUSES the clean-patch tell: exactly one tell comp, no second inspect line for it
+    if len(re.findall(r"class \w*CleanPatchTell\w*\s*:\s*ThingComp", _cs("RM_LongShadeMiddenMapgen.cs") + src)) != 1:
+        bad.append("empty-patch warning must reuse the one clean-patch tell comp (LONGSHADE_EMPTY_PATCH_WARNING_1)")
     return bad
 
 

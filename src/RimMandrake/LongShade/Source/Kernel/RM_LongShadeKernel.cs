@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace RimMandrake.LongShade
 {
-    public static class RM_LongShadeKernel
+    public static partial class RM_LongShadeKernel
     {
         // ================================================================= midden heaps
         /// <summary>A heap can be tended while it has room for another layer and its cooldown since the last tend has run out.</summary>
