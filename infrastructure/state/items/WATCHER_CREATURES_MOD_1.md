@@ -88,3 +88,17 @@ Mod Settings toggle per feature; every DLC is assumed present.
 - A design pitch is written and ruled by the owner: the kit mechanism, and a per-biome candidate
   member list drawn from existing rosters plus new creatures.
 - The kit is built, and one member per biome is proven on a quicktest map.
+
+## built: the Rust Cathedral Watcher (2026-10-08, `21d276478`, unrun in game)
+
+`RM_Watcher` (mechanoid flesh, the living-bolt shape; own think tree `RM_ThinkTree_Watcher`; medium
+`RM_RustCathedral_CrackedMetalSoil`). Its watch job `RM_JobDriver_WatcherStalk` reuses the kit's decision and adds the stalk:
+rise (`RM_WatcherStalkRise`, keyframe AnimationDef) -> head eases toward the nearest pawn not of its kind, shown in eight
+45-degree pictures -> on a flinch, retract (`RM_WatcherStalkRetract`) and only then hide with the seam-glint sign
+(`RM_WatcherStalkKernel.Step`, fuzz family `stalk`; a hide-at-half-retract mutation is caught). Death: the kit's death action
+swaps the corpse for `RM_WatcherRemains_Watcher` (husk), which smelts once into 3 steel. Mod Settings: its own section
+(stalks on/off, animation, smooth turning). **All numbers PROVISIONAL:** flinch 9, watch 16, hide 7500~15000, retract 10
+ticks, rise 40, turn 4 deg/tick, baseHealthScale 0.03, geometry in `RM_Watcher_RenderTree.xml`.
+Art: placeholders are tinted vanilla turret textures; 9 artpipe jobs queued (`rm_watcher_head_{e,ne,n,se,s}_v1`, stalk,
+hatch, husk, seam-glint sign). When the heads land, list them under the head node's `octantTexPaths` (N, NE, E, SE, S).
+Not wired: the alarm ripple reaches it (it derives from the kit driver) but the per-map active cap does not count it.
