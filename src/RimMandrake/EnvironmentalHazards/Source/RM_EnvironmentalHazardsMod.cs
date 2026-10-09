@@ -107,8 +107,13 @@ namespace RimMandrake.EnvironmentalHazards
     //  21. dryAirBlowerEnabled — RM_CompDryFieldEmitter
     //      (GREENTIDE_MECHANICS_2 M2). Off: a built dry-air blower stops
     //      holding back plant growth and repelling wild animals in its
-    //      doorway arc; it still draws power/fuel and pushes heat like any
-    //      running machine.
+    //      doorway arc; it still draws power/fuel and cools the room behind it.
+    //  21a. dryAirBlowerCoolingEnabled / dryAirBlowerCoolingStrength /
+    //      dryAirBlowerPowerWatts — RM_CompBlowerRoomCooler
+    //      (BLOWER_ROOM_COOLER_1). The blower cools the enclosed room behind it
+    //      toward its target temperature and never heats any room. Strength in
+    //      heat units per second (vanilla cooler: 21), power in watts while
+    //      cooling; PROVISIONAL 14 and 250. Off: no cooling, low power draw.
     //  22. treeFallEnabled — RM_TreeFallUtility.FellTree (GREENTIDE_MECHANICS_2
     //      M6). Single choke point for all three fellers: off means a
     //      cracking giant tree stops rolling/warning, the Shatterer's own
@@ -352,6 +357,11 @@ namespace RimMandrake.EnvironmentalHazards
     //      ArmorRating, so it starts choosing hazard gear on its own. Never
     //      changes what the gear actually does once worn — only whether the
     //      AI notices it is worth wearing.
+    //  58. launchHeldColonistWarningEnabled — RM_Patch_LaunchHeldColonistWarning
+    //      (LAUNCH_HELD_COLONIST_WARNING_1). On: the gravship launch
+    //      confirmation names every colonist or colony prisoner held inside
+    //      something not ours (brine jacket, Hwelgrue, Titanoslime). Off: the
+    //      vanilla dialog, unchanged. Never blocks a launch either way.
     // ════════════════════════════════════════════════════════════════════
     public class RM_EnvironmentalHazardsSettings : ModSettings
     {
@@ -382,6 +392,10 @@ namespace RimMandrake.EnvironmentalHazards
         public static float livingRegrowthRateMultiplier = 1f;
         public static bool rootCausewaysEnabled = true;
         public static bool dryAirBlowerEnabled = true;
+        public static bool dryAirBlowerCoolingEnabled = true;
+        public static float dryAirBlowerCoolingStrength = 14f;
+        public static float dryAirBlowerPowerWatts = 250f;
+        public static bool launchHeldColonistWarningEnabled = true;
         public static bool treeFallEnabled = true;
         public static bool breaklightEnabled = true;
         public static bool steamDevilEnabled = true;
@@ -469,6 +483,10 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref livingRegrowthRateMultiplier, "livingRegrowthRateMultiplier", 1f);
             Scribe_Values.Look(ref rootCausewaysEnabled, "rootCausewaysEnabled", true);
             Scribe_Values.Look(ref dryAirBlowerEnabled, "dryAirBlowerEnabled", true);
+            Scribe_Values.Look(ref dryAirBlowerCoolingEnabled, "dryAirBlowerCoolingEnabled", true);
+            Scribe_Values.Look(ref dryAirBlowerCoolingStrength, "dryAirBlowerCoolingStrength", 14f);
+            Scribe_Values.Look(ref dryAirBlowerPowerWatts, "dryAirBlowerPowerWatts", 250f);
+            Scribe_Values.Look(ref launchHeldColonistWarningEnabled, "launchHeldColonistWarningEnabled", true);
             Scribe_Values.Look(ref treeFallEnabled, "treeFallEnabled", true);
             Scribe_Values.Look(ref breaklightEnabled, "breaklightEnabled", true);
             Scribe_Values.Look(ref steamDevilEnabled, "steamDevilEnabled", true);
@@ -609,7 +627,17 @@ namespace RimMandrake.EnvironmentalHazards
               + "this is off. Maps already generated keep whatever network they already have.");
             list.CheckboxLabeled("Dry-air blower plant and animal repel", ref dryAirBlowerEnabled,
                 "A built dry-air blower stops holding back plant growth and repelling wild animals in its "
-              + "doorway arc; it still draws power/fuel and pushes heat like any running machine.");
+              + "doorway arc; it still draws power/fuel and cools the room behind it.");
+            list.CheckboxLabeled("Dry-air blower cools the room behind it", ref dryAirBlowerCoolingEnabled,
+                "The blower is a room cooler that never heats any room: it cools the enclosed room behind it "
+              + "toward its target temperature, with no hot exhaust. Off: no cooling, and it draws low power.");
+            list.Label("Dry-air blower cooling strength: " + dryAirBlowerCoolingStrength.ToString("0") + " heat/s (vanilla cooler 21)");
+            dryAirBlowerCoolingStrength = Mathf.Round(list.Slider(dryAirBlowerCoolingStrength, 0f, 42f));
+            list.Label("Dry-air blower power draw while cooling: " + dryAirBlowerPowerWatts.ToString("0") + " W");
+            dryAirBlowerPowerWatts = Mathf.Round(list.Slider(dryAirBlowerPowerWatts, 0f, 600f) / 10f) * 10f;
+            list.CheckboxLabeled("Warn at gravship launch about held colonists", ref launchHeldColonistWarningEnabled,
+                "The launch confirmation names any colonist or prisoner held inside something (a brine jacket, "
+              + "a creature that swallowed them) so you can free them first. Never blocks the launch.");
             list.CheckboxLabeled("Tree fall (crack, shatter, gnaw)", ref treeFallEnabled,
                 "A cracking giant tree stops rolling and warning, a hazard aura built to shatter trees "
               + "stops felling them, and a creature built to gnaw one down stops seeking a trunk to chew.");

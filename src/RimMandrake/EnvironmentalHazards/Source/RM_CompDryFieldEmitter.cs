@@ -248,7 +248,7 @@ namespace RimMandrake.EnvironmentalHazards
             animal.health.AddHediff(hediff);
 
             animal.mindState?.mentalStateHandler?.TryStartMentalState(
-                MentalStateDefOf.PanicFlee, "dry, bone-scouring heat", forced: true, forceWake: true);
+                MentalStateDefOf.PanicFlee, "a blast of bone-dry air", forced: true, forceWake: true);
         }
     }
 }
