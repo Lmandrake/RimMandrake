@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_JawaReturnTow.xml                     LONGSHADE_JAWA_RETURN_1 (ideation I5, owner admitted 2026-10-08)
+
+  The dead sandcrawler at the end of the Long Shade's Crawler Road was a Jawa clan's. Once a colonist has been inside, nothing
+  hostile is left and the hull is picked clean, a Jawa clan may walk in and tow it away; the map's biggest shadow leaves with it.
+  The mechanism is generic and lives in mandrake.rm.longshade (IncidentWorker_RM_HullTow); this def names the claimants.
+  Guarded by MayRequire on the whole def: the worker class does not exist without the Long Shade. All numbers PROVISIONAL.
+-->
+<Defs>
+  <IncidentDef MayRequire="mandrake.rm.longshade">
+    <defName>RUT_JawaReturnTow</defName>
+    <label>a clan returns for the crawler</label>
+    <category>Misc</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimMandrake.LongShade.IncidentWorker_RM_HullTow</workerClass>
+    <baseChance>2</baseChance>
+    <earliestDay>5</earliestDay>
+    <minRefireDays>30</minRefireDays>
+    <allowedBiomes><li>RM_LongShade</li></allowedBiomes>
+    <modExtensions>
+      <li Class="RimMandrake.LongShade.RM_HullTowExtension">
+        <factionPrefixes>
+          <li>RUT_Jawa_</li>
+        </factionPrefixes>
+        <arrivalPawns>3</arrivalPawns>
+        <towTicks>15000</towTicks>
+        <maxLooseItems>0</maxLooseItems>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+</Defs>

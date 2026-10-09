@@ -275,6 +275,10 @@ def midden_problems():
     return bad
 
 
+def wk_src(src, cls):
+    return src.split("class %s" % cls, 1)[1]
+
+
 def extras_problems():
     """LONGSHADE_SHADE_EXTRAS_1: tollok ticks, lure awning, stampede for your roof; the empty patch warning reuses the clean-patch tell."""
     bad, src = [], _cs("RM_ShadeExtras.cs")
@@ -334,6 +338,23 @@ def extras_problems():
         bad.append("harrok ambush no longer gated on harrokEnabled")
     if "RM_Harrok" not in [e.tag for e in _def(_xml("BiomeDefs", "RM_LongShade.xml"), "BiomeDef", BIOME).find("wildAnimals")]:
         bad.append("harrok is not in the biome roster")
+    # Jawa return: the hull is recorded at the Crawler Road terminus; the campaign incident names the worker and claimants
+    if "SetHull(" not in _cs("RM_LongShadeMapgen.cs"):
+        bad.append("Crawler Road terminus no longer records the hull (the Jawa return has nothing to tow)")
+    tow = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Defs", "IncidentDefs", "RUT_JawaReturnTow.xml")
+    if not os.path.isfile(tow):
+        bad.append("RUT_JawaReturnTow.xml missing in UtinniPatches")
+    else:
+        inc2 = _def(ET.parse(tow).getroot(), "IncidentDef", "RUT_JawaReturnTow")
+        cn2 = ((inc2.findtext("workerClass") if inc2 is not None else "") or "").split(".")[-1]
+        if inc2 is None or "class %s" % cn2 not in src:
+            bad.append("RUT_JawaReturnTow workerClass not found in RM_ShadeExtras.cs")
+        elif inc2.get("MayRequire") != "mandrake.rm.longshade":
+            bad.append("RUT_JawaReturnTow lost MayRequire mandrake.rm.longshade (class absent without the Long Shade)")
+        elif not [e.text for e in inc2.findall("modExtensions/li/factionPrefixes/li")]:
+            bad.append("RUT_JawaReturnTow names no claimant faction prefix")
+    if "jawaReturnEnabled" not in wk_src(src, "IncidentWorker_RM_HullTow"):
+        bad.append("Jawa return CanFireNowSub no longer gates on jawaReturnEnabled")
     # empty patch warning REUSES the clean-patch tell: exactly one tell comp, no second inspect line for it
     if len(re.findall(r"class \w*CleanPatchTell\w*\s*:\s*ThingComp", _cs("RM_LongShadeMiddenMapgen.cs") + src)) != 1:
         bad.append("empty-patch warning must reuse the one clean-patch tell comp (LONGSHADE_EMPTY_PATCH_WARNING_1)")

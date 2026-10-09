@@ -493,6 +493,15 @@ namespace RimMandrake.LongShade.SelfTest
                     int lastS = r.Next(0, 5000), nowS = lastS + r.Next(0, 3000), cd = r.Next(100, 2000);
                     Check(RM_LongShadeKernel.HarrokCanStrike(true, 1f, 1.2f, nowS, lastS, cd) == (nowS - lastS >= cd), "harrok cooldown wrong");
                     Check(!RM_LongShadeKernel.HarrokCanStrike(false, 1f, 1.2f, nowS + 99999, lastS, cd), "harrok strikes prey that is moving");
+                    int cx = r.Next(20, 200), cz = r.Next(20, 200), hw2 = r.Next(1, 30), hh = r.Next(1, 14), px = cx + r.Next(-20, 20), pz = cz + r.Next(-10, 10), cnt = 0;
+                    for (int yy = cz - 20; yy <= cz + 20; yy++) for (int xx = cx - 30; xx <= cx + 30; xx++) if (RM_LongShadeKernel.InHullRect(xx, yy, cx, cz, hw2, hh)) cnt++;
+                    Check(cnt == hw2 * hh, "InHullRect covers " + cnt + " cells for a " + hw2 + "x" + hh + " rect");
+                    Check(RM_LongShadeKernel.InHullRect(cx, cz, cx, cz, hw2, hh), "the hull centre is outside its own rect");
+                    bool ent = r.Next(2) == 0; int hos = r.Next(0, 3), itm = r.Next(0, 6), mx = r.Next(0, 4);
+                    Check(RM_LongShadeKernel.HullLooted(ent, hos, itm, mx) == (ent && hos == 0 && itm <= mx), "HullLooted disagrees with its definition");
+                    int st = r.Next(-1, 5000), nw = r.Next(0, 20000), tw = r.Next(1, 15000);
+                    Check(RM_LongShadeKernel.TowDone(st, nw, tw) == (st >= 0 && nw - st >= tw), "TowDone disagrees with its definition");
+                    Check(!RM_LongShadeKernel.TowDone(-1, 999999, 1), "a clan that never arrived finishes towing");
                     Check(!RM_LongShadeKernel.HarrokCanStrike(true, 5f, 1.2f, nowS + 99999, lastS, cd), "harrok strikes prey above its body-size cap");
                 }
                 catch (Exception e) { fails.Add("extras seed " + s + ": " + e.Message); }

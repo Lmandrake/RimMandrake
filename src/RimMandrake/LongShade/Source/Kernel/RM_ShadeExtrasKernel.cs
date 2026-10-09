@@ -68,5 +68,25 @@ namespace RimMandrake.LongShade
         {
             return preyResting && preyBodySize <= maxBodySize && now - lastStrike >= cooldownTicks;
         }
+
+        // ================================================================= Jawa return (I5)
+        /// <summary>The hull counts as looted once a colonist has been inside, nothing hostile is left in it and at most maxItems loose items remain.</summary>
+        public static bool HullLooted(bool entered, int hostilesInside, int itemsInside, int maxItems)
+        {
+            return entered && hostilesInside <= 0 && itemsInside <= maxItems;
+        }
+
+        /// <summary>Is (x, z) inside the w x h rect centred on (cx, cz)? Even sizes extend one more cell to the high side.</summary>
+        public static bool InHullRect(int x, int z, int cx, int cz, int w, int h)
+        {
+            int minX = cx - w / 2, minZ = cz - h / 2;
+            return x >= minX && x < minX + w && z >= minZ && z < minZ + h;
+        }
+
+        /// <summary>The tow is done when the clan has had towTicks since it arrived; a start of -1 means it has not arrived.</summary>
+        public static bool TowDone(int startTick, int now, int towTicks)
+        {
+            return startTick >= 0 && now - startTick >= towTicks;
+        }
     }
 }

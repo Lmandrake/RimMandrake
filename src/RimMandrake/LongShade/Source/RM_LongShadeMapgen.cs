@@ -311,6 +311,8 @@ namespace RimMandrake.LongShade
             try
             {
                 step.terminusStep.genStep.Generate(map, parms);
+                // LONGSHADE_JAWA_RETURN_1: remember where the dead crawler lies (25x9 plan centred here).
+                map.GetComponent<RM_MapComponent_CrawlerHull>()?.SetHull(at, 25, 9);
             }
             catch (System.Exception e)
             {
