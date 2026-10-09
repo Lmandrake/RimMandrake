@@ -327,7 +327,9 @@ gets a new creature.
 
 ## 5. The Rust Cathedral camera stalk: feasibility (2026-10-08)
 
-Offline design and feasibility only. Nothing in this section is built.
+Built 2026-10-08 (`21d276478`), unrun in game: `RM_Watcher` in `src/RimMandrake/Watchers/Defs/ThingDefs_Races/RM_Watcher.xml`,
+its render tree, two AnimationDefs, its own think tree and job (`RM_JobDriver_WatcherStalk`, derived from the kit's driver),
+and the Verse-free `RM_WatcherStalkKernel` (fuzz family `stalk`). Art is vanilla placeholders until the queued artpipe jobs land.
 
 ### 5.1 What the owner asked
 
@@ -383,8 +385,8 @@ Rust Cathedral only, very shy.**
 | The bolts' attitude freeze | `RM_ThinkNode_ConditionalAttitudeBand` (same tree) | optional: the Watchers could freeze with the bolts when the place's mood drops. Data only. Not proposed unless the owner wants it |
 | The piinnok's tracking | `RM_JobDriver_Watch.cs` l.152–154 | four-step `FaceCell`. The Watcher does not use it; its head is driven by the tracked angle (5.6) |
 
-**What does not exist anywhere in `src/`:** a keyframe `AnimationDef`, and a render node turned
-by a comp angle. Both are new to this repo, though both are vanilla mechanisms.
+**First in this repo:** a keyframe `AnimationDef` (`Watchers/Defs/AnimationDefs/RM_Watcher_Animations.xml`) and a render
+node whose picture is chosen by a comp angle (`RM_WatcherStalkRender.cs`). Both are vanilla mechanisms.
 
 **Do not reuse:** the `PawnRenderNodeProperties_Spastic` wing tree. It was reversed on the fire
 hawk (CLAUDE.md flyer section) because it wiggles one fixed texture and cannot express poses.
@@ -460,9 +462,9 @@ member of the kit: it notices from far off, drops fast, and stays down a long ti
 
 | parameter | direction | provisional value |
 |---|---|---|
-| flinch radius | **larger** than the kit's: it pulls back while a pawn is still far away | PROVISIONAL, tune in the quicktest |
-| retract speed | fast: a short *retract* animation | PROVISIONAL |
-| re-emerge delay | long: it stays down well after the pawn has left | PROVISIONAL |
+| flinch radius | **larger** than the kit's: it pulls back while a pawn is still far away | 9 cells (kit 6), watch radius 16. PROVISIONAL |
+| retract speed | fast: a short *retract* animation | 10 ticks (rise 40). PROVISIONAL |
+| re-emerge delay | long: it stays down well after the pawn has left | 7500~15000 ticks (piinnok 2500~7500). PROVISIONAL |
 
 These are `RM_WatcherExtension` fields on this creature's def, not kit defaults. The retract must
 finish before the hidden hediff goes on (see Risks above).
