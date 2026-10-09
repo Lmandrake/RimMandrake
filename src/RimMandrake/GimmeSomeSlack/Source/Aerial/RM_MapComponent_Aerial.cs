@@ -338,7 +338,7 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 return c == home || pg.WalkableFast(c);
             };
             int n = f.wires > 0 ? f.wires : AerialMath.StrandCount(tips.Count, tips.Count, AerialSettings.maxStrands);
-            l = AerialMath.LayFallenStrands(tips, new P2(b.x, b.z), new P2(f.toward.x + 0.5, f.toward.z + 0.5), f.length, f.seed, n, walk);
+            l = AerialMath.LayFallenStrands(tips, new P2(b.x, b.z), new P2(f.AimX, f.AimZ), f.length, f.seed, n, walk);
             lays[f] = l;
             laySig[f] = (a, WalkSig(a.Position, f.length));
             return l;
