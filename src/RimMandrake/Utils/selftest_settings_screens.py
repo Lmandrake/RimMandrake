@@ -914,6 +914,11 @@ MODS = {
         "Trade intel by Social skill (not wired yet)": "Now",
         "Protocol-droid intel modules (not wired yet)": "Now",
     }, ()),
+    "RaidRedesigner": ("RaidRedesignerSettings.cs", "RM_RaidRedesigner.csproj", {
+        "Old friends and enemies": "NextPulse",
+        "Roster size and grudge strength": "NextPulse",
+        "Remember them permanently": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
