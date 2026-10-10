@@ -307,6 +307,24 @@ MODS = {
         "Wreck-lichen": "Now",
         "Cross-biome opt-in": "Now",
     }, ()),
+    "TerminalBiomes": ("RM_TerminalBiomesMod.cs", "RM_TerminalBiomes.csproj", {
+        "Mod and biome switches": "Now",
+        "The Scald's kit": "Now",
+        "The Scald's map-generation scatter (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "The Chill's growers and wax procession": "Now",
+        "The suulk (TWILIGHT_DANGER_LIGHTWEB_1)": "NextPulse",
+        "The vaulisk lure (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Vaulisk reveal": "Now",
+        "Pane strikes (TWILIGHT_PANE_STRIKE_1)": "NextPulse",
+        "Deck accumulation (TWILIGHT_PANE_STRIKE_1)": "Now",
+        "The Twilight Sea's light economy": "Now",
+        "Floor flora placement (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Floor flora light behaviour": "Now",
+        "Channel current (TWILIGHT_CHANNEL_CURRENT_1)": "Now",
+        "The Grey Sea files your ship (GREYSEA_HULL_CRUST_BUILD_1)": "Now",
+        "The Grey Sea answers your light (GREYSEA_LAMP_RESPONSE_BUILD_1)": "Now",
+        "Not wired yet (these change nothing)": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
