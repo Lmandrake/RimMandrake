@@ -1,0 +1,1 @@
+The rimflow owner-quote flag is refused for words the owner typed as a MID-TURN message: the forged-quote guard does not see them as a chat turn. Record the event under the seat without that flag and state in the evidence that he approved in chat (FIREHAWK_FLIGHT_BEHAVIOR_1, 2026-10-10).
