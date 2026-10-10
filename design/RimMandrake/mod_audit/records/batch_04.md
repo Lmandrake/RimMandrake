@@ -116,13 +116,13 @@ Assessed against RUBRIC.md and SCENARIO_BRIEF.md. Stage 1 output; stage 2 checke
 **Why:** Owner-adopted: design/Jawa/mods/required_mods.md l.1088 records it as THE 'growth moments with choices' mod and puts it in the recommended core comedy stack; stat_normalization_audit_2026-09-09.md also checked its siblings. Nothing of ours builds it; QoL, no ceiling change. A sibling (arkymn.bettergrowthmoments) was flagged as possibly better; if both are active they would fight (not checked).
 **Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 0.8 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony'], 0 static ctor(s), 0 defs, 0 patch ops) · size 1 (disk_mb 0.05) · maintenance 3 (steam-only: no repo link or source found (SEARCHED); supports_1_6 True) · interaction 0 (no patch ops, no edges with our mods (edges are a lower bound; Harmony runtime patches not visible))
 **Holds it in / exit:** adopted in required_mods.md (core comedy stack) -> None
-**Open:** Is arkymn.bettergrowthmoments also in the list? If yes the two growth-moment mods overlap; check.
+**Open:** arkymn.bettergrowthmoments IS in FULL.LATEST (position 68) alongside this mod (position 248): two growth-moment mods are active together (MEASURED from the facts universe). Which one should stay, or do they fight?
 <sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
 
 ### Realistic Darkness (Light) (`wemd.realisticdarknesslight`)
 **Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** (none) (steam-only, None)
 **Adds:** content: none (def_total 0); 33 patch ops into Core (+SpeakUp, Ideology, meaningfulparties) · functionality: XML+DLL, no Harmony: darkens nights, dusks, eclipses and some weather · art: 1 texture
-**Why:** Atmosphere that suits a hard desert-night frontier. design/RimMandrake/atmospheric_base_hook_ecosystem.md l.526 flags it as relevant to our L8 lighting compositor 'for the opposite reason' from the power-saver antagonist: it changes what darkness looks like, which our lighting is written against. So it is a known interaction, not a nuisance; keep and test the compositor against it. 33 patch ops into vanilla, none touching our defs (patches_ours_refs 0).
+**Why:** Atmosphere that suits a hard desert-night frontier. design/RimMandrake/atmospheric_base_hook_ecosystem.md l.526 flags it as relevant to our L8 lighting compositor 'for the opposite reason' from the power-saver antagonist: it changes what darkness looks like, which our lighting is written against, and deepfire_luminous_pigment_spec.md (Realistic Darkness row) rules the interaction 'makes outdoors dark common, so the combat rule fires more; intended'. So it is a known interaction, not a nuisance; keep and test the compositor against it. 33 patch ops into vanilla, none touching our defs (patches_ours_refs 0).
 **Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 0.7 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags [], 0 static ctor(s), 0 defs, 33 patch ops) · size 1 (disk_mb 0.17) · maintenance 3 (steam-only: no repo link or source found (SEARCHED); supports_1_6 True) · interaction 1 (33 patch ops into vanilla/third-party defs only; no edges with our mods)
 **Holds it in / exit:** our lighting design (atmospheric_base_hook_ecosystem.md) assumes it as the darkness baseline -> None
 **Open:** Which darkness level is the baseline for the L8 compositor tests; a changed darkness setting would change readability of our coloured lights.
@@ -180,5 +180,194 @@ Assessed against RUBRIC.md and SCENARIO_BRIEF.md. Stage 1 output; stage 2 checke
 **Problems:** log_noise 1 (1 distinct error(s), 1 occurrence(s), 0 chatter line(s) in the 550-mod session; sample: [Def Error]: BoneWall) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 2 (texture_decoded_mb_est 154.3 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony', 'settings_screen'], 1 static ctor(s), 30 defs, 126 patch ops) · size 1 (disk_mb 12.7) · maintenance 3 (steam-only: no repo link or source found (SEARCHED); supports_1_6 True) · interaction 2 (patched_by_ours_refs 15, patches_ours_refs 0) · log_noise 1 (1 distinct error '[Def Error]: BoneWall' (def-only attribution; may be a victim of someone else's patch))
 **Holds it in / exit:** mandrake.rut.researchretag (15 edges); RSW_Maguana and Doctrine yield generator reference its stat; bones items in saves UNMEASURED; declares incompatible_with sihv.rombones and Soul.BonesNBits (neither in the universe) -> unfiled: ROMBONES_BONE_ECONOMY_PORT_OR_CUT
 **Open:** Does the campaign want a bone-craft economy at all? If yes, port to RM_ defs; if no, cut and drop the MayRequire rows.; Do you want animals to drop bones that can be built into things (bone walls, tools)? If yes we port it into our defs; if no it can be cut.  [CARD-WORTHY]
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### RimBridgeServer (`brrainz.rimbridgeserver`)
+**Verdict:** KEEP (MEASURED) · **Fit:** neutral · **Source:** https://github.com/pardeike/RimBridgeServer (github, MIT)
+**Adds:** content: none (def_total 0) · functionality: 9 DLLs + Harmony: exposes a live automation bridge (tool API) from the running game for external harnesses and agents · art: 2 textures
+**Why:** This is our own debugging substrate: src/RimMandrake/Utils/*, loadsweep, the bridge docs (design/RimMandrake/bridge_system.md) and the northstar validations reference it in 102 files. Developer-only; it must not be in a player's shipping list, so KEEP means 'keep on the owner's list', and a release checklist should exclude it. Source verified on GitHub (pardeike), pushed 2026-10-07.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 1.2 MB (INFERRED header proxy)) · complexity 3 (9 DLL(s), flags ['harmony'], 0 static ctor(s), 0 defs, 0 patch ops) · size 1 (disk_mb 3.17) · maintenance 1 (source verified, last push 2026-10-07; supports_1_6 True) · interaction 0 (no patch ops, no edges with our mods (edges are a lower bound; Harmony runtime patches not visible))
+**Holds it in / exit:** the whole bridge workflow (rimflow, modcheck, jawa/* tools); 102 repo files reference it -> None
+**Open:** Release hygiene: confirm player-facing ModsConfig excludes it (ties to brief 5 item 1, audience).
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### RimQuest (Continued) (`mlie.rimquest`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** https://github.com/emipa606/RimQuest (github, MIT)
+**Adds:** content: 6 defs (5 RimQuest.QuestGiverDef, 1 JobDef); 3 patch ops · functionality: 2 DLLs + Harmony + settings + world-component tick: quest-givers appear on traders and caravans; quests can be bought; settings control which quests and prices · art: 3 textures
+**Why:** Owner-adopted for the Jawa premise: required_mods.md l.1346 'quest-givers appear on visitors/caravans so quests aren't gated on comms timing', paired with Call For Intel (which is in the list at position 83). Resonates with trader-driven frontier life. Caution: buying quests for money could cheapen our authored quest families (VAULT_THAW, BESKAR_ARMORER and others in infrastructure/state/items); its settings let us restrict which quests are offered.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 1 (tick FLAG(s) world_component_tick (string presence, not proof it runs); per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 0.9 MB (INFERRED header proxy)) · complexity 2 (2 DLL(s), flags ['harmony', 'settings_screen', 'world_component_tick'], 3 static ctor(s), 6 defs, 3 patch ops) · size 1 (disk_mb 0.91) · maintenance 1 (source verified, last push 2026-09-19; supports_1_6 True) · interaction 1 (3 patch ops into vanilla/third-party defs only; no edges with our mods)
+**Holds it in / exit:** adopted in required_mods.md; mlie.morefactioninteraction patches it (1 edge) -> None
+**Open:** Which vanilla quest types should RimQuest be allowed to sell, so authored quest families keep their rewards? Settings exist for this; value unset.
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Romance & Intimacy On The Rim (`mianreplicate.romanceandintimacyontherim`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** https://github.com/MianReplicate/R_IOTR (github, MIT)
+**Adds:** content: none (def_total 0) · functionality: Harmony + settings: compatibility bridge so Romance On The Rim and Intimacy (Friends n' Lovers) run together · art: 1 texture
+**Why:** Held in by two active mods it stitches together (both in FULL.LATEST: telardo.romanceontherim position 421, lovelydovey.sex.witheuterpe position 480) and by an explicit owner decision: jawa_society.md l.181 specifies running both via this bridge for the maximum-drama stack. Without it the two do not cross-patch (required_mods.md l.1204). SFW social layer, no RJW.
+**Problems:** log_noise 1 (0 distinct error(s), 0 occurrence(s), 1 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 1.2 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony', 'settings_screen'], 1 static ctor(s), 0 defs, 0 patch ops) · size 1 (disk_mb 0.25) · maintenance 1 (source verified, last push 2026-06-15; supports_1_6 True) · interaction 0 (no patch ops, no edges with our mods (edges are a lower bound; Harmony runtime patches not visible))
+**Holds it in / exit:** telardo.romanceontherim and lovelydovey.sex.witheuterpe (its declared dependencies); jawa_society.md relationship-complexity decision -> None
+**Open:** If either parent mod is later removed this goes with it.
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### RunAndGun - Continued (`memegoddess.runandgun`)
+**Verdict:** KEEP (MEASURED) · **Fit:** neutral · **Source:** (C# in mod folder) (ships-source (C# in mod folder), None)
+**Adds:** content: none (def_total 0); 1 patch op · functionality: Harmony + settings: drafted pawns shoot while moving at accuracy and speed penalties · art: 4 textures
+**Why:** Owner-protected: infrastructure/state/facts/protected_mods.json records the 2026-09-12 sitting 'RunAndGun stays for now' (can be re-carded only on NEW local evidence of a defect). Penalties keep it a trade-off not a ceiling raise (brief 4 test 4). C# source ships in the folder. incompatible_with roolo.dualwield, which is not in the universe, so no live conflict.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 2.9 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony', 'settings_screen'], 1 static ctor(s), 0 defs, 1 patch ops) · size 1 (disk_mb 0.64) · maintenance 1 (C# source ships inside the mod folder (MEASURED); no repo link seen; supports_1_6 True) · interaction 1 (1 patch ops into vanilla/third-party defs only; no edges with our mods)
+**Holds it in / exit:** owner's protection ruling 2026-09-12 (protected_mods.json); GIDDYUP_KEEP_OR_CUT_1 (closed) examined this mod together with memegoddess.giddyup -> None
+**Open:** none
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Scenario Amender [1.6 Fixed] (`plusblankplus.scenarioamenderfork`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** (none) (steam-only, None)
+**Adds:** content: none (def_total 0) · functionality: Harmony: Review Scenario > Edit lets you change the running game's scenario mid-game (this fork fixes a Save NRE) · art: 1 texture, 10.5 MB decoded estimate
+**Why:** It rewrites the scenario of a live save, so for the owner it is an authoring/testing aid (the campaign scenario is hand-made, brief 1; SCENARIO_SETTINGS_SPEC.md governs it) and for a player it would be a cheat (edit away the HARD start, brief 2/4 test 4). Held in by the owner's own scenario iteration; exit when the scenario is frozen. INFERRED: I did not find a doc that says he uses it.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 10.5 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony'], 1 static ctor(s), 0 defs, 0 patch ops) · size 1 (disk_mb 0.31) · maintenance 3 (steam-only: no repo link or source found (SEARCHED); supports_1_6 True) · interaction 0 (no patch ops, no edges with our mods (edges are a lower bound; Harmony runtime patches not visible))
+**Holds it in / exit:** owner's scenario iteration (no dependants) -> unfiled: SCENARIO_AMENDER_RETIRE_AFTER_SCENARIO_FREEZE
+**Open:** Do you still edit the scenario inside a running save with Scenario Amender? If not, drop it; players should not be able to rewrite the hard start.  [CARD-WORTHY]
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Search Option (`hellrevenger.searchoption`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** (none) (steam-only, None)
+**Adds:** content: none (def_total 0) · functionality: Harmony: a search box on float-menu (right-click) options · art: 1 texture
+**Why:** Right-click menus grow long on a 550-mod list; a search box is pure UI with no balance effect (brief 4 test 4). Nothing of ours replaces it. 0 errors, 0.21 MB.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 5.6 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony'], 1 static ctor(s), 0 defs, 0 patch ops) · size 1 (disk_mb 0.21) · maintenance 3 (steam-only: no repo link or source found (SEARCHED); supports_1_6 True) · interaction 0 (no patch ops, no edges with our mods (edges are a lower bound; Harmony runtime patches not visible))
+**Holds it in / exit:** supplies a UI aid we have no plan to build -> None
+**Open:** none
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Self Dyeing (`avilmask.selfdyeing`)
+**Verdict:** KEEP (MEASURED) · **Fit:** neutral · **Source:** https://github.com/catgirlfighter/RimWorld_SelfDyeing (github (name-search match), )
+**Adds:** content: none (def_total 0); 2 patch ops into Ideology/Core · functionality: XML+DLL, no Harmony: pawns dye their own clothes (Ideology styling) · art: 2 textures
+**Why:** deepfire_luminous_pigment_spec.md (the paint-compat table) lists Self Dyeing as present and 'nothing' to do: colour changes reach CompDeepfire.Notify_ColorChanged so our glow follows. That is a MEASURED compatibility, not a dependency. Cosmetic QoL, neutral fit. Source is only a name-search match (github-search), so provenance is unverified.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 1.0 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags [], 2 static ctor(s), 0 defs, 2 patch ops) · size 1 (disk_mb 0.22) · maintenance 2 (repo only a name-search match (INFERRED), last push 2025-12-02; supports_1_6 True) · interaction 1 (2 patch ops into vanilla/third-party defs only; no edges with our mods)
+**Holds it in / exit:** supplies a cosmetic QoL we have no plan to build; compat reviewed in deepfire_luminous_pigment_spec.md -> None
+**Open:** none
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Sensible Bed Ownership (`sensiblebedownership.1trickpwnyta`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** https://github.com/1trickPwnyta/SensibleBedOwnership (github, None)
+**Adds:** content: none (def_total 0) · functionality: Harmony + settings: bed assignment per map (so caravanning does not unassign), right-click to assign, search bar, gravship-specific rules · art: 5 textures
+**Why:** The crew lives aboard a ship that keeps moving (brief 1), so bed ownership that survives map changes and has explicit gravship rules is exactly the problem it solves; nothing of ours replaces it. Source on GitHub (1trickPwnyta) pushed 2026-04-23, no licence listed. 0 errors.
+**Problems:** log_noise 1 (0 distinct error(s), 0 occurrence(s), 1 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 2.1 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony', 'settings_screen'], 2 static ctor(s), 0 defs, 0 patch ops) · size 1 (disk_mb 0.47) · maintenance 1 (source verified, last push 2026-04-23; supports_1_6 True) · interaction 0 (no patch ops, no edges with our mods (edges are a lower bound; Harmony runtime patches not visible))
+**Holds it in / exit:** supplies ship-crew bed assignment we have no plan to build -> None
+**Open:** Gravship rules vs our RM_SeabedLayer 'ship carries you down' maps: does bed ownership transfer cleanly across planet layers? Untested.
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Sensible Factions (`boots.sensiblefactions`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** dissonant · **Source:** https://github.com/neutralboolean/BootsSensibleFactions-Forked (github (name-search match), mit)
+**Adds:** content: none (def_total 0) · functionality: Harmony + settings: keeps factions clustered and lets biomes weight which factions settle (world generation) · art: 1 texture
+**Why:** A world-generation faction placer: with no worldgen and a frozen savegame (brief 2, 4 test 5) it has no job after the world is painted. Not removed outright because brief 5 item 8 is unresolved (whether the expected world remake regenerates factions). force_users_build_spec.md l.285 treats it as an active faction-restriction lever, so it is still referenced. No dependants; no placed Things.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 1.1 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony', 'settings_screen'], 2 static ctor(s), 0 defs, 0 patch ops) · size 1 (disk_mb 0.22) · maintenance 2 (repo only a name-search match (INFERRED), last push 2026-01-03; supports_1_6 True) · interaction 0 (no patch ops, no edges with our mods (edges are a lower bound; Harmony runtime patches not visible))
+**Holds it in / exit:** design/Jawa/force_users_build_spec.md names it as an active lever; brief 5 item 8 (does a remake regenerate anything?) -> unfiled: SENSIBLE_FACTIONS_RETIRE_AFTER_PAINT_ONCE
+**Open:** When the world is remade at the end, are factions placed by hand or can a generator place them? If by hand, this mod can go now.  [CARD-WORTHY]
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Sentience Catalyst Filth Rate Reducer (`flyingsloth.scfilthreducer`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** (C# in mod folder) (ships-source (C# in mod folder), None)
+**Adds:** content: none (def_total 0); 2 patch ops · functionality: Harmony + settings: cuts the filth rate of animals with the Sentience Catalyst (Odyssey), default 50% · art: 1 texture
+**Why:** Tiny tuning mod with C# source shipped (MEASURED). Sentience-catalysed animals are Odyssey-only content, which we assume present (brief 2). No dependants, 0 errors. It is a single stat multiplier, no ceiling change.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 1.2 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony', 'settings_screen'], 1 static ctor(s), 0 defs, 2 patch ops) · size 1 (disk_mb 3.24) · maintenance 1 (C# source ships inside the mod folder (MEASURED); no repo link seen; supports_1_6 True) · interaction 1 (2 patch ops into vanilla/third-party defs only; no edges with our mods)
+**Holds it in / exit:** supplies a filth tweak we have no plan to build -> None
+**Open:** none
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Show Known Techprints (`spacemoth.showknowntechprints`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** (none) (steam-only, None)
+**Adds:** content: none (def_total 0) · functionality: Harmony: icon on techprints showing whether applied; tooltip on what it unlocks · art: 5 small textures
+**Why:** Royalty techprint UI aid; Royalty is a hard prerequisite (brief 2) and techprints sell through traders. Pure UI, no balance effect. Source steam-only (no repo seen), maintenance risk noted but low-impact.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 2.7 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony'], 1 static ctor(s), 0 defs, 0 patch ops) · size 1 (disk_mb 0.21) · maintenance 3 (steam-only: no repo link or source found (SEARCHED); supports_1_6 True) · interaction 0 (no patch ops, no edges with our mods (edges are a lower bound; Harmony runtime patches not visible))
+**Holds it in / exit:** supplies a UI aid we have no plan to build -> None
+**Open:** none
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Slave Rebellions Improved (Continued) (`mlie.slaverebellionsimproved`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** https://github.com/emipa606/SlaveRebellionsImproved (github, MIT)
+**Adds:** content: 1 DutyDef · functionality: 2 DLLs + Harmony + settings: improves slave rebellions (behaviour and incident) · art: 2 textures
+**Why:** Used by our design: plot_mechanisms_wave.md Zizzik's aftermath lists 'slave rebellion (mlie.slaverebellionsimproved is live - trigger its incident)' as one legal misfortune, and src/RimUtinni/AftermathRites/Defs/RM_AftermathRuleDefs.xml records it as confirmed PRESENT (but its IncidentDef defName was not confirmed, so no rule uses it yet). Slaves are part of the clan society (jawa_society.md). Pairs with Prisoners Should Fear Turrets.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 2.2 MB (INFERRED header proxy)) · complexity 2 (2 DLL(s), flags ['harmony', 'settings_screen'], 1 static ctor(s), 1 defs, 0 patch ops) · size 1 (disk_mb 0.78) · maintenance 2 (MEASURED repo, last push 2025-06-21; supports_1_6 True) · interaction 0 (no patch ops, no edges with our mods (edges are a lower bound; Harmony runtime patches not visible))
+**Holds it in / exit:** plot_mechanisms_wave.md Zizzik misfortune list; AftermathRites comment (presence confirmed, defName not) -> None
+**Open:** Its IncidentDef defName is still unconfirmed in our AftermathRites rules; read the mod's XML before wiring.
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Sleeping Buddies (`astryl.sleepingbuddies`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** (none) (steam-only, None)
+**Adds:** content: 2 defs (JobDef 1, ThoughtDef 1) · functionality: Harmony + settings + map-component tick: small pets sleep at the foot of a colonist's bed for a mood bonus; never takes the sleeping slot · art: 1 texture, 4.7 MB decoded estimate
+**Why:** Small flavour mod that fits a crew living with scrap-pets; map_component_tick flag means a per-map tick (INFERRED small; per-mod TPS UNMEASURED). The pet never claims the sleeping slot, so it will not conflict with Sensible Bed Ownership. Source steam-only.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 1 (tick FLAG(s) map_component_tick (string presence, not proof it runs); per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 4.7 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony', 'map_component_tick', 'settings_screen'], 1 static ctor(s), 2 defs, 0 patch ops) · size 1 (disk_mb 0.67) · maintenance 3 (steam-only: no repo link or source found (SEARCHED); supports_1_6 True) · interaction 0 (no patch ops, no edges with our mods (edges are a lower bound; Harmony runtime patches not visible))
+**Holds it in / exit:** supplies pet flavour we have no plan to build -> None
+**Open:** Does the 'small pet' set include our invented fauna? Handled automatically per its description; unverified.
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Snap Out! (`weilbyte.snapout`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** (none) (steam-only, None)
+**Adds:** content: 7 defs (JobDef 4, InteractionDef 1, ThoughtDef 1, WorkGiverDef 1); 76 xml · functionality: 2 DLLs: pawns try to calm a pawn in a mental break; settings screen · art: 1 texture
+**Why:** Held in by ours: mandrake.rut.pawnflavor patches it 10 times and lists weilbyte.snapout in loadAfter and MayRequire thoughts (src/RimUtinni/PawnFlavor/About/About.xml l.62), and frozensnowfox.complexjobs patches it too. A crew of 3-8 under pressure makes mental breaks a main drama source. Source steam-only: maintenance exposure (the pawnflavor patches would orphan if it vanished).
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 1.2 MB (INFERRED header proxy)) · complexity 2 (2 DLL(s), flags ['settings_screen'], 1 static ctor(s), 7 defs, 1 patch ops) · size 1 (disk_mb 1.58) · maintenance 3 (steam-only: no repo link or source found (SEARCHED); supports_1_6 True) · interaction 2 (patched_by_ours_refs 10, patches_ours_refs 0)
+**Holds it in / exit:** mandrake.rut.pawnflavor (10 patch edges, loadAfter, MayRequire thoughts); complexjobs patches it -> None
+**Open:** Source unavailable: if the author vanishes, PawnFlavor's 10 edges need a port of the 4 JobDefs.
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Social Experience from Trade (`krelinos.socialexpfromtrade`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/Krelinos/Social-EXP-From-Trade (github, MIT)
+**Adds:** content: none (def_total 0) · functionality: Harmony + settings: social skill XP from trade, scaled by deal value; full source on GitHub · art: 2 textures
+**Why:** Trade is the Jawa economy (Hutt ledger, Bazaar); giving the negotiator skill growth is flavour. Risk: it could feed an exponential if XP scales with deal size without a cap; its settings tweak this, default unchecked. Source verified (MIT, 2025-07). No ruling touches it.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 1.2 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony', 'settings_screen'], 0 static ctor(s), 0 defs, 0 patch ops) · size 1 (disk_mb 0.47) · maintenance 2 (MEASURED repo, last push 2025-07-11; supports_1_6 True) · interaction 0 (no patch ops, no edges with our mods (edges are a lower bound; Harmony runtime patches not visible))
+**Holds it in / exit:** supplies trade-skill growth we have no plan to build -> None
+**Open:** Check default XP scaling against the 'anti-exponential' test: does a single huge deal level social absurdly?
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Stackable Chunks (`elshender.stackablechunks`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/earthyturtle/StackableChunks (github (name-search match), )
+**Adds:** content: none (def_total 0); 4 patch ops · functionality: HugsLib-based + Harmony: makes stone/steel chunks stack · art: 1 texture, 14 assembly files across versions
+**Why:** Pure convenience; hard-depends on HugsLib (position 21, in the list). Note jawa_scavenge_system_design_2026-10-03.md dislikes vanilla 'chunks you lugged back' and replaces it with a sorting/stripping process; whether that process touches stone chunks is not stated, so a clash is possible but unconfirmed. Maintenance risk: the repo found is an INFERRED name match last pushed 2021-06 (maintenance severity 3).
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 2.1 MB (INFERRED header proxy)) · complexity 2 (2 DLL(s), flags ['harmony'], 0 static ctor(s), 0 defs, 4 patch ops) · size 1 (disk_mb 5.3) · maintenance 3 (repo only a name-search match (INFERRED), last push 2021-06-14; supports_1_6 True) · interaction 1 (4 patch ops into vanilla/third-party defs only; no edges with our mods)
+**Holds it in / exit:** supplies stack behaviour we have no plan to build -> None
+**Open:** Does the planned salvage nest handle stone chunks or only tech salvage? If chunks are replaced this goes with them.
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Standalone Hot Spring (`balistafreak.standalonehotspring`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** https://github.com/balistafreak/StandaloneHotspring (github, None)
+**Adds:** content: 5 defs (HediffDef 2, JobDef 1, JoyGiverDef 1, ThingDef 1); 20 xml · functionality: Harmony: a buildable hot spring on a steam geyser (stone blocks; joy, healing); ships C# source · art: 6 textures, 17 MB on disk, mostly assemblies and source
+**Why:** The hot spring is one donor building with a donor-art texture set. Under 'no donor art kept' and port-everything (brief 2, 3) it has to be ported to an owned def or cut, and the furniture register review (design/Jawa/worldbuilding/review/furniture_register_rows.json) already lists StandaloneHotSpring. It also pipes groundwater from a geyser, which touches the liquids ruling (one LiquidDef registry, FlowWorks the flow engine; brief 2). A luxury water building is mildly off tone for a scarcity desert but valid in volcanic biomes.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 3.8 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony'], 1 static ctor(s), 5 defs, 0 patch ops) · size 1 (disk_mb 17.39) · maintenance 3 (steam-only: no repo link or source found (SEARCHED); supports_1_6 True) · interaction 0 (no patch ops, no edges with our mods (edges are a lower bound; Harmony runtime patches not visible))
+**Holds it in / exit:** furniture register sitting lists it; placed hot springs in the save UNMEASURED -> unfiled: HOTSPRING_PORT_OR_CUT_AT_FURNITURE_SITTING
+**Open:** Does it use groundwater outside FlowWorks' LiquidDef registry (brief 2 liquids ruling)?
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Stealing Mod (`amoruch.rimworldstealingmod`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** https://github.com/amoruch/RimWorldStealingMod (github, None)
+**Adds:** content: 5 defs (ThoughtDef 3, JobDef 1, TraitDef 1) · functionality: Harmony: pawns pickpocket other pawns' inventories; new Kleptomaniac trait · art: 1 texture
+**Why:** Resonant: thieving scavenger clan. Held in by ours: mandrake.rut.pawnflavor patches it 30 times and lists it in loadAfter (PawnFlavor About.xml l.22), the most edges of any mod in this batch. The 2026-08-30 audit asked to 'examine' for balance; stealing from inventories is intra-colony, not a scarcity bypass, so the anti-exponential concern looks small (INFERRED). Source repo is an INFERRED link; verify before relying.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 1.2 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony'], 1 static ctor(s), 5 defs, 0 patch ops) · size 1 (disk_mb 0.17) · maintenance 3 (steam-only: no repo link or source found (SEARCHED); supports_1_6 True) · interaction 2 (patched_by_ours_refs 30, patches_ours_refs 0)
+**Holds it in / exit:** mandrake.rut.pawnflavor (30 patch edges) -> None
+**Open:** Read the stealing job XP/chance numbers to close the 2026-08-30 'examine' flag.
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Storage Memory (`karshou.storagememory`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** (none) (steam-only, None)
+**Adds:** content: none (def_total 0) · functionality: Harmony: containers keep contents when uninstalled for transport · art: 1 texture
+**Why:** A moving ship is constantly uninstalling and reinstalling containers, and vanilla spills or loses their contents; this removes that. Nothing of ours replaces it. Interacts with the 'decide what to leave behind' loop only in that it makes carrying cheaper (brief 1). Source steam-only.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 0.0 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony'], 1 static ctor(s), 0 defs, 0 patch ops) · size 1 (disk_mb 0.48) · maintenance 3 (steam-only: no repo link or source found (SEARCHED); supports_1_6 True) · interaction 0 (no patch ops, no edges with our mods (edges are a lower bound; Harmony runtime patches not visible))
+**Holds it in / exit:** supplies container transport we have no plan to build -> None
+**Open:** Does it make storage mobile in a way that undermines 'decide what to leave behind' (a pressure the owner wants)? Judgement call.
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Storyteller Enhanced (Continued) (`mlie.storytellerenhanced`)
+**Verdict:** KEEP (UNVERIFIED) · **Fit:** neutral · **Source:** https://github.com/emipa606/StorytellerEnhanced (github, LGPL-3.0)
+**Adds:** content: 7 defs (StorytellerDef 4, DifficultyDef 3); 8 patch ops into incidents (Core 8, meaningfulparties 4) · functionality: Harmony-free XML+DLL: four alternate storytellers with patterned pacing and three difficulty presets · art: 10 textures, 8.8 MB
+**Why:** required_mods.md l.871 ADOPTED it in 2026-08-05 as the substrate for a 3-act climb, with an audit still pending ('confirm escalation is capability/targeting-shaped'). But SCENARIO_SETTINGS_SPEC.md R-S7 settles the storyteller as vanilla 'Randy' and l.314 warns that authoring a custom DifficultyDef would cost R-S4. The two docs disagree; I keep it because its 8 IncidentDef patches apply regardless of the chosen storyteller (INFERRED) and its removal has unknown effects on incident pacing, and I flag the contradiction.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 8.8 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['harmony'], 1 static ctor(s), 7 defs, 8 patch ops) · size 1 (disk_mb 1.35) · maintenance 1 (source verified, last push 2026-03-07; supports_1_6 True) · interaction 1 (8 patch ops into vanilla/third-party defs only; no edges with our mods)
+**Holds it in / exit:** required_mods.md adoption (2026-08-05); incident patches (8) change pacing under any storyteller -> None
+**Open:** Which storyteller runs the campaign, vanilla Randy or one of Storyteller Enhanced's four? If Randy, do you want this mod's incident patches and its storytellers at all?  [CARD-WORTHY]
+<sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
+
+### Stuff on Tables Forked (`moistestwhale.stuffontablesforked`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** (C# in mod folder) (ships-source (C# in mod folder), None)
+**Adds:** content: none (def_total 0); 56 patch ops (Core 45, VFE Spacer 20, Ideology 18, Odyssey 15, VFE Art 14, Epochs Pyrinth 12, ...) · functionality: settings DLL, no Harmony: lets things sit on tables via per-mod compat patches; ships C# source · art: 2 textures
+**Why:** A cosmetic/utility placement mod with C# source in the folder (MEASURED). The facts counted 12 'ours' references, but I read the patch: they come from 1.6/ModCompat/EpochsPyrinth/Patches/SoTF_Patches_EpochsPyrinth.xml targeting DV_PyrinthLamp and DV_PyrinthHeater, which the loader applies only when det.epochspyrinth (position 131) is active. Our mandrake.rm.pyrinth (OURS_ABSENT_INSTALLED) apparently carries the same defNames, so the edge is probable if both load (INFERRED). Nothing of ours depends on it.
+**Problems:** log_noise 0 (0 distinct error(s), 0 occurrence(s), 0 chatter line(s) in the 550-mod session) · tps 0 (no tick FLAG in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 4.7 MB (INFERRED header proxy)) · complexity 2 (1 DLL(s), flags ['settings_screen'], 0 static ctor(s), 0 defs, 56 patch ops) · size 1 (disk_mb 0.84) · maintenance 1 (C# source ships inside the mod folder (MEASURED); no repo link seen; supports_1_6 True) · interaction 2 (patched_by_ours_refs 0, patches_ours_refs 12) · interaction 1 (12 counted edges to mandrake.rm.pyrinth are really Epochs Pyrinth DV_ defNames in an IfModActive compat folder)
+**Holds it in / exit:** supplies table placement we have no plan to build -> None
+**Open:** Our mandrake.rm.pyrinth is not in FULL.LATEST; if the owner adds it per the gap proposal, check for duplicate DV_ defNames against det.epochspyrinth.
 <sub>facts: batch 04 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5.5 2026-10-10</sub>
 
