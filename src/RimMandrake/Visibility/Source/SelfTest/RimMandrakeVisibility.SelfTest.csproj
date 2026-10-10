@@ -86,6 +86,8 @@
          one directory up — must be compiled in here too or this offline
          harness fails CS0103 on that type. -->
     <Compile Include="..\RM_VisibilityMod.cs" />
+    <Compile Include="..\..\..\_Shared\SettingsKit\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

@@ -76,6 +76,8 @@
     <Compile Include="..\RM_SeaShoreUtility.cs" />
     <Compile Include="..\RM_SeaShoresSettings.cs" />
     <Compile Include="..\RM_SeaShoresMod.cs" />
+    <Compile Include="..\..\..\_Shared\SettingsKit\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 
