@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -113,100 +115,175 @@ namespace RimMandrake.LongShade
             Scribe_Values.Look(ref cleanPatchTellEnabled, "cleanPatchTellEnabled", true);
         }
 
-        private static Vector2 settingsScroll;
-        private static float settingsViewHeight = 1200f;
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_LongShadeSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_LongShadeSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1200f;
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
 
         public void DoWindowContents(Rect inRect)
         {
             // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
-            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, settingsView);
             Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
             list.Begin(settingsView);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.CheckboxLabeled("Long Shade content enabled", ref modEnabled,
-                "Master switch, kept for parity with every other RimMandrake biome mod. "
-              + "The biome def, its native creatures and its native flora are plain "
-              + "content either way, so this mainly stops the dewfringe's rim gate below.");
-            list.CheckboxLabeled("Dewfringe confined to the shade line", ref dewfringeShadeLineGateEnabled,
-                "The dewfringe (a new native plant, LONGSHADE_RULED_CONTENT_1 Q6) only ever "
-              + "grows on shade-boundary cells — the rim, not the area — enforced by a small "
-              + "Harmony patch on wild-plant spawning. Off: it follows plain fertility/terrain "
-              + "rules like any other plant and can spread across open ground, breaking the "
-              + "design's own 'pale, rim-only, never green in quantity' ceiling — provided as "
-              + "an escape hatch, not the intended way to play.");
-            list.GapLine();
+            if (Group(list, "Mod switch and the dewfringe rim", RimMandrake.Shared.SettingScope.Now, new[] { "modEnabled", "dewfringeShadeLineGateEnabled" }))
+            {
+                list.CheckboxLabeled("Long Shade content enabled", ref modEnabled,
+                    "Master switch, kept for parity with every other RimMandrake biome mod. "
+                  + "The biome def, its native creatures and its native flora are plain "
+                  + "content either way. Off: also switches off every scripted mechanic below "
+                  + "(the dewfringe rim gate, map-generation extras, middens, tollok ticks, the lure awning, "
+                  + "the harrok ambush, the incidents and the smoke calendar).");
+                list.CheckboxLabeled("Dewfringe confined to the shade line", ref dewfringeShadeLineGateEnabled,
+                    "The dewfringe (a new native plant, LONGSHADE_RULED_CONTENT_1 Q6) only ever "
+                  + "grows on shade-boundary cells — the rim, not the area — enforced by a small "
+                  + "Harmony patch on wild-plant spawning. Off: it follows plain fertility/terrain "
+                  + "rules like any other plant and can spread across open ground, breaking the "
+                  + "design's own 'pale, rim-only, never green in quantity' ceiling — provided as "
+                  + "an escape hatch, not the intended way to play.");
+                list.GapLine();
+            }
 
             // LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2: this biome's own map
             // generation, so its switches live here (they read Creature
             // Behaviors' shade-patch graph but are not kit mechanics).
-            list.Label("Map generation (affects only maps generated after the change)");
-            list.CheckboxLabeled("The Crawler Road", ref crawlerRoadEnabled,
-                "MAP GENERATION. Across the widest gap in a Long Shade map's shade, a line of wrecked "
-              + "machines, each about one dash from the next, so the wrecks' shadows make a crossing. "
-              + "With the Star Wars layer it ends at a dead sandcrawler. The wrecks can be stripped "
-              + "for salvage or uninstalled and moved, which breaks the crossing; reinstalling one "
-              + "mends it. Needs Creature Behaviors' sun heat. Off: no road is laid on new maps.");
-            list.CheckboxLabeled("The Long Carry (sun graves)", ref sunGravesEnabled,
-                "MAP GENERATION. A few travellers and their pack animals lie dead out on the open sand, "
-              + "still carrying their load, too far from shade to walk out and back bare-headed but "
-              + "within reach under a parasol. Salvage and something to read; they point nowhere. "
-              + "Needs Creature Behaviors' sun heat and shade gear. Off: no graves on new maps.");
-            list.GapLine();
+            if (Group(list, "Map generation (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "crawlerRoadEnabled", "sunGravesEnabled", "middenMapgenEnabled", "cleanPatchTellEnabled" }))
+            {
+                list.CheckboxLabeled("The Crawler Road", ref crawlerRoadEnabled,
+                    "MAP GENERATION. Across the widest gap in a Long Shade map's shade, a line of wrecked "
+                  + "machines, each about one dash from the next, so the wrecks' shadows make a crossing. "
+                  + "With the Star Wars layer it ends at a dead sandcrawler. The wrecks can be stripped "
+                  + "for salvage or uninstalled and moved, which breaks the crossing; reinstalling one "
+                  + "mends it. Needs Creature Behaviors' sun heat. Off: no road is laid on new maps.");
+                list.CheckboxLabeled("The Long Carry (sun graves)", ref sunGravesEnabled,
+                    "MAP GENERATION. A few travellers and their pack animals lie dead out on the open sand, "
+                  + "still carrying their load, too far from shade to walk out and back bare-headed but "
+                  + "within reach under a parasol. Salvage and something to read; they point nowhere. "
+                  + "Needs Creature Behaviors' sun heat and shade gear. Off: no graves on new maps.");
+                list.CheckboxLabeled("Old middens at the lee of rocks when the map is made", ref middenMapgenEnabled,
+                    "New Long Shade maps start with a few old heaps at the down-sun end of small rock "
+                  + "outcrops. Changes the generated map (worldgen-affecting). Off: only vrekka-built heaps.");
+                list.CheckboxLabeled("Clean-patch tell", ref cleanPatchTellEnabled,
+                    "A patch of shade that a mirrak or gulloth lairs in is marked on the ground as "
+                  + "'unnaturally clean', with an inspect line. Changes the generated map (worldgen-affecting).");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Shipfall Commons (the ship as a refuge)", ref shipfallCommonsEnabled,
-                "After your gravship lands on a Long Shade map, its shadow becomes the biggest shade "
-              + "on the map and the wildlife notices: first small animals, then herds, then pirrik, "
-              + "and at last a gloomcast come to shelter round the hull. Nothing climbs aboard. When "
-              + "a colonist takes the pilot's console they scatter, with a message; launching is never "
-              + "held up. Off: wildlife ignores the ship.");
-            list.GapLine();
+            if (Group(list, "Shipfall Commons (the ship as a refuge)", RimMandrake.Shared.SettingScope.Now, new[] { "shipfallCommonsEnabled" }))
+            {
+                list.CheckboxLabeled("Shipfall Commons (the ship as a refuge)", ref shipfallCommonsEnabled,
+                    "After your gravship lands on a Long Shade map, its shadow becomes the biggest shade "
+                  + "on the map and the wildlife notices: first small animals, then herds, then pirrik, "
+                  + "and at last a gloomcast come to shelter round the hull. Nothing climbs aboard. When "
+                  + "a colonist takes the pilot's console they scatter, with a message; launching is never "
+                  + "held up. Off: wildlife ignores the ship.");
+                list.GapLine();
+            }
 
-            list.Label("Lee-side middens");
-            list.CheckboxLabeled("Vrekka build midden heaps", ref middenVrekkaBuildEnabled,
-                "A vrekka with no heap nearby starts one on a shaded, unroofed cell outside your home "
-              + "area. Heaps already on the map stay either way. Off: no new heaps appear.");
-            list.CheckboxLabeled("Vrekka tend unsearched heaps", ref middenRegrowthEnabled,
-                "Vrekka visit a heap nobody has searched and pile on another layer every few days, up to "
-              + "four; each layer is worth more when you search. A searched heap is spent for good. "
-              + "Off: heaps stay as they are.");
-            list.CheckboxLabeled("Old middens at the lee of rocks when the map is made", ref middenMapgenEnabled,
-                "New Long Shade maps start with a few old heaps at the down-sun end of small rock "
-              + "outcrops. Changes the generated map (worldgen-affecting). Off: only vrekka-built heaps.");
-            list.CheckboxLabeled("Clean-patch tell", ref cleanPatchTellEnabled,
-                "A patch of shade that a mirrak or gulloth lairs in is marked on the ground as "
-              + "'unnaturally clean', with an inspect line. Changes the generated map (worldgen-affecting).");
-            list.GapLine();
+            if (Group(list, "Lee-side middens", RimMandrake.Shared.SettingScope.Now, new[] { "middenVrekkaBuildEnabled", "middenRegrowthEnabled" }))
+            {
+                list.CheckboxLabeled("Vrekka build midden heaps", ref middenVrekkaBuildEnabled,
+                    "A vrekka with no heap nearby starts one on a shaded, unroofed cell outside your home "
+                  + "area. Heaps already on the map stay either way. Off: no new heaps appear.");
+                list.CheckboxLabeled("Vrekka tend unsearched heaps", ref middenRegrowthEnabled,
+                    "Vrekka visit a heap nobody has searched and pile on another layer every few days, up to "
+                  + "four; each layer is worth more when you search. A searched heap is spent for good. "
+                  + "Off: heaps stay as they are.");
+                list.GapLine();
+            }
 
-            list.Label("Shade extras");
-            list.CheckboxLabeled("Tollok ticks in wild shade", ref tollokTicksEnabled,
-                "Animals and colonists that sit still for an hour in the deep middle of a natural patch pick up "
-              + "tollok ticks: pain, then bleeding. Shade you built (a roof, a tent, a parasol) is clean, so it is worth more. "
-              + "Off: resting in wild shade is free.");
-            list.CheckboxLabeled("Lure awning", ref lureAwningEnabled,
-                "A cheap hide awning on poles that throws a patch of shade where there was none, to draw game within "
-              + "gunshot. Off: the awning casts nothing and is ordinary furniture.");
-            list.CheckboxLabeled("A clan returns for the dead crawler", ref jawaReturnEnabled,
-                "Once the dead sandcrawler at the end of the Crawler Road has been cleared and looted, a clan of scavengers "
-              + "may walk in and tow the whole hull away, taking the biggest shadow on the map with it. Needs the campaign "
-              + "layer's incident. Off: the hull stays for good.");
-            list.CheckboxLabeled("Harrok ambush", ref harrokEnabled,
-                "The harrok stands in the open as a pole and strikes whatever rests in the strip of shade it throws. "
-              + "Off: harrok still stand and cast shade but never strike.");
-            list.CheckboxLabeled("Stampede for your roof", ref stampedeEnabled,
-                "A herd caught out in the heat with every patch full may bolt for the roofed part of your home area "
-              + "and stay until it has cooled. Off: the incident never fires.");
-            list.CheckboxLabeled("Smoke-haze fronts", ref smokeHazeFrontEnabled,
-                "Fires beyond the horizon send a smoke front: for a few days the sun dims, every shadow "
-              + "lengthens and the heat bed fades. Off: the incident never fires (the shade-grid effect itself is "
-              + "toggled in Creature Behaviors).");
-            list.CheckboxLabeled("Ash pulse after the haze", ref ashPulseEnabled,
-                "When a smoke front clears, its ash settles and feeds the ground: for a few days plants grow "
-              + "faster and wild growth thickens. Off: no ash pulse follows the haze.");
-            list.CheckboxLabeled("Sand-lock after the haze", ref sandLockEnabled,
-                "When a smoke front clears, its ash packs the sand hard until the wind unpacks it: sand swimmers "
-              + "are forced to the surface and nothing can burrow or lie buried in sand. Off: no sand-lock follows.");
-            list.GapLine();
+            if (Group(list, "Shade extras", RimMandrake.Shared.SettingScope.Now, new[] { "tollokTicksEnabled", "lureAwningEnabled", "harrokEnabled" }))
+            {
+                list.CheckboxLabeled("Tollok ticks in wild shade", ref tollokTicksEnabled,
+                    "Animals and colonists that sit still for an hour in the deep middle of a natural patch pick up "
+                  + "tollok ticks: pain, then bleeding. Shade you built (a roof, a tent, a parasol) is clean, so it is worth more. "
+                  + "Off: resting in wild shade is free.");
+                list.CheckboxLabeled("Lure awning", ref lureAwningEnabled,
+                    "A cheap hide awning on poles that throws a patch of shade where there was none, to draw game within "
+                  + "gunshot. Off: the awning casts nothing and is ordinary furniture.");
+                list.CheckboxLabeled("Harrok ambush", ref harrokEnabled,
+                    "The harrok stands in the open as a pole and strikes whatever rests in the strip of shade it throws. "
+                  + "Off: harrok still stand and cast shade but never strike.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Incidents: stampede, haze fronts and the clan's return", RimMandrake.Shared.SettingScope.NextPulse, new[] { "stampedeEnabled", "smokeHazeFrontEnabled", "jawaReturnEnabled" }))
+            {
+                list.CheckboxLabeled("Stampede for your roof", ref stampedeEnabled,
+                    "A herd caught out in the heat with every patch full may bolt for the roofed part of your home area "
+                  + "and stay until it has cooled. Off: the incident never fires.");
+                list.CheckboxLabeled("Smoke-haze fronts", ref smokeHazeFrontEnabled,
+                    "Fires beyond the horizon send a smoke front: for a few days the sun dims, every shadow "
+                  + "lengthens and the heat bed fades. Off: the incident never fires (the shade-grid effect itself is "
+                  + "toggled in Creature Behaviors).");
+                list.CheckboxLabeled("A clan returns for the dead crawler", ref jawaReturnEnabled,
+                    "Once the dead sandcrawler at the end of the Crawler Road has been cleared and looted, a clan of scavengers "
+                  + "may walk in and tow the whole hull away, taking the biggest shadow on the map with it. Needs the campaign "
+                  + "layer's incident. Off: the hull stays for good.");
+                list.GapLine();
+            }
+
+            if (Group(list, "After the haze: ash pulse and sand-lock", RimMandrake.Shared.SettingScope.NextPulse, new[] { "ashPulseEnabled", "sandLockEnabled" }))
+            {
+                list.CheckboxLabeled("Ash pulse after the haze", ref ashPulseEnabled,
+                    "When a smoke front clears, its ash settles and feeds the ground: for a few days plants grow "
+                  + "faster and wild growth thickens. Off: no ash pulse follows the haze.");
+                list.CheckboxLabeled("Sand-lock after the haze", ref sandLockEnabled,
+                    "When a smoke front clears, its ash packs the sand hard until the wind unpacks it: sand swimmers "
+                  + "are forced to the surface and nothing can burrow or lie buried in sand. Off: no sand-lock follows.");
+                list.GapLine();
+            }
 
             list.Label("Shade-seeking wander and contact venom");
             list.Label("Both mechanics this biome's own flora touches (the vorrel's shade "
@@ -220,7 +297,6 @@ namespace RimMandrake.LongShade
               + "after both and adds no second, possibly-disagreeing switch of its own "
               + "(biome_mod_architecture.md §6b-3).");
             list.GapLine();
-
             // LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 1 — same §6b-3 rule: the
             // mechanisms are Creature Behaviors kit pieces, so their switches
             // live on that mod's screen; this biome only carries the data.
@@ -230,7 +306,7 @@ namespace RimMandrake.LongShade
               + "Switch them there: \"Pinned sun (golden hour)\" with its sky-strength dial, and "
               + "\"False-shade ambush (the mirrak)\".");
 
-            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
+            viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
         }
