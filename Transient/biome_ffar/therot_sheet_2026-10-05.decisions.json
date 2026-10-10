@@ -5,40 +5,78 @@
   "decisions": {
     "AA_Agaripawn": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "1d84e07bd23dea8d"
+      }
     },
     "AA_Agaripod": {
       "at": "2026-10-10T15:00:14.668Z",
       "decidedAt": "2026-10-10T14:59:51.127Z",
       "decision": "B",
-      "note": "Adopt new name, improve the description.",
-      "prefill": "A",
-      "variants": [
+      "legacyVariantsDefault": [
         "B",
         "C"
       ],
-      "variantsDefault": true
+      "migratedFrom": 1,
+      "note": "Adopt new name, improve the description.",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "B": "393e937133cde485",
+        "C": "c568123001133a32"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "393e937133cde485",
+          "state": "pick"
+        }
+      }
     },
     "AA_AngelMoth": {
       "at": "2026-10-10T17:34:27.653Z",
       "decidedAt": "2026-10-10T17:34:27.653Z",
       "decision": "C",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "Regenerate S. Otherwise accept. Rename and regenerate description.",
       "prefill": "A",
       "purge": [
         "e42e8d355e4c69dbe3426ef720967601bcdb949eb93f48294defa805f71f8bbe"
       ],
       "purgeTouched": true,
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "B": "6f8becc71706c8b8",
+        "C": "2b0ac12cea5c82b1"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "2b0ac12cea5c82b1",
+          "state": "pick"
+        }
+      }
     },
     "AA_AnimaColossus": {
       "at": "2026-10-10T15:02:06.812Z",
       "decidedAt": "2026-10-10T15:02:06.812Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -55,188 +93,395 @@
         "e8b99406ac09b29fb012a0346dcbb6c8492bbe62e7b8b889fea792f11328c12e"
       ],
       "purgeTouched": true,
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "B": "af060998e92573a9"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "AA_MycoidColossus": {
       "at": "2026-10-10T15:09:06.878Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "A",
+        "B",
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
         "0663191015852bf12257ed76ef4b273844981b3ff6f31ac05265cc774e06d6e4"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B",
-        "D"
-      ],
-      "variantsDefault": true
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "32b619577df9901c",
+        "B": "c80a68d0ff43fdfa",
+        "D": "06ce104754790830"
+      }
     },
     "AA_Swarmling": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "6ff92b6d2f1bb2c4"
+      }
     },
     "AB_AgaricusDomeCap": {
       "at": "2026-10-10T15:11:47.040Z",
       "decision": "A",
-      "note": "Redo name and description",
-      "prefill": "A",
-      "variants": [
+      "legacyVariantsDefault": [
         "A"
       ],
-      "variantsDefault": true
+      "migratedFrom": 1,
+      "note": "Redo name and description",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "ce653cfb2ada2988"
+      },
+      "slots": {
+        "RotSpecies/AgaricusDomeCap": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "ce653cfb2ada2988",
+          "state": "pick"
+        }
+      }
     },
     "AB_Agarilux": {
       "at": "2026-10-10T15:12:09.572Z",
       "decidedAt": "2026-10-10T15:12:02.114Z",
       "decision": "A",
+      "legacyVariants": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "Redo name and description",
       "prefill": "A",
       "purge": [
         "6a13e4ba32b3017611486004af91dbea012afeaaa69bce7a69d54c1625cee432"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "425c7b0200881097"
+      },
+      "slots": {
+        "RotSpecies/Agarilux": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "425c7b0200881097",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T15:12:04.137Z"
     },
     "AB_AgariluxPrime": {
       "at": "2026-10-10T15:12:49.515Z",
       "decision": "A",
+      "legacyVariants": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "Accept new name, improve description, focusing on its dangerous behavior",
       "prefill": "A",
       "purge": [
         "20fc1470b444ec8b3b0050d9b3d6810e33ddb253bcf1a349cf2dbf5838bdc461"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "4c0f0904f9a53ec9"
+      },
       "variantsAt": "2026-10-10T15:12:14.497Z"
     },
     "AB_ArbuscularMycorrhiza": {
       "at": "2026-10-10T15:13:26.243Z",
       "decision": "A",
+      "legacyVariantsDefault": [],
+      "migratedFrom": 1,
       "note": "Improve name and description.",
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "7ee1ee7cd04aa426"
+      },
+      "slots": {
+        "RotSpecies/ArbuscularMycorrhiza": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "7ee1ee7cd04aa426",
+          "state": "pick"
+        }
+      }
     },
     "AB_Bryolux": {
       "at": "2026-10-10T15:13:40.106Z",
       "decision": "A",
+      "legacyVariantsDefault": [],
+      "migratedFrom": 1,
       "note": "Add two more realistic variants",
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "093663d5c9ffcea2"
+      },
+      "slots": {
+        "RotSpecies/Bryolux": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "093663d5c9ffcea2",
+          "state": "pick"
+        }
+      }
     },
     "AB_DribblingCap": {
       "at": "2026-10-10T15:15:08.423Z",
       "decision": "A",
+      "legacyVariantsDefault": [],
+      "migratedFrom": 1,
       "note": "Rename, improve description, make two other improved variants that are more realistic",
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "555fec7226c295f5"
+      },
+      "slots": {
+        "RotSpecies/DribblingCap": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "555fec7226c295f5",
+          "state": "pick"
+        }
+      }
     },
     "AB_GiantAgarilux": {
       "at": "2026-10-10T15:15:21.924Z",
       "decision": "A",
+      "legacyVariantsDefault": [],
+      "migratedFrom": 1,
       "note": "Rename, improve description, make two other improved variants that are more realistic",
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "e261b8172e55bb48"
+      },
+      "slots": {
+        "RotSpecies/GiantAgarilux": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "e261b8172e55bb48",
+          "state": "pick"
+        }
+      }
     },
     "AB_GlowingAgarilux": {
       "at": "2026-10-10T17:30:41.360Z",
       "decision": "A",
-      "note": "Rename, improve description, make two other improved variants that are more realistic",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C"
       ],
+      "migratedFrom": 1,
+      "note": "Rename, improve description, make two other improved variants that are more realistic",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "f4973638738505b5",
+        "B": "b553bc608fcb1a08",
+        "C": "bc4b7656d18caf5f"
+      },
+      "slots": {
+        "RotSpecies/GlowingAgarilux": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "f4973638738505b5",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T17:30:41.360Z"
     },
     "AB_Glowstool": {
       "at": "2026-10-10T17:30:47.727Z",
       "decision": "A",
-      "note": "Rename, improve description, make two other improved variants that are more realistic",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C"
       ],
+      "migratedFrom": 1,
+      "note": "Rename, improve description, make two other improved variants that are more realistic",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "be7b4e4d6244da96",
+        "B": "53a0b432cc7be6a5",
+        "C": "1385ca0374d1f4a5"
+      },
+      "slots": {
+        "RotSpecies/Glowstool": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "be7b4e4d6244da96",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T17:30:47.727Z"
     },
     "AB_LilacBeacon": {
       "at": "2026-10-10T17:31:08.922Z",
       "decision": "A",
-      "note": "Rename, improve description, make two other improved variants that are more realistic",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C"
       ],
+      "migratedFrom": 1,
+      "note": "Rename, improve description, make two other improved variants that are more realistic",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "f2f9675375ec2115",
+        "B": "77d89511a0c16105",
+        "C": "4c8f1c2420129adf"
+      },
+      "slots": {
+        "RotSpecies/LilacBeacon": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "f2f9675375ec2115",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T17:31:08.922Z"
     },
     "AB_RecurvedStropharia": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "4eaa01e0485a63a2"
+      }
     },
     "AB_SlimyPholiota": {
       "at": "2026-10-10T17:32:56.919Z",
       "decision": "A",
-      "note": "Rename, improve description, make two other improved variants that are more realistic",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B",
         "C"
       ],
+      "migratedFrom": 1,
+      "note": "Rename, improve description, make two other improved variants that are more realistic",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "3a5b3a0b6fc4a511",
+        "B": "7d280c0b5ecbba64",
+        "C": "49befed2462144e3"
+      },
+      "slots": {
+        "RotSpecies/SlimyPholiota": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "3a5b3a0b6fc4a511",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T17:32:56.919Z"
     },
     "AB_WitchesOyster": {
       "at": "2026-10-10T17:33:42.054Z",
       "decision": "A",
-      "note": "Rename, improve description, make two other improved variants that are more realistic",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C"
       ],
+      "migratedFrom": 1,
+      "note": "Rename, improve description, make two other improved variants that are more realistic",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "e2fe54c782fb1b4c",
+        "B": "f1720c2443afe0dd",
+        "C": "325e1d3090ec469c"
+      },
+      "slots": {
+        "RotSpecies/WitchesOyster": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "e2fe54c782fb1b4c",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T17:33:42.054Z"
     },
     "RM_AgelessCap": {
       "at": "2026-10-10T17:31:37.824Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "B",
+        "D",
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
         "925feb103df63816f8e76cc8af317a643f537a2d1293ca1ffd5aa0d7f104a095"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B",
-        "D",
-        "E"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "3db4ba867ac3f33a",
+        "B": "21698b4c23f170e0",
+        "D": "6049f7e417c88e7d",
+        "E": "901589842eac477f"
+      },
       "variantsAt": "2026-10-10T17:31:37.824Z"
     },
     "RM_Arpeau": {
       "at": "2026-10-10T15:14:20.534Z",
       "decidedAt": "2026-10-10T15:14:14.260Z",
       "decision": "B",
+      "legacyVariants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -244,18 +489,33 @@
         "9a2e82d816619b9dc7d9bd80f6155471cfc18c4c620f7b7c35ef70be77bf69ee"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "f9b4c199b1198f0f",
+        "B": "492b8ac384112dce",
+        "C": "4507a98494c998f8",
+        "D": "553eb30307991fbd"
+      },
+      "slots": {
+        "RotSporeKit/Things/Plant/Arpeau": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "492b8ac384112dce",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T15:14:20.534Z"
     },
     "RM_BlastpodShroom": {
       "at": "2026-10-10T17:31:05.081Z",
       "decidedAt": "2026-10-10T17:31:01.123Z",
       "decision": "C",
+      "legacyVariants": [
+        "E",
+        "F"
+      ],
+      "migratedFrom": 1,
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
@@ -264,34 +524,61 @@
         "8260cf3e56152901f89e59870281af60c0366f3c6aa49a14fe5b3500fa99d8e2"
       ],
       "purgeTouched": true,
-      "variants": [
-        "E",
-        "F"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "C": "a607d91dd4bce8a0",
+        "E": "0c33fbe252f8dc8f",
+        "F": "35f909ad57fb6213"
+      },
+      "slots": {
+        "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "a607d91dd4bce8a0",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T17:30:58.040Z"
     },
     "RM_BleedingTooth": {
       "at": "2026-10-10T17:32:46.127Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "purge": [
-        "847dc28fde17e2bf895a1ab225e7c8a7b7f7deec9d0f64721f982f53066b8f04"
-      ],
-      "purgeTouched": true,
-      "variants": [
+      "legacyVariantsDefault": [
         "B",
         "C",
         "D",
         "E",
         "F"
       ],
-      "variantsDefault": true
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "847dc28fde17e2bf895a1ab225e7c8a7b7f7deec9d0f64721f982f53066b8f04"
+      ],
+      "purgeTouched": true,
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "69305acd148c5956",
+        "B": "51e47aea6bd7fa36",
+        "C": "75cde2b145b5f743",
+        "D": "46d613de71af4c6d",
+        "E": "73f5eb49dafd0f69",
+        "F": "0db2b3a564d879cc"
+      }
     },
     "RM_Brightbell": {
       "at": "2026-10-10T17:33:28.246Z",
       "decidedAt": "2026-10-10T15:20:59.303Z",
       "decision": "C",
+      "legacyVariants": [
+        "C",
+        "D",
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
@@ -299,17 +586,32 @@
         "56c96bd53a28fb3c477f9c2ca8811e3e577deee5ca054546e9bd0e0cd1513305"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C",
-        "D",
-        "E"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "C": "4068c10eed8ba727",
+        "D": "13ccef714213a487",
+        "E": "7f22087c5a607896"
+      },
+      "slots": {
+        "RotSporeKit/Things/Plant/Brightbell": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "4068c10eed8ba727",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T17:33:26.352Z"
     },
     "RM_Brogg": {
       "at": "2026-10-10T15:03:03.284Z",
       "decidedAt": "2026-10-10T15:02:34.041Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "A",
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "Remove tint. Enhance description.",
       "prefill": "A",
       "purge": [
@@ -318,21 +620,41 @@
         "82bc8e90c6bfd75b3adeb4c05c4da744fa9f48b0a1e15fd500aa983179e9f1bb"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "e6ab8b8f2f8c267c",
+        "B": "3d76760207dbd199"
+      },
+      "slots": {
+        "RM_TheRot/Fauna/Redrawn/Brogg/Brogg": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "e6ab8b8f2f8c267c",
+          "state": "pick"
+        }
+      }
     },
     "RM_Brullith": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "6707ea8a816530ef"
+      }
     },
     "RM_CrimsonCap": {
       "at": "2026-10-10T17:32:39.080Z",
       "decidedAt": "2026-10-10T17:32:39.080Z",
       "decision": "G",
+      "legacyVariants": [
+        "G",
+        "H"
+      ],
+      "migratedFrom": 1,
       "note": "Rename, improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
@@ -344,66 +666,131 @@
         "fd787ef4957cee94ac59636699aca62517d878fc7764daed4a43c6daa133b382"
       ],
       "purgeTouched": true,
-      "variants": [
-        "G",
-        "H"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "G": "1fe031a22d6dd84d",
+        "H": "4d87156883ab5c5d"
+      },
+      "slots": {
+        "RotSporeKit/Things/Plant/CrimsonCap": {
+          "migrated": true,
+          "pick": "G",
+          "set_id": "1fe031a22d6dd84d",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T17:32:36.382Z"
     },
     "RM_Dewshrooms": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "f5e4c879a597e6d0"
+      }
     },
     "RM_Durrok": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "61f7cd1b983da5ff"
+      }
     },
     "RM_EuphoricCrown": {
       "at": "2026-10-10T15:16:11.093Z",
       "decidedAt": "2026-10-10T15:16:11.093Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariantsDefault": [
         "B",
         "C"
       ],
-      "variantsDefault": true
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "B": "b7d98eae28ac0410",
+        "C": "8abbd8c73993ec9a"
+      },
+      "slots": {
+        "RotSporeKit/Things/Plant/EuphoricCrown": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "b7d98eae28ac0410",
+          "state": "pick"
+        }
+      }
     },
     "RM_FalseFruit": {
       "at": "2026-10-10T17:31:41.437Z",
       "decidedAt": "2026-10-10T15:18:23.143Z",
       "decision": "B",
-      "note": "improve description, make two other improved variants that are more realistic",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "improve description, make two other improved variants that are more realistic",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "B": "291800cd4a6819f2",
+        "C": "6ec940bba4625369",
+        "D": "6580c8318f006c7f"
+      },
+      "slots": {
+        "RotSporeKit/Things/Plant/FalseFruit": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "291800cd4a6819f2",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T17:31:41.437Z"
     },
     "RM_FlakespireFungus": {
       "at": "2026-10-10T17:33:15.416Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "C",
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
         "e871384f56ba44bda702dbce336299c74eea2caba99eb6e9a53a3c7750f7f1a5"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "C",
-        "D"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "bc89fdc70da0e020",
+        "C": "d0dfdb5ff55cf85c",
+        "D": "2437c5e2f393d063"
+      },
       "variantsAt": "2026-10-10T17:33:13.917Z"
     },
     "RM_FruitingBodies": {
       "at": "2026-10-10T17:31:54.430Z",
       "decision": "A",
+      "legacyVariants": [
+        "E",
+        "F"
+      ],
+      "migratedFrom": 1,
       "note": "make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
@@ -412,21 +799,36 @@
         "cab09965d3904fd685bbdfaa052171c84e3eed3adadf0b5ee214b7a0fd6c7cd5"
       ],
       "purgeTouched": true,
-      "variants": [
-        "E",
-        "F"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "d25a5ddd4b3de0ab",
+        "E": "1b590d66e5fd4703",
+        "F": "7ccfde05e003d19e"
+      },
       "variantsAt": "2026-10-10T17:31:46.970Z"
     },
     "RM_Grellik": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "4befc14dc44bd3dd"
+      }
     },
     "RM_GreyLady": {
       "at": "2026-10-10T17:33:08.744Z",
       "decidedAt": "2026-10-10T15:20:15.763Z",
       "decision": "B",
+      "legacyVariantsDefault": [
+        "B",
+        "C",
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "Improve description",
       "prefill": "A",
       "purge": [
@@ -435,30 +837,51 @@
         "85bf87c03fa0806592cc95a4079c72a91bde2245adc834f9d8d8197839de4a01"
       ],
       "purgeTouched": true,
-      "variants": [
-        "B",
-        "C",
-        "D"
-      ],
-      "variantsDefault": true
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "B": "987989c1fc02a87d",
+        "C": "3efd1c77ad9bd350",
+        "D": "0711d31c15003102"
+      },
+      "slots": {
+        "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "987989c1fc02a87d",
+          "state": "pick"
+        }
+      }
     },
     "RM_Hwelgrue": {
       "at": "2026-10-10T15:08:34.461Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "purge": [],
-      "purgeTouched": true,
-      "variants": [
+      "legacyVariantsDefault": [
         "A",
         "B",
         "C"
       ],
-      "variantsDefault": true
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "purge": [],
+      "purgeTouched": true,
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "86958f002cc08519",
+        "B": "75cf4c6839b73aa3",
+        "C": "39fcbd2f93ce0569"
+      }
     },
     "RM_Illoth": {
       "at": "2026-10-10T15:08:50.692Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -467,23 +890,19 @@
         "1cef08e262658cc4d6758120b7ae5cf8de735329ec8a242e85094f6ff5ef6560"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "C"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "5af218aaef8076b8",
+        "C": "3dd3bf3e9d3078d3"
+      },
       "variantsAt": "2026-10-10T15:08:45.680Z"
     },
     "RM_MortalMorelPlant": {
       "at": "2026-10-10T17:33:38.862Z",
       "decidedAt": "2026-10-10T15:21:27.393Z",
       "decision": "B",
-      "note": "Rename, improve description, make two other improved variants that are more realistic",
-      "prefill": "A",
-      "purge": [
-        "88d5e0e268b3b3bb1af578c92d704d06d97133cfef4c6dfbfa66e91c85e89917"
-      ],
-      "purgeTouched": true,
-      "variants": [
+      "legacyVariants": [
         "B",
         "C",
         "D",
@@ -491,16 +910,55 @@
         "F",
         "G"
       ],
+      "migratedFrom": 1,
+      "note": "Rename, improve description, make two other improved variants that are more realistic",
+      "prefill": "A",
+      "purge": [
+        "88d5e0e268b3b3bb1af578c92d704d06d97133cfef4c6dfbfa66e91c85e89917"
+      ],
+      "purgeTouched": true,
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "B": "1ff89f53fed11f81",
+        "C": "72a9fb51ac0ee868",
+        "D": "bf89c5b9afbb2b80",
+        "E": "be9ddb2aad2da7ed",
+        "F": "5d209c7683ce0bc3",
+        "G": "35290a38ade34481"
+      },
+      "slots": {
+        "RotSporeKit/Things/Plant/MortalMorel": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "1ff89f53fed11f81",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T17:33:36.719Z"
     },
     "RM_Mullgoth": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "f22ff5c4b3cc5b2a"
+      }
     },
     "RM_Nuitae": {
       "at": "2026-10-10T17:31:32.430Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "B",
+        "C",
+        "F",
+        "G"
+      ],
+      "migratedFrom": 1,
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
@@ -508,45 +966,87 @@
         "705f39d048cb95aeaea888397ffcfcbe0b4eb36c589e98e3571b69474e7c6c7f"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B",
-        "C",
-        "F",
-        "G"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "49974ee0db823fe7",
+        "B": "599dccac059fa058",
+        "C": "f1f3dcefa4f459db",
+        "F": "fc7a78dfc4367105",
+        "G": "cb6bab2e8a4421c5"
+      },
       "variantsAt": "2026-10-10T17:31:32.430Z"
     },
     "RM_PaleTree": {
       "at": "2026-10-10T17:32:09.359Z",
       "decision": "A",
-      "note": "improve description, make two other improved variants that are more realistic",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C",
         "D",
         "E"
       ],
+      "migratedFrom": 1,
+      "note": "improve description, make two other improved variants that are more realistic",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "ec2542c4bebaed44",
+        "B": "bf4d85768beef1a6",
+        "C": "d4bbf925ac8d918e",
+        "D": "dde382af04eccba8",
+        "E": "f07dfc6b15fa0519"
+      },
+      "slots": {
+        "RotSporeKit/Things/Plant/PaleTree": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "ec2542c4bebaed44",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T17:32:09.359Z"
     },
     "RM_Pusmelon": {
       "at": "2026-10-10T17:30:51.385Z",
       "decidedAt": "2026-10-10T15:15:40.486Z",
       "decision": "B",
-      "note": "Rename, improve description, make two other improved variants that are more realistic",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "Rename, improve description, make two other improved variants that are more realistic",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "B": "c04a15441d638087",
+        "C": "cc0e32b347b6bd3f",
+        "D": "1364710a1724b7db"
+      },
+      "slots": {
+        "RotSporeKit/Things/Plant/Pusmelon": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "c04a15441d638087",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T17:30:51.385Z"
     },
     "RM_RegenerantVeil": {
       "at": "2026-10-10T17:31:25.486Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "D",
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
@@ -554,17 +1054,24 @@
         "aa606e0edc8224783fde99ef5b87439eb6c08d44893ef6f8a6f485590a8a24e3"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "D",
-        "E"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "155ec8073c3046cc",
+        "D": "9fa0edd6976af5d3",
+        "E": "5c73f378e7d560ff"
+      },
       "variantsAt": "2026-10-10T17:31:23.566Z"
     },
     "RM_Sagecrust": {
       "at": "2026-10-10T17:33:22.517Z",
       "decidedAt": "2026-10-10T15:20:48.754Z",
       "decision": "C",
+      "legacyVariants": [
+        "C",
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
@@ -572,47 +1079,106 @@
         "a9dac49e125b19e4881580693ad68bfc3907b88755ca9e83c921239f56a696a9"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C",
-        "D"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "C": "b2b3978f83178d35",
+        "D": "b9359f6fed2ff967"
+      },
+      "slots": {
+        "RotSporeKit/Things/Plant/Sagecrust": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "b2b3978f83178d35",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T17:33:22.517Z"
     },
     "RM_Shambles": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "d0e786dea1f44fa6"
+      }
     },
     "RM_Shinecap": {
       "at": "2026-10-10T15:14:40.278Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C",
         "D",
         "E"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "8c1d86e72e03a2bf",
+        "B": "ac88a8683bfabff7",
+        "C": "9502eb7d756e91f4",
+        "D": "cae11070c07adf82",
+        "E": "d640baf5fce4fdff"
+      },
+      "slots": {
+        "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "8c1d86e72e03a2bf",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T15:14:40.278Z"
     },
     "RM_Skerrith": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "54605fcf1d959481"
+      }
     },
     "RM_Skulltop": {
       "at": "2026-10-10T15:21:22.010Z",
       "decision": "A",
+      "legacyVariantsDefault": [],
+      "migratedFrom": 1,
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "49f97a0c2161eb81"
+      },
+      "slots": {
+        "RotSporeKit/Things/Plant/Skulltop/Skulltop": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "49f97a0c2161eb81",
+          "state": "pick"
+        }
+      }
     },
     "RM_Thozzik": {
       "at": "2026-10-10T15:10:32.407Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "A",
+        "B",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -621,94 +1187,169 @@
         "93971b556669f1a03b8fe7c910c34d91eb5d929c2025a8ea943d3a6a6c957df2"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B",
-        "C"
-      ],
-      "variantsDefault": true
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "eae7524d7f8a044b",
+        "B": "559bc8aef4efae08",
+        "C": "84dbf1c483263b5f"
+      }
     },
     "RM_ThozzikColony": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "eae7524d7f8a044b"
+      }
     },
     "RM_ThozzikColonyQueen": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "ae7eb01043c9805b"
+      }
     },
     "RM_ThozzikQueen": {
       "at": "2026-10-10T15:11:32.806Z",
       "decision": "A",
-      "note": "Redundant?",
-      "prefill": "A",
-      "variants": [
+      "legacyVariantsDefault": [
         "A"
       ],
-      "variantsDefault": true
+      "migratedFrom": 1,
+      "note": "Redundant?",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "ae7eb01043c9805b"
+      },
+      "slots": {
+        "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "ae7eb01043c9805b",
+          "state": "pick"
+        }
+      }
     },
     "RM_ThozzikSpawned": {
       "at": "2026-10-10T15:10:49.750Z",
       "decision": "A",
-      "note": "Redundant?",
-      "prefill": "A",
-      "variants": [
+      "legacyVariantsDefault": [
         "A",
         "B",
         "C"
       ],
-      "variantsDefault": true
+      "migratedFrom": 1,
+      "note": "Redundant?",
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "eae7524d7f8a044b",
+        "B": "559bc8aef4efae08",
+        "C": "84dbf1c483263b5f"
+      },
+      "slots": {
+        "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "eae7524d7f8a044b",
+          "state": "pick"
+        }
+      }
     },
     "RM_VioletWimple": {
       "at": "2026-10-10T17:32:01.227Z",
       "decision": "A",
+      "legacyVariants": [
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "migratedFrom": 1,
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
         "cf994f6d38a65ee5dce5ed77d0146135ed319cbb25ed49a0ca25e35cb6215162"
       ],
       "purgeTouched": true,
-      "variants": [
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "ee87ded99c23dcc6",
+        "B": "5051da77ef99e054",
+        "C": "28e429f81effa0f9",
+        "D": "3e40e75629fd47e4",
+        "E": "d6373bfa9b078176",
+        "F": "27f0c6e448b83acc"
+      },
+      "variantsAt": "2026-10-10T17:31:59.365Z"
+    },
+    "RM_Wrinklecap": {
+      "at": "2026-10-10T17:32:53.352Z",
+      "decision": "A",
+      "legacyVariants": [
         "B",
         "C",
         "D",
         "E",
         "F"
       ],
-      "variantsAt": "2026-10-10T17:31:59.365Z"
-    },
-    "RM_Wrinklecap": {
-      "at": "2026-10-10T17:32:53.352Z",
-      "decision": "A",
+      "migratedFrom": 1,
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
         "e3b8c4841b3b109e0713b5af56e3f91e2de84b700e0484a2c7c3a48b73f0e63e"
       ],
       "purgeTouched": true,
-      "variants": [
-        "B",
-        "C",
-        "D",
-        "E",
-        "F"
-      ],
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "29ea49c7b5e4e43b",
+        "B": "bbb7549826666875",
+        "C": "0a78f5dbef8acd05",
+        "D": "43b88c5c35130712",
+        "E": "de7363fedfe9ed3f",
+        "F": "c46e2009efd6c66b"
+      },
       "variantsAt": "2026-10-10T17:32:53.352Z"
     },
     "RSW_ShiroTrap": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/ShiroTrap/ShiroTrap_i": "E",
         "swanimals/ShiroTrap/ShiroTrap_j": "F"
       },
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "A": "500b3c52389d815d",
+        "E": "74adce66695e4f2a",
+        "F": "9fb98fdfb1e98842"
+      }
     },
     "Snoruuk": {
       "at": "2026-10-10T15:10:11.360Z",
       "decidedAt": "2026-10-10T15:09:43.277Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -724,12 +1365,35 @@
         "swanimals/Snoruuk/Snoruuk_j": "C"
       },
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "cf064b3a064be0fd",
+      "schema": 2,
+      "setIds": {
+        "B": "3794d49348b08782",
+        "C": "315e7293dcf83fd8"
+      },
+      "slots": {
+        "swanimals/Snoruuk/Snoruuk": {
+          "migrated": true,
+          "state": "redraw"
+        },
+        "swanimals/Snoruuk/Snoruuk_j": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "315e7293dcf83fd8",
+          "state": "pick"
+        }
+      }
     }
   },
+  "migrations": [
+    {
+      "against_snapshot": "cf064b3a064be0fd",
+      "at": "2026-10-10T11:53:50-0700",
+      "by": "script:src/RimMandrake/Utils/art/decisions_v2.py",
+      "from": 1,
+      "to": 2
+    }
+  ],
   "posture": "pick-one",
   "reviewStatus": {
     "at": null,
@@ -739,6 +1403,7 @@
   },
   "savedAt": "2026-10-10T10:34:28-0700",
   "savedBy": "review-sheet-sidecar",
+  "schema": 2,
   "sheetId": "therot_sheet_2026-10-05",
   "snapshot": "infrastructure/state/art/sheets/therot_sheet_2026-10-05.snapshot.json",
   "snapshotId": "cf064b3a064be0fd",

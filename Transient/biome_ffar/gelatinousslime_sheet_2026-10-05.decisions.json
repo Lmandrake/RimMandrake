@@ -25,6 +25,7 @@
         }
       ],
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -36,37 +37,76 @@
           "when": "2026-10-09T18:17:14-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "a9b381d8897cf9b5",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/Dwommo/RM_Dwommo": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RM_Fubbum": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "a9b381d8897cf9b5",
+      "schema": 2,
+      "setIds": {
+        "A": "e70fe15bf378c2e1"
+      }
     },
     "RM_Gappo": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "a9b381d8897cf9b5",
+      "schema": 2,
+      "setIds": {
+        "A": "6ece4e941e9ee701"
+      }
     },
     "RM_GappoGreater": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "a9b381d8897cf9b5",
+      "schema": 2,
+      "setIds": {
+        "A": "7e3b9d828da67097"
+      }
     },
     "RM_GappoLesser": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "a9b381d8897cf9b5",
+      "schema": 2,
+      "setIds": {
+        "A": "68d88bcc94d23833"
+      }
     },
     "RM_Gelatid": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "a9b381d8897cf9b5",
+      "schema": 2,
+      "setIds": {
+        "A": "b8e6c296fea5c13c"
+      }
     },
     "RM_Glurro": {
       "at": "2026-10-06T03:18:05.705Z",
       "decidedAt": "2026-10-06T03:18:00.697Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -78,9 +118,14 @@
           "when": "2026-10-09T01:20:07-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "a9b381d8897cf9b5",
+      "schema": 2
     },
     "RM_Plant_Bellows": {
+      "assign": {
+        "B": "Things/Plant/Bush"
+      },
       "at": "2026-10-06T03:19:22.134Z",
       "conflictSheet": [
         {
@@ -105,6 +150,7 @@
       ],
       "decidedAt": "2026-10-06T03:19:22.134Z",
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_byname": "B"
@@ -119,9 +165,25 @@
         "picks": {
           "_byname": "B"
         }
+      },
+      "rev": "a9b381d8897cf9b5",
+      "schema": 2,
+      "setIds": {
+        "B": "10a4caa504702300"
+      },
+      "slots": {
+        "Things/Plant/Bush": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "10a4caa504702300",
+          "state": "pick"
+        }
       }
     },
     "RM_Plant_Readerbloom": {
+      "assign": {
+        "B": "Things/Plant/Dandelion"
+      },
       "at": "2026-10-10T00:46:00.833Z",
       "conflictSheet": [
         {
@@ -146,6 +208,7 @@
       ],
       "decidedAt": "2026-10-06T03:19:26.430Z",
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -164,12 +227,27 @@
       "purge": [
         "914e38677a20be4e72eed09b27ef41768a3c882a7e30746117ea9a938ce5ce1d"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "a9b381d8897cf9b5",
+      "schema": 2,
+      "setIds": {
+        "B": "0b258a98e6f7ff67"
+      },
+      "slots": {
+        "Things/Plant/Dandelion": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RM_Plant_SlimeGrass": {
+      "assign": {
+        "C": "Things/Plant/Grass"
+      },
       "at": "2026-10-06T03:19:58.680Z",
       "decidedAt": "2026-10-06T03:19:58.680Z",
       "decision": "C",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -188,12 +266,29 @@
         "a488242e9afdf9e575cb601763a53bbb573f4a983e27dfa3cc1e96cb92b12c0f",
         "04e365a819c107a124d380810bd62ff8f15ab6c036636d4b081c5b725adebc3a"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "a9b381d8897cf9b5",
+      "schema": 2,
+      "setIds": {
+        "C": "fb4707484f4f4f65"
+      },
+      "slots": {
+        "Things/Plant/Grass": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "fb4707484f4f4f65",
+          "state": "pick"
+        }
+      }
     },
     "RM_Plant_Thumbstalk": {
+      "assign": {
+        "B": "Things/Plant/Bush"
+      },
       "at": "2026-10-06T03:20:10.137Z",
       "decidedAt": "2026-10-06T03:20:04.804Z",
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -214,14 +309,42 @@
       "purge": [
         "bf9373f689fdb2913e30e005cbd8cef2bd1d99d3567d40a5fb6160f61e827ea8"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "a9b381d8897cf9b5",
+      "schema": 2,
+      "setIds": {
+        "B": "86ed7ebc9c01f228"
+      },
+      "slots": {
+        "Things/Plant/Bush": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "86ed7ebc9c01f228",
+          "state": "pick"
+        }
+      }
     },
     "RM_Titanoslime": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "a9b381d8897cf9b5",
+      "schema": 2,
+      "setIds": {
+        "A": "e21e5f2f6297d683"
+      }
     }
   },
+  "migrations": [
+    {
+      "against_snapshot": "a9b381d8897cf9b5",
+      "at": "2026-10-10T11:53:45-0700",
+      "by": "script:src/RimMandrake/Utils/art/decisions_v2.py",
+      "from": 1,
+      "to": 2
+    }
+  ],
   "posture": "pick-one",
   "reviewStatus": {
     "at": "2026-10-05T20:21:00-0700",
@@ -231,6 +354,7 @@
   },
   "savedAt": "2026-10-05T20:20:10-0700",
   "savedBy": "review-sheet-sidecar",
+  "schema": 2,
   "sheetId": "gelatinousslime_sheet_2026-10-05",
   "snapshot": "infrastructure/state/art/sheets/gelatinousslime_sheet_2026-10-05.snapshot.json",
   "snapshotId": "a9b381d8897cf9b5",

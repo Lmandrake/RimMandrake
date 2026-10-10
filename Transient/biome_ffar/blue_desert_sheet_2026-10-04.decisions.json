@@ -7,6 +7,7 @@
       "at": "2026-10-06T03:12:59.600Z",
       "decidedAt": "2026-10-06T03:12:54.791Z",
       "decision": "E",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -27,23 +28,57 @@
         "01ae686025006dac908ba91ebdd7155ea2f44a95af67652dc9020f909e67745a",
         "6c8481c109f8e82da8171bd9508a8065c90b11b8b0aa9b957fe029344250dcaa"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "E": "dc814e60fecd8d90"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_Thunderbeast/AA_Thunderbeast": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "dc814e60fecd8d90",
+          "state": "pick"
+        }
+      }
     },
     "RM_Chimeglobe": {
       "at": "2026-10-06T03:14:21.801Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "A": "84cb32bd08a3a066",
+        "B": "0149328f2a60b07a"
+      },
+      "slots": {
+        "Things/Plant/RM_Chimeglobe/RM_Chimeglobe": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "84cb32bd08a3a066",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-06T03:14:21.801Z"
     },
     "RM_Dorrak": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "A": "bf9338b77a1c5fcf"
+      }
     },
     "RM_Dovvik": {
       "at": "2026-10-09T17:49:53-0700",
@@ -68,6 +103,7 @@
       ],
       "decidedAt": "2026-10-05T05:54:07.847Z",
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -85,12 +121,25 @@
         "5afdcdfafbba574d4d2ae90438b2adf380f09854c16a3151ecd43efb095c4ad3",
         "3dfd29415782dc217ad4674edb5544f30171f8e6dd0e7fead5ece095af6a3849"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RM_Glassfern": {
       "at": "2026-10-06T03:14:25.538Z",
       "decidedAt": "2026-10-04T23:42:36.375Z",
       "decision": "B",
+      "legacyVariants": [
+        "B",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -107,15 +156,32 @@
         "49c80e23debcaec53455882319587b1fcb38f79f5057e1d7786927d6cb0bcd48"
       ],
       "purgeTouched": true,
-      "variants": [
-        "B",
-        "C"
-      ],
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "B": "544113d4b7dbd50c",
+        "C": "9714e3c3b405432d"
+      },
+      "slots": {
+        "Things/Plant/RM_Glassfern/RM_Glassfern": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "544113d4b7dbd50c",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-06T03:14:25.538Z"
     },
     "RM_Kethevar": {
       "at": "2026-10-05T14:37:17.720Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -130,22 +196,45 @@
         }
       ],
       "prefill": "A",
-      "variants": [
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "A": "afdb88861aa9c0c4",
+        "B": "7c72be04f2acdbc5",
+        "C": "108892706cc46cbf",
+        "D": "70621d41b1077462"
+      },
+      "slots": {
+        "Things/Plant/RM_Kethevar/RM_Kethevar": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "afdb88861aa9c0c4",
+          "state": "pick"
+        }
+      },
+      "variantsAt": "2026-10-05T14:37:17.720Z"
+    },
+    "RM_Krissek": {
+      "decision": "A",
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "A": "615fb9d1b121c705"
+      }
+    },
+    "RM_Lisqueth": {
+      "at": "2026-10-05T14:37:22.774Z",
+      "decision": "A",
+      "legacyVariants": [
         "A",
         "B",
         "C",
         "D"
       ],
-      "variantsAt": "2026-10-05T14:37:17.720Z"
-    },
-    "RM_Krissek": {
-      "decision": "A",
-      "note": "",
-      "prefill": "A"
-    },
-    "RM_Lisqueth": {
-      "at": "2026-10-05T14:37:22.774Z",
-      "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -160,12 +249,22 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "A": "16d7e53e6b00ef06",
+        "B": "ab75d786298a98c6",
+        "C": "28fed949e308f4d1",
+        "D": "2c36dea443530382"
+      },
+      "slots": {
+        "Things/Plant/RM_Lisqueth/RM_Lisqueth": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "16d7e53e6b00ef06",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-05T14:37:22.774Z"
     },
     "RM_Murrek": {
@@ -191,6 +290,7 @@
       ],
       "decidedAt": "2026-10-05T05:55:04.302Z",
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -202,12 +302,25 @@
           "when": "2026-10-09T18:16:08-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Murrek/RM_Murrek": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RM_Ossivel": {
       "at": "2026-10-06T03:12:38.560Z",
       "decidedAt": "2026-10-05T14:27:05.681Z",
       "decision": "B",
+      "legacyVariants": [
+        "B",
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -231,15 +344,31 @@
         "590ba05c30d5e0593bb799f26f1c748d31cbd8a9cd853d4b8e45f01de70720f8"
       ],
       "purgeTouched": true,
-      "variants": [
-        "B",
-        "D"
-      ],
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "B": "406a7519b33b58ad",
+        "D": "1148acc1ce2dbfc2"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "406a7519b33b58ad",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-06T03:12:38.560Z"
     },
     "RM_Palefloss": {
       "at": "2026-10-05T14:37:26.890Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -252,17 +381,28 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C"
-      ],
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "A": "9019f479a62d8b0b",
+        "B": "3115e25ee252e4a5",
+        "C": "21842fa2ddb85c51"
+      },
+      "slots": {
+        "Things/Plant/RM_Palefloss/RM_Palefloss": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "9019f479a62d8b0b",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-05T14:37:26.890Z"
     },
     "RM_Qeshra": {
       "at": "2026-10-06T03:14:54.825Z",
       "decidedAt": "2026-10-04T23:43:38.375Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -276,7 +416,20 @@
           "when": "2026-10-09T01:19:17-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "A": "a774a4d8df6db931"
+      },
+      "slots": {
+        "Things/Plant/RM_Qeshra/RM_Qeshra": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "a774a4d8df6db931",
+          "state": "pick"
+        }
+      }
     },
     "RM_Utikka": {
       "at": "2026-10-09T17:49:53-0700",
@@ -301,6 +454,7 @@
       ],
       "decidedAt": "2026-10-05T05:56:25.653Z",
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -318,11 +472,26 @@
         "086e060adc0fb404fd9b5be01ac9ed63177020c3f2c5337dce8a50fc68f495a0",
         "0037e2521adbe84e52051cb2e0feb6c0dc03705e34f46ffe862beca2a244b4ae"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Utikka/RM_Utikka": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RM_Vashpuk": {
       "at": "2026-10-06T03:14:47.467Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -337,18 +506,34 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "A": "e1e173dd9e001af7",
+        "B": "db08fc69c9eb0d14",
+        "C": "53ebb10dfafd6f7c",
+        "D": "f607c454178b74bc"
+      },
+      "slots": {
+        "Things/Plant/RM_Vashpuk/RM_Vashpuk": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "e1e173dd9e001af7",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-06T03:14:47.467Z"
     },
     "RM_Vekkit": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "A": "d5088322b67bd973"
+      }
     },
     "RM_Vhaulk": {
       "at": "2026-10-06T03:14:12.448Z",
@@ -373,16 +558,37 @@
       ],
       "decidedAt": "2026-10-06T03:13:59.370Z",
       "decision": "E",
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
         "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "E": "23aab3812d1b7c48"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "23aab3812d1b7c48",
+          "state": "pick"
+        }
+      }
     },
     "RM_Virr": {
       "at": "2026-10-06T03:15:00.961Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -397,12 +603,22 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C",
-        "D"
-      ],
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "A": "3371252c6ed2b5a3",
+        "B": "a96d8f8a90a2a39a",
+        "C": "9a81f07b399a9b85",
+        "D": "8d2f15988ac9942a"
+      },
+      "slots": {
+        "Things/Plant/RM_Virr/RM_Virr": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "3371252c6ed2b5a3",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-06T03:15:00.961Z"
     },
     "RM_Vrisk": {
@@ -428,6 +644,7 @@
       ],
       "decidedAt": "2026-10-05T14:36:47.721Z",
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -445,17 +662,32 @@
         "6e9f6f848afe411e6e922f9c8423618d2a378f92f29f532b22a6cc3cc3e81c5a",
         "964f4cfb368c30c7501265836af6055a2dd88258fb81a108b89a1eb0dbbbd17c"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Vrisk/RM_Vrisk": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RM_Zhaaz": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "A": "b6ff774976643183"
+      }
     },
     "Vapaad": {
       "at": "2026-10-06T03:13:37.129Z",
       "decidedAt": "2026-10-06T03:13:18.395Z",
       "decision": "G",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -474,9 +706,31 @@
         "888ef88237d28c1172509750e2cd0df3ea1770cb01cefab9bf806e052fe687b1",
         "788cd180fef48964edb84ccd387bc078f849c996b4f99d958ed28d9acb0f63f6"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "03503bba1df3f583",
+      "schema": 2,
+      "setIds": {
+        "G": "d2f30bedd95aead6"
+      },
+      "slots": {
+        "swanimals/Vapaad/Vapaad": {
+          "migrated": true,
+          "pick": "G",
+          "set_id": "d2f30bedd95aead6",
+          "state": "pick"
+        }
+      }
     }
   },
+  "migrations": [
+    {
+      "against_snapshot": "03503bba1df3f583",
+      "at": "2026-10-10T11:53:41-0700",
+      "by": "script:src/RimMandrake/Utils/art/decisions_v2.py",
+      "from": 1,
+      "to": 2
+    }
+  ],
   "posture": "pick-one",
   "reviewStatus": {
     "at": "2026-10-05T20:15:01-0700",
@@ -486,6 +740,7 @@
   },
   "savedAt": "2026-10-05T20:15:01-0700",
   "savedBy": "review-sheet-sidecar",
+  "schema": 2,
   "sheetId": "blue_desert_sheet_2026-10-04",
   "snapshot": "infrastructure/state/art/sheets/blue_desert_sheet_2026-10-04.snapshot.json",
   "snapshotId": "03503bba1df3f583",

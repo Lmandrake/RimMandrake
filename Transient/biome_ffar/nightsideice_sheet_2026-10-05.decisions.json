@@ -7,6 +7,7 @@
       "at": "2026-10-06T02:03:29.851Z",
       "decidedAt": "2026-10-06T02:03:21.972Z",
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -20,12 +21,21 @@
           "when": "2026-10-09T01:20:35-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "5d9f13d8190e2ea6",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/AA_ShockGoat/AA_ShockGoat": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RSW_CaveLemming": {
       "at": "2026-10-06T02:03:15.126Z",
       "decidedAt": "2026-10-06T02:02:46.346Z",
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -45,22 +55,52 @@
         "9acaf96bc5dc1d938bde54e2eb673c32b5d0633864617f9cfdf7898ec263db54",
         "b9f6559efb95f15fead851773008793243d820c9d123a7792bca283bf60d1b75"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "5d9f13d8190e2ea6",
+      "schema": 2,
+      "slots": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RSW_Wampa": {
       "at": "2026-10-06T02:02:33.683Z",
       "decidedAt": "2026-10-06T02:02:33.683Z",
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Wampa/Wampa_j": "C"
       },
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "5d9f13d8190e2ea6",
+      "schema": 2,
+      "setIds": {
+        "B": "6c82507ab18fef51",
+        "C": "a64b8f9f25efaa13"
+      },
+      "slots": {
+        "swanimals/Wampa/Wampa": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "6c82507ab18fef51",
+          "state": "pick"
+        },
+        "swanimals/Wampa/Wampa_j": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "a64b8f9f25efaa13",
+          "state": "pick"
+        }
+      }
     },
     "Tauntaun": {
       "at": "2026-10-06T02:03:56.593Z",
       "decidedAt": "2026-10-06T02:03:39.311Z",
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -77,9 +117,35 @@
       "picks": {
         "swanimals/Tauntaun/Tauntaun_j": "C"
       },
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "5d9f13d8190e2ea6",
+      "schema": 2,
+      "setIds": {
+        "C": "617371880a8eeecd"
+      },
+      "slots": {
+        "swanimals/Tauntaun/Tauntaun": {
+          "migrated": true,
+          "state": "redraw"
+        },
+        "swanimals/Tauntaun/Tauntaun_j": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "617371880a8eeecd",
+          "state": "pick"
+        }
+      }
     }
   },
+  "migrations": [
+    {
+      "against_snapshot": "5d9f13d8190e2ea6",
+      "at": "2026-10-10T11:53:48-0700",
+      "by": "script:src/RimMandrake/Utils/art/decisions_v2.py",
+      "from": 1,
+      "to": 2
+    }
+  ],
   "posture": "pick-one",
   "reviewStatus": {
     "at": "2026-10-05T19:10:00-0700",
@@ -89,6 +155,7 @@
   },
   "savedAt": "2026-10-05T19:03:57-0700",
   "savedBy": "review-sheet-sidecar",
+  "schema": 2,
   "sheetId": "nightsideice_sheet_2026-10-05",
   "snapshot": "infrastructure/state/art/sheets/nightsideice_sheet_2026-10-05.snapshot.json",
   "snapshotId": "5d9f13d8190e2ea6",

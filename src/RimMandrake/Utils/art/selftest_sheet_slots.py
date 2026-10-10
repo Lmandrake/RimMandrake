@@ -1,0 +1,185 @@
+#!/usr/bin/env python3
+"""selftest_sheet_slots.py — the slot model of the biome art sheet (DESIGN 2026-10-10 §3; owner rulings by question card).
+
+  derive   sheet_slots.derive over dump-shaped defs: PekoPeko (sexes + male/female flight), Sketto (one flight),
+           BlastpodShroom (grown random POOL + young), HulduCatch (catch item), a young stage with its own picture,
+           alternateGraphics making the adult a pool; render-name hints.
+  page JS  the sheet's own SLX logic under node:
+           · click-to-use per slot; clicking again takes it back; primary pick drives `decision`
+           · pick and ✕ of one set cannot both stand (either order); a per-picture delete of the picked set is refused
+           · ✕ on the ONLY in-game picture of a slot turns the slot into REDRAW and says the old one stays until replaced
+           · retire of a live picture: redraw, stays until replaced
+           · `in random pool` only on a pool lane, never pre-ticked; "add all new renders" adds renders only
+           · an unassigned render cannot be used until labelled; a catch row's reference renders never
+           · a schema-1 record upgrades on edit: variants -> legacyVariants, a default list -> legacyVariantsDefault
+           · needs-you lists required slots with no answer and unlabelled renders; asks set and clear
+  builder  the row markup labels every lane with its slot and offers no pool tick off a pool lane.
+"""
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
+FAILS = []
+
+
+def check(cond, msg):
+    print(("PASS " if cond else "FAIL ") + msg)
+    if not cond:
+        FAILS.append(msg)
+
+
+def derive_tests():
+    import sheet_slots as SL
+    pk = [("RSW_PekoPeko", {"lifeStages": [
+        {"bodyGraphicData": {"texPath": "P/Peko_m"}, "femaleGraphicData": {"texPath": "P/Peko_f"}},
+        {"bodyGraphicData": {"texPath": "P/Peko_m"}, "femaleGraphicData": {"texPath": "P/Peko_f"},
+         "dessicatedBodyGraphicData": {"texPath": "P/Peko_Dessicated"}}],
+        "flyingAnimationFramePathPrefix": "P/Peko_m_Flying_", "flyingAnimationFramePathPrefixFemale": "P/Peko_f_Flying_"})]
+    s = SL.derive("RSW_PekoPeko", {"race": {"lifeStageAges": [{"def": "AnimalBaby"}, {"def": "AnimalAdult"}]}}, {"pawn": True}, pk)
+    labels = [x["label"] for x in s]
+    check(labels == ["ADULT · MALE", "ADULT · FEMALE", "FLYING · MALE", "FLYING · FEMALE"],
+          f"PekoPeko: adult male/female + flying male/female, desiccated never a slot ({labels})")
+    check(s[0]["required"] and not s[2]["required"] and s[3]["res"] == "_flip:P/Peko_f_Flying_",
+          "PekoPeko: adult required; the female flip-book is its own slot")
+    sk = SL.derive("RSW_Sketto", {}, {"pawn": True}, [("RSW_Sketto", {"lifeStages": [{"bodyGraphicData": {"texPath": "S/Sketto"}}],
+                                                                    "flyingAnimationFramePathPrefix": "S/Sketto_Flying_"})])
+    check([x["label"] for x in sk] == ["ADULT", "FLYING"], "Sketto: ADULT + FLYING, no sex labels")
+    bl = SL.derive("RM_BlastpodShroom", {"graphicData": {"texPath": "R/BoomGrown", "graphicClass": "Verse.Graphic_Random"},
+                                         "plant": {"immatureGraphicPath": "R/BoomImmature"}}, {"plant": True}, [])
+    check([(x["label"], x["pool"], x["required"]) for x in bl] == [("PLANT · GROWN (random pool)", True, True),
+                                                                    ("PLANT · YOUNG (immature)", False, False)],
+          "BlastpodShroom: grown is a random POOL and required; young is its own slot")
+    hc = SL.derive("RM_HulduCatch", {"graphicData": {"texPath": "I/HulduCatch", "graphicClass": "Verse.Graphic_StackCount"}},
+                   {"category": "Item"}, [], catch=True)
+    check([x["label"] for x in hc] == ["CATCH ITEM"], "HulduCatch: one CATCH ITEM slot")
+    yg = SL.derive("RM_X", {"race": {"lifeStageAges": [{"def": "AnimalJuvenile"}, {"def": "AnimalAdult"}]}}, {"pawn": True},
+                   [("RM_X", {"lifeStages": [{"bodyGraphicData": {"texPath": "X/X_j"}}, {"bodyGraphicData": {"texPath": "X/X"}}],
+                              "alternateGraphics": [{"texPath": "X/XV_B"}]})])
+    check([(x["label"], x["pool"]) for x in yg] == [("ADULT", True), ("YOUNG · JUVENILE", False),
+                                                     ("ADULT · ALTERNATE (random pool)", True)],
+          "a juvenile with its own picture is a YOUNG slot; alternateGraphics make the adult a pool")
+    check(SL.hint("regen_gt_pekopeko_flying_f_4") == "flight frame — not a body" and SL.hint("huldu_juv_v2") == "young",
+          "render-name hints: flight frame / young")
+    check(SL.set_id({"east": "a", "south": "b"}) == SL.set_id({"south": "b", "east": "a"}) != SL.set_id({"east": "a"}),
+          "set ids are order-free and change with the pictures")
+
+
+ITEM = {
+    "id": "RM_Pod", "rev": "s1", "prefill": "A", "thumbs": {}, "letters": ["A", "B", "C"], "graphics": [
+        {"key": "R/Grown", "res": "R/Grown", "primary": True, "lane": "slot", "pool": True, "facings": ["single"], "role": "body",
+         "slot": {"label": "PLANT · GROWN (random pool)", "kind": "grown", "required": True},
+         "cols": [{"letter": "A", "kind": "live", "winner": True, "faces": {"single": "a1"}, "setId": "sa"},
+                  {"letter": "B", "kind": "artpipe", "faces": {"single": "b1"}, "setId": "sb", "purgeable": True},
+                  {"letter": "C", "kind": "donor", "faces": {"single": "c1"}, "setId": "sc", "purgeable": True}]},
+        {"key": "R/Young", "res": "R/Young", "primary": False, "lane": "slot", "pool": False, "facings": ["single"], "role": "young plant",
+         "slot": {"label": "PLANT · YOUNG (immature)", "kind": "plant_young", "required": False},
+         "cols": [{"letter": "D", "kind": "live", "winner": True, "faces": {"single": "d1"}, "setId": "sd"}]},
+        {"key": "_byname", "res": None, "primary": False, "lane": "unassigned", "pool": False, "facings": ["single"], "role": "renders",
+         "slot": {"label": "RENDERS NOT YET ASSIGNED", "kind": "unassigned"},
+         "cols": [{"letter": "E", "kind": "artpipe", "faces": {"single": "e1"}, "setId": "se", "purgeable": True}]},
+        {"key": "_reference:RM_Huldu", "res": "_reference:RM_Huldu", "primary": False, "lane": "reference", "facings": ["single"], "role": "reference",
+         "slot": {"label": "REFERENCE", "kind": "reference"},
+         "cols": [{"letter": "F", "kind": "artpipe", "faces": {"single": "f1"}, "setId": "sf"}]}]}
+
+
+def js_tests():
+    import sheet_js_harness as H
+    if not H.node():
+        check(False, "node is needed (UNMEASURED)")
+        return
+    prog = "const it = " + json.dumps(ITEM) + r""";
+const S = window.SLX, o = {}, cp = x => JSON.parse(JSON.stringify(x));
+let r = {decision: '', note: ''};
+o.fresh = cp(S.poolRec(r, 'R/Grown'));
+o.p1 = S.pick(it, r, 'R/Grown', 'B'); o.afterPick = cp(r);
+o.p2 = S.pick(it, r, 'R/Grown', 'B'); o.afterUnpick = cp(r);
+S.pick(it, r, 'R/Grown', 'B'); S.reject(it, r, 'R/Grown', 'B'); o.pickThenX = cp(r);
+S.pick(it, r, 'R/Grown', 'B'); o.xThenPick = cp(r);
+o.purgePicked = S.purgeToggle(it, r, 'b1'); o.purgeOther = S.purgeToggle(it, r, 'c1'); o.afterPurge = cp(r);
+o.pickPurged = S.pick(it, r, 'R/Grown', 'C'); o.afterPickPurged = cp(r);
+let y = {decision: 'A', note: ''};
+o.onlyYoung = S.reject(it, y, 'R/Young', 'D'); o.afterOnlyYoung = cp(y);
+let t = {decision: 'A', note: ''};
+o.retire = S.retire(it, t, 'R/Young', 'D'); o.afterRetire = cp(t);
+let q = {decision: 'A', note: ''};
+o.poolNo = S.poolToggle(it, q, 'R/Young', 'D');
+o.poolB = S.poolToggle(it, q, 'R/Grown', 'B'); o.afterPoolB = cp(q);
+let q2 = {decision: 'A', note: ''}; S.poolAddAll(it, q2, 'R/Grown'); o.addAll = cp(q2);
+let q3 = {decision: 'A', note: ''}; o.leave = S.poolToggle(it, q3, 'R/Grown', 'A'); o.afterLeave = cp(q3);
+let u = {decision: '', note: ''};
+o.unassigned = S.pick(it, u, '_byname', 'E'); o.reference = S.pick(it, u, '_reference:RM_Huldu', 'F');
+S.assign(it, u, 'E', 'R/Young'); o.pickAssigned = S.pick(it, u, 'R/Young', 'E'); o.afterAssigned = cp(u);
+let a = {decision: '', note: ''}; S.slotButton(it, a, 'R/Grown', 'accept'); o.accept = cp(a);
+let m = {decision: 'B', note: '', variants: ['B', 'C'], at: 'x'}; S.v2(m); o.v2 = cp(m);
+let md = {decision: 'B', note: '', variants: ['B', 'C'], variantsDefault: true}; S.v2(md); o.v2d = cp(md);
+let n = {decision: '', note: ''}; o.need = S.needsYou(it, n); S.acceptAll(it, n); S.assign(it, n, 'E', 'not_needed'); o.need2 = S.needsYou(it, n);
+let k = {decision: '', note: ''}; S.setAsk(k, 'rename.name', 'Gloamling'); S.setAsk(k, 'describe', 'improve'); o.asks = cp(k.asks);
+S.setAsk(k, 'rename.name', ''); S.setAsk(k, 'describe', ''); o.asksCleared = k.asks === undefined;
+console.log(JSON.stringify(o));
+"""
+    o = H.run_js(prog)
+    check(o["fresh"] == {"add": [], "remove": []}, "nothing is pre-ticked: a fresh row has an empty pool record")
+    check(o["afterPick"]["decision"] == "B" and o["afterPick"]["slots"]["R/Grown"]["pick"] == "B"
+          and o["afterPick"]["slots"]["R/Grown"]["set_id"] == "sb" and o["afterPick"]["schema"] == 2,
+          "click-to-use on the primary slot: decision B, slot pick B with its set id, schema 2")
+    check(o["afterUnpick"]["decision"] == "" and "R/Grown" not in o["afterUnpick"]["slots"], "clicking the used set again takes it back")
+    check(o["pickThenX"]["decision"] == "" and o["pickThenX"]["reject"]["R/Grown"] == ["B"],
+          "✕ not-for-this-slot on the picked set takes the pick back (both cannot stand)")
+    check(o["xThenPick"]["decision"] == "B" and not (o["xThenPick"].get("reject") or {}).get("R/Grown"),
+          "using a ✕'d set clears its ✕")
+    check(not o["purgePicked"]["ok"] and o["purgeOther"]["ok"] and o["afterPurge"]["purge"] == ["c1"],
+          "deleting a picture of the picked set is refused; another set's picture can be deleted")
+    check(o["pickPurged"]["ok"] and o["afterPickPurged"]["purge"] == [], "using a set clears its delete marks")
+    check(o["afterOnlyYoung"]["slots"]["R/Young"]["state"] == "redraw" and "stays in game" in o["onlyYoung"]["msg"],
+          "✕ on the ONLY young picture -> slot REDRAW, and the sheet says D stays until replaced")
+    check(o["afterRetire"]["slots"]["R/Young"]["state"] == "redraw" and o["afterRetire"]["retire"]["R/Young"] == ["D"],
+          "retire of the only live picture -> redraw; it stays until replaced")
+    check(not o["poolNo"]["ok"] and "random pool" in o["poolNo"]["msg"], "a pool tick on a non-pool slot is refused")
+    check(o["afterPoolB"]["pool"]["R/Grown"]["add"] == ["B"] and o["afterPoolB"]["pool"]["R/Grown"]["baseline"] == ["sa"],
+          "in random pool: B added, with the pool's in-game baseline recorded")
+    check(o["addAll"]["pool"]["R/Grown"]["add"] == ["B"], "add all new renders: our render B only (not live A, not donor C)")
+    check(o["afterLeave"]["pool"]["R/Grown"]["remove"] == ["A"] and o["afterLeave"]["slots"]["R/Grown"]["state"] == "redraw"
+          and "stays in game" in o["leave"]["msg"], "the last member leaving the pool -> redraw, stays until replaced")
+    check(not o["unassigned"]["ok"] and not o["reference"]["ok"], "an unassigned render and a reference render cannot be used")
+    check(o["pickAssigned"]["ok"] and o["afterAssigned"]["slots"]["R/Young"]["pick"] == "E" and o["afterAssigned"]["assign"] == {"E": "R/Young"},
+          "once labelled 'young', render E can be used for the young slot")
+    check(o["accept"]["slots"]["R/Grown"]["state"] == "accept" and o["accept"]["decision"] == "A",
+          "accept unchanged on the primary slot keeps the in-game set (decision = A)")
+    check(o["v2"].get("legacyVariants") == ["B", "C"] and "variants" not in o["v2"], "a schema-1 tick list upgrades to legacyVariants on edit")
+    check(o["v2d"].get("legacyVariantsDefault") == ["B", "C"] and not o["v2d"].get("legacyVariants"),
+          "a machine-default list upgrades to legacyVariantsDefault, never his")
+    check(o["need"] == ["PLANT · GROWN (random pool)", "1 render unassigned"] and o["need2"] == [],
+          "needs-you: the required slot and the unlabelled render; empty after accept-all + labelling")
+    check(o["asks"] == {"rename": {"name": "Gloamling"}, "describe": "improve"} and o["asksCleared"], "asks set and clear")
+
+
+def markup_tests():
+    import sheet_js_harness as H
+    html = H.item_html(dict(ITEM, label="Pod", effect="", tier="ours", tierText="", flags=[], related=[], elsewhere=[],
+                            rulings=[], desc={}, dependsOn=None), {"decision": "A", "note": ""})
+    for lab in ("PLANT · GROWN (random pool)", "PLANT · YOUNG (immature)", "RENDERS NOT YET ASSIGNED", "REFERENCE"):
+        check(lab in html, f"row markup labels the lane {lab!r}")
+    young = html[html.index("PLANT · YOUNG"):html.index("RENDERS NOT YET ASSIGNED")]
+    check('data-act="pool"' not in young, "no pool control on a non-pool lane")
+    unas = html[html.index("RENDERS NOT YET ASSIGNED"):html.index("REFERENCE")]
+    check('data-act="pick"' not in unas and "this is:" in unas, "an unassigned render offers 'this is:' and no use button")
+    check("accept unchanged" in html and "redraw this slot" in html and "add all new renders to the pool" in html,
+          "slot buttons + the per-pool 'add all new renders' button")
+    for f in ("Name", "Description", "More art", "Missing facings", "Size", "Belongs", "cut from this biome"):
+        check(f in html, f"requests block has {f!r}")
+
+
+def main():
+    derive_tests()
+    js_tests()
+    markup_tests()
+    print("\nALL PASS" if not FAILS else f"\n{len(FAILS)} FAILED")
+    return 1 if FAILS else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

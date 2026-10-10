@@ -7,6 +7,10 @@
       "at": "2026-10-09T14:15:54.722Z",
       "decidedAt": "2026-10-09T14:15:06.071Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -19,15 +23,26 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "0df6e3b0e31d48d4"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_BedBug/AA_BedBug": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "AA_CrystalMit": {
       "at": "2026-10-09T14:17:00.023Z",
       "decidedAt": "2026-10-09T14:16:15.662Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -40,20 +55,37 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "fde9ba889e30e3df"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "AA_DecayDrake": {
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "B"
+      "prefill": "B",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "c275c1e96576ecb9"
+      }
     },
     "AA_GiantCrownedSilkie": {
       "at": "2026-10-09T14:18:27.088Z",
       "decidedAt": "2026-10-09T14:18:08.384Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -71,20 +103,58 @@
         "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female_baby": "E"
       },
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "178118e7a28b1d82",
+        "C": "fa8003ea46f82780",
+        "D": "eb0d62a85b6e2cec",
+        "E": "42b49220bed26e8e"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie": {
+          "migrated": true,
+          "state": "redraw"
+        },
+        "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_baby": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "fa8003ea46f82780",
+          "state": "pick"
+        },
+        "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "eb0d62a85b6e2cec",
+          "state": "pick"
+        },
+        "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female_baby": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "42b49220bed26e8e",
+          "state": "pick"
+        }
+      }
     },
     "AA_Helixien": {
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "B"
+      "prefill": "B",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "04e2e26ad9e37cd9"
+      }
     },
     "AA_InfectedAerofleet": {
       "at": "2026-10-09T14:21:46.052Z",
       "decidedAt": "2026-10-09T14:20:35.845Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -103,15 +173,26 @@
         "2208d36dc81c2c093af8672bd9b6ba8cc014eda4927d56752866eefbd10aa2cf"
       ],
       "purgeTouched": true,
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "64f460b1da81c991"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_Aerofleet/AA_InfectedAerofleet": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "AA_LuciferBug": {
       "at": "2026-10-09T14:22:33.911Z",
       "decidedAt": "2026-10-09T14:22:28.887Z",
       "decision": "hold",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -124,15 +205,20 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "e16a6713ed6b1726"
+      }
     },
     "AA_OcularJelly": {
       "at": "2026-10-09T14:23:53.321Z",
       "decidedAt": "2026-10-09T14:23:33.353Z",
       "decision": "B",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -145,26 +231,52 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "2f51209556d0bc6a"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "2f51209556d0bc6a",
+          "state": "pick"
+        }
+      }
     },
     "AA_Plasmorph": {
       "at": "2026-10-09T14:24:07.251Z",
       "decidedAt": "2026-10-09T14:24:07.251Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariantsDefault": [
         "B"
       ],
-      "variantsDefault": true
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "a9a40c0d3ea5def4"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "a9a40c0d3ea5def4",
+          "state": "pick"
+        }
+      }
     },
     "AA_Radyak": {
       "at": "2026-10-09T14:24:39.232Z",
       "decidedAt": "2026-10-09T14:24:24.803Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -182,15 +294,40 @@
         "_byname": "D"
       },
       "prefill": "A",
-      "variants": [
-        "D"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "a175ee7a47e73ced",
+        "C": "0d8dbcde78600fde",
+        "D": "e28285ee40b02f49"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_Radyak/AA_Radyak_baby": {
+          "migrated": true,
+          "state": "redraw"
+        },
+        "Things/Pawn/Animal/AA_Radyak/AA_Radyak_female": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "a175ee7a47e73ced",
+          "state": "pick"
+        },
+        "Things/Pawn/Animal/AA_Radyak/AA_Radyak_male": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "0d8dbcde78600fde",
+          "state": "pick"
+        }
+      }
     },
     "AA_RipperHound": {
       "at": "2026-10-09T14:25:07.186Z",
       "decidedAt": "2026-10-09T14:25:03.232Z",
       "decision": "hold",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -203,15 +340,20 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "2006eb6a1e9bd714"
+      }
     },
     "AM_Dryad_Corruptor": {
       "at": "2026-10-09T14:13:54.054Z",
       "decidedAt": "2026-10-09T14:13:54.054Z",
       "decision": "B",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -224,15 +366,28 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "87419f70c9db5447"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AM_Dryad_Corruptor/AM_Dryad_Corruptor": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "87419f70c9db5447",
+          "state": "pick"
+        }
+      }
     },
     "AM_Dryad_Ocular": {
       "at": "2026-10-09T14:14:21.949Z",
       "decidedAt": "2026-10-09T14:14:15.411Z",
       "decision": "hold",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -245,15 +400,20 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "f7008db3460af75f"
+      }
     },
     "AM_Dryad_Tumorous": {
       "at": "2026-10-09T14:14:52.615Z",
       "decidedAt": "2026-10-09T14:14:37.070Z",
       "decision": "B",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -266,15 +426,28 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "28794368b4a11127"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AM_Dryad_Tumorous/AM_Dryad_Tumorous": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "28794368b4a11127",
+          "state": "pick"
+        }
+      }
     },
     "GR_Beetlefleet": {
       "at": "2026-10-09T14:20:22.135Z",
       "decidedAt": "2026-10-09T14:18:54.361Z",
       "decision": "B",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -291,127 +464,287 @@
         "1353dead6d575173a214df2274499364dd8835498c89c3e6485ebf5ca8d02559"
       ],
       "purgeTouched": true,
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "ab734530697ab766"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "ab734530697ab766",
+          "state": "pick"
+        }
+      }
     },
     "RM_BloodBouquet": {
+      "assign": {
+        "B": "Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a"
+      },
       "at": "2026-10-09T14:32:26.539Z",
       "decidedAt": "2026-10-09T14:32:26.539Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariantsDefault": [
         "A",
         "B"
       ],
-      "variantsDefault": true
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "eeca2bb27136cb03",
+        "B": "b4bee1f485c12794"
+      },
+      "slots": {
+        "Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "b4bee1f485c12794",
+          "state": "pick"
+        }
+      }
     },
     "RM_CrystalFlower": {
+      "assign": {
+        "B": "Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a"
+      },
       "at": "2026-10-09T14:32:44.345Z",
       "decidedAt": "2026-10-09T14:32:44.345Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "0b50e2c8e453b446"
+      },
+      "slots": {
+        "Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "0b50e2c8e453b446",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T14:32:42.338Z"
     },
     "RM_DarkCrust": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "bbed98b51c4c0827"
+      }
     },
     "RM_Eskith": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "8396905da1053dc2"
+      }
     },
     "RM_Fexxil": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "6796c2076022a5f4"
+      }
     },
     "RM_GiantAgariTox": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "f69a4466de32cb48"
+      }
     },
     "RM_GiantToxicFlower": {
+      "assign": {
+        "B": "Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a"
+      },
       "at": "2026-10-09T14:34:21.389Z",
       "decidedAt": "2026-10-09T14:34:16.449Z",
       "decision": "A",
+      "legacyVariants": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_byname": "B"
       },
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "101cc019fcaa5ec4",
+        "B": "d247645bf30a15fb"
+      },
+      "slots": {
+        "Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "101cc019fcaa5ec4",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T14:34:21.388Z"
     },
     "RM_Ixalith": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "63b0d7734b99ab75"
+      }
     },
     "RM_KeeningCordax": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "703630f55ba51bbf"
+      }
     },
     "RM_Kissaveth": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "b1f9d5599f60d9d3"
+      }
     },
     "RM_Mullgoth": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "f22ff5c4b3cc5b2a"
+      }
     },
     "RM_RavenNettle": {
       "at": "2026-10-09T14:34:58.267Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "083a0c150bd49d39",
+        "B": "dc33b5e4f9f871af"
+      },
+      "slots": {
+        "Things/Plant/RM_RavenNettle/RM_RavenNettle_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "083a0c150bd49d39",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T14:34:58.267Z"
     },
     "RM_RedBugloss": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "231da52eeadfd544"
+      }
     },
     "RM_Selvix": {
       "at": "2026-10-09T14:36:15.207Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "ff22f5c3f389a602"
+      },
+      "slots": {
+        "Things/Plant/RM_Selvix/RM_Selvix": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "ff22f5c3f389a602",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T14:36:15.207Z"
     },
     "RM_Sessarix": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "85a9328d14e68a45"
+      }
     },
     "RM_Suush": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "514c69267c113aa4"
+      }
     },
     "RM_TreeMartyr": {
       "at": "2026-10-09T14:34:48.104Z",
       "decidedAt": "2026-10-09T14:34:36.298Z",
       "decision": "B",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -424,61 +757,130 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "e1184b773d3176ba"
+      },
+      "slots": {
+        "Things/Plant/RM_TreeMartyr": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "e1184b773d3176ba",
+          "state": "pick"
+        }
+      }
     },
     "RM_Tsevrix": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "574a19b124781a48"
+      }
     },
     "RM_TwistingThornwood": {
       "at": "2026-10-09T14:36:24.057Z",
       "decidedAt": "2026-10-09T14:36:24.057Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariantsDefault": [
         "B"
       ],
-      "variantsDefault": true
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "72f2cef9465b46a3"
+      },
+      "slots": {
+        "Things/Plant/RM_TwistingThornwood": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "72f2cef9465b46a3",
+          "state": "pick"
+        }
+      }
     },
     "RM_Vexxiss": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "8bf9df4d97c00c20"
+      }
     },
     "RM_Xithess": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "43013209f97b3b0c"
+      }
     },
     "RM_Zisska": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "b41d2b59be56042d"
+      }
     },
     "RSW_GraniteSlug": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "8a9b3b2ebd83a6ca"
+      }
     },
     "RSW_Lylek": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "f23b2daa27000401"
+      }
     },
     "RSW_Mynock": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "ca4e1196bee1d39b"
+      }
     },
     "RSW_Neebray": {
       "at": "2026-10-09T14:23:06.506Z",
       "decidedAt": "2026-10-09T14:23:01.267Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "A",
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -494,16 +896,35 @@
         "_flip:swanimals/Neebray/Neebray_Flying_": "B"
       },
       "prefill": "A",
-      "variants": [
-        "A",
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "1acfc137d66f3719",
+        "B": "336bb97a5b2e4b7b"
+      },
+      "slots": {
+        "_flip:swanimals/Neebray/Neebray_Flying_": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "336bb97a5b2e4b7b",
+          "state": "pick"
+        },
+        "swanimals/Neebray/Neebray": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RSW_Screecher": {
       "at": "2026-10-09T14:26:22.755Z",
       "decidedAt": "2026-10-09T14:26:22.755Z",
       "decision": "hold",
+      "legacyVariantsDefault": [
+        "A",
+        "B",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -519,25 +940,45 @@
         "_flip:swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher_Flying_": "C"
       },
       "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "275b68b9ea34504c",
+        "B": "7b87c06d28cee1dc",
+        "C": "a0820b4dff05f3f6"
+      },
+      "slots": {
+        "_flip:swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher_Flying_": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "a0820b4dff05f3f6",
+          "state": "pick"
+        }
+      }
     },
     "RSW_Skalder": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Skalder/Skalder_Swimming": "B"
       },
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "A": "89881c042de8a423",
+        "B": "cf1960f8a309f73e"
+      }
     },
     "RSW_VentStalker": {
       "at": "2026-10-09T14:31:03.016Z",
       "decidedAt": "2026-10-09T14:30:56.801Z",
       "decision": "C",
+      "legacyVariants": [
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -546,15 +987,29 @@
         "0acf8db94c0d1bbe99a7f65514195706be71a256798cc1f5cc679fcd29c56580"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C"
-      ],
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "C": "d5c96a6394e98c5d"
+      },
+      "slots": {
+        "swanimals/Kinrath/Kinrath": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "d5c96a6394e98c5d",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T14:31:03.016Z"
     },
     "Silooth": {
       "at": "2026-10-09T14:27:51.701Z",
       "decidedAt": "2026-10-09T14:26:59.746Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -570,27 +1025,77 @@
         "swanimals/Silooth/Silooth_j": "C"
       },
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "6fe5960f679785dc",
+        "C": "53dd49e1c25c8f97"
+      },
+      "slots": {
+        "swanimals/Silooth/Silooth": {
+          "migrated": true,
+          "state": "redraw"
+        },
+        "swanimals/Silooth/Silooth_j": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "53dd49e1c25c8f97",
+          "state": "pick"
+        }
+      }
     },
     "Visceral": {
       "at": "2026-10-09T14:31:39.250Z",
       "decidedAt": "2026-10-09T14:31:39.250Z",
       "decision": "B",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "Things/Pawn/Animal/Visceral/VisceralBaby": "C",
         "Things/Pawn/Animal/Visceral/VisceralTeen": "D"
       },
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "55c4254b730defc3",
+      "schema": 2,
+      "setIds": {
+        "B": "59fc47c6cc8ea5d3",
+        "C": "610edfeb1f75d677",
+        "D": "77b51c36cce9ee04"
+      },
+      "slots": {
+        "Things/Pawn/Animal/Visceral/Visceral": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "59fc47c6cc8ea5d3",
+          "state": "pick"
+        },
+        "Things/Pawn/Animal/Visceral/VisceralBaby": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "610edfeb1f75d677",
+          "state": "pick"
+        },
+        "Things/Pawn/Animal/Visceral/VisceralTeen": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "77b51c36cce9ee04",
+          "state": "pick"
+        }
+      }
     }
   },
+  "migrations": [
+    {
+      "against_snapshot": "55c4254b730defc3",
+      "at": "2026-10-10T11:53:41-0700",
+      "by": "script:src/RimMandrake/Utils/art/decisions_v2.py",
+      "from": 1,
+      "to": 2
+    }
+  ],
   "posture": "pick-one",
   "reviewStatus": {
     "at": null,
@@ -600,6 +1105,7 @@
   },
   "savedAt": "2026-10-09T07:36:24-0700",
   "savedBy": "review-sheet-sidecar",
+  "schema": 2,
   "sheetId": "cauldron_sheet_2026-10-04",
   "snapshot": "infrastructure/state/art/sheets/cauldron_sheet_2026-10-04.snapshot.json",
   "snapshotId": "55c4254b730defc3",

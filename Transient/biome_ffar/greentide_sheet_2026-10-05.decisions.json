@@ -7,6 +7,11 @@
       "at": "2026-10-08T04:42:21.917Z",
       "decidedAt": "2026-10-08T04:41:23.624Z",
       "decision": "B",
+      "legacyVariantsDefault": [
+        "A",
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -25,16 +30,32 @@
         "00459853933ec87bd19e3e41f2a62c7bba020bf08ce5b3db59ebf20816162a15"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "976e4d612db08b45",
+        "B": "c2ce025f4d223888"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "c2ce025f4d223888",
+          "state": "pick"
+        }
+      }
     },
     "Plant_Grass": {
       "at": "2026-10-09T05:16:50.665Z",
       "decidedAt": "2026-10-08T04:54:00.654Z",
       "decision": "B",
+      "legacyVariants": [
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -48,21 +69,29 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "5dcfe42d227c0bf4",
+        "C": "09f32dff16efbe1e",
+        "D": "f3b419591f17be1c",
+        "E": "ba83d8c31e4c2c7c"
+      },
+      "slots": {
+        "Things/Plant/RG_Grass": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "5dcfe42d227c0bf4",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:16:50.665Z"
     },
     "Plant_TallGrass": {
       "at": "2026-10-09T05:18:10.679Z",
       "decidedAt": "2026-10-08T04:55:00.408Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B",
         "C",
         "D",
@@ -71,11 +100,39 @@
         "G",
         "H"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "5dcfe42d227c0bf4",
+        "C": "f7d5ea4fa5a4f16c",
+        "D": "09f32dff16efbe1e",
+        "E": "f3b419591f17be1c",
+        "F": "041fb7d3493cd254",
+        "G": "424661a28956a3c8",
+        "H": "ba83d8c31e4c2c7c"
+      },
+      "slots": {
+        "Things/Plant/RG_Grass": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "5dcfe42d227c0bf4",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:18:09.034Z"
     },
     "RM_Brakkel": {
       "at": "2026-10-09T05:16:18.975Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -88,28 +145,57 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "4f382c569ccff983",
+        "B": "7420cc3226f8e3cf",
+        "C": "e68e2bd7b54337aa"
+      },
+      "slots": {
+        "Things/Plant/RM_Brakkel/RM_Brakkel_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "4f382c569ccff983",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:16:18.975Z"
     },
     "RM_Brunnock": {
       "at": "2026-10-09T05:16:28.393Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "84e3b005151a9398",
+        "B": "40f479eaa32d8649"
+      },
+      "slots": {
+        "Things/Plant/RM_Brunnock/RM_Brunnock_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "84e3b005151a9398",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:16:28.393Z"
     },
     "RM_CanopySwinger": {
+      "assign": {
+        "B": "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger"
+      },
       "at": "2026-10-09T05:31:31.377Z",
       "decidedAt": "2026-10-09T05:09:17.040Z",
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_byname": "B"
@@ -121,12 +207,30 @@
         "84f4f83864130b6375d0d6fb92242a38039d39d48cead52cea247fdc7079d37b"
       ],
       "purgeTouched": true,
-      "variants": [],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "325ead7eb072e135"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "325ead7eb072e135",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:09:20.591Z"
     },
     "RM_Cundral": {
       "at": "2026-10-09T05:16:32.542Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -139,16 +243,30 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "b5f7fa21d492cdb5",
+        "B": "8e70f422696eab61",
+        "C": "30ee3a5d4daf625f"
+      },
+      "slots": {
+        "Things/Plant/RM_Cundral/RM_Cundral_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "b5f7fa21d492cdb5",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:16:32.542Z"
     },
     "RM_Dhollock": {
       "at": "2026-10-08T04:43:16.604Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -161,37 +279,84 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "48ce06d7f76e62f4"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RM_Dhollock/RM_Dhollock": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "48ce06d7f76e62f4",
+          "state": "pick"
+        }
+      }
     },
     "RM_Dubbol": {
+      "assign": {
+        "B": "Things/Plant/SweetheartPlant/SweetheartPlantA"
+      },
       "at": "2026-10-08T04:55:44.409Z",
       "decidedAt": "2026-10-08T04:55:44.409Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "ed96b4a4a2f7b137"
+      },
+      "slots": {
+        "Things/Plant/SweetheartPlant/SweetheartPlantA": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "ed96b4a4a2f7b137",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T04:55:42.031Z"
     },
     "RM_Ghemmel": {
       "at": "2026-10-09T05:16:42.860Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "6b07a8f8d2a6134a",
+        "B": "fc9c5942e19dd16b",
+        "C": "ae24b19cebf5d874"
+      },
+      "slots": {
+        "Things/Plant/RM_Ghemmel/RM_Ghemmel_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "6b07a8f8d2a6134a",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:16:39.713Z"
     },
     "RM_Gorbeleth": {
       "at": "2026-10-09T05:16:46.018Z",
       "decision": "A",
+      "legacyVariants": [
+        "B",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -204,176 +369,399 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B",
-        "C"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "865dc24f92ce2ce8",
+        "B": "6b1d7c4a86af807c",
+        "C": "45b3df448306b528"
+      },
+      "slots": {
+        "Things/Plant/RM_Gorbeleth/RM_Gorbeleth_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "865dc24f92ce2ce8",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:16:46.018Z"
     },
     "RM_Greatbole": {
       "at": "2026-10-09T05:16:58.473Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "c68659927785d5d0",
+        "B": "a260fe5f24111366",
+        "C": "53623d3d698b3d80"
+      },
       "variantsAt": "2026-10-09T05:16:54.624Z"
     },
     "RM_Illurin": {
       "at": "2026-10-09T05:17:04.935Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "beca3851f09cb2b9",
+        "B": "802041650b32bdf6",
+        "C": "a845a1566c70dcaf"
+      },
+      "slots": {
+        "Things/Plant/RM_Illurin/RM_Illurin_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "beca3851f09cb2b9",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:17:02.632Z"
     },
     "RM_Kaddrath": {
       "at": "2026-10-09T05:17:10.333Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "d3abbfbb6a6f0f91",
+        "B": "bf8130fbeccbabfc",
+        "C": "e50eb746418478d7"
+      },
       "variantsAt": "2026-10-09T05:17:08.502Z"
     },
     "RM_Karrun": {
+      "assign": {
+        "B": "Things/Plant/PincushionPlant/PincushionPlantA"
+      },
       "at": "2026-10-08T04:55:58.253Z",
       "decidedAt": "2026-10-08T04:55:58.253Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "961c6720476ede93"
+      },
+      "slots": {
+        "Things/Plant/PincushionPlant/PincushionPlantA": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "961c6720476ede93",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T04:55:56.843Z"
     },
     "RM_Krannock": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "b49740d7d10683ed"
+      }
     },
     "RM_Lozh": {
+      "assign": {
+        "B": "Things/Plant/SnakePlant/SnakePlantA"
+      },
       "at": "2026-10-08T04:56:03.979Z",
       "decidedAt": "2026-10-08T04:56:02.492Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "02ce9ea42e31460f"
+      },
+      "slots": {
+        "Things/Plant/SnakePlant/SnakePlantA": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "02ce9ea42e31460f",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T04:56:03.979Z"
     },
     "RM_Maddrick": {
       "at": "2026-10-09T05:17:14.211Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "f59883449f608740",
+        "B": "8a774e5d02015920",
+        "C": "3624fab8a339b48f"
+      },
+      "slots": {
+        "Things/Plant/RM_Maddrick/RM_Maddrick_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "f59883449f608740",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:17:12.599Z"
     },
     "RM_Mirrelbole": {
       "at": "2026-10-09T05:17:19.471Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "f5afaf0735390e93",
+        "B": "5eeddc365cace26b",
+        "C": "495b0310a53bf408",
+        "D": "c845d9b7715c5330"
+      },
+      "slots": {
+        "Things/Plant/RM_Mirrelbole/RM_Mirrelbole_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "f5afaf0735390e93",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:17:18.024Z"
     },
     "RM_Mourvel": {
       "at": "2026-10-09T05:17:26.214Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "1e9e7bce8a2b1ec4",
+        "B": "968ddbdff20a01c0",
+        "C": "fa664e5fd6d64ee4",
+        "D": "b469a56ff3c97ea6"
+      },
+      "slots": {
+        "Things/Plant/RM_Mourvel/RM_Mourvel_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "1e9e7bce8a2b1ec4",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:17:24.056Z"
     },
     "RM_Nemmer": {
       "at": "2026-10-09T05:17:33.044Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B",
         "C"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "942c169efddab772",
+        "B": "821da1a3ebc1a42e",
+        "C": "b6cf78f6d7796473"
+      },
+      "slots": {
+        "Things/Plant/RM_Nemmer/RM_Nemmer_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "942c169efddab772",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:17:31.011Z"
     },
     "RM_Phorrik": {
       "at": "2026-10-09T05:17:40.109Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "57360b7db39d22ae",
+        "B": "6b72b6ca59188026",
+        "C": "46e6bbcf4f7f34dc",
+        "D": "1447d32f1fa7bf10"
+      },
+      "slots": {
+        "Things/Plant/RM_Phorrik/RM_Phorrik_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "57360b7db39d22ae",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:17:38.616Z"
     },
     "RM_Quathis": {
       "at": "2026-10-09T05:17:46.485Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "982e5c921d3305b6",
+        "B": "8206fcfd68dfc9a9",
+        "C": "5b161c2e7652dde2",
+        "D": "5c7f7207ab79597a"
+      },
+      "slots": {
+        "Things/Plant/RM_Quathis/RM_Quathis_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "982e5c921d3305b6",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:17:45.055Z"
     },
     "RM_Saava": {
+      "assign": {
+        "B": "Things/Plant/Schlumbergera/SchlumbergeraA"
+      },
       "at": "2026-10-08T04:56:09.390Z",
       "decidedAt": "2026-10-08T04:56:09.390Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "c2fb8dd76453f548"
+      },
+      "slots": {
+        "Things/Plant/Schlumbergera/SchlumbergeraA": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "c2fb8dd76453f548",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T04:56:08.075Z"
     },
     "RM_Sarnstilt": {
       "at": "2026-10-09T05:17:52.839Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "9507ec5d9811781d",
+        "B": "2dd55883b04e82e4",
+        "C": "c1e1c89aaead86e4",
+        "D": "1c6293258a93bf2e"
+      },
+      "slots": {
+        "Things/Plant/RM_Sarnstilt/RM_Sarnstilt_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "9507ec5d9811781d",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:17:51.346Z"
     },
     "RM_Sarquin": {
       "at": "2026-10-09T05:18:02.905Z",
       "decidedAt": "2026-10-09T05:18:02.905Z",
       "decision": "C",
+      "legacyVariants": [
+        "A",
+        "C",
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -387,27 +775,54 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A",
-        "C",
-        "D"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "6807d15e2bef927f",
+        "C": "3656ffb422e2f8c9",
+        "D": "b18380ee826be264"
+      },
+      "slots": {
+        "Things/Plant/RM_Sarquin/RM_Sarquin_a": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "3656ffb422e2f8c9",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:18:00.787Z"
     },
     "RM_Skorra": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "2d6d89ab84d43752"
+      }
     },
     "RM_Sulleth": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "42c807f0aded6e18"
+      }
     },
     "RM_Sytheclaw": {
       "at": "2026-10-09T05:15:59.049Z",
       "decidedAt": "2026-10-08T04:51:47.205Z",
       "decision": "hold",
+      "legacyVariantsDefault": [
+        "A",
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -420,28 +835,52 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A",
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "9702dc5a53b0338e",
+        "B": "b8d90866d31b305c"
+      }
     },
     "RM_Thalquith": {
+      "assign": {
+        "B": "Things/Plant/RM_Thalquith/RM_Thalquith_a"
+      },
       "at": "2026-10-09T05:18:20.232Z",
       "decidedAt": "2026-10-08T04:55:08.901Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "c46f2e5948cfcffb",
+        "C": "cf7f6bfc15e02497",
+        "D": "396a53c541c674c3"
+      },
+      "slots": {
+        "Things/Plant/RM_Thalquith/RM_Thalquith_a": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "c46f2e5948cfcffb",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:18:20.232Z"
     },
     "RM_Thurrock": {
       "at": "2026-10-08T04:52:00.898Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -454,139 +893,310 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "20ec921c04ff227f"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RM_Thurrock/RM_Thurrock": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "20ec921c04ff227f",
+          "state": "pick"
+        }
+      }
     },
     "RM_Tumbel": {
       "at": "2026-10-09T05:18:26.659Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "65998a1106ae49d5",
+        "B": "8987899dc9125694",
+        "C": "0027ffcaab5895df",
+        "D": "034e76b0e98c9c1d"
+      },
+      "slots": {
+        "Things/Plant/RM_Tumbel/RM_Tumbel_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "65998a1106ae49d5",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:18:25.230Z"
     },
     "RM_Tuun": {
       "at": "2026-10-09T05:19:21.832Z",
       "decidedAt": "2026-10-09T05:19:16.160Z",
       "decision": "D",
+      "legacyVariants": [
+        "C",
+        "D",
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
         "26272ed49b6f677eeba769031c59a4d4393537ea04724350d0a5d38f6893580c"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C",
-        "D",
-        "E"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "C": "1e0c6dc0e424139c",
+        "D": "a3b8c58f5eb08001",
+        "E": "f8c4eae2b20c4bb4"
+      },
+      "slots": {
+        "Things/Plant/JadePlant/JadePlantA": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "a3b8c58f5eb08001",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:19:20.008Z"
     },
     "RM_Uvva": {
+      "assign": {
+        "B": "Things/Plant/Peyote/PeyoteA"
+      },
       "at": "2026-10-08T04:56:27.656Z",
       "decidedAt": "2026-10-08T04:56:27.656Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "4d25ba9f0baf92d9"
+      },
+      "slots": {
+        "Things/Plant/Peyote/PeyoteA": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "4d25ba9f0baf92d9",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T04:56:25.174Z"
     },
     "RM_Veluthar": {
       "at": "2026-10-09T05:18:40.960Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B",
         "C"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "edb6a75ce6c0bd7e",
+        "B": "1558d9c716ef12aa",
+        "C": "8cd0b2fa4a2c06e3"
+      },
+      "slots": {
+        "Things/Plant/RM_Veluthar/RM_Veluthar_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "edb6a75ce6c0bd7e",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:18:40.960Z"
     },
     "RM_Vurmeloth": {
       "at": "2026-10-09T05:18:45.222Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "0a79652fd003bf51",
+        "B": "f259f6804f5708c2"
+      },
+      "slots": {
+        "Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "0a79652fd003bf51",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:18:45.222Z"
     },
     "RM_Vurrak": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "ac1635f9fbaab171"
+      }
     },
     "RM_Wollick": {
       "at": "2026-10-09T05:18:51.957Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "871baaf572bc35ff",
+        "B": "15d2e85d54f8fd53",
+        "C": "b036017b3c087b47",
+        "D": "a84fc79c8e0efab7"
+      },
+      "slots": {
+        "Things/Plant/RM_Wollick/RM_Wollick_a": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "871baaf572bc35ff",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:18:50.314Z"
     },
     "RM_Yammeth": {
       "at": "2026-10-09T05:16:14.186Z",
       "decision": "A",
+      "legacyVariants": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [],
       "purgeTouched": true,
-      "variants": [
-        "A"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "52ef8a1e16c3f022"
+      },
       "variantsAt": "2026-10-08T04:52:40.430Z"
     },
     "RM_YearningFruit": {
       "at": "2026-10-09T05:18:57.666Z",
       "decidedAt": "2026-10-08T04:55:34.511Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "0b39e8244b4af133",
+        "C": "f0d60a267bb80522",
+        "D": "d5dc9eb663c9b480"
+      },
+      "slots": {
+        "Things/Plant/RM_YearningFruit": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "0b39e8244b4af133",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:18:54.855Z"
     },
     "RM_Zeev": {
+      "assign": {
+        "B": "Things/Plant/AloeVera/AloeVeraA"
+      },
       "at": "2026-10-08T04:56:31.021Z",
       "decidedAt": "2026-10-08T04:56:31.021Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "f83a11eed1323c5e"
+      },
+      "slots": {
+        "Things/Plant/AloeVera/AloeVeraA": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "f83a11eed1323c5e",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T04:56:29.711Z"
     },
     "RM_Zhorrel": {
+      "assign": {
+        "B": "Things/Plant/RM_Zhorrel/RM_Zhorrel_a"
+      },
       "at": "2026-10-09T05:19:02.854Z",
       "decidedAt": "2026-10-08T04:55:38.000Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "61b6cf61dbbf8065",
+        "C": "da584b854cfec4d6",
+        "D": "3835240ec80e1bcb"
+      },
+      "slots": {
+        "Things/Plant/RM_Zhorrel/RM_Zhorrel_a": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "61b6cf61dbbf8065",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:19:01.075Z"
     },
     "RSW_Beldon": {
@@ -621,6 +1231,7 @@
       ],
       "decidedAt": "2026-10-09T02:35:45.861Z",
       "decision": "",
+      "migratedFrom": 1,
       "note": "",
       "picks": {},
       "prefill": "A",
@@ -632,6 +1243,8 @@
         "a885a6df7414074d961c7474c401268dc5e4be555ae87e8d1732e5bf329f26f9"
       ],
       "purgeTouched": true,
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
       "stale_letters_dropped": {
         "decision": "H",
         "picks": {
@@ -646,26 +1259,44 @@
           "J"
         ]
       },
-      "variants": [],
       "variantsAt": "2026-10-09T02:36:16.765Z"
     },
     "RSW_Clodhopper": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "3f1e9ecca9ff58e1"
+      }
     },
     "RSW_Convor": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_flip:swanimals/Convor/Convor_Flying_": "D",
         "swanimals/Convor/Convor_f": "C"
       },
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "726b0d55c284b7fb",
+        "C": "e77e06f920385ed8",
+        "D": "678fab21b4a36924"
+      }
     },
     "RSW_Dalgo": {
       "at": "2026-10-09T05:09:28.475Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "A",
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -677,13 +1308,17 @@
         "1964cc764f572ca1b7a07774ab481787e769f72cd941ffb688ef792eb45e4b5c"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "31a6d572a4302d94",
+        "B": "1b05a9e5988918ec"
+      }
     },
     "RSW_Diggerpede": {
+      "assign": {
+        "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Diggerpede/Diggerpede"
+      },
       "at": "2026-10-09T05:32:02.199Z",
       "conflictSheet": [
         {
@@ -710,6 +1345,10 @@
       ],
       "decidedAt": "2026-10-09T05:11:14.990Z",
       "decision": "C",
+      "legacyVariants": [
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_byname": "B"
@@ -717,15 +1356,27 @@
       "prefill": "A",
       "purge": [],
       "purgeTouched": true,
-      "variants": [
-        "C"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "2c6fda2a7f088c24",
+        "C": "904b0cde6e2d5d26"
+      },
+      "slots": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Diggerpede/Diggerpede": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "904b0cde6e2d5d26",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:11:09.953Z"
     },
     "RSW_Dragonsnake": {
       "at": "2026-10-09T05:31:38.927Z",
       "decidedAt": "2026-10-09T05:09:38.369Z",
       "decision": "E",
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Dragonsnake/Dragonsnake_Swimming": "D"
@@ -740,13 +1391,32 @@
         "2a584e2ef256491a78b7b7a9beb092ef11b7fa63eabbb16eee3c5e54c77978fa"
       ],
       "purgeTouched": true,
-      "variants": [],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "D": "6feb3d576400a2f0",
+        "E": "ee9ef86757ad61cc"
+      },
+      "slots": {
+        "swanimals/Dragonsnake/Dragonsnake_Swimming": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "6feb3d576400a2f0",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:09:52.461Z"
     },
     "RSW_Falumpaset": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "5f19246bd74f9bd5"
+      }
     },
     "RSW_Fambaa": {
       "at": "2026-10-09T05:31:48.778Z",
@@ -777,6 +1447,10 @@
       ],
       "decidedAt": "2026-10-09T05:10:19.429Z",
       "decision": "G",
+      "legacyVariants": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Fambaa/Fambaa_Swimming": "D",
@@ -793,9 +1467,35 @@
         "c9a3a0d102da77808d92c660a69c2666681f2af45ef0cd7c09c1213dba56e5b9"
       ],
       "purgeTouched": true,
-      "variants": [
-        "B"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "dd2968a0a0d739c9",
+        "D": "b6dcb0a8bd4fbd53",
+        "E": "fb93ecb2d1b7a0ec",
+        "F": "4daa51fa79033a6b",
+        "G": "1545c163f9683caa"
+      },
+      "slots": {
+        "swanimals/Fambaa/Fambaa_Swimming": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "b6dcb0a8bd4fbd53",
+          "state": "pick"
+        },
+        "swanimals/Fambaa/Fambaa_j": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "fb93ecb2d1b7a0ec",
+          "state": "pick"
+        },
+        "swanimals/Fambaa/Fambaa_j_Swimming": {
+          "migrated": true,
+          "pick": "F",
+          "set_id": "4daa51fa79033a6b",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:10:21.807Z"
     },
     "RSW_Gelagrub": {
@@ -821,6 +1521,7 @@
       ],
       "decidedAt": "2026-10-09T05:10:30.404Z",
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -829,13 +1530,31 @@
         "06c241a95ee0ac436e7a9a31692d3049195f798e0fe5cff95214fe6d792dede2"
       ],
       "purgeTouched": true,
-      "variants": [],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "2d9c979e6320682c"
+      },
+      "slots": {
+        "swanimals/Gelagrub/Gelagrub": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "2d9c979e6320682c",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:10:32.732Z"
     },
     "RSW_Gizka": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "88c36a241d501e0c"
+      }
     },
     "RSW_Hawkbat": {
       "at": "2026-10-09T05:32:14.827Z",
@@ -876,6 +1595,21 @@
       ],
       "decidedAt": "2026-10-09T05:11:38.831Z",
       "decision": "J",
+      "legacyVariants": [
+        "G",
+        "H",
+        "J",
+        "K",
+        "L",
+        "M",
+        "N",
+        "O",
+        "P",
+        "Q",
+        "R",
+        "S"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -918,34 +1652,64 @@
         "ec6f18d180242f266b89e12c6853eef8758217837e9bbdc13fccff72eaa88e54"
       ],
       "purgeTouched": true,
-      "variants": [
-        "G",
-        "H",
-        "J",
-        "K",
-        "L",
-        "M",
-        "N",
-        "O",
-        "P",
-        "Q",
-        "R",
-        "S"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "F": "4f46679b7cf6fef1",
+        "G": "556393174f7d5705",
+        "H": "f110a28389838fd6",
+        "J": "1e5747c0e904a972",
+        "K": "ecb22a16e17cd6f7",
+        "L": "269ed82059d1c8c5",
+        "M": "17674d5378758c81",
+        "N": "062a8738c71aa27c",
+        "O": "cde16373fb2b17af",
+        "P": "af3d15d0015e4c95",
+        "Q": "544a2acc92882205",
+        "R": "e5d7e566fb0a354d",
+        "S": "f5926cbcf63479e0"
+      },
+      "slots": {
+        "_flip:swanimals/Hawkbat/Hawkbat_Flying_": {
+          "migrated": true,
+          "pick": "G",
+          "set_id": "556393174f7d5705",
+          "state": "pick"
+        },
+        "swanimals/Hawkbat/Hawkbat_j": {
+          "migrated": true,
+          "pick": "F",
+          "set_id": "4f46679b7cf6fef1",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:32:14.827Z"
     },
     "RSW_Hssiss": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Hssiss/Hssiss_Swimming": "C"
       },
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "9fb5f685b2be4c4f",
+        "C": "0de4fc1efb0432bd"
+      }
     },
     "RSW_Kinrath": {
       "at": "2026-10-09T05:32:36.083Z",
       "decidedAt": "2026-10-09T05:12:42.767Z",
       "decision": "F",
+      "legacyVariantsDefault": [
+        "A",
+        "B",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -975,17 +1739,31 @@
         "0acf8db94c0d1bbe99a7f65514195706be71a256798cc1f5cc679fcd29c56580"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B",
-        "C"
-      ],
-      "variantsDefault": true
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "0db58459dffc1556",
+        "B": "89186cb8a6847c93",
+        "C": "1050dc06f7eaf4f5",
+        "F": "0e5d04f0e5f85691"
+      },
+      "slots": {
+        "swanimals/Kinrath/Kinrath": {
+          "migrated": true,
+          "pick": "F",
+          "set_id": "0e5d04f0e5f85691",
+          "state": "pick"
+        }
+      }
     },
     "RSW_Klorslug": {
       "at": "2026-10-09T05:32:28.058Z",
       "decidedAt": "2026-10-09T05:12:29.069Z",
       "decision": "D",
+      "legacyVariants": [
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Klorslug/Klorslug_j": "B"
@@ -997,15 +1775,28 @@
         "811a513c344626a8ecd101fb4a2824edf62008f7ac1a2de30f1f6baa7e0b64ed"
       ],
       "purgeTouched": true,
-      "variants": [
-        "E"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "058635009e073892",
+        "D": "007a380f26b667e0",
+        "E": "1593adbd0c19d2ac"
+      },
+      "slots": {
+        "swanimals/Klorslug/Klorslug_j": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "058635009e073892",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:12:36.649Z"
     },
     "RSW_Lylek": {
       "at": "2026-10-09T05:32:43.188Z",
       "decidedAt": "2026-10-09T05:12:53.536Z",
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -1014,7 +1805,19 @@
         "14da01de98dbfa21ff89df2eaa9553fdb429dc72680d3a7f44031c4664922220"
       ],
       "purgeTouched": true,
-      "variants": [],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "f23b2daa27000401"
+      },
+      "slots": {
+        "swanimals/Lylek/Lylek": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "f23b2daa27000401",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:12:57.803Z"
     },
     "RSW_Mott": {
@@ -1043,6 +1846,7 @@
       ],
       "decidedAt": "2026-10-09T05:13:41.239Z",
       "decision": "",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1074,16 +1878,42 @@
         "91ebf8eb6db310366b20d7992605f9eabb1bb20cab32ad3fd184cf57a650fd1c"
       ],
       "purgeTouched": true,
-      "variants": [],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "C": "d3bb126e22e9773c",
+        "G": "2732e66d4bb4060d"
+      },
+      "slots": {
+        "swanimals/Mott/Mott_m": {
+          "migrated": true,
+          "pick": "G",
+          "set_id": "2732e66d4bb4060d",
+          "state": "pick"
+        },
+        "swanimals/Mott/Mott_m_Swimming": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "d3bb126e22e9773c",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:13:52.363Z"
     },
     "RSW_Nuna": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Nuna/Nuna_m": "C"
       },
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "8fb45bb646070982",
+        "C": "60147d5b7d6bf4b1"
+      }
     },
     "RSW_PekoPeko": {
       "at": "2026-10-09T05:15:15.840Z",
@@ -1147,6 +1977,15 @@
       ],
       "decidedAt": "2026-10-09T05:15:02.728Z",
       "decision": "N",
+      "legacyVariants": [
+        "E",
+        "F",
+        "K",
+        "L",
+        "M",
+        "O"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_": "E",
@@ -1176,19 +2015,48 @@
         "8f7b797f93b8bb5d4b2ec6050e0178a029977275c28d47265276fb283f431c00"
       ],
       "purgeTouched": true,
-      "variants": [
-        "E",
-        "F",
-        "K",
-        "L",
-        "M",
-        "O"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "D": "2fd3f9cd53b990d1",
+        "E": "98a6d215954bd244",
+        "F": "70283aceef52d70e",
+        "K": "2d101e4e8b774ea0",
+        "L": "176a00e0af94b9a5",
+        "M": "8a777cc10f2b199d",
+        "N": "bb36931f96cbb7e8",
+        "O": "0de3f432d6c49ff1"
+      },
+      "slots": {
+        "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "98a6d215954bd244",
+          "state": "pick"
+        },
+        "swanimals/PekoPeko/PekoPeko_f": {
+          "migrated": true,
+          "pick": "N",
+          "set_id": "bb36931f96cbb7e8",
+          "state": "pick"
+        },
+        "swanimals/PekoPeko/PekoPeko_m": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "2fd3f9cd53b990d1",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:15:15.840Z"
     },
     "RSW_Shiro": {
       "at": "2026-10-08T04:50:24.447Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -1197,49 +2065,97 @@
         "56b29f4a33734ff74139de8f888aff9e92bdda1a66b53ad359711fe4dba5a4a4"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "466a944af084fb2b",
+        "B": "8f3ed1c8b6a61842"
+      },
       "variantsAt": "2026-10-08T04:50:24.447Z"
     },
     "RSW_ShiroTrap": {
       "at": "2026-10-09T05:15:38.891Z",
       "decidedAt": "2026-10-09T05:15:26.335Z",
       "decision": "F",
+      "legacyVariants": [
+        "D",
+        "G"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/ShiroTrap/ShiroTrap_i": "B",
         "swanimals/ShiroTrap/ShiroTrap_j": "C"
       },
       "prefill": "A",
-      "variants": [
-        "D",
-        "G"
-      ],
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "74adce66695e4f2a",
+        "C": "9fb98fdfb1e98842",
+        "D": "54db93fe16d563b5",
+        "F": "500b3c52389d815d",
+        "G": "fc682965ee73f4f8"
+      },
+      "slots": {
+        "swanimals/ShiroTrap/ShiroTrap_i": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "74adce66695e4f2a",
+          "state": "pick"
+        },
+        "swanimals/ShiroTrap/ShiroTrap_j": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "9fb98fdfb1e98842",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-09T05:15:36.176Z"
     },
     "RSW_Whisperbird": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_flip:swanimals/Whisperbird/Whisperbird_Flying_": "E"
       },
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "A": "2c480f36dac218af",
+        "E": "2c27280ec0efd9b9"
+      }
     },
     "RSW_Worrt": {
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Worrt/Worrt_Swimming": "C",
         "swanimals/Worrt/Worrt_j": "D"
       },
-      "prefill": "B"
+      "prefill": "B",
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "51547eb56834dd17",
+        "C": "cc1a618450573abe",
+        "D": "8df24d15330775e6"
+      }
     },
     "VFEI2_Swarmling": {
+      "assign": {
+        "C": "Things/Pawn/Animal/Swarmling/Swarmling"
+      },
       "at": "2026-10-09T05:15:49.344Z",
       "decidedAt": "2026-10-09T05:15:48.148Z",
       "decision": "C",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_byname": "C"
@@ -1251,12 +2167,31 @@
         "5bb78e31ab58f106311544a98de064834faffe2cbe47938fe2695a552aee4d59"
       ],
       "purgeTouched": true,
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "609a9324173ab3ab",
+      "schema": 2,
+      "setIds": {
+        "B": "814856bcb1a65b9c",
+        "C": "447432eeaf3db42d"
+      },
+      "slots": {
+        "Things/Pawn/Animal/Swarmling/Swarmling": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "447432eeaf3db42d",
+          "state": "pick"
+        }
+      }
     }
   },
+  "migrations": [
+    {
+      "against_snapshot": "609a9324173ab3ab",
+      "at": "2026-10-10T11:53:45-0700",
+      "by": "script:src/RimMandrake/Utils/art/decisions_v2.py",
+      "from": 1,
+      "to": 2
+    }
+  ],
   "posture": "pick-one",
   "reviewStatus": {
     "at": null,
@@ -1266,6 +2201,7 @@
   },
   "savedAt": "2026-10-08T22:32:51-0700",
   "savedBy": "review-sheet-sidecar",
+  "schema": 2,
   "sheetId": "greentide_sheet_2026-10-05",
   "snapshot": "infrastructure/state/art/sheets/greentide_sheet_2026-10-05.snapshot.json",
   "snapshotId": "609a9324173ab3ab",

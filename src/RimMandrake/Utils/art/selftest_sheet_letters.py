@@ -91,36 +91,25 @@ def main():
     if not Path(node).exists():
         check(False, "variant tick selftest needs node (UNMEASURED)")
     else:
-        js = src[src.index("window.artOwnerVariants"):src.index("const _itemBody = it => {")]
-        tog = src[src.index("window.artToggleVariant = (id, letter) => {"):src.index("window.artPick = (id, g, letter) => {")]
+        import sheet_js_harness as H
         it = {"id": "r", "graphics": [
-            {"pool": True, "cols": [{"letter": "A", "kind": "artpipe", "faces": {"south": "a1"}},
-                                    {"letter": "B", "kind": "artpipe", "faces": {"south": "b1"}},
-                                    {"letter": "C", "kind": "artpipe", "faces": {"south": "c1"}, "noSelect": True}]},
-            {"flip": True, "cols": [{"letter": "E", "kind": "artpipe", "faces": {"1_east": "e1"}}]}]}
-        prog = ("const window={};const LETTER_ORDER='ABCDEFG';let frozen=false;const errs=[];const showErr=m=>errs.push(m);"
-                "const queue=()=>{},patchRow=()=>{},paintCounts=()=>{},prefillOf=()=>'A';" + js + tog +
-                "const it=" + json.dumps(it) + ";const byId=new Map([['r',it]]);const o={};"
-                "o.none=window.artOwnerVariants({variants:['A','B'],variantsDefault:true});"
-                "o.mine=window.artOwnerVariants({variants:['A']});"
-                "const DEC={r:{decision:'A',variants:['A','B'],variantsDefault:true}};"
-                "window.artToggleVariant('r','B');o.after=JSON.parse(JSON.stringify(DEC.r));"
-                "window.artToggleVariant('r','E');o.flip=JSON.parse(JSON.stringify(DEC.r));o.errs=errs.slice();"
-                "const r5={variants:['A','C']};window.artEnsureVariants(it,r5);o.r5=r5;"
-                "const r6={variants:['A','C'],variantsDefault:true};window.artEnsureVariants(it,r6);o.r6=r6;"
-                "console.log(JSON.stringify(o))")
-        out = json.loads(subprocess.run([node, "-e", prog], capture_output=True, text=True, check=True).stdout)
-        check(out["none"] == [] and out["mine"] == ["A"], "a machine-default variant list shows NO ticks; his list shows")
-        check(out["after"]["variants"] == ["B"] and "variantsDefault" not in out["after"],
-              "one click ticks only THAT set: the default list is not laundered into his (was [A,B] -> click B)")
-        check(out["after"].get("legacyVariantsDefault") == ["A", "B"], "the dropped default list is kept aside as legacy, not lost")
-        check(out["flip"]["variants"] == ["B"] and any("random pool" in e for e in out["errs"]),
-              "a tick on a non-pool lane (flight frames) is refused with a reason")
-        check(out["r5"]["variants"] == ["A"], "a placeholder letter is stripped from his explicit variants list on save")
-        check(out["r6"]["variants"] == ["A", "C"] and out["r6"]["variantsDefault"],
-              "a save never rewrites (materialises) a machine-default list")
+            {"key": "g", "pool": True, "lane": "slot", "primary": True, "slot": {"label": "ADULT"},
+             "cols": [{"letter": "A", "kind": "artpipe", "faces": {"south": "a1"}},
+                      {"letter": "B", "kind": "artpipe", "faces": {"south": "b1"}},
+                      {"letter": "C", "kind": "artpipe", "faces": {"south": "c1"}, "noSelect": True}]},
+            {"key": "_flip:x", "lane": "slot", "flip": True, "slot": {"label": "FLYING"},
+             "cols": [{"letter": "E", "kind": "artpipe", "faces": {"1_east": "e1"}}]}]}
+        out = H.run_js("const it=" + json.dumps(it) + ";const o={};"
+                       "const r={decision:'A',variants:['A','B'],variantsDefault:true};SLX.poolToggle(it,r,'g','B');o.after=r;"
+                       "o.flip=SLX.poolToggle(it,r,'_flip:x','E');o.ph=SLX.poolToggle(it,r,'g','C');"
+                       "const f={decision:'',note:''};o.fresh=SLX.poolRec(f,'g');console.log(JSON.stringify(o))")
+        check(out["after"]["pool"]["g"]["add"] == ["B"] and out["after"].get("legacyVariantsDefault") == ["A", "B"]
+              and "variants" not in out["after"], "one click ticks only THAT set: the default list is not laundered into his")
+        check(not out["flip"]["ok"] and "random pool" in out["flip"]["msg"], "a tick on a non-pool lane (flight frames) is refused")
+        check(not out["ph"]["ok"], "a placeholder set can never be a variant")
+        check(out["fresh"] == {"add": [], "remove": []}, "nothing is pre-ticked")
         check("artDefaultVariants" not in src, "the pre-tick default (artDefaultVariants) is gone from the sheet")
-    for frag in ("if (c.noSelect) return", "placeholder — not selectable", "artNoSelect(it).has(letter)",
+    for frag in ("if (c.noSelect) return", "placeholder — not selectable", "is placeholder art — it cannot be picked",
                  "artNoSelect(it_).has(key)"):
         check(frag in src, f"sheet JS guards placeholders: {frag!r}")
     # the Python side: a circle set is noSelect; a set mixing a circle with real art is not

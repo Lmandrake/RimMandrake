@@ -35,6 +35,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import artledger as L  # noqa: E402
 import subject as S  # noqa: E402  (ART_SUBJECT_RESOLVER_1: the one name->art matcher)
 import placeholder_detect as PD  # noqa: E402
+import sheet_slots as SLOTS  # noqa: E402  (what each picture is FOR: the slot vocabulary, DESIGN 2026-10-10 §3.1)
 import scaled_review_gate as SG  # noqa: E402  (the hard gate: a sheet failing a scaled-review requirement is never written)
 
 SKILL = Path.home() / ".claude" / "skills" / "review-sheets" / "assets"
@@ -214,6 +215,18 @@ def thumb(sha: str, imgdir: Path, src_bytes: bytes | None = None, size: int = 20
 GENERIC_DIRS = {"plant", "plants", "things", "thing", "item", "items", "building", "buildings", "animal", "animals",
                 "pawn", "pawns", "terrain", "filth", "mote", "motes", "projectile", "weapon", "weapons", "apparel"}
 FAM_RE = re.compile(r"_(north|east|south|west)(_r\d+)?$")
+
+
+def _def_slots(name: str) -> list[dict]:
+    """sheet_slots for one def from the live dump; [] when unreadable (the row then shows unlabelled lanes, never fails)."""
+    try:
+        import gametex as GT
+        return GT.def_slots(name)
+    except (SystemExit, Exception) as e:                    # noqa: BLE001
+        if not _EXTRA_WARNED:
+            _EXTRA_WARNED.append(1)
+            print(f"WARNING: slots UNMEASURED ({type(e).__name__}: {e})", file=sys.stderr)
+        return []
 
 
 def game_extra_texpaths(names) -> dict:
@@ -556,11 +569,15 @@ window.artTogglePurge = (id, sha) => {
 addEventListener('DOMContentLoaded', () => {
   /* A decision click is recorded as decidedAt, so a row touched ONLY to purge or annotate
      never turns its prefill into a ruling at ingest (art_sheet.py docstring). */
-  /* A save strips placeholder letters from HIS variant list; it never writes a default list (no pre-ticks). */
+  /* A save strips placeholder letters from HIS variant list; it never writes a default list (no pre-ticks). On a biome
+     sheet every saved record is schema 2 (decisions_v2.py), stamped with the inventory revision it was made against. */
   const origQueue = window.queue;
   if (typeof origQueue === 'function') window.queue = function (id) {
     const it = byId.get(id);
-    if (it && DEC[id]) window.artEnsureVariants(it, DEC[id]);
+    if (it && DEC[id]) {
+      window.artEnsureVariants(it, DEC[id]);
+      if (window.SLX && it.graphics && it.graphics.some(g => g.lane)) { window.SLX.v2(DEC[id]); if (it.rev) DEC[id].rev = it.rev; }
+    }
     return origQueue.apply(this, arguments);
   };
   const orig = window.setDecision;
@@ -568,7 +585,18 @@ addEventListener('DOMContentLoaded', () => {
     const it_ = byId.get(id);
     if (it_ && window.artNoSelect(it_).has(key)) { if (typeof showErr === 'function') showErr('Set ' + key + ' is placeholder art — it cannot be picked.'); return; }
     orig(id, key, opts);
-    if (DEC[id]) { DEC[id].decidedAt = new Date().toISOString(); queue(id); }
+    if (DEC[id]) {
+      DEC[id].decidedAt = new Date().toISOString();
+      /* the right-hand letter / redo buttons ARE the primary slot's choice: keep the slot record in step */
+      const g = window.SLX && it_ && (it_.graphics || []).find(x => x.primary && x.lane === 'slot');
+      if (g) {
+        const k = DEC[id].decision, S = window.SLX; S.v2(DEC[id]);
+        if (k && k.length === 1) DEC[id].slots[g.key] = { state: 'pick', pick: k, slot_id: (g.slot || {}).id || null, at: DEC[id].decidedAt };
+        else if (k === 'redo') DEC[id].slots[g.key] = { state: 'redraw', slot_id: (g.slot || {}).id || null, at: DEC[id].decidedAt };
+        else delete DEC[id].slots[g.key];
+      }
+      queue(id);
+    }
   };
   /* The template's patchRow repaints only the buttons; the picked-column frame and the purge
      marks live in the row body, so repaint that too (also covers undo/redo). */
@@ -820,6 +848,21 @@ BIOME_SLUG = {"RM_LongShade": "desert", "RM_Stillsand": "deep_desert", "RM_BlueD
 TIER_RE = S.TIER_RE
 NOT_BODY_JOB = re.compile(r"dess?icc?at|corpse|_mote|halo|filth|skeleton|print|mask|_icon\b", re.I)
 PAIR_COLOURS = ["#e8b64c", "#5ac3c3", "#c38ae8", "#e07a5f", "#7fc35a", "#5a8ae8", "#e85aa8", "#c3b85a"]
+_ROW_SLOTS: dict = {}
+# a lane the live dump names no slot for: its label from the census role (DESIGN §3.1)
+FALLBACK_SLOT = {"swimming graphic": ("SWIMMING", "swimming"), "flying graphic": ("FLYING", "flying"),
+                 "young plant": ("PLANT · YOUNG (immature)", "plant_young"), "leafless plant": ("PLANT · LEAFLESS", "leafless"),
+                 "alternate graphic (the game picks it at random)": ("ADULT · ALTERNATE (random pool)", "alternate"),
+                 "wing-beat flight frames": ("FLYING", "flying")}
+SLOT_DESC = {"adult": "what every grown animal looks like", "adult_female": "what every grown female looks like",
+             "young": "an earlier life stage, drawn until it grows up", "young_female": "an earlier life stage (female)",
+             "flying": "wing-beat frames, shown while airborne — plays as a loop",
+             "flying_female": "wing-beat frames for females — plays as a loop",
+             "swimming": "drawn while it swims", "swimming_female": "drawn while a female swims",
+             "alternate": "one of the pictures the game picks at random for the adult",
+             "grown": "the mature plant", "plant_young": "the immature plant before it matures (immatureGraphicPath)",
+             "leafless": "the plant out of season (leaflessGraphicPath)", "item": "the item as it lies on the ground",
+             "body": "the picture the game draws for it"}
 ROLE_TEXT = {"body": "body", "swimming": "swimming graphic", "flying": "flying graphic",
              "plant_immature": "young plant", "plant_leafless": "leafless plant",
              "alternate": "alternate graphic (the game picks it at random)", None: "renders found by NAME"}
@@ -932,6 +975,28 @@ def _is_failed_canon(fam: str, fc: set) -> bool:
 
 
 _JOB_TARGETS: dict | None = None
+_JOB_SLOTS: dict | None = None
+
+
+def job_slots() -> dict:
+    """job id (lower) -> the sheet SLOT (lane key) a finished artpipe job was filed for (fill_queue `slot`, written by
+    enact since 2026-10-10): such a render is offered in that slot, never in the unassigned lane."""
+    global _JOB_SLOTS
+    if _JOB_SLOTS is None:
+        import os
+        _JOB_SLOTS = {}
+        root = Path(os.environ.get("ARTPIPE_STATE_DIR") or "/mnt/d/Luke/dev/_artpipe") / "done"
+        if root.is_dir():
+            for f in root.glob("*.json"):
+                if f.name.endswith(".manifest.json"):
+                    continue
+                try:
+                    j = json.loads(f.read_text())
+                except (OSError, ValueError):
+                    continue
+                if isinstance(j, dict) and j.get("id") and isinstance(j.get("slot"), str):
+                    _JOB_SLOTS[str(j["id"]).lower()] = j["slot"]
+    return _JOB_SLOTS
 
 
 def job_targets() -> dict:
@@ -984,7 +1049,9 @@ def name_render_cols(idx: L.Index, words, exact, defs=()) -> list[dict]:
             fams[fam].setdefault(fac, sha)
             meta[fam] = {"date": v.get("date", ""), "prompt": v.get("prompt", ""), "item": v.get("item")}
     fc = failed_canon_jobs()
-    return [{"kind": "artpipe", "faces": f, "date": meta[k]["date"],
+    slots_of = job_slots()
+    return [{"kind": "artpipe", "faces": f, "date": meta[k]["date"], "family": k,
+             "jobSlot": next((slots_of[j] for j in slots_of if FAM_RE.sub("", j) == k.lower()), None),
              "label": f"render {k}" + (FAILED_CANON_BADGE if _is_failed_canon(k, fc) else ""),
              "detail": f"{meta[k]['date']} · found by NAME — not wired to any graphic of ours yet · {meta[k]['item'] or ''}",
              "prompt": (meta[k]["prompt"] or "")[:240], "bound": False}
@@ -1029,7 +1096,7 @@ def flipbook_cols(idx: L.Index, words, exact, prefixes=()) -> list[dict]:
             seqs[seq].setdefault(flip_key(fm.group("n"), fac), sha)
             m = meta.setdefault(seq, {"date": "", "prompt": v.get("prompt", ""), "item": v.get("item")})
             m["date"] = max(m["date"], v.get("date", "") or "")
-    out = [{"kind": "artpipe", "faces": f, "date": meta[k]["date"], "label": f"flight frames {k}",
+    out = [{"kind": "artpipe", "faces": f, "date": meta[k]["date"], "label": f"flight frames {k}", "seq": k,
             "detail": f"{meta[k]['date']} · {len(f)} frames · {meta[k]['item'] or ''}",
             "prompt": (meta[k]["prompt"] or "")[:240], "bound": False}
            for k, f in sorted(seqs.items(), key=lambda kv: meta[kv[0]]["date"], reverse=True)]
@@ -1041,7 +1108,7 @@ def flipbook_cols(idx: L.Index, words, exact, prefixes=()) -> list[dict]:
             if fm and not pt["mask"] and pt["res"].startswith(pre) and pt["facing"] in FLIP_FACINGS:
                 faces.setdefault(flip_key(fm.group("n"), pt["facing"]), ev["sha"])
         if faces:
-            out.insert(0, {"kind": "live", "faces": faces, "date": "", "winner": True, "bound": True,
+            out.insert(0, {"kind": "live", "faces": faces, "date": "", "winner": True, "bound": True, "prefix": pre,
                            "label": f"IN GAME — {pre.rsplit('/', 1)[-1]}", "prompt": "",
                            "detail": f"the flip-book the game draws now ({len(faces)} frames under {pre})"})
     return out
@@ -1158,30 +1225,255 @@ if (!window.__bsAnim) window.__bsAnim = setInterval(() => document.querySelector
   const im = el.querySelector('img'); if (!im || !im.complete || !im.naturalWidth) return;
   el.dataset.i = i; im.src = fr[i];
 }), 66);
-/* Variant ticks (owner, by question card 2026-10-10): NEVER pre-ticked. A tick exists only on a lane where the game
-   truly draws from a random pool (a Graphic_Random folder, or alternateGraphics), and only the owner's own click puts
-   one there. A record still carrying a machine-default list from the retired 2026-10-06 rule (`variantsDefault`) shows
-   NO ticks, and a click never converts that default list into his: it starts his own list from empty. */
-window.artOwnerVariants = d => (d && !d.variantsDefault && Array.isArray(d.variants)) ? d.variants : [];
-/* Owner rule 2026-10-07 22:33 PDT: a geometric placeholder set (c.noSelect) can never be a pick or a variant. */
+/* ═══ SLOTS (DESIGN 2026-10-10 §3; owner rulings by question card 2026-10-10) ═══════════════════════════════════════
+   Every picture lives in a labelled SLOT — what the game draws it as. Click a picture to USE it for that slot (click it
+   again to take that back), or say `accept unchanged` / `redraw this slot`. ✕ is four different things and the sheet
+   says which: `✕ not for this slot` (deletes nothing), `retire` (a live picture: it stays in game until its replacement
+   is installed), `leave the random pool` (pool slots only), and the small per-picture ✕ that deletes from the art store.
+   A variant tick (`in random pool`) exists only where the game truly draws from a random pool and is NEVER pre-ticked;
+   renders found by name must be labelled (`this is:`) before they can be used; a catch row's creature renders are
+   reference only. Records are schema 2 (decisions_v2.py). SLX is pure logic over (item, record): no DOM, node-tested. */
 window.artNoSelect = it => new Set((it.graphics || []).flatMap(g => g.cols.filter(c => c.noSelect).map(c => c.letter)));
-window.artPoolLetters = it => new Set((it.graphics || []).filter(g => g.pool).flatMap(g => g.cols.map(c => c.letter)));
 window.artEnsureVariants = (it, rec) => {
   if (rec && Array.isArray(rec.variants) && !rec.variantsDefault) { const ns = window.artNoSelect(it); rec.variants = rec.variants.filter(l => !ns.has(l)); }
+};
+const SLX = window.SLX = {};
+const _ok = (msg) => ({ ok: true, msg: msg || '' }), _no = m => ({ ok: false, msg: m });
+SLX.lane = (it, gk) => (it.graphics || []).find(g => g.key === gk);
+SLX.v2 = rec => {
+  if (!rec) return rec;
+  if ((+rec.schema || 1) < 2) {
+    rec.schema = 2;
+    if (Array.isArray(rec.variants) && rec.variants.length) {
+      if (rec.variantsDefault) rec.legacyVariantsDefault = rec.variants; else rec.legacyVariants = rec.variants;
+    }
+    delete rec.variants; delete rec.variantsDefault;
+  }
+  rec.slots = rec.slots || {};
+  return rec;
+};
+SLX.assigned = rec => (rec && rec.assign) || {};
+/* lanes as shown: a render he labelled moves into that slot's lane (and becomes usable there) */
+SLX.view = (it, rec) => {
+  const asg = SLX.assigned(rec);
+  const lanes = (it.graphics || []).map(g => ({ g, cols: g.cols.filter(c => !(g.lane === 'unassigned' && asg[c.letter] && SLX.lane(it, asg[c.letter]))) }));
+  for (const l of lanes) {
+    if (l.g.lane !== 'slot') continue;
+    for (const g of it.graphics || []) if (g.lane === 'unassigned') for (const c of g.cols)
+      if (asg[c.letter] === l.g.key) l.cols.push(Object.assign({}, c, { assignedHere: true }));
+  }
+  return lanes;
+};
+SLX.colIn = (it, rec, gk, L) => { const l = SLX.view(it, rec).find(x => x.g.key === gk); return l ? l.cols.find(c => c.letter === L) : null; };
+SLX.state = (it, rec, g) => {
+  const s = ((rec || {}).slots || {})[g.key];
+  if (s && s.state && !s.migrated) return s;
+  if (g.primary) {
+    const d = (rec || {}).decision;
+    if (d === 'redo') return { state: 'redraw' };
+    if (d && d.length === 1) return { state: 'pick', pick: d };
+  }
+  const p = ((rec || {}).picks || {})[g.key];
+  if (p) return { state: 'pick', pick: p };
+  return s && s.state ? s : { state: '' };
+};
+SLX.inGame = g => g.cols.filter(c => c.winner && !c.purgedLive);
+SLX.list = (rec, key, gk) => new Set((((rec || {})[key] || {})[gk]) || []);
+SLX.putList = (rec, key, gk, set) => { rec[key] = rec[key] || {}; const a = [...set].sort(); if (a.length) rec[key][gk] = a; else delete rec[key][gk]; };
+SLX.setSlot = (it, rec, g, st) => {
+  SLX.v2(rec);
+  const now = new Date().toISOString();
+  if (!st || !st.state) delete rec.slots[g.key];
+  else rec.slots[g.key] = Object.assign({ slot_id: (g.slot || {}).id || null, at: now }, st);
+  if (g.primary) {
+    rec.decision = !st || !st.state ? '' : st.state === 'pick' ? st.pick : st.state === 'redraw' ? 'redo'
+      : st.state === 'accept' ? ((SLX.inGame(g)[0] || {}).letter || '') : '';
+    rec.decidedAt = now;
+  } else if (rec.picks && rec.picks[g.key] !== undefined) {
+    if (st && st.state === 'pick') rec.picks[g.key] = st.pick; else delete rec.picks[g.key];
+  }
+};
+SLX.pick = (it, rec, gk, L) => {
+  const g = SLX.lane(it, gk);
+  if (!g) return _no('no such slot');
+  if (g.lane === 'reference') return _no('These are pictures of the LIVING creature, shown for reference — they cannot be used as the catch.');
+  if (g.lane === 'unassigned') return _no('Say what render ' + L + ' is first (the "this is" box) — an unassigned render cannot be used.');
+  const c = SLX.colIn(it, rec, gk, L);
+  if (!c) return _no('Set ' + L + ' is not in this slot.');
+  if (c.noSelect) return _no('Set ' + L + ' is placeholder art — it cannot be picked.');
+  if (c.purgedLive) return _no('You purged set ' + L + '; it cannot be picked.');
+  const cur = SLX.state(it, rec, g);
+  if (cur.state === 'pick' && cur.pick === L) { SLX.setSlot(it, rec, g, null); return _ok('took back ' + L); }
+  SLX.v2(rec);
+  /* pick and ✕ of one set cannot both stand: using it clears its ✕ marks (DESIGN §3.3 guard 2) */
+  for (const k of ['reject', 'retire']) { const s = SLX.list(rec, k, gk); s.delete(L); SLX.putList(rec, k, gk, s); }
+  const shas = new Set(Object.values(c.faces || {}));
+  if (rec.purge) rec.purge = rec.purge.filter(x => !shas.has(x));
+  SLX.setSlot(it, rec, g, { state: 'pick', pick: L, set_id: c.setId });
+  return _ok();
+};
+SLX.slotButton = (it, rec, gk, state) => {
+  const g = SLX.lane(it, gk);
+  if (!g || g.lane !== 'slot') return _no('not a slot');
+  const cur = SLX.state(it, rec, g);
+  SLX.setSlot(it, rec, g, cur.state === state ? null : { state });
+  return _ok();
+};
+SLX.acceptAll = (it, rec) => {
+  for (const g of it.graphics || []) if (g.lane === 'slot' && !SLX.state(it, rec, g).state) SLX.setSlot(it, rec, g, { state: 'accept' });
+  return _ok();
+};
+/* the only picture(s) the game draws in this slot are all being sent away and nothing new is picked: the slot becomes a
+   REDRAW and the old picture stays in game until the new one is installed (owner ruling, question card 2026-10-10) */
+SLX._maybeRedraw = (it, rec, g) => {
+  const gone = new Set([...SLX.list(rec, 'reject', g.key), ...SLX.list(rec, 'retire', g.key), ...((SLX.poolRec(rec, g.key).remove) || [])]);
+  const live = SLX.inGame(g).filter(c => !gone.has(c.letter));
+  const st = SLX.state(it, rec, g);
+  if (SLX.inGame(g).length && !live.length && st.state !== 'pick' && !(SLX.poolRec(rec, g.key).add || []).length) {
+    SLX.setSlot(it, rec, g, { state: 'redraw' });
+    return 'Nothing would be left in "' + ((g.slot || {}).label || 'this slot') + '": it becomes a REDRAW, and ' + SLX.inGame(g).map(c => c.letter).join(', ') + ' stays in game until the new picture is installed.';
+  }
+  return '';
+};
+SLX.reject = (it, rec, gk, L) => {
+  const g = SLX.lane(it, gk);
+  if (!g || g.lane !== 'slot') return _no('not a slot');
+  SLX.v2(rec);
+  const s = SLX.list(rec, 'reject', gk);
+  if (s.has(L)) { s.delete(L); SLX.putList(rec, 'reject', gk, s); return _ok(); }
+  s.add(L); SLX.putList(rec, 'reject', gk, s);
+  const st = SLX.state(it, rec, g);
+  if (st.state === 'pick' && st.pick === L) SLX.setSlot(it, rec, g, null);
+  const pr = SLX.poolRec(rec, gk); if ((pr.add || []).includes(L)) SLX.putPool(it, rec, g, Object.assign({}, pr, { add: pr.add.filter(x => x !== L) }));
+  return _ok(SLX._maybeRedraw(it, rec, g));
+};
+SLX.retire = (it, rec, gk, L) => {
+  const g = SLX.lane(it, gk);
+  if (!g || g.lane !== 'slot') return _no('not a slot');
+  SLX.v2(rec);
+  const s = SLX.list(rec, 'retire', gk);
+  if (s.has(L)) { s.delete(L); SLX.putList(rec, 'retire', gk, s); return _ok(); }
+  s.add(L); SLX.putList(rec, 'retire', gk, s);
+  { const st = SLX.state(it, rec, g); if (st.state === 'pick' && st.pick === L) SLX.setSlot(it, rec, g, null); }
+  return _ok(SLX._maybeRedraw(it, rec, g) || (L + ' stays in game until its replacement is installed.'));
+};
+SLX.poolRec = (rec, gk) => (((rec || {}).pool || {})[gk]) || { add: [], remove: [] };
+SLX.putPool = (it, rec, g, p) => {
+  rec.pool = rec.pool || {};
+  if (!p.baseline) p.baseline = SLX.inGame(g).map(c => c.setId).filter(Boolean).sort();
+  if (!(p.add || []).length && !(p.remove || []).length) delete rec.pool[g.key]; else rec.pool[g.key] = p;
+};
+SLX.poolToggle = (it, rec, gk, L) => {
+  const g = SLX.lane(it, gk);
+  if (!g || !g.pool) return _no('Set ' + L + ' is not in a random pool — the game never draws it at random, so it cannot be a variant.');
+  const c = SLX.colIn(it, rec, gk, L);
+  if (!c) return _no('no such set');
+  if (c.noSelect) return _no('Set ' + L + ' is placeholder art — it cannot be kept as a variant.');
+  SLX.v2(rec);
+  const p = JSON.parse(JSON.stringify(SLX.poolRec(rec, gk)));
+  p.add = p.add || []; p.remove = p.remove || [];
+  let msg = '';
+  if (c.winner) {          /* a member the game draws now: leave / rejoin the pool */
+    if (p.remove.includes(L)) p.remove = p.remove.filter(x => x !== L); else p.remove.push(L);
+  } else {
+    if (p.add.includes(L)) p.add = p.add.filter(x => x !== L);
+    else { p.add.push(L); const r = SLX.list(rec, 'reject', gk); r.delete(L); SLX.putList(rec, 'reject', gk, r); }
+  }
+  SLX.putPool(it, rec, g, p);
+  if (c.winner && p.remove.includes(L)) {
+    const st = SLX.state(it, rec, g); if (st.state === 'pick' && st.pick === L) SLX.setSlot(it, rec, g, null);
+    msg = SLX._maybeRedraw(it, rec, g);
+  }
+  return _ok(msg);
+};
+SLX.addable = (rec, g, cols) => cols.filter(c => !c.winner && !c.noSelect && !c.purgedLive && !(c.kind === 'donor' && !c.ours && !c.oursRender)
+  && !SLX.list(rec, 'reject', g.key).has(c.letter));
+SLX.poolAddAll = (it, rec, gk) => {
+  const g = SLX.lane(it, gk);
+  if (!g || !g.pool) return _no('not a random pool');
+  SLX.v2(rec);
+  const l = SLX.view(it, rec).find(x => x.g.key === gk);
+  const p = JSON.parse(JSON.stringify(SLX.poolRec(rec, gk)));
+  p.add = [...new Set([...(p.add || []), ...SLX.addable(rec, g, l.cols).map(c => c.letter)])].sort();
+  p.remove = p.remove || [];
+  SLX.putPool(it, rec, g, p);
+  return _ok();
+};
+SLX.assign = (it, rec, L, target) => {
+  SLX.v2(rec);
+  rec.assign = rec.assign || {};
+  if (!target) delete rec.assign[L]; else rec.assign[L] = target;
+  /* un-assigning a render takes back any use of it */
+  for (const g of it.graphics || []) { const st = SLX.state(it, rec, g); if (st.state === 'pick' && st.pick === L && rec.assign[L] !== g.key && g.lane === 'slot' && !g.cols.some(c => c.letter === L)) SLX.setSlot(it, rec, g, null); }
+  return _ok();
+};
+SLX.purgeToggle = (it, rec, sha) => {
+  for (const g of it.graphics || []) {
+    const st = SLX.state(it, rec, g);
+    if (st.state !== 'pick') continue;
+    const c = SLX.colIn(it, rec, g.key, st.pick);
+    if (c && Object.values(c.faces || {}).includes(sha) && !(rec.purge || []).includes(sha))
+      return _no('That picture is part of ' + st.pick + ', your pick for "' + ((g.slot || {}).label || 'this slot') + '" — take the pick back first (pick and delete cannot both stand).');
+  }
+  const s = new Set(rec.purge || []);
+  if (s.has(sha)) s.delete(sha); else s.add(sha);
+  rec.purge = [...s]; rec.purgeTouched = true;
+  return _ok();
+};
+SLX.setAsk = (rec, path, value) => {
+  SLX.v2(rec);
+  rec.asks = rec.asks || {};
+  const [k, sub] = path.split('.');
+  if (sub) {
+    const o = Object.assign({}, rec.asks[k] || {});
+    if (value === '' || value == null || value === false) delete o[sub]; else o[sub] = value;
+    if (Object.keys(o).length) rec.asks[k] = o; else delete rec.asks[k];
+  } else if (value === '' || value == null || value === false || (Array.isArray(value) && !value.length)) delete rec.asks[k];
+  else rec.asks[k] = value;
+  if (!Object.keys(rec.asks).length) delete rec.asks;
+  return _ok();
+};
+SLX.needsYou = (it, rec) => {
+  const out = [];
+  for (const g of it.graphics || []) if (g.lane === 'slot' && (g.slot || {}).required && !SLX.state(it, rec, g).state) out.push((g.slot || {}).label || g.key);
+  const un = (it.graphics || []).filter(g => g.lane === 'unassigned').flatMap(g => g.cols).filter(c => !SLX.assigned(rec)[c.letter]);
+  if (un.length) out.push(un.length + ' render' + (un.length === 1 ? '' : 's') + ' unassigned');
+  return out;
+};
+SLX.conflicts = (it, rec) => {
+  const out = [], purge = new Set((rec || {}).purge || []);
+  for (const g of it.graphics || []) {
+    const st = SLX.state(it, rec, g);
+    if (st.state !== 'pick') continue;
+    const c = SLX.colIn(it, rec, g.key, st.pick);
+    if (c && Object.values(c.faces || {}).some(x => purge.has(x))) out.push(st.pick + ' is your pick AND marked ✕ delete — choose one');
+    if (!c && g.lane === 'slot' && g.primary && (it.graphics || []).some(x => x.lane === 'unassigned' && x.cols.some(y => y.letter === st.pick)))
+      out.push('your row pick ' + st.pick + ' is an unassigned render — say what it is (the "this is" box)');
+    else if (!c && g.lane === 'slot' && !(it.graphics || []).some(x => x.cols.some(y => y.letter === st.pick)))
+      out.push('your pick ' + st.pick + ' for ' + ((g.slot || {}).label || 'this slot') + ' is no longer on the sheet (its pictures were deleted) — pick again or redraw');
+  }
+  /* an old ✕ on the ONLY picture the game draws in a slot now means REDRAW (owner ruling by question card 2026-10-10) —
+     shown for him to confirm, never filed on his behalf */
+  for (const g of it.graphics || []) {
+    if (g.lane !== 'slot' || SLX.state(it, rec, g).state) continue;
+    const ig = SLX.inGame(g);
+    if (ig.length && ig.every(c => Object.values(c.faces || {}).every(x => purge.has(x))))
+      out.push(ig.map(c => c.letter).join(', ') + ' is the only picture of ' + ((g.slot || {}).label || 'this slot') + ' and is marked ✕ — that now means REDRAW (it stays in game until replaced): click "redraw this slot" to confirm');
+  }
+  return out;
 };
 const _itemBody = it => {
   const d = (typeof DEC !== 'undefined' && DEC[it.id]) || {};
   const purge = new Set(d.purge || []);
-  const picks = Object.assign({}, it.prefillPicks || {}, d.picks || {});
-  const variants = new Set(window.artOwnerVariants(d));
-  window.artNoSelect(it).forEach(l => variants.delete(l));
+  const legacy = new Set(d.legacyVariants || []);
+  const A = (act, extra, label, cls, title) => `<button class="sl-b ${cls || ''}" data-act="${act}" data-id="${esc(it.id)}"${extra} title="${esc(title || '')}">${label}</button>`;
   const cell = (c, f) => {
     const s = c.faces[f];
     if (!s) return `<div class="bs-cell bs-gap" title="no ${f} picture in this set">—</div>`;
     const t = it.thumbs[s];
     if (!t) return `<div class="bs-cell bs-gap" title="picture not archived">?</div>`;
     const p = purge.has(s);
-    const btn = c.purgeable ? `<button class="ac-purge${p ? ' on' : ''}" title="reject + PURGE: delete this picture from the art store so it never appears again" onclick="event.stopPropagation();artTogglePurge('${it.id}','${s}')">${p ? '✕ purging' : '✕'}</button>` : '';
+    const btn = c.purgeable ? `<button class="ac-purge${p ? ' on' : ''}" title="DELETE this one picture from the art store so it never appears again (deletes bytes — not the same as 'not for this slot')" data-act="purge" data-id="${esc(it.id)}" data-sha="${s}">${p ? '✕ deleting' : '✕'}</button>` : '';
     const ab = faceAbbr(f);
     return `<div class="bs-cell${p ? ' ac-purged' : ''}"><div class="thumb ac-thumb" data-zoom="${t}" data-cap="${esc(it.label)} · ${c.letter} · ${f}"><img src="${t}" loading="lazy" alt=""></div>${ab ? `<span class="bs-face">${ab}</span>` : ''}${btn}</div>`;
   };
@@ -1196,44 +1488,84 @@ const _itemBody = it => {
     }).join('');
     return `<div class="bs-faces bs-frames" style="grid-template-columns:repeat(${g.nframes + 1},auto)">${rows}</div>`;
   };
+  const slotLanes = (it.graphics || []).filter(g => g.lane === 'slot');
   const col = (c, g) => {
-    const picked = g.primary ? d.decision === c.letter : picks[g.key] === c.letter;
+    const st = SLX.state(it, d, g);
+    const picked = st.state === 'pick' && st.pick === c.letter;
+    const rej = SLX.list(d, 'reject', g.key).has(c.letter), ret = SLX.list(d, 'retire', g.key).has(c.letter);
+    const pr = SLX.poolRec(d, g.key), inAdd = (pr.add || []).includes(c.letter), leaves = (pr.remove || []).includes(c.letter);
     const tip = `${c.label}\n${c.detail}${c.ppc ? `\n\nresolution: ${c.srcPx[0]}×${c.srcPx[1]} px over the ${it.scale.kind === 'plant' ? 'quad' : 'drawSize'} = ${c.ppc} px/cell` : ''}${c.also ? '\n\nidentical copies:\n' + c.also.join('\n') : ''}${c.prompt ? '\n\nprompt: ' + c.prompt : ''}`;
-    const vr = variants.has(c.letter);
-    if (c.noSelect) return `<div class="bs-set ac-${c.kind} bs-phcol" title="${esc(c.placeholder || '')}">
-      <div class="bs-head"><b>${c.letter}</b><span>${esc(c.short)}</span><i class="bs-ph">placeholder — not selectable</i></div>
-      ${faces(c, g)}
-      <div class="bs-foot"><i class="bs-novar">cannot be picked or kept as a variant</i></div>
-    </div>`;
-    const vbtn = !g.pool ? '' : `<button class="bs-var${vr ? ' on' : ''}" title="keep this set as a valid VARIANT as well as your one pick (saved as variants: [...] on the row)" onclick="event.stopPropagation();artToggleVariant('${it.id}','${c.letter}')">${vr ? '✓ variant' : '+ variant'}</button>`;
-    return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${vr ? ' bs-isvar' : ''}">
-      <div class="bs-head${c.purgedLive ? '' : ' bs-pick'}"${c.purgedLive ? '' : ` data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}"`} title="${esc(tip)}${c.purgedLive ? '' : '\n\nclick to pick this set'}"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : ''}${c.purgedLive ? `<i class="bs-ph" title="You purged this picture. The game still shows it until a replacement is installed, so it is listed here for reference only and cannot be picked.">you purged this — still live until a replacement is installed</i>` : ''}${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
-      ${faces(c, g)}
-      <div class="bs-foot">${vbtn}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : (it.scale.drawSize||[])[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
+    const X = ` data-g="${esc(g.key)}" data-l="${c.letter}"`;
+    const badges = [c.winner ? `<i class="sl-ig">IN GAME${g.pool ? ' · in pool' : ''}</i>` : '',
+      c.assignedHere ? '<i class="sl-asg">labelled by you</i>' : '',
+      legacy.has(c.letter) ? '<i class="sl-old" title="an old variant tick from before 2026-10-10 that may have been the machine\'s default, not yours: nothing ships from it until you confirm it on the old-ticks sheet">old tick — confirm on the old-ticks sheet</i>' : '',
+      c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : '',
+      c.purgedLive ? `<i class="bs-ph" title="You purged this picture. The game still shows it until a replacement is installed.">you purged this — still live until replaced</i>` : ''].join('');
+    const head = `<div class="bs-head${g.lane === 'slot' && !c.purgedLive && !c.noSelect ? ' bs-pick' : ''}"${g.lane === 'slot' && !c.purgedLive && !c.noSelect ? ` data-act="pick" data-id="${esc(it.id)}"${X}` : ''} title="${esc(tip)}${g.lane === 'slot' ? '\n\nclick to use this set for ' + ((g.slot || {}).label || 'this slot') : ''}"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>`;
+    let foot = '', note = '';
+    if (c.noSelect) foot = '<i class="bs-novar">placeholder — cannot be used or kept</i>';
+    else if (g.lane === 'reference') foot = '<i class="bs-novar">reference only</i>';
+    else if (g.lane === 'unassigned') {
+      const cur = SLX.assigned(d)[c.letter] || '';
+      const opts = slotLanes.map(x => `<option value="${esc(x.key)}"${cur === x.key ? ' selected' : ''}>${esc((x.slot || {}).label || x.key)}</option>`).join('')
+        + `<option value="not_needed"${cur === 'not_needed' ? ' selected' : ''}>not needed — none of these</option>`;
+      foot = `<label class="sl-this">this is: <select data-act="assign" data-id="${esc(it.id)}"${X}><option value="">— choose —</option>${opts}</select></label>${c.hint ? `<i class="sl-hint" title="what its job name suggests — a hint, never applied for you">looks like: ${esc(c.hint)}</i>` : ''}`;
+    } else if (!c.purgedLive) {
+      const verbs = [A('pick', X, picked ? '✓ using this' : 'use this', picked ? 'on' : '', 'use this set for ' + ((g.slot || {}).label || 'this slot') + ' (click again to take it back)')];
+      if (c.winner && g.pool) verbs.push(A('pool', X, leaves ? '✕ leaves the pool' : 'leave the random pool', leaves ? 'bad' : '', 'take this picture OUT of the random pool the game draws from (it is archived, never deleted)'));
+      else if (c.winner) verbs.push(A('retire', X, ret ? '✕ retiring' : '✕ retire', ret ? 'bad' : '', 'retire this live picture from the game — it stays until its replacement is installed'));
+      else {
+        if (g.pool) verbs.push(A('pool', X, inAdd ? '✓ in random pool' : '+ random pool', inAdd ? 'pool' : '', 'add this set to the random pool the game draws from (never pre-ticked)'));
+        verbs.push(A('reject', X, rej ? '✕ not for this slot' : '✕ not for this slot', rej ? 'bad' : '', 'this set is wrong for this slot — deletes nothing'));
+      }
+      foot = verbs.join('');
+      if ((ret || leaves || rej) && c.winner) note = `<div class="sl-warn">${esc(c.letter)} stays in game until the new picture is installed</div>`;
+    }
+    return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${(rej || ret || leaves) ? ' sl-rej' : ''}${inAdd ? ' bs-isvar' : ''}${c.noSelect ? ' bs-phcol' : ''}">
+      ${head}${badges ? `<div class="sl-badges">${badges}</div>` : ''}
+      ${faces(c, g)}${note}
+      <div class="bs-foot">${foot}${g.primary && c.ppc ? `<i class="bs-ppc" title="resolution of this set: ${c.srcPx[0]} px wide over ${fmt(it.scale.kind === 'plant' ? it.scale.quad : (it.scale.drawSize||[])[0])} cells = ${c.ppc} px per cell (enhanced zoom resolves 128–256)">${c.ppc} px/cell</i>` : ''}</div>
     </div>`;
   };
+  const chip = (g, cols) => {
+    if (g.lane === 'reference') return '<span class="sl-chip ref">reference only</span>';
+    if (g.lane === 'unassigned') { const n = cols.filter(c => !SLX.assigned(d)[c.letter]).length; return n ? `<span class="sl-chip need">${n} unassigned</span>` : '<span class="sl-chip done">all labelled</span>'; }
+    const st = SLX.state(it, d, g), ig = SLX.inGame(g).map(c => c.letter).join(', ');
+    const pr = SLX.poolRec(d, g.key), pool = ((pr.add || []).length ? ' · pool + ' + pr.add.join(', ') : '') + ((pr.remove || []).length ? ' · ' + pr.remove.join(', ') + ' leave the pool' : '');
+    if (st.state === 'pick' && !cols.some(c => c.letter === st.pick)) return `<span class="sl-chip bad" title="the pick recorded for this slot names a set that is not in this slot">your pick ${esc(st.pick)} is not in this slot</span>`;
+    if (st.state === 'pick') return `<span class="sl-chip done">using ${esc(st.pick)}${esc(pool)}</span>`;
+    if (st.state === 'accept') return `<span class="sl-chip done">accepted unchanged${ig ? ' (' + esc(ig) + ')' : ''}${esc(pool)}</span>`;
+    if (st.state === 'redraw') return `<span class="sl-chip redraw">${it.dependsOn ? 'redraw waits for ' + esc(it.dependsOn) : 'redraw queued'}${ig ? ' · ' + esc(ig) + ' stays until replaced' : ''}</span>`;
+    if (st.state === 'not_drawn') return '<span class="sl-chip done">not drawn</span>';
+    if (pool) return `<span class="sl-chip done">${esc(pool.slice(3))}</span>`;
+    return (g.slot || {}).required ? '<span class="sl-chip need">needs you</span>' : '<span class="sl-chip">unreviewed — unchanged</span>';
+  };
+  const sec = l => {
+    const g = l.g, sl = g.slot || {};
+    const ordered = l.cols.slice().sort((a, b) => LETTER_ORDER.indexOf(a.letter) - LETTER_ORDER.indexOf(b.letter));
+    const st = SLX.state(it, d, g);
+    const stub = c => `<details class="bs-nearstub"${st.pick === c.letter ? ' open' : ''}><summary title="set ${c.letter} looks almost the same as set ${c.near_of} — click to show it"><b>${c.letter}</b><span>≈ ${c.near_of}</span><span class="sub">near-<br>duplicate<br>▸ show</span></summary>${col(c, g)}</details>`;
+    const btns = g.lane !== 'slot' ? '' : `<div class="sl-btns">${A('slot', ` data-g="${esc(g.key)}" data-v="accept"`, 'accept unchanged', st.state === 'accept' ? 'on' : '', 'keep what the game draws in this slot now')}${A('slot', ` data-g="${esc(g.key)}" data-v="redraw"`, it.dependsOn ? 'redraw from ' + esc(it.dependsOn) + ' (starts once it is settled)' : 'redraw this slot', st.state === 'redraw' ? 'on' : '', 'a new picture for this slot; the current one stays in game until it is installed')}${!sl.required && SLX.inGame(g).length ? '' : ''}${g.pool ? A('pooladdall', ` data-g="${esc(g.key)}"`, 'add all new renders to the pool', '', 'put every new render of ours in this slot into the random pool (nothing is ever pre-ticked)') : ''}<span class="sub">click a picture to use it</span></div>`;
+    const prior = g.prior ? `<div class="bs-prior" title="${esc(g.prior.was)}">${esc(g.prior.text)}${g.prior.note ? ' — “' + esc(g.prior.note) + '”' : ''}</div>` : '';
+    return `<div class="sl-lane sl-${g.lane} sl-k-${esc(sl.kind || 'x')}" data-lane="${esc(g.key)}">
+      <div class="sl-head"><b>${esc(sl.label || g.role)}</b>${chip(g, l.cols)}</div>
+      <div class="sl-desc">${esc(sl.desc || '')}${g.res && g.lane === 'slot' ? ` <span class="sub" title="${esc(g.res)}">· ${esc(g.res.replace(/^_flip:/, '').split('/').pop())}</span>` : ''}${(sl.also || []).length ? ` <span class="sub">· also used by: ${esc(sl.also.join(', ').toLowerCase())}</span>` : ''}${g.pool ? ' <span class="sl-poolnote">random pool — the game picks one of these at random</span>' : ''}</div>
+      ${btns}${prior}
+      <div class="bs-strip">${ordered.map(c => c.near_of ? stub(c) : col(c, g)).join('') || '<span class="sub">no pictures</span>'}</div></div>`;
+  };
+  const lanes = SLX.view(it, d).filter(l => l.cols.length || l.g.lane === 'slot');
+  const need = SLX.needsYou(it, d), confl = SLX.conflicts(it, d);
+  const rowHead = `<div class="sl-rowhead">${need.length ? `<span class="sl-chip need">needs you: ${esc(need.join(' · '))}</span>` : confl.length ? '' : '<span class="sl-chip done">every required slot has your answer</span>'}${confl.map(x => `<span class="sl-chip bad">${esc(x)}</span>`).join('')}${slotLanes.some(g => !SLX.state(it, d, g).state) ? A('acceptall', '', 'accept all unchanged slots', '', 'every slot you have not answered keeps what the game draws now') : ''}${(d.legacyVariants || []).length ? `<span class="sl-chip old" title="old variant ticks that may have been the machine's default: they ship nothing until you confirm each on the old-ticks sheet">old ticks ${esc(d.legacyVariants.join(', '))} — confirm on the old-ticks sheet</span>` : ''}</div>`;
   const donorAbs = it.donorAbsent ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>donor column</b><span>${esc(it.donorAbsent)}</span></div></div>` : '';
   const canon = it.canon ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>canon</b><span>${it.canon.base ? 'entry for the base species: ' + esc(it.canon.base) : 'reference — not pickable'}</span></div>
       <div class="bs-cimgs">${it.canon.imgs.map(u => `<div class="thumb bs-cthumb" data-zoom="${u}" data-cap="canon reference · ${esc(it.canon.dir)}"><img src="${u}" loading="lazy" alt=""></div>`).join('') || '<span class="sub">entry has no images</span>'}</div>
       <div class="bs-must"><b>Must show</b><pre>${esc(it.canon.must || '(this entry lists no Must show)')}</pre>${it.canon.ruling ? `<b>Your ruling on the entry</b><pre>${esc(it.canon.ruling)}</pre>` : ''}<details><summary>visual brief</summary><pre>${esc(it.canon.brief)}</pre></details></div></div>` : '';
-  const sec = (g, i) => {
-    /* Every set in LETTER order, so the letters read contiguously (owner, Vhaulk note 2026-10-04: "I see only
-       A and C, no B"). A near-duplicate keeps its place and its letter as a narrow stub that expands in place. */
-    const ordered = g.cols.slice().sort((a, b) => LETTER_ORDER.indexOf(a.letter) - LETTER_ORDER.indexOf(b.letter));
-    const stub = c => `<details class="bs-nearstub"${d.decision === c.letter || picks[g.key] === c.letter || variants.has(c.letter) ? ' open' : ''}><summary title="set ${c.letter} looks almost the same as set ${c.near_of} — click to show it"><b>${c.letter}</b><span>≈ ${c.near_of}</span><span class="sub">near-<br>duplicate<br>▸ show</span></summary>${col(c, g)}</details>`;
-    const many = it.graphics.length > 1;
-    const cur = g.primary ? d.decision : picks[g.key];
-    const head = many ? `<div class="bs-gh" title="${esc(g.res || 'renders matched by name, not bound to a texture path')}"><b>${esc(g.role)}</b>${g.res ? ` <span class="sub">${esc(g.res.split('/').pop())}</span>` : ''} · ${g.primary ? 'buttons on the right' : `click a set · picked <b>${esc(cur || 'nothing')}</b>`}</div>` : '';
-    const prior = g.prior ? `<div class="bs-prior" title="${esc(g.prior.was)}">${esc(g.prior.text)}${g.prior.note ? ' — “' + esc(g.prior.note) + '”' : ''}</div>` : '';
-    return `<div class="bs-g">${head}${prior}
-      <div class="bs-strip">${ordered.map(c => c.near_of ? stub(c) : col(c, g)).join('')}</div></div>`;
-  };
   const links = it.related.length ? `<div class="bs-links">related (judged separately): ${it.related.map(r => `<a href="#" data-jump="${esc(r.id)}">${esc(r.label)} <span class="sub">${esc(r.id)}</span></a> <span class="sub">${esc(r.why)}</span>`).join(' · ')}</div>` : '';
   const elsewhere = it.elsewhere.length ? `<div class="sub">also related, not in this biome: ${it.elsewhere.map(esc).join(', ')}</div>` : '';
   const purgedNote = it.purgedHidden ? `<div class="sub" title="pictures you rejected with the purge mark; they no longer appear on any sheet">${it.purgedHidden} purged picture${it.purgedHidden === 1 ? '' : 's'} hidden</div>` : '';
   const noart = it.noArt ? `<div class="bs-noart">NO ART YET — nothing found after searching every source:<div style="font-size:11px;font-weight:normal;opacity:.85;margin-top:3px;word-break:break-word">${esc(it.noArtWhy)}</div></div>` : '';
   const rline = r => `<div class="ac-r bs-r ac-t-${r.trust}" title="${esc(r.at + ' ' + r.verdict + ' · ' + r.trust + ' · ' + r.sheet + (r.note ? '\n“' + r.note + '”' : ''))}">${esc(r.at)} <b>${esc(r.verdict)}</b> <span class="sub">${esc(r.trust)} · ${esc(r.sheet)}</span> ${r.note ? '“' + esc(r.note) + '”' : ''}</div>`;
-  const rs = it.rulings.slice().reverse();          /* newest first; older ones fold */
+  const rs = it.rulings.slice().reverse();
   const rul = rs.length ? `<div class="ac-rulings">${rs.slice(0, 2).map(rline).join('')}${rs.length > 2 ? `<details><summary class="sub">${rs.length - 2} older ruling(s)</summary>${rs.slice(2).map(rline).join('')}</details>` : ''}</div>` : '';
   const ds = it.desc || {};
   const dtext = ds.description || '';
@@ -1248,8 +1580,33 @@ const _itemBody = it => {
     ${it.fresh ? `<div class="bs-fresh bs-fresh-${it.fresh.state}">${esc(it.fresh.text)}</div>` : ''}
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
     ${desc}${links}${elsewhere}${rul}${window.artFollowedHtml(d)}${purgedNote}${noart}</div>
-    <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${scaleBlock(it)}${donorAbs}${canon}</div></div>`;
+    <div class="bs-content"><div class="bs-graphics">${rowHead}${lanes.map(sec).join('')}${window.artAsksHtml(it, d)}</div>${scaleBlock(it)}${donorAbs}${canon}</div></div>`;
   return re ? `<details class="bs-ruled">${reHead}${inner}</details>` : inner;
+};
+/* requests that used to be typed into the note get their own fields (owner rulings by question card 2026-10-10: rename,
+   description, make N more based on X, missing facings, size, move biome/tier, cut). The note stays for everything else.
+   Each ask is its own work item in `art.py enact`, so "followed" is per ask. */
+window.artAsksHtml = (it, d) => {
+  const a = d.asks || {}, id = esc(it.id);
+  const lanes = (it.graphics || []).filter(g => g.lane === 'slot');
+  const letters = [...new Set(SLX.view(it, d).filter(l => l.g.lane === 'slot').flatMap(l => l.cols.map(c => c.letter)))].sort((x, y) => LETTER_ORDER.indexOf(x) - LETTER_ORDER.indexOf(y));
+  const sel = (path, opts, cur, blank) => `<select data-act="ask" data-id="${id}" data-k="${path}">${blank !== undefined ? `<option value="">${esc(blank)}</option>` : ''}${opts.map(([v, t]) => `<option value="${esc(v)}"${String(cur ?? '') === String(v) ? ' selected' : ''}>${esc(t)}</option>`).join('')}</select>`;
+  const inp = (path, cur, ph, type, w) => `<input data-act="ask" data-id="${id}" data-k="${path}" type="${type || 'text'}" value="${esc(cur ?? '')}" placeholder="${esc(ph || '')}" style="width:${w || 140}px">`;
+  const laneOpts = lanes.map(g => [g.key, (g.slot || {}).label || g.key]);
+  const btn3 = (path, cur, vals) => vals.map(([v, t]) => `<button class="sl-b${cur === v ? ' on' : ''}" data-act="askset" data-id="${id}" data-k="${path}" data-v="${v}">${t}</button>`).join('');
+  const more = (a.more || []).map((m, i) => `<div class="sl-more">make <b>${esc(m.n)}</b> new <b>${esc(((lanes.find(g => g.key === m.slot) || {}).slot || {}).label || m.slot)}</b>${m.base ? ' based on <b>' + esc(m.base) + '</b>' : ''}${m.how ? ' — “' + esc(m.how) + '”' : ''} <button class="sl-b bad" data-act="moredel" data-id="${id}" data-v="${i}">remove</button></div>`).join('');
+  const fa = a.facings || {};
+  const set = Object.keys(a).filter(k => a[k] && (!Array.isArray(a[k]) || a[k].length));
+  const biomes = ((typeof CFG !== 'undefined' && CFG.biomes) || []).map(b => [b.key, b.label]);
+  return `<details class="sl-asks"${set.length ? ' open' : ''}><summary>Requests${set.length ? ': ' + esc(set.join(', ')) : ' — rename · description · more art · missing facings · size · move / cut'} <span class="sub">(the note box stays for anything else)</span></summary>
+    <div class="sl-grid">
+      <b>Name</b><div>${inp('rename.name', (a.rename || {}).name, 'new name (blank = keep)', 'text', 220)} <label><input type="checkbox" data-act="askcheck" data-id="${id}" data-k="rename.suggest"${(a.rename || {}).suggest ? ' checked' : ''}> suggest names for me</label></div>
+      <b>Description</b><div>${btn3('describe', a.describe, [['keep', 'keep'], ['improve', 'improve'], ['rewrite', 'rewrite to match the chosen art']])}</div>
+      <b>More art</b><div>${more}<span class="sl-addmore">make ${inp('_more.n', '2', '', 'number', 48)} new ${sel('_more.slot', laneOpts, (lanes[0] || {}).key)} versions based on ${sel('_more.base', letters.map(l => [l, l]), '', '—')} how: ${inp('_more.how', '', 'how should they differ', 'text', 200)} <button class="sl-b" data-act="moreadd" data-id="${id}">add</button></span></div>
+      <b>Missing facings</b><div>draw ${['south', 'east', 'north'].map(f => `<label><input type="checkbox" data-act="facing" data-id="${id}" data-v="${f}"${(fa.faces || []).includes(f) ? ' checked' : ''}> ${f}</label>`).join(' ')} of ${sel('facings.slot', laneOpts, fa.slot, '— slot —')} from ${sel('facings.from', letters.map(l => [l, l]), fa.from, '—')}</div>
+      <b>Size</b><div>body size ${inp('size.bodySize', (a.size || {}).bodySize, '', 'number', 70)} · drawn size × ${inp('size.drawScale', (a.size || {}).drawScale, '', 'number', 70)} · which pictures / what exactly: ${inp('size.scope', (a.size || {}).scope, 'e.g. adult and corpse, triple the length', 'text', 220)}</div>
+      <b>Belongs</b><div>move to ${sel('move.biome', biomes, (a.move || {}).biome, 'this biome')} · tier ${sel('move.tier', [['RM', 'RM'], ['RSW', 'RSW'], ['RUT', 'RUT']], (a.move || {}).tier, 'unchanged')} · <button class="sl-b${a.cut ? ' bad' : ''}" data-act="askset" data-id="${id}" data-k="cut" data-v="1">${a.cut ? '✕ cut from this biome' : 'cut from this biome'}</button></div>
+    </div></details>`;
 };
 const fmt = x => (x == null ? '?' : (+x).toFixed(3).replace(/\.?0+$/, ''));
 function scaleBlock(it) {
@@ -1269,38 +1626,44 @@ function scaleBlock(it) {
 
 const LETTER_ORDER = "%LETTERS%";
 const NEAR_BITS = %NEAR%;
-window.artToggleVariant = (id, letter) => {
+/* every control on a row: one delegated handler. Each act edits the row's record through SLX, then saves + repaints. */
+window.__moreDraft = window.__moreDraft || {};
+window.artAct = (el, ev) => {
   if (frozen) return;
-  const it = byId.get(id); if (!it) return;
-  if (window.artNoSelect(it).has(letter)) { if (typeof showErr === 'function') showErr('Set ' + letter + ' is placeholder art — it cannot be kept as a variant.'); return; }
-  if (!window.artPoolLetters(it).has(letter)) { if (typeof showErr === 'function') showErr('Set ' + letter + ' is not in a random pool — the game never draws it at random, so it cannot be a variant.'); return; }
+  const id = el.dataset.id, it = byId.get(id);
+  if (!it) return;
+  const act = el.dataset.act, g = el.dataset.g, L = el.dataset.l, v = el.dataset.v, k = el.dataset.k;
+  if (k && k.startsWith('_more.')) { (window.__moreDraft[id] = window.__moreDraft[id] || {})[k.slice(6)] = el.value; return; }
   const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
-  /* only HIS ticks: a machine-default list is dropped, never laundered into his (bug 2026-10-10, DESIGN §2) */
-  const s = new Set(window.artOwnerVariants(rec));
-  if (rec.variantsDefault) { rec.legacyVariantsDefault = rec.variants; delete rec.variantsDefault; }
-  if (s.has(letter)) s.delete(letter); else s.add(letter);
-  rec.variants = [...s].sort((a, b) => LETTER_ORDER.indexOf(a) - LETTER_ORDER.indexOf(b));
-  rec.variantsAt = new Date().toISOString();
-  queue(id); patchRow(id); paintCounts();
-};
-window.artPick = (id, g, letter) => {
-  if (frozen) return;
-  const it = byId.get(id); if (!it) return;
-  if (window.artNoSelect(it).has(letter)) { if (typeof showErr === 'function') showErr('Set ' + letter + ' is placeholder art — it cannot be picked.'); return; }
-  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
-  rec.picks = Object.assign({}, it.prefillPicks || {}, rec.picks || {});
-  rec.picks[g] = letter; rec.decidedAt = new Date().toISOString();
+  let r = { ok: true };
+  if (act === 'pick') r = SLX.pick(it, rec, g, L);
+  else if (act === 'slot') r = SLX.slotButton(it, rec, g, v);
+  else if (act === 'acceptall') r = SLX.acceptAll(it, rec);
+  else if (act === 'reject') r = SLX.reject(it, rec, g, L);
+  else if (act === 'retire') r = SLX.retire(it, rec, g, L);
+  else if (act === 'pool') r = SLX.poolToggle(it, rec, g, L);
+  else if (act === 'pooladdall') r = SLX.poolAddAll(it, rec, g);
+  else if (act === 'assign') r = SLX.assign(it, rec, L, el.value);
+  else if (act === 'purge') r = SLX.purgeToggle(it, rec, el.dataset.sha);
+  else if (act === 'ask') { const num = el.type === 'number'; r = SLX.setAsk(rec, k, num ? (el.value === '' ? '' : +el.value) : el.value.trim()); }
+  else if (act === 'askcheck') r = SLX.setAsk(rec, k, el.checked);
+  else if (act === 'askset') { const cur = k.includes('.') ? ((rec.asks || {})[k.split('.')[0]] || {})[k.split('.')[1]] : (rec.asks || {})[k]; r = SLX.setAsk(rec, k, k === 'cut' ? !cur : (cur === v ? '' : v)); }
+  else if (act === 'facing') { const fa = Object.assign({}, (rec.asks || {}).facings || {}); const s = new Set(fa.faces || []); el.checked ? s.add(v) : s.delete(v); fa.faces = [...s]; r = SLX.setAsk(rec, 'facings', fa.faces.length ? fa : ''); }
+  else if (act === 'moreadd') {
+    const dr = window.__moreDraft[id] || {}, lanes = (it.graphics || []).filter(x => x.lane === 'slot');
+    const m = { slot: dr.slot || (lanes[0] || {}).key, n: Math.max(1, Math.min(8, +(dr.n || 2))), base: dr.base || null, how: (dr.how || '').trim() };
+    r = SLX.setAsk(rec, 'more', [...(((rec.asks || {}).more) || []), m]);
+    delete window.__moreDraft[id];
+  } else if (act === 'moredel') { const ms = (((rec.asks || {}).more) || []).slice(); ms.splice(+v, 1); r = SLX.setAsk(rec, 'more', ms); }
+  else return;
+  if (!r.ok) { if (typeof showErr === 'function') showErr(r.msg); return; }
+  if (r.msg && typeof banner === 'function') { try { banner('info', esc(r.msg)); } catch (e) {} }
+  rec.at = new Date().toISOString();
   queue(id); patchRow(id); paintCounts();
 };
 document.addEventListener('click', e => {
-  if (e.target.closest('.ac-purge') || e.target.closest('.bs-var')) return;
-  const p = e.target.closest('[data-pick-l]');
-  if (p) {
-    e.preventDefault(); e.stopPropagation();
-    if (p.dataset.pickPrimary === '1') setDecision(p.dataset.pickId, p.dataset.pickL);
-    else window.artPick(p.dataset.pickId, p.dataset.pickG, p.dataset.pickL);
-    return;
-  }
+  const a = e.target.closest('[data-act]');
+  if (a && a.tagName !== 'SELECT' && a.tagName !== 'INPUT') { e.preventDefault(); e.stopPropagation(); window.artAct(a, e); return; }
   const j = e.target.closest('[data-jump]');
   if (j) {
     e.preventDefault(); e.stopPropagation();
@@ -1309,6 +1672,13 @@ document.addEventListener('click', e => {
     else alert('That row is hidden by the current filter.');
   }
 }, true);
+document.addEventListener('change', e => { const a = e.target.closest('select[data-act],input[data-act]'); if (a) { e.stopPropagation(); window.artAct(a, e); } }, true);
+/* `#q=<text>` in the URL opens the sheet filtered to matching rows (for a link to one row, and for screenshots); it is
+   not saved as his filter */
+addEventListener('load', () => setTimeout(() => {
+  const m = (location.hash || '').match(/^#q=(.+)$/), q = document.getElementById('q');
+  if (m && q && typeof render === 'function') { q.value = decodeURIComponent(m[1]); render(); }
+}, 50));
 /* rebuilt-sheet notice: poll the served page every ~60 s; when its build stamp (the gate stamp, else a hash of the HTML) differs
    from what this tab loaded, show a banner. NEVER auto-reloads: an unsaved note would be lost. */
 (() => {
@@ -1425,6 +1795,39 @@ details.bs-desc[open]>summary::after{content:" ▴ less";color:#e8b64c;font-size
 .row .opts button[data-set="redo"]{order:98}.row .opts button[data-set="hold"]{order:99}
 .row .opts::after{content:"";order:97;flex-basis:100%;height:0}
 @media (max-width:1400px){.bs-canonp{flex-basis:240px}.bs-cthumb{width:56px;height:56px;flex-basis:56px}}
+/* ── slots (DESIGN 2026-10-10): one labelled lane per picture the game draws ── */
+.bs-graphics{flex-direction:column;flex-wrap:nowrap;align-items:stretch}
+.sl-rowhead{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:2px 0}
+.sl-lane{border:1px solid #2c333d;border-left:4px solid #6a7484;border-radius:6px;padding:4px 7px 6px;background:#12151a}
+.sl-k-adult,.sl-k-grown,.sl-k-item,.sl-k-body{border-left-color:#e8b64c}.sl-k-adult_female{border-left-color:#e07ab0}
+.sl-k-young,.sl-k-young_female,.sl-k-plant_young{border-left-color:#7fc35a}.sl-k-flying,.sl-k-flying_female{border-left-color:#5ac3c3}
+.sl-k-swimming,.sl-k-swimming_female{border-left-color:#5a8ae8}.sl-k-alternate,.sl-k-leafless{border-left-color:#c38ae8}
+.sl-unassigned{border-left-color:#8a6a3a;border-style:dashed}.sl-reference{border-left-color:#555;opacity:.9;background:#101010}
+.sl-head{display:flex;gap:10px;align-items:center;justify-content:space-between}
+.sl-head>b{font-size:13.5px;letter-spacing:.04em;color:#f0e2c0}
+.sl-desc{font-size:11.5px;color:#a9b2bf;margin:1px 0 3px}
+.sl-poolnote{color:#9fb6ff;font-size:11px}
+.sl-chip{font-size:11.5px;padding:1px 8px;border-radius:10px;border:1px solid #3d4653;color:#c3cad6;background:#181c22;white-space:nowrap}
+.sl-chip.need{border-color:#b8862b;color:#ffd27a;background:#2a2010}.sl-chip.done{border-color:#2f7a45;color:#9fe0a8;background:#102016}
+.sl-chip.redraw{border-color:#b85a2b;color:#ffb08a;background:#2a1610}.sl-chip.bad{border-color:#b3261e;color:#fff;background:#5a1a16;white-space:normal}
+.sl-chip.ref{color:#9fb6c9}.sl-chip.old{border-color:#7a6aa8;color:#d6c8ff;background:#1c1830}
+.sl-btns{display:flex;flex-wrap:wrap;gap:5px;align-items:center;margin:2px 0 4px}
+.sl-b{font-size:11px;padding:2px 8px;border-radius:4px;border:1px solid #3d4653;background:#161a20;color:#c3cad6;cursor:pointer}
+.sl-b:hover{border-color:#8a95a5;color:#fff}.sl-b.on{background:#2f7a45;border-color:#5ac37f;color:#fff}
+.sl-b.bad{background:#7a2420;border-color:#e06c6c;color:#fff}.sl-b.pool{background:#2a4a8a;border-color:#6a9ae8;color:#fff}
+.sl-badges{display:flex;flex-wrap:wrap;gap:3px;margin:1px 0 2px;font-size:10px}
+.sl-badges i{font-style:normal;padding:0 5px;border-radius:3px}
+.sl-ig{background:#173a5a;color:#9fd0ff}.sl-asg{background:#203a20;color:#9fe0a8}.sl-old{background:#2c2440;color:#d6c8ff}
+.bs-set.sl-rej{border-color:#e06c6c}.bs-set.sl-rej .bs-faces{opacity:.55}
+.sl-warn{font-size:11px;color:#ffb08a;margin:2px 0;max-width:280px}
+.sl-this{font-size:11px;color:#d8c7a8}.sl-this select{font-size:11px;max-width:190px}
+.sl-hint{font-size:10.5px;color:#e8b64c;font-style:normal}
+.sl-asks{border:1px solid #2c333d;border-radius:6px;padding:3px 7px;background:#121417;font-size:12px}
+.sl-asks>summary{cursor:pointer;color:#e8d6a8}
+.sl-grid{display:grid;grid-template-columns:110px 1fr;gap:5px 10px;align-items:center;margin:5px 0}
+.sl-grid b{color:#e8b64c;font-size:12px}.sl-grid input,.sl-grid select{font-size:11.5px;background:#0d1014;color:#e6e6e6;border:1px solid #3d4653;border-radius:3px;padding:1px 4px}
+.sl-more{font-size:11.5px;margin:1px 0}
+.sl-lane .bs-set{min-width:200px}.bs-foot .sl-b{padding:1px 6px}
 </style>
 """
 
@@ -1474,9 +1877,14 @@ BIOME_BRIEF = """<p><b>{label}</b> — every flora and fauna row of this biome (
 the load-order race; <b>render</b> columns are artpipe outputs (newest first); <b>history</b> columns are earlier states of our files
 from git; <b>donor original</b> is the donor mod's own sprite. Each set shows its facings side by side (S, E, N);
 hover a set's header for where it came from.</p>
-<p><b>Pick, per row, the column the game should show</b> (letter buttons, or click a column's header). A row with a second graphic
-(swimming, flying) shows it as its own strip — click a column header there to pick for it. <b>✕</b> on a non-live picture rejects and
-purges it for good. The note box is the most useful control on the row: say what is wrong, and a redo is written from it.</p>
+<p><b>Every picture lives in a labelled SLOT</b> — what the game draws it as (ADULT · MALE, ADULT · FEMALE, YOUNG, FLYING,
+PLANT · GROWN, CATCH ITEM …). <b>Click a picture to use it for that slot</b> (click again to take it back), or answer the slot with
+<b>accept unchanged</b> / <b>redraw this slot</b>. The ✕ verbs say what they do: <b>✕ not for this slot</b> deletes nothing;
+<b>✕ retire</b> takes a live picture out of the game once its replacement is installed (it stays until then); <b>leave the random
+pool</b> exists only where the game picks among pictures at random; the small ✕ on one picture deletes it from the art store.
+<b>+ random pool</b> appears only on a real random pool and is never pre-ticked. Renders found by name sit under <b>RENDERS NOT YET
+ASSIGNED</b> until you say what each one is. <b>Requests</b> (rename, description, more art, missing facings, size, move/cut) have
+their own fields; the note box is for anything else.</p>
 <p><b>Canon rows</b> show the canon-library reference images and the entry's <b>Must show</b> list beside the pictures. A canon creature and
 our own (franchise-free) stand-in for it are <b>separate rows</b>, each judged on its own, but grouped together under one coloured band
 with a <b>related</b> link both ways. A stand-in's Star Wars twin (RSW_) is always its own full row in the band, even where the biome
@@ -1857,6 +2265,14 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         words |= {(r.get("label") or "").replace(" ", "")}
         prefixes = [res["res"] for res in (r.get("art") or {}).get("resources") or []
                     if res.get("role") == "flying" and FLIP_RES_RE.match(res["res"] + "1")]
+        # the live def dump names every slot the game draws: flip-book prefixes (male AND female) come from it too
+        row_slots = []
+        for _n in dict.fromkeys([r["key"], r.get("port"), *(r.get("defNames") or [])]):
+            if _n:
+                row_slots += [x for x in _def_slots(_n) if x["id"] not in {y["id"] for y in row_slots}]
+        for x in row_slots:
+            if x["res"].startswith("_flip:") and x["res"][6:] not in prefixes:
+                prefixes.append(x["res"][6:])
         flips = [c for c in flipbook_cols(idx, words, r.get("artpipe_state_jobs") or [], prefixes)
                  if not (set(c["faces"].values()) & have)]
         flip_shas = {s for c in flips for s in c["faces"].values()}
@@ -1864,8 +2280,31 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                                              defs={r["key"], r.get("port"), *(r.get("defNames") or [])})
                  if _fkey(c) not in seen and not (set(c["faces"].values()) & (have | flip_shas))]
         if flips:
-            graphics.append({"res": "_flip:" + (prefixes[0] if prefixes else r["key"]), "role": FLIP_ROLE,
-                             "cols": flips, "prior_raw": None, "flip": True})
+            # one lane per flip-book (a male and a female sequence are different slots, DESIGN §1 PekoPeko): a live
+            # set goes to its own prefix; a render sequence whose name says female to the female prefix, else the first
+            fem = next((x["res"][6:] for x in row_slots if x["kind"] == "flying_female"), None)
+            lanes = {}
+            for c in flips:
+                pre = c.get("prefix") or (fem if fem and re.search(r"(?:^|_)(f|female)(?:_|$)", c.get("seq") or "", re.I)
+                                          else (prefixes[0] if prefixes else r["key"]))
+                lanes.setdefault(pre, []).append(c)
+            for pre in sorted(lanes, key=lambda x: (x == fem, x)):
+                graphics.append({"res": "_flip:" + pre, "role": FLIP_ROLE, "cols": lanes[pre], "prior_raw": None,
+                                 "flip": True})
+        # a render filed FOR a slot (its job carries `slot`) goes straight to that slot's lane
+        for c in list(named):
+            lane = next((g for g in graphics if c.get("jobSlot") and g["res"] == c["jobSlot"]), None)
+            if lane is not None:
+                lane["cols"].append(c)
+                named.remove(c)
+        # a catch row: renders of the LIVING creature are reference only, never a pickable catch picture
+        _src = r["key"][:-len("Catch")] if r["key"].endswith("Catch") and len(r["key"]) > 5 else None
+        if _src and named:
+            ref = [c for c in named if "catch" not in (c.get("family") or c.get("label") or "").lower()]
+            named = [c for c in named if c not in ref]
+            if ref:
+                graphics.append({"res": "_reference:" + _src, "role": "reference", "cols": ref, "prior_raw": None,
+                                 "reference": True})
         if named:
             graphics.append({"res": None, "role": ROLE_TEXT[None], "cols": named, "prior_raw": None})
         # req 14: a picture the ledger has PURGED (his reject+purge, on any sheet) is never shown as a column
@@ -1969,6 +2408,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             for c in g["cols"]:
                 if c.get("near_of") is not None and id(c["near_of"]) not in letters:
                     c.pop("near_of")
+        _ROW_SLOTS[r["key"]] = row_slots
         built.append((r, graphics))
 
     maxl = max([LETTERS.index(c["letter"]) + 1 for _, gs in built for g in gs for c in g["cols"]] + [1])
@@ -2015,13 +2455,47 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 else:
                     text = f"your {SIT1} pick is not among these pictures any more"
                 prior = {"text": text, "note": pr.get("note", ""), "was": was}
+            # the SLOT this lane is (DESIGN §3.1): from the live dump by texPath, else from the census role
+            _sl = next((x for x in _ROW_SLOTS.get(key) or [] if x["res"] == g["res"]), None) if g["res"] else None
+            if _sl is None and g["res"] and not g.get("reference"):
+                # the census can name an older folder for the same picture (swanimals/PekoPeko/PekoPeko_f vs the dump's
+                # RimStarWars/SWBestiary/PekoPeko/PekoPeko_f): one slot whose FILE name matches is that slot
+                _bn = [x for x in _ROW_SLOTS.get(key) or [] if x["res"].rsplit("/", 1)[-1] == g["res"].rsplit("/", 1)[-1]]
+                _sl = _bn[0] if len(_bn) == 1 else None
+            if g.get("reference"):
+                lane, slot_ = "reference", {"label": f"REFERENCE — the living creature ({g['res'].split(':', 1)[1]}), "
+                                                     "not pickable here", "kind": "reference", "required": False,
+                                            "desc": "its renders, shown so you can see what the catch should be a dead one of"}
+            elif g["res"] is None:
+                lane, slot_ = "unassigned", {"label": "RENDERS NOT YET ASSIGNED", "kind": "unassigned", "required": False,
+                                             "desc": "made for this subject, but nobody has said which picture of it they "
+                                                     "are — say what each one is before it can be used"}
+            else:
+                lane = "slot"
+                if _sl:
+                    slot_ = {"id": _sl["id"], "label": _sl["label"], "kind": _sl["kind"], "also": _sl.get("also") or [],
+                             "required": bool(_sl["required"]) or gi == 0}
+                else:
+                    lab, kd = FALLBACK_SLOT.get(g["role"], (None, None))
+                    if not lab:
+                        kd = {"fauna": "adult", "flora": "grown", "fish": "item"}.get(r["kind"], "body")
+                        lab = {"adult": "ADULT", "grown": "PLANT · GROWN", "item": "ITEM"}.get(kd, "BODY") if gi == 0 \
+                            else f"ANOTHER GRAPHIC · {g['res'].rsplit('/', 1)[-1]}"
+                    if key.endswith("Catch") and gi == 0:
+                        lab, kd = "CATCH ITEM", "item"
+                    slot_ = {"label": lab, "kind": kd, "required": gi == 0, "also": []}
+                slot_["desc"] = SLOT_DESC.get(slot_["kind"], "")
+                if _sl and _sl.get("pool"):
+                    g["pool"] = True
             gitems.append({
                 "key": gkey, "res": g["res"], "role": g["role"], "primary": gi == 0, "facings": facings,
-                "pool": bool(g.get("pool")),
+                "pool": bool(g.get("pool")) and lane == "slot", "lane": lane, "slot": slot_,
                 "prior": prior, **flip,
                 "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
                           if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "purgedLive", "noSelect", "neverShown", "copyOf")}
-                         | {"short": _short(c)} for c in g["cols"]]})
+                         | {"short": _short(c), "setId": SLOTS.set_id(c["faces"]),
+                            "hint": SLOTS.hint(c.get("family") or c.get("seq") or c.get("label") or "") if lane == "unassigned" else ""}
+                         for c in g["cols"]]})
         letter, why, source = prim_pf
         _nosel = {c["letter"] for g in gitems for c in g["cols"] if c.get("noSelect")}
         picks = {k: v for k, v in picks.items() if v not in _nosel}
@@ -2105,8 +2579,10 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "prefill": letter, "prefillWhy": why, "prefillSource": source,
             "contested": source in ("inferred", "none"), "inferred": source == "inferred",
             "prefillPicks": picks, "graphics": gitems, "thumbs": thumbs, "canon": canon,
-            "letters": [c["letter"] for g in gitems if g["primary"] or g["res"] is None for c in g["cols"]
+            "letters": [c["letter"] for g in gitems if g["primary"] for c in g["cols"]
                         if not c.get("purgedLive") and not c.get("noSelect")],
+            "dependsOn": (key[:-len("Catch")] if key.endswith("Catch") and key[:-len("Catch")] in {x["key"] for x in rows}
+                          else None),
             "related": [{"id": o, "label": labels[o], "why": w} for o, w in sorted(rel.get(key, {}).items())],
             "elsewhere": elsewhere.get(key, []),
             "noArt": no_art, "purgedHidden": purged_hidden.get(key, 0), "donorPurged": key in donor_purged,
@@ -2200,6 +2676,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         snap_rows.get(rk, {}).get("columns", {}).get(l) == f
         for rk, pr in prev_rows.items() for l, f in (pr.get("columns") or {}).items())
     snap["snapshotId"] = prev.get("snapshotId") if superset and prev.get("snapshotId") else new_id
+    for it in ordered:
+        it["rev"] = snap["snapshotId"]     # the inventory revision a schema-2 record is saved against
 
     opts = pick_options(maxl)
     n_canon = sum(1 for it in ordered if it["canon"])
@@ -2221,12 +2699,13 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "Where you have no pick and no keep, the prefill trusts a commit message citing your approval (⚠), else what the "
             "game shows now; a row with only name-found renders is prefilled to the newest render (⚠).",
         ],
-        "posture": {"mode": "pick-one", "explain": "Each row: pick the ONE set the game should show (and one per extra "
-                    "graphic). The winner goes into the owning mod and the loser is archived — nothing installs until you see "
-                    "that plan. ✕ on a picture = reject + PURGE."},
+        "posture": {"mode": "pick-one", "explain": "Each SLOT of a row (adult, female, young, flying, grown, catch …): click "
+                    "the picture to use, or accept unchanged / redraw. Nothing installs until you see that plan. '✕ not for this "
+                    "slot' deletes nothing; the small ✕ on one picture deletes it from the art store."},
         "options": opts, "groupLabel": "group", "media": True,
         "freshness": _fresh_banner(fresh, {it["id"] for it in ordered}),
         "decisionsFile": decisions_path.name, "decisionsPath": str(decisions_path), "sheetPath": str(out_html),
+        "schema": 2, "biomes": [{"key": k, "label": v.get("label", k)} for k, v in census["biomes"].items()],
     }
     render = '<script id="RENDER">' + BIOME_BODY.replace("%LETTERS%", LETTERS).replace("%NEAR%", str(NEAR)) + COMMON_JS + "</script>" + STYLE + BIOME_STYLE
     out_html.parent.mkdir(parents=True, exist_ok=True)
