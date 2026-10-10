@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using HarmonyLib;
 using UnityEngine;
 using Verse;
@@ -54,39 +56,102 @@ namespace RimMandrake.StarWars.SWBestiary
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RSW_BeastMechanicsSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RSW_BeastMechanicsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): metal eating, scrap hoarding and toxin dependence are read by job givers, patches and the need tick each time they run, so [now]; the innate ability is granted when a creature spawns, so changing it only matters for creatures that spawn afterwards: [next pulse]. Nothing is read at map or world generation.</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 400f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
+            list.Begin(view);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.CheckboxLabeled(
-                "Metal-eating creatures",
-                ref metalEatingEnabled,
-                "The ferroclaw feeds on steel and steel slag instead of grazing, and digs slag up when a map has none. Off: it grazes like any other animal.");
+            if (Group(list, "Metal-eating creatures", RimMandrake.Shared.SettingScope.Now, new[] { "metalEatingEnabled" }))
+            {
+                list.CheckboxLabeled("Metal-eating creatures", ref metalEatingEnabled,
+                    "The ferroclaw feeds on steel and steel slag instead of grazing, and digs slag up when a map has none. Off: it grazes like any other animal.");
+                list.GapLine();
+            }
 
-            list.Gap();
+            if (Group(list, "Innate creature abilities", RimMandrake.Shared.SettingScope.NextPulse, new[] { "innateAbilitiesEnabled" }))
+            {
+                list.CheckboxLabeled("Innate creature abilities", ref innateAbilitiesEnabled,
+                    "The voltmaw fires a plasma volley and the cindermite sprays raw chemfuel. Off: neither gains its ranged attack. A creature that already has the ability keeps it.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled(
-                "Innate creature abilities",
-                ref innateAbilitiesEnabled,
-                "The voltmaw fires a plasma volley and the cindermite sprays raw chemfuel. Off: neither gains its ranged attack.");
+            if (Group(list, "Scrap-hoarding birds", RimMandrake.Shared.SettingScope.Now, new[] { "scrapHoardingEnabled" }))
+            {
+                list.CheckboxLabeled("Scrap-hoarding birds", ref scrapHoardingEnabled,
+                    "Scrap-nest birds build nests in the wild and carry loose scrap, components and precious metals back to them. They never take from inside your base. Off: they forage and fly like any other bird, and existing nests still slowly accumulate scrap on their own.");
+                list.GapLine();
+            }
 
-            list.Gap();
+            if (Group(list, "Toxin-dependent creatures", RimMandrake.Shared.SettingScope.Now, new[] { "toxinDependenceEnabled" }))
+            {
+                list.CheckboxLabeled("Toxin-dependent creatures", ref toxinDependenceEnabled,
+                    "The mutagenic norphea needs polluted ground or toxic buildup to stay well, and sickens and can die in withdrawal on clean land. Off: its dependence is always satisfied.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled(
-                "Scrap-hoarding birds",
-                ref scrapHoardingEnabled,
-                "Scrap-nest birds build nests in the wild and carry loose scrap, components and precious metals back to them. They never take from inside your base. Off: they forage and fly like any other bird, and existing nests still slowly accumulate scrap on their own.");
-
-            list.Gap();
-
-            list.CheckboxLabeled(
-                "Toxin-dependent creatures",
-                ref toxinDependenceEnabled,
-                "The mutagenic norphea needs polluted ground or toxic buildup to stay well, and sickens and can die in withdrawal on clean land. Off: its dependence is always satisfied.");
-
+            viewHeight = list.CurHeight + 20f;
             list.End();
+            Widgets.EndScrollView();
         }
     }
 
