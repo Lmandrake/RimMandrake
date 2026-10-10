@@ -311,8 +311,10 @@ def extras_problems():
     hed = _def(_xml("HediffDefs", "RM_Tollok_Hediffs.xml"), "HediffDef", "RM_TollokInfestation")
     if hed is None:
         bad.append("HediffDef RM_TollokInfestation missing")
-    elif not any(float(st.findtext("bleedRate") or 0) > 0 for st in hed.findall("stages/li")):
-        bad.append("tollok infestation never bleeds (the owner's pitch is itching then bleeding)")
+    elif not any(c.findtext("capacity") == "BloodPumping" and float(c.findtext("offset") or 0) < 0
+                 for c in hed.findall("stages/li/capMods/li")):
+        # HediffStage has no bleedRate field in 1.6 (ee8e70ef3): the draining stage lowers BloodPumping instead.
+        bad.append("tollok infestation never drains blood (the owner's pitch is itching then bleeding)")
     tol = src.split("class RM_MapComponent_Tollok", 1)[1].split("// ───", 1)[0]
     if "tollokTicksEnabled" not in tol or "modEnabled" not in tol:
         bad.append("tollok scan no longer gated on modEnabled/tollokTicksEnabled")
