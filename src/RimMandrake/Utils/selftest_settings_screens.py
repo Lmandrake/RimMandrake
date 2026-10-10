@@ -110,14 +110,31 @@ MODS = {
         "Vexxith acid-proofing": "Now",
         "Acid-proof vexxith door": "NextGameStart",
     }, ()),
+    "Pyrelands": ("RM_PyrelandsMod.cs", "FireEcologyHook.csproj", {
+        "Mod enabled": "Now",
+        "Fulgurite, loose ash and scorch-fruit": "Now",
+        "Ash accumulation (Ash Fall / Cinderfall weather)": "Now",
+        "Plant art and wild flora": "Now",
+        "Scorched ruins (new maps)": "NewMapsOnly",
+        "Biome placement (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Absorbed mechanics (mandrake.rut.pyrelandsmechanics)": "Now",
+        "Furnace-beast herds at world start (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Giants and recipe costs (restart)": "NextGameStart",
+        "Burrowers": "Now",
+        "Lightning breakers and sand shovelling": "Now",
+        "Cross-biome ash accumulation": "Now",
+    }, ()),
 }
+
+# (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
+DELIBERATE_KEY_RENAMES = {("scorchFruitChance", "scorchFruitChancePerCell")}
 
 
 def check(cs, csproj, expected, extra=()):
     errs = []
     scribed = set(re.findall(r'Scribe_Values\.Look\(ref (\w+), "(\w+)"', cs))
     for field, key in scribed:
-        if field != key:
+        if field != key and (field, key) not in DELIBERATE_KEY_RENAMES:
             errs.append(f"scribe key {key!r} != field {field!r}")
     scribed = {f for f, _ in scribed} | set(extra)
     a = cs.index("public void DoWindowContents")

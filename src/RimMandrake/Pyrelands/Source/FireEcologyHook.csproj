@@ -48,6 +48,8 @@
     <Compile Include="FireEcologyHook.cs" />
     <Compile Include="PlantGrowthStages.cs" />
     <Compile Include="RM_PyrelandsMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_PyrelandsDensityEnforcer.cs" />
     <Compile Include="WildPlantAllowlist.cs" />
     <!-- PYRELANDS_RM_MOD_BUILD_1 §6 — absorbed from
