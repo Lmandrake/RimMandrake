@@ -38,6 +38,12 @@ namespace JawaBench.BridgeTools
         internal const string MExplain = "aware.thing-explain";
         internal static readonly string[] MetricIds = { MIncident, MContext, MGeneration, MSpawn, MDisk, MWild, MExplain };
 
+        /// <summary>Install options (not metrics): install.generation-early = patch PawnGenerator.GeneratePawn at bridge
+        /// registration (world generation and the first map pay for it) instead of lazily on the first arm
+        /// (AWARENESS_GENPAWN_TAME_ARM_BEFORE_USE). Default false.</summary>
+        internal const string OptGenerationEarly = "install.generation-early";
+        internal static readonly string[] OptionIds = { OptGenerationEarly };
+
         internal const int TagCapacity = 8192;          // generation tags (pawn id -> observation)
         internal const int SpawnCapacity = 2048;        // spawn observations retained
         internal const int IncidentCapacity = 512;      // incident journal rows retained
@@ -52,8 +58,11 @@ namespace JawaBench.BridgeTools
         internal sealed class Switches
         {
             private readonly Dictionary<string, bool> _on = new Dictionary<string, bool>(StringComparer.Ordinal);
+            private readonly Dictionary<string, bool> _opt = new Dictionary<string, bool>(StringComparer.Ordinal);
             internal string Note;
-            internal Switches() { foreach (var id in MetricIds) _on[id] = true; }
+            internal Switches() { foreach (var id in MetricIds) _on[id] = true; foreach (var id in OptionIds) _opt[id] = false; }
+            internal bool Option(string id) { lock (_on) return _opt.TryGetValue(id, out var v) && v; }
+            internal Dictionary<string, bool> Options() { lock (_on) return new Dictionary<string, bool>(_opt); }
             internal bool On(string id) { lock (_on) return _on.TryGetValue(id, out var v) && v; }
             internal bool Set(string id, bool v)
             {
@@ -73,6 +82,7 @@ namespace JawaBench.BridgeTools
                 foreach (var p in kv)
                 {
                     if (!(p.Value is bool b)) { notes.Add(p.Key + ": not a bool"); continue; }
+                    if (s._opt.ContainsKey(p.Key)) { lock (s._on) s._opt[p.Key] = b; continue; }
                     if (!s.Set(p.Key, b)) notes.Add(p.Key + ": unknown metric id");
                 }
                 s.Note = notes.Count == 0 ? "ok" : string.Join("; ", notes);
