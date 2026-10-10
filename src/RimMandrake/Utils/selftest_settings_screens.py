@@ -124,6 +124,19 @@ MODS = {
         "Lightning breakers and sand shovelling": "Now",
         "Cross-biome ash accumulation": "Now",
     }, ()),
+    "GelatinousSlime": ("SlimeMod.cs", "RM_GelatinousSlime.csproj", {
+        "The gene archive": "Now",
+        "Biome rarity (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Flavour": "Now",
+        "Slimification and fields": "Now",
+        "Ruined farms (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Joining Water ring": "Now",
+        "Visitors": "Now",
+        "Creatures and the slime pit": "Now",
+        "Titanoslime chunks and the archive vat": "Now",
+        "The titanoslime": "Now",
+        "Titanoslime rarity (WORLDGEN-AFFECTING)": "NewMapsOnly",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)

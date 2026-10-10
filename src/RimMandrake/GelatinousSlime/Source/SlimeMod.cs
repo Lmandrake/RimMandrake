@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -172,122 +174,215 @@ namespace RimMandrake.GelatinousSlime
             Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
             Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
             list.Begin(settingsView);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.Label("THE GENE ARCHIVE");
-            list.CheckboxLabeled("Prefer the higher-priority gene archive", ref preferHigherPriorityArchive,
-                "On (default): if another mod or the campaign ships its own gene archive with a "
-                + "higher priority than this mod's own 17-entry universal one, the gene machine "
-                + "offers that archive instead — this is how a campaign swaps in its own gene "
-                + "lists with no patch. Off: always use this mod's own universal archive, even "
-                + "if a higher-priority one is loaded.");
-            list.GapLine();
+            if (Group(list, "The gene archive", RimMandrake.Shared.SettingScope.Now, new[] { "preferHigherPriorityArchive" }))
+            {
+                list.CheckboxLabeled("Prefer the higher-priority gene archive", ref preferHigherPriorityArchive,
+                    "On (default): if another mod or the campaign ships its own gene archive with a "
+                    + "higher priority than this mod's own 17-entry universal one, the gene machine "
+                    + "offers that archive instead — this is how a campaign swaps in its own gene "
+                    + "lists with no patch. Off: always use this mod's own universal archive, even "
+                    + "if a higher-priority one is loaded.");
+                list.GapLine();
+            }
 
-            list.Label("Biome rarity: " + RarityLabel());
-            list.Label("At 0 the gelatinous slime never generates on a new planet. "
-                       + "The default places roughly one to three rare patches. "
-                       + "Changing this affects planets generated afterwards, never "
-                       + "one that already exists.");
-            rarityFactor = list.Slider(rarityFactor, 0f, 8f);
-            list.GapLine();
+            if (Group(list, "Biome rarity (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "rarityFactor" }))
+            {
+                list.Label("Biome rarity: " + RarityLabel());
+                list.Label("At 0 the gelatinous slime never generates on a new planet. "
+                           + "The default places roughly one to three rare patches. "
+                           + "Changing this affects planets generated afterwards, never "
+                           + "one that already exists.");
+                rarityFactor = list.Slider(rarityFactor, 0f, 8f);
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("\"Entry recorded\" messages", ref flavorEntryRecorded,
-                "The body acknowledges each genome it finishes filing.");
-            list.CheckboxLabeled("Read-marks", ref flavorReadMarks,
-                "Slimified creatures leave a smear where they have walked.");
-            list.GapLine();
+            if (Group(list, "Flavour", RimMandrake.Shared.SettingScope.Now, new[] { "flavorEntryRecorded", "flavorReadMarks" }))
+            {
+                list.CheckboxLabeled("\"Entry recorded\" messages", ref flavorEntryRecorded,
+                    "The body acknowledges each genome it finishes filing.");
+                list.CheckboxLabeled("Read-marks", ref flavorReadMarks,
+                    "Slimified creatures leave a smear where they have walked.");
+                list.GapLine();
+            }
 
-            list.Label("THE BODY'S MECHANICS");
-            list.CheckboxLabeled("Slimification", ref slimificationEnabled,
-                "On (default): standing on the body slowly reads a creature into it. "
-                + "Off: nothing is applied or grows, so the slime is ground you can stand on; "
-                + "any film already on a pawn just wipes off.");
-            list.Label("Days to be read: " + slimificationClockDays.ToString("0.0")
-                       + " (shipped 7). Shorter is deadlier; the injected dose scales with it.");
-            slimificationClockDays = Mathf.Round(list.Slider(slimificationClockDays, 2f, 30f) * 2f) / 2f;
-            list.CheckboxLabeled("Farm conversion", ref fieldConversionEnabled,
-                "On (default): sown fields on slime-grass revert to ordinary slime ground over "
-                + "a few harvests. Off: fields stay as laid.");
-            list.Label("Conversion rate: " + fieldConversionRate.ToString("0.00") + "x");
-            fieldConversionRate = list.Slider(fieldConversionRate, 0.25f, 4f);
-            list.CheckboxLabeled("Ruined farms (affects newly generated maps)", ref farmRuinsEnabled,
-                "On (default): a newly generated slime map holds two to four failed farms half "
-                + "sunk into slime-grass: fence stubs, a dead irrigation channel, a collapsed "
-                + "shed and a little left behind. Off: none are placed. WORLDGEN-AFFECTING: "
-                + "changes only maps generated afterwards, never one that already exists.");
-            list.CheckboxLabeled("Joining Water ring (affects newly generated maps)", ref joiningWaterEnabled,
-                "On (default): a newly generated slime map holds a ring of hand-prints pressed into hardened slime, where the clan's "
-                + "Joining Water rite can be held, and the rite shares one person's lasting hurts out among the ring as weak, passing ones. "
-                + "Off: no ring is placed and the rite shares nothing. WORLDGEN-AFFECTING: changes only maps generated afterwards.");
-            list.CheckboxLabeled("Visitors", ref visitorsEnabled,
-                "On (default): placid, part-read wild animals wander onto a slime map. "
-                + "Off: none arrive and the map opens without them.");
-            list.Label("Arrival rate: " + visitorArrivalRate.ToString("0.00") + "x");
-            visitorArrivalRate = list.Slider(visitorArrivalRate, 0.25f, 4f);
-            list.CheckboxLabeled("Greater gappo clears channels", ref gappoChannels,
-                "On (default): the greater gappo's scoop hardens the soft slime under it and wipes "
-                + "the smear, leaving a clean channel behind it. Off: it grazes and the ground is "
-                + "left as it was.");
-            list.CheckboxLabeled("Fubbum hunts gelatids", ref fubbumHunts,
-                "On (default): the fubbum, the Slime's one hunter, stalks the gelatid herds. It "
-                + "never hunts colonists first. Off: it stays on the map but hunts nothing.");
-            list.CheckboxLabeled("Dwommo flies", ref dwommoFlies,
-                "On (default): the dwommo, the Slime's gas-float aristocracy, drifts over the body in "
-                + "real flight. Off: it stays on the map but never leaves the ground.");
-            list.CheckboxLabeled("Slime pit as a solvent", ref pitSolvent,
-                "On (default): the slime pit also renders toxipotatoes and twisted meat safe to eat. "
-                + "Off: the pit only makes simple meals from raw slime.");
-            list.CheckboxLabeled("Titanoslime chunk breaches seals", ref sealBreach,
-                "On (default): a chunk cut from a titanoslime dissolves an Assailant seal and drenches the "
-                + "doorway in slime. Off: the chunk does nothing and seals stay shut.");
-            list.CheckboxLabeled("Titanoslime chunk is a thrown bomb", ref chunkBomb,
-                "On (default): a chunk thrown by a pawn bursts, drenching everyone near it to a late stage of "
-                + "slimification and turning the ground to slime for a day. No armour stops it; dry ground and "
-                + "the antidote undo it. Off: a thrown chunk lands inert.");
-            list.Label("Chunk keeps for: " + chunkShelfDays.ToString("0.0") + " days off the body");
-            chunkShelfDays = Mathf.Round(list.Slider(chunkShelfDays, 0.5f, 5f) * 10f) / 10f;
-            list.CheckboxLabeled("Archive resurrection", ref archiveResurrection,
-                "On (default): every time the body reads a colonist it files them as they were, and an "
-                + "archive vat can grow a dead one back from that last entry, with no memory of anything since. "
-                + "Off: no new entries are filed and the vat does nothing; entries already filed are kept.");
-            list.GapLine();
+            if (Group(list, "Slimification and fields", RimMandrake.Shared.SettingScope.Now, new[] { "slimificationEnabled", "slimificationClockDays", "fieldConversionEnabled", "fieldConversionRate" }))
+            {
+                list.CheckboxLabeled("Slimification", ref slimificationEnabled,
+                    "On (default): standing on the body slowly reads a creature into it. "
+                    + "Off: nothing is applied or grows, so the slime is ground you can stand on; "
+                    + "any film already on a pawn just wipes off.");
+                list.Label("Days to be read: " + slimificationClockDays.ToString("0.0")
+                           + " (shipped 7). Shorter is deadlier; the injected dose scales with it.");
+                slimificationClockDays = Mathf.Round(list.Slider(slimificationClockDays, 2f, 30f) * 2f) / 2f;
+                list.CheckboxLabeled("Farm conversion", ref fieldConversionEnabled,
+                    "On (default): sown fields on slime-grass revert to ordinary slime ground over "
+                    + "a few harvests. Off: fields stay as laid.");
+                list.Label("Conversion rate: " + fieldConversionRate.ToString("0.00") + "x");
+                fieldConversionRate = list.Slider(fieldConversionRate, 0.25f, 4f);
+                list.GapLine();
+            }
 
-            list.Label("THE TITANOSLIME");
-            list.Label("A titanic green slime that swallows pawns whole and grows on what "
-                       + "it absorbs. With every box below unticked it is still a large, "
-                       + "slow predator that slams — nothing breaks, it just stops being "
-                       + "the thing it was built to be.");
+            if (Group(list, "Ruined farms (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "farmRuinsEnabled" }))
+            {
+                list.CheckboxLabeled("Ruined farms (affects newly generated maps)", ref farmRuinsEnabled,
+                    "On (default): a newly generated slime map holds two to four failed farms half "
+                    + "sunk into slime-grass: fence stubs, a dead irrigation channel, a collapsed "
+                    + "shed and a little left behind. Off: none are placed. WORLDGEN-AFFECTING: "
+                    + "changes only maps generated afterwards, never one that already exists.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Swallow pawns whole", ref titanoslimeEngulfs,
-                "On: a titanoslime that hits with its engulfing mass takes the target "
-                + "inside itself and digests it. Off: that attack is an ordinary slam, "
-                + "and anything already held is released.");
+            if (Group(list, "Joining Water ring", RimMandrake.Shared.SettingScope.Now, new[] { "joiningWaterEnabled" }))
+            {
+                list.CheckboxLabeled("Joining Water ring", ref joiningWaterEnabled,
+                    "On (default): a newly generated slime map holds a ring of hand-prints pressed into hardened slime, where the clan's "
+                    + "Joining Water rite can be held, and the rite shares one person's lasting hurts out among the ring as weak, passing ones. "
+                    + "Off: no ring is placed on maps generated afterwards, and the rite shares nothing on any map, rings already placed included.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Grows as it eats", ref titanoslimeGrows,
-                "On: absorbing prey, and ordinary eating, move it up a five-stage ladder "
-                + "from body size 6 to 40. Off: it keeps the stage it spawned at.");
+            if (Group(list, "Visitors", RimMandrake.Shared.SettingScope.Now, new[] { "visitorsEnabled", "visitorArrivalRate" }))
+            {
+                list.CheckboxLabeled("Visitors", ref visitorsEnabled,
+                    "On (default): placid, part-read wild animals wander onto a slime map. "
+                    + "Off: none arrive and the map opens without them.");
+                list.Label("Arrival rate: " + visitorArrivalRate.ToString("0.00") + "x");
+                visitorArrivalRate = list.Slider(visitorArrivalRate, 0.25f, 4f);
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Growth is reversible", ref titanoslimeReversible,
-                "Off (default): the ladder only climbs — starving, standing off slime "
-                + "terrain and being wounded never take mass back, so a fed titanoslime "
-                + "is a permanent, escalating threat. On: all three take mass back, so "
-                + "nothing is permanently huge.");
+            if (Group(list, "Creatures and the slime pit", RimMandrake.Shared.SettingScope.Now, new[] { "gappoChannels", "fubbumHunts", "dwommoFlies", "pitSolvent" }))
+            {
+                list.CheckboxLabeled("Greater gappo clears channels", ref gappoChannels,
+                    "On (default): the greater gappo's scoop hardens the soft slime under it and wipes "
+                    + "the smear, leaving a clean channel behind it. Off: it grazes and the ground is "
+                    + "left as it was.");
+                list.CheckboxLabeled("Fubbum hunts gelatids", ref fubbumHunts,
+                    "On (default): the fubbum, the Slime's one hunter, stalks the gelatid herds. It "
+                    + "never hunts colonists first. Off: it stays on the map but hunts nothing.");
+                list.CheckboxLabeled("Dwommo flies", ref dwommoFlies,
+                    "On (default): the dwommo, the Slime's gas-float aristocracy, drifts over the body in "
+                    + "real flight. Off: it stays on the map but never leaves the ground.");
+                list.CheckboxLabeled("Slime pit as a solvent", ref pitSolvent,
+                    "On (default): the slime pit also renders toxipotatoes and twisted meat safe to eat. "
+                    + "Off: the pit only makes simple meals from raw slime.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Sheds gelatids when cut", ref titanoslimeSheds,
-                "On: a wounded titanoslime of stage 2 or better comes apart into wild "
-                + "gelatids as you fight it, losing mass with each one.");
+            if (Group(list, "Titanoslime chunks and the archive vat", RimMandrake.Shared.SettingScope.Now, new[] { "sealBreach", "chunkBomb", "chunkShelfDays", "archiveResurrection" }))
+            {
+                list.CheckboxLabeled("Titanoslime chunk breaches seals", ref sealBreach,
+                    "On (default): a chunk cut from a titanoslime dissolves an Assailant seal and drenches the "
+                    + "doorway in slime. Off: the chunk does nothing and seals stay shut.");
+                list.CheckboxLabeled("Titanoslime chunk is a thrown bomb", ref chunkBomb,
+                    "On (default): a chunk thrown by a pawn bursts, drenching everyone near it to a late stage of "
+                    + "slimification and turning the ground to slime for a day. No armour stops it; dry ground and "
+                    + "the antidote undo it. Off: a thrown chunk lands inert.");
+                list.Label("Chunk keeps for: " + chunkShelfDays.ToString("0.0") + " days off the body");
+                chunkShelfDays = Mathf.Round(list.Slider(chunkShelfDays, 0.5f, 5f) * 10f) / 10f;
+                list.CheckboxLabeled("Archive resurrection", ref archiveResurrection,
+                    "On (default): every time the body reads a colonist it files them as they were, and an "
+                    + "archive vat can grow a dead one back from that last entry, with no memory of anything since. "
+                    + "Off: no new entries are filed and the vat does nothing; entries already filed are kept.");
+                list.GapLine();
+            }
 
-            list.Label("Largest stage it can reach: " + MaxStageLabel());
-            titanoslimeMaxStage = Mathf.RoundToInt(list.Slider(titanoslimeMaxStage, 1f, 5f));
+            if (Group(list, "The titanoslime", RimMandrake.Shared.SettingScope.Now, new[] { "titanoslimeEngulfs", "titanoslimeGrows", "titanoslimeReversible", "titanoslimeSheds", "titanoslimeMaxStage" }))
+            {
+                list.Label("A titanic green slime that swallows pawns whole and grows on what "
+                           + "it absorbs. With every box below unticked it is still a large, "
+                           + "slow predator that slams — nothing breaks, it just stops being "
+                           + "the thing it was built to be.");
+                list.CheckboxLabeled("Swallow pawns whole", ref titanoslimeEngulfs,
+                    "On: a titanoslime that hits with its engulfing mass takes the target "
+                    + "inside itself and digests it. Off: that attack is an ordinary slam, "
+                    + "and anything already held is released.");
+                list.CheckboxLabeled("Grows as it eats", ref titanoslimeGrows,
+                    "On: absorbing prey, and ordinary eating, move it up a five-stage ladder "
+                    + "from body size 6 to 40. Off: it keeps the stage it spawned at.");
+                list.CheckboxLabeled("Growth is reversible", ref titanoslimeReversible,
+                    "Off (default): the ladder only climbs — starving, standing off slime "
+                    + "terrain and being wounded never take mass back, so a fed titanoslime "
+                    + "is a permanent, escalating threat. On: all three take mass back, so "
+                    + "nothing is permanently huge.");
+                list.CheckboxLabeled("Sheds gelatids when cut", ref titanoslimeSheds,
+                    "On: a wounded titanoslime of stage 2 or better comes apart into wild "
+                    + "gelatids as you fight it, losing mass with each one.");
+                list.Label("Largest stage it can reach: " + MaxStageLabel());
+                titanoslimeMaxStage = Mathf.RoundToInt(list.Slider(titanoslimeMaxStage, 1f, 5f));
+                list.GapLine();
+            }
 
-            list.Label("Titanoslime rarity: " + TitanoslimeRarityLabel());
-            list.Label("Multiplies how often a titanoslime spawns in any biome that lists "
-                       + "one. At 0 none ever spawns. Takes effect on the next map "
-                       + "generated; a titanoslime already on a map is unaffected.");
-            titanoslimeSpawnFactor = list.Slider(titanoslimeSpawnFactor, 0f, 3f);
+            if (Group(list, "Titanoslime rarity (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "titanoslimeSpawnFactor" }))
+            {
+                list.Label("Titanoslime rarity: " + TitanoslimeRarityLabel());
+                list.Label("Multiplies how often a titanoslime spawns in any biome that lists "
+                           + "one. At 0 none ever spawns. Takes effect on the next map "
+                           + "generated; a titanoslime already on a map is unaffected.");
+                titanoslimeSpawnFactor = list.Slider(titanoslimeSpawnFactor, 0f, 3f);
+                list.GapLine();
+            }
 
             settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
             Widgets.EndScrollView();
+        }
+
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(SlimeSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(SlimeSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. A search matches the section title or any of its setting names. Scope AUDITED per setting against its
+        /// read site (2026-10-10): the biome rarity, the ruined farms and the titanoslime spawn weight are read while a map is generated ([new maps only]); the fubbum, dwommo and pit-solvent switches are re-applied to the loaded defs when the window closes, and every other setting is read by a tick, job, hediff, comp or interaction ([now]).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            // tagOverride "[next game start]": the kit has no such scope; these are read while defs load or when a game loads.
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
         }
 
         private static string MaxStageLabel()
