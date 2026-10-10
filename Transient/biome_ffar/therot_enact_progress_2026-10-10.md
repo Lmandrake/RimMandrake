@@ -22,8 +22,26 @@
 - Variant jobs: 48 rotvar_* (2 per "two more variants" row, reference = his pick), rotrow_angelmoth_south_v1, rotrow_snoruuk_v2 (donor + canon image); Snoruuk v1 north/south given the canon image too
 - Job audit: 56 Rot jobs, 0 reference a ✕'d/purged picture
 
-## Phase 4 deploy
-pending
+## Phase 4 deploy — DONE
+- `deploy_custom_mods.py --compose biomes --apply` (TheRot is folded into RimMandrake.Biomes): 84 files deployed, INCLUDING the composed DLLs, with RimWorldWin64 running — none refused. Needs a game restart.
+- 22 stale files are in the game copy and not in the repo (e.g. TheRot BMT_PusmelonA/BMT_SagecrustA just retired, BMT_VioletWimpleA/B, Wrinkle1-4, ShinecapImmature_a/b, Seadew BMT_*). Graphic_Random draws them, so his picks are not exclusive in game until a `--prune` run.
+- UtinniPatches not deployed: its only change is a comment in RUT_TheRot.xml.
+
+## Questions for the owner (recorded with --mark-done --evidence "OWNER: ...")
+- Renames with no name given — current label kept: skarrow dome (AB_AgaricusDomeCap), tolluk cap (AB_Agarilux row -> RM_TollukCap), bollusk trunk, ruvvak weeper, vokkun pillar, ithra glowcap, nubbik stool, quessa spire, glissik slimecap, turrok shelf, rhessa cap, vennik salve, gubbra gourd, angel moth.
+  NOTE: for the 11 rows that also had variant jobs, the modified enact.py files the OWNER mark as "followed" and does NOT list it under CONFLICTS (the match-branch ignores OWNER: evidence) — the questions live only in the ledger events and here.
+- RM_ThozzikSpawned: RM_Thozzik minus meat/leather and hasGenders, same art/faction, nothing spawns it but its 0.2 roster row — delete it?
+- RM_ThozzikQueen: not a duplicate (wild hive queen vs tame RM_ThozzikColonyQueen) — keep both?
+- RM_Thozzik: 3 render-B ✕s not purged because RM_ThozzikSpawned's default-ticked variant B keeps them.
+
+## Stale-sheet notes
+- RM_MortalMorelPlant: sheet column A (IN GAME 88d5e0e2) was not what the slot held (render D 094319d5).
+- Arpeau, Brightbell, MortalMorel, Nuitae, Shinecap folders hold _p3a/_p3b pictures, and Pusmelon/Sagecrust BMT_*B pictures, never shown on the sheet; left in place.
+- AB_Agarilux row shows the donor texPath art; the Rot roster now carries RM_TollukCap, which draws different art.
+- Undecided rows (no click at all, prefill only): AA_Agaripawn, AA_Swarmling (its A is a render, not in game), AB_RecurvedStropharia, RM_BleedingTooth, RM_Brullith, RM_Dewshrooms, RM_Durrok, RM_Grellik, RM_Mullgoth, RM_Shambles, RM_Skerrith, RM_ThozzikColony, RM_ThozzikColonyQueen.
+
+## Final enact state
+TODO 0, CONFLICTS 8 (3 Thozzik purges + 5 OWNER questions)
 
 ## Commits
 pending
