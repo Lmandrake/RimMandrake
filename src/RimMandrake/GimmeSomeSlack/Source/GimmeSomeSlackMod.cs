@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using RimMandrake.GimmeSomeSlack.Core;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -178,6 +179,174 @@ namespace RimMandrake.GimmeSomeSlack
                 map.mapDrawer.RegenerateEverythingNow();
             }
         }
+
+        public void DoWindowContents(Rect inRect)
+        {
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
+            list.Begin(view);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+
+            if (Group(list, "Messy cords and default style", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "style", "extCordColorMode", "extCordColor", "hideHookupWires" }))
+            {
+            list.CheckboxLabeled("Messy cords (master switch)", ref enabled,
+                "Conduit becomes invisible and is drawn as loose, too-long cords between what it connects. " +
+                "Off: vanilla conduit art and hookup wires come back as soon as you close this window.");
+            // per-build style (stage 2, design 2.4): the style is picked on each build button; this is only the default
+            list.Label("Default style. Style is chosen when you build (the build button's menu); this sets what new games start with and how unstyled conduit looks (changes take effect when this window closes)");
+            foreach (CordStyle s in Enum.GetValues(typeof(CordStyle)))
+            {
+                bool installed = CordMaterials.StyleInstalled(s);
+                string label = GimmeSomeSlackMod.StyleLabel(s) + (installed ? "" : "  (art not installed yet)");
+                Rect r = list.GetRect(30f);
+                Rect swatchRect = new Rect(r.xMax - 210f, r.y + 7f, 200f, 16f);
+                Rect radio = new Rect(r.x, r.y, r.width - 220f, r.height);
+                if (installed)
+                {
+                    if (Widgets.RadioButtonLabeled(radio, label, style == s)) style = s;
+                    GimmeSomeSlackMod.DrawSwatch(swatchRect, s);
+                }
+                else
+                {
+                    GUI.color = Color.gray;
+                    Widgets.Label(radio, "   " + label);
+                    GUI.color = Color.white;
+                }
+            }
+            if (style == CordStyle.ExtensionCord)
+            {
+                if (list.RadioButton("   Default Modern colour: a different colour per run", extCordColorMode == ExtCordColorMode.Mixed))
+                    extCordColorMode = ExtCordColorMode.Mixed;
+                if (list.RadioButton("   Default Modern colour: one colour (" + CordMaterials.ExtCordColors[Mathf.Clamp(extCordColor, 0, 4)] + ")",
+                                  extCordColorMode == ExtCordColorMode.Single))
+                    extCordColorMode = ExtCordColorMode.Single;
+                if (extCordColorMode == ExtCordColorMode.Single)
+                    extCordColor = Mathf.RoundToInt(list.Slider(extCordColor, 0f, CordMaterials.ExtCordColors.Length - 1));
+            }
+            list.CheckboxLabeled("Hide vanilla's thin machine hookup wires (power overlay lines always stay)", ref hideHookupWires);
+                list.GapLine();
+            }
+
+            if (Group(list, "Slack, loops and tangles", RimMandrake.Shared.SettingScope.Now, new[] { "slack", "loopBudget", "cordsPerConnection", "tangles", "needlessLoops", "diveThrough", "tangleMin" }))
+            {
+            list.Label("Slack: " + (slack <= 0.01f ? "off (path-tight)" : slack.ToString("0.00") + "x the owner level"),
+                    tooltip: "How much spare cord each cord carries. 1.00 = loops, figure-eights and heaps like a too-long extension cord.");
+            slack = list.Slider(slack, 0f, 1.8f);
+            list.Label("Loop budget: up to " + loopBudget.ToString("0") + " cells of each cord in loops and heaps",
+                    tooltip: "How much cord one cord may spend on loops, figure-eights and heaps. This is not a length cap: a cord's side-to-side wander comes on top, so a short lead can still lie several times its distance.");
+            loopBudget = list.Slider(loopBudget, 2f, 40f);
+            list.Label("Cords per connection: 1 to " + cordsPerConnection);
+            cordsPerConnection = Mathf.RoundToInt(list.Slider(cordsPerConnection, 1f, 3f));
+            list.CheckboxLabeled("Dense conduit fields become one tangle", ref tangles);
+            list.CheckboxLabeled("Needless conduit stubs become pointless loops", ref needlessLoops);
+            list.CheckboxLabeled("Cords dive under walls and water where they must (a plate marks each wall crossing)", ref diveThrough);
+            list.Label("Messiness: a dense conduit field of " + tangleMin + "+ cells becomes one tangle",
+                    tooltip: "Lower = more of a crowded base turns into heaps of cord plugged into junction boxes (power strips in the Modern look).");
+            tangleMin = Mathf.RoundToInt(list.Slider(tangleMin, 6f, 20f));
+                list.GapLine();
+            }
+
+            if (Group(list, "Breaks and sparks", RimMandrake.Shared.SettingScope.Now, new[] { "breakReadout", "sparkIntensity", "whip", "downedWire", "sparksOnlyOverlay", "maxSparkingEnds", "highlight" }))
+            {
+            list.CheckboxLabeled("Break readout: live ends spark, dead ends lie limp", ref breakReadout);
+            list.Label("Spark intensity: " + sparkIntensity.ToString("0.0") + "x");
+            sparkIntensity = list.Slider(sparkIntensity, 0f, 2f);
+            list.CheckboxLabeled("Live broken ends whip about (also while paused)", ref whip);
+            list.CheckboxLabeled("Live wires hanging out of walls drip sparks in bursts", ref downedWire);
+            list.CheckboxLabeled("Sparks only while the power overlay is open", ref sparksOnlyOverlay);
+            list.Label("Most sparking ends per map: " + maxSparkingEnds);
+            maxSparkingEnds = Mathf.RoundToInt(list.Slider(maxSparkingEnds, 8f, 48f));
+            list.CheckboxLabeled("Selecting a powered building highlights every cord of its net", ref highlight);
+                list.GapLine();
+            }
+
+            if (Group(list, "Wind sway", RimMandrake.Shared.SettingScope.Now, new[] { "sway", "swayAmplitude", "swayMode", "floorRipple" }))
+            {
+            list.CheckboxLabeled("Hanging cords sway in the wind (obeys the game's plant-sway option)", ref sway);
+            list.Label("Sway strength: " + swayAmplitude.ToString("0.0") + "x");
+            swayAmplitude = list.Slider(swayAmplitude, 0f, 2f);
+            if (list.RadioButton("   Sway drawn on the CPU (default, always works)", swayMode == SwayMode.CPU,
+                              tooltip: "Each hanging cord on screen is bent every frame. Costs a little CPU; this is the shipping behaviour."))
+                swayMode = SwayMode.CPU;
+            if (list.RadioButton("   Sway drawn by the plant wind shader (experimental, zero CPU)", swayMode == SwayMode.Shader,
+                              tooltip: "Hanging cords use the same wind shader as plants and move with them. Falls back to the CPU route " +
+                                       "by itself if the shader is unavailable. Under a roof hanging cords never sway."))
+                swayMode = SwayMode.Shader;
+            list.CheckboxLabeled("Outdoor floor cords ripple slightly in the wind (off by default)", ref floorRipple,
+                "Off: cords on the floor lie still, as shipped. On: unroofed floor cords on screen ripple gently with the wind " +
+                "(uses the sway strength above; obeys the game's plant-sway option).");
+                list.GapLine();
+            }
+
+            if (Group(list, "Far zoom and debug", RimMandrake.Shared.SettingScope.Now, new[] { "lod", "debugDraw" }))
+            {
+            list.CheckboxLabeled("Far zoom: simplify cords (one thin strand, no pieces)", ref lod);
+            list.CheckboxLabeled("Debug: draw the node graph", ref debugDraw);
+                list.GapLine();
+            }
+
+            viewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
+            list.End();
+            Widgets.EndScrollView();
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1200f;
+
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string/enum setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(GimmeSomeSlackSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string) || f.FieldType.IsEnum)
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(GimmeSomeSlackSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): every cable setting is read live by the cord graph rebuild, per-frame draw, spark/whip tick or placement, and GimmeSomeSlackSettings.Apply() re-prints every map when this window closes; none is read at world or map generation, so all are [now].</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
     }
 
     public class GimmeSomeSlackMod : Mod
@@ -228,100 +397,8 @@ namespace RimMandrake.GimmeSomeSlack
             {
                 case SettingsTab.OverheadLines: LoadedModManager.GetMod<Aerial.AerialLinesMod>()?.DoSettingsWindowContents(inner); break;
                 case SettingsTab.FlexibleHoses: LoadedModManager.GetMod<Hose.FireHosesMod>()?.DoSettingsWindowContents(inner); break;
-                default: DrawCables(inner); break;
+                default: Settings?.DoWindowContents(inner); break;
             }
-        }
-
-        private static Vector2 scroll;
-        private static float viewHeight = 1200f;
-
-        private void DrawCables(Rect inRect)
-        {
-            var view = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(viewHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref scroll, view);
-            var l = new Listing_Standard { maxOneColumn = true };
-            l.Begin(view);
-            l.CheckboxLabeled("Messy cords (master switch)", ref GimmeSomeSlackSettings.enabled,
-                "Conduit becomes invisible and is drawn as loose, too-long cords between what it connects. " +
-                "Off: vanilla conduit art and hookup wires come back as soon as you close this window.");
-            l.GapLine();
-            // per-build style (stage 2, design 2.4): the style is picked on each build button; this is only the default
-            l.Label("Default style. Style is chosen when you build (the build button's menu); this sets what new games start with and how unstyled conduit looks (changes take effect when this window closes)");
-            foreach (CordStyle s in Enum.GetValues(typeof(CordStyle)))
-            {
-                bool installed = CordMaterials.StyleInstalled(s);
-                string label = StyleLabel(s) + (installed ? "" : "  (art not installed yet)");
-                Rect r = l.GetRect(30f);
-                Rect swatchRect = new Rect(r.xMax - 210f, r.y + 7f, 200f, 16f);
-                Rect radio = new Rect(r.x, r.y, r.width - 220f, r.height);
-                if (installed)
-                {
-                    if (Widgets.RadioButtonLabeled(radio, label, GimmeSomeSlackSettings.style == s)) GimmeSomeSlackSettings.style = s;
-                    DrawSwatch(swatchRect, s);
-                }
-                else
-                {
-                    GUI.color = Color.gray;
-                    Widgets.Label(radio, "   " + label);
-                    GUI.color = Color.white;
-                }
-            }
-            if (GimmeSomeSlackSettings.style == CordStyle.ExtensionCord)
-            {
-                if (l.RadioButton("   Default Modern colour: a different colour per run", GimmeSomeSlackSettings.extCordColorMode == ExtCordColorMode.Mixed))
-                    GimmeSomeSlackSettings.extCordColorMode = ExtCordColorMode.Mixed;
-                if (l.RadioButton("   Default Modern colour: one colour (" + CordMaterials.ExtCordColors[Mathf.Clamp(GimmeSomeSlackSettings.extCordColor, 0, 4)] + ")",
-                                  GimmeSomeSlackSettings.extCordColorMode == ExtCordColorMode.Single))
-                    GimmeSomeSlackSettings.extCordColorMode = ExtCordColorMode.Single;
-                if (GimmeSomeSlackSettings.extCordColorMode == ExtCordColorMode.Single)
-                    GimmeSomeSlackSettings.extCordColor = Mathf.RoundToInt(l.Slider(GimmeSomeSlackSettings.extCordColor, 0f, CordMaterials.ExtCordColors.Length - 1));
-            }
-            l.GapLine();
-            l.Label("Slack: " + (GimmeSomeSlackSettings.slack <= 0.01f ? "off (path-tight)" : GimmeSomeSlackSettings.slack.ToString("0.00") + "x the owner level"),
-                    tooltip: "How much spare cord each cord carries. 1.00 = loops, figure-eights and heaps like a too-long extension cord.");
-            GimmeSomeSlackSettings.slack = l.Slider(GimmeSomeSlackSettings.slack, 0f, 1.8f);
-            l.Label("Loop budget: up to " + GimmeSomeSlackSettings.loopBudget.ToString("0") + " cells of each cord in loops and heaps",
-                    tooltip: "How much cord one cord may spend on loops, figure-eights and heaps. This is not a length cap: a cord's side-to-side wander comes on top, so a short lead can still lie several times its distance.");
-            GimmeSomeSlackSettings.loopBudget = l.Slider(GimmeSomeSlackSettings.loopBudget, 2f, 40f);
-            l.Label("Cords per connection: 1 to " + GimmeSomeSlackSettings.cordsPerConnection);
-            GimmeSomeSlackSettings.cordsPerConnection = Mathf.RoundToInt(l.Slider(GimmeSomeSlackSettings.cordsPerConnection, 1f, 3f));
-            l.CheckboxLabeled("Dense conduit fields become one tangle", ref GimmeSomeSlackSettings.tangles);
-            l.CheckboxLabeled("Needless conduit stubs become pointless loops", ref GimmeSomeSlackSettings.needlessLoops);
-            l.CheckboxLabeled("Cords dive under walls and water where they must (a plate marks each wall crossing)", ref GimmeSomeSlackSettings.diveThrough);
-            l.Label("Messiness: a dense conduit field of " + GimmeSomeSlackSettings.tangleMin + "+ cells becomes one tangle",
-                    tooltip: "Lower = more of a crowded base turns into heaps of cord plugged into junction boxes (power strips in the Modern look).");
-            GimmeSomeSlackSettings.tangleMin = Mathf.RoundToInt(l.Slider(GimmeSomeSlackSettings.tangleMin, 6f, 20f));
-            l.GapLine();
-            l.CheckboxLabeled("Break readout: live ends spark, dead ends lie limp", ref GimmeSomeSlackSettings.breakReadout);
-            l.Label("Spark intensity: " + GimmeSomeSlackSettings.sparkIntensity.ToString("0.0") + "x");
-            GimmeSomeSlackSettings.sparkIntensity = l.Slider(GimmeSomeSlackSettings.sparkIntensity, 0f, 2f);
-            l.CheckboxLabeled("Live broken ends whip about (also while paused)", ref GimmeSomeSlackSettings.whip);
-            l.CheckboxLabeled("Live wires hanging out of walls drip sparks in bursts", ref GimmeSomeSlackSettings.downedWire);
-            l.CheckboxLabeled("Sparks only while the power overlay is open", ref GimmeSomeSlackSettings.sparksOnlyOverlay);
-            l.Label("Most sparking ends per map: " + GimmeSomeSlackSettings.maxSparkingEnds);
-            GimmeSomeSlackSettings.maxSparkingEnds = Mathf.RoundToInt(l.Slider(GimmeSomeSlackSettings.maxSparkingEnds, 8f, 48f));
-            l.CheckboxLabeled("Selecting a powered building highlights every cord of its net", ref GimmeSomeSlackSettings.highlight);
-            l.CheckboxLabeled("Hanging cords sway in the wind (obeys the game's plant-sway option)", ref GimmeSomeSlackSettings.sway);
-            l.Label("Sway strength: " + GimmeSomeSlackSettings.swayAmplitude.ToString("0.0") + "x");
-            GimmeSomeSlackSettings.swayAmplitude = l.Slider(GimmeSomeSlackSettings.swayAmplitude, 0f, 2f);
-            if (l.RadioButton("   Sway drawn on the CPU (default, always works)", GimmeSomeSlackSettings.swayMode == SwayMode.CPU,
-                              tooltip: "Each hanging cord on screen is bent every frame. Costs a little CPU; this is the shipping behaviour."))
-                GimmeSomeSlackSettings.swayMode = SwayMode.CPU;
-            if (l.RadioButton("   Sway drawn by the plant wind shader (experimental, zero CPU)", GimmeSomeSlackSettings.swayMode == SwayMode.Shader,
-                              tooltip: "Hanging cords use the same wind shader as plants and move with them. Falls back to the CPU route " +
-                                       "by itself if the shader is unavailable. Under a roof hanging cords never sway."))
-                GimmeSomeSlackSettings.swayMode = SwayMode.Shader;
-            l.CheckboxLabeled("Outdoor floor cords ripple slightly in the wind (off by default)", ref GimmeSomeSlackSettings.floorRipple,
-                "Off: cords on the floor lie still, as shipped. On: unroofed floor cords on screen ripple gently with the wind " +
-                "(uses the sway strength above; obeys the game's plant-sway option).");
-            l.CheckboxLabeled("Far zoom: simplify cords (one thin strand, no pieces)", ref GimmeSomeSlackSettings.lod);
-            l.CheckboxLabeled("Hide vanilla's thin machine hookup wires (power overlay lines always stay)", ref GimmeSomeSlackSettings.hideHookupWires);
-            l.CheckboxLabeled("Debug: draw the node graph", ref GimmeSomeSlackSettings.debugDraw);
-            l.GapLine();
-            if (l.ButtonText("Reset to defaults")) GimmeSomeSlackSettings.ResetToDefaults();
-            viewHeight = Mathf.Max(600f, l.CurHeight + 40f);
-            l.End();
-            Widgets.EndScrollView();
         }
 
         public static string StyleLabel(CordStyle s)
@@ -337,7 +414,7 @@ namespace RimMandrake.GimmeSomeSlack
         }
 
         /// <summary>The style's strand art tiled across the row (every colour / cable kind it uses).</summary>
-        private static void DrawSwatch(Rect r, CordStyle s)
+        internal static void DrawSwatch(Rect r, CordStyle s)
         {
             string[] paths;
             if (s == CordStyle.ExtensionCord)
