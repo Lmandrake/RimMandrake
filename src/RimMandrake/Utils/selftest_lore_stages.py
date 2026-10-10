@@ -73,7 +73,14 @@ def main():
             "toolchain note); UNMEASURED, not a pass or a fail" % DOTNET_CANDIDATES)
 
     win_csproj = _to_windows_path(CSPROJ)
-    cmd = [dotnet, "run", "--project", win_csproj, "-c", "Release"]
+    # dotnet.exe cannot build from a \\wsl.localhost path (MSB3030 on ext4 clones): stage on D: first.
+    sys.path.insert(0, HERE)
+    import winbuild
+    rc, rec = winbuild.stage_build(CSPROJ, stage_name="SelfTest_lore_stages")
+    if rc:
+        print("selftest build FAILED")
+        sys.exit(rc)
+    cmd = [dotnet, "run", "--project", winbuild.staged_win(rec, CSPROJ), "-c", "Release", "--no-build"]
     result = subprocess.run(cmd, capture_output=True, text=True)
     print(result.stdout, end="")
     if result.stderr.strip():
