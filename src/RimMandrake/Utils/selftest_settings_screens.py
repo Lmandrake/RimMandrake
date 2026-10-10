@@ -325,6 +325,44 @@ MODS = {
         "The Grey Sea answers your light (GREYSEA_LAMP_RESPONSE_BUILD_1)": "Now",
         "Not wired yet (these change nothing)": "Now",
     }, ()),
+    "Stillsand#Main": ("RM_StillsandMod.cs", "RM_Stillsand.csproj", {
+        "Zuurrik (blood on the sand)": "Now",
+        "Precious cave: carving and set pieces (fixed at map generation)": "NewMapsOnly",
+        "Precious cave: what it holds (fixed at map generation)": "NewMapsOnly",
+        "Nothing rots in the cave": "Now",
+        "Water on the sand": "Now",
+        "Water debt weights the sand's events": "NextPulse",
+        "Under the sand: thumper, fishing and swimmers": "Now",
+        "The Listening": "Now",
+        "Footprints in moving sand": "Now",
+    }, ("genStepEnabled", "yardangShapingEnabled", "torEnabled", "torChance", "dripEnabled", "wallRingEnabled", "tribalMarkEnabled", "rowEnabled", "rowWeight", "preservationEnabled", "bloomOnPour", "ledgerEnabled", "ledgerIncidentWeighting", "thumperEnabled", "thumperRadius", "sandFishingWakeEnabled", "sandFishingWakeChance", "driftSwimEnabled", "driftSwimDepth", "listeningHissEnabled", "listeningSingingEnabled", "listeningWarningEnabled", "singingWarningCells", "listeningRumbleEnabled", "duneErasesTracks")),
+    "Stillsand#Skeletons": ("RM_SkeletonSettings.cs", "RM_Stillsand.csproj", {
+        "Giant skeletons on new maps (fixed at map generation)": "NewMapsOnly",
+        "Giant corpses become skeletons": "Now",
+        "Bone harps and dune burial": "Now",
+        "Dust on the horizon": "NextPulse",
+        "Dust-settled letter": "Now",
+    }, ()),
+    "Stillsand#GlassChain": ("RM_GlassChainMod.cs", "RM_Stillsand.csproj", {
+        "Sun-fed work tables": "Now",
+        "Sand sieve": "Now",
+        "Solar and wringing stills": "Now",
+        "Sun lance": "Now",
+        "Geophone": "Now",
+        "Recipes": "Now",
+    }, ()),
+    "Stillsand#Events": ("RM_StillsandEventsMod.cs", "RM_Stillsand.csproj", {
+        "Leviathan incidents": "NextPulse",
+        "Muurrok mirror beam": "Now",
+        "Krayt horn": "Now",
+        "Krayt den quest": "NextPulse",
+    }, ("leviathanDisabled", "leviathanOdds")),
+    "Stillsand#DuneGale": ("RM_DuneGaleSettings.cs", "RM_Stillsand.csproj", {
+        "The dune gale": "NextPulse",
+        "Gale effects": "Now",
+        "What the wind uncovers at gale end": "Now",
+        "Dust devils": "NextPulse",
+    }, ("emergenceOff",)),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)

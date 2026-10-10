@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -60,21 +61,9 @@ namespace RimMandrake.Stillsand
             }
         }
 
-        private static Vector2 settingsScroll;
-        private static float settingsViewHeight = 800f;
-
-        public void DoWindowContents(Rect inRect)
+        /// <summary>One toggle and one odds slider per leviathan incident, built from the def database.</summary>
+        private static void DrawIncidentRows(Listing_Standard list)
         {
-            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
-            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
-            list.Begin(settingsView);
-            list.Label("Event creatures: the leviathans that come up out of the sand on a Stillsand map. "
-                       + "Each comes as an incident, warns first (a letter and a growing rumble), and "
-                       + "leaves a funnel or a drag mark for everything it takes.");
-            list.GapLine();
-
             List<IncidentDef> incidents = DefDatabase<IncidentDef>.AllDefsListForReading
                 .Where(d => d.workerClass != null && typeof(RM_IncidentWorker_SandLeviathan).IsAssignableFrom(d.workerClass))
                 .ToList();
@@ -94,27 +83,116 @@ namespace RimMandrake.Stillsand
                 odds[d.defName] = Mathf.Round(f * 20f) / 20f;
                 list.Gap(6f);
             }
+        }
 
-            list.GapLine();
-            list.CheckboxLabeled("Muurrok mirror beam", ref mirrorBeamEnabled,
-                "The muurrok reflects the sun off its crest as a sweeping heat beam (never fire). "
-                + "It needs sun: none at night, under a roof, or in a sand gale. Off: it only strikes from under.");
-            if (mirrorBeamEnabled)
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_StillsandEventsSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
             {
-                list.CheckboxLabeled("  Muurrok beam uses the sun-lance sun", ref mirrorBeamSharedSun,
-                    "On: the beam's strength follows the same sun as the sun lance and sun tables (this map's sun "
-                    + "height, shade from walls and dunes, roof, gale). Off: it follows the plain day/night light level.");
+                if (n == "leviathanDisabled") { disabled.Clear(); continue; }
+                if (n == "leviathanOdds") { odds.Clear(); continue; }
+                FieldInfo f = typeof(RM_StillsandEventsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
             }
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1400f;
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the leviathan incident toggles are read in CanFireNowSub and the odds in BaseChanceThisGame (storyteller rolls, NextPulse); the den quest is read when the quest script is tested for an offer (NextPulse); the beam and horn are read per use (Now).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
+        public void DoWindowContents(Rect inRect)
+        {
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, viewRect);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
+            list.Begin(viewRect);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+
+            list.Label("Event creatures: the leviathans that come up out of the sand on a Stillsand map. "
+                       + "Each comes as an incident, warns first (a letter and a growing rumble), and "
+                       + "leaves a funnel or a drag mark for everything it takes.");
             list.GapLine();
-            list.CheckboxLabeled("Krayt horn", ref hornEnabled,
-                "A horn that can be blown to rout smaller predators and tribal raiders nearby. Off: it cannot be used.");
-            hornAnswerChance = list.SliderLabeled("Chance the call is answered: " + (hornAnswerChance * 100f).ToString("0") + "%",
-                hornAnswerChance, 0f, 1f,
-                tooltip: "Every blow rolls this; on a hit the krayt attack is queued a few hours out. 0 means never.");
-            hornAnswerChance = Mathf.Round(hornAnswerChance * 100f) / 100f;
-            list.CheckboxLabeled("Krayt den quest", ref denQuestEnabled,
-                "Tribes and a Jawa crew ask you to clear a greater krayt's den, when your map has one with the dragon still inside. Off: the quest is never offered.");
-            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
+
+            if (Group(list, "Leviathan incidents", RimMandrake.Shared.SettingScope.NextPulse, new[] { "leviathanDisabled", "leviathanOdds" }))
+            {
+                DrawIncidentRows(list);
+                list.GapLine();
+            }
+
+            if (Group(list, "Muurrok mirror beam", RimMandrake.Shared.SettingScope.Now, new[] { "mirrorBeamEnabled", "mirrorBeamSharedSun" }))
+            {
+                list.CheckboxLabeled("Muurrok mirror beam", ref mirrorBeamEnabled,
+                    "The muurrok reflects the sun off its crest as a sweeping heat beam (never fire). "
+                    + "It needs sun: none at night, under a roof, or in a sand gale. Off: it only strikes from under.");
+                if (mirrorBeamEnabled)
+                {
+                    list.CheckboxLabeled("  Muurrok beam uses the sun-lance sun", ref mirrorBeamSharedSun,
+                        "On: the beam's strength follows the same sun as the sun lance and sun tables (this map's sun "
+                        + "height, shade from walls and dunes, roof, gale). Off: it follows the plain day/night light level.");
+                }
+                list.GapLine();
+            }
+
+            if (Group(list, "Krayt horn", RimMandrake.Shared.SettingScope.Now, new[] { "hornEnabled", "hornAnswerChance" }))
+            {
+                list.CheckboxLabeled("Krayt horn", ref hornEnabled,
+                    "A horn that can be blown to rout smaller predators and tribal raiders nearby. Off: it cannot be used.");
+                hornAnswerChance = list.SliderLabeled("Chance the call is answered: " + (hornAnswerChance * 100f).ToString("0") + "%",
+                    hornAnswerChance, 0f, 1f,
+                    tooltip: "Every blow rolls this; on a hit the krayt attack is queued a few hours out. 0 means never.");
+                hornAnswerChance = Mathf.Round(hornAnswerChance * 100f) / 100f;
+                list.GapLine();
+            }
+
+            if (Group(list, "Krayt den quest", RimMandrake.Shared.SettingScope.NextPulse, new[] { "denQuestEnabled" }))
+            {
+                list.CheckboxLabeled("Krayt den quest", ref denQuestEnabled,
+                    "Tribes and a Jawa crew ask you to clear a greater krayt's den, when your map has one with the dragon still inside. Off: the quest is never offered.");
+                list.GapLine();
+            }
+
+            viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
         }

@@ -63,32 +63,9 @@ namespace RimMandrake.Stillsand
             }
         }
 
-        public static void Draw(Listing_Standard list)
+        /// <summary>The per-row enable box and weight slider (called from the Stillsand screen's "what it holds" group).</summary>
+        public static void DrawRows(Listing_Standard list)
         {
-            list.GapLine();
-            list.Label("The rare rock and its precious cave (new maps only)");
-            list.CheckboxLabeled("Carve a cave into the map's largest outcrop", ref genStepEnabled,
-                "Off: the Stillsand generates its rock as before, with no cave, no table roll and no landing letter.");
-            list.CheckboxLabeled("Shape the outcrop as a wind-aligned yardang", ref yardangShapingEnabled,
-                "Trims and fills the largest outcrop into a long, tapering ridge laid along the one wind. Off: the outcrop keeps its generated shape; the cave is still carved.");
-            list.CheckboxLabeled("Seat a small tor on rockless maps", ref torEnabled,
-                "When a map has no rock at all, sometimes raise one small yardang tor so the map still has its landmark.");
-            if (torEnabled)
-            {
-                list.Label("Rockless-map tor chance: " + torChance.ToStringPercent());
-                torChance = list.Slider(torChance, 0f, 1f);
-            }
-
-            list.CheckboxLabeled("Nothing rots in the cave", ref preservationEnabled,
-                "Corpses and food lying on a roofed cave cell do not rot, and desiccated remains stay. Acts live, on existing caves too. Off: vanilla rot resumes.");
-            list.CheckboxLabeled("The cave drips", ref dripEnabled,
-                "Each new cave carries one ambient water-drip sound, the only water sound in the biome. New maps only.");
-            list.CheckboxLabeled("Lens grotto: grown-biosilica walls", ref wallRingEnabled,
-                "The lens grotto rings its chamber with mineable biosilica wall. Off: the grotto is bare rock. New maps only.");
-            list.CheckboxLabeled("Taken cave: tribal mark on the wall", ref tribalMarkEnabled,
-                "The emptied cave carries its own tribal glyph. New maps only.");
-
-            list.Label("What the cave holds (one weighted roll per cave):");
             foreach (RM_PreciousCaveDef def in DefDatabase<RM_PreciousCaveDef>.AllDefsListForReading)
             {
                 Rect row = list.GetRect(Text.LineHeight);
