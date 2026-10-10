@@ -79,7 +79,7 @@
 
     <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
     <configurationListOrderPriority>-97</configurationListOrderPriority>
-    <categoryTag>Outlander</categoryTag>
+    <categoryTag>DeepwaterCompact</categoryTag>  <!-- own tag so it can hold techprints (TECHPRINT_FACTION_GATING_1); Patches/FactionCategoryTags_Compat.xml keeps every other Outlander-keyed list treating it as Outlander -->
     <requiredCountAtGameStart>1</requiredCountAtGameStart>
     <techLevel>Industrial</techLevel>
     <humanlikeFaction>true</humanlikeFaction>

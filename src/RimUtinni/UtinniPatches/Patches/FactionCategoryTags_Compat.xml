@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FactionCategoryTags_Compat.xml       UtinniPatches — TECHPRINT_FACTION_GATING_1
+
+  The techprint gate is ResearchProjectDef.heldByFactionCategoryTags, which names a FactionDef.categoryTag.
+  Six campaign factions shared vanilla's "Outlander" tag and the Trade Moot shared "Tribal", so none of them
+  could hold a print of its own (design/Jawa/worldbuilding/faction_tech_alignment.md). Each now carries its
+  own tag (Defs/FactionDefs/Jawa*.xml): HuttCartel, AscendantHelix, DeepwaterCompact, FreeDroidEnclaves,
+  GeonosianHive, WildsteamClan, JawaTradeMoot. Blackstar is NOT tagged here: it is vanilla Pirate, whose
+  def node is also the abstract PirateBandBase, so a tag on it would be inherited by every other mod's
+  untagged pirate faction (ruling Q15 needs a different route).
+
+  Everything ELSE vanilla and the mod stack keys on a category tag must keep treating those factions exactly
+  as before. Consumers MEASURED in the 1.6 decompile (2026-10-10): PreceptApparelRequirement and
+  PreceptWorker_Apparel (allowed/disallowed tag lists), ThingSetMaker_Conditional_MakingFaction
+  (makingFactionCategories), QuestNode_GetRandomPawnKindForFaction (a choices table keyed by categoryTag),
+  TechprintUtility (heldByFactionCategoryTags). So:
+    1. every *CategoryTags / makingFactionCategories list that names Outlander (Tribal) also names the new
+       tags, EXCEPT heldByFactionCategoryTags, which is the gate and is assigned per row by ruling;
+    2. the Royalty lodger table gets a row per new tag copying the Outlander (Tribal) row;
+    3. the Hutt fence (ruling Q11, "the fence carries everything"): every held list also names HuttCartel.
+  Runs once over the whole def set; UtinniPatches loads last, so every other mod's defs are already in it.
+-->
+<Patch>
+
+  <!-- 1a. Outlander-keyed lists (never the techprint gate itself) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs//*[(contains(name(),'CategoryTags') or name()='makingFactionCategories') and not(name()='heldByFactionCategoryTags') and li='Outlander']</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs//*[(contains(name(),'CategoryTags') or name()='makingFactionCategories') and not(name()='heldByFactionCategoryTags') and li='Outlander']</xpath>
+      <value>
+        <li>HuttCartel</li>
+        <li>AscendantHelix</li>
+        <li>DeepwaterCompact</li>
+        <li>FreeDroidEnclaves</li>
+        <li>GeonosianHive</li>
+        <li>WildsteamClan</li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- 1b. Tribal-keyed lists -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs//*[(contains(name(),'CategoryTags') or name()='makingFactionCategories') and not(name()='heldByFactionCategoryTags') and li='Tribal']</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs//*[(contains(name(),'CategoryTags') or name()='makingFactionCategories') and not(name()='heldByFactionCategoryTags') and li='Tribal']</xpath>
+      <value>
+        <li>JawaTradeMoot</li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- 2. Royalty lodger table: same pawn kinds the shared tag gave them -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/QuestScriptDef[defName="Util_ChooseRandomQuestLodgerKind"]//choices[li/categoryTag="Outlander"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/QuestScriptDef[defName="Util_ChooseRandomQuestLodgerKind"]//choices[li/categoryTag="Outlander"]</xpath>
+      <value>
+        <li><categoryTag>HuttCartel</categoryTag><pawnKinds><li>SpaceRefugee_Clothed</li><li>Villager</li></pawnKinds></li>
+        <li><categoryTag>AscendantHelix</categoryTag><pawnKinds><li>SpaceRefugee_Clothed</li><li>Villager</li></pawnKinds></li>
+        <li><categoryTag>DeepwaterCompact</categoryTag><pawnKinds><li>SpaceRefugee_Clothed</li><li>Villager</li></pawnKinds></li>
+        <li><categoryTag>FreeDroidEnclaves</categoryTag><pawnKinds><li>SpaceRefugee_Clothed</li><li>Villager</li></pawnKinds></li>
+        <li><categoryTag>GeonosianHive</categoryTag><pawnKinds><li>SpaceRefugee_Clothed</li><li>Villager</li></pawnKinds></li>
+        <li><categoryTag>WildsteamClan</categoryTag><pawnKinds><li>SpaceRefugee_Clothed</li><li>Villager</li></pawnKinds></li>
+        <li><categoryTag>JawaTradeMoot</categoryTag><pawnKinds><li>Tribal_Penitent</li><li>Tribal_Archer</li><li>Tribal_Warrior</li></pawnKinds></li>
+      </value>
+    </match>
+  </Operation>
+
+  <!-- 3. The Hutt fence: anything any faction holds, the Cartel sells at a markup -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef/heldByFactionCategoryTags[not(li='HuttCartel')]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/ResearchProjectDef/heldByFactionCategoryTags[not(li='HuttCartel')]</xpath>
+      <value>
+        <li>HuttCartel</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

@@ -83,7 +83,7 @@
 
     <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
     <configurationListOrderPriority>-96</configurationListOrderPriority>
-    <categoryTag>Outlander</categoryTag>
+    <categoryTag>WildsteamClan</categoryTag>  <!-- own tag so it can hold techprints (TECHPRINT_FACTION_GATING_1); Patches/FactionCategoryTags_Compat.xml keeps every other Outlander-keyed list treating it as Outlander -->
     <requiredCountAtGameStart>1</requiredCountAtGameStart>
     <techLevel>Industrial</techLevel>
     <humanlikeFaction>true</humanlikeFaction>

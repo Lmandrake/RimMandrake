@@ -81,7 +81,7 @@
 
     <maxConfigurableAtWorldCreation>9999</maxConfigurableAtWorldCreation>
     <configurationListOrderPriority>-94</configurationListOrderPriority>
-    <categoryTag>Outlander</categoryTag>
+    <categoryTag>FreeDroidEnclaves</categoryTag>  <!-- own tag so it can hold techprints (TECHPRINT_FACTION_GATING_1); Patches/FactionCategoryTags_Compat.xml keeps every other Outlander-keyed list treating it as Outlander -->
     <requiredCountAtGameStart>1</requiredCountAtGameStart>
     <techLevel>Spacer</techLevel>
     <!-- R3: explicit, load-bearing. Do not let this fall through to the parent. -->
