@@ -8,9 +8,12 @@
   RSW_Durasteel) rather than the design's conversion recipe: an alias loses nothing and needs no bill. The mod has
   NO mining or deep-drill producer for it in 1.6 (nothing to zero); it appears only in recipe filters/costs, trader
   stock (thingDef), the Binary Star Raiders loot filter and floors. One Replace per stack count (31 counts today):
-  a PatchOperationReplace cannot rename an element and keep its text. A count added by a mod update is left
-  naming the removed def; validation.py (durasteel_outerrim_static) checks the shape, the counts are re-measured by
-  grepping `<OuterRim_Durasteel>N<` in that mod's Defs. Every operation is a no-op when the donor is absent.
+  a PatchOperationReplace cannot rename an element and keep its text. The counts were measured in OuterRim.Core only;
+  the sister mod neronix17.outerrim.furnitureanddecor spends other counts (its doors, beds, tables, dressers), so a
+  final PatchOperationSetName renames EVERY remaining <OuterRim_Durasteel> element to <RSW_Durasteel>, keeping its
+  count. Without it those costList entries named the removed def, stayed null, and Minify Everything's Mass-from-costList
+  postfix NRE'd on the doors: RimWorld reset ModsConfig to Core (FULL_LIST_LOAD_DIAGNOSE_MINIFY_SAYS_NO, 2026-10-10).
+  validation.py (durasteel_outerrim_static) checks the shape, including the catch-all. Every operation is a no-op when the donor is absent.
   LKDurasteel_Ore: not found in the workshop tree (searched 2026-10-10); nothing patched.
 -->
 <Patch>
@@ -178,6 +181,11 @@
     <success>Always</success>
     <xpath>/Defs//thingDef[text()="OuterRim_Durasteel"]</xpath>
     <value><thingDef>RSW_Durasteel</thingDef></value>
+  </Operation>
+  <Operation Class="PatchOperationSetName">
+    <success>Always</success>
+    <xpath>/Defs//OuterRim_Durasteel</xpath>
+    <name>RSW_Durasteel</name>
   </Operation>
   <Operation Class="PatchOperationRemove">
     <success>Always</success>

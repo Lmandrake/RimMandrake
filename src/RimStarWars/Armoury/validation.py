@@ -675,8 +675,8 @@ def durasteel_convert_static(patch_path=None, defs_dir=None):
     have = set(int(n) for x in xps for n in _re.findall(r'KOTOR_AlloyDurasteel\[text\(\)="(\d+)"\]', x))
     for need in sorted(counts - have):
         bad.append("patch has no Replace for stack count %d" % need)
-    joined = "\n".join(xps)
-    for must in ("kotor_IngotDurasteel_recipe", "kotor_IngotDurasteel_10xrecipe", 'defName="KOTOR_AlloyDurasteel"'):
+    joined = "\n".join(xps) + "\n"
+    for must in ("kotor_IngotDurasteel_recipe", "kotor_IngotDurasteel_10xrecipe", 'defName="KOTOR_AlloyDurasteel"', "/Defs//KOTOR_AlloyDurasteel\n"):
         if must not in joined:
             bad.append("patch does not remove %s" % must)
     return bad
@@ -698,8 +698,8 @@ def durasteel_outerrim_static(patch_path=None):
                 bad.append("count %s Replace writes %r" % (m.group(1), o.findtext("value/RSW_Durasteel")))
     if len(seen) < 20:
         bad.append("only %d count Replaces" % len(seen))
-    xs = "\n".join(o.findtext("xpath") or "" for o in root.iter("Operation"))
-    for must in ('li[text()="OuterRim_Durasteel"]', 'thingDef[text()="OuterRim_Durasteel"]', 'defName="OuterRim_Durasteel"'):
+    xs = "\n".join(o.findtext("xpath") or "" for o in root.iter("Operation")) + "\n"
+    for must in ('li[text()="OuterRim_Durasteel"]', 'thingDef[text()="OuterRim_Durasteel"]', 'defName="OuterRim_Durasteel"', '/Defs//OuterRim_Durasteel\n'):
         if must not in xs:
             bad.append("patch lacks " + must)
     return bad
