@@ -135,3 +135,66 @@
 **Open:** Deon.rimtek.core stays unless its other dependants are also retired; that belongs to the framework batch.
 <sub>facts: batch 11 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
 
+### Show Me Your Hands (`mlie.showmeyourhands`)
+**Verdict:** KEEP (MEASURED) · **Fit:** neutral · **Source:** https://github.com/emipa606/ShowMeYourHands (github, MIT)
+**Adds:** content: 187 WHands.ClutterHandsTDef hand-position defs · functionality: draws hands on the weapon when drafted, computing positions from weapon graphics; per-weapon settings; 3 DLLs, Harmony, settings screen, 4 static ctors · art: 10 textures, 5.6 MB on disk
+**Why:** Our Armoury absorbed hand-position data for KotOR and lightsaber weapons as WHands.ClutterHandsTDef defs (3 files under src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/*/ShowMeYourHands/, opened; also gen_additionalmods_absorption.py). Those defs use this mod's def type, so removing it would orphan them. Source verified (emipa606, MIT, pushed 2026-10-08).
+**Problems:** complexity 3 (3 DLLs, Harmony, 4 static ctors) · log_noise 1 (log_chatter_lines 2, 0 errors) · tps 1 (Harmony on draw paths; no tick FLAG) · maintenance 1 (github pushed 2026-10-08, supports 1.6)
+**Holds it in / exit:** Armoury Absorbed_AdditionalMods hand defs of this def type (3 files); show-me-your-tools (meathax) grips tools through it -> None
+**Open:** none
+<sub>facts: batch 11 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Minerals Rock (`zacharyfoster.mineralsrock`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** https://github.com/zachary-foster/MineralsRock (github, NOASSERTION)
+**Adds:** content: 66 defs: 64 ThingDefs (new rock types and mountain forms), a recipe and a tip set; 4 patch ops into 3 BiomeDefs (Core and Odyssey) · functionality: overhauls mountains and rock: varied sizes and shapes, per-rock hardness, yield, beauty, cover; makes Basalt the only rock in volcanic biomes; needs Minerals Framework; Harmony DLL; marked 'version 0.1, under development' · art: 630 textures, 166.9 MB on disk, ~71.4 MB decoded estimate
+**Why:** It rewrites the rock of every map and edits BiomeDefs, which overlaps the biome content we own in mandrake.rm.biomes (brief §2: all biome content is one RM mod). Biome-to-tile assignment and terrain are redone at the single paint pass (CLAUDE.md), so it should be decided there, not now: removing it today would strip the rock Things the current map is built from (placed Things UNMEASURED). It is also v0.1 and logs two Def Errors, so keeping it long-term is a risk. Exit is to either port the rock variety we want into our biome/terrain work or drop it at the paint pass.
+**Problems:** log_noise 1 (2 distinct Def Errors: WeatheredBasalt, PassableBasalt (candidate attribution, def names declared by this mod)) · size 2 (disk_mb 166.85) · memory 2 (texture_decoded_mb_est 71.4) · interaction 2 (patches 3 BiomeDefs, the domain of mandrake.rm.biomes; no patches_ours_refs found) · maintenance 1 (github pushed 2025-09-24; but the mod calls itself version 0.1) · tps 2 (mountain/rock generation and Harmony run per map; UNMEASURED)
+**Holds it in / exit:** placed mountain rock ThingDefs on existing maps: UNMEASURED; hard dependency Minerals Framework (not in this batch) -> unfiled: MINERALS_ROCK_DECISION_AT_PAINT_ONCE_1
+**Open:** Do the two Def Errors drop Basalt defs, and does anything of ours reference Basalt (TheForge sources mention it)? · **Needs owner:** Do you want varied rock shapes and basalt-only volcanic mountains in the game, or should rock stay vanilla/our own?
+<sub>facts: batch 11 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Rimesis (`font.rimesis`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: 46 defs: HediffDef 17, JobDef 4, ThoughtDef 4, GenStepDef 3, RaidStrategyDef 3, ScenPartDef 2, RimHUD values · functionality: turns a few raiders into persistent recurring antagonists who remember wounds and kills and grow in skill, gear and implants; escalating retaliation raids after a faction's last settlement falls; chronicle; Harmony with world-component and comp ticks · art: 7 textures
+**Why:** Its core idea (persistent, remembered enemies) overlaps our mandrake.rm.raidredesigner, whose GameComponent_OldFriends already keeps a scribed roster with grudge and notability (opened its About.xml; item PLOT_MECHANISM_MODS_WAVE_1). But Rimesis also grows raider skills, equipment and implants and adds retaliation raids that continue after a faction is defeated, which is stat growth the arms-race pillar forbids and a pressure source the campaign did not plan (Empire, Hutt ledger, Ta'Baa, brief §1). Nothing of ours depends on it. Kept for now only because the owner may want antagonists; exit is whatever OldFriends grows into.
+**Problems:** tps 2 (world_component_tick, comp_tick and comp_tick_rare FLAGS with Harmony) · interaction 2 (overlaps raidredesigner OldFriends concept; optional hooks to Warcasket, VFE Pirates, Isekai RPG Leveling) · log_noise 0 (log_error_occurrences 0 in the 550-mod session) · maintenance 3 (steam-only, no repo)
+**Holds it in / exit:** no dependants; save data in its world component UNMEASURED -> PLOT_MECHANISM_MODS_WAVE_1 (existing)
+**Open:** Whether its optional Isekai RPG Leveling integration activates depends on brief §5.4 (unresolved). · **Needs owner:** Do you want persistent growing enemy raiders and post-defeat retaliation waves, or should named enemies come only from our own OldFriends system?
+<sub>facts: batch 11 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Simple sidearms (`petetimessix.simplesidearms`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/PeteTimesSix/SimpleSidearms (github-search, )
+**Adds:** content: 34 defs: 21 SidearmWeaponTagMapDefs, 9 ConceptDefs, 3 JobDefs, a ThinkTree; 11 patch ops touching 27 vanilla ThingDefs and 2 ThinkTrees · functionality: pawns carry and swap several weapons (sidearm per range); Harmony DLL with settings screen, 6 static ctors · art: 138 textures, 3.2 MB, ~4.5 MB decoded
+**Why:** Established combat-QoL framework whose behaviour we have no plan to rebuild. Patches only vanilla (patches_mods ludeon.rimworld 26), no patches_ours_refs, no patched_by. Zero log errors. The name-search github hit PeteTimesSix/SimpleSidearms matches the package author but is not verified.
+**Problems:** complexity 3 (Harmony, 6 static ctors, ThinkTree patches) · tps 1 (no tick FLAG; ThinkTree extension) · log_noise 0 (log_error_occurrences 0 in the 550-mod session) · maintenance 2 (source from name search (github-search), last push 2025-08-13)
+**Holds it in / exit:** supplies multi-weapon carry; nothing of ours depends on it -> None
+**Open:** Do our roster pawnkinds assume a single weapon (sidearm rows in JawaFactionRoster are plain loadouts)?
+<sub>facts: batch 11 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### WarCasket Expanded (`aoba.warcasket`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (MEASURED) · **Fit:** resonant · **Source:** none (steam-only, None)
+**Adds:** content: 14 defs: 12 VFEPirates.WarcasketDefs and 2 ThingDefs · functionality: three extra locked-in warcasket armours for VFE Pirates' warcaskets; XML only · art: 69 textures, 1.8 MB, ~28.8 MB decoded
+**Why:** Our Armoury patches these suits (Warcasket_BuildPathCut.xml lists aoba.warcasket in its def table; Warcasket_HazardRetune.xml, Armour_Ratings.xml retune the VFEPirates Warcasket family) and the owner ruled a Jawa may wear only a SALVAGED casket, never a built one. We also ship our own suit class, mandrake.rm.warcasket (WARCASKET_SUIT_CLASS_1), which generalizes the idea without VFE Pirates. This mod's defs depend on VFE Pirates' WarcasketDef type, so it goes only when the Pirates dependency does. Fit is resonant (a scavenged hulk is 'too cool to say no to').
+**Problems:** interaction 2 (our Armoury patches the same Warcaskets (build path cut, hazard retune)) · memory 1 (texture_decoded_mb_est 28.8) · log_noise 0 (log_error_occurrences 0 in the 550-mod session) · maintenance 3 (steam-only)
+**Holds it in / exit:** Armoury Warcasket_*.xml patches (opened Warcasket_BuildPathCut.xml); hard dependency OskarPotocki.VFE.Pirates; worn warcasket frames: UNMEASURED -> WARCASKET_FIRST_SCRIPT_1 / WARCASKET_DEPENDENCY_DOWNLOAD_URL_1 (existing); exit: unfiled: WARCASKET_VFEPIRATES_FREE_1
+**Open:** Do the three added suits need the same BuildPathCut as the base suits? · **Needs owner:** Does the 'no donor art kept' ruling cover these three extra warcasket suits?
+<sub>facts: batch 11 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Big and Small - Weapons (`redmattis.bigweapons`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (MEASURED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: 16 defs: 15 ThingDefs (giant hammers, bows and other oversized weapons) and a SoundDef · functionality: XML only; weapons for Big and Small body-size races; requires Biotech, Harmony and BigSmall.Core · art: 15 textures, ~23.1 MB decoded estimate
+**Why:** We already use it: mandrake.rsw.patches/WeaponTags_Renormalise.xml re-tags BS_GiantHammer, BS_GiantMedievalHammer, BS_GiantPrimitiveBow and others as Neolithic melee/ranged so our large xenotypes (the Gamorrean line, which also rides BigSmall, see StarWarsPatches/Defs/XenotypeDefs/GamorreanXenotype.xml) can be issued them. 15 xpath refs (patched_by) confirm it. The medieval names and art are off-tone, so the exit is the weapons donor retirement with our own RSW_ giant weapons.
+**Problems:** interaction 2 (patched_by_ours_refs 15) · memory 1 (texture_decoded_mb_est 23.1) · log_noise 0 (log_error_occurrences 0 in the 550-mod session) · maintenance 3 (steam-only)
+**Holds it in / exit:** mandrake.rsw.patches: 15 refs in WeaponTags_Renormalise.xml (opened); BigSmall.Core hard dependency (kept for Gamorreans) -> WEAPONS_DONOR_RETIREMENT_1 (existing); unfiled: GIANT_WEAPONS_OWN_ART_1
+**Open:** Are BS_ giant weapons currently issued to any roster pawnkind (check JawaFactionRoster weaponTags)?
+<sub>facts: batch 11 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Show Me Your Tools - Forked (`meathax.showmeyourtools`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** (C# source inside the mod folder) (ships-source, None)
+**Adds:** content: 111 defs: 55 JobToolDefs, 40 FleckDefs, 16 SoundDefs; 50 patch ops into JobToolDefs and 19 EffecterDefs · functionality: animated hand tools and debris while colonists work (pickaxe, welder, sewing needle...), hands via Show Me Your Hands; Harmony and a game-component tick FLAG; 6 static ctors · art: 130 textures, ~6 MB on disk, ~48.5 MB decoded
+**Why:** Cosmetic work animation that passes the ceiling test trivially. It sits on Show Me Your Hands (kept) and patches nals.facialanimation twice, so it belongs to the animated-face stack the owner protects. Ships C# source and has a performance-fork note in its description, and zero log errors. Particle debris per worker is the only plausible TPS cost; per-mod TPS UNMEASURED.
+**Problems:** tps 2 (game_component_tick FLAG plus 40 flecks and effecters per working pawn; UNMEASURED) · memory 1 (texture_decoded_mb_est 48.5) · log_noise 0 (log_error_occurrences 0 in the 550-mod session) · complexity 3 (Harmony, 6 static ctors) · maintenance 2 (source ships in folder, no repo or push date)
+**Holds it in / exit:** builds on mlie.showmeyourhands; patches nals.facialanimation (2 ops) -> None
+**Open:** If the 8-10 TPS session needs trimming, this is a candidate to toggle first (it has per-tool switches).
+<sub>facts: batch 11 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
