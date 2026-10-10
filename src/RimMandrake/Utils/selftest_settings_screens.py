@@ -936,6 +936,9 @@ MODS = {
     "DroidRepairJobs": ("DroidRepairJobsMod.cs", "RimMandrake.Utinni.DroidRepairJobs.csproj", {
         "Repair-job payment": "NextPulse",
     }, ()),
+    "EggReckoning": ("EggReckoningSettings.cs", "RimMandrake.Utinni.EggReckoning.csproj", {
+        "The Reckoning quest": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
