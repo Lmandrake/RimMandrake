@@ -368,7 +368,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Animal/RockTroll/RockTroll</texPath>
+          <texPath>Things/Pawn/Animal/FloodedCanyon/RM_Uttaqar/RM_Uttaqar</texPath>
           <drawSize>2</drawSize>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
@@ -379,7 +379,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Animal/RockTroll/RockTroll</texPath>
+          <texPath>Things/Pawn/Animal/FloodedCanyon/RM_Uttaqar/RM_Uttaqar</texPath>
           <drawSize>3.5</drawSize>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
