@@ -24,7 +24,7 @@ suite.toggles = ["flamePoints", "flecks", "consumeFuel", "qualityScaling", "glow
 STATUES = ("RM_FlameStatue_Ember", "RM_FlameStatue_Dancer", "RM_FlameStatue_Colossus")
 POINTS = {"RM_FlameStatue_Ember": 1, "RM_FlameStatue_Dancer": 3, "RM_FlameStatue_Colossus": 5}
 NEEDLES = ("mandrake.rm.flamestatues", "RM_FlameStatue", "FlameStatues")
-TEX = os.path.join(HERE, "Textures", "Things", "Building", "Art", "RM_FlameStatues", "RM_FlameStatue_Placeholder.png")
+TEX = [os.path.join(HERE, "Textures", "Things", "Building", "Art", "RM_FlameStatues", "%s.png" % d) for d in STATUES]
 
 
 @suite.chain("load_clean")
@@ -93,8 +93,9 @@ def static_checks():
     asm = os.path.join(HERE, "Assemblies")
     if not os.path.isdir(asm) or not any(f.endswith(".dll") for f in os.listdir(asm)):
         bad.append("no DLL in Assemblies")
-    if not os.path.isfile(TEX):
-        bad.append("placeholder texture missing: %s" % TEX)
+    for t in TEX:
+        if not os.path.isfile(t):
+            bad.append("statue texture missing: %s" % t)
     return bad
 
 
