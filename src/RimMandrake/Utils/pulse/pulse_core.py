@@ -49,6 +49,10 @@ STUCK_SECS = 20 * 60             # busy with no transcript growth: dim amber, ne
 RED_WINDOW_SECS = 24 * 3600      # how far back an un-acked red stays on screen
 OOM_CLUSTER_GAP = 30 * 60        # harness kills come in bursts; one incident per burst
 DONE_WINDOW_SECS = 12 * 3600
+SEAT_WAIT_FADE_SECS = 2 * 3600   # "finished, waiting for you" fades to a plain chip after this
+SEATS = ("BENCH", "FOUNDRY")     # the only windows that can ask for the owner
+OLD_ASK_SECS = 3 * 86400         # older asks fold into one "older (N)" line (nothing dropped)
+SHEETS_DIRS = [c / "Transient" / "biome_ffar" for c in CLONES]
 
 # ---------------------------------------------------------------- readers (impure)
 
@@ -193,6 +197,58 @@ def read_bridge(clone: Path = CLONES[0]) -> str | None:
     return None
 
 
+def read_hands(state_dir: Path | None = None) -> list[dict]:
+    """Things agents deliberately handed the owner (`pulse.py hand`). Newest record per id wins."""
+    out: dict[str, dict] = {}
+    for h in read_jsonl_tail((state_dir or STATE_DIR) / "hands.jsonl", 2 << 20):
+        if h.get("id") and h.get("target"):
+            out[h["id"]] = h
+    return list(out.values())
+
+
+def http_ok(url: str, timeout: float = 0.8) -> bool:
+    import urllib.request
+    try:
+        return urllib.request.urlopen(url, timeout=timeout).status == 200
+    except Exception:
+        return False
+
+
+def parse_sheet_log(text: str) -> dict:
+    import re
+    urls = re.findall(r"https?://[^\s]+", text)
+    m = re.search(r"(\d+) rows\s*·\s*(\d+) decided", text)
+    return {"urls": urls, "never_reviewed": "NEVER reviewed" in text,
+            "rows": int(m.group(1)) if m else None}
+
+
+def read_sheets(dirs: list[Path] | None = None, probe=http_ok) -> list[dict]:
+    """Every review-sheet server that answers: the LAST url in its serve.log that returns HTTP 200
+    (SHEETS_INDEX/TONIGHT docs carry stale ports - never read those)."""
+    import re
+    from concurrent.futures import ThreadPoolExecutor
+    logs: dict[str, Path] = {}
+    for d in (dirs if dirs is not None else SHEETS_DIRS):
+        for f in glob.glob(str(d / "*.serve.log")):
+            f = Path(f)
+            if f.name not in logs or f.stat().st_mtime > logs[f.name].stat().st_mtime:
+                logs[f.name] = f
+
+    def one(f: Path):
+        try:
+            info = parse_sheet_log(f.read_text(errors="replace"))
+            mt = f.stat().st_mtime
+        except OSError:
+            return None
+        live = next((u for u in reversed(info["urls"]) if probe(u)), None)
+        if not live:
+            return None
+        name = re.sub(r"_sheet_.*$", "", f.name.replace(".serve.log", ""))
+        return {"name": name, "url": live, "unreviewed": info["never_reviewed"], "rows": info["rows"], "mtime": mt}
+    with ThreadPoolExecutor(8) as ex:
+        return [r for r in ex.map(one, logs.values()) if r]
+
+
 def owner_prompts(since: float, history: Path = HISTORY) -> list[dict]:
     return [h for h in read_jsonl_tail(history, 2 << 20) if (h.get("timestamp") or 0) / 1000 >= since]
 
@@ -202,6 +258,31 @@ def owner_prompts(since: float, history: Path = HISTORY) -> list[dict]:
 def seat_name(s: dict) -> str:
     n = (s.get("name") or "").strip()
     return n[6:] if n.upper().startswith("AGENT ") else (n or f"pid {s.get('pid')}")
+
+
+def seat_key(s: dict) -> str | None:
+    """BENCH / FOUNDRY for a real seat window, else None. A seat is a user-named `AGENT <SEAT>`
+    interactive window; the phone's remote-control child (entrypoint sdk-cli, derived name
+    like `bench-61`) and other projects' windows (HESTIA, EMERGENCY) are never seats."""
+    if s.get("entrypoint") == "sdk-cli":
+        return None
+    n = (s.get("name") or "").strip().upper()
+    if not n.startswith("AGENT "):
+        return None
+    first = n[6:].split()[0] if n[6:].split() else ""
+    return first if first in SEATS else None
+
+
+def chip_label(s: dict) -> str:
+    if s.get("entrypoint") == "sdk-cli":
+        return "phone"
+    n = seat_name(s).lower()
+    return "emerg" if n.startswith("emergency") else n.split()[0] if n.split() else n
+
+
+def nice_id(iid: str) -> str:
+    import re
+    return re.sub(r"_\d+$", "", str(iid or "")).lower().replace("_", " ")
 
 
 def iso_to_epoch(ts: str) -> float:
@@ -228,6 +309,15 @@ def link_for(e: dict) -> dict | None:
     if e.get("sha"):
         sha = str(e["sha"])
         return {"type": "url", "value": GITHUB_COMMIT + sha, "label": sha[:9]}
+    return None
+
+
+def item_link(iid: str, clones: list[Path] | None = None) -> dict | None:
+    """A ruling with no evidence field still opens its item file (needs events carry none)."""
+    for c in (clones if clones is not None else CLONES):
+        f = c / "infrastructure/state/items" / f"{iid}.md"
+        if f.exists():
+            return {"type": "path", "value": win_path(str(f)), "label": "item"}
     return None
 
 
@@ -263,25 +353,36 @@ def classify_sessions(sessions: list[dict], extras: dict, seen: dict, items: dic
         doing = f" · {item}" if item else ""
         status = s.get("status")
         key = f"win:{sid}"
-        if status == "waiting":
+        seat = seat_key(s)
+        win = {"seat": seat, "label": chip_label(s), "upd": upd, "sub": sub}
+        did = (not s.get("startedAt")) or (upd - s["startedAt"] / 1000 > 5)   # acted since launch
+        lead = f"{who} "
+
+        def add(r, state):
+            r["seat"], r["win"] = seat, {**win, "state": state}
+            r["label"] = r["text"][len(lead):] if r["text"].startswith(lead) else r["text"]
+            rows.append(r)
+        if status == "waiting" and seat:
             q = ex.get("question") or s.get("waitingFor") or "waiting"
             label = "asks" if ex.get("question") else "waiting"
-            rows.append(_amber(key, who, f"{who} {label}: {short(q, 90)}", upd, acks, explicit=True,
-                               sub=sub))
-        elif status == "idle" and sub == 0 and now - upd >= IDLE_AMBER_SECS:
-            rows.append(_amber(key, who, f"{who} finished — idle, waiting for you{doing}", upd, acks,
-                               explicit=False, sub=0))
+            add(_amber(key, who, f"{who} {label}: {short(q, 90)}", upd, acks, explicit=True, sub=sub), "run")
+        elif (status == "idle" and sub == 0 and seat and did and now - upd >= IDLE_AMBER_SECS
+              and now - upd < SEAT_WAIT_FADE_SECS):
+            add(_amber(key, who, f"{who} finished — idle, waiting for you{doing}", upd, acks,
+                       explicit=False, sub=0), "idle")
+        elif status == "waiting":      # a non-seat window asking: presence only, never a top row
+            add(_row(key, "idle", who, f"{who} waiting", upd), "idle")
         elif status == "idle" and sub > 0:
-            rows.append(_row(key, "run", who, f"{who} · {sub} agent{'s' * (sub > 1)} working{doing}", upd))
+            add(_row(key, "run", who, f"{who} · {sub} agent{'s' * (sub > 1)} working{doing}", upd), "run")
         elif status == "idle":
-            rows.append(_row(key, "idle", who, f"{who} just finished{doing}", upd))
+            add(_row(key, "idle", who, f"{who} just finished{doing}", upd), "idle")
         else:
             tm = ex.get("transcript_mtime") or upd
             if now - max(tm, upd) >= STUCK_SECS:
-                rows.append(_row(key, "stuck", who, f"{who} busy · no observed progress{doing}", max(tm, upd)))
+                add(_row(key, "stuck", who, f"{who} busy · no observed progress{doing}", max(tm, upd)), "stuck")
             else:
                 extra = f" · {sub} agent{'s' * (sub > 1)}" if sub else ""
-                rows.append(_row(key, "run", who, f"{who} working{doing}{extra}", upd))
+                add(_row(key, "run", who, f"{who} working{doing}{extra}", upd), "run")
     for sid, info in seen.items():
         if sid not in present:      # session file removed: a clean exit, neutral
             new_seen.pop(sid, None)
@@ -490,14 +591,98 @@ def classify_ledger(ledger: list[dict], since: float, now: float) -> tuple[list[
                              f"{iid} {verb}" + (f" — {what}" if what else ""), t, link=link_for(e), src="ledger"))
     for iid, (t, e) in owner_needs.items():
         if now - t < 14 * 86400:
-            rows.append(_row(f"needs:{iid}", "review", (e.get("seat") or "").upper(),
-                             f"{iid} — {short(e.get('reason') or titles.get(iid) or '', 70)}", t,
-                             src="ledger"))
+            reason = short(e.get("reason") or titles.get(iid) or "(no reason recorded on the needs event)", 90)
+            lk = link_for(e) or item_link(iid)
+            r = _row(f"needs:{iid}", "review", (e.get("seat") or "").upper(),
+                     f"{iid} — {reason}", t, link=lk, src="ledger")
+            r.update({"seat": (e.get("seat") or "").upper(), "title": nice_id(iid), "reason": reason})
+            rows.append(r)
     # one line per thing: a later event on the same key replaces the earlier line
     dedup: dict[str, dict] = {}
     for r in rows:
         dedup[r["key"]] = r
     return list(dedup.values()), counts
+
+
+HAND_TYPES = {"png": "image", "jpg": "image", "jpeg": "image", "gif": "image", "webp": "image", "bmp": "image",
+              "html": "page", "htm": "page", "rws": "save", "md": "doc", "txt": "doc", "json": "data"}
+
+
+def hand_type(target: str) -> str:
+    if target.startswith("http"):
+        return "web"
+    ext = target.rsplit(".", 1)[-1].lower() if "." in Path(target).name else ""
+    return HAND_TYPES.get(ext, "folder" if not ext else "file")
+
+
+def classify_looks(hands: list[dict], sheets: list[dict], seen_look: dict, now: float) -> list[dict]:
+    """The "to look at" feed: deliberate hand-offs + live review sheets. An item leaves the list
+    when its open link is clicked (state seen_look[id] = time). A re-handed target comes back."""
+    rows = []
+    for h in hands:
+        if (seen_look.get(h["id"]) or 0) >= (h.get("ts") or 0):
+            continue
+        tgt = h["target"]
+        link = ({"type": "url", "value": tgt, "label": "open"} if tgt.startswith("http")
+                else {"type": "path", "value": h.get("win") or win_path(tgt), "label": "open"})
+        ty = hand_type(tgt)
+        seat = (h.get("seat") or "").upper() or None
+        r = _row(h["id"], "look", seat or "", h.get("title") or Path(tgt).name, h.get("ts") or 0, link=link, src="hands")
+        r.update({"seat": seat, "title": r["text"], "ltype": ty, "seen_id": h["id"],
+                  "thumb": ty == "image" and not tgt.startswith("http")})
+        rows.append(r)
+    unseen = [x for x in sheets if x["unreviewed"] and (seen_look.get("sheet:" + x["name"]) or 0) < x["mtime"]]
+    if unseen:
+        first = min(unseen, key=lambda x: x["name"])   # each click walks to the next unseen sheet
+        r = _row("sheets", "look", "", f"{len(sheets)} biome sheets live", max(x["mtime"] for x in unseen),
+                 link={"type": "url", "value": first["url"], "label": "open"}, src="sheets")
+        r.update({"seat": None, "title": r["text"], "ltype": "sheets", "seen_id": "sheet:" + first["name"],
+                  "unseen": len(unseen), "thumb": False,
+                  "names": ", ".join(sorted(x["name"] for x in unseen))})
+        rows.append(r)
+    return rows
+
+
+def build_chips(rows: list[dict], now: float) -> list[dict]:
+    """The bottom strip: one small chip per thing that is alive, active first, stale last.
+    Seat chips carry the seat; rimworld and mem are plain; idle non-seat windows merge into ONE
+    dim chip at the far right (never a top row)."""
+    chips = []
+    wins = [r for r in rows if r.get("win")]
+    for seat in SEATS:
+        ws = [r["win"] for r in wins if r["win"]["seat"] == seat]
+        if not ws:
+            continue
+        latest = max(w["upd"] for w in ws)
+        agents = sum(w["sub"] for w in ws)
+        st = ("run" if any(w["state"] == "run" for w in ws) else "stuck" if any(w["state"] == "stuck" for w in ws)
+              else "idle" if now - latest < SEAT_WAIT_FADE_SECS else "stale")
+        chips.append({"label": seat.lower(), "seat": seat, "state": st, "n": len(ws), "agents": agents,
+                      "since": latest})
+    for r in rows:
+        if r["key"] == "game":
+            chips.append({"label": "rimworld", "plain": True, "state": r["kind"] if r["kind"] == "run" else "idle",
+                          "since": r["since"], "title": r["text"]})
+        elif r["key"] == "artpipe":
+            chips.append({"label": "artpipe", "seat": "ART", "state": r["kind"] if r["kind"] == "run" else "idle",
+                          "since": r["since"], "title": r["text"]})
+    bad = any(r["kind"] == "red" and not r.get("acked") and r.get("src") in ("memwatch", "kernel") for r in rows)
+    chips.append({"label": "mem", "plain": True, "state": "red" if bad else "idle", "since": 0})
+    others, dim = {}, {}
+    for r in wins:
+        w = r["win"]
+        if w["seat"]:
+            continue
+        (others if w["state"] in ("run", "stuck") else dim).setdefault(w["label"], []).append(w)
+    for lab, ws in others.items():
+        chips.append({"label": lab, "state": "run", "n": len(ws), "since": max(w["upd"] for w in ws)})
+    rank = {"run": 0, "stuck": 0, "red": 0, "idle": 1, "stale": 2}
+    chips.sort(key=lambda c: (rank.get(c["state"], 1), -(c.get("since") or 0)))
+    if dim:
+        chips.append({"label": " · ".join(f"{k}{'×%d' % len(v) if len(v) > 1 else ''}" for k, v in
+                                          sorted(dim.items(), key=lambda kv: -max(w["upd"] for w in kv[1]))),
+                      "state": "dim", "since": max(w["upd"] for v in dim.values() for w in v)})
+    return chips
 
 
 def classify_artpipe(a: dict, now: float, at: float) -> list[dict]:
@@ -524,7 +709,7 @@ def classify_game(probe: dict | None, bridge: str | None, now: float) -> list[di
     return [_row("game", "run" if running else "idle", "GAME", txt, (probe or {}).get("at", now), src="probe")]
 
 
-KIND_ORDER = {"red": 0, "amber": 1, "amber_soft": 2, "warn": 2.5, "stuck": 3, "run": 4, "review": 5, "idle": 6, "done": 7}
+KIND_ORDER = {"red": 0, "amber": 1, "amber_soft": 2, "warn": 2.5, "stuck": 3, "run": 4, "review": 5, "look": 5.5, "idle": 6, "done": 7}
 
 
 def order_rows(rows: list[dict]) -> list[dict]:
@@ -533,12 +718,13 @@ def order_rows(rows: list[dict]) -> list[dict]:
         base = KIND_ORDER.get(r["kind"], 9)
         if r["kind"] in ("red", "amber", "amber_soft", "warn") and acked:
             base = 6.5               # acked alarms drop below the live roster, still visible
-        return (base, -(r.get("since") or 0) if r["kind"] in ("done", "red") else (r.get("since") or 0))
+        return (base, -(r.get("since") or 0) if r["kind"] in ("done", "red", "review", "look") else (r.get("since") or 0))
     return sorted(rows, key=k)
 
 
 def build_strip(rows: list[dict]) -> list[dict]:
-    """The C-style fleet strip: one pill per alarm, a token per running thing, a done tally."""
+    """Alarm pills only (they must survive the widget being collapsed to its strip) + a done tally.
+    Presence lives in `chips`."""
     pills = []
     for r in rows:
         if r.get("acked"):
@@ -546,15 +732,11 @@ def build_strip(rows: list[dict]) -> list[dict]:
         if r["kind"] == "red":
             pills.append({"kind": "red", "text": f"✖ {r['who']} {time.strftime('%H:%M', time.localtime(r['since']))}"})
         elif r["kind"] == "amber":
-            pills.append({"kind": "amber", "text": f"◐ {r['who']}", "since": r["since"]})
+            pills.append({"kind": "amber", "text": f"◐ {r['who']}", "since": r["since"], "seat": r.get("seat")})
         elif r["kind"] == "amber_soft":
-            pills.append({"kind": "amber_soft", "text": f"◑ {r['who']}", "since": r["since"]})
+            pills.append({"kind": "amber_soft", "text": f"◑ {r['who']}", "since": r["since"], "seat": r.get("seat")})
         elif r["kind"] == "warn":
             pills.append({"kind": "warn", "text": "◆ test kill"})
-    for r in rows:
-        if r["kind"] == "run":
-            label = r["who"].lower() if r["who"] in ("ART", "GAME") else r["who"]
-            pills.append({"kind": "run", "text": f"▶ {label}"})
     done = sum(1 for r in rows if r["kind"] == "done")
     if done:
         pills.append({"kind": "done", "text": f"✓ {done}"})
@@ -571,7 +753,8 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
     lrows, counts = classify_ledger(raw.get("ledger", []), since, now)
     oom = (classify_kernel_oom(raw["kernel_oom"], acks, now) if raw.get("kernel_oom") is not None
            else classify_oom(raw.get("memwatch", []), acks, now))   # memwatch only when the kernel log is unreadable
-    rows = (oom + srows + lrows
+    looks = classify_looks(raw.get("hands", []), raw.get("sheets", []), state.get("seen_look", {}), now)
+    rows = (oom + srows + lrows + looks
             + classify_artpipe(raw.get("artpipe", {}), now, raw.get("at", {}).get("artpipe", now))
             + classify_game(raw.get("probe"), raw.get("bridge"), now))
     rows = order_rows(rows)
@@ -589,9 +772,9 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
     new_state = dict(state)
     new_state.update({"seen": seen, "open": open_now})
     snap = {
-        "v": 1, "collected_at": now, "rows": rows, "strip": build_strip(rows), "counts": counts,
+        "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": build_chips(rows, now), "counts": counts,
         "done_since": since, "sources": raw.get("source_status", {}),
         "tally": {k: sum(1 for r in rows if r["kind"] == k and not r.get("acked"))
-                  for k in ("red", "amber", "amber_soft", "warn", "run", "done", "review")},
+                  for k in ("red", "amber", "amber_soft", "warn", "run", "done", "review", "look")},
     }
     return snap, new_state, events

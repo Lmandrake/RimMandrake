@@ -47,7 +47,8 @@ WIDTH = 580
 EXPANDED_H = 400
 COLLAPSED_H = 41
 ALLOWED_PREFIXES = ("D:\\Luke\\dev\\", "C:\\Users\\Mandrake\\", "\\\\wsl.localhost\\Ubuntu\\",
-                    "https://github.com/Lmandrake/", "https://claude.ai/")
+                    "https://github.com/Lmandrake/", "https://claude.ai/",
+                    "http://localhost:", "http://127.0.0.1:")
 
 user32 = ctypes.windll.user32
 dwm = ctypes.windll.dwmapi

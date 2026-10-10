@@ -179,5 +179,104 @@ snap2, st2, ev2 = pc.collect_snapshot({**raw, "sessions": sessions2}, st, NOW + 
 qa = [e for e in ev2 if e["m"] == "alarm_close" and e["kind"] == "amber"]
 check("answering the question logs its age (question-age metric)", qa and qa[0]["age_s"] == 360, ev2)
 
+# --- redesign D (owner cards 2026-10-10) -----------------------------------------------
+def win(sid, name, status, upd_ago, started_ago=None, **kw):
+    s = {"sessionId": sid, "pid": 1, "name": name, "status": status, "kind": "interactive", "alive": True,
+         "statusUpdatedAt": (NOW - upd_ago) * 1000, "entrypoint": "cli", "_file": f"/x/{sid}.json"}
+    if started_ago is not None:
+        s["startedAt"] = (NOW - started_ago) * 1000
+    s.update(kw)
+    return s
+
+D = [win("s1", "AGENT BENCH", "idle", 300, 9000),                       # real seat, did work, 5 min idle
+     win("s2", "AGENT FOUNDRY", "idle", 3 * 3600, 5 * 3600),            # real seat idle 3 h -> faded
+     win("s3", "HESTIA", "idle", 13 * 3600, 13 * 3600),                 # other project
+     win("s4", "EMERGENCY", "idle", 13 * 3600, 13 * 3600),
+     win("s5", "bench-61", "idle", 13 * 3600, 13 * 3600, entrypoint="sdk-cli", nameSource="derived"),
+     win("s6", "AGENT BENCH", "idle", 600, 600.5),                      # seat never used since launch
+     win("s7", "HESTIA", "waiting", 300, 9000, waitingFor="input needed")]
+rows, _, _ = pc.classify_sessions(D, {}, {}, {}, {}, NOW)
+byk = {r["key"]: r for r in rows}
+check("a used seat idle 5 min is soft amber", byk["win:s1"]["kind"] == "amber_soft", byk["win:s1"])
+check("a seat idle 3 h fades to a plain idle chip", byk["win:s2"]["kind"] == "idle", byk["win:s2"])
+check("other-project windows never raise amber", byk["win:s3"]["kind"] == "idle" and byk["win:s4"]["kind"] == "idle")
+check("the phone's remote-control child is never a seat or amber", byk["win:s5"]["kind"] == "idle" and byk["win:s5"]["seat"] is None)
+check("a seat that never did anything since launch is not amber", byk["win:s6"]["kind"] == "idle", byk["win:s6"])
+check("a non-seat window asking is a chip, not an amber row", byk["win:s7"]["kind"] == "idle", byk["win:s7"])
+check("seat_key: only AGENT BENCH/FOUNDRY on a cli entrypoint",
+      [pc.seat_key(w) for w in D[:5]] == ["BENCH", "FOUNDRY", None, None, None], [pc.seat_key(w) for w in D[:5]])
+check("an explicit question from a seat stays amber past the 2 h fade",
+      pc.classify_sessions([win("q", "AGENT FOUNDRY", "waiting", 5 * 3600, 9 * 3600)], {}, {}, {}, {}, NOW)[0][0]["kind"] == "amber")
+check("chip_label names the phone and shortens emergency",
+      pc.chip_label(D[4]) == "phone" and pc.chip_label(D[3]) == "emerg" and pc.chip_label(D[2]) == "hestia")
+
+chips = pc.build_chips(rows + [pc._row("game", "run", "GAME", "RimWorld UP", NOW), pc._row("artpipe", "idle", "ART", "artpipe", NOW)], NOW)
+lab = [c["label"] for c in chips]
+check("active chips sort left, the merged dim chip is last", chips[-1]["state"] == "dim" and chips[0]["state"] == "run", lab)
+check("idle non-seat windows merge into ONE dim chip", sum(1 for c in chips if c["state"] == "dim") == 1
+      and "hestia" in chips[-1]["label"] and "phone" in chips[-1]["label"] and "emerg" in chips[-1]["label"], chips[-1])
+check("the faded foundry seat is a stale chip, sorted after the live one",
+      next(c for c in chips if c["label"] == "foundry")["state"] == "stale"
+      and lab.index("foundry") > lab.index("bench"), lab)
+check("rimworld and mem chips are plain; artpipe is the ART colour",
+      next(c for c in chips if c["label"] == "rimworld")["plain"] and next(c for c in chips if c["label"] == "mem")["plain"]
+      and next(c for c in chips if c["label"] == "artpipe")["seat"] == "ART")
+red_oom = pc._row("oom:x", "red", "BENCH", "OOM", NOW, src="kernel")
+check("an unacked OOM turns the mem chip red",
+      next(c for c in pc.build_chips([red_oom], NOW) if c["label"] == "mem")["state"] == "red")
+
+# rulings: newest first, titles, never a seat word in the label
+r2 = pc.classify_ledger([le("needs", "OLDER_ASK_1", 9 * 86400, to="OWNER", reason="old"),
+                         le("needs", "NEWER_ASK_1", 100, to="OWNER", reason="fresh")], NOW - 3600, NOW)[0]
+ordr = [r["key"] for r in pc.order_rows(r2)]
+check("rulings sort newest first", ordr == ["needs:NEWER_ASK_1", "needs:OLDER_ASK_1"], ordr)
+check("a ruling carries a readable title, its seat and a reason",
+      r2[1]["title"] in ("newer ask", "older ask") and r2[0]["seat"] == "FOUNDRY" and r2[0]["reason"], r2)
+check("a needs event with no reason says so rather than going blank",
+      "no reason" in pc.classify_ledger([le("needs", "BLANK_1", 5, to="OWNER")], NOW - 3600, NOW)[0][0]["reason"])
+
+# look feed: hands, seen, re-hand, sheets
+H = [{"id": "hand:aa", "target": "/home/mandrake/rm/bench/Transient/x.png", "title": "contact sheet", "seat": "BENCH", "ts": NOW - 50},
+     {"id": "hand:bb", "target": "https://example.org/p", "title": "a page", "seat": "foundry", "ts": NOW - 100}]
+lr = {r["key"]: r for r in pc.classify_looks(H, [], {}, NOW)}
+check("a handed image is a look row with a thumbnail and a native-path link",
+      lr["hand:aa"]["thumb"] and lr["hand:aa"]["link"]["value"].startswith("\\\\wsl.localhost\\Ubuntu\\home"), lr["hand:aa"])
+check("a handed url opens as a url and is not thumbnailed", lr["hand:bb"]["link"]["type"] == "url" and not lr["hand:bb"]["thumb"])
+check("hand seat normalises to upper case (colour key)", lr["hand:bb"]["seat"] == "FOUNDRY")
+check("opening (seen) removes it from the list", "hand:aa" not in pc.classify_looks(H, [], {"hand:aa": NOW}, NOW) and
+      "hand:aa" not in {r["key"] for r in pc.classify_looks(H, [], {"hand:aa": NOW}, NOW)})
+check("handing the same target AGAIN after it was seen brings it back",
+      "hand:aa" in {r["key"] for r in pc.classify_looks([{**H[0], "ts": NOW + 5}], [], {"hand:aa": NOW}, NOW)})
+SH = [{"name": "a", "url": "http://localhost:1/?t=x", "unreviewed": True, "rows": 3, "mtime": NOW - 500},
+      {"name": "b", "url": "http://localhost:2/?t=y", "unreviewed": True, "rows": 3, "mtime": NOW - 400},
+      {"name": "c", "url": "http://localhost:3/?t=z", "unreviewed": False, "rows": 3, "mtime": NOW - 300}]
+sr = [r for r in pc.classify_looks([], SH, {}, NOW) if r["key"] == "sheets"][0]
+check("sheets roll into one row: 3 live, 2 unseen, opens the first unseen",
+      sr["title"].startswith("3 biome") and sr["unseen"] == 2 and sr["link"]["value"].endswith("t=x"), sr)
+sr2 = [r for r in pc.classify_looks([], SH, {"sheet:a": NOW}, NOW) if r["key"] == "sheets"][0]
+check("opening a sheet marks it seen; the next click walks to the next one", sr2["unseen"] == 1 and sr2["link"]["value"].endswith("t=y"), sr2)
+check("no unseen sheets -> no sheet row", not [r for r in pc.classify_looks([], SH, {"sheet:a": NOW, "sheet:b": NOW}, NOW) if r["key"] == "sheets"])
+info = pc.parse_sheet_log("  sheet  x\n             24 rows · 24 decided · NEVER reviewed (pre-fill only)\n  serving    http://localhost:35397/?t=Q\n"
+                          "  serving    http://localhost:40000/?t=R\n")
+check("serve.log parse: all urls in order, never-reviewed flag, row count",
+      info["urls"][-1].endswith("40000/?t=R") and info["never_reviewed"] and info["rows"] == 24, info)
+with tempfile.TemporaryDirectory() as d:
+    Path(d, "p_sheet_2026-10-05.serve.log").write_text("1 rows · 0 decided · NEVER reviewed\n  serving http://localhost:1/?t=a\n  serving http://localhost:2/?t=b\n")
+    Path(d, "dead_sheet_2026-10-05.serve.log").write_text("  serving http://localhost:9/?t=a\n")
+    got = pc.read_sheets([Path(d)], probe=lambda u: u.startswith("http://localhost:2/"))
+    check("read_sheets takes the LAST url that answers and drops dead servers", len(got) == 1 and got[0]["url"].endswith(":2/?t=b") and got[0]["name"] == "p", got)
+    sanity = pc.read_sheets([Path(d)], probe=lambda u: True)
+    check("sanity probe: with everything answering both servers are found", len(sanity) == 2, sanity)
+
+# hand verb writes a record the reader sees
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import pulse as pl  # noqa: E402
+rec = pl.hand("Transient/some.png", "a title", "bench")
+check("hand verb records seat upper-cased and a native path", rec["seat"] == "BENCH" and rec["win"] and rec["title"] == "a title", rec)
+check("the daemon reader sees a handed record", any(h["id"] == rec["id"] for h in pc.read_hands()))
+check("snapshot v2 carries chips and look rows",
+      {"chips"} <= set(pc.collect_snapshot({**raw, "hands": [{**H[0], "ts": NOW - 5}]}, {}, NOW)[0]) and
+      any(r["kind"] == "look" for r in pc.collect_snapshot({**raw, "hands": [{**H[0], "ts": NOW - 5}]}, {}, NOW)[0]["rows"]))
+
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)
