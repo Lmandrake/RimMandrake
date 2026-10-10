@@ -382,6 +382,29 @@ def reader_checks():
     check(T.sustained_from_rows(dropped) == "unknown", "MUST 7: a seq gap (dropped rows) breaks the streak")
     check(T.sustained_from_rows(mono_run(6)) == "low", "MUST 7: six abutting low windows ARE sustained low")
 
+    # MUST 8: two game processes are analysed SEPARATELY
+    now8 = t15 + 5000
+    b_fresh = [dict(sample(now8 - 5 * (12 - i), 100 + i, ratio=1.0, session="bbbb"), monoStart=50.0 + 5 * i,
+                    monoEnd=55.0 + 5 * i, mono=55.0 + 5 * i, game=1) for i in range(12)]
+    a_stale = [dict(sample(now8 - 200 - 5 * (8 - i), 10 + i, ratio=0.3, session="aaaa"), monoStart=900.0 + 5 * i,
+                    monoEnd=905.0 + 5 * i, mono=905.0 + 5 * i, game=1) for i in range(8)]
+    for r in b_fresh + a_stale:
+        T.place(r)
+    mixed_rows = b_fresh + a_stale       # session order: the reader groups by session start, B first
+    sm = T.summarise(mixed_rows, now=now8)
+    v = T.verdict(sm)
+    check(v[0] == "OK" and sm.get("session", "").startswith("bbbb"),
+          "MUST 8: a fresh healthy session is judged on its OWN windows, not the stale session listed after it: %r %r"
+          % (v, sm.get("session")))
+    check(len(sm.get("sessions") or []) == 2 and any(x["session"] == "aaaa" and x["coverage"] == "STALE"
+                                                    for x in sm.get("sessions") or []),
+          "MUST 8: every session in the window is summarised on its own: %r" % sm.get("sessions"))
+    tl8 = T.timeline(sorted(mixed_rows, key=lambda r: r["_o"] if "_o" in r else 0), now8 - 300, now8)
+    check(all(h["to"] >= h["from"] for h in tl8["holes"]),
+          "MUST 8: overlapping sessions never produce backwards coverage holes: %r" % tl8["holes"])
+    check([r["_t"] for r in tl8["rows"]] == sorted(r["_t"] for r in tl8["rows"]),
+          "MUST 8: the merged timeline is chronological")
+
     # verdicts: coverage separate from performance
     now = t15 + 1000
     fresh_low = [sample(now - 5 * (8 - i), i, ratio=0.3) for i in range(8)]
