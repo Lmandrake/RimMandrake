@@ -25605,7 +25605,7 @@
         <things>
           <li>
             <defName>GravshipHull</defName>
-            <stuffDef>KOTOR_AlloyBronzium</stuffDef>
+            <stuffDef>RSW_Durasteel</stuffDef>
             <rotInteger>0</rotInteger>
             <quality IsNull="True" />
             <plantToGrowDef IsNull="True" />
@@ -25640,7 +25640,7 @@
         <things>
           <li>
             <defName>GravshipHull</defName>
-            <stuffDef>KOTOR_AlloyBronzium</stuffDef>
+            <stuffDef>RSW_Durasteel</stuffDef>
             <rotInteger>0</rotInteger>
             <quality IsNull="True" />
             <plantToGrowDef IsNull="True" />
@@ -35533,7 +35533,7 @@
         <things>
           <li>
             <defName>GravshipHull</defName>
-            <stuffDef>KOTOR_AlloyBronzium</stuffDef>
+            <stuffDef>RSW_Durasteel</stuffDef>
             <rotInteger>0</rotInteger>
             <quality IsNull="True" />
             <plantToGrowDef IsNull="True" />
@@ -35550,7 +35550,7 @@
         <things>
           <li>
             <defName>GravshipHull</defName>
-            <stuffDef>KOTOR_AlloyBronzium</stuffDef>
+            <stuffDef>RSW_Durasteel</stuffDef>
             <rotInteger>0</rotInteger>
             <quality IsNull="True" />
             <plantToGrowDef IsNull="True" />

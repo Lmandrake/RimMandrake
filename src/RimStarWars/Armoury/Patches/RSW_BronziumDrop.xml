@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_BronziumDrop.xml          mandrake.rsw.armoury
+
+  BRONZIUM_DROP_1 (owner: "Too close to just bronze. Lame. Drop from game."; design
+  canon_materials_design_2026-10-09.md section 3.10). Bronzium exists at runtime only from the donor
+  guy762.mm.kotorcore / guy762.mm.kotorweapons, so this patch strips it there. The Armoury's absorbed copies
+  (Defs/Absorbed_KotorCore, DEPLOY_HOLD) have the same defs deleted in source. Old saves load
+  KOTOR_AlloyBronzium as RSW_Durasteel through RM_DefAliasDef (EnvironmentalHazards RM_MaterialMerges_Aliases.xml).
+
+  Order matters: the junk-pile yield and the recipe are removed before the defs they name. Every operation is a
+  no-op when its target is absent (PatchOperationRemove with success=Always), so the patch is safe without the donor.
+  PROVISIONAL: removing the donor defs by patch is the in-repo substitute for Cherry Picker entries; the Cherry
+  Picker config (not in repo) is owed a matching cut of the same six defNames if the owner prefers that route.
+-->
+<Patch>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="KOTOR_MineableJunk"]//li[mineableThing="KotORChunk_bronzium"]</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/RecipeDef[defName="KotORRecipe_BronziumFromSlag"]</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="KotORChunk_bronzium" or defName="KOTOR_MineableBronzium" or defName="KOTOR_AlloyBronzium" or defName="guy762_LgtBattleArmor_bronzium"]</xpath>
+  </Operation>
+</Patch>
