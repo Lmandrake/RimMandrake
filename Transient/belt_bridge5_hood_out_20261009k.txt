@@ -1,0 +1,30 @@
+terrain {"success": true, "message": "Applied 1/1 op(s): 81 cell(s) changed, 0 already correct.", "layer": "top", "opsRequested": 1, "opsApplied": 1, "cellsRequested": 81, "cellsChanged": 81, "cellsAlreadyCor
+spawn True Human670076 "Spawned 1/1 RSW_RimMandrakeJawa_Kind in faction PlayerColony."
+gear {"success": false, "message": "Object reference not set to an instance of an object", "exception": "System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref E87341D0]\n  at Verse.Pawn_EquipmentTracker.Notify_EquipmentAdded (Verse.ThingWithComps eq) [0x0000c] in <61
+job {"success": false, "accepted": true, "interruptibleBefore": true, "requestedJobDef": "GoSwimming", "afterJobDef": "Wait", "nowRunningRequested": false, "ticksElapsed": 0, "pausedDuringWait": true, "queueLength": 0, "note": "Job was accepted (enqueued) but curJob after 60 tick(s) is 'Wait', not 'GoSwimming' - it may have finished, failed immediately, or be queued rather than current. \u26a0\ufe0f T
+t 0 {'x': 106, 'z': 60} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+t 1 {'x': 106, 'z': 60} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+t 2 {'x': 106, 'z': 61} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+t 3 {'x': 106, 'z': 61} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+t 4 {'x': 106, 'z': 61} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+t 5 {'x': 106, 'z': 61} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+end {"success": true, "action": "end", "scope": "map", "notes": ["Duration = TicksPassed - it expires next tick. GameCondition has no EndNow()."], "endsNextTick": true, "gamePaused": true, "listCaveat": "
+conds []
+temp {"success": false, "message": "Give a cell as 'x,z'.", "operation": {"OperationId": "op_715970800ad84e96bd0eb8bf44b3e3c8", "Status": "Completed", "Success": true, "DurationMs": 43, "Warnings": [{"Code": "arguments.unknown", "Message": "Ignored unknown argument(s) x, z. Valid parameters: cell, pawn."
+job {"success": false, "accepted": true, "interruptibleBefore": true, "beforeJobDef": "SEX_Converse", "requestedJobDef": "GoSwimming", "afterJobDef": "Wait", "nowRunningRequested": false, "ticksElapsed": 0, "pausedDuringWait": true, "queueLength": 0, "note": "Job was accepted (enqueued) but curJob after
+t 0 {'x': 106, 'z': 61} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+t 1 {'x': 106, 'z': 61} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+t 2 {'x': 106, 'z': 61} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+t 3 {'x': 106, 'z': 61} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+t 4 {'x': 106, 'z': 61} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+t 5 {'x': 106, 'z': 61} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+end {"success": false, "message": "'Flashstorm' is not active on this map.", "operation": {"OperationId": "op_d2ccc5762f714787aaa9821e7a330a1a", "Status": "Completed", "Success": true, "DurationMs": 42}, 
+conds []
+temp {"success": false, "message": "Give a cell as 'x,z'.", "operation": {"OperationId": "op_f8aef752b7124871915ecf75812b1a6e", "Status": "Completed", "Success": true, "DurationMs": 37, "Warnings": [{"Code": "arguments.unknown", "Message": "Ignored unknown argument(s) x, z. Valid parameters: cell, pawn."
+job {"success": true, "accepted": true, "interruptibleBefore": true, "beforeJobDef": "Wait", "requestedJobDef": "GoSwimming", "afterJobDef": "GoSwimming", "nowRunningRequested": true, "ticksElapsed": 0, "pausedDuringWait": true, "queueLength": 0, "operation": {"OperationId": "op_315bfdae1bbc4992bc748782
+t 0 {'x': 100, 'z': 60} hooded=7 swimmingHooded=1 pawn=Cait swimming=True canDraw=False flags=0 toggle=True
+t 1 {'x': 100, 'z': 60} hooded=7 swimmingHooded=1 pawn=Cait swimming=True canDraw=False flags=0 toggle=True
+t 2 {'x': 100, 'z': 60} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+t 3 {'x': 100, 'z': 60} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+t 4 {'x': 100, 'z': 60} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
+t 5 {'x': 100, 'z': 60} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True
