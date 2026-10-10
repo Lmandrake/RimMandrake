@@ -92,6 +92,10 @@ namespace JawaBench.BridgeTools
         internal static A.Meter M(string id) => Meters[id];
         private static long Now() => Stopwatch.GetTimestamp();
         private static void Cost(string id, long t0) { try { Meters[id].Add(Stopwatch.GetTimestamp() - t0); } catch { } }
+        // Scope hooks (prefix ... finalizer around the original): charge only the three hook bodies, never the wrapped
+        // original. Measured live 2026-10-10: charging prefix-start..finalizer-end put TryExecute and GeneratePawn
+        // themselves into aware.incident-journal (mean 438 ms) and aware.origin-generation (mean 43 ms).
+        private static void CostTicks(string id, long ticks) { try { Meters[id].Add(ticks); } catch { } }
         private static int Epoch() { try { return Rec.EpochFor(Current.Game); } catch { return Rec.Epoch; } }
         private static int Tick() { try { return Find.TickManager != null ? Find.TickManager.TicksGame : -1; } catch { return -1; } }
 
@@ -222,7 +226,7 @@ namespace JawaBench.BridgeTools
         }
 
         // ------------------------------------------------------------------ incident journal
-        internal sealed class IncState { internal A.Token Adopted, Mine; internal A.IncidentRec Rec; internal long T0; }
+        internal sealed class IncState { internal A.Token Adopted, Mine; internal A.IncidentRec Rec; internal long T0, Pre, Post; }
 
         private static void IncPre(IncidentWorker __instance, IncidentParms parms, out IncState __state)
         {
@@ -262,10 +266,12 @@ namespace JawaBench.BridgeTools
                 }
             }
             catch (Exception e) { Rec.Fault(e); }
+            finally { if (__state != null) __state.Pre = Now() - t0; }
         }
 
         private static void IncPost(bool __result, bool __runOriginal, IncState __state)
         {
+            long p0 = Now();
             try
             {
                 var r = __state?.Rec;
@@ -275,10 +281,12 @@ namespace JawaBench.BridgeTools
                 if (!__runOriginal) { r.WorkerEntered = "unknown"; r.WorkerEnteredWhy = "the original was skipped by another prefix; whatever ran instead is not observed"; }
             }
             catch (Exception e) { Rec.Fault(e); }
+            finally { if (__state != null) __state.Post = Now() - p0; }
         }
 
         private static void IncFin(Exception __exception, IncState __state)
         {
+            long f0 = Now();
             try
             {
                 if (__state == null) return;
@@ -288,7 +296,7 @@ namespace JawaBench.BridgeTools
                 A.Scope.Pop(__state.Mine);
                 A.Scope.Pop(__state.Adopted);
                 if (r != null) DiskRow("incident", IncidentFields(r));
-                Cost(A.MIncident, __state.T0);
+                CostTicks(A.MIncident, __state.Pre + __state.Post + (Now() - f0));
             }
             catch (Exception e) { Rec.Fault(e); }
         }
@@ -306,7 +314,7 @@ namespace JawaBench.BridgeTools
         }
 
         // ------------------------------------------------------------------ generation tag
-        internal sealed class GenState { internal long T0; internal int NextId = -1; internal A.Ctx Ctx; internal int Epoch; }
+        internal sealed class GenState { internal long T0, Pre, Post; internal int NextId = -1; internal A.Ctx Ctx; internal int Epoch; }
 
         private static void GenPre(out GenState __state)
         {
@@ -324,10 +332,12 @@ namespace JawaBench.BridgeTools
                 __state = st;
             }
             catch (Exception e) { Rec.Fault(e); }
+            finally { if (__state != null) __state.Pre = Now() - t0; }
         }
 
         private static void GenPost(Pawn __result, bool __runOriginal, GenState __state)
         {
+            long p0 = Now();
             try
             {
                 if (__state == null || __result == null) return;
@@ -341,9 +351,10 @@ namespace JawaBench.BridgeTools
                 BumpOpen(false);
             }
             catch (Exception e) { Rec.Fault(e); }
+            finally { if (__state != null) __state.Post = Now() - p0; }
         }
 
-        private static void GenFin(GenState __state) { if (__state != null) Cost(A.MGeneration, __state.T0); }
+        private static void GenFin(GenState __state) { if (__state != null) CostTicks(A.MGeneration, __state.Pre + __state.Post); }
 
         // ------------------------------------------------------------------ spawn observation
         private static void SpawnPost(Pawn __instance, Map map, bool respawningAfterLoad, bool __runOriginal)
