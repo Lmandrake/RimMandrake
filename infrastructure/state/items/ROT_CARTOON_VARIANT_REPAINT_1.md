@@ -10,7 +10,10 @@ replacements. Folders: `src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant
   Arpeau_B, BMT_VioletWimpleA/B, CavernalMorel_A/B, Nuitae_B.
 - 22 artpipe jobs filed, `rot_<subject>_v3a|b`, no reference (restyle), `install_to` = `<folder>/<folder>_p3a|b.png`.
 
-## owed
+## done 2026-10-10
+- 22 v3 renders installed as *_p3a|b.png; ShinecapImmature a/b + ArpeauGreen A/B retired. rot_agarilux_v3 uninstalled (no Rot def).
+
+## owed (superseded; remaining: agarilux def)
 - **Collect** each finished job into its folder through the ledger (`artpipe_state.py collect --from-jobs`
   / `art.py install`), look at it beside the kept variant, reject anything cartoonish.
 - **Retire on install, not before** (no painted variant remains in these folders yet):
