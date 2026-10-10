@@ -1,0 +1,17 @@
+== run3 (A3,A4 + confounded A1) ==
+BEFORE p1 {('Scratch', 'Arm'): 6.108914, ('MissingBodyPart', 'Kidney'): 1.0, ('Cut', 'Arm'): 0.6108914, ('Crack', 'Brain'): 2.0} p2 {('Cut', 'Arm'): 1.0}
+p1 inside: stored)", "Bacta: 30 / 30", "Target fuel level: 30", "Healing disabled in mod settings"]}]
+p1 healing-off 900->2400 {('Scratch', 'Arm'): 6.108914, ('MissingBodyPart', 'Kidney'): 1.0, ('Cut', 'Arm'): 0.464277446, ('Crack', 'Brain'): 1.853386} {('Scratch', 'Arm'): 6.108914, ('MissingBodyPart', 'Kidney'): 1.0, ('Cut', 'Arm'): 0.17104955, ('Crack', 'Brain'): 1.853386}
+p2@1500 {('Cut', 'Arm'): 0.4899999} p1 healing-on {('Scratch', 'Arm'): 5.598914, ('MissingBodyPart', 'Kidney'): 1.0, ('Crack', 'Brain'): 1.41354418}
+p2@3300 {}
+RESULT BACTA_TANK_CORE_1/A1 FAIL clean=True kidney_still_missing=True same-pawn per-1500t: cut_heal on=0.17 off=0.29 ; brain_drop on=0.44 off=0.00
+RESULT BACTA_TANK_CORE_1/A3 PASS permanent cut 1.0 -> 0.4899999(@1500) -> None(@3300); rate 24/day predicts ~2500 ticks
+t4 inspect StarWars.Bacta.Building_BactaTank", "inspect": ["Power needed: 20 W (200 W when active)", "Grid excess: -570 W (553 Wd stored)", "Bacta: 0 / 30", "Out of bacta (30x bacta)", "Target fuel level: 30"]}]
+t4 after 2nd pawn StarWars.Bacta.Building_BactaTank", "inspect": ["Power needed: 20 W (200 W when active)", "Grid excess: -570 W (550 Wd stored)", "Bacta: 0 / 30", "Out of bacta (30x bacta)", "Target fuel level: 30"]}]
+RESULT BACTA_TANK_CORE_1/A4 PASS fuel 30.0 -> 17.5(@300) -> 0.0(@1800); second pawn refused at zero: True
+== A1b brain-only same-pawn ==
+START {('Stab', 'Leg'): 3.0, ('Cataract', 'Eye'): 0.001, ('HearingLoss', 'Ear'): 0.001, ('MissingBodyPart', 'Kidney'): 1.0, ('Crack', 'Brain'): 3.0}
+inside:  "Grid excess: -690 W (648 Wd stored)", "Bacta: 30 / 30", "Target fuel level: 30", "Healing disabled in mod settings"]}]
+OFF  900->2400 {('Stab', 'Leg'): 3.0, ('Cataract', 'Eye'): 0.001, ('HearingLoss', 'Ear'): 0.001, ('MissingBodyPart', 'Kidney'): 1.0, ('Crack', 'Brain'): 2.80000019} {('Stab', 'Leg'): 3.0, ('Cataract', 'Eye'): 0.001, ('HearingLoss', 'Ear'): 0.001, ('MissingBodyPart', 'Kidney'): 1.0, ('Crack', 'Brain'): 2.44000053}
+ON  2400->3900 {('Stab', 'Leg'): 2.93, ('Cataract', 'Eye'): 0.001, ('HearingLoss', 'Ear'): 0.001, ('MissingBodyPart', 'Kidney'): 1.0, ('Crack', 'Brain'): 2.20000076} |  when active)", "Grid excess: -690 W (612 Wd stored)", "Bacta: 30 / 30", "Target fuel level: 30", "Immersing: Nicole"]}]
+RESULT BACTA_TANK_CORE_1/A1b PASS kidney_still_missing=True brain per-1500t: off=0.360 on=0.240
