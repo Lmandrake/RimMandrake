@@ -349,8 +349,10 @@ namespace JawaBench.BridgeTools
                 var windowIdsBefore = SnapshotWindowIds();
 
                 bool executed;
+                var awareness = JawaBenchAwareness.BridgeBegin("jawa/raid_shape_fire");
                 try { executed = IncidentDefOf.RaidEnemy.Worker.TryExecute(parms); }
                 catch (Exception e) { return Fail("TryExecute threw: " + e.GetType().Name + ": " + e.Message); }
+                finally { JawaBenchAwareness.BridgeEnd(awareness); }
 
                 var windowsOpened = WindowsOpenedSince(windowIdsBefore);
 

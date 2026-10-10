@@ -421,7 +421,8 @@ def place(r, ep=None):
 
 
 KINDS = {"sample", "incident", "session", "marker", "game", "menu", "context", "save", "silence", "resumed",
-         "shutdown", "shutdown-complete", "error", "log", "observer", "dropped"}
+         "shutdown", "shutdown-complete", "error", "log", "observer", "dropped",
+         "awareness"}   # map awareness rows (incident called / pawn arrival), only while armed: design/RimMandrake/map_awareness.md
 STATES = {STATE_RUN, STATE_PAUSED, STATE_MIXED, STATE_STALL, STATE_LONGEVENT}
 SESSION_RE = re.compile(r"^[0-9a-f]{1,64}$")
 NONNEG_SAMPLE = ("dReal", "runS", "pausedS", "explainedS", "stallS", "ambigS", "expected", "simMs", "gapMaxMs", "fps",
@@ -1093,6 +1094,8 @@ def render_row(r, tz):
             r.get("phase"), r.get("speed"), r.get("mult"), r.get("multAfter", r.get("mult")), r.get("heapMB"))
     if k == "silence":
         return "%s  SILENCE  main thread silent %ss, phase %s (watchdog thread)" % (t, r.get("silentS"), r.get("phase"))
+    if k == "awareness":
+        return "%s  AWARE    %s: %s" % (t, r.get("what"), (r.get("statement") or "")[:160])
     return "%s  %-8s %s" % (t, (k or "?").upper(), json.dumps({kk: v for kk, v in r.items()
                                                               if not kk.startswith("_") and kk not in ("utc", "kind")})[:160])
 

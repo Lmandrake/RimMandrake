@@ -2048,6 +2048,9 @@ namespace JawaBench.BridgeTools
                 var rows = new List<object>();
                 var landed = 0;
                 var substituted = 0;
+                // map awareness: every pawn generated/spawned in this loop carries `bridge:jawa/spawn_pawn` in its chain
+                var awareness = JawaBenchAwareness.BridgeBegin("jawa/spawn_pawn");
+                try {
                 for (var i = 0; i < count; i++)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -2171,6 +2174,7 @@ namespace JawaBench.BridgeTools
                         xenotypeApplied = xenoOk
                     });
                 }
+                } finally { JawaBenchAwareness.BridgeEnd(awareness); }
 
                 // ⚠️ This used to be `rows.Count > 0`. Rows are added for pawns that
                 // THREW during generation too, so a batch in which every single pawn
@@ -4218,7 +4222,9 @@ namespace JawaBench.BridgeTools
                 Quest made;
                 try
                 {
-                    made = QuestUtility.GenerateQuestAndMakeAvailable(qdef, usePoints);
+                    var awareness = JawaBenchAwareness.BridgeBegin("jawa/fire_quest");
+                    try { made = QuestUtility.GenerateQuestAndMakeAvailable(qdef, usePoints); }
+                    finally { JawaBenchAwareness.BridgeEnd(awareness); }
                 }
                 catch (Exception e)
                 {
@@ -4355,7 +4361,12 @@ namespace JawaBench.BridgeTools
                 var fired = false;
                 // FIRE_RAID_REPORTS_MODAL_1 - diff the window stack across TryExecute.
                 var windowIdsBefore = SnapshotWindowIds();
-                if (!dryRun) fired = idef.Worker.TryExecute(parms);
+                if (!dryRun)
+                {
+                    var awareness = JawaBenchAwareness.BridgeBegin("jawa/fire_incident");
+                    try { fired = idef.Worker.TryExecute(parms); }
+                    finally { JawaBenchAwareness.BridgeEnd(awareness); }
+                }
                 var windowsOpened = dryRun ? new List<object>() : WindowsOpenedSince(windowIdsBefore);
                 bool blockedByDialog = fired && windowsOpened.Count > 0;
                 string swallowNote = DialogSwallowNote(windowsOpened, fired);

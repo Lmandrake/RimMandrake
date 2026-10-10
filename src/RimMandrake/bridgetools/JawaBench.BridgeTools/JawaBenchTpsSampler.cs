@@ -686,6 +686,10 @@ namespace JawaBench.BridgeTools
         {
             try { JawaBenchTpsSampler.Install("bridge-registration"); }
             catch { }
+            // map awareness (PAWN_ORIGIN_BUILD_SAY_ORIGIN_UNKNOWN): same startup path, so the first map's generation is
+            // recorded without a bridge call. Never throws (this constructor must not).
+            try { JawaBenchAwareness.Install("bridge-registration"); }
+            catch { }
         }
 
 #if JAWA_GM_TOOLS

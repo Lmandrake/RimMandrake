@@ -150,7 +150,7 @@ namespace JawaBench.BridgeTools
             }
         }
 
-        internal static bool IsBulk(string kind) => kind == "sample" || kind == "context" || kind == "marker";
+        internal static bool IsBulk(string kind) => kind == "sample" || kind == "context" || kind == "marker" || kind == "awareness";
 
         private static long _dropFirst = -1, _dropLast = -1, _dropPending;
         internal static long DroppedCritical;
