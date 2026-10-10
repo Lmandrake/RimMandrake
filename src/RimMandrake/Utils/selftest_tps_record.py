@@ -369,7 +369,7 @@ def reader_checks():
 
 # names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
 # from the harness is a failure, not a pass.
-CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting"]
+CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes"]
 
 
 def unit_checks(lines):

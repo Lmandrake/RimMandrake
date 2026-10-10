@@ -131,11 +131,11 @@ namespace JawaBench.BridgeTools
         // ---- main-thread state ------------------------------------------------------------------
         private static readonly M.FrameAccumulator Acc = new M.FrameAccumulator();
         private static Game _game;
-        private static bool _inMenu, _prevFrameWaiting;
-        private static double _prevRootPre, _explained, _explainedAtPre, _leStart, _leDur, _saveStart, _saveTotal;
+        private static bool _prevFrameWaiting;
+        internal static readonly JawaBenchTpsLifecycle Life = new JawaBenchTpsLifecycle(JawaBenchTpsProfiler.Stages);
+        private static double _prevRootPre, _explained, _explainedAtPre, _leStart, _leDur, _saveStart;
         private static double _tmuStart, _lastSim, _lastContext = -1, _lastMarker;
         private static int _ticksPre, _gcAtPre;
-        private static string _loadName = "";
 
         internal static void Install(string startedBy)
         {
@@ -324,28 +324,30 @@ namespace JawaBench.BridgeTools
                 if (_prevFrameWaiting) _explained += now - _prevRootPre;
                 _prevRootPre = now;
                 Game game = Current.Game;
-                if (game == null || Current.ProgramState != ProgramState.Playing)
+                bool playing = game != null && Current.ProgramState == ProgramState.Playing;
+                var ev = Life.OnFrame(game, playing, now);
+                if (ev != JawaBenchTpsLifecycle.Event.None) WD.LastSave = "";     // game-scoped (MUST 6)
+                if (ev == JawaBenchTpsLifecycle.Event.Menu)
                 {
-                    if (!_inMenu && game == null)
-                    {
-                        _inMenu = true;
-                        _game = null;
-                        Acc.Reset();
-                        BreakStreak();
-                        W.Enqueue("menu", "\"programState\":\"" + Current.ProgramState + "\"");
-                    }
+                    _game = null;
+                    Acc.Reset();
+                    BreakStreak();
+                    W.Enqueue("menu", "\"programState\":\"" + Current.ProgramState + "\"");
+                }
+                if (!playing)
+                {
                     if (game == null) WD.Set(WD.PMenu);
                     return;
                 }
-                if (!ReferenceEquals(game, _game))
+                if (ev == JawaBenchTpsLifecycle.Event.Game)
                 {
                     _game = game;
-                    _inMenu = false;
                     Acc.Reset();
                     BreakStreak();
                     _lastContext = -1;
                     var tm = game.tickManager;
-                    W.Enqueue("game", "\"save\":" + W.Json(_loadName) + ",\"ticksGame\":" + (tm != null ? tm.TicksGame : -1) +
+                    W.Enqueue("game", "\"game\":" + Life.GameSeq + ",\"save\":" + W.Json(Life.SaveName) +
+                                      ",\"ticksGame\":" + (tm != null ? tm.TicksGame : -1) +
                                       ",\"maps\":" + (game.Maps != null ? game.Maps.Count : 0));
                     Marker("game");
                 }
@@ -397,14 +399,14 @@ namespace JawaBench.BridgeTools
         private static void SavePostfix(string fileName)
         {
             double d = WD.Now - _saveStart;
-            _saveTotal += d;
+            Life.OnSave(d);
             WD.Exit();
             if (RuntimeError == null) W.Enqueue("save", "\"file\":" + W.Json(fileName) + ",\"saveS\":" + M.F(d, 3));
         }
 
         private static void LoadPrefix(string saveFileName)
         {
-            _loadName = saveFileName ?? "";
+            Life.OnLoadRequested(saveFileName, WD.Now);
             WD.Set(WD.PLoad);
         }
 
@@ -456,7 +458,7 @@ namespace JawaBench.BridgeTools
         {
             Incidents++;
             string quiet = Interlocked.Exchange(ref WD.QuietPhase, null);
-            W.Enqueue("incident", M.IncidentFields(g, quiet, _lastSim, GC.CollectionCount(0) - _gcAtPre, _saveTotal,
+            W.Enqueue("incident", "\"game\":" + Life.GameSeq + "," + M.IncidentFields(g, quiet, _lastSim, GC.CollectionCount(0) - _gcAtPre, Life.SaveTotal,
                                                    WD.LastSave, WD.ContextFields()));
         }
 
@@ -467,6 +469,7 @@ namespace JawaBench.BridgeTools
             Windows++;
             var sb = new StringBuilder(900);
             sb.Append(M.WindowFields(w))
+              .Append(",\"game\":").Append(Life.GameSeq)
               .Append(",\"speed\":\"").Append(tm.CurTimeSpeed.ToString()).Append('"')
               .Append(",\"tg\":").Append(tm.TicksGame)
               .Append(",\"tickMs\":").Append(M.F(tm.MeanTickTime, 3))
@@ -516,7 +519,7 @@ namespace JawaBench.BridgeTools
                 sb.Append(",\"workingSetMB\":").Append(M.F(p.WorkingSet64 / 1048576.0, 1));
             }
             catch { }
-            sb.Append(",\"save\":").Append(W.Json(_loadName));
+            sb.Append(",\"save\":").Append(W.Json(Life.SaveName));
             W.Enqueue("context", sb.ToString());
         }
 

@@ -95,6 +95,19 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
   86400 s path needs a prefix that threw; the guard is kept because skip rules are version behaviour.
 - GREEN: `C# units: 4 run, 0 failed`; companion builds.
 
+### MUST 6 — game-scoped state reset, game identity persisted
+- Seam: the sampler's menu/game transition logic moved unchanged into the Verse-free
+  `JawaBenchTpsLifecycle.cs` (harness-compiled).
+- RED (`T_LifecycleScopes`): `menu clears the game's save label: 'Ashkarr_A' | a NEW game never inherits the
+  previous load's save name: 'Ashkarr_A' | cumulative save time is per game: 4.5 | attribution from game 1
+  does not reach game 2's first window: 0.2 s carried | a stale (1 h old) load request does not label a new
+  game: 'Broken_Save'`.
+- FIX: `LoadGame` is a REQUEST (it only queues a long event — RimSage) consumed by the next game reaching
+  Playing within 20 min; the menu clears the label; every game/menu boundary resets the save total, the
+  profiler totals and worst ticks (`JawaBenchTpsStages.Reset`) and `WD.LastSave`; `game` (1, 2, … per
+  process) rides on `game`, `sample` and `incident` rows.
+- GREEN: `C# units: 5 run, 0 failed`; companion builds.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)
