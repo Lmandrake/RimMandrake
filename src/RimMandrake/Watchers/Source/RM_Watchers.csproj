@@ -47,7 +47,8 @@
     <Compile Include="RM_CompWatcherStalk.cs" />
     <Compile Include="RM_JobDriver_WatcherStalk.cs" />
     <Compile Include="RM_WatcherStalkRender.cs" />
-    <Compile Include="RM_WatcherStalkSettings.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>

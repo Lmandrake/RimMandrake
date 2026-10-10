@@ -25,9 +25,9 @@ namespace RimMandrake.Watchers
             compClass = typeof(RM_CompWatcherStalk);
         }
 
-        public int RiseTicks => RM_WatcherStalkSettings.stalkAnimation && riseAnimation != null ? riseAnimation.durationTicks : 0;
+        public int RiseTicks => RM_WatchersSettings.watcherStalkAnimation && riseAnimation != null ? riseAnimation.durationTicks : 0;
 
-        public int RetractTicks => RM_WatcherStalkSettings.stalkAnimation && retractAnimation != null ? retractAnimation.durationTicks : 0;
+        public int RetractTicks => RM_WatchersSettings.watcherStalkAnimation && retractAnimation != null ? retractAnimation.durationTicks : 0;
     }
 
     /// <summary>Holds the stalk phase (read by the render workers each draw) and the eased head angle. The watch job sets the phase and
@@ -78,7 +78,7 @@ namespace RimMandrake.Watchers
         {
             if (parent is Pawn pawn && pawn.Spawned)
             {
-                pawn.Drawer.renderer.SetAnimation(RM_WatcherStalkSettings.stalkAnimation ? anim : null);
+                pawn.Drawer.renderer.SetAnimation(RM_WatchersSettings.watcherStalkAnimation ? anim : null);
             }
         }
 
@@ -118,7 +118,7 @@ namespace RimMandrake.Watchers
                 targetAngle = RM_WatcherStalkKernel.IdleTarget(angle, Rand.Value);
                 idleNextTick = now + Props.idlePauseTicks.RandomInRange;
             }
-            float step = RM_WatcherStalkSettings.smoothTracking ? Props.turnDegreesPerTick : 0f;
+            float step = RM_WatchersSettings.watcherStalkSmoothTracking ? Props.turnDegreesPerTick : 0f;
             angle = RM_WatcherStalkKernel.Ease(angle, targetAngle, step);
             int oct = Octant;
             if (oct != lastOctant)

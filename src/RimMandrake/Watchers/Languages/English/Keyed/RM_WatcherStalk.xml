@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- WATCHER_CREATURES_MOD_1: the Rust Cathedral Watcher's own settings section (RM_WatcherStalkSettings). -->
+<!-- WATCHER_CREATURES_MOD_1: the Rust Cathedral Watcher's own settings section (now in RM_WatchersSettings). -->
 <LanguageData>
   <RM_WatcherStalk_Setting_Header>The Watcher (Rust Cathedral)</RM_WatcherStalk_Setting_Header>
   <RM_WatcherStalk_Setting_Enabled>Watcher camera stalks</RM_WatcherStalk_Setting_Enabled>

@@ -759,6 +759,13 @@ MODS = {
     "LoreStages": ("RM_LoreStagesMod.cs", "RM_LoreStages.csproj", {
         "Staged lore text": "Now",
     }, ()),
+    "Watchers": ("RM_WatchersMod.cs", "RM_Watchers.csproj", {
+        "Mod switch": "Now",
+        "Watcher behaviour": "Now",
+        "Other things they hide from": "Now",
+        "Flinch, hiding and crowd size": "Now",
+        "The Watcher (Rust Cathedral)": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
