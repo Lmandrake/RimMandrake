@@ -135,7 +135,6 @@
       <GravlitePanel>30</GravlitePanel>
     </killedLeavings>
     <recipes>
-      <li>Make_PlasteelGF</li>
       <li>Make_ComponentIndustrialGF</li>
       <li>Make_ComponentSpacerGF</li>
       <li>Make_GravlitePanelGF</li>
@@ -144,57 +143,6 @@
   </ThingDef>
 
   <!-- recipes, verbatim from the donor -->
-  <RecipeDef>
-    <defName>Make_PlasteelGF</defName>
-    <label>make plasteel</label>
-    <description>Make a plasteel.</description>
-    <jobString>Compressing plasteel.</jobString>
-    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
-    <effectWorking>GravForgePulse</effectWorking>
-    <soundWorking>Recipe_Machining</soundWorking>
-    <workAmount>9000</workAmount>
-    <ingredients>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>Steel</li>
-          </thingDefs>
-        </filter>
-        <count>50</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>Chemfuel</li>
-          </thingDefs>
-        </filter>
-        <count>50</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>Silver</li>
-          </thingDefs>
-        </filter>
-        <count>3.5</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <thingDefs>
-        <li>Steel</li>
-        <li>Chemfuel</li>
-        <li>Silver</li>
-      </thingDefs>
-    </fixedIngredientFilter>
-    <products>
-      <Plasteel>35</Plasteel>
-    </products>
-    <skillRequirements>
-      <Crafting>6</Crafting>
-    </skillRequirements>
-    <workSkill>Crafting</workSkill>
-    <displayPriority>5</displayPriority>
-  </RecipeDef>
 
   <RecipeDef>
     <defName>Make_ComponentIndustrialGF</defName>

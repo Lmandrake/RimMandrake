@@ -159,8 +159,13 @@ def main():
     import tempfile, shutil
     check("durasteel convert: clean tree", V.durasteel_convert_static() == [], V.durasteel_convert_static())
     check("outerrim patch: clean", V.durasteel_outerrim_static() == [], V.durasteel_outerrim_static())
+    check("plasteel cut: clean", V.plasteel_cut_static() == [], V.plasteel_cut_static())
     tmp = tempfile.mkdtemp()
     try:
+        open(os.path.join(tmp, "r.xml"), "w").write("<Defs><RecipeDef><defName>Make_PlasteelGF</defName></RecipeDef></Defs>")
+        open(os.path.join(tmp, "empty.xml"), "w").write("<Patch/>")
+        got = V.plasteel_cut_static([tmp], os.path.join(tmp, "empty.xml"))
+        check("plasteel cut: planted surviving recipe and unnamed donor recipes caught", len(got) == 3, got)
         open(os.path.join(tmp, "p.xml"), "w").write('<Patch><Operation Class="PatchOperationReplace"><xpath>/Defs//OuterRim_Durasteel[text()="30"]</xpath>'
                                                     '<value><RSW_Durasteel>31</RSW_Durasteel></value></Operation></Patch>')
         got = V.durasteel_outerrim_static(os.path.join(tmp, "p.xml"))

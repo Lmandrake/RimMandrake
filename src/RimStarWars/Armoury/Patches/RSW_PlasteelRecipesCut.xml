@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_PlasteelRecipesCut.xml          mandrake.rsw.armoury
+
+  CANON_MATERIALS_BUILD_1 L4 (design canon_materials_design_2026-10-09.md section 3.3): the only recipe that makes
+  Plasteel from other materials is the alloy forge's (SHIP_ALLOY_FORGE_1). This removes the donor
+  guy762.mm.kotorcore recipes kotor_Plasteel_recipe and kotor_Plasteel_10xrecipe (plastoid + steel at the plasma
+  furnace); the Armoury's absorbed copies are cut in source. Make_PlasteelGF (GravForge) is cut in
+  src/RimUtinni/ResearchRetag (RUT_Ported_GravForge.xml), and the donor als.gravtech copy is retired by that mod.
+  No-op when the donor is absent (success=Always).
+  NOT done here, still owed under L4: Rimefeller UncuredPlasteel route check (needs the Rimefeller defs read), the
+  Odyssey asteroid MineablePlasteel / MineableComponentsIndustrial allowlist patch, plasteel salvage re-melt.
+-->
+<Patch>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/RecipeDef[defName="kotor_Plasteel_recipe" or defName="kotor_Plasteel_10xrecipe"]</xpath>
+  </Operation>
+</Patch>
