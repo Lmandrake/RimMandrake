@@ -19,7 +19,9 @@
 //     * time spent in an IDENTIFIED long event or save (measured by the sampler and passed in as
 //       `explained`) is excluded from expected ticks and reported separately;
 //     * UNEXPLAINED gaps are NEVER subtracted: a recovered 90 s stall stays in expected ticks,
-//       drags the ratio down, and is returned as an incident (no 60 s discard any more);
+//       drags the ratio down, and is returned as an incident (no 60 s discard any more) - including a
+//       gap across a pause/speed change, which counts at the HIGH end of the two states (expectedLo /
+//       ratioHi carry the other end);
 //     * a multiplier change inside the tick loop (pre != post) and a state change across a long
 //       blocked gap are AMBIGUOUS and counted as such; a window that is mostly ambiguous is "mixed".
 //
@@ -103,7 +105,7 @@ namespace JawaBench.BridgeTools
 
         public sealed class Window
         {
-            public double DReal, RunS, PausedS, ExplainedS, StallS, AmbigS, Expected, GapMaxS, SimS, SimMaxS;
+            public double DReal, RunS, PausedS, ExplainedS, StallS, AmbigS, Expected, ExpectedLo, GapMaxS, SimS, SimMaxS;
             public int DTicks, Frames, PausedFrames, Transitions, CapFrames, BudgetFrames, GapsDropped;
             public double MultMin, MultMax, MultEnd;
             public bool PausedEnd;
@@ -113,6 +115,9 @@ namespace JawaBench.BridgeTools
             public double TpsWall => DReal > 0 ? DTicks / DReal : 0.0;      // raw: ticks per wall second
             public double Target => RunS > 0 ? Expected / RunS : 0.0;       // time-weighted 60 x mult
             public double Ratio => Expected > 0 ? DTicks / Expected : double.NaN;
+            /// <summary>Upper ratio bound: ticks over the LOW end of the expected range (an unexplained gap across
+            /// a state change has an uncertain multiplier; Expected takes the high end, never omits it).</summary>
+            public double RatioHi => ExpectedLo > 0 ? DTicks / ExpectedLo : double.NaN;
             public double PausedFrac => DReal > 0 ? PausedS / DReal : 0.0;
             public double SimShare => DReal > 0 ? SimS / DReal : 0.0;
 
@@ -176,12 +181,31 @@ namespace JawaBench.BridgeTools
                 if (dt > w.GapMaxS) w.GapMaxS = dt;
                 if (transition) w.Transitions++;
                 if (gap) w.StallS += r;
-                if (gap && transition) w.AmbigS += r;
+                if (gap && transition)
+                {
+                    // MUST 5: the state changed somewhere inside an unexplained gap, so which multiplier (or pause)
+                    // governed it is unknown. The time is KEPT: expected takes the HIGH end of the two states,
+                    // ExpectedLo the low end, and the seconds are ambiguous. Never dropped from the denominator.
+                    w.AmbigS += r;
+                    double before = _pausedPrev ? 0.0 : _multPrev, after = paused ? 0.0 : mult;
+                    double hi = Math.Max(before, after), lo = Math.Min(before, after);
+                    if (hi > 0)
+                    {
+                        w.RunS += r;
+                        w.Expected += TicksPerSecondAtSpeed1 * hi * r;
+                        w.ExpectedLo += TicksPerSecondAtSpeed1 * lo * r;
+                        _lastRunDt = r;
+                        if (hi < w.MultMin) w.MultMin = hi;
+                        if (hi > w.MultMax) w.MultMax = hi;
+                    }
+                    else { w.PausedS += r; w.PausedFrames++; }
+                }
                 else if (paused) { w.PausedS += r; w.PausedFrames++; }
                 else
                 {
                     w.RunS += r;
                     w.Expected += TicksPerSecondAtSpeed1 * mult * r;
+                    w.ExpectedLo += TicksPerSecondAtSpeed1 * mult * r;
                     _lastRunDt = r;
                     if (mult < w.MultMin) w.MultMin = mult;
                     if (mult > w.MultMax) w.MultMax = mult;
@@ -305,6 +329,8 @@ namespace JawaBench.BridgeTools
               .Append(",\"tpsWall\":").Append(F(w.TpsWall, 2))
               .Append(",\"target\":").Append(F(w.Target, 2))
               .Append(",\"expected\":").Append(F(w.Expected, 1))
+              .Append(",\"expectedLo\":").Append(F(w.ExpectedLo, 1))
+              .Append(",\"ratioHi\":").Append(F(w.RatioHi, 3))
               .Append(",\"runS\":").Append(F(w.RunS, 3))
               .Append(",\"pausedS\":").Append(F(w.PausedS, 3))
               .Append(",\"explainedS\":").Append(F(w.ExplainedS, 3))

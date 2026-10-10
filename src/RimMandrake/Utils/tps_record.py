@@ -88,7 +88,7 @@ class Window:
     """Port of JawaBenchTpsMath.Window."""
     def __init__(self):
         self.dReal = self.runS = self.pausedS = self.explainedS = self.stallS = self.ambigS = 0.0
-        self.expected = self.gapMaxS = self.simS = self.simMaxS = 0.0
+        self.expected = self.expectedLo = self.gapMaxS = self.simS = self.simMaxS = 0.0
         self.dTicks = self.frames = self.pausedFrames = self.transitions = 0
         self.capFrames = self.budgetFrames = self.gapsDropped = 0
         self.multMin, self.multMax, self.multEnd = float("inf"), float("-inf"), 0.0
@@ -99,6 +99,7 @@ class Window:
     tpsWall = property(lambda s: s.dTicks / s.dReal if s.dReal > 0 else 0.0)
     target = property(lambda s: s.expected / s.runS if s.runS > 0 else 0.0)
     ratio = property(lambda s: s.dTicks / s.expected if s.expected > 0 else None)
+    ratioHi = property(lambda s: s.dTicks / s.expectedLo if s.expectedLo > 0 else None)
     pausedFrac = property(lambda s: s.pausedS / s.dReal if s.dReal > 0 else 0.0)
     simShare = property(lambda s: s.simS / s.dReal if s.dReal > 0 else 0.0)
 
@@ -151,12 +152,24 @@ class FrameAccumulator:
             w.stallS += r
         if gap and transition:
             w.ambigS += r
+            before, after = (0.0 if self._paused_prev else self._mult_prev), (0.0 if paused else mult)
+            hi, lo = max(before, after), min(before, after)
+            if hi > 0:
+                w.runS += r
+                w.expected += TICKS_PER_SECOND_AT_SPEED1 * hi * r
+                w.expectedLo += TICKS_PER_SECOND_AT_SPEED1 * lo * r
+                self._last_run_dt = r
+                w.multMin, w.multMax = min(w.multMin, hi), max(w.multMax, hi)
+            else:
+                w.pausedS += r
+                w.pausedFrames += 1
         elif paused:
             w.pausedS += r
             w.pausedFrames += 1
         else:
             w.runS += r
             w.expected += TICKS_PER_SECOND_AT_SPEED1 * mult * r
+            w.expectedLo += TICKS_PER_SECOND_AT_SPEED1 * mult * r
             self._last_run_dt = r
             w.multMin, w.multMax = min(w.multMin, mult), max(w.multMax, mult)
         g = None
@@ -205,7 +218,8 @@ def window_fields(w):
     fps = w.frames / w.dReal if w.dReal > 0 else 0.0
     parts = [('"state":"%s"' % w.state), '"dReal":' + F(w.dReal, 3), '"dTicks":%d' % w.dTicks,
              '"ratio":' + F(w.ratio, 3), '"tps":' + F(w.tps, 2), '"tpsWall":' + F(w.tpsWall, 2),
-             '"target":' + F(w.target, 2), '"expected":' + F(w.expected, 1), '"runS":' + F(w.runS, 3),
+             '"target":' + F(w.target, 2), '"expected":' + F(w.expected, 1), '"expectedLo":' + F(w.expectedLo, 1),
+             '"ratioHi":' + F(w.ratioHi, 3), '"runS":' + F(w.runS, 3),
              '"pausedS":' + F(w.pausedS, 3), '"explainedS":' + F(w.explainedS, 3), '"stallS":' + F(w.stallS, 3),
              '"ambigS":' + F(w.ambigS, 3), '"pausedFrac":' + F(w.pausedFrac, 3), '"multMin":' + F(w.multMin, 2),
              '"multMax":' + F(w.multMax, 2), '"mult":' + F(w.multEnd, 2), '"transitions":%d' % w.transitions,

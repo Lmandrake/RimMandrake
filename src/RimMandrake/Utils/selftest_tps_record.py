@@ -79,6 +79,10 @@ def traces():
     s = Sim(); s.run(1.0, mult=3); s.frame(90.0, False, 3); s.run(5.2, mult=3); out["stall90"] = s.rows
     s = Sim(); s.run(1.0, paused=True); s.frame(15.0, True, 1); s.run(1.0, paused=True); out["pausedstall"] = s.rows
     s = Sim(); s.run(10.1, mult=3, factor=0.5); out["slow"] = s.rows
+    # MUST 5: a 90 s unexplained gap ACROSS a speed change (1x before, 3x after) must stay in expected ticks
+    s = Sim(); s.run(1.0, mult=1); s.frame(90.0, False, 3); s.run(5.2, mult=3); out["stallflip"] = s.rows
+    # ... and across a pause -> run change
+    s = Sim(); s.run(1.0, paused=True); s.frame(90.0, False, 1); s.run(5.2); out["stallunpause"] = s.rows
     return out
 
 
@@ -129,6 +133,14 @@ def trace_checks(tr):
           "a freeze while paused is still a stall incident: %r %r" % (g, w))
     w = W("slow")
     check(w and all(x["state"] == "run" and abs(x["ratio"] - 0.5) < 0.05 for x in w), "half-speed ticking -> 0.5: %r" % w)
+    w = W("stallflip")
+    check(w and w[0]["state"] == "stall" and w[0]["runS"] > 90 and w[0]["ratio"] is not None and w[0]["ratio"] < 0.05
+          and w[0].get("expectedLo") is not None and w[0]["expectedLo"] <= w[0]["expected"],
+          "MUST 5: a 90 s gap across a speed change stays in expected ticks (ratio < 0.05, range lo..hi): %r" % w[:1])
+    w = W("stallunpause")
+    check(w and w[0]["state"] == "stall" and w[0]["ratio"] is not None and w[0]["ratio"] < 0.05
+          and w[0].get("ratioHi") is None,
+          "MUST 5: a 90 s gap across pause->run keeps the gap (expected hi), lo = 0 so ratioHi is null: %r" % w[:1])
     return res
 
 
