@@ -5179,3 +5179,8 @@
 {"seat":"FOUNDRY","event":"lease","id":"ART_TEXTURE_GAPS_FOLLOWUP_1","action":"release","token":"FOUNDRY.pid93857.2ab076fb","ts":"2026-10-10T10:12:58Z","tsn":1791627178921911960}
 {"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-10T11:07:47Z","tsn":1791630467088153390}
 {"seat":"FOUNDRY","event":"lease","id":"PIT_SUPERDEEP_COLLAPSE_1","action":"take","token":"FOUNDRY.pid12779.8081d9c6","expires":"2026-10-10T11:52:47Z","ts":"2026-10-10T11:07:47Z","tsn":1791630467885219684}
+{"seat":"FOUNDRY","event":"lease","id":"PIT_SUPERDEEP_COLLAPSE_1","action":"take","token":"FOUNDRY.pid13158.aa426816","expires":"2026-10-10T14:24:38Z","ts":"2026-10-10T13:39:38Z","tsn":1791639579001856570}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY full belt: acceptance sweep","ts":"2026-10-10T13:39:43Z","tsn":1791639583451565965}
+{"seat":"FOUNDRY","event":"lease","id":"MINERALS_WHERE_THEY_BELONG_1","action":"take","token":"FOUNDRY.pid13161.15b27441","expires":"2026-10-10T14:24:49Z","ts":"2026-10-10T13:39:49Z","tsn":1791639589228964690}
+{"seat":"FOUNDRY","event":"lease","id":"ART_TEXTURE_GAPS_FOLLOWUP_1","action":"take","token":"FOUNDRY.pid13170.b48b4489","expires":"2026-10-10T14:25:07Z","ts":"2026-10-10T13:40:07Z","tsn":1791639607856727369}
+{"seat":"FOUNDRY","event":"reconcile","id":"ART_TEXTURE_GAPS_FOLLOWUP_1","verdict":"partial","sha":"9cf566e55 d1e9e5dad","remaining":"KOTOR small_dyeable crystal: own render owed; RM_Braskeen (REDO v2) and RM_Ismerrow (install A?) await owner pick","ts":"2026-10-10T13:40:59Z","tsn":1791639659584454828}
