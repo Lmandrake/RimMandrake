@@ -60,6 +60,120 @@ def extract(text):
     return out
 
 
+_STOP = {"rimworld", "rw", "mod", "mods", "the", "for", "and", "of", "a", "an", "continued", "unofficial", "updated",
+         "redux", "edition", "framework_", "1", "16", "15", "14", "v1"}
+_SIDECAR = {"patch", "patches", "compat", "compatibility", "checker", "addon", "addons", "fix", "fixes", "translation",
+            "translations", "template", "example", "examples", "tools", "test", "tests", "localization"}
+_LIBS = {("pardeike", "harmony"): "brrainz.harmony", ("pardeike", "harmonyrimworld"): "brrainz.harmony"}
+
+
+def name_tokens(s):
+    """'RimworldHugsLib-Checker 1.6' -> {'hugs','lib','checker'}. Pure; selftested."""
+    s = re.sub(r"([a-z0-9])([A-Z])", r"\1 \2", s or "")
+    s = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1 \2", s)
+    toks = {t for t in re.split(r"[^a-z0-9]+", s.lower()) if t and t not in _STOP and not t.isdigit()}
+    return {t[:-1] if len(t) > 3 and t.endswith("s") and not t.endswith("ss") else t for t in toks}
+
+
+def resembles(mod_name, repo):
+    """True when a repo NAME plausibly is this mod: token Jaccard >= 0.5 and no sidecar word (patch, checker,
+    compat, ...) the mod name lacks. Pure; selftested."""
+    a, b = name_tokens(mod_name), name_tokens(repo)
+    if not a or not b:
+        return False
+    if (b - a) & _SIDECAR:
+        return False
+    return len(a & b) / float(len(a | b)) >= 0.5
+
+
+def reject_reason(pid, mod_name, owner, repo, via_search=False):
+    """None when a candidate repo may stand as this mod's source, else why not. Pure; selftested.
+    Rejects shared-library repos named in READMEs/descriptions (Harmony, Publicise, MonoMod), wiki repos, and
+    (for search hits) repos whose name does not resemble the mod's."""
+    o, r = (owner or "").lower(), (repo or "").lower()
+    lib = _LIBS.get((o, r))
+    if lib and pid != lib:
+        return "shared library repo %s/%s, not this mod (only %s is Harmony)" % (owner, repo, lib)
+    if o == "rwmt" and r == "publicise":
+        return "build tool repo rwmt/Publicise, not this mod"
+    if o == "monomod":
+        return "MonoMod library repo, not this mod"
+    if "wiki" in r:
+        return "wiki repo, not source"
+    if via_search and not resembles(mod_name, repo):
+        return "search hit whose repo name does not resemble the mod name %r" % mod_name
+    return None
+
+
+SEARCHED_WHERE = "about.url, about.description, README files, .git/config"
+
+
+def reselect(rec, pid, mod_name, cls, ships_source, search_hits=None):
+    """Re-judge a cached sources.json record offline (no network) -> a corrected copy. Pure; selftested.
+    Every candidate gets verify.status REJECTED + reject_reason when it fails reject_reason(); selection falls
+    through to the next candidate, to the mod's own shipped source, to the next resembling search hit, or to
+    steam-only/none. A NOT_FOUND repo is never the source. Found-nothing is INFERRED, never MEASURED."""
+    import copy
+    rec = copy.deepcopy(rec or {"packageId": pid, "candidates": []})
+    if cls in ("OURS", "CORE_DLC"):
+        return rec
+    for k in ("source_url", "license", "last_push", "archived", "verify_status", "search_note", "note"):
+        rec.pop(k, None)
+    rec.update(source_url=None, source_kind="none", license=None, last_push=None, archived=None, confidence="INFERRED")
+    rejected = []
+    for c in rec.get("candidates") or []:
+        if not c.get("repo"):
+            continue
+        why = reject_reason(pid, mod_name, c["owner"], c["repo"])
+        if why:
+            c["verify"] = dict(c.get("verify") or {}, status="REJECTED", reject_reason=why)
+            rejected.append("%s/%s" % (c["owner"], c["repo"]))
+    for c in rec.get("candidates") or []:
+        v = c.get("verify") or {}
+        if c.get("host") == "github.com" and c.get("repo") and v.get("status") == "VERIFIED":
+            rec.update(source_url=v.get("html_url"), source_kind="github", license=v.get("license"),
+                       last_push=v.get("pushed_at"), archived=v.get("archived"), confidence="MEASURED")
+            break
+    if rec["source_url"] is None:
+        for c in rec.get("candidates") or []:
+            st = (c.get("verify") or {}).get("status")
+            if c.get("repo") and st not in ("REJECTED", "NOT_FOUND"):
+                rec["source_url"] = "https://%s/%s/%s" % (c["host"], c["owner"], c["repo"])
+                rec["source_kind"] = "github" if c["host"] == "github.com" else (
+                    "gitlab" if c["host"] == "gitlab.com" else "other-git")
+                rec["confidence"] = "UNVERIFIED" if st in (None, "UNVERIFIED") else "INFERRED"
+                rec["verify_status"] = st or "NOT_ASKED (budget)"
+                break
+    nf = ["%s/%s" % (c["owner"], c["repo"]) for c in rec.get("candidates") or []
+          if c.get("repo") and (c.get("verify") or {}).get("status") == "NOT_FOUND"]
+    if rec["source_url"] is None and ships_source:
+        rec.update(source_kind="ships-source", source_url="(C# source inside the mod folder)", confidence="MEASURED")
+    searched = SEARCHED_WHERE
+    if rec["source_url"] is None and search_hits is not None:
+        searched += ", gh search for the mod name"
+        for h in search_hits:
+            repo = (h.get("fullName") or "/").split("/", 1)[1]
+            why = reject_reason(pid, mod_name, (h.get("fullName") or "/").split("/")[0], repo, via_search=True)
+            if why:
+                rejected.append("%s (search)" % h.get("fullName"))
+                continue
+            rec.update(source_kind="github-search", source_url=h.get("url"),
+                       license=(h.get("license") or {}).get("key") if isinstance(h.get("license"), dict) else None,
+                       last_push=h.get("pushedAt"), archived=h.get("isArchived"), confidence="INFERRED",
+                       search_note="search hit whose repo name resembles the mod NAME; not proof - confirm before relying on it")
+            break
+    if rec["source_url"] is None:
+        rec["source_kind"] = "steam-only" if rec.get("steam_url") else "none"
+        rec["confidence"] = "INFERRED"
+        rec["source_note"] = "no source found (searched: %s)%s%s" % (
+            searched, "; NOT_FOUND: " + ", ".join(nf) if nf else "",
+            "; REJECTED: " + ", ".join(rejected) if rejected else "")
+    elif rejected:
+        rec["source_note"] = "REJECTED: " + ", ".join(rejected)
+    rec["rejected"] = rejected
+    return rec
+
+
 def git_remote(folder):
     p = os.path.join(folder or "", ".git", "config")
     try:

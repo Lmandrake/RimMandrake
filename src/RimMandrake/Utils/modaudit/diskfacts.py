@@ -17,7 +17,13 @@ Per mod, cached as one JSON file under ~/.cache/rm_modaudit/disk/<packageId>.jso
              (DoSettingsWindowContents), MapComponentTick, GameComponentTick, WorldComponentTick, CompTick,
              CompTickRare, Prepatcher
   source     ships C# source (.cs/.csproj/.sln), .git, .github, README files, and the folder's Source/ dir
-  layout     files under Defs/ Patches/ Languages/ (any version folder)
+  layout     files under Defs/ Patches/ Languages/ (any version folder); defs_dirs = {"<path>/Defs": xml files}
+  textures   decoded_mb_est counts ONLY images under a Textures/ segment and under no source-like segment
+             (Source, src, .vs, obj, bin, packages, About) - RimWorld loads textures only from <contentDir>/Textures;
+             decoded_mb_est_all_images keeps every png/dds for comparison
+  dlls       + "types": top-level type names from the .NET metadata TypeDef table (dotnetmeta.py), for class_ref edges
+
+SCHEMA bumps whenever a record's shape changes; a cached record with another schema is re-collected.
 """
 import argparse
 import json
@@ -31,8 +37,11 @@ import xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
+import dotnetmeta  # noqa: E402
 
 CACHE = os.path.expanduser("~/.cache/rm_modaudit/disk")
+SCHEMA = 2
+SOURCE_SEGS = {"source", "src", ".vs", "obj", "bin", "packages", "about"}
 KIND = {}
 for e in (".png", ".dds", ".jpg", ".jpeg", ".psd", ".tga", ".bmp"):
     KIND[e] = "textures"
@@ -53,6 +62,7 @@ DLL_FLAGS = {
     "comp_tick_rare": b"CompTickRare",
     "prepatcher": b"Prepatcher",
 }
+BYVERSION_FIELDS = ("loadAfterByVersion", "loadBeforeByVersion", "forceLoadAfterByVersion", "forceLoadBeforeByVersion")
 LIST_FIELDS = ("loadBefore", "loadAfter", "forceLoadBefore", "forceLoadAfter", "incompatibleWith", "supportedVersions",
                "authors")
 
@@ -84,6 +94,9 @@ def parse_about(path):
             byv[v.tag] = [((li.find("packageId").text or "").strip().lower() if li.find("packageId") is not None
                            and li.find("packageId").text else None) for li in v.findall("li")]
     out["modDependenciesByVersion"] = byv
+    for f in BYVERSION_FIELDS:
+        node = root.find(f)
+        out[f] = {v.tag: [x.lower() for x in _lis(v)] for v in node} if node is not None else {}
     out["supports_1_6"] = "1.6" in out["supportedVersions"]
     return out
 
@@ -103,15 +116,31 @@ def image_dims(path):
     return None
 
 
+def texture_is_loaded(rel_dir):
+    """True when an image in this folder (relative to the mod root) is one RimWorld loads as a texture: some path
+    segment is Textures and none is source-like. Pure; selftested."""
+    segs = [x.lower() for x in rel_dir.replace("\\", "/").split("/") if x and x != "."]
+    return "textures" in segs and not (set(segs) & SOURCE_SEGS)
+
+
+def defs_dir_key(rel_dir):
+    """'1.6/Mods/X/Defs/Things' -> '1.6/Mods/X/Defs' (the folder up to the first Defs segment), else None."""
+    segs = [x for x in rel_dir.replace("\\", "/").split("/") if x and x != "."]
+    return "/".join(segs[:segs.index("Defs") + 1]) if "Defs" in segs else None
+
+
 def walk_mod(folder):
     disk = {"bytes": 0, "files": 0, "by_kind": {}}
-    tex = {"images": 0, "decoded_mb_est": 0.0, "unreadable_headers": 0, "largest": []}
+    tex = {"images": 0, "images_loaded": 0, "decoded_mb_est": 0.0, "decoded_mb_est_all_images": 0.0,
+           "unreadable_headers": 0, "largest": [], "largest_not_loaded": []}
     dlls, source, layout = [], {"cs": 0, "csproj": 0, "sln": 0, "git": False, "github": False, "readme": [],
-                                "source_dir": False}, {"Defs": 0, "Patches": 0, "Languages": 0}
-    big = []
+                                "source_dir": False}, {"Defs": 0, "Patches": 0, "Languages": 0, "defs_dirs": {}}
+    big, big_out = [], []
     for dp, dns, fns in os.walk(folder):
         rel = os.path.relpath(dp, folder)
         parts = set(rel.replace("\\", "/").split("/"))
+        tex_loaded = texture_is_loaded(rel)
+        dkey = defs_dir_key(rel)
         if ".git" in dns:
             source["git"] = True
             dns.remove(".git")
@@ -137,6 +166,8 @@ def walk_mod(folder):
             for seg in ("Defs", "Patches", "Languages"):
                 if seg in parts and ext == ".xml":
                     layout[seg] += 1
+            if dkey and ext == ".xml":
+                layout["defs_dirs"][dkey] = layout["defs_dirs"].get(dkey, 0) + 1
             if ext in (".png", ".dds"):
                 tex["images"] += 1
                 d = image_dims(p)
@@ -144,8 +175,14 @@ def walk_mod(folder):
                     tex["unreadable_headers"] += 1
                 else:
                     mb = d[0] * d[1] * 4 * 1.33 / 1048576.0
-                    tex["decoded_mb_est"] += mb
-                    big.append((round(mb, 1), os.path.relpath(p, folder), d[0], d[1]))
+                    tex["decoded_mb_est_all_images"] += mb
+                    row = (round(mb, 1), os.path.relpath(p, folder), d[0], d[1])
+                    if tex_loaded:
+                        tex["images_loaded"] += 1
+                        tex["decoded_mb_est"] += mb
+                        big.append(row)
+                    else:
+                        big_out.append(row)
             elif ext == ".dll":
                 try:
                     with open(p, "rb") as fh:
@@ -153,7 +190,8 @@ def walk_mod(folder):
                 except OSError:
                     blob = b""
                 dlls.append({"path": os.path.relpath(p, folder), "bytes": sz,
-                             "flags": sorted(f for f, needle in DLL_FLAGS.items() if needle in blob)})
+                             "flags": sorted(f for f, needle in DLL_FLAGS.items() if needle in blob),
+                             "types": dotnetmeta.type_names(blob)})
             elif ext == ".cs":
                 source["cs"] += 1
             elif ext == ".csproj":
@@ -163,14 +201,17 @@ def walk_mod(folder):
             if fn.lower().startswith("readme") and len(source["readme"]) < 5:
                 source["readme"].append(os.path.relpath(p, folder))
     big.sort(reverse=True)
+    big_out.sort(reverse=True)
     tex["largest"] = big[:5]
+    tex["largest_not_loaded"] = big_out[:5]
     tex["decoded_mb_est"] = round(tex["decoded_mb_est"], 1)
+    tex["decoded_mb_est_all_images"] = round(tex["decoded_mb_est_all_images"], 1)
     return disk, tex, dlls, source, layout
 
 
 def collect_one(row):
     folder = row.get("folder")
-    rec = {"packageId": row["packageId"], "folder": folder, "collected": time.strftime("%Y-%m-%dT%H:%M:%S")}
+    rec = {"packageId": row["packageId"], "schema": SCHEMA, "folder": folder, "collected": time.strftime("%Y-%m-%dT%H:%M:%S")}
     if not folder or not os.path.isdir(folder):
         rec["error"] = "UNRESOLVED (no folder)"
         return rec
@@ -196,12 +237,25 @@ def _cache_path(pid):
     return os.path.join(CACHE, re.sub(r"[^A-Za-z0-9._-]", "_", pid) + ".json")
 
 
-def load_all(rows):
+def _current(p):
+    """True when a cache file exists and carries this SCHEMA."""
+    if not os.path.isfile(p):
+        return False
+    try:
+        return json.load(open(p)).get("schema") == SCHEMA
+    except (OSError, ValueError):
+        return False
+
+
+def load_all(rows, any_schema=False):
+    """{packageId: record} for every cached record of the CURRENT schema (stale ones are absent -> missing)."""
     out = {}
     for r in rows:
         p = _cache_path(r["packageId"])
         if os.path.isfile(p):
-            out[r["packageId"]] = json.load(open(p))
+            rec = json.load(open(p))
+            if any_schema or rec.get("schema") == SCHEMA:
+                out[r["packageId"]] = rec
     return out
 
 
@@ -218,7 +272,7 @@ def main(argv=None):
         p = _cache_path(a.redo.lower())
         if os.path.exists(p):
             os.remove(p)
-    todo = [r for r in rows if not os.path.isfile(_cache_path(r["packageId"]))]
+    todo = [r for r in rows if not _current(_cache_path(r["packageId"]))]
     if a.status:
         print("diskfacts: %d cached, %d remaining of %d" % (len(rows) - len(todo), len(todo), len(rows)))
         return
@@ -230,6 +284,8 @@ def main(argv=None):
         with open(_cache_path(r["packageId"]), "w") as fh:
             json.dump(rec, fh)
         n += 1
+        if n % 25 == 0:
+            print("  diskfacts: %d done this run (%.0fs), last %s" % (n, time.time() - t0, r["packageId"]), flush=True)
     left = len(todo) - n
     print("diskfacts: collected %d this run in %.0fs; %d remaining%s"
           % (n, time.time() - t0, left, " - re-run to resume" if left else " - DONE"))

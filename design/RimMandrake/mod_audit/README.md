@@ -29,6 +29,7 @@ Assessors work **from measured facts, never guesses**. The rubric's forbidden sh
 | `facts/mod_facts.jsonl` | one JSON object per mod: everything measured about it | `assemble.py` |
 | `facts/mod_facts.csv` | flat view of the same rows for a spreadsheet | `assemble.py` |
 | `facts/session_context.json` | the measured session: log probe, unattributed errors, TPS stage profile, process memory | `assemble.py` |
+| `FACTS_REGEN_DELTA.md` | which stage-1 verdicts/severities the 2026-10-10 facts regeneration would change, by rule (flags only) | `facts_delta.py --before <old jsonl>` |
 | `batches/batch_NN.json`, `batches/INDEX.md` | self-contained assessor inputs, grouped by routing category | `batches.py` |
 
 ## How to refresh the facts (all offline; no bridge, no game)
@@ -40,7 +41,7 @@ Tools live in `src/RimMandrake/Utils/modaudit/`. Caches are derived and live out
 python3 src/RimMandrake/Utils/modaudit/selftest_modaudit.py           # must print OK first
 python3 src/RimMandrake/Utils/modaudit/universe.py                    # ~10 s: FULL.LATEST + our absent mods, all roots
 python3 src/RimMandrake/Utils/modaudit/defscan.py                     # ~1 min: offline def + patch census
-python3 src/RimMandrake/Utils/modaudit/diskfacts.py --budget 240      # resumable; re-run until it says DONE (~25 min total over /mnt/c)
+python3 src/RimMandrake/Utils/modaudit/diskfacts.py --budget 240      # resumable; re-run until it says DONE (~20 min total over /mnt/c); a SCHEMA bump re-walks every mod
 python3 src/RimMandrake/Utils/modaudit/runtime.py [--log <archived Player log> --session <tps id prefix> --token <bridge token>]
 python3 src/RimMandrake/Utils/modaudit/sources.py --budget 240 [--search]   # resumable; gh api, capped + cached
 python3 src/RimMandrake/Utils/modaudit/assemble.py                    # writes facts/ (refuses on a failed sanity probe)
@@ -62,11 +63,26 @@ whatever is running now and is never the default.
   list; see `Transient/foundry_full_latest_gap_proposal_20261010.md` for the owner's add-after-clean-load ruling).
 - **`def_total`, `defs_by_type`** declared in the mod's own XML, inheritance resolved, **before** patches and
   `MayRequire`. Not "what the running game has".
+- **`dependants`** every mod that would lose something if this one went, ALL edge kinds; **`dependants_detail`**
+  `[{packageId, kinds, refs}]` with kinds `hard_dep` (modDependencies), `hard_dep_v1.6` (modDependenciesByVersion
+  v1.6), `load_after` (loadAfter/forceLoadAfter, +ByVersion v1.6), `patch_xpath`, `findmod` (FindMod name = About
+  name), `mayrequire` (any element of Defs/Patches), `class_ref` (XML names a type in this mod's LOADED DLLs, read from
+  the .NET TypeDef table), `def_ref` (CANDIDATE: XML names a defName only this mod declares). Core/DLC is never a
+  dependant. **`dependants_hard`** = the old modDependencies-only list. A patch selecting a def by `text()=` or `@Class`
+  makes no edge (lower bound).
+- **`cherry_picker_cut_defs`, `cherry_picker_shell`** declared defs on the LIVE Cherry Picker list (settings = intent
+  for the next load); shell = >= 90% of its player-facing defs (ThingDef, PawnKindDef, BackstoryDef, ...) cut.
+- **`defs_xml_files_total` / `_loaded` / `defs_outside_loaded_dirs`** Defs XML anywhere vs under the 1.6 contentDirs;
+  the outside list excludes older version folders (`defs_xml_files_older_versions`) and Source: what remains is
+  LoadFolders/compat-gated content `def_total` did not count.
 - **`patch_ops_all`, `patches_mods`, `patched_by`** from xpath defNames; an xpath with no defName adds no edge, so
   edges are a **lower bound**. `patches_ours_refs` / `patched_by_ours_refs` are the interaction counts with our mods.
 - **`dll_flags`** string presence in an assembly (`HarmonyLib`, `DoSettingsWindowContents`, `MapComponentTick`,
   ...). A FLAG, never a count, and not proof the code path runs.
-- **`texture_decoded_mb_est`** w*h*4*1.33 from PNG/DDS headers: an INFERRED memory proxy, not a measurement.
+- **`texture_decoded_mb_est`** w*h*4*1.33 from PNG/DDS headers of images under a `Textures/` folder and no
+  source-like folder (Source, src, .vs, obj, bin, packages, About): an INFERRED memory proxy, not a measurement.
+  `texture_decoded_mb_est_all_images` counts every png/dds (`largest_images_not_loaded` shows what was dropped); a mod
+  that loads images by its own code (RimThemes `Themes/`, Worldbuilder presets) is undercounted by the Textures figure.
 - **`log_*`** from the 550-mod session of 2026-10-10. `null` = the mod was not in that session (UNMEASURED);
   `0` = measured zero. Attribution is CANDIDATE: read `log_error_samples` before charging a mod.
 - **`static_ctors`** how many `[StaticConstructorOnStartup]` types the LoadTracer saw from the mod's assemblies.
@@ -74,6 +90,10 @@ whatever is running now and is never the default.
   `session_context.json` `tps.stage_share`); `jawa/map_comp_timing` (`91f9c0a14`) can name MapComponents when run.
 - **`source_*`** `MEASURED` = a repo the mod itself links, verified by `gh api`; `INFERRED` = linked but
   unverified, or a `--search` name match (confirm before relying on it); `steam-only` = no link found.
+  `assemble.py` re-judges every cached record offline (`sources.reselect`): shared-library repos (pardeike/Harmony
+  except for Harmony itself, rwmt/Publicise, MonoMod/*), wiki repos and search hits whose repo name does not resemble
+  the mod are REJECTED (`source_rejected`), a NOT_FOUND repo is never the source, and found-nothing reads INFERRED
+  with `source_note` "no source found (searched: ...)".
 - **`prior_verdict_2026_08_30`** the earlier whole-list pass (`design/Jawa/mods/outgrown_audit_2026-08-30.*`),
   which did not open its framework rows one by one; context, not authority.
 
