@@ -748,6 +748,11 @@ MODS = {
         "Fuel on or off": "Now",
         "Fuel use rate (restart)": "NextGameStart",
     }, ()),
+    "Inhabited": ("RM_InhabitedMod.cs", "Inhabited.csproj", {
+        "Visited places can break": "Now",
+        "Robbed threshold": "NextPulse",
+        "Beggars from displaced people": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
