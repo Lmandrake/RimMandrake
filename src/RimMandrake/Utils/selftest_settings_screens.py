@@ -869,12 +869,56 @@ def run_mod(name, cs_name, pj_name, expected, extra):
     return bad, total
 
 
+def check_biomes_shell():
+    """BiomesShell keeps a Scribed per-entry toggle DICTIONARY (no Scribe_Values), so it has its own check:
+    kit in csproj, search box, collapsible groups with a per-group reset, worldgen label, dictionary still Scribed,
+    then plants one defect at a time."""
+    base = os.path.join(ROOT, "BiomesShell", "Source")
+    cs = open(os.path.join(base, "RM_BiomesMod.cs"), encoding="utf-8").read()
+    pj = open(os.path.join(base, "RM_Biomes.csproj"), encoding="utf-8").read()
+
+    def errs(c, p):
+        e = []
+        for kit in ("SettingsKitCore.cs", "SettingsKitDrawer.cs"):
+            if kit not in p:
+                e.append(f"csproj lacks the {kit} Compile Include")
+        if "SettingsKitDrawer.SearchBox" not in c:
+            e.append("no search box")
+        if "SettingsKitDrawer.ResetButton" not in c:
+            e.append("no per-group reset")
+        if "(WORLDGEN-AFFECTING)" not in c:
+            e.append("biome group not labelled worldgen")
+        if 'Scribe_Collections.Look(ref enabled, "enabled"' not in c:
+            e.append("toggle dictionary not Scribed")
+        if "maxOneColumn = true" not in c:
+            e.append("no maxOneColumn")
+        return e
+    bad = total = 1
+    e = errs(cs, pj)
+    print(("ok   " if not e else "FAIL ") + "BiomesShell: kit screen (search, grouped reset, worldgen label)" + ("" if not e else " | " + "; ".join(e)))
+    bad = 1 if e else 0
+    for label, c2, p2, want in (
+        ("kit dropped from csproj", cs, pj.replace("SettingsKitDrawer.cs", "SettingsKitDrawr.cs"), "SettingsKitDrawer.cs"),
+        ("search box removed", cs.replace("SettingsKitDrawer.SearchBox", "SettingsKitDrawer.SearchBx"), pj, "search box"),
+        ("reset removed", cs.replace("SettingsKitDrawer.ResetButton", "SettingsKitDrawer.ResetButtn"), pj, "per-group reset"),
+        ("worldgen label dropped", cs.replace("(WORLDGEN-AFFECTING)", "(x)"), pj, "worldgen"),
+    ):
+        total += 1
+        hit = any(want in x for x in errs(c2, p2)) and (c2, p2) != (cs, pj)
+        print(("ok   " if hit else "FAIL ") + f"BiomesShell: {label}")
+        bad += not hit
+    return bad, total
+
+
 def main():
     bad = total = 0
     for name, (cs_name, pj_name, expected, extra) in MODS.items():
         b, t = run_mod(name, cs_name, pj_name, expected, extra)
         bad += b
         total += t
+    b, t = check_biomes_shell()
+    bad += b
+    total += t
     print(f"settings screens selftest: {total - bad}/{total} ok")
     return 1 if bad else 0
 

@@ -111,28 +111,70 @@ namespace RimMandrake.Biomes
             RM_BiomesGate.Apply("settings changed");
         }
 
+        // MOD_OPTIONS_RETROFIT_1: per-entry toggles live in the Scribed RM_BiomesSettings.enabled dictionary (absent key = on).
+        // Scope AUDITED against the read site (2026-10-10): RM_BiomesGate.Apply writes BiomeDef.generatesNaturally, which only
+        // WorldGenStep_Terrain.BiomeFrom reads -> NewMapsOnly for an entry that ships BiomeDefs. RM_BiomesSettings.Enabled(key) has
+        // NO other reader in the repo, so an entry with no BiomeDefs (every engine/mechanic entry today) gates nothing yet: DEAD.
+        private float viewHeight = 1200f;
+        private string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        private static bool Group(Listing_Standard list, string title, string note, string searchQuery, List<RosterEntry> members)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (var e in members)
+                    if (!hit && (RimMandrake.Shared.SettingsKitCore.Matches(e.label ?? "", searchQuery)
+                                 || RimMandrake.Shared.SettingsKitCore.Matches(e.key ?? "", searchQuery))) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label(note);
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () =>
+            {
+                foreach (var e in members) settings.enabled.Remove(e.key);   // absent key = on = the shipped default
+            });
+            return true;
+        }
+
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            const float rowH = 48f;
-            var groups = new[] { "biome", "engine", "kit" };
-            int rows = roster.Count + groups.Length * 2 + 4;
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, rows * rowH);
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scroll, view);
-            var list = new Listing_Standard { ColumnWidth = view.width };
+            var list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.Label("One toggle per biome. Off stops that biome being placed on new worlds "
-                     + "(affects world generation — takes effect on the next new world). "
-                     + "Existing maps keep their terrain and creatures; no content is unloaded.");
+            list.Label("One toggle per roster entry. An entry that ships biomes stops those biomes being placed on new worlds "
+                     + "(WORLDGEN-AFFECTING; takes effect on the next new world). Existing maps keep their terrain and creatures; "
+                     + "no content is unloaded.");
             list.GapLine();
 
-            foreach (var g in groups)
+            foreach (var g in new[] { "biome", "engine", "kit" })
             {
                 var members = roster.Where(e => e.group == g).ToList();
                 if (members.Count == 0) continue;
-                list.Label(g == "biome" ? "<b>Biomes</b>" : g == "engine" ? "<b>Engines</b>" : "<b>Mechanics</b>");
+                string title = g == "biome" ? "Biomes (WORLDGEN-AFFECTING)" : g == "engine" ? "Engines" : "Mechanics";
+                string tag = RimMandrake.Shared.SettingsKitCore.ScopeTag(RimMandrake.Shared.SettingScope.NewMapsOnly);
+                string note = members.Any(e => e.biomeDefs.Count > 0)
+                    ? tag + " changes only affect worlds generated afterwards"
+                    : "[no effect yet] these toggles are recorded but nothing reads them; each is wired per mod later";
+                if (!Group(list, title, note, searchQuery, members)) continue;
                 foreach (var e in members)
                 {
+                    if (!string.IsNullOrWhiteSpace(searchQuery)
+                        && !RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery)
+                        && !RimMandrake.Shared.SettingsKitCore.Matches(e.label ?? "", searchQuery)
+                        && !RimMandrake.Shared.SettingsKitCore.Matches(e.key ?? "", searchQuery)) continue;
                     bool on = RM_BiomesSettings.Enabled(e.key);
                     bool was = on;
                     string tip = e.blurb
@@ -141,7 +183,7 @@ namespace RimMandrake.Biomes
                               + "Existing maps keep their terrain and creatures; this stops new placement.\n"
                               + "Biome defs: " + string.Join(", ", e.biomeDefs)
                             : "\n\nThis entry ships no biome of its own; its toggle is recorded for "
-                              + "the mechanics gate, which is wired per mod.");
+                              + "the mechanics gate, which is wired per mod. Nothing reads it yet.");
                     list.CheckboxLabeled(e.label, ref on, tip);
                     if (on != was) settings.enabled[e.key] = on;
                     Text.Font = GameFont.Tiny;
@@ -150,8 +192,9 @@ namespace RimMandrake.Biomes
                     GUI.color = Color.white;
                     Text.Font = GameFont.Small;
                 }
-                list.Gap();
+                list.GapLine();
             }
+            viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
         }
