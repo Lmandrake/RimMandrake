@@ -1,0 +1,42 @@
+label: Deep Diving
+label: Sea diving enabled
+label: Require a grav engine to build a dive hatch
+label: Sea floors: habitat terrain bands (map generation)
+label: The Scald: immersion berth (ship rooms heat)
+label: Immersion heat intensity: 1.00x
+label: Immersion heat intensity: 1.00x
+label: The Scald: floor vent fields (affects floor generation)
+label: The Scald: Sail Forecast (sailors warn before a vent discharges)
+label: Vent discharge burns and interrupts nearby people
+label: The Scald: bottom-walkers expose mat (the Walking Pasture)
+label: The Scald: Return Gallery coolant ruin (affects floor generation)
+label: The Chill: Return Comb landmark (affects floor generation)
+label: Sea-floor layer: each sea generates its own floor (affects floor generation)
+label: Sea-floor layer: one starting-animal seeder (affects floor generation)
+label: Sea-floor layer: floors grow their sea's plants and refill their animals (restart)
+label: The Chill: dive meets a few animals by weight (affects floor generation)
+label: Animals met on a Chill dive (PROVISIONAL, default 3): 3
+label: Animals met on a Chill dive (PROVISIONAL, default 3): 3
+label: Grey Sea: brine pools crystallise intruders
+label: Grey Sea: orruhmu pool sentinels squirt intruders
+label: Grey Sea: Brine Elders can discharge
+label: Brine Elder discharge stuns living creatures
+label: Grey Sea: Brine Elders trade on novelty
+label: Grey Sea: keep the Elder and wrecks reachable (affects world generation)
+label: Specimen cabinet: keep finds on display
+label: The Chill: no fire on the seabed
+label: The Chill: oxygen pumps carry air down
+label: Power drawn while pumping (W): 300
+label: Power drawn while pumping (W): 300
+label: Room cells one pump can fill: 60
+label: Room cells one pump can fill: 60
+label: The Chill: boil shroud visuals
+label: Danger-clock alerts (low suit, brine-encased colonist)
+label: The Chill: heated suit battery drains
+label: The Chill: the garden defends itself
+label: The Chill: thermal footprints
+label: The Chill: drowned aurora floor light
+label: The Chill: aurora surge storms
+label: The Chill: aurora when no surface map is loaded
+label: Compatibility: Real Fog of War map-change fix
+label: Close
