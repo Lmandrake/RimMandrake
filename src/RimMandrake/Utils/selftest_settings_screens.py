@@ -68,6 +68,24 @@ MODS = {
         "Decay cells and the rotting bed": "Now",
         "The mother's price": "Now",
     }, ()),
+    "Abyss": ("RM_AbyssMod.cs", "RM_Abyss.csproj", {
+        "Biome rarity (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Gharreks, sorters and krizzaks": "Now",
+        "Sorter dens on new maps": "NewMapsOnly",
+        "Summs and ombrathias": "Now",
+        "Ishvariths and light": "Now",
+        "The Dark": "Now",
+        "Etchfall": "Now",
+        "The hidden ship": "Now",
+        "Wickwood lamp crops": "NextGameStart",
+        "Fold-lamps": "Now",
+        "Heat-folding discovery": "NextGameStart",
+        "Sound": "Now",
+        "Cryptid signs": "Now",
+        "Brood lair switch": "Now",
+        "Brood lair details (fixed at map generation)": "NewMapsOnly",
+        "Stolen egg and bonded summ": "Now",
+    }, ()),
 }
 
 

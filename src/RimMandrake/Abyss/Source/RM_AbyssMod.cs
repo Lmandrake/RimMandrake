@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -121,6 +123,65 @@ namespace RimMandrake.Abyss
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
+        private static Vector2 scroll;
+        private static float lastHeight = 1200f;
+
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_AbyssSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_AbyssSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. A search matches the section title or any of its setting names. Scope AUDITED per setting against its
+        /// read site (2026-10-10): the biome rarity is read by the worldgen biome worker and the sorter-den step by map generation
+        /// ([new maps only]); the lair's wreck and sleep depth are fixed when its map is made ([new maps only]); the wickwood
+        /// strike and the heat-folding grant run when defs load / a game loads ([next game start], a label local to this screen);
+        /// every other setting is read by a tick, job, comp, weather or hook ([now]).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            // tagOverride "[next game start]": the kit has no such scope; these are read while defs load or when a game loads.
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
         public void DoWindowContents(Rect inRect)
         {
             // the screen outgrew one page: scroll it (view height measured from the last draw)
@@ -129,108 +190,170 @@ namespace RimMandrake.Abyss
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.Label("Biome rarity: " + RarityLabel());
-            list.Label("At 0 the Abyss never generates on a new planet. "
-                       + "The default places a handful of rare, hilly, night-dark patches. "
-                       + "Affects planets generated afterwards, never one that already exists.");
-            biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
-
-            list.CheckboxLabeled("Gharreks sleep in the still and feed at gusts", ref gustFeedersEnabled,
-                "On: gharreks lie dormant until a gust, then open and feed together. Off: they behave as ordinary animals.");
-
-            list.CheckboxLabeled("Wild sorters set rings of shards", ref durrgakRingsEnabled,
-                "On: wild sorters slowly arrange obsidian-shard rings on the ground they roam. Off: none are placed; rings already standing stay. Safe mid-game.");
-            list.CheckboxLabeled("New maps carry a sorter den and rings", ref durrgakMapSignsEnabled,
-                "On: each new Abyss map has a tidy den lined with scrap steel, a row of shard rings, and sometimes a salvage cache. Off: none. Affects maps generated afterwards (map generation).");
-
-            list.CheckboxLabeled("Wild krizzaks eat light", ref krizzakLightEatingEnabled,
-                "On: wild krizzaks settle on glow plants and lit lamps and shrink their light until they leave. Off: they only fly about. Light recovers on its own. Safe mid-game.");
-            list.CheckboxLabeled("The Dark cannot swallow deepfire", ref darkSparesDeepfire,
-                "On: deepfire light (painted floors, glowing pawns, the glow tank) keeps its full reach in the Dark while every other lamp shrinks. Off: the Dark shrinks deepfire like any lamp. Needs Luminous Pigment. Safe mid-game.");
-
-            list.CheckboxLabeled("Summs regenerate", ref summRegenerates,
-                "On: a summ slowly heals its wounds on its own. Off: it heals like any animal. Safe mid-game.");
-            list.CheckboxLabeled("Summs burn in daylight", ref summUVSensitive,
-                "On: a summ under an open daylit sky takes a daylight burn (pain, slowness) that fades in shade or darkness. Off: daylight does nothing to it. Safe mid-game.");
-            list.CheckboxLabeled("Ombrathias rattle their quills before they lunge", ref drokattakHackleEnabled,
-                "On: an ombrathia that starts a hunt or an attack stops for a moment and rattles its quills, a warning. Off: it lunges at once. Safe mid-game.");
-
-            list.Label("Etchfall strength: " + (etchfallStrength <= 0.001f ? "off" : etchfallStrength.ToString("0.0") + "x"));
-            etchfallStrength = list.Slider(etchfallStrength, 0f, 3f);
-            list.Label("How fast falling grain erodes unroofed rock and steel into tholin dust. 0 = off; roofed cells are never touched. Safe mid-game; hollows already made stay.");
-
-            list.CheckboxLabeled("The Dark blinds and swallows lamplight", ref darkEnabled,
-                "On: in the Abyss the air is dark; pawns lose sight, aim and melee skill and lamps shrink, except where warmth thins it. Off: the Abyss weather is plain sky only. Safe mid-game.");
-            list.Label("Dark strength: " + (darkStrength <= 0.001f ? "off" : darkStrength.ToString("0.0") + "x"));
-            darkStrength = list.Slider(darkStrength, 0f, 2f);
-            list.Label("How hard the Dark presses on sight, aim, melee and lamplight. 0 = no effect. Warm places stay clear at any strength.");
-
-            list.CheckboxLabeled("The Unveiling may happen", ref unveilingEnabled,
-                "On: rarely the Dark folds away for a few hours and the whole country shows. Off: it never lifts.");
-
-            list.CheckboxLabeled("Storm giant calls in Witchfire storms", ref stormCallEnabled,
-                "On: some thunder in Witchfire storms is a summ calling, a flash with no lightning, and one may come down and cross the map. Off: ordinary storms.");
-
-            list.CheckboxLabeled("Ishvariths flee light", ref lightAversionEnabled,
-                "On: an ishvarith standing in light breaks off what it is doing and slinks toward the nearest dark cell, so a lit camp neutralises it. Off: it ignores light entirely. Safe mid-game.");
-            if (lightAversionEnabled)
+            if (Group(list, "Biome rarity (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "biomeRarityFactor" }))
             {
-                list.Label("  Flee search radius: " + fleeRadiusMultiplier.ToString("0.00") + "x (default searches 10 cells out)");
-                fleeRadiusMultiplier = list.Slider(fleeRadiusMultiplier, 0.5f, 2f);
+                list.Label("Biome rarity: " + RarityLabel());
+                list.Label("At 0 the Abyss never generates on a new planet. "
+                           + "The default places a handful of rare, hilly, night-dark patches. "
+                           + "Affects planets generated afterwards, never one that already exists.");
+                biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
+                list.GapLine();
             }
 
-            list.CheckboxLabeled("A landed gravship slowly hides", ref shipCoverEnabled,
-                "On: a gravship kept quiet (few lit lamps) in the Abyss slowly drops out of sight; the cover lapses after a while, resets when the engine leaves, and collapses if a probe reports. Off: no cover. Safe mid-game.");
-            list.CheckboxLabeled("Probes hunt the hidden ship", ref probesEnabled,
-                "On: while the ship is hidden, probes come now and then. A probe that keeps a moving colonist or lit lamp in sight reports and the cover collapses. Off: the cover is never tested.");
+            if (Group(list, "Gharreks, sorters and krizzaks", RimMandrake.Shared.SettingScope.Now, new[] { "gustFeedersEnabled", "durrgakRingsEnabled", "krizzakLightEatingEnabled" }))
+            {
+                list.CheckboxLabeled("Gharreks sleep in the still and feed at gusts", ref gustFeedersEnabled,
+                    "On: gharreks lie dormant until a gust, then open and feed together. Off: they behave as ordinary animals.");
+                list.CheckboxLabeled("Wild sorters set rings of shards", ref durrgakRingsEnabled,
+                    "On: wild sorters slowly arrange obsidian-shard rings on the ground they roam. Off: none are placed; rings already standing stay. Safe mid-game.");
+                list.CheckboxLabeled("Wild krizzaks eat light", ref krizzakLightEatingEnabled,
+                    "On: wild krizzaks settle on glow plants and lit lamps and shrink their light until they leave. Off: they only fly about. Light recovers on its own. Safe mid-game.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Wickwoods are lamp crops", ref lampCropsEnabled,
-                "On: the wickwood, the Abyss's glowing tree, grows wild there and lights the ground beneath it brightly enough to grow crops; extract and replant it to light a farm. The Dark never swallows its light. Off: it is a plain glowing tree that does not farm and no longer grows wild. Takes effect after a restart.");
+            if (Group(list, "Sorter dens on new maps", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "durrgakMapSignsEnabled" }))
+            {
+                list.CheckboxLabeled("New maps carry a sorter den and rings", ref durrgakMapSignsEnabled,
+                    "On: each new Abyss map has a tidy den lined with scrap steel, a row of shard rings, and sometimes a salvage cache. Off: none. Affects maps generated afterwards (map generation).");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Fold-lamps hold a lane of clear air", ref foldLaneEnabled,
-                "On: a lit fold-lamp clears the Dark in a lane ahead of its throat, toward the way it faces. Off: it is a plain fuelled heater-lamp. Safe mid-game.");
-            list.CheckboxLabeled("Heat-folding is learned by watching the Dark", ref foldDiscoveryByWatching,
-                "On: heat-folding opens only after a colonist has stood in a warm clear pocket beside a fire or heater while the Dark lies all around (a letter says so). Off: it is an ordinary research project from the start.");
+            if (Group(list, "Summs and ombrathias", RimMandrake.Shared.SettingScope.Now, new[] { "summRegenerates", "summUVSensitive", "drokattakHackleEnabled" }))
+            {
+                list.CheckboxLabeled("Summs regenerate", ref summRegenerates,
+                    "On: a summ slowly heals its wounds on its own. Off: it heals like any animal. Safe mid-game.");
+                list.CheckboxLabeled("Summs burn in daylight", ref summUVSensitive,
+                    "On: a summ under an open daylit sky takes a daylight burn (pain, slowness) that fades in shade or darkness. Off: daylight does nothing to it. Safe mid-game.");
+                list.CheckboxLabeled("Ombrathias rattle their quills before they lunge", ref drokattakHackleEnabled,
+                    "On: an ombrathia that starts a hunt or an attack stops for a moment and rattles its quills, a warning. Off: it lunges at once. Safe mid-game.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Sound comes in gusts", ref gustSoundscapeEnabled,
-                "On: the Dark is silent; each gust lands as an impact, gharrek gill-fans rustle after it, falling grain ticks on stone, and a lamp a krizzak is eating clatters. Off: the ordinary fog wind (after a restart) and none of these.");
-            list.CheckboxLabeled("The Dark swallows those sounds", ref darkMuffleEnabled,
-                "On: the gust sounds come through muffled while the camera looks into the Dark and sharp over a warm clear pocket. Off: always sharp. Safe mid-game.");
-            list.CheckboxLabeled("The Dark swallows EVERY map sound", ref darkMuffleAllSounds,
-                "On: gunshots, footsteps, animal calls and every other sound placed on an Abyss map are muffled by the Dark at the camera, not only the Abyss's own. Needs the setting above. Off: only the Abyss's own sounds. Safe mid-game.");
+            if (Group(list, "Ishvariths and light", RimMandrake.Shared.SettingScope.Now, new[] { "lightAversionEnabled", "fleeRadiusMultiplier" }))
+            {
+                list.CheckboxLabeled("Ishvariths flee light", ref lightAversionEnabled,
+                    "On: an ishvarith standing in light breaks off what it is doing and slinks toward the nearest dark cell, so a lit camp neutralises it. Off: it ignores light entirely. Safe mid-game.");
+                if (lightAversionEnabled)
+                {
+                    list.Label("  Flee search radius: " + fleeRadiusMultiplier.ToString("0.00") + "x (default searches 10 cells out)");
+                    fleeRadiusMultiplier = list.Slider(fleeRadiusMultiplier, 0.5f, 2f);
+                }
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Abyss: cryptid signs", ref cryptidSignsEnabled,
-                "On: people whisper of visitors who come for the Dark, and are never seen. New maps may carry extra rings and "
-                + "caches; an item left unwatched on a ring of shards in the Dark is sometimes swapped for goods of about its "
-                + "value; a clear pocket rarely opens over nothing; colonists whisper, and after a long stay one may dream of not "
-                + "needing the light. Off: none of it; the biome is whole without it. Rumor-sites affect maps generated afterwards.");
+            if (Group(list, "The Dark", RimMandrake.Shared.SettingScope.Now, new[] { "darkEnabled", "darkStrength", "unveilingEnabled", "stormCallEnabled", "darkSparesDeepfire" }))
+            {
+                list.CheckboxLabeled("The Dark cannot swallow deepfire", ref darkSparesDeepfire,
+                    "On: deepfire light (painted floors, glowing pawns, the glow tank) keeps its full reach in the Dark while every other lamp shrinks. Off: the Dark shrinks deepfire like any lamp. Needs Luminous Pigment. Safe mid-game.");
+                list.CheckboxLabeled("The Dark blinds and swallows lamplight", ref darkEnabled,
+                    "On: in the Abyss the air is dark; pawns lose sight, aim and melee skill and lamps shrink, except where warmth thins it. Off: the Abyss weather is plain sky only. Safe mid-game.");
+                list.Label("Dark strength: " + (darkStrength <= 0.001f ? "off" : darkStrength.ToString("0.0") + "x"));
+                darkStrength = list.Slider(darkStrength, 0f, 2f);
+                list.Label("How hard the Dark presses on sight, aim, melee and lamplight. 0 = no effect. Warm places stay clear at any strength.");
+                list.CheckboxLabeled("The Unveiling may happen", ref unveilingEnabled,
+                    "On: rarely the Dark folds away for a few hours and the whole country shows. Off: it never lifts.");
+                list.CheckboxLabeled("Storm giant calls in Witchfire storms", ref stormCallEnabled,
+                    "On: some thunder in Witchfire storms is a summ calling, a flash with no lightning, and one may come down and cross the map. Off: ordinary storms.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("A brood lair at the bottom of the deepest chasm", ref broodLairEnabled,
-                "On: where a map is marked for it, a summ brood-mother the size of the land sleeps round her eggs among a field of great bones. "
-                + "Light, salvage cutting and taking an egg stir her; she shows it before she wakes, and awake she cannot be fought. "
-                + "Off: no lair on maps generated afterwards, and an existing lair's meter stops moving (map generation).");
-            list.Label("How deeply she sleeps: " + broodSleepDepth.ToString("0.0") + "x");
-            broodSleepDepth = list.Slider(broodSleepDepth, 0.5f, 2f);
-            list.Label("Higher lets you take more before she wakes. Fixed for a lair when its map is made.");
-            list.CheckboxLabeled("A wrecked rescue ship in the lair wall", ref wreckEnabled,
-                "On: the lair holds a wrecked rescue gravship to cut fittings from. Your own ship takes only some of them, to restore what has worn; "
-                + "the rest is loot. Off: no wreck on lairs generated afterwards (map generation).");
-            list.CheckboxLabeled("A stolen egg brings Witchfire storms home", ref eggStormsEnabled,
-                "On: while a stolen summ egg is kept on your home map, Witchfire storms gather there every several days and a summ comes looking. Off: the egg is quiet. Safe mid-game.");
-            list.CheckboxLabeled("A bonded summ kills what it finds", ref baneEnabled,
-                "On: a summ that imprinted on you hunts wild animals on its own, semi-randomly, and now and then turns on a tame one. Off: it behaves like any tame animal. Safe mid-game.");
-            list.Label("Bonded summ hunger: " + beastHunger.ToString("0.0") + "x");
-            beastHunger = list.Slider(beastHunger, 0.5f, 3f);
-            list.Label("How ruinous its appetite is on top of its size. 1 = shipped.");
+            if (Group(list, "Etchfall", RimMandrake.Shared.SettingScope.Now, new[] { "etchfallStrength" }))
+            {
+                list.Label("Etchfall strength: " + (etchfallStrength <= 0.001f ? "off" : etchfallStrength.ToString("0.0") + "x"));
+                etchfallStrength = list.Slider(etchfallStrength, 0f, 3f);
+                list.Label("How fast falling grain erodes unroofed rock and steel into tholin dust. 0 = off; roofed cells are never touched. Safe mid-game; hollows already made stay.");
+                list.GapLine();
+            }
+
+            if (Group(list, "The hidden ship", RimMandrake.Shared.SettingScope.Now, new[] { "shipCoverEnabled", "probesEnabled" }))
+            {
+                list.CheckboxLabeled("A landed gravship slowly hides", ref shipCoverEnabled,
+                    "On: a gravship kept quiet (few lit lamps) in the Abyss slowly drops out of sight; the cover lapses after a while, resets when the engine leaves, and collapses if a probe reports. Off: no cover. Safe mid-game.");
+                list.CheckboxLabeled("Probes hunt the hidden ship", ref probesEnabled,
+                    "On: while the ship is hidden, probes come now and then. A probe that keeps a moving colonist or lit lamp in sight reports and the cover collapses. Off: the cover is never tested.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Wickwood lamp crops", RimMandrake.Shared.SettingScope.Now, new[] { "lampCropsEnabled" }, "[next game start]"))
+            {
+                list.CheckboxLabeled("Wickwoods are lamp crops", ref lampCropsEnabled,
+                    "On: the wickwood, the Abyss's glowing tree, grows wild there and lights the ground beneath it brightly enough to grow crops; extract and replant it to light a farm. The Dark never swallows its light. Off: it is a plain glowing tree that does not farm and no longer grows wild. Takes effect after a restart.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Fold-lamps", RimMandrake.Shared.SettingScope.Now, new[] { "foldLaneEnabled" }))
+            {
+                list.CheckboxLabeled("Fold-lamps hold a lane of clear air", ref foldLaneEnabled,
+                    "On: a lit fold-lamp clears the Dark in a lane ahead of its throat, toward the way it faces. Off: it is a plain fuelled heater-lamp. Safe mid-game.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Heat-folding discovery", RimMandrake.Shared.SettingScope.Now, new[] { "foldDiscoveryByWatching" }, "[next game start]"))
+            {
+                list.CheckboxLabeled("Heat-folding is learned by watching the Dark", ref foldDiscoveryByWatching,
+                    "On: heat-folding opens only after a colonist has stood in a warm clear pocket beside a fire or heater while the Dark lies all around (a letter says so). Off: it is an ordinary research project from the start.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Sound", RimMandrake.Shared.SettingScope.Now, new[] { "gustSoundscapeEnabled", "darkMuffleEnabled", "darkMuffleAllSounds" }))
+            {
+                list.CheckboxLabeled("Sound comes in gusts", ref gustSoundscapeEnabled,
+                    "On: the Dark is silent; each gust lands as an impact, gharrek gill-fans rustle after it, falling grain ticks on stone, and a lamp a krizzak is eating clatters. Off: the ordinary fog wind (after a restart) and none of these.");
+                list.CheckboxLabeled("The Dark swallows those sounds", ref darkMuffleEnabled,
+                    "On: the gust sounds come through muffled while the camera looks into the Dark and sharp over a warm clear pocket. Off: always sharp. Safe mid-game.");
+                list.CheckboxLabeled("The Dark swallows EVERY map sound", ref darkMuffleAllSounds,
+                    "On: gunshots, footsteps, animal calls and every other sound placed on an Abyss map are muffled by the Dark at the camera, not only the Abyss's own. Needs the setting above. Off: only the Abyss's own sounds. Safe mid-game.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Cryptid signs", RimMandrake.Shared.SettingScope.Now, new[] { "cryptidSignsEnabled" }))
+            {
+                list.CheckboxLabeled("Abyss: cryptid signs", ref cryptidSignsEnabled,
+                    "On: people whisper of visitors who come for the Dark, and are never seen. New maps may carry extra rings and "
+                    + "caches; an item left unwatched on a ring of shards in the Dark is sometimes swapped for goods of about its "
+                    + "value; a clear pocket rarely opens over nothing; colonists whisper, and after a long stay one may dream of not "
+                    + "needing the light. Off: none of it; the biome is whole without it. Rumor-sites affect maps generated afterwards.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Brood lair switch", RimMandrake.Shared.SettingScope.Now, new[] { "broodLairEnabled" }))
+            {
+                list.CheckboxLabeled("A brood lair at the bottom of the deepest chasm", ref broodLairEnabled,
+                    "On: where a map is marked for it, a summ brood-mother the size of the land sleeps round her eggs among a field of great bones. "
+                    + "Light, salvage cutting and taking an egg stir her; she shows it before she wakes, and awake she cannot be fought. "
+                    + "Off: no lair on maps generated afterwards, and an existing lair's meter stops moving (map generation).");
+                list.GapLine();
+            }
+
+            if (Group(list, "Brood lair details (fixed at map generation)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "wreckEnabled", "broodSleepDepth" }))
+            {
+                list.Label("How deeply she sleeps: " + broodSleepDepth.ToString("0.0") + "x");
+                broodSleepDepth = list.Slider(broodSleepDepth, 0.5f, 2f);
+                list.Label("Higher lets you take more before she wakes. Fixed for a lair when its map is made.");
+                list.CheckboxLabeled("A wrecked rescue ship in the lair wall", ref wreckEnabled,
+                    "On: the lair holds a wrecked rescue gravship to cut fittings from. Your own ship takes only some of them, to restore what has worn; "
+                    + "the rest is loot. Off: no wreck on lairs generated afterwards (map generation).");
+                list.GapLine();
+            }
+
+            if (Group(list, "Stolen egg and bonded summ", RimMandrake.Shared.SettingScope.Now, new[] { "eggStormsEnabled", "baneEnabled", "beastHunger" }))
+            {
+                list.CheckboxLabeled("A stolen egg brings Witchfire storms home", ref eggStormsEnabled,
+                    "On: while a stolen summ egg is kept on your home map, Witchfire storms gather there every several days and a summ comes looking. Off: the egg is quiet. Safe mid-game.");
+                list.CheckboxLabeled("A bonded summ kills what it finds", ref baneEnabled,
+                    "On: a summ that imprinted on you hunts wild animals on its own, semi-randomly, and now and then turns on a tame one. Off: it behaves like any tame animal. Safe mid-game.");
+                list.Label("Bonded summ hunger: " + beastHunger.ToString("0.0") + "x");
+                beastHunger = list.Slider(beastHunger, 0.5f, 3f);
+                list.Label("How ruinous its appetite is on top of its size. 1 = shipped.");
+                list.GapLine();
+            }
 
             lastHeight = list.CurHeight + 12f;
             list.End();
             Widgets.EndScrollView();
         }
-
-        private static Vector2 scroll;
-        private static float lastHeight = 1200f;
 
         private static string RarityLabel()
         {
