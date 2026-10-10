@@ -227,17 +227,6 @@
    "status": "queued"
   },
   {
-   "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Halquin/RM_Halquin_a.png",
-   "sha256": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
-   "added": "2026-10-07",
-   "texPath": "Things/Plant/RM_Halquin/RM_Halquin_a",
-   "job": [
-    "regen_fw_halquin_varb_v1",
-    "regen_fw_halquin_varc_v1"
-   ],
-   "status": "queued"
-  },
-  {
    "path": "src/RimMandrake/FeverWood/Textures/Things/Plant/RM_Maulith/RM_Maulith_a.png",
    "sha256": "25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc",
    "added": "2026-10-07",
