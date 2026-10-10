@@ -243,7 +243,7 @@ Status tags: `RULED (date, where)` · `DRAFTED (by whom, agreed?)` ·
 
 ## 6. Contradictions — listed, sourced, NOT resolved
 
-**G80 — the Spire prep's four shapes vs the Key ruling.** `SUPERSEDED-BY ashfall §6 (2026-09-12, commit 919d5c155); still on disk`
+**G80 — the Spire prep's four shapes vs the Key ruling.** `RESOLVED 2026-10-10: prep doc deleted (the Key ruling stands; the Spire is now one building with the Scald dark tower, story sitting round 2)`
 > `design/Jawa/spire_plot_discussion_prep.md` header still says: "He ruled 2026-09-12 … function NOT ruled, deliberately — 'Not ready to resolve this yet, need a whole plot discussion first (TBD)'" and offers four candidate shapes (Third Clock / Archive Heist / Cathedral's Errand / Standing Wound) — while `ashfall_research_base.md` §6 now carries "Campaign function — RULED at the plot sitting, 2026-09-12. The Base is THE KEY." Delete-don't-supersede has not yet been applied to the prep doc.
 
 **G81 — pre-rename place names across the corpus.** `CONTRADICTED-BY infrastructure/state/items/closed/WORLD_NAME_FIXES_1.md (RULED renames, bridge pass + doc fix not yet run)`
