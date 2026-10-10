@@ -812,6 +812,22 @@ MODS = {
         "On a new discovery: message and small rewards": "NextPulse",
         "Regions of the ship": "Now",
     }, ("disabledCategories",)),
+    "LuminousPigment": ("LuminousPigmentMod.cs", "RM_LuminousPigment.csproj", {
+        "Wild crowncarpet on new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Mat sighting and shelf life": "Now",
+        "The press": "Now",
+        "Deepfire jars and night visibility": "Now",
+        "The GlowTank": "Now",
+        "Painting: coats and light": "Now",
+        "Painting: deepfire cost per target": "Now",
+        "What can take deepfire": "Now",
+        "Glowing in the dark: combat penalties": "Now",
+        "First-coat and floor beauty": "Now",
+        "Cuisine": "Now",
+        "Cuisine: dish odds and families": "Now",
+        "Gods (Ninefold)": "Now",
+        "Status (the purple engine)": "Now",
+    }, ("coatRadius", "coatIntensity", "familyEnabled")),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
