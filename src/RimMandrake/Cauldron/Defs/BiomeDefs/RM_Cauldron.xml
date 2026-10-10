@@ -43,8 +43,8 @@
         RM_RedBugloss, RM_GiantAgariTox, RM_KeeningCordax,
         RM_GiantToxicFlower) at the same weights, plus RM_Xithess.
       - wildAnimals (CAULDRON_RULED_CONTENT_1): +3 owned natives (RM_Vexxiss,
-        RM_Zisska, RM_Eskith) and +4 owner-ruled Alpha Animals imports
-        (Plasmorph, LuciferBug, Radyak, RipperHound). The imports override
+        RM_Zisska, RM_Eskith) and +3 owner-ruled Alpha Animals imports
+        (Plasmorph, LuciferBug, Radyak). The imports override
         the frozen sheet's no-grazer and ban-9 lines on purpose. Lylek,
         Skalder (RSW_ ports) and Silooth (donor) ride the Utinni patch.
 

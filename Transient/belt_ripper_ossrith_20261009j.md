@@ -1,0 +1,4 @@
+# ripper hound drop + ossrith art (2026-10-09j)
+- Owner cards 2026-10-09: drop ripper hound; queue new very alien art for the ossrith (RM_Radyak), night side, "not just a yak".
+- Ripper hound: deleted RM_RipperHound.xml (ThingDef, PawnKindDef, render tree); removed from Cauldron About/biome comment, donor_plain_ports_check.py. Cauldron selftest census 50/6 -> 48/5, validation.py kind floor 6 -> 5. AA_RipperHound patches in RimUtinni target the donor, left alone.
+- Ossrith: prior art existed (enact_f3decf4d_radyak_v1, owner "good start, more alien" 14:24); owner now asks for a fresh stranger one. Queued ossrith_alien_v2_{east,south,north} (priority 0, no reference=, target RM_Radyak) from Transient/ossrith_art_job_20261009j.json. Install is owed after the daemon renders and he rules; RM_Radyak.xml still on donor texPaths and its MayRequire guard stays until then.

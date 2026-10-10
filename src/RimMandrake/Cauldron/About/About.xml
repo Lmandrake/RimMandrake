@@ -56,7 +56,7 @@ keening cordax, giant toxic flower) are now owned RM_ defs, so wildPlants no
 longer depends on Alpha Biomes; RM_Xithess (a filter-frond with a vent-chemistry
 yield) joins them. Three owned natives are added (RM_Vexxiss, RM_Zisska,
 RM_Eskith, with RM_Vexxith shear material and RM_ZisskaMeat) and four Alpha
-Animals imports (Plasmorph, Lucifer bug, Radyak, Ripper hound), each
+Animals imports (Plasmorph, Lucifer bug, Radyak), each
 MayRequire'd. The thornwood and martyr tree carry a growth-scaled metal
 second yield.
 
