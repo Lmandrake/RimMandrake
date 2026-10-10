@@ -1,7 +1,8 @@
 """GLOW_TANK_SEED_LIVE_SOW_1 (L2): a SEEDED, powered GlowTank gets its crop sown, spends the seed culture on the first
 sow (fuel 1 -> 0), sets `established`, and glows; an UNSEEDED twin with a crop forced into it never establishes
 (control: TryEstablish needs the seed). The seed goes in through jawa/thing_refuel (CompRefuelable.Refuel, no hauler).
-The sow is tried the real way first (a colonist, defaultPlantToGrow) and, if no colonist sows within the budget, the
+The sow is tried the real way first (a colonist with Plants 12 and Growing on, the sow research finished,
+defaultPlantToGrow) and, if no colonist sows within the budget, the
 crop is placed with spawn_batch and the result says route=spawned. python.exe, bridge held, any quicktest map.
 argv: "X,Z" site origin (default 90,130). Exit 0 = PASS."""
 import sys, os, json
@@ -35,7 +36,15 @@ rows = {"start": state(seeded)}
 rows["refuel"] = call("jawa/thing_refuel", thingId=seeded, amount=1)
 rows["seeded"] = state(seeded)
 route = "colonist"
+# the real sow needs what the game asks of it: the sow research (RM_DeepfireRefining), Growing >= sowMinSkill 6, Growing on
+rows["research"] = call("jawa/research_finish_project", project="RM_DeepfireRefining", doCompletionDialog=False, doCompletionLetter=False).get("success")
+before = {q.get("id") for q in call("jawa/list_pawns", rect=R(X, Z, 6, 6)).get("pawns") or []}
 call("jawa/spawn_pawn", kindDef="Colonist", x=X + 1, z=Z + 1, faction="player", count=1)
+grower = next((q.get("id") for q in call("jawa/list_pawns", rect=R(X, Z, 6, 6)).get("pawns") or [] if q.get("id") not in before), None)
+if grower:
+    call("jawa/set_pawn_skill", pawn=str(grower), skill="Plants", level=12)
+    call("jawa/set_work_priority", pawnId=str(grower), workType="Growing", priority=1)
+rows["grower"] = grower
 sown = False
 for _ in range(12):
     call("rimworld/step_game_ticks", ticks=500, pauseFirst=True, timeoutMs=120000)
@@ -52,7 +61,8 @@ rows["after"] = state(seeded)
 rows["control"] = state(bare)
 for k in ("start", "seeded", "after", "control"):
     print(k, rows[k])
-print("refuel", {k: rows["refuel"].get(k) for k in ("success", "fuelBefore", "fuelAfter", "capacity", "error")}, "route", route)
+print("refuel", {k: rows["refuel"].get(k) for k in ("success", "fuelBefore", "fuelAfter", "capacity", "error")}, "route", route,
+      "research", rows.get("research"), "grower", rows.get("grower"))
 fails = []
 a, c = rows["after"], rows["control"]
 if not rows["seeded"].get("ok") or rows["seeded"]["fuel"] != 1:
