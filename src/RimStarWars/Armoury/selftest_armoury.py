@@ -158,8 +158,13 @@ def main():
     # durasteel conversion: clean passes; planted defects (a source count the patch lacks; a leftover donor name) fail
     import tempfile, shutil
     check("durasteel convert: clean tree", V.durasteel_convert_static() == [], V.durasteel_convert_static())
+    check("outerrim patch: clean", V.durasteel_outerrim_static() == [], V.durasteel_outerrim_static())
     tmp = tempfile.mkdtemp()
     try:
+        open(os.path.join(tmp, "p.xml"), "w").write('<Patch><Operation Class="PatchOperationReplace"><xpath>/Defs//OuterRim_Durasteel[text()="30"]</xpath>'
+                                                    '<value><RSW_Durasteel>31</RSW_Durasteel></value></Operation></Patch>')
+        got = V.durasteel_outerrim_static(os.path.join(tmp, "p.xml"))
+        check("outerrim patch: planted wrong count and missing forms caught", any("count 30" in b for b in got) and len(got) >= 3, got)
         open(os.path.join(tmp, "x.xml"), "w").write("<Defs><ThingDef><costList><RSW_Durasteel>777</RSW_Durasteel>"
                                                     "<KOTOR_AlloyDurasteel>5</KOTOR_AlloyDurasteel></costList></ThingDef></Defs>")
         got = V.durasteel_convert_static(defs_dir=tmp)

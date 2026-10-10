@@ -40,6 +40,7 @@
       <li><from>KOTOR_AlloyBronzium</from><to>RSW_Durasteel</to><defType>ThingDef</defType></li>
       <!-- CANON_MATERIALS_BUILD_1: donor durasteel converts 1:1 -->
       <li><from>KOTOR_AlloyDurasteel</from><to>RSW_Durasteel</to><defType>ThingDef</defType></li>
+      <li><from>OuterRim_Durasteel</from><to>RSW_Durasteel</to><defType>ThingDef</defType></li>
     </aliases>
   </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
 </Defs>
