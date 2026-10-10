@@ -1,0 +1,23 @@
+S1_wildCalves calves ['RSW_ShrublandGiant670226', 'RSW_ShrublandGiant670228', 'RSW_ShrublandGiant670231'] wildAdult RSW_ShrublandGiant670232 {"states": [{"def": "Berserk", "label": "berserk", "neverRecoversAlone": false, "blockNormalThoughts": true}, {"def": "BerserkPermanent", "label": "berserk", "neverRecoversAlone": true, "blockNormalThoughts": true}, {"de
+S1_wildCalves tameAdult RSW_ShrublandGiant670233 {"states": [{"def": "Berserk", "label": "berserk", "neverRecoversAlone": false, "blockNormalThoughts": true}, {"def": "BerserkPermanent", "label": "berserk", "neverRecoversAlone": true, "blockNormalThoughts": true}, {"de
+S2_tameCalves calves ['RSW_ShrublandGiant670287', 'RSW_ShrublandGiant670288', 'RSW_ShrublandGiant670289'] wildAdult RSW_ShrublandGiant670290 {"states": [{"def": "Berserk", "label": "berserk", "neverRecoversAlone": false, "blockNormalThoughts": true}, {"def": "BerserkPermanent", "label": "berserk", "neverRecoversAlone": true, "blockNormalThoughts": true}, {"de
+S2_tameCalves tameAdult RSW_ShrublandGiant670291 {"states": [{"def": "Berserk", "label": "berserk", "neverRecoversAlone": false, "blockNormalThoughts": true}, {"def": "BerserkPermanent", "label": "berserk", "neverRecoversAlone": true, "blockNormalThoughts": true}, {"de
+['id', 'name', 'kind', 'kindDef', 'def', 'hasGenes', 'uniqueXenotype', 'isPlayer', 'hostile', 'x', 'z', 'spawned', 'dead', 'downed', 'stunned', 'stunTicksLeft', 'fleshType', 'isMechanoid', 'isFlesh', 'intelligence', 'bodySize']
+RSW_ShrublandGiant670226 None None None 122 96
+RSW_ShrublandGiant670228 None None None 125 87
+RSW_ShrublandGiant670231 None None None 124 94
+RSW_ShrublandGiant670232 None None None 127 95
+RSW_ShrublandGiant670233 PlayerColony None None 107 99
+RSW_ShrublandGiant670287 PlayerColony None None 154 99
+RSW_ShrublandGiant670288 PlayerColony None None 152 101
+RSW_ShrublandGiant670289 PlayerColony None None 154 99
+RSW_ShrublandGiant670290 None None None 127 98
+RSW_ShrublandGiant670291 PlayerColony None None 139 101
+RSW_ShrublandGiant670232 Years": 31, "developmentalStage": "Adult", "position": {"x": 127, "z": 95}, "traits": [], "skills": [], "apparel": [], "equipment": [], "hediffs": [], "needs": [{"need": 
+  insp ['Male, age 31']
+RSW_ShrublandGiant670233 Years": 20, "developmentalStage": "Adult", "position": {"x": 107, "z": 99}, "traits": [], "skills": [], "apparel": [], "equipment": [], "hediffs": [{"def": "Gunshot", "pa
+  insp ['Female thunderstep, age 20 of New Arrivals', 'Wandering.']
+RSW_ShrublandGiant670290 Years": 42, "developmentalStage": "Adult", "position": {"x": 127, "z": 98}, "traits": [], "skills": [], "apparel": [], "equipment": [], "hediffs": [], "needs": [{"need": 
+  insp ['Female, age 42']
+RSW_ShrublandGiant670291 Years": 11, "developmentalStage": "Adult", "position": {"x": 139, "z": 101}, "traits": [], "skills": [], "apparel": [], "equipment": [], "hediffs": [], "needs": [{"need":
+  insp ['Female thunderstep, age 11 of New Arrivals', 'Wandering.']
