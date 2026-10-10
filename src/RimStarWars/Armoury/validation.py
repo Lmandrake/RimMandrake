@@ -681,10 +681,33 @@ def durasteel_convert_static(patch_path=None, defs_dir=None):
     return bad
 
 
+def durasteel_outerrim_static(patch_path=None):
+    """Offline: the OuterRim conversion patch is well formed: every count Replace keeps its count, li/thingDef forms are
+    covered and the donor def is removed."""
+    import re as _re
+    patch_path = patch_path or _os.path.join(_ARMOURY_DIR, "Patches", "RSW_DurasteelConvert_OuterRim.xml")
+    bad, root = [], _ET.parse(patch_path).getroot()
+    seen = set()
+    for o in root.iter("Operation"):
+        xp = o.findtext("xpath") or ""
+        m = _re.search(r'OuterRim_Durasteel\[text\(\)="(\d+)"\]', xp)
+        if m:
+            seen.add(m.group(1))
+            if (o.findtext("value/RSW_Durasteel") or "") != m.group(1):
+                bad.append("count %s Replace writes %r" % (m.group(1), o.findtext("value/RSW_Durasteel")))
+    if len(seen) < 20:
+        bad.append("only %d count Replaces" % len(seen))
+    xs = "\n".join(o.findtext("xpath") or "" for o in root.iter("Operation"))
+    for must in ('li[text()="OuterRim_Durasteel"]', 'thingDef[text()="OuterRim_Durasteel"]', 'defName="OuterRim_Durasteel"'):
+        if must not in xs:
+            bad.append("patch lacks " + must)
+    return bad
+
+
 @suite.chain("durasteel_convert")
 def durasteel_convert(t):
     with t.component("durasteel_convert_shape", beyond_toggle=True):
-        bad = durasteel_convert_static()
+        bad = durasteel_convert_static() + durasteel_outerrim_static()
         if bad:
             raise ExpectationFailed("; ".join(bad[:10]))
 
