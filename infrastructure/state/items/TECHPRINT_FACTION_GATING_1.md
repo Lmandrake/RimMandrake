@@ -135,10 +135,16 @@ faction" to the player from this same field. **This confirms the owner's
 pure Def-field data, zero C#.**
 
 What's still missing before any row can use it:
-1. **None of the 12 campaign `FactionDef`s currently set `categoryTag`**
-   (checked `src/RimStarWars` — zero hits). Adding one is trivial XML per
-   faction, but which factions get which tag(s) was ruled by the owner
-   2026-09-26 (`faction_tech_alignment.md` section 6).
+1. **Category tags — BUILT 2026-10-10 (`ca7015ad9`).** Each campaign faction now carries its own
+   `categoryTag` (HuttCartel, AscendantHelix, DeepwaterCompact, FreeDroidEnclaves, GeonosianHive,
+   WildsteamClan, JawaTradeMoot); Homestead keeps `Outlander`, the Tuskens `Tribal`, the Junkers `Pirate`.
+   `UtinniPatches/Patches/FactionCategoryTags_Compat.xml` keeps every other Outlander/Tribal-keyed list
+   (ideo apparel allow/disallow, makingFactionCategories, the Royalty lodger table) treating them as before,
+   and adds `HuttCartel` to every `heldByFactionCategoryTags` (the fence, Q11). Consequence: the six
+   ex-Outlander factions stop selling the 32 mod-stack prints held by `Outlander`; Homestead and the Hutts
+   still do. **Blackstar is still untagged**: it is vanilla `Pirate`, whose def node is also the abstract
+   `PirateBandBase`, so a tag there is inherited by every other mod's untagged pirate faction — Q15 needs
+   another route (e.g. a dedicated RUT faction def).
 2. **No design doc maps a faction to a tech DOMAIN in the sense this gate
    needs.** Searched `design/Jawa/worldbuilding/FACTION_SPEC.md` (948 lines),
    `faction_roster_v2.md` (2847 lines), `faction_equipment_clusters.md`,
@@ -230,9 +236,10 @@ commands run, nothing committed/pushed — left for the owner to review.
 - [ ] `design/Jawa/worldbuilding/faction_tech_alignment.md` written and read by
       the owner — its open questions are his to rule (Wildsteam's jungle tech and
       the Empire's stealable manufacturing plans are TBD by his own words).
-- [ ] Manifest rows assigned against that map (build step, not this item):
-      `categoryTag` per aligned `FactionDef`, `heldByFactionCategoryTags` per
-      research row, `StockGenerator_Techprints` on that faction's traders.
+- [x] `categoryTag` per aligned `FactionDef` + compat patch + Hutt fence (`ca7015ad9`); Blackstar open (above).
+- [ ] Manifest rows assigned against that map: `techprintCount` + `heldByFactionCategoryTags` per
+      research row. (`StockGenerator_Techprints`: vanilla Outlander/Neolithic trader kinds carry it and the factions
+      inherit those lists; whether the `RUT_Caravan_*`/`RUT_Base_*` kinds carry it is UNMEASURED.)
 - [ ] Follow-on build item needed for the ship-only reveal trigger
       (QuestNode or Harmony patch) before that class can be called "working"
       rather than "labeled."
