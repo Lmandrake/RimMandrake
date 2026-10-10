@@ -1,4 +1,6 @@
 # project: RimMandrake/RustChrome/Source/RustChrome.csproj
-# dll: 97ed61728b0eae7cbd5a95a19ec0c5d155c06883adb2f20a6896a1ce7fd19795
-838a0f3085fa86b0ca13dd95b1bbdc83b36026866c5e75029b644d5cd68ad5d6 RustChromeMod.cs
+# dll: f8f929f49ca5bc79c2352e4e8577e4d1140863d17d08bd9bae83057995bf59b1
+28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../_Shared/SettingsKit/SettingsKitCore.cs
+29fa9ae39f23034377d71aafd6a1c802b96b1458d278c366812fc8826bc14ee6 RustChromeMod.cs
+d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../_Shared/SettingsKit/SettingsKitDrawer.cs
 f04de3037f64c1cbcedceefa90ebea6be9738a444a22e1c8b5e236986c822021 RustChromeColors.cs
