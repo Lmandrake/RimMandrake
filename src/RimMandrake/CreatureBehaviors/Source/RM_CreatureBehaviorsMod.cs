@@ -319,6 +319,10 @@ namespace RimMandrake.CreatureBehaviors
     //      (LONGSHADE_SHEET_STRUCTURAL_RULINGS_1). Off: a race carrying
     //      RM_SandBuriedGraphicExtension draws its ordinary body on sand like any
     //      vanilla animal; purely visual, no behaviour depends on it.
+    //  48. perceivedBeautyEnabled / perceivedBeautyMultiplier — RM_PerceivedBeautyPatches.cs
+    //      (OLLOPOM_OUTDOOR_BEAUTY). A race carrying RM_PerceivedBeautyExtension adds its beautyOutdoors
+    //      (× the multiplier) to its own cell's beauty while that cell is psychologically outdoors. Off: no
+    //      creature counts toward perceived beauty, as in vanilla.
     // ════════════════════════════════════════════════════════════════════
     public class RM_CreatureBehaviorsSettings : ModSettings
     {
@@ -437,6 +441,9 @@ namespace RimMandrake.CreatureBehaviors
         public static float mirageBreakChanceMultiplier = 1f;
         public static bool tracksEnabled = true;
         public static bool sandBuriedGraphicEnabled = true;
+        // OLLOPOM_OUTDOOR_BEAUTY — RM_PerceivedBeautyPatches.cs. Off: creatures add nothing to perceived beauty (vanilla).
+        public static bool perceivedBeautyEnabled = true;
+        public static float perceivedBeautyMultiplier = 1f;
         // CHILL_CREATURES_VANISH_1 — RM_WildLeaveNotice.cs. Off: wild animals leave a too-warm/too-cold
         // map (or leave starving) silently, as vanilla does.
         public static bool wildLeaveNoticeEnabled = true;
@@ -663,6 +670,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref mirageBreakChanceMultiplier, "mirageBreakChanceMultiplier", 1f);
             Scribe_Values.Look(ref tracksEnabled, "tracksEnabled", true);
             Scribe_Values.Look(ref sandBuriedGraphicEnabled, "sandBuriedGraphicEnabled", true);
+            Scribe_Values.Look(ref perceivedBeautyEnabled, "perceivedBeautyEnabled", true);
+            Scribe_Values.Look(ref perceivedBeautyMultiplier, "perceivedBeautyMultiplier", 1f);
             Scribe_Values.Look(ref wildLeaveNoticeEnabled, "wildLeaveNoticeEnabled", true);
             Scribe_Values.Look(ref trackPoolCap, "trackPoolCap", RM_TrackPool.DefaultCapacity);
             Scribe_Values.Look(ref trackPrintOpacity, "trackPrintOpacity", 0.7f);
@@ -1173,6 +1182,19 @@ namespace RimMandrake.CreatureBehaviors
                 list.CheckboxLabeled("Half-buried-in-sand graphics", ref sandBuriedGraphicEnabled,
                     "Sand burrowers (thraia, drazzik) draw their half-buried art while resting on loose sand. "
                   + "Off: they draw their ordinary body there. Purely visual.");
+                list.GapLine();
+            }
+            if (Group(list, "Pretty creatures outdoors", new[] { "perceivedBeautyEnabled", "perceivedBeautyMultiplier" }, new[] { "PerceivedBeauty" }))
+            {
+                list.CheckboxLabeled("Pretty creatures add outdoor beauty", ref perceivedBeautyEnabled,
+                    "A creature built to be lovely to look at (the ollopom) adds beauty to the spot it stands on "
+                  + "while it is outdoors, so colonists nearby feel it in their Beauty need, like a flower bed. "
+                  + "Indoors it adds nothing. Off: animals never count toward beauty, as in vanilla.");
+                if (perceivedBeautyEnabled)
+                {
+                    list.Label("  Creature beauty strength: " + perceivedBeautyMultiplier.ToStringPercent());
+                    perceivedBeautyMultiplier = list.Slider(perceivedBeautyMultiplier, 0f, 3f);
+                }
                 list.GapLine();
             }
             if (Group(list, "Wild-leave notice", new[] { "wildLeaveNoticeEnabled" }, new string[0]))

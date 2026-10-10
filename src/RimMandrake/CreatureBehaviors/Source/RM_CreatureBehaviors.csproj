@@ -209,6 +209,9 @@
     <Compile Include="RM_TrackGridPatches.cs" />
     <Compile Include="RM_SectionLayer_TrackPrints.cs" />
     <Compile Include="RM_TrackGridDiag.cs" />
+    <Compile Include="RM_PerceivedBeautyExtension.cs" />
+    <Compile Include="RM_PerceivedBeautyMath.cs" />
+    <Compile Include="RM_PerceivedBeautyPatches.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

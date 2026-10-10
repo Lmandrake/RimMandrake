@@ -36,7 +36,7 @@ suite = Suite("CreatureBehaviors")
 suite.toggles = ["tracksEnabled", "verminBreedingEnabled", "gnawBehaviorEnabled", "eatCleanableBehaviorEnabled",
                  "seekShadeBehaviorEnabled", "seekMarkedTerrainBehaviorEnabled", "sunScaldEnabled", "senseWebEnabled",
                  "chewAnchorsBehaviorEnabled", "frontCreepEnabled", "aquaticAmbushEnabled", "parentalEnrageEnabled",
-                 "drumLureEnabled"]
+                 "drumLureEnabled", "perceivedBeautyEnabled"]
 
 SETTINGS = "RimMandrake.CreatureBehaviors.RM_CreatureBehaviorsSettings"
 DIAG = "RimMandrake.CreatureBehaviors.RM_TrackGridDiag"
@@ -343,6 +343,8 @@ MECHANICS = [
     ("decoyShadeEnabled", ["RM_CompDecoyShade", "RM_FalseShadeExtension", "RM_MapComponent_FalseShade"],
      ["ThingDef/RM_DecoyShadeTarp", "ResearchProjectDef/RM_DecoyShadeResearch"]),
     ("drumLureEnabled", ["RM_CompDrumLure"], ["HediffDef/RM_DrumLureSubmersion", "HediffDef/RM_DrumLureLured"]),
+    ("perceivedBeautyEnabled", ["RM_PerceivedBeautyExtension", "RM_PerceivedBeautyPatches", "RM_PerceivedBeautyMath"],
+     ["ThingDef/RSW_Ollopom"]),
 ]
 
 
@@ -352,6 +354,69 @@ def _setting(t, action, field, value=None):
     else:
         r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action=action, field=field, value=str(value))
     return r if isinstance(r, dict) else {}
+
+
+# ---------------------------------------------------------------- perceived beauty (OLLOPOM_OUTDOOR_BEAUTY, 2026-10-10)
+# Owner: "I was considering it for outdoor beauty instead." MEASURED (RimSage): Need_Beauty reads
+# BeautyUtility.AverageBeautyPerceptible, which sums CellBeauty over ~250 nearby cells; CellBeauty skips every
+# Pawn (BeautyRelevant = Building/Item/Plant/Filth), so a stat on the animal can never reach it.
+# RULED OUT: "PawnBeauty 1 on the ollopom gives a beauty bonus" — PawnBeauty feeds only ThoughtWorker_Pretty/Ugly,
+#   which return false unless other.RaceProps.Humanlike, and PriceUtility.PawnQualityPriceFactor (+20% value per
+#   point). It was removed from the def for that reason.
+# Read as STATE through RM_PerceivedBeautyPatches.Probe(pawnId) = "contribution|outdoors|avgBesideIt"; the average
+# includes the postfix, so on-minus-off isolates our term. Visuals are not judged.
+PB_PROBE = NS + "RM_PerceivedBeautyPatches"
+
+
+def _pb_probe(t, pid):
+    r = t.bridge_call("jawa/static_call", type=PB_PROBE, method="Probe", args=pid)
+    if not _live(t):
+        return None
+    parts = str((r or {}).get("result")).split("|")
+    if not (r or {}).get("success") or len(parts) != 3:
+        _unmeasured(t, "Probe(%s) unreadable: %s" % (pid, str(r)[:200]))
+    return float(parts[0]), parts[1].strip().lower() == "true", float(parts[2])
+
+
+@suite.chain("perceived_beauty")
+def perceived_beauty(t):
+    with _comp(t, "ollopom_outdoors_adds_beauty_and_toggle_removes_it", toggle="perceivedBeautyEnabled"):
+        mi = t.bridge_call("jawa/map_info")
+        if _live(t) and mi and mi.get("sizeX"):
+            t.anchor = (int(mi["sizeX"]) // 2, int(mi["sizeZ"]) // 2)
+            x, z = t.anchor
+            t.bridge_call("jawa/set_roof_batch", ops="%d,%d,%d,%d" % (x - 3, z - 3, 7, 7), roofDef="None")
+        pid = t.spawn_pawn("RSW_Ollopom")
+        ctrl = t.spawn_pawn("Muffalo", beyond=[t.anchor]) if _live(t) else None
+        if _live(t) and not (pid and ctrl):
+            _unmeasured(t, "could not spawn an ollopom and a muffalo control")
+        if not _live(t):
+            return
+        for p in (pid, ctrl):
+            t.session.call("jawa/set_draft", pawnId=p, drafted=True)      # animals ignore it; harmless if so
+        old = _setting(t, "get", "perceivedBeautyEnabled").get("value")
+        try:
+            _setting(t, "set", "perceivedBeautyEnabled", "True")
+            on = _pb_probe(t, pid)
+            cm = _pb_probe(t, ctrl)
+            _setting(t, "set", "perceivedBeautyEnabled", "False")
+            off = _pb_probe(t, pid)
+        finally:
+            if old is not None:
+                _setting(t, "set", "perceivedBeautyEnabled", old)
+        if not (on and cm and off):
+            return
+        if not on[1]:
+            _unmeasured(t, "the ollopom's cell is not psychologically outdoors, so the arm cannot test outdoor beauty")
+        # Sanity probe first: the instrument must see a positive term before its zeros mean anything.
+        if on[0] <= 0:
+            raise ExpectationFailed("ollopom outdoors with the mechanic on contributed %r (expected > 0)" % (on[0],))
+        if cm[0] != 0:
+            raise ExpectationFailed("control muffalo (no extension) contributed %r (expected 0)" % (cm[0],))
+        if off[0] != 0:
+            raise ExpectationFailed("mechanic off, ollopom still contributed %r" % (off[0],))
+        if not on[2] > off[2]:
+            raise ExpectationFailed("perceived beauty beside it did not rise with the mechanic on (on %r, off %r)" % (on[2], off[2]))
 
 
 @suite.chain("mechanic_toggles")

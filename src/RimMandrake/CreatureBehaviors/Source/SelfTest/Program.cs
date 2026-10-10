@@ -579,6 +579,29 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Assert(l40 > l70 * 2f, "40 deg shadow " + l40 + " not much longer than 70 deg " + l70);
             });
 
+            // ── OLLOPOM_OUTDOOR_BEAUTY ──────────────────────────────────
+            Case("perceived beauty: a pretty creature adds beauty outdoors only, alive only, scaled, and nothing when off (shipped ollopom)", () =>
+            {
+                string root = FindModsRoot();
+                var doc = new System.Xml.XmlDocument();
+                doc.Load(System.IO.Path.Combine(root, "..", "RimStarWars", "SWBestiary", "Defs", "ThingDefs_Races", "RSW_Ollopom.xml"));
+                System.Xml.XmlNode ext = doc.SelectSingleNode("//ThingDef[defName='RSW_Ollopom']/modExtensions/li[contains(@Class,'RM_PerceivedBeautyExtension')]");
+                Assert(ext != null, "RSW_Ollopom carries no RM_PerceivedBeautyExtension");
+                Assert(ext.Attributes["MayRequire"]?.Value == "mandrake.rm.biomes",
+                    "the extension is not MayRequire-guarded on mandrake.rm.biomes (CreatureBehaviors ships folded into it, so its own id never loads; an unguarded missing Class discards the def)");
+                Assert(doc.SelectSingleNode("//ThingDef[defName='RSW_Ollopom']/statBases/PawnBeauty") == null,
+                    "PawnBeauty is back on the ollopom: it is inert for animals (humanlike-only thoughts) and only inflates market value");
+                float b = float.Parse(ext.SelectSingleNode("beautyOutdoors").InnerText, System.Globalization.CultureInfo.InvariantCulture);
+                Assert(b > 0f && b < 14f, "ollopom beautyOutdoors " + b + " is not a SMALL bonus (0 < b < a rose's 14)");
+                // Sanity probe: the rule must be able to say yes before its zeros mean anything.
+                Assert(RM_PerceivedBeautyMath.Contribution(true, 1f, b, false, true) == b, "outdoors, alive, on: not the full value");
+                Assert(RM_PerceivedBeautyMath.Contribution(true, 2f, b, false, true) == 2f * b, "multiplier not applied");
+                Assert(RM_PerceivedBeautyMath.Contribution(true, 1f, b, false, false) == 0f, "indoors added beauty (owner asked for OUTDOOR beauty)");
+                Assert(RM_PerceivedBeautyMath.Contribution(true, 1f, b, true, true) == 0f, "a dead creature added beauty");
+                Assert(RM_PerceivedBeautyMath.Contribution(false, 1f, b, false, true) == 0f, "the setting off still added beauty");
+                Assert(RM_PerceivedBeautyMath.Contribution(true, 0f, b, false, true) == 0f, "multiplier 0 still added beauty");
+            });
+
             // ── STILLSAND_GLARE_BLIND_GOGGLES_1 ─────────────────────────
             Case("glare-blind: full sun blinds, sand shade and protected eyes do not (shipped numbers)", () =>
             {

@@ -62,8 +62,6 @@
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
       <FilthRate>2</FilthRate>
       <Wildness>0.4</Wildness>
-      <!-- owner, Weeping Stones art sheet 2026-10-10: "Nice. Give them a small beauty bonus then call them done." -->
-      <PawnBeauty>1</PawnBeauty>
     </statBases>
     <tools>
       <li>
@@ -116,6 +114,13 @@
     <modExtensions>
       <li MayRequire="pathfinding.framework" Class="PathfindingFramework.MovementExtension">
         <movementDef>PF_Movement_Amphibious</movementDef>
+      </li>
+      <!-- owner, Weeping Stones art sheet 2026-10-10: "Nice. Give them a small beauty bonus then call them done."
+           then: "I was considering it for outdoor beauty instead." Animals never feed vanilla beauty (BeautyUtility.CellBeauty
+           skips pawns), so this extension adds it: about half a rose (rose = 14) on its own cell, outdoors only.
+           Not PawnBeauty: that stat only drives humanlike Pretty/Ugly opinions and +20% market value per point. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_PerceivedBeautyExtension" MayRequire="mandrake.rm.biomes">
+        <beautyOutdoors>8</beautyOutdoors>
       </li>
     </modExtensions>
     <race>
