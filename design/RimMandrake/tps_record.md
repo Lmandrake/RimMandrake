@@ -172,6 +172,16 @@ a non-main thread, records nothing (`profSkipped`). On the installed Harmony 2.4
 prefixes are never skipped by another prefix returning false (decompiled `MethodCreator.AffectsOriginal`);
 the guard exists because that is version behaviour.
 
+Every sampler and attribution hook goes through `JawaBenchHookGuard` (`TPS_HOOKS_HARDEN_REENTRY_AND_LATE_GUARDS`).
+The thread check comes first, then the nesting check, and only then the body. Per-invocation values travel
+in the guard's `__state` scope and never in statics. Each scope closes in a void finalizer, including Root
+and TickManagerUpdate, which used to close in postfixes. The heartbeat `Beat()` has its own exception
+boundary. Two kinds of nesting are rejected and counted: a nested `DoSingleTick`, `Root.Update` or
+`TickManagerUpdate`. Long events and saves may nest. Per-hook coverage is `ok`, `degraded` or `disabled`,
+with counters for foreign-thread, nested, orphan-finalizer, unbalanced, skipped-original, threw and fault
+events. It appears as `hooks` and `attributionHooks` in `jawa/tps_report` and in the handshake. It is unit-tested
+offline in `TpsMathSelfTest/UnitsHookGuard.cs`. Live behaviour on Mono is UNVERIFIED (built, not deployed).
+
 ⚖️ Overhead: `profHooks` timer pairs fired × the per-pair cost calibrated at install = `profEstMs`. That is
 an **incomplete estimator, not a bound**: it omits Harmony dispatch, the phase stack and the finalizer
 blocks, and calibration noise can also inflate it. The real cost is owed from three separately restarted
