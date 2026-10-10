@@ -13,7 +13,7 @@ The JawaBench companion starts the sampler when RimBridgeServer registers it (ga
 bridge call needed) and writes ordered JSON lines - windows, incidents, lifecycle events,
 attribution - through one bounded writer thread into session-named segments
 
-    C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\JawaBench\tps\tps_<start>_<session>_<pid>_<seg>.jsonl
+    <game_paths.LOCALLOW>\JawaBench\tps\tps_<start>_<session>_<pid>_<seg>.jsonl   (the game's SaveData folder)
 
 (>= 7 days kept, byte-capped; outside git). Times given without a zone are read in --tz (default
 America/Los_Angeles, the owner's zone); the record itself is UTC. The window maths is a PORT of
@@ -337,12 +337,8 @@ _open = open   # selftest swaps this to simulate a segment vanishing mid-read
 
 
 def record_dir():
-    try:
-        from game_paths import PLAYER_LOG
-        base = os.path.dirname(PLAYER_LOG)
-    except Exception:                                           # noqa: BLE001
-        base = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
-    return os.path.join(base, "JawaBench", "tps")
+    from game_paths import LOCALLOW
+    return os.path.join(LOCALLOW, "JawaBench", "tps")
 
 
 def list_files(d):
