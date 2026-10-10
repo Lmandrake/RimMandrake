@@ -41,6 +41,8 @@
     <Compile Include="RSW_FactionApparelThoughtExtension.cs" />
     <Compile Include="RSW_ThoughtWorker_ObserverFactionApparel.cs" />
     <Compile Include="RSW_TrophyCraftSettings.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>
