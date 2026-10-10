@@ -1,0 +1,10 @@
+set {"success": true, "written": 1, "requested": 1, "errors": [], "clamped": [], "note": "Nothing is visible until jawa/world_commit runs.", "tiles": [{"t
+found {"success": true, "tile": 11000, "layerId": 0, "faction": "PlayerColony", "settlementId": 161, "name": "Histed", "limitReached": true, "note": "AddNewHome does not generate a map. limitReached is info
+PROBE forge_home mapId=7 allowed=True enabled=True biome=RM_TheForge cells=0
+set {"success": true, "written": 1, "requested": 1, "errors": [], "clamped": [], "note": "Nothing is visible until jawa/world_commit runs.", "tiles": [{"t
+found {"success": true, "tile": 11500, "layerId": 0, "faction": "PlayerColony", "settlementId": 162, "name": "Bok Choy's Campsite", "limitReached": true, "note": "AddNewHome does not generate a map. limitRe
+PROBE arid_home mapId=8 allowed=False enabled=True biome=AridShrubland cells=0
+set {"success": true, "written": 1, "requested": 1, "errors": [], "clamped": [], "note": "Nothing is visible until jawa/world_commit runs.", "tiles": [{"t
+found {"success": true, "tile": 12000, "layerId": 0, "faction": "PlayerColony", "settlementId": 163, "name": "Roarton", "limitReached": true, "note": "AddNewHome does not generate a map. limitReached is inf
+PROBE forge_home_toggle_off mapId=9 allowed=True enabled=False biome=RM_TheForge cells=0
+GET after True

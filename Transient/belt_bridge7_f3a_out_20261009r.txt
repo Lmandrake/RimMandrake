@@ -1,0 +1,14 @@
+DEF Dewback ['texPath": "RimStarWars/SWBestiary/Dewback/Dewback"', 'texPath": "swanimals/Dewback/Dewback_Dessicated"']
+DEF RSW_Dewback ['texPath": "RimStarWars/SWBestiary/Dewback/Dewback"', 'texPath": "swanimals/Dewback/Dewback_Dessicated"']
+DEF Ronto ['texPath": "RimStarWars/SWBestiary/Ronto/Ronto"', 'texPath": "swanimals/Ronto/Ronto_Dessicated"']
+DEF RSW_Ronto ['texPath": "RimStarWars/SWBestiary/Ronto/Ronto"', 'texPath": "swanimals/Ronto/Ronto_Dessicated"']
+DEF Nuna ['texPath": "RimStarWars/SWBestiary/Nuna/Nuna_f"', 'texPath": "RimStarWars/SWBestiary/Nuna/Nuna_m"', 'texPath": "swanimals/Nuna/Nuna_Dessicated"']
+DEF RSW_Nuna ['texPath": "RimStarWars/SWBestiary/Nuna/Nuna_f"', 'texPath": "RimStarWars/SWBestiary/Nuna/Nuna_m"', 'texPath": "swanimals/Nuna/Nuna_Dessicated"']
+SPAWN Dewback {"success": true, "message": "Spawned 1/1 Dewback in faction PlayerColony.", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "Dewback211868", "name": "Mookee",
+SPAWN RSW_Dewback {"success": true, "message": "Spawned 1/1 RSW_Dewback in faction PlayerColony.", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "RSW_Dewback211869", "name": "
+SPAWN Ronto {"success": true, "message": "Spawned 1/1 Ronto in faction PlayerColony.", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "Ronto211870", "name": "Achuta", "ki
+SPAWN RSW_Ronto {"success": true, "message": "Spawned 1/1 RSW_Ronto in faction PlayerColony.", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "RSW_Ronto211871", "name": "Buye
+SPAWN Nuna {"success": true, "message": "Spawned 1/1 Nuna in faction PlayerColony.", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "Nuna211872", "name": "Mynock", "kind
+SPAWN RSW_Nuna {"success": true, "message": "Spawned 1/1 RSW_Nuna in faction PlayerColony.", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "RSW_Nuna211873", "name": "Majori
+SHOT C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\bridge7_f3_Dewback_0__cell_rect.png
+SHOT C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\bridge7_f3_Dewback_3__cell_rect.png

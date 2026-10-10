@@ -8,7 +8,7 @@ for d in ("ThingDef/RSW_Zersium", "ThingDef/RSW_MineableZersium", "GenStepDef/RU
     r = S.call("jawa/get_defs", defs=d)
     print("DEF", d, r.get("success"), r.get("foundCount"), r.get("notFound"))
 def probe(tag):
-    r = S.call("jawa/static_call", type="RimMandrake.Utinni.UtinniPatches.RUT_ZersiumForgeProof", method="Probe", args="")
+    r = S.call("jawa/static_call", type="RimMandrake.Utinni.UtinniPatches.RUT_ZersiumForgeProof", method="Probe", args="x")
     print("PROBE", tag, r.get("result") if r.get("success") else j(r))
 tiles = [int(t) for t in sys.argv[1].split(",")]   # three free tiles
 back = int(sys.argv[2]) if len(sys.argv) > 2 else 0

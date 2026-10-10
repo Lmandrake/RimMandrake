@@ -548,7 +548,7 @@ def zersium_forge(t):
                 raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
     with t.component("zersium_only_in_forge", toggle="zersiumForgeEnabled"):
         r = t.bridge_call("jawa/static_call", type="RimMandrake.Utinni.UtinniPatches.RUT_ZersiumForgeProof",
-                          method="Probe", args="")
+                          method="Probe", args="x")
         res = str((r or {}).get("result", ""))
         if t._guard():
             f = dict(kv.split("=", 1) for kv in res.split() if "=" in kv)

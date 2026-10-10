@@ -1,0 +1,46 @@
+lines 13832
+Bridge token (expected 1)                                  1
+     [RimBridge] Bridge token: 0e31fa4126204bd8a635ffbae4bb5472
+dead-load strings (expect 0)                               0
+ALL texture-missing lines (info)                           3
+     Failed to find any textures at RotSpecies/Swarmling/Swarmling while constructing Multi(initPath=RotSpecies/Swarmling/Swarmling, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+     Failed to find any textures at RotSpecies/Swarmling/Swarmling while constructing Multi(initPath=RotSpecies/Swarmling/Swarmling, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+     Failed to find any textures at RotSpecies/Swarmling/Swarmling while constructing Multi(initPath=RotSpecies/Swarmling/Swarmling, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))
+F3: texture errors on fold paths (expect 0)                0
+ArtFold patch errors (expect 0)                            0
+artoverride mentions (expect 0)                            0
+cross-reference errors (info)                              0
+leather texPath fix errors (expect 0)                      0
+zersium/alloy forge errors (expect 0)                      0
+removed-def / silooth errors (expect 0)                    0
+JawaRules errors (expect 0)                                0
+Config errors (info)                                       29
+     Config error in Utinni Shellmandrake.rut.menushell: defName Utinni Shellmandrake.rut.menushell should only contain letters, numbers, underscores, or dashes.
+     Config error in Cocoa: same research view coords and tab as HotTubs: 1, 0(RUT_Tree_Hearth)
+     Config error in TargetedInsultingSpree: label contains illegal character(s): "[]{}". This can cause issues during grammar resolution. If this was intended, you can use the "ignoreIllegalLabelCharacterConfigError" flag.
+     Config error in ModernFixtures: same research view coords and tab as RR_Furniture: 0, 0(RUT_Tree_Hearth)
+     Config error in RM_FE_Ash_Trace: burnedDef is flammable
+     Config error in AdvancedShowers: same research view coords and tab as VCE_StewCooking: 2, 0(RUT_Tree_Hearth)
+     Config error in RM_FE_Ash_Light: burnedDef is flammable
+     Config error in HotTubs: same research view coords and tab as Cocoa: 1, 0(RUT_Tree_Hearth)
+     Config error in guy762_bowcaster_ceremonial: verb 2: has incorrect forcedMiss settings; explosive projectiles and only explosive projectiles should have forced miss enabled
+     Config error in RM_FE_Ground_Sand: burnedDef is flammable
+     Config error in RR_Furniture: same research view coords and tab as ModernFixtures: 0, 0(RUT_Tree_Hearth)
+     Config error in guy762_hvyrepeater_massdriver: verb 1: has incorrect forcedMiss settings; explosive projectiles and only explosive projectiles should have forced miss enabled
+     Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+     Config error in VCE_StewCooking: same research view coords and tab as AdvancedShowers: 2, 0(RUT_Tree_Hearth)
+     Config error in guy762_lgtrepeater_onderon: verb 1: has incorrect forcedMiss settings; explosive projectiles and only explosive projectiles should have forced miss enabled
+     Config error in RM_FE_Ground_Soil: burnedDef is flammable
+     Config error in RR_LateralThinking: researchViewX and/or researchViewY not set
+     Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+     Config error in RR_Organization: researchViewX and/or researchViewY not set
+     Config error in RM_FE_Ash_Trace: burnedDef is flammable
+     Config error in RM_FE_Ash_Light: burnedDef is flammable
+     Config error in guy762_bowcaster_ceremonial: verb 2: has incorrect forcedMiss settings; explosive projectiles and only explosive projectiles should have forced miss enabled
+     Config error in RM_FE_Ground_Sand: burnedDef is flammable
+     Config error in guy762_hvyrepeater_massdriver: verb 1: has incorrect forcedMiss settings; explosive projectiles and only explosive projectiles should have forced miss enabled
+     Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+     Config error in guy762_lgtrepeater_onderon: verb 1: has incorrect forcedMiss settings; explosive projectiles and only explosive projectiles should have forced miss enabled
+     Config error in RM_FE_Ground_Soil: burnedDef is flammable
+     Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+     Config error in Techprint_RR_lighting: description has trailing whitespace
