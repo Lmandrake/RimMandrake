@@ -48,6 +48,8 @@ SETTINGS = {
         "rainFillsExcavationsEnabled": True, "liquidLooksEnabled": True, "pitOutlineEnabled": True, "pitHidesShadowEnabled": True, "edgeSinksEnabled": True,
         "sourceBudgetMultiplier": 1.0, "minLimitlessBodyCells": 50.0, "refillRateMultiplier": 1.0,
         "rainFillPerPulse": 0.1,
+        "recedeKeepsLastCell": True, "recedeSparesOutflow": True,   # 2026-10-09 recession passes
+        "legacyFillFallbackEnabled": True, "legacyFloodViaEngineEnabled": True, "pumpFedSpreadEnabled": True,
         "superdeepCaptureEnabled": True, "superdeepCapturesOwnFaction": False,
         "ladderRequiredToExitEnabled": True, "ladderPrisonDoorEnabled": True,
         "superdeepShootingRuleEnabled": True,

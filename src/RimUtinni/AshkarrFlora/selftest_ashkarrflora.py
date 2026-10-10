@@ -97,7 +97,7 @@ def reds(result):
 def main():
     parsed = V.shipped_defs()
     names = [n for _t, n, _s, _p in parsed]
-    check("sanity: the Defs/ parse sees all six shipped defs", len(names) == 6 and "RUT_Grellspine" in names, names)
+    check("sanity: the Defs/ parse sees all five shipped defs (six until MATERIAL_MERGES_CLEANUP_1 dropped RUT_SweetlineWool)", len(names) == 5 and "RUT_Grellspine" in names, names)
     check("sanity: plant fields are parsed (RUT_Grellbush growDays 3)",
           dict((n, p) for _t, n, _s, p in parsed).get("RUT_Grellbush", {}).get("growDays") == "3")
     check("ranges are skipped, not compared", all("~" not in v for _t, _n, _s, p in parsed for v in p.values()))
