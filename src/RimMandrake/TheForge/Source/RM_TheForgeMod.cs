@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -157,149 +159,236 @@ namespace RimMandrake.TheForge
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_TheForgeSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_TheForgeSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string> { "Not wired yet (these change nothing)" };
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): every setting is read on the tick it matters
+        /// or through RM_MechanicGates ([now]), except the floatstone door and spunstone hull switches, which RM_SpunstonePartsGate
+        /// applies once at startup ([next game start], a label local to this screen). Nothing here is read at map generation.</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
         public void DoWindowContents(Rect inRect)
         {
-            // Scrolls: the grand-cycle rows made the list taller than the
-            // default settings window.
+            // Scrolls: the grand-cycle rows made the list taller than the default settings window.
             Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPos, viewRect);
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.CheckboxLabeled("The Forge enabled", ref modEnabled,
-                "Master switch. Off: the biome and its defs still load unchanged, but every "
-              + "per-feature toggle below is ignored as off.");
-            list.GapLine();
+            if (Group(list, "The Forge enabled", RimMandrake.Shared.SettingScope.Now, new[] { "modEnabled" }))
+            {
+    list.CheckboxLabeled("The Forge enabled", ref modEnabled,
+                    "Master switch. Off: the biome and its defs still load unchanged, but every "
+                  + "per-feature toggle below is ignored as off.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Weather-pulse bursts", ref weatherPulseEnabled,
-                "The closed boiling-rain cycle: long still heat broken by sudden scalding "
-              + "bursts, with a flash-growth window after each one. Off: the Forge keeps its "
-              + "own weather and no burst, scald or flash window happens.");
-            list.GapLine();
+            if (Group(list, "Weather pulse and grand cycle", RimMandrake.Shared.SettingScope.Now, new[] { "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabled", "cycleFloodingEnabled", "lavaFreezeEnabled", "meltBackDestroys", "floatstoneBloomEnabled", "cycleDormancyEnabled", "cycleTelegraphLetters" }))
+            {
+                list.CheckboxLabeled("Weather-pulse bursts", ref weatherPulseEnabled,
+                    "The closed boiling-rain cycle: long still heat broken by sudden scalding "
+                  + "bursts, with a flash-growth window after each one. Off: the Forge keeps its "
+                  + "own weather and no burst, scald or flash window happens.");
+                list.GapLine();
 
-            list.CheckboxLabeled("Grand cycle (fire and water)", ref grandCycleEnabled,
-                "Stretches the pulse into six phases: still heat, a gas wash that sets the "
-              + "map alight, torrential boiling rain with flooding, the freeze (lava crusts "
-              + "over into basalt and pumice), the growth (floatstone gardens bloom on the "
-              + "crust), then glowing cracks and the melt-back. Off: plain random pulses "
-              + "only; any crust still standing melts back gently, harming nothing.");
-            list.CheckboxLabeled("  Gas wash ignites the map", ref gasWashEnabled,
-                "Phase 2: superheated gas bursts set flammable ground alight in swathes.");
-            list.CheckboxLabeled("  Boiling-rain flooding", ref cycleFloodingEnabled,
-                "Phase 3: the torrential rain releases standing water floods (FlowWorks).");
-            list.CheckboxLabeled("  Lava freezes into walkable crust", ref lavaFreezeEnabled,
-                "Phase 4: open lava crusts over into temporary basalt shingle and pumice.");
-            list.CheckboxLabeled("  Melt-back destroys what stands on the crust", ref meltBackDestroys,
-                "Phase 6: when the crust melts, things on it burn and are destroyed and "
-              + "pawns are badly burned. Off: they are moved to safe ground instead.");
-            list.CheckboxLabeled("  Floatstone gardens bloom on the crust", ref floatstoneBloomEnabled,
-                "Phase 5: floatstone gardens grow on the frozen crust; unharvested ones "
-              + "tear free and drift away when the cracks appear.");
-            list.CheckboxLabeled("  Creatures sleep through the dry phases", ref cycleDormancyEnabled,
-                "The dhokkur stands up only in the boiling rain; the julmox and the dhuvvox "
-              + "stay sealed until the rain and its growth window. Off: all stay awake.");
-            list.CheckboxLabeled("  Warning letters", ref cycleTelegraphLetters,
-                "Letters before the gas wash (the hiss), at the glowing cracks and at the "
-              + "melt. Off: the phases still happen, unannounced.");
-            list.GapLine();
+                list.CheckboxLabeled("Grand cycle (fire and water)", ref grandCycleEnabled,
+                    "Stretches the pulse into six phases: still heat, a gas wash that sets the "
+                  + "map alight, torrential boiling rain with flooding, the freeze (lava crusts "
+                  + "over into basalt and pumice), the growth (floatstone gardens bloom on the "
+                  + "crust), then glowing cracks and the melt-back. Off: plain random pulses "
+                  + "only; any crust still standing melts back gently, harming nothing.");
+                list.CheckboxLabeled("  Gas wash ignites the map", ref gasWashEnabled,
+                    "Phase 2: superheated gas bursts set flammable ground alight in swathes.");
+                list.CheckboxLabeled("  Boiling-rain flooding", ref cycleFloodingEnabled,
+                    "Phase 3: the torrential rain releases standing water floods (FlowWorks).");
+                list.CheckboxLabeled("  Lava freezes into walkable crust", ref lavaFreezeEnabled,
+                    "Phase 4: open lava crusts over into temporary basalt shingle and pumice.");
+                list.CheckboxLabeled("  Melt-back destroys what stands on the crust", ref meltBackDestroys,
+                    "Phase 6: when the crust melts, things on it burn and are destroyed and "
+                  + "pawns are badly burned. Off: they are moved to safe ground instead.");
+                list.CheckboxLabeled("  Floatstone gardens bloom on the crust", ref floatstoneBloomEnabled,
+                    "Phase 5: floatstone gardens grow on the frozen crust; unharvested ones "
+                  + "tear free and drift away when the cracks appear.");
+                list.CheckboxLabeled("  Creatures sleep through the dry phases", ref cycleDormancyEnabled,
+                    "The dhokkur stands up only in the boiling rain; the julmox and the dhuvvox "
+                  + "stay sealed until the rain and its growth window. Off: all stay awake.");
+                list.CheckboxLabeled("  Warning letters", ref cycleTelegraphLetters,
+                    "Letters before the gas wash (the hiss), at the glowing cracks and at the "
+                  + "melt. Off: the phases still happen, unannounced.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Floatstone keelwork", ref keelworkEnabled,
-                "Floatstone keel braces linked to a grav engine cut the gravship's fuel use. "
-              + "Off: braces still build and stand, but save no fuel.");
-            list.CheckboxLabeled("  Keel braces ring at launch", ref keelRingEnabled,
-                "Each keel brace linked to the grav engine rings once, glassily, as the gravship "
-              + "launches. Off: the braces launch silently.");
-            list.CheckboxLabeled("Spunstone bonding is learned in the Forge", ref spunstoneStudyEnabled,
-                "The spunstone bonding research stays hidden until colonists have studied "
-              + "enough mature floatstone gardens. Off: the project is visible and "
-              + "researchable from the start, and gardens are not studied.");
-            list.CheckboxLabeled("  Floatstone door (restart to apply)", ref floatstoneDoorEnabled,
-                "A fast, airtight door that can only be built from floatstone, unlocked by spunstone "
-              + "bonding. Off: it leaves the architect menu on the next launch; doors already built stay.");
-            list.CheckboxLabeled("  Spunstone hull (restart to apply)", ref spunstoneHullEnabled,
-                "An airtight gravship hull wall that can only be built from floatstone, unlocked by "
-              + "spunstone bonding. Off: it leaves the architect menu on the next launch; hull already "
-              + "built stays.");
-            list.CheckboxLabeled("Four voices of the Forge", ref forgeVoicesEnabled,
-                "Each phase of the grand cycle has its own sound: a turbine throb in the still "
-              + "heat, coughing vents in the gas wash, a hiss under the boiling rain, ticking "
-              + "glass as the basalt cools, and a deep cracking pulse before the melt.");
-            list.CheckboxLabeled("  Visual cues for the voices", ref forgeVoicesVisualCues,
-                "Show a message naming each phase's sound as it begins. Always on while the "
-              + "game or ambient volume is muted.");
-            list.CheckboxLabeled("The dhuvvox clock", ref dhuvvoxClockEnabled,
-                "Awake dhuvvox show how long their run has left, slow in its final "
-              + "quarter-hour, and visibly curl back into their nodules when it ends. "
-              + "Off: they still seal on the cycle, without the clock.");
-            list.CheckboxLabeled("  Scuttling sound", ref dhuvvoxRunSoundEnabled,
-                "Awake dhuvvox tick and scuttle where they run; the ticks space out and fade as the "
-              + "run's final quarter-hour passes. Needs the dhuvvox clock.");
-            list.CheckboxLabeled("The dhuvvox swarm", ref dhuvvoxSwarmEnabled,
-                "When the boiling rain starts, a swarm of dhuvvox (PROVISIONAL: 60, a first guess to be tuned "
-              + "live) erupts from the ash around the resident ones; when the rain ends they burrow back, "
-              + "leaving ash scars and a message. Off: only the map's own dhuvvox wake and seal.");
-            list.GapLine();
+            if (Group(list, "Keelwork and spunstone study", RimMandrake.Shared.SettingScope.Now, new[] { "keelworkEnabled", "keelRingEnabled", "spunstoneStudyEnabled" }))
+            {
+                list.CheckboxLabeled("Floatstone keelwork", ref keelworkEnabled,
+                    "Floatstone keel braces linked to a grav engine cut the gravship's fuel use. "
+                  + "Off: braces still build and stand, but save no fuel.");
+                list.CheckboxLabeled("  Keel braces ring at launch", ref keelRingEnabled,
+                    "Each keel brace linked to the grav engine rings once, glassily, as the gravship "
+                  + "launches. Off: the braces launch silently.");
+                list.CheckboxLabeled("Spunstone bonding is learned in the Forge", ref spunstoneStudyEnabled,
+                    "The spunstone bonding research stays hidden until colonists have studied "
+                  + "enough mature floatstone gardens. Off: the project is visible and "
+                  + "researchable from the start, and gardens are not studied.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("White plume fronts", ref plumeFrontsEnabled,
-                "During the freeze, quench steam rolls off newly crusted ground in moving white fronts. "
-              + "Off: no fronts form (the freeze itself is unchanged).");
-            list.CheckboxLabeled("  Plumes blind shooters", ref plumeObscureEnabled,
-                "Fronts lay vanilla blind smoke, which cuts ranged accuracy and stops targets being picked through it.");
-            list.CheckboxLabeled("  Plumes soak the ground", ref plumeSoakEnabled,
-                "Fronts leave water puddles, which evaporate within hours and do not burn.");
-            list.CheckboxLabeled("  Plumes raise heat", ref plumeHeatEnabled,
-                "Pawns inside a front feel hotter air, so vanilla heatstroke sets in faster. No new condition is added.");
-            list.CheckboxLabeled("  Vapour-adapted creatures are exempt", ref plumeAdaptedExempt,
-                "Creatures that live in the vapour columns take no extra heat from a front.");
-            list.Label("Plume strength: " + plumeStrength.ToString("0.00") + "x");
-            plumeStrength = list.Slider(plumeStrength, 0.25f, 2f);
-            list.GapLine();
+            if (Group(list, "Spunstone door and hull (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "floatstoneDoorEnabled", "spunstoneHullEnabled" }, "[next game start]"))
+            {
+                list.CheckboxLabeled("  Floatstone door (restart to apply)", ref floatstoneDoorEnabled,
+                    "A fast, airtight door that can only be built from floatstone, unlocked by spunstone "
+                  + "bonding. Off: it leaves the architect menu on the next launch; doors already built stay.");
+                list.CheckboxLabeled("  Spunstone hull (restart to apply)", ref spunstoneHullEnabled,
+                    "An airtight gravship hull wall that can only be built from floatstone, unlocked by "
+                  + "spunstone bonding. Off: it leaves the architect menu on the next launch; hull already "
+                  + "built stays.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Vapour-column haze", ref skyColumnGridEnabled,
-                "A faint haze, brighter at the rim, marks the ground under each vapour column where the sky creatures graze.");
-            list.CheckboxLabeled("  Ash spirals in the columns", ref skyAshSpiralsEnabled,
-                "Ash flecks wind upward inside the vapour columns near the camera. Cosmetic only.");
-            list.CheckboxLabeled("  Column-aware hunting", ref skyColumnHuntEnabled,
-                "Predators that live in the columns prefer prey inside them and ignore prey far out on the open ash.");
-            list.CheckboxLabeled("  Jossur stoops", ref jossurStoopEnabled,
-                "A hunting jossur takes to the air when its prey is a way off and closes in on the wing.");
-            list.CheckboxLabeled("  Selecting a sky creature lights up its columns", ref skyColumnHighlightEnabled,
-                "While a column-bound flier is selected, the columns it can reach are outlined. Nothing is shown otherwise.");
-            list.GapLine();
+            if (Group(list, "Voices and the dhuvvox", RimMandrake.Shared.SettingScope.Now, new[] { "forgeVoicesEnabled", "forgeVoicesVisualCues", "dhuvvoxClockEnabled", "dhuvvoxRunSoundEnabled", "dhuvvoxSwarmEnabled" }))
+            {
+                list.CheckboxLabeled("Four voices of the Forge", ref forgeVoicesEnabled,
+                    "Each phase of the grand cycle has its own sound: a turbine throb in the still "
+                  + "heat, coughing vents in the gas wash, a hiss under the boiling rain, ticking "
+                  + "glass as the basalt cools, and a deep cracking pulse before the melt.");
+                list.CheckboxLabeled("  Visual cues for the voices", ref forgeVoicesVisualCues,
+                    "Show a message naming each phase's sound as it begins. Always on while the "
+                  + "game or ambient volume is muted.");
+                list.CheckboxLabeled("The dhuvvox clock", ref dhuvvoxClockEnabled,
+                    "Awake dhuvvox show how long their run has left, slow in its final "
+                  + "quarter-hour, and visibly curl back into their nodules when it ends. "
+                  + "Off: they still seal on the cycle, without the clock.");
+                list.CheckboxLabeled("  Scuttling sound", ref dhuvvoxRunSoundEnabled,
+                    "Awake dhuvvox tick and scuttle where they run; the ticks space out and fade as the "
+                  + "run's final quarter-hour passes. Needs the dhuvvox clock.");
+                list.CheckboxLabeled("The dhuvvox swarm", ref dhuvvoxSwarmEnabled,
+                    "When the boiling rain starts, a swarm of dhuvvox (PROVISIONAL: 60, a first guess to be tuned "
+                  + "live) erupts from the ash around the resident ones; when the rain ends they burrow back, "
+                  + "leaving ash scars and a message. Off: only the map's own dhuvvox wake and seal.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Dhokkur wakes with a groan", ref dhokkurWakeEffectsEnabled,
-                "When the boiling rain wakes a dhokkur, the hill groans and water pours off its plates "
-              + "for a few seconds. Off: it stands up silently.");
-            list.CheckboxLabeled("Dhokkur paths wear into the ground", ref dhokkurPathMemoryEnabled,
-                "Ground a dhokkur walks on separate rains is polished to glass, and it seals in a worn "
-              + "hollow at the end of its tracks. Off: no new wear (polished ground already laid stays).");
-            list.Label("  Rains to polish a track: " + dhokkurPassesToPolish);
-            dhokkurPassesToPolish = Mathf.RoundToInt(list.Slider(dhokkurPassesToPolish, 1f, 10f));
-            list.CheckboxLabeled("  Tracks fade when unwalked", ref dhokkurTrailsFade,
-                "Off: polished tracks last forever. On: a track unwalked for the period below loses one "
-              + "rain's wear, and goes back to bare ground once it drops under the polish count.");
-            list.Label("  Fade period: " + dhokkurTrailFadeDays.ToString("0") + " days");
-            dhokkurTrailFadeDays = list.Slider(dhokkurTrailFadeDays, 5f, 240f);
-            list.CheckboxLabeled("Dhokkur shoves walls off its path", ref dhokkurWallShoveEnabled,
-                "A building standing on a dhokkur's polished track, next to it, is shoved aside rather "
-              + "than destroyed. Off: it walks around, as any animal does.");
-            list.Label("  A shoved building is first: " + ShoveModeLabels[Mathf.Clamp(dhokkurShoveMode, 0, 2)]);
-            dhokkurShoveMode = Mathf.RoundToInt(list.Slider(dhokkurShoveMode, 0f, 2f));
-            list.Label("  Damage when it cannot be moved: " + dhokkurShoveDamagePct.ToStringPercent());
-            dhokkurShoveDamagePct = list.Slider(dhokkurShoveDamagePct, 0f, 1f);
-            list.GapLine();
-            list.Label("Tibanna-tap rate: " + tibannaTapRate.ToString("0.00") + "x");
-            tibannaTapRate = list.Slider(tibannaTapRate, 0.25f, 3f);
-            list.CheckboxLabeled("Vapor-column immunity", ref vaporColumnImmunity,
-                "Sky fauna drifting in the vent columns are immune to ground heat hazards "
-              + "while aloft.");
-            list.Label("Foundry tower scatter count: " + towerScatterCount);
-            towerScatterCount = (int)list.Slider(towerScatterCount, 0f, 3f);
-            list.Label("Die-off ring density: " + dieOffRingDensity.ToString("0.00") + "x");
-            dieOffRingDensity = list.Slider(dieOffRingDensity, 0f, 3f);
-            list.Label("Vent work-speed bonus: " + ventWorkSpeedBonus.ToString("0.00") + "x");
-            ventWorkSpeedBonus = list.Slider(ventWorkSpeedBonus, 1f, 2f);
+            if (Group(list, "White plume fronts", RimMandrake.Shared.SettingScope.Now, new[] { "plumeFrontsEnabled", "plumeObscureEnabled", "plumeSoakEnabled", "plumeHeatEnabled", "plumeAdaptedExempt", "plumeStrength" }))
+            {
+                list.CheckboxLabeled("White plume fronts", ref plumeFrontsEnabled,
+                    "During the freeze, quench steam rolls off newly crusted ground in moving white fronts. "
+                  + "Off: no fronts form (the freeze itself is unchanged).");
+                list.CheckboxLabeled("  Plumes blind shooters", ref plumeObscureEnabled,
+                    "Fronts lay vanilla blind smoke, which cuts ranged accuracy and stops targets being picked through it.");
+                list.CheckboxLabeled("  Plumes soak the ground", ref plumeSoakEnabled,
+                    "Fronts leave water puddles, which evaporate within hours and do not burn.");
+                list.CheckboxLabeled("  Plumes raise heat", ref plumeHeatEnabled,
+                    "Pawns inside a front feel hotter air, so vanilla heatstroke sets in faster. No new condition is added.");
+                list.CheckboxLabeled("  Vapour-adapted creatures are exempt", ref plumeAdaptedExempt,
+                    "Creatures that live in the vapour columns take no extra heat from a front.");
+                list.Label("Plume strength: " + plumeStrength.ToString("0.00") + "x");
+                plumeStrength = list.Slider(plumeStrength, 0.25f, 2f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Vapour columns and sky creatures", RimMandrake.Shared.SettingScope.Now, new[] { "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled" }))
+            {
+                list.CheckboxLabeled("Vapour-column haze", ref skyColumnGridEnabled,
+                    "A faint haze, brighter at the rim, marks the ground under each vapour column where the sky creatures graze.");
+                list.CheckboxLabeled("  Ash spirals in the columns", ref skyAshSpiralsEnabled,
+                    "Ash flecks wind upward inside the vapour columns near the camera. Cosmetic only.");
+                list.CheckboxLabeled("  Column-aware hunting", ref skyColumnHuntEnabled,
+                    "Predators that live in the columns prefer prey inside them and ignore prey far out on the open ash.");
+                list.CheckboxLabeled("  Jossur stoops", ref jossurStoopEnabled,
+                    "A hunting jossur takes to the air when its prey is a way off and closes in on the wing.");
+                list.CheckboxLabeled("  Selecting a sky creature lights up its columns", ref skyColumnHighlightEnabled,
+                    "While a column-bound flier is selected, the columns it can reach are outlined. Nothing is shown otherwise.");
+                list.GapLine();
+            }
+
+            if (Group(list, "The dhokkur", RimMandrake.Shared.SettingScope.Now, new[] { "dhokkurWakeEffectsEnabled", "dhokkurPathMemoryEnabled", "dhokkurPassesToPolish", "dhokkurTrailsFade", "dhokkurTrailFadeDays", "dhokkurWallShoveEnabled", "dhokkurShoveMode", "dhokkurShoveDamagePct" }))
+            {
+                list.CheckboxLabeled("Dhokkur wakes with a groan", ref dhokkurWakeEffectsEnabled,
+                    "When the boiling rain wakes a dhokkur, the hill groans and water pours off its plates "
+                  + "for a few seconds. Off: it stands up silently.");
+                list.CheckboxLabeled("Dhokkur paths wear into the ground", ref dhokkurPathMemoryEnabled,
+                    "Ground a dhokkur walks on separate rains is polished to glass, and it seals in a worn "
+                  + "hollow at the end of its tracks. Off: no new wear (polished ground already laid stays).");
+                list.Label("  Rains to polish a track: " + dhokkurPassesToPolish);
+                dhokkurPassesToPolish = Mathf.RoundToInt(list.Slider(dhokkurPassesToPolish, 1f, 10f));
+                list.CheckboxLabeled("  Tracks fade when unwalked", ref dhokkurTrailsFade,
+                    "Off: polished tracks last forever. On: a track unwalked for the period below loses one "
+                  + "rain's wear, and goes back to bare ground once it drops under the polish count.");
+                list.Label("  Fade period: " + dhokkurTrailFadeDays.ToString("0") + " days");
+                dhokkurTrailFadeDays = list.Slider(dhokkurTrailFadeDays, 5f, 240f);
+                list.CheckboxLabeled("Dhokkur shoves walls off its path", ref dhokkurWallShoveEnabled,
+                    "A building standing on a dhokkur's polished track, next to it, is shoved aside rather "
+                  + "than destroyed. Off: it walks around, as any animal does.");
+                list.Label("  A shoved building is first: " + ShoveModeLabels[Mathf.Clamp(dhokkurShoveMode, 0, 2)]);
+                dhokkurShoveMode = Mathf.RoundToInt(list.Slider(dhokkurShoveMode, 0f, 2f));
+                list.Label("  Damage when it cannot be moved: " + dhokkurShoveDamagePct.ToStringPercent());
+                dhokkurShoveDamagePct = list.Slider(dhokkurShoveDamagePct, 0f, 1f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Not wired yet (these change nothing)", RimMandrake.Shared.SettingScope.Now, new[] { "tibannaTapRate", "vaporColumnImmunity", "towerScatterCount", "dieOffRingDensity", "ventWorkSpeedBonus" }))
+            {
+                list.Label("These five are declared and saved but nothing reads them yet (FORGE_MECHANICS_1's remaining work): moving them changes nothing in play.");
+                list.Label("Tibanna-tap rate: " + tibannaTapRate.ToString("0.00") + "x");
+                tibannaTapRate = list.Slider(tibannaTapRate, 0.25f, 3f);
+                list.CheckboxLabeled("Vapor-column immunity", ref vaporColumnImmunity,
+                    "Sky fauna drifting in the vent columns are immune to ground heat hazards "
+                  + "while aloft.");
+                list.Label("Foundry tower scatter count: " + towerScatterCount);
+                towerScatterCount = (int)list.Slider(towerScatterCount, 0f, 3f);
+                list.Label("Die-off ring density: " + dieOffRingDensity.ToString("0.00") + "x");
+                dieOffRingDensity = list.Slider(dieOffRingDensity, 0f, 3f);
+                list.Label("Vent work-speed bonus: " + ventWorkSpeedBonus.ToString("0.00") + "x");
+                ventWorkSpeedBonus = list.Slider(ventWorkSpeedBonus, 1f, 2f);
+                list.GapLine();
+            }
 
             viewHeight = Mathf.Max(inRect.height, list.CurHeight + 12f);
             list.End();

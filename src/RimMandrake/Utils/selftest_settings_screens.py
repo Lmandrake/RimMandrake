@@ -19,6 +19,12 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # folder, mod .cs, csproj, expected groups: title -> scope (the audited scopes)
 # folder: (mod .cs, csproj, expected groups, extra setting names the screen resets that are not Scribe_Values fields)
 MODS = {
+    "Graffiti": ("RM_GraffitiMod.cs", "Graffiti.csproj", {
+        "Painting": "Now",
+        "Viewer reactions": "Now",
+        "Raiders": "Now",
+        "Cleaning": "Now",
+    }, ()),
     "LeaningScrub": ("RM_LeaningScrubMod.cs", "RM_LeaningScrub.csproj", {
         "Mod and venomvine passability": "Now",
         "The Stall and the Gale": "Now",
@@ -145,6 +151,17 @@ MODS = {
         "Ship: the swallowed navigator": "Now",
         "Technology: the gut-mother and the unjoining draught": "Now",
         "Cross-biome opt-in": "Now",
+    }, ()),
+    "TheForge": ("RM_TheForgeMod.cs", "RM_TheForge.csproj", {
+        "The Forge enabled": "Now",
+        "Weather pulse and grand cycle": "Now",
+        "Keelwork and spunstone study": "Now",
+        "Spunstone door and hull (restart)": "NextGameStart",
+        "Voices and the dhuvvox": "Now",
+        "White plume fronts": "Now",
+        "Vapour columns and sky creatures": "Now",
+        "The dhokkur": "Now",
+        "Not wired yet (these change nothing)": "Now",
     }, ()),
 }
 
