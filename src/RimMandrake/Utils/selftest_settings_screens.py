@@ -187,6 +187,17 @@ MODS = {
         "Wreck-anchored vermin nests": "Now",
         "Species a wreck nest may produce": "Now",
     }, ()),
+    "Wasteland": ("RM_WastelandMod.cs", "RM_Wasteland.csproj", {
+        "Wasteland master switch": "Now",
+        "Storms": "Now",
+        "Ambient dose and radiothermal heat": "Now",
+        "Processor animals": "Now",
+        "Grippers": "Now",
+        "The Middenshell": "Now",
+        "Waste casks and the sealed cask bay": "Now",
+        "Rite of Tipping": "Now",
+        "Not wired yet (these change nothing)": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)

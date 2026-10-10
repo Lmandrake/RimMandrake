@@ -46,6 +46,8 @@
   <ItemGroup>
     <Compile Include="RM_BiomeWorker_Wasteland.cs" />
     <Compile Include="RM_WastelandMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_WastelandMechanicsExtensions.cs" />
     <Compile Include="RM_MapComponent_WastelandStorms.cs" />
     <Compile Include="RM_CompAmbientDose.cs" />
