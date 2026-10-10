@@ -68,9 +68,11 @@ EXCLUDE_PREFIXES = (
 )
 TEXT_EXTS = (".md", ".txt", ".yml")
 
-# THREE_UPPER_SNAKE_WORDS_# (CLAUDE.md, "Queue items are NAMED, not numbered")
-# -- at least two underscore-joined uppercase words then a trailing number.
-_ID_RE = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+_\d+\b")
+# Item ids (CLAUDE.md, "Queue items are NAMED, not numbered"): any UPPER_SNAKE token
+# of 2+ words. A legacy `..._N` token always counts as a citation (absent from the
+# ledger -> `unknown`); a SUBJECT_INTENT_TWIST token counts only when the ledger knows
+# it, because without the trailing number constants like MAX_FLIGHT_TIME share the shape.
+_ID_RE = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+\b")
 
 _STATE_LIE_RE = re.compile(r"\|\s*(?:open|doing)\s*\||still open|open item", re.I)
 
@@ -151,6 +153,9 @@ def scan(root=None, world=None, files=None):
                 continue
             for m in _ID_RE.finditer(line):
                 token = m.group(0)
+                if not model.NAMED_ID.match(token) and not (
+                        token in known_ids and model.is_new_name(token)):
+                    continue
                 n_citations += 1
                 if token not in known_ids:
                     # No ledger entry at all -- a legacy B*/C*/W* id, or a

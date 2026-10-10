@@ -53,7 +53,7 @@ back, never cleared.
 
 ## Queue
 
-An item is one line — `THREE_UPPER_SNAKE_WORDS_# · lane · the ask` — plus optional
+An item is one line — `SUBJECT_INTENT_TWIST · lane · the ask` (grammar: `design/RimMandrake/ticket_naming_2026-10-10.md`) — plus optional
 prose in `infrastructure/state/items/<ID>.md` for expensive-list items only. 🔑 **On
 close/drop/supersede the prose moves to `items/closed/<ID>.md`** — so `items/*.md` is
 the LIVE set and a sweep stops walking finished work; `rimflow show` resolves both.

@@ -38,6 +38,11 @@ PASS, FAIL = [], []
 CTX = {}
 
 
+
+def _fx(base, n):
+    """A fixture id in the SUBJECT_INTENT_TWIST form (`rimflow file` refuses `_N`)."""
+    return base + ("_PROBE_FIXTURE" if n == 1 else "_PROBE_N%d" % n)
+
 def case(name, fn):
     try:
         fn()
@@ -146,16 +151,16 @@ def t_peek_callers_race_for_one_item_sanity_probe():
     item. If this ever stops holding, the concurrency case below proves nothing."""
     fresh("probe")
     for i in range(N):
-        ready("RACE_ITEM_HERE_%d" % (i + 1))
+        ready(_fx("RACE_ITEM_HERE", i + 1))
     outs = parallel(N, "next", "--peek")
     tops = {o.split("\n")[1].split()[0] for o in outs}
-    assert tops == {"RACE_ITEM_HERE_1"}, tops
+    assert tops == {"RACE_ITEM_HERE_PROBE_FIXTURE"}, tops
 
 
 def t_concurrent_next_callers_get_different_items():
     fresh("concurrent")
     for i in range(N):
-        ready("RACE_ITEM_HERE_%d" % (i + 1))
+        ready(_fx("RACE_ITEM_HERE", i + 1))
     outs = parallel(N, "next")
     got = [reserved(o) for o in outs]
     ids = [g[0] for g in got]
@@ -176,15 +181,15 @@ def t_concurrent_claimable_offers_are_reserved_too():
     """`next` with nothing ranked offers the oldest PROPOSED item; that is reserved too."""
     fresh("concurrent_proposed")
     for i in range(3):
-        ok("file", "PROPOSED_ITEM_HERE_%d" % (i + 1), "--for", "FOUNDRY", "--title", "p")
+        ok("file", _fx("PROPOSED_ITEM_HERE", i + 1), "--for", "FOUNDRY", "--title", "p")
     outs = parallel(3, "next")
     ids = sorted(reserved(o)[0] for o in outs)
-    assert ids == ["PROPOSED_ITEM_HERE_1", "PROPOSED_ITEM_HERE_2", "PROPOSED_ITEM_HERE_3"], ids
+    assert ids == ["PROPOSED_ITEM_HERE_PROBE_FIXTURE", "PROPOSED_ITEM_HERE_PROBE_N2", "PROPOSED_ITEM_HERE_PROBE_N3"], ids
 
 
 def t_wrong_token_refused():
     fresh("wrong_token")
-    ready("TOKEN_CHECK_ITEM_1")
+    ready("TOKEN_CHECK_ITEM_PROBE_FIXTURE")
     iid, tok = reserved(ok("next"))
     refused("does not hold", "renew", iid, "--token", "FOUNDRY.someone.deadbeef")
     refused("does not hold", "release", iid, "--token", "FOUNDRY.someone.deadbeef")
@@ -210,7 +215,7 @@ def t_renew_keeps_it_and_expiry_reoffers_through_the_git_check():
                              (>= S+9) has not, so nothing may be offered
       expiry  at t1+11.1  -> past any renewed expiry (<= S+5+6)."""
     fresh("renew_expiry")
-    ready("RENEWED_ITEM_HERE_1")
+    ready("RENEWED_ITEM_HERE_PROBE_FIXTURE")
     iid, tok = reserved(ok("next", ttl=6))
     t1 = time.time()
     _sleep_until(t1 + 3.0)
@@ -231,41 +236,41 @@ def t_expired_claim_comes_back_as_reconcile_when_git_names_it():
     """(d): a `doing` item whose lease lapsed is offerable again — but git names it, so the
     offer is RECONCILE, never 'build this'."""
     fresh("expiry_reconcile")
-    ok("file", "BUILT_THEN_LAPSED_1", "--for", "FOUNDRY", "--title", "t")
-    out = ok("claim", "BUILT_THEN_LAPSED_1", ttl=1)
+    ok("file", "BUILT_THEN_LAPSED_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
+    out = ok("claim", "BUILT_THEN_LAPSED_PROBE_FIXTURE", ttl=1)
     assert "-> doing" in out, out
     with open(os.path.join(CTX["dir"], "gitfixture.json"), "w") as fh:
         json.dump({"ref": "origin/main", "head": "f" * 40, "commits": [
             {"sha": "a1b2c3d4e" + "0" * 31, "ts": "2099-01-01T00:00:00Z",
-             "subject": "BUILT_THEN_LAPSED_1: the whole build", "body": "",
+             "subject": "BUILT_THEN_LAPSED_PROBE_FIXTURE: the whole build", "body": "",
              "files": ["src/RimMandrake/X/Defs/X.xml"]}]}, fh)
     time.sleep(2.2)
     out = ok("next")
-    assert "RECONCILE BUILT_THEN_LAPSED_1" in out, out
+    assert "RECONCILE BUILT_THEN_LAPSED_PROBE_FIXTURE" in out, out
     assert "LAPSED LEASE" in out and "judge them before anything is rebuilt" in out, out
-    assert "rimflow claim BUILT_THEN_LAPSED_1 --token" not in out, out
+    assert "rimflow claim BUILT_THEN_LAPSED_PROBE_FIXTURE --token" not in out, out
 
 
 def t_claim_hides_the_item_and_the_view_shows_it_active():
     fresh("claim_hides")
-    ok("file", "CLAIMED_AND_HIDDEN_1", "--for", "FOUNDRY", "--title", "t")
-    ok("file", "SECOND_IN_LINE_1", "--for", "FOUNDRY", "--title", "t")
-    ok("claim", "CLAIMED_AND_HIDDEN_1")
+    ok("file", "CLAIMED_AND_HIDDEN_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
+    ok("file", "SECOND_IN_LINE_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
+    ok("claim", "CLAIMED_AND_HIDDEN_PROBE_FIXTURE")
     out = ok("next")
-    assert reserved(out)[0] == "SECOND_IN_LINE_1", out
+    assert reserved(out)[0] == "SECOND_IN_LINE_PROBE_FIXTURE", out
     view = ok("queue", "FOUNDRY")
     prog = view[view.index("# IN PROGRESS"):view.index("# BLOCKED")]
-    assert "## CLAIMED_AND_HIDDEN_1" in prog and "## SECOND_IN_LINE_1" in prog, prog
+    assert "## CLAIMED_AND_HIDDEN_PROBE_FIXTURE" in prog and "## SECOND_IN_LINE_PROBE_FIXTURE" in prog, prog
     assert prog.count("lease:    LIVE") == 2, prog
     nxt = view[view.index("# NEXT"):view.index("# IN PROGRESS")]
     assert "## " not in nxt, nxt
     # why says who holds it, not "state is ready"
-    assert "LEASED until" in ok("why", "SECOND_IN_LINE_1")
+    assert "LEASED until" in ok("why", "SECOND_IN_LINE_PROBE_FIXTURE")
 
 
 def t_start_still_works_and_reclaim_revokes():
     fresh("start_reclaim")
-    ok("file", "SCRIPTED_START_ITEM_1", "--for", "FOUNDRY", "--title", "t")
+    ok("file", "SCRIPTED_START_ITEM_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
     iid, tok = reserved(ok("next"))
     assert "-> doing" in ok("start", iid), "a bare start must keep working for scripts"
     ok("reclaim", iid)
@@ -277,7 +282,7 @@ def t_start_still_works_and_reclaim_revokes():
 def t_replay_judges_by_event_timestamps():
     """Liveness at replay is the event's own ts vs `expires` — pure over the ledger."""
     def ev(ts, **kw):
-        return dict({"ts": ts, "seat": "FOUNDRY", "id": "PURE_REPLAY_ITEM_1"}, **kw)
+        return dict({"ts": ts, "seat": "FOUNDRY", "id": "PURE_REPLAY_ITEM_PROBE_FIXTURE"}, **kw)
     base = [ev("2026-10-07T00:00:00Z", event="file", title="t", kind="task",
                **{"for": "FOUNDRY"}),
             ev("2026-10-07T00:00:01Z", event="lease", action="take", token="FOUNDRY.a.00000001",
@@ -293,8 +298,8 @@ def t_replay_judges_by_event_timestamps():
     w = model.replay(base + [rival])
     assert len(w.errors) == 1 and "LEASED until" in w.errors[0][2], w.errors
     w = model.replay(base + [after])
-    assert not w.errors and w.items["PURE_REPLAY_ITEM_1"].lease["token"].endswith("02")
-    it = w.items["PURE_REPLAY_ITEM_1"]
+    assert not w.errors and w.items["PURE_REPLAY_ITEM_PROBE_FIXTURE"].lease["token"].endswith("02")
+    it = w.items["PURE_REPLAY_ITEM_PROBE_FIXTURE"]
     assert model.lease_status(it, model.epoch("2026-10-07T01:00:00Z")) == "live"
     assert model.lease_status(it, model.epoch("2026-10-07T01:31:00Z")) == "lapsed"
     too_long = ev("2026-10-07T00:00:02Z", event="lease", action="take",
@@ -336,11 +341,11 @@ def extract_old_package(dest):
 def t_old_reader_tolerates_leases():
     fresh("old_reader")
     old_cli = extract_old_package(os.path.join(CTX["dir"], "old"))
-    ok("file", "OLD_SEES_CLAIMED_1", "--for", "FOUNDRY", "--title", "t")
-    ready("OLD_SEES_RESERVED_1")
-    ok("claim", "OLD_SEES_CLAIMED_1")                         # lease take + claim + start
+    ok("file", "OLD_SEES_CLAIMED_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
+    ready("OLD_SEES_RESERVED_PROBE_FIXTURE")
+    ok("claim", "OLD_SEES_CLAIMED_PROBE_FIXTURE")                         # lease take + claim + start
     iid, tok = reserved(ok("next"))                         # lease take only
-    assert iid == "OLD_SEES_RESERVED_1", iid
+    assert iid == "OLD_SEES_RESERVED_PROBE_FIXTURE", iid
     ok("renew", iid, "--token", tok)
     code = ("import json,sys; sys.path.insert(0, %r)\n"
             "from rimflow import model, priority\n"
@@ -356,10 +361,10 @@ def t_old_reader_tolerates_leases():
     r = json.loads(p.stdout.decode())
     CTX["old"] = r
     assert r["errors"] and set(r["errors"]) == {"lease"}, r["errors"]
-    assert r["items"]["OLD_SEES_CLAIMED_1"] == "doing", r["items"]
+    assert r["items"]["OLD_SEES_CLAIMED_PROBE_FIXTURE"] == "doing", r["items"]
     # ⚠️ the known gap: a reservation alone is invisible to an old clone
-    assert r["items"]["OLD_SEES_RESERVED_1"] == "ready" and \
-        r["rank"] == ["OLD_SEES_RESERVED_1"], r
+    assert r["items"]["OLD_SEES_RESERVED_PROBE_FIXTURE"] == "ready" and \
+        r["rank"] == ["OLD_SEES_RESERVED_PROBE_FIXTURE"], r
     for args in (("next", "--peek"), ("show", iid), ("queue", "FOUNDRY"), ("why", iid)):
         ok(*args, cli=old_cli)
 
@@ -369,8 +374,8 @@ def report():
     if r:
         print("\nOLD CLONE (%s) on a step-3 ledger: %d lease events -> world.errors; "
               "claimed item %s; reserved-only item %s and offered by old rank: %s"
-              % (OLD_REF, len(r["errors"]), r["items"]["OLD_SEES_CLAIMED_1"],
-                 r["items"]["OLD_SEES_RESERVED_1"], ", ".join(r["rank"]) or "none"))
+              % (OLD_REF, len(r["errors"]), r["items"]["OLD_SEES_CLAIMED_PROBE_FIXTURE"],
+                 r["items"]["OLD_SEES_RESERVED_PROBE_FIXTURE"], ", ".join(r["rank"]) or "none"))
 
 
 def _read():

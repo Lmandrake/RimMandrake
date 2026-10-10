@@ -42,7 +42,7 @@ def case(name, fn):
 # ---------------------------------------------------------------------------
 # HELPERS
 # ---------------------------------------------------------------------------
-IID = "LANCE_TETHER_PULL_1"
+IID = "LANCE_TETHER_PULL_PROBE_FIXTURE"
 
 
 def T(n):
@@ -299,26 +299,26 @@ def t_any_seat_may_pass_a_criterion_on_a_built_item():
 
 
 def t_built_items_never_enter_the_implementation_pool():
-    evs = filed() + [impl(2, crit(("A1", "L1")))] + filed(iid="OTHER_READY_WORK_1", n=3)
+    evs = filed() + [impl(2, crit(("A1", "L1")))] + filed(iid="OTHER_READY_WORK_PROBE_FIXTURE", n=3)
     w = model.replay(evs)
     ids = [i.id for i in priority.rank(w, "FOUNDRY")]
-    assert ids == ["OTHER_READY_WORK_1"], ids
+    assert ids == ["OTHER_READY_WORK_PROBE_FIXTURE"], ids
     why = " ".join(priority.why_not(w, "FOUNDRY", IID))
     assert "built" in why and "--acceptance" in why, why
 
 
 def t_acceptance_groups_by_cheapest_level_and_seat():
     evs = (filed() + [impl(2, crit(("A1", "L2"), ("A4", "L4")))]
-           + filed("BENCH", "SECOND_BUILT_THING_1", 3)
-           + [impl(5, crit(("A1", "GREEN-FULL")), "BENCH", "SECOND_BUILT_THING_1")]
-           + filed("BENCH", "THIRD_BUILT_THING_1", 6)
-           + [impl(8, crit(("A9", "L4")), "BENCH", "THIRD_BUILT_THING_1")]
-           + filed(iid="FOURTH_BUILT_THING_1", n=9)
-           + [impl(11, crit(("B1", "L1"), ("B2", "L2")), iid="FOURTH_BUILT_THING_1")])
+           + filed("BENCH", "SECOND_BUILT_THING_PROBE_FIXTURE", 3)
+           + [impl(5, crit(("A1", "GREEN-FULL")), "BENCH", "SECOND_BUILT_THING_PROBE_FIXTURE")]
+           + filed("BENCH", "THIRD_BUILT_THING_PROBE_FIXTURE", 6)
+           + [impl(8, crit(("A9", "L4")), "BENCH", "THIRD_BUILT_THING_PROBE_FIXTURE")]
+           + filed(iid="FOURTH_BUILT_THING_PROBE_FIXTURE", n=9)
+           + [impl(11, crit(("B1", "L1"), ("B2", "L2")), iid="FOURTH_BUILT_THING_PROBE_FIXTURE")])
     w = model.replay(evs)
     g = [(lv, [i.id for i in items]) for lv, items in priority.acceptance(w)]
-    assert g == [("L1", ["FOURTH_BUILT_THING_1"]), ("L2", [IID]),
-                 ("GREEN-FULL", ["SECOND_BUILT_THING_1"]), ("L4", ["THIRD_BUILT_THING_1"])], g
+    assert g == [("L1", ["FOURTH_BUILT_THING_PROBE_FIXTURE"]), ("L2", [IID]),
+                 ("GREEN-FULL", ["SECOND_BUILT_THING_PROBE_FIXTURE"]), ("L4", ["THIRD_BUILT_THING_PROBE_FIXTURE"])], g
     f = [lv for lv, _ in priority.acceptance(w, "FOUNDRY")]
     b = [lv for lv, _ in priority.acceptance(w, "BENCH")]
     assert f == ["L1", "L2", "GREEN-FULL"] and b == ["L4"], (f, b)
@@ -412,8 +412,8 @@ def t_cli_implemented_real_git_fallback_without_index():
                                    cwd=REPO).decode().strip()
     ok("implemented", IID, "--sha", real[:9], "--none-owed", fixture=False)
     assert state_of() == "done"
-    file_ready("SECOND_REAL_THING_1")
-    refused("implemented", "SECOND_REAL_THING_1", "--sha", "0badc0de0badc0de", "--none-owed",
+    file_ready("SECOND_REAL_THING_PROBE_FIXTURE")
+    refused("implemented", "SECOND_REAL_THING_PROBE_FIXTURE", "--sha", "0badc0de0badc0de", "--none-owed",
             fixture=False)
 
 
@@ -423,8 +423,8 @@ def t_cli_implemented_refuses_untagged_or_missing_criteria():
     write_prose(IID, "- A1 L1: tagged\n- quicktest shows it working\n")
     err = refused("implemented", IID, "--sha", sha(1)[:9])
     assert "no level tag" in err and "quicktest" in err, err
-    file_ready("NO_CRITERIA_AT_ALL_1")
-    err = refused("implemented", "NO_CRITERIA_AT_ALL_1", "--sha", sha(1)[:9])
+    file_ready("NO_CRITERIA_AT_ALL_PROBE_FIXTURE")
+    err = refused("implemented", "NO_CRITERIA_AT_ALL_PROBE_FIXTURE", "--sha", sha(1)[:9])
     assert "--none-owed" in err, err
     err = refused("implemented", IID, "--sha", sha(1)[:9], "--none-owed",
                   "--criteria-file", criteria_file("A1 L2: owed\n"))
@@ -439,10 +439,10 @@ def t_cli_implemented_criteria_file_and_none_owed():
              criteria_file("# header comment\nO1 L0: builds\nA1 GREEN-FULL: full list\n"
                            "A2 L4: owner plays it\n"))
     assert "needs bridge" in out and "cheapest GREEN-FULL" in out, out
-    file_ready("OFFLINE_ONLY_THING_1")
-    out = ok("implemented", "OFFLINE_ONLY_THING_1", "--sha", sha(2)[:9], "--none-owed")
+    file_ready("OFFLINE_ONLY_THING_PROBE_FIXTURE")
+    out = ok("implemented", "OFFLINE_ONLY_THING_PROBE_FIXTURE", "--sha", sha(2)[:9], "--none-owed")
     assert "-> done" in out, out
-    err = refused("implemented", "OFFLINE_ONLY_THING_1", "--sha", sha(2)[:9], "--none-owed")
+    err = refused("implemented", "OFFLINE_ONLY_THING_PROBE_FIXTURE", "--sha", sha(2)[:9], "--none-owed")
     assert "already" in err or "terminal" in err, err
 
 
@@ -462,12 +462,12 @@ def t_cli_close_unchanged_but_warns_when_criteria_owed():
     file_ready()
     ok("close", IID, "--sha", "abcdef1")                     # no manifest: as before
     assert state_of() == "done"
-    file_ready("OWES_STILL_THING_1")
-    ok("implemented", "OWES_STILL_THING_1", "--sha", sha(1)[:9], "--criteria-file",
+    file_ready("OWES_STILL_THING_PROBE_FIXTURE")
+    ok("implemented", "OWES_STILL_THING_PROBE_FIXTURE", "--sha", sha(1)[:9], "--criteria-file",
        criteria_file("A1 L2: x\n"))
-    rc, out, err = run("close", "OWES_STILL_THING_1", "--sha", "abcdef1")
+    rc, out, err = run("close", "OWES_STILL_THING_PROBE_FIXTURE", "--sha", "abcdef1")
     assert rc == 0 and "OWES A1 L2" in err, (rc, out, err)
-    assert state_of("OWES_STILL_THING_1") == "done"
+    assert state_of("OWES_STILL_THING_PROBE_FIXTURE") == "done"
 
 
 def t_cli_show_prints_the_manifest():

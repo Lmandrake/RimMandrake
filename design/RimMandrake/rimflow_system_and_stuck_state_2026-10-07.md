@@ -32,7 +32,7 @@ building is cheap**. That asymmetry drives most of what follows.
   nothing about an item is stored except events.
 
 ### 1.2 Items, prose, views
-- **Item id**: `THREE_UPPER_SNAKE_WORDS_#` (e.g. `STILLSAND_SOLAR_STILL_1`).
+- **Item id**: `SUBJECT_INTENT_TWIST` for new items (e.g. `BRIDGE_HANG_UNSTICK_THIRD_TIME_LUCKY`; `ticket_naming_2026-10-10.md`); legacy `…_1` ids such as `STILLSAND_SOLAR_STILL_1` stay valid.
 - **Prose** (optional): `infrastructure/state/items/<ID>.md` with conventional sections
   `## spec`, `## verify`, `## criteria`. On close/drop/supersede the CLI moves it to
   `items/closed/`. 395 live prose files today.

@@ -305,8 +305,9 @@ FUNCTION_RUNGS = ("planned", "designed", "implemented", "runnable", "validated",
 CONTENT_RUNGS = ("none", "placeholder", "authored", "final")
 
 # The item-ID grammar, and the ONLY place it is written down. It admits the
-# THREE_DESCRIPTIVE_WORDS_# form (underscores, digits) and the legacy B58 / D5 form,
-# which is why legacy items still close under their own number.
+# SUBJECT_INTENT_TWIST form, the legacy THREE_WORDS_# form and the legacy B58 / D5 form,
+# which is why legacy items still close under their own number. The stricter grammar for
+# NEW ids is `mint_problems` below; this one only has to admit every id ever written.
 # 🔑 It is also the `Closes:` trailer grammar: `importer.py` walks those trailers out of
 # git, and a name this regex rejects is a trailer nothing will ever match.
 # ⛔ Do not restate this in a doctrine file. POLICY.md and CLAUDE.md both once named
@@ -484,7 +485,7 @@ VERBS = {
     # nothing, per the ruling — and the one expensive rung (`played`) is
     # gated in `_who_refusal`, not here, the same way `game UP` gates on
     # `measured` rather than in this table. Itemless: a system is not a rimflow
-    # item and carries no THREE_WORDS_# id.
+    # item and carries no item id.
     "capability": {"who": "any", "req": ("system",),
                   "opt": ("function_rung", "content_rung", "evidence_ref", "date", "note",
                           "retired")},
@@ -498,10 +499,102 @@ VERBS = {
 ITEMLESS = ("seat", "bridge", "game", "spawn", "capability")
 
 
-# THREE_DESCRIPTIVE_WORDS_# — the naming rule since 2026-08-20. Legacy IDs (B58, D55,
-# C40) do not match it and are never renamed, which is why this is one half of a test
-# and not the whole of it.
+# LEGACY: THREE_DESCRIPTIVE_WORDS_# — the naming rule 2026-08-20 → 2026-10-10. 2,714 of
+# 2,846 items end in `_1`; the number never varied. Every such id stays valid forever
+# and is never renamed, but no NEW item is minted in this form (see mint_problems).
+# Older legacy IDs (B58, D55, C40) match neither form and are never renamed either.
 NAMED_ID = re.compile(r"^[A-Z][A-Z0-9]*(_[A-Z0-9]+)+_\d+$")
+
+# NEW (2026-10-10): SUBJECT_INTENT_TWIST — design/RimMandrake/ticket_naming_2026-10-10.md.
+# The FIRST word (at position >= 1) found in INTENT_WORDS is the hinge: everything before
+# it is the SUBJECT (what the item is about, greppable), the hinge is the INTENT at filing
+# time (never live state — the ledger shows that beside the id), everything after it is
+# the TWIST (a true, readable comic aside about how it is going).
+# ⚠️ Keep nouns that are common SUBJECTS in this project out of the bank (PATCH, MAP, SHIP,
+# PLANT, REVIEW, TEST, PAINT, PORT, SPEC …): the first bank word wins, so a subject word in
+# the bank splits the name in the wrong place. `rimflow namecheck <ID>` shows the parse.
+INTENT_WORDS = frozenset("""
+    AUDIT CENSUS MEASURE REMEASURE PROBE PROVE VERIFY VET JUDGE BENCHMARK BISECT
+    DEBUG DIAGNOSE HUNT CHASE
+    BUILD CODE WIRE REWIRE FILL POPULATE INSTALL DEPLOY FINISH POLISH WIDEN SHRINK
+    FIX MEND REPAIR UNSTICK UNTANGLE UNBLOCK HARDEN ENFORCE SILENCE CORRECT
+    RECONCILE SYNC UNIFY MERGE DEDUPE
+    EXCISE CULL PRUNE DELETE RETIRE
+    SALVAGE RESCUE RESTORE REVIVE ABSORB MIGRATE RENAME RESKIN REDRAW
+    DRAIN TAME TUNE BALANCE
+    DESIGN REDESIGN RETHINK SKETCH DECIDE ASK HARVEST DOCUMENT EXPLAIN MONITOR
+    REBUILD RETRY
+""".split())
+# Words that make a twist vague or mean. Not exhaustive — the doc's rules are the bar;
+# this only refuses the cheapest failures.
+BANNED_NAME_WORDS = frozenset("""
+    MISC STUFF THINGS ETC LOL WIP TODO TBD IDK WHATEVER MAYBE FOO
+    STUPID DUMB IDIOT MORON LAZY INCOMPETENT PATHETIC
+""".split())
+NAME_MAX_LEN = 44
+NAME_MIN_WORDS, NAME_MAX_WORDS = 3, 7
+_NEW_SHAPE = re.compile(r"^[A-Z0-9]+(?:_[A-Z0-9]+)*$")
+
+
+def parse_name(iid):
+    """-> (subject_words, intent, twist_words), or None when there is no hinge.
+
+    The hinge is the first INTENT_WORDS word at position >= 1 with at least one word
+    after it."""
+    words = str(iid or "").split("_")
+    for i in range(1, len(words) - 1):
+        if words[i] in INTENT_WORDS:
+            return words[:i], words[i], words[i + 1:]
+    return None
+
+
+def is_new_name(iid):
+    """Shape + hinge only (the free-text detector). Use mint_problems to MINT."""
+    s = str(iid or "")
+    return bool(_NEW_SHAPE.match(s)) and not NAMED_ID.match(s) and parse_name(s) is not None
+
+
+def is_named_id(iid):
+    """Is this token a named item id in either form (legacy `_N`, or SUBJECT_INTENT_TWIST)?"""
+    return bool(NAMED_ID.match(str(iid or ""))) or is_new_name(iid)
+
+
+def mint_problems(iid, known_ids):
+    """-> [reason, ...] why `iid` may not be minted as a NEW item; [] means it may.
+
+    Mint-time only. Replay never calls this — every id already in the ledger stays valid."""
+    s = str(iid or "")
+    probs = []
+    if s in known_ids:
+        return ["%s already exists — give the new item its own name" % s]
+    if not _NEW_SHAPE.match(s):
+        probs.append("only UPPER_SNAKE ASCII: A-Z, 0-9 and single underscores")
+        return probs
+    if NAMED_ID.match(s):
+        probs.append("ends in a number (`_1`): that is the retired legacy form — drop the "
+                     "number and add an intent word and a twist")
+    words = s.split("_")
+    if not NAME_MIN_WORDS <= len(words) <= NAME_MAX_WORDS:
+        probs.append("%d words; a name has %d-%d words"
+                     % (len(words), NAME_MIN_WORDS, NAME_MAX_WORDS))
+    if len(s) > NAME_MAX_LEN:
+        probs.append("%d chars; too long, the cap is %d" % (len(s), NAME_MAX_LEN))
+    if not re.search(r"[A-Z]", words[-1]):
+        probs.append("last word is a bare number, which reads as the legacy `_N` form")
+    banned = sorted(set(words) & BANNED_NAME_WORDS)
+    if banned:
+        probs.append("vague or mean word(s) %s: a twist must be specific and kind"
+                     % ", ".join(banned))
+    parts = parse_name(s)
+    if parts is None:
+        if words and words[0] in INTENT_WORDS:
+            probs.append("starts with the intent: put the SUBJECT first, then the intent")
+        elif words and words[-1] in INTENT_WORDS:
+            probs.append("ends on the intent: add a twist after it")
+        else:
+            probs.append("no intent word: the name needs SUBJECT_INTENT_TWIST, with the "
+                         "intent from the word bank (rimflow namecheck --bank)")
+    return probs
 
 
 def is_item_heading(token, body_lines):
@@ -519,11 +612,12 @@ def is_item_heading(token, body_lines):
     particular guard is how 853 lines of owner briefings would have died.
 
     The discriminator is that a real item carries a `state:` field at column 0, or is
-    named in the THREE_DESCRIPTIVE_WORDS_# form. Prose sections have neither.
+    named in either named form (legacy `_N` or SUBJECT_INTENT_TWIST). Prose sections
+    have neither.
     """
     if not ID_RE.match(token or ""):
         return False
-    if NAMED_ID.match(token):
+    if is_named_id(token):
         return True
     return any(re.match(r"state\s*:", l) for l in body_lines)
 
@@ -600,7 +694,7 @@ def _check_item_reference(ev):
     iid = ev.get("id")
     if not iid or not ID_RE.match(str(iid)):
         raise SchemaError(
-            "`%s` needs an id matching THREE_DESCRIPTIVE_WORDS_# (got %r). "
+            "`%s` needs an item id (got %r). New items are SUBJECT_INTENT_TWIST; "
             "Legacy IDs like B58 still resolve and are never renamed." % (verb, iid))
 
 
@@ -656,7 +750,7 @@ def _check_enums(ev):
     if verb in ("file", "spawn") and ev["for"] not in SEATS:
         raise SchemaError("%s --for must name a seat" % verb)
     if verb == "spawn" and not ID_RE.match(str(ev["name"])):
-        raise SchemaError("spawn --name must be THREE_DESCRIPTIVE_WORDS_# "
+        raise SchemaError("spawn --name must be an item id, SUBJECT_INTENT_TWIST "
                           "(got %r)" % ev["name"])
     # Without this, `rimflow spawn --for FOUNRDY ...` or `rimflow reassign X
     # --to BULID` succeeded and wrote an item owned by a seat that does not

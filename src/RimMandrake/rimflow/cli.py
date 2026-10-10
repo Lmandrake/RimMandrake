@@ -1430,8 +1430,53 @@ def _replaces(args, seat, w):
     print("                           its child, and closing it drops the remainder.")
 
 
+def _mint_or_die(iid, w):
+    """New items are named SUBJECT_INTENT_TWIST (design/RimMandrake/ticket_naming_2026-10-10.md).
+
+    Mint-time only: every id already in the ledger, `_1` included, stays valid forever."""
+    probs = model.mint_problems(iid, set(w.items))
+    if probs:
+        die("%s is not a new-style item name:\n  - %s\n\n"
+            "New items are SUBJECT_INTENT_TWIST: what it is, what it sets out to do (one word "
+            "from the bank), then a TRUE comic aside on how it is going.\n"
+            "  e.g. BRIDGE_HANG_UNSTICK_THIRD_TIME_LUCKY, GREATBOLE_CORE_RESKIN_NOT_A_DRILL\n"
+            "Check a name first:  rimflow namecheck <NAME>   (the bank: rimflow namecheck --bank)"
+            % (iid, "\n  - ".join(probs)))
+
+
+def cmd_namecheck(args, seat):
+    """Show how a proposed item name parses and whether it may be minted."""
+    if args.bank or not args.name:
+        print("intent words (the hinge between SUBJECT and TWIST):")
+        words = sorted(model.INTENT_WORDS)
+        for i in range(0, len(words), 10):
+            print("  " + " ".join(words[i:i + 10]))
+        if not args.name:
+            return 0
+    _, w = load()
+    iid = args.name
+    if iid in w.items:
+        it = w.items[iid]
+        print("%s exists: state %s, owner %s%s" % (
+            iid, it.state, it.owner,
+            "  (legacy form, valid forever)" if model.NAMED_ID.match(iid) else ""))
+        return 0
+    parts = model.parse_name(iid)
+    if parts:
+        print("subject %s · intent %s · twist %s"
+              % ("_".join(parts[0]), parts[1], "_".join(parts[2])))
+    probs = model.mint_problems(iid, set(w.items))
+    if probs:
+        print("REFUSED:\n  - " + "\n  - ".join(probs))
+        return 1
+    print("OK — %d chars. Read it cold: is the subject greppable, the twist true, kind and "
+          "specific?" % len(iid))
+    return 0
+
+
 def cmd_file(args, seat):
     _, w = load()
+    _mint_or_die(args.id, w)
     ev = {"seat": seat, "event": "file", "id": args.id, "title": args.title,
           "kind": args.kind, "row": args.row, "target": args.target_field,
           "needs": args.needs, "spec": args.spec, "caused_by": args.caused_by}
@@ -1967,6 +2012,7 @@ def cmd_spawn(args, seat):
     ⛔ Do not reintroduce `--id` here.
     """
     _, w = load()
+    _mint_or_die(args.name, w)
     known = (args.from_ in w.items or args.from_ in w.findings
              or model.RUN_RE.match(args.from_ or ""))
     if not known:
@@ -2702,8 +2748,14 @@ def build_parser():
     s = add("why", "why is this item not being offered", cmd_why)
     s.add_argument("id")
 
+    s = add("namecheck", "does a proposed item name follow SUBJECT_INTENT_TWIST?",
+            cmd_namecheck)
+    s.add_argument("name", nargs="?")
+    s.add_argument("--bank", action="store_true", help="list the intent words")
+
     s = add("file", "create work — for any seat, including another's", cmd_file)
-    s.add_argument("id", help="THREE_DESCRIPTIVE_WORDS_#")
+    s.add_argument("id", help="SUBJECT_INTENT_TWIST, e.g. BRIDGE_HANG_UNSTICK_THIRD_TIME_LUCKY "
+                   "(rimflow namecheck)")
     s.add_argument("--for", dest="for_", required=True)
     s.add_argument("--title", required=True)
     s.add_argument("--kind", default="task")
@@ -2773,7 +2825,7 @@ def build_parser():
     s = add("finding", "name what a run found", cmd_finding)
     s.add_argument("--from", dest="from_", required=True,
                    help="ITEM/run-N@config")
-    s.add_argument("--name", required=True, help="THREE_DESCRIPTIVE_WORDS_#")
+    s.add_argument("--name", required=True, help="the finding's name, UPPER_SNAKE")
     s.add_argument("--type", required=True)
     s.add_argument("--severity", required=True)
     s.add_argument("--id", help="host item; derived from --from when it is a run")
@@ -2781,7 +2833,8 @@ def build_parser():
     s = add("spawn", "turn a finding into work, for any seat", cmd_spawn)
     s.add_argument("--from", dest="from_", required=True, help="a finding or run name")
     s.add_argument("--for", dest="for_", required=True)
-    s.add_argument("--name", required=True, help="THREE_DESCRIPTIVE_WORDS_#")
+    s.add_argument("--name", required=True,
+                   help="the new item: SUBJECT_INTENT_TWIST (rimflow namecheck)")
     s.add_argument("--kind", default="task")
     s.add_argument("--needs", choices=model.NEEDS)
     s.add_argument("--spec")

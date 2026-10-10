@@ -59,17 +59,19 @@ TOKEN_RE = re.compile(r"[A-Za-z0-9_]+")
 # Strength of a mention, strongest last: a trailer is a stated claim, a subject an association.
 HOW_RANK = {"subject": 0, "closes": 1, "implemented": 2}
 SUBJECT_KEEP = 100
-VERSION = 2
+VERSION = 3          # 3: ids_in also reads SUBJECT_INTENT_TWIST ids (2026-10-10)
 
 
 # ---------------------------------------------------------------------------
 # PARSING — shared by real `git log` output and test fixtures
 # ---------------------------------------------------------------------------
 def ids_in(text):
-    """-> [id] of every THREE_WORDS_# token in `text`, in order, deduped."""
+    """-> [id] of every named item id (legacy `_N` or SUBJECT_INTENT_TWIST) in `text`,
+    in order, deduped. A new-form token needs an intent-word hinge, so a constant like
+    MAX_FLIGHT_TIME is not mistaken for an item."""
     out = []
     for tok in TOKEN_RE.findall(text or ""):
-        if model.NAMED_ID.match(tok) and tok not in out:
+        if model.is_named_id(tok) and tok not in out:
             out.append(tok)
     return out
 
