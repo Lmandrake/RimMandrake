@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Owner, Weeping Stones sheet 2026-10-10 (Plant_Ambrosia): "Beef up the description, keep the name ... Loving homage
+     to the original game." Name untouched; description only. The art redraw is a separate artpipe job. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Ambrosia"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Ambrosia"]/description</xpath>
+      <value>
+        <description>A small, slow-growing bush whose woody stem forks once into two level arms, like a T grown into a shrub. At the tip of each arm hangs at most a single golden fruit, glowing softly enough to be found by its light at dusk. Ambrosia fruit is sweet, delicate and lifts the mood of anyone who eats it; it cannot be farmed, it will not be hurried, and a wild stand of it has been worth a war more than once.</description>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Plant_Ambrosia"]</xpath>
+      <value>
+        <description>A small, slow-growing bush whose woody stem forks once into two level arms, like a T grown into a shrub. At the tip of each arm hangs at most a single golden fruit, glowing softly enough to be found by its light at dusk. Ambrosia fruit is sweet, delicate and lifts the mood of anyone who eats it; it cannot be farmed, it will not be hurried, and a wild stand of it has been worth a war more than once.</description>
+      </value>
+    </nomatch>
+  </Operation>
+</Patch>
