@@ -444,10 +444,6 @@ DESCRIPTION_BACKFILL = {
         '.',
         'A hollow plastoid core, chosen when speed matters more than force. The weapon becomes very fast and very light, and lands like a training bar.',
     ),
-    'guy762_KotORpartCore_bronzium': (
-        '.',
-        'A bronzium core, balanced rather than heavy. It brings the weapon quickly back on line and sits well in the hand.',
-    ),
     'guy762_KotORpartCore_uranium': (
         '.',
         'A depleted uranium core. Dense enough to punch through armour, and slow enough that the wearer of that armour may see it coming.',

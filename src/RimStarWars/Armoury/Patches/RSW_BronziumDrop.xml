@@ -8,12 +8,21 @@
   (Defs/Absorbed_KotorCore, DEPLOY_HOLD) have the same defs deleted in source. Old saves load
   KOTOR_AlloyBronzium as RSW_Durasteel through RM_DefAliasDef (EnvironmentalHazards RM_MaterialMerges_Aliases.xml).
 
+  The modular melee part guy762_KotORpartCore_bronzium (ModularWeapons2.ModularPartsDef in the donor's
+  AdditionalMods/ModularWeapons2/Defs/ModularPartDefs_MeleeBasic.xml, costList KOTOR_AlloyBronzium) is cut too, first,
+  since it would otherwise name a removed material. No weapon, recipe or default-parts list references it (searched the
+  donor tree and the Armoury); the Armoury's absorbed copy never carried it.
+
   Order matters: the junk-pile yield and the recipe are removed before the defs they name. Every operation is a
   no-op when its target is absent (PatchOperationRemove with success=Always), so the patch is safe without the donor.
   PROVISIONAL: removing the donor defs by patch is the in-repo substitute for Cherry Picker entries; the Cherry
   Picker config (not in repo) is owed a matching cut of the same six defNames if the owner prefers that route.
 -->
 <Patch>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/ModularWeapons2.ModularPartsDef[defName="guy762_KotORpartCore_bronzium"]</xpath>
+  </Operation>
   <Operation Class="PatchOperationRemove">
     <success>Always</success>
     <xpath>/Defs/ThingDef[defName="KOTOR_MineableJunk"]//li[mineableThing="KotORChunk_bronzium"]</xpath>
