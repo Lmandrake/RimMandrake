@@ -1,9 +1,9 @@
 {
  "biome": "RM_WeepingStones",
- "built": "2026-10-09T07:46:46-0700",
+ "built": "2026-10-10T07:03:53-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 68 mods \u2014 a test list): 565 active",
  "rows": {
   "ColossusToad": {
    "columns": {
@@ -187,21 +187,39 @@
      "single": "1fa62377db397ce41e67996bbc7d1c38916bf44b21e1f7cab5c70c74ad76ac73"
     },
     "B": {
+     "single": "95d857f6e64e1cbb155e0c4f4f301233ec47c1385c3df98b31fd57b030c2fb31"
+    },
+    "C": {
+     "single": "a3b942ed633a0e26adce8d4ec161a3531da173ef565d6b7c0b6436f193779131"
+    },
+    "D": {
+     "single": "e382e2b5ffd6fac7e839b009a178a8ce1ee7a76883bf5196edd37abc5eecdec6"
+    },
+    "E": {
      "single": "ba7ef0d389401cd7fbe04caff22e3b17ab4683b2909119941fe82c27abdc6748"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/Seadew",
-    "B": "_byname"
+    "B": "RotSporeKit/Things/Plant/Seadew",
+    "C": "RotSporeKit/Things/Plant/Seadew",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rot_dewshrooms_v2"
+    "B": "render rot_seadew_v3a",
+    "C": "render rot_seadew_v3b",
+    "D": "render legacy_37499fae_dewshrooms_v1",
+    "E": "render rot_dewshrooms_v2"
    },
    "res": "RotSporeKit/Things/Plant/Seadew",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "dewshrooms"
   },
@@ -743,6 +761,9 @@
      "single": "848eea3e71d32536310abb125922650579e3af0a783e7c4d06321b370723430b"
     },
     "B": {
+     "single": "94ddb6a01d13b31cd934613b7d7ddb5da00b27d2266583f71cd3b4b5ddc9ffd4"
+    },
+    "C": {
      "east": "bd224b827f1942abda6ef840603fa57204ac26fc7680707737e7a1a3b4aaca8c",
      "north": "f90c8e25074735c179a4cb424a32c00c061e9f778cb4edae2b4a784e270f45a6",
      "south": "22fdd11c154c2264da21ef263739a283d1b1cdef5115e0ceccbda2c9d699f6e9"
@@ -750,16 +771,19 @@
    },
    "graphic_of": {
     "A": "Things/Item/RM_MurrinCatch",
-    "B": "_byname"
+    "B": "Things/Item/RM_MurrinCatch",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 WeepingStones",
-    "B": "render weepingstones_murrin"
+    "B": "render RM_MurrinCatch_v3_nooutline",
+    "C": "render weepingstones_murrin"
    },
    "res": "Things/Item/RM_MurrinCatch",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
    ],
    "subject_key": "murrincatch"
   },
@@ -1399,17 +1423,22 @@
      "south": "40bf1934ab07b29dcac4576f53ceb83c85d0784cddab29e22cea1c2eccc5ad9b"
     },
     "B": {
+     "east": "4c824f35904b87705eede1bd6b42c95ae9fb7d4d0f9975d52bea11a03cc5acc4",
+     "north": "b525eb0eee660d41839d15925e5b5f69f19b717689477109ebdfa509e3b805b6",
+     "south": "284634f6a0ca494275033782e422c1df58eed2b75338263657bbd42dfdd072ab"
+    },
+    "C": {
      "east": "fefe44be028ce7008ae5ed6f0564ce23a696c61fe6995bb67aad592ec13d61bf",
      "north": "0a100234fb6f1ce045a777da479140a1826bcfd91340e46233844eb3ff6a12eb",
      "south": "02419165fd9c86af8bdc1af86434e4b5b132a29bdfdd4e4c0c339237a30587af"
     },
-    "C": {
+    "D": {
      "east": "7031fe634582b4dac4678e00133c8ae629553b4c47bf7280a1afcbe1ca8d8fa8"
     },
-    "D": {
+    "E": {
      "east": "954ec8891e436ef0a7c1913cdc54d6ffdd25675a9fb482c3c53562932b32fa3a"
     },
-    "E": {
+    "F": {
      "east": "99557fa15ec586c1b39fdacd754a2e084bcdd29edd1bd1f320c50aca2103ca42",
      "north": "b6aa3b1fbef58ad2b33193e2d3a7eed03af48b9f77424061862842472ba01ff8",
      "south": "b9990b0d1ab8a0a0f66a031786a3e0bda89834c80906b077ee3e1f6af6a66b38"
@@ -1420,14 +1449,16 @@
     "B": "swanimals/Boma/Boma",
     "C": "swanimals/Boma/Boma",
     "D": "swanimals/Boma/Boma",
-    "E": "swanimals/Boma/Boma"
+    "E": "swanimals/Boma/Boma",
+    "F": "swanimals/Boma/Boma"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render canon_boma_v1",
-    "C": "render boma_toyfig_a",
-    "D": "render boma_toyfig_b",
-    "E": "history SWBestiary 2026-09-12"
+    "B": "render canonregen_rsw_boma_v1",
+    "C": "render canon_boma_v1",
+    "D": "render boma_toyfig_a",
+    "E": "render boma_toyfig_b",
+    "F": "history SWBestiary 2026-09-12"
    },
    "res": "swanimals/Boma/Boma",
    "reserved": [
@@ -1435,7 +1466,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "boma"
   },
@@ -1447,19 +1479,24 @@
      "south": "86024f69b1a8be1858aa6216111566da3a697ad4ad0dc819321e28537d00907c"
     },
     "B": {
-     "east": "bde9b18ba4293f536c53171682bc88610e7baa1072b1b6cba0db5a96959ef9d1"
+     "east": "914567f853650f926db61f1a7af94e9fd79e01dced0826ff4fd51395f654303c",
+     "north": "6b2f669f1b0705f440502676372f2fe33e51a12bfdf24da889a967314a30d42b",
+     "south": "d697a17c0b0f369ba6fd6a6fe0039a2c10ac25320f22ef8029a3060b07d8c358"
     },
     "C": {
+     "east": "bde9b18ba4293f536c53171682bc88610e7baa1072b1b6cba0db5a96959ef9d1"
+    },
+    "D": {
      "east": "58621eb60e9150eb3cf65f4887e9a66fff5bc7aadc1f8906639ba6ad78fec74f",
      "north": "7388136c17591aa17c5b0836b5530cf673e6b8afb74c38f1e97aae07f883f68b",
      "south": "cb80f22cfd51810ab54fe383b716f86e678ecbd957251264b5f30f071c0b0692"
     },
-    "D": {
+    "E": {
      "east": "a3896b6849e675fbfbcf8aa3c09a28c5010739bb0a6329bd38a473c9b3263334",
      "north": "2588487bfeed8a148f45a0b9860b97cd69fa2660c9322e9708cdf5f8e6f5380a",
      "south": "8f7f9cac7ae43bc012b32f71026dc06fd07f7762ceb8c089b2fc77fd15c62dd4"
     },
-    "E": {
+    "F": {
      "1_east": "800d099c9ad1010968988e0c2dd19f736b1574a8a29575a1940d14527c88efbf",
      "1_north": "0ba52eafbcb790636f7889aadcf80bfeb042e2728cad9bb8531ddb8dfc2b9f75",
      "1_south": "c30da978551e5b79670152f47ec32124fddbbe2823077f3c3e292ee771c23471",
@@ -1479,14 +1516,16 @@
     "B": "swanimals/Dactillion/Dactillion",
     "C": "swanimals/Dactillion/Dactillion",
     "D": "swanimals/Dactillion/Dactillion",
-    "E": "_flip:swanimals/Dactillion/Dactillion_Flying_"
+    "E": "swanimals/Dactillion/Dactillion",
+    "F": "_flip:swanimals/Dactillion/Dactillion_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render dactillion_toyfig_b",
-    "C": "history SWBestiary 2026-09-12",
-    "D": "donor original \u2014 mlie.starwarsanimalcollection",
-    "E": "IN GAME \u2014 Dactillion_Flying_"
+    "B": "render canonregen_rsw_dactillion_v1",
+    "C": "render dactillion_toyfig_b",
+    "D": "history SWBestiary 2026-09-12",
+    "E": "donor original \u2014 mlie.starwarsanimalcollection",
+    "F": "IN GAME \u2014 Dactillion_Flying_"
    },
    "res": "swanimals/Dactillion/Dactillion",
    "reserved": [
@@ -1494,36 +1533,32 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "dactillion"
   },
   "RSW_Dewback": {
    "columns": {
     "A": {
-     "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df",
-     "north": "b7b58c3a104b13a56c5387493a099cbefed279c952abfb3c0659a11132f4d6db",
-     "south": "8550e4638e026dd94c018251ac39cdcbaf88b779f34d3874de43ecfff4e02917"
-    },
-    "B": {
      "east": "a64097abc972d7bafdc36a7ed07f7708952c2d2c3ca0a4e388d6bded18558f30"
     },
-    "C": {
+    "B": {
      "north": "48c4fecca5406f0133bb2de963cb99666927f7f7f9ddc6ad7249e7b70a6888b3",
      "south": "576adedfebb3240571e59324a7fd4c475a365b81bebdf05fb0f09c54bcbf4fc8"
     },
-    "D": {
+    "C": {
      "east": "983b2477d5f697524363c941df4132657c0d6d22ed884a4d6090dfaf04f834df"
     },
-    "E": {
+    "D": {
      "south": "c25e20d775248d8b55e9affff1a6f44021cf8dd530aaae33170b6d88079e713f"
     },
-    "F": {
+    "E": {
      "east": "be61243d6dab85d4e64e372f0d6f7519b3933cdae0bbc6cb0f22693c2fe7e8f3",
      "north": "5da6c3b2f118ac58e94313a620e372e4e5dfc1e9b21730fd54041a4cd5f1dc86",
      "south": "8abaefe6bee04fae0aaf92bb16968ef2a3e5123ea519ef9184908e9bebe5d98d"
     },
-    "G": {
+    "F": {
      "east": "3b7873e344c08bfc53037a0406fd563b6aa07cf790db15b26639eb36725238b2",
      "north": "b7b58c3a104b13a56c5387493a099cbefed279c952abfb3c0659a11132f4d6db",
      "south": "8550e4638e026dd94c018251ac39cdcbaf88b779f34d3874de43ecfff4e02917"
@@ -1535,17 +1570,15 @@
     "C": "swanimals/Dewback/Dewback",
     "D": "swanimals/Dewback/Dewback",
     "E": "swanimals/Dewback/Dewback",
-    "F": "swanimals/Dewback/Dewback",
-    "G": "swanimals/Dewback/Dewback"
+    "F": "swanimals/Dewback/Dewback"
    },
    "labels": {
-    "A": "IN GAME \u2014 DewbackArtOverride",
-    "B": "render regen_ls_canon_dewback_v1",
-    "C": "render regen_ls_canon_dewback_v1_ns",
-    "D": "render longshade_rsw_dewback_v1 \u2014 failed canon check",
-    "E": "render facingrepair_dewback_v1",
-    "F": "history DewbackArtOverride 2026-09-11",
-    "G": "history DewbackArtOverride 2026-09-20"
+    "A": "render regen_ls_canon_dewback_v1",
+    "B": "render regen_ls_canon_dewback_v1_ns",
+    "C": "render longshade_rsw_dewback_v1 \u2014 failed canon check",
+    "D": "render facingrepair_dewback_v1",
+    "E": "history DewbackArtOverride 2026-09-11",
+    "F": "history DewbackArtOverride 2026-09-20"
    },
    "res": "swanimals/Dewback/Dewback",
    "reserved": [
@@ -1554,8 +1587,7 @@
     "C",
     "D",
     "E",
-    "F",
-    "G"
+    "F"
    ],
    "subject_key": "dewback"
   },
@@ -1603,17 +1635,22 @@
      "south": "1c7bfe96dedacbfa9308462e201f78fcf808f8ba226d48ae9b153ba2e1e36e14"
     },
     "B": {
+     "east": "f68e4001613b9ffe1e6e3b776a71adbe172495c6a43223d1209104eeeb5a6c79",
+     "north": "f7e0e96cc0cfedf502409ee8156ab971ab7e9138497714d13b78a67e0b780f24",
+     "south": "788bf995c2407c46e6f1849d57bc5c992113d9cfc1b518ab48d6ab9c374dd32c"
+    },
+    "C": {
      "east": "0aac66f6be3e80476891730fbe6176576351ad0ac28982e7884ebeb07149439f",
      "north": "eec53efa7c79c6d5b757922f650c5075beaa2de4d79749490fcfbdbd7cad1f32",
      "south": "08653d01a8b0ecb06d0e291cd6949fab181ad0ce5032461ee75f7e4eb7bdce6f"
     },
-    "C": {
+    "D": {
      "east": "ec858fd728d367b7241a5373cd158f404a66e3e9e9bdba95cb333c79323b1795"
     },
-    "D": {
+    "E": {
      "east": "0da76f25f7fddfdfd2a884d03e83cfc85e12a58a09564db625c681529fb0f72e"
     },
-    "E": {
+    "F": {
      "east": "2a90350be4d698f0ae9088490bc3cc2a1e0a8826f262b8a990ddb5700cb27495",
      "north": "31bba8ca7061c5cfd1aec3c339d2295d04c5709859cecaf8d8d836cbc2d1d3af",
      "south": "cbca68b0099b86e6de4743d25f850ddc9240f0191620a7f41d2fe1c992eb15ba"
@@ -1624,14 +1661,16 @@
     "B": "swanimals/Fanback/Fanback",
     "C": "swanimals/Fanback/Fanback",
     "D": "swanimals/Fanback/Fanback",
-    "E": "swanimals/Fanback/Fanback_Swimming"
+    "E": "swanimals/Fanback/Fanback",
+    "F": "swanimals/Fanback/Fanback_Swimming"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render canon_fanback_v1",
-    "C": "render fanback_toyfig_a",
-    "D": "render fanback_toyfig_b",
-    "E": "IN GAME \u2014 SWBestiary"
+    "B": "render canonregen_rsw_fanback_v1",
+    "C": "render canon_fanback_v1",
+    "D": "render fanback_toyfig_a",
+    "E": "render fanback_toyfig_b",
+    "F": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Fanback/Fanback",
    "reserved": [
@@ -1639,7 +1678,8 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
    ],
    "subject_key": "fanback"
   },
@@ -1682,21 +1722,26 @@
   "RSW_Ollopom": {
    "columns": {
     "A": {
-     "east": "a8f3676624ebec671b9261301ab992c0aea6c39c659519f74287c4c92fca80ec",
-     "north": "ed66186b8e2e32bd0eefbece01fe5ba3aef2529ceac7c7cae0695f9d9c555ddc",
-     "south": "71252656a89842f41b3d99c81af4a56ceb16ffd979713a6557523f3aaa2151f1"
-    },
-    "B": {
-     "east": "44fc3e3f0671529773f8df6eb8c43f8a375b351bf2f5e9921a490bb406a87592",
-     "north": "39005bac7efb6ff5550dd4106cd06a4395935b0046bf0593727af5a1310e4401",
-     "south": "26fb93e093d994b37dde1b300a58fccf94d4eb226cb9a686612d0acb02afb0eb"
-    },
-    "C": {
      "east": "91df5d5e2e126a03e24f862712a15823b81cb4e6bf6a0d3aabefe9b437d78a27",
      "north": "d70414e35d2fa94caf5a26bdefda04059997d772df489fd4cf5c13cf808aabc6",
      "south": "20958c7f3437e6ce13fe8f9b40eefbef5fbddb0d8e9125ddae174a96ab368c4d"
     },
+    "B": {
+     "east": "fc86c8a4cc725d09219b81e9a28f0248ea2568bf4290f714b60653034091febc",
+     "north": "19f3d7a408b69a1bd7b745518ccdbb25b67bd69d65c896ff54b12eed06c35d0d",
+     "south": "86edd065586ac1c560b55b6fe9ab0703ff6c036944e15380bbcb461518bac456"
+    },
+    "C": {
+     "east": "44fc3e3f0671529773f8df6eb8c43f8a375b351bf2f5e9921a490bb406a87592",
+     "north": "39005bac7efb6ff5550dd4106cd06a4395935b0046bf0593727af5a1310e4401",
+     "south": "26fb93e093d994b37dde1b300a58fccf94d4eb226cb9a686612d0acb02afb0eb"
+    },
     "D": {
+     "east": "a8f3676624ebec671b9261301ab992c0aea6c39c659519f74287c4c92fca80ec",
+     "north": "ed66186b8e2e32bd0eefbece01fe5ba3aef2529ceac7c7cae0695f9d9c555ddc",
+     "south": "71252656a89842f41b3d99c81af4a56ceb16ffd979713a6557523f3aaa2151f1"
+    },
+    "E": {
      "east": "fa930e10d9723f7fbade582524fd867ab2195c20158a4fccd19cb7a162ace5b9",
      "north": "652222e71f0464f7d380c0fc0988d903a1ceddbf03ab79bbf5bddbfcb6daa6c9",
      "south": "9d7b3564f21361c7727b0071a34da69a4688f811d443fca060d74061b2435378"
@@ -1706,24 +1751,27 @@
     "A": "swanimals/Ollopom/Ollopom",
     "B": "swanimals/Ollopom/Ollopom",
     "C": "swanimals/Ollopom/Ollopom",
-    "D": "swanimals/Ollopom/Ollopom_Swimming"
+    "D": "swanimals/Ollopom/Ollopom",
+    "E": "swanimals/Ollopom/Ollopom_Swimming"
    },
    "labels": {
-    "A": "IN GAME \u2014 OllopomArtOverride",
-    "B": "history OllopomArtOverride 2026-09-13",
-    "C": "donor original \u2014 mlie.starwarsanimalcollection",
-    "D": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
+    "B": "render canonregen_rsw_ollopom_v1 \u2014 failed canon check",
+    "C": "history OllopomArtOverride 2026-09-13",
+    "D": "history OllopomArtOverride 2026-09-20",
+    "E": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Ollopom/Ollopom",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
    ],
    "subject_key": "ollopom"
   }
  },
  "sheetId": "weepingstones_sheet_2026-10-05",
- "snapshotId": "f887cb22b7201552"
+ "snapshotId": "fb9db321a6e6c4fd"
 }

@@ -1,0 +1,314 @@
+[
+ {
+  "id": "enact_83bac00a_plant_ambrosia_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_Ambrosia",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Beef up the description, keep the name, make the art very special. Softly glowing golden fruit, just one or two, nestled in distinctive two-armed growth like a T-shape made into a small bush. Loving homage to the original game. Drop the art currently here.\" RimWorld sprite of the ambrosia, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Beef up the description, keep the name, make the art very special. Softly glowing golden fruit, just one or two, nestled in distinctive two-armed growth like a T-shape made into a small bush. Loving homage to the original game. Drop the art currently here.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/fa/fa6e5ce7aa56aaee97280ac61a9b877ba7ab579fa0cb231ad8054c7c6a4b6f9d.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_9f4d6fc2_huldu_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Huldu",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo based on (c) but make more alien: an alien otter-equivalent with gripping arms and a whale-like tail, covering in luxurious fur. Hunts in the water but can drag itself onto land as needed and jump around to get where it's going. Very beautiful fur that is a trading commodity. Good name, bad description: regenerate and expand. Full art regen.\" RimWorld sprite of the huldu, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Redo based on (c) but make more alien: an alien otter-equivalent with gripping arms and a whale-like tail, covering in luxurious fur. Hunts in the water but can drag itself onto land as needed and jump around to get where it's going. Very beautiful fur that is a trading commodity. Good name, bad description: regenerate and expand. Full art regen.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/28/2875a03bb4fb888ac477b4a6f23af61ab60ef7d362574825ff549c77fb4ed5b5.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_26d21692_hulducatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_HulduCatch",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until\" RimWorld sprite of the hulducatch, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until",
+  "canon_reference": [],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_7bd33c4d_ivvolcatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_IvvolCatch",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until\" RimWorld sprite of the ivvolcatch, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until",
+  "canon_reference": [],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_93121ad1_karrekcatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_KarrekCatch",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until\" RimWorld sprite of the karrekcatch, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until",
+  "canon_reference": [],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_c6ff2423_kirruk_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Kirruk",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Total regen. Take it's current description. Should be an alien comb-flier, slotted trailing teeth-like combs that flow from its \"wings\" as it glides on the moist updraft to drink. Quasi-avian bird thing. Rename to \"Dewglider\"\" RimWorld sprite of the kirruk, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Total regen. Take it's current description. Should be an alien comb-flier, slotted trailing teeth-like combs that flow from its \"wings\" as it glides on the moist updraft to drink. Quasi-avian bird thing. Rename to \"Dewglider\"",
+  "canon_reference": [],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_34cbe6a2_loomu_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Loomu",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"I like the description (Though it needs beefing up). Image is too cute, make it more realistic looking and wet: it sits in the water and sings out what it hears. Should have very strange sound work. Remove the turtle art.\" RimWorld sprite of the loomu, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "I like the description (Though it needs beefing up). Image is too cute, make it more realistic looking and wet: it sits in the water and sings out what it hears. Should have very strange sound work. Remove the turtle art.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/28/2875a03bb4fb888ac477b4a6f23af61ab60ef7d362574825ff549c77fb4ed5b5.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_80efca3d_loomucatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_LoomuCatch",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until\" RimWorld sprite of the loomucatch, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until",
+  "canon_reference": [],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_e6d931f4_murrin_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Murrin",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo completely. A fast alien fish with twin dorsal comb-fins and small hand-like fins near its head. Colorful and odd.\" RimWorld sprite of the murrin, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Redo completely. A fast alien fish with twin dorsal comb-fins and small hand-like fins near its head. Colorful and odd.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/8c/8cf333e0f6fdbc31ea999cd160f60b5c5e736f1c52551214c61fbf8112cb619a.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_0b47a9f1_murrincatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_MurrinCatch",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until\" RimWorld sprite of the murrincatch, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/84/848eea3e71d32536310abb125922650579e3af0a783e7c4d06321b370723430b.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_39dedfee_ozhu_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ozhu",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until\" RimWorld sprite of the ozhu, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until",
+  "canon_reference": [],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_3c182127_skarrin_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Skarrin",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Enhance the description, keep the name, redo the art to focus on a slender knife-like silver eel-thing with a cruel suction-like mouth for sucking water, blood, and flesh away. Sharp fins emit regularly from its body that can be flexed into painfully cutting lines. Extremely delicious.\" RimWorld sprite of the skarrin, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Enhance the description, keep the name, redo the art to focus on a slender knife-like silver eel-thing with a cruel suction-like mouth for sucking water, blood, and flesh away. Sharp fins emit regularly from its body that can be flexed into painfully cutting lines. Extremely delicious.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/8c/8cf333e0f6fdbc31ea999cd160f60b5c5e736f1c52551214c61fbf8112cb619a.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_a3b3cad9_skarrincatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_SkarrinCatch",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until\" RimWorld sprite of the skarrincatch, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until",
+  "canon_reference": [],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_0baaed3f_ssurr_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Ssurr",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Expand the description, but otherwise good. Must redo the art because the crest-fan isn't rotating with the creature properly.\" RimWorld sprite of the ssurr, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Expand the description, but otherwise good. Must redo the art because the crest-fan isn't rotating with the creature properly.",
+  "canon_reference": [],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_3df263b9_vellak_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Vellak",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make more alien based on (b), less recognizably camel, more like a furred snake for a neck/head. Sometimes used for pack animals. Redo description after art to conform.\" RimWorld sprite of the vellak, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Make more alien based on (b), less recognizably camel, more like a furred snake for a neck/head. Sometimes used for pack animals. Redo description after art to conform.",
+  "canon_reference": [],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_eeb62996_vhakk_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Vhakk",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Drop all of this art, it's all bad. Try again. Make something low and lurking that lays in the water and watches, same niche as an alligator but looking more like a cross between a flounder and a badger. Eyes on short stalks. New description, same name.\" RimWorld sprite of the vhakk, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Drop all of this art, it's all bad. Try again. Make something low and lurking that lays in the water and watches, same niche as an alligator but looking more like a cross between a flounder and a badger. Eyes on short stalks. New description, same name.",
+  "canon_reference": [],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_aff7b795_vizhik_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Vizhik",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Close. Beef up description, rename to the Fan Eel, then generate highly realistic images to consider. Drop all this art.\" RimWorld sprite of the vizhik, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Close. Beef up description, rename to the Fan Eel, then generate highly realistic images to consider. Drop all this art.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/8c/8cf333e0f6fdbc31ea999cd160f60b5c5e736f1c52551214c61fbf8112cb619a.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_edfc376e_vizhikcatch_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_VizhikCatch",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until\" RimWorld sprite of the vizhikcatch, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until",
+  "canon_reference": [],
+  "biome_neutral": true
+ }
+]
