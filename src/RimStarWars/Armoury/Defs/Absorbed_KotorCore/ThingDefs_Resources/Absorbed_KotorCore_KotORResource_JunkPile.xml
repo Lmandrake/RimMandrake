@@ -78,11 +78,6 @@
             <mineableYield>1</mineableYield>
           </li>
           <li>
-            <randomWeight>0.05</randomWeight>
-            <mineableThing>KotORChunk_bronzium</mineableThing>
-            <mineableYield>1</mineableYield>
-          </li>
-          <li>
             <randomWeight>0.03</randomWeight>
             <mineableThing>ComponentIndustrial</mineableThing>
             <mineableYield>8</mineableYield>

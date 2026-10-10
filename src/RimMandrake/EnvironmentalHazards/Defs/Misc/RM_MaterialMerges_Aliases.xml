@@ -36,6 +36,8 @@
       <!-- plasteel slag and tibanna (survivors live in guy762.mm.kotorcore / Armoury) -->
       <li><from>ChunkSlagPlasteel_GT</from><to>KotORChunk_plasteel</to><defType>ThingDef</defType></li>
       <li><from>RUT_TibannaGas</from><to>KOTOR_Tibanna</to><defType>ThingDef</defType></li>
+      <!-- BRONZIUM_DROP_1: bronzium dropped; the exported ship held 4 bronzium-stuffed things, now RSW_Durasteel -->
+      <li><from>KOTOR_AlloyBronzium</from><to>RSW_Durasteel</to><defType>ThingDef</defType></li>
     </aliases>
   </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
 </Defs>
