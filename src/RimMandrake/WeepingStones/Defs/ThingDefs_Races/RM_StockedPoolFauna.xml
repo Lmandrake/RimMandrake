@@ -702,6 +702,7 @@
       <baseHealthScale>0.55</baseHealthScale>
       <foodType>OmnivoreRoughAnimal</foodType>
       <specificMeatDef>RM_HulduMeat</specificMeatDef>
+      <leatherDef>RM_Leather_Huldu</leatherDef>
       <lifeExpectancy>7</lifeExpectancy>
       <gestationPeriodDays>14</gestationPeriodDays>
       <litterSizeCurve>
