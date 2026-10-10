@@ -970,6 +970,10 @@ MODS = {
         "Saturation heist raid": "NextPulse",
         "Saturation deflagration": "Now",
     }, ()),
+    "ShipMemory": ("ShipMemorySettings.cs", "RimMandrake.Utinni.ShipMemory.csproj", {
+        "Memory-Core reveal": "Now",
+        "Bioferrite stockpile trigger": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
