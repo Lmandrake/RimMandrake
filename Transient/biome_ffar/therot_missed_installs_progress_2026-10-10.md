@@ -38,6 +38,13 @@ in both src and the game copy, pixel-equal to sheet E/F.
 - **The rejected young pictures stay live** (`BoomshroomImmature.png`, `GreyLadyImmature_a.png`) until the new ones are
   approved on the sheet. Each is the only young picture its plant has.
 
+## 6. AngelMoth C is the only look (decision taken by question card 2026-10-10)
+- `RotSpecies_NamesAndSizes.xml`: two PatchOperationRemove ops delete the donor alternateGraphics AA_AngelMoth2 and 3, so
+  only C remains. validate_patch: 0 errors, each remove matches 1 node.
+- South: job `rotrow_angelmoth_south_v1_south` was already pending (08:40) and references exactly C east+north (shas match
+  the installed files, no B), so no second job was queued. The donor south stays at our path until it lands.
+- Deployed (`--compose biomes --apply --prune`, VERIFIED, 1 file). Needs a game restart.
+
 ## Validation / pixel checks
 - validate_patch (full mod set FULL.LATEST): 0 errors. One new warning: the AngelMoth op matches 2 nodes, which is
   intended.
