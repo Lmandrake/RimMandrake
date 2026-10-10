@@ -32,8 +32,9 @@ LEARNED, 2026-10-02 (five live runs; each is a check or guard below, not prose o
     earlier-seeded channel's inlet is paid first; an odd stock gives it the extra level (O9: 3/2).
   * The fixed engine (ddb473416) fills a channel FAR END FIRST: [0,0,0,1] -> [1,1,1,1] in n*D pulses,
     every compass direction, identical vectors (E2_*); reproduced on two fresh maps bit-for-bit.
-  * A 1-cell pond at shipped recession supplies exactly ONE level, then recedes (floor(4/5) = 0
-    supported cells): E3b. The old P2 strip "had no source"; a painted 1-cell source fixes it.
+  * A 1-cell pond at shipped recession supplied exactly ONE level, then receded (floor(4/5) = 0
+    supported cells): E3b. Since LIQUID_RECESSION_TOPOLOGY_1 (keep-last-cell, 2026-10-09) it keeps its last
+    cell while stock > 0 and pays the whole 4-cell run (stock 5 -> 1). The old P2 strip "had no source"; a painted 1-cell source fixes it.
   * Rain lands on EVERY unroofed excavated cell of the map, so it runs last and is predicted
     map-wide; RainRate needs ticks after weather_set (TransitionTo lerps over ~4000 ticks), so the
     rain-OFF negative rides the job ticks with rainFillPerPulse pinned 1.0.
@@ -95,7 +96,7 @@ BOOL_DEFAULTS = {
                pitExposureEnabled=True, pitDepthDrawOffsetEnabled=True,
                canalFireEnabled=True,      # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
                pitDrowningEnabled=True, poisonFillEnabled=True,      # PIT_FILL_EFFECTS_1
-               viscosityEnabled=True, thickCreepEnabled=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
+               viscosityEnabled=True, thickCreepEnabled=True, recedeKeepsLastCell=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
     S_RIVER: dict(riverSteamEnabled=True),
 }
 FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
@@ -182,6 +183,7 @@ class PulseOracle(object):
         # lowest cell index (RM_StockMath.PrefersCandidate). Refill/Restore are NOT modelled
         # (<0.04 level per pulse at the shipped rates; scenes stay far from floor boundaries).
         self.recession = recession
+        self.keep_last = True             # recedeKeepsLastCell (shipped default, PROVISIONAL 2026-10-09)
         self.receded = set()
         # rain (ApplyRain, first thing in DoPulse): accumulator += rate * perPulse; whole levels
         # go into EVERY unroofed, not-full excavated cell on the map (not just one scene).
@@ -338,6 +340,10 @@ class PulseOracle(object):
                 continue
             per = float(b["capacity"]) / len(cells)
             sup = max(0, int(b["stock"] // per))
+            # LIQUID_RECESSION_TOPOLOGY_1 (RM_StockMath.SupportedCellsKeepingLast, setting recedeKeepsLastCell, shipped ON):
+            # a body with any stock left keeps its last wet cell, so a pump or channel can still draw the sub-cell residual
+            if self.keep_last and sup == 0 and b["stock"] > 0 and per > 0:
+                sup = 1
             cx = sum(c[0] for c in cells) // len(cells)
             cz = sum(c[1] for c in cells) // len(cells)
             rec = b.setdefault("receded", [])
@@ -450,7 +456,7 @@ def rect_cells(x, z, w, h):
 BODIES = {
     "W1": dict(cells=rect_cells(0, 60, 16, 4), limitless=True),       # west edge, 64 cells
     "W2": dict(cells=[(60, 150)], limitless=False, capacity=5),       # E3 budget (recession OFF)
-    "W2R": dict(cells=[(70, 150)], limitless=False, capacity=5),      # E3b recession (defaults)
+    "W2R": dict(cells=[(70, 150), (71, 150)], limitless=False, capacity=10),   # E3b recession (defaults); 2 cells since keep-last-cell
     "W3": dict(cells=[(80, 150), (81, 150)], limitless=False, capacity=10),   # E4 engine
     "W4": dict(cells=rect_cells(0, 200, 10, 4), limitless=False),     # edge, 40 < 50 cells
     "W5": dict(cells=rect_cells(150, 30, 8, 8), limitless=False, capacity=320),  # interior 64
@@ -726,8 +732,8 @@ def o2_settings_defaults():
         m1 = re.search(r"public static float %s\s*=\s*([\d.]+)f" % f, allsrc)
         if not m1 or float(m1.group(1)) != want:
             probs.append("%s=%s want %s" % (f, m1 and m1.group(1), want))
-    if seen != 35:                  # +4 2026-10-05: pitDepthDrawOffset, canalFire, pitDrowning, poisonFill; +viscosity;
-        probs.append("toggle census %d != 35" % seen)   # -1 2026-10-06: channelConfinementEnabled retired
+    if seen != 37:                  # +1 thickCreepEnabled, +1 recedeKeepsLastCell 2026-10-09; +4 2026-10-05: pitDepthDrawOffset, canalFire, pitDrowning, poisonFill; +viscosity;
+        probs.append("toggle census %d != 37" % seen)   # -1 2026-10-06: channelConfinementEnabled retired
     # PIT_LEGACY_CODE_RETIRE_1 northstar: one settings screen; no struggle/escape/exposure toggle survives
     mods = re.findall(r"class \w+ : Mod\b", allsrc)
     if len(mods) != 2:              # RimMandrakeFlowWorksMod + RiverSteamMod (PitsMod retired)
@@ -1052,9 +1058,9 @@ def o7_scene_predictions():
         v = oracle_for(k, 8, recession=True)
         if v[3] != [1, 1, 1, 1] or v[0] != [0, 0, 0, 1]:
             probs.append("%s: %s" % (k, v[:4]))
-    v = oracle_for("E3b_recede", 4, recession=True)
-    if v[-1] != [0, 0, 0, 1]:
-        probs.append("E3b at shipped recession should keep exactly one level at the far end: %s" % v)
+    v = oracle_for("E3b_recede", 6, recession=True)
+    if v[-1] != [1, 1, 1, 1]:
+        probs.append("E3b at shipped recession (keep-last-cell) should fill the whole 4-cell run from the 1-cell pond: %s" % v)
     v = oracle_for("E3_budget", 7, recession=False)
     if sum(v[-1]) != 5 or v[-1] != v[-2]:
         probs.append("E3 budget (recession OFF) should deliver 5 and rest: %s" % v[-2:])
@@ -1683,7 +1689,7 @@ def phase_S(L, args):
                 if g.get("limitless") is not False or abs((g.get("capacity") or 0) - want_c) > 1e-3 \
                         or abs((g.get("stock") or 0) - want_c) > 1e-3 or g.get("cellCount") != len(BODIES[k]["cells"]):
                     bad.append("%s %r (want limited cap %s)" % (k, g, want_c))
-            L.row("S3_classification", not bad, "MOD", bad or "W1, W8 limitless; W2/W2R 5, W3 10, W4 (edge,40) 200, "
+            L.row("S3_classification", not bad, "MOD", bad or "W1, W8 limitless; W2 5, W2R 10, W3 10, W4 (edge,40) 200, "
                   "W5 (interior,64) 320 all LIMITED")
         band, inner = SCENES["S4_band"]["cells"]
         L.dig(band, 1)
@@ -1777,8 +1783,11 @@ def phase_A(L, args):
         bid = L.ids.get("W2R")
         brec = Live.body_in(rec, bid)
         e3b = vec.get("E3b_recede", [[]])[-1]
-        L.row("E3b_recession_shipped", "E3b_recede" not in mism and sum(e3b) == 1 and brec.get("recededCount") == 1
-              and abs((brec.get("stock") if brec.get("stock") is not None else -9) - 4.0) < 0.05, "MOD",
+        # keep-last-cell (LIQUID_RECESSION_TOPOLOGY_1, shipped ON) made a 1-cell pond never recede while stock > 0, so W2R is 2
+        # cells (capacity 10): it pays the 4-cell run (stock 10 -> 6, + a sub-0.05 refill) and sheds ONE cell (floor(6/5) = 1);
+        # recession OFF sheds none (the no_recession fault)
+        L.row("E3b_recession_shipped", "E3b_recede" not in mism and sum(e3b) == 4 and brec.get("recededCount") == 1
+              and abs((brec.get("stock") if brec.get("stock") is not None else -9) - 6.0) < 0.05, "MOD",
               "final %s, W2R %s" % (e3b, {k: brec.get(k) for k in ("stock", "recededCount", "activeCellCount")}))
         sink1 = L.eng().get("sinkTransferredTotal")
         L.row("E5_sink_drains", "E5_sink" not in mism and abs((sink1 - sink0) - (L.o.drained - drained0)) < 1e-3
