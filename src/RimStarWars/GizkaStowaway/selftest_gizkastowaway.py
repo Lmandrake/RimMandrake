@@ -56,8 +56,8 @@ def main():
         check("break %-46s -> %s" % (tag, must[:30]), any(must in g for g in got), got)
 
     for name, setting, const in V.TRIGGERS:
-        brk("%s ignores %s" % (name[7:], setting), M, "Ready(RSW_GizkaStowawayMod.Settings?.%s ?? false)" % setting, "Ready(true)", V.trigger_findings, setting)
-    brk("master switch dropped from Ready", M, "!s.stowawayEventsEnabled || ", "", V.trigger_findings, "Ready()")
+        brk("%s ignores %s" % (name[7:], setting), M, "Ready(RSW_GizkaSettings.%s)" % setting, "Ready(true)", V.trigger_findings, setting)
+    brk("master switch dropped from Ready", M, "!RSW_GizkaSettings.stowawayEventsEnabled || ", "", V.trigger_findings, "Ready()")
     brk("donor-absent guard dropped", M, "if (RSW_GizkaPopulation.Kind == null) return false;", "", V.trigger_findings, "Ready()")
     brk("cooldown 1 day", M, "DiscoveryCooldownTicks = 900000", "DiscoveryCooldownTicks = 60000", V.trigger_findings, "cooldown")
     brk("trade as common as gravship", M, "ChanceTrade = 0.05f", "ChanceTrade = 0.5f", V.trigger_findings, "not gravship > salvage")
@@ -84,7 +84,7 @@ def main():
         check("break hediff %-32s -> %s" % (tag, must[:26]), any(must in g for g in got), got)
 
     ib = lambda tag, fn, old, new, must: brk(tag, fn, old, new, V.infestation_findings, must)
-    ib("chewing ignores its toggle", I, "s.chewingEnabled && stage", "stage", "chewing is not gated")
+    ib("chewing ignores its toggle", I, "RSW_GizkaSettings.chewingEnabled && stage", "stage", "chewing is not gated")
     ib("chewing at any stage", I, "stage >= GizkaStage.Infestation)", "stage >= GizkaStage.Cute)", "chewing is not gated")
     ib("announce on the way down", I, "if (stage > lastStage) AnnounceStage", "if (stage != lastStage) AnnounceStage", "steps DOWN")
     ib("plague band at 95 percent", I, "cap * 0.72f", "cap * 0.95f", "stage bands")
@@ -100,14 +100,14 @@ def main():
     ib("stowaway test ignores the hediff", V.POP, "GetFirstHediffOfDef(Fecundity) != null", "true", "IsStowawayGizka")
 
     cb = lambda tag, fn, old, new, must: brk(tag, fn, old, new, V.cull_findings, must)
-    cb("cull guilt ignores its toggle", P, "|| !s.cullGuiltEnabled) return;", ") return;", "gated on the master")
+    cb("cull guilt ignores its toggle", P, "|| !RSW_GizkaSettings.cullGuiltEnabled) return;", ") return;", "gated on the master")
     cb("every gizka death is guilt", P, "if (!RSW_GizkaPopulation.IsStowawayGizka(victim)) return;", "", "IsStowawayGizka")
     cb("witness radius 40", P, "WitnessRadius = 12f", "WitnessRadius = 40f", "radius")
     cb("no line of sight needed", P, "!GenSight.LineOfSight(c.Position, victim.Position, victim.Map)", "false", "LineOfSight")
 
     sb = lambda tag, old, new, must: brk(tag, S, old, new, V.slider_findings, must)
-    sb("frequency slider floor 0.5", "Settings.discoveryFrequency, 0f, 3f", "Settings.discoveryFrequency, 0.5f, 3f", "cannot be slid to 0")
-    sb("cap default 100 outside 4..80", "public int populationCap = 22;", "public int populationCap = 100;", "does not contain")
+    sb("frequency slider floor 0.5", "discoveryFrequency = list.Slider(discoveryFrequency, 0f, 3f)", "discoveryFrequency = list.Slider(discoveryFrequency, 0.5f, 3f)", "cannot be slid to 0")
+    sb("cap default 100 outside 4..80", "public static int populationCap = 22;", "public static int populationCap = 100;", "does not contain")
 
     def chain(srcs_patch=None):
         saved = V.load_srcs

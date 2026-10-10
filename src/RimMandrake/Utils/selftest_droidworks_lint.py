@@ -137,7 +137,7 @@ def planted(cfg, inp):
                                                        'Scribe_Values.Look(ref lastResetTick, "lastResetTick", -1); Scribe_Values.Look(ref lastResetTick, "lastResetTick", -1);'))
     trial("settings default drift", "SETTINGS_DRIFT", cs_sub("RSW_DroidworksSettings.cs", 'Scribe_Values.Look(ref driftTime, "driftTime", 1f, true);',
                                                           'Scribe_Values.Look(ref driftTime, "driftTime", 2f, true);'))
-    trial("settings reset drift", "SETTINGS_DRIFT", cs_sub("RSW_DroidworksSettings.cs", "personalityDrift = true;\n            driftTime = 1f;", "personalityDrift = true;\n            driftTime = 1.5f;"))
+    # no "reset drift" trial: since the SettingsKit retrofit the reset reads the field initialisers (shippedDefaults), so it cannot drift
     trial("DefOf names no def", "DEFOF_MISSING", cs_sub("DroidworksDefOf.cs", "RSW_DW_Part_Leg;", "RSW_DW_Part_Legg;"))
     trial("first-wins extension", "FIRST_WINS_EXTENSION", cs_sub("Need_Power.cs", "DroidworksExtension.OfRace(pawn.def)", "pawn.def.GetModExtension<DroidworksExtension>()"))
     trial("hediff ladder moved", "FORMAT_LADDER", xml_sub("HediffDefs_Droidworks.xml", "<minSeverity>2.5</minSeverity>", "<minSeverity>2.6</minSeverity>"))
