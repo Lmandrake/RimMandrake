@@ -138,4 +138,27 @@
     </thinkRoot>
   </ThinkTreeDef>
 
+  <!--
+    SCRAPNEST_BIRD_BASE_THEFT_1 — the "stealing raid" (owner, 2026-10-10:
+    "Yes they steal everything, and there are also stealing raids.").
+    Worker: Source/BeastMechanics/ScrapThiefFlock.cs. Shaped on vanilla
+    ThrumboPasses (Misc, Map_PlayerHome, minRefireDays); fires only on maps
+    whose biome actually lists the scrap-nest bird, and only while the
+    scrapThiefFlockEnabled Mod Setting is on.
+    ⚠️ PROVISIONAL: baseChance and refire are builder guesses, and the
+    setting defaults ON without an owner word on the default.
+  -->
+  <IncidentDef>
+    <defName>RSW_ScrapThiefFlock</defName>
+    <label>scrap-bird raid</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.StarWars.SWBestiary.IncidentWorker_ScrapThiefFlock</workerClass>
+    <baseChance>0.6</baseChance>
+    <minRefireDays>20</minRefireDays>
+    <earliestDay>10</earliestDay>
+  </IncidentDef>
+
 </Defs>

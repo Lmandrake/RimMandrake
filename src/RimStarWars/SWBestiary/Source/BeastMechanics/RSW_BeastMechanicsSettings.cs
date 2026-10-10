@@ -40,6 +40,20 @@ namespace RimMandrake.StarWars.SWBestiary
         // CompProperties_Spawner this flag does not reach.
         public static bool scrapHoardingEnabled = true;
 
+        // SCRAPNEST_BIRD_BASE_THEFT_1 — owner-ruled (2026-09-21, 2026-10-10:
+        // "Yes they steal everything, and there are also stealing raids.").
+        // ⚠️ PROVISIONAL defaults: the owner did not say on or off by default;
+        // ON matches "they steal everything". See ScrapThiefFlock.cs.
+        // Base theft: ambient scrap-nest birds also take hoardable items from
+        // stockpiles, shelves and the home area. Off: they keep to loose scrap
+        // outside the base, exactly as first shipped. Nests are never sited
+        // inside the home area either way.
+        public static bool scrapBirdBaseTheftEnabled = true;
+
+        // Raiding flocks: the IncidentWorker_ScrapThiefFlock event. A flock in
+        // a raid robs the base even with base theft off — the raid is the event.
+        public static bool scrapThiefFlockEnabled = true;
+
         // The mutagenic norphea's toxin dependence (ToxinDependence.cs): the
         // need rises on polluted ground or with toxic buildup and falls
         // elsewhere, with a lethal withdrawal stage. Off: the need is held full.
@@ -52,6 +66,8 @@ namespace RimMandrake.StarWars.SWBestiary
             Scribe_Values.Look(ref metalEatingEnabled, "metalEatingEnabled", true);
             Scribe_Values.Look(ref innateAbilitiesEnabled, "innateAbilitiesEnabled", true);
             Scribe_Values.Look(ref scrapHoardingEnabled, "scrapHoardingEnabled", true);
+            Scribe_Values.Look(ref scrapBirdBaseTheftEnabled, "scrapBirdBaseTheftEnabled", true);
+            Scribe_Values.Look(ref scrapThiefFlockEnabled, "scrapThiefFlockEnabled", true);
             Scribe_Values.Look(ref toxinDependenceEnabled, "toxinDependenceEnabled", true);
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
@@ -82,7 +98,7 @@ namespace RimMandrake.StarWars.SWBestiary
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): metal eating, scrap hoarding and toxin dependence are read by job givers, patches and the need tick each time they run, so [now]; the innate ability is granted when a creature spawns, so changing it only matters for creatures that spawn afterwards: [next pulse]. Nothing is read at map or world generation.</summary>
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): metal eating, scrap hoarding, base theft and toxin dependence are read by job givers, patches and the need tick each time they run, so [now]; the innate ability is granted when a creature spawns, so changing it only matters for creatures that spawn afterwards: [next pulse]; the scrap-bird raid is checked when the storyteller next rolls it: [next pulse]. Nothing is read at map or world generation.</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
@@ -135,10 +151,19 @@ namespace RimMandrake.StarWars.SWBestiary
                 list.GapLine();
             }
 
-            if (Group(list, "Scrap-hoarding birds", RimMandrake.Shared.SettingScope.Now, new[] { "scrapHoardingEnabled" }))
+            if (Group(list, "Scrap-hoarding birds", RimMandrake.Shared.SettingScope.Now, new[] { "scrapHoardingEnabled", "scrapBirdBaseTheftEnabled" }))
             {
                 list.CheckboxLabeled("Scrap-hoarding birds", ref scrapHoardingEnabled,
-                    "Scrap-nest birds build nests in the wild and carry loose scrap, components and precious metals back to them. They never take from inside your base. Off: they forage and fly like any other bird, and existing nests still slowly accumulate scrap on their own.");
+                    "Scrap-nest birds build nests in the wild and carry scrap, components and precious metals back to them. Off: they forage and fly like any other bird, no raiding flocks come, and existing nests still slowly accumulate scrap on their own.");
+                list.CheckboxLabeled("Birds steal from your base", ref scrapBirdBaseTheftEnabled,
+                    "Scrap-nest birds also take components, precious metals and steel out of your stockpiles, shelves and home area, and you get an alert when they do. The loot goes to a nest outside your base, never inside it. Off: they only take loose scrap lying outside your base.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Scrap-bird raids", RimMandrake.Shared.SettingScope.NextPulse, new[] { "scrapThiefFlockEnabled" }))
+            {
+                list.CheckboxLabeled("Scrap-bird raiding flocks", ref scrapThiefFlockEnabled,
+                    "An event: a flock of scrap-nest birds flies into a colony where they live, robs it for half a day to a day, then leaves. Each theft raises an alert. A raiding flock steals from your base even when the base-theft option above is off. Off: the event never fires.");
                 list.GapLine();
             }
 
