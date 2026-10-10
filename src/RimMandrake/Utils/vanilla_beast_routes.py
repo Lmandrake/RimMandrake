@@ -21,7 +21,10 @@ import os
 import sqlite3
 import sys
 
-DB = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite"
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import DUMP_ROOT  # noqa: E402
+
+DB = os.path.join(DUMP_ROOT, "defs.sqlite")
 
 
 def rows(c, t):
