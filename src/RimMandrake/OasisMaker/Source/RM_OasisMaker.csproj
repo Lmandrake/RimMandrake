@@ -42,6 +42,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="Kernel\RM_OasisKernel.cs" />
     <Compile Include="RM_OasisMakerSettings.cs" />
     <Compile Include="RM_OasisPlacementScorer.cs" />

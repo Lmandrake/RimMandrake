@@ -897,6 +897,12 @@ MODS = {
         "Claude CLI and timeout": "Now",
         "Gods budget": "Now",
     }, ()),
+    "OasisMaker": ("RM_OasisMakerSettings.cs", "RM_OasisMaker.csproj", {
+        "Oasis-maker enabled": "Now",
+        "Placement scoring": "Now",
+        "Growth timing": "Now",
+        "Radius caps (locked when an oasis-maker's quality locks)": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
