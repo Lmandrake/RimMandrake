@@ -221,6 +221,21 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
 - `observer.jsonl` stays outside retention (append-only, a few rows a day); stated in the doc.
 - GREEN: parity 68/68, `C# units: 12 run, 0 failed`, companion builds.
 
+### MUST 12 — preserve the previous log before a relaunch; no archive collisions
+- RED: `C# unit ArchiveNoCollisions: two different logs -> two archives, a repeat -> none:
+  Player-prev_20261010T150000Z.log | both contents preserved` (same-length different content was deduped
+  away); `FAIL MUST 12: no external Player-prev.log preservation: AttributeError(...)`.
+- FIX: `ArchiveLogNow` copies through a temp file while hashing, names the archive
+  `<name>_<sha256[:12]>.log`, skips only when a `*_<sha12>.log` already exists, never overwrites; the `log`
+  row carries `sha256`, `bytes` and `fromSession` (the session whose heartbeat stopped closest before the
+  previous log's last write). `tps_record.preserve_prev_log()` applies the same rule from OUTSIDE the game
+  and `belt_watchdog` runs it every pass, so the previous session's log is kept before the next launch's
+  long play-data load and before a second relaunch can rotate it (remaining window: two launches inside one
+  watchdog interval with no companion registration in between — stated in the doc). Unity's log path is
+  now cached at install (no Unity call from `ProcessExit`).
+- Live: the first watchdog pass archived `Player-prev_20261010T154138Z_6c53f937eac5.log`.
+- GREEN: `C# units: 13 run, 0 failed`, python PASS, belt selftest 40/40, companion builds.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)
