@@ -1,30 +1,40 @@
 # BESKAR_ARMORER_QUEST_1 — the Blackstar quest to the Mandalorian armorer
 
 ## spec
-Spec: `design/RimMandrake/canon_materials_design_2026-10-09.md` §3.7. Owner, typed 2026-10-09: *"(1) and a quest
-with Blackstar allows you to access that rare individual, otherwise you just use the pieces you find. Never can
-reforge yourself, smelting destroys it (converts into other lesser ores), only the rare location can properly
-reforge."* Parent: CANON_MATERIALS_BUILD_1, which removes self-reforging and makes beskar smelting destructive
-(its L7); this item builds the one legitimate reforge.
+Spec: `design/RimMandrake/beskar_armorer_quest_design_2026-10-09.md` (the decided design; every question ruled
+2026-10-09, typed and by card). Parent: CANON_MATERIALS_BUILD_1 (its L7 removes `kotor_IngotBeskar_recipe` and
+beskar mining yields; not this item).
 
-**Needs the owner:** the quest has no design yet. Blackstar Company is the vanilla `Pirate` reskin and
-`permanentEnemy` (`design/Jawa/worldbuilding/FACTION_SPEC.md` entry 10), so how a quest runs *through* them
-(a contract, a captive, a ransom, a job for them) is his call. Checked 2026-10-09: no Mandalorian-armorer quest,
-pawn or site exists in `src/`; no open item covers it.
-
-Questions for the sitting:
-1. What the Blackstar quest is, and what it costs.
-2. What "the rare location" is: a site the armorer works at, or the armorer as a visitor.
-3. What reforging returns: the same mass of beskar as new gear of the player's choice, or a fixed menu.
-4. Repeatable, or once per game.
-
-Then: write the quest spec (`rimworld-quests` skill), build it, Mod Settings toggle.
+Build, in a new mod `src/RimUtinni/BeskarArmorer` (`mandrake.rut.beskararmorer`):
+- the orbital covert `RM_ArmorerCovert` (Orbit layer, gravship, permanent, map regenerated per visit) with the
+  Armorer, two sworn, and `RM_ArmorerForge` (spec §2);
+- route 1: releasing a captured Blackstar Mandalorian (`RUT_Jawa_Blackstar_Heavy`/`_Leader`) starts
+  `RM_Quest_ArmorerDebt`, which reveals the covert (§3);
+- route 2: incident-offered `RM_Quest_ImperialPrisonBreak` at the `RM_ImperialDetentionPost` site, Empire heat
+  raised a lot, same reveal (§4);
+- the C# seam: no bill outside her forge consumes beskar, only she works her forge, smelting beskar gives steel
+  + slag (§5); heat recorded to `RM_HeatEvents` for the GM blackboard (§6); Mod Settings (§7).
 
 ## criteria
-- L1 L4: owner rules the four questions above
-- L2 L0: the quest exists, offers through its intended route, and leads to the armorer
-- L3 L0: the armorer reforges the player's beskar pieces into beskar gear; nothing else in the game does
-- L4 L1: the quest validator and a minimal-list load show no errors
+- L1 L4: owner rules the design questions (done 2026-10-09: route, orbital base, tribute, smelt yield, return
+  any time, harm consequence)
+- L2 L0: `validate_quest.py` is clean on both QuestScriptDefs, and the def/recipe generator logs no errors on a
+  minimal-list load
+- L3 L0: offline selftests pass for beskar mass, melt count × 0.8, the smelt replacement (steel ⌈n/3⌉ + 1
+  `ChunkSlagSteel`, never beskar) and the bill ingredient gate
+- L4 L1: route 1 live: releasing a captured `RUT_Jawa_Blackstar_Heavy` offers `RM_Quest_ArmorerDebt`, and after
+  its delay `RM_ArmorerCovert` exists on the Orbit layer; releasing any other pawn does not
+- L5 L1: the covert is reached by gravship; melting beskar pieces at `RM_ArmorerForge` returns 4/5 of their beskar
+  mass, and a reforge bill there produces the chosen beskar gear; a colonist cannot start either bill
+- L6 L1: no colony bench can fill a bill with beskar (Mando gear, or Metallic-stuff gear with beskar as stuff),
+  and smelting a beskar item at the electric smelter yields steel + slag
+- L7 L1: leaving the covert and gravshipping back regenerates the map with the same three pawns; no visit limit
+- L8 L1: damaging the Armorer, a sworn guard or a covert building marks the covert lost (gone on departure, never
+  re-revealed by either route), fires a Blackstar raid at once, and records max `Pirate` heat in `RM_HeatEvents`
+- L9 L1: route 2 offers via `RM_BlackstarPrisonBreakOffer` (not before day 30, never while the covert is revealed
+  or lost); breaking the detainee out records Large Empire heat, sends an Empire pursuit raid, and reveals the
+  covert; his death or the timeout fails it
+- L10 L1: each Mod Settings toggle off disables its part; the whole mod off leaves beskar smelting vanilla
 
 ## verify
 Record with `rimflow verify BESKAR_ARMORER_QUEST_1 --criterion <ID> ...`.
