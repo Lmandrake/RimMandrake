@@ -191,6 +191,10 @@
     {
      "old": "swanimals/Dewback/Dewback",
      "new": "RimStarWars/SWBestiary/Dewback/Dewback"
+    },
+    {
+     "old": "swanimals/Dewback/DewbackW",
+     "new": "RimStarWars/SWBestiary/Dewback/Dewback"
     }
    ],
    "owner": "src/RimStarWars/SWBestiary",

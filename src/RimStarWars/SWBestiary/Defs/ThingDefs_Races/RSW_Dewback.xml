@@ -131,27 +131,27 @@
     <alternateGraphicChance>0.8</alternateGraphicChance>
     <alternateGraphics>
       <li>
-        <texPath>swanimals/Dewback/DewbackW</texPath>
+        <texPath>RimStarWars/SWBestiary/Dewback/Dewback</texPath>
         <color>(137,147,100)</color>
       </li>
       <li>
-        <texPath>swanimals/Dewback/DewbackW</texPath>
+        <texPath>RimStarWars/SWBestiary/Dewback/Dewback</texPath>
         <color>(116,124,83)</color>
       </li>
       <li>
-        <texPath>swanimals/Dewback/DewbackW</texPath>
+        <texPath>RimStarWars/SWBestiary/Dewback/Dewback</texPath>
         <color>(71,99,56)</color>
       </li>
       <li>
-        <texPath>swanimals/Dewback/DewbackW</texPath>
+        <texPath>RimStarWars/SWBestiary/Dewback/Dewback</texPath>
         <color>(93,122,78)</color>
       </li>
       <li>
-        <texPath>swanimals/Dewback/DewbackW</texPath>
+        <texPath>RimStarWars/SWBestiary/Dewback/Dewback</texPath>
         <color>(181,181,97)</color>
       </li>
       <li>
-        <texPath>swanimals/Dewback/DewbackW</texPath>
+        <texPath>RimStarWars/SWBestiary/Dewback/Dewback</texPath>
         <color>(193,168,69)</color>
       </li>
     </alternateGraphics>

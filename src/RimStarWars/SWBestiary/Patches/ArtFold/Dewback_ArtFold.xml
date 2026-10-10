@@ -16,4 +16,12 @@
       <value><texPath>RimStarWars/SWBestiary/Dewback/Dewback</texPath></value>
     </match>
   </Operation>
+  <!-- Alternate graphics: 80% of donor dewbacks draw swanimals/Dewback/DewbackW (donor art, never overridden by the old mod). Repointed to the same painted set; the 6 tint colours are inert on our all-clear mask. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef//texPath[text()="swanimals/Dewback/DewbackW"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef//texPath[text()="swanimals/Dewback/DewbackW"]</xpath>
+      <value><texPath>RimStarWars/SWBestiary/Dewback/Dewback</texPath></value>
+    </match>
+  </Operation>
 </Patch>
