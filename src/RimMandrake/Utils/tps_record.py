@@ -745,31 +745,48 @@ def preserve_prev_log(prev_path=None, archive_dir=None):
 # ---------------------------------------------------------------- time arguments
 
 def _tz(name):
-    import zoneinfo
-    return zoneinfo.ZoneInfo(name or DEFAULT_TZ)
+    try:
+        import zoneinfo
+        return zoneinfo.ZoneInfo(name or DEFAULT_TZ)
+    except Exception as e:                                      # noqa: BLE001
+        raise ValueError("time zone %r unavailable (%s); on Windows python install the tzdata package, or give "
+                         "times with an explicit offset (2026-10-09T15:00-07:00)" % (name or DEFAULT_TZ, e))
+
+
+def _localize(naive, z, text):
+    """Attach zone z to a naive wall time, REFUSING a DST-nonexistent or DST-ambiguous one (SHOULD 5)."""
+    a, b = naive.replace(tzinfo=z, fold=0), naive.replace(tzinfo=z, fold=1)
+    back = datetime.fromtimestamp(a.timestamp(), z).replace(tzinfo=None)
+    if back != naive and datetime.fromtimestamp(b.timestamp(), z).replace(tzinfo=None) != naive:
+        raise ValueError("%r is a nonexistent local time in %s (skipped by a DST change); give an explicit offset"
+                         % (text, z.key))
+    if a.utcoffset() != b.utcoffset():
+        raise ValueError("%r is ambiguous in %s (it happens twice at a DST change); give an explicit offset, e.g. "
+                         "%s or %s" % (text, z.key, a.isoformat(), b.isoformat()))
+    return a
 
 
 def parse_when(s, tz=None, now=None):
     """Epoch seconds for "2026-10-09 15:00[:SS]" / "yesterday 15:00" / "today 9:30" / "15:00" (local in tz),
     an ISO time with Z or an offset, or a bare epoch number."""
     s = s.strip()
-    z = _tz(tz)
     if re.fullmatch(r"\d{9,11}(\.\d+)?", s):
         return float(s)
+    z = _tz(tz)
     m = re.fullmatch(r"(?:(today|yesterday)\s+)?(\d{1,2}):(\d{2})(?::(\d{2}))?", s, re.I)
     if m:
         base = datetime.fromtimestamp(time.time() if now is None else now, z).date()
         if (m.group(1) or "").lower() == "yesterday":
             base -= timedelta(days=1)
-        dt = datetime(base.year, base.month, base.day, int(m.group(2)), int(m.group(3)), int(m.group(4) or 0), tzinfo=z)
-        return dt.timestamp()
+        dt = datetime(base.year, base.month, base.day, int(m.group(2)), int(m.group(3)), int(m.group(4) or 0))
+        return _localize(dt, z, s).timestamp()
     iso = s.replace("Z", "+00:00")
     try:
         dt = datetime.fromisoformat(iso)
     except ValueError:
         raise ValueError("cannot read time %r (try '2026-10-09 15:00', 'yesterday 15:00' or an ISO time)" % s)
     if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=z)
+        dt = _localize(dt, z, s)
     return dt.timestamp()
 
 
@@ -960,12 +977,18 @@ def verdict(summary):
         return "INFO", "coverage STALE: newest window %ds ago (game down, at the menu, or the sampler stopped) - " \
                        "not a performance verdict%s" % (s["newestAgeS"], err)
     if not s["run"]:
-        return "INFO", "%d windows in 5m, none judged (%s)%s" % (
-            s["samples"], ", ".join("%s %d" % kv for kv in sorted(s["states"].items(), key=str)), err)
+        st = (" ; %d stall%s, worst %.0fs" % (s["stalls"], "" if s["stalls"] == 1 else "s", s.get("stallMaxS") or 0)) \
+            if s.get("stalls") else ""
+        return "INFO", "%d windows in 5m, none judged (%s)%s%s" % (
+            s["samples"], ", ".join("%s %d" % kv for kv in sorted(s["states"].items(), key=str)), st, err)
     tg = ", ".join("target %s: tps %.0f ratio %.2f (n %d)" % (k, v["tpsMedian"], v["ratioMedian"], v["n"])
                    for k, v in sorted(s["byTarget"].items(), key=lambda kv: float(kv[0])))
-    body = "ratio median %.2f (min %.2f) over %d run windows; %s; %d incidents; gapMax %.0fms%s" % (
-        s["ratioMedian"], s["ratioMin"], s["run"], tg, s["incidents"], s["gapMaxMs"] or 0, err)
+    stalls = ""
+    if s.get("stalls"):
+        stalls = " (%d stall%s, worst %.0fs unexplained)" % (s["stalls"], "" if s["stalls"] == 1 else "s",
+                                                             s.get("stallMaxS") or 0)
+    body = "ratio median %.2f (min %.2f) over %d run windows; %s; %d incidents%s; gapMax %.0fms%s" % (
+        s["ratioMedian"], s["ratioMin"], s["run"], tg, s["incidents"], stalls, s["gapMaxMs"] or 0, err)
     others = [o for o in (s.get("others") or []) if o["coverage"] == "FRESH"]
     if others:
         body += "; %d other live session(s): %s" % (len(others), ", ".join(
@@ -1049,7 +1072,10 @@ def timeline(rows, t0, t1):
 
 
 def _local(ep, tz):
-    return datetime.fromtimestamp(ep, _tz(tz)).strftime("%Y-%m-%d %H:%M:%S")
+    """Local wall time WITH its UTC offset and zone (SHOULD 5): two instants never print alike across DST."""
+    d = datetime.fromtimestamp(ep, _tz(tz))
+    off = d.strftime("%z")
+    return d.strftime("%Y-%m-%d %H:%M:%S") + " %s:%s %s" % (off[:3], off[3:], d.tzname())
 
 
 def render_row(r, tz):
@@ -1061,8 +1087,10 @@ def render_row(r, tz):
             r.get("target"), r.get("fps"), r.get("simShare", "-"), r.get("gapMaxMs", r.get("frameMaxMs")),
             ("  top " + r["top"]) if r.get("top") else "")
     if k == "incident":
-        return "%s  INCIDENT %-9s %ss (unexplained %ss) phase %s speed %s mult %s->%s heap %s" % (
+        blocked = r.get("quietPhase")
+        return "%s  INCIDENT %-9s %ss (unexplained %ss) %s(recovered in %s) speed %s mult %s->%s heap %s" % (
             t, r.get("type") or r.get("kindDetail") or r.get("gapKind"), r.get("gapS"), r.get("unexplainedS"),
+            ("blocked in %s " % blocked.split("@")[0]) if isinstance(blocked, str) and blocked else "",
             r.get("phase"), r.get("speed"), r.get("mult"), r.get("multAfter", r.get("mult")), r.get("heapMB"))
     if k == "silence":
         return "%s  SILENCE  main thread silent %ss, phase %s (watchdog thread)" % (t, r.get("silentS"), r.get("phase"))
@@ -1120,12 +1148,16 @@ def main(argv=None):
             print(health)
         return 0
     if a.at or a.since:
-        if a.at:
-            c, h = parse_when(a.at, a.tz), parse_span(a.span)
-            t0, t1 = c - h, c + h
-        else:
-            t0 = parse_when(a.since, a.tz)
-            t1 = parse_when(a.until, a.tz) if a.until else time.time()
+        try:
+            if a.at:
+                c, h = parse_when(a.at, a.tz), parse_span(a.span)
+                t0, t1 = c - h, c + h
+            else:
+                t0 = parse_when(a.since, a.tz)
+                t1 = parse_when(a.until, a.tz) if a.until else time.time()
+        except ValueError as e:
+            print("tps_record: %s" % e, file=sys.stderr)
+            return 2
         tl = timeline(rows, t0, t1)
         if a.json:
             print(json.dumps({k: v for k, v in tl.items() if k != "rows"} | {
