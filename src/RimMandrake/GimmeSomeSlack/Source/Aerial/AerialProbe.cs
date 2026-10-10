@@ -60,6 +60,17 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             if (cmd.StartsWith("copy:")) return StyleProbeAerial.Copy(map, cmd.Substring(5));
             if (cmd == "watchdog") return Ok(cmd, "\"repairs\":" + comp.Watchdog() + ",\"netRepairs\":" + comp.netRepairs);
             if (cmd == "alert") { var d = Alert_WireDown.Down(map); return Ok(cmd, "\"down\":" + d.Count + ",\"enabled\":" + B(AerialSettings.wireDownAlert) + ",\"ids\":[" + string.Join(",", d.Select(a => a.thingIDNumber.ToString(CultureInfo.InvariantCulture))) + "]"); }
+            if (cmd == "ownersweep") return Ok(cmd, "\"cut\":" + comp.OwnerMismatchSweep());   // GS-5, explicit action (the sweep otherwise runs every 250 ticks)
+            if (cmd.StartsWith("owner:"))   // owner:ID,player|hostile -- change a thing's faction without the claim UI (GS-5 probe)
+            {
+                string[] op = cmd.Substring(6).Split(',');
+                Thing ot = ById(map, int.Parse(op[0], CultureInfo.InvariantCulture));
+                if (ot == null || op.Length < 2) return Fail(cmd, "no such thing or no owner");
+                Faction nf = op[1] == "player" ? Faction.OfPlayer : Find.FactionManager.AllFactionsListForReading.FirstOrDefault(f => !f.IsPlayer && f.HostileTo(Faction.OfPlayer));
+                if (nf == null) return Fail(cmd, "no hostile faction");
+                ot.SetFaction(nf);
+                return Ok(cmd, "\"faction\":" + CompAerialAnchor.FactionKey(ot));
+            }
             if (cmd == "poll") return Ok(cmd, "\"flips\":" + comp.PollFallen());
             if (cmd == "defaults") { AerialSettings.ResetToDefaults(); AerialSettings.Apply(); return Ok(cmd, ""); }
             if (cmd.StartsWith("net:")) return Net(map, cmd.Substring(4));
