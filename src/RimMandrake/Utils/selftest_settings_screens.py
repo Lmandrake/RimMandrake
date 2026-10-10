@@ -43,6 +43,22 @@ MODS = {
         "Aurora, roofs and cave fauna": "Now",
         "Entrance biomes (world generation)": "NewMapsOnly",
     }, ("entranceBiomes",)),
+    "Greentide": ("RM_GreentideMod.cs", "RM_Greentide.csproj", {
+        "Churnmud and the mire": "Now",
+        "Jungle density": "NewMapsOnly",
+        "World-map movement": "Now",
+        "Cross-biome opt-in (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "The Frenzy": "Now",
+        "Jungle grenades": "Now",
+        "Canopy swarm (the krannock)": "Now",
+        "Stellock lace": "Now",
+        "The shoal (the illisk)": "Now",
+        "The false bank (the vurrak)": "Now",
+        "The canopy-breaker (the thurrock)": "Now",
+        "The Roil (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Greatbole fruitfall and harvest ladder": "Now",
+        "Greatbole seeds and servants": "NextGameStart",
+    }, ()),
 }
 
 
@@ -56,7 +72,7 @@ def check(cs, csproj, expected, extra=()):
     a = cs.index("public void DoWindowContents")
     body = cs[a:cs.index("list.End();", a)]
     groups = []   # (title, scope, names, text)
-    for m in re.finditer(r'if \(Group\(list, "([^"]+)", [\w.]*SettingScope\.(\w+), new\[\] \{ ([^}]*) \}\)', body):
+    for m in re.finditer(r'if \(Group\(list, "([^"]+)", [\w.]*SettingScope\.(\w+), new\[\] \{ ([^}]*) \}(?:, "(\[[a-z ]+\])")?\)', body):
         names = re.findall(r'"(\w+)"', m.group(3))
         i = body.index("{", m.end())          # the block's opening brace (the line after the if(...))
         depth, j = 0, i
@@ -70,7 +86,8 @@ def check(cs, csproj, expected, extra=()):
             errs.append(f"group {m.group(1)!r}: unbalanced braces")
         if "if (Group(" in body[i:j]:
             errs.append(f"group {m.group(1)!r}: swallows the next group (a closing brace is missing)")
-        groups.append((m.group(1), m.group(2), names, body[i:j]))
+        scope = {"[next game start]": "NextGameStart"}.get(m.group(4), m.group(2))   # a tag override is the audited label
+        groups.append((m.group(1), scope, names, body[i:j]))
     got = {t: s for t, s, _, _ in groups}
     if len(groups) != len(expected):
         errs.append(f"{len(groups)} groups found, expected {len(expected)}")
@@ -126,6 +143,8 @@ def run_mod(name, cs_name, pj_name, expected, extra):
     if scope_swap:
         t, s = scope_swap
         plants.append(("a scope tag flipped to a dishonest one", lambda c, p: (c.replace(f'"{t}", RimMandrake.Shared.SettingScope.{s}', f'"{t}", RimMandrake.Shared.SettingScope.Now', 1), p), "audited scope"))
+    if "NextGameStart" in expected.values():
+        plants.append(("a next-game-start tag overridden to [now]", lambda c, p: (c.replace('"[next game start]"))', '"[now]"))', 1), p), "audited scope"))
     for label, f, want in plants:
         c2, p2 = f(cs, pj)
         total += 1
