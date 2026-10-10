@@ -17,12 +17,9 @@
   KEPT, re-pointed: the crystal harvest (VEF.AnimalBehaviours, a framework we keep anyway)
   now yields our RM_OssrithCrystal, refined at a biofuel refinery (RM_RefineOssrithCrystal).
 
-  ART: our redraw is queued, not accepted (artpipe enact_f3decf4d_radyak_v1_*, owner "redo"
-  2026-10-09). Until it is installed, texPaths stay on the donor's path as a loud temporary
-  placeholder — the RSW_DesertPortMisc_Races.xml precedent — and RM_Cauldron's roster row
-  stays guarded on sarg.alphaanimals so a donor-less load never spawns a textureless beast.
-  When the art lands: install it under Things/Pawn/Animal/RM_Radyak/, re-point these
-  texPaths, and drop that roster guard.
+  ART: v3 render owner-approved 2026-10-10 ("Ossrith looks good!"), installed through the art
+  ledger at Things/Pawn/Animal/RM_Radyak/RM_Radyak_{east,south,north}. One body art serves
+  male, female and calf (calf is scaled by drawSize); west mirrors east.
 -->
 <Defs>
 
@@ -147,7 +144,7 @@
         <label>ossrith calf</label>
         <labelPlural>ossrith calves</labelPlural>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_Radyak/AA_Radyak_baby</texPath>
+          <texPath>Things/Pawn/Animal/RM_Radyak/RM_Radyak</texPath>
           <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -161,7 +158,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_Radyak/AA_Radyak_male</texPath>
+          <texPath>Things/Pawn/Animal/RM_Radyak/RM_Radyak</texPath>
           <drawSize>2.25</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -169,7 +166,7 @@
           </shadowData>
         </bodyGraphicData>
         <femaleGraphicData>
-          <texPath>Things/Pawn/Animal/AA_Radyak/AA_Radyak_female</texPath>
+          <texPath>Things/Pawn/Animal/RM_Radyak/RM_Radyak</texPath>
           <drawSize>2</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -187,7 +184,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_Radyak/AA_Radyak_male</texPath>
+          <texPath>Things/Pawn/Animal/RM_Radyak/RM_Radyak</texPath>
           <drawSize>3</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>
@@ -195,7 +192,7 @@
           </shadowData>
         </bodyGraphicData>
         <femaleGraphicData>
-          <texPath>Things/Pawn/Animal/AA_Radyak/AA_Radyak_female</texPath>
+          <texPath>Things/Pawn/Animal/RM_Radyak/RM_Radyak</texPath>
           <drawSize>2.75</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
