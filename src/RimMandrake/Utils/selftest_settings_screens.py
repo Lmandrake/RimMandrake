@@ -693,6 +693,14 @@ MODS = {
         "Chance chute": "Now",
         "Chance chute odds (applied at the next roll)": "NextPulse",
     }, ()),
+    "KineticArms": ("RM_KineticArmsMod.cs", "RimMandrake_KineticArms.csproj", {
+        "Weapons": "Now",
+        "Throw strength, thump cannons and cords": "Now",
+        "Kicker mines": "Now",
+        "Pulse cannon": "Now",
+        "Raiders carrying looted weapons": "NextPulse",
+        "Ruins and complexes loot (WORLDGEN-AFFECTING)": "NewMapsOnly",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)

@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
 using HarmonyLib;
 using RimMandrake.ExplosiveKnockback;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using static RimMandrake.KineticArms.RimMandrakeKineticArmsSettings;
 
 namespace RimMandrake.KineticArms
 {
@@ -196,67 +198,95 @@ namespace RimMandrake.KineticArms
 
         public override string SettingsCategory() => "RimMandrake: Kinetic Arms";
 
-        public override void DoSettingsWindowContents(Rect inRect)
+        public override void DoSettingsWindowContents(Rect inRect) => DoWindowContents(inRect);
+
+        public void DoWindowContents(Rect inRect)
         {
-            Rect view = new Rect(0f, 0f, inRect.width - 20f, 1080f);
+            Rect view = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(viewHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scroll, view);
-            var l = new Listing_Standard();
-            l.Begin(view);
-            l.Label("Weapons (off: never traded, carried or given as a reward; ones already in the world keep working)");
-            foreach (var w in Weapons)
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
+            list.Begin(view);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+
+            if (Group(list, "Weapons", RimMandrake.Shared.SettingScope.Now, new[] { "enableThudder", "enablePalmThumper", "enableSlamLauncher", "enableRepulsorRifle", "enableKickerMine", "enableThumpShell", "enablePulseCannon", "enableGravRam" }))
             {
-                var f = typeof(RimMandrakeKineticArmsSettings).GetField(w.field);
-                bool v = (bool)f.GetValue(null);
-                l.CheckboxLabeled("  " + w.label, ref v);
-                f.SetValue(null, v);
+                list.Label("Off: never traded, carried or given as a reward; ones already in the world keep working");
+                list.CheckboxLabeled("  Thudder grenades", ref enableThudder);
+                list.CheckboxLabeled("  Palm thumper", ref enablePalmThumper);
+                list.CheckboxLabeled("  Slam launcher", ref enableSlamLauncher);
+                list.CheckboxLabeled("  Repulsor rifle", ref enableRepulsorRifle);
+                list.CheckboxLabeled("  Kicker mine", ref enableKickerMine);
+                list.CheckboxLabeled("  Thump shell", ref enableThumpShell);
+                list.CheckboxLabeled("  Pulse cannon", ref enablePulseCannon);
+                list.CheckboxLabeled("  Grav-ram", ref enableGravRam);
+                list.GapLine();
             }
-            l.GapLine();
-            l.Label("Kinetic throw strength: " + RimMandrakeKineticArmsSettings.kineticStrength.ToString("0.00", CultureInfo.InvariantCulture)
-                + "x  (multiplies only these weapons' throws, on top of Explosive Knockback's own strength)");
-            RimMandrakeKineticArmsSettings.kineticStrength = l.Slider(RimMandrakeKineticArmsSettings.kineticStrength, 0f, 3f);
-            l.CheckboxLabeled("Thump cannons throw farther", ref RimMandrakeKineticArmsSettings.thumpCannonThrows,
-                "The mechanoid thump cannon's blast throws people (5 cells beside the impact at the default force). Off: vanilla, it throws nothing.");
-            l.Label("Thump cannon throw force: " + RimMandrakeKineticArmsSettings.thumpCannonForce.ToString("0.0", CultureInfo.InvariantCulture)
-                + "  (a mortar shell is 1.0)");
-            RimMandrakeKineticArmsSettings.thumpCannonForce = l.Slider(RimMandrakeKineticArmsSettings.thumpCannonForce, 0f, 4f);
-            l.GapLine();
-            l.CheckboxLabeled("Kicker mines re-arm", ref RimMandrakeKineticArmsSettings.kickerRearms,
-                "On: a kick spends chemfuel and the mine stays. Off: the mine is used up by its first kick.");
-            l.Label("Chemfuel per kick: " + RimMandrakeKineticArmsSettings.kickerFuelPerKick.ToString("0", CultureInfo.InvariantCulture));
-            RimMandrakeKineticArmsSettings.kickerFuelPerKick = Mathf.Round(l.Slider(RimMandrakeKineticArmsSettings.kickerFuelPerKick, 1f, 30f));
-            l.GapLine();
-            l.Label("Pulse cannon stored charges: " + RimMandrakeKineticArmsSettings.pulseCapacity);
-            RimMandrakeKineticArmsSettings.pulseCapacity = (int)l.Slider(RimMandrakeKineticArmsSettings.pulseCapacity, 1f, 12f);
-            l.Label("Pulse cannon seconds to refill one charge (powered): " + RimMandrakeKineticArmsSettings.pulseRechargeSeconds.ToString("0", CultureInfo.InvariantCulture));
-            RimMandrakeKineticArmsSettings.pulseRechargeSeconds = Mathf.Round(l.Slider(RimMandrakeKineticArmsSettings.pulseRechargeSeconds, 1f, 120f));
-            l.GapLine();
-            l.CheckboxLabeled("Pirate raiders sometimes carry kinetic weapons looted from ruins", ref RimMandrakeKineticArmsSettings.lootedOnRaiders,
-                "Off: these weapons are found in ruins only. No other faction ever carries them.");
-            l.Label("Chance a pirate gunner carries a looted one: " + RimMandrakeKineticArmsSettings.lootedChancePercent.ToString("0.0", CultureInfo.InvariantCulture)
-                + "%  (grenadiers get thudder grenades; others a weapon they could afford)");
-            RimMandrakeKineticArmsSettings.lootedChancePercent = l.Slider(RimMandrakeKineticArmsSettings.lootedChancePercent, 0f, 20f);
-            l.CheckboxLabeled("Kinetic weapons are found in ancient ruins", ref RimMandrakeKineticArmsSettings.foundInRuins,
-                "Ancient Danger temples can hold one kinetic weapon (or a stack of thump shells) among their loot. Off: nothing places them in ruins.");
-            l.Label("Chance an ancient temple holds one: " + RimMandrakeKineticArmsSettings.ruinsChancePercent.ToString("0", CultureInfo.InvariantCulture) + "%");
-            RimMandrakeKineticArmsSettings.ruinsChancePercent = Mathf.Round(l.Slider(RimMandrakeKineticArmsSettings.ruinsChancePercent, 0f, 100f));
-            l.CheckboxLabeled("Kinetic weapons are found in ancient complexes", ref RimMandrakeKineticArmsSettings.foundInComplexes,
-                "Ancient complex room loot and security crates can hold one kinetic weapon (a rare draw, about as rare as spacer components). Off: complexes never hold them. Grav-rams are the rarest find everywhere.");
-            l.GapLine();
-            l.CheckboxLabeled("Kicker mines hidden from enemies", ref RimMandrakeKineticArmsSettings.kickerHidden,
-                "On: like any trap, raiders do not see it. Off: raiders know where every kicker mine is and walk around it.");
-            l.Label("Pulse cannon power draw: " + RimMandrakeKineticArmsSettings.pulsePowerDraw.ToString("0", CultureInfo.InvariantCulture) + " W");
-            RimMandrakeKineticArmsSettings.pulsePowerDraw = Mathf.Round(l.Slider(RimMandrakeKineticArmsSettings.pulsePowerDraw, 0f, 1500f) / 10f) * 10f;
-            l.CheckboxLabeled("Kinetic blasts cut aerial cords", ref RimMandrakeKineticArmsSettings.kineticCutsCords,
-                "Off (default): with Gimme Some Slack, a kinetic blast sways overhead cords and leaves them whole; only real explosions cut them. On: kinetic blasts cut cords like any other blast.");
-            l.Label("Throw recovery window, shield belts vs throws: see Explosive Knockback's settings.");
-            l.Gap();
-            if (l.ButtonText("Reset to defaults"))
+
+            if (Group(list, "Throw strength, thump cannons and cords", RimMandrake.Shared.SettingScope.Now, new[] { "kineticStrength", "thumpCannonThrows", "thumpCannonForce", "kineticCutsCords" }))
             {
-                Reset();
+                list.Label("Kinetic throw strength: " + kineticStrength.ToString("0.00", CultureInfo.InvariantCulture)
+                    + "x  (multiplies only these weapons' throws, on top of Explosive Knockback's own strength)");
+                kineticStrength = list.Slider(kineticStrength, 0f, 3f);
+                list.CheckboxLabeled("Thump cannons throw farther", ref thumpCannonThrows,
+                    "The mechanoid thump cannon's blast throws people (5 cells beside the impact at the default force). Off: vanilla, it throws nothing.");
+                list.Label("Thump cannon throw force: " + thumpCannonForce.ToString("0.0", CultureInfo.InvariantCulture)
+                    + "  (a mortar shell is 1.0)");
+                thumpCannonForce = list.Slider(thumpCannonForce, 0f, 4f);
+                list.CheckboxLabeled("Kinetic blasts cut aerial cords", ref kineticCutsCords,
+                    "Off (default): with Gimme Some Slack, a kinetic blast sways overhead cords and leaves them whole; only real explosions cut them. On: kinetic blasts cut cords like any other blast.");
+                list.Label("Throw recovery window, shield belts vs throws: see Explosive Knockback's settings.");
+                list.GapLine();
             }
-            l.End();
+
+            if (Group(list, "Kicker mines", RimMandrake.Shared.SettingScope.Now, new[] { "kickerRearms", "kickerFuelPerKick", "kickerHidden" }))
+            {
+                list.CheckboxLabeled("Kicker mines re-arm", ref kickerRearms,
+                    "On: a kick spends chemfuel and the mine stays. Off: the mine is used up by its first kick.");
+                list.Label("Chemfuel per kick: " + kickerFuelPerKick.ToString("0", CultureInfo.InvariantCulture));
+                kickerFuelPerKick = Mathf.Round(list.Slider(kickerFuelPerKick, 1f, 30f));
+                list.CheckboxLabeled("Kicker mines hidden from enemies", ref kickerHidden,
+                    "On: like any trap, raiders do not see it. Off: raiders know where every kicker mine is and walk around it.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Pulse cannon", RimMandrake.Shared.SettingScope.Now, new[] { "pulseCapacity", "pulseRechargeSeconds", "pulsePowerDraw" }))
+            {
+                list.Label("Pulse cannon stored charges: " + pulseCapacity);
+                pulseCapacity = (int)list.Slider(pulseCapacity, 1f, 12f);
+                list.Label("Pulse cannon seconds to refill one charge (powered): " + pulseRechargeSeconds.ToString("0", CultureInfo.InvariantCulture));
+                pulseRechargeSeconds = Mathf.Round(list.Slider(pulseRechargeSeconds, 1f, 120f));
+                list.Label("Pulse cannon power draw: " + pulsePowerDraw.ToString("0", CultureInfo.InvariantCulture) + " W");
+                pulsePowerDraw = Mathf.Round(list.Slider(pulsePowerDraw, 0f, 1500f) / 10f) * 10f;
+                list.GapLine();
+            }
+
+            if (Group(list, "Raiders carrying looted weapons", RimMandrake.Shared.SettingScope.NextPulse, new[] { "lootedOnRaiders", "lootedChancePercent" }))
+            {
+                list.CheckboxLabeled("Pirate raiders sometimes carry kinetic weapons looted from ruins", ref lootedOnRaiders,
+                    "Off: these weapons are found in ruins only. No other faction ever carries them.");
+                list.Label("Chance a pirate gunner carries a looted one: " + lootedChancePercent.ToString("0.0", CultureInfo.InvariantCulture)
+                    + "%  (grenadiers get thudder grenades; others a weapon they could afford)");
+                lootedChancePercent = list.Slider(lootedChancePercent, 0f, 20f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Ruins and complexes loot (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "foundInRuins", "ruinsChancePercent", "foundInComplexes" }))
+            {
+                list.CheckboxLabeled("Kinetic weapons are found in ancient ruins", ref foundInRuins,
+                    "Ancient Danger temples can hold one kinetic weapon (or a stack of thump shells) among their loot. Off: nothing places them in ruins.");
+                list.Label("Chance an ancient temple holds one: " + ruinsChancePercent.ToString("0", CultureInfo.InvariantCulture) + "%");
+                ruinsChancePercent = Mathf.Round(list.Slider(ruinsChancePercent, 0f, 100f));
+                list.CheckboxLabeled("Kinetic weapons are found in ancient complexes", ref foundInComplexes,
+                    "Ancient complex room loot and security crates can hold one kinetic weapon (a rare draw, about as rare as spacer components). Off: complexes never hold them. Grav-rams are the rarest find everywhere.");
+                list.GapLine();
+            }
+
+            viewHeight = list.CurHeight + 12f;
+            list.End();
             Widgets.EndScrollView();
         }
+
+        private static float viewHeight = 1080f;
 
         public override void WriteSettings()
         {
@@ -264,32 +294,74 @@ namespace RimMandrake.KineticArms
             ApplySettings();
         }
 
-        public static void Reset()
+        /// <summary>Resets every setting (the old whole-screen reset); kept for callers outside the screen.</summary>
+        public static void Reset() => ResetFields(AllNames);
+
+        private static readonly string[] AllNames =
         {
-            RimMandrakeKineticArmsSettings.enableThudder = true;
-            RimMandrakeKineticArmsSettings.enablePalmThumper = true;
-            RimMandrakeKineticArmsSettings.enableSlamLauncher = true;
-            RimMandrakeKineticArmsSettings.enableRepulsorRifle = true;
-            RimMandrakeKineticArmsSettings.enableKickerMine = true;
-            RimMandrakeKineticArmsSettings.enableThumpShell = true;
-            RimMandrakeKineticArmsSettings.enablePulseCannon = true;
-            RimMandrakeKineticArmsSettings.enableGravRam = true;
-            RimMandrakeKineticArmsSettings.kineticStrength = 1f;
-            RimMandrakeKineticArmsSettings.thumpCannonThrows = true;
-            RimMandrakeKineticArmsSettings.thumpCannonForce = 2.5f;
-            RimMandrakeKineticArmsSettings.kickerRearms = true;
-            RimMandrakeKineticArmsSettings.kickerFuelPerKick = 10f;
-            RimMandrakeKineticArmsSettings.pulseCapacity = 4;
-            RimMandrakeKineticArmsSettings.pulseRechargeSeconds = 20f;
-            RimMandrakeKineticArmsSettings.lootedOnRaiders = true;
-            RimMandrakeKineticArmsSettings.lootedChancePercent = 2f;
-            RimMandrakeKineticArmsSettings.foundInRuins = true;
-            RimMandrakeKineticArmsSettings.ruinsChancePercent = 35f;
-            RimMandrakeKineticArmsSettings.foundInComplexes = true;
-            RimMandrakeKineticArmsSettings.kickerHidden = true;
-            RimMandrakeKineticArmsSettings.pulsePowerDraw = 350f;
-            RimMandrakeKineticArmsSettings.kineticCutsCords = false;
+            "enableThudder", "enablePalmThumper", "enableSlamLauncher", "enableRepulsorRifle", "enableKickerMine", "enableThumpShell",
+            "enablePulseCannon", "enableGravRam", "kineticStrength", "thumpCannonThrows", "thumpCannonForce", "kickerRearms",
+            "kickerFuelPerKick", "pulseCapacity", "pulseRechargeSeconds", "lootedOnRaiders", "lootedChancePercent", "foundInRuins",
+            "ruinsChancePercent", "foundInComplexes", "kickerHidden", "pulsePowerDraw", "kineticCutsCords",
+        };
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RimMandrakeKineticArmsSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        /// <summary>Restores the named settings to their shipped values, then re-pushes them into the defs (forces, power draw,
+        /// weapon availability) exactly as closing the settings window does.</summary>
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RimMandrakeKineticArmsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
             ApplySettings();
+        }
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): weapon toggles, forces, cords, power draw and
+        /// the kicker/pulse numbers are pushed into the defs by ApplySettings when the window closes or read per use (now);
+        /// the looted-raider chance is read when a pawn's weapon is generated (next pulse); ruin/complex loot is read when a
+        /// site map's loot is generated (new maps only).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
         }
     }
 
