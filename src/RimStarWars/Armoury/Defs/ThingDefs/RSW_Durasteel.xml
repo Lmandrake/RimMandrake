@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- CANON_MATERIALS_BUILD_1 — RSW_Durasteel, the one durasteel (design/RimMandrake/canon_materials_design_2026-10-09.md
+     §3.2). Canon Star Wars, so RSW tier (mandrake.rsw.armoury). Stats are KOTOR_AlloyDurasteel's (Metals2.xml), with
+     StuffPower_Armor_Sharp raised 0.8 -> 0.9 (steel's) per §3.2.
+
+     Source: the alloy forge recipe steel + RSW_Zersium -> durasteel (Patches/RSW_AlloyForge_Durasteel.xml,
+     SHIP_ALLOY_FORGE_1). No mineable or deep-drill producer exists for it, by design.
+     Donor durasteel conversion/redirects (OuterRim, LK, KOTOR recipes) are NOT in this def; they are separate work.
+
+     PROVISIONAL: stackLimit 75 and the colour tint (steel's stack sprites tinted, material not paint, until our render
+     lands through the art ledger). All other numbers are the donor's measured values, not invented. -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_Durasteel</defName>
+    <label>durasteel</label>
+    <description>One of the most common alloys in the galaxy: steel hardened with zersium into a heavy, tough, heat-resistant structural metal. It plates starships, walls, blast doors and vaults, and armours everything from soldiers to household droids.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Steel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(115,125,120)</color>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <useHitPoints>false</useHitPoints>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>5</MarketValue>
+      <Mass>0.675</Mass>
+      <Beauty>-1</Beauty>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <StuffPower_Armor_Sharp>0.9</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.6</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>1</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>1.25</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>1.25</StuffPower_Insulation_Heat>
+      <SharpDamageMultiplier>1</SharpDamageMultiplier>
+      <BluntDamageMultiplier>1.2</BluntDamageMultiplier>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <stuffProps>
+      <categories>
+        <li>Metallic</li>
+      </categories>
+      <appearance>Metal</appearance>
+      <stuffAdjective>durasteel</stuffAdjective>
+      <color>(115,125,120)</color>
+      <commonality>0.75</commonality>
+      <soundImpactBullet>BulletImpact_Metal</soundImpactBullet>
+      <soundImpactMelee>Pawn_Melee_Punch_HitBuilding_Metal</soundImpactMelee>
+      <soundMeleeHitSharp>MeleeHit_Metal_Sharp</soundMeleeHitSharp>
+      <soundMeleeHitBlunt>MeleeHit_Metal_Blunt</soundMeleeHitBlunt>
+      <statFactors>
+        <MaxHitPoints>3</MaxHitPoints>
+        <Beauty>0.5</Beauty>
+        <Flammability>0</Flammability>
+        <WorkToMake>1</WorkToMake>
+        <WorkToBuild>1</WorkToBuild>
+        <MeleeWeapon_CooldownMultiplier>1</MeleeWeapon_CooldownMultiplier>
+      </statFactors>
+    </stuffProps>
+    <tradeTags>
+      <li>guy762TT_AllItemsSellable</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>
