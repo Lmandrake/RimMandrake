@@ -236,6 +236,22 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
 - Live: the first watchdog pass archived `Player-prev_20261010T154138Z_6c53f937eac5.log`.
 - GREEN: `C# units: 13 run, 0 failed`, python PASS, belt selftest 40/40, companion builds.
 
+### MUST 15 — identified-time union and original-exception cleanup
+- Seam: the sampler's explained-time bookkeeping (`_explained`, `_leDur`, waiting frames) moved unchanged
+  into Verse-free `JawaBenchTpsExplained.cs`; units replay the verified hook order
+  (RootPrefix → LongEventsUpdate → RootPostfix → TmuPrefix, RimSage `Root.Update`/`Root_Play.Update`).
+- RED: `ExplainedDirectSave: a direct save outside long-event coverage is explained: 0`;
+  `ExplainedSplitAcrossIntervals: an open scope is split at the observation (2 + 2 s): 0 + 0`
+  (`ExplainedNestedOnce` already passed on the old code: it double-counted nothing, it just never counted
+  saves).
+- FIX: identified work is a set of INTERVALS — long-event scopes, SaveGame scopes (depth-counted, so a save
+  nested in a long event counts once) and whole frames spent waiting on an async event — and
+  `Take(now)` returns their UNION within (previous observation, now], splitting an open scope. Long-event
+  and save scopes now close in void Harmony **finalizers** (run on throw, original exception rethrown —
+  verified in decompiled Harmony 2.4.2); every prefix/finalizer body is contained (`Fail` disables the
+  sampler); the `save` row says `threw` when SaveGame threw; open scopes are dropped at game boundaries.
+- GREEN: `C# units: 16 run, 0 failed`; companion builds.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)

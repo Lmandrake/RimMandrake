@@ -29,6 +29,7 @@
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsStages.cs" />
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsLifecycle.cs" />
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsSettings.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsExplained.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Units*.cs" />
   </ItemGroup>

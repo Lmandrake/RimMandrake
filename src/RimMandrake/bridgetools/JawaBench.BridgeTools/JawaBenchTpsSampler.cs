@@ -74,9 +74,9 @@ namespace JawaBench.BridgeTools
         // ---- main-thread state ------------------------------------------------------------------
         private static readonly M.FrameAccumulator Acc = new M.FrameAccumulator();
         private static Game _game;
-        private static bool _prevFrameWaiting;
         internal static readonly JawaBenchTpsLifecycle Life = new JawaBenchTpsLifecycle(JawaBenchTpsProfiler.Stages);
-        private static double _prevRootPre, _explained, _explainedAtPre, _leStart, _leDur, _saveStart;
+        internal static readonly JawaBenchTpsExplained Explained = new JawaBenchTpsExplained();
+        private static bool _leOpen;
         private static double _tmuStart, _lastSim, _lastContext = -1, _lastMarker;
         private static int _ticksPre, _gcAtPre;
         private static string _logPath;     // cached on the main thread at install: ProcessExit may run elsewhere
@@ -122,9 +122,9 @@ namespace JawaBench.BridgeTools
                     h.Patch(tmu, prefix: hm(nameof(TmuPrefix)), postfix: hm(nameof(TmuPostfix)));
                     h.Patch(root, prefix: hm(nameof(RootPrefix)), postfix: hm(nameof(RootPostfix)));
                     var le = AccessTools.Method(typeof(LongEventHandler), nameof(LongEventHandler.LongEventsUpdate));
-                    if (le != null) h.Patch(le, prefix: hm(nameof(LePrefix)), postfix: hm(nameof(LePostfix)));
+                    if (le != null) h.Patch(le, prefix: hm(nameof(LePrefix)), finalizer: hm(nameof(LeFinalizer)));
                     var save = AccessTools.Method(typeof(GameDataSaveLoader), nameof(GameDataSaveLoader.SaveGame), new[] { typeof(string) });
-                    if (save != null) h.Patch(save, prefix: hm(nameof(SavePrefix)), postfix: hm(nameof(SavePostfix)));
+                    if (save != null) h.Patch(save, prefix: hm(nameof(SavePrefix)), finalizer: hm(nameof(SaveFinalizer)));
                     var load = AccessTools.Method(typeof(GameDataSaveLoader), nameof(GameDataSaveLoader.LoadGame), new[] { typeof(string) });
                     if (load != null) h.Patch(load, prefix: hm(nameof(LoadPrefix)));
                     if (Settings.Attribution) JawaBenchTpsProfiler.Install(h);
@@ -286,8 +286,7 @@ namespace JawaBench.BridgeTools
             try
             {
                 double now = WD.Now;
-                if (_prevFrameWaiting) _explained += now - _prevRootPre;
-                _prevRootPre = now;
+                Explained.RootPre(now);
                 Game game = Current.Game;
                 bool playing = game != null && Current.ProgramState == ProgramState.Playing;
                 var ev = Life.OnFrame(game, playing, now);
@@ -296,6 +295,7 @@ namespace JawaBench.BridgeTools
                 {
                     _game = null;
                     Acc.Reset();
+                    Explained.Reset();
                     BreakStreak();
                     W.Enqueue("menu", "\"programState\":\"" + Current.ProgramState + "\"");
                 }
@@ -308,6 +308,7 @@ namespace JawaBench.BridgeTools
                 {
                     _game = game;
                     Acc.Reset();
+                    Explained.Reset();
                     BreakStreak();
                     _lastContext = -1;
                     var tm = game.tickManager;
@@ -327,9 +328,7 @@ namespace JawaBench.BridgeTools
             {
                 bool waiting = LongEventHandler.ShouldWaitForEvent;
                 WD.LastLongEvent = waiting || LongEventHandler.AnyEventNowOrWaiting;
-                if (waiting) _prevFrameWaiting = true;
-                else { _prevFrameWaiting = false; _explained += _leDur; }
-                _leDur = 0;
+                Explained.RootPost(waiting);
                 WD.Set(WD.PGuiRender);
                 try { WD.LastFocused = UnityEngine.Application.isFocused; } catch { }
                 double now = WD.Now;
@@ -338,41 +337,68 @@ namespace JawaBench.BridgeTools
             catch (Exception e) { Fail("root-postfix", e); }
         }
 
+        // MUST 15: long-event and save scopes open in a prefix and close in a void FINALIZER, which runs whether
+        // the original returned or threw and rethrows the original exception unchanged (Harmony 2.4.2,
+        // decompiled). Every body is contained: a telemetry failure disables the sampler, never the game.
         private static void LePrefix()
         {
-            _leStart = -1;
-            if (RuntimeError != null || !LongEventHandler.AnyEventNowOrWaiting) return;
-            _leStart = WD.Now;
-            WD.Enter(WD.PLongEvent);
+            _leOpen = false;
+            if (RuntimeError != null) return;
+            try
+            {
+                if (!LongEventHandler.AnyEventNowOrWaiting) return;
+                _leOpen = true;
+                Explained.LongEventBegin(WD.Now);
+                WD.Enter(WD.PLongEvent);
+            }
+            catch (Exception e) { Fail("le-prefix", e); }
         }
 
-        private static void LePostfix()
+        private static void LeFinalizer()
         {
-            if (_leStart < 0) return;
-            _leDur += WD.Now - _leStart;
-            _leStart = -1;
-            WD.Exit();
+            if (!_leOpen) return;
+            _leOpen = false;
+            try { Explained.LongEventEnd(WD.Now); WD.Exit(); }
+            catch (Exception e) { Fail("le-finalizer", e); }
         }
 
-        private static void SavePrefix(string fileName)
+        private static void SavePrefix(string fileName, out double __state)
         {
-            _saveStart = WD.Now;
-            WD.LastSave = fileName ?? "";
-            WD.Enter(WD.PSave);
+            __state = -1;
+            try
+            {
+                __state = WD.Now;
+                Explained.SaveBegin(__state);
+                WD.LastSave = fileName ?? "";
+                WD.Enter(WD.PSave);
+            }
+            catch (Exception e) { Fail("save-prefix", e); }
         }
 
-        private static void SavePostfix(string fileName)
+        private static void SaveFinalizer(string fileName, double __state, Exception __exception)
         {
-            double d = WD.Now - _saveStart;
-            Life.OnSave(d);
-            WD.Exit();
-            if (RuntimeError == null) W.Enqueue("save", "\"file\":" + W.Json(fileName) + ",\"saveS\":" + M.F(d, 3));
+            if (__state < 0) return;
+            try
+            {
+                double now = WD.Now, d = now - __state;
+                Explained.SaveEnd(now);
+                Life.OnSave(d);
+                WD.Exit();
+                if (RuntimeError == null)
+                    W.Enqueue("save", "\"file\":" + W.Json(fileName) + ",\"saveS\":" + M.F(d, 3) +
+                                      (__exception != null ? ",\"threw\":" + W.Json(__exception.GetType().Name) : ""));
+            }
+            catch (Exception e) { Fail("save-finalizer", e); }
         }
 
         private static void LoadPrefix(string saveFileName)
         {
-            Life.OnLoadRequested(saveFileName, WD.Now);
-            WD.Set(WD.PLoad);
+            try
+            {
+                Life.OnLoadRequested(saveFileName, WD.Now);
+                WD.Set(WD.PLoad);
+            }
+            catch (Exception e) { Fail("load-prefix", e); }
         }
 
         // ---- TickManager.TickManagerUpdate: the window (once per played frame) -------------------
@@ -385,8 +411,7 @@ namespace JawaBench.BridgeTools
                 bool paused = __instance.Paused;
                 double mult = __instance.TickRateMultiplier;
                 _ticksPre = __instance.TicksGame;
-                double ex = _explained - _explainedAtPre;
-                _explainedAtPre = _explained;
+                double ex = Explained.Take(now);
                 var g = Acc.Pre(now, paused, mult, _ticksPre, ex);
                 if (g.HasValue) Incident(g.Value, __instance, paused, mult);
                 // MUST 3: the window closes HERE, before this frame's tick work, so its attribution totals hold
