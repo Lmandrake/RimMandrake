@@ -1,0 +1,72 @@
+[
+ {
+  "id": "bacta_tank_body_ns",
+  "rimflow_item_id": "BACTA_TANK_ART_1",
+  "target_def": "RSW_BactaTank",
+  "target_texpath": "Things/Building/Bacta/RSW_BactaTank",
+  "facings": [
+   "north",
+   "south"
+  ],
+  "canvas_w": 128,
+  "canvas_h": 256,
+  "prompt": "RimWorld building sprite, standing upright, front surface facing the viewer: Star Wars bacta tank as in The Empire Strikes Back medical bay: a tall upright glass cylinder about twice as tall as it is wide, white clinical metal collar cap at the top and a matching white collar base at the bottom with small grey service panels and pipes, the glass between the collars clear and empty so a patient can be drawn inside later, a faint pale-blue backlit glow at the base.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic and grounded, never cartoonish, never a flat shape or icon; one centred subject on a fully transparent background, no ground plane, no cast shadow; soft painted edges, no outlines. The middle of the glass column must stay clear and see-through; the occupant and the bacta fluid are drawn by the game between layers.",
+  "install_to": "src/RimStarWars/Bacta/Textures/Things/Building/Bacta/RSW_BactaTank_{facing}.png",
+  "biome_neutral": true
+ },
+ {
+  "id": "bacta_tank_body_e",
+  "rimflow_item_id": "BACTA_TANK_ART_1",
+  "target_def": "RSW_BactaTank",
+  "target_texpath": "Things/Building/Bacta/RSW_BactaTank",
+  "facings": [
+   "east"
+  ],
+  "canvas_w": 256,
+  "canvas_h": 128,
+  "prompt": "RimWorld building sprite, the same bacta tank turned on its side so its long axis runs left to right: Star Wars bacta tank as in The Empire Strikes Back medical bay: a tall upright glass cylinder about twice as tall as it is wide, white clinical metal collar cap at the top and a matching white collar base at the bottom with small grey service panels and pipes, the glass between the collars clear and empty so a patient can be drawn inside later, a faint pale-blue backlit glow at the base.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic and grounded, never cartoonish, never a flat shape or icon; one centred subject on a fully transparent background, no ground plane, no cast shadow; soft painted edges, no outlines. The middle of the glass column must stay clear and see-through.",
+  "install_to": "src/RimStarWars/Bacta/Textures/Things/Building/Bacta/RSW_BactaTank_{facing}.png",
+  "biome_neutral": true
+ },
+ {
+  "id": "bacta_medical_droid",
+  "rimflow_item_id": "BACTA_TANK_ART_1",
+  "target_def": "RSW_MedicalDroid",
+  "target_texpath": "Things/Building/Bacta/RSW_MedicalDroid",
+  "facings": [],
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld building sprite: a 2-1B style Star Wars surgical droid, a slim humanoid medical automaton with a transparent hydraulic torso showing its pistons, a narrow head with a vocabulator grille, and several thin surgical waldo arms folded at its sides, standing on a squat wheeled base, muted grey and pale blue-white plating.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic and grounded, never cartoonish, never a flat shape or icon; one centred subject on a fully transparent background, no ground plane, no cast shadow; soft painted edges, no outlines.",
+  "install_to": "src/RimStarWars/Bacta/Textures/Things/Building/Bacta/RSW_MedicalDroid.png",
+  "biome_neutral": true
+ },
+ {
+  "id": "bacta_canister",
+  "rimflow_item_id": "BACTA_TANK_ART_1",
+  "target_def": "RSW_Bacta",
+  "target_texpath": "Things/Item/Bacta/RSW_Bacta",
+  "facings": [],
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld game item sprite: a sealed medical canister of bacta, a stout cylindrical white-and-grey clinical container with a clear window strip showing translucent pale-blue gel inside, a valve cap on top.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic and grounded, never cartoonish, never a flat shape or icon; one centred subject on a fully transparent background, no ground plane, no cast shadow; soft painted edges, no outlines.",
+  "install_to": "src/RimStarWars/Bacta/Textures/Things/Item/Bacta/RSW_Bacta.png",
+  "biome_neutral": true
+ },
+ {
+  "id": "bacta_spray",
+  "rimflow_item_id": "BACTA_TANK_ART_1",
+  "target_def": "RSW_BactaSpray",
+  "target_texpath": "Things/Item/Bacta/RSW_BactaSpray",
+  "facings": [],
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "prompt": "RimWorld game item sprite: a handheld bacta spray, a slim white aerosol medical canister with a trigger nozzle head and a pale-blue fluid band around its middle.",
+  "style_notes": "Matte painterly vanilla-RimWorld house style, realistic and grounded, never cartoonish, never a flat shape or icon; one centred subject on a fully transparent background, no ground plane, no cast shadow; soft painted edges, no outlines.",
+  "install_to": "src/RimStarWars/Bacta/Textures/Things/Item/Bacta/RSW_BactaSpray.png",
+  "biome_neutral": true
+ }
+]
