@@ -1,0 +1,1410 @@
+{
+ "mod": "GimmeSomeSlack",
+ "script": "northstar_matrix/run_live.py",
+ "mode": "live",
+ "pass": "state-only (--no-shots)",
+ "tier": "gimmesomeslack",
+ "started": "2026-10-09T18:18:15",
+ "spec_hash": "9928ce69f08ecffe55fc9c0b350a20b992e2e0860bd599d7a792e650b146c7d3",
+ "catalog": "src/RimMandrake/GimmeSomeSlack/northstar_matrix/design_spec.py",
+ "reach": {
+  "Cap": 2.6,
+  "Wobble": 0.06,
+  "reach_cells": 4.545,
+  "R": 5,
+  "GAP": 12
+ },
+ "region": [
+  12,
+  12,
+  226,
+  100
+ ],
+ "rows": [
+  {
+   "id": "O0_board_pitch",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": "0 boards, every plot pair >= GAP 12 apart (R=5 from CordLayer.cs)"
+  },
+  {
+   "id": "I0_screenshots",
+   "status": "SKIP",
+   "class": "HARNESS",
+   "detail": "--no-shots (deliberate; the walk rules screenshots are the human look and never a pass bar): no screenshot was taken, so image sanity (census mask, frame_ok, blank/magenta), the on/off pair shots and the net-selected/power-overlay frames are UNMEASURED; run --sweep-shots <this result> for them. State verdicts are unaffected."
+  },
+  {
+   "id": "L1_map_250",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "sizeX": 250,
+    "sizeZ": 250,
+    "mapBiome": "TemperateForest"
+   }
+  },
+  {
+   "id": "L2_tier_running",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": "15 mods running, gimmesomeslack True"
+  },
+  {
+   "id": "L3_probe_rect_channel",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": "defaults + rect: answered"
+  },
+  {
+   "id": "L4_aerial_autolink_off",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "success": true,
+    "cmd": "set:autoLink=False",
+    "value": "False"
+   }
+  },
+  {
+   "id": "L5_site_pinned",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "weather": true,
+    "local_hour_before": 12,
+    "ticksGame_before": 76519,
+    "ticksGame_after": 135433,
+    "pinned_noon": true,
+    "nonColonistsDestroyed": 5
+   }
+  },
+  {
+   "id": "L6_no_pawn_in_region",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": "region 10,10,230,104 empty of pawns"
+  },
+  {
+   "id": "H0_probe_channel",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": "HoseProbe defaults applied"
+  },
+  {
+   "id": "MX_H00_Flat_straight_L6",
+   "status": "PASS",
+   "class": "-",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.38,
+    "widthOverWire": 6.08,
+    "minBendFlat": 1.2559,
+    "minBendPlump": 1.2569,
+    "couplings": 2,
+    "flatLen": 15.0872,
+    "pathLen": 14.7818,
+    "poseLen": 15.0872,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "808e5a076f2b6183",
+    "provider": "debug",
+    "transitionTicks": 30
+   }
+  },
+  {
+   "id": "MX_H01_Flat_corner_L14",
+   "status": "PASS",
+   "class": "-",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.38,
+    "widthOverWire": 6.08,
+    "minBendFlat": 1.2578,
+    "minBendPlump": 1.2579,
+    "couplings": 2,
+    "flatLen": 17.0592,
+    "pathLen": 17.7944,
+    "poseLen": 17.0592,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "f508b7f27508357f",
+    "provider": "debug",
+    "transitionTicks": 30
+   }
+  },
+  {
+   "id": "MX_H02_Flat_water_L24",
+   "status": "PASS",
+   "class": "-",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.38,
+    "widthOverWire": 6.08,
+    "minBendFlat": 1.2578,
+    "minBendPlump": 1.2578,
+    "couplings": 2,
+    "flatLen": 33.0917,
+    "pathLen": 32.7263,
+    "poseLen": 33.0917,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "435660be8413b55a",
+    "provider": "debug",
+    "transitionTicks": 30
+   }
+  },
+  {
+   "id": "MX_H03_Plump_straight_L14",
+   "status": "PASS",
+   "class": "-",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.465,
+    "widthOverWire": 7.44,
+    "minBendFlat": 1.2577,
+    "minBendPlump": 1.2579,
+    "couplings": 2,
+    "flatLen": 22.9716,
+    "pathLen": 22.7354,
+    "poseLen": 22.9688,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "11e2d9072929f08e",
+    "provider": "debug",
+    "transitionTicks": 30
+   }
+  },
+  {
+   "id": "MX_H04_Plump_corner_L24",
+   "status": "PASS",
+   "class": "-",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.465,
+    "widthOverWire": 7.44,
+    "minBendFlat": 1.2577,
+    "minBendPlump": 1.2578,
+    "couplings": 2,
+    "flatLen": 23.9062,
+    "pathLen": 24.6606,
+    "poseLen": 23.8641,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "e7ca15be5a09c886",
+    "provider": "debug",
+    "transitionTicks": 30
+   }
+  },
+  {
+   "id": "MX_H05_Plump_water_L6",
+   "status": "PASS",
+   "class": "-",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.465,
+    "widthOverWire": 7.44,
+    "minBendFlat": 1.2552,
+    "minBendPlump": 1.2555,
+    "couplings": 2,
+    "flatLen": 15.0901,
+    "pathLen": 14.7818,
+    "poseLen": 15.0845,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "ed4ae35965c3043b",
+    "provider": "debug",
+    "transitionTicks": 30
+   }
+  },
+  {
+   "id": "MX_H06_Filling50_straight_L24",
+   "status": "PASS",
+   "class": "-",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.4183,
+    "widthOverWire": 6.6921,
+    "minBendFlat": 1.2577,
+    "minBendPlump": 1.2578,
+    "couplings": 2,
+    "flatLen": 33.4123,
+    "pathLen": 32.7263,
+    "poseLen": 33.2313,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "0168b7cee92e21b6",
+    "provider": "debug",
+    "transitionTicks": 30
+   }
+  },
+  {
+   "id": "MX_H07_Filling50_corner_L6",
+   "status": "PASS",
+   "class": "-",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.4183,
+    "widthOverWire": 6.6921,
+    "minBendFlat": 1.2561,
+    "minBendPlump": 1.2567,
+    "couplings": 2,
+    "flatLen": 11.9033,
+    "pathLen": 12.6067,
+    "poseLen": 11.9032,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "69ce46fb619e4b54",
+    "provider": "debug",
+    "transitionTicks": 30
+   }
+  },
+  {
+   "id": "MX_H08_Filling50_water_L14",
+   "status": "PASS",
+   "class": "-",
+   "detail": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.4183,
+    "widthOverWire": 6.6921,
+    "minBendFlat": 1.2577,
+    "minBendPlump": 1.2579,
+    "couplings": 2,
+    "flatLen": 22.9742,
+    "pathLen": 22.7354,
+    "poseLen": 22.9706,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "e7ea57a2047a2ff4",
+    "provider": "debug",
+    "transitionTicks": 30
+   }
+  },
+  {
+   "id": "Z_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errors": [],
+    "newWarnings": 0,
+    "siteClearErrorsExcluded": 0,
+    "donorMapInitErrorsExcluded": 0
+   }
+  }
+ ],
+ "boards": [],
+ "scenes": {
+  "H00_Flat_straight_L6": {
+   "id": "H00_Flat_straight_L6",
+   "group": "hose",
+   "factors": {
+    "St": "Flat",
+    "Ro": "straight",
+    "Le": 6,
+    "Fl": "water"
+   },
+   "origin": [
+    12,
+    12
+   ],
+   "plot_game": [
+    12,
+    12,
+    20,
+    9
+   ],
+   "board": "hose",
+   "settings": {},
+   "notes": [
+    "hose kit built; placed and read by run_live.py through HoseProbe (validation_hose.py call shapes)",
+    "tar/chemfuel LiquidDef names not authored yet: fluid None, fluid_key carries the intent; HoseProbe has no fluid input"
+   ],
+   "shows": [
+    "hose_thicker_than_wire",
+    "hose_flat_vs_plump"
+   ],
+   "site_fail": [],
+   "zoom_root": 11,
+   "view": {
+    "overlay": "none",
+    "select_at": null
+   },
+   "expected": {
+    "state": "Flat",
+    "visible_width": [
+     0.375,
+     0.385
+    ],
+    "width_over_wire_ge": 4.0,
+    "blend": [
+     0,
+     0
+    ],
+    "min_bend_radius_ge": 1.2,
+    "couplings_min": 2,
+    "self_intersections": 0,
+    "unwalkable_points": 0
+   },
+   "reel": [
+    20,
+    16
+   ],
+   "far": [
+    26,
+    16
+   ],
+   "probes": [
+    {
+     "cmd": "check:20,16,26,16",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "lay:20,16,26,16",
+     "success": true,
+     "reason": null
+    }
+   ],
+   "census": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.38,
+    "widthOverWire": 6.08,
+    "minBendFlat": 1.2559,
+    "minBendPlump": 1.2569,
+    "couplings": 2,
+    "flatLen": 15.0872,
+    "pathLen": 14.7818,
+    "poseLen": 15.0872,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "808e5a076f2b6183",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "status": "PASS",
+   "diffs": [],
+   "shot": {
+    "file": null,
+    "kind": "skipped",
+    "ok": null,
+    "skipped": "--no-shots",
+    "rect": [
+     12,
+     12,
+     20,
+     9
+    ]
+   }
+  },
+  "H01_Flat_corner_L14": {
+   "id": "H01_Flat_corner_L14",
+   "group": "hose",
+   "factors": {
+    "St": "Flat",
+    "Ro": "corner",
+    "Le": 14,
+    "Fl": "chemfuel"
+   },
+   "origin": [
+    35,
+    12
+   ],
+   "plot_game": [
+    35,
+    12,
+    28,
+    16
+   ],
+   "board": "hose",
+   "settings": {},
+   "notes": [
+    "hose kit built; placed and read by run_live.py through HoseProbe (validation_hose.py call shapes)",
+    "tar/chemfuel LiquidDef names not authored yet: fluid None, fluid_key carries the intent; HoseProbe has no fluid input"
+   ],
+   "shows": [
+    "hose_thicker_than_wire",
+    "hose_flat_vs_plump"
+   ],
+   "site_fail": [],
+   "zoom_root": 11,
+   "view": {
+    "overlay": "none",
+    "select_at": null
+   },
+   "expected": {
+    "state": "Flat",
+    "visible_width": [
+     0.375,
+     0.385
+    ],
+    "width_over_wire_ge": 4.0,
+    "blend": [
+     0,
+     0
+    ],
+    "min_bend_radius_ge": 1.2,
+    "couplings_min": 2,
+    "self_intersections": 0,
+    "unwalkable_points": 0
+   },
+   "reel": [
+    43,
+    23
+   ],
+   "far": [
+    50,
+    16
+   ],
+   "probes": [
+    {
+     "cmd": "check:43,23,50,16",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "lay:43,23,50,16",
+     "success": true,
+     "reason": null
+    }
+   ],
+   "census": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.38,
+    "widthOverWire": 6.08,
+    "minBendFlat": 1.2578,
+    "minBendPlump": 1.2579,
+    "couplings": 2,
+    "flatLen": 17.0592,
+    "pathLen": 17.7944,
+    "poseLen": 17.0592,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "f508b7f27508357f",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "status": "PASS",
+   "diffs": [],
+   "shot": {
+    "file": null,
+    "kind": "skipped",
+    "ok": null,
+    "skipped": "--no-shots",
+    "rect": [
+     35,
+     12,
+     28,
+     16
+    ]
+   }
+  },
+  "H02_Flat_water_L24": {
+   "id": "H02_Flat_water_L24",
+   "group": "hose",
+   "factors": {
+    "St": "Flat",
+    "Ro": "water",
+    "Le": 24,
+    "Fl": "tar"
+   },
+   "origin": [
+    66,
+    12
+   ],
+   "plot_game": [
+    66,
+    12,
+    38,
+    9
+   ],
+   "board": "hose",
+   "settings": {},
+   "notes": [
+    "hose kit built; placed and read by run_live.py through HoseProbe (validation_hose.py call shapes)",
+    "tar/chemfuel LiquidDef names not authored yet: fluid None, fluid_key carries the intent; HoseProbe has no fluid input"
+   ],
+   "shows": [
+    "hose_thicker_than_wire",
+    "hose_flat_vs_plump"
+   ],
+   "site_fail": [],
+   "zoom_root": 11,
+   "view": {
+    "overlay": "none",
+    "select_at": null
+   },
+   "expected": {
+    "state": "Flat",
+    "visible_width": [
+     0.375,
+     0.385
+    ],
+    "width_over_wire_ge": 4.0,
+    "blend": [
+     0,
+     0
+    ],
+    "min_bend_radius_ge": 1.2,
+    "couplings_min": 2,
+    "self_intersections": 0,
+    "unwalkable_points": 0
+   },
+   "reel": [
+    74,
+    16
+   ],
+   "far": [
+    98,
+    16
+   ],
+   "probes": [
+    {
+     "cmd": "check:74,16,98,16",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "lay:74,16,98,16",
+     "success": true,
+     "reason": null
+    }
+   ],
+   "census": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Flat",
+    "blend": 0,
+    "visibleWidth": 0.38,
+    "widthOverWire": 6.08,
+    "minBendFlat": 1.2578,
+    "minBendPlump": 1.2578,
+    "couplings": 2,
+    "flatLen": 33.0917,
+    "pathLen": 32.7263,
+    "poseLen": 33.0917,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "435660be8413b55a",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "status": "PASS",
+   "diffs": [],
+   "shot": {
+    "file": null,
+    "kind": "skipped",
+    "ok": null,
+    "skipped": "--no-shots",
+    "rect": [
+     66,
+     12,
+     38,
+     9
+    ]
+   }
+  },
+  "H03_Plump_straight_L14": {
+   "id": "H03_Plump_straight_L14",
+   "group": "hose",
+   "factors": {
+    "St": "Plump",
+    "Ro": "straight",
+    "Le": 14,
+    "Fl": "tar"
+   },
+   "origin": [
+    107,
+    12
+   ],
+   "plot_game": [
+    107,
+    12,
+    28,
+    9
+   ],
+   "board": "hose",
+   "settings": {},
+   "notes": [
+    "hose kit built; placed and read by run_live.py through HoseProbe (validation_hose.py call shapes)",
+    "tar/chemfuel LiquidDef names not authored yet: fluid None, fluid_key carries the intent; HoseProbe has no fluid input"
+   ],
+   "shows": [
+    "hose_thicker_than_wire",
+    "hose_flat_vs_plump"
+   ],
+   "site_fail": [],
+   "zoom_root": 11,
+   "view": {
+    "overlay": "none",
+    "select_at": null
+   },
+   "expected": {
+    "state": "Plump",
+    "visible_width": [
+     0.46,
+     0.47
+    ],
+    "width_over_wire_ge": 4.0,
+    "blend": [
+     1,
+     1
+    ],
+    "min_bend_radius_ge": 1.2,
+    "couplings_min": 2,
+    "self_intersections": 0,
+    "unwalkable_points": 0
+   },
+   "reel": [
+    115,
+    16
+   ],
+   "far": [
+    129,
+    16
+   ],
+   "probes": [
+    {
+     "cmd": "check:115,16,129,16",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "lay:115,16,129,16",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "flow:115,16=on",
+     "success": true,
+     "reason": null
+    }
+   ],
+   "census": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.465,
+    "widthOverWire": 7.44,
+    "minBendFlat": 1.2577,
+    "minBendPlump": 1.2579,
+    "couplings": 2,
+    "flatLen": 22.9716,
+    "pathLen": 22.7354,
+    "poseLen": 22.9688,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "11e2d9072929f08e",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "status": "PASS",
+   "diffs": [],
+   "shot": {
+    "file": null,
+    "kind": "skipped",
+    "ok": null,
+    "skipped": "--no-shots",
+    "rect": [
+     107,
+     12,
+     28,
+     9
+    ]
+   }
+  },
+  "H04_Plump_corner_L24": {
+   "id": "H04_Plump_corner_L24",
+   "group": "hose",
+   "factors": {
+    "St": "Plump",
+    "Ro": "corner",
+    "Le": 24,
+    "Fl": "water"
+   },
+   "origin": [
+    138,
+    12
+   ],
+   "plot_game": [
+    138,
+    12,
+    38,
+    21
+   ],
+   "board": "hose",
+   "settings": {},
+   "notes": [
+    "hose kit built; placed and read by run_live.py through HoseProbe (validation_hose.py call shapes)",
+    "tar/chemfuel LiquidDef names not authored yet: fluid None, fluid_key carries the intent; HoseProbe has no fluid input"
+   ],
+   "shows": [
+    "hose_thicker_than_wire",
+    "hose_flat_vs_plump"
+   ],
+   "site_fail": [],
+   "zoom_root": 11,
+   "view": {
+    "overlay": "none",
+    "select_at": null
+   },
+   "expected": {
+    "state": "Plump",
+    "visible_width": [
+     0.46,
+     0.47
+    ],
+    "width_over_wire_ge": 4.0,
+    "blend": [
+     1,
+     1
+    ],
+    "min_bend_radius_ge": 1.2,
+    "couplings_min": 2,
+    "self_intersections": 0,
+    "unwalkable_points": 0
+   },
+   "reel": [
+    146,
+    28
+   ],
+   "far": [
+    158,
+    16
+   ],
+   "probes": [
+    {
+     "cmd": "check:146,28,158,16",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "lay:146,28,158,16",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "flow:146,28=on",
+     "success": true,
+     "reason": null
+    }
+   ],
+   "census": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.465,
+    "widthOverWire": 7.44,
+    "minBendFlat": 1.2577,
+    "minBendPlump": 1.2578,
+    "couplings": 2,
+    "flatLen": 23.9062,
+    "pathLen": 24.6606,
+    "poseLen": 23.8641,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "e7ca15be5a09c886",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "status": "PASS",
+   "diffs": [],
+   "shot": {
+    "file": null,
+    "kind": "skipped",
+    "ok": null,
+    "skipped": "--no-shots",
+    "rect": [
+     138,
+     12,
+     38,
+     21
+    ]
+   }
+  },
+  "H05_Plump_water_L6": {
+   "id": "H05_Plump_water_L6",
+   "group": "hose",
+   "factors": {
+    "St": "Plump",
+    "Ro": "water",
+    "Le": 6,
+    "Fl": "chemfuel"
+   },
+   "origin": [
+    179,
+    12
+   ],
+   "plot_game": [
+    179,
+    12,
+    20,
+    9
+   ],
+   "board": "hose",
+   "settings": {},
+   "notes": [
+    "hose kit built; placed and read by run_live.py through HoseProbe (validation_hose.py call shapes)",
+    "tar/chemfuel LiquidDef names not authored yet: fluid None, fluid_key carries the intent; HoseProbe has no fluid input"
+   ],
+   "shows": [
+    "hose_thicker_than_wire",
+    "hose_flat_vs_plump"
+   ],
+   "site_fail": [],
+   "zoom_root": 11,
+   "view": {
+    "overlay": "none",
+    "select_at": null
+   },
+   "expected": {
+    "state": "Plump",
+    "visible_width": [
+     0.46,
+     0.47
+    ],
+    "width_over_wire_ge": 4.0,
+    "blend": [
+     1,
+     1
+    ],
+    "min_bend_radius_ge": 1.2,
+    "couplings_min": 2,
+    "self_intersections": 0,
+    "unwalkable_points": 0
+   },
+   "reel": [
+    187,
+    16
+   ],
+   "far": [
+    193,
+    16
+   ],
+   "probes": [
+    {
+     "cmd": "check:187,16,193,16",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "lay:187,16,193,16",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "flow:187,16=on",
+     "success": true,
+     "reason": null
+    }
+   ],
+   "census": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Plump",
+    "blend": 1,
+    "visibleWidth": 0.465,
+    "widthOverWire": 7.44,
+    "minBendFlat": 1.2552,
+    "minBendPlump": 1.2555,
+    "couplings": 2,
+    "flatLen": 15.0901,
+    "pathLen": 14.7818,
+    "poseLen": 15.0845,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "ed4ae35965c3043b",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "status": "PASS",
+   "diffs": [],
+   "shot": {
+    "file": null,
+    "kind": "skipped",
+    "ok": null,
+    "skipped": "--no-shots",
+    "rect": [
+     179,
+     12,
+     20,
+     9
+    ]
+   }
+  },
+  "H06_Filling50_straight_L24": {
+   "id": "H06_Filling50_straight_L24",
+   "group": "hose",
+   "factors": {
+    "St": "Filling50",
+    "Ro": "straight",
+    "Le": 24,
+    "Fl": "chemfuel"
+   },
+   "origin": [
+    12,
+    36
+   ],
+   "plot_game": [
+    12,
+    36,
+    38,
+    9
+   ],
+   "board": "hose",
+   "settings": {},
+   "notes": [
+    "hose kit built; placed and read by run_live.py through HoseProbe (validation_hose.py call shapes)",
+    "tar/chemfuel LiquidDef names not authored yet: fluid None, fluid_key carries the intent; HoseProbe has no fluid input"
+   ],
+   "shows": [
+    "hose_thicker_than_wire"
+   ],
+   "site_fail": [],
+   "zoom_root": 11,
+   "view": {
+    "overlay": "none",
+    "select_at": null
+   },
+   "expected": {
+    "state": "Filling",
+    "visible_width": [
+     0.381,
+     0.464
+    ],
+    "width_over_wire_ge": 4.0,
+    "blend": [
+     0.2,
+     0.8
+    ],
+    "min_bend_radius_ge": 1.2,
+    "couplings_min": 2,
+    "self_intersections": 0,
+    "unwalkable_points": 0
+   },
+   "reel": [
+    20,
+    40
+   ],
+   "far": [
+    44,
+    40
+   ],
+   "probes": [
+    {
+     "cmd": "check:20,40,44,40",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "lay:20,40,44,40",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "flow:20,40=on",
+     "success": true,
+     "reason": null
+    }
+   ],
+   "census": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.4183,
+    "widthOverWire": 6.6921,
+    "minBendFlat": 1.2577,
+    "minBendPlump": 1.2578,
+    "couplings": 2,
+    "flatLen": 33.4123,
+    "pathLen": 32.7263,
+    "poseLen": 33.2313,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "0168b7cee92e21b6",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "status": "PASS",
+   "diffs": [],
+   "shot": {
+    "file": null,
+    "kind": "skipped",
+    "ok": null,
+    "skipped": "--no-shots",
+    "rect": [
+     12,
+     36,
+     38,
+     9
+    ]
+   }
+  },
+  "H07_Filling50_corner_L6": {
+   "id": "H07_Filling50_corner_L6",
+   "group": "hose",
+   "factors": {
+    "St": "Filling50",
+    "Ro": "corner",
+    "Le": 6,
+    "Fl": "tar"
+   },
+   "origin": [
+    53,
+    36
+   ],
+   "plot_game": [
+    53,
+    36,
+    20,
+    12
+   ],
+   "board": "hose",
+   "settings": {},
+   "notes": [
+    "hose kit built; placed and read by run_live.py through HoseProbe (validation_hose.py call shapes)",
+    "tar/chemfuel LiquidDef names not authored yet: fluid None, fluid_key carries the intent; HoseProbe has no fluid input"
+   ],
+   "shows": [
+    "hose_thicker_than_wire"
+   ],
+   "site_fail": [],
+   "zoom_root": 11,
+   "view": {
+    "overlay": "none",
+    "select_at": null
+   },
+   "expected": {
+    "state": "Filling",
+    "visible_width": [
+     0.381,
+     0.464
+    ],
+    "width_over_wire_ge": 4.0,
+    "blend": [
+     0.2,
+     0.8
+    ],
+    "min_bend_radius_ge": 1.2,
+    "couplings_min": 2,
+    "self_intersections": 0,
+    "unwalkable_points": 0
+   },
+   "reel": [
+    61,
+    43
+   ],
+   "far": [
+    64,
+    40
+   ],
+   "probes": [
+    {
+     "cmd": "check:61,43,64,40",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "lay:61,43,64,40",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "flow:61,43=on",
+     "success": true,
+     "reason": null
+    }
+   ],
+   "census": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.4183,
+    "widthOverWire": 6.6921,
+    "minBendFlat": 1.2561,
+    "minBendPlump": 1.2567,
+    "couplings": 2,
+    "flatLen": 11.9033,
+    "pathLen": 12.6067,
+    "poseLen": 11.9032,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "69ce46fb619e4b54",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "status": "PASS",
+   "diffs": [],
+   "shot": {
+    "file": null,
+    "kind": "skipped",
+    "ok": null,
+    "skipped": "--no-shots",
+    "rect": [
+     53,
+     36,
+     20,
+     12
+    ]
+   }
+  },
+  "H08_Filling50_water_L14": {
+   "id": "H08_Filling50_water_L14",
+   "group": "hose",
+   "factors": {
+    "St": "Filling50",
+    "Ro": "water",
+    "Le": 14,
+    "Fl": "water"
+   },
+   "origin": [
+    76,
+    36
+   ],
+   "plot_game": [
+    76,
+    36,
+    28,
+    9
+   ],
+   "board": "hose",
+   "settings": {},
+   "notes": [
+    "hose kit built; placed and read by run_live.py through HoseProbe (validation_hose.py call shapes)",
+    "tar/chemfuel LiquidDef names not authored yet: fluid None, fluid_key carries the intent; HoseProbe has no fluid input"
+   ],
+   "shows": [
+    "hose_thicker_than_wire"
+   ],
+   "site_fail": [],
+   "zoom_root": 11,
+   "view": {
+    "overlay": "none",
+    "select_at": null
+   },
+   "expected": {
+    "state": "Filling",
+    "visible_width": [
+     0.381,
+     0.464
+    ],
+    "width_over_wire_ge": 4.0,
+    "blend": [
+     0.2,
+     0.8
+    ],
+    "min_bend_radius_ge": 1.2,
+    "couplings_min": 2,
+    "self_intersections": 0,
+    "unwalkable_points": 0
+   },
+   "reel": [
+    84,
+    40
+   ],
+   "far": [
+    98,
+    40
+   ],
+   "probes": [
+    {
+     "cmd": "check:84,40,98,40",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "lay:84,40,98,40",
+     "success": true,
+     "reason": null
+    },
+    {
+     "cmd": "flow:84,40=on",
+     "success": true,
+     "reason": null
+    }
+   ],
+   "census": {
+    "kind": "Hose",
+    "laid": true,
+    "layOk": true,
+    "layReason": null,
+    "state": "Filling",
+    "blend": 0.4667,
+    "visibleWidth": 0.4183,
+    "widthOverWire": 6.6921,
+    "minBendFlat": 1.2577,
+    "minBendPlump": 1.2579,
+    "couplings": 2,
+    "flatLen": 22.9742,
+    "pathLen": 22.7354,
+    "poseLen": 22.9706,
+    "selfIntersects": false,
+    "unwalkablePoints": 0,
+    "fellBack": false,
+    "geometryHash": "e7ea57a2047a2ff4",
+    "provider": "debug",
+    "transitionTicks": 30
+   },
+   "status": "PASS",
+   "diffs": [],
+   "shot": {
+    "file": null,
+    "kind": "skipped",
+    "ok": null,
+    "skipped": "--no-shots",
+    "rect": [
+     76,
+     36,
+     28,
+     9
+    ]
+   }
+  }
+ },
+ "mod_hash": "3b27dd60fadb43e85474faa99ba611235386f881c681efd2751cdf666f7d9d28",
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "sarg.alphabiomes",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "running_sha256": "03a978fe87024ba89556ccc02948957b90921c9871ff468bbce468d73c10177a",
+  "assembly_matches": 1,
+  "assembly_sha256": "2e5713fb9a08816e1dfc390a8d35d0bb640db230c58027759a7e28f221f710a9"
+ },
+ "map": {
+  "sizeX": 250,
+  "sizeZ": 250,
+  "mapBiome": "TemperateForest"
+ },
+ "fresh_map": null,
+ "aborted": null,
+ "log": [],
+ "calls": 282,
+ "wall_s": 30.1,
+ "timing": {
+  "phases_s": {
+   "shots_camera_only": 14.2,
+   "hose": 12.3,
+   "setup": 2.1,
+   "site_setup": 0.9,
+   "post": 0.6,
+   "shot_copy_wait": 0.0
+  },
+  "shots_taken": 0,
+  "calls": 282,
+  "calls_profile": null,
+  "note": "phases add up to wall_s; shots are nested out of the phase they ran in; shot_copy_wait is the residual PNG copy that did not overlap the bridge calls"
+ },
+ "ticks_spent": 1086,
+ "budget": {
+  "design_ticks_stills": 138,
+  "design_wall_min": "15-20 after cold load",
+  "boards": []
+ },
+ "summary": {
+  "scenes": 9,
+  "status": {
+   "PASS": 9
+  },
+  "fail_class": {}
+ }
+}
