@@ -892,6 +892,11 @@ MODS = {
         "Colony Visibility raid scaling": "NextPulse",
         "Launch reset (next gravship launch)": "NextPulse",
     }, ()),
+    "Oracle": ("OracleSettings.cs", "Oracle.csproj", {
+        "Oracle kill switch": "Now",
+        "Claude CLI and timeout": "Now",
+        "Gods budget": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
