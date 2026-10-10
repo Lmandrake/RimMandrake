@@ -26,6 +26,7 @@ import json
 from pathlib import Path
 
 import artledger as L
+import decisions_v2 as DV
 
 _PH: dict = {}
 MIRROR_ROOT = Path("/mnt/d/Luke/dev/RimMandrake")
@@ -203,6 +204,9 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
     """purge=False leaves every ✕ alone (art.py enact purges itself, never releasing a keep);
     skip_rows: row keys not ingested at all (enact --hold)."""
     doc = json.loads(Path(decisions_path).read_text())
+    bad_schema = DV.refuse_unknown(doc)
+    if bad_schema:
+        return {"ok": False, "error": "REFUSED: " + bad_schema}
     redo_rows = [r for r, v in (doc.get("decisions") or {}).items()
                  if isinstance(v, dict) and v.get("at") and (v.get("decision") or "").strip() == "redo"]
     if redo_jobs is not None:
@@ -263,6 +267,7 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
         return w.add(ev)
 
     out = {"ok": True, "rulings": 0, "purged": 0, "purge_refused": 0, "untouched": 0, "unresolved": []}
+    _confs = DV.confirmations()
     skip = set(skip_rows) | set(stale)
     out["stale_rows"] = stale
     for row, v in (doc.get("decisions") or {}).items():
@@ -315,7 +320,7 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                     if put(rev):
                         out["rejected"] = out.get("rejected", 0) + 1
             # per-biome sheets: a row's extra graphics (swimming, flying …) carry their own pick
-            for g, pl in sorted((v.get("picks") or {}).items()):
+            for g, pl in sorted(DV.slot_picks(v).items()):   # schema-2 per-slot picks, else schema-1 `picks`
                 if pl in cols and pl != dec and placeholder_set(cols[pl].values()):
                     out.setdefault("placeholder_refused", []).append(f"{row}:{g}:{pl} (pick)")
                     continue
@@ -330,8 +335,10 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                         out["rulings"] += 1
         # kept variants: extra columns the owner marked as valid in-game variants of the pick
         if srow and decided:
-            # HIS ticks only: a machine-default list (`variantsDefault`, the retired 2026-10-06 pre-tick) is never a keep
-            for vl in sorted(set([] if v.get("variantsDefault") else v.get("variants") or [])):
+            # HIS ticks only: a machine-default list (`variantsDefault`, the retired 2026-10-06 pre-tick) is never a keep,
+            # and a legacy schema-1 tick is one only once he confirmed it on the old-ticks sheet (decisions_v2)
+            _cf = (_confs.get((snap.get("sheetId") or doc.get("sheetId"), row)) or {}).get("confirm") or set()
+            for vl in sorted(set(DV.owner_pool_adds(v, _cf))):
                 if vl in cols and vl != dec and placeholder_set(cols[vl].values()):
                     out.setdefault("placeholder_refused", []).append(f"{row}:{vl} (variant)")
                     continue

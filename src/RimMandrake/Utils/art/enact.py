@@ -49,6 +49,14 @@ Without --apply it is a DRY RUN: the full plan is printed and nothing changes. S
               folded biome mod). A plan that would write a DLL while RimWorldWin64 runs is skipped and said so.
   8 SUMMARY   counts per action, CONFLICTS, TODOs; art is visible after the next game restart.
 
+SCHEMA 2 (DESIGN 2026-10-10 §3.5/§3.6; decisions_v2.py): a record with a schema this build does not know is REFUSED.
+Per-slot picks (`slots`) win over `picks`/`decision`; a ticked variant ships only on a lane that is a random pool
+(`is_pool`), else it is listed as an ignored tick; legacy schema-1 ticks ship only once confirmed on the old-ticks
+sheet (until then they only protect their pictures); `pool.remove` takes a picture out of a folder pool; a slot set to
+`redraw` files a job for THAT slot (its texPath, its facings); `asks.more` files one job per render asked for (catch rows
+wait for their creature); every other ask (rename, description, size, move, facings) is a TODO until
+`--mark-done <row> --ask <kind>`; `asks.cut` cuts like a `cut` decision.
+
 Idempotent: every step compares against the current state, so a second run after success is a no-op.
 --hold <subject> (repeatable, case-insensitive substring of the row key) skips those rows in every step.
 """
@@ -65,6 +73,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import artledger as L  # noqa: E402
+import decisions_v2 as DV  # noqa: E402
 import ingest as I  # noqa: E402
 
 WRITER_TAG = "script:src/RimMandrake/Utils/art/enact.py"
@@ -778,6 +787,9 @@ def keep_ruling(idx: L.Index, row: str, letter: str, sha: str):
 def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list[dict] | None = None,
                stale: dict | None = None) -> dict:
     doc = json.loads(decisions.read_text())
+    bad_schema = DV.refuse_unknown(doc)
+    if bad_schema:
+        raise ValueError(bad_schema)
     snap_path = Path(doc.get("snapshot") or "")
     if not snap_path.is_absolute():
         snap_path = L.REPO_ROOT / snap_path
@@ -795,9 +807,10 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
          "retire": [], "blocked": [], "withdraw": [],
          "install_after_ingest": [], "queue": [], "queued_already": [], "refile": [], "awaiting_pick": [], "purge": [], "purged_already": 0,
          "cuts": [], "todo": [], "done": [], "conflicts": [], "in_game_not_ours": 0, "followed": {},
-         "ignored_variants": []}
+         "ignored_variants": [], "legacy_unconfirmed": [], "asks": []}
     decs = doc.get("decisions") or {}
     wd_ids = withdrawn_ids()
+    confs = DV.confirmations()
     by_id = {j["id"]: j for j in jobs}
 
     def refs_sha(j: dict, sha: str | None) -> bool:
@@ -832,16 +845,29 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             past = [x for x in past if x != note]
         names = row_names(row, v, census)
         xed = {s for s in (v.get("purge") or []) if s}     # his ✕ on this row: purged in step 4, never kept/installed
+        conf = confs.get((sheet, row)) or {}
+        confirmed, dropped = conf.get("confirm") or set(), conf.get("drop") or set()
+        asks = DV.asks_of(v)
+        assign = {l: g for l, g in (v.get("assign") or {}).items() if isinstance(g, str) and g not in ("not_needed",)
+                  and not g.startswith("other_subject:")}
+        v2_slots = {g: st for g, st in (v.get("slots") or {}).items() if isinstance(st, dict) and not st.get("migrated")}
         # ── 5 cut
-        is_cut = decided and (dec == "cut" or (dec == "hold" and CUT_NOTE.search(note or "")))
+        is_cut = decided and (dec == "cut" or (dec == "hold" and CUT_NOTE.search(note or "")) or bool(asks.get("cut")))
         if is_cut:
             P["cuts"].append({"row": row, "names": names, "note": note, "raw_note": v.get("note")})
         # ── 2 install
         protect_here = set()
         folders: dict = {}
         picks: dict = {}
-        if decided and not is_cut and dec != "redo":
-            picks, conf = effective_picks(v, srow)
+        if decided and not is_cut and (dec != "redo" or v2_slots):
+            picks, conf = effective_picks(v, srow) if dec != "redo" else ({}, [])
+            # schema 2: HIS per-slot choices (a click on the new sheet) win; a migrated slot is only a view of the above
+            for g, st in v2_slots.items():
+                if st.get("state") == "pick" and st.get("pick") in cols:
+                    picks[g] = st["pick"]
+                    conf = [x for x in conf if x[0] != st["pick"]]
+                elif st.get("state") in ("accept", "redraw", "not_drawn"):
+                    picks.pop(g, None)
             for letter, c in conf:
                 shas = [x for x in (cols.get(letter) or {}).values() if x and x not in xed]
                 protect_here |= set(shas)
@@ -907,17 +933,22 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                         rul = keep_ruling(idx, row, letter, sha)
                         P["install"].append({"row": row, "mod": mod, "rel": r, "sha": sha, "letter": letter,
                                              "ruling": rul["id"] if rul else None})
-            for vl in ([] if v.get("variantsDefault") else v.get("variants") or []):
-                # HIS ticks protect their pictures; a machine-default tick never does (Thozzik, DESIGN §2)
+            for vl in DV.protect_letters(v, confirmed, dropped):
+                # HIS ticks (and legacy ticks he has not ruled on yet) protect their pictures; a machine-default tick
+                # never does (Thozzik, DESIGN §2)
                 protect_here |= {s for s in (cols.get(vl) or {}).values() if s and s not in xed}
             # ── 2b variants he TICKED (not the sheet's default tick): shipped beside the pick, never only protected
             # (bug 2026-10-10: Bladderquill/Shadefern/Steamfrond/Verdimoss/Weepmat B and Fanback C were never shipped)
-            explicit = [] if v.get("variantsDefault") else [x for x in (v.get("variants") or []) if x in cols]
+            explicit = [x for x in DV.owner_pool_adds(v, confirmed) if x in cols]
+            for vl in v.get("legacyVariants") or []:
+                if vl not in confirmed and vl not in dropped and vl in cols:
+                    P["legacy_unconfirmed"].append(f"{row}: old variant tick {vl} — not shipped until you confirm it on "
+                                                   f"the old-ticks sheet")
             # a tick outside a random pool (a flight frame set, a swimming/young/second-sex graphic, a by-name render
             # with no graphic) never ships as a variant: listed once, the pictures stay protected (DESIGN §2, §3.5)
             refused = []
             for vl in explicit:
-                gv = gof_resolved(srow, vl)
+                gv = assign.get(vl) or gof_resolved(srow, vl)
                 if gv and picks.get(gv) == vl:
                     continue
                 if not is_pool(idx, src, srow, gv, names):
@@ -925,11 +956,14 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     P["ignored_variants"].append(f"{row}: ignored variant tick {vl} on "
                                                  f"{(gv or 'an unassigned render').rsplit('/', 1)[-1]} — not a random pool")
             explicit = [x for x in explicit if x not in refused]
+            # a folder this run fills keeps his ticks — and every legacy tick he has not ruled on yet: unknown is never
+            # read as "take it out of the game"
+            pending = [x for x in (v.get("legacyVariants") or []) if x not in dropped and x not in confirmed]
             for g in list(folders):
-                for vl in explicit:
+                for vl in explicit + refused + pending:
                     folders[g]["keep"] |= {s for s in (cols.get(vl) or {}).values() if s and s not in xed}
             for vl in explicit:
-                gv = gof_resolved(srow, vl)
+                gv = assign.get(vl) or gof_resolved(srow, vl)
                 if not gv or picks.get(gv) == vl:
                     continue            # the pick itself, or a letter of another graphic (a per-graphic pick)
                 for facing, sha in sorted((cols.get(vl) or {}).items()):
@@ -947,6 +981,28 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                                          "ruling": rul["id"] if rul else None, "kind": own["kind"],
                                          "rebind": own.get("rebind"), "names": names, "variant": True,
                                          "alt": (own["graphic"], own["res"]) if own["kind"] == "alt" else None})
+            # ── 2d pool.remove: a picture he took OUT of a folder pool leaves the folder (archived, never deleted), unless
+            # it is the folder's last picture; a pool he edited that has moved since (baseline) is not touched
+            for g, rm in DV.owner_pool_removes(v).items():
+                base = ((v.get("pool") or {}).get(g) or {}).get("baseline")
+                now = sorted(DV.SL.set_id(cols[l]) for l, gg in (srow.get("graphic_of") or {}).items()
+                             if gg == g and l in cols and str((srow.get("labels") or {}).get(l, "")).startswith("IN GAME"))
+                if base is not None and sorted(base) != now:
+                    P["conflicts"].append(f"{row}: the random pool of {g.rsplit('/', 1)[-1]} changed since you edited it "
+                                          f"— your pool removals ({', '.join(rm)}) were not applied; look again")
+                    continue
+                fs = folder_slots(idx, g)
+                gone = {sh for l in rm for sh in (cols.get(l) or {}).values()}
+                left = [x for x in fs if x[2] not in gone]
+                if not fs:
+                    P["todo"].append(f"{row}: take {', '.join(rm)} out of the random pool of {g} (alternateGraphics edit)")
+                elif not left:
+                    P["conflicts"].append(f"{row}: removing {', '.join(rm)} would empty the pool of {g.rsplit('/', 1)[-1]} "
+                                          f"— kept; pick or redraw a replacement first")
+                else:
+                    for m_, r_, sha_ in fs:
+                        if sha_ in gone:
+                            P["retire"].append({"row": row, "mod": m_, "rel": r_, "sha": sha_, "xed": True})
             # a folder this run adds to ends up holding exactly his pick + ticked variants: the rest leaves the game
             for g, fo in folders.items():
                 for m, r, live in folder_slots(idx, g):
@@ -1031,6 +1087,49 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 P["followed"][row] = {"note": v.get("note"), "by": ["mark-done"]}
             else:
                 P["todo"].append(f"{row}: note not enacted — {note[:110]!r} (art or def edit? `--mark-done {row}` when done)")
+        # ── 3b schema 2: a slot he set to `redraw` (not the row's primary redo, handled above) and every `asks.more`
+        # entry is its own job; a catch row's derivative jobs wait for its creature (DESIGN §3.6)
+        if decided and not is_cut:
+            prim = srow.get("res")
+            src_row2 = catch_source(row, decs)
+            settled2 = (True, None, "")
+            if src_row2:
+                settled2 = source_settled(src_row2, decs, snap, jobs, idx, census)
+            want = []
+            for g, st in v2_slots.items():
+                if st.get("state") == "redraw" and not (g == prim and dec == "redo"):
+                    want.append({"kind": "slot", "slot": g, "n": 1, "base": None, "how": ""})
+            for k, m in enumerate(asks.get("more") or []):
+                if isinstance(m, dict):
+                    want.append({"kind": "more", "slot": m.get("slot") or prim, "n": max(1, min(int(m.get("n") or 1), 8)),
+                                 "base": m.get("base"), "how": m.get("how") or "", "k": k})
+            fa = asks.get("facings")
+            if isinstance(fa, dict) and fa.get("faces"):
+                want.append({"kind": "facings", "slot": fa.get("slot") or prim, "n": 1, "base": fa.get("from"),
+                             "how": "draw the missing facing(s) " + ", ".join(fa["faces"]), "faces": fa["faces"]})
+            for w in want:
+                aid = L.det_id("ask", sheet, row, json.dumps(w, sort_keys=True))[:8]
+                have = [j for j in jobs if str(j.get("id", "")).startswith(f"enact_{aid}_")]
+                if have:
+                    P["queued_already"].append(f"{row}: {w['kind']} {w['slot'] and w['slot'].rsplit('/', 1)[-1]} — "
+                                               f"{len(have)} job(s) {'/'.join(sorted({j['_state'] for j in have}))}")
+                    continue
+                if src_row2 and not settled2[0]:
+                    P["blocked"].append(f"{row}: {w['kind']} not filed — waiting for {src_row2} to be settled ({settled2[2]})")
+                    continue
+                P["queue"].append({"row": row, "names": names, "note": w["how"] or note, "srow": srow, "v": v,
+                                   "slot": w["slot"], "ask": w, "ask_id": aid,
+                                   **({"ref_shas": [settled2[1]] if settled2[1] else [], "source": src_row2}
+                                      if src_row2 else {})})
+            # def-side asks: one TODO each until --mark-done <row> --ask <kind> records it done
+            for kind in ("rename", "describe", "size", "move"):
+                if kind not in asks:
+                    continue
+                key = f"ask:{kind}:{json.dumps(asks[kind], sort_keys=True)}"
+                if (sheet, row, key) in done_marks:
+                    continue
+                P["asks"].append(f"{row}: ask {kind} — {json.dumps(asks[kind], ensure_ascii=False)[:120]} "
+                                 f"(`--mark-done {row} --ask {kind}` once done)")
         # ── 6c every --mark-done --evidence "OWNER: <question>" on this row is a CONFLICT, whatever else the row has
         # (jobs, a followed note, a pick): bug 2026-10-10, 11 of 14 Rot rename questions on rows with art jobs were
         # recorded in the ledger and never shown to him
@@ -1175,6 +1274,10 @@ def redo_ref_shas(q: dict, idx: L.Index | None = None) -> list[str]:
     srow, v, note = q["srow"], q["v"], q.get("note") or ""
     cols, labels = srow.get("columns") or {}, srow.get("labels") or {}
     bad = set(v.get("purge") or [])
+    base = (q.get("ask") or {}).get("base")
+    if base and base in cols:                       # "make N more based on X": X is the reference
+        s = first_by_facing(cols[base], bad)
+        return [s] if s and L.store_has(s) and not idx.is_purged(s) else []
     m = BASED_ON.search(note)
     if m and m.group(1).upper() in cols:
         s = first_by_facing(cols[m.group(1).upper()], bad)
@@ -1208,8 +1311,13 @@ def job_rows(P: dict) -> list[dict]:
     for q in P["queue"]:
         srow, v, row = q["srow"], q["v"], q["row"]
         refs = [str(L.store_path(s)) for s in redo_ref_shas(q, idx)]
-        facings = sorted({f for c in (srow.get("columns") or {}).values() for f in c
-                          if f in ("east", "north", "south")}, key=["east", "south", "north"].index)
+        lane = q.get("slot")
+        lane_cols = [c for l, c in (srow.get("columns") or {}).items()
+                     if not lane or (srow.get("graphic_of") or {}).get(l) == lane]
+        facings = sorted({f for c in lane_cols for f in c if f in ("east", "north", "south")},
+                         key=["east", "south", "north"].index)
+        if (q.get("ask") or {}).get("faces"):
+            facings = [f for f in ("east", "south", "north") if f in q["ask"]["faces"]] or facings
         note = q["note"]
         label = (srow.get("subject_key") or row).replace("_", " ")
         src_ref = q.get("source") and refs
@@ -1217,6 +1325,20 @@ def job_rows(P: dict) -> list[dict]:
                  f"colours exactly" if src_ref else
                  "the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy"
                  if refs else "no reference is attached: draw it fresh from the note")
+        if q.get("ask_id"):
+            a = q["ask"]
+            what = {"slot": "its {} picture".format(lane.rsplit("/", 1)[-1] if lane else "body"),
+                    "more": f"a NEW additional version of its {lane.rsplit('/', 1)[-1] if lane else 'body'} picture",
+                    "facings": "the missing facing(s) of its picture"}[a["kind"]]
+            for n in range(a.get("n") or 1):
+                base = f"enact_{q['ask_id']}_{L.subject_key(row)}" + (f"_{n + 1}" if (a.get("n") or 1) > 1 else "")
+                rows.append({"id": f"{base}_v{next_version(base)}", "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+                             "target_def": row, "slot": lane, "ask": a["kind"],
+                             "prompt": (f"Owner's request, verbatim, overrides everything below: \"{note}\" " if note else "")
+                             + f"RimWorld sprite of the {label}, painterly vanilla-RimWorld house style; draw {what} — {guide}.",
+                             "canvas_w": 256, "canvas_h": 256, "facings": facings, "priority": 0,
+                             "owner_note": note, "canon_reference": refs, "biome_neutral": True})
+            continue
         base = f"enact_{L.det_id(P['sheet'], row, note, v.get('at'), *(q.get('ref_shas') or []))[:8]}_{L.subject_key(row)}"
         rows.append({"id": f"{base}_v{next_version(base)}",
                      "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1", "target_def": row,
@@ -1269,9 +1391,12 @@ def game_running() -> bool:
 
 
 def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_deploy: bool = False,
-          redo_jobs_out: Path | None = None, done_evidence: str = "") -> dict:
+          redo_jobs_out: Path | None = None, done_evidence: str = "", ask: str | None = None) -> dict:
     decisions = Path(decisions)
     doc = json.loads(decisions.read_text())
+    bad_schema = DV.refuse_unknown(doc)
+    if bad_schema:
+        return {"ok": False, "error": bad_schema}
     held_rows = [r for r in (doc.get("decisions") or {}) if is_held(r, holds)]
     # 1 ingest (dry-run counts what would be added)
     ing = I.ingest(decisions, dry_run=not apply, defer_redo_jobs=True, purge=False, skip_rows=held_rows)
@@ -1288,6 +1413,19 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
     # --mark-done is a RECORD that a note was enacted by hand, so it is written even on a dry run
     for row in mark_done:
         v = (doc.get("decisions") or {}).get(row) or {}
+        if ask:
+            a = DV.asks_of(v).get(ask)
+            if a is None:
+                R["conflicts"].append(f"--mark-done {row} --ask {ask}: that row carries no such ask — nothing recorded")
+                continue
+            key = f"ask:{ask}:{json.dumps(a, sort_keys=True)}"
+            w = L.Writer({e["id"] for e in idx.events})
+            w.add({"type": "enact_done", "id": L.det_id("enact_done", sheet, row, key), "sheet": sheet, "row": row,
+                   "note": key, "by": "agent", "evidence": done_evidence or "", "via": I.rel_via(decisions)})
+            w.flush()
+            P["asks"] = [x for x in P["asks"] if not x.startswith(f"{row}: ask {ask} ")]
+            P["done"].append(f"{row}: ask {ask} marked done")
+            continue
         note = I.open_note(v)
         halves = pending_def_halves(v, sheet, row, {(e.get("sheet"), e.get("row"), e.get("note")) for e in idx.events
                                                     if e.get("type") == "enact_done"}) if not note else []
@@ -1407,6 +1545,8 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
             if r.returncode == 0:
                 R["queued_jobs"] = len(rows)
                 for q in P["queue"]:
+                    if q.get("ask_id"):
+                        continue        # a slot redraw / asked-for render follows its ASK, never the row's note
                     if q["note"] and not (DEF_ASK.search(q["note"]) and q["row"] not in P["followed"]
                                           and any(x.startswith(f"{q['row']}: def half of the note") for x in R["todo"])):
                         P["followed"][q["row"]] = {"note": q["v"].get("note"),
@@ -1541,6 +1681,12 @@ def report(R: dict) -> str:
         L_.append(f"     {q['row']}: {q['note'][:90]!r}")
     for q in P["queued_already"]:
         L_.append(f"     already: {q}")
+    if P.get("legacy_unconfirmed"):
+        L_.append(f"  old ticks  {len(P['legacy_unconfirmed'])} legacy variant tick(s) waiting on the old-ticks confirm sheet (nothing shipped)")
+        L_ += [f"     {x}" for x in P["legacy_unconfirmed"][:40]]
+    if P.get("asks"):
+        L_.append(f"  asks       {len(P['asks'])} def-side ask(s) open")
+        L_ += [f"     {x}" for x in P["asks"]]
     if P.get("ignored_variants"):
         L_.append(f"  variants   {len(P['ignored_variants'])} tick(s) ignored — not in a random pool (pictures kept, nothing shipped)")
         L_ += [f"     {x}" for x in P["ignored_variants"]]
@@ -1592,12 +1738,14 @@ def main(argv=None) -> int:
     ap.add_argument("--hold", action="append", default=[], help="skip rows whose key contains this (repeatable)")
     ap.add_argument("--mark-done", action="append", default=[], help="record a row's note as enacted by hand")
     ap.add_argument("--evidence", default="", help="with --mark-done: the commit/file that did it")
+    ap.add_argument("--ask", choices=("rename", "describe", "size", "move"),
+                    help="with --mark-done: record that row's schema-2 ask of this kind as done (not its note)")
     ap.add_argument("--no-deploy", action="store_true")
     a = ap.parse_args(argv)
     if a.apply and a.dry_run:
         ap.error("--apply and --dry-run together")
     R = enact(Path(a.decisions), apply=a.apply, holds=a.hold, mark_done=a.mark_done, no_deploy=a.no_deploy,
-              done_evidence=a.evidence)
+              done_evidence=a.evidence, ask=a.ask)
     print(report(R))
     return 0 if R.get("ok") else 2
 

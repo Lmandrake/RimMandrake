@@ -809,8 +809,8 @@ def decision_letters(v: dict) -> set[str]:
     """The column letters one row of a decisions file refers to: its decision, extra-graphic picks, variants."""
     if not isinstance(v, dict):
         return set()
-    out = {(v.get("decision") or "").strip()} | set((v.get("picks") or {}).values()) | set(v.get("variants") or [])
-    return {x for x in out if isinstance(x, str) and len(x) == 1 and x in SHEET_LETTERS}
+    import decisions_v2 as DV        # schema 2 names letters in slots/pool/reject/retire/assign/asks too
+    return {x for x in DV.letters(v) if x in SHEET_LETTERS}
 
 
 def snapshot_versions(snap_path: Path) -> list[tuple]:

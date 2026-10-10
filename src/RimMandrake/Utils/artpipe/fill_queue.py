@@ -57,6 +57,9 @@ CSV columns (JSON: same keys; `facings` may be a JSON list there):
                        canon gate (canon_check.py) grades against it (wins over canon where they differ).
     canon_na           optional — Must-show lines (1-based numbers or exact texts; list, or "2;4;5" in CSV)
                        the canon gate marks n/a for this job and does not count; `canon_na_reason` says why.
+    slot, ask          optional — the art review sheet SLOT the render is for (a lane key: the texPath, or `_flip:<prefix>`)
+                       and the kind of request that filed it (slot | more | facings); carried onto the job so the
+                       sheet offers the render in that slot instead of an unassigned lane (DESIGN 2026-10-10 §3.1).
                        Any OTHER unknown row field is WARNED about on stderr, never silently dropped.
     canon_reference    optional — image path(s) to attach as ANATOMY guidance.
                        Defaults to the canon-library entry's images when
@@ -119,7 +122,7 @@ KNOWN_ROW_FIELDS = frozenset(REQUIRED_ROW_FIELDS) | {
     "background", "biome_neutral", "biome_register", "canon", "canon_reference", "channel", "derive_from",
     "drawsize", "facings", "install_to", "no_subject", "oversize_reason", "priority", "reference",
     "style_notes", "target_def", "target_original", "target_texpath",
-    "owner_note", "canon_na", "canon_na_reason"}
+    "owner_note", "canon_na", "canon_na_reason", "slot", "ask"}
 
 
 def _split_na(v):
@@ -425,6 +428,9 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
             if not isinstance(on, (str, list)):
                 raise ValueError(f"row {base_id!r} owner_note must be a string")
             job["owner_note"] = on
+        for k in ("slot", "ask"):
+            if isinstance(row.get(k), str) and row[k]:
+                job[k] = row[k]
         na = _split_na(row.get("canon_na"))
         if na:
             job["canon_na"] = na
