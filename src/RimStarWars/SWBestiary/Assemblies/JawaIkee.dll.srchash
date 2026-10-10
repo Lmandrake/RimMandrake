@@ -1,5 +1,7 @@
 # project: RimStarWars/SWBestiary/Source/JawaIkee/JawaIkee.csproj
-# dll: 49a54e0f506f3c312df1de263d3d5eef1d30c86018d735d4796fe0ce61437088
-7c0e6f8ba8ac3919fe4387178454779288d4a41e6b2ebbb12cc9ea3274fb5ad4 RSW_JawaIkeeSettings.cs
+# dll: 0362416e4d0df22145c4c8235b60f1e6339d0cd9fe7e2a24dee3fc24d357e023
+05a64328cc7be2c87ab29dc89ce91d16bca8d366fa9c51c194a68ce88f2d2de1 RSW_JawaIkeeSettings.cs
+28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../../../RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs
 cc236b550cd5ffcaf92c20040d5f5f882703a1ac937c5beb3b395f6c776992a7 Kernel/RSW_IkeeKernel.cs
+d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../../../RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs
 f3df78251e0c8d04b292ca68acdf580323a62120fcaa235ea1a365be1fa167b1 ThoughtWorker_IkeeNearby.cs

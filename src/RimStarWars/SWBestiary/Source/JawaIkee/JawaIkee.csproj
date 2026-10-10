@@ -29,4 +29,8 @@
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
     <PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4518-beta" PrivateAssets="all" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
+  </ItemGroup>
 </Project>

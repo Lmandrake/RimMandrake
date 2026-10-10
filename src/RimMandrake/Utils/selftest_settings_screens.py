@@ -1014,6 +1014,21 @@ MODS = {
         "Dewsilk cocoons": "NextGameStart",
         "Native oasis flora (WORLDGEN-AFFECTING)": "NewMapsOnly",
     }, ()),
+    "SWBestiary#Livestock": ("Livestock/RSW_LivestockSettings.cs", "Livestock/RimMandrakeLivestockRSW.csproj", {
+        "Kiln-belly feed cycle (Onnik)": "Now",
+        "Kiln batch cooldown": "NextPulse",
+        "Moornak grief hazard": "Now",
+        "Moornak release timer": "NextPulse",
+    }, ()),
+    "SWBestiary#Ikee": ("JawaIkee/RSW_JawaIkeeSettings.cs", "JawaIkee/JawaIkee.csproj", {
+        "Ikee mood effect": "Now",
+    }, ()),
+    "SWBestiary#BeastMechanics": ("BeastMechanics/RSW_BeastMechanicsSettings.cs", "BeastMechanics/RimMandrakeBeastMechanicsRSW.csproj", {
+        "Metal-eating creatures": "Now",
+        "Innate creature abilities": "NextPulse",
+        "Scrap-hoarding birds": "Now",
+        "Toxin-dependent creatures": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
