@@ -19,12 +19,12 @@ Wing E (`design/Jawa/worldbuilding/ship_deck_plan.md`).
    research.
 3. Durasteel: steel + `RSW_Zersium` → `RSW_Durasteel`. Runs as **the forge's first recipe**, not on the ship
    smelter (owner, question card 2026-10-09). Zersium is a **rare local ore in ONE home biome** (owner,
-   question card 2026-10-09). **TO CONFIRM with the owner:** which biome.
+   question card 2026-10-09). Its home is **The Forge** (`RM_TheForge`; owner, question card 2026-10-09).
 4. Place the forge in the ship layout once its stage in the deck plan is set.
 5. Mod Settings: the progressive gate and each recipe can be toggled.
 
 ## criteria
-- L1 L4: owner names zersium's home biome
+- L1 L4: zersium's home biome is The Forge (ruled 2026-10-09)
 - L2 L0: `RSW_Zersium` exists with a canon description and the confirmed source; steel + zersium makes `RSW_Durasteel` on the confirmed building
 - L3 L0: the alloy forge's plasteel recipe is the only fabricated plasteel route and unlocks after the durasteel one
 - L4 L0: settings toggles exist and default to the shipped behaviour
