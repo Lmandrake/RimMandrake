@@ -501,8 +501,10 @@ namespace RimMandrake.EnvironmentalHazards
         private static readonly HashSet<string> collapsedSections = new HashSet<string>();
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. A search matches the section title or any of its setting names. Scope tags other than "new maps only"
-        /// are PROVISIONAL: toggles are read live, but each mechanic's in-play behaviour is described in its own tooltip.</summary>
+        /// should draw. A search matches the section title or any of its setting names. Scope AUDITED per section against the
+        /// source (2026-10-10): every section reads its settings on a tick, job or hook so [now] holds, except "Weather, light and
+        /// water", whose incident gates (breaklight, steam devil, spore cloud) are consulted only when the storyteller next rolls
+        /// the incident ([next pulse]), and the map-generation section ([new maps only]).</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
@@ -521,7 +523,8 @@ namespace RimMandrake.EnvironmentalHazards
             Text.Font = GameFont.Small;
             if (!open) return false;
             list.Label(RimMandrake.Shared.SettingsKitCore.ScopeTag(scope) + (scope == RimMandrake.Shared.SettingScope.NewMapsOnly
-                ? " changes only affect maps generated afterwards" : " changes apply to what is on the map now"));
+                ? " changes only affect maps generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time the storyteller or a timer rolls it" : " changes apply to what is on the map now"));
             RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
             return true;
         }
@@ -659,7 +662,7 @@ namespace RimMandrake.EnvironmentalHazards
 
                 list.GapLine();
             }
-            if (Group(list, "Weather, light and water", RimMandrake.Shared.SettingScope.Now, new[] { "biomeGlowMultiplierEnabled", "weatherPulseEnabled", "breaklightEnabled", "steamDevilEnabled", "sporeCloudEnabled", "gradientSurgeEnabled", "weatherGateCoversWholeCondition", "warblingGlowEnabled", "warblingGlowSpeedMultiplier", "waterAgitationEnabled", "waterAgitationDensity" }))
+            if (Group(list, "Weather, light and water", RimMandrake.Shared.SettingScope.NextPulse, new[] { "biomeGlowMultiplierEnabled", "weatherPulseEnabled", "breaklightEnabled", "steamDevilEnabled", "sporeCloudEnabled", "gradientSurgeEnabled", "weatherGateCoversWholeCondition", "warblingGlowEnabled", "warblingGlowSpeedMultiplier", "waterAgitationEnabled", "waterAgitationDensity" }))
             {
                 list.CheckboxLabeled("Biome darkness multiplier", ref biomeGlowMultiplierEnabled,
                     "A biome built to run darker than usual (WORLDGEN-AFFECTING for anything that reads "
