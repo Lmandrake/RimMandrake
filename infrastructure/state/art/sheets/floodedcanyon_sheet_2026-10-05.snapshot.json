@@ -1,9 +1,9 @@
 {
  "biome": "RM_FloodedCanyon",
- "built": "2026-10-10T10:11:46-0700",
+ "built": "2026-10-10T13:07:18-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_Murkling": {
    "columns": {
@@ -26,6 +26,7 @@
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "render sheet_redo_AA_Murkling_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/FO_NightPest/FO_NightPest",
    "reserved": [
     "A",
@@ -68,6 +69,9 @@
     "C": "render gapfin_RM_TwistingThornwood_v1",
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThornwood_b (2 of 2) \u2014 FloodedCanyon"
    },
+   "pools": [
+    "Things/Plant/RM_CrackedThornwood"
+   ],
    "res": "Things/Plant/RM_CrackedThornwood",
    "reserved": [
     "A",
@@ -99,6 +103,7 @@
     "A": "IN GAME \u2014 FloodedCanyon",
     "B": "render enact_eb31f5eb_harrovaq_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Harrovaq/RM_Harrovaq",
    "reserved": [
     "A",
@@ -131,6 +136,7 @@
     "B": "render enact_080134bc_luqqim_v1",
     "C": "render enact_d14c4f0b_luqqim_v2"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Luqqim/RM_Luqqim",
    "reserved": [
     "A",
@@ -181,6 +187,7 @@
     "D": "render enact_02b55f2e_muttavaq_v1",
     "E": "render RM_Muttavaq"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Thrumbo/Thrumbo",
    "reserved": [
     "A",
@@ -222,6 +229,7 @@
     "B": "render enact_688d4c1b_nabbuq_v2",
     "C": "render enact_90c43f6c_nabbuq_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Nabbuq/RM_Nabbuq",
    "reserved": [
     "A",
@@ -254,6 +262,7 @@
     "A": "IN GAME \u2014 LongShade",
     "B": "history LongShade 2026-09-29"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Ommok/RM_Ommok",
    "reserved": [
     "A",
@@ -291,6 +300,7 @@
     "B": "render enact_154c12cf_ruqqal_v2",
     "C": "render enact_38e46a04_ruqqal_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Ruqqal/RM_Ruqqal",
    "reserved": [
     "A",
@@ -324,6 +334,7 @@
     "B": "render enact_70b1f8a2_sevvuq_v1",
     "C": "render enact_f95acc37_sevvuq_v2"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Sevvuq/RM_Sevvuq",
    "reserved": [
     "A",
@@ -356,6 +367,7 @@
     "A": "donor original \u2014 Vanilla Textures Expanded",
     "B": "render RM_Tarruq"
    },
+   "pools": [],
    "res": null,
    "reserved": [
     "A",
@@ -408,6 +420,9 @@
     "E": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThorngrass_b (2 of 3) \u2014 FloodedCanyon",
     "F": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThorngrass_c (3 of 3) \u2014 FloodedCanyon"
    },
+   "pools": [
+    "Things/Plant/RM_TwistingThorngrass"
+   ],
    "res": "Things/Plant/RM_TwistingThorngrass",
    "reserved": [
     "A",
@@ -460,6 +475,9 @@
     "E": "render legacy_d52a8f4d_plant_twistingthornweed_v1",
     "F": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThornweed_b (2 of 3) \u2014 FloodedCanyon"
    },
+   "pools": [
+    "Things/Plant/RM_TwistingThornweed"
+   ],
    "res": "Things/Plant/RM_TwistingThornweed",
    "reserved": [
     "A",
@@ -508,6 +526,7 @@
     "C": "render RM_Uttaqar",
     "D": "render enact_uttaqar_baby_7dc56b70_uttaqar_v1 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "Animal/RockTroll/RockTroll",
    "reserved": [
     "A",
@@ -555,6 +574,9 @@
     "C": "render enact_fcveqma_real_v2",
     "D": "render enact_fcveqma_real_v3"
    },
+   "pools": [
+    "Things/Plant/RM_Veqma"
+   ],
    "res": "Things/Plant/RM_Veqma",
    "reserved": [
     "A",
@@ -584,6 +606,7 @@
     "A": "IN GAME \u2014 FloodedCanyon",
     "B": "render enact_1d929b27_zennaq_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Zennaq/RM_Zennaq",
    "reserved": [
     "A",
@@ -634,6 +657,7 @@
     "D": "render canonregen_rsw_cancell_v1 \u2014 failed canon check",
     "E": "render canonregen_rsw_cancell_v2 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "swanimals/CanCell/CanCell",
    "reserved": [
     "A",
@@ -723,7 +747,7 @@
     "C": "swanimals/Convor/Convor",
     "D": "swanimals/Convor/Convor",
     "E": "swanimals/Convor/Convor_f",
-    "F": "_flip:swanimals/Convor/Convor_Flying_",
+    "F": "_flip:swanimals/Convor/Convor_f_Flying_",
     "G": "_flip:swanimals/Convor/Convor_Flying_"
    },
    "labels": {
@@ -735,6 +759,7 @@
     "F": "IN GAME \u2014 Convor_f_Flying_",
     "G": "IN GAME \u2014 Convor_Flying_"
    },
+   "pools": [],
    "res": "swanimals/Convor/Convor",
    "reserved": [
     "A",
@@ -822,6 +847,7 @@
     "D": "render enact_a7139488_creature_mantrap_v1",
     "E": "render enact_f889cf2f_creature_mantrap_v2"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
    "reserved": [
     "A",
@@ -858,6 +884,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render enact_0ae79c6a_gornt_v1"
    },
+   "pools": [],
    "res": "swanimals/Gornt/Gornt",
    "reserved": [
     "A",
@@ -891,6 +918,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render enact_5e098e7b_mutagenicnorphea_v1"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea",
    "reserved": [
     "A",
@@ -924,6 +952,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render enact_f4be0239_sandleaper_v1"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper",
    "reserved": [
     "A",
@@ -957,6 +986,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render enact_0232cc80_sandpillar_v1"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar",
    "reserved": [
     "A",
@@ -990,6 +1020,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render enact_90d52757_woolamander_v1"
    },
+   "pools": [],
    "res": "swanimals/Woolamander/Woolamander",
    "reserved": [
     "A",
@@ -1028,6 +1059,7 @@
     "B": "render enact_a1894dc1_emperorvulture_v1 \u2014 failed canon check",
     "C": "render enact_rut_ulvassk_alien_v3"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture",
    "reserved": [
     "A",
@@ -1062,6 +1094,7 @@
     "A": "IN GAME \u2014 UtinniPatches",
     "B": "render enact_15eaaf39_sealedsleeper_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper",
    "reserved": [
     "A",

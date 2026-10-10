@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheRot",
- "built": "2026-10-10T10:14:14-0700",
+ "built": "2026-10-10T12:52:08-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_Agaripawn": {
    "columns": {
@@ -19,6 +19,7 @@
    "labels": {
     "A": "IN GAME \u2014 TheRot"
    },
+   "pools": [],
    "res": "RotSpecies/Agaripawn/Agaripawn",
    "reserved": [
     "A"
@@ -58,6 +59,7 @@
     "B": "history AgaripodArtOverride 2026-09-13",
     "C": "history AgaripodArtOverride 2026-09-20"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/AA_Agaripod/AA_Agaripod",
    "reserved": [
     "A",
@@ -84,11 +86,6 @@
      "north": "e14810d6b74b3ccd2980facce0b49d2226497d0b19954f3e51b862b50ac9d0cd",
      "south": "c531ad6e109b7e285c9a3c0a9dda70ae142b24ba0132f1c024765e773fa8dca9"
     },
-    "B": {
-     "east": "b8d5defaf35391db4b5e13ca5f0e766c0405c625e3795dcd5fee0e8f1bed18d0",
-     "north": "9e1cf0f9792c58427e18a98b5fd1a58f02fd03691d599ade7c1d3eed3d73152c",
-     "south": "e42e8d355e4c69dbe3426ef720967601bcdb949eb93f48294defa805f71f8bbe"
-    },
     "C": {
      "east": "b8d5defaf35391db4b5e13ca5f0e766c0405c625e3795dcd5fee0e8f1bed18d0",
      "north": "9e1cf0f9792c58427e18a98b5fd1a58f02fd03691d599ade7c1d3eed3d73152c"
@@ -106,18 +103,21 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
-    "B": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
     "C": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
     "D": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth2",
     "E": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth3"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_AngelMoth_v1",
     "C": "render gapall_AA_AngelMoth_v1",
     "D": "IN GAME \u2014 Alpha Animals",
     "E": "IN GAME \u2014 Alpha Animals"
    },
+   "pools": [
+    "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
+    "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth2",
+    "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth3"
+   ],
    "res": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
    "reserved": [
     "A",
@@ -143,11 +143,6 @@
      "north": "60bf836a9ae058e16c1122d3fe42613e58b711a14daf2633b74bcac8bdf1d7d9",
      "south": "2d27955a87e58ef3ec971f675939f0920e08d44995b7d41e2784bec9a91f7659"
     },
-    "B": {
-     "east": "beac1fb5a1fdea8f9e2223694e2dfb47d9f3e74158f1bb16d3845716d6d87bab",
-     "north": "e75d849d345ef7b715c72f25f3622c1442daf4c74861a8a1d25f1afaf9ff1b35",
-     "south": "e8b99406ac09b29fb012a0346dcbb6c8492bbe62e7b8b889fea792f11328c12e"
-    },
     "C": {
      "south": "52646f50fdf27a12e0dec0ca9a4275aa7ba60936affe7d35b058705db9a633c5"
     },
@@ -158,16 +153,15 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus",
-    "B": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus",
     "C": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus",
     "D": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_AnimaColossus_v1",
     "C": "render enact_4b7d5ca2_animacolossus_v1",
     "D": "render gapall_AA_AnimaColossus_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus",
    "reserved": [
     "A",
@@ -211,6 +205,7 @@
     "B": "render rot_mycoidcolossus_v3",
     "D": "render rot_mycoidcolossus_v2"
    },
+   "pools": [],
    "res": "RotSpecies/MycoidColossus/MycoidColossus",
    "reserved": [
     "A",
@@ -247,6 +242,7 @@
     "A": "render miasma_swarmling_green_v2",
     "B": "render miasma_swarmling_green_v3"
    },
+   "pools": [],
    "res": "RotSpecies/Swarmling/Swarmling",
    "reserved": [
     "A",
@@ -273,6 +269,7 @@
    "labels": {
     "A": "IN GAME \u2014 TheRot"
    },
+   "pools": [],
    "res": "RotSpecies/AgaricusDomeCap",
    "reserved": [
     "A"
@@ -294,6 +291,9 @@
    "labels": {
     "A": "IN GAME \u2014 random variant Agarilux_A (1 of 1) \u2014 TheRot"
    },
+   "pools": [
+    "RotSpecies/Agarilux"
+   ],
    "res": "RotSpecies/Agarilux",
    "reserved": [
     "A",
@@ -317,6 +317,7 @@
    "labels": {
     "A": "IN GAME \u2014 TheRot"
    },
+   "pools": [],
    "res": "RotSpecies/AgariluxPrime",
    "reserved": [
     "A",
@@ -340,6 +341,9 @@
    "labels": {
     "A": "IN GAME \u2014 random variant ArbuscularMycorrhiza_A (1 of 1) \u2014 TheRot"
    },
+   "pools": [
+    "RotSpecies/ArbuscularMycorrhiza"
+   ],
    "res": "RotSpecies/ArbuscularMycorrhiza",
    "reserved": [
     "A"
@@ -371,6 +375,9 @@
     "B": "render rotvar_ab_bryolux_a_v1",
     "C": "render rotvar_ab_bryolux_b_v1"
    },
+   "pools": [
+    "RotSpecies/Bryolux"
+   ],
    "res": "RotSpecies/Bryolux",
    "reserved": [
     "A",
@@ -404,6 +411,9 @@
     "B": "render rotvar_ab_dribblingcap_a_v1",
     "C": "render rotvar_ab_dribblingcap_b_v1"
    },
+   "pools": [
+    "RotSpecies/DribblingCap"
+   ],
    "res": "RotSpecies/DribblingCap",
    "reserved": [
     "A",
@@ -437,6 +447,9 @@
     "B": "render rotvar_ab_giantagarilux_a_v1",
     "C": "render rotvar_ab_giantagarilux_b_v1 \u2014 failed canon check"
    },
+   "pools": [
+    "RotSpecies/GiantAgarilux"
+   ],
    "res": "RotSpecies/GiantAgarilux",
    "reserved": [
     "A",
@@ -466,10 +479,13 @@
     "C": "RotSpecies/GlowingAgarilux"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant GlowingAgarilux_A (1 of 1) \u2014 TheRot",
-    "B": "render rotvar_ab_glowingagarilux_a_v1",
-    "C": "render rotvar_ab_glowingagarilux_b_v1"
+    "A": "IN GAME \u2014 random variant GlowingAgarilux_A (1 of 3) \u2014 TheRot",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant GlowingAgarilux_b (2 of 3) \u2014 TheRot",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant GlowingAgarilux_c (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSpecies/GlowingAgarilux"
+   ],
    "res": "RotSpecies/GlowingAgarilux",
    "reserved": [
     "A",
@@ -499,10 +515,13 @@
     "C": "RotSpecies/Glowstool"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant Glowstool_A (1 of 1) \u2014 TheRot",
-    "B": "render rotvar_ab_glowstool_a_v1",
-    "C": "render rotvar_ab_glowstool_b_v1"
+    "A": "IN GAME \u2014 random variant Glowstool_A (1 of 3) \u2014 TheRot",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant Glowstool_b (2 of 3) \u2014 TheRot",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant Glowstool_c (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSpecies/Glowstool"
+   ],
    "res": "RotSpecies/Glowstool",
    "reserved": [
     "A",
@@ -532,10 +551,13 @@
     "C": "RotSpecies/LilacBeacon"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant LilacBeacon_A (1 of 1) \u2014 TheRot",
-    "B": "render rotvar_ab_lilacbeacon_a_v1",
-    "C": "render rotvar_ab_lilacbeacon_b_v1"
+    "A": "IN GAME \u2014 random variant LilacBeacon_A (1 of 3) \u2014 TheRot",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant LilacBeacon_b (2 of 3) \u2014 TheRot",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant LilacBeacon_c (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSpecies/LilacBeacon"
+   ],
    "res": "RotSpecies/LilacBeacon",
    "reserved": [
     "A",
@@ -564,6 +586,7 @@
     "A": "IN GAME \u2014 TheRot",
     "B": "render rot_recurvedstropharia_v2"
    },
+   "pools": [],
    "res": "RotSpecies/RecurvedStropharia",
    "reserved": [
     "A",
@@ -593,10 +616,13 @@
     "C": "RotSpecies/SlimyPholiota"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant SlimyPholiota_A (1 of 1) \u2014 TheRot",
-    "B": "render rotvar_ab_slimypholiota_a_v1",
-    "C": "render rotvar_ab_slimypholiota_b_v1"
+    "A": "IN GAME \u2014 random variant SlimyPholiota_A (1 of 3) \u2014 TheRot",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant SlimyPholiota_b (2 of 3) \u2014 TheRot",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant SlimyPholiota_c (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSpecies/SlimyPholiota"
+   ],
    "res": "RotSpecies/SlimyPholiota",
    "reserved": [
     "A",
@@ -626,10 +652,13 @@
     "C": "RotSpecies/WitchesOyster"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheRot",
-    "B": "render rotvar_ab_witchesoyster_a_v1",
-    "C": "render rotvar_ab_witchesoyster_b_v1"
+    "A": "IN GAME \u2014 random variant WitchesOyster_A (1 of 3) \u2014 TheRot",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant WitchesOyster_b (2 of 3) \u2014 TheRot",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant WitchesOyster_c (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSpecies/WitchesOyster"
+   ],
    "res": "RotSpecies/WitchesOyster",
    "reserved": [
     "A",
@@ -663,11 +692,14 @@
     "E": "RotSporeKit/Things/Plant/AgelessCap"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant AgelessCap_A (1 of 2) \u2014 TheRot",
-    "B": "IN GAME \u2014 random variant AgelessCap_B (2 of 2) \u2014 TheRot",
-    "D": "render rotvar_agelesscap_a_v1",
-    "E": "render rotvar_agelesscap_b_v1"
+    "A": "IN GAME \u2014 random variant AgelessCap_A (1 of 4) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant AgelessCap_B (2 of 4) \u2014 TheRot",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant AgelessCap_d (3 of 4) \u2014 TheRot",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant AgelessCap_e (4 of 4) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/AgelessCap"
+   ],
    "res": "RotSporeKit/Things/Plant/AgelessCap",
    "reserved": [
     "A",
@@ -710,6 +742,9 @@
     "C": "IN GAME \u2014 random variant Arpeau_C (3 of 3) \u2014 TheRot",
     "D": "render arpeau_a_v1"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/Arpeau"
+   ],
    "res": "RotSporeKit/Things/Plant/Arpeau",
    "reserved": [
     "A",
@@ -732,9 +767,6 @@
     "A": {
      "single": "7068ac6171e655c34a29f5a97451d0e6f60680783bc5f96a7987b7f4efe589ae"
     },
-    "B": {
-     "single": "eaa39f8c641078bcdc08a8c93710b06e350b8ffdd435b16848481815c0b9f81c"
-    },
     "C": {
      "single": "8260cf3e56152901f89e59870281af60c0366f3c6aa49a14fe5b3500fa99d8e2"
     },
@@ -750,20 +782,22 @@
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
-    "B": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
     "C": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
     "D": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomImmature",
-    "E": "_byname",
-    "F": "_byname"
+    "E": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
+    "F": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant BoomshroomGrown_A (1 of 3) \u2014 TheRot",
-    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant BoomshroomGrown_B (2 of 3) \u2014 TheRot",
+    "A": "our deployed art (render rot_blastpodshroom_v2) \u2014 RimMandrake: Baroque Biomes",
     "C": "in game now, never shown \u2014 IN GAME \u2014 random variant BoomshroomGrown_C (3 of 3) \u2014 TheRot",
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant BoomshroomImmature (1 of 1) \u2014 TheRot",
-    "E": "render rotvar_blastpodshroom_a_v1",
-    "F": "render rotvar_blastpodshroom_b_v1 \u2014 failed canon check"
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant BoomshroomGrown_e (1 of 2) \u2014 TheRot",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant BoomshroomGrown_f (2 of 2) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
+    "RotSporeKit/Things/Plant/Boomshroom/BoomshroomImmature"
+   ],
    "res": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
    "reserved": [
     "A",
@@ -808,13 +842,16 @@
     "F": "RotSporeKit/Things/Plant/BleedingTooth"
    },
    "labels": {
-    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
     "B": "render rot_bleedingtooth_v3a",
     "C": "render rot_bleedingtooth_v3b",
     "D": "IN GAME \u2014 random variant BleedingTooth_A (1 of 3) \u2014 TheRot",
     "E": "in game now, a re-encoded copy of set B \u2014 IN GAME \u2014 random variant BleedingTooth_p3a (2 of 3) \u2014 TheRot",
     "F": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant BleedingTooth_p3b (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/BleedingTooth"
+   ],
    "res": "RotSporeKit/Things/Plant/BleedingTooth",
    "reserved": [
     "A",
@@ -834,9 +871,6 @@
   },
   "RM_Brightbell": {
    "columns": {
-    "A": {
-     "single": "56c96bd53a28fb3c477f9c2ca8811e3e577deee5ca054546e9bd0e0cd1513305"
-    },
     "C": {
      "single": "1547d686d365b9105d3b7a600a20ff2fa91ad71d463f14588772db0ee53d00a2"
     },
@@ -848,17 +882,18 @@
     }
    },
    "graphic_of": {
-    "A": "RotSporeKit/Things/Plant/Brightbell",
     "C": "RotSporeKit/Things/Plant/Brightbell",
     "D": "RotSporeKit/Things/Plant/Brightbell",
     "E": "RotSporeKit/Things/Plant/Brightbell"
    },
    "labels": {
-    "A": "render rot_brightbell_v2",
-    "C": "IN GAME \u2014 random variant Brightbell_A (1 of 1) \u2014 TheRot",
-    "D": "render rotvar_brightbell_a_v1",
-    "E": "render rotvar_brightbell_b_v1"
+    "C": "IN GAME \u2014 random variant Brightbell_A (1 of 3) \u2014 TheRot",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant Brightbell_d (2 of 3) \u2014 TheRot",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant Brightbell_e (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/Brightbell"
+   ],
    "res": "RotSporeKit/Things/Plant/Brightbell",
    "reserved": [
     "A",
@@ -880,21 +915,15 @@
      "east": "bcbb8a4a68fbc9d462fc7dffbfa81cb10dc9bde86665df30c1a8e9dba88b85a0",
      "north": "4c06dce1bae89768dd6d3e32a969e7bbb457b769a7fc49bcd4146c0d73515245",
      "south": "9aa35cd9e2b7d4888b1d419ddaf116c8d4d696b5a4889fc63c7f3a57f0fa6b09"
-    },
-    "B": {
-     "east": "8790466bcc0ccfd0bae6bd5b004f6c3eae0d0e7e4802cc6ccdba19a47447fa95",
-     "north": "82bc8e90c6bfd75b3adeb4c05c4da744fa9f48b0a1e15fd500aa983179e9f1bb",
-     "south": "9bd30a8ac36e1dbeefe838d28004ac4d03b236878d6edac10060c1ffd1a5119e"
     }
    },
    "graphic_of": {
-    "A": "RM_TheRot/Fauna/Redrawn/Brogg/Brogg",
-    "B": "RM_TheRot/Fauna/Redrawn/Brogg/Brogg"
+    "A": "RM_TheRot/Fauna/Redrawn/Brogg/Brogg"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheRot",
-    "B": "render rot_brogg"
+    "A": "IN GAME \u2014 TheRot"
    },
+   "pools": [],
    "res": "RM_TheRot/Fauna/Redrawn/Brogg/Brogg",
    "reserved": [
     "A",
@@ -924,6 +953,7 @@
    "labels": {
     "A": "IN GAME \u2014 TheRot"
    },
+   "pools": [],
    "res": "RM_TheRot/Fauna/Redrawn/Brullith/Brullith",
    "reserved": [
     "A"
@@ -937,24 +967,6 @@
   },
   "RM_CrimsonCap": {
    "columns": {
-    "A": {
-     "single": "fd787ef4957cee94ac59636699aca62517d878fc7764daed4a43c6daa133b382"
-    },
-    "B": {
-     "single": "35bec7e818089a0550ddf9fa1fdfd15ace8943e08f1f660fb1115f68c9e22a29"
-    },
-    "C": {
-     "single": "c7520cdab09b6f2d8aba1d65bec63c57486f2ef57d0fbcacfd2ae9acc8dce80f"
-    },
-    "D": {
-     "single": "b2de8d98b963ce380b67abc15084fbf63e9d8384dd173b19fff750142e5310b5"
-    },
-    "E": {
-     "single": "54537d0083688f6c014a320d45464c43fc3a4bdb93bbbc63e87ff042ad06d0ca"
-    },
-    "F": {
-     "single": "946f33b92d3717ded1e68b19d935b628d98adb5a153878d1efa31168fb8e93ba"
-    },
     "G": {
      "single": "db0b36156f6e7b1f2e5fd179f4630a1df2c9ae40341b5ea895df1bbc39702b0a"
     },
@@ -963,25 +975,16 @@
     }
    },
    "graphic_of": {
-    "A": "RotSporeKit/Things/Plant/CrimsonCap",
-    "B": "RotSporeKit/Things/Plant/CrimsonCap",
-    "C": "RotSporeKit/Things/Plant/CrimsonCap",
-    "D": "RotSporeKit/Things/Plant/CrimsonCap",
-    "E": "RotSporeKit/Things/Plant/CrimsonCap",
-    "F": "RotSporeKit/Things/Plant/CrimsonCap",
     "G": "RotSporeKit/Things/Plant/CrimsonCap",
     "H": "RotSporeKit/Things/Plant/CrimsonCap"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant CrimsonCap_a (1 of 6) \u2014 TheRot",
-    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_b (2 of 6) \u2014 TheRot",
-    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_c (3 of 6) \u2014 TheRot",
-    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_d (4 of 6) \u2014 TheRot",
-    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_e (5 of 6) \u2014 TheRot",
-    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_f (6 of 6) \u2014 TheRot",
-    "G": "render rotvar_crimsoncap_a_v1",
-    "H": "render rotvar_crimsoncap_b_v1 \u2014 failed canon check"
+    "G": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_g (1 of 2) \u2014 TheRot",
+    "H": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_h (2 of 2) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/CrimsonCap"
+   ],
    "res": "RotSporeKit/Things/Plant/CrimsonCap",
    "reserved": [
     "A",
@@ -1035,6 +1038,9 @@
     "F": "in game now, a re-encoded copy of set B \u2014 IN GAME \u2014 random variant Seadew_p3a (2 of 3) \u2014 TheRot",
     "G": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant Seadew_p3b (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/Seadew"
+   ],
    "res": "RotSporeKit/Things/Plant/Seadew",
    "reserved": [
     "A",
@@ -1068,6 +1074,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Durrok/RM_Durrok",
    "reserved": [
     "A"
@@ -1101,6 +1108,9 @@
     "B": "IN GAME \u2014 random variant EuphoricCrown_A (1 of 1) \u2014 TheRot",
     "C": "render rut_liveingredient_euphoriccrown_v1"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/EuphoricCrown"
+   ],
    "res": "RotSporeKit/Things/Plant/EuphoricCrown",
    "reserved": [
     "A",
@@ -1137,10 +1147,13 @@
    },
    "labels": {
     "A": "render rot_falsefruit_v2",
-    "B": "IN GAME \u2014 random variant FalseFruit_A (1 of 1) \u2014 TheRot",
-    "C": "render rotvar_falsefruit_a_v1",
-    "D": "render rotvar_falsefruit_b_v1"
+    "B": "IN GAME \u2014 random variant FalseFruit_A (1 of 3) \u2014 TheRot",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant FalseFruit_c (2 of 3) \u2014 TheRot",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant FalseFruit_d (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/FalseFruit"
+   ],
    "res": "RotSporeKit/Things/Plant/FalseFruit",
    "reserved": [
     "A",
@@ -1159,9 +1172,6 @@
     "A": {
      "single": "eb05e7dcdc6894a1a84940620d3a8bd82d62a69605938ce3e320de822b961190"
     },
-    "B": {
-     "single": "e871384f56ba44bda702dbce336299c74eea2caba99eb6e9a53a3c7750f7f1a5"
-    },
     "C": {
      "single": "9c8e35e112c4b2189c81b5fa806ea7f83c3e2137da702261a5168eb25fd8aa65"
     },
@@ -1171,16 +1181,17 @@
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/FlakespireFungus",
-    "B": "RotSporeKit/Things/Plant/FlakespireFungus",
     "C": "RotSporeKit/Things/Plant/FlakespireFungus",
     "D": "RotSporeKit/Things/Plant/FlakespireFungus"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant Flakespirefungus_a (1 of 2) \u2014 TheRot",
-    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant Flakespirefungus_b (2 of 2) \u2014 TheRot",
-    "C": "render rotvar_flakespirefungus_a_v1",
-    "D": "render rotvar_flakespirefungus_b_v1 \u2014 failed canon check"
+    "A": "IN GAME \u2014 random variant Flakespirefungus_a (3 of 3) \u2014 TheRot",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant FlakespireFungus_c (1 of 3) \u2014 TheRot",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant FlakespireFungus_d (2 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/FlakespireFungus"
+   ],
    "res": "RotSporeKit/Things/Plant/FlakespireFungus",
    "reserved": [
     "A",
@@ -1198,15 +1209,6 @@
     "A": {
      "single": "753c75cdd61bc89f646dd0ad1a6a5f43a7ef3580606613f0441b321e61e6e0df"
     },
-    "B": {
-     "single": "b459f5d7245439e2d16951412866b81317b6c3b83518cfb836f93fbd6e27363e"
-    },
-    "C": {
-     "single": "89ee1e9cfbf23702c93d4f9684bc251a6a82cfbfd1f305dc126012f09e3488b9"
-    },
-    "D": {
-     "single": "cab09965d3904fd685bbdfaa052171c84e3eed3adadf0b5ee214b7a0fd6c7cd5"
-    },
     "E": {
      "single": "e30ab9925b27aa69e7a4e2e139329d17f68db50e85a2b76cfd0c25d3ffebb088"
     },
@@ -1216,20 +1218,17 @@
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/FruitingBodies",
-    "B": "RotSporeKit/Things/Plant/FruitingBodies",
-    "C": "RotSporeKit/Things/Plant/FruitingBodies",
-    "D": "RotSporeKit/Things/Plant/FruitingBodies",
     "E": "RotSporeKit/Things/Plant/FruitingBodies",
     "F": "RotSporeKit/Things/Plant/FruitingBodies"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant FruitingBodies_A (1 of 4) \u2014 TheRot",
-    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant FruitingBodyA (2 of 4) \u2014 TheRot",
-    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant FruitingBodyB (3 of 4) \u2014 TheRot",
-    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant FruitingBodyC (4 of 4) \u2014 TheRot",
-    "E": "render rotvar_fruitingbodies_a_v1",
-    "F": "render rotvar_fruitingbodies_b_v1"
+    "A": "IN GAME \u2014 random variant FruitingBodies_A (1 of 3) \u2014 TheRot",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant FruitingBodies_e (2 of 3) \u2014 TheRot",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant FruitingBodies_f (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/FruitingBodies"
+   ],
    "res": "RotSporeKit/Things/Plant/FruitingBodies",
    "reserved": [
     "A",
@@ -1258,6 +1257,7 @@
    "labels": {
     "A": "IN GAME \u2014 TheRot"
    },
+   "pools": [],
    "res": "RM_TheRot/Fauna/Redrawn/Grellik/Grellik",
    "reserved": [
     "A"
@@ -1271,9 +1271,6 @@
   },
   "RM_GreyLady": {
    "columns": {
-    "A": {
-     "single": "58480c528d3498ec0070fa1d7caa11823b681c79f994a7806ab8354e657c095e"
-    },
     "B": {
      "single": "0ec42b4a5cf3b81d0028d980c701178634569b055a0d12c9fdbcb37c93d1ab85"
     },
@@ -1285,27 +1282,24 @@
     },
     "E": {
      "single": "a31f985818ba5a63683de257bc7ea2c6d5192ce62b7073f44854e0c228fabbc1"
-    },
-    "F": {
-     "single": "85bf87c03fa0806592cc95a4079c72a91bde2245adc834f9d8d8197839de4a01"
     }
    },
    "graphic_of": {
-    "A": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
     "B": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
     "C": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
     "D": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
-    "E": "RotSporeKit/Things/Plant/GreyLady/GreyLadyImmature",
-    "F": "RotSporeKit/Things/Plant/GreyLady/GreyLadyImmature"
+    "E": "RotSporeKit/Things/Plant/GreyLady/GreyLadyImmature"
    },
    "labels": {
-    "A": "our deployed art (render rot_greylady_v3) \u2014 RimMandrake: Baroque Biomes",
-    "B": "IN GAME \u2014 random variant GreyLadyGrown_A (1 of 1) \u2014 TheRot",
-    "C": "render greyladygrown_b_v1",
-    "D": "render greyladygrown_c_v1",
-    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant GreyLadyImmature_a (1 of 1) \u2014 TheRot",
-    "F": "render greyladyimmature_a_v1"
+    "B": "IN GAME \u2014 random variant GreyLadyGrown_A (1 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant GreyLadyGrown_c (2 of 3) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant GreyLadyGrown_d (3 of 3) \u2014 TheRot",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant GreyLadyImmature_a (1 of 1) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
+    "RotSporeKit/Things/Plant/GreyLady/GreyLadyImmature"
+   ],
    "res": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
    "reserved": [
     "A",
@@ -1349,6 +1343,7 @@
     "B": "history TheRot 2026-10-03",
     "C": "history TheRot 2026-10-03"
    },
+   "pools": [],
    "res": "RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue",
    "reserved": [
     "A",
@@ -1382,6 +1377,7 @@
     "A": "IN GAME \u2014 TheRot",
     "C": "history TheRot 2026-10-03"
    },
+   "pools": [],
    "res": "RM_TheRot/Fauna/Redrawn/Illoth/Illoth",
    "reserved": [
     "A",
@@ -1400,9 +1396,6 @@
   },
   "RM_MortalMorelPlant": {
    "columns": {
-    "A": {
-     "single": "88d5e0e268b3b3bb1af578c92d704d06d97133cfef4c6dfbfa66e91c85e89917"
-    },
     "B": {
      "single": "cf9a25a2014007a0c292f7d6d4779e2af4925bf5e37d79965a3b889bf45553f2"
     },
@@ -1423,23 +1416,24 @@
     }
    },
    "graphic_of": {
-    "A": "RotSporeKit/Things/Plant/MortalMorel",
     "B": "RotSporeKit/Things/Plant/MortalMorel",
     "C": "RotSporeKit/Things/Plant/MortalMorel",
-    "D": "_byname",
+    "D": "RotSporeKit/Things/Plant/MortalMorel",
     "E": "RotSporeKit/Things/Plant/MortalMorel",
-    "F": "_byname",
-    "G": "_byname"
+    "F": "RotSporeKit/Things/Plant/MortalMorel",
+    "G": "RotSporeKit/Things/Plant/MortalMorel"
    },
    "labels": {
-    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
-    "B": "IN GAME \u2014 random variant MortalMorel_A (1 of 2) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant MortalMorel_A (1 of 5) \u2014 TheRot",
     "C": "render rot_mortalmorel_v3b",
-    "D": "render rot_mortalmorelplant_v2",
-    "E": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant MortalMorel_p3b (2 of 2) \u2014 TheRot",
-    "F": "render rotvar_mortalmorelplant_a_v1",
-    "G": "render rotvar_mortalmorelplant_b_v1 \u2014 failed canon check"
+    "D": "IN GAME \u2014 random variant MortalMorel_d (2 of 5) \u2014 TheRot",
+    "E": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant MortalMorel_p3b (5 of 5) \u2014 TheRot",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant MortalMorel_f (3 of 5) \u2014 TheRot",
+    "G": "in game now, never shown \u2014 IN GAME \u2014 random variant MortalMorel_g (4 of 5) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/MortalMorel"
+   ],
    "res": "RotSporeKit/Things/Plant/MortalMorel",
    "reserved": [
     "A",
@@ -1472,6 +1466,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth",
    "reserved": [
     "A"
@@ -1509,12 +1504,15 @@
     "G": "RotSporeKit/Things/Plant/Nuitae"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant Nuitae_A (1 of 3) \u2014 TheRot",
-    "B": "IN GAME \u2014 random variant Nuitae_B (2 of 3) \u2014 TheRot",
-    "C": "IN GAME \u2014 random variant Nuitae_C (3 of 3) \u2014 TheRot",
-    "F": "render rotvar_nuitae_a_v1",
-    "G": "render rotvar_nuitae_b_v1"
+    "A": "IN GAME \u2014 random variant Nuitae_A (1 of 5) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant Nuitae_B (2 of 5) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant Nuitae_C (3 of 5) \u2014 TheRot",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant Nuitae_f (4 of 5) \u2014 TheRot",
+    "G": "in game now, never shown \u2014 IN GAME \u2014 random variant Nuitae_g (5 of 5) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/Nuitae"
+   ],
    "res": "RotSporeKit/Things/Plant/Nuitae",
    "reserved": [
     "A",
@@ -1564,13 +1562,16 @@
     "F": "Things/Plant/TreeAnima_Immature"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant PaleTree_A (1 of 1) \u2014 TheRot",
-    "B": "render rot_paletree_v2",
-    "C": "render rut_paletree_v1",
-    "D": "render rotvar_paletree_a_v1",
-    "E": "render rotvar_paletree_b_v1",
+    "A": "IN GAME \u2014 random variant PaleTree_A (1 of 5) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant PaleTree_b (2 of 5) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant PaleTree_c (3 of 5) \u2014 TheRot",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant PaleTree_d (4 of 5) \u2014 TheRot",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant PaleTree_e (5 of 5) \u2014 TheRot",
     "F": "IN GAME \u2014 ludeon.rimworld.royalty"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/PaleTree"
+   ],
    "res": "RotSporeKit/Things/Plant/PaleTree",
    "reserved": [
     "A",
@@ -1610,10 +1611,13 @@
    },
    "labels": {
     "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
-    "B": "IN GAME \u2014 random variant Pusmelon_A (1 of 1) \u2014 TheRot",
-    "C": "render rotvar_pusmelon_a_v1",
-    "D": "render rotvar_pusmelon_b_v1"
+    "B": "IN GAME \u2014 random variant Pusmelon_A (1 of 3) \u2014 TheRot",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant Pusmelon_c (2 of 3) \u2014 TheRot",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant Pusmelon_d (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/Pusmelon"
+   ],
    "res": "RotSporeKit/Things/Plant/Pusmelon",
    "reserved": [
     "A",
@@ -1632,9 +1636,6 @@
     "A": {
      "single": "cfa63202898cdf5306f548ca7a2374110b5eb49e7189b71e74579477c932216e"
     },
-    "C": {
-     "single": "aa606e0edc8224783fde99ef5b87439eb6c08d44893ef6f8a6f485590a8a24e3"
-    },
     "D": {
      "single": "93c962f2d7fa0ff4064ae3f011c3f1e98247aca92765c59268969fcdfb098749"
     },
@@ -1644,16 +1645,17 @@
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/RegenerantVeil",
-    "C": "RotSporeKit/Things/Plant/RegenerantVeil",
     "D": "RotSporeKit/Things/Plant/RegenerantVeil",
     "E": "RotSporeKit/Things/Plant/RegenerantVeil"
    },
    "labels": {
-    "A": "IN GAME \u2014 random variant RegenerantVeil_A (1 of 2) \u2014 TheRot",
-    "C": "IN GAME \u2014 random variant RegenerantVeil_C (2 of 2) \u2014 TheRot",
-    "D": "render rotvar_regenerantveil_a_v1",
-    "E": "render rotvar_regenerantveil_b_v1"
+    "A": "IN GAME \u2014 random variant RegenerantVeil_A (1 of 3) \u2014 TheRot",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RegenerantVeil_d (2 of 3) \u2014 TheRot",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RegenerantVeil_e (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/RegenerantVeil"
+   ],
    "res": "RotSporeKit/Things/Plant/RegenerantVeil",
    "reserved": [
     "A",
@@ -1671,9 +1673,6 @@
   },
   "RM_Sagecrust": {
    "columns": {
-    "A": {
-     "single": "a9dac49e125b19e4881580693ad68bfc3907b88755ca9e83c921239f56a696a9"
-    },
     "C": {
      "single": "2620878044a5f8e7a062bb180b1493ca77601398c1b38825dbbfbefdbdad34ca"
     },
@@ -1682,15 +1681,16 @@
     }
    },
    "graphic_of": {
-    "A": "RotSporeKit/Things/Plant/Sagecrust",
     "C": "RotSporeKit/Things/Plant/Sagecrust",
     "D": "RotSporeKit/Things/Plant/Sagecrust"
    },
    "labels": {
-    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
-    "C": "IN GAME \u2014 random variant Sagecrust_A (1 of 1) \u2014 TheRot",
-    "D": "render rotvar_sagecrust_a_v1"
+    "C": "IN GAME \u2014 random variant Sagecrust_A (1 of 2) \u2014 TheRot",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant Sagecrust_d (2 of 2) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/Sagecrust"
+   ],
    "res": "RotSporeKit/Things/Plant/Sagecrust",
    "reserved": [
     "A",
@@ -1719,6 +1719,7 @@
    "labels": {
     "A": "IN GAME \u2014 TheRot"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Shambles/RM_Shambles",
    "reserved": [
     "A"
@@ -1762,6 +1763,10 @@
     "D": "IN GAME \u2014 random variant ShinecapImmature_d (1 of 2) \u2014 TheRot",
     "E": "IN GAME \u2014 random variant ShinecapImmature_e (2 of 2) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
+    "RotSporeKit/Things/Plant/Shinecap/ShinecapImmature"
+   ],
    "res": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
    "reserved": [
     "A",
@@ -1793,6 +1798,7 @@
    "labels": {
     "A": "IN GAME \u2014 TheRot"
    },
+   "pools": [],
    "res": "RM_TheRot/Fauna/Redrawn/Skerrith/Skerrith",
    "reserved": [
     "A"
@@ -1816,6 +1822,9 @@
    "labels": {
     "A": "IN GAME \u2014 random variant Skulltop_A (1 of 1) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/Skulltop/Skulltop"
+   ],
    "res": "RotSporeKit/Things/Plant/Skulltop/Skulltop",
    "reserved": [
     "A"
@@ -1832,11 +1841,6 @@
      "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb",
      "south": "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85"
     },
-    "B": {
-     "east": "1f3992e70590047acaf36daa35fd4859a8e546ca12eb39aaac5be1e57f1875cc",
-     "north": "93971b556669f1a03b8fe7c910c34d91eb5d929c2025a8ea943d3a6a6c957df2",
-     "south": "b2ec037d0ff17824fb6dd65e59cd955ec141621db86ef6a432b716034e7b8617"
-    },
     "C": {
      "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
      "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb"
@@ -1844,14 +1848,13 @@
    },
    "graphic_of": {
     "A": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
-    "B": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
     "C": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik"
    },
    "labels": {
     "A": "IN GAME \u2014 TheRot",
-    "B": "render rot_thozzik",
     "C": "history TheRot 2026-10-03"
    },
+   "pools": [],
    "res": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
    "reserved": [
     "A",
@@ -1888,6 +1891,7 @@
     "A": "IN GAME \u2014 TheRot",
     "C": "history TheRot 2026-10-03"
    },
+   "pools": [],
    "res": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
    "reserved": [
     "A",
@@ -1918,6 +1922,7 @@
    "labels": {
     "A": "IN GAME \u2014 TheRot"
    },
+   "pools": [],
    "res": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen",
    "reserved": [
     "A"
@@ -1943,6 +1948,7 @@
    "labels": {
     "A": "IN GAME \u2014 TheRot"
    },
+   "pools": [],
    "res": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen",
    "reserved": [
     "A"
@@ -1961,11 +1967,6 @@
      "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb",
      "south": "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85"
     },
-    "B": {
-     "east": "1f3992e70590047acaf36daa35fd4859a8e546ca12eb39aaac5be1e57f1875cc",
-     "north": "93971b556669f1a03b8fe7c910c34d91eb5d929c2025a8ea943d3a6a6c957df2",
-     "south": "b2ec037d0ff17824fb6dd65e59cd955ec141621db86ef6a432b716034e7b8617"
-    },
     "C": {
      "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
      "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb"
@@ -1973,14 +1974,13 @@
    },
    "graphic_of": {
     "A": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
-    "B": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
     "C": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik"
    },
    "labels": {
     "A": "IN GAME \u2014 TheRot",
-    "B": "render rot_thozzik",
     "C": "history TheRot 2026-10-03"
    },
+   "pools": [],
    "res": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
    "reserved": [
     "A",
@@ -2027,13 +2027,16 @@
     "F": "RotSporeKit/Things/Plant/VioletWimple"
    },
    "labels": {
-    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
     "B": "render rot_violetwimple_v3a",
     "C": "render rot_violetwimple_v3b",
     "D": "IN GAME \u2014 random variant VioletWimple_A (1 of 3) \u2014 TheRot",
     "E": "in game now, a re-encoded copy of set B \u2014 IN GAME \u2014 random variant VioletWimple_p3a (2 of 3) \u2014 TheRot",
     "F": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant VioletWimple_p3b (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/VioletWimple"
+   ],
    "res": "RotSporeKit/Things/Plant/VioletWimple",
    "reserved": [
     "A",
@@ -2081,13 +2084,16 @@
     "F": "RotSporeKit/Things/Plant/Wrinklecap"
    },
    "labels": {
-    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
     "B": "render rot_wrinklecap_v3a",
     "C": "render rot_wrinklecap_v3b",
     "D": "IN GAME \u2014 random variant Wrinklecap_A (1 of 3) \u2014 TheRot",
     "E": "in game now, a re-encoded copy of set B \u2014 IN GAME \u2014 random variant Wrinklecap_p3a (2 of 3) \u2014 TheRot",
     "F": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant Wrinklecap_p3b (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/Wrinklecap"
+   ],
    "res": "RotSporeKit/Things/Plant/Wrinklecap",
    "reserved": [
     "A",
@@ -2154,6 +2160,7 @@
     "E": "IN GAME \u2014 SWBestiary",
     "F": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/ShiroTrap/ShiroTrap",
    "reserved": [
     "A",
@@ -2225,6 +2232,7 @@
     "D": "render enact_6811876e_snoruuk_v1",
     "E": "render rotrow_snoruuk_v2"
    },
+   "pools": [],
    "res": "swanimals/Snoruuk/Snoruuk",
    "reserved": [
     "A",
@@ -2248,5 +2256,5 @@
   }
  },
  "sheetId": "therot_sheet_2026-10-05",
- "snapshotId": "72e2706ba545c5cf"
+ "snapshotId": "511271607ac9b213"
 }

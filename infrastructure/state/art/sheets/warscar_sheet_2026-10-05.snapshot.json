@@ -1,9 +1,9 @@
 {
  "biome": "RM_Warscar",
- "built": "2026-10-10T10:14:29-0700",
+ "built": "2026-10-10T13:14:48-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_Helixien": {
    "columns": {
@@ -138,6 +138,7 @@
    "labels": {
     "A": "IN GAME \u2014 Scarlands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm",
    "reserved": [
     "A"
@@ -159,6 +160,7 @@
    "labels": {
     "A": "IN GAME \u2014 Scarlands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Chatrak/RM_Chatrak",
    "reserved": [
     "A",
@@ -186,6 +188,7 @@
    "labels": {
     "A": "IN GAME \u2014 Scarlands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_ElectricGryllotalpa/RM_ElectricGryllotalpa",
    "reserved": [
     "A"
@@ -207,6 +210,7 @@
    "labels": {
     "A": "IN GAME \u2014 Scarlands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_ElectricTick/RM_ElectricTick",
    "reserved": [
     "A"
@@ -231,6 +235,9 @@
     "A": "IN GAME \u2014 random variant RM_Glower_a (1 of 1) \u2014 Scarlands",
     "B": "render gapall_RM_Glower_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Glower"
+   ],
    "res": "Things/Plant/RM_Glower",
    "reserved": [
     "A",
@@ -256,6 +263,7 @@
    "labels": {
     "A": "IN GAME \u2014 Scarlands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_JuggernautBeetle/RM_JuggernautBeetle",
    "reserved": [
     "A"
@@ -277,6 +285,7 @@
    "labels": {
     "A": "IN GAME \u2014 Scarlands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer",
    "reserved": [
     "A"
@@ -302,6 +311,7 @@
    "labels": {
     "A": "IN GAME \u2014 Scarlands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Rimclaw/RM_Rimclaw",
    "reserved": [
     "A"
@@ -323,6 +333,7 @@
    "labels": {
     "A": "IN GAME \u2014 Scarlands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_ScarRoach/RM_ScarRoach",
    "reserved": [
     "A"
@@ -351,6 +362,9 @@
     "A": "IN GAME \u2014 random variant RM_ScorchedStars_a (1 of 2) \u2014 Scarlands",
     "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_ScorchedStars_b (2 of 2) \u2014 Scarlands"
    },
+   "pools": [
+    "Things/Plant/RM_ScorchedStars"
+   ],
    "res": "Things/Plant/RM_ScorchedStars",
    "reserved": [
     "A",
@@ -377,6 +391,7 @@
    "labels": {
     "A": "IN GAME \u2014 Scarlands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Tetchik/RM_Tetchik",
    "reserved": [
     "A",
@@ -411,6 +426,7 @@
     "A": "IN GAME \u2014 Stillsand",
     "B": "render stillsand_regen_RSW_Vozzik_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Vozzik/RM_Vozzik",
    "reserved": [
     "A",
@@ -461,6 +477,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FoundryBeetle/FoundryBeetle",
    "reserved": [
     "A",
@@ -490,6 +507,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/Korrum/Korrum",
    "reserved": [
     "A"
@@ -522,6 +540,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "C": "render warscar_MegaphoridLarva_v2"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Megaphorid/MegaphoridLarva",
    "reserved": [
     "A",
@@ -553,6 +572,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "D": "render warscar_Mynock_v2"
    },
+   "pools": [],
    "res": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
    "reserved": [
     "A",
@@ -596,6 +616,7 @@
     "B": "render RM_Vozzik",
     "C": "history SWBestiary 2026-10-03"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
    "reserved": [
     "A",

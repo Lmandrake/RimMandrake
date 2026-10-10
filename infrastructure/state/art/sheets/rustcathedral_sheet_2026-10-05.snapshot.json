@@ -1,9 +1,9 @@
 {
  "biome": "RM_RustCathedral",
- "built": "2026-10-09T07:39:34-0700",
+ "built": "2026-10-10T12:50:11-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "GR_Mecharat": {
    "columns": {
@@ -48,9 +48,15 @@
    "labels": {
     "A": "IN GAME \u2014 RustCathedral"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_CathedralRoach/RM_CathedralRoach",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "436cc5fc81c52a8fccf1fd27569f64947b1b18a3c0ec0b3ecf890411487f7735",
+    "6aef557545c11404640a5fe247a6665f1aa6f5d1079c62f57e013822cd6e7762",
+    "afb2f61d35ba1ad6c3d367477aad0d34cc32574f49d1e47faefc104e451e1f0c"
    ],
    "subject_key": "cathedralroach"
   },
@@ -71,18 +77,26 @@
    "graphic_of": {
     "A": "Things/Item/Fish/Dogfish",
     "B": "_byname",
-    "C": "_byname"
+    "C": "_reference:RM_CoolantEel"
    },
    "labels": {
     "A": "IN GAME \u2014 ludeon.rimworld.odyssey",
     "B": "render gapall_RM_CoolantEelCatch_v1",
     "C": "render RM_CoolantEel"
    },
+   "pools": [],
    "res": "Things/Item/Fish/Dogfish",
    "reserved": [
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "74b6b33887d032ca8b0fe92280bb5a396eb72adf057f413b2021272db0b10034",
+    "9bde039faa3fd7fa12e88cc2a035060d378098a6610d696d40ea01431f637424",
+    "9c9b54168d25a9ff4467bdcdb76fc5cba20eb716488504c4d55f4547caaeadff",
+    "cc36e331325eb294b977bdad14fb69c8a889ac67a7282f141071c829dc15ac63",
+    "d322b949ab02c814485482f0f631c012109faba5cc1ecdb7cc11bc972b9e8374"
    ],
    "subject_key": "coolanteelcatch"
   },
@@ -107,10 +121,19 @@
     "A": "render rut_livingbolt_v2",
     "B": "IN GAME \u2014 RustCathedral"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "11f0f3ddc4fde9f18abb84d223fbb908997f7f0322770db5a97e82089737e071",
+    "342dc505109ba3a2e9983239a3a1541cb3c843820c44ab005e830e9cbfeee810",
+    "3be9863ccdcea84d0187a058f16c31f0676147f06515e4e5fc5b3c5ea566c355",
+    "47e7de96f33036d17ca3f2608c7eb8189f2cb50559a0d4d10f6843ea517a07f2",
+    "507f524f19789f4dc28e4ffcc83f6d33748c39c71847bda8d28afd60ed4bf38a",
+    "cfce652fa171dc4c11f82aa921c11812c7784c505b601c3bc0f6b43b506554b9"
    ],
    "subject_key": "livingbolt"
   },
@@ -132,10 +155,16 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render warscar_Mynock_v2"
    },
+   "pools": [],
    "res": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5",
+    "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747",
+    "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5"
    ],
    "subject_key": "mynock"
   },
@@ -167,11 +196,23 @@
     "B": "IN GAME \u2014 SWBestiary",
     "C": "render RM_Vozzik"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
    "reserved": [
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492",
+    "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
+    "7d607cde373e32c9c64894bdad2493839d58d86cae941cf7a9746d4b1507507b",
+    "a05d8d0b6983842a13830002385736e26243b0c2364e0a96d82e80ebbb32ec94",
+    "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e",
+    "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
+    "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+    "e0d0305e090721a3098952d1f1e95f2d7e13399a82745b62a2b995d5b03f186b",
+    "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb"
    ],
    "subject_key": "vozzik"
   }

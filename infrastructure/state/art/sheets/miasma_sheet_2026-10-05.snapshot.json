@@ -1,9 +1,9 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-10-10T10:12:52-0700",
+ "built": "2026-10-10T13:13:02-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_DecayDrake": {
    "columns": {
@@ -26,6 +26,7 @@
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_DecayDrake_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake",
    "reserved": [
     "A",
@@ -62,6 +63,7 @@
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_Helixien_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/AA_Helixien/AA_Helixien",
    "reserved": [
     "A",
@@ -84,41 +86,6 @@
      "north": "e93e3d268b30cee0a4125aae02986726eab0a192f0cabc8bd7de9d94f00557b1",
      "south": "747b53ef3b32f48daa7407607f62fe6148be4e69aea090f1a86dd5043889c295"
     },
-    "B": {
-     "south": "6e0e4c3eb870f76f4b22378e3aca2b70400f6414b7b2515164852b07dfdcc5fc"
-    },
-    "C": {
-     "south": "9d97b22f62a2293746b75b7bccaa64d516afe51b540af886a1e51bbeabcb8750"
-    },
-    "D": {
-     "south": "279fa3a30986988c4de0f8e7914a8c4494c0c87eaad6881d7bfd633b1aae4805"
-    },
-    "E": {
-     "north": "6879730bb01fe34c5c8622580f915fa4ba78e9226209f4945ce5215860fa340a",
-     "south": "ac5c3251808d4f0132344854c7faf80296abde805fd36b36b984f08c19605188"
-    },
-    "F": {
-     "south": "b545208b559ab4d88d4ad74fa1848da69971fdbade96594c9f5dd4528b788eb0"
-    },
-    "G": {
-     "north": "570aa3b9f4ab75df14f9accfbad24d5970ed1067745e453591487a850293617e",
-     "south": "99a517059cf78a467f9693f8152ed67074b721446d191872b68ea31a7891b56b"
-    },
-    "H": {
-     "north": "bbbb5c5519ea2f5ea3db4d7c4a8cb678f867803499aae8bc821060890c016927"
-    },
-    "I": {
-     "single": "718616bda9a8944e216ca8053e577de257c5f26dc667afc25d350cb349f295db"
-    },
-    "J": {
-     "single": "f948206e2e4db23a3ecc2f01d944488c127b65a2f00a157e85cdf76bf17a44f7"
-    },
-    "K": {
-     "single": "32517ac4bcbd67f6d82d72b752c838af2c460a8f1d22e558d2fa4cec8afa9323"
-    },
-    "L": {
-     "single": "cc009ef0de9dc098e8f71f7708d93b2b96244f4d00f90a217ec559210a75e504"
-    },
     "M": {
      "east": "58c44d3e8b5051f3afe73f0349017598b3464e0cf2d8295ad227258d7f283cac",
      "north": "de89c31957122795af6bfe1aaab72388996bd935c830df700dce7d4edc0bc757",
@@ -137,38 +104,21 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
-    "B": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
-    "C": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
-    "D": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
-    "E": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
-    "F": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
-    "G": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
-    "H": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
-    "I": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
-    "J": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
-    "K": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
-    "L": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
     "M": "_byname",
     "N": "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw2",
     "O": "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw3"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render lockjaw_improve_a_r10",
-    "C": "render lockjaw_improve_a_r11",
-    "D": "render lockjaw_improve_a_r12",
-    "E": "render lockjaw_improve_a_r8",
-    "F": "render lockjaw_improve_a_r9",
-    "G": "render lockjaw_improve_b_r8",
-    "H": "render lockjaw_improve_b_r9",
-    "I": "render lockjaw_improve_a",
-    "J": "render lockjaw_improve_a_r2",
-    "K": "render lockjaw_improve_b",
-    "L": "render lockjaw_improve_b_r2",
     "M": "render miasma_siezer_v1",
     "N": "IN GAME \u2014 UtinniPatches",
     "O": "IN GAME \u2014 UtinniPatches"
    },
+   "pools": [
+    "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw2",
+    "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw3",
+    "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw"
+   ],
    "res": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
    "reserved": [
     "A",
@@ -214,38 +164,8 @@
      "north": "470b6fd51500bdd2140bab07465c8b0a224670c78156e1ba817053e9c4618774",
      "south": "2fda8da744610a0213d1817de758a8bcf8ea25d5325d0bb32add0c537fdd3b18"
     },
-    "B": {
-     "single": "4ba5d288e328718b0a41376692b097db699a8a20856c4b6e1dfa10adde0ae0c7"
-    },
-    "D": {
-     "single": "4439de18f6d26ddffb4fe2f6ff5252a8b380b9e795647d18f648abd13f1ab90f"
-    },
     "E": {
      "single": "7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d"
-    },
-    "F": {
-     "single": "cc79ab2cdd30341f339e9fd2374a6f36c82de7dae941cf8de47dbbcf8e2130c2"
-    },
-    "G": {
-     "single": "0a87017de19c6882744d411db229e4a201541e9a6c9f0285f2f4a13840510184"
-    },
-    "H": {
-     "single": "5ebfc3726523f778670d25ec838afaa9efd5fec2d53b49ddbdbbef94cce6d0c4"
-    },
-    "I": {
-     "single": "7ed9b10335828766c00bb710d97420624743856f57d290c1eadf0b220847eff7"
-    },
-    "J": {
-     "single": "8094444617567d8f0485d46c337df6bd6814eebfae3d7caa839e4e55080054e3"
-    },
-    "K": {
-     "single": "14bb57f1d400a32829ea378aa6b385610b98b97af43397d0f73aeeed81b39c55"
-    },
-    "L": {
-     "single": "13681d3f00b37acc202724159d3bafbfac165018c26ad6206d8f0c7597808bbb"
-    },
-    "M": {
-     "single": "2e3e0a9af339ad58b89ef4bd6edf5c46fddd5b9bbece38d51c0a9fb3ae1ee305"
     },
     "N": {
      "east": "ec2b7cab37e3f2558e7bf2a4df74fdb7e1d33ab42402b7eb6254486b6d79e5bb",
@@ -274,17 +194,7 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
-    "B": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
-    "D": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
     "E": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
-    "F": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
-    "G": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
-    "H": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
-    "I": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
-    "J": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
-    "K": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
-    "L": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
-    "M": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
     "N": "_byname",
     "O": "_byname",
     "P": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
@@ -294,17 +204,7 @@
    },
    "labels": {
     "A": "donor original \u2014 Alpha Animals",
-    "B": "render codexcal_mantrap_r4",
-    "D": "render mantrap_improve_a_r2",
     "E": "render mantrap_improve_a_r7",
-    "F": "render mantrap_improve_b",
-    "G": "render mantrap_improve_b_r2",
-    "H": "render mantrap_improve_b_r3",
-    "I": "render mantrap_improve_b_r4",
-    "J": "render mantrap_improve_b_r5",
-    "K": "render mantrap_improve_b_r6",
-    "L": "render mantrap_improve_b_r7",
-    "M": "render mantrap_improve_b_r8",
     "N": "render miasma_lastvine_calm_v1",
     "O": "render miasma_lastvine_reared_v1",
     "P": "IN GAME \u2014 UtinniPatches",
@@ -312,6 +212,7 @@
     "R": "render enact_a7139488_creature_mantrap_v1",
     "S": "render enact_f889cf2f_creature_mantrap_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
    "reserved": [
     "A",
@@ -388,6 +289,11 @@
     "D": "IN GAME \u2014 Alpha Animals",
     "E": "IN GAME \u2014 Alpha Animals"
    },
+   "pools": [
+    "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
+    "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp2",
+    "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp3"
+   ],
    "res": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
    "reserved": [
     "A",
@@ -430,6 +336,7 @@
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_Slurrypede_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/AA_Slurrypede/AA_Slurrypede",
    "reserved": [
     "A",
@@ -466,6 +373,7 @@
     "A": "history ThermadonArtOverride 2026-09-20",
     "B": "history ThermadonArtOverride 2026-09-13"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/AA_Thermadon/AA_Thermadon",
    "reserved": [
     "A",
@@ -502,6 +410,7 @@
     "A": "IN GAME \u2014 Miasma",
     "B": "render miasma_aphreen_v2"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Aphreen/RM_Aphreen_a",
    "reserved": [
     "A",
@@ -532,6 +441,7 @@
     "A": "IN GAME \u2014 Miasma",
     "C": "history Miasma 2026-10-03"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Bozzuga/RM_Bozzuga",
    "reserved": [
     "A",
@@ -573,6 +483,9 @@
     "C": "render miasma_braskeen_closed_v2",
     "D": "render miasma_braskeen_open_v2"
    },
+   "pools": [
+    "Things/Plant/RM_Braskeen/RM_Braskeen"
+   ],
    "res": "Things/Plant/RM_Braskeen/RM_Braskeen",
    "reserved": [
     "A",
@@ -603,6 +516,9 @@
     "A": "IN GAME \u2014 random variant RM_Brelloch_a_a (1 of 1) \u2014 Miasma",
     "B": "render gapfin_RM_Brelloch_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Brelloch/RM_Brelloch_a"
+   ],
    "res": "Things/Plant/RM_Brelloch/RM_Brelloch_a",
    "reserved": [
     "A",
@@ -629,6 +545,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee",
    "reserved": [
     "A"
@@ -660,6 +577,7 @@
     "A": "history Miasma 2026-10-03",
     "B": "IN GAME \u2014 Miasma"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm",
    "reserved": [
     "A",
@@ -690,6 +608,7 @@
     "A": "IN GAME \u2014 Miasma",
     "B": "render miasma_ilbareen_dead"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Ilbareen/RM_Ilbareen_live",
    "reserved": [
     "A",
@@ -718,6 +637,9 @@
     "A": "IN GAME \u2014 random variant RM_Immarel_a_a (1 of 1) \u2014 Miasma",
     "B": "render gapfin_RM_Immarel_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Immarel/RM_Immarel_a"
+   ],
    "res": "Things/Plant/RM_Immarel/RM_Immarel_a",
    "reserved": [
     "A",
@@ -756,6 +678,9 @@
     "C": "render miasma_ismerrow_c",
     "D": "render miasma_ismerrow_d"
    },
+   "pools": [
+    "Things/Plant/RM_Ismerrow/RM_Ismerrow"
+   ],
    "res": "Things/Plant/RM_Ismerrow/RM_Ismerrow",
    "reserved": [
     "A",
@@ -790,6 +715,7 @@
     "A": "history Miasma 2026-09-25",
     "B": "IN GAME \u2014 Miasma"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Karravel/RM_Karravel",
    "reserved": [
     "A",
@@ -822,6 +748,7 @@
     "A": "history Miasma 2026-09-25",
     "B": "IN GAME \u2014 Miasma"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Karrimeth/RM_Karrimeth",
    "reserved": [
     "A",
@@ -854,6 +781,7 @@
     "A": "history Miasma 2026-10-03",
     "B": "IN GAME \u2014 Miasma"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Karrobel/RM_Karrobel",
    "reserved": [
     "A",
@@ -886,6 +814,7 @@
     "A": "history Miasma 2026-09-25",
     "B": "IN GAME \u2014 Miasma"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Karrolun/RM_Karrolun",
    "reserved": [
     "A",
@@ -921,6 +850,7 @@
     "C": "render miasma_nemreth_varc_v1",
     "D": "render miasma_nemreth_varb_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Nemreth/RM_Nemreth_a",
    "reserved": [
     "A",
@@ -966,6 +896,9 @@
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant Nogtyl_B (2 of 3) \u2014 TheRot",
     "E": "in game now, never shown \u2014 IN GAME \u2014 random variant Nogtyl_C (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/Nogtyl"
+   ],
    "res": "RotSporeKit/Things/Plant/Nogtyl",
    "reserved": [
     "A",
@@ -1001,6 +934,7 @@
     "B": "render miasma_nyssolet_varb_v1",
     "C": "render miasma_nyssolet_varc_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Nyssolet/RM_Nyssolet_a",
    "reserved": [
     "A",
@@ -1029,6 +963,9 @@
     "A": "IN GAME \u2014 random variant RM_Ollamane_a_a (1 of 1) \u2014 Miasma",
     "B": "render gapfin_RM_Ollamane_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Ollamane/RM_Ollamane_a"
+   ],
    "res": "Things/Plant/RM_Ollamane/RM_Ollamane_a",
    "reserved": [
     "A",
@@ -1061,6 +998,7 @@
     "A": "IN GAME \u2014 LongShade",
     "B": "history LongShade 2026-09-29"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Ommok/RM_Ommok",
    "reserved": [
     "A",
@@ -1103,6 +1041,7 @@
     "C": "render miasma_ommolyn_v2b",
     "D": "render miasma_ommolyn_v2c"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Ommolyn/RM_Ommolyn_a",
    "reserved": [
     "A",
@@ -1137,6 +1076,7 @@
     "B": "render miasma_pallasheen_varb_v1",
     "C": "render miasma_pallasheen_varc_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Pallasheen/RM_Pallasheen_a",
    "reserved": [
     "A",
@@ -1165,6 +1105,9 @@
     "A": "IN GAME \u2014 random variant RM_Quennath_a_a (1 of 1) \u2014 Miasma",
     "B": "render gapfin_RM_Quennath_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Quennath/RM_Quennath_a"
+   ],
    "res": "Things/Plant/RM_Quennath/RM_Quennath_a",
    "reserved": [
     "A",
@@ -1191,6 +1134,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
    "reserved": [
     "A"
@@ -1218,6 +1162,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper",
    "reserved": [
     "A"
@@ -1252,6 +1197,7 @@
     "B": "render miasma_sarrash_varb_v1",
     "C": "render miasma_sarrash_varc_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Sarrash/RM_Sarrash_a",
    "reserved": [
     "A",
@@ -1278,6 +1224,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger",
    "reserved": [
     "A"
@@ -1305,6 +1252,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey",
    "reserved": [
     "A"
@@ -1344,6 +1292,9 @@
     "C": "render miasma_thessamor_varb_v1",
     "D": "render miasma_thessamor_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Thessamor/RM_Thessamor_a"
+   ],
    "res": "Things/Plant/RM_Thessamor/RM_Thessamor_a",
    "reserved": [
     "A",
@@ -1372,6 +1323,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo",
    "reserved": [
     "A"
@@ -1406,6 +1358,7 @@
     "B": "render miasma_thrannock_varb_v1",
     "C": "render miasma_thrannock_varc_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Thrannock/RM_Thrannock_a",
    "reserved": [
     "A",
@@ -1439,6 +1392,7 @@
     "B": "render miasma_ullavess_varb_v1",
     "C": "render miasma_ullavess_varc_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Ullavess/RM_Ullavess_a",
    "reserved": [
     "A",
@@ -1472,6 +1426,7 @@
     "B": "render miasma_vellamine_varb_v1",
     "C": "render miasma_vellamine_varc_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Vellamine/RM_Vellamine_a",
    "reserved": [
     "A",
@@ -1510,6 +1465,7 @@
     "C": "render miasma_velluric_v2b",
     "D": "render miasma_velluric_v2c"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Velluric/RM_Velluric_a",
    "reserved": [
     "A",
@@ -1544,6 +1500,7 @@
     "B": "render miasma_wessaline_varb_v1",
     "C": "render miasma_wessaline_varc_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Wessaline/RM_Wessaline_a",
    "reserved": [
     "A",
@@ -1569,6 +1526,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/AaroxisDendoria/AaroxisDendoria",
    "reserved": [
     "A",
@@ -1612,6 +1570,7 @@
     "C": "history AnoobaArtOverride 2026-09-20",
     "E": "render leaningscrub_anooba_v1 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "swanimals/Anooba/Anooba_m",
    "reserved": [
     "A",
@@ -1674,6 +1633,7 @@
     "C": "render miasma_canon_blarth_v1",
     "D": "render miasma_canon_blarth_v1_swim"
    },
+   "pools": [],
    "res": "swanimals/Blarth/Blarth",
    "reserved": [
     "A",
@@ -1741,6 +1701,7 @@
     "G": "render miasma_canon_blixus_v2_swim \u2014 failed canon check",
     "H": "render miasma_canon_blixus_v2b \u2014 failed canon check"
    },
+   "pools": [],
    "res": "swanimals/Blixus/Blixus",
    "reserved": [
     "A",
@@ -1815,12 +1776,12 @@
    "graphic_of": {
     "A": "swanimals/Bogwing/Bogwing",
     "B": "_flip:swanimals/Bogwing/Bogwing_Flying_",
-    "C": "swanimals/Bogwing/Bogwing",
-    "D": "swanimals/Bogwing/Bogwing",
-    "E": "swanimals/Bogwing/Bogwing",
-    "F": "swanimals/Bogwing/Bogwing",
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname",
     "G": "swanimals/Bogwing/Bogwing",
-    "H": "swanimals/Bogwing/Bogwing"
+    "H": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
@@ -1832,6 +1793,7 @@
     "G": "render miasma_canon_bogwing_v1",
     "H": "render miasma_canon_bogwing_flying_2_v2 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "swanimals/Bogwing/Bogwing",
    "reserved": [
     "A",
@@ -1865,21 +1827,15 @@
      "east": "2596e413f59fb0ce672475161f2d50b6ae5dac86177721cb0e21b4c0de02fcf2",
      "north": "5893fffe56954bcdb4126ae98077d051e2b89be03b0f49d43c0e043f3c0f2b18",
      "south": "7e4a9d3357aa96747ec1093b9310ed05d9f234b1f5bb6e859b9f8eace9d63289"
-    },
-    "B": {
-     "east": "f45ba5eb9123ef915be5c05041f6fa0936205485729f1dd174aeeb2bfe3ce664",
-     "north": "b93cf6913e4ba27725e026a17448f706332a6ca60a3b4338cf94810cf17357a7",
-     "south": "4b26c6ebc8fcb39511fe1241e1e7cb903561a2e4b19ea24f1dc0d3a626f49a3a"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon",
-    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-11"
+    "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CrestedDragon/CrestedDragon",
    "reserved": [
     "A",
@@ -1910,6 +1866,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/Faa/Faa",
    "reserved": [
     "A"
@@ -1947,6 +1904,7 @@
     "B": "render leaningscrub_grank_v1 \u2014 failed canon check",
     "F": "render regen_ls2_canon_grank_v1"
    },
+   "pools": [],
    "res": "swanimals/Grank/Grank",
    "reserved": [
     "A",
@@ -1992,6 +1950,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "C": "render miasma_canon_laajuv_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/Laa/Laa",
    "reserved": [
     "A",
@@ -2041,6 +2000,7 @@
     "C": "render miasma_canon_marshhaunt_v1",
     "D": "render miasma_canon_marshhaunt_v1_swim"
    },
+   "pools": [],
    "res": "swanimals/MarshHaunt/MarshHaunt",
    "reserved": [
     "A",
@@ -2073,6 +2033,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
    "reserved": [
     "A"
@@ -2110,6 +2071,7 @@
     "B": "render miasma_canon_opeejuv_v1",
     "C": "render miasma_canon_opeejuv_v2 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller",
    "reserved": [
     "A",
@@ -2145,6 +2107,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render miasma_hellslantern_v1"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GlowWorm/GlowWorm",
    "reserved": [
     "A",
@@ -2199,6 +2162,7 @@
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/Runyip/Runyip",
    "reserved": [
     "A",
@@ -2241,6 +2205,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper",
    "reserved": [
     "A"
@@ -2288,6 +2253,9 @@
     "C": "history ShiroArtOverride 2026-09-13",
     "E": "render canonregen_rsw_shiro_v1 \u2014 failed canon check"
    },
+   "pools": [
+    "swanimals/Shiro/Shiro"
+   ],
    "res": "swanimals/Shiro/Shiro",
    "reserved": [
     "A",
@@ -2327,6 +2295,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey",
    "reserved": [
     "A"
@@ -2346,16 +2315,6 @@
      "north": "423e80ceb91d4b9cbbf1d76e70b531f8a9a634eb65d31feb0274b4b48f2d08d2",
      "south": "14247714a6dcc0bdd94bae619c1ce7a990defaa03aed778fb781c1faac51e527"
     },
-    "B": {
-     "east": "791d8827bd0e92c368fbb5348283a5d87bb8014dc07ad9a9e923e8e4414edf35",
-     "north": "c4eb469157e78cd42be0aa1110d7d881287bd64c94362d86fc707a828c27cc19",
-     "south": "2c1c0a49536acd6809296100493e80b4aa6e1604967a6066a7f8f3275f88e1b5"
-    },
-    "C": {
-     "east": "4987d4160186fa1734d47dfc222f06396f5b5013f191c7b319eeffa43bf5e005",
-     "north": "4fa636bae7e9bdc68f8fcda9ee223b59574601d56c84c4191f6a4bd3f0ca3669",
-     "south": "06b9551f9a25de7ee79d371d4557345c5a46969293042d6ddb9d22dd7543635c"
-    },
     "E": {
      "east": "363cb566ecf64c4cb90c15982ddf742a5a6667a3970f2ff738290eb7bc6afcc2",
      "north": "a045090062d7f77d2d61f07af293ebe68a9bac67bca3bfe0f595e62366bd4c73",
@@ -2364,16 +2323,13 @@
    },
    "graphic_of": {
     "A": "swanimals/Vornskyr/Vornskyr",
-    "B": "swanimals/Vornskyr/Vornskyr",
-    "C": "swanimals/Vornskyr/Vornskyr",
     "E": "swanimals/Vornskyr/Vornskyr"
    },
    "labels": {
     "A": "history VornskyrArtOverride 2026-09-20",
-    "B": "render canon_vornskyr_v1",
-    "C": "history VornskyrArtOverride 2026-09-13",
     "E": "render miasma_canon_vornskyr_v2"
    },
+   "pools": [],
    "res": "swanimals/Vornskyr/Vornskyr",
    "reserved": [
     "A",
@@ -2463,10 +2419,10 @@
     "C": "swanimals/Whisperbird/Whisperbird",
     "D": "swanimals/Whisperbird/Whisperbird",
     "E": "_flip:swanimals/Whisperbird/Whisperbird_Flying_",
-    "G": "swanimals/Whisperbird/Whisperbird",
-    "H": "swanimals/Whisperbird/Whisperbird",
-    "I": "swanimals/Whisperbird/Whisperbird",
-    "J": "swanimals/Whisperbird/Whisperbird",
+    "G": "_byname",
+    "H": "_byname",
+    "I": "_byname",
+    "J": "_byname",
     "K": "swanimals/Whisperbird/Whisperbird"
    },
    "labels": {
@@ -2481,6 +2437,7 @@
     "J": "render regen_ls2_canon_whisperbird_flying_4_v1",
     "K": "render regen_ls2_canon_whisperbird_v1"
    },
+   "pools": [],
    "res": "swanimals/Whisperbird/Whisperbird",
    "reserved": [
     "A",
@@ -2545,6 +2502,7 @@
     "C": "render miasma_canon_yobshrimpjuv_v1",
     "D": "render miasma_canon_yobshrimpjuv_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/Yobshrimp/Yobshrimp",
    "reserved": [
     "A",
@@ -2567,16 +2525,6 @@
      "north": "ded48e738e7c051f7b667eb2944cc7fba39257b7fe1ae8f76697e2df9131115c",
      "south": "fc41903ec644ef7beccc6b3e9d8ed8eb85a23da800c703381e58e06294beeb9b"
     },
-    "B": {
-     "east": "944bc1cb66caeb649ebcea5614d27cd3df37311d17f73a78f74a261243e19985",
-     "north": "78336fa757e868de62d3bf3761a13ae0fdda2ab3acb16e22ac04baf0e6f23ffc",
-     "south": "e6007f2f15d0c85dbf249895fd75232f465bee26e1d7f06a75f07882e3b57e54"
-    },
-    "C": {
-     "east": "62eecf79281dbbc892b691dcf74a59f2f5c294b7903f91d2648e08db0b560666",
-     "north": "81372f44bb81f87841e0eebd537769e90829380f7c6f1ca93c3f7077a839bb04",
-     "south": "3e8f3a5b7d85896128f646853cca4efc3035e92d9ef78d47d1a8c1aa8a618a1b"
-    },
     "E": {
      "east": "562096263f995574978bb85c1506e3407c37e14edf77435bf0e27d34e64f0466",
      "north": "aadd791b99d0c65cd0f60079f81f881d1b7bfe5bc1a838d1188417c27499d8a0",
@@ -2585,16 +2533,13 @@
    },
    "graphic_of": {
     "A": "swanimals/Zakkeg/Zakkeg",
-    "B": "swanimals/Zakkeg/Zakkeg",
-    "C": "swanimals/Zakkeg/Zakkeg",
     "E": "swanimals/Zakkeg/Zakkeg"
    },
    "labels": {
     "A": "history ZakkegArtOverride 2026-09-20",
-    "B": "render canon_zakkeg_v1",
-    "C": "history ZakkegArtOverride 2026-09-11",
     "E": "render miasma_canon_zakkeg_v2"
    },
+   "pools": [],
    "res": "swanimals/Zakkeg/Zakkeg",
    "reserved": [
     "A",
@@ -2640,6 +2585,7 @@
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_VFEI2_BlackSwarmling_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling",
    "reserved": [
     "A",
@@ -2662,11 +2608,6 @@
      "north": "049d3244175b4f8a2cb55bd9193ac02c3993d6be75b7abcba687392bdd641ca8",
      "south": "f927ee1fc6be6aeb9174053bf82a5d5a4617773ad22591411a012854ee22630d"
     },
-    "B": {
-     "east": "3034bea4ac29a39ded7f9eeed9a8889409ebcd663ca26b432a57383411ad2533",
-     "north": "5bb78e31ab58f106311544a98de064834faffe2cbe47938fe2695a552aee4d59",
-     "south": "58fe0732b61fa39a1e17a81cb256e9e12dffe8d32b95acb228cae8b4f116259c"
-    },
     "C": {
      "east": "18b9a987ab8183d2b2cb432046736016e137b0f7414a5d1a73ec93ce473804b8",
      "north": "bda1ecd6c34bc0db1c31355485600dccc22619fa8498a03827722575bf4c0f9c",
@@ -2684,18 +2625,17 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/Swarmling/Swarmling",
-    "B": "Things/Pawn/Animal/Swarmling/Swarmling",
     "C": "_byname",
     "D": "Things/Pawn/Animal/Swarmling/Swarmling",
     "E": "Things/Pawn/Animal/Swarmling/Swarmling"
    },
    "labels": {
     "A": "IN GAME \u2014 Vanilla Factions Expanded - Insectoids 2",
-    "B": "render rot_swarmling_v2",
     "C": "render regen_gt_saluksis_v2",
     "D": "render miasma_swarmling_green_v2",
     "E": "render miasma_swarmling_green_v3"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Swarmling/Swarmling",
    "reserved": [
     "A",
@@ -2716,5 +2656,5 @@
   }
  },
  "sheetId": "miasma_sheet_2026-10-05",
- "snapshotId": "8b697c172eff7737"
+ "snapshotId": "d5a35b5d3c89fbd5"
 }

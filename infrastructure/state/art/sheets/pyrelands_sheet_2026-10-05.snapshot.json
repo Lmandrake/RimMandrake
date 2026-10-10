@@ -1,9 +1,9 @@
 {
  "biome": "RM_Pyrelands",
- "built": "2026-10-10T10:13:57-0700",
+ "built": "2026-10-10T13:13:28-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Ashwallow": {
    "columns": {
@@ -19,6 +19,7 @@
    "labels": {
     "A": "IN GAME \u2014 Pyrelands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow",
    "reserved": [
     "A"
@@ -44,6 +45,7 @@
    "labels": {
     "A": "IN GAME \u2014 Pyrelands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
    "reserved": [
     "A",
@@ -87,6 +89,7 @@
    "labels": {
     "A": "IN GAME \u2014 Pyrelands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Pyrelands/Emberscythe/Emberscythe",
    "reserved": [
     "A"
@@ -160,6 +163,10 @@
     "J": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_FE_EmberGrass_LeaflessC (3 of 4) \u2014 Pyrelands",
     "K": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_FE_EmberGrass_LeaflessD (4 of 4) \u2014 Pyrelands"
    },
+   "pools": [
+    "Things/Plant/RM_FE_EmberGrass",
+    "Things/Plant/RM_FE_EmberGrass_Leafless"
+   ],
    "res": "Things/Plant/RM_FE_EmberGrass",
    "reserved": [
     "A",
@@ -216,6 +223,10 @@
     "D": "render pyre_quickgrass_a_v1",
     "F": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_FE_QuickgrassB (2 of 2) \u2014 Pyrelands"
    },
+   "pools": [
+    "Things/Plant/RM_FE_Quickgrass",
+    "Things/Plant/RM_FE_Quickgrass_Leafless"
+   ],
    "res": "Things/Plant/RM_FE_Quickgrass",
    "reserved": [
     "A",
@@ -265,7 +276,7 @@
      "2_east": "2cb3e6f7e3e61463e4048ba6bacf6e3358a75399c8ad836247c82921ab76db90",
      "3_east": "a674f5b0bd80c751572737f5f51873a11dec9931065df12a691b8c2dce5ad21f"
     },
-    "t": {
+    "w": {
      "1_east": "914df485d9ce798ea94c799bcb91fa49a0101dc4655720503c74d3e452157fb7",
      "1_north": "372522174a2f6bc6eceae5896b6c5bcea2d9c7e1e83b4045e8140b4f51a9558b",
      "1_south": "595e99efd30d2739425ca5de31fc253f645c87772a8996682876651d909451c4",
@@ -287,14 +298,15 @@
     "M": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
     "X": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
     "j": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_",
-    "t": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_"
+    "w": "_flip:Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk_Flying_"
    },
    "labels": {
     "M": "IN GAME \u2014 Pyrelands",
     "X": "IN GAME \u2014 FireHawk_Flying_",
     "j": "flight frames pyrelands_firehawk_flight8",
-    "t": "flight frames rut_firehawk_flying_v2"
+    "w": "flight frames rut_firehawk_flying_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
    "reserved": [
     "A",
@@ -342,7 +354,10 @@
     "q",
     "r",
     "s",
-    "t"
+    "t",
+    "u",
+    "v",
+    "w"
    ],
    "shownBase": [
     "05434a84b7811298b05d5cf16f4f506639be007704bdfebb78f246fe578fc761",
@@ -452,6 +467,7 @@
     "G": "flight frames pyrelands_firewasp_flight8",
     "H": "render pyrelands_firewasp_flight8_8r"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
    "reserved": [
     "A",
@@ -482,21 +498,15 @@
      "east": "10501994621cbca2a29474b02d68972b3364e08cbebf9f2fbea2f54549d2635c",
      "north": "675a463db3560beee149e10650f28a8d48d01d0a54ea50d655f3caa65e4908b3",
      "south": "100fcd1a7622807308107f156095d4c15e0b191c171d3fbd1ccdda5611b60018"
-    },
-    "B": {
-     "east": "52df2d63b4c6dadf0cb8bc21912a41033edecb0411cc2139097551cb2749810c",
-     "north": "caac1f7558836da15440e7961d79829f225ecee377a55767bd80749cce0b5801",
-     "south": "3eea5e59ed62336eb1e9cde9c481b9a1369914a1bb21e3ba39b6bdad3c701dd7"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang",
-    "B": "Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang"
+    "A": "Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang"
    },
    "labels": {
-    "A": "IN GAME \u2014 Pyrelands",
-    "B": "history UtinniPatches 2026-09-19"
+    "A": "IN GAME \u2014 Pyrelands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang",
    "reserved": [
     "A",
@@ -526,6 +536,7 @@
    "labels": {
     "A": "IN GAME \u2014 Pyrelands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant",
    "reserved": [
     "A",
@@ -560,6 +571,7 @@
     "A": "IN GAME \u2014 Pyrelands",
     "B": "history UtinniPatches 2026-09-19"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw",
    "reserved": [
     "A",
@@ -589,6 +601,7 @@
    "labels": {
     "A": "IN GAME \u2014 Pyrelands"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Pyrelands/Ullai/Ullai",
    "reserved": [
     "A"
@@ -628,6 +641,7 @@
     "C": "history AnoobaArtOverride 2026-09-20",
     "E": "render leaningscrub_anooba_v1 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "swanimals/Anooba/Anooba_m",
    "reserved": [
     "A",
@@ -681,6 +695,7 @@
     "F": "history DalgoArtOverride 2026-09-17",
     "H": "render canonregen_rsw_dalgo_v1 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "swanimals/Dalgo/Dalgo",
    "reserved": [
     "A",
@@ -752,6 +767,10 @@
     "D": "render canonregen_rsw_gizka_v1 \u2014 failed canon check",
     "E": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [
+    "RimStarWars/SWBestiary/Gizka/GizkaW",
+    "swanimals/Gizka/Gizka"
+   ],
    "res": "swanimals/Gizka/Gizka",
    "reserved": [
     "A",
@@ -806,6 +825,7 @@
     "F": "render regen_ls3_iriaz_h_v1",
     "G": "render regen_ls3_iriaz_i_v1"
    },
+   "pools": [],
    "res": "swanimals/Iriaz/Iriaz",
    "reserved": [
     "A",
@@ -875,6 +895,7 @@
     "D": "history NunaArtOverride 2026-09-17",
     "E": "render canonregen_rsw_nuna_v1"
    },
+   "pools": [],
    "res": "swanimals/Nuna/Nuna_f",
    "reserved": [
     "A",
@@ -911,11 +932,6 @@
      "north": "1ec666344e269c657ee6a59bf97058fac049ee769077158d61587163ca89817c",
      "south": "cf76274a823aac293985b41e5b1769feb47ab04697ea3e977c3153ec32fc1d3f"
     },
-    "G": {
-     "east": "3f25a5d60e3f752a2dd8170201927cfb0a527b681f11f011b90f02584ddb0e5f",
-     "north": "1ec666344e269c657ee6a59bf97058fac049ee769077158d61587163ca89817c",
-     "south": "2a7aa4433e9f46bfe7d1367b546e43dd578b908d65729f2622c4c909ae8a8d44"
-    },
     "I": {
      "east": "3f25a5d60e3f752a2dd8170201927cfb0a527b681f11f011b90f02584ddb0e5f",
      "north": "1ec666344e269c657ee6a59bf97058fac049ee769077158d61587163ca89817c"
@@ -929,17 +945,16 @@
    "graphic_of": {
     "A": "swanimals/Orray/Orray",
     "F": "swanimals/Orray/Orray",
-    "G": "swanimals/Orray/Orray",
     "I": "swanimals/Orray/Orray",
     "J": "swanimals/Orray/Orray"
    },
    "labels": {
     "A": "history OrrayArtOverride 2026-09-20",
     "F": "history OrrayArtOverride 2026-09-17",
-    "G": "history OrrayArtOverride 2026-09-18",
     "I": "history OrrayArtOverride 2026-09-18",
     "J": "render canonregen_rsw_orray_v1"
    },
+   "pools": [],
    "res": "swanimals/Orray/Orray",
    "reserved": [
     "A",
@@ -1001,6 +1016,7 @@
     "B": "render longshade_rsw_zeer_v1",
     "C": "history ZeerArtOverride 2026-09-18"
    },
+   "pools": [],
    "res": "swanimals/Zeer/Zeer",
    "reserved": [
     "A",
@@ -1020,5 +1036,5 @@
   }
  },
  "sheetId": "pyrelands_sheet_2026-10-05",
- "snapshotId": "b264d7b187975287"
+ "snapshotId": "b64170b15fe66e58"
 }

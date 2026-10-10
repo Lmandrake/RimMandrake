@@ -1,9 +1,9 @@
 {
  "biome": "RM_GreySea",
- "built": "2026-10-10T10:12:11-0700",
+ "built": "2026-10-10T13:09:43-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_BrineCrown": {
    "columns": {
@@ -17,6 +17,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_BrineCrown_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_BrineCrown"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_BrineCrown",
    "reserved": [
     "A",
@@ -40,6 +43,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_Brinecomb_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_Brinecomb"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_Brinecomb",
    "reserved": [
     "A",
@@ -72,6 +78,7 @@
     "B": "IN GAME \u2014 TerminalBiomes",
     "C": "render enact_c0132bf3_corrik_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Corrik/RM_Corrik",
    "reserved": [
     "A",
@@ -98,6 +105,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_CruciblePod_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_CruciblePod"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_CruciblePod",
    "reserved": [
     "A",
@@ -121,6 +131,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_CubicSculpture_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_CubicSculpture"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_CubicSculpture",
    "reserved": [
     "A",
@@ -146,6 +159,7 @@
    "labels": {
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Essarn/RM_Essarn",
    "reserved": [
     "A",
@@ -174,7 +188,7 @@
     }
    },
    "graphic_of": {
-    "B": "Things/Item/RM_GreySea/RM_EssarnCatch",
+    "B": "_byname",
     "D": "Things/Item/RM_GreySea/RM_EssarnCatch",
     "E": "Things/Item/RM_GreySea/RM_EssarnCatch"
    },
@@ -183,6 +197,7 @@
     "D": "IN GAME \u2014 TerminalBiomes",
     "E": "render RM_EssarnCatch_v3_nooutline"
    },
+   "pools": [],
    "res": "Things/Item/RM_GreySea/RM_EssarnCatch",
    "reserved": [
     "A",
@@ -214,6 +229,7 @@
    "labels": {
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Fessk/RM_Fessk",
    "reserved": [
     "A",
@@ -239,6 +255,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_GlassVeilKelp_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_GlassVeilKelp"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_GlassVeilKelp",
    "reserved": [
     "A",
@@ -269,6 +288,7 @@
     "A": "history TerminalBiomes 2026-09-26",
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Grusk/RM_Grusk",
    "reserved": [
     "A",
@@ -298,7 +318,7 @@
    },
    "graphic_of": {
     "B": "Things/Item/RM_GreySea/RM_GruskCatch",
-    "C": "Things/Item/RM_GreySea/RM_GruskCatch",
+    "C": "_byname",
     "D": "Things/Item/RM_GreySea/RM_GruskCatch"
    },
    "labels": {
@@ -306,6 +326,7 @@
     "C": "render phreg_RM_Grusk_v1",
     "D": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Item/RM_GreySea/RM_GruskCatch",
    "reserved": [
     "A",
@@ -341,6 +362,7 @@
     "A": "history TerminalBiomes 2026-09-26",
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Haarn/RM_Haarn",
    "reserved": [
     "A",
@@ -373,7 +395,7 @@
    },
    "graphic_of": {
     "B": "Things/Item/RM_GreySea/RM_HaarnCatch",
-    "C": "Things/Item/RM_GreySea/RM_HaarnCatch",
+    "C": "_byname",
     "D": "Things/Item/RM_GreySea/RM_HaarnCatch",
     "E": "Things/Item/RM_GreySea/RM_HaarnCatch"
    },
@@ -383,6 +405,7 @@
     "D": "render gate_gap_HaarnCatch_v1",
     "E": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Item/RM_GreySea/RM_HaarnCatch",
    "reserved": [
     "A",
@@ -427,6 +450,7 @@
     "B": "render phreg_RM_Hessal_v1",
     "C": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Hessal/RM_Hessal",
    "reserved": [
     "A",
@@ -458,13 +482,14 @@
    "graphic_of": {
     "B": "Things/Item/RM_GreySea/RM_HessalCatch",
     "D": "Things/Item/RM_GreySea/RM_HessalCatch",
-    "E": "_byname"
+    "E": "_reference:RM_Hessal"
    },
    "labels": {
     "B": "render phreg_RM_HessalCatch_v1",
     "D": "IN GAME \u2014 TerminalBiomes",
     "E": "render greysea_hessal_redo_v2"
    },
+   "pools": [],
    "res": "Things/Item/RM_GreySea/RM_HessalCatch",
    "reserved": [
     "A",
@@ -495,6 +520,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_Hoarstock_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_Hoarstock"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_Hoarstock",
    "reserved": [
     "A",
@@ -525,6 +553,7 @@
     "A": "history TerminalBiomes 2026-09-26",
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Immu/RM_Immu",
    "reserved": [
     "A",
@@ -550,13 +579,14 @@
     }
    },
    "graphic_of": {
-    "C": "Things/Item/RM_GreySea/RM_ImmuCatch",
+    "C": "_byname",
     "D": "Things/Item/RM_GreySea/RM_ImmuCatch"
    },
    "labels": {
     "C": "render phreg_RM_Immu_v1",
     "D": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Item/RM_GreySea/RM_ImmuCatch",
    "reserved": [
     "A",
@@ -592,6 +622,7 @@
     "A": "history TerminalBiomes 2026-09-26",
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Karrud/RM_Karrud",
    "reserved": [
     "A",
@@ -617,13 +648,14 @@
     }
    },
    "graphic_of": {
-    "C": "Things/Item/RM_GreySea/RM_KarrudCatch",
+    "C": "_byname",
     "D": "Things/Item/RM_GreySea/RM_KarrudCatch"
    },
    "labels": {
     "C": "render phreg_RM_Karrud_v1",
     "D": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Item/RM_GreySea/RM_KarrudCatch",
    "reserved": [
     "A",
@@ -659,6 +691,7 @@
     "A": "history TerminalBiomes 2026-09-26",
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Maalu/RM_Maalu",
    "reserved": [
     "A",
@@ -684,13 +717,14 @@
     }
    },
    "graphic_of": {
-    "C": "Things/Item/RM_GreySea/RM_MaaluCatch",
+    "C": "_byname",
     "D": "Things/Item/RM_GreySea/RM_MaaluCatch"
    },
    "labels": {
     "C": "render phreg_RM_Maalu_v1",
     "D": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Item/RM_GreySea/RM_MaaluCatch",
    "reserved": [
     "A",
@@ -719,6 +753,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_Masonmat_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_Masonmat"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_Masonmat",
    "reserved": [
     "A",
@@ -742,6 +779,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_Milkwell_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_Milkwell"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_Milkwell",
    "reserved": [
     "A",
@@ -765,6 +805,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_MosaicFanPalm_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_MosaicFanPalm"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_MosaicFanPalm",
    "reserved": [
     "A",
@@ -788,6 +831,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_Mournweft_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_Mournweft"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_Mournweft",
    "reserved": [
     "A",
@@ -811,6 +857,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_Murkblush_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_Murkblush"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_Murkblush",
    "reserved": [
     "A",
@@ -834,6 +883,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_Neverset_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_Neverset"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_Neverset",
    "reserved": [
     "A",
@@ -864,6 +916,7 @@
     "A": "history TerminalBiomes 2026-09-26",
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Nissik/RM_Nissik",
    "reserved": [
     "A",
@@ -893,7 +946,7 @@
    },
    "graphic_of": {
     "B": "_byname",
-    "C": "Things/Item/RM_GreySea/RM_NissikCatch",
+    "C": "_byname",
     "D": "Things/Item/RM_GreySea/RM_NissikCatch"
    },
    "labels": {
@@ -901,6 +954,7 @@
     "C": "render phreg_RM_Nissik_v1",
     "D": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Item/RM_GreySea/RM_NissikCatch",
    "reserved": [
     "A",
@@ -936,6 +990,7 @@
     "A": "history TerminalBiomes 2026-09-26",
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Oomal/RM_Oomal",
    "reserved": [
     "A",
@@ -961,13 +1016,14 @@
     }
    },
    "graphic_of": {
-    "C": "Things/Item/RM_GreySea/RM_OomalCatch",
+    "C": "_byname",
     "D": "Things/Item/RM_GreySea/RM_OomalCatch"
    },
    "labels": {
     "C": "render phreg_RM_Oomal_v1",
     "D": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Item/RM_GreySea/RM_OomalCatch",
    "reserved": [
     "A",
@@ -1005,6 +1061,7 @@
     "A": "render RM_Orruhmu",
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Orruhmu/RM_Orruhmu",
    "reserved": [
     "A",
@@ -1034,6 +1091,7 @@
    "labels": {
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Otheska/RM_Otheska",
    "reserved": [
     "A",
@@ -1062,6 +1120,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
    "reserved": [
     "A"
@@ -1093,6 +1152,7 @@
     "A": "history TerminalBiomes 2026-09-26",
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Sallik/RM_Sallik",
    "reserved": [
     "A",
@@ -1118,13 +1178,14 @@
     }
    },
    "graphic_of": {
-    "C": "Things/Item/RM_GreySea/RM_SallikCatch",
+    "C": "_byname",
     "D": "Things/Item/RM_GreySea/RM_SallikCatch"
    },
    "labels": {
     "C": "render phreg_RM_Sallik_v1",
     "D": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Item/RM_GreySea/RM_SallikCatch",
    "reserved": [
     "A",
@@ -1153,6 +1214,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_SaltBladeGrey_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_SaltBladeGrey"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_SaltBladeGrey",
    "reserved": [
     "A",
@@ -1176,6 +1240,9 @@
    "labels": {
     "A": "IN GAME \u2014 random variant RM_SaltBladeTwilight_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_SaltBladeTwilight"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_SaltBladeTwilight",
    "reserved": [
     "A"
@@ -1195,6 +1262,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_SaltChimneyVine_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_SaltChimneyVine"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_SaltChimneyVine",
    "reserved": [
     "A",
@@ -1218,6 +1288,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_Saltswoon_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_Saltswoon"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_Saltswoon",
    "reserved": [
     "A",
@@ -1299,6 +1372,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_SpherePlant_A (1 of 1) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Plant/RM_GreySea/RM_SpherePlant"
+   ],
    "res": "Things/Plant/RM_GreySea/RM_SpherePlant",
    "reserved": [
     "A",
@@ -1329,6 +1405,7 @@
     "A": "history TerminalBiomes 2026-09-26",
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Thollim/RM_Thollim",
    "reserved": [
     "A",
@@ -1354,13 +1431,14 @@
     }
    },
    "graphic_of": {
-    "B": "Things/Item/RM_GreySea/RM_ThollimCatch",
+    "B": "_byname",
     "D": "Things/Item/RM_GreySea/RM_ThollimCatch"
    },
    "labels": {
     "B": "render phreg_RM_Thollim_v1",
     "D": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Item/RM_GreySea/RM_ThollimCatch",
    "reserved": [
     "A",
@@ -1392,6 +1470,7 @@
    "labels": {
     "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/SeaBeasts/Reefback/Reefback",
    "reserved": [
     "A"

@@ -1,9 +1,9 @@
 {
  "biome": "RM_WeepingStones",
- "built": "2026-10-10T10:15:20-0700",
+ "built": "2026-10-10T12:56:53-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "ColossusToad": {
    "columns": {
@@ -26,6 +26,7 @@
     "A": "IN GAME \u2014 ludeon.rimworld.odyssey",
     "B": "render gapall_ColossusToad_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/ColossusToad/ColossusToad",
    "reserved": [
     "A",
@@ -68,6 +69,9 @@
     "C": "render enact_83bac00a_plant_ambrosia_v1",
     "D": "donor original \u2014 ludeon.rimworld.core"
    },
+   "pools": [
+    "Things/Plant/Ambrosia"
+   ],
    "res": "Things/Plant/Ambrosia",
    "reserved": [
     "A",
@@ -108,6 +112,9 @@
     "C": "render wsvar_plant_reeds_a_v1",
     "D": "render wsvar_plant_reeds_b_v1"
    },
+   "pools": [
+    "Things/Plant/Reeds"
+   ],
    "res": "Things/Plant/Reeds",
    "reserved": [
     "A",
@@ -138,6 +145,9 @@
     "A": "IN GAME \u2014 random variant RM_Bladderquill_a (1 of 2) \u2014 WeepingStones",
     "B": "IN GAME \u2014 random variant RM_Bladderquill_b (2 of 2) \u2014 WeepingStones"
    },
+   "pools": [
+    "Things/Plant/RM_Bladderquill"
+   ],
    "res": "Things/Plant/RM_Bladderquill",
    "reserved": [
     "A",
@@ -163,6 +173,7 @@
    "labels": {
     "B": "render weepingstones2_burrak"
    },
+   "pools": [],
    "res": null,
    "reserved": [
     "A",
@@ -205,6 +216,9 @@
     "C": "render wsvar_dewblade_a_v1",
     "D": "render wsvar_dewblade_b_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Dewblade"
+   ],
    "res": "Things/Plant/RM_Dewblade",
    "reserved": [
     "A",
@@ -245,6 +259,9 @@
     "C": "render wsvar_dewgourd_a_v1",
     "D": "render wsvar_dewgourd_b_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Dewgourd"
+   ],
    "res": "Things/Plant/RM_Dewgourd",
    "reserved": [
     "A",
@@ -295,6 +312,9 @@
     "F": "in game now, a re-encoded copy of set B \u2014 IN GAME \u2014 random variant Seadew_p3a (2 of 3) \u2014 TheRot",
     "G": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant Seadew_p3b (3 of 3) \u2014 TheRot"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/Seadew"
+   ],
    "res": "RotSporeKit/Things/Plant/Seadew",
    "reserved": [
     "A",
@@ -341,6 +361,9 @@
     "C": "render wsvar_dripfringe_a_v1",
     "D": "render wsvar_dripfringe_b_v1 \u2014 failed canon check"
    },
+   "pools": [
+    "Things/Plant/RM_Dripfringe"
+   ],
    "res": "Things/Plant/RM_Dripfringe",
    "reserved": [
     "A",
@@ -376,6 +399,7 @@
     "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "C": "render gapall_RM_Duul_v1"
    },
+   "pools": [],
    "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
    "reserved": [
     "A",
@@ -410,6 +434,7 @@
     "A": "donor original \u2014 More Vanilla Textures",
     "C": "render weepingstones2_gorrask"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Tortoise/Tortoise",
    "reserved": [
     "A",
@@ -464,6 +489,7 @@
     "D": "render enact_9f4d6fc2_huldu_v1",
     "E": "render enact_huldu_from_c_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Tortoise/Tortoise",
    "reserved": [
     "A",
@@ -521,10 +547,10 @@
     "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
     "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
     "C": "_byname",
-    "D": "_byname",
+    "D": "_reference:RM_Huldu",
     "E": "_byname",
-    "F": "_byname",
-    "G": "_byname"
+    "F": "_reference:RM_Huldu",
+    "G": "_reference:RM_Huldu"
    },
    "labels": {
     "A": "donor original \u2014 [TW1.6]\u5802\u4e38\u8d34\u56fe\u91cd\u7f6e~\u98df\u7269 Tang's~Retexture~Foods",
@@ -535,6 +561,7 @@
     "F": "render enact_9f4d6fc2_huldu_v1",
     "G": "render enact_huldu_from_c_v2"
    },
+   "pools": [],
    "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
    "reserved": [
     "A",
@@ -577,6 +604,7 @@
     "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "C": "render gapall_RM_Ikkal_v1"
    },
+   "pools": [],
    "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
    "reserved": [
     "A",
@@ -611,6 +639,7 @@
     "A": "donor original \u2014 More Vanilla Textures",
     "C": "render weepingstones_ivvol"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Tortoise/Tortoise",
    "reserved": [
     "A",
@@ -656,7 +685,7 @@
     "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
     "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
     "C": "_byname",
-    "D": "_byname",
+    "D": "_reference:RM_Ivvol",
     "E": "_byname"
    },
    "labels": {
@@ -666,6 +695,7 @@
     "D": "render weepingstones_ivvol",
     "E": "render enact_7bd33c4d_ivvolcatch_v1"
    },
+   "pools": [],
    "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
    "reserved": [
     "A",
@@ -705,6 +735,7 @@
     "A": "donor original \u2014 More Vanilla Textures",
     "C": "render weepingstones_karrek"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Cobra/Cobra",
    "reserved": [
     "A",
@@ -750,7 +781,7 @@
     "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
     "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
     "C": "_byname",
-    "D": "_byname",
+    "D": "_reference:RM_Karrek",
     "E": "_byname"
    },
    "labels": {
@@ -760,6 +791,7 @@
     "D": "render weepingstones_karrek",
     "E": "render enact_93121ad1_karrekcatch_v1"
    },
+   "pools": [],
    "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
    "reserved": [
     "A",
@@ -813,6 +845,7 @@
     "C": "render weepingstones2_kirruk",
     "D": "render enact_c6ff2423_kirruk_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Chicken/Chicken",
    "reserved": [
     "A",
@@ -861,6 +894,7 @@
     "C": "render weepingstones_loomu",
     "D": "render enact_34cbe6a2_loomu_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Tortoise/Tortoise",
    "reserved": [
     "A",
@@ -912,8 +946,8 @@
     "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
     "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
     "C": "_byname",
-    "D": "_byname",
-    "E": "_byname",
+    "D": "_reference:RM_Loomu",
+    "E": "_reference:RM_Loomu",
     "F": "_byname"
    },
    "labels": {
@@ -924,6 +958,7 @@
     "E": "render enact_34cbe6a2_loomu_v1",
     "F": "render enact_80efca3d_loomucatch_v1"
    },
+   "pools": [],
    "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
    "reserved": [
     "A",
@@ -978,6 +1013,7 @@
     "C": "donor original \u2014 XenomorphInsectoids",
     "D": "render weepingstones2_mirrik"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Spelopede/Spelopede",
    "reserved": [
     "A",
@@ -1029,6 +1065,7 @@
     "C": "render weepingstones_murrin",
     "D": "render enact_e6d931f4_murrin_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Cobra/Cobra",
    "reserved": [
     "A",
@@ -1074,9 +1111,9 @@
    "graphic_of": {
     "A": "Things/Item/RM_MurrinCatch",
     "B": "Things/Item/RM_MurrinCatch",
-    "C": "_byname",
+    "C": "_reference:RM_Murrin",
     "D": "Things/Item/RM_MurrinCatch",
-    "E": "_byname"
+    "E": "_reference:RM_Murrin"
    },
    "labels": {
     "A": "IN GAME \u2014 WeepingStones",
@@ -1085,6 +1122,7 @@
     "D": "render enact_0b47a9f1_murrincatch_v1",
     "E": "render enact_e6d931f4_murrin_v1"
    },
+   "pools": [],
    "res": "Things/Item/RM_MurrinCatch",
    "reserved": [
     "A",
@@ -1129,6 +1167,7 @@
     "C": "render gapall_RM_Ozhu_v1",
     "D": "render enact_39dedfee_ozhu_v1"
    },
+   "pools": [],
    "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
    "reserved": [
     "A",
@@ -1170,6 +1209,9 @@
     "C": "render wsvar_rockfinger_a_v1",
     "D": "render wsvar_rockfinger_b_v1 \u2014 failed canon check"
    },
+   "pools": [
+    "Things/Plant/RM_Rockfinger"
+   ],
    "res": "Things/Plant/RM_Rockfinger",
    "reserved": [
     "A",
@@ -1210,6 +1252,9 @@
     "C": "render wsvar_salvecomb_a_v1",
     "D": "render wsvar_salvecomb_b_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Salvecomb"
+   ],
    "res": "Things/Plant/RM_Salvecomb",
    "reserved": [
     "A",
@@ -1250,6 +1295,9 @@
     "C": "render wsvar_shadefern_a_v1",
     "D": "render wsvar_shadefern_b_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Shadefern"
+   ],
    "res": "Things/Plant/RM_Shadefern",
    "reserved": [
     "A",
@@ -1277,6 +1325,7 @@
    "labels": {
     "B": "render weepingstones2_sillik"
    },
+   "pools": [],
    "res": null,
    "reserved": [
     "A",
@@ -1320,6 +1369,7 @@
     "C": "render weepingstones_skarrin",
     "D": "render enact_3c182127_skarrin_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Cobra/Cobra",
    "reserved": [
     "A",
@@ -1371,8 +1421,8 @@
     "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
     "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
     "C": "_byname",
-    "D": "_byname",
-    "E": "_byname",
+    "D": "_reference:RM_Skarrin",
+    "E": "_reference:RM_Skarrin",
     "F": "_byname"
    },
    "labels": {
@@ -1383,6 +1433,7 @@
     "E": "render enact_3c182127_skarrin_v1",
     "F": "render enact_a3b3cad9_skarrincatch_v1"
    },
+   "pools": [],
    "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
    "reserved": [
     "A",
@@ -1423,6 +1474,7 @@
     "B": "render weepingstones2_ssurr",
     "C": "render enact_0baaed3f_ssurr_v1"
    },
+   "pools": [],
    "res": null,
    "reserved": [
     "A",
@@ -1456,6 +1508,9 @@
     "A": "IN GAME \u2014 random variant RM_Steamfrond_a (1 of 2) \u2014 WeepingStones",
     "B": "IN GAME \u2014 random variant RM_Steamfrond_b (2 of 2) \u2014 WeepingStones"
    },
+   "pools": [
+    "Things/Plant/RM_Steamfrond"
+   ],
    "res": "Things/Plant/RM_Steamfrond",
    "reserved": [
     "A",
@@ -1489,6 +1544,7 @@
     "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "C": "render gapall_RM_Tarrik_v1"
    },
+   "pools": [],
    "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
    "reserved": [
     "A",
@@ -1523,6 +1579,7 @@
     "A": "donor original \u2014 Vanilla Textures Expanded",
     "B": "render weepingstones2_tirbak"
    },
+   "pools": [],
    "res": null,
    "reserved": [
     "A",
@@ -1560,6 +1617,7 @@
     "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "C": "render gapall_RM_Ullo_v1"
    },
+   "pools": [],
    "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
    "reserved": [
     "A",
@@ -1594,6 +1652,7 @@
     "B": "render weepingstones2_vellak",
     "C": "render enact_3df263b9_vellak_v1"
    },
+   "pools": [],
    "res": null,
    "reserved": [
     "A",
@@ -1637,6 +1696,9 @@
     "C": "render wsvar_verdimoss_a_v1",
     "D": "render wsvar_verdimoss_b_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Verdimoss"
+   ],
    "res": "Things/Plant/RM_Verdimoss",
    "reserved": [
     "A",
@@ -1678,6 +1740,7 @@
     "B": "render weepingstones2_vhakk",
     "C": "render enact_eeb62996_vhakk_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Alligator/Alligator",
    "reserved": [
     "A",
@@ -1722,6 +1785,7 @@
     "C": "render weepingstones_vizhik",
     "D": "render enact_aff7b795_vizhik_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Cobra/Cobra",
    "reserved": [
     "A",
@@ -1773,8 +1837,8 @@
     "A": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
     "B": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
     "C": "_byname",
-    "D": "_byname",
-    "E": "_byname",
+    "D": "_reference:RM_Vizhik",
+    "E": "_reference:RM_Vizhik",
     "F": "_byname"
    },
    "labels": {
@@ -1785,6 +1849,7 @@
     "E": "render enact_aff7b795_vizhik_v1",
     "F": "render enact_edfc376e_vizhikcatch_v1"
    },
+   "pools": [],
    "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
    "reserved": [
     "A",
@@ -1826,6 +1891,7 @@
     "B": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
     "C": "render gapall_RM_Vobbal_v1"
    },
+   "pools": [],
    "res": "Things/Item/Resource/MeatFoodRaw/Meat_Small",
    "reserved": [
     "A",
@@ -1866,6 +1932,9 @@
     "C": "render wsvar_weepmat_a_v1",
     "D": "render wsvar_weepmat_b_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Weepmat"
+   ],
    "res": "Things/Plant/RM_Weepmat",
    "reserved": [
     "A",
@@ -1942,6 +2011,13 @@
     "G": "IN GAME \u2014 SWBestiary",
     "H": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [
+    "swanimals/Bantha/BanthaV_G",
+    "swanimals/Bantha/BanthaV_H",
+    "swanimals/Bantha/BanthaV_I",
+    "swanimals/Bantha/BanthaV_J",
+    "swanimals/Bantha/BanthaW"
+   ],
    "res": "swanimals/Bantha/BanthaW",
    "reserved": [
     "A",
@@ -1992,35 +2068,17 @@
      "east": "4c824f35904b87705eede1bd6b42c95ae9fb7d4d0f9975d52bea11a03cc5acc4",
      "north": "b525eb0eee660d41839d15925e5b5f69f19b717689477109ebdfa509e3b805b6",
      "south": "284634f6a0ca494275033782e422c1df58eed2b75338263657bbd42dfdd072ab"
-    },
-    "C": {
-     "east": "fefe44be028ce7008ae5ed6f0564ce23a696c61fe6995bb67aad592ec13d61bf",
-     "north": "0a100234fb6f1ce045a777da479140a1826bcfd91340e46233844eb3ff6a12eb",
-     "south": "02419165fd9c86af8bdc1af86434e4b5b132a29bdfdd4e4c0c339237a30587af"
-    },
-    "D": {
-     "east": "7031fe634582b4dac4678e00133c8ae629553b4c47bf7280a1afcbe1ca8d8fa8"
-    },
-    "F": {
-     "east": "99557fa15ec586c1b39fdacd754a2e084bcdd29edd1bd1f320c50aca2103ca42",
-     "north": "b6aa3b1fbef58ad2b33193e2d3a7eed03af48b9f77424061862842472ba01ff8",
-     "south": "b9990b0d1ab8a0a0f66a031786a3e0bda89834c80906b077ee3e1f6af6a66b38"
     }
    },
    "graphic_of": {
     "A": "swanimals/Boma/Boma",
-    "B": "swanimals/Boma/Boma",
-    "C": "swanimals/Boma/Boma",
-    "D": "swanimals/Boma/Boma",
-    "F": "swanimals/Boma/Boma"
+    "B": "swanimals/Boma/Boma"
    },
    "labels": {
     "A": "history SWBestiary 2026-09-13",
-    "B": "IN GAME \u2014 SWBestiary",
-    "C": "render canon_boma_v1",
-    "D": "render boma_toyfig_a",
-    "F": "history SWBestiary 2026-09-12"
+    "B": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/Boma/Boma",
    "reserved": [
     "A",
@@ -2092,6 +2150,7 @@
     "E": "donor original \u2014 mlie.starwarsanimalcollection",
     "F": "IN GAME \u2014 Dactillion_Flying_"
    },
+   "pools": [],
    "res": "swanimals/Dactillion/Dactillion",
    "reserved": [
     "A",
@@ -2176,6 +2235,10 @@
     "F": "history DewbackArtOverride 2026-09-20",
     "G": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [
+    "swanimals/Dewback/Dewback",
+    "swanimals/Dewback/DewbackW"
+   ],
    "res": "swanimals/Dewback/Dewback",
    "reserved": [
     "A",
@@ -2264,6 +2327,14 @@
     "G": "IN GAME \u2014 SWBestiary",
     "H": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [
+    "swanimals/Eopie/Eopie",
+    "swanimals/Eopie/EopieA",
+    "swanimals/Eopie/EopieB",
+    "swanimals/Eopie/EopieC",
+    "swanimals/Eopie/EopieD",
+    "swanimals/Eopie/EopieE"
+   ],
    "res": "swanimals/Eopie/Eopie",
    "reserved": [
     "A",
@@ -2323,6 +2394,7 @@
     "C": "render canon_fanback_v1",
     "F": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/Fanback/Fanback",
    "reserved": [
     "A",
@@ -2378,6 +2450,7 @@
     "B": "history JamelArtOverride 2026-09-13",
     "C": "history SWBestiary 2026-09-17"
    },
+   "pools": [],
    "res": "swanimals/Jamel/Jamel",
    "reserved": [
     "A",
@@ -2432,6 +2505,7 @@
     "D": "history OllopomArtOverride 2026-09-20",
     "E": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/Ollopom/Ollopom",
    "reserved": [
     "A",
@@ -2461,5 +2535,5 @@
   }
  },
  "sheetId": "weepingstones_sheet_2026-10-05",
- "snapshotId": "dbb3fdbb7556a554"
+ "snapshotId": "d7f29f0812a74e59"
 }

@@ -1,9 +1,9 @@
 {
  "biome": "RM_LanternDeeps",
- "built": "2026-10-10T10:12:18-0700",
+ "built": "2026-10-10T13:10:11-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Blinker": {
    "columns": {
@@ -26,6 +26,7 @@
     "A": "render RM_Blinker",
     "B": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Blinker/Blinker",
    "reserved": [
     "A",
@@ -59,6 +60,7 @@
     "A": "history LanternDeeps 2026-10-03",
     "B": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
    "reserved": [
     "A",
@@ -119,6 +121,9 @@
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant D (4 of 4) \u2014 LanternDeeps",
     "E": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 4) \u2014 LanternDeeps"
    },
+   "pools": [
+    "RM_LanternDeeps/Things/Plant/BrellikBulb"
+   ],
    "res": "RM_LanternDeeps/Things/Plant/BrellikBulb",
    "reserved": [
     "A",
@@ -147,6 +152,7 @@
    "labels": {
     "A": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Candler/Candler",
    "reserved": [
     "A"
@@ -193,6 +199,7 @@
    "labels": {
     "A": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/Crystal/Cleaver/Cleaver",
    "reserved": [
     "A"
@@ -246,6 +253,9 @@
     "H": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 5) \u2014 LanternDeeps",
     "I": "in game now, never shown \u2014 IN GAME \u2014 random variant C (3 of 5) \u2014 LanternDeeps"
    },
+   "pools": [
+    "RM_LanternDeeps/Things/Plant/Mycelium"
+   ],
    "res": "RM_LanternDeeps/Things/Plant/Mycelium",
    "reserved": [
     "A",
@@ -281,6 +291,7 @@
    "labels": {
     "A": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Drifter/Drifter",
    "reserved": [
     "A"
@@ -319,6 +330,7 @@
     "C": "render deeps_facetmothlarvae_eyes_v1",
     "D": "render deeps_facetmothlarvae_eyes_v2"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/FacetMoth/Crystalpillar",
    "reserved": [
     "A",
@@ -375,6 +387,12 @@
     "D": "IN GAME \u2014 LanternDeeps",
     "E": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [
+    "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug",
+    "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Green/Jewelbug",
+    "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Red/Jewelbug",
+    "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug"
+   ],
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug",
    "reserved": [
     "A",
@@ -425,6 +443,7 @@
    "labels": {
     "A": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Knocker/Knocker",
    "reserved": [
     "A"
@@ -468,6 +487,9 @@
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant d (4 of 4) \u2014 LanternDeeps",
     "E": "in game now, never shown \u2014 IN GAME \u2014 random variant b (2 of 4) \u2014 LanternDeeps"
    },
+   "pools": [
+    "RM_LanternDeeps/Things/Plant/KuvraSpout"
+   ],
    "res": "RM_LanternDeeps/Things/Plant/KuvraSpout",
    "reserved": [
     "A",
@@ -509,6 +531,9 @@
     "C": "IN GAME \u2014 random variant A (1 of 3) \u2014 LanternDeeps",
     "D": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [
+    "RM_LanternDeeps/Things/Crystals/LanternstoneMedium"
+   ],
    "res": "RM_LanternDeeps/Things/Crystals/LanternstoneMedium",
    "reserved": [
     "A",
@@ -549,6 +574,7 @@
     "B": "render deeps_megapleura_eyes_v1 \u2014 failed canon check",
     "C": "render deeps_megapleura_eyes_v2"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Megapleura/Megapleura",
    "reserved": [
     "A",
@@ -583,6 +609,7 @@
     "A": "history LanternDeeps 2026-10-03",
     "F": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/MossBeetle/MossGrub",
    "reserved": [
     "A",
@@ -631,6 +658,9 @@
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant D (4 of 4) \u2014 LanternDeeps",
     "E": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 4) \u2014 LanternDeeps"
    },
+   "pools": [
+    "RM_LanternDeeps/Things/Plant/NurrikGill"
+   ],
    "res": "RM_LanternDeeps/Things/Plant/NurrikGill",
    "reserved": [
     "A",
@@ -684,6 +714,7 @@
    "labels": {
     "A": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Pooler/Pooler",
    "reserved": [
     "A"
@@ -732,6 +763,10 @@
     "F": "in game now, never shown \u2014 IN GAME \u2014 random variant C (3 of 5) \u2014 LanternDeeps",
     "G": "in game now, never shown \u2014 IN GAME \u2014 random variant a (1 of 1) \u2014 LanternDeeps"
    },
+   "pools": [
+    "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
+    "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceImmature"
+   ],
    "res": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
    "reserved": [
     "A",
@@ -790,6 +825,9 @@
     "G": "in game now, never shown \u2014 IN GAME \u2014 random variant C (3 of 6) \u2014 LanternDeeps",
     "H": "in game now, never shown \u2014 IN GAME \u2014 random variant D (4 of 6) \u2014 LanternDeeps"
    },
+   "pools": [
+    "RM_LanternDeeps/Things/Plant/QuorrFern"
+   ],
    "res": "RM_LanternDeeps/Things/Plant/QuorrFern",
    "reserved": [
     "A",
@@ -842,6 +880,7 @@
    "labels": {
     "A": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Shoal/Shoal",
    "reserved": [
     "A"
@@ -867,6 +906,7 @@
    "labels": {
     "A": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Sipper/Sipper",
    "reserved": [
     "A"
@@ -892,6 +932,7 @@
    "labels": {
     "A": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Slick/Slick",
    "reserved": [
     "A"
@@ -917,6 +958,7 @@
    "labels": {
     "A": "IN GAME \u2014 LanternDeeps"
    },
+   "pools": [],
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Tapper/Tapper",
    "reserved": [
     "A"
@@ -950,6 +992,9 @@
     "B": "IN GAME \u2014 random variant C (3 of 3) \u2014 LanternDeeps",
     "C": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 3) \u2014 LanternDeeps"
    },
+   "pools": [
+    "RM_LanternDeeps/Things/Plant/ThrakkCap"
+   ],
    "res": "RM_LanternDeeps/Things/Plant/ThrakkCap",
    "reserved": [
     "A",
@@ -1024,6 +1069,11 @@
     "K": "in game now, a re-encoded copy of set E \u2014 IN GAME \u2014 random variant a (1 of 1) \u2014 LanternDeeps",
     "L": "in game now, never shown \u2014 IN GAME \u2014 random variant a (1 of 1) \u2014 LanternDeeps"
    },
+   "pools": [
+    "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown",
+    "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferHarvested",
+    "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferImmature"
+   ],
    "res": "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown",
    "reserved": [
     "A",
@@ -1076,6 +1126,9 @@
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant D (4 of 4) \u2014 LanternDeeps",
     "E": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 4) \u2014 LanternDeeps"
    },
+   "pools": [
+    "RM_LanternDeeps/Things/Plant/VellokReed"
+   ],
    "res": "RM_LanternDeeps/Things/Plant/VellokReed",
    "reserved": [
     "A",
@@ -1117,6 +1170,9 @@
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant D (4 of 4) \u2014 LanternDeeps",
     "E": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 4) \u2014 LanternDeeps"
    },
+   "pools": [
+    "RM_LanternDeeps/Things/Plant/ZivvitTaper"
+   ],
    "res": "RM_LanternDeeps/Things/Plant/ZivvitTaper",
    "reserved": [
     "A",

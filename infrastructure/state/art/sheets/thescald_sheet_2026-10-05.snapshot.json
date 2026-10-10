@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheScald",
- "built": "2026-10-10T10:14:01-0700",
+ "built": "2026-10-10T13:14:23-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Bladderboil": {
    "columns": {
@@ -19,6 +19,7 @@
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Bladderboil/RM_Bladderboil",
    "reserved": [
     "A",
@@ -67,7 +68,7 @@
     "B": "Things/Item/Resource/RM_BladderboilCatch",
     "C": "Things/Item/Resource/RM_BladderboilCatch",
     "D": "Things/Item/Resource/RM_BladderboilCatch",
-    "E": "_byname",
+    "E": "_reference:RM_Bladderboil",
     "F": "Things/Item/Resource/RM_BladderboilCatch",
     "G": "Things/Item/Resource/RM_BladderboilCatch",
     "H": "Things/Item/Resource/RM_BladderboilCatch"
@@ -82,6 +83,9 @@
     "G": "render phfix_RUT_BladderboilCatch_a",
     "H": "render RM_BladderboilCatch_v3_nooutline"
    },
+   "pools": [
+    "Things/Item/Resource/RM_BladderboilCatch"
+   ],
    "res": "Things/Item/Resource/RM_BladderboilCatch",
    "reserved": [
     "A",
@@ -126,6 +130,9 @@
     "I": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Crowncarpet_b (2 of 3) \u2014 LuminousPigment",
     "J": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Crowncarpet_c (3 of 3) \u2014 LuminousPigment"
    },
+   "pools": [
+    "Things/Plant/RM_Crowncarpet"
+   ],
    "res": "Things/Plant/RM_Crowncarpet",
    "reserved": [
     "A",
@@ -171,6 +178,7 @@
     "A": "render scaldfloor_doss",
     "C": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Doss/RM_Doss",
    "reserved": [
     "A",
@@ -215,8 +223,8 @@
     "A": "Things/Item/Resource/RM_DossCatch",
     "B": "Things/Item/Resource/RM_DossCatch",
     "C": "Things/Item/Resource/RM_DossCatch",
-    "D": "_byname",
-    "E": "_byname",
+    "D": "_reference:RM_Doss",
+    "E": "_reference:RM_Doss",
     "F": "Things/Item/Resource/RM_DossCatch"
    },
    "labels": {
@@ -227,6 +235,9 @@
     "E": "render scald3_doss",
     "F": "render RM_DossCatch_v3_nooutline"
    },
+   "pools": [
+    "Things/Item/Resource/RM_DossCatch"
+   ],
    "res": "Things/Item/Resource/RM_DossCatch",
    "reserved": [
     "A",
@@ -260,6 +271,7 @@
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Eesh/RM_Eesh",
    "reserved": [
     "A",
@@ -298,7 +310,7 @@
     "A": "Things/Item/Resource/RM_EeshCatch",
     "B": "Things/Item/Resource/RM_EeshCatch",
     "C": "Things/Item/Resource/RM_EeshCatch",
-    "D": "_byname",
+    "D": "_reference:RM_Eesh",
     "E": "Things/Item/Resource/RM_EeshCatch"
    },
    "labels": {
@@ -308,6 +320,9 @@
     "D": "render scaldfloor_eesh",
     "E": "render RM_EeshCatch_v3_nooutline"
    },
+   "pools": [
+    "Things/Item/Resource/RM_EeshCatch"
+   ],
    "res": "Things/Item/Resource/RM_EeshCatch",
    "reserved": [
     "A",
@@ -340,6 +355,7 @@
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Ekkel/RM_Ekkel",
    "reserved": [
     "A",
@@ -377,7 +393,7 @@
     "A": "Things/Item/Resource/RM_EkkelCatch",
     "B": "Things/Item/Resource/RM_EkkelCatch",
     "C": "Things/Item/Resource/RM_EkkelCatch",
-    "D": "_byname",
+    "D": "_reference:RM_Ekkel",
     "E": "Things/Item/Resource/RM_EkkelCatch"
    },
    "labels": {
@@ -387,6 +403,9 @@
     "D": "render scaldfloor_ekkel",
     "E": "render RM_EkkelCatch_v3_nooutline"
    },
+   "pools": [
+    "Things/Item/Resource/RM_EkkelCatch"
+   ],
    "res": "Things/Item/Resource/RM_EkkelCatch",
    "reserved": [
     "A",
@@ -441,6 +460,7 @@
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Karrash/RM_Karrash",
    "reserved": [
     "A",
@@ -479,7 +499,7 @@
     "A": "Things/Item/Resource/RM_KarrashCatch",
     "B": "Things/Item/Resource/RM_KarrashCatch",
     "C": "Things/Item/Resource/RM_KarrashCatch",
-    "D": "_byname",
+    "D": "_reference:RM_Karrash",
     "E": "Things/Item/Resource/RM_KarrashCatch"
    },
    "labels": {
@@ -489,6 +509,9 @@
     "D": "render scaldfloor_karrash",
     "E": "render RM_KarrashCatch_v3_nooutline"
    },
+   "pools": [
+    "Things/Item/Resource/RM_KarrashCatch"
+   ],
    "res": "Things/Item/Resource/RM_KarrashCatch",
    "reserved": [
     "A",
@@ -521,6 +544,7 @@
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Muddal/RM_Muddal",
    "reserved": [
     "A",
@@ -562,6 +586,9 @@
     "C": "IN GAME \u2014 random variant RM_MuddalCatch_c (3 of 3) \u2014 TerminalBiomes",
     "E": "render RM_MuddalCatch_v3_nooutline"
    },
+   "pools": [
+    "Things/Item/Resource/RM_MuddalCatch"
+   ],
    "res": "Things/Item/Resource/RM_MuddalCatch",
    "reserved": [
     "A",
@@ -594,6 +621,7 @@
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Noohm/RM_Noohm",
    "reserved": [
     "A",
@@ -632,6 +660,9 @@
     "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Saal_b (2 of 3) \u2014 TerminalBiomes",
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Saal_c (3 of 3) \u2014 TerminalBiomes"
    },
+   "pools": [
+    "Things/Item/Resource/RM_Saal"
+   ],
    "res": "Things/Item/Resource/RM_Saal",
    "reserved": [
     "A",
@@ -666,6 +697,7 @@
     "A": "history TerminalBiomes 2026-10-03",
     "B": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_ScaldWalker/RM_ScaldWalker",
    "reserved": [
     "A",
@@ -692,6 +724,7 @@
    "labels": {
     "A": "IN GAME \u2014 TerminalBiomes"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Shulla/RM_Shulla",
    "reserved": [
     "A",
@@ -734,7 +767,7 @@
     "B": "Things/Item/Resource/RM_ShullaCatch",
     "C": "Things/Item/Resource/RM_ShullaCatch",
     "D": "Things/Item/Resource/RM_ShullaCatch",
-    "E": "_byname",
+    "E": "_reference:RM_Shulla",
     "F": "Things/Item/Resource/RM_ShullaCatch"
    },
    "labels": {
@@ -745,6 +778,9 @@
     "E": "render scald_shulla_v1",
     "F": "render RM_ShullaCatch_v3_nooutline"
    },
+   "pools": [
+    "Things/Item/Resource/RM_ShullaCatch"
+   ],
    "res": "Things/Item/Resource/RM_ShullaCatch",
    "reserved": [
     "A",
@@ -791,6 +827,7 @@
     "C": "IN GAME \u2014 TerminalBiomes",
     "D": "render scald3_shimmereel"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Thuum/RM_Thuum",
    "reserved": [
     "A",
@@ -834,8 +871,8 @@
     "A": "Things/Item/Resource/RM_ThuumCatch",
     "B": "Things/Item/Resource/RM_ThuumCatch",
     "C": "Things/Item/Resource/RM_ThuumCatch",
-    "E": "_byname",
-    "F": "_byname",
+    "E": "_reference:RM_Thuum",
+    "F": "_reference:RM_Thuum",
     "G": "Things/Item/Resource/RM_ThuumCatch"
    },
    "labels": {
@@ -846,6 +883,9 @@
     "F": "render scald3_shimmereel",
     "G": "render RM_ThuumCatch_v3_nooutline"
    },
+   "pools": [
+    "Things/Item/Resource/RM_ThuumCatch"
+   ],
    "res": "Things/Item/Resource/RM_ThuumCatch",
    "reserved": [
     "A",

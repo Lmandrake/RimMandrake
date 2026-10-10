@@ -1,9 +1,9 @@
 {
  "biome": "RM_Contagion",
- "built": "2026-10-10T10:11:07-0700",
+ "built": "2026-10-10T13:03:46-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Bleedleaf": {
    "columns": {
@@ -32,6 +32,7 @@
     "C": "render contagion_Bleedleaf_var2",
     "D": "render contagion_Bleedleaf_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Bleedleaf/RM_Bleedleaf",
    "reserved": [
     "A",
@@ -58,6 +59,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Blisterfloat/RM_Blisterfloat",
    "reserved": [
     "A"
@@ -83,6 +85,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk",
    "reserved": [
     "A"
@@ -121,6 +124,7 @@
     "C": "render contagion_BloodyFist_var2",
     "D": "render contagion_BloodyFist_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_BloodyFist/RM_BloodyFist",
    "reserved": [
     "A",
@@ -147,6 +151,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_BloodyMess/RM_BloodyMess",
    "reserved": [
     "A",
@@ -190,6 +195,7 @@
     "B": "render stillsand_regen_RSW_Ikee_v2",
     "C": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_ContagionIkee/RM_ContagionIkee",
    "reserved": [
     "A",
@@ -220,6 +226,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Crispling/RM_Crispling",
    "reserved": [
     "A"
@@ -245,6 +252,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Danglemaw/RM_Danglemaw",
    "reserved": [
     "A"
@@ -277,6 +285,7 @@
     "A": "IN GAME \u2014 Contagion",
     "B": "render enact_9b51ef78_doublemaw_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Doublemaw/RM_Doublemaw",
    "reserved": [
     "A",
@@ -321,6 +330,7 @@
     "D": "render contagion_Eyebark_var2",
     "E": "render contagion_Eyebark_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Eyebark/RM_Eyebark",
    "reserved": [
     "A",
@@ -356,6 +366,7 @@
     "A": "IN GAME \u2014 Contagion",
     "B": "render enact_ffe79056_eyestinger_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Eyestinger/RM_Eyestinger",
    "reserved": [
     "A",
@@ -382,6 +393,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Fleshsop/RM_Fleshsop",
    "reserved": [
     "A",
@@ -416,6 +428,7 @@
     "A": "IN GAME \u2014 Contagion",
     "B": "render enact_712dc596_gawpsack_v1 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack",
    "reserved": [
     "A",
@@ -442,6 +455,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Gnashling/RM_Gnashling",
    "reserved": [
     "A"
@@ -467,6 +481,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Gorekite/RM_Gorekite",
    "reserved": [
     "A"
@@ -505,6 +520,7 @@
     "C": "render contagion_Gorestalk_var2",
     "D": "render contagion_Gorestalk_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Gorestalk/RM_Gorestalk",
    "reserved": [
     "A",
@@ -544,6 +560,7 @@
     "C": "render contagion_HalfmadeTree_var2",
     "D": "render contagion_HalfmadeTree_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree",
    "reserved": [
     "A",
@@ -583,6 +600,7 @@
     "C": "render contagion_HalfmadeTreeBlighted_var2",
     "D": "render contagion_HalfmadeTreeBlighted_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_HalfmadeTreeBlighted/RM_HalfmadeTreeBlighted",
    "reserved": [
     "A",
@@ -622,6 +640,7 @@
     "C": "render contagion_Lashgrass_var2",
     "D": "render contagion_Lashgrass_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Lashgrass/RM_Lashgrass",
    "reserved": [
     "A",
@@ -661,6 +680,7 @@
     "C": "render contagion_Meatvine_var2",
     "D": "render contagion_Meatvine_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Meatvine/RM_Meatvine",
    "reserved": [
     "A",
@@ -687,6 +707,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut",
    "reserved": [
     "A"
@@ -712,6 +733,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Ogleknot/RM_Ogleknot",
    "reserved": [
     "A"
@@ -737,6 +759,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Peeper/RM_Peeper",
    "reserved": [
     "A"
@@ -775,6 +798,7 @@
     "C": "render contagion_Rattlegrope_var2",
     "D": "render contagion_Rattlegrope_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Rattlegrope/RM_Rattlegrope",
    "reserved": [
     "A",
@@ -819,6 +843,9 @@
     "D": "render contagion_RustPuff_var2",
     "E": "render contagion_RustPuff_var3"
    },
+   "pools": [
+    "RotSporeKit/Things/Plant/RustPuff"
+   ],
    "res": "RotSporeKit/Things/Plant/RustPuff",
    "reserved": [
     "A",
@@ -860,6 +887,7 @@
     "C": "render contagion_Sapblister_var2",
     "D": "render contagion_Sapblister_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Sapblister/RM_Sapblister",
    "reserved": [
     "A",
@@ -886,6 +914,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide",
    "reserved": [
     "A"
@@ -916,6 +945,7 @@
     "A": "IN GAME \u2014 Contagion",
     "B": "render pyre_scorchpod_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Scorchpod/RM_Scorchpod",
    "reserved": [
     "A",
@@ -964,6 +994,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Skinflap/RM_Skinflap",
    "reserved": [
     "A"
@@ -989,6 +1020,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Sloshbelly/RM_Sloshbelly",
    "reserved": [
     "A"
@@ -1021,6 +1053,7 @@
     "A": "IN GAME \u2014 Contagion",
     "B": "render enact_c6a3f569_sparkleech_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech",
    "reserved": [
     "A",
@@ -1047,6 +1080,7 @@
    "labels": {
     "A": "IN GAME \u2014 Contagion"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub",
    "reserved": [
     "A"
@@ -1085,6 +1119,7 @@
     "C": "render contagion_Toothmoss_var2",
     "D": "render contagion_Toothmoss_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Toothmoss/RM_Toothmoss",
    "reserved": [
     "A",
@@ -1124,6 +1159,7 @@
     "C": "render contagion_Wombpod_var2",
     "D": "render contagion_Wombpod_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Wombpod/RM_Wombpod",
    "reserved": [
     "A",

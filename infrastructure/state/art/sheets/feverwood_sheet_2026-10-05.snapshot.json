@@ -1,9 +1,9 @@
 {
  "biome": "RM_FeverWood",
- "built": "2026-10-10T10:11:33-0700",
+ "built": "2026-10-10T13:06:35-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "Plant_HydenockTree_Wild": {
    "columns": {
@@ -37,6 +37,9 @@
     "D": "render regen_fw_hydenocktree_varc_v1",
     "E": "IN GAME \u2014 mlie.starwarsanimalcollection"
    },
+   "pools": [
+    "swplants/HydenockTree"
+   ],
    "res": "swplants/HydenockTree",
    "reserved": [
     "A",
@@ -83,6 +86,9 @@
     "D": "render regen_fw_jogantree_varc_v1",
     "E": "IN GAME \u2014 mlie.starwarsanimalcollection"
    },
+   "pools": [
+    "swplants/JoganTree"
+   ],
    "res": "swplants/JoganTree",
    "reserved": [
     "A",
@@ -134,6 +140,7 @@
     "E": "render regen_fw_ammeth_v2c",
     "F": "render regen_fw_ammeth_own_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Ammeth/RM_Ammeth_a",
    "reserved": [
     "A",
@@ -170,6 +177,7 @@
     "A": "IN GAME \u2014 FeverWood",
     "B": "render regen_fw_brathek_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Brathek/RM_Brathek",
    "reserved": [
     "A",
@@ -227,12 +235,12 @@
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
     "B": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
-    "D": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
+    "D": "_byname",
     "G": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
     "H": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
-    "I": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
-    "J": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
-    "K": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow"
+    "I": "_byname",
+    "J": "_byname",
+    "K": "_byname"
    },
    "labels": {
     "A": "history FeverWood 2026-09-26",
@@ -244,6 +252,7 @@
     "J": "render regen_fw_chellow_flying_1_v1",
     "K": "render regen_fw_chellow_flying_3_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
    "reserved": [
     "A",
@@ -302,6 +311,7 @@
     "E": "render regen_fw_cistrel_v2c",
     "F": "render regen_fw_cistrel_own_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Cistrel/RM_Cistrel_a",
    "reserved": [
     "A",
@@ -344,6 +354,7 @@
     "C": "render regen_fw_claithe_varb_v1",
     "D": "render regen_fw_claithe_varc_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Claithe/RM_Claithe_a",
    "reserved": [
     "A",
@@ -389,6 +400,7 @@
     "D": "render regen_fw_corvath_v2b",
     "E": "render regen_fw_corvath_v2c"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Corvath/RM_Corvath_a",
    "reserved": [
     "A",
@@ -428,6 +440,7 @@
     "B": "render feverwood_drommath",
     "D": "render regen_fw_drommath_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Drommath/RM_Drommath",
    "reserved": [
     "A",
@@ -465,6 +478,7 @@
     "B": "render regen_fw_giantleaf_varb_v1",
     "C": "render regen_fw_giantleaf_varc_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_GiantLeaf/RM_GiantLeaf_a",
    "reserved": [
     "A",
@@ -490,6 +504,7 @@
    "labels": {
     "A": "IN GAME \u2014 FeverWood"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Gorrameth/RM_Gorrameth",
    "reserved": [
     "A"
@@ -515,6 +530,7 @@
    "labels": {
     "A": "IN GAME \u2014 FeverWood"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Grolth/RM_Grolth",
    "reserved": [
     "A"
@@ -558,6 +574,7 @@
     "D": "render regen_fw_halquin_varc_v1",
     "E": "render regen_fw_halquin_own_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Halquin/RM_Halquin_a",
    "reserved": [
     "A",
@@ -586,6 +603,7 @@
    "labels": {
     "A": "IN GAME \u2014 FeverWood"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Lommerel/RM_Lommerel",
    "reserved": [
     "A"
@@ -634,6 +652,7 @@
     "E": "render regen_fw_maulith_own_v1",
     "F": "render enact_449ef76f_maulith_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Maulith/RM_Maulith_a",
    "reserved": [
     "A",
@@ -690,11 +709,11 @@
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
     "B": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
-    "D": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
-    "E": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
-    "F": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname",
     "G": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
-    "H": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith"
+    "H": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 FeverWood",
@@ -705,6 +724,7 @@
     "G": "render regen_fw_murrelith_v2",
     "H": "render regen_fw_murrelith_flying_1_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
    "reserved": [
     "A",
@@ -738,6 +758,7 @@
    "labels": {
     "A": "IN GAME \u2014 FeverWood"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Nemmel/RM_Nemmel",
    "reserved": [
     "A"
@@ -781,6 +802,7 @@
     "D": "render regen_fw_nubrith_varc_v1",
     "E": "render regen_fw_nubrith_own_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Nubrith/RM_Nubrith_a",
    "reserved": [
     "A",
@@ -822,6 +844,7 @@
     "B": "render feverwood_ollareth",
     "C": "IN GAME \u2014 FeverWood"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Ollareth/RM_Ollareth",
    "reserved": [
     "A",
@@ -858,6 +881,7 @@
     "B": "render regen_fw_ossagrel_varb_v1",
     "C": "render regen_fw_ossagrel_varc_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Ossagrel/RM_Ossagrel_a",
    "reserved": [
     "A",
@@ -901,6 +925,7 @@
     "D": "render regen_fw_plennith_varc_v1",
     "E": "render regen_fw_plennith_own_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Plennith/RM_Plennith_a",
    "reserved": [
     "A",
@@ -942,6 +967,7 @@
     "C": "render regen_fw_seepril_varc_v1",
     "D": "render regen_fw_seepril_varb_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Seepril/RM_Seepril_a",
    "reserved": [
     "A",
@@ -969,6 +995,7 @@
    "labels": {
     "A": "IN GAME \u2014 FeverWood"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Silloch/RM_Silloch",
    "reserved": [
     "A"
@@ -1001,6 +1028,7 @@
     "A": "history FeverWood 2026-09-26",
     "B": "IN GAME \u2014 FeverWood"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Skellick",
    "reserved": [
     "A",
@@ -1031,6 +1059,7 @@
     "A": "IN GAME \u2014 FeverWood",
     "B": "render feverwood_plant_skethral"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Skethral/RM_Skethral_a",
    "reserved": [
     "A",
@@ -1074,6 +1103,7 @@
     "D": "render regen_fw_skimmel_v2b",
     "E": "render regen_fw_skimmel_v2c"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Skimmel/RM_Skimmel_a",
    "reserved": [
     "A",
@@ -1120,6 +1150,7 @@
     "D": "render regen_fw_sodderel_v2b",
     "E": "render regen_fw_sodderel_v2c"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Sodderel/RM_Sodderel_a",
    "reserved": [
     "A",
@@ -1155,6 +1186,7 @@
     "A": "IN GAME \u2014 FeverWood",
     "B": "render feverwood_thavrik"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Thavrik",
    "reserved": [
     "A",
@@ -1189,6 +1221,7 @@
     "A": "IN GAME \u2014 FeverWood",
     "B": "render regen_fw_thornbug_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Thornbug/RM_Thornbug",
    "reserved": [
     "A",
@@ -1233,6 +1266,7 @@
     "D": "render regen_fw_thulvane_v2b",
     "E": "render regen_fw_thulvane_v2c"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Thulvane/RM_Thulvane_a",
    "reserved": [
     "A",
@@ -1279,6 +1313,7 @@
     "D": "render regen_fw_tullick_v2b",
     "E": "render regen_fw_tullick_v2c"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Tullick/RM_Tullick_a",
    "reserved": [
     "A",
@@ -1325,6 +1360,7 @@
     "D": "render regen_fw_varnoth_v2b",
     "E": "render regen_fw_varnoth_v2c"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Varnoth/RM_Varnoth_a",
    "reserved": [
     "A",
@@ -1366,6 +1402,7 @@
     "B": "render feverwood_vaulm",
     "C": "IN GAME \u2014 FeverWood"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Vaulm/RM_Vaulm",
    "reserved": [
     "A",
@@ -1417,6 +1454,7 @@
     "E": "render regen_fw_verrow_v2c",
     "F": "render regen_fw_verrow_own_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Verrow/RM_Verrow_a",
    "reserved": [
     "A",
@@ -1464,6 +1502,7 @@
     "D": "render regen_fw_wanlith_v2c",
     "E": "render regen_fw_wanlith_v2a"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Wanlith/RM_Wanlith_a",
    "reserved": [
     "A",
@@ -1538,7 +1577,7 @@
     "A": "swanimals/Convor/Convor",
     "B": "swanimals/Convor/Convor",
     "C": "swanimals/Convor/Convor_f",
-    "D": "_flip:swanimals/Convor/Convor_Flying_",
+    "D": "_flip:swanimals/Convor/Convor_f_Flying_",
     "E": "_flip:swanimals/Convor/Convor_Flying_",
     "F": "swanimals/Convor/Convor",
     "G": "swanimals/Convor/Convor"
@@ -1552,6 +1591,7 @@
     "F": "render regen_ls2_canon_convor_v2",
     "G": "render regen_ls2_canon_convor_v3"
    },
+   "pools": [],
    "res": "swanimals/Convor/Convor",
    "reserved": [
     "A",
@@ -1601,16 +1641,6 @@
   },
   "RSW_Fambaa": {
    "columns": {
-    "A": {
-     "east": "105e206407cfe8e172a12a6e93ac7705b7aab61bf4122864128668593e61abfe",
-     "north": "c9a3a0d102da77808d92c660a69c2666681f2af45ef0cd7c09c1213dba56e5b9",
-     "south": "7f0dd63333922a65b0550b221d682597cae7735adf3d5b0d9b40aba3304b4370"
-    },
-    "B": {
-     "east": "aeab59b09f628d6f4c6dd826d440fd368f8b2f1656909dce706afc4608428526",
-     "north": "65bdae211f776694ec2de06b89ef8c8934add73f4f2c217fc91ff63cb56068b7",
-     "south": "c3ecfa24e621d698b0e1e50536e47afb6abcbf65a8e532181410b3b7e38e2a64"
-    },
     "D": {
      "east": "90a5e2f4b3627102bf473421e0365ae5f17a5edf2f8b142e662f720bedbdadcb",
      "north": "145431db3db7e1a85e20d94092a1dc9fdde000a2edd59331d6eb4bc9fac2a9c3",
@@ -1633,21 +1663,18 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Fambaa/Fambaa",
-    "B": "swanimals/Fambaa/Fambaa",
     "D": "swanimals/Fambaa/Fambaa_Swimming",
     "E": "swanimals/Fambaa/Fambaa_j",
     "F": "swanimals/Fambaa/Fambaa_j_Swimming",
     "G": "swanimals/Fambaa/Fambaa"
    },
    "labels": {
-    "A": "IN GAME \u2014 FambaaArtOverride",
-    "B": "history FambaaArtOverride 2026-09-11",
     "D": "IN GAME \u2014 SWBestiary",
     "E": "IN GAME \u2014 SWBestiary",
     "F": "IN GAME \u2014 SWBestiary",
     "G": "render regen_fw_canon_fambaa_v1"
    },
+   "pools": [],
    "res": "swanimals/Fambaa/Fambaa",
    "reserved": [
     "A",
@@ -1682,11 +1709,6 @@
   },
   "RSW_Gelagrub": {
    "columns": {
-    "A": {
-     "east": "80f34fa32f8850459378fab90f39a9189372d75e869456f49b097ce8d20925d3",
-     "north": "06c241a95ee0ac436e7a9a31692d3049195f798e0fe5cff95214fe6d792dede2",
-     "south": "6abd2d80da8a09c3271501a8d3e370b8776f1b844797a968b8d78f91f3ce3ce3"
-    },
     "B": {
      "east": "7a5cb9489047ba6b5a31e31561cc4e7fc032a991740d86ad58a206a33cf1d03b",
      "north": "2f87d1691f424f5a94c771da9a2f5736de997fc19c67d656a1b1368c017fc111",
@@ -1694,13 +1716,12 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Gelagrub/Gelagrub",
     "B": "swanimals/Gelagrub/Gelagrub"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/Gelagrub/Gelagrub",
    "reserved": [
     "A",
@@ -1797,6 +1818,9 @@
     "J": "IN GAME \u2014 SWBestiary",
     "K": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [
+    "swanimals/LongtailGorg/LongtailGorg"
+   ],
    "res": "swanimals/LongtailGorg/LongtailGorg",
    "reserved": [
     "A",
@@ -1890,6 +1914,7 @@
     "D": "history NunaArtOverride 2026-09-17",
     "E": "render canonregen_rsw_nuna_v1"
    },
+   "pools": [],
    "res": "swanimals/Nuna/Nuna_f",
    "reserved": [
     "A",
@@ -1956,6 +1981,9 @@
     "F": "render longshade_rsw_chakroot_v3",
     "G": "render longshade_rsw_chakroot_v4"
    },
+   "pools": [
+    "Things/Plant/RSW_Plant_Chakroot_Wild"
+   ],
    "res": "Things/Plant/RSW_Plant_Chakroot_Wild",
    "reserved": [
     "A",
@@ -2023,6 +2051,7 @@
     "D": "render regen_ls2_canon_urusai_v2",
     "E": "render regen_ls2_canon_urusai_v3"
    },
+   "pools": [],
    "res": "swanimals/Urusai/Urusai",
    "reserved": [
     "A",
@@ -2115,10 +2144,10 @@
     "C": "swanimals/Whisperbird/Whisperbird",
     "D": "swanimals/Whisperbird/Whisperbird",
     "E": "_flip:swanimals/Whisperbird/Whisperbird_Flying_",
-    "G": "swanimals/Whisperbird/Whisperbird",
-    "H": "swanimals/Whisperbird/Whisperbird",
-    "I": "swanimals/Whisperbird/Whisperbird",
-    "J": "swanimals/Whisperbird/Whisperbird",
+    "G": "_byname",
+    "H": "_byname",
+    "I": "_byname",
+    "J": "_byname",
     "K": "swanimals/Whisperbird/Whisperbird"
    },
    "labels": {
@@ -2133,6 +2162,7 @@
     "J": "render regen_ls2_canon_whisperbird_flying_4_v1",
     "K": "render regen_ls2_canon_whisperbird_v1"
    },
+   "pools": [],
    "res": "swanimals/Whisperbird/Whisperbird",
    "reserved": [
     "A",
@@ -2191,6 +2221,7 @@
     "A": "donor original \u2014 Vanilla Factions Expanded - Insectoids 2",
     "B": "IN GAME \u2014 UtinniPatches"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Megathrips/Megathrips",
    "reserved": [
     "A",
@@ -2208,5 +2239,5 @@
   }
  },
  "sheetId": "feverwood_sheet_2026-10-05",
- "snapshotId": "ae1dafddd27ac7cd"
+ "snapshotId": "9197392c76d826bd"
 }
