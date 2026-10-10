@@ -118,3 +118,38 @@ item itself stays open (`doing`, FOUNDRY) rather than closing, because the
 `## verify` bar (a full-list live session showing zero vanilla spawns across
 every route) is nowhere near met — only the biome-roster route has been
 checked, and it checked clean.
+
+## Wave 2 (2026-10-10) — the non-roster routes, measured
+
+Instrument: `src/RimMandrake/Utils/vanilla_beast_routes.py` over `defs.sqlite` (captured 2026-10-04T17:39:06Z, full
+mod list — **pre-Cherry-Picker**, so a CP cut is invisible here; the result is "what the mod set can route", not
+what the Utinni scenario shows after its cuts). Selection rules are the decompiled 1.6 engine's own, read via
+RimSage the same day. Sanity probe: Muffalo is found as a trader animal and a caravan carrier (OK).
+115 official (Ludeon/DLC) animal pawn ThingDefs.
+
+- **Manhunter packs** — `AggressiveAnimalIncidentUtility` draws from the map's biome rosters (`AllWildAnimals`,
+  coastal and pollution lists); even its global fallback is filtered by biome commonality. ⇒ the **roster route**,
+  which wave 1 found clean for `wildAnimals`. ⚠️ Not yet checked: the `coastalAnimals`/`pollutionWildAnimals` lists
+  of our biomes, and Odyssey's `AnimalHabitat` tile mutator (picks its own kind, 50% manhunter chance).
+- **Farm animals wander in** — engine rule: Animal, Wildness < 0.35, `AnimalFarm` trade tag, not Dryad. Official
+  eligible: **10** — `Alpaca`, `Chicken`, `Cow`, `Donkey`, `Dromedary`, `Duck`, `Goat`, `Pig`, `Sheep`, `Yak`. Ours eligible: 43, so cutting
+  the official ten leaves the incident live with owned animals.
+- **Trader stock** — `StockGenerator_Animals`: race trade tags ∩ a trader's `tradeTagsSell`, inside its wildness
+  band, tradeability can-sell. Official animals some trader can sell: **49**; ours: 642.
+- **Caravan pack carriers** (`FactionDef.pawnGroupMakers[*].carriers`) — official: **6**, all from
+  donor factions in the mod set:
+- `Alpaca` — 24 factions (e.g. `AG_OutlanderCivilUnion`, `BS_Dvergr_Medieval_Union`, `BS_LittlePeople`)
+- `Dromedary` — 23 factions (e.g. `AG_OutlanderCivilUnion`, `BS_Dvergr_Medieval_Union`, `BS_LittlePeople`)
+- `Elephant` — 21 factions (e.g. `AG_OutlanderCivilUnion`, `BS_Dvergr_Medieval_Union`, `BS_LittlePeople`)
+- `Horse` — 1 factions (e.g. `KAR_OrcClan`)
+- `Muffalo` — 30 factions (e.g. `AG_OutlanderCivilUnion`, `BS_Dvergr_Medieval_Union`, `BS_LittlePeople`)
+- `Yak` — 2 factions (e.g. `BS_Muspelheim`, `BS_Niflheim`)
+  Ours already carrying for some faction: 27 kinds (Bantha, Dewback, Eopie, Ronto, …).
+- **Self-tame** acts on animals already on the map ⇒ roster route. **Quest animal rewards** not measured this wave.
+
+⇒ A Cherry Picker cut of the official animal ThingDefs should close trader stock and wander-in (both select from
+`DefDatabase<PawnKindDef>`) — UNVERIFIED: confirm the cut actually removes the kind from that database rather than
+zeroing a commonality, since Cherry Picker has several cut mechanisms and a commonality-0 cut does not stop either route — but the six carrier kinds are named directly by faction defs, so cutting
+them without first repointing those factions' `carriers` at owned beasts breaks caravan generation for every faction
+listed. That repoint is the next concrete step, faction by faction, before any CP wave touches Muffalo/Alpaca/
+Dromedary/Elephant/Horse/Yak.
