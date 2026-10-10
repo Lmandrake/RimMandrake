@@ -24,3 +24,10 @@ Source: `art.py enact` log `/home/mandrake/.seat-tmp/BENCH/ws_apply.log` (commit
 | RSW_Dactillion | "Old Flyer art must be removed (remove F)" | delete old flying flip-book art F | DONE — 12 Dactillion_Flying_* frames retired via ledger (owner's words); flyingAnimation* fields removed; MaxFlightTime kept |
 | RSW_Ollopom (3 picks + note) | "Nice. Give them a small beauty bonus then call them done." | install pick B; Beauty stat bonus | DONE — pick B installed at RimStarWars/SWBestiary/Ollopom/ (live texPath) via ruling 5a3ce5b0; PawnBeauty 1 added |
 | RM_Huldu (reference) | "Redo based on (c) ..." | attach (c) render as reference on pending job(s) | DONE — v1 (no reference) had already fully rendered; v2 enact_huldu_from_c_v2 queued with (c) east render as canon_reference |
+
+## Result
+All 19 rows done and marked with `art.py enact --mark-done` (evidence 721d86974); enact now reports TODO 0, CONFLICTS 0.
+- Renames are label-only (defName kept, so saves are safe): burra burra, iaala, softstone. ColossusToad became a new def, RM_Colossia (WeepingStones), on RM_WeepingStones only. The frozen RUT_WeepingStones twin and the vanilla toad are unchanged.
+- Huldu: v1 had already finished rendering without a reference, so it shows on the sheet beside v2 (`enact_huldu_from_c_v2`, built from (c)).
+- PawnBeauty on an animal (Ollopom) shows on the stat card, but RimWorld's room beauty counts only buildings, items, plants and filth. If he wants a gameplay effect, that needs a mechanism (question for him).
+- Deploys refused: all three touched mods (composed Biomes, SWBestiary, UtinniPatches) would write a DLL while the game is running. Run them after the game closes. The SWBestiary deploy also removes the 12 Dactillion_Flying_* files from the game copy.

@@ -7,7 +7,17 @@
       "at": "2026-10-10T14:09:40.805Z",
       "decidedAt": "2026-10-10T14:08:54.977Z",
       "decision": "B",
-      "note": "Redo more alien, rename Colossia, regenerate description, based on the current (b) but extended.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:09:40.805Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Redo more alien, rename Colossia, regenerate description, based on the current (b) but extended.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -39,7 +49,17 @@
       "at": "2026-10-10T14:41:03.665Z",
       "decidedAt": "2026-10-10T14:41:01.405Z",
       "decision": "B",
-      "note": "Two more variants, more realistic.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:41:03.665Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Two more variants, more realistic.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -62,7 +82,17 @@
       "at": "2026-10-10T14:08:28.825Z",
       "decidedAt": "2026-10-10T14:08:22.140Z",
       "decision": "B",
-      "note": "Rename to Burra Burra",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:08:28.825Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Rename to Burra Burra",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },
@@ -82,7 +112,17 @@
       "at": "2026-10-10T14:40:20.050Z",
       "decidedAt": "2026-10-10T14:40:10.576Z",
       "decision": "B",
-      "note": "Two more variants, more realistic.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:40:20.050Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Two more variants, more realistic.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -93,7 +133,17 @@
       "at": "2026-10-10T14:40:34.487Z",
       "decidedAt": "2026-10-10T14:40:33.219Z",
       "decision": "B",
-      "note": "Two more variants, more realistic.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:40:34.487Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Two more variants, more realistic.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -104,7 +154,17 @@
       "at": "2026-10-10T14:42:51.164Z",
       "decidedAt": "2026-10-10T14:42:01.068Z",
       "decision": "B",
-      "note": "Improve description",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:42:51.164Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Improve description",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "e382e2b5ffd6fac7e839b009a178a8ce1ee7a76883bf5196edd37abc5eecdec6"
@@ -121,7 +181,17 @@
       "at": "2026-10-10T14:40:56.080Z",
       "decidedAt": "2026-10-10T14:40:45.356Z",
       "decision": "B",
-      "note": "Two more variants, more realistic.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:40:56.080Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Two more variants, more realistic.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -132,7 +202,17 @@
       "at": "2026-10-10T14:45:51.904Z",
       "decidedAt": "2026-10-10T14:45:46.137Z",
       "decision": "C",
-      "note": "Improve description.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:45:51.904Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Improve description.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "picks": {
         "_byname": "C"
       },
@@ -215,7 +295,17 @@
       "at": "2026-10-10T14:47:05.202Z",
       "decidedAt": "2026-10-10T14:46:52.002Z",
       "decision": "A",
-      "note": "Improve description and call it a Softstone.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:47:05.202Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Improve description and call it a Softstone.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "picks": {
         "_byname": "C"
       },
@@ -268,7 +358,17 @@
       "at": "2026-10-10T14:19:11.371Z",
       "decidedAt": "2026-10-10T14:18:57.664Z",
       "decision": "C",
-      "note": "Rename the Iaala",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:19:11.371Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Rename the Iaala",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "picks": {
         "_byname": "C"
       },
@@ -463,7 +563,17 @@
       "at": "2026-10-10T14:41:21.839Z",
       "decidedAt": "2026-10-10T14:41:06.454Z",
       "decision": "B",
-      "note": "Two more variants, more realistic. Make this 50% larger.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:41:21.839Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Two more variants, more realistic. Make this 50% larger.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -474,7 +584,17 @@
       "at": "2026-10-10T14:41:29.442Z",
       "decidedAt": "2026-10-10T14:41:26.542Z",
       "decision": "B",
-      "note": "Two more variants, more realistic.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:41:29.442Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Two more variants, more realistic.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -485,7 +605,17 @@
       "at": "2026-10-10T14:41:37.524Z",
       "decidedAt": "2026-10-10T14:41:33.350Z",
       "decision": "B",
-      "note": "Two more variants, more realistic.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:41:37.524Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Two more variants, more realistic.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -589,7 +719,17 @@
     "RM_Steamfrond": {
       "at": "2026-10-10T14:44:50.944Z",
       "decision": "A",
-      "note": "Creates a unique Star Wars cuisine spice.  Improve the description.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:44:50.944Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Creates a unique Star Wars cuisine spice.  Improve the description.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -615,7 +755,17 @@
       "at": "2026-10-10T14:32:51.005Z",
       "decidedAt": "2026-10-10T14:31:25.781Z",
       "decision": "A",
-      "note": "Redo the description to be more in world. Flexible wind intakes constantly drain moisture from any dampness in the breeze and make a low howling sound in a strong gust. Pack animal.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:32:51.005Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Redo the description to be more in world. Flexible wind intakes constantly drain moisture from any dampness in the breeze and make a low howling sound in a strong gust. Pack animal.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },
@@ -675,7 +825,17 @@
     "RM_Verdimoss": {
       "at": "2026-10-10T14:44:43.088Z",
       "decision": "A",
-      "note": "Two more variants, more realistic. Improve the description.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:44:43.088Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Two more variants, more realistic. Improve the description.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -764,7 +924,17 @@
     "RM_Weepmat": {
       "at": "2026-10-10T14:44:32.911Z",
       "decision": "A",
-      "note": "Two more variants, more realistic. Improve the description",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:44:32.911Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Two more variants, more realistic. Improve the description",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A",
@@ -810,7 +980,17 @@
       "at": "2026-10-10T14:11:02.038Z",
       "decidedAt": "2026-10-10T14:10:31.261Z",
       "decision": "B",
-      "note": "Old Flyer art must be removed (remove F)",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:11:02.038Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Old Flyer art must be removed (remove F)",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "picks": {
         "_flip:swanimals/Dactillion/Dactillion_Flying_": "F"
       },
@@ -870,7 +1050,17 @@
       "at": "2026-10-10T14:27:34.097Z",
       "decidedAt": "2026-10-10T14:26:31.023Z",
       "decision": "B",
-      "note": "Nice. Give them a small beauty bonus then call them done.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T14:27:34.097Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Nice. Give them a small beauty bonus then call them done.",
+          "when": "2026-10-10T08:21:13-0700"
+        }
+      ],
       "picks": {
         "swanimals/Ollopom/Ollopom_Swimming": "E"
       },
