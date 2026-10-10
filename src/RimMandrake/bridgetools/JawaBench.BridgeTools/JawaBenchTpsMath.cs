@@ -305,6 +305,23 @@ namespace JawaBench.BridgeTools
             return "ok";
         }
 
+        /// <summary>The value a run window adds to the sampler's streak.
+        /// MUST 7: rounded exactly as the disk carries it (F(ratio, 3)), so the live tool and the reader classify
+        /// 0.5996 / 1.1504 the same way.</summary>
+        public static double StreakValue(double ratio) =>
+            double.IsNaN(ratio) || double.IsInfinity(ratio) ? ratio : Math.Round(ratio, 3, MidpointRounding.AwayFromZero);
+
+        /// <summary>Sustained, but "unknown" when the newest streak window is older than StaleSeconds (a stopped
+        /// sampler must not keep reporting its last streak).</summary>
+        public static string SustainedFresh(IList<double> streak, double newestAgeSeconds)
+        {
+            if (newestAgeSeconds > StaleSeconds) return "unknown";
+            return Sustained(streak);
+        }
+
+        /// <summary>A streak/verdict older than this is stale (the reader's STALE_SECONDS).</summary>
+        public const double StaleSeconds = 60.0;
+
         /// <summary>Start a new segment before appending a line that would push this one past the cap.</summary>
         public static bool ShouldRotate(long currentBytes, long lineBytes)
         {

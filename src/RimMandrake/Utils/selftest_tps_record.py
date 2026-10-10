@@ -176,6 +176,8 @@ def trace_checks(tr):
 # ---- scalar vectors ---------------------------------------------------------------------------
 M_VECTORS = [[], [5], [3, 1, 2], [4, 1, 3, 2], [60, 59.5, 12, 61]]
 S_VECTORS = [[0.5] * 5, [0.5] * 6, [1.0] + [0.4] * 6, [0.4] * 5 + [0.9], [1.3] * 6, [1.0] * 8, [0.6] * 6]
+# MUST 7: the sampler's streak is judged on the value the disk carries (3 decimals), so C# and the reader agree
+Q_VECTORS = [[0.5996] * 6, [1.1504] * 6, [0.5994] * 6]
 R_VECTORS = [(0, 3_000_000), (2_097_000, 100), (2_097_100, 100), (2_097_152, 1), (10, 10)]
 N_VECTORS = [(1_791_640_000, "0123456789abcdef0123456789abcdef", 4242, 0), (0, "ab", 1, 17)]
 X_VECTORS = [  # (bytes, ageDays, current) ..., cap
@@ -203,6 +205,7 @@ def py_lines(tr, res):
         out += res[k]
     out += ["M " + T.F(T.median(xs), 3) for xs in M_VECTORS]
     out += ["S " + T.sustained(xs) for xs in S_VECTORS]
+    out += ["Q " + T.sustained([float(T.F(x, 3)) for x in xs]) for xs in Q_VECTORS]
     out += ["R %d" % (1 if T.should_rotate(c, n) else 0) for c, n in R_VECTORS]
     out += ["N " + T.segment_name(*v) for v in N_VECTORS]
     for items, cap in X_VECTORS:
@@ -218,6 +221,7 @@ def cs_input(tr):
         rows += ["F " + " ".join(num(x) for x in f) for f in frames]
     rows += ["M " + " ".join(str(x) for x in xs) for xs in M_VECTORS]
     rows += ["S " + " ".join(str(x) for x in xs) for xs in S_VECTORS]
+    rows += ["Q " + " ".join(str(x) for x in xs) for xs in Q_VECTORS]
     rows += ["R %d %d" % v for v in R_VECTORS]
     rows += ["N %d %s %d %d" % v for v in N_VECTORS]
     rows += ["X " + " ".join("%d:%s:%d" % i for i in items) + " %d" % cap for items, cap in X_VECTORS]
@@ -349,6 +353,35 @@ def reader_checks():
     two_sess = [sample(t15 + 5 * i, i, ratio=0.3, session="s1" if i < 3 else "s2") for i in range(6)]
     check(T.sustained_from_rows(two_sess) == "unknown", "a new session breaks the streak")
 
+    # MUST 7: continuity is the window boundaries, a game/menu/error/silence row or a dropped seq breaks it
+    def mono_run(n, start_seq=1, t_start=t15, mono0=100.0, ratio=0.3, game=1, skip=None):
+        out, m = [], mono0
+        for i in range(n):
+            if skip is not None and i == skip:
+                m += 5.0                       # one whole window missing
+                continue
+            r = dict(sample(t_start + (m - mono0) + 5, start_seq + i, ratio=ratio), mono=m + 5, monoStart=m,
+                     monoEnd=m + 5, game=game)
+            out.append(r)
+            m += 5.0
+        return out
+    check(T.sustained_from_rows(mono_run(7, skip=3)) == "unknown",
+          "MUST 7: ONE missing window (10 s apart) breaks the streak: %r" % T.sustained_from_rows(mono_run(7, skip=3)))
+    g1 = mono_run(3, start_seq=1, game=1)
+    ev = [{"kind": "game", "utc": iso(t15 + 16), "session": "aaaa", "seq": 4, "game": 2}]
+    g2 = mono_run(3, start_seq=5, t_start=t15 + 15, mono0=115.0, game=2)
+    for r in ev:
+        T.place(r)
+    check(T.sustained_from_rows(g1 + ev + g2) == "unknown",
+          "MUST 7: three low windows before a game replacement and three after are NOT one streak")
+    er = [{"kind": "error", "utc": iso(t15 + 16), "session": "aaaa", "seq": 4}]
+    T.place(er[0])
+    g2b = mono_run(3, start_seq=5, t_start=t15 + 15, mono0=115.0, game=1)
+    check(T.sustained_from_rows(g1 + er + g2b) == "unknown", "MUST 7: an error row breaks the streak")
+    dropped = mono_run(3, start_seq=1) + mono_run(3, start_seq=6, t_start=t15 + 15, mono0=115.0)  # seq 4,5 lost
+    check(T.sustained_from_rows(dropped) == "unknown", "MUST 7: a seq gap (dropped rows) breaks the streak")
+    check(T.sustained_from_rows(mono_run(6)) == "low", "MUST 7: six abutting low windows ARE sustained low")
+
     # verdicts: coverage separate from performance
     now = t15 + 1000
     fresh_low = [sample(now - 5 * (8 - i), i, ratio=0.3) for i in range(8)]
@@ -369,7 +402,7 @@ def reader_checks():
 
 # names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
 # from the harness is a failure, not a pass.
-CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes"]
+CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale"]
 
 
 def unit_checks(lines):

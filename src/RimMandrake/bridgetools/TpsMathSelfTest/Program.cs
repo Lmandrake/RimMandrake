@@ -66,6 +66,9 @@ namespace JawaBench.BridgeTools
                     case "S":
                         Console.WriteLine("S " + M.Sustained(a.Skip(1).Select(P).ToList()));
                         break;
+                    case "Q":   // the SAMPLER's streak: raw ratios through StreakValue, then Sustained
+                        Console.WriteLine("Q " + M.Sustained(a.Skip(1).Select(P).Select(M.StreakValue).ToList()));
+                        break;
                     case "R":
                         Console.WriteLine("R " + (M.ShouldRotate(long.Parse(a[1]), long.Parse(a[2])) ? 1 : 0));
                         break;

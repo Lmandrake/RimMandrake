@@ -462,6 +462,8 @@ namespace JawaBench.BridgeTools
                                                    WD.LastSave, WD.ContextFields()));
         }
 
+        private static double _streakMono = -1;
+
         private static void BreakStreak() { lock (Gate) Streak.Clear(); }
 
         private static void Emit(M.Window w, TickManager tm)
@@ -485,8 +487,9 @@ namespace JawaBench.BridgeTools
             {
                 Ring.Enqueue("{\"utc\":\"" + W.Utc() + "\"," + fields + "}");
                 while (Ring.Count > M.RingCapacity) Ring.Dequeue();
-                if (state == M.StateRun && !double.IsNaN(w.Ratio)) { Streak.Add(w.Ratio); if (Streak.Count > M.RingCapacity) Streak.RemoveAt(0); }
+                if (state == M.StateRun && !double.IsNaN(w.Ratio)) { Streak.Add(M.StreakValue(w.Ratio)); if (Streak.Count > M.RingCapacity) Streak.RemoveAt(0); }
                 else Streak.Clear();
+                _streakMono = WD.Now;
             }
             double now = WD.Now;
             if (_lastContext < 0 || now - _lastContext >= 60) { _lastContext = now; Context(); }
@@ -573,7 +576,7 @@ namespace JawaBench.BridgeTools
                 ratioMin = rat.Count > 0 ? (double?)rat.Min() : null,
                 ratioMedian = rat.Count > 0 ? (double?)M.Median(rat) : null,
                 ratioMax = rat.Count > 0 ? (double?)rat.Max() : null,
-                sustained = M.Sustained(streak),
+                sustained = M.SustainedFresh(streak, _streakMono < 0 ? double.MaxValue : WD.Now - _streakMono),
                 samplesJsonl = tail,
             };
         }
