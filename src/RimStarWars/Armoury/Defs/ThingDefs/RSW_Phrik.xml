@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  ASTEROID_DESERT_ORES_1 + CANON_MATERIALS_BUILD_1 L6 (partial: phrik) — RSW_Phrik, the canon lightsaber-resistant alloy
+  (design/RimMandrake/canon_materials_design_2026-10-09.md §3.5). RSW tier (mandrake.rsw.armoury).
+
+  Sources: rare trade, and a rare phrikite deposit in ONE desert biome (RM_Stillsand and its twin RUT_ExtremeDesert; the biome
+  is PROVISIONAL, owner question open) placed by RUT_PhrikiteDesertLumps (src/RimUtinni/UtinniPatches). RSW_MineablePhrikite
+  has scatter 0 and deep 0, so that GenStep is its only placement. Phrikite smelts aboard into RSW_Phrik
+  (Patches/RSW_Smelter_Alloys.xml).
+
+  PROVISIONAL (no calibration, no ruling): MarketValue 90, ore 8, Mass 0.8/1, yield 12, lump 3~6. Art: tinted steel stacks.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_Phrik</defName>
+    <label>phrik</label>
+    <description>A rare, robust alloy that a lightsaber cannot easily cut. It is hammered into staffs and blades for those who must parry a saber, and it is mined, smelted from phrikite, in only a few desert places.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Steel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(140,145,150)</color>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <useHitPoints>false</useHitPoints>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>90</MarketValue>
+      <Mass>0.8</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_Phrikite</defName>
+    <label>phrikite</label>
+    <description>Raw phrikite, a dull greyish ore with a pale lustre. It is smelted into phrik, the saber-resistant alloy.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Steel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(165,170,175)</color>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <useHitPoints>false</useHitPoints>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>8</MarketValue>
+      <Mass>1</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RSW_MineablePhrikite</defName>
+    <label>phrikite ore</label>
+    <description>Desert rock seamed with phrikite, rare and pale. A little of it, deep in the sands.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(68,68,72)</color>
+      <colorTwo>(165,170,175)</colorTwo>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>1800</MaxHitPoints>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RSW_Phrikite</mineableThing>
+      <mineableYield>12</mineableYield>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+      <mineableScatterLumpSizeRange>3~6</mineableScatterLumpSizeRange>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>
+      <veinMineable>true</veinMineable>
+    </building>
+  </ThingDef>
+
+</Defs>

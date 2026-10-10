@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_Smelter_Alloys.xml          mandrake.rsw.armoury
+
+  ASTEROID_DESERT_ORES_1 (doonium, phrik: design canon_materials_design_2026-10-09.md section 3.5) and the CANON_MATERIALS_BUILD_1
+  L2/L4 "re-melt aboard" duty (durasteel and plasteel slag): four VFE Factory ProcessDefs on the ship's smelter, shaped like
+  VFEFactory_SmeltMetalFromSlag (the donor, workshop 3686924415 1.6 ProcessDefs_AutomatedSmelter.xml):
+    RSW_SmeltDoonium            5 doonium ore + 1 RM_GlowerCrust -> 4 RSW_Doonium     (glower crust is the flux: lore link)
+    RSW_SmeltPhrik              4 phrikite -> 2 RSW_Phrik
+    RSW_SmeltPlasteelFromSlag   1 KotORChunk_plasteel -> 15 Plasteel
+    RSW_SmeltDurasteelFromSlag  1 KotORChunk_durasteel -> 15 RSW_Durasteel
+  Attached to the donor smelter and to WreckedMachines' Kludged / Refurbished / Repaired tiers. Each op is success=Always, and
+  the whole patch is Conditional on VFE Factory's process existing, so without VFE Factory it adds nothing and logs nothing.
+  Toggles (RSW_ArmourySettings, applied at startup by Source/AlloyForge/RSW_AlloyOres.cs): dooniumSmeltEnabled,
+  phrikSmeltEnabled, slagRemeltAboardEnabled.
+  PROVISIONAL (no calibration, no ruling): every ratio and tick count above.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PipeSystem.ProcessDef[defName="VFEFactory_SmeltMetalFromSlag"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RM_GlowerCrust"]</xpath>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs</xpath>
+            <value>
+              <PipeSystem.ProcessDef>
+                <defName>RSW_SmeltDoonium</defName>
+                <label>Smelt doonium from ore and glower crust</label>
+                <labelOverride>Smelt doonium from ore and glower crust</labelOverride>
+                <description>Smelt doonium ore with glower crust as flux into doonium, the heavy metal of reactor shielding and ship keels.</description>
+                <priorityInBillList>0</priorityInBillList>
+                <spawnOnInteractionCell>true</spawnOnInteractionCell>
+                <autoGrabFromHoppers>true</autoGrabFromHoppers>
+                <autoInputSlots>
+                  <li>(0,0,3)</li>
+                  <li>(1,0,3)</li>
+                  <li>(-1,0,3)</li>
+                </autoInputSlots>
+                <ticks>2400</ticks>
+                <ingredients>
+                  <li>
+                    <thing>RSW_DooniumOre</thing>
+                    <countNeeded>5</countNeeded>
+                  </li>
+                  <li>
+                    <thing>RM_GlowerCrust</thing>
+                    <countNeeded>1</countNeeded>
+                  </li>
+                </ingredients>
+                <results>
+                  <li>
+                    <thing>RSW_Doonium</thing>
+                    <count>4</count>
+                  </li>
+                </results>
+                <isFactoryProcess>true</isFactoryProcess>
+                <autoExtract>true</autoExtract>
+                <onlyGrabAndOutputToFactoryHoppers>true</onlyGrabAndOutputToFactoryHoppers>
+                <sustainerWhenWorking>true</sustainerWhenWorking>
+                <sustainerDef>VFEFactory_AutomatedSmeltingSustainer</sustainerDef>
+                <effecterWhenWorking>true</effecterWhenWorking>
+                <effecterDef>VFEFactory_Smelt</effecterDef>
+                <maxOutputCount>75</maxOutputCount>
+              </PipeSystem.ProcessDef>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="VFEFactory_AutomatedSmelter"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltDoonium</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltDoonium</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltDoonium</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltDoonium</li>
+            </value>
+          </li>
+        </operations>
+      </match>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PipeSystem.ProcessDef[defName="VFEFactory_SmeltMetalFromSlag"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RSW_Phrik"]</xpath>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs</xpath>
+            <value>
+              <PipeSystem.ProcessDef>
+                <defName>RSW_SmeltPhrik</defName>
+                <label>Smelt phrik from phrikite</label>
+                <labelOverride>Smelt phrik from phrikite</labelOverride>
+                <description>Smelt phrikite ore into phrik, the lightsaber-resistant alloy.</description>
+                <priorityInBillList>0</priorityInBillList>
+                <spawnOnInteractionCell>true</spawnOnInteractionCell>
+                <autoGrabFromHoppers>true</autoGrabFromHoppers>
+                <autoInputSlots>
+                  <li>(0,0,3)</li>
+                  <li>(1,0,3)</li>
+                  <li>(-1,0,3)</li>
+                </autoInputSlots>
+                <ticks>2400</ticks>
+                <ingredients>
+                  <li>
+                    <thing>RSW_Phrikite</thing>
+                    <countNeeded>4</countNeeded>
+                  </li>
+                </ingredients>
+                <results>
+                  <li>
+                    <thing>RSW_Phrik</thing>
+                    <count>2</count>
+                  </li>
+                </results>
+                <isFactoryProcess>true</isFactoryProcess>
+                <autoExtract>true</autoExtract>
+                <onlyGrabAndOutputToFactoryHoppers>true</onlyGrabAndOutputToFactoryHoppers>
+                <sustainerWhenWorking>true</sustainerWhenWorking>
+                <sustainerDef>VFEFactory_AutomatedSmeltingSustainer</sustainerDef>
+                <effecterWhenWorking>true</effecterWhenWorking>
+                <effecterDef>VFEFactory_Smelt</effecterDef>
+                <maxOutputCount>75</maxOutputCount>
+              </PipeSystem.ProcessDef>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="VFEFactory_AutomatedSmelter"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltPhrik</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltPhrik</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltPhrik</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltPhrik</li>
+            </value>
+          </li>
+        </operations>
+      </match>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PipeSystem.ProcessDef[defName="VFEFactory_SmeltMetalFromSlag"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="RSW_Durasteel"]</xpath>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs</xpath>
+            <value>
+              <PipeSystem.ProcessDef>
+                <defName>RSW_SmeltPlasteelFromSlag</defName>
+                <label>Smelt plasteel from slag</label>
+                <labelOverride>Smelt plasteel from slag</labelOverride>
+                <description>Melt plasteel slag back into plasteel plate.</description>
+                <priorityInBillList>0</priorityInBillList>
+                <spawnOnInteractionCell>true</spawnOnInteractionCell>
+                <autoGrabFromHoppers>true</autoGrabFromHoppers>
+                <autoInputSlots>
+                  <li>(0,0,3)</li>
+                  <li>(1,0,3)</li>
+                  <li>(-1,0,3)</li>
+                </autoInputSlots>
+                <ticks>1600</ticks>
+                <ingredients>
+                  <li>
+                    <thing>KotORChunk_plasteel</thing>
+                    <countNeeded>1</countNeeded>
+                  </li>
+                </ingredients>
+                <results>
+                  <li>
+                    <thing>Plasteel</thing>
+                    <count>15</count>
+                  </li>
+                </results>
+                <isFactoryProcess>true</isFactoryProcess>
+                <autoExtract>true</autoExtract>
+                <onlyGrabAndOutputToFactoryHoppers>true</onlyGrabAndOutputToFactoryHoppers>
+                <sustainerWhenWorking>true</sustainerWhenWorking>
+                <sustainerDef>VFEFactory_AutomatedSmeltingSustainer</sustainerDef>
+                <effecterWhenWorking>true</effecterWhenWorking>
+                <effecterDef>VFEFactory_Smelt</effecterDef>
+                <maxOutputCount>75</maxOutputCount>
+              </PipeSystem.ProcessDef>
+              <PipeSystem.ProcessDef>
+                <defName>RSW_SmeltDurasteelFromSlag</defName>
+                <label>Smelt durasteel from slag</label>
+                <labelOverride>Smelt durasteel from slag</labelOverride>
+                <description>Melt durasteel slag back into durasteel.</description>
+                <priorityInBillList>0</priorityInBillList>
+                <spawnOnInteractionCell>true</spawnOnInteractionCell>
+                <autoGrabFromHoppers>true</autoGrabFromHoppers>
+                <autoInputSlots>
+                  <li>(0,0,3)</li>
+                  <li>(1,0,3)</li>
+                  <li>(-1,0,3)</li>
+                </autoInputSlots>
+                <ticks>1600</ticks>
+                <ingredients>
+                  <li>
+                    <thing>KotORChunk_durasteel</thing>
+                    <countNeeded>1</countNeeded>
+                  </li>
+                </ingredients>
+                <results>
+                  <li>
+                    <thing>RSW_Durasteel</thing>
+                    <count>15</count>
+                  </li>
+                </results>
+                <isFactoryProcess>true</isFactoryProcess>
+                <autoExtract>true</autoExtract>
+                <onlyGrabAndOutputToFactoryHoppers>true</onlyGrabAndOutputToFactoryHoppers>
+                <sustainerWhenWorking>true</sustainerWhenWorking>
+                <sustainerDef>VFEFactory_AutomatedSmeltingSustainer</sustainerDef>
+                <effecterWhenWorking>true</effecterWhenWorking>
+                <effecterDef>VFEFactory_Smelt</effecterDef>
+                <maxOutputCount>75</maxOutputCount>
+              </PipeSystem.ProcessDef>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="VFEFactory_AutomatedSmelter"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltPlasteelFromSlag</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltPlasteelFromSlag</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltPlasteelFromSlag</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltPlasteelFromSlag</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="VFEFactory_AutomatedSmelter"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltDurasteelFromSlag</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Kludged"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltDurasteelFromSlag</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Refurbished"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltDurasteelFromSlag</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <success>Always</success>
+            <xpath>/Defs/ThingDef[defName="RM_WM_AutomatedSmelter_Repaired"]/comps/li[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"]/processes</xpath>
+            <value>
+              <li>RSW_SmeltDurasteelFromSlag</li>
+            </value>
+          </li>
+        </operations>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>

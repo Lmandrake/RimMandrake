@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_OdysseyAsteroid_Doonium.xml          mandrake.rsw.armoury
+
+  ASTEROID_DESERT_ORES_1 (design canon_materials_design_2026-10-09.md section 3.5): doonium ore on Odyssey asteroid maps
+  ONLY. Same explicit allowlist as RSW_OdysseyAsteroidNoPlasteel.xml (the three asteroid GenStepDefs and the Asteroids
+  GeneratedLocationDef). RSW_MineableDoonium has scatter 0 and deep 0, so no planet surface path can place it.
+  Smelted aboard with RM_GlowerCrust into RSW_Doonium (RSW_Smelter_Alloys.xml). Toggle: RSW_ArmourySettings.dooniumAsteroidEnabled
+  (default on) takes it back out of the three GenSteps at startup (Source/AlloyForge/RSW_AlloyOres.cs).
+  PROVISIONAL counts (no calibration; real amounts belong in the mineral registry): ruins 6~10, no-ruins 4~8, basic 3~6.
+-->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <success>Always</success>
+    <xpath>/Defs/GenStepDef[defName="Asteroid"]/genStep/mineableCounts</xpath>
+    <value>
+      <RSW_MineableDoonium>6~10</RSW_MineableDoonium>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <success>Always</success>
+    <xpath>/Defs/GenStepDef[defName="Asteroid_NoRuins"]/genStep/mineableCounts</xpath>
+    <value>
+      <RSW_MineableDoonium>4~8</RSW_MineableDoonium>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <success>Always</success>
+    <xpath>/Defs/GenStepDef[defName="AsteroidBasic"]/genStep/mineableCounts</xpath>
+    <value>
+      <RSW_MineableDoonium>3~6</RSW_MineableDoonium>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <success>Always</success>
+    <xpath>/Defs/GeneratedLocationDef[defName="Asteroids"]/preciousResources</xpath>
+    <value>
+      <li>RSW_MineableDoonium</li>
+    </value>
+  </Operation>
+</Patch>

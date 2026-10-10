@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ASTEROID_DESERT_ORES_1: register the self-gating desert phrikite scatter on every player map
+     (shape: RUT_ZersiumForgeLumps_Register.xml). The GenStep checks the biome and the setting. -->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li MayRequire="mandrake.rsw.armoury">RUT_PhrikiteDesertLumps</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

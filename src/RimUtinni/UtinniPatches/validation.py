@@ -95,7 +95,7 @@ from modcheck import Suite, ExpectationFailed
 
 suite = Suite("UtinniPatches")
 suite.toggles = ["ambientShrineDoctrineEnabled", "geothermalDensityFieldEnabled",
-                 "utinniWorldIconEnabled", "zersiumForgeEnabled"]
+                 "utinniWorldIconEnabled", "zersiumForgeEnabled", "phrikiteDesertEnabled"]
 
 _MOD_DIR = os.path.dirname(os.path.abspath(__file__))
 _WORLDICON_PATCH = os.path.join(_MOD_DIR, "Patches", "UtinniWorldIcon.xml")
@@ -573,6 +573,57 @@ def zersium_forge(t):
                 raise ExpectationFailed("Forge map carries no zersium ore: %r" % res)
             if f.get("allowed") != "True" and cells != 0:
                 raise ExpectationFailed("zersium ore outside the Forge: %r" % res)
+
+
+@suite.chain("phrikite_desert")
+def phrikite_desert(t):
+    """ASTEROID_DESERT_ORES_1: phrikite (RSW_Phrikite -> RSW_Phrik, mandrake.rsw.armoury) is mined only in the extreme desert.
+    Ore scatter/deep commonality 0; its one placement is RUT_PhrikiteDesertLumps, registered on Base_Player and gated on
+    RM_Stillsand/RUT_ExtremeDesert plus phrikiteDesertEnabled. The desert choice is PROVISIONAL (owner question open).
+    Live half like zersium: ore cells > 0 on an allowed map, exactly 0 elsewhere. Not proven here: that the smelt aboard runs
+    (Armoury's chain), and stated vs placed amounts across seeds."""
+    import xml.etree.ElementTree as ET
+    armoury = os.path.join(_MOD_DIR, "..", "..", "RimStarWars", "Armoury", "Defs", "ThingDefs", "RSW_Phrik.xml")
+    with t.component("phrikite_wiring_static", beyond_toggle=True):
+        defs = {d.findtext("defName"): d for d in ET.parse(armoury).getroot().findall("ThingDef")}
+        ore = defs.get("RSW_MineablePhrikite")
+        if "RSW_Phrik" not in defs or "RSW_Phrikite" not in defs or ore is None:
+            raise ExpectationFailed("RSW_Phrik / RSW_Phrikite / RSW_MineablePhrikite missing from %s" % armoury)
+        b = ore.find("building")
+        if b.findtext("mineableThing") != "RSW_Phrikite" or b.findtext("mineableScatterCommonality") != "0":
+            raise ExpectationFailed("ore must yield RSW_Phrikite with scatter commonality 0 (desert only)")
+        if b.findtext("deepCommonality") not in (None, "0"):
+            raise ExpectationFailed("ore must have no deep-drill route")
+        gs = ET.parse(os.path.join(_MOD_DIR, "Defs", "MapGeneration", "RUT_PhrikiteDesertLumps.xml")).getroot().find("GenStepDef/genStep")
+        biomes = sorted(li.text for li in gs.find("allowedBiomes"))
+        if gs.findtext("forcedDefToScatter") != "RSW_MineablePhrikite" or biomes != ["RM_Stillsand", "RUT_ExtremeDesert"]:
+            raise ExpectationFailed("GenStep must force RSW_MineablePhrikite on exactly the desert pair, got %r" % biomes)
+        if int(gs.findtext("minLumps") or 0) < 1:
+            raise ExpectationFailed("GenStep must declare minLumps >= 1")
+        reg = ET.parse(os.path.join(_MOD_DIR, "Patches", "RUT_PhrikiteDesertLumps_Register.xml")).getroot()
+        if "RUT_PhrikiteDesertLumps" not in [li.text for li in reg.iter("li")]:
+            raise ExpectationFailed("RUT_PhrikiteDesertLumps is not registered on Base_Player")
+        src = open(os.path.join(_MOD_DIR, "Source", "RUT_GenStep_ZersiumForgeLumps.cs"), encoding="utf-8").read()
+        if "RUT_GenStep_PhrikiteDesertLumps" not in src or "phrikiteDesertEnabled" not in src:
+            raise ExpectationFailed("the phrikite GenStep class or its setting is missing from the C#")
+    with t.component("phrikite_defs_loaded", beyond_toggle=True):
+        for d in ("ThingDef/RSW_Phrik", "ThingDef/RSW_MineablePhrikite", "GenStepDef/RUT_PhrikiteDesertLumps"):
+            r = t.bridge_call("jawa/get_defs", defs=d)
+            if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+    with t.component("phrikite_only_in_desert", toggle="phrikiteDesertEnabled"):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Utinni.UtinniPatches.RUT_PhrikiteDesertProof",
+                          method="Probe", args="x")
+        res = str((r or {}).get("result", ""))
+        if t._guard():
+            f = dict(kv.split("=", 1) for kv in res.split() if "=" in kv)
+            if "cells" not in f:
+                raise ExpectationFailed("probe could not ask: %r" % (r,))
+            cells = int(f["cells"])
+            if f.get("allowed") == "True" and f.get("enabled") == "True" and cells == 0:
+                raise ExpectationFailed("desert map carries no phrikite ore: %r" % res)
+            if f.get("allowed") != "True" and cells != 0:
+                raise ExpectationFailed("phrikite ore outside the desert: %r" % res)
 
 
 @suite.chain("mindstone_matrix_recipes")

@@ -25,9 +25,12 @@ namespace RimMandrake.Utinni.UtinniPatches
 
         public override int SeedPart => 734119052;
 
+        // The Mod Settings switch for this step; the phrikite subclass swaps it.
+        protected virtual bool Enabled => UtinniPatchesSettings.zersiumForgeEnabled;
+
         public override void Generate(Map map, GenStepParams parms)
         {
-            if (!UtinniPatchesSettings.zersiumForgeEnabled || !Allowed(map, allowedBiomes))
+            if (!Enabled || !Allowed(map, allowedBiomes))
             {
                 return;
             }
@@ -71,7 +74,7 @@ namespace RimMandrake.Utinni.UtinniPatches
             usedSpots.Clear();
             if (placed < minLumps)
             {
-                Log.Warning("[RUT_ZersiumForgeLumps] placed " + placed + " of minimum " + minLumps + " lumps on a Forge map (no eligible natural rock?).");
+                Log.Warning("[" + GetType().Name + "] placed " + placed + " of minimum " + minLumps + " lumps on a gated map (no eligible natural rock?).");
             }
         }
 
@@ -85,6 +88,15 @@ namespace RimMandrake.Utinni.UtinniPatches
         {
             return map != null && map.Biome != null && !biomes.NullOrEmpty() && biomes.Contains(map.Biome);
         }
+    }
+
+    // ASTEROID_DESERT_ORES_1 — phrikite's only placement: a few small lumps of RSW_MineablePhrikite in the natural
+    // rock of ONE desert biome (RM_Stillsand and its twin RUT_ExtremeDesert; PROVISIONAL, owner question open).
+    // Same gate-and-guarantee logic as the zersium step, own seed and own Mod Settings switch.
+    public class RUT_GenStep_PhrikiteDesertLumps : RUT_GenStep_ZersiumForgeLumps
+    {
+        public override int SeedPart => 734119077;
+        protected override bool Enabled => UtinniPatchesSettings.phrikiteDesertEnabled;
     }
 
     // Bridge proof (jawa/static_call): the gate's verdict for the current map, and the count of
@@ -107,6 +119,29 @@ namespace RimMandrake.Utinni.UtinniPatches
             }
             bool allowed = RUT_GenStep_ZersiumForgeLumps.Allowed(map, step.allowedBiomes);
             return "allowed=" + allowed + " enabled=" + UtinniPatchesSettings.zersiumForgeEnabled
+                 + " biome=" + map.Biome.defName + " cells=" + map.listerThings.ThingsOfDef(ore).Count;
+        }
+    }
+
+    // Same probe for phrikite: "allowed=<bool> enabled=<bool> biome=<defName> cells=<n>".
+    public static class RUT_PhrikiteDesertProof
+    {
+        public static string Probe(string unused)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null)
+            {
+                return "no map";
+            }
+            GenStepDef gs = DefDatabase<GenStepDef>.GetNamedSilentFail("RUT_PhrikiteDesertLumps");
+            RUT_GenStep_PhrikiteDesertLumps step = gs?.genStep as RUT_GenStep_PhrikiteDesertLumps;
+            ThingDef ore = DefDatabase<ThingDef>.GetNamedSilentFail("RSW_MineablePhrikite");
+            if (step == null || ore == null)
+            {
+                return "no defs";
+            }
+            bool allowed = RUT_GenStep_ZersiumForgeLumps.Allowed(map, step.allowedBiomes);
+            return "allowed=" + allowed + " enabled=" + UtinniPatchesSettings.phrikiteDesertEnabled
                  + " biome=" + map.Biome.defName + " cells=" + map.listerThings.ThingsOfDef(ore).Count;
         }
     }

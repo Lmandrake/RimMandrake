@@ -67,6 +67,12 @@ namespace RimMandrake.StarWars.Armoury
         // ── Alloy forge durasteel (SHIP_ALLOY_FORGE_1, Patches/RSW_AlloyForge_Durasteel.xml) ──
         public static bool durasteelAlloyEnabled = true;
 
+        // ── Doonium, phrik and aboard slag re-melt (ASTEROID_DESERT_ORES_1, Patches/RSW_Smelter_Alloys.xml) ──
+        public static bool dooniumAsteroidEnabled = true;
+        public static bool dooniumSmeltEnabled = true;
+        public static bool phrikSmeltEnabled = true;
+        public static bool slagRemeltAboardEnabled = true;
+
         // ── Gear self-buff abilities (SelfHediffVerb) ───────────────────
         public static bool selfHediffVerbEnabled = true;
         public static float selfHediffCooldown = 1f;
@@ -111,6 +117,10 @@ namespace RimMandrake.StarWars.Armoury
             Scribe_Values.Look(ref secondaryYieldAmount, "secondaryYieldAmount", 1f, true);
 
             Scribe_Values.Look(ref durasteelAlloyEnabled, "durasteelAlloyEnabled", true, true);
+            Scribe_Values.Look(ref dooniumAsteroidEnabled, "dooniumAsteroidEnabled", true, true);
+            Scribe_Values.Look(ref dooniumSmeltEnabled, "dooniumSmeltEnabled", true, true);
+            Scribe_Values.Look(ref phrikSmeltEnabled, "phrikSmeltEnabled", true, true);
+            Scribe_Values.Look(ref slagRemeltAboardEnabled, "slagRemeltAboardEnabled", true, true);
 
             Scribe_Values.Look(ref selfHediffVerbEnabled, "selfHediffVerbEnabled", true, true);
             Scribe_Values.Look(ref selfHediffCooldown, "selfHediffCooldown", 1f, true);
@@ -238,6 +248,21 @@ namespace RimMandrake.StarWars.Armoury
                 "On (shipped default): the ship's alloy forge (VFE Factory) has a durasteel recipe, "
               + "steel plus zersium ore, as its first alloy. Off: durasteel comes only from salvage "
               + "and trade. Takes effect after your next game load.");
+            list.GapLine();
+
+            // ── Doonium, phrik, slag re-melt ────────────────────────────
+            list.CheckboxLabeled("Doonium ore on asteroid maps", ref dooniumAsteroidEnabled,
+                "On (shipped default): Odyssey asteroid maps carry doonium ore. Off: doonium comes only from "
+              + "salvage and trade. Takes effect after your next game load.");
+            list.CheckboxLabeled("Ship smelter makes doonium from ore and glower crust", ref dooniumSmeltEnabled,
+                "On (shipped default): the ship's smelter (VFE Factory) can smelt doonium ore with glower crust. "
+              + "Takes effect after your next game load.");
+            list.CheckboxLabeled("Ship smelter makes phrik from phrikite", ref phrikSmeltEnabled,
+                "On (shipped default): the ship's smelter can smelt phrikite ore into phrik. "
+              + "Takes effect after your next game load.");
+            list.CheckboxLabeled("Ship smelter re-melts plasteel and durasteel slag", ref slagRemeltAboardEnabled,
+                "On (shipped default): salvage slag of plasteel and durasteel melts back into plate on the ship's smelter. "
+              + "Takes effect after your next game load.");
             list.GapLine();
 
             // ── Self-hediff verb ────────────────────────────────────────
