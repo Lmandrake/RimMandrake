@@ -369,7 +369,7 @@ def reader_checks():
 
 # names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
 # from the harness is a failure, not a pass.
-CS_UNITS = ["IncidentRowComposition"]
+CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting"]
 
 
 def unit_checks(lines):
@@ -416,7 +416,25 @@ def _j_silence(rows):
     check(len(rows) == 1 and rows[0].get("kind") == "silence", "MUST 1: silence row composes: %r" % rows)
 
 
-J_CHECKS = [("incident", _j_incident), ("silence", _j_silence)]   # assertions on production-composed lines
+def _j_worst(rows):
+    w = (rows[0].get("worst") or [{}])[0] if rows else {}
+    check(rows and w.get("tg") == 777 and w.get("ms") == 50 and rows[0]["attr"]["tick"][1] == 50,
+          "SHOULD 1: the worst tick names its own tick id and the SAME duration as the tick total: %r" % rows)
+    st = w.get("stages") if isinstance(w, dict) else None
+    check(isinstance(st, dict) and st.get("tl:Normal") == 40 and st.get("tickOther") == 10,
+          "SHOULD 1: the worst tick keeps its numeric per-stage breakdown (ms), not only a `top` string: %r" % w)
+    check(rows and rows[0].get("attrValid") is True, "valid nesting reads attrValid true: %r" % rows)
+
+
+def _j_invalid(rows):
+    check(rows and rows[0].get("attrValid") is False and isinstance(rows[0].get("attrOverMs"), (int, float))
+          and rows[0]["attrOverMs"] > 0,
+          "MUST 2/A12: children exceeding their parent flag attrValid false with the excess (never a silent clamp): %r"
+          % rows)
+
+
+J_CHECKS = [("incident", _j_incident), ("silence", _j_silence), ("stages-worst", _j_worst),
+            ("stages-invalid", _j_invalid)]   # assertions on production-composed lines
 
 
 def cs_parity(tr, res):

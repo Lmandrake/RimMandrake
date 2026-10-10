@@ -77,6 +77,24 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
   timeline selects by overlap.
 - GREEN: python checks PASS, C# parity 64/64, companion builds.
 
+### MUST 2 (+ SHOULD 1, review item 12) — profiler timers skip-safe and exception-contained
+- Seam: the accounting moved unchanged into the Verse-free `JawaBenchTpsStages.cs` (compiled by the
+  harness); the Harmony hooks only read the clock and call in.
+- RED (`T_StagesSkipSafe`, `T_StagesWorstTick`, `T_StagesInvalidNesting`):
+  `FAIL C# unit StagesSkipSafe: an End with no recorded start fabricated 86400 s (tl:Normal) / 86400 s (tick)`;
+  `FAIL SHOULD 1: ... {'tg': 777, 'ms': 50, 'top': 'tl:Normal 80%'}` (no numeric breakdown);
+  children summing past their parent produced no validity flag.
+- FIX: `End`/`TickEnd` refuse a zero start or a backwards clock and count `profSkipped`; one duration
+  feeds both the tick total and the worst-tick record; worst ticks carry the tick id captured in the
+  prefix (`TicksGame+1`, DoSingleTick increments first) and an exclusive per-stage `stages{}` breakdown in
+  ms; every window states `attrValid` and `attrOverMs` when children exceed parents. Hooks: prefix +
+  **void finalizer** (runs on throw, rethrows the original — see Harmony facts), each in try/catch that
+  disables attribution (`attrError`, tool `attribution.runtimeError`) rather than escaping into the tick;
+  hooks on a non-main thread are skipped and counted.
+- Note (verified, see facts): on Harmony 2.4.2 our void `out __state` prefixes are never skipped, so the
+  86400 s path needs a prefix that threw; the guard is kept because skip rules are version behaviour.
+- GREEN: `C# units: 4 run, 0 failed`; companion builds.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)
