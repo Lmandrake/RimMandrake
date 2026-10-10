@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ModsConfigData>
+  <version>1.6.4871 rev591</version>
+  <activeMods>
+    <li>brrainz.harmony</li><li>ludeon.rimworld</li><li>ludeon.rimworld.royalty</li><li>ludeon.rimworld.ideology</li><li>ludeon.rimworld.biotech</li><li>ludeon.rimworld.anomaly</li><li>ludeon.rimworld.odyssey</li><li>brrainz.rimbridgeserver</li><li>lazyfridaystudio.genesexpandedeyes</li><li>mlie.horrors</li><li>mlie.starwarsanimalcollection</li><li>ray1203.simplecamerasetting</li><li>redmattis.betterprerequisites</li><li>erdelf.humanoidalienraces</li><li>neronix17.toolbox</li><li>oskarpotocki.vanillafactionsexpanded.core</li><li>neronix17.outland.genetics</li><li>oskarpotocki.vfe.insectoid2</li><li>redmattis.bigsmall.core</li><li>sarg.alphaanimals</li><li>sarg.alphabiomes</li><li>turnovus.biotech.integratedgenes</li><li>vanillaexpanded.vfefactory</li><li>mandrake.rm.acousticscanner</li><li>mandrake.rm.flowworks</li><li>mandrake.rm.bazaar</li><li>mandrake.rm.gimmesomeslack</li><li>mandrake.rm.explosiveknockback</li><li>mandrake.rm.graffiti</li><li>mandrake.rm.gravshiplanding</li><li>mandrake.rm.hugethings</li><li>mandrake.rm.injections</li><li>mandrake.rm.inhabited</li><li>mandrake.rm.keelhoist</li><li>mandrake.rm.kineticarms</li><li>mandrake.rm.ninefold</li><li>mandrake.rm.aftermath</li><li>mandrake.rm.luminouspigment</li><li>mandrake.rm.planetpresetprime</li><li>mandrake.rm.proximityhatch</li><li>mandrake.rm.raidredesigner</li><li>mandrake.rm.visibility</li><li>mandrake.rm.watchers</li><li>mandrake.rm.weathersuite</li><li>mandrake.rm.wreckedmachines</li><li>mandrake.rsw.bacta</li><li>mandrake.rsw.droidworks</li><li>mandrake.rsw.injections</li><li>mandrake.rsw.starwarsraces</li><li>mandrake.rsw.trophycraft</li><li>mandrake.rut.antiquities</li><li>mandrake.rut.cathedralpass</li><li>mandrake.rut.droidrepairjobs</li><li>mandrake.rut.empirepursuit</li><li>mandrake.rut.injections</li><li>mandrake.rut.rites</li><li>mandrake.rm.biomes</li><li>mandrake.rm.shipvermin</li><li>mandrake.rm.solarmirrors</li><li>mandrake.rm.warcasket</li><li>mandrake.rsw.swbestiary</li><li>mandrake.rut.ashkarrflora</li><li>mandrake.rut.falllinearrivals</li><li>mandrake.rut.patches</li><li>mandrake.rut.eggreckoning</li><li>mandrake.rut.shipshields</li><li>mandrake.rut.unfinishedline</li><li>mandrake.rut.wasterun</li></activeMods>
+  <knownExpansions>
+    <li>ludeon.rimworld.royalty</li>
+    <li>ludeon.rimworld.ideology</li>
+    <li>ludeon.rimworld.biotech</li>
+    <li>ludeon.rimworld.anomaly</li>
+    <li>ludeon.rimworld.odyssey</li>
+  </knownExpansions>
+</ModsConfigData>
