@@ -464,3 +464,17 @@ the live game/bridge**.
 Deploy + live-proof of boxes 2/3/6/7 via `jawa/droid_format_tier` is still
 owed at the next game-down window, exactly as stated above — nothing new
 found, nothing regressed. Item left in `doing`.
+
+## fix 2026-10-09 (FOUNDRY belt, offline) for bridge5 A1/A3 FAILs
+- **A1 mechanism:** the stages' `<disablesNeeds>` names only vanilla needs; the full list adds ~12 ungated third-party
+  needs that `ShouldHaveNeed` returns true for. Fix: `Patch_ShouldHaveNeed_Power.Postfix` (now `Priority.Last`) vetoes
+  every non-`RSW_DW_Power` need on a droid whose tier is Mindless/Blank (`DroidworksKernel.TierAllowsNeed`). Other mods untouched.
+- **A3 mechanism:** blank disables all work, so vanilla's Idle-colonist block wanders it. Fix: `RSW_DW_BlankStandbyInsert`
+  at `Humanlike_PostMain` -> `JobGiver_DWBlankStandby` gives a 250-tick Wait to blank droids only (orders, duties, recharge still win).
+- Offline: Droidworks builds 0/0; droid fuzz 11007 cases OK incl. new tier need/idle invariants.
+- Spawn-time third-party hediffs (passions, RJW parts, Asthma, IUD) are a separate leak, not fixed here.
+
+### live-verify (next bridge sitting, full list, after deploy)
+- A1: GNK droid `jawa/droid_format_tier` set mindless, then blank -> `needs` == `['RSW_DW_Power']` exactly. FAIL: any other need.
+- A3: blank droid, 600 ticks, undrafted -> job is `Wait` ("Standing"), never `Wander*`; position unchanged. Programmable control still works/wanders.
+- Regression: programmable keeps Mood (+third-party needs), sapient gains Joy/Beauty/Comfort/Outdoors.

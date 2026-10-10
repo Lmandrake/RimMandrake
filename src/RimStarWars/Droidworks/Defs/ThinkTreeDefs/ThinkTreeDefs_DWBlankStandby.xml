@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- DROIDWORKS_FORMAT_TIERS_1: a BLANK droid stands still instead of wandering.
+       Humanlike_PostMain sits after the main colonist work block and before vanilla's
+       "Idle colonist" wander (Core/ThinkTreeDefs/Humanlike.xml), so orders, duties and
+       the recharge insert (Humanlike_PreMain) all still win. The job giver returns null
+       for every non-droid and every tier but Blank. -->
+  <ThinkTreeDef>
+    <defName>RSW_DW_BlankStandbyInsert</defName>
+    <insertTag>Humanlike_PostMain</insertTag>
+    <insertPriority>100</insertPriority>
+    <thinkRoot Class="RimMandrake.StarWars.Droidworks.JobGiver_DWBlankStandby" />
+  </ThinkTreeDef>
+
+</Defs>
