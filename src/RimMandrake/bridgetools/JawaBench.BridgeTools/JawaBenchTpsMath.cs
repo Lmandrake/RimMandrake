@@ -330,7 +330,7 @@ namespace JawaBench.BridgeTools
         /// <summary>One gap incident's JSON fields (no braces).</summary>
         public static string GapFields(Gap g)
         {
-            return "\"kind\":\"" + g.Kind + "\",\"gapS\":" + F(g.Seconds, 3) + ",\"explainedS\":" + F(g.Explained, 3) +
+            return "\"gapS\":" + F(g.Seconds, 3) + ",\"explainedS\":" + F(g.Explained, 3) +
                    ",\"unexplainedS\":" + F(g.Seconds - g.Explained, 3) + ",\"pausedAfter\":" + (g.Paused ? "true" : "false") +
                    ",\"mult\":" + F(g.Mult, 2) + ",\"ambiguous\":" + (g.Ambiguous ? "true" : "false");
         }

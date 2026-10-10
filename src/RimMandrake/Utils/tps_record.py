@@ -218,8 +218,8 @@ def window_fields(w):
 
 def gap_fields(g):
     """Port of JawaBenchTpsMath.GapFields."""
-    return ('"kind":"%s","gapS":%s,"explainedS":%s,"unexplainedS":%s,"pausedAfter":%s,"mult":%s,"ambiguous":%s' % (
-        gap_kind(g), F(g["seconds"], 3), F(g["explained"], 3), F(g["seconds"] - g["explained"], 3),
+    return ('"gapS":%s,"explainedS":%s,"unexplainedS":%s,"pausedAfter":%s,"mult":%s,"ambiguous":%s' % (
+        F(g["seconds"], 3), F(g["explained"], 3), F(g["seconds"] - g["explained"], 3),
         "true" if g["paused"] else "false", F(g["mult"], 2), "true" if g["ambiguous"] else "false"))
 
 
