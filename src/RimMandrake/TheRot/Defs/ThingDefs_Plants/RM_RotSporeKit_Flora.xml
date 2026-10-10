@@ -699,6 +699,39 @@
     </plant>
   </ThingDef>
 
+  <!-- ============== Tolluk cap (our Agarilux) ==============
+       Name/label/description from design: biome_flora_rosters.md row "tolluk cap" (donor AB_Agarilux, Rot commonality 2)
+       and RotSpecies_NamesAndSizes.xml. PROVISIONAL: every number below (HP, growDays, fertility, cluster, size) is
+       copied from sibling mushrooms, not designed; biome wiring is NOT done here. -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_TollukCap</defName>
+    <label>tolluk cap</label>
+    <description>The common tall mushroom of the pale forest: a lilac cap on a thick white stalk, studded with soft knobs that glow faintly when the air is wet.</description>
+    <graphicData>
+      <texPath>RotSporeKit/Things/Plant/TollukCap</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.35</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <growDays>5.5</growDays>
+      <fertilityMin>0.05</fertilityMin>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.5~1.1</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>6</wildClusterRadius>
+      <wildClusterWeight>2</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+  </ThingDef>
+
   <!-- ============== Sagecrust ============== -->
   <ThingDef ParentName="PlantBase">
     <defName>RM_Sagecrust</defName>
