@@ -56,6 +56,8 @@
     <Compile Include="MentalState_BrainWormPuppet.cs" />
     <Compile Include="Projectile_BrainWormEgg.cs" />
     <Compile Include="RSW_BrainWormsSettings.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>
