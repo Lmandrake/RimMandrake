@@ -1,9 +1,9 @@
 {
  "biome": "RM_FloodedCanyon",
- "built": "2026-10-10T01:00:51-0700",
+ "built": "2026-10-10T10:11:46-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 565 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_Murkling": {
    "columns": {
@@ -31,6 +31,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "57a098473d73479a1631bd5c19637093c5b06311ed2444aec8443217f27539cd",
+    "789bd3da12cc679f5c1af427b22cbba94260c3bb07cf788264ab6786cd2b0eb3",
+    "85bc84e3401fc513d587ae135ce8c098e6780f9bc644404a343be96e3f68566b",
+    "b3e69d8f7573c3ee116cf64b381cef345a9263d0604a0bb5ac6107900aa5ee25",
+    "d7fd05f1d4332745962b8a99dc3a2ff309d02f35caf9a227d04aae00c83fee0c",
+    "fb24aabaac879e327c24a6ca926dbd7862dc4564aa769cb590b623fac0277b88"
+   ],
    "subject_key": "murkling"
   },
   "RM_CrackedThornwood": {
@@ -43,23 +51,34 @@
     },
     "C": {
      "single": "d92285d8adf2c75ae3f305b9e080e09645e079db354af088ca42c8ef44b9b26c"
+    },
+    "D": {
+     "single": "8ca61330cac095970bb51d58fe04e0eac14a4c7394d6b333f909adb13eb1a278"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_CrackedThornwood",
     "B": "Things/Plant/RM_CrackedThornwood",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "Things/Plant/RM_CrackedThornwood"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant TwistingThornwood_a (1 of 2) \u2014 FloodedCanyon",
     "B": "render gapall_RM_CrackedThornwood_v1",
-    "C": "render gapfin_RM_TwistingThornwood_v1"
+    "C": "render gapfin_RM_TwistingThornwood_v1",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThornwood_b (2 of 2) \u2014 FloodedCanyon"
    },
    "res": "Things/Plant/RM_CrackedThornwood",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
+   ],
+   "shownBase": [
+    "0a4a0528b19b365cb7a0b501b52ddea4f0e53a06887959bdc0164c46f91ee60a",
+    "d92285d8adf2c75ae3f305b9e080e09645e079db354af088ca42c8ef44b9b26c",
+    "e5fafd127835482fd4b50ff356befd1475383a7fac90e9b3c7b20ccbf07285dd"
    ],
    "subject_key": "crackedthornwood"
   },
@@ -84,6 +103,9 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "7e17bd9e8971910603fdb5dd606d48a2140b33e048d9e986e6ab99200f6b85bd"
    ],
    "subject_key": "harrovaq"
   },
@@ -114,6 +136,9 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "1bdfa086e56084c510399a540e8f23d3cc1d05d327c8a50e5abbd524b3715f97"
    ],
    "subject_key": "luqqim"
   },
@@ -164,6 +189,15 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "07c885ae00517ab3f8063debe64cae070e645ae90683565f55cedae2be352c31",
+    "10733b9eb62bf2d286f1e52f987513346df6178db74b30db6afa865dc338a5f0",
+    "28aec978958784677edf51eca63ed8c791037cf25fc653b309cab34075fa6205",
+    "8beab9075503d893a172c3bed26d535fd1a39f8aefa7e8b4c484acb2bba30e9f",
+    "925c943b83df1c59b6f32fbd643308a5669926212dfcef0fa3820eacbd676e2e",
+    "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
+    "fbb8738669fb2de56eed7f43e8970386360c658906ed1502ebbc23a668f016d9"
+   ],
    "subject_key": "muttavaq"
   },
   "RM_Nabbuq": {
@@ -194,6 +228,9 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "72d1d12ecb77d67a28eab1c10055e6ce5a69c9fac5159ef92e626ce5de11c68c"
+   ],
    "subject_key": "nabbuq"
   },
   "RM_Ommok": {
@@ -221,6 +258,14 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "0bd92c393b1fa0d50ce1c1e6c01a099d74ecfab37f5bbd3336ed8858e0a04257",
+    "10115071a331deac22f9d0afe3d6191f391f8a90773f35a7b968ba9e5908e51b",
+    "333db5930ae3509e57157d4c68fe0674efae5b7ce23ebca162dc47e0a70ab024",
+    "58cf7d565fcd15a804298c4e8cafc988feab8092a0bb061bdbd0df0df308c100",
+    "5a886bd59aca4df841bfacf82640eb2e0910ffe47684bbae79ee2f4ea4403481",
+    "dc65e88c249af4a1363557f5430021b4b292c327a3a9eac1eeaaf12a8f75b619"
    ],
    "subject_key": "ommok"
   },
@@ -252,6 +297,9 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "2ff584fc6c75553302667405c63042eb234d6995d5850c8a11f09a5054ec5171"
+   ],
    "subject_key": "ruqqal"
   },
   "RM_Sevvuq": {
@@ -282,6 +330,9 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "a91737ef9a82822106d3650eae34a85c8e4dddf9683a249fc157dc75a5736f6f"
+   ],
    "subject_key": "sevvuq"
   },
   "RM_Tarruq": {
@@ -310,6 +361,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "48996f4d3e2199d587a1f4858ee7db77524b679e92e8f6dc27338f8a07b1ffaa",
+    "9200a4c28ce3a5c893f253ba74a696f1f5c7b3ef8d436fc79d28257fc0f9b7d0",
+    "9a98fed3c0e333f9b3ffac934841276fc60b2fd367cefb53180118ed18f7bb12",
+    "bcb8875dfee3ee396495a90a77bb83e053da52254d020eed3d199fa064d79f56",
+    "c1eabb2373a2a778345f05ff8141de394e66993238981ca8ce9ddffa32353772",
+    "d53bb43902929a31a08d227305dc8e887fd95d8bd07b61aada44a819e8063987"
+   ],
    "subject_key": "tarruq"
   },
   "RM_TwistingThorngrass": {
@@ -325,26 +384,42 @@
     },
     "D": {
      "single": "8541b85f1be9810464f5cc8dde5eaf94422ad3cd2b5cbdd43333a6e00397c059"
+    },
+    "E": {
+     "single": "13cf3d63cbe0369ca6387b0ab850a5956c2f71d96228ad5dd9ef8db653e72457"
+    },
+    "F": {
+     "single": "2fc159db5bc9f4a83d1504d5c9ca3082b05fe2907ea58cf5180f788244bbf991"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_TwistingThorngrass",
     "B": "Things/Plant/RM_TwistingThorngrass",
     "C": "Things/Plant/RM_TwistingThorngrass",
-    "D": "Things/Plant/RM_TwistingThorngrass"
+    "D": "Things/Plant/RM_TwistingThorngrass",
+    "E": "Things/Plant/RM_TwistingThorngrass",
+    "F": "Things/Plant/RM_TwistingThorngrass"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapfin_RM_TwistingThorngrass_v1",
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "B": "IN GAME \u2014 random variant TwistingThorngrass_a (1 of 3) \u2014 FloodedCanyon",
     "C": "render enact_10c96cdf_twistingthorngrass_v1",
-    "D": "render enact_cf1eb3bf_twistingthorngrass_v2"
+    "D": "render enact_cf1eb3bf_twistingthorngrass_v2",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThorngrass_b (2 of 3) \u2014 FloodedCanyon",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThorngrass_c (3 of 3) \u2014 FloodedCanyon"
    },
    "res": "Things/Plant/RM_TwistingThorngrass",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "3e8a8759be42c6463f60b1332afe7de584caef33aee4f427c64040d2917601bb",
+    "f32acf4e16a1afe2054ec6677d4382465dd4dd8dffe9ac8a141df4e33aafd4d5"
    ],
    "subject_key": "twistingthorngrass"
   },
@@ -364,6 +439,9 @@
     },
     "E": {
      "single": "af488075a6159dd96351fa336f2e518f7f4e91b226f4090c547e7054d51d8e65"
+    },
+    "F": {
+     "single": "3c3b2e8e2defb425c43543eb9b7bd66a1e17661930b193a5a37ee382518bc5ef"
     }
    },
    "graphic_of": {
@@ -371,14 +449,16 @@
     "B": "Things/Plant/RM_TwistingThornweed",
     "C": "Things/Plant/RM_TwistingThornweed",
     "D": "Things/Plant/RM_TwistingThornweed",
-    "E": "Things/Plant/RM_TwistingThornweed"
+    "E": "Things/Plant/RM_TwistingThornweed",
+    "F": "Things/Plant/RM_TwistingThornweed"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render twistingthornweed_v1_r2",
+    "A": "IN GAME \u2014 random variant TwistingThornweed_a (1 of 3) \u2014 FloodedCanyon",
+    "B": "IN GAME \u2014 random variant TwistingThornweed_c (3 of 3) \u2014 FloodedCanyon",
     "C": "render enact_546016b1_twistingthornweed_v1",
     "D": "render enact_b39e17ba_twistingthornweed_v2",
-    "E": "render legacy_d52a8f4d_plant_twistingthornweed_v1"
+    "E": "render legacy_d52a8f4d_plant_twistingthornweed_v1",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant TwistingThornweed_b (2 of 3) \u2014 FloodedCanyon"
    },
    "res": "Things/Plant/RM_TwistingThornweed",
    "reserved": [
@@ -386,7 +466,12 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "17eceb1e8c16ae696ed58907dc2b96debc7935a45bd5846256814c171205dfc1",
+    "2441d440350e9a05deeb2f44467ede646ec450d351b1ff7ffd9b1be3f883425c"
    ],
    "subject_key": "twistingthornweed"
   },
@@ -430,6 +515,17 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "002334271c134fad2ef45a535a24704e804366e0312ef574edc0d271ce162c71",
+    "20ade451fbe545d1ad29d16abcc5ac4e068ee5148ac2260be52b91bc4ef7643c",
+    "3ee9327363117842d579082d05cc4ddee65b4731d5aa6538a83a72705f822c33",
+    "3f7017b2e4a1cb51a0997b15604487ba29e12113543b3b48262109d7d4bbb033",
+    "54e72766e7a5784c52fb42ff1343c7d9adb93bfa18cb7c6403b5966fe4512214",
+    "719248047b779eed2af25ccb94df2e1fb0392a481cf9d066a20bffaed566bdca",
+    "8b7a2de527b39309663ae8aef748acd22205f2c0c821af952e93c2de2c913079",
+    "97a9a1452b3ccd38a85e5a34b09fc3c11af66f1eacd315a46ba8512d883cdcd0",
+    "d715dc9a1cd18a110bf6d6ea2e7680490c1c8d78683863525afa4a59e53f7dc3"
+   ],
    "subject_key": "uttaqar"
   },
   "RM_Veqma": {
@@ -454,7 +550,7 @@
     "D": "_byname"
    },
    "labels": {
-    "A": "our deployed art (render RM_Veqma) \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant RM_Veqma (1 of 1) \u2014 FloodedCanyon",
     "B": "render enact_fcveqma_real_v1",
     "C": "render enact_fcveqma_real_v2",
     "D": "render enact_fcveqma_real_v3"
@@ -465,6 +561,9 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "bdb7ac0f5185c8f0190369f9782444ff4bb243173e15d67d6295078d612cbb02"
    ],
    "subject_key": "veqma"
   },
@@ -490,6 +589,9 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "31e7292e9aa9e9774d706adf5b7d30be59db33b2be983eb798a793c3f53d086d"
+   ],
    "subject_key": "zennaq"
   },
   "RSW_CanCell": {
@@ -512,21 +614,50 @@
      "4_east": "ee17d0f65a39265c235507311a4d037cd1c4b79fc6c3553a1c7fb013d22da0de",
      "4_north": "fbc831bb620b7a45a897697a891e8d527480eff75c78c1ee99ca22d3be0e4a9e",
      "4_south": "a6c8756d7659797c36ac5e813bd0482b5fb4de72d20266a8fd8bcb5b0694bdaf"
+    },
+    "D": {
+     "east": "8431d77ed49d3f3de751c42c06946b1699b3f2ae6eec60ecd5e66e52d74b4535"
+    },
+    "E": {
+     "east": "5c0ca893f552c0f9187f9516a3cdb19cee532bfab9a816600ee58504db949ba8"
     }
    },
    "graphic_of": {
     "A": "swanimals/CanCell/CanCell",
-    "C": "_flip:swanimals/CanCell/CanCell_Flying_"
+    "C": "_flip:swanimals/CanCell/CanCell_Flying_",
+    "D": "swanimals/CanCell/CanCell",
+    "E": "swanimals/CanCell/CanCell"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "C": "IN GAME \u2014 CanCell_Flying_"
+    "C": "IN GAME \u2014 CanCell_Flying_",
+    "D": "render canonregen_rsw_cancell_v1 \u2014 failed canon check",
+    "E": "render canonregen_rsw_cancell_v2 \u2014 failed canon check"
    },
    "res": "swanimals/CanCell/CanCell",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "193f16ac5764c9485b1050d23f682d19af33e02bf0b95e69e6c36423c51dd1cf",
+    "20a48d785e4c3dbe5b9b0ab064f832407ccc44cca5a789f81f6ffc6b8b5b2997",
+    "3ace4361960d7bb9350210686ca711db100f37782fafcbfd51392aa2332b1e52",
+    "4bbb99d061280d796e1535741cf68245e61895f9acbaf024cd62b651a368deef",
+    "5b23c42aad8a407ecf29e7948a69b2d52a42cd8106ad4a81c62f356e825bd430",
+    "7bf4d8fbe05e6458d98f3b7bc644cd6c4e3aa2103db463e0aeefa50222bd5b4c",
+    "8ec5fd10caf8f5902276c15e267e078835d0283619d44d6b87993564343b0790",
+    "90238ea43c838a644b144761c85457a7c31b6da47d2bb11aa70fc0a878c261a8",
+    "97a030819d2a629c7419b54f806a768020bdd2baa16445ee19106bd4cdeb23c1",
+    "a6c8756d7659797c36ac5e813bd0482b5fb4de72d20266a8fd8bcb5b0694bdaf",
+    "d533f9b3988c110a1ad6c3c4f48f8f76f3db092ceedf8d89ec9c093d45586b4f",
+    "ee17d0f65a39265c235507311a4d037cd1c4b79fc6c3553a1c7fb013d22da0de",
+    "ef2511606050d5a4d407bf2c74d2e545b6d60e2151161e2aefcc503a6ac038d8",
+    "f06b4b74efad7d965e74b673c5dc70e23e77b44ddd9fe091a2dc53d85fb5601d",
+    "fbc831bb620b7a45a897697a891e8d527480eff75c78c1ee99ca22d3be0e4a9e"
    ],
    "subject_key": "cancell"
   },
@@ -614,6 +745,47 @@
     "F",
     "G"
    ],
+   "shownBase": [
+    "10b4b9ef4ad7f7afb05149181f27718035f9ce10031f464d0f9431d3ed1d2188",
+    "1df7eb5714c5fec155ce51f1570984596cc0bf2517d97c5793b6a37a6eb9d735",
+    "2011533a7186226142c8b7646f9fd1c54b39f02d7a0948fee713c177e5ab4a0c",
+    "2161e64b279cefeadb45863b3640d13bc20a8fab1839bb3b1a0285f16038cfaf",
+    "296f437d6d9ed1daa204963512269ac8604fabeff44ef04aca7220210e712360",
+    "2fc80191c68997f2051b0d4ea71a9d57707f75c3d1fcc47fa9a80579050cf87b",
+    "34ccacb5b68c2a5c0a0f9f1aff3d76cf4d7b258d87416b173c01dec55bec0dec",
+    "360ca5fb897f01bf78417491f298b232e150794946e649576c7c68aa2b51f524",
+    "39b4b2c0a9e55bbe48776c730e74f6b77fd4defe2ce8b2feb78284acdc84b95c",
+    "406350d7d732d766987e8c37f47d7931d2758f435525d28d7652653a93fe36a9",
+    "4458dc8bcef509555c53722d444141ea54edee1d44b125ed95453b5df6f413fd",
+    "52fb2d350a99cd931e32d3bc748561c6c13db31b10f998f9b81c4c20d6d5ca31",
+    "55efc2da767a9da89402316f3d315a7c3a0a2f83c67ec24b4ddff7f08860b0a0",
+    "5bab61a5b11ddb994e31d9ad9dda2a262cc1d9143233d94ec9c4e9e628e8e61d",
+    "6340f28fc215ebd9e28a483cbc305799bfd97e1f38a4f6f109f07521c8651625",
+    "74148c2ae3e091d64f606292973f2f0fd9910bebea25455bef2d0b9aa309c320",
+    "7a0a10afbdbfd9eedeb8d6436a06970ced3ceaaa726a3cec43feb1a09679f4c3",
+    "7d1cc1d5284369c2928a5b9ac966683e5fe3a3f7103e3d53da1effb631226358",
+    "804c3bc6bea09afdc62a852cf6182c8686f23e195ef50244b9664d881011b488",
+    "81aa3a96abf52a6b789671f7c81258b92830823b7e6d385866e6cfc7c9e20043",
+    "92d2782e702eff8b88cca80717f125d540e1202bc216428bc26fb37ad75d4d2a",
+    "93c3d7d58fab40a0826afd87ee12e210b010dfcc0340059b929f530f2e918b95",
+    "96bb487a3542cfc9cf79dc1eb1a3e5619d16fef59632fb79b68ad1923dd8ffd5",
+    "980b49b06f96675a3e0992038b1c3c863276a9d111697b00010cd63306eeedfd",
+    "a8dd1f199a5b1a7b2e6c0d63cde5aa3f10c61e21f2b6906316dc82a8beb890e8",
+    "b3f22c3fad897eed7d6e79152baf86b1a383434973645fbc8b9de4469bcaffb0",
+    "b95ed0b1fb389460f227ac33ffdc3bd8ffe8c71d695fc41f28329a3e3c7f4a35",
+    "c02dd654f26961c188eb153df2753557c3141121091abdb191d3db8e5587ab2c",
+    "c46a6827df6faae87f1ca0806d85f4d96f35976d5c82254fd8edb6bae35a88fd",
+    "c9199f78c620cf702dc2aff13da28278ac0990ea9c4e1989eed658c780844172",
+    "cf8fcfa5ad487cdfc97a0c2284ffb3c530896f26b513f5fab1bb9b081c5e42e6",
+    "d01bc774a48caa84b3973f2f82550dc733dd0bcbc3e9bc61ebe431f52cf5e9cf",
+    "d1f7c87906618d48004a8794f7ca6af9a4c85c0fb7e2cb65f7520aec4debbb87",
+    "d67594dc3f78ef20ef7118421c67ea10746278cf541b6457b1b7370c1607e2cc",
+    "e0aa83483c18ee6835a3770cafc49a9ddf8940f7c3bbd0cebeac398071207919",
+    "eaa9143a524f973c8c3dce80ab5094b7d42ce8a20cad459c5b265a11975a7ed3",
+    "f9823ce6f53f8cd10057be22ad20fcf23eae6c7d966546726e7efc4a2a42cced",
+    "fa71044cbca1efb3f746a11d0713f4860818e6f079f019562dde3d6e61c39352",
+    "fa7ef3949ca880b50a9f80890bd1599fee7826a016a20d92f737900c9468b3b8"
+   ],
    "subject_key": "convor"
   },
   "RSW_Creature_Mantrap": {
@@ -658,6 +830,11 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d",
+    "d08be7051362c4dd382545e6acacffe179cab08b8e4509c30c2bd04c66f824a5",
+    "dd4d8dce9c0446e5de77183d59ef9312ed20c4237e38fc4dd32c3dfcf8ba974a"
+   ],
    "subject_key": "creature_mantrap"
   },
   "RSW_Gornt": {
@@ -685,6 +862,11 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "03ba95e2744b017665c7808ce14e1dda41909e47a82756dcfd85e4502eb0855a",
+    "875547fc35bdd2dc6eda220f0da86406e5d9bf117ad93398068273cb198fdbd0",
+    "fce69d1735fc651f5030e6a26783ec6e55cd93f27f26e21934a643b61145bf57"
    ],
    "subject_key": "gornt"
   },
@@ -714,6 +896,11 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "3bbef1389b7ab59c626f6e37993db45eb153311107352af9139d8bde845c3293",
+    "406f7891285e5de327b092ae1401f6b87a7762fa0d692be87a358980c76ed905",
+    "a2790f567690070fd77faf54dfe534df28dd826715c3b841a69ef3be21aa2bca"
+   ],
    "subject_key": "mutagenicnorphea"
   },
   "RSW_SandLeaper": {
@@ -741,6 +928,11 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "15716966a9bcf1110beb87170e53b3a01874f696738b043423df45987ca3b641",
+    "4529bae6c1e65b12c61ee28f854e6d0bff20376988e5a40f2d0cd7ed9f360d1e",
+    "b8daeed8f484cb9f0b4429dec862333c29875cd0ff4451cd186cf3cdfbd3e4a7"
    ],
    "subject_key": "sandleaper"
   },
@@ -770,6 +962,11 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "77adf2e56b7a276a92efb870b941bed515ad7da8f3701e098bad54d8bb405c72",
+    "b7bd88a93528091ce425dd60112b75d3bbab49c28a0d82ea047224d46cb51976",
+    "bc6ad51af41659199083f62fe71a4d0e2ac8ca0acca05c2ac9661fcae5e8f13d"
+   ],
    "subject_key": "sandpillar"
   },
   "RSW_Woolamander": {
@@ -798,6 +995,11 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "4fbc5a837cbb5e75600f27dc7f379566ebb47f91fe61e07a1bea726901cdaefd",
+    "65b3c7b11712b1d1c1944d9118a9489017baf7ea120738497aa9d02ed67f3042",
+    "d56475fa9078e1308759e126d9b5aa58e2e00543989820a4442308183c9429f1"
+   ],
    "subject_key": "woolamander"
   },
   "RUT_EmperorVulture": {
@@ -809,20 +1011,33 @@
     },
     "B": {
      "east": "5fbb4188db3d7a6285268e464520b2662a7ca4e709b31c5adf4f01f67ef7500e"
+    },
+    "C": {
+     "east": "8ea99995fe401070c3f0dc98ace839d6d7122f4c5106ab6fe4853dbf2cd6c709",
+     "north": "385211f4021ddd67f669db9cc3118aca4621dc9feb28ec88ef8e4b624700622c",
+     "south": "695c088b859abcb71fd7c12acf5ff70268003b80e2f22d8d521f247a363a9fff"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture",
-    "B": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture"
+    "B": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render enact_a1894dc1_emperorvulture_v1"
+    "B": "render enact_a1894dc1_emperorvulture_v1 \u2014 failed canon check",
+    "C": "render enact_rut_ulvassk_alien_v3"
    },
    "res": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "17c45c085dcea55749a53339b048c80a5f83fc361067b4f33f76601cd6b327b4",
+    "5f63030396b0f0a31ce7be3d5c9037df7baac36d3a4695d975c3c6604ef094ae",
+    "81eb20ba36c3818b00695129a973b8159c34f3cf4ed31799e0eb24260915e4ec"
    ],
    "subject_key": "emperorvulture"
   },
@@ -851,6 +1066,11 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "72b1a2a8c4f576cb9abc63c59808a2b380abe8a86955a19ffde53308aa26ea88",
+    "ed99bc9e0a98d1c1084c2452d1edff277ada6e4dbfce72e00008d72dc7affbd0",
+    "fa039bb7e0069e78e62af058f2ece1fe59851c66273dc914fd1c500aca08fdcd"
    ],
    "subject_key": "sealedsleeper"
   }

@@ -48,6 +48,7 @@ BUNDLES = Path("/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures")
 CACHE = Path(os.environ.get("RM_GAMETEX_CACHE") or "/tmp/rm_gametex")
 GAME_VERSION = (1, 6)
 FACE_RE = re.compile(r"^(?P<stem>.+?)_(?P<facing>north|east|south|west)(?P<mask>m?)$", re.I)
+DEFTEX_SCHEMA = 2      # 2: + "extra" (alternateGraphics, plant immature/leafless) per def
 NONBODY = re.compile(r"dess?icc?ated|_corpse$|skeleton", re.I)
 
 
@@ -241,12 +242,13 @@ def resolve_res(res: str, ix: dict | None = None) -> dict:
             vs = sorted(d["variants"])
             d["faces"] = {"single": vs[0]}
             random_of[mi] = len(vs)
+            d["all_variants"] = vs
     copies = []
     for mi, d in by_mod.items():
         m = ix["mods"][mi]
         copies.append({"mod": m["name"] or Path(m["dir"]).name, "packageId": m["packageId"], "root": m["root"],
                        "dir": m["dir"], "load_index": m["load_index"], "faces": d["faces"],
-                       "random_of": random_of.get(mi)})
+                       "random_of": random_of.get(mi), "variants": d.get("all_variants") or []})
     copies.sort(key=lambda c: -c["load_index"])
     if copies and copies[0]["load_index"] >= 0:
         copies[0]["winner"] = True
@@ -299,25 +301,35 @@ def build_deftex() -> dict:
             if isinstance(ls, dict):
                 tps += _texpaths_of(ls.get("bodyGraphicData")) + _texpaths_of(ls.get("femaleGraphicData"))
         tps = [t for t in dict.fromkeys(tps) if not NONBODY.search(t)]
-        if tps:
-            kinds[d["defName"]] = {"race": race, "tex": tps}
+        alts = [a["texPath"] for a in f.get("alternateGraphics") or []
+                if isinstance(a, dict) and isinstance(a.get("texPath"), str) and a["texPath"]]
+        if tps or alts:
+            kinds[d["defName"]] = {"race": race, "tex": tps, "extra": {t: "alternate" for t in alts}}
     td = json.loads((dd / "defs" / "ThingDef.json").read_text())
     for d in td["defs"]:
         f = d.get("fields") or {}
         dn = d["defName"]
-        tps = []
+        tps, extra = [], {}
         if (d.get("is") or {}).get("pawn"):
             for k, v in kinds.items():
                 if v["race"] == dn:
                     tps += v["tex"]
+                    extra.update(v.get("extra") or {})
         tps += _texpaths_of(f.get("graphicData"))
+        pl = f.get("plant") if isinstance(f.get("plant"), dict) else {}
+        for fld, role in (("immatureGraphicPath", "plant_immature"), ("leaflessGraphicPath", "plant_leafless")):
+            if isinstance(pl.get(fld), str) and pl[fld]:
+                extra.setdefault(pl[fld], role)
         tps = [t for t in dict.fromkeys(tps) if not NONBODY.search(t)]
-        if tps:
-            out[dn] = {"tex": tps, "mod": d.get("modName"), "packageId": d.get("packageId"), "label": d.get("label")}
+        extra = {t: r for t, r in extra.items() if t not in tps}
+        if tps or extra:
+            out[dn] = {"tex": tps, "extra": extra, "mod": d.get("modName"), "packageId": d.get("packageId"),
+                       "label": d.get("label")}
     for k, v in kinds.items():
-        out.setdefault(k, {"tex": v["tex"], "mod": None, "packageId": None, "label": None, "race": v["race"]})
+        out.setdefault(k, {"tex": v["tex"], "extra": v.get("extra") or {}, "mod": None, "packageId": None,
+                           "label": None, "race": v["race"]})
     res = {"capture": str(dd), "built": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "secs": round(time.time() - t0, 1),
-           "defs": out}
+           "defs": out, "schema": DEFTEX_SCHEMA}
     CACHE.mkdir(parents=True, exist_ok=True)
     tmp = CACHE / "deftex.json.tmp"
     tmp.write_text(json.dumps(res))
@@ -336,7 +348,7 @@ def deftex(rebuild: bool = False) -> dict:
     dd = _dump_dir()
     if not rebuild and p.is_file():
         _DT = json.loads(p.read_text())
-        if dd is None or _DT.get("capture") == str(dd):
+        if (dd is None or _DT.get("capture") == str(dd)) and _DT.get("schema") == DEFTEX_SCHEMA:
             return _DT
     _DT = build_deftex()
     return _DT
@@ -344,6 +356,12 @@ def deftex(rebuild: bool = False) -> dict:
 
 def def_texpaths(defname: str) -> list[str]:
     return list((deftex()["defs"].get(defname) or {}).get("tex") or [])
+
+
+def def_extra_texpaths(defname: str) -> dict:
+    """{texPath: role} the game ALSO draws for DEFNAME besides its body: PawnKindDef alternateGraphics ("alternate"),
+    plant immatureGraphicPath ("plant_immature") and leaflessGraphicPath ("plant_leafless"), from the live dump."""
+    return dict((deftex()["defs"].get(defname) or {}).get("extra") or {})
 
 
 def ingest(defnames, dry: bool = False) -> dict:
@@ -362,7 +380,7 @@ def ingest(defnames, dry: bool = False) -> dict:
                                "bundle": 0, "unresolved": []}
     for dn in sorted(set(defnames)):
         stats["defs"] += 1
-        tps = def_texpaths(dn)
+        tps = def_texpaths(dn) + [t for t in def_extra_texpaths(dn) if t not in def_texpaths(dn)]
         if tps:
             stats["defs_with_tex"] += 1
         for tp in tps:
@@ -390,6 +408,23 @@ def ingest(defnames, dry: bool = False) -> dict:
                                        "game_root": c["root"], "random_of": c.get("random_of"),
                                        "bound_by": f"texPath of {dn} in live DefDump capture {cap}"})
                     stats["pngs"] += 1
+                # the copy the game draws from a Graphic_Random folder: EVERY picture in it, one event each, so the
+                # sheet shows each as its own column (owner card 2026-10-10 "Put them on the sheet"). Our own
+                # folders are read from the repo instead (art_sheet.random_folder_variants).
+                if c.get("winner") and len(c.get("variants") or []) > 1 and not c["packageId"].startswith("mandrake."):
+                    for vpath in c["variants"]:
+                        stats["random_variants"] = stats.get("random_variants", 0) + 1
+                        if dry:
+                            continue
+                        b = Path(vpath).read_bytes()
+                        sha = L.sha256_bytes(b)
+                        L.store_put_bytes(b, sha)
+                        BF._variant(w, sha=sha, b=b, kind="donor", loc=f"loose:{vpath}", rel=tp + ".png",
+                                    idkey=f"gametex|{vpath}|{tp}|rv",
+                                    extra={"donor_pkg": c["packageId"], "donor_mod": c["mod"], "how": "loose",
+                                           "game_root": c["root"], "random_of": c.get("random_of"),
+                                           "random_variant": Path(vpath).stem,
+                                           "bound_by": f"texPath of {dn} in live DefDump capture {cap}"})
             for bb in r["bundle"]:
                 if dry:
                     stats["bundle"] += 1

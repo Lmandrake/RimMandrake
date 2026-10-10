@@ -1,9 +1,9 @@
 {
  "biome": "RM_Wasteland",
- "built": "2026-10-09T23:27:34-0700",
+ "built": "2026-10-10T10:14:51-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 565 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "Plant_GrayGrass": {
    "columns": {
@@ -18,26 +18,36 @@
     },
     "D": {
      "single": "39985695b25dd219ea3ff636beb680d78e5d07111eaa306a758db3722f026577"
+    },
+    "E": {
+     "single": "f769de81bb8ef631bfa75cbf13a451aed4dc99c673fdcc95c75e1053abbdba20"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/Graygrass",
     "B": "Things/Plant/Graygrass",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "Things/Plant/Graygrass_Leafless"
    },
    "labels": {
     "A": "IN GAME \u2014 ludeon.rimworld.biotech",
     "B": "render gapbs_Plant_GrayGrass_v1",
     "C": "render enact_wlplantgraygrass_v2",
-    "D": "render enact_wlplantgraygrass_v1"
+    "D": "render enact_wlplantgraygrass_v1",
+    "E": "IN GAME \u2014 ludeon.rimworld.biotech"
    },
    "res": "Things/Plant/Graygrass",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "657ca426bc08e0116b837427488c63c7ed23e997e32401bf542da08616a6cc97",
+    "f1100d8f36f9c7bb9c4fbdeba42c9ff291d5932f7164065532561a810d2138f4"
    ],
    "subject_key": "graygrass"
   },
@@ -54,26 +64,36 @@
     },
     "D": {
      "single": "81cdc22eb640ef3663d5d727bc8d1a0d50a6fb67826d64dbd41abee618355e74"
+    },
+    "E": {
+     "single": "2559cff8c7a728cf3ec9fbbbd7fb83709de78df98171a2f07b25deb54af78b0e"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RG_Toxipotato",
     "B": "Things/Plant/RG_Toxipotato",
     "C": "_byname",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "Things/Plant/_Immature/RG_Toxipotato_Immature"
    },
    "labels": {
     "A": "IN GAME \u2014 regrowth.botr.core",
     "B": "render gapbs_Plant_Toxipotato_v1",
     "C": "render enact_wlplanttoxipotato_v1",
-    "D": "render enact_wlplanttoxipotato_v2"
+    "D": "render enact_wlplanttoxipotato_v2",
+    "E": "IN GAME \u2014 regrowth.botr.core"
    },
    "res": "Things/Plant/RG_Toxipotato",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "7f908f2aeff1f4f5dd70916e139166f2fbc4718884f39b84a851784d91fc39a3",
+    "bd08094f7889a71e7dc09cda1418a52311020e93f463cf494e6f8145db44f81e"
    ],
    "subject_key": "toxipotato"
   },
@@ -84,20 +104,42 @@
     },
     "B": {
      "single": "174964f06783f9ecf619d914cf01100e5bdd621ac311a201225148de8e74b5af"
+    },
+    "C": {
+     "single": "72cdfeffb6be450dda3e47ab26a39dfc2c44702e6bac5d8b6739d01a7a4fb86a"
+    },
+    "D": {
+     "single": "652766cdd4c496f04354bc6afeabe0e48a77df0ad71b8b9667ee58d42587f455"
+    },
+    "E": {
+     "single": "c84d3501161f43e7b76aa57f38f738bbbe948814be4d00cf774ce77dd8282bba"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RG_PoluxTree",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "Things/Plant/TreePolux_Immature",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 regrowth.botr.core",
-    "B": "render gapall_Plant_TreePolux_v1"
+    "B": "render gapall_Plant_TreePolux_v1",
+    "C": "IN GAME \u2014 ludeon.rimworld.biotech",
+    "D": "render enact_wlplanttreepolux_v1",
+    "E": "render enact_wlplanttreepolux_v2"
    },
    "res": "Things/Plant/RG_PoluxTree",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "174964f06783f9ecf619d914cf01100e5bdd621ac311a201225148de8e74b5af",
+    "d9d4182f04ce7437a9f09bf32386040ca939222072d75c98e35591c674de7dd8"
    ],
    "subject_key": "treepolux"
   },
@@ -105,17 +147,32 @@
    "columns": {
     "A": {
      "single": "36d60b1bb7ae0e995ae135696eeab2230d3660558e3e6fe2423297a1482d903a"
+    },
+    "B": {
+     "single": "fdc2d7879c89d6844970fc2ebe02b2d1cfa5706b5d074945570db761962711f4"
+    },
+    "C": {
+     "single": "8283aed503282f242ff37aba443e28bbdc77c690ee012912fd3164bc0ed255eb"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Boilbulb"
+    "A": "Things/Plant/RM_Boilbulb",
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Wasteland"
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render enact_wlrmboilbulb_v1",
+    "C": "render enact_wlrmboilbulb_v2"
    },
    "res": "Things/Plant/RM_Boilbulb",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "36d60b1bb7ae0e995ae135696eeab2230d3660558e3e6fe2423297a1482d903a"
    ],
    "subject_key": "boilbulb"
   },
@@ -123,17 +180,32 @@
    "columns": {
     "A": {
      "single": "523d5fd7647073f46920ccb62249f1e37835ce80221c29e02961d466e8e7e5d4"
+    },
+    "B": {
+     "single": "6332ba72adfda1869cb433437fbc1cdff5a127961a6f78a81ab7e94920567329"
+    },
+    "C": {
+     "single": "8e4c605403ca056986431b89229c7923975e0b1667537fc5b215448a337078c9"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Cinderfelt"
+    "A": "Things/Plant/RM_Cinderfelt",
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Wasteland"
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render enact_wlrmcinderfelt_v1",
+    "C": "render enact_wlrmcinderfelt_v2"
    },
    "res": "Things/Plant/RM_Cinderfelt",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "523d5fd7647073f46920ccb62249f1e37835ce80221c29e02961d466e8e7e5d4"
    ],
    "subject_key": "cinderfelt"
   },
@@ -159,23 +231,41 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "65d3fe6a30830eb670502cbe0c31d9b372a83c7204a62cea3c2f54de3492eb1a"
+   ],
    "subject_key": "dosimeterlawn"
   },
   "RM_Pusberry": {
    "columns": {
     "A": {
      "single": "f76c776d09ca5af727e9094aee9cbb47e1be0e8cda80b5bf1373d8c9978d02c9"
+    },
+    "B": {
+     "single": "b11338aa88bfdd7bf6cb03a0f22f1c0ec135a67fd978bc540d6da6096bdff1f6"
+    },
+    "C": {
+     "single": "c94a85b3aa3d1d1225fd98c7f2da87a1960607452213178bb550538c4ebb43eb"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Pusberry"
+    "A": "Things/Plant/RM_Pusberry",
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Wasteland"
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render enact_wlrmpusberry_v1",
+    "C": "render enact_wlrmpusberry_v2"
    },
    "res": "Things/Plant/RM_Pusberry",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "f76c776d09ca5af727e9094aee9cbb47e1be0e8cda80b5bf1373d8c9978d02c9"
    ],
    "subject_key": "pusberry"
   },
@@ -183,17 +273,32 @@
    "columns": {
     "A": {
      "single": "29a646c56199eeee8452c117b5ed143979325e059d2b498bcbcc62eb1f47b489"
+    },
+    "B": {
+     "single": "0c6a2dcb9bc15519016000ddd7d2f470217c3424a75c3fb99413ca9b26c4042b"
+    },
+    "C": {
+     "single": "d273410613db5f571e2d08a13f32195c6a9a95a7d9076ef1ccaf2a843d542996"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Scumgrass"
+    "A": "Things/Plant/RM_Scumgrass",
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Wasteland"
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render enact_wlrmscumgrass_v1",
+    "C": "render enact_wlrmscumgrass_v2"
    },
    "res": "Things/Plant/RM_Scumgrass",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "29a646c56199eeee8452c117b5ed143979325e059d2b498bcbcc62eb1f47b489"
    ],
    "subject_key": "scumgrass"
   },
@@ -213,23 +318,41 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "79f5e3fe985c926fa41991a113e12bfc53c381fc561a514019a0738003f8d4f9"
+   ],
    "subject_key": "tallscumgrass"
   },
   "RM_VaultRoot": {
    "columns": {
     "A": {
      "single": "ae7c0cf983c8d371a23951723bfb0d995548b68e5016e09e126cffd25484289b"
+    },
+    "B": {
+     "single": "05809638529045c34934b1f0bdd60a323bec1ebf563c2111ee3b8a1f153bdcd2"
+    },
+    "C": {
+     "single": "92c7e054daa43d60e98f3f0aba5ea6840a576836012f0888734f34976d669e04"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/VaultRoot"
+    "A": "Things/Plant/VaultRoot",
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Wasteland"
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render enact_wlvaultroot_real_v2",
+    "C": "render enact_wlvaultroot_real_v3"
    },
    "res": "Things/Plant/VaultRoot",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "ae7c0cf983c8d371a23951723bfb0d995548b68e5016e09e126cffd25484289b"
    ],
    "subject_key": "vaultroot"
   },
@@ -237,17 +360,32 @@
    "columns": {
     "A": {
      "single": "b8155d39c8f24fab602f5b19cb4ee574ee8d05b68789a194152333dce6867ec6"
+    },
+    "B": {
+     "single": "312f81b9f0f8be6846adfa08c2d14cff924cc88d255f6e3c806bf8c4227c603b"
+    },
+    "C": {
+     "single": "1a66902a967b4df8cba86a5f38346e3ec591423e3165fe9a8d71131d5882887d"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Wartshrub"
+    "A": "Things/Plant/RM_Wartshrub",
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 Wasteland"
+    "A": "IN GAME \u2014 Wasteland",
+    "B": "render enact_wlrmwartshrub_v1",
+    "C": "render enact_wlrmwartshrub_v2"
    },
    "res": "Things/Plant/RM_Wartshrub",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "b8155d39c8f24fab602f5b19cb4ee574ee8d05b68789a194152333dce6867ec6"
    ],
    "subject_key": "wartshrub"
   },
@@ -258,21 +396,44 @@
     },
     "C": {
      "single": "fd6f6fc3794ce20d3f50c7537e77400427df7c9115d35f66f2b70c45b3abbade"
+    },
+    "D": {
+     "single": "f6db81cb64ac1b1f4ba739529980b43c623a4f292ec234d602b1a2a8ce2a564e"
+    },
+    "E": {
+     "single": "8f753276fa40846a2dfeae9630a6dd36407204ca270eb2061504a663aaefb8e7"
+    },
+    "F": {
+     "single": "a7e49981d9e886d434795718a91e591215dd7dd8e02b653bbaba625c15d0e712"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/ScorchedStars",
-    "C": "_byname"
+    "C": "Things/Plant/ScorchedStars",
+    "D": "Things/Plant/ScorchedStars",
+    "E": "_byname",
+    "F": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "C": "render gapall_RM_WastelandScorchedStars_v1"
+    "A": "shipped, shadowed \u2014 random variant ScorchedStars_a (1 of 2) \u2014 UtinniPatches",
+    "C": "IN GAME \u2014 random variant ScorchedStars_a (1 of 2) \u2014 Wasteland",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant ScorchedStars_b (2 of 2) \u2014 Wasteland",
+    "E": "render enact_wlrmwastelandscorchedstars_v1",
+    "F": "render enact_wlrmwastelandscorchedstars_v2"
    },
    "res": "Things/Plant/ScorchedStars",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "ea059cd9c8d11745919b7925ffa3604a5f605c1fd1e09feeae0521f237913fbf",
+    "f86624c57933080b24a937ed8ebd53311c0f1d48f678bb4b3800e627f9609873",
+    "fd6f6fc3794ce20d3f50c7537e77400427df7c9115d35f66f2b70c45b3abbade"
    ],
    "subject_key": "wastelandscorchedstars"
   },
@@ -318,6 +479,17 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "2d6dacbdf25d538d24dd93bce0d2180453d8c1cca1f103ec21328754c84e7932",
+    "36fcdbf197abe7b90a59acd6e9b113c84a4eb8e423dc2d5ba01e1d145ed4c3bc",
+    "52cfaa849811e8f707c9b9a0c9479a880aad1dab398e7991b4912d5bacccb86c",
+    "67eeeaf7f49d27582ec5df1680fbad21bdc2e3127ebd0596e9481fb12c1edf89",
+    "c98b9cc79b22fc9811786f892a13dade5804f805581d53ffd2de4f013de599e1",
+    "ca22126c0caf71f83645458db6f26bdc6709bc9b50a6ed6e6c8ae35e395916f9",
+    "ca714dc15d545db8b35689680b1160b6f470811259ef827da7d9143d3bdb61c1",
+    "df16fb690b530d90cb77bb6660eab2db2d2214dab75b0783f43aee5d8ab0f3ff",
+    "fa208fd2a3949fb897629385487bcf448f8df10fd831978647104cc13b3b3043"
+   ],
    "subject_key": "bloodletterpetrel"
   },
   "RSW_Borcatu": {
@@ -331,21 +503,39 @@
      "east": "04e24eb6db74020338efab88ce61d90eee12fe012b6a9b12f5382ab53a0dac47",
      "north": "941a3f997093ef9dfff97bbc224a8e0588218c54101733b0b52cc90c475ec038",
      "south": "799fafa69e2ce8147b2816f7a61ff7579ebe3dd019dda5daca3cd62362d9cf0c"
+    },
+    "D": {
+     "east": "808ef3625c09946ad32b8bf4c340f8c35f72d22f2c70c5719f9fc61571a49cb2",
+     "south": "e6f9789cc0bab81142caea1b792b9160c80c5ca93d3a088b4fbe3503d3e7a5f4"
     }
    },
    "graphic_of": {
     "A": "swanimals/Borcatu/Borcatu",
-    "B": "swanimals/Borcatu/Borcatu"
+    "B": "swanimals/Borcatu/Borcatu",
+    "D": "_byname"
    },
    "labels": {
     "A": "history SWBestiary 2026-09-13",
-    "B": "IN GAME \u2014 SWBestiary"
+    "B": "IN GAME \u2014 SWBestiary",
+    "D": "render enact_wlborcatu_quills_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Borcatu/Borcatu",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
+   ],
+   "shownBase": [
+    "04e24eb6db74020338efab88ce61d90eee12fe012b6a9b12f5382ab53a0dac47",
+    "0daef52061f87844f76494af23057913b55356b0936a1bd49559a8a2e0fd1620",
+    "799fafa69e2ce8147b2816f7a61ff7579ebe3dd019dda5daca3cd62362d9cf0c",
+    "941a3f997093ef9dfff97bbc224a8e0588218c54101733b0b52cc90c475ec038",
+    "a5961deed028ddc5029bece2215f75ad92345c7473d64b4648bef8650aa4a868",
+    "cbce7196dc1359bf1905654a474076f29c10502c0cbbc69bd97fb0de2a7985c0",
+    "cfe0943317c341b76099f7ef90f9488aad91051d256c00298c724b7080c2bbeb",
+    "ebe0d0b2a0045cefb4367c51f98387a2796e96c74bf4d956578a254356df5f38",
+    "fc74e123c6ce3d922aacd3094edb655f6cfee62dbff64851cef56360a2a01b90"
    ],
    "subject_key": "borcatu"
   },
@@ -375,6 +565,11 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "0a20ff93042f043a877cbac86d43c6a84f8d18af65ae4e709b008a5676132086",
+    "1ebb66b07ec805aee4dfe6cf1de38706e2da80d7dc3d4fd4c4f61c3fc9c54d7e",
+    "c6fee02abd34428995a367bb5b5a457009afd537e728f587d0743c6abb1eff79"
+   ],
    "subject_key": "excretor"
   },
   "RSW_FleeceSpider": {
@@ -402,6 +597,14 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "36e746ed820761ac0f237bb8f77a7dbae4010edf412940c30bc0766e354e037b",
+    "4829fb13730337b300f86d452cc6991ab6eeda3c52d27b1b0eefb7ccaafa8bb7",
+    "c723d4a37b3313ffe352beeca4044ba92e0e6c5d7f30f06968ae7fcb41970f07",
+    "cdb417dcc45554753e1a665dce2e6fecf46dcc6965bc2eeaf12069006317d6df",
+    "ecd0608f9463d5da066bf8e64c2bbcbab37d3e89d4bb2bb5703ea365603fca70",
+    "fbb7f0ab1e343d2b3594cc52e556ee2fe7399a7d1eac4e5ce846df852d3d4176"
    ],
    "subject_key": "fleecespider"
   },
@@ -439,6 +642,17 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "058011fd38ebd48c32545ed38328c6078493dbc3376b19aeb3fb73347198b285",
+    "091517b19af2d6ffef2edd74271d65be96ed342bab561a735f8eaa126e124573",
+    "1ecae74132eed9577805ee01e10d0a2ad7eed6c2cb339d8bfc84db0ef642952b",
+    "2fbe31dd9e27a9b1eb4c6af3ee32b7e8005dd903302d4b610f383a863aee351a",
+    "6da16d919f5e3def81def0394e0e6d399ecfe2c26f63160b7e99add2dbf02092",
+    "6e4e9f389620412ad1f3a86d2db76062589811d5fb2901bf863786094bf84505",
+    "7e948ac1c419651e4bb9b8dd749f8fa15a86def298b4c30812fcce0807f5db3e",
+    "a5a789a64e3fcb4ce6242e5060d2a6fe6c92cb3a1f287152030195005384cc43",
+    "bec987be0727cd32568a92cc4c7141557fcff1d6beb6f75bda1a5bda511bfe30"
+   ],
    "subject_key": "maligoat"
   },
   "RSW_Sacapillar": {
@@ -466,6 +680,11 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "02e358ac7c776b4f21f676fd90d39077c9ea4e5893bfd612fc8245bac693bdf4",
+    "51f16aec1daf0713a717e3bc5a8529f0bf88453fa97b6cb127a7bb6912d88df3",
+    "5af4172be7a2db67b74893ed9f20545d426f6ed0895dba6e8e68aab07cade8ab"
    ],
    "subject_key": "sacapillar"
   },
@@ -503,6 +722,17 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "0907a668426b54cbcee1e0cacf2889339b6f1abc7a3783179475dac3ee15af96",
+    "30cb690ac5a38186a3b7ccc95497a40ffca12e2216f75ef38e187bd13171864f",
+    "329ba0809e745b9e153383d6c9360f4e1127c7088bc31d5f784e8e842bb4f020",
+    "37e661b2c97cef6401128e3d875f8e2c3a77679ec272ac975a5d19a4ee5d022e",
+    "4350b5daca9bda496cf78865b547bd80c594a8d8888d27741f5b67b366a38ae1",
+    "7a4295d1173e17636d561a7b20829387971b813984b7e72f39939415e6df38cc",
+    "aa1c394b6c20be424ce98dc0d0466790dd2847e44bfa0aab5e555067387d7f02",
+    "ab46fe0c651e32f57c146d940e2f44815d3f6d83498cf0910364f431467288fd",
+    "bc5d3fb176422bd6aaa618d0f679d29544c2ae0d789da4c54cf2f5dab6179246"
+   ],
    "subject_key": "screecher"
   },
   "RUT_BrineBattery": {
@@ -531,6 +761,11 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "0356ecf65292ef77cae68adf47b7c890b0076ca6da73f2b49f9085fc20583d03",
+    "197136bb300de71fcb8a3e5de97030939c1014f6db075902a6cf259100b9c27c",
+    "61f78e3a7e7429379753445ff18df9bff089e1002a0ee466167d3e2e146f0284"
+   ],
    "subject_key": "brinebattery"
   },
   "VAEWaste_Megatardi": {
@@ -555,6 +790,10 @@
     },
     "E": {
      "east": "e729ec86d22bdbfda9dc2c8348a1ad6708635095352eed748e198ef8a4384166"
+    },
+    "F": {
+     "north": "f97db5c60558e3116d122b142fc271ba8223d9f9dbd396e151eab93f6153a1af",
+     "south": "96ff1a4ffb775dafb9383973ab35aaea1f0c924ef7e6c65efb3bd8903b96f733"
     }
    },
    "graphic_of": {
@@ -562,14 +801,16 @@
     "B": "Things/Pawn/Animal/Megatardi/Megatardi",
     "C": "Things/Pawn/Animal/Megatardi/Megatardi",
     "D": "Things/Pawn/Animal/Megatardi/Megatardi",
-    "E": "Things/Pawn/Animal/Megatardi/Megatardi"
+    "E": "Things/Pawn/Animal/Megatardi/Megatardi",
+    "F": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
     "B": "render facingrepair_megatardi_v1",
     "C": "history UtinniPatches 2026-09-11",
     "D": "history UtinniPatches 2026-09-11",
-    "E": "history UtinniPatches 2026-09-11"
+    "E": "history UtinniPatches 2026-09-11",
+    "F": "render enact_wlmegatardi_ns_v1"
    },
    "res": "Things/Pawn/Animal/Megatardi/Megatardi",
    "reserved": [
@@ -577,7 +818,20 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "04aed4596b4bc40af6e5ad8e6d20e651b58ce29808d4d53aa6b500f06b62614f",
+    "26d5a858d5a4cbe29e5b283910a2642b673922d43f0b2a4b5ef07b96ef3051c7",
+    "4e2801f96feec93e9e2e24faffaa84bb097130d44c336713e46eac208dbc30ee",
+    "69f99d2a5914e428e50caf1e00e5d19e3175149e7d228e16b1bf5ff25ee35ce3",
+    "6ef846a310960a6adae1d3256523218f792da74ec3d446824b66a7b78bc8ad5f",
+    "9469a6d8a42985ecd9c5ebb9c51b55bff9a2efaef34c2f734fc1452333b7702c",
+    "a6852f208b6536f55d7e51f05a58513c4a3266e923d70da35614eaf15f1c2d63",
+    "ac5cb0278c1d783c2274ffae91627a946c40ed3ac7c18e45d11f05ae53f9a8bd",
+    "b564e443de1d0c2216eb39b9daf384d62f453946b5c7e1db538c2f55824e918f",
+    "e729ec86d22bdbfda9dc2c8348a1ad6708635095352eed748e198ef8a4384166"
    ],
    "subject_key": "vaewaste_megatardi"
   }

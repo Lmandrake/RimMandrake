@@ -1,9 +1,9 @@
 {
  "biome": "RM_NightsideIce",
- "built": "2026-10-09T07:37:55-0700",
+ "built": "2026-10-10T10:13:49-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_ShockGoat": {
    "columns": {
@@ -32,6 +32,14 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "6a11a568eae6fabdb835565debf26d108beb84faccf95cca4cc336056b21eac7",
+    "bcaadce40442f96c0115b460a60a005da1246fa98735a96e3b65b248ceb6dd78",
+    "c3393ed5a233b5f45de458a4927376a76d4e760c424768b1f130371c7b587497",
+    "cd807a61921c644fab0ebad283c747d908c40af8f76cbfc3d094d5575ba71cb6",
+    "dbdf4abf638e547780df0da7225486568e75a991f6b0e85f39447e964c695ce5",
+    "e0b5ce5699b15ead5420377f45d493d9b3453b9d396bf30c890c769f827a87e0"
    ],
    "subject_key": "shockgoat"
   },
@@ -62,6 +70,14 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "22e9996b2a717b3e5eab916f893b770ec541a2605dec1b1d5a79dde316a7f86b",
+    "8e3d67c15d10edcd1cd1e041e98391c72a4088233d72a1dbf35e246dd8253126",
+    "9acaf96bc5dc1d938bde54e2eb673c32b5d0633864617f9cfdf7898ec263db54",
+    "b9f6559efb95f15fead851773008793243d820c9d123a7792bca283bf60d1b75",
+    "bd446d6bce804db2673b57b6c164bce5018f1444c2bf261e0b54834e26a5cc6b",
+    "ca95c92e524c096bbfad950d22fa8cb85864f93dfe5ea6419c9ac60b8b6c8012"
+   ],
    "subject_key": "cavelemming"
   },
   "RSW_Wampa": {
@@ -80,28 +96,52 @@
      "east": "11b6d0329c9b724c7dad9db4eb0b349a633edc1f55dade01ec91b5449675935b",
      "north": "59619e94a34980b3c146678c9ab9bde52488d0db4df76426eefda67fe933b106",
      "south": "8ea03da849e75951165f9b1253f20cb41edd7f99262ba797cb81dd7e6b3ab49b"
+    },
+    "D": {
+     "east": "cad3172607aeaa7f52d84c81c82d31943c0872c1d7a9dffebd9f940d6b0e2afd",
+     "north": "24baa93cba65defdead28d67289550d6850339b805bc6e88a73336d46902a4b2",
+     "south": "1b1323fc5250fc02c823b0ffd4bd47da2ba99da6df677fb5d1dfb5fc4532a5f8"
     }
    },
    "graphic_of": {
     "A": "swanimals/Wampa/Wampa",
     "B": "swanimals/Wampa/Wampa",
-    "C": "swanimals/Wampa/Wampa_j"
+    "C": "swanimals/Wampa/Wampa_j",
+    "D": "swanimals/Wampa/Wampa"
    },
    "labels": {
     "A": "history SWBestiary 2026-09-09",
     "B": "IN GAME \u2014 SWBestiary",
-    "C": "IN GAME \u2014 SWBestiary"
+    "C": "IN GAME \u2014 SWBestiary",
+    "D": "render canonregen_rsw_wampa_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Wampa/Wampa",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
+   ],
+   "shownBase": [
+    "11b6d0329c9b724c7dad9db4eb0b349a633edc1f55dade01ec91b5449675935b",
+    "281e4251a54530e4fc5b60754b456147441f5a3f03480046ff936d10b8807497",
+    "415af8fe2c222bc1647065f9166ef34f32ecbe506146b6a0c1e9976444de67ce",
+    "582e578f0bbfea1ed15774cfa1970f1ffce405237b2f319470503016b8428165",
+    "59619e94a34980b3c146678c9ab9bde52488d0db4df76426eefda67fe933b106",
+    "8ea03da849e75951165f9b1253f20cb41edd7f99262ba797cb81dd7e6b3ab49b",
+    "bc2112bb663794b0f36ccef622ecd0f2abd9fd170133ce29676a6785f1ebf222",
+    "e64862a4879bcacccd3846a30e271e10c040534e3a6d4b72a77aad1857099be3",
+    "ef179636328bfc4cc3237382f6f60ae675511cdd463bb392b535ed4cbc9b0da5"
    ],
    "subject_key": "wampa"
   },
   "Tauntaun": {
    "columns": {
+    "A": {
+     "east": "45ecc26a11888c3fe7e44d713eebda6ceb7a7ec03db7d572c182b2db301b1e54",
+     "north": "ca69a2b894ca6da3fadd49f252d09b65a2b53b31ef55a3f657759838d4b3948e",
+     "south": "ec61e64684f85023ba6f6b1b1b7e25718a7a8d321e383d5c695141fd2512e0d9"
+    },
     "B": {
      "east": "dd42ec0c1ec17e2aea9f8d187327c80f022d06b3136fd699e431af204f84e9ed",
      "north": "192352a7f27eb33bdc7284dfdd801ecf4f81e8cb462a26dcdbf514a08dff4da7",
@@ -119,11 +159,13 @@
     }
    },
    "graphic_of": {
-    "B": "_byname",
+    "A": "swanimals/Tauntaun/Tauntaun",
+    "B": "swanimals/Tauntaun/Tauntaun",
     "C": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
     "D": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon"
    },
    "labels": {
+    "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Tauntaun_v1",
     "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "D": "IN GAME \u2014 SWBestiary"
@@ -134,6 +176,17 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "192352a7f27eb33bdc7284dfdd801ecf4f81e8cb462a26dcdbf514a08dff4da7",
+    "45ecc26a11888c3fe7e44d713eebda6ceb7a7ec03db7d572c182b2db301b1e54",
+    "4e688911e696993db0b5a5417c08d8feebbe689d1d37e727526fe4aa44e6ee40",
+    "7c6c193a9b5f8e1923dcd54d22bcdadd814469aca2b5ecf9118bd7d1fb70ac5d",
+    "ca69a2b894ca6da3fadd49f252d09b65a2b53b31ef55a3f657759838d4b3948e",
+    "dd42ec0c1ec17e2aea9f8d187327c80f022d06b3136fd699e431af204f84e9ed",
+    "dd44f62b3b53bb50cdba2ca90021db2d919e92d678930420aeafa2c5161d830e",
+    "ec61e64684f85023ba6f6b1b1b7e25718a7a8d321e383d5c695141fd2512e0d9",
+    "f600c0a4770bba2397e303d9c166dfe60b7f594b3bf5ff921b0644e3e3aa676c"
    ],
    "subject_key": "tauntaun"
   }

@@ -216,6 +216,69 @@ GENERIC_DIRS = {"plant", "plants", "things", "thing", "item", "items", "building
 FAM_RE = re.compile(r"_(north|east|south|west)(_r\d+)?$")
 
 
+def game_extra_texpaths(names) -> dict:
+    """{texPath: role} the game also draws for any of NAMES (gametex.def_extra_texpaths over the live def dump);
+    {} when the dump is unreadable — the row then shows what the census found, never fails."""
+    out = {}
+    try:
+        import gametex as GT
+        for n in names:
+            if n:
+                for t, role in GT.def_extra_texpaths(n).items():
+                    out.setdefault(t, role)
+    except (SystemExit, Exception) as e:                    # noqa: BLE001
+        if not _EXTRA_WARNED:
+            _EXTRA_WARNED.append(1)
+            print(f"WARNING: alternate/young graphics UNMEASURED ({type(e).__name__}: {e})", file=sys.stderr)
+    return out
+
+
+_EXTRA_WARNED: list = []
+COPY_BITS = 2   # dHash bits: a random-folder picture this close to one already shown is a re-encoded copy of it
+
+
+def shown_base(key: str, ruled: dict | None, prev_rows: dict) -> set:
+    """The pictures the owner has been SHOWN on row KEY: the columns of the snapshot his decisions were saved against
+    (the page he ruled on); for a sheet he never saved, the baseline the previous build carried (`shownBase`), else
+    the previous build's columns. A random-folder picture outside it is labelled "in game now, never shown"."""
+    if ruled is not None:
+        row = (ruled.get("rows") or {}).get(key) or {}
+        return {sh for f in (row.get("columns") or {}).values() for sh in f.values()}
+    row = prev_rows.get(key) or {}
+    if "shownBase" in row:
+        return set(row["shownBase"])
+    return {sh for f in (row.get("columns") or {}).values() for sh in f.values()}
+
+
+def _ph(idx, sha: str):
+    return next((v.get("ph") for v in idx.variants.get(sha) or [] if v.get("ph")), None)
+
+
+def random_folder_variants(idx: L.Index, res: str, skip_mods=()) -> dict:
+    """{mod: {variant name: {facing: sha}}} for every mod of ours where `res` is a FOLDER (Graphic_Random /
+    Graphic_Collection texPath): each picture directly inside it, masks excluded (`_<facing>m`, `<name>_m`, and
+    `<name>m` beside a `<name>`). A mod shipping a file AT `res` (skip_mods) is not a folder there."""
+    pre = res.rstrip("/") + "/"
+    raw = defaultdict(dict)                    # mod -> {stem: {facing: sha}}
+    for (mod, rel), ev in idx.live.items():
+        if mod in skip_mods or not rel.startswith(pre) or "/" in rel[len(pre):] or not ev.get("sha"):
+            continue
+        if not rel.lower().endswith(".png"):
+            continue
+        pt = L.parse_texfile(rel)
+        if pt["mask"]:
+            continue
+        raw[mod].setdefault(pt["res"][len(pre):], {})[pt["facing"]] = ev["sha"]
+    out = {}
+    for mod, vs in raw.items():
+        names = set(vs)
+        keep = {n: f for n, f in vs.items()
+                if not ((n.endswith("_m") and n[:-2] in names) or (n.endswith("m") and n[:-1] in names))}
+        if keep:
+            out[mod] = keep
+    return out
+
+
 def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
     parts = res.split("/")
     # the creature word is the folder (swanimals/Wraid/Wraid_j -> Wraid) unless that folder is a generic
@@ -232,29 +295,37 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
         pt = L.parse_texfile(rel)
         if pt["res"] == res and not pt["mask"]:
             live[mod][pt["facing"]] = ev["sha"]
+    # 1a. a texPath with no file of its own in a mod is a FOLDER there (Graphic_Random / Graphic_Collection): the game
+    # draws EVERY picture in it at random, so each one is its own column (owner card 2026-10-10, "Put them on the
+    # sheet": CrimsonCap b-f, Boomshroom B/C, Flakespire b, FruitingBody A-C drew in game and were never shown)
+    folder = random_folder_variants(idx, res, skip_mods=set(live))
     first_git = {}
-    for sha in {s for f in live.values() for s in f.values()}:
+    for sha in {s for f in live.values() for s in f.values()} | \
+            {s for vs in folder.values() for f in vs.values() for s in f.values()}:
         gs = sorted((v for v in idx.variants[sha] if v.get("kind") == "git"), key=lambda v: v.get("date", ""))
         if gs:
             first_git[sha] = gs[0]
-    ranks = {m: order.get(package_id(m), -1) for m in live}
+    ranks = {m: order.get(package_id(m), -1) for m in list(live) + list(folder)}
     # game copies of this texPath (donor / other mods, ingested by gametex.py bound by texPath): one per mod
     dons, don_meta = defaultdict(dict), {}
     for sha, vs in idx.variants.items():
         for v in vs:
             if v.get("kind") == "donor" and v.get("res") == res and not v.get("mask"):
                 pkg = (v.get("donor_pkg") or "?").lower()
+                if v.get("random_variant"):          # one picture of a donor Graphic_Random folder: its own column
+                    pkg = f"{pkg}#{v['random_variant']}"
                 dons[pkg].setdefault(v.get("facing"), sha)
                 m = don_meta.setdefault(pkg, {"mod": v.get("donor_mod") or pkg, "how": v.get("how"),
                                               "random_of": v.get("random_of"), "bound_by": v.get("bound_by"),
-                                              "loc": v.get("loc", "")})
+                                              "loc": v.get("loc", ""), "random_variant": v.get("random_variant")})
                 if v.get("donor_mod"):
                     m["mod"] = v["donor_mod"]
-    dranks = {p: order.get(p, order.get(p + "_steam", -1)) for p in dons}
+    dranks = {p: order.get(p.split("#")[0], order.get(p.split("#")[0] + "_steam", -1)) for p in dons}
     allr = list(ranks.values()) + list(dranks.values())
     top = max(allr) if allr and max(allr) >= 0 else None
     winner = next((m for m in ranks if top is not None and ranks[m] == top), None)
     dwinner = next((p for p in dranks if top is not None and dranks[p] == top), None) if winner is None else None
+    dwin_pkg = dwinner.split("#")[0] if dwinner else None   # every picture of the winning copy's random folder draws
     for mod in sorted(live, key=lambda m: -ranks[m]):
         f = live[mod]
         g = [first_git[s] for s in f.values() if s in first_git]
@@ -266,6 +337,20 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
                                 + (f" · bytes from {lastg.get('commit')} {lastg.get('date')}: {lastg.get('subject', '')}" if lastg else "")),
                      "commit_subjects": [v.get("subject", "") for v in g],
                      "winner": mod == winner})
+    for mod in sorted(folder, key=lambda m: -ranks[m]):
+        vs = folder[mod]
+        for i, (vname, f) in enumerate(sorted(vs.items()), 1):
+            g = sorted((first_git[s] for s in f.values() if s in first_git), key=lambda v: v.get("date", ""))
+            lastg = g[-1] if g else {}
+            where = ("IN GAME — " if mod == winner else "shipped, shadowed — " if ranks[mod] >= 0
+                     else "shipped, not loaded — ")
+            cols.append({"kind": "live", "mod": mod, "faces": dict(f), "date": lastg.get("date", ""),
+                         "label": f"{where}random variant {vname} ({i} of {len(vs)}) — {mod.split('/')[-1]}",
+                         "detail": (f"Graphic_Random folder {res}: the game draws one of its {len(vs)} pictures at random"
+                                    f" · load index {ranks[mod]}"
+                                    + (f" · bytes from {lastg.get('commit')} {lastg.get('date')}: {lastg.get('subject', '')}" if lastg else "")),
+                         "commit_subjects": [v.get("subject", "") for v in g],
+                         "winner": mod == winner, "random_variant": vname, "random_of": len(vs)})
 
     # 2. artpipe render families: bound by collected.jsonl dest, or alias by creature word
     fams = defaultdict(dict)
@@ -318,9 +403,10 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
                          "detail": f"{commit} {date}: {subj}"})
 
     # 4. game copies from other mods: the one the game draws first (IN GAME), then donor originals
-    for pkg in sorted(dons, key=lambda p: -dranks[p]):
+    wi = 0
+    for pkg in sorted(dons, key=lambda p: (-dranks[p], p)):
         m = don_meta[pkg]
-        win = pkg == dwinner
+        win = pkg.split("#")[0] == dwin_pkg
         how = "AssetBundle extract" if m["how"] == "assetbundle-extract" else "loose PNG in the game's mod folders"
         col = {"kind": "donor", "faces": dons[pkg], "date": "", "winner": win,
                "ours": pkg.startswith("mandrake."),   # our own deployed copy is not a donor original
@@ -329,10 +415,14 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
                "detail": (f"load index {dranks[pkg]}" + (" (last loaded, wins)" if win else
                           " (shadowed by a later mod)" if dranks[pkg] >= 0 else " (not in the measured load order)")
                           + f" · {pkg} · {how}"
-                          + (f" · 1 of {m['random_of']} random variants" if m.get("random_of") else "")
+                          + ((f" · random variant {m['random_variant']} of {m['random_of']} in the folder" if m.get("random_variant")
+                              else f" · 1 of {m['random_of']} random variants") if m.get("random_of") else "")
                           + (f" · bound: {m['bound_by']}" if m.get("bound_by") else ""))}
+        if m.get("random_variant"):
+            col["random_variant"], col["random_of"] = m["random_variant"], m.get("random_of")
         if win:
-            cols.insert(0, col)
+            cols.insert(wi, col)
+            wi += 1
         else:
             cols.append(col)
 
@@ -731,7 +821,8 @@ TIER_RE = S.TIER_RE
 NOT_BODY_JOB = re.compile(r"dess?icc?at|corpse|_mote|halo|filth|skeleton|print|mask|_icon\b", re.I)
 PAIR_COLOURS = ["#e8b64c", "#5ac3c3", "#c38ae8", "#e07a5f", "#7fc35a", "#5a8ae8", "#e85aa8", "#c3b85a"]
 ROLE_TEXT = {"body": "body", "swimming": "swimming graphic", "flying": "flying graphic",
-             "plant_immature": "young plant", "plant_leafless": "leafless plant", None: "renders found by NAME"}
+             "plant_immature": "young plant", "plant_leafless": "leafless plant",
+             "alternate": "alternate graphic (the game picks it at random)", None: "renders found by NAME"}
 SIT1 = "desert sitting 1"
 
 
@@ -772,6 +863,10 @@ def _layer(row: dict) -> str:
 def _short(c: dict) -> str:
     """One readable line for a set's header; the full provenance is its tooltip."""
     lab = c.get("label", "")
+    if c.get("random_variant"):
+        return (("IN GAME now, NEVER SHOWN · " if c.get("neverShown") else
+                 f"IN GAME · copy of {c['copyOf']} · " if c.get("copyOf") else "IN GAME · ") if c.get("winner") else
+                "not drawn · ") + f"random {c['random_variant']} ({c.get('random_of') or '?'} in folder) · ✕ removes it"
     if c.get("kind") == "live":
         return ("IN GAME · " if c.get("winner") else "not loaded · " if "not loaded" in lab else "shadowed copy · ") + lab.split("— ")[-1]
     if c.get("kind") == "artpipe":
@@ -1733,6 +1828,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                     for cr in bb["rows"] if (cr.get("canon") or {}).get("entry")}
     _ph_shared = PD.shared_map(census)
     built, purged_hidden, hidden_kept = [], {}, {}
+    _base_of = {}          # row -> the pictures the owner has been shown on it (shown_base), kept in the snapshot
     donor_purged = set()
     # only bytes an artpipe render MADE are ours: donor art copied into one of our mods is still the donor's original
     ours_shas = {s_ for s_, vv in idx.variants.items() if any(v.get("kind") == "artpipe" for v in vv)}
@@ -1749,6 +1845,19 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             p = res.get("prior_selection")
             graphics.append({"res": res["res"], "role": ROLE_TEXT.get(res.get("role"), res.get("role") or "graphic"),
                              "cols": cols, "prior_raw": p, "joined_by": res.get("joined_by")})
+        # every OTHER graphic the game draws for the row's defs (live dump): alternateGraphics and a plant's
+        # young/leafless graphic — a picture the game can draw is on the row (owner card 2026-10-10)
+        _have_res = {g["res"] for g in graphics}
+        for xres, xrole in game_extra_texpaths([r["key"], r.get("port"), *(r.get("defNames") or [])]).items():
+            if xres in _have_res or xres.lower().endswith(("_dessicated", "_desiccated", "_corpse")):
+                continue
+            _have_res.add(xres)
+            br = build_row(idx, xres, order, slots)
+            cols = [c for c in br["cols"] if _fkey(c) not in seen]
+            seen.update(_fkey(c) for c in cols)
+            if cols:
+                graphics.append({"res": xres, "role": ROLE_TEXT.get(xrole, xrole), "cols": cols, "prior_raw": None,
+                                 "joined_by": "live-def-dump"})
         have = {s for g in graphics for c in g["cols"] for s in c["faces"].values()}
         words = {w for x in [r["key"], r.get("port")] + list(r.get("defNames") or []) if x for w in S.join_stems(x)}
         words |= {(r.get("label") or "").replace(" ", "")}
@@ -1792,6 +1901,10 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             graphics.insert(0, prim)
         allcols = [c for g in graphics for c in g["cols"]]
         mem = letter_memory.get(r["key"]) or {}
+        # every picture an earlier build of this sheet put on this row (ruled snapshot + latest): a random-folder
+        # picture outside it is labelled "in game now, never shown"
+        _shown_before = shown_base(r["key"], ruled, prev_rows)
+        _base_of[r["key"]] = _shown_before
         _assign_letters(allcols, mem.get("columns"), mem.get("reserved"))
         kept = _kept_cols(allcols, mem, used_letters.get(r["key"]) or set())
         _k = [c for c in kept if not any(idx.is_purged(sh) for sh in c["faces"].values())]
@@ -1820,6 +1933,22 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 c["label"] = "our deployed art" + (" (render %s)" % FAM_RE.sub("", jobs[0]) if jobs else "") + " — " + \
                     c.get("label", "").split("— ", 1)[-1]
             c["purgeable"] = c["kind"] not in ("live", "kept") and not (c["kind"] == "donor" and c.get("winner"))   # the game's own art
+            if c.get("random_variant") and c.get("winner"):
+                # one picture of a random folder the game draws: he keeps it or ✕s it (enact retires a ✕'d one
+                # from the folder); a picture this sheet never showed him says so
+                c["purgeable"] = not (c["kind"] == "donor" and not c.get("ours"))
+                if _shown_before and not (set(c["faces"].values()) & _shown_before):
+                    # a re-encoded copy of a picture already on the row (dHash within COPY_BITS) is not "never shown"
+                    hit = next((o for sh in c["faces"].values() for o in _shown_before
+                                if _ph(idx, sh) and _ph(idx, o) and L.hamming(_ph(idx, sh), _ph(idx, o)) <= COPY_BITS), None)
+                    copy_of = (next((d["letter"] for d in allcols if hit in d["faces"].values()), "shown before")
+                               if hit else None)
+                    if copy_of:
+                        c["copyOf"] = copy_of
+                        c["label"] = f"in game now, a re-encoded copy of set {copy_of} — " + c["label"]
+                    else:
+                        c["neverShown"] = True
+                        c["label"] = "in game now, never shown — " + c["label"]
             if c.get("purgedLive"):
                 c["purgeable"] = False
         try:   # placeholder_detect: a row drawn by script-flat shapes or borrowed vanilla textures has no art of ours
@@ -1889,7 +2018,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 "key": gkey, "res": g["res"], "role": g["role"], "primary": gi == 0, "facings": facings,
                 "prior": prior, **flip,
                 "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
-                          if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "purgedLive", "noSelect")}
+                          if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "purgedLive", "noSelect", "neverShown", "copyOf")}
                          | {"short": _short(c)} for c in g["cols"]]})
         letter, why, source = prim_pf
         _nosel = {c["letter"] for g in gitems for c in g["cols"] if c.get("noSelect")}
@@ -2005,7 +2134,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                           "labels": {c["letter"]: c["label"] for g in gitems for c in g["cols"]},
                           "graphic_of": {c["letter"]: g["key"] for g in gitems for c in g["cols"]},
                           "reserved": sorted(set((letter_memory.get(key) or {}).get("reserved") or [])
-                                             | {c["letter"] for g in gitems for c in g["cols"]}, key=LETTERS.index)}
+                                             | {c["letter"] for g in gitems for c in g["cols"]}, key=LETTERS.index),
+                          "shownBase": sorted(_base_of.get(key) or ())}
 
     for key, cs in hidden_kept.items():
         sr = snap_rows.get(key)

@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheForge",
- "built": "2026-10-09T07:41:03-0700",
+ "built": "2026-10-10T10:14:04-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_Aerofleet": {
    "columns": {
@@ -22,6 +22,11 @@
    "res": "Things/Pawn/Animal/AA_Aerofleet_TwilightSea/AA_Aerofleet_TwilightSea",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "38ce595b807676cab54949e4572239c4da8a90e58497227402b682d40ad5bd7f",
+    "6d5726f85c98bb09c171bcb1eaf9b3b424b89ba151c21a1b61f80b3152811894",
+    "f045586140575cc9339b867a82e20eb2600cc84956ba67b37da624ce3a529af6"
    ],
    "subject_key": "aerofleet"
   },
@@ -51,6 +56,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "027b4353985d32139b8ec18a241083a53f8bd59698bc37f0e69fdd1028f21582",
+    "17e3b059af9bd1ac387b796e3d16d17a7d324ddecdbf086e6ab21f8074c3b192",
+    "1957521f470a489daa158804a08d13e0628b15559a804982a5d08e01a2f1361e",
+    "7351fe52604da46eb8248ed9c547d2ca608f4ba10d8eda0575d11249c29ec212",
+    "b748852f9472dc16ebdce35f86a6ebeb0ffb63ba548b4f70da77f55427922c3f",
+    "c00fd4857030848f817dc0cf86a01f358f37161b090b4c0ddf52eaab25b5c94c"
+   ],
    "subject_key": "colossalaerofleet"
   },
   "AA_CrescendoAnole": {
@@ -61,6 +74,11 @@
      "south": "90400475f4eecf8bdf190751b96d0f1ee86dd47bdb9acc83ffccc19239ed4b7e"
     },
     "B": {
+     "east": "8f8aa2631097670ac3670841fcfaf81d054526dc3078418f9da07aec79a944e2",
+     "north": "099f96a856761abe0524dfb3da3a3883d3240aff47b5d12ada0e111f20a41d31",
+     "south": "7d5aa114a8c88eb473c9cc84b0088ecd2b2bc9262030d582e5e102913b53d72f"
+    },
+    "C": {
      "east": "ee24fbcc7b1f31615984f67b876adb328c74b3da5fcd838fe648eb6480436712",
      "north": "d249d04da713bab36b1839b965a56090c073ceabd3dbca988bdedd5c036d5021",
      "south": "a584bc21f0e87b2cef25ce289f692d00868771093878ea47ae1e0f65015e7ce7"
@@ -68,16 +86,30 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole",
-    "B": "Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole"
+    "B": "Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole",
+    "C": "Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_CrescendoAnole_v1"
+    "B": "render legacy_312a94c6_crescendoanole_v1",
+    "C": "render gapall_AA_CrescendoAnole_v1"
    },
    "res": "Things/Pawn/Animal/AA_CrescendoAnole/AA_CrescendoAnole",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "099f96a856761abe0524dfb3da3a3883d3240aff47b5d12ada0e111f20a41d31",
+    "1b13258b490ef70d79c38d4a0994dc2322427aa6ecf20f1c8657a932b7811359",
+    "7d5aa114a8c88eb473c9cc84b0088ecd2b2bc9262030d582e5e102913b53d72f",
+    "8f8aa2631097670ac3670841fcfaf81d054526dc3078418f9da07aec79a944e2",
+    "90400475f4eecf8bdf190751b96d0f1ee86dd47bdb9acc83ffccc19239ed4b7e",
+    "a584bc21f0e87b2cef25ce289f692d00868771093878ea47ae1e0f65015e7ce7",
+    "d249d04da713bab36b1839b965a56090c073ceabd3dbca988bdedd5c036d5021",
+    "d34f7a0d7a1864ab80e7c0e0fbbd19ed96decbd2f92cdba238acd3199fba5187",
+    "ee24fbcc7b1f31615984f67b876adb328c74b3da5fcd838fe648eb6480436712"
    ],
    "subject_key": "crescendoanole"
   },
@@ -107,29 +139,53 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "65285f8eab42a8946668a4d3db4bde7e4bb7523086d67f1c32ea22218b8f1b89",
+    "7f1b3737b99fa8e7267bfbb1fde97b8c2b5c7056d6644b539881070932f4014c",
+    "982a880a912bebbaaff4bebfcbb9d03488401280dea4f04d169ffd4e49f7f20a",
+    "9b97071a436f7f1f0b66c809561966e75fac74b0ce1ce1828c4120465256e9bb",
+    "b6b2174594f4be8298a6ecb0d423ee8d3c04076bea4c2da60bd81934563944d2",
+    "cd4bc23c553d4245be15589b6da07468c7a686580be0a8209ea01c9c838d1f32"
+   ],
    "subject_key": "metallovore"
   },
   "AB_FirevineTree": {
    "columns": {
     "A": {
-     "single": "1ce93b8ab9c992f7511af3a48b99ac3b3a0d6fb897fc6787be73fd4371a08f23"
+     "single": "526de0fc197ed54c216a6251d93a53450d44367031bba88f4d67ad00ce80bae7"
     },
     "B": {
      "single": "0d9294c9be6c0315a014a164245b8a93ec87666cea610cf74192c5ffea0d4929"
+    },
+    "C": {
+     "single": "1ce93b8ab9c992f7511af3a48b99ac3b3a0d6fb897fc6787be73fd4371a08f23"
+    },
+    "D": {
+     "single": "52533def7e0d920c712dc3212cddff89cd3d2393d6ec8d5dfec9b60cc9bec87f"
     }
    },
    "graphic_of": {
     "A": "Things/Plants/AB_FirevineTree",
-    "B": "Things/Plants/AB_FirevineTree"
+    "B": "Things/Plants/AB_FirevineTree",
+    "C": "Things/Plants/AB_FirevineTree",
+    "D": "Things/Plants/AB_FirevineTree_Leafless"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Biomes",
-    "B": "render gapbs_AB_FirevineTree_v1"
+    "A": "in game now, never shown \u2014 IN GAME \u2014 random variant AB_FirevineTreeA (1 of 1) \u2014 UtinniPatches",
+    "B": "render gapbs_AB_FirevineTree_v1",
+    "C": "donor original \u2014 Alpha Biomes",
+    "D": "IN GAME \u2014 Alpha Biomes"
    },
    "res": "Things/Plants/AB_FirevineTree",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [
+    "0d9294c9be6c0315a014a164245b8a93ec87666cea610cf74192c5ffea0d4929",
+    "1ce93b8ab9c992f7511af3a48b99ac3b3a0d6fb897fc6787be73fd4371a08f23"
    ],
    "subject_key": "firevinetree"
   },
@@ -140,20 +196,30 @@
     },
     "B": {
      "single": "b10191cd4241c3c2ed00fddd76563186c94569c9a82c441cac49a8fa4388f0b1"
+    },
+    "C": {
+     "single": "8beb560df9aadeecb78bd9efe2a33f40975ed8940d2de531b90f583dfce80856"
     }
    },
    "graphic_of": {
     "A": "Things/Plants/AB_TinkleGrass",
-    "B": "Things/Plants/AB_TinkleGrass"
+    "B": "Things/Plants/AB_TinkleGrass",
+    "C": "Things/Plants/AB_TinkleGrass_Leafless"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Biomes",
-    "B": "render gapbs_AB_TinkleGrass_v1"
+    "B": "render gapbs_AB_TinkleGrass_v1",
+    "C": "IN GAME \u2014 Alpha Biomes"
    },
    "res": "Things/Plants/AB_TinkleGrass",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "3ef3fa4d61dba580a643f003ccaa850055f18b38f847789b6757d9e3d2d747f4",
+    "b10191cd4241c3c2ed00fddd76563186c94569c9a82c441cac49a8fa4388f0b1"
    ],
    "subject_key": "tinklegrass"
   },
@@ -175,7 +241,7 @@
     "C": "Things/Plants/IronScruff_Bindweed"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
+    "A": "IN GAME \u2014 random variant IronScruff_BindweedA (1 of 1) \u2014 UtinniPatches",
     "B": "render gapall_IronScruff_Bindweed_v1",
     "C": "donor original \u2014 Primordial Geysers"
    },
@@ -185,6 +251,11 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "16085e0e5c29e2d418d9348bdee395ee28c2489907a09f9bb3cae3ff2bd53468",
+    "a6d3b9f4370164fe364c1a247414b159fc4c1688e0c352747654a9e9f9908a80",
+    "c127b7c24f1dfa2d8b604b222208e143d1d5d98f26c53fedee6272fd9a64df34"
+   ],
    "subject_key": "ironscruff_bindweed"
   },
   "IronScruff_PrimordialGrass": {
@@ -193,21 +264,37 @@
      "single": "2563b5ba28f4cf097c14ef113cf9a8a92af98586f232778e1ea9ba022c8c0f22"
     },
     "B": {
+     "single": "80b0ac5881ad2edb478a4d55e430d2b6e4d13c2bd53fac735a041db8d39a7ae6"
+    },
+    "C": {
+     "single": "3e8ed44c8bdd3c9f9c04975c409e41c01efcc409c8e65303e3d3bf3a1353c965"
+    },
+    "D": {
      "single": "578a3ca40d183146cbb06804d00fc713d91df7c85532ba54c8bf5da445057b80"
     }
    },
    "graphic_of": {
     "A": "Things/Plants/IronScruff_PrimordialGrassPlant",
-    "B": "_byname"
+    "B": "Things/Plants/IronScruff_PrimordialGrassPlant",
+    "C": "Things/Plant/Grass_Leafless",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Primordial Geysers",
-    "B": "render gapall_IronScruff_PrimordialGrass_v1"
+    "B": "in game now, never shown \u2014 IN GAME \u2014 Primordial Geysers",
+    "C": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures",
+    "D": "render gapall_IronScruff_PrimordialGrass_v1"
    },
    "res": "Things/Plants/IronScruff_PrimordialGrassPlant",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [
+    "2563b5ba28f4cf097c14ef113cf9a8a92af98586f232778e1ea9ba022c8c0f22",
+    "578a3ca40d183146cbb06804d00fc713d91df7c85532ba54c8bf5da445057b80"
    ],
    "subject_key": "ironscruff_primordialgrass"
   },
@@ -217,21 +304,31 @@
      "single": "2563b5ba28f4cf097c14ef113cf9a8a92af98586f232778e1ea9ba022c8c0f22"
     },
     "B": {
+     "single": "80b0ac5881ad2edb478a4d55e430d2b6e4d13c2bd53fac735a041db8d39a7ae6"
+    },
+    "C": {
      "single": "46989061d02cfc20e661b3ab50003cf1b58c19d13bbfb7c862409800fe4f5f9e"
     }
    },
    "graphic_of": {
     "A": "Things/Plants/IronScruff_PrimordialGrassPlant",
-    "B": "_byname"
+    "B": "Things/Plants/IronScruff_PrimordialGrassPlant",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Primordial Geysers",
-    "B": "render gapall_IronScruff_PrimordialTallGrass_v1"
+    "B": "in game now, never shown \u2014 IN GAME \u2014 Primordial Geysers",
+    "C": "render gapall_IronScruff_PrimordialTallGrass_v1"
    },
    "res": "Things/Plants/IronScruff_PrimordialGrassPlant",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "2563b5ba28f4cf097c14ef113cf9a8a92af98586f232778e1ea9ba022c8c0f22",
+    "46989061d02cfc20e661b3ab50003cf1b58c19d13bbfb7c862409800fe4f5f9e"
    ],
    "subject_key": "ironscruff_primordialtallgrass"
   },
@@ -261,6 +358,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "462650a7b617eef3f89099eefacf5674089a903a93c9861603043e57cf7d0ad4",
+    "589e21a2c69ac252c5e18f01803ddfbc38280dde3a8dd14fcb6f41aeb9dd5207",
+    "75a940cc510eb43196c7ed0187459ae3eabb62042a1fcd4414e46c471b852cc1",
+    "8a58406a812138cf74cfb20b22950f44202eea3f2d446bd127ec416ce87a8a60",
+    "adb82828e159e730bbc51240b60cf5760435f7050c43dd9093fd01693122454a",
+    "e2fd16d23aa0d4b1f44aa83adcfda7630d1e05e02532eedfccf1d642876418e2"
+   ],
    "subject_key": "lavasnail"
   },
   "Plant_Fireweed": {
@@ -277,13 +382,17 @@
     "B": "Things/Plant/Fireweed"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimUtinni Patches (Jawa campaign)",
+    "A": "IN GAME \u2014 random variant FireweedA (1 of 1) \u2014 UtinniPatches",
     "B": "render gapfin_Plant_Fireweed_v1"
    },
    "res": "Things/Plant/Fireweed",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "7166ac4d240d941b092339345ab0ede019f8bf7f4c2219f51c2ad7e04b0ccde7",
+    "dc95ad68f496c64f422faab5e8ced2bf98bf3c0f1e1d4fc25bb10131b50feba5"
    ],
    "subject_key": "fireweed"
   },
@@ -309,6 +418,10 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "180763f053b2d9845f48b2e126db52b0041ffdce3bdd0458143ce1bb2e8ebea6",
+    "be1d50708c2f06d14de16a42e95db6bab4f63a7a984ef40160f6a00efa8d596b"
+   ],
    "subject_key": "magmacactus"
   },
   "RM_CinderCrust": {
@@ -325,13 +438,17 @@
     "B": "Things/Plant/RM_CinderCrust"
    },
    "labels": {
-    "A": "our deployed art (render rm_cindercrust_v1) \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant RM_CinderCrust_a (1 of 1) \u2014 TheForge",
     "B": "render gapfin_RM_CinderCrust_v1"
    },
    "res": "Things/Plant/RM_CinderCrust",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "327370abe17faa1d86b3281849d21a2f843d78b783fb41cb9b66232d08ab3ca6",
+    "b1e43db9f8e0c93b83eb84590c94b23d0853ee25996ded3f5ead043d42a30079"
    ],
    "subject_key": "cindercrust"
   },
@@ -353,6 +470,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "02ad7a559f782d2b6a1ce55d88ba945cc7a4a720f9b9ee45ca63e0388d52b3d6",
+    "274f8ee8b1851b3011de9fe6638958b752e3acfce17c7f86dab73a10246b75e6",
+    "56f7826888095ddc63012a09f5381b2f2a554f43c3e3aba64e15eb83b544f300"
+   ],
    "subject_key": "dhokkur"
   },
   "RM_Dhuvvox": {
@@ -373,6 +495,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "3d09d47e34229535633839719b8e1e0350daebee0240a00c4d3dce5a098d70d5",
+    "7e77836d9e43fc3954d8c076f059fe17589711394b84b3558cb54e5fa16ee4e2",
+    "e65bc87a25ee498ce9595038e365ca96e58b84f1e7316159a29a6ecf1a058b7c"
+   ],
    "subject_key": "dhuvvox"
   },
   "RM_FireLavender": {
@@ -389,13 +516,17 @@
     "B": "Things/Plant/FireLavender"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant FireLavender_a (1 of 1) \u2014 TheForge",
     "B": "render sheet_redo_RM_FireLavender_v1"
    },
    "res": "Things/Plant/FireLavender",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "1d2ce9cfc7397d5ce1b101f8bceadd475890fe619ec3e8369eec538f9f70e4c4",
+    "fd4fa34acb1f4dadfa78c89f3adc87f95c5c818e70a9bd44cf4d7665e3986c81"
    ],
    "subject_key": "firelavender"
   },
@@ -417,6 +548,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "265f30a7b98d0e9d9008c6840d95e7199d2ab43e9ddd4810e671dbdd01ec04e6",
+    "45f264f99ec62ba4d6f720bedadef69b4e7a2aeee5dbf1f715a5b6d1ac5a7304",
+    "dfe950b38cd8a53eb1784bf8b0942f8cc240b7e461af8007683d5fbb6bff96f2"
+   ],
    "subject_key": "fleetflier"
   },
   "RM_HeatsinkFungus": {
@@ -433,13 +569,17 @@
     "B": "Things/Plant/HeatsinkFungus"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant HeatsinkFungus_a (1 of 1) \u2014 TheForge",
     "B": "render sheet_redo_RM_HeatsinkFungus_v1"
    },
    "res": "Things/Plant/HeatsinkFungus",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "98c5c47d973e30cadaf49fbfa048d86e7f318296da57fed6148601e05f24f2b2",
+    "d6aeb87b306c16df0682ef2136121ba8a0dceb600201099ff3ecb16543521bf6"
    ],
    "subject_key": "heatsinkfungus"
   },
@@ -461,6 +601,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "16e5b7b43e8d0faef1719702ce28948944b9e345e2db53e8d7fdae7c083dfc77",
+    "5ebbdd3869fc810904c27eb1ee7c7dab232a7a5152731fe277552eb0c3903469",
+    "874c78bd3298825323b184c2bb67b7d175095aa23e4e97c5f81f4ae04d8d0db8"
+   ],
    "subject_key": "jossur"
   },
   "RM_Julmox": {
@@ -480,6 +625,11 @@
    "res": "Things/Pawn/Animal/RM_Julmox/RM_Julmox",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "37365033758c74463c6de71e3203d3bad42e1fde265794d88b67733ac96a4c63",
+    "c4a7597b3b5864d122386e51f3f40e1e8e260c02b1468d7776dd6ca6a4a3d29c",
+    "f14bf9f1226e6df6aede3a729dd7b0093c46be75ea084df79fd68e350b3b8a97"
    ],
    "subject_key": "julmox"
   },
@@ -567,6 +717,42 @@
     "G",
     "H"
    ],
+   "shownBase": [
+    "06aa6751671020d1457fe451b571c078595b1e8ab54386c0044fa98d26125c7b",
+    "084c8ada17bd0e74656853ca9d02baf65e7054290e7f9cee6660038d332f818e",
+    "094849690b6e6abeec9ff19a98ff41ec98627cc77d4dd5ec9be21e59977bdd8f",
+    "0c87f3308092253710f877d0df5c525d3c3b1ba7152f8ab7490a2097037c9dcd",
+    "11dc3491336037440e029d4c4953f767dae4481ed67916cb3f6a771071834fe8",
+    "1bcdcb01f88805b46a4560cc06ad683cd8689578fb999c1e053513a14981e02a",
+    "32d310c9bbde99ebb795a8fbf2616a21a300e1b702e31797352834576511e5c6",
+    "3ca656719d55554406d888b3ce906d4d270b8115d605d6a6e19b5abbdf50cc0a",
+    "4abcacae8112c143e0f3173dfc3367f9672b451220506936c4ad0fdd4cda1626",
+    "50411bd94fceef0047c16beded8a663138d4c3fcf9a7b1533a3d48a06aa09834",
+    "54a5b59bf71ebcfae4cae7540bf10b428853ec69ea1b5807b4f8149eadeb83b9",
+    "5b4ff5388507a62dcc7330f588b545c7c4f8714ec56e44979577d47ab17a6938",
+    "8812dccba18bc3c185052986cab28961ba4fb81ea588fd64ae61732ecd41c8f3",
+    "8db4e307bdbfa9debf9b8a29f9b1a45c2dfcb1df3db0125b854803ecd381c789",
+    "8f098d1cbc686bf19d3139fd2b32b82fed2827b161372814013eea4205a27360",
+    "92ae9baa108e3bbfcead5eb7ecfc89a6f2c950a485db537c2498a331cebd5875",
+    "9b6cf202f28c1de5f33b1e0f798049a6900d9e6d440edb51ed0f34e6ea8a4e07",
+    "9bc8ae51b86a9e39d940ade61642e8b9a7600e45d46982056d17d28ed83f4991",
+    "9d81799ecf9a0be2556a4b6330bbc90102fe1fbc88dee8b1530998363abdc482",
+    "9f21e1101f9b5c6d2f36772de854927e5082cac51b6b71552a364c7f36f499bd",
+    "a534399fc616944efbb3c4351cc920b92758f076ec07204627f22ec1f9481868",
+    "be091798911b521b0cff9a61895fd51c163dd74655a1c209c58c259e132e9a43",
+    "ca581fee816d5a7a1f1ddacbbf3da68e6aa6ccb3d7b0e135267af552e0669201",
+    "ce73ccff6ca8fbaf9a978cd317d3e0b9f8f3e2588e7c7850b487395feb00cb2a",
+    "cede05f5faf76e1b758456447d14d1682a2bbd64d4a64557c340c77cc7669aca",
+    "d06b5760c848f3b815770ae01b9223e9d741d619470d07b40ed4cd1d0ee6b969",
+    "d6ebe5f1f0d5578e513a6b5fd446b942c5430c7a243a6ec1b7a50f470d067357",
+    "d9938e919ff979d04e518dc01d10db846f1cfd4e1f4ce19a03ff5aea340d4c4f",
+    "dab8a60d8894b67c3732ae8f3b376c83a10fb50f824e18b3535f790569c56eff",
+    "dfbea120334feaac431315583b0ee365021a08dc03959b99503f80a3dbb0ce8c",
+    "e9aa92ee266a9726fe6a7ce7464803b69d3302e01f5ffc2beb98e846562b5d55",
+    "ee247eff82ff722d5f309a836ce190a4ec1241d1ce58cd4a185844cdecfc1085",
+    "f26b6e7d24c7fc2f6856edfadedce5ef46f9b6da823412f2f512fcde834675ba",
+    "f5e110692dc01d2ae38edf2cdacd269695aeb676430783dcc17760cac8194d9c"
+   ],
    "subject_key": "beldon"
   },
   "RSW_LavaFlea": {
@@ -577,6 +763,11 @@
      "south": "91accd8fbc314bc8c779312bce4280d8728c8a5f3121608828b7b2bbd23b3c33"
     },
     "B": {
+     "east": "80905ebd702af2344d0b094266dffdcf30443395c131090324bf327b84393afd",
+     "north": "64ea2b5a9bb2ea7cf15d9840df62e41478f592c1010cc1b4ad4c2f1f24179ee4",
+     "south": "36115b38f4031f027b1c41b56a2fe6fa7511c1611021709ec2ec2e431d45eccb"
+    },
+    "C": {
      "east": "354966bec71601beb22962e1624bbbeb606be7000ccad3653f44f052afb23814",
      "north": "640770913fddd948b84a6838e9aac794678a9951fd2491362275ce5b2338b69a",
      "south": "a1452d8238159392f8e58caee6ac541139acbae9cab2fa1b5c34a4ed8242cf17"
@@ -584,16 +775,30 @@
    },
    "graphic_of": {
     "A": "swanimals/LavaFlea/LavaFlea",
-    "B": "swanimals/LavaFlea/LavaFlea_j"
+    "B": "swanimals/LavaFlea/LavaFlea",
+    "C": "swanimals/LavaFlea/LavaFlea_j"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "IN GAME \u2014 SWBestiary"
+    "B": "render canonregen_rsw_lavaflea_v1 \u2014 failed canon check",
+    "C": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/LavaFlea/LavaFlea",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "18aafdb29462c979555520f87db7575b7357c80789300598e7327324ae772a79",
+    "354966bec71601beb22962e1624bbbeb606be7000ccad3653f44f052afb23814",
+    "36115b38f4031f027b1c41b56a2fe6fa7511c1611021709ec2ec2e431d45eccb",
+    "640770913fddd948b84a6838e9aac794678a9951fd2491362275ce5b2338b69a",
+    "64ea2b5a9bb2ea7cf15d9840df62e41478f592c1010cc1b4ad4c2f1f24179ee4",
+    "80905ebd702af2344d0b094266dffdcf30443395c131090324bf327b84393afd",
+    "91accd8fbc314bc8c779312bce4280d8728c8a5f3121608828b7b2bbd23b3c33",
+    "a1452d8238159392f8e58caee6ac541139acbae9cab2fa1b5c34a4ed8242cf17",
+    "a96fcfb0b50b8ec8e4c9a7da2fec31bd04c16c51d131b6b70f0516e0c25028fc"
    ],
    "subject_key": "lavaflea"
   },
@@ -614,6 +819,11 @@
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Maguana/Maguana",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "127ec9168d5edfc60b3349fd0657d6ad5cf8168f8b06b63bda02c82e87dc44f3",
+    "28b3868ef16e5a94947a5a8b08b526cf416055c2eba62b8bc704d5eecdb34cfd",
+    "ae34b0c48b7ba72b58d5d6d89058adee69e69f1157135791867415c68cfd11e9"
    ],
    "subject_key": "maguana"
   },
@@ -643,9 +853,17 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "2e5f0262ee6951e9eec8a61c52f35b5f2a2d5f3daf9517c51e79864d90c1e96b",
+    "6a90fbae268b52c40f15b3c379d8d9f9c2f4029167ab71573798c80e61db6c23",
+    "728b30c429198a545d2bc728d61e1cbb1dbd380da93f64a4e95e72cc80748dca",
+    "792033b45e93dacae14fe5bb5cfa4fbcb9e70877eb5b2f28e6e92878fc448de9",
+    "d5dae432bd68f6a7d8c668c63e8d3f158111333581fdda9cdb23047cddf262a4",
+    "e080036eeccf9ddf3143255ca76fa1f05699b28d9271437890e824d82699b8b1"
+   ],
    "subject_key": "tibidee"
   }
  },
  "sheetId": "theforge_sheet_2026-10-05",
- "snapshotId": "cc05b756d1b41b42"
+ "snapshotId": "917cbbad6f491fb7"
 }

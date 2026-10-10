@@ -1,9 +1,9 @@
 {
  "biome": "RM_Miasma",
- "built": "2026-10-09T07:37:29-0700",
+ "built": "2026-10-10T10:12:52-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_DecayDrake": {
    "columns": {
@@ -24,12 +24,20 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "shipped, not loaded \u2014 DecayDrakeArtOverride"
+    "B": "render gapall_AA_DecayDrake_v1"
    },
    "res": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "35089a5429fa1ef9535baddc8c09a05f6bea8d9a6f559f09c7b7e9b94684e79f",
+    "6a1234293ef67df19a8aec0c7797b37619c165bae50c64be666b6501e5009342",
+    "79f726107e09de5ea497c6cd29aa7193720d88f0c5a2da6a431de3e1b4bfafab",
+    "ba98737edc7f536ecef779f7fd1353f6274358a61127e5e25e0259658b23f199",
+    "ca8ff92b2d64e790002839d5abe86f4af8d660933bee1c79beef33e7224823d6",
+    "e68cc3a30ed579a9230d75a41e250e96434f5233e5a9d85dd4efe048ba004e40"
    ],
    "subject_key": "decaydrake"
   },
@@ -58,6 +66,14 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "5cefccb8a71b79fbdce2355e6655758f5206274a86a563688828e5e8a906a143",
+    "7778ee23e92f8cebf8b12c6b1c16412f4f0ede6908f9da25ff9e88144e70f63e",
+    "7dec057170bae3d2178b610e709036a4c3149dbf00b7b6a35d9aafc83a8a04bd",
+    "d95f5af4564e0369955f016ab394295e4eeecd2350215116200c2ca4fbc77cb6",
+    "fb0a4cae2598c719ef11b8fcc9b87aa757a3a9d6e7e162c0ba6e09a3d28e65c4",
+    "fb72d8180dbcdaaf28e5cd80fe92dd795242605925b2d24260c51e7fd6764b18"
    ],
    "subject_key": "helixien"
   },
@@ -107,6 +123,16 @@
      "east": "58c44d3e8b5051f3afe73f0349017598b3464e0cf2d8295ad227258d7f283cac",
      "north": "de89c31957122795af6bfe1aaab72388996bd935c830df700dce7d4edc0bc757",
      "south": "fc77e91a6d7342b548d4c980bc9e5b5d9181038a6389772afdd17731c6a61084"
+    },
+    "N": {
+     "east": "a90b9ac1954e4d1ce83dccf7c83c046226335316f54c23fb5c39ad59fed31a48",
+     "north": "c7d0c544d0d9124d47dbe0e33ebadd1e74875675080f48c08c77faf752ff99a0",
+     "south": "e4f609b2b4687ec5475e364764ea1bf1f7983e4b95166fbc65547b183e28a15b"
+    },
+    "O": {
+     "east": "fe6f66619c69e1b4151d16df63045a70b702fce873600b3d86023838ee3fe5b7",
+     "north": "3fb5d032e4c31c2594da62d404b63259c0f9380307fe8248c935fb676009de3f",
+     "south": "0694077a5231da021e45938be811fa499691fefb9e094eb2d9fadfe764d6dbd4"
     }
    },
    "graphic_of": {
@@ -122,7 +148,9 @@
     "J": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
     "K": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
     "L": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
-    "M": "_byname"
+    "M": "_byname",
+    "N": "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw2",
+    "O": "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw3"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
@@ -137,7 +165,9 @@
     "J": "render lockjaw_improve_a_r2",
     "K": "render lockjaw_improve_b",
     "L": "render lockjaw_improve_b_r2",
-    "M": "render miasma_siezer_v1"
+    "M": "render miasma_siezer_v1",
+    "N": "IN GAME \u2014 UtinniPatches",
+    "O": "IN GAME \u2014 UtinniPatches"
    },
    "res": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
    "reserved": [
@@ -153,7 +183,27 @@
     "J",
     "K",
     "L",
-    "M"
+    "M",
+    "N",
+    "O"
+   ],
+   "shownBase": [
+    "279fa3a30986988c4de0f8e7914a8c4494c0c87eaad6881d7bfd633b1aae4805",
+    "31deefbc904b0b65804d06a1d01c23bd64d878a6294dbfab1dae492b3d6133aa",
+    "32517ac4bcbd67f6d82d72b752c838af2c460a8f1d22e558d2fa4cec8afa9323",
+    "570aa3b9f4ab75df14f9accfbad24d5970ed1067745e453591487a850293617e",
+    "6879730bb01fe34c5c8622580f915fa4ba78e9226209f4945ce5215860fa340a",
+    "6e0e4c3eb870f76f4b22378e3aca2b70400f6414b7b2515164852b07dfdcc5fc",
+    "718616bda9a8944e216ca8053e577de257c5f26dc667afc25d350cb349f295db",
+    "747b53ef3b32f48daa7407607f62fe6148be4e69aea090f1a86dd5043889c295",
+    "99a517059cf78a467f9693f8152ed67074b721446d191872b68ea31a7891b56b",
+    "9d97b22f62a2293746b75b7bccaa64d516afe51b540af886a1e51bbeabcb8750",
+    "ac5c3251808d4f0132344854c7faf80296abde805fd36b36b984f08c19605188",
+    "b545208b559ab4d88d4ad74fa1848da69971fdbade96594c9f5dd4528b788eb0",
+    "bbbb5c5519ea2f5ea3db4d7c4a8cb678f867803499aae8bc821060890c016927",
+    "cc009ef0de9dc098e8f71f7708d93b2b96244f4d00f90a217ec559210a75e504",
+    "e93e3d268b30cee0a4125aae02986726eab0a192f0cabc8bd7de9d94f00557b1",
+    "f948206e2e4db23a3ecc2f01d944488c127b65a2f00a157e85cdf76bf17a44f7"
    ],
    "subject_key": "lockjaw"
   },
@@ -206,6 +256,20 @@
      "east": "a8b055b91505ee93c3a04df206d9674ceaaa665097012bf823129124c6669869",
      "north": "2efb76a002396d70580899683a094ea278b4eab8f0cd1bbc80b02c464d00eb02",
      "south": "0dce85c53c7c5de1eb5660c15a27053f1d7f6251a86ec869614b459f64287092"
+    },
+    "P": {
+     "east": "7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d",
+     "north": "7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d",
+     "south": "7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d"
+    },
+    "Q": {
+     "single": "8331db87e098f178b91e9b4f01d01a682343fa8006e212ecdb2b252d59bd4428"
+    },
+    "R": {
+     "single": "db9c6a751a84685cbd71f7c81788ff9f1e3862f49fdb61da7de89e78874dd32a"
+    },
+    "S": {
+     "single": "7d1496f9d8933c8b3eb913af98838ca99700dd61b714b1ebd84c8706357abb2a"
     }
    },
    "graphic_of": {
@@ -222,10 +286,14 @@
     "L": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
     "M": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
     "N": "_byname",
-    "O": "_byname"
+    "O": "_byname",
+    "P": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
+    "Q": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
+    "R": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
+    "S": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap"
    },
    "labels": {
-    "A": "IN GAME \u2014 Alpha Animals",
+    "A": "donor original \u2014 Alpha Animals",
     "B": "render codexcal_mantrap_r4",
     "D": "render mantrap_improve_a_r2",
     "E": "render mantrap_improve_a_r7",
@@ -238,7 +306,11 @@
     "L": "render mantrap_improve_b_r7",
     "M": "render mantrap_improve_b_r8",
     "N": "render miasma_lastvine_calm_v1",
-    "O": "render miasma_lastvine_reared_v1"
+    "O": "render miasma_lastvine_reared_v1",
+    "P": "IN GAME \u2014 UtinniPatches",
+    "Q": "render enact_4ec0d9cc_creature_mantrap_v3",
+    "R": "render enact_a7139488_creature_mantrap_v1",
+    "S": "render enact_f889cf2f_creature_mantrap_v2"
    },
    "res": "Things/Pawn/Animal/AA_Mantrap/AA_Mantrap",
    "reserved": [
@@ -256,7 +328,28 @@
     "L",
     "M",
     "N",
-    "O"
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S"
+   ],
+   "shownBase": [
+    "0a87017de19c6882744d411db229e4a201541e9a6c9f0285f2f4a13840510184",
+    "13681d3f00b37acc202724159d3bafbfac165018c26ad6206d8f0c7597808bbb",
+    "14bb57f1d400a32829ea378aa6b385610b98b97af43397d0f73aeeed81b39c55",
+    "2e3e0a9af339ad58b89ef4bd6edf5c46fddd5b9bbece38d51c0a9fb3ae1ee305",
+    "2fda8da744610a0213d1817de758a8bcf8ea25d5325d0bb32add0c537fdd3b18",
+    "4439de18f6d26ddffb4fe2f6ff5252a8b380b9e795647d18f648abd13f1ab90f",
+    "470b6fd51500bdd2140bab07465c8b0a224670c78156e1ba817053e9c4618774",
+    "4ba5d288e328718b0a41376692b097db699a8a20856c4b6e1dfa10adde0ae0c7",
+    "59a2c8a46e141443c9c041a8cce36f63f9ce2b0efa9a71a562b55cd8ea5c53ca",
+    "5ebfc3726523f778670d25ec838afaa9efd5fec2d53b49ddbdbbef94cce6d0c4",
+    "7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d",
+    "7ed9b10335828766c00bb710d97420624743856f57d290c1eadf0b220847eff7",
+    "8094444617567d8f0485d46c337df6bd6814eebfae3d7caa839e4e55080054e3",
+    "b39f63246cf4a640242e41eef7b3122ead41b7b4177da964d697037ade550e3c",
+    "cc79ab2cdd30341f339e9fd2374a6f36c82de7dae941cf8de47dbbcf8e2130c2"
    ],
    "subject_key": "mantrap"
   },
@@ -271,21 +364,48 @@
      "east": "7c2185c3ac25a5fd3dfb5b2bde3abc28231df07b3b04119998ce7f99ced1826f",
      "north": "99a9dfeaa248cb694f7191f458550fd0fef8d805946788371ff7db3f3697c8cd",
      "south": "8ab3cadbf2712a734d28bea2eea1957a28f6e18b1dfa1270942c6fac7f5d82d7"
+    },
+    "D": {
+     "east": "223b5d20bafb79bfc07285df72c7109b6c9009cc485609c7040d00a9c39af934",
+     "north": "ec4648f11b75f57555eed64ce2b2b3ce39839f809c29b90d918bdfdee6144481",
+     "south": "fb2f8ebcef8201d1e1976c4c3f32c2348a5febc4d7cbdae5a1240fe43a9a2d0c"
+    },
+    "E": {
+     "east": "a86fa825387d32d4602779410d96408c06c6a8abd6b53cb497cb20601b940a4e",
+     "north": "4da664defece7b657b8f061d6b948b2cbaf78274758ea5b101548b9dabad39dc",
+     "south": "9dcce10077d09646524b142511276deb654015f7fabcd866d970a19c114cd86c"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
-    "B": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp"
+    "B": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
+    "D": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp2",
+    "E": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp3"
    },
    "labels": {
-    "A": "IN GAME \u2014 RaptorShrimpArtOverride",
-    "B": "history RaptorShrimpArtOverride 2026-09-13"
+    "A": "history RaptorShrimpArtOverride 2026-09-20",
+    "B": "history RaptorShrimpArtOverride 2026-09-13",
+    "D": "IN GAME \u2014 Alpha Animals",
+    "E": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "0fbc904693956a905ca8c8a851fccbb35f8d1332cd6fad413456f7abcabb65ce",
+    "2e8106c1717cd2fc771adaed68a9e9e8d468a46cf9f1dc6a2deccf856de346f3",
+    "75d9add9d1c54e7216b5639b2d16ed710dc7a88e56603a7dcdab90685a2de043",
+    "7c2185c3ac25a5fd3dfb5b2bde3abc28231df07b3b04119998ce7f99ced1826f",
+    "8ab3cadbf2712a734d28bea2eea1957a28f6e18b1dfa1270942c6fac7f5d82d7",
+    "99a9dfeaa248cb694f7191f458550fd0fef8d805946788371ff7db3f3697c8cd",
+    "c1157b57e47e441dae47f0c14c123d9f1d3c7adb4636ca6cda0df89b3ff79fba",
+    "d776aee8cf163875db46ac0a51e64e9cc24063b27e0464c9ca374a466ef2f27f",
+    "ecb37e42c2f99945f0be6b3ca6371e7c076ea7a543fcb0cc24a35ff1eb870100"
    ],
    "subject_key": "raptorshrimp"
   },
@@ -315,6 +435,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "0a0993dcc995c537e15101e5e86927eaa629af354b2c6f31571ab20223d4e15d",
+    "20a8d38b58ec7b55de116e0e513595413f2d3cf02e1621db96ff5ad36b15a6ae",
+    "77e179539ba419d237a9659ab02f925c2d953f73a4fe034e39e4fc8bd86c4afc",
+    "9a2b745259804ea605218e645a72169050cceace0c46c7d6efeaa4bf9760f9dc",
+    "a7c86877710cd6a35b3cf4d5ba7ccf22776b4b0387c54cf368dadc22c5952c38",
+    "bbcba801a20611cc639362fcb5c64b9af2b45f548b6177ac0112e36ba30e2696"
+   ],
    "subject_key": "slurrypede"
   },
   "AA_Thermadon": {
@@ -335,7 +463,7 @@
     "B": "Things/Pawn/Animal/AA_Thermadon/AA_Thermadon"
    },
    "labels": {
-    "A": "IN GAME \u2014 ThermadonArtOverride",
+    "A": "history ThermadonArtOverride 2026-09-20",
     "B": "history ThermadonArtOverride 2026-09-13"
    },
    "res": "Things/Pawn/Animal/AA_Thermadon/AA_Thermadon",
@@ -343,6 +471,17 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "03074e6c9ac7acbbbefba39c2a2817476c6961eb1ec13335dbbe4c88ee3b0691",
+    "0c9a1d7338c1623796fcda595b4203afcc858d8e976d170b4df338c6e015ba87",
+    "13f2a08977c6808403ca02e1c96c53562ecd2ba642d23b6844778d8f3fc3ed38",
+    "4ee0be68e9c5b514fdaf7f0208f3d65177258a6536bccbfd8de5056ce72878e5",
+    "68c26ed9a8ba1e29216cbdad7444094bfac8d76ffb3be3870c7523e771ea8f9b",
+    "7edd77bb89ef84d807e3ff137ecf5713aa7dc6b76ebe103681d8c91786b5c592",
+    "949321697f27751440b7f49cf1191e68e5203baa2498c6ae1cfb82556c8f3743",
+    "e67a3d0db2e73840997f294dcb7f05e006b0de8d5cd7558a20c80aab6464570a",
+    "fe43502ff9283e5f635a77aa30c68f1365c352cc6a3727fe4b7d82d156fc6bd6"
    ],
    "subject_key": "thermadon"
   },
@@ -367,6 +506,9 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "123170c5435351b45a36987086c244c2b39b0cc4991c21d845622de5bb1f3532"
    ],
    "subject_key": "aphreen"
   },
@@ -395,6 +537,12 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "4485fc0f931fc3349fd815a6805d1fda6ea911c0e8ef47f1689fb52a78c48601",
+    "a13859878844cf2aea48fb260085e410fe1cb1a3d2c1001e02972fde156ee656",
+    "c5d3173f0e44e570e5bce216d0d1279093bf7ffa7b4c215ff4a212a72e33238f",
+    "dd7182736ff5ebc6b6638d8935eb31d6e6afa1fb5ed089e660679cbd8b43860f"
    ],
    "subject_key": "bozzuga"
   },
@@ -432,6 +580,10 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "268aace147126381485a037e971b9c679e3644f01d79a461e571327018bdece6",
+    "b75e70887de54a52c3c3b8a4d7c76a4a0e5091e6c77772849a599bebf2994142"
+   ],
    "subject_key": "braskeen"
   },
   "RM_Brelloch": {
@@ -448,13 +600,17 @@
     "B": "_byname"
    },
    "labels": {
-    "A": "our deployed art (render miasma_brelloch) \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant RM_Brelloch_a_a (1 of 1) \u2014 Miasma",
     "B": "render gapfin_RM_Brelloch_v1"
    },
    "res": "Things/Plant/RM_Brelloch/RM_Brelloch_a",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "1b607384f527eb31400200127a35e4a479dd0493a545190c38a7484b65d274e4",
+    "c89035bcb6e79cd149e2324da7fa8b67aa55bb06c2acedeb281496f1bdcf5b1e"
    ],
    "subject_key": "brelloch"
   },
@@ -476,6 +632,12 @@
    "res": "Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "0e2b9f9f5afcc09bada1838950abaf907eb45f828a17251df60ddc13059d0ec6",
+    "19a9eb4d0cbdc0029d461e857ae5c8ab8c97dabf1cc9fb30245de126d1ee0628",
+    "85da26bde24f7b78328dfbbfa33bf191a4c28d3eb200d8ad4e98a9ed1a009985",
+    "d8821580cf44349c472775f0162b06b90adfa5340773a517dcd500a1cfe7bfc2"
    ],
    "subject_key": "crimsonopeejuv"
   },
@@ -503,6 +665,12 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "05658ff6438ea9aa5185073182bd0e8bf94b70106ee7a63edc1b4608e4d7d9cc",
+    "2eaf60efb3d29a142456119b9fc77cf8d49ab528247a591b6e19948155cf4c4c",
+    "eaa7be60672547a3eda2237a56b8564a669c04b0867f517821c394bedcb4fd91",
+    "f169f9dc3416b9d1afef925738adff789124a23a6684c6aa42c3794158387a56"
+   ],
    "subject_key": "feverswarm"
   },
   "RM_Ilbareen": {
@@ -527,6 +695,10 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "3547ea8ee4bb0683a761df3775c09f736e0a9827ac473e00856e6fb009bf949d",
+    "5d81293c36d8f029a5403c58ba0a7cad9c8d1fed83fedfc04b1bc8ab9068a618"
+   ],
    "subject_key": "ilbareen"
   },
   "RM_Immarel": {
@@ -543,13 +715,17 @@
     "B": "_byname"
    },
    "labels": {
-    "A": "our deployed art (render miasma_immarel) \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant RM_Immarel_a_a (1 of 1) \u2014 Miasma",
     "B": "render gapfin_RM_Immarel_v1"
    },
    "res": "Things/Plant/RM_Immarel/RM_Immarel_a",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "176bb2faab3366f3d1ff583c22fd4984431f838fbfff100378f5a4130f4be742",
+    "6e5db2255e469656ff1631d9c3857aa379f60699084d72b8c6e1baf165ba38aa"
    ],
    "subject_key": "immarel"
   },
@@ -587,6 +763,12 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "4b52f8cf7ce050a3191ae3deda9f353e23f9199ea82fd575903c12d7e2ec6a44",
+    "73353e258837c35ee97f605bd4e7d421a79412c8e13aa9a85388f5aaeadebb80",
+    "80ade350dd5dd780b5f6c6c967c201b105bd0111f9df7585ae4d53f01cfdded3",
+    "a3179a28c513eb5a9945a9b365e6c270ef71874abfbb2023f1b061455aefb030"
+   ],
    "subject_key": "ismerrow"
   },
   "RM_Karravel": {
@@ -612,6 +794,12 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "055616977c04159d4b86c8885a900c6bc09cf40120419bc0ddf12e0c351f6eef",
+    "05d13d7fa46d3c6e716964cdc5376e58b2cd974f942e4c7bb558e7a80f2acf6c",
+    "2c225f0cd46539594450562031180e2dc92350de0ba4b29022e839bc16c1f2ad",
+    "c3777b564e9f28b9cc1ef4b6abd5e075b3363a169c5872f24a4c19caaa00a8fd"
    ],
    "subject_key": "karravel"
   },
@@ -639,6 +827,12 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "6563a4658b45027c50543c0874f3616505aaaba6862abde472ef2c2281cef433",
+    "816ddaabed3033a29c58efdfee1db219f5c1c3173d3c30b4e794ccbd8b249dc0",
+    "ab1a07240937fba4d30dd29a923d356cd4a9d0c47d3f76bffeee847c4e6091e0",
+    "fa77c8f64f02fa7f0355f2266ddd65f54dc9530d05bde380bba3489f878041da"
+   ],
    "subject_key": "karrimeth"
   },
   "RM_Karrobel": {
@@ -665,6 +859,12 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "523b78bdf1901365fc84039eddba1844ff0b6d3e8ef327f0fb07ef2900af2462",
+    "ab81c619d455fe612465810fd88800f03f6b60bab34c9b8750c0ab269e857b5d",
+    "ba04451bae3d91c5f6b48a9f4bbd4f027f663bb64da4e35dacd1e66f881b9fea",
+    "d8ac28adfe3210d6b4d66435ef60f467dd6a25abcfaef1036fd477f556d2c441"
+   ],
    "subject_key": "karrobel"
   },
   "RM_Karrolun": {
@@ -690,6 +890,12 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "2e2c631c3a6f54666037a5766561194df7acc0a43142df2730a8c999ef5f3cf3",
+    "36cfc59ddca191ace71329d5a8d1645f76c82a5cea4c8d2a672630c0f6e0076a",
+    "49d5148cd8280605232f306eb3d8313a9eb9eda60cd0b7d2de02e81ac0261c57",
+    "8b5de95d603d0f039bdc7dc7a811fd3f922558b3c2c0af2008a1446b3f3ff0c2"
    ],
    "subject_key": "karrolun"
   },
@@ -722,6 +928,10 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "af9b80be2d14b9e8205ea1db64fafd91e56c0f824201b6348a322ec9548ff094",
+    "c1e742dd3a07e5f77ccf99b4342b4877231c912fdf98b7c456f390c275130752"
+   ],
    "subject_key": "nemreth"
   },
   "RM_Nogtyl": {
@@ -734,23 +944,38 @@
     },
     "C": {
      "single": "064212a1c2c6936c917daae1b2d179a66f4042a414b50fed1683ecc8a0658174"
+    },
+    "D": {
+     "single": "b547de935a51f19901f13044fc76dcd96d55e33bfe526142c89ae0e19924eae2"
+    },
+    "E": {
+     "single": "0c33b894252440e42110991db9a734a757f700f95415cbf683c1bbf21eb33b42"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/Nogtyl",
     "B": "RotSporeKit/Things/Plant/Nogtyl",
-    "C": "RotSporeKit/Things/Plant/Nogtyl"
+    "C": "RotSporeKit/Things/Plant/Nogtyl",
+    "D": "RotSporeKit/Things/Plant/Nogtyl",
+    "E": "RotSporeKit/Things/Plant/Nogtyl"
    },
    "labels": {
-    "A": "our deployed art (render rot_nogtyl_v2) \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant Nogtyl_A (1 of 3) \u2014 TheRot",
     "B": "render miasma_nogtyl_varb_v1",
-    "C": "render miasma_nogtyl_varc_v1"
+    "C": "render miasma_nogtyl_varc_v1",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant Nogtyl_B (2 of 3) \u2014 TheRot",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant Nogtyl_C (3 of 3) \u2014 TheRot"
    },
    "res": "RotSporeKit/Things/Plant/Nogtyl",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "1748fcc745fd12a15f723c7c2dc5a8659f6dfcacdc3b8d30dd375d93be1c27c5"
    ],
    "subject_key": "nogtyl"
   },
@@ -782,6 +1007,9 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "9c2924f943d9817edd70da9ecf49f9a6f0c15f54d41dd26f2e3b1f776932c85f"
+   ],
    "subject_key": "nyssolet"
   },
   "RM_Ollamane": {
@@ -798,13 +1026,17 @@
     "B": "_byname"
    },
    "labels": {
-    "A": "our deployed art (render miasma_ollamane) \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant RM_Ollamane_a_a (1 of 1) \u2014 Miasma",
     "B": "render gapfin_RM_Ollamane_v1"
    },
    "res": "Things/Plant/RM_Ollamane/RM_Ollamane_a",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "83fe2051cc1ca209fd25eb62f2c9c161effb9c4a0dd98b9cebd8833b11f11b8e",
+    "fd9e557e4d1cb6ac9503f117de2e1b5fdf36aa6c2106b9388f839a152bc593d3"
    ],
    "subject_key": "ollamane"
   },
@@ -833,6 +1065,14 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "0bd92c393b1fa0d50ce1c1e6c01a099d74ecfab37f5bbd3336ed8858e0a04257",
+    "10115071a331deac22f9d0afe3d6191f391f8a90773f35a7b968ba9e5908e51b",
+    "333db5930ae3509e57157d4c68fe0674efae5b7ce23ebca162dc47e0a70ab024",
+    "58cf7d565fcd15a804298c4e8cafc988feab8092a0bb061bdbd0df0df308c100",
+    "5a886bd59aca4df841bfacf82640eb2e0910ffe47684bbae79ee2f4ea4403481",
+    "dc65e88c249af4a1363557f5430021b4b292c327a3a9eac1eeaaf12a8f75b619"
    ],
    "subject_key": "ommok"
   },
@@ -870,6 +1110,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "911013aca50d0febf97b50e74150853df525ca387906c49455d03a72b6a13ba6"
+   ],
    "subject_key": "ommolyn"
   },
   "RM_Pallasheen": {
@@ -900,6 +1143,9 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "1595abf4dd2db336b1ce15372a56b4f00b4d442b6982d86c5f3e95073ae16ec4"
+   ],
    "subject_key": "pallasheen"
   },
   "RM_Quennath": {
@@ -916,13 +1162,17 @@
     "B": "_byname"
    },
    "labels": {
-    "A": "our deployed art (render miasma_quennath) \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant RM_Quennath_a_a (1 of 1) \u2014 Miasma",
     "B": "render gapfin_RM_Quennath_v1"
    },
    "res": "Things/Plant/RM_Quennath/RM_Quennath_a",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "a05bb2816952d3fd58dfc3f6515918f9e8c6119686b896aba55adfcbe444f621",
+    "d4c2f947328e5ff6fce34669c2e2e9af2837c9cf397aa5652d180487090093b2"
    ],
    "subject_key": "quennath"
   },
@@ -945,6 +1195,12 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "01f03283d92b0f1fe67eb09008c19eb983796fb5a56942e8499a0f5abe2177bf",
+    "2f5af1ae7696aa6de897540f22e6e6a519d4e7a02cdd4c94d08af8a4acaa6a60",
+    "3d0dd6247ced199248f8820eb7c2ee4015542e00c54c0212882df4f7c47ef5b1",
+    "589ec4d48f165f6ee1cf489a66979286a785c81e6afeee777e22fabdc676cb0d"
+   ],
    "subject_key": "reefbackjuv"
   },
   "RM_RustNipperJuv": {
@@ -965,6 +1221,12 @@
    "res": "Things/Pawn/Animal/SeaBeasts/RustNipper/RustNipper",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "31e81b5d5331595e8b782728a79a99ea3d91f56793be30dcdb9f278a3442acde",
+    "8aae2b9368e34afe9ea4cd4519ed33c271052fec0e7c18aae1db428be0ec4269",
+    "d235ac6242454ee6dd7c57afc52e6b31f76e68528f5111bd34588ac698013f0c",
+    "f7702aa2126a386960eb1dc252d8121896c6cb5e90b5d92c2c49096c834eb3d3"
    ],
    "subject_key": "rustnipperjuv"
   },
@@ -996,6 +1258,9 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "5035b08b80c832c2a8ad47e08c5dc1e9ef204916e5bf8716da522e504b13579c"
+   ],
    "subject_key": "sarrash"
   },
   "RM_ShaleGorgerJuv": {
@@ -1017,6 +1282,12 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "11695f90c2120ec4458b661e34c6e7687ba85606cf883e1a96aacd3c4848b150",
+    "1933240ce8c52ada41bc90623a005bb2fec282d3fd8bf24421556afe85f88a56",
+    "1f66700916e05003c0cd88087c37c569dd090d741db1287777aa10d5e337c838",
+    "501933890ec17d811f073c12fc55d987b06a68a962264635eccd093f1f4b0b7d"
+   ],
    "subject_key": "shalegorgerjuv"
   },
   "RM_SiltLampreyJuv": {
@@ -1037,6 +1308,12 @@
    "res": "Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "2545f8088feb031a04978e413d8114c8eff09c7f527c9f820f1f5f133e494e2d",
+    "2b06c700cbaf2ee003dddfe5f1ffc178e143475472d9fbce0cce6b0a8aee1e15",
+    "546036a8af8ca831a5abb116ff594ea3ebe8946246dca28b7f396b40ed24254b",
+    "b4c26b7fd464910987a951ad14441ae05fe7a041dbe0406ff00dc31ad18ae259"
    ],
    "subject_key": "siltlampreyjuv"
   },
@@ -1062,7 +1339,7 @@
     "D": "_byname"
    },
    "labels": {
-    "A": "our deployed art (render miasma_thessamor) \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant RM_Thessamor_a_a (1 of 1) \u2014 Miasma",
     "B": "render gapfin_RM_Thessamor_v1",
     "C": "render miasma_thessamor_varb_v1",
     "D": "render miasma_thessamor_varc_v1"
@@ -1073,6 +1350,10 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "9b0fcab554117af7ff30525eaecce5a67415a2a4780917fdeba5bc78be8ce753",
+    "bcd6bd18cc62178c9f5a4c187cc548df7d70588fb09748b9000c3037aa02eb32"
    ],
    "subject_key": "thessamor"
   },
@@ -1094,6 +1375,12 @@
    "res": "Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "16f1d74486bd94b5794e3230b075a24c24c96a318646ebaa022f371b3e294b87",
+    "8884c74be0073453f2a39214c3e9608517f1eec1ad455276714a125ae4bdefcc",
+    "c609f61c66952cfd735369bd10056d63cd7b57454360cf9ef878f9c2e23aa032",
+    "dea16ffb25d2febd6d8e86f451bf8d89ca5089a725531d1e9daa32729f24aee9"
    ],
    "subject_key": "thornbackcolojuv"
   },
@@ -1125,6 +1412,9 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "97de0b93e964739f9ede8d097b8ac087980d53343978c41049c97176c7de44f2"
+   ],
    "subject_key": "thrannock"
   },
   "RM_Ullavess": {
@@ -1155,6 +1445,9 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "8530f8328b6da9fa03da5914717031a096a403bdd7cc4406a313a494fc1763e3"
+   ],
    "subject_key": "ullavess"
   },
   "RM_Vellamine": {
@@ -1184,6 +1477,9 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "0044c8c1fba954a60e5c741eb4d4137538192478f256ca03f83bdd97827835c4"
    ],
    "subject_key": "vellamine"
   },
@@ -1221,6 +1517,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "2e389996eaae81bb31dc5a749aab86bcd1dacaa457c9b79fee355daeeac534b0"
+   ],
    "subject_key": "velluric"
   },
   "RM_Wessaline": {
@@ -1251,6 +1550,9 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "d5505dba9df706873bd75b8118512d256fc65704e4ba4fd79a92411a4fd15b65"
+   ],
    "subject_key": "wessaline"
   },
   "RSW_AaroxisDendoria": {
@@ -1271,6 +1573,14 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "03a45f0c8df06d1f6fa13cd7075a4bea1e48105a9c1982b35c318bf43cdc4e64",
+    "0fe58b18e94413f59e694d121060422ddfb13789626ecf5591184893758a0982",
+    "2c2443a7296dd04e340de576ed6636658a6d490a9e33b1e08a3623aa20d0fb8d",
+    "3c87b423524221b44c7e8d925beaa428f5c701fd8d8feb74810eea5b27fcecff",
+    "7e00924a4f42843952ccdb33531dbb58d7c8f696abf6a312ec3be7daa2c34245",
+    "d3f458d01a2a8264610637ff441a307e99409587628887deeefb64d7467c63da"
    ],
    "subject_key": "aaroxisdendoria"
   },
@@ -1295,20 +1605,37 @@
    "graphic_of": {
     "A": "swanimals/Anooba/Anooba_f",
     "C": "swanimals/Anooba/Anooba_m",
-    "E": "swanimals/Anooba/Anooba_f"
+    "E": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 AnoobaArtOverride",
-    "C": "IN GAME \u2014 AnoobaArtOverride",
-    "E": "IN GAME \u2014 AnoobaArtOverride"
+    "C": "history AnoobaArtOverride 2026-09-20",
+    "E": "render leaningscrub_anooba_v1 \u2014 failed canon check"
    },
-   "res": "swanimals/Anooba/Anooba_f",
+   "res": "swanimals/Anooba/Anooba_m",
    "reserved": [
     "A",
     "B",
     "C",
     "D",
     "E"
+   ],
+   "shownBase": [
+    "0964a84c920eedd515ae9327bf42115ec42c4190ceedb9388953a97cf36863d9",
+    "1578777c0ecf7d064c275d6d8d3a9868bbca020221c98fbd3e067fb55ed278b0",
+    "2cbadfc9c5276d09059b21427d0b5e6f18361464d58c1400b3477a1e3c5c04b1",
+    "361c4a194cb7c9376c47d7883f5fe2086fccb18eeac6c0acf0f2e38f75388a0a",
+    "44db05fb521cd8b507450ba517a3b6c7c097434d9370b494451bddb08765892e",
+    "4bad4bc4f761f8e3343f79b252f1b3070bf914a3058d7e26d06926046973fcf3",
+    "5d13d2b683d57087a156ecff1ccfbc3ed69098b8c8472c30209ff6e2c012cd61",
+    "7b7bef9a67bf92ef82a379b771934ed1e6a010251fff3a2e4de5f7be3905bdd3",
+    "9176e14b0bd117f519fc445dcb968fc49f77f8fe3e31c2390865a64c25598bda",
+    "9d63a4733f0f8ff358d154e3208731fa31e9f11d165c5fa43be1b010c58f32ba",
+    "a616443d96fbee65ef9170145a450a5d4dace58012cbd5205d4d4f77e03c0d04",
+    "a93d680fe46c242d9e6fc62256362c3e6cd9c71cd5b263c89a81d02e7203bef7",
+    "acf5c4deef3e5fb939a13b500336174541623256711c0c607707b6efb342f0b9",
+    "d1ac9b1fee217b3183ef3d0e7ed7dc9f5b8e8866800bd56b9b3d7daf0aa92da5",
+    "f3ba2a949cd8cee0f7511a9937da3987e924a3e1a87ea84f99686b442d7381fa"
    ],
    "subject_key": "anooba"
   },
@@ -1354,6 +1681,14 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "1f2c6d18e39de1f8a45f8ecdd2c5444080232a509a679a969dd44aea4d83f777",
+    "53f3136f47c898f1d7146013a3f4e4f9b18ac66e8f2fb3dfb4cb842748f2fdc3",
+    "5afc74ba7cac2e438f485296c05d5c4461b1a0b08066fc1f9c136418c1f5abbb",
+    "a6fcbae3a838d9cf3de2100f64a59ec0dccce4411e98a933780b4a8257d63efe",
+    "be17ce9687aaa940142b09b22565e7e29f837e1b97b5edbe5eaea6886b3bda59",
+    "e4c1c5872d406aeffe7e4fdde67ce70e49c9eaf0ee6fd8cd7af4b74ad9950486"
+   ],
    "subject_key": "blarth"
   },
   "RSW_Blixus": {
@@ -1377,19 +1712,34 @@
      "east": "c212ee08bcb35e33e7ed9695db67db021cca5d16ed50236dea38aca889611b9b",
      "north": "bca041ce2e2531f6df6a6b000d5eff2efdfb71a6a706e7602a3f14066b9aa6bf",
      "south": "3e25e3e6f44576525accaae6521e72243b22be0c78316000651c73837bc0b0ed"
+    },
+    "F": {
+     "north": "28406133a9b35b302d2d9121eb2ef1cd32ef730bc570cd376cd769c62d378693"
+    },
+    "G": {
+     "east": "0983b89016e20ea295e245e135a7a7217ad35dc072d438ae65ab67e912cff8f7"
+    },
+    "H": {
+     "south": "83119dfdf86abbf7604dab541f8a972fdc4aca86ac35c1a9d60f8864e14eee20"
     }
    },
    "graphic_of": {
     "A": "swanimals/Blixus/Blixus",
     "B": "swanimals/Blixus/Blixus_Swimming",
     "D": "swanimals/Blixus/Blixus",
-    "E": "swanimals/Blixus/Blixus"
+    "E": "swanimals/Blixus/Blixus",
+    "F": "swanimals/Blixus/Blixus",
+    "G": "swanimals/Blixus/Blixus",
+    "H": "swanimals/Blixus/Blixus"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
     "D": "render miasma_canon_blixus_v1 \u2014 failed canon check",
-    "E": "render miasma_canon_blixus_v1_swim \u2014 failed canon check"
+    "E": "render miasma_canon_blixus_v1_swim \u2014 failed canon check",
+    "F": "render miasma_canon_blixus_v2",
+    "G": "render miasma_canon_blixus_v2_swim \u2014 failed canon check",
+    "H": "render miasma_canon_blixus_v2b \u2014 failed canon check"
    },
    "res": "swanimals/Blixus/Blixus",
    "reserved": [
@@ -1397,7 +1747,18 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [
+    "1fb5431b22c195b528daac6ac2250a9f42661ccc7cbc7a91228245eea8351997",
+    "29a0259c969682d4b08a9145cc1c6db1931a8bb0e7fec879ae628329f0772f1a",
+    "30c7d3d4d799ab3fd0c4b7f5aa3198f2ca6a2aff02b87cb55ddb7ae65b4626a5",
+    "4107efe335c3a7edcc7ae627b4ecd8b1ec56caee39692c7df6136894b72e33b5",
+    "688166e543ea79c5a5c3aa116c72fd2d9d29932231d3d10013d13304f6425653",
+    "ab02396ba9c171ab560e258a82191515faadf8bb0680c036d5c09fcbeaa1bde9"
    ],
    "subject_key": "blixus"
   },
@@ -1482,6 +1843,20 @@
     "G",
     "H"
    ],
+   "shownBase": [
+    "0c56858ce24445a0dd1e0d8de1845368092d60f1ff7bff46f1a3e6512b3199a0",
+    "109774f85e5cc00900c2bc9a7d2f9cc985748e448915f29bb13d2c9cabfe78f0",
+    "1c7d71e7634424b82145b38032a508cc51b982df2d6ba01a6372e00d3313c264",
+    "2331dee1e399cf0e2dba2ade02e4416a0111af6878ca16db2d2af8bc81e1cfc9",
+    "3e07dcd0b02f4c5d248ea70ca1131803cfd6831e0cf17820a68a5c77f1be9b68",
+    "65f99bebbfb00f5552ac947c29d889c68c9e519205649dd0af9ef7ff40b9c5a7",
+    "9efcbbef67aa1d5649902d853237515eadd51cf31b76877acdc8e03cc0611611",
+    "ce3a2a9d93be49f5d7fdc6e668792146d8ea7bc30fe54d6a9ed5d21bed2e0ef8",
+    "e67de3567bda6341497b9b63c8e52226e54522936baad65dbc6d1fd0d518692e",
+    "e9f308c20adb4187239ce8600fcd8c95f9f6c994be0847aaef25c67d9f2b3af1",
+    "f9a36d0cbf69262964101e73057d2c632a0577bcd6f9f17080eb75462a8506ab",
+    "ff76ed6cdb8873799d48f16820968f0d0f94c839c3f05f046864b06dec7ad131"
+   ],
    "subject_key": "bogwing"
   },
   "RSW_CrestedDragon": {
@@ -1510,6 +1885,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "2596e413f59fb0ce672475161f2d50b6ae5dac86177721cb0e21b4c0de02fcf2",
+    "4b26c6ebc8fcb39511fe1241e1e7cb903561a2e4b19ea24f1dc0d3a626f49a3a",
+    "5893fffe56954bcdb4126ae98077d051e2b89be03b0f49d43c0e043f3c0f2b18",
+    "7e4a9d3357aa96747ec1093b9310ed05d9f234b1f5bb6e859b9f8eace9d63289",
+    "b93cf6913e4ba27725e026a17448f706332a6ca60a3b4338cf94810cf17357a7",
+    "f45ba5eb9123ef915be5c05041f6fa0936205485729f1dd174aeeb2bfe3ce664"
+   ],
    "subject_key": "cresteddragon"
   },
   "RSW_FaaJuv": {
@@ -1531,6 +1914,12 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "16bf54ac8baa12239db06f4d50d1df80c471a8e8cd8d4771dc0473ea399bb7f5",
+    "2aa6758ed0bfc966810ab56b9a3503324e6d1960c89712c3ce1a8b21a1e727c4",
+    "7e140da59624b22295e72cb36da42c47e27d936e7146803b05eac8a5c22850de",
+    "f4d721d5a0ab356c6eba8cd8c85d6cf8ad8a2c11107ade307aa371caae791beb"
+   ],
    "subject_key": "faajuv"
   },
   "RSW_Grank": {
@@ -1543,11 +1932,6 @@
     "B": {
      "east": "13a5350399251dbe575073caabb2c01611fe55a16da0c36116c2c3c8d341ae15"
     },
-    "E": {
-     "east": "13a5350399251dbe575073caabb2c01611fe55a16da0c36116c2c3c8d341ae15",
-     "north": "40fa5f1568f275f34d99edc0acb98330eea00521e5046d481ec5949528223ed2",
-     "south": "7dbca2616c8eb36be5ef15196a9477da334c5232354d3c76dffef1856765819d"
-    },
     "F": {
      "north": "a1b5baf285fce16b35453cb463984a9c0d64f06f97d627e6e199888e67feeee9",
      "south": "936ad29ba1462f826e28b6f4cf049b80860516acc42479fcf4de829b6d25b109"
@@ -1556,13 +1940,11 @@
    "graphic_of": {
     "A": "swanimals/Grank/Grank",
     "B": "swanimals/Grank/Grank",
-    "E": "swanimals/Grank/Grank",
     "F": "swanimals/Grank/Grank"
    },
    "labels": {
     "A": "history GrankArtOverride 2026-09-20",
     "B": "render leaningscrub_grank_v1 \u2014 failed canon check",
-    "E": "IN GAME \u2014 GrankArtOverride",
     "F": "render regen_ls2_canon_grank_v1"
    },
    "res": "swanimals/Grank/Grank",
@@ -1573,6 +1955,18 @@
     "D",
     "E",
     "F"
+   ],
+   "shownBase": [
+    "13a5350399251dbe575073caabb2c01611fe55a16da0c36116c2c3c8d341ae15",
+    "1fd297392af1c6fbeb93c6bbb041eb7e108235812401da4182472a3cb1fb80c9",
+    "40fa5f1568f275f34d99edc0acb98330eea00521e5046d481ec5949528223ed2",
+    "4b980aefdd9305d6beaeb32d7e1df2ced461ac1b528b390a0ae2ed1e0e227ccc",
+    "7dbca2616c8eb36be5ef15196a9477da334c5232354d3c76dffef1856765819d",
+    "84a80542cf841ba2c810f6d148b6d1c1a223f5b0ccd318daaf41d348dbcc91c5",
+    "b9893b6e5e9892faf34e2ac8e2798acf8989385d4027a02b4fd0bae25c7cc829",
+    "bb77d0791588fc20692bd0a1d837b350d09baa3a077f9d61b2a2f8d4d3daf031",
+    "c377f34ffef25efda0b01683a50d51bb0f151b901f15932e9e24b224a428c5b1",
+    "ec070a853856f42fa1ff148f8394725f7f60e48026c9e8cae8ce189a5086f361"
    ],
    "subject_key": "grank"
   },
@@ -1603,6 +1997,12 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "1008b853d1d490754e333178c2158a73fdc3a45f4bf6be89316f0f0844ed5b3e",
+    "55af2c54c4b709786102e98e72514c3c1b383b17574bd458d6037009552e41ea",
+    "c44ea06bfd6200098043917c3c03bf30131d21e9c885d1776594c17d90797750",
+    "c7998c4f60d9ad09e2bd1360c2274bdbdbb6bd1d555dc107c6ee1fb3617ec2ba"
    ],
    "subject_key": "laajuv"
   },
@@ -1648,6 +2048,14 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "1db7933ec7479a7be8bfe8d4aca9ffcb8efefee25ac25891f7cf47cdf3896952",
+    "3886b9f5410522c26239d3eec6e1cdccfca499aa2665670ef2699a8e5e348165",
+    "3dcc7a57d88b7e67efca3a06a17c58b70d0375689a41357ca2f684f07af2b642",
+    "57b443f58b8505f1a90b86d86336015ce405fc4038443bfd54726a6f475e3b53",
+    "7c15d998007d71bcdfb111224eb1dccb7facc39c6b16107b273fe0826691188c",
+    "a3be0ca75983d551f245f1daf13abb364bfb9917344e3e056a03872cd6c4b0eb"
+   ],
    "subject_key": "marshhaunt"
   },
   "RSW_MeeJuv": {
@@ -1668,6 +2076,12 @@
    "res": "Things/Pawn/Animal/SeaBeasts/Mee/Mee",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "18e7e0a381173360f4536cb3b14e0bb98c2b1536fd8f92667887bfd77827fa44",
+    "82aff98e9423139c9cc104f44882e3cf813fd8f90a5b04a53fdb549196b488ee",
+    "b0e8510ca41fc131890dad2893eae68556781c78fe5236a4423f9da61ad864a7",
+    "cea8f41561c5f80390860ce42a68d7e628ab81f95b4da4d498a248303775b3c3"
    ],
    "subject_key": "meejuv"
   },
@@ -1702,6 +2116,12 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "1b8f445b7dc54d2222e3b33eb2c0a8d9ced7be767e71352b730ff42ac0d14439",
+    "314da0cc770ba94c6048049c6055b754f2d622346f92c61af5dd4e43617b6d4d",
+    "8dce0c0b15708be5424b76377e490fde8deca3b17ad5cb4bcf3f2e67ede196c8",
+    "c5cca4d71538c005cc70304f06f392657ff90f132b60384bab0c7a57a094a75f"
+   ],
    "subject_key": "opeeseakillerjuv"
   },
   "RSW_PodWorm": {
@@ -1729,6 +2149,11 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "06e8fdba152b6cea123077e50604572c79b27550891b5218b5f5075e74fa5ddd",
+    "aa69dc740ed27e095c65881711544b8922deb613a1b258f0edb64c0a066a8185",
+    "d4beeb5fec5314fb6f7f36878e52325a69bb6e1976e8c0aa09c140303d2f90f6"
    ],
    "subject_key": "podworm"
   },
@@ -1782,6 +2207,23 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "05cb88ad0aa971941ca6b2faa9799e490822caa10ef6dcbc1ecb1c08743cacc0",
+    "0db9f1e981eb6e09d4c8b4e55009e28e6bc11e4f3dafd334f9fb48e134e43820",
+    "1f93381d0af41b63853f1a4ed4df317410ac0df191e07aa5e0637649c5e55c54",
+    "24606d6427b8f159e82df20745b4e7b1a37ca469a923244dd32170b221463e26",
+    "6a90bfdf8a730d1d1d7950da9c9935c7cc0ddc01c3955617cb4122a6d30a7451",
+    "7f34c08daad15a14f06b1a653e3d0d8da38f39962d9904b4e54155b0fc08687d",
+    "805acd616fb4c08567a0e1aa9b2d3b2f7700318b1998d251de1293313f39a20b",
+    "8c76736041e5331f15cdbb97eb16740a14bc8d799a09bd4548d52e40eb198965",
+    "8eaac9428a94122709810b08e6c65f74e7ac737706789439d94559292fef1fef",
+    "97a71f8b6c44c031f13c6ac3eafc58a1a22363ab6db1036d358a03366b9cce84",
+    "b4119d7521bb8b23ba5c6bc7b085d4e02a6e626f899fdae17bde96194fa2a6a4",
+    "d10f3a9369e39ee6530addf47bb93be57fbaa2f26bfcb32785efa73bbc346f3a",
+    "e5448b9390471027a1d4e08a37b09d2c2d6285113c74a7292319a1b380a8c1c8",
+    "ee52b1e929af84d5fb9e7ee2b77d63e1b2126ca3dd7894def8e7079ab190c6cd",
+    "ff64a17ff834b22e45898b520dc7dc687ea693cd6873f04e61489399b5e442fe"
+   ],
    "subject_key": "runyip"
   },
   "RSW_RustNipperJuv": {
@@ -1803,6 +2245,12 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "31e81b5d5331595e8b782728a79a99ea3d91f56793be30dcdb9f278a3442acde",
+    "8aae2b9368e34afe9ea4cd4519ed33c271052fec0e7c18aae1db428be0ec4269",
+    "d235ac6242454ee6dd7c57afc52e6b31f76e68528f5111bd34588ac698013f0c",
+    "f7702aa2126a386960eb1dc252d8121896c6cb5e90b5d92c2c49096c834eb3d3"
+   ],
    "subject_key": "rustnipperjuv"
   },
   "RSW_Shiro": {
@@ -1821,24 +2269,46 @@
      "east": "08e7783b9032b1996b83b15928217bda1352750d9829dd72ccb6aaa10b81ba65",
      "north": "9bd1be3ab3a2e3e1a1117b51c7c7c9b2a0a2f56ee501f5a71057fbf6ef48f4bd",
      "south": "3c8b996f6d1a65e8ebba6ef44f247ccf9d249bcbe91638f3536270f1bc63e90b"
+    },
+    "E": {
+     "east": "c1270fb1b4a08acfa104290028b06fa47f1696b40958e2c3fbcc1549b879b62f",
+     "north": "f019e415ac68387a1951567c0a6f6dbdb89d0ef8961fed04815e5016030025cb",
+     "south": "defff240c4dca93fbe3fed16d5b64ef28f706e9bf200844158cab07d8d1a2e81"
     }
    },
    "graphic_of": {
     "A": "swanimals/Shiro/Shiro",
     "B": "swanimals/Shiro/Shiro",
-    "C": "swanimals/Shiro/Shiro"
+    "C": "swanimals/Shiro/Shiro",
+    "E": "swanimals/Shiro/Shiro"
    },
    "labels": {
-    "A": "IN GAME \u2014 ShiroArtOverride",
+    "A": "history ShiroArtOverride 2026-09-20",
     "B": "render canon_shiro_v1",
-    "C": "history ShiroArtOverride 2026-09-13"
+    "C": "history ShiroArtOverride 2026-09-13",
+    "E": "render canonregen_rsw_shiro_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Shiro/Shiro",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "08e7783b9032b1996b83b15928217bda1352750d9829dd72ccb6aaa10b81ba65",
+    "3c8b996f6d1a65e8ebba6ef44f247ccf9d249bcbe91638f3536270f1bc63e90b",
+    "481a1f1e5132bd0a9d1da7bbd5574e0224e94eac30dd872afbfe8f9e5e722b64",
+    "49b00d1439c2b9e5b744df3e9fd322ae53eb1d74aa583e3aba6707fb86a12265",
+    "56b29f4a33734ff74139de8f888aff9e92bdda1a66b53ad359711fe4dba5a4a4",
+    "7d5feacac6e585b4b2b6013d70b2f417cd8eb2a995335414be1625858df2f736",
+    "89fb3421c8aa6683e7f3d8cde93f66bd1150a90c1d0c00076877a022fca332d3",
+    "999870c4e790140f0737cb48e456fd48a431e0c39f21a875258ae4e38770b00f",
+    "9bd1be3ab3a2e3e1a1117b51c7c7c9b2a0a2f56ee501f5a71057fbf6ef48f4bd",
+    "a05d2e95ed2e3a48a3c3c3fd107f087b74db200be28bedeea33f8e362452c2d5",
+    "b0a3c369491beb5ca3a283a76a3dfe9d79bb274fbba7f4b54056e0c34778b508",
+    "ef9a7cffd35a1a4d7758b8204cbbc831a707f630188eb0cc52470096c92c5a7d"
    ],
    "subject_key": "shiro"
   },
@@ -1860,6 +2330,12 @@
    "res": "Things/Pawn/Animal/SeaBeasts/SiltLamprey/SiltLamprey",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "2545f8088feb031a04978e413d8114c8eff09c7f527c9f820f1f5f133e494e2d",
+    "2b06c700cbaf2ee003dddfe5f1ffc178e143475472d9fbce0cce6b0a8aee1e15",
+    "546036a8af8ca831a5abb116ff594ea3ebe8946246dca28b7f396b40ed24254b",
+    "b4c26b7fd464910987a951ad14441ae05fe7a041dbe0406ff00dc31ad18ae259"
    ],
    "subject_key": "siltlampreyjuv"
   },
@@ -1893,7 +2369,7 @@
     "E": "swanimals/Vornskyr/Vornskyr"
    },
    "labels": {
-    "A": "IN GAME \u2014 VornskyrArtOverride",
+    "A": "history VornskyrArtOverride 2026-09-20",
     "B": "render canon_vornskyr_v1",
     "C": "history VornskyrArtOverride 2026-09-13",
     "E": "render miasma_canon_vornskyr_v2"
@@ -1905,6 +2381,20 @@
     "C",
     "D",
     "E"
+   ],
+   "shownBase": [
+    "06b9551f9a25de7ee79d371d4557345c5a46969293042d6ddb9d22dd7543635c",
+    "14247714a6dcc0bdd94bae619c1ce7a990defaa03aed778fb781c1faac51e527",
+    "1b54910c63f1e7797fbd169cdf1ed5b8a65909de26c63330cc169dad77aaa049",
+    "2c1c0a49536acd6809296100493e80b4aa6e1604967a6066a7f8f3275f88e1b5",
+    "423e80ceb91d4b9cbbf1d76e70b531f8a9a634eb65d31feb0274b4b48f2d08d2",
+    "4987d4160186fa1734d47dfc222f06396f5b5013f191c7b319eeffa43bf5e005",
+    "4fa636bae7e9bdc68f8fcda9ee223b59574601d56c84c4191f6a4bd3f0ca3669",
+    "791d8827bd0e92c368fbb5348283a5d87bb8014dc07ad9a9e923e8e4414edf35",
+    "9ab9b55048bab254edb252697db9bff742606bff5011e6badf2316f2a311fe17",
+    "9df7890bc6cf693f254124faf924f05d5be733e9b8671f67dc7fd37e41dcb9b2",
+    "c4eb469157e78cd42be0aa1110d7d881287bd64c94362d86fc707a828c27cc19",
+    "d6c7c5cf18e51c013be6bbdab8f984d493c92424a8ca60cb149218e645032c3d"
    ],
    "subject_key": "vornskyr"
   },
@@ -1942,11 +2432,6 @@
      "4_north": "b742b9927574c2b08bad22669f8a4fa08fa9ebb087b132f4b4f8bf356abded6e",
      "4_south": "ba063319304070949dbaf526a323a1a877e9ae06e78868fdaeb251a430c919c9"
     },
-    "F": {
-     "east": "6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235",
-     "north": "e6f8baecbe4afac09be50947a57824d354564c9e221dbf7b4d473eff5001b3fe",
-     "south": "669d1d32882758ba004624bcc560f3779ea8e8d757a84b8e83f806a1d8519800"
-    },
     "G": {
      "east": "cfbef2bcdeb097facae3eca05f3d791ec6c314edcb43200d7bef82dfd8fbca7b",
      "north": "1901d1e16aa3f7bd26d8edbe3cc5da773fcc864a55eb4c228cc774e8b6d21b8b",
@@ -1978,7 +2463,6 @@
     "C": "swanimals/Whisperbird/Whisperbird",
     "D": "swanimals/Whisperbird/Whisperbird",
     "E": "_flip:swanimals/Whisperbird/Whisperbird_Flying_",
-    "F": "swanimals/Whisperbird/Whisperbird",
     "G": "swanimals/Whisperbird/Whisperbird",
     "H": "swanimals/Whisperbird/Whisperbird",
     "I": "swanimals/Whisperbird/Whisperbird",
@@ -1991,7 +2475,6 @@
     "C": "render canon_whisperbird_v1",
     "D": "history WhisperbirdArtOverride 2026-09-13",
     "E": "IN GAME \u2014 Whisperbird_Flying_",
-    "F": "IN GAME \u2014 WhisperbirdArtOverride",
     "G": "render regen_ls2_canon_whisperbird_flying_1_v1",
     "H": "render regen_ls2_canon_whisperbird_flying_2_v1",
     "I": "render regen_ls2_canon_whisperbird_flying_3_v1",
@@ -2011,6 +2494,27 @@
     "I",
     "J",
     "K"
+   ],
+   "shownBase": [
+    "0396b577a77ec1ec017608a1021a0201f3694239b8cb6877f8fbccf25ac1498b",
+    "044567f5e87ed5eae89163b656580f64e1bcebb991303fa70bab4d35412334f6",
+    "0fbfc37be3e254b11bdc97953506eb97a14a7636fcf201415c72df609853da3d",
+    "1796d7c62eb7d37203fc8ea78fd86baeb127f6ff41e2947b466ccd0f432cb4e4",
+    "669d1d32882758ba004624bcc560f3779ea8e8d757a84b8e83f806a1d8519800",
+    "6d3e365087193bcb368b90edc66f9333c97c6b155513f4d882fd5f8c811fc235",
+    "6dea12f8e1a599a427ce34283be521263aff349bafcbbcfc7e5ab3e23a7cbae0",
+    "7ae19b20bf1f5119c3a4fb9e8f93f85db70984bcd811c55912b8da2626776f51",
+    "8e713f0b0fb3768ac78f04e7f76ff6f4ff8e513e482def4d67abe12929005278",
+    "a7b5b34ac531bcc04c8e64982d1f1b20fa1eb905cabbe5ee7542eeba1e064f19",
+    "b742b9927574c2b08bad22669f8a4fa08fa9ebb087b132f4b4f8bf356abded6e",
+    "ba063319304070949dbaf526a323a1a877e9ae06e78868fdaeb251a430c919c9",
+    "c959b7fc4dbfed12b16ef579104cfe5631f11ee44bac8aa98affb7edf6bff4b3",
+    "d569212f02a99d54c657af1b52ee515178db042cfaf02226959a1ff272942df8",
+    "dae7f44dd8b158a0bd57d448d93af82c5b66b3b63550bf684ca0a33046b02af4",
+    "e6f8baecbe4afac09be50947a57824d354564c9e221dbf7b4d473eff5001b3fe",
+    "eaf1975e5e7c87ca50119bedfbda6581d75dc510dbe2a499eef6d95a90f753a9",
+    "f1bf361b8df0285d41ac0779c64b3c5a3df92ca39da0f9b0ac76d1cd5f725318",
+    "f685c0e91711ac58f7efb0f2adb58d32789b86725dc62b7e31b33ff3af9c557a"
    ],
    "subject_key": "whisperbird"
   },
@@ -2048,6 +2552,12 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "2cc8ee3f59c597cff1a10f65327e6f31525588d324a790827c1c47ec90e42f3d",
+    "7f02236c0f4a73884d72354cf513f638086b20e1de4efeb47b9478e75ca402bf",
+    "bbb416bfa70b9cc06aec2dda3c42b50bea040c00c56939ad575dcb31f84f7820",
+    "c76b334a3564f934688523fa1f8d65152cc1707e591f8cdd48ea772d325130b8"
+   ],
    "subject_key": "yobshrimpjuv"
   },
   "RSW_Zakkeg": {
@@ -2080,7 +2590,7 @@
     "E": "swanimals/Zakkeg/Zakkeg"
    },
    "labels": {
-    "A": "IN GAME \u2014 ZakkegArtOverride",
+    "A": "history ZakkegArtOverride 2026-09-20",
     "B": "render canon_zakkeg_v1",
     "C": "history ZakkegArtOverride 2026-09-11",
     "E": "render miasma_canon_zakkeg_v2"
@@ -2092,6 +2602,20 @@
     "C",
     "D",
     "E"
+   ],
+   "shownBase": [
+    "25ad043bbfbc8861e50c5a9729badb93ed68db2fe4dfc9d0f4d1f87380a15f14",
+    "3e8f3a5b7d85896128f646853cca4efc3035e92d9ef78d47d1a8c1aa8a618a1b",
+    "62eecf79281dbbc892b691dcf74a59f2f5c294b7903f91d2648e08db0b560666",
+    "78336fa757e868de62d3bf3761a13ae0fdda2ab3acb16e22ac04baf0e6f23ffc",
+    "80eeda0d5f1503b2d782f35c7120ef0c40402ae884511d2e55b01394d9d75a01",
+    "81372f44bb81f87841e0eebd537769e90829380f7c6f1ca93c3f7077a839bb04",
+    "944bc1cb66caeb649ebcea5614d27cd3df37311d17f73a78f74a261243e19985",
+    "ded48e738e7c051f7b667eb2944cc7fba39257b7fe1ae8f76697e2df9131115c",
+    "e6007f2f15d0c85dbf249895fd75232f465bee26e1d7f06a75f07882e3b57e54",
+    "e7acf002c1cd7e717318be4f6c8196ca888a023f06e7062b206ea1943b502fda",
+    "e98c63c87796fa78deff871619a967398533bf06bf3097480d8c6e0e1e5b2f3c",
+    "fc41903ec644ef7beccc6b3e9d8ed8eb85a23da800c703381e58e06294beeb9b"
    ],
    "subject_key": "zakkeg"
   },
@@ -2114,12 +2638,20 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "shipped, not loaded \u2014 BlackSwarmlingArtOverride"
+    "B": "render gapall_VFEI2_BlackSwarmling_v1"
    },
    "res": "Things/Pawn/Animal/VFEI2_BlackSwarmling/VFEI2_BlackSwarmling",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "7aa96b68dfce545903dc75f64de720912d1d3323c9cc4014fff87123779b2666",
+    "9cb5744dea8d463b0fccd2ab8dd0c788afb8c31f653b2ea327c219d17cb413a1",
+    "a006783fdf04aadaaf3a9588b1040b58e0d29cb227aa21fb2e4984d86e5453ed",
+    "a71bb907f3d02671b8e0651457dfb5142650c32167e7d39eece8579ea8b4f667",
+    "c83f52635183737be3bb56a5d01e118d002337dcd4307372b13ed3119aa835e4",
+    "f13eacd83ea3ca0bf5cc857c4edda133be07062797c625cc1bee09c1c4542691"
    ],
    "subject_key": "blackswarmling"
   },
@@ -2153,14 +2685,14 @@
    "graphic_of": {
     "A": "Things/Pawn/Animal/Swarmling/Swarmling",
     "B": "Things/Pawn/Animal/Swarmling/Swarmling",
-    "C": "Things/Pawn/Animal/Swarmling/Swarmling",
+    "C": "_byname",
     "D": "Things/Pawn/Animal/Swarmling/Swarmling",
     "E": "Things/Pawn/Animal/Swarmling/Swarmling"
    },
    "labels": {
     "A": "IN GAME \u2014 Vanilla Factions Expanded - Insectoids 2",
     "B": "render rot_swarmling_v2",
-    "C": "shipped, not loaded \u2014 SwarmlingArtOverride",
+    "C": "render regen_gt_saluksis_v2",
     "D": "render miasma_swarmling_green_v2",
     "E": "render miasma_swarmling_green_v3"
    },
@@ -2172,9 +2704,17 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "049d3244175b4f8a2cb55bd9193ac02c3993d6be75b7abcba687392bdd641ca8",
+    "3034bea4ac29a39ded7f9eeed9a8889409ebcd663ca26b432a57383411ad2533",
+    "3b2744dc3779c7e4a6114fa09b773e9b7f4f78f47b6dbe64e1f9369d7ebb2505",
+    "58fe0732b61fa39a1e17a81cb256e9e12dffe8d32b95acb228cae8b4f116259c",
+    "5bb78e31ab58f106311544a98de064834faffe2cbe47938fe2695a552aee4d59",
+    "f927ee1fc6be6aeb9174053bf82a5d5a4617773ad22591411a012854ee22630d"
+   ],
    "subject_key": "swarmling"
   }
  },
  "sheetId": "miasma_sheet_2026-10-05",
- "snapshotId": "603c01998d27e8d6"
+ "snapshotId": "8b697c172eff7737"
 }

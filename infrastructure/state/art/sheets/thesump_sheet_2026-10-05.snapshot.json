@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheSump",
- "built": "2026-10-09T07:43:22-0700",
+ "built": "2026-10-10T10:14:00-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Brindeth": {
    "columns": {
@@ -38,6 +38,9 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "b8b30e331c24e7a90e230ee0e5eaf8a2cce8099cdfddaea037a709221f39d6dd"
    ],
    "subject_key": "brindeth"
   },
@@ -96,6 +99,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "8a3a5377f0e6bf7823a5d137c2cb3c47b9134644c24e15bacb2f92f52ebfa4c2"
+   ],
    "subject_key": "dorvel"
   },
   "RM_Dredgel": {
@@ -130,6 +136,11 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "0a947d573ebed8b6335ac3aa6695cd93fc995a0c7b2bb693fe85d07db3fb4f76",
+    "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212",
+    "3be22d91574e6efde69f0159560d756a1ce771e752007689e3ec79b506f196ac"
+   ],
    "subject_key": "dredgel"
   },
   "RM_Gulveth": {
@@ -149,6 +160,11 @@
    "res": "Things/Pawn/Animal/RM_Gulveth/RM_Gulveth",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "003618df6de8bb6ddc6dba758cf7f13125bdc8fe56b9a89fcaa0e0745e49990d",
+    "8008fe4c474c8f60e72ac332853042871c576bfee5476553b329011d98b86692",
+    "966965fb45e0d02312ef20fe7b90a9f13427aeda32be5129a26c459b0ff5989f"
    ],
    "subject_key": "gulveth"
   },
@@ -194,6 +210,20 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "1d3db3290e3e9882a886cc3a7c00f0cffbc445a9e5990f3cdb4b7d0593295026",
+    "4e054cd866c28b737a014e7315e8eac79d0965d986a6adfd174dbf7cd4162eb4",
+    "5d2d5061583dfc1f3a0b1083f48bbd5537a205fd3299e3a6045c60301be5a711",
+    "63950fd2a3cb4547267b472de664fc1130c52efcc176a8becfbf35dacd57f0fb",
+    "6eb4ad8af7cf32faffcb724ed3f3c0c9a428b2b7d77579ba4879648854d520fe",
+    "753d4a00777eaa44ecda0416fcd1c8d3c9a1f1c8fd0b987d00aa8ec93afa9200",
+    "7b042f027c335ca41a880aec4232dd9d7d22f45eb6d59f7bf166e7adbd6383f9",
+    "8a7083e15098ae5c7e95bf8c3f1db09db878584d0c6e836c4846191447fbcb46",
+    "8abb0c7e6bbfab66c5dc1b043a6681a3ae3eb49c67127e7c958cfdd76f0f4e98",
+    "8e1bcec0f3b5074ed68d1053045dd396ad1542ca396f8ac5d3facb68367122e5",
+    "9f8035a19940b41349fa92495adfdb0df155d8bc3202227764fb5cca03cb255a",
+    "e9b256816445d466957ffca219021139813f4397ff17857adaeb3af97280870f"
+   ],
    "subject_key": "kethrel"
   },
   "RM_Korveth": {
@@ -229,6 +259,9 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "96fc2b8881c42a2253a58243e3202d58235a88472f4a888d43f3e479f0cf4567"
    ],
    "subject_key": "korveth"
   },
@@ -266,6 +299,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "cf7f863be32a238c5d7c623bfd068b7c012276c954025bcc17c4f5ecf3b1af01"
+   ],
    "subject_key": "mirrelin"
   },
   "RM_Pallick": {
@@ -302,6 +338,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "74e65868b227230e88ee1f63a5975afe5a8d9305eaa80e0f92ed704218f7e52a"
+   ],
    "subject_key": "pallick"
   },
   "RM_Skarrid": {
@@ -322,6 +361,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "a361baa2e721e2dca7c84166bb9b2ad879b3d41d9533d32f5aa712e118651f7a",
+    "c7c6444f44c85673966b66ade33a40fb7feab858035fc604e274b3e63cd8a395",
+    "c9fbcb96dbf3aa938e2abd7c9cd616bec24cb3985d832de74ee9e79feed5964a"
+   ],
    "subject_key": "skarrid"
   },
   "RM_Skellarn": {
@@ -341,6 +385,11 @@
    "res": "Things/Pawn/Animal/RM_Skellarn/RM_Skellarn",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "1742866dcaeb12585bf8282dcfe0ff5354f4d8bd987f6048f0f1e40539e9531e",
+    "33e73e6038c4b3645ee8fbde1437f86ea9e186080dd522aa463c9084a8f47e73",
+    "f7084298e38ff2d35af264d3264501edd817d5c1833d6103c8fd702881238be5"
    ],
    "subject_key": "skellarn"
   },
@@ -377,6 +426,9 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "a45a5c53047768a6eabb657fbd92e43349e67c35ad2d8f092a8bdf72c1f4cb55"
    ],
    "subject_key": "skelver"
   },
@@ -420,6 +472,9 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "1a4dd401609435b2d741c4eec5a1fe8f36c67da6934b7b44f00fbc10b3424d09"
+   ],
    "subject_key": "soffeth"
   },
   "RM_SumpMouse": {
@@ -447,6 +502,11 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "632de18c9d302f01b6bbd960bcfb244a7a909191e2913b1403074e4d834125d0",
+    "9d407c7364f96a9b05eb514dee8159ab49d7ee9feb59511b30e64c028f5cd700",
+    "fe63638d8c7828556349693afa9abc5f8a14b9c294755a93af4129a06b666563"
    ],
    "subject_key": "sumpmouse"
   },
@@ -477,6 +537,11 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "0a440f60020d59ca8183c15674358637ee949905e38c52169df9a610d3de270e",
+    "27ba46c0f043bb096db1eea3b0d08d3b1ff9b34067df446f6dff058347fc2c0d",
+    "4e7699d87f443498397e96568ecf5212cfa34503dccd894705d78cad40abb670"
+   ],
    "subject_key": "thrummel"
   },
   "RM_ThrummelBroodmother": {
@@ -506,6 +571,11 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "0aa82d7df7b707e6fb5d455e5943e4b36c892bd2c4c5771c79b54aee7b68a562",
+    "789a3ad0e760eed30a3789960a69ded3f244f0d4141d33b2608cac2e3ac8fff9",
+    "bf90aaa2f4f309f6d90d0174538718211fa84d59dc3de630b893086d04462400"
+   ],
    "subject_key": "thrummelbroodmother"
   },
   "RM_ThrummelWarden": {
@@ -534,6 +604,11 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "1a25ecbd5d60a8504ca0acbf2347bf54ee60644fc4914748fe51aff9a32cefc8",
+    "214ddd1103614539a9ac838333db763410c3551994492141fdfab62bf5a3c5bc",
+    "6106782b8c490da4f8bef34ffbef27a0ceeac81865ae0bc571401bfbfda96697"
    ],
    "subject_key": "thrummelwarden"
   },
@@ -571,6 +646,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "774ce307491f08cbf4cadf2a33bd28bf002a89ad28e237dd20745f57eb40d8a3"
+   ],
    "subject_key": "tolleth"
   },
   "RM_Velloch": {
@@ -607,6 +685,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "fa96726ed239fa9ca9f9ab671aef6596173e6ea878ab74c960fef86f992b30cb"
+   ],
    "subject_key": "velloch"
   },
   "RSW_Hssiss": {
@@ -625,23 +706,55 @@
      "east": "0d30a373b760c4e69bf470d0c2a520f00159d1b73ab46c6108865581cc4c7746",
      "north": "b3177bac6db8e882be247e63d84b960d0c31e771bf12904b7976455216a02ee1",
      "south": "350f2b9759d65713b642acc5959dd597266007db703f51c1e9ee907daed74f3b"
+    },
+    "D": {
+     "east": "d430611e408326f4f23ae168afcdffbb2755edb1e7732589f9729e00282266ce",
+     "north": "d17275cb854e2e3d9e29fd72bff480189303e584402a3e407731af45abd8d7c4",
+     "south": "291c1ede2a0fe974a11a0e0145a25f9dbf7ce1a62a62ec6ee16848fb55d6d465"
+    },
+    "E": {
+     "east": "3207a7c7e2aec5767329957e8b49b6f0c16cda92c836fbf1299e606afc51f5d1",
+     "north": "129b327a36a4bb1c4ae5baf954eca6a60fab1d4566728d9aa0c311be718b32a3",
+     "south": "91d30b28f55403aad9b8b9ba58050c9fe2f20dfff759734ded608194b18b6987"
+    },
+    "F": {
+     "east": "0e982716a3adb2eda82d02c39bc31a7995be845f172be8407cb4200a99ce8168",
+     "north": "6444afa4da1f0ddd7e1af645fc32f313137a14372265f6acc2010062ecd9b300",
+     "south": "e6ffe21911aff87bbbed86745221e253f8eea68fc90aba6a02c8f81e9815eced"
     }
    },
    "graphic_of": {
     "A": "swanimals/Hssiss/Hssiss",
     "B": "swanimals/Hssiss/Hssiss_Swimming",
-    "C": "swanimals/Hssiss/Hssiss"
+    "C": "swanimals/Hssiss/Hssiss",
+    "D": "swanimals/Hssiss/HssissA",
+    "E": "swanimals/Hssiss/HssissB",
+    "F": "swanimals/Hssiss/HssissC"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
-    "C": "render thesump_Hssiss_v2"
+    "C": "render thesump_Hssiss_v2",
+    "D": "IN GAME \u2014 SWBestiary",
+    "E": "IN GAME \u2014 SWBestiary",
+    "F": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Hssiss/Hssiss",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "24ac8ee79856c3a4cb779aaabf512f35ef97d0688e08774205078176161c9c68",
+    "980e61dbe6a026a073199851f16c33d6c2df9e841aceceed630788bf546be47e",
+    "e0f18f3f10577e1c13a6f3c25cc0c8eba1508e4ff4934a642d94279986f53ebe",
+    "e242bfec7b768df5f97d0bcca3dd116631106ac12812cc56771aaac4c7876faa",
+    "e84e3fba38c7a0e5cfd71104587134708b800a650f55d9481696ef3fab0e15be",
+    "f5cc3c557c56ce2d1f5d969b7ec702320b9553701ed678f5071fdc63eca06724"
    ],
    "subject_key": "hssiss"
   },

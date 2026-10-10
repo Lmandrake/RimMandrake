@@ -72,6 +72,10 @@ def fingerprint(row_keys: list[list[str]], row_res: list[list[str]], idx, failed
     shas = set()
     for res in {r for rs in row_res for r in rs}:
         shas |= {s for s in idx.by_res.get(res, ()) if not idx.is_purged(s)}
+        # a Graphic_Random folder's pictures (each its own column since 2026-10-10)
+        pre = res.rstrip("/") + "/"
+        shas |= {"RV:" + ev["sha"] for (_m, rel), ev in getattr(idx, "live", {}).items()
+                 if rel.startswith(pre) and "/" not in rel[len(pre):] and ev.get("sha") and not idx.is_purged(ev["sha"])}
     keys = {k for ks in row_keys for k in ks if len(k) >= S.MIN_KEY}
     for sha, vs in idx.variants.items():
         if idx.is_purged(sha):
@@ -194,7 +198,9 @@ def main(argv=None) -> int:
         rows = (census["biomes"].get(biome) or {}).get("rows") or []
         keys = [[S.norm(S.stem(x)) for x in [r["key"], r.get("port"), r.get("label")] + list(r.get("defNames") or [])
                  + list(r.get("donors") or []) if x] for r in rows]
-        res = [[x["res"] for x in (r.get("art") or {}).get("resources") or []] for r in rows]
+        res = [[x["res"] for x in (r.get("art") or {}).get("resources") or []]
+               + list(art_sheet.game_extra_texpaths([r["key"], r.get("port"), *(r.get("defNames") or [])]))
+               for r in rows]      # + alternate / young graphics the game draws (art_sheet adds them to the row)
         fp = fingerprint(keys, res, idx, failed)
         stale, prev_blank = "", False
         try:                      # re-verify the sheet on disk (stamp + every requirement, incl. rendering in a real browser)

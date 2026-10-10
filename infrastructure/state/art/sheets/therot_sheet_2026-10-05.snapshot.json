@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheRot",
- "built": "2026-10-10T07:00:45-0700",
+ "built": "2026-10-10T10:14:14-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 68 mods \u2014 a test list): 565 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_Agaripawn": {
    "columns": {
@@ -22,6 +22,11 @@
    "res": "RotSpecies/Agaripawn/Agaripawn",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "8c127dc52dfe1793fedd7464ff03172d871cf27d779b6aac742a573dd7460d46",
+    "d0685f7758527e5dc293083a813c9e87f2f6b183cd6f98c9a415d851ca1f15b6",
+    "fc250aed26c6dc69029190e5a8a2830c3d34635065983dd499d63e97d7b73aff"
    ],
    "subject_key": "agaripawn"
   },
@@ -59,6 +64,17 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "5878b091696ef1c9d1f72dda572b840a7a2360a76e7e75e3bbe8c8c3a0c26122",
+    "63588c10b9779d47a3cea4cc16d6b6df8bc6ec650a5e97b0336173743c73e5b4",
+    "6bb23fdaa633e3018a6acf8c24feb78712584cf0753ab2c345bb579527bee5e0",
+    "7b42f67d859d1ad86a9cf9feaa3cbe28f2df526a0743a49f1fb2af590568e505",
+    "8f7163b46de1b7e205964bd11fd4ce796bb1f62420f4f92da51cb867644b5630",
+    "8fde5ed91c715dba7e71f434751531089a316797df1f216a277c361ff18d9479",
+    "944bb3ecc045bba8fd140c44272567c7629d4112a83b4d4855b4bf018d598cef",
+    "f176c520718ee2dd421a8f50758826eb8ae4709b7959722a96e3d1af6789f1e7",
+    "f3332328c9a16f7a73620527867c3d31bd07d63d09263d74088d596e27e2e622"
+   ],
    "subject_key": "agaripod"
   },
   "AA_AngelMoth": {
@@ -72,20 +88,51 @@
      "east": "b8d5defaf35391db4b5e13ca5f0e766c0405c625e3795dcd5fee0e8f1bed18d0",
      "north": "9e1cf0f9792c58427e18a98b5fd1a58f02fd03691d599ade7c1d3eed3d73152c",
      "south": "e42e8d355e4c69dbe3426ef720967601bcdb949eb93f48294defa805f71f8bbe"
+    },
+    "C": {
+     "east": "b8d5defaf35391db4b5e13ca5f0e766c0405c625e3795dcd5fee0e8f1bed18d0",
+     "north": "9e1cf0f9792c58427e18a98b5fd1a58f02fd03691d599ade7c1d3eed3d73152c"
+    },
+    "D": {
+     "east": "046175388ce09668c9f68d6c4ac3f648851ca7c9c017768bcb436e4719ef841d",
+     "north": "1dd6abd2b8e7e1ac6ce72f94f59261f04adaf0665f5c034f1a1a354a0c1a7296",
+     "south": "53c74024753716ad1ea1f53411e38984f378465f50a4efa91a4db320eeba5e34"
+    },
+    "E": {
+     "east": "6a878768c98045c290f4e4ffa9e0f7e8b76f36414cd999d7c13d601ace6b1ee1",
+     "north": "f76fd1219d7b0e9bb9fb7f35fc02b2d3bba58f49e93a3039d4a3557a3aad64d0",
+     "south": "92427421cf7161ac79882b995dd42b660b0793ca94023f291fa74a949c849197"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
-    "B": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth"
+    "B": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
+    "C": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
+    "D": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth2",
+    "E": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth3"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_AngelMoth_v1"
+    "B": "render gapall_AA_AngelMoth_v1",
+    "C": "render gapall_AA_AngelMoth_v1",
+    "D": "IN GAME \u2014 Alpha Animals",
+    "E": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "9e1cf0f9792c58427e18a98b5fd1a58f02fd03691d599ade7c1d3eed3d73152c",
+    "b8d5defaf35391db4b5e13ca5f0e766c0405c625e3795dcd5fee0e8f1bed18d0",
+    "c531ad6e109b7e285c9a3c0a9dda70ae142b24ba0132f1c024765e773fa8dca9",
+    "cadebc6675363a5e31f772b0553744008e87af0ba9fffce880acc2ec1841b919",
+    "e14810d6b74b3ccd2980facce0b49d2226497d0b19954f3e51b862b50ac9d0cd",
+    "e42e8d355e4c69dbe3426ef720967601bcdb949eb93f48294defa805f71f8bbe"
    ],
    "subject_key": "angelmoth"
   },
@@ -100,20 +147,41 @@
      "east": "beac1fb5a1fdea8f9e2223694e2dfb47d9f3e74158f1bb16d3845716d6d87bab",
      "north": "e75d849d345ef7b715c72f25f3622c1442daf4c74861a8a1d25f1afaf9ff1b35",
      "south": "e8b99406ac09b29fb012a0346dcbb6c8492bbe62e7b8b889fea792f11328c12e"
+    },
+    "C": {
+     "south": "52646f50fdf27a12e0dec0ca9a4275aa7ba60936affe7d35b058705db9a633c5"
+    },
+    "D": {
+     "east": "beac1fb5a1fdea8f9e2223694e2dfb47d9f3e74158f1bb16d3845716d6d87bab",
+     "north": "e75d849d345ef7b715c72f25f3622c1442daf4c74861a8a1d25f1afaf9ff1b35"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus",
-    "B": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus"
+    "B": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus",
+    "C": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus",
+    "D": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "render gapall_AA_AnimaColossus_v1"
+    "B": "render gapall_AA_AnimaColossus_v1",
+    "C": "render enact_4b7d5ca2_animacolossus_v1",
+    "D": "render gapall_AA_AnimaColossus_v1"
    },
    "res": "Things/Pawn/Animal/AA_AnimaColossus/AA_AnimaColossus",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [
+    "2d27955a87e58ef3ec971f675939f0920e08d44995b7d41e2784bec9a91f7659",
+    "3998e435539b0778a82b03f3ea40168beee6778fa2c100058f0d3d68c4ea85eb",
+    "60bf836a9ae058e16c1122d3fe42613e58b711a14daf2633b74bcac8bdf1d7d9",
+    "beac1fb5a1fdea8f9e2223694e2dfb47d9f3e74158f1bb16d3845716d6d87bab",
+    "e75d849d345ef7b715c72f25f3622c1442daf4c74861a8a1d25f1afaf9ff1b35",
+    "e8b99406ac09b29fb012a0346dcbb6c8492bbe62e7b8b889fea792f11328c12e"
    ],
    "subject_key": "animacolossus"
   },
@@ -127,9 +195,6 @@
     "B": {
      "north": "329addea284828129e5907380e72d7d9a984ee8467caa0cfc7835be7ac3e9d40"
     },
-    "C": {
-     "east": "0663191015852bf12257ed76ef4b273844981b3ff6f31ac05265cc774e06d6e4"
-    },
     "D": {
      "east": "b3cf87b80e9309e79ecb0fa9d3dc8c4934d153b8da871f2ead8b85d9b82e8db4",
      "north": "df051ef03180f8084fc7d04d5e9598b34ac5251a47f67256b766f82fdc9fdd6e",
@@ -139,13 +204,11 @@
    "graphic_of": {
     "A": "RotSpecies/MycoidColossus/MycoidColossus",
     "B": "RotSpecies/MycoidColossus/MycoidColossus",
-    "C": "RotSpecies/MycoidColossus/MycoidColossus",
     "D": "RotSpecies/MycoidColossus/MycoidColossus"
    },
    "labels": {
     "A": "IN GAME \u2014 TheRot",
     "B": "render rot_mycoidcolossus_v3",
-    "C": "render rut_mycoidcolossus_v1",
     "D": "render rot_mycoidcolossus_v2"
    },
    "res": "RotSpecies/MycoidColossus/MycoidColossus",
@@ -154,6 +217,13 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "0663191015852bf12257ed76ef4b273844981b3ff6f31ac05265cc774e06d6e4",
+    "329addea284828129e5907380e72d7d9a984ee8467caa0cfc7835be7ac3e9d40",
+    "b3cf87b80e9309e79ecb0fa9d3dc8c4934d153b8da871f2ead8b85d9b82e8db4",
+    "df051ef03180f8084fc7d04d5e9598b34ac5251a47f67256b766f82fdc9fdd6e",
+    "fa17e986b743fc7336232a3d7f8e46d05a882e21e7b8a8e22b6f7f26246ee67b"
    ],
    "subject_key": "mycoidcolossus"
   },
@@ -182,6 +252,13 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "5376e2b5135e2d9695b133f28e8f219de07d36adc55a5ddeb4e5cbb0bef13772",
+    "855fd0d57f8dcb42ae64cf040e81e3f89128e8b4a2bb8454f816a9f6b33d00bd",
+    "a6100b1c2102ebdb444cfcdeb9fa8c5c21958aa6d79097fa29f1c76df20a4b6a",
+    "c398689ba78ec5b915301bfdf1bd3e90781a44a589dd2f67252e4f56d43e161c",
+    "df52e3736d2984f6ca6ff3122cdd77011f26275eb7c1f62e0875688c6c7e1418"
+   ],
    "subject_key": "swarmling"
   },
   "AB_AgaricusDomeCap": {
@@ -200,29 +277,31 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "07d0af160b434d89bcbfc04218c5b409ca9e8b8593a1ade53087b6ee6dbd498f"
+   ],
    "subject_key": "agaricusdomecap"
   },
   "AB_Agarilux": {
    "columns": {
     "A": {
      "single": "a3dff28387f7c532ce16f5c599e00674d6aaa4e1ecf8e822fe275da55ee7aa24"
-    },
-    "B": {
-     "single": "6a13e4ba32b3017611486004af91dbea012afeaaa69bce7a69d54c1625cee432"
     }
    },
    "graphic_of": {
-    "A": "RotSpecies/Agarilux",
-    "B": "RotSpecies/Agarilux"
+    "A": "RotSpecies/Agarilux"
    },
    "labels": {
-    "A": "our deployed art (render rot_agarilux_v3) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rot_agarilux_v2"
+    "A": "IN GAME \u2014 random variant Agarilux_A (1 of 1) \u2014 TheRot"
    },
    "res": "RotSpecies/Agarilux",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "6a13e4ba32b3017611486004af91dbea012afeaaa69bce7a69d54c1625cee432",
+    "a3dff28387f7c532ce16f5c599e00674d6aaa4e1ecf8e822fe275da55ee7aa24"
    ],
    "subject_key": "agarilux"
   },
@@ -230,23 +309,22 @@
    "columns": {
     "A": {
      "single": "85779af91a06483f2aaee457219fb5524d2ce4d18eda57334e9e598afffaf550"
-    },
-    "B": {
-     "single": "20fc1470b444ec8b3b0050d9b3d6810e33ddb253bcf1a349cf2dbf5838bdc461"
     }
    },
    "graphic_of": {
-    "A": "RotSpecies/AgariluxPrime",
-    "B": "RotSpecies/AgariluxPrime"
+    "A": "RotSpecies/AgariluxPrime"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheRot",
-    "B": "render rot_agariluxprime_v2"
+    "A": "IN GAME \u2014 TheRot"
    },
    "res": "RotSpecies/AgariluxPrime",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "20fc1470b444ec8b3b0050d9b3d6810e33ddb253bcf1a349cf2dbf5838bdc461",
+    "85779af91a06483f2aaee457219fb5524d2ce4d18eda57334e9e598afffaf550"
    ],
    "subject_key": "agariluxprime"
   },
@@ -260,11 +338,14 @@
     "A": "RotSpecies/ArbuscularMycorrhiza"
    },
    "labels": {
-    "A": "our deployed art (render rot_arbuscularmycorrhiza_v2) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant ArbuscularMycorrhiza_A (1 of 1) \u2014 TheRot"
    },
    "res": "RotSpecies/ArbuscularMycorrhiza",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "dcd2dcbfce7e121a4e685d2ff294a8f5d27d3a5cdfc0ea3b7795fea885b44ac7"
    ],
    "subject_key": "arbuscularmycorrhiza"
   },
@@ -272,17 +353,32 @@
    "columns": {
     "A": {
      "single": "d3565087381e7a4b38b689416bcb445f08962310276d8777289259008c148edc"
+    },
+    "B": {
+     "single": "6311420e4c29e1cef217e3771dbfac8888f7b69d45b9594dd46f526b0865cbd5"
+    },
+    "C": {
+     "single": "46b8d93b0607813527a97e4c111646b71b3ed39d30ebd6d7b7dc2b21c9ac018c"
     }
    },
    "graphic_of": {
-    "A": "RotSpecies/Bryolux"
+    "A": "RotSpecies/Bryolux",
+    "B": "RotSpecies/Bryolux",
+    "C": "RotSpecies/Bryolux"
    },
    "labels": {
-    "A": "our deployed art (render rot_bryolux_v2) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant Bryolux_A (1 of 1) \u2014 TheRot",
+    "B": "render rotvar_ab_bryolux_a_v1",
+    "C": "render rotvar_ab_bryolux_b_v1"
    },
    "res": "RotSpecies/Bryolux",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "d3565087381e7a4b38b689416bcb445f08962310276d8777289259008c148edc"
    ],
    "subject_key": "bryolux"
   },
@@ -290,17 +386,32 @@
    "columns": {
     "A": {
      "single": "cd270c5f37c9f5f0b27af0eadabbbd9aef7aed1ae967f2192fe7fdcd34ad840a"
+    },
+    "B": {
+     "single": "89ed71432ca3caa6f5f13cbde05281d31ea575a13fb4933086ecaa1442ec7912"
+    },
+    "C": {
+     "single": "18378be6d43e8091775a68713cf39822a263b590b52b98ba0d29d321d887ba8c"
     }
    },
    "graphic_of": {
-    "A": "RotSpecies/DribblingCap"
+    "A": "RotSpecies/DribblingCap",
+    "B": "RotSpecies/DribblingCap",
+    "C": "RotSpecies/DribblingCap"
    },
    "labels": {
-    "A": "our deployed art (render rot_dribblingcap_v2) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant DribblingCap_A (1 of 1) \u2014 TheRot",
+    "B": "render rotvar_ab_dribblingcap_a_v1",
+    "C": "render rotvar_ab_dribblingcap_b_v1"
    },
    "res": "RotSpecies/DribblingCap",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "cd270c5f37c9f5f0b27af0eadabbbd9aef7aed1ae967f2192fe7fdcd34ad840a"
    ],
    "subject_key": "dribblingcap"
   },
@@ -308,17 +419,32 @@
    "columns": {
     "A": {
      "single": "6a392571840af974a39d220490e80769f63598fbf42949d16b776720a822e8fc"
+    },
+    "B": {
+     "single": "38612d849a7ac6f8a15ddb882140c5623895ae463ba5414e9fc6c3e2e7e8dc0c"
+    },
+    "C": {
+     "single": "faa6d7e31322f0351f7e4782271edcab79dd5d175f24a9ca5f00700b537a39d0"
     }
    },
    "graphic_of": {
-    "A": "RotSpecies/GiantAgarilux"
+    "A": "RotSpecies/GiantAgarilux",
+    "B": "RotSpecies/GiantAgarilux",
+    "C": "RotSpecies/GiantAgarilux"
    },
    "labels": {
-    "A": "our deployed art (render rot_giantagarilux_v2) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant GiantAgarilux_A (1 of 1) \u2014 TheRot",
+    "B": "render rotvar_ab_giantagarilux_a_v1",
+    "C": "render rotvar_ab_giantagarilux_b_v1 \u2014 failed canon check"
    },
    "res": "RotSpecies/GiantAgarilux",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "6a392571840af974a39d220490e80769f63598fbf42949d16b776720a822e8fc"
    ],
    "subject_key": "giantagarilux"
   },
@@ -326,17 +452,32 @@
    "columns": {
     "A": {
      "single": "6f67f77bd8b782014d847567cf9fa3e71841da8a8c834a5356b2da526e1bd2f0"
+    },
+    "B": {
+     "single": "45c5cc1081193a2d33b0eeeea4babe378a1280189bdab752a369c1e098d29152"
+    },
+    "C": {
+     "single": "d1764618bcf514ee1245fdf80ea1cb5ae43debddf8d03670647258d6a4cffdb4"
     }
    },
    "graphic_of": {
-    "A": "RotSpecies/GlowingAgarilux"
+    "A": "RotSpecies/GlowingAgarilux",
+    "B": "RotSpecies/GlowingAgarilux",
+    "C": "RotSpecies/GlowingAgarilux"
    },
    "labels": {
-    "A": "our deployed art (render rot_glowingagarilux_v2) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant GlowingAgarilux_A (1 of 1) \u2014 TheRot",
+    "B": "render rotvar_ab_glowingagarilux_a_v1",
+    "C": "render rotvar_ab_glowingagarilux_b_v1"
    },
    "res": "RotSpecies/GlowingAgarilux",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "6f67f77bd8b782014d847567cf9fa3e71841da8a8c834a5356b2da526e1bd2f0"
    ],
    "subject_key": "glowingagarilux"
   },
@@ -344,17 +485,32 @@
    "columns": {
     "A": {
      "single": "11b913669a293262eed08221906ac3aa8f02b266a168f4c7b6f697f9f07ec533"
+    },
+    "B": {
+     "single": "623d63073a1e39be85ade1b15633f56c78b808534f3da909e2aedd59a9a8623e"
+    },
+    "C": {
+     "single": "fdabff9f2dbde276b49e1117dd7a9f7dc022a5d9d11e2481f94103e9ebfac935"
     }
    },
    "graphic_of": {
-    "A": "RotSpecies/Glowstool"
+    "A": "RotSpecies/Glowstool",
+    "B": "RotSpecies/Glowstool",
+    "C": "RotSpecies/Glowstool"
    },
    "labels": {
-    "A": "our deployed art (render rot_glowstool_v2) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant Glowstool_A (1 of 1) \u2014 TheRot",
+    "B": "render rotvar_ab_glowstool_a_v1",
+    "C": "render rotvar_ab_glowstool_b_v1"
    },
    "res": "RotSpecies/Glowstool",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "11b913669a293262eed08221906ac3aa8f02b266a168f4c7b6f697f9f07ec533"
    ],
    "subject_key": "glowstool"
   },
@@ -362,17 +518,32 @@
    "columns": {
     "A": {
      "single": "d0c0f977d67534c1e192a19d614db98ae53eaa30839434de87a95381d70d5e2f"
+    },
+    "B": {
+     "single": "05b8e73fe481e9851897647040168932d87515ca04bea59f2b678607cc620e08"
+    },
+    "C": {
+     "single": "37606983c611688874f37f10f06e21f54ae84a00c4d729acd0c6ecf6bc5fb6ce"
     }
    },
    "graphic_of": {
-    "A": "RotSpecies/LilacBeacon"
+    "A": "RotSpecies/LilacBeacon",
+    "B": "RotSpecies/LilacBeacon",
+    "C": "RotSpecies/LilacBeacon"
    },
    "labels": {
-    "A": "our deployed art (render rot_lilacbeacon_v2) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant LilacBeacon_A (1 of 1) \u2014 TheRot",
+    "B": "render rotvar_ab_lilacbeacon_a_v1",
+    "C": "render rotvar_ab_lilacbeacon_b_v1"
    },
    "res": "RotSpecies/LilacBeacon",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "d0c0f977d67534c1e192a19d614db98ae53eaa30839434de87a95381d70d5e2f"
    ],
    "subject_key": "lilacbeacon"
   },
@@ -398,23 +569,42 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "6173714afac0369b808de7c2bc36f8913aafff95b351b8bfceaec8bc3b6fafcf",
+    "e56158571747f7f85a6eec6e1931621dec1152cd8751157f5540164e71b2fcfd"
+   ],
    "subject_key": "recurvedstropharia"
   },
   "AB_SlimyPholiota": {
    "columns": {
     "A": {
      "single": "25e8c5b5a5c024b466559689633c5d13b31f1c334f0c89546b440bffb1e71260"
+    },
+    "B": {
+     "single": "130633d36a4db6dfdb28d1fc3889b9f24503c6e0798298c3b57af2ac706bcef1"
+    },
+    "C": {
+     "single": "b9cb4014d23ccfcbd739aacd475690b1def96864b8134a90db5d661397cadc85"
     }
    },
    "graphic_of": {
-    "A": "RotSpecies/SlimyPholiota"
+    "A": "RotSpecies/SlimyPholiota",
+    "B": "RotSpecies/SlimyPholiota",
+    "C": "RotSpecies/SlimyPholiota"
    },
    "labels": {
-    "A": "our deployed art (render rot_slimypholiota_v2) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant SlimyPholiota_A (1 of 1) \u2014 TheRot",
+    "B": "render rotvar_ab_slimypholiota_a_v1",
+    "C": "render rotvar_ab_slimypholiota_b_v1"
    },
    "res": "RotSpecies/SlimyPholiota",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "25e8c5b5a5c024b466559689633c5d13b31f1c334f0c89546b440bffb1e71260"
    ],
    "subject_key": "slimypholiota"
   },
@@ -422,17 +612,32 @@
    "columns": {
     "A": {
      "single": "780e22885637d57bafbad47e678a997348f32a754c61da0fc01fc74585438c28"
+    },
+    "B": {
+     "single": "bc51c3aebef0368c0dfe5099ffc3d4d1b6c5b08743a7827fdc2f2aed60594534"
+    },
+    "C": {
+     "single": "d707dbf7043780f1cfed17861bf57add4433aa0aef4cddd0d4365215f724ae38"
     }
    },
    "graphic_of": {
-    "A": "RotSpecies/WitchesOyster"
+    "A": "RotSpecies/WitchesOyster",
+    "B": "RotSpecies/WitchesOyster",
+    "C": "RotSpecies/WitchesOyster"
    },
    "labels": {
-    "A": "IN GAME \u2014 TheRot"
+    "A": "IN GAME \u2014 TheRot",
+    "B": "render rotvar_ab_witchesoyster_a_v1",
+    "C": "render rotvar_ab_witchesoyster_b_v1"
    },
    "res": "RotSpecies/WitchesOyster",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "780e22885637d57bafbad47e678a997348f32a754c61da0fc01fc74585438c28"
    ],
    "subject_key": "witchesoyster"
   },
@@ -444,25 +649,37 @@
     "B": {
      "single": "6800368c9e2ee35421e18770a28012d90fbdddfa8bc52b98861199bc090aa294"
     },
-    "C": {
-     "single": "925feb103df63816f8e76cc8af317a643f537a2d1293ca1ffd5aa0d7f104a095"
+    "D": {
+     "single": "7830b5f86a0ba11538060c9db234d273402a947ac0eb23a59da49d16660cfe94"
+    },
+    "E": {
+     "single": "a2be0710740e4d47e707e6973f0fc98e8192250f94dc0f9c3e704148efb92cfe"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/AgelessCap",
     "B": "RotSporeKit/Things/Plant/AgelessCap",
-    "C": "RotSporeKit/Things/Plant/AgelessCap"
+    "D": "RotSporeKit/Things/Plant/AgelessCap",
+    "E": "RotSporeKit/Things/Plant/AgelessCap"
    },
    "labels": {
-    "A": "our deployed art (render rot_agelesscap_v2) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rut_agelesscap_v2",
-    "C": "render rut_liveingredient_agelesscap_v1"
+    "A": "IN GAME \u2014 random variant AgelessCap_A (1 of 2) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant AgelessCap_B (2 of 2) \u2014 TheRot",
+    "D": "render rotvar_agelesscap_a_v1",
+    "E": "render rotvar_agelesscap_b_v1"
    },
    "res": "RotSporeKit/Things/Plant/AgelessCap",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "6800368c9e2ee35421e18770a28012d90fbdddfa8bc52b98861199bc090aa294",
+    "925feb103df63816f8e76cc8af317a643f537a2d1293ca1ffd5aa0d7f104a095",
+    "f7fa31b5554e081b371746401c6525d5b7cdb9cd8af339c97d37fe5dcee41722"
    ],
    "subject_key": "agelesscap"
   },
@@ -479,24 +696,19 @@
     },
     "D": {
      "single": "9a2e82d816619b9dc7d9bd80f6155471cfc18c4c620f7b7c35ef70be77bf69ee"
-    },
-    "E": {
-     "single": "1a81d3239607ee1900babf8c90c5385288fcfeafc623cb1926d4f18dfa1466ee"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/Arpeau",
     "B": "RotSporeKit/Things/Plant/Arpeau",
     "C": "RotSporeKit/Things/Plant/Arpeau",
-    "D": "RotSporeKit/Things/Plant/Arpeau",
-    "E": "RotSporeKit/Things/Plant/Arpeau"
+    "D": "RotSporeKit/Things/Plant/Arpeau"
    },
    "labels": {
-    "A": "our deployed art (render rot_arpeau_v2) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rot_arpeau_v3b",
-    "C": "render rot_arpeau_v3a",
-    "D": "render arpeau_a_v1",
-    "E": "render arpeau_b_v1"
+    "A": "IN GAME \u2014 random variant Arpeau_A (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant Arpeau_B (2 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant Arpeau_C (3 of 3) \u2014 TheRot",
+    "D": "render arpeau_a_v1"
    },
    "res": "RotSporeKit/Things/Plant/Arpeau",
    "reserved": [
@@ -506,23 +718,63 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "1a81d3239607ee1900babf8c90c5385288fcfeafc623cb1926d4f18dfa1466ee",
+    "9115df0f8b6b673edef479f9ab88e122b4024d830286f5c2188af359203213e6",
+    "9a2e82d816619b9dc7d9bd80f6155471cfc18c4c620f7b7c35ef70be77bf69ee",
+    "a3f0cb02f3ac76ae09bf2df97b95efb4986ba66c5c9a9a5585fb58d7c44ec18a",
+    "dc40b6256714c7fc8ff08cac293befb22a5bbb0c4cc722e1fc527324d6daac7d"
+   ],
    "subject_key": "arpeau"
   },
   "RM_BlastpodShroom": {
    "columns": {
     "A": {
      "single": "7068ac6171e655c34a29f5a97451d0e6f60680783bc5f96a7987b7f4efe589ae"
+    },
+    "B": {
+     "single": "eaa39f8c641078bcdc08a8c93710b06e350b8ffdd435b16848481815c0b9f81c"
+    },
+    "C": {
+     "single": "8260cf3e56152901f89e59870281af60c0366f3c6aa49a14fe5b3500fa99d8e2"
+    },
+    "D": {
+     "single": "54c70554cc59376cc6e34297a2bc0a4da5dd64b7338d8f82fa0a05f07b7a3879"
+    },
+    "E": {
+     "single": "00c49ae5b7da5c06c8a6ba5dc5a75482fdab5f61baa56099b3abdb07382f040d"
+    },
+    "F": {
+     "single": "a160f94f10c72db21294017e0b43b5eeef1fdaea479f77cd5743941e9f795c06"
     }
    },
    "graphic_of": {
-    "A": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown"
+    "A": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
+    "B": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
+    "C": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
+    "D": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomImmature",
+    "E": "_byname",
+    "F": "_byname"
    },
    "labels": {
-    "A": "our deployed art (render rot_blastpodshroom_v2) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant BoomshroomGrown_A (1 of 3) \u2014 TheRot",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant BoomshroomGrown_B (2 of 3) \u2014 TheRot",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant BoomshroomGrown_C (3 of 3) \u2014 TheRot",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant BoomshroomImmature (1 of 1) \u2014 TheRot",
+    "E": "render rotvar_blastpodshroom_a_v1",
+    "F": "render rotvar_blastpodshroom_b_v1 \u2014 failed canon check"
    },
    "res": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "7068ac6171e655c34a29f5a97451d0e6f60680783bc5f96a7987b7f4efe589ae"
    ],
    "subject_key": "blastpodshroom"
   },
@@ -539,26 +791,44 @@
     },
     "D": {
      "single": "2e3b178567790f3745be8c38d85db696548c1944d673346680f6bbc3cefc4cf1"
+    },
+    "E": {
+     "single": "21448970612ae70710de7d1e4180cbb82c251b52cd03d230cf96b6a7bb6366d6"
+    },
+    "F": {
+     "single": "d7637867c84daa2991ee6df8390f289f823581cf48e7deacd0bdb1fc63bf45e1"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/BleedingTooth",
     "B": "RotSporeKit/Things/Plant/BleedingTooth",
     "C": "RotSporeKit/Things/Plant/BleedingTooth",
-    "D": "RotSporeKit/Things/Plant/BleedingTooth"
+    "D": "RotSporeKit/Things/Plant/BleedingTooth",
+    "E": "RotSporeKit/Things/Plant/BleedingTooth",
+    "F": "RotSporeKit/Things/Plant/BleedingTooth"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
     "B": "render rot_bleedingtooth_v3a",
     "C": "render rot_bleedingtooth_v3b",
-    "D": "render rot_bleedingtooth_v2"
+    "D": "IN GAME \u2014 random variant BleedingTooth_A (1 of 3) \u2014 TheRot",
+    "E": "in game now, a re-encoded copy of set B \u2014 IN GAME \u2014 random variant BleedingTooth_p3a (2 of 3) \u2014 TheRot",
+    "F": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant BleedingTooth_p3b (3 of 3) \u2014 TheRot"
    },
    "res": "RotSporeKit/Things/Plant/BleedingTooth",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "22021eb019af1c1ecc97ac342ae787dc05f837053d66570161ccdbcdb116c3f3",
+    "2e3b178567790f3745be8c38d85db696548c1944d673346680f6bbc3cefc4cf1",
+    "847dc28fde17e2bf895a1ab225e7c8a7b7f7deec9d0f64721f982f53066b8f04",
+    "b82b35378bdacce0406e0bea70812afd82ad038c34c274694aa65f7b082fd92d"
    ],
    "subject_key": "bleedingtooth"
   },
@@ -567,28 +837,40 @@
     "A": {
      "single": "56c96bd53a28fb3c477f9c2ca8811e3e577deee5ca054546e9bd0e0cd1513305"
     },
-    "B": {
-     "single": "465c0328034def8669d3e5b987cf0684834809e7282028fd77e88e8dbd0f665b"
-    },
     "C": {
      "single": "1547d686d365b9105d3b7a600a20ff2fa91ad71d463f14588772db0ee53d00a2"
+    },
+    "D": {
+     "single": "8d449e564959990e923c5bfb63e365a0021269e1f1771743b621aca27ab4ec2d"
+    },
+    "E": {
+     "single": "39e2c999ecc4a124662ee80b9f49e747221d2983fc71455fcb8bdc096a18af56"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/Brightbell",
-    "B": "RotSporeKit/Things/Plant/Brightbell",
-    "C": "RotSporeKit/Things/Plant/Brightbell"
+    "C": "RotSporeKit/Things/Plant/Brightbell",
+    "D": "RotSporeKit/Things/Plant/Brightbell",
+    "E": "RotSporeKit/Things/Plant/Brightbell"
    },
    "labels": {
-    "A": "our deployed art (render rot_brightbell_v2) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rot_brightbell_v3a",
-    "C": "render rot_brightbell_v3b"
+    "A": "render rot_brightbell_v2",
+    "C": "IN GAME \u2014 random variant Brightbell_A (1 of 1) \u2014 TheRot",
+    "D": "render rotvar_brightbell_a_v1",
+    "E": "render rotvar_brightbell_b_v1"
    },
    "res": "RotSporeKit/Things/Plant/Brightbell",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "1547d686d365b9105d3b7a600a20ff2fa91ad71d463f14588772db0ee53d00a2",
+    "465c0328034def8669d3e5b987cf0684834809e7282028fd77e88e8dbd0f665b",
+    "56c96bd53a28fb3c477f9c2ca8811e3e577deee5ca054546e9bd0e0cd1513305"
    ],
    "subject_key": "brightbell"
   },
@@ -618,6 +900,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "4c06dce1bae89768dd6d3e32a969e7bbb457b769a7fc49bcd4146c0d73515245",
+    "82bc8e90c6bfd75b3adeb4c05c4da744fa9f48b0a1e15fd500aa983179e9f1bb",
+    "8790466bcc0ccfd0bae6bd5b004f6c3eae0d0e7e4802cc6ccdba19a47447fa95",
+    "9aa35cd9e2b7d4888b1d419ddaf116c8d4d696b5a4889fc63c7f3a57f0fa6b09",
+    "9bd30a8ac36e1dbeefe838d28004ac4d03b236878d6edac10060c1ffd1a5119e",
+    "bcbb8a4a68fbc9d462fc7dffbfa81cb10dc9bde86665df30c1a8e9dba88b85a0"
+   ],
    "subject_key": "brogg"
   },
   "RM_Brullith": {
@@ -638,23 +928,73 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "3f0d353930bedea257ba1a7db2bffc6cea5f0a8fbf1fedb5e043344a048dc743",
+    "a9745b1fb70317271f024207ac448bb8fde47e20b7911fb9a9a80752bcedc320",
+    "f3879ffb08a64fc534d213308ac731a399a0cb2ea08695abb69b718ac424cf94"
+   ],
    "subject_key": "brullith"
   },
   "RM_CrimsonCap": {
    "columns": {
     "A": {
      "single": "fd787ef4957cee94ac59636699aca62517d878fc7764daed4a43c6daa133b382"
+    },
+    "B": {
+     "single": "35bec7e818089a0550ddf9fa1fdfd15ace8943e08f1f660fb1115f68c9e22a29"
+    },
+    "C": {
+     "single": "c7520cdab09b6f2d8aba1d65bec63c57486f2ef57d0fbcacfd2ae9acc8dce80f"
+    },
+    "D": {
+     "single": "b2de8d98b963ce380b67abc15084fbf63e9d8384dd173b19fff750142e5310b5"
+    },
+    "E": {
+     "single": "54537d0083688f6c014a320d45464c43fc3a4bdb93bbbc63e87ff042ad06d0ca"
+    },
+    "F": {
+     "single": "946f33b92d3717ded1e68b19d935b628d98adb5a153878d1efa31168fb8e93ba"
+    },
+    "G": {
+     "single": "db0b36156f6e7b1f2e5fd179f4630a1df2c9ae40341b5ea895df1bbc39702b0a"
+    },
+    "H": {
+     "single": "7c71e36391fda6ee65c0cc31aeb1250913a36cd7ccef86132e055c54f473f773"
     }
    },
    "graphic_of": {
-    "A": "RotSporeKit/Things/Plant/CrimsonCap"
+    "A": "RotSporeKit/Things/Plant/CrimsonCap",
+    "B": "RotSporeKit/Things/Plant/CrimsonCap",
+    "C": "RotSporeKit/Things/Plant/CrimsonCap",
+    "D": "RotSporeKit/Things/Plant/CrimsonCap",
+    "E": "RotSporeKit/Things/Plant/CrimsonCap",
+    "F": "RotSporeKit/Things/Plant/CrimsonCap",
+    "G": "RotSporeKit/Things/Plant/CrimsonCap",
+    "H": "RotSporeKit/Things/Plant/CrimsonCap"
    },
    "labels": {
-    "A": "our deployed art (render rot_crimsoncap_v2) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant CrimsonCap_a (1 of 6) \u2014 TheRot",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_b (2 of 6) \u2014 TheRot",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_c (3 of 6) \u2014 TheRot",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_d (4 of 6) \u2014 TheRot",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_e (5 of 6) \u2014 TheRot",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant CrimsonCap_f (6 of 6) \u2014 TheRot",
+    "G": "render rotvar_crimsoncap_a_v1",
+    "H": "render rotvar_crimsoncap_b_v1 \u2014 failed canon check"
    },
    "res": "RotSporeKit/Things/Plant/CrimsonCap",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [
+    "fd787ef4957cee94ac59636699aca62517d878fc7764daed4a43c6daa133b382"
    ],
    "subject_key": "crimsoncap"
   },
@@ -669,26 +1009,31 @@
     "C": {
      "single": "a3b942ed633a0e26adce8d4ec161a3531da173ef565d6b7c0b6436f193779131"
     },
-    "D": {
-     "single": "e382e2b5ffd6fac7e839b009a178a8ce1ee7a76883bf5196edd37abc5eecdec6"
-    },
     "E": {
      "single": "ba7ef0d389401cd7fbe04caff22e3b17ab4683b2909119941fe82c27abdc6748"
+    },
+    "F": {
+     "single": "5ebafdcd75c817563c684dc317f1092998155c363cb4051b80431dc07fb39cf3"
+    },
+    "G": {
+     "single": "80972f4065b3d828750162c2bf0d58b0146df66b686b0c705037c0d946a2cc83"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/Seadew",
     "B": "RotSporeKit/Things/Plant/Seadew",
     "C": "RotSporeKit/Things/Plant/Seadew",
-    "D": "_byname",
-    "E": "_byname"
+    "E": "RotSporeKit/Things/Plant/Seadew",
+    "F": "RotSporeKit/Things/Plant/Seadew",
+    "G": "RotSporeKit/Things/Plant/Seadew"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
     "B": "render rot_seadew_v3a",
     "C": "render rot_seadew_v3b",
-    "D": "render legacy_37499fae_dewshrooms_v1",
-    "E": "render rot_dewshrooms_v2"
+    "E": "IN GAME \u2014 random variant Seadew_A (1 of 3) \u2014 TheRot",
+    "F": "in game now, a re-encoded copy of set B \u2014 IN GAME \u2014 random variant Seadew_p3a (2 of 3) \u2014 TheRot",
+    "G": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant Seadew_p3b (3 of 3) \u2014 TheRot"
    },
    "res": "RotSporeKit/Things/Plant/Seadew",
    "reserved": [
@@ -696,7 +1041,16 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [
+    "1fa62377db397ce41e67996bbc7d1c38916bf44b21e1f7cab5c70c74ad76ac73",
+    "95d857f6e64e1cbb155e0c4f4f301233ec47c1385c3df98b31fd57b030c2fb31",
+    "a3b942ed633a0e26adce8d4ec161a3531da173ef565d6b7c0b6436f193779131",
+    "ba7ef0d389401cd7fbe04caff22e3b17ab4683b2909119941fe82c27abdc6748",
+    "e382e2b5ffd6fac7e839b009a178a8ce1ee7a76883bf5196edd37abc5eecdec6"
    ],
    "subject_key": "dewshrooms"
   },
@@ -718,6 +1072,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "00da96559e313294c38004a2733c93f78ce8accfb92d5b68ff35eea5e1514f40",
+    "30701f14ee3cf3cc4dab1baf04925f4073ea028e45cc2066646bfa900506c05a",
+    "cf024497dad1b72f3dd711fd0f198e48a298fe0c17c2fe5dc4b649b95c23e372"
+   ],
    "subject_key": "durrok"
   },
   "RM_EuphoricCrown": {
@@ -738,8 +1097,8 @@
     "C": "RotSporeKit/Things/Plant/EuphoricCrown"
    },
    "labels": {
-    "A": "our deployed art (render rot_euphoriccrown_v2) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rut_euphoriccrown_v1",
+    "A": "render rot_euphoriccrown_v2",
+    "B": "IN GAME \u2014 random variant EuphoricCrown_A (1 of 1) \u2014 TheRot",
     "C": "render rut_liveingredient_euphoriccrown_v1"
    },
    "res": "RotSporeKit/Things/Plant/EuphoricCrown",
@@ -747,6 +1106,11 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "a76e757b2141d8e1ef909e90c50df071c32361b7776652d75705aeabec41eef1",
+    "ce3215f8ebf69895be401b60a720a85393ec9c6e489d7637f822e1155c4eb3bf",
+    "d336df74f4d99946cf244fb5408e288862ecefeb3d24f8337a6fde01ae4bce2f"
    ],
    "subject_key": "euphoriccrown"
   },
@@ -757,20 +1121,36 @@
     },
     "B": {
      "single": "0931e7e2dde67bb6bb7861057d2fc8680888cb4fc85463a52bd8a2205457925d"
+    },
+    "C": {
+     "single": "cd1ab125d3b4f93a07fca7cf910d200fdbf65309b23ea24b579eeea5305278c7"
+    },
+    "D": {
+     "single": "22fcf37401e513706721a05cae109f8a5f7ecb2a055c6a923f3254451c6f109f"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/FalseFruit",
-    "B": "RotSporeKit/Things/Plant/FalseFruit"
+    "B": "RotSporeKit/Things/Plant/FalseFruit",
+    "C": "RotSporeKit/Things/Plant/FalseFruit",
+    "D": "RotSporeKit/Things/Plant/FalseFruit"
    },
    "labels": {
-    "A": "our deployed art (render rot_falsefruit_v2) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rut_falsefruit_v1"
+    "A": "render rot_falsefruit_v2",
+    "B": "IN GAME \u2014 random variant FalseFruit_A (1 of 1) \u2014 TheRot",
+    "C": "render rotvar_falsefruit_a_v1",
+    "D": "render rotvar_falsefruit_b_v1"
    },
    "res": "RotSporeKit/Things/Plant/FalseFruit",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [
+    "0931e7e2dde67bb6bb7861057d2fc8680888cb4fc85463a52bd8a2205457925d",
+    "e55f14a8fadcca02d83197930a98e23a8b8715c3fc289d50ef85959ce73170c5"
    ],
    "subject_key": "falsefruit"
   },
@@ -778,17 +1158,38 @@
    "columns": {
     "A": {
      "single": "eb05e7dcdc6894a1a84940620d3a8bd82d62a69605938ce3e320de822b961190"
+    },
+    "B": {
+     "single": "e871384f56ba44bda702dbce336299c74eea2caba99eb6e9a53a3c7750f7f1a5"
+    },
+    "C": {
+     "single": "9c8e35e112c4b2189c81b5fa806ea7f83c3e2137da702261a5168eb25fd8aa65"
+    },
+    "D": {
+     "single": "be2e1c7bf6696dfc08b79d7771ca1b251d0b19462ca5f031f6d885f4f825b763"
     }
    },
    "graphic_of": {
-    "A": "RotSporeKit/Things/Plant/FlakespireFungus"
+    "A": "RotSporeKit/Things/Plant/FlakespireFungus",
+    "B": "RotSporeKit/Things/Plant/FlakespireFungus",
+    "C": "RotSporeKit/Things/Plant/FlakespireFungus",
+    "D": "RotSporeKit/Things/Plant/FlakespireFungus"
    },
    "labels": {
-    "A": "our deployed art (render rot_flakespirefungus_v2) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant Flakespirefungus_a (1 of 2) \u2014 TheRot",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant Flakespirefungus_b (2 of 2) \u2014 TheRot",
+    "C": "render rotvar_flakespirefungus_a_v1",
+    "D": "render rotvar_flakespirefungus_b_v1 \u2014 failed canon check"
    },
    "res": "RotSporeKit/Things/Plant/FlakespireFungus",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [
+    "eb05e7dcdc6894a1a84940620d3a8bd82d62a69605938ce3e320de822b961190"
    ],
    "subject_key": "flakespirefungus"
   },
@@ -796,17 +1197,50 @@
    "columns": {
     "A": {
      "single": "753c75cdd61bc89f646dd0ad1a6a5f43a7ef3580606613f0441b321e61e6e0df"
+    },
+    "B": {
+     "single": "b459f5d7245439e2d16951412866b81317b6c3b83518cfb836f93fbd6e27363e"
+    },
+    "C": {
+     "single": "89ee1e9cfbf23702c93d4f9684bc251a6a82cfbfd1f305dc126012f09e3488b9"
+    },
+    "D": {
+     "single": "cab09965d3904fd685bbdfaa052171c84e3eed3adadf0b5ee214b7a0fd6c7cd5"
+    },
+    "E": {
+     "single": "e30ab9925b27aa69e7a4e2e139329d17f68db50e85a2b76cfd0c25d3ffebb088"
+    },
+    "F": {
+     "single": "29d4a7932c0d4ac710cf7e62229dbc0d94b10644536a97bd7f2bc48b52d16d53"
     }
    },
    "graphic_of": {
-    "A": "RotSporeKit/Things/Plant/FruitingBodies"
+    "A": "RotSporeKit/Things/Plant/FruitingBodies",
+    "B": "RotSporeKit/Things/Plant/FruitingBodies",
+    "C": "RotSporeKit/Things/Plant/FruitingBodies",
+    "D": "RotSporeKit/Things/Plant/FruitingBodies",
+    "E": "RotSporeKit/Things/Plant/FruitingBodies",
+    "F": "RotSporeKit/Things/Plant/FruitingBodies"
    },
    "labels": {
-    "A": "our deployed art (render rot_fruitingbodies_v2) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant FruitingBodies_A (1 of 4) \u2014 TheRot",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant FruitingBodyA (2 of 4) \u2014 TheRot",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant FruitingBodyB (3 of 4) \u2014 TheRot",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant FruitingBodyC (4 of 4) \u2014 TheRot",
+    "E": "render rotvar_fruitingbodies_a_v1",
+    "F": "render rotvar_fruitingbodies_b_v1"
    },
    "res": "RotSporeKit/Things/Plant/FruitingBodies",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "753c75cdd61bc89f646dd0ad1a6a5f43a7ef3580606613f0441b321e61e6e0df"
    ],
    "subject_key": "fruitingbodies"
   },
@@ -828,6 +1262,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "2aed3bda2196102862607f34bbd404751b17823afbd1a858bd0388c16d4323d4",
+    "6bb7dc5c632fe0e4e16cfcd1bb7072d450ea205639cbd8f8d3b68246aad7edeb",
+    "8bf1dfb1fa8222aa99313b6928d7990e9b950123f47c669b37e1ef7a81e745c0"
+   ],
    "subject_key": "grellik"
   },
   "RM_GreyLady": {
@@ -843,26 +1282,44 @@
     },
     "D": {
      "single": "b02bc9e2464a1f47c2e6c5c27a5dbe1d44dcac98ef25a0a2031f30a0a13c7976"
+    },
+    "E": {
+     "single": "a31f985818ba5a63683de257bc7ea2c6d5192ce62b7073f44854e0c228fabbc1"
+    },
+    "F": {
+     "single": "85bf87c03fa0806592cc95a4079c72a91bde2245adc834f9d8d8197839de4a01"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
     "B": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
     "C": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
-    "D": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown"
+    "D": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
+    "E": "RotSporeKit/Things/Plant/GreyLady/GreyLadyImmature",
+    "F": "RotSporeKit/Things/Plant/GreyLady/GreyLadyImmature"
    },
    "labels": {
     "A": "our deployed art (render rot_greylady_v3) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render greyladygrown_a_v1",
+    "B": "IN GAME \u2014 random variant GreyLadyGrown_A (1 of 1) \u2014 TheRot",
     "C": "render greyladygrown_b_v1",
-    "D": "render greyladygrown_c_v1"
+    "D": "render greyladygrown_c_v1",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant GreyLadyImmature_a (1 of 1) \u2014 TheRot",
+    "F": "render greyladyimmature_a_v1"
    },
    "res": "RotSporeKit/Things/Plant/GreyLady/GreyLadyGrown",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "0ec42b4a5cf3b81d0028d980c701178634569b055a0d12c9fdbcb37c93d1ab85",
+    "58480c528d3498ec0070fa1d7caa11823b681c79f994a7806ab8354e657c095e",
+    "b02bc9e2464a1f47c2e6c5c27a5dbe1d44dcac98ef25a0a2031f30a0a13c7976",
+    "cff7c32a8a830d328c7e5c510d59f98352da501c90bac3ba6c2b52d46ef5d2cf"
    ],
    "subject_key": "greylady"
   },
@@ -898,6 +1355,11 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "7365bb147f9c256792a2e7978250e32117cd37fd574160b9cb5ff45f6e819663",
+    "8930474a2bf6898d4ebdca431a6b0f1749f80e8ebc10b05975d02be21fe0998b",
+    "fa5ed404a57a5013789a265650df2e8bdd8e1506fe5746dd068e66b89e0dfb6e"
+   ],
    "subject_key": "hwelgrue"
   },
   "RM_Illoth": {
@@ -907,11 +1369,6 @@
      "north": "46287e82fd41d878f582165783c26c1fffc6074c85831a7dce878cef7f036aff",
      "south": "f79178ada94af101cf91d2801cbd4109f8c82fb616dd497b4ff4af2b5c47822e"
     },
-    "B": {
-     "east": "49488b471b241356de5de5fa143dec93fb803b59d0ca2667db56c7ac7bbc004f",
-     "north": "1cef08e262658cc4d6758120b7ae5cf8de735329ec8a242e85094f6ff5ef6560",
-     "south": "8a3287d9253bf143c76687e344656dc5e282fcfa3405fa53b3791cd93625df52"
-    },
     "C": {
      "east": "2705c1e7c5ef6ea67194ec3a3100ed4ab1f58825f11da07a7fb7171bd1cbc1b9",
      "north": "46287e82fd41d878f582165783c26c1fffc6074c85831a7dce878cef7f036aff"
@@ -919,12 +1376,10 @@
    },
    "graphic_of": {
     "A": "RM_TheRot/Fauna/Redrawn/Illoth/Illoth",
-    "B": "RM_TheRot/Fauna/Redrawn/Illoth/Illoth",
     "C": "RM_TheRot/Fauna/Redrawn/Illoth/Illoth"
    },
    "labels": {
     "A": "IN GAME \u2014 TheRot",
-    "B": "render rot_illoth",
     "C": "history TheRot 2026-10-03"
    },
    "res": "RM_TheRot/Fauna/Redrawn/Illoth/Illoth",
@@ -932,6 +1387,14 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "1cef08e262658cc4d6758120b7ae5cf8de735329ec8a242e85094f6ff5ef6560",
+    "2705c1e7c5ef6ea67194ec3a3100ed4ab1f58825f11da07a7fb7171bd1cbc1b9",
+    "46287e82fd41d878f582165783c26c1fffc6074c85831a7dce878cef7f036aff",
+    "49488b471b241356de5de5fa143dec93fb803b59d0ca2667db56c7ac7bbc004f",
+    "8a3287d9253bf143c76687e344656dc5e282fcfa3405fa53b3791cd93625df52",
+    "f79178ada94af101cf91d2801cbd4109f8c82fb616dd497b4ff4af2b5c47822e"
    ],
    "subject_key": "illoth"
   },
@@ -948,26 +1411,50 @@
     },
     "D": {
      "single": "094319d50a64e5ec558138cc90d3ad911986e178e4c0927124b43aec9d79edb6"
+    },
+    "E": {
+     "single": "654314b884c9f08bbc833aef526b6a109fa074c639576d21f19d1e0d8044e905"
+    },
+    "F": {
+     "single": "92d7fd135ced46208d43398237a105e34c44cd49de5f5fb6f4653974bef6538d"
+    },
+    "G": {
+     "single": "ef54a4d9de1296c592c0eca1d6a2e73fbff9cb928a93972747c5b4a8e95159c5"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/MortalMorel",
     "B": "RotSporeKit/Things/Plant/MortalMorel",
     "C": "RotSporeKit/Things/Plant/MortalMorel",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "RotSporeKit/Things/Plant/MortalMorel",
+    "F": "_byname",
+    "G": "_byname"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rot_mortalmorel_v3a",
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "B": "IN GAME \u2014 random variant MortalMorel_A (1 of 2) \u2014 TheRot",
     "C": "render rot_mortalmorel_v3b",
-    "D": "render rot_mortalmorelplant_v2"
+    "D": "render rot_mortalmorelplant_v2",
+    "E": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant MortalMorel_p3b (2 of 2) \u2014 TheRot",
+    "F": "render rotvar_mortalmorelplant_a_v1",
+    "G": "render rotvar_mortalmorelplant_b_v1 \u2014 failed canon check"
    },
    "res": "RotSporeKit/Things/Plant/MortalMorel",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [
+    "094319d50a64e5ec558138cc90d3ad911986e178e4c0927124b43aec9d79edb6",
+    "88d5e0e268b3b3bb1af578c92d704d06d97133cfef4c6dfbfa66e91c85e89917",
+    "cf9a25a2014007a0c292f7d6d4779e2af4925bf5e37d79965a3b889bf45553f2",
+    "e7d329d02d1ab001e156f4dee898e66756e65d70653dc244f2a6efaca2eeb446"
    ],
    "subject_key": "mortalmorelplant"
   },
@@ -989,6 +1476,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "014b59c7f23a75e38e64624f66fc06ff0d184a5c493676fd0ca9af759c6b4075",
+    "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6",
+    "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac"
+   ],
    "subject_key": "mullgoth"
   },
   "RM_Nuitae": {
@@ -1002,26 +1494,26 @@
     "C": {
      "single": "1a53090dfe59bbf2c0da4952b2992dd5b73ad1fd5f7a9e94de01f2603c430e43"
     },
-    "D": {
-     "single": "705f39d048cb95aeaea888397ffcfcbe0b4eb36c589e98e3571b69474e7c6c7f"
+    "F": {
+     "single": "4328ad61ef9321e749006768e6a11191ce515d9fb1375671aab1893f467df37f"
     },
-    "E": {
-     "single": "7681fca44051478ba0e7f936a0906875d89deebac7a62371119a53c7425fea17"
+    "G": {
+     "single": "9b26c7887e633cbfec200eaec112fcf2fbbf78dd0260a956c7d6e0ba573636e6"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/Nuitae",
     "B": "RotSporeKit/Things/Plant/Nuitae",
     "C": "RotSporeKit/Things/Plant/Nuitae",
-    "D": "RotSporeKit/Things/Plant/Nuitae",
-    "E": "RotSporeKit/Things/Plant/Nuitae"
+    "F": "RotSporeKit/Things/Plant/Nuitae",
+    "G": "RotSporeKit/Things/Plant/Nuitae"
    },
    "labels": {
-    "A": "our deployed art (render rot_nuitae_v2) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rot_nuitae_v3a",
-    "C": "render rot_nuitae_v3b",
-    "D": "render nuitae_a_v1",
-    "E": "render nuitae_b_v1"
+    "A": "IN GAME \u2014 random variant Nuitae_A (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant Nuitae_B (2 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant Nuitae_C (3 of 3) \u2014 TheRot",
+    "F": "render rotvar_nuitae_a_v1",
+    "G": "render rotvar_nuitae_b_v1"
    },
    "res": "RotSporeKit/Things/Plant/Nuitae",
    "reserved": [
@@ -1029,7 +1521,16 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [
+    "1a53090dfe59bbf2c0da4952b2992dd5b73ad1fd5f7a9e94de01f2603c430e43",
+    "3609da2015e9b3f233e4f5484fffadacbcf354d593afb9beffd170ee1e512476",
+    "705f39d048cb95aeaea888397ffcfcbe0b4eb36c589e98e3571b69474e7c6c7f",
+    "7681fca44051478ba0e7f936a0906875d89deebac7a62371119a53c7425fea17",
+    "ebc6f07ca5e19448d6593458f6bb94c828467131193253848e7f50161aefc6ad"
    ],
    "subject_key": "nuitae"
   },
@@ -1043,23 +1544,46 @@
     },
     "C": {
      "single": "7e02de00583902fc0872bd4c5c6c57ef8f23de70099afad603e3a96197dc2190"
+    },
+    "D": {
+     "single": "d6b6f91caeac01f6f95171bb067243925e00e4cae9913ca352f300b7ec0c47d4"
+    },
+    "E": {
+     "single": "b0ac53f1adbbd5abfcb1af097037ce1ed996346992b08c149794f415503bc73c"
+    },
+    "F": {
+     "single": "b8257ab9ba945eadaf949a2c9634e5c004bafbfb4167e9939d9c4206415f017a"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/PaleTree",
     "B": "RotSporeKit/Things/Plant/PaleTree",
-    "C": "RotSporeKit/Things/Plant/PaleTree"
+    "C": "RotSporeKit/Things/Plant/PaleTree",
+    "D": "RotSporeKit/Things/Plant/PaleTree",
+    "E": "RotSporeKit/Things/Plant/PaleTree",
+    "F": "Things/Plant/TreeAnima_Immature"
    },
    "labels": {
-    "A": "our deployed art (render rot_paletree_v3) \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant PaleTree_A (1 of 1) \u2014 TheRot",
     "B": "render rot_paletree_v2",
-    "C": "render rut_paletree_v1"
+    "C": "render rut_paletree_v1",
+    "D": "render rotvar_paletree_a_v1",
+    "E": "render rotvar_paletree_b_v1",
+    "F": "IN GAME \u2014 ludeon.rimworld.royalty"
    },
    "res": "RotSporeKit/Things/Plant/PaleTree",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "21f4283ee40c328728c7b833e88b81700aef4b4cf5f71887753101cee8168294",
+    "7e02de00583902fc0872bd4c5c6c57ef8f23de70099afad603e3a96197dc2190",
+    "9f4aab8cfdb8b5dcd9a82f17dfa564b4d2c9200685a7f08b1f3f5858d3ff60ac"
    ],
    "subject_key": "paletree"
   },
@@ -1070,20 +1594,36 @@
     },
     "B": {
      "single": "0dbb121338e27d00ae5d149115a35e3352eda486c73201e50fb55bcfb8db419f"
+    },
+    "C": {
+     "single": "121e4172e33982a82962d9d6e8e537be36cbdc809e635de3cc03afa65ba3566b"
+    },
+    "D": {
+     "single": "44e5594533102e0e0ac6540591e859a0c0c3bbd72833700bf914604acb2cf266"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/Pusmelon",
-    "B": "RotSporeKit/Things/Plant/Pusmelon"
+    "B": "RotSporeKit/Things/Plant/Pusmelon",
+    "C": "RotSporeKit/Things/Plant/Pusmelon",
+    "D": "RotSporeKit/Things/Plant/Pusmelon"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rot_pusmelon_v2"
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "B": "IN GAME \u2014 random variant Pusmelon_A (1 of 1) \u2014 TheRot",
+    "C": "render rotvar_pusmelon_a_v1",
+    "D": "render rotvar_pusmelon_b_v1"
    },
    "res": "RotSporeKit/Things/Plant/Pusmelon",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [
+    "0dbb121338e27d00ae5d149115a35e3352eda486c73201e50fb55bcfb8db419f",
+    "72d3ad9a630f2ad58ba9a56edcf67cf62a8f80e45598400024623acafd7c2006"
    ],
    "subject_key": "pusmelon"
   },
@@ -1092,28 +1632,40 @@
     "A": {
      "single": "cfa63202898cdf5306f548ca7a2374110b5eb49e7189b71e74579477c932216e"
     },
-    "B": {
-     "single": "4459145f8a4cbabea89690312cad07f543d0a3e63e329402bfdf1a365f0bbb93"
-    },
     "C": {
      "single": "aa606e0edc8224783fde99ef5b87439eb6c08d44893ef6f8a6f485590a8a24e3"
+    },
+    "D": {
+     "single": "93c962f2d7fa0ff4064ae3f011c3f1e98247aca92765c59268969fcdfb098749"
+    },
+    "E": {
+     "single": "86824802eb7ee499649e7e7bc39245f0faffbf6cd002d0cfc37262d5944b443c"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/RegenerantVeil",
-    "B": "RotSporeKit/Things/Plant/RegenerantVeil",
-    "C": "RotSporeKit/Things/Plant/RegenerantVeil"
+    "C": "RotSporeKit/Things/Plant/RegenerantVeil",
+    "D": "RotSporeKit/Things/Plant/RegenerantVeil",
+    "E": "RotSporeKit/Things/Plant/RegenerantVeil"
    },
    "labels": {
-    "A": "our deployed art (render rot_regenerantveil_v2) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rut_liveingredient_regenerantveil_v1",
-    "C": "render rut_regenerantveil_v1"
+    "A": "IN GAME \u2014 random variant RegenerantVeil_A (1 of 2) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant RegenerantVeil_C (2 of 2) \u2014 TheRot",
+    "D": "render rotvar_regenerantveil_a_v1",
+    "E": "render rotvar_regenerantveil_b_v1"
    },
    "res": "RotSporeKit/Things/Plant/RegenerantVeil",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "4459145f8a4cbabea89690312cad07f543d0a3e63e329402bfdf1a365f0bbb93",
+    "aa606e0edc8224783fde99ef5b87439eb6c08d44893ef6f8a6f485590a8a24e3",
+    "cfa63202898cdf5306f548ca7a2374110b5eb49e7189b71e74579477c932216e"
    ],
    "subject_key": "regenerantveil"
   },
@@ -1122,28 +1674,34 @@
     "A": {
      "single": "a9dac49e125b19e4881580693ad68bfc3907b88755ca9e83c921239f56a696a9"
     },
-    "B": {
-     "single": "2de83bd7f75eba5331edfd781f4eb8c8ea0dc384f12b2df05f4fdc9655211c05"
-    },
     "C": {
      "single": "2620878044a5f8e7a062bb180b1493ca77601398c1b38825dbbfbefdbdad34ca"
+    },
+    "D": {
+     "single": "1224d249f75bd2e50bf5616df607a814943caf7c1481cffb8f600c70dd00b489"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/Sagecrust",
-    "B": "RotSporeKit/Things/Plant/Sagecrust",
-    "C": "RotSporeKit/Things/Plant/Sagecrust"
+    "C": "RotSporeKit/Things/Plant/Sagecrust",
+    "D": "RotSporeKit/Things/Plant/Sagecrust"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render legacy_d1f1c87c_sagecrust_v1",
-    "C": "render rot_sagecrust_v2"
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "C": "IN GAME \u2014 random variant Sagecrust_A (1 of 1) \u2014 TheRot",
+    "D": "render rotvar_sagecrust_a_v1"
    },
    "res": "RotSporeKit/Things/Plant/Sagecrust",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
+   ],
+   "shownBase": [
+    "2620878044a5f8e7a062bb180b1493ca77601398c1b38825dbbfbefdbdad34ca",
+    "2de83bd7f75eba5331edfd781f4eb8c8ea0dc384f12b2df05f4fdc9655211c05",
+    "a9dac49e125b19e4881580693ad68bfc3907b88755ca9e83c921239f56a696a9"
    ],
    "subject_key": "sagecrust"
   },
@@ -1164,6 +1722,11 @@
    "res": "Things/Pawn/Animal/RM_Shambles/RM_Shambles",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "213c6d2777ae9a9826dacfacaddd896cf14ab115ec8ee5bb71485df280761a35",
+    "5b88ed6046bf16b892979f96bf28f30e962f5a81b5eefa0deacc88a5ebb55695",
+    "9766cbacb85d1b6cc82812fdb8716a77578e138af7cb9bd7746c31eb85607835"
    ],
    "subject_key": "shambles"
   },
@@ -1187,17 +1750,17 @@
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
-    "B": "_byname",
-    "C": "_byname",
-    "D": "_byname",
-    "E": "_byname"
+    "B": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
+    "C": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
+    "D": "RotSporeKit/Things/Plant/Shinecap/ShinecapImmature",
+    "E": "RotSporeKit/Things/Plant/Shinecap/ShinecapImmature"
    },
    "labels": {
-    "A": "our deployed art (render rot_shinecap_v2) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rot_shinecap_v3a",
-    "C": "render rot_shinecap_v3b",
-    "D": "render rot_shinecapimmature_v3a",
-    "E": "render rot_shinecapimmature_v3b"
+    "A": "IN GAME \u2014 random variant ShinecapGrown_a (1 of 3) \u2014 TheRot",
+    "B": "IN GAME \u2014 random variant ShinecapGrown_b (2 of 3) \u2014 TheRot",
+    "C": "IN GAME \u2014 random variant ShinecapGrown_c (3 of 3) \u2014 TheRot",
+    "D": "IN GAME \u2014 random variant ShinecapImmature_d (1 of 2) \u2014 TheRot",
+    "E": "IN GAME \u2014 random variant ShinecapImmature_e (2 of 2) \u2014 TheRot"
    },
    "res": "RotSporeKit/Things/Plant/Shinecap/ShinecapGrown",
    "reserved": [
@@ -1206,6 +1769,13 @@
     "C",
     "D",
     "E"
+   ],
+   "shownBase": [
+    "19dd20f4f2d1f596273dd54e3b556e247f84d7e94ab23d752ca946439b44e2c3",
+    "2128695880dac696ffc4b7d667cd4bb1e98ba0b4b0f8613a187402437672ac25",
+    "9d96a90735f41eef90aae10b5b111af8bc467b85da07a8efdf24d3232bf5a7cb",
+    "b3ea8db95a9444ba5473afbe92af22365ce9f7f5222cc1ad1146f4e0d1a2219c",
+    "cec620f9fe6dbb4bb0ca8fdaca5ade74ae247bf5b2a510899430ac785921819c"
    ],
    "subject_key": "shinecap"
   },
@@ -1227,6 +1797,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "0bdfaf0fd45e71181dd341de9f4aed815c99ec42a902c8a164180b3dde8c6bb6",
+    "e713aad586bcc162a1060e3b245c9d605385fa26883d5619325fb60b7493b639",
+    "fb43237ea89d4c20c957d4f9e75d4285e5c22581a301a1cb723438cb5b96911d"
+   ],
    "subject_key": "skerrith"
   },
   "RM_Skulltop": {
@@ -1239,11 +1814,14 @@
     "A": "RotSporeKit/Things/Plant/Skulltop/Skulltop"
    },
    "labels": {
-    "A": "our deployed art (render rot_skulltop_v2) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant Skulltop_A (1 of 1) \u2014 TheRot"
    },
    "res": "RotSporeKit/Things/Plant/Skulltop/Skulltop",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "d29b4c46de42d5dc714dca4c7c876f3aa75a86baa52609534df815b2f3d33504"
    ],
    "subject_key": "skulltop"
   },
@@ -1280,6 +1858,14 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "1f3992e70590047acaf36daa35fd4859a8e546ca12eb39aaac5be1e57f1875cc",
+    "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+    "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85",
+    "93971b556669f1a03b8fe7c910c34d91eb5d929c2025a8ea943d3a6a6c957df2",
+    "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb",
+    "b2ec037d0ff17824fb6dd65e59cd955ec141621db86ef6a432b716034e7b8617"
+   ],
    "subject_key": "thozzik"
   },
   "RM_ThozzikColony": {
@@ -1289,11 +1875,6 @@
      "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb",
      "south": "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85"
     },
-    "B": {
-     "east": "1f3992e70590047acaf36daa35fd4859a8e546ca12eb39aaac5be1e57f1875cc",
-     "north": "93971b556669f1a03b8fe7c910c34d91eb5d929c2025a8ea943d3a6a6c957df2",
-     "south": "b2ec037d0ff17824fb6dd65e59cd955ec141621db86ef6a432b716034e7b8617"
-    },
     "C": {
      "east": "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
      "north": "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb"
@@ -1301,12 +1882,10 @@
    },
    "graphic_of": {
     "A": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
-    "B": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
     "C": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik"
    },
    "labels": {
     "A": "IN GAME \u2014 TheRot",
-    "B": "render rot_thozzik",
     "C": "history TheRot 2026-10-03"
    },
    "res": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
@@ -1314,6 +1893,14 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "1f3992e70590047acaf36daa35fd4859a8e546ca12eb39aaac5be1e57f1875cc",
+    "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+    "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85",
+    "93971b556669f1a03b8fe7c910c34d91eb5d929c2025a8ea943d3a6a6c957df2",
+    "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb",
+    "b2ec037d0ff17824fb6dd65e59cd955ec141621db86ef6a432b716034e7b8617"
    ],
    "subject_key": "thozzikcolony"
   },
@@ -1335,6 +1922,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "14dea1a2ddd8f12898e8cc1028f7d979e75c82a3569aa8117b4c78815f6b97e6",
+    "17e50a5c3cc893ad5c9911165efc077f16a3eb52f5b14776f5748be5621512d9",
+    "d4e13b31c09511ff8b4e3ce205f9aa91e13aa7faa6f5ef38206d4dd314ac55b3"
+   ],
    "subject_key": "thozzikcolonyqueen"
   },
   "RM_ThozzikQueen": {
@@ -1354,6 +1946,11 @@
    "res": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "14dea1a2ddd8f12898e8cc1028f7d979e75c82a3569aa8117b4c78815f6b97e6",
+    "17e50a5c3cc893ad5c9911165efc077f16a3eb52f5b14776f5748be5621512d9",
+    "d4e13b31c09511ff8b4e3ce205f9aa91e13aa7faa6f5ef38206d4dd314ac55b3"
    ],
    "subject_key": "thozzikqueen"
   },
@@ -1390,6 +1987,14 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "1f3992e70590047acaf36daa35fd4859a8e546ca12eb39aaac5be1e57f1875cc",
+    "3b4b9ca0612aa4fefa4d3f792ad868e34821a90484d715267382f9ac54f632ed",
+    "63952bb227d2f6b3a27d4505568ed9f8d55cda641ff3cd7f297a4a23121a3b85",
+    "93971b556669f1a03b8fe7c910c34d91eb5d929c2025a8ea943d3a6a6c957df2",
+    "a9a3cbe1d48c6834dece91f3d1153611de92c72f6634514f64539703c1bd9aeb",
+    "b2ec037d0ff17824fb6dd65e59cd955ec141621db86ef6a432b716034e7b8617"
+   ],
    "subject_key": "thozzikspawned"
   },
   "RM_VioletWimple": {
@@ -1405,26 +2010,44 @@
     },
     "D": {
      "single": "e972e8af905027810d917263fb40ba0325ac114d4ec62e4f8ca08c41dced65dd"
+    },
+    "E": {
+     "single": "0ccb0af62c238a4f3ccb76186d18e9ba988b16c9990fb5711d2e2a7c437d55eb"
+    },
+    "F": {
+     "single": "cd577c84d4069c5476192ebd4ea3bfbd58316a7f9ed0afdde828bc7ac215702b"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/VioletWimple",
     "B": "RotSporeKit/Things/Plant/VioletWimple",
     "C": "RotSporeKit/Things/Plant/VioletWimple",
-    "D": "RotSporeKit/Things/Plant/VioletWimple"
+    "D": "RotSporeKit/Things/Plant/VioletWimple",
+    "E": "RotSporeKit/Things/Plant/VioletWimple",
+    "F": "RotSporeKit/Things/Plant/VioletWimple"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
     "B": "render rot_violetwimple_v3a",
     "C": "render rot_violetwimple_v3b",
-    "D": "render rot_violetwimple_v2"
+    "D": "IN GAME \u2014 random variant VioletWimple_A (1 of 3) \u2014 TheRot",
+    "E": "in game now, a re-encoded copy of set B \u2014 IN GAME \u2014 random variant VioletWimple_p3a (2 of 3) \u2014 TheRot",
+    "F": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant VioletWimple_p3b (3 of 3) \u2014 TheRot"
    },
    "res": "RotSporeKit/Things/Plant/VioletWimple",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "be510f69bf160e079d0cfd65823f9384a3b6a27b61eb71a3e71ebd011f1b1d08",
+    "cf994f6d38a65ee5dce5ed77d0146135ed319cbb25ed49a0ca25e35cb6215162",
+    "e972e8af905027810d917263fb40ba0325ac114d4ec62e4f8ca08c41dced65dd",
+    "ea7fed794d5a18d766b4144da031225c49723889494d421e36ff389849fb2656"
    ],
    "subject_key": "violetwimple"
   },
@@ -1441,26 +2064,44 @@
     },
     "D": {
      "single": "9ffbe202c53ff667a1a82398abf04756258a1443f960955b6304ad3de57a73d3"
+    },
+    "E": {
+     "single": "16b31393e849d1248dcf683ae64cc03581e9fd945fc3991254db36f83f90d371"
+    },
+    "F": {
+     "single": "abbd2f4201357dc09e588ed9195570ee3fc4e8f14a12bb8abd73fb989a0564cc"
     }
    },
    "graphic_of": {
     "A": "RotSporeKit/Things/Plant/Wrinklecap",
     "B": "RotSporeKit/Things/Plant/Wrinklecap",
     "C": "RotSporeKit/Things/Plant/Wrinklecap",
-    "D": "RotSporeKit/Things/Plant/Wrinklecap"
+    "D": "RotSporeKit/Things/Plant/Wrinklecap",
+    "E": "RotSporeKit/Things/Plant/Wrinklecap",
+    "F": "RotSporeKit/Things/Plant/Wrinklecap"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
     "B": "render rot_wrinklecap_v3a",
     "C": "render rot_wrinklecap_v3b",
-    "D": "render rot_wrinklecap_v2"
+    "D": "IN GAME \u2014 random variant Wrinklecap_A (1 of 3) \u2014 TheRot",
+    "E": "in game now, a re-encoded copy of set B \u2014 IN GAME \u2014 random variant Wrinklecap_p3a (2 of 3) \u2014 TheRot",
+    "F": "in game now, a re-encoded copy of set C \u2014 IN GAME \u2014 random variant Wrinklecap_p3b (3 of 3) \u2014 TheRot"
    },
    "res": "RotSporeKit/Things/Plant/Wrinklecap",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "9ffbe202c53ff667a1a82398abf04756258a1443f960955b6304ad3de57a73d3",
+    "bc92cf53af00ede2f4a6c731b0d3db30e68fecb73772d189aa356b1b8d4213e6",
+    "e11b0e1ee56c9097c6c6ab210fb602582f944a9021f8aaf6e766ae199dabf75c",
+    "e3b8c4841b3b109e0713b5af56e3f91e2de84b700e0484a2c7c3a48b73f0e63e"
    ],
    "subject_key": "wrinklecap"
   },
@@ -1522,6 +2163,26 @@
     "E",
     "F"
    ],
+   "shownBase": [
+    "081005155dc2c73537267237f86b2e83c1ed423cbc4bb53d4d5a0d06b4be521a",
+    "0fb340316f7c162bdf1c1bfaf3bc507f4a025e3f199e6ea44e7afcb19e5ee8b1",
+    "1638eb06ac8ad05585fa0418a58f4f0a8fb1ced49edf1d10f8abefeea288a53d",
+    "319a9d0a07c3f0dbe060e1dc38b55e98b1904a34eab5b9041fda230a2a0c485b",
+    "335e7c919ba15bc6a9f499df86ce249304c000e4996ffd08c15c77459c605350",
+    "3713dcf7f1c90ca94fd7facfd396f5329b11ba647d0a29ff1378d73a4968388d",
+    "3be9ad845f817b75cef8a1d4106557f6a4fe7edcb81a96632edfc73dc0e429eb",
+    "5fd33f77bfa07c29286311a05162be018799a7eba28143de26b61c63dd07b094",
+    "64e8a7b01468a6be75d7ff64e1939aef15980e72d7861e769244e1fe8d1c3fb5",
+    "71bc818df17f50639a95e89317210a981d3a40cbb588d2951e5c51486a8ff622",
+    "7c010de897bf89f38df87914d5583c4cae8fb5fe3e2ef4d7ac91093560db027f",
+    "7f87b2dde7d7a9c898fdd1d119986c6a01dd913182774c7451100fbeb4e37e1e",
+    "9234254e26038b048656eeb66a7aecb0501e86b80b5112243966fd9c0d3df863",
+    "9ded9c265c32e51f4a62ac31b595c6e16abbcd58bf63e96fdf2553c0043e1791",
+    "ab0eba0b16a0d64921d64ea8dd3917bf79b20bb6737fc686ab0d292035d9228f",
+    "c15f31c73a543fea740004f8aa1b6e951d0f228f8054eec7c9729e16e6e3d764",
+    "c26ba72f3c99f7b199d9672b6601800ff89e317defd1400f32f8eab77456c05d",
+    "ce84c80fc922ee5bb95898af8236e06f95b7292641bc99013f471888302e3ceb"
+   ],
    "subject_key": "shirotrap"
   },
   "Snoruuk": {
@@ -1540,27 +2201,52 @@
      "east": "a4c6a36277e72f754db3e208f1bdca0309973219ab05c048d80aa43208642a6d",
      "north": "e1c8c25f1b10ea4d4116fcba2276664be2f4e7fd25b2c5d6518b9a355e796c53",
      "south": "a8e85102baba028883b2ac9e634b854e9cb05be8adb57269c9e3a07d2321a25b"
+    },
+    "D": {
+     "east": "664c6652ed3d2ebbb735e5e5975f590e2736dccbfdb492b13ef791c0e2623914",
+     "north": "26de43b29a8945a6601b0f823f46e9b9d79203a783f16edb64218c184dd19778",
+     "south": "71ed981ca7e4e8ab776ce82f1acb412480fa44c5220f184e69abbcc883e9be39"
+    },
+    "E": {
+     "east": "947011bf8f0434449594f139ca9ed68eb9590be738e111cfb3460e9965945853"
     }
    },
    "graphic_of": {
     "A": "swanimals/Snoruuk/Snoruuk",
     "B": "swanimals/Snoruuk/Snoruuk",
-    "C": "swanimals/Snoruuk/Snoruuk_j"
+    "C": "swanimals/Snoruuk/Snoruuk_j",
+    "D": "swanimals/Snoruuk/Snoruuk",
+    "E": "swanimals/Snoruuk/Snoruuk"
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Snoruuk_v1",
-    "C": "IN GAME \u2014 mlie.starwarsanimalcollection"
+    "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
+    "D": "render enact_6811876e_snoruuk_v1",
+    "E": "render rotrow_snoruuk_v2"
    },
    "res": "swanimals/Snoruuk/Snoruuk",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "0a4265bc41812109b679ca98dd43cdb469e6f901b0e51967d48f4b672ccb5d31",
+    "1de37148349b8a4492a9578d91b777f30205ad688f6deb2dcb90c288e63a95ff",
+    "47dc7d82cdf263c00066aac708f0fb84df47e93230415eef535752be258e7f24",
+    "84b5aed6c720ce44907c2bf4ca7505fafe26191f222ec7982396057411308791",
+    "a4c6a36277e72f754db3e208f1bdca0309973219ab05c048d80aa43208642a6d",
+    "a8e85102baba028883b2ac9e634b854e9cb05be8adb57269c9e3a07d2321a25b",
+    "a9c96b522a49f28939983909b39e040c62053b19ff1c8be614463fcdd372c48e",
+    "dc8164ce7f2a65138878ffeb48bb98482d385afc2bf5d68c1abc6e3484f3ef49",
+    "e1c8c25f1b10ea4d4116fcba2276664be2f4e7fd25b2c5d6518b9a355e796c53"
    ],
    "subject_key": "snoruuk"
   }
  },
  "sheetId": "therot_sheet_2026-10-05",
- "snapshotId": "cf064b3a064be0fd"
+ "snapshotId": "72e2706ba545c5cf"
 }
