@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using HarmonyLib;
 using UnityEngine;
 using Verse;
@@ -288,77 +290,31 @@ namespace RimMandrake.DivingInteraction
             list.Begin(settingsView);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
-            list.CheckboxLabeled("Sea diving enabled", ref masterEnabled,
-                "Master switch. Off: no dive hatch can be entered, every floor mechanic below stops "
-              + "(defences, discharges, surges, floor light, heat, trade), and newly generated floors get no "
-              + "seeded animals, ruins or terraces. Restart-required parts (floor plants and animal refill) "
-              + "follow it after a restart. A colonist already encased in brine stays encased and keeps "
-              + "smothering until mined out, so switching this off never strands anyone in a jacket.");
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            if (masterEnabled)
-            {
-                list.Gap();
+            if (Group(list, "Master switch and access", RimMandrake.Shared.SettingScope.Now, new[] { "masterEnabled", "requireGravEngine" }))
+                {
+                list.CheckboxLabeled("Sea diving enabled", ref masterEnabled,
+                    "Master switch. Off: no dive hatch can be entered, every floor mechanic below stops "
+                  + "(defences, discharges, surges, floor light, heat, trade), and newly generated floors get no "
+                  + "seeded animals, ruins or terraces. Restart-required parts (floor plants and animal refill) "
+                  + "follow it after a restart. A colonist already encased in brine stays encased and keeps "
+                  + "smothering until mined out, so switching this off never strands anyone in a jacket.");
                 list.CheckboxLabeled("Require a grav engine to build a dive hatch", ref requireGravEngine,
                     "Shipped default: ON. The owner's ruling is that a gravship is the sole way "
                   + "to reach a sea floor — turning this off lets the hatch be built anywhere, for "
                   + "testing or a different ruleset, but that is not the shipped experience.");
+                list.GapLine();
+            }
 
-                list.Gap();
+            if (Group(list, "Sea-floor generation (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "seaFloorBandsEnabled", "seabedFloorContentEnabled", "seabedSingleSeederEnabled" }))
+                {
                 list.CheckboxLabeled("Sea floors: habitat terrain bands (map generation)", ref seaFloorBandsEnabled,
                     "Shipped default: ON. AFFECTS MAP GENERATION. A newly generated sea floor gets "
                   + "each sea's own habitat terrain in patches (the Scald's mat-ringed hot pools, "
                   + "the Chill's propane crust and liquid pools) so its floor flora can grow. Off: "
                   + "the floor is one plain terrain and that flora never appears. Floors already "
                   + "generated are unchanged either way.");
-
-                list.Gap();
-                list.CheckboxLabeled("The Scald: immersion berth (ship rooms heat)", ref scaldBerthEnabled,
-                    "Shipped default: ON. A ship parked on the Scald's floor slowly heats its rooms; "
-                  + "the load grows with each room's hull border, so a compact ship is cheap to cool "
-                  + "and a sprawling one is not. Coolers and power are vanilla. It never seals doors "
-                  + "or blocks launch. Off: no heat is added.");
-                if (scaldBerthEnabled)
-                {
-                    list.Label("Immersion heat intensity: " + scaldBerthIntensity.ToString("0.00") + "x");
-                    scaldBerthIntensity = list.Slider(scaldBerthIntensity, 0.25f, 3f);
-                }
-
-                list.Gap();
-                list.CheckboxLabeled("The Scald: floor vent fields (affects floor generation)", ref scaldVentFieldsEnabled,
-                    "Shipped default: ON. WORLD-GENERATION setting. A new Scald floor map generates "
-                  + "3-5 steam vents, glass and bead flora around them, and bubble-sailors riding "
-                  + "each vent. Floors already generated keep what they have. Off: new floors have none.");
-                list.CheckboxLabeled("The Scald: Sail Forecast (sailors warn before a vent discharges)", ref scaldVentForecastEnabled,
-                    "Shipped default: ON. Before a vent discharges, every bubble-sailor gathers over "
-                  + "it for about 40 seconds; the same behaviour precedes every discharge. Off: vents "
-                  + "never discharge and sailors only stay near their vents.");
-                if (scaldVentForecastEnabled)
-                {
-                    list.CheckboxLabeled("Vent discharge burns and interrupts nearby people", ref scaldVentDischargeHarms,
-                        "Shipped default: ON. Off: the warning and discharge look the same but hurt nobody.");
-                }
-
-                list.Gap();
-                list.CheckboxLabeled("The Scald: bottom-walkers expose mat (the Walking Pasture)", ref walkerGrazingEnabled,
-                    "Shipped default: ON. Where a bottom-walker grazes standing still, the crowncarpet mat is "
-                  + "cropped and its pigment-rich underside is left bare; colonists doing hauling gather it behind "
-                  + "the herd, stop when the herd moves on, and keep away from the walkers. Off: walkers are plain "
-                  + "grazing animals and no job is offered.");
-
-                list.Gap();
-                list.CheckboxLabeled("The Scald: Return Gallery coolant ruin (affects floor generation)", ref scaldReturnGalleryEnabled,
-                    "Shipped default: ON. WORLD-GENERATION setting. A new Scald floor map lays a half-buried "
-                  + "Rust Cathedral coolant manifold: probe its five branch outlets, read the gauges, and mark "
-                  + "the branch that still returns warm water to open its locker. A wrong mark only jams the "
-                  + "latch for a day. Floors already generated keep what they have. Off: new floors have none, "
-                  + "and colonists stop probing outlets on galleries that already exist.");
-                list.CheckboxLabeled("The Chill: Return Comb landmark (affects floor generation)", ref chillReturnCombEnabled,
-                    "Shipped default: ON. WORLD-GENERATION setting. A new Chill floor map lays the Return Comb: a "
-                  + "horseshoe of ice-rock cut by black busbars, the return junction of the unfinished planetary "
-                  + "dynamo. Scenery and lore only, no puzzle. Floors already generated keep what they have. "
-                  + "Off: new floors have none.");
-
-                list.Gap();
                 list.CheckboxLabeled("Sea-floor layer: each sea generates its own floor (affects floor generation)", ref seabedFloorContentEnabled,
                     "Shipped default: ON. WORLD-GENERATION setting. A ship landing on the sea floor under the "
                   + "Scald, the Grey Sea, the Twilight Sea or the Chill finds that sea's own floor: its terrain, "
@@ -369,12 +325,31 @@ namespace RimMandrake.DivingInteraction
                   + "the sea's own seeder (on the Chill, the count set below), and the floor then refills slowly over "
                   + "time. Off: vanilla's animal step also runs at generation, which can start a floor far busier "
                   + "than the count below. PROVISIONAL.");
-                list.CheckboxLabeled("Sea-floor layer: floors grow their sea's plants and refill their animals (restart)", ref seabedFloorLifeEnabled,
-                    "Shipped default: ON. Takes effect after a restart. Each sea floor on the sea-floor layer grows "
-                  + "the flora of the sea above it and slowly repopulates with that sea's animals, as the hatch's "
-                  + "floors did. Off: floors keep only the animals placed when they were generated, and no plants.");
+                list.GapLine();
+            }
 
-                list.Gap();
+            if (Group(list, "The Scald: floor generation (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "scaldVentFieldsEnabled", "scaldReturnGalleryEnabled" }))
+                {
+                list.CheckboxLabeled("The Scald: floor vent fields (affects floor generation)", ref scaldVentFieldsEnabled,
+                    "Shipped default: ON. WORLD-GENERATION setting. A new Scald floor map generates "
+                  + "3-5 steam vents, glass and bead flora around them, and bubble-sailors riding "
+                  + "each vent. Floors already generated keep what they have. Off: new floors have none.");
+                list.CheckboxLabeled("The Scald: Return Gallery coolant ruin (affects floor generation)", ref scaldReturnGalleryEnabled,
+                    "Shipped default: ON. WORLD-GENERATION setting. A new Scald floor map lays a half-buried "
+                  + "Rust Cathedral coolant manifold: probe its five branch outlets, read the gauges, and mark "
+                  + "the branch that still returns warm water to open its locker. A wrong mark only jams the "
+                  + "latch for a day. Floors already generated keep what they have. Off: new floors have none, "
+                  + "and colonists stop probing outlets on galleries that already exist.");
+                list.GapLine();
+            }
+
+            if (Group(list, "The Chill: floor generation (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "chillReturnCombEnabled", "chillDensityDrawEnabled", "chillDiveAnimalCount" }))
+                {
+                list.CheckboxLabeled("The Chill: Return Comb landmark (affects floor generation)", ref chillReturnCombEnabled,
+                    "Shipped default: ON. WORLD-GENERATION setting. A new Chill floor map lays the Return Comb: a "
+                  + "horseshoe of ice-rock cut by black busbars, the return junction of the unfinished planetary "
+                  + "dynamo. Scenery and lore only, no puzzle. Floors already generated keep what they have. "
+                  + "Off: new floors have none.");
                 list.CheckboxLabeled("The Chill: dive meets a few animals by weight (affects floor generation)", ref chillDensityDrawEnabled,
                     "Shipped default: ON. WORLD-GENERATION setting. A new Chill floor seeds the number of animals "
                   + "set below, each drawn by its commonality (so common species may repeat and rare ones are "
@@ -385,9 +360,78 @@ namespace RimMandrake.DivingInteraction
                 {
                     list.Label("Animals met on a Chill dive (PROVISIONAL, default 3): " + chillDiveAnimalCount);
                     chillDiveAnimalCount = Mathf.RoundToInt(list.Slider(chillDiveAnimalCount, 1f, 8f));
-                }
+            }
+                list.GapLine();
+            }
 
-                list.Gap();
+            if (Group(list, "Grey Sea: floor generation (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "greyFloorWalkCheckEnabled" }))
+                {
+                list.CheckboxLabeled("Grey Sea: keep the Elder and wrecks reachable (affects world generation)", ref greyFloorWalkCheckEnabled,
+                    "Shipped default: ON. After the floor is decorated, a last pass removes the salt pillars, "
+                  + "domes, chimneys, crystals or statuary that wall the Elder or a wreck off from where the "
+                  + "ship lands. Affects only newly generated Grey Sea floors. Off: the floor generates as before.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Sea-floor life (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "seabedFloorLifeEnabled" }, "[next game start]"))
+                {
+                list.CheckboxLabeled("Sea-floor layer: floors grow their sea's plants and refill their animals (restart)", ref seabedFloorLifeEnabled,
+                    "Shipped default: ON. Takes effect after a restart (read once at startup). Each sea floor on the sea-floor layer grows "
+                  + "the flora of the sea above it and slowly repopulates with that sea's animals, as the hatch's "
+                  + "floors did. Off: floors keep only the animals placed when they were generated, and no plants.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Patch-gated features (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "chillDrownedAuroraEnabled", "realFowCompatEnabled" }, "[next game start]"))
+                {
+                list.CheckboxLabeled("The Chill: drowned aurora floor light", ref chillDrownedAuroraEnabled,
+                    "Shipped default: ON. Applied at startup, so turning it on after a start waits for a restart (turning it off dims the light now). LIGHT ONLY. The seabed's ambient light rises and falls with whichever "
+                  + "aurora is active on the surface far above — a slow violet-teal glow that "
+                  + "ripples, never a fixed brightness. Surge storms and the electrojet mast follow the "
+                  + "same aurora whether this is on or off. Off: the seabed loses this light layer "
+                  + "(whatever baseline light it would otherwise have is unaffected, never darkened "
+                  + "further); Fuselight and Ghostpane's own steady point-glow is unaffected either "
+                  + "way, so the floor never goes fully black from toggling this off.");
+                list.CheckboxLabeled("Compatibility: Real Fog of War map-change fix", ref realFowCompatEnabled,
+                    "Shipped default: ON. Only matters if Real Fog of War is installed. When a colonist "
+                  + "moves to another map (a sea floor, a cave), Real Fog of War keeps listening for "
+                  + "animals left behind on the old map and throws an error every couple of seconds. "
+                  + "This drops those stale entries before each listen. Off: Real Fog of War's own "
+                  + "behaviour, errors included. The patch is applied at startup, so turning it on after a start waits for a restart.");
+                list.GapLine();
+            }
+
+            if (Group(list, "The Scald: hot floor", RimMandrake.Shared.SettingScope.Now, new[] { "scaldBerthEnabled", "scaldBerthIntensity", "scaldVentForecastEnabled", "scaldVentDischargeHarms", "walkerGrazingEnabled" }))
+                {
+                list.CheckboxLabeled("The Scald: immersion berth (ship rooms heat)", ref scaldBerthEnabled,
+                    "Shipped default: ON. A ship parked on the Scald's floor slowly heats its rooms; "
+                  + "the load grows with each room's hull border, so a compact ship is cheap to cool "
+                  + "and a sprawling one is not. Coolers and power are vanilla. It never seals doors "
+                  + "or blocks launch. Off: no heat is added.");
+                if (scaldBerthEnabled)
+                {
+                    list.Label("Immersion heat intensity: " + scaldBerthIntensity.ToString("0.00") + "x");
+                    scaldBerthIntensity = list.Slider(scaldBerthIntensity, 0.25f, 3f);
+            }
+            list.CheckboxLabeled("The Scald: Sail Forecast (sailors warn before a vent discharges)", ref scaldVentForecastEnabled,
+                "Shipped default: ON. Before a vent discharges, every bubble-sailor gathers over "
+              + "it for about 40 seconds; the same behaviour precedes every discharge. Off: vents "
+              + "never discharge and sailors only stay near their vents.");
+            if (scaldVentForecastEnabled)
+            {
+                list.CheckboxLabeled("Vent discharge burns and interrupts nearby people", ref scaldVentDischargeHarms,
+                    "Shipped default: ON. Off: the warning and discharge look the same but hurt nobody.");
+            }
+            list.CheckboxLabeled("The Scald: bottom-walkers expose mat (the Walking Pasture)", ref walkerGrazingEnabled,
+                "Shipped default: ON. Where a bottom-walker grazes standing still, the crowncarpet mat is "
+              + "cropped and its pigment-rich underside is left bare; colonists doing hauling gather it behind "
+              + "the herd, stop when the herd moves on, and keep away from the walkers. Off: walkers are plain "
+              + "grazing animals and no job is offered.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Grey Sea: brine and Elders", RimMandrake.Shared.SettingScope.Now, new[] { "greyPoolDefenceEnabled", "greyPoolSentinelEnabled", "greyElderDischargeEnabled", "greyElderStunsLivingEnabled", "greyElderTradeEnabled", "specimenCabinetEnabled" }))
+                {
                 list.CheckboxLabeled("Grey Sea: brine pools crystallise intruders", ref greyPoolDefenceEnabled,
                     "Shipped default: ON. On the Grey Sea's floor, touching a brine pool — or "
                   + "standing in a salt chimney's plume — encases a colonist in salt. They are "
@@ -395,15 +439,11 @@ namespace RimMandrake.DivingInteraction
                   + "before they smother. Off: the pools are merely slow water. Jackets already "
                   + "on a saved map keep working either way, so switching this off never leaves "
                   + "anyone sealed in.");
-
-                list.Gap();
                 list.CheckboxLabeled("Grey Sea: orruhmu pool sentinels squirt intruders", ref greyPoolSentinelEnabled,
                     "Shipped default: ON. An orruhmu (a salt-dome-mimic creature stationed on brine "
                   + "pool shores) swells as a warning, then squirts and encases the nearest colonist "
                   + "if 2 or more crowd within 5 cells — a lone worker is always safe. Off: orruhmu "
                   + "never squirt; they remain harmless, mineral-mimicking dressing.");
-
-                list.Gap();
                 list.CheckboxLabeled("Grey Sea: Brine Elders can discharge", ref greyElderDischargeEnabled,
                     "Shipped default: ON. Each Grey Sea floor's Brine Elder builds a visible charge "
                   + "and, once full, releases a blinding EMP burst on its own — or immediately if "
@@ -415,29 +455,22 @@ namespace RimMandrake.DivingInteraction
                     list.CheckboxLabeled("Brine Elder discharge stuns living creatures", ref greyElderStunsLivingEnabled,
                         "Shipped default: ON. Every living creature within the discharge's reach and in sight of the "
                       + "Elder is stunned for about 5 seconds (PROVISIONAL). Off: only mechanoids are stunned.");
-                }
+            }
+            list.CheckboxLabeled("Grey Sea: Brine Elders trade on novelty", ref greyElderTradeEnabled,
+                "Shipped default: ON. Offer a specimen and the Elder pays well for the first "
+              + "of its kind it has ever seen at THIS pool, and almost nothing for a repeat — "
+              + "every Grey Sea tile keeps its own memory, so travelling to another tile finds "
+              + "a market that has never seen your find. Off: the Elder's trade gizmo "
+              + "disappears; nothing already recorded is lost.");
+            list.CheckboxLabeled("Specimen cabinet: keep finds on display", ref specimenCabinetEnabled,
+                "Shipped default: ON. A specimen cabinet holds creature corpses, chunks and raw materials; "
+              + "each different kind on display adds beauty to the cabinet and a small museum mood to the "
+              + "colony. Off: the cabinet is plain storage with no beauty or mood from what it holds.");
+                list.GapLine();
+            }
 
-                list.Gap();
-                list.CheckboxLabeled("Grey Sea: Brine Elders trade on novelty", ref greyElderTradeEnabled,
-                    "Shipped default: ON. Offer a specimen and the Elder pays well for the first "
-                  + "of its kind it has ever seen at THIS pool, and almost nothing for a repeat — "
-                  + "every Grey Sea tile keeps its own memory, so travelling to another tile finds "
-                  + "a market that has never seen your find. Off: the Elder's trade gizmo "
-                  + "disappears; nothing already recorded is lost.");
-
-                list.Gap();
-                list.CheckboxLabeled("Grey Sea: keep the Elder and wrecks reachable (affects world generation)", ref greyFloorWalkCheckEnabled,
-                    "Shipped default: ON. After the floor is decorated, a last pass removes the salt pillars, "
-                  + "domes, chimneys, crystals or statuary that wall the Elder or a wreck off from where the "
-                  + "ship lands. Affects only newly generated Grey Sea floors. Off: the floor generates as before.");
-
-                list.Gap();
-                list.CheckboxLabeled("Specimen cabinet: keep finds on display", ref specimenCabinetEnabled,
-                    "Shipped default: ON. A specimen cabinet holds creature corpses, chunks and raw materials; "
-                  + "each different kind on display adds beauty to the cabinet and a small museum mood to the "
-                  + "colony. Off: the cabinet is plain storage with no beauty or mood from what it holds.");
-
-                list.Gap();
+            if (Group(list, "The Chill: survival", RimMandrake.Shared.SettingScope.Now, new[] { "chillFireBanEnabled", "chillAirPumpEnabled", "chillAirPumpWatts", "chillAirPumpCellsPerPump", "chillHeatedSuitEnabled", "dangerClockAlertsEnabled", "chillBoilShroudEnabled" }))
+                {
                 list.CheckboxLabeled("The Chill: no fire on the seabed", ref chillFireBanEnabled,
                     "Shipped default: ON. \"There's no oxygen down in the sea floor so it's not "
                   + "explosive\" — on the Chill's seabed pocket map, campfires and torches never "
@@ -446,8 +479,6 @@ namespace RimMandrake.DivingInteraction
                   + "plant that carries its own oxidizer (built under a separate item) is exempt. "
                   + "Off: fire behaves normally down there, for testing or a different ruleset. "
                   + "Every other map is unaffected either way.");
-
-                list.Gap();
                 list.CheckboxLabeled("The Chill: oxygen pumps carry air down", ref chillAirPumpEnabled,
                     "Shipped default: ON. On the Chill's seabed, a powered oxygen pump (Odyssey) fills its "
                   + "sealed room with air, so stoves, fuelled heaters and torches in that room can burn. "
@@ -460,37 +491,34 @@ namespace RimMandrake.DivingInteraction
                     chillAirPumpWatts = list.Slider(chillAirPumpWatts, 50f, 1000f);
                     list.Label("Room cells one pump can fill: " + chillAirPumpCellsPerPump);
                     chillAirPumpCellsPerPump = (int)list.Slider(chillAirPumpCellsPerPump, 10f, 400f);
-                }
+            }
+            list.CheckboxLabeled("The Chill: heated suit battery drains", ref chillHeatedSuitEnabled,
+                "Shipped default: ON. The heated dive suit's battery drains while worn "
+              + "outdoors on the Chill's seabed, and recharges near a powered suit charging "
+              + "rack. An empty suit gives no cold protection at all, only vanilla's own "
+              + "hypothermia to fight on the walk back. Off: the suit's cold protection is "
+              + "simply always on, and the charging rack becomes inert decoration — never "
+              + "strands anyone on a dead battery.");
+            list.CheckboxLabeled("Danger-clock alerts (low suit, brine-encased colonist)", ref dangerClockAlertsEnabled,
+                "On: an alert while a heated suit is low or empty outside on the Chill seabed, and one while "
+              + "a colonist is encased in brine, with the hours left before they smother. Off: no alerts.");
+            list.CheckboxLabeled("The Chill: boil shroud visuals", ref chillBoilShroudEnabled,
+                "Shipped default: ON. Purely cosmetic. Liquid near any heated room's walls "
+              + "bubbles as the warm hull boils the cryogenic lake beside it, and a smaller "
+              + "shimmer follows any live colonist or powered device standing outdoors down "
+              + "there. Off: no flecks, nothing mechanical changes — the cold and the room "
+              + "freezing it fights are unaffected either way.");
+                list.GapLine();
+            }
 
-                list.Gap();
-                list.CheckboxLabeled("The Chill: boil shroud visuals", ref chillBoilShroudEnabled,
-                    "Shipped default: ON. Purely cosmetic. Liquid near any heated room's walls "
-                  + "bubbles as the warm hull boils the cryogenic lake beside it, and a smaller "
-                  + "shimmer follows any live colonist or powered device standing outdoors down "
-                  + "there. Off: no flecks, nothing mechanical changes — the cold and the room "
-                  + "freezing it fights are unaffected either way.");
-
-                list.Gap();
-                list.CheckboxLabeled("Danger-clock alerts (low suit, brine-encased colonist)", ref dangerClockAlertsEnabled,
-                    "On: an alert while a heated suit is low or empty outside on the Chill seabed, and one while "
-                  + "a colonist is encased in brine, with the hours left before they smother. Off: no alerts.");
-                list.CheckboxLabeled("The Chill: heated suit battery drains", ref chillHeatedSuitEnabled,
-                    "Shipped default: ON. The heated dive suit's battery drains while worn "
-                  + "outdoors on the Chill's seabed, and recharges near a powered suit charging "
-                  + "rack. An empty suit gives no cold protection at all, only vanilla's own "
-                  + "hypothermia to fight on the walk back. Off: the suit's cold protection is "
-                  + "simply always on, and the charging rack becomes inert decoration — never "
-                  + "strands anyone on a dead battery.");
-
-                list.Gap();
+            if (Group(list, "The Chill: garden and footprints", RimMandrake.Shared.SettingScope.Now, new[] { "chillGardenDefenseEnabled", "chillThermalFootprintsEnabled" }))
+                {
                 list.CheckboxLabeled("The Chill: the garden defends itself", ref chillGardenDefenseEnabled,
                     "Shipped default: ON. Harvesting past a threshold, killing floor life, or hitting "
                   + "it with directed heat draws a survivable electric arc from the Iliss. Sustained "
                   + "destruction wakes a bounded group of dormant Tarnn into one hard, winnable fight "
                   + "— never a raid, never repeating. Off: the floor garden never fights back; floor "
                   + "life is simply passive wildlife.");
-
-                list.Gap();
                 list.CheckboxLabeled("The Chill: thermal footprints", ref chillThermalFootprintsEnabled,
                     "Shipped default: ON. Everything warm marks the seabed's ice: a walking colonist "
                   + "leaves a thin trail of refrozen glossy melt-prints, and a parked powered device "
@@ -499,18 +527,11 @@ namespace RimMandrake.DivingInteraction
                   + "site also makes the garden's own defenses escalate faster on a return visit. Off: "
                   + "nothing new is deposited and that escalation bonus never applies; frost glaze "
                   + "already on a saved map is unaffected either way.");
+                list.GapLine();
+            }
 
-                list.Gap();
-                list.CheckboxLabeled("The Chill: drowned aurora floor light", ref chillDrownedAuroraEnabled,
-                    "Shipped default: ON. LIGHT ONLY. The seabed's ambient light rises and falls with whichever "
-                  + "aurora is active on the surface far above — a slow violet-teal glow that "
-                  + "ripples, never a fixed brightness. Surge storms and the electrojet mast follow the "
-                  + "same aurora whether this is on or off. Off: the seabed loses this light layer "
-                  + "(whatever baseline light it would otherwise have is unaffected, never darkened "
-                  + "further); Fuselight and Ghostpane's own steady point-glow is unaffected either "
-                  + "way, so the floor never goes fully black from toggling this off.");
-
-                list.Gap();
+            if (Group(list, "The Chill: aurora surges", RimMandrake.Shared.SettingScope.Now, new[] { "chillAuroraSurgeEnabled", "chillAuroraUnattendedEnabled" }))
+                {
                 list.CheckboxLabeled("The Chill: aurora surge storms", ref chillAuroraSurgeEnabled,
                     "Shipped default: ON. When the drowned aurora spikes past a threshold, the seabed "
                   + "enters a surge: an electrojet mast draws real power scaled to the spike, every Iliss "
@@ -523,19 +544,67 @@ namespace RimMandrake.DivingInteraction
                   + "ship lands below), the floor's aurora follows any world-wide aurora, or else its own aurora "
                   + "nights: about one evening in three (PROVISIONAL). Off: the floor stays dark and surge-free until a "
                   + "surface map above is loaded.");
+                list.GapLine();
             }
-
-            list.Gap();
-            list.CheckboxLabeled("Compatibility: Real Fog of War map-change fix", ref realFowCompatEnabled,
-                "Shipped default: ON. Only matters if Real Fog of War is installed. When a colonist "
-              + "moves to another map (a sea floor, a cave), Real Fog of War keeps listening for "
-              + "animals left behind on the old map and throws an error every couple of seconds. "
-              + "This drops those stale entries before each listen. Off: Real Fog of War's own "
-              + "behaviour, errors included. Takes effect immediately.");
 
             settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
             Widgets.EndScrollView();
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_DivingSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): GenStep/site-parent reads are
+        /// new-maps-only; the startup static constructor and startup-applied Harmony patches are next-game-start;
+        /// everything else is read per tick, job, gizmo or alert and is now.</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_DivingSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
         }
     }
 

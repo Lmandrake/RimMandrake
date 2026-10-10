@@ -670,6 +670,20 @@ MODS = {
         "Pilgrim camps (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Reading the journals": "Now",
     }, ()),
+    "DivingInteraction": ("RM_DivingSettings.cs", "RM_DivingInteraction.csproj", {
+        "Master switch and access": "Now",
+        "Sea-floor generation (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "The Scald: floor generation (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "The Chill: floor generation (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Grey Sea: floor generation (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Sea-floor life (restart)": "NextGameStart",
+        "Patch-gated features (restart)": "NextGameStart",
+        "The Scald: hot floor": "Now",
+        "Grey Sea: brine and Elders": "Now",
+        "The Chill: survival": "Now",
+        "The Chill: garden and footprints": "Now",
+        "The Chill: aurora surges": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
@@ -747,14 +761,14 @@ def run_mod(name, cs_name, pj_name, expected, extra):
     total += 1
     print(("ok   " if not e else "FAIL ") + f"{name}: real screen, every setting grouped, resettable, scopes as audited" + ("" if not e else " | " + "; ".join(e[:4])))
     bad += bool(e)
-    g0, g1 = groups[0], groups[1]
+    g0, g1 = groups[0], (groups[1] if len(groups) > 1 else groups[0])
     last0 = g0[2][-1]
     scope_swap = next(((t, s) for t, s in expected.items() if s not in ("Now", "NextGameStart")), None)
     plants = [
         ("a name dropped from its group array", lambda c, p: (c.replace(f', "{last0}" }}', ' }', 1) if f', "{last0}" }}' in c else c.replace(f'"{last0}" }}', ' }', 1), p), "no group"),
         ("a setting in two groups", lambda c, p: (c.replace(f'"{g1[0]}", RimMandrake.Shared.SettingScope.{g1[1]}, new[] {{ ', f'"{g1[0]}", RimMandrake.Shared.SettingScope.{g1[1]}, new[] {{ "{g0[2][0]}", ', 1), p), "two groups"),
         ("group names a non-setting", lambda c, p: (c.replace(f'"{last0}" }}', '"notASettingAtAll" }', 1), p), "not a Scribed setting"),
-        ("a Group's closing brace lost", lambda c, p: (c.replace('                list.GapLine();\n            }\n', '                list.GapLine();\n', 1), p), "swallows"),
+        ("a Group's closing brace lost", lambda c, p: (c.replace('                list.GapLine();\n            }\n', '                list.GapLine();\n', 1), p), "swallows|unbalanced braces"),
         ("kit dropped from the csproj", lambda c, p: (c, p.replace("SettingsKitDrawer.cs", "SettingsKitDrawr.cs")), "SettingsKitDrawer.cs"),
         ("snapshot removed", lambda c, p: (c.replace("shippedDefaults = SnapshotDefaults()", "shippedDefaultz = SnapshotDefaults()"), p), "shippedDefaults"),
     ]
@@ -774,7 +788,7 @@ def run_mod(name, cs_name, pj_name, expected, extra):
             e, _ = check(c2, p2, expected, extra)
         except Exception as ex:   # a broken file must still be a failure, not a crash
             e = [f"exception {ex}"]
-        hit = any(want in x for x in e)
+        hit = any(w in x for x in e for w in want.split('|'))
         print(("ok   " if hit else "FAIL ") + f"{name}: {label}" + ("" if hit else f" | wanted {want!r}, got {e[:2]}"))
         bad += not hit
     return bad, total
