@@ -5293,3 +5293,5 @@
 {"seat":"FOUNDRY","event":"lease","id":"BRIDGE_TPS_REVIEW2_FIXES_1","action":"renew","token":"FOUNDRY.pid15041.f6fe1858","ts":"2026-10-10T16:39:30Z","expires":"2026-10-10T17:24:30Z","tsn":1791650371121909065}
 {"seat":"FOUNDRY","event":"lease","id":"BRIDGE_TPS_REVIEW2_FIXES_1","action":"renew","token":"FOUNDRY.pid15041.f6fe1858","ts":"2026-10-10T16:44:28Z","expires":"2026-10-10T17:29:28Z","tsn":1791650668484130720}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-10T16:48:20Z","tsn":1791650900932878438}
+{"seat":"FOUNDRY","event":"lease","id":"MINERALS_WHERE_THEY_BELONG_1","action":"take","token":"FOUNDRY.pid15776.1c011162","expires":"2026-10-10T17:34:11Z","ts":"2026-10-10T16:49:11Z","tsn":1791650951295015519}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"TPS MUST17 full-list","ts":"2026-10-10T16:49:35Z","tsn":1791650975290769052}
