@@ -1,0 +1,21 @@
+# BRIDGE_TPS_CAPTURE_FIXES_1 — make the TPS record actually answer "was it slow at 3pm, and why"
+
+## spec
+Merged must-do list from the Opus and GPT reviews of BRIDGE_TPS_REGULAR_REPORT_1 (read both reports in Transient/).
+1. Start automatically at game load (always-loaded mod hook / verified companion registration), not on a bridge call; write session-start, game-change, menu, shutdown and sampler-failure events.
+2. Keep long stalls: drop the 60 s discard, record recovered stalls as incidents; main-thread heartbeat + last-phase, a watchdog thread that logs silence; belt_watchdog.py becomes an external periodic observer (PID/exit, heartbeat age). Never subtract unexplained stalls from the denominator.
+3. Window semantics: accumulate expected ticks over time at the known multiplier (observe state before tick work), record wall duration, paused duration, multiplier transitions, raw wall TPS; mark ambiguous transitions.
+4. Dependable disk: one ordered bounded writer, sequence numbers + error counters, per-session file names, >=7 days retention with a byte cap, rotation that cannot destroy history.
+5. Coarse continuous attribution: time DoSingleTick, tick-list categories, world/map ticks, components; counts/total/max and bounded worst-tick records; separate save/long-event time.
+6. Incident context at stall time (phase, ticks, speed, pause/focus/save status, GC delta, writer health), session metadata (save, build, mod manifest), archive Player.log per session.
+7. tps_record.py: --at/--since/--until/--tz, explicit session selection, row validation; sustained warning needs contiguous fresh windows; belt_watchdog distinguishes stale/missing coverage from performance.
+SHOULD: targeted mod attribution on low ratio; external hang diagnostics. SKIP: always-on per-method/per-pawn instrumentation.
+
+## criteria
+- C1 (L0) trace-testable accumulator selftest covers partial pauses, multiplier changes, autosave, a recovered 90 s stall.
+- C2 (L0) reader selftest covers --at/--tz, concurrent rotation, future timestamps, stale coverage.
+- C3 (L1) sampler records from game load with NO bridge call; measured overhead on the full ~600-mod list is stated.
+- C4 (L2) forced termination and a permanent hang leave a readable record ending at the last heartbeat.
+
+## verify
+The next morning, `tps_record.py --at <yesterday 15:00> --tz America/Los_Angeles` returns a bounded timeline with ratios and incidents.
