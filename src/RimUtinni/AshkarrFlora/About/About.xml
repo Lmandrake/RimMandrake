@@ -69,6 +69,7 @@ wool", never off a giant species name — the giants are still unnamed
       <!-- MATERIAL_MERGES_CLEANUP_1: the sweetline harvest is RM_SweetlineWool, defined there. -->
       <packageId>mandrake.rm.biomes</packageId>
       <displayName>RimMandrake: Baroque Biomes</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

@@ -270,8 +270,8 @@ def every_shipped_def_reads_back(t):
 
     with t.component("every_shipped_def_is_found_and_the_list_is_sane", beyond_toggle=True):
         names = [n for _ty, n, _s, _p in defs]
-        if "RUT_SweetlineTree" not in names or len(names) < 6:
-            raise ExpectationFailed("the Defs/ parse is blind: found %r (expected RUT_SweetlineTree and >= 6 defs)" % names)
+        if "RUT_SweetlineTree" not in names or len(names) < 5:
+            raise ExpectationFailed("the Defs/ parse is blind: found %r (expected RUT_SweetlineTree and >= 5 defs: 6 until MATERIAL_MERGES_CLEANUP_1 dropped RUT_SweetlineWool)" % names)
         r = t.bridge_call("jawa/get_defs", defs=";".join("%s/%s" % (ty, n) for ty, n, _s, _p in defs),
                           fields="plant", deep=True)
         if _live(t):
