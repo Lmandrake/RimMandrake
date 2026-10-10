@@ -298,8 +298,10 @@
       "action": "keep",
       "band": "wretched-small",
       "commonality": 0.7,
-      "def": "RSW_FleeceSpider",
-      "law": "prep §4.2; bs 0.32 (MEASURED); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_FleeceSpider to the already-ported, already-wired RSW_ name (RUT_Wasteland)"
+      "def": "RM_Frethik",
+      "law": "prep §4.2; bs 0.32 (MEASURED); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_FleeceSpider to the already-ported, already-wired RSW_ name (RUT_Wasteland); Wasteland sheet 2026-10-09 (owner): \"Redo Name and Description. RimMandrake tier, NOt star wars at all.\" — ported RSW_FleeceSpider -> RM_Frethik (mandrake.rm.wasteland, cast inline in RM_Wasteland_Biome.xml), renamed frethik, description rewritten",
+      "label": "frethik",
+      "description": "A palm-sized mite whose back is a dense crown of glassy hairs. They are salt. The frethik drinks the brine that pools where the Wastes' rivers die, and its body pushes the salt out through its hairs, where it sets into needles with a faint pearly sheen. An old frethik drags a crown heavier than itself and leaves a trail of white grit behind it. It eats whatever falls to the ground, and it does not bite unless it is stepped on. Settlers keep them as pets. A frethik shedding its salt on a warm night glitters softly, and few other things in the Wastes are pretty to look at."
     },
     {
       "action": "keep",
@@ -312,8 +314,10 @@
       "action": "keep",
       "band": "wretched-herd",
       "commonality": 0.4,
-      "def": "RSW_Maligoat",
-      "law": "\"maligoat\" is the wretched-herd read exactly (prep §4.2); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Maligoat to the already-ported, already-wired RSW_ name (RUT_Wasteland)"
+      "def": "RM_Kroffa",
+      "law": "\"maligoat\" is the wretched-herd read exactly (prep §4.2); ROSTER_DEAD_BMT_NAMES_SWEEP_1: renamed from BMT_Maligoat to the already-ported, already-wired RSW_ name (RUT_Wasteland); Wasteland sheet 2026-10-09 (owner): \"RimMandrake tier, NOT Star Wars. Never was.\" — ported RSW_Maligoat -> RM_Kroffa (mandrake.rm.wasteland, cast inline in RM_Wasteland_Biome.xml), name kroffa kept, description rewritten",
+      "label": "kroffa",
+      "description": "A squat, heavy grazer armoured in overlapping plates of hide, each one thick enough to turn a knife. Its blunt face ends in a pair of hooked mouthparts that strip the tough, bitter scrub of the Wastes, and two thick horns curl back over its neck. Kroffa can eat what poisons other grazers and stand where the fallout settles, and they keep their milk clean through all of it. That milk is rich and sweet and good to drink raw, so they are the one animal in the Wastes that settlers seek out. They are slow and do not frighten easily. A herd can be driven, but it cannot be hurried."
     },
     {
       "action": "keep",
@@ -341,7 +345,9 @@
       "band": "extremophile-odd",
       "commonality": 0.18,
       "def": "VAEWaste_Megatardi",
-      "law": "waste-marked tardigrade-analog — extremophile-odd lane (ban 4 pass by marking)"
+      "law": "waste-marked tardigrade-analog — extremophile-odd lane (ban 4 pass by marking); Wasteland sheet 2026-10-09 (owner): \"Remake N and S. Redo name and description.\" — renamed thuffor (label edited in place on our absorbed copy), description rewritten; N/S art redraw queued separately",
+      "label": "thuffor",
+      "description": "A blind, six-legged mountain of a grub-thing, as big as a muffalo and built like a barrel of soft armour. The thuffor eats almost nothing, and it can live off the Wastes' own refuse. It mouths its way through slag, rot and the leaking toxic waste the old world left behind, and it is none the worse for it, because it stores the poison in its own body. It walks very slowly and never seems to be going anywhere, and it does not mind a load strapped to its back, so the people of the Wastes use it as a pack animal. It is gentle and easy to tame. The danger comes when it dies: everything it ever ate leaves it in one choking cloud, and nobody butchers a thuffor upwind."
     },
     {
       "action": "keep",

@@ -458,11 +458,11 @@ Source: every `fauna[]` row in `design/Jawa/worldbuilding/biomes/rosters/*.json`
 | `GR_Molebear` | grutt | wasteland | Vanilla Genetics Expanded | RULED | donor art | already carries a ruled coined name |
 | `GR_ParagonRat` | grithe | wasteland | Vanilla Genetics Expanded | RULED | donor art | already carries a ruled coined name |
 | `RSW_FacetMothLarvae` | soulchime | the_lantern_deeps | RimMandrake: SW — Bestiary | RULED | donor art | already carries a ruled coined name |
-| `RSW_FleeceSpider` | puffmite | wasteland | RimMandrake: SW — Bestiary | RULED | donor art | already carries a ruled coined name |
+| `RM_Frethik` (was `RSW_FleeceSpider`) | frethik | wasteland | RimMandrake: Wasteland | RULED | donor art | owner 2026-10-09 Wasteland sheet: renamed from puffmite, moved to the RimMandrake tier |
 | `RSW_FungalMantis` | skerrith | the_rot | RimMandrake: SW — Bestiary | RULED | donor art | already carries a ruled coined name |
 | `RSW_FungalWeevil` | grellik | the_rot | RimMandrake: SW — Bestiary | RULED |  done:3 | already carries a ruled coined name |
 | `RSW_GlowSlug` | glowbulb | the_fever_wood | RimMandrake: SW — Bestiary | RULED | donor art | already carries a ruled coined name |
-| `RSW_Maligoat` | kroffa | wasteland | RimMandrake: SW — Bestiary | RULED | donor art | already carries a ruled coined name |
+| `RM_Kroffa` (was `RSW_Maligoat`) | kroffa | wasteland | RimMandrake: Wasteland | RULED | donor art | owner 2026-10-09 Wasteland sheet: moved to the RimMandrake tier |
 | `RSW_Stoneback` | bokka | desert | RimMandrake: SW — Bestiary | RULED | regen:3 | already carries a ruled coined name |
 | `AA_DuskRat` | dusk rat | abyss | Alpha Animals | KEPT | donor art | KEPT — owner ruled the name IS the joke (abyss.md §4/§Owed); art redo owed, name stays |
 | `RM_Titanoslime` | None | the_slime | ? | OURS | UNMEASURED | owner's own creature, named in his ask 2026-09-20 |

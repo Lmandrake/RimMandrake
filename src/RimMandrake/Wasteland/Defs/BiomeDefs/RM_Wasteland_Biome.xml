@@ -164,6 +164,9 @@
       <RM_Gravelgut>0.2</RM_Gravelgut>  <!-- port of AA_Terramorph -->
       <RM_Grimewing>0.15</RM_Grimewing>  <!-- new: flyer niche, ruled in 2026-09-28 -->
       <RM_Smolderback>0.05</RM_Smolderback>  <!-- new: radiothermal solitary, rare -->
+      <!-- Wasteland sheet 2026-10-09 (owner): RSW_FleeceSpider "Redo Name and Description. RimMandrake tier, NOt star wars at all." and RSW_Maligoat "RimMandrake tier, NOT Star Wars. Never was." Ported to RM_Frethik / RM_Kroffa (Defs/ThingDefs_Races/), weights carried over from UtinniPatches' WildAnimals_Wasteland.xml. -->
+      <RM_Frethik>0.7</RM_Frethik>  <!-- frethik - wretched-small; salt-haired mite, pet -->
+      <RM_Kroffa>0.4</RM_Kroffa>  <!-- kroffa - wretched-herd; plated milk-grazer -->
     </wildAnimals>
     <coastalWildAnimals />
 
