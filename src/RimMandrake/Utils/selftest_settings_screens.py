@@ -861,6 +861,9 @@ MODS = {
     "RustChrome": ("RustChromeMod.cs", "RustChrome.csproj", {
         "Rust & Chrome UI theme": "Now",
     }, ()),
+    "SacredGraffiti": ("RM_SacredGraffitiMod.cs", "SacredGraffiti.csproj", {
+        "Sacred marks from rituals": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
