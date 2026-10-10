@@ -481,6 +481,18 @@ def ash_act_problems(cond_root=None, sources=None):
         bad.append("sand-swim terrain test no longer consults the sand-lock (swimmers ignore it)")
     if "RM_ConditionGround.SandLocked" not in rd("RM_SandBuriedGraphic.cs"):
         bad.append("buried graphic with its own terrains ignores the sand-lock")
+    sar = src.get("RSW_SwimmerRoad.cs") or open(os.path.join(HERE, "..", "..", "RimStarWars", "Sarlacc", "Source", "RSW_SwimmerRoad.cs"), encoding="utf-8").read()
+    halt = sar.split("class RSW_SandLockHalt", 1)[-1].split("class RSW_MapComponent_SwimmerRoad", 1)[0]
+    if "class RSW_SandLockHalt" not in sar or "RM_ConditionGround.SandLocked" not in halt:
+        bad.append("sarlacc swimmer sand-lock halt missing or no longer reads RM_ConditionGround.SandLocked (the gated test)")
+    if "RSW_SandLockHalt.Halted(pawn)" not in sar.split("class RSW_JobGiver_SwimmerRoad", 1)[-1][:1500]:
+        bad.append("swimmer job giver no longer halts on the sand-lock (swimmer keeps travelling)")
+    if "RSW_SandLockHalt.Tick(this)" not in sar:
+        bad.append("swimmer in-flight Goto is never interrupted by the sand-lock")
+    if "Messages.Message" not in halt or "ThrowDustPuffThick" not in halt:
+        bad.append("sarlacc halt has no readable sign (message and churned dust)")
+    if "PROVISIONAL" not in halt:
+        bad.append("sarlacc halt numbers lost their PROVISIONAL marker")
     proj = rd("RM_CreatureBehaviors.csproj")
     if 'Compile Include="RM_AshPulse.cs"' not in proj:
         bad.append("RM_AshPulse.cs not in the CreatureBehaviors csproj (compiles into nothing)")

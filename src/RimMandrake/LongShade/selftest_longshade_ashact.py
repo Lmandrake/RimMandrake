@@ -38,5 +38,16 @@ check("planted: AshPulse.cs dropped from the csproj fails",
 check("planted: growth patch removed fails",
       any("Plant.get_GrowthRate" in x for x in v.ash_act_problems(None, {
           "RM_AshPulse.cs": cb("RM_AshPulse.cs").replace("nameof(Plant.GrowthRate)", "nameof(Plant.Growth)")})))
+SAR = open(os.path.join(HERE, "..", "..", "RimStarWars", "Sarlacc", "Source", "RSW_SwimmerRoad.cs"), encoding="utf-8").read()
+def sp(a, b):
+    return v.ash_act_problems(None, {"RSW_SwimmerRoad.cs": SAR.replace(a, b)})
+check("planted: halt that ignores the lock test fails",
+      any("halt missing" in x for x in sp("RM_ConditionGround.SandLocked(pawn.Position, pawn.Map)", "false")))
+check("planted: job giver no longer halting fails",
+      any("keeps travelling" in x for x in sp("RSW_SandLockHalt.Halted(pawn))\n            {\n                return", "false)\n            {\n                return")))
+check("planted: in-flight Goto never interrupted fails",
+      any("never interrupted" in x for x in sp("RSW_SandLockHalt.Tick(this);", "")))
+check("planted: silent halt (no message) fails",
+      any("no readable sign" in x for x in sp('Messages.Message(', 'Log.Message(')))
 print("%d FAILED" % len(FAILS) if FAILS else "all ok")
 sys.exit(1 if FAILS else 0)
