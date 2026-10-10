@@ -318,10 +318,14 @@ def hose_spec(r, k):
         b = [2 + L, 4]
         walls = []
     water = [[x, y] for x in range(2 + L // 2 - 1, 2 + L // 2 + 1) for y in range(0, H)] if r["Ro"] == "water" else []
-    plot = [0, 0, W, H]
+    # GIMMESOMESLACK_HOSE_BEND_TRACE_1 (live 2026-10-09): the nozzle faces WEST and its straight lead-out + U-turn ran past
+    # the plot's west edge onto unprepared map ground (another plot's margin, marsh, rock), so H01/H02/H04/H05/H07 failed
+    # "no room for the straight lead-out" on one fresh map and passed on another. A soil margin of M cells west of the scene.
+    M = 6
+    plot = [0, 0, W + M, H]
 
     def gc(p):
-        return [p[0], H - 1 - p[1]]
+        return [p[0] + M, H - 1 - p[1]]
     ops = [{"op": "terrain", "def": "Soil", "rect": plot}]
     if water:
         ops.append({"op": "terrain", "def": "WaterShallow", "cells": [gc(p) for p in water]})
