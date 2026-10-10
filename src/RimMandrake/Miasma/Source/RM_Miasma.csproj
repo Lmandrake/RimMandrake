@@ -45,6 +45,8 @@
 
   <ItemGroup>
     <Compile Include="RM_MiasmaMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_MiasmaBiome.cs" />
     <Compile Include="RM_WardenMotherSuccession.cs" />
     <Compile Include="RM_MothersPrice.cs" />

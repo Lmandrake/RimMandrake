@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -105,8 +107,60 @@ namespace RimMandrake.Miasma
             Scribe_Values.Look(ref attarEnabled, "attarEnabled", true, true);
         }
 
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float setting, read from the field initialisers.
+        // MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_MiasmaSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_MiasmaSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
         private static Vector2 scroll;
         private static float viewHeight = 1400f;
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): only the biome rarity slider is read at world
+        /// generation ([new maps only]); everything else is read on a tick, a stat query, a trade or a def edit applied when the
+        /// window closes ([now]). Decay cells and flotsam act on live maps; their start-of-map placement is described in the text.</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label(RimMandrake.Shared.SettingsKitCore.ScopeTag(scope) + (scope == RimMandrake.Shared.SettingScope.NewMapsOnly
+                ? " changes only affect planets generated afterwards"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
 
         public void DoWindowContents(Rect inRect)
         {
@@ -114,124 +168,136 @@ namespace RimMandrake.Miasma
             Widgets.BeginScrollView(inRect, ref scroll, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.Label("Biome rarity: " + RarityLabel());
-            list.Label("At 0 the Miasma never generates on a new planet. The default "
-                       + "places a scattering of hot, salt-crusted delta forest along "
-                       + "rivers. Affects planets generated afterwards, never one that "
-                       + "already exists.");
-            biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
-            list.GapLine();
-
-            list.Label("This biome's own mechanics — the salinity gradient, the "
-                      + "breath-tide surge, stranding pools, the weather lock and "
-                      + "exposure hediff, fever-forged boons, and warden/crèche "
-                      + "placement — are togglable per-mechanic in the shared "
-                      + "\"RimMandrake: Environmental Hazards Kit\" mod's own settings "
-                      + "screen, not here: Greentide and Sump read those exact same "
-                      + "switches, so a second, Miasma-only copy of them on this "
-                      + "screen would either do nothing or quietly disagree with that "
-                      + "one.");
-            list.GapLine();
-
-            list.CheckboxLabeled("Warden mother young: self-taming and succession",
-                ref wardenSuccessionEnabled,
-                "A stranded young may quietly self-tame if the player never harms one "
-                + "of its crèche-mates, becomes trainable for water-bound work only, "
-                + "and can inherit the crèche if the mother dies of old age. Off: the "
-                + "young stay wild and the crèche is never inherited.");
-            if (wardenSuccessionEnabled)
+            if (Group(list, "Biome rarity (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "biomeRarityFactor" }))
             {
-                list.Label("  Self-tame chance per check: " + (selfTameChancePerCheck * 100f).ToString("0") + "%");
-                selfTameChancePerCheck = list.Slider(selfTameChancePerCheck, 0.01f, 0.5f);
+                list.Label("Biome rarity: " + RarityLabel());
+                list.Label("At 0 the Miasma never generates on a new planet. The default "
+                           + "places a scattering of hot, salt-crusted delta forest along "
+                           + "rivers. Affects planets generated afterwards, never one that "
+                           + "already exists.");
+                biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
+                list.GapLine();
             }
 
+            list.Label("This biome's own mechanics (the salinity gradient, the breath-tide surge, stranding pools, "
+                      + "the weather lock and exposure hediff, fever-forged boons, warden/creche placement) are toggled in the shared "
+                      + "\"RimMandrake: Environmental Hazards Kit\" mod's own settings screen, not here: Greentide and Sump read "
+                      + "those same switches.");
             list.GapLine();
-            list.CheckboxLabeled("Predatory plants feed on wild scuttlers",
-                ref plantPredationEnabled,
-                "The Miasma's carnivorous plants kill wild, unfactioned scuttlers that wander "
-                + "within reach. Off: they never hunt.");
-            list.CheckboxLabeled("Pollination gate on the mangals",
-                ref pollinationGateEnabled,
-                "The Miasma's mangals only grow where their pollinator swarm lives. Off: they grow "
-                + "wherever the terrain allows. Takes effect after the settings window closes.");
-            list.CheckboxLabeled("Stranded deformation",
-                ref strandedDeformationEnabled,
-                "Some creatures stranded in a drying pool are born deformed and do not thrive. "
-                + "Off: none are.");
-            if (strandedDeformationEnabled)
+
+            if (Group(list, "Warden mother young", RimMandrake.Shared.SettingScope.Now, new[] { "wardenSuccessionEnabled", "youngCallEnabled", "selfTameChancePerCheck" }))
             {
-                list.Label("  Chance per stranded creature: " + (strandedDeformationChance * 100f).ToString("0") + "%");
-                strandedDeformationChance = list.Slider(strandedDeformationChance, 0.01f, 1f);
+                list.CheckboxLabeled("Warden mother young: self-taming and succession",
+                    ref wardenSuccessionEnabled,
+                    "A stranded young may quietly self-tame if the player never harms one "
+                    + "of its crèche-mates, becomes trainable for water-bound work only, "
+                    + "and can inherit the crèche if the mother dies of old age. Off: the "
+                    + "young stay wild and the crèche is never inherited.");
+                if (wardenSuccessionEnabled)
+                {
+                    list.Label("  Self-tame chance per check: " + (selfTameChancePerCheck * 100f).ToString("0") + "%");
+                    selfTameChancePerCheck = list.Slider(selfTameChancePerCheck, 0.01f, 0.5f);
+                }
+                list.CheckboxLabeled("Stranded young call",
+                    ref youngCallEnabled,
+                    "A stranded young cries out, a letter points at the first one, and the warden mother lumbers toward "
+                    + "it through the water, never onto dry land. Off: the young are silent and the mother ignores them. "
+                    + "Takes effect after the settings window closes.");
+                list.GapLine();
             }
 
-            list.GapLine();
-            list.CheckboxLabeled("Bozzuga hunts",
-                ref ambushFrogHunts,
-                "The bozzuga, the root-maze's ambush frog, lies in wait and eats scuttlers and stranded young. "
-                + "Off: it is a placid animal that hunts nothing.");
-
-            list.GapLine();
-            list.CheckboxLabeled("Stranded young call",
-                ref youngCallEnabled,
-                "A stranded young cries out, a letter points at the first one, and the warden mother lumbers toward "
-                + "it through the water, never onto dry land. Off: the young are silent and the mother ignores them. "
-                + "Takes effect after the settings window closes.");
-
-            list.GapLine();
-            list.CheckboxLabeled("Flotsam in the root-lines",
-                ref flotsamEnabled,
-                "River goods (scrap steel, wood, cloth, the odd component) wash into the roots at the start of "
-                + "a Miasma map and again after every surge recedes. Off: none arrives.");
-            if (flotsamEnabled)
+            if (Group(list, "Predators and pollination", RimMandrake.Shared.SettingScope.Now, new[] { "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "ambushFrogHunts", "strandedDeformationChance" }))
             {
-                list.Label("  Amount: " + flotsamAmount.ToString("0.0") + "x");
-                flotsamAmount = list.Slider(flotsamAmount, 0.25f, 3f);
+                list.CheckboxLabeled("Predatory plants feed on wild scuttlers",
+                    ref plantPredationEnabled,
+                    "The Miasma's carnivorous plants kill wild, unfactioned scuttlers that wander "
+                    + "within reach. Off: they never hunt.");
+                list.CheckboxLabeled("Pollination gate on the mangals",
+                    ref pollinationGateEnabled,
+                    "The Miasma's mangals only grow where their pollinator swarm lives. Off: they grow "
+                    + "wherever the terrain allows. Takes effect after the settings window closes.");
+                list.CheckboxLabeled("Stranded deformation",
+                    ref strandedDeformationEnabled,
+                    "Some creatures stranded in a drying pool are born deformed and do not thrive. "
+                    + "Off: none are. Takes effect after the settings window closes.");
+                if (strandedDeformationEnabled)
+                {
+                    list.Label("  Chance per stranded creature: " + (strandedDeformationChance * 100f).ToString("0") + "%");
+                    strandedDeformationChance = list.Slider(strandedDeformationChance, 0.01f, 1f);
+                }
+                list.CheckboxLabeled("Bozzuga hunts",
+                    ref ambushFrogHunts,
+                    "The bozzuga, the root-maze's ambush frog, lies in wait and eats scuttlers and stranded young. "
+                    + "Off: it is a placid animal that hunts nothing. Takes effect after the settings window closes.");
+                list.GapLine();
             }
 
-            list.GapLine();
-            list.CheckboxLabeled("Attar: still, glaze and balm",
-                ref attarEnabled,
-                "Delta silt and salt refine into attar at the attar still. Glazing raises an artwork's beauty; balm "
-                + "fades one scar and heals nothing else. Off: the still's recipe is hidden and glaze and balm cannot "
-                + "be used (glazed artworks lose the bonus). Attar already made stays in the world.");
-
-            list.GapLine();
-            list.CheckboxLabeled("Decay cells: power from rot",
-                ref decayCellsEnabled,
-                "An old meter still reading current lies in a compost bed on each new Miasma map; analyzing it unlocks "
-                + "the decay cell research. A built cell fed rotting goods makes power, less as the feed runs down, and "
-                + "a cell that has digested its lifetime of feed becomes a rotting bed. Off: no meter is placed and "
-                + "cells make no power (built ones stay).");
-            if (decayCellsEnabled)
+            if (Group(list, "Flotsam in the root-lines", RimMandrake.Shared.SettingScope.Now, new[] { "flotsamEnabled", "flotsamAmount" }))
             {
-                list.Label("  Power: " + decayCellPowerMultiplier.ToStringPercent());
-                decayCellPowerMultiplier = list.Slider(decayCellPowerMultiplier, 0.25f, 2f);
+                list.CheckboxLabeled("Flotsam in the root-lines",
+                    ref flotsamEnabled,
+                    "River goods (scrap steel, wood, cloth, the odd component) wash into the roots at the start of "
+                    + "a Miasma map and again after every surge recedes. Off: none arrives.");
+                if (flotsamEnabled)
+                {
+                    list.Label("  Amount: " + flotsamAmount.ToString("0.0") + "x");
+                    flotsamAmount = list.Slider(flotsamAmount, 0.25f, 3f);
+                }
+                list.GapLine();
             }
 
-            list.GapLine();
-            list.CheckboxLabeled("Rotting bed: corpse disposal",
-                ref rottingBedCorpsesEnabled,
-                "A spent decay cell's rotting bed takes corpses as storage, one per cell, and rots them down one at a "
-                + "time: the body is consumed, its gear drops beside the bed, and it leaves bones and, for a person "
-                + "with a head, a skull that names whose it was. Off: the bed still holds corpses but nothing rots down.");
-            if (rottingBedCorpsesEnabled)
+            if (Group(list, "Attar: still, glaze and balm", RimMandrake.Shared.SettingScope.Now, new[] { "attarEnabled" }))
             {
-                list.Label("  Rot-down time: " + rottingBedRotDays.ToString("0.0") + " days per corpse");
-                rottingBedRotDays = list.Slider(rottingBedRotDays, 0.5f, 10f);
+                list.CheckboxLabeled("Attar: still, glaze and balm",
+                    ref attarEnabled,
+                    "Delta silt and salt refine into attar at the attar still. Glazing raises an artwork's beauty; balm "
+                    + "fades one scar and heals nothing else. Off: the still's recipe is hidden and glaze and balm cannot "
+                    + "be used (glazed artworks lose the bonus). Attar already made stays in the world.");
+                list.GapLine();
             }
 
-            list.GapLine();
-            list.CheckboxLabeled("The mother's price: a held stranded young is worth a fortune",
-                ref mothersPriceEnabled,
-                "A stranded young your colony holds sells for a fortune to any trader, and a caravan comes for it a day or "
-                + "two after you take one in. Sell it and its crèche remembers: the warden mother never tolerates your "
-                + "colony again and none of her young will be yours. Carry it back into her water instead and she "
-                + "tolerates your whole colony from then on. Off: no price, no buyer, no betrayal, no return.");
-            if (mothersPriceEnabled)
+            if (Group(list, "Decay cells and the rotting bed", RimMandrake.Shared.SettingScope.Now, new[] { "decayCellsEnabled", "rottingBedCorpsesEnabled", "decayCellPowerMultiplier", "rottingBedRotDays" }))
             {
-                list.Label("  Extra price for a stranded young: " + youngPriceOffset.ToString("0") + " silver");
-                youngPriceOffset = list.Slider(youngPriceOffset, 0f, 5000f);
+                list.CheckboxLabeled("Decay cells: power from rot",
+                    ref decayCellsEnabled,
+                    "An old meter still reading current lies in a compost bed on each new Miasma map; analyzing it unlocks "
+                    + "the decay cell research. A built cell fed rotting goods makes power, less as the feed runs down, and "
+                    + "a cell that has digested its lifetime of feed becomes a rotting bed. Off: no meter is placed on maps "
+                    + "started afterwards and cells make no power (built ones stay).");
+                if (decayCellsEnabled)
+                {
+                    list.Label("  Power: " + decayCellPowerMultiplier.ToStringPercent());
+                    decayCellPowerMultiplier = list.Slider(decayCellPowerMultiplier, 0.25f, 2f);
+                }
+                list.CheckboxLabeled("Rotting bed: corpse disposal",
+                    ref rottingBedCorpsesEnabled,
+                    "A spent decay cell's rotting bed takes corpses as storage, one per cell, and rots them down one at a "
+                    + "time: the body is consumed, its gear drops beside the bed, and it leaves bones and, for a person "
+                    + "with a head, a skull that names whose it was. Off: the bed still holds corpses but nothing rots down.");
+                if (rottingBedCorpsesEnabled)
+                {
+                    list.Label("  Rot-down time: " + rottingBedRotDays.ToString("0.0") + " days per corpse");
+                    rottingBedRotDays = list.Slider(rottingBedRotDays, 0.5f, 10f);
+                }
+                list.GapLine();
+            }
+
+            if (Group(list, "The mother's price", RimMandrake.Shared.SettingScope.Now, new[] { "mothersPriceEnabled", "youngPriceOffset" }))
+            {
+                list.CheckboxLabeled("The mother's price: a held stranded young is worth a fortune",
+                    ref mothersPriceEnabled,
+                    "A stranded young your colony holds sells for a fortune to any trader, and a caravan comes for it a day or "
+                    + "two after you take one in. Sell it and its crèche remembers: the warden mother never tolerates your "
+                    + "colony again and none of her young will be yours. Carry it back into her water instead and she "
+                    + "tolerates your whole colony from then on. Off: no price, no buyer, no betrayal, no return.");
+                if (mothersPriceEnabled)
+                {
+                    list.Label("  Extra price for a stranded young: " + youngPriceOffset.ToString("0") + " silver");
+                    youngPriceOffset = list.Slider(youngPriceOffset, 0f, 5000f);
+                }
+                list.GapLine();
             }
 
             viewHeight = list.CurHeight + 20f;
