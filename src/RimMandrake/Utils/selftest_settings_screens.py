@@ -247,6 +247,22 @@ MODS = {
         "The alloy forge": "Now",
         "Architect menu (restart)": "NextGameStart",
     }, ()),
+    "Webwork": ("RM_WebworkMod.cs", "RM_Webwork.csproj", {
+        "World generation (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Emergent spawn": "Now",
+        "Guaranteed nest (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Egg economy": "Now",
+        "Creeping front and thrixweave (restart)": "NextGameStart",
+        "Urraveth remains: new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "The dead giant (urraveth remains)": "Now",
+    }, ()),
+    "Warcasket": ("RM_WarcasketSettings.cs", "RM_Warcasket.csproj", {
+        "Warcasket master switch": "Now",
+        "Suit failure and hazardous water": "Now",
+        "Sarcophagi": "Now",
+        "Cask bay and core dose": "Now",
+        "Sealed corpses on new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
