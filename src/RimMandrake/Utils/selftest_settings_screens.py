@@ -96,6 +96,20 @@ MODS = {
         "Helix contract pay": "NextPulse",
         "Helix devices": "Now",
     }, ()),
+    "Cauldron": ("RM_CauldronMod.cs", "RM_Cauldron.csproj", {
+        "Biome rarity (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Metal in the trees": "Now",
+        "Vent bloom exposure": "Now",
+        "Vexxiss behaviour": "Now",
+        "Nettle shorelines": "Now",
+        "Ground vents (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Vents and what hangs on them": "Now",
+        "Vent silence length": "NextPulse",
+        "Dewfall": "Now",
+        "Flora expansion and fexxil venom": "NextGameStart",
+        "Vexxith acid-proofing": "Now",
+        "Acid-proof vexxith door": "NextGameStart",
+    }, ()),
 }
 
 

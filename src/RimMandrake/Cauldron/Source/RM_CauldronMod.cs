@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -111,140 +113,188 @@ namespace RimMandrake.Cauldron
             bool prevSaturation = dewfallSaturationEnabled, prevFlecks = assayFlecksEnabled, prevGrade = assayGradeEnabled,
                  prevYield = metalYieldEnabled;
             list.Begin(viewRect);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
-            list.Label("Biome rarity: " + RarityLabel());
-            list.Label("At 0 the Cauldron never generates on a new planet. "
-                       + "The default places a scattering of cold, permanently dim, "
-                       + "toxin-laced forest patches. Affects planets generated "
-                       + "afterwards, never one that already exists.");
-            biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
-
-            list.GapLine();
-            list.CheckboxLabeled("Metal-infused trees yield metal",
-                ref metalYieldEnabled,
-                "Twisting thornwood and martyr trees drop steel beside their wood, "
-                + "more from older growth. Off: wood only. Takes effect on the next harvest.");
-            if (metalYieldEnabled)
+            if (Group(list, "Biome rarity (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "biomeRarityFactor" }))
             {
-                list.Label("Metal yield: " + metalYieldFactor.ToString("0.0") + "x (default 1.0x)");
-                metalYieldFactor = list.Slider(metalYieldFactor, 0.1f, 3f);
-                list.CheckboxLabeled("  ...and show an assay grade",
-                    ref assayGradeEnabled,
-                    "The inspect pane of a thornwood or martyr tree reads its grade (unripe, trace, fair, "
-                    + "rich, lode) and roughly how much metal it would give if cut now.");
-                if (assayGradeEnabled)
+                list.Label("Biome rarity: " + RarityLabel());
+                list.Label("At 0 the Cauldron never generates on a new planet. "
+                           + "The default places a scattering of cold, permanently dim, "
+                           + "toxin-laced forest patches. Affects planets generated "
+                           + "afterwards, never one that already exists.");
+                biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Metal in the trees", RimMandrake.Shared.SettingScope.Now, new[] { "metalYieldEnabled", "metalYieldFactor", "assayGradeEnabled", "assayFlecksEnabled" }))
+            {
+                list.CheckboxLabeled("Metal-infused trees yield metal",
+                    ref metalYieldEnabled,
+                    "Twisting thornwood and martyr trees drop steel beside their wood, "
+                    + "more from older growth. Off: wood only. Takes effect on the next harvest.");
+                if (metalYieldEnabled)
                 {
-                    list.CheckboxLabeled("    ...and show it as metal flecks on the trunk",
-                        ref assayFlecksEnabled,
-                        "Fair trees show a light scatter of metal glints on the trunk, rich and lode trees a heavy one. "
-                        + "Needs the fleck overlay art; until it is installed this does nothing.");
+                    list.Label("Metal yield: " + metalYieldFactor.ToString("0.0") + "x (default 1.0x)");
+                    metalYieldFactor = list.Slider(metalYieldFactor, 0.1f, 3f);
+                    list.CheckboxLabeled("  ...and show an assay grade",
+                        ref assayGradeEnabled,
+                        "The inspect pane of a thornwood or martyr tree reads its grade (unripe, trace, fair, "
+                        + "rich, lode) and roughly how much metal it would give if cut now.");
+                    if (assayGradeEnabled)
+                    {
+                        list.CheckboxLabeled("    ...and show it as metal flecks on the trunk",
+                            ref assayFlecksEnabled,
+                            "Fair trees show a light scatter of metal glints on the trunk, rich and lode trees a heavy one. "
+                            + "Needs the fleck overlay art; until it is installed this does nothing.");
+                    }
                 }
+                list.GapLine();
             }
 
-            list.GapLine();
-            list.CheckboxLabeled("Vent bloom builds a metal load",
-                ref ventBloomExposureEnabled,
-                "During a vent bloom, anyone outdoors under open sky slowly takes on a "
-                + "metal-load condition. A roof or toxic-resistant gear keeps it off; native "
-                + "animals are unaffected. Off: the bloom is weather only.");
-            if (ventBloomExposureEnabled)
+            if (Group(list, "Vent bloom exposure", RimMandrake.Shared.SettingScope.Now, new[] { "ventBloomExposureEnabled", "ventBloomExposureFactor" }))
             {
-                list.Label("Metal load build-up: " + ventBloomExposureFactor.ToString("0.0") + "x (default 1.0x)");
-                ventBloomExposureFactor = list.Slider(ventBloomExposureFactor, 0.1f, 3f);
+                list.CheckboxLabeled("Vent bloom builds a metal load",
+                    ref ventBloomExposureEnabled,
+                    "During a vent bloom, anyone outdoors under open sky slowly takes on a "
+                    + "metal-load condition. A roof or toxic-resistant gear keeps it off; native "
+                    + "animals are unaffected. Off: the bloom is weather only.");
+                if (ventBloomExposureEnabled)
+                {
+                    list.Label("Metal load build-up: " + ventBloomExposureFactor.ToString("0.0") + "x (default 1.0x)");
+                    ventBloomExposureFactor = list.Slider(ventBloomExposureFactor, 0.1f, 3f);
+                }
+                list.GapLine();
             }
 
-            list.GapLine();
-            list.CheckboxLabeled("Vexxiss puts out fires",
-                ref vexxissFireWardenEnabled,
-                "A vexxiss that notices a nearby fire walks to it and smothers it. Off: it ignores fire.");
-            if (vexxissFireWardenEnabled)
+            if (Group(list, "Vexxiss behaviour", RimMandrake.Shared.SettingScope.Now, new[] { "vexxissFireWardenEnabled", "vexxissAttacksIgniter", "vexxissPoisonsWater", "vexxissWaterLetter", "vexxissPrintsEnabled" }))
             {
-                list.CheckboxLabeled("  ...and attacks whoever started it",
-                    ref vexxissAttacksIgniter,
-                    "When the fire has a known starter still in reach, the vexxiss goes for them first. "
-                    + "A tame vexxiss never attacks its own faction.");
+                list.CheckboxLabeled("Vexxiss puts out fires",
+                    ref vexxissFireWardenEnabled,
+                    "A vexxiss that notices a nearby fire walks to it and smothers it. Off: it ignores fire.");
+                if (vexxissFireWardenEnabled)
+                {
+                    list.CheckboxLabeled("  ...and attacks whoever started it",
+                        ref vexxissAttacksIgniter,
+                        "When the fire has a known starter still in reach, the vexxiss goes for them first. "
+                        + "A tame vexxiss never attacks its own faction.");
+                }
+                list.CheckboxLabeled("Vexxiss poisons the water it wades through",
+                    ref vexxissPoisonsWater,
+                    "Water cells a vexxiss stands in, and the cells touching it, turn to toxic water. "
+                    + "Off: water is left alone.");
+                if (vexxissPoisonsWater)
+                {
+                    list.CheckboxLabeled("  ...and warn me when it does",
+                        ref vexxissWaterLetter,
+                        "A letter when a vexxiss starts turning water toxic on a map where you have colonists. "
+                        + "At most one per animal per day.");
+                }
+                list.CheckboxLabeled("Vexxiss leave a trail of prints",
+                    ref vexxissPrintsEnabled,
+                    "A walking vexxiss leaves huge mineral-ringed prints on bare ground that last about a day and survive "
+                    + "saving, so you can follow one across the map. Hover a print to see which vexxiss left it. "
+                    + "Needs the Creature Behaviors mod (the shared footprint grid) and its tracks switch on.");
+                list.GapLine();
             }
-            list.CheckboxLabeled("Vexxiss poisons the water it wades through",
-                ref vexxissPoisonsWater,
-                "Water cells a vexxiss stands in, and the cells touching it, turn to toxic water. "
-                + "Off: water is left alone.");
-            if (vexxissPoisonsWater)
+
+            if (Group(list, "Nettle shorelines", RimMandrake.Shared.SettingScope.Now, new[] { "condensateGardensEnabled" }))
             {
-                list.CheckboxLabeled("  ...and warn me when it does",
-                    ref vexxissWaterLetter,
-                    "A letter when a vexxiss starts turning water toxic on a map where you have colonists. "
-                    + "At most one per animal per day.");
+                list.CheckboxLabeled("Nettles colonize poisoned shorelines",
+                    ref condensateGardensEnabled,
+                    "Raven nettles grow up along the banks of toxic water: some when the map is made, more "
+                    + "over the following weeks wherever a shore turns toxic. Off: nettles grow only as ordinary "
+                    + "wild plants. Affects maps made afterwards for the first part; the spread applies at once.");
+                list.GapLine();
             }
-            list.CheckboxLabeled("Vexxiss leave a trail of prints",
-                ref vexxissPrintsEnabled,
-                "A walking vexxiss leaves huge mineral-ringed prints on bare ground that last about a day and survive "
-                + "saving, so you can follow one across the map. Hover a print to see which vexxiss left it. "
-                + "Needs the Creature Behaviors mod (the shared footprint grid) and its tracks switch on.");
 
-            list.GapLine();
-            list.CheckboxLabeled("Nettles colonize poisoned shorelines",
-                ref condensateGardensEnabled,
-                "Raven nettles grow up along the banks of toxic water: some when the map is made, more "
-                + "over the following weeks wherever a shore turns toxic. Off: nettles grow only as ordinary "
-                + "wild plants. Affects maps made afterwards for the first part; the spread applies at once.");
-
-            list.GapLine();
-            list.CheckboxLabeled("Ground vents (new maps only)",
-                ref ventsEnabled,
-                "WORLDGEN: a Cauldron map made from now on gets a handful of vents. Off: none, and every "
-                + "vent feature below does nothing on that map. Maps already made are unchanged.");
-            list.CheckboxLabeled("Vents follow the weather",
-                ref ventWeatherEnabled,
-                "A vent breathes harder in a vent bloom, softer in vapour bank and dewfall, and goes "
-                + "hushed while a bloom is arriving.");
-            list.CheckboxLabeled("  ...and warn me when the vents go quiet",
-                ref ventFalterMessage,
-                "A message when the vents hush ahead of a vent bloom.");
-            list.CheckboxLabeled("Bloom exposure is strongest near vents",
-                ref ventLocalExposureEnabled,
-                "The bloom's metal load is full strength beside a live vent and fades to a tenth far from "
-                + "every one. Off: it reaches everyone outdoors equally. Maps with no vents are unaffected.");
-            list.CheckboxLabeled("Vexxiss drink from vents",
-                ref vexxissDrinksVentsEnabled,
-                "A wild vexxiss braces over a vent and inhales until it falls silent for days, then the vent "
-                + "slowly recovers. Off: vexxiss ignore vents.");
-            list.Label("Silence lasts: " + ventSilenceDays.ToString("0.0") + " days (default 4.0)");
-            ventSilenceDays = list.Slider(ventSilenceDays, 1f, 10f);
-            list.CheckboxLabeled("Flowers grow around vents",
-                ref ventGardensEnabled,
-                "Crystal flowers ring stable vents, blood bouquets mark chronic leaks, giant toxic flowers "
-                + "favour vents that blew out recently. Needs nettle gardens above to be on.");
-            list.CheckboxLabeled("Dewfall beads the ground",
-                ref dewfallBeadsEnabled,
-                "During dewfall, beads of brightly coloured chemical condensate form on open ground under the sky, "
-                + "outside your home area, and evaporate within a day. Off: dewfall leaves no beads.");
-            if (dewfallBeadsEnabled)
+            if (Group(list, "Ground vents (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "ventsEnabled" }))
             {
-                list.Label("Bead density: " + dewfallBeadDensity.ToString("0.00") + "x (default 1.00x)");
-                dewfallBeadDensity = list.Slider(dewfallBeadDensity, 0.25f, 2f);
+                list.CheckboxLabeled("Ground vents (new maps only)",
+                    ref ventsEnabled,
+                    "WORLDGEN: a Cauldron map made from now on gets a handful of vents. Off: none, and every "
+                    + "vent feature below does nothing on that map. Maps already made are unchanged.");
+                list.GapLine();
             }
-            list.CheckboxLabeled("Dewfall saturates the garden",
-                ref dewfallSaturationEnabled,
-                "During dewfall the flowering plants bloom in full, wrong colours, green included, and settle back "
-                + "when it lifts. Only plants whose dew art is installed change; until then this does nothing.");
-            list.CheckboxLabeled("Flora expansion (restart to apply)",
-                ref floraExpansionEnabled,
-                "Tsevrix, ixalith, fexxil, sessarix, kissaveth and selvix in the wild roster. Off: only the original "
-                + "eleven plants grow. The roster change applies on the next launch.");
-            list.CheckboxLabeled("Fexxil burrs carry venom (restart to apply)",
-                ref fexxilVenomEnabled,
-                "Walking through fexxil gives a toxic scratch. Off: the thicket only slows you down.");
 
-            list.GapLine();
-            list.CheckboxLabeled("Vexxith is acid-proof",
-                ref vexxithAcidImmunityEnabled,
-                "Anything made of vexxith plate, and the acid-proof door, takes no acid damage. Off: acid burns "
-                + "vexxith like anything else. A pawn in vexxith armour is still burned; the armour is not.");
-            list.CheckboxLabeled("Acid-proof vexxith door (restart to apply)",
-                ref vexxithDoorEnabled,
-                "A door that can only be built from vexxith plate. Off: it leaves the architect menu on the next "
-                + "launch; doors already built stay.");
+            if (Group(list, "Vents and what hangs on them", RimMandrake.Shared.SettingScope.Now, new[] { "ventWeatherEnabled", "ventFalterMessage", "ventLocalExposureEnabled", "vexxissDrinksVentsEnabled", "ventGardensEnabled" }))
+            {
+                list.CheckboxLabeled("Vents follow the weather",
+                    ref ventWeatherEnabled,
+                    "A vent breathes harder in a vent bloom, softer in vapour bank and dewfall, and goes "
+                    + "hushed while a bloom is arriving.");
+                list.CheckboxLabeled("  ...and warn me when the vents go quiet",
+                    ref ventFalterMessage,
+                    "A message when the vents hush ahead of a vent bloom.");
+                list.CheckboxLabeled("Bloom exposure is strongest near vents",
+                    ref ventLocalExposureEnabled,
+                    "The bloom's metal load is full strength beside a live vent and fades to a tenth far from "
+                    + "every one. Off: it reaches everyone outdoors equally. Maps with no vents are unaffected.");
+                list.CheckboxLabeled("Vexxiss drink from vents",
+                    ref vexxissDrinksVentsEnabled,
+                    "A wild vexxiss braces over a vent and inhales until it falls silent for days, then the vent "
+                    + "slowly recovers. Off: vexxiss ignore vents.");
+                list.CheckboxLabeled("Flowers grow around vents",
+                    ref ventGardensEnabled,
+                    "Crystal flowers ring stable vents, blood bouquets mark chronic leaks, giant toxic flowers "
+                    + "favour vents that blew out recently. Needs nettle gardens above to be on.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Vent silence length", RimMandrake.Shared.SettingScope.NextPulse, new[] { "ventSilenceDays" }))
+            {
+                list.Label("Silence lasts: " + ventSilenceDays.ToString("0.0") + " days (default 4.0)");
+                ventSilenceDays = list.Slider(ventSilenceDays, 1f, 10f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Dewfall", RimMandrake.Shared.SettingScope.Now, new[] { "dewfallBeadsEnabled", "dewfallBeadDensity", "dewfallSaturationEnabled" }))
+            {
+                list.CheckboxLabeled("Dewfall beads the ground",
+                    ref dewfallBeadsEnabled,
+                    "During dewfall, beads of brightly coloured chemical condensate form on open ground under the sky, "
+                    + "outside your home area, and evaporate within a day. Off: dewfall leaves no beads.");
+                if (dewfallBeadsEnabled)
+                {
+                    list.Label("Bead density: " + dewfallBeadDensity.ToString("0.00") + "x (default 1.00x)");
+                    dewfallBeadDensity = list.Slider(dewfallBeadDensity, 0.25f, 2f);
+                }
+                list.CheckboxLabeled("Dewfall saturates the garden",
+                    ref dewfallSaturationEnabled,
+                    "During dewfall the flowering plants bloom in full, wrong colours, green included, and settle back "
+                    + "when it lifts. Only plants whose dew art is installed change; until then this does nothing.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Flora expansion and fexxil venom", RimMandrake.Shared.SettingScope.Now, new[] { "floraExpansionEnabled", "fexxilVenomEnabled" }, "[next game start]"))
+            {
+                list.CheckboxLabeled("Flora expansion (restart to apply)",
+                    ref floraExpansionEnabled,
+                    "Tsevrix, ixalith, fexxil, sessarix, kissaveth and selvix in the wild roster. Off: only the original "
+                    + "eleven plants grow. The roster change applies on the next launch.");
+                list.CheckboxLabeled("Fexxil burrs carry venom (restart to apply)",
+                    ref fexxilVenomEnabled,
+                    "Walking through fexxil gives a toxic scratch. Off: the thicket only slows you down.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Vexxith acid-proofing", RimMandrake.Shared.SettingScope.Now, new[] { "vexxithAcidImmunityEnabled" }))
+            {
+                list.CheckboxLabeled("Vexxith is acid-proof",
+                    ref vexxithAcidImmunityEnabled,
+                    "Anything made of vexxith plate, and the acid-proof door, takes no acid damage. Off: acid burns "
+                    + "vexxith like anything else. A pawn in vexxith armour is still burned; the armour is not.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Acid-proof vexxith door", RimMandrake.Shared.SettingScope.Now, new[] { "vexxithDoorEnabled" }, "[next game start]"))
+            {
+                list.CheckboxLabeled("Acid-proof vexxith door (restart to apply)",
+                    ref vexxithDoorEnabled,
+                    "A door that can only be built from vexxith plate. Off: it leaves the architect menu on the next "
+                    + "launch; doors already built stay.");
+                list.GapLine();
+            }
 
             if (dewfallSaturationEnabled != prevSaturation || assayFlecksEnabled != prevFlecks || assayGradeEnabled != prevGrade
                 || metalYieldEnabled != prevYield)
@@ -267,6 +317,61 @@ namespace RimMandrake.Cauldron
 
         private Vector2 scrollPosition;
         private float lastContentHeight;
+
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_CauldronSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_CauldronSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. A search matches the section title or any of its setting names. Scope AUDITED per setting against its
+        /// read site (2026-10-10): the biome rarity and the vent placement are read while a map is generated ([new maps only]); the vent silence length is rolled when a vexxiss next drinks ([next pulse]); the wild-roster expansion, fexxil venom and the vexxith door are applied once at startup ([next game start], a label local to this screen); every other setting is read by a tick, comp, harvest or draw call ([now]).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            // tagOverride "[next game start]": the kit has no such scope; these are read while defs load or when a game loads.
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
 
         private static string RarityLabel()
         {
