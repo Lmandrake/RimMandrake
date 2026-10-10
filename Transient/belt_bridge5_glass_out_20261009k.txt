@@ -1,0 +1,12 @@
+terrain RM_Glasswalk {"success": true, "message": "Applied 1/1 op(s): 27 cell(s) changed, 0 already correct.", "layer": "top", "opsRequested": 1, "opsApplied": 1, "cellsRe
+terrain Concrete {"success": true, "message": "Applied 1/1 op(s): 27 cell(s) changed, 0 already correct.", "layer": "top", "opsRequested": 1, "opsApplied": 1, "cellsRe
+terrain RUT_Duckboards {"success": false, "message": "Applied 0/1 op(s): 0 cell(s) changed, 0 already correct.", "layer": "top", "opsRequested": 1, "opsApplied": 0, "cellsRe
+LANE RM_Glasswalk ticks 402 cells 24 offlane False hediffs ['AS_MoodyPassion', 'AS_TranshumanistPassion', 'SEX_Womb', 'MCR_MoodChainWatcher']
+LANE Concrete ticks 331 cells 24 offlane False hediffs ['MissingBodyPart', 'MissingBodyPart', 'SEX_Womb', 'MCR_MoodChainWatcher']
+LANE RUT_Duckboards ticks 443 cells 24 offlane False hediffs ['AS_TranshumanistPassion', 'Stab', 'SEX_Penis', 'MCR_MoodChainWatcher']
+RATIO glass/concrete 1.215  duck/concrete 1.338 (glass expect ~ (base+3)/base)
+DEFS {"success": true, "message": "2 of 3 def(s) resolved; 1 not found", "requested": 3, "foundCount": 2, "notFound": ["TerrainDef/RUT_Duckboards"], "malformed": [], "fieldsAsked": ["pathCost", "generatedFilth", "filthAcceptanceMask"], "defs": [{"requested": "TerrainDef/RM_Glasswalk", "found": true, "defName": "RM_Glasswalk", "defType": "TerrainDef", "label": "glasswalk", "modName": "RimMandrake: Baroque Biomes", "packageId": "mandrake.rm.biomes", "fields": {"filthAcceptanceMask": "None", "pathCost": 3}}, {"requested": "TerrainDef/RUT_Duckboards", "found": false, "defType": "TerrainDef", "defName": "RUT_Duckboards"}, {"requested": "TerrainDef/Concrete", "found": true, "defName": "Concrete", "defType": "TerrainDef", "label": "concrete", "modName": "Core", "packageId": "ludeon.rimworld", "fields": {"filthAcceptanceMask": "Any", "pathCost": 0}}], "ticksGame": 212683, "operation": {"OperationId":
+duck Applied 1/1 op(s): 27 cell(s) changed, 0 already correct.
+pawn Human691926 ['AS_IdeologicalPassion_Hediff', 'Gunshot', 'DA_RedTearAddiction', 'DA_RedTearTolerance', 'SEX_Penis']
+TIMES {'RM_Glasswalk': [2944, 88], 'Concrete': [3194, 3130], 'RM_Duckboards': [2961, 3100]}
+RATIO glass/concrete 0.479  duck/concrete 0.958
