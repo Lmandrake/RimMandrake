@@ -1,0 +1,14 @@
+DEF GR_Spidercat ['texPath": "RimUtinni/UtinniPatches/Spidercat/GR_Spidercat"', 'texPath": "Things/Pawn/Animal/Insectoid/Spidercat/GR_Dessicated_Spidercat"']
+DEF AA_Thunderox ['texPath": "RimUtinni/UtinniPatches/Thunderox/AA_Thunderox_male"', 'texPath": "Things/Pawn/Animal/AA_Thunderox/AA_Dessicated_Thunderox"', 'texPath": "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_baby"', 'texPath": "Things/Pawn/Animal/AA_Thunderox/AA_Thunderox_female"']
+DEF VFEI2_Megathrips ['texPath": "Things/Pawn/Animal/Megathrips/Dessicated_Megathrips"', 'texPath": "Things/Pawn/Animal/Megathrips/Megathrips"']
+DEF Dalgo ['texPath": "swanimals/Dalgo/Dalgo"', 'texPath": "swanimals/Dalgo/Dalgo_Dessicated"']
+DEF Iriaz ['texPath": "swanimals/Iriaz/Iriaz"', 'texPath": "swanimals/Iriaz/Iriaz_Dessicated"']
+DEF RSW_Kreetle ['texPath": "RimStarWars/SWBestiary/Kreetle/Kreetle"', 'texPath": "swanimals/Kreetle/Kreetle_Dessicated"', 'texPath": "swanimals/Kreetle/Kreetle_j"', 'texPath": "swanimals/Kreetle/Kreetle_j_Dessicated"']
+SPAWN GR_Spidercat {"success": true, "message": "Spawned 1/1 GR_Spidercat in faction PlayerColony.", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "GR_Spidercat211874", "name":
+SPAWN AA_Thunderox {"success": true, "message": "Spawned 1/1 AA_Thunderox in faction PlayerColony.", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "AA_Thunderox211875", "name":
+SPAWN VFEI2_Megathrips {"success": true, "message": "Spawned 1/1 VFEI2_Megathrips in faction PlayerColony.", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "VFEI2_Megathrips211876",
+SPAWN Dalgo {"success": true, "message": "Spawned 1/1 Dalgo in faction PlayerColony.", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "Dalgo211877", "name": "Malastare", 
+SPAWN Iriaz {"success": true, "message": "Spawned 1/1 Iriaz in faction PlayerColony.", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "Iriaz211878", "name": "Bargon", "ki
+SPAWN RSW_Kreetle {"success": true, "message": "Spawned 1/1 RSW_Kreetle in faction PlayerColony.", "spawnedCount": 1, "failedCount": 0, "substitutedCount": 0, "pawns": [{"ok": true, "id": "RSW_Kreetle211879", "name": "
+SHOT C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\bridge7_f3_GR_Spidercat_0__cell_rect.png
+SHOT C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Screenshots\bridge7_f3_GR_Spidercat_3__cell_rect.png

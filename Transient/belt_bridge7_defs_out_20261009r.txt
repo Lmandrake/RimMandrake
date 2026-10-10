@@ -1,0 +1,31 @@
+ALLOY forge prereq ['RM_WM_AlloyForgeRestoration']
+ALLOY plasteel prereq ['RM_WM_PlasteelAlloying']
+ALLOY ResearchProjectDef/RM_WM_AlloyForgeRestoration found
+ALLOY ResearchProjectDef/RM_WM_PlasteelAlloying found
+ALLOY ThingDef/RSW_Durasteel notFound
+ALLOY PipeSystem.ProcessDef/RSW_AlloyDurasteel notFound
+ALLOY ThingDef/RSW_Zersium found
+ALLOY forge processes [{"compClass": "CompMainComponent"}, {"compClass": "KeepOnComp"}, {"transmitsPower": false, "idlePowerDraw": -1.0, "shortCircuitInRain": true, "showPowerNeededIfOff": true, "alwaysDisplayAsUsingPower": false, "compClass": "CompPowerTrader"}, {"compClass": "CompPowerTrader_Overclocked"}, {"heatPerSecond": 21.0, "heatPushMaxTemperature": 120.0, "heatPushMinTemperature": -99999.0, "compClass": "CompHeatPusherPowered_Overclocked"}, {"commandTexture": "UI/Commands/DesirePower", "commandLabelKey": "CommandDesignateTogglePowerLabel", "commandDescKey": "CommandDesignateTogglePowerDesc", "compClass": "
+MERGE removed RM_RotWeakChitin notFound
+MERGE removed RM_RotMediumChitin notFound
+MERGE removed RSW_WeakChitin notFound
+MERGE removed RSW_FragileChitin notFound
+MERGE removed RSW_MediumChitin notFound
+MERGE removed RSW_ToxiChitin notFound
+MERGE removed RSW_GrayChitin notFound
+MERGE removed RSW_CrystalChitin notFound
+MERGE removed RUT_Hardwood notFound
+MERGE removed ChunkSlagPlasteel_GT notFound
+MERGE removed RUT_TibannaGas notFound
+MERGE survivor RM_WeakChitin found
+MERGE survivor RM_MediumChitin found
+MERGE survivor RM_GrayChitin found
+MERGE survivor RM_CrystalChitin found
+MERGE survivor RM_FragileChitin found
+MERGE survivor RM_ToxiChitin found
+MERGE survivor RM_GreatboleHardwood found
+MERGE survivor RM_RawSalt found
+MERGE survivor KotORChunk_plasteel found
+MERGE survivor KOTOR_Tibanna found
+PROBE ThingDef/Mynock found
+PROBE ThingDef/Nonexistent_Def_XYZ notFound

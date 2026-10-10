@@ -40,3 +40,11 @@ Built:
 Record with `rimflow verify ZERSIUM_FORGE_BIOME_1 --criterion <ID> --result pass|fail|partial --evidence <path>`.
 L0 offline (done 2026-10-09: winbuild 0W/0E; static chain PASS and a break case caught). L1 needs a full-list
 bridge session and a freshly generated Forge map (an old Forge map predates the GenStep and reads 0 cells).
+
+## live read (2026-10-09, bridge7, full-565)
+L4 PASS. L5 PARTIAL: the biome gate and the toggle read correctly, but the PROVISIONAL density places far less than
+the "~2-3 lumps / ~660 zersium per map" estimate above: four fresh RM_TheForge player-home maps (250x250, LargeHills)
+carried 24, 0, 0, 0 ore cells; a 150x150 flat one 0. Most Forge maps get none, so toggle-off cannot be told apart.
+Likely CanScatterAt finding little natural rock on Forge maps at 0.3~0.5 per 10k cells. Retune (count or lump
+placement), then re-read L5 on new home maps. Only player-home maps run the GenStep (Base_Player); a faction-less
+`scenelib.biome_map` settlement generates with Base_Faction and always reads 0.
