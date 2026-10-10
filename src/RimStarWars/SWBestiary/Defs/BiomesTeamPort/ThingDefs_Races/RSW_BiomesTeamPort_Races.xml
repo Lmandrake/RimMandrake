@@ -6031,9 +6031,18 @@ A qattora does not fight well, but it does not need to: struck or seized, it fir
         <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
         <chanceFactor>0.2</chanceFactor>
       </li>
+      <li>
+        <label>tail</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2.5</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>RSW_SWTailAttackTool</linkedBodyPartsGroup>
+      </li>
     </tools>
     <race>
-      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <body>RSW_QettaBody</body>
       <baseBodySize>0.2</baseBodySize>
       <baseHealthScale>0.4</baseHealthScale>
       <baseHungerRate>0.115</baseHungerRate>
