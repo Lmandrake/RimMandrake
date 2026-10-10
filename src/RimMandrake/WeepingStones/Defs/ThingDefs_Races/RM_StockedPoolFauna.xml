@@ -338,9 +338,8 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Karrek/RM_Karrek</texPath>
           <drawSize>0.35</drawSize>
-          <color>(120, 90, 60)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
@@ -349,9 +348,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Karrek/RM_Karrek</texPath>
           <drawSize>0.4</drawSize>
-          <color>(120, 90, 60)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
@@ -360,9 +358,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Cobra/Cobra</texPath>
+          <texPath>Things/Pawn/Animal/RM_Karrek/RM_Karrek</texPath>
           <drawSize>0.45</drawSize>
-          <color>(120, 90, 60)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Cobra/Dessicated_Cobra</texPath>
@@ -863,9 +860,8 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/RM_Ivvol/RM_Ivvol</texPath>
           <drawSize>0.7</drawSize>
-          <color>(120, 115, 100)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
@@ -874,9 +870,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/RM_Ivvol/RM_Ivvol</texPath>
           <drawSize>0.825</drawSize>
-          <color>(120, 115, 100)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
@@ -885,9 +880,8 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <texPath>Things/Pawn/Animal/RM_Ivvol/RM_Ivvol</texPath>
           <drawSize>0.95</drawSize>
-          <color>(120, 115, 100)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>

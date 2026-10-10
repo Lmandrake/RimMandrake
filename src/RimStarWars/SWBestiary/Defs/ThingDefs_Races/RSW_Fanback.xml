@@ -184,6 +184,12 @@
     <defName>RSW_Fanback</defName>
     <label>fanback</label>
     <race>RSW_Fanback</race>
+    <alternateGraphicChance>0.5</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Fanback/FanbackV_C</texPath>
+      </li>
+    </alternateGraphics>
     <combatPower>400</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
     <wildGroupSize>1~2</wildGroupSize>
