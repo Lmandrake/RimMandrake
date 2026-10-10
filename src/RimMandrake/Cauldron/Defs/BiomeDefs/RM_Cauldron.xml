@@ -146,7 +146,7 @@
       <AA_BedBug MayRequire="sarg.alphaanimals">0.3</AA_BedBug>  <!-- bedbug - small-pred, keep -->
       <AA_CrystalMit MayRequire="sarg.alphaanimals">0.15</AA_CrystalMit>  <!-- crystalmit - small, keep -->
       <AA_GiantCrownedSilkie MayRequire="sarg.alphaanimals">0.15</AA_GiantCrownedSilkie>  <!-- giant crowned silkie - medium, keep -->
-      <AA_DecayDrake MayRequire="sarg.alphaanimals">0.1</AA_DecayDrake>  <!-- decay drake - medium, keep -->
+      <RM_DecayDrake>0.1</RM_DecayDrake>  <!-- fermatalis (decay drake) - medium, keep; our port of AA_DecayDrake, defined in the Miasma member (DONOR_CODE_PLAIN_PORTS_1) -->
       <AA_Helixien MayRequire="sarg.alphaanimals">0.1</AA_Helixien>  <!-- helixien - giant, keep -->
       <AA_Wildpod MayRequire="sarg.alphaanimals">0.05</AA_Wildpod>  <!-- wildpod - giant, keep -->
       <!-- CAULDRON_RULED_CONTENT_1: three owned natives (one home each). -->

@@ -28,11 +28,11 @@ VANILLA_TEX = {  # vanilla/DLC texPaths a port may borrow (read from RimSage, 20
     "Things/Pawn/Animal/Megaspider/Dessicated_Megaspider", "Things/Item/Resource/Uranium",
     "Things/Projectile/LauncherShot", "Things/Pawn/Animal/Bear/Dessicated_Bear",
     "Things/Pawn/Animal/Elephant/Dessicated_Elephant", "Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo",
-    "Things/Pawn/Animal/Warg/Dessicated_Warg", "Things/Pawn/Animal/Iguana/Dessicated_Iguana",
+    "Things/Pawn/Animal/Warg/Dessicated_Warg", "Things/Pawn/Animal/Iguana/Dessicated_Iguana", "Things/Item/Resource/PlantFoodRaw/RawFungus",
 }
 VEF_GUARD = 'MayRequire="OskarPotocki.VanillaFactionsExpanded.Core"'
 
-# one row per port: mod folder, def file, our defName, donor defName, roster file, donor-path art placeholders
+# one row per port and roster (roster_mod when the roster lives in another member): mod folder, def file, our defName, donor defName, roster file, donor-path art placeholders
 PORTS = [
     {"mod": "Cauldron", "file": "Defs/ThingDefs_Races/RM_Radyak.xml", "ours": "RM_Radyak", "donor": "AA_Radyak",
      "roster": "Defs/BiomeDefs/RM_Cauldron.xml",
@@ -46,6 +46,10 @@ PORTS = [
      "roster": "Defs/BiomeDefs/RM_TheRot_Biome.xml", "placeholder_tex": set()},
     {"mod": "TheRot", "file": "Defs/Fauna/RM_AgariPorts.xml", "ours": "RM_MycoidColossus", "donor": "AA_MycoidColossus",
      "roster": "Defs/BiomeDefs/RM_TheRot_Biome.xml", "placeholder_tex": set()},
+    {"mod": "Miasma", "file": "Defs/ThingDefs_Races/RM_DecayDrake.xml", "ours": "RM_DecayDrake", "donor": "AA_DecayDrake",
+     "roster": "Defs/BiomeDefs/RM_Miasma.xml", "placeholder_tex": set()},
+    {"mod": "Miasma", "file": "Defs/ThingDefs_Races/RM_DecayDrake.xml", "ours": "RM_DecayDrake", "donor": "AA_DecayDrake",
+     "roster_mod": "Cauldron", "roster": "Defs/BiomeDefs/RM_Cauldron.xml", "placeholder_tex": set()},
 ]
 
 
@@ -87,7 +91,8 @@ def check_port(p):
     refs = set(re.findall(r"<(?:resourceDef|initialAbility|defaultProjectile|li)>(RM_\w+)</", body))
     for r in sorted(refs - defined):
         bad.append("%s: references %s, which its file does not define" % (p["ours"], r))
-    roster = _strip_comments(open(os.path.join(mod, p["roster"]), encoding="utf-8").read())
+    roster_mod = os.path.join(ROOT, p.get("roster_mod", p["mod"]))
+    roster = _strip_comments(open(os.path.join(roster_mod, p["roster"]), encoding="utf-8").read())
     if not re.search(r"<%s\b[^>]*>[\d.]+</%s>" % (p["ours"], p["ours"]), roster):
         bad.append("%s: roster %s does not name it" % (p["ours"], p["roster"]))
     if re.search(r"<%s\b" % p["donor"], roster):

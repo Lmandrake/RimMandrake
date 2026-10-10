@@ -42,3 +42,11 @@ validation.py static_checks). Offline only — nothing loaded.
   QuadrupedAnimalWithHooves; spore-clump eggs -> VEF asexual reproduction produceEggs=false (young appear directly).
 - Art ours: RotSpecies (rennok, vorrugath); gromma installed via art.py at Things/Pawn/Animal/RM_Agaripod.
 - Rot roster rows now RM_ and unguarded.
+### DecayDrake -> RM_DecayDrake "fermatalis" (Miasma; also cast by RM_Cauldron) — built
+- `src/RimMandrake/Miasma/Defs/ThingDefs_Races/RM_DecayDrake.xml` + `Patches/RM_DecayDrake_VEFThinkTree.xml`.
+  "Keep the mechanic": VEF fermenting breath + weird eating kept (guarded), mound item ported as RM_FermentedMound
+  (placeholder art: vanilla raw fungus tinted). Think tree added only if VEF's ThinkTreeDef exists.
+- Note: the fermenting target list is the donor's (vanilla/Alpha Biomes grasses) — it names none of the Miasma's own
+  flora, so the mechanic rarely fires there, same as with the donor. Widening it is a design call, not made here.
+- Body/sounds/meat/dessicated -> vanilla (QuadrupedAnimalWithPawsAndTail, Iguana). Art ours, installed via art.py.
+- Both roster rows (RM_Miasma, RM_Cauldron) now RM_DecayDrake, unguarded.
