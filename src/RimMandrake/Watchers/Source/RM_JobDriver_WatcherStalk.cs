@@ -102,7 +102,7 @@ namespace RimMandrake.Watchers
                 return;
             }
             int now = Find.TickManager.TicksGame;
-            bool enabled = RM_WatchersSettings.watchersEnabled && RM_WatcherStalkSettings.watcherEnabled;
+            bool enabled = RM_WatchersSettings.watchersEnabled && RM_WatchersSettings.watcherStalkEnabled;
             bool onMedium = RM_WatcherUtility.OnMedium(pawn, ext);
             StepFlags kit = StepFlags.None;
             Pawn nearest = null;
@@ -206,7 +206,7 @@ namespace RimMandrake.Watchers
         protected override Job TryGiveJob(Pawn pawn)
         {
             RM_WatcherExtension ext = pawn?.def.GetModExtension<RM_WatcherExtension>();
-            if (ext == null || pawn.GetComp<RM_CompWatcherStalk>() == null || !RM_WatcherStalkSettings.watcherEnabled)
+            if (ext == null || pawn.GetComp<RM_CompWatcherStalk>() == null || !RM_WatchersSettings.watcherStalkEnabled)
             {
                 return null;
             }
