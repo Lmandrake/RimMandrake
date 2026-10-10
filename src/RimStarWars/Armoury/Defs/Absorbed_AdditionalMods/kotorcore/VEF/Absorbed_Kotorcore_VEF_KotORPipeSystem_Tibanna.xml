@@ -76,7 +76,7 @@
     </statBases>
     <drawStyleCategory>Conduits</drawStyleCategory>
     <costList>
-      <KOTOR_AlloyDurasteel>1</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>1</RSW_Durasteel>
     </costList>
     <comps>
       <li Class="PipeSystem.CompProperties_Resource">
@@ -142,7 +142,7 @@
     </statBases>
     <drawStyleCategory>Conduits</drawStyleCategory>
     <costList>
-      <KOTOR_AlloyDurasteel>1</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>1</RSW_Durasteel>
     </costList>
     <comps>
       <li Class="PipeSystem.CompProperties_Resource">
@@ -193,7 +193,7 @@
       <Beauty>-2</Beauty>
     </statBases>
     <costList>
-      <KOTOR_AlloyDurasteel>10</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>10</RSW_Durasteel>
       <ComponentIndustrial>1</ComponentIndustrial>
     </costList>
     <comps>
@@ -256,7 +256,7 @@
     </statBases>
     <size>(2,2)</size>
     <costList>
-      <KOTOR_AlloyDurasteel>140</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>140</RSW_Durasteel>
     </costList>
     <comps>
       <li Class="PipeSystem.CompProperties_ResourceStorage">
@@ -326,7 +326,7 @@
     </statBases>
     <size>(1,1)</size>
     <costList>
-      <KOTOR_AlloyDurasteel>40</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>40</RSW_Durasteel>
     </costList>
     <building>
       <preventDeteriorationOnTop>true</preventDeteriorationOnTop>
@@ -401,7 +401,7 @@
     </statBases>
     <size>(1,1)</size>
     <costList>
-      <KOTOR_AlloyDurasteel>40</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>40</RSW_Durasteel>
     </costList>
     <building>
       <preventDeteriorationOnTop>true</preventDeteriorationOnTop>

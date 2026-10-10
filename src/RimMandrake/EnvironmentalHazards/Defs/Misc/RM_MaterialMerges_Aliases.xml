@@ -38,6 +38,8 @@
       <li><from>RUT_TibannaGas</from><to>KOTOR_Tibanna</to><defType>ThingDef</defType></li>
       <!-- BRONZIUM_DROP_1: bronzium dropped; the exported ship held 4 bronzium-stuffed things, now RSW_Durasteel -->
       <li><from>KOTOR_AlloyBronzium</from><to>RSW_Durasteel</to><defType>ThingDef</defType></li>
+      <!-- CANON_MATERIALS_BUILD_1: donor durasteel converts 1:1 -->
+      <li><from>KOTOR_AlloyDurasteel</from><to>RSW_Durasteel</to><defType>ThingDef</defType></li>
     </aliases>
   </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
 </Defs>

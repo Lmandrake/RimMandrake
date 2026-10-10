@@ -51,7 +51,7 @@
       <li>KOTOR_Research_UltraComponent</li>
     </researchPrerequisites>
     <costList>
-      <KOTOR_AlloyDurasteel>65</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>65</RSW_Durasteel>
       <ComponentIndustrial>6</ComponentIndustrial>
       <ComponentSpacer>4</ComponentSpacer>
       <KOTOR_UltraComponent>1</KOTOR_UltraComponent>

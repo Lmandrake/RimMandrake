@@ -53,7 +53,7 @@
     <costList>
       <ComponentSpacer>1</ComponentSpacer>
       <KOTOR_FabricArmorweave>40</KOTOR_FabricArmorweave>
-      <KOTOR_AlloyDurasteel>10</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>10</RSW_Durasteel>
     </costList>
     <apparel>
       <drawData>
@@ -154,7 +154,7 @@
 			</factionPrerequisiteTags-->
     </recipeMaker>
     <costList>
-      <KOTOR_AlloyDurasteel>80</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>80</RSW_Durasteel>
       <KOTOR_FabricArmorweave>80</KOTOR_FabricArmorweave>
       <ComponentSpacer>2</ComponentSpacer>
     </costList>
@@ -245,7 +245,7 @@
 			</factionPrerequisiteTags-->
     </recipeMaker>
     <costList>
-      <KOTOR_AlloyDurasteel>120</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>120</RSW_Durasteel>
       <ComponentSpacer>2</ComponentSpacer>
     </costList>
     <thingSetMakerTags>

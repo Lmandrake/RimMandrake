@@ -48,7 +48,6 @@
         <li>
           <things>
             <KOTOR_MineableJunk>0.35</KOTOR_MineableJunk>
-            <KOTOR_MineableDurasteel>0.1</KOTOR_MineableDurasteel>
             <MineableComponentsIndustrial>0.05</MineableComponentsIndustrial>
           </things>
           <indoorRuin>false</indoorRuin>

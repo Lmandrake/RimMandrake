@@ -647,8 +647,50 @@ def alloy_forge_durasteel(t):
             raise ExpectationFailed("RSW_Durasteel exists but RSW_AlloyDurasteel is not on the forge: %s" % comps[:300])
 
 
+# ------------------------------------------------- donor durasteel conversion (CANON_MATERIALS_BUILD_1 L2)
+_ARMOURY_DIR = _os.path.dirname(_os.path.abspath(__file__))
+
+
+def durasteel_convert_static(patch_path=None, defs_dir=None):
+    """Offline: no source def still names KOTOR_AlloyDurasteel, the donor-conversion patch removes the steel+uranium
+    recipes and the donor def, and it carries one Replace for EVERY stack count the source now spends on RSW_Durasteel
+    (a count the patch lacks would leave the donor def named after it is removed)."""
+    import re as _re
+    patch_path = patch_path or _os.path.join(_ARMOURY_DIR, "Patches", "RSW_DurasteelConvert.xml")
+    defs_dir = defs_dir or _os.path.join(_ARMOURY_DIR, "Defs")
+    bad, counts = [], set()
+    for d, _, fs in _os.walk(defs_dir):
+        for f in fs:
+            if not f.endswith(".xml") or f == "RSW_Durasteel.xml":   # that file's comment cites the donor by name
+                continue
+            t = open(_os.path.join(d, f), encoding="utf-8").read()
+            if "KOTOR_AlloyDurasteel" in t:
+                bad.append("%s still names KOTOR_AlloyDurasteel" % f)
+            if "kotor_IngotDurasteel" in t:
+                bad.append("%s still carries kotor_IngotDurasteel" % f)
+            counts.update(int(n) for n in _re.findall(r"<RSW_Durasteel>(\d+)</RSW_Durasteel>", t))
+    root = _ET.parse(patch_path).getroot()
+    xps = [o.findtext("xpath") or "" for o in root.iter("Operation")]
+    have = set(int(n) for x in xps for n in _re.findall(r'KOTOR_AlloyDurasteel\[text\(\)="(\d+)"\]', x))
+    for need in sorted(counts - have):
+        bad.append("patch has no Replace for stack count %d" % need)
+    joined = "\n".join(xps)
+    for must in ("kotor_IngotDurasteel_recipe", "kotor_IngotDurasteel_10xrecipe", 'defName="KOTOR_AlloyDurasteel"'):
+        if must not in joined:
+            bad.append("patch does not remove %s" % must)
+    return bad
+
+
+@suite.chain("durasteel_convert")
+def durasteel_convert(t):
+    with t.component("durasteel_convert_shape", beyond_toggle=True):
+        bad = durasteel_convert_static()
+        if bad:
+            raise ExpectationFailed("; ".join(bad[:10]))
+
+
 if __name__ == "__main__":
-    _bad = durasteel_static()
+    _bad = durasteel_static() + durasteel_convert_static()
     print("DURASTEEL STATIC: %s" % ("PASS (0 findings)" if not _bad else "FAIL"))
     for _p in _bad:
         print("  - " + _p)

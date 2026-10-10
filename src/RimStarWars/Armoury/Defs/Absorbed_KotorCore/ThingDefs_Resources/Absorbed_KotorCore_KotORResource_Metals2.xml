@@ -496,43 +496,6 @@
     </building>
   </ThingDef>
 
-  <ThingDef ParentName="KOTOR_Metal">
-    <defName>KOTOR_AlloyDurasteel</defName>
-    <label>Durasteel</label>
-    <description>One of the most common alloys in the galaxy, Durasteel is used for everything from household appliances to military armor.</description>
-    <graphicData>
-      <color>(115,125,120)</color>
-    </graphicData>
-    <statBases>
-      <MarketValue>5</MarketValue>
-      <Mass>0.675</Mass>
-      <Flammability>0</Flammability>
-      <DeteriorationRate>0</DeteriorationRate>
-      <StuffPower_Armor_Sharp>0.8</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>0.6</StuffPower_Armor_Blunt>
-      <StuffPower_Armor_Heat>1</StuffPower_Armor_Heat>
-      <StuffPower_Insulation_Cold>1.25</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>1.25</StuffPower_Insulation_Heat>
-      <SharpDamageMultiplier>1</SharpDamageMultiplier>
-      <BluntDamageMultiplier>1.2</BluntDamageMultiplier>
-    </statBases>
-    <stuffProps>
-      <stuffAdjective>Durasteel</stuffAdjective>
-      <color>(115,125,120)</color>
-      <commonality>0.75</commonality>
-      <statFactors>
-        <MaxHitPoints>3</MaxHitPoints>
-        <Beauty>0.5</Beauty>
-        <Flammability>0</Flammability>
-        <WorkToMake>1</WorkToMake>
-        <WorkToBuild>1</WorkToBuild>
-        <MeleeWeapon_CooldownMultiplier>1</MeleeWeapon_CooldownMultiplier>
-      </statFactors>
-    </stuffProps>
-    <tradeTags>
-      <li>guy762TT_KotORRawMat_common</li>
-    </tradeTags>
-  </ThingDef>
 
   <ThingDef ParentName="ChunkBase">
     <defName>KotORChunk_durasteel</defName>
@@ -554,7 +517,7 @@
     </thingCategories>
     <smeltable>true</smeltable>
     <smeltProducts>
-      <KOTOR_AlloyDurasteel>15</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>15</RSW_Durasteel>
     </smeltProducts>
     <tradeTags>
       <li>guy762TT_KotORSalvage</li>
@@ -598,7 +561,7 @@
     <costList>
       <ComponentIndustrial>11</ComponentIndustrial>
       <Plasteel>20</Plasteel>
-      <KOTOR_AlloyDurasteel>40</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>40</RSW_Durasteel>
     </costList>
     <building>
       <claimable>false</claimable>
@@ -636,7 +599,7 @@
       </thingDefs>
     </fixedIngredientFilter>
     <products>
-      <KOTOR_AlloyDurasteel>15</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>15</RSW_Durasteel>
     </products>
     <skillRequirements>
       <Crafting>5</Crafting>
@@ -648,98 +611,6 @@
     </recipeUsers>
   </RecipeDef>
 
-  <RecipeDef>
-    <defName>kotor_IngotDurasteel_recipe</defName>
-    <label>smelt 5 Durasteel</label>
-    <description>smelt 5 Durasteel ingots.</description>
-    <jobString>Smelting 5 Durasteel ingots.</jobString>
-    <workSkill>Crafting</workSkill>
-    <workSpeedStat>SmeltingSpeed</workSpeedStat>
-    <effectWorking>Smelt</effectWorking>
-    <soundWorking>Recipe_Smelt</soundWorking>
-    <workAmount>2500</workAmount>
-    <ingredients>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>Steel</li>
-          </thingDefs>
-        </filter>
-        <count>5</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>Uranium</li>
-          </thingDefs>
-        </filter>
-        <count>2</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <thingDefs>
-        <li>Steel</li>
-        <li>Uranium</li>
-      </thingDefs>
-    </fixedIngredientFilter>
-    <products>
-      <KOTOR_AlloyDurasteel>5</KOTOR_AlloyDurasteel>
-    </products>
-    <researchPrerequisite>KOTOR_Research_Durasteel</researchPrerequisite>
-    <skillRequirements>
-      <Crafting>8</Crafting>
-    </skillRequirements>
-    <displayPriority>10</displayPriority>
-    <recipeUsers>
-      <li>kotor_PlasmaFurnace</li>
-    </recipeUsers>
-  </RecipeDef>
 
-  <RecipeDef>
-    <defName>kotor_IngotDurasteel_10xrecipe</defName>
-    <label>smelt 50 Durasteel</label>
-    <description>smelt 50 Durasteel ingots.</description>
-    <jobString>Smelting 50 Durasteel ingots.</jobString>
-    <workSkill>Crafting</workSkill>
-    <workSpeedStat>SmeltingSpeed</workSpeedStat>
-    <effectWorking>Smelt</effectWorking>
-    <soundWorking>Recipe_Smelt</soundWorking>
-    <workAmount>25000</workAmount>
-    <ingredients>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>Steel</li>
-          </thingDefs>
-        </filter>
-        <count>50</count>
-      </li>
-      <li>
-        <filter>
-          <thingDefs>
-            <li>Uranium</li>
-          </thingDefs>
-        </filter>
-        <count>20</count>
-      </li>
-    </ingredients>
-    <fixedIngredientFilter>
-      <thingDefs>
-        <li>Steel</li>
-        <li>Uranium</li>
-      </thingDefs>
-    </fixedIngredientFilter>
-    <products>
-      <KOTOR_AlloyDurasteel>50</KOTOR_AlloyDurasteel>
-    </products>
-    <researchPrerequisite>KOTOR_Research_Durasteel</researchPrerequisite>
-    <skillRequirements>
-      <Crafting>8</Crafting>
-    </skillRequirements>
-    <displayPriority>10</displayPriority>
-    <recipeUsers>
-      <li>kotor_PlasmaFurnace</li>
-    </recipeUsers>
-  </RecipeDef>
 
 </Defs>

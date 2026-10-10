@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_DurasteelConvert.xml          mandrake.rsw.armoury
+
+  CANON_MATERIALS_BUILD_1 L2/L4-durasteel (design canon_materials_design_2026-10-09.md section 3.2). The donor
+  guy762.mm.kotorcore / guy762.mm.kotorweapons make KOTOR_AlloyDurasteel; this patch points every use of it at
+  RSW_Durasteel and then removes the donor def, so the donor alloy is no longer produced. The Armoury's absorbed
+  copies (Defs/Absorbed_KotorCore, DEPLOY_HOLD) carry the same change in source. Old saves load
+  KOTOR_AlloyDurasteel as RSW_Durasteel through RM_DefAliasDef (EnvironmentalHazards RM_MaterialMerges_Aliases.xml).
+
+  Removed first: kotor_IngotDurasteel_recipe and its 10x variant (steel + uranium; uranium is not a canon input) and
+  the KOTOR_MineableDurasteel entry in the junk-pile generator (the mineable def stays loadable for saves; its chunk
+  KotORChunk_durasteel keeps smelting, now to RSW_Durasteel). Then one Replace per distinct stack count, because a
+  PatchOperationReplace cannot rename an element and keep its text: the counts are the ones the donor uses today.
+  A NEW count in a donor update would be left naming the removed def: the offline check in validation.py
+  (durasteel_convert) lists the counts and fails when they drift from the source copy.
+  Every operation is a no-op (success=Always) when its target is absent.
+-->
+<Patch>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/RecipeDef[defName="kotor_IngotDurasteel_recipe" or defName="kotor_IngotDurasteel_10xrecipe"]</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="KOTOR_MineableJunk"]//KOTOR_MineableDurasteel</xpath>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="1"]</xpath>
+    <value><RSW_Durasteel>1</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="5"]</xpath>
+    <value><RSW_Durasteel>5</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="6"]</xpath>
+    <value><RSW_Durasteel>6</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="8"]</xpath>
+    <value><RSW_Durasteel>8</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="10"]</xpath>
+    <value><RSW_Durasteel>10</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="15"]</xpath>
+    <value><RSW_Durasteel>15</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="20"]</xpath>
+    <value><RSW_Durasteel>20</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="25"]</xpath>
+    <value><RSW_Durasteel>25</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="30"]</xpath>
+    <value><RSW_Durasteel>30</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="40"]</xpath>
+    <value><RSW_Durasteel>40</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="50"]</xpath>
+    <value><RSW_Durasteel>50</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="56"]</xpath>
+    <value><RSW_Durasteel>56</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="60"]</xpath>
+    <value><RSW_Durasteel>60</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="65"]</xpath>
+    <value><RSW_Durasteel>65</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="80"]</xpath>
+    <value><RSW_Durasteel>80</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="100"]</xpath>
+    <value><RSW_Durasteel>100</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="120"]</xpath>
+    <value><RSW_Durasteel>120</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="140"]</xpath>
+    <value><RSW_Durasteel>140</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="150"]</xpath>
+    <value><RSW_Durasteel>150</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="200"]</xpath>
+    <value><RSW_Durasteel>200</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="350"]</xpath>
+    <value><RSW_Durasteel>350</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//KOTOR_AlloyDurasteel[text()="500"]</xpath>
+    <value><RSW_Durasteel>500</RSW_Durasteel></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//li[text()="KOTOR_AlloyDurasteel"]</xpath>
+    <value><li>RSW_Durasteel</li></value>
+  </Operation>
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs//ammoDef[text()="KOTOR_AlloyDurasteel"]</xpath>
+    <value><ammoDef>RSW_Durasteel</ammoDef></value>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[defName="KOTOR_AlloyDurasteel"]</xpath>
+  </Operation>
+</Patch>
