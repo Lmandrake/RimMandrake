@@ -676,3 +676,172 @@ marked otherwise.
   is published to origin.
 - The largest unbounded writers are `bridge_sessions.jsonl`, `observer.jsonl`, the playtest
   journals and `Saves`.
+
+---
+
+## 6. Safety rules and owner rulings
+
+Each rule below is an owner ruling (quoted where his words exist) or a hard-won project rule.
+The "enforced by" column states what actually stops a violation. "Convention" means nothing
+does.
+
+| # | rule | source | enforced by |
+|---|---|---|---|
+| S1 | **Holding the bridge is blanket authorization.** Start Steam, launch, cold-load, kill and relaunch without asking: *"Never ask that. If you have bridge, you may start steam, launch game, anything you need."* | owner 2026-09-19 (CLAUDE.md) | n/a (a permission, not a restriction) |
+| S2 | **A reboot is the seat's to call**, when the bridge is free or yours. ⛔ The exception is killing a game **he is actively playing**. If you cannot tell which game is loaded, ask one line | owner 2026-09-02 (`GAME_STATE_WORKFLOW.md:44-67`) | convention. Nothing reads which save is loaded |
+| S3 | **One driver at a time.** `rimflow bridge take`, then `release` the moment you stop. Errs toward allowing; the owner overrides | owner 2026-09-02 | the lease only (§4.1). Not enforced at the socket |
+| S4 | **Never live-test a flyer's flight unattended**, and never hunt flight screenshots. Use a state read (`jawa/pawn_flight`) or wait for the owner | owner ×3, 2026-09-25 | convention |
+| S5 | **Never fullscreen, maximize or focus-steal the game** for testing | owner 2026-10-04 | convention. ⚠️ `focus_heal.py` does exactly this by design (§4.6) |
+| S6 | **Kill all hostiles on any review map**, at build time and on every visit (`jawa/destroy_bulk filter=nonColonists`, `jawa/incident_queue_clear`, Peaceful storyteller) | owner 2026-10-05 | implemented in `GimmeSomeSlack/human_review.py` `sweep_hostiles`; other review builders by convention |
+| S7 | **Save states are the safety net.** In-memory consequences (a pawn dying) are disposable. **What matters is never writing a bad save and never overwriting the wrong slot** | owner 2026-08-31 | convention |
+| S8 | **Back up the Saves keepers before `save_game` and stat the folder afterwards.** It has written the current slot instead of `saveName` | CLAUDE.md "Options he must LOOK at…" | convention |
+| S9 | **Options he must judge ship as a savegame**: one map, all options on a grid with a key. Saves stay until he deletes them | owner 2026-09-02 | convention |
+| S10 | **Keep hostile tests paused. Spawn hostiles at the map edge. Re-pause the moment a timed test ends.** Verify the pause by reading `ticksGame` twice | skill §4b (2026-08-12 casualties) | convention |
+| S11 | **`success: true` is not evidence.** Read back the raw field, then look | skill §2 | convention plus the tool-design rules (refusal lists) |
+| S12 | **Launch through Steam, never the bare exe** | memory 2026-08-30 | convention. All scripted launchers comply (MEASURED §4.3) |
+| S13 | **Never `search_debug_actions` on the full list; never call debug-action discovery from a suite** | skill §4; runbook row 8 | convention |
+| S14 | **`hot_reload_defs` is retired**; restart on the minimal list instead | owner 2026-09-03 | client refuses (`_retired`); the DLL still exports it |
+| S15 | **GM (world-acting) tools are opt-in at build time** (`--gm`); `fire_raid` defaults to `dryRun=true` | csproj comment; owner ruling "required before that ships" | build flag. No runtime gate |
+| S16 | **All five DLCs in every test list** | owner 2026-09-19 | `modset_builder.tier_guard` |
+| S17 | **The owner announces DEPLOYING and GOING_DOWN**; a seat never stamps an inferred state | owner 2026-08-20/22 | `rimflow` schema plus `block_forged_owner_said.py` |
+| S18 | **`./game` from a seat stamps the ledger only** and never broadcasts to windows | owner 2026-09-29 | code (`broadcast.py`) |
+| S19 | **Prefer state reads to screenshots**; screenshot your own graphics before asking him to look; review visuals in game, not browser sheets | owner 2026-10-05 | convention |
+| S20 | **A subagent waiting on a cold load must block in a foreground loop**, never end its turn to wait for a notification. A background agent dies after 600 s of silence | skill §0b; CLAUDE.md | convention (brief text) |
+| S21 | **Never message the other window about the bridge**; read `BRIDGE` / `bridge who` | CLAUDE.md | `block_peer_messages.py` hook |
+| S22 | **Never assume the bridge is unavailable**; check `bridge who` before briefing "no bridge" | owner 2026-09-26 | convention |
+
+---
+
+## 7. Dependency and risk map
+
+### 7.1 External dependencies and single points of failure
+
+| dependency | owner / update channel | SPOF? | what breaks when it moves |
+|---|---|---|---|
+| RimWorld 1.6 runtime (Steam, auto-update) | Ludeon via Steam | yes | Assembly-CSharp API drift breaks the companion (compiled against a specific `Assembly-CSharp`) and 630 mods |
+| **RimBridgeServer** (Workshop 3727949765, **auto-update**, last 2026-10-07 → 2.3.0) | Pardeike via Steam | **yes, and unpinned** | the wire protocol, SDK binary contract, attention policy, tool names, paging, threading |
+| Lib.GAB / Gabp.Runtime | inside the RBS package | yes | the handshake and framing our hand-written client reverse-engineered from DLL heaps |
+| Harmony (`brrainz.harmony`, Workshop 2009463077) | Pardeike via Steam | yes | JawaBench's six-plus Harmony ids (ArgGuard, TPS, awareness, event recorder…) |
+| Steam client | Valve | yes (launch path) | every scripted launch goes through Steam (URI or `-applaunch`) |
+| Windows Task Scheduler and `\WSL Keepalive` | local | for observers and timers | observers stop silently |
+| WSL2 VM (NAT networking) | Microsoft | yes, for every agent | all agents, rimflow, builds; the game itself survives |
+| Windows `dotnet.exe` SDK (user-local) | local | for builds | no companion or mod rebuilds |
+| `D:` drive (mirror, `_rmscratch`, `_rmbuild`) | local | yes | `python.exe` scripts (mirror), the shared lease (fails open), the session log, builds |
+| `tasklist.exe`, `netstat.exe`, `taskkill.exe`, `powershell.exe` interop | WSL interop | yes, for state measurement | probe UNMEASURED; kill and launch fail |
+| GitHub origin | GitHub | for cross-clone lease visibility (ledger) | ledger shards diverge; the shared lock is the fallback |
+| Five of our own mod DLLs referenced by the companion (Oracle, RimDefDump, Droidworks, Inhabited, GimmeSomeSlack) | us | per tool family | type-load failures on lists without them (P5) |
+| `Player.log` as the token, port and readiness channel | Unity | yes | no token means no connection; stale log means false readiness (P9, P12) |
+
+### 7.2 Predicted problems
+
+Severity: **C** = can destroy work or silently invalidate a whole run of results; **H** =
+costs a cold load or more, or misleads a decision; **M** = costs a session or minutes;
+**L** = nuisance.
+
+| # | failure mode | trigger | symptom | who it fools | current mitigation | gap | proposed fix | sev |
+|---|---|---|---|---|---|---|---|---|
+| P1 | **RBS/SDK version skew** | Steam auto-updates RBS (it did on 2026-10-07) under an already-built companion | companion register error and zero `jawa/` tools, **or** a `MissingMethodException` only when a particular tool runs | anyone trusting the csproj claim "skew impossible by construction" | `load_session.py`'s census gate; `get_bridge_status` lists companion errors (DOC README:216) | no record of which RBS version a run used; no auto-rebuild; not pinned | stamp the RBS version and SDK assembly hash into the `[JawaBench] context` line and the TPS session file. Rebuild the companion when it changes. Consider pinning RBS as a local (non-Workshop) mod copy | **H** |
+| P2 | **Attention gate blocks calls** | RBS 2.3.0 "blocking attention" after a hard log error or failed operation (DOC README:53). Whether direct mode is affected is UNVERIFIED | after the first red error, ordinary calls refuse or stall while diagnostics answer | a session diagnosing "the bridge broke" or "the game hung" | none. The client never calls `attention/current` or `ack` (MEASURED) | policy doc (`docs/attention-policy.md`) not on disk | fetch the upstream policy. Teach the client to detect an attention refusal, print it, and offer `attention/ack`. The watchdog should report the attention state | **H** (if direct mode is affected) |
+| P3 | **Lease not enforced at the socket** | a subagent, ad-hoc `Transient/*.py` or observer drives without `take` | wedged calls; world changes nobody can attribute | both seats, the owner | convention; `modset_builder` gate only | client and server know nothing of the lease | make `RimBridge.connect()` call `bridge_gate` for non-read tools (fail closed, with an explicit override flag), and write seat plus holder into `bridge_sessions.jsonl` | **H** |
+| P4 | **Observer as a second driver** | `belt_watchdog` (main-thread `get_ui_state`, `tps_report`) or a scheduled observer connects while a suite has a long call in flight | probe times out → watchdog reads STALLED, or the suite's call stalls behind the probe | the watchdog's own verdict | probe timeouts (8 s per call) | no coordination between watchdog and runner | have runners publish "in long call until T" in the heartbeat, and have the watchdog skip main-thread probes inside that window | M |
+| P5 | **Partial companion load on minimal lists** | the companion hard-references five of our mod DLLs; a tier without them is loaded | some or all `jawa/` tools missing; `ReflectionTypeLoadException` | a tester concluding "tool X is broken" or "deploy failed" | init line tolerates partial types; a 19-mod list showed 301 tools on 2026-08-30 (DOC), so registration survived then | how RBS's registrar handles it now is UNVERIFIED | isolate mod-specific tools behind reflection, or a separate companion bundle per mod (`BridgeTools/JawaBench.FlowWorks/…`). Add a minimal-tier census to selftests | M |
+| P6 | **Duplicate tool name kills the whole provider** | two forks add the same `[Tool]` name, or a rename leaves an alias | every `jawa/` tool gone until restart (measured 2026-09-19) | everyone; it looks like a deploy failure | none at build time (today 398 unique, MEASURED) | `build.py` checks removals but not duplicates | `build.py` refuses on any duplicate name **or alias** in the compiled metadata | **H** |
+| P7 | **Torn companion DLL** | `shutil.copy2` direct onto the target is interrupted (antivirus handle, Steam, crash) | bad image; zero `jawa/` tools | the next session | WinError 1224 message for the running-game case | no temp-then-rename; no post-copy hash verify | copy to `.tmp`, verify sha256, `os.replace`; record the deployed hash | M |
+| P8 | **Dirty build stamped as a clean SHA** | `build.py --apply` from a dirty tree | behaviour attributed to commit X that X does not contain | later diagnosis; the reviewer | "DRIFT" warning only | the deployed companion has no `.srchash`; the dirty flag is not embedded | embed `+dirty.<treehash>` in the version, write `BridgeTools/JawaBench/DEPLOYED.json` (sha, dirty, built-at, RBS version), and refuse a dirty deploy without a flag | M |
+| P9 | **Stale or empty token** | an ad-hoc script connects between launch and the new token line, or reads a Player.log from the previous run | "Invalid authentication token", or an empty token | the agent ("bridge is down") | `launch_and_wait.sh` waits for truncation; the client errors clearly | ad-hoc scripts do not wait | client: if the log's mtime predates the process start (via `tasklist`), refuse with "token is from a previous run" | L |
+| P10 | **Port 5174 held by another process** | a stale process, a second RimWorld, or unrelated software | RBS fails to bind or uses another port (UNVERIFIED); probe sees LISTENING on 5174 and records **UP** | the probe, and `rimflow next` (offers bridge work) | none | the probe does not match the PID | probe: `netstat -ano` PID must equal the `RimWorldWin64` PID; read the port only from *this* run's log | M |
+| P11 | **Two RimWorld processes** | a Steam double-launch, or a relaunch before the old process exited | Player.log contention; port conflict; kill by image kills both | the probe ("RUNNING") | `taskkill /IM` kills all | no "exactly one process" assertion | assert one PID before launch and after load; kill by PID, as CLAUDE.md itself says | M |
+| P12 | **`launch_and_wait.sh` false "BRIDGE UP"** | the Steam launch silently fails (Steam not running, update pending, dialog). Stage 1 times out **without failing** and prints "log truncated" anyway, then stage 2 greps the **previous run's** log, finds the marker, and exits 0 (MEASURED from the script's control flow) | "BRIDGE UP after ~185s" with no game running | the caller and any agent chaining on its exit code | none (and its exit code is already known to be wrong in the other direction) | stage 1 has no failure exit | exit non-zero when truncation is never seen; require a RimWorld PID newer than the launch time; match the token line *after* truncation | **H** |
+| P13 | **ModsConfig reset to Core-only by RimWorld's recovery** | a def or patch exception during load (inert `MayRequire` on `<Operation>`, hit twice 2026-09-27) | the next launch is Core-only, so RBS is not active, no bridge at all, or a misleading partial game | launch wrappers (timeouts look like a slow load); P12 makes it look UP | `./game`'s warning, if anyone runs it | no pre-launch assertion of the intended tier | before every launch, parse ModsConfig and compare it with the intended tier's digest; after load, compare the `modSet` digest | **H** |
+| P14 | **Mod list loss or tearing** | `modset_builder` writes ModsConfig non-atomically; per-tier backups overwrite each other when tiers chain | a torn or wrong ModsConfig; `--restore` restores a test tier | the owner (he launches into a test list) | FULL.LATEST in git; a count-mismatch warning on restore | non-atomic write; backups not chained | atomic write; immutable timestamped backups; a `--restore` that refuses unless the count matches FULL.LATEST | M |
+| P15 | **Cold-load budget mismatches** | a slow load (first after reboot, a cache miss, a 33-minute load) | the watchdog says STALLED at 25 min and its remedy says kill → a healthy load is killed and the loop repeats; `launch_and_wait` gives up at ~5 min; `live_session` at 15 min | the watchdog's reader | none consistent; four different budgets in code | budgets are wall-clock constants, not progress-based | judge progress by Player.log growth and the last "Loading …" phase line; set the budget from measured history keyed by mod count; one shared constant | **H** |
+| P16 | **Timed-out mutation executes anyway, then gets retried** | a 30 s default timeout on a long call (flood ticks, map gen, save) | the late reply is dropped as abandoned, the action still happened, and the caller retries → double spawn, double raid, double save | the result counts | "never re-issue a call whose idempotence you have not established" (skill) | no idempotency key; no use of the operation journal | on timeout, poll `rimbridge/get_operation`/`wait_for_operation` by OperationId instead of retrying. Default the timeout by tool class | **H** |
+| P17 | **Main thread throttled (unfocused, Run in background off)** | the pref is lost (fresh Prefs.xml, a language switch saves prefs, a reinstall) or the owner minimises the game | `ping` OK, every main-thread call times out at 30 s, all-null `get_bridge_status` | the agent ("game hung") | watchdog signal; `focus_heal` | nothing asserts the pref before a run | preflight: read `Prefs.xml` (game down) or `jawa/prefs` (game up) and refuse an unattended run if `runInBackground` is false | M |
+| P18 | **Focus healing fights the owner** | `focus_heal` minimises his foreground window during his session | his windows minimise, keystrokes land in the game | n/a (a social cost) | ruling S5 | the code still does it | remove the minimise-blocker step when the owner is present (BENCH mode); rely on Run in background instead | M |
+| P19 | **Our Harmony patches alter the game being measured** | the first `jawa/` call lazily installs patches on `Thing.TakeDamage`, `Pawn.Kill`, `Thing.Destroy`, `PawnGenerator.GeneratePawn`, `Pawn.SpawnSetup`, `IncidentWorker.TryExecute`, `TickManagerUpdate`, `Root.Update`, `SaveGame`/`LoadGame`, and a **blocking prefix on `WildAnimalSpawner`** | perf cost on hot paths, an exception in our postfix breaking gameplay, wild spawns blocked and left armed, and behaviour that differs between sessions with and without a `jawa/` call | TPS measurements, mod authors, **the owner's campaign** (same DLL) | try/catch around installs; counted drops | no "observer effect" statement per patch; no global off switch at runtime | one `jawa/instrumentation status\|off` tool; every patch reports its install state and cost in the context line; the blocking prefix auto-expires | **H** |
+| P20 | **World-acting tools in the campaign game** | a `--gm` DLL is loaded in every game; a script aimed at a test map runs while his campaign is loaded | a raid, explosion, storyteller swap or `static_call` in the campaign | the script (it targets "current map") | `dryRun` defaults; S2's one-line question | no runtime knowledge of which save is loaded | companion refuses GM tools when the loaded save's name is in a campaign list (or the colony name matches) unless `confirmCampaign=true` | **H** |
+| P21 | **`save_game` overwrites the wrong slot** | `saveName` not honoured (state-dependent, 2026-08-24) | a keeper or campaign save overwritten | the caller (the tool returns the requested path with `exists:true`) | convention S8 | not enforced | a `jawa/save_as` tool that refuses if the target exists or differs from the current slot, and returns the real path plus size and mtime of every changed file | **C** |
+| P22 | **Zombie load reads as UP** | `ErrorWhileLoadingGame` after `game_loaded`; the process keeps answering | plausible numbers from a world in memory; the probe says UP | everyone, including `rimflow next` | the canary in some scripts (`first_light.py`, `w9_run.py`) | not in the probe, not universal | probe and session start: grep this run's log for `ErrorWhileLoadingGame` after settling; mark the game ZOMBIE and refuse bridge work | **H** |
+| P23 | **Hung main thread** | a tight exception loop, a quest test loop, a debug-tree build | `ping` OK, main-thread calls time out, AppHangB1 after ~4 min | callers that poll only "is the process alive" | `belt_watchdog` WEDGED verdict and runbook | the watchdog never acts; recovery waits for an agent | a policy runner: WEDGED for over N min while the lease holder is silent → kill by PID, archive the log, record it | M |
+| P24 | **GC or memory stalls on the full list** | long sessions, big maps, many spawns; WSL vmmem competing for RAM | frames of seconds; 30 s timeouts; OOM crash | timing benchmarks and timeouts | memwatch (WSL side only) | no in-game memory sampling found (UNVERIFIED; TPS records ticks, not heap) | add managed heap and RSS to TPS windows; cap WSL memory in `.wslconfig` | M |
+| P25 | **Log capture caps** | an every-frame exception loop | RimWorld's in-memory log and RBS's log journal (`rimbridge/list_logs`) are bounded (sizes UNVERIFIED); per-call `effects.logs` may miss lines; Player.log grows without bound | callers relying on `effects.logs` as the error detector | Player.log tail scan in the watchdog | the cap values are unknown (the brief's "10,000" was not found in the companion; MEASURED absent) | measure RBS's journal capacity; treat `effects.logs` as a sample, never proof of absence | M |
+| P26 | **Disk full** (C: LocalLow or D:) | big Player.logs, saves, TPS archives (1 GiB logs + 256 MB TPS + 256 MB health), the `_rmbuild` cache | a failed or **truncated save**; TPS drops; the build fails | the save (corrupted silently) | retention caps on TPS and health | no free-space preflight anywhere (UNVERIFIED by grep) | preflight: refuse launch, save or build under X GB free; the watchdog reports free space | M |
+| P27 | **Windows Update or reboot overnight** | a forced reboot during belt mode | game and WSL gone; heartbeats stale; the lease still held by a dead seat for 45 min | the morning reader of belt results | heartbeat staleness; the lease staleness rule | no reboot record; results in flight are not marked | record `LastBootUpTime` in each run header; the runner marks interrupted runs UNMEASURED(REBOOT) on wake | M |
+| P28 | **WSL restart or OOM kills agents mid-drive** | `wsl --shutdown`, memory OOM in a seat cgroup | the game keeps running, possibly **unpaused with hostiles**; the lease is held | the next session | none | no dead-man's switch | a dead-man in the companion: if no client call for N minutes during a belt-armed session, pause the game | M |
+| P29 | **Lease expiry mid-run** | a long run that emits no rimflow events | after 45 min the other seat may take it, so two drivers | both seats | skill tells you to emit notes; the shared lock refreshes on emits | bridge traffic does not refresh the lease | the client touches `BRIDGE_SHARED.json` on every call (or every N minutes) while connected | **H** |
+| P30 | **Same-seat concurrent drivers** | the parent plus a subagent, or two subagents, under one seat name | wedges (two drivers stick); interleaved world edits | the lease (it reads "held by FOUNDRY", true for all of them) | belt brief: "one subagent engaged with the bridge" | no per-process identity | the lease carries a holder token (pid or session id) that the client must present | **H** |
+| P31 | **Ledger, mirror and shared lock disagree** | clone ledgers unpushed; D: unavailable, so the shared lock fails open | `BRIDGE` says FREE while the other clone holds it | anyone glancing at `BRIDGE` | `bridge who` warns on disagreement; the shared lock | fail-open reads; the mirror travels by git | when the shared lock is unreadable, `take` warns loudly (and offers `--force`) rather than silently allowing | M |
+| P32 | **drvfs staleness and clock skew** | WSL reads `/mnt/c` and `/mnt/d` with cached metadata; WSL clock drift after sleep | truncation detection and log mtimes wrong; `winbuild` copies back a stale DLL or misses one (start−2 s window) | build and launch wrappers | none | mtime-based logic everywhere | compare content hashes rather than mtimes for build outputs; get times from Windows (`powershell (Get-Item).LastWriteTimeUtc`) for Windows files | M |
+| P33 | **Mirror lag: `python.exe` runs old code** | edit, push, run within 5 min | results attributed to code that did not run | the agent, the reviewer, the ledger | `./mirror sync` exists | nothing forces it | every bridge script prints the git blob hash of itself and of `rimbridge_client.py` at start; refuse when it differs from the seat clone's HEAD | **H** |
+| P34 | **Antivirus interference** | Defender scans a freshly built DLL, `python.exe` sockets, or the large Player.log | slow first load, a locked DLL at deploy, rare connection resets | latency benchmarks, deploy | none | UNVERIFIED that Defender exclusions exist | add exclusions for the RimWorld folder, `BridgeTools`, `_rmbuild` and LocalLow, and document them | L |
+| P35 | **The unknown-parameter guard silently degrades** | a `tools/list` failure, a schema-less descriptor, or companion-to-companion `ctx.Tools.CallAsync` and Lua scripts that bypass the Python client | a misspelled argument runs on defaults and returns success | the caller | client guard (warning on UNCHECKED); ArgGuard counts | UNCHECKED is a stderr line only | strict mode on by default for belt runs (ArgGuard throws); the client refuses mutations when the guard is UNCHECKED | M |
+| P36 | **Envelope `Success` mistaken for tool success** | a script greps for `Success` or checks the envelope | refusals counted as passes | suite results | skill text | no helper enforces it | `RimBridge.call_ok()` returns the payload and raises on payload `success is not True` | M |
+| P37 | **Retired tool still reachable** | `hot_reload_defs` called through Lua, `ctx.Tools` or another client | the 2026-09-03 failure (pawn generation broken, health flags green) | everyone | client-side refusal | the DLL still exports it | delete it or `#if` it out of the build | L |
+| P38 | **Discovery tools livelock the full list** | `search_debug_actions` or `list_debug_action_roots` on 600 mods | AppHang, process killed, a cold load lost | a new agent following the README | skill warnings; runbook row 8 | client does not refuse them | add both to the client's refusal list when the modSet count exceeds N | M |
+| P39 | **`modlist_swap.py` while the game is up** | a swap during a session | file written; the game ignores it; the next launch differs from what the session believed | the next launcher | none (no running-game or lease check, MEASURED) | — | reuse `modset_builder`'s `game_running()` and `bridge_ok()` | M |
+| P40 | **OS tools report success under the wrong interpreter** | `system_screenshot.py` or `system_click.py` run with `python3` | exit 0, no file, no click | callers checking only the exit code | stderr line | exit code 0 | exit non-zero when not on Windows | L |
+| P41 | **Save corruption around our patches** | the TPS sampler patches `GameDataSaveLoader.SaveGame`/`LoadGame`; an exception or slow postfix during save | a partial or slow save | the owner | `UnpatchAll` rollback on install failure only | no proof that the save postfix is exception-safe | wrap every save/load patch body in try/catch with a counted error; a selftest that saves with patches installed | M |
+| P42 | **Upstream source missing locally** | the reviewer or an agent needs RBS internals (threading, attention, port fallback, registrar) | answers become UNVERIFIED or guessed | everyone | the Workshop README (473 lines) | `vendor/mod_sources/RimBridgeServer-main` referenced but absent | re-vendor the source at the installed version (2.3.0) with a commit SHA, and keep it in sync on update (ties to P1) | M |
+| P43 | **UltraSpeedBoost changes speed 4 everywhere** | RBS enables `TickManager.UltraSpeedBoost` at startup (DOC README:300) | speed-4 timing and TPS differ from vanilla, including in his campaign | perf numbers; the owner's feel of speed 4 | none | — | record the boost flag in each TPS session; decide whether to turn it off at startup for perf tests | L |
+| P44 | **One generation of Player.log** | two relaunches between observer passes, or a crash then an immediate relaunch | the crashing run's log is gone | crash forensics | companion archives Player-prev at start; observers every 2 min; the watchdog copies it | the companion can only archive if it loads; observers depend on scheduled tasks whose installation is not in the repo | launch wrappers copy `Player.log` to the archive *before* killing or launching | M |
+
+**The five scariest, in order:** P12 (a false "BRIDGE UP" from the previous run's log),
+P21 (`save_game` overwrites a keeper), P1 plus P2 (unpinned RBS auto-update, with a new
+attention gate our client ignores), P30 plus P3 (same-seat concurrent drivers that nothing at
+the socket can stop), and P13 plus P15 (a Core-only reset or a slow load misread as a
+stall, so the watchdog's remedy kills good loads or chases ghosts).
+
+---
+
+## 8. Open questions for the reviewer
+
+1. **Pin or follow RBS?** It auto-updated to 2.3.0 on 2026-10-07. Should it be pinned as a
+   local copy (and how is a deliberate upgrade then tested), or should the companion
+   rebuild itself automatically when the SDK hash changes?
+2. **Does RBS 2.3.0's "blocking attention" apply in direct mode**, and what exactly trips it
+   (any `Log.Error`? only failed operations?) What should an unattended client do: ack
+   automatically and record, or stop the run?
+3. **Should the lease be enforced at the socket?** Options: (a) client-side gate, (b) a
+   companion tool that rejects calls lacking a lease token, (c) keep it a courtesy
+   protocol. What is the failure cost of each when the ledger is unreadable?
+4. **What is RBS's server-side concurrency model?** Per-connection serial? A global queue?
+   Why did two drivers "stick" rather than interleave? This decides whether observers may
+   probe during a run (P4).
+5. **Is a single 30 s default timeout right?** Or should timeouts be per tool class (read,
+   mutation, long-event), with the operation journal (`get_operation`) as the recovery path
+   instead of retries?
+6. **How much instrumentation is acceptable inside the owner's campaign game?** The same
+   companion, Harmony patches and GM tools load there. Should a "campaign mode" disable
+   GM tools and blocking prefixes at runtime?
+7. **What should be the single readiness definition?** Today there are five: process
+   exists; port LISTENING; `GABP server running standalone` in the log; `Bridge token:` in
+   the log; ~40 s settle after the first answer; plus the zombie canary. Which should
+   `rimflow`'s UP mean?
+8. **Should the four launch idioms collapse into one launcher** (Steam URI vs
+   `-applaunch`; forced vs graceful kill; three ready markers; budgets from 5 to 15 min)?
+   What should its contract be?
+9. **Cold-load watchdog policy:** wall-clock budget, or progress-based (log growth, phase
+   lines)? What evidence should be required before a watchdog remedy says "kill"?
+10. **Partial companion loading:** split mod-specific tools into per-mod companion bundles
+    so a minimal list never type-loads a missing mod? What does RBS do with a
+    `ReflectionTypeLoadException` today?
+11. **Is the GM build flag the right granularity?** 48 tools range from `weather_set` to
+    `static_call`. Is a runtime capability (per-session arm, expiry) better than a build
+    flag?
+12. **Save safety:** should `save_game` be wrapped (or replaced) so that no bridge-driven
+    save can overwrite an existing file without an explicit flag?
+13. **Identity of what ran:** the companion's deployed bytes (no `.srchash`), the script's
+    bytes (mirror lag), the RBS version and the mod list digest are each recorded somewhere
+    different, or nowhere. Should every bridge session open with one provenance record that
+    joins all four?
+14. **Same-seat multiplicity:** should the lease identify a process or session rather than
+    a seat? How should a parent hand the lease to a subagent and get it back?
+15. **Should the companion carry a dead-man's switch** (pause the game when no client has
+    spoken for N minutes during a belt run), given that WSL can die while the game keeps
+    simulating?
+
+---
+
+*Maintenance:* this document makes claims about code. When the code changes, correct the
+claim in the same commit, or delete it (CLAUDE.md "Inaccurate material is DELETED"). Counts
+in §3 are re-measured with the regex census in §3.1, never edited by hand.
