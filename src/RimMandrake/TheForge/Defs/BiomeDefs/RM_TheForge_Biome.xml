@@ -99,7 +99,7 @@
   <BiomeDef>
     <defName>RM_TheForge</defName>
     <label>the Forge</label>
-    <description>One mountain, three zones, and the only vertical skyline for a hundred kilometres: tall, dark foundry towers rising defiantly against the sun, streaming vent-steam like banners. Below them the red seams and the flows; around them the ash skirts; above them, improbably, herds -- vast placid gas-grazers drifting in the vapor columns. The mountain rains on itself in scalding bursts, and mosses drink in the seconds between fall and flash.</description>
+    <description>One mountain, three zones, and the only vertical skyline for a hundred kilometres: tall, dark foundry towers rising defiantly against the sun, streaming vent-steam like banners. Below them the red seams and the flows; around them the ash skirts; above them, improbably, herds -- vast placid gas-grazers drifting in the vapor columns. The mountain rains on itself in scalding bursts, and mosses drink in the seconds between fall and flash. The name is older than the towers, too: the ancients came here to make the toughest alloys they knew.</description>
     <workerClass>RimMandrake.TheForge.RM_BiomeWorker_TheForge</workerClass>
     <texture>World/Biomes/ExtremeDesert</texture>
     <foragedFood>RawAgave</foragedFood>
