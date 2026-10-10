@@ -64,6 +64,8 @@
     <Compile Include="Designator_PaintGraffitiMark.cs" />
     <Compile Include="WorkGiver_PaintGraffitiDesignated.cs" />
     <Compile Include="RM_GraffitiMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>
