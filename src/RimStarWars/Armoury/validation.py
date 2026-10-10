@@ -706,7 +706,7 @@ def durasteel_outerrim_static(patch_path=None):
 
 def plasteel_cut_static(defs_dirs=None, patch_path=None):
     """Offline: no source def defines a plasteel-making recipe other than the alloy forge's, and the donor cut patch names
-    both kotor_Plasteel recipes."""
+    both kotor_Plasteel recipes and Rimefeller's Make_PlasteelComposite (steel + synthylene -> UncuredPlasteel)."""
     import re as _re
     root = _os.path.dirname(_ARMOURY_DIR)
     defs_dirs = defs_dirs or [_os.path.join(_ARMOURY_DIR, "Defs"), _os.path.join(root, "..", "RimUtinni", "ResearchRetag", "Defs")]
@@ -720,7 +720,7 @@ def plasteel_cut_static(defs_dirs=None, patch_path=None):
                     for n in _re.findall(r"<defName>(kotor_Plasteel_\w*|Make_PlasteelGF)</defName>", t):
                         bad.append("%s still defines %s" % (f, n))
     p = open(patch_path, encoding="utf-8").read()
-    for n in ("kotor_Plasteel_recipe", "kotor_Plasteel_10xrecipe"):
+    for n in ("kotor_Plasteel_recipe", "kotor_Plasteel_10xrecipe", "Make_PlasteelComposite"):
         if 'defName="%s"' % n not in p:
             bad.append("cut patch does not name " + n)
     return bad

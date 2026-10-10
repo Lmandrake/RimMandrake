@@ -2534,7 +2534,7 @@ KIT = {
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
         <li><thingDef>Silver</thingDef><countRange>20~60</countRange></li>
         <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
-        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~15</countRange></li>
+        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~15</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
       <!-- dusty dark brown — owner, the Jawa colour -->
@@ -2599,7 +2599,7 @@ KIT = {
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
         <li><thingDef>Silver</thingDef><countRange>20~60</countRange></li>
         <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
-        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~15</countRange></li>
+        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~15</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
       <!-- dusty dark brown — owner, the Jawa colour -->
@@ -2656,7 +2656,7 @@ KIT = {
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
         <li><thingDef>Silver</thingDef><countRange>20~60</countRange></li>
         <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
-        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~15</countRange></li>
+        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~15</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
       <!-- dusty dark brown — owner, the Jawa colour -->
@@ -2713,7 +2713,7 @@ KIT = {
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
         <li><thingDef>Silver</thingDef><countRange>20~60</countRange></li>
         <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
-        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~15</countRange></li>
+        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~15</countRange></li>
         <li><thingDef>Silver</thingDef><countRange>60~150</countRange></li>
         <li><thingDef>ComponentSpacer</thingDef><countRange>1~1</countRange></li>
       </subOptionsChooseOne>
@@ -2763,7 +2763,7 @@ KIT = {
       <subOptionsChooseOne>
         <li><thingDef>Chemfuel</thingDef><countRange>10~35</countRange></li>
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
-        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~20</countRange></li>
+        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~20</countRange></li>
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
@@ -2813,7 +2813,7 @@ KIT = {
       <subOptionsChooseOne>
         <li><thingDef>Chemfuel</thingDef><countRange>10~35</countRange></li>
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
-        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~20</countRange></li>
+        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~20</countRange></li>
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
@@ -2859,7 +2859,7 @@ KIT = {
       <subOptionsChooseOne>
         <li><thingDef>Chemfuel</thingDef><countRange>10~35</countRange></li>
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
-        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~20</countRange></li>
+        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~20</countRange></li>
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
       </subOptionsChooseOne>
     </inventoryOptions>
@@ -2904,7 +2904,7 @@ KIT = {
       <subOptionsChooseOne>
         <li><thingDef>Chemfuel</thingDef><countRange>10~35</countRange></li>
         <li><thingDef>ComponentIndustrial</thingDef><countRange>1~4</countRange></li>
-        <li><thingDef>OuterRim_Durasteel</thingDef><countRange>5~20</countRange></li>
+        <li><thingDef>RSW_Durasteel</thingDef><countRange>5~20</countRange></li>
         <li><thingDef>Steel</thingDef><countRange>15~40</countRange></li>
         <li><thingDef>OuterRim_ComponentHypertech</thingDef><countRange>1~2</countRange></li>
       </subOptionsChooseOne>

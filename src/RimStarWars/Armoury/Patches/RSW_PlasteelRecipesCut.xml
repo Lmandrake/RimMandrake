@@ -8,12 +8,18 @@
   furnace); the Armoury's absorbed copies are cut in source. Make_PlasteelGF (GravForge) is cut in
   src/RimUtinni/ResearchRetag (RUT_Ported_GravForge.xml), and the donor als.gravtech copy is retired by that mod.
   No-op when the donor is absent (success=Always).
-  NOT done here, still owed under L4: Rimefeller UncuredPlasteel route check (needs the Rimefeller defs read), the
-  Odyssey asteroid MineablePlasteel / MineableComponentsIndustrial allowlist patch, plasteel salvage re-melt.
+  Rimefeller (dubwise.rimefeller, workshop 1321849735, 1.6): its only plasteel route is the recipe
+  Make_PlasteelComposite (steel + synthylene + chemfuel -> UncuredPlasteel at the FabricationBench, then cured to
+  Plasteel in its autoclave). Removing the recipe leaves nothing to cure, so the autoclave mode has no input.
+  Asteroid mining is cut by RSW_OdysseyAsteroidNoPlasteel.xml; slag re-melt (KotORRecipe_PlasteelFromSlag) stays.
 -->
 <Patch>
   <Operation Class="PatchOperationRemove">
     <success>Always</success>
     <xpath>/Defs/RecipeDef[defName="kotor_Plasteel_recipe" or defName="kotor_Plasteel_10xrecipe"]</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/RecipeDef[defName="Make_PlasteelComposite"]</xpath>
   </Operation>
 </Patch>
