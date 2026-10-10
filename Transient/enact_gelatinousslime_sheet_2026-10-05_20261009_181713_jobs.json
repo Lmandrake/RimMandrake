@@ -1,0 +1,34 @@
+[
+ {
+  "id": "enact_5673ffda_dwommo_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Dwommo",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"floater\" RimWorld sprite of the dwommo, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "floater",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/52/52ce95b020409ae041fe5c0d2c4523827449150a54fc10a4479868a2b82c5e1c.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_a78ae7bb_plant_readerbloom_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Plant_Readerbloom",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"regen for low quality\" RimWorld sprite of the readerbloom, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "regen for low quality",
+  "canon_reference": [],
+  "biome_neutral": true
+ }
+]

@@ -183,6 +183,25 @@
     },
     "RM_Noohm": {
       "at": "2026-10-06T03:49:08.512Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_TheScald/Noohm/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:49:08.512Z",
+            "decision": "A",
+            "note": "",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-10T00:48:45.350Z"
+        }
+      ],
       "decision": "A",
       "note": "",
       "prefill": "A",
@@ -217,6 +236,25 @@
     },
     "RM_Shulla": {
       "at": "2026-10-06T03:50:26.045Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_TheScald/Shulla/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:50:26.045Z",
+            "decision": "A",
+            "note": "",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-10T00:48:47.890Z"
+        }
+      ],
       "decision": "A",
       "note": "",
       "prefill": "A",

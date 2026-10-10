@@ -1,0 +1,17 @@
+[
+ {
+  "id": "enact_449ef76f_maulith_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Maulith",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"regen, not quality enough\" RimWorld sprite of the maulith, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "regen, not quality enough",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/25/25b911d827a8be59ea71f20ba9ec1387305c503d86cb4bb822413510e594f4bc.png"
+  ],
+  "biome_neutral": true
+ }
+]

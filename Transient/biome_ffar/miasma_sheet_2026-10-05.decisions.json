@@ -80,6 +80,37 @@
     },
     "AA_Mantrap": {
       "at": "2026-10-08T03:51:24.071Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Miasma/Mantrap/noslot",
+          "kind": "noslot",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-08T03:51:24.071Z",
+            "decision": "E",
+            "note": "",
+            "picks": null,
+            "variants": [
+              "B",
+              "D",
+              "E",
+              "F",
+              "G",
+              "H",
+              "I",
+              "J",
+              "K",
+              "L",
+              "M"
+            ]
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-08T03:49:47.096Z",
       "decision": "E",
       "note": "",
@@ -664,6 +695,30 @@
     },
     "RSW_Blixus": {
       "at": "2026-10-08T03:42:41.913Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Miasma/Blixus/failed",
+          "kind": "failed",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-08T03:42:41.913Z",
+            "decision": "redo",
+            "note": "No new art!",
+            "picks": {
+              "swanimals/Blixus/Blixus_Swimming": "B"
+            },
+            "variants": [
+              "A",
+              "B"
+            ]
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-08T03:42:39.080Z",
       "decision": "redo",
       "note": "No new art!",
@@ -764,6 +819,27 @@
     },
     "RSW_OpeeSeaKillerJuv": {
       "at": "2026-10-08T03:54:43.202Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Miasma/Opee Sea Killer Juv/failed",
+          "kind": "failed",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-08T03:54:43.202Z",
+            "decision": "redo",
+            "note": "",
+            "picks": null,
+            "variants": [
+              "A"
+            ]
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-08T03:54:36.863Z",
       "decision": "redo",
       "note": "",

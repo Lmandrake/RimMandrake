@@ -58,6 +58,25 @@
     },
     "RM_Dredgel": {
       "at": "2026-10-06T03:55:03.945Z",
+      "conflictSheet": [
+        {
+          "action": "drop the delete: 1 ✕ removed, kept",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_TheSump/Dredgel/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:55:03.945Z",
+            "decision": "redo",
+            "note": "",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-06T03:54:49.614Z",
       "decision": "redo",
       "note": "",
@@ -74,7 +93,6 @@
       ],
       "prefill": "A",
       "purge": [
-        "2ca18c6ede1bbe0239a6b3a6f880c971f8bacc8ea422ce0c6ae0920185d28212",
         "3be22d91574e6efde69f0159560d756a1ce771e752007689e3ec79b506f196ac",
         "0a947d573ebed8b6335ac3aa6695cd93fc995a0c7b2bb693fe85d07db3fb4f76"
       ],

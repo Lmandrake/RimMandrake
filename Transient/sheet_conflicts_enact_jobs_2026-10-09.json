@@ -1,0 +1,226 @@
+[
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_KraytDragon",
+  "target_texpath": "swanimals/KraytDragon/KraytDragon_f",
+  "owner_note": "This is the four-legged subspecies, follow the canon image closely. ",
+  "background": "transparent",
+  "channel": "codex",
+  "drawsize": 8.3,
+  "id": "stillsand_s3_RSW_KraytDragon_v4",
+  "facings": [
+   "south"
+  ],
+  "priority": 0,
+  "canvas_w": 1024,
+  "canvas_h": 1024,
+  "style_notes": "Biome register: arid desert, harsh sun light; the subject keeps its own canon colours, no biome grade Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow, the whole body inside the frame with a clear margin on every side. Canon visual brief (design/RimStarWars/canon_references/kraytdragon/description.md): Four images (two canon, two Legends) that show three clearly different looks, so the entry must pick one. The text calls \"krayt dragon\" an umbrella term for several species (canyon krayt, greater krayt, the sixteen-limbed leviathan variant). - **`canon_1` (The Mandalorian CGI render; the canon infobox):** a sand-coloured tan-brown, long, **serpentine/lizard** body. The head is a big wedge with a wide mouth packed with rows of white conical teeth, a long tongue, and a **small hooked beak-like horn/barb on the side of the head**. Very long muscular neck, thick body, and a **long tail that curls up** and carries a ridge of spikes. Pale cream-grey underside. Short dorsal bone-spikes along the neck and back. **Many short, thick limbs, arranged in banks along the body (the leviathan variant: sixteen legs; visible here as clustered stubby legs at the front and middle of the body)**, each with 4 to 5 curved dark claws. Skin is dry, rough, wrinkled, desert-camouflage coloured, no bright colours. Rock-and-sand texture on the back. - **`canon_2` (screen frame, The Mandalorian season 2):** the leviathan's head from the front mid-attack: huge gaping jaws, upper and lower rows of conical white teeth, grey tongue, sand blasting off it, and a spray of yellowish-green venom being spat from the mouth (the caption: acidic poison). Head is broad and smooth-domed, not horned. - **`legends_1` (colour painting, Legends):** a **green-olive** four-legged reptile, crocodile-meets-dragon: **two upturned horns on the brow and a crest of smaller spiked frills behind the head**, a row of pale spines along the back, long curving thin-tipped tail, five-toed pale-clawed feet, jaws open and drooling, thick folded neck. Four legs only. - **`legends_2` (3D model, Legends):** a blue-grey, scaly four-legged reptile with **two long upswept horns**, a yellow-brown head and back spikes, long snout, a pale belly, and a rat-like thin tail. Four legs. - **The images disagree:** canon art (`canon_1`, `canon_2`) = tan sand-coloured, hornless apart from the side barb, many legs, huge toothy maw. Legends art = green or blue-grey, four legs, with long brow horns. Trust the canon pair for the shipping design; keep Legends horns and green colour out unless the owner rules otherwise. - **Size:** none shown directly (Legends text: about 45 m long; no scale object in any image). Must show: - [ ] Long serpentine lizard body with a very long muscular neck and a long tail that curls up with a spiked ridge (canon render) - [ ] Sand-tan / desert-brown rough wrinkled hide with a paler cream underside, not green or blue - [ ] Huge wedge head with a wide mouth packed with rows of conical white teeth and a long tongue - [ ] Small hooked horn or barb on the side of the head; no big brow horns (those are Legends only) - [ ] Many short, thick clawed limbs in clustered banks along the body (leviathan variant: sixteen limbs; four-legged only for the Legends type) - [ ] Short bony dorsal spikes down the neck and back - [ ] Able to show a yellow-green acid spray from the mouth when attacking Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "prompt": "RimWorld creature sprite: the krayt dragon, the FOUR-LEGGED subspecies (two pairs of legs, no more), drawn closely from the canon library images: a massive reptilian predator with a long tail, horned head and dorsal ridge of spikes, canon sand-tan hide. HARD REQUIREMENT (the previous render failed the canon check on exactly this): every foot, front and rear, shows 4 to 5 curved dark claws \u2014 never three.",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/kraytdragon/wookieepedia_canon_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/kraytdragon/wookieepedia_canon_2.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/kraytdragon/wookieepedia_legends_1.webp",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/kraytdragon/wookieepedia_legends_2.webp"
+  ],
+  "biome_neutral": true,
+  "oversize_reason": "same canvas as the failed job it re-files",
+  "canon": "kraytdragon",
+  "derive_from": "stillsand_s2_RSW_KraytDragon_v3_east"
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Blixus",
+  "owner_note": "Owner flagged that no new art existed for this creature (sheet showed none); new art wanted.",
+  "background": "transparent",
+  "channel": "codex",
+  "drawsize": 4.0,
+  "id": "miasma_canon_blixus_v2",
+  "facings": [
+   "north"
+  ],
+  "priority": 0,
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "style_notes": "Biome register: miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background. Canon visual brief (design/RimStarWars/canon_references/blixus/description.md): Two images, and they disagree sharply on colour and body plan, so read both before drawing. - **Canon (`wookieepedia_canon_1.webp`, Clone Wars 3D render, side view):** a compact, low, crab/trilobite-like body. The top is a smooth teal-blue overlapping armour carapace (flared plates like a horseshoe-crab or isopod shell, pale veining on the head plate) that sweeps back past the body. Beneath it the flesh is soft pinkish-tan, with a wide, lip-lined slit of a mouth low on the front of the underbelly. Two small amber/orange eyes sit under the carapace brim. Six rigid, blade-like blue-grey chitin legs (jointed with rusty-orange joints) point down and slightly forward like picks; two small pincer claws sit near the mouth. Five very long, thick, flesh-pink tentacles (finely ringed like an earthworm) trail and loop from the front/upper body, each longer than the whole body; the distal third is grey and studded with small thorn spikes, ending in a flat pink paddle-pad with a ring of dark suckers. - **Legends (`wookieepedia_legends_1.webp`, comic panel):** the same animal reads as a squid-like thing in red-orange with yellow-gold armour plates and yellow scaly sucker-skin, a large yellow eye with a black slit pupil, and a yellow beak/crest. LEGENDS continuity, and the colours (red-orange and yellow, not teal and pink) do not match canon. Do not blend the palettes. - Text agrees with both on the count: five tentacles, six legs, half-shell. - Size: the tentacles dwarf the body; no scale reference in the images (comic shows it filling a corridor beside droid-suited figures, indicating human-plus size). Must show: - [ ] Low armoured half-shell carapace over the back (teal-blue, overlapping flared plates), soft pink underbelly exposed below it - [ ] Exactly six stiff, blade/pick-like chitin legs, angled down and forward - [ ] Exactly five very long, ringed, flesh-pink tentacles, each longer than the body - [ ] Tentacles grey and thorn-spiked toward the tips, ending in a flat pink sucker-pad - [ ] Wide lip-lined slit mouth low on the front of the underbelly, with small pincer claws beside it - [ ] Two small amber eyes tucked under the carapace brim Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "prompt": "Owner flagged that no new art existed for this creature; produce fresh standing and swimming art. RimWorld creature sprite of the Star Wars blixus, matching the attached canon image: a low crab/trilobite-like animal under a smooth teal-blue armoured half-shell of overlapping flared plates, soft pinkish-tan underbelly, a wide lip-lined slit mouth low on the front with two small pincer claws beside it, two small amber eyes under the carapace brim, exactly six stiff blade-like blue-grey chitin legs angled down and forward, and exactly five very long ringed flesh-pink tentacles, each longer than the body, grey and thorn-spiked toward the tips and ending in a flat pink sucker-pad. Standing pose. One animal, whole body, centred. HARD REQUIREMENT (the previous render failed the canon check on exactly this): exactly six stiff blade-like chitin legs, three on each side, every one of them clearly visible from this view (not four).",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/blixus/wookieepedia_canon_1.webp"
+  ],
+  "biome_neutral": true,
+  "oversize_reason": "same canvas as the failed job it re-files",
+  "canon": "blixus",
+  "derive_from": "miasma_canon_blixus_v1_east"
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Blixus",
+  "owner_note": "Owner flagged that no new art existed for this creature (sheet showed none); new art wanted.",
+  "background": "transparent",
+  "channel": "codex",
+  "drawsize": 4.0,
+  "id": "miasma_canon_blixus_v2b",
+  "facings": [
+   "south"
+  ],
+  "priority": 0,
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "style_notes": "Biome register: miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background. Canon visual brief (design/RimStarWars/canon_references/blixus/description.md): Two images, and they disagree sharply on colour and body plan, so read both before drawing. - **Canon (`wookieepedia_canon_1.webp`, Clone Wars 3D render, side view):** a compact, low, crab/trilobite-like body. The top is a smooth teal-blue overlapping armour carapace (flared plates like a horseshoe-crab or isopod shell, pale veining on the head plate) that sweeps back past the body. Beneath it the flesh is soft pinkish-tan, with a wide, lip-lined slit of a mouth low on the front of the underbelly. Two small amber/orange eyes sit under the carapace brim. Six rigid, blade-like blue-grey chitin legs (jointed with rusty-orange joints) point down and slightly forward like picks; two small pincer claws sit near the mouth. Five very long, thick, flesh-pink tentacles (finely ringed like an earthworm) trail and loop from the front/upper body, each longer than the whole body; the distal third is grey and studded with small thorn spikes, ending in a flat pink paddle-pad with a ring of dark suckers. - **Legends (`wookieepedia_legends_1.webp`, comic panel):** the same animal reads as a squid-like thing in red-orange with yellow-gold armour plates and yellow scaly sucker-skin, a large yellow eye with a black slit pupil, and a yellow beak/crest. LEGENDS continuity, and the colours (red-orange and yellow, not teal and pink) do not match canon. Do not blend the palettes. - Text agrees with both on the count: five tentacles, six legs, half-shell. - Size: the tentacles dwarf the body; no scale reference in the images (comic shows it filling a corridor beside droid-suited figures, indicating human-plus size). Must show: - [ ] Low armoured half-shell carapace over the back (teal-blue, overlapping flared plates), soft pink underbelly exposed below it - [ ] Exactly six stiff, blade/pick-like chitin legs, angled down and forward - [ ] Exactly five very long, ringed, flesh-pink tentacles, each longer than the body - [ ] Tentacles grey and thorn-spiked toward the tips, ending in a flat pink sucker-pad - [ ] Wide lip-lined slit mouth low on the front of the underbelly, with small pincer claws beside it - [ ] Two small amber eyes tucked under the carapace brim Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "prompt": "Owner flagged that no new art existed for this creature; produce fresh standing and swimming art. RimWorld creature sprite of the Star Wars blixus, matching the attached canon image: a low crab/trilobite-like animal under a smooth teal-blue armoured half-shell of overlapping flared plates, soft pinkish-tan underbelly, a wide lip-lined slit mouth low on the front with two small pincer claws beside it, two small amber eyes under the carapace brim, exactly six stiff blade-like blue-grey chitin legs angled down and forward, and exactly five very long ringed flesh-pink tentacles, each longer than the body, grey and thorn-spiked toward the tips and ending in a flat pink sucker-pad. Standing pose. One animal, whole body, centred. HARD REQUIREMENT (the previous render failed the canon check on exactly this): all five ringed pink tentacles are each clearly LONGER than the body, including the lower pair.",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/blixus/wookieepedia_canon_1.webp"
+  ],
+  "biome_neutral": true,
+  "oversize_reason": "same canvas as the failed job it re-files",
+  "canon": "blixus",
+  "derive_from": "miasma_canon_blixus_v1_east"
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Blixus",
+  "target_texpath": "swanimals/Blixus/Blixus_Swimming",
+  "owner_note": "Owner flagged that no new art existed for this creature (sheet showed none); new art wanted.",
+  "background": "transparent",
+  "channel": "codex",
+  "drawsize": 4.0,
+  "id": "miasma_canon_blixus_v2_swim",
+  "facings": [
+   "east"
+  ],
+  "priority": 0,
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "style_notes": "Biome register: miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background. Canon visual brief (design/RimStarWars/canon_references/blixus/description.md): Two images, and they disagree sharply on colour and body plan, so read both before drawing. - **Canon (`wookieepedia_canon_1.webp`, Clone Wars 3D render, side view):** a compact, low, crab/trilobite-like body. The top is a smooth teal-blue overlapping armour carapace (flared plates like a horseshoe-crab or isopod shell, pale veining on the head plate) that sweeps back past the body. Beneath it the flesh is soft pinkish-tan, with a wide, lip-lined slit of a mouth low on the front of the underbelly. Two small amber/orange eyes sit under the carapace brim. Six rigid, blade-like blue-grey chitin legs (jointed with rusty-orange joints) point down and slightly forward like picks; two small pincer claws sit near the mouth. Five very long, thick, flesh-pink tentacles (finely ringed like an earthworm) trail and loop from the front/upper body, each longer than the whole body; the distal third is grey and studded with small thorn spikes, ending in a flat pink paddle-pad with a ring of dark suckers. - **Legends (`wookieepedia_legends_1.webp`, comic panel):** the same animal reads as a squid-like thing in red-orange with yellow-gold armour plates and yellow scaly sucker-skin, a large yellow eye with a black slit pupil, and a yellow beak/crest. LEGENDS continuity, and the colours (red-orange and yellow, not teal and pink) do not match canon. Do not blend the palettes. - Text agrees with both on the count: five tentacles, six legs, half-shell. - Size: the tentacles dwarf the body; no scale reference in the images (comic shows it filling a corridor beside droid-suited figures, indicating human-plus size). Must show: - [ ] Low armoured half-shell carapace over the back (teal-blue, overlapping flared plates), soft pink underbelly exposed below it - [ ] Exactly six stiff, blade/pick-like chitin legs, angled down and forward - [ ] Exactly five very long, ringed, flesh-pink tentacles, each longer than the body - [ ] Tentacles grey and thorn-spiked toward the tips, ending in a flat pink sucker-pad - [ ] Wide lip-lined slit mouth low on the front of the underbelly, with small pincer claws beside it - [ ] Two small amber eyes tucked under the carapace brim Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "prompt": "Owner flagged that no new art existed for this creature; produce fresh standing and swimming art. RimWorld creature SWIMMING sprite of the Star Wars blixus, the same individual as the accepted standing render: a low crab/trilobite-like animal under a smooth teal-blue armoured half-shell of overlapping flared plates, soft pinkish-tan underbelly, a wide lip-lined slit mouth low on the front with two small pincer claws beside it, two small amber eyes under the carapace brim, exactly six stiff blade-like blue-grey chitin legs angled down and forward, and exactly five very long ringed flesh-pink tentacles, each longer than the body, grey and thorn-spiked toward the tips and ending in a flat pink sucker-pad. Shown swimming, the body low and level as if half-submerged, limbs paddling or trailing, the outline clean against transparency (the water is drawn by the game). One animal, whole body, centred. HARD REQUIREMENT (the previous render failed the canon check on exactly this): all five ringed pink tentacles are each clearly LONGER than the body \u2014 none shorter.",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/blixus/wookieepedia_canon_1.webp"
+  ],
+  "biome_neutral": true,
+  "oversize_reason": "same canvas as the failed job it re-files",
+  "canon": "blixus",
+  "derive_from": "miasma_canon_blixus_v1_east"
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_OpeeSeaKillerJuv",
+  "target_texpath": "Things/Pawn/Animal/SeaBeasts/OpeeSeaKiller/OpeeSeaKiller",
+  "owner_note": "Follow canon image precisely",
+  "background": "transparent",
+  "channel": "codex",
+  "drawsize": 1.8,
+  "id": "miasma_canon_opeejuv_v3",
+  "facings": [
+   "south"
+  ],
+  "priority": 0,
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "style_notes": "Biome register: miasma register: a salt-crusted mangal forest under a green-gold haze, brackish channels, rainbow-hued plants; gold-green light, pale salt crust Matte painterly vanilla-RimWorld house style, realistic, grounded and alien; one centred subject on a fully transparent background. Canon visual brief (design/RimStarWars/canon_references/opeeseakiller/description.md): Four images (3D renders of the TPM creature plus a film frame); all agree closely. - **Silhouette:** a stocky, torpedo-shaped crustacean-fish hybrid: a **huge fish-like head** with the mouth taking up most of the front, and a **long segmented armoured back** like a lobster or woodlouse tail: overlapping arched plates (a ridged carapace) narrowing to a pointed rear. Looks like a lobster with a bullfrog-fish head. - **Colour:** **reddish-orange to coral-red/brick-pink** skin and plates with greyer, pale blue-grey on the plate edges and underside (`legends_1`), pink-violet in the dark underwater film frame (`legends_2`). Mouth interior **purple-lilac**. Eyes **orange-red** with black slit pupil (text says yellow; the images lean orange-red, `canon_2` closer to amber-yellow). - **Mouth:** an enormous, rounded, gaping mouth edged by thick wrinkled lips and **double rows of long, pale cream, pointed conical teeth** (upper and lower, inner and outer rows), visible in `canon_1`. A **long, smooth, pink-mauve, prehensile tongue** with a knobbed tip shoots out of the mouth (`canon_2`, `legends_2` film frame). - **Head details:** wrinkled, folded, lumpy skin on the face; bulbous eyes set high on each side; a few short, fleshy stubs or stalks on the crown of the head, from which grow **one to three very long, thin, whip-like antennae, orange-tan at the base, ending in a dark blue-purple lure bulb at the tip** (the antennae are longer than the whole body). - **Limbs:** **three pairs of thin, jointed, crab-like walking legs** hanging from the underside of the rear body, each ending in a flat paddle or blunt claw, plus a **pair of broad, fan-shaped pectoral fins** behind the head (finely ribbed, orange-red). - **Size:** 20 m long per the text; the film frame shows it dwarfing a submersible. Must show: - [ ] Huge fish-like head with an enormous gaping mouth and double rows of long pale conical teeth - [ ] Long, segmented, arched armour-plated back tapering to a point, like a lobster tail - [ ] Reddish-orange/coral-red skin and plates with a purple-lilac mouth interior - [ ] Long, thin, whip-like antennae from the top of the head with dark blue-purple lure tips - [ ] Three pairs of thin jointed crab-like legs under the rear body plus a pair of broad fan-shaped pectoral fins - [ ] Long, smooth, pink-mauve prehensile tongue that can extend far out of the mouth - [ ] Bulbous orange-red eyes high on the wrinkled, lumpy face Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow canon image precisely\" RimWorld creature sprite of the Star Wars canon opee sea killer, a young one, drawn to match the attached canon image precisely: a huge fish-like head with an enormous gaping mouth lined with double rows of long pale conical teeth and a purple-lilac mouth interior, wrinkled lumpy face with bulbous orange-red eyes set high, long thin whip antennae rising from the crown ending in dark blue-purple lure bulbs, a long segmented arched armour-plated back tapering to a point like a lobster tail, reddish-orange/coral-red skin and plates, broad fan-shaped pectoral fins and three pairs of thin jointed crab-like legs under the rear body, the pink-mauve tongue just showing at the mouth. One animal, whole body, centred. CANON MUST-PASS FOR THIS FACING (the previous render of this facing failed the daemon's canon check on these exact points; get every one right and keep everything else): (1) The antennae from the crown must be VERY LONG thin whips, each clearly LONGER THAN THE WHOLE BODY, arching up and out past the silhouette, each ending in a dark blue-purple lure bulb. (2) The walking legs must be THIN, JOINTED, CRAB-LIKE, three pairs, spindly with visible knee joints - NOT short thick paddle limbs. (3) The pink-mauve tongue must be long, smooth and prehensile, extending out of the mouth, not a short textured nub. HARD REQUIREMENT (the previous render failed the canon check on exactly this): the three pairs of walking legs are THIN, spindly, jointed crab-like limbs \u2014 not short or stout.",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/opeeseakiller/wookieepedia_canon_1.webp"
+  ],
+  "biome_neutral": true,
+  "canon": "opeeseakiller",
+  "derive_from": "miasma_canon_opeejuv_v1_east"
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_TookeTrap_Wild",
+  "owner_note": "Please follow the original in-game version more closle,y this is a canon render. Can also look this up.",
+  "background": "transparent",
+  "channel": "codex",
+  "drawsize": 1.0,
+  "id": "webwork_tooketrap_redo_v3",
+  "facings": [],
+  "priority": 0,
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "style_notes": "Biome register: webwork register: a silk-strung jungle in permanent gloom under a sealed dark-green canopy; bone-pale, dull green and mud-dark, with dull red as the one accent; must read against dark leaf litter by value and rim Painterly vanilla-RimWorld house style, matte, realistic and grounded, never cartoonish or cute; one centred subject on a transparent background, no ground, no props, no baked shadow. Canon visual brief (design/RimStarWars/canon_references/tooke_trap_plant/description.md): All three images agree on the body plan: - a low **rosette of broad, pointed, veined leaves**, eight on the mature plant; - one or more **long, thin, curving stalks** rising from the centre; - each stalk ending in a **toothed \"mouth\" pod**, a hinged jaw lined with long, thin, inward-curving spines, like a Venus flytrap stretched into a tube; - a **small cluster of round berry-like knobs** at the top of the mouth or where it meets the stalk. These are likely the lure or scent organs. Colour: - **Leaves:** pale sage/olive-green to cream, with **red-to-rose veins and edges**. - **Stalk and mouth:** **brown-maroon to rust**; the mouth interior is darker. - **Knobs:** dark red. Size: a small plant, roughly knee-high to waist-high, judging by tooke prey and its use as a house plant. The images: - **Image 1** (Legends field-guide painting) is the strongest reference, with one stalk and mouth. - **Image 2** (*Gungan Frontier* sprite) shows **two** stalks and mouths, which confirms the one-to-four-stalk range. - **Image 3** (LEGO) shows the same plan in toy form. Use it only for confirmation, never for style. Must show: - [ ] Low rosette of broad, pointed leaves, sage/cream with red veins and edges - [ ] At least one long, thin, curving stalk rising from the centre (one to four allowed) - [ ] Each stalk ends in a toothed mouth pod with long, thin, inward-curving spines - [ ] Stalk and mouth are brown-maroon/rust, distinct from the green leaves - [ ] Small cluster of round dark-red knobs at the mouth - [ ] Reads as a small plant (knee-to-waist height), not a tree Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Please follow the original in-game version more closle,y this is a canon render. Can also look this up.\" RimWorld plant sprite of the canon Star Wars tooke-trap plant, following the original in-game sprite (attached reference) closely: a low rosette of broad pointed leaves, sage and cream with red veins and edges, from which one to three long thin curving maroon stalks rise, each ending in a toothed mouth pod lined with long thin inward-curving spines, with a small cluster of round dark-red knobs at the mouth. One whole plant, centred. HARD FOOTPRINT LIMIT: the plant must fit inside the reference's silhouette box - no taller and no wider than the attached reference sprite (about 210 px wide by 207 px tall on the 256 canvas), same near-square proportions, leaving clear margin at the top; do not stretch or squash it. FOOTPRINT (hard requirement, the validator rejects otherwise): the plant must fill the same footprint as the attached reference sprite, about 210x207 px of the 256 canvas, starting near x=22, y=25 \u2014 do not shrink or re-centre it; stalks and leaves reach close to the canvas edges like the original. HARD REQUIREMENT (the previous render failed the canon check on exactly this): realistic natural rendering: waxy leaf surfaces and fleshy pod texture under natural light; no flat, angular, cel-style shading.",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/tooke_trap_plant/tooke_trap_wookieepedia_1.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/tooke_trap_plant/tooke_trap_wookieepedia_2.png"
+  ],
+  "biome_neutral": true,
+  "canon": "tooke_trap_plant"
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Hawkbat",
+  "target_texpath": "swanimals/Hawkbat/Hawkbat_j",
+  "owner_note": "Get rid of all this crappy art and follow the purple and tan canon art very closely. NOT a bird. Flyer.",
+  "background": "transparent",
+  "channel": "codex",
+  "drawsize": 2.0,
+  "id": "regen_gt_canon_hawkbat_juv_v2",
+  "facings": [
+   "north"
+  ],
+  "priority": 0,
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "style_notes": "Biome register: greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background. Canon visual brief (design/RimStarWars/canon_references/hawkbat/description.md): This is a stronger case of text/image (and current-canon/Legends) disagreement than usual, and three of the four candidate images line up with each other against the fourth: - `wookieepedia_current_canon_infobox.jpg` (current canon, a display prop photographed for *Star Wars: Hyperspace Lounge* material) shows something that barely reads as \"hawk-bat\" at all: a squat, **slug/larva-bodied** creature in deep violet-to-near-black skin, a bulky snouted head with small forward-curling horn-like growths, visible curved fangs, and large clawed grasping forelimbs. No batlike membrane wings are visible in this pose. This is a legitimate current-canon depiction but is visually disconnected from everything else found for this creature \u2014 treat it as the minority/outlier reference, not the target. - `wookieepedia_legends_infobox.jpg` (*The Wildlife of Star Wars: A Field Guide* illustration) \u2014 the clearest single reference: a pterosaur-like silhouette with **violet-purple dorsal wing membrane fading to cream/pale-gold on the ventral side**, ribbed wing structure, a short beaked head with a small forward horn and a green eye (not the ruby the text names \u2014 see below), clawed wingtips, long tail. Matches the \"purplish yellow-gray adult\" text closely for the wing coloring. - `wookieepedia_legends_juvenile.jpg` (same Field Guide source, two individuals) directly illustrates the text's green-juvenile \u2192 purple/gold adult transformation: a green-and-purple individual perched atop a building, still gripping a shed skin below it, next to a separate **pale gray-white** flying individual with a **red/orange eye** diving past. Confirms the molt described in the sourced text and shows the eye color is inconsistently rendered across sources (green in one image, red in another) even though the text says ruby. - `donor_mod_workshop_icon.jpg` \u2014 cropped from the donor mod's own Steam Workshop screenshot (full grid screenshot showing \"HAWK-BAT\" labeled next to Gornt/Gorak/Iriaz \u2014 see Source URLs). **This is the strongest confirmation available**: the mod's own stylized icon uses the same **violet-purple-topped, cream/pale-yellow-bottomed wing membrane**, small head with a slight brow horn, and long tail as the Legends Field Guide art \u2014 i.e. whoever built this RimWorld mod referenced the classic Legends hawk-bat, not the Hyperspace Lounge current-canon redesign. **Net read: render the Legends version** \u2014 a purple-topped, cream-to-pale-gold- bellied, membrane-winged reptavian bat with a small forehead horn, hooked beak, and long tail, consistent across three independent sources (Field Guide art \u00d72 and the donor mod's own icon). The current-canon Hyperspace Lounge image is real but is the outlier and should not be used as the color target \u2014 flagging it here rather than quietly dropping it, per this library's own rule about disagreement. Must show: - [ ] Wing membrane violet-purple on the dorsal side fading to cream/pale-gold on the ventral side - [ ] Small forward-curling horn-like growth on the forehead - [ ] Hooked beak, not a flat bird beak - [ ] Long tail present - [ ] Ribbed wing membrane structure with clawed wingtips - [ ] Reads as a pterosaur-like reptavian, not the slug/larva-bodied current-canon outlier Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Get rid of all this crappy art and follow the purple and tan canon art very closely. NOT a bird. Flyer.\" RimWorld creature sprite of the juvenile hawkbat, the same individual as the accepted adult render, younger and smaller with softer paler purple-tan colouring and proportionally larger head: a pterosaur/bat-like flier, NOT a bird (no feathers, no beak): a slim body with a long thin neck and a small narrow reptilian head with a short snout, a green eye and small head tufts; two huge triangular leathery membrane wings with long pointed tips, ribbed by radiating fine veins; the membranes banded violet-purple along the bones and veins fading to pale tan-gold between them, with tan-cream underwing; clawed wing-hooks, short legs and a thin tail. Standing/perched pose, wings folded. One animal, whole body, centred. HARD REQUIREMENT (the previous render failed the canon check on exactly this): a young hawkbat (smaller, rounder proportions than the adult) seen from behind, matching the installed juvenile east/south facings.",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/hawkbat/wookieepedia_current_canon_infobox.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/hawkbat/wookieepedia_legends_infobox.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/hawkbat/wookieepedia_legends_juvenile.jpg"
+  ],
+  "biome_neutral": true,
+  "canon": "hawkbat",
+  "derive_from": "regen_gt_canon_hawkbat_v1_east"
+ },
+ {
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_PekoPeko",
+  "target_texpath": "swanimals/PekoPeko/PekoPeko_m",
+  "owner_note": "kill all this terrible art. Follow the canon very closely. Flyer.",
+  "background": "transparent",
+  "channel": "codex",
+  "drawsize": 3.5,
+  "id": "conflict_pekopeko_m_v2",
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "style_notes": "Biome register: greentide register: a gallery jungle standing in permanent ground-hugging steam over warm rivers, deep churned mud between the roots, a low fog that never lifts, everything growing fast and wet; dim green steam-lit light, saturated wet greens, dark wet bark Matte painterly vanilla-RimWorld house style, realistic, grounded and alien, naturalistic and botanically/zoologically believable, never cartoonish; one centred subject on a fully transparent background. Canon visual brief (design/RimStarWars/canon_references/pekopeko/description.md): This is a second text-vs-image mismatch case, same shape as the Wyyyschokk one this library exists to catch \u2014 most of the easily-found candidate images do NOT show the blue coloring the text insists on, and only one candidate actually confirms it: - `wookieepedia_battlefront2_painting.jpg` \u2014 **the one candidate that matches the sourced text.** The in-universe Theed palace painting (current canon, *Battlefront II*) shows the peko-peko perched on Padm\u00e9's arm with unmistakable **peacock-blue wing and tail plumage**, a small yellow/gold head crest, long trailing tail feathers with pale gold edging, and a raptor-like curved beak. This is the strongest single confirmation of the \"peacock + macaw\" description and should be treated as the visual anchor. - `wookieepedia_fieldguide.jpg` \u2014 an unlit gray 3D model/render (body plan only: long S-curved neck, elongated toothy-looking beak/skull, folded wings, long tail) \u2014 confirms silhouette and beak shape but carries **no color information at all**; do not read \"gray\" as canon. - `wookieepedia_infobox.jpg` \u2014 a small flat cartoon icon in tan/khaki/gold with a bony reptilian-looking head; this reads as a generic wiki species-icon illustration rather than accurate canon color and visibly UNDERSELLS the blue plumage the text describes \u2014 exactly the failure mode this library exists to catch. Keep it only as a cautionary example, not a reference to render from. - `swg_toxic_pekopeko_mount.jpg` \u2014 in-game screenshot from *Star Wars Galaxies* of the mutated \"Toxic peko-peko\" mount: reddish/rust-orange plumage on a winged reptavian body. Per the source text this is an explicitly MUTATED variant (bred by an outlaw for toxin/aggression), so its red-orange color is not representative of a baseline peko-peko \u2014 it is useful for body plan (wings, clawed feet, elongated beak) but the color should be disregarded for a baseline render. **Net read: render blue** (`wookieepedia_battlefront2_painting.jpg` is the target), peacock/macaw-style plumage, long trailing tail feathers, clawed wings, a strong hooked/nut-cracking beak. The gray model gives the cleanest body-plan silhouette. The tan icon and the red mutant screenshot are both off-canon for color and should not be used as color references. Must show: - [ ] Peacock-blue wing and tail plumage \u2014 not drab, tan, or reddish-orange - [ ] Small yellow/gold head crest - [ ] Long trailing tail feathers with pale gold edging - [ ] Long, S-curved neck and an elongated, toothy-looking beak/skull - [ ] Clawed wings, foldable close to the body Realistic painted natural-history illustration: grounded, believable form and anatomy, matte surface texture, soft painted edges, the silhouette carried by value and colour contrast against a mid-tone ground rather than by a drawn line; never cartoonish, never cute, no outlines.",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"kill all this terrible art. Follow the canon very closely. Flyer.\" RimWorld creature sprite of the male peko-peko, the same species as the accepted female render but brighter, bolder blue with a larger gold crest and longer tail: a long-necked, elegant blue flier: slate-to-peacock blue plumage over the wings and a very long trailing tail of narrow feathers edged with pale gold, a long slim neck, a small head with a small yellow-gold crest and a short hooked bill, and slim clawed legs. Standing/perched pose, wings folded.",
+  "canon_reference": [
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/pekopeko/wookieepedia_battlefront2_painting.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/pekopeko/wookieepedia_fieldguide.jpg",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/pekopeko/wookieepedia_infobox.jpg"
+  ],
+  "biome_neutral": true,
+  "oversize_reason": "same canvas as the failed job it re-files",
+  "canon": "pekopeko"
+ },
+ {
+  "rimflow_item_id": "ABYSS_SHEET_DONOR_PORT_1",
+  "target_def": "RM_Ossumatha",
+  "target_original": [
+   "AA_DarkVandal"
+  ],
+  "owner_note": "Make hide pitch black with four glowing yellow eyes",
+  "background": "transparent",
+  "channel": "codex",
+  "drawsize": 1.2,
+  "id": "abyss_ossumatha_v5",
+  "facings": [
+   "north",
+   "south"
+  ],
+  "priority": 0,
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "style_notes": "Biome register: abyss register: permanent night under the Dark, no sun and no sky-light; the subject is lit only by a dim cool rim light from above-behind and by its own glow if it has one; it must read at game zoom against near-black obsidian through rim and value, never a bright fill; no baked cast shadow, no daylight anywhere Painterly vanilla-RimWorld house style, matte, no outlines, never cute; one centred subject on a transparent background, no ground, no props. Family look (owner, Abyss sheet 2026-10-05): the Abyss's black, many-eyed kin, possibly of Sith origin, now drawn pitch-black with FOUR GLOWING YELLOW EYES.",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Make hide pitch black with four glowing yellow eyes\" Edit the attached accepted render of the ossumatha, one of the Abyss's black, many-eyed family (our own invention). Keep the same individual, the same pose, the same view, the same silhouette, proportions and painted style exactly; change ONLY: make the whole hide and armour plates PITCH BLACK (deep matte black read only by a cool rim light), and give it exactly FOUR small eyes that glow a clear warm yellow, set symmetrically on its head (two each side), clearly visible at game zoom and the brightest accent on the body. Keep the shovel jaw and plate shapes as they are.",
+  "biome_neutral": true,
+  "derive_from": "abyss_ossumatha_v3_east",
+  "target_texpath": "RM_Abyss/Things/Pawn/Animal/RM_Ossumatha/RM_Ossumatha"
+ }
+]

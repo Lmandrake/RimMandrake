@@ -591,13 +591,38 @@
     },
     "RSW_Beldon": {
       "at": "2026-10-09T02:36:16.765Z",
+      "conflictSheet": [
+        {
+          "action": "leave the current art: unverifiable letters dropped",
+          "by": "click",
+          "choice": "other",
+          "item": "RM_Greentide/Beldon/stale",
+          "kind": "stale",
+          "note": "This has more modern art, be careful",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-09T02:36:16.765Z",
+            "decision": "H",
+            "note": "",
+            "picks": {
+              "_flip:swanimals/Beldon/BeldonC_Flying_": "D",
+              "swanimals/Beldon/BeldonC": "C"
+            },
+            "variants": [
+              "B",
+              "D",
+              "E",
+              "H",
+              "J"
+            ]
+          },
+          "when": "2026-10-10T00:46:26.696Z"
+        }
+      ],
       "decidedAt": "2026-10-09T02:35:45.861Z",
-      "decision": "H",
+      "decision": "",
       "note": "",
-      "picks": {
-        "_flip:swanimals/Beldon/BeldonC_Flying_": "D",
-        "swanimals/Beldon/BeldonC": "C"
-      },
+      "picks": {},
       "prefill": "A",
       "purge": [
         "4c50ccd8ca5d9b79787f2885774658c5268915dc08542481b9b7324b26f16dbf",
@@ -607,13 +632,21 @@
         "a885a6df7414074d961c7474c401268dc5e4be555ae87e8d1732e5bf329f26f9"
       ],
       "purgeTouched": true,
-      "variants": [
-        "B",
-        "D",
-        "E",
-        "H",
-        "J"
-      ],
+      "stale_letters_dropped": {
+        "decision": "H",
+        "picks": {
+          "_flip:swanimals/Beldon/BeldonC_Flying_": "D",
+          "swanimals/Beldon/BeldonC": "C"
+        },
+        "variants": [
+          "B",
+          "D",
+          "E",
+          "H",
+          "J"
+        ]
+      },
+      "variants": [],
       "variantsAt": "2026-10-09T02:36:16.765Z"
     },
     "RSW_Clodhopper": {
@@ -652,6 +685,29 @@
     },
     "RSW_Diggerpede": {
       "at": "2026-10-09T05:32:02.199Z",
+      "conflictSheet": [
+        {
+          "action": "drop the delete: 6 ✕ removed, kept",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Greentide/Diggerpede/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-09T05:32:02.199Z",
+            "decision": "C",
+            "note": "",
+            "picks": {
+              "_byname": "B"
+            },
+            "variants": [
+              "C"
+            ]
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-09T05:11:14.990Z",
       "decision": "C",
       "note": "",
@@ -659,14 +715,7 @@
         "_byname": "B"
       },
       "prefill": "A",
-      "purge": [
-        "7bc9334c51484d8adbbc52c23c5f3ed8feda63932dc064cdb3f523ece7ac65e8",
-        "376552e5deb86a0392df7f7728e9cf1fb35e0f83fc3a1805bb008969a67825c4",
-        "096c653bf1d76c6bf9770388199759ff1086b338fd846a3642debf7201a71803",
-        "bec67d675dbedc49df0d46f72cf9b21ed0c36e5eb56f4499c3e4d197e60d9d4c",
-        "8dd840148f9ac32d719335e21571ea299cc99ce83b1f58b8a97bbdac2e7ffb0f",
-        "8115c00d64c143589e68944996a9e709cd44bb8c92da430910ad4e90893262b7"
-      ],
+      "purge": [],
       "purgeTouched": true,
       "variants": [
         "C"
@@ -701,6 +750,31 @@
     },
     "RSW_Fambaa": {
       "at": "2026-10-09T05:31:48.778Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Greentide/Fambaa/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-09T05:31:48.778Z",
+            "decision": "G",
+            "note": "",
+            "picks": {
+              "swanimals/Fambaa/Fambaa_Swimming": "D",
+              "swanimals/Fambaa/Fambaa_j": "E",
+              "swanimals/Fambaa/Fambaa_j_Swimming": "F"
+            },
+            "variants": [
+              "B"
+            ]
+          },
+          "when": "2026-10-10T00:46:50.951Z"
+        }
+      ],
       "decidedAt": "2026-10-09T05:10:19.429Z",
       "decision": "G",
       "note": "",
@@ -726,6 +800,25 @@
     },
     "RSW_Gelagrub": {
       "at": "2026-10-09T05:31:53.560Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Greentide/Gelagrub/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-09T05:31:53.560Z",
+            "decision": "B",
+            "note": "",
+            "picks": null,
+            "variants": []
+          },
+          "when": "2026-10-10T00:46:56.421Z"
+        }
+      ],
       "decidedAt": "2026-10-09T05:10:30.404Z",
       "decision": "B",
       "note": "",
@@ -746,6 +839,41 @@
     },
     "RSW_Hawkbat": {
       "at": "2026-10-09T05:32:14.827Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Greentide/Hawkbat/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-09T05:32:14.827Z",
+            "decision": "J",
+            "note": "",
+            "picks": {
+              "_flip:swanimals/Hawkbat/Hawkbat_Flying_": "G",
+              "swanimals/Hawkbat/Hawkbat_j": "F"
+            },
+            "variants": [
+              "G",
+              "H",
+              "J",
+              "K",
+              "L",
+              "M",
+              "N",
+              "O",
+              "P",
+              "Q",
+              "R",
+              "S"
+            ]
+          },
+          "when": "2026-10-10T00:47:00.513Z"
+        }
+      ],
       "decidedAt": "2026-10-09T05:11:38.831Z",
       "decision": "J",
       "note": "",
@@ -891,6 +1019,28 @@
     },
     "RSW_Mott": {
       "at": "2026-10-09T05:32:50.923Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Greentide/Mott/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-09T05:32:50.923Z",
+            "decision": "",
+            "note": "",
+            "picks": {
+              "swanimals/Mott/Mott_m": "G",
+              "swanimals/Mott/Mott_m_Swimming": "C"
+            },
+            "variants": []
+          },
+          "when": "2026-10-10T00:47:05.027Z"
+        }
+      ],
       "decidedAt": "2026-10-09T05:13:41.239Z",
       "decision": "",
       "note": "",
@@ -937,12 +1087,70 @@
     },
     "RSW_PekoPeko": {
       "at": "2026-10-09T05:15:15.840Z",
+      "conflictSheet": [
+        {
+          "action": "column N -> main graphic swanimals/PekoPeko/PekoPeko_f",
+          "by": "click",
+          "choice": "A",
+          "item": "RM_Greentide/Peko Peko/amb",
+          "kind": "amb",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-09T05:15:15.840Z",
+            "decision": "N",
+            "note": "",
+            "picks": {
+              "_byname": "N",
+              "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_": "E",
+              "swanimals/PekoPeko/PekoPeko_m": "D"
+            },
+            "variants": [
+              "E",
+              "F",
+              "K",
+              "L",
+              "M",
+              "O"
+            ]
+          },
+          "when": "2026-10-10T00:47:10.195Z"
+        },
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Greentide/Peko Peko/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-09T05:15:15.840Z",
+            "decision": "N",
+            "note": "",
+            "picks": {
+              "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_": "E",
+              "swanimals/PekoPeko/PekoPeko_f": "N",
+              "swanimals/PekoPeko/PekoPeko_m": "D"
+            },
+            "variants": [
+              "E",
+              "F",
+              "K",
+              "L",
+              "M",
+              "O"
+            ]
+          },
+          "when": "2026-10-10T00:47:13.218Z"
+        }
+      ],
       "decidedAt": "2026-10-09T05:15:02.728Z",
       "decision": "N",
       "note": "",
       "picks": {
-        "_byname": "N",
         "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_": "E",
+        "swanimals/PekoPeko/PekoPeko_f": "N",
         "swanimals/PekoPeko/PekoPeko_m": "D"
       },
       "prefill": "A",

@@ -46,8 +46,27 @@
       "carriedAt": "2026-10-07",
       "carriedBy": "BENCH helper: renamed/moved row (owner note: \"The existing (B) render should be made into its own new creature: The Dancing Skresh\")",
       "carriedFrom": "RM_Hollu",
+      "conflictSheet": [
+        {
+          "action": "leave the current art: unverifiable letters dropped",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_TwilightSea/Dancing Skresh/stale",
+          "kind": "stale",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-07T13:57:34.547Z",
+            "decision": "A",
+            "note": "",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-10T00:48:53.261Z"
+        }
+      ],
       "decidedAt": "2026-10-07T13:54:23.985Z",
-      "decision": "A",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -60,19 +79,83 @@
           "note": "No. The existing (B) render should be made into its own new creature: The Dancing Skresh, new description. But this Hollu is supposed to be a section of almost stained glass-like waveglass, the beautifully colored transparent organism that covers much of the topside ocean. It is a curved-in piece of this sheet in its final life stage.",
           "when": "2026-10-09T01:21:31-0700"
         }
-      ]
+      ],
+      "picks": {},
+      "stale_letters_dropped": {
+        "decision": "A",
+        "picks": null,
+        "variants": null
+      },
+      "variants": []
     },
     "RM_GrippingTerror": {
       "at": "2026-10-06T03:52:23.384Z",
       "carriedAt": "2026-10-07",
       "carriedBy": "BENCH helper: renamed/moved row (owner note: \"Rename this to the Gripping Terror and move it to the Twilight Sea\")",
       "carriedFrom": "RSW_ElderSando on thescald_sheet_2026-10-05",
+      "conflictSheet": [
+        {
+          "action": "leave the current art: unverifiable letters dropped",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_TwilightSea/Gripping Terror/stale",
+          "kind": "stale",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:52:23.384Z",
+            "decision": "A",
+            "note": "Rename this to the Gripping Terror and move it to the Twilight Sea. It does not belong in the Scald. RimMandrake tier. ",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-10T00:48:56.801Z"
+        }
+      ],
       "decidedAt": "2026-10-06T03:51:49.515Z",
-      "decision": "A",
-      "note": "Rename this to the Gripping Terror and move it to the Twilight Sea. It does not belong in the Scald. RimMandrake tier. "
+      "decision": "",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:52:23.384Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Rename this to the Gripping Terror and move it to the Twilight Sea. It does not belong in the Scald. RimMandrake tier. ",
+          "when": "2026-10-09T18:15:37-0700"
+        }
+      ],
+      "picks": {},
+      "stale_letters_dropped": {
+        "decision": "A",
+        "picks": null,
+        "variants": null
+      },
+      "variants": []
     },
     "RM_Hollu": {
       "at": "2026-10-07T13:57:34.547Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_TwilightSea/Hollu/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-07T13:57:34.547Z",
+            "decision": "B",
+            "note": "",
+            "picks": null,
+            "variants": [
+              "B"
+            ]
+          },
+          "when": "2026-10-10T00:48:58.807Z"
+        }
+      ],
       "decidedAt": "2026-10-07T13:54:23.985Z",
       "decision": "B",
       "note": "",
@@ -245,6 +328,28 @@
     },
     "RM_Loohn": {
       "at": "2026-10-07T13:58:28.779Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_TwilightSea/Loohn/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-07T13:58:28.779Z",
+            "decision": "A",
+            "note": "",
+            "picks": null,
+            "variants": [
+              "A",
+              "C"
+            ]
+          },
+          "when": "2026-10-10T00:49:02.178Z"
+        }
+      ],
       "decision": "A",
       "note": "",
       "prefill": "A",
@@ -260,6 +365,27 @@
     },
     "RM_Lunoowa": {
       "at": "2026-10-07T14:00:08.976Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_TwilightSea/Lunoowa/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-07T14:00:08.976Z",
+            "decision": "redo",
+            "note": "",
+            "picks": null,
+            "variants": [
+              "C"
+            ]
+          },
+          "when": "2026-10-10T00:49:07.498Z"
+        }
+      ],
       "decidedAt": "2026-10-07T13:59:14.522Z",
       "decision": "redo",
       "note": "",
@@ -403,6 +529,28 @@
     },
     "RM_Noolim": {
       "at": "2026-10-07T14:02:29.867Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_TwilightSea/Noolim/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-07T14:02:29.867Z",
+            "decision": "A",
+            "note": "",
+            "picks": null,
+            "variants": [
+              "A",
+              "C"
+            ]
+          },
+          "when": "2026-10-10T00:49:09.181Z"
+        }
+      ],
       "decision": "A",
       "note": "",
       "prefill": "A",
@@ -647,6 +795,28 @@
     },
     "RM_Weloon": {
       "at": "2026-10-07T14:04:40.501Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_TwilightSea/Weloon/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-07T14:04:40.501Z",
+            "decision": "A",
+            "note": "",
+            "picks": null,
+            "variants": [
+              "A",
+              "C"
+            ]
+          },
+          "when": "2026-10-10T00:49:11.088Z"
+        }
+      ],
       "decision": "A",
       "note": "",
       "prefill": "A",

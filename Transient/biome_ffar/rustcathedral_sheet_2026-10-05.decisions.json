@@ -71,15 +71,30 @@
     },
     "RSW_Vozzik": {
       "at": "2026-10-06T02:16:39.953Z",
+      "conflictSheet": [
+        {
+          "action": "drop the delete: 3 ✕ removed, kept",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_RustCathedral/Vozzik/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T02:16:39.953Z",
+            "decision": "B",
+            "note": "",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-06T02:16:39.953Z",
       "decision": "B",
       "note": "",
       "prefill": "A",
-      "purge": [
-        "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e",
-        "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
-        "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc"
-      ],
+      "purge": [],
       "purgeTouched": true
     }
   },
