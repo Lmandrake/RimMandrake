@@ -6,6 +6,7 @@ must collapse identical events and order by content, never by file position. Run
 against throwaway ledgers only; the last case folds the REAL ledger read-only and
 checks the new order projects identically to the pre-2026-10-02 file-position order.
 """
+import json
 import os
 import random
 import shutil
@@ -156,7 +157,13 @@ def t_real_ledger_projects_as_before():
     for rank, f in enumerate(files):
         old.extend((str(ev.get("ts") or ""), rank, ev) for ev in model._read_one(f))
     old.sort(key=lambda t: (t[0], t[1]))
-    old = [t[2] for t in old]
+    # Invariant 2 applies to the baseline too: a union merge can leave a byte-identical
+    # event twice (two `already exists` errors on 2026-10-10), and the old order never
+    # collapsed those, so without this the baseline reports a duplicate the reader
+    # correctly ignores.
+    _seen = set()
+    old = [t[2] for t in old
+           if not (json.dumps(t[2], sort_keys=True) in _seen or _seen.add(json.dumps(t[2], sort_keys=True)))]
     new = model.read()
 
     def proj(evs):
