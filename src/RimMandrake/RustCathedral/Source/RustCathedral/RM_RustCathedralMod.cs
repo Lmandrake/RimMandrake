@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 using RimMandrake.RustCathedral.Hum;
@@ -129,23 +131,146 @@ namespace RimMandrake.RustCathedral
             Scribe_Values.Look(ref RustCathedralWallsSettings.livePatternMetalGateEnabled, "walls_livePatternMetalGateEnabled", true);
         }
 
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_RustCathedralSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_RustCathedralSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1400f;
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string> { "Not wired yet (these change nothing)" };
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope the biome worker (GetScore) and three GenSteps (borehulk placement, canal eels, strays) run at world or map generation ([new maps only]); the roach think node, the borehulk drill comp's tick and its grind roll read live ([now]). The four cross-biome fields are read by nothing, so they sit in the collapsed change-nothing group (crossBiomeBiomeList is a string with no control and is kept only as a saved key).ED per setting against its read site (2026-10-10): the biome worker (GetScore) and three GenSteps (borehulk placement, canal eels, strays) run at world or map generation ([new maps only]); the roach think node, the borehulk drill comp's tick and its grind roll read live ([now]). The four cross-biome fields are read by nothing, so they sit in the collapsed change-nothing group (crossBiomeBiomeList is a string with no control and is kept only as a saved key).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
+        public void DoWindowContents(Rect inRect)
+        {
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, viewRect);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
+            list.Begin(viewRect);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+
+            if (Group(list, "Biome rarity (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "biomeRarityFactor" }))
+            {
+                list.Label("Biome rarity: " + RustCathedralRarityLabel());
+                biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Cathedral roaches", RimMandrake.Shared.SettingScope.Now, new[] { "roachCleaningEnabled" }))
+            {
+                list.CheckboxLabeled("Roaches clean filth and wastepacks", ref roachCleaningEnabled,
+                    "Off: the cathedral roach still spawns and wanders, it just never seeks out filth or wastepacks to eat.");
+                list.GapLine();
+            }
+
+            if (Group(list, "The borehulk on new maps (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "borehulkEnabled", "borehulkSpawnChance" }))
+            {
+                list.CheckboxLabeled("Map generation: may place a borehulk", ref borehulkEnabled,
+                    "Map generation only: applies to maps generated afterwards. Off: no new map gets a borehulk; one already placed stays.");
+                list.Label("Borehulk chance per map: " + borehulkSpawnChance.ToStringPercent());
+                borehulkSpawnChance = list.Slider(borehulkSpawnChance, 0f, 1f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Borehulk grinding", RimMandrake.Shared.SettingScope.Now, new[] { "borehulkGrindEnabled", "borehulkGrindMtbHours" }))
+            {
+                list.CheckboxLabeled("Worn borehulk grinds its stub on the plate", ref borehulkGrindEnabled,
+                    "Off: the worn borehulk never lowers its drill to scrape (no sound, no sparks).");
+                list.Label("Grind roughly every " + borehulkGrindMtbHours.ToString("0.0") + " hours");
+                borehulkGrindMtbHours = list.Slider(borehulkGrindMtbHours, 0.5f, 24f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Canal eels and dried-out dead on new maps (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "coolantEelsEnabled", "coolantEelCount", "straysEnabled", "strayCount" }))
+            {
+                list.CheckboxLabeled("Map generation: living coolant eels in the canals", ref coolantEelsEnabled,
+                    "Map generation only: applies to maps generated afterwards. Off: no new map gets living eels; the canals stay fishable.");
+                list.Label("Living eels per map: " + coolantEelCount);
+                coolantEelCount = (int)list.Slider(coolantEelCount, 0f, 20f);
+                list.CheckboxLabeled("Map generation: dried-out dead at the edges", ref straysEnabled,
+                    "Map generation only: applies to maps generated afterwards. Off: no new map gets the desiccated animal dead at its edges.");
+                list.Label("Dead per map: " + strayCount);
+                strayCount = (int)list.Slider(strayCount, 0f, 20f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Not wired yet (these change nothing)", RimMandrake.Shared.SettingScope.Now, new[] { "crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage" }))
+            {
+                list.CheckboxLabeled("Allow this mod's mechanics on other biomes", ref crossBiomeEnabled,
+                    "Reserved for a future pass. No mechanic in this mod currently reads this switch (nor crossBiomeEverywhere, crossBiomeBiomeList or crossBiomeCoverage, which have no controls).");
+                list.GapLine();
+            }
+
+            viewHeight = list.CurHeight + 20f;
+            list.End();
+            Widgets.EndScrollView();
+        }
+
+        private static string RustCathedralRarityLabel()
+        {
+            float v = biomeRarityFactor;
+            if (v <= 0.001f) return "never generates";
+            if (v < 0.6f) return "very rare (" + v.ToString("0.0") + "x)";
+            if (v < 1.6f) return "default (" + v.ToString("0.0") + "x)";
+            if (v < 4f) return "uncommon (" + v.ToString("0.0") + "x)";
+            return "common (" + v.ToString("0.0") + "x)";
+        }
     }
 
     public class RM_RustCathedralMod : Mod
     {
         public static RM_RustCathedralSettings settings;
 
-        // Absorbed kits' settings DATA classes (all-static fields, unchanged
-        // from their satellite-mod days) still need ONE instance each to call
-        // the non-static DoWindowContents() on. RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1:
-        // Verse.Mod tracks only ONE ModSettings instance per Mod object, so a
-        // second/third GetSettings<T>() call here for a different T returned
-        // null instead of loading anything — plain `new` is correct: these
-        // instances exist only to host the DoWindowContents() method, their
-        // static fields are scribed by RM_RustCathedralSettings.ExposeData()
-        // above, not by these instances' own (never-invoked-by-Scribe) ExposeData().
+        // The absorbed kits' settings DATA classes (all-static fields) still need ONE instance each to call the
+        // non-static DoWindowContents() on. RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1: Verse.Mod tracks only ONE ModSettings
+        // per Mod object, so plain `new` is correct; their static fields are scribed by RM_RustCathedralSettings.ExposeData().
         private readonly RustCathedralHumSettings humSettings = new RustCathedralHumSettings();
         private readonly RustCathedralWallsSettings wallsSettings = new RustCathedralWallsSettings();
+        private static int tab;
 
         public RM_RustCathedralMod(ModContentPack content) : base(content)
         {
@@ -159,94 +284,19 @@ namespace RimMandrake.RustCathedral
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
-            // Three independent sections stacked top to bottom: this mod's
-            // own master/roach/cross-biome block, then the absorbed Hum
-            // block, then the absorbed Walls block — each a full
-            // Listing_Standard pass over its own vertical slice of inRect,
-            // since RustCathedralHumSettings/RustCathedralWallsSettings'
-            // DoWindowContents() (unchanged from their satellite-mod days)
-            // each call Begin/End on the Rect they are handed.
-            // Listing_Standard.Begin is a clipping BeginGroup, and the three
-            // sections need ~1000px against a ~570px dialog body, so equal
-            // thirds clipped the borehulk/cross-biome rows and the end of the
-            // Hum block out of reach. Fixed heights inside a scroll view.
-            Rect view = new Rect(0f, 0f, inRect.width - 16f, OwnSectionHeight + HumSectionHeight + WallsSectionHeight);
-            Widgets.BeginScrollView(inRect, ref scrollPosition, view);
-            DoOwnSection(new Rect(0f, 0f, view.width, OwnSectionHeight));
-            humSettings.DoWindowContents(new Rect(0f, OwnSectionHeight, view.width, HumSectionHeight));
-            wallsSettings.DoWindowContents(new Rect(0f, OwnSectionHeight + HumSectionHeight, view.width, WallsSectionHeight));
-            Widgets.EndScrollView();
-        }
-
-        private const float OwnSectionHeight = 900f;
-        private const float HumSectionHeight = 1000f;
-        private const float WallsSectionHeight = 240f;
-        private Vector2 scrollPosition;
-
-        private static void DoOwnSection(Rect inRect)
-        {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width, maxOneColumn = true };
-            list.Begin(inRect);
-
-            list.Label("Worldgen — applies to planets generated afterwards, never one that already exists.");
-            list.Label("Biome rarity: " + RustCathedralRarityLabel());
-            RM_RustCathedralSettings.biomeRarityFactor = list.Slider(RM_RustCathedralSettings.biomeRarityFactor, 0f, 8f);
-            list.GapLine();
-
-            list.Label("Cathedral roaches (absorbed from the former mandrake.rut.rustcathedralroaches)");
-            bool roachCleaningEnabled = RM_RustCathedralSettings.roachCleaningEnabled;
-            list.CheckboxLabeled("Roaches clean filth and wastepacks", ref roachCleaningEnabled,
-                "Off: the cathedral roach still spawns and wanders, it just never seeks out filth or wastepacks to eat.");
-            RM_RustCathedralSettings.roachCleaningEnabled = roachCleaningEnabled;
-            list.GapLine();
-
-            list.Label("The borehulk (one colossal peaceful mining droid)");
-            bool borehulkEnabled = RM_RustCathedralSettings.borehulkEnabled;
-            list.CheckboxLabeled("Map generation: may place a borehulk", ref borehulkEnabled,
-                "Map generation only: applies to maps generated afterwards. Off: no new map gets a borehulk; one already placed stays.");
-            RM_RustCathedralSettings.borehulkEnabled = borehulkEnabled;
-            list.Label("Borehulk chance per map: " + RM_RustCathedralSettings.borehulkSpawnChance.ToStringPercent());
-            RM_RustCathedralSettings.borehulkSpawnChance = list.Slider(RM_RustCathedralSettings.borehulkSpawnChance, 0f, 1f);
-            bool borehulkGrindEnabled = RM_RustCathedralSettings.borehulkGrindEnabled;
-            list.CheckboxLabeled("Worn borehulk grinds its stub on the plate", ref borehulkGrindEnabled,
-                "Off: the worn borehulk never lowers its drill to scrape (no sound, no sparks).");
-            RM_RustCathedralSettings.borehulkGrindEnabled = borehulkGrindEnabled;
-            list.Label("Grind roughly every " + RM_RustCathedralSettings.borehulkGrindMtbHours.ToString("0.0") + " hours");
-            RM_RustCathedralSettings.borehulkGrindMtbHours = list.Slider(RM_RustCathedralSettings.borehulkGrindMtbHours, 0.5f, 24f);
-            list.GapLine();
-
-            list.Label("The canals and the edges (map generation)");
-            bool coolantEelsEnabled = RM_RustCathedralSettings.coolantEelsEnabled;
-            list.CheckboxLabeled("Map generation: living coolant eels in the canals", ref coolantEelsEnabled,
-                "Map generation only: applies to maps generated afterwards. Off: no new map gets living eels; the canals stay fishable.");
-            RM_RustCathedralSettings.coolantEelsEnabled = coolantEelsEnabled;
-            list.Label("Living eels per map: " + RM_RustCathedralSettings.coolantEelCount);
-            RM_RustCathedralSettings.coolantEelCount = (int)list.Slider(RM_RustCathedralSettings.coolantEelCount, 0f, 20f);
-            bool straysEnabled = RM_RustCathedralSettings.straysEnabled;
-            list.CheckboxLabeled("Map generation: dried-out dead at the edges", ref straysEnabled,
-                "Map generation only: applies to maps generated afterwards. Off: no new map gets the desiccated animal dead at its edges.");
-            RM_RustCathedralSettings.straysEnabled = straysEnabled;
-            list.Label("Dead per map: " + RM_RustCathedralSettings.strayCount);
-            RM_RustCathedralSettings.strayCount = (int)list.Slider(RM_RustCathedralSettings.strayCount, 0f, 20f);
-            list.GapLine();
-
-            list.Label("Cross-biome (reserved — not yet wired to any mechanic in this build)");
-            bool crossBiomeEnabled = RM_RustCathedralSettings.crossBiomeEnabled;
-            list.CheckboxLabeled("Allow this mod's mechanics on other biomes", ref crossBiomeEnabled,
-                "Reserved for a future pass. No mechanic in this mod currently reads this switch.");
-            RM_RustCathedralSettings.crossBiomeEnabled = crossBiomeEnabled;
-
-            list.End();
-        }
-
-        private static string RustCathedralRarityLabel()
-        {
-            float v = RM_RustCathedralSettings.biomeRarityFactor;
-            if (v <= 0.001f) return "never generates";
-            if (v < 0.6f) return "very rare (" + v.ToString("0.0") + "x)";
-            if (v < 1.6f) return "default (" + v.ToString("0.0") + "x)";
-            if (v < 4f) return "uncommon (" + v.ToString("0.0") + "x)";
-            return "common (" + v.ToString("0.0") + "x)";
+            // Three screens (this mod, the Hum kit, the Walls kit), one tab each; each is a full SettingsKit screen
+            // with its own search box and scroll view.
+            string[] names = { "The Cathedral", "The hum", "Walls" };
+            float w = inRect.width / names.Length;
+            for (int i = 0; i < names.Length; i++)
+            {
+                if (Widgets.ButtonText(new Rect(inRect.x + i * w, inRect.y, w - 4f, 30f), (tab == i ? "[ " + names[i] + " ]" : names[i])))
+                    tab = i;
+            }
+            Rect body = new Rect(inRect.x, inRect.y + 36f, inRect.width, inRect.height - 36f);
+            if (tab == 1) humSettings.DoWindowContents(body);
+            else if (tab == 2) wallsSettings.DoWindowContents(body);
+            else settings.DoWindowContents(body);
         }
     }
 }
