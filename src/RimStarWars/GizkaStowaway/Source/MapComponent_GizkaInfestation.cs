@@ -67,12 +67,11 @@ namespace RimMandrake.StarWars.GizkaStowaway
             base.MapComponentTick();
             if (Find.TickManager.TicksGame % CheckIntervalTicks != 0) return;
 
-            RSW_GizkaSettings s = RSW_GizkaStowawayMod.Settings;
-            if (s == null || !s.stowawayEventsEnabled) return;
+            if (!RSW_GizkaSettings.stowawayEventsEnabled) return;
             if (RSW_GizkaPopulation.Kind == null) return;
 
             List<Pawn> gizka = RSW_GizkaPopulation.ListOnMap(map);
-            GizkaStage stage = StageFor(gizka.Count, s.populationCap);
+            GizkaStage stage = StageFor(gizka.Count, RSW_GizkaSettings.populationCap);
 
             if (stage != lastStage)
             {
@@ -80,7 +79,7 @@ namespace RimMandrake.StarWars.GizkaStowaway
                 lastStage = stage;
             }
 
-            if (s.chewingEnabled && stage >= GizkaStage.Infestation)
+            if (RSW_GizkaSettings.chewingEnabled && stage >= GizkaStage.Infestation)
             {
                 DoChewing(gizka);
             }
