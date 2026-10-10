@@ -53,6 +53,10 @@
     </statBases>
     <building>
       <isResourceRock>true</isResourceRock>
+      <!-- forceRockTypes rock (RM_RustCathedral BiomeDef): map gen reads RockDefAt(c).building.naturalTerrain for every
+           rock-elevation cell; without it GenStep_Terrain NREs and the map gens with almost no content (measured live
+           2026-10-09, quicktest regen: 'Error in GenStep: NullReferenceException at GenStep_Terrain.Generate'). -->
+      <naturalTerrain>RM_RustCathedral_CrackedMetalSoil</naturalTerrain>
       <mineableThing>Steel</mineableThing>
       <mineableYield>35</mineableYield>
       <mineableDropChance>1</mineableDropChance>

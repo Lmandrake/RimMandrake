@@ -1,0 +1,323 @@
+{
+ "RM_Miasma": {
+  "biome": "RM_Miasma",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Miasma",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Rain",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 1.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RUT_MiasmaWeatherLock",
+     "label": "The miasma's breath",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "RM_Liliana": 6,
+   "RM_Bozzuga": 5,
+   "RM_DecayDrake": 2
+  },
+  "plants": {
+   "RM_Thrannock": 38,
+   "RM_Aphreen": 20,
+   "RM_Ullavess": 19,
+   "RM_Sarrash": 19,
+   "RM_Immarel": 18,
+   "RM_Vellamine": 16,
+   "RM_Pallasheen": 10,
+   "RM_Wessaline": 10,
+   "RM_Velluric": 9,
+   "RM_Nyssolet": 9,
+   "RM_Braskeen": 8,
+   "RM_Nemreth": 8,
+   "RM_Ismerrow": 8,
+   "RM_Ommolyn": 7,
+   "RM_Ollamane": 1
+  },
+  "errors": []
+ },
+ "RM_NightsideIce": {
+  "biome": "RM_NightsideIce",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_NightsideIce",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {},
+  "plants": {},
+  "errors": []
+ },
+ "RM_Pyrelands": {
+  "biome": "RM_Pyrelands",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Pyrelands",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Overcast",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_FireWasp": 12,
+   "RM_Flamefang": 6,
+   "RM_Ashwallow": 4,
+   "RM_FireHawk": 4,
+   "RM_Barbslinger": 1
+  },
+  "plants": {
+   "RM_FE_Plant_EmberGrass": 113,
+   "RM_FE_Plant_Quickgrass": 87
+  },
+  "errors": []
+ },
+ "RM_RustCathedral": {
+  "biome": "RM_RustCathedral",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_RustCathedral",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_CathedralRoach": 1,
+   "RM_Borehulk": 1
+  },
+  "plants": {
+   "Plant_TreeAnima": 1
+  },
+  "errors": [
+   "Error in GenStep: System.NullReferenceException: Object reference not set to an instance of an object\r"
+  ]
+ },
+ "RM_Stillsand": {
+  "biome": "RM_Stillsand",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Stillsand",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Qorrax": 3,
+   "RM_Loomma": 2,
+   "RM_Drazzik": 1
+  },
+  "plants": {
+   "RM_KneelOllim": 10,
+   "RM_UltrissPad": 10,
+   "RM_Ollim": 3,
+   "RM_LightPipeNub": 2,
+   "RM_Glasscrust": 1
+  },
+  "errors": []
+ },
+ "RM_TheScald": {
+  "biome": "RM_TheScald",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_TheScald",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Fog",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RUT_ScaldSteamLock",
+     "label": "The boil's breath",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    },
+    {
+     "def": "RUT_ScaldSteamCarrier",
+     "label": "Standing steam",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {},
+  "plants": {
+   "RM_Simmerlace": 57,
+   "RM_Foamgorse": 43,
+   "RM_Threshreed": 39,
+   "RM_Seepcandle": 32,
+   "RM_Crowncarpet": 29
+  },
+  "errors": []
+ },
+ "RM_GreySea": {
+  "biome": "RM_GreySea",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_GreySea",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Fog",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Essarn": 2,
+   "RM_Hessal": 2,
+   "RM_Sallik": 1
+  },
+  "plants": {
+   "RM_Masonmat": 36,
+   "RM_CubicSculpture": 25,
+   "RM_CruciblePod": 22,
+   "RM_Mournweft": 21,
+   "RM_Saltswoon": 16,
+   "RM_MosaicFanPalm": 15,
+   "RM_Hoarstock": 14,
+   "RM_SpherePlant": 12,
+   "RM_Milkwell": 11,
+   "RM_Murkblush": 10,
+   "RM_Neverset": 9,
+   "RM_BrineCrown": 7,
+   "RM_SaltBladeGrey": 1,
+   "RM_SaltBladeTwilight": 1
+  },
+  "errors": []
+ },
+ "RM_TheChill": {
+  "biome": "RM_TheChill",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_TheChill",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Fog",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {},
+  "plants": {
+   "RM_Slackwax": 59,
+   "RM_Skyharp": 49,
+   "RM_Ghostpane": 47,
+   "RM_Pitchpearl": 45
+  },
+  "errors": []
+ }
+}

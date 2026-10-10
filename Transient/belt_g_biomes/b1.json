@@ -1,0 +1,176 @@
+{
+ "RM_Abyss": {
+  "biome": "RM_Abyss",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Abyss",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "RM_AbyssDark",
+    "last": "RM_AbyssDark",
+    "curWeatherAge": 2917,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Moravatha": 7,
+   "RM_Lirrith": 5,
+   "RM_Gharrek": 4,
+   "RM_Ossumatha": 4,
+   "RM_Durrgak": 3,
+   "RM_Ysvaltha": 3,
+   "RM_Drokattak": 1,
+   "RM_Skarnix": 1
+  },
+  "plants": {
+   "RM_GlowingGrass": 168,
+   "RM_TreeMushroom": 31,
+   "RM_GlowGlobe": 1
+  },
+  "errors": [
+   "Could not load Texture2D at 'Biomes/PoisonForest' in any active mod or in base resources.\r"
+  ]
+ },
+ "RM_BlueDesert": {
+  "biome": "RM_BlueDesert",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_BlueDesert",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "RM_IceSandDrift",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RM_BlueDesertHazeCarrier",
+     "label": "The Haze",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {},
+  "plants": {
+   "RM_Palefloss": 87,
+   "RM_Glassfern": 34,
+   "RM_Virr": 29,
+   "RM_Chimeglobe": 22,
+   "RM_Qeshra": 13,
+   "RM_Lisqueth": 7,
+   "RM_Vashpuk": 4,
+   "RM_Kethevar": 4
+  },
+  "errors": []
+ },
+ "RM_Cauldron": {
+  "biome": "RM_Cauldron",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Cauldron",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "RM_VapourBank",
+    "last": "RM_ScatterDusk",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Zisska": 9,
+   "RM_Eskith": 3,
+   "RM_Suush": 2,
+   "RM_DecayDrake": 2
+  },
+  "plants": {
+   "RM_DarkCrust": 167,
+   "RM_RavenNettle": 8,
+   "RM_Fexxil": 6,
+   "RM_Tsevrix": 6,
+   "RM_RedBugloss": 6,
+   "RM_Sessarix": 5,
+   "RM_Kissaveth": 2
+  },
+  "errors": []
+ },
+ "RM_Contagion": {
+  "biome": "RM_Contagion",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Contagion",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "RM_ContagionBloom",
+    "last": "FoggyRain",
+    "curWeatherAge": 44322,
+    "rainRate": 1.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Gawpsack": 6,
+   "RM_BloodyMess": 4,
+   "RM_Sloshbelly": 2,
+   "RM_Fleshsop": 2,
+   "RM_Sparkleech": 2,
+   "RM_ContagionIkee": 2,
+   "RM_Scaldhide": 2,
+   "RM_Eyestinger": 1,
+   "RM_Bloodlurk": 1,
+   "RM_Danglemaw": 1,
+   "RM_Gorekite": 1,
+   "RM_Scorchpod": 1,
+   "RM_Meltgut": 1
+  },
+  "plants": {
+   "RM_Lashgrass": 130,
+   "RM_Toothmoss": 36,
+   "RM_RustPuff": 32,
+   "RM_Bleedleaf": 2
+  },
+  "errors": []
+ }
+}

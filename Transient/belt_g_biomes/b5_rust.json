@@ -1,0 +1,35 @@
+{
+ "RM_RustCathedral": {
+  "biome": "RM_RustCathedral",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_RustCathedral",
+  "temp": 2.28435254,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 73443,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_CathedralRoach": 1
+  },
+  "plants": {
+   "Plant_TreeAnima": 1
+  },
+  "errors": [
+   "Could not load Texture2D at 'Biomes/PoisonForest' in any active mod or in base resources.\r"
+  ]
+ }
+}

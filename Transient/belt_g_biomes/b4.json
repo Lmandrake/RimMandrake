@@ -1,0 +1,366 @@
+{
+ "RM_ChillCrater": {
+  "biome": "RM_ChillCrater",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_ChillCrater",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {},
+  "plants": {},
+  "errors": []
+ },
+ "RM_TwilightSea": {
+  "biome": "RM_TwilightSea",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_TwilightSea",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Fog",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Murrol": 2,
+   "RM_Lunoowa": 2,
+   "RM_Aluun": 1
+  },
+  "plants": {
+   "RM_Almslight": 63,
+   "RM_Murkspindle": 44,
+   "RM_Gloamurn": 39,
+   "RM_Glimmerhusk": 28,
+   "RM_Hushcoral": 23,
+   "RM_HoolimbrePlant": 2,
+   "RM_NoothelmPlant": 1
+  },
+  "errors": []
+ },
+ "RM_TheForge": {
+  "biome": "RM_TheForge",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_TheForge",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RM_ForgePulse",
+     "label": "The mountain's breath",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "RM_Dhuvvox": 18,
+   "RM_FleetFlier": 7,
+   "LavaSnail": 4,
+   "RM_Julmox": 4,
+   "RM_Jossur": 2
+  },
+  "plants": {
+   "Plant_Fireweed": 98,
+   "Plant_MagmaCactus": 53,
+   "AB_TinkleGrass": 36,
+   "AB_FirevineTree": 13
+  },
+  "errors": []
+ },
+ "RM_TheRot": {
+  "biome": "RM_TheRot",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_TheRot",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "RM_SheenMist",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 1.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RM_SheenExposureLock",
+     "label": "The Sheen's breath",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "RM_Agaripod": 4,
+   "RM_Brogg": 3,
+   "RM_Skerrith": 2,
+   "RM_Brullith": 1,
+   "RM_Agaripawn": 1,
+   "RM_ThozzikColony": 1,
+   "RM_ThozzikSpawned": 1,
+   "RM_MycoidColossus": 1,
+   "RM_ThozzikColonyQueen": 1,
+   "RM_Thozzik": 1,
+   "RM_Shambles": 1
+  },
+  "plants": {
+   "AB_Bryolux": 76,
+   "AB_Glowstool": 31,
+   "AB_GiantAgarilux": 19,
+   "AB_Agarilux": 16,
+   "AB_GlowingAgarilux": 10,
+   "RM_Dewshrooms": 9,
+   "RM_FruitingBodies": 9,
+   "RM_Pusmelon": 6,
+   "AB_LilacBeacon": 5,
+   "RM_Sagecrust": 5,
+   "AB_WitchesOyster": 4,
+   "AB_RecurvedStropharia": 3,
+   "AB_ArbuscularMycorrhiza": 3,
+   "AB_DribblingCap": 2,
+   "AB_AgaricusDomeCap": 1,
+   "AB_SlimyPholiota": 1
+  },
+  "errors": []
+ },
+ "RM_TheSump": {
+  "biome": "RM_TheSump",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_TheSump",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Fog",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RUT_SumpDuskLock",
+     "label": "Permanent dusk",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "RM_Skarrid": 6,
+   "RM_Dredgel": 6,
+   "RM_SumpMouse": 5,
+   "RM_Kethrel": 4,
+   "RM_Gulveth": 3,
+   "RM_ThrummelWarden": 1
+  },
+  "plants": {
+   "RM_Mirrelin": 152,
+   "RM_Pallick": 20,
+   "RM_Korveth": 8,
+   "RM_Brindeth": 7,
+   "RM_Soffeth": 5,
+   "RM_Skelver": 4,
+   "RM_Dorvel": 3,
+   "RM_Tolleth": 1
+  },
+  "errors": []
+ },
+ "RM_Wasteland": {
+  "biome": "RM_Wasteland",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Wasteland",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Scumslider": 2
+  },
+  "plants": {
+   "RM_Scumgrass": 91,
+   "RM_TallScumgrass": 47,
+   "RM_WastelandScorchedStars": 20,
+   "RM_DosimeterLawn": 12,
+   "RM_Pusberry": 8,
+   "Plant_TreePolux": 6,
+   "RM_Wartshrub": 5,
+   "RM_Boilbulb": 5,
+   "RM_VaultRoot": 4,
+   "RM_Cinderfelt": 2
+  },
+  "errors": [
+   "Could not load Texture2D at 'Biomes/Wasteland' in any active mod or in base resources.\r"
+  ]
+ },
+ "RM_Webwork": {
+  "biome": "RM_Webwork",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Webwork",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Vennick": 38,
+   "RM_Skennet": 6,
+   "RM_Cravvet": 5,
+   "RM_Quarrok": 2,
+   "RM_Ollathrix": 1
+  },
+  "plants": {
+   "RM_Kollavane": 80,
+   "RM_Dulloth": 78,
+   "RM_Tavrosk": 26,
+   "RM_Brimlock": 16
+  },
+  "errors": []
+ },
+ "RM_WeepingStones": {
+  "biome": "RM_WeepingStones",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_WeepingStones",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Fog",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Mirrik": 8,
+   "RM_Skarrin": 5,
+   "RM_Murrin": 5,
+   "RM_Karrek": 4,
+   "RM_Ssurr": 3,
+   "RM_Vellak": 2,
+   "RM_Huldu": 2,
+   "RM_Sillik": 1,
+   "RM_Loomu": 1,
+   "RM_Vhakk": 1,
+   "RM_GorraskCondenser": 1
+  },
+  "plants": {
+   "RM_Dewblade": 53,
+   "RM_Weepmat": 37,
+   "RM_Verdimoss": 36,
+   "RM_Shadefern": 21,
+   "RM_Dewshrooms": 19,
+   "RM_Dripfringe": 14,
+   "RM_Salvecomb": 10,
+   "RM_Rockfinger": 6,
+   "RM_Steamfrond": 4
+  },
+  "errors": [
+   "Could not load Texture2D at 'World/Biomes/ZBiome_Oasis' in any active mod or in base resources.\r"
+  ]
+ }
+}
