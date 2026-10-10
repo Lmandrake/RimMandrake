@@ -142,7 +142,7 @@
          raised unresolved cross-references + a ConfigErrors NRE on the free tier. -->
     <wildAnimals>
       <RM_Muttavaq>0.03</RM_Muttavaq>  <!-- the pan giant - one per pan, very rare -->
-      <RM_Uttaqar>0.05</RM_Uttaqar>  <!-- the crag giant (rock troll) - rare -->
+      <RM_Uttaqar>0.05</RM_Uttaqar>  <!-- the crag giant (stone-hide uttaqar) - rare -->
       <RM_Tarruq>0.12</RM_Tarruq>  <!-- the voice - year-round Patient resident -->
     </wildAnimals>
     <!-- Flora is thin outside the shade line by design (Veqma's own placement
