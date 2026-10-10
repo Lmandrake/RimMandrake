@@ -1,0 +1,181 @@
+{
+ "schema": "companion_handshake/1",
+ "success": true,
+ "utc": "2026-10-10T21:00:32.6905094Z",
+ "companionAssembly": "JawaBench.BridgeTools",
+ "companionVersion": "0.1.0+f34b77501ea04c0c9e3ea17bac5922ca4c48733d",
+ "companionSha": "f34b77501ea04c0c9e3ea17bac5922ca4c48733d",
+ "companionMvid": "0fcde4c0-b7bc-40aa-88ba-93509667ab54",
+ "companionFileSha256": "96e05a9ed60ca63abd3a2bca51d806439b788e58e6f127d520743534c61b17d4",
+ "companionPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\BridgeTools\\JawaBench\\JawaBench.BridgeTools.dll",
+ "compileProfile": "gm",
+ "runtimeProfile": "test",
+ "effectiveProfile": "test",
+ "profileWhy": "profile file says test until 2026-10-11T12:00:00.0000000Z",
+ "profileFile": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\companion_profile.json",
+ "policy": {
+  "name": "test",
+  "recorderBudgetShare": 1.0,
+  "tpsSampler": true,
+  "tpsAttribution": true,
+  "awarenessCheapHooks": true,
+  "awarenessGenerationHook": true,
+  "wildSpawnerBlock": true,
+  "budget": {
+   "verdict": "unmeasured",
+   "note": "the recorders' real cost is the C0-C5 restart protocol (RECORDER_OVERHEAD_MEASURE_SIX_CONFIGS_DEEP); the partial figure below is awareness HOOK BODIES ONLY over process uptime (no Harmony dispatch, no TPS hooks) and is not a verdict",
+   "awarenessBodiesMs": 0.0,
+   "uptimeS": 1244.0,
+   "awarenessBodiesShare": 0.0,
+   "awarenessBodiesVerdict": "within"
+  }
+ },
+ "gate": {
+  "status": "complete",
+  "detail": "397 tools gated, 0 unguarded, by bridge-registration",
+  "guarded": 397,
+  "unguarded": [],
+  "installMs": 2466.3,
+  "refusals": 0,
+  "gateErrors": 0,
+  "campaignDenied": 32
+ },
+ "hooks": {
+  "tps": {
+   "installStatus": "complete",
+   "detail": "TickManagerUpdate: ok; Root.Update: ok; LongEventsUpdate: ok; SaveGame: ok; LoadGame: ok",
+   "coverage": {
+    "Root.Update": {
+     "coverage": "ok",
+     "entered": 2,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    },
+    "TickManagerUpdate": {
+     "coverage": "ok",
+     "entered": 0,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    },
+    "LongEventsUpdate": {
+     "coverage": "ok",
+     "entered": 2,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    },
+    "SaveGame": {
+     "coverage": "ok",
+     "entered": 0,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    },
+    "LoadGame": {
+     "coverage": "ok",
+     "entered": 0,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    }
+   }
+  },
+  "attribution": {
+   "installStatus": "complete",
+   "detail": "DoSingleTick: ok; TickList.Tick: ok; WorldTick: ok; WorldPostTick: ok; MapPreTick: ok; MapPostTick: ok; MapComponentTick: ok; GameComponentTick: ok",
+   "coverage": {
+    "DoSingleTick": {
+     "coverage": "ok",
+     "entered": 0,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    },
+    "stages": {
+     "coverage": "ok",
+     "entered": 0,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    }
+   }
+  },
+  "awareness": {
+   "installStatus": "complete",
+   "detail": "IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok",
+   "generationHook": "not installed (lazy: installs on the first jawa/awareness arm)",
+   "faults": 0,
+   "foreignThreadCalls": 0
+  },
+  "argGuard": {
+   "installed": true,
+   "staleRefusals": 0
+  },
+  "wildSpawner": {
+   "patch": "not patched",
+   "blocked": false
+  }
+ },
+ "rimBridgeServer": {
+  "loaded": true,
+  "version": "2.3.0.0",
+  "informationalVersion": "2.3.0+8e4eaba26da9c852780c44d5e110768350426197"
+ },
+ "harmony": {
+  "version": "2.4.2.0"
+ },
+ "game": {
+  "available": true,
+  "epoch": 0,
+  "programState": "Entry",
+  "ticksGame": -1,
+  "mapIds": [],
+  "currentMapId": -1,
+  "saveNote": "save is the name the TPS lifecycle saw loaded (null for a new game, or when the sampler is off)"
+ },
+ "reservedArgs": [
+  "expectGameEpoch",
+  "expectMapId",
+  "expectCurrentMapId"
+ ],
+ "operation": {
+  "OperationId": "op_7cfde59f52a74a0591ed18a81984cd2c",
+  "Status": "Completed",
+  "Success": true,
+  "DurationMs": 5901
+ },
+ "state": {
+  "programState": "Entry",
+  "hasCurrentGame": false
+ }
+}

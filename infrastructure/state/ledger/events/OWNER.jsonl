@@ -265,3 +265,4 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ts":"2026-10-10T17:28:05Z","tsn":1791653285065636337}
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-10-10T17:41:10Z","tsn":1791654070959497660}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"I closed the game","ts":"2026-10-10T19:14:59Z","tsn":1791659699490133560}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ts":"2026-10-10T21:00:17Z","tsn":1791666017882401301}

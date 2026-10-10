@@ -1,0 +1,186 @@
+{
+ "blocks": [
+  {
+   "speed": "Normal",
+   "attr": true,
+   "windows": 7,
+   "ticks": 292,
+   "tpsWall": 8.2,
+   "simMsPerTick": 114.149,
+   "ratioMean": 0.137,
+   "fps": 6.3,
+   "profEstMs": 0.12
+  },
+  {
+   "speed": "Normal",
+   "attr": false,
+   "windows": 7,
+   "ticks": 285,
+   "tpsWall": 8.0,
+   "simMsPerTick": 117.506,
+   "ratioMean": 0.133,
+   "fps": 6.0,
+   "profEstMs": 0
+  },
+  {
+   "speed": "Normal",
+   "attr": false,
+   "windows": 7,
+   "ticks": 263,
+   "tpsWall": 7.4,
+   "simMsPerTick": 128.691,
+   "ratioMean": 0.123,
+   "fps": 5.7,
+   "profEstMs": 0
+  },
+  {
+   "speed": "Normal",
+   "attr": true,
+   "windows": 7,
+   "ticks": 275,
+   "tpsWall": 7.6,
+   "simMsPerTick": 123.866,
+   "ratioMean": 0.127,
+   "fps": 5.5,
+   "profEstMs": 0.12
+  },
+  {
+   "speed": "Superfast",
+   "attr": true,
+   "windows": 7,
+   "ticks": 344,
+   "tpsWall": 9.6,
+   "simMsPerTick": 98.533,
+   "ratioMean": 0.027,
+   "fps": 5.6,
+   "profEstMs": 0.14
+  },
+  {
+   "speed": "Superfast",
+   "attr": false,
+   "windows": 7,
+   "ticks": 317,
+   "tpsWall": 8.9,
+   "simMsPerTick": 107.392,
+   "ratioMean": 0.025,
+   "fps": 5.5,
+   "profEstMs": 0
+  },
+  {
+   "speed": "Superfast",
+   "attr": false,
+   "windows": 7,
+   "ticks": 293,
+   "tpsWall": 8.2,
+   "simMsPerTick": 116.749,
+   "ratioMean": 0.023,
+   "fps": 5.5,
+   "profEstMs": 0
+  },
+  {
+   "speed": "Superfast",
+   "attr": true,
+   "windows": 7,
+   "ticks": 364,
+   "tpsWall": 10.1,
+   "simMsPerTick": 93.446,
+   "ratioMean": 0.028,
+   "fps": 5.9,
+   "profEstMs": 0.14
+  },
+  {
+   "speed": "Ultrafast",
+   "attr": true,
+   "windows": 7,
+   "ticks": 336,
+   "tpsWall": 9.4,
+   "simMsPerTick": 99.983,
+   "ratioMean": 0.001,
+   "fps": 5.7,
+   "profEstMs": 0.13
+  },
+  {
+   "speed": "Ultrafast",
+   "attr": false,
+   "windows": 7,
+   "ticks": 356,
+   "tpsWall": 9.9,
+   "simMsPerTick": 96.074,
+   "ratioMean": 0.001,
+   "fps": 6.0,
+   "profEstMs": 0
+  },
+  {
+   "speed": "Ultrafast",
+   "attr": false,
+   "windows": 7,
+   "ticks": 315,
+   "tpsWall": 8.9,
+   "simMsPerTick": 106.069,
+   "ratioMean": 0.001,
+   "fps": 5.9,
+   "profEstMs": 0
+  },
+  {
+   "speed": "Ultrafast",
+   "attr": true,
+   "windows": 7,
+   "ticks": 355,
+   "tpsWall": 10.0,
+   "simMsPerTick": 95.508,
+   "ratioMean": 0.001,
+   "fps": 5.8,
+   "profEstMs": 0.14
+  }
+ ],
+ "summary": {
+  "Normal": {
+   "simMsPerTick_on": 119.007,
+   "simMsPerTick_off": 123.099,
+   "simOverheadPct": -3.3,
+   "tpsWall_on": 7.9,
+   "tpsWall_off": 7.7,
+   "tpsCostPct": -2.6,
+   "blockSpread_simMsPerTick_on": [
+    114.149,
+    123.866
+   ],
+   "blockSpread_simMsPerTick_off": [
+    117.506,
+    128.691
+   ]
+  },
+  "Superfast": {
+   "simMsPerTick_on": 95.989,
+   "simMsPerTick_off": 112.07,
+   "simOverheadPct": -14.3,
+   "tpsWall_on": 9.8,
+   "tpsWall_off": 8.6,
+   "tpsCostPct": -15.2,
+   "blockSpread_simMsPerTick_on": [
+    98.533,
+    93.446
+   ],
+   "blockSpread_simMsPerTick_off": [
+    107.392,
+    116.749
+   ]
+  },
+  "Ultrafast": {
+   "simMsPerTick_on": 97.745,
+   "simMsPerTick_off": 101.072,
+   "simOverheadPct": -3.3,
+   "tpsWall_on": 9.7,
+   "tpsWall_off": 9.4,
+   "tpsCostPct": -3.2,
+   "blockSpread_simMsPerTick_on": [
+    99.983,
+    95.508
+   ],
+   "blockSpread_simMsPerTick_off": [
+    96.074,
+    106.069
+   ]
+  }
+ }
+}

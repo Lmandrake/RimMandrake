@@ -1,0 +1,17 @@
+{
+ "fp": {
+  "0Harmony.dll": "353daafec180bb8e",
+  "Assembly-CSharp.dll": "5cf1b5be399d5b1c",
+  "Gabp.Runtime.dll": "d548e8665efb033e",
+  "Lib.GAB.dll": "c06a5e04c12a477b",
+  "MoonSharp.Interpreter.dll": "1db76110f2169863",
+  "Newtonsoft.Json.dll": "f0c07af0e84d4dd4",
+  "RimBridgeServer.Contracts.dll": "91852118fdf1ee5c",
+  "RimBridgeServer.Core.dll": "fb671fcbe2c0c1dd",
+  "RimBridgeServer.Extensions.Abstractions.dll": "786668c7f53e6878",
+  "RimBridgeServer.Sdk.dll": "46abe5b6ad8a70bf",
+  "RimBridgeServer.dll": "bedefc9bf0c4ba30",
+  "RimBridgeServer.version": "2.3.0"
+ },
+ "recorded": "2026-10-10T21:00:49Z"
+}
