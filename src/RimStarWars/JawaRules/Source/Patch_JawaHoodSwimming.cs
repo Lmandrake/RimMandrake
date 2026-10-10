@@ -128,14 +128,36 @@ namespace RimMandrake.StarWars.JawaRules
                     parms.swimming = true;
                 }
                 bool canDraw = pickNode.Worker.CanDrawNow(pickNode, parms);
+                // JAWA_SWIM_HOOD_KEEP_1 discriminators (bridge6): which gate says no.
+                PawnDrawParms restored = parms;
+                restored.flags |= PawnRenderFlags.Clothes | PawnRenderFlags.Headgear;
+                bool restoredCan = pickNode.Worker.CanDrawNow(pickNode, restored);
+                PawnDrawParms dry = restored; dry.swimming = false;
+                bool baseCan = pickNode.Worker is PawnRenderNodeWorker_Apparel_Head ? BaseGate(pickNode, dry) : false;
+                bool hgVisible = PawnRenderNodeWorker_Apparel_Head.HeadgearVisible(restored);
                 return "hooded=" + hooded + " swimmingHooded=" + swimmingHooded + " pawn=" + pick.LabelShortCap
                     + " swimming=" + swimming + " canDraw=" + canDraw + " flags=" + (int)parms.flags
-                    + " toggle=" + RSW_JawaRulesSettings.swimHoodEnabled;
+                    + " toggle=" + RSW_JawaRulesSettings.swimHoodEnabled
+                    + " worker=" + pickNode.Worker.GetType().FullName
+                    + " applies=" + JawaHoodRender.SwimForceApplies(parms) + " kept=" + JawaHoodRender.IsKeptHood(pickNode.apparel?.def)
+                    + " restoredCan=" + restoredCan + " headgearVisibleRestored=" + hgVisible + " baseGate=" + baseCan
+                    + " skipFlag=" + pickNode.Props.skipFlag + " rotDrawMode=" + pickNode.Props.rotDrawMode + " parmsRot=" + parms.rotDrawMode
+                    + " facing=" + parms.facing + " debugEnabled=" + pickNode.DebugEnabled;
             }
             catch (Exception e)
             {
                 return "ERROR " + e.GetType().Name + ": " + e.Message;
             }
+        }
+
+        // The PawnRenderNodeWorker base gates only (rotDrawMode, facing, skip flags, side, linked parts, DebugEnabled),
+        // re-stated so a reader can tell a base-gate refusal from the apparel-head flag gate.
+        private static bool BaseGate(PawnRenderNode node, PawnDrawParms parms)
+        {
+            if (!node.Props.rotDrawMode.HasFlag(parms.rotDrawMode)) return false;
+            if (node.Props.visibleFacing != null && !node.Props.visibleFacing.Contains(parms.facing)) return false;
+            if (node.Props.skipFlag != RenderSkipFlagDefOf.None && parms.skipFlags.HasFlag(node.Props.skipFlag)) return false;
+            return node.DebugEnabled;
         }
 
         private static PawnRenderNode FindHood(PawnRenderNode n)
