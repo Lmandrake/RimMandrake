@@ -47,7 +47,18 @@
     "RM_Luqqim": {
       "at": "2026-10-10T05:55:08.024Z",
       "decision": "A",
-      "note": "Two more variants, good!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T05:55:08.024Z",
+          "followed_by": [
+            "enact_080134bc_luqqim_v1",
+            "enact_d14c4f0b_luqqim_v2"
+          ],
+          "note": "Two more variants, good!",
+          "when": "2026-10-10T00:58:18-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -82,7 +93,18 @@
     "RM_Nabbuq": {
       "at": "2026-10-10T05:55:15.434Z",
       "decision": "A",
-      "note": "Two more variants, good!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T05:55:15.434Z",
+          "followed_by": [
+            "enact_688d4c1b_nabbuq_v2",
+            "enact_90c43f6c_nabbuq_v1"
+          ],
+          "note": "Two more variants, good!",
+          "when": "2026-10-10T00:58:18-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -97,7 +119,18 @@
     "RM_Ruqqal": {
       "at": "2026-10-10T05:55:21.657Z",
       "decision": "A",
-      "note": "Two more variants, good!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T05:55:21.657Z",
+          "followed_by": [
+            "enact_154c12cf_ruqqal_v2",
+            "enact_38e46a04_ruqqal_v1"
+          ],
+          "note": "Two more variants, good!",
+          "when": "2026-10-10T00:58:18-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -107,7 +140,18 @@
     "RM_Sevvuq": {
       "at": "2026-10-10T05:55:25.004Z",
       "decision": "A",
-      "note": "Two more variants, good!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T05:55:25.004Z",
+          "followed_by": [
+            "enact_70b1f8a2_sevvuq_v1",
+            "enact_f95acc37_sevvuq_v2"
+          ],
+          "note": "Two more variants, good!",
+          "when": "2026-10-10T00:58:18-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -138,7 +182,18 @@
       "at": "2026-10-10T05:55:31.069Z",
       "decidedAt": "2026-10-10T05:55:29.495Z",
       "decision": "B",
-      "note": "Two more variants, good!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T05:55:31.069Z",
+          "followed_by": [
+            "enact_10c96cdf_twistingthorngrass_v1",
+            "enact_cf1eb3bf_twistingthorngrass_v2"
+          ],
+          "note": "Two more variants, good!",
+          "when": "2026-10-10T00:58:18-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -149,7 +204,18 @@
       "at": "2026-10-10T05:55:35.870Z",
       "decidedAt": "2026-10-10T05:55:34.562Z",
       "decision": "B",
-      "note": "Two more variants, good!",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T05:55:35.870Z",
+          "followed_by": [
+            "enact_546016b1_twistingthornweed_v1",
+            "enact_b39e17ba_twistingthornweed_v2"
+          ],
+          "note": "Two more variants, good!",
+          "when": "2026-10-10T00:58:18-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -174,7 +240,19 @@
     "RM_Veqma": {
       "at": "2026-10-10T05:56:40.335Z",
       "decision": "A",
-      "note": "Is this a dug up plant? If it's supposed to be planted, then REDO making it much more realistic and add a few variants to choose from. If it's something already dug up, then keep it but make it more realistic.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T05:56:40.335Z",
+          "followed_by": [
+            "enact_fcveqma_real_v1",
+            "enact_fcveqma_real_v2",
+            "enact_fcveqma_real_v3"
+          ],
+          "note": "Is this a dug up plant? If it's supposed to be planted, then REDO making it much more realistic and add a few variants to choose from. If it's something already dug up, then keep it but make it more realistic.",
+          "when": "2026-10-10T00:58:18-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [],
       "variantsDefault": true
@@ -233,7 +311,19 @@
       "at": "2026-10-10T05:49:29.407Z",
       "decidedAt": "2026-10-10T05:48:29.277Z",
       "decision": "B",
-      "note": "You were supposed to make more realistic variants of (B). Try harder. ",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T05:49:29.407Z",
+          "followed_by": [
+            "enact_4ec0d9cc_creature_mantrap_v3",
+            "enact_a7139488_creature_mantrap_v1",
+            "enact_f889cf2f_creature_mantrap_v2"
+          ],
+          "note": "You were supposed to make more realistic variants of (B). Try harder. ",
+          "when": "2026-10-10T00:58:18-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"

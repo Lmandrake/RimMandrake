@@ -7,7 +7,18 @@
       "at": "2026-10-10T06:05:01.028Z",
       "decidedAt": "2026-10-10T06:04:57.363Z",
       "decision": "B",
-      "note": "Add two variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T06:05:01.028Z",
+          "followed_by": [
+            "enact_wlplantgraygrass_v1",
+            "enact_wlplantgraygrass_v2"
+          ],
+          "note": "Add two variants",
+          "when": "2026-10-10T00:58:28-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -18,7 +29,18 @@
       "at": "2026-10-10T06:05:31.360Z",
       "decidedAt": "2026-10-10T06:05:29.933Z",
       "decision": "B",
-      "note": "Add two variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T06:05:31.360Z",
+          "followed_by": [
+            "enact_wlplanttoxipotato_v1",
+            "enact_wlplanttoxipotato_v2"
+          ],
+          "note": "Add two variants",
+          "when": "2026-10-10T00:58:28-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"
@@ -29,7 +51,18 @@
       "at": "2026-10-10T06:05:37.151Z",
       "decidedAt": "2026-10-10T06:05:36.183Z",
       "decision": "B",
-      "note": "Add two variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T06:05:37.151Z",
+          "followed_by": [
+            "enact_wlplanttreepolux_v1",
+            "enact_wlplanttreepolux_v2"
+          ],
+          "note": "Add two variants",
+          "when": "2026-10-10T00:58:28-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },
@@ -42,7 +75,18 @@
     "RM_Boilbulb": {
       "at": "2026-10-10T06:04:20.275Z",
       "decision": "A",
-      "note": "Add two variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T06:04:20.275Z",
+          "followed_by": [
+            "enact_wlrmboilbulb_v1",
+            "enact_wlrmboilbulb_v2"
+          ],
+          "note": "Add two variants",
+          "when": "2026-10-10T00:58:28-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -52,7 +96,18 @@
     "RM_Cinderfelt": {
       "at": "2026-10-10T06:04:24.339Z",
       "decision": "A",
-      "note": "Add two variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T06:04:24.339Z",
+          "followed_by": [
+            "enact_wlrmcinderfelt_v1",
+            "enact_wlrmcinderfelt_v2"
+          ],
+          "note": "Add two variants",
+          "when": "2026-10-10T00:58:28-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -83,7 +138,18 @@
     "RM_Pusberry": {
       "at": "2026-10-10T06:05:06.059Z",
       "decision": "A",
-      "note": "Add two variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T06:05:06.059Z",
+          "followed_by": [
+            "enact_wlrmpusberry_v1",
+            "enact_wlrmpusberry_v2"
+          ],
+          "note": "Add two variants",
+          "when": "2026-10-10T00:58:28-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -93,7 +159,18 @@
     "RM_Scumgrass": {
       "at": "2026-10-10T06:05:22.930Z",
       "decision": "A",
-      "note": "Add two variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T06:05:22.930Z",
+          "followed_by": [
+            "enact_wlrmscumgrass_v1",
+            "enact_wlrmscumgrass_v2"
+          ],
+          "note": "Add two variants",
+          "when": "2026-10-10T00:58:28-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -103,7 +180,18 @@
     "RM_TallScumgrass": {
       "at": "2026-10-10T06:05:26.338Z",
       "decision": "A",
-      "note": "Add two variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T06:05:26.338Z",
+          "followed_by": [
+            "enact_wlrmtallscumgrass_v1",
+            "enact_wlrmtallscumgrass_v2"
+          ],
+          "note": "Add two variants",
+          "when": "2026-10-10T00:58:28-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -113,7 +201,19 @@
     "RM_VaultRoot": {
       "at": "2026-10-10T06:05:54.946Z",
       "decision": "A",
-      "note": "Add three much more realistic versions of this, and make it twice as large",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T06:05:54.946Z",
+          "followed_by": [
+            "enact_wlvaultroot_real_v2",
+            "enact_wlvaultroot_real_v3",
+            "enact_wlvaultroot_real_v1"
+          ],
+          "note": "Add three much more realistic versions of this, and make it twice as large",
+          "when": "2026-10-10T00:58:28-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -123,7 +223,18 @@
     "RM_Wartshrub": {
       "at": "2026-10-10T06:06:02.516Z",
       "decision": "A",
-      "note": "Add two variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T06:06:02.516Z",
+          "followed_by": [
+            "enact_wlrmwartshrub_v1",
+            "enact_wlrmwartshrub_v2"
+          ],
+          "note": "Add two variants",
+          "when": "2026-10-10T00:58:28-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "A"
@@ -134,7 +245,18 @@
       "at": "2026-10-10T06:05:19.790Z",
       "decidedAt": "2026-10-10T06:05:19.790Z",
       "decision": "C",
-      "note": "Add two variants",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T06:05:19.790Z",
+          "followed_by": [
+            "enact_wlrmwastelandscorchedstars_v1",
+            "enact_wlrmwastelandscorchedstars_v2"
+          ],
+          "note": "Add two variants",
+          "when": "2026-10-10T00:58:28-0700"
+        }
+      ],
       "picks": {
         "_byname": "C"
       },
@@ -184,7 +306,19 @@
       "at": "2026-10-10T06:00:02.318Z",
       "decidedAt": "2026-10-10T05:59:07.714Z",
       "decision": "B",
-      "note": "Add short quills along their flanks.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T06:00:02.318Z",
+          "followed_by": [
+            "enact_wlborcatu_quills_v1_east",
+            "enact_wlborcatu_quills_v1_north",
+            "enact_wlborcatu_quills_v1_south"
+          ],
+          "note": "Add short quills along their flanks.",
+          "when": "2026-10-10T00:58:28-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "cfe0943317c341b76099f7ef90f9488aad91051d256c00298c724b7080c2bbeb",
