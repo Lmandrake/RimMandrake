@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  ASTEROID_DESERT_ORES_1 + CANON_MATERIALS_BUILD_1 L6 (partial: doonium) — RSW_Doonium, the canon ship-construction and
+  reactor-shielding metal (design/RimMandrake/canon_materials_design_2026-10-09.md §3.5). RSW tier (mandrake.rsw.armoury).
+
+  Sources: salvage and rare trade (CANON_MATERIALS_BUILD_1 L5/L6), and asteroid ore: RSW_MineableDoonium is placed ONLY by
+  Patches/RSW_OdysseyAsteroid_Doonium.xml into Odyssey asteroid GenSteps (scatter 0, deep 0: never on a planet surface).
+  Ore smelts aboard with RM_GlowerCrust into RSW_Doonium (Patches/RSW_Smelter_Alloys.xml, VFE ProcessDef).
+
+  PROVISIONAL (no calibration, no ruling): MarketValue 45, ore 6, Mass 0.8/1, yield 18, lump 6~10. Amounts per map belong in
+  the mineral registry. Art: steel's stack sprites tinted (material, not paint) until our render lands via the art ledger.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_Doonium</defName>
+    <label>doonium</label>
+    <description>A heavy, dense metal used above all in starship construction: it shields reactor cores and braces the keels of large ships. It is mined from asteroid fields and smelted with glower crust, or pulled out of wrecks.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Steel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(95,90,75)</color>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <useHitPoints>false</useHitPoints>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>45</MarketValue>
+      <Mass>0.8</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_DooniumOre</defName>
+    <label>doonium ore</label>
+    <description>Raw doonium-bearing rock, dense and dull. It must be smelted with glower crust before it is any use.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Steel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(110,100,60)</color>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <useHitPoints>false</useHitPoints>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>6</MarketValue>
+      <Mass>1</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RSW_MineableDoonium</defName>
+    <label>doonium ore</label>
+    <description>Asteroid rock seamed with doonium, heavy and almost black. It occurs only in asteroid fields, never on a planet.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(68,68,72)</color>
+      <colorTwo>(110,100,60)</colorTwo>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>1800</MaxHitPoints>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RSW_DooniumOre</mineableThing>
+      <mineableYield>18</mineableYield>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+      <mineableScatterLumpSizeRange>6~10</mineableScatterLumpSizeRange>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>
+      <veinMineable>true</veinMineable>
+    </building>
+  </ThingDef>
+
+</Defs>

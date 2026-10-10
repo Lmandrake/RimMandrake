@@ -164,6 +164,7 @@ suite.toggles = [
     "returningWeaponEnabled", "returningWeaponSpeed",
     "ionDamageEnabled", "ionSeverity", "plasmaGrenadeFires",
     "durasteelAlloyEnabled",
+    "dooniumAsteroidEnabled", "dooniumSmeltEnabled", "phrikSmeltEnabled", "slagRemeltAboardEnabled",
 ]
 
 ION_DAMAGE = "guy762_InternalDamage_ion"
@@ -788,6 +789,101 @@ def transparisteel_fold(t):
         bad = transparisteel_fold_static()
         if bad:
             raise ExpectationFailed("; ".join(bad[:10]))
+
+
+def ores_and_smelts_static(defs_dir=None, ast_patch=None, smelt_patch=None):
+    """Offline (ASTEROID_DESERT_ORES_1): doonium and phrik defs exist with ore scatter/deep 0 and the right mineableThing;
+    the asteroid patch adds the doonium ore to exactly the three allowlisted GenSteps and nothing on a planet places it; the
+    smelter patch defines the four processes with the right ingredients/results and attaches each to every ship smelter."""
+    import re as _re
+    d = defs_dir or _os.path.join(_ARMOURY_DIR, "Defs", "ThingDefs")
+    ast_patch = ast_patch or _os.path.join(_ARMOURY_DIR, "Patches", "RSW_OdysseyAsteroid_Doonium.xml")
+    smelt_patch = smelt_patch or _os.path.join(_ARMOURY_DIR, "Patches", "RSW_Smelter_Alloys.xml")
+    bad = []
+    defs = {}
+    for f in ("RSW_Doonium.xml", "RSW_Phrik.xml"):
+        try:
+            for t in _ET.parse(_os.path.join(d, f)).getroot().findall("ThingDef"):
+                defs[t.findtext("defName")] = t
+        except Exception as e:
+            bad.append("%s unreadable: %s" % (f, e))
+    for mine, ore, metal in (("RSW_MineableDoonium", "RSW_DooniumOre", "RSW_Doonium"), ("RSW_MineablePhrikite", "RSW_Phrikite", "RSW_Phrik")):
+        for n in (mine, ore, metal):
+            if n not in defs:
+                bad.append("%s not defined" % n)
+        if mine in defs:
+            b = defs[mine].find("building")
+            if b is None or b.findtext("mineableThing") != ore:
+                bad.append("%s does not yield %s" % (mine, ore))
+            elif b.findtext("mineableScatterCommonality") != "0" or b.findtext("deepCommonality") not in (None, "0"):
+                bad.append("%s has a scatter or deep route (must be 0)" % mine)
+    try:
+        ap = _ET.parse(ast_patch).getroot()
+        steps = set()
+        for op in ap.iter("Operation"):
+            x = op.findtext("xpath") or ""
+            m = _re.search(r'GenStepDef\[defName="([^"]+)"\]/genStep/mineableCounts$', x)
+            if m:
+                steps.add(m.group(1))
+                if op.find("value/RSW_MineableDoonium") is None:
+                    bad.append("asteroid op for %s adds something other than RSW_MineableDoonium" % m.group(1))
+            elif "GenStepDef" in x:
+                bad.append("unscoped GenStepDef xpath: " + x)
+        if steps != {"Asteroid", "Asteroid_NoRuins", "AsteroidBasic"}:
+            bad.append("doonium GenStep allowlist is %s" % sorted(steps))
+    except Exception as e:
+        bad.append("asteroid patch unreadable: %s" % e)
+    try:
+        sp = _ET.parse(smelt_patch).getroot()
+        procs = {p.findtext("defName"): p for p in sp.iter("PipeSystem.ProcessDef")}
+        want = {"RSW_SmeltDoonium": ({"RSW_DooniumOre", "RM_GlowerCrust"}, "RSW_Doonium"),
+                "RSW_SmeltPhrik": ({"RSW_Phrikite"}, "RSW_Phrik"),
+                "RSW_SmeltPlasteelFromSlag": ({"KotORChunk_plasteel"}, "Plasteel"),
+                "RSW_SmeltDurasteelFromSlag": ({"KotORChunk_durasteel"}, "RSW_Durasteel")}
+        smelters = ("VFEFactory_AutomatedSmelter", "RM_WM_AutomatedSmelter_Kludged", "RM_WM_AutomatedSmelter_Refurbished", "RM_WM_AutomatedSmelter_Repaired")
+        attach = {}
+        for op in sp.iter("li"):
+            x = op.findtext("xpath") or ""
+            m = _re.search(r'ThingDef\[defName="([^"]+)"\]/comps/li\[@Class="PipeSystem.CompProperties_AdvancedResourceProcessor"\]/processes$', x)
+            if m:
+                for li in op.findall("value/li"):
+                    attach.setdefault(li.text, set()).add(m.group(1))
+        for n, (ings, res) in want.items():
+            p = procs.get(n)
+            if p is None:
+                bad.append("process %s not defined" % n)
+                continue
+            if {i.text for i in p.findall("ingredients/li/thing")} != ings:
+                bad.append("%s ingredients are not %s" % (n, sorted(ings)))
+            if [r.text for r in p.findall("results/li/thing")] != [res]:
+                bad.append("%s does not result in %s" % (n, res))
+            if attach.get(n) != set(smelters):
+                bad.append("%s is attached to %s, not all four smelters" % (n, sorted(attach.get(n, []))))
+    except Exception as e:
+        bad.append("smelter patch unreadable: %s" % e)
+    return bad
+
+
+@suite.chain("ores_and_smelts")
+def ores_and_smelts(t):
+    with t.component("ores_and_smelts_shape", beyond_toggle=True):
+        bad = ores_and_smelts_static()
+        if bad:
+            raise ExpectationFailed("; ".join(bad[:10]))
+    for tog, dn in (("dooniumAsteroidEnabled", "ThingDef/RSW_MineableDoonium"), ("dooniumSmeltEnabled", "PipeSystem.ProcessDef/RSW_SmeltDoonium"),
+                    ("phrikSmeltEnabled", "PipeSystem.ProcessDef/RSW_SmeltPhrik"), ("slagRemeltAboardEnabled", "PipeSystem.ProcessDef/RSW_SmeltPlasteelFromSlag")):
+        with t.component("defs_present_" + tog, toggle=tog):
+            if t.session is None:
+                return
+            r = t.bridge_call("jawa/get_defs", defs=dn)
+            if not r or not r.get("success"):
+                t.upstream_reason = "UNMEASURED: get_defs failed: %r" % (r,)
+                t.upstream_failed = True
+                return
+            if r.get("foundCount") != 1:
+                t.upstream_reason = "UNMEASURED: %s absent (VFE Factory or the patch not loaded)" % dn
+                t.upstream_failed = True
+                return
 
 
 @suite.chain("durasteel_convert")

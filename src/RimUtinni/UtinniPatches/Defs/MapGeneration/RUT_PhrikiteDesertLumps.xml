@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ASTEROID_DESERT_ORES_1. Phrikite's only placement: a few small lumps of RSW_MineablePhrikite in the natural rock of
+  extreme-desert maps (owner, question card 2026-10-09, typed "Both": trade AND a rare desert deposit). Gated on
+  RM_Stillsand (the extreme desert) and its frozen twin RUT_ExtremeDesert, and on Mod Settings "Phrikite ore in the
+  extreme desert". Registered on Base_Player by Patches/RUT_PhrikiteDesertLumps_Register.xml; gates itself.
+  ⚠️ WHICH desert is PROVISIONAL: the registry named RM_Stillsand, RM_BlueDesert and RUT_ExtremeDesert as candidates and
+  no ruling picked one (owner question open); change allowedBiomes here and in the registry row to move it.
+
+  PROVISIONAL numbers (no calibration, no owner ruling): 0.15~0.3 lumps per 10k cells, floor 1 lump per map; lump 3~6 cells
+  x yield 12 (RSW_MineablePhrikite) is about 36~72 phrikite per map before mining losses (RARE by design).
+  order 205: just after RocksFromGrid (200).
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rsw.armoury">
+    <defName>RUT_PhrikiteDesertLumps</defName>
+    <order>205</order>
+    <genStep Class="RimMandrake.Utinni.UtinniPatches.RUT_GenStep_PhrikiteDesertLumps">
+      <forcedDefToScatter>RSW_MineablePhrikite</forcedDefToScatter>
+      <countPer10kCellsRange>0.15~0.3</countPer10kCellsRange>
+      <minLumps>1</minLumps><!-- PROVISIONAL: floor so no desert map reads 0 -->
+      <allowedBiomes>
+        <li MayRequire="mandrake.rm.stillsand">RM_Stillsand</li>
+        <li>RUT_ExtremeDesert</li>
+      </allowedBiomes>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

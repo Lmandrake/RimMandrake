@@ -195,6 +195,24 @@ def main():
     finally:
         shutil.rmtree(tmp)
 
+    # doonium / phrik ores and smelts: clean passes; planted defects caught
+    check("ores and smelts: clean tree", V.ores_and_smelts_static() == [], V.ores_and_smelts_static())
+    tmp = tempfile.mkdtemp()
+    try:
+        os.makedirs(os.path.join(tmp, "defs"))
+        open(os.path.join(tmp, "defs", "RSW_Doonium.xml"), "w").write("<Defs><ThingDef><defName>RSW_MineableDoonium</defName><building><mineableThing>Steel</mineableThing>"
+            "<mineableScatterCommonality>2</mineableScatterCommonality></building></ThingDef></Defs>")
+        open(os.path.join(tmp, "defs", "RSW_Phrik.xml"), "w").write("<Defs/>")
+        open(os.path.join(tmp, "a.xml"), "w").write('<Patch><Operation><xpath>/Defs/GenStepDef[defName="Asteroid"]/genStep/mineableCounts</xpath><value><MineableGold>1~2</MineableGold></value></Operation>'
+            '<Operation><xpath>/Defs/GenStepDef/genStep/mineableCounts</xpath></Operation></Patch>')
+        open(os.path.join(tmp, "s.xml"), "w").write("<Patch/>")
+        got = V.ores_and_smelts_static(defs_dir=os.path.join(tmp, "defs"), ast_patch=os.path.join(tmp, "a.xml"), smelt_patch=os.path.join(tmp, "s.xml"))
+        check("ores and smelts: planted wrong yield, scatter route, bad asteroid ops, missing processes caught",
+              any("does not yield" in b for b in got) and any("allowlist" in b for b in got) and any("unscoped" in b for b in got)
+              and sum("not defined" in b for b in got) >= 4, got)
+    finally:
+        shutil.rmtree(tmp)
+
     if FAILS:
         print("\n%d Armoury selftest(s) FAILED" % len(FAILS))
         return 1

@@ -48,6 +48,9 @@ namespace RimMandrake.Utinni.UtinniPatches
         // ZERSIUM_FORGE_BIOME_1 — worldgen-affecting (new Forge maps only).
         public static bool zersiumForgeEnabled = true;
 
+        // ASTEROID_DESERT_ORES_1 — worldgen-affecting (new Stillsand / extreme-desert maps only).
+        public static bool phrikiteDesertEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -58,6 +61,7 @@ namespace RimMandrake.Utinni.UtinniPatches
             Scribe_Values.Look(ref holyFlameActEnabled, "holyFlameActEnabled", true);
             Scribe_Values.Look(ref mindstoneGalleryEnabled, "mindstoneGalleryEnabled", true);
             Scribe_Values.Look(ref zersiumForgeEnabled, "zersiumForgeEnabled", true);
+            Scribe_Values.Look(ref phrikiteDesertEnabled, "phrikiteDesertEnabled", true);
         }
 
         private static Vector2 settingsScroll;
@@ -114,6 +118,12 @@ namespace RimMandrake.Utinni.UtinniPatches
                 "On: newly generated Forge maps carry a few small seams of zersium ore, the mineral that turns "
               + "steel into durasteel, and the only place on the planet it can be mined. Off: no zersium seams "
               + "anywhere. Worldgen-affecting: applies to Forge maps generated after the change.");
+
+            list.GapLine();
+            list.CheckboxLabeled("Phrikite ore in the extreme desert", ref phrikiteDesertEnabled,
+                "On: newly generated extreme-desert (Stillsand) maps carry a few small seams of phrikite ore, "
+              + "smelted aboard into phrik, the saber-resistant alloy, and the only place on the planet it can be mined. "
+              + "Off: no phrikite seams anywhere. Worldgen-affecting: applies to maps generated after the change.");
 
             settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
