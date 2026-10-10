@@ -299,11 +299,31 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
   — in `session_<id>.json` (`modOrderDigest` also on the `session` row).
 - GREEN: `C# units: 18 run, 0 failed`; companion builds.
 
-(next fixes below)
+## C3 controlled-interruption matrix (minimal list) — PASS, 2026-10-10 16:33–16:48Z
 
-## C3 controlled-interruption matrix (minimal list)
+Deployed build `1b611f322` then `8b6617289` (`build.py --gm --apply`, game killed first), minimal list
+(26 mods, `modlist_swap.py --minimal --apply`), Steam launch (`launch_and_wait.sh`), bridge held by FOUNDRY,
+no focus/fullscreen. Interruptions from the new GM-gated `jawa/tps_test_block` (sleeps on the main thread),
+`D:\Luke\dev\_rmscratch\ntsuspend.ps1` (whole-process suspension) and `taskkill`. Driver:
+`D:\Luke\dev\_rmscratch\tps_c3\drive.py`. Evidence read from the record FILES.
 
-(pending)
+| # | case | result |
+|---|---|---|
+| 1 | autostart, no bridge call | before any call: `session` v2 `startedBy: bridge-registration`, `install.sampler: complete` (5 targets ok), `install.attribution: complete` (8 stages), `marker start`, `log` row archiving Player-prev.log with `sha256` and `fromSession: af126b98…` (the right previous session), `menu`. PASS |
+| 2 | 3 / 8 / 40 / 90 s main-thread blocks | exactly one `incident` each, `type stall`, `gapS` 3.012 / 8.017 / 40.017 / 90.017, `blocked in update` (quietPhase), `game 1`, local time `-07:00 PDT`; each gap inside one window's `[monoStart, monoEnd]` (e.g. 40 s gap in [119.69, 162.924]); max `simShare` 0.076 over 20 windows; consecutive windows abut; 0 strict-parse failures in the session files. PASS |
+| 2 | silence / heartbeat during the 90 s block | `silence` rows at 10.3 / 40.3 / 70.4 s, `resumed` 90.4 s; a mid-block watchdog pass persisted `silent` (open) then `ended`. PASS |
+| 3 | save / load / new game | `save` row (0.379 s); **defect found**: the load's label went to the transient `new Game()` of PreLoadAct (game 3, no windows) and the loaded game arrived unlabelled (game 4). Fixed (`8b6617289`: a game is entered only Playing WITH a World), redeployed, re-run: `game 2 save tps_c3_save2` with its windows. Menu → new game: `save ""`. PASS after fix |
+| 4 | whole-process suspension 35 s | mid-suspension watchdog pass: WARN `hb-stale-alive` "(same process) … cause not established", persisted open; after resume persisted `ended`; in-process a 36.013 s `incident` with `quietPhase` null (the watchdog was suspended too — correct). PASS |
+| 5 | permanent hang + kill | `jawa/tps_test_block 120`: heartbeat at +25 s `mainBeatUtc 16:42:52.836` / `watchdogUtc 16:43:13.776`, at +55 s main unchanged / watchdog `16:43:43.827`; `silent` persisted; `taskkill /F` at 16:43:48.47; record ends with two `silence` rows, last line complete; next pass persisted `exited-without-shutdown` naming main progress 16:42:52.836Z and watchdog 16:43:43.827Z. PASS |
+| 6 | forced kills near a window line | kill 0.0 s after a `sample` line landed, and 2.5 s after: both segments end on a newline, last row parses, record-wide `replayed 0`, `conflicts 0`, `malformed` unchanged (the 2 build-2 rows); both sessions got `exited-without-shutdown`. Segment-boundary kills not exercised (rotation is 2 MB ≈ 2,000 windows; the torn-tail / post-rotation paths are covered by the fault-injection units). PASS |
+| 7 | graceful close (`taskkill` without /F) | `shutdown phase:intent` → `log` (Player.log archived, `_7ef47665d2bc.log`) → `shutdown-complete drained true archived true`, all within 3 ms of each other; no observer finding for that session. PASS |
+
+Window line size measured: median 1,043 B, max 1,248 B (46 windows) — the doc's "~1-2 KB" holds.
+Not covered here (C4 / MUST 17): full-list overhead A/B, autostart on the full list, focus/sleep/CPU/disk
+discrimination, two simultaneous processes, overnight reconstruction, a standing periodic observer.
+Cleanup: game exited cleanly; live ModsConfig restored to the 67-mod list it had (byte-identical to
+`Transient/ModsConfig.live67_before_tps_20261010.xml`); bridge released. Saves `tps_c3_save`,
+`tps_c3_save2` left in the Saves folder (test saves).
 
 ## Owed
 
