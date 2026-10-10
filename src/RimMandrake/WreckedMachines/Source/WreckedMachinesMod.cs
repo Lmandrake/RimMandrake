@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
@@ -101,116 +102,169 @@ namespace RimMandrake.WreckedMachines
             Scribe_Values.Look(ref plasteelAlloyEnabled, "plasteelAlloyEnabled", true, true);
         }
 
-        private static Vector2 settingsScroll;
-        private static float settingsViewHeight = 1200f;
+                // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(WreckedMachinesSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(WreckedMachinesSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1400f;
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the mod places no biome, terrain or map-gen worker, so nothing is read at world or map generation. WreckedMachinesPatcher re-derives the def edits when this window closes ([now]); the two Architect-menu switches are the exception, applied when the menu builds its buttons ([next game start], a label local to this screen).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
 
         public void DoWindowContents(Rect inRect)
         {
             // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
-            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
-            list.Begin(settingsView);
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, viewRect);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
+            list.Begin(viewRect);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.CheckboxLabeled(
-                "Allow the original VFE automated smelter to be built",
-                ref allowDonorSmelter,
-                "Off (shipped default): the donor mod's own Automated Smelter is "
-                + "hidden from the Architect menu, so the wreck-restoration ladder "
-                + "is the only way onto the factory floor. On: the donor building "
-                + "reappears in the Architect menu alongside our three tiers, "
-                + "restoring the old testing arrangement. Not worldgen-affecting, "
-                + "but the Architect menu caches its buttons at startup, so this "
-                + "takes full effect after your next game load.");
-            list.GapLine();
+            if (Group(list, "Research and material costs", RimMandrake.Shared.SettingScope.Now, new[] { "researchCostFactor", "materialCostFactor", "skipRestorationResearch" }))
+            {
+                list.Label("Restoration research cost: " + researchCostFactor.ToString("0.00") + "x");
+                list.Label(
+                    "Scales the research needed to unlock the Repaired tier. 1.0x is "
+                    + "the shipped cost.");
+                researchCostFactor = list.Slider(researchCostFactor, 0.25f, 4f);
+                list.Label("Rebuild material cost: " + materialCostFactor.ToString("0.00") + "x");
+                list.Label(
+                    "Scales the steel and components spent stepping a wreck up to "
+                    + "Kludged or Repaired. 1.0x is the shipped cost.");
+                materialCostFactor = list.Slider(materialCostFactor, 0.25f, 4f);
+                list.CheckboxLabeled(
+                    "Skip the restoration research for the upper grades",
+                    ref skipRestorationResearch,
+                    "Off (shipped default): stepping a wrecked smelter up to Refurbished "
+                    + "or Original needs the Automated Smelter Restoration research "
+                    + "project finished first. On: no research gate, materials alone.");
+                list.GapLine();
+            }
 
-            list.Label("Restoration research cost: " + researchCostFactor.ToString("0.00") + "x");
-            list.Label(
-                "Scales the research needed to unlock the Repaired tier. 1.0x is "
-                + "the shipped cost.");
-            researchCostFactor = list.Slider(researchCostFactor, 0.25f, 4f);
-            list.GapLine();
+            if (Group(list, "The grade ladder", RimMandrake.Shared.SettingScope.Now, new[] { "wreckedRatio", "kludgedRatio", "refurbishedRatio", "requireLowerGradeUnderneath", "enableSalvagedEmanators" }))
+            {
+                list.Label("Each grade works at a fraction of the original machine. Nothing "
+                    + "equals the original unless full restoration is switched on below.");
+                list.Gap();
 
-            list.Label("Rebuild material cost: " + materialCostFactor.ToString("0.00") + "x");
-            list.Label(
-                "Scales the steel and components spent stepping a wreck up to "
-                + "Kludged or Repaired. 1.0x is the shipped cost.");
-            materialCostFactor = list.Slider(materialCostFactor, 0.25f, 4f);
-            list.GapLine();
+                list.Label("Wrecked capability: " + wreckedRatio.ToString("0.000") + "x of the original");
+                list.Label("A wrecked power source still trickles this much (default 0.001, a faint flicker). "
+                    + "Wrecked machines of every other kind are inert.");
+                wreckedRatio = list.Slider(wreckedRatio, 0f, 0.05f);
+                list.Gap();
 
-            list.CheckboxLabeled(
-                "Skip the restoration research for the upper grades",
-                ref skipRestorationResearch,
-                "Off (shipped default): stepping a wrecked smelter up to Refurbished "
-                + "or Original needs the Automated Smelter Restoration research "
-                + "project finished first. On: no research gate, materials alone.");
-            list.GapLine();
+                list.Label("Kludged capability: " + kludgedRatio.ToString("0.00") + "x of the original");
+                kludgedRatio = list.Slider(kludgedRatio, 0.05f, 0.6f);
+                list.Gap();
 
-            list.Label("THE GRADE LADDER");
-            list.Label("Each grade works at a fraction of the original machine. Nothing "
-                + "equals the original unless full restoration is switched on below.");
-            list.Gap();
+                list.Label("Refurbished capability: " + refurbishedRatio.ToString("0.00") + "x of the original");
+                refurbishedRatio = list.Slider(refurbishedRatio, 0.3f, 0.95f);
+                if (kludgedRatio > refurbishedRatio) kludgedRatio = refurbishedRatio;
+                list.Label("Applies to power output (salvaged power cells) and mood (salvaged emanators). "
+                    + "Factory machines step by recipe set and stats instead.");
+                list.CheckboxLabeled(
+                    "Upper grades must be built over a lower grade",
+                    ref requireLowerGradeUnderneath,
+                    "On (shipped default): a Kludged, Refurbished or original machine can "
+                    + "only be built over a lower grade of the same machine, so restoring "
+                    + "a found wreck is the only way to get one. Off: they can be built "
+                    + "on open ground too.");
+                list.CheckboxLabeled(
+                    "Salvaged psychic emanators soothe nearby pawns",
+                    ref enableSalvagedEmanators,
+                    "On (shipped default): a powered Kludged or Refurbished emanator "
+                    + "gives nearby pawns a mood bonus, scaled by its grade. Off: they "
+                    + "still draw power but do nothing.");
 
-            list.Label("Wrecked capability: " + wreckedRatio.ToString("0.000") + "x of the original");
-            list.Label("A wrecked power source still trickles this much (default 0.001, a faint flicker). "
-                + "Wrecked machines of every other kind are inert.");
-            wreckedRatio = list.Slider(wreckedRatio, 0f, 0.05f);
-            list.Gap();
+                list.GapLine();
+            }
 
-            list.Label("Kludged capability: " + kludgedRatio.ToString("0.00") + "x of the original");
-            kludgedRatio = list.Slider(kludgedRatio, 0.05f, 0.6f);
-            list.Gap();
+            if (Group(list, "The alloy forge", RimMandrake.Shared.SettingScope.Now, new[] { "alloyForgeProgressiveGate", "plasteelAlloyEnabled" }))
+            {
+                list.CheckboxLabeled(
+                    "Alloy forge unlocks step by step",
+                    ref alloyForgeProgressiveGate,
+                    "On (shipped default): the alloy forge needs Alloy Forge Restoration, "
+                    + "an early project right after the smelter, and its plasteel recipe "
+                    + "needs Plasteel Alloying, a late one. Off: the forge and its "
+                    + "plasteel recipe use VFE Factory's own research gates.");
+                list.CheckboxLabeled(
+                    "Alloy forge can make plasteel",
+                    ref plasteelAlloyEnabled,
+                    "On (shipped default): the forge's plasteel recipe exists. Off: the "
+                    + "forge cannot make plasteel, so it comes only from salvage and trade. "
+                    + "Machines already built pick this up after your next game load.");
+                list.GapLine();
+            }
 
-            list.Label("Refurbished capability: " + refurbishedRatio.ToString("0.00") + "x of the original");
-            refurbishedRatio = list.Slider(refurbishedRatio, 0.3f, 0.95f);
-            if (kludgedRatio > refurbishedRatio) kludgedRatio = refurbishedRatio;
-            list.Label("Applies to power output (salvaged power cells) and mood (salvaged emanators). "
-                + "Factory machines step by recipe set and stats instead.");
-            list.GapLine();
+            if (Group(list, "Architect menu (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "allowDonorSmelter", "allowFullRestoration" }, "[next game start]"))
+            {
+                list.CheckboxLabeled(
+                    "Allow the original VFE automated smelter to be built",
+                    ref allowDonorSmelter,
+                    "Off (shipped default): the donor mod's own Automated Smelter is "
+                    + "hidden from the Architect menu, so the wreck-restoration ladder "
+                    + "is the only way onto the factory floor. On: the donor building "
+                    + "reappears in the Architect menu alongside our three tiers, "
+                    + "restoring the old testing arrangement. Not worldgen-affecting, "
+                    + "but the Architect menu caches its buttons at startup, so this "
+                    + "takes full effect after your next game load.");
+                list.CheckboxLabeled(
+                    "Allow full restoration to the original machine",
+                    ref allowFullRestoration,
+                    "Off (shipped default): Refurbished is the ceiling, and the original "
+                    + "grade cannot be built. On: the original (1.0) grade appears in the "
+                    + "Architect menu and can be built over a Refurbished machine. The "
+                    + "Architect menu caches its buttons at startup, so this takes full "
+                    + "effect after your next game load.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled(
-                "Allow full restoration to the original machine",
-                ref allowFullRestoration,
-                "Off (shipped default): Refurbished is the ceiling, and the original "
-                + "grade cannot be built. On: the original (1.0) grade appears in the "
-                + "Architect menu and can be built over a Refurbished machine. The "
-                + "Architect menu caches its buttons at startup, so this takes full "
-                + "effect after your next game load.");
-            list.GapLine();
-
-            list.CheckboxLabeled(
-                "Upper grades must be built over a lower grade",
-                ref requireLowerGradeUnderneath,
-                "On (shipped default): a Kludged, Refurbished or original machine can "
-                + "only be built over a lower grade of the same machine, so restoring "
-                + "a found wreck is the only way to get one. Off: they can be built "
-                + "on open ground too.");
-            list.GapLine();
-
-            list.CheckboxLabeled(
-                "Salvaged psychic emanators soothe nearby pawns",
-                ref enableSalvagedEmanators,
-                "On (shipped default): a powered Kludged or Refurbished emanator "
-                + "gives nearby pawns a mood bonus, scaled by its grade. Off: they "
-                + "still draw power but do nothing.");
-
-            list.GapLine();
-            list.Label("THE ALLOY FORGE");
-            list.CheckboxLabeled(
-                "Alloy forge unlocks step by step",
-                ref alloyForgeProgressiveGate,
-                "On (shipped default): the alloy forge needs Alloy Forge Restoration, "
-                + "an early project right after the smelter, and its plasteel recipe "
-                + "needs Plasteel Alloying, a late one. Off: the forge and its "
-                + "plasteel recipe use VFE Factory's own research gates.");
-            list.CheckboxLabeled(
-                "Alloy forge can make plasteel",
-                ref plasteelAlloyEnabled,
-                "On (shipped default): the forge's plasteel recipe exists. Off: the "
-                + "forge cannot make plasteel, so it comes only from salvage and trade. "
-                + "Machines already built pick this up after your next game load.");
-
-            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
+            viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
         }

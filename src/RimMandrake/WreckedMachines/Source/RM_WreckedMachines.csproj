@@ -40,6 +40,8 @@
 
   <ItemGroup>
     <Compile Include="WreckedMachinesMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="WreckedMachinesLadder.cs" />
     <Compile Include="Kernel\RM_WreckedMachinesKernel.cs" />
   </ItemGroup>
