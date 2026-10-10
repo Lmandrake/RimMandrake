@@ -1012,6 +1012,53 @@ def lane_a_live(B, rows, log):
     m3 = B.probe("motion")
     row(rows, "B4b_sparks_thrown_ticking", "PASS" if m3.get("sparksThrown", 0) > s0 else "FAIL", "MOD",
         {"sparksBefore": s0, "sparksAfter160Ticks": m3.get("sparksThrown")})
+    # B4c SPARK_EFFECT_BUDGET_REWORK_1 A2: sparkIntensity scales the sparks thrown by downed wall wires (credit k per event)
+    spk = {}
+    for k in ("0.5", "2"):
+        B.probe("set:sparkIntensity=%s" % k)
+        B.probe("motionreset")
+        B.ticks(900)
+        spk[k] = B.probe("motion").get("sparksThrown", 0)
+    B.probe("set:sparkIntensity=1")
+    row(rows, "B4c_spark_intensity_scales_downed", "PASS" if spk["2"] > 0 and spk["2"] >= 2 * max(spk["0.5"], 1) else "FAIL", "MOD",
+        {"sparksThrown900": spk, "liveWallEnds": m2.get("liveWallEnds")})
+    # B4d SPARK_EFFECT_BUDGET_REWORK_1 A1: ONE shared spark set, capped at maxSparkingEnds in total, on-screen ends first.
+    # The scene has only 2 live ends ~11 cells apart (one camera view holds both), so a powered 3-cell stub is built ~70 cells
+    # away and the cap set to 1 (the same rule as "8 of many"): framed on the stub, the one chosen end must be ITS end (1 of 3
+    # live ends on screen); framed on the scene, one of the scene's. Measured 2026-10-09: a whole-scene frame alone could not tell.
+    fx, fz = (X0 - 70, Z0) if X0 >= 80 else (X0 + 70, Z0)
+    frect = "%d,%d,8,6" % (fx - 1, fz - 1)
+    B.call("jawa/destroy_batch", rects=frect, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:" + frect)
+    B.call("jawa/set_fog", action="unfog", rect=frect)
+    B.call("jawa/build_batch", ops="Battery:%d,%d,0" % (fx, fz), faction="player")
+    B.call("jawa/build_batch", ops=ops("PowerConduit", [(fx + 1, fz), (fx + 2, fz), (fx + 3, fz)]), faction="player", wipeExisting=False)
+    flt = B.call("jawa/list_things", defName="Battery", rect="%d,%d,1,2" % (fx, fz), limit=3)
+    fbid = next((t.get("id") or t.get("thingId") for t in flt.get("things") or []), None)
+    if fbid:
+        B.call("jawa/battery_set", thing=fbid, mode="setPct", value=1.0)
+    B.ticks(3)
+    B.probe("poll")
+    B.ticks(2)
+    bud = {}
+    B.probe("set:maxSparkingEnds=1")
+    for name, (cx, cz) in (("stub", (fx + 2, fz)), ("scene", (X0 + 14, Z0 + 2))):
+        B.call("rimworld/frame_cell_rect", x=cx, z=cz, width=1, height=1, paddingCells=0)
+        time.sleep(1.5)
+        mm = B.probe("motion")
+        bud[name] = {k: mm.get(k) for k in ("liveEndsAll", "liveEndsOnScreen", "sparkSet", "sparkSetOnScreen", "maxSparkingEnds")}
+    B.probe("set:maxSparkingEnds=24")
+    mm = B.probe("motion")
+    bud["cap24"] = {k: mm.get(k) for k in ("liveEndsAll", "sparkSet", "maxSparkingEnds")}
+    st_, s_, c_ = bud["stub"], bud["scene"], bud["cap24"]
+    b4d = (st_.get("liveEndsAll") or 0) >= 3 and st_.get("liveEndsOnScreen") == 1 and st_.get("sparkSet") == 1 \
+        and st_.get("sparkSetOnScreen") == 1 and s_.get("sparkSet") == 1 and s_.get("sparkSetOnScreen") == 1 \
+        and c_.get("sparkSet") == min(24, c_.get("liveEndsAll") or 0)
+    row(rows, "B4d_spark_budget_shared_visible_first", "PASS" if b4d else "FAIL", "MOD", bud)
+    B.call("jawa/destroy_batch", rects=frect, categories="All")
+    B.ticks(2)
+    B.probe("poll")
+    B.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1], width=SITE[2], height=SITE[3], paddingCells=1)
     # B7 sway (CPU path): two frames 30 ticks apart differ with sway ON, nothing drawn with it OFF
     a = motion(B)
     B.ticks(30)

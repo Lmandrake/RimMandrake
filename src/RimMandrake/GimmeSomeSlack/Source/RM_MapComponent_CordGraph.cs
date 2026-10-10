@@ -368,7 +368,7 @@ namespace RimMandrake.GimmeSomeSlack
         private int sparkSetFrame = -1;
         private int sparkSetBuilds = -1;
 
-        private List<CordEnd> SparkEnds()
+        internal List<CordEnd> SparkEnds()
         {
             if (sparkSetFrame == Time.frameCount && sparkSetBuilds == Builds) return sparkSet;
             sparkSetFrame = Time.frameCount;
