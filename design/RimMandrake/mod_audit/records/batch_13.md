@@ -173,15 +173,6 @@ Assessed by Sonnet 5.5 against facts generated 2026-10-10T14:47:38-0700. One sec
 **Open:** Check the campaign save for placed crypt furniture before removal. | NEEDS OWNER: Does the 'retheme-or-drop' call on Dark Ages mods (undecided per donor_proper_noun_backlog) go to drop for this one?
 <sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
 
-### Darkest Dungeon Incident Sounds (`darkestdungeon.incidentsounds`)
-**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None; availability no, INFERRED)
-**Adds:** content: 1 SoundDef; 1 patch into Core; functionality: Replaces incident alert sounds with Darkest Dungeon narrator/horror stings; art: 0.82 MB sounds
-**Why:** Audio swap from a recognisable game IP; the setting wants its own sound identity (brief 4 test 3 tone). No dependants, no ThingDefs, no placed Things, trivial retirement. Marked card_worthy since sound taste is the owner's.
-**Problems:** complexity 1 XML only · log_noise 0 0 errors · maintenance 2 no repo (steam-only); XML only
-**Holds it in / exit:** none -> None
-**Open:** none | NEEDS OWNER: Keep or cut the Darkest Dungeon incident sounds (borrowed from another game)?
-<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
-
 ### Decorative Cliffs (Continued) (`mlie.decorativecliffs`)
 **Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/emipa606/DecorativeCliffs (github, MIT; availability yes, MEASURED)
 **Adds:** content: 22 defs: ThingDef 20 (buildable decorative cliffs), DesignationCategoryDef 1, settings def 1; functionality: Decorative cliff walls that slow movement and provide cover; XML only; art: 0.55 MB textures + 0.42 MB asset bundle; 14.1 MB decoded estimate
@@ -360,5 +351,86 @@ Assessed by Sonnet 5.5 against facts generated 2026-10-10T14:47:38-0700. One sec
 **Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 1 repo MEASURED, MIT, pushed 2026-07-24
 **Holds it in / exit:** none -> None
 **Open:** What do the backpack stat offsets do to carry capacity?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Darkest Dungeon Incident Sounds (`darkestdungeon.incidentsounds`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 1 SoundDef; 1 patch into Core; functionality: Replaces 12 incident and event notification sounds (letters, comms, death, game start) with Darkest Dungeon stings; art: 0.82 MB sounds
+**Why:** An explicit design pick: design/Jawa/mods/required_mods.md lines 1140-1145 ('Event-audio / dread-horn layer (mood, not comedy)') chose this focused Incident Sounds replacer for the raid and threat dread cue, no voiceover, pure audio, passes the 7-question test. My first pass called it off-tone and cut it; that was wrong because I read the name, not the doc. Cost is nil: 1 def, no code.
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 no repo found (steam-only); XML only so the shipped files are the source
+**Holds it in / exit:** design pick in required_mods.md 1140-1145 -> None
+**Open:** Does Star Wars Themed Sounds (also a planned pick) overlap the same incident sounds? That mod is not in the 589-mod facts I read.
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Metal Pipe (`flangopink.metalpipe`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 11 defs: ThingDef 8, SoundDef 3; functionality: Joke items and sounds: the meme 'metal pipe falling' sound effect; one small Harmony DLL; art: 0.06 MB textures + 0.09 MB sounds
+**Why:** Meme gag content; the scenario tone is Firefly/BSG frontier (brief 1, 4 test 3). The 2026-08-30 pass called it trivial flavour; trivial is not fit. Retirement: dependants [], placed Things unlikely but UNMEASURED, no inheritance.
+**Problems:** complexity 2 one Harmony DLL, static_ctors 1 · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 no repo found (steam-only); XML only so the shipped files are the source
+**Holds it in / exit:** none -> None
+**Open:** none | NEEDS OWNER: Is a meme-sound gag mod acceptable, or cut?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Metal Pipe Horseshoe Replacement (`flangopink.metalpipehorseshoe`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 1 SoundDef; 2 patch ops into Core; functionality: Replaces the horseshoe-throw sound with the metal-pipe meme sound; art: 0.09 MB sounds
+**Why:** Meme sound swap for the horseshoes recreation; the same reasoning as Metal Pipe. Horseshoes are a vanilla joy building; nothing depends on this swap. Retirement trivial: no ThingDefs, no dependants.
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 no repo found (steam-only); XML only so the shipped files are the source
+**Holds it in / exit:** none -> None
+**Open:** none | NEEDS OWNER: Same card as Metal Pipe.
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Mood Chain Reaction (`acutus.moodchainreaction`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** none (C# source inside the mod folder, None; availability yes, MEASURED)
+**Adds:** content: 29 defs: ThoughtDef 11, EffecterDef 5, SoundDef 5, HediffDef 3, AbilityDef 2, MentalStateDef 1, TraitDef 1; functionality: Pawns' moods spread through social relationships; a contagious Belly Laugh ability creates mood cascades; 2 DLLs (game_component_tick), C# source shipped; art: 2.4 MB textures + 1.4 MB sounds; 15.7 MB decoded estimate
+**Why:** New 1.6-only mod (folder 1.6). In a crew of about 3-8 aboard one ship (brief 1) a mood-cascade layer gives qualitative, character-driven drama, with no power ladder (brief 4 test 4). Nothing depends on it. Marked card_worthy because cascading mental states could spiral on a six-pawn hard start and nobody has measured it; fit is INFERRED.
+**Problems:** complexity 2 2 DLLs, game_component_tick FLAG; no Harmony flag · tps 1 game_component_tick only · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 C# source ships; no repo URL verified
+**Holds it in / exit:** none -> None
+**Open:** Does chain-reaction mood on 6 founders raise breakdown risk beyond the hard start's intent? | NEEDS OWNER: Do you want pawn moods to spread between crew (contagious laughter, panic), given the six-founder hard start?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### More Faction Interaction (Continued) (`mlie.morefactioninteraction`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** https://github.com/emipa606/MoreFactionInteraction (github, MIT; availability yes, MEASURED)
+**Adds:** content: 59 defs: ThingSetMakerDef 15, IncidentDef 13, RuleDef 13, EventDef 5, TraderKindDef 4, WorldObjectDef 4, GenStepDef 2, LetterDef 2; functionality: Faction-interaction events (tributes, trade caravans, dispatches, faction quests); 2 DLLs with Harmony, map/world ticks; art: 0.22 MB textures
+**Why:** Not an ELIMINATE because no fit or duplication proof exists. cherry_picker_killlist.md line 59 ('buys nothing for the faction work; keep only if the interaction content is wanted on its own merits', counting 10 assemblies where this facts record shows 2 DLLs) and required_mods.md line 930 PARKs it ('reward-loop needs pillar audit'). Nothing holds it in; no ruling. Kept for now only because the pillar audit has not run. Exit: unfiled MORE_FACTION_INTERACTION_PILLAR_AUDIT.
+**Problems:** complexity 2 2 DLLs, Harmony, static_ctors 2 · tps 1 comp_tick, map and world component tick FLAGS · log_noise 0 0 error occurrences in the 550-mod session · maintenance 1 repo MEASURED, MIT, pushed 2026-09-04 · interaction 2 adds incidents and ThingSetMakers (reward loop) beside our Oracle/raid-redesigner plot work
+**Holds it in / exit:** nothing depends on it; parked in required_mods.md 930 -> unfiled: MORE_FACTION_INTERACTION_PILLAR_AUDIT
+**Open:** Run the pillar audit: which of its 13 incidents give rewards that bypass scarcity? | NEEDS OWNER: Do you want faction tributes, dispatches and reward events, or only our own plot incidents?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Numbers (`mehni.numbers`)
+**Verdict:** KEEP (MEASURED) · **Fit:** neutral · **Source:** https://github.com/Mehni/kNumbers (github, MIT; availability yes, MEASURED)
+**Adds:** content: 109 defs: PawnColumnDef 76, PawnTableDef 23, PawnColumnOptionDef 8, MainButtonDef 2; functionality: Spreadsheet-style overview window of colonist or prisoner stats; 4 DLLs with Harmony and a settings screen; 75 .cs shipped; art: 0.12 MB textures
+**Why:** Pure information UI (brief 4 test 4 passes trivially). MIT repo (Mehni/kNumbers), pushed 2025-08-28. required_mods.md line 286-288 recorded a '1.6 Temp Don't Download' caution and a hotkey conflict (Z key), which the 1.6 facts do not show as live. Patched by the Main Button Icons fork (3 refs) and Giddy-Up (1). Nothing ours touches it.
+**Problems:** complexity 2 4 DLLs, Harmony, static_ctors 5 · log_noise 0 0 error occurrences in the 550-mod session · maintenance 1 repo MEASURED, MIT, pushed 2025-08-28 · size 1 disk_mb 6.28
+**Holds it in / exit:** bs.mbifvte and memegoddess.giddyup patch it -> None
+**Open:** none
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Posthuman Drift Core Mod (`xylthixlm.races.core`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (C# source inside the mod folder, None; availability yes, MEASURED)
+**Adds:** content: 17 defs: StatDef 13, ScenPartDef 3, XylRacesCore.Config 1; 3 patch ops into Ideology; functionality: Shared code and assets for the Posthuman Drift xenotype series; does nothing alone. 2 DLLs, Harmony; art: 0.06 MB textures
+**Why:** Only reason it is present: xylthixlm.races.titan (Titan xenotype, 12 defs, in the list) depends on it (dependants field). Our UtinniPatches/Patches/AncientsAreRakata.xml deliberately loads after the Titan and 15 other xenotype-patching mods and Removes/Adds on the xenotypeSet node, so we already manage around this family. Whether the Titan stays is a separate verdict in another batch; this one follows it. Exit: drop with Titan; no item.
+**Problems:** complexity 2 2 DLLs, Harmony, static_ctors 1 · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 C# source ships in folder (0 .cs counted); no repo URL
+**Holds it in / exit:** xylthixlm.races.titan (dependant); AncientsAreRakata.xml load-order dependency -> unfiled: POSTHUMAN_DRIFT_TITAN_VERDICT
+**Open:** Is a vat-grown stone-giant builder xenotype wanted at all? (Titan's own verdict governs.) | NEEDS OWNER: Do you want the Posthuman Drift Titan xenotype in the campaign?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Realistic Human Sounds (Continued) (`mlie.realistichumansounds`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** https://github.com/emipa606/RealisticHumanSounds (github, MIT; availability yes, MEASURED)
+**Adds:** content: 14 SoundDefs; 1 patch; functionality: Replaces pain, death and combat vocalisations of humanlike pawns with realistic recordings; art: 9.5 MB asset bundle; 0.68 MB textures
+**Why:** Adopted pick: required_mods.md lines 1148-1153 ('pawns scream when hurt'), pure audio. The unanswered crux is recorded there: does it fire for non-human xenotypes such as Jawa; no source read has answered it. Two DLLs with Harmony; MIT repo pushed 2026-07-22.
+**Problems:** complexity 2 2 DLLs, Harmony, static_ctors 1 · log_noise 0 0 error occurrences in the 550-mod session · size 1 disk_mb 10.26 (9.5 MB bundle) · maintenance 1 repo MEASURED, MIT, pushed 2026-07-22
+**Holds it in / exit:** design pick in required_mods.md -> None
+**Open:** Does it vocalise for Jawa (non-human bodies)? Not answered anywhere I read.
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Rimefeller (`dubwise.rimefeller`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/Dubwise56/Rimefeller (github, None; availability yes, MEASURED)
+**Adds:** content: 150 defs: TerrainDef 48, ThingDef 38, ResearchProjectDef 15, DesignatorDropdownGroupDef 11, RecipeDef 7, JobDef 5, WorkGiverDef 5, SoundDef 5; functionality: Oil industry: drill oil, pump, crack and refine into chemfuel, plastic, composites, napalm; pipe networks; 3 DLLs with Harmony and tick flags; art: 5.2 MB textures; 88.1 MB decoded estimate
+**Why:** required_mods.md lines 565-575 records an owner ruling: adopt, pillar-cleared ONLY as non-buildable, found, un-relocatable oil treasure (an infinite pump is fine if discoverable-only with a bounding threat). That condition is an authoring step: strip the buildable designation. I scanned src/ for DerrickDrill, OilWell and CrudeCracker and found them only in mandrake.rut.researchretag (87 patched refs) and nothing that removes buildability, so the condition is unmet in our repo (INFERRED; the scan found 7 files, sanity ok). While buildable it is the 'large-scale automation / free fuel' system the brief excludes (brief 2). Keep, but the authoring step is owed. liquids_framework_design.md line 267 lists Rimefeller only as a deferred seam, and messy_conduit_design lists it as an active neighbour.
+**Problems:** interaction 3 patched_by_ours_refs 91; plus patches CE; the pump outputs chemfuel which loosens the fuel leash (required_mods 565) · complexity 3 3 DLLs, Harmony, static_ctors 16 · tps 2 comp_tick and map_component_tick FLAGS; pipe networks tick; UNMEASURED · memory 2 texture_decoded_mb_est 88.1 (proxy) · size 1 disk_mb 18.04 · log_noise 0 0 error occurrences in the 550-mod session · maintenance 1 repo MEASURED, pushed 2026-10-03
+**Holds it in / exit:** researchretag 87 refs, armoury 4 refs (and armoury/researchretag About lists); ruling that it is the found oil treasure -> unfiled: RIMEFELLER_DEBUILDABLE_FOUND_OIL_1
+**Open:** Is the de-buildable pass done anywhere (live check of designationCategory on OilWell, DerrickDrill, CrudeCracker)? | NEEDS OWNER: Is Rimefeller still wanted as a found-only oil treasure, with all buildable oil machinery removed? Nothing in the repo does that yet.
 <sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
 
