@@ -40,6 +40,8 @@
   <ItemGroup>
     <Compile Include="GenStep_ScatterWebworkSilk.cs" />
     <Compile Include="ShokkweaveEconomySettings.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="StockGenerator_RareShokkweave.cs" />
   </ItemGroup>
 
