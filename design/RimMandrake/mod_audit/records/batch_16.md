@@ -90,286 +90,6 @@
 **Open:** The DLL has no Harmony and no tick flags: what is it for (recipe discovery?). Not verified.
 <sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
 
-### RimStarWars: Structure Injections (`mandrake.rsw.injections`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/StructureInjectionsSW) (ours, in-repo)
-**Adds:** content: 37 defs: GenStepDef 18, TileMutatorDef 15, ThingDef 3, SoundDef 1 - one finished structure promise (The Moisture Farm, roster row 1), 43 roster rows open / functionality: XML only; rides mandrake.rm.injections GenStep_RimplacePlan engine; 11 patch ops into mandrake.rm.biomes/droidworks/mlie/rut.patches / art: 7 textures, 2.06 MB on disk
-**Why:** Content layer for the structure-injection program, tier-correct (Star Wars flavour over the franchise-free engine, brief §1 tiers). Hard dependency on our engine mod mandrake.rm.injections (dependencies). Nothing retires it; the description says 43 more roster rows are planned. It is not yet placed on any Ash'karr tile (description), so it costs nothing at play today.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 1 (7 textures, texture_decoded_mb_est 8.0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 2.25) · interaction 2 (patches_ours_refs 21, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author) · interaction 1 (4 patch refs target mlie.starwarsanimalcollection defs (patches_mods): a donor edge that must be repointed whe)
-**Holds it in / exit:** depends on mandrake.rm.injections; wires TileMutators onto biomes via 15 patch refs to mandrake.rm.biomes -> None
-**Open:** The 4 mlie.starwarsanimalcollection patch refs: do they name creatures already ported to RSW_ (swbestiary)? A checker should list them.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimUtinni: Structure Injections (`mandrake.rut.injections`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/StructureInjectionsRUT) (ours, in-repo)
-**Adds:** content: 124 defs: GenStepDef 33, KCSG.SymbolDef 26, TileMutatorDef 18, ThingDef 10, HistoryEventDef 8, IncidentDef 8 - four campaign promises (Oasis Shrine, Rakatan Trace, Cistern, Toll Gap) / functionality: one small DLL (flags comp_tick, map_component_tick, settings_screen); KCSG symbol-based structures need Vanilla Expanded Core; 9 patch ops incl. 10 refs to Odyssey / art: 2 textures, 0.8 MB on disk
-**Why:** Campaign-named structures (Oasis Shrine, Rakatan Trace) pass the RUT test (brief §1: names Ash'karr or this story). Depends on mandrake.rm.injections and on OskarPotocki.VanillaFactionsExpanded.Core, which is in FULL.LATEST and is a framework ours already lean on (brief §2 Q16 allows RM mods to require mods). No overlap with anything we own; the plan is to add more roster rows.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 1 (2 textures, texture_decoded_mb_est 0.4 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors 0) · tps 1 (tick flags ['comp_tick', 'map_component_tick']; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.8) · interaction 1 (patch_ops_all 9, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** depends on mandrake.rm.injections; needs VFE Core for KCSG.SymbolDef -> None
-**Open:** The DLL carries tick FLAGS (comp_tick, map_component_tick) in a mod described as pure structure placement: what does it tick? Not verified.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimMandrake: Utinni — Inhabited (Ash'karr) (`mandrake.rut.inhabited`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/AshkarrInhabited) (ours, in-repo)
-**Adds:** content: 8 defs: SecurityProfileDef 4, SettlementManifestDef 4 - the Junkers pilot settlement manifest (The Claim Jump, tile 16905) / functionality: data-only; the engine is mandrake.rm.inhabited (SETTLEMENT_VISIT_LOOP_1) / art: none
-**Why:** Pure data (0.02 MB) for the inhabited-settlement engine, naming a real Ash'karr settlement. Keeping it costs nothing and it is the campaign half of an engine we own. Names a tile (16905, ZBiome_Badlands) and a donor biome def, which the paint pass may move; that is a content edit, not a reason to drop the mod (brief §2: paint once at the end).
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.02) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** depends on mandrake.rm.inhabited -> None
-**Open:** Manifest names tile 16905 / ZBiome_Badlands: will the paint pass re-seat it? Not resolved here (brief §2 paint once).
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Jawa Rules (local) (`mandrake.rsw.jawarules`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/JawaRules) (ours, in-repo)
-**Adds:** content: 0 defs; two code rules: Jawa may not sow (they harvest and cut but never plant), plus a second colony rule / functionality: one Harmony DLL (1 static ctor) + settings screen; 2 patch ops into armoury and starwarsraces / art: none
-**Why:** Two rules a def cannot express (description), written as one small assembly so a load failure is attributable. Our own patches target it (patched_by none) and it targets only our mods (patches_mods armoury, starwarsraces). Fits the scenario directly. Retire only if the Jawa xenotype stops carrying the rules.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors 1) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.05) · interaction 2 (patches_ours_refs 4, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** patches mandrake.rsw.armoury and mandrake.rsw.starwarsraces (4 refs) -> None
-**Open:** Tier: packageId is rsw but the rule is Jawa-colony-specific ("Jawa Rules", DECIDE ruling); the brief §1 RUT test ("names this clan") would put it in RUT. Tier choice left to the owner.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Jawa Scavenger Events (`mandrake.rut.scavengerevents`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/ScavengerEvents) (ours, in-repo)
-**Adds:** content: 8 defs: IncidentDef 7, ThoughtDef 1 - Migration, SurvivalPod, PodCrash, ShipBreak, Thanksgiving, Insects, Stroke / functionality: one DLL of IncidentWorkers (settings screen); ported behaviour of Mo'Events from a decompile, own defNames and letter text / art: none
-**Why:** It exists to retire a donor: the description states mlie.moevents was RETIRED 2026-09-29 and removed from FULL.LATEST. Measured: mlie.moevents is not in ModsConfig.FULL.LATEST.xml. No remaining dependency on the donor, no Harmony, XML plus one DLL. MIT attribution to Mlie is recorded in the description.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors 0) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.04) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** replaces the retired donor mlie.moevents (absent from FULL.LATEST, MEASURED) -> None
-**Open:** Storyteller threat odds: do 7 new baseChance incidents interact with the "no arms race, qualitative danger" pillar? Not assessed.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Empire Pursuit — Survey Shadow (`mandrake.rut.empirepursuit`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/EmpirePursuit) (ours, in-repo)
-**Adds:** content: 7 defs: RUT_EmpireRungDef 6, ScenPartDef 1 - an orbital Empire pursuer scenario part (survey shadow) / functionality: one Harmony DLL (map_component_tick, 2 static ctors); fork of Ruthless Faction Pursuit (GPLv3, Matathias) with credit; only the mechanoid-pursuit half kept / art: none
-**Why:** The Empire as orbital pursuer is one of the campaign's three pressures (brief §1, 01_campaign). Already forked and trimmed (Omni Pursuit dropped); the donor itself is not in FULL.LATEST (matathias.ruthlessfactionpursuit absent, MEASURED). Obligation: GPLv3 and the author asked for credit; the description carries it.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors 2) · tps 1 (tick flags ['map_component_tick']; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.13) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author) · maintenance 1 (GPLv3 fork: our redistribution, if ever public, must be GPL-compatible)
-**Holds it in / exit:** requires Odyssey and Harmony -> None
-**Open:** If the mod set is ever public: GPLv3 of this fork versus the project's own licence. Not a present problem (single-player build, brief §5.1).
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Ash'karr Landmark Art (`mandrake.rut.ashkarrlandmarkart`)
-**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/AshkarrLandmarkArt) (ours, in-repo)
-**Adds:** content: 0 defs; 48 patch ops repointing LandmarkDefs (from Vanilla Landmarks Expanded, Odyssey, Alpha Biomes, mlie) to repainted icons / functionality: XML/texture only / art: 52 repainted world-map landmark icons, 1024x1024 each (measured with PIL on the source folder), 17.6 MB on disk
-**Why:** It repaints icons of landmarks whose defs belong to donors (patches_mods: vanillaexpanded.vexploratione 72 refs, odyssey 100, alphabiomes 12, mlie 8). Our world will be painted once, at the end, with our own landmark defs (brief §2); the Ishko landmarks mod already shows the owned-def pattern. So the repaint rides donor defs and ends when owned landmark defs replace them. The memory proxy is the real issue: 52 icons at 1024x1024 decode to ~277 MB (INFERRED) for 128-px-class world-map sprites; downscaling is a cheap win independent of the verdict.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 3 (texture_decoded_mb_est 276.6 MB: 52 icons all 1024x1024 (measured)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 17.6) · interaction 1 (patch_ops_all 48, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** 48 LandmarkDefs of donors repointed to our art; landmarks present in the frozen world: UNMEASURED -> unfiled: ASHKARR_LANDMARKS_OWNED_DEFS
-**Open:** Do world-map icons need 1024x1024? Vanilla landmark icons are far smaller; a downscale pass would cut the proxy about 16x. Not tested in game.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimUtinni: Ishko's Dark Landmarks (`mandrake.rut.ishkolandmarks`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/IshkoDarkLandmarks) (ours, in-repo)
-**Adds:** content: 3 LandmarkDefs for the god Ishko: Lightless Sink, Shadowed Overhang, Cold Lava Tube / functionality: XML only; requires Odyssey / art: none
-**Why:** Fills a measured gap: the sacred-sites pass found Ishko was the one of the Nine with no landmark (description). Owned defs, 0.01 MB, no donor dependency (only Odyssey, a hard prerequisite per brief §2). This is the model for replacing donor landmarks.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.01) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** depends on Odyssey (accepted prerequisite) -> None
-**Open:** No art shipped (0 textures): the landmark icon must come from somewhere; which texture do the three defs point at? Not verified.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### JawaVoice (SpeakUp reskin) (`mandrake.rsw.jawavoice`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/JawaVoice) (ours, in-repo)
-**Adds:** content: 0 defs; 203 patch ops adding Jawaese lines to SpeakUp interaction rulesStrings (370 refs into jpt.speakup) / functionality: no assembly; identity-gated so only Jawa pawns speak it / art: none
-**Why:** Pure flavour with strong scenario fit (Jawaese bubbles with English gloss). Its only dependency is JPT.speakup, which is in FULL.LATEST. Zero cost beyond load-time patching. Coupling risk: 370 xpath refs into SpeakUp's defs, so a SpeakUp rename breaks it silently (a patch that matches nothing logs nothing, CLAUDE.md).
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.82) · interaction 1 (patch_ops_all 203, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author) · maintenance 1 (tied to a third-party mod (JPT.speakup) whose defs it patches 370 times)
-**Holds it in / exit:** depends on JPT.speakup (third party, in FULL.LATEST) -> None
-**Open:** Is SpeakUp itself wanted long term? It is a dependency of this mod; assessed in its own batch.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimStarWars: Cuisine (`mandrake.rsw.cuisine`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/Cuisine) (ours, in-repo)
-**Adds:** content: 38 defs: RecipeDef 21, ThingDef 14, ThoughtDef 2, ThingCategoryDef 1 - campfire skewers (meat, veg, fungus, fruit, fish) / functionality: one DLL without Harmony flags; wave 1 of the cuisine design; patches mandrake.rm.biomes 4 refs / art: 11 textures, 3.2 MB decoded est
-**Why:** Our own version of a food-on-a-stick donor; the description records the owner ruling to ingest that mod and jettison it, and no such mod is in FULL.LATEST (grep of ModsConfig.FULL.LATEST.xml for "stick": none). Neutral-to-resonant Star Wars cuisine for any SW scenario (RSW tier). Wave 1 only: more waves are designed.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 1 (11 textures, texture_decoded_mb_est 3.2 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors 0) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.38) · interaction 2 (patches_ours_refs 4, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** replaces a retired food-on-a-stick donor (not in FULL.LATEST) -> None
-**Open:** The DLL has no Harmony and no tick flags: what is it for (recipe discovery?). Not verified.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimUtinni: The Long Hunger (`mandrake.rut.longhunger`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/LongHunger) (ours, in-repo)
-**Adds:** content: 5 defs: ThingDef 2 (RUT_LongHunger world entity, RUT_Groundcaller prop), IncidentDef 1, QuestScriptDef 1, WeatherDef 1 - a VAST dune leviathan with its own mythos, separate from the Krayt / functionality: one DLL (settings screen only); requires Anomaly / art: no textures shipped (0): the summoning prop is a v1 art placeholder per the description
-**Why:** Campaign mythos content (dune leviathan, tremor damage, salvage on submerge), a qualitative threat rather than a stat-inflated one (brief §2 pillars). Small and self-contained. Art is owed: no textures in the mod, so the world entity and prop render placeholders or donor art; this is an art gap, not a verdict reason.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors 0) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.04) · interaction 2 (patches_ours_refs 0, patched_by_ours_refs 2) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** requires Anomaly (accepted prerequisite); patched by mandrake.rm.biomes (2 refs) -> None
-**Open:** Art owed: RUT_LongHunger and RUT_Groundcaller have 0 textures in the mod; is art tracked in the art ledger?
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Desert Vehicle Reskin — Alpha Vehicles Neolithic (`mandrake.rsw.desertvehiclereskin`)
-**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/DesertVehicleReskin) (ours, in-repo)
-**Adds:** content: 0 defs; 43 patch ops: 39 refs into sarg.alphavehiclesneolithic, 11 into VFE Props and Decor / functionality: one Harmony DLL (1 static ctor) + settings screen; texture overrides at the donor's own paths / art: 30 textures, 39.9 MB decoded est: redrawn draught animals so carts read as desert
-**Why:** Entirely a skin on a donor (Alpha Vehicles - Neolithic, in FULL.LATEST): vehicles, stats and research stay the donor's. Brief §3 and §4 test 8: art kept only for a donor is not kept; the direction is to own the content. What holds it in is that the donor is in the list and the reskin makes it non-medieval. Exit is either to retire the vehicles donor with this mod or to build owned desert vehicles. Whether the campaign wants Neolithic carts at all is a design call, not mine.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 1 (30 textures, texture_decoded_mb_est 39.9 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors 1) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 1.1) · interaction 1 (patch_ops_all 43, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** sarg.alphavehiclesneolithic is in FULL.LATEST (hard dependency) -> unfiled: OWN_DESERT_HAULERS_OR_DROP_ALPHA_VEHICLES
-**Open:** Does the campaign want Neolithic animal-drawn vehicles at all? If not, both this mod and the donor go.
-**Needs owner:** Do you want animal-drawn carts (Alpha Vehicles Neolithic) in the campaign, or should vehicles be the gravship and nothing else?
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Jawa Doctrine Patches (`mandrake.rut.doctrine`)
-**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/Doctrine) (ours, in-repo)
-**Adds:** content: 0 defs; 900 patch ops: mlie.starwarsanimalcollection 624, vanillaexpanded.vgeneticse 538, sarg.alphaanimals 347, vanilla 112, VFE Insectoid 2 108 (these are xpath refs, they overlap); MegafaunaYield meat-yield patches; Droid Factory removal / functionality: one Harmony postfix DLL (DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 fix, 1 static ctor) / art: none
-**Why:** The bulk of its 900 ops patch donors that are on the sunset track (mlie, Alpha Animals, VGE, Insectoid 2): when they go, those patches go inert (a patch that matches nothing logs nothing). The Droid Factory patch targets OuterRim_DroidFactory from Droid Depot, which is not in FULL.LATEST, so it is already inert (INFERRED: patch target mod absent). The Harmony ISFLESH crash fix belongs next to Droidworks. Exit: donor ports (DONOR_DEFS_PORT_TO_OURS_1), then fold survivors into rut.patches or droidworks.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors 1) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.55) · interaction 2 (patches_ours_refs 156, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author) · interaction 2 (pure patch layer over donors being retired; 900 ops of which most will go dead silently)
-**Holds it in / exit:** patches 156 of our defNames (patches_ours_refs); donors still active: mlie, alphaanimals, vgeneticse, insectoid2 -> DONOR_DEFS_PORT_TO_OURS_1
-**Open:** Is the Harmony ISFLESH fix still needed now that Droidworks owns the droid platform? A checker should read the postfix target.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimMandrake - Star Wars Races (`mandrake.rsw.starwarsraces`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/StarWarsRaces) (ours, in-repo)
-**Adds:** content: 527 defs: GeneDef 164, HeadTypeDef 124, PawnKindDef 85, XenotypeDef 70, RulePackDef 48, HediffDef 6 - 69 Star Wars species owned outright / functionality: XML only (dll_count 0); depends on Biotech, VFE Core, HAR-family genes mods (Neronix17.Outland.Genetics, Turnovus, RedMattis BigSmall/BetterPrerequisites, LazyFriday eyes), all in FULL.LATEST / art: 891 textures, 11.3 MB on disk, 999 MB decoded est
-**Why:** Its purpose is to own the species so the three colliding xenotype mods can be switched off, and measured: none of Star Wars Xenotypes, Outer Rim Galactic Diversity nor BTD Xenotype Remix is in FULL.LATEST. Most-patched mod of ours (patched_by_ours_refs 560: pawnflavor 424, rsw.patches 74, rut.patches 60). The founders and factions are species from here. Real cost: the memory proxy (999 MB) is the largest of any single mod in the batch.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 3 (891 textures, texture_decoded_mb_est 999.0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 12.09) · interaction 2 (patches_ours_refs 0, patched_by_ours_refs 560) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** patched by pawnflavor (424), rsw.patches (74), rut.patches (60), jawarules (2); supplies the xenotypes the Jawa founders use -> None
-**Open:** Is the 999 MB texture proxy real? 891 textures at ~1.1 MB decoded each; head and body atlases might be oversized. Needs a measurement, not a guess.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Jawa Armoury Rebalance (`mandrake.rsw.armoury`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/Armoury) (ours, in-repo)
-**Adds:** content: 1566 defs: ThingDef 761, SoundDef 304, HediffDef 125, ResearchProjectDef 74, RecipeDef 53, Lightsaber.HiltPartDef 43 - weapon ladder restretched, absorbed KotOR/other weapon mods / functionality: one Harmony DLL (comp_tick, 13 static ctors); depends on VFE Core, adaptive storage, EBSG framework, OuterRim Core / art: 2682 textures, 84.6 MB on disk, 3129 MB decoded est; 407 sounds, 51.5 MB
-**Why:** Core of the "weapons match the setting's physics" design and the destination of the Star Wars weapon donor sunset (guy762 KotOR weapons defs are declared here, MEASURED by grep). Most-patched weapon surface: patched_by_ours_refs 842 (researchretag 444, rsw.patches 208, pawnflavor 170). Problems are cost, not fit: largest memory proxy in the batch and 3 distinct log config errors on its own absorbed guy762 weapons.
-**Problems:** log_noise 2 (6 occurrences, 3 distinct: "Config error in guy762_bowcaster_ceremonial / hvyrepeater_massdriver / lgtrepeater) · memory 3 (2682 textures, texture_decoded_mb_est 3128.9 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors 13) · tps 1 (tick flags ['comp_tick']; per-mod TPS UNMEASURED) · size 2 (disk_mb 139.18) · interaction 2 (patches_ours_refs 65, patched_by_ours_refs 842) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** patched by researchretag (444), rsw.patches (208), pawnflavor (170), rut.patches (18); still depends on neronix17.outerrim.core -> None
-**Open:** Fix the forcedMiss config on absorbed guy762 weapons (explosive projectiles only should force a miss).; 3.1 GB decoded proxy for 2682 textures: measure real memory before acting.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimMandrake: SW — Gizka Stowaway (`mandrake.rsw.gizkastowaway`)
-**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/GizkaStowaway) (ours, in-repo)
-**Adds:** content: 5 defs: HediffDef 2, RecipeDef 1, ThingDef 1, ThoughtDef 1 - the Gizka ship-pest as a found-aboard event with escalation and exits / functionality: one Harmony DLL (map_component_tick, 2 static ctors); patches swbestiary (9 refs) and mlie.starwarsanimalcollection (8 refs) / art: none
-**Why:** The creature is not ours here: the description says Gizka lives in mlie.starwarsanimalcollection, yet RSW_Gizka is now declared in SWBestiary (MEASURED grep) and the mod declares no dependency on either (dependencies: Ludeon.RimWorld, Harmony). It silently depends on a donor. Keep the event; exit is repointing its 8 mlie refs to the RSW_Gizka def and declaring swbestiary.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors 2) · tps 1 (tick flags ['map_component_tick']; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.06) · interaction 2 (patches_ours_refs 9, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author) · interaction 2 (9 refs to swbestiary and 8 to mlie; undeclared dependency means load order, not dependencies, decides success)
-**Holds it in / exit:** 8 patch refs to mlie.starwarsanimalcollection; no declared dependency on its creature source -> unfiled: GIZKA_STOWAWAY_REPOINT_TO_RSW
-**Open:** Does the event spawn the mlie Gizka or RSW_Gizka today? Only a live check tells; not run.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimMandrake: SW — Shokk (`mandrake.rsw.shokk`)
-**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/Shokk) (ours, in-repo)
-**Adds:** content: 1 FactionDef; the mod was shrunk (SHOKK_SKIN_SHRINK_1) to a single skin patch after the Wyyyschokk mechanisms moved to rm.biomes / functionality: XML only, 14 patch refs into mandrake.rm.biomes; hard dependency on mlie.starwarsanimalcollection / art: 3 textures, 4.0 MB decoded est
-**Why:** What holds it in: a hard dependency (dependencies) on the mlie donor for the Wyyyschokk creature; no RSW_ Wyyyschokk exists in SWBestiary (grep found only RSW_Shokk_FeraliskBrood and RSW_WyyyschokkFang). The exit is the port of the creature (MLIE_FAUNA_ABSORPTION_1 is closed without it). Tiny cost; the only reason it matters is that it keeps the donor hard-required.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 1 (3 textures, texture_decoded_mb_est 4.0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.84) · interaction 2 (patches_ours_refs 14, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** hard dependency on mlie.starwarsanimalcollection; shokk mechanisms lived in rm.biomes after the shrink -> unfiled: WYYYSCHOKK_PORT_TO_RSW
-**Open:** Is a Wyyyschokk creature port planned? SWBestiary has no RSW_Wyyyschokk def.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Jawa Ion Weapons (local) (`mandrake.rsw.ionweapons`)
-**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/JawaIonWeapons) (ours, in-repo)
-**Adds:** content: 6 defs: ThingDef 2, DamageDef 1, HediffDef 1, ResearchProjectDef 1, StatDef 1 - the Jawa Ion Blaster plus ion damage and ion-buildup stun hediff / functionality: two DLLs with Harmony (1 static ctor) + settings screen; depends on Neronix17.OuterRim.Core / art: 2 textures, 0.7 MB decoded est
-**Why:** A capture-not-kill signature weapon that fits Jawa droid-capture (brief §1). Small and self-contained. Overlap check owed: Armoury also owns a large weapon set and ion/stun weapons are common; I did not compare. Depends on the OuterRim Core donor (in FULL.LATEST).
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 1 (2 textures, texture_decoded_mb_est 0.7 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (2 DLL(s) with Harmony, static_ctors 1) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.1) · interaction 2 (patches_ours_refs 0, patched_by_ours_refs 11) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** depends on Neronix17.OuterRim.Core; patched by researchretag 7, rsw.patches 3, droidworks 1 -> None
-**Open:** Does mandrake.rsw.armoury already carry an ion weapon? Not compared.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimUtinni: Ship Memory — the Chains Below (`mandrake.rut.shipmemory`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/ShipMemory) (ours, in-repo)
-**Adds:** content: 1 ThingDef; 15 patch ops into Anomaly (HoldingPlatform and others) adding a discovery-prerequisite reveal gate / functionality: one DLL (game_component_tick, settings screen); requires Anomaly / art: none
-**Why:** Implements the owner's ruling that the Anomaly content is not cut, only the player's research route (quoted in description). Contained: 1 def and a reveal gate. The brief §5.7 contradiction (Anomaly "reskin library" versus "kept content is the Assailant war") is not resolved here; this mod sits on the second reading.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors 0) · tps 1 (tick flags ['game_component_tick']; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.03) · interaction 1 (patch_ops_all 15, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** patches 14 Anomaly defs -> None
-**Open:** Brief §5.7: Anomaly storyline at zero versus Anomaly content as permanent canon. This mod assumes the latter; decide before extending.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Antiquities (`mandrake.rut.antiquities`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/Antiquities) (ours, in-repo)
-**Adds:** content: 14 defs: ResearchProjectDef 5, ThingDef 5, JobDef 1, ResearchTabDef 1, WorkGiverDef 1, WorkTypeDef 1 - the 17th research tree (Language, Religion, Culture, Cartography, Voice) read out of urns / functionality: one DLL (settings screen); two of our mods depend on it (rites, scarlandsladder) / art: none
-**Why:** Ruled design (antiquities_design.md RULED 2026-09-04) and a dependency of two of ours (dependants_ours). The tree is a discovery system, not a parallel ladder: stages are read from the world. Patched by researchretag (12 refs).
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors 0) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.05) · interaction 2 (patches_ours_refs 0, patched_by_ours_refs 12) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** dependants_ours: mandrake.rut.rites, mandrake.rut.scarlandsladder; 12 refs from researchretag -> None
-**Open:** Tree rebrand names and merges remain open per its description; labels cheap, defNames never rename.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Salvation Rites (`mandrake.rut.rites`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/Rites) (ours, in-repo)
-**Adds:** content: 25 defs: ResearchProjectDef 5, PreceptDef 3, RitualBehaviorDef 3, RitualObligationTargetFilterDef 3, RitualOutcomeEffectDef 3, RitualPatternDef 3 - five liturgy rites revealed not bought / functionality: XML only; hard dependency on mandrake.rut.antiquities / art: none
-**Why:** Authored on the owner's research-tree ruling; the reveal gate is live (RITES_REVEAL_MECHANISM_1). XML only, 0.04 MB, depends only on Antiquities. It is campaign liturgy (Scrap Shrine, Conduit Choir), not a player power ladder.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.04) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** depends on mandrake.rut.antiquities; Ideology precept defs -> None
-**Open:** Rituals need Ideology (a hard prerequisite, brief §2); nothing else.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimStarWars: Structure Injections (`mandrake.rsw.injections`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/StructureInjectionsSW) (ours, in-repo)
-**Adds:** content: 37 defs: GenStepDef 18, TileMutatorDef 15, ThingDef 3, SoundDef 1 - one finished structure promise (The Moisture Farm, roster row 1), 43 roster rows open / functionality: XML only; rides mandrake.rm.injections GenStep_RimplacePlan engine; 11 patch ops into mandrake.rm.biomes/droidworks/mlie/rut.patches / art: 7 textures, 2.06 MB on disk
-**Why:** Content layer for the structure-injection program, tier-correct (Star Wars flavour over the franchise-free engine, brief §1 tiers). Hard dependency on our engine mod mandrake.rm.injections (dependencies). Nothing retires it; the description says 43 more roster rows are planned. It is not yet placed on any Ash'karr tile (description), so it costs nothing at play today.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 1 (7 textures, texture_decoded_mb_est 8.0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 2.25) · interaction 2 (patches_ours_refs 21, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author) · interaction 1 (4 patch refs target mlie.starwarsanimalcollection defs (patches_mods): a donor edge that must be repointed whe)
-**Holds it in / exit:** depends on mandrake.rm.injections; wires TileMutators onto biomes via 15 patch refs to mandrake.rm.biomes -> None
-**Open:** The 4 mlie.starwarsanimalcollection patch refs: do they name creatures already ported to RSW_ (swbestiary)? A checker should list them.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimUtinni: Structure Injections (`mandrake.rut.injections`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/StructureInjectionsRUT) (ours, in-repo)
-**Adds:** content: 124 defs: GenStepDef 33, KCSG.SymbolDef 26, TileMutatorDef 18, ThingDef 10, HistoryEventDef 8, IncidentDef 8 - four campaign promises (Oasis Shrine, Rakatan Trace, Cistern, Toll Gap) / functionality: one small DLL (flags comp_tick, map_component_tick, settings_screen); KCSG symbol-based structures need Vanilla Expanded Core; 9 patch ops incl. 10 refs to Odyssey / art: 2 textures, 0.8 MB on disk
-**Why:** Campaign-named structures (Oasis Shrine, Rakatan Trace) pass the RUT test (brief §1: names Ash'karr or this story). Depends on mandrake.rm.injections and on OskarPotocki.VanillaFactionsExpanded.Core, which is in FULL.LATEST and is a framework ours already lean on (brief §2 Q16 allows RM mods to require mods). No overlap with anything we own; the plan is to add more roster rows.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 1 (2 textures, texture_decoded_mb_est 0.4 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors 0) · tps 1 (tick flags ['comp_tick', 'map_component_tick']; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.8) · interaction 1 (patch_ops_all 9, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** depends on mandrake.rm.injections; needs VFE Core for KCSG.SymbolDef -> None
-**Open:** The DLL carries tick FLAGS (comp_tick, map_component_tick) in a mod described as pure structure placement: what does it tick? Not verified.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimMandrake: Utinni — Inhabited (Ash'karr) (`mandrake.rut.inhabited`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/AshkarrInhabited) (ours, in-repo)
-**Adds:** content: 8 defs: SecurityProfileDef 4, SettlementManifestDef 4 - the Junkers pilot settlement manifest (The Claim Jump, tile 16905) / functionality: data-only; the engine is mandrake.rm.inhabited (SETTLEMENT_VISIT_LOOP_1) / art: none
-**Why:** Pure data (0.02 MB) for the inhabited-settlement engine, naming a real Ash'karr settlement. Keeping it costs nothing and it is the campaign half of an engine we own. Names a tile (16905, ZBiome_Badlands) and a donor biome def, which the paint pass may move; that is a content edit, not a reason to drop the mod (brief §2: paint once at the end).
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.02) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** depends on mandrake.rm.inhabited -> None
-**Open:** Manifest names tile 16905 / ZBiome_Badlands: will the paint pass re-seat it? Not resolved here (brief §2 paint once).
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Jawa Rules (local) (`mandrake.rsw.jawarules`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/JawaRules) (ours, in-repo)
-**Adds:** content: 0 defs; two code rules: Jawa may not sow (they harvest and cut but never plant), plus a second colony rule / functionality: one Harmony DLL (1 static ctor) + settings screen; 2 patch ops into armoury and starwarsraces / art: none
-**Why:** Two rules a def cannot express (description), written as one small assembly so a load failure is attributable. Our own patches target it (patched_by none) and it targets only our mods (patches_mods armoury, starwarsraces). Fits the scenario directly. Retire only if the Jawa xenotype stops carrying the rules.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors 1) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.05) · interaction 2 (patches_ours_refs 4, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** patches mandrake.rsw.armoury and mandrake.rsw.starwarsraces (4 refs) -> None
-**Open:** Tier: packageId is rsw but the rule is Jawa-colony-specific ("Jawa Rules", DECIDE ruling); the brief §1 RUT test ("names this clan") would put it in RUT. Tier choice left to the owner.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Jawa Scavenger Events (`mandrake.rut.scavengerevents`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/ScavengerEvents) (ours, in-repo)
-**Adds:** content: 8 defs: IncidentDef 7, ThoughtDef 1 - Migration, SurvivalPod, PodCrash, ShipBreak, Thanksgiving, Insects, Stroke / functionality: one DLL of IncidentWorkers (settings screen); ported behaviour of Mo'Events from a decompile, own defNames and letter text / art: none
-**Why:** It exists to retire a donor: the description states mlie.moevents was RETIRED 2026-09-29 and removed from FULL.LATEST. Measured: mlie.moevents is not in ModsConfig.FULL.LATEST.xml. No remaining dependency on the donor, no Harmony, XML plus one DLL. MIT attribution to Mlie is recorded in the description.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors 0) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.04) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** replaces the retired donor mlie.moevents (absent from FULL.LATEST, MEASURED) -> None
-**Open:** Storyteller threat odds: do 7 new baseChance incidents interact with the "no arms race, qualitative danger" pillar? Not assessed.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Empire Pursuit — Survey Shadow (`mandrake.rut.empirepursuit`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/EmpirePursuit) (ours, in-repo)
-**Adds:** content: 7 defs: RUT_EmpireRungDef 6, ScenPartDef 1 - an orbital Empire pursuer scenario part (survey shadow) / functionality: one Harmony DLL (map_component_tick, 2 static ctors); fork of Ruthless Faction Pursuit (GPLv3, Matathias) with credit; only the mechanoid-pursuit half kept / art: none
-**Why:** The Empire as orbital pursuer is one of the campaign's three pressures (brief §1, 01_campaign). Already forked and trimmed (Omni Pursuit dropped); the donor itself is not in FULL.LATEST (matathias.ruthlessfactionpursuit absent, MEASURED). Obligation: GPLv3 and the author asked for credit; the description carries it.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors 2) · tps 1 (tick flags ['map_component_tick']; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.13) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author) · maintenance 1 (GPLv3 fork: our redistribution, if ever public, must be GPL-compatible)
-**Holds it in / exit:** requires Odyssey and Harmony -> None
-**Open:** If the mod set is ever public: GPLv3 of this fork versus the project's own licence. Not a present problem (single-player build, brief §5.1).
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### Ash'karr Landmark Art (`mandrake.rut.ashkarrlandmarkart`)
-**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/AshkarrLandmarkArt) (ours, in-repo)
-**Adds:** content: 0 defs; 48 patch ops repointing LandmarkDefs (from Vanilla Landmarks Expanded, Odyssey, Alpha Biomes, mlie) to repainted icons / functionality: XML/texture only / art: 52 repainted world-map landmark icons, 1024x1024 each (measured with PIL on the source folder), 17.6 MB on disk
-**Why:** It repaints icons of landmarks whose defs belong to donors (patches_mods: vanillaexpanded.vexploratione 72 refs, odyssey 100, alphabiomes 12, mlie 8). Our world will be painted once, at the end, with our own landmark defs (brief §2); the Ishko landmarks mod already shows the owned-def pattern. So the repaint rides donor defs and ends when owned landmark defs replace them. The memory proxy is the real issue: 52 icons at 1024x1024 decode to ~277 MB (INFERRED) for 128-px-class world-map sprites; downscaling is a cheap win independent of the verdict.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 3 (texture_decoded_mb_est 276.6 MB: 52 icons all 1024x1024 (measured)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 17.6) · interaction 1 (patch_ops_all 48, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** 48 LandmarkDefs of donors repointed to our art; landmarks present in the frozen world: UNMEASURED -> unfiled: ASHKARR_LANDMARKS_OWNED_DEFS
-**Open:** Do world-map icons need 1024x1024? Vanilla landmark icons are far smaller; a downscale pass would cut the proxy about 16x. Not tested in game.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimUtinni: Ishko's Dark Landmarks (`mandrake.rut.ishkolandmarks`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/IshkoDarkLandmarks) (ours, in-repo)
-**Adds:** content: 3 LandmarkDefs for the god Ishko: Lightless Sink, Shadowed Overhang, Cold Lava Tube / functionality: XML only; requires Odyssey / art: none
-**Why:** Fills a measured gap: the sacred-sites pass found Ishko was the one of the Nine with no landmark (description). Owned defs, 0.01 MB, no donor dependency (only Odyssey, a hard prerequisite per brief §2). This is the model for replacing donor landmarks.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.01) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** depends on Odyssey (accepted prerequisite) -> None
-**Open:** No art shipped (0 textures): the landmark icon must come from somewhere; which texture do the three defs point at? Not verified.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### JawaVoice (SpeakUp reskin) (`mandrake.rsw.jawavoice`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/JawaVoice) (ours, in-repo)
-**Adds:** content: 0 defs; 203 patch ops adding Jawaese lines to SpeakUp interaction rulesStrings (370 refs into jpt.speakup) / functionality: no assembly; identity-gated so only Jawa pawns speak it / art: none
-**Why:** Pure flavour with strong scenario fit (Jawaese bubbles with English gloss). Its only dependency is JPT.speakup, which is in FULL.LATEST. Zero cost beyond load-time patching. Coupling risk: 370 xpath refs into SpeakUp's defs, so a SpeakUp rename breaks it silently (a patch that matches nothing logs nothing, CLAUDE.md).
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.82) · interaction 1 (patch_ops_all 203, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author) · maintenance 1 (tied to a third-party mod (JPT.speakup) whose defs it patches 370 times)
-**Holds it in / exit:** depends on JPT.speakup (third party, in FULL.LATEST) -> None
-**Open:** Is SpeakUp itself wanted long term? It is a dependency of this mod; assessed in its own batch.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
-### RimStarWars: Cuisine (`mandrake.rsw.cuisine`)
-**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/Cuisine) (ours, in-repo)
-**Adds:** content: 38 defs: RecipeDef 21, ThingDef 14, ThoughtDef 2, ThingCategoryDef 1 - campfire skewers (meat, veg, fungus, fruit, fish) / functionality: one DLL without Harmony flags; wave 1 of the cuisine design; patches mandrake.rm.biomes 4 refs / art: 11 textures, 3.2 MB decoded est
-**Why:** Our own version of a food-on-a-stick donor; the description records the owner ruling to ingest that mod and jettison it, and no such mod is in FULL.LATEST (grep of ModsConfig.FULL.LATEST.xml for "stick": none). Neutral-to-resonant Star Wars cuisine for any SW scenario (RSW tier). Wave 1 only: more waves are designed.
-**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 1 (11 textures, texture_decoded_mb_est 3.2 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors 0) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.38) · interaction 2 (patches_ours_refs 4, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
-**Holds it in / exit:** replaces a retired food-on-a-stick donor (not in FULL.LATEST) -> None
-**Open:** The DLL has no Harmony and no tick flags: what is it for (recipe discovery?). Not verified.
-<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
-
 ### RimUtinni: The Long Hunger (`mandrake.rut.longhunger`)
 **Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/LongHunger) (ours, in-repo)
 **Adds:** content: 5 defs: ThingDef 2 (RUT_LongHunger world entity, RUT_Groundcaller prop), IncidentDef 1, QuestScriptDef 1, WeatherDef 1 - a VAST dune leviathan with its own mythos, separate from the Krayt / functionality: one DLL (settings screen only); requires Anomaly / art: no textures shipped (0): the summoning prop is a v1 art placeholder per the description
@@ -604,5 +324,231 @@
 **Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 3 (1831 textures, texture_decoded_mb_est 1261.6 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 3 (3 DLL(s) with Harmony, static_ctors 0) · tps 1 (tick flags ['comp_tick', 'comp_tick_rare']; per-mod TPS UNMEASURED) · size 2 (disk_mb 154.02) · interaction 2 (patches_ours_refs 61, patched_by_ours_refs 1209) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
 **Holds it in / exit:** patched by rut.patches (1067), doctrine (72), armoury (36); hard dependencies on three donors; gizkastowaway and falllinearrivals patch it -> MLIE_FAUNA_ABSORPTION_1 (closed) / DONOR_DEFS_PORT_TO_OURS_1
 **Open:** Which of its 3 donor dependencies are still genuinely used (Alpha Animals behaviour in C# per brief §3) versus residual? A checker should split them.; 1.26 GB proxy next to the donors' own art: measure real process memory with and without the donors.
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimUtinni: Greentide Raid Ant (`mandrake.rut.greentideraidant`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/GreentideRaidAnt) (ours, in-repo)
+**Adds:** content: 7 defs: ThingDef 3, PawnKindDef 2, FactionDef 1, ThinkTreeDef 1 - a re-authored giant ant race with carapace leather and wall, hidden raid faction, and a raid job giver / functionality: XML only (the donor's one C# class re-authored in XML think tree terms); depends on mandrake.rm.biomes / art: 8 textures, 10.1 MB decoded est
+**Why:** THEY_MOD_REPLICATION_1: replicates They! (Giant Ants) so the dependency can be retired. Measured: Sapiently.TheyAtomicMonsters is not in FULL.LATEST. Ants as a raid faction fit a qualitative-threat design. Contained and already independent.
+**Problems:** log_noise 0 (0 occurrences, 0 distinct errors, 0 chatter lines in the 550-mod session) · memory 1 (8 textures, texture_decoded_mb_est 10.1 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 1.98) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** replaces the retired donor Sapiently.TheyAtomicMonsters -> None
+**Open:** Giant ants are Earth-recognizable (recognizability rule, brief §2). Is this exempt as an owner-ruled raid faction? Not resolved.
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### Geonosian Brain Worms (`mandrake.rsw.brainworms`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/BrainWorms) (ours, in-repo)
+**Adds:** content: 10 defs: ThingDef 4, HediffDef 1, IncidentDef 1, MentalStateDef 1, PawnKindDef 1, RecipeDef 1 - a Geonosian hive parasite with staged infection (latent, influenced, puppeted); cold kills it / functionality: one DLL (comp_tick, settings screen); not in FULL.LATEST (OURS_ABSENT_INSTALLED); log fields null = UNMEASURED; the owner ruling (Transient/foundry_full_latest_gap_proposal_20261010.md) adds some of these only after a clean 551-mod cold load / art: none
+**Why:** Built to design/RimStarWars/brain_worm_spec.md; a qualitative threat whose cure is geographic (the cold side of a tidally locked world), which suits the setting. Not in the measured session, so log and cost are UNMEASURED. Adding it to FULL is the owner's gap ruling.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors None) · tps 1 (tick flags ['comp_tick']; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.06) · interaction 1 (patch_ops_all 2, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** (none: not in FULL.LATEST) -> None
+**Open:** Listed in the gap proposal's "other 24" group, not in the 14 ruled additions.
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimStarWars: Imperial Graffiti (`mandrake.rsw.graffitiimperial`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/GraffitiImperial) (ours, in-repo)
+**Adds:** content: 1 ThingDef - an Aurebesh-lettered Imperial-cog stencil variant of the anti-authority graffiti mark / functionality: XML only; depends on mandrake.rm.graffiti (in FULL.LATEST) / art: 1 texture, 2.1 MB decoded est
+**Why:** Star Wars add-on to the franchise-free graffiti mod, as the owner ruled (question card 2026-09-24, in description). Trivial cost. Not in FULL.LATEST.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 1 (1 textures, texture_decoded_mb_est 2.1 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.41) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on mandrake.rm.graffiti -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### Bandolier North Fix — Star Wars KotOR Resources and Materials (`mandrake.rsw.kotorbandoliernorthfix`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/KotORBandolierNorthFix) (ours, in-repo)
+**Adds:** content: 0 defs; 20 textures adding missing north-facing worn art for two bandoliers (bandolier_chewbacca, bandolier_traveler) of a guy762 KotOR Resources mod / functionality: XML-less texture mod; depends on guy762.MM.KotORCore / art: 20 textures, 26.6 MB decoded est
+**Why:** It fixes art for a donor (guy762.MM.KotORCore) that is NOT in FULL.LATEST (MEASURED), so it has nothing to attach to in the current list and cannot work. If the bandoliers are wanted, the right move is to own them in Armoury (the KotOR weapons already live there, Absorbed_KotorWeapons) and drop this fix. Conservative verdict because I did not find whether a bandolier def was absorbed.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 1 (20 textures, texture_decoded_mb_est 26.6 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.21) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on a donor absent from FULL.LATEST -> unfiled: KOTOR_BANDOLIERS_ABSORB_OR_DROP
+**Open:** Did Armoury absorb the four bandolier defs? If yes, delete this mod; if not and bandoliers are unwanted, delete anyway.
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### MSE Droid North Fix — Outer Rim: Droid Depot (`mandrake.rsw.msedroidfix`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** neutral · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/MSEDroidFix) (ours, in-repo)
+**Adds:** content: 0 defs; 1 texture adding the missing north-facing art of the MSE-6 repair droid (its Graphic_Multi shows the front when walking away) / functionality: texture-only; depends on Neronix17.OuterRim.DroidDepot / art: 1 texture, 0.3 MB decoded est
+**Why:** Fixes a donor (Droid Depot) that is not in FULL.LATEST and whose content Droidworks absorbs and retires (description of Droidworks; MEASURED: Droid Depot absent from the list). 0.01 MB, no defs, no dependants (dependants: []), no ParentName. Save placement: an MSE-6 droid would exist in a save only if Droid Depot had been loaded then (UNMEASURED).
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 1 (1 textures, texture_decoded_mb_est 0.3 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.01) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on an absent donor -> None
+**Open:** Does Droidworks have its own MSE-class droid with four-way art? If so this is dead weight.
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### Sarlacc — Native Habitat (local) (`mandrake.rsw.sarlacc`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/Sarlacc) (ours, in-repo)
+**Adds:** content: 17 defs: HediffDef 7, ThingDef 5, IncidentDef 2, PawnKindDef 1, RM_PreciousCaveDef 1, ThinkTreeDef 1 - sarlacc in three stages (swimmer, ambusher, pit) / functionality: one DLL (comp_tick, comp_tick_rare, map_component_tick, settings screen); requires Anomaly (modelled on the Devourer); not in FULL.LATEST (OURS_ABSENT_INSTALLED); log fields null = UNMEASURED; the owner ruling (Transient/foundry_full_latest_gap_proposal_20261010.md) adds some of these only after a clean 551-mod cold load / art: none
+**Why:** Native-habitat build accepted whole (2026-09-12 sitting, forks ruled). A qualitative threat and an iconic Tatooine creature owned in our tier. Three tick flags make it the heaviest tick profile among the absent mods (TPS severity 2, INFERRED); no measurement exists because it was not in the 550-mod session.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors None) · tps 2 (three tick flags (comp_tick, comp_tick_rare, map_component_tick) on a 3-stage creature (INFERRED); UNMEASURED) · size 1 (disk_mb 0.08) · interaction 2 (patches_ours_refs 2, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** (none: not in FULL.LATEST) -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimMandrake: SW — Trophy Craft (`mandrake.rsw.trophycraft`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimStarWars/TrophyCraft) (ours, in-repo)
+**Adds:** content: 5 defs: ThingDef 2, ApparelLayerDef 1, RecipeDef 1, ThoughtDef 1 - Wyyyschokk fang pendant worn as social proof of bravery by Wildsteam, Blackstar and Deep Tribe; a trade good elsewhere / functionality: one DLL (settings screen); 3 patch refs into mlie.starwarsanimalcollection and 2 into rm.biomes; in the 14-mod gap proposal / art: 2 textures
+**Why:** Owner spec 2026-09-13 (quoted in description). The creature the fang comes from is the mlie Wyyyschokk, which has no RSW_ port (SWBestiary grep), so the mod rides a donor edge (3 refs into mlie). Keep; exit is the creature port shared with mandrake.rsw.shokk. The owner already ruled it into the clean-load add list (#6 in the gap proposal).
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 1 (2 textures, texture_decoded_mb_est 0.2 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors None) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.05) · interaction 2 (patches_ours_refs 2, patched_by_ours_refs 2) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** 3 patch refs to mlie.starwarsanimalcollection (Wyyyschokk) -> unfiled: WYYYSCHOKK_PORT_TO_RSW (shared with mandrake.rsw.shokk)
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimUtinni: Aftermath Rites (`mandrake.rut.aftermath`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/AftermathRites) (ours, in-repo)
+**Adds:** content: 14 defs: RM_AftermathRuleDef 8, RM_AlliancePairDef 6 - eight rule defs naming real Ash'karr factions, existing IncidentDef payloads and Ninefold god ties / functionality: data only; depends on mandrake.rm.aftermath (in FULL.LATEST); not in FULL.LATEST (OURS_ABSENT_INSTALLED); log fields null = UNMEASURED; the owner ruling (Transient/foundry_full_latest_gap_proposal_20261010.md) adds some of these only after a clean 551-mod cold load / art: none
+**Why:** Defs-only half of a rule engine that already ships in FULL (mandrake.rm.aftermath). Data costs nothing; it is the campaign payload that makes the engine do anything. Loading it is a one-line add once the 551 load is clean.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.02) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on mandrake.rm.aftermath -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimUtinni: Assailant Salvage (`mandrake.rut.assailantsalvage`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimMandrake/AssailantSalvage) (ours, in-repo)
+**Adds:** content: 26 ThingDefs: owned RUT_ replacements for 22 salvage props formerly cited to the donor Vanilla Quests Expanded - Cryptoforge / functionality: XML only; 10 refs from mandrake.rm.biomes already point at it / art: 24 textures, 13.4 MB decoded est
+**Why:** CRYPTOFORGE_HARVEST_RETIRE_1 step 1: citation swap with owned art and defNames so the donor can retire. Measured: no cryptoforge mod is in FULL.LATEST (grep of the modlist), so the donor is already gone from the list; this mod is the owner of those props. Interaction with rm.biomes (10 refs) means the biome mod expects it, yet it is absent from FULL.LATEST: a dangling edge to resolve.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 1 (24 textures, texture_decoded_mb_est 13.4 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 2.84) · interaction 2 (patches_ours_refs 0, patched_by_ours_refs 10) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** patched by mandrake.rm.biomes (10 refs) -> CRYPTOFORGE_HARVEST_RETIRE_1
+**Open:** mandrake.rm.biomes patches this mod 10 times but this mod is not in FULL.LATEST: do those patches no-op harmlessly? Not tested.
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimUtinni: Scavenger's Atlas (`mandrake.rut.atlas`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/Atlas) (ours, in-repo)
+**Adds:** content: 25 defs: AtlasEntryDef 24, MainButtonDef 1 - the Scavenger's Atlas: discoverable-things map laid out on the ship hull, riddles flip to hints / functionality: one DLL (game_component_tick, settings screen); not in FULL.LATEST (OURS_ABSENT_INSTALLED); log fields null = UNMEASURED; the owner ruling (Transient/foundry_full_latest_gap_proposal_20261010.md) adds some of these only after a clean 551-mod cold load / art: none
+**Why:** A knowledge-discovery UI that supports the exploration feel (brief §1 "scientific expedition") without a power effect. Passes the 7-question test trivially. Not yet in a measured list.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors None) · tps 1 (tick flags ['game_component_tick']; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.1) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** (none) -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimUtinni: The Cathedral Pass (`mandrake.rut.cathedralpass`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/CathedralPass) (ours, in-repo)
+**Adds:** content: 1 HediffDef - RUT_CathedralPass: a clan pawn is read as non-hostile by the mechanoid faction, only on a Rust Cathedral map / functionality: one Harmony DLL (settings screen); in the 14-mod add list (#7) / art: none
+**Why:** Narrow mechanic (scope ruled 2026-09-13 to the narrowest reading) and the owner has ruled it into the clean-load add list. Harmony patch to hostility, so check it does not leak beyond Rust Cathedral maps (its description says it does not).
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors None) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.03) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author) · interaction 1 (Harmony patch to faction hostility on specific maps; interacts with every mod that reads hostility)
+**Holds it in / exit:** depends on Harmony -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimUtinni: The Reckoning (`mandrake.rut.eggreckoning`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/EggReckoning) (ours, in-repo)
+**Adds:** content: 5 defs: HistoryEventDef 3, QuestScriptDef 2 - the egg-black-market assassination quest family / functionality: one DLL (settings screen); depends on rm.biomes and rut.patches; in the 14-mod add list (#11) / art: none
+**Why:** Quest content split from WEBWORK_EGG_BLACKMARKET_BUILD_1; the description admits it needs a new C# plant-watcher verb and live verification. Owner-ruled add; keep, verify when loaded.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors None) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.05) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on mandrake.rut.patches and mandrake.rm.biomes -> None
+**Open:** Description says live verification outside its offline scope is owed.
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### Jawa Fall Line Arrivals (`mandrake.rut.falllinearrivals`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/FallLineArrivals) (ours, in-repo)
+**Adds:** content: 15 defs: ThingDef 6, IncidentDef 3, HediffDef 2, PawnKindDef 2, ThinkTreeDef 1, TileMutatorDef 1 - Fall Line creatures arrive by wreck-fall skyfaller (vermin), never as ambient fauna / functionality: one Harmony DLL (comp_tick); depends on rm.shipvermin; 4 patch refs to swbestiary; in the add list (#10) / art: none
+**Why:** Implements the owner's "arrivals, never ambient" ruling (fall_line.md §8a, 2026-09-20), which fits the evictions-stopped stance (nothing here adds a wildAnimals row). Owner-ruled add.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors None) · tps 1 (tick flags ['comp_tick']; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.06) · interaction 2 (patches_ours_refs 4, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on mandrake.rm.shipvermin; patches mandrake.rsw.swbestiary -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimUtinni: Fungal Soil Trade (`mandrake.rut.fungalsoiltrade`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/FungalSoilTrade) (ours, in-repo)
+**Adds:** content: 4 defs: ThingDef 2 (RUT_FungalSoil, a digging prop), GenStepDef 1, QuestScriptDef 1 - dig the Rot's mycelial mat for a sellable soil / functionality: one Harmony DLL (map_component_tick); not in FULL.LATEST (OURS_ABSENT_INSTALLED); log fields null = UNMEASURED; the owner ruling (Transient/foundry_full_latest_gap_proposal_20261010.md) adds some of these only after a clean 551-mod cold load / art: none
+**Why:** Early-game income route tied to a biome (FUNGAL_SOIL_TRADE_1, owner 2026-09-06). Capped per map so it is not an automatable ladder. Harmony and a map tick: INFERRED low.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors None) · tps 1 (tick flags ['map_component_tick']; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.05) · interaction 1 (patch_ops_all 1, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** (none) -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimUtinni: The Kyber Trade (`mandrake.rut.kybertradeplot`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/KyberTradePlot) (ours, in-repo)
+**Adds:** content: 6 defs: HistoryEventDef 2, IncidentDef 2, QuestScriptDef 2 - the Homestead kyber visit and the donate-and-smuggle plot / functionality: one DLL (settings screen); not in FULL.LATEST (OURS_ABSENT_INSTALLED); log fields null = UNMEASURED; the owner ruling (Transient/foundry_full_latest_gap_proposal_20261010.md) adds some of these only after a clean 551-mod cold load / art: none
+**Why:** Plot content ruled K1/K2 on 2026-09-11. Kyber crystals fit the Star Wars setting. No performance footprint.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors None) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.04) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** (none) -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimMandrake: Utinni — Propane Lake Mechanics (`mandrake.rut.propanelakemechanics`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/PropaneLakeMechanics) (ours, in-repo)
+**Adds:** content: 7 defs: ThingDef 5 (GasVent, VentPump, PipePump, PipeValve, ...), HediffDef 1, IncidentDef 1 - vents, a map saturation tracker, a pipe network with rupture, and a combat deflagration postfix / functionality: one Harmony DLL (comp_tick, map_component_tick); depends on rut.patches; not in FULL.LATEST (OURS_ABSENT_INSTALLED); log fields null = UNMEASURED; the owner ruling (Transient/foundry_full_latest_gap_proposal_20261010.md) adds some of these only after a clean 551-mod cold load / art: none
+**Why:** Ruled 2026-09-01 (propane_gas_deep_design.md §9) BEFORE the liquids framework ruling of 2026-09-13 ("one LiquidDef registry; FlowWorks is the flow engine; never redundant tanks", brief §2). It builds its own pipe network (CompPipeNetwork, MapComponent_PipeNetworks, pump, valve), which overlaps FlowWorks (FlowWorks ships RM_LiquidLogistics machinery). The mod has also been renamed away from its biome (propane lake is now RM_TheChill). The exit is rebuilding pipe/pump/valve on FlowWorks; the vent, saturation and agitation parts are unique.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors None) · tps 2 (comp_tick + map_component_tick + a Harmony postfix on ranged fire resolution (INFERRED); UNMEASURED) · size 1 (disk_mb 0.06) · interaction 2 (patches_ours_refs 1, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on mandrake.rut.patches -> unfiled: PROPANE_PIPES_ON_FLOWWORKS_1
+**Open:** Should the propane pipe/pump/valve be rebuilt on FlowWorks LiquidDef/pipes, or is a gas network deliberately separate from liquids?
+**Needs owner:** The propane-lake pipes, pumps and valves predate the FlowWorks liquids framework. Rebuild them on FlowWorks, or keep a separate gas network?
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### Jawa Restraining Bolts (`mandrake.rut.restrainingbolts`)
+**Verdict:** REPLACE-NOW-WITH-OUR-OWN (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/RestrainingBolts) (ours, in-repo)
+**Adds:** content: 1 GoodwillSituationDef: caps goodwill with the Free Droid Enclaves by how many owned droids carry a restraining bolt / functionality: one DLL (settings screen); reads the hediff OuterRim_RestraintBolt from Droid Depot by name / art: none
+**Why:** It counts Droid Depot's OuterRim_RestraintBolt hediff (GoodwillSituationWorker_RestrainingBolts.cs line 36), but Droid Depot is not in FULL.LATEST and Droidworks ships its own RSW_DW_RestrainingBolt hediff (HediffDefs_Droidworks.xml). In the current list the worker finds no hediff and the cap never applies, silently (GetNamedSilentFail). The replacement is a one-line repoint to RSW_DW_RestrainingBolt (plus RSW_DW_BoltResentment if relevant); the mod is otherwise correct.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors None) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.02) · interaction 2 (reads a hediff from a mod not in the list; the dependency is hidden (dependencies empty)) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** (none) -> DROID_FDE_GOODWILL_CAP_1 (closed) / unfiled: RESTRAINING_BOLT_CAP_REPOINT_TO_DROIDWORKS
+**Open:** Droidworks has two bolt hediffs; which should count toward the cap?
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimUtinni: River Colors (`mandrake.rut.rivercolors`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/RiverColors) (ours, in-repo)
+**Adds:** content: 0 defs; a Harmony patch on WorldDrawLayer_Paths.GeneratePaths so rivers on the world map take per-river colours (WORLD_RIVER_COLORS_1) / functionality: one Harmony DLL (settings screen); not in FULL.LATEST (OURS_ABSENT_INSTALLED); log fields null = UNMEASURED; the owner ruling (Transient/foundry_full_latest_gap_proposal_20261010.md) adds some of these only after a clean 551-mod cold load / art: none
+**Why:** Visual world-map identity (coolant rivers, etc.), one postfix on a drawing routine run at world-layer generation, not per tick. Costs nothing at play.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors None) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.03) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on Harmony -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimUtinni: Scarlands Ladder (`mandrake.rut.scarlandsladder`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/ScarlandsLadder) (ours, in-repo)
+**Adds:** content: 3 defs: GenStepDef 1, RM_LoreStageTableDef 1, ThingDef 1 - five reveal rungs that rewrite the Scarlands description as the player earns the truth / functionality: one DLL (settings screen); depends on mandrake.rm.lorestages and mandrake.rut.antiquities / art: 1 texture
+**Why:** Staged lore data for an engine (mandrake.rm.lorestages). Dependency problem, MEASURED: lorestages is not in FULL.LATEST and is not among the 14 owner-ruled additions or the table's other 24 pairing, so this mod cannot be added to the list without its engine. The mod is fine; the list lacks a dependency.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 1 (1 textures, texture_decoded_mb_est 0.3 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors None) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.12) · interaction 2 (patches_ours_refs 2, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on mandrake.rm.lorestages (not in FULL.LATEST) and mandrake.rut.antiquities -> None
+**Open:** Add mandrake.rm.lorestages alongside this mod in the gap proposal.
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimUtinni: Ship Shields — Modulated Plasma Fields (`mandrake.rut.shipshields`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/ShipShields) (ours, in-repo)
+**Adds:** content: 5 defs: ThingDef 4, ResearchProjectDef 1 - a bespoke building-scale shield comp (SHIELD_MODS_LEVERAGE_1) / functionality: one Harmony DLL (comp_tick, map_component_tick); depends on Odyssey and rm.biomes; in the add list (#12) / art: none
+**Why:** Ruled by card 2026-09-04: a bespoke comp instead of forking a Vanilla Expanded engine (that engine is pawn-apparel scale). Ship-centred (the ship needs defences). Maintenance cost accepted by the owner. Tick flags and a Harmony patch: TPS severity 2 INFERRED, unmeasured.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors None) · tps 2 (comp_tick + map_component_tick + Harmony (INFERRED); UNMEASURED) · size 1 (disk_mb 0.06) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on mandrake.rm.biomes and Odyssey -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimUtinni: The Unfinished Line (`mandrake.rut.unfinishedline`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/UnfinishedLine) (ours, in-repo)
+**Adds:** content: 32 defs: HistoryEventDef 17, QuestScriptDef 7, IncidentDef 2, LetterDef 2, GenStepDef 1, MentalStateDef 1 - the droid-manufacture plot: Jawa alone can run the line the Geonosian hive cannot / functionality: one Harmony DLL with game/world component ticks; depends on droidrepairjobs and droidworks; in the add list (#13) / art: none
+**Why:** Plot content tied to the droid pillar (nobody on the planet mass-produces droids; Jawa restore, not manufacture). Largest quest set among the absent mods; owner-ruled add. Two component ticks flagged, INFERRED low.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s) with Harmony, static_ctors None) · tps 1 (tick flags ['game_component_tick', 'world_component_tick']; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.19) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on mandrake.rut.droidrepairjobs and mandrake.rsw.droidworks -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### Jawa Utinni Statues (`mandrake.rut.utinnistatues`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/UtinniStatues) (ours, in-repo)
+**Adds:** content: 4 ThingDefs: Utinni votive, statue, grand statue, plus Dedicate gizmo to the Nine, idols and sand-crawler relief / functionality: one DLL (settings screen); 6 patch ops, 2 refs from rut.patches / art: 16 textures, 8.9 MB on disk, 34 MB decoded est
+**Why:** STATUE_ART_EXPANSION_1 Mod 1; dedication to the Nine is a campaign signature. Small. Owner has not placed it in the ruled 14, so it waits in the "other 24".
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 1 (16 textures, texture_decoded_mb_est 34.2 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors None) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 8.86) · interaction 2 (patches_ours_refs 1, patched_by_ours_refs 2) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** patched by rut.patches (2 refs) -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimMandrake: Utinni - Waste Run (`mandrake.rut.wasterun`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/WasteRun) (ours, in-repo)
+**Adds:** content: 11 defs: HistoryEventDef 7, IncidentDef 1, QuestScriptDef 1, ThingDef 1, ThoughtDef 1 - the gravship waste run: destination is the branch (drop on Empire, freeze, entomb, sink, slime) / functionality: one DLL (comp_tick, comp_tick_rare); depends on mandrake.rm.warcasket (not in FULL.LATEST); in the add list (#14) / art: none
+**Why:** Owner-ruled add (#14). Dependency check, MEASURED: its engine mandrake.rm.warcasket is also on the add list (#9), listed before it, so ordering is satisfied if both are added. One v1 destination is a stub until ANCIENT_WAR_LAB_1.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors None) · tps 1 (tick flags ['comp_tick', 'comp_tick_rare']; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.05) · interaction 2 (patches_ours_refs 1, patched_by_ours_refs 0) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on mandrake.rm.warcasket (gap list #9) -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimMandrake: Utinni — Weather Suite (Ash'karr) (`mandrake.rut.weathersuite`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/AshkarrWeatherSuite) (ours, in-repo)
+**Adds:** content: 1 PlanetGeometryDef: Ash'karr's real substellar point and the terminator/nightside band arcs for the rm.weathersuite engine / functionality: XML only; patches Core 10 ops / art: none
+**Why:** Data wiring for the generic weather engine to this frozen planet (arcs 63-117 and 117+). 0.02 MB. Depends on a PlanetGeometryDef tied to the world, which the paint pass may change; keep as the single place that holds it.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 1 (XML-only (dll_count 0)) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.02) · interaction 1 (patch_ops_all 5, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on mandrake.rm.weathersuite -> None
+**Open:** none
+<sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
+
+### RimUtinni: Wildsteam Egg Bounty (`mandrake.rut.wildsteameggbounty`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** git@github.com:Lmandrake/RimMandrake.git (src/RimUtinni/WildsteamEggBounty) (ours, in-repo)
+**Adds:** content: 1 QuestScriptDef - the Wildsteam egg bounty, a lower-paying legal outlet beside the smugglers' jackpot / functionality: one DLL (settings screen); depends on rm.biomes and rut.patches / art: none
+**Why:** Owner ruling S6 ruling 2, 2026-09-24 (quoted). Tiny.
+**Problems:** log_noise U (mod not in the 550-mod measured session (OURS_ABSENT_INSTALLED); log_error_occurrences null = UNMEASURED) · memory 0 (0 textures, texture_decoded_mb_est 0 MB (w*h*4*1.33 header proxy, not measured per mod)) · complexity 2 (1 DLL(s), no Harmony flag, static_ctors None) · tps 0 (no tick flag in assemblies; per-mod TPS UNMEASURED) · size 1 (disk_mb 0.02) · interaction 0 (patch_ops_all 0, none touch ours) · maintenance 0 (ours, in this repo (source_kind ours); no external author)
+**Holds it in / exit:** depends on mandrake.rut.patches and mandrake.rm.biomes -> None
+**Open:** none
 <sub>facts: batch 16 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by sonnet-5.5 (batch 16 assessor) 2026-10-10</sub>
 
