@@ -62,8 +62,11 @@ def derive_tests():
     check([(x["label"], x["pool"]) for x in yg] == [("ADULT", True), ("YOUNG · JUVENILE", False),
                                                      ("ADULT · ALTERNATE (random pool)", True)],
           "a juvenile with its own picture is a YOUNG slot; alternateGraphics make the adult a pool")
-    check(SL.hint("regen_gt_pekopeko_flying_f_4") == "flight frame — not a body" and SL.hint("huldu_juv_v2") == "young",
+    check(SL.hint("regen_gt_pekopeko_flying_f_4") == "flight frame — not a body" and SL.hint("huldu_juv_v2") == "young"
+          and SL.hint("render sketto_fly_master_v3") == "flight frame — not a body",
           "render-name hints: flight frame / young")
+    check(SL.hint("render rm_glowfly_v1") != "flight frame — not a body" and SL.hint("butterfly_body_v2") == "",
+          "a creature NAMED ...fly is not a flight frame (token-bounded)")
     check(SL.set_id({"east": "a", "south": "b"}) == SL.set_id({"south": "b", "east": "a"}) != SL.set_id({"east": "a"}),
           "set ids are order-free and change with the pictures")
 

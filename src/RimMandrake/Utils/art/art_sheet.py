@@ -2356,6 +2356,15 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         for c in kept:
             gk = (mem.get("graphic_of") or {}).get(c["letter"])
             g = next((g for g in graphics if (g["res"] or "_byname") == gk), None)
+            if g is None and gk and gk.startswith("_flip:"):
+                g = next((x for x in graphics if x.get("flip")), None)
+            if g is None and gk in (None, "_byname"):
+                # a by-name render he ruled on that is no longer found by name: it stays UNASSIGNED (never offered as
+                # the body: DESIGN §1, Sketto's flight renders sat in the body strip)
+                g = next((x for x in graphics if x["res"] is None), None)
+                if g is None:
+                    g = {"res": None, "role": ROLE_TEXT[None], "cols": [], "prior_raw": None}
+                    graphics.append(g)
             if g is None:
                 g = graphics[0] if graphics else None
             if g is None:
@@ -2363,6 +2372,38 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 graphics.append(g)
             g["cols"].append(c)
             allcols.append(c)
+        # a render bound to a lane only by its NAME whose job name says it is a picture of something ELSE (a flight frame
+        # in a body lane, a young render in the adult lane, a catch in a creature lane) is not offered as that slot's
+        # picture: it goes to UNASSIGNED until he says what it is (DESIGN §1: Sketto's sketto_fly_* in the body strip,
+        # PekoPeko's single flight frame picked as the female body)
+        _slot_kind = {x["res"]: x["kind"] for x in row_slots}
+        _slot_base = {}
+        for x in row_slots:
+            _slot_base.setdefault(x["res"].rsplit("/", 1)[-1], []).append(x["kind"])
+        _unas = None
+        for gi_, g in enumerate(list(graphics)):
+            if not g["res"] or g.get("flip") or g.get("reference"):
+                continue
+            kd = _slot_kind.get(g["res"]) or (lambda b_: b_[0] if len(b_) == 1 else None)(_slot_base.get(g["res"].rsplit("/", 1)[-1], [])) \
+                or ("adult" if gi_ == 0 and r["kind"] == "fauna" else None)
+            if not kd:
+                continue
+            for c in list(g["cols"]):
+                if c.get("kind") != "artpipe" or c.get("winner") or c.get("jobSlot") == g["res"]:
+                    continue
+                h = SLOTS.hint(c.get("family") or c.get("label") or "")
+                wrong = (h == "flight frame — not a body" and not kd.startswith("flying")) or \
+                        (h == "young" and kd in ("adult", "adult_female", "grown")) or \
+                        (h == "catch item" and kd != "item")
+                if wrong:
+                    if _unas is None:
+                        _unas = next((x for x in graphics if x["res"] is None), None)
+                        if _unas is None:
+                            _unas = {"res": None, "role": ROLE_TEXT[None], "cols": [], "prior_raw": None}
+                            graphics.append(_unas)
+                    g["cols"].remove(c)
+                    _unas["cols"].append(c)
+        graphics = [g for g in graphics if g["cols"] or g is graphics[0]]
         for c in allcols:
             # a "donor" column whose bytes an artpipe render made is our art under a donor-ported texPath
             # (TheRot's RotSporeKit/... carries rot_*_v2 renders): it must not read as donor-only (gate req 3)

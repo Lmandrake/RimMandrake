@@ -28,7 +28,7 @@ SEX_LABEL = {"": "", "male": " · MALE", "female": " · FEMALE"}
 STAGE_WORD = {"AnimalBaby": "baby", "AnimalBabyTiny": "hatchling", "AnimalJuvenile": "juvenile",
               "HumanlikeBaby": "baby", "HumanlikeChild": "child"}
 # a render's job name says what it is a picture OF; used only as a HINT on an unassigned render (never auto-assigns)
-HINTS = (("flying", re.compile(r"fl(?:y|ight|ying)", re.I), "flight frame — not a body"),
+HINTS = (("flying", re.compile(r"(?:^|[_\s])(?:fly|flight|flying)(?:_|$)", re.I), "flight frame — not a body"),
          ("young", re.compile(r"(?<![a-z])(juv(?:enile)?|young|baby|calf|pup|chick|hatchling|larva|immature|_j)(?![a-z])", re.I), "young"),
          ("female", re.compile(r"(?<![a-z])(female|_f)(?![a-z])", re.I), "female"),
          ("male", re.compile(r"(?<![a-z])(male|_m)(?![a-z])", re.I), "male"),
