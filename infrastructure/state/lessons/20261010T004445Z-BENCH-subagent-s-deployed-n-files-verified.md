@@ -1,0 +1,1 @@
+A subagent's 'Deployed N files, VERIFIED' went false within minutes: another clone redeployed UtinniPatches from an older sha. Deployed state is only as good as the last writer; re-run the deploy dry run from a clone at the fix sha before calling it live.

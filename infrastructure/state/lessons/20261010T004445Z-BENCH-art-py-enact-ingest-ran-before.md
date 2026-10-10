@@ -1,0 +1,1 @@
+art.py enact: ingest ran before purge, so ✕'d pictures the same sheet also picked read as owner-kept and the apply purged 0 where the dry run planned 3. Fixed 7c623ab47 (selftest_enact_selfpurge.py). A dry run and an apply can disagree whenever a step writes state a later step reads.
