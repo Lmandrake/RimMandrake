@@ -37,6 +37,8 @@
 
   <ItemGroup>
     <Compile Include="UtinniStatuesMod.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RUT_StatuePicker.cs" />
   </ItemGroup>
 
