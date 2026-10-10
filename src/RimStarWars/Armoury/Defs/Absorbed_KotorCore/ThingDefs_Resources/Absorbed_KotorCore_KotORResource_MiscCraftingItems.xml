@@ -71,7 +71,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>KOTOR_AlloyDurasteel</li>
+            <li>RSW_Durasteel</li>
           </thingDefs>
         </filter>
         <count>20</count>
@@ -96,7 +96,7 @@
     <fixedIngredientFilter>
       <thingDefs>
         <li>ComponentSpacer</li>
-        <li>KOTOR_AlloyDurasteel</li>
+        <li>RSW_Durasteel</li>
         <li>KOTOR_IngotCortosis</li>
         <li>KOTOR_PlasmaCartridge</li>
       </thingDefs>

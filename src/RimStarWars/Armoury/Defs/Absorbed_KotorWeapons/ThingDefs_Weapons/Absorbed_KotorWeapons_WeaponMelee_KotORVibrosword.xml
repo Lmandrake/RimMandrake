@@ -603,7 +603,7 @@
       <ComponentSpacer>4</ComponentSpacer>
       <Plasteel>50</Plasteel>
       <Gold>10</Gold>
-      <KOTOR_AlloyDurasteel>80</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>80</RSW_Durasteel>
       <ComponentIndustrial>4</ComponentIndustrial>
       <KOTOR_PlasmaCartridge>1</KOTOR_PlasmaCartridge>
     </costList>

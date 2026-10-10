@@ -41,7 +41,7 @@
     </graphicData>
     <!-- Cost -->
     <costList>
-      <KOTOR_AlloyDurasteel>150</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>150</RSW_Durasteel>
       <ComponentIndustrial>10</ComponentIndustrial>
       <ComponentSpacer>5</ComponentSpacer>
       <KOTOR_UltraComponent>1</KOTOR_UltraComponent>

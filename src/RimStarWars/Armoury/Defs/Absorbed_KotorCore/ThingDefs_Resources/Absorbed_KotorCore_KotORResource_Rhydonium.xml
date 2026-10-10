@@ -506,7 +506,7 @@
     </statBases>
     <size>(7,7)</size>
     <costList>
-      <KOTOR_AlloyDurasteel>500</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>500</RSW_Durasteel>
       <ComponentIndustrial>25</ComponentIndustrial>
       <ComponentSpacer>5</ComponentSpacer>
     </costList>
@@ -615,7 +615,7 @@
       <destroySound>BuildingDestroyed_Metal_Medium</destroySound>
     </building>
     <costList>
-      <KOTOR_AlloyDurasteel>100</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>100</RSW_Durasteel>
       <KOTOR_IngotCortosis>20</KOTOR_IngotCortosis>
       <ComponentSpacer>2</ComponentSpacer>
       <KOTOR_UltraComponent>1</KOTOR_UltraComponent>
@@ -714,7 +714,7 @@
       <destroySound>BuildingDestroyed_Metal_Medium</destroySound>
     </building>
     <costList>
-      <KOTOR_AlloyDurasteel>200</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>200</RSW_Durasteel>
       <KOTOR_IngotCortosis>30</KOTOR_IngotCortosis>
       <ComponentSpacer>3</ComponentSpacer>
       <KOTOR_UltraComponent>1</KOTOR_UltraComponent>

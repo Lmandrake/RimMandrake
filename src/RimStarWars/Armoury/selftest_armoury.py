@@ -155,6 +155,19 @@ def main():
           got.get("own_ranged_ops_carry_no_donor_guard") == "FAIL"
           and got.get("ranged_patch_damage_is_live") in ("FAIL", "UNMEASURED"), got)
 
+    # durasteel conversion: clean passes; planted defects (a source count the patch lacks; a leftover donor name) fail
+    import tempfile, shutil
+    check("durasteel convert: clean tree", V.durasteel_convert_static() == [], V.durasteel_convert_static())
+    tmp = tempfile.mkdtemp()
+    try:
+        open(os.path.join(tmp, "x.xml"), "w").write("<Defs><ThingDef><costList><RSW_Durasteel>777</RSW_Durasteel>"
+                                                    "<KOTOR_AlloyDurasteel>5</KOTOR_AlloyDurasteel></costList></ThingDef></Defs>")
+        got = V.durasteel_convert_static(defs_dir=tmp)
+        check("durasteel convert: planted missing count and leftover name caught",
+              any("777" in b for b in got) and any("still names" in b for b in got), got)
+    finally:
+        shutil.rmtree(tmp)
+
     if FAILS:
         print("\n%d Armoury selftest(s) FAILED" % len(FAILS))
         return 1

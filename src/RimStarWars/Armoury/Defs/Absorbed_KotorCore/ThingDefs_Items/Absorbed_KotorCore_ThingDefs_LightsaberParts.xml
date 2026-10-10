@@ -77,7 +77,7 @@
     </recipeMaker>
     <costList>
       <KOTOR_UltraComponent>1</KOTOR_UltraComponent>
-      <KOTOR_AlloyDurasteel>20</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>20</RSW_Durasteel>
       <ComponentSpacer>6</ComponentSpacer>
       <ComponentIndustrial>4</ComponentIndustrial>
     </costList>

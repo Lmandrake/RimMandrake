@@ -49,7 +49,7 @@
     <costList>
       <ComponentSpacer>6</ComponentSpacer>
       <Plasteel>50</Plasteel>
-      <KOTOR_AlloyDurasteel>60</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>60</RSW_Durasteel>
     </costList>
     <comps>
       <li Class="CompExtraSounds.CompProperties_ExtraSounds">
@@ -165,7 +165,7 @@
     <costList>
       <ComponentSpacer>6</ComponentSpacer>
       <Plasteel>50</Plasteel>
-      <KOTOR_AlloyDurasteel>60</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>60</RSW_Durasteel>
       <ComponentIndustrial>2</ComponentIndustrial>
     </costList>
     <tools>

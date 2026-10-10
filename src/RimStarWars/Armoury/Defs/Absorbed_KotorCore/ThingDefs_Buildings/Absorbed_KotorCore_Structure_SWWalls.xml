@@ -187,7 +187,7 @@
     <building>
     </building>
     <costList>
-      <KOTOR_AlloyDurasteel>6</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>6</RSW_Durasteel>
       <Steel>1</Steel>
       <!-- <ComponentIndustrial>1</ComponentIndustrial> -->
     </costList>
@@ -215,7 +215,7 @@
     <building>
     </building>
     <costList>
-      <KOTOR_AlloyDurasteel>6</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>6</RSW_Durasteel>
       <Steel>1</Steel>
     </costList>
   </ThingDef>
@@ -371,7 +371,7 @@
     <building>
     </building>
     <costList>
-      <KOTOR_AlloyDurasteel>8</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>8</RSW_Durasteel>
       <Steel>1</Steel>
     </costList>
   </ThingDef>

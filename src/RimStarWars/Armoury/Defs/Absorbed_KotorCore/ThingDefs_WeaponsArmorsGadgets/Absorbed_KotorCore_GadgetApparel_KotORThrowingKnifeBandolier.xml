@@ -122,7 +122,7 @@
         <hotKey>Misc4</hotKey>
         <chargeNoun>knives</chargeNoun>
         <displayGizmoWhileUndrafted>false</displayGizmoWhileUndrafted>
-        <ammoDef>KOTOR_AlloyDurasteel</ammoDef>
+        <ammoDef>RSW_Durasteel</ammoDef>
         <ammoCountPerCharge>5</ammoCountPerCharge>
       </li>
     </comps>

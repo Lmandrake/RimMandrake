@@ -45,7 +45,7 @@
     </recipeMaker>
     <costList>
       <Plasteel>100</Plasteel>
-      <KOTOR_AlloyDurasteel>25</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>25</RSW_Durasteel>
       <ComponentIndustrial>6</ComponentIndustrial>
       <ComponentSpacer>5</ComponentSpacer>
       <KOTOR_PlasmaCartridge>4</KOTOR_PlasmaCartridge>
@@ -155,7 +155,7 @@
     </recipeMaker>
     <costList>
       <Plasteel>100</Plasteel>
-      <KOTOR_AlloyDurasteel>25</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>25</RSW_Durasteel>
       <ComponentIndustrial>9</ComponentIndustrial>
       <ComponentSpacer>5</ComponentSpacer>
       <KOTOR_PlasmaCartridge>4</KOTOR_PlasmaCartridge>
@@ -457,7 +457,7 @@
     </recipeMaker>
     <costList>
       <Plasteel>100</Plasteel>
-      <KOTOR_AlloyDurasteel>25</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>25</RSW_Durasteel>
       <ComponentIndustrial>12</ComponentIndustrial>
       <ComponentSpacer>8</ComponentSpacer>
       <KOTOR_PlasmaCartridge>4</KOTOR_PlasmaCartridge>

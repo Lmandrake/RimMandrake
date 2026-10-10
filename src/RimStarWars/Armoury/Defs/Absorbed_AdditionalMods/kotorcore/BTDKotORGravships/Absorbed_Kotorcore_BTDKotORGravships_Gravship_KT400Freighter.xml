@@ -22,7 +22,7 @@
     <size>(1,1)</size>
     <uiIconScale>0.04</uiIconScale>
     <costList>
-      <KOTOR_AlloyDurasteel>56</KOTOR_AlloyDurasteel>
+      <RSW_Durasteel>56</RSW_Durasteel>
       <ComponentSpacer>1</ComponentSpacer>
     </costList>
     <statBases>
