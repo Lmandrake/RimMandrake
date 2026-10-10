@@ -269,6 +269,17 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
 - GREEN: `T_InstallRollback`, `T_ShutdownBounded` (a hanging log copy returns in < 5 s with
   `archiveTimedOut:true`), python PASS; `C# units: 18 run, 0 failed`; companion builds.
 
+### SHOULD 5 — DST, offsets, blocked phase, historical severity
+- RED: `ambiguous local time '2026-11-01 01:30' must be refused, not silently resolved`; same for the
+  nonexistent `2027-03-14 02:30`; `printed local times carry offset and zone: '2026-10-09 15:00:00'`;
+  incident line showed only the recovery phase; `a healthy verdict still names the recovered stall:
+  ('OK', '... 1 incidents; gapMax 20ms')`.
+- FIX: `parse_when` refuses DST-nonexistent and DST-ambiguous wall times with the two explicit-offset
+  spellings to choose from (CLI exits 2 with the message); epoch input no longer needs tz data; missing
+  tz data is a clean error naming `tzdata`. `_local` prints `-07:00 PDT`. Incidents print `blocked in
+  <quietPhase> (recovered in <phase>)`. Verdicts (judged or not) name recovered stalls and the worst one.
+- GREEN: python PASS; CLI checked on the real record.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)

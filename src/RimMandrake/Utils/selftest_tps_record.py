@@ -538,6 +538,27 @@ def reader_checks():
         except AttributeError as e:
             check(False, "MUST 12: no external Player-prev.log preservation: %r" % e)
 
+    # SHOULD 5: DST-ambiguous/nonexistent local times are refused; printed times carry their offset; the blocked
+    # phase and recovered stalls are shown
+    for bad, why in (("2026-11-01 01:30", "ambiguous"), ("2027-03-14 02:30", "nonexistent")):
+        try:
+            T.parse_when(bad, "America/Los_Angeles")
+            check(False, "SHOULD 5: %s local time %r must be refused, not silently resolved" % (why, bad))
+        except ValueError as e:
+            check(why in str(e), "SHOULD 5: the refusal says %s: %s" % (why, e))
+    loc = T._local(t15, "America/Los_Angeles")
+    check(loc.endswith("-07:00 PDT"), "SHOULD 5: printed local times carry offset and zone: %r" % loc)
+    row = T.place({"kind": "incident", "utc": iso(t15), "type": "stall", "gapS": 40, "unexplainedS": 40,
+                   "phase": "frame-rest", "quietPhase": "tl:Normal@39.0s", "mult": 1, "multAfter": 1})
+    out = T.render_row(row, "America/Los_Angeles")
+    check("blocked in tl:Normal" in out, "SHOULD 5: an incident shows where the main thread was BLOCKED: %r" % out)
+    now5 = t15 + 400
+    ok_rows = [dict(sample(now5 - 5 * (8 - i), i + 1, ratio=1.0), session="abab") for i in range(8)] + [
+        {"kind": "incident", "utc": iso(now5 - 100), "session": "abab", "seq": 50, "type": "stall", "gapS": 75.0,
+         "unexplainedS": 75.0}]
+    v = T.verdict(T.summarise(ok_rows, now=now5))
+    check("1 stall" in v[1] and "75" in v[1], "SHOULD 5: a healthy verdict still names the recovered stall: %r" % (v,))
+
     # MUST 8: two game processes are analysed SEPARATELY
     now8 = t15 + 5000
     b_fresh = [dict(sample(now8 - 5 * (12 - i), 100 + i, ratio=1.0, session="bbbb"), monoStart=50.0 + 5 * i,
