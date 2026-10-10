@@ -756,6 +756,9 @@ MODS = {
     "GravshipLanding": ("GravshipLandingMod.cs", "RM_GravshipLanding.csproj", {
         "Landing reveal (WORLDGEN-AFFECTING)": "NewMapsOnly",
     }, ()),
+    "LoreStages": ("RM_LoreStagesMod.cs", "RM_LoreStages.csproj", {
+        "Staged lore text": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
