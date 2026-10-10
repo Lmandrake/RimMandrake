@@ -2,6 +2,8 @@
 
 ## Status
 - 20:44 started; bridge held by FOUNDRY; game UP full list (613), rehearsal COPY loaded (never save).
+- NOTE: the clock stamps on entries below between 21:05 and 22:20 were mis-written; real elapsed span of the whole sitting is 20:44-21:25. Order is correct.
+- 21:25 DONE. Scratch map (tile 9000) already gone; only the rehearsal colony map (3, tile 17007, unsaved, tick ~233k) is loaded. Bridge released.
 
 ## SHOKKWEAVE_SOLE_SOURCE_1 A1 (ProofHarvest hook vs Real FoW)
 - 20:55 hook rebuilt b09a57710: ProofHarvest + ProofHarvestDesignate step single ticks (DoSingleTick, max 250) until the RealFoW-prefixed Deconstruct designator accepts; output adds "(after T ticks)". Built clean. Deploy: the composed-biomes apply wrote 9 other files but the DLL STILL DIFFERS (locked by the running game) -> takes effect only after a game-down redeploy (`deploy_custom_mods.py --compose biomes --apply`) + load. A1 rerun is therefore owed next load; no in-game rerun possible now (no live public static reaches the RealFoW-patched designator on an existing thing).
@@ -33,4 +35,15 @@
 - LASSO A2: AM settings class not reachable by name via mod_settings_field (AM.Core.Settings static field, type name unresolved); config file still carries no LassoSpawnChance -> unchanged FAIL, not re-recorded. Setting it is build work, not verification.
 
 ## Reload needs (batched)
-- RUT_DyingCreep graphic type + 12 catch items Meat_Small: parse next load only.
+- RUT_DyingCreep graphic type + 12 catch items Meat_Small (b4400b20a, deployed): parse next load only.
+- Webwork DLL (b09a57710, ProofHarvest tick-stepping): NOT deployed - the composed-biomes apply could not overwrite the loaded DLL. At game-down: `python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --apply`, then load the full list and rerun `ProofHarvest true;RM_Webwork_Anchor;34` for SHOKKWEAVE_SOLE_SOURCE_1 A1.
+- No other row needs a reload; none of the fails above is fixed by one.
+
+## Hook / build gaps found (for FOUNDRY to file or fix)
+- JAWA_SWIM_HOOD_KEEP_1: postfix ordering vs LovinExpansion postfix / Fortified prefix / VEF transpiler on the full list (note on the item).
+- PARENTAL_ENRAGE_FACTION_GUARD_1: no enrage on the full list; needs a ProofEnrage per-calf scan read (note on the item).
+- DROIDWORKS_FORMAT_TIERS_1: third-party needs leak onto Mindless/Blank droids; Blank droid wanders (note on the item).
+- LASSO_CHERRYPICKER_REMOVAL_1: Make_AM_LassoCloth + Make_AM_LassoDevilstrand still craftable.
+- KINETIC_BLAST_WEAPONS_1: EK body_override (too-big control thrown) and shield_counter (staged belt at 0 energy).
+- GLOW_TANK_LIQUID_FEED_1 A2 needs a tank-fill proof hook; UNFINISHED_LINE_* needs the minimal list (mod not in the full list).
+- Full-list pawn inspect strings appear cached (counts/"since" frozen across 800+ ticks) - do not use inspect_string for time-varying state there.
