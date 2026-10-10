@@ -68,6 +68,8 @@
     <Compile Include="..\RSW_JawaIonWeaponsSettings.cs" />
     <Compile Include="..\StatPart_InverseBodySize.cs" />
     <Compile Include="..\Kernel\RSW_IonBuildupKernel.cs" />
+    <Compile Include="..\..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

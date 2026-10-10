@@ -987,6 +987,13 @@ MODS = {
     "WildsteamEggBounty": ("WildsteamEggBountySettings.cs", "RimMandrake.Utinni.WildsteamEggBounty.csproj", {
         "Wildsteam egg bounty quest": "NextPulse",
     }, ()),
+    "JawaIonWeapons": ("RSW_JawaIonWeaponsSettings.cs", "JawaIonWeapons.csproj", {
+        "People and droids: wearing a target down": "Now",
+        "Body-size resistance": "Now",
+        "Machines and mechanoids: instant overload": "Now",
+        "Shields": "Now",
+        "Vehicles (needs Vehicle Framework installed)": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
