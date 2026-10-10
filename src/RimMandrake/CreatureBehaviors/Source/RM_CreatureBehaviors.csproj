@@ -186,6 +186,7 @@
     <!-- LONGSHADE_GPT_ENRICHMENT_1 §3: camera-keyed heat soundscape, herd calls, footfalls. -->
     <Compile Include="RM_HeatSoundscape.cs" />
     <Compile Include="RM_ShadeHaze.cs" />
+    <Compile Include="RM_AshPulse.cs" />
     <Compile Include="RM_SunHeatExtension.cs" />
     <Compile Include="RM_SunHeatPatches.cs" />
     <Compile Include="RM_WildLeaveMath.cs" />
