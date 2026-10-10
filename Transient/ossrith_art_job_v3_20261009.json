@@ -1,0 +1,22 @@
+[
+ {
+  "id": "ossrith_alien_v3",
+  "rimflow_item_id": "DONOR_CODE_PLAIN_PORTS_1",
+  "target_def": "RM_Radyak",
+  "target_original": [
+   "AA_Radyak"
+  ],
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "priority": 0,
+  "biome_neutral": true,
+  "owner_note": "Owner 2026-10-09 on v2: 'I like it, but I'd like it to be even more realistic. Try again, but you're getting close!' Keep the v2 design (bone-white plate, mask skull, green crystal ridge, long stilt legs); push realism.",
+  "prompt": "RimWorld sprite of the ossrith, a nocturnal grazer of the Cauldron's night side, in side view facing right. Anatomy: a lean, long-legged frame under bone-white overlapping plate, a bare mask of bone for a face with deep black sockets and no visible mouth line, and a jagged ridge of hard green crystal breaking up through the plates along its spine, thickest at the shoulders. Make it genuinely alien and strange, a creature that evolved on another world: unfamiliar body plan and joint arrangement, asymmetric crystal growth, long digitigrade legs that bend in unexpected places, an elongated skull, hide plates that look like fossilised shell. The silhouette reads as a different animal from any hooved grazer, with no horns, no mane, no shaggy coat and no bovine proportions. Lit by cold night light, with the crystal faintly translucent green. Keep the same creature as the previous version: bone-white overlapping plates, narrow mask skull with one dark socket, green crystal ridge along the spine, long stilt legs. Push it further toward photographic realism: real material weight and wear, fine surface cracks, growth lines and pitting on the plate, wet-looking joint membranes where the plates meet, believable muscle and tendon mass at the joints, crystal with real internal fracture and refraction, naturalistic hoof-less feet with splayed dark digits instead of cartoon hooves, soft contact shadow under the body.",
+  "style_notes": "Highly realistic natural-history photograph-grade painting of an alien animal: believable anatomy, weight, material microdetail and lighting; eerie and strange, never cute, never stylised or cartoonish."
+ }
+]
