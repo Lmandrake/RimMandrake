@@ -15,7 +15,7 @@ on the screen says so. This records every frozen input when a cell STARTS, re-re
 `complete` refuse unless:
   1. every required cell (default C0..C5) was recorded AND verified unchanged at its end;
   2. every cell's inputs equal C0's, except the keys that cell declares as its variable (default: `collectors`);
-  3. the newest preflight report (preflight.py) has no FAIL, and was written after... nothing: it must exist;
+  3. the newest preflight report (preflight_bridge.py) has no FAIL, and was written after... nothing: it must exist;
   4. no required safety item is still open in the ledger (default TPS_HOOKS_HARDEN_REENTRY_AND_LATE_GUARDS, the
      recorder Harmony-safety FAIL GPT section 2.3 says blocks the affected hooks; --safety-item adds more,
      --no-safety-item removes the default only with --reason, which is recorded).
@@ -70,7 +70,7 @@ def capture(saves=(), fixture=None):
     """Every frozen input, as plain data. Each sub-capture that cannot be read records {'unreadable': why}, which can
     never equal a readable value, so ignorance is never mistaken for 'unchanged'."""
     import game_paths as gp
-    import preflight as pf
+    import preflight_bridge as pf
     out = {}
 
     def guard(key, fn):
@@ -237,7 +237,7 @@ def item_state(item):
 
 
 def cmd_complete(a, state_of=item_state, last_report=None):
-    import preflight as pf
+    import preflight_bridge as pf
     data = load(a.experiment)
     cells = a.cells.split(',') if a.cells else DEFAULT_CELLS
     why = []
@@ -263,7 +263,7 @@ def cmd_complete(a, state_of=item_state, last_report=None):
         if fails:
             why.append('latest preflight (%s, %s) has FAIL: %s' % (rep['when'], rep['mode'], fails))
     except (OSError, ValueError, KeyError):
-        why.append('no preflight report at %s (run preflight.py)' % rep_p)
+        why.append('no preflight report at %s (run preflight_bridge.py)' % rep_p)
     safety = [s for s in DEFAULT_SAFETY if not (a.no_safety_item and s in a.no_safety_item)] + (a.safety_item or [])
     if a.no_safety_item and not a.reason:
         print('REFUSED: --no-safety-item needs --reason (it is recorded)')

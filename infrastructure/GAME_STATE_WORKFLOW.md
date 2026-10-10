@@ -57,7 +57,7 @@ The things that still gate it:
 |---|---|
 | **The bridge must be free** (or yours) | someone else may be mid-drive; `rimflow bridge who`, then take it *for the reboot* so the reason is in the file they read |
 | **The window still costs ~25 min** | so spend it — `rimworld-load-round` §2/§3: decision strings and one signature per assembly, written BEFORE the game starts |
-| **`preflight.py` says GREEN** | `python3 src/RimMandrake/Utils/preflight.py --tier full --deep` before the launch (wrong list, stale deploy, load-killer lint, wedgers, lease); `--live` in the first five minutes after it. NO-GO names the check; `skills/rimbridge/references/preflight.md` |
+| **`preflight_bridge.py` says GREEN** | `python3 src/RimMandrake/Utils/preflight_bridge.py --tier full --deep` before the launch (wrong list, stale deploy, load-killer lint, wedgers, lease); `--live` in the first five minutes after it. NO-GO names the check; `skills/rimbridge/references/preflight.md` |
 
 ⭐ Still run `./game --said "<his verbatim words>"` for each transition, exactly as
 below. The authorization changed who may *act*; it did not change how the state is

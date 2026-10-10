@@ -1,7 +1,7 @@
 # Pre-flight: before a cold load, and in its first five minutes
 
 *Fold-in owed: this is the full text; `SKILL.md` carries one pointer row. Skills are curated in
-fresh-context passes, so this file waits for one.* Source: `src/RimMandrake/Utils/preflight.py`
+fresh-context passes, so this file waits for one.* Source: `src/RimMandrake/Utils/preflight_bridge.py`
 (`PREFLIGHT_BUILD_85_ROWS_OF_HINDSIGHT`). Design: GPT's review §3
 (`Transient/foundry_bridge_system_review_gpt_20261010.md`, expires) and
 `design/RimMandrake/bridge_debugging_system.md` §5.3.
@@ -9,10 +9,10 @@ fresh-context passes, so this file waits for one.* Source: `src/RimMandrake/Util
 ## Run it
 
 ```
-python3 src/RimMandrake/Utils/preflight.py --tier full --deep     # before launching the full list
-python3 src/RimMandrake/Utils/preflight.py --tier minimal --purpose menu
-python3 src/RimMandrake/Utils/preflight.py --modset acc_green_min # any modset_builder tier as the intended list
-python3 src/RimMandrake/Utils/preflight.py --tier full --live     # after launch: files + OS only, no bridge call
+python3 src/RimMandrake/Utils/preflight_bridge.py --tier full --deep     # before launching the full list
+python3 src/RimMandrake/Utils/preflight_bridge.py --tier minimal --purpose menu
+python3 src/RimMandrake/Utils/preflight_bridge.py --modset acc_green_min # any modset_builder tier as the intended list
+python3 src/RimMandrake/Utils/preflight_bridge.py --tier full --live     # after launch: files + OS only, no bridge call
 ```
 
 Exit **0 GREEN**, **1 NO-GO** (a FAIL), **2 NOT-GREEN** (no FAIL, but a required check is UNMEASURED or

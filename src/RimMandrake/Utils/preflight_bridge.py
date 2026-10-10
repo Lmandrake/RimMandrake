@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-r"""preflight.py -- the ordered, fail-fast pre-flight before a cold load (offline) and for the first five live minutes.
+r"""preflight_bridge.py -- the ordered, fail-fast pre-flight before a cold load (offline) and for the first five live minutes.
 
-    python3 src/RimMandrake/Utils/preflight.py --tier full            # offline, before launch: GREEN / NO-GO
-    python3 src/RimMandrake/Utils/preflight.py --tier minimal --purpose menu
-    python3 src/RimMandrake/Utils/preflight.py --tier full --live     # after launch, read-only, files + OS only
+    python3 src/RimMandrake/Utils/preflight_bridge.py --tier full            # offline, before launch: GREEN / NO-GO
+    python3 src/RimMandrake/Utils/preflight_bridge.py --tier minimal --purpose menu
+    python3 src/RimMandrake/Utils/preflight_bridge.py --tier full --live     # after launch, read-only, files + OS only
     ... [--modset <modset_builder tier>] [--deep] [--all] [--json out.json] [--seat FOUNDRY]
 
 WHY. Every row of bridge_debugging_system.md section 4 that cost hours (MODLIST, STALE, CONTENT load killers, HANG
@@ -51,7 +51,9 @@ COMPANION_REPO = os.path.join(REPO, 'src', 'RimMandrake', 'bridgetools', 'artifa
                               'JawaBench.BridgeTools.dll')
 COMPANION_GAME = gp.resolve(r'C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\JawaBench.BridgeTools.dll',
                             '/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/BridgeTools/JawaBench/JawaBench.BridgeTools.dll')
-SCRATCH = gp.resolve(r'D:\Luke\dev\_rmscratch\preflight', '/mnt/d/Luke/dev/_rmscratch/preflight')
+# by platform, NOT gp.resolve: resolve falls back to the Windows spelling when the WSL path does not exist YET, and
+# os.makedirs('D:\\...') under WSL then creates a literal directory of that name in the cwd
+SCRATCH = r'D:\Luke\dev\_rmscratch\preflight' if os.name == 'nt' else '/mnt/d/Luke/dev/_rmscratch/preflight'
 LOG_ARCHIVE = os.path.join(SCRATCH, 'playerlogs')
 DEP_BASELINE = os.path.join(REPO, 'infrastructure', 'state', 'preflight', 'dependency_baseline.json')
 LAST_REPORT = os.path.join(SCRATCH, 'last_preflight.json')
@@ -440,9 +442,14 @@ def c_src_killers(ctx):
 def c_def_lint(ctx):
     """The patched-tree lint. Cached by content; a miss costs ~1-5 min, run only with --deep."""
     want_src = ctx.get('want_src', '')
-    mc = os.path.join(MODLISTS, TIER_FILES.get(ctx['tier'], '')) if want_src.startswith('snapshot') else None
-    if not mc or not os.path.isfile(mc):
-        mc = gp.MODS_CONFIG                                     # the list the next load will actually read
+    if want_src.startswith('snapshot'):
+        mc = os.path.join(MODLISTS, TIER_FILES.get(ctx['tier'], ''))
+    elif want_src.startswith('manifest.'):
+        mc = os.path.join(MODLISTS, want_src)
+    else:                                                       # --modset: the lint needs a file; lint what the
+        mc = gp.MODS_CONFIG                                     # next load will actually read
+    if not os.path.isfile(mc):
+        return UNM('no list file to lint: %s' % mc)
     rel = os.path.relpath(mc, REPO) if mc.startswith(REPO) else None
     out_json = os.path.join(SCRATCH, 'effective_def_lint_last.json')
     os.makedirs(SCRATCH, exist_ok=True)
@@ -457,7 +464,7 @@ def c_def_lint(ctx):
         p = subprocess.run(cmd, cwd=REPO, capture_output=True, text=True, timeout=1500)
     except subprocess.TimeoutExpired:
         return UNM('effective_def_lint timed out (25 min)')
-    if 'CACHE-MISS' in p.stdout:
+    if p.returncode == 4 and 'CACHE-MISS' in p.stdout:
         return UNM('effective_def_lint has no cached result for this exact content; run with --deep (~1-5 min)')
     try:
         rep = json.load(open(out_json))

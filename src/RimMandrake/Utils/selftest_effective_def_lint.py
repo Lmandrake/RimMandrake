@@ -159,6 +159,14 @@ def main():
         edl.build_and_check(mc, {}, rep2, progress=lambda s: None)
         check('second run is a cache HIT with identical findings', rep2.meta.get('cache', '').startswith('HIT')
               and rep2.checks['costlist']['findings'] == rep.checks['costlist']['findings'])
+        mj = os.path.join(td, 'manifest.T.json')
+        with open(mj, 'w') as fh:
+            fh.write('{"name": "T", "ids": ["test.a", "mandrake.test"]}')
+        repj = edl.Report()
+        repj.meta = {}
+        edl.build_and_check(mj, {}, repj, progress=lambda s: None)
+        check('a modmanifest manifest.<NAME>.json with the same ordered ids hits the same cache entry',
+              repj.meta.get('cache', '').startswith('HIT'))
         with open(os.path.join(mods, 'B', 'Patches', 'p.xml'), 'a') as fh:
             fh.write('\n<!-- touched -->\n')
         rep3 = edl.Report()
