@@ -177,11 +177,32 @@ def t_gather(tmp):
         s.name == "bridge" and s.level == w.STALLED for s in sigs), w.report(sigs))
     # 'Not Responding' that persists across two watchdog calls >240 s apart -> WEDGED
     nr = dict(game, game=dict(game["game"], responding=False))
-    w.gather(**dict(kw, runners=["win:9 x"], win=nr, now=time.time() - 300))
+    # 300 s earlier the same process was 300 s younger (age is what identifies it when no start time is given)
+    w.gather(**dict(kw, runners=["win:9 x"], win=dict(nr, game=dict(nr["game"], age=2700)), now=time.time() - 300))
     sigs = w.gather(**dict(kw, runners=["win:9 x"], win=dict(nr, game=dict(nr["game"], cpu=310.0))))
     g = [s for s in sigs if s.name == "game"][0]
-    check("Not Responding for 5 min at a full core -> WEDGED (tight loop)", g.level == w.WEDGED and "tight loop"
-          in g.detail, g.line())
+    check("Not Responding for 5 min at a full core -> WEDGED, process total stated, no thread attribution",
+          g.level == w.WEDGED and "tight loop" not in g.detail and "main thread" not in g.detail
+          and "process total" in g.detail, g.line())
+    # GPT review 2.3: the CPU trend is keyed on pid AND start time, on a monotonic interval
+    sd = os.path.join(tmp, "cpu_state")
+    t0 = time.time()
+    w.cpu_rate({"pid": 7, "cpu": 100.0, "start": "2026-10-10T10:00:00.000Z"}, t0, sd, mono=500.0)
+    r_same, _ = w.cpu_rate({"pid": 7, "cpu": 130.0, "start": "2026-10-10T10:00:00.000Z"}, t0 + 60, sd, mono=560.0)
+    check("same pid + same start time -> a CPU rate", r_same is not None and abs(r_same - 0.5) < 1e-9, r_same)
+    r_reuse, _ = w.cpu_rate({"pid": 7, "cpu": 140.0, "start": "2026-10-10T11:00:00.000Z"}, t0 + 120, sd, mono=620.0)
+    check("same pid, different start time (pid reuse) -> no CPU rate", r_reuse is None, r_reuse)
+    w.cpu_rate({"pid": 7, "cpu": 10.0, "start": "S"}, t0 + 180, sd, mono=680.0)
+    r_clock, _ = w.cpu_rate({"pid": 7, "cpu": 40.0, "start": "S"}, t0 + 240 + 3600, sd, mono=740.0)
+    check("wall clock stepped against the monotonic clock -> no CPU rate", r_clock is None, r_clock)
+    with open(log, "w") as f:
+        f.write("x\nReached max messages limit. Stopping logging to avoid spam.\n")
+    os.utime(log, (time.time() - 3 * w.LOG_FROZEN_S, time.time() - 3 * w.LOG_FROZEN_S))
+    sigs = w.gather(**dict(kw, runners=["win:9 x"]))
+    pl = [s for s in sigs if s.name == "player_log"][0]
+    check("Verse.Log cap: the decompiled 10,000 limit, emission suppressed, error activity unknown",
+          "10,000" in pl.detail and "1000-message" not in pl.detail and "error activity unknown" in pl.detail,
+          pl.line())
     # heartbeat files
     os.makedirs(hb, exist_ok=True)
     now = time.time()

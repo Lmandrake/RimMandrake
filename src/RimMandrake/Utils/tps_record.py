@@ -1128,6 +1128,9 @@ def main(argv=None):
     ap.add_argument("--window", type=int, default=300, help="verdict window in seconds (default 300)")
     ap.add_argument("--dir", default=None, help="record directory (default: the game's SaveData JawaBench/tps)")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--health", action="store_true", help="with --at/--since: join the external health observer's "
+                    "stream (health_observer.py) to the timeline and its incidents; evidence only, no causes")
+    ap.add_argument("--health-dir", default=None, help="observer stream directory (default <LocalLow>/JawaBench/health)")
     a = ap.parse_args(argv)
     rec = read_record(a.dir)
     rows = select_session(rec["rows"], a.session)
@@ -1164,6 +1167,10 @@ def main(argv=None):
         else:
             print(render_timeline(tl, a.tz))
             print(health)
+            if a.health:
+                import health_observer
+                inc = [r for r in tl["rows"] if r.get("kind") in ("incident", "silence")]
+                print("\n".join(health_observer.health_section(t0, t1, inc, a.health_dir)))
         return 0
     s = summarise(rows, window_s=a.window)
     level, detail = verdict(s)

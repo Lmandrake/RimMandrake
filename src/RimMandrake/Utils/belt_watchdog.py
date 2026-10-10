@@ -238,6 +238,7 @@ $o = @{}
 $p = Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | Select-Object -First 1
 if ($p) { $o.game = @{ pid = $p.Id; cpu = [math]::Round($p.TotalProcessorTime.TotalSeconds, 1);
   responding = $p.Responding; age = [int](New-TimeSpan $p.StartTime (Get-Date)).TotalSeconds;
+  start = $p.StartTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
   title = $p.MainWindowTitle; ws_mb = [int]($p.WorkingSet64 / 1MB) } }
 $o.games = @(Get-Process RimWorldWin64 -ErrorAction SilentlyContinue | ForEach-Object {
   @{ pid = $_.Id; startUtc = $_.StartTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffZ") } })
@@ -365,28 +366,61 @@ def short_cmd(cmd):
     return (m.group(1) if m else cmd or "")[-110:].replace("src/RimMandrake/Utils/", "")
 
 
-def cpu_rate(game, now, state_dir=None):
+def _start_key(game, now):
+    """Process identity beside the pid: its start time. The PowerShell probe gives it exactly; an older probe dict
+    only has age, so the start is estimated to the second."""
+    if game.get("start"):
+        return game["start"]
+    if game.get("age") is not None:
+        return "~%d" % int(now - float(game["age"]))
+    return None
+
+
+def _same_start(a, b):
+    if a is None or b is None:
+        return False
+    if a.startswith("~") and b.startswith("~"):
+        return abs(int(a[1:]) - int(b[1:])) <= 2
+    return a == b
+
+
+def cpu_rate(game, now, state_dir=None, mono=None):
     """(cores busy since the last watchdog call, seconds the window has been continuously 'Not Responding'),
     persisted in .belt_state/watchdog_last.json so one-shot calls 5 min apart still see a trend. Records this
-    sample. Either value is None when there is no usable previous sample."""
+    sample. Either value is None when there is no usable previous sample.
+
+    The previous sample counts only for the SAME process (pid AND start time: a reused pid is another process)
+    and the interval is the monotonic clock's; when wall and monotonic intervals disagree by more than 2 s
+    (clock step, sleep, a WSL restart) there is no rate. The rate is the PROCESS total across all threads:
+    it says nothing about which thread is busy (GPT review 2.3)."""
     import belt_heartbeat
     d = state_dir or belt_heartbeat.STATE_DIR
     p = os.path.join(d, "watchdog_last.json")
+    mono = time.monotonic() + (now - time.time()) if mono is None else mono
+    start = _start_key(game, now)
     rate, nr_since, last = None, None, {}
     try:
         with open(p, encoding="utf-8") as f:
             last = json.load(f)
-        dt = now - last["t"]
-        if last.get("pid") == game.get("pid") and 5 < dt < 900 and game.get("cpu") is not None:
-            rate = (float(game["cpu"]) - float(last["cpu"])) / dt
-    except (OSError, ValueError, KeyError, TypeError):
+    except (OSError, ValueError):
         last = {}
+    same = bool(last) and last.get("pid") == game.get("pid") and _same_start(last.get("start"), start)
+    try:
+        if same and game.get("cpu") is not None and last.get("mono") is not None:
+            dt = mono - last["mono"]
+            if 5 < dt < 900 and abs((now - last["t"]) - dt) <= 2.0:
+                rate = (float(game["cpu"]) - float(last["cpu"])) / dt
+                if rate < 0:
+                    rate = None
+    except (KeyError, TypeError, ValueError):
+        rate = None
     if game.get("responding") is False:
-        nr_since = last.get("nr_since") if last.get("pid") == game.get("pid") and last.get("nr_since") else now
+        nr_since = last.get("nr_since") if same and last.get("nr_since") else now
     try:
         os.makedirs(d, exist_ok=True)
         with open(p, "w", encoding="utf-8") as f:
-            json.dump({"t": now, "pid": game.get("pid"), "cpu": game.get("cpu"), "nr_since": nr_since}, f)
+            json.dump({"t": now, "mono": mono, "pid": game.get("pid"), "start": start, "cpu": game.get("cpu"),
+                       "nr_since": nr_since}, f)
     except OSError:
         pass
     return rate, (now - nr_since if nr_since else None)
@@ -423,14 +457,15 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
                                                  game.get("ws_mb"))
         rate, nr_for = cpu_rate(game, now, hb_dir)
         if rate is not None:
-            bits += " (%.2f cores since last check%s)" % (rate, ": BUSY" if rate > 0.7 else ": IDLE/FROZEN"
-                                                          if rate < 0.05 else "")
+            bits += " (process total %.2f cores since last check, all threads%s)" % (
+                rate, ": busy" if rate > 0.7 else ": near idle" if rate < 0.05 else "")
         unfocused = "rimworld" not in ((win or {}).get("fg") or "rimworld").lower()
         loading = (game.get("age") or 0) < LOAD_BUDGET_S          # a cold load is legitimately unresponsive
         if game.get("responding") is False and nr_for is not None and nr_for > NOT_RESPONDING_WEDGE_S \
                 and not loading:
             sigs.append(Sig("game", WEDGED, bits + " -- 'Not Responding' for %s straight%s" % (
-                _age(nr_for), " at a full core: main thread in a tight loop" if (rate or 0) > 0.7 else ""),
+                _age(nr_for), " with the process at %.2f cores (process total; which thread is busy is not known)"
+                % rate if rate is not None else ""),
                 "hang class 2: read the Player.log tail for the last thing it did, then kill by PID and relaunch"))
         elif game.get("responding") is False and unfocused:
             sigs.append(Sig("game", STALLED, bits + " -- 'Not Responding' while UNFOCUSED",
@@ -453,9 +488,13 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
             sigs.append(Sig("player_log", WEDGED, "%s; %s: %dx (%.0f%% of tail errors) %r" % (
                 detail, kind, loop["count"], loop["share"] * 100, loop["sig"][:110]), loop["remedy"]))
         elif game and log_age > LOG_FROZEN_S and run_active and "Reached max messages limit" in tail_text(player_log):
-            # Verse.Log stops writing after 1000 messages until Log.ResetMessageCount (only called at data load): the game is
-            # fine but every later error is INVISIBLE to Player.log and jawa/drain_log (MEASURED live 2026-10-03, 16:54).
-            sigs.append(Sig("player_log", WARN, detail + "; Verse.Log hit its 1000-message cap (blind, not hung)",
+            # Verse.Log counts every Unity log message and at 10,000 (StopLoggingAtMessageCount, decompiled 1.6
+            # Verse/Log.cs via RimSage 2026-10-10) sets Debug.unityLogger.logEnabled = false. Only Log.Clear (the
+            # debug log window's Clear) calls Log.ResetMessageCount; jawa/static_call can call it directly. After the
+            # cap, Player.log and jawa/drain_log are blind (hit live 2026-10-03, 16:54): emission suppressed, error
+            # activity unknown - never read the quiet log as "no errors".
+            sigs.append(Sig("player_log", WARN, detail + "; Verse.Log hit its 10,000-message cap: emission "
+                            "suppressed, error activity unknown (not evidence of a hang)",
                             "jawa/static_call type=Verse.Log method=ResetMessageCount (the runner does it per chain)"))
         elif game and log_age > LOG_FROZEN_S and run_active:
             sigs.append(Sig("player_log", STALLED, detail + " while a run is active (frozen?)",
