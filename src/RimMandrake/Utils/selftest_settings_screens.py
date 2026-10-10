@@ -926,6 +926,10 @@ MODS = {
         "Favour tilts the odds": "NextPulse",
         "Offerings (Nine Faults, the Left Behind)": "Now",
     }, ()),
+    "Antiquities": ("AntiquitiesMod.cs", "RimMandrake.Utinni.Antiquities.csproj", {
+        "Reading the antiquities": "Now",
+        "Key text bonus": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
