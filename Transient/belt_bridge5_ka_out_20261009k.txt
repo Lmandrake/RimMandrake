@@ -1,0 +1,26 @@
+names thump_cannon,thump_off,thudder_crowd,palm_shove,slam_charge,repulsor_along_shot,repulsor_westward,grav_ram,thump_shell,kicker_north,kicker_east,kicker_south,kicker_west,kicker_dud_rearm,pulse_push,pulse_charge_gate,strength_zero,looted_pirates,palm_arrest_wall,gravram_big_body,ruins_loot,kicker_hidden,cords_marker,ring_fleck
+origins 24
+thump_cannon       PASS thump_cannon p 13,12->18,12 along=5 across=0 launches=1 newInjuries=0 force=2.5
+thump_off          PASS thump_off p 28,12->28,12 launches=0 forceWhileOff=0
+thudder_crowd      PASS thudder_crowd thrown>=3cells=4 dead=0 | a 43,12->47,12 launches=1; b 41,12->37,12 launches=1; c 42,13->42,18 launches=1; d 42,11->42,7 launches=1
+palm_shove         PASS palm_shove p 57,12->60,12 along=3 across=0 launches=1 newInjuries=0 | side 56,13->56,13 launches=0 sideUnmoved=True
+slam_charge        PASS slam_charge p 73,12->78,12 along=5 across=0 launches=1 newInjuries=1
+repulsor_along_shot PASS repulsor_along_shot p 87,12->92,12 along=5 across=0 launches=1 newInjuries=0
+repulsor_westward  PASS repulsor_westward p 102,12->97,12 along=5 across=0 launches=1 newInjuries=0
+grav_ram           PASS grav_ram p 117,12->127,12 along=10 across=0 launches=1 newInjuries=0
+thump_shell        PASS thump_shell p 133,12->138,12 along=5 across=0 launches=1 newInjuries=1
+kicker_north       PASS kicker_north p 147,12->147,16 along=4 across=0 launches=1 newInjuries=0 fuelSpent=10
+kicker_east        PASS kicker_east p 162,12->167,12 along=5 across=0 launches=1 newInjuries=0 fuelSpent=10
+kicker_south       PASS kicker_south p 177,12->177,8 along=4 across=0 launches=1 newInjuries=0 fuelSpent=10
+kicker_west        PASS kicker_west p 12,27->8,27 along=4 across=0 launches=1 newInjuries=0 fuelSpent=10
+kicker_dud_rearm   PASS kicker_dud_rearm p 27,27->31,27 along=4 across=0 launches=1 newInjuries=0 dudLaunches=0 mineStillThere=True
+pulse_push         PASS pulse_push p 42,27->49,27 along=7 across=0 launches=1 newInjuries=0
+pulse_charge_gate  PASS pulse_charge_gate targetWhenEmpty=False targetWhenCharged=True
+strength_zero      PASS strength_zero p 72,27->72,27 launches=0 (strength 0: no throw)
+looted_pirates     PASS looted_pirates pirateFactions=True campaignLooters=True otherFactionsClean=True pirate=RM_Gun_PalmThumper grenadier=RM_Weapon_ThudderGrenade boss=RM_Gun_RepulsorRifle rollMiss=none
+palm_arrest_wall   PASS palm_arrest_wall p 102,27->103,27 wallStopNoImpact=True newInjuries=0
+gravram_big_body   PASS gravram_big_body big 117,27->124,27; control 117,31->117,31 launches=0 body=2.5 repulsorTooBig=True
+ruins_loot         PASS ruins_loot wired=True complexes=True hit=RM_Weapon_ThudderGrenade miss=True offGivesNone=True picks=RM_Weapon_ThudderGrenadex1,RM_Gun_PalmThumperx1,RM_Gun_SlamLauncherx1,RM_Gun_RepulsorRiflex1,RM_KickerMinex1,RM_Shell_Thumpx12,RM_Turret_PulseCannonx1,RM_Gun_GravRamx1
+kicker_hidden      PASS kicker_hidden hiddenRaiderKnows=False shownRaiderKnows=True
+cords_marker       PASS cords_marker marked=True cutSettingRemoves=True restored=True thumpCannonStillCuts=True
+ring_fleck         PASS ring_fleck fleck=True textureResolves=True

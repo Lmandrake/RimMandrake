@@ -1,0 +1,26 @@
+scenes available: calibration,wall_stop,door_stop,over_sandbags,pit_colonist,pit_enemy,no_cross,cover_breaks,items,corpse_into_pit,killed_by_blast,shelf,in_pit_skip,heavy_skip,caps,tick_cap,settings_off,emp_no_throw,lookup_projectile,lookup_zero_wins,impact_factor,body_override,immunity_window,shield_counter flowworks=True gss=True
+calibration      PASS p 13,12->16,12 (3 cells) away=True alive=True launches=1 [type=launch tick=200978 exp=689711 thing=Human689707 from=13,12 to=16,12 planned=3 cells=3 stop=Distance impact=0 otherImpact=0 door=False mass=60.89998 hoseDropped=False faction=PlayerColony]
+wall_stop        PASS p 28,12->29,12 (1 cells) [type=launch tick=201278 exp=689809 thing=Human689791 from=28,12 to=29,12 planned=3 cells=1 stop=Wall impact=7.726268 otherImpact=0 door=False mass=60.89998 hoseDropped=False faction=PlayerColony]
+door_stop        PASS p 43,12->44,12 (1 cells) doorHp 104->93 [type=launch tick=201578 exp=689896 thing=Human689889 from=43,12 to=44,12 planned=3 cells=1 stop=Door impact=7.729438 otherImpact=0 door=True mass=60.99998 hoseDropped=False faction=PlayerColony]
+over_sandbags    PASS p 58,12->61,12 (3 cells) (sandbags at x+2)
+pit_colonist     PASS p 73,12->75,12 (2 cells) landedOnFirstPitCell=True stillInPit=True descents=1
+pit_enemy        PASS p 88,12->91,12 (3 cells) landedOnFirstPitCell=True stillInPit=True descents=1
+no_cross         PASS p 102,12->104,12 (2 cells) (1-wide pit at x+2; must stop IN it)
+cover_breaks     PASS coversLeft=0 pawnInPit=True descents=1 at 119,12
+items            PASS steel 133,12->137,12 (4 cells) mass=37.5 want=4; comp 132,13->132,18 (5 cells) mass=0.6 want=5; heavy 131,12->131,12 (0 cells) mass=8000 want=0; steelCount=75
+corpse_into_pit  PASS corpse 148,12->150,12 (2 cells) onPitFloor=True forbidden=True
+killed_by_blast  PASS dead=2 corpsesThrown=2
+shelf            PASS steel 178,12->178,12 (0 cells) (on a shelf: must stay)
+in_pit_skip      PASS p 13,27->13,27 (0 cells) skips(in_pit)=1
+heavy_skip       PASS big 28,27->24,24 (4 cells) skips(too_big)=1
+caps             PASS pawns=10 pawnsHandled=10 items=59 launches=10 itemMoves=30 cappedSkips=29 cap=40
+tick_cap         PASS items=9 moves=6 maxPerTick=3 droppedByTickCap=3
+settings_off     PASS p 73,27->73,27 (0 cells); steel 71,27->71,27 (0 cells) waveHitThem=True
+emp_no_throw     PASS p 88,27->88,27 (0 cells) (EMP force 0: no request)
+lookup_projectile PASS p 103,27->110,27 (7 cells) want~7 [type=request tick=206312 exp=690821 thing=Human933 from=103,27 centre=102,27 radius=2.9 force=2.5 damType=Bomb source=projectile shieldAbsorbed=False]
+lookup_zero_wins PASS p 118,27->118,27 (0 cells) requests=0
+impact_factor    PASS p 133,27->134,27 (1 cells) [type=launch tick=206912 exp=690900 thing=Human690896 from=133,27 to=134,27 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=62.29998 hoseDropped=False faction=PlayerColony]
+body_override    FAIL big 148,27->152,30 (4 cells); control 146,30->149,25 (5 cells) bodySize=2.5 controlTooBig=True
+immunity_window  PASS launches=1 immuneSkip=True guardHolds=True
+shield_counter   FAIL p 178,27->178,27 (0 cells) energy 0->0 [type=skip tick=207812 exp=691061 thing=Human691057 reason=shield energyBefore=0 energyAfter=0 broke=False]
+VERDICT FAIL  (24 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\explosive_knockback\run_20261009T210336.jsonl
