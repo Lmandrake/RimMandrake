@@ -7,9 +7,11 @@
   only, no wood (ruling R4). Woody stuff dropped (§2.1).
   Statbases/footprints copy vanilla SculptureSmall / SculptureLarge / SculptureGrand (Buildings_Art.xml).
 
-  PROVISIONAL: fuel capacity, glow radius, flame sizes and every point offset are placeholders until the
-  step-6 art lands and the vent positions are measured from the PNGs (§2.6). Consumption is the spec's
-  (Ember 0.12/day, Dancer 0.28, Colossus 0.5). The placeholder sprite is the retired RM_FlameStatuary's.
+  Art: one PNG per def from artpipe rm_flamestatue_*_v3 (2026-10-10), shipped at half the authored canvas.
+  Point offsets are MEASURED from those PNGs (spec §2.6): x = (px - 0.5) * drawSize, z = (0.5 - py) * drawSize,
+  then lifted +0.25 * size so the flame stands on the vent. The colossus art carries its two lower vents in
+  the fire-pit ring, not the palms, so its points follow the art. PROVISIONAL: fuel capacity, glow radius,
+  flame sizes. Consumption is the spec's (Ember 0.12/day, Dancer 0.28, Colossus 0.5).
 -->
 <Defs>
 
@@ -18,7 +20,6 @@
     <!-- BuildingBase is MapMeshOnly, and comp PostDraw (the flames) only runs for realtime drawers -->
     <drawerType>MapMeshAndRealTime</drawerType>
     <graphicData>
-      <texPath>Things/Building/Art/RM_FlameStatues/RM_FlameStatue_Placeholder</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stuffCategories>
@@ -36,6 +37,7 @@
     <label>ember idol</label>
     <description>A squat brazier-figure carved around a single crown vent. Fed with chemfuel, a flame stands on its head and lights the room; left dry, it is only a sculpture.</description>
     <graphicData>
+      <texPath>Things/Building/Art/RM_FlameStatues/RM_FlameStatue_Ember</texPath>
       <drawSize>(1.5,1.5)</drawSize>
     </graphicData>
     <fillPercent>0.35</fillPercent>
@@ -69,7 +71,7 @@
       </li>
       <li Class="RimMandrake.FlameStatues.RM_CompProperties_FlamePoints">
         <points>
-          <li><offset>(0,0,0.5)</offset><size>0.35</size></li>   <!-- crown -->
+          <li><offset>(0,0,0.60)</offset><size>0.35</size></li>   <!-- crown vent, measured (0.50,0.16) -->
         </points>
         <qualityScalingEnabled>true</qualityScalingEnabled>
         <fireGlowFleckIntervalTicks>90</fireGlowFleckIntervalTicks>
@@ -82,6 +84,7 @@
     <label>flame dancer</label>
     <description>A lithe abstract figure with arms raised and palms cupped upward as vents, a third vent in its crown. Fed with chemfuel, all three vents burn.</description>
     <graphicData>
+      <texPath>Things/Building/Art/RM_FlameStatues/RM_FlameStatue_Dancer</texPath>
       <drawSize>(3,3)</drawSize>
     </graphicData>
     <fillPercent>0.5</fillPercent>
@@ -115,9 +118,9 @@
       </li>
       <li Class="RimMandrake.FlameStatues.RM_CompProperties_FlamePoints">
         <points>
-          <li><offset>(0.32,0,0.61)</offset><size>0.35</size></li>   <!-- right palm -->
-          <li><offset>(-0.30,0,0.63)</offset><size>0.35</size></li>   <!-- left palm -->
-          <li><offset>(0,0,1.15)</offset><size>0.55</size></li>   <!-- crown -->
+          <li><offset>(0.66,0,1.34)</offset><size>0.35</size></li>   <!-- right palm, measured (0.72,0.08) -->
+          <li><offset>(-0.67,0,1.34)</offset><size>0.35</size></li>   <!-- left palm, measured (0.28,0.08) -->
+          <li><offset>(0,0,1.27)</offset><size>0.55</size></li>   <!-- crown, measured (0.50,0.125) -->
         </points>
         <qualityScalingEnabled>true</qualityScalingEnabled>
         <fireGlowFleckIntervalTicks>90</fireGlowFleckIntervalTicks>
@@ -131,6 +134,7 @@
     <description>A seated giant on a carved fire-pit ring, palms up, with vents in its crown and shoulders. Fed with chemfuel, all five vents burn and light a wide room.</description>
     <size>(2,2)</size>
     <graphicData>
+      <texPath>Things/Building/Art/RM_FlameStatues/RM_FlameStatue_Colossus</texPath>
       <drawSize>(4,4)</drawSize>
     </graphicData>
     <fillPercent>0.5</fillPercent>
@@ -164,11 +168,11 @@
       </li>
       <li Class="RimMandrake.FlameStatues.RM_CompProperties_FlamePoints">
         <points>
-          <li><offset>(0.62,0,0.5)</offset><size>0.45</size></li>   <!-- right palm -->
-          <li><offset>(-0.62,0,0.5)</offset><size>0.45</size></li>   <!-- left palm -->
-          <li><offset>(0,0,1.6)</offset><size>0.7</size></li>   <!-- crown -->
-          <li><offset>(0.72,0,1.05)</offset><size>0.35</size></li>   <!-- right shoulder vent -->
-          <li><offset>(-0.72,0,1.05)</offset><size>0.35</size></li>   <!-- left shoulder vent -->
+          <li><offset>(1.32,0,-0.95)</offset><size>0.45</size></li>   <!-- right fire-pit vent, measured (0.83,0.765) -->
+          <li><offset>(-1.32,0,-0.95)</offset><size>0.45</size></li>   <!-- left fire-pit vent, measured (0.17,0.765) -->
+          <li><offset>(0,0,2.03)</offset><size>0.7</size></li>   <!-- crown, measured (0.50,0.035) -->
+          <li><offset>(0.72,0,1.17)</offset><size>0.35</size></li>   <!-- right shoulder vent, measured (0.68,0.23) -->
+          <li><offset>(-0.72,0,1.17)</offset><size>0.35</size></li>   <!-- left shoulder vent, measured (0.32,0.23) -->
         </points>
         <qualityScalingEnabled>true</qualityScalingEnabled>
         <fireGlowFleckIntervalTicks>90</fireGlowFleckIntervalTicks>
