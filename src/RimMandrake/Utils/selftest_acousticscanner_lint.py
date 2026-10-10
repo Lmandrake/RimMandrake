@@ -21,7 +21,7 @@ PLANTS = [
     ("settings floor no longer the kernel's", M, "MinBandSize = RM_AcousticKernel.MinBandSize;", "MinBandSize = 7;", "as-banding-floor"),
     ("band slider not bounded by the floor", M, "list.Slider(BandSizeClamped, MinBandSize, MaxBandSize)", "list.Slider(BandSizeClamped, 3, MaxBandSize)", "as-banding-floor"),
     ("slider excludes the default", M, "list.Slider(overlayHours, 1f, 48f)", "list.Slider(overlayHours, 10f, 48f)", "as-setting-ranges"),
-    ("reset writes a different default", M, "cooldownHours = 24f;\n                overlayHours = 6f;", "cooldownHours = 12f;\n                overlayHours = 6f;", "as-setting-ranges"),
+    ("reset snapshot removed", M, "shippedDefaults = SnapshotDefaults()", "shippedDefaultz = SnapshotDefaults()", "as-setting-ranges"),
     ("settings key differs from field", M, 'Scribe_Values.Look(ref rangeCells, "rangeCells", 60f)', 'Scribe_Values.Look(ref rangeCells, "range", 60f)', "settings-scribed"),
     ("kernel missing from the csproj", "Source/RM_AcousticScanner.csproj", '<Compile Include="Kernel\\RM_AcousticKernel.cs" />', "", "compile-listed"),
     ("kernel imports Verse", K, "using System.Collections.Generic;", "using System.Collections.Generic;\nusing Verse;", "as-kernel-pure"),

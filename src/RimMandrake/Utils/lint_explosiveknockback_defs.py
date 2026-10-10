@@ -121,7 +121,7 @@ def main(argv):
             E("ek-reset", "Reset() never writes %s" % fld)
         elif wrote[fld].strip() != val.strip():
             E("ek-reset", "Reset() writes %s = %s but it is declared %s" % (fld, wrote[fld], val))
-    for m in re.finditer(S + r"\.(\w+) = (?:\(int\))?(?:Mathf\.Round\()?l\.Slider\(" + S + r"\.\1, ([\d.]+)f, ([\d.]+)f\)", modcs):
+    for m in re.finditer(r"(\w+) = (?:\(int\))?(?:Mathf\.Round\()?list\.Slider\(\1, ([\d.]+)f, ([\d.]+)f\)", modcs):
         fld, lo, hi = m.group(1), float(m.group(2)), float(m.group(3))
         v = decl.get(fld)
         if v is None or not lo <= float(v.rstrip("f")) <= hi:

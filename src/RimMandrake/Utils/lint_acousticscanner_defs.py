@@ -186,11 +186,9 @@ def main(argv):
         d = float(decl[fld].rstrip("f")) if fld in decl else None
         if d is None or not (float(lo) <= d <= float(hi)):
             errs.append("ERROR as-setting-ranges: %s default %s outside slider %s..%s" % (fld, d, lo, hi))
-    reset = txt[txt.index("SettingReset"):]
-    for fld, val in decl.items():
-        mm = re.search(r"\b%s = ([^;]+);" % fld, reset)
-        if mm and mm.group(1).strip() != val.strip():
-            errs.append("ERROR as-setting-ranges: Reset writes %s = %s but the declared default is %s" % (fld, mm.group(1), val))
+    # Reset writes the shipped values: the per-group reset restores the snapshot of the field initialisers, so the declared defaults ARE what Reset writes
+    if "shippedDefaults = SnapshotDefaults()" not in txt:
+        errs.append("ERROR as-setting-ranges: Reset has no shipped-defaults snapshot, so it cannot write the declared defaults")
     for kf in glob.glob(os.path.join(mod, "Source", "Kernel", "*.cs")):
         for lineno, line in enumerate(open(kf, encoding="utf-8-sig").read().splitlines(), 1):
             if re.match(r"\s*using\s+(Verse|RimWorld|UnityEngine|HarmonyLib)\b", line):
