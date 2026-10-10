@@ -1,0 +1,603 @@
+{
+ "load": {
+  "status": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "installDetail": "IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok",
+   "startedBy": "bridge-registration",
+   "installedUtc": "2026-10-10T22:34:31.6292293Z",
+   "settings": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\tps\\awareness_settings.json",
+   "settingsNote": "ok",
+   "epoch": 1,
+   "seq": 1,
+   "installSeq": 1,
+   "retained": {
+    "generationTags": 0,
+    "spawns": 0,
+    "incidents": 0,
+    "seen": 25
+   },
+   "evictions": {
+    "generationTags": 0,
+    "seen": 0,
+    "spawns": 0,
+    "incidents": 0
+   },
+   "untaggedGenerations": 0,
+   "loadRespawns": 25,
+   "lateRowsDropped": 0,
+   "scopesTruncated": 0,
+   "scopesUnbalanced": 0,
+   "faults": 0,
+   "switches": {
+    "aware.incident-journal": true,
+    "aware.origin-context": true,
+    "aware.origin-generation": true,
+    "aware.origin-spawn": true,
+    "aware.disk-rows": true,
+    "aware.wild-spawner-block": true,
+    "aware.thing-explain": true
+   },
+   "meters": {
+    "aware.incident-journal": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-context": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-generation": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-spawn": {
+     "calls": 25,
+     "meanUs": 227.808,
+     "maxUs": 5623.6,
+     "totalMs": 5.695,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.disk-rows": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.wild-spawner-block": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.thing-explain": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    }
+   },
+   "disk": {
+    "armed": false,
+    "rows": 0,
+    "dropped": 0,
+    "writerRunning": true
+   },
+   "wildSpawner": {
+    "blocked": false,
+    "skippedTicks": 0,
+    "patch": "not patched"
+   },
+   "generationHook": "not installed (lazy: installs on the first jawa/awareness arm)",
+   "options": {
+    "install.generation-early": false
+   },
+   "foreignThreadCalls": 25,
+   "ticksGame": 5803,
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5803
+   }
+  },
+  "pawnCount": 20,
+  "originRows": 20,
+  "generationKinds": {
+   "null": 20
+  },
+  "preLoadClaims": [],
+  "sample": [
+   {
+    "id": "Human844",
+    "kind": "Colonist",
+    "ourInvolvement": "unknown",
+    "statement": "present at baseline or before recording; origin unknown"
+   },
+   {
+    "id": "Human847",
+    "kind": "Colonist",
+    "ourInvolvement": "unknown",
+    "statement": "present at baseline or before recording; origin unknown"
+   },
+   {
+    "id": "Human850",
+    "kind": "Colonist",
+    "ourInvolvement": "unknown",
+    "statement": "present at baseline or before recording; origin unknown"
+   }
+  ]
+ },
+ "tests": {
+  "arm": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "installDetail": "IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok",
+   "startedBy": "bridge-registration",
+   "installedUtc": "2026-10-10T22:34:31.6292293Z",
+   "settings": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\tps\\awareness_settings.json",
+   "settingsNote": "ok",
+   "epoch": 1,
+   "seq": 1,
+   "installSeq": 1,
+   "retained": {
+    "generationTags": 0,
+    "spawns": 0,
+    "incidents": 0,
+    "seen": 25
+   },
+   "evictions": {
+    "generationTags": 0,
+    "seen": 0,
+    "spawns": 0,
+    "incidents": 0
+   },
+   "untaggedGenerations": 0,
+   "loadRespawns": 25,
+   "lateRowsDropped": 0,
+   "scopesTruncated": 0,
+   "scopesUnbalanced": 0,
+   "faults": 0,
+   "switches": {
+    "aware.incident-journal": true,
+    "aware.origin-context": true,
+    "aware.origin-generation": true,
+    "aware.origin-spawn": true,
+    "aware.disk-rows": true,
+    "aware.wild-spawner-block": true,
+    "aware.thing-explain": true
+   },
+   "meters": {
+    "aware.incident-journal": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-context": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-generation": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-spawn": {
+     "calls": 25,
+     "meanUs": 227.808,
+     "maxUs": 5623.6,
+     "totalMs": 5.695,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.disk-rows": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.wild-spawner-block": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.thing-explain": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    }
+   },
+   "disk": {
+    "armed": true,
+    "until": "2026-10-10T23:11:36.6044168Z",
+    "rows": 0,
+    "dropped": 0,
+    "writerRunning": true
+   },
+   "wildSpawner": {
+    "blocked": false,
+    "skippedTicks": 0,
+    "patch": "not patched"
+   },
+   "generationHook": "installed lazily by jawa/awareness arm at 2026-10-10T22:41:36.6279560Z",
+   "options": {
+    "install.generation-early": false
+   },
+   "foreignThreadCalls": 25,
+   "ticksGame": 31397,
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 31397
+   }
+  },
+  "dry_ShortCircuit": {
+   "success": false,
+   "message": "ShortCircuit canFireNow=False (dry run, nothing fired).",
+   "incident": "ShortCircuit",
+   "category": "ThreatSmall",
+   "canFireNow": false,
+   "forced": true,
+   "fired": false,
+   "windowsOpened": [],
+   "blockedByDialog": false,
+   "points": 35.0,
+   "ticksGame": 31397,
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 31397
+   }
+  },
+  "fire_ShortCircuit": {
+   "success": false,
+   "message": "ShortCircuit did NOT fire. canFireNow=False.",
+   "incident": "ShortCircuit",
+   "category": "ThreatSmall",
+   "canFireNow": false,
+   "forced": true,
+   "fired": false,
+   "windowsOpened": [],
+   "blockedByDialog": false,
+   "points": 35.0,
+   "ticksGame": 31397,
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 31397
+   }
+  },
+  "dry_AnimalInsanityMass": {
+   "success": true,
+   "message": "AnimalInsanityMass canFireNow=True (dry run, nothing fired).",
+   "incident": "AnimalInsanityMass",
+   "category": "ThreatBig",
+   "canFireNow": true,
+   "forced": true,
+   "fired": false,
+   "windowsOpened": [],
+   "blockedByDialog": false,
+   "points": 35.0,
+   "ticksGame": 31397,
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 31397
+   }
+  },
+  "fire_AnimalInsanityMass": {
+   "success": false,
+   "message": "AnimalInsanityMass did NOT fire. canFireNow=True.",
+   "incident": "AnimalInsanityMass",
+   "category": "ThreatBig",
+   "canFireNow": true,
+   "forced": true,
+   "fired": false,
+   "windowsOpened": [],
+   "blockedByDialog": false,
+   "points": 35.0,
+   "ticksGame": 31397,
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 31397
+   }
+  },
+  "journal_after_false": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "switchOn": true,
+   "epoch": 1,
+   "overwritten": 0,
+   "oldestRetainedSeq": 2,
+   "truncatedByLimit": 0,
+   "rows": [
+    {
+     "aseq": 2,
+     "epoch": 1,
+     "tick": 31397,
+     "def": "ShortCircuit",
+     "target": "map:0",
+     "forced": true,
+     "points": 35.0,
+     "called": true,
+     "outerBodyRan": "true",
+     "returned": "false",
+     "workerEntered": "unknown",
+     "workerEnteredWhy": "not instrumented",
+     "pawnsGeneratedDuring": 0,
+     "pawnsSpawnedDuring": 0,
+     "chain": "bridge:jawa/fire_incident#1 > incident:ShortCircuit#2",
+     "statement": "incident ShortCircuit was called; outer body ran: true; returned false; worker entered: unknown"
+    },
+    {
+     "aseq": 3,
+     "epoch": 1,
+     "tick": 31397,
+     "def": "AnimalInsanityMass",
+     "target": "map:0",
+     "forced": true,
+     "points": 35.0,
+     "called": true,
+     "outerBodyRan": "true",
+     "returned": "false",
+     "workerEntered": "unknown",
+     "workerEnteredWhy": "not instrumented",
+     "pawnsGeneratedDuring": 0,
+     "pawnsSpawnedDuring": 0,
+     "chain": "bridge:jawa/fire_incident#3 > incident:AnimalInsanityMass#4",
+     "statement": "incident AnimalInsanityMass was called; outer body ran: true; returned false; worker entered: unknown"
+    }
+   ],
+   "coverage": "TryExecute calls only; an incident body a mod runs without TryExecute is not seen, and deferred deliveries (drop pods, shuttles) land after the call",
+   "ticksGame": 31397,
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 31397
+   }
+  },
+  "queue": {
+   "success": true,
+   "queued": {
+    "incident": "ResourcePodCrash",
+    "points": 35.0,
+    "fireTick": 31457,
+    "retryDurationTicks": 0,
+    "triedToFire": false
+   },
+   "queueCountBefore": 0,
+   "queueCountAfter": 1,
+   "fireTick": 31457,
+   "ticksUntilFire": 60,
+   "note": "Fires only while the game is TICKING (IncidentQueueTick runs on the map/world tick).",
+   "ticksGame": 31397,
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 31397
+   }
+  },
+  "journal_after_queue": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "switchOn": true,
+   "epoch": 1,
+   "overwritten": 0,
+   "oldestRetainedSeq": 2,
+   "truncatedByLimit": 0,
+   "rows": [
+    {
+     "aseq": 2,
+     "epoch": 1,
+     "tick": 31397,
+     "def": "ShortCircuit",
+     "target": "map:0",
+     "forced": true,
+     "points": 35.0,
+     "called": true,
+     "outerBodyRan": "true",
+     "returned": "false",
+     "workerEntered": "unknown",
+     "workerEnteredWhy": "not instrumented",
+     "pawnsGeneratedDuring": 0,
+     "pawnsSpawnedDuring": 0,
+     "chain": "bridge:jawa/fire_incident#1 > incident:ShortCircuit#2",
+     "statement": "incident ShortCircuit was called; outer body ran: true; returned false; worker entered: unknown"
+    },
+    {
+     "aseq": 3,
+     "epoch": 1,
+     "tick": 31397,
+     "def": "AnimalInsanityMass",
+     "target": "map:0",
+     "forced": true,
+     "points": 35.0,
+     "called": true,
+     "outerBodyRan": "true",
+     "returned": "false",
+     "workerEntered": "unknown",
+     "workerEnteredWhy": "not instrumented",
+     "pawnsGeneratedDuring": 0,
+     "pawnsSpawnedDuring": 0,
+     "chain": "bridge:jawa/fire_incident#3 > incident:AnimalInsanityMass#4",
+     "statement": "incident AnimalInsanityMass was called; outer body ran: true; returned false; worker entered: unknown"
+    },
+    {
+     "aseq": 4,
+     "epoch": 1,
+     "tick": 31457,
+     "def": "ResourcePodCrash",
+     "target": "map:0",
+     "forced": false,
+     "points": 35.0,
+     "called": true,
+     "outerBodyRan": "true",
+     "returned": "true",
+     "workerEntered": "unknown",
+     "workerEnteredWhy": "not instrumented",
+     "pawnsGeneratedDuring": 0,
+     "pawnsSpawnedDuring": 0,
+     "chain": "bridge:jawa/incident_schedule#5 > incident:ResourcePodCrash#6",
+     "statement": "incident ResourcePodCrash was called; outer body ran: true; returned true; worker entered: unknown"
+    }
+   ],
+   "coverage": "TryExecute calls only; an incident body a mod runs without TryExecute is not seen, and deferred deliveries (drop pods, shuttles) land after the call",
+   "ticksGame": 34281,
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 34281
+   }
+  },
+  "receipts": [
+   {
+    "actionId": "spawn0",
+    "tool": "jawa/spawn_pawn",
+    "requestedKind": "Thrumbo",
+    "returnedIds": [
+     "Thrumbo148258"
+    ],
+    "toolKinds": [
+     "Thrumbo"
+    ],
+    "readBackKinds": [
+     "Thrumbo"
+    ],
+    "missingOnReadBack": [],
+    "mismatch": false,
+    "toolSuccess": true
+   },
+   {
+    "actionId": "spawn1",
+    "tool": "jawa/spawn_pawn",
+    "requestedKind": "Tribal_Warrior",
+    "returnedIds": [
+     "Human148280"
+    ],
+    "toolKinds": [
+     "Tribal_Warrior"
+    ],
+    "readBackKinds": [
+     "Tribal_Warrior"
+    ],
+    "missingOnReadBack": [],
+    "mismatch": false,
+    "toolSuccess": true
+   },
+   {
+    "actionId": "spawn2",
+    "tool": "jawa/spawn_pawn",
+    "requestedKind": "SpaceRefugee",
+    "returnedIds": [
+     "Human148306"
+    ],
+    "toolKinds": [
+     "SpaceRefugee"
+    ],
+    "readBackKinds": [
+     "SpaceRefugee"
+    ],
+    "missingOnReadBack": [],
+    "mismatch": false,
+    "toolSuccess": true
+   }
+  ],
+  "receiptProblems": [],
+  "meters": {
+   "aware.incident-journal": {
+    "calls": 3,
+    "meanUs": 2835.6,
+    "maxUs": 7980.0,
+    "totalMs": 8.507,
+    "note": "hook body only; Harmony dispatch not included"
+   },
+   "aware.origin-context": {
+    "calls": 0,
+    "meanUs": 0.0,
+    "maxUs": 0.0,
+    "totalMs": 0.0,
+    "note": "hook body only; Harmony dispatch not included"
+   },
+   "aware.origin-generation": {
+    "calls": 7,
+    "meanUs": 884.957,
+    "maxUs": 4071.2,
+    "totalMs": 6.195,
+    "note": "hook body only; Harmony dispatch not included"
+   },
+   "aware.origin-spawn": {
+    "calls": 28,
+    "meanUs": 286.582,
+    "maxUs": 5623.6,
+    "totalMs": 8.024,
+    "note": "hook body only; Harmony dispatch not included"
+   },
+   "aware.disk-rows": {
+    "calls": 0,
+    "meanUs": 0.0,
+    "maxUs": 0.0,
+    "totalMs": 0.0,
+    "note": "hook body only; Harmony dispatch not included"
+   },
+   "aware.wild-spawner-block": {
+    "calls": 0,
+    "meanUs": 0.0,
+    "maxUs": 0.0,
+    "totalMs": 0.0,
+    "note": "hook body only; Harmony dispatch not included"
+   },
+   "aware.thing-explain": {
+    "calls": 0,
+    "meanUs": 0.0,
+    "maxUs": 0.0,
+    "totalMs": 0.0,
+    "note": "hook body only; Harmony dispatch not included"
+   }
+  }
+ }
+}
