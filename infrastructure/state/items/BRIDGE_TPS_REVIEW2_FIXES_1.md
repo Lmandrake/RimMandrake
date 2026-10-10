@@ -24,4 +24,6 @@ Do not trust the previous progress log's "Done" marks; GPT found runtime defects
 - MUST 17 stays OWED to a cold load of the full ~600-mod list: the three-configuration overhead A/B, autostart on the
   full list, the overnight reconstruction, and a standing periodic external observer (belt_watchdog only runs when
   run). C4 here cannot close without it.
+- 2026-10-10 FOUNDRY: C3 (L2) PASS on the minimal list, 7 cases, evidence in Transient/foundry_tps_review2_fixes_20261010.md
+  "C3"; it found and fixed one more defect (a load's save label taken by the transient PreLoadAct Game, 8b6617289).
 
