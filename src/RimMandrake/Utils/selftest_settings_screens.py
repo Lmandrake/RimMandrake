@@ -888,6 +888,10 @@ MODS = {
         "Fresh wreck falls": "NextPulse",
         "Wreck hazards": "Now",
     }, ()),
+    "Visibility": ("RM_VisibilityMod.cs", "Visibility.csproj", {
+        "Colony Visibility raid scaling": "NextPulse",
+        "Launch reset (next gravship launch)": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
