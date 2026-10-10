@@ -182,3 +182,183 @@ Assessed by Sonnet 5.5 against facts generated 2026-10-10T14:47:38-0700. One sec
 **Open:** none | NEEDS OWNER: Keep or cut the Darkest Dungeon incident sounds (borrowed from another game)?
 <sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
 
+### Decorative Cliffs (Continued) (`mlie.decorativecliffs`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/emipa606/DecorativeCliffs (github, MIT; availability yes, MEASURED)
+**Adds:** content: 22 defs: ThingDef 20 (buildable decorative cliffs), DesignationCategoryDef 1, settings def 1; functionality: Decorative cliff walls that slow movement and provide cover; XML only; art: 0.55 MB textures + 0.42 MB asset bundle; 14.1 MB decoded estimate
+**Why:** Cheap, cover-and-slowdown map-dressing; nothing depends on it, nothing of ours touches it. A desert-canyon scenario benefits from buildable cliff dressing, and we have no plan to build it. Source linked and MIT (emipa606/DecorativeCliffs, pushed 2025-06-15).
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · memory 1 texture_decoded_mb_est 14.1 · maintenance 1 repo MEASURED, MIT, pushed 2025-06-15
+**Holds it in / exit:** supplies buildable cliff decor we have not planned -> None
+**Open:** none
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Defensive Positions - Forked (`gondragon.defensivepositions`)
+**Verdict:** KEEP (MEASURED) · **Fit:** neutral · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 16 defs: KeyBindingDef 13, JobDef 1, ThingDef 1; functionality: One-click send-to-battle-station for drafted colonists; small Harmony DLL with map component; art: 0.28 MB textures
+**Why:** QoL that required_mods.md line 1336 and 1503 selects (Forked version for 1.6). Passes the ceiling test trivially (brief 4 test 4). Nothing of ours touches it. Folder carries only a 1.6 version.
+**Problems:** complexity 2 one Harmony DLL, static_ctors 3 · tps 1 map_component_tick FLAG, tiny content · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 no repo URL verified; shipped DLL only
+**Holds it in / exit:** ruled in required_mods.md line 1336 -> None
+**Open:** none
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Designator Shapes (`merthsoft.designatorshapes`)
+**Verdict:** KEEP (MEASURED) · **Fit:** neutral · **Source:** https://github.com/merthsoft/designator-shapes (github, Unlicense; availability yes, MEASURED)
+**Adds:** content: 60 defs: DesignatorShapeDef 37, OverlayGroupDef 12, DrawStyleDef 11; functionality: Build, mine and zone in shapes (circles, lines, fills); Harmony DLL + C# source (39 .cs); art: 0.34 MB textures
+**Why:** Tooling QoL for the colony-builder, patched by VME memes mods only; Unlicense, pushed 2025-08-17. Nothing ours depends on it, and it is a pure interface aid.
+**Problems:** complexity 2 one Harmony DLL, static_ctors 2 · log_noise 0 0 error occurrences in the 550-mod session · maintenance 1 repo MEASURED, pushed 2025-08-17 · interaction 1 patches vanilla; alphamemes/vmemese patch it
+**Holds it in / exit:** none -> None
+**Open:** none
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Dubs Bad Hygiene - Thirst (`dubwise.dubsbadhygiene.thirst`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** https://github.com/Dubwise56/Dubs-Bad-Hygiene (github, None; availability yes, MEASURED)
+**Adds:** content: 0 defs and no XML on disk (xml 0.0 MB; textures 0.33 MB only); functionality: Adds the Thirst need on top of Dubs Bad Hygiene Lite; the Thirst need and drinking jobs live in the Lite assembly (our Sarlacc source cites `DubsBadHygiene.Need_Thirst` in the Lite defs), so this add-on is a switch plus art (INFERRED); art: 0.33 MB textures
+**Why:** The one piece of Dubs Bad Hygiene the owner accepted: design/Jawa/mods/forbidden_mods.md lines 155-160 (rev. 2026-08-04: THIRST-only ADOPTED), and the thirst liability is built into xenotype heat/thirst design. Our code references it: RimMandrake/FlowWorks RM_ColoredWaterBottles.xml MayRequires Dubwise.DubsBadHygiene.Thirst, and the liquids framework design lists 'DBH Lite + Thirst add-on' as a v1 seam. Water scarcity is the intended mechanical pressure (brief 1).
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 1 Dubs repo linked, pushed 2026-09-23 (monorepo of Bad Hygiene)
+**Holds it in / exit:** FlowWorks MayRequire (RM_ColoredWaterBottles.xml); liquids_framework_design.md v1 seam; Sarlacc breach-flood relies on the Thirst need (MapComponent_SarlaccBreachFlood.cs) -> None
+**Open:** Confirm what the add-on file actually enables (it ships no XML).
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Dubs Bad Hygiene Lite (`dubwise.dubsbadhygiene.lite`)
+**Verdict:** KEEP (MEASURED) · **Fit:** neutral · **Source:** https://github.com/Dubwise56/Dubs-Bad-Hygiene (github, None; availability yes, MEASURED)
+**Adds:** content: 246 defs: ThingDef 71, JobDef 27, ResearchProjectDef 22, WorkGiverDef 21, ThoughtDef 17, DubsModOptions 15, SoundDef 11, HediffDef 8; functionality: Toilets, bathing, hygiene needs and moods, drinking jobs and the Thirst need base; 4 DLLs with Harmony and tick flags, 28 static constructors, 22.5 MB; art: 8.1 MB textures; 99.8 MB decoded estimate
+**Why:** Thirst runs on Lite, and Thirst is accepted (forbidden_mods.md lines 155-160), so Lite stays while Thirst stays: FlowWorks MayRequires Lite (RM_ColoredWaterBottles.xml), Sarlacc's mechanism is verified against Lite's NeedDefs, and mandrake.rut.researchretag patches 58 of its research defs. Cost is real: 28 static ctors and 4 DLLs, and the 3 log errors are research-view coordinate collisions against our RUT_Tree_Hearth. The full sim stays forbidden; Lite still ships toilets and bathing as default content, which the 2026-08-04 ruling did not fully address.
+**Problems:** complexity 3 static_ctors 28 (> 20), 4 DLLs, Harmony · tps 2 comp_tick, comp_tick_rare, map_component_tick FLAGS; plumbing/need ticking on a colony; UNMEASURED · memory 2 texture_decoded_mb_est 99.8 (proxy) · log_noise 1 3 occurrences; 'Config error in ModernFixtures: same research view coords and tab as RR_Furniture (RUT_Tree_Hearth)' · interaction 2 patched_by_ours_refs 58 (researchretag); Dubs uses a RUT tree · size 2 disk_mb 22.54
+**Holds it in / exit:** Thirst add-on dependant (dubsbadhygiene.thirst); FlowWorks MayRequire; Sarlacc source; researchretag 58 refs -> None
+**Open:** Are Lite's toilets, showers and hygiene need switched off in its settings (DubsModOptions 15)? If not, the forbidden full-sim creeps in through Lite. | NEEDS OWNER: Do you accept Lite's toilets, bathing and hygiene mood effects as the cost of Thirst, or should they be switched off or cut?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Dubs Mint Minimap (`dubwise.dubsmintminimap`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/Dubwise56/Dubs-Mint-Minimap (github, None; availability yes, MEASURED)
+**Adds:** content: 8 defs (SoundDef 3, KeyBindingDef 2, ThingDef 2); functionality: Adds an on-screen minimap with options and a ping tool; 9 MB DLL; art: 0.79 MB textures
+**Why:** UI QoL (brief 4 test 4), Dubs repo linked and pushed 2026-09-21. Named as an active neighbour in the Messy Conduit design (messy_conduit_design_2026-10-02.md 8.9). One caution: a minimap can show terrain the Route-B fog hides; I did not measure it. Nothing ours touches it.
+**Problems:** complexity 2 two DLLs, Harmony, static_ctors 8 · size 2 disk_mb 11.32 (9.1 MB assemblies) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 1 repo MEASURED pushed 2026-09-21
+**Holds it in / exit:** none -> None
+**Open:** Does the minimap draw fogged or unexplored cells under NWN Real Fog of War?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Engines Unlimited (`nep.enginesunlimited`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 0 defs; 1 patch op (xpath without a defName); ships a 2.9 MB non-standard file; functionality: Removes the limit on how many engines a gravship can use; art: 0.43 MB textures
+**Why:** Redundant and wrong-direction. design/Jawa/worldbuilding/gravship_flight_invariants.md (lines 183, 352-362) records that Engines Unlimited patches every thruster to maxSimultaneous 9000 and the live def reads 20 small / 10 large from Bigger Gravships (redmattis.biggergravship, in the list), which patches after all XML: the mod does not survive. Its intent (unlimited engines) also runs against the owner's caps. Retirement: dependants [], no defs, no inheritance. Doc claims were measured live; I re-read none of it.
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 no repo found (steam-only); XML only so the shipped files are the source · interaction 2 patches every thruster defName-less; overridden by Bigger Gravships
+**Holds it in / exit:** none -> None
+**Open:** The invariants doc is dated; re-read thruster maxSimultaneous live if the cap matters.
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Epochs - Incense (`det.epochsincense`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 8 defs: EffecterDef 2, FleckDef 2, ThingDef 2, ThoughtDef 2; functionality: Incense burners for churches and ritual rooms, with smoke effects and a mood thought; depends on VFE Framework; art: 1.18 MB textures; 15.9 MB decoded estimate
+**Why:** Decorative ritual item from a medieval-church-flavoured 'Epochs' mod set; nothing depends on it, and Ta'Baa's theology and Rakata ritual spaces are ours to dress. Under the donor-port ruling its two ThingDefs are portable. Exit: unfiled port or drop, not urgent.
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 no repo found (steam-only); XML only so the shipped files are the source · memory 1 texture_decoded_mb_est 15.9
+**Holds it in / exit:** none; placed incense UNMEASURED -> unfiled: EPOCHS_INCENSE_PORT_OR_DROP
+**Open:** none
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Epochs - Pyrinth (`det.epochspyrinth`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (MEASURED) · **Fit:** neutral · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 13 defs: ThingDef 11 (ore, torches, heaters, braziers, pylon, blade), EffecterDef 2; functionality: Non-refuelable torches, heaters and braziers from pyrinth ore; the mod absorbed into our tier; art: 1.92 MB textures; 37.1 MB decoded estimate
+**Why:** We already built the absorbed copy: src/RimMandrake/Pyrinth (`mandrake.rm.pyrinth`) preserves the defNames verbatim and is explicitly NOT YET DEPLOYABLE because loading both collides (its About, lines 15-17). CRYSTAL_INGEST_EXECUTION_1 is done and gated the Lantern Deeps scatter by patching the live donor def. Holding it in: mandrake.rm.biomes (1 ref), Pyrinth (1 ref) and the Lantern Deeps gate patches; so the donor stays until a retirement item swaps in the absorbed pack.
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 no repo found (steam-only); XML only so the shipped files are the source · interaction 2 patched_by_ours_refs 2; same-defName collision if the absorbed pack is deployed alongside
+**Holds it in / exit:** Lantern Deeps gate patches the LIVE donor (RUT_LanternDeepGatePyrinth.xml); mandrake.rm.biomes and mandrake.rm.pyrinth patched_by refs; absorbed pack dormant by design -> CRYSTAL_INGEST_EXECUTION_1 (done) / unfiled: EPOCHS_PYRINTH_RETIRE_ACTIVATE_RM_PYRINTH
+**Open:** Which step flips: remove the donor and activate rm.pyrinth in one load round?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Extra Explosion Effects (`keshash.extraexplosioneffects`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** none (C# source inside the mod folder, None; availability yes, MEASURED)
+**Adds:** content: 12 FleckDefs; one Harmony DLL with C# source (10 .cs); functionality: More explosion visual effects; the Harmony part renders them; art: 0.26 MB textures
+**Why:** Cosmetic; ships its C# source in the folder, which makes any later fix ours to carry. Sits beside Better Explosions (nephlite.advexplosions), another explosion visual mod; I did not measure a conflict. Nothing ours touches it.
+**Problems:** complexity 2 one Harmony DLL, no static ctors · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 source ships in folder; no repo URL verified · interaction 1 adds flecks; overlaps Better Explosions (not measured)
+**Holds it in / exit:** none -> None
+**Open:** Pair with Better Explosions: do their flecks double up?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### FancyRats+ (`tyrannidae.fancyratsplus`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 0 declared defs; 16 patch ops (FancyRats 6, Alpha Biomes 5, Core 3); functionality: Re-textures the FancyRats pet-rat mod and wires the variants into Alpha Biomes spawns; requires armoredampharos.fancyrats (in the list); art: 0.94 MB textures; 26.8 MB decoded estimate
+**Why:** Art-only retexture of a donor pet-rat mod: no donor art is kept (brief 2, memory no-donor-art-kept), and fancy domestic rats are an Earth-recognizable animal the recognizability rule keeps out of starved desert biomes (brief 4 test 3). It also wires itself into Alpha Biomes, a donor we are retiring (donor_retirement_plan). Retirement cost: nothing depends on it; FancyRats itself is outside this batch and needs its own verdict; placed pet rats in the save are UNMEASURED.
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 no repo found (steam-only); XML only so the shipped files are the source · interaction 2 patches Alpha Biomes spawns (5 ops), a donor with its own retirement
+**Holds it in / exit:** none; requires FancyRats (separate verdict) -> None
+**Open:** Verdict for armoredampharos.fancyrats must match; if FancyRats is eliminated this follows. | NEEDS OWNER: Do ordinary-looking pet rats belong in a Star Wars-style desert campaign, or should both FancyRats mods go?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Firefoam poppers aren't ugly! (`realify.firefoam`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 0 declared defs; 1 patch op (Core + Odyssey); functionality: Makes firefoam poppers neutral for beauty instead of -8; art: 0.45 MB textures
+**Why:** One-line balance tweak to an Odyssey defence building; nothing depends on it, nothing of ours patches the popper. Odyssey is assumed present (DLC ruling).
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 no repo found (steam-only); XML only so the shipped files are the source
+**Holds it in / exit:** none -> None
+**Open:** none
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Fortifications - Neolithic (`aoba.fortress.neolithic`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 7 ThingDefs; 1 patch op (needs Fortified Features Framework); functionality: Neolithic wooden and earthen fortifications (palisades, ramparts); art: 1.45 MB textures; 13.2 MB decoded estimate
+**Why:** Tribal-era defensive structures for camps; the loop is 'land, camp, explore' (brief 1) and the player has hard starts, so cheap wall variety is on-genre and we have no plan to build palisades. 7 defs, no code. Depends on Fortified Features Framework, which is not in this batch. Nothing ours touches it.
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 no repo found (steam-only); XML only so the shipped files are the source · memory 1 texture_decoded_mb_est 13.2
+**Holds it in / exit:** supplies defensive building variety we have not planned -> None
+**Open:** none
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Giddy-Up 2 - Continued (`memegoddess.giddyup`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** https://github.com/MemeGoddess/GiddyUp2 (github, None; availability yes, MEASURED)
+**Adds:** content: 16 defs: JobDef 4, ConceptDef 3, PawnColumnDef 3, RecipeDef 2, HediffDef 1; 98 patch ops (110 into Core, 23 Odyssey, 8 Ideology, facial-animation and Vehicle Framework); functionality: All-in-one fork of Giddy-Up: pawns ride animals, caravan riding, battle mounts; one Harmony DLL with map_component_tick, 96 .cs files shipped; art: 0.73 MB textures
+**Why:** Rideable mounts fit a desert caravan crew (required_mods.md line 1044: Banthas as reflavoured pack animals, 'optional Giddy-Up 2'), and it is a mobility/cargo mod within the guardrail. It is hooked into our animal work: gen_creature_register.py lists GiddyUp.CompOverlay, and src/RimStarWars/SWBestiary/Patches/SeasWaterline/Waterline_Lane1.xml documents that a duplicate (biome, animal) wildBiomes pair made BiomeDef.CommonalityOfAnimal throw ArgumentException, killing GiddyUp.MountUtility.BuildAnimalBiomeCache. That means roster edits can break it. 98 patch ops into vanilla give a broad blast radius.
+**Problems:** interaction 2 98 patch ops touching Core pawn/animal defs; BuildAnimalBiomeCache breaks on duplicate biome-animal keys (SWBestiary comment) · complexity 2 one Harmony DLL, static_ctors 3 · tps 1 map_component_tick FLAG; mount logic only · log_noise 0 0 error occurrences in the 550-mod session · maintenance 1 repo MEASURED, pushed 2026-09-25
+**Holds it in / exit:** our creature register and SWBestiary Waterline patch (cache coupling); Vehicle Framework patches it -> None
+**Open:** Which of our creatures should be mountable, and does every one carry the Giddy-Up flags?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Gravship Raids (`sk.gravshipraids`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** https://github.com/AhHanie/Rimworld-Gravship-Raids (github-search name match, mit; availability unverified, INFERRED)
+**Adds:** content: 44 defs: GravshipRaidPrefabDef 13, GravshipRaidTemplateDef 11, ThingDef 8, IncidentDef 2, PawnsArrivalModeDef 2, RaidStrategyDef 2, ScenarioDef 2; functionality: Enemy gravship and shuttle raids; if the whole raid is killed, the gravship stays and can be captured; Harmony DLL with map component tick; art: 0.84 MB textures; 5.3 MB decoded estimate
+**Why:** required_mods.md line 1287: ADOPTED, thematically perfect for a gravship campaign, with a DECISION flagged: protect the single-authored-hull invariant (#15) by preferring salvage-only on captured enemy hulls. That decision is not recorded as made (no ruling found), so the mod stays but with an open question. Fits the Empire as orbital pursuer (brief 1). Also gets prefab structures (PrefabDefs) into map_content_injection_research.md. Pushed 2026-10-08, source match INFERRED.
+**Problems:** complexity 2 one Harmony DLL, static_ctors 3 · tps 1 map_component_tick FLAG during raids; UNMEASURED · log_noise 0 0 error occurrences in the 550-mod session · maintenance 1 github-search match pushed 2026-10-08, MIT · interaction 2 adds ScenarioDef x2 and raid strategies; our raid-redesigner/Oracle work may share incidents
+**Holds it in / exit:** adopted in required_mods.md; single-hull invariant #15 decision pending -> None
+**Open:** Can the player keep a captured enemy gravship (second hull) or only salvage it? | NEEDS OWNER: When a raiding gravship is captured, may you keep and fly it, or only strip it for parts (single-hull rule)?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### High Tech Helmets Give Tox Gas Resistance (`ael.tua.helmetsaddtoxresistance`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 0 declared defs; 8 patch ops into Royalty, Core, Biotech; functionality: Gives high-tech helmets (recon, marine, cataphract) toxic gas resistance; art: 0.11 MB textures
+**Why:** Small realism patch; nothing depends on it. One thing to watch: our mandrake.rsw.armoury restretches apparel values and 'loads last', so its helmet numbers may shadow or stack with this patch (not measured).
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 no repo found (steam-only); XML only so the shipped files are the source · interaction 1 patches vanilla apparel; Armoury restretch could shadow it
+**Holds it in / exit:** none -> None
+**Open:** Does Armoury re-set helmet toxResistance after this patch?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Knick Knacks - Let your colonists decorate! (`vaguelysexual.modpackageid.goeshere`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 11 defs: ThingDef 7, JoyGiverDef 2, JobDef 1, JoyKindDef 1; functionality: Knick-knack decorations pawns place themselves as a recreation; 1 Harmony DLL; packageId is a placeholder; art: 0.32 MB textures; 24.7 MB decoded estimate
+**Why:** Cosmetic joy source; fits an 'overstuffed' lived-in ship (required_mods.md line 1435 wants clutter). Depends on Harmony and VFE Core patch. Placeholder packageId 'vaguelysexual.modpackageid.goeshere' means no clean MayRequire on it. Nothing ours touches it.
+**Problems:** complexity 2 one Harmony DLL; comp_tick and world_component_tick FLAGS · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 no repo found (steam-only); XML only so the shipped files are the source · memory 1 texture_decoded_mb_est 24.7
+**Holds it in / exit:** none -> None
+**Open:** Joy: does a decoration-based joy source bypass recreation scarcity?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Medieval Melee Sounds (`bonible.medievalmeleesounds`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None; availability no, INFERRED)
+**Adds:** content: 0 defs (census); 9 patch ops into Core sounds; functionality: Replaces melee hit sounds with Monty Python-style clanging recordings; art: 0.67 MB sounds
+**Why:** Comedy sound replacement with Earth/medieval identity; the sword-and-lightsaber frontier tone (brief 1, 4 test 3) wants its own audio. Sound-only: dependants [], no ThingDefs, no placed Things, trivial retirement. Marked card_worthy as audio taste.
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 2 no repo found (steam-only); XML only so the shipped files are the source
+**Holds it in / exit:** none -> None
+**Open:** none | NEEDS OWNER: Keep or cut the Monty Python melee sounds?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Medieval Signs (`mewn.medievalsigns`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** https://github.com/MewnGoddess/Medieval-Signs (github, None; availability yes, MEASURED)
+**Adds:** content: Census shows 0 defs (blind spot: content is under a 1.5/ folder, 1 xml); the description lists 14 signboards: inn, flophouse, tavern, stables, armory, archery, library, magic shop, butcher, tailor, quarry, blacksmith, apothecary, shop; functionality: Decorative signboards; art: 1.32 MB textures; 41.1 MB decoded estimate
+**Why:** Medieval fantasy signage (inn, tavern, magic shop) is off-genre for the scenario (brief 4 test 3; donor_proper_noun_backlog). A starship crew wants its own signage in Aurebesh style, which may be a small owned item. Retirement: dependants [], placed signs in the save are UNMEASURED so run the save check first.
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 1 repo MEASURED, pushed 2025-08-08 · memory 1 texture_decoded_mb_est 41.1
+**Holds it in / exit:** placed signs UNMEASURED -> unfiled: SHIP_SIGNAGE_OWN_SET
+**Open:** Is a Star Wars style signage set wanted?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Mercer's Backpacks (Continued) (`mlie.mercerbackpacks`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** https://github.com/emipa606/MercersBackpacks (github, MIT; availability yes, MEASURED)
+**Adds:** content: 4 ThingDefs (backpack apparel); asset bundle 0.11 MB; functionality: Backpacks as wearable items, with a more colourful stuff-coloured type; art: 0.33 MB textures; 5.9 MB decoded estimate
+**Why:** Scavengers carry gear; backpacks fit the salvage crew. MIT repo (emipa606), pushed 2026-07-24. The unknown is whether they add carry capacity or armour that would break the scarcity pillar; I did not read the stat values. Nothing ours touches it.
+**Problems:** complexity 1 XML only (dll_count 0) · log_noise 0 0 error occurrences in the 550-mod session · maintenance 1 repo MEASURED, MIT, pushed 2026-07-24
+**Holds it in / exit:** none -> None
+**Open:** What do the backpack stat offsets do to carry capacity?
+<sub>facts: batch 13 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
