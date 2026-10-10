@@ -50,6 +50,10 @@ PORTS = [
      "roster": "Defs/BiomeDefs/RM_Miasma.xml", "placeholder_tex": set()},
     {"mod": "Miasma", "file": "Defs/ThingDefs_Races/RM_DecayDrake.xml", "ours": "RM_DecayDrake", "donor": "AA_DecayDrake",
      "roster_mod": "Cauldron", "roster": "Defs/BiomeDefs/RM_Cauldron.xml", "placeholder_tex": set()},
+    {"mod": "Cauldron", "file": "Defs/ThingDefs_Races/RM_RipperHound.xml", "ours": "RM_RipperHound", "donor": "AA_RipperHound",
+     "roster": None, "uncast_why": "the owner's Cauldron sheet cut AA_RipperHound from RM_Cauldron (8eaa2b252, 2026-10-09)",
+     "placeholder_tex": {"Things/Pawn/Animal/AA_RipperHound/AA_RipperHound", "Things/Pawn/Animal/AA_RipperHound/AA_RipperHoundLeftClaw",
+                         "Things/Pawn/Animal/AA_RipperHound/AA_RipperHoundRightClaw"}},
 ]
 
 
@@ -91,6 +95,9 @@ def check_port(p):
     refs = set(re.findall(r"<(?:resourceDef|initialAbility|defaultProjectile|li)>(RM_\w+)</", body))
     for r in sorted(refs - defined):
         bad.append("%s: references %s, which its file does not define" % (p["ours"], r))
+    if p["roster"] is None:  # deliberately cast nowhere; the row says why
+        notes.append("%s: NOT CAST - %s" % (p["ours"], p["uncast_why"]))
+        return bad, notes
     roster_mod = os.path.join(ROOT, p.get("roster_mod", p["mod"]))
     roster = _strip_comments(open(os.path.join(roster_mod, p["roster"]), encoding="utf-8").read())
     if not re.search(r"<%s\b[^>]*>[\d.]+</%s>" % (p["ours"], p["ours"]), roster):

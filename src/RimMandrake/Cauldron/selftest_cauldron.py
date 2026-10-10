@@ -694,8 +694,10 @@ def source_checks():
     for f in V.DEFAULTS:
         if not re.search(r'Scribe_Values\.Look\(ref %s, "%s"' % (f, f), blob):
             bad.append("Mod Settings field %s is not scribed in ExposeData" % f)
-    if len(V.SHIPPED) != 44 or len(V.FLORA) != 17 or len(V.KINDS) != 4:
-        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 44 / 17 / 4); update "
+    # 50/6 since DONOR_CODE_PLAIN_PORTS_1: + RM_Radyak (ThingDef, PawnKindDef, RM_OssrithCrystal, its RecipeDef)
+    # and RM_RipperHound (ThingDef, PawnKindDef). The walk's wild-kinds step spawns every KIND, both included.
+    if len(V.SHIPPED) != 50 or len(V.FLORA) != 17 or len(V.KINDS) != 6:
+        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 50 / 17 / 6); update "
                    "the walk and this selftest together" % (len(V.SHIPPED), len(V.FLORA), len(V.KINDS)))
     return bad
 

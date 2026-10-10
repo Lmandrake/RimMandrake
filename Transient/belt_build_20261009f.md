@@ -50,3 +50,16 @@ validation.py static_checks). Offline only — nothing loaded.
   flora, so the mechanic rarely fires there, same as with the donor. Widening it is a design call, not made here.
 - Body/sounds/meat/dessicated -> vanilla (QuadrupedAnimalWithPawsAndTail, Iguana). Art ours, installed via art.py.
 - Both roster rows (RM_Miasma, RM_Cauldron) now RM_DecayDrake, unguarded.
+### RipperHound -> RM_RipperHound (Cauldron) — built, CAST NOWHERE
+- `src/RimMandrake/Cauldron/Defs/ThingDefs_Races/RM_RipperHound.xml`: own PawnRenderTreeDef with the base game's
+  PawnRenderNodeProperties_Spastic for the claws (sheet rec). Also swapped donor code the sheet missed: claw damage
+  AA_ExtraDamageInsectoidsClaws ran AlphaBehavioursAndEvents.DamageWorker_ExtraDamageInsectoids -> plain Scratch
+  (anti-insect bonus lost). Body AA_ExtraClawedQuadruped -> QuadrupedAnimalWithPawsAndTail.
+- ART OWED: no render of ours exists; body+claw texPaths on donor paths (placeholder).
+- ⚠️ CONFLICT for the owner: the Cauldron sheet enactment cut AA_RipperHound from RM_Cauldron (8eaa2b252, 07:44
+  today) before the donor-code sheet (built 13:46, read the pre-cut roster) offered "port" (prefill, not an active
+  click). Ported as picked, but no roster casts it. Owner: give it a home or drop the def.
+- Cauldron selftest census 44/4 -> 50/6 (the two ports' defs); validation walk's kind floor 4 -> 6.
+### Selftests: 5 RED before this commit, 4 unrelated and pre-existing (FlowWorks settings/harmony lint, Greentide
+acceptance A3, PLASTEEL_DURASTEEL_MERGE_1 prose in items/). The 5th was Cauldron's census, caused by these ports, fixed.
+### DONE: all 7 ported. Offline only; nothing loaded in game.
