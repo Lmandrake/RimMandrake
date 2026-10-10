@@ -36,9 +36,10 @@ Both dungeons are the same reveal economy wearing two faces (canon.yml
 `assailant_reveal_arc`, owner ruling on point 4 of `VAULT_DUNGEON_CONCEPT_1`):
 ship memory-fragments triangulate, the Forgotten Arsenal/Free Droid Enclave
 (FDE) trust chain gates what the ship will reveal, and both site families sit
-in the same deep-Umbra neighborhood (Assailant complex adjacent to tile 20853;
-20853 itself is vault V6). **The frozen Rakata and their frozen killer sleep
-near each other — one pilgrimage, two revelations.**
+in the Umbra: the Assailant complex IS the ancient war lab beneath the Chill
+(§2.2, `ANCIENT_WAR_LAB_1`; access crag tile 5873), and vault V6 is tile 20853
+on the same nightside. **The frozen Rakata and their frozen killer sleep in
+the same dark — one pilgrimage, two revelations.**
 
 - **Register guard** (canon.yml `rakata.victims_and_tyrants`): the Rakata are
   victims AND were themselves tyrants; the Assailant is never named, never
@@ -57,31 +58,57 @@ near each other — one pilgrimage, two revelations.**
   already-painted world, authored in place via the bridge's KCSG tools
   (§3.5) exactly the way every other piece of Ash'karr content is authored.
 
-## 2. `ASSAILANT_DUNGEON_BUILD_1` — the first-impact complex
+## 2. `ASSAILANT_DUNGEON_BUILD_1` — the impact site: the war lab
 
 ### 2.1 What it is
 
-**The Assailant's first-impact point** — where its landing struck, "unknown and
-undetected at the time, and triangulated far too long after all hope of
-response had been lost" (canon.yml `assailant_reveal_arc`, owner verbatim). A
-HUGE frozen complex, inert and dormant since the fall — not a routine
-map-embedded ancient horror (those already occur on regular maps constantly
-per the Arsenal/Rakata/Assailant background hum); this is *the* site, the one
-place the whole war traces back to.
+**The Assailant's one and only impact site, and the ancient war lab built over
+it, are the same place.** Owner, 2026-10-10 (story sitting card 5, typed):
+*"It's the same location. It landed, secretly, and unfortunately immediately
+sent out some scouts that infected other regions. The Rakata thought they came
+and contained it immediately, built the war lab over it, and eventually
+excavated a huge site around the impact crater in their efforts to study,
+control, and contain it. But before that could ever succeed or fail it became
+clear the original scouts were replicating all over the planet and the war was
+on. Eventually containment breach in the War Lab triggered emergency statis
+systems that froze them there, and they waited out armageddon in suspended
+animation. Eventually the Chill propane liquid body filled in over the War Lab
+and forgot their story from the world... until now."*
 
-### 2.2 Site — deep Umbra
+So this dungeon is the war lab (`ANCIENT_WAR_LAB_1`, `biomes/the_propane_lakes.md`
+§8) and the huge excavated crater the Rakata dug around the impact point. It
+was "unknown and undetected at the time, and triangulated far too long after
+all hope of response had been lost" (canon.yml `assailant_reveal_arc`). It is
+not a routine map-embedded ancient horror (those occur on regular maps per the
+Arsenal/Rakata/Assailant background hum); it is *the* site, the one place the
+whole war traces back to.
 
-Fixed, deep-nightside, adjacent to tile **20853** (`VAULT_DUNGEON_BUILD_1`'s V6,
-held for the frozen-Rakata vault). Region **The Umbra** (arc > 152°, the named
-region already on the gazetteer — `ASHKARR_WORLD_DEFINITION.md` §3,
-`worldgen_interactive_def.md` line 814 lists it among the 28 named regions; not
-a name to invent). Pilgrimage-distance past the FDE's two deep-nightside
-refugee seats (Coldfire, The Cracking Station) — "the last waypoint, rumor
-carriers" (owner ruling, `ASSAILANT_FLESH_DUNGEON_1` history 2026-08-30). Exact
-tile lands from the vault-siting analysis at a down-window placement pass —
-**not committed to the world by this doc**; that bridge write is HELD FOR
-OWNER/FOUNDRY at the next down-window (`rimworld-world-editing`'s
-`world_commit` step, one driver at a time per `rimbridge`).
+What waits inside, owner 2026-10-10 (card 1, typed): the Assailants elsewhere
+*"have effectively been neutralized by time and the slow efforts of the rust
+cathedral over millennia already … Except the original assailants left in the
+war lab. They remain fully armed and capable of reinfecting the entire planet
+just like before and starting it all over again."* Its register (card 2,
+typed): *"Horrible experiments frozen in progress against the Assailants,
+hideous mutations and adaptations the other way too. Two immoral forces locked
+in lethal combat, and an emergency system activation that froze the whole
+place a LONG time ago when containment was detected... but it was far too
+late."* The specimens (card 3, typed): *"Player decides what to do. Then there
+is the start of a breakout. Then a chance to recover or fail."* That beat is
+owed design: `WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`.
+
+### 2.2 Site — beneath the Chill, in the Umbra
+
+The war lab lies beneath the Chill (the propane lake, `RM_TheChill`) in the
+Umbra region, under the island crag at tile **5873** that reads as the lab's
+access (`the_propane_lakes.md` §8; `the_chill_warlab_routes_spec_2026-09-27.md`).
+Region **The Umbra** is the named gazetteer region (`ASHKARR_WORLD_DEFINITION.md`
+§3). Vault V6 (tile 20853) is a separate site on the same nightside. The FDE's two deep-nightside refugee seats (Coldfire,
+The Cracking Station) are "the last waypoint, rumor carriers" (owner ruling,
+`ASSAILANT_FLESH_DUNGEON_1` history 2026-08-30). The
+entry gate is the war lab's, not a separate one: the lake's ending (or an
+early blast) reveals it, and the Spire's command codes open it (§2.6). Bridge
+placement stays HELD FOR OWNER/FOUNDRY at a down-window
+(`rimworld-world-editing`'s `world_commit`, one driver at a time).
 
 ### 2.3 The thaw-gate
 
@@ -113,6 +140,11 @@ location."*
   is established (owner ruling point 5, `ASSAILANT_FLESH_DUNGEON_1`) — the
   quest chain that leads a crew here is downstream of droid trust → Cathedral
   trust (§2.6), not an early-game find.
+- Since the complex is the war lab (§2.1), this core socket and the war lab's
+  own gate (lake ending or early blast, then the Spire's codes) are one
+  dungeon's gates. How they sit together, and how `ASSAILANT_DUNGEON_BUILD_1`
+  and `ANCIENT_WAR_LAB_1` become one build, is owed:
+  `ASSAILANT_WARLAB_BUILD_MERGE`.
 
 ### 2.4 Layout concept (drafted, not authored)
 
@@ -158,19 +190,37 @@ Assailant guardians with ordinary Geonosian ones. The reskin pass itself is
 new art work, not scoped/drafted here — a `generating-rimworld-sprites` job
 for a future build session.
 
-### 2.6 Learning chain / endgame (restated, RULED — not re-litigated)
+### 2.6 Learning chain / endgame (RULED)
 
 Owner ruling verbatim (canon.yml `assailant_reveal_arc`): the ship "remembers
 how to talk to the Rust Cathedral, only to discover it's been talking to the
 FDE and no longer trusts the Cradle." Chain: **earn droid trust → earn
 Cathedral trust → Cathedral reveals "Where the infection started... and
-remains to this day" (this dungeon's location) → thaw-gate strike → the
-Cathedral wants the Cradle as its pyrrhic surgical strike against the
-Assailant → releasing that knowledge to the Hutts requires a deal protecting
-the Cathedral's "beautiful young children," the droids.** Register: the Rust
-Cathedral SPEAKS (has a voice, treats the droids as its children); FDE
-nightside refugees are the last waypoint before the site. Quest-chain authoring
-for this arc rides `rimworld-quests` and is HELD FOR OWNER/build.
+remains to this day" (the war lab) → the Cathedral wants the Cradle as its
+pyrrhic surgical strike against the Assailant → releasing that knowledge to
+the Hutts requires a deal protecting the Cathedral's "beautiful young
+children," the droids.**
+
+2026-10-10 story sitting, binding on this chain:
+
+- **Cathedral trust opens the Spire, not the war lab** (card 7, typed):
+  *"Earning the Cathedral's trust allows you to enter the Spire to obtain the
+  codes needed to get into the War Lab"*. Order: Cathedral trust → Spire entry
+  → codes → war lab. The Cathedral still never grants the codes themselves
+  (`ashfall_research_base.md` §6).
+- **The strike target is the war lab: the frozen original Assailants** (card
+  11, decision taken by question card). Why the Cathedral wants it (card 1,
+  typed): *"The rust cathedral wants to complete its revenge: destroy them
+  once and for all. Only the sad shattered remains of the assailants will
+  survive as homages to patient hatred. Then there is the fear that the empire
+  might get ahold of it and use it against civilian populations like they did
+  with the Death Star."* How the Cradle strike sits beside the player's own
+  dive into the lab is owed: `CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE`.
+
+Register: the Rust Cathedral SPEAKS (has a voice, treats the droids as its
+children); FDE nightside refugees are the last waypoint before the site.
+Quest-chain authoring for this arc rides `rimworld-quests` and is
+HELD FOR OWNER/build.
 
 ### 2.7 Rulings landed 2026-09-01, and what is still held
 
@@ -182,10 +232,6 @@ for this arc rides `rimworld-quests` and is HELD FOR OWNER/build.
 - **The power core = vanilla `AIPersonaCore`.** No new item, no new art. It is
   already in the campaign's salvage set (`design/Jawa/art/salvage_palette.tsv`);
   the fiction is that only an archotech core runs hot enough.
-- **The tile adjacent to 20853 is chosen by PROCEDURE, not picked offline:** at
-  the bridge pass, take `Find.WorldGrid` neighbours of 20853, keep inside
-  Umbra and off the 121-tile settlement-free set (`vault_siting_prep.md`
-  method), then `world_commit`.
 - **Naming tier: `RUT_`.** Every StructureLayoutDef / QuestScriptDef for this
   complex is campaign content (`design/NAMING_SCHEME_PLAN.md` tier test).
 

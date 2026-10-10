@@ -49,7 +49,7 @@ Companion to: `weeping_stones.md` (frozen sheet), `weeping_stones_flora_roster_2
 | biome | flagship identity (what a player retells) |
 |---|---|
 | Sump | tar industry + tar-beast set-pieces, dig-lottery, vermin telegraphy |
-| Fever Wood | the Tenant — a map-spanning hidden aquifer entity; mirror pools |
+| Fever Wood | the sekkulaath — one creature under the whole water table, reaching through every pool; mirror pools |
 | Rust Cathedral | hum-mood system, living bolts, eel-fishing, wall-tier mining |
 | Webwork | shokkweave monopoly economy, web structures, egg blackmarket |
 | Miasma | the moving salt-line/surge axis; fever-forged boons |

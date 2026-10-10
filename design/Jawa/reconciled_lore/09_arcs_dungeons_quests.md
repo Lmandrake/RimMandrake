@@ -32,7 +32,9 @@
    united, tries to take the Utinni back — in local collaboration with the
    Helix, who turn hostile (ending the Ascendant Ladder boon economy: a
    price the player should see coming). Survive it and the ancients become
-   permanently neutral — dominated. AFTER it, two scenes: the Helix's true
+   permanently neutral — dominated. It starts when enough ancients are woken
+   (a count; owner 2026-10-10, card 13), independent of the crater event.
+   AFTER it, two scenes: the Helix's true
    heart (*"If you will not share your wisdom and power, then I will learn
    from what destroyed you"* — the Rakata's outrage radiating), and the
    Rakatans refused by the Rust Cathedral (*"I am bound to an Empire that no
@@ -67,7 +69,13 @@
 - **The Assailant flesh dungeon** (`ASSAILANT_FLESH_DUNGEON_1`, with the owner)
   — the disgusting biological dungeon and the dark-history reveal it carries;
   the Rakata tyranny surfaces HERE, nowhere earlier. The assailant stays
-  unnamed and unsympathetic.
+  unnamed and unsympathetic. It IS the antipode war lab (`ANCIENT_WAR_LAB_1`)
+  beneath the Chill: the Assailant's one impact site, the lab the Rakata built
+  over it and the crater they excavated around it [owner 2026-10-10, story
+  sitting card 5]. The original Assailants wait there, fully armed, frozen
+  mid-combat with the Rakatan experiments, and the Rust Cathedral wants the
+  Cradle to strike them (canon.yml `assailant_reveal_arc` `site_src`,
+  `strike_target_src`).
 - **The Rust Cathedral** — a map made of treasure whose costs are acid-read
   hazards, the densest Arsenal ground, and sacrilege against the Free Droid
   Enclaves (~10 sacred structures, −15 each, hostility hysteresis;
@@ -81,7 +89,10 @@
   Campaign function RULED 2026-09-12: the Spire was the command center of the
   Rakatan surface-level machine, and its isolated command codes — never ceded
   to the Cathedral, ungrantable by it — are the only way into the antipode war
-  lab once the propane lake's crater event reveals it. Design:
+  lab once the propane lake's crater event reveals it. The Spire IS the
+  Scald's dark tower, in the mountains, visible from the Scald's lake; the
+  Cathedral's trust grants ENTRY to the Spire, never the codes [owner
+  2026-10-10, cards 6–7; canon.yml `rust_cathedral.spire_entry_src`]. Design:
   `worldbuilding/ashfall_research_base.md` §6.
 - **Vault dungeons with the owner** (`VAULT_DUNGEON_CONCEPT_1`) — open design
   item.

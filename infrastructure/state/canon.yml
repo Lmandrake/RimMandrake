@@ -1573,14 +1573,52 @@ assailant_reveal_arc:
     knowledge of value to the Hutts... so long as a deal is brokered to
     protect its 'beautiful young children' the droids." Bound with it ("All of
     this"): ship memory-fragments triangulate; FDE nightside refugees are the
-    last waypoint; the dungeon sits in the deep-Umbra neighborhood of tile
-    20853 with 20853 itself held for vault ③ — the frozen Rakata and their
-    frozen killer sleep near each other, one pilgrimage, two revelations.
-    Register notes: the Rust Cathedral SPEAKS (the whispered voices have a
-    speaker) and holds the droids as its children; the arc chains droid trust
-    → Cathedral trust → location reveal → thaw-gate strike → Hutt knowledge
-    deal. The dungeon is the Assailant's FIRST IMPACT POINT, frozen and
-    undetected, woken only by the players' own power core.
+    last waypoint; the dungeon is in the Umbra, as is vault ③ (tile 20853) —
+    the frozen Rakata and their frozen killer sleep in the same dark, one
+    pilgrimage, two revelations. Register notes: the Rust Cathedral SPEAKS
+    (the whispered voices have a speaker) and holds the droids as its
+    children; the arc chains droid trust → Cathedral trust → Spire entry →
+    codes → war lab, with the Cathedral's strike aimed at the war lab. The
+    dungeon is the Assailant's ONE impact site, which IS the ancient war lab
+    beneath the Chill (site_src below).
+  site_ruled: true
+  site_src: >
+    Owner, 2026-10-10 story sitting card 5, typed: "It's the same location.
+    It landed, secretly, and unfortunately immediately sent out some scouts
+    that infected other regions. The Rakata thought they came and contained
+    it immediately, built the war lab over it, and eventually excavated a
+    huge site around the impact crater in their efforts to study, control,
+    and contain it. But before that could ever succeed or fail it became
+    clear the original scouts were replicating all over the planet and the
+    war was on. Eventually containment breach in the War Lab triggered
+    emergency statis systems that froze them there, and they waited out
+    armageddon in suspended animation. Eventually the Chill propane liquid
+    body filled in over the War Lab and forgot their story from the
+    world... until now." So the flesh complex and the war lab
+    (ANCIENT_WAR_LAB_1) are one site: the lab and the excavated crater
+    around the impact point, beneath the Chill.
+  strike_target_ruled: true
+  strike_target_src: >
+    Owner, 2026-10-10 story sitting: card 11, decision taken by question
+    card — the Cradle's strike target is the war lab, the frozen original
+    Assailants. Card 1, typed: "The assailants have effectively been
+    neutralized by time and the slow efforts of the rust cathedral over
+    millennia already. The Rakatan lost the war, but the rust cathedral
+    ensured the assailants also lost over time too. Except the original
+    assailants left in the war lab. They remain fully armed and capable of
+    reinfecting the entire planet just like before and starting it all over
+    again. The rust cathedral wants to complete its revenge: destroy them
+    once and for all. Only the sad shattered remains of the assailants will
+    survive as homages to patient hatred. Then there is the fear that the
+    empire might get ahold of it and use it against civilian populations
+    like they did with the Death Star." Reconciling the strike with the
+    player's own lab dive is owed (CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE).
+  superseded:
+    - value: "a separate flesh complex adjacent to tile 20853 in deep Umbra"
+      why: >
+        dungeons_arc_spec.md §2.2 (2026-08-30 binding) sited the impact-point
+        complex beside vault V6. The 2026-10-10 card 5 ruling makes the
+        impact site and the war lab one place, beneath the Chill.
 deep_desert_tribes:
   fire_identity_ruled: true
   fire_identity_src: >
@@ -1836,6 +1874,14 @@ rakata:
     Sequencing: the Helix's true-heart reveal (helix_lineage) fires AFTER
     this event; the Cathedral's hatred of the Helix (rust_cathedral) dates
     from their siding with the Assailants here.
+  reclamation_trigger_ruled: true
+  reclamation_trigger_src: >
+    Owner, 2026-10-10 story sitting card 13, decision taken by question card:
+    the Reclamation starts when enough ancients are woken — a count, the
+    number owed tuning. Card 12 (by question card): it is fully independent
+    of the crater event, either order. The built trigger (45 days after a
+    refused claim, vault_thaw_quest_family.md) is owed a change
+    (RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT).
 antiquities:
   ruled: true
   src: >
@@ -2015,6 +2061,14 @@ rust_cathedral:
     (grant/revoke, cathedral_concealment_arc_spec.md §3); the war-lab
     command codes are a separate thing held only at the Spire
     (ashfall_research_base.md §6).
+  spire_entry_ruled: true
+  spire_entry_src: >
+    Owner, 2026-10-10 story sitting card 7, typed: "Earning the Cathedral's
+    trust allows you to enter the Spire to obtain the codes needed to get
+    into the War Lab". The Cathedral grants ENTRY to the Spire, never the
+    codes. Card 6, typed: "They are the same building. It's in the
+    mountains, visible from the huge sea/lake of the Scald" — the Spire IS
+    the Scald's dark tower (SCALD_DARK_TOWER_1).
 trade_moot_urns:
   ruled: true
   src: >

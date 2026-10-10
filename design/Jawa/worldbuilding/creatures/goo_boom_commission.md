@@ -209,7 +209,7 @@ the owner picks it or not (§6)**.
   §1 dungeon-guardians as an **Assailant** row (this pass, same table style as the four
   VQEA Splice rows), under the 2026-09-10 ruling "ONE roster with a dungeon-owner column".
 - **Where it spawns:** inside the Assailant complex only — `ASSAILANT_DUNGEON_BUILD_1`
-  (`dungeons_arc_spec.md` §2: the first-impact complex, deep Umbra, thaw-gated). It is
+  (`dungeons_arc_spec.md` §2: the impact site, which is the war lab beneath the Chill; thaw-gated). It is
   placed by that dungeon's layout generator as a **pawn symbol**, the way
   `gen_vault_layouts.py` registers `PAWN_SYMBOLS` for the Forsaken vaults (the pattern
   `BOOM_FAMILY_CUT_1` removed `RUT_Symbol_Boomsnake` from). Because the complex is inert

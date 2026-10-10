@@ -122,7 +122,8 @@ place on the peak that pretends none of that is happening.
 ## 6. Owner rulings — card sitting 2026-09-12 (and what stays owed)
 
 - **Reveal gating — RULED: encrypted, the antiquities literacy ladder
-  unlocks.** The archive can be seized any time; READING it takes the ladder,
+  unlocks.** The archive can be seized once the player is inside the Spire
+  (entry needs the Cathedral's trust, below); READING it takes the ladder,
   so the truth lands in ladder order and can never front-run the Reclamation
   or the flesh dungeon. The gate must read as legible in-fiction, not
   arbitrary.
@@ -146,7 +147,9 @@ place on the peak that pretends none of that is happening.
   mountains. That's the local name for it." ⇒ Display name: **The Spire**
   (the local name). Art/placement register: thin black needle, disc landing
   pad near the top, intermittently visible through the Scald's mountain
-  turbulence.
+  turbulence. 🔑 **The Spire IS the Scald's dark tower** (`SCALD_DARK_TOWER_1`),
+  owner 2026-10-10 (story sitting card 6, typed): *"They are the same building.
+  It's in the mountains, visible from the huge sea/lake of the Scald"*.
 - **Campaign function — RULED at the plot sitting, 2026-09-12. The Base is
   THE KEY.** Owner verbatim: "This is the Key that opens the frozen War Base
   beneath the Propane Lake on the antipodal node. The Dark Spire was the
@@ -168,6 +171,22 @@ place on the peak that pretends none of that is happening.
   and opens nothing at the lake. This makes the Base a **main-line beat**: the
   campaign's antipodal endgame passes through the Spire's core. The dungeon
   shell, the landmark AND the codes-as-prize build may all proceed.
+- **2026-10-10 story sitting — order, entry and the moment of the codes.**
+  - **The Cathedral's trust grants ENTRY to the Spire, never the codes**
+    (card 7, typed): *"Earning the Cathedral's trust allows you to enter the
+    Spire to obtain the codes needed to get into the War Lab"*. Hard order:
+    Cathedral trust → Spire entry → codes → war lab. The codes stay on the
+    Spire's isolated system, as above.
+  - **Taking the codes is "cold access"**: a machine that does not care who
+    holds it (card 10, decision taken by question card).
+  - **The lake can end before the codes are held** (card 8, typed): *"Blowing
+    up the lake early (harder than you think, but possible) will reveal the War
+    Lab even if it cannot be opened yet. Then the Empire's heat will
+    significantly increase,and a small Imperial force will garrison outside the
+    War Lab that must be defeated to enter and use the codes."* Owed design:
+    `WARLAB_GARRISON_DESIGN_EARLY_BLAST`.
+  - Folding the dark tower's built dungeon and this Base's into one building
+    is owed: `SPIRE_DUNGEONS_MERGE_DARK_TOWER`.
 
 Still owed: the dungeon sitting (KCSG templates, datafile text, cast,
 set-pieces) and the live verify (landmark reads back; dungeon placed and
