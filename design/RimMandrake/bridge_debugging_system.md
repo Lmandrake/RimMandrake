@@ -1,6 +1,6 @@
 # Bridge debugging, observability, testing and process
 
-Status: DRAFT for GPT deep review — 2026-10-10, FOUNDRY (offline pass; no bridge taken, no game touched).
+Status: DRAFT for GPT deep review — 2026-10-10, FOUNDRY (offline pass; no bridge taken, no game touched). Complete: sections 0–7.
 Companion doc: `design/RimMandrake/bridge_system.md` (architecture and control, written by a sibling pass). This doc
 is the **debugging, observability, testing and process** half. Owner order, 2026-10-10: *"document the ENTIRE
 bridge system and intention... all of it. Debugging, control, everything."* Aim: **predict problems now instead of
@@ -546,3 +546,159 @@ Raw sweep tallies before dedup, for comparison (subagent counts, not re-verified
 - **Content defects surface as engine-wide symptoms** (#24, #30, #32, #36, #37, #41, #33): a single bad def
   resets the mod list, empties pawn creation, or crashes every map-add. The first exception names it; the
   loudest does not.
+
+---
+
+## 5. Prediction
+
+### 5.1 Measurements taken for this section (2026-10-10, offline, read-only)
+
+| # | measurement | result |
+|---|---|---|
+| P-a | live `ModsConfig.xml` vs `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml` (parsed `activeMods`) | live = **67** (a test tier is active now); FULL.LATEST = **551**; **14 of the live tier's mods are absent from FULL.LATEST**, including `mandrake.rm.bazaar`, `.warcasket`, `.watchers`, `.keelhoist`, `.raidredesigner`, `.solarmirrors`, `.acousticscanner`, `mandrake.rsw.trophycraft` |
+| P-b | FULL.LATEST performance/tick mods | `taranchuk.performanceoptimizer` and `mlie.nwnrealfogofwar` (the 2026-10-03 wedge, #61) are both on the full list |
+| P-c | companion: repo vs game | repo DLL sha `54ed9331…` (11:27) ≠ game `87b7370b…` (09:50); **no `.srchash`** for the companion |
+| P-d | lint schema snapshot | `tool_schemas.json` from 2026-10-03; **26** declared companion tools missing |
+| P-e | per-call telemetry | newest `_obs/runs` file 2026-10-06; 151 bridge sessions today, top clients ad-hoc scripts |
+| P-f | WSL vs Windows UTC clock | 1 s apart now (`date -u` vs PowerShell `UtcNow`) |
+| P-g | scheduled observers | `RimMandrake\TPS Observer` installed (Ready); `health_observer` not installed (deliberate) |
+| P-h | stale runner state | `.belt_state/heartbeat_situational_rerun.json` from 2026-10-06, `heartbeat_preflight.json` from 2026-10-03 |
+| P-i | "prior-pass-now-fail diff" (`debug_process.md` §1 item 2) | no module found by `grep -rl 'prior.pass\|now.fail'` in `Utils/` → UNVERIFIED as built; treat as owed |
+
+### 5.2 Ranked predictions
+
+P = probability it bites within ~2 weeks (judgement, 0–1); C = expected cost when it bites, in agent/bridge minutes
+(judgement, anchored to §4 rows); **score = P × C**. Rows are in rough order; the **score column is the ranking**. Top five by score: **1** (144), **3** (48), **2** (42), **4** (42), **6** (30), then 5 (27), 12 (21). Every row names a pre-emptive check that can be built or run
+**offline now**. "Class" links to §4.
+
+| id | prediction | class (history) | P | C | score | pre-emptive check (offline, now) |
+|---|---|---|---|---|---|---|
+| 1 | **The MUST 17 overhead test (C0–C5) is confounded** by a mid-protocol companion redeploy (map-awareness DLL is built, not deployed — P-c), by `taranchuk.performanceoptimizer` changing what `TickManagerUpdate` costs, or by the `health_observer` running unannounced in a configuration that forbids it | STALE (#31, #51, #77) | 0.6 | 240 | 144 | Freeze a **run manifest** per configuration: companion sha (needs a `.srchash`), `modOrderDigest` from the TPS `session` row, observer task state. Refuse to start a configuration whose manifest differs from C0's except in the one declared variable |
+| 2 | **GREEN-FULL / full-list runs test the wrong mod set**: FULL.LATEST lacks 14 of our own newer mods (P-a), so a `--restore` silently drops them (recurrence of #47) and a GREEN-FULL claims coverage of mods that never loaded | MODLIST (#47, #54) | 0.7 | 60 | 42 | Offline: diff FULL.LATEST against every `src/*/*/About/About.xml` packageId that is meant to ship (and against `Biomes.compose.json` members, which must NOT appear). Live: `jawa/running_mods` set == declared tier set, as `modcheck record` already does — make every runner do it |
+| 3 | **Harmony hazards in the recorders on the 550-mod list** (GPT 2.3 FAIL stands, `TPS_HOOKS_HARDEN_REENTRY_AND_LATE_GUARDS`): reentrancy, late install, another mod's prefix/transpiler on `DoSingleTick`, `TickManagerUpdate`, `IncidentWorker.TryExecute`, `PawnGenerator.GeneratePawn` | CONTENT/STALE | 0.4 | 120 | 48 | Offline: a patch-target census — for each method we patch, list every other mod that patches it (from the last `session_<id>.json` `patchChains`, or `jawa/harmony_patches` output archived), flag prefixes that can return false and transpilers; a C# selftest that re-enters each hook |
+| 4 | **Performance Optimizer distorts or blinds the TPS record only on the full list** (it patches tick paths); minimal-list proofs pass, full-list attribution reads `attrValid:false` or `profSkipped` high, or windows are miscounted | LIE | 0.35 | 120 | 42 | Read its patch list offline (its assemblies are on disk) and intersect with our ten attribution targets; add `profSkipped`/`attrValid` rates to the C4 acceptance limits declared before the run |
+| 5 | **Most live evidence stays unrecordable**: ad-hoc scripts (`_kb_call_tmp.py`, `l2sweep_run.py`, `scenes/*`) bypass `rimdrive.Session` telemetry, `run_identity`, the heartbeat and the results file (P-e) | PROCESS | 0.9 | 30 | 27 | Move the telemetry hook down into `rimbridge_client.py` (the one client every script uses — it already writes `bridge_sessions.jsonl`); make it stamp script name, deploy fingerprint and companion sha on session open |
+| 6 | **Observer effect during cold load and world gen**: the awareness `GeneratePawn` hook (the hottest hook, `game_health_record.md`) and stage timers add time exactly where loads already stall; a slower load then trips `LOAD_BUDGET_S` or looks like a regression | HANG | 0.5 | 60 | 30 | Ship awareness switched OFF for generation until measured; an offline microbenchmark of the hook body (`AwarenessSelfTest` already builds the core); record load duration per launch from `health_observer` milestones (`engine.init` → `bridge.token`) so a delta is visible |
+| 7 | **New-content load killers recur** as biome mods merge into `RimMandrake.Biomes`: drug without `CompProperties_Drug`, FactionDef without a name maker, `BiomeWorker` touching `SurfaceTile.Rivers`, abstract Alert subclass, invalid enum (`<purpose>None`), ModExtension of an absent type, `MayRequire` on `<Operation>`, member-id `MayRequire` | CONTENT/MODLIST (#24, #30, #33, #41, #53, #58, #66) | 0.5 | 40 | 20 | One offline **load-killer lint** over `src/` XML + C#: each of these eight patterns is a regex/XPath or Roslyn-free text check with a sanity probe. Each cost a cold load at least once |
+| 8 | **RealFoW wedges a GREEN-FULL bland-world run** — the remedy was "drop it from test lists" but the full list still carries it (P-b) | HANG (#61) | 0.6 | 30 | 18 | Either declare the bland recipe incompatible with RealFoW and refuse up front, or skip ruin destruction on the full list; preflight checks `activeMods` for known wedgers (a list kept beside `KNOWN_LOOPS`) |
+| 9 | **The companion deployed ≠ the companion Python expects**: `scene_report`/detectors expect awareness fields (`lookTargetIds`, `pawn_origin`) the deployed DLL lacks; results go `unavailable`/INDETERMINATE and get misread as findings | STALE | 0.6 | 30 | 18 | Give the companion a `.srchash` and a `jawa/version` answer (build sha + tool count); preflight compares it with the repo artifact and with the Python's expected capability list |
+| 10 | **A visitor run is CLEAN while disrupted invisibly** (food, bed, path blocking, psychic effects — stated blind spots of `contract.py`), producing a false PASS on mood/need/job criteria | INVALID | 0.3 | 60 | 18 | Per-component declaration `sensitive_to_visitors=True` for need/mood/job criteria → any visitor makes those components INDETERMINATE rather than CLEAN; offline lint lists components touching needs/mood without the flag |
+| 11 | **Native crash with no managed trace** (Burst #82, ntdll #38) recurs with nothing to diagnose | ENV/CONTENT | 0.3 | 60 | 18 | `spike.minidump` (owed): Windows Error Reporting LocalDumps registry key for `RimWorldWin64.exe` is a one-time, offline-installable setting; verify headroom on C: |
+| 12 | **Subagent deaths and background deadlocks recur** (≥ 5 dates, §4 #21, #34) | PROCESS | 0.7 | 30 | 21 | A `PreToolUse` hook in subagent context refusing `run_in_background` on Bash, and a brief linter refusing a bridge-driving brief without "skeleton first" + "watchdog every 5 min" |
+| 13 | **First real `modcheck run` after the swap-path fix** leaves the owner's list on MINIMAL or crashes (never re-exercised live, `runner.py` docstring) | MODLIST | 0.5 | 40 | 20 | Offline rehearsal on a copy of `ModsConfig.xml` in a temp dir (swap → simulated crash → `finally` restore → parse-compare); make `modlist_swap` accept a target path for the test |
+| 14 | **RimBridgeServer or a workshop mod updates overnight** (Steam auto-update): extension discovery changes (the TPS record's autostart depends on `TryCreateInstance` of an instance tool), or the mod set changes and runs become incomparable | STALE/MODLIST | 0.3 | 60 | 18 | Record server version + `modOrderDigest` per run (already in the TPS `session` row) and diff it against the last green run in preflight; refuse "comparable" when they differ |
+| 15 | **Load-time hang hidden by the 25-minute grace**: the watchdog suppresses Not Responding for the first 25 min and the TPS recorder does not exist yet | HANG (#16, #71) | 0.4 | 40 | 16 | Install `health_observer` as the standing early-load witness after MUST 17 (its `log.growth` + milestones see the load); set `LOAD_BUDGET_S` from measured load times per tier, not a constant |
+| 16 | **Verse.Log cap reached sooner** because our own lines (`[JawaBench]` markers, init lines, scene/awareness diagnostics) plus 550 mods' noise count toward 10,000 | LIE (#63) | 0.5 | 30 | 15 | Count our own Player.log lines per hour offline from the archived logs in `JawaBench\tps\logs`; budget them; `runner.py` resets per chain but ad-hoc scripts do not |
+| 17 | **Unknown modal types** from new mods (Bazaar trade window, raid redesigner letters) are not in `BAD_MODALS` and silently freeze/pause runs | MODAL (#1, #62, #67) | 0.5 | 30 | 15 | Invert the rule: any window not in an allow-list (`HARMLESS`) during a run is a modal; collect the allow-list from `window_list` on a clean bland map once |
+| 18 | **Workshop-mod drift breaks a full-list load** (reset to Core) between two cold loads | MODLIST | 0.5 | 30 | 15 | Snapshot workshop `About.xml` versions + mtimes at each green load; preflight lists changed mods before the next cold load is spent |
+| 19 | **Lint gives false confidence or gets ignored**: 26 tools missing from the snapshot (P-d) produce UNKNOWN_TOOL on legitimate calls | HARNESS | 0.8 | 15 | 12 | Regenerate `tool_schemas.json` from the C# `[Tool(` declarations offline (as measured here) plus the RimBridgeServer list; a selftest fails when declared ⊄ snapshot |
+| 20 | **`search_debug_actions` / `execute_debug_action` re-enter a suite** (runbook row 8) | HANG (#60) | 0.3 | 30 | 9 | Add a BANNED list to `lint_calls.py` (none today, MEASURED grep) |
+| 21 | **Two game processes at once** (owner's + agent's, or a zombie) confuse pid matching, the bridge port and retention | ZOMBIE | 0.3 | 30 | 9 | Preflight counts `RimWorldWin64` processes and refuses > 1 |
+| 22 | **Daylight-saving end (Sunday 2026-11-01, America/Los_Angeles)**: `tps_record.py --at "01:30"` is ambiguous; `bridge_utilization.py` reads python.exe's *naive local* stamps | LIE | 0.9 | 10 | 9 | A selftest with a 01:30 fold; make every writer stamp UTC with offset |
+| 23 | **Lease taken from a live helper** because the lease measures ledger events, not bridge activity (#78) | HANG | 0.3 | 30 | 9 | `rimflow bridge who` consults `bridge_sessions.jsonl` (activity in the last 10 min) before declaring a hold stale |
+| 24 | **Wild-spawner block or quiet-world settings leak** into the owner's play after a run (patched on first block, until release) | INVALID | 0.3 | 30 | 9 | `Watch.__exit__` asserts release with a read-back; preflight and `belt_watchdog` report "quiet world ARMED" as a WARN |
+| 25 | **`save_game` writes the wrong slot** from a script that does not use `saved_base.save_base` (#81) | SAVE | 0.4 | 20 | 8 | Route all saves through one wrapper; lint flags direct `rimworld/save_game` calls |
+| 26 | **`runInBackground` reverts per launch** (set in memory via `static_call`) and focus starvation returns; meanwhile `focus_heal` minimising the owner's windows breaks the owner's ruling (#72) | MODAL | 0.5 | 15 | 8 | Preflight reads `Prefs.RunInBackground` live and refuses if false; offline check of `Prefs.xml` after a clean exit |
+| 27 | **False hang still triggers a kill** (healthy idle menu, quiet log) — the TPS heartbeat now distinguishes, but agents still read log mtime | HANG (#16, #79) | 0.4 | 20 | 8 | `belt_watchdog` verdict text cites `mainBeatUtc` age first; the runbook's first line says "log mtime is not liveness" |
+| 28 | **Retention evicts evidence before it is asked for**: 256 MB caps with awareness rows armed, or several heavy days | LIE | 0.2 | 30 | 6 | Measure bytes/day from the existing 4.9 MB record; alert when projected eviction age < 7 days |
+| 29 | **Provenance epoch reset on every `saved_base.world_reset`** (a load = new epoch) makes every baseline pawn "origin unknown"; readers treat unknown as absent | LIE | 0.6 | 10 | 6 | The scene report prints the epoch start tick next to every "unknown"; contract treats baseline-unknown as expected, not INDETERMINATE |
+| 30 | **WSL clock drift after host sleep** mis-orders joins between WSL-written and Windows-written records (1 s now, P-f) | ENV | 0.3 | 20 | 6 | Preflight prints the skew; refuse a join when > 2 s |
+| 31 | **Stale `.belt_state` heartbeats** (P-h) are read as a current runner by a later watchdog pass | LIE | 0.3 | 10 | 3 | Heartbeat carries a run id + start time; watchdog ignores heartbeats with no matching process |
+| 32 | **Mirror refresh races the scheduled `tps_observer`** (runs from `D:\Luke\dev\RimMandrake`, rewritten every 5 min) → transient import errors; Windows observer runs origin/main code while the WSL reader runs the seat clone | ENV | 0.3 | 10 | 3 | Observer catches ImportError into `observer_last.json`; reader prints the observer's code sha |
+| 33 | **The "instance tool, public ctor" invariant is broken** by a refactor and TPS autostart silently reverts to first-call | STALE | 0.15 | 60 | 9 | Offline source check in `selftest_tps_record.py`: `JawaBenchTpsTools` has a public parameterless non-static ctor and `tps_report` is an instance method |
+| 34 | **A run is judged on a mod edited mid-run** (proof STALE, #74) or a DLL rebuilt during a run | STALE | 0.4 | 20 | 8 | `run_identity` start/end fingerprint already exists on live_queue — extend to every runner (prediction 5) |
+
+### 5.3 The pre-flight (proposed design, `src/RimMandrake/Utils/preflight_bridge.py`, NOT BUILT)
+
+**Goal:** before a 15–25 min cold load or a bridge session is spent, catch the top classes (MODLIST, STALE,
+CONTENT load killers, HANG wedgers, ENV) in under a minute offline, then confirm the first five live minutes.
+**Contract:** every check returns PASS / FAIL / UNMEASURED with evidence; UNMEASURED refuses unless
+`--allow-unmeasured`; a refusal names the §4 row it prevents. Reuse the existing pieces; build no parallel system.
+
+**Phase A — offline (game down or up; no bridge; < 60 s)**
+
+| id | check | reuses | catches |
+|---|---|---|---|
+| A1 | intended tier resolved (`modset_builder.resolve_tier`) == the `ModsConfig.xml` that the NEXT load will read (parsed) | modset_builder | #19, #54 |
+| A2 | FULL.LATEST ⊇ every shipping `mandrake.*` packageId; no composed-member ids in any tier | About.xml glob, `Biomes.compose.json` | P-a, #47, #80 |
+| A3 | known wedgers on the list (`mlie.nwnrealfogofwar` with bland_world; others from `KNOWN_LOOPS`) | belt_watchdog | #61 |
+| A4 | every deployed mod DLL `.srchash` == repo; companion sha == repo artifact; `deploy_custom_mods.py` plan empty for the tier's mods; deployed `About.xml` packageIds == ModsConfig ids | run_identity, deploy tool | #31, #46, #51, #52, #57 |
+| A5 | load-killer lint (the eight patterns in §5.2 prediction 7) over the tier's mods | new | #24, #30, #33, #41, #53, #58, #66 |
+| A6 | `validate_patch.py --live --defs` for changed mods since the last green load | existing | #7, #17 |
+| A7 | `lint_calls.py` over the scripts about to run, with a regenerated schema snapshot and a BANNED list | lint_calls | #60, P-d |
+| A8 | workshop + RimBridgeServer version diff since the last green load | TPS `session` row | prediction 14, 18 |
+| A9 | environment: one or zero `RimWorldWin64` processes; WSL/Windows clock skew < 2 s; free disk on C: and D:; `observer_last.json` age < 5 min; no stale `.belt_state` heartbeat without a process | tps_observer, belt_watchdog | prediction 21, 30, 31 |
+| A10 | `--vacuity` and `--mock` selftest of the suites about to run exit clean | vacuity.py, run_selftests | §1.2 harness class |
+| A11 | the decision strings for this load are written (file exists, non-empty) | load-round doctrine | process |
+
+**Phase B — first five live minutes (bridge held; read-only except the named fixes)**
+
+| id | check | reuses | catches |
+|---|---|---|---|
+| B1 | launch observed fresh: Player.log truncated after launch, then `Bridge token:` of THIS process (pid + start time) | launch_and_wait.sh logic | #39 |
+| B2 | `launch_gate` over the new log (type errors) + `Config error in` count + `ErrorWhileLoadingGame` / "Resetting mods config" absent + first exception printed | launch_gate | #2, #17, #30, #32, #57 |
+| B3 | running set (`jawa/running_mods`) == A1's tier set | modcheck.record | #19, #54 |
+| B4 | `jawa/version` (to build) == repo companion; the TPS `session` row `startedBy: bridge-registration`, `install.sampler: complete`, `attrValid` not false in the first windows | TPS record | prediction 1, 9, 33 |
+| B5 | main thread turning over: `get_ui_state` round trip < 2 s; `Prefs.RunInBackground` true; foreground irrelevant | belt_watchdog bridge probe | #23, #59 |
+| B6 | no modal outside the allow-list; colony named; game paused | belt_watchdog modals, saved_base | #1, #62, #67 |
+| B7 | map is `Playing`, has colonists, is home (not culled), quiet-world read back if the suite needs it | live_queue preflight, bland_world.assert_world | #29, #42, #84 |
+| B8 | Verse.Log message count headroom (or a `Log.Clear` reset) | runner.py reset | #63 |
+| B9 | `belt_watchdog` HEALTHY and a heartbeat file for this run exists | belt_watchdog, belt_heartbeat | #59 |
+
+Output: one line per check plus a single verdict `GO` / `NO-GO <ids>`, written to the per-call telemetry run
+file so the run report carries it. Build order by score: A4 + B4 (prediction 1, 9), A1 + A2 + B3 (prediction 2), A5 (prediction 7),
+A3 (prediction 8), B2.
+
+---
+
+## 6. Gaps in the debugging discipline itself
+
+| # | gap | evidence | proposed change |
+|---|---|---|---|
+| G1 | **The sanctioned harness is not where the work happens.** Telemetry, run identity, heartbeats and result records live on the live_queue path; recent live work runs through ad-hoc scripts | P-e: newest `_obs` run 2026-10-06; `_kb_call_tmp.py` 133 sessions since 10-07; `live_queue_results.jsonl` last row 2026-10-06 | put telemetry and fingerprinting in `rimbridge_client.py` so every script gets them for free; make "a scratch script" a recorded run too |
+| G2 | **Rules in prose do not stop recurrences; tools and hooks do.** | §4.2: background deadlock (brief rule only) recurred on ≥ 5 dates; ModsConfig left on a tier (rule only) 5 dates; the launch gate, `saved_base` and receipts stopped their classes | every lesson that names a recurrence must end in a hook, a gate or a check, or say why it cannot; lessons count (259) far exceeds checks written from them |
+| G3 | **The bridge lease does not cover the game's configuration or lifecycle.** | #22, #50, #54, #64; `modcheck run` and `modset_builder --apply` write `ModsConfig.xml` without consulting the lease | make `ModsConfig.xml` writes and game launches/kills lease-checked operations (refuse without the lease), and restore-on-release a declared tier |
+| G4 | **Time lost is not recorded**, so classes cannot be ranked by cost | most §4 rows say `unstated`; only the 2026-10-03 bridge log carried minute stamps | lessons template gets `time_lost_min:` and `durable_fix:` fields; `observatory` "recovery minutes" per class (designed §2.3, unbuilt) |
+| G5 | **Five overlapping observers with no single timeline** | `belt_watchdog`, `tps_observer`, `health_observer`, `crash_watch.sh`, observatory telemetry, `bridge_sessions.jsonl`, the ledger | one read-only `timeline.py --at <time>` that merges them (TPS reader already does `--health`); retire `crash_watch.sh` |
+| G6 | **Numbers in docs rot and are re-quoted** | cold load: 13 (lesson 10-04), ~15 (CLAUDE.md), 18.5–21 (observatory), ~25 (GAME_STATE_WORKFLOW, watchdog budget); log cap 1,000 vs 10,000 | numbers that a tool measures are printed by the tool, never written in prose (the `modlist_swap.py` header already follows this rule) |
+| G7 | **Binding design rests on Transient files with a 14-day shelf life** | `map_awareness.md`, `game_health_record.md`, `tps_record.md` cite `Transient/foundry_*_20261010.md` (they say they restate what binds) | keep the restating discipline; add a check that no committed design doc links a Transient path as its only source |
+| G8 | **Harness defects dominate early findings, and the harness has no own regression suite run live** | `debug_process.md` §8; `abort_proof.py` exists but the abort path "never fired live" until built | a nightly offline `--mock` run of every suite plus `abort_proof` on the first live session of each day |
+| G9 | **"Prior pass now fails" is a STOP rule without an instrument** | P-i | build the diff over the required-checks report (proven verdicts by check id, last vs now) |
+| G10 | **Focus doctrine conflicts with an owner ruling** | `focus_heal.py` minimises the blocking window; owner 2026-10-04: never fullscreen/steal focus | `runInBackground` as a preflight requirement (B5) makes focus irrelevant; demote `focus_heal` to a last resort that asks first |
+| G11 | **Liveness is still judged from Player.log by habit** | #16, #79 (two false hangs, one killed process) | the watchdog prints `mainBeatUtc` age as the first liveness fact; the runbook leads with it |
+| G12 | **Escalation to GPT has no recorded trigger usage** | `debug_process.md` §5 triggers exist; no count of consults per incident found (UNVERIFIED) | the GPT wrapper logs each consult with the item id, so "stuck time before GPT" becomes measurable |
+| G13 | **Owner-facing results are not tied to the deploy that produced them** | observatory §2.4: "today no record carries a deploy fingerprint", so every check is at best *pending deploy proof* | finish `run_identity` on every runner (prediction 5/34) — it is the one missing instrument the report itself names |
+
+---
+
+## 7. Open questions for the reviewer
+
+1. Is a **single pre-flight** (§5.3) the right shape, or should its checks live inside each runner's existing
+   preflight (`live_queue/preflight.py`, `northstar_driver/preflight.py`) to avoid a third preflight?
+2. Should **`ModsConfig.xml` writes and game launch/kill** require the bridge lease (G3)? What breaks if they do
+   (the owner's own launches, Steam)?
+3. Where should per-call telemetry live: `rimbridge_client.py` (every script) or `rimdrive.Session` (structured
+   runs only)? What is the right unit of a "run" for an ad-hoc script?
+4. Is the **visitor rule's CLEAN-with-note** acceptable for need/mood/job criteria, or should those components be
+   visitor-sensitive by declaration (prediction 10)?
+5. For MUST 17, how should `taranchuk.performanceoptimizer` be handled — measured as part of the full list, or
+   ablated in an extra configuration to separate its effect on our hooks?
+6. Is **`GeneratePawn` hooking** acceptable always-on, given it is the hottest path during world gen and cold
+   loads — or should origin-generation arm only after the first map exists?
+7. Which **probabilities and costs in §5.2** look wrong to you, and which classes are missing entirely
+   (e.g. GPU/driver, Windows Update reboots, antivirus file locks on `LocalLow`)?
+8. Is an **allow-list modal detector** (prediction 17) safe, given mods add harmless windows (minimaps, overlays) that
+   would then refuse runs?
+9. Should **minidumps** (Windows LocalDumps) be enabled for `RimWorldWin64.exe` given disk cost and the owner's
+   machine, and who reads them (no symbol server for Unity Mono)?
+10. The history shows **prose rules fail to stop recurrences** (G2). Which of the recurring classes in §4.2 can be
+    turned into hooks without blocking legitimate work, and which genuinely need judgement?
+11. Is the **acceptance ladder** (L0 → GREEN-FULL → L3 → L4) missing a rung for "same artifact, same mod set,
+    comparable run" — i.e. should comparability (artifact + suite hash + mod digest + seed) be a precondition of
+    GREEN at all?
+12. RNG seeds are not pinned anywhere in the harness (§3.8, UNVERIFIED). Is seeding worth doing for RimWorld (Rand
+    state is global and touched by every mod), or is "spawn many" the only honest approach?
+13. What should **time-to-diagnosis** be measured from — first symptom seen by an agent, first owner report, or first
+    recorded evidence — and is it worth a field on every item?
+14. Is it right that the **TPS and health recorders never change the watchdog's verdict** ("slow is not hung"), or
+    should a SUSTAINED LOW during a suite taint tick-dependent checks?
