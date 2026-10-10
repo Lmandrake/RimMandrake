@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- ZERSIUM_FORGE_BIOME_1 — zersium, the canon mineral ore that turns steel into durasteel
+     (design/RimMandrake/canon_materials_design_2026-10-09.md §2b, §3.2). Canon IP, so RSW tier
+     (RimStarWars, mandrake.rsw.armoury) per design/NAMING_SCHEME_PLAN.md and biome_mod_architecture.md
+     §7 Q11: the RimMandrake Forge biome never names it.
+
+     Source (owner, question cards 2026-10-09, SHIP_ALLOY_FORGE_1): a rare local ore in ONE home biome,
+     The Forge. RSW_MineableZersium therefore has mineableScatterCommonality 0 and deepCommonality 0, so
+     no vanilla scatter, deep drill or meteorite path places it anywhere; the ONLY placement is the
+     Forge-gated GenStep RUT_ZersiumForgeLumps (src/RimUtinni/UtinniPatches). Consumer: the alloy
+     forge's first recipe, steel + zersium -> RSW_Durasteel (SHIP_ALLOY_FORGE_1, not built here).
+
+     PROVISIONAL numbers (not calibrated, no owner ruling): MarketValue 5, Mass 0.6, mineableYield 20,
+     lump 8~14 cells. Expected ~660 per standard map (see the GenStep's own header). -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_Zersium</defName>
+    <label>zersium</label>
+    <description>A dense, dull grey-green mineral ore, heavy for its size and oddly cold to the touch. On its own it is little use; smelted into steel it is what makes durasteel, the hard structural alloy of walls, blast doors and starship plating. It is found in only a few places, and here only in the mountain forge's rock.</description>
+    <graphicData>
+      <!-- PLACEHOLDER until our render lands through the art ledger (art.py install): vanilla steel's
+           stack sprites, tinted. Zero art existed for zersium on 2026-10-09 (artpipe_state.py find). -->
+      <texPath>Things/Item/Resource/Steel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(120,160,140)</color>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <useHitPoints>false</useHitPoints>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>5</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RSW_MineableZersium</defName>
+    <label>zersium ore</label>
+    <description>Rock seamed with zersium, the mineral that turns steel into durasteel. The seams show as a cold grey-green sheen in the dark forge rock.</description>
+    <graphicData>
+      <texPath>Things/Building/Linked/RockFlecked_Atlas</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutComplex</shaderType>
+      <color>(68,72,70)</color>
+      <colorTwo>(120,160,140)</colorTwo>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>1800</MaxHitPoints>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RSW_Zersium</mineableThing>
+      <mineableYield>20</mineableYield>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+      <mineableScatterLumpSizeRange>8~14</mineableScatterLumpSizeRange>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>
+      <veinMineable>true</veinMineable>
+    </building>
+  </ThingDef>
+
+</Defs>

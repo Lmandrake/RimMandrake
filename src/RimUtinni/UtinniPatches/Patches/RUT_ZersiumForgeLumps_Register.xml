@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ZERSIUM_FORGE_BIOME_1: register the self-gating Forge zersium scatter on every player map
+     (shape: RUT_FoundryTowerScatter_Register.xml). The GenStep checks the biome and the setting. -->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/MapGeneratorDef[defName="Base_Player"]/genSteps</xpath>
+      <value>
+        <li MayRequire="mandrake.rsw.armoury">RUT_ZersiumForgeLumps</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

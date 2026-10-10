@@ -45,6 +45,9 @@ namespace RimMandrake.Utinni.UtinniPatches
         // LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1 — worldgen-affecting (new Deeps only).
         public static bool mindstoneGalleryEnabled = true;
 
+        // ZERSIUM_FORGE_BIOME_1 — worldgen-affecting (new Forge maps only).
+        public static bool zersiumForgeEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -54,6 +57,7 @@ namespace RimMandrake.Utinni.UtinniPatches
             Scribe_Values.Look(ref utinniWorldIconEnabled, "utinniWorldIconEnabled", true);
             Scribe_Values.Look(ref holyFlameActEnabled, "holyFlameActEnabled", true);
             Scribe_Values.Look(ref mindstoneGalleryEnabled, "mindstoneGalleryEnabled", true);
+            Scribe_Values.Look(ref zersiumForgeEnabled, "zersiumForgeEnabled", true);
         }
 
         private static Vector2 settingsScroll;
@@ -104,6 +108,12 @@ namespace RimMandrake.Utinni.UtinniPatches
                 "On: in a newly generated Lantern Deep, the rock around one Shard-mind carries a few veins of mindstone, "
               + "the only place on the planet it can be mined. Off: no gallery, and no mindstone anywhere. "
               + "Worldgen-affecting: applies to Deeps generated after the change.");
+
+            list.GapLine();
+            list.CheckboxLabeled("Zersium ore in the Forge", ref zersiumForgeEnabled,
+                "On: newly generated Forge maps carry a few small seams of zersium ore, the mineral that turns "
+              + "steel into durasteel, and the only place on the planet it can be mined. Off: no zersium seams "
+              + "anywhere. Worldgen-affecting: applies to Forge maps generated after the change.");
 
             settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();

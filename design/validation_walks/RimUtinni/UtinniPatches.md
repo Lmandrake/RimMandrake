@@ -13,6 +13,7 @@ status-hint: the Utinni campaign patch layer — factions, scenario, doctrine, a
 - PawnKindDefs for the colonist roster (Jawa_Colonist, Jawa_Tribal_Scavenger, Jawa_Tribal_Slinger, Jawa_Tribal_Elder) and the faction roster (Jawa_Empire_Grunt, Jawa_Hutt_Grunt, etc.) exist and are assignable.
 - ScenarioDef Jawa_UtinniStart and QuestScriptDef Jawa_TheClaim exist (the campaign's start scenario and its opening quest).
 - LandmarkDef RUT_ComplexStructures, ThingDef Jawa_ClaimRumour, and the two RulePackDef namers (Jawa_NamerFactionBlackstar, Jawa_NamerFactionPirateWaster) load without error.
+- Zersium (RSW_Zersium) is mined only in the Forge: RSW_MineableZersium has scatter and deep commonality 0, and RUT_ZersiumForgeLumps (Base_Player, gated on RM_TheForge/RUT_TheForge and Mod Settings zersiumForgeEnabled) places it on newly generated Forge maps and nowhere else (ZERSIUM_FORGE_BIOME_1) → zersium_forge.zersium_wiring_static, zersium_forge.zersium_defs_loaded, zersium_forge.zersium_only_in_forge
 
 ## the walk
 1. [L] Player.log after load (full mod list) contains no "Config error in mandrake.rut.patches" and no XML error naming any file under Patches/ or Defs/

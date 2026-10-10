@@ -95,7 +95,7 @@ from modcheck import Suite, ExpectationFailed
 
 suite = Suite("UtinniPatches")
 suite.toggles = ["ambientShrineDoctrineEnabled", "geothermalDensityFieldEnabled",
-                 "utinniWorldIconEnabled"]
+                 "utinniWorldIconEnabled", "zersiumForgeEnabled"]
 
 _MOD_DIR = os.path.dirname(os.path.abspath(__file__))
 _WORLDICON_PATCH = os.path.join(_MOD_DIR, "Patches", "UtinniWorldIcon.xml")
@@ -513,6 +513,52 @@ def infestation_ban_static(t):
             return
         if bad:
             raise ExpectationFailed("; ".join(bad))
+
+
+@suite.chain("zersium_forge")
+def zersium_forge(t):
+    """ZERSIUM_FORGE_BIOME_1: zersium (RSW_Zersium, mandrake.rsw.armoury) is mined only in the Forge. Its ore has
+    scatter/deep commonality 0 and its one placement is RUT_ZersiumForgeLumps, registered on Base_Player and gated
+    on RM_TheForge/RUT_TheForge plus the zersiumForgeEnabled setting. Live half: run on ANY map; on a Forge map
+    the probe must report ore cells > 0, on any other map exactly 0 (the home-biome rule's guard). Not proven
+    here: that mining a cell yields RSW_Zersium (vanilla mineableThing), and stated vs placed amounts across seeds."""
+    import xml.etree.ElementTree as ET
+    armoury = os.path.join(_MOD_DIR, "..", "..", "RimStarWars", "Armoury", "Defs", "ThingDefs", "RSW_Zersium.xml")
+    with t.component("zersium_wiring_static", beyond_toggle=True):
+        defs = {d.findtext("defName"): d for d in ET.parse(armoury).getroot().findall("ThingDef")}
+        ore = defs.get("RSW_MineableZersium")
+        if "RSW_Zersium" not in defs or ore is None:
+            raise ExpectationFailed("RSW_Zersium / RSW_MineableZersium missing from %s" % armoury)
+        b = ore.find("building")
+        if b.findtext("mineableThing") != "RSW_Zersium" or b.findtext("mineableScatterCommonality") != "0":
+            raise ExpectationFailed("ore must yield RSW_Zersium with scatter commonality 0 (home biome only)")
+        if b.findtext("deepCommonality") not in (None, "0"):
+            raise ExpectationFailed("ore must have no deep-drill route")
+        gs = ET.parse(os.path.join(_MOD_DIR, "Defs", "MapGeneration", "RUT_ZersiumForgeLumps.xml")).getroot().find("GenStepDef/genStep")
+        biomes = sorted(li.text for li in gs.find("allowedBiomes"))
+        if gs.findtext("forcedDefToScatter") != "RSW_MineableZersium" or biomes != ["RM_TheForge", "RUT_TheForge"]:
+            raise ExpectationFailed("GenStep must force RSW_MineableZersium on exactly the Forge pair, got %r" % biomes)
+        reg = ET.parse(os.path.join(_MOD_DIR, "Patches", "RUT_ZersiumForgeLumps_Register.xml")).getroot()
+        if "RUT_ZersiumForgeLumps" not in [li.text for li in reg.iter("li")]:
+            raise ExpectationFailed("RUT_ZersiumForgeLumps is not registered on Base_Player")
+    with t.component("zersium_defs_loaded", beyond_toggle=True):
+        for d in ("ThingDef/RSW_Zersium", "ThingDef/RSW_MineableZersium", "GenStepDef/RUT_ZersiumForgeLumps"):
+            r = t.bridge_call("jawa/get_defs", defs=d)
+            if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+    with t.component("zersium_only_in_forge", toggle="zersiumForgeEnabled"):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Utinni.UtinniPatches.RUT_ZersiumForgeProof",
+                          method="Probe", args="")
+        res = str((r or {}).get("result", ""))
+        if t._guard():
+            f = dict(kv.split("=", 1) for kv in res.split() if "=" in kv)
+            if "cells" not in f:
+                raise ExpectationFailed("probe could not ask: %r" % (r,))
+            cells = int(f["cells"])
+            if f.get("allowed") == "True" and f.get("enabled") == "True" and cells == 0:
+                raise ExpectationFailed("Forge map carries no zersium ore: %r" % res)
+            if f.get("allowed") != "True" and cells != 0:
+                raise ExpectationFailed("zersium ore outside the Forge: %r" % res)
 
 
 @suite.chain("mindstone_matrix_recipes")

@@ -79,6 +79,7 @@
     <Compile Include="RUT_GenStep_ScatterThingsPlacedFilth.cs" />
     <!-- LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1 -->
     <Compile Include="RUT_GenStep_MindstoneGallery.cs" />
+    <Compile Include="RUT_GenStep_ZersiumForgeLumps.cs" />
   </ItemGroup>
 
   <ItemGroup>
