@@ -46,6 +46,8 @@
 
   <ItemGroup>
     <Compile Include="RM_WeepingStonesSettings.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_BiomeWorker_WeepingStones.cs" />
     <Compile Include="RM_PoolBody.cs" />
     <Compile Include="RM_Zone_PoolPen.cs" />

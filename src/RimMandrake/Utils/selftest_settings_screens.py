@@ -1005,6 +1005,15 @@ MODS = {
         "Infection progression speed": "Now",
         "Cold-kill rate": "Now",
     }, ()),
+    "WeepingStones": ("RM_WeepingStonesSettings.cs", "RM_WeepingStones.csproj", {
+        "Stocked pools": "Now",
+        "Vhorrin and vizhik odds": "NextPulse",
+        "Walking condenser": "Now",
+        "Condenser season length": "NextPulse",
+        "Condenser quests": "NextPulse",
+        "Dewsilk cocoons": "NextGameStart",
+        "Native oasis flora (WORLDGEN-AFFECTING)": "NewMapsOnly",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
