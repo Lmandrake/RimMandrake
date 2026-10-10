@@ -13,3 +13,4 @@ Owner card 2026-10-10: item icons with black outlines are redrawn painted, no ou
 ## verify
 - Re-run the census on installed PNGs: share < 0.3 for each repainted icon.
 - Batch 3 (24 jobs: fish catches, Cuisine skewers, research kits) queued, nothing installed: Transient/icon_batch3_20261010.md. 119 outlined files remain unqueued (mostly _a/_b/_c stack variants and RUT_ duplicates). Edge-black metric must be judged against interior darkness (see report).
+- Batch 3 rendered and measured: 0 of 24 outlined, sheet Transient/icon_renders_contact_batch3_20261010.png; subject drift on Noolim/Weloon/Aluun noted. Gap art 8 of 10 rendered (Dakkra north/south failed, re-queue owed): Transient/gap_art_contact_20261010.png. Owner index: Transient/OWNER_MORNING_LOOK_20261010.md. NEXT: owner rules install yes/no per sheet.
