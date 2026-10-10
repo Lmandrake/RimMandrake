@@ -1,5 +1,6 @@
 # project: RimUtinni/ScarlandsLadder/Source/RimMandrake.Utinni.ScarlandsLadder.csproj
-# dll: 1f20b98d461c99a0b3d4fadd497291d02d7db767517e4c93d9fc8f4c46316589
+# dll: 331fba2b76394c3f93c5f61c501d7b859472ea5a643d47bfc7698b246754123a
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../../RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs
-9b71da2c949218a9025acc568aa2289674429ec2b32c56b498985ce14e416ceb PilgrimCamps.cs
+3200475e22f0b7599eb86945576005fcd9bfbbf0058114fb9e959e31f3e85d7f ScarlandsLadderSettings.cs
+836e2af684782b2bde697fd1eb2bfdc224e0847fedc7ffacb24790629e57761d PilgrimCamps.cs
 d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../../RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs
