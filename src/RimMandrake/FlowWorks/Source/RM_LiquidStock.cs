@@ -415,10 +415,28 @@ namespace RimMandrake.FlowWorks
 				}
 				live[keys[i]] = n;
 			}
+			// POND_RECESSION_STRANDS_CHANNEL_1: cells with a dug cardinal neighbour feed the flow (RM_FlowKernel
+			// draws donors over cardinals only) and recede last. Excavation does not change inside this loop.
+			HashSet<IntVec3> outflow = null;
+			if (RimMandrakeFlowWorksSettings.recedeSparesOutflow)
+			{
+				for (int i = 0; i < keys.Count; i++)
+				{
+					for (int d = 0; d < 4; d++)
+					{
+						if (owner.IsExcavated(keys[i] + GenAdj.CardinalDirections[d]))
+						{
+							if (outflow == null) outflow = new HashSet<IntVec3>();
+							outflow.Add(keys[i]);
+							break;
+						}
+					}
+				}
+			}
 			int guard = 0;
 			while (body.ActiveCellCount > supported && body.ActiveCellCount > 0 && guard++ < 64)
 			{
-				IntVec3 pick = PickRecedeCell(map, body, live, centroid);
+				IntVec3 pick = PickRecedeCell(map, body, live, centroid, outflow);
 				if (!pick.IsValid)
 				{
 					return;
@@ -458,9 +476,11 @@ namespace RimMandrake.FlowWorks
 
 		private const int GlobalSplitChecks = 4;
 
-		private IntVec3 PickRecedeCell(Map map, RM_LiquidBody body, Dictionary<IntVec3, int> live, IntVec3 centroid)
+		private IntVec3 PickRecedeCell(Map map, RM_LiquidBody body, Dictionary<IntVec3, int> live, IntVec3 centroid,
+			HashSet<IntVec3> outflow)
 		{
 			IntVec3 best = IntVec3.Invalid;
+			bool bestOutflow = true;
 			int bestNeighbours = int.MaxValue;
 			int bestDist = -1;
 			int bestIndex = int.MaxValue;
@@ -470,7 +490,8 @@ namespace RimMandrake.FlowWorks
 				IntVec3 c = kv.Key;
 				int dist = (c - centroid).LengthHorizontalSquared;
 				int idx = map.cellIndices.CellToIndex(c);
-				if (!RM_StockMath.PrefersCandidate(kv.Value, dist, idx, bestNeighbours, bestDist, bestIndex))
+				bool feeds = outflow != null && outflow.Contains(c);
+				if (!RM_StockMath.PrefersCandidate(feeds, kv.Value, dist, idx, bestOutflow, bestNeighbours, bestDist, bestIndex))
 				{
 					continue;
 				}
@@ -480,6 +501,7 @@ namespace RimMandrake.FlowWorks
 					unsafeLocal.Add(c);
 					continue;
 				}
+				bestOutflow = feeds;
 				bestNeighbours = kv.Value;
 				bestDist = dist;
 				bestIndex = idx;
@@ -494,8 +516,9 @@ namespace RimMandrake.FlowWorks
 			unsafeLocal.Sort((a, b) =>
 			{
 				int ia = map.cellIndices.CellToIndex(a), ib = map.cellIndices.CellToIndex(b);
-				if (RM_StockMath.PrefersCandidate(live[a], (a - centroid).LengthHorizontalSquared, ia,
-					live[b], (b - centroid).LengthHorizontalSquared, ib)) return -1;
+				bool oa = outflow != null && outflow.Contains(a), ob = outflow != null && outflow.Contains(b);
+				if (RM_StockMath.PrefersCandidate(oa, live[a], (a - centroid).LengthHorizontalSquared, ia,
+					ob, live[b], (b - centroid).LengthHorizontalSquared, ib)) return -1;
 				return a == b ? 0 : 1;
 			});
 			int before = ComponentCount(live, IntVec3.Invalid);

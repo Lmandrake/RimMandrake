@@ -245,6 +245,23 @@ namespace RimMandrake.FlowWorks
 			return cellIndex < bestCellIndex;
 		}
 
+		/// <summary>POND_RECESSION_STRANDS_CHANNEL_1: <see cref="PrefersCandidate(int,int,int,int,int,int)"/>
+		/// with one key IN FRONT of it — a cell feeding an excavation (an "outflow" cell, one whose cardinal
+		/// neighbour is dug) recedes only after every other cell. Without it the inlet cell of a channel
+		/// drops to the fewest-neighbours rank as soon as its pond-side neighbour dries, recedes, and cuts the
+		/// channel off with most of the stock stranded (measured live: 6 of 30 drained, then nothing).</summary>
+		// PROVISIONAL (auto-decided 2026-10-09, POND_RECESSION_STRANDS_CHANNEL_1): outflow cells recede last (setting recedeSparesOutflow, default on).
+		public static bool PrefersCandidate(
+			bool outflow, int neighbours, int distSquared, int cellIndex,
+			bool bestOutflow, int bestNeighbours, int bestDistSquared, int bestCellIndex)
+		{
+			if (outflow != bestOutflow)
+			{
+				return !outflow;
+			}
+			return PrefersCandidate(neighbours, distSquared, cellIndex, bestNeighbours, bestDistSquared, bestCellIndex);
+		}
+
 		// ── the debit / credit primitives (§5, "Debits") ──────────────────
 
 		/// <summary>FLOWWORKS_POND_STOCK_RELOAD_1: after a load the cell-to-body index must be rebuilt before any lookup.

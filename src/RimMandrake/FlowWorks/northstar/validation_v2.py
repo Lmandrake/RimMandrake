@@ -96,7 +96,7 @@ BOOL_DEFAULTS = {
                pitExposureEnabled=True, pitDepthDrawOffsetEnabled=True,
                canalFireEnabled=True,      # FLOWWORKS_BUILD_PROGRAM_1 Phase 6
                pitDrowningEnabled=True, poisonFillEnabled=True,      # PIT_FILL_EFFECTS_1
-               viscosityEnabled=True, thickCreepEnabled=True, recedeKeepsLastCell=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
+               viscosityEnabled=True, thickCreepEnabled=True, recedeKeepsLastCell=True, recedeSparesOutflow=True),     # FLOWWORKS_BUILD_PROGRAM_1 Phase 3/7 viscosity (2026-10-05)    # rehoused from PitsSettings 2026-10-02
     S_RIVER: dict(riverSteamEnabled=True),
 }
 FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
@@ -184,6 +184,7 @@ class PulseOracle(object):
         # (<0.04 level per pulse at the shipped rates; scenes stay far from floor boundaries).
         self.recession = recession
         self.keep_last = True             # recedeKeepsLastCell (shipped default, PROVISIONAL 2026-10-09)
+        self.spare_outflow = True         # recedeSparesOutflow (shipped default, PROVISIONAL 2026-10-09)
         self.receded = set()
         # rain (ApplyRain, first thing in DoPulse): accumulator += rate * perPulse; whole levels
         # go into EVERY unroofed, not-full excavated cell on the map (not just one scene).
@@ -356,7 +357,11 @@ class PulseOracle(object):
                         continue
                     nb = sum(1 for dx in (-1, 0, 1) for dz in (-1, 0, 1) if (dx or dz)
                              and self.inb((c[0] + dx, c[1] + dz)) and self.is_source((c[0] + dx, c[1] + dz)))
-                    key = (nb, -((c[0] - cx) ** 2 + (c[1] - cz) ** 2), self.idx(c))
+                    # POND_RECESSION_STRANDS_CHANNEL_1 (setting recedeSparesOutflow, shipped ON): a cell with a dug
+                    # CARDINAL neighbour feeds the flow and recedes after every other cell
+                    feeds = self.spare_outflow and any(self.inb(n) and self.exc(n) for n in
+                                                       ((c[0] + 1, c[1]), (c[0] - 1, c[1]), (c[0], c[1] + 1), (c[0], c[1] - 1)))
+                    key = (feeds, nb, -((c[0] - cx) ** 2 + (c[1] - cz) ** 2), self.idx(c))
                     if best is None or key < best[0]:
                         best = (key, c)
                 if best is None:
@@ -732,8 +737,8 @@ def o2_settings_defaults():
         m1 = re.search(r"public static float %s\s*=\s*([\d.]+)f" % f, allsrc)
         if not m1 or float(m1.group(1)) != want:
             probs.append("%s=%s want %s" % (f, m1 and m1.group(1), want))
-    if seen != 37:                  # +1 thickCreepEnabled, +1 recedeKeepsLastCell 2026-10-09; +4 2026-10-05: pitDepthDrawOffset, canalFire, pitDrowning, poisonFill; +viscosity;
-        probs.append("toggle census %d != 37" % seen)   # -1 2026-10-06: channelConfinementEnabled retired
+    if seen != 38:                  # +1 recedeSparesOutflow; +1 thickCreepEnabled, +1 recedeKeepsLastCell 2026-10-09; +4 2026-10-05: pitDepthDrawOffset, canalFire, pitDrowning, poisonFill; +viscosity;
+        probs.append("toggle census %d != 38" % seen)   # -1 2026-10-06: channelConfinementEnabled retired
     # PIT_LEGACY_CODE_RETIRE_1 northstar: one settings screen; no struggle/escape/exposure toggle survives
     mods = re.findall(r"class \w+ : Mod\b", allsrc)
     if len(mods) != 2:              # RimMandrakeFlowWorksMod + RiverSteamMod (PitsMod retired)
