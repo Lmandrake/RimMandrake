@@ -42,8 +42,8 @@ EXPECTED = {
     "AB_ArbuscularMycorrhiza": {"ArbuscularMycorrhiza_A": 16},
     "AB_AgaricusDomeCap": {"AgaricusDomeCap": 10},
     "AB_GiantAgarilux": {"GiantAgarilux_A": 0},   # its art touches the ground only in its own (root) cell,
-    "AB_WitchesOyster": {"WitchesOyster": 9},
-    "RM_PaleTree": {"PaleTree_A": 3},
+    "AB_WitchesOyster": {"WitchesOyster_A": 9, "WitchesOyster_b": 3, "WitchesOyster_c": 8},   # folder installed 80b9b9f7c
+    "RM_PaleTree": {"PaleTree_A": 3, "PaleTree_b": 3, "PaleTree_c": 9, "PaleTree_d": 4, "PaleTree_e": 5},   # B/C installed 80b9b9f7c, later picks via art ledger
 }
 # Before this rework every giant blocked a trunkWidth x trunkDepth column north of its root (minus the root):
 BEFORE = {"AB_AgariluxPrime": 15, "AB_DribblingCap": 8, "RM_Nogtyl": 8, "RM_Arpeau": 3, "AB_ArbuscularMycorrhiza": 8,

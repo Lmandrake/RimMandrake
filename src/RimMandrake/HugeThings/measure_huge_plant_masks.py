@@ -116,7 +116,7 @@ def _patched(defname, field):
 def resolve(defname, named, abstract):
     el = named[defname]
     tex = _patched(defname, "graphicData/texPath") or _inherited(el, abstract, "graphicData/texPath")
-    cls = _inherited(el, abstract, "graphicData/graphicClass") or "Graphic_Random"   # Core PlantBaseNonEdible
+    cls = _patched(defname, "graphicData/graphicClass") or _inherited(el, abstract, "graphicData/graphicClass") or "Graphic_Random"   # Core PlantBaseNonEdible
     ds = _inherited(el, abstract, "graphicData/drawSize") or "(1,1)"
     vr = _patched(defname, "plant/visualSizeRange") or _inherited(el, abstract, "plant/visualSizeRange")
     mesh = _inherited(el, abstract, "plant/maxMeshCount") or "1"
