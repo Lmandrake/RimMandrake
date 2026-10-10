@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_AgariPorts.xml — the rennok, the gromma and the vorrugath. DONOR_CODE_PLAIN_PORTS_1 (owner pick
+  "port" on Transient/donor_code_creatures_sheet_2026-10-09: "Port plain = copy the creature into our
+  own defs and drop or swap the donor class (no new C#)").
+
+  Ported from Alpha Animals (sarg.alphaanimals, 1.6/Defs/ThingDefs_Races/Races_Agaripawn.xml,
+  Races_Agaripod.xml, Races_MycoidColossus.xml). Folded in from this mod's own patches on the donor
+  defs, so the port reads the same as the patched donor did:
+    - names, descriptions and ruled adult widths  (Patches/RotSpecies_NamesAndSizes.xml, ROT_FLORA_FAUNA_VERDICTS_1)
+    - our art paths RotSpecies/Agaripawn, RotSpecies/MycoidColossus  (same file)
+    - wound sharing on rennok and gromma  (Patches/RotSpecies_WoundSharing.xml, ROT_WOUND_SHARING_WIRING_1;
+      RM_TheRotMod's Health sharing toggle names these RM_ defs too)
+  Those patches still target the AA_ defs and stay: the frozen campaign twin RUT_TheRot casts the donor.
+
+  DROPPED (donor assembly AlphaBehavioursAndEvents): CompProperties_GraphicsRefresher and renderTree
+  AA_Alternates — an off-by-default alternate-picture switch; nothing in play.
+  DROPPED (donor StatDefs): the VEF AnimalStatExtension info-card rows.  NOT ported: donor wildBiomes.
+  DROPPED: VEF_CycleSeverance special trainable; the rennok's VEF drop-on-death of one fungus (butchering
+  still yields fungus).
+  SWAPPED for vanilla (donor defs, no code):
+    AA_ToxicBite -> ToxicBite · AA_AgariluxRawFungus -> RawFungus · AA_Wildpawn_* sounds -> Pawn_Bear_*
+    AA_PermanentBurn (HighlyFlammable's hediff) -> Burn · donor dessicated art -> Bear / Elephant / Thrumbo
+    body AA_Hexapod (vorrugath) -> QuadrupedAnimalWithHooves (Teeth + HeadAttackTool present)
+    spore-clump eggs (AA_*Spores) -> VEF asexual reproduction with produceEggs false: the young appear
+    directly instead of as a hatching clump.
+  KEPT, guarded on VEF (a framework we keep): asexual reproduction, HighlyFlammable, cap-flesh harvest.
+  ART: ours. Rennok and vorrugath use this mod's RotSpecies art; the gromma's is installed through the
+  art ledger at Things/Pawn/Animal/RM_Agaripod (the picture AgaripodArtOverride paints over the donor).
+-->
+<Defs>
+
+  <!-- ============================== rennok (AA_Agaripawn) ============================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Agaripawn</defName>
+    <label>rennok</label>
+    <description>A shambling, waist-high hybrid of animal and fungus, its back and flanks grown over with living caps that feed it and hide it. It is slow, flammable, and never quite alone: hurt one and the others in the grove feel it and come. It breeds by throwing spores, so its young owe it nothing. Hunted or kept, it gives a little edible cap-flesh that keeps longer than most fungus.</description>
+    <statBases>
+      <MoveSpeed>4</MoveSpeed>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <MarketValue>200</MarketValue>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Blunt>.75</ArmorRating_Blunt>
+      <ArmorRating_Heat>-100</ArmorRating_Heat>
+      <ArmorRating_Sharp>.75</ArmorRating_Sharp>
+      <FilthRate>8</FilthRate>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left paw</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>11</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack><extraMeleeDamages><li><def>Stun</def><amount>13</amount></li></extraMeleeDamages></surpriseAttack>
+      </li>
+      <li>
+        <label>right paw</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>11</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack><extraMeleeDamages><li><def>Stun</def><amount>13</amount></li></extraMeleeDamages></surpriseAttack>
+      </li>
+      <li>
+        <capacities><li>ToxicBite</li></capacities>
+        <power>6</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>3</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AsexualReproduction" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <reproductionIntervalDays>6</reproductionIntervalDays>
+        <customString>Dispersing spores in: </customString>
+        <produceEggs>false</produceEggs>
+      </li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_HighlyFlammable" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <hediffToInflict>Burn</hediffToInflict>
+      </li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AnimalProduct" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <resourceDef>RawFungus</resourceDef>
+        <gatheringIntervalDays>10</gatheringIntervalDays>
+        <resourceAmount>20</resourceAmount>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+      <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+        <inspectLine>Shares wounds with its grove.</inspectLine>
+      </li>
+    </comps>
+    <race>
+      <herdAnimal>false</herdAnimal>
+      <body>QuadrupedAnimalWithPaws</body>
+      <baseBodySize>1.4</baseBodySize>
+      <baseHealthScale>1.3</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <hasGenders>false</hasGenders>
+      <manhunterOnTameFailChance>0.018</manhunterOnTameFailChance>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>35</lifeExpectancy>
+      <specificMeatDef>RawFungus</specificMeatDef>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Bear_Injured</soundWounded>
+          <soundDeath>Pawn_Bear_Death</soundDeath>
+          <soundCall>Pawn_Bear_Call</soundCall>
+          <soundAngry>Pawn_Bear_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
+        <tag>RotNetwork</tag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Agaripawn</defName>
+    <label>rennok</label>
+    <race>RM_Agaripawn</race>
+    <combatPower>120</combatPower>
+    <ecoSystemWeight>1</ecoSystemWeight>
+    <wildGroupSize>1~3</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RotSpecies/Agaripawn/Agaripawn</texPath>
+          <drawSize>0.7</drawSize>
+          <shadowData><volume>(0.4, 0.3, 0.3)</volume><offset>(0,0,-0.2)</offset></shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Bear/Dessicated_Bear</texPath>
+          <drawSize>0.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RotSpecies/Agaripawn/Agaripawn</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData><volume>(0.6, 0.45, 0.45)</volume><offset>(0,0,-0.25)</offset></shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Bear/Dessicated_Bear</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RotSpecies/Agaripawn/Agaripawn</texPath>
+          <drawSize>7</drawSize>
+          <shadowData><volume>(0.8, 0.6, 0.6)</volume><offset>(0,0,-0.3)</offset></shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Bear/Dessicated_Bear</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================== gromma (AA_Agaripod) ============================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Agaripod</defName>
+    <label>gromma</label>
+    <description>A great slow mound of animal and fungus, grown over with living caps that feed it and hide it, so heavy with growth that bullets sink into it and do little. Fire is another matter. It breeds by throwing spores and feels the wounds of its kin across the grove; hunted or kept, it gives a good yield of edible cap-flesh.</description>
+    <statBases>
+      <MoveSpeed>2.5</MoveSpeed>
+      <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+      <MarketValue>450</MarketValue>
+      <LeatherAmount>0</LeatherAmount>
+      <ArmorRating_Blunt>1</ArmorRating_Blunt>
+      <ArmorRating_Heat>-100</ArmorRating_Heat>
+      <ArmorRating_Sharp>2</ArmorRating_Sharp>
+      <FilthRate>16</FilthRate>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left paw</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>23</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack><extraMeleeDamages><li><def>Stun</def><amount>21</amount></li></extraMeleeDamages></surpriseAttack>
+      </li>
+      <li>
+        <label>right paw</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>23</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack><extraMeleeDamages><li><def>Stun</def><amount>21</amount></li></extraMeleeDamages></surpriseAttack>
+      </li>
+      <li>
+        <capacities><li>ToxicBite</li></capacities>
+        <power>15</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>6</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AsexualReproduction" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <reproductionIntervalDays>12</reproductionIntervalDays>
+        <customString>Dispersing spores in: </customString>
+        <produceEggs>false</produceEggs>
+      </li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_HighlyFlammable" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <hediffToInflict>Burn</hediffToInflict>
+      </li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AnimalProduct" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <resourceDef>RawFungus</resourceDef>
+        <gatheringIntervalDays>10</gatheringIntervalDays>
+        <resourceAmount>60</resourceAmount>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+      <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+        <inspectLine>Shares wounds with its grove.</inspectLine>
+      </li>
+    </comps>
+    <race>
+      <herdAnimal>false</herdAnimal>
+      <body>QuadrupedAnimalWithPaws</body>
+      <baseBodySize>4.0</baseBodySize>
+      <baseHealthScale>3.6</baseHealthScale>
+      <baseHungerRate>0.33</baseHungerRate>
+      <specificMeatDef>RawFungus</specificMeatDef>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <hasGenders>false</hasGenders>
+      <manhunterOnTameFailChance>0.018</manhunterOnTameFailChance>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>70</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Elephant_Injured</soundWounded>
+          <soundDeath>Pawn_Elephant_Dead</soundDeath>
+          <soundCall>Pawn_Elephant_Call</soundCall>
+          <soundAngry>Pawn_Elephant_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
+        <tag>RotNetwork</tag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Agaripod</defName>
+    <label>gromma</label>
+    <race>RM_Agaripod</race>
+    <combatPower>250</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>1</ecoSystemWeight>
+    <wildGroupSize>2~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Agaripod/RM_Agaripod</texPath>
+          <drawSize>1.8</drawSize>
+          <shadowData><volume>(0.4, 0.3, 0.3)</volume><offset>(0,0,-0.2)</offset></shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Elephant/Dessicated_Elephant</texPath>
+          <drawSize>1.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Agaripod/RM_Agaripod</texPath>
+          <drawSize>2.6</drawSize>
+          <shadowData><volume>(0.6, 0.45, 0.45)</volume><offset>(0,0,-0.25)</offset></shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Elephant/Dessicated_Elephant</texPath>
+          <drawSize>2.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Agaripod/RM_Agaripod</texPath>
+          <drawSize>3.8</drawSize>
+          <shadowData><volume>(0.8, 0.6, 0.6)</volume><offset>(0,0,-0.3)</offset></shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Elephant/Dessicated_Elephant</texPath>
+          <drawSize>3.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================== vorrugath (AA_MycoidColossus) ============================== -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_MycoidColossus</defName>
+    <label>vorrugath</label>
+    <description>A walking piece of the pale forest: a cold-blooded six-legged colossus with two spines and six eyes, its back a grove of full-grown caps that trap insects and feed it in turn. It breeds by sporulation and cares for nothing it spawns. It is rarely seen and never mistaken for anything else; when the grove is wounded and something this size answers, the wise are already leaving. Tamed, it can be trimmed for cap-flesh.</description>
+    <statBases>
+      <MoveSpeed>2.00</MoveSpeed>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <MarketValue>550</MarketValue>
+      <LeatherAmount>0</LeatherAmount>
+      <FilthRate>16</FilthRate>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <capacities><li>Bite</li></capacities>
+        <power>20</power>
+        <cooldownTime>1.85</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>15</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AsexualReproduction" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <reproductionIntervalDays>15</reproductionIntervalDays>
+        <customString>Dispersing spores in: </customString>
+        <produceEggs>false</produceEggs>
+      </li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AnimalProduct" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <resourceDef>RawFungus</resourceDef>
+        <gatheringIntervalDays>10</gatheringIntervalDays>
+        <resourceAmount>100</resourceAmount>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <baseBodySize>6</baseBodySize>
+      <baseHealthScale>2.7</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <hasGenders>false</hasGenders>
+      <trainability>Intermediate</trainability>
+      <manhunterOnDamageChance>.75</manhunterOnDamageChance>
+      <lifeExpectancy>570</lifeExpectancy>
+      <specificMeatDef>RawFungus</specificMeatDef>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Rhinoceros_Wounded</soundWounded>
+          <soundDeath>Pawn_Rhinoceros_Death</soundDeath>
+          <soundCall>Pawn_Rhinoceros_Call</soundCall>
+          <soundAngry>Pawn_Rhinoceros_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_MycoidColossus</defName>
+    <label>vorrugath</label>
+    <race>RM_MycoidColossus</race>
+    <combatPower>500</combatPower>
+    <ecoSystemWeight>.75</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RotSpecies/MycoidColossus/MycoidColossus</texPath>
+          <drawSize>4</drawSize>
+          <shadowData><volume>(0.30, 0.25, 0.20)</volume></shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo</texPath>
+          <drawSize>4</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RotSpecies/MycoidColossus/MycoidColossus</texPath>
+          <drawSize>5</drawSize>
+          <shadowData><volume>(0.375, 0.375, 0.375)</volume></shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo</texPath>
+          <drawSize>5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RotSpecies/MycoidColossus/MycoidColossus</texPath>
+          <drawSize>15</drawSize>
+          <shadowData><volume>(0.5, 0.5, 0.4)</volume><offset>(0,0,-0.05)</offset></shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo</texPath>
+          <drawSize>6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

@@ -26,7 +26,9 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))   # src/Ri
 VANILLA_TEX = {  # vanilla/DLC texPaths a port may borrow (read from RimSage, 2026-10-09)
     "Things/Pawn/Animal/Yak/Dessicated_YakMale", "Things/Pawn/Animal/Yak/Dessicated_YakFemale",
     "Things/Pawn/Animal/Megaspider/Dessicated_Megaspider", "Things/Item/Resource/Uranium",
-    "Things/Projectile/LauncherShot",
+    "Things/Projectile/LauncherShot", "Things/Pawn/Animal/Bear/Dessicated_Bear",
+    "Things/Pawn/Animal/Elephant/Dessicated_Elephant", "Things/Pawn/Animal/Thrumbo/Dessicated_Thrumbo",
+    "Things/Pawn/Animal/Warg/Dessicated_Warg", "Things/Pawn/Animal/Iguana/Dessicated_Iguana",
 }
 VEF_GUARD = 'MayRequire="OskarPotocki.VanillaFactionsExpanded.Core"'
 
@@ -38,6 +40,12 @@ PORTS = [
                          "Things/Pawn/Animal/AA_Radyak/AA_Radyak_female"}},
     {"mod": "Miasma", "file": "Defs/ThingDefs_Races/RM_Thermadon.xml", "ours": "RM_Thermadon", "donor": "AA_Thermadon",
      "roster": "Defs/BiomeDefs/RM_Miasma.xml", "placeholder_tex": set()},
+    {"mod": "TheRot", "file": "Defs/Fauna/RM_AgariPorts.xml", "ours": "RM_Agaripawn", "donor": "AA_Agaripawn",
+     "roster": "Defs/BiomeDefs/RM_TheRot_Biome.xml", "placeholder_tex": set()},
+    {"mod": "TheRot", "file": "Defs/Fauna/RM_AgariPorts.xml", "ours": "RM_Agaripod", "donor": "AA_Agaripod",
+     "roster": "Defs/BiomeDefs/RM_TheRot_Biome.xml", "placeholder_tex": set()},
+    {"mod": "TheRot", "file": "Defs/Fauna/RM_AgariPorts.xml", "ours": "RM_MycoidColossus", "donor": "AA_MycoidColossus",
+     "roster": "Defs/BiomeDefs/RM_TheRot_Biome.xml", "placeholder_tex": set()},
 ]
 
 
