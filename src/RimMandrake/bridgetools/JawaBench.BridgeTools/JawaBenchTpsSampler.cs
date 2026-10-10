@@ -79,6 +79,7 @@ namespace JawaBench.BridgeTools
         private static double _prevRootPre, _explained, _explainedAtPre, _leStart, _leDur, _saveStart;
         private static double _tmuStart, _lastSim, _lastContext = -1, _lastMarker;
         private static int _ticksPre, _gcAtPre;
+        private static string _logPath;     // cached on the main thread at install: ProcessExit may run elsewhere
 
         internal static void Install(string startedBy)
         {
@@ -101,6 +102,7 @@ namespace JawaBench.BridgeTools
                     W.RetentionCapBytes = (long)(Settings.RetentionMB * 1048576.0);
                     W.LogRetentionCapBytes = (long)(Settings.LogRetentionMB * 1048576.0);
                     int pid = System.Diagnostics.Process.GetCurrentProcess().Id;
+                    try { _logPath = UnityEngine.Application.consoleLogPath; } catch { }
                     W.Start(RecordDir, Session, pid);
                     StartedBy = startedBy;
                     StartedUtc = W.Utc();
@@ -184,8 +186,7 @@ namespace JawaBench.BridgeTools
                 owners = "{" + string.Join(",", counts.OrderByDescending(kv => kv.Value).Select(kv => W.Json(kv.Key) + ":" + kv.Value)) + "}";
             }
             catch { }
-            string logPath = "";
-            try { logPath = UnityEngine.Application.consoleLogPath; } catch { }
+            string logPath = _logPath ?? "";
             W.Enqueue("session", "\"pid\":" + pid + ",\"startedBy\":" + W.Json(StartedBy) + ",\"build\":" + W.Json(build) +
                                  ",\"engine\":" + W.Json(engine) + ",\"mods\":" + modCount + ",\"modDigest\":\"" + modDigest + "\"" +
                                  ",\"playerLog\":" + W.Json(logPath) + ",\"settings\":" + Settings.ToJson() + ",\"settingsNote\":" + W.Json(SettingsNote) +
@@ -219,14 +220,35 @@ namespace JawaBench.BridgeTools
         {
             try
             {
-                string cur = UnityEngine.Application.consoleLogPath;
+                string cur = _logPath;
                 if (string.IsNullOrEmpty(cur)) return;
                 string prev = Path.Combine(Path.GetDirectoryName(cur), "Player-prev.log");
                 if (!File.Exists(prev)) return;
-                string stamp = File.GetLastWriteTimeUtc(prev).ToString("yyyyMMdd'T'HHmmss'Z'", CultureInfo.InvariantCulture);
-                W.ArchiveLog(prev, "Player-prev_" + stamp + ".log");
+                DateTime mt = File.GetLastWriteTimeUtc(prev);
+                string stamp = mt.ToString("yyyyMMdd'T'HHmmss'Z'", CultureInfo.InvariantCulture);
+                W.ArchiveLog(prev, "Player-prev_" + stamp + ".log", PreviousSession(mt));
             }
             catch { }
+        }
+
+        /// <summary>The session whose heartbeat last changed closest before the previous log's last write (within
+        /// 10 min): the session that log belongs to, recorded on the `log` row (MUST 12).</summary>
+        private static string PreviousSession(DateTime logMtimeUtc)
+        {
+            try
+            {
+                string best = null;
+                double bestGap = 600;
+                foreach (var f in new DirectoryInfo(RecordDir).GetFiles("hb_*.json"))
+                {
+                    string sid = Path.GetFileNameWithoutExtension(f.Name).Substring(3);
+                    if (sid == Session) continue;
+                    double gap = Math.Abs((logMtimeUtc - f.LastWriteTimeUtc).TotalSeconds);
+                    if (gap < bestGap) { bestGap = gap; best = sid; }
+                }
+                return best;
+            }
+            catch { return null; }
         }
 
         private static int _quit;
@@ -240,7 +262,7 @@ namespace JawaBench.BridgeTools
                 W.Drain(2000);
                 if (Settings.ArchivePlayerLog)
                 {
-                    string cur = UnityEngine.Application.consoleLogPath;
+                    string cur = _logPath;
                     W.ArchiveLogNow(cur, "Player_" + W.Utc().Replace(":", "").Replace("-", "").Substring(0, 15) + "Z_" + Session.Substring(0, 8) + ".log");
                     W.Drain(1000);
                 }

@@ -698,6 +698,40 @@ def record_observation(finding, directory=None):
         fh.write(json.dumps(row) + "\n")
 
 
+def preserve_prev_log(prev_path=None, archive_dir=None):
+    """MUST 12: copy Player-prev.log into the archive BEFORE another launch can rotate it away, from OUTSIDE
+    the game (belt_watchdog runs this every pass; the companion can only do it after registration, which
+    follows a long play-data load). Same naming rule as JawaBenchTpsWriter.ArchiveLogNow:
+    Player-prev_<mtimeUtc>_<sha256[:12]>.log, and any existing *_<sha12>.log means it is already kept.
+    Returns the new archive path, or None (absent, or already archived)."""
+    import hashlib
+    import shutil
+    if prev_path is None:
+        try:
+            from game_paths import PLAYER_LOG
+            prev_path = os.path.join(os.path.dirname(PLAYER_LOG), "Player-prev.log")
+        except Exception:                                       # noqa: BLE001
+            return None
+    archive_dir = archive_dir or os.path.join(record_dir(), "logs")
+    if not os.path.isfile(prev_path):
+        return None
+    os.makedirs(archive_dir, exist_ok=True)
+    tmp = os.path.join(archive_dir, ".archiving_%d.tmp" % os.getpid())
+    h = hashlib.sha256()
+    mtime = os.path.getmtime(prev_path)
+    with open(prev_path, "rb") as src, open(tmp, "wb") as dst:
+        for chunk in iter(lambda: src.read(1 << 16), b""):
+            h.update(chunk)
+            dst.write(chunk)
+    tag = h.hexdigest()[:12]
+    if any(n.endswith("_%s.log" % tag) for n in os.listdir(archive_dir)):
+        os.remove(tmp)
+        return None
+    out = os.path.join(archive_dir, "Player-prev_%s_%s.log" % (time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(mtime)), tag))
+    shutil.move(tmp, out)
+    return out
+
+
 # ---------------------------------------------------------------- time arguments
 
 def _tz(name):

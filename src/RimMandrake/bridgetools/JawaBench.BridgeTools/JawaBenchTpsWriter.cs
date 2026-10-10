@@ -399,27 +399,58 @@ namespace JawaBench.BridgeTools
         }
 
         /// <summary>Copy a file into the log archive off the main thread (best effort, retention-bounded).</summary>
-        internal static void ArchiveLog(string source, string name)
+        internal static void ArchiveLog(string source, string name, string fromSession = null)
         {
-            ThreadPool.QueueUserWorkItem(_ => ArchiveLogNow(source, name));
+            ThreadPool.QueueUserWorkItem(_ => ArchiveLogNow(source, name, fromSession));
         }
 
-        internal static void ArchiveLogNow(string source, string name)
+        /// <summary>
+        /// MUST 12: the archive name carries the content's SHA-256 (first 12 hex): <c>name_&lt;sha12&gt;.log</c>.
+        /// The same content is archived once (any existing <c>*_&lt;sha12&gt;.log</c> = already kept, whoever wrote
+        /// it - belt_watchdog's tps_record.preserve_prev_log uses the same rule); different content never
+        /// overwrites or dedupes into another archive, whatever its length or second-resolution timestamp.
+        /// The source is hashed from a snapshot copy, so a log still being written cannot mismatch its name.
+        /// Returns the archive path, or null.
+        /// </summary>
+        internal static string ArchiveLogNow(string source, string name, string fromSession = null)
         {
+            string tmp = null;
             try
             {
-                if (string.IsNullOrEmpty(source) || !File.Exists(source)) return;
-                string dst = Path.Combine(LogDir, name);
-                if (File.Exists(dst) && new FileInfo(dst).Length == new FileInfo(source).Length) return;
+                if (string.IsNullOrEmpty(source) || !File.Exists(source)) return null;
+                Directory.CreateDirectory(LogDir);
+                tmp = Path.Combine(LogDir, ".archiving_" + Guid.NewGuid().ToString("N").Substring(0, 8) + ".tmp");
+                string hex;
                 using (var src = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
-                using (var o = new FileStream(dst, FileMode.Create, FileAccess.Write, FileShare.Read))
-                    src.CopyTo(o);
-                Enqueue("log", "\"archived\":" + Json(dst) + ",\"from\":" + Json(source));
+                using (var o = new FileStream(tmp, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+                using (var sha = System.Security.Cryptography.SHA256.Create())
+                {
+                    var buf = new byte[1 << 16];
+                    int n;
+                    while ((n = src.Read(buf, 0, buf.Length)) > 0) { sha.TransformBlock(buf, 0, n, null, 0); o.Write(buf, 0, n); }
+                    sha.TransformFinalBlock(buf, 0, 0);
+                    hex = BitConverter.ToString(sha.Hash).Replace("-", "").ToLowerInvariant();
+                }
+                string tag = hex.Substring(0, 12);
+                if (Directory.GetFiles(LogDir, "*_" + tag + ".log").Length > 0)
+                {
+                    File.Delete(tmp);
+                    return null;
+                }
+                string stem = name.EndsWith(".log", StringComparison.OrdinalIgnoreCase) ? name.Substring(0, name.Length - 4) : name;
+                string dst = Path.Combine(LogDir, stem + "_" + tag + ".log");
+                File.Move(tmp, dst);
+                tmp = null;
+                Enqueue("log", "\"archived\":" + Json(dst) + ",\"from\":" + Json(source) + ",\"sha256\":\"" + hex + "\"" +
+                               ",\"bytes\":" + new FileInfo(dst).Length + ",\"fromSession\":" + Json(fromSession));
                 RunRetention();
+                return dst;
             }
             catch (Exception e)
             {
+                try { if (tmp != null && File.Exists(tmp)) File.Delete(tmp); } catch { }
                 Enqueue("error", "\"where\":\"log-archive\",\"error\":" + Json(e.GetType().Name + ": " + e.Message));
+                return null;
             }
         }
 

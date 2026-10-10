@@ -18,6 +18,7 @@
 """
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -505,6 +506,25 @@ def reader_checks():
         except Exception as e:                                   # noqa: BLE001
             check(False, "MUST 13: a malformed heartbeat crashed the observer: %r" % e)
 
+    # MUST 12: the external observer preserves Player-prev.log by content, before the next launch can rotate it
+    with tempfile.TemporaryDirectory() as d:
+        logs = os.path.join(d, "logs")
+        prev = os.path.join(d, "Player-prev.log")
+        with open(prev, "w") as fh:
+            fh.write("crashed session log\n" * 50)
+        try:
+            a1 = T.preserve_prev_log(prev, logs)
+            a2 = T.preserve_prev_log(prev, logs)
+            with open(prev, "w") as fh:
+                fh.write("another session log\n" * 50)
+            a3 = T.preserve_prev_log(prev, logs)
+            names = sorted(os.listdir(logs))
+            check(a1 and not a2 and a3 and len(names) == 2 and all(re.match(r"^Player-prev_\d{8}T\d{6}Z_[0-9a-f]{12}\.log$", n)
+                                                                   for n in names),
+                  "MUST 12: preserve_prev_log archives each distinct content once, named by sha: %r" % names)
+        except AttributeError as e:
+            check(False, "MUST 12: no external Player-prev.log preservation: %r" % e)
+
     # MUST 8: two game processes are analysed SEPARATELY
     now8 = t15 + 5000
     b_fresh = [dict(sample(now8 - 5 * (12 - i), 100 + i, ratio=1.0, session="bbbb"), monoStart=50.0 + 5 * i,
@@ -548,7 +568,7 @@ def reader_checks():
 
 # names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
 # from the harness is a failure, not a pass.
-CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "HeartbeatSeparatesMainAndWatchdog", "RetentionLeasesAndBundles"]
+CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "HeartbeatSeparatesMainAndWatchdog", "RetentionLeasesAndBundles", "ArchiveNoCollisions"]
 
 
 def unit_checks(lines):

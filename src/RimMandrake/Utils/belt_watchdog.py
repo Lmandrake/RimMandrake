@@ -646,6 +646,14 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
                             if f["level"] == "WARN" else ""))
     except Exception as e:                                      # noqa: BLE001
         sigs.append(Sig("tps", UNKNOWN, "cannot read the TPS record: %s" % e))
+    if tps_dir is None:      # MUST 12: keep the previous session's Player.log before a relaunch can rotate it away
+        try:
+            import tps_record
+            kept = tps_record.preserve_prev_log()
+            if kept:
+                sigs.append(Sig("tps-log", INFO, "archived Player-prev.log -> %s" % os.path.basename(kept)))
+        except Exception as e:                                  # noqa: BLE001
+            sigs.append(Sig("tps-log", INFO, "could not archive Player-prev.log: %s" % str(e)[:100]))
     return sigs
 
 
