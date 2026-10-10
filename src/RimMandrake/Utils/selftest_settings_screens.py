@@ -743,6 +743,11 @@ MODS = {
         "Battle aftermath switch": "NextPulse",
         "Follow-up limits and windows": "NextPulse",
     }, ()),
+    "FlameStatues": ("FlameStatuesMod.cs", "RimMandrake.FlameStatues.csproj", {
+        "Flames and light": "Now",
+        "Fuel on or off": "Now",
+        "Fuel use rate (restart)": "NextGameStart",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
