@@ -828,6 +828,15 @@ MODS = {
         "Gods (Ninefold)": "Now",
         "Status (the purple engine)": "Now",
     }, ("coatRadius", "coatIntensity", "familyEnabled")),
+    "LongShade": ("RM_LongShadeMod.cs", "RM_LongShade.csproj", {
+        "Mod switch and the dewfringe rim": "Now",
+        "Map generation (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Shipfall Commons (the ship as a refuge)": "Now",
+        "Lee-side middens": "Now",
+        "Shade extras": "Now",
+        "Incidents: stampede, haze fronts and the clan's return": "NextPulse",
+        "After the haze: ash pulse and sand-lock": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
