@@ -48,3 +48,18 @@ drain 10 damage-equivalents per point of force. New proof scenes are written, no
 
 ### Exact checks 2026-10-09 (acceptance sitting)
 - EK.load CHECK: Load tier `explosiveknockback` (`modset_builder.py`; mods: bridge, FlowWorks, GimmeSomeSlack, ExplosiveKnockback). Player.log (WSL `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log`): regex `\[RimMandrake\.ExplosiveKnockback\] Harmony: patched (\d+), missing (\d+)` (PatchApplier.Apply in `ExplosiveKnockback/Source/RM_KnockbackMod.cs`), then `jawa/drain_log limit=400 errorsOnly=True` filtered for `ExplosiveKnockback|RM_Knockback`. PASS: one census line, missing 0, patched >=1; zero error lines naming the mod. FAIL: no census line (assembly not loaded or Apply not reached), missing >=1, `Harmony patch failed`, or an error line naming the mod.
+
+## bridge5 EK.config/EK.guards FAILs, read offline 2026-10-09 (FOUNDRY belt) — no mod-code fix needed; both were the PROOF's staging
+- **body_override:** the control logged `skip reason=too_big` (the mod did the right thing) yet "moved 5 cells", from 146,30 to
+  149,25, a direction neither blast could throw it (away-from-centre is NW for blast 1, due S for the control blast). Both
+  subjects are live animals that walk/flee after a blast, so the scene's displacement verdict could not tell a throw from a walk.
+  Fixed in `RM_KnockbackProof.cs`: the verdict now reads the journal: big has exactly 1 `launch`, control has 0 `launch` + a `too_big` skip.
+- **shield_counter:** confirmed staging gap. A freshly made belt starts at `CompShield.energy` 0 (field default; it charges only
+  in CompTick), so vanilla's own absorption of the 1-damage blast broke it and the counter saw before=0 (`AbsorbByShield` only
+  drains an Active shield). Fixed in the scene: the belt is charged to `EnergyShieldEnergyMax` before the blast, and
+  "drained" is read from the counter's own skip record (energyAfter < energyBefore, or broke), not the belt total.
+- Offline: EK DLL builds 0 errors; kernel selftest 91/91; validation.py STATIC PASS.
+
+### live-verify (next bridge sitting, full list, after deploy of ExplosiveKnockback)
+- EK.config: `knockback_runner` scene `body_override` PASS with detail `bigLaunches=1 controlLaunches=0 controlTooBig=True`.
+- EK.guards: scene `shield_counter` PASS with `energy0 > 0` and the shield skip record showing energyAfter < energyBefore (or broke=True); p moved 0 cells.

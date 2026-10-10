@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 
@@ -735,11 +736,16 @@ namespace RimMandrake.ExplosiveKnockback
                     GenExplosion.DoExplosion(O(s, -1, 4), Map, 1.5f, DamageDefOf.Bomb, null, 1); // control: Bomb, global 2.5 holds
                     s.verdict = sc =>
                     {
+                        // Verdict from the JOURNAL, not displacement: both are live animals that walk or flee after a blast,
+                        // so "moved N cells" cannot tell a throw from a walk (bridge5 2026-10-09: the control logged a
+                        // too_big skip AND moved 5 cells, in a direction no blast could have thrown it).
                         string m = Moved(sc, "big", out Thing t, out int cells);
                         string mc = Moved(sc, "control", out Thing tc, out int cc);
+                        int bigLaunch = ForThing(sc, "launch", t).Count;
+                        int ctrlLaunch = ForThing(sc, "launch", tc).Count;
                         bool ctrlSkip = ForThing(sc, "skip", tc).Any(r => (string)r["reason"] == "too_big");
-                        return Result(sc, cells > 0 && cc == 0 && ctrlSkip, m + "; " + mc + " bodySize=" + sc.numbers["bodySize"].ToString("0.0")
-                            + " controlTooBig=" + ctrlSkip);
+                        return Result(sc, bigLaunch == 1 && ctrlLaunch == 0 && ctrlSkip, m + "; " + mc + " bodySize=" + sc.numbers["bodySize"].ToString("0.0")
+                            + " bigLaunches=" + bigLaunch + " controlLaunches=" + ctrlLaunch + " controlTooBig=" + ctrlSkip);
                     };
                     return null;
                 }
@@ -782,6 +788,12 @@ namespace RimMandrake.ExplosiveKnockback
                     var belt = (Apparel)ThingMaker.MakeThing(beltDef, GenStuff.DefaultStuffFor(beltDef));
                     p.apparel.Wear(belt);
                     CompShield sh = belt.GetComp<CompShield>();
+                    // A freshly made belt starts at energy 0 (CompShield.energy's field default; it only charges by
+                    // CompTick), so the throw counter had nothing to drain (bridge5 2026-10-09: energy 0->0). Charge it.
+                    if (sh != null)
+                    {
+                        AccessTools.FieldRefAccess<CompShield, float>("energy")(sh) = belt.GetStatValue(StatDefOf.EnergyShieldEnergyMax);
+                    }
                     s.numbers["energy0"] = sh?.Energy ?? -1f;
                     s.things["belt"] = belt;
                     Blast(s.o, 2.9f);
@@ -791,7 +803,9 @@ namespace RimMandrake.ExplosiveKnockback
                         var sk = ForThing(sc, "skip", t).Where(r => (string)r["reason"] == "shield").ToList();
                         CompShield shc = ((Apparel)sc.things["belt"]).GetComp<CompShield>();
                         float e1 = shc?.Energy ?? -1f;
-                        bool drained = e1 < sc.numbers["energy0"];
+                        // drained BY THE COUNTER: its own record, not the belt total (vanilla's damage absorption drains it too)
+                        bool drained = sc.numbers["energy0"] > 0f && sk.Count == 1
+                            && (Convert.ToSingle(sk[0]["energyAfter"]) < Convert.ToSingle(sk[0]["energyBefore"]) || Convert.ToBoolean(sk[0]["broke"]));
                         return Result(sc, cells == 0 && sk.Count == 1 && drained, m + " energy " + sc.numbers["energy0"].ToString("0.###")
                             + "->" + e1.ToString("0.###") + (sk.Count > 0 ? " [" + Rec(sk[0]) + "]" : " no shield skip"));
                     };
