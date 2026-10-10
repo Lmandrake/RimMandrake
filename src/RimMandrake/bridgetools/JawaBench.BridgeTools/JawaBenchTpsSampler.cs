@@ -316,6 +316,7 @@ namespace JawaBench.BridgeTools
         private static void RootPrefix()
         {
             WD.Beat();      // always: a disabled sampler must not read as a silent main thread
+            if (JawaBenchTpsProfiler.MainThreadId < 0) JawaBenchTpsProfiler.MainThreadId = Thread.CurrentThread.ManagedThreadId;
             if (RuntimeError != null) return;
             try
             {
@@ -557,6 +558,7 @@ namespace JawaBench.BridgeTools
                     installed = JawaBenchTpsProfiler.Installed,
                     stages = JawaBenchTpsProfiler.PatchedStages,
                     error = JawaBenchTpsProfiler.InstallError,
+                    runtimeError = JawaBenchTpsProfiler.RuntimeError,
                     costPerTimerPairUs = Math.Round(JawaBenchTpsProfiler.CostPerPairSeconds * 1e6, 4),
                 },
                 settings = Settings.ToJson(),
