@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  LONGSHADE_BEDAZZLE_MECHANICS_1, smoke calendar, haze act (design long_shade_bedazzle_2026-09-27.md 4.2).
+  Relief arrives sideways from fires beyond the horizon: the sun dims, every cast shadow lengthens, the heat
+  bed fades. Read as relief, not threat. ALL NUMBERS PROVISIONAL (first-guess, tuned live later):
+  shadowLengthFactor 1.6, soundVolumeFactor 0.5, glowMultiplier 0.6, duration 2~4 days, baseChance 0.5,
+  earliestDay 10, minRefireDays 12. Ash-pulse + sand-lock acts are NOT built (ash-pulse growth virtual UNMEASURED).
+  Mirraks stay short: their false shade never reads the grid's cast length.
+-->
+<Defs>
+  <GameConditionDef>
+    <defName>RM_SmokeHazeCondition</defName>
+    <conditionClass>GameCondition</conditionClass>
+    <label>smoke haze</label>
+    <description>Smoke from fires beyond the horizon thins the sun. Every shadow runs long, the open ground cools, and the sand goes quiet.</description>
+    <startMessage>A brown smoke front has rolled in from beyond the horizon. The sun dims and the shadows stretch.</startMessage>
+    <endMessage>The smoke front has thinned and the hard sun is back.</endMessage>
+    <letterText>Smoke from fires you cannot see has reached the Long Shade. For a few days the sun is dim and every shadow is long: herds will cross the gaps and the open ground is easier to work.</letterText>
+    <letterDef>NeutralEvent</letterDef>
+    <canBePermanent>false</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadeHazeExtension">
+        <shadowLengthFactor>1.6</shadowLengthFactor>
+        <soundVolumeFactor>0.5</soundVolumeFactor>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_GlowMultiplierOverrideExtension">
+        <glowMultiplier>0.6</glowMultiplier>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+  <IncidentDef>
+    <defName>RM_SmokeHazeFront</defName>
+    <label>smoke haze front</label>
+    <category>Misc</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimMandrake.LongShade.IncidentWorker_RM_SmokeHazeFront</workerClass>
+    <gameCondition>RM_SmokeHazeCondition</gameCondition>
+    <durationDays>2~4</durationDays>
+    <baseChance>0.5</baseChance>
+    <earliestDay>10</earliestDay>
+    <minRefireDays>12</minRefireDays>
+    <allowedBiomes><li>RM_LongShade</li></allowedBiomes>
+  </IncidentDef>
+</Defs>

@@ -33,5 +33,9 @@ with tempfile.TemporaryDirectory() as d:
     check("planted defect: a manifest that no longer composes LongShade is not silently passed",
           bool(v.gate_findings("mandrake.rm.biomes", p)))
 check("the shipped def passes the whole static suite on the gate", not [x for x in v.static_checks() if "RUT_JawaReturnTow" in x])
+check("haze: shipped defs and wiring pass", v.haze_problems() == [], str(v.haze_problems()))
+import xml.etree.ElementTree as ET
+bad = ET.fromstring(open(os.path.join(HERE, "Defs", "IncidentDefs", "RM_SmokeHaze.xml"), encoding="utf-8").read().replace("<shadowLengthFactor>1.6", "<shadowLengthFactor>0.5"))
+check("planted defect: a haze that shortens shadows fails", any("lengthening" in x for x in v.haze_problems(bad)))
 print("%d FAILED" % len(FAILS) if FAILS else "all ok")
 sys.exit(1 if FAILS else 0)

@@ -565,3 +565,23 @@ namespace RimMandrake.LongShade
         }
     }
 }
+
+namespace RimMandrake.LongShade
+{
+    /// <summary>LONGSHADE_BEDAZZLE_MECHANICS_1 smoke calendar, haze act (RM_SmokeHazeFront).
+    /// The vanilla make-game-condition worker, gated on the Long Shade and its own toggle, and
+    /// never stacking a second front on a running one. The condition def carries the numbers (PROVISIONAL).</summary>
+    public class IncidentWorker_RM_SmokeHazeFront : IncidentWorker_MakeGameCondition
+    {
+        protected override bool CanFireNowSub(IncidentParms parms)
+        {
+            Map map = parms.target as Map;
+            if (map == null || !RM_LongShadeSettings.modEnabled || !RM_LongShadeSettings.smokeHazeFrontEnabled
+                || !RM_ShadeExtrasTuning.OnLongShade(map))
+            {
+                return false;
+            }
+            return base.CanFireNowSub(parms);
+        }
+    }
+}

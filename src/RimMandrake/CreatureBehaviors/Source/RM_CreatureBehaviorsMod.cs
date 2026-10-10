@@ -350,6 +350,7 @@ namespace RimMandrake.CreatureBehaviors
         public static float soulchimeShardArmorRateMultiplier = 1f;
         public static bool soulchimeTameSootheEnabled = true;
         public static bool shadeGridEnabled = true;
+        public static bool smokeHazeEffectsEnabled = true;
         public static bool shadeSeekingWanderEnabled = true;
         public static bool heatDrivenBurstEnabled = true;
         public static float heatDrivenBurstDecayMultiplier = 1f;
@@ -485,6 +486,7 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref soulchimeShardArmorRateMultiplier, "soulchimeShardArmorRateMultiplier", 1f);
             Scribe_Values.Look(ref soulchimeTameSootheEnabled, "soulchimeTameSootheEnabled", true);
             Scribe_Values.Look(ref shadeGridEnabled, "shadeGridEnabled", true);
+            Scribe_Values.Look(ref smokeHazeEffectsEnabled, "smokeHazeEffectsEnabled", true);
             Scribe_Values.Look(ref shadeSeekingWanderEnabled, "shadeSeekingWanderEnabled", true);
             Scribe_Values.Look(ref heatDrivenBurstEnabled, "heatDrivenBurstEnabled", true);
             Scribe_Values.Look(ref heatDrivenBurstDecayMultiplier, "heatDrivenBurstDecayMultiplier", 1f);
@@ -687,6 +689,9 @@ namespace RimMandrake.CreatureBehaviors
             list.CheckboxLabeled("Shade grid", ref shadeGridEnabled,
                 "The per-cell shade grid stops computing entirely; every shade-reading behavior "
               + "below acts as if the whole map were in full sun.");
+            list.CheckboxLabeled("Smoke-haze shade effects", ref smokeHazeEffectsEnabled,
+                "A smoke-haze weather condition (Long Shade) stops lengthening cast shadows and muffling "
+              + "the heat bed; the condition itself still runs.");
             list.CheckboxLabeled("Shade-seeking wander", ref shadeSeekingWanderEnabled,
                 "A shade-wander-tagged animal stops steering its idle wandering toward shaded cells.");
             list.CheckboxLabeled("Heat-driven burst/retreat hediff", ref heatDrivenBurstEnabled,

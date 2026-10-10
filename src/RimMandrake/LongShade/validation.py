@@ -121,7 +121,7 @@ def static_checks():
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "LongShade.md")):
         bad.append("walk missing")
     for fn in (crawler_road_problems, sun_graves_problems, shipfall_problems, mirrak_problems, vorrel_problems,
-               dewfringe_problems, roster_problems, midden_problems, extras_problems):
+               dewfringe_problems, roster_problems, midden_problems, extras_problems, haze_problems):
         bad.extend(fn())
     return bad
 
@@ -402,6 +402,52 @@ def mirrak_problems():
         bad.append("mirrak strikeRangeCells is not > 0")
     if "RM_Mirrak" not in [e.tag for e in _def(_xml("BiomeDefs", "RM_LongShade.xml"), "BiomeDef", BIOME).find("wildAnimals")]:
         bad.append("mirrak is not in the biome roster")
+    return bad
+
+
+def haze_problems(cond_root=None):
+    """LONGSHADE_BEDAZZLE_MECHANICS_1 smoke calendar (haze act): condition def, its CreatureBehaviors extension, the gated incident."""
+    bad = []
+    root = cond_root if cond_root is not None else _xml("IncidentDefs", "RM_SmokeHaze.xml")
+    cond = _def(root, "GameConditionDef", "RM_SmokeHazeCondition")
+    inc = _def(root, "IncidentDef", "RM_SmokeHazeFront")
+    if cond is None or inc is None:
+        return ["RM_SmokeHazeCondition or RM_SmokeHazeFront missing"]
+    if inc.findtext("gameCondition") != "RM_SmokeHazeCondition":
+        bad.append("haze incident does not make RM_SmokeHazeCondition")
+    if [e.text for e in inc.find("allowedBiomes")] != [BIOME]:
+        bad.append("haze incident is not restricted to the Long Shade")
+    ext = [e for e in cond.iter("li") if e.get("Class", "").endswith("RM_ShadeHazeExtension")]
+    if not ext:
+        bad.append("haze condition lost RM_ShadeHazeExtension (shadows never lengthen)")
+    else:
+        f = float(ext[0].findtext("shadowLengthFactor") or 1)
+        v = float(ext[0].findtext("soundVolumeFactor") or 1)
+        if not 1.0 < f <= 4.0:
+            bad.append("haze shadowLengthFactor %s is not a lengthening within 1..4" % f)
+        if not 0.0 <= v <= 1.0:
+            bad.append("haze soundVolumeFactor %s outside 0..1" % v)
+    if not any(e.get("Class", "").endswith("RM_GlowMultiplierOverrideExtension") for e in cond.iter("li")):
+        bad.append("haze condition no longer dims the sun (RM_GlowMultiplierOverrideExtension)")
+    if "PROVISIONAL" not in open(os.path.join(HERE, "Defs", "IncidentDefs", "RM_SmokeHaze.xml"), encoding="utf-8").read():
+        bad.append("haze numbers lost their PROVISIONAL marker")
+    src = _cs("RM_ShadeExtras.cs")
+    if "class IncidentWorker_RM_SmokeHazeFront" not in src:
+        bad.append("haze worker class missing")
+    else:
+        wk = src.split("class IncidentWorker_RM_SmokeHazeFront", 1)[1]
+        if "smokeHazeFrontEnabled" not in wk or "OnLongShade" not in wk:
+            bad.append("haze worker is not gated on its toggle and the Long Shade")
+    cb = os.path.join(HERE, "..", "CreatureBehaviors", "Source")
+    hz = open(os.path.join(cb, "RM_ShadeHaze.cs"), encoding="utf-8").read()
+    grid = open(os.path.join(cb, "RM_MapComponent_ShadeGrid.cs"), encoding="utf-8").read()
+    snd = open(os.path.join(cb, "RM_HeatSoundscape.cs"), encoding="utf-8").read()
+    if "class RM_ShadeHazeExtension" not in hz:
+        bad.append("RM_ShadeHazeExtension class missing from CreatureBehaviors")
+    if "RM_ShadeHaze.ShadowLengthFactor" not in grid:
+        bad.append("shade grid no longer reads the haze factor")
+    if "RM_ShadeHaze.SoundVolumeFactor" not in snd:
+        bad.append("heat soundscape no longer reads the haze factor")
     return bad
 
 
