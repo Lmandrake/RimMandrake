@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheScald",
- "built": "2026-10-09T07:42:41-0700",
+ "built": "2026-10-10T02:24:28-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "live ModsConfig.xml: 565 active",
  "rows": {
   "RM_Bladderboil": {
    "columns": {
@@ -451,26 +451,13 @@
      "east": "474c424fd87cb158fe9cf4d56317d308365c40451314059217247d2385e2831b",
      "north": "5b57a72c8a56fc095014e9f04e4cf7178be82c30bbe66628f29b31835ee396b9",
      "south": "9ea47869517701154046c4e55ddd36b699558de3348f569537da1281c70660d1"
-    },
-    "B": {
-     "single": "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
-    },
-    "C": {
-     "east": "474c424fd87cb158fe9cf4d56317d308365c40451314059217247d2385e2831b",
-     "north": "5b57a72c8a56fc095014e9f04e4cf7178be82c30bbe66628f29b31835ee396b9",
-     "single": "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
-     "south": "9ea47869517701154046c4e55ddd36b699558de3348f569537da1281c70660d1"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Noohm/RM_Noohm",
-    "B": "Things/Pawn/Animal/RM_Noohm/RM_Noohm",
-    "C": "Things/Pawn/Animal/RM_Noohm/RM_Noohm"
+    "A": "Things/Pawn/Animal/RM_Noohm/RM_Noohm"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "history TerminalBiomes 2026-09-24",
-    "C": "history TerminalBiomes 2026-09-25"
+    "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Noohm/RM_Noohm",
    "reserved": [
@@ -534,26 +521,13 @@
      "east": "e65cbd2957419f8aafb858b9301e15f657e963912b8d2daa9bf48f2c08e0ccdb",
      "north": "77751964a11bfed2c0716621d9dc813d085ae9b8848f37b9a2515e97d44e568a",
      "south": "c77cb3c58cf01d4b8809739848ee052463d27e4be60c24adfc711e33523c353e"
-    },
-    "B": {
-     "single": "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5"
-    },
-    "C": {
-     "east": "e65cbd2957419f8aafb858b9301e15f657e963912b8d2daa9bf48f2c08e0ccdb",
-     "north": "77751964a11bfed2c0716621d9dc813d085ae9b8848f37b9a2515e97d44e568a",
-     "single": "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
-     "south": "c77cb3c58cf01d4b8809739848ee052463d27e4be60c24adfc711e33523c353e"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Shulla/RM_Shulla",
-    "B": "Things/Pawn/Animal/RM_Shulla/RM_Shulla",
-    "C": "Things/Pawn/Animal/RM_Shulla/RM_Shulla"
+    "A": "Things/Pawn/Animal/RM_Shulla/RM_Shulla"
    },
    "labels": {
-    "A": "IN GAME \u2014 TerminalBiomes",
-    "B": "history TerminalBiomes 2026-09-24",
-    "C": "history TerminalBiomes 2026-09-25"
+    "A": "IN GAME \u2014 TerminalBiomes"
    },
    "res": "Things/Pawn/Animal/RM_Shulla/RM_Shulla",
    "reserved": [
@@ -741,5 +715,5 @@
   }
  },
  "sheetId": "thescald_sheet_2026-10-05",
- "snapshotId": "8ce081bda294db3c"
+ "snapshotId": "e54111e64beac027"
 }
