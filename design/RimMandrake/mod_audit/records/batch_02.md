@@ -92,3 +92,102 @@ Assessor: Sonnet 5.5, stage 1. Template per RUBRIC.md section 7.
 **Open:** Does donor audio fall under the no-donor-art ruling (brief §2 names art only)? Not ruled.; NEEDS OWNER: Our own ambient sound system is planned. Should this donor ambience mod be dropped once ours exists, or is donor sound allowed to stay (the no-donor-art rule mentions art only)?
 <sub>facts: batch 02 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 (stage-1 batch 02) 2026-10-10</sub>
 
+### Auto links (`automatic.autolinks`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** (C# source inside the mod folder) (ships-source, no license seen)
+**Adds:** content: none (def_total 0); functionality: Harmony mod (2 DLLs, source in folder) that auto-inserts hyperlinks into def descriptions so one can click through to related defs; 0.83 MB of XML data; art: one small icon
+**Why:** UI convenience over 550 mods' worth of descriptions; no gameplay effect, so it passes the 7-question test trivially (brief §4 test 4). Description parsing happens at load or on display, but no tick FLAG exists; its load cost is UNMEASURED. Nothing of ours references it.
+**Problems:** log_noise 0 0 error occurrences, 0 distinct in the 550-mod session · tps U no tick FLAG in dll_flags; may cost load time over every def description (unmeasured); per-mod TPS UNMEASURED · maintenance 2 C# ships inside the mod folder but no upstream repo link seen; patchable locally, no verified upstream · complexity 2 dll_count 2, flags ['harmony'], static_ctors 1 · memory 1 texture_decoded_mb_est 0.8 MB (INFERRED proxy from PNG headers; per-mod memory UNMEASURED) · size 1 disk_mb 4.46
+**Holds it in / exit:** nothing depends on it -> none
+**Open:** Our own mods' descriptions will be auto-linked; the player may see links to donor defs we mean to retire. Cosmetic only.
+<sub>facts: batch 02 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 (stage-1 batch 02) 2026-10-10</sub>
+
+### Auto Strip on Haul (`fuu.autostriponhaul`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** https://github.com/tenguin/Rimworld_AutoStripOnHaul (github, MIT)
+**Adds:** content: none (def_total 0); 3 patch ops on Core; functionality: Haulers automatically strip corpses of weapons, apparel and inventory; tainted apparel can be forbidden, left or destroyed; settings screen; art: 2 small icons
+**Why:** Its own description says "ideal for scavenger or cannibal colonies", and the brief's Jawa are salvagers (§1). It was once a named suspect in BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 (closed item, line 82: culprit never identified, static search abandoned), so there is no measured case against it. Verified MIT repo (tenguin/Rimworld_AutoStripOnHaul), pushed 2025-03-09.
+**Problems:** log_noise 0 0 error occurrences, 0 distinct in the 550-mod session · tps U no tick FLAG in dll_flags; per-mod TPS UNMEASURED · maintenance 1 repo https://github.com/tenguin/Rimworld_AutoStripOnHaul, last push 2025-03-09T22:11:29Z · complexity 2 dll_count 1, flags ['harmony', 'settings_screen'], static_ctors 0 · memory 1 texture_decoded_mb_est 2.2 MB (INFERRED proxy from PNG headers; per-mod memory UNMEASURED) · size 1 disk_mb 0.86 · interaction 1 patches Core only
+**Holds it in / exit:** nothing depends on it -> none
+**Open:** The closed inventory-transfer item never cleared or convicted this mod; a checker could run the transfer test with it off if the problem recurs.
+<sub>facts: batch 02 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 (stage-1 batch 02) 2026-10-10</sub>
+
+### Better Ambushes Continued (`ionfrigate12345.coolandgoodambush`)
+**Verdict:** KEEP (UNVERIFIED) · **Fit:** neutral · **Source:** https://github.com/Ionfrigate12345/RimworldBetterAmbushesContinued (github-search, no license seen)
+**Adds:** content: none (def_total 0); functionality: Harmony mod: a slider that enlarges ambush encounters by a multiple, plus an option to flee an ambush after a set time; world-component tick; 5 static ctors; art: one 0.14 MB icon
+**Why:** Thematically fine (ambush is an expedition hazard) but it is a quantitative lever: the pillars say danger must be qualitative, "never stat inflation" (brief §1 pillars, §2 no arms race). Whether it hurts depends on the configured multiplier, which is not in the facts. Default behaviour is UNVERIFIED, so the conservative verdict is KEEP with a question rather than ELIMINATE.
+**Problems:** log_noise 0 0 error occurrences, 0 distinct in the 550-mod session · tps 1 tick FLAGs ['world_component_tick']; per-mod TPS UNMEASURED · maintenance 2 repo https://github.com/Ionfrigate12345/RimworldBetterAmbushesContinued, last push 2026-08-05T18:18:44Z (name-search match, unverified) · complexity 2 dll_count 2, flags ['harmony', 'settings_screen', 'world_component_tick'], static_ctors 5 · memory 1 texture_decoded_mb_est 0 MB (INFERRED proxy from PNG headers; per-mod memory UNMEASURED) · size 1 disk_mb 0.24
+**Holds it in / exit:** nothing depends on it -> none
+**Open:** What multiplier is configured in the live ModSettings? 1.0 makes it inert; higher is numeric danger inflation.; NEEDS OWNER: This mod scales ambushes bigger by a slider. The scenario wants danger to be qualitative, not just bigger numbers. Do you want ambush size left at normal, or is bigger ambush acceptable here?
+<sub>facts: batch 02 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 (stage-1 batch 02) 2026-10-10</sub>
+
+### Better Beggars (Continued) (`mlie.betterbeggars`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/emipa606/BetterBeggars (github, GPL-3.0)
+**Adds:** content: 4 QuestScriptDefs and 3 IncidentDefs (beggar quests and incidents, cloned from the vanilla beggar root per skills/rimworld-quests/references/mod_patterns.md); functionality: XML plus two DLLs, settings screen; Ideology is a declared dependency; art: 2 small textures
+**Why:** Self-contained quest pack: a beggar asks for help and the response is rewarded or punished. It requires Ideology (hard prerequisite of shipping per CLAUDE.md, so no problem). Nothing of ours patches it and it has no dependants. Fit is neutral: beggars are generic frontier flavour, not specific to a Jawa crew, and quest rewards can be a ceiling lever, but vanilla beggars share that shape.
+**Problems:** log_noise 0 0 error occurrences, 0 distinct in the 550-mod session · tps U no tick FLAG in dll_flags; per-mod TPS UNMEASURED · maintenance 1 repo https://github.com/emipa606/BetterBeggars, last push 2026-06-02T20:27:49Z · complexity 1 dll_count 2, flags ['settings_screen'], static_ctors 1 · memory 1 texture_decoded_mb_est 1.4 MB (INFERRED proxy from PNG headers; per-mod memory UNMEASURED) · size 1 disk_mb 0.44
+**Holds it in / exit:** supplies beggar quests; nothing of ours depends on it -> none
+**Open:** GPL-3.0 licensed; matters only if we ever absorb code.
+<sub>facts: batch 02 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 (stage-1 batch 02) 2026-10-10</sub>
+
+### Better Growth Moments (`arkymn.bettergrowthmoments`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** (C# source inside the mod folder) (ships-source, no license seen)
+**Adds:** content: none (def_total 0); functionality: Harmony mod adding settings to tune passion and trait choices at child growth moments (Biotech); source in folder (6 .cs); lists incompatible_with Laayoune.author, which is not a package in the universe; art: one 0.2 MB icon
+**Why:** Fixed six founders (brief §1) make child growth a marginal system, but if children arrive the mod only tunes vanilla Biotech outcomes. The stat-normalization audit (design/Jawa/mods/stat_normalization_audit_2026-09-09.md line 168) scoped it out as unrelated to plant growth. Passion/trait gain tuning is a parallel-ladder risk only if the owner sets generous values. KEEP on supply with an open question.
+**Problems:** log_noise 0 0 error occurrences, 0 distinct in the 550-mod session · tps U no tick FLAG in dll_flags; per-mod TPS UNMEASURED · maintenance 2 C# ships in the folder but no upstream link seen · complexity 2 dll_count 1, flags ['harmony', 'settings_screen'], static_ctors 1 · memory 1 texture_decoded_mb_est 1.2 MB (INFERRED proxy from PNG headers; per-mod memory UNMEASURED) · size 1 disk_mb 0.42 · interaction 1 incompatible_with names Laayoune.author, absent from the universe, so no live conflict
+**Holds it in / exit:** nothing depends on it -> none
+**Open:** Are there ever children in the campaign (fixed founders)? If not, this mod is idle.
+<sub>facts: batch 02 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 (stage-1 batch 02) 2026-10-10</sub>
+
+### Better ModMismatch Window (`madeline.modmismatchformatter`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/zzzz465/ModMisMatchFormatter (github, no license seen)
+**Adds:** content: none (def_total 0); functionality: Replaces the mod-mismatch window shown when loading a save made with different mods with a nicer GUI and version check (uses Manifest.xml); art: one 0.71 MB texture (decoded estimate 14.9 MB)
+**Why:** Directly useful here: the owner moves between machines and the list is 550 mods, so mismatch dialogs are routine. No gameplay effect. Source repo verified (zzzz465/ModMisMatchFormatter, pushed 2025-06-15). The decoded texture estimate (14.9 MB) is high for one icon but still low severity.
+**Problems:** log_noise 0 0 error occurrences, 0 distinct in the 550-mod session · tps U no tick FLAG in dll_flags; per-mod TPS UNMEASURED · maintenance 1 repo https://github.com/zzzz465/ModMisMatchFormatter, last push 2025-06-15T03:53:33Z · complexity 2 dll_count 1, flags ['harmony', 'settings_screen'], static_ctors 1 · memory 1 texture_decoded_mb_est 14.9 MB (INFERRED proxy from PNG headers; per-mod memory UNMEASURED) · size 1 disk_mb 1.15
+**Holds it in / exit:** nothing depends on it; useful for save loads across machines -> none
+**Open:** A player list would only need it if players load saves with changed mod sets (audience question §5.1).
+<sub>facts: batch 02 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 (stage-1 batch 02) 2026-10-10</sub>
+
+### Better Projectile Origin (`mlie.betterprojectileorigin`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** https://github.com/emipa606/BetterProjectileOrigin (github, MIT)
+**Adds:** content: none (def_total 0); functionality: Harmony patch: projectiles leave from the weapon muzzle instead of the pawn centre (2 DLLs, settings screen, 2 static ctors); art: 2 small textures
+**Why:** Visual accuracy for ranged weapons and a good match for blasters, which the scenario ships (lightsaber and blaster weapons stay, brief §2 named exclusions). It patches the projectile launch path, so a custom Verb in our weapon mods could bypass it; no xpath edge exists to confirm. Verified MIT repo (emipa606/BetterProjectileOrigin, pushed 2026-06-02).
+**Problems:** log_noise 0 0 error occurrences, 0 distinct in the 550-mod session · tps U no tick FLAG in dll_flags; per-mod TPS UNMEASURED · maintenance 1 repo https://github.com/emipa606/BetterProjectileOrigin, last push 2026-06-02T18:21:07Z · complexity 2 dll_count 2, flags ['harmony', 'settings_screen'], static_ctors 2 · memory 1 texture_decoded_mb_est 2.5 MB (INFERRED proxy from PNG headers; per-mod memory UNMEASURED) · size 1 disk_mb 0.17 · interaction 1 Harmony patch on vanilla projectile launch; no xpath edges into our mods; compatibility with our custom verbs UNVERIFIED
+**Holds it in / exit:** nothing depends on it -> none
+**Open:** Test with our custom weapon verbs: does a non-vanilla Verb_LaunchProjectile subclass still launch from the muzzle?
+<sub>facts: batch 02 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 (stage-1 batch 02) 2026-10-10</sub>
+
+### Better Workbench Management (`falconne.bwm`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, no license seen)
+**Adds:** content: none (def_total 0); 1 patch op; functionality: Better Workbench Management: richer "do until you have X" targets, copy/paste and link bills, restrict bills to a pawn, many bill-tab conveniences; 2 DLLs, 3 static ctors; art: 8 small UI textures
+**Why:** Named adoption: design/Jawa/mods/required_mods.md line 1338 lists it as in both saves ("Pillar: none", i.e. pure QoL). It reduces micromanagement across a 550-mod production stack. No source link was found, so maintenance rests on the Steam author (INFERRED); it works on 1.6 in the measured session with 0 log errors.
+**Problems:** log_noise 0 0 error occurrences, 0 distinct in the 550-mod session · tps U no tick FLAG in dll_flags; per-mod TPS UNMEASURED · maintenance 3 no source link found (source_kind steam-only); cannot patch if 1.7 breaks it · complexity 2 dll_count 2, flags ['harmony', 'settings_screen'], static_ctors 3 · memory 1 texture_decoded_mb_est 5.9 MB (INFERRED proxy from PNG headers; per-mod memory UNMEASURED) · size 1 disk_mb 0.52
+**Holds it in / exit:** design/Jawa/mods/required_mods.md adoption (line 1338) -> none
+**Open:** none
+<sub>facts: batch 02 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 (stage-1 batch 02) 2026-10-10</sub>
+
+### Bigger Gravships (and other Odyssey spaceship related settings) (`redmattis.biggergravship`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** none (steam-only, no license seen)
+**Adds:** content: none (def_total 0); no XML patches; functionality: Stamps gravship size/range/support values from C# at implied-def time (settings for engine radius, extender count and range, support, thruster range, chemfuel tank size) for Odyssey gravships; art: 4 small textures
+**Why:** Load-bearing for the campaign ship. src/RimMandrake/mapsynth/ship_designs.py (lines 38-75) records that the Utinni design only lifts with the owner's stored settings (BG_gravEngineMaxDistance 34, extender distance 30, extender max 12, distance from engine 85; mod defaults leave the hull unliftable, measured needing reach 74.46 vs 51.80) and that the mod wins over Vanilla Gravship Expanded because it runs after XML patching. design/Jawa/worldbuilding/gravship_landing_relaxation.md line 157 also lists it. Losing the settings file silently breaks the ship. Brief §2 lists Mini Gravships as excluded, but this mod enlarges, not shrinks, ship capability.
+**Problems:** log_noise 0 0 error occurrences, 0 distinct in the 550-mod session · tps U no tick FLAG in dll_flags; per-mod TPS UNMEASURED · maintenance 3 no source link found (steam-only); cannot patch if Odyssey 1.6.x changes the comps it stamps · complexity 2 dll_count 1, flags ['harmony', 'settings_screen'], static_ctors 1 · memory 1 texture_decoded_mb_est 9.4 MB (INFERRED proxy from PNG headers; per-mod memory UNMEASURED) · size 1 disk_mb 0.69 · interaction 2 overrides numeric comp values after XML patching, so it overrides Vanilla Gravship Expanded and any patch of ours on those comps regardless of load order (ship_designs.py)
+**Holds it in / exit:** ship_designs.py stored-float settings (owner 2026-08-13); gravship_landing_relaxation.md; Mod_3522759531_GravshipSizeSettings.xml in the live Config -> unfiled: GRAVSHIP_SIZE_STATS_OWN_PATCH (own the four numbers in an RM patch so a settings reset cannot unlift the ship)
+**Open:** Settings file Mod_3522759531_GravshipSizeSettings.xml matches this mod's workshop_id 3522759531 (MEASURED).; Anything that cuts or reorders it unlifts the hull silently.; NEEDS OWNER: The ship only flies because of this mod's size settings, and nothing logs it if they reset. Do you want us to build our own copy of those four numbers into a mod of ours so the ship no longer depends on a donor setting?
+<sub>facts: batch 02 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 (stage-1 batch 02) 2026-10-10</sub>
+
+### Biome Compatibility Project (`kopp.biomecompatibilityproject`)
+**Verdict:** ELIMINATE-COMPLETELY (MEASURED) · **Fit:** dissonant · **Source:** (C# source inside the mod folder) (ships-source, no license seen)
+**Adds:** content: none (def_total 0); source ships (19 .cs); functionality: At load, appends every modded animal and plant to the wildAnimals / wildPlants lists of modded biomes (Creatures.cs lines 73-82; PlantLife.cs lines 74-81 in the shipped 1.6_Source); settings screen; art: one icon
+**Why:** It directly contradicts the roster law: biome casts are hand-built per biome sitting and an animal belongs to ONE biome (CLAUDE.md "An animal belongs to ONE biome"; brief §2 evictions stopped, roster changes at each sitting). Its code mutates the same fields: the closed item WILD_ANIMALS_PADDED_LISTS_1 measured every wildAnimals list padded to 1024 records and named this mod "suspect", and src/RimMandrake/Utils/biome_wildbiomes_evictions.py exists to undo the effect. Our own tooling already refuses it: modset_builder.py TIERS["pyrelands"] puts it in `forbid`, and Pyrelands/Source/WildPlantAllowlist.cs is a runtime guard built because it (with other biome mods) injects foreign flora. Retirement is cheap: def_total 0, no dependants, no placed Things.
+**Problems:** log_noise 0 0 error occurrences, 0 distinct in the 550-mod session · tps U no tick FLAG in dll_flags; per-mod TPS UNMEASURED · maintenance 2 C# ships inside the mod folder but no upstream repo link seen; patchable locally, no verified upstream · complexity 1 dll_count 1, flags ['settings_screen'], static_ctors 1 · memory 1 texture_decoded_mb_est 2.6 MB (INFERRED proxy from PNG headers; per-mod memory UNMEASURED) · size 1 disk_mb 0.55 · interaction 3 writes into wildAnimals/wildPlants of BiomeDefs, the exact fields our biome mod owns, with conflicting intent (source read: Creatures.cs lines 73-82, PlantLife.cs lines 74-81)
+**Holds it in / exit:** nothing depends on it (dependants empty, patched_by empty); ship tiers already exclude it -> WILD_ANIMALS_PADDED_LISTS_1 (closed; the mechanism) / unfiled: BIOMECOMPAT_REMOVE_FROM_FULL_LIST
+**Open:** Confirm in the live Player.log session that removing it clears the 1024-record padding; the closed item never named the culprit with certainty.; NEEDS OWNER: This mod stuffs extra animals and plants into every modded biome, fighting the one-home-per-animal rule. May we remove it from the full list?
+<sub>facts: batch 02 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 (stage-1 batch 02) 2026-10-10</sub>
+
+### Build From Inventory - Continued (`memegoddess.buildfrominventory`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** (C# source inside the mod folder) (ships-source, no license seen)
+**Adds:** content: none (def_total 0); functionality: Harmony mod: construction jobs use materials in a colonist's or pack animal's inventory (6 DLLs, source in folder, map-component tick); art: 3 small textures
+**Why:** Named adoption: design/Jawa/mods/required_mods.md line 1337 says "Prefer the Continued fork for 1.6", pillar "logistics QoL, no free materials". It suits a crew that carries salvage and builds on the move. It was a named candidate (not convicted) in the closed BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 item (line 82). Six DLLs is a complexity flag, and the map-component tick is unmeasured.
+**Problems:** log_noise 0 0 error occurrences, 0 distinct in the 550-mod session · tps 1 tick FLAGs ['map_component_tick']; per-mod TPS UNMEASURED · maintenance 2 C# ships in the folder (7 .cs) but no upstream link; the Continued fork of a long-abandoned original · complexity 2 dll_count 6, flags harmony+map_component_tick · memory 1 texture_decoded_mb_est 1.2 MB (INFERRED proxy from PNG headers; per-mod memory UNMEASURED) · size 1 disk_mb 0.4
+**Holds it in / exit:** design/Jawa/mods/required_mods.md adoption (line 1337) -> none
+**Open:** Was the inventory-transfer refusal ever tested with this mod off? The closed item did not decide.
+<sub>facts: batch 02 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 (stage-1 batch 02) 2026-10-10</sub>
+
