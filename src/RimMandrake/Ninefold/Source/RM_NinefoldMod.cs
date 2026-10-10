@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -84,64 +86,132 @@ namespace RimMandrake.Ninefold
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_NinefoldSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_NinefoldSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or a save loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 400f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
+            list.Begin(view);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.CheckboxLabeled("Enable the Ninefold engine", ref engineEnabled,
-                "The nine gods' satiation/mood tracking and their event-driven reactions "
-              + "to play. Off: completely inert — no tracking, no letters, no log lines, "
-              + "as if the mod were not installed.");
-            list.Gap();
+            // Scopes audited per read site (GameComponent_Ninefold, GodFavourTilt, Offerings): nothing is read at map or world
+            // generation. The engine switch, letters, event impact, mood walk and offerings are read when an event or the hourly
+            // tick runs, so they land now; the favour tilt is read only when an incident, trader, find or weather is rolled.
+            if (Group(list, "Ninefold engine", RimMandrake.Shared.SettingScope.Now, new[] { "engineEnabled" }))
+            {
+                list.CheckboxLabeled("Enable the Ninefold engine", ref engineEnabled,
+                    "The nine gods' satiation/mood tracking and their event-driven reactions "
+                  + "to play. Off: completely inert - no tracking, no letters, no log lines, "
+                  + "as if the mod were not installed. The other options only matter while this is on.");
+                list.GapLine();
+            }
 
-            if (engineEnabled)
+            if (Group(list, "First-contact letters", RimMandrake.Shared.SettingScope.Now, new[] { "firstContactLettersEnabled" }))
             {
                 list.CheckboxLabeled("First-contact letters", ref firstContactLettersEnabled,
                     "Each god sends one narrated letter the first time you meet their "
-                  + "trigger condition. Off: the gods still react to play, just silently — "
+                  + "trigger condition. Off: the gods still react to play, just silently - "
                   + "no letters, ever.");
                 list.GapLine();
+            }
 
+            if (Group(list, "Event impact and mood", RimMandrake.Shared.SettingScope.Now, new[] { "eventMagnitudeMultiplier", "moodWalkMultiplier" }))
+            {
                 list.Label("Event impact: " + eventMagnitudeMultiplier.ToString("0.00") + "x");
                 list.Label("How hard any single event (a birth, a repaired building, a mental "
                   + "break...) moves a god's satiation. 1.0x is the shipped default.");
                 eventMagnitudeMultiplier = list.Slider(eventMagnitudeMultiplier, 0.25f, 3f);
-                list.Gap();
-
                 list.Label("Mood volatility: " + moodWalkMultiplier.ToString("0.00") + "x");
                 list.Label("How much each god's private Mood wanders on its own between events. "
-                  + "This never appears as a number in play — it only colors ambient narration "
+                  + "This never appears as a number in play - it only colors ambient narration "
                   + "elsewhere in the campaign. 1.0x is the shipped default; 0x freezes Mood "
                   + "wherever it last sat.");
                 moodWalkMultiplier = list.Slider(moodWalkMultiplier, 0f, 3f);
                 list.GapLine();
+            }
 
+            if (Group(list, "Favour tilts the odds", RimMandrake.Shared.SettingScope.NextPulse, new[] { "favourOddsEnabled", "favourStrength" }))
+            {
                 list.CheckboxLabeled("Favour tilts the odds", ref favourOddsEnabled,
                     "A pleased or angered god makes a few things in his domain a little more "
                   + "or less likely on your home map: certain incidents, traders, finds and "
                   + "weather. Never labelled. Off: every chance is vanilla.");
-                if (favourOddsEnabled)
-                {
-                    list.Label("Favour strength: " + favourStrength.ToString("0.00") + "x");
-                    list.Label("How far a god's standing bends the odds. 1.0x is the shipped "
-                      + "table (x0.7 to x1.35); 0x is no effect.");
-                    favourStrength = list.Slider(favourStrength, 0f, 2f);
-                }
-                list.Gap();
+                list.Label("Favour strength: " + favourStrength.ToString("0.00") + "x");
+                list.Label("How far a god's standing bends the odds. 1.0x is the shipped "
+                  + "table (x0.7 to x1.35); 0x is no effect.");
+                favourStrength = list.Slider(favourStrength, 0f, 2f);
+                list.GapLine();
+            }
 
+            if (Group(list, "Offerings (Nine Faults, the Left Behind)", RimMandrake.Shared.SettingScope.Now, new[] { "offeringsEnabled" }))
+            {
                 list.CheckboxLabeled("Offerings (Nine Faults, the Left Behind)", ref offeringsEnabled,
                     "Machines the clan has just found are marked as fresh finds the Nine Faults "
                   + "rite may burn out, and a working building can be marked to leave behind at "
                   + "gravship departure. Off: no marks, no toggle, no favour moved by either.");
-            }
-            else
-            {
-                list.Label("Every other option below only matters while the engine is enabled.");
+                list.GapLine();
             }
 
+            viewHeight = list.CurHeight + 20f;
             list.End();
+            Widgets.EndScrollView();
         }
     }
 

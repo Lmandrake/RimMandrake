@@ -919,6 +919,13 @@ MODS = {
         "Roster size and grudge strength": "NextPulse",
         "Remember them permanently": "NextPulse",
     }, ()),
+    "Ninefold": ("RM_NinefoldMod.cs", "Ninefold.csproj", {
+        "Ninefold engine": "Now",
+        "First-contact letters": "Now",
+        "Event impact and mood": "Now",
+        "Favour tilts the odds": "NextPulse",
+        "Offerings (Nine Faults, the Left Behind)": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
