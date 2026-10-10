@@ -567,25 +567,6 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="AA_Swarmling"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Swarmling"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/Swarmling/Swarmling</texPath></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Swarmling"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/Swarmling/Swarmling</texPath></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/PawnKindDef[defName="AA_Swarmling"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
-          <value><texPath>RotSpecies/Swarmling/Swarmling</texPath></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/PawnKindDef[defName="AA_Wildpawn"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
     <match Class="PatchOperationSequence">
       <operations>

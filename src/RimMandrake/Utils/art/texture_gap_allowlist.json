@@ -1,0 +1,149 @@
+{
+ "frozen": "2026-10-10",
+ "entries": [
+  {
+   "texPath": "BMT_Caverns/Terrains/MycelialSoil",
+   "class": "INACTIVE",
+   "owed": "inert: Biomes! Caverns is not in the active list, so the donor def never loads; remove the patch/def when the donor is formally dropped",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimUtinni/FungalSoilTrade/Defs/ThingDefs_Items/RUT_FungalSoil.xml"
+   ]
+  },
+  {
+   "texPath": "BMT_Caverns/Things/Animal/BeardedYak/Dessicated_BeardedYak",
+   "class": "INACTIVE",
+   "owed": "inert: Biomes! Caverns is not in the active list, so the donor def never loads; remove the patch/def when the donor is formally dropped",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/MandrakePatches/Patches/AnimalDessicatedTexPaths_Fix.xml"
+   ]
+  },
+  {
+   "texPath": "BMT_Caverns/Things/Animal/FreezerFrog/Dessicated_FreezertFrog",
+   "class": "INACTIVE",
+   "owed": "inert: Biomes! Caverns is not in the active list, so the donor def never loads; remove the patch/def when the donor is formally dropped",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/MandrakePatches/Patches/AnimalDessicatedTexPaths_Fix.xml"
+   ]
+  },
+  {
+   "texPath": "BMT_Caverns/Things/Animal/GlarralPenguin/Dessicated_GlarralPenguin",
+   "class": "INACTIVE",
+   "owed": "inert: Biomes! Caverns is not in the active list, so the donor def never loads; remove the patch/def when the donor is formally dropped",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/MandrakePatches/Patches/AnimalDessicatedTexPaths_Fix.xml"
+   ]
+  },
+  {
+   "texPath": "Buildings/Crystal_Formations/small_dyeable",
+   "class": "INACTIVE",
+   "owed": "KOTOR_SmallCrystal x7 (+GravTide roofed twins): own small crystal render owed (donor art not kept); item ART_TEXTURE_GAPS_FOLLOWUP_1",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Mineables/Absorbed_KotorWeapons_KotORResource_CrystalFormations_Small.xml"
+   ]
+  },
+  {
+   "texPath": "Things/Filth/CrawlSmear",
+   "class": "MISSING",
+   "owed": "RM_Traces_Spike filth: no art exists anywhere; render owed",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/Traces/Defs/ThingDefs/RM_Traces_Spike.xml"
+   ]
+  },
+  {
+   "texPath": "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra_rest",
+   "class": "MISSING",
+   "owed": "stationary (fins flared) pose: render owed",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Fillers.xml"
+   ]
+  },
+  {
+   "texPath": "Things/Plant/RM_AssayFlecks/Flecks_Heavy",
+   "class": "MISSING",
+   "owed": "Cauldron assay flecks overlay: art owed (C# leaves flecks off until on disk)",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+   ]
+  },
+  {
+   "texPath": "Things/Plant/RM_AssayFlecks/Flecks_Light",
+   "class": "MISSING",
+   "owed": "Cauldron assay flecks overlay: art owed (C# leaves flecks off until on disk)",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+   ]
+  },
+  {
+   "texPath": "Things/Plant/RM_Braskeen/RM_Braskeen",
+   "class": "MISSING",
+   "owed": "owner ruled REDO (\"less cartoonish\"): new render owed; v2 renders await his pick",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/Miasma/Defs/ThingDefs_Plants/RM_Miasma_Predators.xml"
+   ]
+  },
+  {
+   "texPath": "Things/Plant/RM_Dewfall/RM_BloodBouquet_dew",
+   "class": "MISSING",
+   "owed": "Cauldron dew variant: art owed (C# skips swap until on disk)",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+   ]
+  },
+  {
+   "texPath": "Things/Plant/RM_Dewfall/RM_CrystalFlower_dew",
+   "class": "MISSING",
+   "owed": "Cauldron dew variant: art owed (C# skips swap until on disk)",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+   ]
+  },
+  {
+   "texPath": "Things/Plant/RM_Dewfall/RM_GiantToxicFlower_dew",
+   "class": "MISSING",
+   "owed": "Cauldron dew variant: art owed (C# skips swap until on disk)",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+   ]
+  },
+  {
+   "texPath": "Things/Plant/RM_Dewfall/RM_KeeningCordax_dew",
+   "class": "MISSING",
+   "owed": "Cauldron dew variant: art owed (C# skips swap until on disk)",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+   ]
+  },
+  {
+   "texPath": "Things/Plant/RM_Dewfall/RM_RedBugloss_dew",
+   "class": "MISSING",
+   "owed": "Cauldron dew variant: art owed (C# skips swap until on disk)",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/Cauldron/Defs/ThingDefs_Plants/RM_CauldronFlora.xml"
+   ]
+  },
+  {
+   "texPath": "Things/Plant/RM_Ismerrow/RM_Ismerrow",
+   "class": "MISSING",
+   "owed": "sheet row decision is pick A (prefill only, no typed note); miasma_ismerrow_a render exists, not installed: needs his confirmation",
+   "added": "2026-10-10",
+   "defs": [
+    "src/RimMandrake/Miasma/Defs/ThingDefs_Plants/RM_Miasma_RainbowBlooms.xml"
+   ]
+  }
+ ]
+}
