@@ -32,11 +32,15 @@ SIGNALS (each prints one line: LEVEL name: detail  -> remedy)
   run_output  newest Transient/belt_rerun*.txt: a final UNMEASURED/MEASURED line means the run is over
   belt_logs   newest mtime of each Transient/belt_*_log_*.md (a silent subagent dies at 600 s)
   modcheck    age and status of the last live_queue result record
-  tps         the JawaBench TPS record (tps_record.py): median/min/max vs target over 5 min; WARN on SUSTAINED
-              low/high against the speed setting (never changes the verdict). design/RimMandrake/tps_record.md
+  tps         the JawaBench TPS record (tps_record.py): coverage (MISSING/STALE/ERROR) reported apart from
+              performance (WARN on SUSTAINED low/high over contiguous fresh run windows); never changes the verdict.
+  tps-observer the EXTERNAL observer: the sampler's hb_<session>.json age and silentS against the live game pid -
+              main thread silent, whole process frozen, or a session that exited without a shutdown line (crash/
+              kill). design/RimMandrake/tps_record.md
 
-Read-only by construction: the bridge probe calls only ping, rimbridge/get_bridge_status, rimworld/get_ui_state and
-jawa/tps_report (read-only; as the first jawa/ call of a session it also STARTS the TPS sampler).
+Read-only toward the game: the bridge probe calls only ping, rimbridge/get_bridge_status, rimworld/get_ui_state and
+jawa/tps_report. Its one write is the tps-observer's finding, appended once per session to
+JawaBench/tps/observer.jsonl so the TPS record itself says how a crashed session ended.
 """
 import argparse
 import glob
@@ -295,9 +299,10 @@ def win_bridge_probe():
                               for w in ui.get("windows", [])]
         except Exception as e:                                  # noqa: BLE001
             out["main_error"] = str(e)[:200]
-        try:   # BRIDGE_TPS_REGULAR_REPORT_1: starts the sampler if no jawa/ call has yet this session
+        try:   # BRIDGE_TPS_CAPTURE_FIXES_1: sampler health (it starts at game load; this call no longer starts it)
             tr = call("jawa/tps_report")
-            out["tps"] = {k: tr.get(k) for k in ("installed", "samplerStartedUtc", "runtimeError", "writeError")} \
+            out["tps"] = {k: tr.get(k) for k in ("installed", "installError", "startedBy", "samplerStartedUtc", "session",
+                                                 "runtimeError", "writeError")} \
                 if isinstance(tr, dict) else {"error": str(tr)[:120]}
         except Exception as e:                                  # noqa: BLE001
             out["tps"] = {"error": str(e)[:120]}
@@ -599,17 +604,33 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
     except (OSError, KeyError, ValueError):
         sigs.append(Sig("modcheck", INFO, "no live_queue result records"))
 
-    # TPS record (BRIDGE_TPS_REGULAR_REPORT_1): read from disk, so it works with the bridge busy or down
+    # TPS record (BRIDGE_TPS_CAPTURE_FIXES_1): read from disk, so it works with the bridge busy or down.
+    # COVERAGE (MISSING/STALE/ERROR) is reported apart from PERFORMANCE; neither moves the verdict.
     try:
         import tps_record
-        rows, _bad = tps_record.read_samples(tps_dir)
-        lvl, detail = tps_record.verdict(tps_record.summarise(rows, now=now))
+        rec = tps_record.read_record(tps_dir, now=now)
         tb = (br or {}).get("tps") or {}
-        if tb.get("error") or tb.get("runtimeError") or tb.get("writeError"):
-            detail += "; sampler: %s" % (tb.get("error") or tb.get("runtimeError") or tb.get("writeError"))[:100]
-        remedy = ("read the record: python3 src/RimMandrake/Utils/tps_record.py --last 60; the owner's slow-TPS "
-                  "reports are measured here") if lvl == WARN else ""
+        writer = {}
+        if tb.get("writeError"):
+            writer = {"werr": 1, "lastError": str(tb["writeError"])[:80]}
+        lvl, detail = tps_record.verdict(tps_record.summarise(rec["rows"], now=now, writer=writer))
+        if tb.get("error") or tb.get("runtimeError") or tb.get("installError"):
+            detail += "; sampler: %s" % (tb.get("error") or tb.get("runtimeError") or tb.get("installError"))[:100]
+        if rec["malformed"] or rec["invalid"] or rec["future"]:
+            detail += "; record: %d malformed, %d invalid, %d future-dated rows" % (rec["malformed"], rec["invalid"], rec["future"])
+        remedy = ("read the record: python3 src/RimMandrake/Utils/tps_record.py --at <time> --tz America/Los_Angeles; "
+                  "the owner's slow-TPS reports are measured here") if lvl == WARN else ""
         sigs.append(Sig("tps", lvl, detail, remedy))
+        # the EXTERNAL observer: heartbeat age and process exit, which the game process cannot report itself
+        for f in tps_record.observe(rec["rows"], tps_record.read_heartbeats(tps_dir), (game or {}).get("pid"), now=now):
+            if f.get("new"):
+                try:
+                    tps_record.record_observation(f, tps_dir)
+                except OSError:
+                    pass
+            sigs.append(Sig("tps-observer", WARN if f["level"] == "WARN" else INFO, f["detail"],
+                            "python3 src/RimMandrake/Utils/tps_record.py --session %s --sessions" % (f.get("session") or "")[:8]
+                            if f["level"] == "WARN" else ""))
     except Exception as e:                                      # noqa: BLE001
         sigs.append(Sig("tps", UNKNOWN, "cannot read the TPS record: %s" % e))
     return sigs
