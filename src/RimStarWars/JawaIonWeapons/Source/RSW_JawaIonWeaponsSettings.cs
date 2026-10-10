@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -104,62 +106,127 @@ namespace RimMandrake.StarWars.JawaIonWeapons
             return "harsh (" + bodySizeResistExponent.ToString("0.0") + ")";
         }
 
-        private static Vector2 settingsScroll;
-        private static float settingsViewHeight = 1200f;
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RSW_JawaIonWeaponsSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RSW_JawaIonWeaponsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or a save loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 400f;
 
         public void DoWindowContents(Rect inRect)
         {
-            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
-            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
-            list.Begin(settingsView);
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
+            list.Begin(view);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.Label("People and droids — wearing a target down");
-            list.CheckboxLabeled("Stun buildup enabled", ref fleshBuildupEnabled,
-                "Every ion hit adds \"ion buildup\" to a living target until it collapses, alive and "
-              + "unhurt. Off: the blaster still fires and still breaks shields, but nobody ever "
-              + "builds up a charge.");
-            list.Label("Stun buildup per hit: " + stunBuildupMultiplier.ToString("0.00") + "x");
-            list.Label("Higher means fewer shots to drop someone. 1.00x is the shipped weapon: "
-              + "about six solid hits on a person.");
-            stunBuildupMultiplier = list.Slider(stunBuildupMultiplier, 0.25f, 3f);
-            list.Gap();
+            if (Group(list, "People and droids: wearing a target down", RimMandrake.Shared.SettingScope.Now, new[] { "fleshBuildupEnabled", "stunBuildupMultiplier" }))
+            {
+                list.CheckboxLabeled("Stun buildup enabled", ref fleshBuildupEnabled,
+                    "Every ion hit adds \"ion buildup\" to a living target until it collapses, alive and "
+                  + "unhurt. Off: the blaster still fires and still breaks shields, but nobody ever "
+                  + "builds up a charge.");
+                list.Label("Stun buildup per hit: " + stunBuildupMultiplier.ToString("0.00") + "x");
+                list.Label("Higher means fewer shots to drop someone. 1.00x is the shipped weapon: "
+                  + "about six solid hits on a person.");
+                stunBuildupMultiplier = list.Slider(stunBuildupMultiplier, 0.25f, 3f);
+                list.GapLine();
+            }
 
-            list.Label("How much bigger targets resist stunning: " + ResistLabel());
-            list.Label("At the default, doubling a target's size makes it take four times the fire, "
-              + "so a rat drops instantly and a giant barely notices. Slide to the left to make size "
-              + "matter less; at the far left every target takes the same buildup.");
-            bodySizeResistExponent = list.Slider(bodySizeResistExponent, 0f, 3f);
-            list.CheckboxLabeled("Use the same size rule on other mods' stun guns", ref thirdPartyBodySizeScaling,
-                "Other mods' sonic and knockout weapons get the same \"bigger targets resist more\" "
-              + "rule, where a patch has opted them in. Off: those weapons keep their own behaviour.");
-            list.GapLine();
+            if (Group(list, "Body-size resistance", RimMandrake.Shared.SettingScope.Now, new[] { "bodySizeResistExponent", "thirdPartyBodySizeScaling" }))
+            {
+                list.Label("How much bigger targets resist stunning: " + ResistLabel());
+                list.Label("At the default, doubling a target's size makes it take four times the fire, "
+                  + "so a rat drops instantly and a giant barely notices. Slide to the left to make size "
+                  + "matter less; at the far left every target takes the same buildup.");
+                bodySizeResistExponent = list.Slider(bodySizeResistExponent, 0f, 3f);
+                list.CheckboxLabeled("Use the same size rule on other mods' stun guns", ref thirdPartyBodySizeScaling,
+                    "Other mods' sonic and knockout weapons get the same \"bigger targets resist more\" "
+                  + "rule, where a patch has opted them in. Off: those weapons keep their own behaviour.");
+                list.GapLine();
+            }
 
-            list.Label("Machines and mechanoids — instant overload");
-            list.CheckboxLabeled("Overload machines on hit", ref machineTierEnabled,
-                "A mechanoid or droid is hard-stunned the moment it is hit, the way an EMP grenade "
-              + "does it. Off: machines take no stun from ion fire at all.");
-            list.Label("Overload strength: " + machineTierMultiplier.ToString("0.00") + "x");
-            machineTierMultiplier = list.Slider(machineTierMultiplier, 0.25f, 3f);
-            list.GapLine();
+            if (Group(list, "Machines and mechanoids: instant overload", RimMandrake.Shared.SettingScope.Now, new[] { "machineTierEnabled", "machineTierMultiplier" }))
+            {
+                list.CheckboxLabeled("Overload machines on hit", ref machineTierEnabled,
+                    "A mechanoid or droid is hard-stunned the moment it is hit, the way an EMP grenade "
+                  + "does it. Off: machines take no stun from ion fire at all.");
+                list.Label("Overload strength: " + machineTierMultiplier.ToString("0.00") + "x");
+                machineTierMultiplier = list.Slider(machineTierMultiplier, 0.25f, 3f);
+                list.GapLine();
+            }
 
-            list.Label("Shields");
-            list.CheckboxLabeled("Ion fire pops personal shields", ref shieldBreakEnabled,
-                "A hit instantly drains a shield belt, on anyone wearing one. Off: shields absorb ion "
-              + "fire like any other shot.");
-            list.GapLine();
+            if (Group(list, "Shields", RimMandrake.Shared.SettingScope.Now, new[] { "shieldBreakEnabled" }))
+            {
+                list.CheckboxLabeled("Ion fire pops personal shields", ref shieldBreakEnabled,
+                    "A hit instantly drains a shield belt, on anyone wearing one. Off: shields absorb ion "
+                  + "fire like any other shot.");
+                list.GapLine();
+            }
 
-            list.Label("Vehicles (needs Vehicle Framework installed)");
-            list.Label("These do nothing unless the Vehicle Framework mod is active — without it the "
-              + "vehicle part of this mod switches itself off already.");
-            list.CheckboxLabeled("Stun vehicles", ref vehicleTierEnabled,
-                "Ion fire stalls a vehicle. Bigger vehicles take proportionally more hits. Off: "
-              + "vehicles take ordinary component damage and nothing else.");
-            list.Label("Vehicle stun strength: " + vehicleTierMultiplier.ToString("0.00") + "x");
-            vehicleTierMultiplier = list.Slider(vehicleTierMultiplier, 0.25f, 3f);
+            if (Group(list, "Vehicles (needs Vehicle Framework installed)", RimMandrake.Shared.SettingScope.Now, new[] { "vehicleTierEnabled", "vehicleTierMultiplier" }))
+            {
+                list.Label("These do nothing unless the Vehicle Framework mod is active - without it the "
+                  + "vehicle part of this mod switches itself off already.");
+                list.CheckboxLabeled("Stun vehicles", ref vehicleTierEnabled,
+                    "Ion fire stalls a vehicle. Bigger vehicles take proportionally more hits. Off: "
+                  + "vehicles take ordinary component damage and nothing else.");
+                list.Label("Vehicle stun strength: " + vehicleTierMultiplier.ToString("0.00") + "x");
+                vehicleTierMultiplier = list.Slider(vehicleTierMultiplier, 0.25f, 3f);
+                list.GapLine();
+            }
 
-            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
+            viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
         }
