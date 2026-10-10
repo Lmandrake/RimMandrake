@@ -10,7 +10,7 @@ global breeding slider. The creature itself is the donor's (Star Wars Animal Col
 
 CHAINS
   defs_resolve        every def under Defs/ resolves live; a control name reads notFound; the fecundity comp loaded.
-  settings_roundtrip  every public field of RSW_GizkaSettings (INSTANCE fields; the tool reads both kinds), found by
+  settings_roundtrip  every public field of RSW_GizkaSettings (static fields since the SettingsKit retrofit; the tool reads both kinds), found by
                       regex; bool / int / float round-tripped numerically.
   harmony_wiring      each of the five patched engine methods carries a patch owned by mandrake.rsw.gizkastowaway.
   fecundity_state     a gizka given RSW_GizkaFecundity carries it, a control gizka does not.
@@ -89,7 +89,7 @@ def static_checks():
         return ["settings probe found no field (sanity probe failed)"]
     body = _settings_body()
     scribed = body.split("ExposeData", 1)[1].split("public void", 1)[0]
-    ui = _read("Source/RSW_GizkaSettings.cs").split("DoSettingsWindowContents", 1)[1]
+    ui = _read("Source/RSW_GizkaSettings.cs").split("public void DoWindowContents", 1)[1]
     for n, (ty, init) in fields.items():
         m = re.search(r'Scribe_Values\.Look\(ref\s+%s,\s*"%s",\s*([^)]+)\)' % (n, n), scribed)
         if not m:
@@ -197,7 +197,7 @@ def _const(src, name):
 def trigger_findings(srcs):
     out, m = [], srcs.get(MGR, "")
     ready = method_body(m, r"private bool Ready\(bool triggerEnabled\)") or ""
-    for need in ("!s.stowawayEventsEnabled", "!triggerEnabled", "RSW_GizkaPopulation.Kind == null", "DiscoveryCooldownTicks"):
+    for need in ("!RSW_GizkaSettings.stowawayEventsEnabled", "!triggerEnabled", "RSW_GizkaPopulation.Kind == null", "DiscoveryCooldownTicks"):
         if need not in ready:
             out.append("Ready() no longer checks %s (master switch / trigger toggle / donor absent / cooldown)" % need)
     if _const(m, "DiscoveryCooldownTicks") != 900000:
@@ -208,7 +208,7 @@ def trigger_findings(srcs):
         if body is None:
             out.append("%s missing" % name)
             continue
-        if "Ready(RSW_GizkaStowawayMod.Settings?.%s ?? false)" % setting not in body:
+        if "Ready(RSW_GizkaSettings.%s)" % setting not in body:
             out.append("%s does not gate on %s (a toggle with no effect, or default-on when settings are null)" % (name, setting))
         if "Roll(%s)" % const not in body:
             out.append("%s does not roll %s" % (name, const))
@@ -220,7 +220,7 @@ def trigger_findings(srcs):
         if order != sorted(order, reverse=True) or len(set(order)) != 4:
             out.append("trigger chances %s are not gravship > salvage > quest > trade" % order)
     roll = method_body(m, r"private bool Roll\(float baseChance\)") or ""
-    if "Mathf.Clamp01(baseChance * f)" not in roll or "discoveryFrequency ?? 1f" not in roll:
+    if "Mathf.Clamp01(baseChance * f)" not in roll or "RSW_GizkaSettings.discoveryFrequency" not in roll:
         out.append("Roll is no longer clamp01(baseChance * discoveryFrequency) defaulting to 1")
     disc = method_body(m, r"private void Discover\(") or ""
     if "SpawnStowaway(map, cell, Faction.OfPlayer, newborn: false)" not in disc or "lastDiscoveryTick = Find.TickManager.TicksGame" not in disc:
@@ -252,7 +252,7 @@ def fecundity_findings(srcs, props):
     out, f = [], srcs.get(FEC, "")
     base, stretch, mint, minfood = props
     tick = method_body(f, r"public override void CompPostTickInterval\(") or ""
-    order = [tick.find(x) for x in ("!s.stowawayEventsEnabled", "CurLifeStageIndex", "ticksUntilReplicate < 0", "IsComfortable(pawn)",
+    order = [tick.find(x) for x in ("!RSW_GizkaSettings.stowawayEventsEnabled", "CurLifeStageIndex", "ticksUntilReplicate < 0", "IsComfortable(pawn)",
                                     "ticksUntilReplicate -= delta", "TryReplicate(pawn)")]
     if -1 in order or order != sorted(order):
         out.append("CompPostTickInterval order is not master switch -> adult only -> init -> comfort gate -> burn fuse -> replicate (%s)" % order)
@@ -267,7 +267,7 @@ def fecundity_findings(srcs, props):
     if "pawn.Faction, newborn: true" not in rep:
         out.append("an offspring must inherit the parent's faction and be a newborn")
     ri = method_body(f, r"private int ResetInterval\(") or ""
-    for need in ("s.breedingRate <= 0.01f) ? 1f", "Mathf.Lerp(1f, Mathf.Max(1f, Props.intervalStretchAtCap), fill)",
+    for need in ("RSW_GizkaSettings.breedingRate <= 0.01f) ? 1f", "Mathf.Lerp(1f, Mathf.Max(1f, Props.intervalStretchAtCap), fill)",
                  "Props.baseReplicateIntervalDays * stretch / rate", "Mathf.Max(2500,", "* 60000f *", "Rand.Range(0.85f, 1.15f)"):
         if need not in ri:
             out.append("ResetInterval lost `%s`" % need)
@@ -337,9 +337,9 @@ def infestation_findings(srcs):
         if seq != sorted(seq) or seq[-1] != 4:
             out.append("stage is not monotone in count (or never reaches Plague at the cap) for cap %d" % cap)
     mc = method_body(f, r"public override void MapComponentTick\(\)") or ""
-    if "TicksGame % CheckIntervalTicks != 0" not in mc or "!s.stowawayEventsEnabled" not in mc:
+    if "TicksGame % CheckIntervalTicks != 0" not in mc or "!RSW_GizkaSettings.stowawayEventsEnabled" not in mc:
         out.append("MapComponentTick lost its cadence gate or the master switch")
-    if "if (s.chewingEnabled && stage >= GizkaStage.Infestation)" not in mc:
+    if "if (RSW_GizkaSettings.chewingEnabled && stage >= GizkaStage.Infestation)" not in mc:
         out.append("chewing is not gated on chewingEnabled AND the Infestation stage")
     if "if (stage > lastStage) AnnounceStage" not in mc:
         out.append("a stage is announced when it steps DOWN (the warning must be re-earned, never repeated on the way down)")
@@ -365,7 +365,7 @@ def infestation_findings(srcs):
 def cull_findings(srcs):
     out = []
     b = method_body(srcs.get(PAT, ""), r"public static void Prefix\(Pawn __instance\)") or ""
-    if "!s.stowawayEventsEnabled || !s.cullGuiltEnabled) return;" not in b:
+    if "!RSW_GizkaSettings.stowawayEventsEnabled || !RSW_GizkaSettings.cullGuiltEnabled) return;" not in b:
         out.append("cull guilt is not gated on the master switch AND cullGuiltEnabled")
     for need in ("IsStowawayGizka(victim)", "WitnessRadius", "GenSight.LineOfSight(", "FreeColonistsSpawned", "TryGainMemory(thought)"):
         if need not in b:
@@ -383,7 +383,7 @@ def slider_findings(srcs):
     fields = dict((m.group(2), (m.group(1), m.group(3).strip())) for m in _FIELD.finditer(src.split("ExposeData", 1)[0]))
     out = []
     rng = dict((m.group(1), (float(m.group(2)), float(m.group(3)))) for m in re.finditer(
-        r"Settings\.(\w+) = (?:Mathf\.RoundToInt\()?l\.Slider\(Settings\.\1, ([0-9.]+)f, ([0-9.]+)f\)", src))
+        r"(\w+) = (?:Mathf\.RoundToInt\(|\(int\))?list\.Slider\(\1, ([0-9.]+)f, ([0-9.]+)f\)", src))
     if len(rng) < 4:
         return ["only %d sliders parsed from the settings window: parse failure" % len(rng)]
     for n, (lo, hi) in rng.items():
