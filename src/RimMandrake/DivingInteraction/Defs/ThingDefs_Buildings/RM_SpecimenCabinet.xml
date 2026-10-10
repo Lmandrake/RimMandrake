@@ -27,6 +27,9 @@
     <rotatable>true</rotatable>
     <designationCategory>Furniture</designationCategory>
     <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsFurniture</li>
+    </thingCategories>
     <staticSunShadowHeight>0.5</staticSunShadowHeight>
     <surfaceType>Item</surfaceType>
     <canOverlapZones>false</canOverlapZones>

@@ -973,7 +973,7 @@ class Run(object):
             for x in (census or {}).get("hoses") or []:
                 if tuple(x["reel"]) == reel:
                     h = x
-            rec["census"] = {k: h.get(k) for k in ("kind", "laid", "layOk", "state", "blend", "visibleWidth", "widthOverWire", "minBendFlat",
+            rec["census"] = {k: h.get(k) for k in ("kind", "laid", "layOk", "layReason", "state", "blend", "visibleWidth", "widthOverWire", "minBendFlat",
                                                   "minBendPlump", "couplings", "flatLen", "pathLen", "poseLen", "selfIntersects",
                                                   "unwalkablePoints", "fellBack", "geometryHash", "provider")}
             rec["census"]["transitionTicks"] = (census or {}).get("transitionTicks")

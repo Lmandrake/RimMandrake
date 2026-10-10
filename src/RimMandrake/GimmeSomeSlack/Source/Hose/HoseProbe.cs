@@ -193,6 +193,7 @@ namespace RimMandrake.GimmeSomeSlack.Hose
                   .Append(",\"far\":[").Append(r.far.x).Append(',').Append(r.far.z).Append(']')
                   .Append(",\"laid\":").Append(B(r.laid))
                   .Append(",\"layOk\":").Append(B(lay != null))
+                  .Append(",\"layReason\":").Append(S(r.lastLayReason))
                   .Append(",\"carry\":").Append(S(r.carry.ToString()))
                   .Append(",\"carrier\":").Append(r.carrier == null ? "null" : "{\"id\":" + r.carrier.thingIDNumber + ",\"name\":" + S(r.carrier.LabelShort) + ",\"pos\":" + Pos(r.carrier.Position) + "}")
                   .Append(",\"trail\":{\"count\":").Append(r.trail.Count).Append(",\"pulled\":").Append(D(r.TrailLength()))

@@ -207,7 +207,7 @@
     <description>Something young and outsized for its age, no longer than your arm -- which means whatever it grows into is still under this bank. Eat it now, before it eats you next year. Netted rarer than anything else the river gives up, and the one catch every crew brags about.</description>
     <graphicData>
       <texPath>Things/Plant/Echeveria/EcheveriaA</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>12</MarketValue>
