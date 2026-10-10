@@ -16,4 +16,19 @@
       <value><texPath>RimUtinni/UtinniPatches/RaptorShrimp/AA_RaptorShrimp</texPath></value>
     </match>
   </Operation>
+  <!-- Alternate graphics (ALTGAP sweep 2026-10-10): the donor draws these paths via alternateGraphics, which the old same-path override never painted; repointed to the painted set (colour variants of the same animal). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp2"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp2"]</xpath>
+      <value><texPath>RimUtinni/UtinniPatches/RaptorShrimp/AA_RaptorShrimp</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp3"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp3"]</xpath>
+      <value><texPath>RimUtinni/UtinniPatches/RaptorShrimp/AA_RaptorShrimp</texPath></value>
+    </match>
+  </Operation>
 </Patch>

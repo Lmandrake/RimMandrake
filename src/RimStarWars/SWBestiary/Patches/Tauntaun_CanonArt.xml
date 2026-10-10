@@ -27,6 +27,11 @@
           <xpath>Defs/PawnKindDef[defName="Tauntaun"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
           <value><texPath>Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon</texPath></value>
         </li>
+        <!-- Alternate graphics (ALTGAP sweep 2026-10-10): the donor draws six alternateGraphics rows of swanimals/Tauntaun/Tauntaun (alternateGraphicChance 0.8), each a near-white tint; without this 80 percent of tauntauns kept donor art. -->
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Tauntaun"]/alternateGraphics/li/texPath[text()="swanimals/Tauntaun/Tauntaun"]</xpath>
+          <value><texPath>Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon</texPath></value>
+        </li>
       </operations>
     </match>
   </Operation>

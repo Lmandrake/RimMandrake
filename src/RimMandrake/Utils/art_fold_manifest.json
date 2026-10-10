@@ -604,6 +604,10 @@
     {
      "old": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw3",
      "new": "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw3"
+    },
+    {
+     "old": "Things/Pawn/Animal/AA_Lockjaw/AA_Lockjaw",
+     "new": "RimUtinni/UtinniPatches/Lockjaw/AA_Lockjaw2"
     }
    ],
    "owner": "src/RimUtinni/UtinniPatches",
@@ -671,6 +675,14 @@
    "groups": [
     {
      "old": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp",
+     "new": "RimUtinni/UtinniPatches/BloodShrimp/AA_BloodShrimp"
+    },
+    {
+     "old": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp2",
+     "new": "RimUtinni/UtinniPatches/BloodShrimp/AA_BloodShrimp"
+    },
+    {
+     "old": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp3",
      "new": "RimUtinni/UtinniPatches/BloodShrimp/AA_BloodShrimp"
     }
    ],
@@ -751,6 +763,14 @@
    "groups": [
     {
      "old": "Things/Pawn/Animal/AA_FrostMite/AA_FrostMite",
+     "new": "RimUtinni/UtinniPatches/Frostmite/AA_FrostMite"
+    },
+    {
+     "old": "Things/Pawn/Animal/AA_FrostMite/AA_FrostMite2",
+     "new": "RimUtinni/UtinniPatches/Frostmite/AA_FrostMite"
+    },
+    {
+     "old": "Things/Pawn/Animal/AA_FrostMite/AA_FrostMite3",
      "new": "RimUtinni/UtinniPatches/Frostmite/AA_FrostMite"
     }
    ],
@@ -847,6 +867,14 @@
    "groups": [
     {
      "old": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp",
+     "new": "RimUtinni/UtinniPatches/RaptorShrimp/AA_RaptorShrimp"
+    },
+    {
+     "old": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp2",
+     "new": "RimUtinni/UtinniPatches/RaptorShrimp/AA_RaptorShrimp"
+    },
+    {
+     "old": "Things/Pawn/Animal/AA_RaptorShrimp/AA_RaptorShrimp3",
      "new": "RimUtinni/UtinniPatches/RaptorShrimp/AA_RaptorShrimp"
     }
    ],
@@ -988,6 +1016,21 @@
      "new": "Things/Pawn/Animal/Megathrips/Megathrips"
     }
    ],
+   "unlisted_files": 0
+  },
+  {
+   "creature": "Tauntaun",
+   "donor": "mlie.starwarsanimalcollection",
+   "donor_hint": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3497316713",
+   "groups": [
+    {
+     "old": "swanimals/Tauntaun/Tauntaun",
+     "new": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon"
+    }
+   ],
+   "mode": "canon-patch",
+   "owner": "src/RimStarWars/SWBestiary",
+   "patch": "Patches/Tauntaun_CanonArt.xml",
    "unlisted_files": 0
   }
  ]
