@@ -87,7 +87,7 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RUT_SealedSleeper</defName>
-    <label>Sealed sleeper</label>
+    <label>tammuq</label>
     <description>A squat, armor-clad burrower that spends almost its whole life motionless under the cracked clay, banked down inside a wax-lined burrow the way Earth's lungfish rides out a dry year. Walk the famous cracked-pan flats and you are walking on sleeping animals — the Farmers read where they cluster thickest as the surest sign of water underfoot, and prize the pale wax it sheds when it finally wakes.</description>
     <receivesSignals>true</receivesSignals>
     <statBases>
@@ -195,7 +195,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RUT_SealedSleeper</defName>
-    <label>Sealed sleeper</label>
+    <label>tammuq</label>
     <race>RUT_SealedSleeper</race>
     <combatPower>18</combatPower>
     <wildGroupSize>1~1</wildGroupSize>

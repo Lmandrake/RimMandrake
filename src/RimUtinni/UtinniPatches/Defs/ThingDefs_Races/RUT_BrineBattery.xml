@@ -50,7 +50,7 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RUT_BrineBattery</defName>
-    <label>brine battery</label>
+    <label>isi isi</label>
     <description>A squat, rubbery-shelled animal that never leaves its pool — hypersaline water over a mineral bed is half a voltaic cell already, and this thing is the half that moves. It sits at the deepest point like a fitted lid, feeding on the same gradient it draws its charge from, and everyone in the Wasteland who has ever reached into a promising pool for the wrong reason has a story about the other half.</description>
     <statBases>
       <MoveSpeed>1.3</MoveSpeed>
@@ -131,7 +131,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RUT_BrineBattery</defName>
-    <label>brine battery</label>
+    <label>isi isi</label>
     <race>RUT_BrineBattery</race>
     <combatPower>50</combatPower>
     <wildGroupSize>1</wildGroupSize>

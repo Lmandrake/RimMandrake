@@ -33,7 +33,7 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RUT_CrackWax</defName>
     <label>crack-wax</label>
-    <description>A pale, waxy lining shed by a Sealed sleeper when it finally wakes and abandons its burrow. Farmers gather it off the flats and line their cisterns with it — the one waterproofing material the Cracked Lands make for free, and the surest sign a dowsing walk found real water.</description>
+    <description>A pale, waxy lining shed by a tammuq when it finally wakes and abandons its burrow. Farmers gather it off the flats and line their cisterns with it — the one waterproofing material the Cracked Lands make for free, and the surest sign a dowsing walk found real water.</description>
     <thingCategories>
       <li>ResourcesRaw</li>
     </thingCategories>
