@@ -867,6 +867,12 @@ MODS = {
     "StructureInjections": ("RM_StructureInjectionsMod.cs", "StructureInjections.csproj", {
         "Structure injection templates (WORLDGEN-AFFECTING)": "NewMapsOnly",
     }, ()),
+    "SeaShores": ("RM_SeaShoresSettings.cs", "RM_SeaShores.csproj", {
+        "Modded seas count as coastline": "Now",
+        "Shores beside a modded sea (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Fishing": "Now",
+        "Repair existing worlds": "NextGameStart",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
