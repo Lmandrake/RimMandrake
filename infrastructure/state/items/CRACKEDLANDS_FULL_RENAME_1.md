@@ -6,6 +6,10 @@ file names**. The player-facing label is already "the Cracked Lands"; this makes
 the internals match. The rename gate is long closed (`NAMING_SCHEME_EXECUTION_1`,
 2026-08-31) — renames are simply owed work.
 
+## Ruling 2026-10-09 (decision taken by question card)
+
+Rename now. Read the canonical start save for old-name references first; if any are found, STOP and report.
+
 ## Scope
 
 1. **Defs**: `RM_FloodedCanyon` → `RM_CrackedLands`, and every defName carrying

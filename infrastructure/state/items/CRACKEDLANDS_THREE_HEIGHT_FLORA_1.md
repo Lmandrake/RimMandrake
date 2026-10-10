@@ -25,10 +25,9 @@ natural walls; minor harvests only.
   the qirra there.
 - `RM_FossilStrata` places the fossil seam things, which are what talus clasps root beside.
 
-## open questions (owner)
+## rulings and open questions
 
-1. **What does "pry cracks wider" do in game?** Options: a slow chance to turn the adjacent wall
-   cell into a fossil seam or rubble; purely flavour; or a mining-yield bonus next to it.
+1. **"Pry cracks wider" (ruled 2026-10-09, decision taken by question card):** talus clasp prying opens fossil seams (natural walls only), gives a mining bonus beside a clasp, and sends a message letter when a crack happens.
 2. **The harvests**: what each yields, and how much ("minor").
 3. **The Veqma shade-line law**: enforce it with a glow limit on the def, or with roster placement.
    This is also open on `CRACKEDLANDS_RULED_CONTENT_1`.

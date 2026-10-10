@@ -2,8 +2,8 @@
 
 Split from `UNFINISHED_LINE_ENVOY_BEAT_1` (beat 2 built without it). Design: `design/Jawa/proposals/droid_mass_production_quest_chain_2026-10-02.md` §2.2 table (sites A-D).
 
-## blocked
-The owner ruled Q1 = A on 2026-10-03 (the Enclaves get a working line and the player gets its fruits; no player-owned Foundry Line building). The design's site B, "your colony", reads "you get the building (Q1)". Does site B stay (the line stands at your colony but is the Enclaves'), or is it cut? Ask before building.
+## site B ruling
+Site B ("your colony") is CUT (owner card 2026-10-08); sites A, C, D are offered. Q1 = A (ruled 2026-10-03) stands: no player-owned line building.
 
 ## criteria
 - [ ] The choice is offered when The Envoy succeeds; each option's goodwill split per the §2.2 table.

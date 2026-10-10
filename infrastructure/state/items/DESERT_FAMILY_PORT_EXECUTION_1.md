@@ -29,7 +29,7 @@ SWBestiary authoring source, row by row across all 109 decision rows.
 | **already ours** | **4** | 3 SWBestiary (`RSW_ImperialToad`, `RSW_Jellypot`, `RSW_MossBeetle`) + `JOE_Landopus`, which MEASURED as already living in RimUtinni Patches |
 | **DONE** | **85** | |
 | unblocked, still to author | **11** | see below |
-| **needs the owner before authoring** | **12** | 7 Droid Depot + 5 vanilla/Biotech, see below |
+| **owner rulings landed, nothing left to author** | **12** | 7 Droid Depot droids leave to the wreckage injection (2026-09-21); 3 live vanilla rows replaced as ruled; `Rat` stays wreckage-only (card 2026-09-25) |
 | out of scope | **1** | `AB_GiantStikehr` — cut from the Extreme Desert as misplaced the same day. ⛔ Do not re-add |
 
 ### 🔴 art — MEASURED 3 of 84, and this is the actual remaining wave
@@ -62,7 +62,7 @@ CENSUSED 2026-09-20, full table in `Transient/desert_art_census.md`:
 |---|---:|---|
 | **IN FLIGHT** — job already queued or rendered under *this item* | **77** | ⛔ **do not queue.** `registry.jsonl` holds 251 `target` entries with `source: DESERT_FAMILY_PORT_EXECUTION_1`, first registered **2026-09-20 09:41 PDT**. 24 already have PASS-validated renders sitting unreviewed in `_artsrc/`/`done/`; 52 are queued and not yet rendered; 1 (Kybuck) is 2 pass / 1 fail |
 | already has our own art | 4 | `RSW_Plant_Chakroot_Wild`, `RSW_Plant_HubbaGourd_Wild`, `RSW_Plant_Bloddle`, and `RSW_Mynock` (wired by `SHIP_VERMIN_MOD_1`) |
-| **owner already ruled — CONFLICT** | 1 | `RSW_MossBeetle`, see below |
+| **ruled: comes back** | 1 | `RSW_MossBeetle` (owner 2026-09-21: the blanket desert replace governs over the 2026-09-19 deeps cut) |
 | **safe to queue** | **3** | `RSW_ImperialToad`, `RSW_Jellypot`, `JOE_Landopus` |
 
 🔴 **So the owed work is 24 renders to REVIEW BY EYE, not 81 to generate.** Filing
@@ -74,15 +74,7 @@ renders bad, and only an eye caught them.
 from `ART_REGEN_WAVE5_QUEUE_1` (south/east already PASS) and today's
 `desertportb_ferroclaw`. Reconcile them; do not treat it as two needs.
 
-### 🔴 scope conflict the owner must settle — `RSW_MossBeetle`
-
-`Transient/deeps_flora_fauna_review_2026-09-18.decisions.json` (owner-approved
-**2026-09-19**) rules `RSW_MossBeetle` **CUT**. This item's blanket *"replace"* ruling
-came **2026-09-20**, one day later, and sweeps it back in. Two owner rulings one day
-apart disagree about the same creature. ⛔ Do not generate art for it and ⛔ do not
-silently drop it — it is his call which ruling governs.
-
-### ✅ the def half is DONE except for the 12 rows that need him
+### ✅ the def half is DONE
 
 FINAL, 2026-09-21. The "11 unblocked rows" this section used to list was itself wrong:
 **9 of the 11 were already ported** under drafted names. Only two genuinely needed
@@ -108,8 +100,8 @@ is *"agent drafts, owner reacts"*). They need to reach him as a batch.
 ✅ Authoring `RSW_Stoneback` also fixed a real dangling reference: `RSW_Ferroclaw`'s
 `<useMeatFrom>RSW_Stoneback</useMeatFrom>` pointed at a def that did not exist.
 
-⇒ **96 of 109 rows are ported. 12 are blocked on the owner. 1 is out of scope.**
-The def half of this item is finished; what remains is his 12 answers, the art review,
+⇒ **96 of 109 rows are ported. The other 12 were ruled by the owner 2026-09-21 and need no authoring. 1 is out of scope.**
+The def half of this item is finished; what remains is the art review,
 and step 4 (rewiring the biome tables).
 
 ### 🔴 the instrument lesson — stop re-measuring this wrong
@@ -125,15 +117,10 @@ the Alpha Biomes / ReGrowth / Horrors / VFEI2 renames, which use the same mechan
 `RSW_DesertPortMisc_Plants.xml`. Read those comments before counting anything on this
 item. ⛔ Do not count by prefix.
 
-### the 12 rows that need him first
+### the 12 rows that were put to him (ruled 2026-09-21)
 
-- **7 Droid Depot droids** (`OuterRim_DUMDroid`, `DestroyerDroid`, `FX7Droid`, `GNKDroid`,
-  `MSEDroid`, `MuckrakerDroid`, `SalvageAssistDroid`) — `neronix17.outerrim.droiddepot` is
-  **NOT in the active mod list**, so they cannot be read from a live game. Port from the
-  donor's files on disk, or do they not come back at all?
-- **5 vanilla/Biotech rows** (`Rat`, `Plant_Bush`, `Plant_HealrootWild`, `Plant_ShrubLow`
-  from Core; `Plant_Ripthorn` from Biotech) — replacing vanilla is a bigger departure than
-  porting a donor.
+- **7 Droid Depot droids**: leave this item; the wreckage injection system carries them (see "Owner rulings, 2026-09-21" below).
+- **5 vanilla/Biotech rows** (3 live after re-measure; `Plant_ShrubLow` was already replaced by `RUT_Fuzz`): replaced as ruled. `Rat` stays wreckage-only, decision taken by question card 2026-09-25.
 
 ## 🔑 the precedent — copy it, do not invent one
 
@@ -342,12 +329,9 @@ item's own prose and were relayed to him in `Transient/WHAT_NEEDS_THE_OWNER_2026
 as if measured. **Re-measure a count immediately before putting it in front of him**, not
 when the item was written — this queue moves same-day.
 
-## ⏸️ One genuine conflict, left for him deliberately
+## Rat ruling (decision taken by question card 2026-09-25)
 
-He ruled **"replace all 5"**, which includes `Rat`. But `Rat` is **not wired ambient
-anywhere**, so there is nothing to replace — and re-adding a rat purely to replace it would
-contradict the Fall-Line arrivals ruling. ⛔ Not resolved either way: the agent flagged it
-rather than picking, which is correct. **It needs one word from him.**
+`Rat` is not wired ambient anywhere and stays wreckage-only (`FALL_LINE_ARRIVAL_MECHANISM_1` governs); it is not re-added as an ambient desert row.
 
 ## Art
 

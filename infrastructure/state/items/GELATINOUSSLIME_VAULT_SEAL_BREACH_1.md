@@ -3,10 +3,10 @@
 **Campaign tier** (`RUT_`, the vault family). Design: `design/Jawa/worldbuilding/biomes/gelatinousslime_bedazzle_review_2026-10-02.md` §8. Depends on `GELATINOUSSLIME_TITAN_CHUNK_BOMB_1`.
 Caused by `GELATINOUSSLIME_SCORING_SITTING_1` (turn 1). Owner, typed 2026-10-02 (card, item 2): *"Grab a chunk of the giant and it becomes a terrible bomb like weapon to use on someone. Bioweapon after all. Can use it to open one of the vault dungeons blocked by assailant seals."* None of the three pitched stories (the unfiled hull, the cook's giant, the return to sender) was chosen; this replaces them.
 
-## 🔴 What "vault dungeons blocked by assailant seals" refers to: searched, and the seal does not exist
+## What "vault dungeons blocked by assailant seals" refers to
 
 Searched `src/`, `design/`, `infrastructure/state/items/` and canon (2026-10-02) for assailant seal, sealed
-vault, vault dungeon. **The vaults exist; an "Assailant seal" does not.**
+vault, vault dungeon. **The vaults exist; no seal def existed when searched.** The seal is now ruled (see the 2026-10-09 ruling below).
 
 - **The vault dungeons are the six Forsaken vaults**: `design/Jawa/worldbuilding/dungeons_arc_spec.md` §3,
   `VAULT_DUNGEON_BUILD_1` (layouts, `RUT_VaultHeart`, `src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/`),
