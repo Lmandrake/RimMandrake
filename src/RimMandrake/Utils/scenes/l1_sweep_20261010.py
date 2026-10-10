@@ -6,6 +6,7 @@ Every def read is paired with a sanity probe (known-present + known-absent) so a
 import sys, json, re, os, glob
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from scenes import scenelib as S
+from game_paths import LOCALLOW
 S.quiet()
 
 def j(x, n=300): return json.dumps(x, default=str)[:n]
@@ -66,7 +67,7 @@ except Exception as e:
     out("EXCAVATION_WALL_ART_1/A2", "UNMEASURED", repr(e))
 
 # LASSO_CHERRYPICKER_REMOVAL_1 A2
-cfg = glob.glob(os.path.expandvars(r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\Mod_2944488802_*.xml"))
+cfg = glob.glob(os.path.join(LOCALLOW, "Config", "Mod_2944488802_*.xml"))
 if not cfg: out("LASSO_CHERRYPICKER_REMOVAL_1/A2", "FAIL", "config file absent (absence is a FAIL)")
 else:
     m = re.search(r"<LassoSpawnChance>([^<]*)<", open(cfg[0], encoding="utf-8", errors="replace").read())
