@@ -56,3 +56,4 @@ Transient/foundry_tps_ab_result_20261010.json (+ schedule), Transient/foundry_fu
 - LOW TPS FINDING: quicktest map on the 550 list runs ~8-10 TPS (ratio ~0.13), tl:Normal ~83%, main thread 0.99 cores, private 30.6 GB; needs its own diagnosis.
 - Quarry BuildStoneDict duplicate 'Sandstone' key; MenuShell config error (defName with a space); 29 config errors overall.
 - The 14 installed missing mods: separate follow-up now that the 550 load is clean (owner ruling).
+- 14:30 bridge released; game left UP on the 550 list (pid 1568, quicktest map, paused); health_observer.py still running until ~16:42 (python.exe --for 10800)
