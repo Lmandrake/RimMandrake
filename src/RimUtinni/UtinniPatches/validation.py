@@ -541,6 +541,17 @@ def zersium_forge(t):
         reg = ET.parse(os.path.join(_MOD_DIR, "Patches", "RUT_ZersiumForgeLumps_Register.xml")).getroot()
         if "RUT_ZersiumForgeLumps" not in [li.text for li in reg.iter("li")]:
             raise ExpectationFailed("RUT_ZersiumForgeLumps is not registered on Base_Player")
+    with t.component("zersium_min_lumps_guard", beyond_toggle=True):
+        # Cause of 3 of 4 empty Forge maps (2026-10-09): vanilla scatter takes ~2 lumps from a few bounded random
+        # cell draws and returns on the first miss. Guard: the def states a floor of >=1 lumps and the C# keeps
+        # the exhaustive-scan fallback that honours it.
+        gs2 = ET.parse(os.path.join(_MOD_DIR, "Defs", "MapGeneration", "RUT_ZersiumForgeLumps.xml")).getroot().find("GenStepDef/genStep")
+        ml = gs2.findtext("minLumps")
+        if ml is None or int(ml) < 1:
+            raise ExpectationFailed("GenStep must declare minLumps >= 1 (got %r)" % ml)
+        src = open(os.path.join(_MOD_DIR, "Source", "RUT_GenStep_ZersiumForgeLumps.cs"), encoding="utf-8").read()
+        if "minLumps" not in src or "map.AllCells" not in src:
+            raise ExpectationFailed("GenStep C# lost the minLumps exhaustive-scan fallback")
     with t.component("zersium_defs_loaded", beyond_toggle=True):
         for d in ("ThingDef/RSW_Zersium", "ThingDef/RSW_MineableZersium", "GenStepDef/RUT_ZersiumForgeLumps"):
             r = t.bridge_call("jawa/get_defs", defs=d)

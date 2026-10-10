@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 
@@ -18,6 +19,8 @@ namespace RimMandrake.Utinni.UtinniPatches
     // (biome_mod_architecture.md §7 Q11); the mineral itself is RSW tier (mandrake.rsw.armoury).
     public class RUT_GenStep_ZersiumForgeLumps : GenStep_ScatterLumpsMineable
     {
+        // PROVISIONAL: guaranteed lumps per Forge map (no ruling); set in the GenStepDef.
+        public int minLumps = 2;
         public List<BiomeDef> allowedBiomes = new List<BiomeDef>();
 
         public override int SeedPart => 734119052;
@@ -28,7 +31,54 @@ namespace RimMandrake.Utinni.UtinniPatches
             {
                 return;
             }
-            base.Generate(map, parms);
+            // The vanilla loop draws random cells (CellFinderLoose.TryFindRandomNotEdgeCellWith, a bounded number
+            // of tries) and RETURNS on the first miss, so a Forge map whose natural rock is sparse could place 0
+            // lumps. Guarantee minLumps by falling back to an exhaustive scan of eligible rock cells, and count
+            // only lumps that actually spawned ore (IrregularLump can return 0 cells on a Caves cell).
+            minSpacing = 5f;
+            warnOnFail = false;
+            int want = System.Math.Max(CalculateFinalCount(map), minLumps);
+            int placed = 0;
+            ThingDef ore = forcedDefToScatter;
+            var cands = new List<IntVec3>();
+            for (int i = 0; i < want; i++)
+            {
+                IntVec3 c;
+                bool found = TryFindScatterCell(map, out c);
+                if (!found)
+                {
+                    if (cands.Count == 0)
+                    {
+                        foreach (IntVec3 cell in map.AllCells)
+                        {
+                            if (!cell.CloseToEdge(map, 5) && CanScatterAt(cell, map)) cands.Add(cell);
+                        }
+                        cands.Shuffle();
+                    }
+                    while (cands.Count > 0 && !found)
+                    {
+                        c = cands[cands.Count - 1];
+                        cands.RemoveAt(cands.Count - 1);
+                        found = CanScatterAt(c, map);
+                        if (found) { ScatterAtAndCount(c, map, parms, ref placed); usedSpots.Add(c); }
+                    }
+                    if (!found) break;
+                    continue;
+                }
+                ScatterAtAndCount(c, map, parms, ref placed);
+                usedSpots.Add(c);
+            }
+            usedSpots.Clear();
+            if (placed < minLumps)
+            {
+                Log.Warning("[RUT_ZersiumForgeLumps] placed " + placed + " of minimum " + minLumps + " lumps on a Forge map (no eligible natural rock?).");
+            }
+        }
+
+        private void ScatterAtAndCount(IntVec3 c, Map map, GenStepParams parms, ref int placed)
+        {
+            ScatterAt(c, map, parms);
+            if (recentLumpCells.Count > 0) placed++;
         }
 
         public static bool Allowed(Map map, List<BiomeDef> biomes)
