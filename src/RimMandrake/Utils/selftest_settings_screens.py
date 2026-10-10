@@ -19,6 +19,33 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # folder, mod .cs, csproj, expected groups: title -> scope (the audited scopes)
 # folder: (mod .cs, csproj, expected groups, extra setting names the screen resets that are not Scribe_Values fields)
 MODS = {
+    "BlueDesert": ("RM_BlueDesertMod.cs", "RM_BlueDesert.csproj", {
+        "Mod switch": "Now",
+        "Natives, flora detonations and cues": "Now",
+        "Flora roster": "NextGameStart",
+        "Vhaulk": "Now",
+        "Vhaulk road and stay lengths": "NextPulse",
+        "Blue Desert weathers": "NextPulse",
+        "Haze and blue-ice thaw": "Now",
+        "Murrek burial": "NextPulse",
+        "Blue-ice cold rack": "Now",
+        "The ablation line": "NextPulse",
+        "Ossivel and virr song": "Now",
+    }, ()),
+    "FloodedCanyon": ("RM_FloodedCanyonMod.cs", "RM_FloodedCanyon.csproj", {
+        "Biome rarity (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Flood cycle": "Now",
+        "Warning: chimes and signs": "Now",
+        "Flood timing": "NextPulse",
+        "Soaked ground": "Now",
+        "Fossil seams (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Muttavaq": "Now",
+        "After the water recedes": "NextPulse",
+        "Native plants": "NextGameStart",
+        "Zennaq and lightning": "Now",
+        "Refuge ledges and carvings": "Now",
+        "Cliff ledges (WORLDGEN-AFFECTING)": "NewMapsOnly",
+    }, ()),
     "HugeThings": ("RM_HugeThingsSettings.cs", "RM_HugeThings.csproj", {
         "Giant plants": "Now",
         "Giant animals: hitbox and roofs": "Now",
