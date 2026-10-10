@@ -999,6 +999,12 @@ MODS = {
         "Sh'kaar's burning idol": "NextPulse",
         "Sumpgas fuels the idol": "NextGameStart",
     }, ()),
+    "BrainWorms": ("RSW_BrainWormsSettings.cs", "RimMandrake.StarWars.BrainWorms.csproj", {
+        "Salvaged cargo pod incident": "NextPulse",
+        "Egg mortar shells": "Now",
+        "Infection progression speed": "Now",
+        "Cold-kill rate": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)

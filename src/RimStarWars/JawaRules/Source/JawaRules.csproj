@@ -51,6 +51,8 @@
     <Compile Include="RSW_JawaRulesSettings.cs" />
     <Compile Include="PawnRenderNodeWorker_JawaHoodFallback.cs" />
     <Compile Include="Patch_JawaHoodSwimming.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>
