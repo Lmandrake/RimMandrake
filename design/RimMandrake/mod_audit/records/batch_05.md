@@ -273,3 +273,93 @@ Per-mod TPS and memory are UNMEASURED; texture MB are header-based INFERRED prox
 **Open:** Its warnings about 'mental breakdown' and wounds are standard; no ruling needed
 <sub>facts: batch 05 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
 
+### Rimsential - Total Control: Continued (`co.uk.epicguru.factionloadout`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, no license field; available: no)
+**Adds:** content: 0 defs · functionality: Harmony DLL + settings: deep customisation of faction pawn loadouts (overrides pawnkind gear) · art: 2 textures
+**Why:** Recorded in design/Jawa/mods/required_mods.md as a dev-side pawnkind-gear editor 'already in the stack' that does not earn a standing player slot. Our own SpeciesStartingGear_Tuning.xml (src/RimStarWars/StarWarsPatches/Patches) names it the prime suspect for bypassing pawnkind apparel generation (Jawa spawned in surgical masks and jeans despite apparelAllowHeadgearChance 0), marked NOT YET CONFIRMED with a verify step still open. So it may be overriding the gear our defs ask for. Tool for authoring, not content.
+**Problems:** log_noise 0 (0 error occurrences, 0 distinct, 0 chatter lines in the 550-mod session) · tps 0 (no tick FLAGs in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 3.1 (header proxy, not measured)) · complexity 2 (Harmony, dll_count 1, static_ctors 1) · size 1 (disk_mb 1.14) · maintenance 3 (no source found (steam-only)) · interaction 2 (suspected override of pawnkind apparel generation, documented but unconfirmed (src comment, 2026-08-11))
+**Holds it in / exit:** recorded as a dev-side tool in required_mods.md; our SpeciesStartingGear_Tuning.xml is written around the suspicion that it overrides apparel generation -> unfiled: DEV_TOOLS_STRIP_FROM_SHIPPED_LIST_1
+**Open:** Run the VERIFY list in SpeciesStartingGear_Tuning.xml (spawn Jawa and Hutts, check for masks) to confirm or clear it; Steam-only, no source; 'Total Control' original is by Epicguru, this is a continuation
+<sub>facts: batch 05 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Searchable Menus (`kathanon.searchablemenus`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/kathanon/RimWorld-SearchableMenus (github, BSD-3-Clause; available: yes)
+**Adds:** content: 0 defs · functionality: Harmony DLL: adds a search field to any float menu above a configurable size (default 15); needs Float Sub-Menus (kathanon.floatsubmenu, in the list) · art: 1 texture
+**Why:** Large modded right-click menus (hundreds of mods) are a real usability problem and this fixes it; listed in required_mods.md. 0 log errors, BSD-3-Clause source verified. Maintenance caution: the last push was 2023-08-17, over three years ago, but the description says it is safe to add and remove at any time.
+**Problems:** log_noise 0 (0 error occurrences, 0 distinct, 0 chatter lines in the 550-mod session) · tps 0 (no tick FLAGs in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 1.2 (header proxy, not measured)) · complexity 2 (Harmony, dll_count 1, static_ctors 1) · size 1 (disk_mb 0.06) · maintenance 3 (last push 2023-08-17 (> 2 years))
+**Holds it in / exit:** requires kathanon.floatsubmenu; no code dependant of ours -> None
+**Open:** Repo untouched since 2023: watch for a break on a future game update
+<sub>facts: batch 05 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### [42G]Glowing Bushes | Fork by [ETF] (`fourtoo.glowingbush`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, no license field; available: no)
+**Adds:** content: 0 defs; 16 patch ops over 32 ThingDefs (Core, Regrowth BOTR, Odyssey, Alpha Animals) · functionality: DLL + settings: adds a visible glow to strawberry, wild berry, healroot and ambrosia plants (and the Regrowth, Alpha Animals and Odyssey variants) · art: 1 texture
+**Why:** A cosmetic highlight on foraged food plants. It conflicts with the matte natural-history art register and cosmetic changes need the owner's permission (project rule), and 8 of its 20 targets belong to Regrowth, Alpha Animals and Odyssey variants, two of which are donor mods being retired (donor_retirement_plan), so a share of its patches will go dead. It does help foraging readability in a dark-side biome, so kept until ruled. Nothing depends on it. Conditional patches fail silent, so retirement of its targets leaves no error.
+**Problems:** log_noise 0 (0 error occurrences, 0 distinct, 0 chatter lines in the 550-mod session) · tps 0 (no tick FLAGs in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 1.2 (header proxy, not measured)) · complexity 2 (DLL without Harmony flag, dll_count 1, static_ctors 0) · size 1 (disk_mb 0.34) · maintenance 3 (no source found (steam-only)) · interaction 1 (patches vanilla and third-party plant ThingDefs (Regrowth, Alpha Animals) only; no ours)
+**Holds it in / exit:** no dependant; nothing of ours references it -> unfiled: FORAGE_PLANT_GLOW_RULING_1
+**Open:** Does a glow on food plants fit the natural-history art register, or should foraging cues be our own?  **Needs owner:** Should wild food plants (berries, healroot) glow so they are easy to spot, or is that against the realistic look you want?
+<sub>facts: batch 05 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Deep Orbit (`broms.deeporbit`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** dissonant · **Source:** https://github.com/broms122/DeepOrbit (github, no license field; available: yes)
+**Adds:** content: 7 defs: GenStepDef, GeneratedLocationDef, MapGeneratorDef, PlanetLayerDef (Orbit2), PlanetLayerSettingsDef, QuestScriptDef, WorldObjectDef; 7 patch ops on ScenarioDef (6) and PlanetLayerDef · functionality: Requires Odyssey: a second, taller orbit planet layer with about 8 finite rich asteroids, a loot stash and an insectoid cave; patches every ScenarioDef that has an Orbit layer to add Orbit2 · art: 1 texture (7.7 MB est)
+**Why:** Dissonant on two counts. Rich finite asteroids and a loot stash are a resource shortcut (brief §4 test 4: bypassing scarcity), and the mod adds a SECOND planet layer to every scenario, with its patches written for the Layered Atmosphere and Orbit mod that is not in the universe (so its nomatch branch is the one that runs here). Our Scenario_Utinni inherits ScenarioBase and so has an Orbit layer that the xpath matches (INFERRED, not observed). Adding a planet layer changes the world's layer set, which matters for the frozen world and our own RM_SeabedLayer work. The 2026-08-30 audit graded it 'keep' without opening it (it found no Defs because they sit in 1.6/Defs). Kept only because the world is not yet remade and the effect on the savegame is unmeasured.
+**Problems:** log_noise 0 (0 error occurrences, 0 distinct, 0 chatter lines in the 550-mod session) · tps 0 (no tick FLAGs in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 7.7 (header proxy, not measured)) · complexity 2 (DLL without Harmony flag, dll_count 1, static_ctors 0) · size 1 (disk_mb 0.81) · maintenance 1 (source verified, last push 2025-10-13) · interaction 3 (patches every ScenarioDef with an Orbit layer; likely matches our Scenario_Utinni (INFERRED from xpath))
+**Holds it in / exit:** no dependant; retained because its effect on the existing savegame's planet layers is UNMEASURED -> unfiled: DEEP_ORBIT_RETIRE_AT_REMAKE
+**Open:** Was the existing world generated with Orbit2? If so, removal needs the remake first; Do its patches really add Orbit2 to Scenario_Utinni? Needs a def read after load; Layered Atmosphere and Orbit is absent from the universe: some patches may be inert, which makes the layer half-wired  **Needs owner:** Should a second orbit layer with rich asteroids and a loot stash exist in this campaign, or is the ship's own layer plan the only one?
+<sub>facts: batch 05 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Achtung! (`brrainz.achtung`)
+**Verdict:** KEEP (MEASURED) · **Fit:** neutral · **Source:** https://github.com/pardeike/Achtung2 (github, MIT; available: yes)
+**Adds:** content: 0 defs; 2 patch ops on WorkGiverDef · functionality: Harmony DLLs (4), world component tick FLAG, 7 static ctors: drag-formation of drafted pawns, multi-pawn orders, forced jobs, haul/repair outside allowed areas · art: 17 textures
+**Why:** Listed in required_mods.md as ergonomics with no pillar impact, and the 2026-08-30 audit says it has a documented adoption reason. By Brrainz (same author as Harmony), MIT, pushed 2026-08-14. Controls only: no ceiling raise. Forced jobs and 'haul outside allowed areas' are order conveniences, not power.
+**Problems:** log_noise 0 (0 error occurrences, 0 distinct, 0 chatter lines in the 550-mod session) · tps 1 (tick FLAGs world_component_tick (string presence, not proof); per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 6.9 (header proxy, not measured)) · complexity 3 (Harmony, dll_count 4, static_ctors 7) · size 1 (disk_mb 6.02) · maintenance 1 (source verified, last push 2026-08-14)
+**Holds it in / exit:** listed adoption in required_mods.md; no code dependant -> None
+**Open:** none
+<sub>facts: batch 05 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Common Sense (`avilmask.commonsense`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/catgirlfighter/RimWorld_CommonSense (github-search, no license field; available: unverified)
+**Adds:** content: 5 defs (2 JobDef, 1 JoyGiverDef, 1 RecipeDef, 1 RoomRoleDef); 13 patch ops on JobDef, ThingDef and ThinkTreeDef (vanilla and Ideology) · functionality: Harmony DLL: pawns do sensible things automatically (clean before cooking, tidy storage, drop items in right places), with a large settings screen · art: 3 textures (0.4 MB est)
+**Why:** Documented adoption (required_mods.md 'Common Sense - 1.6'), 'well-known QoL'. It rewires JobDefs and ThinkTrees, so anything of ours that adds jobs (gravship tasks, FlowWorks hauling) shares those trees; no conflict is visible in the edge counters (0 ours) but those are a lower bound. required_mods.md mentions a maintained 1.6 continuation (3528467941); which build is loaded is UNVERIFIED. The facts' GitHub link is a name match pushed 2026-10-02.
+**Problems:** log_noise 0 (0 error occurrences, 0 distinct, 0 chatter lines in the 550-mod session) · tps 0 (no tick FLAGs in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 0.4 (header proxy, not measured)) · complexity 2 (Harmony, dll_count 1, static_ctors 5) · size 1 (disk_mb 0.98) · maintenance 2 (source URL is an unverified name match) · interaction 1 (patches vanilla JobDef/ThingDef/ThinkTreeDef; may interplay with custom jobs (edge counters are a lower bound))
+**Holds it in / exit:** adoption in required_mods.md; no code dependant -> None
+**Open:** Which build (original or the 3528467941 continuation) is in the list, and is the GitHub link the same repo?; Check our custom JobDefs for think-tree interplay in the next live load
+<sub>facts: batch 05 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Dubs Break Mod (`dubwise.dubsbreakmod`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/Dubwise56/Dubs-Break-Mod (github, no license field; available: yes)
+**Adds:** content: 0 defs · functionality: Two DLLs (9.96 MB), settings: a mental break of a given intensity needs at least one thought at or above that intensity · art: 1 texture
+**Why:** Makes mental breaks explicable and rarer for a small fixed crew, which protects the six founders from random breaks (brief §1); fully configurable, no content. The 2026-08-30 audit gave it 'keep' without opening it. GitHub source verified (pushed 2025-07-03). The 10 MB is DLL size, not art.
+**Problems:** log_noise 0 (0 error occurrences, 0 distinct, 0 chatter lines in the 550-mod session) · tps 0 (no tick FLAGs in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 1.2 (header proxy, not measured)) · complexity 2 (Harmony, dll_count 2, static_ctors 0) · size 1 (disk_mb 9.96) · maintenance 2 (source verified, last push 2025-07-03)
+**Holds it in / exit:** no dependant; supplies break rules we have no plan to build -> None
+**Open:** Unchanged vanilla breaks might be part of the intended pressure; the setting can restore them
+<sub>facts: batch 05 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Performance Optimizer (`taranchuk.performanceoptimizer`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** https://github.com/realloon/Kingfisher (github-search, mit; available: unverified)
+**Adds:** content: 3 defs (2 KeyBindingDef, 1 KeyBindingCategoryDef) · functionality: Harmony DLL, comp-tick FLAG, settings: various performance tweaks · art: 1 texture
+**Why:** The 550-mod list ran at about 8-10 TPS with the main thread saturated and the cause undiagnosed (brief §4 test 10), so a performance patcher is directly on point, but its benefit on this list is UNMEASURED and it modifies tick behaviour, which can change how our MapComponents (HugeThings footprints, FlowWorks) are driven. The facts' GitHub link (realloon/Kingfisher) is a name match for another project and is not accepted as this mod's source.
+**Problems:** log_noise 0 (0 error occurrences, 0 distinct, 0 chatter lines in the 550-mod session) · tps 1 (comp_tick FLAG; it modifies tick behaviour and may affect our map components (INFERRED)) · memory 1 (texture_decoded_mb_est 1.9 (header proxy, not measured)) · complexity 2 (Harmony, dll_count 1, static_ctors 2) · size 1 (disk_mb 0.54) · maintenance 2 (source URL is an unverified name match) · tps U (it is itself a tick patcher; net effect on the 550 list UNMEASURED)
+**Holds it in / exit:** no dependant; owner-visible TPS problem is the reason to keep it -> None
+**Open:** A/B TPS measurement on the quicktest map with and without it (UNMEASURED); Source is UNVERIFIED: facts' repo is a name-match
+<sub>facts: batch 05 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Rim Control (`lordfelix.rimcontrol`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (MEASURED) · **Fit:** neutral · **Source:** (C# source inside the mod folder) (ships-source, no license field; available: yes)
+**Adds:** content: 5 defs (2 JobDef, 1 DesignationDef, 1 MainButtonDef, 1 WorkGiverDef) · functionality: Harmony DLL (C# source shipped, 10 static ctors): in-game editor for item, building, plant, weapon, gene, ammo and psycast stats; persistent overrides, undo/redo, spawn customised objects · art: 5 textures
+**Why:** Owner FULLY ADOPTED it on 2026-08-07 as an authoring and tuning tool (required_mods.md), not a player system. Its edits persist as settings overrides on top of defs, which fights the standing rule that tuning belongs in our own defs ('Everything should be moved to our own thing defs'); the owner's own doc warns edits 'can have unforeseen consequences with mods'. Keep while tuning, then bake the chosen values into defs and drop the mod from shipped lists. It declares incompatibility with lordfelix.CustomMapDimensions, which is not in the universe.
+**Problems:** log_noise 0 (0 error occurrences, 0 distinct, 2 chatter lines in the 550-mod session) · tps 0 (no tick FLAGs in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 4.9 (header proxy, not measured)) · complexity 2 (Harmony, dll_count 1, static_ctors 10) · size 1 (disk_mb 3.3) · maintenance 1 (ships its own C# source in the mod folder) · interaction 2 (persisted stat overrides sit on top of every mod's defs, including ours; invisible to patch edges)
+**Holds it in / exit:** owner adoption in required_mods.md; no code dependant -> unfiled: RIMCONTROL_OVERRIDES_BAKED_INTO_DEFS_1
+**Open:** Where are its saved overrides stored, and which of our stat decisions live only there?
+<sub>facts: batch 05 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Sand Castles (`zylle.sandcastles`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** resonant · **Source:** https://github.com/Zylleon/SandCastleMod (github-search, no license field; available: unverified)
+**Adds:** content: 4 defs (JobDef, JoyGiverDef, TaleDef, ThingDef) · functionality: DLL: colonists build sandcastles when it is warm as a recreation activity · art: 22 textures (14.0 MB est), credited to Johny Commander
+**Why:** A small joy activity that is mildly on-theme on a sand world, but it is donor content with donor art (22 textures), and the no-donor-art ruling (brief §2) means a shipped version needs our own art. Cheap, no dependants, 0 log errors, so no urgency. Source link is a name match (pushed 2026-06-24).
+**Problems:** log_noise 0 (0 error occurrences, 0 distinct, 0 chatter lines in the 550-mod session) · tps 0 (no tick FLAGs in dll_flags; per-mod TPS UNMEASURED) · memory 1 (texture_decoded_mb_est 14.0 (header proxy, not measured)) · complexity 2 (DLL without Harmony flag, dll_count 1, static_ctors 0) · size 1 (disk_mb 1.59) · maintenance 2 (source URL is an unverified name match)
+**Holds it in / exit:** no dependant; nothing of ours references it -> unfiled: SANDCASTLE_JOY_OWN_ART_1
+**Open:** Is the joy activity wanted at all on a no-self-sufficient-tile ship? A taste call
+<sub>facts: batch 05 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
