@@ -145,6 +145,16 @@ namespace JawaBench.BridgeTools
                     catch { }
                 }
 
+                // BRIDGE_TPS_REGULAR_REPORT_1. The standing TPS record. Same lazy-init
+                // reasoning: play before the first jawa/ call of a session is NOT sampled,
+                // which jawa/tps_report states (samplerStartedUtc).
+                try { JawaBenchTpsSampler.Install(); }
+                catch (Exception te)
+                {
+                    try { Log.Warning("[JawaBench] TPS sampler install threw: " + te.Message); }
+                    catch { }
+                }
+
                 // ⭐ A SECOND LINE, AND IT IS THE ONE THAT PAYS LATER. Owner's ask,
                 // 2026-08-23: print state that makes a log debuggable months from now,
                 // not just proof that the assembly loaded.

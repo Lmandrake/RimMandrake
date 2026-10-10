@@ -94,8 +94,28 @@ def t_gather(tmp):
         f.write("- x\n")
     game = {"game": {"pid": 1, "cpu": 10.0, "responding": True, "age": 3000}, "py": [], "fg": "RimWorld by Ludeon"}
     br = {"ok": True, "connect_ms": 5, "state": {"programState": "Playing"}, "main_ms": 30, "windows": []}
+    tpsd = os.path.join(tmp, "tps")
+    os.makedirs(tpsd)
     kw = dict(bridge=True, player_log=log, win=game, br=br, hb_dir=hb, transient=trans,
-              results=os.path.join(tmp, "none.jsonl"), runners=[])
+              results=os.path.join(tmp, "none.jsonl"), runners=[], tps_dir=tpsd)
+    # BRIDGE_TPS_REGULAR_REPORT_1 (C3): a sustained-low record prints a WARN tps line and never moves the verdict
+    sigs = w.gather(**dict(kw, runners=["win:9 situational_rerun.py"]))
+    tp = [s for s in sigs if s.name == "tps"]
+    check("empty TPS record -> one tps line, UNKNOWN", len(tp) == 1 and tp[0].level == w.UNKNOWN, w.report(sigs))
+    with open(os.path.join(tpsd, "tps.jsonl"), "w") as f:
+        for i in range(8, 0, -1):
+            f.write(json.dumps({"utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - 5 * i)),
+                                "tps": 170, "target": 900, "ratio": 0.189, "state": "run", "speed": "Ultrafast",
+                                "frameMaxMs": 90, "gc0": 1}) + "\n")
+    with open(ro, "w") as f:
+        f.write(IN_PROGRESS)
+    sigs = w.gather(**dict(kw, runners=["win:9 situational_rerun.py"]))
+    tp = [s for s in sigs if s.name == "tps"][0]
+    check("170 tps at speed 4 for 40 s -> tps WARN SUSTAINED LOW, verdict still HEALTHY",
+          tp.level == w.WARN and "SUSTAINED LOW" in tp.detail and w.compose(sigs)[0] == "HEALTHY", w.report(sigs))
+    os.remove(os.path.join(tpsd, "tps.jsonl"))
+    with open(ro, "w") as f:
+        f.write(RERUN13)
     sigs = w.gather(**kw)
     v = w.compose(sigs)[0]
     check("rerun13 fixture, no runner process -> DEAD (the run is over, stop polling)", v == "DEAD",

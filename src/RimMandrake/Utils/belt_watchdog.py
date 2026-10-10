@@ -32,8 +32,11 @@ SIGNALS (each prints one line: LEVEL name: detail  -> remedy)
   run_output  newest Transient/belt_rerun*.txt: a final UNMEASURED/MEASURED line means the run is over
   belt_logs   newest mtime of each Transient/belt_*_log_*.md (a silent subagent dies at 600 s)
   modcheck    age and status of the last live_queue result record
+  tps         the JawaBench TPS record (tps_record.py): median/min/max vs target over 5 min; WARN on SUSTAINED
+              low/high against the speed setting (never changes the verdict). design/RimMandrake/tps_record.md
 
-Read-only by construction: the bridge probe calls only ping, rimbridge/get_bridge_status and rimworld/get_ui_state.
+Read-only by construction: the bridge probe calls only ping, rimbridge/get_bridge_status, rimworld/get_ui_state and
+jawa/tps_report (read-only; as the first jawa/ call of a session it also STARTS the TPS sampler).
 """
 import argparse
 import glob
@@ -292,6 +295,12 @@ def win_bridge_probe():
                               for w in ui.get("windows", [])]
         except Exception as e:                                  # noqa: BLE001
             out["main_error"] = str(e)[:200]
+        try:   # BRIDGE_TPS_REGULAR_REPORT_1: starts the sampler if no jawa/ call has yet this session
+            tr = call("jawa/tps_report")
+            out["tps"] = {k: tr.get(k) for k in ("installed", "samplerStartedUtc", "runtimeError", "writeError")} \
+                if isinstance(tr, dict) else {"error": str(tr)[:120]}
+        except Exception as e:                                  # noqa: BLE001
+            out["tps"] = {"error": str(e)[:120]}
         try:
             c.close()
         except Exception:                                       # noqa: BLE001
@@ -377,7 +386,7 @@ def cpu_rate(game, now, state_dir=None):
 # ---------------------------------------------------------------- assemble
 
 def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=None, br=None, hb_dir=None,
-           transient=TRANSIENT, results=RESULTS, runners=None):
+           transient=TRANSIENT, results=RESULTS, runners=None, tps_dir=None):
     now = time.time() if now is None else now
     sigs = []
     win = probe_windows() if win is None else win
@@ -589,6 +598,20 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
                 _age(now - t))))
     except (OSError, KeyError, ValueError):
         sigs.append(Sig("modcheck", INFO, "no live_queue result records"))
+
+    # TPS record (BRIDGE_TPS_REGULAR_REPORT_1): read from disk, so it works with the bridge busy or down
+    try:
+        import tps_record
+        rows, _bad = tps_record.read_samples(tps_dir)
+        lvl, detail = tps_record.verdict(tps_record.summarise(rows, now=now))
+        tb = (br or {}).get("tps") or {}
+        if tb.get("error") or tb.get("runtimeError") or tb.get("writeError"):
+            detail += "; sampler: %s" % (tb.get("error") or tb.get("runtimeError") or tb.get("writeError"))[:100]
+        remedy = ("read the record: python3 src/RimMandrake/Utils/tps_record.py --last 60; the owner's slow-TPS "
+                  "reports are measured here") if lvl == WARN else ""
+        sigs.append(Sig("tps", lvl, detail, remedy))
+    except Exception as e:                                      # noqa: BLE001
+        sigs.append(Sig("tps", UNKNOWN, "cannot read the TPS record: %s" % e))
     return sigs
 
 
