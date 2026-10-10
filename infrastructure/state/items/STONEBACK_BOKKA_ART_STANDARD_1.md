@@ -106,43 +106,18 @@ A stated verdict with the reason — kept, or regenerated with the old and new s
 ⛔ Not "regenerated because the note said make sure": that is not what he asked.
 
 - [x] Verdict stated with the reason, reached by looking at the art.
-- [ ] New art put in front of him beside the old, once the Desktop daemon has run.
+- [x] New art put in front of him beside the old (`Transient/bokka_old_vs_new_20261010.png`, 2026-10-10).
 - [ ] Only then swapped in, with his permission.
 
-## status — 2026-09-25 (FOUNDRY)
+## status — 2026-10-10 (FOUNDRY)
 
-**Still pending — the regen has NOT completed.** All three
-`infrastructure/artpipe/pending/RSW_Stoneback_{south,east,north}.json` jobs are still sitting in
-`pending/`, unclaimed. `infrastructure/artpipe/done/` has no Stoneback entries, and the three
-`_artsrc/RSW_Stoneback_{south,east,north}/` directories are empty (dated 2026-09-23, i.e. created
-at queue time, never filled).
-
-🔴 **Not just waiting in line — the daemon already tried twice and both attempts were rejected by
-its own offline validator**, not by a human. `registry.jsonl` shows, for all three facings:
-- 2026-09-23 21:18 local: `generated` → `validated verdict:"fail"` (immediate, `elapsed_s: null` on
-  the generate event — looks like a quota/early-abort attempt, not a real render).
-- 2026-09-23 23:02 local: `generated` (real render, ~5s elapsed) → `validated verdict:"fail"`
-  (near-instant after) — a genuine generation that the pipeline's automated gate then rejected.
-
-Both times the reconcile logic returned the job to `pending/` for retry (consistent with them
-sitting there now with no `attempts` counter or reject reason recorded in the job JSON, and no
-rejected image kept anywhere to inspect why). So there is nothing to put in front of the owner yet
-— no successful generation has ever completed for this creature.
-
-**Queue position**: `pending/` holds **434** jobs total; the daemon claims by ascending
-`(priority, name)`, and **337 of those 434 carry a priority number lower than our 120** (lower
-number = claimed first), so all three Stoneback jobs are well back in the queue even before
-counting the 5 jobs tied at exactly 120. This is on top of already having failed its own validator
-twice.
-
-Registry-search caveat from the section above still holds and was re-confirmed: the six stale
-`2026-09-20T16:51:43Z` / `DESERT_FAMILY_PORT_EXECUTION_1` rows are the korrum's, not this item's —
-disambiguated by timestamp before drawing any conclusion above.
-
-No swap, no comparison sheet, no art to show him — none of that is possible until a generation
-attempt actually clears the automated validator. Left in `doing`, not `needs=owner`, since the
-owner-facing checklist items are still unreachable. Re-check `pending/`/`registry.jsonl` for these
-three job ids before doing anything else on this item.
+**The regen is DONE and waiting on his permission to swap.** All three facings rendered and passed the
+daemon's validator on 2026-09-26 (`_artpipe/done/RSW_Stoneback_{south,east,north}.json`, PNGs in
+`_artsrc/RSW_Stoneback_<facing>/`, 256x256). Looked at: the new art is the right animal — a clawed,
+tailed, jowled quadruped with plated back, painterly, no outline — matching the def. Old (top) vs new
+(bottom), south/east/north: `Transient/bokka_old_vs_new_20261010.png`. Nothing installed: a cosmetic
+swap needs his yes. On yes: `art.py install` each facing into
+`src/RimStarWars/SWBestiary/Textures/swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback_<facing>.png`.
 
 ## criteria
 
