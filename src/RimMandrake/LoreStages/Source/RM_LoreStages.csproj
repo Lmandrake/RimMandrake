@@ -50,6 +50,8 @@
     <Compile Include="GameComponent_LoreStage.cs" />
     <Compile Include="LoreStageDebugActions.cs" />
     <Compile Include="RM_LoreStagesMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>
