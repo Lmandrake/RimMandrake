@@ -61,7 +61,7 @@
     </ingestible>
     <graphicData>
       <texPath>Things/Plant/RUT_DyingCreep</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <shaderType>Transparent</shaderType>
       <drawSize>0.9</drawSize>
     </graphicData>
