@@ -50,3 +50,7 @@ FOUNDRY offline builder, 2026-10-09. No bridge, no deploy.
 - RM_MaterialMerges_Aliases.xml (EnvironmentalHazards, RM_DefAliasDef) maps all 21 removed names; save-check table in the item.
 - Bronzium split to BRONZIUM_DROP_1 (donor-only at runtime; Cherry Picker + ship re-stuff work, not a fold).
 - Selftests: 282 pass, 5 fail, none from this change (ledger_lint BENCH shard, FlowWorks harmony/northstar, Halquin allowlist, Greentide acceptance map).
+
+## Result
+- Task 1: 616bbcdf3 (SILOOTH_ART_FOLD_1 built; owes S3 L1 live look).
+- Task 2: 23a59a864 (MATERIAL_MERGES_CLEANUP_1 built; owes L7 L1 minimal-list load). BRONZIUM_DROP_1 filed.
