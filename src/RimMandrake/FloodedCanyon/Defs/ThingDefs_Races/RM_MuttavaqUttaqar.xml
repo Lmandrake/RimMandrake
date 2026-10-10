@@ -9,7 +9,7 @@
   CONTENT_1's own file-collision note — not touched here.
 
   ============================================================================
-  RM_Uttaqar — the rock troll, ported as ours
+  RM_Uttaqar — the stone-hide uttaqar (port of the donor rock troll)
   ============================================================================
 
   Port of `DA_RockTroll` (Dinonysus's RockTroll mod, workshop 3472275628,
@@ -19,8 +19,8 @@
   sharp / 0.7 blunt / 0.8 heat, MarketValue 5300, lifeExpectancy 750,
   trainability Intermediate.
 
-  Label ships as "rock troll" (bible: uttaqar-as-label is a batch-4h DRAFT
-  the owner passed on twice); defName is RM_Uttaqar per the commission.
+  Label ships as "stone-hide uttaqar" (owner, by question card 2026-10-10); defName is RM_Uttaqar
+  per the commission.
 
   HEDIFF DECISION — self-petrification PORTED, not flagged-and-skipped.
   Read the donor's own DA_BloodPetrification HediffDef (Animal_RockTroll.xml,
@@ -212,7 +212,7 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Uttaqar</defName>
-    <label>rock troll</label>
+    <label>stone-hide uttaqar</label>
     <description>A colossal, eyeless creature that owns the Cracked Lands' crag walls, talus slopes and slot-canyon dark the way the muttavaq owns the flats — it surfaces from its lair only when provoked. Lacking real regeneration, it answers every wound with stone: ultra-fast clotting ossifies into dense ablative formations within minutes, so an old uttaqar reads as more rock than flesh, seamed with wound-stone in layers a Farmer can count like tree rings.</description>
     <receivesSignals>true</receivesSignals>
     <statBases>
@@ -347,7 +347,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Uttaqar</defName>
-    <label>rock troll</label>
+    <label>stone-hide uttaqar</label>
     <race>RM_Uttaqar</race>
     <combatPower>650</combatPower>
     <ecoSystemWeight>0.15</ecoSystemWeight>
