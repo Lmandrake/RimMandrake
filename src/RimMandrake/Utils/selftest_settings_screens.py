@@ -214,6 +214,12 @@ MODS = {
         "Upkeep": "Now",
         "Work and timing": "Now",
     }, ()),
+    "WreckedMachines": ("WreckedMachinesMod.cs", "RM_WreckedMachines.csproj", {
+        "Research and material costs": "Now",
+        "The grade ladder": "Now",
+        "The alloy forge": "Now",
+        "Architect menu (restart)": "NextGameStart",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
