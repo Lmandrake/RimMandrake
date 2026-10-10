@@ -305,7 +305,7 @@ def sustained(run_ratios):
 
 DEFAULT_TZ = os.environ.get("TPS_TZ", "America/Los_Angeles")
 FUTURE_SLACK_SECONDS = 120
-SEGMENT_RE = re.compile(r"^tps_(\d{8}T\d{6}Z)_([0-9a-f]+)_(\d+)_(\d{3})\.jsonl$")
+SEGMENT_RE = re.compile(r"^tps_(\d{8}T\d{6}Z)_([0-9a-f]+)_(\d+)_(\d{3,})\.jsonl$")   # SegmentName pads to >= 3
 LEGACY = ("tps.1.jsonl", "tps.jsonl", "observer.jsonl")   # observer.jsonl: belt_watchdog's external findings
 _open = open   # selftest swaps this to simulate a segment vanishing mid-read
 
@@ -325,7 +325,10 @@ def list_files(d):
         names = os.listdir(d)
     except OSError:
         return []
-    segs = sorted(n for n in names if SEGMENT_RE.match(n))
+    def key(n):
+        m = SEGMENT_RE.match(n)
+        return (m.group(1), m.group(2), int(m.group(3)), int(m.group(4)))
+    segs = sorted((n for n in names if SEGMENT_RE.match(n)), key=key)
     return [os.path.join(d, n) for n in LEGACY if n in names] + [os.path.join(d, n) for n in segs]
 
 
@@ -394,16 +397,46 @@ def place(r, ep=None):
     return r
 
 
+KINDS = {"sample", "incident", "session", "marker", "game", "menu", "context", "save", "silence", "resumed",
+         "shutdown", "shutdown-complete", "error", "log", "observer", "dropped"}
+STATES = {STATE_RUN, STATE_PAUSED, STATE_MIXED, STATE_STALL, STATE_LONGEVENT}
+SESSION_RE = re.compile(r"^[0-9a-f]{1,64}$")
+NONNEG_SAMPLE = ("dReal", "runS", "pausedS", "explainedS", "stallS", "ambigS", "expected", "simMs", "gapMaxMs", "fps",
+                 "tps", "tpsWall", "target")
+
+
 def _valid(r):
-    """A row we can place on the timeline. Legacy rows (no `kind`) are samples."""
+    """MUST 13: a row we can place on the timeline, checked field by field. Legacy rows (no `kind`) are
+    samples. Rejected (counted `invalid`, never crashing a later step): a non-object, an unknown kind, a
+    session that is not a hex id, a non-integer or negative seq, a sample without a known state or with a
+    non-numeric / non-finite / negative duration or rate. Booleans are never numbers."""
     if not isinstance(r, dict) or _epoch(r.get("utc")) is None:
         return False
     k = r.setdefault("kind", "sample")
-    if k == "sample":
-        if not isinstance(r.get("state"), str):
+    if not isinstance(k, str) or k not in KINDS:
+        return False
+    sess = r.get("session")
+    if sess is not None and not (isinstance(sess, str) and SESSION_RE.match(sess)):
+        return False
+    seq = r.get("seq")
+    if seq is not None and (not isinstance(seq, int) or isinstance(seq, bool) or seq < 0):
+        return False
+    for f in ("mono", "monoStart", "monoEnd"):
+        if f in r and r[f] is not None and _num(r[f]) is None:
             return False
-        for f in ("ratio", "tps", "dReal"):
-            if r.get(f) is not None and not isinstance(r.get(f), (int, float)):
+    if k == "sample":
+        if r.get("state") not in STATES:
+            return False
+        if "ratio" in r and r["ratio"] is not None and _num(r["ratio"]) is None:
+            return False
+        for f in NONNEG_SAMPLE:
+            if f in r and r[f] is not None and (_num(r[f]) is None or r[f] < 0):
+                return False
+        if _num(r.get("dReal")) is None:
+            return False
+    if k == "incident":
+        for f in ("gapS", "unexplainedS"):
+            if f in r and (_num(r[f]) is None or r[f] < 0):
                 return False
     return True
 
@@ -418,7 +451,7 @@ def read_record(directory=None, now=None):
     order = 0
     for p in list_files(d):
         try:
-            fh = _open(p, encoding="utf-8", errors="replace")
+            fh = _open(p, "rb")
         except FileNotFoundError:
             out["vanished"] += 1
             continue
@@ -427,15 +460,19 @@ def read_record(directory=None, now=None):
             continue
         out["files"] += 1
         with fh:
-            for ln in fh:
-                if not ln.endswith("\n"):          # a line the writer has not finished: never parse half a row
+            for raw in fh:
+                if not raw.endswith(b"\n"):        # a line the writer has not finished: never parse half a row
                     out["malformed"] += 1
                     continue
-                ln = ln.strip()
+                try:
+                    ln = raw.decode("utf-8").strip()   # strict: a corrupted byte is a malformed row, not U+FFFD
+                except UnicodeDecodeError:
+                    out["malformed"] += 1
+                    continue
                 if not ln:
                     continue
                 try:
-                    r = json.loads(ln)
+                    r = loads_strict(ln)             # duplicate keys and NaN/Infinity refused (MUST 1/13)
                 except ValueError:
                     out["malformed"] += 1
                     continue
@@ -480,10 +517,12 @@ def read_heartbeats(directory=None):
         p = os.path.join(d, n)
         try:
             with _open(p, encoding="utf-8") as fh:
-                hb = json.load(fh)
+                hb = loads_strict(fh.read())
+            if not isinstance(hb, dict):
+                continue                          # MUST 13: a heartbeat must be an object
             hb["_path"], hb["_mtime"] = p, os.path.getmtime(p)
             out.append(hb)
-        except (OSError, ValueError):
+        except (OSError, ValueError, TypeError, UnicodeDecodeError):
             continue
     out.sort(key=lambda h: h["_mtime"], reverse=True)
     return out
@@ -511,7 +550,7 @@ def observe(rows, hbs, game_pid, now=None):
     for hb in hbs:
         sess, pid = hb.get("session"), hb.get("pid")
         age = now - hb["_mtime"]
-        silent = float(hb.get("silentS") or 0)
+        silent = _num(hb.get("silentS")) or 0.0
         base = {"session": sess, "pid": pid, "hbAgeS": round(age, 1), "silentS": silent, "phase": hb.get("phase"),
                 "lastHeartbeatUtc": hb.get("utc")}
         if age <= HB_FRESH_SECONDS:

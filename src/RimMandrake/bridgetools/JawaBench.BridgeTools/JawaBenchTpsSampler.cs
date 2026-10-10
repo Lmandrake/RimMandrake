@@ -58,63 +58,6 @@ using WD = JawaBench.BridgeTools.JawaBenchTpsWatchdog;
 
 namespace JawaBench.BridgeTools
 {
-    internal sealed class JawaBenchTpsSettings
-    {
-        public bool Sampler = true, Attribution = true, Watchdog = true, ArchivePlayerLog = true;
-        public double RetentionDays = M.RetentionDays;
-        public double RetentionMB = M.RetentionBytes / 1048576.0;
-        public double LogRetentionMB = M.LogRetentionBytes / 1048576.0;
-
-        internal static JawaBenchTpsSettings Load(string dir, out string note)
-        {
-            var s = new JawaBenchTpsSettings();
-            string p = Path.Combine(dir, "tps_settings.json");
-            note = null;
-            try
-            {
-                if (!File.Exists(p))
-                {
-                    File.WriteAllText(p, s.ToJson() + "\n");
-                    note = "wrote defaults";
-                    return s;
-                }
-                string t = File.ReadAllText(p);
-                s.Sampler = Bool(t, "sampler", s.Sampler);
-                s.Attribution = Bool(t, "attribution", s.Attribution);
-                s.Watchdog = Bool(t, "watchdog", s.Watchdog);
-                s.ArchivePlayerLog = Bool(t, "archivePlayerLog", s.ArchivePlayerLog);
-                s.RetentionDays = Math.Max(M.RetentionDays, Num(t, "retentionDays", s.RetentionDays));
-                s.RetentionMB = Math.Max(16, Num(t, "retentionMB", s.RetentionMB));
-                s.LogRetentionMB = Math.Max(16, Num(t, "logRetentionMB", s.LogRetentionMB));
-            }
-            catch (Exception e) { note = "settings unreadable, defaults used: " + e.Message; }
-            return s;
-        }
-
-        private static bool Bool(string t, string k, bool d)
-        {
-            var m = Regex.Match(t, "\"" + k + "\"\\s*:\\s*(true|false)", RegexOptions.IgnoreCase);
-            return m.Success ? m.Groups[1].Value.ToLowerInvariant() == "true" : d;
-        }
-
-        private static double Num(string t, string k, double d)
-        {
-            var m = Regex.Match(t, "\"" + k + "\"\\s*:\\s*([0-9.]+)");
-            double v;
-            return m.Success && double.TryParse(m.Groups[1].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out v) ? v : d;
-        }
-
-        internal string ToJson()
-        {
-            return "{\"sampler\":" + B(Sampler) + ",\"attribution\":" + B(Attribution) + ",\"watchdog\":" + B(Watchdog) +
-                   ",\"archivePlayerLog\":" + B(ArchivePlayerLog) + ",\"retentionDays\":" + M.F(RetentionDays, 2) +
-                   ",\"retentionMB\":" + M.F(RetentionMB, 1) + ",\"logRetentionMB\":" + M.F(LogRetentionMB, 1) +
-                   ",\"_doc\":\"design/RimMandrake/tps_record.md - defaults are the shipped behaviour; retention can only grow\"}";
-        }
-
-        private static string B(bool b) => b ? "true" : "false";
-    }
-
     internal static class JawaBenchTpsSampler
     {
         private static readonly object Gate = new object();
@@ -245,7 +188,7 @@ namespace JawaBench.BridgeTools
             try { logPath = UnityEngine.Application.consoleLogPath; } catch { }
             W.Enqueue("session", "\"pid\":" + pid + ",\"startedBy\":" + W.Json(StartedBy) + ",\"build\":" + W.Json(build) +
                                  ",\"engine\":" + W.Json(engine) + ",\"mods\":" + modCount + ",\"modDigest\":\"" + modDigest + "\"" +
-                                 ",\"playerLog\":" + W.Json(logPath) + ",\"settings\":" + Settings.ToJson() +
+                                 ",\"playerLog\":" + W.Json(logPath) + ",\"settings\":" + Settings.ToJson() + ",\"settingsNote\":" + W.Json(SettingsNote) +
                                  ",\"segment\":" + W.Json(Path.GetFileName(W.CurrentPath)));
             ThreadPool.QueueUserWorkItem(_ =>
             {

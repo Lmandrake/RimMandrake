@@ -135,6 +135,25 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
   where no session has a window, then merges rows chronologically; `sustainedBySession` is returned.
 - GREEN: python checks PASS; reader smoke-run on the real record dir clean.
 
+### MUST 13 — strict rows/settings, segments >= 1000
+- Seam: `JawaBenchTpsSettings` moved unchanged out of the sampler into Verse-free `JawaBenchTpsSettings.cs`.
+- RED: `FAIL MUST 13: read_record crashed on a malformed row: TypeError("cannot use 'list' as a dict key")`;
+  `segment 1000 is listed and sorted after 999: [..._002.jsonl, ..._999.jsonl]` (1000 invisible);
+  `a malformed heartbeat crashed the observer: TypeError(...)`; `C# unit SettingsStrict: duplicate key:
+  expected REFUSED ... got note=null | nested key ... sampler=False | truncated document ...` (the regex read
+  `sampler:false` out of a nested object and out of a truncated file).
+- FIX: reader reads bytes, decodes each line STRICT utf-8, parses with `loads_strict` (dup keys / NaN
+  refused), `_valid` checks kind ∈ known set, hex session, non-negative int seq, finite non-bool numbers,
+  sample state ∈ the five, non-negative durations/rates; `SEGMENT_RE` takes `\d{3,}` and segments sort
+  numerically; heartbeats must be objects; `observe` tolerates junk `silentS`. Settings: one strict flat
+  JSON object (`ParseFlat`), any duplicate/nested/truncated/non-finite/wrong-type value → whole file
+  refused, defaults used, reason in `note` (now on the `session` row as `settingsNote`); retention values
+  only grow from the shipped defaults (16 MB was accepted before, contradicting the doc) and are capped;
+  read once at launch (stated in `_doc`).
+- Consequence, measured: the 2 build-2 incident rows on disk carry the duplicate `mult` and now count as
+  `malformed` (173 rows read, 2 malformed) — exactly the rows MUST 1 says were wrong.
+- GREEN: python checks PASS, `C# units: 7 run, 0 failed`, companion builds.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)
