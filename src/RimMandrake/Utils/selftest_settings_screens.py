@@ -994,6 +994,11 @@ MODS = {
         "Shields": "Now",
         "Vehicles (needs Vehicle Framework installed)": "Now",
     }, ()),
+    "UtinniStatues": ("UtinniStatuesMod.cs", "RimMandrake.Utinni.UtinniStatues.csproj", {
+        "Statue carving": "NextGameStart",
+        "Sh'kaar's burning idol": "NextPulse",
+        "Sumpgas fuels the idol": "NextGameStart",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
