@@ -58,7 +58,7 @@ namespace RimMandrake.StarWars.JawaRules
 
     public static class Patch_ApparelHead_CanDrawNow_SwimHood
     {
-        [ThreadStatic] private static bool reentry;
+        [ThreadStatic] internal static bool reentry;
 
         public static void Postfix(PawnRenderNodeWorker_Apparel_Head __instance,
                                    PawnRenderNode __0, PawnDrawParms __1, ref bool __result)
@@ -87,6 +87,36 @@ namespace RimMandrake.StarWars.JawaRules
             {
                 reentry = false;
             }
+        }
+    }
+
+    // JAWA_SWIM_HOOD_KEEP_1, MEASURED live on the full list 2026-10-09 (bridge6, extended ProofHood: worker is
+    // PawnRenderNodeWorker_Apparel_Head, applies/kept True, base gates True, yet the re-ask said False with
+    // headgearVisibleRestored=False): ReGrowthCore's postfix on PawnRenderNodeWorker_Apparel_Head.HeadgearVisible sets
+    // __result = false whenever pawn.jobs.curJob.swimming ("IsBathingNow" = JobDriver_Bathe OR curJob.swimming), so
+    // restoring Clothes|Headgear could never win. (StandaloneHotSpring's twin postfix only fires inside its own bath
+    // toil.) Fix: a Priority.Last postfix on HeadgearVisible that, ONLY while our own kept-hood re-ask is running
+    // (Patch_ApparelHead_CanDrawNow_SwimHood.reentry), replaces the answer with vanilla's own HeadgearVisible rule
+    // (flags, bed, portrait/HatsOnlyOnMap). Outside that re-ask every mod's verdict stands untouched.
+    public static class Patch_HeadgearVisible_KeptHoodReask
+    {
+        [HarmonyLib.HarmonyPriority(HarmonyLib.Priority.Last)]
+        public static void Postfix(PawnDrawParms parms, ref bool __result)
+        {
+            if (__result || !Patch_ApparelHead_CanDrawNow_SwimHood.reentry)
+            {
+                return;
+            }
+            __result = VanillaHeadgearVisible(parms);
+        }
+
+        // Verse.PawnRenderNodeWorker_Apparel_Head.HeadgearVisible, 1.6, as decompiled (RimSage 2026-10-09).
+        public static bool VanillaHeadgearVisible(PawnDrawParms parms)
+        {
+            if (!parms.flags.FlagSet(PawnRenderFlags.Clothes) || !parms.flags.FlagSet(PawnRenderFlags.Headgear)) return false;
+            if (!parms.Portrait && parms.bed != null && !parms.bed.def.building.bed_showSleeperBody) return false;
+            if (parms.Portrait && Prefs.HatsOnlyOnMap) return parms.flags.FlagSet(PawnRenderFlags.StylingStation);
+            return true;
         }
     }
 
