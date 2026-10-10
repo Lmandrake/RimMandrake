@@ -264,6 +264,17 @@ MODS = {
         "Sealed corpses on new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",
     }, ()),
 
+    "RustCathedral": ("RustCathedral/RM_RustCathedralMod.cs", "RustCathedral/RM_RustCathedral.csproj", {
+        "Biome rarity (WORLDGEN-AFFECTING)": "NewMapsOnly", "Cathedral roaches": "Now",
+        "The borehulk on new maps (WORLDGEN-AFFECTING)": "NewMapsOnly", "Borehulk grinding": "Now",
+        "Canal eels and dried-out dead on new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Not wired yet (these change nothing)": "Now"}, ()),
+    "RustCathedral#Hum": ("Hum/RustCathedralHumSettings.cs", "Hum/RimMandrake.RustCathedral.Hum.csproj", {
+        "The hum and the Cathedral's standing": "Now", "Living bolts": "Now", "The canals": "Now",
+        "Drilling the deep metal": "NextPulse", "Under the plate": "Now", "How long the roll lasts": "NextPulse",
+        "Bolts on the hull": "Now"}, ()),
+    "RustCathedral#Walls": ("Walls/RustCathedralWallsSettings.cs", "Walls/RimMandrake.RustCathedral.Walls.csproj", {
+        "Wall tiers and sacred walls (WORLDGEN-AFFECTING)": "NewMapsOnly", "Live Pattern Metal": "Now"}, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
