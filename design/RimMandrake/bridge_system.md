@@ -580,6 +580,10 @@ on every driver (including subagents and ad-hoc `Transient/*.py` scripts) choosi
   tier**, so chaining tiers loses the original list (DOC skill §6, still true by code).
   `write_config` writes **non-atomically** (`open(CONFIG,"wb")`, MEASURED
   `modset_builder.py:913-926`). `--restore` copies FULL.LATEST.
+- **`modmanifest.py`** (2026-10-10): the intended ordered list is `infrastructure/state/modlists/manifest.<NAME>.json`
+  (ids + source ModsConfig sha256). `check` compares it with the next-load ModsConfig and, with `--loaded`, with what
+  the running game loaded: CORE_ONLY, MISSING, EXTRA, REORDERED, DUPLICATE_ID, NOT_LOADED, and `--roots` duplicate
+  installed roots. `gap` lists our `src/` mods absent from it (a proposal; it never edits FULL.LATEST).
 - **RimWorld's own recovery:** when a load throws during def resolution, RimWorld can
   **reset ModsConfig to Core-only**. This was hit twice in one night by an inert
   `MayRequire` on `<Operation>` (DOC CLAUDE.md 2026-09-27). The next launch is then a
