@@ -48,6 +48,8 @@
     <Compile Include="RM_ExplosiveGrowthRegistry.cs" />
     <Compile Include="RM_ExplosiveGrowthDefOf.cs" />
     <Compile Include="ExplosiveGrowthMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="ExplosiveGrowthAPI.cs" />
     <Compile Include="RM_MapComponent_ExplosiveGrowth.cs" />
     <Compile Include="RM_SoakSources.cs" />
