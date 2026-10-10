@@ -1,0 +1,180 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Art sheet redesign mock</title><style>
+:root{--bg:#120e0a;--panel:#1b1510;--line:#3a2e22;--ink:#eadbc4;--dim:#a8957a;--acc:#e8b64c;--ok:#5ac37f;--bad:#e06c6c;--warn:#e8a24c;--info:#7fb0d8}
+body{background:var(--bg);color:var(--ink);font:13px/1.35 system-ui,Segoe UI,sans-serif;margin:0;padding:12px 16px}
+h1{font-size:18px;margin:0 0 4px;color:var(--acc)} .intro{color:var(--dim);margin:0 0 12px;max-width:1100px}
+.row{background:var(--panel);border:1px solid var(--line);border-radius:8px;margin:0 0 16px;padding:8px 10px}
+.rh{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:6px}.nm{font-size:16px;font-weight:700;color:var(--acc)}
+code{color:var(--dim);font-size:11px}.kind{font-size:11px;font-weight:700;letter-spacing:.04em;background:#2b2116;border:1px solid #5a4a2a;border-radius:4px;padding:1px 6px}
+.sum{margin-left:auto;font-size:12.5px;padding:2px 8px;border-radius:4px}.sum.done{background:#16301f;color:#9fe0a8}.sum.todo{background:#3a2a10;color:#f3c77a}
+.lane{border:1px solid var(--line);border-left:6px solid #6a5a3a;border-radius:6px;margin:6px 0;padding:5px 7px;background:#16110c}
+.l-adult{border-left-color:#e8b64c}.l-young{border-left-color:#7fc35a}.l-flight{border-left-color:#5ac3c3}.l-catch{border-left-color:#c38ae8}.l-unassigned{border-left-color:#888;border-style:dashed}.l-ref{border-left-color:#555;opacity:.8}
+.lh{display:flex;gap:10px;align-items:center}.slot{display:flex;flex-direction:column}.sl{font-size:14px;font-weight:800;letter-spacing:.03em}.ss{font-size:11.5px;color:var(--dim)}
+.lstat{margin-left:auto;font-size:12px;padding:2px 8px;border-radius:4px;white-space:nowrap}.lstat.ok{background:#16301f;color:#9fe0a8}.lstat.todo{background:#3a2a10;color:#f3c77a}.lstat.warn{background:#3a1d10;color:#f0a070}.lstat.blocked{background:#2a1a3a;color:#c9a3f0}.lstat.info{background:#1a2430;color:#9fc0e0}
+.lsel{display:flex;gap:6px;margin:4px 0}.lsel label,.ak label{border:1px solid var(--line);border-radius:4px;padding:1px 7px;color:var(--dim);cursor:pointer}.lsel label.on,.ak label.on{background:#2f5a3a;border-color:var(--ok);color:#fff}.lsel input,.ak label input{display:none}.lsel.dis{opacity:.7}
+.cards{display:flex;flex-wrap:wrap;gap:8px;margin-top:3px}
+.card{border:1px solid var(--line);border-radius:6px;padding:4px;background:#0f0c09}
+.card.picked{border:2px solid var(--ok);box-shadow:0 0 0 2px #5ac37f44}.card.rejected{border:2px solid var(--bad)}.card.rejected .cells{opacity:.4}
+.ch{display:flex;gap:6px;align-items:baseline;font-size:11px;margin-bottom:2px}.ch b{font-size:14px;color:var(--acc)}.prov{color:var(--dim)}
+.ig{background:#10283a;color:#8ac3e8;border-radius:3px;padding:0 4px;font-weight:700}.new{background:#3a2c10;color:#f3c77a;border-radius:3px;padding:0 4px}.cf{background:#3a1515;color:#f0a0a0;border-radius:3px;padding:0 4px}.play{color:#5ac3c3}.donor{background:#222;color:#bbb;border-radius:3px;padding:0 4px}
+.cells{display:flex;gap:3px}.cell{position:relative;width:84px;height:84px;background:repeating-conic-gradient(#1c1915 0 25%,#141210 0 50%) 0 0/14px 14px;border-radius:4px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.cell img{max-width:100%;max-height:100%;object-fit:contain;pointer-events:none}.fc{position:absolute;left:2px;bottom:1px;font-size:10px;color:#aaa;background:#000a;padding:0 3px;border-radius:2px}
+.ctl{display:flex;gap:5px;margin-top:3px;font-size:11.5px}.ctl label{border:1px solid var(--line);border-radius:4px;padding:1px 6px;cursor:pointer;color:var(--dim)}.ctl input{display:none}
+.ctl .pk.on{background:#2f7a45;color:#fff;border-color:var(--ok)}.ctl .rj.on{background:#7a2f2f;color:#fff;border-color:var(--bad)}.ctl .pl.on{background:#2b3f5a;color:#fff;border-color:#7fb0d8}
+.lockmsg{color:#888;font-style:italic}.assign{font-size:11.5px;margin-top:3px}.assign select{background:#221a12;color:var(--ink);border:1px solid #6a5a3a}
+.warn{font-size:11.5px;color:#f0a070;max-width:300px;margin-top:3px}
+.lnote{margin:2px 0}
+.asks{border-top:1px dashed var(--line);margin-top:6px;padding-top:5px;display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}
+.ak{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:12px}.akl{font-weight:700;color:var(--acc);min-width:78px}
+.ak.dep{grid-column:1/-1;color:#c9a3f0}
+.tx{background:#0f0c09;border:1px solid var(--line);color:var(--ink);padding:2px 5px;border-radius:4px;width:170px}.tx.wide{width:220px}.num{width:34px;background:#0f0c09;border:1px solid var(--line);color:var(--ink);border-radius:4px;padding:2px 4px}
+select{background:#0f0c09;color:var(--ink);border:1px solid var(--line);border-radius:4px}
+.sub{color:var(--dim);font-size:11px}
+.wrap{display:flex;gap:10px}.body{flex:1}.ctx{flex:0 0 220px;border:1px dashed #5a4a2a;border-radius:6px;color:#8a7a5a;font-size:11.5px;padding:8px}.chips{display:flex;gap:6px;align-items:center;margin-top:6px}.chip{border:1px dashed #6a5a3a;border-radius:10px;padding:1px 8px;color:#c9b48a;font-size:11.5px}
+.notebox{display:flex;gap:6px;margin-top:5px;align-items:flex-start}.notebox textarea{flex:1;height:44px;background:#0f0c09;border:1px solid var(--line);color:var(--ink);border-radius:4px}
+</style></head><body>
+<h1>Art review sheet — proposed layout (static mock, 3 rows)</h1>
+<p class="intro">Every picture lives in a labelled <b>slot</b> (what the game draws it as). Click a picture to use it for that slot, or choose <i>accept unchanged</i> / <i>redraw this slot</i>. "✕ not for this slot" never deletes anything. "In random pool" appears <b>only</b> where the game picks among alternatives of the grown form. Requests that used to go in the note have their own fields.</p>
+<section class="row">
+ <div class="rh"><span class="nm">Kabbrik pod</span> <code>RM_BlastpodShroom</code> <span class="kind">PLANT</span>
+   <span class="sum todo">Needs you: 1 render unassigned (assign it, or mark not needed) · decided so far: GROWN use A, pool A+B · YOUNG redraw</span></div>
+ <div class="wrap"><div class="body"><div class="lane l-adult">
+  <div class="lh"><div class="slot"><span class="sl">PLANT · GROWN</span><span class="ss">the mature plant · the game picks one of the pool at random each time one grows</span></div>
+  <div class="lstat ok">decided · use A · pool A+B (C leaves the pool)</div></div>
+  <div class="lnote"><div class="lsel"><label class=""><input type="radio" >accept unchanged</label><label class=""><input type="radio" >redraw this slot</label><span class="sub">click a picture to use it</span></div></div>
+  <div class="cards"><div class="card picked k-live">
+  <div class="ch"><b>A</b><span class="prov">in game now</span><span class="ig">IN GAME</span></div>
+  <div class="cells"><div class="cell"><img src="img/7068ac6171e655c34a29.webp"><span class="fc"></span></div></div>
+  
+  <div class="ctl"><label class="pk on"><input type="radio" checked> use this</label><label class="rj"><input type="checkbox" > ✕ not for this slot</label><label class="pl on"><input type="checkbox" checked> in random pool</label></div></div><div class="card  k-live">
+  <div class="ch"><b>B</b><span class="prov">in game now</span><span class="ig">IN GAME</span><span class="new">never shown before</span></div>
+  <div class="cells"><div class="cell"><img src="img/eaa39f8c641078bcdc08.webp"><span class="fc"></span></div></div>
+  
+  <div class="ctl"><label class="pk"><input type="radio" > use this</label><label class="rj"><input type="checkbox" > ✕ not for this slot</label><label class="pl on"><input type="checkbox" checked> in random pool</label></div></div><div class="card rejected k-live">
+  <div class="ch"><b>C</b><span class="prov">in game now</span><span class="ig">IN GAME</span><span class="new">never shown before</span></div>
+  <div class="cells"><div class="cell"><img src="img/8260cf3e56152901f89e.webp"><span class="fc"></span></div></div>
+  <div class="warn">✕ removes C from the game's random pool</div>
+  <div class="ctl"><label class="pk"><input type="radio" > use this</label><label class="rj on"><input type="checkbox" checked> ✕ not for this slot</label><label class="pl"><input type="checkbox" > in random pool</label></div></div></div></div><div class="lane l-young">
+  <div class="lh"><div class="slot"><span class="sl">PLANT · YOUNG</span><span class="ss">the immature plant before it matures (immatureGraphicPath) · REQUIRED: the game draws it</span></div>
+  <div class="lstat warn">redraw queued · D stays until replaced</div></div>
+  <div class="lnote"><div class="lsel"><label class=""><input type="radio" >accept unchanged</label><label class="on"><input type="radio" checked>redraw this slot</label><span class="sub">click a picture to use it</span></div></div>
+  <div class="cards"><div class="card rejected k-live">
+  <div class="ch"><b>D</b><span class="prov">in game now</span><span class="ig">IN GAME</span></div>
+  <div class="cells"><div class="cell"><img src="img/54c70554cc59376cc6e3.webp"><span class="fc"></span></div></div>
+  <div class="warn">D is the ONLY young picture. Rejecting it queues a redraw; D stays in game until the new one is installed.</div>
+  <div class="ctl"><label class="pk"><input type="radio" > use this</label><label class="rj on"><input type="checkbox" checked> ✕ not for this slot</label></div></div></div></div><div class="lane l-unassigned">
+  <div class="lh"><div class="slot"><span class="sl">RENDERS NOT YET ASSIGNED</span><span class="ss">made for this subject, but nobody has said which picture of it they are · say what each one is</span></div>
+  <div class="lstat todo">1 unassigned</div></div>
+  
+  <div class="cards"><div class="card  k-artpipe">
+  <div class="ch"><b>E</b><span class="prov">new render</span></div>
+  <div class="cells"><div class="cell"><img src="img/00c49ae5b7da5c06c8a6.webp"><span class="fc"></span></div></div>
+  <div class="assign">this is: <select><option>grown</option></select></div>
+  <div class="ctl"><span class="lockmsg">assign a slot first</span></div></div><div class="card  k-artpipe">
+  <div class="ch"><b>F</b><span class="prov">new render</span><span class="cf">failed canon check</span></div>
+  <div class="cells"><div class="cell"><img src="img/a160f94f10c72db21294.webp"><span class="fc"></span></div></div>
+  <div class="assign">this is: <select><option>— choose —</option><option>grown</option><option>young</option><option>not needed</option></select></div>
+  <div class="ctl"><span class="lockmsg">assign a slot first</span></div></div></div></div></div><div class="ctx">canon images + Must show, in-game size beside a human, px/cell — unchanged from today's sheet (omitted in this mock)</div></div>
+ <div class="asks">
+  <div class="ak"><span class="akl">Name</span><input class="tx" value="" placeholder="new name (leave blank = keep)"> <label class=""><input type="checkbox" > suggest names for me</label></div>
+  <div class="ak"><span class="akl">Description</span><label class=""><input type="radio" >keep</label><label class="on"><input type="radio" checked>improve</label><label class=""><input type="radio" >rewrite to match the chosen art</label></div>
+  <div class="ak"><span class="akl">More art</span>make <input class="num" value="2"> new <select><option>grown</option></select> versions, based on <select><option>A</option></select> <input class="tx wide" value="more realistic" placeholder="how should they differ? (optional)"></div>
+  <div class="ak"><span class="akl">Size</span>body size <input class="num" value=""> · drawn size × <input class="num" value=""> <span class="sub">(blank = unchanged)</span></div>
+  <div class="ak"><span class="akl">Belongs</span><select><option>this biome</option></select> tier <select><option>unchanged</option></select>  <label class=""><input type="checkbox" > cut from this biome</label></div>
+  
+  
+</div>
+ <div class="notebox"><span class="akl">Note</span><textarea placeholder="anything the fields above do not say — nuance welcome; each request above is tracked separately"></textarea></div>
+</section><section class="row">
+ <div class="rh"><span class="nm">Peko-peko</span> <code>RSW_PekoPeko</code> <span class="kind">ANIMAL · has sexes · flies</span>
+   <span class="sum todo">Still needs you: ADULT FEMALE · 4 renders unassigned</span></div>
+ <div class="wrap"><div class="body"><div class="lane l-adult">
+  <div class="lh"><div class="slot"><span class="sl">ADULT · FEMALE</span><span class="ss">femaleGraphicData · what every grown female looks like</span></div>
+  <div class="lstat todo">needs you: game draws donor art here — pick A or redraw?</div></div>
+  <div class="lnote"><div class="lsel"><label class=""><input type="radio" >accept unchanged</label><label class=""><input type="radio" >redraw this slot</label><span class="sub">click a picture to use it</span></div></div>
+  <div class="cards"><div class="card  k-git">
+  <div class="ch"><b>A</b><span class="prov">older version</span></div>
+  <div class="cells"><div class="cell"><img src="img/163699f0dfaf48f44859.webp"><span class="fc">S</span></div><div class="cell"><img src="img/9b80f08097879062e327.webp"><span class="fc">E</span></div><div class="cell"><img src="img/c810505f7d1471b3cce1.webp"><span class="fc">N</span></div></div>
+  
+  <div class="ctl"><label class="pk"><input type="radio" > use this</label><label class="rj"><input type="checkbox" > ✕ not for this slot</label></div></div></div></div><div class="lane l-adult">
+  <div class="lh"><div class="slot"><span class="sl">ADULT · MALE</span><span class="ss">bodyGraphicData · what every grown male looks like</span></div>
+  <div class="lstat ok">accepted unchanged (D)</div></div>
+  <div class="lnote"><div class="lsel"><label class="on"><input type="radio" checked>accept unchanged</label><label class=""><input type="radio" >redraw this slot</label><span class="sub">click a picture to use it</span></div></div>
+  <div class="cards"><div class="card  k-donor">
+  <div class="ch"><b>D</b><span class="prov">donor original</span><span class="ig">IN GAME</span></div>
+  <div class="cells"><div class="cell"><img src="img/b64f05d78665c7b8de07.webp"><span class="fc">S</span></div><div class="cell"><img src="img/6e10195a61852caed757.webp"><span class="fc">E</span></div><div class="cell"><img src="img/bc1c95fc5e3919aa84b7.webp"><span class="fc">N</span></div></div>
+  
+  <div class="ctl"><label class="pk"><input type="radio" > use this</label><label class="rj"><input type="checkbox" > ✕ not for this slot</label></div></div><div class="card  k-artpipe">
+  <div class="ch"><b>S</b><span class="prov">new render</span><span class="cf">failed canon check</span></div>
+  <div class="cells"><div class="cell"><img src="img/2b200b94931a94a52192.webp"><span class="fc">S</span></div><div class="cell"><img src="img/c81708af300e8c50e813.webp"><span class="fc">E</span></div><div class="cell"><img src="img/aea521e6219dd712207b.webp"><span class="fc">N</span></div></div>
+  
+  <div class="ctl"><label class="pk"><input type="radio" > use this</label><label class="rj"><input type="checkbox" > ✕ not for this slot</label></div></div></div></div><div class="lane l-flight">
+  <div class="lh"><div class="slot"><span class="sl">FLYING · MALE</span><span class="ss">wing-beat frames, shown while airborne · plays as a loop</span></div>
+  <div class="lstat ok">accepted unchanged (E)</div></div>
+  <div class="lnote"><div class="lsel"><label class="on"><input type="radio" checked>accept unchanged</label><label class=""><input type="radio" >redraw this slot</label><span class="sub">click a picture to use it</span></div></div>
+  <div class="cards"><div class="card  k-live">
+  <div class="ch"><b>E</b><span class="prov">in game now</span><span class="ig">IN GAME</span><span class="play">▶ loop</span></div>
+  <div class="cells"><div class="cell"><img src="img/0dc08f40ca3ce0d17ed8.webp"><span class="fc">E</span></div><div class="cell"><img src="img/f51a97b2d178a68416b2.webp"><span class="fc">S</span></div><div class="cell"><img src="img/84fd92a3335ca7ed481a.webp"><span class="fc">N</span></div></div>
+  
+  <div class="ctl"><label class="pk"><input type="radio" > use this</label><label class="rj"><input type="checkbox" > ✕ not for this slot</label></div></div></div></div><div class="lane l-flight">
+  <div class="lh"><div class="slot"><span class="sl">FLYING · FEMALE</span><span class="ss">wing-beat frames for females (flyingAnimationFramePathPrefixFemale)</span></div>
+  <div class="lstat ok">accepted unchanged (V)</div></div>
+  <div class="lnote"><div class="lsel"><label class="on"><input type="radio" checked>accept unchanged</label><label class=""><input type="radio" >redraw this slot</label><span class="sub">click a picture to use it</span></div></div>
+  <div class="cards"><div class="card  k-live">
+  <div class="ch"><b>V</b><span class="prov">in game now</span><span class="ig">IN GAME</span><span class="play">▶ loop</span></div>
+  <div class="cells"><div class="cell"><img src="img/0dc08f40ca3ce0d17ed8.webp"><span class="fc">E</span></div><div class="cell"><img src="img/f51a97b2d178a68416b2.webp"><span class="fc">S</span></div><div class="cell"><img src="img/84fd92a3335ca7ed481a.webp"><span class="fc">N</span></div></div>
+  
+  <div class="ctl"><label class="pk"><input type="radio" > use this</label><label class="rj"><input type="checkbox" > ✕ not for this slot</label></div></div></div></div><div class="lane l-unassigned">
+  <div class="lh"><div class="slot"><span class="sl">RENDERS NOT YET ASSIGNED</span><span class="ss">single flight frames and a male body render, filed by name only</span></div>
+  <div class="lstat todo">4 unassigned (2 shown)</div></div>
+  
+  <div class="cards"><div class="card  k-artpipe">
+  <div class="ch"><b>K</b><span class="prov">new render</span></div>
+  <div class="cells"><div class="cell"><img src="img/9a0bf0da8b0cbe346050.webp"><span class="fc">S</span></div><div class="cell"><img src="img/c379d60d79d82c81bb4d.webp"><span class="fc">E</span></div><div class="cell"><img src="img/4c933de0cd1dbb55932e.webp"><span class="fc">N</span></div></div>
+  <div class="assign">this is: <select><option>flight frame (female) — not a body</option></select></div>
+  <div class="ctl"><span class="lockmsg">assign a slot first</span></div></div><div class="card  k-artpipe">
+  <div class="ch"><b>U</b><span class="prov">new render</span><span class="cf">failed canon check</span></div>
+  <div class="cells"><div class="cell"><img src="img/8f4154e4f8aa35b97890.webp"><span class="fc">S</span></div><div class="cell"><img src="img/c2d27e0891359da883a7.webp"><span class="fc">E</span></div></div>
+  <div class="assign">this is: <select><option>— choose —</option><option>adult male</option><option>adult female</option><option>young</option><option>not this animal</option></select></div>
+  <div class="ctl"><span class="lockmsg">assign a slot first</span></div></div></div></div></div><div class="ctx">canon images + Must show, in-game size beside a human, px/cell — unchanged from today's sheet (omitted in this mock)</div></div>
+ <div class="chips"><span class="akl">Requests</span><span class="chip">+ rename</span><span class="chip">+ description</span><span class="chip">+ more art</span><span class="chip">+ size</span><span class="chip">+ move / cut</span><span class="chip">+ missing facings</span></div>
+ <div class="notebox"><span class="akl">Note</span><textarea placeholder="anything the fields above do not say — nuance welcome; each request above is tracked separately"></textarea></div>
+</section><section class="row">
+ <div class="rh"><span class="nm">Huldu (catch)</span> <code>RM_HulduCatch</code> <span class="kind">CATCH ITEM · what fishing pulls out</span>
+   <span class="sum done">Decided: redraw from Huldu · the job starts automatically once Huldu's ADULT slot is settled</span></div>
+ <div class="wrap"><div class="body"><div class="lane l-catch">
+  <div class="lh"><div class="slot"><span class="sl">CATCH ITEM</span><span class="ss">the dead fish item a pawn carries and cooks · ONE picture, no facings</span></div>
+  <div class="lstat blocked">redraw waits for RM_Huldu</div></div>
+  <div class="lnote"><div class="lsel"><label>accept unchanged</label><label class="on">redraw from Huldu (starts when Huldu is settled)</label><span class="sub">or click a picture to use it now</span></div></div>
+  <div class="cards"><div class="card  k-donor">
+  <div class="ch"><b>B</b><span class="prov">donor original</span><span class="ig">IN GAME</span><span class="donor">vanilla meat stand-in</span></div>
+  <div class="cells"><div class="cell"><img src="img/4ad01fe590388eb40ca2.webp"><span class="fc"></span></div></div>
+  
+  <div class="ctl"><label class="pk"><input type="radio" > use this</label><label class="rj"><input type="checkbox" > ✕ not for this slot</label></div></div><div class="card  k-artpipe">
+  <div class="ch"><b>C</b><span class="prov">new render</span></div>
+  <div class="cells"><div class="cell"><img src="img/e26a5b50c9c005561b0d.webp"><span class="fc"></span></div></div>
+  
+  <div class="ctl"><label class="pk"><input type="radio" > use this</label><label class="rj"><input type="checkbox" > ✕ not for this slot</label></div></div></div></div><div class="lane l-ref">
+  <div class="lh"><div class="slot"><span class="sl">REFERENCE — the living creature (not pickable here)</span><span class="ss">Huldu renders, shown so you can see what the catch should be a dead one of</span></div>
+  <div class="lstat info">reference only</div></div>
+  
+  <div class="cards"><div class="card  k-artpipe">
+  <div class="ch"><b>D</b><span class="prov">new render</span></div>
+  <div class="cells"><div class="cell"><img src="img/903b315e9bab8446207d.webp"><span class="fc">S</span></div><div class="cell"><img src="img/26136762c89acb348ea4.webp"><span class="fc">E</span></div><div class="cell"><img src="img/8da5b6923d668f32e08d.webp"><span class="fc">N</span></div></div>
+  
+  <div class="ctl"><span class="lockmsg">reference only</span></div></div><div class="card  k-artpipe">
+  <div class="ch"><b>G</b><span class="prov">new render</span></div>
+  <div class="cells"><div class="cell"><img src="img/626542cd94627f706972.webp"><span class="fc">S</span></div><div class="cell"><img src="img/308e8e9a7ddc6e5bd8b4.webp"><span class="fc">E</span></div><div class="cell"><img src="img/960868de2da9cdcf86ca.webp"><span class="fc">N</span></div></div>
+  
+  <div class="ctl"><span class="lockmsg">reference only</span></div></div></div></div></div><div class="ctx">canon images + Must show, in-game size beside a human, px/cell — unchanged from today's sheet (omitted in this mock)</div></div>
+ <div class="asks">
+  <div class="ak"><span class="akl">Name</span><input class="tx" value="" placeholder="new name (leave blank = keep)"> <label class=""><input type="checkbox" > suggest names for me</label></div>
+  <div class="ak"><span class="akl">Description</span><label class="on"><input type="radio" checked>keep</label><label class=""><input type="radio" >improve</label><label class=""><input type="radio" >rewrite to match the chosen art</label></div>
+  <div class="ak"><span class="akl">More art</span>make <input class="num" value=""> new <select><option>adult</option></select> versions, based on <select><option>—</option></select> <input class="tx wide" value="" placeholder="how should they differ? (optional)"></div>
+  <div class="ak"><span class="akl">Size</span>body size <input class="num" value=""> · drawn size × <input class="num" value=""> <span class="sub">(blank = unchanged)</span></div>
+  <div class="ak"><span class="akl">Belongs</span><select><option>this biome</option></select> tier <select><option>unchanged</option></select>  <label class=""><input type="checkbox" > cut from this biome</label></div>
+  
+  <div class="ak dep"><span class="akl">Waits for</span><b>RM_Huldu</b> — ADULT slot is "redraw". The catch is drawn from whichever Huldu you pick, automatically.</div>
+</div>
+ <div class="notebox"><span class="akl">Note</span><textarea placeholder="anything the fields above do not say — nuance welcome; each request above is tracked separately"></textarea></div>
+</section>
+</body></html>
