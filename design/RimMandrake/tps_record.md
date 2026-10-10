@@ -205,9 +205,14 @@ sleep — **cause not established**), `hb-stale-unknown` (the process probe fail
 exited), `shutdown-incomplete` (intent without completion) or `exited-without-shutdown`. Every finding is
 appended to `observer.jsonl` when it opens, every 5 minutes while it lasts, and when it ends (terminal
 findings once). Each pass also copies `Player-prev.log` into `tps\logs` by content hash before a relaunch
-can rotate it. Silence means "no observed main-thread progress", never proven deadlock. ⚠️ The observer
-runs only when `belt_watchdog.py` runs: a standing periodic observer independent of bridge calls is owed
-(MUST 17).
+can rotate it. Silence means "no observed main-thread progress", never proven deadlock.
+
+**Standing observer:** `src/RimMandrake/Utils/tps_observer.py` does the same observer pass on its own, every
+2 minutes, from the Windows scheduled task `RimMandrake\TPS Observer` (`pythonw.exe` on the
+`D:\Luke\dev\RimMandrake` mirror: no console window, no PowerShell; the process probe is Toolhelp +
+`GetProcessTimes`, so start times are real). Each pass rewrites `tps\observer_last.json` (time, games seen,
+findings, `ok`/`error`) — if that file is old, the standing observer is not running. Install/remove lines are
+in the script's header. The task is Windows state, not in git: re-create it on a rebuilt machine.
 
 ## Durability
 
