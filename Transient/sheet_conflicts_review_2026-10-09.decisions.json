@@ -1,12 +1,59 @@
 {
-  "posture": "whitelist",
   "criterion": "Not ranked: grouped by biome. The pre-selected letter is my least-destructive suggestion, not a decision.",
-  "sheetId": "sheet_conflicts_review_2026-10-09",
-  "reviewStatus": {
-    "state": "prefill",
-    "by": null,
-    "at": null,
-    "evidence": "generated; no human has picked"
+  "decidedCount": 6,
+  "decisions": {
+    "RM_Abyss/Aveluthia/del": {
+      "at": "2026-10-10T00:43:35.516Z",
+      "decidedAt": "2026-10-10T00:43:35.516Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Abyss/Giant Fibre Stalk/stale": {
+      "at": "2026-10-10T00:43:37.928Z",
+      "decidedAt": "2026-10-10T00:43:37.928Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Abyss/Glowing Grass/stale": {
+      "at": "2026-10-10T00:43:59.371Z",
+      "decidedAt": "2026-10-10T00:43:59.371Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Abyss/Night Mule/del": {
+      "at": "2026-10-10T00:43:00.015Z",
+      "decidedAt": "2026-10-10T00:43:00.015Z",
+      "decision": "B",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Abyss/Nightling/amb": {
+      "at": "2026-10-10T00:43:18.358Z",
+      "decidedAt": "2026-10-10T00:43:18.358Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "B"
+    },
+    "RM_Abyss/Shadow Charger/amb": {
+      "at": "2026-10-10T00:43:30.654Z",
+      "decidedAt": "2026-10-10T00:43:27.962Z",
+      "decision": "other",
+      "note": "broken?",
+      "prefill": "B"
+    }
   },
-  "decisions": {}
+  "posture": "whitelist",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generated; no human has picked",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-09T17:44:00-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "sheet_conflicts_review_2026-10-09",
+  "writeCount": 7
 }
