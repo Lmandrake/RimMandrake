@@ -106,7 +106,7 @@
  },
  "universe_generated": "2026-10-10T14:47:38-0700",
  "defscan": {
-  "generated": "2026-10-10T15:00:06-0700",
+  "generated": "2026-10-10T16:21:58-0700",
   "instrument": "def_inventory.build over ModsConfig.UNIVERSE.xml + patch_file_census",
   "missing": [
    "vlvop.tormentmaster.expansion"
@@ -118,6 +118,18 @@
   "harmony flag on brrainz.harmony": true,
   "core declares >5000 defs": true,
   "rut.patches patches mods": true,
-  "flowworks has settings flag": true
+  "flowworks has settings flag": true,
+  "aoba.framework <- aoba.fortress.industrial hard_dep_v1.6": true,
+  "zetrith.prepatcher <- krkr.rule56": true,
+  "geneticheadsframework <- geneticheadsbiotech load_after+findmod (its class refs sit in 1.5/Defs, unloaded)": true,
+  "jecstools <- ours class_ref": true,
+  "mines2patchouterrim <- ours": true,
+  "withrosaline <- ours (mayrequire/def_ref)": true,
+  "techlevelenforcement texture < 50 MB (Source/packages excluded)": true,
+  "techlevelenforcement source is not MonoMod": true,
+  "hot spring + stealing: NOT_FOUND repo never the source": true,
+  "cherry picker shells (urban ruins, bigsmall)": true,
+  "kotor vge has defs outside loaded dirs": true,
+  "jecstools Defs XML total > loaded": true
  }
 }
