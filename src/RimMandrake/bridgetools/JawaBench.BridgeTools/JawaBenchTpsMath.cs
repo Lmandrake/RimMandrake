@@ -64,9 +64,9 @@ namespace JawaBench.BridgeTools
 
         /// <summary>Record segments: a new file past this size. Rotation never moves or deletes the live file.</summary>
         public const long SegmentBytes = 2L * 1024L * 1024L;
-        /// <summary>Files are kept at least this long ...</summary>
+        /// <summary>Inactive sessions are kept this long unless the cap forces their bundle out earlier (MUST 11).</summary>
         public const double RetentionDays = 7.0;
-        /// <summary>... unless the directory would exceed this cap; then the OLDEST non-current files go first.</summary>
+        /// <summary>Directory cap: over it, the oldest inactive session bundles go first (see PlanRetention).</summary>
         public const long RetentionBytes = 256L * 1024L * 1024L;
         /// <summary>Same rule for archived Player.logs, with their own cap.</summary>
         public const long LogRetentionBytes = 1024L * 1024L * 1024L;
@@ -339,24 +339,48 @@ namespace JawaBench.BridgeTools
         }
 
         /// <summary>
-        /// Which files to delete. Never a current-session file. First everything older than
-        /// <see cref="RetentionDays"/>; then, while the rest exceeds <paramref name="capBytes"/>, the oldest.
-        /// Inputs are parallel arrays; returns indices, oldest first.
+        /// Which files to delete, in deletion order (MUST 11). Inactive sessions go as whole BUNDLES (segments,
+        /// heartbeat and manifest together): first every bundle whose NEWEST file is older than
+        /// <paramref name="days"/>, then, while the total exceeds <paramref name="capBytes"/>, the oldest
+        /// bundles. A PINNED file (a live segment, an active session's heartbeat/manifest, every file of ANOTHER
+        /// active process) is never deleted. An active session's unpinned files (this process's closed
+        /// segments) go oldest first only if the cap is still exceeded. So the guarantee is: an inactive
+        /// session is kept `days` unless the cap forces its whole bundle out earlier, oldest first; an active
+        /// session is never touched except this process's own closed segments under cap pressure.
         /// </summary>
-        public static List<int> PlanRetention(IList<long> bytes, IList<double> ageDays, IList<bool> current, long capBytes)
+        public static List<int> PlanRetention(IList<long> bytes, IList<double> ageDays, IList<string> session,
+                                              IList<bool> pinned, IList<bool> active, long capBytes, double days = RetentionDays)
         {
-            var del = new List<int>();
-            var order = Enumerable.Range(0, bytes.Count).OrderByDescending(i => ageDays[i]).ThenBy(i => i).ToList();
+            int n = bytes.Count;
             long total = 0;
-            foreach (int i in order) total += bytes[i];
-            foreach (int i in order)
+            for (int i = 0; i < n; i++) total += bytes[i];
+            var del = new List<int>();
+            var gone = new HashSet<int>();
+            var bundles = new Dictionary<string, List<int>>(StringComparer.Ordinal);
+            for (int i = 0; i < n; i++)
             {
-                if (current[i]) continue;
-                if (ageDays[i] > RetentionDays || total > capBytes)
+                if (active[i]) continue;
+                string k = session[i] ?? "";
+                List<int> l;
+                if (!bundles.TryGetValue(k, out l)) bundles[k] = l = new List<int>();
+                l.Add(i);
+            }
+            var order = bundles.Values.OrderByDescending(l => l.Min(i => ageDays[i])).ThenBy(l => l.Min()).ToList();
+            Action<List<int>> drop = idx =>
+            {
+                foreach (int i in idx.OrderByDescending(i => ageDays[i]).ThenBy(i => i))
                 {
-                    del.Add(i);
-                    total -= bytes[i];
+                    if (gone.Contains(i) || pinned[i]) continue;
+                    del.Add(i); gone.Add(i); total -= bytes[i];
                 }
+            };
+            foreach (var idx in order) if (idx.Min(i => ageDays[i]) > days) drop(idx);
+            foreach (var idx in order) if (total > capBytes && idx.Any(i => !gone.Contains(i))) drop(idx);
+            foreach (int i in Enumerable.Range(0, n).Where(i => active[i] && !pinned[i] && !gone.Contains(i))
+                                        .OrderByDescending(i => ageDays[i]).ThenBy(i => i).ToList())
+            {
+                if (total <= capBytes) break;
+                del.Add(i); gone.Add(i); total -= bytes[i];
             }
             return del;
         }

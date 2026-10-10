@@ -267,17 +267,43 @@ def segment_name(start_epoch, session, pid, segment):
     return "tps_%s_%s_%d_%03d.jsonl" % (time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(start_epoch)), session, pid, segment)
 
 
-def plan_retention(sizes, age_days, current, cap_bytes):
-    """Port of JawaBenchTpsMath.PlanRetention: indices to delete, oldest first; never a current file."""
-    order = sorted(range(len(sizes)), key=lambda i: (-age_days[i], i))
+def plan_retention(sizes, age_days, sessions, pinned, active, cap_bytes, days=RETENTION_DAYS):
+    """Port of JawaBenchTpsMath.PlanRetention (MUST 11): indices to delete, in deletion order.
+    Inactive sessions are deleted as whole BUNDLES (segments + heartbeat + manifest together): first every
+    bundle whose NEWEST file is older than `days`, then - while over the cap - the oldest bundles. A pinned
+    file (a live segment, an active session's heartbeat/manifest, or anything of ANOTHER active process) is
+    never deleted; an active session's unpinned files (the current process's closed segments) go oldest first
+    only if the cap is still exceeded."""
+    n = len(sizes)
     total = sum(sizes)
-    out = []
-    for i in order:
-        if current[i]:
-            continue
-        if age_days[i] > RETENTION_DAYS or total > cap_bytes:
+    out, gone = [], set()
+    bundles = {}
+    for i in range(n):
+        if not active[i]:
+            bundles.setdefault(sessions[i], []).append(i)
+    order = sorted(bundles.items(), key=lambda kv: (-min(age_days[i] for i in kv[1]), min(kv[1])))
+
+    def drop(idx):
+        nonlocal total
+        for i in sorted(idx, key=lambda i: (-age_days[i], i)):
+            if i in gone or pinned[i]:
+                continue
             out.append(i)
+            gone.add(i)
             total -= sizes[i]
+    for _, idx in order:
+        if min(age_days[i] for i in idx) > days:
+            drop(idx)
+    for _, idx in order:
+        if total > cap_bytes and any(i not in gone for i in idx):
+            drop(idx)
+    for i in sorted((i for i in range(n) if active[i] and not pinned[i] and i not in gone),
+                    key=lambda i: (-age_days[i], i)):
+        if total <= cap_bytes:
+            break
+        out.append(i)
+        gone.add(i)
+        total -= sizes[i]
     return out
 
 

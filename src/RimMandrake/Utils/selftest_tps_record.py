@@ -180,11 +180,14 @@ S_VECTORS = [[0.5] * 5, [0.5] * 6, [1.0] + [0.4] * 6, [0.4] * 5 + [0.9], [1.3] *
 Q_VECTORS = [[0.5996] * 6, [1.1504] * 6, [0.5994] * 6]
 R_VECTORS = [(0, 3_000_000), (2_097_000, 100), (2_097_100, 100), (2_097_152, 1), (10, 10)]
 N_VECTORS = [(1_791_640_000, "0123456789abcdef0123456789abcdef", 4242, 0), (0, "ab", 1, 17)]
-X_VECTORS = [  # (bytes, ageDays, current) ..., cap
-    ([(100, 8.0, 0), (100, 1.0, 0), (100, 0.1, 1)], 10_000),
-    ([(100, 9.0, 1), (100, 3.0, 0)], 10_000),
-    ([(400, 3.0, 0), (400, 2.0, 0), (400, 1.0, 0), (400, 0.0, 1)], 1000),
+X_VECTORS = [  # (bytes, ageDays, session, pinned, active) ..., cap   (MUST 11)
+    ([(100, 8.0, "a", 0, 0), (100, 1.0, "b", 0, 0), (100, 0.1, "c", 1, 1)], 10_000),
+    ([(100, 9.0, "c", 1, 1), (100, 3.0, "b", 0, 0)], 10_000),
+    ([(400, 3.0, "a", 0, 0), (400, 2.0, "b", 0, 0), (400, 1.0, "c", 0, 1), (400, 0.0, "c", 1, 1)], 1000),
     ([], 5),
+    # two processes + an old bundle: C current (live + 2 closed), O another ACTIVE process, X inactive bundle
+    ([(100, 0.0, "C", 1, 1), (100, 1.0, "C", 0, 1), (100, 2.0, "C", 0, 1), (100, 0.01, "O", 1, 1),
+      (100, 3.0, "O", 1, 1), (100, 9.0, "X", 0, 0), (10, 8.5, "X", 0, 0), (10, 8.5, "X", 0, 0)], 250),
 ]
 
 
@@ -209,7 +212,8 @@ def py_lines(tr, res):
     out += ["R %d" % (1 if T.should_rotate(c, n) else 0) for c, n in R_VECTORS]
     out += ["N " + T.segment_name(*v) for v in N_VECTORS]
     for items, cap in X_VECTORS:
-        d = T.plan_retention([i[0] for i in items], [i[1] for i in items], [bool(i[2]) for i in items], cap)
+        d = T.plan_retention([i[0] for i in items], [i[1] for i in items], [i[2] for i in items],
+                             [bool(i[3]) for i in items], [bool(i[4]) for i in items], cap)
         out.append("X " + ",".join(str(i) for i in d))
     return out
 
@@ -224,7 +228,7 @@ def cs_input(tr):
     rows += ["Q " + " ".join(str(x) for x in xs) for xs in Q_VECTORS]
     rows += ["R %d %d" % v for v in R_VECTORS]
     rows += ["N %d %s %d %d" % v for v in N_VECTORS]
-    rows += ["X " + " ".join("%d:%s:%d" % i for i in items) + " %d" % cap for items, cap in X_VECTORS]
+    rows += ["X " + " ".join("%d:%s:%s:%d:%d" % i for i in items) + " %d" % cap for items, cap in X_VECTORS]
     rows += ["U"]
     return "\n".join(rows) + "\n"
 
@@ -233,10 +237,20 @@ def scalar_checks():
     check(T.median([4, 1, 3, 2]) == 2.5 and T.median([]) is None, "median")
     check([T.sustained(x) for x in S_VECTORS] == ["unknown", "low", "low", "ok", "high", "ok", "ok"], "sustained")
     check(T.should_rotate(2_097_100, 100) and not T.should_rotate(0, 3_000_000), "rotation (never an empty segment)")
-    check(T.plan_retention([100, 100, 100], [8, 1, 0.1], [False, False, True], 10_000) == [0], "retention: >7 days goes")
-    check(T.plan_retention([100], [9], [True], 10) == [], "retention never deletes the current session")
-    check(T.plan_retention([400, 400, 400, 400], [3, 2, 1, 0], [False, False, False, True], 1000) == [0, 1],
-          "byte cap deletes oldest first")
+    try:
+        P = T.plan_retention
+        check(P([100, 100, 100], [8, 1, 0.1], ["a", "b", "c"], [0, 0, 1], [0, 0, 1], 10_000) == [0],
+              "retention: an inactive session > 7 days goes")
+        check(P([100], [9], ["c"], [1], [1], 10) == [], "retention never deletes a pinned (live) file")
+        x = X_VECTORS[4][0]
+        d = P([i[0] for i in x], [i[1] for i in x], [i[2] for i in x], [i[3] for i in x], [i[4] for i in x], 250)
+        check(not any(x[i][2] == "O" for i in d),
+              "MUST 11: another ACTIVE process's files are never deleted (deleted %r)" % [x[i][:3] for i in d])
+        check({5, 6, 7} <= set(d), "MUST 11: an old inactive session goes as a BUNDLE (segment + hb + manifest): %r" % d)
+        check(2 in d and 0 not in d,
+              "MUST 11: a session over the cap loses its oldest CLOSED segment, never its live one: %r" % d)
+    except TypeError as e:
+        check(False, "MUST 11: plan_retention has no session/lease model: %r" % e)
     check(T.F(0.0005, 3) == "0.001" and T.F(-0.0, 2) == "0" and T.F(None, 2) == "null", "F rounding")
 
 
@@ -534,7 +548,7 @@ def reader_checks():
 
 # names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
 # from the harness is a failure, not a pass.
-CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "HeartbeatSeparatesMainAndWatchdog"]
+CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "HeartbeatSeparatesMainAndWatchdog", "RetentionLeasesAndBundles"]
 
 
 def unit_checks(lines):

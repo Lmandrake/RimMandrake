@@ -347,25 +347,55 @@ namespace JawaBench.BridgeTools
             }
         }
 
+        /// <summary>A session whose heartbeat file changed within this many seconds is ACTIVE: its files are a
+        /// live process's evidence and are never pruned by another process (the heartbeat is the lease).</summary>
+        internal const double LeaseSeconds = 60;
+
+        private static readonly System.Text.RegularExpressions.Regex SegRe =
+            new System.Text.RegularExpressions.Regex("^tps_\\d{8}T\\d{6}Z_([0-9a-f]+)_\\d+_(\\d{3,})\\.jsonl$");
+        private static readonly System.Text.RegularExpressions.Regex MetaRe =
+            new System.Text.RegularExpressions.Regex("^(?:hb|session)_([0-9a-f]+)\\.json$");
+
         private static void Prune(string dir, string[] patterns, long cap)
         {
             if (string.IsNullOrEmpty(dir) || !Directory.Exists(dir)) return;
             var files = patterns.SelectMany(p => new DirectoryInfo(dir).GetFiles(p)).GroupBy(f => f.FullName).Select(g => g.First()).ToList();
             var now = DateTime.UtcNow;
-            var del = PlanWithDays(files.Select(f => f.Length).ToList(),
-                                   files.Select(f => (now - f.LastWriteTimeUtc).TotalDays).ToList(),
-                                   files.Select(f => f.Name.IndexOf(Session, StringComparison.Ordinal) >= 0).ToList(), cap);
+            int n = files.Count;
+            var sess = new string[n];
+            var segNo = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                var m = SegRe.Match(files[i].Name);
+                if (m.Success) { sess[i] = m.Groups[1].Value; segNo[i] = int.Parse(m.Groups[2].Value, CultureInfo.InvariantCulture); continue; }
+                segNo[i] = -1;
+                var mm = MetaRe.Match(files[i].Name);
+                sess[i] = mm.Success ? mm.Groups[1].Value : "file:" + files[i].Name;   // anything else: its own bundle
+            }
+            var activeSessions = new HashSet<string>(StringComparer.Ordinal) { Session ?? "" };
+            for (int i = 0; i < n; i++)
+                if (files[i].Name.StartsWith("hb_", StringComparison.Ordinal) && (now - files[i].LastWriteTimeUtc).TotalSeconds < LeaseSeconds)
+                    activeSessions.Add(sess[i]);
+            var liveSeg = new Dictionary<string, int>(StringComparer.Ordinal);
+            for (int i = 0; i < n; i++)
+                if (segNo[i] >= 0 && (!liveSeg.ContainsKey(sess[i]) || segNo[i] > liveSeg[sess[i]])) liveSeg[sess[i]] = segNo[i];
+            var active = new bool[n];
+            var pinned = new bool[n];
+            for (int i = 0; i < n; i++)
+            {
+                active[i] = activeSessions.Contains(sess[i]);
+                if (!active[i]) continue;
+                bool own = sess[i] == Session;
+                bool live = segNo[i] >= 0 && liveSeg[sess[i]] == segNo[i];
+                pinned[i] = !own || live || segNo[i] < 0 || files[i].FullName == CurrentPath;
+            }
+            var del = M.PlanRetention(files.Select(f => f.Length).ToList(),
+                                      files.Select(f => (now - f.LastWriteTimeUtc).TotalDays).ToList(),
+                                      sess, pinned, active, cap, RetentionDays);
             foreach (int i in del)
             {
                 try { files[i].Delete(); } catch { }
             }
-        }
-
-        private static List<int> PlanWithDays(IList<long> bytes, IList<double> age, IList<bool> current, long cap)
-        {
-            // the settings file may LENGTHEN retention; PlanRetention's age rule is scaled to match.
-            double k = RetentionDays > 0 ? M.RetentionDays / RetentionDays : 1.0;
-            return M.PlanRetention(bytes, age.Select(a => a * k).ToList(), current, cap);
         }
 
         /// <summary>Copy a file into the log archive off the main thread (best effort, retention-bounded).</summary>

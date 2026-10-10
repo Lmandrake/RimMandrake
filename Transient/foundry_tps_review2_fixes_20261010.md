@@ -203,6 +203,24 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
 - GREEN: python checks PASS; `selftest_belt_watchdog.py` 40/40 (one legacy fixture without `dReal` first
   failed against the new strict `_valid`; `dReal` is optional again, a missing one is taken as one cadence).
 
+### MUST 11 — protect active sessions, retain metadata coherently
+- RED: the old plan on a two-process scenario (this process C, another live process O, an old session X),
+  cap 250: `old plan, cap 250: ['x-seg', 'x-hb', 'x-manifest', 'other-closed', 'other-live']` — it deleted the
+  OTHER live process's live segment and never trimmed this process's own segments; the new selftest
+  `FAIL MUST 11: plan_retention has no session/lease model: TypeError(...)`.
+- FIX (`M.PlanRetention` + Python port, parity vectors incl. the scenario; `W.Prune`): a session is ACTIVE
+  while its `hb_` file is < 60 s old (the heartbeat is the lease). Inactive sessions are pruned as whole
+  BUNDLES (segments + hb + manifest): first those whose newest file is older than `retentionDays`, then the
+  oldest bundles while over the cap. Pinned and never deleted: every file of another active process, this
+  process's live segment, heartbeat and manifest. This process's own closed segments go oldest-first only if
+  still over the cap (a long session no longer grows past it). The 7-day scaling hack is gone (days passed
+  in). Segment numbers parsed with `\d{3,}`.
+- Real-file unit `T_RetentionLeasesAndBundles` (written after the fix, so green-only; the old Prune keyed
+  protection on the current session name alone and would have deleted `beef01_000`): other live process
+  keeps all four files; the 9-day inactive bundle goes whole; own oldest closed segment trimmed, live kept.
+- `observer.jsonl` stays outside retention (append-only, a few rows a day); stated in the doc.
+- GREEN: parity 68/68, `C# units: 12 run, 0 failed`, companion builds.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)
