@@ -145,15 +145,10 @@ namespace JawaBench.BridgeTools
                     catch { }
                 }
 
-                // BRIDGE_TPS_REGULAR_REPORT_1. The standing TPS record. Same lazy-init
-                // reasoning: play before the first jawa/ call of a session is NOT sampled,
-                // which jawa/tps_report states (samplerStartedUtc).
-                try { JawaBenchTpsSampler.Install(); }
-                catch (Exception te)
-                {
-                    try { Log.Warning("[JawaBench] TPS sampler install threw: " + te.Message); }
-                    catch { }
-                }
+                // BRIDGE_TPS_CAPTURE_FIXES_1. The TPS sampler is NOT installed from here: the
+                // JawaBenchTpsTools constructor starts it when RimBridgeServer registers companions
+                // at game load (that constructor is also what fires this initializer, so installing
+                // here first would mislabel startedBy), and jawa/tps_report starts it otherwise.
 
                 // ⭐ A SECOND LINE, AND IT IS THE ONE THAT PAYS LATER. Owner's ask,
                 // 2026-08-23: print state that makes a log debuggable months from now,
@@ -236,7 +231,7 @@ namespace JawaBench.BridgeTools
         private static System.Collections.Generic.IEnumerable<string> ToolNames(Type[] types)
         {
             return types
-                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static))
+                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly))
                 .Select(m => new { m, attr = m.GetCustomAttribute<ToolAttribute>(inherit: false) })
                 .Where(x => x.attr != null)
                 .Select(x => x.attr.Name)
@@ -258,7 +253,7 @@ namespace JawaBench.BridgeTools
         private static int CountTools(Type[] types)
         {
             return types
-                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static))
+                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly))
                 .Count(m => m.GetCustomAttributes(typeof(ToolAttribute), inherit: false).Length > 0);
         }
     }

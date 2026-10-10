@@ -1,74 +1,143 @@
-// JawaBenchTpsSampler.cs - TPS is measured all the time, not investigated (BRIDGE_TPS_REGULAR_REPORT_1).
+// JawaBenchTpsSampler.cs - TPS is measured all the time, not investigated
+// (BRIDGE_TPS_REGULAR_REPORT_1, rebuilt by BRIDGE_TPS_CAPTURE_FIXES_1).
 //
 // Owner, 2026-10-10: he regularly sees very slow (and fast) TPS that agents later "cannot reproduce".
-// So the companion keeps a standing record: every 5 real seconds of play, one sample of
-// ticks-per-real-second with the speed setting, its effective multiplier and the paused share, so a
-// speed-1 reading is never mistaken for slowness at speed 4.
+// So the companion keeps a standing record that answers "was it slow at 3 pm, and why".
 //
-// HOW IT RUNS
-//   * A Harmony POSTFIX on Verse.TickManager.TickManagerUpdate - called once per frame by
-//     Game.UpdatePlay, on the main thread, only while a game is being played. Per frame it does a
-//     handful of field reads and one float compare; the sample maths runs once per 5 s and the file
-//     append is handed to the thread pool, so the main thread never touches the disk.
-//   * Installed from JawaBenchInit.Announce, which is LAZY: it fires on the first jawa/ call of a
-//     session (JAWABENCH_INIT_LINE_IS_LAZY_1). Play before that call is NOT sampled. belt_watchdog's
-//     probe calls jawa/tps_report, which starts it. The tool reports samplerStartedUtc so a gap is
-//     never read as "TPS was fine".
-//   * Record: <SaveData>/JawaBench/tps/tps.jsonl, rotated to tps.1.jsonl at 1 MB (outside git).
-//   * The maths (window, paused/speed normalisation, rotation, sustained judgement) is
-//     JawaBenchTpsMath.cs, selftested offline against the Python reader (selftest_tps_record.py).
+// HOW IT STARTS (item 1) - at game load, with NO bridge call
+//   RimBridgeServer, once play data has loaded (Root_Update_Patch -> RimBridgeStartup.OnRuntimeReady ->
+//   RimBridgeCapabilities.Initialize -> RimBridgeExtensionDiscovery.BuildProviders, decompiled from the
+//   installed RimBridgeServer.dll 2026-10-10), calls Activator.CreateInstance on every companion type that
+//   declares an INSTANCE [Tool] method. JawaBenchTpsTools is such a type; its constructor calls Install().
+//   So the sampler starts at the main menu of every launch that has brrainz.rimbridgeserver active,
+//   before anyone connects. (That first executed code also fires the module initializer, so the
+//   JawaBenchInit lines and the other lazily-installed patches now install at load too.)
 //
-// ⛔ The postfix must never throw into the game loop: everything is inside a catch, and a
-// failure disables the sampler and is reported by the tool rather than retried every frame.
+// WHAT IT RECORDS - all through JawaBenchTpsWriter (ordered, bounded, session-named segments)
+//   session   once per process: pid, build, engine, mod count/digest; full manifest in session_<id>.json
+//   game/menu each time a game is entered (with the save name) or left
+//   sample    one WINDOW per ~5 real s of play (JawaBenchTpsMath.FrameAccumulator): ratio against
+//             expected ticks integrated frame by frame, raw wall TPS, paused/explained/stall/ambiguous
+//             seconds, fps, worst frame gap, tick-work share, coarse attribution (JawaBenchTpsProfiler),
+//             writer health
+//   incident  every frame gap > GapSeconds: stall (unexplained) or longevent (save / long event), with
+//             the context below. Recovered stalls are KEPT - nothing is discarded for being long.
+//   context   every 60 s of play: maps (id, size, biome, pawns, things), heap, process memory
+//   silence / resumed   from the watchdog thread (JawaBenchTpsWatchdog) when the main thread stops
+//   shutdown  on Application.quitting, after which the writer is drained and Player.log archived
+//   error     the sampler disabled itself after an exception (it never retries every frame)
+//   log       a Player.log was archived to tps/logs (Player-prev.log at start = the PREVIOUS session,
+//             which is how a crashed session's log survives the next launch)
+//
+// SETTINGS - the companion is not a mod and has no settings screen, so the Mod Settings rule is met by
+//   JawaBench/tps/tps_settings.json, written with the shipped defaults on first start: sampler,
+//   attribution, watchdog, archivePlayerLog on/off, retentionDays, retentionMB, logRetentionMB.
+//   All-off degrades to "no record", never to an error.
+//
+// ⛔ Main-thread patches never throw into the game loop: any exception disables the sampler, writes an
+//    `error` line, and is reported by jawa/tps_report.
 //
 // Doc: design/RimMandrake/tps_record.md
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using HarmonyLib;
 using RimBridgeServer.Sdk;
 using Verse;
 using M = JawaBench.BridgeTools.JawaBenchTpsMath;
+using W = JawaBench.BridgeTools.JawaBenchTpsWriter;
+using WD = JawaBench.BridgeTools.JawaBenchTpsWatchdog;
 
 namespace JawaBench.BridgeTools
 {
+    internal sealed class JawaBenchTpsSettings
+    {
+        public bool Sampler = true, Attribution = true, Watchdog = true, ArchivePlayerLog = true;
+        public double RetentionDays = M.RetentionDays;
+        public double RetentionMB = M.RetentionBytes / 1048576.0;
+        public double LogRetentionMB = M.LogRetentionBytes / 1048576.0;
+
+        internal static JawaBenchTpsSettings Load(string dir, out string note)
+        {
+            var s = new JawaBenchTpsSettings();
+            string p = Path.Combine(dir, "tps_settings.json");
+            note = null;
+            try
+            {
+                if (!File.Exists(p))
+                {
+                    File.WriteAllText(p, s.ToJson() + "\n");
+                    note = "wrote defaults";
+                    return s;
+                }
+                string t = File.ReadAllText(p);
+                s.Sampler = Bool(t, "sampler", s.Sampler);
+                s.Attribution = Bool(t, "attribution", s.Attribution);
+                s.Watchdog = Bool(t, "watchdog", s.Watchdog);
+                s.ArchivePlayerLog = Bool(t, "archivePlayerLog", s.ArchivePlayerLog);
+                s.RetentionDays = Math.Max(M.RetentionDays, Num(t, "retentionDays", s.RetentionDays));
+                s.RetentionMB = Math.Max(16, Num(t, "retentionMB", s.RetentionMB));
+                s.LogRetentionMB = Math.Max(16, Num(t, "logRetentionMB", s.LogRetentionMB));
+            }
+            catch (Exception e) { note = "settings unreadable, defaults used: " + e.Message; }
+            return s;
+        }
+
+        private static bool Bool(string t, string k, bool d)
+        {
+            var m = Regex.Match(t, "\"" + k + "\"\\s*:\\s*(true|false)", RegexOptions.IgnoreCase);
+            return m.Success ? m.Groups[1].Value.ToLowerInvariant() == "true" : d;
+        }
+
+        private static double Num(string t, string k, double d)
+        {
+            var m = Regex.Match(t, "\"" + k + "\"\\s*:\\s*([0-9.]+)");
+            double v;
+            return m.Success && double.TryParse(m.Groups[1].Value, NumberStyles.Float, CultureInfo.InvariantCulture, out v) ? v : d;
+        }
+
+        internal string ToJson()
+        {
+            return "{\"sampler\":" + B(Sampler) + ",\"attribution\":" + B(Attribution) + ",\"watchdog\":" + B(Watchdog) +
+                   ",\"archivePlayerLog\":" + B(ArchivePlayerLog) + ",\"retentionDays\":" + M.F(RetentionDays, 2) +
+                   ",\"retentionMB\":" + M.F(RetentionMB, 1) + ",\"logRetentionMB\":" + M.F(LogRetentionMB, 1) +
+                   ",\"_doc\":\"design/RimMandrake/tps_record.md - defaults are the shipped behaviour; retention can only grow\"}";
+        }
+
+        private static string B(bool b) => b ? "true" : "false";
+    }
+
     internal static class JawaBenchTpsSampler
     {
         private static readonly object Gate = new object();
-        private static readonly object FileGate = new object();
         private static readonly Queue<string> Ring = new Queue<string>();
-        private static readonly List<float> RunRatios = new List<float>();   // ratios of state=run, capped
+        private static readonly List<double> Streak = new List<double>();   // unbroken run-window ratios
 
         internal static bool Installed;
-        internal static string InstallError;
-        internal static string RuntimeError;
-        internal static string StartedUtc;
-        internal static string RecordPath;
-        internal static string WriteError;
-        internal static int SamplesWritten;
-        internal static int WindowsDropped;
+        internal static string InstallError, RuntimeError, StartedUtc, StartedBy, RecordDir, SettingsNote;
+        internal static JawaBenchTpsSettings Settings = new JawaBenchTpsSettings();
+        internal static int Windows, Incidents;
         private static bool _attempted;
-        private static readonly string Session = Guid.NewGuid().ToString("N").Substring(0, 8);
+        internal static readonly string Session = Guid.NewGuid().ToString("N");
 
-        // ---- window state: main thread only -------------------------------------------------
-        private static bool _open;
+        // ---- main-thread state ------------------------------------------------------------------
+        private static readonly M.FrameAccumulator Acc = new M.FrameAccumulator();
         private static Game _game;
-        private static float _t0;
-        private static int _tick0;
-        private static int _gc0;
-        private static int _frames;
-        private static int _pausedFrames;
-        private static float _frameMax;
-        private static TimeSpeed _speed0;
-        private static bool _speedChanged;
+        private static bool _inMenu, _prevFrameWaiting;
+        private static double _prevRootPre, _explained, _explainedAtPre, _leStart, _leDur, _saveStart, _saveTotal;
+        private static double _tmuStart, _lastSim, _lastContext = -1, _lastMarker;
+        private static int _ticksPre, _gcAtPre;
+        private static string _loadName = "";
 
-        internal static void Install()
+        internal static void Install(string startedBy)
         {
             lock (Gate)
             {
@@ -76,167 +145,393 @@ namespace JawaBench.BridgeTools
                 _attempted = true;
                 try
                 {
-                    string dir = Path.Combine(Path.Combine(GenFilePaths.SaveDataFolderPath, "JawaBench"), "tps");
-                    Directory.CreateDirectory(dir);
-                    RecordPath = Path.Combine(dir, "tps.jsonl");
-
-                    var m = AccessTools.Method(typeof(TickManager), nameof(TickManager.TickManagerUpdate));
-                    if (m == null)
+                    RecordDir = Path.Combine(Path.Combine(GenFilePaths.SaveDataFolderPath, "JawaBench"), "tps");
+                    Directory.CreateDirectory(RecordDir);
+                    Settings = JawaBenchTpsSettings.Load(RecordDir, out SettingsNote);
+                    if (!Settings.Sampler)
                     {
-                        InstallError = "TickManager.TickManagerUpdate not found";
+                        InstallError = "disabled by tps_settings.json (sampler: false)";
+                        Log.Message("[JawaBench] TPS sampler OFF by " + Path.Combine(RecordDir, "tps_settings.json"));
+                        return;
+                    }
+                    W.RetentionDays = Settings.RetentionDays;
+                    W.RetentionCapBytes = (long)(Settings.RetentionMB * 1048576.0);
+                    W.LogRetentionCapBytes = (long)(Settings.LogRetentionMB * 1048576.0);
+                    int pid = System.Diagnostics.Process.GetCurrentProcess().Id;
+                    W.Start(RecordDir, Session, pid);
+                    StartedBy = startedBy;
+                    StartedUtc = W.Utc();
+
+                    var h = new Harmony("mandrake.jawabench.tps");
+                    var self = typeof(JawaBenchTpsSampler);
+                    Func<string, HarmonyMethod> hm = n => new HarmonyMethod(self.GetMethod(n, BindingFlags.Static | BindingFlags.NonPublic));
+                    var tmu = AccessTools.Method(typeof(TickManager), nameof(TickManager.TickManagerUpdate));
+                    var root = AccessTools.Method(typeof(Root), nameof(Root.Update));
+                    if (tmu == null || root == null)
+                    {
+                        InstallError = "TickManager.TickManagerUpdate or Root.Update not found";
+                        W.Enqueue("error", "\"where\":\"install\",\"error\":" + W.Json(InstallError));
                         Log.Warning("[JawaBench] TPS sampler NOT installed: " + InstallError);
                         return;
                     }
-                    new Harmony("mandrake.jawabench.tps").Patch(m, postfix: new HarmonyMethod(
-                        typeof(JawaBenchTpsSampler).GetMethod(nameof(Postfix), BindingFlags.Static | BindingFlags.NonPublic)));
+                    h.Patch(tmu, prefix: hm(nameof(TmuPrefix)), postfix: hm(nameof(TmuPostfix)));
+                    h.Patch(root, prefix: hm(nameof(RootPrefix)), postfix: hm(nameof(RootPostfix)));
+                    var le = AccessTools.Method(typeof(LongEventHandler), nameof(LongEventHandler.LongEventsUpdate));
+                    if (le != null) h.Patch(le, prefix: hm(nameof(LePrefix)), postfix: hm(nameof(LePostfix)));
+                    var save = AccessTools.Method(typeof(GameDataSaveLoader), nameof(GameDataSaveLoader.SaveGame), new[] { typeof(string) });
+                    if (save != null) h.Patch(save, prefix: hm(nameof(SavePrefix)), postfix: hm(nameof(SavePostfix)));
+                    var load = AccessTools.Method(typeof(GameDataSaveLoader), nameof(GameDataSaveLoader.LoadGame), new[] { typeof(string) });
+                    if (load != null) h.Patch(load, prefix: hm(nameof(LoadPrefix)));
+                    if (Settings.Attribution) JawaBenchTpsProfiler.Install(h);
+                    if (Settings.Watchdog) WD.Start(RecordDir);
+                    try { UnityEngine.Application.quitting += OnQuit; } catch { }
+                    try { AppDomain.CurrentDomain.ProcessExit += (s, e) => OnQuit(); } catch { }
                     Installed = true;
-                    StartedUtc = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
-                    Log.Message("[JawaBench] TPS sampler installed: one sample per " + M.CadenceSeconds +
-                                " s of play -> " + RecordPath);
+
+                    WriteSessionStart(pid);
+                    if (Settings.ArchivePlayerLog) ArchivePrevLog();
+                    Log.Message("[JawaBench] TPS sampler installed (" + startedBy + "): session " + Session + " pid " + pid +
+                                " -> " + W.CurrentPath + (Settings.Attribution ? "; attribution " + JawaBenchTpsProfiler.PatchedStages +
+                                " stages" : "; attribution off") + (JawaBenchTpsProfiler.InstallError != null ? " (" + JawaBenchTpsProfiler.InstallError + ")" : ""));
                 }
                 catch (Exception e)
                 {
                     InstallError = e.GetType().Name + ": " + e.Message;
+                    try { W.Enqueue("error", "\"where\":\"install\",\"error\":" + W.Json(InstallError)); } catch { }
                     Log.Warning("[JawaBench] TPS sampler NOT installed: " + InstallError);
                 }
             }
         }
 
-        private static void Postfix(TickManager __instance)
+        // ---- session metadata (item 6) -----------------------------------------------------------
+        private static void WriteSessionStart(int pid)
+        {
+            string build = "unknown", engine = "unknown", modDigest = "unmeasured";
+            int modCount = -1;
+            var mods = new List<string>();
+            try
+            {
+                var attr = typeof(JawaBenchTpsSampler).Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+                if (attr != null) { string v = attr.InformationalVersion; int p = v.IndexOf('+'); build = p >= 0 ? v.Substring(p + 1) : v; if (build.Length > 12) build = build.Substring(0, 12); }
+            }
+            catch { }
+            try { engine = RimWorld.VersionControl.CurrentVersionStringWithRev; } catch { }
+            try
+            {
+                mods = LoadedModManager.RunningModsListForReading.Select(m => m.PackageId ?? "").ToList();
+                modCount = mods.Count;
+                unchecked
+                {
+                    uint hsh = 2166136261;
+                    foreach (char c in string.Join(",", mods.OrderBy(x => x, StringComparer.Ordinal))) { hsh ^= c; hsh *= 16777619; }
+                    modDigest = hsh.ToString("x8");
+                }
+            }
+            catch { }
+            string owners = "{}";
+            try
+            {
+                var counts = new Dictionary<string, int>();
+                foreach (var m in Harmony.GetAllPatchedMethods())
+                {
+                    var info = Harmony.GetPatchInfo(m);
+                    if (info == null) continue;
+                    foreach (var o in info.Owners) counts[o] = counts.TryGetValue(o, out var n) ? n + 1 : 1;
+                }
+                owners = "{" + string.Join(",", counts.OrderByDescending(kv => kv.Value).Select(kv => W.Json(kv.Key) + ":" + kv.Value)) + "}";
+            }
+            catch { }
+            string logPath = "";
+            try { logPath = UnityEngine.Application.consoleLogPath; } catch { }
+            W.Enqueue("session", "\"pid\":" + pid + ",\"startedBy\":" + W.Json(StartedBy) + ",\"build\":" + W.Json(build) +
+                                 ",\"engine\":" + W.Json(engine) + ",\"mods\":" + modCount + ",\"modDigest\":\"" + modDigest + "\"" +
+                                 ",\"playerLog\":" + W.Json(logPath) + ",\"settings\":" + Settings.ToJson() +
+                                 ",\"segment\":" + W.Json(Path.GetFileName(W.CurrentPath)));
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try
+                {
+                    File.WriteAllText(Path.Combine(RecordDir, "session_" + Session + ".json"),
+                        "{\"session\":\"" + Session + "\",\"pid\":" + pid + ",\"build\":" + W.Json(build) + ",\"engine\":" + W.Json(engine) +
+                        ",\"modDigest\":\"" + modDigest + "\",\"mods\":[" + string.Join(",", mods.Select(W.Json)) + "]" +
+                        ",\"harmonyOwners\":" + owners + "}\n");
+                }
+                catch (Exception e) { W.Enqueue("error", "\"where\":\"manifest\",\"error\":" + W.Json(e.Message)); }
+            });
+            Marker("start");
+        }
+
+        /// <summary>A Player.log line that joins the log to the record: session, pid, seq, utc.</summary>
+        private static void Marker(string why)
+        {
+            try
+            {
+                long seq = W.Enqueue("marker", "\"why\":" + W.Json(why));
+                Log.Message("[JawaBench] TPS marker " + why + ": session " + Session + " seq " + seq + " utc " + W.Utc());
+            }
+            catch { }
+        }
+
+        private static void ArchivePrevLog()
+        {
+            try
+            {
+                string cur = UnityEngine.Application.consoleLogPath;
+                if (string.IsNullOrEmpty(cur)) return;
+                string prev = Path.Combine(Path.GetDirectoryName(cur), "Player-prev.log");
+                if (!File.Exists(prev)) return;
+                string stamp = File.GetLastWriteTimeUtc(prev).ToString("yyyyMMdd'T'HHmmss'Z'", CultureInfo.InvariantCulture);
+                W.ArchiveLog(prev, "Player-prev_" + stamp + ".log");
+            }
+            catch { }
+        }
+
+        private static int _quit;
+
+        private static void OnQuit()
+        {
+            if (Interlocked.Exchange(ref _quit, 1) == 1) return;
+            try
+            {
+                W.Enqueue("shutdown", "\"windows\":" + Windows + ",\"incidents\":" + Incidents + "," + W.HealthFields());
+                W.Drain(2000);
+                if (Settings.ArchivePlayerLog)
+                {
+                    string cur = UnityEngine.Application.consoleLogPath;
+                    W.ArchiveLogNow(cur, "Player_" + W.Utc().Replace(":", "").Replace("-", "").Substring(0, 15) + "Z_" + Session.Substring(0, 8) + ".log");
+                    W.Drain(1000);
+                }
+            }
+            catch { }
+        }
+
+        private static void Fail(string where, Exception e)
+        {
+            RuntimeError = where + ": " + e.GetType().Name + ": " + e.Message;
+            try { W.Enqueue("error", "\"where\":" + W.Json(where) + ",\"error\":" + W.Json(e.GetType().Name + ": " + e.Message)); } catch { }
+            try { Log.Warning("[JawaBench] TPS sampler disabled after an exception: " + RuntimeError); } catch { }
+        }
+
+        // ---- Root.Update: heartbeat, menu/game transitions, long-event time (every frame) --------
+        private static void RootPrefix()
         {
             if (RuntimeError != null) return;
             try
             {
+                WD.Beat();
+                double now = WD.Now;
+                if (_prevFrameWaiting) _explained += now - _prevRootPre;
+                _prevRootPre = now;
                 Game game = Current.Game;
-                if (game == null || __instance == null) { _open = false; return; }
-                float now = UnityEngine.Time.realtimeSinceStartup;
-                TimeSpeed speed = __instance.CurTimeSpeed;
-                if (!_open || !ReferenceEquals(game, _game))
+                if (game == null || Current.ProgramState != ProgramState.Playing)
                 {
-                    Open(game, __instance, now, speed);
+                    if (!_inMenu && game == null)
+                    {
+                        _inMenu = true;
+                        _game = null;
+                        Acc.Reset();
+                        BreakStreak();
+                        W.Enqueue("menu", "\"programState\":\"" + Current.ProgramState + "\"");
+                    }
+                    if (game == null) WD.Set(WD.PMenu);
                     return;
                 }
-                _frames++;
-                if (__instance.Paused) _pausedFrames++;
-                if (speed != _speed0) _speedChanged = true;
-                float dt = UnityEngine.Time.unscaledDeltaTime;
-                if (dt > _frameMax) _frameMax = dt;
-
-                float dReal = now - _t0;
-                if (dReal < M.CadenceSeconds) return;
-
-                int dTicks = __instance.TicksGame - _tick0;
-                if (M.WindowUsable(dReal, dTicks))
-                    Emit(__instance, dReal, dTicks, speed);
-                else
-                    WindowsDropped++;
-                Open(game, __instance, now, speed);
-            }
-            catch (Exception e)
-            {
-                RuntimeError = e.GetType().Name + ": " + e.Message;
-                try { Log.Warning("[JawaBench] TPS sampler disabled after an exception: " + RuntimeError); } catch { }
-            }
-        }
-
-        private static void Open(Game game, TickManager tm, float now, TimeSpeed speed)
-        {
-            _open = true;
-            _game = game;
-            _t0 = now;
-            _tick0 = tm.TicksGame;
-            _gc0 = GC.CollectionCount(0);
-            _frames = 0;
-            _pausedFrames = 0;
-            _frameMax = 0f;
-            _speed0 = speed;
-            _speedChanged = false;
-        }
-
-        private static void Emit(TickManager tm, float dReal, int dTicks, TimeSpeed speed)
-        {
-            float mult = tm.TickRateMultiplier;
-            var s = M.Compute(dTicks, dReal, _frames, _pausedFrames, mult, _speedChanged);
-            int gc = GC.CollectionCount(0) - _gc0;
-            var sb = new StringBuilder(320);
-            sb.Append("{\"utc\":\"").Append(DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")).Append('"')
-              .Append(",\"session\":\"").Append(Session).Append('"')
-              .Append(",\"tg\":").Append(tm.TicksGame)
-              .Append(",\"dReal\":").Append(M.F(dReal, 3))
-              .Append(",\"dTicks\":").Append(dTicks)
-              .Append(",\"tps\":").Append(M.F(s.Tps, 2))
-              .Append(",\"speed\":\"").Append(speed.ToString()).Append('"')
-              .Append(",\"mult\":").Append(M.F(mult, 2))
-              .Append(",\"target\":").Append(M.F(s.Target, 2))
-              .Append(",\"ratio\":").Append(M.F(s.Ratio, 3))
-              .Append(",\"state\":\"").Append(s.State).Append('"')
-              .Append(",\"pausedFrac\":").Append(M.F(s.PausedFrac, 3))
-              .Append(",\"frames\":").Append(_frames)
-              .Append(",\"fps\":").Append(M.F(dReal > 0f ? _frames / dReal : 0f, 1))
-              .Append(",\"frameMaxMs\":").Append(M.F(_frameMax * 1000f, 1))
-              .Append(",\"tickMs\":").Append(M.F(tm.MeanTickTime, 3))
-              .Append(",\"gc0\":").Append(gc)
-              .Append('}');
-            string line = sb.ToString();
-
-            lock (Gate)
-            {
-                Ring.Enqueue(line);
-                while (Ring.Count > M.RingCapacity) Ring.Dequeue();
-                if (s.State == M.StateRun)
+                if (!ReferenceEquals(game, _game))
                 {
-                    RunRatios.Add(s.Ratio);
-                    if (RunRatios.Count > M.RingCapacity) RunRatios.RemoveAt(0);
+                    _game = game;
+                    _inMenu = false;
+                    Acc.Reset();
+                    BreakStreak();
+                    _lastContext = -1;
+                    var tm = game.tickManager;
+                    W.Enqueue("game", "\"save\":" + W.Json(_loadName) + ",\"ticksGame\":" + (tm != null ? tm.TicksGame : -1) +
+                                      ",\"maps\":" + (game.Maps != null ? game.Maps.Count : 0));
+                    Marker("game");
                 }
             }
-            ThreadPool.QueueUserWorkItem(_ => Append(line));
+            catch (Exception e) { Fail("root-prefix", e); }
         }
 
-        private static void Append(string line)
+        private static void RootPostfix()
         {
+            if (RuntimeError != null) return;
             try
             {
-                lock (FileGate)
-                {
-                    byte[] bytes = Encoding.UTF8.GetBytes(line + "\n");
-                    long cur = File.Exists(RecordPath) ? new FileInfo(RecordPath).Length : 0L;
-                    if (M.ShouldRotate(cur, bytes.Length))
-                    {
-                        string old = Path.Combine(Path.GetDirectoryName(RecordPath), "tps.1.jsonl");
-                        if (File.Exists(old)) File.Delete(old);
-                        File.Move(RecordPath, old);
-                    }
-                    using (var fs = new FileStream(RecordPath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
-                        fs.Write(bytes, 0, bytes.Length);
-                    SamplesWritten++;
-                    WriteError = null;
-                }
+                bool waiting = LongEventHandler.ShouldWaitForEvent;
+                WD.LastLongEvent = waiting || LongEventHandler.AnyEventNowOrWaiting;
+                if (waiting) _prevFrameWaiting = true;
+                else { _prevFrameWaiting = false; _explained += _leDur; }
+                _leDur = 0;
+                WD.Set(WD.PGuiRender);
+                try { WD.LastFocused = UnityEngine.Application.isFocused; } catch { }
+                double now = WD.Now;
+                if (now - _lastMarker >= 3600) { _lastMarker = now; if (now > 60) Marker("hourly"); }
             }
-            catch (Exception e)
-            {
-                WriteError = e.GetType().Name + ": " + e.Message;
-            }
+            catch (Exception e) { Fail("root-postfix", e); }
         }
 
+        private static void LePrefix()
+        {
+            _leStart = -1;
+            if (RuntimeError != null || !LongEventHandler.AnyEventNowOrWaiting) return;
+            _leStart = WD.Now;
+            WD.Enter(WD.PLongEvent);
+        }
+
+        private static void LePostfix()
+        {
+            if (_leStart < 0) return;
+            _leDur += WD.Now - _leStart;
+            _leStart = -1;
+            WD.Exit();
+        }
+
+        private static void SavePrefix(string fileName)
+        {
+            _saveStart = WD.Now;
+            WD.LastSave = fileName ?? "";
+            WD.Enter(WD.PSave);
+        }
+
+        private static void SavePostfix(string fileName)
+        {
+            double d = WD.Now - _saveStart;
+            _saveTotal += d;
+            WD.Exit();
+            if (RuntimeError == null) W.Enqueue("save", "\"file\":" + W.Json(fileName) + ",\"saveS\":" + M.F(d, 3));
+        }
+
+        private static void LoadPrefix(string saveFileName)
+        {
+            _loadName = saveFileName ?? "";
+            WD.Set(WD.PLoad);
+        }
+
+        // ---- TickManager.TickManagerUpdate: the window (once per played frame) -------------------
+        private static void TmuPrefix(TickManager __instance)
+        {
+            if (RuntimeError != null || __instance == null || _game == null) return;
+            try
+            {
+                double now = WD.Now;
+                bool paused = __instance.Paused;
+                double mult = __instance.TickRateMultiplier;
+                _ticksPre = __instance.TicksGame;
+                double ex = _explained - _explainedAtPre;
+                _explainedAtPre = _explained;
+                var g = Acc.Pre(now, paused, mult, _ticksPre, ex);
+                if (g.HasValue) Incident(g.Value, __instance, paused, mult);
+                _gcAtPre = GC.CollectionCount(0);
+                WD.LastPaused = paused;
+                WD.LastMult = M.F(mult, 2);
+                WD.LastSpeed = __instance.CurTimeSpeed.ToString();
+                WD.LastTicksGame = _ticksPre;
+                WD.Enter(WD.PTickUpdate);
+                _tmuStart = WD.Now;
+            }
+            catch (Exception e) { Fail("tick-prefix", e); }
+        }
+
+        private static void TmuPostfix(TickManager __instance)
+        {
+            if (RuntimeError != null || __instance == null || _game == null || !Acc.Open) return;
+            try
+            {
+                double sim = WD.Now - _tmuStart;
+                WD.Exit();
+                _lastSim = sim;
+                int ticks = __instance.TicksGame;
+                WD.LastTicksGame = ticks;
+                var w = Acc.Post(__instance.TickRateMultiplier, ticks, sim);
+                if (w != null) Emit(w, __instance);
+            }
+            catch (Exception e) { Fail("tick-postfix", e); }
+        }
+
+        private static void Incident(M.Gap g, TickManager tm, bool paused, double mult)
+        {
+            Incidents++;
+            string quiet = Interlocked.Exchange(ref WD.QuietPhase, null);
+            W.Enqueue("incident", "\"type\":\"" + g.Kind + "\"," + M.GapFields(g) +
+                                  ",\"quietPhase\":" + W.Json(quiet) + ",\"prevSimS\":" + M.F(_lastSim, 3) +
+                                  ",\"gcDelta\":" + (GC.CollectionCount(0) - _gcAtPre) +
+                                  ",\"saveTotalS\":" + M.F(_saveTotal, 3) + ",\"lastSave\":" + W.Json(WD.LastSave) +
+                                  "," + WD.ContextFields());
+        }
+
+        private static void BreakStreak() { lock (Gate) Streak.Clear(); }
+
+        private static void Emit(M.Window w, TickManager tm)
+        {
+            Windows++;
+            var sb = new StringBuilder(900);
+            sb.Append(M.WindowFields(w))
+              .Append(",\"speed\":\"").Append(tm.CurTimeSpeed.ToString()).Append('"')
+              .Append(",\"tg\":").Append(tm.TicksGame)
+              .Append(",\"tickMs\":").Append(M.F(tm.MeanTickTime, 3))
+              .Append(",\"focused\":").Append(WD.LastFocused ? "true" : "false")
+              .Append(",\"gc\":").Append(GC.CollectionCount(0))
+              .Append(",\"heapMB\":").Append(M.F(GC.GetTotalMemory(false) / 1048576.0, 1));
+            if (JawaBenchTpsProfiler.Installed) sb.Append(',').Append(JawaBenchTpsProfiler.TakeWindowFields());
+            sb.Append(',').Append(W.HealthFields());
+            string fields = sb.ToString();
+            W.Enqueue("sample", fields);
+            string state = w.State;
+            lock (Gate)
+            {
+                Ring.Enqueue("{\"utc\":\"" + W.Utc() + "\"," + fields + "}");
+                while (Ring.Count > M.RingCapacity) Ring.Dequeue();
+                if (state == M.StateRun && !double.IsNaN(w.Ratio)) { Streak.Add(w.Ratio); if (Streak.Count > M.RingCapacity) Streak.RemoveAt(0); }
+                else Streak.Clear();
+            }
+            double now = WD.Now;
+            if (_lastContext < 0 || now - _lastContext >= 60) { _lastContext = now; Context(); }
+        }
+
+        /// <summary>Periodic colony context (item 6): cheap counts only, no full-map enumeration.</summary>
+        private static void Context()
+        {
+            var sb = new StringBuilder(400);
+            sb.Append("\"maps\":[");
+            int i = 0;
+            foreach (var map in Find.Maps)
+            {
+                if (i >= 8) break;
+                if (i++ > 0) sb.Append(',');
+                sb.Append("{\"id\":").Append(map.uniqueID)
+                  .Append(",\"size\":\"").Append(map.Size.x).Append('x').Append(map.Size.z).Append('"')
+                  .Append(",\"biome\":").Append(W.Json(map.Biome?.defName))
+                  .Append(",\"pawns\":").Append(map.mapPawns?.AllPawnsSpawnedCount ?? -1)
+                  .Append(",\"things\":").Append(map.listerThings?.AllThings?.Count ?? -1)
+                  .Append(",\"current\":").Append(ReferenceEquals(map, Find.CurrentMap) ? "true" : "false")
+                  .Append('}');
+            }
+            sb.Append("],\"mapCount\":").Append(Find.Maps.Count);
+            sb.Append(",\"worldPawns\":").Append(Find.WorldPawns?.AllPawnsAliveOrDead?.Count ?? -1);
+            sb.Append(",\"heapMB\":").Append(M.F(GC.GetTotalMemory(false) / 1048576.0, 1));
+            try
+            {
+                var p = System.Diagnostics.Process.GetCurrentProcess();
+                sb.Append(",\"workingSetMB\":").Append(M.F(p.WorkingSet64 / 1048576.0, 1));
+            }
+            catch { }
+            sb.Append(",\"save\":").Append(W.Json(_loadName));
+            W.Enqueue("context", sb.ToString());
+        }
+
+        // ---- the [Tool] -----------------------------------------------------------------------------
         internal static object Report(int last)
         {
             List<string> lines;
-            List<float> ratios;
-            lock (Gate)
-            {
-                lines = Ring.ToList();
-                ratios = RunRatios.ToList();
-            }
+            List<double> streak;
+            lock (Gate) { lines = Ring.ToList(); streak = Streak.ToList(); }
             if (last <= 0) last = 60;
             var tail = lines.Skip(Math.Max(0, lines.Count - last)).ToList();
-            // Stats over the run samples among the returned tail, parsed back from our own lines.
-            var tps = new List<float>();
-            var rat = new List<float>();
+            var rat = new List<double>();
             foreach (var l in tail)
             {
                 if (l.IndexOf("\"state\":\"run\"", StringComparison.Ordinal) < 0) continue;
-                float t, r;
-                if (TryField(l, "tps", out t)) tps.Add(t);
+                double r;
                 if (TryField(l, "ratio", out r)) rat.Add(r);
             }
             return new
@@ -245,62 +540,87 @@ namespace JawaBench.BridgeTools
                 installed = Installed,
                 installError = InstallError,
                 runtimeError = RuntimeError,
-                writeError = WriteError,
+                writeError = W.LastError,
+                startedBy = StartedBy,
                 samplerStartedUtc = StartedUtc,
-                note = "Sampling starts on the first jawa/ call of a session; play before samplerStartedUtc is not recorded. " +
-                       "Judge tps against target (60 x effective speed multiplier); paused/mixed samples are never judged.",
+                session = Session,
+                note = "Starts at game load (RimBridgeServer companion registration), no bridge call needed. Judge ratio " +
+                       "(ticks / expected ticks integrated frame by frame over unpaused time); only state=run windows are judged. " +
+                       "Stalls are kept as incidents. Read history with src/RimMandrake/Utils/tps_record.py --at/--since.",
                 cadenceSeconds = M.CadenceSeconds,
-                recordPath = RecordPath,
+                recordDir = RecordDir,
+                segment = W.CurrentPath,
+                writer = new { enqueued = W.Enqueued, written = W.Written, dropped = W.Dropped, writeErrors = W.WriteErrors, queue = W.QueueDepth, lastError = W.LastError },
+                watchdog = new { phase = WD.PhaseName, silenceLines = WD.SilenceLines, heartbeat = WD.HeartbeatPath },
+                attribution = new
+                {
+                    installed = JawaBenchTpsProfiler.Installed,
+                    stages = JawaBenchTpsProfiler.PatchedStages,
+                    error = JawaBenchTpsProfiler.InstallError,
+                    costPerTimerPairUs = Math.Round(JawaBenchTpsProfiler.CostPerPairSeconds * 1e6, 4),
+                },
+                settings = Settings.ToJson(),
+                windows = Windows,
+                incidents = Incidents,
                 samplesInMemory = lines.Count,
-                samplesWritten = SamplesWritten,
-                windowsDropped = WindowsDropped,
                 returned = tail.Count,
-                runSamples = tps.Count,
-                tpsMin = tps.Count > 0 ? (float?)tps.Min() : null,
-                tpsMedian = tps.Count > 0 ? (float?)M.Median(tps) : null,
-                tpsMax = tps.Count > 0 ? (float?)tps.Max() : null,
-                ratioMin = rat.Count > 0 ? (float?)rat.Min() : null,
-                ratioMedian = rat.Count > 0 ? (float?)M.Median(rat) : null,
-                ratioMax = rat.Count > 0 ? (float?)rat.Max() : null,
-                sustained = M.Sustained(ratios),
+                runWindows = rat.Count,
+                ratioMin = rat.Count > 0 ? (double?)rat.Min() : null,
+                ratioMedian = rat.Count > 0 ? (double?)M.Median(rat) : null,
+                ratioMax = rat.Count > 0 ? (double?)rat.Max() : null,
+                sustained = M.Sustained(streak),
                 samplesJsonl = tail,
             };
         }
 
-        private static bool TryField(string line, string key, out float v)
+        private static bool TryField(string line, string key, out double v)
         {
-            v = 0f;
+            v = 0;
             string k = "\"" + key + "\":";
             int i = line.IndexOf(k, StringComparison.Ordinal);
             if (i < 0) return false;
             i += k.Length;
             int j = i;
             while (j < line.Length && line[j] != ',' && line[j] != '}') j++;
-            return float.TryParse(line.Substring(i, j - i), System.Globalization.NumberStyles.Float,
-                                  System.Globalization.CultureInfo.InvariantCulture, out v);
+            return double.TryParse(line.Substring(i, j - i), NumberStyles.Float, CultureInfo.InvariantCulture, out v);
         }
     }
 
-    public sealed partial class JawaBenchTerrainTools
+    /// <summary>
+    /// The TPS tool, deliberately an INSTANCE [Tool] on a type with a public parameterless constructor:
+    /// RimBridgeServer constructs such types when it registers companions at game load
+    /// (RimBridgeExtensionDiscovery.TryCreateInstance), and the constructor starts the sampler. This is
+    /// what makes the record independent of any bridge call (BRIDGE_TPS_CAPTURE_FIXES_1, item 1).
+    /// ⛔ Keep the constructor public, parameterless and non-throwing; make the tool static and the
+    /// sampler goes back to starting only on the first jawa/ call.
+    /// </summary>
+    public sealed class JawaBenchTpsTools
     {
+        public JawaBenchTpsTools()
+        {
+            try { JawaBenchTpsSampler.Install("bridge-registration"); }
+            catch { }
+        }
+
         [Tool(
             "jawa/tps_report",
             Description =
-                "The standing TPS record (BRIDGE_TPS_REGULAR_REPORT_1): one sample per 5 real seconds of play - ticks per " +
-                "real second, the speed setting, its EFFECTIVE multiplier, target (60 x multiplier), ratio, paused share, " +
-                "fps, worst frame, mean tick ms, gen-0 GCs. Read-only. TRAP: the sampler starts on the first jawa/ call of " +
-                "a session (this call starts it), so play before samplerStartedUtc was never measured. Judge against target, " +
-                "never 60: 170 tps is fine at speed 3 and dire at speed 4. The on-disk record (recordPath) survives restarts; " +
-                "read it with src/RimMandrake/Utils/tps_record.py.",
+                "The standing TPS record (BRIDGE_TPS_CAPTURE_FIXES_1): starts at game load with no bridge call. One window " +
+                "per ~5 real seconds of play: ratio = ticks / expected ticks (60 x the effective multiplier, integrated frame " +
+                "by frame over UNPAUSED time), raw wall tps, paused/explained/stall seconds, fps, tick-work share, coarse " +
+                "attribution (tick lists, world, maps, components). Frame gaps > 2 s are kept as incidents (stall or " +
+                "longevent). Read-only. The on-disk record (recordDir, session-named segments, 7+ days) survives restarts; " +
+                "read history with src/RimMandrake/Utils/tps_record.py --at/--since --tz.",
             ResultDescription =
-                "success, samplerStartedUtc, recordPath, samplesJsonl (last N lines), tpsMin/Median/Max and " +
-                "ratioMin/Median/Max over the run samples among them, sustained (low|high|ok|unknown), errors if any.")]
-        public static Task<object> TpsReport(
+                "success, startedBy, samplerStartedUtc, session, recordDir, segment, writer health, watchdog phase, " +
+                "attribution status, samplesJsonl (last N windows), ratioMin/Median/Max over run windows, sustained " +
+                "(low|high|ok|unknown over an unbroken run streak), errors if any.")]
+        public Task<object> TpsReport(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "How many of the most recent samples to return (default 60 = 5 minutes; max 720).")] int last = 60)
+            [ToolParameter(Description = "How many of the most recent windows to return (default 60 = 5 minutes; max 720).")] int last = 60)
         {
-            JawaBenchTpsSampler.Install();
+            JawaBenchTpsSampler.Install("tool-call");
             return Task.FromResult(JawaBenchTpsSampler.Report(Math.Min(last, M.RingCapacity)));
         }
     }
