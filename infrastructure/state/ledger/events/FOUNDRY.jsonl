@@ -5112,3 +5112,6 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-10T06:10:45Z","tsn":1791612645515098971}
 {"seat":"FOUNDRY","event":"file","id":"ROT_CARTOON_VARIANT_REPAINT_1","title":"Rot plants: painted replacements for retired cartoon Graphic_Random variants","kind":"art","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-10-10T06:23:08Z","tsn":1791613388346928370}
 {"seat":"FOUNDRY","event":"file","id":"MOOKEE_TRADE_ANIMAL_IDENTIFY_1","title":"Identify the Rot trader animal named 'Mookee' (donor SW art) and own a realistic render","kind":"art","target":"v1","needs":"game-up","for":"FOUNDRY","ts":"2026-10-10T06:46:15Z","tsn":1791614775326023085}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FOUNDRY: identify the 'Mookee' animal in the live game (MOOKEE_TRADE_ANIMAL_IDENTIFY_1)","ts":"2026-10-10T06:47:23Z","tsn":1791614843665722746}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-10T06:50:37Z","tsn":1791615037037918885}
+{"seat":"FOUNDRY","event":"note","id":"MOOKEE_TRADE_ANIMAL_IDENTIFY_1","text":"Mookee = pawn Dewback211868, race/kind defName Dewback (donor mlie.starwarsanimalcollection, not RSW_Dewback), PlayerColony lineup on live Rot colony. Detail Transient/belt_mookee_20261009t.md","ts":"2026-10-10T06:50:39Z","tsn":1791615039695905279}
