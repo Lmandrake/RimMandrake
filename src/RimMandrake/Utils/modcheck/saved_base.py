@@ -64,32 +64,38 @@ def snapshot_saves(saves_dir):
         return {}
 
 
-def save_base(s, saves_dir=None, name=SAVE_NAME, overwrite=False, wait=2.0):
-    """Returns {"verified": bool, "problems": [...], ...}. Never trusts the path save_game hands back."""
+def save_base(s, saves_dir=None, name=SAVE_NAME, overwrite=False, wait=2.0, current_slot=None):
+    """Returns {"verified": bool, "problems": [...], ...}. Never trusts the path save_game hands back.
+
+    Keepers are hashed and backed up by save_guard (content-addressed, deduped) BEFORE the call, and verified by
+    hash after it. current_slot: the save this game was loaded from ('none' for a fileless game); when it is a
+    keeper the save is refused (save_game can write the current slot). Unknown is allowed here for the existing
+    runners but recorded in "warnings" - KEEPER_SAVES_HARDEN_WRONG_SLOT_WRITES."""
+    import save_guard
     saves_dir = saves_dir or default_saves_dir()
-    before = snapshot_saves(saves_dir)
-    problems = []
-    if name + ".rws" in before and not overwrite:
+    try:
+        snap = save_guard.snapshot(saves_dir)
+    except OSError as e:
+        return {"verified": False, "problems": ["cannot back up keepers: %s" % e], "path": None}
+    if name + ".rws" in snap["files"] and not overwrite:
         return {"verified": False, "problems": ["%s.rws already exists; pass overwrite=True" % name], "path": None}
-    if before:
-        bk = os.path.join(os.path.dirname(saves_dir.rstrip("/\\")), "Saves_backup_northstar_%s" % time.strftime("%Y%m%d%H%M%S"))
-        os.makedirs(bk, exist_ok=True)
-        for n in before:
-            shutil.copy2(os.path.join(saves_dir, n), os.path.join(bk, n))
+    why = [w for w in save_guard.admit(snap, None, current_slot) if "UNKNOWN" not in w]
+    if overwrite:
+        snap["keepers"].pop(name + ".rws", None)
+        snap["files"].pop(name + ".rws", None)
+    if why:
+        return {"verified": False, "problems": why, "path": None}
+    warnings = [] if current_slot is not None else ["current slot unknown: a wrong-slot write is only caught after"]
+    problems = []
     r = s.call("rimworld/save_game", saveName=name)
     if not r.get("success"):
         problems.append("save_game failed: %s" % r.get("message"))
     time.sleep(wait)
+    v = save_guard.verify(snap, saves_dir, name)
+    problems += v["problems"]
     after = snapshot_saves(saves_dir)
-    if name + ".rws" not in after:
-        problems.append("no %s.rws appeared" % name)
-    elif after[name + ".rws"] < 1000:
-        problems.append("%s.rws is only %d bytes" % (name, after[name + ".rws"]))
-    changed = [n for n in before if n != name + ".rws" and after.get(n) != before[n]]
-    if changed:
-        problems.append("existing saves changed or vanished: %s" % changed)
     return {"verified": not problems, "problems": problems, "path": os.path.join(saves_dir, name + ".rws"),
-            "sizeBytes": after.get(name + ".rws", 0)}
+            "sizeBytes": after.get(name + ".rws", 0), "changed": v["changed"], "warnings": warnings}
 
 
 def cleanup(s, keep_colonists=3):

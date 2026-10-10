@@ -641,7 +641,7 @@ class FakeWorld(object):
         if d and target:
             path = os.path.join(d, target + ".rws")
             with open(path, "wb") as f:
-                f.write(b"<savegame>" + b"x" * (2000 + len(self.pawns)))
+                f.write(b"<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<savegame>" + b"x" * (2000 + len(self.pawns)))
         return {"success": True, "path": path or ("%s.rws" % saveName)}
 
     def _t_rimworld_load_game_ready(self, saveName=None, **_):
