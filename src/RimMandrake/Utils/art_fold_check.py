@@ -17,6 +17,8 @@ that art into the mod that owns the creature and deletes the standalone mod. The
              texture in one of our mods (a same-path row keeps it on purpose).
   UNLISTED   the override's packageId appears in no About.xml, no compose list, and no modlist
              snapshot (infrastructure/state/modlists/, deployed/config/).
+  ALTGAP     a donor PawnKindDef's alternateGraphics draws a texPath the fold does not repoint (Dewback DewbackW,
+             2026-10-10: 80 percent of spawns kept donor art).
   KEPT       mode "dead" rows: the `kept` path (where the bytes survive) exists.
 
 Sanity probe: the manifest's Silooth row (the precedent, folded by hand) must pass, and
@@ -84,6 +86,41 @@ def donor_has_literal(d, lit):
         except OSError:
             pass
     return False
+
+
+_altdefs_cache = {}
+
+
+def _donor_alt_defs(d):
+    """[(all texPaths of the def, alternateGraphics texPaths)] per donor PawnKindDef with alternates; one scan per donor."""
+    if d in _altdefs_cache:
+        return _altdefs_cache[d]
+    out = []
+    for f in glob.glob(os.path.join(glob.escape(d), "**", "*.xml"), recursive=True):
+        if "/About/" in f:
+            continue
+        try:
+            txt = open(f, encoding="utf-8", errors="replace").read()
+            if "alternateGraphics" not in txt:
+                continue
+            root = ET.fromstring(txt.encode("utf-8"))
+        except (OSError, ET.ParseError):
+            continue
+        for e in root.iter("PawnKindDef"):
+            alts = {(t.text or "").strip() for t in e.findall("alternateGraphics/li/texPath") if t.text}
+            if alts:
+                out.append(({(t.text or "").strip() for t in e.iter("texPath")}, alts))
+    _altdefs_cache[d] = out
+    return out
+
+
+def donor_alt_paths(d, olds):
+    """texPaths in alternateGraphics of every donor PawnKindDef that also names one of olds."""
+    out = set()
+    for allp, alts in _donor_alt_defs(d):
+        if allp & olds:
+            out |= alts
+    return out
 
 
 def _src_texpath_index(repo):
@@ -166,6 +203,15 @@ def check(rows, repo=REPO, donor_roots=DONOR_ROOTS, check_donor=True):
                 users = texidx.get(old, set())
                 if users and not _resolves_anywhere(repo, old):
                     bad.append("NO-DANGLE: %s still name %s, which no mod of ours ships" % (sorted(users)[:3], old))
+        if check_donor and r.get("donor") and r.get("groups"):
+            d = donor_dir(r["donor"], r.get("donor_hint"), donor_roots)
+            if d is not None:
+                olds = {g["old"] for g in r["groups"]}
+                for ap in sorted(donor_alt_paths(d, olds)):
+                    if ap not in olds:
+                        bad.append("ALTGAP: donor alternateGraphics draws %s, which the fold does not cover" % ap)
+                    elif ptxt is not None and 'texPath[text()="%s"]' % ap not in ptxt and "alternateGraphics" not in ptxt:
+                        bad.append("ALTGAP: donor alternateGraphics draws %s but no patch operation reaches alternateGraphics" % ap)
         pid = (r.get("packageId") or "").lower()
         if pid:
             hits = [os.path.relpath(f, repo) for f, t in listings if pid in t]
@@ -190,16 +236,17 @@ def selftest():
             open(p, "w").write(text)
         donor = os.path.join(td, "donors", "D1")
         w("donors/D1/About/About.xml", "<ModMetaData><packageId>x.donor</packageId></ModMetaData>")
-        w("donors/D1/Defs/a.xml", "<Defs><PawnKindDef><texPath>d/Fake/Fake</texPath></PawnKindDef></Defs>")
-        op = '<Patch><Operation Class="PatchOperationConditional"><xpath>/Defs/PawnKindDef//texPath[text()="d/Fake/Fake"]</xpath><match Class="PatchOperationReplace"><xpath>/Defs/PawnKindDef//texPath[text()="d/Fake/Fake"]</xpath><value><texPath>O/Own/Fake/Fake</texPath></value></match></Operation></Patch>'
+        w("donors/D1/Defs/a.xml", "<Defs><PawnKindDef><alternateGraphics><li><texPath>d/Fake/FakeW</texPath></li></alternateGraphics><texPath>d/Fake/Fake</texPath></PawnKindDef></Defs>")
+        op = '<Patch><Operation Class="PatchOperationConditional"><xpath>/Defs/PawnKindDef//texPath[text()="d/Fake/Fake"]</xpath><match Class="PatchOperationReplace"><xpath>/Defs/PawnKindDef//texPath[text()="d/Fake/Fake"]</xpath><value><texPath>O/Own/Fake/Fake</texPath></value></match></Operation><Operation Class="PatchOperationConditional"><xpath>/Defs/PawnKindDef//texPath[text()="d/Fake/FakeW"]</xpath><match Class="PatchOperationReplace"><xpath>/Defs/PawnKindDef//texPath[text()="d/Fake/FakeW"]</xpath><value><texPath>O/Own/Fake/Fake</texPath></value></match></Operation></Patch>'
         for f in FACINGS:
             png("src/T/Own/Textures/O/Own/Fake/Fake_%s.png" % f)
         w("src/T/Own/About/About.xml", "<ModMetaData><packageId>x.own</packageId></ModMetaData>")
         w("src/T/Own/Patches/Fold.xml", op)
         base = {"creature": "good", "override": "src/T/FakeArtOverride", "packageId": "x.fakeartoverride",
                 "owner": "src/T/Own", "donor": "x.donor", "patch": "Patches/Fold.xml",
-                "groups": [{"old": "d/Fake/Fake", "new": "O/Own/Fake/Fake"}]}
+                "groups": [{"old": "d/Fake/Fake", "new": "O/Own/Fake/Fake"}, {"old": "d/Fake/FakeW", "new": "O/Own/Fake/Fake"}]}
         cases = [(dict(base), None)]
+        cases.append((dict(base, creature="alt-gap", groups=[{"old": "d/Fake/Fake", "new": "O/Own/Fake/Fake"}]), "ALTGAP"))
         cases.append((dict(base, creature="still-there"), "GONE"))
         cases.append((dict(base, creature="no-facing", groups=[{"old": "d/Fake/Fake", "new": "O/Own/Nope/Fake"}]), "RESOLVES"))
         cases.append((dict(base, creature="no-patch", patch="Patches/Missing.xml"), "PATCHED"))
