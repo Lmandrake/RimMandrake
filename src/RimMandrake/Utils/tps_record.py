@@ -92,7 +92,8 @@ class Window:
         self.dTicks = self.frames = self.pausedFrames = self.transitions = 0
         self.capFrames = self.budgetFrames = self.gapsDropped = 0
         self.multMin, self.multMax, self.multEnd = float("inf"), float("-inf"), 0.0
-        self.pausedEnd = False
+        self.pausedEnd = self.tickReset = False
+        self.monoStart = self.monoEnd = 0.0
         self.gaps = []
 
     tps = property(lambda s: s.dTicks / s.runS if s.runS > 0 else 0.0)
@@ -123,18 +124,31 @@ def gap_kind(g):
 
 
 class FrameAccumulator:
-    """Port of JawaBenchTpsMath.FrameAccumulator (see the C# for the semantics)."""
+    """Port of JawaBenchTpsMath.FrameAccumulator (see the C# for the semantics; windows close in pre())."""
     def __init__(self):
         self.open = False
         self._w = Window()
+        self._closed = None
+
+    def take_closed(self):
+        w, self._closed = self._closed, None
+        return w
+
+    @staticmethod
+    def _new(start):
+        w = Window()
+        w.monoStart = start
+        return w
 
     def pre(self, now, paused, mult, ticks_before, explained):
         self._ticks_pre, self._paused_pre, self._mult_pre, self._last_run_dt = ticks_before, paused, mult, 0.0
         if not self.open:
-            self.open, self._need_tick0 = True, True
+            self.open = True
             self._t_prev = self._t0 = now
+            self._tick0 = self._last_after = ticks_before
+            self._tick_carry = 0
             self._paused_prev, self._mult_prev = paused, mult
-            self._w = Window()
+            self._w = self._new(now)
             return None
         dt = max(0.0, now - self._t_prev)
         ex = 0.0 if explained < 0 else min(explained, dt)
@@ -142,6 +156,11 @@ class FrameAccumulator:
         transition = paused != self._paused_prev or (not paused and not self._paused_prev and mult != self._mult_prev)
         gap = dt > GAP_SECONDS
         w = self._w
+        if ticks_before < self._last_after:
+            w.tickReset = True
+            self._tick_carry += self._last_after - self._tick0
+            self._tick0 = ticks_before
+        self._last_after = ticks_before
         w.frames += 1
         w.dReal += dt
         w.explainedS += ex
@@ -181,15 +200,25 @@ class FrameAccumulator:
             else:
                 w.gapsDropped += 1
         self._t_prev, self._paused_prev, self._mult_prev = now, paused, mult
+        if now - self._t0 >= CADENCE_SECONDS:
+            d = self._tick_carry + ticks_before - self._tick0
+            self._tick_carry = 0
+            if d < 0:
+                w.tickReset, d = True, 0
+            w.dTicks = min(d, 2 ** 31 - 1)
+            w.multEnd, w.pausedEnd, w.monoEnd = mult, paused, now
+            if w.multMin == float("inf"):
+                w.multMin = w.multMax = 0.0
+            self._closed = w
+            self._t0, self._tick0 = now, ticks_before
+            self._w = self._new(now)
         return g
 
     def post(self, mult_after, ticks_after, sim_seconds):
         if not self.open:
-            return None
-        if self._need_tick0:
-            self._need_tick0, self._tick0 = False, ticks_after
-            return None
+            return
         w = self._w
+        self._last_after = ticks_after
         w.simS += sim_seconds
         w.simMaxS = max(w.simMaxS, sim_seconds)
         if not self._paused_pre:
@@ -202,21 +231,13 @@ class FrameAccumulator:
                 w.ambigS += self._last_run_dt
                 w.transitions += 1
         self._mult_prev = mult_after
-        if self._t_prev - self._t0 < CADENCE_SECONDS:
-            return None
-        w.dTicks = max(0, ticks_after - self._tick0)
-        w.multEnd, w.pausedEnd = mult_after, self._paused_pre
-        if w.multMin == float("inf"):
-            w.multMin = w.multMax = 0.0
-        self._t0, self._tick0 = self._t_prev, ticks_after
-        self._w = Window()
-        return w
 
 
 def window_fields(w):
     """Port of JawaBenchTpsMath.WindowFields (the JSON fields, no braces)."""
     fps = w.frames / w.dReal if w.dReal > 0 else 0.0
-    parts = [('"state":"%s"' % w.state), '"dReal":' + F(w.dReal, 3), '"dTicks":%d' % w.dTicks,
+    parts = [('"state":"%s"' % w.state), '"monoStart":' + F(w.monoStart, 3), '"monoEnd":' + F(w.monoEnd, 3),
+             '"dReal":' + F(w.dReal, 3), '"dTicks":%d' % w.dTicks,
              '"ratio":' + F(w.ratio, 3), '"tps":' + F(w.tps, 2), '"tpsWall":' + F(w.tpsWall, 2),
              '"target":' + F(w.target, 2), '"expected":' + F(w.expected, 1), '"expectedLo":' + F(w.expectedLo, 1),
              '"ratioHi":' + F(w.ratioHi, 3), '"runS":' + F(w.runS, 3),
@@ -226,7 +247,8 @@ def window_fields(w):
              '"frames":%d' % w.frames, '"fps":' + F(fps, 1), '"gapMaxMs":' + F(w.gapMaxS * 1000.0, 1),
              '"gaps":%d' % (len(w.gaps) + w.gapsDropped), '"simMs":' + F(w.simS * 1000.0, 1),
              '"simMaxMs":' + F(w.simMaxS * 1000.0, 1), '"simShare":' + F(w.simShare, 3),
-             '"capFrames":%d' % w.capFrames, '"budgetFrames":%d' % w.budgetFrames]
+             '"capFrames":%d' % w.capFrames, '"budgetFrames":%d' % w.budgetFrames,
+             '"tickReset":%s' % ("true" if w.tickReset else "false")]
     return ",".join(parts)
 
 
@@ -336,6 +358,42 @@ def _epoch(utc):
             return None
 
 
+def _num(x):
+    """A finite JSON number (never a bool), else None."""
+    if isinstance(x, bool) or not isinstance(x, (int, float)):
+        return None
+    x = float(x)
+    return x if math.isfinite(x) else None
+
+
+def place(r, ep=None):
+    """Set r['_t'] (END of what the row describes) and r['_t0'] (its START), in epoch seconds.
+    A window carries explicit monotonic boundaries (monoStart/monoEnd) and the envelope's (utc, mono)
+    anchor, so it is placed by them - never by its enqueue time (MUST 3). An incident covers its gap
+    (gapS before its end) and `resumed` its silence, so both are INTERVALS selected by overlap."""
+    if ep is None:
+        ep = _epoch(r.get("utc"))
+    if ep is None:
+        ep = 0.0
+    k = r.get("kind")
+    mono, end, start = _num(r.get("mono")), _num(r.get("monoEnd")), _num(r.get("monoStart"))
+    t = ep
+    if k == "sample" and mono is not None and end is not None and end <= mono:
+        t = ep - (mono - end)
+    t0 = t
+    if k == "sample":
+        if mono is not None and start is not None and start <= mono and end is not None:
+            t0 = ep - (mono - start)
+        else:
+            t0 = t - (_num(r.get("dReal")) or 0.0)
+    elif k == "incident":
+        t0 = t - max(0.0, _num(r.get("gapS")) or 0.0)
+    elif k == "resumed":
+        t0 = t - max(0.0, _num(r.get("silentS")) or 0.0)
+    r["_t"], r["_t0"] = t, t0
+    return r
+
+
 def _valid(r):
     """A row we can place on the timeline. Legacy rows (no `kind`) are samples."""
     if not isinstance(r, dict) or _epoch(r.get("utc")) is None:
@@ -388,7 +446,7 @@ def read_record(directory=None, now=None):
                 if ep > now + FUTURE_SLACK_SECONDS:
                     out["future"] += 1
                     continue
-                r["_t"] = ep
+                place(r, ep)
                 r["_o"] = order
                 order += 1
                 out["rows"].append(r)
@@ -538,7 +596,8 @@ def sustained_from_rows(rows):
     coverage hole starts the streak again)."""
     streak, prev = [], None
     for r in _samples(rows):
-        r.setdefault("_t", _epoch(r.get("utc")) or 0)
+        if "_t" not in r:
+            place(r)
         if not contiguous(prev, r):
             streak = []
         if r.get("state") == STATE_RUN and isinstance(r.get("ratio"), (int, float)):
@@ -567,7 +626,8 @@ def summarise(rows, now=None, window_s=300, writer=None):
     """Coverage and performance over the last window_s. Pure: selftested on fixtures."""
     now = time.time() if now is None else now
     for r in rows:
-        r.setdefault("_t", _epoch(r.get("utc")) or 0)
+        if "_t" not in r:
+            place(r)
     samples = _samples(rows)
     recent = [s for s in samples if s["_t"] >= now - window_s]
     newest = max((s["_t"] for s in samples), default=None)
@@ -667,21 +727,22 @@ def timeline(rows, t0, t1):
     """Rows in [t0, t1] (a window counts if it overlaps), coverage holes, incidents, per-target ratios."""
     sel = []
     for r in rows:
-        start = r["_t"] - (float(r.get("dReal") or 0) if r.get("kind") == "sample" else 0)
-        if r["_t"] >= t0 and start <= t1:
+        if "_t0" not in r:
+            place(r)
+        if r["_t"] >= t0 and r["_t0"] <= t1:
             sel.append(r)
     holes, prev = [], None
     for r in _samples(sel):
         if prev is not None and not contiguous(prev, r):
-            holes.append({"from": prev["_t"], "to": r["_t"] - float(r.get("dReal") or 0),
+            holes.append({"from": prev["_t"], "to": r["_t0"],
                           "sameSession": (prev.get("session") == r.get("session"))})
         prev = r
     ss = _samples(sel)
     if not ss:
         holes.append({"from": t0, "to": t1, "sameSession": False})
     else:
-        if ss[0]["_t"] - float(ss[0].get("dReal") or 0) > t0 + CADENCE_SECONDS:
-            holes.insert(0, {"from": t0, "to": ss[0]["_t"] - float(ss[0].get("dReal") or 0), "sameSession": False})
+        if ss[0]["_t0"] > t0 + CADENCE_SECONDS:
+            holes.insert(0, {"from": t0, "to": ss[0]["_t0"], "sameSession": False})
         if ss[-1]["_t"] < t1 - 2 * CADENCE_SECONDS:
             holes.append({"from": ss[-1]["_t"], "to": t1, "sameSession": False})
     return {"from": t0, "to": t1, "rows": sel, "holes": holes,
@@ -716,7 +777,7 @@ def render_timeline(tl, tz):
     out = ["timeline %s .. %s (%s)" % (_local(tl["from"], tz), _local(tl["to"], tz), tz or DEFAULT_TZ)]
     holes = list(tl["holes"])
     for r in tl["rows"]:
-        while holes and holes[0]["from"] <= r["_t"] - float(r.get("dReal") or 0) and holes[0]["to"] <= r["_t"]:
+        while holes and holes[0]["from"] <= r.get("_t0", r["_t"]) and holes[0]["to"] <= r["_t"]:
             h = holes.pop(0)
             out.append("%s  -- NO COVERAGE for %ds%s --" % (_local(h["from"], tz), h["to"] - h["from"],
                                                             " (same session: sampler gap)" if h["sameSession"] else ""))

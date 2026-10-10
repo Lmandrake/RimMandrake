@@ -107,8 +107,8 @@ namespace JawaBench.BridgeTools
         {
             public double DReal, RunS, PausedS, ExplainedS, StallS, AmbigS, Expected, ExpectedLo, GapMaxS, SimS, SimMaxS;
             public int DTicks, Frames, PausedFrames, Transitions, CapFrames, BudgetFrames, GapsDropped;
-            public double MultMin, MultMax, MultEnd;
-            public bool PausedEnd;
+            public double MultMin, MultMax, MultEnd, MonoStart, MonoEnd;
+            public bool PausedEnd, TickReset;
             public List<Gap> Gaps = new List<Gap>();
 
             public double Tps => RunS > 0 ? DTicks / RunS : 0.0;            // ticks per RUNNING second
@@ -137,23 +137,37 @@ namespace JawaBench.BridgeTools
 
         /// <summary>
         /// Pure frame-trace accumulator. The sampler calls Pre() in a Harmony PREFIX on
-        /// TickManager.TickManagerUpdate (state before tick work) and Post() in the POSTFIX.
-        /// Post() returns a closed window once CadenceSeconds of intervals have accumulated.
+        /// TickManager.TickManagerUpdate (state before tick work) and Post() after the tick work.
+        /// BOUNDARIES (MUST 3): a window is [monoStart, monoEnd] between two PREFIX observations and is closed
+        /// by Pre(), BEFORE that frame's tick work. It holds every interval between its prefixes and every
+        /// tick invocation that STARTED inside it - so its tick work (simS, attribution) physically lies inside
+        /// its own real time (simShare can never exceed 1), and a long current tick lands in the same window as
+        /// the gap it causes. dTicks = ticks before the closing prefix minus ticks before the opening one.
+        /// The engine credits a frame's real time to that frame's ticks, so tick COUNTS can lag the real-time
+        /// boundary by one frame; that skew is bounded by one frame's ticks (<= 2 x mult).
         /// Everything is in seconds of a monotonic clock supplied by the caller.
         /// </summary>
         public sealed class FrameAccumulator
         {
             public bool Open { get; private set; }
-            private bool _needTick0;
             private double _tPrev, _t0;
-            private int _tick0, _ticksPre;
+            private int _tick0, _ticksPre, _lastAfter;
+            private long _tickCarry;
             private bool _pausedPrev, _pausedPre;
             private double _multPrev, _multPre, _lastRunDt;
             private Window _w = new Window();
+            private Window _closed;
 
-            public void Reset() { Open = false; _w = new Window(); }
+            public void Reset() { Open = false; _w = new Window(); _closed = null; }
 
-            /// <summary>State before tick work. Returns the gap this frame closed, if it was one.</summary>
+            /// <summary>The window Pre() closed this frame, once; null otherwise.</summary>
+            public Window TakeClosed() { var w = _closed; _closed = null; return w; }
+
+            private static Window NewWindow(double start) =>
+                new Window { MultMin = double.MaxValue, MultMax = double.MinValue, MonoStart = start };
+
+            /// <summary>State before tick work. Returns the gap this frame closed, if it was one; a window that
+            /// reached the cadence is closed here and handed out by TakeClosed().</summary>
             public Gap? Pre(double now, bool paused, double mult, int ticksBefore, double explained)
             {
                 _ticksPre = ticksBefore;
@@ -162,10 +176,10 @@ namespace JawaBench.BridgeTools
                 _lastRunDt = 0;
                 if (!Open)
                 {
-                    Open = true; _needTick0 = true;
-                    _tPrev = now; _t0 = now;
+                    Open = true;
+                    _tPrev = now; _t0 = now; _tick0 = ticksBefore; _lastAfter = ticksBefore; _tickCarry = 0;
                     _pausedPrev = paused; _multPrev = mult;
-                    _w = new Window { MultMin = double.MaxValue, MultMax = double.MinValue };
+                    _w = NewWindow(now);
                     return null;
                 }
                 double dt = now - _tPrev;
@@ -175,6 +189,15 @@ namespace JawaBench.BridgeTools
                 bool transition = paused != _pausedPrev || (!paused && !_pausedPrev && mult != _multPrev);
                 bool gap = dt > GapSeconds;
                 var w = _w;
+                if (ticksBefore < _lastAfter)
+                {
+                    // the tick counter went BACKWARDS between frames (game swapped under us, counter reset): keep
+                    // the ticks counted so far, restart the baseline here, and flag the window.
+                    w.TickReset = true;
+                    _tickCarry += (long)_lastAfter - _tick0;
+                    _tick0 = ticksBefore;
+                }
+                _lastAfter = ticksBefore;
                 w.Frames++;
                 w.DReal += dt;
                 w.ExplainedS += ex;
@@ -220,15 +243,33 @@ namespace JawaBench.BridgeTools
                 _tPrev = now;
                 _pausedPrev = paused;
                 _multPrev = mult;
+                if (now - _t0 >= CadenceSeconds)
+                {
+                    // integer boundary: ticks are an int that can go BACKWARDS (a game swapped under us); never clamp
+                    // silently - flag it and count nothing for the window.
+                    long d = _tickCarry + ((long)ticksBefore - _tick0);
+                    _tickCarry = 0;
+                    if (d < 0) { w.TickReset = true; d = 0; }
+                    w.DTicks = d > int.MaxValue ? int.MaxValue : (int)d;
+                    w.MultEnd = mult;
+                    w.PausedEnd = paused;
+                    w.MonoEnd = now;
+                    if (w.MultMin == double.MaxValue) { w.MultMin = 0; w.MultMax = 0; }
+                    _closed = w;
+                    _t0 = now;
+                    _tick0 = ticksBefore;
+                    _w = NewWindow(now);
+                }
                 return g;
             }
 
-            /// <summary>After tick work. Returns a closed window when the cadence has elapsed.</summary>
-            public Window Post(double multAfter, int ticksAfter, double simSeconds)
+            /// <summary>After tick work: this frame's invocation belongs to the window open NOW (it started after
+            /// the boundary Pre() may just have drawn).</summary>
+            public void Post(double multAfter, int ticksAfter, double simSeconds)
             {
-                if (!Open) return null;
-                if (_needTick0) { _needTick0 = false; _tick0 = ticksAfter; return null; }
+                if (!Open) return;
                 var w = _w;
+                _lastAfter = ticksAfter;
                 w.SimS += simSeconds;
                 if (simSeconds > w.SimMaxS) w.SimMaxS = simSeconds;
                 if (!_pausedPre)
@@ -239,16 +280,6 @@ namespace JawaBench.BridgeTools
                     if (multAfter != _multPre) { w.AmbigS += _lastRunDt; w.Transitions++; }
                 }
                 _multPrev = multAfter;    // the next interval starts under the post-tick multiplier
-                if (_tPrev - _t0 < CadenceSeconds) return null;
-                w.DTicks = ticksAfter - _tick0;
-                if (w.DTicks < 0) w.DTicks = 0;
-                w.MultEnd = multAfter;
-                w.PausedEnd = _pausedPre;
-                if (w.MultMin == double.MaxValue) { w.MultMin = 0; w.MultMax = 0; }
-                _t0 = _tPrev;
-                _tick0 = ticksAfter;
-                _w = new Window { MultMin = double.MaxValue, MultMax = double.MinValue };
-                return w;
             }
         }
 
@@ -322,6 +353,8 @@ namespace JawaBench.BridgeTools
         {
             var sb = new StringBuilder(400);
             sb.Append("\"state\":\"").Append(w.State).Append('"')
+              .Append(",\"monoStart\":").Append(F(w.MonoStart, 3))
+              .Append(",\"monoEnd\":").Append(F(w.MonoEnd, 3))
               .Append(",\"dReal\":").Append(F(w.DReal, 3))
               .Append(",\"dTicks\":").Append(w.DTicks)
               .Append(",\"ratio\":").Append(F(w.Ratio, 3))
@@ -349,7 +382,8 @@ namespace JawaBench.BridgeTools
               .Append(",\"simMaxMs\":").Append(F(w.SimMaxS * 1000.0, 1))
               .Append(",\"simShare\":").Append(F(w.SimShare, 3))
               .Append(",\"capFrames\":").Append(w.CapFrames)
-              .Append(",\"budgetFrames\":").Append(w.BudgetFrames);
+              .Append(",\"budgetFrames\":").Append(w.BudgetFrames)
+              .Append(",\"tickReset\":").Append(w.TickReset ? "true" : "false");
             return sb.ToString();
         }
 

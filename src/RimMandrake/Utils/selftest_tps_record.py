@@ -83,6 +83,11 @@ def traces():
     s = Sim(); s.run(1.0, mult=1); s.frame(90.0, False, 3); s.run(5.2, mult=3); out["stallflip"] = s.rows
     # ... and across a pause -> run change
     s = Sim(); s.run(1.0, paused=True); s.frame(90.0, False, 1); s.run(5.2); out["stallunpause"] = s.rows
+    # MUST 3: a 40 s CURRENT invocation (DoSingleTick) at the cadence boundary: the next prefix is 40 s later
+    s = Sim(); s.run(5.0); s.frame(1 / 60, False, 1, sim=40.0); s.frame(40.0 + 1 / 60, False, 1); s.run(5.2)
+    out["longtick"] = s.rows
+    # MUST 3/34: the tick counter goes BACKWARDS (a new game under the same accumulator)
+    s = Sim(); s.run(3.0); s.ticks = 10; s.run(3.0); s.run(0.2); out["tickreset"] = s.rows
     return out
 
 
@@ -93,9 +98,10 @@ def replay_py(rows):
         g = acc.pre(f[0], bool(f[1]), f[2], f[3], f[4])
         if g is not None:
             lines.append('G "type":"%s",' % T.gap_kind(g) + T.gap_fields(g))
-        w = acc.post(f[5], f[6], f[7])
+        w = acc.take_closed()
         if w is not None:
             lines.append("W " + T.window_fields(w))
+        acc.post(f[5], f[6], f[7])
     return lines
 
 
@@ -133,6 +139,29 @@ def trace_checks(tr):
           "a freeze while paused is still a stall incident: %r %r" % (g, w))
     w = W("slow")
     check(w and all(x["state"] == "run" and abs(x["ratio"] - 0.5) < 0.05 for x in w), "half-speed ticking -> 0.5: %r" % w)
+    w = W("longtick")
+    check(w and all(x["simShare"] <= 1.0 for x in w),
+          "MUST 3: tick work is placed in the window whose real time contains it (simShare <= 1): %r"
+          % [(x["state"], x["dReal"], x["simMs"], x["simShare"]) for x in w])
+    check(any(x["dReal"] > 40 and x["simMs"] >= 40000 for x in w),
+          "MUST 3: the 40 s tick and the 40 s gap it caused are in the SAME window: %r"
+          % [(x["state"], x["dReal"], x["simMs"]) for x in w])
+    for k in ("healthy1", "longtick", "autosave"):
+        ws = W(k)
+        check(all("monoStart" in x and "monoEnd" in x and abs(x["monoEnd"] - x["monoStart"] - x["dReal"]) < 0.002
+                  for x in ws), "MUST 3: every window carries its explicit [monoStart, monoEnd] (%s): %r" % (k, ws[:1]))
+        check(all(abs(b.get("monoStart", -9) - a.get("monoEnd", 9)) < 1e-6 for a, b in zip(ws, ws[1:])),
+              "MUST 3: consecutive windows abut exactly (%s)" % k)
+    ws, fr = W("healthy1"), tr["healthy1"]
+    end = [f for f in fr if ws and abs(f[0] - ws[-1].get("monoEnd", -1)) < 0.0006]
+    check(ws and abs(ws[0].get("monoStart", -1) - fr[0][0]) < 0.0006 and end
+          and sum(x["dTicks"] for x in ws) == end[0][3] - fr[0][3],
+          "MUST 3/6: windows start at the first observed prefix and count every tick from there to the last "
+          "boundary, first frame included: %r" % [(x.get("monoStart"), x["dTicks"]) for x in ws])
+    w = W("tickreset")
+    check(any(x.get("tickReset") for x in w) and all(x["dTicks"] >= 0 for x in w),
+          "MUST 3: a tick counter that goes backwards is flagged tickReset, never a silent clamp: %r"
+          % [(x["dTicks"], x.get("tickReset")) for x in w])
     w = W("stallflip")
     check(w and w[0]["state"] == "stall" and w[0]["runS"] > 90 and w[0]["ratio"] is not None and w[0]["ratio"] < 0.05
           and w[0].get("expectedLo") is not None and w[0]["expectedLo"] <= w[0]["expected"],
@@ -295,6 +324,21 @@ def reader_checks():
         again = {x["session"]: x for x in T.observe(rec["rows"], T.read_heartbeats(d), 22)}
         check(not again["ccc"]["new"] and any(r.get("kind") == "observer" for r in rec["rows"]),
               "an observer finding is written once and read back into the record")
+
+    # MUST 3: placement uses the window's explicit boundaries, not the enqueue time
+    with tempfile.TemporaryDirectory() as d:
+        p = os.path.join(d, T.segment_name(t15 - 600, "cccc", 12, 0))
+        late = dict(sample(t15, 5, ratio=0.2), mono=1000.0, monoStart=990.0, monoEnd=995.0)   # enqueued 5 s late
+        inc = {"kind": "incident", "utc": iso(t15 + 200), "session": "cccc", "seq": 6, "type": "stall", "gapS": 300.0}
+        with open(p, "w") as fh:
+            fh.write(json.dumps(late) + "\n" + json.dumps(inc) + "\n")
+        rec = T.read_record(d, now=t15 + 400)
+        r0 = [r for r in rec["rows"] if r.get("kind") == "sample"]
+        check(r0 and abs(r0[0]["_t"] - (t15 - 5)) < 0.01 and abs(r0[0].get("_t0", 0) - (t15 - 10)) < 0.01,
+              "MUST 3: a window is placed at [utc-(mono-monoStart), utc-(mono-monoEnd)]: %r"
+              % [(r.get("_t0"), r["_t"]) for r in r0])
+        tl = T.timeline(rec["rows"], t15 + 20, t15 + 40)    # inside the 300 s stall, away from its endpoint
+        check(tl["incidents"] == 1, "MUST 3/A30: an incident is selected by OVERLAP with its gap interval: %r" % tl["incidents"])
 
     # sustained needs CONTIGUOUS fresh windows
     gap_rows = [sample(t15 + 5 * i, i, ratio=0.3) for i in range(3)] + \

@@ -421,6 +421,10 @@ namespace JawaBench.BridgeTools
                 _explainedAtPre = _explained;
                 var g = Acc.Pre(now, paused, mult, _ticksPre, ex);
                 if (g.HasValue) Incident(g.Value, __instance, paused, mult);
+                // MUST 3: the window closes HERE, before this frame's tick work, so its attribution totals hold
+                // exactly the invocations that started inside it.
+                var closed = Acc.TakeClosed();
+                if (closed != null) Emit(closed, __instance);
                 _gcAtPre = GC.CollectionCount(0);
                 WD.LastPaused = paused;
                 WD.LastMult = M.F(mult, 2);
@@ -442,8 +446,7 @@ namespace JawaBench.BridgeTools
                 _lastSim = sim;
                 int ticks = __instance.TicksGame;
                 WD.LastTicksGame = ticks;
-                var w = Acc.Post(__instance.TickRateMultiplier, ticks, sim);
-                if (w != null) Emit(w, __instance);
+                Acc.Post(__instance.TickRateMultiplier, ticks, sim);
             }
             catch (Exception e) { Fail("tick-postfix", e); }
         }

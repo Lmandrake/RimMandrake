@@ -56,8 +56,9 @@ namespace JawaBench.BridgeTools
                     case "F":
                         var g = acc.Pre(P(a[1]), a[2] == "1", P(a[3]), int.Parse(a[4]), P(a[5]));
                         if (g.HasValue) Console.WriteLine("G \"type\":\"" + g.Value.Kind + "\"," + M.GapFields(g.Value));
-                        var w = acc.Post(P(a[6]), int.Parse(a[7]), P(a[8]));
+                        var w = acc.TakeClosed();
                         if (w != null) Console.WriteLine("W " + M.WindowFields(w));
+                        acc.Post(P(a[6]), int.Parse(a[7]), P(a[8]));
                         break;
                     case "M":
                         Console.WriteLine("M " + M.F(M.Median(a.Skip(1).Select(P).ToList()), 3));
