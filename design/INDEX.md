@@ -81,7 +81,6 @@ This is an index, not doctrine — the tier rule and the promotion test live in
      third layer of the research-normalization stack |
 | `salvation_engine_build_spec.md` | The Salvation Engine — build spec | ? draft — fable handoff sprint 2026-08-30, item fable_handoff_sprint_1 |
 | `salvation_engine_review.md` | The Nine, Reviewed — BENCH critical assessment of the pantheon + matrix |  |
-| `spire_plot_discussion_prep.md` | The Spire — plot-discussion prep for the campaign-function sitting |  |
 | `sw_ownership_survey.md` | Star Wars mod ownership survey — measured facts only | — |
 | `text_lore_load_report.md` | The Text Lore Load — complete inventory and estimate (2026-09-11) | — |
 | `tibanna_embargo_plot_spec.md` | The tibanna embargo — the Empire's quietest weapon, and the clock it winds | — |
