@@ -4,13 +4,22 @@
   Relief arrives sideways from fires beyond the horizon: the sun dims, every cast shadow lengthens, the heat
   bed fades. Read as relief, not threat. ALL NUMBERS PROVISIONAL (first-guess, tuned live later):
   shadowLengthFactor 1.6, soundVolumeFactor 0.5, glowMultiplier 0.6, duration 2~4 days, baseChance 0.5,
-  earliestDay 10, minRefireDays 12. Ash-pulse + sand-lock acts are NOT built (ash-pulse growth virtual UNMEASURED).
+  earliestDay 10, minRefireDays 12.
   Mirraks stay short: their false shade never reads the grid's cast length.
+
+  ASH ACT (starts when the haze ends, RM_GameCondition_SmokeHaze.End): "the ash settles: an ashfall pulse fertilises
+  ... and simultaneously packs the sand hard ... until the wind unpacks it". ALL NUMBERS PROVISIONAL:
+  ash pulse 3~5 days, growthRateFactor 1.5, plantDensityFactor 1.3; sand-lock 4~7 days (outlasts the pulse).
+  MEASURED via RimSage 2026-10-10: GameCondition has no plant-growth virtual (Plant.GrowthRate hard-codes
+  NoxiousHaze/Drought; Volcanic Winter has no plant term), so growth is a postfix on Plant.get_GrowthRate
+  (CreatureBehaviors RM_AshPulse.cs) and density is the real PlantDensityFactor virtual.
+  The sand-lock makes Sand/SoftSand/RM_DeepSand stop counting as swim/bury ground: every sand swimmer breaches
+  with its own wake and stagger (a readable sign), nothing submerges or lies buried until it ends.
 -->
 <Defs>
   <GameConditionDef>
     <defName>RM_SmokeHazeCondition</defName>
-    <conditionClass>GameCondition</conditionClass>
+    <conditionClass>RimMandrake.LongShade.RM_GameCondition_SmokeHaze</conditionClass>
     <label>smoke haze</label>
     <description>Smoke from fires beyond the horizon thins the sun. Every shadow runs long, the open ground cools, and the sand goes quiet.</description>
     <startMessage>A brown smoke front has rolled in from beyond the horizon. The sun dims and the shadows stretch.</startMessage>
@@ -27,6 +36,43 @@
       <li Class="RimMandrake.EnvironmentalHazards.RM_GlowMultiplierOverrideExtension">
         <glowMultiplier>0.6</glowMultiplier>
       </li>
+      <li Class="RimMandrake.LongShade.RM_SmokeCalendarExtension">
+        <ashPulseCondition>RM_AshPulseCondition</ashPulseCondition>
+        <ashPulseDays>3~5</ashPulseDays>
+        <sandLockCondition>RM_SandLockCondition</sandLockCondition>
+        <sandLockDays>4~7</sandLockDays>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+  <GameConditionDef>
+    <defName>RM_AshPulseCondition</defName>
+    <conditionClass>RimMandrake.CreatureBehaviors.RM_GameCondition_GrowthPulse</conditionClass>
+    <label>ash pulse</label>
+    <description>The smoke's ash has settled into the ground. Plants grow faster and wild growth thickens on ground that is otherwise meagre.</description>
+    <endMessage>The ash has been taken up; the ground is meagre again.</endMessage>
+    <letterText>The smoke front has cleared and its ash has settled. For a few days the ground is fed: plants grow faster and wild growth thickens. The same ash has packed the sand hard. Nothing can swim or burrow through it, and anything that was under the sand has been forced up, until the wind unpacks it.</letterText>
+    <canBePermanent>false</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_GrowthPulseExtension">
+        <growthRateFactor>1.5</growthRateFactor>
+        <plantDensityFactor>1.3</plantDensityFactor>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+  <GameConditionDef>
+    <defName>RM_SandLockCondition</defName>
+    <conditionClass>GameCondition</conditionClass>
+    <label>sand-lock</label>
+    <description>Settled ash has packed the sand hard. Nothing can swim or burrow through it, and buried animals have been forced to the surface.</description>
+    <endMessage>The wind has unpacked the sand. Things can burrow again.</endMessage>
+    <letterText>The smoke front has cleared and its ash has packed the sand hard. Nothing can swim or burrow through it, and anything that was under the sand has been forced up, until the wind unpacks it.</letterText>
+    <canBePermanent>false</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_SandLockExtension" />
     </modExtensions>
   </GameConditionDef>
 

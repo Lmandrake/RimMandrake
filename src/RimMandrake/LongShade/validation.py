@@ -121,7 +121,8 @@ def static_checks():
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "LongShade.md")):
         bad.append("walk missing")
     for fn in (crawler_road_problems, sun_graves_problems, shipfall_problems, mirrak_problems, vorrel_problems,
-               dewfringe_problems, roster_problems, midden_problems, extras_problems, haze_problems):
+               dewfringe_problems, roster_problems, midden_problems, extras_problems, haze_problems,
+               ash_act_problems):
         bad.extend(fn())
     return bad
 
@@ -404,6 +405,87 @@ def mirrak_problems():
         bad.append("mirrak strikeRangeCells is not > 0")
     if "RM_Mirrak" not in [e.tag for e in _def(_xml("BiomeDefs", "RM_LongShade.xml"), "BiomeDef", BIOME).find("wildAnimals")]:
         bad.append("mirrak is not in the biome roster")
+    return bad
+
+
+def ash_act_problems(cond_root=None, sources=None):
+    """LONGSHADE_BEDAZZLE_MECHANICS_1 smoke calendar (ash act): the haze chains into an ash-pulse growth surge and a
+    sand-lock; the growth rides a Plant.get_GrowthRate postfix (no GameCondition growth virtual exists, MEASURED via
+    RimSage 2026-10-10) and the lock rides the one sand-swim terrain test. `sources` overrides C# text by file name."""
+    bad = []
+    src = sources or {}
+    root = cond_root if cond_root is not None else _xml("IncidentDefs", "RM_SmokeHaze.xml")
+    haze = _def(root, "GameConditionDef", "RM_SmokeHazeCondition")
+    ash = _def(root, "GameConditionDef", "RM_AshPulseCondition")
+    lock = _def(root, "GameConditionDef", "RM_SandLockCondition")
+    if haze is None or ash is None or lock is None:
+        return ["RM_SmokeHazeCondition, RM_AshPulseCondition or RM_SandLockCondition missing"]
+    if not (haze.findtext("conditionClass") or "").endswith("RM_GameCondition_SmokeHaze"):
+        bad.append("haze condition class no longer chains the ash act (RM_GameCondition_SmokeHaze)")
+    cal = [e for e in haze.iter("li") if e.get("Class", "").endswith("RM_SmokeCalendarExtension")]
+    if not cal:
+        bad.append("haze lost RM_SmokeCalendarExtension (the ash act never starts)")
+    else:
+        if cal[0].findtext("ashPulseCondition") != "RM_AshPulseCondition":
+            bad.append("smoke calendar does not start RM_AshPulseCondition")
+        if cal[0].findtext("sandLockCondition") != "RM_SandLockCondition":
+            bad.append("smoke calendar does not start RM_SandLockCondition")
+        def rng(t):
+            lo, _, hi = (t or "").partition("~")
+            return float(lo), float(hi or lo)
+        ap, sl = rng(cal[0].findtext("ashPulseDays")), rng(cal[0].findtext("sandLockDays"))
+        if not (0 < ap[0] <= ap[1] <= 30 and 0 < sl[0] <= sl[1] <= 30):
+            bad.append("ash act durations outside 0..30 days")
+    if not (ash.findtext("conditionClass") or "").endswith("RM_GameCondition_GrowthPulse"):
+        bad.append("ash pulse condition class does not carry PlantDensityFactor (RM_GameCondition_GrowthPulse)")
+    gx = [e for e in ash.iter("li") if e.get("Class", "").endswith("RM_GrowthPulseExtension")]
+    if not gx:
+        bad.append("ash pulse lost RM_GrowthPulseExtension (no growth surge)")
+    else:
+        g = float(gx[0].findtext("growthRateFactor") or 1)
+        dn = float(gx[0].findtext("plantDensityFactor") or 1)
+        if not 1.0 < g <= 4.0:
+            bad.append("ash pulse growthRateFactor %s is not a surge within 1..4" % g)
+        if not 1.0 <= dn <= 4.0:
+            bad.append("ash pulse plantDensityFactor %s outside 1..4" % dn)
+    if not any(e.get("Class", "").endswith("RM_SandLockExtension") for e in lock.iter("li")):
+        bad.append("sand-lock condition lost RM_SandLockExtension (sand never locks)")
+    for d in (ash, lock):
+        if not (d.findtext("letterText") and d.findtext("endMessage")):
+            bad.append("%s has no readable letter/end message" % d.findtext("defName"))
+    xmltext = open(os.path.join(HERE, "Defs", "IncidentDefs", "RM_SmokeHaze.xml"), encoding="utf-8").read()
+    if "ASH ACT" not in xmltext or "PROVISIONAL" not in xmltext.split("ASH ACT", 1)[1][:400]:
+        bad.append("ash act numbers lost their PROVISIONAL marker")
+    cal_cs = src.get("RM_SmokeCalendar.cs") or _cs("RM_SmokeCalendar.cs")
+    if "class RM_GameCondition_SmokeHaze" not in cal_cs or "StartAshAct" not in cal_cs.split("class RM_GameCondition_SmokeHaze", 1)[1]:
+        bad.append("haze condition End() no longer starts the ash act")
+    for flag in ("ashPulseEnabled", "sandLockEnabled", "OnLongShade"):
+        if flag not in cal_cs:
+            bad.append("ash act is not gated on %s" % flag)
+    mod = _cs("RM_LongShadeMod.cs")
+    for flag in ("ashPulseEnabled", "sandLockEnabled"):
+        if mod.count(flag) < 3:
+            bad.append("LongShade setting %s not declared, saved and shown" % flag)
+    cb = os.path.join(HERE, "..", "CreatureBehaviors", "Source")
+    rd = lambda n: src.get(n) or open(os.path.join(cb, n), encoding="utf-8").read()
+    ap_cs = rd("RM_AshPulse.cs")
+    if "PropertyGetter(typeof(Plant), nameof(Plant.GrowthRate))" not in ap_cs:
+        bad.append("growth surge no longer patches Plant.get_GrowthRate")
+    if "override float PlantDensityFactor" not in ap_cs:
+        bad.append("RM_GameCondition_GrowthPulse no longer overrides PlantDensityFactor")
+    if "conditionGrowthEffectsEnabled" not in ap_cs or "sandLockEffectsEnabled" not in ap_cs:
+        bad.append("ash act effects not gated on their CreatureBehaviors settings")
+    swim = rd("RM_CompSandSwim.cs")
+    body = swim.split("public static bool IsSwimTerrain", 1)[-1].split("private static void EnsureDefaults", 1)[0]
+    if "RM_ConditionGround.SandLocked" not in body:
+        bad.append("sand-swim terrain test no longer consults the sand-lock (swimmers ignore it)")
+    if "RM_ConditionGround.SandLocked" not in rd("RM_SandBuriedGraphic.cs"):
+        bad.append("buried graphic with its own terrains ignores the sand-lock")
+    proj = rd("RM_CreatureBehaviors.csproj")
+    if 'Compile Include="RM_AshPulse.cs"' not in proj:
+        bad.append("RM_AshPulse.cs not in the CreatureBehaviors csproj (compiles into nothing)")
+    if 'Compile Include="RM_SmokeCalendar.cs"' not in _cs("RM_LongShade.csproj"):
+        bad.append("RM_SmokeCalendar.cs not in the LongShade csproj (compiles into nothing)")
     return bad
 
 

@@ -422,6 +422,10 @@ namespace RimMandrake.CreatureBehaviors
             {
                 return false;
             }
+            if (RM_ConditionGround.SandLocked(c, map))
+            {
+                return false; // LONGSHADE_BEDAZZLE_MECHANICS_1 sand-lock: ash has packed this sand hard
+            }
             if (ext?.swimTerrains != null && ext.swimTerrains.Count > 0)
             {
                 return ext.swimTerrains.Contains(t);

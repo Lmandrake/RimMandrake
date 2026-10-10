@@ -53,3 +53,21 @@ Owner rulings 2026-10-03: vanilla audio ships as final; first-guess numbers ship
   tick via vanilla `CompAmbientSound` + `RSW_WreckMetalTick` (vanilla Tick_Tiny grain folder; wrecks now
   tickerType Normal). First script: `src/RimStarWars/Sarlacc/selftest_longshade_audio.py`.
 - Still owed: the quicktests (game-up) and the mirrak haze (smoke calendar, unbuilt).
+
+## smoke calendar (design `long_shade_bedazzle_2026-09-27.md` §4.2) — all three acts built offline 2026-10-10
+
+- **Haze act** (`RM_SmokeHazeFront` → `RM_SmokeHazeCondition`): shadows ×1.6, heat bed ×0.5, glow ×0.6, 2~4 days.
+- **Ash act** (starts when the haze ends, `RM_GameCondition_SmokeHaze.End` → `RM_SmokeCalendarExtension`): one
+  "Ash settles" letter, then `RM_AshPulseCondition` (growth ×1.5 via a `Plant.get_GrowthRate` postfix with an
+  inspect line; wild density ×1.3 via the real `PlantDensityFactor` virtual; 3~5 days) and `RM_SandLockCondition`
+  (Sand/SoftSand/RM_DeepSand stop counting as swim/bury ground in `RM_SandSwimUtility.IsSwimTerrain` and the
+  buried-graphic patch, so every sand swimmer breaches with its own wake and stagger; 4~7 days).
+- **MEASURED (RimSage, 2026-10-10):** no `GameCondition` virtual carries plant growth rate — `Plant.GrowthRate`
+  hard-codes NoxiousHaze/Drought by DefOf, and Volcanic Winter has no plant term (sky, -7 °C, animal density only).
+- **PROVISIONAL numbers** (def comment says so): growthRateFactor 1.5, plantDensityFactor 1.3, ash pulse 3~5 days, sand-lock 4~7 days.
+- Toggles: LongShade `ashPulseEnabled` / `sandLockEnabled` (start the acts); CreatureBehaviors
+  `conditionGrowthEffectsEnabled` / `sandLockEffectsEnabled` (the effects).
+- Offline proof: `LongShade/validation.py ash_act_problems` + `selftest_longshade_ashact.py` (6 planted defects).
+- **Not covered by the lock:** the RSW sarlacc swimmer (`CompSarlaccSwimmer`, its own movement) — see owner question.
+- **Owed live:** a quicktest that forces the haze to end and reads plant GrowthRate ×1.5 and a submerged swimmer
+  breaching on sand while `RM_SandLockCondition` is active.

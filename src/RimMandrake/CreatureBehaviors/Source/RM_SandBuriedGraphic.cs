@@ -68,7 +68,8 @@ namespace RimMandrake.CreatureBehaviors
             if (ext.buryTerrains != null && ext.buryTerrains.Count > 0)
             {
                 TerrainDef t = __instance.Position.GetTerrain(__instance.Map);
-                onTerrain = t != null && ext.buryTerrains.Contains(t);
+                onTerrain = t != null && ext.buryTerrains.Contains(t)
+                    && !RM_ConditionGround.SandLocked(__instance.Position, __instance.Map);
             }
             else
             {

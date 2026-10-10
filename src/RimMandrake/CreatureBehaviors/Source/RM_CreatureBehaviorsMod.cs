@@ -351,6 +351,8 @@ namespace RimMandrake.CreatureBehaviors
         public static bool soulchimeTameSootheEnabled = true;
         public static bool shadeGridEnabled = true;
         public static bool smokeHazeEffectsEnabled = true;
+        public static bool conditionGrowthEffectsEnabled = true;
+        public static bool sandLockEffectsEnabled = true;
         public static bool shadeSeekingWanderEnabled = true;
         public static bool heatDrivenBurstEnabled = true;
         public static float heatDrivenBurstDecayMultiplier = 1f;
@@ -487,6 +489,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref soulchimeTameSootheEnabled, "soulchimeTameSootheEnabled", true);
             Scribe_Values.Look(ref shadeGridEnabled, "shadeGridEnabled", true);
             Scribe_Values.Look(ref smokeHazeEffectsEnabled, "smokeHazeEffectsEnabled", true);
+            Scribe_Values.Look(ref conditionGrowthEffectsEnabled, "conditionGrowthEffectsEnabled", true);
+            Scribe_Values.Look(ref sandLockEffectsEnabled, "sandLockEffectsEnabled", true);
             Scribe_Values.Look(ref shadeSeekingWanderEnabled, "shadeSeekingWanderEnabled", true);
             Scribe_Values.Look(ref heatDrivenBurstEnabled, "heatDrivenBurstEnabled", true);
             Scribe_Values.Look(ref heatDrivenBurstDecayMultiplier, "heatDrivenBurstDecayMultiplier", 1f);
@@ -692,6 +696,12 @@ namespace RimMandrake.CreatureBehaviors
             list.CheckboxLabeled("Smoke-haze shade effects", ref smokeHazeEffectsEnabled,
                 "A smoke-haze weather condition (Long Shade) stops lengthening cast shadows and muffling "
               + "the heat bed; the condition itself still runs.");
+            list.CheckboxLabeled("Ash-pulse growth surge", ref conditionGrowthEffectsEnabled,
+                "An ash-pulse condition (Long Shade smoke calendar) stops speeding plant growth and "
+              + "thickening wild growth; the condition itself still runs.");
+            list.CheckboxLabeled("Sand-lock", ref sandLockEffectsEnabled,
+                "A sand-lock condition (Long Shade smoke calendar) stops packing the sand hard: sand "
+              + "swimmers keep swimming and buried animals stay buried; the condition itself still runs.");
             list.CheckboxLabeled("Shade-seeking wander", ref shadeSeekingWanderEnabled,
                 "A shade-wander-tagged animal stops steering its idle wandering toward shaded cells.");
             list.CheckboxLabeled("Heat-driven burst/retreat hediff", ref heatDrivenBurstEnabled,
