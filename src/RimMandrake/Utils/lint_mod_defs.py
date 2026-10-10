@@ -114,6 +114,11 @@ def run(mod_name, argv, known_missing_art=(), require_xml=True, require_settings
                 referenced.add(tx)
             if el.tag == "li" and re.fullmatch(r"RimMandrake\.[A-Za-z0-9_.]+", tx):   # a class named as list text (placeWorkers, comps ...)
                 resolve(tx, f"{rel} <li>")
+            if el.tag == "graphicClass" and tx.split(".")[-1].startswith("Graphic_Linked") and not is_patch:
+                # LINKED_GRAPHIC_ICON_NRE_1: a Graphic_Linked* named as graphicClass is built with NO subGraphic (only
+                # linkType wraps one), so BuildableDef.ResolveIcon NREs in Graphic_Linked.get_MatSingle and aborts every
+                # later post-load action. Use graphicClass Graphic_Single + <linkType>.
+                E("linked-graphicclass", f"{rel}: graphicClass {tx} is built without a subGraphic (NRE at ResolveIcon); use Graphic_Single with <linkType>")
             if el.tag in ("texPath",) and tx:
                 tp = os.path.join(mod, "Textures", *tx.split("/"))
                 folder = os.path.dirname(tp)
