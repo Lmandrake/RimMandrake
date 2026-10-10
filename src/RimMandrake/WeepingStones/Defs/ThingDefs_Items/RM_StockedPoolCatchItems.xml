@@ -97,7 +97,7 @@
 
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_VizhikCatch</defName>
-    <label>vizhik</label>
+    <label>fan eel</label>
     <description>Picked off wet stone after an escape, gloved — not caught in the pool, caught traveling.</description>
     <graphicData>
       <texPath>Things/Item/Fish/RM_VizhikCatch</texPath>

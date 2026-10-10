@@ -141,7 +141,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Skarrin</defName>
     <label>skarrin</label>
-    <description>A forearm-long pool fish that spends as much time above the water as in it. When the pool is fed a stocked pool boils with them, silver arcs snapping at the falling dew-smoke. It jumps, and it bites what it lands on — clears a pen wall from standing water; a handler leaning over the pool takes a face-strike.</description>
+    <description>A forearm-long, knife-slender silver eel that spends as much time above the water as in it. Its round mouth is a cruel suction cup ringed with rasps, made for drawing in water, blood and soft flesh alike. A row of thin, sharp fins runs the length of its body, and it can flex them out stiff into cutting lines; a skarrin that twists in a handler's grip leaves a ladder of fine, painful cuts. When the pool is fed, a stocked pool boils with them, silver arcs snapping at the falling dew-smoke, and a handler leaning over the water risks a face-strike. Its flesh is extremely delicious, which is the only reason anyone keeps them.</description>
     <statBases>
       <MoveSpeed>3.2</MoveSpeed>
       <MarketValue>22</MarketValue>
@@ -375,8 +375,8 @@
   <!-- ══════════════════════ 2c. RM_Vizhik — the walker (pot-eel) ══════════════════════ -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Vizhik</defName>
-    <label>vizhik</label>
-    <description>A wrist-thin eel, comb-gills fanned along the whole neck like a ruff, cold, quick, and never where you left it. When a pen is overfull, a vizhik pours itself out of the pen and crosses open rock on its gill-comb — into the next pool, the cistern, the water barrel, the kitchen stock-pot. Its bite is small and goes septic more often than it should.</description>
+    <label>fan eel</label>
+    <description>A wrist-thin eel with comb-gills fanned along its whole neck in a translucent ruff that opens and closes with every breath; the fan gives it its name. It is cold, quick, and never where you left it. When a pen is overfull, a fan eel pours itself over the rim and crosses open rock on its gill-fan, kept wet by the dew alone, into the next pool, the cistern, the water barrel or the kitchen stock-pot. Its bite is small, but its teeth carry pool-muck, and the wound goes septic more often than it should. People who keep pools learn to count them at dusk.</description>
     <statBases>
       <MoveSpeed>2.8</MoveSpeed>
       <MarketValue>16</MarketValue>
@@ -448,7 +448,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Vizhik</defName>
-    <label>vizhik</label>
+    <label>fan eel</label>
     <race>RM_Vizhik</race>
     <combatPower>10</combatPower>
     <ecoSystemWeight>0.2</ecoSystemWeight>
@@ -581,7 +581,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Loomu</defName>
     <label>loomu</label>
-    <description>A cat-sized, boneless, dove-grey thing that hangs in the warm seep-throat water and repeats what it hears at the bank: the feed whistle, the wind through the vanes, a child's laugh, its keeper's name for it. Mild in the flesh, terrible in the ear — a loomu pen at night runs through its whole collection. Handlers stop teaching them words on purpose and cannot stop teaching them by accident.</description>
+    <description>A cat-sized, boneless, dove-grey thing that sits half-sunk in the warm seep-throat water, its slick skin always wet and faintly ridged like the inside of a shell. It has no song of its own. It repeats what it hears at the bank: the feed whistle, the wind through the vanes, a child's laugh, its keeper's name for it. Every sound comes back subtly wrong, pitched through water and a throat never built for air. Mild in the flesh, terrible in the ear: a loomu pen at night runs through its whole collection, layered and out of time, until the pools sound crowded with people who are not there. Handlers stop teaching them words on purpose and cannot stop teaching them by accident.</description>
     <statBases>
       <MoveSpeed>1.8</MoveSpeed>
       <MarketValue>45</MarketValue>
@@ -688,7 +688,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Huldu</defName>
     <label>huldu</label>
-    <description>A forearm-length velvet-skinned swimmer, dorsal comb folded flat like wet fur; clings when handled. Warm to the touch — not seep-warm, body-warm, with a pulse you can feel through the skin. Lifted from the water it does not thrash: it grips the handler's forearm and presses close, and it shivers. None whatsoever, which is its own kind of problem: the huldu is the row that makes the handler the uneasy party.</description>
+    <description>A long, sleek water-hunter built like an otter that took a strange turn: two short gripping arms set high on the chest, with clever hands that can pin a struggling fish or hold fast to a pen rail, and a broad horizontal fluke of a tail like a small whale's. It hunts underwater, driving prey against the rock with sweeps of that tail. When it must, it drags itself out onto land on its arms and crosses open stone in startling bounding hops off the fluke. Its coat is dense, oiled and luxurious, shedding water in sheets and drying to a deep, shifting sheen; huldu fur is beautiful enough that traders ask for it by name.</description>
     <statBases>
       <MoveSpeed>1.6</MoveSpeed>
       <MarketValue>50</MarketValue>
@@ -794,7 +794,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Ivvol</defName>
     <label>ivvol</label>
-    <description>A flat bottom-dweller, its comb a raised dorsal ridge set with a row of eyes — the ridge surfaces, the eyes count. A doormat-sized floor-thing that knows the feed schedule better than the apprentice does. Passive — but it learns. Pens with an ivvol have fewer vizhik escapes and no vhorrin has ever grown in one, and no farmer can tell you the mechanism. When finally netted it does not struggle; it goes still, and the whole ridge of eyes turns to the farmer, and it watches.</description>
+    <description>A flat bottom-dweller, its comb a raised dorsal ridge set with a row of eyes — the ridge surfaces, the eyes count. A doormat-sized floor-thing that knows the feed schedule better than the apprentice does. Passive — but it learns. Pens with an ivvol have fewer fan eel escapes and no vhorrin has ever grown in one, and no farmer can tell you the mechanism. When finally netted it does not struggle; it goes still, and the whole ridge of eyes turns to the farmer, and it watches.</description>
     <statBases>
       <MoveSpeed>1.0</MoveSpeed>
       <MarketValue>70</MarketValue>

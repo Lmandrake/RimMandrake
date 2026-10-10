@@ -136,8 +136,8 @@
 
   <ThingDef ParentName="OrganicProductBase">
     <defName>RM_VizhikMeat</defName>
-    <label>vizhik meat</label>
-    <description>Raw meat from a vizhik. Excellent eating, and the pens keep breeding them because they keep arriving on their own. The mild doubt is where it's been — nobody eats a vizhik pulled from the cistern without thinking about the cistern.</description>
+    <label>fan eel meat</label>
+    <description>Raw meat from a fan eel. Excellent eating, and the pens keep breeding them because they keep arriving on their own. The mild doubt is where it's been — nobody eats a fan eel pulled from the cistern without thinking about the cistern.</description>
     <graphicData>
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
