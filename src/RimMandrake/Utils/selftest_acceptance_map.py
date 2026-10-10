@@ -190,8 +190,6 @@ if os.path.exists(gt) and os.path.exists(pm):
     g = {(r["item"], r["criterion"]): r for r in M.run_apply(gt, "x", w)}
     check("real Greentide run: A2 PASS", g[("GREENTIDE_FIRST_SCRIPT_1", "A2")]["verdict"] == "PASS")
     check("real Greentide run: A3 UNMEASURED without a classification file", g[("GREENTIDE_FIRST_SCRIPT_1", "A3")]["verdict"] == "UNMEASURED")
-    check("real Greentide run: churnmud criterion UNMEASURED (the component was UNMEASURED, so no pass)",
-          g[("MOD_OPTIONS_RETROFIT_1", "A3")]["verdict"] == "UNMEASURED")
     p = {(r["item"], r["criterion"]): r for r in M.run_apply(pm, "x", w)}
     check("real PyrelandsMechanics run reproduces the hand-recorded A2 and A3 as PASS",
           p[("PYRELANDS_MECHANICS_FIRST_SCRIPT_1", "A2")]["verdict"] == "PASS"

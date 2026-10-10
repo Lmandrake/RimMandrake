@@ -117,7 +117,7 @@
     </match>
   </Operation>
 
-  <!-- RM_Arpeau, churrun mast (10 wide): Arpeau_A 4 contact cells, Arpeau_B 3 contact cells -->
+  <!-- RM_Arpeau, churrun mast (10 wide): Arpeau_A 4 contact cells, Arpeau_p3a 10 contact cells, Arpeau_p3b 7 contact cells -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RM_Arpeau"]</xpath>
     <match Class="PatchOperationAddModExtension">
@@ -136,12 +136,22 @@
               </contact>
             </li>
             <li>
-              <texture>Arpeau_B</texture>
-              <opaqueMin>(0.0781,0.1406)</opaqueMin>
-              <opaqueMax>(0.9453,0.9453)</opaqueMax>
+              <texture>Arpeau_p3a</texture>
+              <opaqueMin>(0.2666,0.0107)</opaqueMin>
+              <opaqueMax>(0.7383,0.9854)</opaqueMax>
               <contact>
-                <li>(1,1)</li>
+                <li>(-1,0)</li><li>(1,0)</li><li>(2,0)</li>
+                <li>(-2,1)</li><li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
                 <li>(0,2)</li><li>(1,2)</li>
+              </contact>
+            </li>
+            <li>
+              <texture>Arpeau_p3b</texture>
+              <opaqueMin>(0.2422,0.0117)</opaqueMin>
+              <opaqueMax>(0.7637,0.9902)</opaqueMax>
+              <contact>
+                <li>(-1,0)</li><li>(1,0)</li><li>(2,0)</li>
+                <li>(-1,1)</li><li>(0,1)</li><li>(1,1)</li><li>(2,1)</li>
               </contact>
             </li>
           </variants>
