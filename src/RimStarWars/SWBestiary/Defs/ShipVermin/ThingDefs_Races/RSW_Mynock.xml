@@ -33,13 +33,14 @@
      (RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock.png, Graphic_Single)
      carries real owner-approved art since 75115178c (2026-09-11): the
      "hideous wet practical-effects" redesign from IKEE_MYNOCK_ART_REGEN_1,
-     reused from mandrake.rsw.mynockartoverride's south-facing texture. One
+     reused from the retired MynockArtOverride's south-facing texture. One
      static graphic, not a directional north/east/south set - the previous
      "NOT YET GENERATED" note above was stale and was corrected during
      MYNOCK_FLIGHT_ART_FIRST_1 (2026-09-20), which confirmed the art before
-     touching flight. mandrake.rsw.mynockartoverride's own texture bytes
-     (swanimals/Mynock/*) remain unrelated - that mod retextures a different,
-     donor mynock at the donor's own texPath.
+     touching flight. The donor-mynock retexture (folded from the retired
+     MynockArtOverride, ART_OVERRIDE_FOLD_ALL_1) lives at
+     Textures/RimStarWars/SWBestiary/Mynock/ and is unrelated - it retextures a
+     different, donor mynock via Patches/ArtFold.
 
      Flight (MYNOCK_FLIGHT_ART_FIRST_1, 2026-09-20): MaxFlightTime/
      FlightCooldown/flightStartChanceOnJobStart/flightSpeedFactor/

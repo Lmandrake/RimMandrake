@@ -158,7 +158,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Dewback/Dewback</texPath>
+          <texPath>RimStarWars/SWBestiary/Dewback/Dewback</texPath>
           <drawSize>1.33</drawSize>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
@@ -173,7 +173,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Dewback/Dewback</texPath>
+          <texPath>RimStarWars/SWBestiary/Dewback/Dewback</texPath>
           <drawSize>2.67</drawSize>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>
@@ -188,7 +188,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Dewback/Dewback</texPath>
+          <texPath>RimStarWars/SWBestiary/Dewback/Dewback</texPath>
           <drawSize>4.0</drawSize>
           <shaderType>CutoutComplex</shaderType>
           <shadowData>

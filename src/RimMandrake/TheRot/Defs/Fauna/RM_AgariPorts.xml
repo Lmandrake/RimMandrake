@@ -26,7 +26,7 @@
     directly instead of as a hatching clump.
   KEPT, guarded on VEF (a framework we keep): asexual reproduction, HighlyFlammable, cap-flesh harvest.
   ART: ours. Rennok and vorrugath use this mod's RotSpecies art; the gromma's is installed through the
-  art ledger at Things/Pawn/Animal/RM_Agaripod (the picture AgaripodArtOverride paints over the donor).
+  art ledger at Things/Pawn/Animal/RM_Agaripod (Patches/ArtFold/Agaripod_ArtFold.xml points the donor at it too).
 -->
 <Defs>
 

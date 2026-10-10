@@ -58,9 +58,9 @@ ROWS: list[tuple] = [
     ], "keep", "N/S landed in the 09-14 facing wave. The item file still lists these as missing."),
 
     ("mantistanis", "Invented fauna (ours)", "Mantistanis", [
-        ("east", f"{U}/MantistanisArtOverride/Textures/Things/Pawn/Animal/Megafauna/Insectoid/GR_Mantistanis_east.png"),
-        ("north", f"{U}/MantistanisArtOverride/Textures/Things/Pawn/Animal/Megafauna/Insectoid/GR_Mantistanis_north.png"),
-        ("south", f"{U}/MantistanisArtOverride/Textures/Things/Pawn/Animal/Megafauna/Insectoid/GR_Mantistanis_south.png"),
+        ("east", f"src/RimMandrake/Utils/art_check_fixtures/MantistanisTextures/Things/Pawn/Animal/Megafauna/Insectoid/GR_Mantistanis_east.png"),
+        ("north", f"src/RimMandrake/Utils/art_check_fixtures/MantistanisTextures/Things/Pawn/Animal/Megafauna/Insectoid/GR_Mantistanis_north.png"),
+        ("south", f"src/RimMandrake/Utils/art_check_fixtures/MantistanisTextures/Things/Pawn/Animal/Megafauna/Insectoid/GR_Mantistanis_south.png"),
     ], "keep", "South landed in the 09-14 facing wave. Item file lists it as missing — stale."),
 
     ("firehawk", "Invented fauna (ours)", "FireHawk", [
@@ -76,70 +76,70 @@ ROWS: list[tuple] = [
     ], "keep", "Ours, was a lone east sprite. Now a full set and deployed."),
 
     ("greengoo", "Invented fauna (ours)", "GreenGoo", [
-        ("east", f"{U}/GreenGooArtOverride/Textures/Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo_east.png"),
-        ("north", f"{U}/GreenGooArtOverride/Textures/Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo_north.png"),
-        ("south", f"{U}/GreenGooArtOverride/Textures/Things/Pawn/Animal/AA_GreenGoo/AA_GreenGoo_south.png"),
+        ("east", f"{U}/UtinniPatches/Textures/RimUtinni/UtinniPatches/GreenGoo/AA_GreenGoo_east.png"),
+        ("north", f"{U}/UtinniPatches/Textures/RimUtinni/UtinniPatches/GreenGoo/AA_GreenGoo_north.png"),
+        ("south", f"{U}/UtinniPatches/Textures/RimUtinni/UtinniPatches/GreenGoo/AA_GreenGoo_south.png"),
     ], "keep", "You praised this one. Faceless slime: no rear cue is possible, so the facing law may not apply."),
 
     # ── SW-canon fauna ──────────────────────────────────────────────────────
     ("orray", "SW-canon fauna", "Orray", [
-        ("east", f"{S}/OrrayArtOverride/Textures/swanimals/Orray/Orray_east.png"),
-        ("north", f"{S}/OrrayArtOverride/Textures/swanimals/Orray/Orray_north.png"),
-        ("south", f"{S}/OrrayArtOverride/Textures/swanimals/Orray/Orray_south.png"),
+        ("east", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Orray/Orray_east.png"),
+        ("north", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Orray/Orray_north.png"),
+        ("south", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Orray/Orray_south.png"),
     ], "rerender", "FACING BROKEN: north is a side profile, not a rear view. Confirmed by eye tonight."),
 
     ("anooba_f", "SW-canon fauna", "Anooba (female)", [
-        ("east", f"{S}/AnoobaArtOverride/Textures/swanimals/Anooba/Anooba_f_east.png"),
-        ("north", f"{S}/AnoobaArtOverride/Textures/swanimals/Anooba/Anooba_f_north.png"),
-        ("south", f"{S}/AnoobaArtOverride/Textures/swanimals/Anooba/Anooba_f_south.png"),
+        ("east", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Anooba/Anooba_f_east.png"),
+        ("north", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Anooba/Anooba_f_north.png"),
+        ("south", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Anooba/Anooba_f_south.png"),
     ], "rerender", "FACING BROKEN: north is a full frontal face, teeth to camera. Confirmed by eye tonight."),
 
     ("anooba_m", "SW-canon fauna", "Anooba (male)", [
-        ("east", f"{S}/AnoobaArtOverride/Textures/swanimals/Anooba/Anooba_m_east.png"),
-        ("north", f"{S}/AnoobaArtOverride/Textures/swanimals/Anooba/Anooba_m_north.png"),
-        ("south", f"{S}/AnoobaArtOverride/Textures/swanimals/Anooba/Anooba_m_south.png"),
+        ("east", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Anooba/Anooba_m_east.png"),
+        ("north", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Anooba/Anooba_m_north.png"),
+        ("south", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Anooba/Anooba_m_south.png"),
     ], "rerender", "DUPLICATE: byte-identical to the female in all three facings. No male art exists."),
 
     ("iriaz", "SW-canon fauna", "Iriaz", [
-        ("east", f"{S}/IriazArtOverride/Textures/swanimals/Iriaz/Iriaz_east.png"),
-        ("north", f"{S}/IriazArtOverride/Textures/swanimals/Iriaz/Iriaz_north.png"),
-        ("south", f"{S}/IriazArtOverride/Textures/swanimals/Iriaz/Iriaz_south.png"),
+        ("east", f"{S}/SWBestiary/Textures/swanimals/Iriaz/Iriaz_east.png"),
+        ("north", f"{S}/SWBestiary/Textures/swanimals/Iriaz/Iriaz_north.png"),
+        ("south", f"{S}/SWBestiary/Textures/swanimals/Iriaz/Iriaz_south.png"),
     ], "", "UNDECIDED ON PURPOSE — identity unruled: canon library says four-legged Dantooine antelope, this art is the two-legged Dathomir read."),
 
     ("nuna_f", "SW-canon fauna", "Nuna (female)", [
-        ("east", f"{S}/NunaArtOverride/Textures/swanimals/Nuna/Nuna_f_east.png"),
-        ("north", f"{S}/NunaArtOverride/Textures/swanimals/Nuna/Nuna_f_north.png"),
-        ("south", f"{S}/NunaArtOverride/Textures/swanimals/Nuna/Nuna_f_south.png"),
+        ("east", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Nuna/Nuna_f_east.png"),
+        ("north", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Nuna/Nuna_f_north.png"),
+        ("south", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Nuna/Nuna_f_south.png"),
     ], "keep", "The real female set — full painterly, deployed."),
 
     ("nuna_m", "SW-canon fauna", "Nuna (male)", [
-        ("east", f"{S}/NunaArtOverride/Textures/swanimals/Nuna/Nuna_m_east.png"),
-        ("north", f"{S}/NunaArtOverride/Textures/swanimals/Nuna/Nuna_m_north.png"),
-        ("south", f"{S}/NunaArtOverride/Textures/swanimals/Nuna/Nuna_m_south.png"),
+        ("east", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Nuna/Nuna_m_east.png"),
+        ("north", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Nuna/Nuna_m_north.png"),
+        ("south", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Nuna/Nuna_m_south.png"),
     ], "rerender", "DUPLICATE: north+south are byte-identical to the female. Only east is real male art."),
 
     ("zeer", "SW-canon fauna", "Zeer", [
-        ("east", f"{S}/ZeerArtOverride/Textures/swanimals/Zeer/Zeer_east.png"),
-        ("north", f"{S}/ZeerArtOverride/Textures/swanimals/Zeer/Zeer_north.png"),
-        ("south", f"{S}/ZeerArtOverride/Textures/swanimals/Zeer/Zeer_south.png"),
+        ("east", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Zeer/Zeer_east.png"),
+        ("north", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Zeer/Zeer_north.png"),
+        ("south", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Zeer/Zeer_south.png"),
     ], "keep", "Full painterly set, deployed. drawSize 4.0 measured from SWAC adult lifeStages."),
 
     ("dalgo", "SW-canon fauna", "Dalgo", [
-        ("east", f"{S}/DalgoArtOverride/Textures/swanimals/Dalgo/Dalgo_east.png"),
-        ("north", f"{S}/DalgoArtOverride/Textures/swanimals/Dalgo/Dalgo_north.png"),
-        ("south", f"{S}/DalgoArtOverride/Textures/swanimals/Dalgo/Dalgo_south.png"),
+        ("east", f"{S}/SWBestiary/Textures/swanimals/Dalgo/Dalgo_east.png"),
+        ("north", f"{S}/SWBestiary/Textures/swanimals/Dalgo/Dalgo_north.png"),
+        ("south", f"{S}/SWBestiary/Textures/swanimals/Dalgo/Dalgo_south.png"),
     ], "keep", "Full painterly set, deployed."),
 
     ("gizka", "SW-canon fauna", "Gizka", [
-        ("east", f"{S}/GizkaArtOverride/Textures/swanimals/Gizka/Gizka_east.png"),
-        ("north", f"{S}/GizkaArtOverride/Textures/swanimals/Gizka/Gizka_north.png"),
-        ("south", f"{S}/GizkaArtOverride/Textures/swanimals/Gizka/Gizka_south.png"),
+        ("east", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Gizka/Gizka_east.png"),
+        ("north", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Gizka/Gizka_north.png"),
+        ("south", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Gizka/Gizka_south.png"),
     ], "keep", "Full set. You raised its ecosystem grain 0.3 to 1.0 — the pyramid law puts it on top."),
 
     ("gizka_w", "SW-canon fauna", "Gizka (wild variant)", [
-        ("east", f"{S}/GizkaArtOverride/Textures/swanimals/Gizka/GizkaW_east.png"),
-        ("north", f"{S}/GizkaArtOverride/Textures/swanimals/Gizka/GizkaW_north.png"),
-        ("south", f"{S}/GizkaArtOverride/Textures/swanimals/Gizka/GizkaW_south.png"),
+        ("east", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Gizka/GizkaW_east.png"),
+        ("north", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Gizka/GizkaW_north.png"),
+        ("south", f"{S}/SWBestiary/Textures/RimStarWars/SWBestiary/Gizka/GizkaW_south.png"),
     ], "keep", "PARTIAL DUPLICATE: differs from tame Gizka on east only; north+south are the same file. Intended?"),
 
     # ── outside the pipeline ────────────────────────────────────────────────

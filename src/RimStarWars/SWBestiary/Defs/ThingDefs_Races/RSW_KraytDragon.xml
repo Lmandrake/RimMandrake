@@ -46,10 +46,8 @@
   `<li>RSW_KraytDragon</li>` in the same pass (KellDragon there stays bare,
   still unported).
 
-  No ArtOverride collision — a full `find src/RimStarWars -maxdepth 1
-  -iname "*ArtOverride*"` for KraytDragon-named folders found none (only
-  `GreaterKraytDragonArtOverride`, a distinct species). All art shipped
-  from SWBestiary.
+  No ArtOverride mod exists for KraytDragon (GreaterKraytDragon is a distinct
+  species, its art folded into SWBestiary). All art shipped from SWBestiary.
 
   Art: 12 PNGs extracted this pass via extract_bundle.py against the live
   Steam workshop bundle (workshop folder 3497316713) — KraytDragon_j_south/

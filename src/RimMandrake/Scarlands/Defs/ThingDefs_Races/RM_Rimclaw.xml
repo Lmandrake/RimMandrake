@@ -13,9 +13,9 @@
     - wildBiomes dropped: the biome's own wildAnimals row casts it (RM_Warscar).
     - dessicated graphics and the baby texture (donor art) dropped; every life stage uses the ruled picture.
   Kept from the donor because they are vanilla: Leather_Lizard, the Biotech DeathActionWorker_ToxCloud death burst.
-  ART: the owner's A pick, the picture the game already showed (src/RimUtinni/RimclawArtOverride, south/east/north),
-  copied 2026-10-06 through the art ledger to the texPath below. RimclawArtOverride itself is untouched: it still
-  dresses the donor RG_Rimclaw, which no biome of ours casts any more.
+  ART: the owner's A pick, copied 2026-10-06 through the art ledger to the texPath below (south/east/north).
+  The donor RG_Rimclaw, which no biome of ours casts any more, is pointed at the same picture by
+  Patches/ArtFold/Rimclaw_ArtFold.xml.
 -->
 <Defs>
 

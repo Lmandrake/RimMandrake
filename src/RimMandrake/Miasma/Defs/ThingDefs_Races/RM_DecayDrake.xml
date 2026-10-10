@@ -23,8 +23,8 @@
   QuadrupedAnimalWithPawsAndTail (same attack groups); AA_DecayDrake_* sounds -> Pawn_Iguana_*;
   useMeatFrom AA_RoughPlatedMonitor -> Iguana; dessicated art -> Iguana; the mound's taste thought
   AA_AteHorribleRot -> AteRawFood and its art -> vanilla raw fungus tinted mash-brown (placeholder).
-  ART: ours, the picture DecayDrakeArtOverride paints over the donor, installed through the art
-  ledger at Things/Pawn/Animal/RM_DecayDrake.
+  ART: ours, installed through the art ledger at Things/Pawn/Animal/RM_DecayDrake; the donor
+  AA_DecayDrake is pointed at the same picture by Patches/ArtFold/DecayDrake_ArtFold.xml.
 -->
 <Defs>
 

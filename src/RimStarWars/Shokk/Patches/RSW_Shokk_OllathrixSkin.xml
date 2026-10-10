@@ -23,11 +23,10 @@
   happen — it is a hard modDependency/loadAfter, About.xml) gets a quiet
   no-op instead of a red error on every launch.
 
-  Reuses the Wyyyschokk's already-shipped art path (swanimals/Wyyyschokk/
-  Wyyyschokk{,_east,_north}) rather than commissioning new art — the donor's
-  own texPath, shipped by the
-  donor mod `mlie.starwarsanimalcollection` (already a modDependency of
-  this mod) and/or `mandrake.rsw.wyyyschokkartoverride`.
+  Reuses the Wyyyschokk's art rather than commissioning new art: our redraw,
+  shipped in this mod at Textures/RimStarWars/Shokk/Wyyyschokk/ (folded in
+  from the retired standalone wyyyschokkartoverride, ART_OVERRIDE_FOLD_ALL_1);
+  Patches/ArtFold/Wyyyschokk_ArtFold.xml points the donor's own Wyyyschokk at it too.
 
   UPDATE, SHOKK_SKIN_SHRINK_1 (2026-09-26): the mechanism move this file's
   own header once deferred is DONE — RM_Ollathrix now carries the mouth-loom
@@ -92,7 +91,7 @@
     <match Class="PatchOperationReplace">
       <xpath>/Defs/PawnKindDef[defName="RM_Ollathrix"]/lifeStages/li[1]/bodyGraphicData/texPath</xpath>
       <value>
-        <texPath>swanimals/Wyyyschokk/Wyyyschokk</texPath>
+        <texPath>RimStarWars/Shokk/Wyyyschokk/Wyyyschokk</texPath>
       </value>
     </match>
   </Operation>
@@ -102,7 +101,7 @@
     <match Class="PatchOperationReplace">
       <xpath>/Defs/PawnKindDef[defName="RM_Ollathrix"]/lifeStages/li[2]/bodyGraphicData/texPath</xpath>
       <value>
-        <texPath>swanimals/Wyyyschokk/Wyyyschokk</texPath>
+        <texPath>RimStarWars/Shokk/Wyyyschokk/Wyyyschokk</texPath>
       </value>
     </match>
   </Operation>
@@ -112,7 +111,7 @@
     <match Class="PatchOperationReplace">
       <xpath>/Defs/PawnKindDef[defName="RM_Ollathrix"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
       <value>
-        <texPath>swanimals/Wyyyschokk/Wyyyschokk</texPath>
+        <texPath>RimStarWars/Shokk/Wyyyschokk/Wyyyschokk</texPath>
       </value>
     </match>
   </Operation>

@@ -21,15 +21,14 @@
   `Pawn_Chick_Call` (left bare); adult sounds repoint to the
   already-absorbed sound wave (RSW_Pawn_PekoPeko_*, 2026-09-02).
 
-  `PekoPekoArtOverride` (mandrake.rsw.pekopekoartoverride) covers the base
-  `PekoPeko_{m,f}_{south,east,north}` facing (shared across the hatchling
-  and adult life stages, one texPath per sex) — texPaths stay unchanged
-  text, so the override binds automatically. The flying-animation frames
+  Art: the base `PekoPeko_{m,f}_{south,east,north}` facing (shared across the
+  hatchling and adult life stages, one texPath per sex) lives at
+  Textures/RimStarWars/SWBestiary/PekoPeko/ (folded from the retired
+  PekoPekoArtOverride, ART_OVERRIDE_FOLD_ALL_1). The flying-animation frames
   (`flyingAnimationFramePathPrefix`/`...Female`, 4 frames x 3 facings x 2
-  sexes = 24) and `PekoPeko_Dessicated` are NOT covered by the override —
-  extracted this pass (25 PNGs total) via extract_bundle.py against the
-  same AssetBundle every prior wave used. Sits at Textures/swanimals/
-  PekoPeko/.
+  sexes = 24) and `PekoPeko_Dessicated` were extracted this pass (25 PNGs total)
+  via extract_bundle.py against the same AssetBundle every prior wave used.
+  Sits at Textures/swanimals/PekoPeko/.
 
   Wired into the live cast this same pass: BiomeCypreJungle (per
   cast_assignment.csv's current row for this species), repointed from the
@@ -211,11 +210,11 @@
         <label>peko-peko hatchling</label>
         <labelPlural>peko-peko hatchlings</labelPlural>
         <bodyGraphicData>
-          <texPath>swanimals/PekoPeko/PekoPeko_m</texPath>
+          <texPath>RimStarWars/SWBestiary/PekoPeko/PekoPeko_m</texPath>
           <drawSize>1.0</drawSize>
         </bodyGraphicData>
         <femaleGraphicData>
-          <texPath>swanimals/PekoPeko/PekoPeko_f</texPath>
+          <texPath>RimStarWars/SWBestiary/PekoPeko/PekoPeko_f</texPath>
           <drawSize>1.0</drawSize>
         </femaleGraphicData>
         <dessicatedBodyGraphicData>
@@ -225,7 +224,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/PekoPeko/PekoPeko_m</texPath>
+          <texPath>RimStarWars/SWBestiary/PekoPeko/PekoPeko_m</texPath>
           <drawSize>2.0</drawSize>
           <shadowData>
             <volume>(0.3, 0.3, 0.3)</volume>
@@ -233,7 +232,7 @@
           </shadowData>
         </bodyGraphicData>
         <femaleGraphicData>
-          <texPath>swanimals/PekoPeko/PekoPeko_f</texPath>
+          <texPath>RimStarWars/SWBestiary/PekoPeko/PekoPeko_f</texPath>
           <drawSize>2.0</drawSize>
           <shadowData>
             <volume>(0.3, 0.3, 0.3)</volume>
@@ -247,7 +246,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/PekoPeko/PekoPeko_m</texPath>
+          <texPath>RimStarWars/SWBestiary/PekoPeko/PekoPeko_m</texPath>
           <drawSize>3.5</drawSize>
           <shadowData>
             <volume>(0.4, 0.4, 0.4)</volume>
@@ -255,7 +254,7 @@
           </shadowData>
         </bodyGraphicData>
         <femaleGraphicData>
-          <texPath>swanimals/PekoPeko/PekoPeko_f</texPath>
+          <texPath>RimStarWars/SWBestiary/PekoPeko/PekoPeko_f</texPath>
           <drawSize>3.5</drawSize>
           <shadowData>
             <volume>(0.4, 0.4, 0.4)</volume>

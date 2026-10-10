@@ -29,17 +29,16 @@
   the game is whole without that mod, Fambaa just loses the amphibious
   movement bonus.
 
-  🔴 **ArtOverride collision avoided, checked BEFORE extracting anything**:
-  `FambaaArtOverride` (mandrake.rsw.fambaaartoverride) exists and covers the
-  adult `Fambaa_{south,east,north}` facings only — its own About.xml says
-  the juvenile stage, the swimming graphic, and the dessicated-corpse
-  texture all stay on donor art. SWBestiary ships ONLY the facings NOT
-  covered: `Fambaa_Dessicated`, `Fambaa_Swimming_{south,east,north}`,
+  Art: the adult `Fambaa_{south,east,north}` facings live at
+  Textures/RimStarWars/SWBestiary/Fambaa/ (folded from the retired
+  FambaaArtOverride, ART_OVERRIDE_FOLD_ALL_1) and the RSW_Fambaa texPath points
+  there. This def's own extras stay under Textures/swanimals/Fambaa/:
+  `Fambaa_Dessicated`, `Fambaa_Swimming_{south,east,north}`,
   `Fambaa_j_{south,east,north}`, `Fambaa_j_Dessicated`,
-  `Fambaa_j_Swimming_{south,east,north}` — the adult base facing is NOT
-  extracted here. The donor's own `FambaaPack_*`/`Fambaa_jPack_*` variants
-  (pack-saddle recolors) are unreferenced by this species' own def and
-  excluded, same precedent as Falumpaset/Jamel's excluded "Pack" files.
+  `Fambaa_j_Swimming_{south,east,north}`. The donor's own
+  `FambaaPack_*`/`Fambaa_jPack_*` variants (pack-saddle recolors) are
+  unreferenced by this species' own def and excluded, same precedent as
+  Falumpaset/Jamel's excluded "Pack" files.
 
   Art: 11 PNGs extracted this pass via extract_bundle.py against the same
   AssetBundle every prior wave used (workshop folder 3497316713,
@@ -234,7 +233,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Fambaa/Fambaa</texPath>
+          <texPath>RimStarWars/SWBestiary/Fambaa/Fambaa</texPath>
           <drawSize>4.0</drawSize>
           <shadowData>
             <volume>(0.7, 0.6, 0.4)</volume>
@@ -253,7 +252,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Fambaa/Fambaa</texPath>
+          <texPath>RimStarWars/SWBestiary/Fambaa/Fambaa</texPath>
           <drawSize>8.0</drawSize>
           <shadowData>
             <volume>(1, 0.8, 0.5)</volume>

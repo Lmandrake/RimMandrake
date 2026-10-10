@@ -250,5 +250,5 @@ design/RimStarWars/canon_references/<slug>/description.md   the target
 src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/RimMandrakeXenotypes.xml
                                                             species defs — GENERATED, never edit
 src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/            creature defs
-src/RimStarWars/<Name>ArtOverride/Textures/                 our creature art overrides
+src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/<Name>/  our creature redraws (donor defs patched to them in Patches/ArtFold/)
 ```

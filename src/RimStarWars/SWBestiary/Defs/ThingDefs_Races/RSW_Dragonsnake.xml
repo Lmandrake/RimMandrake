@@ -185,7 +185,7 @@
         <label>dragonsnake neonate</label>
         <labelPlural>dragonsnake neonates</labelPlural>
         <bodyGraphicData>
-          <texPath>swanimals/Dragonsnake/Dragonsnake</texPath>
+          <texPath>RimStarWars/SWBestiary/Dragonsnake/Dragonsnake</texPath>
           <drawSize>1.0</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -204,7 +204,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Dragonsnake/Dragonsnake</texPath>
+          <texPath>RimStarWars/SWBestiary/Dragonsnake/Dragonsnake</texPath>
           <drawSize>2.0</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -223,7 +223,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Dragonsnake/Dragonsnake</texPath>
+          <texPath>RimStarWars/SWBestiary/Dragonsnake/Dragonsnake</texPath>
           <drawSize>4.0</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>

@@ -30,12 +30,10 @@
   ALREADY-PORTED `RSW_SW_Calamity` (RSW_MlieWaveC_Abilities.xml), no new
   ability port needed.
 
-  🔴 **ArtOverride collision avoided, checked BEFORE extracting anything**:
-  `HoraxArtOverride` (mandrake.rsw.horaxartoverride) exists and covers the
-  `Horax_{south,east,north}` facings only (all 3 life stages share this one
-  texPath at different drawSize) — its own About.xml says the
-  dessicated-corpse texture stays on donor art. SWBestiary ships ONLY
-  `Horax_Dessicated` — the base facing is NOT extracted here.
+  Art: `Horax_{south,east,north}` (all 3 life stages share this one texPath at
+  different drawSize) live at Textures/RimStarWars/SWBestiary/Horax/ (folded
+  from the retired HoraxArtOverride, ART_OVERRIDE_FOLD_ALL_1). Only
+  `Horax_Dessicated` stays at Textures/swanimals/Horax/.
 
   Art: 1 PNG extracted this pass via extract_bundle.py against the same
   AssetBundle every prior wave used — `Horax_Dessicated`, confirmed
@@ -232,7 +230,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Horax/Horax</texPath>
+          <texPath>RimStarWars/SWBestiary/Horax/Horax</texPath>
           <drawSize>2.0</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -246,7 +244,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Horax/Horax</texPath>
+          <texPath>RimStarWars/SWBestiary/Horax/Horax</texPath>
           <drawSize>6.0</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -260,7 +258,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Horax/Horax</texPath>
+          <texPath>RimStarWars/SWBestiary/Horax/Horax</texPath>
           <drawSize>8.0</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>

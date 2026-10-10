@@ -28,7 +28,7 @@
       RM_GloomcastHide / RM_GloomcastMeat, same stats, duplicated in
       RM_LongShade_FaunaSupport.xml.
     - art: the actual PNGs (not new renders) were copied from
-      src/RimStarWars/HoraxArtOverride/Textures/swanimals/Horax/ and
+      src/RimStarWars/SWBestiary/Textures/RimStarWars/SWBestiary/Horax/ and
       src/RimStarWars/SWBestiary/Textures/swanimals/Horax/Horax_Dessicated.png
       into this mod's own Textures/swanimals/Gloomcast/ — CLAUDE.md's "loose
       PNG beats AssetBundle donor art" and this item's own "existing art

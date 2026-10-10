@@ -104,13 +104,11 @@ Functional checks belong in the suite.
 5. **Selftest offline first.** Run it under `--mock` and it must exit clean before it
    costs a bridge minute. A run recorded through `modcheck` is the record (§1 DONE (b)).
 
-**The `*ArtOverride` family: one parametrized script, not 48.** A single family suite
-covers every art-override mod. It reads its member list from the glob at run time, so a
-new override is covered without an edit. Per member it checks that the overridden def's
-graphic resolves to our texture path, not the donor's (the texture binds by texPath); that
-`Player.log` has no missing-texture or magenta error for that path; and that every facing
-the def needs is present. It records under one family key whose run entry lists the members. A member that needs a
-behaviour check of its own graduates to its own `validation.py`.
+**The `*ArtOverride` family is gone.** All 60 standalone art-override mods were folded into
+the mods that own their creatures (ART_OVERRIDE_FOLD_ALL_1, 2026-10-09): the art sits at a path
+of the owner mod's own and the donor def is pointed at it by a `Patches/ArtFold/` patch. The
+offline proof is `src/RimMandrake/Utils/art_fold_check.py` over `art_fold_manifest.json`; a
+creature's live look is its owner mod's script's business.
 
 **Folded mods.** A mod folded into a composed mod, such as a biome folded into
 `RimMandrake.Biomes`, is covered by the composed mod's script only if that script's

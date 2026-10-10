@@ -32,9 +32,9 @@
   item tolerates pre-donor-retirement.
 
   No `*ArtOverride` mod exists for ShiroTrap (checked first — the only
-  Shiro-family override, `mandrake.rsw.shiroartoverride`, explicitly
-  excludes "the separate ShiroTrap creature", confirmed against its own
-  About.xml this pass). 12 PNGs extracted this pass via extract_bundle.py
+  Shiro-family override, the since-retired ShiroArtOverride folded into
+  SWBestiary's Textures/RimStarWars/SWBestiary/Shiro/, covered only Shiro and
+  excluded "the separate ShiroTrap creature"). 12 PNGs extracted this pass via extract_bundle.py
   against the same AssetBundle every prior wave used: all 3 lifeStages'
   facings (`ShiroTrap_j_{south,east,north}`, `ShiroTrap_i_{south,east,north}`,
   `ShiroTrap_{south,east,north}`) plus their 3 dessicated variants

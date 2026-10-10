@@ -16,13 +16,10 @@
   (RSW_MlieWaveB_Resources.xml). No egg comp (not an egg layer). No
   `canCrossBreedWith` in the donor.
 
-  🔴 **ArtOverride collision avoided, checked BEFORE extracting anything**:
-  `GrankArtOverride` (mandrake.rsw.grankartoverride) exists and covers
-  `Grank_{east,north,south}` (the primary look, all 3 life stages — the
-  override's own About.xml says the dessicated-corpse texture stays on
-  donor art). Per the Dragonsnake/Anooba same-path-collision trap
-  (2026-09-12 finding), SWBestiary ships ONLY `Grank_Dessicated` — the base
-  facing is NOT extracted here.
+  Art: `Grank_{east,north,south}` (the primary look, all 3 life stages) live at
+  Textures/RimStarWars/SWBestiary/Grank/ (folded from the retired
+  GrankArtOverride, ART_OVERRIDE_FOLD_ALL_1); the texPath points there. Only
+  `Grank_Dessicated` stays at Textures/swanimals/Grank/.
 
   Art: 1 PNG extracted this pass via extract_bundle.py against the live
   Steam workshop bundle (workshop folder 3497316713) — Grank_Dessicated,
@@ -197,7 +194,7 @@
         <label>grank pup</label>
         <labelPlural>grank pups</labelPlural>
         <bodyGraphicData>
-          <texPath>swanimals/Grank/Grank</texPath>
+          <texPath>RimStarWars/SWBestiary/Grank/Grank</texPath>
           <drawSize>0.75</drawSize>
           <shadowData>
             <volume>(0.30, 0.25, 0.20)</volume>
@@ -210,7 +207,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Grank/Grank</texPath>
+          <texPath>RimStarWars/SWBestiary/Grank/Grank</texPath>
           <drawSize>1.25</drawSize>
           <shadowData>
             <volume>(0.375, 0.375, 0.375)</volume>
@@ -223,7 +220,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Grank/Grank</texPath>
+          <texPath>RimStarWars/SWBestiary/Grank/Grank</texPath>
           <drawSize>1.75</drawSize>
           <shadowData>
             <volume>(0.5, 0.5, 0.4)</volume>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Hawkbat_ArtFold.xml - ART_OVERRIDE_FOLD_ALL_1 (precedent SILOOTH_ART_FOLD_1)
+
+  Art: the Hawkbat redraw that the standalone HawkbatArtOverride mod used to paint over Mlie.StarWarsAnimalCollection's art at the same path. It now lives in this mod at Textures/RimStarWars/SWBestiary/Hawkbat/ and the donor's texPath is pointed at it below; our own defs that drew the donor path were edited in place.
+  The donor's own PawnKindDef texPath is matched by VALUE (any life stage, any graphic slot, and an
+  abstract parent if the donor inherits), so every slot the old same-path override reached is
+  redirected and nothing else. Conditional: a load without the donor matches nothing and logs nothing.
+  Checked offline by src/RimMandrake/Utils/art_fold_check.py (manifest row "Hawkbat").
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef//texPath[text()="swanimals/Hawkbat/Hawkbat"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef//texPath[text()="swanimals/Hawkbat/Hawkbat"]</xpath>
+      <value><texPath>RimStarWars/SWBestiary/Hawkbat/Hawkbat</texPath></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef//texPath[text()="swanimals/Hawkbat/Hawkbat_j"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef//texPath[text()="swanimals/Hawkbat/Hawkbat_j"]</xpath>
+      <value><texPath>RimStarWars/SWBestiary/Hawkbat/Hawkbat_j</texPath></value>
+    </match>
+  </Operation>
+</Patch>

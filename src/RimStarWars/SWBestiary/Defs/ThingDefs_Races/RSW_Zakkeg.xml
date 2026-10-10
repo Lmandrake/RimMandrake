@@ -24,10 +24,10 @@
   `RSW_Pawn_Boma_*`, which does resolve; the wrong-species CHOICE itself is
   still the donor's and is left unchanged.
 
-  `mandrake.rsw.zakkegartoverride` ships owner-approved art at the SAME
-  relative texPath the donor uses (swanimals/Zakkeg/Zakkeg_{south,east,
-  north}) — per the Anooba incident precedent, did NOT extract or ship
-  those 3 facings, only `Zakkeg_Dessicated` (1 PNG).
+  Art: the 3 base facings (Zakkeg_{south,east,north}) live at
+  Textures/RimStarWars/SWBestiary/Zakkeg/ (folded from the retired
+  ZakkegArtOverride, ART_OVERRIDE_FOLD_ALL_1); only `Zakkeg_Dessicated` (1 PNG)
+  was extracted at Textures/swanimals/Zakkeg/.
 -->
 <Defs>
 <!-- ThingDef -->
@@ -206,7 +206,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Zakkeg/Zakkeg</texPath>
+          <texPath>RimStarWars/SWBestiary/Zakkeg/Zakkeg</texPath>
           <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -220,7 +220,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Zakkeg/Zakkeg</texPath>
+          <texPath>RimStarWars/SWBestiary/Zakkeg/Zakkeg</texPath>
           <drawSize>3.0</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -234,7 +234,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Zakkeg/Zakkeg</texPath>
+          <texPath>RimStarWars/SWBestiary/Zakkeg/Zakkeg</texPath>
           <drawSize>5.0</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>

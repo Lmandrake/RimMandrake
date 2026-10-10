@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Thermadon_ArtFold.xml - ART_OVERRIDE_FOLD_ALL_1 (precedent SILOOTH_ART_FOLD_1)
+
+  Art: this mod's own port already carries, byte for byte, the Thermadon picture the standalone ThermadonArtOverride mod painted over sarg.alphaanimals's art (Textures/Things/Pawn/Animal/RM_Thermadon/RM_Thermadon_*.png). The donor's texPath is pointed at it below, so the donor creature keeps drawing it now the standalone mod is gone.
+  The donor's own PawnKindDef texPath is matched by VALUE (any life stage, any graphic slot, and an
+  abstract parent if the donor inherits), so every slot the old same-path override reached is
+  redirected and nothing else. Conditional: a load without the donor matches nothing and logs nothing.
+  Checked offline by src/RimMandrake/Utils/art_fold_check.py (manifest row "Thermadon").
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_Thermadon/AA_Thermadon"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef//texPath[text()="Things/Pawn/Animal/AA_Thermadon/AA_Thermadon"]</xpath>
+      <value><texPath>Things/Pawn/Animal/RM_Thermadon/RM_Thermadon</texPath></value>
+    </match>
+  </Operation>
+</Patch>

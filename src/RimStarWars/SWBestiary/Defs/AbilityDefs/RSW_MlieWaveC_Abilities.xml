@@ -532,8 +532,8 @@
   buff, isBad false, DisappearsOnDeath) — no new ThoughtDef needed, unlike
   SootheSong/WebShot. Icon (`Ability_AnimalForceFocus`, 128x128) newly
   extracted this pass — no sibling `*ArtOverride` mod covers it (Vornskyr's
-  own ArtOverride, mandrake.rsw.vornskyrartoverride, covers only the base
-  south/east/north body facing, confirmed by reading its own About.xml).
+  base art, SWBestiary Textures/RimStarWars/SWBestiary/Vornskyr, covers only
+  the base south/east/north body facing).
   Wired both ways off RSW_Vornskyr, same dual-wiring precedent as
   GreaterKraytDragon/Kinrath/Shyrack: PawnKindDef `<abilities>` AND
   ThingDef's `<race><specialTrainables>`, matching the donor's own Vornskyr

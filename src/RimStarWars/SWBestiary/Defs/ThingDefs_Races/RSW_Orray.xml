@@ -15,13 +15,12 @@
   sound wave (RSW_Pawn_Orray_*, 2026-09-02). No `canCrossBreedWith` (donor
   sets none, and no already-ported species lists bare `Orray` either).
 
-  `OrrayArtOverride` (mandrake.rsw.orrayartoverride) covers the base
-  `Orray_{south,east,north}` facing across all life stages (one shared
-  texPath) — texPaths stay unchanged text, so the override binds
-  automatically. Only `Orray_Dessicated` was extracted this pass (1 PNG,
-  the donor's own `OrrayPack_*` pack-saddle variants excluded, unreferenced
-  by the def) via extract_bundle.py against the same AssetBundle every
-  prior wave used. Sits at Textures/swanimals/Orray/.
+  Art: the base `Orray_{south,east,north}` facing (all life stages, one shared
+  texPath) lives at Textures/RimStarWars/SWBestiary/Orray/ (folded from the
+  retired OrrayArtOverride, ART_OVERRIDE_FOLD_ALL_1). Only `Orray_Dessicated`
+  was extracted this pass (1 PNG, the donor's own `OrrayPack_*` pack-saddle
+  variants excluded, unreferenced by the def) via extract_bundle.py against the
+  same AssetBundle every prior wave used. Sits at Textures/swanimals/Orray/.
 
   Wired into the live cast this same pass: ZBiome_Grasslands (per
   cast_assignment.csv's current row for this species), repointed from the
@@ -195,7 +194,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Orray/Orray</texPath>
+          <texPath>RimStarWars/SWBestiary/Orray/Orray</texPath>
           <drawSize>1.1</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -205,7 +204,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Orray/Orray</texPath>
+          <texPath>RimStarWars/SWBestiary/Orray/Orray</texPath>
           <drawSize>1.75</drawSize>
           <shadowData>
             <volume>(0.3, 0.3, 0.3)</volume>
@@ -219,7 +218,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Orray/Orray</texPath>
+          <texPath>RimStarWars/SWBestiary/Orray/Orray</texPath>
           <drawSize>2.75</drawSize>
           <shadowData>
             <volume>(0.4, 0.4, 0.4)</volume>

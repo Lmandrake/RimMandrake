@@ -18,20 +18,12 @@
   (ported together this same pass, both share this file's own dependency
   chain). No `specialTrainables` at all (donor leaves it bare).
 
-  `mandrake.rsw.shiroartoverride` (checked FIRST, per the flag left by
-  Pass 20) ships owner-approved custom art at the EXACT SAME relative path
-  the donor uses (`swanimals/Shiro/Shiro_{south,east,north}`) — its own
-  About.xml states it relies on same-path resolution, loading after the
-  donor. The Anooba incident (5a8fc8c1c) already proved shipping a
-  duplicate PNG at that same path from mandrake.rsw.swbestiary (which loads
-  AFTER the override) silently reverts the override back to donor art — so
-  this port does NOT extract or ship `Shiro_{south,east,north}.png` at all,
-  leaving the override's own copies as the sole source once the override is
-  active (and the donor's own copies as fallback if it ever isn't). Only
-  `Shiro_Dessicated` (a facing the override does not cover, confirmed
-  against its own description) was extracted this pass via extract_bundle.py
-  against the same AssetBundle every prior wave used. Sits at
-  Textures/swanimals/Shiro/ (1 file only, by design).
+  Art: owner-approved `Shiro_{south,east,north}` (and the `ShiroB` variant)
+  live at Textures/RimStarWars/SWBestiary/Shiro/ (folded from the retired
+  ShiroArtOverride, ART_OVERRIDE_FOLD_ALL_1); the texPaths point there. Only
+  `Shiro_Dessicated` (a facing the old override did not cover) was extracted
+  this pass via extract_bundle.py against the same AssetBundle every prior wave
+  used. Sits at Textures/swanimals/Shiro/ (1 file only, by design).
 
   Wired into the live cast this same pass: per cast_assignment.csv's current
   row(s) for this species, repointed from the bare "Shiro" entry in
@@ -149,18 +141,18 @@
     <combatPower>85</combatPower>
     <ecoSystemWeight>0.40</ecoSystemWeight>
     <!-- Owner kept the canon_shiro_v1 render as a variant beside his pick A (Greentide sheet 2026-10-08,
-         "+ variant" tick; art ledger ruling e6371c756a12be99aadc). Art in ShiroArtOverride; the corpse keeps
+         "+ variant" tick; art ledger ruling e6371c756a12be99aadc). Art in SWBestiary Textures/RimStarWars/SWBestiary/Shiro/ (ShiroB); the corpse keeps
          the base dessicated texture. -->
     <alternateGraphicChance>0.5</alternateGraphicChance>
     <alternateGraphics>
       <li>
-        <texPath>swanimals/Shiro/ShiroB</texPath>
+        <texPath>RimStarWars/SWBestiary/Shiro/ShiroB</texPath>
       </li>
     </alternateGraphics>
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Shiro/Shiro</texPath>
+          <texPath>RimStarWars/SWBestiary/Shiro/Shiro</texPath>
           <drawSize>0.9</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -170,7 +162,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Shiro/Shiro</texPath>
+          <texPath>RimStarWars/SWBestiary/Shiro/Shiro</texPath>
           <drawSize>1.2</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -180,7 +172,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>swanimals/Shiro/Shiro</texPath>
+          <texPath>RimStarWars/SWBestiary/Shiro/Shiro</texPath>
           <drawSize>1.5</drawSize>
           <shadowData>
             <volume>(0.45, 0.45, 0.45)</volume>
