@@ -19,6 +19,7 @@
     <genStep Class="RimMandrake.Utinni.UtinniPatches.RUT_GenStep_ZersiumForgeLumps">
       <forcedDefToScatter>RSW_MineableZersium</forcedDefToScatter>
       <countPer10kCellsRange>0.3~0.5</countPer10kCellsRange>
+      <minLumps>2</minLumps><!-- PROVISIONAL: floor so no Forge map reads 0 -->
       <allowedBiomes>
         <li MayRequire="mandrake.rm.biomes">RM_TheForge</li>
         <li>RUT_TheForge</li>
