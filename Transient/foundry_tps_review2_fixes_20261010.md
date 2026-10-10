@@ -173,6 +173,19 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
   `(session, seq)` is read once (`replayed`), a different row under the same key counted `conflicts`.
 - GREEN: `C# units: 10 run, 0 failed`; python PASS; companion builds.
 
+### MUST 10 — separate main/watchdog progress; atomic heartbeat with errors
+- RED (`T_HeartbeatSeparatesMainAndWatchdog` with the main beat 30 s old; observer fixture):
+  `FAIL MUST 10: the heartbeat carries the main thread's last progress (mainBeatUtc) ~30 s before the
+  watchdog's write (watchdogUtc): {'utc': '2026-10-10T16:12:22.203Z', 'mainBeatUtc': None, 'watchdogUtc': None}`;
+  `hbSeq, mainBeatMono, watchdogMono, ticksGame, hbErrors, procStartUtc present: ['mono', 'phase', 'pid', ...]`;
+  observer reported only `lastHeartbeatUtc` = the watchdog write time.
+- FIX: `hb_<session>.json` now carries `mainBeatMono/mainBeatUtc` (the main thread's last Root.Update beat),
+  `watchdogMono/watchdogUtc` (this write), `hbSeq`, `ticksGame`, `procStartUtc` (for pid-reuse checks),
+  `hbErrors/hbLastError` (write failures were swallowed before); written to `.tmp` then `File.Replace`d
+  (fallback copy), so readers never see a partial file. Observer findings carry `lastMainProgressUtc` and
+  `lastWatchdogUtc` separately (older heartbeats: main = watchdog − silentS, marked approx).
+- GREEN: `C# units: 11 run, 0 failed`; python PASS; companion builds.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)

@@ -565,8 +565,15 @@ def observe(rows, hbs, game_pid, now=None):
         sess, pid = hb.get("session"), hb.get("pid")
         age = now - hb["_mtime"]
         silent = _num(hb.get("silentS")) or 0.0
+        # MUST 10: two different facts. lastMainProgressUtc = the main thread's last beat (older builds: the
+        # watchdog write minus silentS, approximate); lastWatchdogUtc = when the watchdog thread last wrote.
+        wd_utc = hb.get("watchdogUtc") or hb.get("utc")
+        main_utc = hb.get("mainBeatUtc")
+        if not main_utc and _epoch(wd_utc) is not None:
+            main_utc = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(_epoch(wd_utc) - silent)) + " (approx)"
         base = {"session": sess, "pid": pid, "hbAgeS": round(age, 1), "silentS": silent, "phase": hb.get("phase"),
-                "lastHeartbeatUtc": hb.get("utc")}
+                "lastMainProgressUtc": main_utc, "lastWatchdogUtc": wd_utc, "hbSeq": hb.get("hbSeq"),
+                "hbErrors": hb.get("hbErrors")}
         if age <= HB_FRESH_SECONDS:
             if silent > SILENCE_SECONDS:
                 out.append(dict(base, finding="silent", level="WARN",
@@ -578,7 +585,8 @@ def observe(rows, hbs, game_pid, now=None):
         elif sess not in ended:
             f = dict(base, finding="exited-without-shutdown", level="INFO",
                      detail="session %s (pid %s) ended WITHOUT a shutdown line - crash or kill; its record ends at "
-                            "the last heartbeat %s, phase %s" % ((sess or "?")[:8], pid, hb.get("utc"), hb.get("phase")))
+                            "the main thread's last progress %s (watchdog last wrote %s), phase %s" % (
+                                (sess or "?")[:8], pid, main_utc, wd_utc, hb.get("phase")))
             f["new"] = (sess, "exited-without-shutdown") not in reported
             out.append(f)
     return out

@@ -92,6 +92,7 @@ namespace JawaBench.BridgeTools
         internal static void Start(string dir)
         {
             if (_thread != null) return;
+            ProcessStartUtc();
             HeartbeatPath = Path.Combine(dir, "hb_" + W.Session + ".json");
             Interlocked.Exchange(ref _beatTicks, W.Clock.ElapsedTicks);
             _thread = new Thread(Loop) { IsBackground = true, Name = "JawaBench.TpsWatchdog" };
@@ -154,24 +155,76 @@ namespace JawaBench.BridgeTools
             }
         }
 
+        internal static void SetBeatForTest(double secondsAgo) =>
+            Interlocked.Exchange(ref _beatTicks, W.Clock.ElapsedTicks - (long)(secondsAgo * Stopwatch.Frequency));
+
+        internal static void WriteHeartbeatForTest()
+        {
+            double now = Now;
+            WriteHeartbeat(now, now - Seconds(Interlocked.Read(ref _beatTicks)));
+        }
+
+        private static long _hbSeq, _hbErrors;
+        private static string _hbLastError;
+        internal static string ProcStartUtc;
+
+        private static string ProcessStartUtc()
+        {
+            if (ProcStartUtc != null) return ProcStartUtc;
+            try { ProcStartUtc = Process.GetCurrentProcess().StartTime.ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.fff'Z'", System.Globalization.CultureInfo.InvariantCulture); }
+            catch { ProcStartUtc = ""; }
+            return ProcStartUtc;
+        }
+
+        /// <summary>
+        /// MUST 10: the heartbeat states TWO different facts - when the MAIN thread last made progress
+        /// (mainBeatMono / mainBeatUtc, from its last Root.Update beat) and when THIS watchdog thread wrote
+        /// (watchdogMono / watchdogUtc) - plus a sequence number, the process start time (so an external
+        /// observer can tell a reused pid), and the count/last text of heartbeat write errors. Published
+        /// atomically (temp file, then replace), so a reader never sees an empty or half-written file.
+        /// </summary>
         private static void WriteHeartbeat(double now, double quiet)
         {
+            string tmp = HeartbeatPath + ".tmp";
             try
             {
-                var sb = new StringBuilder(256);
+                long seq = ++_hbSeq;
+                double beatMono = Seconds(Interlocked.Read(ref _beatTicks));
+                DateTime utcNow = DateTime.UtcNow;
+                string iso(DateTime t) => t.ToString("yyyy-MM-dd'T'HH:mm:ss.fff'Z'", System.Globalization.CultureInfo.InvariantCulture);
+                var sb = new StringBuilder(512);
                 sb.Append("{\"pid\":").Append(W.Pid)
                   .Append(",\"session\":\"").Append(W.Session).Append('"')
-                  .Append(",\"utc\":\"").Append(W.Utc()).Append('"')
+                  .Append(",\"procStartUtc\":").Append(M.Json(ProcessStartUtc()))
+                  .Append(",\"hbSeq\":").Append(seq)
+                  .Append(",\"utc\":\"").Append(iso(utcNow)).Append('"')
                   .Append(",\"mono\":").Append(M.F(now, 3))
+                  .Append(",\"watchdogUtc\":\"").Append(iso(utcNow)).Append('"')
+                  .Append(",\"watchdogMono\":").Append(M.F(now, 3))
+                  .Append(",\"mainBeatUtc\":\"").Append(iso(utcNow.AddSeconds(-(now - beatMono)))).Append('"')
+                  .Append(",\"mainBeatMono\":").Append(M.F(beatMono, 3))
                   .Append(",\"silentS\":").Append(M.F(quiet, 1))
                   .Append(",\"phase\":\"").Append(PhaseName).Append('"')
                   .Append(",\"ticksGame\":").Append(LastTicksGame)
                   .Append(",\"segment\":").Append(W.Json(Path.GetFileName(W.CurrentPath ?? "")))
+                  .Append(",\"hbErrors\":").Append(Interlocked.Read(ref _hbErrors))
+                  .Append(",\"hbLastError\":").Append(M.Json(_hbLastError))
                   .Append(',').Append(W.HealthFields())
                   .Append('}');
-                File.WriteAllText(HeartbeatPath, sb.ToString());
+                File.WriteAllText(tmp, sb.ToString());
+                if (File.Exists(HeartbeatPath))
+                {
+                    try { File.Replace(tmp, HeartbeatPath, null); }
+                    catch { File.Copy(tmp, HeartbeatPath, true); File.Delete(tmp); }
+                }
+                else File.Move(tmp, HeartbeatPath);
             }
-            catch { }
+            catch (Exception e)
+            {
+                Interlocked.Increment(ref _hbErrors);
+                _hbLastError = e.GetType().Name + ": " + e.Message;
+                try { if (File.Exists(tmp)) File.Delete(tmp); } catch { }
+            }
         }
     }
 }
