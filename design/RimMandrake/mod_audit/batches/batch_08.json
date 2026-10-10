@@ -1,0 +1,1840 @@
+{
+ "batch": 8,
+ "category": "biomes_world",
+ "count": 14,
+ "instructions": "Assess every mod per design/RimMandrake/mod_audit/RUBRIC.md against design/RimMandrake/mod_audit/SCENARIO_BRIEF.md; write assessments/batch_08.jsonl. Whole-session context (TPS, memory, log probe): facts/session_context.json.",
+ "mods": [
+  {
+   "packageId": "mlie.advancedbiomes",
+   "name": "Advanced Biomes (Continued)",
+   "author": "Hey my team rules!",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 45,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3541022508",
+   "workshop_id": "3541022508",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3541022508",
+   "about_url": "https://github.com/emipa606/AdvancedBiomes",
+   "supports_1_6": true,
+   "description": "[img]https://i.postimg.cc/1X4HT06h/Info.png[/img]\nUpdate of Hey my team rules!s mod\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=1338280929\n\n[b]The release of RimWorld 1.6 added improved support for [url=https://github.com/emipa606/AssetBuilder/blob/main/README.md]Asset Bundles[/url][/b].\nTo avoid doubling the size of the mod, it was re-released using only Asset Bundles, you can find the previous version of this mod [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2052116426]here[/url].\n\n- Some features might not function since I had to decompile the source and some of the transpiling harmony-code I could not figure out.\n- Added mod-options for changing the probability for the added biomes during world generation.\n- Added fish-definitions for Vanilla Fishing Expanded, thank you LilithDarkmoon!\n- Added Chinese translation, thanks Forsakenboy!\n- Added French translation, thanks qux!\n- Added a mod-option to use the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1565767794]Volcano Variety[/url] setting, by thakyZ\n- Wild mushrooms should now fulfill Ideology Fungi-need\n\n- [url= https://steamcommunity.com/sharedfiles/filedetails/?id=2383746247]World Map Beautification Project Patch[/url] by Sacrificial Goat\n\n[img]https://i.postimg.cc/8csH3dWV/Notice.png[/img]\n\n[table]\n    [tr]\n        [td][url=https://discord.gg/h5TY6DA][img]https://i.postimg.cc/T1h9SjbF/Discord.png[/img][/url][/td]\n        [td][url=https://github.com/emipa606/AdvancedBiomes][img]https://i.postimg.cc/fykKF7X4/Github.png[/img][/url][/td]\n    [/tr]\n    [tr]\n        [td][img]https://i.postimg.cc/90zpSP9s/Add-May-Work.png[/img][/td]\n        [td][img]https://i.postimg.cc/6qS0N7L6/Unsafe-To-Remove.png[/img][/td]\n    [/tr]\n[/table]\n\t\n[img]https://i.postimg.cc/hvhrw8xB/Original-Description.png[/img]\n\t\nTerraforming has always been more art than science. The process often resulted in an unstable biosphere. Poisonous forests, lakes of lava, and unregulated weapons testing have left scars across the landscape. These areas pose a hightened threat to colonists, only the desperate or foolish would attempt to live there.\n\nAdvanced Biomes adds 5 new biomes to RimWorld, complete with custom weather, plants and animals.\n\n[b]Poison Forest[/b]: A thick, poisonous forest. The stale air carries millions of fiberous spores. The terrain is soggy with scum and muck. Spiney thickets of poplars cover poison briar and plump fungi.\n[list]\n[*]Poison Spores Weather. Colonists will gradually build up toxicity while outdoors. Let them stay inside every few days to reduce the toxicity.\n[*]New butterflies, mushrooms and blue deer.\n[/list]\n\n[b]Savanna[/b]: A savanna is a rolling grassland scattered with shrubs and isolated trees, which can be found between a tropical rainforest and desert biome. Not enough rain falls on a savanna to support forests.\n[list]\n[*]Big animals, tall grass and few trees makes this ideal for hunting and ranged combat.\n[*]New acacia and baobab trees.\n[/list]\n\n[b]Volcano[/b]: A volcano is a rupture in the crust of a planet, that allows hot lava, volcanic ash, and gases to escape from a magma chamber below the surface.\n[list]\n[*]Pools of lava give off tons of heat and light up the night.\n[*]Volcanic eruptions block the sun for a few days.\n[/list]\n\n[b]Wetland[/b]: A wetland is a land area that is saturated with water, either permanently or seasonally, such that it takes on the characteristics of a distinct ecosystem.\n[list]\n[*]Water makes it difficult to find places to build here.\n[*]New sword fern, ivy, cedar trees, and mangrove trees.\n[/list]\n\n[b]Wasteland[/b]: A highly radioactive desert. Nuclear contamination from weapons testing, war or meltdowns has permanently altered the landscape.\n[list]\n[*]Pools of radioactive waste light up the night.\n[*]Hardly any trees, and nothing to eat but mutant animals.\n[/list]\n\nAdvanced Biomes will be updated periodically, please leave a comment if you have a problem or suggestion.\n\nSpecial thanks to Spdskatr for letting me use his active terrain mod.\nPlease remember to rate this up if you like the mod!\n\nFor 1.0: https://www.dropbox.com/s/m8kv0s4ofkpfxb3/Advanced%20Biomes%201.0.zip?dl=0\n\n[img]https://i.postimg.cc/x8qR7GH9/Reporting-Issues.png[/img]\n[list]\n[*] See if the the error persists if you just have this mod and its requirements active.\n[*] If not, try adding your other mods until it happens again.\n[*] Always post your log using the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Log Uploader[/url]\n[*] For best support, please use the Discord-channel for error-reporting.\n[*] Do not report errors by making a discussion-thread, I get no notification of that.\n[*] If you have the solution for a problem, please post it to the GitHub repository.\n[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods\n[/list]  | tags:  radiation,  lava,  toxicity \n\n[url=https://steamcommunity.com/sharedfiles/filedetails/changelog/3541022508][img]https://img.shields.io/github/v/release/emipa606/AdvancedBiomes?label=latest%20version&style=plastic&color=9f1111&labelColor=black[/img][/url] | tags:  radiation,  lava,  toxicity",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 6.65,
+   "disk_by_kind": {
+    "other": {
+     "files": 4,
+     "mb": 0.01
+    },
+    "xml": {
+     "files": 140,
+     "mb": 0.22
+    },
+    "assemblies": {
+     "files": 3,
+     "mb": 0.04
+    },
+    "textures": {
+     "files": 2,
+     "mb": 0.34
+    },
+    "assetbundles": {
+     "files": 2,
+     "mb": 6.03
+    }
+   },
+   "texture_count": 2,
+   "texture_decoded_mb_est": 1.4,
+   "dll_count": 3,
+   "dlls": [
+    {
+     "name": "ActiveTerrain.dll",
+     "path": "1.6/Assemblies/ActiveTerrain.dll",
+     "kb": 24.5,
+     "flags": [
+      "comp_tick",
+      "harmony",
+      "map_component_tick"
+     ]
+    },
+    {
+     "name": "BiomesPlus.dll",
+     "path": "1.6/Assemblies/BiomesPlus.dll",
+     "kb": 12.5,
+     "flags": [
+      "settings_screen"
+     ]
+    },
+    {
+     "name": "VersionFromManifest.dll",
+     "path": "1.6/Assemblies/VersionFromManifest.dll",
+     "kb": 5.0,
+     "flags": []
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "harmony",
+    "map_component_tick",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 58,
+   "defs_by_type": {
+    "ThingDef": 30,
+    "TerrainDef": 12,
+    "BiomeDef": 5,
+    "PawnKindDef": 4,
+    "ActiveTerrain.SpecialTerrain": 2,
+    "IncidentDef": 2,
+    "GameConditionDef": 1,
+    "HediffDef": 1,
+    "WeatherDef": 1
+   },
+   "patch_ops_all": 28,
+   "patched_def_types": {
+    "TileMutatorDef": 23,
+    "IncidentDef": 4
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld.odyssey": 18,
+    "ludeon.rimworld": 4,
+    "jaeger972.factionterritories": 2,
+    "ludeon.rimworld.ideology": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.patches": 80,
+    "mandrake.rut.doctrine": 7,
+    "tyrannidae.fancyratsplus": 5,
+    "mandrake.rsw.patches": 2,
+    "sarg.alphabiomes": 2,
+    "grimterra.biomesmod": 1,
+    "mlie.starwarsanimalcollection": 1,
+    "zylle.morevanillabiomes": 1
+   },
+   "patched_by_ours_refs": 89,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 3,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/emipa606/AdvancedBiomes",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "MIT",
+   "source_last_push": "2025-11-08T21:00:09Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "sarg.alphabiomes",
+   "name": "Alpha Biomes",
+   "author": "Sarg",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 51,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1841354677",
+   "workshop_id": "1841354677",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=1841354677",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds multiple unique new biomes to Rimworld.\n \n<size=24>Features</size>\n\nAdds 12 new diverse biomes to your Rimworlds. The mod has been designed with the Alpha Animals mod in mind, although it is not a requirement.\n\n- The Mycotic Jungle: a warm and humid biome filled with HUGE mushrooms. Home to the Wildpod and some weird mushroom varieties of usual creatures.\n- The Gallatross Graveyard: an arid temperate biome, littered with the skeletal remains of ancient beasts.\n- The Feralisk Infested Jungle: a warm, wet biome with incredibly dense vegetation, filled to the brink with extremely dangerous predatory spiders.\n- The Ocular Forest: a weird transdimensional realm intruding upon our Universe. Home to strange new flora and fauna.\n- The Gelatinous Superorganism: a swampy biome that is actually the upper surface of an extraordinarily large mold-like creature. No rocks to be found, but plenty of food.\n- The Mechanoid Intrusion: a desolate temperate biome with mechanical ruins. Apparently an ancient mechanoid attempt at turning the planet into a megastructure.\n- The Propane Lakes: a frozen wasteland, colder than the most inhospitable Sea Ice, but teaming with aberrant flora and fauna.\n- The Forsaken Crags: permanently clouded by a preternatural darkness, light is the most valuable commodity in this desertic landscape. Inspired by (and compatible with) the Forsakens mod.\n- The Tar Pits: an arid biome rich in vegetation, filled with treacherous tar pits that make movement quite difficult. Beware the Bumbledrone hives! \n- The Pyroclastic Conflagration: a volcanic expanse of unrelenting and brutal nature. Fire and lava are both your worst enemy and your best friend in this biome.\n- The Idyllic Meadows: a lush meadow of giant flowers. A super easy biome that provides tons of resources and few predators.\n- The Miasmic Mangrove: a dangerous tropical biome full of debilitating diseases.\n\n\nThe biomes have been tweaked so they don't take too much space in the world map, and you might have to generate a planet again if some biome is not appearing, since they have different temperature and humidity characteristics.\n\n<size=24>Issues</size>\n\nBalance is obviously always a concern, although it has been playtested. Feel free to tell me if you think something is too wacky.\n\n<size=24>Plans for the future</size>\n\nMaybe more biomes, who knows!\n\n<size=24>Compatibility</size>\n\nCompatible with any other biome mod \nCompatible with Alpha Animals (obviously)\nCompatible with Magical Menagerie\nCompatible with Dinosauria\nCompatible with Megafauna\nCompatible with Vanilla Animals Expanded\nCompatible with Rim of Madness - Bones\nCompatible with Vanilla Fishing Expanded (adds 19 new fish)\nCompatible with Fish Industry\nCompatible with Forsakens\nCompatible with Camouflage and Stealth\nCompatible with Fertile Fields\n\nMods that modify the way the world is generated MAY cause some weird results. Use at your own risk.\n\n<size=24>Credit</size>\nBone planet: Hyptosis https://opengameart.org/content/bone-planet \nSome sounds by Mike Koenig at http://soundbible.com\nAlien planet sound modified from Speedenza: https://freesound.org/people/Speedenza/sounds/198532/\n\n<size=24>Changelog</size>\n\nFull changelog on GitHub",
+   "dependencies": [
+    "brrainz.harmony",
+    "OskarPotocki.VanillaFactionsExpanded.Core"
+   ],
+   "dependants": [
+    "mandrake.rm.biomes"
+   ],
+   "dependants_ours": [
+    "mandrake.rm.biomes"
+   ],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "brrainz.harmony",
+    "BiomesTeam.BiomesIslands",
+    "OskarPotocki.VanillaFactionsExpanded.Core"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 106.05,
+   "disk_by_kind": {
+    "xml": {
+     "files": 296,
+     "mb": 1.66
+    },
+    "assemblies": {
+     "files": 2,
+     "mb": 0.19
+    },
+    "textures": {
+     "files": 1128,
+     "mb": 98.34
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    },
+    "sounds": {
+     "files": 4,
+     "mb": 5.86
+    }
+   },
+   "texture_count": 1128,
+   "texture_decoded_mb_est": 788.0,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "AlphaBiomes.dll",
+     "path": "1.6/Assemblies/AlphaBiomes.dll",
+     "kb": 119.0,
+     "flags": [
+      "comp_tick",
+      "comp_tick_rare",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "comp_tick_rare",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 743,
+   "defs_by_type": {
+    "ThingDef": 271,
+    "TerrainDef": 113,
+    "TileMutatorDef": 91,
+    "KCSG.SymbolDef": 49,
+    "KCSG.StructureLayoutDef": 26,
+    "RulePackDef": 24,
+    "LandmarkDef": 23,
+    "HediffDef": 22,
+    "ThoughtDef": 16,
+    "AlphaBiomes.SpecialSpawnsDef": 12,
+    "BiomeDef": 12,
+    "WeatherDef": 12,
+    "PrefabDef": 9,
+    "GameConditionDef": 7,
+    "RecipeDef": 7,
+    "IncidentDef": 6,
+    "SoundDef": 6,
+    "FleckDef": 5,
+    "WorkGiverDef": 5,
+    "DamageDef": 3,
+    "StuffCategoryDef": 3,
+    "AlphaBiomes.BiomeStructuresDef": 2,
+    "TerrainAffordanceDef": 2,
+    "VEF.Buildings.HiddenDesignatorsDef": 2,
+    "VEF.Maps.ActiveTerrainDef": 2
+   },
+   "patch_ops_all": 335,
+   "patched_def_types": {
+    "ThingDef": 104,
+    "TerrainDef": 71,
+    "TileMutatorDef": 39,
+    "BiomeDef": 35,
+    "LandmarkDef": 33,
+    "PawnKindDef": 5,
+    "ThoughtDef": 4,
+    "IncidentDef": 3,
+    "StatDef": 3,
+    "DesignationCategoryDef": 1
+   },
+   "patch_findmod_names": {
+    "Vanilla Furniture Expanded - Power": 2,
+    "Alpha Genes": 1,
+    "Alpha Memes": 1,
+    "Birds Beyond: Temperate Forest": 1,
+    "Birds Beyond: Tropical Rainforest": 1,
+    "Camouflage and Stealth": 1,
+    "Dinosauria": 1,
+    "Empire": 1,
+    "Erin's Final Fantasy Animals": 1,
+    "Erin's Fox Squirrel": 1,
+    "Erin's Friendly Ferrets": 1,
+    "Erin's Valheim Creatures": 1,
+    "Fertile Fields [1.1]": 1,
+    "FishIndustry": 1,
+    "Megafauna": 1
+   },
+   "patches_mods": {
+    "ludeon.rimworld.odyssey": 64,
+    "ludeon.rimworld": 11,
+    "mlie.advancedbiomes": 2,
+    "jm.bettertraders": 1,
+    "kas.strongerscaling": 1,
+    "ludeon.rimworld.biotech": 1,
+    "smashphil.vehicleframework": 1,
+    "vanillaexpanded.vfepower": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.patches": 871,
+    "mandrake.rut.pawnflavor": 170,
+    "mandrake.rm.biomes": 84,
+    "grimterra.biomesmod": 20,
+    "mandrake.rut.ashkarrlandmarkart": 12,
+    "sarg.alphagenes": 9,
+    "chaoticenrico.bettertrees": 7,
+    "mandrake.rm.flowworks": 7,
+    "mandrake.rut.doctrine": 6,
+    "oskarpotocki.vfe.tribals": 3,
+    "sarg.alphaanimals": 3,
+    "mandrake.rsw.patches": 2,
+    "mandrake.rut.injections": 2,
+    "jellypowered.survivaltools": 1,
+    "mandrake.rsw.armoury": 1
+   },
+   "patched_by_ours_refs": 1155,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 7,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/juanosarg/AlphaBiomes",
+   "source_kind": "github-search",
+   "source_confidence": "INFERRED",
+   "source_license": "",
+   "source_last_push": "2026-09-29T17:55:52Z",
+   "source_archived": false,
+   "source_note": "top hit for the mod NAME; a name match, not proof - confirm before relying on it",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "hailuan.customquestframework",
+   "name": "Custom Quest Framework",
+   "author": "HaiLuan",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 97,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2978572782",
+   "workshop_id": "2978572782",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2978572782",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "(WIP)\n         Have you ever thought about editing a quest yourself? Build your own map for other players to explore? \n\t\t The Custom Quest Framework has added the function of allowing players to edit quests themselves.\n\t\t \n         Functions:\n         I：Edit Quest:\n\t\t This mod added a questeditor to help player edit quest.\n\t\t II:Custom Map:\n\t\t This mod provides the function to customize maps as quest sites.\n\t\t III:Misc:\n\t\t LootBox.Pawnspawner.........\n\n\t\t How should I edit a quest?\n         Hmmm,My English is not very good and I am unable to write a detailed tutorial, but I have created some custom quest mods as a example.",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [
+    "hailuan.customquestframeworkai",
+    "mlie.dungeonpack"
+   ],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 8.81,
+   "disk_by_kind": {
+    "xml": {
+     "files": 134,
+     "mb": 0.72
+    },
+    "assemblies": {
+     "files": 9,
+     "mb": 3.72
+    },
+    "textures": {
+     "files": 120,
+     "mb": 4.37
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 120,
+   "texture_decoded_mb_est": 98.1,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "QuestEditor_Library.dll",
+     "path": "1.6/Assemblies/net48/QuestEditor_Library.dll",
+     "kb": 741.0,
+     "flags": [
+      "comp_tick",
+      "game_component_tick",
+      "harmony",
+      "map_component_tick",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "game_component_tick",
+    "harmony",
+    "map_component_tick",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 116,
+   "defs_by_type": {
+    "ThingDef": 44,
+    "QuestEditor_Library.PawnModDef": 14,
+    "JobDef": 10,
+    "GenStepDef": 6,
+    "WorldObjectDef": 6,
+    "DesignationDef": 5,
+    "MapGeneratorDef": 5,
+    "DrawStyleDef": 4,
+    "DutyDef": 4,
+    "TerrainDef": 3,
+    "QuestEditor_Library.CustomMapBackgroundEffectDef": 2,
+    "ScenPartDef": 2,
+    "SitePartDef": 2,
+    "WorkGiverDef": 2,
+    "BiomeDef": 1,
+    "DrawStyleCategoryDef": 1,
+    "FleckDef": 1,
+    "HediffDef": 1,
+    "MainButtonDef": 1,
+    "QuestEditor_Library.ReplacementDataDef": 1,
+    "QuestEditor_Library.SpecialPawnGenerateDef": 1
+   },
+   "patch_ops_all": 1,
+   "patched_def_types": {
+    "DesignationCategoryDef": 1
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 5,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/ying636/CustomQuestFrameworkOld",
+   "source_kind": "github-search",
+   "source_confidence": "INFERRED",
+   "source_license": "",
+   "source_last_push": "2023-11-11T11:53:59Z",
+   "source_archived": false,
+   "source_note": "top hit for the mod NAME; a name match, not proof - confirm before relying on it",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "m00nl1ght.geologicallandforms",
+   "name": "Geological Landforms",
+   "author": "m00nl1ght",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 142,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2773943594",
+   "workshop_id": "2773943594",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2773943594",
+   "about_url": "https://github.com/m00nl1ght-dev/GeologicalLandforms",
+   "supports_1_6": true,
+   "description": "Adds 44 landforms to the game, which generate biome-independently. The goal of this mod is to make map generation more interesting and varied, compared to the vanilla experience of simply having either a cliff or a coast on one edge of your map.",
+   "dependencies": [],
+   "dependants": [
+    "m00nl1ght.geologicallandforms.biometransitions"
+   ],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "Ludeon.RimWorld.Odyssey",
+    "brrainz.harmony"
+   ],
+   "load_before": [
+    "rwmt.multiplayer"
+   ],
+   "incompatible_with": [],
+   "disk_mb": 14.69,
+   "disk_by_kind": {
+    "other": {
+     "files": 29,
+     "mb": 0.04
+    },
+    "xml": {
+     "files": 195,
+     "mb": 8.04
+    },
+    "assemblies": {
+     "files": 23,
+     "mb": 5.91
+    },
+    "textures": {
+     "files": 16,
+     "mb": 0.7
+    },
+    "assetbundles": {
+     "files": 2,
+     "mb": 0.01
+    }
+   },
+   "texture_count": 16,
+   "texture_decoded_mb_est": 10.5,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "LunarLoader.dll",
+     "path": "1.6/Assemblies/LunarLoader.dll",
+     "kb": 15.0,
+     "flags": []
+    }
+   ],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md",
+     "1.4/Lunar/README.md",
+     "1.5/Lunar/README.md",
+     "1.6/Lunar/README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 44,
+   "defs_by_type": {
+    "TileMutatorDef": 44
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 3,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/m00nl1ght-dev/GeologicalLandforms",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "NOASSERTION",
+   "source_last_push": "2026-10-10T13:43:59Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "grimterra.biomesmod",
+   "name": "GRiNDTerra Biomes",
+   "author": "ItsMePaulieB",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 150,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3537211820",
+   "workshop_id": "3537211820",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3537211820",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Alien Biomes for Alien Worlds.",
+   "dependencies": [
+    "OskarPotocki.VanillaFactionsExpanded.Core",
+    "Ludeon.RimWorld.Odyssey"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 251.65,
+   "disk_by_kind": {
+    "xml": {
+     "files": 51,
+     "mb": 0.46
+    },
+    "assemblies": {
+     "files": 1,
+     "mb": 0.01
+    },
+    "textures": {
+     "files": 1184,
+     "mb": 251.18
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1184,
+   "texture_decoded_mb_est": 772.8,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "GRimTerraBiomes.dll",
+     "path": "1.6/Assemblies/GRimTerraBiomes.dll",
+     "kb": 11.5,
+     "flags": []
+    }
+   ],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 288,
+   "defs_by_type": {
+    "ThingDef": 136,
+    "TerrainDef": 104,
+    "BiomeDef": 15,
+    "ScatterableDef": 13,
+    "WeatherDef": 11,
+    "PawnKindDef": 9
+   },
+   "patch_ops_all": 125,
+   "patched_def_types": {
+    "TileMutatorDef": 105,
+    "BiomeDef": 15,
+    "VanillaPlantsExpandedMorePlants.AquaticGrowZoneTerrainsDef": 1,
+    "VanillaPlantsExpandedMorePlants.SandyGrowZoneTerrainsDef": 1
+   },
+   "patch_findmod_names": {
+    "GRiNDTerra Biomes": 15,
+    "Alpha Biomes": 1,
+    "Vanilla Landmarks Expanded": 1,
+    "Vanilla Plants Expanded - More Plants": 1
+   },
+   "patches_mods": {
+    "vanillaexpanded.vexploratione": 49,
+    "ludeon.rimworld.odyssey": 30,
+    "sarg.alphabiomes": 20,
+    "ludeon.rimworld.biotech": 1,
+    "mlie.advancedbiomes": 1,
+    "vanillaexpanded.vee": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.patches": 81,
+    "mandrake.rut.doctrine": 6,
+    "mandrake.rut.pyrelandsmechanics": 6,
+    "mandrake.rm.patches": 4
+   },
+   "patched_by_ours_refs": 97,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "mlie.horrors",
+   "name": "Horrors (Continued)",
+   "author": "Viceroy",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 154,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3535224844",
+   "workshop_id": "3535224844",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3535224844",
+   "about_url": "https://github.com/emipa606/Horrors",
+   "supports_1_6": true,
+   "description": "[img]https://img.litet.net/logos/Info.png[/img]\nUpdate of Viceroys mod\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=822995067\n\n[b]The release of RimWorld 1.6 added improved support for [url=https://github.com/emipa606/AssetBuilder/blob/main/README.md]Asset Bundles[/url][/b].\nTo avoid doubling the size of the mod, it was re-released using only Asset Bundles, you can find the previous version of this mod [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2036315072]here[/url].\n\nChinese translation: Kevin JCK\nMod-breakdown video: DementedZombie\n\n[strike]Not compatible with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=736172213]Rimsenal - Federation Faction Pack[/url] as it also has a defName called Harvester[/strike] Seems that mod changed its defname for its harvesters in 1.3 so should no longer be an issue.\n\n[img]https://img.litet.net/logos/Notice.png[/img]\n\n[table]\n\t[tr]\n\t\t[td][url=https://discord.gg/h5TY6DA][img]https://img.litet.net/logos/Discord.png[/img][/url][/td]\n\t\t[td][url=https://github.com/emipa606/Horrors][img]https://img.litet.net/logos/Github.png[/img][/url][/td]\n    [/tr]\n    [tr]\n        [td][img]https://img.litet.net/logos/UnsafeToAdd.png[/img][/td]\n        [td][img]https://img.litet.net/logos/RemoveMayWork.png[/img][/td]\n    [/tr]\n[/table]\n\t\n[img]https://img.litet.net/logos/OriginalDescription.png[/img]\n\nAdds a swarm of Unknown Horrors to the Rimworlds, they have hives of their own that will need to be assaulted and eradicated to ensure your safety. They infest and attack your colony, carving out a large hive and building it up over several tiers. With an overarching AI controlling the behaviour of the hive as they too try and survive. Making use of their every wit.\n\nThis mod aims to offer an alternative to the simple dynamics of the vanilla infestation, by adding a smart enemy to compete against that has the same objective as you, but with different dynamics to survive. Watch as the hive expands, hardens itself, defends itself and slowly spreads to assault your colony.\n\nExpect a challenge when facing the (somewhat rare) events. With regular raids offering little more danger than you already come to expect, but the infestation can be a death sentence if your colony is not well prepared.\n\nFrom an artistic direction, the Horrors are a combination of several horror tropes, and as such can be considered a mashup of the Zerg, Alien, Pitchblack and generally spiders. Specifically colony spiders.\n\nThey come in many fearsome forms and are a danger to even the most prepared of colonies.\n\n\n[h1] Features: [/h1] \n[list]\n    [*]A new hostile faction, namely the Horrors.\n    [*]Prowling Monsters to defend against.\n    [*]Attackable Hive sites.\n    [*]Infestations to try and survive.\n    [*]Multiple different structures used by the Horrors to infest your base.\n    [*]Dynamic hive behaviour with an overarching AI.\n    [*]4 different types of monster to defend against.\n    [*]More immersive sense of infestation, happening before your eyes as Horrors dig out and web their hive.\n[/list]\n\n[h1] Known Issues and Limitations: [/h1] \n[list]\n    [*]Seemingly harmless nullpointer exception on first encounter with Horrors.\n    [*]Human Horrors (This is because a faction MUST have a human leader, I am working to bypass this)\n    [*]Thieving Horrors, sometimes Horrors will steal things for monetary value, this is hardcoded into the thinktree based on pawn intelligence, and will be supersceded by my own thinktree (which I am working on)\n    [*]Faction bases for Horrors at this time are very rudimentary, I haven't had time to switch it over to the A17 goodies for the faction base yet. But I will!\n[/list]\n\nPlease Note: I am working on solving the above-mentioned nullpointer exception. But as far as I can tell it does not seem to interfere with the operation of the mod.\n\n[h1] Future Plans: [/h1] \n[list]\n    [*]Expand Hives.\n    [*]Increase number of unique Horrors.\n    [*]Increase variety for raids and add different raid types.\n    [*]Expand AI for the hive.\n    [*]Add aditional hive defense + attack behaviours.\n    [*]Hive passification through technological means (Xenomorph research anyone?)\n    [*]Horror Biome.\n    [*]Horror Diseases.\n    [*]More beneficial resources that can be gained from hives.\n[/list]\n\n[h1] FAQ: [/h1] \n[list]\n    [*]How do I remove webs?\n\n- You can use the Clear Plants tool to clear webs. Or you can burn them out.\n\n    [*]How do I remove Horror corpses?\n\n- You can butcher or burn the bodies.\n\n    [*]Does destroying Horror hives lower the chance for attacks by them?\n\n- Not at the moment no, although destroying all of them will remove the faction and all attacks by them (if that is vanilla behaviour when you eradicate a faction.) This is definitely going to change, as in the future, each hive on the map will increase the size and danger of Horror attacks and Infestation events.\n\n    [*]Do you have to make a new game or is it compatible with old saves?\n\n- This mod does require a new game to be created. It also adds items to equipment tables and will likely cause issues if added/removed mid-save.\n\n    [*]Are these things tougher than vanilla infestations?\n\n- Creature-for-creature they are comparable in health and DPS to vanilla insectoids. However the hive has greater survival capability and it also has a higher final difficulty level than vanilla infestations, since there are higher tier creatures available.\n\n[/list]\n\nFurthermore I'd like to say that it is important to get feedback from as many of you as possible, I am only one man and it is hard to find the time to thoroughly test something like this. So I did it in expeditious terms and may have missed some issues that did not meet the eye.\n\nThank everyone for downloading my mod and for giving me a chance to entertain you!\n\n\n[img]https://img.litet.net/logos/ReportingIssues.png[/img]\n[list]\n[*] See if the the error persists if you just have this mod and its requirements active.\n[*] If not, try adding your other mods until it happens again.\n[*] Always post your log using the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Log Uploader[/url]\n[*] For best support, please use the Discord-channel for error-reporting.\n[*] Do not report errors by making a discussion-thread, I get no notification of that.\n[*] If you have the solution for a problem, please post it to the GitHub repository.\n[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods\n[/list] \n\n[url=https://steamcommunity.com/sharedfiles/filedetails/changelog/3535224844][img]https://img.shields.io/github/v/release/emipa606/Horrors?label=latest%20version&style=plastic&color=9f1111&labelColor=black[/img][/url] | tags: horror creatures",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 22.51,
+   "disk_by_kind": {
+    "other": {
+     "files": 89,
+     "mb": 0.07
+    },
+    "assemblies": {
+     "files": 1,
+     "mb": 0.04
+    },
+    "xml": {
+     "files": 79,
+     "mb": 0.18
+    },
+    "textures": {
+     "files": 3,
+     "mb": 0.05
+    },
+    "assetbundles": {
+     "files": 2,
+     "mb": 22.17
+    }
+   },
+   "texture_count": 3,
+   "texture_decoded_mb_est": 0.5,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "Horrors.dll",
+     "path": "1.6/Assemblies/Horrors.dll",
+     "kb": 36.0,
+     "flags": [
+      "comp_tick",
+      "comp_tick_rare",
+      "harmony"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "comp_tick_rare",
+    "harmony"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 66,
+   "defs_by_type": {
+    "ThingDef": 31,
+    "PawnKindDef": 8,
+    "BodyPartDef": 6,
+    "BodyDef": 3,
+    "RulePackDef": 3,
+    "SoundDef": 3,
+    "ThinkTreeDef": 3,
+    "BodyPartGroupDef": 2,
+    "BiomeDef": 1,
+    "FactionDef": 1,
+    "GenStepDef": 1,
+    "IncidentDef": 1,
+    "PawnGroupKindDef": 1,
+    "TerrainDef": 1,
+    "TraderKindDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.patches": 29,
+    "mandrake.rut.doctrine": 24
+   },
+   "patched_by_ours_refs": 53,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 3,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/emipa606/Horrors",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "MIT",
+   "source_last_push": "2026-07-22T22:06:59Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "gravtide.mod",
+   "name": "GravTide",
+   "author": "yongdd",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 163,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3779600989",
+   "workshop_id": "3779600989",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3779600989",
+   "about_url": "https://discord.gg/gzDb8Cqxxg",
+   "supports_1_6": true,
+   "description": "Explore the sea floor aboard your gravship. Discover new underwater biomes shaped by depth and water temperature, from coral reefs and kelp forests to the lightless deep sea. Encounter marine life and find mineral resources along the way. Prepare for pressure, cold and flooding as you explore the ocean depths.\n\nTHE OCEAN\n- Pressure increases with depth. Check both equipment ratings and the wearer's breathing and pressure limits before a dive. Diving helmets and integrated hardsuits supply air with a complete functioning seal. A working one-atmosphere suit also isolates its wearer from the surrounding pressure.\n- Water reduces insulation and narrows comfortable temperature ranges. Sealed diving equipment helps, but does not remove the underwater temperature penalty.\n- Underwater rooms need walls, roofs and watertight foundations. Gravship substructure and suitable concrete foundations seal the floor. Hulls and hatches have pressure ratings; airtight walls hold until they implode, ordinary doors leak first, and stone or wooden walls let water through. Deeper roofs need closer supports.\n- Water reduces the range and damage of conventional projectiles and the damage of blunt melee attacks. Underwater weapons retain their damage. Overhead projectiles and orbital attacks cannot be used on seabed maps.\n- Deep bases lose radio contact. Comms consoles, scanners and uplinks have depth limits; uplink progress is retained until contact returns. Colonists within radio range can still receive quest offers. Raid access also depends on depth and the attackers' type.\n- Light decreases with depth. The continental shelf supports abundant marine life, while deeper waters offer vents, oil seeps, mineral deposits and animals adapted to the dark.\n\nAIRLOCKS AND DIVING\n- Select colonists and right-click deep ocean water on a coastal land map to dive to a linked seabed. Choose crew and cargo, explore, then return through the shore boundary.\n- Layout: dry room - pressure hatch - airlock with compartment pressure set - pressure hatch - sea. Use pressure-rated walls, a roof and a watertight floor.\n- Connect a drain tank and drainage pump on the same continuous deck; no sea-facing outlet is needed. Add a suction pump in other rooms that need draining.\n- To leave: close both hatches, match sea pressure, then open the outer hatch. To return: close the outer hatch, drain and match the inner room, then open the inner hatch. Wear diving equipment suited to the depth and pressure.\n\nBOATS AND SHIPYARDS\n- Build hulls in a coastal shipyard and fit them with suitable propulsion, crew stations and cargo storage. Cabins, a galley, an infirmary, a storeroom and chemfuel generators can be installed below deck.\n- Colonists gather to launch wooden hulls. Steel hulls use the shipyard gantry, operated by one colonist.\n- Carry crew and cargo between coasts or anchor in open water. Submarines can travel at the surface or on the sea floor, with separate diving and surfacing operations.\n\nOFFSHORE PLATFORMS\n- Support platform decks with piles in shallower water or moorings in deeper water. Bring a work barge with suitable installation equipment to build them.\n- Use a seabed survey array to locate deposits. A production platform above an oil field extracts and processes its crude oil.\n\nGENES\nWith Biotech, preserve tissue samples from marine animals and process them in a gene sequencer to recover underwater adaptations.\n- Gills provide underwater breathing and increase food consumption while active. Work and learning are slower even on land. Gills provide no pressure protection.\n- Pressure-stable nerves prevent high-pressure nervous syndrome, with slower research and increased food demand. Other pressure limits still apply.\n- High-pressure membranes prevent enzyme failure but slow work.\n- The dive reflex extends breath-holding time and slows the development of some pressure-related conditions. It does not raise pressure limits.\n- An unossified skeleton aids swimming but reduces carrying capacity, movement and melee damage. Ectothermy reduces food needs, with penalties in cold water and reduced protection from clothing.\n\nSCENARIO\nStranded below starts three survivors aboard a damaged gravship on the sea floor.\n\nCOMPATIBILITY\nRace compatibility: Moyo, Merren, Haeyang, Mincho and Star Wars Xenotypes.\nMoyo cannot breathe underwater on their own and need breathing equipment when diving.\n\nMod settings let you adjust underwater equipment and humanoid race support for other mods.\n\nAlso compatible with Ambient Rim, TP Sea Plants, Event Image Popup, Smooth Terrain, Layered Atmosphere and Orbit, Vanilla Gravship Expanded, Dlc collaboration - Void universe, and Yet another Optimizer.\n\nA WARNING\nPressure failures and flooding can be fatal. Keep saves you can reload; commitment mode is not recommended.\n\nStart a new world. This mod changes how the world map is generated, so it cannot be added to an existing one. Mostly tested at 100% planet coverage.\n\nRequires Odyssey and Harmony. Anomaly, Biotech, Royalty and Ideology are optional.\n\nLanguages: English, Korean (한국어), Russian (Русский), Simplified Chinese (简体中文) and Japanese (日本語). The author has not been able to personally verify the Russian, Chinese or Japanese translations.\n\nMore on the Discord (https://discord.gg/gzDb8Cqxxg); bug reports and suggestions welcome there or on the Discussions tab.\n\nBuilt with AI assistance from Claude and Codex for code, defs, tooling, documentation, translations and artwork. The author directs development and decides what is released. Validation includes automated tests and in-game playtesting. Declared to the AI-DECLARATION.md standard (https://ai-declaration.md/en/0.1.2/) at level auto; see the included declaration for details.\n\nPortions of the materials used to create this content/mod are trademarks and/or copyrighted works of Ludeon Studios Inc. All rights reserved by Ludeon. This content/mod is not official and is not endorsed by Ludeon.",
+   "dependencies": [
+    "Ludeon.RimWorld.Odyssey",
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Odyssey",
+    "Nemonian.MY2",
+    "Arquebus.StagzMerfolk",
+    "Sanoo6.HaeyangRaceMod",
+    "SutSutMan.MinchoTheMintChocoSlimeHARver",
+    "guy762.StarWarsXenotypes",
+    "MrHydralisk.LayeredAtmosphereOrbit"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 95.94,
+   "disk_by_kind": {
+    "other": {
+     "files": 320,
+     "mb": 6.75
+    },
+    "xml": {
+     "files": 738,
+     "mb": 3.58
+    },
+    "textures": {
+     "files": 831,
+     "mb": 70.62
+    },
+    "assemblies": {
+     "files": 1,
+     "mb": 2.74
+    },
+    "assetbundles": {
+     "files": 1,
+     "mb": 0.02
+    },
+    "source": {
+     "files": 1277,
+     "mb": 12.24
+    }
+   },
+   "texture_count": 831,
+   "texture_decoded_mb_est": 364.9,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "GravTide.dll",
+     "path": "Assemblies/GravTide.dll",
+     "kb": 2806.5,
+     "flags": [
+      "comp_tick",
+      "comp_tick_rare",
+      "harmony",
+      "map_component_tick",
+      "settings_screen",
+      "world_component_tick"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "comp_tick_rare",
+    "harmony",
+    "map_component_tick",
+    "settings_screen",
+    "world_component_tick"
+   ],
+   "ships_source": {
+    "cs": 1267,
+    "csproj": 7,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "Docs/README.md",
+     "Docs/ArtReviews/BandedIron/README.md",
+     "Source/ReviewTools/FishClassificationAudit/README.md",
+     "Source/ReviewTools/RetiredReferenceAudit/README.md",
+     "Source/ReviewTools/VacuumRewriteAudit/README.md"
+    ],
+    "source_dir": true
+   },
+   "def_total": 753,
+   "defs_by_type": {
+    "ThingDef": 287,
+    "PawnKindDef": 60,
+    "GravTide.MaritimeRoomDef": 44,
+    "TerrainDef": 39,
+    "TileMutatorDef": 36,
+    "BodyPartDef": 23,
+    "GenStepDef": 23,
+    "ScatterableDef": 20,
+    "BiomeDef": 17,
+    "ResearchProjectDef": 15,
+    "StatDef": 14,
+    "HediffDef": 11,
+    "MapGeneratorDef": 11,
+    "QuestScriptDef": 11,
+    "BodyDef": 10,
+    "GravTide.SeabedFloorProfileDef": 10,
+    "JobDef": 10,
+    "WorkGiverDef": 10,
+    "WorldObjectDef": 10,
+    "GravTide.MaritimeOperationDef": 9,
+    "SitePartDef": 9,
+    "GeneDef": 7,
+    "GravTide.MaritimeSitePlanDef": 7,
+    "ThinkTreeDef": 6,
+    "ThoughtDef": 6
+   },
+   "patch_ops_all": 100,
+   "patched_def_types": {
+    "ThingDef": 48,
+    "IncidentDef": 18,
+    "GameConditionDef": 14,
+    "GeneDef": 9,
+    "QuestScriptDef": 8,
+    "BiomeDef": 7,
+    "StatDef": 7,
+    "RecipeDef": 3,
+    "AbilityDef": 2,
+    "PlanetLayerDef": 2
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 56,
+    "ludeon.rimworld.odyssey": 53,
+    "ludeon.rimworld.anomaly": 20,
+    "ludeon.rimworld.royalty": 18,
+    "winggar.meaningfulparties": 18,
+    "ludeon.rimworld.biotech": 11,
+    "ludeon.rimworld.ideology": 8,
+    "vanillaexpanded.gravship": 8,
+    "jpt.speakup": 2,
+    "jaeger972.factionterritories": 1,
+    "smashphil.vehicleframework": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 12,
+   "static_ctors": 21,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": null,
+   "prior_note_2026_08_30": null,
+   "src": null
+  },
+  {
+   "packageId": "zylle.morevanillabiomes",
+   "name": "More Vanilla Biomes",
+   "author": "Zylle",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 221,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1931453053",
+   "workshop_id": "1931453053",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=1931453053",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Features:\nMore Vanilla Biomes adds more map variety without overhauling the game. Includes eight new vanilla-friendly biomes.\n\nMarsh: Marshy terrain with dense plants but few trees. Temperate to cold.\n\nStormy Savanna: Warm, with poor soil, lots of grass, and few trees.\n\nCoastal Dunes: Low-lying sandy area with lots of water. \n\nSandbar: Smooth, flat, sandy islands with little if any vegetation or arable land.\n\nAlpine Meadow: A beautiful area with fertile soil, lots of flowers, and few predators. The summers are mild and bountiful, and the winters are cold and harsh.\n\nDesert Oasis: Desert with groundwater close to the surface, making small lakes that support pockets thick vegetation.\n\nIce Floes: Frigid chunks of ice floating on the ocean. Who would want to live here?\n\nCloud Forest: Found at the tops of tropical mountains and named for the constant fog. Animals frequently wander up the slopes from the forests below.\n\nBadlands: Rocky, dry and desolate, these temperate regions feature little life.\n\nGlacial Shield: Where the glacier meets the tundra, this area is icy, rocky, and cold almost year-round. Thick stands of forest are concentrated in patches of soil and around lakes, attracting wildlife.\n\n-------------------------\nCompatibility\nThis mod is meant to be as widely compatible as possible. Please report any issues.\n\nCompatible with other biome mods including Alpha Biomes, Advanced Biomes, Archipelagos,and Nature's Pretty Sweet.\n\nPatched for many plant and animal mods.\n\nMods that change world generation may cause strange results, please report any issues.\n\n\n\n\nFishing-- compatible with: \nVanilla Fishing Expanded\nFishIndustry\n[RF] Fishing [1.0]\n\nRecommended\n[url=https://steamcommunity.com/sharedfiles/filedetails/?id=1095331978]Prepare Landing[/url] to help find the biome of your choice\n[url=https://steamcommunity.com/sharedfiles/filedetails/?id=761315214]Map Reroll[/url] if playing on maps without much solid ground.\nYour choice of gravel visibility mod, especially if playing in Grasslands or Dunes. Some options are [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1613910454]Gravel[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1541281864]Where's the Gravel?[/url], and [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1561838700]Soil Contrast[/url]\n\nIncompatibility\nTerra Project: Makes extensive changes to world generation that I can't work around.\n\nPlease report any other incompatibilities you find.\n\n-------------------------\nCredits:\nThis mod uses code borrowed from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1539309846]Rainbeau's Archipelagos[/url]\n\nTranslations:\nJapanese by Proxyer \nFrench by DrTCS and qux\nSimplified Chinese by 第四天灾\n\n-------------------------\nLinks:\nGet it on Github: https://github.com/Zylleon/MoreVanillaBiomes/releases/latest\nDiscord: https://discord.gg/CQrsbEV\nMy other mods: https://steamcommunity.com/profiles/76561197998830956/myworkshopfiles/?appid=294100\n\nSupport me: https://ko-fi.com/zylleon",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 3.57,
+   "disk_by_kind": {
+    "xml": {
+     "files": 237,
+     "mb": 0.89
+    },
+    "assemblies": {
+     "files": 6,
+     "mb": 0.22
+    },
+    "textures": {
+     "files": 13,
+     "mb": 2.45
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 13,
+   "texture_decoded_mb_est": 16.5,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "VanillaBiomes.dll",
+     "path": "1.6/Assemblies/VanillaBiomes.dll",
+     "kb": 26.5,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 28,
+   "defs_by_type": {
+    "BiomeDef": 10,
+    "FeatureDef": 7,
+    "RulePackDef": 7,
+    "TerrainDef": 2,
+    "ThingDef": 2
+   },
+   "patch_ops_all": 171,
+   "patched_def_types": {
+    "ThingDef": 94,
+    "TileMutatorDef": 41,
+    "BiomeDef": 23,
+    "IncidentDef": 3,
+    "VCE_Fishing.BiomeTempDef": 3,
+    "TerrainDef": 2,
+    "VCE_Fishing.FishableTerrainDef": 2
+   },
+   "patch_findmod_names": {
+    "Biomes! Core": 1,
+    "Biomes! Islands": 1,
+    "Vanilla Fishing Expanded": 1
+   },
+   "patches_mods": {
+    "sarg.alphaanimals": 89,
+    "ludeon.rimworld.odyssey": 36,
+    "ludeon.rimworld": 8,
+    "regrowth.botr.core": 3,
+    "ludeon.rimworld.biotech": 1,
+    "mlie.advancedbiomes": 1,
+    "winggar.meaningfulparties": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.patches": 43,
+    "mlie.starwarsanimalcollection": 17,
+    "mandrake.rsw.patches": 4
+   },
+   "patched_by_ours_refs": 47,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 1,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/Zylleon/MoreVanillaBiomes",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": "2026-08-02T19:46:48Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "radzerp.naturalpaths",
+   "name": "Natural Paths",
+   "author": "sindre0830",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 224,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2008833499",
+   "workshop_id": "2008833499",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2008833499",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "A simple mod that adds paths for all biomes in vanilla + more! \nThis mod is finished and all new content in the future will come as addons dependent on this mod. That way you don't have to worry about unexpected problems with your game.\n\nCheck out my addon: Natural Lakes\n\nStats\n  - Cost: Nothing\n  - Work to build: 150   (50% longer than concrete)\n  - Walk speed: 100%\n  - Flammability: 0%\n  - Beauty: 0",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 13.35,
+   "disk_by_kind": {
+    "other": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "xml": {
+     "files": 4,
+     "mb": 0.01
+    },
+    "textures": {
+     "files": 8,
+     "mb": 13.33
+    }
+   },
+   "texture_count": 8,
+   "texture_decoded_mb_est": 38.4,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": true,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 8,
+   "defs_by_type": {
+    "TerrainDef": 7,
+    "DesignationCategoryDef": 1
+   },
+   "patch_ops_all": 15,
+   "patched_def_types": {},
+   "patch_findmod_names": {
+    "Desire Paths": 15
+   },
+   "patches_mods": {
+    "ludeon.rimworld": 8,
+    "ludeon.rimworld.odyssey": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/sindre0830/naturalPaths",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "MIT",
+   "source_last_push": "2025-07-06T14:38:05Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Terrain path decor — trivial flavor, fits desert terrain work",
+   "src": null
+  },
+  {
+   "packageId": "ironscruff.primordialgeysers",
+   "name": "Primordial Geysers",
+   "author": "IronScruff",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 242,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2896731795",
+   "workshop_id": "2896731795",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2896731795",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "This mod adds a new biome, the primordial geysers, themed off of yellowstone's geysers. The biomes have vibrant orange soil that is somewhat pretty, but impossible to grow on. Patches of rich soil among mostly rocky soil require targeted growing. The springs nearby provided an evolutionary hotbed, allowing collosal versions of microbes to evolve. Or were they put there?\\n\\nFor version 1.4.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 7.16,
+   "disk_by_kind": {
+    "xml": {
+     "files": 28,
+     "mb": 0.1
+    },
+    "textures": {
+     "files": 40,
+     "mb": 3.0
+    },
+    "other": {
+     "files": 4,
+     "mb": 4.06
+    }
+   },
+   "texture_count": 40,
+   "texture_decoded_mb_est": 11.6,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 21,
+   "defs_by_type": {
+    "ThingDef": 10,
+    "PawnKindDef": 4,
+    "BodyDef": 3,
+    "BiomeDef": 1,
+    "BodyPartDef": 1,
+    "BodyPartGroupDef": 1,
+    "TerrainDef": 1
+   },
+   "patch_ops_all": 7,
+   "patched_def_types": {
+    "BiomeDef": 3,
+    "VCE_Fishing.BiomeTempDef": 1
+   },
+   "patch_findmod_names": {
+    "Alpha Animals": 1,
+    "Vanilla Animals Expanded": 1,
+    "Vanilla Fishing Expanded": 1
+   },
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.patches": 39,
+    "mandrake.rm.patches": 10,
+    "mandrake.rut.doctrine": 7,
+    "mandrake.rsw.armoury": 3
+   },
+   "patched_by_ours_refs": 59,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "m00nl1ght.geologicallandforms.biometransitions",
+   "name": "Biome Transitions",
+   "author": "m00nl1ght-dev",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 387,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2814391846",
+   "workshop_id": "2814391846",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2814391846",
+   "about_url": "https://github.com/m00nl1ght-dev/GeologicalLandforms",
+   "supports_1_6": true,
+   "description": "Add-on for Geological Landforms that generates maps with multiple mixing biomes on them when you settle on a world tile that has different biomes adjacent to it.",
+   "dependencies": [
+    "m00nl1ght.GeologicalLandforms"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "Ludeon.RimWorld.Odyssey",
+    "brrainz.harmony",
+    "m00nl1ght.GeologicalLandforms"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.8,
+   "disk_by_kind": {
+    "xml": {
+     "files": 15,
+     "mb": 0.06
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.74
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 1.9,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 1,
+   "defs_by_type": {
+    "TileMutatorDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/m00nl1ght-dev/GeologicalLandforms",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "NOASSERTION",
+   "source_last_push": "2026-10-10T13:43:59Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "ogliss.thewhitecrayon.quarry",
+   "name": "Quarry",
+   "author": "The White Crayon (Updated for 1.1 by Ogliss)",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 412,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2007576583",
+   "workshop_id": "2007576583",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2007576583",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds a quarry for mining in flat terrain.",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "Ludeon.RimWorld.Odyssey"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 12.96,
+   "disk_by_kind": {
+    "other": {
+     "files": 5,
+     "mb": 0.01
+    },
+    "xml": {
+     "files": 131,
+     "mb": 0.13
+    },
+    "assemblies": {
+     "files": 14,
+     "mb": 6.29
+    },
+    "textures": {
+     "files": 23,
+     "mb": 6.53
+    }
+   },
+   "texture_count": 23,
+   "texture_decoded_mb_est": 27.8,
+   "dll_count": 2,
+   "dlls": [
+    {
+     "name": "0Harmony.dll",
+     "path": "1.6/Assemblies/0Harmony.dll",
+     "kb": 2398.5,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "Quarry.dll",
+     "path": "1.6/Assemblies/Quarry.dll",
+     "kb": 68.5,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 19,
+   "defs_by_type": {
+    "TerrainDef": 7,
+    "ThingDef": 4,
+    "ConceptDef": 1,
+    "DesignationDef": 1,
+    "DesignatorDropdownGroupDef": 1,
+    "JobDef": 1,
+    "LetterDef": 1,
+    "RecordDef": 1,
+    "WorkGiverDef": 1,
+    "WorkTypeDef": 1
+   },
+   "patch_ops_all": 4,
+   "patched_def_types": {
+    "ThingDef": 2,
+    "DesignationCategoryDef": 1
+   },
+   "patch_findmod_names": {
+    "Alpha Biomes": 1
+   },
+   "patches_mods": {
+    "ludeon.rimworld": 2,
+    "ludeon.rimworld.biotech": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "jellypowered.survivaltools": 2
+   },
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 6,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/TheWhiteCrayon/Quarry",
+   "source_kind": "github-search",
+   "source_confidence": "INFERRED",
+   "source_license": "cc0-1.0",
+   "source_last_push": "2021-08-14T05:09:49Z",
+   "source_archived": true,
+   "source_note": "top hit for the mod NAME; a name match, not proof - confirm before relying on it",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "zal.comigogreaterswamps",
+   "name": "Comigo's Greater Swamps (Continued)",
+   "author": "Zaljerem",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 438,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3620545124",
+   "workshop_id": "3620545124",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3620545124",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Original mod by Bara CoMiGo\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=2548444243\nIf the original author requests it, I will remove this update.\n\nREQUIRES BiomesKit (Continued) or ReGrowth 2\n\n--\n\nAdded Odyssey fishing and landmark compatibility.\nAdded animal mod compatibility:\n\nThe Basilisk\nGiant Toads\nVanilla Animals Expanded\n\n--\n\nOriginal mod notes (1.4):\n\nHostile environments that make regular swamps look like a sweet home. Embrace water and disease, embrace the Greater Swamps.",
+   "dependencies": [
+    "brrainz.harmony",
+    "zal.biomeskit"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "brrainz.harmony",
+    "zal.biomeskit",
+    "zal.wmbp",
+    "regrowth.botr.core",
+    "VanillaExpanded.VCEF"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 3.48,
+   "disk_by_kind": {
+    "xml": {
+     "files": 5,
+     "mb": 0.04
+    },
+    "other": {
+     "files": 5,
+     "mb": 0.02
+    },
+    "textures": {
+     "files": 45,
+     "mb": 3.42
+    }
+   },
+   "texture_count": 45,
+   "texture_decoded_mb_est": 22.7,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 6,
+   "defs_by_type": {
+    "BiomeDef": 6
+   },
+   "patch_ops_all": 10,
+   "patched_def_types": {
+    "TileMutatorDef": 10
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld.odyssey": 8,
+    "ludeon.rimworld.biotech": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.patches": 7
+   },
+   "patched_by_ours_refs": 7,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "chezhou.chezhoulib.lib",
+   "name": "ChezhouLib",
+   "author": "Chezhou",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 456,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3595247479",
+   "workshop_id": "3595247479",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3595247479",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "此框架为自用开发的组件库，包含一些常用的功能和工具，和一些外星人框架扩展功能",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [
+    "chezhou.creature.sandworm"
+   ],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "erdelf.HumanoidAlienRaces",
+    "nals.facialanimation",
+    "void.charactereditor"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 5.4,
+   "disk_by_kind": {
+    "xml": {
+     "files": 32,
+     "mb": 0.05
+    },
+    "assemblies": {
+     "files": 5,
+     "mb": 2.09
+    },
+    "assetbundles": {
+     "files": 10,
+     "mb": 0.74
+    },
+    "textures": {
+     "files": 49,
+     "mb": 1.4
+    },
+    "other": {
+     "files": 43,
+     "mb": 1.12
+    }
+   },
+   "texture_count": 49,
+   "texture_decoded_mb_est": 52.0,
+   "dll_count": 5,
+   "dlls": [
+    {
+     "name": "ChezhouLib.dll",
+     "path": "1.6/Assemblies/ChezhouLib.dll",
+     "kb": 1731.5,
+     "flags": [
+      "comp_tick",
+      "comp_tick_rare",
+      "game_component_tick",
+      "harmony",
+      "map_component_tick"
+     ]
+    },
+    {
+     "name": "DOTween.dll",
+     "path": "1.6/Assemblies/DOTween.dll",
+     "kb": 173.5,
+     "flags": []
+    },
+    {
+     "name": "ChezhouLib.CE.dll",
+     "path": "CECompat/Assemblies/ChezhouLib.CE.dll",
+     "kb": 10.5,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "ChezhouLib.FA.dll",
+     "path": "FACompat/Assemblies/ChezhouLib.FA.dll",
+     "kb": 27.5,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "ChezhouLib.HAR.dll",
+     "path": "HARCompat/Assemblies/ChezhouLib.HAR.dll",
+     "kb": 198.0,
+     "flags": [
+      "harmony"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "comp_tick_rare",
+    "game_component_tick",
+    "harmony",
+    "map_component_tick"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "Docs/README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 70,
+   "defs_by_type": {
+    "ChezhouLib.LibDef.ClFeatureDeclarationDef": 17,
+    "JobDef": 12,
+    "ChezhouLib.LibDef.ClShaderMaterial": 7,
+    "ChezhouLib.LibDef.ClShaderPro": 4,
+    "HediffDef": 4,
+    "KeyBindingDef": 4,
+    "ThingDef": 4,
+    "ChezhouLib.LibDef.ClAnimationClipDef": 2,
+    "MapGeneratorDef": 2,
+    "WorldObjectDef": 2,
+    "BiomeDef": 1,
+    "ChezhouLib.GroupAnimation.ClGroupAnimationDef": 1,
+    "ChezhouLib.LibDef.ClAssetLord": 1,
+    "ChezhouLib.LibDef.UnityShaderLord": 1,
+    "DrawStyleCategoryDef": 1,
+    "DrawStyleDef": 1,
+    "GenStepDef": 1,
+    "KeyBindingCategoryDef": 1,
+    "MainButtonDef": 1,
+    "RoofDef": 1,
+    "StatDef": 1,
+    "WorkGiverDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 27,
+   "static_ctors": 22,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  }
+ ]
+}

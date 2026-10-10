@@ -1,0 +1,123 @@
+{
+ "generated": "2026-10-10T15:15:17-0700",
+ "log": "/mnt/d/Luke/dev/_rmscratch/playerlog_archive/Player.20261010T143457.log",
+ "log_sha256_16": "411b6cd1032e2032",
+ "log_lines": 15783,
+ "probe": "MEASURED 183 Player.log distinct errors (344 occurrence(s) across 183 distinct error(s)) via measure.count-errors @ sha256:411b6cd1032e2032 size=1034913 lines=15780",
+ "blocks": 344,
+ "attributed_blocks": 100,
+ "unattributed_top": [
+  [
+   "Tried to calculate chance for father with gender <q>.",
+   152
+  ],
+  [
+   "Tried to get a resource \"UI<path> from a different thread. All resources must be loaded in the main thread.",
+   2
+  ],
+  [
+   "XML error: <drawStyleCategory>Wall</drawStyleCategory> doesn't correspond to any field in type BuildingProperties. Context: <building><isInert>true<<path>",
+   1
+  ],
+  [
+   "[Def Error]: PassableVacstone",
+   1
+  ],
+  [
+   "Config error in Utinni Shellmandrake.rut.menushell: defName Utinni Shellmandrake.rut.menushell should only contain letters, numbers, underscores, or dashes.",
+   1
+  ],
+  [
+   "Config error in Cocoa: same research view coords and tab as HotTubs: <n>, <n>(RUT_Tree_Hearth)",
+   1
+  ],
+  [
+   "Config error in TargetedInsultingSpree: label contains illegal character(s): <q>. This can cause issues during grammar resolution. If this was intended, you can use the <q> flag.",
+   1
+  ],
+  [
+   "Exception in ConfigErrors() of PirateYttakin: System.NullReferenceException: Object reference not set to an instance of an object",
+   1
+  ],
+  [
+   "Config error in Techprint_RR_lighting: description has trailing whitespace",
+   1
+  ],
+  [
+   "Could not load reference to Verse.ThingDef named Meat_BMT_Maxolotl",
+   1
+  ],
+  [
+   "Could not load reference to Verse.ThingDef named Meat_TYR_HotfootRat",
+   1
+  ],
+  [
+   "Could not load reference to Verse.ThingDef named Meat_TYR_KangarooRat",
+   1
+  ],
+  [
+   "Could not load reference to Verse.ThingDef named Meat_TYR_Lemming",
+   1
+  ],
+  [
+   "Could not load reference to Verse.ThingDef named Meat_TYR_Mouse",
+   1
+  ],
+  [
+   "Could not load reference to Verse.ThingDef named Meat_TYR_MousePoison",
+   1
+  ]
+ ],
+ "loadtracer_ctor_lines": 1639,
+ "ns_map_size": 521,
+ "attribution": "CANDIDATE (path/frame/def/tag evidence; see runtime.py docstring)",
+ "warnings": "UNMEASURED - Player.log has no consistent warning prefix; only error openers are counted",
+ "tps": {
+  "status": "MEASURED",
+  "session": "c1a88107",
+  "files": [
+   "tps_20261010T210001Z_c1a88107dac242c49924c8c6e10642b1_1568_000.jsonl"
+  ],
+  "mods_in_session": 550,
+  "run_windows": 124,
+  "ratio_median": 0.026,
+  "ratio_p10": 0.001,
+  "stage_share": {
+   "mapPost": 0.487,
+   "mapComp": 0.486,
+   "tl:Normal": 0.017,
+   "world": 0.005,
+   "mapPre": 0.004,
+   "tl:Long": 0.001,
+   "tl:Rare": 0.001,
+   "gameComp": 0.0,
+   "worldPost": 0.0
+  },
+  "per_mod": "UNMEASURED - the record attributes time to engine stages, not assemblies/mods; jawa/map_comp_timing (91f9c0a14) can name MapComponents but had not been run on a full list"
+ },
+ "health": {
+  "privateMB": 37194.8,
+  "peakWorkingSetMB": 22845.4,
+  "mainthread_cores_max": 1.0,
+  "availPhysMB_min": 772,
+  "samples": 652,
+  "status": "MEASURED",
+  "scope": "whole game process pid 1568 (all mods together); per-mod memory UNMEASURED"
+ },
+ "universe_generated": "2026-10-10T14:47:38-0700",
+ "defscan": {
+  "generated": "2026-10-10T15:00:06-0700",
+  "instrument": "def_inventory.build over ModsConfig.UNIVERSE.xml + patch_file_census",
+  "missing": [
+   "vlvop.tormentmaster.expansion"
+  ],
+  "gameVersion": "1.6",
+  "defNodes": 55988
+ },
+ "probes": {
+  "harmony flag on brrainz.harmony": true,
+  "core declares >5000 defs": true,
+  "rut.patches patches mods": true,
+  "flowworks has settings flag": true
+ }
+}

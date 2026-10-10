@@ -1,0 +1,5087 @@
+{
+ "batch": 14,
+ "category": "misc_content_2",
+ "count": 48,
+ "instructions": "Assess every mod per design/RimMandrake/mod_audit/RUBRIC.md against design/RimMandrake/mod_audit/SCENARIO_BRIEF.md; write assessments/batch_14.jsonl. Whole-session context (TPS, memory, log probe): facts/session_context.json.",
+ "mods": [
+  {
+   "packageId": "sierra.rt.generaltraits",
+   "name": "RimTraits - General Traits",
+   "author": "Sierra",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 265,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2206957172",
+   "workshop_id": "2206957172",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2206957172",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "[h1]Mod Version: v1.18[/h1]\n\n\n[h1]Get [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2244594116]RimTraits - Vanilla Trait Colors[/url] to change your Trait Colours to match this mod![/h1]\n\n\nThis mod adds 46 traits defining a pawn's attributes, some are mutually exclusive to each other with increasing rarity for the higher tier traits.\n\nThis mod aims to add more minor traits that give each pawn a bit more uniqueness.\n\n\n[b]Features:[/b]\n[list]\n[*]46 Traits\n[/list]\n\n\n[b]Recommended Mods:[/b]\n[list]\n[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2836791007]RimFantasy - Medieval Overhaul Edition[/url]\n[b]- Recommended for [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2553700067]Medieval Overhaul[/url] users. Incompatible with the other RimFantasy mods.[/b]\n\n[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=1916352291]RimTraits - Medieval Talents[/url]\n[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2206957172]RimTraits - General Traits[/url]\n[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2244594116]RimTraits - Vanilla Trait Colours[/url]\n[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2595980371]Milkshakes - Digital Deluxe Edition[/url]\n\n[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=2695164414]Tweaks Galore[/url]\n[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=1508850027]RimHUD[/url]\n[*][url=https://steamcommunity.com/sharedfiles/filedetails/?id=1855885448]Guard For Me[/url]\n[/list]\n\n\n[b]Mod Compatibility:[/b]\n[list]\n[*]No Known Issues\n[*]Supports [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2451324814][SYR] Trait Value[/url]\n[/list]\n\n\n[b]Balance:[/b]\nBalance feedbacks are appreciated, suggestions will be considered as long as no C# is involved.\n\n\n[h1][url=https://discord.gg/rimworld]Click here to join us on the Community Discord![/url][/h1]\n[url=https://ko-fi.com/sierra0001][img]https://i.imgur.com/SBiUpbW.png[/img][/url]\n\n\n[h1]Credits:[/h1]\n[list]\n[*]Mascot inspired and based on Geneforge by Spiderweb Software (Go play the series, it's great).\n[/list]\n\n\n(CC BY-NC-ND 4.0)\n\n\n[h1]Troubleshooting & Bug Reports:[/h1]\nJoin the Discord (link below) for troubleshooting and bug reports. Steam is a terrible platform for support and I will not be using it to deal with anything longer than a simple answer.\n[h1][url=https://discord.gg/rimworld][img]https://i.imgur.com/Y2Bdoia.gif[/img][/url][/h1]\n\n\n[h1]Latest Changes:[/h1]\n[b]v1.178/b]\n[list]\n[*][Update] RimWorld 1.6 Ready.\n[/list]",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "Ludeon.RimWorld.Odyssey"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 1.09,
+   "disk_by_kind": {
+    "other": {
+     "files": 4,
+     "mb": 0.0
+    },
+    "xml": {
+     "files": 31,
+     "mb": 0.16
+    },
+    "textures": {
+     "files": 5,
+     "mb": 0.93
+    }
+   },
+   "texture_count": 5,
+   "texture_decoded_mb_est": 22.2,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": true,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 50,
+   "defs_by_type": {
+    "TraitDef": 46,
+    "ThoughtDef": 4
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/Sierra0001/RimTraits---General-Traits",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "NOASSERTION",
+   "source_last_push": "2025-06-12T07:44:48Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "kupie.isjustdoingitlive.plzdonthateme.roofedscanning",
+   "name": "Roofed Scanning 1.6",
+   "author": "TheElm",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 268,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3524551636",
+   "workshop_id": "3524551636",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3524551636",
+   "about_url": "https://theelm.net/RW-Scanning",
+   "supports_1_6": true,
+   "description": "Updated from TheElm's mod:\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=2870663873\n\nAnd an unknown member who made it for 1.5, but they deleted it now.\n\nI'm also bad at coding, and the original code used Transpilers which actually search for/inject code. I just patched Rimworld's function that checks for roof: Nothing checks for a roof besides these specific buildings, so I just patched that instead!\n\nLets you use the scanners indoors\n\t\nShould include:\n-Long Range Mineral Scanner\n-Ground Penetrating Scanner\n-Orbital Scanner (from Odyssey DLC)\n        \nBecause scanning is just that important",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.22,
+   "disk_by_kind": {
+    "assemblies": {
+     "files": 2,
+     "mb": 0.01
+    },
+    "xml": {
+     "files": 4,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.2
+    },
+    "other": {
+     "files": 3,
+     "mb": 0.0
+    },
+    "source": {
+     "files": 4,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 1.2,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 2,
+    "csproj": 1,
+    "sln": 1,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": true
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 7,
+   "patched_def_types": {
+    "ThingDef": 7
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 4,
+    "ludeon.rimworld.odyssey": 3
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 1,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "rwnodetree.rwplanetatmosphere",
+   "name": "RW - Planet Atmosphere",
+   "author": "[cn]nuclear",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 272,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3272330410",
+   "workshop_id": "3272330410",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3272330410",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "As the name, This mod add the planet atmosphere effect for game",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "brrainz.harmony"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 186.07,
+   "disk_by_kind": {
+    "other": {
+     "files": 79,
+     "mb": 11.06
+    },
+    "xml": {
+     "files": 17,
+     "mb": 0.02
+    },
+    "assemblies": {
+     "files": 5,
+     "mb": 0.25
+    },
+    "textures": {
+     "files": 24,
+     "mb": 174.33
+    },
+    "assetbundles": {
+     "files": 6,
+     "mb": 0.16
+    },
+    "source": {
+     "files": 23,
+     "mb": 0.25
+    }
+   },
+   "texture_count": 19,
+   "texture_decoded_mb_est": 1131.6,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "RW_PlanetAtmosphere.dll",
+     "path": "1.6/Assemblies/RW_PlanetAtmosphere.dll",
+     "kb": 52.5,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 19,
+    "csproj": 3,
+    "sln": 1,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 14,
+   "defs_by_type": {
+    "RW_PlanetAtmosphere.RendererDef": 8,
+    "RW_PlanetAtmosphere.CloudDef": 4,
+    "RW_PlanetAtmosphere.AtmosphereDef": 1,
+    "RW_PlanetAtmosphere.RingDef": 1
+   },
+   "patch_ops_all": 3,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 2,
+    "ludeon.rimworld.odyssey": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 2,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "moja.salvagerubble",
+   "name": "Salvage Rubble",
+   "author": "Moja",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 273,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3529058623",
+   "workshop_id": "3529058623",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3529058623",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "This mod allows the deconstruction of Rubble Piles (added in RimWorld 1.6 / Odyssey) to yield a small amount of salvageable resources:\n\n    - Steel (common)\n    - Wood (rare)\n    - Components (very rare)\n    - Gold (ultra rare)\n    - Plasteel (extremely rare)\n\n    Internally, cost values are scaled using high integers (e.g. Steel = 1000) to allow precise tuning of returned materials via the resourcesFractionWhenDeconstructed field.\n\n    Future versions may support Construction skill-based return scaling and configuration options.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.46,
+   "disk_by_kind": {
+    "other": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "xml": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.45
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 2.1,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 2,
+   "patched_def_types": {
+    "ThingDef": 2
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld.odyssey": 2
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "dark.signs",
+   "name": "Signs and Comments",
+   "author": "DarkFlame7",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 282,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3281950776",
+   "workshop_id": "3281950776",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3281950776",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds placeable signs that show ingame labels with your custom text, to organize things and plan ahead.\nAlso adds sign functionality to a number of vanilla objects.",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony"
+   ],
+   "load_before": [],
+   "incompatible_with": [
+    "Dark.CommentsAndNoSigns"
+   ],
+   "disk_mb": 7.65,
+   "disk_by_kind": {
+    "assemblies": {
+     "files": 9,
+     "mb": 0.39
+    },
+    "xml": {
+     "files": 39,
+     "mb": 0.23
+    },
+    "textures": {
+     "files": 123,
+     "mb": 6.92
+    },
+    "other": {
+     "files": 5,
+     "mb": 0.01
+    },
+    "source": {
+     "files": 21,
+     "mb": 0.1
+    }
+   },
+   "texture_count": 123,
+   "texture_decoded_mb_est": 59.0,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "Signs.dll",
+     "path": "1.6/Assemblies/Signs.dll",
+     "kb": 51.0,
+     "flags": [
+      "comp_tick",
+      "comp_tick_rare",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "comp_tick_rare",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 19,
+    "csproj": 2,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": true
+   },
+   "def_total": 36,
+   "defs_by_type": {
+    "ThingDef": 29,
+    "DesignatorDropdownGroupDef": 4,
+    "DesignationDef": 2,
+    "DesignationCategoryDef": 1
+   },
+   "patch_ops_all": 15,
+   "patched_def_types": {
+    "ThingDef": 28
+   },
+   "patch_findmod_names": {
+    "Ideology": 1
+   },
+   "patches_mods": {
+    "ludeon.rimworld.ideology": 12,
+    "ludeon.rimworld": 11
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rm.patches": 9
+   },
+   "patched_by_ours_refs": 9,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "hol.smeltpatch",
+   "name": "Smelt More Stuff",
+   "author": "Holgast",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 286,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2347285971",
+   "workshop_id": "2347285971",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2347285971",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Removes the filter from smelting weapons and apparel, so you should be able to smelt more things.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.3,
+   "disk_by_kind": {
+    "xml": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.3
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 1.2,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 3,
+   "patched_def_types": {
+    "RecipeDef": 2
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 2
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "jpt.speakup",
+   "name": "SpeakUp",
+   "author": "jptrrs",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 290,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2502518544",
+   "workshop_id": "2502518544",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2502518544",
+   "about_url": "https://steamcommunity.com/id/jptrrs/myworkshopfiles/?appid=294100",
+   "supports_1_6": true,
+   "description": "SpeakUp is a Social Interaction Framework (SIF) capable of giving voice to your pawns.\n\nLet'em speak their mind - let's hear them out!",
+   "dependencies": [
+    "brrainz.harmony",
+    "Jaxe.Bubbles"
+   ],
+   "dependants": [
+    "mandrake.rsw.jawavoice"
+   ],
+   "dependants_ours": [
+    "mandrake.rsw.jawavoice"
+   ],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 3.63,
+   "disk_by_kind": {
+    "other": {
+     "files": 10,
+     "mb": 0.01
+    },
+    "xml": {
+     "files": 110,
+     "mb": 2.95
+    },
+    "source": {
+     "files": 17,
+     "mb": 0.04
+    },
+    "assemblies": {
+     "files": 5,
+     "mb": 0.13
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.49
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 5.4,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "SpeakUp.dll",
+     "path": "1.6/Assemblies/SpeakUp.dll",
+     "kb": 29.0,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 15,
+    "csproj": 1,
+    "sln": 1,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 185,
+   "defs_by_type": {
+    "InteractionDef": 185
+   },
+   "patch_ops_all": 29,
+   "patched_def_types": {
+    "InteractionDef": 21,
+    "RulePackDef": 8
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 29,
+    "winggar.meaningfulparties": 2
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rsw.jawavoice": 370,
+    "mandrake.rut.pawnflavor": 10,
+    "sarg.alphamemes": 4,
+    "vanillaexpanded.vmemese": 4,
+    "gravtide.mod": 2,
+    "frozensnowfox.complexjobs": 1,
+    "ludeon.rimworld.biotech": 1,
+    "vanillaexpanded.vee": 1,
+    "wemd.realisticdarknesslight": 1
+   },
+   "patched_by_ours_refs": 380,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "gerrymon.stylizedslavecollar",
+   "name": "Stylized Slave Collars and Headgears",
+   "author": "Gerrymon",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 300,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3040600773",
+   "workshop_id": "3040600773",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3040600773",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Add more styles for slave collar and new bridle item, which based on medieval scold's bridle, but have more modern variations in form of styles. It restricts the wearer's talking to 10% and eating to 50% (less than Capacity Deprivation's mouthfold).",
+   "dependencies": [
+    "Ludeon.RimWorld.Ideology"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.69,
+   "disk_by_kind": {
+    "xml": {
+     "files": 7,
+     "mb": 0.01
+    },
+    "textures": {
+     "files": 57,
+     "mb": 0.68
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 57,
+   "texture_decoded_mb_est": 72.9,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 15,
+   "defs_by_type": {
+    "ThingStyleDef": 13,
+    "HediffDef": 1,
+    "ThingDef": 1
+   },
+   "patch_ops_all": 15,
+   "patched_def_types": {
+    "StyleCategoryDef": 26,
+    "ThingDef": 1
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld.ideology": 27,
+    "ludeon.rimworld": 4
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Slave collar/headgear items — directly on-theme for the slavery doctrine",
+   "src": null
+  },
+  {
+   "packageId": "ucp.tabletopdecorations",
+   "name": "Tabletop Decorations",
+   "author": "bazoka81",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 303,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2535771403",
+   "workshop_id": "2535771403",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2535771403",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds decorations for those empty spaces in your colony. Tables aren't just for eating!",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 1.22,
+   "disk_by_kind": {
+    "xml": {
+     "files": 3,
+     "mb": 0.05
+    },
+    "textures": {
+     "files": 76,
+     "mb": 1.17
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 76,
+   "texture_decoded_mb_est": 120.5,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 32,
+   "defs_by_type": {
+    "ThingDef": 29,
+    "DesignatorDropdownGroupDef": 3
+   },
+   "patch_ops_all": 6,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 18
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Decor — trivial flavor",
+   "src": null
+  },
+  {
+   "packageId": "vlvop.tormentmaster.expansion",
+   "name": null,
+   "author": null,
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 306,
+   "folder": null,
+   "workshop_id": null,
+   "steam_url": null,
+   "about_url": null,
+   "supports_1_6": null,
+   "description": null,
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": null,
+   "load_before": null,
+   "incompatible_with": null,
+   "disk_mb": 0.0,
+   "disk_by_kind": {},
+   "texture_count": null,
+   "texture_decoded_mb_est": null,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": null,
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "NOT LOADED in the measured session",
+   "log_error_occurrences": null,
+   "log_errors_distinct": null,
+   "log_error_samples": null,
+   "log_evidence_kinds": null,
+   "log_chatter_lines": null,
+   "static_ctors": null,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "none",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "tsa.torturepod",
+   "name": "Torture Pod",
+   "author": "TSA",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 307,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3572173918",
+   "workshop_id": "3572173918",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3572173918",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds a torturing device that behaves similar to a softcore scanner. You can designate a prisoner to be tortured. The torture will lower his resistance and the resistance of all other prisoners. But the victim will be scarred for life and your colonists will not be happy either.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 2.74,
+   "disk_by_kind": {
+    "xml": {
+     "files": 21,
+     "mb": 0.04
+    },
+    "textures": {
+     "files": 7,
+     "mb": 1.66
+    },
+    "other": {
+     "files": 25,
+     "mb": 0.85
+    },
+    "assemblies": {
+     "files": 3,
+     "mb": 0.12
+    },
+    "source": {
+     "files": 17,
+     "mb": 0.07
+    }
+   },
+   "texture_count": 7,
+   "texture_decoded_mb_est": 13.3,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "TSA_TorturePod.dll",
+     "path": "Assemblies/TSA_TorturePod.dll",
+     "kb": 50.0,
+     "flags": [
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 13,
+    "csproj": 1,
+    "sln": 1,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": true
+   },
+   "def_total": 12,
+   "defs_by_type": {
+    "ThoughtDef": 5,
+    "HediffDef": 2,
+    "JobDef": 2,
+    "WorkGiverDef": 2,
+    "ThingDef": 1
+   },
+   "patch_ops_all": 2,
+   "patched_def_types": {
+    "StatDef": 2
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 2
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.pawnflavor": 50
+   },
+   "patched_by_ours_refs": 50,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "trouperton.trystantravellersshuttleschematics",
+   "name": "Trystan Traveller's Shuttle Schematics",
+   "author": "Trouperton, Gangar4999",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 316,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3655212016",
+   "workshop_id": "3655212016",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3655212016",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Simple mod that adds additional shuttle variants more suited to certain tasks.\n    \nThose being:\n- Personal Shuttle\n- Cargo Shuttle",
+   "dependencies": [
+    "Ludeon.RimWorld.Odyssey"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 4.4,
+   "disk_by_kind": {
+    "xml": {
+     "files": 4,
+     "mb": 0.02
+    },
+    "textures": {
+     "files": 33,
+     "mb": 4.38
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 33,
+   "texture_decoded_mb_est": 202.5,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 10,
+   "defs_by_type": {
+    "ThingDef": 6,
+    "TransportShipDef": 2,
+    "WorldObjectDef": 2
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "error277.tunneler.expanded",
+   "name": "Tunneler Expanded",
+   "author": "Error277",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 317,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2599616050",
+   "workshop_id": "2599616050",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2599616050",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Tunneler Expanded adds a lot of extra content and quality of life improvements for you cave people",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 5.39,
+   "disk_by_kind": {
+    "xml": {
+     "files": 12,
+     "mb": 0.04
+    },
+    "textures": {
+     "files": 45,
+     "mb": 5.34
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 45,
+   "texture_decoded_mb_est": 15.1,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 28,
+   "defs_by_type": {
+    "ThingDef": 21,
+    "RecipeDef": 3,
+    "TerrainDef": 3,
+    "ResearchProjectDef": 1
+   },
+   "patch_ops_all": 3,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 2,
+    "ludeon.rimworld.ideology": 2
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.researchretag": 8
+   },
+   "patched_by_ours_refs": 8,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Tunneling terrain/building/drug content — directly on-theme for the clan's Nomad+Tunneler ideology memes",
+   "src": null
+  },
+  {
+   "packageId": "nephlite.orbitaltradecolumn",
+   "name": "Utility Columns",
+   "author": "Nephlite, Maxim, Viceroy",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 321,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2013476665",
+   "workshop_id": "2013476665",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2013476665",
+   "about_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2013476665",
+   "supports_1_6": true,
+   "description": "Adds several types of utility column.\nAll columns hold up the roof, beware of possible roof collapse when moving.",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 15.72,
+   "disk_by_kind": {
+    "other": {
+     "files": 5,
+     "mb": 0.04
+    },
+    "assemblies": {
+     "files": 4,
+     "mb": 1.02
+    },
+    "xml": {
+     "files": 45,
+     "mb": 0.2
+    },
+    "textures": {
+     "files": 177,
+     "mb": 14.47
+    }
+   },
+   "texture_count": 177,
+   "texture_decoded_mb_est": 81.0,
+   "dll_count": 2,
+   "dlls": [
+    {
+     "name": "0Harmony.dll",
+     "path": "1.6/Assemblies/0Harmony.dll",
+     "kb": 910.0,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "RimWorldColumns.dll",
+     "path": "1.6/Assemblies/RimWorldColumns.dll",
+     "kb": 60.5,
+     "flags": [
+      "comp_tick",
+      "comp_tick_rare",
+      "harmony"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "comp_tick_rare",
+    "harmony"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 36,
+   "defs_by_type": {
+    "ThingDef": 29,
+    "ResearchProjectDef": 3,
+    "TerrainDef": 3,
+    "RimWorldColumns.RWCSettingsDef": 1
+   },
+   "patch_ops_all": 9,
+   "patched_def_types": {
+    "RoyalTitleDef": 7,
+    "PreceptDef": 3,
+    "ThingDef": 1
+   },
+   "patch_findmod_names": {
+    "Ideology": 1,
+    "Royalty": 1
+   },
+   "patches_mods": {
+    "ludeon.rimworld.royalty": 8,
+    "ludeon.rimworld.ideology": 3
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.researchretag": 16,
+    "mandrake.rsw.armoury": 5
+   },
+   "patched_by_ours_refs": 21,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 1,
+   "static_ctors": 5,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/RealTelefonmast/UtilityColumns",
+   "source_kind": "github-search",
+   "source_confidence": "INFERRED",
+   "source_license": "gpl-3.0",
+   "source_last_push": "2024-05-13T04:40:39Z",
+   "source_archived": false,
+   "source_note": "top hit for the mod NAME; a name match, not proof - confirm before relying on it",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "gravenwitch.vsrexamined",
+   "name": "Vanilla Skills Rexamined",
+   "author": "Gravenwitch",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 355,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3235834179",
+   "workshop_id": "3235834179",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3235834179",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "A patch for VSE that nerfs and condenses expertise. Most expertise are now valid choices or at least worthy of consideration.",
+   "dependencies": [
+    "brrainz.harmony",
+    "OskarPotocki.VanillaFactionsExpanded.Core",
+    "imranfish.xmlextensions",
+    "vanillaexpanded.skills"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "brrainz.harmony",
+    "OskarPotocki.VanillaFactionsExpanded.Core"
+   ],
+   "load_before": [
+    "alias.degeneralizework"
+   ],
+   "incompatible_with": [
+    "zlj.staticqualityplus",
+    "imranfish.madderskills"
+   ],
+   "disk_mb": 0.14,
+   "disk_by_kind": {
+    "xml": {
+     "files": 5,
+     "mb": 0.06
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.09
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 1.9,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 5,
+   "defs_by_type": {
+    "StatDef": 5
+   },
+   "patch_ops_all": 105,
+   "patched_def_types": {
+    "VSE.Expertise.ExpertiseDef": 99,
+    "StatDef": 18
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "vanillaexpanded.skills": 99,
+    "ludeon.rimworld": 28,
+    "ludeon.rimworld.ideology": 5,
+    "ludeon.rimworld.anomaly": 3,
+    "ludeon.rimworld.biotech": 3,
+    "kas.strongerscaling": 2
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "gabrieel1482.raidvehicleframework",
+   "name": "VehicleRaid Framework",
+   "author": "gabrieel1482",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 359,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3667863988",
+   "workshop_id": "3667863988",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3667863988",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "This framework allows creating mods that add raids using vehicles.",
+   "dependencies": [
+    "smashphil.vehicleframework"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "SmashPhil.VehicleFramework",
+    "ariandel.miliraimperium",
+    "ancot.milirarace"
+   ],
+   "load_before": [
+    "rimthunder.core",
+    "oskarpotocki.vanillavehiclesexpanded"
+   ],
+   "incompatible_with": [],
+   "disk_mb": 1.14,
+   "disk_by_kind": {
+    "xml": {
+     "files": 19,
+     "mb": 0.07
+    },
+    "textures": {
+     "files": 2,
+     "mb": 0.51
+    },
+    "other": {
+     "files": 3,
+     "mb": 0.05
+    },
+    "assemblies": {
+     "files": 1,
+     "mb": 0.51
+    }
+   },
+   "texture_count": 2,
+   "texture_decoded_mb_est": 6.4,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "VehicleRaidFramework.dll",
+     "path": "Assemblies/VehicleRaidFramework.dll",
+     "kb": 519.0,
+     "flags": [
+      "comp_tick",
+      "harmony",
+      "map_component_tick",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "harmony",
+    "map_component_tick",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 20,
+   "defs_by_type": {
+    "DutyDef": 13,
+    "JobDef": 3,
+    "GenStepDef": 1,
+    "SoundDef": 1,
+    "ThingDef": 1,
+    "Vehicles.AirdropDef": 1
+   },
+   "patch_ops_all": 4,
+   "patched_def_types": {
+    "MapGeneratorDef": 1
+   },
+   "patch_findmod_names": {
+    "Vanilla Vehicles Expanded": 1
+   },
+   "patches_mods": {
+    "oskarpotocki.vanillavehiclesexpanded": 5,
+    "ludeon.rimworld": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 4,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "winggar.meaningfulparties",
+   "name": "Wing's Meaningful Parties",
+   "author": "winggar",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 369,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3504909699",
+   "workshop_id": "3504909699",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3504909699",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Wish you knew why your pawns were partying the night away? So did I, so I whipped up this mod in a few hours.\n\t\nWithout changing the frequency of parties, colonists will now throw parties over any of over 100 new party causes, including:\n - a colonist or bonded animal's birthday\n - the survival of a major raid\n - settling a new tile\n - researching beer brewing\n - a colonist recovering from alcohol addiction\n - a baby shower for a pregnant colonist\n - the end of a volcanic winter\n - a colonist's optimism\n - sacrificing a prisoner\n - embracing the void\n ... and many more\n \nThis mod includes support for Vanilla Events Expanded's purple events, and as far as I can tell is compatible with Days Matter.\n\nThis mod is entirely cosmetic, and is safe to add or remove mid-save.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.27,
+   "disk_by_kind": {
+    "other": {
+     "files": 6,
+     "mb": 0.11
+    },
+    "assemblies": {
+     "files": 2,
+     "mb": 0.06
+    },
+    "xml": {
+     "files": 5,
+     "mb": 0.03
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.03
+    },
+    "source": {
+     "files": 21,
+     "mb": 0.04
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 0.7,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "MeaningfulParties.dll",
+     "path": "1.6/Assemblies/MeaningfulParties.dll",
+     "kb": 30.0,
+     "flags": [
+      "harmony",
+      "world_component_tick"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "world_component_tick"
+   ],
+   "ships_source": {
+    "cs": 19,
+    "csproj": 1,
+    "sln": 1,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": true
+   },
+   "def_total": 119,
+   "defs_by_type": {
+    "MeaningfulParties.PartyCauseDef": 119
+   },
+   "patch_ops_all": 3,
+   "patched_def_types": {
+    "GatheringDef": 3
+   },
+   "patch_findmod_names": {
+    "Vanilla Social Interactions Expanded": 2
+   },
+   "patches_mods": {
+    "ludeon.rimworld": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.pawnflavor": 110,
+    "mandrake.rm.biomes": 27,
+    "mandrake.rsw.patches": 23,
+    "gravtide.mod": 18,
+    "lee.theforce.lightsaber": 12,
+    "sarg.alphamemes": 7,
+    "lovelydovey.recreation.witheuterpe": 6,
+    "lovelydovey.sex.witheuterpe": 6,
+    "vanillaexpanded.vmemese": 6,
+    "redmattis.bigsmall.core": 5,
+    "vanillaexpanded.vee": 5,
+    "mandrake.rsw.jawavoice": 4,
+    "mlie.storytellerenhanced": 4,
+    "turnovus.biotech.integratedgenes": 3,
+    "zal.betterinfestations": 3,
+    "avilmask.nonunopinata": 2,
+    "jpt.speakup": 2,
+    "vanillaexpanded.vfecore": 2,
+    "arcjc007.wallstuff": 1,
+    "avius.prisonlabor": 1
+   },
+   "patched_by_ours_refs": 166,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/benjaminiserman/MeaningfulParties",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "MIT",
+   "source_last_push": "2025-08-12T04:28:45Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "tleno.wireheadstyle",
+   "name": "Wirehead Style",
+   "author": "Tleno",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 370,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3311183008",
+   "workshop_id": "3311183008",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3311183008",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Introduces a new tech-focused ideoligion style that eschews techist hexagons for exposed cables and messy piles of electronics, for all your techno-cultist, electronics hoarder and post-apocalyptic techie needs.\n\t\nRequires Ideology DLC.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Ideology"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 1.89,
+   "disk_by_kind": {
+    "xml": {
+     "files": 13,
+     "mb": 0.04
+    },
+    "textures": {
+     "files": 68,
+     "mb": 1.86
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 68,
+   "texture_decoded_mb_est": 18.7,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 28,
+   "defs_by_type": {
+    "ThingStyleDef": 25,
+    "ThingDef": 2,
+    "StyleCategoryDef": 1
+   },
+   "patch_ops_all": 1,
+   "patched_def_types": {
+    "ThingDef": 4
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld.ideology": 4
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "btd.remix.gravshipblueprints",
+   "name": "[BTD] Gravship Blueprints",
+   "author": "beeteedubs",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 378,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3575162262",
+   "workshop_id": "3575162262",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3575162262",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "This adds a \"save ship\" button to the pilot console and a scenario that allows you to start with a saved gravship, also includes down gravship quest sites and an endgame like quest site to salvage a custom gravship.",
+   "dependencies": [
+    "ludeon.rimworld.odyssey",
+    "brrainz.harmony"
+   ],
+   "dependants": [
+    "btd.gbp.shippack.kotor.vge"
+   ],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "vanillaexpanded.gravship"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 44.29,
+   "disk_by_kind": {
+    "other": {
+     "files": 28,
+     "mb": 1.96
+    },
+    "xml": {
+     "files": 23,
+     "mb": 0.05
+    },
+    "assemblies": {
+     "files": 1,
+     "mb": 0.26
+    },
+    "textures": {
+     "files": 40,
+     "mb": 42.02
+    }
+   },
+   "texture_count": 40,
+   "texture_decoded_mb_est": 177.1,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "RWM_BTD_Remix_GravshipBlueprints.dll",
+     "path": "1.6/Assemblies/RWM_BTD_Remix_GravshipBlueprints.dll",
+     "kb": 266.5,
+     "flags": [
+      "game_component_tick",
+      "harmony",
+      "map_component_tick",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "game_component_tick",
+    "harmony",
+    "map_component_tick",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 27,
+   "defs_by_type": {
+    "ThingDef": 10,
+    "HistoryEventDef": 3,
+    "QuestScriptDef": 3,
+    "SitePartDef": 3,
+    "IncidentDef": 2,
+    "ScenPartDef": 2,
+    "LetterDef": 1,
+    "MapGeneratorDef": 1,
+    "TerrainDef": 1,
+    "WorldObjectDef": 1
+   },
+   "patch_ops_all": 3,
+   "patched_def_types": {
+    "ThingDef": 3
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld.royalty": 2,
+    "ludeon.rimworld": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rsw.droidworks": 2,
+    "mandrake.rm.patches": 1
+   },
+   "patched_by_ours_refs": 3,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 4,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "nals.facialanimationexperimentals",
+   "name": "[NL] Facial Animation - Experimentals",
+   "author": "Nals",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 380,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2581693737",
+   "workshop_id": "2581693737",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2581693737",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Dear Users\n\n      Thank you using my Mods, Facial Animation has been patched by various modders.\n      I'm very happy about that. However, at the same time, it was becoming difficult to expand the functionality.\n\n      So, I decided to split Facial Animation into two mods. This mod is for the human race.\n      It contains only textures and definition files enabling new features.\n      If you are interested in my textures and you want to trying new features, please activate this mod.\n      I apologize for any inconvenience.\n\n\n      Dear Modders\n\n      In order to release the new features of FacialAnimation faster, this mod has been separated from FacialAnimation.\n      Therefore, the new features implemented in this mod do not consider compatibility at all.\n      If you create a compatibility patch, it may not work properly depending on the future updates of this mod.\n\n      Caution\n      Redistribution of this MOD data is prohibited.\n\n      ユーザーの皆様へ\n\n      Facial Animationをいつもご利用いただきありがとうございます。\n      Facial Animationはこれまで様々なModderの方々によってパッチが作成されてきました。ありがとうございます。\n      しかしながら、同時に最近は互換性を考えると新機能の追加が難しいと感じてきています。\n\n      そこで、私は表情Modを2つに分離することにしました。\n      新機能を試してみたい方は本Modを有効化してください。ご不便をおかけしますが宜しくお願い致します。\n\n      Modderの方々へ\n\n      FacialAnimationの新機能を高速にリリースするため、本ModはFaicalAnimationから分離しました。\n      したがって、本Modに組み込まれた新機能は互換性を重要視していません。\n      互換パッチを作成する場合、本Modの今後の更新によっては正常に動作しなくなる可能性があります。\n\n\n      注意\n      当MODの再配布を禁じます。",
+   "dependencies": [
+    "Nals.FacialAnimation"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Nals.FacialAnimation"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 1.95,
+   "disk_by_kind": {
+    "xml": {
+     "files": 122,
+     "mb": 0.14
+    },
+    "textures": {
+     "files": 359,
+     "mb": 1.81
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 359,
+   "texture_decoded_mb_est": 476.1,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 93,
+   "defs_by_type": {
+    "FacialAnimation.FaceAnimationDef": 49,
+    "FacialAnimation.LidTypeDef": 7,
+    "FacialAnimation.EyeballTypeDef": 6,
+    "FacialAnimation.MouthShapeDef": 5,
+    "FacialAnimation.SkinTypeDef": 5,
+    "FacialAnimation.BrowTypeDef": 3,
+    "FacialAnimation.EmotionShapeDef": 3,
+    "FacialAnimation.HeadTypeDef": 3,
+    "FacialAnimation.MouthTypeDef": 3,
+    "FacialAnimation.EyeballColorDef": 2,
+    "FacialAnimation.HeadShapeDef": 2,
+    "FacialAnimation.LidOptionShapeDef": 2,
+    "FacialAnimation.EmotionTypeDef": 1,
+    "FacialAnimation.LidOptionTypeDef": 1,
+    "FacialAnimation.LidShapeDef": 1
+   },
+   "patch_ops_all": 4,
+   "patched_def_types": {
+    "ThingDef": 3
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 3
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "vanillaexpanded.vtexe.facialanims": 7,
+    "memegoddess.giddyup": 5,
+    "lovelydovey.sex.witheuterpe": 3,
+    "frozensnowfox.complexjobs": 2,
+    "redmattis.betterprerequisites": 1
+   },
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "neronix17.retexture.charactereditor",
+   "name": "Character Editor Retextured",
+   "author": "Neronix17",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 388,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2855844396",
+   "workshop_id": "2855844396",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2855844396",
+   "about_url": "https://www.patreon.com/neronix17",
+   "supports_1_6": true,
+   "description": "Simple retexture for the UI elements of Character Editor.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "void.charactereditor"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 1.11,
+   "disk_by_kind": {
+    "xml": {
+     "files": 1,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 49,
+     "mb": 1.11
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 49,
+   "texture_decoded_mb_est": 85.4,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "aoba.fortress.industrial",
+   "name": "Fortifications - Industrial",
+   "author": "AobaKuma",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 393,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2561619583",
+   "workshop_id": "2561619583",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2561619583",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Fortifications have been needed since the dawn of time, it is no different within the Rim, securing a settlement is paramount to its survival.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "AOBA.Framework",
+    "OskarPotocki.VanillaFactionsExpanded.Core",
+    "VanillaExpanded.VFEArchitect",
+    "ceteam.combatextended",
+    "VanillaExpanded.VFESecurity",
+    "imranfish.xmlextensions"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 15.46,
+   "disk_by_kind": {
+    "other": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "xml": {
+     "files": 613,
+     "mb": 2.22
+    },
+    "assemblies": {
+     "files": 15,
+     "mb": 0.35
+    },
+    "textures": {
+     "files": 460,
+     "mb": 12.68
+    },
+    "sounds": {
+     "files": 10,
+     "mb": 0.22
+    }
+   },
+   "texture_count": 460,
+   "texture_decoded_mb_est": 361.7,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 111,
+   "defs_by_type": {
+    "ThingDef": 53,
+    "TerrainDef": 13,
+    "RecipeDef": 12,
+    "ResearchProjectDef": 6,
+    "SoundDef": 6,
+    "FleckDef": 4,
+    "HediffDef": 3,
+    "WorkGiverDef": 3,
+    "DesignatorDropdownGroupDef": 2,
+    "EffecterDef": 2,
+    "JobDef": 2,
+    "JoyGiverDef": 1,
+    "JoyKindDef": 1,
+    "ResearchTabDef": 1,
+    "StuffAppearanceDef": 1,
+    "XmlExtensions.SettingsMenuDef": 1
+   },
+   "patch_ops_all": 64,
+   "patched_def_types": {
+    "ResearchProjectDef": 11,
+    "TerrainDef": 11,
+    "ThingDef": 9,
+    "RecipeDef": 6,
+    "StatDef": 1
+   },
+   "patch_findmod_names": {
+    "Vanilla Furniture Expanded - Architect": 3,
+    "Biomes! Core": 1,
+    "Fortification Industrial -Nuclear Dawn": 1,
+    "Vanilla Factions Expanded - Ancients": 1,
+    "Vanilla Factions Expanded - Classical": 1,
+    "Vanilla Furniture Expanded - Security": 1,
+    "Vanilla Quests Expanded - Ancients": 1,
+    "Vanilla Weapons Expanded": 1,
+    "XML Extensions": 1
+   },
+   "patches_mods": {
+    "ludeon.rimworld": 17,
+    "vanillaexpanded.vfearchitect": 3,
+    "vanillaquestsexpanded.ancients": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.researchretag": 28,
+    "mandrake.rsw.armoury": 2
+   },
+   "patched_by_ours_refs": 30,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "smxrez.makeshiftreexamined",
+   "name": "Makeshift: Re-Examined",
+   "author": "Smxrez",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 402,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3455187943",
+   "workshop_id": "3455187943",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3455187943",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Rebalance makeshift",
+   "dependencies": [
+    "vanillaexpanded.vwems"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "vanillaexpanded.vwems"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.46,
+   "disk_by_kind": {
+    "xml": {
+     "files": 5,
+     "mb": 0.02
+    },
+    "textures": {
+     "files": 2,
+     "mb": 0.45
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 2,
+   "texture_decoded_mb_est": 4.8,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 2,
+   "defs_by_type": {
+    "ThingDef": 2
+   },
+   "patch_ops_all": 22,
+   "patched_def_types": {
+    "ThingDef": 21
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "vanillaexpanded.vwems": 21
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/Smxrez/Makeshift-ReExamined",
+   "source_kind": "github-search",
+   "source_confidence": "INFERRED",
+   "source_license": "",
+   "source_last_push": "2025-10-16T00:08:18Z",
+   "source_archived": false,
+   "source_note": "top hit for the mod NAME; a name match, not proof - confirm before relying on it",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "sinnamon.moreritualrewards",
+   "name": "More Ritual Rewards",
+   "author": "Sinnamon",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 405,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2582489076",
+   "workshop_id": "2582489076",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2582489076",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Tired of having only a few possible rewards?\\nthis is the answer for your concerns!\\nIt adds another handful!!!! and now you get to have 2 handful possible rewards :D",
+   "dependencies": [
+    "brrainz.harmony",
+    "Ludeon.RimWorld.Ideology"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "Ludeon.RimWorld.Ideology",
+    "Carnagion.ImprovedInsectoids",
+    "VanillaExpanded.VanillaTraitsExpanded"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 2.19,
+   "disk_by_kind": {
+    "assemblies": {
+     "files": 12,
+     "mb": 0.59
+    },
+    "xml": {
+     "files": 37,
+     "mb": 0.09
+    },
+    "other": {
+     "files": 8,
+     "mb": 1.32
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.14
+    },
+    "source": {
+     "files": 8,
+     "mb": 0.05
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 1.2,
+   "dll_count": 2,
+   "dlls": [
+    {
+     "name": "ritualRewards.dll",
+     "path": "1.6/Assemblies/ritualRewards.dll",
+     "kb": 38.5,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "ritualRewards.dll",
+     "path": "Assemblies/ritualRewards.dll",
+     "kb": 38.5,
+     "flags": [
+      "harmony"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony"
+   ],
+   "ships_source": {
+    "cs": 6,
+    "csproj": 1,
+    "sln": 1,
+    "git": true,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 22,
+   "defs_by_type": {
+    "RitualAttachableOutcomeEffectDef": 16,
+    "GameConditionDef": 4,
+    "IncidentDef": 1,
+    "WeatherDef": 1
+   },
+   "patch_ops_all": 4,
+   "patched_def_types": {
+    "RitualAttachableOutcomeEffectDef": 2
+   },
+   "patch_findmod_names": {
+    "Improved Insectoids": 1,
+    "Precepts and Memes": 1
+   },
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 1,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/ahls/RimworldRitualExpansion",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": "2021-09-08T04:53:47Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "kuhlyus.modpatch.vanillaoutpost",
+   "name": "Vanilla Mining Outpost Patch",
+   "author": "Kuhlyus",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 428,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2968491314",
+   "workshop_id": "2968491314",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2968491314",
+   "about_url": "steam://url/CommunityFilePage/2968491314",
+   "supports_1_6": true,
+   "description": "A Patch for the Mining Outpost from the Vanilla Outposts Expanded Mod to add Ores, Minerals and other mineable Stuff from other Mods.\n\tI try to add more \"Ore Mods\" in the future... if you got a sugestion, please tell me. \n\t\n\tFor now there are this Mods compatible with it:\n\t\n\tMorrowRim - Glass and Ebony\n\t- Glass\n\t- Ebony\n\t\n\tMorrowRim - Adamantium\n\t- Adamantium\n\t- Blessed Adamantium? (No... it needs to be blessed by Almalexia and i own her money... sooo... bad luck i guess. ¯\\_(ツ)_/¯)\n\t\n\tMedieval Overhaul\n\t- Coal\n\t- Citrine\n\t- Amber\n\t- Onyx\n\t- Emerald\n\t- Sapphire\n\t- Ruby\n\t- Iron Ore (for Steel)\n\t- Silver Ore (for Silver)\n\t- Gold Ore (for Gold)\n\t- removes Industrial Components (becurse Medieval and such)\n\t\n\tObsidia Expansion\n\t- Obsidian\n\t- Mythril\n\t- Platinum\n\t- Empyrium and Orichalcum? (No... Both needs to be synthesized and the Miners dont know how.)\n\t\n\tJewelry\n\t- Diamond\n\t- Ruby\n\t- Sapphire\n\t\n\t[Ry]Rimcraft Metals\n\t- Thorium ore\n\t- Dark Iron ore\n\t- Mithril Ore\n\t- Adamantite Ore\n\t- True Silver Ore\n\t\n\tGemstones\n\t- Amethyst\n\t- Chalcedony\n\t- Citrine\n\t- Garnet\n\t- Lapis\n\t- Quartz\n\t- Serpentine\n\t- Turquoise\n\t- Emerald, Diamond, Ruby and Sapphire? (No... there have to be a surface vein available to be able to mine them at the outpost and this 4 can only be deepmined... sorry)\n\t\n\tVanilla Psycasts Expanded\n\t- Eltex\n\t\n\tKraltech Industries\n\t- Super Steel\n\t\n\tGlitter Tech\n\t- Titanium\n\t\n\tHRG164hjo's Starbound Mod\n\t- Bone\n\t- Coal\n\t- Glass\n\t- Erchius\n\t- Core Fragment\n\t- Diamond\n\t- Copper Ore\n\t- Iron Ore\n\t- Tungsten Ore\n\t- Titanium Ore\n\t- Durasteel Ore\n\t- Aegisalt Ore\n\t- Ferozium Ore\n\t- Violium Ore\n\t- Solarium Ore\n\t\n\tRimFantasy - House Doyle\n\t- Amethyst\n\t\n\tyou dont have to add all of them in your Modlist. Just use the ones you like. It works with and without them.\n\t\n\tOther Patches for the Mining Outpost i know:\n\t\n\tExpanded Materials Metals Patch for Outposts Mines\n\t- Its made by Daria40K and she mostly did the same as i did... there should be no Problem when you load her Patch before mine. Same thing with the lite version.\n\t\n\tRimFantasy Gemstones Patch for Outposts Mines\n\t- Also made by Daria40K with a lil twist she made seperat Mining Outpost just for the Gems... should also work if you load it before my Patch.\n\t\n\tThanks to:\n\t\n\t- ScooterBug for pointing out an incompatibility bug with the Jewelry and the Gemstones mods... that helps a lot to code a solution for it! Now they should work with and without each other ;)\n\t\n\tIn case of any questions, sugestions or bugs, use Steam Workshop comment section.",
+   "dependencies": [
+    "vanillaexpanded.outposts"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "vanillaexpanded.outposts",
+    "dankpyon.medieval.overhaul",
+    "sirmashedpotato.morrowrim.glassandebony",
+    "sirmashedpotato.morrowrim.adamantium",
+    "obsidiaexpansion.core",
+    "kikohi.jewelry",
+    "daria40k.expandedmaterialsmetalspatchoutposts",
+    "daria40k.rimfantasygemstonespatchoutposts",
+    "vanillaexpanded.vpsycastse",
+    "blackmarket420.kraltechindustries",
+    "blackmarket420.kraltechindustrieslite",
+    "zylle.gemstones",
+    "ryflamer.rimcraft.metals",
+    "xavior.glittertech",
+    "hrg164hjo.starboundinrimworld",
+    "sierra.rf.housedoyle"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.53,
+   "disk_by_kind": {
+    "xml": {
+     "files": 2,
+     "mb": 0.01
+    },
+    "textures": {
+     "files": 2,
+     "mb": 0.52
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 2,
+   "texture_decoded_mb_est": 2.1,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 21,
+   "patched_def_types": {
+    "WorldObjectDef": 19
+   },
+   "patch_findmod_names": {
+    "Gemstones": 2,
+    "Jewelry": 2,
+    "Glitter Tech": 1,
+    "HRG164hjo's Starbound Mod": 1,
+    "Kraltech Industries": 1,
+    "Kraltech Industries LITE": 1,
+    "Medieval Overhaul": 1,
+    "MorrowRim - Adamantium": 1,
+    "MorrowRim - Glass and Ebony": 1,
+    "Obsidia Expansion": 1,
+    "RimFantasy - House Doyle": 1,
+    "Vanilla Psycasts Expanded": 1,
+    "[Ry]Rimcraft Metals": 1
+   },
+   "patches_mods": {
+    "vanillaexpanded.outposts": 19
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 1,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "daria40k.alphaanimalspatchoutposts",
+   "name": "Alpha Animals Patch for Outposts Mines",
+   "author": "Daria40K",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 434,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2704392053",
+   "workshop_id": "2704392053",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2704392053",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Alpha Animals Patch for Vanilla Outposts Expanded Mines\n\nThis patch add the sky steel ore from Alpha Animals to Vanilla Outposts Expanded so that they can be an output for the outposts mines.",
+   "dependencies": [
+    "vanillaexpanded.outposts",
+    "sarg.alphaanimals"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "vanillaexpanded.outposts",
+    "sarg.alphaanimals"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.2,
+   "disk_by_kind": {
+    "xml": {
+     "files": 6,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.19
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 1.1,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 2,
+   "patched_def_types": {
+    "WorldObjectDef": 1
+   },
+   "patch_findmod_names": {
+    "Alpha Animals": 1
+   },
+   "patches_mods": {
+    "vanillaexpanded.outposts": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/Daria40K/Alpha-Animals-Patch-for-Outposts-Mines",
+   "source_kind": "github-search",
+   "source_confidence": "INFERRED",
+   "source_license": "",
+   "source_last_push": "2025-07-14T19:28:39Z",
+   "source_archived": false,
+   "source_note": "top hit for the mod NAME; a name match, not proof - confirm before relying on it",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "meteores.ancienturbanruinsalldeconstructible.aurad",
+   "name": "Ancient Ruins All Deconstructible",
+   "author": "Meteores",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 436,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3361061429",
+   "workshop_id": "3361061429",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3361061429",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Have you tried living in the ruins of cities? It's not that easy to get several floors, but I personally want to. It is very difficult to rebuild everything to suit your needs in cities, because getting rid of all the junk is incredibly long and tedious, and these walls that cannot be dismantled in any honest way.\n\nThere is a solution! Ancient Urban Ruins All Deconstructible allows you to disassemble almost everything in ruins simply by ordering it to be disassembled, cleanly and without residual debris.\n\nCurrently supports:\n- Ancient urban ruins\n- Ancient mining industry\n- Ancient hydroponic farm facilities\n- The Dead Man's Switch - AncientCorps\n\n(Maybe in the future I will give HP to the walls, but if you give it just like that, then all existing walls will have negative health, and for new ones there will be 1 HP.)\n\nTo give HP to walls and some objects, check out this mod:  \nAncient Urban Ruins Hit Point  \nIf you have any structures from Ancient Urban Ruins, do not install this mod, otherwise all modified objects will have negative health.\n\nWell, just for aesthetics, I gave the sculptures in the mall a lot of beauty.\n\nIs it safe to add to an existing game?\n- Yes. This is just a small XML patch.\nBut I recommend always making backups \n\nIs it safe to delete? \n- Yes, no problem. This is just a small XML patch.\n\nBut I recommend always making backups \n\nWrite if you find compatibility issues.",
+   "dependencies": [],
+   "dependants": [
+    "meteores.ancienturbanruinsvanillaloot.aurvl"
+   ],
+   "dependants_ours": [],
+   "load_after": [
+    "XMB.AncientUrbanrUins.MO",
+    "XMB.AncientHydroponicFarmFacilities.MO",
+    "XMB.AncientMiningIndustry.MO",
+    "Aoba.DeadManSwitch.AncientCorps"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.54,
+   "disk_by_kind": {
+    "xml": {
+     "files": 2,
+     "mb": 0.01
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.53
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 4.7,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 48,
+   "patched_def_types": {
+    "ThingDef": 44
+   },
+   "patch_findmod_names": {
+    "Ancient hydroponic farm facilities": 1,
+    "Ancient mining industry": 1,
+    "Ancient urban ruins": 1,
+    "The Dead Man's Switch - AncientCorps": 1
+   },
+   "patches_mods": {
+    "xmb.ancienturbanruins.mo": 34
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "sd.fa.geneticheadsbiotech",
+   "name": "Genetic Biotech for Facial Animation",
+   "author": "SunshineyDays",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 440,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3501317537",
+   "workshop_id": "3501317537",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3501317537",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": null,
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "nals.facialanimation",
+    "sd.fa.geneticheadsframework"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.83,
+   "disk_by_kind": {
+    "xml": {
+     "files": 8,
+     "mb": 0.01
+    },
+    "textures": {
+     "files": 117,
+     "mb": 0.82
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 117,
+   "texture_decoded_mb_est": 132.9,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 7,
+   "defs_by_type": {
+    "FacialAnimation.HeadTypeDef": 5,
+    "FacialAnimation.LidTypeDef": 2
+   },
+   "patch_ops_all": 4,
+   "patched_def_types": {
+    "FacialAnimation.LidTypeDef": 2
+   },
+   "patch_findmod_names": {
+    "Genetic Heads Framework for [NL] Facial Animation": 1
+   },
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "sd.fa.geneticheadsmods",
+   "name": "Genetic Mods for Facial Animation",
+   "author": "SunshineyDays",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 441,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3501317734",
+   "workshop_id": "3501317734",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3501317734",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": null,
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "nals.facialanimation",
+    "sd.fa.geneticheadsframework",
+    "sd.fa.geneticheadsframework.dev",
+    "sd.fa.geneticheadsframework.devbuild",
+    "guy762.StarWarsXenotypes",
+    "BotchJob.Profaned",
+    "jtcsbonereapers.formerlypphhyy"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 6.37,
+   "disk_by_kind": {
+    "xml": {
+     "files": 45,
+     "mb": 0.11
+    },
+    "assemblies": {
+     "files": 1,
+     "mb": 0.01
+    },
+    "textures": {
+     "files": 809,
+     "mb": 6.25
+    },
+    "other": {
+     "files": 3,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 809,
+   "texture_decoded_mb_est": 1057.3,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "Textures/StarWarsXenotypes/Eyes/README.md",
+     "Textures/StarWarsXenotypes/Lids/README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 8,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "reel.facialanims",
+   "name": "Reel's Facial Animation Textures",
+   "author": "Reel",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 448,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3118315633",
+   "workshop_id": "3118315633",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3118315633",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "My own Vanilla-Style textures for [NL] Facial Animations, built to work alongside Vanilla Expanded's retexture as well as EyeGenes2 to add custom eye coloring. \n\nAdds 6 custom eye mouth textures that are based on Roblox faces.\nThis mod doesn't add custom eyebrow or skin textures, however I may decide to add some in a future update.\n\nPlease place this above VTE Facial Anims and EyeGenes2.",
+   "dependencies": [
+    "nals.facialanimation",
+    "vanillaexpanded.vtexe.facialanims"
+   ],
+   "dependants": [
+    "sd.fa.reelsadjustments"
+   ],
+   "dependants_ours": [],
+   "load_after": [
+    "nals.facialanimation",
+    "nals.facialanimationexperimentals"
+   ],
+   "load_before": [
+    "vanillaexpanded.vtexe.facialanims",
+    "oppey.eyegenes2"
+   ],
+   "incompatible_with": [],
+   "disk_mb": 2.08,
+   "disk_by_kind": {
+    "xml": {
+     "files": 11,
+     "mb": 0.02
+    },
+    "textures": {
+     "files": 422,
+     "mb": 1.07
+    },
+    "other": {
+     "files": 2,
+     "mb": 0.99
+    }
+   },
+   "texture_count": 422,
+   "texture_decoded_mb_est": 559.7,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 23,
+   "defs_by_type": {
+    "FacialAnimation.MouthTypeDef": 9,
+    "FacialAnimation.EyeballTypeDef": 7,
+    "FacialAnimation.LidTypeDef": 7
+   },
+   "patch_ops_all": 8,
+   "patched_def_types": {
+    "FacialAnimation.LidTypeDef": 7
+   },
+   "patch_findmod_names": {
+    "[BT] EyeGenes2 | Base - [NL] Facial Animation |": 1
+   },
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "sd.fa.reelsadjustments",
+   "name": "Adjustments for Reel's Facial Animation Textures",
+   "author": "Sunshiney Days",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 452,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3429452043",
+   "workshop_id": "3429452043",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3429452043",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Just scooting female eyes back and some mouths up. I made none of the art, just adjusted placement. I'll happily take this down if Reel asks me to.",
+   "dependencies": [
+    "reel.facialanims"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "reel.facialanims"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 22.56,
+   "disk_by_kind": {
+    "xml": {
+     "files": 1,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 179,
+     "mb": 22.56
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 179,
+   "texture_decoded_mb_est": 247.3,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "opa.allspecialistscanwork",
+   "name": "All Specialists Can Work",
+   "author": "Orange Peel Assassin",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 453,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2833543540",
+   "workshop_id": "2833543540",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2833543540",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Updated from iwishforducks Specialists can work!\n\tNow every single Specialist can work. Works with ideology, works with all VFE's, works with alpha memes.",
+   "dependencies": [
+    "Ludeon.RimWorld.Ideology"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [
+    "Ducks.SpecialistsCanWork"
+   ],
+   "disk_mb": 0.14,
+   "disk_by_kind": {
+    "xml": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.14
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 2.9,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 2,
+   "patched_def_types": {
+    "PreceptDef": 2
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "sarg.alphaskills",
+   "name": "Alpha Skills",
+   "author": "Sarg Bjornson",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 454,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3448953006",
+   "workshop_id": "3448953006",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3448953006",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "An add-on mod for Vanilla Skills Expanded adding 13 new passions and 19 new expertises.",
+   "dependencies": [
+    "brrainz.harmony",
+    "OskarPotocki.VanillaFactionsExpanded.Core",
+    "vanillaexpanded.skills"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "OskarPotocki.VanillaFactionsExpanded.Core",
+    "vanillaexpanded.skills"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 2.0,
+   "disk_by_kind": {
+    "xml": {
+     "files": 21,
+     "mb": 0.09
+    },
+    "assemblies": {
+     "files": 2,
+     "mb": 0.05
+    },
+    "textures": {
+     "files": 120,
+     "mb": 1.86
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 120,
+   "texture_decoded_mb_est": 44.2,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "AlphaSkills.dll",
+     "path": "1.6/Assemblies/AlphaSkills.dll",
+     "kb": 32.5,
+     "flags": [
+      "harmony"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 98,
+   "defs_by_type": {
+    "VSE.Passions.PassionDef": 51,
+    "HediffDef": 19,
+    "VSE.Expertise.ExpertiseDef": 19,
+    "StatDef": 5,
+    "ThoughtDef": 4
+   },
+   "patch_ops_all": 2,
+   "patched_def_types": {
+    "HediffDef": 6
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 6
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 1,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/vbardales/Rimworld-Skill-Icons",
+   "source_kind": "github-search",
+   "source_confidence": "INFERRED",
+   "source_license": "other",
+   "source_last_push": "2026-10-10T20:47:23Z",
+   "source_archived": false,
+   "source_note": "top hit for the mod NAME; a name match, not proof - confirm before relying on it",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "meteores.ancienturbanruinsvanillaloot.aurvl",
+   "name": "Ancient Urban Ruins Hit Point",
+   "author": "Meteores",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 455,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3446989523",
+   "workshop_id": "3446989523",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3446989523",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "After a short break, I finally gave HP to the walls and some objects, and it turned out to be surprisingly simple.\n\nThis mod is partially incompatible with existing saves.\n\nFAQ:\nHey! Why do my walls have -1 HP?!?!?\n- If you live in ancient ruins - DO NOT INSTALL THIS MOD!\n- If you are currently looting ancient ruins - DO NOT INSTALL THIS MOD!!\n- If you started the 'Safe House' or 'Scavenger Group' scenario - DO NOT INSTALL THIS MOD!!!",
+   "dependencies": [
+    "XMB.AncientUrbanrUins.MO",
+    "Meteores.AncientUrbanRuinsAllDeconstructible.AURAD"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "XMB.AncientUrbanrUins.MO",
+    "Meteores.AncientUrbanRuinsAllDeconstructible.AURAD"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.58,
+   "disk_by_kind": {
+    "xml": {
+     "files": 2,
+     "mb": 0.02
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.56
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 5.3,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 22,
+   "patched_def_types": {
+    "ThingDef": 14,
+    "AncientMarket_Libraray.CustomMapDataDef": 7
+   },
+   "patch_findmod_names": {
+    "Ancient Ruins All Deconstructible": 1,
+    "Ancient urban ruins": 1
+   },
+   "patches_mods": {
+    "xmb.ancienturbanruins.mo": 294
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "keyz182.keyzallowutilities",
+   "name": "Keyz' Allow Utilities",
+   "author": "keyz182",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 459,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3524716849",
+   "workshop_id": "3524716849",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3524716849",
+   "about_url": "https://steamcommunity.com/id/keyz182/myworkshopfiles/?appid=294100",
+   "supports_1_6": true,
+   "description": "Utility gizmos for bulk allow/forbid, selection, haul urgently, and more.",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "ludeon.rimworld.odyssey",
+    "Mehni.PickUpAndHaul",
+    "mehni.pickupandhaul.unofficial",
+    "rwmt.Multiplayer"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 1.43,
+   "disk_by_kind": {
+    "other": {
+     "files": 4,
+     "mb": 0.04
+    },
+    "xml": {
+     "files": 12,
+     "mb": 0.03
+    },
+    "assemblies": {
+     "files": 7,
+     "mb": 0.2
+    },
+    "textures": {
+     "files": 22,
+     "mb": 1.14
+    },
+    "sounds": {
+     "files": 1,
+     "mb": 0.03
+    }
+   },
+   "texture_count": 22,
+   "texture_decoded_mb_est": 11.0,
+   "dll_count": 2,
+   "dlls": [
+    {
+     "name": "KeyzAllowUtilities.dll",
+     "path": "1.6/Assemblies/KeyzAllowUtilities.dll",
+     "kb": 111.0,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    },
+    {
+     "name": "KeyzAllowUtilities.PUAH.dll",
+     "path": "Compatibility/mehni.pickupandhaul/1.6/Assemblies/KeyzAllowUtilities.PUAH.dll",
+     "kb": 9.5,
+     "flags": [
+      "harmony"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 32,
+   "defs_by_type": {
+    "KeyBindingDef": 17,
+    "DesignationDef": 5,
+    "JobDef": 2,
+    "WorkGiverDef": 2,
+    "WorkTypeDef": 2,
+    "EffecterDef": 1,
+    "KeyBindingCategoryDef": 1,
+    "SoundDef": 1,
+    "ThingDef": 1
+   },
+   "patch_ops_all": 7,
+   "patched_def_types": {
+    "DesignationCategoryDef": 4,
+    "ThingDef": 4
+   },
+   "patch_findmod_names": {
+    "Ancient urban ruins": 1
+   },
+   "patches_mods": {
+    "ludeon.rimworld": 4,
+    "ludeon.rimworld.biotech": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 15,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/spdskatr/RWModdingResources",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "MIT",
+   "source_last_push": "2020-08-14T14:32:13Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "tribeagle.simpleslaverycollars",
+   "name": "Simple Slavery Collars",
+   "author": "Thirite, Ziehn, MarkSill, TRIBeagle",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 465,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2557274194",
+   "workshop_id": "2557274194",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2557274194",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Add collars from Simple Slavery Mod and some tweaks related to slavery in Ideology DLC.",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "erdelf.HumanoidAlienRaces",
+    "erdelf.HumanoidAlienRaces.dev"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 8.67,
+   "disk_by_kind": {
+    "xml": {
+     "files": 164,
+     "mb": 0.35
+    },
+    "assemblies": {
+     "files": 13,
+     "mb": 4.46
+    },
+    "textures": {
+     "files": 41,
+     "mb": 0.39
+    },
+    "other": {
+     "files": 20,
+     "mb": 3.04
+    },
+    "source": {
+     "files": 121,
+     "mb": 0.44
+    }
+   },
+   "texture_count": 41,
+   "texture_decoded_mb_est": 5.6,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "SimpleSlaveryCollars.dll",
+     "path": "1.6/Assemblies/SimpleSlaveryCollars.dll",
+     "kb": 122.5,
+     "flags": [
+      "comp_tick",
+      "comp_tick_rare",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "comp_tick_rare",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 115,
+    "csproj": 3,
+    "sln": 3,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": true
+   },
+   "def_total": 24,
+   "defs_by_type": {
+    "JobDef": 6,
+    "ThingDef": 5,
+    "ThoughtDef": 4,
+    "WorkGiverDef": 4,
+    "HediffDef": 3,
+    "MentalStateDef": 1,
+    "RecordDef": 1
+   },
+   "patch_ops_all": 24,
+   "patched_def_types": {
+    "ThingDef": 29,
+    "PreceptDef": 2,
+    "ThinkTreeDef": 1
+   },
+   "patch_findmod_names": {
+    "Ideology": 3,
+    "Micro Comms Console": 1,
+    "Small Comms Console": 1,
+    "Tiny Comms Console": 1,
+    "Vanilla Gravship Expanded - Chapter 1": 1
+   },
+   "patches_mods": {
+    "ludeon.rimworld": 7,
+    "ludeon.rimworld.ideology": 6,
+    "vanillaexpanded.gravship": 3
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.pawnflavor": 130
+   },
+   "patched_by_ours_refs": 130,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 3,
+   "static_ctors": 8,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "neronix17.toolbox",
+   "name": "Tabula Rasa",
+   "author": "Neronix17",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 466,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1660622094",
+   "workshop_id": "1660622094",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=1660622094",
+   "about_url": "https://www.patreon.com/neronix17",
+   "supports_1_6": true,
+   "description": "Formerly [O21] Toolbox. A library mod, provides a lot of useful, reusable code, primarily for Outpost 21 mods, but usable by anyone.",
+   "dependencies": [],
+   "dependants": [
+    "neronix17.outerrim.core",
+    "neronix17.outerrim.furnitureanddecor",
+    "neronix17.outland.genetics",
+    "neronix17.shieldgenerators"
+   ],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "UnlimitedHugs.HugsLib",
+    "erdelf.HumanoidAlienRaces"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 9.72,
+   "disk_by_kind": {
+    "xml": {
+     "files": 160,
+     "mb": 1.49
+    },
+    "other": {
+     "files": 15,
+     "mb": 1.69
+    },
+    "assemblies": {
+     "files": 14,
+     "mb": 4.91
+    },
+    "textures": {
+     "files": 66,
+     "mb": 1.04
+    },
+    "assetbundles": {
+     "files": 2,
+     "mb": 0.56
+    },
+    "sounds": {
+     "files": 1,
+     "mb": 0.02
+    },
+    "source": {
+     "files": 5,
+     "mb": 0.01
+    }
+   },
+   "texture_count": 66,
+   "texture_decoded_mb_est": 43.8,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "TabulaRasa.dll",
+     "path": "1.6/Assemblies/TabulaRasa.dll",
+     "kb": 275.5,
+     "flags": [
+      "comp_tick",
+      "comp_tick_rare",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "comp_tick_rare",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 3,
+    "csproj": 1,
+    "sln": 1,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 13,
+   "defs_by_type": {
+    "JobDef": 5,
+    "ApparelLayerDef": 4,
+    "FleshTypeDef": 1,
+    "HediffDef": 1,
+    "ScenPartDef": 1,
+    "ThoughtDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.pawnflavor": 10
+   },
+   "patched_by_ours_refs": 10,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 9,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "dmp.vfepirates.warcasketwork",
+   "name": "VFE Pirates - Hardworking Warcaskets",
+   "author": "dmp☆",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 470,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3535194807",
+   "workshop_id": "3535194807",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3535194807",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Allows warcaskets to work with reduced work speeds. They are trying their best..\nConfigure this mod through VEF Toggable Patches",
+   "dependencies": [
+    "oskarpotocki.vfe.pirates"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "oskarpotocki.vfe.pirates"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.63,
+   "disk_by_kind": {
+    "other": {
+     "files": 4,
+     "mb": 0.01
+    },
+    "xml": {
+     "files": 3,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 2,
+     "mb": 0.62
+    }
+   },
+   "texture_count": 2,
+   "texture_decoded_mb_est": 4.7,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 11,
+   "patched_def_types": {
+    "VFEPirates.WarcasketDef": 6,
+    "TraitDef": 3
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "oskarpotocki.vfe.pirates": 3
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "teiwaz.taajg",
+   "name": "[GTG]Traders Accept All Junk Gear",
+   "author": "Teiwaz",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 473,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3729570505",
+   "workshop_id": "3729570505",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3729570505",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "This is a lightweight patch mod designed to turn certain traders into junk gear recyclers, helping you easily clean up after battles.",
+   "dependencies": [
+    "Teiwaz.GTGTraderCore"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "Ludeon.RimWorld.Odyssey",
+    "erdelf.humanoidalienraces",
+    "oskarpotocki.vanillafactionsexpanded.core",
+    "Teiwaz.GTGTraderCore"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.95,
+   "disk_by_kind": {
+    "xml": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.94
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 5.9,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 3,
+   "patched_def_types": {
+    "TraderKindDef": 2
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "teiwaz.tacac",
+   "name": "[GTG]Traders Accept Chunks & Corpses",
+   "author": "Teiwaz",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 474,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3756658373",
+   "workshop_id": "3756658373",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3756658373",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "This is a lightweight patch mod that expands the buying range of certain caravans, helping you dispose of hard-to-handle junk.",
+   "dependencies": [
+    "Teiwaz.GTGTraderCore"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "Ludeon.RimWorld.Odyssey",
+    "erdelf.humanoidalienraces",
+    "oskarpotocki.vanillafactionsexpanded.core",
+    "Teiwaz.GTGTraderCore"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.49,
+   "disk_by_kind": {
+    "xml": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.49
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 3.0,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 3,
+   "patched_def_types": {
+    "TraderKindDef": 2
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "sd.fa.vteadjustments",
+   "name": "Adjustments for Vanilla Textures Expanded - [NL] Facial Animation",
+   "author": "Sunny Days",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 476,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3532050275",
+   "workshop_id": "3532050275",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3532050275",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adjustments for some items in Vanilla Textures Expanded - [NL] Facial Animation. Side-facing male eyebrows and one male and female mouth (Hawk). I made none of the art, just adjusted placement. I'll happily take this down if the VTE team asks me to.",
+   "dependencies": [
+    "vanillaexpanded.vtexe.facialanims"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "vanillaexpanded.vtexe.facialanims"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.16,
+   "disk_by_kind": {
+    "xml": {
+     "files": 1,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 47,
+     "mb": 0.16
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 47,
+   "texture_decoded_mb_est": 71.7,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "kem.beardadjustment",
+   "name": "Beard Adjustment",
+   "author": "Kem",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 478,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2880669781",
+   "workshop_id": "2880669781",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2880669781",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Scales the narrow Head Beard to fit the normal Head",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "nals.facialanimation",
+    "nals.facialanimationexperimentals",
+    "rimeffect.asarireapers",
+    "rimeffect.drell",
+    "erin.miqote",
+    "erin.aura",
+    "erin.viera",
+    "erin.ffraces",
+    "erin.azaphrae",
+    "pim.xenohumansretextured",
+    "VanillaExpanded.VTEXE.FacialAnims"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.01,
+   "disk_by_kind": {
+    "xml": {
+     "files": 4,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.0
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 1.2,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 3,
+   "patched_def_types": {
+    "HeadTypeDef": 3
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "chezhou.creature.sandworm",
+   "name": "LEVIATHANS:SANDWORM",
+   "author": "代码: 追踪虫，建筑贴图与封面：噶笑斯基",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 481,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3713982815",
+   "workshop_id": "3713982815",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3713982815",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "来自辛迪加的神秘委托已经送达：他们在深砂带锁定了一头利维坦级沙虫，并提供了一台能够模拟沙虫交配信号的沙锤。将沙锤带往世界地图上的深砂回响区，部署后等待地脉震动积累，巨型沙虫将会在异常沙尘暴中从地图边缘现身。猎杀它，撑过这场来自沙海深处的灾厄，并领取辛迪加承诺的报酬。",
+   "dependencies": [
+    "Chezhou.ChezhouLib.lib"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Chezhou.ChezhouLib.lib"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 40.7,
+   "disk_by_kind": {
+    "xml": {
+     "files": 17,
+     "mb": 0.03
+    },
+    "assemblies": {
+     "files": 2,
+     "mb": 0.4
+    },
+    "assetbundles": {
+     "files": 8,
+     "mb": 38.02
+    },
+    "textures": {
+     "files": 8,
+     "mb": 0.4
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    },
+    "sounds": {
+     "files": 1,
+     "mb": 1.85
+    }
+   },
+   "texture_count": 8,
+   "texture_decoded_mb_est": 2.3,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "SandWormLib.dll",
+     "path": "1.6/Assemblies/SandWormLib.dll",
+     "kb": 96.0,
+     "flags": [
+      "comp_tick",
+      "game_component_tick",
+      "harmony",
+      "map_component_tick",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "game_component_tick",
+    "harmony",
+    "map_component_tick",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 10,
+   "defs_by_type": {
+    "ThingDef": 3,
+    "SoundDef": 2,
+    "ChezhouLib.LibDef.ClAssetLord": 1,
+    "QuestScriptDef": 1,
+    "SongDef": 1,
+    "WeatherDef": 1,
+    "WorldObjectDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "redmattis.optional",
+   "name": "Big and Small - Enable All Optional Content",
+   "author": "RedMattis",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 486,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3532649666",
+   "workshop_id": "3532649666",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3532649666",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "This mod simply enables optional content like the giant weapons, large meals, shrink rays, and so without requiring the mods that would typically enable them.\\n\\nThe mod has no content itself, but will trigger activation of content elsewhere.",
+   "dependencies": [
+    "brrainz.harmony",
+    "RedMattis.BetterPrerequisites",
+    "RedMattis.BigSmall.Core"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "brrainz.harmony",
+    "RedMattis.BetterPrerequisites",
+    "RedMattis.BigSmall.Core"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.21,
+   "disk_by_kind": {
+    "xml": {
+     "files": 1,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 2,
+     "mb": 0.21
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 2,
+   "texture_decoded_mb_est": 1.2,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "frozensnowfox.complexjobs",
+   "name": "[FSF] Complex Jobs",
+   "author": "FrozenSnowFox",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 498,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2069684319",
+   "workshop_id": "2069684319",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2069684319",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Overhauls the worktypes and workgivers in the work tab splitting existing jobs into smaller jobs and streamlining tasks so things run more efficiently.\n\t\t\n\t\tLoad this mod at the end of your mod list.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Accurex.MedievalOverhaul.Stuff",
+    "AmCh.Eragon.HCGeneFabrication",
+    "Aoba.DeadManSwitch.Core",
+    "Aoba.Fortress.Industrial.Citadel",
+    "bambaryla.beyondaotc",
+    "Better.Humanoid.Mechanoid.CN",
+    "CETeam.CombatExtended",
+    "DankPyon.Medieval.Overhaul",
+    "daylight.RLEsExpansionProductPS",
+    "dhultgren.buryonthespot",
+    "Dubwise.DubsBadHygiene",
+    "Dubwise.DubsPaintShop",
+    "Dubwise.Rimefeller",
+    "Dubwise.Rimatomics",
+    "Dubwise.DubsRimkit",
+    "Euterpe.MilkyTitfuck",
+    "Farxmai2.VanillaFurnitureExpandedPack",
+    "FLASHPOINT55.HumanPowerGeneratorMod",
+    "Fluffy.FluffyBreakdowns",
+    "fluffy.colonymanager",
+    "FrozenSnowFox.SimpleEducation",
+    "godsfathermixtape.worksitesexpanded",
+    "Haplo.Miscellaneous.Robots",
+    "Haplo.Miscellaneous.Training",
+    "Alaestor.MiscRobots.PlusPlus",
+    "Heremeus.MedicalDissection",
+    "imranfish.xmlextensions",
+    "isorex.mechanoidsaddon",
+    "keepmortarsready.1trickPwnyta",
+    "kentington.saveourship2",
+    "Keshash.LayeredWallDestruction",
+    "Killathon.ArtificialBeings",
+    "leion247658.MiscVHCraftableHRobots",
+    "LimeTreeSnake.Ammunition",
+    "Mehni.PickUpAndHaul",
+    "Mlie.OmniCoreDrill",
+    "Mlie.PleaseHaulPerishables",
+    "Mlie.ReadyThoseGuns",
+    "Mlie.RecycleThis",
+    "n7huntsman.ceramics",
+    "Neronix17.Asimov",
+    "Neronix17.OuterRim.DroidDepot",
+    "Pal5k.LogisticsMechanoid",
+    "postrobcore.feedthecolonists",
+    "PrimitiveProduction.velcroboy333",
+    "Orion.Hospitality",
+    "Orpheusly.PawnStorages",
+    "ReSplice.XOTR.Core",
+    "Romyashi.Scavenging",
+    "roolo.whatthehack",
+    "RusticFox.BulkStoneCutting",
+    "sarg.alphagenes",
+    "sarg.alphamechs",
+    "sarg.rimbees",
+    "scpchemfuel.appliances",
+    "seos.vfe.mechanoids.drones",
+    "Shashlichnik.DeepAndDeeper",
+    "Sielfyr.WTHaddon",
+    "SirMashedPotato.Ashlands",
+    "Smuffle.HarvestOrgansPostMortem",
+    "SmashPhil.VehicleFramework",
+    "sneaks.meatblend",
+    "sneaks.veggiemix",
+    "spdskatr.projectrimfactory",
+    "spdskatr.projectrimfactory.drones",
+    "sumghai.MousekinRace",
+    "syrchalis.processor.framework",
+    "syrchalis.prosthetictable",
+    "syrchalis.universalfermenter",
+    "Teemo.PickUpAndHaulForked",
+    "telardo.MultiFloors",
+    "telardo.MultiFloorsDev",
+    "temmie3754.berrypicker",
+    "theeyeofbrows.fluffybreakdowns",
+    "OskarPotocki.VanillaFactionsExpanded.Core",
+    "OskarPotocki.VanillaFactionsExpanded.MedievalModule",
+    "OskarPotocki.VanillaVehiclesExpanded",
+    "OskarPotocki.VFE.Mechanoid",
+    "OskarPotocki.VFE.Medieval2",
+    "OskarPotocki.VFE.Pirates",
+    "OskarPotocki.VFE.Tribals",
+    "Owlchemist.SeedsPleaseLite",
+    "UnlimitedHugs.AllowTool",
+    "Ushanka.BiologicalWarfare",
+    "vanillaexpanded.gravship",
+    "VanillaExpanded.VBooksE",
+    "VanillaExpanded.VBrewE",
+    "VanillaExpanded.VBrewECandT",
+    "VanillaExpanded.VCookE",
+    "VanillaExpanded.VCookESushi",
+    "VanillaExpanded.VCEF",
+    "VanillaExpanded.VGeneticsE",
+    "VanillaExpanded.VGeneticsEMoreLabStuff",
+    "VanillaExpanded.HelixienGas",
+    "VanillaExpanded.VFEA",
+    "VanillaExpanded.VFEPower",
+    "VanillaExpanded.VFESecurity",
+    "VanillaExpanded.VPlantsEMore",
+    "VanillaExpanded.VPlantsEMushrooms",
+    "vanillaracesexpanded.android",
+    "vanillaracesexpanded.sanguophage",
+    "vanillaquestsexpanded.generator",
+    "weilbyte.snapout",
+    "vr.fantasy.biotech",
+    "wvc.sergkart.races.biotech",
+    "XMB.AncientHydroponicFarmFacilities.MO",
+    "XMB.AncientMiningIndustry.MO",
+    "zal.advanceddeepdrill",
+    "zal.ceramics"
+   ],
+   "load_before": [],
+   "incompatible_with": [
+    "CodeOptimist.JobSplitter",
+    "DarthSergeant.NurseJob",
+    "FrozenSnowFox.ComplexJobsLegacy"
+   ],
+   "disk_mb": 1.38,
+   "disk_by_kind": {
+    "xml": {
+     "files": 392,
+     "mb": 1.14
+    },
+    "textures": {
+     "files": 2,
+     "mb": 0.24
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 2,
+   "texture_decoded_mb_est": 1.2,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 22,
+   "defs_by_type": {
+    "WorkTypeDef": 21,
+    "XmlExtensions.SettingsMenuDef": 1
+   },
+   "patch_ops_all": 772,
+   "patched_def_types": {
+    "WorkGiverDef": 363,
+    "ThingDef": 226,
+    "AlienRace.ThingDef_AlienRace": 136,
+    "WorkTypeDef": 44,
+    "GeneDef": 31,
+    "ThinkTreeDef": 14,
+    "RecipeDef": 6,
+    "TraitDef": 4,
+    "VFETribals.TribalResearchProjectDef": 3,
+    "PreceptDef": 1
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 146,
+    "vanillaracesexpanded.archon": 31,
+    "ludeon.rimworld.biotech": 30,
+    "dubwise.dubsbadhygiene.lite": 19,
+    "ludeon.rimworld.anomaly": 18,
+    "smashphil.vehicleframework": 10,
+    "vanillaexpanded.gravship": 9,
+    "vanillaexpanded.vgeneticse": 9,
+    "ludeon.rimworld.ideology": 7,
+    "oskarpotocki.vanillafactionsexpanded.core": 6,
+    "sarg.alphagenes": 6,
+    "dubwise.rimefeller": 5,
+    "vanillaquestsexpanded.generator": 5,
+    "oskarpotocki.vfe.pirates": 4,
+    "vanillaexpanded.vcooke": 4,
+    "dubwise.dubspaintshop": 3,
+    "oskarpotocki.vfe.tribals": 3,
+    "nals.facialanimation": 2,
+    "nals.facialanimationexperimentals": 2,
+    "petetimessix.researchreinvented": 2
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "danzinagri.facialanimationcompatabilityproject",
+   "name": "Facial Animation Compatability Project",
+   "author": "DanZinagri",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 500,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3585705988",
+   "workshop_id": "3585705988",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3585705988",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "I like what Genetic Framework is doing, it seems like a really clean system, but I like the head shapes provided by NL Facial Animation, as they tend to fit the more anime aesthetic, especially as i tend to run stuff alongside races like ratkin and the like. So going to do some adjustments in an attempt to bring things more in line with that style.\n\t\n\tCurrently Supported:\n\t- Vanilla Races Expanded - Phytokin (Specifically the Barkskin head) - No Heavy Jaw or Gaunt Yet.\n    - Vanilla Heavy Jaw Gene (so Neanderthals and such)\n    - Vanilla Gaunt Gene (So wasters and such)\n    \n    If applying to existing save/pawn, go into the facial animation menu and select the BarkSkin face, this should swap over to the new head texture; this overwrites the normal list of heads.",
+   "dependencies": [
+    "nals.facialanimation"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Biotech",
+    "zaire82.hdheadattatchmentsforfacialanimation",
+    "vanillaracesexpanded.pigskin",
+    "vanillaracesexpanded.lycanthrope",
+    "nals.facialanimation",
+    "nals.facialanimationexperimentals",
+    "sd.fa.geneticheadsframework",
+    "vanillaracesexpanded.phytokin",
+    "redmattis.bigsmall.core",
+    "redmattis.bigsmall.core",
+    "redmattis.morexenos",
+    "redmattis.bigsmall",
+    "redmattis.bsslimes",
+    "redmattis.undead",
+    "redmattis.yokai",
+    "erin.expie",
+    "redmattis.bigsmall.bugs",
+    "redmattis.bigsmall.bugs",
+    "sarg.alphagenes",
+    "redmattis.lamiasandothersnakes",
+    "vanillaracesexpanded.saurid",
+    "erin.shisune",
+    "tug.minotaur",
+    "tug.minotaur.expanded",
+    "v.rooboid.faun",
+    "tug.satyrfaun.expanded",
+    "lucius.eyegenes3",
+    "det.stoneborn",
+    "erin.rhyaeth",
+    "eclair155.onixeno",
+    "det.boglegs",
+    "det.keshig",
+    "det.brawnum",
+    "det.venators",
+    "erin.auraeyl",
+    "erin.fenrisulfr",
+    "erin.auronyabiotech",
+    "unagi.facialanimation",
+    "vanillaracesexpanded.sanguophage",
+    "vres.betterparts"
+   ],
+   "load_before": [
+    "barb.facetexture"
+   ],
+   "incompatible_with": [],
+   "disk_mb": 28.67,
+   "disk_by_kind": {
+    "xml": {
+     "files": 26,
+     "mb": 0.04
+    },
+    "assemblies": {
+     "files": 1,
+     "mb": 0.06
+    },
+    "textures": {
+     "files": 536,
+     "mb": 28.56
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 536,
+   "texture_decoded_mb_est": 633.7,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "FACP.dll",
+     "path": "1.6/Assemblies/FACP.dll",
+     "kb": 64.5,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 16,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 1,
+   "static_ctors": 1,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "arandomkiwi.rimthemes",
+   "name": "RimThemes",
+   "author": "aRandomKiwi",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 539,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1668983184",
+   "workshop_id": "1668983184",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=1668983184",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "A UI themes manager.\nVersion NX <color=#FFD800>Rev 10.2</color> for Rimworld.\n\nThemes Engine for Rimworld.\nMake RimWorld look as you are or as you want.",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [
+    "mandrake.rut.menushell"
+   ],
+   "dependants_ours": [
+    "mandrake.rut.menushell"
+   ],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 286.68,
+   "disk_by_kind": {
+    "other": {
+     "files": 39,
+     "mb": 177.72
+    },
+    "assemblies": {
+     "files": 15,
+     "mb": 20.08
+    },
+    "xml": {
+     "files": 16,
+     "mb": 0.05
+    },
+    "textures": {
+     "files": 374,
+     "mb": 44.73
+    },
+    "sounds": {
+     "files": 244,
+     "mb": 44.08
+    }
+   },
+   "texture_count": 288,
+   "texture_decoded_mb_est": 84.8,
+   "dll_count": 2,
+   "dlls": [
+    {
+     "name": "LibAPNG.dll",
+     "path": "1.6/Assemblies/LibAPNG.dll",
+     "kb": 21.0,
+     "flags": []
+    },
+    {
+     "name": "RimThemes.dll",
+     "path": "1.6/Assemblies/RimThemes.dll",
+     "kb": 2948.0,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 65,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/aRandomKiwi/RimThemes",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "GPL-3.0",
+   "source_last_push": "2025-07-22T20:44:34Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": null,
+   "prior_note_2026_08_30": null,
+   "src": null
+  },
+  {
+   "packageId": "rw.mod.simplestairs",
+   "name": "SimpleStairs (Fork)",
+   "author": "gomi, b0unt9",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 544,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3526906079",
+   "workshop_id": "3526906079",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3526906079",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "[h1]SimpleStairs (Fork)[/h1]\n\nThis is a [b]fork[/b] of the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2926310517]original \"SimpleStairs\" mod[/url] for RimWorld, updated to support [b]version 1.6[/b].\n\nAs of RimWorld 1.6, the [b]placingDraggableDimensions[/b] XML element used in 1.5 is no longer supported. It has been superseded by [b]drawStyleCategory[/b], which should be used to specify the visual and interaction style of placeable objects.\n\n[hr]\n\n[h2]📦 Differences from the Original Mod[/h2]\n\n[list]\n[*][b]placingDraggableDimensions[/b] has been replaced by [b]drawStyleCategory[/b] to control object placement and visual behavior.\n[/list]\n\n[hr]\n\n[h2]📌 Notes[/h2]\n\n[list]\n[*]This is [b]not an official update[/b] by the original author.  \n[*]This is a simple update for 1.6 compatibility.  \n[*]The mod should be safe to use in existing saves, but always back up your game just in case.\n[/list]\n\n[hr]\n\n[h2]📜 Credits[/h2]\n\n[list]\n[*]Original mod by [url=https://steamcommunity.com/profiles/76561198109651831/]gomi[/url] ([url=https://steamcommunity.com/sharedfiles/filedetails/?id=2926310517]Workshop page[/url])  \n[*]1.6 update by [url=https://github.com/b0unt9]Bounty[/url]\n[/list]\n\n[hr]\n\n[h2]🔧 Compatibility[/h2]\n\n[list]\n[*]RimWorld 1.5, 1.6  \n[*]Incompatible with the original mod (disable one or the other)\n[/list]\n\n[hr]\n\n[h2]💬 Feedback[/h2]\n\nIssues or suggestions?  \nFeel free to leave a comment or contact me via GitHub:  \n[url=https://github.com/rw-mod/SimpleStairs]github.com/rw-mod/SimpleStairs[/url]",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Solaris.FurnitureBase"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.72,
+   "disk_by_kind": {
+    "xml": {
+     "files": 8,
+     "mb": 0.08
+    },
+    "other": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 53,
+     "mb": 0.63
+    }
+   },
+   "texture_count": 53,
+   "texture_decoded_mb_est": 20.6,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": true,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 10,
+   "defs_by_type": {
+    "ThingDef": 10
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/rw-mod/SimpleStairs",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": "2025-07-16T01:52:44Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": null,
+   "prior_note_2026_08_30": null,
+   "src": null
+  }
+ ]
+}

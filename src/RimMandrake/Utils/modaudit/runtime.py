@@ -18,6 +18,9 @@ Each block is attributed to CANDIDATE mods by four kinds of evidence, all record
          that declare it in their XML (defscan owners)                            (medium: the declarer is not
          always the culprit - a patcher may have broken it)
   tag    a leading [Tag] that equals a mod's name/shortName or assembly stem      (medium)
+  prefix a defName NO mod declares (Failed to find X named Y) whose prefix (Y before the first _) is used by
+         exactly one mod for >= 5 defs                                             (weak)
+An assembly stem shipped by >= 3 mods (VersionFromManifest, 0MultiplayerAPI, Assembly-CSharp ...) never attributes.
 ATTRIBUTION IS CANDIDATE, never a verdict. A block may name several mods; base-game frames (Verse, RimWorld,
 System, UnityEngine, Mono, HarmonyLib, LudeonTK) never attribute.
 
@@ -55,7 +58,9 @@ RX_PATH = re.compile(r"(?:Mods|294100)[\\/]+([^\\/\s'\")]+)")
 RX_FRAME = re.compile(r"^\s*(?:at\s+)?(?:\(wrapper [^)]*\)\s+)?([A-Za-z_][\w`]*(?:\.[A-Za-z_<>][\w`<>]*)+)")
 RX_DEFS = (re.compile(r"Config error in ([A-Za-z0-9_]+)"), re.compile(r"named ([A-Za-z0-9_]+)"),
            re.compile(r"ConfigErrors\(\) of ([A-Za-z0-9_]+)"), re.compile(r"\bdef ([A-Za-z0-9_]{3,})"),
-           re.compile(r"defName[=: ]+\"?([A-Za-z0-9_]+)"))
+           re.compile(r"defName[=: ]+\"?([A-Za-z0-9_]+)"), re.compile(r"^\[Def Error\]:?\s*([A-Za-z0-9_]+)"))
+SHARED_MIN_MODS = 3          # an assembly stem shipped by >= this many mods is a shared helper: never attributes
+RX_PREFIX = re.compile(r"^([A-Za-z][A-Za-z0-9]{1,15})_")
 RX_TAG = re.compile(r"^\[([^\]\[]{2,60})\]")
 RX_CTOR = re.compile(r"^\[LoadTracer\] ctor \d+/\d+: (\S+) \[([^\]]+)\]")
 
@@ -114,9 +119,13 @@ def attribute(opener, cont, maps):
                 hits[pid].add("frame")
     for rx in RX_DEFS:
         for m in rx.finditer(opener):
-            for pid in maps["owners"].get(m.group(1), ()):
-                if not pid.startswith("ludeon.rimworld"):
-                    hits[pid].add("def")
+            owners = [p for p in maps["owners"].get(m.group(1), ()) if not p.startswith("ludeon.rimworld")]
+            for pid in owners:
+                hits[pid].add("def")
+            if not maps["owners"].get(m.group(1)):
+                pm = RX_PREFIX.match(m.group(1))       # a def nobody declares: its prefix may still name a mod
+                for pid in maps.get("prefix", {}).get(pm.group(1) if pm else "", ()):
+                    hits[pid].add("prefix")
     m = RX_TAG.match(opener)
     if m:
         for pid in maps["tag"].get(m.group(1).strip().lower(), ()):
@@ -133,13 +142,24 @@ def build_maps(universe_rows, disk, owners, ctor_pairs):
         d = disk.get(pid) or {}
         for dl in d.get("dlls") or []:
             stem = os.path.splitext(os.path.basename(dl["path"]))[0].lower()
-            if stem not in SHARED_DLLS:
+            if stem not in SHARED_DLLS and stem != "assembly-csharp":
                 asm[stem].add(pid)
                 tag[stem].add(pid)
         ab = d.get("about") or {}
         for k in ("name", "shortName"):
             if ab.get(k):
                 tag[ab[k].strip().lower()].add(pid)
+    for stem in [k for k, v in asm.items() if len(v) >= SHARED_MIN_MODS]:
+        del asm[stem]                                   # shared helper (VersionFromManifest, 0MultiplayerAPI ...)
+        tag.pop(stem, None)
+    # defName prefix -> mod, only where >= 5 of that mod's defs carry it and no other mod uses it
+    pref = defaultdict(Counter)
+    for dn, pids in owners.items():
+        pm = RX_PREFIX.match(dn)
+        if pm:
+            for p in pids:
+                pref[pm.group(1)][p] += 1
+    prefix = {k: {max(v, key=v.get)} for k, v in pref.items() if len(v) == 1 and sum(v.values()) >= 5}
     ns = {}
     first = {}
     for typ, a in ctor_pairs:
@@ -149,7 +169,7 @@ def build_maps(universe_rows, disk, owners, ctor_pairs):
         for n in range(1, len(parts)):
             ns.setdefault(".".join(parts[:n]), a)
         first.setdefault(parts[0], a)
-    return {"folder": folder, "asm": asm, "tag": tag, "ns": ns, "asm_by_first_ns": first,
+    return {"folder": folder, "asm": asm, "tag": tag, "ns": ns, "asm_by_first_ns": first, "prefix": prefix,
             "owners": {k: v for k, v in owners.items()}}
 
 
