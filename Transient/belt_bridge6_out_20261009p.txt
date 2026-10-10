@@ -72,3 +72,31 @@ t 2 {'x': 96, 'z': 56} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False c
 t 3 {'x': 96, 'z': 56} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True worker=Verse.PawnRenderNodeWorker_Apparel_Head applies=False kept=True restoredCan=True headgearVisibleRestored=True baseGate=True skipFlag= rotDrawMode=Fresh, Rotting, Dessicated parmsRot=0 facing=2 debugEnabled=True
 t 4 {'x': 96, 'z': 56} hooded=7 swimmingHooded=0 pawn=Twice-Kin swimming=False canDraw=True flags=96 toggle=True worker=Verse.PawnRenderNodeWorker_Apparel_Head applies=False kept=True restoredCan=True headgearVisibleRestored=True baseGate=True skipFlag= rotDrawMode=Fresh, Rotting, Dessicated parmsRot=0 facing=2 debugEnabled=True
 PID Human670473
+== scratch map
+MAP 4 {"success": true, "tile": 9000, "tileValid": true, "mapId": 4, "sizeX": 200, "sizeZ": 200, "cellCount": 40000, "tileInfo": {"biome": "AridShrubland", "hilliness": "SmallHills", "hillinessInt": 2, "elevation": 561.0, "rainfall": 0.0, "swampiness": 0.0, "temperature": 6.1, "pollution": 0.0, "waterCove
+== EK config+guards
+scenes available: calibration,wall_stop,door_stop,over_sandbags,pit_colonist,pit_enemy,no_cross,cover_breaks,items,corpse_into_pit,killed_by_blast,shelf,in_pit_skip,heavy_skip,caps,tick_cap,settings_off,emp_no_throw,lookup_projectile,lookup_zero_wins,impact_factor,body_override,immunity_window,shield_counter flowworks=True gss=True
+lookup_projectile PASS p 13,12->20,12 (7 cells) want~7 [type=request tick=137256 exp=689607 thing=Human966 from=13,12 centre=12,12 radius=2.9 force=2.5 damType=Bomb source=projectile shieldAbsorbed=False]
+lookup_zero_wins PASS p 28,12->28,12 (0 cells) requests=0
+impact_factor    PASS p 43,12->44,12 (1 cells) [type=launch tick=137856 exp=689750 thing=Human689746 from=43,12 to=44,12 planned=3 cells=1 stop=Wall impact=0 otherImpact=0 door=False mass=60.74998 hoseDropped=False faction=PlayerColony]
+body_override    PASS big 58,12->62,18 (6 cells); control 56,15->59,11 (4 cells) bodySize=2.5 bigLaunches=1 controlLaunches=0 controlTooBig=True
+immunity_window  PASS launches=1 immuneSkip=True guardHolds=True
+shield_counter   PASS p 88,12->88,12 (0 cells) energy 1.1->1.1 [type=skip tick=138756 exp=689922 thing=Human689918 reason=shield energyBefore=1.067 energyAfter=0.737 broke=False]
+VERDICT PASS  (6 scenes) -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\explosive_knockback\run_20261009T220936.jsonl
+== droid
+spawn ['RSW_DW_Race_OuterRim_GNKDroid689999', 'RSW_DW_Race_OuterRim_GNKDroid690000', 'RSW_DW_Race_OuterRim_GNKDroid690001']
+SET mindless {"success": true, "action": "set", "tier": "Mindless", "severity": 2.0, "needs": ["RSW_DW_Power"], "ticksGame": 139055, "operation": {"OperationId": "op_3543b67b2f5146bb923c84d5c6748429", "Status": "C
+SET blank {"success": true, "action": "set", "tier": "Blank", "severity": 1.0, "needs": ["RSW_DW_Power"], "ticksGame": 139055, "operation": {"OperationId": "op_0d3a420af5e049e4aeeaa22dbdd844c7", "Status": "Comp
+SET sapient {"success": true, "action": "set", "tier": "Sapient", "severity": 4.0, "needs": ["Mood", "Hygiene", "DrugDesire", "RoomSize", "AM_TeaNeed", "AM_CoffeeNeed", "RomanceOnTheRim_Need_Romance", "PrisonLabo
+AFTER mindless RSW_DW_Race_OuterRim_GNKDroid689999 {'needs': ['RSW_DW_Power'], 'pos': {'x': 45, 'z': 60}, 'job': None} pos0 {'x': 85, 'z': 149} job=GotoWander target=(44, 0, 61) insp ['Aphrodor female, age 60 of New Arrivals', 'Wandering.']
+AFTER blank RSW_DW_Race_OuterRim_GNKDroid690000 {'needs': ['RSW_DW_Power'], 'pos': {'x': 98, 'z': 153}, 'job': None} pos0 {'x': 98, 'z': 153} job=Wait target=null insp ['Aphrodor male, age 35 of New Arrivals', 'Standing.']
+AFTER sapient RSW_DW_Race_OuterRim_GNKDroid690001 {'needs': ['Mood', 'Hygiene', 'DrugDesire', 'RoomSize', 'AM_TeaNeed', 'AM_CoffeeNeed', 'RomanceOnTheRim_Need_Romance', 'PrisonLabor_Motivation', 'PrisonLabor_Treatment', 'VME_Desserts', 'VME_Anonymity', 'VME_Corruption', 'SEX_Intimacy', 'RSW_DW_Power', 'Joy', 'Beauty', 'Comfort', 'Outdoors'], 'pos': {'x': 105, 'z': 146}, 'job': None} pos0 {'x': 105, 'z': 146} job=RM_PaintGraffitiJob target=(105, 0, 145) insp ['Gestor male, age 44 of New Arrivals', 'Painting graffiti.']
+== droid programmable control
+tier {"success": true, "action": "get", "tier": "Programmable", "severity": 3.0, "needs": ["Mood", "Hygiene", "DrugDesire", "RoomSize", "AM_TeaNeed", "AM_CoffeeNeed", "RomanceOnTheRim_Need_Romance", "Priso
+PROGRAMMABLE RSW_DW_Race_OuterRim_GNKDroid690166 jobs {'job=GotoWander'} needs ['Mood', 'Hygiene', 'DrugDesire', 'RoomSize', 'AM_TeaNeed', 'AM_CoffeeNeed', 'RomanceOnTheRim_Need_Romance', 'PrisonLabor_Motivation', 'PrisonLabor_Treatment', 'VME_Desserts', 'VME_Anonymity', 'VME_Corruption', 'SEX_Intimacy', 'RSW_DW_Power']
+== silooth
+True 1 []
+['texPath": "swanimals/Silooth/Silooth_j"', 'texPath": "swanimals/Silooth/Silooth_j_Dessicated"', 'texPath": "RimStarWars/SWBestiary/Silooth/Silooth"', 'texPath": "swanimals/Silooth/Silooth_Dessicated"', 'texPath": "RimStarWars/SWBestiary/Silooth/Silooth"', 'texPath": "swanimals/Silooth/Silooth_Dessicated"']
+spawned Silooth690284
+== silooth texture_audit
+{"success": true, "message": "28 DEAD texPath(s) in 27808 path(s) across 29611 def(s). Plus 41 UNJUDGED - a custom graphicClass resolves its own filenames and this checker cannot judge them.", "defsScanned": 29611, "pathsChecked": 27808, "missingCount": 28, "unjudgedCount": 41, "truncated": false, "elapsedMs": 30172, "missing": [{"def": "KOTOR_SmallCrystal_red", "label": "small crystal formation, red", "mod": "Jawa Armoury Rebalance", "packageId": "mandrake.rsw.armoury", "graphic": "graphicData", "texPath": "Buildings/Crystal_Formations/small_dyeable"}, {"def": "KOTOR_SmallCrystal_orange", "label": "small crystal formation, orange", "mod": "Jawa Armoury Rebalance", "packageId": "mandrake.rsw
