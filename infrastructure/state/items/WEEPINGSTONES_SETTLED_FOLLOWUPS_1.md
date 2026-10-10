@@ -21,5 +21,12 @@ attached as reference). Early renders were withdrawn to `D:\Luke\dev\_artpipe\_w
 NEXT: after each creature pick, run `art.py enact <decisions> --apply` — it files the waiting catch.
 
 ## Huldu fur (his note: "Very beautiful fur that is a trading commodity")
-Description now says so; no fur/leather product exists. NEXT: owner question — should huldu yield a valuable fur
-(a leather def with high market value)? Not built.
+Decision taken by question card 2026-10-10: "add it". DONE at `0de0868678a2`: `RM_Leather_Huldu` ("huldu fur",
+MarketValue 9, LeatherBase) in `WeepingStones/Defs/ThingDefs_Items/RM_HulduFur.xml`, set as RM_Huldu's `leatherDef`.
+Uses the shared vanilla leather texture tinted brown for now. Icon job `rm_huldufur_icon_v1` queued (reference: the
+huldu render), target texPath `Things/Item/Resource/RM_LeatherHuldu`. NEXT: when it is done, install it and add the
+`<texPath>` to RM_Leather_Huldu's graphicData.
+
+## Agent-added scopes: owner KEPT all three
+Decision taken by question card 2026-10-10: the new RM_Colossia creature, the "korrim" spice + recipe change, and the
+global vanilla reeds repoint all STAND as the agent added them.
