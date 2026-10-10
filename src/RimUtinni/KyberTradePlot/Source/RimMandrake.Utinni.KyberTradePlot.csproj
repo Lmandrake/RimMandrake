@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="KyberTradePlotSettings.cs" />
     <Compile Include="KyberTradePlotIncidentWorker.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>

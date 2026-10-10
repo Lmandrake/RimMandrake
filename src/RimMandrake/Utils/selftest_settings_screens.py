@@ -943,6 +943,9 @@ MODS = {
         "Fungal ground on the Rot (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Fungal distress (mining the Rot's soil)": "Now",
     }, ()),
+    "KyberTradePlot": ("KyberTradePlotSettings.cs", "RimMandrake.Utinni.KyberTradePlot.csproj", {
+        "Kyber trade plot content": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)

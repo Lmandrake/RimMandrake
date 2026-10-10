@@ -1,0 +1,6 @@
+# project: RimUtinni/KyberTradePlot/Source/RimMandrake.Utinni.KyberTradePlot.csproj
+# dll: f8b33b3c8c3823163e018fee854c9243911b6d14748fd1c7541b4360aa2186b9
+28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../../RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs
+8f5d75c8cea09598eb99b19b10c6f6dc1ec0cb5a04aa4973123d8bc22286eee6 KyberTradePlotSettings.cs
+cbbe271db48a5515cadef5938c8c14164f416f35d867ea104a1fcd4dbd50c9c5 KyberTradePlotIncidentWorker.cs
+d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../../RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs
