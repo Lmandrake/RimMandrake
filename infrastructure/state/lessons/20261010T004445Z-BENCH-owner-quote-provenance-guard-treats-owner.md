@@ -1,0 +1,1 @@
+The owner-quote provenance guard treats an owner QUESTION as non-authorization and rejects quotes joined with separators: record one verbatim statement per rimflow note, and a typed question as plain note text.
