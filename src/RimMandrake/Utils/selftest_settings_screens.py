@@ -798,6 +798,13 @@ MODS = {
         "Quest offers": "NextPulse",
         "Throat cask": "Now",
     }, ()),
+    "EmpirePursuit": ("Settings.cs", "EmpirePursuit.csproj", {
+        "Debug": "Now",
+        "Escalation ladder": "Now",
+        "Which rungs fire": "NextPulse",
+        "Rung memory": "NextPulse",
+        "Ion cordon timing": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
