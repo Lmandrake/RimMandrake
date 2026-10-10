@@ -17,14 +17,14 @@ Wing E (`design/Jawa/worldbuilding/ship_deck_plan.md`).
    plasteel late. Exotic metals (duranium, beskar, cortosis) are never forged.
 2. Plasteel: keep or retune `VFEFactory_AlloyPlasteel` as the one fabricated plasteel route, gated by a late
    research.
-3. Durasteel: steel + `RSW_Zersium` → `RSW_Durasteel`. **TO CONFIRM with the owner:** on the ship smelter (his
-   question) or as the forge's first recipe; and zersium's source (canon: Nag Ubdur bedrock only; candidates:
+3. Durasteel: steel + `RSW_Zersium` → `RSW_Durasteel`. Runs as **the forge's first recipe**, not on the ship
+   smelter (owner, question card 2026-10-09). **TO CONFIRM with the owner:** zersium's source (canon: Nag Ubdur bedrock only; candidates:
    asteroid ore beside doonium, or a rare deep deposit via the mineral abundance registry).
 4. Place the forge in the ship layout once its stage in the deck plan is set.
 5. Mod Settings: the progressive gate and each recipe can be toggled.
 
 ## criteria
-- L1 L4: owner confirms the durasteel route (smelter or forge) and zersium's source
+- L1 L4: owner confirms zersium's source
 - L2 L0: `RSW_Zersium` exists with a canon description and the confirmed source; steel + zersium makes `RSW_Durasteel` on the confirmed building
 - L3 L0: the alloy forge's plasteel recipe is the only fabricated plasteel route and unlocks after the durasteel one
 - L4 L0: settings toggles exist and default to the shipped behaviour
