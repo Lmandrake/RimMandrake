@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Collections.Generic;
 using HarmonyLib;
 using RimWorld;
 using UnityEngine;
@@ -69,114 +71,177 @@ namespace RimMandrake.SolarMirrors
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
-        private static Vector2 scrollPosition;
-        private static float lastContentHeight;
+                // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_SolarMirrorsSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_SolarMirrorsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1400f;
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): only the ancient-field switches are read at map generation (RM_GenStep_AncientMirrorField, [new maps only]); every other setting is read by the light pass, a patch or a job ([now]), and the window applies it to open maps when it closes.</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
 
         public void DoWindowContents(Rect inRect)
         {
-            // Scroll view + maxOneColumn, per the Webwork fix (cfdba9344): without maxOneColumn the
-            // first frame's overflow wraps into a hidden second column and the view never grows.
-            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(lastContentHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, viewRect);
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.Label("RM_SolarMirrors_Section_Light".Translate());
-            list.CheckboxLabeled("RM_SolarMirrors_Setting_Shade".Translate(), ref shadeEffect,
-                "RM_SolarMirrors_Setting_Shade_Tip".Translate());
-            list.CheckboxLabeled("RM_SolarMirrors_Setting_Glow".Translate(), ref glowEffect,
-                "RM_SolarMirrors_Setting_Glow_Tip".Translate());
-            list.CheckboxLabeled("RM_SolarMirrors_Setting_Sweep".Translate(), ref staticSweep,
-                "RM_SolarMirrors_Setting_Sweep_Tip".Translate());
-            list.Label("RM_SolarMirrors_Setting_Reflectivity".Translate(reflectivityMultiplier.ToStringPercent()),
-                tooltip: "RM_SolarMirrors_Setting_Reflectivity_Tip".Translate());
-            reflectivityMultiplier = Mathf.Round(list.Slider(reflectivityMultiplier, 0.25f, 1.5f) * 20f) / 20f;
-            list.Label("RM_SolarMirrors_Setting_Chain".Translate(maxChain),
-                tooltip: "RM_SolarMirrors_Setting_Chain_Tip".Translate());
-            maxChain = Mathf.RoundToInt(list.Slider(maxChain, 1f, 6f));
-
-            list.GapLine();
-            list.Label("RM_SolarMirrors_Section_Look".Translate());
-            string[] modes = { "RM_SolarMirrors_Render_Off", "RM_SolarMirrors_Render_Spot", "RM_SolarMirrors_Render_Beam" };
-            list.Label("RM_SolarMirrors_Setting_Render".Translate(modes[Mathf.Clamp(beamRender, 0, 2)].Translate()),
-                tooltip: "RM_SolarMirrors_Setting_Render_Tip".Translate());
-            beamRender = Mathf.RoundToInt(list.Slider(beamRender, 0f, 2f));
-
-            list.GapLine();
-            list.Label("RM_SolarMirrors_Section_Uses".Translate());
-            list.CheckboxLabeled("RM_SolarMirrors_Setting_Blind".Translate(), ref blindingDefence,
-                "RM_SolarMirrors_Setting_Blind_Tip".Translate());
-            if (blindingDefence)
+            if (Group(list, "Mirror light", RimMandrake.Shared.SettingScope.Now, new[] { "shadeEffect", "glowEffect", "staticSweep", "reflectivityMultiplier", "maxChain" }))
             {
-                list.Label("RM_SolarMirrors_Setting_BlindRate".Translate(blindSeverityPerDay.ToString("0.0")));
-                blindSeverityPerDay = Mathf.Round(list.Slider(blindSeverityPerDay, 1f, 20f) * 2f) / 2f;
-            }
-            list.CheckboxLabeled("RM_SolarMirrors_Setting_Dazzle".Translate(), ref dazzle,
-                "RM_SolarMirrors_Setting_Dazzle_Tip".Translate());
-            if (dazzle)
-            {
-                list.Label("RM_SolarMirrors_Setting_DazzleMax".Translate(dazzleMaxPenalty.ToStringPercent()));
-                dazzleMaxPenalty = Mathf.Round(list.Slider(dazzleMaxPenalty, 0f, 0.9f) * 20f) / 20f;
-            }
-            list.CheckboxLabeled("RM_SolarMirrors_Setting_Furnace".Translate(), ref solarFurnace,
-                "RM_SolarMirrors_Setting_Furnace_Tip".Translate());
-            list.CheckboxLabeled("RM_SolarMirrors_Setting_Concentration".Translate(), ref concentrationHeat,
-                "RM_SolarMirrors_Setting_Concentration_Tip".Translate());
-            if (concentrationHeat)
-            {
-                list.Label("RM_SolarMirrors_Setting_ConcentrationCap".Translate(concentrationCap.ToString("0.0")));
-                concentrationCap = Mathf.Round(list.Slider(concentrationCap, 1f, 5f) * 4f) / 4f;
-            }
-            list.CheckboxLabeled("RM_SolarMirrors_Setting_RoomHeat".Translate(), ref roomHeat,
-                "RM_SolarMirrors_Setting_RoomHeat_Tip".Translate());
-            if (roomHeat)
-            {
-                list.Label("RM_SolarMirrors_Setting_RoomHeatRate".Translate(roomHeatPerLight.ToString("0.0")));
-                roomHeatPerLight = Mathf.Round(list.Slider(roomHeatPerLight, 0f, 10f) * 4f) / 4f;
-            }
-            list.CheckboxLabeled("RM_SolarMirrors_Setting_Helio".Translate(), ref heliograph,
-                "RM_SolarMirrors_Setting_Helio_Tip".Translate());
-            if (heliograph)
-            {
-                list.Label("RM_SolarMirrors_Setting_HelioRange".Translate(heliographRange.ToString("0")));
-                heliographRange = Mathf.Round(list.Slider(heliographRange, 2f, 40f));
+                list.CheckboxLabeled("RM_SolarMirrors_Setting_Shade".Translate(), ref shadeEffect,
+                    "RM_SolarMirrors_Setting_Shade_Tip".Translate());
+                list.CheckboxLabeled("RM_SolarMirrors_Setting_Glow".Translate(), ref glowEffect,
+                    "RM_SolarMirrors_Setting_Glow_Tip".Translate());
+                list.CheckboxLabeled("RM_SolarMirrors_Setting_Sweep".Translate(), ref staticSweep,
+                    "RM_SolarMirrors_Setting_Sweep_Tip".Translate());
+                list.Label("RM_SolarMirrors_Setting_Reflectivity".Translate(reflectivityMultiplier.ToStringPercent()),
+                    tooltip: "RM_SolarMirrors_Setting_Reflectivity_Tip".Translate());
+                reflectivityMultiplier = Mathf.Round(list.Slider(reflectivityMultiplier, 0.25f, 1.5f) * 20f) / 20f;
+                list.Label("RM_SolarMirrors_Setting_Chain".Translate(maxChain),
+                    tooltip: "RM_SolarMirrors_Setting_Chain_Tip".Translate());
+                maxChain = Mathf.RoundToInt(list.Slider(maxChain, 1f, 6f));
+                list.GapLine();
             }
 
-            list.GapLine();
-            list.Label("RM_SolarMirrors_Section_Field".Translate());
-            list.CheckboxLabeled("RM_SolarMirrors_Setting_Fields".Translate(), ref ancientFields,
-                "RM_SolarMirrors_Setting_Fields_Tip".Translate());
-            if (ancientFields)
+            if (Group(list, "Appearance", RimMandrake.Shared.SettingScope.Now, new[] { "beamRender" }))
             {
-                list.Label("RM_SolarMirrors_Setting_PuzzleReAims".Translate(puzzleMinReAims),
-                    tooltip: "RM_SolarMirrors_Setting_PuzzleReAims_Tip".Translate());
-                puzzleMinReAims = Mathf.RoundToInt(list.Slider(puzzleMinReAims, 2f, 4f));
-                list.Label("RM_SolarMirrors_Setting_PuzzleMirrors".Translate(puzzleMirrors),
-                    tooltip: "RM_SolarMirrors_Setting_PuzzleMirrors_Tip".Translate());
-                puzzleMirrors = Mathf.RoundToInt(list.Slider(puzzleMirrors, 4f, 6f));
+                string[] modes = { "RM_SolarMirrors_Render_Off", "RM_SolarMirrors_Render_Spot", "RM_SolarMirrors_Render_Beam" };
+                list.Label("RM_SolarMirrors_Setting_Render".Translate(modes[Mathf.Clamp(beamRender, 0, 2)].Translate()),
+                    tooltip: "RM_SolarMirrors_Setting_Render_Tip".Translate());
+                beamRender = Mathf.RoundToInt(list.Slider(beamRender, 0f, 2f));
+                list.GapLine();
             }
 
-            list.GapLine();
-            list.Label("RM_SolarMirrors_Section_Care".Translate());
-            list.CheckboxLabeled("RM_SolarMirrors_Setting_Dust".Translate(), ref dustEnabled,
-                "RM_SolarMirrors_Setting_Dust_Tip".Translate());
-            if (dustEnabled)
+            if (Group(list, "Uses", RimMandrake.Shared.SettingScope.Now, new[] { "blindingDefence", "blindSeverityPerDay", "dazzle", "dazzleMaxPenalty", "solarFurnace", "concentrationHeat", "concentrationCap", "roomHeat", "roomHeatPerLight", "heliograph", "heliographRange" }))
             {
-                list.Label("RM_SolarMirrors_Setting_DustRate".Translate(dustPerDay.ToString("0.0")));
-                dustPerDay = Mathf.Round(list.Slider(dustPerDay, 0.1f, 5f) * 10f) / 10f;
+                list.CheckboxLabeled("RM_SolarMirrors_Setting_Blind".Translate(), ref blindingDefence,
+                    "RM_SolarMirrors_Setting_Blind_Tip".Translate());
+                if (blindingDefence)
+                {
+                    list.Label("RM_SolarMirrors_Setting_BlindRate".Translate(blindSeverityPerDay.ToString("0.0")));
+                    blindSeverityPerDay = Mathf.Round(list.Slider(blindSeverityPerDay, 1f, 20f) * 2f) / 2f;
+                }
+                list.CheckboxLabeled("RM_SolarMirrors_Setting_Dazzle".Translate(), ref dazzle,
+                    "RM_SolarMirrors_Setting_Dazzle_Tip".Translate());
+                if (dazzle)
+                {
+                    list.Label("RM_SolarMirrors_Setting_DazzleMax".Translate(dazzleMaxPenalty.ToStringPercent()));
+                    dazzleMaxPenalty = Mathf.Round(list.Slider(dazzleMaxPenalty, 0f, 0.9f) * 20f) / 20f;
+                }
+                list.CheckboxLabeled("RM_SolarMirrors_Setting_Furnace".Translate(), ref solarFurnace,
+                    "RM_SolarMirrors_Setting_Furnace_Tip".Translate());
+                list.CheckboxLabeled("RM_SolarMirrors_Setting_Concentration".Translate(), ref concentrationHeat,
+                    "RM_SolarMirrors_Setting_Concentration_Tip".Translate());
+                if (concentrationHeat)
+                {
+                    list.Label("RM_SolarMirrors_Setting_ConcentrationCap".Translate(concentrationCap.ToString("0.0")));
+                    concentrationCap = Mathf.Round(list.Slider(concentrationCap, 1f, 5f) * 4f) / 4f;
+                }
+                list.CheckboxLabeled("RM_SolarMirrors_Setting_RoomHeat".Translate(), ref roomHeat,
+                    "RM_SolarMirrors_Setting_RoomHeat_Tip".Translate());
+                if (roomHeat)
+                {
+                    list.Label("RM_SolarMirrors_Setting_RoomHeatRate".Translate(roomHeatPerLight.ToString("0.0")));
+                    roomHeatPerLight = Mathf.Round(list.Slider(roomHeatPerLight, 0f, 10f) * 4f) / 4f;
+                }
+                list.CheckboxLabeled("RM_SolarMirrors_Setting_Helio".Translate(), ref heliograph,
+                    "RM_SolarMirrors_Setting_Helio_Tip".Translate());
+                if (heliograph)
+                {
+                    list.Label("RM_SolarMirrors_Setting_HelioRange".Translate(heliographRange.ToString("0")));
+                    heliographRange = Mathf.Round(list.Slider(heliographRange, 2f, 40f));
+                }
+                list.GapLine();
             }
-            list.Label("RM_SolarMirrors_Setting_Power".Translate(heliostatPower.ToString("0")),
-                tooltip: "RM_SolarMirrors_Setting_Power_Tip".Translate());
-            heliostatPower = Mathf.Round(list.Slider(heliostatPower, 50f, 500f) / 10f) * 10f;
 
-            list.GapLine();
-            list.Label("RM_SolarMirrors_Section_Work".Translate());
-            list.Label("RM_SolarMirrors_Setting_ReAim".Translate(reAimWorkMultiplier.ToStringPercent()));
-            reAimWorkMultiplier = Mathf.Round(list.Slider(reAimWorkMultiplier, 0.25f, 3f) * 20f) / 20f;
-            list.Label("RM_SolarMirrors_Setting_Interval".Translate(passIntervalTicks),
-                tooltip: "RM_SolarMirrors_Setting_Interval_Tip".Translate());
-            passIntervalTicks = Mathf.RoundToInt(list.Slider(passIntervalTicks, 125f, 1000f) / 25f) * 25;
+            if (Group(list, "Ancient mirror fields (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "ancientFields", "puzzleMinReAims", "puzzleMirrors" }))
+            {
+                list.CheckboxLabeled("RM_SolarMirrors_Setting_Fields".Translate(), ref ancientFields,
+                    "RM_SolarMirrors_Setting_Fields_Tip".Translate());
+                if (ancientFields)
+                {
+                    list.Label("RM_SolarMirrors_Setting_PuzzleReAims".Translate(puzzleMinReAims),
+                        tooltip: "RM_SolarMirrors_Setting_PuzzleReAims_Tip".Translate());
+                    puzzleMinReAims = Mathf.RoundToInt(list.Slider(puzzleMinReAims, 2f, 4f));
+                    list.Label("RM_SolarMirrors_Setting_PuzzleMirrors".Translate(puzzleMirrors),
+                        tooltip: "RM_SolarMirrors_Setting_PuzzleMirrors_Tip".Translate());
+                    puzzleMirrors = Mathf.RoundToInt(list.Slider(puzzleMirrors, 4f, 6f));
+                }
+                list.GapLine();
+            }
+
+            if (Group(list, "Upkeep", RimMandrake.Shared.SettingScope.Now, new[] { "dustEnabled", "dustPerDay", "heliostatPower" }))
+            {
+                list.CheckboxLabeled("RM_SolarMirrors_Setting_Dust".Translate(), ref dustEnabled,
+                    "RM_SolarMirrors_Setting_Dust_Tip".Translate());
+                if (dustEnabled)
+                {
+                    list.Label("RM_SolarMirrors_Setting_DustRate".Translate(dustPerDay.ToString("0.0")));
+                    dustPerDay = Mathf.Round(list.Slider(dustPerDay, 0.1f, 5f) * 10f) / 10f;
+                }
+                list.Label("RM_SolarMirrors_Setting_Power".Translate(heliostatPower.ToString("0")),
+                    tooltip: "RM_SolarMirrors_Setting_Power_Tip".Translate());
+                heliostatPower = Mathf.Round(list.Slider(heliostatPower, 50f, 500f) / 10f) * 10f;
+                list.GapLine();
+            }
+
+            if (Group(list, "Work and timing", RimMandrake.Shared.SettingScope.Now, new[] { "reAimWorkMultiplier", "passIntervalTicks" }))
+            {
+                list.Label("RM_SolarMirrors_Setting_ReAim".Translate(reAimWorkMultiplier.ToStringPercent()));
+                reAimWorkMultiplier = Mathf.Round(list.Slider(reAimWorkMultiplier, 0.25f, 3f) * 20f) / 20f;
+                list.Label("RM_SolarMirrors_Setting_Interval".Translate(passIntervalTicks),
+                    tooltip: "RM_SolarMirrors_Setting_Interval_Tip".Translate());
+                passIntervalTicks = Mathf.RoundToInt(list.Slider(passIntervalTicks, 125f, 1000f) / 25f) * 25;
+                list.GapLine();
+            }
 
             list.Gap();
             if (list.ButtonText("RM_SolarMirrors_Setting_Reset".Translate()))
@@ -188,7 +253,7 @@ namespace RimMandrake.SolarMirrors
                 AllOff();
             }
 
-            lastContentHeight = list.CurHeight + 12f;
+            viewHeight = list.CurHeight + 12f;
             list.End();
             Widgets.EndScrollView();
         }

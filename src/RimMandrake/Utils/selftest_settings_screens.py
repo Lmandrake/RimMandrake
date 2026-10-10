@@ -206,6 +206,14 @@ MODS = {
         "Rite of Tipping": "Now",
         "Not wired yet (these change nothing)": "Now",
     }, ()),
+    "SolarMirrors": ("RM_SolarMirrorsMod.cs", "RM_SolarMirrors.csproj", {
+        "Mirror light": "Now",
+        "Appearance": "Now",
+        "Uses": "Now",
+        "Ancient mirror fields (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Upkeep": "Now",
+        "Work and timing": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
