@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Radyak.xml — the ossrith. DONOR_CODE_PLAIN_PORTS_1 (owner pick "port" on
+  Transient/donor_code_creatures_sheet_2026-10-09: "Port plain = copy the creature
+  into our own defs and drop or swap the donor class (no new C#)").
+
+  Ported from Alpha Animals (sarg.alphaanimals, 1.6/Defs/ThingDefs_Races/Races_Radyak.xml).
+  Label and description are the owner-ruled ossrith text (Cauldron sheet 2026-10-04,
+  "Good start, more alien please. Rename and regen description."), the same words the
+  campaign's Cauldron_Rename.xml patches onto AA_Radyak.
+
+  DROPPED (donor assembly AlphaBehavioursAndEvents): CompProperties_GraphicsRefresher and
+  renderTree AA_Alternates — an off-by-default alternate-picture switch; nothing in play.
+  DROPPED (donor StatDefs): the VEF AnimalStatExtension info-card rows (AA_PrimaryRole...).
+  NOT ported: the donor's vanilla wildBiomes list — this creature lives only where a
+  biome roster names it.
+  KEPT, re-pointed: the crystal harvest (VEF.AnimalBehaviours, a framework we keep anyway)
+  now yields our RM_OssrithCrystal, refined at a biofuel refinery (RM_RefineOssrithCrystal).
+
+  ART: our redraw is queued, not accepted (artpipe enact_f3decf4d_radyak_v1_*, owner "redo"
+  2026-10-09). Until it is installed, texPaths stay on the donor's path as a loud temporary
+  placeholder — the RSW_DesertPortMisc_Races.xml precedent — and RM_Cauldron's roster row
+  stays guarded on sarg.alphaanimals so a donor-less load never spawns a textureless beast.
+  When the art lands: install it under Things/Pawn/Animal/RM_Radyak/, re-point these
+  texPaths, and drop that roster guard.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Radyak</defName>
+    <label>ossrith</label>
+    <description>A grazer that eats poison and wears it. The ossrith's hide is bone-white plate over a lean, long-legged frame, and its face is a bare mask of bone with deep black sockets where the eyes sit. What it cannot digest from the Cauldron's tainted grass it pushes outward: hard green crystal that breaks up through the plates along its spine in a jagged ridge, thickest on old bulls. It is placid, and it feeds in herds without fear of anything. The crystal can be broken off periodically and refined into uranium at a biofuel refinery, which is the only reason anyone stands near one long.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <ComfyTemperatureMin>-65</ComfyTemperatureMin>
+      <MarketValue>2500</MarketValue>
+      <FilthRate>16</FilthRate>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_Milkable">
+        <milkDef>Milk</milkDef>
+        <milkIntervalDays>6</milkIntervalDays>
+        <milkAmount>15</milkAmount>
+      </li>
+      <li Class="VEF.AnimalBehaviours.CompProperties_AnimalProduct" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <resourceDef>RM_OssrithCrystal</resourceDef>
+        <gatheringIntervalDays>10</gatheringIntervalDays>
+        <resourceAmount>1</resourceAmount>
+      </li>
+    </comps>
+    <race>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <body>QuadrupedAnimalWithHooves</body>
+      <baseBodySize>2.5</baseBodySize>
+      <baseHungerRate>0.535</baseHungerRate>
+      <baseHealthScale>1.75</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <useMeatFrom>Yak</useMeatFrom>
+      <roamMtbDays>2</roamMtbDays>
+      <manhunterOnDamageChance>0.2</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <packAnimal>false</packAnimal>
+      <gestationPeriodDays>6.66</gestationPeriodDays>
+      <lifeExpectancy>46</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.50</minAge>
+          <soundWounded>Pawn_Muffalo_Wounded</soundWounded>
+          <soundDeath>Pawn_Muffalo_Death</soundDeath>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
+          <soundAngry>Pawn_Muffalo_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Radyak</defName>
+    <label>ossrith</label>
+    <race>RM_Radyak</race>
+    <combatPower>100</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>2~5</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>ossrith calf</label>
+        <labelPlural>ossrith calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_Radyak/AA_Radyak_baby</texPath>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Yak/Dessicated_YakMale</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_Radyak/AA_Radyak_male</texPath>
+          <drawSize>2.25</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>Things/Pawn/Animal/AA_Radyak/AA_Radyak_female</texPath>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Yak/Dessicated_YakMale</texPath>
+          <drawSize>2.25</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Yak/Dessicated_YakFemale</texPath>
+          <drawSize>2</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/AA_Radyak/AA_Radyak_male</texPath>
+          <drawSize>3</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>Things/Pawn/Animal/AA_Radyak/AA_Radyak_female</texPath>
+          <drawSize>2.75</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Yak/Dessicated_YakMale</texPath>
+          <drawSize>3</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Yak/Dessicated_YakFemale</texPath>
+          <drawSize>2.75</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- The crystal the ossrith sheds. Placeholder art: vanilla uranium tinted crystal-green
+       (no ossrith-crystal render exists yet; art owed with the creature's). -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_OssrithCrystal</defName>
+    <label>ossrith crystal</label>
+    <description>Hard green crystal broken off an ossrith's spine ridge: the poison it could not digest, pushed out through its plates. Refined at a biofuel refinery, it yields uranium.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Uranium</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(120,200,110)</color>
+    </graphicData>
+    <tradeability>Sellable</tradeability>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>75</stackLimit>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MarketValue>65</MarketValue>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Mass>1.8</Mass>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <tradeTags>
+      <li>Exotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>RM_RefineOssrithCrystal</defName>
+    <label>refine ossrith crystal</label>
+    <description>Refine an ossrith crystal into uranium.</description>
+    <jobString>Refining ossrith crystal.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>2000</workAmount>
+    <recipeUsers>
+      <li>BiofuelRefinery</li>
+    </recipeUsers>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_OssrithCrystal</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_OssrithCrystal</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <Uranium>15</Uranium>
+    </products>
+  </RecipeDef>
+
+</Defs>

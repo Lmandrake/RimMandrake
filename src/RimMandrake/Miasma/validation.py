@@ -251,6 +251,9 @@ def static_checks():
     for tp in re.findall(r"<texPath>([^<]+)</texPath>", wm):
         if not os.path.exists(os.path.join(HERE, "Textures", *(tp + "_south.png").split("/"))):
             bad.append("RM_WardenMother texPath %s resolves to nothing" % tp)
+    sys.path.insert(0, os.path.join(HERE, "..", "Utils"))
+    import donor_plain_ports_check  # DONOR_CODE_PLAIN_PORTS_1: the duskfire port (RM_Thermadon)
+    bad += donor_plain_ports_check.static_checks("Miasma")
     return bad
 
 

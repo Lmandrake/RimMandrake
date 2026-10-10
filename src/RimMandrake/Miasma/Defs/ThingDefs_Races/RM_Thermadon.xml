@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Thermadon.xml — the duskfire. DONOR_CODE_PLAIN_PORTS_1 (owner pick "port" on
+  Transient/donor_code_creatures_sheet_2026-10-09: "Port plain = copy the creature
+  into our own defs and drop or swap the donor class (no new C#)").
+
+  Ported from Alpha Animals (sarg.alphaanimals, 1.6/Defs/ThingDefs_Races/Races_Thermadon.xml).
+  Label and description are the owner-ruled duskfire text (Miasma sheet 2026-10-08,
+  "Redo description. Rename Duskfire."), the same words the campaign's Miasma_Rename.xml
+  patches onto AA_Thermadon.
+
+  DROPPED (donor assembly AlphaBehavioursAndEvents): CompProperties_GraphicsRefresher and
+  renderTree AA_Alternates — an off-by-default alternate-picture switch; nothing in play.
+  DROPPED (donor StatDefs): the VEF AnimalStatExtension info-card rows (AA_PrimaryRole...).
+  INLINED: the donor's abstract parent AA_AlphaBaseInsect (its statBases/race/ingredient
+  fields copied here), so nothing names a donor def.
+  NOT ported: the donor's vanilla wildBiomes list — it lives only where a roster names it.
+  KEPT, re-pointed: the fire spit is not donor code — VEF's InitialAbility grants an
+  AbilityDef. Both the ability and its projectile are ours now (RM_DuskfireSpit), with the
+  donor's icon, fireball texture and cast sound swapped for vanilla ones (Biotech fire-spew
+  icon, the incendiary launcher's shot texture and sound).
+
+  ART: ours, the same three facings ThermadonArtOverride paints over the donor today,
+  installed into this mod through the art ledger at Things/Pawn/Animal/RM_Thermadon/.
+  Dessicated body: vanilla megaspider (the donor's own was donor art).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Thermadon</defName>
+    <label>duskfire</label>
+    <description>A long-legged black hunter the size of a crouching man, its abdomen swollen with paired chemical glands that show a dull ember-red through the chitin as the light fails. When it is threatened the duskfire mixes the two and hurls the result: a gout of burning fluid that clings and spreads. It keeps to the drier root-ridges and hunts at twilight. Never fight one near anything you want to keep — wooden walls, stores and fields burn first.</description>
+    <statBases>
+      <MoveSpeed>5</MoveSpeed>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MarketValue>650</MarketValue>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.4</ArmorRating_Sharp>
+      <Flammability>0</Flammability>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.9</Wildness>
+      <ToxicResistance>1</ToxicResistance>
+      <VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">1</VacuumResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">0.8</ToxicEnvironmentResistance>
+    </statBases>
+    <tools>
+      <li>
+        <label>head claw</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_InitialAbility" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+        <initialAbility>RM_DuskfireSpit</initialAbility>
+      </li>
+    </comps>
+    <race>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <meatColor>(160,168,139)</meatColor>
+      <meatMarketValue>0.5</meatMarketValue>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+      <manhunterOnDamageChance>0.50</manhunterOnDamageChance>
+      <soundEating>Insectoid_Eat</soundEating>
+      <canBeVacuumBurnt>false</canBeVacuumBurnt>
+      <body>BeetleLikeWithClaw</body>
+      <baseHungerRate>0.35</baseHungerRate>
+      <baseBodySize>1.5</baseBodySize>
+      <baseHealthScale>3</baseHealthScale>
+      <gestationPeriodDays>6.66</gestationPeriodDays>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <leatherDef>Leather_BlackChitin</leatherDef>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>6</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>EusocialInsectLarva</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectJuvenile</def>
+          <minAge>0.03</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectAdult</def>
+          <minAge>0.2</minAge>
+          <soundWounded>Pawn_BigInsect_Pain</soundWounded>
+          <soundDeath>Pawn_BigInsect_Death</soundDeath>
+          <soundCall>Pawn_BigInsect_Call</soundCall>
+          <soundAngry>Pawn_BigInsect_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">InsectMeat</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Thermadon</defName>
+    <label>duskfire</label>
+    <race>RM_Thermadon</race>
+    <combatPower>175</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Thermadon/RM_Thermadon</texPath>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <drawSize>1.2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Thermadon/RM_Thermadon</texPath>
+          <drawSize>2</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Thermadon/RM_Thermadon</texPath>
+          <drawSize>3</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.7, 0.43)</volume>
+            <offset>(0,0,-0.1)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <drawSize>3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <AbilityDef>
+    <defName>RM_DuskfireSpit</defName>
+    <label>duskfire spit</label>
+    <description>Mix the two gland chemicals and hurl the result: a glob of burning fluid that bursts on impact and leaves fuel burning where it lands.</description>
+    <iconPath>UI/Abilities/FireSpew</iconPath>
+    <cooldownTicksRange>180</cooldownTicksRange>
+    <aiCanUse>true</aiCanUse>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <writeCombatLog>true</writeCombatLog>
+    <verbProperties>
+      <verbClass>Verb_AbilityShoot</verbClass>
+      <defaultProjectile>RM_DuskfireSpit</defaultProjectile>
+      <accuracyTouch>0.9</accuracyTouch>
+      <accuracyShort>0.85</accuracyShort>
+      <accuracyMedium>0.8</accuracyMedium>
+      <accuracyLong>0.75</accuracyLong>
+      <range>30</range>
+      <muzzleFlashScale>0</muzzleFlashScale>
+      <warmupTime>2</warmupTime>
+      <soundCast>Shot_IncendiaryLauncher</soundCast>
+      <commonality>0.9</commonality>
+      <minRange>2</minRange>
+      <targetParams>
+        <canTargetPawns>true</canTargetPawns>
+      </targetParams>
+      <ai_IsWeapon>false</ai_IsWeapon>
+    </verbProperties>
+  </AbilityDef>
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>RM_DuskfireSpit</defName>
+    <label>duskfire spit</label>
+    <graphicData>
+      <texPath>Things/Projectile/LauncherShot</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+      <color>(232,96,40)</color>
+    </graphicData>
+    <thingClass>Projectile_Explosive</thingClass>
+    <projectile>
+      <speed>40</speed>
+      <damageDef>Flame</damageDef>
+      <damageAmountBase>15</damageAmountBase>
+      <explosionRadius>1.1</explosionRadius>
+      <preExplosionSpawnThingDef>Filth_Fuel</preExplosionSpawnThingDef>
+      <preExplosionSpawnChance>0.6</preExplosionSpawnChance>
+      <ai_IsIncendiary>true</ai_IsIncendiary>
+      <soundExplode>Interact_Ignite</soundExplode>
+    </projectile>
+  </ThingDef>
+
+</Defs>
