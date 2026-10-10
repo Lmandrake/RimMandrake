@@ -19,6 +19,25 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # folder, mod .cs, csproj, expected groups: title -> scope (the audited scopes)
 # folder: (mod .cs, csproj, expected groups, extra setting names the screen resets that are not Scribe_Values fields)
 MODS = {
+    "GimmeSomeSlack#Cables": ("GimmeSomeSlackMod.cs", "RimMandrake_GimmeSomeSlack.csproj", {
+        "Messy cords and default style": "Now",
+        "Slack, loops and tangles": "Now",
+        "Breaks and sparks": "Now",
+        "Wind sway": "Now",
+        "Far zoom and debug": "Now",
+    }, ()),
+    "GimmeSomeSlack#Aerial": ("Aerial/AerialSettings.cs", "RimMandrake_GimmeSomeSlack.csproj", {
+        "Overhead power lines": "Now",
+        "Wire sway": "Now",
+        "Damage, shock and alerts": "Now",
+        "Power-tap clamps": "Now",
+    }, ()),
+    "GimmeSomeSlack#Hose": ("Hose/HoseSettings.cs", "RimMandrake_GimmeSomeSlack.csproj", {
+        "Flexible hoses": "Now",
+        "Hose length and shape": "Now",
+        "Colonists carrying hoses": "Now",
+        "Look and FlowWorks": "Now",
+    }, ()),
     "Graffiti": ("RM_GraffitiMod.cs", "Graffiti.csproj", {
         "Painting": "Now",
         "Viewer reactions": "Now",
@@ -228,7 +247,7 @@ def check(cs, csproj, expected, extra=()):
 
 
 def run_mod(name, cs_name, pj_name, expected, extra):
-    src = os.path.join(ROOT, name, "Source")
+    src = os.path.join(ROOT, name.split("#")[0], "Source")
     cs = open(os.path.join(src, cs_name), encoding="utf-8").read()
     pj = open(os.path.join(src, pj_name), encoding="utf-8").read()
     bad = total = 0

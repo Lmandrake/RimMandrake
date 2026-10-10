@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -105,87 +107,150 @@ namespace RimMandrake.TheSump
             Scribe_Values.Look(ref capstanSnapDamage, "capstanSnapDamage", 20f, true);
         }
 
-        private static Vector2 settingsScroll;
-        private static float settingsViewHeight = 1200f;
+                // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_TheSumpSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_TheSumpSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1400f;
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the rarity slider is read by the biome worker and the mere by a map GenStep ([new maps only]); the kethrel density edits the biome animal list once at startup ([next game start], a label local to this screen); everything else is read on a tick, a job or a property evaluated per use ([now]).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
 
         public void DoWindowContents(Rect inRect)
         {
             // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
-            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
-            list.Begin(settingsView);
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, viewRect);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
+            list.Begin(viewRect);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.Label("Biome rarity: " + RarityLabel());
-            list.Label("At 0 the Sump never generates on a new planet. The default "
-                       + "places a scattering of low, flat, permanently-dusky tar "
-                       + "basins. Affects planets generated afterwards, never one "
-                       + "that already exists.");
-            biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
-            list.GapLine();
+            if (Group(list, "Biome rarity (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "biomeRarityFactor" }))
+            {
+                list.Label("Biome rarity: " + RarityLabel());
+                list.Label("At 0 the Sump never generates on a new planet. The default places a scattering of low, flat, permanently-dusky tar basins. Affects planets generated afterwards, never one that already exists.");
+                biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Tar vault seals contents (no rot; extraction needs solvent)", ref tarVaultEnabled,
-                "The tar vault (RM_TarVault) freezes rot on anything sealed inside it. "
-              + "Off: it behaves like an ordinary shelf, no sealing, no solvent gate.");
-            list.GapLine();
+            if (Group(list, "Tar vault", RimMandrake.Shared.SettingScope.Now, new[] { "tarVaultEnabled" }))
+            {
+                list.CheckboxLabeled("Tar vault seals contents (no rot; extraction needs solvent)", ref tarVaultEnabled,
+                    "The tar vault (RM_TarVault) freezes rot on anything sealed inside it. "
+                  + "Off: it behaves like an ordinary shelf, no sealing, no solvent gate.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Generate the Deep Black mere", ref deepBlackMereEnabled,
-                "A landmark-scale unbroken expanse of deep tar generates once per Sump map, well "
-              + "clear of the edge -- the biome's own \"ocean\" at map scale, and (via FlowWorks' "
-              + "natural-liquid-source rule) an effectively infinite canal source once a channel "
-              + "reaches it. Off: the map keeps only the biome's ordinary scattered tar pockets.");
-            list.GapLine();
+            if (Group(list, "Deep Black mere (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "deepBlackMereEnabled" }))
+            {
+                list.CheckboxLabeled("Generate the Deep Black mere", ref deepBlackMereEnabled,
+                    "A landmark-scale unbroken expanse of deep tar generates once per Sump map, well "
+                  + "clear of the edge -- the biome's own \"ocean\" at map scale, and (via FlowWorks' "
+                  + "natural-liquid-source rule) an effectively infinite canal source once a channel "
+                  + "reaches it. Off: the map keeps only the biome's ordinary scattered tar pockets. "
+                  + "Read when a Sump map is generated; existing maps keep what they have.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Kethrel wears a scrap shell", ref kethrelShellEnabled,
-                "The kethrel picks up loose weapons and scrap near tar and wears them as armour, "
-              + "getting slower and harder with load. Off: it picks nothing up (the plain animal).");
-            list.Label("Kethrel density: " + kethrelDensity.ToString("0.0") + "x (restart to apply)");
-            kethrelDensity = list.Slider(kethrelDensity, 0f, 3f);
-            list.Label("Most valuable thing a kethrel will pick up: " + kethrelValueCeiling.ToString("0") + " silver per stack");
-            kethrelValueCeiling = list.Slider(kethrelValueCeiling, 20f, 2000f);
-            list.CheckboxLabeled("Kethrel may take things from the colony's home area", ref kethrelTakeColonyProperty,
-                "Off: it ignores anything lying inside your home area. On: stockpiled weapons and scrap are fair game.");
-            list.Label("Kethrel molts by itself at: " + kethrelMoltLoadKg.ToString("0") + " kg carried");
-            kethrelMoltLoadKg = list.Slider(kethrelMoltLoadKg, 10f, 80f);
-            list.Label("Molt handling difficulty: " + kethrelHandlingDifficulty.ToString("0.0") + "x");
-            kethrelHandlingDifficulty = list.Slider(kethrelHandlingDifficulty, 0f, 2f);
-            list.GapLine();
+            if (Group(list, "Kethrel scrap shell", RimMandrake.Shared.SettingScope.Now, new[] { "kethrelShellEnabled", "kethrelValueCeiling", "kethrelTakeColonyProperty", "kethrelMoltLoadKg", "kethrelHandlingDifficulty" }))
+            {
+                list.CheckboxLabeled("Kethrel wears a scrap shell", ref kethrelShellEnabled,
+                    "The kethrel picks up loose weapons and scrap near tar and wears them as armour, "
+                  + "getting slower and harder with load. Off: it picks nothing up (the plain animal).");
+                list.Label("Most valuable thing a kethrel will pick up: " + kethrelValueCeiling.ToString("0") + " silver per stack");
+                kethrelValueCeiling = list.Slider(kethrelValueCeiling, 20f, 2000f);
+                list.CheckboxLabeled("Kethrel may take things from the colony's home area", ref kethrelTakeColonyProperty,
+                    "Off: it ignores anything lying inside your home area. On: stockpiled weapons and scrap are fair game.");
+                list.Label("Kethrel molts by itself at: " + kethrelMoltLoadKg.ToString("0") + " kg carried");
+                kethrelMoltLoadKg = list.Slider(kethrelMoltLoadKg, 10f, 80f);
+                list.Label("Molt handling difficulty: " + kethrelHandlingDifficulty.ToString("0.0") + "x");
+                kethrelHandlingDifficulty = list.Slider(kethrelHandlingDifficulty, 0f, 2f);
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Capstan turret ropes and reels", ref capstanEnabled,
-                "Shipped default: ON. A powered capstan turret throws a line at a visible enemy in range and reels it in "
-              + "toward itself. Off: the turret stands idle.");
-            list.Label("Capstan range: " + capstanRange.ToString("0") + " cells");
-            capstanRange = Mathf.Round(list.Slider(capstanRange, 4f, 25f));
-            list.Label("Reel speed: " + capstanReelSpeed.ToStringPercent() + " (one cell every " + (30f / Mathf.Max(0.1f, capstanReelSpeed) / 60f).ToString("0.0") + " s)");
-            capstanReelSpeed = list.Slider(capstanReelSpeed, 0.25f, 4f);
-            list.Label("Cooldown between lines: " + capstanCooldownSeconds.ToString("0") + " s");
-            capstanCooldownSeconds = Mathf.Round(list.Slider(capstanCooldownSeconds, 2f, 120f));
-            list.CheckboxLabeled("Capstan pulls downed colonists to safety", ref capstanFriendlyPull,
-                "Shipped default: ON. With no enemy in range, it ropes a downed colonist in the open and reels them in.");
-            list.Label("Chance per cell that a struggling target snaps the line: " + capstanSnapChance.ToStringPercent());
-            capstanSnapChance = list.Slider(capstanSnapChance, 0f, 0.5f);
-            list.Label("Heaviest it can reel: " + capstanMaxMass.ToString("0") + " kg, body size " + capstanMaxBodySize.ToString("0.0"));
-            capstanMaxMass = Mathf.Round(list.Slider(capstanMaxMass, 30f, 1000f));
-            capstanMaxBodySize = list.Slider(capstanMaxBodySize, 0.5f, 6f);
-            list.Label("Damage to the turret when the line snaps: " + capstanSnapDamage.ToString("0"));
-            capstanSnapDamage = Mathf.Round(list.Slider(capstanSnapDamage, 0f, 100f));
-            list.GapLine();
+            if (Group(list, "Kethrel density (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "kethrelDensity" }, "[next game start]"))
+            {
+                list.Label("Kethrel density: " + kethrelDensity.ToString("0.0") + "x");
+                kethrelDensity = list.Slider(kethrelDensity, 0f, 3f);
+                list.Label("Scales the kethrel's wild commonality in the Sump's animal list once at startup. At 0 it is removed from the list.");
+                list.GapLine();
+            }
 
-            list.Label("This biome's own mechanics — the poured tar moat and fuse-"
-                      + "post ignition, the dig-shaft stratum lottery, the dormant "
-                      + "tar-beast set-piece, sump-mouse filth-trail telegraphy, the "
-                      + "wick-garden crop, and the permanent-dusk weather lock — are "
-                      + "not toggled here. The tar-coating, tarred-hediff, glasswalk-"
-                      + "slip, warbling-gaslight and glow-multiplier switches live on "
-                      + "the shared \"RimMandrake: Environmental Hazards Kit\" mod's "
-                      + "own settings screen (Greentide and Miasma read those exact "
-                      + "same switches, so a second copy here would either do nothing "
-                      + "or silently disagree with that one); the moat-ignition, dig-"
-                      + "lottery, beast-bulge dread and mouse filth-trail mechanics "
-                      + "have no toggle anywhere yet — they are simply always-on "
-                      + "wherever their content is deployed.");
+            if (Group(list, "Capstan turret", RimMandrake.Shared.SettingScope.Now, new[] { "capstanEnabled", "capstanRange", "capstanReelSpeed", "capstanCooldownSeconds", "capstanFriendlyPull", "capstanSnapChance", "capstanMaxMass", "capstanMaxBodySize", "capstanSnapDamage" }))
+            {
+                list.CheckboxLabeled("Capstan turret ropes and reels", ref capstanEnabled,
+                    "Shipped default: ON. A powered capstan turret throws a line at a visible enemy in range and reels it in "
+                  + "toward itself. Off: the turret stands idle.");
+                list.Label("Capstan range: " + capstanRange.ToString("0") + " cells");
+                capstanRange = Mathf.Round(list.Slider(capstanRange, 4f, 25f));
+                list.Label("Reel speed: " + capstanReelSpeed.ToStringPercent() + " (one cell every " + (30f / Mathf.Max(0.1f, capstanReelSpeed) / 60f).ToString("0.0") + " s)");
+                capstanReelSpeed = list.Slider(capstanReelSpeed, 0.25f, 4f);
+                list.Label("Cooldown between lines: " + capstanCooldownSeconds.ToString("0") + " s");
+                capstanCooldownSeconds = Mathf.Round(list.Slider(capstanCooldownSeconds, 2f, 120f));
+                list.CheckboxLabeled("Capstan pulls downed colonists to safety", ref capstanFriendlyPull,
+                    "Shipped default: ON. With no enemy in range, it ropes a downed colonist in the open and reels them in.");
+                list.Label("Chance per cell that a struggling target snaps the line: " + capstanSnapChance.ToStringPercent());
+                capstanSnapChance = list.Slider(capstanSnapChance, 0f, 0.5f);
+                list.Label("Heaviest it can reel: " + capstanMaxMass.ToString("0") + " kg, body size " + capstanMaxBodySize.ToString("0.0"));
+                capstanMaxMass = Mathf.Round(list.Slider(capstanMaxMass, 30f, 1000f));
+                capstanMaxBodySize = list.Slider(capstanMaxBodySize, 0.5f, 6f);
+                list.Label("Damage to the turret when the line snaps: " + capstanSnapDamage.ToString("0"));
+                capstanSnapDamage = Mathf.Round(list.Slider(capstanSnapDamage, 0f, 100f));
+                list.GapLine();
+            }
 
-            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
+            list.Label("This biome's own mechanics (the poured tar moat and fuse-post ignition, the dig-shaft stratum lottery, the dormant "
+                      + "tar-beast set-piece, sump-mouse filth-trail telegraphy, the wick-garden crop, and the permanent-dusk weather lock) "
+                      + "are not toggled here. The tar-coating, tarred-hediff, glasswalk-slip, warbling-gaslight and glow-multiplier switches "
+                      + "live on the shared \"RimMandrake: Environmental Hazards Kit\" mod's own settings screen (Greentide and Miasma read the "
+                      + "same switches); the moat-ignition, dig-lottery, beast-bulge dread and mouse filth-trail mechanics have no toggle "
+                      + "anywhere yet and are always on wherever their content is deployed.");
+
+            viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
         }
