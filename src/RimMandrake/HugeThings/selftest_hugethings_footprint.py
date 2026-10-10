@@ -38,7 +38,7 @@ EXPECTED = {
     "AB_AgariluxPrime": {"AgariluxPrime": 118},
     "AB_DribblingCap": {"DribblingCap_A": 28},
     "RM_Nogtyl": {"Nogtyl_A": 17, "Nogtyl_B": 13, "Nogtyl_C": 10},
-    "RM_Arpeau": {"Arpeau_A": 4, "Arpeau_p3a": 10, "Arpeau_p3b": 7},
+    "RM_Arpeau": {"Arpeau_A": 4, "Arpeau_B": 7, "Arpeau_C": 10},
     "AB_ArbuscularMycorrhiza": {"ArbuscularMycorrhiza_A": 16},
     "AB_AgaricusDomeCap": {"AgaricusDomeCap": 10},
     "AB_GiantAgarilux": {"GiantAgarilux_A": 0},   # its art touches the ground only in its own (root) cell,
