@@ -37,5 +37,12 @@
 - ZERSIUM_FORGE_BIOME_1 L4 PASS; L5 PARTIAL: Forge player-home maps 250x250 hills carried 24/0/0/0 ore cells, 150 flat 0; non-Forge 0; toggle-off 0 (indistinguishable). Density far below the item's ~660/map estimate; noted in the item. Also fixed validation.py: `RUT_ZersiumForgeProof.Probe` takes one string, so args="" -> "No public static Probe with 0 params"; now args="x". scenelib.biome_map maps are faction-less -> Base_Faction -> never run the GenStep (Transient/belt_bridge7_zersium2.py founds a player home first).
 - ART_OVERRIDE_FOLD_ALL_1: implemented at 475863020; F1 L0 PASS; F3 PASS (def texPaths on fold paths, close-ups read, grid Transient/belt_bridge7_f3_grid_20261009r.png; Megathrips occluded, Kreetle/Nuna unframed but defs+audit clean). -> done. F2 note: 3 tracked deployed/config/ModsConfig.before-tier-*.xml still name OLDER artoverride ids (barbslinger, firewasp, boomsnake...) that are not among the 59.
 ## (5) Remaining acceptance rows
+- Triaged the 27 L1 rows; none of the rest is a cheap read on this list/map: UNFINISHED_LINE_* (mod not active in the 565 list), SETTINGS_SCREEN_KIT_1 A5 (known FAIL in bridge2: kit Draw() adopted by no screen; unchanged), TICKER_NEVER_FIRES_FIX_1 A4 (reworded to suppress+repel; needs a powered+fuelled blower and a wild animal in the arc), LASSO A2 (game-down config), the rest need sea-floor / Abyss / FeverWood / Chill maps or save+load. Not attempted.
+
 ## Commits
+- 5435af0f6 skeleton · 9cf566e55 RUT_Fuzz/Zakkro texPaths + ART_TEXTURE_GAPS_FOLLOWUP_1 · 6b8712529 verifies, item moves, zersium Probe args fix, evidence · final log landing.
+
 ## Status at close
+- Game UP on the full list minus the fold (565 active), debug quicktest (RM_TheRot, tile 80070), scratch only, never saved. Kobe's broken equipment cleared (log spam stopped). Bridge released.
+- Next load picks up RUT_Fuzz + RSW_Zakkro dessicated fixes (deployed).
+- OWED: ZERSIUM_FORGE_BIOME_1 density retune then L5 reread (note in item); ART_TEXTURE_GAPS_FOLLOWUP_1; JAWA_SWIM_HOOD_KEEP_1 A2 L2 / A3 L4.
