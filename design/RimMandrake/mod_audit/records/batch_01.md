@@ -182,3 +182,84 @@ Stage-1 assessor record. Template per RUBRIC.md section 7. Facts: facts/mod_fact
 **Open:** Confirm the source repo is the same author (name-match only).
 <sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
 
+### Face Addon Framework (`eoralmilk.faceaddonframework`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (UNVERIFIED) · **Fit:** neutral · **Source:** https://github.com/EoralMilk/FaceAddonFramework (github, Apache-2.0)
+**Adds:** content: none (def_total 0) / functionality: Adds facial-expression addons (eyes, mouth states) to any pawn with a head, a light alternative to Facial Animation (description); 1 Harmony DLL with comp_tick; patches vanilla FleshTypeDef Normal to blank the MissingBodyPart wounds (RemoveEyeWound.xml) / art: 3 textures, 5.4 MB est; 61 MB on disk (53 MB across 105 assembly files in 1.4/1.5/1.6 folders)
+**Why:** No universe mod lists it as a dependency (dependants empty), and a scan of XML and DLL text across the installed third-party folders found no reference to it outside its own folder (INFERRED: the scan used a 20 s per-folder cap, so coverage is not guaranteed). Nothing of ours names it. Still, it sits beside the Facial Animation stack that our UtinniPatches keeps alive (HeadSetForFA_Revive), and CLAUDE.md warns cosmetic changes can break animated faces and need the owner's permission, so I do not recommend elimination on a scan alone. Its blanket patch removes the missing-body-part wound overlay for every pawn's flesh type: a global side effect for a cosmetic mod. Exit: an audit that proves no pawn kind or head set uses face addons.
+**Problems:** log_noise 0 (0 error occurrences, 0 chatter lines in the 550-mod session) · interaction 2 (patches Core FleshTypeDef Normal hediffWounds for every pawn) · size 3 (61.09 MB on disk, 105 assembly files across version folders) · complexity 2 (one Harmony DLL, comp_tick flag, 3 static ctors) · tps 1 (comp_tick flag on a head-addon comp for pawns with heads) · maintenance 2 (source verified Apache-2.0 but last push 2024-05-31)
+**Holds it in / exit:** nothing proven: no dependant, no reference of ours; held by the unconfirmed face-animation stack and the cosmetic-permission rule -> unfiled: FACEADDON_ORPHAN_CHECK_1
+**Open:** Does any head type / xenotype use a FaceAddon comp (our MandrakeJawa, creatures)? The scan cannot see our pawn defs.
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Nightmare Core (`nightmare.core`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://gitlab.com/nightcorp/nightmarecore (gitlab, None)
+**Adds:** content: 9 defs (JobDef 4, DesignationDef 2, WorkGiverDef 2, NightmareCore.TypeNameDef 1) / functionality: Author's shared framework (settings, helpers); the one visible dependant uses it for an invisible display-case building ('allow all items to be displayed' setting); 1 Harmony DLL, comp_tick, 10 static ctors / art: 19 textures, 0.94 MB on disk but 63.5 MB decoded estimate (large dimensions)
+**Why:** Required by icepickgma.invisibledisplaycase (Invisible Display Case Continued, a cosmetic building to put items on show over anything), the only dependant, which patches it 24 times. The overstuffed-ship look the owner wants (required_mods.md) fits cosmetic display; verdict follows that dependant's own row. Source is the mod's own GitLab per its About.xml url; not verified by the facts.
+**Problems:** log_noise 0 (0 error occurrences, 0 chatter lines in the 550-mod session) · memory 2 (63.5 MB decoded est from 19 textures) · complexity 3 (10 static ctors (>5 but <20), Harmony, comp_tick) · maintenance 2 (source on GitLab unverified)
+**Holds it in / exit:** dependant icepickgma.invisibledisplaycase (24 patch refs into it) -> None
+**Open:** Verdict follows Invisible Display Case Continued; its row decides.
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### RimAI Framework (`kilokio.rimai.framework`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None)
+**Adds:** content: none (def_total 0) / functionality: Handles all communication with large language models for the RimAI ecosystem (description); 3 DLLs, settings screen / art: 1 texture
+**Why:** Held in by one dependant, kilokio.rimai.core (RimAI Core BETA: talk to an AI 'server/terminal' that sees your base), which the owner ADOPTED on 2026-08-07 as the talking-ship 'engine is god' voice and pre-authored persona text for (required_mods.md section 8, llm_voice_preauthoring.md; the in-situ comparison was left open). But the later ruling of 2026-09-05 says every LLM-calling mod shells out to `claude -p` and nothing uses a hosted API key, and the framework is exactly a hosted-LLM transport (brief section 2, 'hosted-API LLM mods are dissonant'). So it is dissonant in principle yet load-bearing for an adopted feature. Exit: ship voice through our own claude -p path, then drop RimAI.
+**Problems:** log_noise 1 (0 error occurrences, 4 chatter lines in the 550-mod session) · complexity 2 (3 DLLs, no Harmony, settings screen) · interaction 2 (external LLM network calls with owner-provided key; outside the claude -p ruling) · maintenance 3 (no source linked (steam-only)) · size 1 (1.09 MB)
+**Holds it in / exit:** dependant kilokio.rimai.core (adopted ship voice, 2026-08-07); llm_voice_preauthoring.md persona text written for it -> unfiled: SHIP_VOICE_RIMAI_TO_CLAUDE_P
+**Open:** required_mods.md still lists RimAI as adopted; the 2026-09-05 transport ruling postdates it and was not reconciled there.; The talking ship was planned on RimAI (a hosted-LLM mod), but you later ruled all in-game LLM goes through `claude -p`. Should the ship voice be rebuilt on claude -p and RimAI dropped, or keep RimAI as the voice for now?
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### RimTek Core (`deon.rimtek.core`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None)
+**Adds:** content: none (def_total 0) / functionality: Core library for the RimTek mods (comp_tick, comp_tick_rare, Harmony); 1 DLL / art: 2 textures, 1.1 MB est
+**Why:** Its only consumers are RimTek DigiPal (a belt computer that raises melee and ranged accuracy and allows 'games') and RimTek DocMate (a device that treats patients on nearby beds), 4 and 1 defs. Both are modern-tech convenience items that sit badly in a salvage-scrap Star Wars frontier (brief section 4 test 3) and an accuracy buff and auto-doctor are small parallel progression (test 4). The framework itself has no content, so retirement cost is the two dependants (verdicts live in their batches) and any belts or devices placed in the save (UNMEASURED); no ParentName risk (0 defs). INFERRED: it goes with them.
+**Problems:** log_noise 1 (0 error occurrences, 1 chatter lines in the 550-mod session) · tps 1 (comp_tick and comp_tick_rare flags, small content) · complexity 2 (one Harmony DLL) · maintenance 3 (no source linked (steam-only)) · size 1 (0.1 MB)
+**Holds it in / exit:** dependants deon.rimtek.digipal, deon.rimtek.docmate; placed belts/devices in the save: UNMEASURED -> None
+**Open:** Remove together with DigiPal and DocMate; confirm nobody wears the belt or has a DocMate placed.
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Custom Quest Framework-Level AI (`hailuan.customquestframeworkai`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: 7 defs (PawnColumnDef 3, ThinkTreeDef 2, MainButtonDef 1, PawnTableDef 1) / functionality: Optional add-on to Custom Quest Framework ('CQFA'): level AI for quest map pawns, a pawn table and main button; 1 Harmony DLL / art: 1 texture
+**Why:** required_mods.md lists it as the optional add-on to Custom Quest Framework (the quest-map backbone Ancient Urban Ruins style content leaned on). It has no dependants and nothing of ours references it, only a V2_DREAMS.md mention. Held in only by the quest-framework family decision (CQF itself is in another batch, dependants mlie.dungeonpack); if CQF stays for quest maps this add-on is a small extra, if CQF goes it goes. The Ancient Urban Ruins family it served was cut by the owner on 2026-09-09 (batch 10 record), weakening the case.
+**Problems:** log_noise 0 (0 error occurrences, 0 chatter lines in the 550-mod session) · complexity 2 (one Harmony DLL, 2 static ctors) · maintenance 3 (no source linked (steam-only)) · size 1 (0.04 MB)
+**Holds it in / exit:** parent Custom Quest Framework (hailuan.customquestframework) staying -> unfiled: CQF_FAMILY_DECISION_1
+**Open:** Verdict follows Custom Quest Framework (batch with quest mods).
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Genetic Heads Framework for [NL] Facial Animation (`sd.fa.geneticheadsframework`)
+**Verdict:** KEEP (UNVERIFIED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: none (def_total 0; no description) / functionality: Framework letting genes choose head types for [NL] Facial Animation; 1 Harmony DLL, settings screen; requires nals.facialanimation / art: 2 textures (10.5 MB est)
+**Why:** It belongs to the Facial Animation stack that our UtinniPatches maintains (HeadSetForFA_Revive; batch 14 record for sd.fa.geneticheadsbiotech reports that mod depends on this framework and that head sets are what our patch keeps alive). Facts show no dependants here (an About.xml edge may be missing: UNVERIFIED), and removing a head-type framework while pawns carry its head types risks the animated faces CLAUDE.md protects. Conservative KEEP until the headset audit proposed there runs.
+**Problems:** log_noise 0 (0 error occurrences, 0 chatter lines in the 550-mod session) · complexity 2 (one Harmony DLL) · maintenance 3 (no source linked (steam-only)) · memory 1 (10.5 MB est)
+**Holds it in / exit:** sd.fa.geneticheadsbiotech (per batch 14 record); head types in use by pawns: UNMEASURED; FACIAL_ANIMATION_HEADSET_AUDIT_1 (unfiled, proposed in batch 14) -> None
+**Open:** Which pawn kinds use framework head types?
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Minerals Framework (`zacharyfoster.mineralsframework`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** https://github.com/zachary-foster/MineralsFramework (github, None)
+**Adds:** content: 4 defs (GenStepDef 3, ResearchProjectTagDef 1) / functionality: Overhaul of anything mineable: varied, organic rocks and minerals; custom world-gen steps; 1 Harmony DLL with map_component_tick; marked 'version 0.1, under development'; 73.9 MB (53.6 MB non-texture files) / art: 17 textures, 22 MB est (INFERRED); big non-texture payload
+**Why:** Required by three universe packs (minerals rock, sparkle, frozen), whose own rows (batches 11 and 12) propose deciding Minerals Rock at the paint pass. The mod overlaps terrain/biome ownership by mandrake.rm.biomes (brief section 2) and rewrites the rock of every map; removing it now would strip the rock Things the map is built from (placed Things UNMEASURED). Exit with its packs at the paint pass. Its GenSteps run at map generation, which fits no-worldgen only as map content, not planets.
+**Problems:** log_noise 0 (0 error occurrences, 0 chatter lines in the 550-mod session) · tps 2 (map_component_tick flag plus rock-generation steps run per map) · size 2 (73.93 MB (53.6 MB non-texture)) · maintenance 2 (source verified but no license and version 0.1 'under development') · interaction 2 (its Rock pack patches BiomeDefs mandrake.rm.biomes owns (batch 11))
+**Holds it in / exit:** dependants zacharyfoster.mineralsrock, .mineralssparkle, .mineralsfrozen; placed rock Things in current maps: UNMEASURED -> unfiled: MINERALS_ROCK_DECISION_AT_PAINT_ONCE_1 (proposed in batch 11 record)
+**Open:** What is in the 53.6 MB of 'other' files?
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Pick Up And Haul (`mehni.pickupandhaul`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** https://github.com/Mehni/PickUpAndHaul (github, MIT)
+**Adds:** content: 3 defs (JobDef 2, WorkGiverDef 1) / functionality: Colonists carry many items in their inventory and haul them to a stockpile in one trip; 2 DLLs, Harmony, settings screen, source shipped (17 .cs) / art: 1 texture
+**Why:** Resonant for a small crew: required_mods.md calls hauling mods 'near-essential for 4-8 pawns in 10-15 days' and pairs it with the teardown loop, and it is QoL that passes the 7 questions trivially. One universe mod (sugarcube.puahsharedstorage) depends on it, and two others patch it (memegoddess.giddyup 2, frozensnowfox.complexjobs 1). Discrepancy: required_mods.md says the original Mehni build had no 1.6 and told us to use an unofficial fork; the installed folder is the original workshop id 1279012058 and the facts mark supports_1_6 true, repo pushed 2025-08-28 (MIT). That recommendation looks superseded; verify in game.
+**Problems:** log_noise 0 (0 error occurrences, 0 chatter lines in the 550-mod session) · tps 2 (hauling job AI runs for every hauler; no tick FLAG but JobDriver/WorkGiver changes affect all haul decisions) · interaction 1 (patches no mods; patched by 2 third-party mods) · complexity 2 (2 DLLs, Harmony) · maintenance 1 (source verified MIT, pushed 2025-08-28)
+**Holds it in / exit:** dependant sugarcube.puahsharedstorage; patched by memegoddess.giddyup and frozensnowfox.complexjobs -> None
+**Open:** Confirm the installed build is the one required_mods.md warned about, and that it works on 1.6 in play.
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Pick Up And Haul - Shared Storage Access (`sugarcube.puahsharedstorage`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: none (def_total 0) / functionality: Lets several haulers deliver into one big storage building at once instead of queueing on the single-tile reservation (description); 1 Harmony DLL with game_component_tick, settings screen / art: 2 textures, 2.3 MB est
+**Why:** Fixes a real symptom ('no storage space' with queued haulers) for Pick Up And Haul when deep or ship storage is used, and our ship is storage-limited by design (required_mods.md deck-ratio concept). No dependants, nothing of ours names it; it exists only for PUAH and is tiny. KEEP follows Pick Up And Haul; drop together if PUAH goes.
+**Problems:** log_noise 0 (0 error occurrences, 0 chatter lines in the 550-mod session) · tps 1 (game_component_tick flag, small) · complexity 2 (one Harmony DLL) · maintenance 3 (no source linked (steam-only))
+**Holds it in / exit:** requires mehni.pickupandhaul (in list) -> None
+**Open:** Verdict follows Pick Up And Haul.
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
