@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ZERSIUM_FORGE_BIOME_1. Zersium's only source: a few small lumps of RSW_MineableZersium in the
+  natural rock of Forge maps (owner, question cards 2026-10-09: a rare local ore in ONE home biome,
+  The Forge). Gated on RM_TheForge and its frozen twin RUT_TheForge (twins read their RM column,
+  mineral_abundance_registry_design §5), and on Mod Settings "Zersium ore in the Forge".
+  Registered on Base_Player by Patches/RUT_ZersiumForgeLumps_Register.xml; gates itself.
+
+  PROVISIONAL numbers (no calibration, no owner ruling): 0.3~0.5 lumps per 10k cells is ~2-3 lumps
+  on a 250x250 map; lump 8~14 cells x yield 20 per cell (RSW_MineableZersium) is ~660 zersium per
+  standard map before mining losses. order 205: just after RocksFromGrid (200), which the lumps
+  need to land in (CanScatterAt requires a natural-rock edifice).
+-->
+<Defs>
+
+  <GenStepDef MayRequire="mandrake.rsw.armoury">
+    <defName>RUT_ZersiumForgeLumps</defName>
+    <order>205</order>
+    <genStep Class="RimMandrake.Utinni.UtinniPatches.RUT_GenStep_ZersiumForgeLumps">
+      <forcedDefToScatter>RSW_MineableZersium</forcedDefToScatter>
+      <countPer10kCellsRange>0.3~0.5</countPer10kCellsRange>
+      <allowedBiomes>
+        <li MayRequire="mandrake.rm.biomes">RM_TheForge</li>
+        <li>RUT_TheForge</li>
+      </allowedBiomes>
+    </genStep>
+  </GenStepDef>
+
+</Defs>
