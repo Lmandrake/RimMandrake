@@ -42,6 +42,8 @@
 
   <ItemGroup>
     <Compile Include="SlimeMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="SlimeSeekerProof.cs" />
     <Compile Include="SlimeBiome.cs" />
     <Compile Include="Slimification.cs" />
