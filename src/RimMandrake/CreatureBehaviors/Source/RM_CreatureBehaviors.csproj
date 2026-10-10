@@ -42,6 +42,8 @@
 
   <ItemGroup>
     <Compile Include="RM_CreatureBehaviorsMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_AmbushJobPolicy.cs" />
     <Compile Include="RM_VerminPressureExtension.cs" />
     <Compile Include="RM_MapComponent_VerminPopulation.cs" />

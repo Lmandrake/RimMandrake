@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -451,6 +454,100 @@ namespace RimMandrake.CreatureBehaviors
         public static float lanceDevilstrandMultiplier = 1f;
         public static float lanceThrixweaveMultiplier = 1f;
 
+        // CREATURE_BEHAVIORS_SETTINGS_SCREEN_1: the shipped value of every public static setting above, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order), or it
+        // would capture a later field's default as null/0. Per-group "Reset" writes these back.
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_CreatureBehaviorsSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_CreatureBehaviorsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        // ---- the screen: search, collapsible groups, per-group reset, "used by" (SETTINGS_SCREEN_KIT_1 widgets) ----
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedGroups = new HashSet<string>();
+        private static Dictionary<string, List<string>> usedByCache;
+
+        /// <summary>Loaded defs (things and hediffs) whose comps or modExtensions are one of keywords' types. Read from the
+        /// loaded defs each time the screen is first opened in a session, never hand-kept.</summary>
+        private static List<string> UsedBy(string[] keywords)
+        {
+            if (usedByCache == null) usedByCache = new Dictionary<string, List<string>>();
+            string key = string.Join("|", keywords);
+            if (usedByCache.TryGetValue(key, out List<string> hit)) return hit;
+            var found = new List<string>();
+            if (keywords.Length > 0)
+            {
+                foreach (ThingDef d in DefDatabase<ThingDef>.AllDefsListForReading)
+                {
+                    bool use = false;
+                    if (d.comps != null) foreach (CompProperties c in d.comps) { if (Names(c, keywords)) { use = true; break; } }
+                    if (!use && d.modExtensions != null) foreach (DefModExtension e in d.modExtensions) { if (Names(e, keywords)) { use = true; break; } }
+                    if (use) found.Add(d.label.NullOrEmpty() ? d.defName : d.label);
+                }
+                foreach (HediffDef h in DefDatabase<HediffDef>.AllDefsListForReading)
+                {
+                    if (h.comps == null) continue;
+                    foreach (HediffCompProperties c in h.comps) { if (Names(c, keywords)) { found.Add((h.label.NullOrEmpty() ? h.defName : h.label) + " (hediff)"); break; } }
+                }
+                found.Sort();
+            }
+            usedByCache[key] = found;
+            return found;
+        }
+
+        private static bool Names(object o, string[] keywords)
+        {
+            string tn = o.GetType().Name;
+            foreach (string k in keywords) if (tn.IndexOf(k, System.StringComparison.OrdinalIgnoreCase) >= 0) return true;
+            return false;
+        }
+
+        /// <summary>Group header (click to collapse), then the "Used by" line and effect scope, then a reset button. Returns
+        /// whether the controls should draw. A search matches the group title or any of its setting names.</summary>
+        private static bool Group(Listing_Standard list, string title, string[] names, string[] keywords)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedGroups.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedGroups.Remove(title)) collapsedGroups.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            List<string> users = UsedBy(keywords);
+            string who = keywords.Length == 0 ? "Used by: a map-wide message, no creature def"
+                       : users.Count == 0 ? "Used by: no loaded def uses this right now"
+                       : "Used by " + users.Count + " loaded def" + (users.Count == 1 ? "" : "s") + " (hover to list)";
+            // PROVISIONAL: every group reads its toggles live each pulse/tick, so a change applies at once to what is on the map;
+            // not yet audited per mechanic against the source (CREATURE_BEHAVIORS_SETTINGS_SCREEN_1 owes that).
+            list.Label((string)(who + "   " + RimMandrake.Shared.SettingsKitCore.ScopeTag(RimMandrake.Shared.SettingScope.Now)),
+                -1f, users.Count == 0 ? (TipSignal?)null : new TipSignal(string.Join(", ", users.Take(40)) + (users.Count > 40 ? ", ..." : "")));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 2400f;
 
@@ -586,480 +683,546 @@ namespace RimMandrake.CreatureBehaviors
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
             list.Begin(viewRect);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
             list.Label("This is a toolkit other creatures use for behavior. Turning a piece "
                      + "off only matters for a race that actually uses it.");
             list.GapLine();
-
-            list.CheckboxLabeled("Vermin breeding", ref verminBreedingEnabled,
-                "A breeder-tagged animal stops spawning offspring near itself.");
-            list.Label("Breeding rate: " + breedRateMultiplier.ToString("0.00") + "x");
-            breedRateMultiplier = list.Slider(breedRateMultiplier, 0.25f, 3f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Gnawing behavior", ref gnawBehaviorEnabled,
-                "A gnaw-tagged animal stops seeking out buildings or floors to chew.");
-            list.CheckboxLabeled("Foraging/eating cleanable items", ref eatCleanableBehaviorEnabled,
-                "A tagged animal stops seeking out named items or filth to eat.");
-            list.CheckboxLabeled("Seeking shade", ref seekShadeBehaviorEnabled,
-                "A shade-seeking animal stops ducking under roof once it gets hot.");
-            list.CheckboxLabeled("Seeking marked terrain", ref seekMarkedTerrainBehaviorEnabled,
-                "A tagged animal stops walking toward terrain it's built to seek out.");
-            list.CheckboxLabeled("Predator-hunt silence cue", ref silenceCueEnabled,
-                "A tagged predator's hunt near a colonist stops hushing the map's ambient sound.");
-            list.CheckboxLabeled("Proximity soundscapes", ref proximitySoundscapeEnabled,
-                "A tagged plant or building stops adding its hum layer as the view moves near it "
-              + "(the grove falls silent; nothing else changes).");
-            list.GapLine();
-
-            list.CheckboxLabeled("Sun-scald buildup", ref sunScaldEnabled,
-                "A sun-sensitive pawn's exposure severity stops rising in sun or falling in shade "
-              + "(frozen wherever it currently sits).");
-            list.Label("Sun-scald rate: " + sunScaldSeverityMultiplier.ToString("0.00") + "x");
-            sunScaldSeverityMultiplier = list.Slider(sunScaldSeverityMultiplier, 0.25f, 3f);
-            list.CheckboxLabeled("Sun-scald reads tree shade", ref sunScaldReadsShade,
-                "On a sun-heat map, trees, parasols and cast shade protect from sun-scald as well as roofs "
-              + "(off: only a roof does, as in vanilla's own light-sensitivity).");
-            list.Label("Sun-scald shade threshold: " + sunScaldShadeThreshold.ToString("0.00"));
-            sunScaldShadeThreshold = list.Slider(sunScaldShadeThreshold, 0.1f, 1f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Web-sense network", ref senseWebEnabled,
-                "A registered web/anchor/gutter network stops sensing and marking intruders "
-              + "(nodes still track, but nothing gets felt).");
-            list.CheckboxLabeled("Anchor-chewing behavior", ref chewAnchorsBehaviorEnabled,
-                "A beetle-like animal stops seeking out web anchors to chew through.");
-            list.CheckboxLabeled("Border margin creep", ref frontCreepEnabled,
-                "A map bordering a creeping biome stops advancing that biome's web/anchor/gutter line inward.");
-            list.Label("Margin creep density: " + frontCreepRateMultiplier.ToString("0.00") + "x");
-            frontCreepRateMultiplier = list.Slider(frontCreepRateMultiplier, 0f, 3f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Aquatic ambush (submerge + lunge)", ref aquaticAmbushEnabled,
-                "A tagged animal stops going invisible while submerged in deep water and stops "
-              + "lunging at targets that come into range; any lingering invisibility clears "
-              + "immediately, and the animal hunts like a normal predator from then on.");
-            list.GapLine();
-
-            list.CheckboxLabeled("Wound sharing", ref woundLinkEnabled,
-                "A serious fresh wound on a tagged animal stops partly mirroring onto same-tag "
-              + "kin nearby; the original victim keeps the full wound instead.");
-            list.Label("Wound-sharing amount: " + woundLinkShareMultiplier.ToString("0.00") + "x");
-            woundLinkShareMultiplier = list.Slider(woundLinkShareMultiplier, 0f, 2f);
-            list.CheckboxLabeled("Kin mending", ref kinMendingEnabled,
-                "A tagged animal stops healing its own wounds faster just because same-tag kin "
-              + "are nearby.");
-            list.Label("Kin-mending boost: " + kinMendingBoostMultiplier.ToString("0.00") + "x");
-            kinMendingBoostMultiplier = list.Slider(kinMendingBoostMultiplier, 0f, 2f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Guardian defenses (unchecking this is you deciding the grove's "
-              + "own law doesn't apply to you)",
-                ref guardianAlarmEnabled,
-                "Unchecked: you have chosen to strip the Rot's tea sources of what protects them, "
-              + "for your own convenience. The network alarm stops waking nearby guardians and a "
-              + "false-fruit lure stops gripping the hand that picks it — the grove simply lets "
-              + "you take what it would otherwise defend. Not a neutral accessibility setting: "
-              + "it is your own conscience being asked, every time you open this menu.");
-            list.GapLine();
-
-            list.CheckboxLabeled("Grabber hold-and-crush", ref grapplerHoldEnabled,
-                "On: a pawn caught in a grabber's pincer cannot move and takes crush damage every "
-              + "few seconds; break the hold by hurting the grabber (each hit from someone else has "
-              + "a chance to free them). Off: any hold releases immediately and a pincer hit is just a hit.");
-            list.Label("Hold crush rate: " + grapplerCrushMultiplier.ToString("0.00") + "x");
-            grapplerCrushMultiplier = list.Slider(grapplerCrushMultiplier, 0f, 3f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Drinker fluid sacs", ref drinkerFluidSacsEnabled,
-                "On: a drinker's bite feeds it and fills its fluid sacs (more drained fluids from the carcass), "
-              + "but warm iron blood poisons it and it dies within a day. Off: a bite is just a bite, and its "
-              + "sacs never yield anything.");
-            list.Label("Bad-blood poison severity: " + drinkerPoisonMultiplier.ToString("0.00") + "x");
-            drinkerPoisonMultiplier = list.Slider(drinkerPoisonMultiplier, 0f, 3f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Soulchime psychic stun", ref soulchimePsychicStunEnabled,
-                "On: a Soulchime psychically stuns anyone not of its own faction who gets too close in its "
-              + "line of sight, or who hurts it; psychically deaf pawns are immune. Off: nobody is ever stunned.");
-            list.CheckboxLabeled("Soulchime shard armor", ref soulchimeShardArmorEnabled,
-                "A Soulchime's shard armor stops growing (whatever it's already grown stays).");
-            list.Label("Shard armor growth rate: " + soulchimeShardArmorRateMultiplier.ToString("0.00") + "x");
-            soulchimeShardArmorRateMultiplier = list.Slider(soulchimeShardArmorRateMultiplier, 0f, 3f);
-            list.CheckboxLabeled("Soulchime tamed soothing", ref soulchimeTameSootheEnabled,
-                "A tamed Soulchime stops handing out its soothing calm to nearby colonists.");
-            list.GapLine();
-
-            list.CheckboxLabeled("Shade grid", ref shadeGridEnabled,
-                "The per-cell shade grid stops computing entirely; every shade-reading behavior "
-              + "below acts as if the whole map were in full sun.");
-            list.CheckboxLabeled("Smoke-haze shade effects", ref smokeHazeEffectsEnabled,
-                "A smoke-haze weather condition (Long Shade) stops lengthening cast shadows and muffling "
-              + "the heat bed; the condition itself still runs.");
-            list.CheckboxLabeled("Ash-pulse growth surge", ref conditionGrowthEffectsEnabled,
-                "An ash-pulse condition (Long Shade smoke calendar) stops speeding plant growth and "
-              + "thickening wild growth; the condition itself still runs.");
-            list.CheckboxLabeled("Sand-lock", ref sandLockEffectsEnabled,
-                "A sand-lock condition (Long Shade smoke calendar) stops packing the sand hard: sand "
-              + "swimmers keep swimming and buried animals stay buried; the condition itself still runs.");
-            list.CheckboxLabeled("Shade-seeking wander", ref shadeSeekingWanderEnabled,
-                "A shade-wander-tagged animal stops steering its idle wandering toward shaded cells.");
-            list.CheckboxLabeled("Heat-driven burst/retreat hediff", ref heatDrivenBurstEnabled,
-                "A heat-driven-burst hediff's severity stops climbing or decaying at all (frozen "
-              + "wherever it currently sits).");
-            list.Label("Heat-driven burst decay rate: " + heatDrivenBurstDecayMultiplier.ToString("0.00") + "x");
-            heatDrivenBurstDecayMultiplier = list.Slider(heatDrivenBurstDecayMultiplier, 0.25f, 3f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Show each creature's last decision when inspected", ref lastOutcomeInspectEnabled,
-                "Drum-lurers, aquatic ambushers, heat-burst hunters and alarm sources note what they last decided and why "
-              + "(declined, lunge, cooldown...) and show it in the inspect text. Text only; takes effect now. Off: nothing is recorded.");
-            list.CheckboxLabeled("Drum-lure ambush", ref drumLureEnabled,
-                "A lure predator stops calling victims closer with a false vibration signal; any "
-              + "victim already mid-compulsion is released immediately (they just keep walking "
-              + "wherever they were headed) and the predator hunts like a normal vanilla predator "
-              + "from then on.");
-            list.Label("Drum-lure appraisal chance: " + drumLureChanceMultiplier.ToString("0.00") + "x");
-            drumLureChanceMultiplier = list.Slider(drumLureChanceMultiplier, 0f, 3f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Corpse-dispersal seeding (stagger for shade)", ref shadeStaggerEnabled,
-                "On: a creature dying of a seed-brood walks for the nearest shadow while it still "
-              + "can, and the plant grows from wherever the body falls. Off: it dies exactly as fast "
-              + "and exactly as surely, it just dies where it happens to be standing and leaves "
-              + "nothing growing behind it. This never changes how deadly the fruit is.");
-            list.Label("Corpse germination chance: " + shadeStaggerGerminationMultiplier.ToString("0.00") + "x");
-            shadeStaggerGerminationMultiplier = list.Slider(shadeStaggerGerminationMultiplier, 0f, 3f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Filter-feeding from the ground", ref filterFeedingEnabled,
-                "On: an animal built to strain its food out of the ground (sand, silt) stops on "
-              + "terrain it can feed from and eats there, with no plant or food item involved. "
-              + "Off: it never does, and simply eats like any other animal of its diet — hungrier, "
-              + "but never stuck.");
-            list.Label("Filter-feed meal size: " + filterFeedNutritionMultiplier.ToString("0.00") + "x");
-            filterFeedNutritionMultiplier = list.Slider(filterFeedNutritionMultiplier, 0.25f, 3f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Dung seeding at shade patches", ref dungSeedingEnabled,
-                "On: a big grazer resting in shade leaves dung that fertilises the plants around "
-              + "it, sprouts young ones, and now and then brings a small creature with it — the "
-              + "way seeds and passengers travel between patches that are otherwise cut off from "
-              + "each other. Dung dropped out in the open fertilises nothing. Off: it leaves "
-              + "nothing behind and nothing grows from it.");
-            list.Label("Dung seeding strength: " + dungSeedingMultiplier.ToString("0.00") + "x");
-            dungSeedingMultiplier = list.Slider(dungSeedingMultiplier, 0f, 3f);
-            list.CheckboxLabeled("Dung-hatched young obey the wildlife limit", ref dungHatchRespectsWildlifeCap,
-                "On: a small creature only hatches from dung while the map is below its normal wildlife "
-              + "limit, the same as ordinary wild spawning (CB-4), so a dung trail cannot fill the map. "
-              + "Off: the old behaviour, a chance roll alone.");
-            list.GapLine();
-
-            list.CheckboxLabeled("Giants defend their young", ref parentalEnrageEnabled,
-                "On: getting close to the calf of a giant-with-young animal makes the nearest "
-              + "adult charge you, with no warning at all. It goes after whoever came close and "
-              + "nobody else, and it calms down again once you back off. Off: their young are "
-              + "not guarded, and you can walk right up to one.");
-            list.GapLine();
-
-            list.CheckboxLabeled("Directed assault (march on the colony)", ref directedAssaultBehaviorEnabled,
-                "On: a tagged animal that has nothing to fight marches toward the colony instead of "
-              + "idling at the map edge. Off: it still fights back at whatever it happens to run into, "
-              + "it just never goes looking.");
-            list.GapLine();
-
-            list.CheckboxLabeled("Seed passage (filth + germination)", ref seedPassageEnabled,
-                "On: when a digestive-accelerant hediff runs its course, the carrier leaves filth "
-              + "behind and may germinate a seedling nearby — free calories with a tax, and the tax "
-              + "is the ground sprouting. Off: the hediff still digests just as fast and ends on the "
-              + "same schedule, it just leaves nothing behind.");
-            list.Label("Seed passage germination chance: " + seedPassageGerminationMultiplier.ToString("0.00") + "x");
-            seedPassageGerminationMultiplier = list.Slider(seedPassageGerminationMultiplier, 0f, 3f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Brine battery defensive discharge", ref brineBatteryDischargeEnabled,
-                "On: hurting a brine battery at close range shocks the attacker back (a stun, not a "
-              + "wound). Off: a hit is simply never returned.");
-            list.Label("Discharge strength: " + brineBatteryDischargeMultiplier.ToString("0.00") + "x");
-            brineBatteryDischargeMultiplier = list.Slider(brineBatteryDischargeMultiplier, 0f, 3f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Ambient heat pushing", ref ambientHeatPusherEnabled,
-                "A tagged animal stops pushing ambient heat into whatever cell or room it currently "
-              + "occupies, wild or tamed.");
-            list.CheckboxLabeled("Species-spacing law", ref speciesSpacingEnabled,
-                "On: a tagged animal steers away from other members of its own kind, and takes heat "
-              + "damage every so often if it fails to keep even that much distance. Off: it neither "
-              + "avoids nor cooks its own kind, same as any other animal.");
-            list.Label("Cook-damage rate: " + speciesSpacingCookDamageMultiplier.ToString("0.00") + "x");
-            speciesSpacingCookDamageMultiplier = list.Slider(speciesSpacingCookDamageMultiplier, 0f, 3f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Reaction sources (hive/gall spawn, plant swarm)", ref reactionSourceSpawnEnabled,
-                "On: disturbing a reaction source (a skerrel gall, a gallowroot, and any future consumer "
-              + "wired the same way) spawns a bounded batch of hostile creatures nearby and/or wakes its "
-              + "own kind within range. Off: disturbing it does nothing at all — no spawn, no swarm, no "
-              + "budget spent.");
-            list.Label("Reaction spawn budget: " + reactionSourceBudgetMultiplier.ToString("0.00") + "x");
-            reactionSourceBudgetMultiplier = list.Slider(reactionSourceBudgetMultiplier, 0f, 3f);
-            list.CheckboxLabeled("Disturbed creature answers its own alarm first", ref alarmOriginRespondsFirst,
-                "On: the creature that was actually disturbed takes its share of the alarm budget before "
-              + "the neighbours it wakes, so a big colony cannot use it all up (CB-1). Off: the old order.");
-            list.CheckboxLabeled("Hive sentries notice intruders", ref reactionDetectionEnabled,
-                "On: a reaction source built to watch (an ant hive's sentries) rings its alarm when it "
-              + "SEES an intruder nearby — a colonist, a tamed animal, a raider — and the hive rallies "
-              + "after them. Off: it only rings when hurt, so you can walk a hive until you strike first.");
-            list.CheckboxLabeled("Reaction suppression (stench smoke)", ref reactionSuppressionEnabled,
-                "On: a suppressing counter-tool (the stench grenade) marks an area where no reaction "
-              + "source rings, no alarm spreads, no responder answers, and swarming or rallied creatures "
-              + "give up. Off: the smoke still does whatever else it does, but reactions ignore it.");
-            list.Label("Suppression duration: " + reactionSuppressionDurationMultiplier.ToString("0.00") + "x");
-            reactionSuppressionDurationMultiplier = list.Slider(reactionSuppressionDurationMultiplier, 0f, 3f);
-            list.CheckboxLabeled("Hive residents stay home", ref homeTetherEnabled,
-                "On: a calm creature tethered to a home (an ant hive's residents) drifts back when it "
-              + "wanders too far, so a hive is still occupied when you find it. Off: they wander the "
-              + "map like any wild animal.");
-            list.GapLine();
-
-            list.CheckboxLabeled("Adhesive slick surfaces", ref adhesiveSlickEnabled,
-                "On: a tagged structure's adhesive keeps refreshing its slick hediff on anyone "
-              + "standing on or near it, so lingering climbs from a slow-down toward a near-full "
-              + "stick; a doctor's tend still frees them faster than waiting it out. Off: a hediff "
-              + "already caught still decays and still tends normally, it just never tops back up.");
-            list.Label("Adhesive slick strength: " + adhesiveSlickSeverityMultiplier.ToString("0.00") + "x");
-            adhesiveSlickSeverityMultiplier = list.Slider(adhesiveSlickSeverityMultiplier, 0f, 3f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Sight-blocking plants", ref sightBlockEnabled,
-                "On: a plant tagged as a sight blocker (the Greentide's brakkel, tumbel and the rest of "
-              + "its understory), once grown, stops pawns seeing past it — they cannot target, witness "
-              + "or notice what is on the other side. Pathing, fire, explosions and YOUR view of the map "
-              + "are never affected. Off: those plants are ordinary cover again.");
-            if (sightBlockEnabled)
+            if (Group(list, "Vermin breeding", new[] { "verminBreedingEnabled", "breedRateMultiplier" }, new[] { "VerminBreeder", "VerminPressure" }))
             {
-                list.CheckboxLabeled("  Also blocks ranged fire", ref sightBlockRangedFire,
-                    "On: nobody can shoot at what the thicket hides (fights in dense jungle become close-"
-                  + "quarters). Off: guns and turrets see through it; it still hides things from "
-                  + "witnessing and from animals noticing you.");
-                list.Label("  Thicket depth needed to hide something: " + sightBlockCellsNeeded
-                    + (sightBlockCellsNeeded == 1 ? " plant" : " plants")
-                    + " (higher = more of the jungle stays readable)");
-                sightBlockCellsNeeded = Mathf.RoundToInt(list.Slider(sightBlockCellsNeeded, 1f, 4f));
-                if (sightBlockCellsNeeded < 1) { sightBlockCellsNeeded = 1; }
+                list.CheckboxLabeled("Vermin breeding", ref verminBreedingEnabled,
+                    "A breeder-tagged animal stops spawning offspring near itself.");
+                list.Label("Breeding rate: " + breedRateMultiplier.ToString("0.00") + "x");
+                breedRateMultiplier = list.Slider(breedRateMultiplier, 0.25f, 3f);
+                list.GapLine();
             }
-            list.GapLine();
-
-            list.CheckboxLabeled("Shadow-following commensals", ref shadowFollowEnabled,
-                "On: a tagged small commensal actively tracks and follows the nearest large "
-              + "shadow-casting host creature, staying in its moving shadow. Off: it stops seeking "
-              + "one out and just wanders normally — nothing stops it standing near a host by chance.");
-            list.CheckboxLabeled("Giants cast moving shade", ref movingShadeEnabled,
-                "On: a giant built to cast shade (the Long Shade's gloomcast) throws a real shadow that "
-              + "moves with it. Anything looking for shade can shelter in it, and it cools whoever stands "
-              + "in it like the shadow of a rock. Off: its shadow is only something its riders follow.");
-            list.GapLine();
-
-            list.CheckboxLabeled("Pinned sun (golden hour)", ref pinnedSunEnabled,
-                "On: a biome built with a pinned sun (the Long Shade) keeps one fixed sunset sky "
-              + "forever — no night — and every shadow on the map points the same way and never "
-              + "moves. Off: the sky turns from day to night like anywhere else and shadows swing "
-              + "with the real sun again.");
-            list.Label("Golden-hour sky strength: " + pinnedSunSkyStrength.ToStringPercent());
-            pinnedSunSkyStrength = list.Slider(pinnedSunSkyStrength, 0f, 1f);
-            list.CheckboxLabeled("False-shade ambush (the mirrak)", ref falseShadeAmbushEnabled,
-                "On: a flat ambusher lying in the open looks like shade to animals looking for "
-              + "shade, and seizes whatever lies down in it. Off: it never strikes and nothing "
-              + "mistakes it for shade — it just scavenges the dead.");
-            list.CheckboxLabeled("Ambush predators also hunt wild animals", ref ambushWildPreyEnabled,
-                "On (PROVISIONAL default): a wild lunger, drum-lure, heat-burst or similar ambusher also targets wild "
-              + "animals it could hunt by the game's own prey rules, not only creatures hostile to it. None of these "
-              + "ambushes ever takes over a drafted, berserk or player-ordered creature. Off: they target only "
-              + "creatures hostile to them, so wild prey is ignored.");
-            list.GapLine();
-
-            list.Label("Sun heat — only on biomes built with it (the Long Shade, the deep desert, "
-                     + "and the steam and volcanic lands). Everywhere else nothing changes.");
-            list.CheckboxLabeled("Sun heat", ref sunHeatEnabled,
-                "On: standing in the open sun adds to the temperature a creature feels, so it gets hot, "
-              + "then heatstroke, exactly as it would in a heat wave. Clothing, comfort range and "
-              + "heatstroke work as normal. Smaller creatures heat faster. Off: none of the sun-heat "
-              + "features below run.");
-            if (sunHeatEnabled)
+            if (Group(list, "Animal behaviours (gnaw, eat, shade, silence)", new[] { "gnawBehaviorEnabled", "eatCleanableBehaviorEnabled", "seekShadeBehaviorEnabled", "seekMarkedTerrainBehaviorEnabled", "silenceCueEnabled", "proximitySoundscapeEnabled" }, new[] { "GnawTarget", "EatCleanable", "SeekShade", "SeekTarget", "SilenceAura", "ProximitySoundscape" }))
             {
-                list.Label("  Sun heat strength: " + sunHeatStrength.ToStringPercent());
-                sunHeatStrength = list.Slider(sunHeatStrength, 0f, 3f);
-                list.CheckboxLabeled("  Shadows fall one way", ref directionalShadeEnabled,
-                    "On: every rock, wall and big tree throws its shadow along the sun, longer the lower "
-                  + "the sun is — the shade you see is the shade that counts. Off: shade is a small ring "
-                  + "around each object instead.");
-                list.CheckboxLabeled("  Walk shade to shade", ref sunPathingEnabled,
-                    "On: creatures and colonists (unless drafted) prefer routes through shade, even if longer. "
-                  + "Does nothing where shade does not help (steam and volcanic lands).");
-                list.Label("  How much they avoid the sun: " + sunPathCostMultiplier.ToStringPercent());
-                sunPathCostMultiplier = list.Slider(sunPathCostMultiplier, 0f, 3f);
-                list.CheckboxLabeled("  Sun load bar", ref sunLoadBarEnabled,
-                    "Shows a bar when you select one creature on a sun-heat map: how close it is to "
-                  + "heatstroke, and how much the sun is adding where it stands.");
-                list.CheckboxLabeled("  Animals hop shade to shade", ref shadeHopEnabled,
-                    "On: wild animals do not stroll in the open sun. They rest in shade, stop at its edge, "
-                  + "then sprint to the next patch of shade they can reach before the heat gets to them. "
-                  + "Big animals dash further than small ones. Off: they wander as normal.");
-                if (shadeHopEnabled)
+                list.CheckboxLabeled("Gnawing behavior", ref gnawBehaviorEnabled,
+                    "A gnaw-tagged animal stops seeking out buildings or floors to chew.");
+                list.CheckboxLabeled("Foraging/eating cleanable items", ref eatCleanableBehaviorEnabled,
+                    "A tagged animal stops seeking out named items or filth to eat.");
+                list.CheckboxLabeled("Seeking shade", ref seekShadeBehaviorEnabled,
+                    "A shade-seeking animal stops ducking under roof once it gets hot.");
+                list.CheckboxLabeled("Seeking marked terrain", ref seekMarkedTerrainBehaviorEnabled,
+                    "A tagged animal stops walking toward terrain it's built to seek out.");
+                list.CheckboxLabeled("Predator-hunt silence cue", ref silenceCueEnabled,
+                    "A tagged predator's hunt near a colonist stops hushing the map's ambient sound.");
+                list.CheckboxLabeled("Proximity soundscapes", ref proximitySoundscapeEnabled,
+                    "A tagged plant or building stops adding its hum layer as the view moves near it "
+                  + "(the grove falls silent; nothing else changes).");
+                list.GapLine();
+            }
+            if (Group(list, "Sun-scald", new[] { "sunScaldEnabled", "sunScaldSeverityMultiplier", "sunScaldReadsShade", "sunScaldShadeThreshold" }, new[] { "SunHeat" }))
+            {
+                list.CheckboxLabeled("Sun-scald buildup", ref sunScaldEnabled,
+                    "A sun-sensitive pawn's exposure severity stops rising in sun or falling in shade "
+                  + "(frozen wherever it currently sits).");
+                list.Label("Sun-scald rate: " + sunScaldSeverityMultiplier.ToString("0.00") + "x");
+                sunScaldSeverityMultiplier = list.Slider(sunScaldSeverityMultiplier, 0.25f, 3f);
+                list.CheckboxLabeled("Sun-scald reads tree shade", ref sunScaldReadsShade,
+                    "On a sun-heat map, trees, parasols and cast shade protect from sun-scald as well as roofs "
+                  + "(off: only a roof does, as in vanilla's own light-sensitivity).");
+                list.Label("Sun-scald shade threshold: " + sunScaldShadeThreshold.ToString("0.00"));
+                sunScaldShadeThreshold = list.Slider(sunScaldShadeThreshold, 0.1f, 1f);
+                list.GapLine();
+            }
+            if (Group(list, "Web-sense and border creep", new[] { "senseWebEnabled", "chewAnchorsBehaviorEnabled", "frontCreepEnabled", "frontCreepRateMultiplier" }, new[] { "SenseWebNode", "ChewAnchors", "Chewable", "FrontCreep" }))
+            {
+                list.CheckboxLabeled("Web-sense network", ref senseWebEnabled,
+                    "A registered web/anchor/gutter network stops sensing and marking intruders "
+                  + "(nodes still track, but nothing gets felt).");
+                list.CheckboxLabeled("Anchor-chewing behavior", ref chewAnchorsBehaviorEnabled,
+                    "A beetle-like animal stops seeking out web anchors to chew through.");
+                list.CheckboxLabeled("Border margin creep", ref frontCreepEnabled,
+                    "A map bordering a creeping biome stops advancing that biome's web/anchor/gutter line inward.");
+                list.Label("Margin creep density: " + frontCreepRateMultiplier.ToString("0.00") + "x");
+                frontCreepRateMultiplier = list.Slider(frontCreepRateMultiplier, 0f, 3f);
+                list.GapLine();
+            }
+            if (Group(list, "Aquatic ambush", new[] { "aquaticAmbushEnabled" }, new[] { "AquaticAmbusher" }))
+            {
+                list.CheckboxLabeled("Aquatic ambush (submerge + lunge)", ref aquaticAmbushEnabled,
+                    "A tagged animal stops going invisible while submerged in deep water and stops "
+                  + "lunging at targets that come into range; any lingering invisibility clears "
+                  + "immediately, and the animal hunts like a normal predator from then on.");
+                list.GapLine();
+            }
+            if (Group(list, "Wound sharing and kin mending", new[] { "woundLinkEnabled", "woundLinkShareMultiplier", "kinMendingEnabled", "kinMendingBoostMultiplier" }, new[] { "WoundLink", "KinMending" }))
+            {
+                list.CheckboxLabeled("Wound sharing", ref woundLinkEnabled,
+                    "A serious fresh wound on a tagged animal stops partly mirroring onto same-tag "
+                  + "kin nearby; the original victim keeps the full wound instead.");
+                list.Label("Wound-sharing amount: " + woundLinkShareMultiplier.ToString("0.00") + "x");
+                woundLinkShareMultiplier = list.Slider(woundLinkShareMultiplier, 0f, 2f);
+                list.CheckboxLabeled("Kin mending", ref kinMendingEnabled,
+                    "A tagged animal stops healing its own wounds faster just because same-tag kin "
+                  + "are nearby.");
+                list.Label("Kin-mending boost: " + kinMendingBoostMultiplier.ToString("0.00") + "x");
+                kinMendingBoostMultiplier = list.Slider(kinMendingBoostMultiplier, 0f, 2f);
+                list.GapLine();
+            }
+            if (Group(list, "Guardian defenses", new[] { "guardianAlarmEnabled" }, new[] { "PlantAlarm", "AlarmResponder" }))
+            {
+                list.CheckboxLabeled("Guardian defenses (unchecking this is you deciding the grove's "
+                  + "own law doesn't apply to you)",
+                    ref guardianAlarmEnabled,
+                    "Unchecked: you have chosen to strip the Rot's tea sources of what protects them, "
+                  + "for your own convenience. The network alarm stops waking nearby guardians and a "
+                  + "false-fruit lure stops gripping the hand that picks it — the grove simply lets "
+                  + "you take what it would otherwise defend. Not a neutral accessibility setting: "
+                  + "it is your own conscience being asked, every time you open this menu.");
+                list.GapLine();
+            }
+            if (Group(list, "Grabber hold-and-crush", new[] { "grapplerHoldEnabled", "grapplerCrushMultiplier" }, new[] { "Grappler" }))
+            {
+                list.CheckboxLabeled("Grabber hold-and-crush", ref grapplerHoldEnabled,
+                    "On: a pawn caught in a grabber's pincer cannot move and takes crush damage every "
+                  + "few seconds; break the hold by hurting the grabber (each hit from someone else has "
+                  + "a chance to free them). Off: any hold releases immediately and a pincer hit is just a hit.");
+                list.Label("Hold crush rate: " + grapplerCrushMultiplier.ToString("0.00") + "x");
+                grapplerCrushMultiplier = list.Slider(grapplerCrushMultiplier, 0f, 3f);
+                list.GapLine();
+            }
+            if (Group(list, "Drinker fluid sacs", new[] { "drinkerFluidSacsEnabled", "drinkerPoisonMultiplier" }, new[] { "FluidSacs" }))
+            {
+                list.CheckboxLabeled("Drinker fluid sacs", ref drinkerFluidSacsEnabled,
+                    "On: a drinker's bite feeds it and fills its fluid sacs (more drained fluids from the carcass), "
+                  + "but warm iron blood poisons it and it dies within a day. Off: a bite is just a bite, and its "
+                  + "sacs never yield anything.");
+                list.Label("Bad-blood poison severity: " + drinkerPoisonMultiplier.ToString("0.00") + "x");
+                drinkerPoisonMultiplier = list.Slider(drinkerPoisonMultiplier, 0f, 3f);
+                list.GapLine();
+            }
+            if (Group(list, "Soulchime", new[] { "soulchimePsychicStunEnabled", "soulchimeShardArmorEnabled", "soulchimeShardArmorRateMultiplier", "soulchimeTameSootheEnabled" }, new[] { "ProximityPsychicStun", "ShardArmor", "TameSootheAura" }))
+            {
+                list.CheckboxLabeled("Soulchime psychic stun", ref soulchimePsychicStunEnabled,
+                    "On: a Soulchime psychically stuns anyone not of its own faction who gets too close in its "
+                  + "line of sight, or who hurts it; psychically deaf pawns are immune. Off: nobody is ever stunned.");
+                list.CheckboxLabeled("Soulchime shard armor", ref soulchimeShardArmorEnabled,
+                    "A Soulchime's shard armor stops growing (whatever it's already grown stays).");
+                list.Label("Shard armor growth rate: " + soulchimeShardArmorRateMultiplier.ToString("0.00") + "x");
+                soulchimeShardArmorRateMultiplier = list.Slider(soulchimeShardArmorRateMultiplier, 0f, 3f);
+                list.CheckboxLabeled("Soulchime tamed soothing", ref soulchimeTameSootheEnabled,
+                    "A tamed Soulchime stops handing out its soothing calm to nearby colonists.");
+                list.GapLine();
+            }
+            if (Group(list, "Shade grid and weather effects", new[] { "shadeGridEnabled", "smokeHazeEffectsEnabled", "conditionGrowthEffectsEnabled", "sandLockEffectsEnabled", "shadeSeekingWanderEnabled", "heatDrivenBurstEnabled", "heatDrivenBurstDecayMultiplier" }, new[] { "ShadeHaze", "SandLock", "GrowthPulse", "ShadeSeekingWander", "ShadeDrivenSeverity" }))
+            {
+                list.CheckboxLabeled("Shade grid", ref shadeGridEnabled,
+                    "The per-cell shade grid stops computing entirely; every shade-reading behavior "
+                  + "below acts as if the whole map were in full sun.");
+                list.CheckboxLabeled("Smoke-haze shade effects", ref smokeHazeEffectsEnabled,
+                    "A smoke-haze weather condition (Long Shade) stops lengthening cast shadows and muffling "
+                  + "the heat bed; the condition itself still runs.");
+                list.CheckboxLabeled("Ash-pulse growth surge", ref conditionGrowthEffectsEnabled,
+                    "An ash-pulse condition (Long Shade smoke calendar) stops speeding plant growth and "
+                  + "thickening wild growth; the condition itself still runs.");
+                list.CheckboxLabeled("Sand-lock", ref sandLockEffectsEnabled,
+                    "A sand-lock condition (Long Shade smoke calendar) stops packing the sand hard: sand "
+                  + "swimmers keep swimming and buried animals stay buried; the condition itself still runs.");
+                list.CheckboxLabeled("Shade-seeking wander", ref shadeSeekingWanderEnabled,
+                    "A shade-wander-tagged animal stops steering its idle wandering toward shaded cells.");
+                list.CheckboxLabeled("Heat-driven burst/retreat hediff", ref heatDrivenBurstEnabled,
+                    "A heat-driven-burst hediff's severity stops climbing or decaying at all (frozen "
+                  + "wherever it currently sits).");
+                list.Label("Heat-driven burst decay rate: " + heatDrivenBurstDecayMultiplier.ToString("0.00") + "x");
+                heatDrivenBurstDecayMultiplier = list.Slider(heatDrivenBurstDecayMultiplier, 0.25f, 3f);
+                list.GapLine();
+            }
+            if (Group(list, "Drum-lure and heat-burst ambush", new[] { "lastOutcomeInspectEnabled", "drumLureEnabled", "drumLureChanceMultiplier" }, new[] { "DrumLure", "HeatBurstPredator", "AggroSeverity" }))
+            {
+                list.CheckboxLabeled("Show each creature's last decision when inspected", ref lastOutcomeInspectEnabled,
+                    "Drum-lurers, aquatic ambushers, heat-burst hunters and alarm sources note what they last decided and why "
+                  + "(declined, lunge, cooldown...) and show it in the inspect text. Text only; takes effect now. Off: nothing is recorded.");
+                list.CheckboxLabeled("Drum-lure ambush", ref drumLureEnabled,
+                    "A lure predator stops calling victims closer with a false vibration signal; any "
+                  + "victim already mid-compulsion is released immediately (they just keep walking "
+                  + "wherever they were headed) and the predator hunts like a normal vanilla predator "
+                  + "from then on.");
+                list.Label("Drum-lure appraisal chance: " + drumLureChanceMultiplier.ToString("0.00") + "x");
+                drumLureChanceMultiplier = list.Slider(drumLureChanceMultiplier, 0f, 3f);
+                list.GapLine();
+            }
+            if (Group(list, "Corpse-dispersal seeding", new[] { "shadeStaggerEnabled", "shadeStaggerGerminationMultiplier" }, new[] { "ShadeStagger" }))
+            {
+                list.CheckboxLabeled("Corpse-dispersal seeding (stagger for shade)", ref shadeStaggerEnabled,
+                    "On: a creature dying of a seed-brood walks for the nearest shadow while it still "
+                  + "can, and the plant grows from wherever the body falls. Off: it dies exactly as fast "
+                  + "and exactly as surely, it just dies where it happens to be standing and leaves "
+                  + "nothing growing behind it. This never changes how deadly the fruit is.");
+                list.Label("Corpse germination chance: " + shadeStaggerGerminationMultiplier.ToString("0.00") + "x");
+                shadeStaggerGerminationMultiplier = list.Slider(shadeStaggerGerminationMultiplier, 0f, 3f);
+                list.GapLine();
+            }
+            if (Group(list, "Filter-feeding", new[] { "filterFeedingEnabled", "filterFeedNutritionMultiplier" }, new[] { "FilterFeed" }))
+            {
+                list.CheckboxLabeled("Filter-feeding from the ground", ref filterFeedingEnabled,
+                    "On: an animal built to strain its food out of the ground (sand, silt) stops on "
+                  + "terrain it can feed from and eats there, with no plant or food item involved. "
+                  + "Off: it never does, and simply eats like any other animal of its diet — hungrier, "
+                  + "but never stuck.");
+                list.Label("Filter-feed meal size: " + filterFeedNutritionMultiplier.ToString("0.00") + "x");
+                filterFeedNutritionMultiplier = list.Slider(filterFeedNutritionMultiplier, 0.25f, 3f);
+                list.GapLine();
+            }
+            if (Group(list, "Dung seeding", new[] { "dungSeedingEnabled", "dungSeedingMultiplier", "dungHatchRespectsWildlifeCap" }, new[] { "DungSeeder" }))
+            {
+                list.CheckboxLabeled("Dung seeding at shade patches", ref dungSeedingEnabled,
+                    "On: a big grazer resting in shade leaves dung that fertilises the plants around "
+                  + "it, sprouts young ones, and now and then brings a small creature with it — the "
+                  + "way seeds and passengers travel between patches that are otherwise cut off from "
+                  + "each other. Dung dropped out in the open fertilises nothing. Off: it leaves "
+                  + "nothing behind and nothing grows from it.");
+                list.Label("Dung seeding strength: " + dungSeedingMultiplier.ToString("0.00") + "x");
+                dungSeedingMultiplier = list.Slider(dungSeedingMultiplier, 0f, 3f);
+                list.CheckboxLabeled("Dung-hatched young obey the wildlife limit", ref dungHatchRespectsWildlifeCap,
+                    "On: a small creature only hatches from dung while the map is below its normal wildlife "
+                  + "limit, the same as ordinary wild spawning (CB-4), so a dung trail cannot fill the map. "
+                  + "Off: the old behaviour, a chance roll alone.");
+                list.GapLine();
+            }
+            if (Group(list, "Parental enrage", new[] { "parentalEnrageEnabled" }, new[] { "ParentalEnrage" }))
+            {
+                list.CheckboxLabeled("Giants defend their young", ref parentalEnrageEnabled,
+                    "On: getting close to the calf of a giant-with-young animal makes the nearest "
+                  + "adult charge you, with no warning at all. It goes after whoever came close and "
+                  + "nobody else, and it calms down again once you back off. Off: their young are "
+                  + "not guarded, and you can walk right up to one.");
+                list.GapLine();
+            }
+            if (Group(list, "Directed assault", new[] { "directedAssaultBehaviorEnabled" }, new[] { "DirectedAssault" }))
+            {
+                list.CheckboxLabeled("Directed assault (march on the colony)", ref directedAssaultBehaviorEnabled,
+                    "On: a tagged animal that has nothing to fight marches toward the colony instead of "
+                  + "idling at the map edge. Off: it still fights back at whatever it happens to run into, "
+                  + "it just never goes looking.");
+                list.GapLine();
+            }
+            if (Group(list, "Seed passage", new[] { "seedPassageEnabled", "seedPassageGerminationMultiplier" }, new[] { "SeedPassage" }))
+            {
+                list.CheckboxLabeled("Seed passage (filth + germination)", ref seedPassageEnabled,
+                    "On: when a digestive-accelerant hediff runs its course, the carrier leaves filth "
+                  + "behind and may germinate a seedling nearby — free calories with a tax, and the tax "
+                  + "is the ground sprouting. Off: the hediff still digests just as fast and ends on the "
+                  + "same schedule, it just leaves nothing behind.");
+                list.Label("Seed passage germination chance: " + seedPassageGerminationMultiplier.ToString("0.00") + "x");
+                seedPassageGerminationMultiplier = list.Slider(seedPassageGerminationMultiplier, 0f, 3f);
+                list.GapLine();
+            }
+            if (Group(list, "Brine battery discharge", new[] { "brineBatteryDischargeEnabled", "brineBatteryDischargeMultiplier" }, new[] { "DefensiveDischarge" }))
+            {
+                list.CheckboxLabeled("Brine battery defensive discharge", ref brineBatteryDischargeEnabled,
+                    "On: hurting a brine battery at close range shocks the attacker back (a stun, not a "
+                  + "wound). Off: a hit is simply never returned.");
+                list.Label("Discharge strength: " + brineBatteryDischargeMultiplier.ToString("0.00") + "x");
+                brineBatteryDischargeMultiplier = list.Slider(brineBatteryDischargeMultiplier, 0f, 3f);
+                list.GapLine();
+            }
+            if (Group(list, "Heat pushing and species spacing", new[] { "ambientHeatPusherEnabled", "speciesSpacingEnabled", "speciesSpacingCookDamageMultiplier" }, new[] { "SpeciesSpacing", "HeatPusher" }))
+            {
+                list.CheckboxLabeled("Ambient heat pushing", ref ambientHeatPusherEnabled,
+                    "A tagged animal stops pushing ambient heat into whatever cell or room it currently "
+                  + "occupies, wild or tamed.");
+                list.CheckboxLabeled("Species-spacing law", ref speciesSpacingEnabled,
+                    "On: a tagged animal steers away from other members of its own kind, and takes heat "
+                  + "damage every so often if it fails to keep even that much distance. Off: it neither "
+                  + "avoids nor cooks its own kind, same as any other animal.");
+                list.Label("Cook-damage rate: " + speciesSpacingCookDamageMultiplier.ToString("0.00") + "x");
+                speciesSpacingCookDamageMultiplier = list.Slider(speciesSpacingCookDamageMultiplier, 0f, 3f);
+                list.GapLine();
+            }
+            if (Group(list, "Reaction sources", new[] { "reactionSourceSpawnEnabled", "reactionSourceBudgetMultiplier", "alarmOriginRespondsFirst", "reactionDetectionEnabled", "reactionSuppressionEnabled", "reactionSuppressionDurationMultiplier", "homeTetherEnabled" }, new[] { "ReactionSource", "ReactionUnseen", "HomeTether" }))
+            {
+                list.CheckboxLabeled("Reaction sources (hive/gall spawn, plant swarm)", ref reactionSourceSpawnEnabled,
+                    "On: disturbing a reaction source (a skerrel gall, a gallowroot, and any future consumer "
+                  + "wired the same way) spawns a bounded batch of hostile creatures nearby and/or wakes its "
+                  + "own kind within range. Off: disturbing it does nothing at all — no spawn, no swarm, no "
+                  + "budget spent.");
+                list.Label("Reaction spawn budget: " + reactionSourceBudgetMultiplier.ToString("0.00") + "x");
+                reactionSourceBudgetMultiplier = list.Slider(reactionSourceBudgetMultiplier, 0f, 3f);
+                list.CheckboxLabeled("Disturbed creature answers its own alarm first", ref alarmOriginRespondsFirst,
+                    "On: the creature that was actually disturbed takes its share of the alarm budget before "
+                  + "the neighbours it wakes, so a big colony cannot use it all up (CB-1). Off: the old order.");
+                list.CheckboxLabeled("Hive sentries notice intruders", ref reactionDetectionEnabled,
+                    "On: a reaction source built to watch (an ant hive's sentries) rings its alarm when it "
+                  + "SEES an intruder nearby — a colonist, a tamed animal, a raider — and the hive rallies "
+                  + "after them. Off: it only rings when hurt, so you can walk a hive until you strike first.");
+                list.CheckboxLabeled("Reaction suppression (stench smoke)", ref reactionSuppressionEnabled,
+                    "On: a suppressing counter-tool (the stench grenade) marks an area where no reaction "
+                  + "source rings, no alarm spreads, no responder answers, and swarming or rallied creatures "
+                  + "give up. Off: the smoke still does whatever else it does, but reactions ignore it.");
+                list.Label("Suppression duration: " + reactionSuppressionDurationMultiplier.ToString("0.00") + "x");
+                reactionSuppressionDurationMultiplier = list.Slider(reactionSuppressionDurationMultiplier, 0f, 3f);
+                list.CheckboxLabeled("Hive residents stay home", ref homeTetherEnabled,
+                    "On: a calm creature tethered to a home (an ant hive's residents) drifts back when it "
+                  + "wanders too far, so a hive is still occupied when you find it. Off: they wander the "
+                  + "map like any wild animal.");
+                list.GapLine();
+            }
+            if (Group(list, "Adhesive slick", new[] { "adhesiveSlickEnabled", "adhesiveSlickSeverityMultiplier" }, new[] { "AdhesiveSlick" }))
+            {
+                list.CheckboxLabeled("Adhesive slick surfaces", ref adhesiveSlickEnabled,
+                    "On: a tagged structure's adhesive keeps refreshing its slick hediff on anyone "
+                  + "standing on or near it, so lingering climbs from a slow-down toward a near-full "
+                  + "stick; a doctor's tend still frees them faster than waiting it out. Off: a hediff "
+                  + "already caught still decays and still tends normally, it just never tops back up.");
+                list.Label("Adhesive slick strength: " + adhesiveSlickSeverityMultiplier.ToString("0.00") + "x");
+                adhesiveSlickSeverityMultiplier = list.Slider(adhesiveSlickSeverityMultiplier, 0f, 3f);
+                list.GapLine();
+            }
+            if (Group(list, "Sight-blocking plants", new[] { "sightBlockEnabled", "sightBlockRangedFire", "sightBlockCellsNeeded" }, new[] { "SightBlocker" }))
+            {
+                list.CheckboxLabeled("Sight-blocking plants", ref sightBlockEnabled,
+                    "On: a plant tagged as a sight blocker (the Greentide's brakkel, tumbel and the rest of "
+                  + "its understory), once grown, stops pawns seeing past it — they cannot target, witness "
+                  + "or notice what is on the other side. Pathing, fire, explosions and YOUR view of the map "
+                  + "are never affected. Off: those plants are ordinary cover again.");
+                if (sightBlockEnabled)
                 {
-                    list.Label("    How far they will dash: " + shadeHopRangeMultiplier.ToStringPercent()
-                             + " (lower is stricter)");
-                    shadeHopRangeMultiplier = list.Slider(shadeHopRangeMultiplier, 0.25f, 2f);
+                    list.CheckboxLabeled("  Also blocks ranged fire", ref sightBlockRangedFire,
+                        "On: nobody can shoot at what the thicket hides (fights in dense jungle become close-"
+                      + "quarters). Off: guns and turrets see through it; it still hides things from "
+                      + "witnessing and from animals noticing you.");
+                    list.Label("  Thicket depth needed to hide something: " + sightBlockCellsNeeded
+                        + (sightBlockCellsNeeded == 1 ? " plant" : " plants")
+                        + " (higher = more of the jungle stays readable)");
+                    sightBlockCellsNeeded = Mathf.RoundToInt(list.Slider(sightBlockCellsNeeded, 1f, 4f));
+                    if (sightBlockCellsNeeded < 1) { sightBlockCellsNeeded = 1; }
                 }
-                list.CheckboxLabeled("  Back-to-shade ring", ref dashRingEnabled,
-                    "Draws a line on the ground around a selected drafted colonist, showing how far they "
-                  + "can go and still get back into shade before heatstroke sets in.");
-                list.CheckboxLabeled("  Heat you can hear", ref heatSoundscapeEnabled,
-                    "On a land built with it (the Long Shade): sunlit ground and shade sound different, "
-                  + "keyed to where the camera is looking, not to your people. Off: no heat sound bed.");
-                if (heatSoundscapeEnabled)
-                {
-                    list.Label("    Heat sound volume: " + heatSoundscapeVolume.ToStringPercent());
-                    heatSoundscapeVolume = list.Slider(heatSoundscapeVolume, 0f, 2f);
-                }
-                list.CheckboxLabeled("  Herd calls and giant footfalls", ref creatureHeatSoundsEnabled,
-                    "On a land built with it: a herd animal may call out at the edge of shade before it "
-                  + "sprints, and a giant's footfalls (the gloomcast's) carry further than you can see. "
-                  + "Off: both are silent.");
-                list.CheckboxLabeled("  Cover follows the sun's height", ref kindFromElevationEnabled,
-                    "On a land whose sun height comes from where it sits on the planet (the Stillsand): "
-                  + "On: where the sun stands high, roofs and parasols protect; where it stands low, only "
-                  + "the shade behind a wall or rock does. Off: the land's one fixed rule applies everywhere.");
-                list.CheckboxLabeled("  Sand glare", ref sandGlareEnabled,
-                    "On: open sand throws the sun back up, so standing on it in shade still heats you a "
-                  + "little. Paved floors do not glare, so a paved patch of shade is fully cool. "
-                  + "Off: shade on sand works as anywhere else.");
-                if (sandGlareEnabled)
-                {
-                    list.Label("    Sand glare strength: " + sandGlareStrength.ToStringPercent());
-                    sandGlareStrength = list.Slider(sandGlareStrength, 0f, 2f);
-                }
-                list.CheckboxLabeled("  Glare-blind", ref glareBlindEnabled,
-                    "On a land built with it (the Stillsand): people standing in full glare slowly lose "
-                  + "sight, and get it back in shade or indoors. Sun goggles (or any goggles that keep "
-                  + "out glare) stop it, and some peoples are born with eyes that never need them. "
-                  + "Animals are not affected. Off: nobody is glare-blinded.");
-                if (glareBlindEnabled)
-                {
-                    list.Label("    How fast glare blinds: " + glareBlindRateMultiplier.ToStringPercent());
-                    glareBlindRateMultiplier = list.Slider(glareBlindRateMultiplier, 0f, 3f);
-                }
-                list.CheckboxLabeled("  The mirage", ref mirageEnabled,
-                    "On a land built with it (the Stillsand), under a high sun: the far edge of the map "
-                  + "shimmers with water that is not there, the shimmer spoils long shots taken from full "
-                  + "sun, and someone suffering heatstroke may set off walking for the water. They stay on "
-                  + "the map: they come to, collapse, or stop when a drafted friend reaches them, and you "
-                  + "get a letter either way. Off: none of it.");
-                if (mirageEnabled)
-                {
-                    list.Label("    How often the heat-struck chase the water: " + mirageBreakChanceMultiplier.ToStringPercent());
-                    mirageBreakChanceMultiplier = list.Slider(mirageBreakChanceMultiplier, 0f, 3f);
-                }
+                list.GapLine();
             }
-            list.GapLine();
-
-            list.Label("Shade gear — how well each piece works depends on the land's kind of heat: "
-                     + "overhead sun, low sun, or steam and volcanic heat (where no shade helps).");
-            list.CheckboxLabeled("Parasols cast shade", ref parasolShadeEnabled,
-                "On: a parasol shades the colonist carrying it, and a little of the cell beside them. "
-                + "Strong under an overhead sun, weak under a low one. Off: it is just something to carry.");
-            list.CheckboxLabeled("Shade tents cast shade", ref shadeTentEnabled,
-                "On: a pitched shade tent shades the ground under it. Strong under an overhead sun, "
-                + "weak under a low one. Off: it casts no shade.");
-            list.CheckboxLabeled("Decoy shade tarps fool shade-seekers", ref decoyShadeEnabled,
-                "On: a decoy shade tarp reads as shade to animals looking for shade (mirrak hide is the most "
-                + "convincing) though it cools no one. Off: it is an ordinary awning and fools nothing.");
-            list.CheckboxLabeled("Breeding vermin eat what they breed on", ref verminBreedingEatsFood,
-                "On: a breeder that needs a food pile (the greatbole grubs and their fruit) uses some of it up with every litter, and "
-              + "food it cannot walk to (behind a wall or a shut-off door) does not count. Clear the food and the infestation starves. "
-              + "Off: the pile is never used up and any pile in range counts.");
-            if (verminBreedingEatsFood)
+            if (Group(list, "Shadow followers and moving shade", new[] { "shadowFollowEnabled", "movingShadeEnabled" }, new[] { "ShadowFollower", "ShadowCaster" }))
             {
-                list.Label("Food eaten per litter: " + verminLitterFoodUnits);
-                verminLitterFoodUnits = Mathf.RoundToInt(list.Slider(verminLitterFoodUnits, 1f, 20f));
+                list.CheckboxLabeled("Shadow-following commensals", ref shadowFollowEnabled,
+                    "On: a tagged small commensal actively tracks and follows the nearest large "
+                  + "shadow-casting host creature, staying in its moving shadow. Off: it stops seeking "
+                  + "one out and just wanders normally — nothing stops it standing near a host by chance.");
+                list.CheckboxLabeled("Giants cast moving shade", ref movingShadeEnabled,
+                    "On: a giant built to cast shade (the Long Shade's gloomcast) throws a real shadow that "
+                  + "moves with it. Anything looking for shade can shelter in it, and it cools whoever stands "
+                  + "in it like the shadow of a rock. Off: its shadow is only something its riders follow.");
+                list.GapLine();
             }
-            list.CheckboxLabeled("Salvage winch hooks heavy objects", ref salvageWinchEnabled,
-                "On: a salvage winch can be ordered to hook a wreck chunk, a carcass or a downed beast within reach "
-              + "and drag it home beside the winch, cell by cell. Off: winches do nothing and drop what they hold.");
-            if (salvageWinchEnabled)
+            if (Group(list, "Pinned sun and false shade", new[] { "pinnedSunEnabled", "pinnedSunSkyStrength", "falseShadeAmbushEnabled", "ambushWildPreyEnabled" }, new[] { "PinnedSun", "FalseShade" }))
             {
-                list.Label("Winch reach: " + salvageWinchRange.ToString("0") + " cells");
-                salvageWinchRange = Mathf.Round(list.Slider(salvageWinchRange, 5f, 40f));
-                list.Label("Heaviest load: " + salvageWinchMaxMass.ToString("0") + " kg");
-                salvageWinchMaxMass = Mathf.Round(list.Slider(salvageWinchMaxMass, 50f, 2000f) / 10f) * 10f;
-                list.Label("Reel speed: " + salvageWinchReelSpeed.ToString("0.0") + "x");
-                salvageWinchReelSpeed = list.Slider(salvageWinchReelSpeed, 0.3f, 3f);
+                list.CheckboxLabeled("Pinned sun (golden hour)", ref pinnedSunEnabled,
+                    "On: a biome built with a pinned sun (the Long Shade) keeps one fixed sunset sky "
+                  + "forever — no night — and every shadow on the map points the same way and never "
+                  + "moves. Off: the sky turns from day to night like anywhere else and shadows swing "
+                  + "with the real sun again.");
+                list.Label("Golden-hour sky strength: " + pinnedSunSkyStrength.ToStringPercent());
+                pinnedSunSkyStrength = list.Slider(pinnedSunSkyStrength, 0f, 1f);
+                list.CheckboxLabeled("False-shade ambush (the mirrak)", ref falseShadeAmbushEnabled,
+                    "On: a flat ambusher lying in the open looks like shade to animals looking for "
+                  + "shade, and seizes whatever lies down in it. Off: it never strikes and nothing "
+                  + "mistakes it for shade — it just scavenges the dead.");
+                list.CheckboxLabeled("Ambush predators also hunt wild animals", ref ambushWildPreyEnabled,
+                    "On (PROVISIONAL default): a wild lunger, drum-lure, heat-burst or similar ambusher also targets wild "
+                  + "animals it could hunt by the game's own prey rules, not only creatures hostile to it. None of these "
+                  + "ambushes ever takes over a drafted, berserk or player-ordered creature. Off: they target only "
+                  + "creatures hostile to them, so wild prey is ignored.");
+                list.GapLine();
             }
-            list.CheckboxLabeled("Sun shields cast shade", ref sunShieldEnabled,
-                "On: a standing sun shield throws shade on its far side from the sun. The one piece "
-                + "that works under a low sun; only modest under an overhead one. Off: it casts no shade.");
-            list.GapLine();
-
-            list.CheckboxLabeled("Sand swimmers go under the sand", ref sandSwimEnabled,
-                "On: creatures built to swim through loose sand (the vekka, the sand stalker, the krayt) "
-              + "sink out of sight on sand, leaving a dust wake and a rumble, and burst up when they "
-              + "strike, reach rock or are hit. Hard ground stops them. Off: they walk the surface "
-              + "like any animal.");
-            if (sandSwimEnabled)
+            if (Group(list, "Sun heat", new[] { "sunHeatEnabled", "sunHeatStrength", "directionalShadeEnabled", "sunPathingEnabled", "sunPathCostMultiplier", "sunLoadBarEnabled", "shadeHopEnabled", "shadeHopRangeMultiplier", "dashRingEnabled", "heatSoundscapeEnabled", "heatSoundscapeVolume", "creatureHeatSoundsEnabled", "kindFromElevationEnabled", "sandGlareEnabled", "sandGlareStrength", "glareBlindEnabled", "glareBlindRateMultiplier", "mirageEnabled", "mirageBreakChanceMultiplier" }, new[] { "SunHeat", "SunDash", "HeatSoundscape", "GlareProtection", "Footfalls" }))
             {
-                list.CheckboxLabeled("  Droids are invisible to swimmers", ref sandSwimDroidImmunity,
-                    "On: nothing under the sand goes after a pawn with no water in it, so droids and "
-                  + "mechanoids can cross, fish and haul where nothing alive can. Off: swimmers attack them too.");
-                list.Label("  Rumble volume: " + sandSwimRumbleVolume.ToStringPercent());
-                sandSwimRumbleVolume = list.Slider(sandSwimRumbleVolume, 0f, 2f);
+                list.Label("Sun heat — only on biomes built with it (the Long Shade, the deep desert, "
+                         + "and the steam and volcanic lands). Everywhere else nothing changes.");
+                list.CheckboxLabeled("Sun heat", ref sunHeatEnabled,
+                    "On: standing in the open sun adds to the temperature a creature feels, so it gets hot, "
+                  + "then heatstroke, exactly as it would in a heat wave. Clothing, comfort range and "
+                  + "heatstroke work as normal. Smaller creatures heat faster. Off: none of the sun-heat "
+                  + "features below run.");
+                if (sunHeatEnabled)
+                {
+                    list.Label("  Sun heat strength: " + sunHeatStrength.ToStringPercent());
+                    sunHeatStrength = list.Slider(sunHeatStrength, 0f, 3f);
+                    list.CheckboxLabeled("  Shadows fall one way", ref directionalShadeEnabled,
+                        "On: every rock, wall and big tree throws its shadow along the sun, longer the lower "
+                      + "the sun is — the shade you see is the shade that counts. Off: shade is a small ring "
+                      + "around each object instead.");
+                    list.CheckboxLabeled("  Walk shade to shade", ref sunPathingEnabled,
+                        "On: creatures and colonists (unless drafted) prefer routes through shade, even if longer. "
+                      + "Does nothing where shade does not help (steam and volcanic lands).");
+                    list.Label("  How much they avoid the sun: " + sunPathCostMultiplier.ToStringPercent());
+                    sunPathCostMultiplier = list.Slider(sunPathCostMultiplier, 0f, 3f);
+                    list.CheckboxLabeled("  Sun load bar", ref sunLoadBarEnabled,
+                        "Shows a bar when you select one creature on a sun-heat map: how close it is to "
+                      + "heatstroke, and how much the sun is adding where it stands.");
+                    list.CheckboxLabeled("  Animals hop shade to shade", ref shadeHopEnabled,
+                        "On: wild animals do not stroll in the open sun. They rest in shade, stop at its edge, "
+                      + "then sprint to the next patch of shade they can reach before the heat gets to them. "
+                      + "Big animals dash further than small ones. Off: they wander as normal.");
+                    if (shadeHopEnabled)
+                    {
+                        list.Label("    How far they will dash: " + shadeHopRangeMultiplier.ToStringPercent()
+                                 + " (lower is stricter)");
+                        shadeHopRangeMultiplier = list.Slider(shadeHopRangeMultiplier, 0.25f, 2f);
+                    }
+                    list.CheckboxLabeled("  Back-to-shade ring", ref dashRingEnabled,
+                        "Draws a line on the ground around a selected drafted colonist, showing how far they "
+                      + "can go and still get back into shade before heatstroke sets in.");
+                    list.CheckboxLabeled("  Heat you can hear", ref heatSoundscapeEnabled,
+                        "On a land built with it (the Long Shade): sunlit ground and shade sound different, "
+                      + "keyed to where the camera is looking, not to your people. Off: no heat sound bed.");
+                    if (heatSoundscapeEnabled)
+                    {
+                        list.Label("    Heat sound volume: " + heatSoundscapeVolume.ToStringPercent());
+                        heatSoundscapeVolume = list.Slider(heatSoundscapeVolume, 0f, 2f);
+                    }
+                    list.CheckboxLabeled("  Herd calls and giant footfalls", ref creatureHeatSoundsEnabled,
+                        "On a land built with it: a herd animal may call out at the edge of shade before it "
+                      + "sprints, and a giant's footfalls (the gloomcast's) carry further than you can see. "
+                      + "Off: both are silent.");
+                    list.CheckboxLabeled("  Cover follows the sun's height", ref kindFromElevationEnabled,
+                        "On a land whose sun height comes from where it sits on the planet (the Stillsand): "
+                      + "On: where the sun stands high, roofs and parasols protect; where it stands low, only "
+                      + "the shade behind a wall or rock does. Off: the land's one fixed rule applies everywhere.");
+                    list.CheckboxLabeled("  Sand glare", ref sandGlareEnabled,
+                        "On: open sand throws the sun back up, so standing on it in shade still heats you a "
+                      + "little. Paved floors do not glare, so a paved patch of shade is fully cool. "
+                      + "Off: shade on sand works as anywhere else.");
+                    if (sandGlareEnabled)
+                    {
+                        list.Label("    Sand glare strength: " + sandGlareStrength.ToStringPercent());
+                        sandGlareStrength = list.Slider(sandGlareStrength, 0f, 2f);
+                    }
+                    list.CheckboxLabeled("  Glare-blind", ref glareBlindEnabled,
+                        "On a land built with it (the Stillsand): people standing in full glare slowly lose "
+                      + "sight, and get it back in shade or indoors. Sun goggles (or any goggles that keep "
+                      + "out glare) stop it, and some peoples are born with eyes that never need them. "
+                      + "Animals are not affected. Off: nobody is glare-blinded.");
+                    if (glareBlindEnabled)
+                    {
+                        list.Label("    How fast glare blinds: " + glareBlindRateMultiplier.ToStringPercent());
+                        glareBlindRateMultiplier = list.Slider(glareBlindRateMultiplier, 0f, 3f);
+                    }
+                    list.CheckboxLabeled("  The mirage", ref mirageEnabled,
+                        "On a land built with it (the Stillsand), under a high sun: the far edge of the map "
+                      + "shimmers with water that is not there, the shimmer spoils long shots taken from full "
+                      + "sun, and someone suffering heatstroke may set off walking for the water. They stay on "
+                      + "the map: they come to, collapse, or stop when a drafted friend reaches them, and you "
+                      + "get a letter either way. Off: none of it.");
+                    if (mirageEnabled)
+                    {
+                        list.Label("    How often the heat-struck chase the water: " + mirageBreakChanceMultiplier.ToStringPercent());
+                        mirageBreakChanceMultiplier = list.Slider(mirageBreakChanceMultiplier, 0f, 3f);
+                    }
+                }
+                list.GapLine();
             }
-            list.GapLine();
-
-            list.CheckboxLabeled("Half-buried-in-sand graphics", ref sandBuriedGraphicEnabled,
-                "Sand burrowers (thraia, drazzik) draw their half-buried art while resting on loose sand. "
-              + "Off: they draw their ordinary body there. Purely visual.");
-            list.GapLine();
-
-            list.CheckboxLabeled("Say why wild animals leave", ref wildLeaveNoticeEnabled,
-                "When a wild animal walks off a map you are on because it is too warm, too cold or starving "
-              + "there, a message says so (one per species per hour). Off: they leave silently, as in vanilla.");
-            list.GapLine();
-
-            list.CheckboxLabeled("Footprints (performance switch)", ref tracksEnabled,
-                "On ground built to take prints (the Warscar's settled film, the Stillsand's sand), "
-              + "everything that walks leaves prints pointing the way it went, invisible things "
-              + "included. They stay until that land's own wind or dunes wipe them. Off: no prints "
-              + "are recorded or drawn. This is the switch to flip if a big map runs slow.");
-            if (tracksEnabled)
+            if (Group(list, "Shade gear, vermin food and salvage winch", new[] { "parasolShadeEnabled", "shadeTentEnabled", "decoyShadeEnabled", "verminBreedingEatsFood", "verminLitterFoodUnits", "salvageWinchEnabled", "salvageWinchRange", "salvageWinchMaxMass", "salvageWinchReelSpeed", "sunShieldEnabled" }, new[] { "ShadeGear", "ShadeCloth", "SalvageWinch" }))
             {
-                list.Label("  Prints kept per map: " + trackPoolCap
-                         + " (when full, small animals' prints go first, then the oldest)");
-                trackPoolCap = Mathf.RoundToInt(list.Slider(trackPoolCap, 1000f, 20000f) / 500f) * 500;
-                if (trackPoolCap < 1000) { trackPoolCap = 1000; }
-                list.Label("  Print opacity: " + trackPrintOpacity.ToStringPercent());
-                trackPrintOpacity = list.Slider(trackPrintOpacity, 0.1f, 1f);
+                list.Label("Shade gear — how well each piece works depends on the land's kind of heat: "
+                         + "overhead sun, low sun, or steam and volcanic heat (where no shade helps).");
+                list.CheckboxLabeled("Parasols cast shade", ref parasolShadeEnabled,
+                    "On: a parasol shades the colonist carrying it, and a little of the cell beside them. "
+                    + "Strong under an overhead sun, weak under a low one. Off: it is just something to carry.");
+                list.CheckboxLabeled("Shade tents cast shade", ref shadeTentEnabled,
+                    "On: a pitched shade tent shades the ground under it. Strong under an overhead sun, "
+                    + "weak under a low one. Off: it casts no shade.");
+                list.CheckboxLabeled("Decoy shade tarps fool shade-seekers", ref decoyShadeEnabled,
+                    "On: a decoy shade tarp reads as shade to animals looking for shade (mirrak hide is the most "
+                    + "convincing) though it cools no one. Off: it is an ordinary awning and fools nothing.");
+                list.CheckboxLabeled("Breeding vermin eat what they breed on", ref verminBreedingEatsFood,
+                    "On: a breeder that needs a food pile (the greatbole grubs and their fruit) uses some of it up with every litter, and "
+                  + "food it cannot walk to (behind a wall or a shut-off door) does not count. Clear the food and the infestation starves. "
+                  + "Off: the pile is never used up and any pile in range counts.");
+                if (verminBreedingEatsFood)
+                {
+                    list.Label("Food eaten per litter: " + verminLitterFoodUnits);
+                    verminLitterFoodUnits = Mathf.RoundToInt(list.Slider(verminLitterFoodUnits, 1f, 20f));
+                }
+                list.CheckboxLabeled("Salvage winch hooks heavy objects", ref salvageWinchEnabled,
+                    "On: a salvage winch can be ordered to hook a wreck chunk, a carcass or a downed beast within reach "
+                  + "and drag it home beside the winch, cell by cell. Off: winches do nothing and drop what they hold.");
+                if (salvageWinchEnabled)
+                {
+                    list.Label("Winch reach: " + salvageWinchRange.ToString("0") + " cells");
+                    salvageWinchRange = Mathf.Round(list.Slider(salvageWinchRange, 5f, 40f));
+                    list.Label("Heaviest load: " + salvageWinchMaxMass.ToString("0") + " kg");
+                    salvageWinchMaxMass = Mathf.Round(list.Slider(salvageWinchMaxMass, 50f, 2000f) / 10f) * 10f;
+                    list.Label("Reel speed: " + salvageWinchReelSpeed.ToString("0.0") + "x");
+                    salvageWinchReelSpeed = list.Slider(salvageWinchReelSpeed, 0.3f, 3f);
+                }
+                list.CheckboxLabeled("Sun shields cast shade", ref sunShieldEnabled,
+                    "On: a standing sun shield throws shade on its far side from the sun. The one piece "
+                    + "that works under a low sun; only modest under an overhead one. Off: it casts no shade.");
+                list.GapLine();
             }
-
-            list.GapLine();
-            list.CheckboxLabeled("Traction lance fires and reels", ref lanceEnabled,
-                "Shipped default: ON. A manned traction lance throws a fabric tether at a visible target in range and reels "
-              + "it in. Off: the lance stands idle even when crewed.");
-            list.Label("Lance range: " + lanceRange.ToString("0") + " cells (before the tether's fabric)");
-            lanceRange = Mathf.Round(list.Slider(lanceRange, 4f, 30f));
-            list.Label("Lance reel speed: " + lanceReelSpeed.ToStringPercent());
-            lanceReelSpeed = list.Slider(lanceReelSpeed, 0.25f, 4f);
-            list.Label("Lance cooldown between throws: " + lanceCooldownSeconds.ToString("0") + " s");
-            lanceCooldownSeconds = Mathf.Round(list.Slider(lanceCooldownSeconds, 2f, 120f));
-            list.CheckboxLabeled("Lance pulls downed colonists to safety", ref lanceFriendlyPull,
-                "Shipped default: ON. With no enemy in range, the crewed lance ropes a downed colonist and reels them in.");
-            list.Label("Chance per cell that a struggling target snaps the tether: " + lanceSnapChance.ToStringPercent());
-            lanceSnapChance = list.Slider(lanceSnapChance, 0f, 0.5f);
-            list.Label("Tether strength by fabric (scales reach and strength, divides snap chance):");
-            list.Label("  Cloth: " + lanceClothMultiplier.ToString("0.00") + "x");
-            lanceClothMultiplier = list.Slider(lanceClothMultiplier, 0.25f, 3f);
-            list.Label("  Devilstrand: " + lanceDevilstrandMultiplier.ToString("0.00") + "x");
-            lanceDevilstrandMultiplier = list.Slider(lanceDevilstrandMultiplier, 0.25f, 3f);
-            list.Label("  Thrixweave: " + lanceThrixweaveMultiplier.ToString("0.00") + "x");
-            lanceThrixweaveMultiplier = list.Slider(lanceThrixweaveMultiplier, 0.25f, 3f);
+            if (Group(list, "Sand swimmers", new[] { "sandSwimEnabled", "sandSwimDroidImmunity", "sandSwimRumbleVolume" }, new[] { "SandSwim" }))
+            {
+                list.CheckboxLabeled("Sand swimmers go under the sand", ref sandSwimEnabled,
+                    "On: creatures built to swim through loose sand (the vekka, the sand stalker, the krayt) "
+                  + "sink out of sight on sand, leaving a dust wake and a rumble, and burst up when they "
+                  + "strike, reach rock or are hit. Hard ground stops them. Off: they walk the surface "
+                  + "like any animal.");
+                if (sandSwimEnabled)
+                {
+                    list.CheckboxLabeled("  Droids are invisible to swimmers", ref sandSwimDroidImmunity,
+                        "On: nothing under the sand goes after a pawn with no water in it, so droids and "
+                      + "mechanoids can cross, fish and haul where nothing alive can. Off: swimmers attack them too.");
+                    list.Label("  Rumble volume: " + sandSwimRumbleVolume.ToStringPercent());
+                    sandSwimRumbleVolume = list.Slider(sandSwimRumbleVolume, 0f, 2f);
+                }
+                list.GapLine();
+            }
+            if (Group(list, "Half-buried graphics", new[] { "sandBuriedGraphicEnabled" }, new[] { "SandBuriedGraphic" }))
+            {
+                list.CheckboxLabeled("Half-buried-in-sand graphics", ref sandBuriedGraphicEnabled,
+                    "Sand burrowers (thraia, drazzik) draw their half-buried art while resting on loose sand. "
+                  + "Off: they draw their ordinary body there. Purely visual.");
+                list.GapLine();
+            }
+            if (Group(list, "Wild-leave notice", new[] { "wildLeaveNoticeEnabled" }, new string[0]))
+            {
+                list.CheckboxLabeled("Say why wild animals leave", ref wildLeaveNoticeEnabled,
+                    "When a wild animal walks off a map you are on because it is too warm, too cold or starving "
+                  + "there, a message says so (one per species per hour). Off: they leave silently, as in vanilla.");
+                list.GapLine();
+            }
+            if (Group(list, "Footprints", new[] { "tracksEnabled", "trackPoolCap", "trackPrintOpacity" }, new[] { "TrackSurface" }))
+            {
+                list.CheckboxLabeled("Footprints (performance switch)", ref tracksEnabled,
+                    "On ground built to take prints (the Warscar's settled film, the Stillsand's sand), "
+                  + "everything that walks leaves prints pointing the way it went, invisible things "
+                  + "included. They stay until that land's own wind or dunes wipe them. Off: no prints "
+                  + "are recorded or drawn. This is the switch to flip if a big map runs slow.");
+                if (tracksEnabled)
+                {
+                    list.Label("  Prints kept per map: " + trackPoolCap
+                             + " (when full, small animals' prints go first, then the oldest)");
+                    trackPoolCap = Mathf.RoundToInt(list.Slider(trackPoolCap, 1000f, 20000f) / 500f) * 500;
+                    if (trackPoolCap < 1000) { trackPoolCap = 1000; }
+                    list.Label("  Print opacity: " + trackPrintOpacity.ToStringPercent());
+                    trackPrintOpacity = list.Slider(trackPrintOpacity, 0.1f, 1f);
+                }
+                list.GapLine();
+            }
+            if (Group(list, "Traction lance", new[] { "lanceEnabled", "lanceRange", "lanceReelSpeed", "lanceCooldownSeconds", "lanceFriendlyPull", "lanceSnapChance", "lanceClothMultiplier", "lanceDevilstrandMultiplier", "lanceThrixweaveMultiplier" }, new[] { "TetherPull", "TetherStuff" }))
+            {
+                list.CheckboxLabeled("Traction lance fires and reels", ref lanceEnabled,
+                    "Shipped default: ON. A manned traction lance throws a fabric tether at a visible target in range and reels "
+                  + "it in. Off: the lance stands idle even when crewed.");
+                list.Label("Lance range: " + lanceRange.ToString("0") + " cells (before the tether's fabric)");
+                lanceRange = Mathf.Round(list.Slider(lanceRange, 4f, 30f));
+                list.Label("Lance reel speed: " + lanceReelSpeed.ToStringPercent());
+                lanceReelSpeed = list.Slider(lanceReelSpeed, 0.25f, 4f);
+                list.Label("Lance cooldown between throws: " + lanceCooldownSeconds.ToString("0") + " s");
+                lanceCooldownSeconds = Mathf.Round(list.Slider(lanceCooldownSeconds, 2f, 120f));
+                list.CheckboxLabeled("Lance pulls downed colonists to safety", ref lanceFriendlyPull,
+                    "Shipped default: ON. With no enemy in range, the crewed lance ropes a downed colonist and reels them in.");
+                list.Label("Chance per cell that a struggling target snaps the tether: " + lanceSnapChance.ToStringPercent());
+                lanceSnapChance = list.Slider(lanceSnapChance, 0f, 0.5f);
+                list.Label("Tether strength by fabric (scales reach and strength, divides snap chance):");
+                list.Label("  Cloth: " + lanceClothMultiplier.ToString("0.00") + "x");
+                lanceClothMultiplier = list.Slider(lanceClothMultiplier, 0.25f, 3f);
+                list.Label("  Devilstrand: " + lanceDevilstrandMultiplier.ToString("0.00") + "x");
+                lanceDevilstrandMultiplier = list.Slider(lanceDevilstrandMultiplier, 0.25f, 3f);
+                list.Label("  Thrixweave: " + lanceThrixweaveMultiplier.ToString("0.00") + "x");
+                lanceThrixweaveMultiplier = list.Slider(lanceThrixweaveMultiplier, 0.25f, 3f);
+                list.GapLine();
+            }
             list.End();
             lastContentHeight = list.CurHeight + 12f;
             Widgets.EndScrollView();
