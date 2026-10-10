@@ -5295,3 +5295,4 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-10T16:48:20Z","tsn":1791650900932878438}
 {"seat":"FOUNDRY","event":"lease","id":"MINERALS_WHERE_THEY_BELONG_1","action":"take","token":"FOUNDRY.pid15776.1c011162","expires":"2026-10-10T17:34:11Z","ts":"2026-10-10T16:49:11Z","tsn":1791650951295015519}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"TPS MUST17 full-list","ts":"2026-10-10T16:49:35Z","tsn":1791650975290769052}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-10-10T16:55:54Z","tsn":1791651354991723197}
