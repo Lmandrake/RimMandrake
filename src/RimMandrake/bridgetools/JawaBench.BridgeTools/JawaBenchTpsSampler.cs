@@ -368,7 +368,11 @@ namespace JawaBench.BridgeTools
                 double now = WD.Now;
                 Explained.RootPre(now);
                 Game game = Current.Game;
-                bool playing = game != null && Current.ProgramState == ProgramState.Playing;
+                // A game is "entered" only once it is Playing WITH a world. Loading a save from inside a game creates a
+                // bare `new Game()` in the load's PreLoadAct (decompiled 1.6) while ProgramState still reads Playing;
+                // C3 live run 2026-10-10 saw that transient object take the load's save label (game 3, no windows)
+                // and the real loaded game arrive as an unlabelled game 4.
+                bool playing = game != null && Current.ProgramState == ProgramState.Playing && game.World != null;
                 var ev = Life.OnFrame(game, playing, now);
                 if (ev != JawaBenchTpsLifecycle.Event.None) WD.LastSave = "";     // game-scoped (MUST 6)
                 if (ev == JawaBenchTpsLifecycle.Event.Menu)
