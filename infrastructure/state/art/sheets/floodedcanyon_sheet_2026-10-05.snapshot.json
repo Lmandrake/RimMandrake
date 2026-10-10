@@ -1,6 +1,6 @@
 {
  "biome": "RM_FloodedCanyon",
- "built": "2026-10-09T23:25:46-0700",
+ "built": "2026-10-10T01:00:51-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
  "loadOrder": "live ModsConfig.xml: 565 active",
@@ -436,17 +436,35 @@
    "columns": {
     "A": {
      "single": "bdb7ac0f5185c8f0190369f9782444ff4bb243173e15d67d6295078d612cbb02"
+    },
+    "B": {
+     "single": "c25e650e494949027e2c821fdcc8c607d9c919956f256921df77bd130243e9b1"
+    },
+    "C": {
+     "single": "c0bc87537611f83f7db16c72839ef1d2c15ed6522c5c0b86f54b8b15ed6fa603"
+    },
+    "D": {
+     "single": "d9c92d083ee4531b610dabdd92858ff45f5bc1a2da474ef4540125660236badf"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Veqma"
+    "A": "Things/Plant/RM_Veqma",
+    "B": "_byname",
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
-    "A": "our deployed art (render RM_Veqma) \u2014 RimMandrake: Baroque Biomes"
+    "A": "our deployed art (render RM_Veqma) \u2014 RimMandrake: Baroque Biomes",
+    "B": "render enact_fcveqma_real_v1",
+    "C": "render enact_fcveqma_real_v2",
+    "D": "render enact_fcveqma_real_v3"
    },
    "res": "Things/Plant/RM_Veqma",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "veqma"
   },
@@ -773,7 +791,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render enact_90d52757_woolamander_v1 \u2014 failed canon check"
+    "B": "render enact_90d52757_woolamander_v1"
    },
    "res": "swanimals/Woolamander/Woolamander",
    "reserved": [
@@ -799,7 +817,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 UtinniPatches",
-    "B": "render enact_a1894dc1_emperorvulture_v1 \u2014 failed canon check"
+    "B": "render enact_a1894dc1_emperorvulture_v1"
    },
    "res": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture",
    "reserved": [
