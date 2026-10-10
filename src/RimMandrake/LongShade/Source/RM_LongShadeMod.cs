@@ -76,6 +76,9 @@ namespace RimMandrake.LongShade
         /// <summary>LONGSHADE_STAMPEDE_ROOF_1: the overheated-herd stampede incident.</summary>
         public static bool stampedeEnabled = true;
 
+        /// <summary>LONGSHADE_BEDAZZLE_MECHANICS_1 smoke calendar, haze act: smoke-haze fronts may arrive (shadows lengthen, sun dims).</summary>
+        public static bool smokeHazeFrontEnabled = true;
+
         /// <summary>LONGSHADE_HARROK_STILT_1): the harrok's ambush from its own shadow.</summary>
         public static bool harrokEnabled = true;
 
@@ -90,6 +93,7 @@ namespace RimMandrake.LongShade
             Scribe_Values.Look(ref tollokTicksEnabled, "tollokTicksEnabled", true);
             Scribe_Values.Look(ref lureAwningEnabled, "lureAwningEnabled", true);
             Scribe_Values.Look(ref stampedeEnabled, "stampedeEnabled", true);
+            Scribe_Values.Look(ref smokeHazeFrontEnabled, "smokeHazeFrontEnabled", true);
             Scribe_Values.Look(ref modEnabled, "modEnabled", true);
             Scribe_Values.Look(ref dewfringeShadeLineGateEnabled, "dewfringeShadeLineGateEnabled", true);
             Scribe_Values.Look(ref crawlerRoadEnabled, "crawlerRoadEnabled", true);
@@ -184,6 +188,10 @@ namespace RimMandrake.LongShade
             list.CheckboxLabeled("Stampede for your roof", ref stampedeEnabled,
                 "A herd caught out in the heat with every patch full may bolt for the roofed part of your home area "
               + "and stay until it has cooled. Off: the incident never fires.");
+            list.CheckboxLabeled("Smoke-haze fronts", ref smokeHazeFrontEnabled,
+                "Fires beyond the horizon send a smoke front: for a few days the sun dims, every shadow "
+              + "lengthens and the heat bed fades. Off: the incident never fires (the shade-grid effect itself is "
+              + "toggled in Creature Behaviors).");
             list.GapLine();
 
             list.Label("Shade-seeking wander and contact venom");

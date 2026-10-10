@@ -97,6 +97,8 @@ namespace RimMandrake.CreatureBehaviors
 		private bool directional;
 		private Vector2 sunShadowDir;
 		private float sunLengthPerHeight;
+		// LONGSHADE_BEDAZZLE_MECHANICS_1 haze: the factor folded into the last recompute.
+		private float lastHazeFactor = 1f;
 
 		// STILLSAND_SUN_FROM_LATITUDE_1: the map's sun elevation (NaN when
 		// unknown — no pin, no heat extension, no planet tile), and the sand
@@ -321,6 +323,10 @@ namespace RimMandrake.CreatureBehaviors
 				return; // mod option: shade grid disabled — ShadeAt reports full sun everywhere
 			}
 			int now = Find.TickManager.TicksGame;
+			if (now % 250 == 7 && RM_ShadeHaze.ShadowLengthFactor(map) != lastHazeFactor)
+			{
+				recomputeRequested = true; // a haze front arrived or cleared
+			}
 			if (recomputeRequested || now % RecomputeIntervalTicks == 0)
 			{
 				Recompute();
@@ -595,6 +601,11 @@ namespace RimMandrake.CreatureBehaviors
 			recomputeRequested = false;
 			System.Array.Clear(castShade, 0, n);
 			ResolveSun();
+			lastHazeFactor = RM_ShadeHaze.ShadowLengthFactor(map);
+			if (directional)
+			{
+				sunLengthPerHeight *= lastHazeFactor;
+			}
 			int width = map.Size.x;
 			int height = map.Size.z;
 			foreach (IntVec3 cell in map.AllCells)

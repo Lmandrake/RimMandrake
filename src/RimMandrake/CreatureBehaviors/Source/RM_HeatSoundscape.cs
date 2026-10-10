@@ -98,7 +98,7 @@ namespace RimMandrake.CreatureBehaviors
                 return;
             }
             SoundDef want = Wanted(out RM_HeatSoundscapeExtension ext);
-            float vol = RM_CreatureBehaviorsSettings.heatSoundscapeVolume;
+            float vol = RM_CreatureBehaviorsSettings.heatSoundscapeVolume * RM_ShadeHaze.SoundVolumeFactor(map);
             if (want == playing && sustainer != null && !sustainer.Ended && vol == playingVolume)
             {
                 return;
