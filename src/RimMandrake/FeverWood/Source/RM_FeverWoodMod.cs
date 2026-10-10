@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -354,210 +355,326 @@ namespace RimMandrake.FeverWood
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.Label("Fever Wood");
-            list.GapLine();
-            list.Label("The biome's hazard mechanics (mirror pools, boughway network, the living trunk) "
-              + "are not settings-gated yet — they ship from mandrake.rm.environmentalhazards, which has "
-              + "no per-Fever-Wood toggle of its own.");
-            list.GapLine();
-            list.CheckboxLabeled("Sekkulaath tentacle bestiary", ref tentacleBestiaryEnabled,
-                "Six pseudo-species tentacle limbs (feeler, snare, lash, porter, sentinel, bloom) "
-              + "emerge ambiently at registered mirror pools and can be driven off, severed for a "
-              + "harvestable body, or — rarely — permanently cleared from a map. Off: no limbs ever "
-              + "spawn; a map already carrying spawned limbs is unaffected until they next retreat.");
-            list.Label("Ambient sighting frequency (mean hours, lower = more often): "
-                + tentacleAmbientMtbHours.ToString("0.0"));
-            tentacleAmbientMtbHours = list.Slider(tentacleAmbientMtbHours, 1f, 24f);
-            list.CheckboxLabeled("Limbs sink back on their own", ref tentacleLimbLingerEnabled,
-                "On: a limb nobody drives off slides back under the water after its linger time, so the "
-              + "pools breathe: limbs rise, wait and sink. A sentinel sinking lets the crown chorus resume. "
-              + "Porters keep their own exit. Off: limbs stand until driven off or severed.");
-            list.Label("Linger time before an undisturbed limb sinks (hours): " + tentacleLimbLingerHours.ToString("0"));
-            tentacleLimbLingerHours = list.Slider(tentacleLimbLingerHours, 1f, 72f);
-            list.Label("Most limbs up on one map at once (0 = no cap; the Great Emergence ignores it): " + tentacleLiveLimbCap);
-            tentacleLiveLimbCap = (int)list.Slider(tentacleLiveLimbCap, 0f, 20f);
-            list.GapLine();
-            list.CheckboxLabeled("The Great Emergence (rare set-piece)", ref tentacleGreatEmergenceEnabled,
-                "A large pool under real pressure can, rarely, erupt into a distinct and much bigger "
-              + "attack: several limbs rising together with the eye itself. Driving off or killing the "
-              + "eye ends the whole attack. There is no protection against this beyond seeing it coming "
-              + "— no maturity gate, no wealth floor. Off: the eye never spawns on this map at all.");
-            list.Label("Pool must register at least this many connected water cells: " + tentacleGreatEmergencePoolSizeThreshold);
-            tentacleGreatEmergencePoolSizeThreshold = (int)list.Slider(tentacleGreatEmergencePoolSizeThreshold, 4f, 80f);
-            list.CheckboxLabeled("Pool size means one connected pool", ref tentaclePoolsAreClusters,
-                "On: the threshold above must be met by a single connected pool, and the Great Emergence rises there. "
-              + "Off: all registered water on the map is counted together, so many small ponds can qualify.");
-            list.Label("Ordinary encounters that must accumulate at a qualifying pool first: " + tentacleGreatEmergencePressureThreshold);
-            tentacleGreatEmergencePressureThreshold = (int)list.Slider(tentacleGreatEmergencePressureThreshold, 0f, 30f);
-            list.Label("Chance per roll, once eligible, that it fires (roughly 1/50 by default): "
-                + tentacleGreatEmergenceChance.ToString("0.000"));
-            tentacleGreatEmergenceChance = list.Slider(tentacleGreatEmergenceChance, 0f, 0.25f);
-            list.Label("Limbs that rise alongside the eye: " + tentacleGreatEmergenceMinLimbs + " - " + tentacleGreatEmergenceMaxLimbs);
-            tentacleGreatEmergenceMinLimbs = (int)list.Slider(tentacleGreatEmergenceMinLimbs, 1f, 10f);
-            tentacleGreatEmergenceMaxLimbs = (int)list.Slider(tentacleGreatEmergenceMaxLimbs, 1f, 10f);
-            list.GapLine();
-            list.CheckboxLabeled("Uranium suppression (free-tier route)", ref tentacleUraniumSuppressionEnabled,
-                "A colonist can craft a radioactive suppressant charge from vanilla Uranium and use it to "
-              + "foul a registered pool, driving whatever lives beneath it down for several days — no "
-              + "hostile encounters and no treasure trickle from that pool while it lasts. Off: the item "
-              + "and recipe still exist, but using one does nothing.");
-            list.Label("Charges consumed per use: " + tentacleUraniumSuppressantAmountPerUse);
-            tentacleUraniumSuppressantAmountPerUse = (int)list.Slider(tentacleUraniumSuppressantAmountPerUse, 1f, 20f);
-            list.Label("Suppression duration (days): " + tentacleUraniumSuppressionDurationDays.ToString("0.0"));
-            tentacleUraniumSuppressionDurationDays = list.Slider(tentacleUraniumSuppressionDurationDays, 0.5f, 30f);
-            list.CheckboxLabeled("Fouling withdraws limbs already up", ref foulingWithdrawsLimbs,
-                "On: fouling a pool drives every tentacle already up back under the water, and even a burning "
-              + "pool edge cannot raise one while the fouling lasts. Off: fouling only stops new limbs rising "
-              + "on their own; limbs already up stay, and fire can still force one up.");
-            list.GapLine();
-            list.CheckboxLabeled("Sekkulaath prison tank", ref sekkulaathTankEnabled,
-                "A buildable containment cell that teaches, produces, and can get out. Off: the "
-              + "tank can still be built, but it never produces, never teaches, and its occupant "
-              + "never escapes — an inert box, not a working feature.");
-            list.Label("Escape risk multiplier (lower = more escape-prone): "
-                + sekkulaathEscapeRiskMultiplier.ToString("0.00"));
-            sekkulaathEscapeRiskMultiplier = list.Slider(sekkulaathEscapeRiskMultiplier, 0.25f, 4f);
-            list.GapLine();
-            list.CheckboxLabeled("Ant hive dungeons", ref antHiveDungeonEnabled,
-                "A rare, procedurally-laid-out chain of dug tunnels and rooms, populated with kurreth "
-              + "workers and a queen in the deepest room. The hive notices you, raises the alarm and "
-              + "rallies after you (Creature Behaviors' reaction settings govern that). Off: no hive ever "
-              + "generates on a new map; an already-generated one is unaffected.");
-            list.Label("Hive frequency multiplier (lower = rarer): " + antHiveChanceMultiplier.ToString("0.00"));
-            antHiveChanceMultiplier = list.Slider(antHiveChanceMultiplier, 0f, 3f);
-            list.CheckboxLabeled("Ant hives are really dug (worldgen)", ref antHiveRealGeometry,
-                "On: a new hive keeps its rooms well clear of the pools, never stacks one room on another, and digs its rooms "
-              + "and tunnels out of any rock they cross. Off: the old layout, which could paint a hive under solid rock. "
-              + "Affects new maps only.");
-            list.CheckboxLabeled("Ant hive farm chamber (worldgen)", ref antHiveFarmChamberEnabled,
-                "The shallowest hive room keeps a herd of thornbugs the kurreth tend and herd back when "
-              + "they stray: the hive is a farm. Off: new hives carry no herd and an existing herd is no "
-              + "longer herded.");
-            list.CheckboxLabeled("Ant hive seals passages", ref antHiveSealingEnabled,
-                "When the hive raises its alarm it plugs the tunnel behind the intruder with resin "
-              + "(one tunnel per alarm; the plugs crumble after a few hours or can be broken). Off: "
-              + "the way out stays open.");
-            list.CheckboxLabeled("Ant hive parasite chamber (worldgen)", ref antHiveParasiteChamberEnabled,
-                "A mid-depth hive room hides a glomvar, a pale thing the kurreth cannot perceive that "
-              + "eats them one a day, and falls on them in a frenzy while they are busy fighting you. "
-              + "Off: new hives carry none and an existing one stops hunting the hive.");
-            list.GapLine();
-            list.CheckboxLabeled("Two-front lure raids", ref twoFrontLureEnabled,
-                "A buildable stake for staking a tamed animal or prisoner as living bait. While bait is "
-              + "staked, the Fever Wood's two raiders (the kurreth swarm, and the skreth brood from the "
-              + "webbed side of the wood) may converge on it one "
-              + "after the other, never both at once. Off: the stake and staking still work, but no "
-              + "raid is ever rolled.");
-            list.Label("Mean hours until a first wave answers a staked lure: " + twoFrontLureRaidMtbHours.ToString("0.0"));
-            twoFrontLureRaidMtbHours = list.Slider(twoFrontLureRaidMtbHours, 1f, 24f);
-            list.Label("Chance a second wave follows the first: " + twoFrontLureSecondWaveChance.ToString("0.00"));
-            twoFrontLureSecondWaveChance = list.Slider(twoFrontLureSecondWaveChance, 0f, 1f);
-            list.CheckboxLabeled("Lure raiders go for the bait from two real fronts", ref twoFrontLureTrueFronts,
-                "On: each wave first runs at the staked bait, and a second wave enters from the side opposite where the "
-              + "first actually came in. Off: they assault the colony directly, from edges worked out from the stake.");
-            list.Label("Second-wave delay range (hours): " + twoFrontLureSecondWaveMinHours.ToString("0.0")
-                + " - " + twoFrontLureSecondWaveMaxHours.ToString("0.0"));
-            twoFrontLureSecondWaveMinHours = list.Slider(twoFrontLureSecondWaveMinHours, 0.5f, 12f);
-            twoFrontLureSecondWaveMaxHours = list.Slider(twoFrontLureSecondWaveMaxHours, 0.5f, 24f);
-            list.Label("Raid strength: max(" + twoFrontLureMinThreatPoints.ToString("0") + ", colony threat points x "
-                + twoFrontLureThreatPointsMultiplier.ToString("0.00") + ")");
-            twoFrontLureMinThreatPoints = list.Slider(twoFrontLureMinThreatPoints, 20f, 300f);
-            twoFrontLureThreatPointsMultiplier = list.Slider(twoFrontLureThreatPointsMultiplier, 0.1f, 2f);
-            list.CheckboxLabeled("Lock the wager in once a raid is drawn", ref twoFrontLureLockOnceTriggered,
-                "Off (shipped default): a staked pawn can be released at any time, even after a raid is "
-              + "already inbound. On: once THIS stake has drawn a raid, 'Release lure' is disabled until "
-              + "the bait dies, is rescued by the raid's own fallout, or the stake is rebuilt — matching "
-              + "the design sheet's 'you are hoping the second column shows up' framing more literally.");
-            list.GapLine();
-            list.CheckboxLabeled("Sap-suckers refuse a failed taming attempt", ref sapSuckerMishandleRefusalEnabled,
-                "On: a failed attempt to tame a vaulm, drommath or ollareth sets off its refusal — the vaulm "
-              + "seals itself, the drommath swells, the ollareth screams — just as being hurt does. Off: only "
-              + "being hurt sets it off.");
-            list.CheckboxLabeled("Silloch ambush from the bark", ref sillochAmbushEnabled,
-                "On: a silloch presses itself against a tree trunk and waits, and strikes any small creature (or "
-              + "person) that steps right beside it. It never chases: once the victim gets a few steps clear, it lets "
-              + "go. Off: it wanders like an ordinary animal and never strikes unprovoked.");
-            list.CheckboxLabeled("Brathek bores into living wood", ref brathekBoresWood,
-                "On: a brathek eats living trees as well as ground cover, so a grove with brathek in it slowly thins. "
-              + "It never digs through walls, buildings or boughways. Off: it grazes like any other animal.");
-            list.GapLine();
-            list.CheckboxLabeled("Kurreth carry animals off alive", ref antTheftEnabled,
-                "On: a kurreth raid fights as before, but up to a third of the column pins a thornbug (then any "
-              + "tamed vaulm, ollareth or drommath) down without killing it and carries it off the map alive; once "
-              + "nothing is left to take, the rest leave. A letter names every animal taken and the way the column "
-              + "went, and a slime trail leads off the edge there. Off: the kurreth wave is a plain assault.");
-            list.CheckboxLabeled("Stolen animals can be taken back", ref kurrethColumnEnabled,
-                "On: after a theft the column makes camp a few tiles away with the animals bound alive; a colonist who "
-              + "reaches one while no kurreth stands guard close by cuts it free. Not reached in time, the column goes "
-              + "on to its hive: if a hive lies under the map they were taken from, they are carried bound into its "
-              + "deepest chamber for a while, then lost. Off: a stolen animal is simply gone with the column.");
-            list.CheckboxLabeled("One theft letter per kurreth column", ref kurrethTheftPerColumn,
-                "On: each column that carries animals off gets its own letter and raid-back quest, sent once that column "
-              + "has left the map, naming the edge IT left by. Off: every theft within about ten seconds of the first is "
-              + "lumped into one letter.");
-            list.CheckboxLabeled("A lost raid-back is lost for good", ref kurrethLossFinalize,
-                "On: when the raid-back fails, every animal not actually brought back is gone for good in every phase (as in "
-              + "the hive), and an animal only counts as rescued once it is unbound on a map and out of the kurreth's hands. "
-              + "Off: the old checks, where an animal still held off-map could count as rescued.");
-            list.Label("Days before the column reaches its hive: " + kurrethColumnDays.ToString("0.0"));
-            kurrethColumnDays = list.Slider(kurrethColumnDays, 1f, 15f);
-            list.Label("Days the animals last bound in the hive: " + kurrethHiveHoldDays.ToString("0.0"));
-            kurrethHiveHoldDays = list.Slider(kurrethHiveHoldDays, 2f, 60f);
-
-            list.GapLine();
-            list.CheckboxLabeled("Oil boil weather", ref oilBoilEnabled,
-                "On hot, still days the seep oil boils off the ground into a low haze. While it lasts seepril yield "
-              + "more seep oil, and the haze is fuel: a shot fired from or landing in it, a fire or a burning creature in "
-              + "it, or a dry-lightning strike flashes fire along the haze, which then burns off. The crown (boughway, "
-              + "bough-soil, stilt platforms) and roofed ground stay clear. Melee never sparks it. Off: the weather never comes.");
-            list.Label("Only at or above this outdoor temperature: " + oilBoilMinTempC.ToString("0") + " C");
-            oilBoilMinTempC = list.Slider(oilBoilMinTempC, 20f, 60f);
-            list.Label("How often, against the biome's other weather: " + oilBoilCommonalityMultiplier.ToString("0.0") + "x");
-            oilBoilCommonalityMultiplier = list.Slider(oilBoilCommonalityMultiplier, 0f, 5f);
-            list.Label("Seepril yield while boiling: " + oilBoilYieldMultiplier.ToString("0.0") + "x");
-            oilBoilYieldMultiplier = list.Slider(oilBoilYieldMultiplier, 1f, 4f);
-            list.Label("How far a flash runs along the haze: " + oilBoilFlashRadius.ToString("0") + " cells");
-            oilBoilFlashRadius = list.Slider(oilBoilFlashRadius, 2f, 20f);
-            list.CheckboxLabeled("A flash at a pool's edge wakes the deep", ref oilBoilWakesDeep,
-                "On: if the fire reaches a cell beside a pool, tentacles rise there (an ordinary emergence, never the "
-              + "Great Emergence). Off: the fire burns and the deep sleeps on.");
-
-            list.GapLine();
-            list.CheckboxLabeled("The ransom of its young", ref broodRansomEnabled,
-                "The small tentacled things kept in prison tanks are the deep's own young. The more of them the world "
-              + "holds (occupied tanks and young-casks on your maps and in your caravans, plus any town that keeps one), "
-              + "the more often tentacles rise and the more often they are snares and lashes; a letter says when the pools "
-              + "grow bolder. Return a young to a Fever Wood pool (the tank's 'Return to the deep', or open a young-cask "
-              + "at the water's edge) and within the hour the deep sets down one great gift from the very bottom. Any "
-              + "other water: it settles in and nothing answers. Off: none of this happens.");
-            list.Label("Boldness per young held: +" + broodBoldnessPerYoung.ToString("0.00")
-                + "  (cap x" + broodBoldnessCap.ToString("0.0") + ")");
-            broodBoldnessPerYoung = list.Slider(broodBoldnessPerYoung, 0f, 0.5f);
-            broodBoldnessCap = list.Slider(broodBoldnessCap, 1f, 5f);
-            list.Label("Chance an exotic trader carries a young-cask: " + broodCaskTraderStockChance.ToString("0.00"));
-            broodCaskTraderStockChance = list.Slider(broodCaskTraderStockChance, 0f, 1f);
-            list.Label("Goodwill a town loses when you free the young from its display tank: " + broodDisplayTankGoodwillLoss);
-            broodDisplayTankGoodwillLoss = Mathf.RoundToInt(list.Slider(broodDisplayTankGoodwillLoss, 0f, 100f));
-            RM_DeepGiftTableDef gifts = DefDatabase<RM_DeepGiftTableDef>.GetNamedSilentFail(RM_DeepGift.TableDefName);
-            if (gifts != null)
+            if (Group(list, "Tentacle bestiary and sinking", RimMandrake.Shared.SettingScope.Now, new[] { "tentacleBestiaryEnabled", "tentacleAmbientMtbHours", "tentacleLimbLingerEnabled", "tentacleLimbLingerHours", "tentacleLiveLimbCap" }))
             {
-                list.Label("Gift weights (x base weight; 0 = never):");
-                foreach (RM_DeepGiftEntry e in gifts.entries)
+                list.CheckboxLabeled("Sekkulaath tentacle bestiary", ref tentacleBestiaryEnabled,
+                    "Six pseudo-species tentacle limbs (feeler, snare, lash, porter, sentinel, bloom) "
+                  + "emerge ambiently at registered mirror pools and can be driven off, severed for a "
+                  + "harvestable body, or — rarely — permanently cleared from a map. Off: no limbs ever "
+                  + "spawn; a map already carrying spawned limbs is unaffected until they next retreat.");
+                list.Label("Ambient sighting frequency (mean hours, lower = more often): "
+                    + tentacleAmbientMtbHours.ToString("0.0"));
+                tentacleAmbientMtbHours = list.Slider(tentacleAmbientMtbHours, 1f, 24f);
+                list.CheckboxLabeled("Limbs sink back on their own", ref tentacleLimbLingerEnabled,
+                    "On: a limb nobody drives off slides back under the water after its linger time, so the "
+                  + "pools breathe: limbs rise, wait and sink. A sentinel sinking lets the crown chorus resume. "
+                  + "Porters keep their own exit. Off: limbs stand until driven off or severed.");
+                list.Label("Linger time before an undisturbed limb sinks (hours): " + tentacleLimbLingerHours.ToString("0"));
+                tentacleLimbLingerHours = list.Slider(tentacleLimbLingerHours, 1f, 72f);
+                list.Label("Most limbs up on one map at once (0 = no cap; the Great Emergence ignores it): " + tentacleLiveLimbCap);
+                tentacleLiveLimbCap = (int)list.Slider(tentacleLiveLimbCap, 0f, 20f);
+                list.GapLine();
+            }
+
+            if (Group(list, "The Great Emergence (rare set-piece)", RimMandrake.Shared.SettingScope.NextPulse, new[] { "tentacleGreatEmergenceEnabled", "tentacleGreatEmergencePoolSizeThreshold", "tentaclePoolsAreClusters", "tentacleGreatEmergencePressureThreshold", "tentacleGreatEmergenceChance", "tentacleGreatEmergenceMinLimbs", "tentacleGreatEmergenceMaxLimbs" }))
+            {
+                list.CheckboxLabeled("The Great Emergence (rare set-piece)", ref tentacleGreatEmergenceEnabled,
+                    "A large pool under real pressure can, rarely, erupt into a distinct and much bigger "
+                  + "attack: several limbs rising together with the eye itself. Driving off or killing the "
+                  + "eye ends the whole attack. There is no protection against this beyond seeing it coming "
+                  + "— no maturity gate, no wealth floor. Off: the eye never spawns on this map at all.");
+                list.Label("Pool must register at least this many connected water cells: " + tentacleGreatEmergencePoolSizeThreshold);
+                tentacleGreatEmergencePoolSizeThreshold = (int)list.Slider(tentacleGreatEmergencePoolSizeThreshold, 4f, 80f);
+                list.CheckboxLabeled("Pool size means one connected pool", ref tentaclePoolsAreClusters,
+                    "On: the threshold above must be met by a single connected pool, and the Great Emergence rises there. "
+                  + "Off: all registered water on the map is counted together, so many small ponds can qualify.");
+                list.Label("Ordinary encounters that must accumulate at a qualifying pool first: " + tentacleGreatEmergencePressureThreshold);
+                tentacleGreatEmergencePressureThreshold = (int)list.Slider(tentacleGreatEmergencePressureThreshold, 0f, 30f);
+                list.Label("Chance per roll, once eligible, that it fires (roughly 1/50 by default): "
+                    + tentacleGreatEmergenceChance.ToString("0.000"));
+                tentacleGreatEmergenceChance = list.Slider(tentacleGreatEmergenceChance, 0f, 0.25f);
+                list.Label("Limbs that rise alongside the eye: " + tentacleGreatEmergenceMinLimbs + " - " + tentacleGreatEmergenceMaxLimbs);
+                tentacleGreatEmergenceMinLimbs = (int)list.Slider(tentacleGreatEmergenceMinLimbs, 1f, 10f);
+                tentacleGreatEmergenceMaxLimbs = (int)list.Slider(tentacleGreatEmergenceMaxLimbs, 1f, 10f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Uranium suppression", RimMandrake.Shared.SettingScope.Now, new[] { "tentacleUraniumSuppressionEnabled", "tentacleUraniumSuppressantAmountPerUse", "tentacleUraniumSuppressionDurationDays", "foulingWithdrawsLimbs" }))
+            {
+                list.CheckboxLabeled("Uranium suppression (free-tier route)", ref tentacleUraniumSuppressionEnabled,
+                    "A colonist can craft a radioactive suppressant charge from vanilla Uranium and use it to "
+                  + "foul a registered pool, driving whatever lives beneath it down for several days — no "
+                  + "hostile encounters and no treasure trickle from that pool while it lasts. Off: the item "
+                  + "and recipe still exist, but using one does nothing.");
+                list.Label("Charges consumed per use: " + tentacleUraniumSuppressantAmountPerUse);
+                tentacleUraniumSuppressantAmountPerUse = (int)list.Slider(tentacleUraniumSuppressantAmountPerUse, 1f, 20f);
+                list.Label("Suppression duration (days): " + tentacleUraniumSuppressionDurationDays.ToString("0.0"));
+                tentacleUraniumSuppressionDurationDays = list.Slider(tentacleUraniumSuppressionDurationDays, 0.5f, 30f);
+                list.CheckboxLabeled("Fouling withdraws limbs already up", ref foulingWithdrawsLimbs,
+                    "On: fouling a pool drives every tentacle already up back under the water, and even a burning "
+                  + "pool edge cannot raise one while the fouling lasts. Off: fouling only stops new limbs rising "
+                  + "on their own; limbs already up stay, and fire can still force one up.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Sekkulaath prison tank", RimMandrake.Shared.SettingScope.Now, new[] { "sekkulaathTankEnabled", "sekkulaathEscapeRiskMultiplier" }))
+            {
+                list.CheckboxLabeled("Sekkulaath prison tank", ref sekkulaathTankEnabled,
+                    "A buildable containment cell that teaches, produces, and can get out. Off: the "
+                  + "tank can still be built, but it never produces, never teaches, and its occupant "
+                  + "never escapes — an inert box, not a working feature.");
+                list.Label("Escape risk multiplier (lower = more escape-prone): "
+                    + sekkulaathEscapeRiskMultiplier.ToString("0.00"));
+                sekkulaathEscapeRiskMultiplier = list.Slider(sekkulaathEscapeRiskMultiplier, 0.25f, 4f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Ant hive dungeons (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "antHiveDungeonEnabled", "antHiveChanceMultiplier", "antHiveRealGeometry", "antHiveFarmChamberEnabled", "antHiveParasiteChamberEnabled" }))
+            {
+                list.CheckboxLabeled("Ant hive dungeons", ref antHiveDungeonEnabled,
+                    "A rare, procedurally-laid-out chain of dug tunnels and rooms, populated with kurreth "
+                  + "workers and a queen in the deepest room. The hive notices you, raises the alarm and "
+                  + "rallies after you (Creature Behaviors' reaction settings govern that). Off: no hive ever "
+                  + "generates on a new map; an already-generated one is unaffected.");
+                list.Label("Hive frequency multiplier (lower = rarer): " + antHiveChanceMultiplier.ToString("0.00"));
+                antHiveChanceMultiplier = list.Slider(antHiveChanceMultiplier, 0f, 3f);
+                list.CheckboxLabeled("Ant hives are really dug (worldgen)", ref antHiveRealGeometry,
+                    "On: a new hive keeps its rooms well clear of the pools, never stacks one room on another, and digs its rooms "
+                  + "and tunnels out of any rock they cross. Off: the old layout, which could paint a hive under solid rock. "
+                  + "Affects new maps only.");
+                list.CheckboxLabeled("Ant hive farm chamber (worldgen)", ref antHiveFarmChamberEnabled,
+                    "The shallowest hive room keeps a herd of thornbugs the kurreth tend and herd back when "
+                  + "they stray: the hive is a farm. Off: new hives carry no herd and an existing herd is no "
+                  + "longer herded.");
+                list.CheckboxLabeled("Ant hive parasite chamber (worldgen)", ref antHiveParasiteChamberEnabled,
+                    "A mid-depth hive room hides a glomvar, a pale thing the kurreth cannot perceive that "
+                  + "eats them one a day, and falls on them in a frenzy while they are busy fighting you. "
+                  + "Off: new hives carry none and an existing one stops hunting the hive.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Ant hive alarm sealing", RimMandrake.Shared.SettingScope.NextPulse, new[] { "antHiveSealingEnabled" }))
+            {
+                list.CheckboxLabeled("Ant hive seals passages", ref antHiveSealingEnabled,
+                    "When the hive raises its alarm it plugs the tunnel behind the intruder with resin "
+                  + "(one tunnel per alarm; the plugs crumble after a few hours or can be broken). Off: "
+                  + "the way out stays open.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Two-front lure: stake and rolls", RimMandrake.Shared.SettingScope.Now, new[] { "twoFrontLureEnabled", "twoFrontLureRaidMtbHours", "twoFrontLureLockOnceTriggered" }))
+            {
+                list.CheckboxLabeled("Two-front lure raids", ref twoFrontLureEnabled,
+                    "A buildable stake for staking a tamed animal or prisoner as living bait. While bait is "
+                  + "staked, the Fever Wood's two raiders (the kurreth swarm, and the skreth brood from the "
+                  + "webbed side of the wood) may converge on it one "
+                  + "after the other, never both at once. Off: the stake and staking still work, but no "
+                  + "raid is ever rolled.");
+                list.Label("Mean hours until a first wave answers a staked lure: " + twoFrontLureRaidMtbHours.ToString("0.0"));
+                twoFrontLureRaidMtbHours = list.Slider(twoFrontLureRaidMtbHours, 1f, 24f);
+                list.CheckboxLabeled("Lock the wager in once a raid is drawn", ref twoFrontLureLockOnceTriggered,
+                    "Off (shipped default): a staked pawn can be released at any time, even after a raid is "
+                  + "already inbound. On: once THIS stake has drawn a raid, 'Release lure' is disabled until "
+                  + "the bait dies, is rescued by the raid's own fallout, or the stake is rebuilt — matching "
+                  + "the design sheet's 'you are hoping the second column shows up' framing more literally.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Two-front lure: the waves", RimMandrake.Shared.SettingScope.NextPulse, new[] { "twoFrontLureSecondWaveChance", "twoFrontLureTrueFronts", "twoFrontLureSecondWaveMinHours", "twoFrontLureSecondWaveMaxHours", "twoFrontLureThreatPointsMultiplier", "twoFrontLureMinThreatPoints" }))
+            {
+                list.Label("Chance a second wave follows the first: " + twoFrontLureSecondWaveChance.ToString("0.00"));
+                twoFrontLureSecondWaveChance = list.Slider(twoFrontLureSecondWaveChance, 0f, 1f);
+                list.CheckboxLabeled("Lure raiders go for the bait from two real fronts", ref twoFrontLureTrueFronts,
+                    "On: each wave first runs at the staked bait, and a second wave enters from the side opposite where the "
+                  + "first actually came in. Off: they assault the colony directly, from edges worked out from the stake.");
+                list.Label("Second-wave delay range (hours): " + twoFrontLureSecondWaveMinHours.ToString("0.0")
+                    + " - " + twoFrontLureSecondWaveMaxHours.ToString("0.0"));
+                twoFrontLureSecondWaveMinHours = list.Slider(twoFrontLureSecondWaveMinHours, 0.5f, 12f);
+                twoFrontLureSecondWaveMaxHours = list.Slider(twoFrontLureSecondWaveMaxHours, 0.5f, 24f);
+                list.Label("Raid strength: max(" + twoFrontLureMinThreatPoints.ToString("0") + ", colony threat points x "
+                    + twoFrontLureThreatPointsMultiplier.ToString("0.00") + ")");
+                twoFrontLureMinThreatPoints = list.Slider(twoFrontLureMinThreatPoints, 20f, 300f);
+                twoFrontLureThreatPointsMultiplier = list.Slider(twoFrontLureThreatPointsMultiplier, 0.1f, 2f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Sap-suckers, silloch and brathek", RimMandrake.Shared.SettingScope.Now, new[] { "sapSuckerMishandleRefusalEnabled", "sillochAmbushEnabled", "brathekBoresWood" }))
+            {
+                list.CheckboxLabeled("Sap-suckers refuse a failed taming attempt", ref sapSuckerMishandleRefusalEnabled,
+                    "On: a failed attempt to tame a vaulm, drommath or ollareth sets off its refusal — the vaulm "
+                  + "seals itself, the drommath swells, the ollareth screams — just as being hurt does. Off: only "
+                  + "being hurt sets it off.");
+                list.CheckboxLabeled("Silloch ambush from the bark", ref sillochAmbushEnabled,
+                    "On: a silloch presses itself against a tree trunk and waits, and strikes any small creature (or "
+                  + "person) that steps right beside it. It never chases: once the victim gets a few steps clear, it lets "
+                  + "go. Off: it wanders like an ordinary animal and never strikes unprovoked.");
+                list.CheckboxLabeled("Brathek bores into living wood", ref brathekBoresWood,
+                    "On: a brathek eats living trees as well as ground cover, so a grove with brathek in it slowly thins. "
+                  + "It never digs through walls, buildings or boughways. Off: it grazes like any other animal.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Kurreth theft letters", RimMandrake.Shared.SettingScope.Now, new[] { "kurrethTheftPerColumn" }))
+            {
+                list.CheckboxLabeled("One theft letter per kurreth column", ref kurrethTheftPerColumn,
+                    "On: each column that carries animals off gets its own letter and raid-back quest, sent once that column "
+                  + "has left the map, naming the edge IT left by. Off: every theft within about ten seconds of the first is "
+                  + "lumped into one letter.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Kurreth raids and raid-back", RimMandrake.Shared.SettingScope.NextPulse, new[] { "antTheftEnabled", "kurrethColumnEnabled", "kurrethLossFinalize", "kurrethColumnDays", "kurrethHiveHoldDays" }))
+            {
+                list.CheckboxLabeled("Kurreth carry animals off alive", ref antTheftEnabled,
+                    "On: a kurreth raid fights as before, but up to a third of the column pins a thornbug (then any "
+                  + "tamed vaulm, ollareth or drommath) down without killing it and carries it off the map alive; once "
+                  + "nothing is left to take, the rest leave. A letter names every animal taken and the way the column "
+                  + "went, and a slime trail leads off the edge there. Off: the kurreth wave is a plain assault.");
+                list.CheckboxLabeled("Stolen animals can be taken back", ref kurrethColumnEnabled,
+                    "On: after a theft the column makes camp a few tiles away with the animals bound alive; a colonist who "
+                  + "reaches one while no kurreth stands guard close by cuts it free. Not reached in time, the column goes "
+                  + "on to its hive: if a hive lies under the map they were taken from, they are carried bound into its "
+                  + "deepest chamber for a while, then lost. Off: a stolen animal is simply gone with the column.");
+                list.CheckboxLabeled("A lost raid-back is lost for good", ref kurrethLossFinalize,
+                    "On: when the raid-back fails, every animal not actually brought back is gone for good in every phase (as in "
+                  + "the hive), and an animal only counts as rescued once it is unbound on a map and out of the kurreth's hands. "
+                  + "Off: the old checks, where an animal still held off-map could count as rescued.");
+                list.Label("Days before the column reaches its hive: " + kurrethColumnDays.ToString("0.0"));
+                kurrethColumnDays = list.Slider(kurrethColumnDays, 1f, 15f);
+                list.Label("Days the animals last bound in the hive: " + kurrethHiveHoldDays.ToString("0.0"));
+                kurrethHiveHoldDays = list.Slider(kurrethHiveHoldDays, 2f, 60f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Oil boil weather", RimMandrake.Shared.SettingScope.NextPulse, new[] { "oilBoilEnabled", "oilBoilMinTempC", "oilBoilCommonalityMultiplier" }))
+            {
+                list.CheckboxLabeled("Oil boil weather", ref oilBoilEnabled,
+                    "On hot, still days the seep oil boils off the ground into a low haze. While it lasts seepril yield "
+                  + "more seep oil, and the haze is fuel: a shot fired from or landing in it, a fire or a burning creature in "
+                  + "it, or a dry-lightning strike flashes fire along the haze, which then burns off. The crown (boughway, "
+                  + "bough-soil, stilt platforms) and roofed ground stay clear. Melee never sparks it. Off: the weather never comes.");
+                list.Label("Only at or above this outdoor temperature: " + oilBoilMinTempC.ToString("0") + " C");
+                oilBoilMinTempC = list.Slider(oilBoilMinTempC, 20f, 60f);
+                list.Label("How often, against the biome's other weather: " + oilBoilCommonalityMultiplier.ToString("0.0") + "x");
+                oilBoilCommonalityMultiplier = list.Slider(oilBoilCommonalityMultiplier, 0f, 5f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Oil boil: yield and flash", RimMandrake.Shared.SettingScope.Now, new[] { "oilBoilYieldMultiplier", "oilBoilFlashRadius", "oilBoilWakesDeep" }))
+            {
+                list.Label("Seepril yield while boiling: " + oilBoilYieldMultiplier.ToString("0.0") + "x");
+                oilBoilYieldMultiplier = list.Slider(oilBoilYieldMultiplier, 1f, 4f);
+                list.Label("How far a flash runs along the haze: " + oilBoilFlashRadius.ToString("0") + " cells");
+                oilBoilFlashRadius = list.Slider(oilBoilFlashRadius, 2f, 20f);
+                list.CheckboxLabeled("A flash at a pool's edge wakes the deep", ref oilBoilWakesDeep,
+                    "On: if the fire reaches a cell beside a pool, tentacles rise there (an ordinary emergence, never the "
+                  + "Great Emergence). Off: the fire burns and the deep sleeps on.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Brood ransom", RimMandrake.Shared.SettingScope.Now, new[] { "broodRansomEnabled", "broodBoldnessPerYoung", "broodBoldnessCap" }))
+            {
+                list.CheckboxLabeled("The ransom of its young", ref broodRansomEnabled,
+                    "The small tentacled things kept in prison tanks are the deep's own young. The more of them the world "
+                  + "holds (occupied tanks and young-casks on your maps and in your caravans, plus any town that keeps one), "
+                  + "the more often tentacles rise and the more often they are snares and lashes; a letter says when the pools "
+                  + "grow bolder. Return a young to a Fever Wood pool (the tank's 'Return to the deep', or open a young-cask "
+                  + "at the water's edge) and within the hour the deep sets down one great gift from the very bottom. Any "
+                  + "other water: it settles in and nothing answers. Off: none of this happens.");
+                list.Label("Boldness per young held: +" + broodBoldnessPerYoung.ToString("0.00")
+                    + "  (cap x" + broodBoldnessCap.ToString("0.0") + ")");
+                broodBoldnessPerYoung = list.Slider(broodBoldnessPerYoung, 0f, 0.5f);
+                broodBoldnessCap = list.Slider(broodBoldnessCap, 1f, 5f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Brood ransom: casks, goodwill and gifts", RimMandrake.Shared.SettingScope.NextPulse, new[] { "broodCaskTraderStockChance", "broodDisplayTankGoodwillLoss", "broodGiftWeightMultipliers" }))
+            {
+                list.Label("Chance an exotic trader carries a young-cask: " + broodCaskTraderStockChance.ToString("0.00"));
+                broodCaskTraderStockChance = list.Slider(broodCaskTraderStockChance, 0f, 1f);
+                list.Label("Goodwill a town loses when you free the young from its display tank: " + broodDisplayTankGoodwillLoss);
+                broodDisplayTankGoodwillLoss = Mathf.RoundToInt(list.Slider(broodDisplayTankGoodwillLoss, 0f, 100f));
+                RM_DeepGiftTableDef gifts = DefDatabase<RM_DeepGiftTableDef>.GetNamedSilentFail(RM_DeepGift.TableDefName);
+                if (gifts != null)
                 {
-                    if (e.thing == null)
+                    list.Label("Gift weights (x base weight; 0 = never):");
+                    foreach (RM_DeepGiftEntry e in gifts.entries)
                     {
-                        continue;
+                        if (e.thing == null)
+                        {
+                            continue;
+                        }
+                        float m = broodGiftWeightMultipliers.TryGetValue(e.thing.defName, out float v) ? v : 1f;
+                        list.Label("  " + e.thing.LabelCap + ": x" + m.ToString("0.0"));
+                        broodGiftWeightMultipliers[e.thing.defName] = list.Slider(m, 0f, 5f);
                     }
-                    float m = broodGiftWeightMultipliers.TryGetValue(e.thing.defName, out float v) ? v : 1f;
-                    list.Label("  " + e.thing.LabelCap + ": x" + m.ToString("0.0"));
-                    broodGiftWeightMultipliers[e.thing.defName] = list.Slider(m, 0f, 5f);
                 }
+                list.GapLine();
             }
 
             viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
+        }
+
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_FeverWoodSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                if (n == "broodGiftWeightMultipliers") { broodGiftWeightMultipliers = new Dictionary<string, float>(); continue; }
+                FieldInfo f = typeof(RM_FeverWoodSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): ambient limb rolls, tank, stake rolls, sap-sucker
+        /// and silloch comps and the yield/flash hooks are read by a tick, comp, job or patch, so [now]; the Great Emergence, the lure
+        /// waves, the kurreth raids and the brood gifts and trader stock are read when the roll, raid or quest fires, so [next pulse];
+        /// the oil boil weather table is rebuilt when the window closes and bites at the next weather change, so [next pulse]; the
+        /// hive settings are read by the map generation step (the farm and parasite switches also by later ticks), so new maps only.</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
         }
     }
 

@@ -92,6 +92,8 @@
     <Compile Include="Kernel\RM_BroodKernel.cs" />
     <Compile Include="Kernel\RM_TankKernel.cs" />
     <Compile Include="Kernel\RM_PoolKernel.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>
