@@ -41,6 +41,8 @@
 
   <ItemGroup>
     <Compile Include="Kernel\RM_NightsideIceKernel.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_NightsideIceMod.cs" />
     <Compile Include="RM_HeatDial.cs" />
     <!-- NIGHTSIDEICE_SHIVVEN_BUILD_1: uses the sand-swim kit in RimMandrake.CreatureBehaviors

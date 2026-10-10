@@ -837,6 +837,13 @@ MODS = {
         "Incidents: stampede, haze fronts and the clan's return": "NextPulse",
         "After the haze: ash pulse and sand-lock": "NextPulse",
     }, ()),
+    "NightsideIce": ("RM_NightsideIceMod.cs", "RM_NightsideIce.csproj", {
+        "Nightside Ice enabled": "Now",
+        "The heat dial": "Now",
+        "The shivven": "Now",
+        "Breach cracks": "Now",
+        "Breach cracks: the first crack's countdown": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
