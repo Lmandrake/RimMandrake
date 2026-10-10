@@ -18,7 +18,7 @@
   <RecipeDef ParentName="CookMealBase">
     <defName>RM_CookPoolFryBasket</defName>
     <label>cook pool-fry basket</label>
-    <description>Cook a simple basket of skarrin and karrek — the stocked farm's daily bread.</description>
+    <description>Cook a simple basket of skarrin and iaala — the stocked farm's daily bread.</description>
     <jobString>Cooking a pool-fry basket.</jobString>
     <workAmount>300</workAmount>
     <workSpeedStat>CookSpeed</workSpeedStat>
@@ -51,11 +51,11 @@
     <displayPriority>1450</displayPriority>
   </RecipeDef>
 
-  <!-- §4.2 Murrin-and-seep-salt broth — the pilgrim's comfort dish. -->
+  <!-- §4.2 Murrin-and-korrim broth — the pilgrim's comfort dish. -->
   <RecipeDef ParentName="CookMealBase">
     <defName>RM_CookMurrinBroth</defName>
-    <label>cook murrin-and-seep-salt broth</label>
-    <description>Simmer murrin thin with a pinch of seep-salt — the taste of the stones.</description>
+    <label>cook murrin-and-korrim broth</label>
+    <description>Simmer murrin thin with a pinch of korrim — the taste of the stones.</description>
     <jobString>Cooking murrin broth.</jobString>
     <workAmount>300</workAmount>
     <workSpeedStat>CookSpeed</workSpeedStat>
@@ -75,7 +75,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RM_RawSalt</li>
+            <li>RM_Korrim</li>
           </thingDefs>
         </filter>
         <count>0.05</count>
@@ -84,7 +84,7 @@
     <fixedIngredientFilter>
       <thingDefs>
         <li>RM_MurrinMeat</li>
-        <li>RM_RawSalt</li>
+        <li>RM_Korrim</li>
       </thingDefs>
     </fixedIngredientFilter>
     <products>
@@ -97,9 +97,9 @@
   <!-- §4.3 Karrek paste — rendered, keeps a season, caravan food. -->
   <RecipeDef ParentName="CookMealBase">
     <defName>RM_RenderKarrekPaste</defName>
-    <label>render karrek paste</label>
-    <description>Render a basketful of karrek at a stove into a dense ration that keeps for a season.</description>
-    <jobString>Rendering karrek paste.</jobString>
+    <label>render iaala paste</label>
+    <description>Render a basketful of iaala at a stove into a dense ration that keeps for a season.</description>
+    <jobString>Rendering iaala paste.</jobString>
     <workAmount>600</workAmount>
     <workSpeedStat>CookSpeed</workSpeedStat>
     <requiredGiverWorkType>Cooking</requiredGiverWorkType>

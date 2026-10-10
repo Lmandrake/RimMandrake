@@ -76,7 +76,7 @@
 
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_KarrekCatch</defName>
-    <label>karrek</label>
+    <label>iaala</label>
     <description>A basket-trapped handful of finger-length armored fish, chitin combs still snapping. Never a line, never bare hands.</description>
     <graphicData>
       <texPath>Things/Item/Fish/RM_KarrekCatch</texPath>

@@ -32,8 +32,8 @@
   <!-- ikkal — floater, common. "dew-cup." -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_Ikkal</defName>
-    <label>ikkal</label>
-    <description>A palm-wide bladder that hangs at the surface with a comb of fringe trailing below it, sieving the dew-smoke out of the water as it falls. At dusk the whole pool is dimpled with them, tilted to the same side like cups set out. It has no fight in it; a child can lift one out. Thin eating, and nobody minds -- pilgrims cook them for the broth, which tastes faintly of the stones.</description>
+    <label>softstone</label>
+    <description>A palm-wide bladder with a comb of fringe trailing below it. At dusk it rises to hang at the surface, sieving the dew-smoke out of the water as it falls, and the whole pool is dimpled with them, tilted to the same side like cups set out. By day it sinks and rests on the pool floor, grey, rounded and dead still, and it is easy to take for a pebble until you close your hand on it and it gives like wet bread: hence softstone. It has no fight in it; a child can lift one out. Thin eating, and nobody minds: pilgrims cook them for the broth, which tastes faintly of the stones.</description>
     <graphicData>
       <texPath>Things/Item/Fish/RM_Ikkal</texPath>
       <color>(210, 225, 230)</color>
@@ -77,7 +77,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_Duul</defName>
     <label>duul</label>
-    <description>A slow grey sock of a thing that lies on the pool floor and eats what settles -- silt, dung, dead dew-smoke, the ash blown in from the desert. A pool with duul in it stays clear; a pool without them clouds in a season. Every oasis keeper knows the count. It is edible in the sense that most things are.</description>
+    <description>A slow grey sock of a thing, as long as a forearm, that lies on the pool floor and eats whatever settles: silt, dung, dead dew-smoke, the ash blown in from the desert. It moves so little that weed takes root on its back. A pool with duul in it stays clear and a pool without them clouds over in a single season, so every oasis keeper knows the count in his water the way a herder knows his flock, and nobody takes a duul for the pot while the water is still murky. The flesh is pale, soft and tastes of mud; it is edible in the sense that most things are.</description>
     <graphicData>
       <texPath>Things/Item/Fish/RM_Duul</texPath>
       <color>(140, 140, 135)</color>

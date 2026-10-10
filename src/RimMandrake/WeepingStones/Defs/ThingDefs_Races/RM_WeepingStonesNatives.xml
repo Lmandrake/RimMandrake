@@ -444,7 +444,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Tirbak</defName>
     <label>tirbak</label>
-    <description>A placid colossus, round-backed, with a row of dorsal rain-fins like a ship's ventilation cowls. It drinks once per wind-cycle and carries it for days, fins fanned to the wind as it walks — the caravan mount of the oasis string, and the beast the desert roads were beaded for. It replaces the muffalo/dromedary/elephant pack slot a donor mod once filled here.</description>
+    <description>A placid colossus, round-backed, with a row of dorsal rain-fins like a ship's ventilation cowls. The fins are wind intakes: flexible, forever turning into the breeze, they drain the moisture out of any dampness the air carries, so a tirbak drinks from the wind as much as from the pools and carries what it gathers for days. In a strong gust the intakes moan, a low howl that rolls across the stones long before the beast itself comes into sight, and oasis folk know a caravan is close by the sound alone. Patient under a load and slow to spook, it is the pack beast of the oasis string, and the desert roads were beaded to its stride.</description>
     <statBases>
       <MoveSpeed>2.2</MoveSpeed>
       <MarketValue>900</MarketValue>
@@ -568,8 +568,8 @@
   <!-- ══════════════════════ RM_Burrak — the well-digger (elder = burradar, same def) ══════════════════════ -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Burrak</defName>
-    <label>burrak</label>
-    <description>A bear-sized wallower that digs catch-basins that outlive it — abandoned burrak digs are how new micro-oases start. A working oasis tolerates its one huge elder, worn claw-combs and all, the way a town tolerates its engineer; in fiction the biggest of them earns the name burradar, but it is the same animal grown vast, not a second kind.</description>
+    <label>burra burra</label>
+    <description>A bear-sized wallower that digs catch-basins that outlive it — abandoned burra burra digs are how new micro-oases start. A working oasis tolerates its one huge elder, worn claw-combs and all, the way a town tolerates its engineer. The name is the sound of it at work, a doubled grunt with every heave of wet earth; the very biggest are only the same animal grown vast, not a second kind.</description>
     <statBases>
       <MoveSpeed>1.8</MoveSpeed>
       <MarketValue>260</MarketValue>
@@ -648,7 +648,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Burrak</defName>
-    <label>burrak</label>
+    <label>burra burra</label>
     <race>RM_Burrak</race>
     <combatPower>70</combatPower>
     <ecoSystemWeight>0.6</ecoSystemWeight>

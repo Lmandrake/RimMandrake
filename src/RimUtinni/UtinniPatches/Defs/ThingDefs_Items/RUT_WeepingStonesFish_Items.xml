@@ -33,7 +33,7 @@
   <!-- ikkal — floater, common. "dew-cup." -->
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RUT_Ikkal</defName>
-    <label>ikkal</label>
+    <label>softstone</label>
     <description>A palm-wide bladder that hangs at the surface with a comb of fringe trailing below it, sieving the dew-smoke out of the water as it falls. At wind-hour the whole pool is dimpled with them, tilted to the same side like cups set out. It has no fight in it; a child can lift one out. Thin eating, and nobody minds -- pilgrims cook them for the broth, which tastes faintly of the stones.</description>
     <graphicData>
       <texPath>Things/Item/Fish/RUT_Ikkal</texPath>

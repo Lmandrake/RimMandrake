@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!--
+    Odyssey's Plant_Reeds, cast inline on RM_WeepingStones, drawn with our own art: owner's pick (b)
+    (render gapbs_Plant_Reeds_v1) on the Weeping Stones art sheet 2026-10-10, note "Two more variants,
+    more realistic." Our sprites live at Things/Plant/RM_Reeds/ (Graphic_Random: the pick is RM_Reeds_A,
+    the two variants are queued in artpipe to land as RM_Reeds_B/_C). The vanilla folder is left alone —
+    Graphic_Random would otherwise mix the vanilla reeds into ours.
+  -->
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef[defName="Plant_Reeds"]/graphicData/texPath</xpath>
+    <value><texPath>Things/Plant/RM_Reeds</texPath></value>
+  </Operation>
+</Patch>

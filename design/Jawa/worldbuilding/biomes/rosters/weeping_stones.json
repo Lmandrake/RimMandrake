@@ -31,11 +31,11 @@
       "note": "predator special MEASURED — margin ring per §10 (hunts the approaches, never the pool)"
     },
     {
-      "def": "ColossusToad",
+      "def": "RM_Colossia",
       "commonality": 0.4,
-      "action": "keep",
+      "action": "invent",
       "band": "medium-resident",
-      "law": "§10 obvious keep; pool-margin amphibian body at reliable standing water (§4); slow (spd 3.2 MEASURED)"
+      "law": "§10 pool-margin amphibian body at reliable standing water (§4); slow (spd 3.2). Was vanilla ColossusToad; art sheet 2026-10-10 (owner): \"Redo more alien, rename Colossia, regenerate description, based on the current (b) but extended.\" — ported to our own RM_Colossia"
     },
     {
       "def": "Ollopom",
@@ -132,7 +132,7 @@
       "commonality": 0.12,
       "action": "invent",
       "band": "large-resident",
-      "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: well-digger; RULED one def (card) — the burradar elder is a role, not a second def",
+      "law": "WEEPING_STONES_DESIGN_SITTING_1 ruling 2026-09-24: well-digger; RULED one def (card) — the elder is a role, not a second def. Label burra burra (art sheet 2026-10-10, owner: \"Rename to Burra Burra\"); defName unchanged",
       "note": "detail row in weeping_stones_fauna_roster_2026-09-24.md"
     },
     {
@@ -457,7 +457,7 @@
       "from_sheet": "weeping_stones §10"
     },
     {
-      "name": "burrak / burradar (well-digger, claw-combs; elder form)",
+      "name": "burra burra (well-digger, claw-combs; elder form)",
       "kind": "creature",
       "mechanic_load": "C#: dig-catch-basin terrain edits (optional v2)",
       "from_sheet": "weeping_stones §10"

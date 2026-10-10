@@ -77,8 +77,8 @@
 
   <ThingDef ParentName="OrganicProductBase">
     <defName>RM_KarrekBreedingStock</defName>
-    <label>karrek breeding stock</label>
-    <description>A basket-trapped swarm of live karrek, carried home in a wet skin. Release into a stocked pool pen — bandage before you do.</description>
+    <label>iaala breeding stock</label>
+    <description>A basket-trapped swarm of live iaala, carried home in a wet skin. Release into a stocked pool pen — bandage before you do.</description>
     <graphicData>
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
