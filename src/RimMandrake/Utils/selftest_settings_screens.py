@@ -137,6 +137,15 @@ MODS = {
         "The titanoslime": "Now",
         "Titanoslime rarity (WORLDGEN-AFFECTING)": "NewMapsOnly",
     }, ()),
+    "TheRot": ("RM_TheRotMod.cs", "RM_TheRot.csproj", {
+        "The Rot enabled": "Now",
+        "Sheen, rot, heat and spores": "Now",
+        "Wild spawns and kin bonds (restart)": "NextGameStart",
+        "Giant: the hwelgrue": "Now",
+        "Ship: the swallowed navigator": "Now",
+        "Technology: the gut-mother and the unjoining draught": "Now",
+        "Cross-biome opt-in": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
@@ -212,7 +221,7 @@ def run_mod(name, cs_name, pj_name, expected, extra):
     bad += bool(e)
     g0, g1 = groups[0], groups[1]
     last0 = g0[2][-1]
-    scope_swap = next(((t, s) for t, s in expected.items() if s != "Now"), None)
+    scope_swap = next(((t, s) for t, s in expected.items() if s not in ("Now", "NextGameStart")), None)
     plants = [
         ("a name dropped from its group array", lambda c, p: (c.replace(f', "{last0}" }}', ' }', 1) if f', "{last0}" }}' in c else c.replace(f'"{last0}" }}', ' }', 1), p), "no group"),
         ("a setting in two groups", lambda c, p: (c.replace(f'"{g1[0]}", RimMandrake.Shared.SettingScope.{g1[1]}, new[] {{ ', f'"{g1[0]}", RimMandrake.Shared.SettingScope.{g1[1]}, new[] {{ "{g0[2][0]}", ', 1), p), "two groups"),

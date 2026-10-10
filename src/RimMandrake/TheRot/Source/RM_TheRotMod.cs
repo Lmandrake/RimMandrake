@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimMandrake.EnvironmentalHazards;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -82,9 +83,9 @@ namespace RimMandrake.TheRot
         public static string crossBiomeBiomeList = "";
         public static float crossBiomeCoverage = 1f;
 
-        private string biomeListBuffer;
-        private Vector2 scrollPos;
-        private float scrollHeight = 1400f;
+        private static string biomeListBuffer;
+        private static Vector2 scrollPos;
+        private static float scrollHeight = 1400f;
 
         public override void ExposeData()
         {
@@ -166,6 +167,60 @@ namespace RimMandrake.TheRot
             return result;
         }
 
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_TheRotSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_TheRotSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+                if (n == "crossBiomeBiomeList") biomeListBuffer = null;
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the wild-spawn rows, health-sharing comps and
+        /// hwelgrue roster entry are edited once at startup ([next game start], a label local to this screen); everything else, including the
+        /// cross-biome opt-in (RM_KitFronts asks on every tick and extension lookup), is read live ([now]). Nothing here is read at map generation.</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
         public void DoWindowContents(Rect inRect)
         {
             if (biomeListBuffer == null)
@@ -177,124 +232,145 @@ namespace RimMandrake.TheRot
             Widgets.BeginScrollView(inRect, ref scrollPos, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.CheckboxLabeled("The Rot enabled", ref theRotEnabled,
-                "Master switch. Off: the biome and its defs still load (nothing here is worldgen-affecting "
-              + "except the cross-biome section below), but every per-feature toggle is ignored as off.");
-            list.GapLine();
-
-            list.CheckboxLabeled("Sheen exposure ladder", ref sheenExposure,
-                "The Sheen weather rotation bootstraps a spore-coating hediff on unprotected pawns.");
-            list.CheckboxLabeled("Accelerated rot/decay", ref acceleratedRot,
-                "Items and corpses decay faster on this biome's living ground.");
-            list.Label("  Rate: " + acceleratedRotRate.ToString("0.00") + "x");
-            acceleratedRotRate = list.Slider(acceleratedRotRate, 0.25f, 3f);
-            list.CheckboxLabeled("Living produce heat", ref livingProduceHeat,
-                "Live food preparations radiate warmth proportional to stored mass.");
-            list.Label("  Heat per unit: " + livingProduceHeatPerUnit.ToString("0.00") + "x");
-            livingProduceHeatPerUnit = list.Slider(livingProduceHeatPerUnit, 0.25f, 3f);
-            list.CheckboxLabeled("Warm living ground", ref warmMat,
-                "The biome's natural terrain and living mycelium floors radiate ambient warmth.");
-            list.Label("  Warmth: " + warmMatWarmth.ToString("0.00") + "x");
-            warmMatWarmth = list.Slider(warmMatWarmth, 0.25f, 3f);
-            list.CheckboxLabeled("Live preparations", ref livePreparations,
-                "Food/ingredient preparations stay biologically \"alive\" until used.");
-            list.CheckboxLabeled("  Strict viability", ref livePreparationsStrictViability,
-                "Strict: viability lapses on any mishandling. Lenient: more forgiving window.");
-            list.CheckboxLabeled("Health sharing (restart to apply)", ref healthSharing,
-                "Chittik, gromma and rennok split wounds with kin in their grove; mullgoth and durrok heal faster among kin. "
-              + "Needs Alpha Animals. Applies on the next launch.");
-            list.CheckboxLabeled("Guardian groves (new maps, restart to apply)", ref guardianGroves,
-                "Defended tea-source mushrooms wild-spawn with the false-fruit lure ring. WORLDGEN-AFFECTING: "
-              + "applies to maps generated after the next launch.");
-            list.CheckboxLabeled("Pale tree spawn (new maps, restart to apply)", ref paleTreeSpawn,
-                "The rare pale tree (a door-ajar oddity) wild-spawns. Royalty-gated regardless of this toggle. "
-              + "WORLDGEN-AFFECTING: applies to maps generated after the next launch.");
-            list.Label("Spore cloud incident weight: " + sporeCloudIncidentWeight.ToString("0.00") + "x");
-            sporeCloudIncidentWeight = list.Slider(sporeCloudIncidentWeight, 0f, 3f);
-            list.CheckboxLabeled("Spore allergy", ref sporeAllergy,
-                "The Sheen's spores cause the spore-allergy disease in people and animals (an incident). Off: never fires on this biome.");
-            list.Label("  Incidence: " + sporeAllergyIncidence.ToString("0.00") + "x");
-            sporeAllergyIncidence = list.Slider(sporeAllergyIncidence, 0.25f, 3f);
-            list.GapLine();
-
-            list.Label("Giant: the hwelgrue");
-            list.CheckboxLabeled("Hwelgrue (wild spawn: new maps, restart to apply)", ref hwelgrue,
-                "The gut that walks: a huge slow maggot that eats whatever lies on open ground and passes the metal in Sheen "
-              + "castings. Off: it stops grazing and digesting, it leaves the Rot's wild roster on the next launch "
-              + "(WORLDGEN-AFFECTING), and any wild one that appears is removed.");
-            list.Label("  Days between castings: " + hwelgrueCastingDays.ToString("0.0"));
-            hwelgrueCastingDays = list.Slider(hwelgrueCastingDays, 0.5f, 10f);
-            list.Label("  Rot speed-up where it rests: " + hwelgrueRotMultiplier.ToString("0.0") + "x");
-            hwelgrueRotMultiplier = list.Slider(hwelgrueRotMultiplier, 1f, 10f);
-            list.Label("  Most on one map: " + hwelgrueMapCap);
-            hwelgrueMapCap = Mathf.RoundToInt(list.Slider(hwelgrueMapCap, 1f, 5f));
-            list.CheckboxLabeled("  Swallows the downed (Still Alive In There)", ref hwelgrueSwallow,
-                "A hwelgrue takes a downed pawn lying in the open, any faction, and digests it slowly enough to rescue. "
-              + "Knocking from inside says someone is still alive. Off: it never swallows anyone.");
-            list.Label("  Hours to digest, per unit of body size: " + swallowHoursPerBodySize.ToString("0"));
-            swallowHoursPerBodySize = list.Slider(swallowHoursPerBodySize, 3f, 72f);
-            list.Label("  Damage that cuts its belly open: " + swallowBellyCutDamage.ToString("0"));
-            swallowBellyCutDamage = list.Slider(swallowBellyCutDamage, 25f, 600f);
-            list.Label("  Chance a newly met hwelgrue already holds someone: " + (swallowStrangerChance * 100f).ToString("0") + "%");
-            swallowStrangerChance = list.Slider(swallowStrangerChance, 0f, 1f);
-            list.Label("  Knocking loudness: " + swallowLoudness.ToString("0.00") + "x");
-            swallowLoudness = list.Slider(swallowLoudness, 0f, 2f);
-            list.GapLine();
-
-            list.Label("Ship: the swallowed navigator");
-            list.CheckboxLabeled("One hwelgrue per world carries an old drive core", ref navigatorCore,
-                "It pings your gravship while it lives; cut out, the core is a facility that multiplies the grav engine's "
-              + "total range. Off: no hwelgrue carries it, no pings, and an installed core adds nothing.");
-            list.Label("  Hours between pings: " + navigatorPingHours.ToString("0"));
-            navigatorPingHours = list.Slider(navigatorPingHours, 1f, 48f);
-            list.Label("  Range bonus at full integrity: +" + (navigatorRangeBonus * 100f).ToString("0") + "% of total range");
-            navigatorRangeBonus = list.Slider(navigatorRangeBonus, 0f, 1f);
-            list.Label("  Core integrity lost per point of ship-weapon damage: " + navigatorShipDamageFactor.ToString("0.00"));
-            navigatorShipDamageFactor = list.Slider(navigatorShipDamageFactor, 0f, 2f);
-            list.Label("  Integrity below which the core comes out ruined: " + navigatorRuinThreshold.ToString("0"));
-            navigatorRuinThreshold = list.Slider(navigatorRuinThreshold, 0f, 90f);
-            list.Label("  Pings per entry of the dead ship's log: " + navigatorPingsPerEntry);
-            navigatorPingsPerEntry = Mathf.RoundToInt(list.Slider(navigatorPingsPerEntry, 1f, 12f));
-            list.GapLine();
-
-            list.Label("Technology: the gut-mother");
-            list.CheckboxLabeled("Gut-mother vat", ref gutMother,
-                "A dead hwelgrue leaves its digesting sac; studied and researched, it grows a vat anywhere that digests "
-              + "corpses and gives back their implants and gear. Off: no sac drops, vats take no bodies and digest nothing.");
-            list.Label("  Hours to digest a body: " + gutMotherDigestHours.ToString("0"));
-            gutMotherDigestHours = list.Slider(gutMotherDigestHours, 1f, 96f);
-            list.Label("  Chance each implant comes back: " + (gutMotherRecoveryChance * 100f).ToString("0") + "%");
-            gutMotherRecoveryChance = list.Slider(gutMotherRecoveryChance, 0f, 1f);
-            list.Label("  Starter culture market value: " + gutMotherStarterValue.ToString("0"));
-            gutMotherStarterValue = list.Slider(gutMotherStarterValue, 50f, 3000f);
-            list.CheckboxLabeled("Unjoining draught", ref unjoiningDraught,
-                "A brutal purge brewed at a drug lab: drives out parasites, Rot symbionts and any hidden metalhorror. "
-              + "Off: drinking it does nothing and new bills for it are not offered.");
-            list.CheckboxLabeled("  Leaves a scar on a liver or kidney", ref unjoiningOrganDamage,
-                "Off: the purge still makes the patient sick, but no permanent organ scar.");
-            list.Label("  Purge sickness length: " + unjoiningPurgeHours.ToString("0") + " hours");
-            unjoiningPurgeHours = list.Slider(unjoiningPurgeHours, 1f, 72f);
-            list.GapLine();
-
-            list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");
-            list.Label("Lets Rot mechanics generate on a NON-Rot biome's map, without adding the whole "
-              + "biome. Applies once, right after a map generates; an existing map is never retroactively "
-              + "changed.");
-            list.CheckboxLabeled("Enable outside The Rot biome", ref crossBiomeEnabled,
-                "Master switch for the section below.");
-            if (crossBiomeEnabled)
+            if (Group(list, "The Rot enabled", RimMandrake.Shared.SettingScope.Now, new[] { "theRotEnabled" }))
             {
-                list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere,
-                    "Apply to any non-Rot biome. Off: only the biomes named below.");
-                if (!crossBiomeEverywhere)
+    list.CheckboxLabeled("The Rot enabled", ref theRotEnabled,
+                    "Master switch. Off: the biome and its defs still load (nothing here is worldgen-affecting "
+                  + "except the cross-biome section below), but every per-feature toggle is ignored as off.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Sheen, rot, heat and spores", RimMandrake.Shared.SettingScope.Now, new[] { "sheenExposure", "acceleratedRot", "acceleratedRotRate", "livingProduceHeat", "livingProduceHeatPerUnit", "warmMat", "warmMatWarmth", "livePreparations", "livePreparationsStrictViability", "sporeCloudIncidentWeight", "sporeAllergy", "sporeAllergyIncidence" }))
+            {
+                list.CheckboxLabeled("Sheen exposure ladder", ref sheenExposure,
+                    "The Sheen weather rotation bootstraps a spore-coating hediff on unprotected pawns.");
+                list.CheckboxLabeled("Accelerated rot/decay", ref acceleratedRot,
+                    "Items and corpses decay faster on this biome's living ground.");
+                list.Label("  Rate: " + acceleratedRotRate.ToString("0.00") + "x");
+                acceleratedRotRate = list.Slider(acceleratedRotRate, 0.25f, 3f);
+                list.CheckboxLabeled("Living produce heat", ref livingProduceHeat,
+                    "Live food preparations radiate warmth proportional to stored mass.");
+                list.Label("  Heat per unit: " + livingProduceHeatPerUnit.ToString("0.00") + "x");
+                livingProduceHeatPerUnit = list.Slider(livingProduceHeatPerUnit, 0.25f, 3f);
+                list.CheckboxLabeled("Warm living ground", ref warmMat,
+                    "The biome's natural terrain and living mycelium floors radiate ambient warmth.");
+                list.Label("  Warmth: " + warmMatWarmth.ToString("0.00") + "x");
+                warmMatWarmth = list.Slider(warmMatWarmth, 0.25f, 3f);
+                list.CheckboxLabeled("Live preparations", ref livePreparations,
+                    "Food/ingredient preparations stay biologically \"alive\" until used.");
+                list.CheckboxLabeled("  Strict viability", ref livePreparationsStrictViability,
+                    "Strict: viability lapses on any mishandling. Lenient: more forgiving window.");
+                list.Label("Spore cloud incident weight: " + sporeCloudIncidentWeight.ToString("0.00") + "x");
+                sporeCloudIncidentWeight = list.Slider(sporeCloudIncidentWeight, 0f, 3f);
+                list.CheckboxLabeled("Spore allergy", ref sporeAllergy,
+                    "The Sheen's spores cause the spore-allergy disease in people and animals (an incident). Off: never fires on this biome.");
+                list.Label("  Incidence: " + sporeAllergyIncidence.ToString("0.00") + "x");
+                sporeAllergyIncidence = list.Slider(sporeAllergyIncidence, 0.25f, 3f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Wild spawns and kin bonds (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "healthSharing", "guardianGroves", "paleTreeSpawn", "hwelgrue" }, "[next game start]"))
+            {
+                list.CheckboxLabeled("Health sharing (restart to apply)", ref healthSharing,
+                    "Chittik, gromma and rennok split wounds with kin in their grove; mullgoth and durrok heal faster among kin. "
+                  + "Needs Alpha Animals. Applies on the next launch.");
+                list.CheckboxLabeled("Guardian groves (new maps, restart to apply)", ref guardianGroves,
+                    "Defended tea-source mushrooms wild-spawn with the false-fruit lure ring. WORLDGEN-AFFECTING: "
+                  + "applies to maps generated after the next launch.");
+                list.CheckboxLabeled("Pale tree spawn (new maps, restart to apply)", ref paleTreeSpawn,
+                    "The rare pale tree (a door-ajar oddity) wild-spawns. Royalty-gated regardless of this toggle. "
+                  + "WORLDGEN-AFFECTING: applies to maps generated after the next launch.");
+                list.CheckboxLabeled("Hwelgrue (wild spawn: new maps, restart to apply)", ref hwelgrue,
+                    "The gut that walks: a huge slow maggot that eats whatever lies on open ground and passes the metal in Sheen "
+                  + "castings. Off: it stops grazing and digesting, it leaves the Rot's wild roster on the next launch "
+                  + "(WORLDGEN-AFFECTING), and any wild one that appears is removed.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Giant: the hwelgrue", RimMandrake.Shared.SettingScope.Now, new[] { "hwelgrueCastingDays", "hwelgrueRotMultiplier", "hwelgrueMapCap", "hwelgrueSwallow", "swallowHoursPerBodySize", "swallowBellyCutDamage", "swallowStrangerChance", "swallowLoudness" }))
+            {
+                list.Label("  Days between castings: " + hwelgrueCastingDays.ToString("0.0"));
+                hwelgrueCastingDays = list.Slider(hwelgrueCastingDays, 0.5f, 10f);
+                list.Label("  Rot speed-up where it rests: " + hwelgrueRotMultiplier.ToString("0.0") + "x");
+                hwelgrueRotMultiplier = list.Slider(hwelgrueRotMultiplier, 1f, 10f);
+                list.Label("  Most on one map: " + hwelgrueMapCap);
+                hwelgrueMapCap = Mathf.RoundToInt(list.Slider(hwelgrueMapCap, 1f, 5f));
+                list.CheckboxLabeled("  Swallows the downed (Still Alive In There)", ref hwelgrueSwallow,
+                    "A hwelgrue takes a downed pawn lying in the open, any faction, and digests it slowly enough to rescue. "
+                  + "Knocking from inside says someone is still alive. Off: it never swallows anyone.");
+                list.Label("  Hours to digest, per unit of body size: " + swallowHoursPerBodySize.ToString("0"));
+                swallowHoursPerBodySize = list.Slider(swallowHoursPerBodySize, 3f, 72f);
+                list.Label("  Damage that cuts its belly open: " + swallowBellyCutDamage.ToString("0"));
+                swallowBellyCutDamage = list.Slider(swallowBellyCutDamage, 25f, 600f);
+                list.Label("  Chance a newly met hwelgrue already holds someone: " + (swallowStrangerChance * 100f).ToString("0") + "%");
+                swallowStrangerChance = list.Slider(swallowStrangerChance, 0f, 1f);
+                list.Label("  Knocking loudness: " + swallowLoudness.ToString("0.00") + "x");
+                swallowLoudness = list.Slider(swallowLoudness, 0f, 2f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Ship: the swallowed navigator", RimMandrake.Shared.SettingScope.Now, new[] { "navigatorCore", "navigatorPingHours", "navigatorRangeBonus", "navigatorShipDamageFactor", "navigatorRuinThreshold", "navigatorPingsPerEntry" }))
+            {
+                list.CheckboxLabeled("One hwelgrue per world carries an old drive core", ref navigatorCore,
+                    "It pings your gravship while it lives; cut out, the core is a facility that multiplies the grav engine's "
+                  + "total range. Off: no hwelgrue carries it, no pings, and an installed core adds nothing.");
+                list.Label("  Hours between pings: " + navigatorPingHours.ToString("0"));
+                navigatorPingHours = list.Slider(navigatorPingHours, 1f, 48f);
+                list.Label("  Range bonus at full integrity: +" + (navigatorRangeBonus * 100f).ToString("0") + "% of total range");
+                navigatorRangeBonus = list.Slider(navigatorRangeBonus, 0f, 1f);
+                list.Label("  Core integrity lost per point of ship-weapon damage: " + navigatorShipDamageFactor.ToString("0.00"));
+                navigatorShipDamageFactor = list.Slider(navigatorShipDamageFactor, 0f, 2f);
+                list.Label("  Integrity below which the core comes out ruined: " + navigatorRuinThreshold.ToString("0"));
+                navigatorRuinThreshold = list.Slider(navigatorRuinThreshold, 0f, 90f);
+                list.Label("  Pings per entry of the dead ship's log: " + navigatorPingsPerEntry);
+                navigatorPingsPerEntry = Mathf.RoundToInt(list.Slider(navigatorPingsPerEntry, 1f, 12f));
+                list.GapLine();
+            }
+
+            if (Group(list, "Technology: the gut-mother and the unjoining draught", RimMandrake.Shared.SettingScope.Now, new[] { "gutMother", "gutMotherDigestHours", "gutMotherRecoveryChance", "gutMotherStarterValue", "unjoiningDraught", "unjoiningOrganDamage", "unjoiningPurgeHours" }))
+            {
+                list.CheckboxLabeled("Gut-mother vat", ref gutMother,
+                    "A dead hwelgrue leaves its digesting sac; studied and researched, it grows a vat anywhere that digests "
+                  + "corpses and gives back their implants and gear. Off: no sac drops, vats take no bodies and digest nothing.");
+                list.Label("  Hours to digest a body: " + gutMotherDigestHours.ToString("0"));
+                gutMotherDigestHours = list.Slider(gutMotherDigestHours, 1f, 96f);
+                list.Label("  Chance each implant comes back: " + (gutMotherRecoveryChance * 100f).ToString("0") + "%");
+                gutMotherRecoveryChance = list.Slider(gutMotherRecoveryChance, 0f, 1f);
+                list.Label("  Starter culture market value: " + gutMotherStarterValue.ToString("0"));
+                gutMotherStarterValue = list.Slider(gutMotherStarterValue, 50f, 3000f);
+                list.CheckboxLabeled("Unjoining draught", ref unjoiningDraught,
+                    "A brutal purge brewed at a drug lab: drives out parasites, Rot symbionts and any hidden metalhorror. "
+                  + "Off: drinking it does nothing and new bills for it are not offered.");
+                list.CheckboxLabeled("  Leaves a scar on a liver or kidney", ref unjoiningOrganDamage,
+                    "Off: the purge still makes the patient sick, but no permanent organ scar.");
+                list.Label("  Purge sickness length: " + unjoiningPurgeHours.ToString("0") + " hours");
+                unjoiningPurgeHours = list.Slider(unjoiningPurgeHours, 1f, 72f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Cross-biome opt-in", RimMandrake.Shared.SettingScope.Now, new[] { "crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeBiomeList", "crossBiomeCoverage" }))
+            {
+                list.Label("Lets Rot mechanics generate on a NON-Rot biome's map, without adding the whole "
+                  + "biome. Read live "
+                  + "by the shared Rot mechanics, so a change applies to maps already running.");
+                list.CheckboxLabeled("Enable outside The Rot biome", ref crossBiomeEnabled,
+                    "Master switch for the section below.");
+                if (crossBiomeEnabled)
                 {
-                    list.Label("  Biome defNames, comma-separated (e.g. TropicalRainforest, AridShrubland):");
-                    biomeListBuffer = list.TextEntry(biomeListBuffer);
-                    crossBiomeBiomeList = biomeListBuffer;
+                    list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere,
+                        "Apply to any non-Rot biome. Off: only the biomes named below.");
+                    if (!crossBiomeEverywhere)
+                    {
+                        list.Label("  Biome defNames, comma-separated (e.g. TropicalRainforest, AridShrubland):");
+                        biomeListBuffer = list.TextEntry(biomeListBuffer);
+                        crossBiomeBiomeList = biomeListBuffer;
+                    }
+                    list.Label("  Intensity on those maps: " + crossBiomeCoverage.ToStringPercent());
+                    crossBiomeCoverage = list.Slider(crossBiomeCoverage, 0f, 1f);
                 }
-                list.Label("  Intensity on those maps: " + (crossBiomeCoverage * 100f).ToString("0") + "%");
-                crossBiomeCoverage = list.Slider(crossBiomeCoverage, 0f, 1f);
+                list.GapLine();
             }
 
             list.End();
