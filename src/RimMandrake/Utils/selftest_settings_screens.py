@@ -263,6 +263,7 @@ MODS = {
         "Cask bay and core dose": "Now",
         "Sealed corpses on new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",
     }, ()),
+
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)

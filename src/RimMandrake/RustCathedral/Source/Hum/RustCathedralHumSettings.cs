@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -125,75 +127,155 @@ namespace RimMandrake.RustCathedral.Hum
 			RimMandrake.Shared.PatchApplier.AfterExpose();
 		}
 
-		public void DoWindowContents(Rect inRect)
-		{
-			Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-			list.Begin(inRect);
-			RimMandrake.Shared.PatchApplier.DrawNotice(list);
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
 
-			list.Label("Live play -- applies to every map immediately, nothing here affects worldgen.");
-			list.CheckboxLabeled("Hum-mood system", ref humMechanicEnabled,
-				"Off: the Rust Cathedral's attitude tracking, layered hum, and goodwill coupling all stop. Nothing plays, nothing drains.");
-			list.CheckboxLabeled("Droid commentary", ref commentaryEnabled,
-				"Off: no messages fire on band changes, even with a droid on the map. The hum and goodwill coupling still run.");
-			list.CheckboxLabeled("Sustained sacrilege lowers the Cathedral's standing", ref goodwillDrainEnabled,
-				"Off: the worst band still sounds and displays, but never lowers the Cathedral's standing on its own. Catches and drilling still cost standing.");
-			list.Label("Irritation decay speed: " + irritationDecayRateMultiplier.ToString("0.00") + "x (higher = forgets faster)");
-			irritationDecayRateMultiplier = list.Slider(irritationDecayRateMultiplier, 0.25f, 4f);
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RustCathedralHumSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
 
-			list.GapLine();
-			list.Label("Living bolts");
-			list.CheckboxLabeled("Bolts dance and freeze", ref boltDanceEnabled,
-				"Off: living bolts wander like ordinary small mechanoids and never form figures or stop dead. Nothing else about them changes.");
-			list.CheckboxLabeled("Bolts shed curiosities", ref boltShedEnabled,
-				"Off: living bolts stop leaving shed curiosities on the ground. Curiosities already dropped are unaffected.");
-			list.CheckboxLabeled("The Cathedral minds what you do to its bolts", ref boltWatchedPricingEnabled,
-				"Off: taking a shed curiosity or killing a living bolt stops feeding the Cathedral's mood. The hum still runs on everything else.");
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RustCathedralHumSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
 
-			list.GapLine();
-			list.Label("The canals and the deep");
-			list.CheckboxLabeled("The Cathedral minds what you take from its canals", ref fishingPricingEnabled,
-				"Off: fishing the coolant canals stops feeding the Cathedral's mood. The eels are still there, still catchable and still worth selling, and the occasional nasty catch still happens -- nothing about the water itself changes.");
-			list.CheckboxLabeled("Drilling the deep metal is answered", ref drillResponseEnabled,
-				"Off: a deep drill on the Rust Cathedral is treated like a deep drill anywhere else, and ordinary deep-drill infestations can occur there again instead.");
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1400f;
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string> { "unused" };
 
-			list.GapLine();
-			list.Label("Under the plate");
-			list.CheckboxLabeled("Something turns over under the plate", ref lineCycleEnabled,
-				"Off: the slow roll under the deck plate never comes, and nothing on the plateau stops for it.");
-			list.Label("It comes roughly every " + lineCycleMtbDays.ToString("0.0") + " days");
-			lineCycleMtbDays = list.Slider(lineCycleMtbDays, 1f, 30f);
-			list.Label("It takes " + lineCycleMinSeconds.ToString("0") + " to " + lineCycleMaxSeconds.ToString("0") + " seconds to pass");
-			lineCycleMinSeconds = list.Slider(lineCycleMinSeconds, 20f, 300f);
-			lineCycleMaxSeconds = Mathf.Max(lineCycleMinSeconds, list.Slider(lineCycleMaxSeconds, 20f, 300f));
-			list.CheckboxLabeled("Colonists learn to read the hum", ref humReadingEnabled,
-				"Off: nobody learns to read the hum by listening and nothing new is shown. Primers already written still teach.");
-			list.Label("Days of listening on calm ground before it comes: " + humReaderThresholdDays.ToString("0.0"));
-			humReaderThresholdDays = list.Slider(humReaderThresholdDays, 0.5f, 30f);
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope the biome worker (GetScore) and three GenSteps (borehulk placement, canal eels, strays) run at world or map generation ([new maps only]); the roach think node, the borehulk drill comp's tick and its grind roll read live ([now]). The four cross-biome fields are read by nothing, so they sit in the collapsed change-nothing group (crossBiomeBiomeList is a string with no control and is kept only as a saved key).ED per setting against its read site (2026-10-10): the biome worker (GetScore) and three GenSteps (borehulk placement, canal eels, strays) run at world or map generation ([new maps only]); the roach think node, the borehulk drill comp's tick and its grind roll read live ([now]). The four cross-biome fields are read by nothing, so they sit in the collapsed change-nothing group (crossBiomeBiomeList is a string with no control and is kept only as a saved key).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
 
-			list.GapLine();
-			list.Label("Bolts on the hull");
-			list.CheckboxLabeled("Some bolts ride the ship away", ref hullBoltsEnabled,
-				"Off: no bolt ever clings to a ship leaving the plateau, and bolts already aboard stop drifting to the edge and stop reacting. Nothing else changes.");
-			list.Label("Bolts that cling at liftoff: " + hullBoltBoardMin + " to " + hullBoltBoardMax + " (" + (hullBoltNoneChance * 100f).ToString("0") + "% chance of none)");
-			hullBoltBoardMin = Mathf.RoundToInt(list.Slider(hullBoltBoardMin, 0f, 5f));
-			hullBoltBoardMax = Mathf.Max(hullBoltBoardMin, Mathf.RoundToInt(list.Slider(hullBoltBoardMax, 0f, 5f)));
-			hullBoltNoneChance = list.Slider(hullBoltNoneChance, 0f, 1f);
-			list.Label("How often a dancing bolt drifts to a landed ship's edge: " + (hullBoltEdgePull * 100f).ToString("0") + "% of figures");
-			hullBoltEdgePull = list.Slider(hullBoltEdgePull, 0f, 1f);
-			list.CheckboxLabeled("They stop and turn when the plateau's things change hands", ref hullBoltWitnessEnabled,
-				"Off: the bolts aboard never react, and nothing waits for you at the next landing on the plateau.");
-			list.Label("How much it is minded: " + hullBoltWeightScale.ToString("0.00") + "x, at most " + hullBoltIrritationCap.ToString("0") + " on landing");
-			hullBoltWeightScale = list.Slider(hullBoltWeightScale, 0f, 3f);
-			hullBoltIrritationCap = list.Slider(hullBoltIrritationCap, 0f, 100f);
-			list.Label("Days aboard before the hull goes cold under them: " + hullBoltRealiseDays.ToString("0.0") + "; days more before it is noticed: " + hullBoltRevealDays.ToString("0.0"));
-			hullBoltRealiseDays = list.Slider(hullBoltRealiseDays, 0f, 60f);
-			hullBoltRevealDays = list.Slider(hullBoltRevealDays, 0f, 60f);
-			list.CheckboxLabeled("Colonists like seeing them", ref hullBoltPetMemoryEnabled,
-				"Off: no small good memory from watching the bolts on the hull.");
+        public void DoWindowContents(Rect inRect)
+        {
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, viewRect);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
+            list.Begin(viewRect);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+            RimMandrake.Shared.PatchApplier.DrawNotice(list);
 
-			list.End();
-		}
+            if (Group(list, "The hum and the Cathedral's standing", RimMandrake.Shared.SettingScope.Now, new[] { "humMechanicEnabled", "commentaryEnabled", "goodwillDrainEnabled", "irritationDecayRateMultiplier" }))
+            {
+                list.CheckboxLabeled("Hum-mood system", ref humMechanicEnabled,
+                    "Off: the Rust Cathedral's attitude tracking, layered hum, and goodwill coupling all stop. Nothing plays, nothing drains.");
+                list.CheckboxLabeled("Droid commentary", ref commentaryEnabled,
+                    "Off: no messages fire on band changes, even with a droid on the map. The hum and goodwill coupling still run.");
+                list.CheckboxLabeled("Sustained sacrilege lowers the Cathedral's standing", ref goodwillDrainEnabled,
+                    "Off: the worst band still sounds and displays, but never lowers the Cathedral's standing on its own. Catches and drilling still cost standing.");
+                list.Label("Irritation decay speed: " + irritationDecayRateMultiplier.ToString("0.00") + "x (higher = forgets faster)");
+                irritationDecayRateMultiplier = list.Slider(irritationDecayRateMultiplier, 0.25f, 4f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Living bolts", RimMandrake.Shared.SettingScope.Now, new[] { "boltDanceEnabled", "boltShedEnabled", "boltWatchedPricingEnabled" }))
+            {
+                list.CheckboxLabeled("Bolts dance and freeze", ref boltDanceEnabled,
+                    "Off: living bolts wander like ordinary small mechanoids and never form figures or stop dead. Nothing else about them changes.");
+                list.CheckboxLabeled("Bolts shed curiosities", ref boltShedEnabled,
+                    "Off: living bolts stop leaving shed curiosities on the ground. Curiosities already dropped are unaffected.");
+                list.CheckboxLabeled("The Cathedral minds what you do to its bolts", ref boltWatchedPricingEnabled,
+                    "Off: taking a shed curiosity or killing a living bolt stops feeding the Cathedral's mood. The hum still runs on everything else.");
+                list.GapLine();
+            }
+
+            if (Group(list, "The canals", RimMandrake.Shared.SettingScope.Now, new[] { "fishingPricingEnabled" }))
+            {
+                list.CheckboxLabeled("The Cathedral minds what you take from its canals", ref fishingPricingEnabled,
+                    "Off: fishing the coolant canals stops feeding the Cathedral's mood. The eels are still there, still catchable and still worth selling, and the occasional nasty catch still happens -- nothing about the water itself changes.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Drilling the deep metal", RimMandrake.Shared.SettingScope.NextPulse, new[] { "drillResponseEnabled" }))
+            {
+                list.CheckboxLabeled("Drilling the deep metal is answered", ref drillResponseEnabled,
+                    "Off: a deep drill on the Rust Cathedral is treated like a deep drill anywhere else, and ordinary deep-drill infestations can occur there again instead. Read when the storyteller rolls the incident, so it takes hold at the next roll.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Under the plate", RimMandrake.Shared.SettingScope.Now, new[] { "lineCycleEnabled", "lineCycleMtbDays", "humReadingEnabled", "humReaderThresholdDays" }))
+            {
+                list.CheckboxLabeled("Something turns over under the plate", ref lineCycleEnabled,
+                    "Off: the slow roll under the deck plate never comes, and nothing on the plateau stops for it.");
+                list.Label("It comes roughly every " + lineCycleMtbDays.ToString("0.0") + " days");
+                lineCycleMtbDays = list.Slider(lineCycleMtbDays, 1f, 30f);
+                list.CheckboxLabeled("Colonists learn to read the hum", ref humReadingEnabled,
+                    "Off: nobody learns to read the hum by listening and nothing new is shown. Primers already written still teach.");
+                list.Label("Days of listening on calm ground before it comes: " + humReaderThresholdDays.ToString("0.0"));
+                humReaderThresholdDays = list.Slider(humReaderThresholdDays, 0.5f, 30f);
+                list.GapLine();
+            }
+
+            if (Group(list, "How long the roll lasts", RimMandrake.Shared.SettingScope.NextPulse, new[] { "lineCycleMinSeconds", "lineCycleMaxSeconds" }))
+            {
+                list.Label("It takes " + lineCycleMinSeconds.ToString("0") + " to " + lineCycleMaxSeconds.ToString("0") + " seconds to pass (applies from the next roll)");
+                lineCycleMinSeconds = list.Slider(lineCycleMinSeconds, 20f, 300f);
+                lineCycleMaxSeconds = Mathf.Max(lineCycleMinSeconds, list.Slider(lineCycleMaxSeconds, 20f, 300f));
+                list.GapLine();
+            }
+
+            if (Group(list, "Bolts on the hull", RimMandrake.Shared.SettingScope.Now, new[] { "hullBoltsEnabled", "hullBoltBoardMin", "hullBoltBoardMax", "hullBoltNoneChance", "hullBoltEdgePull", "hullBoltWitnessEnabled", "hullBoltWeightScale", "hullBoltIrritationCap", "hullBoltRealiseDays", "hullBoltRevealDays", "hullBoltPetMemoryEnabled" }))
+            {
+                list.CheckboxLabeled("Some bolts ride the ship away", ref hullBoltsEnabled,
+                    "Off: no bolt ever clings to a ship leaving the plateau, and bolts already aboard stop drifting to the edge and stop reacting. Nothing else changes.");
+                list.Label("Bolts that cling at liftoff: " + hullBoltBoardMin + " to " + hullBoltBoardMax + " (" + (hullBoltNoneChance * 100f).ToString("0") + "% chance of none)");
+                hullBoltBoardMin = Mathf.RoundToInt(list.Slider(hullBoltBoardMin, 0f, 5f));
+                hullBoltBoardMax = Mathf.Max(hullBoltBoardMin, Mathf.RoundToInt(list.Slider(hullBoltBoardMax, 0f, 5f)));
+                hullBoltNoneChance = list.Slider(hullBoltNoneChance, 0f, 1f);
+                list.Label("How often a dancing bolt drifts to a landed ship's edge: " + (hullBoltEdgePull * 100f).ToString("0") + "% of figures");
+                hullBoltEdgePull = list.Slider(hullBoltEdgePull, 0f, 1f);
+                list.CheckboxLabeled("They stop and turn when the plateau's things change hands", ref hullBoltWitnessEnabled,
+                    "Off: the bolts aboard never react, and nothing waits for you at the next landing on the plateau.");
+                list.Label("How much it is minded: " + hullBoltWeightScale.ToString("0.00") + "x, at most " + hullBoltIrritationCap.ToString("0") + " on landing");
+                hullBoltWeightScale = list.Slider(hullBoltWeightScale, 0f, 3f);
+                hullBoltIrritationCap = list.Slider(hullBoltIrritationCap, 0f, 100f);
+                list.Label("Days aboard before the hull goes cold under them: " + hullBoltRealiseDays.ToString("0.0") + "; days more before it is noticed: " + hullBoltRevealDays.ToString("0.0"));
+                hullBoltRealiseDays = list.Slider(hullBoltRealiseDays, 0f, 60f);
+                hullBoltRevealDays = list.Slider(hullBoltRevealDays, 0f, 60f);
+                list.CheckboxLabeled("Colonists like seeing them", ref hullBoltPetMemoryEnabled,
+                    "Off: no small good memory from watching the bolts on the hull.");
+                list.GapLine();
+            }
+
+            viewHeight = list.CurHeight + 20f;
+            list.End();
+            Widgets.EndScrollView();
+        }
 	}
 
 	// RUSTCATHEDRAL_RM_MOD_BUILD_1: the standalone RustCathedralHumSettingsMod
