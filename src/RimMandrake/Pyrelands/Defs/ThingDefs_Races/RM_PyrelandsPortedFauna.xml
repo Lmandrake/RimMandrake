@@ -615,7 +615,7 @@
       <baseHungerRate>1.0</baseHungerRate>
       <baseHealthScale>2.0</baseHealthScale>
       <fleshType>Insectoid</fleshType>
-      <leatherDef>Leather_Chitin</leatherDef>
+      <leatherDef MayRequire="sarg.alphaanimals">Leather_Chitin</leatherDef>
       <bloodDef>Filth_BloodInsect</bloodDef>
       <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
       <useMeatFrom>Megaspider</useMeatFrom>
@@ -776,7 +776,7 @@
       <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
       <trainability>None</trainability>
       <fleshType>Insectoid</fleshType>
-      <leatherDef>Leather_Chitin</leatherDef>
+      <leatherDef MayRequire="sarg.alphaanimals">Leather_Chitin</leatherDef>
       <bloodDef>Filth_BloodInsect</bloodDef>
       <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
       <useMeatFrom>Megaspider</useMeatFrom>
