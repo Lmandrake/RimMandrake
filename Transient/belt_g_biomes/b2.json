@@ -1,0 +1,314 @@
+{
+ "RM_FeverWood": {
+  "biome": "RM_FeverWood",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_FeverWood",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Kurreth": 13,
+   "RM_Thornbug": 4,
+   "RM_Chellow": 4,
+   "RM_Vaulm": 2,
+   "RM_Brathek": 2,
+   "RM_Drommath": 2,
+   "RM_KurrethQueen": 1,
+   "RM_Glomvar": 1,
+   "RM_Grolth": 1
+  },
+  "plants": {
+   "RM_Thulvane": 39,
+   "RM_Varnoth": 32,
+   "RM_Ossagrel": 19,
+   "RM_Verrow": 16,
+   "RM_Claithe": 12,
+   "RM_Ammeth": 12,
+   "RM_Sodderel": 11,
+   "RM_Tullick": 10,
+   "RM_Seepril": 10,
+   "RM_Nubrith": 9,
+   "RM_Maulith": 9,
+   "RM_Halquin": 7,
+   "RM_Cistrel": 6,
+   "RM_Corvath": 3,
+   "RM_GiantLeaf": 3,
+   "Plant_Timbershroom": 2
+  },
+  "errors": []
+ },
+ "RM_FloodedCanyon": {
+  "biome": "RM_FloodedCanyon",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_FloodedCanyon",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Tarruq": 14,
+   "RM_Muttavaq": 3,
+   "RM_Uttaqar": 2
+  },
+  "plants": {
+   "RM_TwistingThorngrass": 64,
+   "RM_TwistingThornweed": 38,
+   "RM_Ruqqal": 21,
+   "RM_Nabbuq": 18,
+   "RM_Sevvuq": 15,
+   "RM_CrackedThornwood": 14,
+   "RM_Veqma": 12,
+   "RM_Luqqim": 8,
+   "RM_Zennaq": 6,
+   "RM_Harrovaq": 4
+  },
+  "errors": []
+ },
+ "RM_GelatinousSlime": {
+  "biome": "RM_GelatinousSlime",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_GelatinousSlime",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "RM_Weather_SlimeRain",
+    "last": "Clear",
+    "curWeatherAge": 2682,
+    "rainRate": 1.00575,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Gelatid": 6,
+   "RM_Gappo": 3,
+   "RM_ThozzikColony": 2,
+   "RM_Brogg": 1,
+   "RM_Illoth": 1
+  },
+  "plants": {
+   "RM_Plant_SlimeGrass": 200
+  },
+  "errors": []
+ },
+ "RM_Greentide": {
+  "biome": "RM_Greentide",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_Greentide",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "RM_RoilWeather",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": [
+    {
+     "def": "RM_RoilLock",
+     "label": "The Roil",
+     "scope": "map",
+     "affectsThisMap": true,
+     "permanent": true,
+     "ticksPassed": 0,
+     "ticksLeft": -1
+    }
+   ]
+  },
+  "wild": {
+   "RM_Yammeth": 19,
+   "RM_Sulleth": 15,
+   "RM_Krannock": 11,
+   "RM_Gristle": 9,
+   "RM_CanopySwinger": 2
+  },
+  "plants": {
+   "RM_GreentideGrass": 36,
+   "RM_Wollick": 31,
+   "RM_YearningFruit": 27,
+   "RM_Brakkel": 21,
+   "RM_Illurin": 19,
+   "RM_GreentideTallGrass": 18,
+   "RM_Phorrik": 17,
+   "RM_Sarquin": 12,
+   "RM_Tumbel": 11,
+   "RM_Maddrick": 8
+  },
+  "errors": []
+ },
+ "RM_LanternDeeps": {
+  "biome": "RM_LanternDeeps",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_LanternDeeps",
+  "temp": 17.0,
+  "weather": {
+   "weather": {
+    "current": "RM_DeepCalm",
+    "last": "RM_DeepCalm",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Sipper": 21,
+   "RM_Slick": 20,
+   "RM_Shoal": 15,
+   "RM_Blinker": 12,
+   "RM_Candler": 9,
+   "RM_Gembug": 6,
+   "RM_Tapper": 6,
+   "RM_BloodropMoth": 5,
+   "RM_Knocker": 4,
+   "RM_Drifter": 3,
+   "RM_Pooler": 2
+  },
+  "plants": {
+   "RM_DeepMycelium": 160,
+   "RM_ZivvitTaper": 34,
+   "RM_NurrikGill": 5,
+   "RM_KuvraSpout": 1
+  },
+  "errors": []
+ },
+ "RM_LeaningScrub": {
+  "biome": "RM_LeaningScrub",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_LeaningScrub",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "RM_ScrubWindFog",
+    "last": "Overcast",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Fuzzrunner": 9,
+   "RM_TunnelSnake": 6,
+   "RM_Surrik": 5,
+   "RM_TruffleMole": 5,
+   "RM_Rollbug": 4,
+   "RM_Ribbonwhip": 3,
+   "RM_Fuzzviper": 3,
+   "RM_Shirrel": 3,
+   "RM_Zellik": 1,
+   "RM_Shokka": 1
+  },
+  "plants": {
+   "RM_Fuzz": 78,
+   "RM_Whipfuzz": 52,
+   "Plant_Brambles": 27,
+   "RM_Cruststar": 27,
+   "RM_Pillowmoss": 16
+  },
+  "errors": []
+ },
+ "RM_LongShade": {
+  "biome": "RM_LongShade",
+  "tile_set": [
+   true,
+   ""
+  ],
+  "regen": [
+   true,
+   ""
+  ],
+  "playing": true,
+  "mapBiome": "RM_LongShade",
+  "temp": 14.3483849,
+  "weather": {
+   "weather": {
+    "current": "Clear",
+    "last": "Clear",
+    "curWeatherAge": 48427,
+    "rainRate": 0.0,
+    "snowRate": 0.0
+   },
+   "conditions": []
+  },
+  "wild": {
+   "RM_Bokka": 3,
+   "RM_Tebbra": 3,
+   "RM_Dunejelly": 1,
+   "RM_Gulloth": 1
+  },
+  "plants": {
+   "RM_Pavecrust": 97,
+   "RM_Maidenbloom": 47,
+   "RM_Leachmoss": 33,
+   "RM_Shadespire": 13,
+   "RM_Venomvine": 8,
+   "RM_Vorrel": 2
+  },
+  "errors": []
+ }
+}
