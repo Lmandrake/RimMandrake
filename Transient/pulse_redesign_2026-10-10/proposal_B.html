@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pulse B — Shelf</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="mock_common.css">
+<style>
+/* B — two shelves: rulings as a short list on top, artifacts as a thumbnail shelf below. */
+.body{flex:1;overflow:hidden;display:flex;flex-direction:column;padding:4px 0 0}
+.sec{display:flex;align-items:center;gap:8px;padding:5px 14px 3px;color:var(--dim);font-size:10.5px}
+.sec b{color:var(--cream);font-weight:500;font-size:11.5px}
+.sec::after{content:"";flex:1;height:1px;background:var(--line2)}
+.rule{display:grid;grid-template-columns:8px 1fr auto;column-gap:8px;align-items:center;height:21px;padding:0 12px 0 14px;white-space:nowrap}
+.rule .d{width:7px;height:7px;transform:rotate(45deg);background:var(--a)}
+.rule .x{overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+.rule .x em{font-style:normal;color:var(--faint);margin-left:6px;font-size:10.5px}
+.rule .t{color:var(--dim);font-size:10.5px}
+.rule.old{opacity:.6}
+.more{padding:1px 14px 0 30px;color:var(--faint);font-size:10.5px}
+.shelf{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:3px 12px 6px 14px}
+.tile{position:relative;border-radius:6px;overflow:hidden;background:#1f160f;box-shadow:inset 0 0 0 1px var(--line2)}
+.tile::before{content:"";position:absolute;left:0;top:0;right:0;height:3px;background:var(--a);z-index:1}
+.tile .img{height:50px;background-size:cover;background-position:center;filter:saturate(.85)}
+.tile .ph{height:50px;display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--a);background:repeating-linear-gradient(135deg,#241911 0 6px,#20160f 6px 12px)}
+.tile .ph span{font-size:10px;color:var(--muted);margin-left:6px;line-height:1.2}
+.tile .cap{display:flex;justify-content:space-between;gap:4px;padding:2px 6px 3px;font-size:10px;color:var(--muted);white-space:nowrap}
+.tile .cap span:first-child{overflow:hidden;text-overflow:ellipsis}
+.tile .cap .t{color:var(--faint)}
+.tile .badge{position:absolute;right:4px;top:7px;font-size:9.5px;padding:0 5px;border-radius:7px;background:#140e0acc;color:var(--mustard)}
+</style></head>
+<body><div id="app"><div id="tb"></div><div class="body" id="body"></div><div id="strip"></div></div>
+<script src="mock_data.js"></script><script src="mock_shell.js"></script>
+<script>
+document.getElementById('tb').outerHTML = titleBar();
+document.getElementById('strip').outerHTML = presenceStrip();
+const nice = id => id.replace(/_\d+$/,'').toLowerCase().replace(/_/g,' ');
+const rs = RULINGS.slice().sort((a,b) => a.age - b.age);
+let h = `<div class="sec"><b>to rule</b>${rs.length}</div>`;
+for (const r of rs.slice(0,4))
+  h += `<div class="rule s-${r.seat} ${r.age>72?'old':''}"><span class="d"></span><span class="x">${nice(r.id)}<em>${r.text}</em></span><span class="t">${ageTxt(r.age)}</span></div>`;
+h += `<div class="more">+ ${rs.length-4} older · oldest ${ageTxt(rs[rs.length-1].age)}</div>`;
+h += `<div class="sec"><b>to look at</b>${ARTIFACTS.length}</div><div class="shelf">`;
+for (const a of ARTIFACTS.slice(0,8)) {
+  const vis = a.thumb ? `<div class="img" style="background-image:url('${a.thumb}')"></div>`
+    : `<div class="ph">${a.kind==='sheets'?'☰':'▤'}<span>${a.kind==='sheets'?'27 live<br><b style="color:var(--mustard);font-weight:500">10 unseen</b>':'html<br>page'}</span></div>`;
+  const badge = '';
+  h += `<div class="tile s-${a.seat}">${vis}${badge}<div class="cap"><span>${a.what.replace(/^27 biome sheets served · 10 never reviewed$/,'biome sheets')}</span><span class="t">${ageTxt(a.age)}</span></div></div>`;
+}
+h += `</div>`;
+document.getElementById('body').innerHTML = h;
+</script></body></html>

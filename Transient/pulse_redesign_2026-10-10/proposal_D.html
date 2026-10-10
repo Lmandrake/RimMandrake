@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pulse D — Two lists</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="mock_common.css">
+<style>
+/* D — hybrid after GPT review: B's two labelled sections, A's compact rows, C's evidence links.
+   Old rulings are NOT dimmed (age is not unimportance); each section shows >= 4 rows and borrows
+   the other's unused space; every row opens something. */
+.body{flex:1;overflow:hidden;padding:4px 0 0}
+.sec{display:flex;align-items:center;gap:8px;padding:5px 14px 3px;color:var(--dim);font-size:10.5px}
+.sec b{color:var(--cream);font-weight:500;font-size:11.5px}
+.sec::after{content:"";flex:1;height:1px;background:var(--line2);order:2}
+.sec .all{order:3;color:var(--faint)}
+.row{display:grid;grid-template-columns:3px 1fr auto auto;column-gap:8px;align-items:center;height:22px;padding:0 12px 0 12px;white-space:nowrap}
+.row .bar{height:15px;border-radius:2px;background:var(--a)}
+.row .x{overflow:hidden;text-overflow:ellipsis;color:var(--cream)}
+.row .x .id{color:var(--a);font-size:10.5px;margin-right:7px}
+.row .ev{font-size:10.5px;color:var(--mustard)}
+.row .t{color:var(--dim);font-size:10.5px;min-width:26px;text-align:right}
+.row .t.old{color:#b07a4a}
+.look{grid-template-columns:3px 26px 1fr auto auto;height:24px}
+.look .th{width:26px;height:18px;border-radius:3px;background-size:cover;background-position:center;box-shadow:inset 0 0 0 1px var(--line2)}
+.look .th.ty{display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--a);background:#241911}
+.look .x{color:var(--text)}
+.look .x small{color:var(--faint);font-size:10px;margin-left:6px}
+.look .x b{color:var(--mustard);font-weight:500}
+</style></head>
+<body><div id="app"><div id="tb"></div><div class="body" id="body"></div><div id="strip"></div></div>
+<script src="mock_data.js"></script><script src="mock_shell.js"></script>
+<script>
+document.getElementById('tb').outerHTML = titleBar();
+document.getElementById('strip').outerHTML = presenceStrip();
+const nice = id => id.replace(/_\d+$/,'').toLowerCase().replace(/_/g,' ');
+const rs = RULINGS.slice().sort((a,b) => a.age - b.age);
+const as = ARTIFACTS.slice().sort((a,b) => a.age - b.age);
+// space budget: 12 rows total, each section at least 4, a short section donates the rest
+const BUDGET = 11, nr = Math.min(rs.length, Math.max(4, BUDGET - Math.min(as.length, 5))), na = Math.min(as.length, BUDGET - nr);
+let h = `<div class="sec"><b>to rule</b>${rs.length}<span class="all">${rs.length > nr ? 'all ' + rs.length + ' ▾' : ''}</span></div>`;
+for (const r of rs.slice(0, nr))
+  h += `<div class="row s-${r.seat}"><span class="bar"></span><span class="x"><span class="id">${nice(r.id)}</span>${r.text}</span><span class="ev">${r.ev ? 'open ↗' : ''}</span><span class="t ${r.age > 72 ? 'old' : ''}">${ageTxt(r.age)}</span></div>`;
+h += `<div class="sec"><b>to look at</b>${as.length}<span class="all">${as.length > na ? 'all ' + as.length + ' ▾' : ''}</span></div>`;
+const TY = {html:'▤', sheets:'☰', dir:'▦', png:'▣'};
+for (const a of as.slice(0, na)) {
+  const th = a.thumb ? `<span class="th" style="background-image:url('${a.thumb}')"></span>` : `<span class="th ty">${TY[a.kind]}</span>`;
+  const what = a.kind === 'sheets' ? `27 biome sheets live <b>· 10 unseen</b>` : a.what;
+  h += `<div class="row look s-${a.seat}"><span class="bar"></span>${th}<span class="x">${what}<small>${a.kind === 'sheets' ? 'web' : a.kind}</small></span><span class="ev">↗</span><span class="t">${ageTxt(a.age)}</span></div>`;
+}
+document.getElementById('body').innerHTML = h;
+</script></body></html>
