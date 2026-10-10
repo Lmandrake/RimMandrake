@@ -69,4 +69,10 @@
     </Reference>
   </ItemGroup>
 
+  <!-- MOD_OPTIONS_RETROFIT_1: shared SettingsKit (search box, scope tags, per-section reset) -->
+  <ItemGroup>
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
+  </ItemGroup>
+
 </Project>
