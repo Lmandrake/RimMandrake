@@ -1028,6 +1028,7 @@ MODS = {
         "Metal-eating creatures": "Now",
         "Innate creature abilities": "NextPulse",
         "Scrap-hoarding birds": "Now",
+        "Scrap-bird raids": "NextPulse",
         "Toxin-dependent creatures": "Now",
     }, ()),
 }

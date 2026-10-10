@@ -42,7 +42,10 @@ namespace RimMandrake.StarWars.SWBestiary
                 return null;
             }
 
-            Thing nest = NearestNest(pawn, nestDef, comp.Props.nestSearchRadius);
+            // SCRAPNEST_BIRD_BASE_THEFT_1: a raiding-flock bird flies its loot to ANY nest on the map, however far — it arrived at
+            // the colony's edge and has no nest of its own nearby, and the loot must end up somewhere findable.
+            bool raiding = RSW_ScrapThiefFlock.IsRaiding(pawn);
+            Thing nest = NearestNest(pawn, nestDef, raiding ? float.MaxValue : comp.Props.nestSearchRadius);
             if (nest == null)
             {
                 // No nest of its own in range. Build one and hoard next think —
@@ -53,7 +56,7 @@ namespace RimMandrake.StarWars.SWBestiary
                 return null;
             }
 
-            Thing scrap = FindScrap(pawn, comp.Props, nest);
+            Thing scrap = FindScrap(pawn, comp.Props, nest, StealsFromBase(pawn, raiding));
             if (scrap == null)
             {
                 return null;
@@ -65,11 +68,24 @@ namespace RimMandrake.StarWars.SWBestiary
         }
 
         // ── gating ───────────────────────────────────────────────────────
+        // SCRAPNEST_BIRD_BASE_THEFT_1 (owner, 2026-10-10: "Yes they steal everything, and there are also stealing raids."):
+        // ambient birds rob stockpiles and the home area when scrapBirdBaseTheftEnabled is on; a bird in a live raiding flock
+        // (IncidentWorker_ScrapThiefFlock) always does, whatever that toggle says, because the raid IS the event.
+        private static bool StealsFromBase(Pawn pawn, bool raiding)
+        {
+            return raiding || RSW_BeastMechanicsSettings.scrapBirdBaseTheftEnabled;
+        }
+
         private static bool Eligible(Pawn pawn)
         {
             // This node sits on every animal's think tree: the cheap gates run before the kernel's arguments are gathered.
             if (!RSW_BeastMechanicsSettings.scrapHoardingEnabled || pawn == null || pawn.Map == null || pawn.Dead || pawn.Downed
                 || pawn.TryGetComp<CompScrapHoarder>() == null)
+            {
+                return false;
+            }
+            // A raiding-flock bird whose time is up stops hoarding so vanilla's ExitTimedOut node walks it off the map.
+            if (pawn.mindState != null && RSW_HoardKernel.RaidOver(pawn.mindState.exitMapAfterTick, Find.TickManager.TicksGame))
             {
                 return false;
             }
@@ -109,8 +125,11 @@ namespace RimMandrake.StarWars.SWBestiary
             // Prefer a cell beside standing vegetation — the sheet's nests are
             // woven INTO the vine, not dropped on bare crust. Fall back to any
             // legal cell so a bird on open ground is not stuck forever.
-            if (!TryFindNestCell(pawn, nestDef, props, requirePlantCover: true, out IntVec3 cell)
-                && !TryFindNestCell(pawn, nestDef, props, requirePlantCover: false, out cell))
+            // The wide last try is for a bird standing inside or beside a colony (a base thief): every cell within 8 may be home area,
+            // and the nest must still land OUTSIDE it.
+            if (!TryFindNestCell(pawn, nestDef, props, requirePlantCover: true, 8, out IntVec3 cell)
+                && !TryFindNestCell(pawn, nestDef, props, requirePlantCover: false, 8, out cell)
+                && !TryFindNestCell(pawn, nestDef, props, requirePlantCover: false, 30, out cell))
             {
                 return;
             }
@@ -119,17 +138,17 @@ namespace RimMandrake.StarWars.SWBestiary
         }
 
         private static bool TryFindNestCell(Pawn pawn, ThingDef nestDef, CompProperties_ScrapHoarder props,
-            bool requirePlantCover, out IntVec3 result)
+            bool requirePlantCover, int radius, out IntVec3 result)
         {
             Map map = pawn.Map;
             List<Thing> existing = map.listerThings.ThingsOfDef(nestDef);
-            return CellFinder.TryFindRandomCellNear(pawn.Position, map, 8, Validator, out result);
+            return CellFinder.TryFindRandomCellNear(pawn.Position, map, radius, Validator, out result);
 
             bool Validator(IntVec3 c)
             {
-                // 🔴 Never inside the player's base. Base-stealing is an
-                // UNRULED candidate (SCRAPNEST_BIRD_BASE_THEFT_1); a nest
-                // appearing in the colony would be that mechanic by accident.
+                // 🔴 Never inside the player's base, even now that the birds
+                // steal from it (SCRAPNEST_BIRD_BASE_THEFT_1): they rob the
+                // colony and nest OUTSIDE it, so the loot stays recoverable.
                 return RSW_HoardKernel.NestCellOk(c.InBounds(map),
                     () => c.Standable(map) && !c.Fogged(map),
                     () => map.areaManager.Home[c],
@@ -162,7 +181,7 @@ namespace RimMandrake.StarWars.SWBestiary
         }
 
         // ── finding the scrap ────────────────────────────────────────────
-        private static Thing FindScrap(Pawn pawn, CompProperties_ScrapHoarder props, Thing nest)
+        private static Thing FindScrap(Pawn pawn, CompProperties_ScrapHoarder props, Thing nest, bool stealFromBase)
         {
             if (props.hoardableDefs.NullOrEmpty())
             {
@@ -183,7 +202,7 @@ namespace RimMandrake.StarWars.SWBestiary
                 }
                 Thing found = GenClosest.ClosestThingReachable(
                     pawn.Position, map, ThingRequest.ForDef(def), PathEndMode.ClosestTouch,
-                    traverse, props.scrapSearchRadius, t => IsTakeable(t, nest));
+                    traverse, props.scrapSearchRadius, t => IsTakeable(t, nest, stealFromBase));
                 if (found != null)
                 {
                     return found;
@@ -192,21 +211,21 @@ namespace RimMandrake.StarWars.SWBestiary
             return null;
         }
 
-        private static bool IsTakeable(Thing t, Thing nest)
+        private static bool IsTakeable(Thing t, Thing nest, bool stealFromBase)
         {
             if (t == null)
             {
                 return false;
             }
             Map map = t.Map;
-            // 🔴 THE BASE-STEALING GUARD. arid_shrubland.md §4's own text calls
-            // birds robbing player bases a CANDIDATE, not a ruled mechanic, so
-            // it is not built: anything inside the home area or in any storage
-            // is off limits, and there is no setting that relaxes that. Ruling
-            // is owed on SCRAPNEST_BIRD_BASE_THEFT_1. (The kernel asks these in
-            // order and lazily; "already at the nest" keeps the hoard from being
+            // THE BASE-STEALING GUARD, now switchable: SCRAPNEST_BIRD_BASE_THEFT_1
+            // was ruled by the owner (2026-09-21 and 2026-10-10) — the birds
+            // steal from stockpiles and the home area too. Without
+            // stealFromBase, anything inside the home area or in any storage
+            // is off limits as before. (The kernel asks these in order and
+            // lazily; "already at the nest" keeps the hoard from being
             // shuffled back and forth.)
-            return RSW_HoardKernel.Takeable(t.Spawned, t.stackCount, map != null,
+            return RSW_HoardKernel.Takeable(t.Spawned, t.stackCount, map != null, stealFromBase,
                 () => map.areaManager.Home[t.Position],
                 () => t.IsInAnyStorage(),
                 () => t.Position.GetEdifice(map) is Building_Storage,

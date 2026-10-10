@@ -448,17 +448,20 @@ namespace RimMandrake.StarWars.SWBestiary.SelfTest
                             Steps++;
                         }
                 // Takeable: lazy order
-                for (int m = 0; m < 256; m++)
+                for (int m = 0; m < 512; m++)
                 {
                     var probes = new List<string>();
-                    bool spawned = (m & 1) != 0, hasMap = (m & 2) != 0, home = (m & 4) != 0, store = (m & 8) != 0, bld = (m & 16) != 0; int stack = (m & 32) != 0 ? 5 : 0; float d = (m & 64) != 0 ? 2f : (m & 128) != 0 ? 2.01f : 9f;
-                    bool got = RSW_HoardKernel.Takeable(spawned, stack, hasMap, () => { probes.Add("h"); return home; }, () => { probes.Add("s"); return store; }, () => { probes.Add("b"); return bld; }, () => { probes.Add("d"); return d; });
+                    bool spawned = (m & 1) != 0, hasMap = (m & 2) != 0, home = (m & 4) != 0, store = (m & 8) != 0, bld = (m & 16) != 0, steal = (m & 256) != 0; int stack = (m & 32) != 0 ? 5 : 0; float d = (m & 64) != 0 ? 2f : (m & 128) != 0 ? 2.01f : 9f;
+                    bool got = RSW_HoardKernel.Takeable(spawned, stack, hasMap, steal, () => { probes.Add("h"); return home; }, () => { probes.Add("s"); return store; }, () => { probes.Add("b"); return bld; }, () => { probes.Add("d"); return d; });
                     var want = new List<string>(); bool w = true;
                     if (!spawned || stack <= 0 || !hasMap) w = false;
+                    else if (steal) { want.Add("d"); if (d <= 2f) w = false; }
                     else { want.Add("h"); if (home) w = false; else { want.Add("s"); if (store) w = false; else { want.Add("b"); if (bld) w = false; else { want.Add("d"); if (d <= 2f) w = false; } } } }
                     Check(got == w, $"Takeable({m})"); Check(probes.SequenceEqual(want), $"Takeable probes [{string.Join(",", probes)}] vs [{string.Join(",", want)}]");
                     Steps++;
                 }
+                Check(!RSW_HoardKernel.RaidOver(-99999, 5) && !RSW_HoardKernel.RaidOver(100, 100) && RSW_HoardKernel.RaidOver(100, 101) && RSW_HoardKernel.RaidOver(0, 1), "RaidOver edges");
+                Check(RSW_HoardKernel.TheftMessageDue(-1, 0, 2500) && !RSW_HoardKernel.TheftMessageDue(100, 2599, 2500) && RSW_HoardKernel.TheftMessageDue(100, 2600, 2500), "TheftMessageDue edges");
                 Check(RSW_HoardKernel.CanAddNest(3, 4) && !RSW_HoardKernel.CanAddNest(4, 4) && !RSW_HoardKernel.CanAddNest(5, 4) && !RSW_HoardKernel.CanAddNest(0, 0), "CanAddNest edges");
                 Check(RSW_HoardKernel.SpacingOk(18f, 18f) && !RSW_HoardKernel.SpacingOk(17.9f, 18f) && RSW_HoardKernel.SpacingOk(float.MaxValue, 18f), "SpacingOk edges");
             }

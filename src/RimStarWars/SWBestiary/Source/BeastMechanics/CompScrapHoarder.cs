@@ -33,13 +33,13 @@ namespace RimMandrake.StarWars.SWBestiary
     // — see CompMetalEater.cs, whose header records why an inserted node beats
     // cloning the vanilla animal think tree.
     //
-    // 🔴 ONE DELIBERATE OMISSION, and it is a ruling, not an oversight.
-    // arid_shrubland.md's own text ends that paragraph with "(Candidate: the
-    // birds also steal from player bases.)" — a CANDIDATE, never ruled. So
-    // JobGiver_HoardScrap refuses anything inside a player home area or in any
-    // storage, and this comp carries no switch to turn that off. Base-stealing
-    // is filed for the owner as SCRAPNEST_BIRD_BASE_THEFT_1 and must be ruled
-    // before it is built.
+    // BASE THEFT. arid_shrubland.md ends that paragraph with "(Candidate: the
+    // birds also steal from player bases.)"; the owner ruled it in
+    // (SCRAPNEST_BIRD_BASE_THEFT_1, 2026-09-21 and 2026-10-10): the birds rob
+    // stockpiles and the home area, raiding flocks come as an event, and every
+    // theft alerts the player. That half lives in ScrapThiefFlock.cs and the
+    // scrapBirdBaseTheftEnabled / scrapThiefFlockEnabled Mod Settings
+    // (PROVISIONAL default ON). Nests are still never sited in the home area.
     // ════════════════════════════════════════════════════════════════════
     public class CompProperties_ScrapHoarder : CompProperties
     {

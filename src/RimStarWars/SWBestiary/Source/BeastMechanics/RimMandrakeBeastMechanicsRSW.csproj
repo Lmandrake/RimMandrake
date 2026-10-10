@@ -64,6 +64,7 @@
     <Compile Include="CompScrapHoarder.cs" />
     <Compile Include="JobGiver_HoardScrap.cs" />
     <Compile Include="JobDriver_HoardScrap.cs" />
+    <Compile Include="ScrapThiefFlock.cs" />
     <Compile Include="CompInnateAbility.cs" />
     <Compile Include="CompAbilityEffect_FuelSpew.cs" />
     <Compile Include="RSW_BeastMechanicsDefOf.cs" />

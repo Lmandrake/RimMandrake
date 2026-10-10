@@ -135,3 +135,28 @@ four fresh birds, one at (70,205) **inside** a painted Home area and one at
 first 20-second play window**; the inside stack was **still on its cell 132,962
 ticks (≈2.2 in-game days) later**. `IsTakeable`'s `map.areaManager.Home` test is
 what holds it, and nests likewise never appeared inside the painted area.
+
+## 🔴 Owner ruling 2026-10-10 (typed)
+
+"I already ruled on this in the past 3+4. Yes they steal everything, and there are also stealing raids."
+= option (c) for the ambient birds AND option (d) as an event. This supersedes the 2026-09-21 build note
+above that kept ambient birds hands-off the colony.
+
+## Built 2026-10-10 (FOUNDRY) — PROVISIONAL defaults
+
+- `RSW_HoardKernel.Takeable` takes `stealFromBase`; when set, the home-area, storage and shelf guards are
+  skipped (never asked). `TryFindNestCell`'s home-area refusal is UNCHANGED — nests never land in the base;
+  a wider 30-cell fallback lets a bird inside the colony still find an outside cell.
+- Ambient birds steal from the base while `scrapBirdBaseTheftEnabled` is on; a live raiding-flock bird always does.
+- `IncidentDef RSW_ScrapThiefFlock` / `IncidentWorker_ScrapThiefFlock` (`ScrapThiefFlock.cs`): 3–6 birds enter at
+  the edge, are forced toward a stockpile, rob for 0.5–1 day, then vanilla `exitMapAfterTick` walks them off.
+  Fires only where the map's biome lists the bird. Raiders take loot to any nest on the map, however far.
+- Alert: the flock's first theft is a NegativeEvent letter; every other theft from the base (flock or ambient)
+  is a NegativeEvent message, throttled to one per map per 2500 ticks.
+- Mod Settings beside `scrapHoardingEnabled`: `scrapBirdBaseTheftEnabled` and `scrapThiefFlockEnabled`,
+  both default **ON — PROVISIONAL**: the owner never answered on/off-by-default; ON matches "they steal everything".
+- "Everything" is read as everything the bird hoards (its `hoardableDefs`: components, precious metals, steel,
+  plasteel, uranium) from everywhere — the list was not widened to every item. Re-rule if he meant more.
+- baseChance 0.6, minRefireDays 20, earliestDay 10 are builder guesses.
+
+Owed live (bridge): the verify section above, run against the incident and against ambient birds with the toggle on/off.

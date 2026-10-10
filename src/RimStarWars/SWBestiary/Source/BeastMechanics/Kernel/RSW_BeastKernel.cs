@@ -85,6 +85,13 @@ namespace RimMandrake.StarWars.SWBestiary
             return best;
         }
 
+        /// <summary>A raiding-flock bird is done once its exit time has passed (vanilla mindState.exitMapAfterTick, -99999 when unset): it
+        /// stops hoarding so the vanilla ExitTimedOut node can walk it off the map.</summary>
+        public static bool RaidOver(int exitMapAfterTick, int ticksGame) { return exitMapAfterTick >= 0 && ticksGame > exitMapAfterTick; }
+
+        /// <summary>One theft message per map per window, so a flock emptying a shelf is one line, not twenty.</summary>
+        public static bool TheftMessageDue(int lastTick, int now, int window) { return lastTick < 0 || now - lastTick >= window; }
+
         /// <summary>A bird builds only while the map is under the nest cap.</summary>
         public static bool CanAddNest(int existing, int maxPerMap) { return existing < maxPerMap; }
 
@@ -106,13 +113,15 @@ namespace RimMandrake.StarWars.SWBestiary
             return true;
         }
 
-        /// <summary>Loose scrap only: on the map, outside the home area and any storage, and not already at the nest. Lazy, in this order.</summary>
-        public static bool Takeable(bool spawned, int stackCount, bool hasMap, Func<bool> inHomeArea, Func<bool> inAnyStorage, Func<bool> onStorageBuilding, Func<float> distToNest)
+        /// <summary>On the map and not already at the nest. Without stealFromBase, loose scrap only: outside the home area and any storage.
+        /// With it (SCRAPNEST_BIRD_BASE_THEFT_1, owner-ruled 2026-10-10) stockpiles, shelves and the home area are fair game and are never
+        /// asked. Lazy, in this order.</summary>
+        public static bool Takeable(bool spawned, int stackCount, bool hasMap, bool stealFromBase, Func<bool> inHomeArea, Func<bool> inAnyStorage, Func<bool> onStorageBuilding, Func<float> distToNest)
         {
             if (!spawned || stackCount <= 0 || !hasMap) return false;
-            if (inHomeArea()) return false;
-            if (inAnyStorage()) return false;
-            if (onStorageBuilding()) return false;
+            if (!stealFromBase && inHomeArea()) return false;
+            if (!stealFromBase && inAnyStorage()) return false;
+            if (!stealFromBase && onStorageBuilding()) return false;
             if (distToNest() <= TakeableNestClearance) return false;
             return true;
         }
