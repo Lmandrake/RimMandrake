@@ -939,6 +939,10 @@ MODS = {
     "EggReckoning": ("EggReckoningSettings.cs", "RimMandrake.Utinni.EggReckoning.csproj", {
         "The Reckoning quest": "NextPulse",
     }, ()),
+    "FungalSoilTrade": ("FungalSoilTradeOptions.cs", "RimMandrake.Utinni.FungalSoilTrade.csproj", {
+        "Fungal ground on the Rot (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Fungal distress (mining the Rot's soil)": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
