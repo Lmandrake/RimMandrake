@@ -111,10 +111,10 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <RSW_MutagenicNorphea MayRequire="mandrake.rsw.swbestiary">0.4</RSW_MutagenicNorphea>  <!-- mutagenic norphea - the-Sealed, keep -->
+      <RSW_MutagenicNorphea MayRequire="mandrake.rsw.swbestiary">0.4</RSW_MutagenicNorphea>  <!-- qattora - the-Sealed, keep -->
       <Gornt MayRequire="mlie.starwarsanimalcollection">0.3</Gornt>  <!-- gornt - the-Patient, keep -->
       <Eopie MayRequire="mlie.starwarsanimalcollection">0.25</Eopie>  <!-- eopie - the-Patient, keep -->
-      <RSW_SandLeaper MayRequire="mandrake.rsw.swbestiary">0.2</RSW_SandLeaper>  <!-- sand leaper - the-Spenders, adjust-keep -->
+      <RSW_SandLeaper MayRequire="mandrake.rsw.swbestiary">0.2</RSW_SandLeaper>  <!-- qetta - the-Spenders, adjust-keep -->
       <CanCell MayRequire="mlie.starwarsanimalcollection">0.2</CanCell>  <!-- can-cell - flier-commuter, keep -->
       <Convor MayRequire="mlie.starwarsanimalcollection">0.2</Convor>  <!-- convor - flier-commuter, import -->
       <AA_Murkling MayRequire="sarg.alphaanimals">0.2</AA_Murkling>  <!-- murkling - the-Spenders, adjust-keep -->
@@ -124,7 +124,7 @@
       <!-- COMMISSION_LEDGER_CLEANUP_1: two signature commissions the roster's
            own new_defs list flagged as unbuilt ("no live def answers to it" /
            the flagship vs. the existing sort-fillers above). -->
-      <RUT_EmperorVulture>0.15</RUT_EmperorVulture>  <!-- emperor vulture - the-Patient, new -->
+      <RUT_EmperorVulture>0.15</RUT_EmperorVulture>  <!-- ulvassk - the-Patient, new -->
       <RUT_SealedSleeper>0.2</RUT_SealedSleeper>  <!-- Sealed sleeper - the-Sealed signature, new -->
     </wildAnimals>
     <coastalWildAnimals />

@@ -1174,8 +1174,8 @@ copied verbatim from the donor mods' own Textures trees.
   </PawnKindDef>
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_SandPillar</defName>
-    <label>sandpillar</label>
-    <description>Similarly to some species of salamander, this colossal caterpillar stays in its juvenile state for life but remains able to reproduce despite this.</description>
+    <label>luttaq</label>
+    <description>A long, soft-bodied crawler that is a caterpillar in every way but one: it never pupates. It simply goes on growing, breeding as a larva, until it is as long as a man is tall. It walks on rank after rank of stubby suckered prolegs, and its head is ringed by a crown of pale, groping tentacles that taste the ground ahead and draw plant matter in to the mouth. The body is the dull ochre and clay-brown of the flats it grazes, which makes the markings all the worse: along each segment runs a pattern of dark rings and staring false eyes that seem, from a distance, to shift and blink as the animal ripples forward.</description>
     <statBases>
       <MoveSpeed>4.4</MoveSpeed>
       <MarketValue>100</MarketValue>
@@ -1261,7 +1261,7 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_SandPillar</defName>
-    <label>sandpillar</label>
+    <label>luttaq</label>
     <race>RSW_SandPillar</race>
     <combatPower>15</combatPower>
     <ecoSystemWeight>0.3</ecoSystemWeight>
@@ -5853,16 +5853,24 @@ copied verbatim from the donor mods' own Textures trees.
       </li>
     </lifeStages>
   </PawnKindDef>
-  <ThingDef ParentName="RSW_PollutedLands_BaseInsect">
+  <!-- Owner, Cracked Lands sheet 2026-10-09: "Totally new realistic version of this, with new
+       description and abilities and name. Total regen. No mutagenic." Mutapox milk and the
+       toxin-dependence starting hediff are gone; it is a replete (honeypot) beetle now:
+       milkable for stored sugary fluid (vanilla InsectJelly) and a bombardier-style blinding
+       spray when struck (vanilla CompProperties_GasOnDamage). defName kept for save safety. -->
+  <ThingDef ParentName="BaseInsect">
     <defName>RSW_MutagenicNorphea</defName>
-    <label>mutagenic norphea</label>
-    <description>This unique insectoid's body is so adapted to environmental toxins that it cannot survive without them. It periodically produces a liquid that can induce mutations in humans.</description>
+    <label>qattora</label>
+    <description>A heavy, slow ground beetle of the cracked flats, built like a cask. Through the wet weeks a qattora gorges on bloom nectar, sap and anything sweet it can lap from the flood carpet, then stores the surplus in a swollen, rubbery abdomen that can reach the size of a fist. When the land dries it digs into the clay and lives off that reserve for months. Farmers keep them for the amber, faintly sweet fluid that can be coaxed from a full replete.
+
+A qattora does not fight well, but it does not need to: struck or seized, it fires a scalding, choking spray from glands at the tip of its abdomen, a dense irritant cloud that leaves attackers blind and coughing while it lumbers away.</description>
     <statBases>
-      <MoveSpeed>3</MoveSpeed>
+      <MoveSpeed>2.6</MoveSpeed>
       <MarketValue>95</MarketValue>
       <ComfyTemperatureMin>-25</ComfyTemperatureMin>
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
-      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.15</ArmorRating_Sharp>
       <Wildness>0.5</Wildness>
     </statBases>
     <race>
@@ -5933,27 +5941,31 @@ copied verbatim from the donor mods' own Textures trees.
         <eggCountRange>2~5</eggCountRange>
       </li>
       <li Class="CompProperties_Milkable">
-        <milkDef>RSW_MutapoxVial</milkDef>
-        <milkIntervalDays>15</milkIntervalDays>
-        <milkAmount>1</milkAmount>
+        <milkDef>InsectJelly</milkDef>
+        <milkIntervalDays>4</milkIntervalDays>
+        <milkAmount>6</milkAmount>
         <milkFemaleOnly>false</milkFemaleOnly>
+      </li>
+      <li Class="CompProperties_GasOnDamage">
+        <type>BlindSmoke</type>
+        <damageFactor>3</damageFactor>
+        <useStackCountAsFactor>true</useStackCountAsFactor>
       </li>
     </comps>
     <tradeTags>
       <li>AnimalExotic</li>
-      <li>RSW_PollutedCommon</li>
     </tradeTags>
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_MutagenicNorphea</defName>
-    <label>mutagenic norphea</label>
+    <label>qattora</label>
     <race>RSW_MutagenicNorphea</race>
     <combatPower>55</combatPower>
     <ecoSystemWeight>0.5</ecoSystemWeight>
     <wildGroupSize>2~3</wildGroupSize>
     <lifeStages>
       <li>
-        <label>norphea nymph</label>
+        <label>qattora grub</label>
         <bodyGraphicData>
           <texPath>swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea</texPath>
           <drawSize>0.8</drawSize>
@@ -5984,17 +5996,11 @@ copied verbatim from the donor mods' own Textures trees.
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
-    <startingHediffs>
-      <li>
-        <def>RSW_ToxinDependence</def>
-        <severity>0.50</severity>
-      </li>
-    </startingHediffs>
   </PawnKindDef>
   <ThingDef ParentName="AnimalThingBase">
     <defName>RSW_SandLeaper</defName>
-    <label>sand leaper</label>
-    <description>A desert rodent related to the common surface rat. While its main defense is mostly being small and quick, it has some natural chitinous armor as well.</description>
+    <label>qetta</label>
+    <description>Something like a rodent, if a rodent had been assembled from the wrong parts. A qetta has no forelimbs at all: it bounds on two long, many-jointed hind legs, its body sheathed in overlapping plates of glossy chitin that slide over one another as it bends, coils and doubles back on itself in ways no backbone should allow. Its long, naked tail is fully prehensile and does the work hands would — hooking stems, hauling seed heads down to its mouth, anchoring it upside down in a crack while it feeds. It moves in bursts too quick to follow and freezes between them, and a flood-week flat can be thick with them without a single one ever quite being seen.</description>
     <statBases>
       <MoveSpeed>4.25</MoveSpeed>
       <MarketValue>220</MarketValue>
@@ -6032,7 +6038,7 @@ copied verbatim from the donor mods' own Textures trees.
       <baseHealthScale>0.4</baseHealthScale>
       <baseHungerRate>0.115</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
-      <leatherDef>Leather_Light</leatherDef>
+      <leatherDef>RM_FragileChitin</leatherDef>
       <trainability>None</trainability>
       <petness>0.4</petness>
       <nuzzleMtbHours>12</nuzzleMtbHours>
@@ -6078,7 +6084,7 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RSW_SandLeaper</defName>
-    <label>sand leaper</label>
+    <label>qetta</label>
     <race>RSW_SandLeaper</race>
     <combatPower>33</combatPower>
     <ecoSystemWeight>0.25</ecoSystemWeight>

@@ -19,10 +19,9 @@
   RUT_MortuaryCrawler precedent (same item, the_scarlands wave), its
   texPath is not a live asset — authored from scratch with new art, same
   posture RUT_FleetFlier (the_forge wave) used when no live donor passed.
-  "emperor vulture" is the sheet's own capitalized name for the creature
-  (not a group label like "the Mortuary Guild"/"the Sealed"), so no
-  shipping-name card is owed the way RUT_MortuaryCrawler's was — same
-  posture as RUT_Glower/ultracactus in prior waves.
+  Shipping label is "ulvassk" (owner, Cracked Lands sheet 2026-10-09: "Absolutely
+  not, this fails the Terran check. Redo massicaly alien.") — a massively alien
+  thermal-riding flier, not a bird; defName kept for save safety.
 
   Mechanism: "rides the flat's thermals" is native 1.6 flight
   (MaxFlightTime/FlightCooldown/race flight fields), not VEF floating —
@@ -52,8 +51,8 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RUT_EmperorVulture</defName>
-    <label>emperor vulture</label>
-    <description>A huge, patient scavenger that spends its days riding the thermals off the cracked flats, circling for hours without a single wingbeat. It reads the water table the way the Farmers read the Sealed — it is never wrong about where the next carcass will be, and it is always early. The floods bring it two feasts: the drowned first, then the dying carpet after.</description>
+    <label>ulvassk</label>
+    <description>Nothing about an ulvassk is a bird. Its body is a long, flat, translucent-skinned sac slung between two pairs of membrane vanes, ribbed like a kite and stretched on hollow spars of bone, and it rides the thermals off the cracked flats by inflating that sac with heated air and drifting for hours without a single beat. Below hangs a cluster of jointed, hook-tipped feeding limbs folded around a radial mouth; it has no head to speak of, only a ring of dark pits along the leading edge that track the heat of the ground. It reads the water table the way the Farmers read the Sealed — it is never wrong about where the next carcass will be, and it is always early. The floods bring it two feasts: the drowned first, then the dying carpet after.</description>
     <statBases>
       <MoveSpeed>3.8</MoveSpeed>
       <Mass>18</Mass>
@@ -66,7 +65,7 @@
     </statBases>
     <tools>
       <li>
-        <label>talons</label>
+        <label>hooked feeding limbs</label>
         <capacities>
           <li>Scratch</li>
         </capacities>
@@ -75,7 +74,7 @@
         <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
       </li>
       <li>
-        <label>beak</label>
+        <label>radial mouth</label>
         <capacities>
           <li>Bite</li>
         </capacities>
@@ -136,7 +135,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RUT_EmperorVulture</defName>
-    <label>emperor vulture</label>
+    <label>ulvassk</label>
     <race>RUT_EmperorVulture</race>
     <combatPower>35</combatPower>
     <wildGroupSize>1~2</wildGroupSize>
