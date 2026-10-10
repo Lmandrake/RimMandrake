@@ -7,6 +7,10 @@
       "at": "2026-10-08T05:23:31.827Z",
       "decidedAt": "2026-10-08T05:23:26.023Z",
       "decision": "F",
+      "legacyVariants": [
+        "F"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -33,26 +37,55 @@
         "ce35bb8fedadc48745becee07c926922a703832d3ab8296ac713e11f50057c1b"
       ],
       "purgeTouched": true,
-      "variants": [
-        "F"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "D": "b256825e5a62ca56",
+        "F": "fd7bb07b87b17ae9"
+      },
+      "slots": {
+        "Things/Pawn/Animal/landopus/swimming_landopus": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "b256825e5a62ca56",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:23:21.599Z"
     },
     "RM_Bokka": {
       "at": "2026-10-08T05:02:53.192Z",
       "decidedAt": "2026-10-05T03:18:42.854Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "B": "98e0194277196d70"
+      },
+      "slots": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "98e0194277196d70",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:02:45.453Z"
     },
     "RM_Chorn": {
       "at": "2026-10-08T05:04:06.869Z",
       "decidedAt": "2026-10-08T05:03:46.933Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -67,15 +100,20 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "d5bd57c5d9d6e98f"
+      }
     },
     "RM_Dakkra": {
       "at": "2026-10-08T05:04:40.956Z",
       "decidedAt": "2026-10-08T05:04:23.401Z",
       "decision": "C",
+      "legacyVariants": [
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -89,14 +127,33 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "C"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "963bd405ac241726"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RM_Dakkra/RM_Dakkra": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "963bd405ac241726",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:04:40.956Z"
     },
     "RM_Dewfringe": {
       "at": "2026-10-08T05:27:33.439Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -109,20 +166,38 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "e28472e933adf979",
+        "B": "0a0970b50566f940",
+        "C": "cdebd13dba901b85",
+        "D": "ff7d72dd27df4001",
+        "E": "77bf6a7373511dba",
+        "F": "86754dfb5fdb15a3"
+      },
+      "slots": {
+        "Things/Plant/RM_Dewfringe": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "e28472e933adf979",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:27:33.439Z"
     },
     "RM_Dunejelly": {
       "at": "2026-10-08T05:05:58.736Z",
       "decidedAt": "2026-10-08T05:05:45.139Z",
       "decision": "D",
+      "legacyVariantsDefault": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -147,19 +222,24 @@
         "98384dcadc06b05500a44aa7ea355a1749ea35ea3574339b0ccc4d641ef91899"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E"
-      ],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "d35bd17b64332075",
+        "B": "b5505cd1b52284a4",
+        "C": "9cc2b9471249f6ea",
+        "D": "f7a2489624bba155",
+        "E": "d47de7802bb3370b"
+      }
     },
     "RM_Gennok": {
       "at": "2026-10-08T05:08:23.102Z",
       "decidedAt": "2026-10-08T05:08:14.714Z",
       "decision": "C",
+      "legacyVariants": [
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -168,15 +248,31 @@
         "95d35ae044a26575a28bc0a52be640f333510fe8db8d23088447c447081136a0"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "d2c2bc2bda544262"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RM_Gennok/RM_Gennok": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "d2c2bc2bda544262",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:08:13.589Z"
     },
     "RM_Gloomcast": {
       "at": "2026-10-08T05:08:47.208Z",
       "decidedAt": "2026-10-08T05:08:41.893Z",
       "decision": "E",
+      "legacyVariantsDefault": [
+        "A",
+        "B",
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -188,12 +284,21 @@
         "b65c4377b0f9bec8cfbc251fc971d9eb7ec0a9e1f89563d36e7174db2e920335"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B",
-        "E"
-      ],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "8047fb63d4da3448",
+        "B": "f657532c7465dc0b",
+        "E": "557915489d4c42dc"
+      },
+      "slots": {
+        "swanimals/Gloomcast/Gloomcast": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "557915489d4c42dc",
+          "state": "pick"
+        }
+      }
     },
     "RM_GreatDevourer": {
       "at": "2026-10-05T03:21:18.329Z",
@@ -217,12 +322,27 @@
         }
       ],
       "decision": "A",
+      "migratedFrom": 1,
       "note": "This is NOT Canon. Star Wars DOES have something called the Great Devourer that is unrelated. This was from Alpha Animals originally, and now we are making it ours. It is now a life stage of the Sarlacc (see entry) that quests until it finds rich food and a water source to claim. See the Sarlacc entry for what to call it properly. Remove the canon association with this animal. Lives at the RSW level (though we're adding to the Star Wars canon ourselves with this one)",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "6513d2be1242d267"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RM_GreatDevourer/RM_GreatDevourer": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "6513d2be1242d267",
+          "state": "pick"
+        }
+      }
     },
     "RM_Groundrunner": {
       "at": "2026-10-05T03:22:41.896Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -234,17 +354,45 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "25ef3f020ad9153c"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RM_Groundrunner/RM_Groundrunner": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "25ef3f020ad9153c",
+          "state": "pick"
+        }
+      }
     },
     "RM_Jellypot": {
       "at": "2026-10-05T03:23:31.832Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "See above, belongs at RimMandrake level.",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "d35bd17b64332075"
+      },
+      "slots": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "d35bd17b64332075",
+          "state": "pick"
+        }
+      }
     },
     "RM_Khorrak": {
       "at": "2026-10-05T03:24:32.049Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "See above, belongs at RimMandrake level",
       "prefill": "A",
       "purge": [
@@ -252,12 +400,18 @@
         "ed969696fb9b1831fdb0955c9488e145678fb535271ea1681dda8981a594d300",
         "ec5cacdb2a581d56308b9d3990943f7a5be41cdfe622a596ef79623cc263c60e"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "c766c6873f6c73e8"
+      }
     },
     "RM_Kudda": {
       "at": "2026-10-05T03:25:18.886Z",
       "decidedAt": "2026-10-05T03:25:14.272Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -269,35 +423,60 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2
     },
     "RM_Leachmoss": {
       "at": "2026-10-08T05:27:36.890Z",
       "decidedAt": "2026-10-05T03:34:26.417Z",
       "decision": "redo",
-      "note": "",
-      "prefill": "hold",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "hold",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "00edb29cd975345b",
+        "B": "78e59b386ae15cfb"
+      },
       "variantsAt": "2026-10-08T05:27:36.890Z"
     },
     "RM_Maidenbloom": {
       "at": "2026-10-05T03:34:47.286Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "e6f2c12c00f2dd2c",
+        "B": "3449661f35cdb56d"
+      },
+      "slots": {
+        "Things/Plant/RM_Maidenbloom": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "e6f2c12c00f2dd2c",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-05T03:34:47.286Z"
     },
     "RM_MatureFleshbeast": {
       "at": "2026-10-05T03:26:07.380Z",
       "decidedAt": "2026-10-05T03:26:00.765Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -309,16 +488,25 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2
     },
     "RM_Mirrak": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "3d08c5f6aca86951"
+      }
     },
     "RM_Ommok": {
       "at": "2026-10-05T03:27:16.168Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -330,11 +518,28 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "852c321cce764cfa"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RM_Ommok/RM_Ommok": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "852c321cce764cfa",
+          "state": "pick"
+        }
+      }
     },
     "RM_Oreclaw": {
       "at": "2026-10-08T05:12:59.593Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -347,15 +552,17 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "25ef3f020ad9153c"
+      }
     },
     "RM_Ossik": {
       "at": "2026-10-05T03:27:44.922Z",
       "decidedAt": "2026-10-05T03:27:42.379Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -367,11 +574,22 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2
     },
     "RM_Pavecrust": {
       "at": "2026-10-08T05:27:42.510Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -384,19 +602,30 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A",
-        "B",
-        "C",
-        "D",
-        "E",
-        "F"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "52134dffdd277a68",
+        "B": "c9f97b04511fd3a0",
+        "C": "1abe389646f5f054",
+        "D": "edac4e6dbf535df2",
+        "E": "bea4522aac570bbf",
+        "F": "9a6a32842c17bedf"
+      },
+      "slots": {
+        "Things/Plant/RM_Pavecrust": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "52134dffdd277a68",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:27:42.510Z"
     },
     "RM_Pirrik": {
       "at": "2026-10-05T02:43:41.936Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -404,20 +633,36 @@
         "ce36709f9f4696e7a960b07980b10bb1356a8fe8a02e2c348c996a3cc6516619",
         "827d7a3b37e26f39f8cb44c881274075c44ad03b878e9ddaffd23edbf007a193"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "87f412ffc1e953d5"
+      }
     },
     "RM_Qorrax": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax_Swimming": "B"
       },
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "70ddf5da74d57eda",
+        "B": "0f050e39bd41200a"
+      }
     },
     "RM_Shadespire": {
       "at": "2026-10-08T05:27:49.203Z",
       "decidedAt": "2026-10-08T05:27:47.027Z",
       "decision": "D",
+      "legacyVariantsDefault": [
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -425,19 +670,35 @@
         "64944ac8ff038ec3c8cc08584a3bd7a61d64f1ba5e6c844a1941879e46989dfc"
       ],
       "purgeTouched": true,
-      "variants": [
-        "D"
-      ],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "D": "335fce4e24a09e5b"
+      },
+      "slots": {
+        "Things/Plant/RM_Shadespire": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "335fce4e24a09e5b",
+          "state": "pick"
+        }
+      }
     },
     "RM_Sippra": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "e3297f8539cf53c0"
+      }
     },
     "RM_Skarrok": {
       "at": "2026-10-05T03:04:23.160Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "Accept art, but renake to Ski'ra'lim",
       "prefill": "A",
       "purge": [
@@ -445,11 +706,20 @@
         "3ae5d1b61d21e2a791cd5a2448fc38ba0809ed1da9ae465ec9318864a3b6dc6f",
         "a344c956e9292c8c0260c18a434d6a6230aeb7d92d30ee54280086678e0d7148"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "da429a3fcde76535"
+      }
     },
     "RM_Skiralim": {
       "at": "2026-10-08T05:19:02.305Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -462,14 +732,16 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "da429a3fcde76535"
+      }
     },
     "RM_Sollak": {
       "at": "2026-10-05T03:06:03.634Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "Keep art, rename it Chorn.",
       "prefill": "A",
       "purge": [
@@ -477,11 +749,17 @@
         "46e866033c6a3c2000ca45470ad663b3ef6f8307906794e57b253c265e3c26ab",
         "fc7e8a9cbdb51788979ea482d7a7994e9015a4f0cdea733c0a9532f425da0c87"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "d5bd57c5d9d6e98f"
+      }
     },
     "RM_Tazzok": {
       "at": "2026-10-05T03:06:32.157Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -489,11 +767,17 @@
         "abc03a1b583876e86a062e0c0aadef2f756f2fc6d390905b1fa89c09b129588e",
         "f098fcd0b46cdb094c02a9f638c1027fbd24332fb68d9f7b3ae9c8acda7c0b65"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "0dd53b1e275e77c4"
+      }
     },
     "RM_Tebbra": {
       "at": "2026-10-05T03:06:43.071Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -501,12 +785,18 @@
         "6b3a090946e5d54236827f1ceb8a66f76bed90ed8126ec752bc33b2232a6cc0e",
         "ff50a8125e4f130215464faa4eb6633b48cab873a1cd2ecf99fdef04c910816e"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "10504e111da41dd4"
+      }
     },
     "RM_Thurra": {
       "at": "2026-10-05T03:28:32.410Z",
       "decidedAt": "2026-10-05T03:28:29.768Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -518,12 +808,15 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2
     },
     "RM_TruffleMole": {
       "at": "2026-10-05T03:29:44.217Z",
       "decidedAt": "2026-10-05T03:29:44.217Z",
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -535,11 +828,25 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "B": "9581b0b599e7b420"
+      },
+      "slots": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "9581b0b599e7b420",
+          "state": "pick"
+        }
+      }
     },
     "RM_Ulgga": {
       "at": "2026-10-05T03:31:36.983Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "see above",
       "prefill": "A",
       "purge": [
@@ -547,18 +854,28 @@
         "9469399751d86b1067d1c5211c0646778ea2fa1c77a65a81b732d99f397a752a",
         "dd87d591d64faa7477367d5faf88a1fc6a92d0fdd55f38b5bbb4372cef1c8caa"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "61e22d0e7cddfd0f"
+      }
     },
     "RM_Ultracactus": {
       "at": "2026-10-05T03:38:51.802Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "see above",
-      "prefill": "hold"
+      "prefill": "hold",
+      "rev": "f22208a82306d1d2",
+      "schema": 2
     },
     "RM_Venomvine": {
       "at": "2026-10-08T05:28:23.003Z",
       "decidedAt": "2026-10-05T03:36:51.415Z",
       "decision": "redo",
+      "legacyVariantsDefault": [],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -574,37 +891,73 @@
         }
       ],
       "prefill": "hold",
-      "variants": [],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2
     },
     "RM_Vorrel": {
       "at": "2026-10-08T05:28:32.012Z",
       "decidedAt": "2026-10-08T05:28:32.012Z",
       "decision": "B",
-      "note": "",
-      "prefill": "hold",
-      "variants": [
+      "legacyVariantsDefault": [
         "B"
       ],
-      "variantsDefault": true
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "hold",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "B": "a13ca4fdcbaba748"
+      }
     },
     "RM_Vosska": {
       "at": "2026-10-05T03:32:26.866Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "see above",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "8c9d8d927472d05a"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RM_Vosska/RM_Vosska": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "8c9d8d927472d05a",
+          "state": "pick"
+        }
+      }
     },
     "RM_Vrekka": {
       "at": "2026-10-05T03:13:01.749Z",
       "decidedAt": "2026-10-05T03:12:42.127Z",
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "Keep the overall face/mouth part and bony underjaw. Make the legs even snorter and less fit for running. Ambush predator.",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Vrekka/RM_Vrekka": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RSW_Bantha": {
       "at": "2026-10-08T05:02:38.415Z",
       "decidedAt": "2026-10-08T05:02:21.204Z",
       "decision": "F",
+      "legacyVariants": [
+        "F",
+        "G",
+        "H",
+        "I",
+        "J"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -629,19 +982,31 @@
         "180410ff27f77194026df59b76551860bb8ea7c98d637b8ae32bbe9e096e4169"
       ],
       "purgeTouched": true,
-      "variants": [
-        "F",
-        "G",
-        "H",
-        "I",
-        "J"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "85574fad8cd7ef21",
+        "F": "196f016abd10d2d8",
+        "G": "02a5b98d0f52b352",
+        "H": "56beef210c87bd44",
+        "I": "729a2402667708ac",
+        "J": "b36e0a8a7de21203"
+      },
+      "slots": {
+        "swanimals/Bantha/BanthaW_j": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "85574fad8cd7ef21",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:02:28.752Z"
     },
     "RSW_Bokka": {
       "at": "2026-10-05T03:18:38.290Z",
       "decidedAt": "2026-10-05T03:18:20.809Z",
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -653,12 +1018,29 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "B": "98e0194277196d70"
+      },
+      "slots": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "98e0194277196d70",
+          "state": "pick"
+        }
+      }
     },
     "RSW_Bolotaur": {
       "at": "2026-10-08T05:03:28.836Z",
       "decidedAt": "2026-10-08T05:03:05.469Z",
       "decision": "E",
+      "legacyVariants": [
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -672,15 +1054,26 @@
         "202d94c298daed4a360312adb5d5d335904e1f9ee68be5d33ea450ece9c8ee0e"
       ],
       "purgeTouched": true,
-      "variants": [
-        "E"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "E": "81b4da6e2b957885"
+      },
+      "slots": {
+        "swanimals/Bolotaur/Bolotaur": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "81b4da6e2b957885",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:03:28.836Z"
     },
     "RSW_Clodhopper": {
       "at": "2026-10-05T01:19:00.386Z",
       "decidedAt": "2026-10-05T01:16:52.328Z",
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "Truly alien creature, do not turn into a bird. Ignore the \"avian\" description, they don't look anything like a bird. Four legged. Wingless. Travel in large groups. Bizarre jointed mouth part ending in an extended beak at the end of a fleshy appendage.  Follow canon.",
       "prefill": "A",
       "purge": [
@@ -688,12 +1081,24 @@
         "dc297c1ba505b126c785a32f7ec3c07e6432e68509b6efffd96aa4a05ddf84c2",
         "cd39c6b7a3a4b2111728d3020313923f04af28046cd9062de2ec81f87fecf343"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "slots": {
+        "swanimals/Clodhopper/Clodhopper": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RSW_Dewback": {
       "at": "2026-10-08T05:05:19.261Z",
       "decidedAt": "2026-10-08T05:04:56.887Z",
       "decision": "H",
+      "legacyVariants": [
+        "H"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -719,15 +1124,26 @@
         "758b2b01eb82d06f18c09316f3d834a715f416e35660790c3648267d9ab14935"
       ],
       "purgeTouched": true,
-      "variants": [
-        "H"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "H": "c05d3d9ca162ffea"
+      },
+      "slots": {
+        "swanimals/Dewback/Dewback": {
+          "migrated": true,
+          "pick": "H",
+          "set_id": "c05d3d9ca162ffea",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:05:00.406Z"
     },
     "RSW_DommoTree": {
       "at": "2026-10-05T03:34:06.796Z",
       "decidedAt": "2026-10-05T03:34:02.881Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -739,12 +1155,21 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2
     },
     "RSW_Eopie": {
       "at": "2026-10-08T05:06:34.034Z",
       "decidedAt": "2026-10-08T05:06:22.402Z",
       "decision": "G",
+      "legacyVariantsDefault": [
+        "A",
+        "B",
+        "F",
+        "G"
+      ],
+      "migratedFrom": 1,
       "note": "Good!",
       "picks": {
         "swanimals/Eopie/Eopie_j": "F"
@@ -759,18 +1184,31 @@
         "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B",
-        "F",
-        "G"
-      ],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "9f57f01b3a98ad9b",
+        "B": "caa1fafbce04d3f1",
+        "F": "684b1bf387e4cea1",
+        "G": "565b93b674cc9a2d"
+      },
+      "slots": {
+        "swanimals/Eopie/Eopie_j": {
+          "migrated": true,
+          "pick": "F",
+          "set_id": "684b1bf387e4cea1",
+          "state": "pick"
+        }
+      }
     },
     "RSW_Falumpaset": {
       "at": "2026-10-08T05:07:03.438Z",
       "decidedAt": "2026-10-08T05:06:54.313Z",
       "decision": "C",
+      "legacyVariants": [
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -791,15 +1229,29 @@
         "9082ec7f8b8ea1fb1413ca1b69358f59013288802c9a3f22aa260b185cbfc416"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "c91b98353c647e4c"
+      },
+      "slots": {
+        "swanimals/Falumpaset/Falumpaset": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "c91b98353c647e4c",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:07:03.438Z"
     },
     "RSW_FeralGrazer": {
       "at": "2026-10-08T05:07:24.282Z",
       "decidedAt": "2026-10-08T05:07:24.282Z",
       "decision": "C",
+      "legacyVariants": [
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -818,15 +1270,35 @@
         "b2472be4ad49ba9d7d8a4c43f60c4aaff8f95cf53e3f99da5c0ff44ca4fa46de"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "3721850a0b3245bc"
+      },
+      "slots": {
+        "swanimals/FeralGrazer/FeralGrazer": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "3721850a0b3245bc",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:07:09.235Z"
     },
     "RSW_FrilledGorg": {
       "at": "2026-10-08T05:08:05.789Z",
       "decidedAt": "2026-10-08T05:07:50.851Z",
       "decision": "F",
+      "legacyVariants": [
+        "A",
+        "F",
+        "G",
+        "I",
+        "J",
+        "K",
+        "M"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -853,21 +1325,56 @@
         "c83dd075243daaa6e40de427a3d0d90ebf837abc3bd088809a04ce233b23210c"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "F",
-        "G",
-        "I",
-        "J",
-        "K",
-        "M"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "9f911d05cf1b7d40",
+        "C": "d1eb6bba973bccd0",
+        "D": "8326e7abcb9d51d8",
+        "E": "b77348a9b148341f",
+        "F": "e5370881222ab665",
+        "G": "3cb8fa6f0e07e63c",
+        "I": "9ea73859f0eb63ba",
+        "J": "b568a9dd7affbf1b",
+        "K": "f44d59598e47b95c",
+        "M": "3d05a19c84480927"
+      },
+      "slots": {
+        "swanimals/FrilledGorg/FrilledGorg_Swimming": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "d1eb6bba973bccd0",
+          "state": "pick"
+        },
+        "swanimals/FrilledGorg/FrilledGorg_j": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "8326e7abcb9d51d8",
+          "state": "pick"
+        },
+        "swanimals/FrilledGorg/FrilledGorg_j_Swimming": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "b77348a9b148341f",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:07:47.717Z"
     },
     "RSW_Gorg": {
       "at": "2026-10-08T05:09:15.863Z",
       "decidedAt": "2026-10-08T05:09:15.863Z",
       "decision": "F",
+      "legacyVariants": [
+        "F",
+        "G",
+        "H",
+        "K",
+        "L",
+        "N",
+        "O"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -892,30 +1399,69 @@
         "6abf49062826588170b9ade67da4aeeba55426034831692cc60cbf17d08d65e7"
       ],
       "purgeTouched": true,
-      "variants": [
-        "F",
-        "G",
-        "H",
-        "K",
-        "L",
-        "N",
-        "O"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "128d018ac27d60ed",
+        "D": "52fbb24c72748535",
+        "E": "350fe6a8080b0de5",
+        "F": "c50e748fc449ce44",
+        "G": "6b3e5ab0f7b31699",
+        "H": "d4e4209c7cdfcb9f",
+        "K": "0343e49f7acaeab6",
+        "L": "4f63abc22a4c9a92",
+        "N": "faa3ec19d204f6ef",
+        "O": "189583de0f4a20bc"
+      },
+      "slots": {
+        "swanimals/Gorg/Gorg_Swimming": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "128d018ac27d60ed",
+          "state": "pick"
+        },
+        "swanimals/Gorg/Gorg_j": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "52fbb24c72748535",
+          "state": "pick"
+        },
+        "swanimals/Gorg/Gorg_j_Swimming": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "350fe6a8080b0de5",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:09:00.858Z"
     },
     "RSW_GreatDevourer": {
       "at": "2026-10-08T05:27:13.661Z",
       "decision": "A",
-      "note": "Not SW",
-      "prefill": "A",
-      "variants": [
+      "legacyVariantsDefault": [
         "A"
       ],
-      "variantsDefault": true
+      "migratedFrom": 1,
+      "note": "Not SW",
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "6513d2be1242d267"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "6513d2be1242d267",
+          "state": "pick"
+        }
+      }
     },
     "RSW_Groundrunner": {
       "at": "2026-10-05T03:22:34.924Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -927,12 +1473,30 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "25ef3f020ad9153c"
+      },
+      "slots": {
+        "Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "25ef3f020ad9153c",
+          "state": "pick"
+        }
+      }
     },
     "RSW_Gutkurr": {
       "at": "2026-10-08T05:09:24.486Z",
       "decidedAt": "2026-10-08T05:09:22.712Z",
       "decision": "C",
+      "legacyVariantsDefault": [
+        "A",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -941,16 +1505,29 @@
         "bd8053c99e1367906bbedb693ee2ccc457dba3c45b6bdd4c9c10bde58a9651eb"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "C"
-      ],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "3c2c2969c5e4ea62",
+        "C": "26f0168eb36dabef"
+      },
+      "slots": {
+        "swanimals/Gutkurr/Gutkurr": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "26f0168eb36dabef",
+          "state": "pick"
+        }
+      }
     },
     "RSW_Horax": {
       "at": "2026-10-08T05:09:50.473Z",
       "decidedAt": "2026-10-08T05:09:44.191Z",
       "decision": "E",
+      "legacyVariants": [
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -963,15 +1540,29 @@
         "dabe7c133ead7a48bc6cd0140d6c04585ef9d4cfe25274c8839bece39f664af4"
       ],
       "purgeTouched": true,
-      "variants": [
-        "E"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "E": "73c428bc8a86fad8"
+      },
+      "slots": {
+        "swanimals/Horax/Horax": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "73c428bc8a86fad8",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:09:47.245Z"
     },
     "RSW_Hrumph": {
       "at": "2026-10-08T05:10:16.605Z",
       "decidedAt": "2026-10-08T05:10:08.793Z",
       "decision": "D",
+      "legacyVariants": [
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Hrumph/Hrumph_j": "C"
@@ -983,15 +1574,34 @@
         "02397881facf5c06691c38b0cd2c2cc05067764d5891d10624c8a2395e7a71ac"
       ],
       "purgeTouched": true,
-      "variants": [
-        "D"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "b0d3c949efa5d789",
+        "D": "026a66d126a8bfaa"
+      },
+      "slots": {
+        "swanimals/Hrumph/Hrumph_j": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "b0d3c949efa5d789",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:10:14.466Z"
     },
     "RSW_Iriaz": {
       "at": "2026-10-08T05:10:40.058Z",
       "decidedAt": "2026-10-08T05:10:37.746Z",
       "decision": "I",
+      "legacyVariantsDefault": [
+        "A",
+        "B",
+        "G",
+        "H",
+        "I"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "B",
       "purge": [
@@ -1017,19 +1627,32 @@
         "f0417789c32fb83912fbe9d56b6d1fc1f769e308826567e01f678e111de62a67"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "B",
-        "G",
-        "H",
-        "I"
-      ],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "8327c519dcf23eeb",
+        "B": "ab6d40b18bc5b694",
+        "G": "c8a3eca2b256cf7e",
+        "H": "a94fb8cdad8202c5",
+        "I": "bb28c35e8466d65f"
+      },
+      "slots": {
+        "swanimals/Iriaz/Iriaz": {
+          "migrated": true,
+          "pick": "I",
+          "set_id": "bb28c35e8466d65f",
+          "state": "pick"
+        }
+      }
     },
     "RSW_IridonianReek": {
       "at": "2026-10-08T05:10:52.486Z",
       "decidedAt": "2026-10-08T05:10:47.814Z",
       "decision": "D",
+      "legacyVariants": [
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Reek/Reek_j": "C"
@@ -1041,15 +1664,30 @@
         "48ecfc21360c987853a65773c545ef1936be3279b313e314ee9d6bcf60c671f8"
       ],
       "purgeTouched": true,
-      "variants": [
-        "D"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "722dca6e8a29e26e",
+        "D": "4d829a8d44f53936"
+      },
+      "slots": {
+        "swanimals/Reek/Reek_j": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "722dca6e8a29e26e",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:10:50.942Z"
     },
     "RSW_Jakobeast": {
       "at": "2026-10-08T05:11:04.362Z",
       "decidedAt": "2026-10-08T05:10:59.627Z",
       "decision": "E",
+      "legacyVariants": [
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Jakobeast/Jakobeast_j": "C"
@@ -1061,15 +1699,30 @@
         "90bbe5bea7d9223deccc7b78aed2a5e09dc3f8208c1d284a44a5ba3372ea3701"
       ],
       "purgeTouched": true,
-      "variants": [
-        "E"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "091afad2c0abfb99",
+        "E": "14831d65d6678c3c"
+      },
+      "slots": {
+        "swanimals/Jakobeast/Jakobeast_j": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "091afad2c0abfb99",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:11:02.460Z"
     },
     "RSW_Jamel": {
       "at": "2026-10-08T05:11:17.420Z",
       "decidedAt": "2026-10-08T05:11:12.567Z",
       "decision": "D",
+      "legacyVariants": [
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -1078,21 +1731,49 @@
         "d7e33c9d85e3bad84472dbf08d4e7aec637b47107bfacb80529d1e180e751e31"
       ],
       "purgeTouched": true,
-      "variants": [
-        "D"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "D": "0197440d32d37096"
+      },
+      "slots": {
+        "swanimals/Jamel/Jamel": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "0197440d32d37096",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:11:14.168Z"
     },
     "RSW_Jellypot": {
       "at": "2026-10-05T03:23:20.223Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "Tint it more green. Rename to Dunejelly.",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "d35bd17b64332075"
+      },
+      "slots": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "d35bd17b64332075",
+          "state": "pick"
+        }
+      }
     },
     "RSW_Jimvu": {
       "at": "2026-10-08T05:11:29.016Z",
       "decidedAt": "2026-10-08T05:11:26.284Z",
       "decision": "C",
+      "legacyVariants": [
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -1101,14 +1782,25 @@
         "fc76118c588611d33a2e91c66332bdbacc211c87ff58a12ef979a7e409041b70"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "d5f761ad778ee12e"
+      },
+      "slots": {
+        "swanimals/Jimvu/Jimvu": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "d5f761ad778ee12e",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:11:27.494Z"
     },
     "RSW_Khorrak": {
       "at": "2026-10-05T03:24:15.288Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "It should produce vacstone chunks.",
       "prefill": "A",
       "purge": [
@@ -1116,12 +1808,21 @@
         "ed969696fb9b1831fdb0955c9488e145678fb535271ea1681dda8981a594d300",
         "ec5cacdb2a581d56308b9d3990943f7a5be41cdfe622a596ef79623cc263c60e"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "c766c6873f6c73e8"
+      }
     },
     "RSW_Krykna": {
       "at": "2026-10-08T05:11:38.525Z",
       "decidedAt": "2026-10-08T05:11:35.320Z",
       "decision": "C",
+      "legacyVariants": [
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -1130,15 +1831,26 @@
         "21241915edca38bed4c7e83d70bc86c50c7a49a6a9ac7c902ebbe02a97fecc31"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "7bc0dc2754f5b5e3"
+      },
+      "slots": {
+        "swanimals/Krykna/Krykna": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "7bc0dc2754f5b5e3",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:11:36.293Z"
     },
     "RSW_Kudda": {
       "at": "2026-10-05T03:25:10.421Z",
       "decidedAt": "2026-10-05T03:25:05.824Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1150,12 +1862,21 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2
     },
     "RSW_Kwi": {
+      "assign": {
+        "C": "swanimals/Kwi/Kwi"
+      },
       "at": "2026-10-08T05:11:49.762Z",
       "decidedAt": "2026-10-08T05:11:49.762Z",
       "decision": "C",
+      "legacyVariants": [
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_byname": "C"
@@ -1167,15 +1888,35 @@
         "e56b7b7ceaeb955ceaf6f03ff2e8107a5675ed1b7a931e1c20a7f4c96f0d3849"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "86b4f24958b27c00"
+      },
+      "slots": {
+        "swanimals/Kwi/Kwi": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "86b4f24958b27c00",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:11:45.310Z"
     },
     "RSW_LongtailGorg": {
       "at": "2026-10-08T05:12:07.465Z",
       "decidedAt": "2026-10-08T05:12:02.554Z",
       "decision": "F",
+      "legacyVariants": [
+        "F",
+        "G",
+        "H",
+        "I",
+        "J",
+        "K",
+        "L"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1199,21 +1940,47 @@
         "b1af40525b8033f45c21405495c25c26225ee8163d58e1d2f141231290450a21"
       ],
       "purgeTouched": true,
-      "variants": [
-        "F",
-        "G",
-        "H",
-        "I",
-        "J",
-        "K",
-        "L"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "cecc5d72a88293d4",
+        "D": "284a09cf995708e4",
+        "E": "b2ad6382a85b4690",
+        "F": "bb0e7e6caeb302a5",
+        "G": "54082c82e0977879",
+        "H": "9d8fb3094ba869f3",
+        "I": "e2d1c122f31de4ac",
+        "J": "c846799a84f60232",
+        "K": "cbcbc71401dbe5d2",
+        "L": "d7ade2b5325eb826"
+      },
+      "slots": {
+        "swanimals/LongtailGorg/LongtailGorg_Swimming": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "cecc5d72a88293d4",
+          "state": "pick"
+        },
+        "swanimals/LongtailGorg/LongtailGorg_j": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "284a09cf995708e4",
+          "state": "pick"
+        },
+        "swanimals/LongtailGorg/LongtailGorg_j_Swimming": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "b2ad6382a85b4690",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:11:58.448Z"
     },
     "RSW_MatureFleshbeast": {
       "at": "2026-10-05T03:25:53.952Z",
       "decidedAt": "2026-10-05T03:25:45.188Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1231,7 +1998,9 @@
         "e34da4a0974656f7711c4ef5a310cc30e3b4cc01e2e4ca354c529ac312274b49",
         "924215c2575d4f3d829d926428520551b9b63ed2ac93c875db4031072bff095c"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "f22208a82306d1d2",
+      "schema": 2
     },
     "RSW_Nerf": {
       "at": "2026-10-08T05:12:34.688Z",
@@ -1262,6 +2031,10 @@
       ],
       "decidedAt": "2026-10-08T05:12:29.408Z",
       "decision": "E",
+      "legacyVariants": [
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1286,14 +2059,42 @@
         "1ca88ca5d3db5afbe6cbee248534beb33c36946f521a62b1b1fa0a2f90ca3680"
       ],
       "purgeTouched": true,
-      "variants": [
-        "E"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "B": "39330a080d5de31c",
+        "C": "ff784bddfaa3166c",
+        "E": "a3280a7e83c97d65"
+      },
+      "slots": {
+        "swanimals/Nerf/Nerf_f": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "a3280a7e83c97d65",
+          "state": "pick"
+        },
+        "swanimals/Nerf/Nerf_j": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "39330a080d5de31c",
+          "state": "pick"
+        },
+        "swanimals/Nerf/Nerf_m": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "ff784bddfaa3166c",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:12:25.277Z"
     },
     "RSW_Nuna": {
       "at": "2026-10-05T02:43:29.607Z",
       "decision": "A",
+      "legacyVariants": [
+        "F"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Nuna/Nuna_m": "F"
@@ -1312,15 +2113,19 @@
         "2c70ed792c2fa6111362bc59a464cbfdd0c2cd9bdacdd8f8a7310a1c96fa0167"
       ],
       "purgeTouched": true,
-      "variants": [
-        "F"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "8fb45bb646070982",
+        "F": "60147d5b7d6bf4b1"
+      },
       "variantsAt": "2026-10-05T02:43:15.484Z"
     },
     "RSW_Ommok": {
       "at": "2026-10-05T03:27:10.393Z",
       "decidedAt": "2026-10-05T03:26:29.583Z",
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1332,12 +2137,26 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "B": "384c3937f605eff0"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RSW_Ommok/RSW_Ommok": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "384c3937f605eff0",
+          "state": "pick"
+        }
+      }
     },
     "RSW_Ossik": {
       "at": "2026-10-05T03:27:37.053Z",
       "decidedAt": "2026-10-05T03:27:34.261Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1355,38 +2174,71 @@
         "919b35c82665929c48b6017deeccbe2c333d21a74e1a0cd45abd69153b4cb3d8",
         "9ecd37095c8f967d1d28d667d8f890c333e1d6a0e2575d59ac3f6665fb00a767"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "f22208a82306d1d2",
+      "schema": 2
     },
     "RSW_Plant_Chakroot_Wild": {
       "at": "2026-10-08T05:28:38.455Z",
       "decidedAt": "2026-10-08T05:28:37.017Z",
       "decision": "C",
+      "legacyVariantsDefault": [
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
         "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C"
-      ],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "f46101e2655c5240"
+      },
+      "slots": {
+        "Things/Plant/RSW_Plant_Chakroot_Wild": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "f46101e2655c5240",
+          "state": "pick"
+        }
+      }
     },
     "RSW_Plant_HubbaGourd_Wild": {
       "at": "2026-10-08T05:29:02.704Z",
       "decidedAt": "2026-10-08T05:28:58.416Z",
       "decision": "B",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "B": "665872840e9709e4"
+      },
+      "slots": {
+        "Things/Plant/RSW_Plant_HubbaGourd_Wild": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "665872840e9709e4",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:28:57.467Z"
     },
     "RSW_Ronto": {
       "at": "2026-10-08T05:14:17.651Z",
       "decidedAt": "2026-10-08T05:14:06.565Z",
       "decision": "F",
+      "legacyVariants": [
+        "F"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -1404,15 +2256,29 @@
         "9f148f51a5b05b6011e69898add2b28301437cd5280ad508e5f8f6dfe74cbe96"
       ],
       "purgeTouched": true,
-      "variants": [
-        "F"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "F": "4d893e5c3bbd694b"
+      },
+      "slots": {
+        "swanimals/Ronto/Ronto": {
+          "migrated": true,
+          "pick": "F",
+          "set_id": "4d893e5c3bbd694b",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:14:15.009Z"
     },
     "RSW_Runyip": {
       "at": "2026-10-08T05:14:33.790Z",
       "decidedAt": "2026-10-08T05:14:25.963Z",
       "decision": "G",
+      "legacyVariants": [
+        "G"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Runyip/Runyip_Swimming": "C",
@@ -1426,15 +2292,44 @@
         "09f42584602e2be5452f174e29a71891d1a1917541992cb33a01c0b1ec12cb39"
       ],
       "purgeTouched": true,
-      "variants": [
-        "G"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "7bcbbb0655963442",
+        "D": "3e19c488de47a8fc",
+        "E": "73b23e267f7e996d",
+        "G": "5feab3793c092d27"
+      },
+      "slots": {
+        "swanimals/Runyip/Runyip_Swimming": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "7bcbbb0655963442",
+          "state": "pick"
+        },
+        "swanimals/Runyip/Runyip_j": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "3e19c488de47a8fc",
+          "state": "pick"
+        },
+        "swanimals/Runyip/Runyip_j_Swimming": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "73b23e267f7e996d",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:14:31.191Z"
     },
     "RSW_Shaak": {
       "at": "2026-10-08T05:14:42.970Z",
       "decidedAt": "2026-10-08T05:14:39.038Z",
       "decision": "C",
+      "legacyVariants": [
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -1443,15 +2338,31 @@
         "5ab6582f802250356a1767edaaf6a89c1432007f4deb0a491fbaa88854d83252"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "64dfe69577bf5089"
+      },
+      "slots": {
+        "swanimals/Shaak/Shaak": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "64dfe69577bf5089",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:14:41.291Z"
     },
     "RSW_Shyrack": {
       "at": "2026-10-08T05:15:19.408Z",
       "decidedAt": "2026-10-08T05:14:52.796Z",
       "decision": "C",
+      "legacyVariantsDefault": [
+        "A",
+        "C",
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1481,17 +2392,30 @@
         "06ed443cc2d720d15b1dc228b154ca744229f68e3ec4fb7506ce5d52a80b5861"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "C",
-        "D"
-      ],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "8cfe62ce798cae23",
+        "C": "4ad43e5eb3a04638",
+        "D": "7567a80f84d78595"
+      },
+      "slots": {
+        "swanimals/Shyrack/Shyrack": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "4ad43e5eb3a04638",
+          "state": "pick"
+        }
+      }
     },
     "RSW_Skalder": {
       "at": "2026-10-08T05:18:21.443Z",
       "decidedAt": "2026-10-08T05:18:11.034Z",
       "decision": "D",
+      "legacyVariants": [
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1516,15 +2440,33 @@
         "d4e402ac13bee4208bbfe088fe5ec27c94797047f965ab6ccdb57fe646c3bf34"
       ],
       "purgeTouched": true,
-      "variants": [
-        "D"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "cf1960f8a309f73e",
+        "D": "89881c042de8a423"
+      },
+      "slots": {
+        "swanimals/Skalder/Skalder_Swimming": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "cf1960f8a309f73e",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:18:13.540Z"
     },
     "RSW_Sketto": {
       "at": "2026-10-08T05:18:45.590Z",
       "decidedAt": "2026-10-08T05:18:36.800Z",
       "decision": "C",
+      "legacyVariantsDefault": [
+        "A",
+        "C",
+        "D",
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1577,31 +2519,62 @@
         "37ea6f01fc5ee8b533660156672b2770e41eec9c5f9f5f767183787ad5d09166"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "C",
-        "D",
-        "E"
-      ],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "86ed2ed45da973da",
+        "C": "80eba54af3de63bd",
+        "D": "093ef2185344f96c",
+        "E": "b3936105723cd550"
+      },
+      "slots": {
+        "swanimals/Sketto/Sketto": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "80eba54af3de63bd",
+          "state": "pick"
+        }
+      }
     },
     "RSW_SurraGrass": {
       "at": "2026-10-08T05:28:00.175Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "7f89808c208b584a",
+        "B": "1a9153d96cb378f0",
+        "C": "c01aaf8d8f124a2c",
+        "D": "f827d7a0af46a838"
+      },
+      "slots": {
+        "Things/Plant/RSW_SurraGrass": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "7f89808c208b584a",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:27:56.581Z"
     },
     "RSW_TeeMuss": {
       "at": "2026-10-08T05:22:52.947Z",
       "decidedAt": "2026-10-08T05:22:40.525Z",
       "decision": "C",
+      "legacyVariantsDefault": [
+        "A",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1622,16 +2595,26 @@
         "098e01a4a5a2c855b491d0eac7dcc3544390994463f05c60cad34a3f0a41d513"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "C"
-      ],
-      "variantsDefault": true
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "faa87041c6d37057",
+        "C": "92c9cc5785b93b62"
+      },
+      "slots": {
+        "swanimals/TeeMuss/TeeMuss": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "92c9cc5785b93b62",
+          "state": "pick"
+        }
+      }
     },
     "RSW_Thurra": {
       "at": "2026-10-05T03:28:27.392Z",
       "decidedAt": "2026-10-05T03:28:24.020Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1643,12 +2626,15 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2
     },
     "RSW_TruffleMole": {
       "at": "2026-10-05T03:29:33.405Z",
       "decidedAt": "2026-10-05T03:28:38.873Z",
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1660,12 +2646,26 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "B": "9581b0b599e7b420"
+      },
+      "slots": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "9581b0b599e7b420",
+          "state": "pick"
+        }
+      }
     },
     "RSW_Ulgga": {
       "at": "2026-10-05T03:31:30.186Z",
       "decidedAt": "2026-10-05T03:30:13.684Z",
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1685,12 +2685,21 @@
         "9469399751d86b1067d1c5211c0646778ea2fa1c77a65a81b732d99f397a752a",
         "dd87d591d64faa7477367d5faf88a1fc6a92d0fdd55f38b5bbb4372cef1c8caa"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RSW_Ulgga/RSW_Ulgga": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RSW_Ultracactus": {
       "at": "2026-10-05T03:38:44.071Z",
       "decidedAt": "2026-10-05T03:38:00.163Z",
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1702,12 +2711,19 @@
           "when": "2026-10-09T01:19:47-0700"
         }
       ],
-      "prefill": "hold"
+      "prefill": "hold",
+      "rev": "f22208a82306d1d2",
+      "schema": 2
     },
     "RSW_Uvak": {
       "at": "2026-10-08T05:24:03.615Z",
       "decidedAt": "2026-10-08T05:23:47.357Z",
       "decision": "C",
+      "legacyVariants": [
+        "C",
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1737,16 +2753,32 @@
         "de165f017ed92394d71fc2b8e0632bfd7259f6f58397aecf9629e32c568c33eb"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C",
-        "D"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "e195354843f1913f",
+        "D": "4cde5aeaefcdb390"
+      },
+      "slots": {
+        "swanimals/Uvak/Uvak": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "e195354843f1913f",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:24:03.615Z"
     },
     "RSW_Varactyl": {
       "at": "2026-10-08T05:25:05.095Z",
       "decidedAt": "2026-10-08T05:25:05.095Z",
       "decision": "D",
+      "legacyVariants": [
+        "D",
+        "E",
+        "F"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_byname": "D",
@@ -1759,30 +2791,62 @@
         "2c6b0b81f0f8c6d812f0ed79be9d33fa9889e80657aaf81832fde9b55de5a684"
       ],
       "purgeTouched": true,
-      "variants": [
-        "D",
-        "E",
-        "F"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "B": "1d670f218bd1f254",
+        "D": "7802fe617410298c",
+        "E": "150d7b7f54600a1d",
+        "F": "4b37121a6c9dd531"
+      },
+      "slots": {
+        "swanimals/Varactyl/Varactyl_m": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "1d670f218bd1f254",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:24:09.730Z"
     },
     "RSW_VellaraBloom": {
       "at": "2026-10-08T05:28:04.684Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C",
         "D"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "bae81d085fe14e7d",
+        "B": "7303d283766194c4",
+        "C": "0a8e0dd9952c7949",
+        "D": "8b7969b5e3ecd227"
+      },
+      "slots": {
+        "Things/Plant/RSW_VellaraBloom": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "bae81d085fe14e7d",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:28:04.684Z"
     },
     "RSW_Voorpak": {
       "at": "2026-10-08T05:25:14.959Z",
       "decidedAt": "2026-10-08T05:25:12.005Z",
       "decision": "D",
+      "legacyVariants": [
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -1801,27 +2865,48 @@
         "f4f121dfc2d25040ef23803edd4bd16dd49fc574bdf9689fb3f8a2ab8913900e"
       ],
       "purgeTouched": true,
-      "variants": [
-        "D"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "D": "6e9cef3e679b11ea"
+      },
+      "slots": {
+        "swanimals/Voorpak/Voorpak": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "6e9cef3e679b11ea",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:25:14.959Z"
     },
     "RSW_Vosska": {
       "at": "2026-10-05T03:32:17.798Z",
       "decision": "A",
+      "legacyVariants": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "Move this to RimMandrake, then move to our custom extreme desert biome to swim in the sand",
       "prefill": "A",
       "purge": [],
       "purgeTouched": true,
-      "variants": [
-        "B"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "A": "8c9d8d927472d05a",
+        "B": "b60f7955bdc484a2"
+      },
       "variantsAt": "2026-10-05T03:31:59.068Z"
     },
     "RSW_Worrt": {
       "at": "2026-10-08T05:25:45.695Z",
       "decidedAt": "2026-10-08T05:25:44.248Z",
       "decision": "E",
+      "legacyVariants": [
+        "E"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "swanimals/Worrt/Worrt_Swimming": "C",
@@ -1837,15 +2922,37 @@
         "f393a11d4a583f599237f626a68e16158f3f8253e8c8733e451d598163217b3d"
       ],
       "purgeTouched": true,
-      "variants": [
-        "E"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "cc1a618450573abe",
+        "D": "8df24d15330775e6",
+        "E": "3828c32e360f5d07"
+      },
+      "slots": {
+        "swanimals/Worrt/Worrt_Swimming": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "cc1a618450573abe",
+          "state": "pick"
+        },
+        "swanimals/Worrt/Worrt_j": {
+          "migrated": true,
+          "pick": "D",
+          "set_id": "8df24d15330775e6",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:25:39.819Z"
     },
     "RSW_Wraid": {
       "at": "2026-10-08T05:25:55.182Z",
       "decidedAt": "2026-10-08T05:25:53.693Z",
       "decision": "C",
+      "legacyVariants": [
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -1854,15 +2961,30 @@
         "2e230da5ae927e65119021a718fbf91102ad80db701576b6ef2784116086e682"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "41a83a152adab5e7"
+      },
+      "slots": {
+        "swanimals/Wraid/Wraid": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "41a83a152adab5e7",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:25:52.495Z"
     },
     "RSW_WraidAlpha": {
       "at": "2026-10-08T05:02:09.625Z",
       "decidedAt": "2026-10-08T05:02:03.477Z",
       "decision": "C",
+      "legacyVariants": [
+        "C",
+        "D"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -1871,16 +2993,30 @@
         "fa325a03bf871c368b6917cac286f4a77245d798d39990d29852efe6d2d68c81"
       ],
       "purgeTouched": true,
-      "variants": [
-        "C",
-        "D"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "C": "41a83a152adab5e7",
+        "D": "59f80936532b4107"
+      },
+      "slots": {
+        "swanimals/Wraid/Wraid": {
+          "migrated": true,
+          "pick": "C",
+          "set_id": "41a83a152adab5e7",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:02:09.625Z"
     },
     "RSW_Zeer": {
       "at": "2026-10-08T05:26:51.921Z",
       "decidedAt": "2026-10-08T05:26:45.623Z",
       "decision": "I",
+      "legacyVariants": [
+        "I"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "prefill": "A",
       "purge": [
@@ -1902,12 +3038,31 @@
         "5960814d6a766c839d563066f29b9d15b99e16b1a70f2cf73970b3b39cb14610"
       ],
       "purgeTouched": true,
-      "variants": [
-        "I"
-      ],
+      "rev": "f22208a82306d1d2",
+      "schema": 2,
+      "setIds": {
+        "I": "91a1b73f7b1e999e"
+      },
+      "slots": {
+        "swanimals/Zeer/Zeer": {
+          "migrated": true,
+          "pick": "I",
+          "set_id": "91a1b73f7b1e999e",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-08T05:26:51.921Z"
     }
   },
+  "migrations": [
+    {
+      "against_snapshot": "f22208a82306d1d2",
+      "at": "2026-10-10T11:53:43-0700",
+      "by": "script:src/RimMandrake/Utils/art/decisions_v2.py",
+      "from": 1,
+      "to": 2
+    }
+  ],
   "posture": "pick-one",
   "reviewStatus": {
     "at": "2026-10-04T20:38:52-0700",
@@ -1917,6 +3072,7 @@
   },
   "savedAt": "2026-10-07T22:29:03-0700",
   "savedBy": "review-sheet-sidecar",
+  "schema": 2,
   "sheetId": "desert_sheet_2026-10-04",
   "snapshot": "infrastructure/state/art/sheets/desert_sheet_2026-10-04.snapshot.json",
   "snapshotId": "f22208a82306d1d2",

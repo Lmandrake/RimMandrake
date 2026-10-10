@@ -663,7 +663,8 @@ def effective_picks(v: dict, srow: dict) -> tuple[dict, list[str]]:
     (a by-name render on a row with several graphics). Per-graphic picks win over the row pick."""
     cols = srow.get("columns") or {}
     gof = dict(srow.get("graphic_of") or {})
-    graphics = sorted({g for g in gof.values() if g != "_byname"}) or ([srow["res"]] if srow.get("res") else [])
+    graphics = sorted({g for g in gof.values() if g != "_byname" and not g.startswith("_reference")}) or (
+        [srow["res"]] if srow.get("res") else [])
     for l in cols:
         gof.setdefault(l, graphics[0] if len(graphics) == 1 else "_byname")
     picks = dict(v.get("picks") or {})
@@ -674,6 +675,8 @@ def effective_picks(v: dict, srow: dict) -> tuple[dict, list[str]]:
         if letter not in cols:
             return
         g = gof.get(letter)
+        if g and g.startswith("_reference"):
+            return "reference"
         if g == "_byname":
             if len(graphics) == 1:
                 g = graphics[0]
@@ -692,7 +695,10 @@ def effective_picks(v: dict, srow: dict) -> tuple[dict, list[str]]:
         if assign(picks["_byname"], "byname pick") == "ambiguous":
             conflicts.append((picks["_byname"], f"pick {picks['_byname']} is a by-name render and the row has "
                                                 f"{len(graphics)} graphics; it does not say which one it replaces"))
-    if dec in cols:
+    if dec in cols and str(gof.get(dec) or "").startswith("_reference"):
+        conflicts.append((dec, f"row pick {dec} is a render of the LIVING creature (reference only on a catch row) — "
+                               f"it is not a catch picture; pick or redraw the catch"))
+    elif dec in cols:
         g = gof.get(dec)
         if g == "_byname" and len(graphics) > 1:
             missing = [x for x in graphics if x not in out]
@@ -707,8 +713,11 @@ def effective_picks(v: dict, srow: dict) -> tuple[dict, list[str]]:
 def gof_resolved(srow: dict, letter: str) -> str | None:
     """The graphic a column stands for; a by-name render resolves only on a row with one graphic."""
     gof = srow.get("graphic_of") or {}
-    graphics = sorted({g for g in gof.values() if g != "_byname"}) or ([srow["res"]] if srow.get("res") else [])
+    graphics = sorted({g for g in gof.values() if g != "_byname" and not g.startswith("_reference")}) or (
+        [srow["res"]] if srow.get("res") else [])
     g = gof.get(letter) or (graphics[0] if len(graphics) == 1 else None)
+    if g and g.startswith("_reference"):
+        return None
     if g == "_byname":
         g = graphics[0] if len(graphics) == 1 else None
     return g

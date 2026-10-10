@@ -7,6 +7,7 @@
       "at": "2026-10-06T03:38:00.220Z",
       "decidedAt": "2026-10-06T03:37:20.978Z",
       "decision": "redo",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -20,17 +21,32 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "slots": {
+        "RM_LanternDeeps/Fauna/Hydrocarbon/Blinker/Blinker": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RM_BloodropMoth": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "074f81c3c8108ca8"
+      }
     },
     "RM_BovineBeetle": {
       "at": "2026-10-06T03:41:08.266Z",
       "decidedAt": "2026-10-06T03:41:08.266Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -42,27 +58,42 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2
     },
     "RM_BrellikBulb": {
       "at": "2026-10-06T03:42:38.540Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "add variants",
       "prefill": "A",
       "purge": [
         "8929ed215e73bfd524c4508d339747a392075d66f5b7608b257a1aaad927026c"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "d2ca836d3e60448c"
+      }
     },
     "RM_Candler": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "089c8d2edb59c611"
+      }
     },
     "RM_Chiller": {
       "at": "2026-10-06T03:38:21.074Z",
       "decidedAt": "2026-10-06T03:38:17.644Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -74,17 +105,29 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2
     },
     "RM_Cleaver": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "378918b2d130ab15"
+      }
     },
     "RM_DeepMycelium": {
+      "assign": {
+        "E": "RM_LanternDeeps/Things/Plant/Mycelium"
+      },
       "at": "2026-10-06T03:43:42.295Z",
       "decidedAt": "2026-10-06T03:43:40.296Z",
       "decision": "E",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -105,17 +148,37 @@
         "eb3267af878357e08bd1031426aa1061a2614e4cecb8436ba11241490dbc5c51",
         "6552587c2df5217a8c6313dcc76f4140a9ba930ad38e89eaed898eaeb4d1fefd"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "E": "8552000e0332a101"
+      },
+      "slots": {
+        "RM_LanternDeeps/Things/Plant/Mycelium": {
+          "migrated": true,
+          "pick": "E",
+          "set_id": "8552000e0332a101",
+          "state": "pick"
+        }
+      }
     },
     "RM_Drifter": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "f5db588fe915bee3"
+      }
     },
     "RM_FacetMothLarvae": {
       "at": "2026-10-06T03:42:20.939Z",
       "decidedAt": "2026-10-06T03:42:19.821Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -127,7 +190,9 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2
     },
     "RM_Gembug": {
       "at": "2026-10-06T03:40:26.295Z",
@@ -136,6 +201,7 @@
       "carriedFrom": "RSW_Gembug",
       "decidedAt": "2026-10-06T03:40:02.228Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -148,12 +214,26 @@
           "note": "I like it but the eyes are too warm-blood-style. Make them more like pale blue gems. Rimmandrake tier. ",
           "when": "2026-10-09T01:25:46-0700"
         }
-      ]
+      ],
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "106ed7f7b4ed71b8"
+      },
+      "slots": {
+        "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "106ed7f7b4ed71b8",
+          "state": "pick"
+        }
+      }
     },
     "RM_GlowSlug": {
       "at": "2026-10-06T03:40:42.773Z",
       "decidedAt": "2026-10-06T03:40:40.551Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -165,16 +245,28 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2
     },
     "RM_Knocker": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "8fe7e94d5d410555"
+      }
     },
     "RM_KuvraSpout": {
       "at": "2026-10-06T03:42:59.534Z",
       "decision": "A",
+      "legacyVariants": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -188,27 +280,54 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "5d9291f26493fcf1"
+      },
+      "slots": {
+        "RM_LanternDeeps/Things/Plant/KuvraSpout": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "5d9291f26493fcf1",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-06T03:42:53.242Z"
     },
     "RM_Lanternstone_Sowable": {
       "at": "2026-10-06T03:42:47.773Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B",
         "C"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "511a1ca6d8566228",
+        "B": "d7d7b8c8e4f42acf",
+        "C": "9c49c85f51c1f78b"
+      },
+      "slots": {
+        "RM_LanternDeeps/Things/Crystals/LanternstoneMedium": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "511a1ca6d8566228",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-06T03:42:47.773Z"
     },
     "RM_Megapleura": {
       "at": "2026-10-06T03:41:30.254Z",
       "decidedAt": "2026-10-06T03:41:30.254Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -220,12 +339,15 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2
     },
     "RM_MossBeetleLarvae": {
       "at": "2026-10-06T03:41:50.315Z",
       "decidedAt": "2026-10-06T03:41:49.708Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -237,11 +359,14 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2
     },
     "RM_NurrikGill": {
       "at": "2026-10-06T03:43:55.266Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -254,12 +379,26 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "b5eba560b40fad2d"
+      },
+      "slots": {
+        "RM_LanternDeeps/Things/Plant/NurrikGill": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "b5eba560b40fad2d",
+          "state": "pick"
+        }
+      }
     },
     "RM_OsskBramble": {
       "at": "2026-10-06T03:44:09.623Z",
       "decidedAt": "2026-10-06T03:44:07.133Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -271,37 +410,58 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2
     },
     "RM_Pooler": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "d5a3dd2f556b551e"
+      }
     },
     "RM_PrennaLace": {
       "at": "2026-10-06T03:44:23.723Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "add variants",
       "prefill": "A",
       "purge": [
         "8fa4fe85a54fcfb04378ca925ec1284b3766cf261bd5604861153dfec5e773fe"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "e2273b04981e3c89"
+      }
     },
     "RM_QuorrFern": {
       "at": "2026-10-06T03:44:37.509Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "add variants",
       "prefill": "A",
       "purge": [
         "95f377bf312efb42ffaa888a44f3e6341628f0e4591f67408e2e95caa4e4e73f"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "6649b062fa0eac22"
+      }
     },
     "RM_ShatterjawBeetle": {
       "at": "2026-10-06T03:41:58.551Z",
       "decidedAt": "2026-10-06T03:41:58.020Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -313,72 +473,132 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2
     },
     "RM_Shoal": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "f4c50ae900708690"
+      }
     },
     "RM_Sipper": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "39bdfe0506c999db"
+      }
     },
     "RM_Slick": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "41d257493888a4d9"
+      }
     },
     "RM_Tapper": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "196c4d12095365b1"
+      }
     },
     "RM_ThrakkCap": {
       "at": "2026-10-06T03:44:46.232Z",
       "decision": "A",
-      "note": "",
-      "prefill": "A",
-      "variants": [
+      "legacyVariants": [
         "A",
         "B"
       ],
+      "migratedFrom": 1,
+      "note": "",
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "68ac415611ce6013",
+        "B": "5030e9e6482692fd"
+      },
+      "slots": {
+        "RM_LanternDeeps/Things/Plant/ThrakkCap": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "68ac415611ce6013",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-06T03:44:46.232Z"
     },
     "RM_TwitchingPuffer": {
       "at": "2026-10-06T03:44:59.155Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "add variants",
       "prefill": "A",
       "purge": [
         "ebab863d05bdab245bb5a5b45b2437f2503b56cf004c71b3f0abea1826478459"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "fc06a1d1f298d481"
+      }
     },
     "RM_VellokReed": {
       "at": "2026-10-06T03:45:06.817Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "add variants",
       "prefill": "A",
       "purge": [
         "ba87b34f7a9436d65feefa5c33109cb5c626dffd1895c961ef48c99e0307d5ba"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "2983473ef8d0c0ad"
+      }
     },
     "RM_ZivvitTaper": {
       "at": "2026-10-06T03:45:16.882Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "add variants",
       "prefill": "A",
       "purge": [
         "259c71777f6263a9158e731add420ce12bd91a51fde29943102488c41dab1b7e"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "320687c5d8354ea8"
+      }
     },
     "RSW_BloodropMoth": {
       "at": "2026-10-06T03:39:32.515Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "I like it, but take eway its eyes. RimMandrake tier. ",
       "prefill": "A",
       "purge": [
@@ -386,12 +606,18 @@
         "1d04505102b068678c0e43031756cb07911b7d42d81fdc34db5bf8472c088959",
         "09392e00a033bba7d40b2ca39ac8a8fabe8f091e82b1369cb577fa9caa9d0e22"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "074f81c3c8108ca8"
+      }
     },
     "RSW_BovineBeetle": {
       "at": "2026-10-06T03:41:04.059Z",
       "decidedAt": "2026-10-06T03:41:01.056Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -412,11 +638,14 @@
         "fbe676e6024b6833149193bd125b5d7897eac6d3416d631466125f3076c105d3",
         "b77e6174df38cddd52dde5aca011cd133d7cdced0b5aec81feab3c968daa6911"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2
     },
     "RSW_FacetMothLarvae": {
       "at": "2026-10-06T03:42:25.103Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "I like but remove eyes. Rimmandrake tier",
       "prefill": "A",
       "purge": [
@@ -424,12 +653,18 @@
         "bb8842a43d16e4002dc07dacdb21ed2bf618ab80407508e9725b7fb89cc65c97",
         "ced346acae7b745698ca8c2b8618a8484121437082c4090be3124f25c00c6ce4"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "abf9a7ff26bdcf73"
+      }
     },
     "RSW_Gembug": {
       "at": "2026-10-06T03:40:26.295Z",
       "decidedAt": "2026-10-06T03:40:02.228Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -443,12 +678,26 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "106ed7f7b4ed71b8"
+      },
+      "slots": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "106ed7f7b4ed71b8",
+          "state": "pick"
+        }
+      }
     },
     "RSW_GlowSlug": {
       "at": "2026-10-06T03:40:36.249Z",
       "decidedAt": "2026-10-06T03:40:33.293Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -460,11 +709,14 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2
     },
     "RSW_Megapleura": {
       "at": "2026-10-06T03:41:28.303Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -479,11 +731,25 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "8a31dc3ea3917062"
+      },
+      "slots": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Megapleura/Megapleura": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "8a31dc3ea3917062",
+          "state": "pick"
+        }
+      }
     },
     "RSW_MossBeetleLarvae": {
       "at": "2026-10-06T03:41:44.963Z",
       "decision": "A",
+      "migratedFrom": 1,
       "note": "I like but remove eyes",
       "prefill": "A",
       "purge": [
@@ -491,12 +757,18 @@
         "cd18739cd2687d42acdda7805116f05e71b2bddfa8acd4130b812d2022c8e7d4",
         "33d160e8b74c4470e1b6cda1d63f519c5b06bb0ac0b3b714e856a2bc69273642"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2,
+      "setIds": {
+        "A": "f63b571c643b151e"
+      }
     },
     "RSW_ShatterjawBeetle": {
       "at": "2026-10-06T03:41:56.066Z",
       "decidedAt": "2026-10-06T03:41:55.445Z",
       "decision": "hold",
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -508,9 +780,20 @@
           "when": "2026-10-09T01:25:46-0700"
         }
       ],
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "9314c44a9f6fb7c7",
+      "schema": 2
     }
   },
+  "migrations": [
+    {
+      "against_snapshot": "9314c44a9f6fb7c7",
+      "at": "2026-10-10T11:53:46-0700",
+      "by": "script:src/RimMandrake/Utils/art/decisions_v2.py",
+      "from": 1,
+      "to": 2
+    }
+  ],
   "posture": "pick-one",
   "reviewStatus": {
     "at": "2026-10-05T20:45:17-0700",
@@ -520,6 +803,7 @@
   },
   "savedAt": "2026-10-05T20:45:17-0700",
   "savedBy": "review-sheet-sidecar",
+  "schema": 2,
   "sheetId": "lanterndeeps_sheet_2026-10-05",
   "snapshot": "infrastructure/state/art/sheets/lanterndeeps_sheet_2026-10-05.snapshot.json",
   "snapshotId": "9314c44a9f6fb7c7",

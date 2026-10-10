@@ -5,28 +5,56 @@
   "decisions": {
     "AA_Murkling": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "742d59476a855ee5"
+      }
     },
     "RM_CrackedThornwood": {
+      "assign": {
+        "C": "Things/Plant/RM_CrackedThornwood"
+      },
       "at": "2026-10-10T05:55:42.119Z",
       "decidedAt": "2026-10-10T05:55:42.119Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "B",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_byname": "C"
       },
       "prefill": "A",
-      "variants": [
-        "B",
-        "C"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "5e2a01676a982e96",
+        "B": "c6e9368233232e3c",
+        "C": "72f2cef9465b46a3"
+      },
+      "slots": {
+        "Things/Plant/RM_CrackedThornwood": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "5e2a01676a982e96",
+          "state": "pick"
+        }
+      }
     },
     "RM_Harrovaq": {
       "at": "2026-10-10T05:54:58.330Z",
       "decidedAt": "2026-10-10T05:54:42.283Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -39,14 +67,25 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "83d7d688ef22c870"
+      },
+      "slots": {
+        "Things/Plant/RM_Harrovaq/RM_Harrovaq": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RM_Luqqim": {
       "at": "2026-10-10T05:55:08.024Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -60,15 +99,32 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "dc12fc8897abf134"
+      },
+      "slots": {
+        "Things/Plant/RM_Luqqim/RM_Luqqim": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "dc12fc8897abf134",
+          "state": "pick"
+        }
+      }
     },
     "RM_Muttavaq": {
+      "assign": {
+        "C": "Things/Pawn/Animal/Thrumbo/Thrumbo"
+      },
       "at": "2026-10-10T05:51:31.543Z",
       "decidedAt": "2026-10-10T05:50:32.849Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "B",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -84,15 +140,26 @@
         "_byname": "C"
       },
       "prefill": "A",
-      "variants": [
-        "B",
-        "C"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "B": "f45032946664c1f1",
+        "C": "2c34681b45a74463"
+      },
+      "slots": {
+        "Things/Pawn/Animal/Thrumbo/Thrumbo": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RM_Nabbuq": {
       "at": "2026-10-10T05:55:15.434Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -106,19 +173,38 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "4158a008036eaac3"
+      },
+      "slots": {
+        "Things/Plant/RM_Nabbuq/RM_Nabbuq": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "4158a008036eaac3",
+          "state": "pick"
+        }
+      }
     },
     "RM_Ommok": {
       "decision": "B",
+      "migratedFrom": 1,
       "note": "",
-      "prefill": "B"
+      "prefill": "B",
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "B": "852c321cce764cfa"
+      }
     },
     "RM_Ruqqal": {
       "at": "2026-10-10T05:55:21.657Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -132,14 +218,27 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "05100920566ee33f"
+      },
+      "slots": {
+        "Things/Plant/RM_Ruqqal/RM_Ruqqal": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "05100920566ee33f",
+          "state": "pick"
+        }
+      }
     },
     "RM_Sevvuq": {
       "at": "2026-10-10T05:55:25.004Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -153,15 +252,31 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "b0fb5dc0ded0c58e"
+      },
+      "slots": {
+        "Things/Plant/RM_Sevvuq/RM_Sevvuq": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "b0fb5dc0ded0c58e",
+          "state": "pick"
+        }
+      }
     },
     "RM_Tarruq": {
+      "assign": {
+        "B": "Things/Pawn/Animal/Monkey/Monkey"
+      },
       "at": "2026-10-10T05:54:00.946Z",
       "decidedAt": "2026-10-10T05:53:53.022Z",
       "decision": "A",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_byname": "B"
@@ -173,15 +288,29 @@
         "9200a4c28ce3a5c893f253ba74a696f1f5c7b3ef8d436fc79d28257fc0f9b7d0"
       ],
       "purgeTouched": true,
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "4d8d47021da78bde",
+        "B": "0dafd6b3e56a2012"
+      },
+      "slots": {
+        "Things/Pawn/Animal/Monkey/Monkey": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "4d8d47021da78bde",
+          "state": "pick"
+        }
+      }
     },
     "RM_TwistingThorngrass": {
       "at": "2026-10-10T05:55:31.069Z",
       "decidedAt": "2026-10-10T05:55:29.495Z",
       "decision": "B",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -195,15 +324,28 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "B": "ce216888253fe1b0"
+      },
+      "slots": {
+        "Things/Plant/RM_TwistingThorngrass": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "ce216888253fe1b0",
+          "state": "pick"
+        }
+      }
     },
     "RM_TwistingThornweed": {
       "at": "2026-10-10T05:55:35.870Z",
       "decidedAt": "2026-10-10T05:55:34.562Z",
       "decision": "B",
+      "legacyVariantsDefault": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -217,29 +359,54 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "B": "e0355bb74f170246"
+      },
+      "slots": {
+        "Things/Plant/RM_TwistingThornweed": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "e0355bb74f170246",
+          "state": "pick"
+        }
+      }
     },
     "RM_Uttaqar": {
       "at": "2026-10-10T05:51:41.831Z",
       "decidedAt": "2026-10-10T05:51:41.831Z",
       "decision": "C",
+      "legacyVariantsDefault": [
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "Animal/RockTroll/RockTrollBaby": "B",
         "_byname": "C"
       },
       "prefill": "A",
-      "variants": [
-        "C"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "B": "a5f5300540483fc6",
+        "C": "46b1f992828dea6d"
+      },
+      "slots": {
+        "Animal/RockTroll/RockTrollBaby": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "a5f5300540483fc6",
+          "state": "pick"
+        }
+      }
     },
     "RM_Veqma": {
       "at": "2026-10-10T05:56:40.335Z",
       "decision": "A",
+      "legacyVariantsDefault": [],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -254,13 +421,28 @@
         }
       ],
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "ddfb79798a68ac44"
+      },
+      "slots": {
+        "Things/Plant/RM_Veqma": {
+          "migrated": true,
+          "pick": "A",
+          "set_id": "ddfb79798a68ac44",
+          "state": "pick"
+        }
+      }
     },
     "RM_Zennaq": {
       "at": "2026-10-10T05:57:00.339Z",
       "decidedAt": "2026-10-10T05:56:47.984Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -273,14 +455,26 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "fa0fe75d677966d6"
+      },
+      "slots": {
+        "Things/Plant/RM_Zennaq/RM_Zennaq": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RSW_CanCell": {
       "at": "2026-10-10T05:47:44.346Z",
       "decision": "A",
+      "legacyVariants": [
+        "A",
+        "C"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_flip:swanimals/CanCell/CanCell_Flying_": "C"
@@ -292,25 +486,39 @@
         "8ec5fd10caf8f5902276c15e267e078835d0283619d44d6b87993564343b0790"
       ],
       "purgeTouched": true,
-      "variants": [
-        "A",
-        "C"
-      ],
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "e85e0b6a4fc88183",
+        "C": "c7f9e244e4fe8d3d"
+      },
       "variantsAt": "2026-10-10T05:47:44.346Z"
     },
     "RSW_Convor": {
       "decision": "A",
+      "migratedFrom": 1,
       "note": "",
       "picks": {
         "_flip:swanimals/Convor/Convor_Flying_": "F",
         "swanimals/Convor/Convor_f": "E"
       },
-      "prefill": "A"
+      "prefill": "A",
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "726b0d55c284b7fb",
+        "E": "e77e06f920385ed8",
+        "F": "678fab21b4a36924"
+      }
     },
     "RSW_Creature_Mantrap": {
       "at": "2026-10-10T05:49:29.407Z",
       "decidedAt": "2026-10-10T05:48:29.277Z",
       "decision": "B",
+      "legacyVariants": [
+        "B"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -325,15 +533,29 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "B"
-      ],
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "B": "92ff2af5243e5790"
+      },
+      "slots": {
+        "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap": {
+          "migrated": true,
+          "pick": "B",
+          "set_id": "92ff2af5243e5790",
+          "state": "pick"
+        }
+      },
       "variantsAt": "2026-10-10T05:48:37.370Z"
     },
     "RSW_Gornt": {
       "at": "2026-10-10T05:49:22.082Z",
       "decidedAt": "2026-10-10T05:49:08.660Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -346,15 +568,26 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "5779f850a4416ac9"
+      },
+      "slots": {
+        "swanimals/Gornt/Gornt": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RSW_MutagenicNorphea": {
       "at": "2026-10-10T05:50:15.563Z",
       "decidedAt": "2026-10-10T05:49:46.580Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -367,15 +600,26 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "7233315fd808bd80"
+      },
+      "slots": {
+        "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RSW_SandLeaper": {
       "at": "2026-10-10T05:52:30.867Z",
       "decidedAt": "2026-10-10T05:51:47.825Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -388,15 +632,26 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "03a18b26af46f35c"
+      },
+      "slots": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RSW_SandPillar": {
       "at": "2026-10-10T05:53:28.651Z",
       "decidedAt": "2026-10-10T05:52:35.512Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -409,15 +664,26 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "94929b0faadab7ec"
+      },
+      "slots": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RSW_Woolamander": {
       "at": "2026-10-10T05:54:37.205Z",
       "decidedAt": "2026-10-10T05:54:14.398Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -430,15 +696,26 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "61fc8adb07ad8c4d"
+      },
+      "slots": {
+        "swanimals/Woolamander/Woolamander": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RUT_EmperorVulture": {
       "at": "2026-10-10T05:48:19.904Z",
       "decidedAt": "2026-10-10T05:48:08.370Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -451,15 +728,26 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "9de9f47b018d7076"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     },
     "RUT_SealedSleeper": {
       "at": "2026-10-10T05:53:47.454Z",
       "decidedAt": "2026-10-10T05:53:44.433Z",
       "decision": "redo",
+      "legacyVariantsDefault": [
+        "A"
+      ],
+      "migratedFrom": 1,
       "note": "",
       "notes_followed": [
         {
@@ -472,12 +760,28 @@
         }
       ],
       "prefill": "A",
-      "variants": [
-        "A"
-      ],
-      "variantsDefault": true
+      "rev": "39b81786e279194e",
+      "schema": 2,
+      "setIds": {
+        "A": "a25dc98c164a65d6"
+      },
+      "slots": {
+        "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper": {
+          "migrated": true,
+          "state": "redraw"
+        }
+      }
     }
   },
+  "migrations": [
+    {
+      "against_snapshot": "39b81786e279194e",
+      "at": "2026-10-10T11:53:44-0700",
+      "by": "script:src/RimMandrake/Utils/art/decisions_v2.py",
+      "from": 1,
+      "to": 2
+    }
+  ],
   "posture": "pick-one",
   "reviewStatus": {
     "at": null,
@@ -487,6 +791,7 @@
   },
   "savedAt": "2026-10-09T22:57:01-0700",
   "savedBy": "review-sheet-sidecar",
+  "schema": 2,
   "sheetId": "floodedcanyon_sheet_2026-10-05",
   "snapshot": "infrastructure/state/art/sheets/floodedcanyon_sheet_2026-10-05.snapshot.json",
   "snapshotId": "39b81786e279194e",

@@ -49,13 +49,15 @@ def flyer_item() -> tuple[dict, dict]:
           "flags": [], "related": [], "elsewhere": [], "rulings": [], "thumbs": thumbs, "letters": ["A"], "prefill": "A",
           "desc": {}, "graphics": [
               {"key": "swanimals/Probe/Probe", "res": "swanimals/Probe/Probe", "role": "body", "primary": True,
-               "pool": True, "facings": ["south", "east"],
+               "pool": True, "facings": ["south", "east"], "lane": "slot",
+               "slot": {"label": "ADULT", "kind": "adult", "required": True},
                "cols": [{"letter": "A", "kind": "live", "label": "IN GAME", "detail": "", "short": "IN GAME",
                          "faces": {"south": "bodyS", "east": "bodyE"}, "winner": True},
                         {"letter": "B", "kind": "artpipe", "label": "render", "detail": "", "short": "render",
                          "faces": {"south": "bodyS", "east": "bodyE"}, "purgeable": True}]},
               {"key": "_flip:swanimals/Probe/Probe_Flying_", "res": "_flip:swanimals/Probe/Probe_Flying_",
-               "role": "wing-beat flight frames", "primary": False, "pool": True, "flip": True, "nframes": 2,
+               "role": "wing-beat flight frames", "primary": False, "pool": False, "flip": True, "nframes": 2,
+               "lane": "slot", "slot": {"label": "FLYING", "kind": "flying", "required": False},
                "flipFacings": ["east", "south", "north"], "facings": keys,
                "cols": [{"letter": "C", "kind": "artpipe", "label": "flight frames", "detail": "", "short": "flight",
                          "faces": faces, "purgeable": True}]}]}
@@ -63,6 +65,7 @@ def flyer_item() -> tuple[dict, dict]:
 
 
 PROBE = r"""
+document.querySelectorAll('details').forEach(d => { d.open = true; });   /* the requests block too */
 const out = [];
 for (const b of document.querySelectorAll('.row button, .row select, .row input')) {
   const r = b.getBoundingClientRect();
@@ -85,7 +88,7 @@ def main():
         check(False, "node is needed to render the row (UNMEASURED)")
         return 1
     it, files = flyer_item()
-    html = H.item_html(it, {"decision": "A", "note": "", "variants": []})
+    html = H.item_html(it, {"decision": "A", "note": "", "schema": 2})
     check("bs-play" in html, "the flyer row renders a wing-beat playback cell")
     body = f'<div class="row" data-id="RSW_Probe"><div class="main">{html}</div></div>'
     txt, why = H.edge_probe(body, PROBE, files)

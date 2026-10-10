@@ -138,7 +138,7 @@ def confirm_path() -> Path:
     import artledger as L
     if os.environ.get("ART_OLD_TICKS_CONFIRM"):          # selftests point it at a fixture
         return Path(os.environ["ART_OLD_TICKS_CONFIRM"])
-    return L.REPO_ROOT / "Transient" / "biome_ffar" / f"{CONFIRM_SHEET}.decisions.json"
+    return L.REPO_ROOT / "Transient" / CONFIRM_SHEET / f"{CONFIRM_SHEET}.decisions.json"
 
 
 def confirm_key(sheet: str, row: str, letter: str) -> str:
@@ -170,7 +170,8 @@ def confirmations(path: Path | None = None) -> dict:
 
 def _gof(row: dict) -> dict:
     gof = dict(row.get("graphic_of") or {})
-    graphics = sorted({g for g in gof.values() if g != "_byname"}) or ([row["res"]] if row.get("res") else [])
+    graphics = sorted({g for g in gof.values() if g != "_byname" and not g.startswith("_reference")}) or (
+        [row["res"]] if row.get("res") else [])
     for l in (row.get("columns") or {}):
         gof.setdefault(l, graphics[0] if len(graphics) == 1 else "_byname")
     return gof
@@ -208,7 +209,7 @@ def migrate_record(v: dict, ruled_row: dict | None, rev: str | None, cols_overri
         rr["columns"] = cols_override
     cols = rr.get("columns") or {}
     gof = _gof(rr)
-    graphics = sorted({g for g in gof.values() if g != "_byname"})
+    graphics = sorted({g for g in gof.values() if g != "_byname" and not g.startswith("_reference")})
     n = dict(v)
     rep = {"legacy": [], "machine_default": [], "quarantine": [], "byname_pick_unassigned": []}
     n["schema"] = SCHEMA
@@ -232,7 +233,9 @@ def migrate_record(v: dict, ruled_row: dict | None, rev: str | None, cols_overri
     decided = bool(v.get("decidedAt")) or not v.get("purgeTouched")
     if v.get("at") and decided:
         prim = rr.get("res") or (graphics[0] if graphics else None)
-        if dec in cols and gof.get(dec) != "_byname":
+        if dec in cols and str(gof.get(dec)).startswith("_reference"):
+            rep["byname_pick_unassigned"].append(dec)
+        elif dec in cols and gof.get(dec) != "_byname":
             slots[gof[dec]] = {"state": "pick", "pick": dec, "set_id": set_ids.get(dec), "migrated": True}
         elif dec in cols and len(graphics) == 1:
             slots[graphics[0]] = {"state": "pick", "pick": dec, "set_id": set_ids.get(dec), "migrated": True}
