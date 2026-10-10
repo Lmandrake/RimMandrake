@@ -1,0 +1,182 @@
+[
+ {
+  "id": "enact_eb31f5eb_harrovaq_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Harrovaq",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow this inspiration but twice as large and much more realistic. Give me two variants to compare and choose between.\" RimWorld sprite of the harrovaq, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Follow this inspiration but twice as large and much more realistic. Give me two variants to compare and choose between.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/7e/7e17bd9e8971910603fdb5dd606d48a2140b33e048d9e986e6ab99200f6b85bd.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_02b55f2e_muttavaq_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Muttavaq",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Nope. I want you to take the Thrumbo art and then \"star wars ify\" it. HUGE, twice as big as shown, shaggy and fearsome, with a gleaming silver-white horn, strangely wise face. This is an homage to the classic Thrumbo of Rimworld but made star wars crazy awesome. Give me three possibilities to choose from. Go!\" RimWorld sprite of the muttavaq, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Nope. I want you to take the Thrumbo art and then \"star wars ify\" it. HUGE, twice as big as shown, shaggy and fearsome, with a gleaming silver-white horn, strangely wise face. This is an homage to the classic Thrumbo of Rimworld but made star wars crazy awesome. Give me three possibilities to choose from. Go!",
+  "canon_reference": [],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_1d929b27_zennaq_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Zennaq",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Much more realistic version please, then two others to choose from\" RimWorld sprite of the zennaq, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Much more realistic version please, then two others to choose from",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/31/31e7292e9aa9e9774d706adf5b7d30be59db33b2be983eb798a793c3f53d086d.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_0ae79c6a_gornt_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Gornt",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Highly realistic version please, follow the canon closely.\" RimWorld sprite of the gornt, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Highly realistic version please, follow the canon closely.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/03/03ba95e2744b017665c7808ce14e1dda41909e47a82756dcfd85e4502eb0855a.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_5e098e7b_mutagenicnorphea_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_MutagenicNorphea",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Totally new realistic version of this, with new description and abilities and name. Total regen. No mutagenic.\" RimWorld sprite of the mutagenicnorphea, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Totally new realistic version of this, with new description and abilities and name. Total regen. No mutagenic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/3b/3bbef1389b7ab59c626f6e37993db45eb153311107352af9139d8bde845c3293.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_f4be0239_sandleaper_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_SandLeaper",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Alien, chitenous, rodentia, prehensile tail, no arms. Thoroughly strange and flexible. New description. New name.\" RimWorld sprite of the sandleaper, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Alien, chitenous, rodentia, prehensile tail, no arms. Thoroughly strange and flexible. New description. New name.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/15/15716966a9bcf1110beb87170e53b3a01874f696738b043423df45987ca3b641.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_0232cc80_sandpillar_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_SandPillar",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Alien caterpillar that never pupates, tentacles + caterpillar feet, disturbing body patterns on otherwise earth-colored body. New name, new description.\" RimWorld sprite of the sandpillar, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Alien caterpillar that never pupates, tentacles + caterpillar feet, disturbing body patterns on otherwise earth-colored body. New name, new description.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/77/77adf2e56b7a276a92efb870b941bed515ad7da8f3701e098bad54d8bb405c72.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_90d52757_woolamander_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RSW_Woolamander",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Follow pale blue canon closely. Give me two variants to choose from, highly realistic.\" RimWorld sprite of the woolamander, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Follow pale blue canon closely. Give me two variants to choose from, highly realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/4f/4fbc5a837cbb5e75600f27dc7f379566ebb47f91fe61e07a1bea726901cdaefd.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_a1894dc1_emperorvulture_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RUT_EmperorVulture",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Absolutely not, this fails the Terran check. Redo massicaly alien.\" RimWorld sprite of the emperorvulture, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Absolutely not, this fails the Terran check. Redo massicaly alien.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/17/17c45c085dcea55749a53339b048c80a5f83fc361067b4f33f76601cd6b327b4.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_15eaaf39_sealedsleeper_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RUT_SealedSleeper",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"More realistic.\" RimWorld sprite of the sealedsleeper, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "More realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/72/72b1a2a8c4f576cb9abc63c59808a2b380abe8a86955a19ffde53308aa26ea88.png"
+  ],
+  "biome_neutral": true
+ }
+]
