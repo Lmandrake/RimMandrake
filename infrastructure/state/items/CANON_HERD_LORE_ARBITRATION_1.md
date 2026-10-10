@@ -27,3 +27,7 @@ Out of scope: invented RM_ creatures (`BIOME_GROUP_SIZE_WALK_1`).
 - Every UNCLEAR row has an owner ruling (herd / pack / solitary / leave default), recorded beside
   the row in the CSV or in a decisions file next to it.
 - `EXTRA_ART_PER_BIOME_COMMISSION_1` is unblocked once the rulings exist.
+
+## Ruling 2026-10-08 (decision taken by question card)
+
+Each creature is settled at its biome's group-size walk (`BIOME_GROUP_SIZE_WALK_1`), not as one list.

@@ -110,7 +110,7 @@ data-only implementation:
   Flagged as a follow-on build item, not built here per the brief's "do not
   write C# without being certain it's required."
 
-### 4. faction-held — the hard one, genuinely BLOCKED
+### 4. faction-held — the hard one, RULED 2026-09-26
 `ROComp_RequiresFaction` / `OF_Factions` (Research Reinvented, vendored
 source at `vendor/mod_sources/ResearchReinvented-main/…/OpportunityComps/`,
 `…/Managers/OpportunityFactories/OF_Factions.cs`) turned out to be the WRONG
@@ -137,8 +137,8 @@ pure Def-field data, zero C#.**
 What's still missing before any row can use it:
 1. **None of the 12 campaign `FactionDef`s currently set `categoryTag`**
    (checked `src/RimStarWars` — zero hits). Adding one is trivial XML per
-   faction, but which factions get which tag(s) is exactly the "tech-aligned
-   strongly" call the owner referenced.
+   faction, but which factions get which tag(s) was ruled by the owner
+   2026-09-26 (`faction_tech_alignment.md` section 6).
 2. **No design doc maps a faction to a tech DOMAIN in the sense this gate
    needs.** Searched `design/Jawa/worldbuilding/FACTION_SPEC.md` (948 lines),
    `faction_roster_v2.md` (2847 lines), `faction_equipment_clusters.md`,
@@ -172,20 +172,19 @@ What's still missing before any row can use it:
    for sale — none of the campaign factions currently carry this generator
    either (not checked exhaustively here, flagged for the build pass).
 
-**This class stays BLOCKED on the owner naming which factions are
-tech-aligned and to what.** No per-row faction assignment was guessed across
-the ~521 rows.
+**The faction-to-domain alignment was ruled by the owner 2026-09-26** (all 15
+rulings in `faction_tech_alignment.md` section 6). Row assignment across the
+~521 rows is build work, not an owner call.
 
 ## what was NOT written
 No CSV rows touched — `source_gate` in `infrastructure/output/
 research_manifest_draft.csv` is exactly as `RESEARCH_MANIFEST_DRAFT_1` left
 it (518 blank + 3 `memory_core`). No `fate`/`tab`/`tier`/`cost` columns
 touched. No C#/Harmony written. No `FactionDef` XML edited (`categoryTag` is
-a real, confirmed-needed change but assigning it per faction is the blocked
-design call). `ModsConfig.xml` untouched, nothing deployed, no `rimflow`
+a real, confirmed-needed change and the per-faction assignment is ruled, 2026-09-26). `ModsConfig.xml` untouched, nothing deployed, no `rimflow`
 commands run, nothing committed/pushed — left for the owner to review.
 
-## verify (once unblocked)
+## verify
 1. Common: nothing to verify — it's the CSV's existing default.
 2. Jawa-special: once the owner names candidate rows, add
    `ScenPart_StartingResearch` entries to `Scenario_Utinni.xml`, cold-load a

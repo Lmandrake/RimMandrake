@@ -8,11 +8,7 @@ Found by the Weeping Stones first script (`src/RimMandrake/WeepingStones/validat
 
 ## spec
 
-DECISION NEEDED (design call, not a bug fix). Options:
-
-1. Hold the target for the net duration (stun or entangle it on job start), so a handler always succeeds if it reaches the animal.
-2. Net from range: a throw or shot with a short windup instead of a 200-tick channel.
-3. Leave it hard: capture needs a trap, a tame animal lure or a tranquilizer first, and the net job only works on a downed or held animal.
+Ruled by the owner 2026-10-07: capture is not a custom 200-tick channel. Success follows the target's speed and whether the net lands, using the game's existing net mechanics. Replace `RM_NetPoolBreeder`'s channel with vanilla net behaviour.
 
 Also the same chain family has cull (`job_cull`: 0 vhorrin left, 0 meat) and stock (`job_stock`) reds from the same session; they may be unrelated script or load-state faults and are being re-run on the fresh load first.
 
@@ -23,4 +19,4 @@ Also the same chain family has cull (`job_cull`: 0 vhorrin left, 0 meat) and sto
 
 ## Watch out
 
-The decision changes feel (how hard it is to farm the pools), so it is BENCH and the owner's, not FOUNDRY's.
+The ruling above changes feel (how hard it is to farm the pools).

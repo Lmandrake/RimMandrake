@@ -25,9 +25,13 @@ Oomo's fifth found rite: **the cap**. The injury-spreading effect is a power and
   power*; the hediff-spreading is a mechanical power and is the owner's explicit ask, recorded as his.
 - Plus the standard cohesion outcomes (shared memory by quality, favour told by the Narrator).
 
+## Ruling 2026-10-08 (decision taken by question card)
+
+"Separate for now" means the rite stands alone: a self-contained found rite at the Slime, no quest chain. It may be tied to a quest later.
+
 ## criteria
 
-- Owner confirms the god (and what "separate for now" means) before the found-rites row is wired.
+- Wired as a stand-alone found rite (ruled 2026-10-08, see below); god is Oomo.
 - Live: a pawn with one permanent hediff and three participants: after the rite, the permanent one is gone or
   weakened and each participant carries a weak one.
 - Art from `gelatinousslime_turn1_2026-10-02.csv` (the found site).
