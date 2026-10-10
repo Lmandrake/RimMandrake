@@ -1,0 +1,54 @@
+1. Independent attack: this implementation cannot reliably answer the ticket.
+
+- **Coverage is optional.** `JawaBenchTpsSampler.Install()` runs on a bridge call. An entire evening without that call produces nothing. Regular sampling also does not imply regular reporting: no scheduled watchdog/reporting mechanism is supplied.
+- **The worst interval disappears.** `JawaBenchTpsMath.WindowUsable()` rejects windows over 60 seconds. A recovered 90-second freeze increments an in-memory counter and leaves no incident record. A permanent hang never reaches the postfix; a crash loses the unfinished window and queued writes.
+- **Normalisation uses the wrong denominator.** `Emit()` applies the endpoint multiplier to the entire window. `_speedChanged` detects the selected speed, not effective-multiplier or forced-pause changes. Frame-count pause fractions are not elapsed-time fractions. Healthy partial pauses can look slow; pause-heavy windows can hide genuine simulation stalls.
+- **Cadence and frame measurements are different things.** The postfix emits after five seconds have elapsed, whenever it next executes. `_frames / dReal` measures observed tick-update calls, not necessarily rendered FPS. Long events leave `_open` intact and contaminate the next window.
+- **Persistence is weaker than advertised.** Thread-pool callbacks can acquire `FileGate` out of order. There is no bounded queue, drain-on-exit, or explicit durability policy. `Report.success` can remain true while every disk append fails.
+- **Rotation and multiple processes are unsafe.** `FileGate` protects one process only; all instances share two filenames. Concurrent appends/rotations can collide. Rotation deletes the archive before moving the current file; a failed move can destroy retained history and lose the pending sample. The reader has existence/open and rotation races.
+- **The verdict can lie.** `RunRatios` skips pauses/mixed windows and survives game changes: six eligible samples need not represent 30 continuous seconds. Python combines sessions, trusts file order, includes future timestamps, and compares a mixed-speed TPS median with one endpoint target. Stale healthy records can still produce `OK`.
+- **“Why” is absent.** TPS measures completed throughput. It cannot distinguish tick work, saves, GC, rendering, frame limiting, log spam, or another process competing for CPU. Endpoint `MeanTickTime` and collection counts cannot establish attribution. The first quicktest failure specifically requires preserving that session/map’s evidence before relaunch.
+- **Cost and clocks need qualification.** Main-thread emission allocates/formats strings and takes `Gate`; “must not itself cost TPS” is unverified. Float uptime loses precision over long sessions. UTC timestamps can jump; record monotonic time and wall time separately.
+
+2. Opus adjudication:
+
+| Finding | Judgment |
+|---|---|
+| **#1 startup** | Right. Calling a tool from a launcher covers only launches using that launcher; always-loaded startup is the actual fix. |
+| **#2 discarded stalls/hangs** | Right, but “a hang or crash leaves no record” overstates it: previous successful writes remain. Its claim that null/new-game checks already exclude menus/loads is wrong: the postfix may never execute during those states. |
+| **#3–4 multiplier/pauses** | Right defects. The proposed `currentMultiplier × dt` integration is incomplete: endpoint state can be assigned retrospectively to a transition or long blocked interval. Observe state before tick work and explicitly mark uncertain transitions. Six consecutive false windows require repeated transitions; they are not an inevitable consequence of one raid. |
+| **#5 long events** | Right contamination. **Do not exclude arbitrary gaps from expected ticks:** that would normalise away the slowdown being sought. Separate explicitly identified save/load time from unexplained stalls, and retain experienced wall-time throughput. |
+| **#6 tick timing** | Right that the snapshot cannot explain the incident. “A 3-second spike is invisible” is too absolute. Timing all `TickManagerUpdate` gives update duration, not necessarily pure tick work. Equality with a tick cap does not prove the cap stopped progress; a 45-ms duration does not prove the engine’s budget-exit branch fired. |
+| **#7 clamped `unscaledDeltaTime`** | Wrong as a general Unity claim: Unity documents the unscaled values as reporting actual elapsed time without that clamp. Stopwatch gaps remain useful because the hook can skip frames. [Unity documentation](https://docs.unity3d.com/2022.3/Documentation/Manual/TimeFrameManagement.html). |
+| **#8–9 history/query/sustained** | Right; sustained correctness deserves higher priority. “Ten hours” is an estimate, not a retention guarantee. |
+| **#10 GC** | Right for Unity’s Boehm collector, not generic Mono. Collection count or heap growth alone cannot attribute a pause. Record collector/incremental mode and timing where available. [Unity GC documentation](https://docs.unity3d.com/2022.3/Documentation/Manual/performance-incremental-garbage-collection.html). |
+| **#11 rotation** | Plausible; the specific WSL sharing behaviour is unverified here. Falling back to append needs a bounded overflow/retry policy, otherwise the size cap disappears. |
+| **#12 tests; #13 focus** | Right concerns. net8-versus-Mono rounding is secondary to untested lifecycle/I/O. Focus loss must be identified, not inferred from a gap. |
+
+Opus missed unordered writes, cross-process interference, writer-health reporting, reader races, future timestamps, and the inability of a **managed watchdog thread to run during stop-the-world GC**. Its “main-thread cost is trivial” conclusion needs measurement.
+
+The actual watchdog, selftest, engine source, and deployment evidence are not inlined. Their behaviour and Opus’s exact engine constants cannot be independently confirmed from these files.
+
+3. Ranked improvement plan — basenames below refer to the supplied paths.
+
+1. **MUST-DO — Start automatically and record lifecycle.** Move startup into an always-loaded mod hook, or a verified companion registration callback; remove dependence on `TpsReport()`. Write session-start, game-load/change, menu, shutdown, and sampler-failure events. **Why:** otherwise owner-only play remains invisible.
+
+2. **MUST-DO — Preserve silence and long stalls.** In `JawaBenchTpsSampler.cs`, publish monotonic heartbeat/progress and last entered phase from the main thread; use a dedicated watchdog thread to record silence without Unity calls. Remove the 60-second discard in `JawaBenchTpsMath.cs`; emit recovered stall intervals. Extend `belt_watchdog.py` into an external periodic observer recording PID/process exit and heartbeat age. **Why:** the external observer covers process death and managed-GC suspension; silence means “no observed progress,” not proven deadlock.
+
+3. **MUST-DO — Repair window semantics.** Factor a trace-testable accumulator into `JawaBenchTpsMath.cs`. Record wall duration, deliberate paused duration, effective-multiplier transitions, expected ticks, and raw wall TPS. Integrate known running target over time; mark ambiguous transition intervals. Never subtract unexplained stalls. **Why:** speed and pause changes must not manufacture or erase slowdowns.
+
+4. **MUST-DO — Make disk history dependable.** Replace per-sample thread-pool jobs with one ordered, bounded writer; persist sequence numbers and drop/error counters. Use full session UUID/PID filenames and segmented files with at least seven-day retention plus a generous byte cap. Flush regularly, attempt shutdown drain, and retain failed writes for retry. **Why:** ordering, isolation, and overnight retention are prerequisites for reconstruction; state the remaining abrupt-exit durability limit.
+
+5. **MUST-DO — Add continuous coarse attribution.** Add a companion profiler beside `JawaBenchTpsSampler.cs`: time `DoSingleTick`, tick-list categories, world tick, map pre/post tick, and game/map components. Record counts, total/max duration, and bounded worst-tick records. Separate inclusive/exclusive timings to avoid double counting. Time save/long-event scopes separately. **Why:** this distinguishes sustained simulation cost from save/UI/frame delays before the bad session disappears.
+
+6. **MUST-DO — Capture incident context and preserve logs.** At stall detection write the cached last phase/type and entry time, ticks, speed/multiplier, pause/focus/long-event/save status, last completed timings, GC-count delta, and writer health. Periodically cache all-map IDs, dimensions/biomes, pawn/thing counts, heap and process memory; avoid repeated full-map enumeration. Session metadata should identify save, game/build, ordered mod manifest, and Harmony patch owners. Archive `Player.log` per session and emit UTC/monotonic/sequence correlation markers. **Why:** the anomalous first map must remain identifiable after restart.
+
+7. **MUST-DO — Make historical queries and warnings correct.** In `tps_record.py`, add `--at`, `--since`, `--until`, and `--tz America/Los_Angeles`; select sessions explicitly, validate rows, order by session/sequence, and tolerate concurrent rotation. Require contiguous, fresh run windows for sustained warnings; print ratios and TPS grouped by target. In `belt_watchdog.py`, distinguish stale/missing/error coverage from performance status. **Why:** “3pm yesterday” needs a bounded timeline, not a now-relative median.
+
+8. **SHOULD-DO — Add targeted mod attribution.** Retain component-type attribution continuously; trigger a bounded detailed capture on low ratios or expensive ticks. Map declaring assemblies and Harmony patch owners to mod package IDs; shared-method cost is not automatically one mod’s fault. Persist DPA results automatically if used—DPA was disabled in the supplied incident. **Why:** subsystem totals locate the problem; targeted hooks identify candidates without profiling every pawn method continuously.
+
+9. **SHOULD-DO — Capture prolonged-hang diagnostics externally.** After a configurable silence threshold, preserve process CPU/I/O/memory and optionally one rate-limited dump using Mono-compatible analysis. **Why:** the last phase is a clue, not a stack trace or proof of cause.
+
+10. **MUST-DO — Replace acceptance criteria and verify on the owner’s load.** Update the ticket and `tps_record.md`; test startup without bridge calls, partial pauses, multiplier changes, autosave, recovered 90-second stall, permanent hang, forced termination, write failure, rotation races, two instances, and next-day queries. Measure sampler/profiler overhead on ~600 mods. **Why:** Python/C# agreement can preserve the same wrong model, and a minimal-list minute does not establish coverage.
+
+11. **SKIP — Always-on instrumentation of every method/pawn, and causal verdicts from `fps + MeanTickTime` or heap growth.** **Why:** excessive observer cost and unsupported attribution.
