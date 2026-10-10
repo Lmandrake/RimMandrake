@@ -238,3 +238,14 @@ _Prepared for `CAMPAIGN_STORY_SITTING_1` Phase B. Source: `design/Jawa/campaign/
 - **A. It stays history, never a place.** Buys: no new content. Costs: nothing.
 - **B. Stitch: the repulsor spires (v2) are the way back up to what the factories fed on.** Joins the v2 spire and the factory history. Buys: a v2 hook. Costs: v2 only.
 **(Recommended): A** — the owner's rule against adding places.
+
+---
+
+## RULINGS — Round 1 (owner, 2026-10-10 ~12:00, typed into question cards)
+
+- **Card 1 (lab prize), typed:** *"The assailants have effectively been neutralized by time and the slow efforts of the rust cathedral over millennia already. The Rakatan lost the war, but the rust cathedral ensured the assailants also lost over time too. Except the original assailants left in the war lab. They remain fully armed and capable of reinfecting the entire planet just like before and starting it all over again. The rust cathedral wants to complete its revenge: destroy them once and for all. Only the sad shattered remains of the assailants will survive as homages to patient hatred. Then there is the fear that the empire might get ahold of it and use it against civilian populations like they did with the Death Star."*
+- **Card 2 (entering the lab), typed:** *"The environment should be of two terrible forces together. Horrible experiments frozen in progress against the Assailants, hideous mutations and adaptations the other way too. Two immoral forces locked in lethal combat, and an emergency system activation that froze the whole place a LONG time ago when containment was detected... but it was far too late."*
+- **Card 3 (specimens), typed:** *"Player decides what to do. Then there is the start of a breakout. Then a chance to recover or fail."* By his word this overrides the card's "no new mechanism" recommendation: a containment decision, a breakout, and a recover-or-fail beat are now owed design.
+- **Card 4 (crater cut-scene):** option B, the planet reacting (every region notices, then cut to the crater). Decision taken by question card.
+
+Implications for Phase C (not yet propagated to lore docs): the Rust Cathedral's long war of attrition against the Assailants is now canon; the war-lab originals are the last armed remnant; the Empire-weaponisation fear is a stated stake; the lab's register is "two immoral forces frozen mid-combat by an emergency stasis".
