@@ -1597,3 +1597,5 @@
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-10-10T10:44:18Z","tsn":1791629058611212949}
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-10T13:42:32Z","tsn":1791639752727216765}
 {"seat":"BENCH","event":"file","id":"PLANET_ATMOSPHERE_CLOUD_COST_1","title":"Measure Planet Atmosphere 8K cloud cost: load-time and VRAM A/B with and without the mod (owner Q2 = measure first; spec Transient/texture_mod_review_2026-10-10/REVIEW.md)","kind":"task","target":"v1","needs":"bridge","for":"FOUNDRY","ts":"2026-10-10T14:59:11Z","tsn":1791644351485974944}
+{"seat":"BENCH","event":"file","id":"WEEPINGSTONES_SETTLED_FOLLOWUPS_1","title":"Weeping Stones: Vellak description after art, 5 catches waiting on their creature, huldu fur question","kind":"task","target":"v1","needs":"owner","spec":"infrastructure/state/items/WEEPINGSTONES_SETTLED_FOLLOWUPS_1.md","for":"BENCH","ts":"2026-10-10T15:54:09Z","tsn":1791647649516659320}
+{"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-10T15:55:47Z","tsn":1791647747335429781}
