@@ -43,7 +43,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until phfix_RSW_MeeCatch_a/_b paints its own (Things/Item/Fish/RSW_MeeCatch); was borrowing Things/Pawn/Animal/SeaBeasts/Mee/Mee_south. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
   </ThingDef>
 
@@ -54,7 +54,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until phfix_RSW_FaaCatch_a/_b paints its own (Things/Item/Fish/RSW_FaaCatch); was borrowing Things/Pawn/Animal/SeaBeasts/Faa/Faa_south. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
   </ThingDef>
 
@@ -65,7 +65,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until phfix_RSW_LaaCatch_a/_b paints its own (Things/Item/Fish/RSW_LaaCatch); was borrowing Things/Pawn/Animal/SeaBeasts/Laa/Laa_south. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>9</MarketValue>

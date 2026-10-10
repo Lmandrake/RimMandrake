@@ -36,7 +36,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until phfix_fish_RUT_Tubbik paints its own (Things/Item/Fish/RUT_Tubbik); was borrowing the RUT_Hardwood timber texture. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.10</Nutrition>
@@ -60,7 +60,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until phfix_fish_RUT_Zhurr paints its own (Things/Item/Fish/RUT_Zhurr); was borrowing the RUT_Greenwood timber texture. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <comps>
       <li Class="CompProperties_Rottable">
@@ -78,7 +78,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until phfix_RUT_Hurrok_a/_b paints its own (Things/Item/Fish/RUT_Hurrok); was borrowing Things/Plant/SnakePlant/SnakePlantA. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.20</Nutrition>
@@ -104,7 +104,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until phfix_RUT_Vhessa_a/_b paints its own (Things/Item/Fish/RUT_Vhessa); was borrowing Things/Plant/JadePlant/JadePlantA. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>6</MarketValue>

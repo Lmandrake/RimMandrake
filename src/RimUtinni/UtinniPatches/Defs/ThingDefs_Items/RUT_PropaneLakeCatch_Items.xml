@@ -38,7 +38,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until the RM_FessuCatch catch painting (phfix_RM_FessuCatch_a/_b) is installed here as Things/Item/Fish/RUT_Fessu; was borrowing Things/Plant/SweetheartPlant/SweetheartPlantA. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.10</Nutrition>
@@ -63,7 +63,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until the RM_KrellikCatch catch painting (phfix_RM_KrellikCatch_a/_b) is installed here as Things/Item/Fish/RUT_Krellik; was borrowing Things/Plant/PincushionPlant/PincushionPlantC. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.20</Nutrition>
@@ -92,7 +92,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until the RM_OdduCatch catch painting (phfix_RM_OdduCatch_a/_b) is installed here as Things/Item/Fish/RUT_Oddu; was borrowing Things/Plant/JadePlant/JadePlantC. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.15</Nutrition>
@@ -117,7 +117,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until the RM_OovuCatch catch painting (phfix_RM_OovuCatch_a/_b) is installed here as Things/Item/Fish/RUT_Oovu; was borrowing Things/Plant/AloeVera/AloeVeraA. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.10</Nutrition>
@@ -171,7 +171,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until the RM_TarnnCatch catch painting (phfix_RM_TarnnCatch_a/_b) is installed here as Things/Item/Fish/RUT_Tarnn; was borrowing Things/Plant/Echeveria/EcheveriaC. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.08</Nutrition>

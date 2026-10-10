@@ -1,0 +1,5 @@
+colonist Human1151 143 122 -> anchor 146 124
+spawn {"success": true, "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).", "opsRequested": 1, "spawned": 1, "failed": 0, "thingsRequested": 1, "thingsPlaced": 1, "thingsShort": 0, "stacksOverLimit": 0, "cellsOutOfBounds": 0, "perDef": {"RM_Webwork_Anchor": 1}, "errors": [], "ticksGame": 1
+read0 READ nodePresent True | weaveNear 0 | lastYield 0
+desig {"success": true, "action": "add", "designation": "Deconstruct", "added": 1, "removed": 0, "alreadyPresent": 0, "alreadyAbsent": 0, "skippedWrongType": 0, "targetType": "Thing", "targetedThings": true, "note": "'Deconstruct' is a THING designation - the rect selects cells and each thing in them is designated.", "onThings": false, "problemCount": 0, "problemListTruncated": false, "problems": [], "t
+t+1000 READ nodePresent False | weaveNear 3 | lastYield 3

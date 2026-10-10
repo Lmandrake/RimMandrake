@@ -1,0 +1,12 @@
+colonist | null
+spawn | {"success": true, "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).", "opsRequested": 1, "spawned": 1, "failed": 0, "thingsRequested": 1, "thingsPlaced": 1, "thingsShort": 0, "stacksOverLimit": 0, "cellsOutOfBounds": 0, "perDef": {"RUT_DyingCreep": 1}, "errors": [], "ticksGame": 3257, "operation": {"OperationId": "op_1d879771ac7f47ea9f6c7c108ea352f7", "Status": "Completed", "Success": true, "DurationMs": 70}, "state": {"programState": "Playing", "hasCurrentGame": true, "paused": true, "timeSpeed": "Paused", "tick": 3257}}
+CREEP t+0 | {"dying": 1, "dead": 0}
+CREEP t+2557 | {"dying": 9, "dead": 1}
+CREEP t+5126 | {"dying": 42, "dead": 9}
+CREEP t+7709 | {"dying": 114, "dead": 79}
+CREEP t+10228 | {"dying": 98, "dead": 124}
+CREEP t+12743 | {"dying": 64, "dead": 153}
+CREEP t+15262 | {"dying": 27, "dead": 174}
+CREEP t+17784 | {"dying": 4, "dead": 181}
+CREEP t+20364 | {"dying": 0, "dead": 182}
+CREEP t+22961 | {"dying": 0, "dead": 182}
