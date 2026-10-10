@@ -88,7 +88,7 @@ def replay_py(rows):
         f = [float(num(x)) if i in (0, 2, 4, 5, 7) else int(x) for i, x in enumerate(r)]
         g = acc.pre(f[0], bool(f[1]), f[2], f[3], f[4])
         if g is not None:
-            lines.append("G " + T.gap_fields(g))
+            lines.append('G "type":"%s",' % T.gap_kind(g) + T.gap_fields(g))
         w = acc.post(f[5], f[6], f[7])
         if w is not None:
             lines.append("W " + T.window_fields(w))
@@ -117,15 +117,15 @@ def trace_checks(tr):
     w = W("flipflop")[0]
     check(w["state"] == "mixed", "repeated mid-loop flips -> mixed, never judged: %r" % w)
     g, w = G("autosave"), W("autosave")
-    check(len(g) == 1 and g[0]["kind"] == "longevent" and g[0]["gapS"] == 12, "autosave gap is a longevent incident: %r" % g)
+    check(len(g) == 1 and g[0]["type"] == "longevent" and g[0]["gapS"] == 12, "autosave gap is a longevent incident: %r" % g)
     check(w and w[0]["state"] == "longevent" and w[0]["explainedS"] == 12, "autosave window is longevent: %r" % w)
     check(len(w) > 1 and w[1]["state"] == "run" and abs(w[1]["ratio"] - 1) < 0.03, "after the save, healthy again: %r" % w)
     g, w = G("stall90"), W("stall90")
-    check(len(g) == 1 and g[0]["kind"] == "stall" and g[0]["unexplainedS"] == 90, "90 s stall is an incident: %r" % g)
+    check(len(g) == 1 and g[0]["type"] == "stall" and g[0]["unexplainedS"] == 90, "90 s stall is an incident: %r" % g)
     check(w and w[0]["state"] == "stall" and w[0]["dReal"] > 90 and w[0]["ratio"] < 0.05,
           "90 s stall window is KEPT (no 60 s discard) and never subtracted from expected: %r" % w)
     g, w = G("pausedstall"), W("pausedstall")
-    check(len(g) == 1 and g[0]["kind"] == "stall" and g[0]["pausedAfter"] is True and w and w[0]["state"] == "stall",
+    check(len(g) == 1 and g[0]["type"] == "stall" and g[0]["pausedAfter"] is True and w and w[0]["state"] == "stall",
           "a freeze while paused is still a stall incident: %r %r" % (g, w))
     w = W("slow")
     check(w and all(x["state"] == "run" and abs(x["ratio"] - 0.5) < 0.05 for x in w), "half-speed ticking -> 0.5: %r" % w)
