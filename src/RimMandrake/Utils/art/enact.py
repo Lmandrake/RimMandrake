@@ -368,6 +368,29 @@ def add_alternate_graphic(src, names: set, base_texpath: str, alt_texpath: str) 
     return touched
 
 
+def is_pool(idx: L.Index, src, srow: dict, g: str | None, names: set) -> bool:
+    """The game draws graphic `g` from a RANDOM POOL: a Graphic_Random folder (ours, or one the sheet showed as random
+    variants), or a PawnKindDef body that already carries alternateGraphics (or is one of them). Only there can a ticked
+    variant ship (owner, by question card 2026-10-10): a flight flip-book, a swimming, young or second-sex graphic, a catch
+    item or a by-name render is never a pool, and its tick is reported, not shipped."""
+    if not g or g == "_byname" or g.startswith("_flip:"):
+        return False
+    if g in (srow.get("pools") or []):
+        return True
+    if folder_slots(idx, g):
+        return True
+    labels, gof = srow.get("labels") or {}, srow.get("graphic_of") or {}
+    if any("random variant" in str(labels.get(l, "")) for l, gg in gof.items() if gg == g):
+        return True
+    alt = re.compile(r"<alternateGraphics>.*?<texPath>\s*" + re.escape(g) + r"\s*</texPath>", re.S)
+    for n in names:
+        for ent in our_defs_cached(src).get(n, []):
+            if ent["tag"] == "PawnKindDef" and "<alternateGraphics>" in ent["text"] and (
+                    re.search(r"<texPath>\s*" + re.escape(g) + r"\s*</texPath>", ent["text"]) or alt.search(ent["text"])):
+                return True
+    return False
+
+
 def first_by_facing(col: dict, skip=()) -> str | None:
     for f in FACING_PREF:
         s = (col or {}).get(f)
@@ -771,7 +794,8 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
     P = {"decisions": decisions, "sheet": sheet, "biome": biome, "held": [], "install": [], "installed_already": [],
          "retire": [], "blocked": [], "withdraw": [],
          "install_after_ingest": [], "queue": [], "queued_already": [], "refile": [], "awaiting_pick": [], "purge": [], "purged_already": 0,
-         "cuts": [], "todo": [], "done": [], "conflicts": [], "in_game_not_ours": 0, "followed": {}}
+         "cuts": [], "todo": [], "done": [], "conflicts": [], "in_game_not_ours": 0, "followed": {},
+         "ignored_variants": []}
     decs = doc.get("decisions") or {}
     wd_ids = withdrawn_ids()
     by_id = {j["id"]: j for j in jobs}
@@ -883,11 +907,24 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                         rul = keep_ruling(idx, row, letter, sha)
                         P["install"].append({"row": row, "mod": mod, "rel": r, "sha": sha, "letter": letter,
                                              "ruling": rul["id"] if rul else None})
-            for vl in v.get("variants") or []:
+            for vl in ([] if v.get("variantsDefault") else v.get("variants") or []):
+                # HIS ticks protect their pictures; a machine-default tick never does (Thozzik, DESIGN §2)
                 protect_here |= {s for s in (cols.get(vl) or {}).values() if s and s not in xed}
             # ── 2b variants he TICKED (not the sheet's default tick): shipped beside the pick, never only protected
             # (bug 2026-10-10: Bladderquill/Shadefern/Steamfrond/Verdimoss/Weepmat B and Fanback C were never shipped)
             explicit = [] if v.get("variantsDefault") else [x for x in (v.get("variants") or []) if x in cols]
+            # a tick outside a random pool (a flight frame set, a swimming/young/second-sex graphic, a by-name render
+            # with no graphic) never ships as a variant: listed once, the pictures stay protected (DESIGN §2, §3.5)
+            refused = []
+            for vl in explicit:
+                gv = gof_resolved(srow, vl)
+                if gv and picks.get(gv) == vl:
+                    continue
+                if not is_pool(idx, src, srow, gv, names):
+                    refused.append(vl)
+                    P["ignored_variants"].append(f"{row}: ignored variant tick {vl} on "
+                                                 f"{(gv or 'an unassigned render').rsplit('/', 1)[-1]} — not a random pool")
+            explicit = [x for x in explicit if x not in refused]
             for g in list(folders):
                 for vl in explicit:
                     folders[g]["keep"] |= {s for s in (cols.get(vl) or {}).values() if s and s not in xed}
@@ -1504,6 +1541,9 @@ def report(R: dict) -> str:
         L_.append(f"     {q['row']}: {q['note'][:90]!r}")
     for q in P["queued_already"]:
         L_.append(f"     already: {q}")
+    if P.get("ignored_variants"):
+        L_.append(f"  variants   {len(P['ignored_variants'])} tick(s) ignored — not in a random pool (pictures kept, nothing shipped)")
+        L_ += [f"     {x}" for x in P["ignored_variants"]]
     L_.append(f"  re-file    {R['refiled']} failed job(s) back to pending/")
     for rf in P["refile"]:
         L_.append(f"     {rf['row']}: {rf['job']['id']}")

@@ -6,8 +6,10 @@ that FAILS on the pre-fix enact.py:
     now it installs at OUR path and the def's texPath moves to it (placeholder <color> tint dropped). A render picked
     for a Graphic_Random folder of ours goes into the folder (<base>_<letter>.png), and a folder this run fills sheds
     the pictures he did not keep.
-  2 TICKED VARIANTS SHIPPED: an explicit variant tick goes into the plant folder, or (a creature) to <res>V_<L> with an
-    alternateGraphics entry; a DEFAULT variant tick ships nothing.
+  2 TICKED VARIANTS SHIPPED: an explicit variant tick goes into the plant folder, or (a creature whose body is already
+    a random pool: it carries alternateGraphics) to <res>V_<L> with an alternateGraphics entry; a DEFAULT variant tick
+    ships nothing; a tick outside a random pool (a body with no alternates, a flight flip-book) ships nothing and is
+    listed as ignored (owner, by question card 2026-10-10).
   3 ART + DEF NOTES: a note asking for a rename/description is not "followed" because an art job exists — it is a
     TODO until --mark-done, both for an open note and for one an earlier run already moved to notes_followed.
   4 REDRAW REFERENCES: "drop the art" / "total regen" -> no reference; "based on (b)" -> column B; otherwise the
@@ -67,6 +69,17 @@ KINDS = """<?xml version="1.0" encoding="utf-8"?>
     <defName>RSW_Fan</defName>
     <race>RSW_Fan</race>
     <lifeStages><li><bodyGraphicData><texPath>swanimals/Fan/Fan</texPath></bodyGraphicData></li></lifeStages>
+    <alternateGraphicChance>0.5</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <texPath>swanimals/Fan/FanV_X</texPath>
+      </li>
+    </alternateGraphics>
+  </PawnKindDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Kite</defName>
+    <race>RSW_Kite</race>
+    <lifeStages><li><bodyGraphicData><texPath>swanimals/Kite/Kite</texPath></bodyGraphicData></li></lifeStages>
   </PawnKindDef>
 </Defs>
 """
@@ -77,12 +90,14 @@ def build(root: Path) -> dict:
     import artledger as L
     src, led = F["src"], F["led"]
     (src / "RimMandrake/TestMod/Defs/ThingDefs_Races/Kinds.xml").write_text(KINDS)
-    names = ("wa", "bb", "pa", "pb", "da", "db", "fa", "fb", "fc", "ka", "am", "va", "vb", "la", "ha", "hc")
+    names = ("wa", "bb", "pa", "pb", "da", "db", "fa", "fb", "fc", "ka", "am", "va", "vb", "la", "ha", "hc",
+             "ta", "tb", "tc", "sa", "se")
     s = {k: L.store_put_bytes(T.noise_png(100 + i)) for i, k in enumerate(names)}
     tex = src / "RimMandrake/TestMod/Textures"
     evs = []
     for rel, k in (("Things/Plant/RM_Quill/RM_Quill_a.png", "pa"), ("Things/Plant/RM_Dew/RM_Dew_a.png", "da"),
-                   ("swanimals/Fan/Fan_east.png", "fa")):
+                   ("swanimals/Fan/Fan_east.png", "fa"), ("swanimals/Kite/Kite_east.png", "ta"),
+                   ("swanimals/Strill/Strill_east.png", "sa")):
         p = tex / rel
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_bytes(L.store_get(s[k]))
@@ -108,6 +123,14 @@ def build(root: Path) -> dict:
                     "graphic_of": {"A": "swanimals/Fan/Fan", "B": "swanimals/Fan/Fan", "C": "swanimals/Fan/Fan"},
                     "labels": {"A": IG, "B": "render fan_b", "C": "render fan_c"}, "res": "swanimals/Fan/Fan",
                     "subject_key": "fan"},
+        "RSW_Kite": {"columns": {"A": {"east": s["ta"]}, "B": {"east": s["tb"]}, "C": {"east": s["tc"]}},
+                     "graphic_of": {"A": "swanimals/Kite/Kite", "B": "swanimals/Kite/Kite", "C": "swanimals/Kite/Kite"},
+                     "labels": {"A": IG, "B": "render kite_b", "C": "render kite_c"}, "res": "swanimals/Kite/Kite",
+                     "subject_key": "kite"},
+        "RSW_Strill": {"columns": {"A": {"east": s["sa"]}, "E": {"1_east": s["se"]}},
+                       "graphic_of": {"A": "swanimals/Strill/Strill", "E": "_flip:swanimals/Strill/Strill_Flying_"},
+                       "labels": {"A": IG, "E": "flight frames strill_fly"}, "res": "swanimals/Strill/Strill",
+                       "subject_key": "strill"},
         "RM_Kir": {"columns": {"A": {"east": s["ka"]}}, "graphic_of": {"A": "Things/Pawn/Animal/Chicken/Chicken"},
                    "labels": {"A": IG}, "subject_key": "kir"},
         "RM_Amb": {"columns": {"A": {"single": s["am"]}}, "graphic_of": {"A": "Things/Plant/Ambrosia"},
@@ -136,6 +159,8 @@ def build(root: Path) -> dict:
         "RM_Quill": d("B", variants=["A", "B"]),
         "RM_Dew": d("B", variants=["B"], variantsDefault=True),
         "RSW_Fan": d("B", variants=["B", "C"]),
+        "RSW_Kite": d("B", variants=["C"]),
+        "RSW_Strill": d("A", variants=["E"]),
         "RM_Kir": d("redo", 'Total regen. Quasi-avian glider. Rename to "Dewglider"'),
         "RM_Amb": d("redo", "Make the art very special. Drop the art currently here."),
         "RM_Vel": d("redo", "Make more alien based on (b), less camel."),
@@ -191,6 +216,13 @@ def main():
         check(("RSW_Fan", "swanimals/Fan/FanV_C_east.png") in inst, "2 ticked creature variant C -> FanV_C (alternate)")
         check(not any(r == "RM_Bur" and i.get("variant") for i in P["install"] for r in [i["row"]]),
               "2 a DEFAULT variant tick ships nothing extra")
+        check(not any(i["row"] in ("RSW_Kite", "RSW_Strill") and i.get("variant") for i in P["install"]),
+              "2 a tick outside a random pool (body with no alternates; flight flip-book) ships nothing")
+        ig = " | ".join(P.get("ignored_variants") or [])
+        check("RSW_Kite: ignored variant tick C" in ig and "RSW_Strill: ignored variant tick E" in ig
+              and "RSW_Fan" not in ig, "2 ...and each is listed once as an ignored tick (the pool tick on Fan is not)")
+        check(not any(i["row"] == "RSW_Strill" and "Flying" in i["rel"] for i in P["install"]),
+              "2 Strill shape (variants [E], no picks): flight frames never wired as an alternate BODY")
         # 3 def half
         check(any(t.startswith("RM_Kir: def half") for t in R["todo"]) and "RM_Kir" not in P["followed"],
               "3 rename note with an art job is a TODO, not followed")
@@ -226,8 +258,11 @@ def main():
               "1 Dew folder holds only pick B; the unkept A is retired (archived in the store)")
         fan = [k for k in root.findall("PawnKindDef") if k.findtext("defName") == "RSW_Fan"][0]
         alts = [li.findtext("texPath") for li in fan.findall("alternateGraphics/li")]
-        check((tex / "swanimals/Fan/FanV_C_east.png").is_file() and alts == ["swanimals/Fan/FanV_C"]
-              and fan.findtext("alternateGraphicChance") == "0.5", "2 Fan variant C shipped + alternateGraphics, chance 0.5")
+        check((tex / "swanimals/Fan/FanV_C_east.png").is_file() and alts == ["swanimals/Fan/FanV_X", "swanimals/Fan/FanV_C"]
+              and fan.findtext("alternateGraphicChance") == "0.667", "2 Fan variant C shipped + alternateGraphics, chance 0.667")
+        kite = [k for k in root.findall("PawnKindDef") if k.findtext("defName") == "RSW_Kite"][0]
+        check(kite.find("alternateGraphics") is None and not (tex / "swanimals/Kite/KiteV_C_east.png").exists(),
+              "2 Kite (no alternates): its tick did NOT create an alternateGraphics pool")
         check((tex / "swanimals/Fan/Fan_east.png").is_file() and L.sha256_file(tex / "swanimals/Fan/Fan_east.png") == s["fb"],
               "2 Fan pick B installed in its own slot")
         J = jobs_written(F)

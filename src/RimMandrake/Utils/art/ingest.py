@@ -330,7 +330,8 @@ def ingest(decisions_path: Path, dry_run: bool = False, redo_jobs: Path | None =
                         out["rulings"] += 1
         # kept variants: extra columns the owner marked as valid in-game variants of the pick
         if srow and decided:
-            for vl in sorted(set(v.get("variants") or [])):
+            # HIS ticks only: a machine-default list (`variantsDefault`, the retired 2026-10-06 pre-tick) is never a keep
+            for vl in sorted(set([] if v.get("variantsDefault") else v.get("variants") or [])):
                 if vl in cols and vl != dec and placeholder_set(cols[vl].values()):
                     out.setdefault("placeholder_refused", []).append(f"{row}:{vl} (variant)")
                     continue
