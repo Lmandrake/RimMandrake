@@ -228,6 +228,11 @@ def merge_row(a, c, inputs, facts):
         final, status, changed, reason = av, "AGREED", False, None
     if spot:
         evidence.add(str(spot.get("path")))
+    for rej in f.get("source_rejected") or []:      # facts regen marks known false matches REJECTED
+        slug = str(rej).split(" ")[0].lower()
+        if slug and slug in str(src.get("url") or "").lower():
+            src["url"], src["kind"], src["confidence"] = f.get("source_url"), f.get("source_kind"), f.get("source_confidence")
+            amendments.append({"field": "source.url", "old": slug, "new": "REJECTED by facts regen", "evidence": "mod_facts source_rejected"})
     ours = f.get("class") or ("OURS" if pid.startswith(("mandrake.rm.", "mandrake.rsw.", "mandrake.rut."))
                               else "CORE_DLC" if pid.startswith("ludeon.rimworld") else "THIRD_PARTY")
     return {
@@ -251,6 +256,10 @@ def merge_row(a, c, inputs, facts):
         "answered_by_ruling": ruled,
         "replacement_path": a.get("replacement_path"), "holds_it_in": a.get("holds_it_in"),
         "texture_decoded_mb_est": f.get("texture_decoded_mb_est"), "disk_mb": f.get("disk_mb"),
+        "facts_source_kind": f.get("source_kind"), "facts_source_url": f.get("source_url"),
+        "facts_source_confidence": f.get("source_confidence"),
+        "cherry_picker_shell": f.get("cherry_picker_shell"), "cherry_picker_cut_defs": f.get("cherry_picker_cut_defs"),
+        "defs_outside_loaded_dirs": f.get("defs_outside_loaded_dirs"),
         "amendments": amendments, "evidence": sorted(evidence),
     }
 

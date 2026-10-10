@@ -89,6 +89,11 @@ def main():
     check("fit amended", r["fit"], "neutral")
     check("status amended", r["decision_status"], "AGREED")
     check("evidence pointers", "assessments/batch_03.jsonl" in r["evidence"], True)
+    # facts regen rejection: assessor kept a false-match url that facts now REJECTS
+    r = m.merge_row(assess(source={"url": "https://github.com/pardeike/Harmony", "kind": "github", "confidence": "MEASURED"}),
+                    None, {}, facts={"a.b": {"source_rejected": ["pardeike/Harmony (bundled lib)"], "source_url": None,
+                                              "source_kind": "steam-only", "source_confidence": "INFERRED"}})
+    check("facts rejection overrides assessor url", (r["source_url"], r["source_kind"]), (None, "steam-only"))
     if FAILS:
         print("FAIL %d" % len(FAILS))
         for f in FAILS:

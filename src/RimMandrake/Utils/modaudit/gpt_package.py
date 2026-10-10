@@ -252,7 +252,7 @@ def main():
     dp = os.path.join(AUDIT, "FACTS_REGEN_DELTA.md")
     if os.path.isfile(dp):
         d = open(dp).read().split("\n", 1)[1]
-        w(re.sub(r"(?m)^(#+) ", lambda m: "#" + m.group(1) + " ", d[:30000]) + ("\n…(truncated; full file FACTS_REGEN_DELTA.md)\n" if len(d) > 30000 else ""))
+        w(re.sub(r"(?m)^(#+) ", lambda m: "#" + m.group(1) + " ", d[:14000]) + ("\n…(truncated; full file FACTS_REGEN_DELTA.md)\n" if len(d) > 14000 else ""))
     else:
         w("(not yet written)\n")
     # 9b textures
@@ -302,7 +302,7 @@ def main():
             w("| %s | %s | %s | %d | %s | %s | %s |" % (
                 f["packageId"], SHORT.get(r.get("final_decision"), "?"), ",".join(r.get("owner_question_ids") or []) or "-",
                 f.get("patched_by_ours_refs") or 0, ", ".join("%s %d" % (k.replace("mandrake.", ""), v) for k, v in ours) or "-",
-                esc(dd)[:260], f.get("texture_decoded_mb_est")))
+                esc(dd)[:150], f.get("texture_decoded_mb_est")))
         w("")
     bb = F.get("mandrake.rm.biomes") or {}
     w("**Baroque Biomes (`mandrake.rm.biomes`, ours) depends on:** hard %s; patches into: %s.\n" % (
