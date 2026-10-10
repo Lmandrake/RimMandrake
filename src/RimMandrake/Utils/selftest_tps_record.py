@@ -382,6 +382,52 @@ def reader_checks():
     check(T.sustained_from_rows(dropped) == "unknown", "MUST 7: a seq gap (dropped rows) breaks the streak")
     check(T.sustained_from_rows(mono_run(6)) == "low", "MUST 7: six abutting low windows ARE sustained low")
 
+    # MUST 13: strict row validation - every bad row counted, none crashes or slips through
+    with tempfile.TemporaryDirectory() as d:
+        p = os.path.join(d, T.segment_name(t15 - 600, "dddd", 13, 0))
+        good = sample(t15, 1)
+        bad = ['{"kind":"sample","kind":"incident","utc":"%s","session":"dddd","seq":2,"state":"run"}' % iso(t15),
+               json.dumps(dict(sample(t15, 3), ratio=float("nan")), allow_nan=True),
+               json.dumps(dict(sample(t15, 4), ratio=True)),
+               json.dumps(dict(sample(t15, 5), state="bogus")),
+               json.dumps(dict(sample(t15, 6), dReal=-5)),
+               json.dumps(dict(sample(t15, 7), session=["x"])),
+               json.dumps({"kind": "zzz-unknown", "utc": iso(t15), "session": "dddd", "seq": 8}),
+               json.dumps(dict(sample(t15, 9), seq="9"))]
+        with open(p, "wb") as fh:
+            fh.write((json.dumps(good) + "\n").encode())
+            for b in bad:
+                fh.write((b + "\n").encode())
+            fh.write(b'{"kind":"sample","utc":"' + iso(t15).encode() + b'","session":"dd\xffdd","seq":10,"state":"run"}\n')
+        try:
+            rec = T.read_record(d, now=t15 + 60)
+            n_bad = rec["malformed"] + rec["invalid"]
+            check(len(rec["rows"]) == 1 and n_bad == len(bad) + 1,
+                  "MUST 13: 1 good row kept, %d bad rows counted; got %d rows, %d malformed, %d invalid"
+                  % (len(bad) + 1, len(rec["rows"]), rec["malformed"], rec["invalid"]))
+        except Exception as e:                                   # noqa: BLE001
+            check(False, "MUST 13: read_record crashed on a malformed row: %r" % e)
+    # segment numbers >= 1000 are still segments, ordered numerically
+    names = [T.segment_name(t15, "eeee", 1, n) for n in (999, 1000, 2)]
+    with tempfile.TemporaryDirectory() as d:
+        for n in names:
+            open(os.path.join(d, n), "w").close()
+        got = [os.path.basename(x) for x in T.list_files(d)]
+        check(got == [names[2], names[0], names[1]], "MUST 13: segment 1000 is listed and sorted after 999: %r" % got)
+    # heartbeat files that are not objects, or carry junk, never crash the observer
+    with tempfile.TemporaryDirectory() as d:
+        for n, body in (("hb_a.json", "[1,2]"), ("hb_b.json", '"x"'),
+                        ("hb_c.json", json.dumps({"pid": 1, "session": "c", "silentS": "abc", "utc": "x"}))):
+            with open(os.path.join(d, n), "w") as fh:
+                fh.write(body)
+        try:
+            hbs = T.read_heartbeats(d)
+            T.observe([], hbs, None)
+            check(all(isinstance(h, dict) for h in hbs) and len(hbs) == 1,
+                  "MUST 13: non-object heartbeats are skipped, junk fields tolerated: %r" % hbs)
+        except Exception as e:                                   # noqa: BLE001
+            check(False, "MUST 13: a malformed heartbeat crashed the observer: %r" % e)
+
     # MUST 8: two game processes are analysed SEPARATELY
     now8 = t15 + 5000
     b_fresh = [dict(sample(now8 - 5 * (12 - i), 100 + i, ratio=1.0, session="bbbb"), monoStart=50.0 + 5 * i,
@@ -425,7 +471,7 @@ def reader_checks():
 
 # names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
 # from the harness is a failure, not a pass.
-CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale"]
+CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict"]
 
 
 def unit_checks(lines):
