@@ -15,6 +15,12 @@
 - Leather texPath fix: 0 texture errors naming RM_ToxinSealant / RM_RoyalRind / RM_GreatboleGrubSpines / RSW_TelluroxShell.
 - Missing-mod warnings for artoverride ids expected 0 (entries dropped).
 ## (2) Relaunch, Player.log decide strings, art gaps
+- 22:24:07 launched via `steam.exe -applaunch 294100` on 565 active.
+- F1 offline: art_fold_check 60 creatures, 0 red, 0 unmeasured, Silooth probe PASS.
+- Art gaps (offline, during the load):
+  - FIXED in src (deploy after this load; takes effect next load): RUT_Fuzz texPath Things/Plant/RUT_Fuzz (never existed) -> Things/Plant/RM_Fuzz (same species, LeaningScrub art). RSW_Zakkro dessicated (no art) -> vanilla Things/Pawn/Animal/Bear/Dessicated_Bear.
+  - FILED ART_TEXTURE_GAPS_FOLLOWUP_1: RM_Braskeen/RM_Ismerrow (artpipe renders exist, need art install), KOTOR_SmallCrystal x7(+7 GravTide twins) (art only in the unloaded absorbed donor 3254370945), AA_Swarmling (TheRot points it at RotSpecies/Swarmling, art deleted by card enactment 07ff006d0).
+  - Dalgo/Iriaz (same-path SWBestiary), Nuna, Megathrips (same-path UtinniPatches): checked by the log + F3 render below.
 ## (3) Jawa hood proof on a swimmer
 ## (4) Live checks (ZERSIUM_FORGE_BIOME_1, SHIP_ALLOY_FORGE_1 L5, MATERIAL_MERGES_CLEANUP_1, SILOOTH_ART_FOLD_1, ART_OVERRIDE_FOLD_ALL_1 F3)
 ## (5) Remaining acceptance rows

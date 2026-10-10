@@ -217,7 +217,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>swanimals/DesertPort/Zakkro/Zakkro_Dessicated</texPath>
+          <texPath>Things/Pawn/Animal/Bear/Dessicated_Bear</texPath>
           <drawSize>2.4</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -231,7 +231,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>swanimals/DesertPort/Zakkro/Zakkro_Dessicated</texPath>
+          <texPath>Things/Pawn/Animal/Bear/Dessicated_Bear</texPath>
           <drawSize>3.6</drawSize>
         </dessicatedBodyGraphicData>
       </li>
@@ -245,7 +245,7 @@
           </shadowData>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
-          <texPath>swanimals/DesertPort/Zakkro/Zakkro_Dessicated</texPath>
+          <texPath>Things/Pawn/Animal/Bear/Dessicated_Bear</texPath>
           <drawSize>4.8</drawSize>
         </dessicatedBodyGraphicData>
       </li>
