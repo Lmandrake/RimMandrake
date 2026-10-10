@@ -528,6 +528,14 @@
       <value><texPath>RotSpecies/WitchesOyster</texPath></value>
     </match>
   </Operation>
+  <!-- RotSpecies/WitchesOyster is a Graphic_Random folder (A + his ticked B/C, therot_sheet_2026-10-05, 2026-10-10) -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/graphicData/graphicClass</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/graphicData/graphicClass</xpath>
+      <value><graphicClass>Graphic_Random</graphicClass></value>
+    </match>
+  </Operation>
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/PawnKindDef[defName="AA_Agaripawn"]/lifeStages/li[3]/bodyGraphicData/texPath</xpath>
     <match Class="PatchOperationSequence">
@@ -635,6 +643,16 @@
           <value><description>A broad-winged moth with pale, dust-soft wings, bred long ago for some forgotten waste-eating project and long since gone wild. Its grubs are timid things that nibble at sparse growth. The adults are not timid about anything: they eat cloth, wool first and then any natural fibre, worn or stored, and settle for grass only when nothing better is within reach. A tamed one can be shorn of a fine moth-silk, provided the silk is kept well away from every other moth, which will eat that too.</description></value>
         </li>
       </operations>
+    </match>
+  </Operation>
+  <!-- AA_AngelMoth art: his pick C (therot_sheet_2026-10-05) at our path. C has east+north only; the south is the
+       Alpha Animals south until a south is drawn. Covers the body graphic and the matching alternateGraphics entry;
+       AA_AngelMoth2/3 (alternates he did not pick or reject) stay the donor's. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_AngelMoth"]//texPath[text()="Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/PawnKindDef[defName="AA_AngelMoth"]//texPath[text()="Things/Pawn/Animal/AA_AngelMoth/AA_AngelMoth"]</xpath>
+      <value><texPath>RotSpecies/AngelMoth/AngelMoth</texPath></value>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">

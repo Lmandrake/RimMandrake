@@ -232,7 +232,7 @@
     </match>
   </Operation>
 
-  <!-- AB_WitchesOyster, turrok shelf (6 wide): WitchesOyster 9 contact cells -->
+  <!-- AB_WitchesOyster, turrok shelf (6 wide): WitchesOyster_A 9 contact cells -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]</xpath>
     <match Class="PatchOperationAddModExtension">
@@ -242,7 +242,7 @@
           <measuredSize>6</measuredSize>
           <variants>
             <li>
-              <texture>WitchesOyster</texture>
+              <texture>WitchesOyster_A</texture>
               <opaqueMin>(0.0117,0.1855)</opaqueMin>
               <opaqueMax>(0.9863,0.8066)</opaqueMax>
               <contact>

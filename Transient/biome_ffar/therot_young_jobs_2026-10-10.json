@@ -1,0 +1,34 @@
+[
+ {
+  "id": "rotimmature_blastpodshroom_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_BlastpodShroom",
+  "target_texpath": "RotSporeKit/Things/Plant/Boomshroom/BoomshroomImmature",
+  "prompt": "RimWorld plant sprite of a YOUNG, immature kabbrik pod (A low cluster of taut, rounded pods on short stems, the skins grey-white and glossy, each seam showing a faint warm glow.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw the same species as the attached grown picture (the owner's pick) at an early growth stage: smaller, fewer and less developed parts, same palette and anatomy. The attached image is anatomy guidance only, not a sprite to copy. A single young plant on a transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "decision taken by question card 2026-10-10: new young-plant art, from his grown pick",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/00/00c49ae5b7da5c06c8a6ba5dc5a75482fdab5f61baa56099b3abdb07382f040d.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotimmature_greylady_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_GreyLady",
+  "target_texpath": "RotSporeKit/Things/Plant/GreyLady/GreyLadyImmature",
+  "prompt": "RimWorld plant sprite of a YOUNG, immature sylla lace (A slender grey mushroom that grows a fine lace from beneath its cap, falling to the ground around the stalk like a veil.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw the same species as the attached grown picture (the owner's pick) at an early growth stage: smaller, fewer and less developed parts, same palette and anatomy. The attached image is anatomy guidance only, not a sprite to copy. A single young plant on a transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "decision taken by question card 2026-10-10: new young-plant art, from his grown pick",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/0e/0ec42b4a5cf3b81d0028d980c701178634569b055a0d12c9fdbcb37c93d1ab85.png"
+  ],
+  "biome_neutral": true
+ }
+]
