@@ -706,7 +706,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_TollukCap</defName>
     <label>tolluk cap</label>
-    <description>The common tall mushroom of the pale forest: a lilac cap on a thick white stalk, studded with soft knobs that glow faintly when the air is wet.</description>
+    <description>The common tall mushroom of the pale forest: a lilac cap on a thick white stalk, studded with soft knobs that glow faintly when the air is wet. It gives a few edible purple caps when harvested.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/TollukCap</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -728,8 +728,40 @@
       <wildClusterRadius>6</wildClusterRadius>
       <wildClusterWeight>2</wildClusterWeight>
       <wildOrder>1</wildOrder>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_TollukCapHarvest</harvestedThingDef>
+      <harvestYield>4</harvestYield>
       <interferesWithRoof>false</interferesWithRoof>
     </plant>
+  </ThingDef>
+
+  <!-- PROVISIONAL: everything copied from vanilla RawFungus (the siblings' harvest); yield 4 is a guess. The icon
+       reuses the vanilla RawFungus icon; a painted tolluk-cap item icon is owed. -->
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_TollukCapHarvest</defName>
+    <label>tolluk cap</label>
+    <description>The soft purple caps of the tolluk cap, cut from the stalk. Edible raw, better cooked.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Resource/PlantFoodRaw/RawFungus</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.1</MarketValue>
+    </statBases>
+    <ingestible>
+      <foodType>Fungus</foodType>
+    </ingestible>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">Fungus</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>30</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
   </ThingDef>
 
   <!-- ============== Sagecrust ============== -->

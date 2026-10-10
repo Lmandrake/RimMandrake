@@ -46,23 +46,6 @@
     </match>
   </Operation>
 
-  <!-- ============== AB_Agarilux -> tolluk cap (unchanged size) ============== -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_Agarilux"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/label</xpath>
-          <value><label>tolluk cap</label></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/description</xpath>
-          <value><description>The common tall mushroom of the pale forest: a lilac cap on a thick white stalk, studded with soft knobs that glow faintly when the air is wet. It has adapted to open ground and gives a few edible purple caps when harvested, more if you are patient.</description></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
   <!-- ============== AB_AgariluxPrime -> grath elder (20 wide) ============== -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]</xpath>
@@ -480,13 +463,6 @@
     <match Class="PatchOperationReplace">
       <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/graphicData/texPath</xpath>
       <value><texPath>RotSpecies/AgaricusDomeCap</texPath></value>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/graphicData/texPath</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="AB_Agarilux"]/graphicData/texPath</xpath>
-      <value><texPath>RotSpecies/Agarilux</texPath></value>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
