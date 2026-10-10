@@ -624,7 +624,12 @@ def observe(rows, hbs, procs, now=None):
     and written once. A cleanly shut down session yields nothing."""
     now = time.time() if now is None else now
     procs = _procs(procs)
-    ended_sessions = {r.get("session") for r in rows if r.get("kind") in ("shutdown", "shutdown-complete")}
+    # MUST 16: only intent + completion is a clean end; an older build wrote no completion row, so a `shutdown`
+    # row WITHOUT phase=intent (build 1/2) still counts as clean.
+    complete = {r.get("session") for r in rows if r.get("kind") == "shutdown-complete"}
+    intent_only = {r.get("session") for r in rows if r.get("kind") == "shutdown" and r.get("phase") == "intent"} - complete
+    legacy = {r.get("session") for r in rows if r.get("kind") == "shutdown" and r.get("phase") is None}
+    ended_sessions = complete | (legacy - complete)
     last = {}
     for r in rows:
         if r.get("kind") == "observer":
@@ -660,6 +665,10 @@ def observe(rows, hbs, procs, now=None):
                      detail="pid %s (same process) is running but its heartbeat stopped %.0fs ago (phase %s): "
                             "whole-process suspension, stopped watchdog thread, blocked disk, debugger or sleep "
                             "- cause not established; last main progress %s" % (pid, age, hb.get("phase"), main_utc))
+        elif sess in intent_only and sess not in complete:
+            f = dict(base, finding="shutdown-incomplete", level="INFO",
+                     detail="session %s (pid %s) wrote a shutdown INTENT but no shutdown-complete row: the drain or "
+                            "the log archive did not finish before the process ended" % ((sess or "?")[:8], pid))
         elif sess not in ended_sessions:
             f = dict(base, finding="exited-without-shutdown", level="INFO",
                      detail="session %s (pid %s) ended WITHOUT a shutdown row - crash or kill; its record ends at "
@@ -672,7 +681,7 @@ def observe(rows, hbs, procs, now=None):
         prev = last.get(key)
         if prev is None or prev.get("state") == "ended":
             f["state"], f["persist"] = "open", True
-        elif f["finding"] == "exited-without-shutdown":
+        elif f["finding"] in ("exited-without-shutdown", "shutdown-incomplete"):
             f["state"], f["persist"] = "final", False
         else:
             prev_t = _epoch(prev.get("utc"))
@@ -681,7 +690,8 @@ def observe(rows, hbs, procs, now=None):
         f["new"] = f["persist"]           # back-compat name
         out.append(f)
     for key, prev in last.items():
-        if key in current or prev.get("state") == "ended" or prev.get("finding") == "exited-without-shutdown":
+        if key in current or prev.get("state") == "ended" or prev.get("finding") in ("exited-without-shutdown",
+                                                                                     "shutdown-incomplete"):
             continue
         out.append({"session": key[0], "pid": prev.get("pid"), "finding": key[1], "state": "ended",
                     "persist": True, "new": True, "level": "INFO",

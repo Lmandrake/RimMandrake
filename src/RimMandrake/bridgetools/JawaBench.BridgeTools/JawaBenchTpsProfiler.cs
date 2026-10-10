@@ -45,36 +45,63 @@ namespace JawaBench.BridgeTools
 
         private static AccessTools.FieldRef<TickList, TickerType> _tickType;
 
-        internal static void Install(Harmony h)
+        internal const string HarmonyId = "mandrake.jawabench.tps.attr";
+        internal static string InstallStatus = "not-attempted", InstallDetail;
+
+        /// <summary>MUST 16: all eight stage targets resolved first; any patch failure rolls back every stage timer
+        /// (own Harmony id), so attribution is complete, partial (a target missing - named), or failed - never a
+        /// silent mixture whose totals are drained by nobody.</summary>
+        internal static void Install()
         {
             try
             {
                 _tickType = AccessTools.FieldRefAccess<TickList, TickerType>("tickType");
-                var self = typeof(JawaBenchTpsProfiler);
-                Patch(h, AccessTools.Method(typeof(TickManager), nameof(TickManager.DoSingleTick)), "TickPre", "TickFin");
-                Patch(h, AccessTools.Method(typeof(TickList), nameof(TickList.Tick)), "TlPre", "TlFin");
-                Patch(h, AccessTools.Method(typeof(World), nameof(World.WorldTick)), "WorldPre", "WorldFin");
-                Patch(h, AccessTools.Method(typeof(World), nameof(World.WorldPostTick)), "WorldPostPre", "WorldPostFin");
-                Patch(h, AccessTools.Method(typeof(Map), nameof(Map.MapPreTick)), "MapPrePre", "MapPreFin");
-                Patch(h, AccessTools.Method(typeof(Map), nameof(Map.MapPostTick)), "MapPostPre", "MapPostFin");
-                Patch(h, AccessTools.Method(typeof(MapComponentUtility), nameof(MapComponentUtility.MapComponentTick)), "MapCompPre", "MapCompFin");
-                Patch(h, AccessTools.Method(typeof(GameComponentUtility), nameof(GameComponentUtility.GameComponentTick)), "GameCompPre", "GameCompFin");
+                var h = new Harmony(HarmonyId);
+                var t = typeof(JawaBenchTpsProfiler);
+                var map = new Dictionary<string, string[]>
+                {
+                    { "DoSingleTick", new[] { "TickPre", "TickFin" } }, { "TickList.Tick", new[] { "TlPre", "TlFin" } },
+                    { "WorldTick", new[] { "WorldPre", "WorldFin" } }, { "WorldPostTick", new[] { "WorldPostPre", "WorldPostFin" } },
+                    { "MapPreTick", new[] { "MapPrePre", "MapPreFin" } }, { "MapPostTick", new[] { "MapPostPre", "MapPostFin" } },
+                    { "MapComponentTick", new[] { "MapCompPre", "MapCompFin" } }, { "GameComponentTick", new[] { "GameCompPre", "GameCompFin" } },
+                };
+                var targets = new List<JawaBenchTpsInstall.Target>
+                {
+                    new JawaBenchTpsInstall.Target("DoSingleTick", true, () => AccessTools.Method(typeof(TickManager), nameof(TickManager.DoSingleTick))),
+                    new JawaBenchTpsInstall.Target("TickList.Tick", false, () => AccessTools.Method(typeof(TickList), nameof(TickList.Tick))),
+                    new JawaBenchTpsInstall.Target("WorldTick", false, () => AccessTools.Method(typeof(World), nameof(World.WorldTick))),
+                    new JawaBenchTpsInstall.Target("WorldPostTick", false, () => AccessTools.Method(typeof(World), nameof(World.WorldPostTick))),
+                    new JawaBenchTpsInstall.Target("MapPreTick", false, () => AccessTools.Method(typeof(Map), nameof(Map.MapPreTick))),
+                    new JawaBenchTpsInstall.Target("MapPostTick", false, () => AccessTools.Method(typeof(Map), nameof(Map.MapPostTick))),
+                    new JawaBenchTpsInstall.Target("MapComponentTick", false, () => AccessTools.Method(typeof(MapComponentUtility), nameof(MapComponentUtility.MapComponentTick))),
+                    new JawaBenchTpsInstall.Target("GameComponentTick", false, () => AccessTools.Method(typeof(GameComponentUtility), nameof(GameComponentUtility.GameComponentTick))),
+                };
+                PatchedStages = 0;
+                InstallStatus = JawaBenchTpsInstall.Run(targets, (name, m) =>
+                {
+                    var hooks = map[name];
+                    h.Patch((MethodInfo)m, prefix: new HarmonyMethod(t.GetMethod(hooks[0], BindingFlags.Static | BindingFlags.NonPublic)),
+                            finalizer: new HarmonyMethod(t.GetMethod(hooks[1], BindingFlags.Static | BindingFlags.NonPublic)));
+                    PatchedStages++;
+                }, () => { h.UnpatchAll(HarmonyId); PatchedStages = 0; }, out InstallDetail);
+                if (InstallStatus == "failed") { InstallError = InstallDetail; return; }
+                if (InstallStatus == "partial") InstallError = InstallDetail;
                 Calibrate();
                 Installed = true;
             }
             catch (Exception e)
             {
                 InstallError = e.GetType().Name + ": " + e.Message;
+                InstallStatus = "failed";
+                Rollback();
             }
         }
 
-        private static void Patch(Harmony h, MethodInfo m, string pre, string post)
+        internal static void Rollback()
         {
-            if (m == null) { InstallError = (InstallError ?? "") + pre + ": target missing; "; return; }
-            var t = typeof(JawaBenchTpsProfiler);
-            h.Patch(m, prefix: new HarmonyMethod(t.GetMethod(pre, BindingFlags.Static | BindingFlags.NonPublic)),
-                    finalizer: new HarmonyMethod(t.GetMethod(post, BindingFlags.Static | BindingFlags.NonPublic)));
-            PatchedStages++;
+            try { new Harmony(HarmonyId).UnpatchAll(HarmonyId); } catch { }
+            Installed = false;
+            PatchedStages = 0;
         }
 
         private static void Calibrate()

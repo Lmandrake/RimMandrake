@@ -252,6 +252,23 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
   sampler); the `save` row says `threw` when SaveGame threw; open scopes are dropped at game boundaries.
 - GREEN: `C# units: 16 run, 0 failed`; companion builds.
 
+### MUST 16 — installation rollback/status; shutdown completion semantics
+- RED: harness build `error CS0234: The type or namespace name 'JawaBenchTpsInstall' does not exist` (the
+  transactional install did not exist: old `Install` patched sequentially, started the writer, and on an
+  exception left earlier patches live with no rollback; the profiler reported `Installed=true` with missing
+  targets); `FAIL MUST 16: a shutdown intent with no shutdown-complete row is reported, not taken as clean: []`.
+- FIX: `JawaBenchTpsInstall.Run` resolves every target first (a missing REQUIRED target patches nothing),
+  then patches; any throw rolls back every patch of that recorder (`UnpatchAll` of its OWN Harmony id —
+  the profiler now has its own id `mandrake.jawabench.tps.attr`); status `complete|partial|failed|disabled`
+  with per-target detail on the tool (`installStatus`, `attribution.status/detail`) and in the `session`
+  row's `install{}` inventory (SHOULD 7). Shutdown: `W.Shutdown` writes `shutdown` `phase:intent`, drains
+  (monotonic bound), copies Player.log on a thread with its own bound (3 s), then `shutdown-complete`
+  stating `drained`, `archived`, `archiveTimedOut`, `ms`. `Drain` uses a Stopwatch, not UTC. OnQuit touches
+  no Unity API (log path cached). The observer treats only intent + completion as clean (`shutdown-incomplete`
+  otherwise; build-1/2 rows without `phase` still count as clean).
+- GREEN: `T_InstallRollback`, `T_ShutdownBounded` (a hanging log copy returns in < 5 s with
+  `archiveTimedOut:true`), python PASS; `C# units: 18 run, 0 failed`; companion builds.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)
