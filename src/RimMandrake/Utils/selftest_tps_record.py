@@ -344,6 +344,17 @@ def reader_checks():
         tl = T.timeline(rec["rows"], t15 + 20, t15 + 40)    # inside the 300 s stall, away from its endpoint
         check(tl["incidents"] == 1, "MUST 3/A30: an incident is selected by OVERLAP with its gap interval: %r" % tl["incidents"])
 
+    # MUST 10: the observer reports main-thread progress and watchdog progress separately
+    with tempfile.TemporaryDirectory() as d:
+        with open(os.path.join(d, "hb_abc.json"), "w") as fh:
+            json.dump({"pid": 5, "session": "abc", "utc": "2026-10-10T15:00:30.000Z", "silentS": 30.0,
+                       "mainBeatUtc": "2026-10-10T15:00:00.000Z", "watchdogUtc": "2026-10-10T15:00:30.000Z"}, fh)
+        os.utime(os.path.join(d, "hb_abc.json"), (time.time() - 600, time.time() - 600))
+        f = T.observe([], T.read_heartbeats(d), [])
+        check(f and f[0].get("lastMainProgressUtc") == "2026-10-10T15:00:00.000Z"
+              and f[0].get("lastWatchdogUtc") == "2026-10-10T15:00:30.000Z",
+              "MUST 10: observer separates last main-thread progress from the last watchdog write: %r" % f)
+
     # sustained needs CONTIGUOUS fresh windows
     gap_rows = [sample(t15 + 5 * i, i, ratio=0.3) for i in range(3)] + \
                [sample(t15 + 600 + 5 * i, 10 + i, ratio=0.3) for i in range(3)]
@@ -485,7 +496,7 @@ def reader_checks():
 
 # names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
 # from the harness is a failure, not a pass.
-CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight"]
+CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "HeartbeatSeparatesMainAndWatchdog"]
 
 
 def unit_checks(lines):
@@ -549,7 +560,26 @@ def _j_invalid(rows):
           % rows)
 
 
-J_CHECKS = [("incident", _j_incident), ("silence", _j_silence), ("stages-worst", _j_worst),
+def _j_heartbeat(rows):
+    from datetime import datetime as _dt
+    h = rows[0] if rows else {}
+
+    def ep(x):
+        try:
+            return _dt.strptime(x, "%Y-%m-%dT%H:%M:%S.%fZ").timestamp()
+        except (TypeError, ValueError):
+            return None
+    m, w = ep(h.get("mainBeatUtc")), ep(h.get("watchdogUtc"))
+    check(m is not None and w is not None and 29 <= w - m <= 31,
+          "MUST 10: the heartbeat carries the main thread's last progress (mainBeatUtc) ~30 s before the watchdog's "
+          "write (watchdogUtc): %r" % {k: h.get(k) for k in ("utc", "mainBeatUtc", "watchdogUtc")})
+    check(isinstance(h.get("hbSeq"), int) and isinstance(h.get("mainBeatMono"), (int, float))
+          and isinstance(h.get("watchdogMono"), (int, float)) and h.get("ticksGame") == 4242
+          and "hbErrors" in h and "procStartUtc" in h,
+          "MUST 10: hbSeq, mainBeatMono, watchdogMono, ticksGame, hbErrors, procStartUtc present: %r" % sorted(h))
+
+
+J_CHECKS = [("heartbeat", _j_heartbeat), ("incident", _j_incident), ("silence", _j_silence), ("stages-worst", _j_worst),
             ("stages-invalid", _j_invalid)]   # assertions on production-composed lines
 
 
