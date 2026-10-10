@@ -516,7 +516,9 @@ def classify_game(probe: dict | None, bridge: str | None, now: float) -> list[di
     if probe is None and bridge is None:
         return []
     running = (probe or {}).get("rimworld_running")
-    holder = (bridge or "?").split()[0] if bridge else "?"
+    # BRIDGE reads "HELD    <SEAT>    since ..." or "FREE ..."; the holder is the seat, not the verb
+    tok = (bridge or "").split()
+    holder = (tok[1] if tok[0] == "HELD" and len(tok) > 1 else tok[0]) if tok else "?"
     state = "UP" if running else "down" if running is False else "unprobed"
     txt = f"RimWorld {state} · bridge " + ("free" if holder == "FREE" else f"held by {holder}")
     return [_row("game", "run" if running else "idle", "GAME", txt, (probe or {}).get("at", now), src="probe")]
