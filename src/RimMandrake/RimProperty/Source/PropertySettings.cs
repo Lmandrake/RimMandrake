@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -115,43 +117,96 @@ namespace RimMandrake.Property
             Scribe_Values.Look(ref bribeDampenFraction, "bribeDampenFraction", PropertyTuning.BribeDampenFraction);
         }
 
-        private static Vector2 settingsScroll;
-        private static float settingsViewHeight = 1200f;
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(PropertySettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(PropertySettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1200f;
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
 
         public void DoWindowContents(Rect inRect)
         {
             // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
-            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, settingsView);
             Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
             list.Begin(settingsView);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.Label("Getting caught");
-            list.CheckboxLabeled("Witnesses notice unauthorized takings", ref perceptionEnabled,
-                "Off: taking someone else's stuff is never witnessed or reported to their faction. "
-              + "Claims are still tracked underneath, just never enforced by suspicion.");
-            if (perceptionEnabled)
+            if (Group(list, "Getting caught", RimMandrake.Shared.SettingScope.Now, new[] { "perceptionEnabled", "witnessRadius", "witnessConfidence", "suspicionHalfLifeDays" }))
             {
+                list.CheckboxLabeled("Witnesses notice unauthorized takings", ref perceptionEnabled,
+                    "Off: taking someone else's stuff is never witnessed or reported to their faction. "
+                  + "Claims are still tracked underneath, just never enforced by suspicion.");
                 list.Label("How far a witness can see it happen: " + witnessRadius.ToString("0") + " tiles");
                 witnessRadius = list.Slider(witnessRadius, 5f, 40f);
                 list.Label("Chance a witness's account sticks: " + (witnessConfidence * 100f).ToString("0") + "%");
                 witnessConfidence = list.Slider(witnessConfidence, 0f, 1f);
                 list.Label("How long suspicion lingers: " + suspicionHalfLifeDays.ToString("0") + " days");
                 suspicionHalfLifeDays = list.Slider(suspicionHalfLifeDays, 5f, 180f);
+                list.GapLine();
             }
-            list.GapLine();
 
-            list.Label("Claim memory: " + claimLifetimeMultiplier.ToString("0.00") + "x");
-            list.Label("How long an ownership claim is remembered before it fades. 1x is the default "
-              + "(a plain item is forgotten in days, a named/valuable one for years).");
-            claimLifetimeMultiplier = list.Slider(claimLifetimeMultiplier, 0.25f, 4f);
-            list.GapLine();
-
-            list.CheckboxLabeled("Animal theft", ref animalTheftEnabled,
-                "Trained pets and wild animals can be prompted or opportunistically grab small "
-              + "unattended items. Off: animals never do this.");
-            if (animalTheftEnabled)
+            if (Group(list, "Claim memory", RimMandrake.Shared.SettingScope.Now, new[] { "claimLifetimeMultiplier" }))
             {
+                list.Label("Claim memory: " + claimLifetimeMultiplier.ToString("0.00") + "x");
+                list.Label("How long an ownership claim is remembered before it fades. 1x is the default "
+                  + "(a plain item is forgotten in days, a named/valuable one for years).");
+                claimLifetimeMultiplier = list.Slider(claimLifetimeMultiplier, 0.25f, 4f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Animal theft", RimMandrake.Shared.SettingScope.Now, new[] { "animalTheftEnabled", "animalTheftMaxItemMassKg", "animalTheftSearchRadius", "animalTheftFrequencyMultiplier" }))
+            {
+                list.CheckboxLabeled("Animal theft", ref animalTheftEnabled,
+                    "Trained pets and wild animals can be prompted or opportunistically grab small "
+                  + "unattended items. Off: animals never do this.");
                 list.Label("  Heaviest item an animal will grab: " + animalTheftMaxItemMassKg.ToString("0.0") + " kg");
                 animalTheftMaxItemMassKg = list.Slider(animalTheftMaxItemMassKg, 0.5f, 10f);
                 list.Label("  Search range: " + animalTheftSearchRadius.ToString("0") + " tiles");
@@ -159,70 +214,74 @@ namespace RimMandrake.Property
                 list.Label("  Frequency: " + animalTheftFrequencyMultiplier.ToString("0.00") + "x "
                   + "(can only reduce it below the animal's own default checking rate)");
                 animalTheftFrequencyMultiplier = list.Slider(animalTheftFrequencyMultiplier, 0f, 1f);
+                list.GapLine();
             }
-            list.GapLine();
 
-            list.CheckboxLabeled("Theft Hauler (steal and haul away a building)", ref theftHaulerEnabled,
-                "A pawn with the theft-hauler marker can right-click any building to uninstall and "
-              + "carry it off. Off: that order never appears.");
-            list.Gap();
-
-            list.CheckboxLabeled("Salvage claim fees (pay off a claim)", ref salvageClaimFeeEnabled,
-                "Lets a pawn right-click something to pay a fee that settles a lingering ownership "
-              + "claim on it. Off: that order never appears.");
-            if (salvageClaimFeeEnabled)
+            if (Group(list, "Theft Hauler", RimMandrake.Shared.SettingScope.Now, new[] { "theftHaulerEnabled" }))
             {
+                list.CheckboxLabeled("Theft Hauler (steal and haul away a building)", ref theftHaulerEnabled,
+                    "A pawn with the theft-hauler marker can right-click any building to uninstall and "
+                  + "carry it off. Off: that order never appears.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Salvage claim fees", RimMandrake.Shared.SettingScope.Now, new[] { "salvageClaimFeeEnabled", "salvageClaimFeeMultiplier" }))
+            {
+                list.CheckboxLabeled("Salvage claim fees (pay off a claim)", ref salvageClaimFeeEnabled,
+                    "Lets a pawn right-click something to pay a fee that settles a lingering ownership "
+                  + "claim on it. Off: that order never appears.");
                 list.Label("  Fee amount: " + salvageClaimFeeMultiplier.ToString("0.00") + "x");
                 salvageClaimFeeMultiplier = list.Slider(salvageClaimFeeMultiplier, 0.25f, 3f);
+                list.GapLine();
             }
-            list.GapLine();
 
-            list.CheckboxLabeled("Walkable commerce (buy merchandise on the spot)", ref walkableCommerceEnabled,
-                "Lets a pawn right-click something someone else already owns to buy it on the spot, "
-              + "priced off its market value. Records the purchase as a legal provenance record. "
-              + "Off: that order never appears.");
-            if (walkableCommerceEnabled)
+            if (Group(list, "Walkable commerce", RimMandrake.Shared.SettingScope.Now, new[] { "walkableCommerceEnabled", "walkableCommerceMarkup" }))
             {
+                list.CheckboxLabeled("Walkable commerce (buy merchandise on the spot)", ref walkableCommerceEnabled,
+                    "Lets a pawn right-click something someone else already owns to buy it on the spot, "
+                  + "priced off its market value. Records the purchase as a legal provenance record. "
+                  + "Off: that order never appears.");
                 list.Label("  Price markup: " + walkableCommerceMarkup.ToString("0.00") + "x market value");
                 walkableCommerceMarkup = list.Slider(walkableCommerceMarkup, 0.5f, 3f);
+                list.GapLine();
             }
-            list.GapLine();
 
-            list.CheckboxLabeled("Pickpocket (lift an item from someone's own inventory)", ref pickpocketEnabled,
-                "Lets a pawn right-click another pawn to lift something out of their carried inventory. "
-              + "Never their equipped weapon or worn apparel. Risk of being noticed uses the same "
-              + "witness settings above. Off: that order never appears.");
-            if (pickpocketEnabled)
+            if (Group(list, "Pickpocket", RimMandrake.Shared.SettingScope.Now, new[] { "pickpocketEnabled", "pickpocketMinItemValueSilver" }))
             {
+                list.CheckboxLabeled("Pickpocket (lift an item from someone's own inventory)", ref pickpocketEnabled,
+                    "Lets a pawn right-click another pawn to lift something out of their carried inventory. "
+                  + "Never their equipped weapon or worn apparel. Risk of being noticed uses the same "
+                  + "witness settings above. Off: that order never appears.");
                 list.Label("  Not worth the risk below: " + pickpocketMinItemValueSilver.ToString("0") + " silver");
                 pickpocketMinItemValueSilver = list.Slider(pickpocketMinItemValueSilver, 0f, 50f);
+                list.GapLine();
             }
-            list.GapLine();
 
-            list.CheckboxLabeled("Hire the placeless (pay a faction-less pawn or droid to work for you)", ref hirePlacelessEnabled,
-                "Lets a pawn right-click a faction-less wanderer or masterless droid nobody else claims "
-              + "and pay a flat hiring advance. Records the hire as a legal provenance record — no job, "
-              + "schedule or following behavior yet. Off: that order never appears.");
-            if (hirePlacelessEnabled)
+            if (Group(list, "Hire the placeless", RimMandrake.Shared.SettingScope.Now, new[] { "hirePlacelessEnabled", "hirePlacelessFeeSilver" }))
             {
+                list.CheckboxLabeled("Hire the placeless (pay a faction-less pawn or droid to work for you)", ref hirePlacelessEnabled,
+                    "Lets a pawn right-click a faction-less wanderer or masterless droid nobody else claims "
+                  + "and pay a flat hiring advance. Records the hire as a legal provenance record — no job, "
+                  + "schedule or following behavior yet. Off: that order never appears.");
                 list.Label("  Hiring advance: " + hirePlacelessFeeSilver.ToString("0") + " silver");
                 hirePlacelessFeeSilver = list.Slider(hirePlacelessFeeSilver, 0f, 100f);
+                list.GapLine();
             }
-            list.GapLine();
 
-            list.CheckboxLabeled("Bribes / bought rounds (cool off a faction's suspicion)", ref bribeEnabled,
-                "Lets a pawn right-click a factioned pawn from a different faction and pay for a round, "
-              + "cooling off some of whatever that faction already knows about the payer. Never reveals "
-              + "whether there was anything to cool off. Off: that order never appears.");
-            if (bribeEnabled)
+            if (Group(list, "Bribes and bought rounds", RimMandrake.Shared.SettingScope.Now, new[] { "bribeEnabled", "bribeFeeSilver", "bribeDampenFraction" }))
             {
+                list.CheckboxLabeled("Bribes / bought rounds (cool off a faction's suspicion)", ref bribeEnabled,
+                    "Lets a pawn right-click a factioned pawn from a different faction and pay for a round, "
+                  + "cooling off some of whatever that faction already knows about the payer. Never reveals "
+                  + "whether there was anything to cool off. Off: that order never appears.");
                 list.Label("  Cost per round: " + bribeFeeSilver.ToString("0") + " silver");
                 bribeFeeSilver = list.Slider(bribeFeeSilver, 0f, 100f);
                 list.Label("  Suspicion cooled per round: " + (bribeDampenFraction * 100f).ToString("0") + "%");
                 bribeDampenFraction = list.Slider(bribeDampenFraction, 0f, 1f);
+                list.GapLine();
             }
 
-            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
+            viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
         }

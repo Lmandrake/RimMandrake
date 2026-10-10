@@ -102,6 +102,8 @@
     <Compile Include="..\ClaimDecay.cs" />
     <Compile Include="..\PropertyTuning.cs" />
     <Compile Include="..\PropertySettings.cs" />
+    <Compile Include="..\..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 
