@@ -32,8 +32,17 @@ namespace RimMandrake.CreatureBehaviors
 	{
 		private const int CheckIntervalTicks = 60;
 
+		/// <summary>MAP_SILENCE_SINGLE_OWNER_1: the one place that decides whether this map is quiet. Callers register a
+		/// named reason (AddReason/RemoveReason); sound comes back only when the last reason leaves.</summary>
+		public const string ReasonPredatorHunt = "predatorHunt";
+		public const string ReasonExternal = "external";
+
+		private readonly Dictionary<string, int> reasons = new Dictionary<string, int>();
+		// legacy save fields (pre-FV-3): read once, folded into reasons
 		private bool hushed;
 		private int hushEndTick = -1;
+
+		public bool IsHushed => reasons.Count > 0;
 
 		public RM_MapComponent_SilenceCue(Map map)
 			: base(map)
@@ -47,15 +56,14 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				return;
 			}
-			if (hushed)
+			if (RM_SilenceReasons.Expire(reasons, Find.TickManager.TicksGame))
 			{
-				if (Find.TickManager.TicksGame >= hushEndTick)
-				{
-					Restore();
-				}
-				return;
+				Restore();
 			}
-			ScanForTrigger();
+			if (!reasons.ContainsKey(ReasonPredatorHunt))
+			{
+				ScanForTrigger();
+			}
 		}
 
 		/// <summary>
@@ -77,16 +85,37 @@ namespace RimMandrake.CreatureBehaviors
 			{
 				return; // mod option: silence cue disabled
 			}
-			if (hushed)
+			bool wasHushed = IsHushed;
+			AddReason(ReasonExternal, Find.TickManager.TicksGame + durationTicks);
+			if (!wasHushed)
 			{
-				int candidateEnd = Find.TickManager.TicksGame + durationTicks;
-				if (candidateEnd > hushEndTick)
-				{
-					hushEndTick = candidateEnd;
-				}
-				return;
+				Messages.Message("RM_Greentide_SilenceCue".Translate(), MessageTypeDefOf.ThreatBig, historical: false);
 			}
-			Hush(durationTicks);
+		}
+
+		/// <summary>
+		/// MAP_SILENCE_SINGLE_OWNER_1 (FV-3): register a reason for this map to be quiet. endTick is a game tick, or
+		/// RM_SilenceReasons.Indefinite to hold until RemoveReason(key). Ends the biome's ambient sustainers if this is
+		/// the first reason; a later reason never shortens an earlier one under the same key. Not gated by the
+		/// silence-cue setting: callers gate their own trigger. Returns true when this call started the hush.
+		/// </summary>
+		public bool AddReason(string key, int endTick)
+		{
+			bool started = RM_SilenceReasons.Add(reasons, key, endTick);
+			if (started)
+			{
+				EndAmbientSustainers();
+			}
+			return started;
+		}
+
+		/// <summary>Withdraws a reason. Ambient sound is restored only when no other reason is still holding the map quiet.</summary>
+		public void RemoveReason(string key)
+		{
+			if (RM_SilenceReasons.Remove(reasons, key))
+			{
+				Restore();
+			}
 		}
 
 		private void ScanForTrigger()
@@ -106,7 +135,12 @@ namespace RimMandrake.CreatureBehaviors
 				}
 				if (NearAnyColonist(pawn, ext.triggerRadius))
 				{
-					Hush(ext.hushDurationTicks);
+					bool wasHushed = IsHushed;
+					AddReason(ReasonPredatorHunt, Find.TickManager.TicksGame + ext.hushDurationTicks);
+					if (!wasHushed)
+					{
+						Messages.Message("RM_Greentide_SilenceCue".Translate(), MessageTypeDefOf.ThreatBig, historical: false);
+					}
 					return;
 				}
 			}
@@ -126,7 +160,7 @@ namespace RimMandrake.CreatureBehaviors
 			return false;
 		}
 
-		private void Hush(int durationTicks)
+		private void EndAmbientSustainers()
 		{
 			List<SoundDef> ambient = map.Biome?.soundsAmbient;
 			if (ambient.NullOrEmpty())
@@ -142,15 +176,10 @@ namespace RimMandrake.CreatureBehaviors
 					s.End();
 				}
 			}
-			hushed = true;
-			hushEndTick = Find.TickManager.TicksGame + durationTicks;
-			Messages.Message("RM_Greentide_SilenceCue".Translate(), MessageTypeDefOf.ThreatBig, historical: false);
 		}
 
 		private void Restore()
 		{
-			hushed = false;
-			hushEndTick = -1;
 			if (Find.CurrentMap == map)
 			{
 				AmbientSoundManager.Notify_SwitchedMap();
@@ -162,6 +191,41 @@ namespace RimMandrake.CreatureBehaviors
 			base.ExposeData();
 			Scribe_Values.Look(ref hushed, "hushed", false);
 			Scribe_Values.Look(ref hushEndTick, "hushEndTick", -1);
+			// Only timed reasons are saved: an Indefinite one (the FeverWood sentinel) re-registers itself when its limb respawns on load.
+			List<string> keys = null;
+			List<int> ends = null;
+			if (Scribe.mode == LoadSaveMode.Saving)
+			{
+				keys = new List<string>();
+				ends = new List<int>();
+				foreach (KeyValuePair<string, int> kv in reasons)
+				{
+					if (kv.Value != RM_SilenceReasons.Indefinite)
+					{
+						keys.Add(kv.Key);
+						ends.Add(kv.Value);
+					}
+				}
+			}
+			Scribe_Collections.Look(ref keys, "reasonKeys", LookMode.Value);
+			Scribe_Collections.Look(ref ends, "reasonEnds", LookMode.Value);
+			if (Scribe.mode == LoadSaveMode.PostLoadInit)
+			{
+				reasons.Clear();
+				if (keys != null && ends != null)
+				{
+					for (int i = 0; i < keys.Count && i < ends.Count; i++)
+					{
+						reasons[keys[i]] = ends[i];
+					}
+				}
+				if (hushed && reasons.Count == 0)
+				{
+					reasons[ReasonPredatorHunt] = hushEndTick;
+				}
+				hushed = false;
+				hushEndTick = -1;
+			}
 		}
 	}
 }
