@@ -294,6 +294,8 @@ def cmd_check(a):
     print("manifest %s (%d ids, captured %s from %s)" % (os.path.relpath(mpath, ROOT), len(man["ids"]),
                                                           man.get("captured"), man.get("source")))
     print("next load %s sha256 %s" % (cfg, _sha(cfg)[:16]))
+    if man.get("baseline_note"):
+        print("  note: " + man["baseline_note"])
     src = man.get("source") and os.path.join(ROOT, man["source"])
     if src and os.path.exists(src) and man.get("modsconfig_sha256") and _sha(src) != man["modsconfig_sha256"]:
         print("  ! the manifest's source file changed since capture: re-capture or diff it")
