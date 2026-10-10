@@ -18,3 +18,4 @@
 - building validation now
 - validation: WM static PASS (+2 drives, alloy_forge_gated chain); Armoury durasteel_static PASS; walks updated
 - item prose updated; publishing
+- [x] PUBLISHED 637498f0c; implemented recorded
