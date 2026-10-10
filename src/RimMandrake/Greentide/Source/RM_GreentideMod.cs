@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reflection;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -160,7 +161,7 @@ namespace RimMandrake.Greentide
         public static bool greatboleSeedPlantingEnabled = true;
         public static bool greatboleServantsEnabled = false;
 
-        private string biomeListBuffer;
+        private static string biomeListBuffer;
         private static Vector2 scrollPosition;
         private static float lastContentHeight = 1200f;
 
@@ -210,6 +211,63 @@ namespace RimMandrake.Greentide
             return RM_RulesKernel.AppliesToBiome(crossBiomeEnabled, biome?.defName, "RM_Greentide", crossBiomeEverywhere, crossBiomeBiomeList);
         }
 
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_GreentideSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_GreentideSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+            biomeListBuffer = null;   // re-read from the (reset) field at the next draw
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. A search matches the section title or any of its setting names. Scope AUDITED per setting against its
+        /// read site (2026-10-10): plant density, the Roil and the cross-biome opt-in are applied while a map is generated
+        /// ([new maps only]); the two greatbole seed/servant switches are read by patches at game start ([next game start], a label local to this screen);
+        /// every other setting is read by a tick, job, incident or comp, and the world-map movement difficulty is re-asserted
+        /// onto the biome when the window closes ([now]).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            // tagOverride "[next game start]": the kit has no such scope; these switches are read by patches while defs load.
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
         public void DoWindowContents(Rect inRect)
         {
             if (biomeListBuffer == null)
@@ -222,189 +280,224 @@ namespace RimMandrake.Greentide
             Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.Label("Churnmud / mire hazard");
-            list.CheckboxLabeled("Mire hazard enabled", ref mireEnabled,
-                "Standing on churnmud escalates the RM_Mired hediff (slowed, then stuck). "
-              + "Off: churnmud is inert underfoot — no NREs, the terrain just does nothing.");
-            list.Label("Mire severity: " + mireSeverityMultiplier.ToString("0.00") + "x");
-            mireSeverityMultiplier = list.Slider(mireSeverityMultiplier, 0.25f, 3f);
-            list.Gap();
-            list.CheckboxLabeled("Buried caches enabled", ref buriedCacheEnabled,
-                "Loose items left on churnmud long enough get buried (dig them back out, nothing "
-              + "is destroyed). Off: items just sit there like any other terrain.");
-            list.GapLine();
-
-            list.Label("Jungle density");
-            list.Label("Plant density: " + plantDensity.ToString("0.00")
-              + " (new maps only — a map you've already generated keeps the coverage it was born with)");
-            plantDensity = list.Slider(plantDensity, 0.90f, 0.99f);
-            list.Label("World-map movement difficulty: " + movementDifficulty.ToString("0.0")
-              + " — how much SLOWER a caravan crosses Greentide tiles on the PLANET map. This does "
-              + "NOT affect walking speed inside a Greentide map at all; in-map crossing cost comes "
-              + "from the churnmud terrain above, not this number.");
-            movementDifficulty = list.Slider(movementDifficulty, 2f, 4f);
-            list.GapLine();
-
-            list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");
-            list.Label("Lets churnmud/mire generate on a NON-Greentide biome's map, without "
-              + "adding the whole Greentide biome. Applies once, right after a map generates; "
-              + "a map that already exists is never retroactively changed.");
-            list.CheckboxLabeled("Enable outside the Greentide biome", ref crossBiomeEnabled,
-                "Master switch for the section below.");
-            if (crossBiomeEnabled)
+            if (Group(list, "Churnmud and the mire", RimMandrake.Shared.SettingScope.Now, new[] { "mireEnabled", "buriedCacheEnabled", "mireSeverityMultiplier" }))
             {
-                list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere,
-                    "Apply to any non-Greentide biome. Off: only the biomes named below.");
-                if (!crossBiomeEverywhere)
+                list.CheckboxLabeled("Mire hazard enabled", ref mireEnabled,
+                    "Standing on churnmud escalates the RM_Mired hediff (slowed, then stuck). "
+                  + "Off: churnmud is inert underfoot — no NREs, the terrain just does nothing.");
+                list.Label("Mire severity: " + mireSeverityMultiplier.ToString("0.00") + "x");
+                mireSeverityMultiplier = list.Slider(mireSeverityMultiplier, 0.25f, 3f);
+                list.CheckboxLabeled("Buried caches enabled", ref buriedCacheEnabled,
+                    "Loose items left on churnmud long enough get buried (dig them back out, nothing "
+                  + "is destroyed). Off: items just sit there like any other terrain.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Jungle density", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "plantDensity" }))
+            {
+                list.Label("Plant density: " + plantDensity.ToString("0.00")
+                  + " (new maps only — a map you've already generated keeps the coverage it was born with)");
+                plantDensity = list.Slider(plantDensity, 0.90f, 0.99f);
+                list.GapLine();
+            }
+
+            if (Group(list, "World-map movement", RimMandrake.Shared.SettingScope.Now, new[] { "movementDifficulty" }))
+            {
+                list.Label("World-map movement difficulty: " + movementDifficulty.ToString("0.0")
+                  + " — how much SLOWER a caravan crosses Greentide tiles on the PLANET map. This does "
+                  + "NOT affect walking speed inside a Greentide map at all; in-map crossing cost comes "
+                  + "from the churnmud terrain above, not this number.");
+                movementDifficulty = list.Slider(movementDifficulty, 2f, 4f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Cross-biome opt-in (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "crossBiomeEnabled", "crossBiomeEverywhere", "crossBiomeCoverage", "crossBiomeBiomeList" }))
+            {
+                list.Label("Lets churnmud/mire generate on a NON-Greentide biome's map, without "
+                  + "adding the whole Greentide biome. Applies once, right after a map generates; "
+                  + "a map that already exists is never retroactively changed.");
+                list.CheckboxLabeled("Enable outside the Greentide biome", ref crossBiomeEnabled,
+                    "Master switch for the section below.");
+                if (crossBiomeEnabled)
                 {
-                    list.Label("  Biome defNames, comma-separated (e.g. TropicalRainforest, AridShrubland):");
-                    biomeListBuffer = list.TextEntry(biomeListBuffer);
-                    crossBiomeBiomeList = biomeListBuffer;
+                    list.CheckboxLabeled("  Every biome", ref crossBiomeEverywhere,
+                        "Apply to any non-Greentide biome. Off: only the biomes named below.");
+                    if (!crossBiomeEverywhere)
+                    {
+                        list.Label("  Biome defNames, comma-separated (e.g. TropicalRainforest, AridShrubland):");
+                        biomeListBuffer = list.TextEntry(biomeListBuffer);
+                        crossBiomeBiomeList = biomeListBuffer;
+                    }
+                    list.Label("  Coverage: " + (crossBiomeCoverage * 100f).ToString("0") + "% of that map's ordinary Mud terrain becomes churnmud");
+                    crossBiomeCoverage = list.Slider(crossBiomeCoverage, 0f, 1f);
                 }
-                list.Label("  Coverage: " + (crossBiomeCoverage * 100f).ToString("0") + "% of that map's ordinary Mud terrain becomes churnmud");
-                crossBiomeCoverage = list.Slider(crossBiomeCoverage, 0f, 1f);
+                list.GapLine();
             }
-            list.GapLine();
 
-            list.Label("The Frenzy");
-            list.CheckboxLabeled("The Frenzy enabled", ref frenzyEnabled,
-                "Covers both routes: the jungle handing it out on its own as an ambient disease, "
-              + "and a colonist taking a harvested RM_FrenzyDose on purpose. Off: neither ever "
-              + "applies the hediff.");
-            if (frenzyEnabled)
+            if (Group(list, "The Frenzy", RimMandrake.Shared.SettingScope.Now, new[] { "frenzyEnabled", "feverMarkEnabled", "feverMarkGrantsImmunity", "frenzySeverityMultiplier" }))
             {
-                list.Label("  Dose strength: " + frenzySeverityMultiplier.ToString("0.00") + "x");
-                frenzySeverityMultiplier = list.Slider(frenzySeverityMultiplier, 0.5f, 2f);
-                list.Gap();
-                list.CheckboxLabeled("  Survivors become specialists", ref feverMarkEnabled,
-                    "A colonist who lives through the Frenzy's coma keeps a permanent, visible "
-                  + "RM_FeverMark in their health tab — earned only by reaching the coma stage and "
-                  + "being tended out of it alive, never by an early cure. Off: the Frenzy behaves "
-                  + "exactly as before, no mark is ever applied.");
-                if (feverMarkEnabled)
+                list.CheckboxLabeled("The Frenzy enabled", ref frenzyEnabled,
+                    "Covers both routes: the jungle handing it out on its own as an ambient disease, "
+                  + "and a colonist taking a harvested RM_FrenzyDose on purpose. Off: neither ever "
+                  + "applies the hediff.");
+                if (frenzyEnabled)
                 {
-                    list.CheckboxLabeled("    Marked colonists are resistant to catching it again", ref feverMarkGrantsImmunity,
-                        "The qualification half of the reward: a fever-marked colonist is dropped from "
-                      + "the ambient Frenzy incident's victim pool, and a harvested dose is wasted on "
-                      + "one rather than re-applying. Off: the badge is purely cosmetic — a marked "
-                      + "colonist can still catch or be dosed with the Frenzy like anyone else.");
+                    list.Label("  Dose strength: " + frenzySeverityMultiplier.ToString("0.00") + "x");
+                    frenzySeverityMultiplier = list.Slider(frenzySeverityMultiplier, 0.5f, 2f);
+                        list.CheckboxLabeled("  Survivors become specialists", ref feverMarkEnabled,
+                        "A colonist who lives through the Frenzy's coma keeps a permanent, visible "
+                      + "RM_FeverMark in their health tab — earned only by reaching the coma stage and "
+                      + "being tended out of it alive, never by an early cure. Off: the Frenzy behaves "
+                      + "exactly as before, no mark is ever applied.");
+                    if (feverMarkEnabled)
+                    {
+                        list.CheckboxLabeled("    Marked colonists are resistant to catching it again", ref feverMarkGrantsImmunity,
+                            "The qualification half of the reward: a fever-marked colonist is dropped from "
+                          + "the ambient Frenzy incident's victim pool, and a harvested dose is wasted on "
+                          + "one rather than re-applying. Off: the badge is purely cosmetic — a marked "
+                          + "colonist can still catch or be dosed with the Frenzy like anyone else.");
+                    }
                 }
+                list.GapLine();
             }
-            list.GapLine();
 
-            list.Label("Jungle grenades");
-            list.CheckboxLabeled("Stench smoke grenades enabled", ref stenchGrenadeEnabled,
-                "Thrown grenades that burst into a reeking cloud every animal in the biome "
-              + "flees — beasts and the wasp swarm alike. Off: a thrown one is a dud, no "
-              + "explosion, no gas, no flee. The reek is real rot-stink gas, so it costs your "
-              + "own colonists and animals the same lingering-exposure risk it costs anyone "
-              + "else caught in it.");
-            if (stenchGrenadeEnabled)
+            if (Group(list, "Jungle grenades", RimMandrake.Shared.SettingScope.Now, new[] { "stenchGrenadeEnabled", "stenchGrenadeRadiusMultiplier" }))
             {
-                list.Label("  Cloud radius: " + (StenchGrenadeBaseRadius * stenchGrenadeRadiusMultiplier).ToString("0.0")
-                    + " cells (" + stenchGrenadeRadiusMultiplier.ToString("0.00") + "x)");
-                stenchGrenadeRadiusMultiplier = list.Slider(stenchGrenadeRadiusMultiplier, 0.5f, 2f);
+                list.CheckboxLabeled("Stench smoke grenades enabled", ref stenchGrenadeEnabled,
+                    "Thrown grenades that burst into a reeking cloud every animal in the biome "
+                  + "flees — beasts and the wasp swarm alike. Off: a thrown one is a dud, no "
+                  + "explosion, no gas, no flee. The reek is real rot-stink gas, so it costs your "
+                  + "own colonists and animals the same lingering-exposure risk it costs anyone "
+                  + "else caught in it.");
+                if (stenchGrenadeEnabled)
+                {
+                    list.Label("  Cloud radius: " + (StenchGrenadeBaseRadius * stenchGrenadeRadiusMultiplier).ToString("0.0")
+                        + " cells (" + stenchGrenadeRadiusMultiplier.ToString("0.00") + "x)");
+                    stenchGrenadeRadiusMultiplier = list.Slider(stenchGrenadeRadiusMultiplier, 0.5f, 2f);
+                }
+                list.GapLine();
             }
-            list.GapLine();
 
-            list.Label("Canopy swarm (the krannock)");
-            list.CheckboxLabeled("Canopy swarm wild spawning", ref canopySwarmEnabled,
-                "Master on/off for the krannock (RM_Krannock) once it is placed in the biome's "
-              + "wild-animal roster by a future sitting — currently has no visible effect, since "
-              + "this creature is not yet wired into any roster. Its tree-gnawing AI is already "
-              + "covered by the Environmental Hazards Kit's own \"Tree fall\" toggle, not this one.");
-            list.GapLine();
-
-            list.Label("Stellock lace");
-            list.CheckboxLabeled("Stellock branches and the lace research", ref stellockLaceEnabled,
-                "On: felling a Greentide tree on a Greentide map can drop a stellock branch; studying branches "
-              + "reveals the stellock lace research. Off: no branches drop and the research is an ordinary "
-              + "visible project. Laces already made still work either way.");
-            if (stellockLaceEnabled)
+            if (Group(list, "Canopy swarm (the krannock)", RimMandrake.Shared.SettingScope.Now, new[] { "canopySwarmEnabled" }))
             {
-                list.Label("  Branch drop chance per felled tree: " + stellockBranchChance.ToStringPercent());
-                stellockBranchChance = list.Slider(stellockBranchChance, 0f, 1f);
+                list.CheckboxLabeled("Canopy swarm wild spawning", ref canopySwarmEnabled,
+                    "Master on/off for the krannock (RM_Krannock) once it is placed in the biome's "
+                  + "wild-animal roster by a future sitting — currently has no visible effect, since "
+                  + "this creature is not yet wired into any roster. Its tree-gnawing AI is already "
+                  + "covered by the Environmental Hazards Kit's own \"Tree fall\" toggle, not this one.");
+                list.GapLine();
             }
-            list.Label("  A lace stops bleeding for: " + stellockLaceHours.ToString("0.#") + " hours");
-            stellockLaceHours = list.Slider(stellockLaceHours, 1f, 48f);
-            list.GapLine();
 
-            list.Label("The shoal (the illisk)");
-            list.CheckboxLabeled("Illisk hide", ref shoalHideEnabled,
-                "On: bullets, blades, claws and fists barely scratch an illisk; only blasts hurt it at full strength. "
-              + "Off: an illisk takes damage like any small animal.");
-            if (shoalHideEnabled)
+            if (Group(list, "Stellock lace", RimMandrake.Shared.SettingScope.Now, new[] { "stellockLaceEnabled", "stellockBranchChance", "stellockLaceHours" }))
             {
-                list.Label("  Damage that is not a blast gets through at: " + (shoalNonBlastFactor * 100f).ToString("0") + "%");
-                shoalNonBlastFactor = list.Slider(shoalNonBlastFactor, 0f, 1f);
+                list.CheckboxLabeled("Stellock branches and the lace research", ref stellockLaceEnabled,
+                    "On: felling a Greentide tree on a Greentide map can drop a stellock branch; studying branches "
+                  + "reveals the stellock lace research. Off: no branches drop and the research is an ordinary "
+                  + "visible project. Laces already made still work either way.");
+                if (stellockLaceEnabled)
+                {
+                    list.Label("  Branch drop chance per felled tree: " + stellockBranchChance.ToStringPercent());
+                    stellockBranchChance = list.Slider(stellockBranchChance, 0f, 1f);
+                }
+                list.Label("  A lace stops bleeding for: " + stellockLaceHours.ToString("0.#") + " hours");
+                stellockLaceHours = list.Slider(stellockLaceHours, 1f, 48f);
+                list.GapLine();
             }
-            list.GapLine();
 
-            list.Label("The false bank (the vurrak)");
-            list.CheckboxLabeled("Vurrak ambush", ref vurrakAmbushEnabled,
-                "On: a vurrak lies flat along the water's edge, invisible as silted bank, and bites whatever heavy "
-              + "enough steps on it. Lighter animals only make it flinch and show itself. Off: it never hides and "
-              + "never bites on contact; it is an ordinary slow riverbank animal.");
-            if (vurrakAmbushEnabled)
+            if (Group(list, "The shoal (the illisk)", RimMandrake.Shared.SettingScope.Now, new[] { "shoalHideEnabled", "shoalNonBlastFactor" }))
             {
-                list.Label("  Weight that sets it off (body size): " + vurrakTriggerBodySize.ToString("0.00")
-                         + " (a person is 1.00)");
-                vurrakTriggerBodySize = list.Slider(vurrakTriggerBodySize, 0.2f, 2f);
-                list.CheckboxLabeled("  Pause the first time one is revealed", ref vurrakFirstRevealPause,
-                    "On: the very first time your people see a vurrak reveal itself, the game pauses and a letter "
-                  + "explains what happened. Once per game.");
+                list.CheckboxLabeled("Illisk hide", ref shoalHideEnabled,
+                    "On: bullets, blades, claws and fists barely scratch an illisk; only blasts hurt it at full strength. "
+                  + "Off: an illisk takes damage like any small animal.");
+                if (shoalHideEnabled)
+                {
+                    list.Label("  Damage that is not a blast gets through at: " + (shoalNonBlastFactor * 100f).ToString("0") + "%");
+                    shoalNonBlastFactor = list.Slider(shoalNonBlastFactor, 0f, 1f);
+                }
+                list.GapLine();
             }
 
-            list.GapLine();
-
-            list.Label("The canopy-breaker (the thurrock)");
-            list.CheckboxLabeled("Thurrock fells trees", ref thurrockFellingEnabled,
-                "On: a thurrock herd batters the trees around it as it browses, and a tree beaten low enough comes "
-              + "down as a fallen trunk and wood. Off: it is a huge browser that fells nothing.");
-            if (thurrockFellingEnabled)
+            if (Group(list, "The false bank (the vurrak)", RimMandrake.Shared.SettingScope.Now, new[] { "vurrakAmbushEnabled", "vurrakFirstRevealPause", "vurrakTriggerBodySize" }))
             {
-                list.Label("  Felling pace: " + thurrockFellingPace.ToString("0.00") + "x (how often the herd's blows land; higher fells more trees per hour)");
-                thurrockFellingPace = list.Slider(thurrockFellingPace, 0.25f, 3f);
+                list.CheckboxLabeled("Vurrak ambush", ref vurrakAmbushEnabled,
+                    "On: a vurrak lies flat along the water's edge, invisible as silted bank, and bites whatever heavy "
+                  + "enough steps on it. Lighter animals only make it flinch and show itself. Off: it never hides and "
+                  + "never bites on contact; it is an ordinary slow riverbank animal.");
+                if (vurrakAmbushEnabled)
+                {
+                    list.Label("  Weight that sets it off (body size): " + vurrakTriggerBodySize.ToString("0.00")
+                             + " (a person is 1.00)");
+                    vurrakTriggerBodySize = list.Slider(vurrakTriggerBodySize, 0.2f, 2f);
+                    list.CheckboxLabeled("  Pause the first time one is revealed", ref vurrakFirstRevealPause,
+                        "On: the very first time your people see a vurrak reveal itself, the game pauses and a letter "
+                      + "explains what happened. Once per game.");
+                }
+                list.GapLine();
             }
-            list.CheckboxLabeled("Provoked thurrocks batter walls", ref thurrockProvokedWallDamage,
-                "On: a manhunting thurrock shoulders walls and doors the way it shoulders trees. Natural rock is "
-              + "always spared, and a calm one never damages buildings. Off: no building damage even when provoked.");
 
-            list.GapLine();
-
-            list.Label("The Roil, Breaklight and the greatbole");
-            list.CheckboxLabeled("The Roil (WORLDGEN-AFFECTING — new maps only)", ref roilEnabled,
-                "On: a Greentide map stands under permanent waist-deep hot fog (aim x0.7, move x0.95), and the "
-              + "fog can throw up a steam devil. Off: maps generated after the change get ordinary weather. "
-              + "A map that already exists keeps the fog it was born with.");
-            list.CheckboxLabeled("Greatbole fruitfall", ref fruitfallEnabled,
-                "On: now and then a living greatbole drops a fruit or two and a few grubs on its own, no wound "
-              + "needed. Off: fruit only comes from felling or wounding.");
-            list.Label("Greatbole harvest ladder — share of a bole's footprint mined away.");
-            list.Label("  The Great Shaking: " + (greatboleShakingThreshold * 100f).ToString("0") + "% removed");
-            greatboleShakingThreshold = list.Slider(greatboleShakingThreshold, 0.1f, 0.9f);
-            list.Label("  The violent healing: " + (greatboleHealingThreshold * 100f).ToString("0") + "% removed");
-            greatboleHealingThreshold = list.Slider(greatboleHealingThreshold, 0.1f, 0.95f);
-            list.CheckboxLabeled("  The catastrophe can happen", ref greatboleCatastropheEnabled,
-                "Off: a greatbole never dies from being mined out, no matter how much of its footprint is removed. "
-              + "The Great Shaking and the violent healing still fire.");
-            if (greatboleCatastropheEnabled)
+            if (Group(list, "The canopy-breaker (the thurrock)", RimMandrake.Shared.SettingScope.Now, new[] { "thurrockFellingEnabled", "thurrockProvokedWallDamage", "thurrockFellingPace" }))
             {
-                list.Label("  The catastrophe: " + (greatboleCatastropheThreshold * 100f).ToString("0") + "% removed");
-                greatboleCatastropheThreshold = list.Slider(greatboleCatastropheThreshold, 0.1f, 0.99f);
+                list.CheckboxLabeled("Thurrock fells trees", ref thurrockFellingEnabled,
+                    "On: a thurrock herd batters the trees around it as it browses, and a tree beaten low enough comes "
+                  + "down as a fallen trunk and wood. Off: it is a huge browser that fells nothing.");
+                if (thurrockFellingEnabled)
+                {
+                    list.Label("  Felling pace: " + thurrockFellingPace.ToString("0.00") + "x (how often the herd's blows land; higher fells more trees per hour)");
+                    thurrockFellingPace = list.Slider(thurrockFellingPace, 0.25f, 3f);
+                }
+                list.CheckboxLabeled("Provoked thurrocks batter walls", ref thurrockProvokedWallDamage,
+                    "On: a manhunting thurrock shoulders walls and doors the way it shoulders trees. Natural rock is "
+                  + "always spared, and a calm one never damages buildings. Off: no building damage even when provoked.");
+                list.GapLine();
             }
-            list.CheckboxLabeled("Greatbole seeds can be planted (next game start)", ref greatboleSeedPlantingEnabled,
-                "On: a greatbole seed can be planted like a Gauranlen seed. A planted greatbole grows only with open "
-              + "water in a neighbouring cell, and then grows far faster than any other tree; its inspect pane says "
-              + "which. Off: seeds are trade goods only, and any already-planted greatbole grows at the ordinary "
-              + "rate with no water rule. Takes effect the next time the game starts.");
-            list.CheckboxLabeled("Opt-in: greatbole servants (dryads) (next game start)", ref greatboleServantsEnabled,
-                "Changes the tree's character — default off, and the Utinni campaign ships with it off. On: the "
-              + "living heart of a greatbole works like a Gauranlen tree. A colonist can connect to it (stand in the "
-              + "mined-open cell just west of the heart) and direct its dryads; colony buildings near it do NOT "
-              + "weaken the connection. Expected: its dryads will fight the fruit's grubs, which stay hostile in "
-              + "every configuration. Takes effect the next time the game starts.");
+
+            if (Group(list, "The Roil (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "roilEnabled" }))
+            {
+                list.CheckboxLabeled("The Roil (WORLDGEN-AFFECTING — new maps only)", ref roilEnabled,
+                    "On: a Greentide map stands under permanent waist-deep hot fog (aim x0.7, move x0.95), and the "
+                  + "fog can throw up a steam devil. Off: maps generated after the change get ordinary weather. "
+                  + "A map that already exists keeps the fog it was born with.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Greatbole fruitfall and harvest ladder", RimMandrake.Shared.SettingScope.Now, new[] { "fruitfallEnabled", "greatboleCatastropheEnabled", "greatboleShakingThreshold", "greatboleHealingThreshold", "greatboleCatastropheThreshold" }))
+            {
+                list.CheckboxLabeled("Greatbole fruitfall", ref fruitfallEnabled,
+                    "On: now and then a living greatbole drops a fruit or two and a few grubs on its own, no wound "
+                  + "needed. Off: fruit only comes from felling or wounding.");
+                list.Label("Greatbole harvest ladder — share of a bole's footprint mined away.");
+                list.Label("  The Great Shaking: " + (greatboleShakingThreshold * 100f).ToString("0") + "% removed");
+                greatboleShakingThreshold = list.Slider(greatboleShakingThreshold, 0.1f, 0.9f);
+                list.Label("  The violent healing: " + (greatboleHealingThreshold * 100f).ToString("0") + "% removed");
+                greatboleHealingThreshold = list.Slider(greatboleHealingThreshold, 0.1f, 0.95f);
+                list.CheckboxLabeled("  The catastrophe can happen", ref greatboleCatastropheEnabled,
+                    "Off: a greatbole never dies from being mined out, no matter how much of its footprint is removed. "
+                  + "The Great Shaking and the violent healing still fire.");
+                if (greatboleCatastropheEnabled)
+                {
+                    list.Label("  The catastrophe: " + (greatboleCatastropheThreshold * 100f).ToString("0") + "% removed");
+                    greatboleCatastropheThreshold = list.Slider(greatboleCatastropheThreshold, 0.1f, 0.99f);
+                }
+                list.GapLine();
+            }
+
+            if (Group(list, "Greatbole seeds and servants", RimMandrake.Shared.SettingScope.Now, new[] { "greatboleSeedPlantingEnabled", "greatboleServantsEnabled" }, "[next game start]"))
+            {
+                list.CheckboxLabeled("Greatbole seeds can be planted (next game start)", ref greatboleSeedPlantingEnabled,
+                    "On: a greatbole seed can be planted like a Gauranlen seed. A planted greatbole grows only with open "
+                  + "water in a neighbouring cell, and then grows far faster than any other tree; its inspect pane says "
+                  + "which. Off: seeds are trade goods only, and any already-planted greatbole grows at the ordinary "
+                  + "rate with no water rule. Takes effect the next time the game starts.");
+                list.CheckboxLabeled("Opt-in: greatbole servants (dryads) (next game start)", ref greatboleServantsEnabled,
+                    "Changes the tree's character — default off, and the Utinni campaign ships with it off. On: the "
+                  + "living heart of a greatbole works like a Gauranlen tree. A colonist can connect to it (stand in the "
+                  + "mined-open cell just west of the heart) and direct its dryads; colony buildings near it do NOT "
+                  + "weaken the connection. Expected: its dryads will fight the fruit's grubs, which stay hostile in "
+                  + "every configuration. Takes effect the next time the game starts.");
+                list.GapLine();
+            }
             list.Label("Breaklight, the dry-air blower's field, living greatbole placement and "
               + "root causeways are switched in the Environmental Hazards Kit's settings.");
 
