@@ -1,0 +1,8 @@
+0 TileGranite 116
+0 RM_Glasswalk 183
+1 TileGranite 119
+1 RM_Glasswalk 172
+2 TileGranite 119
+2 RM_Glasswalk 188
+RESULT SUMP_WALKWAYS_1/A3-speed FAIL glass=[183, 172, 188] granite=[116, 119, 119] (ticks per 12 cells) speed_ratio=0.65 spec~0.80 (13 ticks/cell + pathCost 3)
+RESULT SUMP_WALKWAYS_1/A3-slip PASS glass slip_off=[183, 172, 188] slip_chance1.0=651 ticks per 12 cells
