@@ -1,9 +1,9 @@
 {
  "biome": "RM_Wasteland",
- "built": "2026-10-10T10:14:51-0700",
+ "built": "2026-10-10T13:15:20-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "Plant_GrayGrass": {
    "columns": {
@@ -37,6 +37,9 @@
     "D": "render enact_wlplantgraygrass_v1",
     "E": "IN GAME \u2014 ludeon.rimworld.biotech"
    },
+   "pools": [
+    "Things/Plant/Graygrass"
+   ],
    "res": "Things/Plant/Graygrass",
    "reserved": [
     "A",
@@ -83,6 +86,9 @@
     "D": "render enact_wlplanttoxipotato_v2",
     "E": "IN GAME \u2014 regrowth.botr.core"
    },
+   "pools": [
+    "Things/Plant/RG_Toxipotato"
+   ],
    "res": "Things/Plant/RG_Toxipotato",
    "reserved": [
     "A",
@@ -129,6 +135,9 @@
     "D": "render enact_wlplanttreepolux_v1",
     "E": "render enact_wlplanttreepolux_v2"
    },
+   "pools": [
+    "Things/Plant/RG_PoluxTree"
+   ],
    "res": "Things/Plant/RG_PoluxTree",
    "reserved": [
     "A",
@@ -165,6 +174,9 @@
     "B": "render enact_wlrmboilbulb_v1",
     "C": "render enact_wlrmboilbulb_v2"
    },
+   "pools": [
+    "Things/Plant/RM_Boilbulb"
+   ],
    "res": "Things/Plant/RM_Boilbulb",
    "reserved": [
     "A",
@@ -198,6 +210,9 @@
     "B": "render enact_wlrmcinderfelt_v1",
     "C": "render enact_wlrmcinderfelt_v2"
    },
+   "pools": [
+    "Things/Plant/RM_Cinderfelt"
+   ],
    "res": "Things/Plant/RM_Cinderfelt",
    "reserved": [
     "A",
@@ -226,6 +241,9 @@
     "A": "IN GAME \u2014 Wasteland",
     "B": "render enact_70af1db9_dosimeterlawn_v1"
    },
+   "pools": [
+    "Things/Plant/DosimeterLawn"
+   ],
    "res": "Things/Plant/DosimeterLawn",
    "reserved": [
     "A",
@@ -258,6 +276,9 @@
     "B": "render enact_wlrmpusberry_v1",
     "C": "render enact_wlrmpusberry_v2"
    },
+   "pools": [
+    "Things/Plant/RM_Pusberry"
+   ],
    "res": "Things/Plant/RM_Pusberry",
    "reserved": [
     "A",
@@ -291,6 +312,9 @@
     "B": "render enact_wlrmscumgrass_v1",
     "C": "render enact_wlrmscumgrass_v2"
    },
+   "pools": [
+    "Things/Plant/RM_Scumgrass"
+   ],
    "res": "Things/Plant/RM_Scumgrass",
    "reserved": [
     "A",
@@ -314,6 +338,9 @@
    "labels": {
     "A": "IN GAME \u2014 Wasteland"
    },
+   "pools": [
+    "Things/Plant/RM_TallScumgrass"
+   ],
    "res": "Things/Plant/RM_TallScumgrass",
    "reserved": [
     "A"
@@ -345,6 +372,9 @@
     "B": "render enact_wlvaultroot_real_v2",
     "C": "render enact_wlvaultroot_real_v3"
    },
+   "pools": [
+    "Things/Plant/VaultRoot"
+   ],
    "res": "Things/Plant/VaultRoot",
    "reserved": [
     "A",
@@ -378,6 +408,9 @@
     "B": "render enact_wlrmwartshrub_v1",
     "C": "render enact_wlrmwartshrub_v2"
    },
+   "pools": [
+    "Things/Plant/RM_Wartshrub"
+   ],
    "res": "Things/Plant/RM_Wartshrub",
    "reserved": [
     "A",
@@ -421,6 +454,9 @@
     "E": "render enact_wlrmwastelandscorchedstars_v1",
     "F": "render enact_wlrmwastelandscorchedstars_v2"
    },
+   "pools": [
+    "Things/Plant/ScorchedStars"
+   ],
    "res": "Things/Plant/ScorchedStars",
    "reserved": [
     "A",
@@ -444,11 +480,6 @@
      "north": "52cfaa849811e8f707c9b9a0c9479a880aad1dab398e7991b4912d5bacccb86c",
      "south": "df16fb690b530d90cb77bb6660eab2db2d2214dab75b0783f43aee5d8ab0f3ff"
     },
-    "B": {
-     "east": "fa208fd2a3949fb897629385487bcf448f8df10fd831978647104cc13b3b3043",
-     "north": "2d6dacbdf25d538d24dd93bce0d2180453d8c1cca1f103ec21328754c84e7932",
-     "south": "67eeeaf7f49d27582ec5df1680fbad21bdc2e3127ebd0596e9481fb12c1edf89"
-    },
     "C": {
      "1_east": "ca22126c0caf71f83645458db6f26bdc6709bc9b50a6ed6e6c8ae35e395916f9",
      "1_north": "36fcdbf197abe7b90a59acd6e9b113c84a4eb8e423dc2d5ba01e1d145ed4c3bc",
@@ -462,16 +493,15 @@
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
-    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
     "C": "_flip:swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel_Flying_",
     "D": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-11",
     "C": "IN GAME \u2014 BloodletterPetrel_Flying_",
     "D": "render enact_cb3cf916_bloodletterpetrel_v1"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
    "reserved": [
     "A",
@@ -519,6 +549,7 @@
     "B": "IN GAME \u2014 SWBestiary",
     "D": "render enact_wlborcatu_quills_v1 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "swanimals/Borcatu/Borcatu",
    "reserved": [
     "A",
@@ -560,6 +591,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render enact_eb982163_excretor_v1"
    },
+   "pools": [],
    "res": "swanimals/FeralNerf/FeralNerf",
    "reserved": [
     "A",
@@ -578,21 +610,15 @@
      "east": "36e746ed820761ac0f237bb8f77a7dbae4010edf412940c30bc0766e354e037b",
      "north": "c723d4a37b3313ffe352beeca4044ba92e0e6c5d7f30f06968ae7fcb41970f07",
      "south": "cdb417dcc45554753e1a665dce2e6fecf46dcc6965bc2eeaf12069006317d6df"
-    },
-    "B": {
-     "east": "4829fb13730337b300f86d452cc6991ab6eeda3c52d27b1b0eefb7ccaafa8bb7",
-     "north": "fbb7f0ab1e343d2b3594cc52e556ee2fe7399a7d1eac4e5ce846df852d3d4176",
-     "south": "ecd0608f9463d5da066bf8e64c2bbcbab37d3e89d4bb2bb5703ea365603fca70"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider",
-    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-11"
+    "A": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FleeceSpider/FleeceSpider",
    "reserved": [
     "A",
@@ -615,11 +641,6 @@
      "north": "6da16d919f5e3def81def0394e0e6d399ecfe2c26f63160b7e99add2dbf02092",
      "south": "091517b19af2d6ffef2edd74271d65be96ed342bab561a735f8eaa126e124573"
     },
-    "B": {
-     "east": "bec987be0727cd32568a92cc4c7141557fcff1d6beb6f75bda1a5bda511bfe30",
-     "north": "2fbe31dd9e27a9b1eb4c6af3ee32b7e8005dd903302d4b610f383a863aee351a",
-     "south": "a5a789a64e3fcb4ce6242e5060d2a6fe6c92cb3a1f287152030195005384cc43"
-    },
     "C": {
      "east": "1ecae74132eed9577805ee01e10d0a2ad7eed6c2cb339d8bfc84db0ef642952b",
      "north": "7e948ac1c419651e4bb9b8dd749f8fa15a86def298b4c30812fcce0807f5db3e",
@@ -628,14 +649,13 @@
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale",
-    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale",
     "C": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatMale"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-11",
     "C": "history SWBestiary 2026-09-11"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Maligoat/MaligoatFemale",
    "reserved": [
     "A",
@@ -676,6 +696,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render enact_98858bc5_sacapillar_v1"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar",
    "reserved": [
     "A",
@@ -716,6 +737,7 @@
     "B": "history SWBestiary 2026-09-11",
     "C": "IN GAME \u2014 Screecher_Flying_"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
    "reserved": [
     "A",
@@ -756,6 +778,7 @@
     "A": "IN GAME \u2014 UtinniPatches",
     "B": "render enact_f26c7759_brinebattery_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RUT_BrineBattery/RUT_BrineBattery",
    "reserved": [
     "A",
@@ -812,6 +835,7 @@
     "E": "history UtinniPatches 2026-09-11",
     "F": "render enact_wlmegatardi_ns_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Megatardi/Megatardi",
    "reserved": [
     "A",
@@ -837,5 +861,5 @@
   }
  },
  "sheetId": "wasteland_sheet_2026-10-05",
- "snapshotId": "071641b7687e0063"
+ "snapshotId": "0e13d12a0b63ddd0"
 }

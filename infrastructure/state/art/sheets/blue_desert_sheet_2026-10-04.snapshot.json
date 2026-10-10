@@ -1,9 +1,9 @@
 {
  "biome": "RM_BlueDesert",
- "built": "2026-10-10T10:11:00-0700",
+ "built": "2026-10-10T13:02:30-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_Thunderbeast": {
    "columns": {
@@ -19,6 +19,7 @@
    "labels": {
     "E": "IN GAME \u2014 BlueDesert"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/AA_Thunderbeast_BlueDesert/AA_Thunderbeast_BlueDesert",
    "reserved": [
     "A",
@@ -54,6 +55,9 @@
     "A": "IN GAME \u2014 random variant RM_Chimeglobe_a (1 of 2) \u2014 BlueDesert",
     "B": "IN GAME \u2014 random variant RM_Chimeglobe_b (2 of 2) \u2014 BlueDesert"
    },
+   "pools": [
+    "Things/Plant/RM_Chimeglobe/RM_Chimeglobe"
+   ],
    "res": "Things/Plant/RM_Chimeglobe/RM_Chimeglobe",
    "reserved": [
     "A",
@@ -79,6 +83,7 @@
    "labels": {
     "A": "IN GAME \u2014 BlueDesert"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Dorrak/RM_Dorrak",
    "reserved": [
     "A"
@@ -111,6 +116,7 @@
     "B": "IN GAME \u2014 BlueDesert",
     "C": "render enact_e3e8ae91_dovvik_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik",
    "reserved": [
     "A",
@@ -144,6 +150,9 @@
     "B": "IN GAME \u2014 random variant RM_Glassfern_a (1 of 2) \u2014 BlueDesert",
     "C": "IN GAME \u2014 random variant RM_Glassfern_b (2 of 2) \u2014 BlueDesert"
    },
+   "pools": [
+    "Things/Plant/RM_Glassfern/RM_Glassfern"
+   ],
    "res": "Things/Plant/RM_Glassfern/RM_Glassfern",
    "reserved": [
     "A",
@@ -183,6 +192,9 @@
     "C": "IN GAME \u2014 random variant RM_Kethevar_c (3 of 4) \u2014 BlueDesert",
     "D": "IN GAME \u2014 random variant RM_Kethevar_d (4 of 4) \u2014 BlueDesert"
    },
+   "pools": [
+    "Things/Plant/RM_Kethevar/RM_Kethevar"
+   ],
    "res": "Things/Plant/RM_Kethevar/RM_Kethevar",
    "reserved": [
     "A",
@@ -212,6 +224,7 @@
    "labels": {
     "A": "IN GAME \u2014 BlueDesert"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Krissek/RM_Krissek",
    "reserved": [
     "A"
@@ -250,6 +263,9 @@
     "C": "IN GAME \u2014 random variant RM_Lisqueth_c (3 of 4) \u2014 BlueDesert",
     "D": "IN GAME \u2014 random variant RM_Lisqueth_d (4 of 4) \u2014 BlueDesert"
    },
+   "pools": [
+    "Things/Plant/RM_Lisqueth/RM_Lisqueth"
+   ],
    "res": "Things/Plant/RM_Lisqueth/RM_Lisqueth",
    "reserved": [
     "A",
@@ -301,6 +317,7 @@
     "C": "render RM_Murrek_tint_v1",
     "D": "render enact_069e4d4b_murrek_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Murrek/RM_Murrek",
    "reserved": [
     "A",
@@ -346,6 +363,7 @@
     "D": "render bluedesert_Ossivel_v2",
     "E": "render bluedesert_Ossivel_v4"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
    "reserved": [
     "A",
@@ -386,6 +404,9 @@
     "B": "IN GAME \u2014 random variant RM_Palefloss_b (2 of 3) \u2014 BlueDesert",
     "C": "IN GAME \u2014 random variant RM_Palefloss_c (3 of 3) \u2014 BlueDesert"
    },
+   "pools": [
+    "Things/Plant/RM_Palefloss/RM_Palefloss"
+   ],
    "res": "Things/Plant/RM_Palefloss/RM_Palefloss",
    "reserved": [
     "A",
@@ -431,6 +452,7 @@
     "D": "render RM_Qeshra_var2",
     "E": "render RM_Qeshra_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Qeshra/RM_Qeshra",
    "reserved": [
     "A",
@@ -466,6 +488,7 @@
     "B": "IN GAME \u2014 BlueDesert",
     "C": "render enact_d67b8fd8_utikka_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Utikka/RM_Utikka",
    "reserved": [
     "A",
@@ -509,6 +532,9 @@
     "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Vashpuk_c (3 of 4) \u2014 BlueDesert",
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Vashpuk_d (4 of 4) \u2014 BlueDesert"
    },
+   "pools": [
+    "Things/Plant/RM_Vashpuk/RM_Vashpuk"
+   ],
    "res": "Things/Plant/RM_Vashpuk/RM_Vashpuk",
    "reserved": [
     "A",
@@ -535,6 +561,7 @@
    "labels": {
     "A": "IN GAME \u2014 BlueDesert"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Vekkit/RM_Vekkit",
    "reserved": [
     "A"
@@ -571,6 +598,7 @@
     "E": "IN GAME \u2014 BlueDesert",
     "F": "render RM_Vhaulk"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk",
    "reserved": [
     "A",
@@ -616,6 +644,9 @@
     "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Virr_c (3 of 4) \u2014 BlueDesert",
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Virr_d (4 of 4) \u2014 BlueDesert"
    },
+   "pools": [
+    "Things/Plant/RM_Virr/RM_Virr"
+   ],
    "res": "Things/Plant/RM_Virr/RM_Virr",
    "reserved": [
     "A",
@@ -649,6 +680,7 @@
     "D": "IN GAME \u2014 BlueDesert",
     "E": "render enact_b3c6f3d3_vrisk_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Vrisk/RM_Vrisk",
    "reserved": [
     "A",
@@ -681,6 +713,7 @@
    "labels": {
     "A": "IN GAME \u2014 BlueDesert"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz",
    "reserved": [
     "A"
@@ -713,6 +746,7 @@
     "B": "render bluedesert_Vapaad_v2",
     "G": "IN GAME \u2014 UtinniPatches"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RUT_Vapaad/RUT_Vapaad",
    "reserved": [
     "A",

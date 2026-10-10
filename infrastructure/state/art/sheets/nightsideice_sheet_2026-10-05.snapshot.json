@@ -1,9 +1,9 @@
 {
  "biome": "RM_NightsideIce",
- "built": "2026-10-10T10:13:49-0700",
+ "built": "2026-10-10T12:49:07-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_ShockGoat": {
    "columns": {
@@ -26,6 +26,7 @@
     "B": "render gapall_AA_ShockGoat_v1",
     "D": "IN GAME \u2014 NightsideIce"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/AA_ShockGoat_NightsideIce/AA_ShockGoat_NightsideIce",
    "reserved": [
     "A",
@@ -64,6 +65,7 @@
     "A": "history SWBestiary 2026-09-11",
     "C": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/CaveLemming/CaveLemming",
    "reserved": [
     "A",
@@ -115,6 +117,7 @@
     "C": "IN GAME \u2014 SWBestiary",
     "D": "render canonregen_rsw_wampa_v1 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "swanimals/Wampa/Wampa",
    "reserved": [
     "A",
@@ -170,6 +173,10 @@
     "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "D": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [
+    "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
+    "swanimals/Tauntaun/Tauntaun"
+   ],
    "res": "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon",
    "reserved": [
     "A",

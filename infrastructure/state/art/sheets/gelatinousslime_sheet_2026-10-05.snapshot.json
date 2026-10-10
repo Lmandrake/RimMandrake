@@ -1,9 +1,9 @@
 {
  "biome": "RM_GelatinousSlime",
- "built": "2026-10-10T10:11:46-0700",
+ "built": "2026-10-10T13:07:49-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Dwommo": {
    "columns": {
@@ -26,6 +26,7 @@
     "A": "IN GAME \u2014 GelatinousSlime",
     "B": "render enact_5673ffda_dwommo_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Dwommo/RM_Dwommo",
    "reserved": [
     "A",
@@ -57,6 +58,7 @@
     "A": "IN GAME \u2014 GelatinousSlime",
     "B": "history GelatinousSlime 2026-10-03"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Fubbum/RM_Fubbum",
    "reserved": [
     "A",
@@ -83,6 +85,7 @@
    "labels": {
     "A": "IN GAME \u2014 GelatinousSlime"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Gappo/RM_Gappo",
    "reserved": [
     "A"
@@ -108,6 +111,7 @@
    "labels": {
     "A": "IN GAME \u2014 GelatinousSlime"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Gappo/RM_GappoGreater",
    "reserved": [
     "A"
@@ -133,6 +137,7 @@
    "labels": {
     "A": "IN GAME \u2014 GelatinousSlime"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Gappo/RM_GappoLesser",
    "reserved": [
     "A"
@@ -158,6 +163,7 @@
    "labels": {
     "A": "IN GAME \u2014 GelatinousSlime"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Gelatid/RM_Gelatid",
    "reserved": [
     "A"
@@ -202,6 +208,9 @@
    "labels": {
     "B": "IN GAME \u2014 random variant RM_Bellows_a (1 of 1) \u2014 GelatinousSlime"
    },
+   "pools": [
+    "Things/Plant/RM_Bellows/RM_Bellows"
+   ],
    "res": "Things/Plant/RM_Bellows/RM_Bellows",
    "reserved": [
     "A",
@@ -230,6 +239,9 @@
     "B": "IN GAME \u2014 random variant RM_Readerbloom_a (1 of 1) \u2014 GelatinousSlime",
     "C": "render enact_a78ae7bb_plant_readerbloom_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Readerbloom/RM_Readerbloom"
+   ],
    "res": "Things/Plant/RM_Readerbloom/RM_Readerbloom",
    "reserved": [
     "A",
@@ -274,6 +286,9 @@
     "F": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_SlimeGrass_d (4 of 4) \u2014 GelatinousSlime",
     "G": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures"
    },
+   "pools": [
+    "Things/Plant/RM_SlimeGrass/RM_SlimeGrass"
+   ],
    "res": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
    "reserved": [
     "A",
@@ -318,6 +333,9 @@
     "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Thumbstalk_c (3 of 4) \u2014 GelatinousSlime",
     "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Thumbstalk_d (4 of 4) \u2014 GelatinousSlime"
    },
+   "pools": [
+    "Things/Plant/RM_Thumbstalk/RM_Thumbstalk"
+   ],
    "res": "Things/Plant/RM_Thumbstalk/RM_Thumbstalk",
    "reserved": [
     "A",
@@ -346,6 +364,7 @@
    "labels": {
     "A": "IN GAME \u2014 GelatinousSlime"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Titanoslime/RM_Titanoslime",
    "reserved": [
     "A"

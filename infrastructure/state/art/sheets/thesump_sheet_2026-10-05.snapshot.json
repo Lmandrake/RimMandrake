@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheSump",
- "built": "2026-10-10T10:14:00-0700",
+ "built": "2026-10-10T12:53:28-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Brindeth": {
    "columns": {
@@ -32,6 +32,9 @@
     "C": "render thesump_Brindeth_var2",
     "D": "render thesump_Brindeth_var3"
    },
+   "pools": [
+    "Things/Plant/RM_Brindeth/RM_Brindeth_a"
+   ],
    "res": "Things/Plant/RM_Brindeth/RM_Brindeth_a",
    "reserved": [
     "A",
@@ -92,6 +95,9 @@
     "C": "render thesump_Dorvel_var2",
     "D": "render thesump_Dorvel_var3"
    },
+   "pools": [
+    "Things/Plant/RM_Dorvel/RM_Dorvel_a"
+   ],
    "res": "Things/Plant/RM_Dorvel/RM_Dorvel_a",
    "reserved": [
     "A",
@@ -129,6 +135,7 @@
     "C": "render RM_Dredgel",
     "D": "render thesump_Dredgel_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Dredgel/RM_Dredgel",
    "reserved": [
     "A",
@@ -157,6 +164,7 @@
    "labels": {
     "A": "IN GAME \u2014 TheSump"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Gulveth/RM_Gulveth",
    "reserved": [
     "A"
@@ -203,6 +211,7 @@
     "C": "render RM_Kethrel_Stage2",
     "D": "render RM_Kethrel_Stage3"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0",
    "reserved": [
     "A",
@@ -253,6 +262,9 @@
     "C": "render thesump_Korveth_var2",
     "D": "render thesump_Korveth_var3"
    },
+   "pools": [
+    "Things/Plant/RM_Korveth/RM_Korveth_a"
+   ],
    "res": "Things/Plant/RM_Korveth/RM_Korveth_a",
    "reserved": [
     "A",
@@ -292,6 +304,9 @@
     "C": "render thesump_Mirrelin_var3",
     "D": "render thesump_Mirrelin_var1"
    },
+   "pools": [
+    "Things/Plant/RM_Mirrelin/RM_Mirrelin_a"
+   ],
    "res": "Things/Plant/RM_Mirrelin/RM_Mirrelin_a",
    "reserved": [
     "A",
@@ -331,6 +346,9 @@
     "C": "render thesump_Pallick_var2",
     "D": "render thesump_Pallick_var3"
    },
+   "pools": [
+    "Things/Plant/RM_Pallick/RM_Pallick_a"
+   ],
    "res": "Things/Plant/RM_Pallick/RM_Pallick_a",
    "reserved": [
     "A",
@@ -357,6 +375,7 @@
    "labels": {
     "A": "IN GAME \u2014 TheSump"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Skarrid/RM_Skarrid",
    "reserved": [
     "A"
@@ -382,6 +401,7 @@
    "labels": {
     "A": "IN GAME \u2014 TheSump"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Skellarn/RM_Skellarn",
    "reserved": [
     "A"
@@ -420,6 +440,9 @@
     "C": "render thesump_Skelver_var2",
     "D": "render thesump_Skelver_var3"
    },
+   "pools": [
+    "Things/Plant/RM_Skelver/RM_Skelver_a"
+   ],
    "res": "Things/Plant/RM_Skelver/RM_Skelver_a",
    "reserved": [
     "A",
@@ -464,6 +487,9 @@
     "D": "render thesump_Soffeth_var2",
     "E": "render thesump_Soffeth_var3"
    },
+   "pools": [
+    "Things/Plant/RM_Soffeth/RM_Soffeth_a"
+   ],
    "res": "Things/Plant/RM_Soffeth/RM_Soffeth_a",
    "reserved": [
     "A",
@@ -498,6 +524,7 @@
     "A": "IN GAME \u2014 TheSump",
     "B": "render thesump_SumpMouse_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_SumpMouse/RM_SumpMouse",
    "reserved": [
     "A",
@@ -531,6 +558,7 @@
     "A": "IN GAME \u2014 TheSump",
     "C": "render thesump_Thrummel_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Thrummel/RM_Thrummel",
    "reserved": [
     "A",
@@ -565,6 +593,7 @@
     "A": "IN GAME \u2014 TheSump",
     "C": "render thesump_ThrummelBroodmother_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_ThrummelBroodmother/RM_ThrummelBroodmother",
    "reserved": [
     "A",
@@ -599,6 +628,7 @@
     "A": "IN GAME \u2014 TheSump",
     "C": "render thesump_ThrummelWarden_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_ThrummelWarden/RM_ThrummelWarden",
    "reserved": [
     "A",
@@ -639,6 +669,7 @@
     "C": "render thesump_Tolleth_var2",
     "D": "render thesump_Tolleth_var3"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Tolleth/RM_Tolleth_a",
    "reserved": [
     "A",
@@ -678,6 +709,9 @@
     "C": "render thesump_Velloch_var2",
     "D": "render thesump_Velloch_var3"
    },
+   "pools": [
+    "Things/Plant/RM_Velloch/RM_Velloch_a"
+   ],
    "res": "Things/Plant/RM_Velloch/RM_Velloch_a",
    "reserved": [
     "A",
@@ -739,6 +773,12 @@
     "E": "IN GAME \u2014 SWBestiary",
     "F": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [
+    "swanimals/Hssiss/Hssiss",
+    "swanimals/Hssiss/HssissA",
+    "swanimals/Hssiss/HssissB",
+    "swanimals/Hssiss/HssissC"
+   ],
    "res": "swanimals/Hssiss/Hssiss",
    "reserved": [
     "A",

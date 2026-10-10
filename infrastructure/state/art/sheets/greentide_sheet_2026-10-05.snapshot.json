@@ -1,9 +1,9 @@
 {
  "biome": "RM_Greentide",
- "built": "2026-10-10T10:12:33-0700",
+ "built": "2026-10-10T13:08:55-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_BloodShrimp": {
    "columns": {
@@ -40,6 +40,11 @@
     "D": "IN GAME \u2014 Alpha Animals",
     "E": "IN GAME \u2014 Alpha Animals"
    },
+   "pools": [
+    "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp",
+    "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp2",
+    "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp3"
+   ],
    "res": "Things/Pawn/Animal/AA_BloodShrimp/AA_BloodShrimp",
    "reserved": [
     "A",
@@ -98,6 +103,9 @@
     "E": "render regen_gt_grass_ownstyle_v1",
     "F": "IN GAME \u2014 regrowth.botr.core"
    },
+   "pools": [
+    "Things/Plant/RG_Grass"
+   ],
    "res": "Things/Plant/RG_Grass",
    "reserved": [
     "A",
@@ -165,6 +173,9 @@
     "H": "render regen_gt_grass_ownstyle_v1",
     "I": "IN GAME \u2014 regrowth.botr.core"
    },
+   "pools": [
+    "Things/Plant/RG_Grass"
+   ],
    "res": "Things/Plant/RG_Grass",
    "reserved": [
     "A",
@@ -206,6 +217,9 @@
     "B": "render rm_brakkel_v1",
     "C": "render regen_gt_brakkel_varb_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Brakkel/RM_Brakkel_a"
+   ],
    "res": "Things/Plant/RM_Brakkel/RM_Brakkel_a",
    "reserved": [
     "A",
@@ -235,6 +249,9 @@
     "A": "IN GAME \u2014 random variant RM_Brunnock_a_a (1 of 1) \u2014 Greentide",
     "B": "render gapfin_RM_Brunnock_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Brunnock/RM_Brunnock_a"
+   ],
    "res": "Things/Plant/RM_Brunnock/RM_Brunnock_a",
    "reserved": [
     "A",
@@ -260,6 +277,7 @@
    "labels": {
     "B": "IN GAME \u2014 Greentide"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger",
    "reserved": [
     "A",
@@ -294,6 +312,9 @@
     "B": "IN GAME \u2014 random variant RM_Cundral_a_b (2 of 2) \u2014 Greentide",
     "C": "render regen_gt_cundral_varb_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Cundral/RM_Cundral_a"
+   ],
    "res": "Things/Plant/RM_Cundral/RM_Cundral_a",
    "reserved": [
     "A",
@@ -320,6 +341,7 @@
    "labels": {
     "A": "IN GAME \u2014 Greentide"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Dhollock/RM_Dhollock",
    "reserved": [
     "A"
@@ -348,6 +370,7 @@
     "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_Dubbol_v1"
    },
+   "pools": [],
    "res": "Things/Plant/SweetheartPlant/SweetheartPlantA",
    "reserved": [
     "A",
@@ -381,6 +404,7 @@
     "B": "render regen_gt_ghemmel_varb_v1",
     "C": "render regen_gt_ghemmel_varc_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Ghemmel/RM_Ghemmel_a",
    "reserved": [
     "A",
@@ -414,6 +438,9 @@
     "B": "render gapfin_RM_Gorbeleth_v1",
     "C": "render regen_gt_gorbeleth_varb_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Gorbeleth/RM_Gorbeleth_a"
+   ],
    "res": "Things/Plant/RM_Gorbeleth/RM_Gorbeleth_a",
    "reserved": [
     "A",
@@ -448,6 +475,9 @@
     "B": "render regen_gt_greatbole_varb_v1",
     "C": "render regen_gt_greatbole_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Greatbole/RM_Greatbole_a"
+   ],
    "res": "Things/Plant/RM_Greatbole/RM_Greatbole_a",
    "reserved": [
     "A",
@@ -481,6 +511,9 @@
     "B": "render regen_gt_illurin_varb_v1",
     "C": "render regen_gt_illurin_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Illurin/RM_Illurin_a"
+   ],
    "res": "Things/Plant/RM_Illurin/RM_Illurin_a",
    "reserved": [
     "A",
@@ -514,6 +547,9 @@
     "B": "render regen_gt_kaddrath_varb_v1",
     "C": "render regen_gt_kaddrath_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Kaddrath/RM_Kaddrath_a"
+   ],
    "res": "Things/Plant/RM_Kaddrath/RM_Kaddrath_a",
    "reserved": [
     "A",
@@ -542,6 +578,7 @@
     "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_Karrun_v1"
    },
+   "pools": [],
    "res": "Things/Plant/PincushionPlant/PincushionPlantA",
    "reserved": [
     "A",
@@ -567,6 +604,7 @@
    "labels": {
     "A": "IN GAME \u2014 Greentide"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Krannock/RM_Krannock",
    "reserved": [
     "A"
@@ -595,6 +633,7 @@
     "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_Lozh_v1"
    },
+   "pools": [],
    "res": "Things/Plant/SnakePlant/SnakePlantA",
    "reserved": [
     "A",
@@ -628,6 +667,9 @@
     "B": "render rm_maddrick_v1",
     "C": "render regen_gt_maddrick_varb_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Maddrick/RM_Maddrick_a"
+   ],
    "res": "Things/Plant/RM_Maddrick/RM_Maddrick_a",
    "reserved": [
     "A",
@@ -667,6 +709,9 @@
     "C": "render regen_gt_mirrelbole_varb_v1",
     "D": "render regen_gt_mirrelbole_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Mirrelbole/RM_Mirrelbole_a"
+   ],
    "res": "Things/Plant/RM_Mirrelbole/RM_Mirrelbole_a",
    "reserved": [
     "A",
@@ -707,6 +752,9 @@
     "C": "render regen_gt_mourvel_varb_v1",
     "D": "render regen_gt_mourvel_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Mourvel/RM_Mourvel_a"
+   ],
    "res": "Things/Plant/RM_Mourvel/RM_Mourvel_a",
    "reserved": [
     "A",
@@ -742,6 +790,7 @@
     "B": "render regen_gt_nemmer_varb_v1",
     "C": "render regen_gt_nemmer_varc_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Nemmer/RM_Nemmer_a",
    "reserved": [
     "A",
@@ -780,6 +829,9 @@
     "C": "render regen_gt_phorrik_varb_v1",
     "D": "render regen_gt_phorrik_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Phorrik/RM_Phorrik_a"
+   ],
    "res": "Things/Plant/RM_Phorrik/RM_Phorrik_a",
    "reserved": [
     "A",
@@ -820,6 +872,9 @@
     "C": "render regen_gt_quathis_varb_v1",
     "D": "render regen_gt_quathis_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Quathis/RM_Quathis_a"
+   ],
    "res": "Things/Plant/RM_Quathis/RM_Quathis_a",
    "reserved": [
     "A",
@@ -850,6 +905,7 @@
     "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_Saava_v1"
    },
+   "pools": [],
    "res": "Things/Plant/Schlumbergera/SchlumbergeraA",
    "reserved": [
     "A",
@@ -888,6 +944,9 @@
     "C": "render regen_gt_sarnstilt_varb_v1",
     "D": "render regen_gt_sarnstilt_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Sarnstilt/RM_Sarnstilt_a"
+   ],
    "res": "Things/Plant/RM_Sarnstilt/RM_Sarnstilt_a",
    "reserved": [
     "A",
@@ -928,6 +987,9 @@
     "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Sarquin_a_a (1 of 1) \u2014 Greentide",
     "D": "render regen_gt_sarquin_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Sarquin/RM_Sarquin_a"
+   ],
    "res": "Things/Plant/RM_Sarquin/RM_Sarquin_a",
    "reserved": [
     "A",
@@ -967,6 +1029,7 @@
     "B": "donor original \u2014 1541721856",
     "C": "render gapall_RSW_Skorra_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/AA_NeedlePost/AA_NeedlePost",
    "reserved": [
     "A",
@@ -997,6 +1060,7 @@
    "labels": {
     "A": "IN GAME \u2014 Greentide"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Sulleth/RM_Sulleth",
    "reserved": [
     "A"
@@ -1029,6 +1093,7 @@
     "A": "IN GAME \u2014 Pyrelands",
     "B": "history UtinniPatches 2026-09-19"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw",
    "reserved": [
     "A",
@@ -1071,6 +1136,9 @@
     "C": "render regen_gt_thalquith_varb_v1",
     "D": "render regen_gt_thalquith_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Thalquith/RM_Thalquith_a"
+   ],
    "res": "Things/Plant/RM_Thalquith/RM_Thalquith_a",
    "reserved": [
     "A",
@@ -1098,6 +1166,7 @@
    "labels": {
     "A": "IN GAME \u2014 Greentide"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Thurrock/RM_Thurrock",
    "reserved": [
     "A"
@@ -1136,6 +1205,9 @@
     "C": "render regen_gt_tumbel_varc_v1",
     "D": "render regen_gt_tumbel_varb_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Tumbel/RM_Tumbel_a"
+   ],
    "res": "Things/Plant/RM_Tumbel/RM_Tumbel_a",
    "reserved": [
     "A",
@@ -1176,6 +1248,7 @@
     "D": "IN GAME \u2014 UtinniPatches",
     "E": "render regen_gt_tuun_v2c"
    },
+   "pools": [],
    "res": "Things/Plant/JadePlant/JadePlantA",
    "reserved": [
     "A",
@@ -1207,6 +1280,7 @@
     "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_Uvva_v1"
    },
+   "pools": [],
    "res": "Things/Plant/Peyote/PeyoteA",
    "reserved": [
     "A",
@@ -1240,6 +1314,7 @@
     "B": "render regen_gt_veluthar_varc_v1",
     "C": "render regen_gt_veluthar_varb_v1"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Veluthar/RM_Veluthar_a",
    "reserved": [
     "A",
@@ -1268,6 +1343,9 @@
     "A": "IN GAME \u2014 random variant RM_Vurmeloth_a_a (1 of 1) \u2014 Greentide",
     "B": "render gapfin_RM_Vurmeloth_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a"
+   ],
    "res": "Things/Plant/RM_Vurmeloth/RM_Vurmeloth_a",
    "reserved": [
     "A",
@@ -1293,6 +1371,7 @@
    "labels": {
     "A": "IN GAME \u2014 Greentide"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Vurrak/RM_Vurrak",
    "reserved": [
     "A"
@@ -1331,6 +1410,9 @@
     "C": "render regen_gt_wollick_varb_v1",
     "D": "render regen_gt_wollick_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Wollick/RM_Wollick_a"
+   ],
    "res": "Things/Plant/RM_Wollick/RM_Wollick_a",
    "reserved": [
     "A",
@@ -1380,10 +1462,10 @@
    "graphic_of": {
     "A": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
     "B": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
-    "D": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
-    "E": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
-    "F": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
-    "G": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth"
+    "D": "_byname",
+    "E": "_byname",
+    "F": "_byname",
+    "G": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Greentide",
@@ -1393,6 +1475,7 @@
     "F": "render regen_gt_yammeth_flying_4_v1",
     "G": "render regen_gt_yammeth_flying_1_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
    "reserved": [
     "A",
@@ -1437,6 +1520,9 @@
     "C": "render regen_gt_yearningfruit_varb_v1",
     "D": "render regen_gt_yearningfruit_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_YearningFruit"
+   ],
    "res": "Things/Plant/RM_YearningFruit",
    "reserved": [
     "A",
@@ -1467,6 +1553,7 @@
     "A": "IN GAME \u2014 UtinniPatches",
     "B": "render phreg_RM_Zeev_v1"
    },
+   "pools": [],
    "res": "Things/Plant/AloeVera/AloeVeraA",
    "reserved": [
     "A",
@@ -1505,6 +1592,9 @@
     "C": "render regen_gt_zhorrel_varb_v1",
     "D": "render regen_gt_zhorrel_varc_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Zhorrel/RM_Zhorrel_a"
+   ],
    "res": "Things/Plant/RM_Zhorrel/RM_Zhorrel_a",
    "reserved": [
     "A",
@@ -1574,12 +1664,12 @@
    "graphic_of": {
     "A": "swanimals/Beldon/Beldon",
     "C": "swanimals/Beldon/BeldonC",
-    "D": "_flip:swanimals/Beldon/BeldonC_Flying_",
+    "D": "_flip:swanimals/Beldon/Beldon_Flying_",
     "E": "_flip:swanimals/Beldon/BeldonC_Flying_",
     "H": "swanimals/Beldon/Beldon",
     "J": "swanimals/Beldon/Beldon",
-    "L": "swanimals/Beldon/Beldon",
-    "M": "swanimals/Beldon/Beldon"
+    "L": "_byname",
+    "M": "_byname"
    },
    "labels": {
     "A": "history SWBestiary 2026-09-12",
@@ -1591,6 +1681,7 @@
     "L": "render regen_gt_beldon_flying_1_v1",
     "M": "render regen_gt_beldon_flying_2_v1"
    },
+   "pools": [],
    "res": "swanimals/Beldon/Beldon",
    "reserved": [
     "A",
@@ -1659,6 +1750,7 @@
     "A": "IN GAME \u2014 SWBestiary",
     "B": "render longshade_rsw_clodhopper_v1"
    },
+   "pools": [],
    "res": "swanimals/Clodhopper/Clodhopper",
    "reserved": [
     "A",
@@ -1734,7 +1826,7 @@
     "A": "swanimals/Convor/Convor",
     "B": "swanimals/Convor/Convor",
     "C": "swanimals/Convor/Convor_f",
-    "D": "_flip:swanimals/Convor/Convor_Flying_",
+    "D": "_flip:swanimals/Convor/Convor_f_Flying_",
     "E": "_flip:swanimals/Convor/Convor_Flying_",
     "F": "swanimals/Convor/Convor",
     "G": "swanimals/Convor/Convor"
@@ -1748,6 +1840,7 @@
     "F": "render regen_ls2_canon_convor_v2",
     "G": "render regen_ls2_canon_convor_v3"
    },
+   "pools": [],
    "res": "swanimals/Convor/Convor",
    "reserved": [
     "A",
@@ -1802,25 +1895,19 @@
      "north": "44f229222949dc126256abcc6f685e704cefb4d0d060ee599bd71920e60d3ef8",
      "south": "44802e3e140bae63a3424eddec749187e285f3caa0b89a6f124f73376f6a7a2f"
     },
-    "B": {
-     "east": "59600ba22d28a0d6dfd1a17bfa443a560368b3cffc4a96648b8102f8e20638f4",
-     "north": "5fbbc26d986460617ff6994ebb504f98c8b3b280ff6f3303fa47828697141998",
-     "south": "01701e6929f442a7af8bb4e475c2cf777cb83245541a4f640f179b3ed2fd208d"
-    },
     "D": {
      "east": "edb143a71cc1fb9d147c18280bdc939137beaf7a3173d514b7107c59d0ec42d5"
     }
    },
    "graphic_of": {
     "A": "swanimals/Dalgo/Dalgo",
-    "B": "swanimals/Dalgo/Dalgo",
     "D": "swanimals/Dalgo/Dalgo"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-12",
     "D": "render canonregen_rsw_dalgo_v1 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "swanimals/Dalgo/Dalgo",
    "reserved": [
     "A",
@@ -1869,6 +1956,7 @@
     "B": "IN GAME \u2014 SWBestiary",
     "C": "render enact_9dd81892_diggerpede_v1"
    },
+   "pools": [],
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Diggerpede/Diggerpede",
    "reserved": [
     "A",
@@ -1917,6 +2005,7 @@
     "E": "render regen_gt_canon_dragonsnake_v1",
     "G": "render regen_gt_canon_dragonsnake_v1_swim \u2014 failed canon check"
    },
+   "pools": [],
    "res": "swanimals/Dragonsnake/Dragonsnake",
    "reserved": [
     "A",
@@ -2015,6 +2104,14 @@
     "I": "IN GAME \u2014 SWBestiary",
     "J": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [
+    "swanimals/Falumpaset/Falumpaset",
+    "swanimals/Falumpaset/FalumpasetA",
+    "swanimals/Falumpaset/FalumpasetB",
+    "swanimals/Falumpaset/FalumpasetC",
+    "swanimals/Falumpaset/FalumpasetD",
+    "swanimals/Falumpaset/FalumpasetE"
+   ],
    "res": "swanimals/Falumpaset/Falumpaset",
    "reserved": [
     "A",
@@ -2078,6 +2175,7 @@
     "F": "IN GAME \u2014 SWBestiary",
     "G": "render regen_fw_canon_fambaa_v1"
    },
+   "pools": [],
    "res": "swanimals/Fambaa/Fambaa",
    "reserved": [
     "A",
@@ -2124,6 +2222,7 @@
    "labels": {
     "B": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/Gelagrub/Gelagrub",
    "reserved": [
     "A",
@@ -2171,6 +2270,10 @@
     "C": "render canonregen_rsw_gizka_v1 \u2014 failed canon check",
     "D": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [
+    "RimStarWars/SWBestiary/Gizka/GizkaW",
+    "swanimals/Gizka/Gizka"
+   ],
    "res": "swanimals/Gizka/Gizka",
    "reserved": [
     "A",
@@ -2288,21 +2391,21 @@
    },
    "graphic_of": {
     "F": "swanimals/Hawkbat/Hawkbat_j",
-    "G": "_flip:swanimals/Hawkbat/Hawkbat_Flying_",
+    "G": "_flip:swanimals/Hawkbat/Hawkbat_j_Flying_",
     "H": "_flip:swanimals/Hawkbat/Hawkbat_Flying_",
     "J": "swanimals/Hawkbat/Hawkbat",
-    "K": "swanimals/Hawkbat/Hawkbat",
-    "L": "swanimals/Hawkbat/Hawkbat",
-    "M": "swanimals/Hawkbat/Hawkbat",
-    "N": "swanimals/Hawkbat/Hawkbat",
-    "O": "swanimals/Hawkbat/Hawkbat",
-    "P": "swanimals/Hawkbat/Hawkbat",
+    "K": "_byname",
+    "L": "_byname",
+    "M": "_byname",
+    "N": "_byname",
+    "O": "_byname",
+    "P": "_byname",
     "Q": "swanimals/Hawkbat/Hawkbat",
-    "R": "swanimals/Hawkbat/Hawkbat",
-    "S": "swanimals/Hawkbat/Hawkbat",
-    "U": "swanimals/Hawkbat/Hawkbat",
-    "V": "swanimals/Hawkbat/Hawkbat",
-    "W": "swanimals/Hawkbat/Hawkbat"
+    "R": "_byname",
+    "S": "_byname",
+    "U": "_byname",
+    "V": "_byname",
+    "W": "_byname"
    },
    "labels": {
     "F": "donor original \u2014 mlie.starwarsanimalcollection",
@@ -2322,6 +2425,7 @@
     "V": "render hawkbat_fly_master_v1",
     "W": "render regen_gt_canon_hawkbat_juv_v2"
    },
+   "pools": [],
    "res": "swanimals/Hawkbat/Hawkbat",
    "reserved": [
     "A",
@@ -2437,6 +2541,12 @@
     "E": "IN GAME \u2014 SWBestiary",
     "F": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [
+    "swanimals/Hssiss/Hssiss",
+    "swanimals/Hssiss/HssissA",
+    "swanimals/Hssiss/HssissB",
+    "swanimals/Hssiss/HssissC"
+   ],
    "res": "swanimals/Hssiss/Hssiss",
    "reserved": [
     "A",
@@ -2461,21 +2571,6 @@
   },
   "RSW_Kinrath": {
    "columns": {
-    "A": {
-     "east": "9a89a904bff14d577e843ae5f2c77a26ce17e9cd73534917dccd8e13e40cab8e",
-     "north": "0acf8db94c0d1bbe99a7f65514195706be71a256798cc1f5cc679fcd29c56580",
-     "south": "478166e4e7ce77b5afb665777dd37ea4dd38236f7b4306f4064900baa5052334"
-    },
-    "B": {
-     "east": "66640308151aca479ad48034514a4e1fd10bb0b5c96d366634bf52dd5f80761a",
-     "north": "9b7f3788c7cb569f2068cc0ae6801ad1f6a4b5d762d435cd289443ded88340b0",
-     "south": "7b03cf3076b405e5b8beebf0f4156dd3d4b46f56f5c34461d281bb1699b3228b"
-    },
-    "C": {
-     "east": "1dc12bcf53aecba1cd77d46cac36270d743da787c416fc2938440534bed0eb3b",
-     "north": "3fc86e6157d8b9b6a55f27f07d51563292b84fce0812c692715f55f8075f5f1b",
-     "south": "ac70f1fdede063cc610c8a987dd84200e2f1d4eab7e4413d8c595944969b7479"
-    },
     "F": {
      "east": "7b329492a519dcae0883542e0619fd0ece1b5799807e50b04b111d962f2ecca5",
      "north": "8c84187972efc3016ac993d1ffe1bbf3202a14b63af89be64184060ee369e7e5",
@@ -2491,21 +2586,16 @@
     }
    },
    "graphic_of": {
-    "A": "swanimals/Kinrath/Kinrath",
-    "B": "swanimals/Kinrath/Kinrath",
-    "C": "swanimals/Kinrath/Kinrath",
     "F": "swanimals/Kinrath/Kinrath",
     "G": "swanimals/Kinrath/Kinrath",
     "H": "swanimals/Kinrath/Kinrath"
    },
    "labels": {
-    "A": "IN GAME \u2014 KinrathArtOverride",
-    "B": "render canon_kinrath_v1",
-    "C": "history KinrathArtOverride 2026-09-13",
     "F": "render regen_gt_canon_kinrath_v1",
     "G": "render kinrath_netcaster_v2",
     "H": "render kinrath_netcaster_v3"
    },
+   "pools": [],
    "res": "swanimals/Kinrath/Kinrath",
    "reserved": [
     "A",
@@ -2554,13 +2644,14 @@
    "graphic_of": {
     "B": "swanimals/Klorslug/Klorslug_j",
     "D": "swanimals/Klorslug/Klorslug",
-    "E": "swanimals/Klorslug/Klorslug"
+    "E": "_byname"
    },
    "labels": {
     "B": "IN GAME \u2014 SWBestiary",
     "D": "IN GAME \u2014 SWBestiary",
     "E": "render regen_gt_canon_klorslug_juv_v1 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "swanimals/Klorslug/Klorslug",
    "reserved": [
     "A",
@@ -2593,6 +2684,7 @@
    "labels": {
     "B": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [],
    "res": "swanimals/Lylek/Lylek",
    "reserved": [
     "A",
@@ -2638,6 +2730,7 @@
     "G": "IN GAME \u2014 SWBestiary",
     "I": "render regen_gt_canon_mott_f_v1"
    },
+   "pools": [],
    "res": "swanimals/Mott/Mott_f",
    "reserved": [
     "A",
@@ -2705,6 +2798,7 @@
     "D": "history NunaArtOverride 2026-09-17",
     "E": "render canonregen_rsw_nuna_v1"
    },
+   "pools": [],
    "res": "swanimals/Nuna/Nuna_f",
    "reserved": [
     "A",
@@ -2801,7 +2895,7 @@
      "east": "c2d27e0891359da883a7067c501b83635480e1ad5554653a6031c18972ffbae4",
      "south": "8f4154e4f8aa35b9789045b9bfa4a5afb8c17347295c4f115806540e2e61fc64"
     },
-    "V": {
+    "b": {
      "1_east": "ab34e6db0e984248d6b7925d8dcf3d507bc33e0ff1af0be97e6db4cec0565d09",
      "1_north": "5a528f5d96f21be3ba80890057523da3c72a316b1c7891c85169b2a7676fba85",
      "1_south": "7731466a138016177521e5dc2f572b0e3b585725e0abc6b2f8f94afca95e4b53",
@@ -2819,7 +2913,7 @@
    "graphic_of": {
     "A": "swanimals/PekoPeko/PekoPeko_f",
     "D": "swanimals/PekoPeko/PekoPeko_m",
-    "E": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_",
+    "E": "_flip:swanimals/PekoPeko/PekoPeko_m_Flying_",
     "F": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_",
     "K": "_byname",
     "L": "_byname",
@@ -2828,7 +2922,7 @@
     "O": "_byname",
     "S": "swanimals/PekoPeko/PekoPeko_m",
     "U": "_byname",
-    "V": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_"
+    "b": "_flip:swanimals/PekoPeko/PekoPeko_f_Flying_"
    },
    "labels": {
     "A": "history PekoPekoArtOverride 2026-09-20",
@@ -2842,8 +2936,9 @@
     "O": "render regen_gt_pekopeko_flying_m_1_v1",
     "S": "render conflict_pekopeko_m_v2 \u2014 failed canon check",
     "U": "render gapbs_RSW_PekoPeko_male_v1 \u2014 failed canon check",
-    "V": "IN GAME \u2014 PekoPeko_f_Flying_"
+    "b": "IN GAME \u2014 PekoPeko_f_Flying_"
    },
+   "pools": [],
    "res": "swanimals/PekoPeko/PekoPeko_f",
    "reserved": [
     "A",
@@ -2867,7 +2962,13 @@
     "S",
     "T",
     "U",
-    "V"
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
+    "a",
+    "b"
    ],
    "shownBase": [
     "083757292701b0e416d688e9cc5ec0a705bbeeb3ad17e4c2817080101ee3da66",
@@ -2942,6 +3043,9 @@
     "C": "history ShiroArtOverride 2026-09-13",
     "E": "render canonregen_rsw_shiro_v1 \u2014 failed canon check"
    },
+   "pools": [
+    "swanimals/Shiro/Shiro"
+   ],
    "res": "swanimals/Shiro/Shiro",
    "reserved": [
     "A",
@@ -3015,6 +3119,7 @@
     "F": "IN GAME \u2014 SWBestiary",
     "G": "render regen_gt_canon_shirotrap_j_v1"
    },
+   "pools": [],
    "res": "swanimals/ShiroTrap/ShiroTrap",
    "reserved": [
     "A",
@@ -3103,10 +3208,10 @@
     "C": "swanimals/Whisperbird/Whisperbird",
     "D": "swanimals/Whisperbird/Whisperbird",
     "E": "_flip:swanimals/Whisperbird/Whisperbird_Flying_",
-    "G": "swanimals/Whisperbird/Whisperbird",
-    "H": "swanimals/Whisperbird/Whisperbird",
-    "I": "swanimals/Whisperbird/Whisperbird",
-    "J": "swanimals/Whisperbird/Whisperbird",
+    "G": "_byname",
+    "H": "_byname",
+    "I": "_byname",
+    "J": "_byname",
     "K": "swanimals/Whisperbird/Whisperbird"
    },
    "labels": {
@@ -3121,6 +3226,7 @@
     "J": "render regen_ls2_canon_whisperbird_flying_4_v1",
     "K": "render regen_ls2_canon_whisperbird_v1"
    },
+   "pools": [],
    "res": "swanimals/Whisperbird/Whisperbird",
    "reserved": [
     "A",
@@ -3214,6 +3320,12 @@
     "F": "IN GAME \u2014 SWBestiary",
     "G": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [
+    "swanimals/Worrt/Worrt",
+    "swanimals/Worrt/WorrtA",
+    "swanimals/Worrt/WorrtB",
+    "swanimals/Worrt/WorrtC"
+   ],
    "res": "swanimals/Worrt/Worrt",
    "reserved": [
     "A",
@@ -3247,11 +3359,6 @@
      "north": "049d3244175b4f8a2cb55bd9193ac02c3993d6be75b7abcba687392bdd641ca8",
      "south": "f927ee1fc6be6aeb9174053bf82a5d5a4617773ad22591411a012854ee22630d"
     },
-    "B": {
-     "east": "3034bea4ac29a39ded7f9eeed9a8889409ebcd663ca26b432a57383411ad2533",
-     "north": "5bb78e31ab58f106311544a98de064834faffe2cbe47938fe2695a552aee4d59",
-     "south": "58fe0732b61fa39a1e17a81cb256e9e12dffe8d32b95acb228cae8b4f116259c"
-    },
     "C": {
      "east": "18b9a987ab8183d2b2cb432046736016e137b0f7414a5d1a73ec93ce473804b8",
      "north": "bda1ecd6c34bc0db1c31355485600dccc22619fa8498a03827722575bf4c0f9c",
@@ -3269,18 +3376,17 @@
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/Swarmling/Swarmling",
-    "B": "Things/Pawn/Animal/Swarmling/Swarmling",
     "C": "_byname",
     "D": "Things/Pawn/Animal/Swarmling/Swarmling",
     "E": "Things/Pawn/Animal/Swarmling/Swarmling"
    },
    "labels": {
     "A": "IN GAME \u2014 Vanilla Factions Expanded - Insectoids 2",
-    "B": "render rot_swarmling_v2",
     "C": "render regen_gt_saluksis_v2",
     "D": "render miasma_swarmling_green_v2",
     "E": "render miasma_swarmling_green_v3"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/Swarmling/Swarmling",
    "reserved": [
     "A",
@@ -3301,5 +3407,5 @@
   }
  },
  "sheetId": "greentide_sheet_2026-10-05",
- "snapshotId": "cb1a51d5a1764ed8"
+ "snapshotId": "b17b1382a570e35d"
 }

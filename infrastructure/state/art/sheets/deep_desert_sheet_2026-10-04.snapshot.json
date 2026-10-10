@@ -1,9 +1,9 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-10T10:11:40-0700",
+ "built": "2026-10-10T13:04:32-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Aurrok": {
    "columns": {
@@ -26,6 +26,7 @@
     "A": "IN GAME \u2014 Stillsand",
     "C": "render stillsand_s2_RM_Aurrok_v3"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok",
    "reserved": [
     "A",
@@ -60,6 +61,7 @@
     "A": "IN GAME \u2014 Stillsand",
     "B": "render stillsand_regen_RM_Drazzik_swimming_v1 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Drazzik/RM_Drazzik",
    "reserved": [
     "A",
@@ -94,6 +96,7 @@
     "B": "history Stillsand 2026-10-01",
     "C": "render RM_DuneCrawler_v3_nooutline"
    },
+   "pools": [],
    "res": "Things/Item/Resource/RM_DuneCrawler",
    "reserved": [
     "A",
@@ -127,6 +130,7 @@
     "A": "IN GAME \u2014 Stillsand",
     "C": "render stillsand_s2_RM_Duumma_surfaced"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Duumma/RM_Duumma",
    "reserved": [
     "A",
@@ -154,6 +158,7 @@
    "labels": {
     "A": "IN GAME \u2014 Stillsand"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Gaanok/RM_Gaanok",
    "reserved": [
     "A",
@@ -226,6 +231,9 @@
     "I": "render stillsand_s2_RM_Glasscrust_var8",
     "J": "render stillsand_s2_RM_Glasscrust_var9"
    },
+   "pools": [
+    "Things/Plant/RM_Glasscrust"
+   ],
    "res": "Things/Plant/RM_Glasscrust",
    "reserved": [
     "A",
@@ -310,6 +318,9 @@
     "K": "render stillsand_s2_RM_KneelOllim_var8",
     "L": "render stillsand_s2_RM_KneelOllim_var9"
    },
+   "pools": [
+    "Things/Plant/RM_KneelOllim"
+   ],
    "res": "Things/Plant/RM_KneelOllim",
    "reserved": [
     "A",
@@ -353,6 +364,9 @@
     "B": "IN GAME \u2014 random variant RM_LightPipeNubB (2 of 2) \u2014 Stillsand",
     "C": "render stillsand_s2_RM_LightPipeNub_v2"
    },
+   "pools": [
+    "Things/Plant/RM_LightPipeNub"
+   ],
    "res": "Things/Plant/RM_LightPipeNub",
    "reserved": [
     "A",
@@ -397,6 +411,7 @@
    "labels": {
     "A": "IN GAME \u2014 Stillsand"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Liikka/RM_Liikka",
    "reserved": [
     "A"
@@ -418,6 +433,7 @@
    "labels": {
     "A": "IN GAME \u2014 Stillsand"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Loomma/RM_Loomma",
    "reserved": [
     "A",
@@ -450,6 +466,9 @@
     "A": "IN GAME \u2014 random variant RM_OllimA (1 of 1) \u2014 Stillsand",
     "B": "render stillsand_regen_RSW_Ollim_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Ollim"
+   ],
    "res": "Things/Plant/RM_Ollim",
    "reserved": [
     "A",
@@ -486,6 +505,7 @@
     "C": "IN GAME \u2014 Stillsand",
     "E": "render stillsand_s2_RM_Oommok_v3"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Oommok/RM_Oommok",
    "reserved": [
     "A",
@@ -529,6 +549,7 @@
     "B": "IN GAME \u2014 Stillsand",
     "C": "render stillsand_regen_RM_Qorrax_swimming_v1 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Qorrax/RM_Qorrax",
    "reserved": [
     "A",
@@ -581,6 +602,7 @@
     "C": "IN GAME \u2014 Stillsand",
     "D": "render stillsand_s2_RM_ShadeMite_grey"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_ShadeMite/RM_ShadeMite",
    "reserved": [
     "A",
@@ -609,6 +631,7 @@
    "labels": {
     "A": "IN GAME \u2014 Stillsand"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Siidda/RM_Siidda",
    "reserved": [
     "A"
@@ -648,6 +671,7 @@
     "D": "IN GAME \u2014 Stillsand",
     "E": "render stillsand_s2_RM_Soorrak_v3"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
    "reserved": [
     "A",
@@ -694,6 +718,7 @@
     "D": "render longshade_rsw_ulgga_v1",
     "E": "render enact_6fe353e8_ulgga_v1"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Ulgga/RM_Ulgga",
    "reserved": [
     "A",
@@ -727,6 +752,9 @@
     "B": "render longshade_rsw_ultracactus_v1",
     "C": "render enact_6f47cc65_ultracactus_v1"
    },
+   "pools": [
+    "Things/Plant/RM_Ultracactus"
+   ],
    "res": "Things/Plant/RM_Ultracactus",
    "reserved": [
     "A",
@@ -750,6 +778,7 @@
    "labels": {
     "A": "IN GAME \u2014 Stillsand"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Veessa/RM_Veessa",
    "reserved": [
     "A"
@@ -775,6 +804,7 @@
    "labels": {
     "A": "IN GAME \u2014 Stillsand"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Vekka/RM_Vekka",
    "reserved": [
     "A"
@@ -814,6 +844,7 @@
     "B": "render stillsand_RM_Vosska_sandswim_v1",
     "C": "render RM_Vosska"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Vosska/RM_Vosska",
    "reserved": [
     "A",
@@ -900,6 +931,10 @@
     "J": "render canonregen_rsw_gizka_v1 \u2014 failed canon check",
     "K": "IN GAME \u2014 SWBestiary"
    },
+   "pools": [
+    "RimStarWars/SWBestiary/Gizka/GizkaW",
+    "swanimals/Gizka/Gizka"
+   ],
    "res": "swanimals/Gizka/Gizka",
    "reserved": [
     "A",
@@ -968,6 +1003,7 @@
     "C": "IN GAME \u2014 SWBestiary",
     "D": "render stillsand_s2_RSW_GraniteSlug_v3"
    },
+   "pools": [],
    "res": "swanimals/GraniteSlug/GraniteSlug",
    "reserved": [
     "A",
@@ -1020,6 +1056,7 @@
     "E": "render stillsand_regen_RSW_GreaterKraytDragon_v2",
     "G": "render stillsand_s2_RSW_GreaterKraytDragon_v3 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
    "reserved": [
     "A",
@@ -1073,6 +1110,7 @@
     "B": "render RM_Ikee",
     "C": "render stillsand_regen_RSW_Ikee_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee",
    "reserved": [
     "A",
@@ -1134,6 +1172,7 @@
     "G": "render stillsand_s2_RSW_KraytDragon_v3 \u2014 failed canon check",
     "H": "render stillsand_s3_RSW_KraytDragon_v4 \u2014 failed canon check"
    },
+   "pools": [],
    "res": "swanimals/KraytDragon/KraytDragon_f",
    "reserved": [
     "A",
@@ -1195,6 +1234,7 @@
     "K": "render stillsand_s2_RSW_Kreetle_v2",
     "L": "history KreetleArtOverride 2026-09-20"
    },
+   "pools": [],
    "res": "swanimals/Kreetle/Kreetle",
    "reserved": [
     "A",
@@ -1310,6 +1350,9 @@
     "J": "render stillsand_s2_RSW_Plant_Bloddle_var8",
     "K": "render stillsand_s2_RSW_Plant_Bloddle_var9"
    },
+   "pools": [
+    "Things/Plant/RSW_Plant_Bloddle"
+   ],
    "res": "Things/Plant/RSW_Plant_Bloddle",
    "reserved": [
     "A",
@@ -1364,6 +1407,7 @@
     "G": "IN GAME \u2014 SWBestiary",
     "H": "render regen_c17_scurrier_v1"
    },
+   "pools": [],
    "res": "swanimals/Scurrier/Scurrier_f",
    "reserved": [
     "A",
@@ -1445,6 +1489,7 @@
     "C": "IN GAME \u2014 SWBestiary",
     "E": "render stillsand_s2_RSW_WarWyrm_v3"
    },
+   "pools": [],
    "res": "swanimals/WarWyrm/WarWyrm",
    "reserved": [
     "A",

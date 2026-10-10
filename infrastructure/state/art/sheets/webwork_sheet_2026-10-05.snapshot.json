@@ -1,9 +1,9 @@
 {
  "biome": "RM_Webwork",
- "built": "2026-10-10T10:14:50-0700",
+ "built": "2026-10-10T12:56:10-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 67 mods \u2014 a test list): 551 active",
  "rows": {
   "Plant_TookeTrap_Wild": {
    "columns": {
@@ -42,6 +42,9 @@
     "E": "render webwork_tooketrap_redo_v4",
     "F": "IN GAME \u2014 mlie.starwarsanimalcollection"
    },
+   "pools": [
+    "swplants/TookeTrap"
+   ],
    "res": "swplants/TookeTrap",
    "reserved": [
     "A",
@@ -91,6 +94,7 @@
     "D": "render webwork_brennoth_real_v1b",
     "E": "render webwork_brennoth_real_v1c"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Brennoth/RM_Brennoth_a",
    "reserved": [
     "A",
@@ -122,6 +126,7 @@
     "A": "history Webwork 2026-09-25",
     "C": "IN GAME \u2014 Webwork"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Brimlock/RM_Brimlock_a",
    "reserved": [
     "A",
@@ -179,6 +184,7 @@
     "E": "render RM_Cravvet_v2",
     "F": "render regen_wb_cravvet_east_v4"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Cravvet/RM_Cravvet",
    "reserved": [
     "A",
@@ -221,6 +227,7 @@
     "B": "render webwork_plant_dulloth",
     "C": "render webwork_dulloth_redo_v2"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Dulloth/RM_Dulloth_a",
    "reserved": [
     "A",
@@ -251,6 +258,7 @@
     "A": "history Webwork 2026-09-25",
     "B": "IN GAME \u2014 Webwork"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Fellome/RM_Fellome_a",
    "reserved": [
     "A",
@@ -279,6 +287,7 @@
     "A": "history Webwork 2026-09-25",
     "B": "IN GAME \u2014 Webwork"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Grennick/RM_Grennick_a",
    "reserved": [
     "A",
@@ -312,6 +321,7 @@
     "B": "render webwork_plant_kessaroth",
     "C": "IN GAME \u2014 Webwork"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Kessaroth/RM_Kessaroth_a",
    "reserved": [
     "A",
@@ -357,6 +367,7 @@
     "D": "render webwork_kollavane_redo_v2b",
     "E": "render webwork_kollavane_redo_v2c"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Kollavane/RM_Kollavane_a",
    "reserved": [
     "A",
@@ -406,6 +417,7 @@
     "D": "render webwork_norrveth_redo_v2b",
     "E": "render webwork_norrveth_redo_v2c"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Norrveth/RM_Norrveth_a",
    "reserved": [
     "A",
@@ -444,6 +456,7 @@
     "A": "history Webwork 2026-09-26",
     "B": "IN GAME \u2014 Webwork"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Ollathrix/RM_Ollathrix",
    "reserved": [
     "A",
@@ -481,6 +494,7 @@
     "B": "render webwork_plant_pellareth",
     "C": "IN GAME \u2014 Webwork"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Pellareth/RM_Pellareth_a",
    "reserved": [
     "A",
@@ -522,6 +536,7 @@
     "B": "render RM_Quarrok",
     "C": "IN GAME \u2014 Webwork"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Quarrok/RM_Quarrok",
    "reserved": [
     "A",
@@ -573,6 +588,7 @@
     "D": "render webwork_ruddreth_real_v1b",
     "E": "render webwork_ruddreth_real_v1c"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Ruddreth/RM_Ruddreth_a",
    "reserved": [
     "A",
@@ -604,6 +620,7 @@
     "A": "history Webwork 2026-09-25",
     "B": "IN GAME \u2014 Webwork"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Sellith/RM_Sellith_a",
    "reserved": [
     "A",
@@ -643,6 +660,7 @@
     "B": "render RM_Sivvern",
     "C": "IN GAME \u2014 Webwork"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Sivvern/RM_Sivvern",
    "reserved": [
     "A",
@@ -702,6 +720,7 @@
     "D": "IN GAME \u2014 Webwork",
     "E": "render RM_Skennet_v2"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Skennet/RM_Skennet",
    "reserved": [
     "A",
@@ -758,6 +777,7 @@
     "D": "render webwork_sorrivel_real_v1b",
     "E": "render webwork_sorrivel_real_v1c"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Sorrivel/RM_Sorrivel_a",
    "reserved": [
     "A",
@@ -789,6 +809,7 @@
     "A": "history Webwork 2026-09-25",
     "B": "IN GAME \u2014 Webwork"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Tavrosk/RM_Tavrosk_a",
    "reserved": [
     "A",
@@ -817,6 +838,7 @@
     "A": "history Webwork 2026-09-25",
     "B": "IN GAME \u2014 Webwork"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Threllick/RM_Threllick_a",
    "reserved": [
     "A",
@@ -850,6 +872,7 @@
     "B": "render webwork_plant_varrisk",
     "C": "IN GAME \u2014 Webwork"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Varrisk/RM_Varrisk_a",
    "reserved": [
     "A",
@@ -891,6 +914,7 @@
     "B": "IN GAME \u2014 Webwork",
     "C": "render webwork_vennick_redo_v3"
    },
+   "pools": [],
    "res": "Things/Pawn/Animal/RM_Vennick/RM_Vennick",
    "reserved": [
     "A",
@@ -927,6 +951,7 @@
     "A": "history Webwork 2026-09-25",
     "B": "IN GAME \u2014 Webwork"
    },
+   "pools": [],
    "res": "Things/Plant/RM_Vessark/RM_Vessark_a",
    "reserved": [
     "A",
