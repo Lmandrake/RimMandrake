@@ -955,6 +955,15 @@ MODS = {
         "Growth multipliers": "Now",
         "Plants left alone": "Now",
     }, ()),
+    "ScavengerEvents": ("ScavengerEventsSettings.cs", "RimMandrake.Utinni.ScavengerEvents.csproj", {
+        "Wildlife migration": "NextPulse",
+        "Survival pod gift": "NextPulse",
+        "Tribal pod crash (rescue)": "NextPulse",
+        "Insect swarm": "NextPulse",
+        "Colonist stroke": "NextPulse",
+        "Ship break (cargo rain)": "NextPulse",
+        "Emergency food relief (Thanksgiving)": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
@@ -1034,10 +1043,11 @@ def run_mod(name, cs_name, pj_name, expected, extra):
     bad += bool(e)
     g0, g1 = groups[0], (groups[1] if len(groups) > 1 else groups[0])
     last0 = g0[2][-1]
+    g1lit = {'NextGameStart': 'Now'}.get(g1[1], g1[1])   # a [next game start] override is written as SettingScope.Now
     scope_swap = next(((t, s) for t, s in expected.items() if s not in ("Now", "NextGameStart")), None)
     plants = [
         ("a name dropped from its group array", lambda c, p: (c.replace(f', "{last0}" }}', ' }', 1) if f', "{last0}" }}' in c else c.replace(f'"{last0}" }}', ' }', 1), p), "no group"),
-        ("a setting in two groups", lambda c, p: (c.replace(f'"{g1[0]}", RimMandrake.Shared.SettingScope.{g1[1]}, new[] {{ ', f'"{g1[0]}", RimMandrake.Shared.SettingScope.{g1[1]}, new[] {{ "{g0[2][0]}", ', 1), p), "two groups"),
+        ("a setting in two groups", lambda c, p: (c.replace(f'"{g1[0]}", RimMandrake.Shared.SettingScope.{g1lit}, new[] {{ ', f'"{g1[0]}", RimMandrake.Shared.SettingScope.{g1lit}, new[] {{ "{g0[2][0]}", ', 1), p), "two groups"),
         ("group names a non-setting", lambda c, p: (c.replace(f'"{last0}" }}', '"notASettingAtAll" }', 1), p), "not a Scribed setting"),
         ("a Group's closing brace lost", lambda c, p: (c.replace('                list.GapLine();\n            }\n', '                list.GapLine();\n', 1), p), "swallows|unbalanced braces"),
         ("kit dropped from the csproj", lambda c, p: (c, p.replace("SettingsKitDrawer.cs", "SettingsKitDrawr.cs")), "SettingsKitDrawer.cs"),
