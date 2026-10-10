@@ -625,12 +625,13 @@ def composed_members():
         if e.get('wave', 99) > d.get('compose_wave', 0):
             continue
         p = os.path.join(REPO, 'src', 'RimMandrake', e['source'], 'About', 'About.xml')
-        try:
-            m = re.search(r'<packageId>\s*([^<\s]+)', open(p, encoding='utf-8-sig').read())
-        except OSError:
+        try:                                     # parsed: a regex takes the first <packageId>, often a dependency's
+            import xml.etree.ElementTree as ET
+            v = (ET.parse(p).getroot().findtext('packageId') or '').strip().lower()
+        except Exception:                        # noqa: BLE001
             continue
-        if m:
-            out.add(m.group(1).lower())
+        if v:
+            out.add(v)
     out.discard('mandrake.rm.biomes')
     return out
 
