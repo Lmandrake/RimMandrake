@@ -36,6 +36,8 @@ namespace RimMandrake.LuminousPigment
         private string lastWaterDrawn;
         // The culture is established once the first sow has taken (the seed unit is consumed then); a blackout clears it.
         private bool established;
+        /// <summary>GLOW_TANK_SEED_LIVE_SOW_1: an established culture glows on its own (Patch_CompRefuelable_GlowTankLit).</summary>
+        public bool Established => established;
 
         private static int TicksPerUnit => RM_GlowTankWater.TicksPerUnit(LuminousPigmentSettings.tankWaterUnitsPerDay);
 
@@ -131,8 +133,9 @@ namespace RimMandrake.LuminousPigment
             {
                 if (cell.GetPlant(Map) != null)
                 {
+                    established = true;           // set first: the RanOutOfFuel signal re-reads the glow
                     seedComp.ConsumeFuel(seedComp.Fuel);
-                    established = true;
+                    GetComp<CompGlower>()?.UpdateLit(Map);
                     return;
                 }
             }
@@ -163,6 +166,7 @@ namespace RimMandrake.LuminousPigment
             {
                 seedComp.ConsumeFuel(seedComp.Fuel);
             }
+            GetComp<CompGlower>()?.UpdateLit(Map);
             foreach (IntVec3 cell in this.OccupiedRect())
             {
                 Plant plant = cell.GetPlant(Map);

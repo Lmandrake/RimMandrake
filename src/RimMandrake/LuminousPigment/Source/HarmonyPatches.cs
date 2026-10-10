@@ -56,6 +56,18 @@ namespace RimMandrake.LuminousPigment
         }
     }
 
+    // GLOW_TANK_SEED_LIVE_SOW_1: CompRefuelable is an IThingGlower lit only while it holds fuel, so the tank went
+    // dark the moment its seed culture was spent on the first sow (measured live 2026-10-09: established=True,
+    // glowOnInt=False). An ESTABLISHED culture is the light source; the seed unit only gates the first sow.
+    [HarmonyPatch(typeof(RimWorld.CompRefuelable), nameof(RimWorld.CompRefuelable.ShouldBeLitNow))]
+    public static class Patch_CompRefuelable_GlowTankLit
+    {
+        public static void Postfix(RimWorld.CompRefuelable __instance, ref bool __result)
+        {
+            if (!__result && __instance.parent is Building_GlowTank tank && tank.Established) __result = true;
+        }
+    }
+
     // DESIGN_PASS LP-2 (GLOW_TANK_LIQUID_FEED_1): a dry GlowTank pauses its crop. Cheap reject first: only the
     // cultured crowncarpet def is looked at, and only when it stands in a GlowTank.
     [HarmonyPatch(typeof(RimWorld.Plant), nameof(RimWorld.Plant.GrowthRate), MethodType.Getter)]
