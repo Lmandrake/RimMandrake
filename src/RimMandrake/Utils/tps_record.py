@@ -388,7 +388,8 @@ def place(r, ep=None):
         if mono is not None and start is not None and start <= mono and end is not None:
             t0 = ep - (mono - start)
         else:
-            t0 = t - (_num(r.get("dReal")) or 0.0)
+            d = _num(r.get("dReal"))
+            t0 = t - (d if d is not None else CADENCE_SECONDS)    # first-build rows carry no dReal
     elif k == "incident":
         t0 = t - max(0.0, _num(r.get("gapS")) or 0.0)
     elif k == "resumed":
@@ -432,8 +433,6 @@ def _valid(r):
         for f in NONNEG_SAMPLE:
             if f in r and r[f] is not None and (_num(r[f]) is None or r[f] < 0):
                 return False
-        if _num(r.get("dReal")) is None:
-            return False
     if k == "incident":
         for f in ("gapS", "unexplainedS"):
             if f in r and (_num(r[f]) is None or r[f] < 0):
@@ -547,20 +546,65 @@ def read_heartbeats(directory=None):
 HB_FRESH_SECONDS = 15   # the watchdog thread rewrites hb_<session>.json every 5 s
 
 
-def observe(rows, hbs, game_pid, now=None):
-    """What an observer OUTSIDE the game process can see that the process cannot say about itself.
-    rows: read_record rows; hbs: read_heartbeats(); game_pid: the running RimWorldWin64 pid or None.
-    Returns findings [{finding, session, pid, hbAgeS, silentS, phase, level, detail}], newest session first:
-      silent                 heartbeat fresh, main thread silent > SILENCE_SECONDS (hung or very long frame)
-      frozen                 the game pid is running but hb_ stopped changing: the watchdog thread is stopped
-                             too (stop-the-world GC, native hang, debugger) - only visible from outside
-      exited-without-shutdown hb_ is old, that pid is not running, and the session wrote no `shutdown` line
-                             (crash, kill, power) - its record ends at the last heartbeat
-    A cleanly shut down session yields nothing."""
-    now = time.time() if now is None else now
-    ended = {r.get("session") for r in rows if r.get("kind") == "shutdown"}
-    reported = {(r.get("session"), r.get("finding")) for r in rows if r.get("kind") == "observer"}
+OBSERVER_UPDATE_SECONDS = 300   # an open finding is re-recorded at most this often while it lasts
+PROC_START_TOLERANCE_S = 2.0
+
+
+def _procs(procs):
+    """Normalise the process probe: None = UNAVAILABLE (never 'no process'); an int = one pid (old callers)."""
+    if procs is None:
+        return None
+    if isinstance(procs, int) and not isinstance(procs, bool):
+        return [{"pid": procs, "startUtc": None}]
     out = []
+    for p in procs:
+        if isinstance(p, dict) and isinstance(p.get("pid"), int):
+            out.append({"pid": p["pid"], "startUtc": p.get("startUtc")})
+    return out
+
+
+def _same_process(hb, procs):
+    """True / False / None (cannot tell). A pid only identifies a process together with its start time: a
+    REUSED pid with a different start is a different process (MUST 9)."""
+    pid = hb.get("pid")
+    cand = [p for p in procs if p["pid"] == pid]
+    if not cand:
+        return False
+    hs = _epoch(hb.get("procStartUtc")) if isinstance(hb.get("procStartUtc"), str) else None
+    for p in cand:
+        ps = _epoch(p.get("startUtc")) if isinstance(p.get("startUtc"), str) else None
+        if hs is None or ps is None:
+            return True                       # older heartbeat / probe without start time: pid match only
+        if abs(hs - ps) <= PROC_START_TOLERANCE_S:
+            return True
+    return False
+
+
+def observe(rows, hbs, procs, now=None):
+    """What an observer OUTSIDE the game process can see that the process cannot say about itself.
+    rows: read_record rows; hbs: read_heartbeats(); procs: every running RimWorldWin64 as
+    [{pid, startUtc}] (None = the probe failed: nothing is then declared exited).
+    Findings (one per heartbeat file, newest first):
+      silent                  heartbeat fresh, main thread silent > SILENCE_SECONDS (hung or very long frame)
+      hb-stale-alive          the SAME process (pid + start time) is running but its heartbeat stopped: a
+                              whole-process suspension, a stopped/starved watchdog thread, a blocked disk, a
+                              debugger or machine sleep - only visible from outside, cause not established
+      hb-stale-unknown        heartbeat stopped and the process probe was unavailable
+      exited-without-shutdown heartbeat stopped, that process is gone (or its pid now belongs to a newer
+                              process), and the session wrote no `shutdown` row
+    MUST 9: every finding carries `persist` (append it to observer.jsonl now) and `state`: open (first
+    sighting), update (still open, last written > OBSERVER_UPDATE_SECONDS ago), ended (a persisted
+    finding that no longer holds; returned for that session at INFO). exited-without-shutdown is terminal
+    and written once. A cleanly shut down session yields nothing."""
+    now = time.time() if now is None else now
+    procs = _procs(procs)
+    ended_sessions = {r.get("session") for r in rows if r.get("kind") in ("shutdown", "shutdown-complete")}
+    last = {}
+    for r in rows:
+        if r.get("kind") == "observer":
+            last[(r.get("session"), r.get("finding"))] = r
+    out = []
+    current = set()
     for hb in hbs:
         sess, pid = hb.get("session"), hb.get("pid")
         age = now - hb["_mtime"]
@@ -574,21 +618,48 @@ def observe(rows, hbs, game_pid, now=None):
         base = {"session": sess, "pid": pid, "hbAgeS": round(age, 1), "silentS": silent, "phase": hb.get("phase"),
                 "lastMainProgressUtc": main_utc, "lastWatchdogUtc": wd_utc, "hbSeq": hb.get("hbSeq"),
                 "hbErrors": hb.get("hbErrors")}
+        f = None
         if age <= HB_FRESH_SECONDS:
             if silent > SILENCE_SECONDS:
-                out.append(dict(base, finding="silent", level="WARN",
-                                detail="main thread silent %.0fs in phase %s (pid %s)" % (silent, hb.get("phase"), pid)))
-        elif game_pid is not None and pid == game_pid:
-            out.append(dict(base, finding="frozen", level="WARN",
-                            detail="pid %s is running but its heartbeat thread stopped %.0fs ago (phase %s): whole "
-                                   "process frozen (GC / native hang)" % (pid, age, hb.get("phase"))))
-        elif sess not in ended:
+                f = dict(base, finding="silent", level="WARN",
+                         detail="main thread silent %.0fs in phase %s (pid %s); last main progress %s"
+                                % (silent, hb.get("phase"), pid, main_utc))
+        elif procs is None:
+            if sess not in ended_sessions:
+                f = dict(base, finding="hb-stale-unknown", level="INFO",
+                         detail="heartbeat of session %s (pid %s) stopped %.0fs ago and the process probe was "
+                                "unavailable - cannot tell running from exited" % ((sess or "?")[:8], pid, age))
+        elif _same_process(hb, procs):
+            f = dict(base, finding="hb-stale-alive", level="WARN",
+                     detail="pid %s (same process) is running but its heartbeat stopped %.0fs ago (phase %s): "
+                            "whole-process suspension, stopped watchdog thread, blocked disk, debugger or sleep "
+                            "- cause not established; last main progress %s" % (pid, age, hb.get("phase"), main_utc))
+        elif sess not in ended_sessions:
             f = dict(base, finding="exited-without-shutdown", level="INFO",
-                     detail="session %s (pid %s) ended WITHOUT a shutdown line - crash or kill; its record ends at "
+                     detail="session %s (pid %s) ended WITHOUT a shutdown row - crash or kill; its record ends at "
                             "the main thread's last progress %s (watchdog last wrote %s), phase %s" % (
                                 (sess or "?")[:8], pid, main_utc, wd_utc, hb.get("phase")))
-            f["new"] = (sess, "exited-without-shutdown") not in reported
-            out.append(f)
+        if f is None:
+            continue
+        key = (sess, f["finding"])
+        current.add(key)
+        prev = last.get(key)
+        if prev is None or prev.get("state") == "ended":
+            f["state"], f["persist"] = "open", True
+        elif f["finding"] == "exited-without-shutdown":
+            f["state"], f["persist"] = "final", False
+        else:
+            prev_t = _epoch(prev.get("utc"))
+            f["state"] = "update"
+            f["persist"] = prev_t is None or now - prev_t >= OBSERVER_UPDATE_SECONDS
+        f["new"] = f["persist"]           # back-compat name
+        out.append(f)
+    for key, prev in last.items():
+        if key in current or prev.get("state") == "ended" or prev.get("finding") == "exited-without-shutdown":
+            continue
+        out.append({"session": key[0], "pid": prev.get("pid"), "finding": key[1], "state": "ended",
+                    "persist": True, "new": True, "level": "INFO",
+                    "detail": "%s on session %s no longer holds" % (key[1], (key[0] or "?")[:8])})
     return out
 
 
@@ -596,7 +667,7 @@ def record_observation(finding, directory=None):
     """Append one observer finding to observer.jsonl in the record dir (read back by read_record)."""
     d = directory or record_dir()
     row = {"kind": "observer", "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-           **{k: v for k, v in finding.items() if k not in ("level", "new")}}
+           **{k: v for k, v in finding.items() if k not in ("level", "new", "persist") and not k.startswith("_")}}
     with open(os.path.join(d, "observer.jsonl"), "a", encoding="utf-8") as fh:
         fh.write(json.dumps(row) + "\n")
 

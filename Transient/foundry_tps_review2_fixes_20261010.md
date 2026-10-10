@@ -186,6 +186,23 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
   `lastWatchdogUtc` separately (older heartbeats: main = watchdog − silentS, marked approx).
 - GREEN: `C# units: 11 run, 0 failed`; python PASS; companion builds.
 
+### MUST 9 — persist every observer finding type; process identity, not one pid
+- RED (fixture: a silent live session, a stale heartbeat on a live process with the same start time, a pid
+  REUSED by a newer process, then recovery, then a failed probe): `FAIL MUST 9: a 'silent' finding is
+  PERSISTED, not only displayed`; `... a stale heartbeat on a live process is persisted and labelled as what
+  it is, not 'whole process frozen'` (old: `exited-without-shutdown` — only one pid was considered);
+  `recovery of a persisted finding is persisted too: []`; `with the process probe unavailable, no session is
+  declared exited` (old declared it).
+- FIX: `observe(rows, hbs, procs)` takes EVERY running RimWorldWin64 as `{pid, startUtc}` (None = probe
+  failed); a pid matches only with the heartbeat's `procStartUtc` (±2 s). Findings: `silent`,
+  `hb-stale-alive` (renamed from `frozen`; the detail lists suspension / stopped watchdog / disk / debugger /
+  sleep, cause not established — review A22), `hb-stale-unknown` (probe failed), `exited-without-shutdown`.
+  Each carries `state` open/update/ended and `persist`: written when it opens, every 5 min while it lasts,
+  and when it ends; exited is terminal (once). belt_watchdog probes all game processes with start times
+  and appends every `persist` finding.
+- GREEN: python checks PASS; `selftest_belt_watchdog.py` 40/40 (one legacy fixture without `dReal` first
+  failed against the new strict `_valid`; `dReal` is optional again, a missing one is taken as one cadence).
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)

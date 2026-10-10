@@ -317,16 +317,16 @@ def reader_checks():
         hb("hb_ccc.json", "ccc", 33, 0.0, 600)      # stale, pid gone, no shutdown line
         hb("hb_ddd.json", "ddd", 44, 0.0, 600)      # stale, pid gone, shut down cleanly
         rows = [{"kind": "shutdown", "session": "ddd", "utc": "2026-10-09T22:00:00Z", "_t": 0}]
-        f = {x["session"]: x for x in T.observe(rows, T.read_heartbeats(d), 22)}
+        f = {x["session"]: x for x in T.observe(rows, T.read_heartbeats(d), [{"pid": 22, "startUtc": None}])}
         check(f.get("aaa", {}).get("finding") == "silent" and f["aaa"]["level"] == "WARN", "fresh hb + silence -> silent WARN: %r" % f.get("aaa"))
-        check(f.get("bbb", {}).get("finding") == "frozen", "running pid with a dead heartbeat -> frozen: %r" % f.get("bbb"))
-        check(f.get("ccc", {}).get("finding") == "exited-without-shutdown" and f["ccc"]["new"],
+        check(f.get("bbb", {}).get("finding") == "hb-stale-alive", "running pid with a dead heartbeat -> hb-stale-alive: %r" % f.get("bbb"))
+        check(f.get("ccc", {}).get("finding") == "exited-without-shutdown" and f["ccc"].get("persist"),
               "pid gone without shutdown -> exited-without-shutdown: %r" % f.get("ccc"))
         check("ddd" not in f, "a clean shutdown yields no finding")
         T.record_observation(f["ccc"], d)
         rec = T.read_record(d)
-        again = {x["session"]: x for x in T.observe(rec["rows"], T.read_heartbeats(d), 22)}
-        check(not again["ccc"]["new"] and any(r.get("kind") == "observer" for r in rec["rows"]),
+        again = {x["session"]: x for x in T.observe(rec["rows"], T.read_heartbeats(d), [{"pid": 22, "startUtc": None}])}
+        check(not again.get("ccc", {}).get("persist", True) and any(r.get("kind") == "observer" for r in rec["rows"]),
               "an observer finding is written once and read back into the record")
 
     # MUST 3: placement uses the window's explicit boundaries, not the enqueue time
@@ -354,6 +354,44 @@ def reader_checks():
         check(f and f[0].get("lastMainProgressUtc") == "2026-10-10T15:00:00.000Z"
               and f[0].get("lastWatchdogUtc") == "2026-10-10T15:00:30.000Z",
               "MUST 10: observer separates last main-thread progress from the last watchdog write: %r" % f)
+
+    # MUST 9: every finding type persists (open / update / ended), and process IDENTITY (pid + start) decides
+    with tempfile.TemporaryDirectory() as d:
+        def hb9(name, sess, pid, silent, age, start):
+            p = os.path.join(d, name)
+            with open(p, "w") as fh:
+                json.dump({"pid": pid, "session": sess, "utc": "2026-10-10T15:00:00.000Z", "silentS": silent,
+                           "phase": "tl:Normal", "procStartUtc": start}, fh)
+            os.utime(p, (time.time() - age, time.time() - age))
+        hb9("hb_a1.json", "a1", 11, 42.0, 2, "2026-10-10T14:00:00.000Z")     # live, main thread silent
+        hb9("hb_b2.json", "b2", 22, 0.0, 120, "2026-10-10T14:00:00.000Z")    # pid 22 alive, same start: stale hb
+        hb9("hb_c3.json", "c3", 33, 0.0, 600, "2026-10-09T10:00:00.000Z")    # pid 33 REUSED by a newer process
+        procs = [{"pid": 11, "startUtc": "2026-10-10T14:00:00.000Z"}, {"pid": 22, "startUtc": "2026-10-10T14:00:00.000Z"},
+                 {"pid": 33, "startUtc": "2026-10-10T16:00:00.000Z"}]
+        f = {x["session"]: x for x in T.observe([], T.read_heartbeats(d), procs)}
+        check(f.get("a1", {}).get("finding") == "silent" and f["a1"].get("persist"),
+              "MUST 9: a `silent` finding is PERSISTED, not only displayed: %r" % f.get("a1"))
+        check(f.get("b2", {}).get("finding") == "hb-stale-alive" and f["b2"].get("persist")
+              and "frozen" not in f["b2"]["detail"],
+              "MUST 9/A22: a stale heartbeat on a live process is persisted and labelled as what it is, not "
+              "'whole process frozen': %r" % f.get("b2"))
+        check(f.get("c3", {}).get("finding") == "exited-without-shutdown",
+              "MUST 9: a pid reused by a NEWER process is not the old session still running: %r" % f.get("c3"))
+        for x in f.values():
+            if x.get("persist"):
+                T.record_observation(x, d)
+        rec = T.read_record(d)
+        again = {x["session"]: x for x in T.observe(rec["rows"], T.read_heartbeats(d), procs)}
+        check(not again["a1"].get("persist") and not again["c3"].get("persist"),
+              "MUST 9: an open finding is not re-written every run (a1 %r, c3 %r)"
+              % (again["a1"].get("persist"), again["c3"].get("persist")))
+        hb9("hb_a1.json", "a1", 11, 0.0, 2, "2026-10-10T14:00:00.000Z")      # a1 recovered
+        ended = [x for x in T.observe(rec["rows"], T.read_heartbeats(d), procs) if x["session"] == "a1"]
+        check(ended and ended[0].get("state") == "ended" and ended[0].get("persist"),
+              "MUST 9: recovery of a persisted finding is persisted too: %r" % ended)
+        unk = {x["session"]: x for x in T.observe([], T.read_heartbeats(d), None)}
+        check(unk.get("c3", {}).get("finding") != "exited-without-shutdown",
+              "MUST 9: with the process probe unavailable, no session is declared exited: %r" % unk.get("c3"))
 
     # sustained needs CONTIGUOUS fresh windows
     gap_rows = [sample(t15 + 5 * i, i, ratio=0.3) for i in range(3)] + \
