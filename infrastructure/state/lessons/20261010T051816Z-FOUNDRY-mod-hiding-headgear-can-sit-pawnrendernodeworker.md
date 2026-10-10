@@ -1,0 +1,1 @@
+A mod hiding headgear can sit on PawnRenderNodeWorker_Apparel_Head.HeadgearVisible, not CanDrawNow: ReGrowthCore hides every hat whenever curJob.swimming. Check harmony_patches on BOTH methods before blaming patch order. (bridge6 2026-10-09)
