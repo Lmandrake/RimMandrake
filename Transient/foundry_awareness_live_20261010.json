@@ -1,0 +1,2453 @@
+{
+ "steps": {
+  "status0": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "installDetail": "IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok",
+   "startedBy": "bridge-registration",
+   "installedUtc": "2026-10-10T21:00:01.5371776Z",
+   "settings": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\tps\\awareness_settings.json",
+   "settingsNote": "ok",
+   "epoch": 1,
+   "seq": 20,
+   "installSeq": 1,
+   "retained": {
+    "generationTags": 0,
+    "spawns": 19,
+    "incidents": 0,
+    "seen": 19
+   },
+   "evictions": {
+    "generationTags": 0,
+    "seen": 0,
+    "spawns": 0,
+    "incidents": 0
+   },
+   "untaggedGenerations": 0,
+   "loadRespawns": 0,
+   "lateRowsDropped": 0,
+   "scopesTruncated": 0,
+   "scopesUnbalanced": 0,
+   "faults": 0,
+   "switches": {
+    "aware.incident-journal": true,
+    "aware.origin-context": true,
+    "aware.origin-generation": true,
+    "aware.origin-spawn": true,
+    "aware.disk-rows": true,
+    "aware.wild-spawner-block": true,
+    "aware.thing-explain": true
+   },
+   "meters": {
+    "aware.incident-journal": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-context": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-generation": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-spawn": {
+     "calls": 19,
+     "meanUs": 153.916,
+     "maxUs": 2494.2,
+     "totalMs": 2.924,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.disk-rows": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.wild-spawner-block": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.thing-explain": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    }
+   },
+   "disk": {
+    "armed": false,
+    "rows": 0,
+    "dropped": 0,
+    "writerRunning": true
+   },
+   "wildSpawner": {
+    "blocked": false,
+    "skippedTicks": 0,
+    "patch": "not patched"
+   },
+   "generationHook": "not installed (lazy: installs on the first jawa/awareness arm)",
+   "options": {
+    "install.generation-early": false
+   },
+   "foreignThreadCalls": 19,
+   "ticksGame": 5738,
+   "operation": {
+    "OperationId": "op_1f2ea2ca183840d890ec925c3efa920c",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 34
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5738
+   }
+  },
+  "arm": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "installDetail": "IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok",
+   "startedBy": "bridge-registration",
+   "installedUtc": "2026-10-10T21:00:01.5371776Z",
+   "settings": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\tps\\awareness_settings.json",
+   "settingsNote": "ok",
+   "epoch": 1,
+   "seq": 20,
+   "installSeq": 1,
+   "retained": {
+    "generationTags": 0,
+    "spawns": 19,
+    "incidents": 0,
+    "seen": 19
+   },
+   "evictions": {
+    "generationTags": 0,
+    "seen": 0,
+    "spawns": 0,
+    "incidents": 0
+   },
+   "untaggedGenerations": 0,
+   "loadRespawns": 0,
+   "lateRowsDropped": 0,
+   "scopesTruncated": 0,
+   "scopesUnbalanced": 0,
+   "faults": 0,
+   "switches": {
+    "aware.incident-journal": true,
+    "aware.origin-context": true,
+    "aware.origin-generation": true,
+    "aware.origin-spawn": true,
+    "aware.disk-rows": true,
+    "aware.wild-spawner-block": true,
+    "aware.thing-explain": true
+   },
+   "meters": {
+    "aware.incident-journal": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-context": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-generation": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-spawn": {
+     "calls": 19,
+     "meanUs": 153.916,
+     "maxUs": 2494.2,
+     "totalMs": 2.924,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.disk-rows": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.wild-spawner-block": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.thing-explain": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    }
+   },
+   "disk": {
+    "armed": true,
+    "until": "2026-10-10T22:16:19.3918828Z",
+    "rows": 0,
+    "dropped": 0,
+    "writerRunning": true
+   },
+   "wildSpawner": {
+    "blocked": false,
+    "skippedTicks": 0,
+    "patch": "not patched"
+   },
+   "generationHook": "installed lazily by jawa/awareness arm at 2026-10-10T21:16:19.4147773Z",
+   "options": {
+    "install.generation-early": false
+   },
+   "foreignThreadCalls": 19,
+   "ticksGame": 5738,
+   "operation": {
+    "OperationId": "op_7d6c30872ad24a4689c4f18edaa0d107",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 38
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5738
+   }
+  },
+  "status1": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "installDetail": "IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok",
+   "startedBy": "bridge-registration",
+   "installedUtc": "2026-10-10T21:00:01.5371776Z",
+   "settings": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\tps\\awareness_settings.json",
+   "settingsNote": "ok",
+   "epoch": 1,
+   "seq": 20,
+   "installSeq": 1,
+   "retained": {
+    "generationTags": 0,
+    "spawns": 19,
+    "incidents": 0,
+    "seen": 19
+   },
+   "evictions": {
+    "generationTags": 0,
+    "seen": 0,
+    "spawns": 0,
+    "incidents": 0
+   },
+   "untaggedGenerations": 0,
+   "loadRespawns": 0,
+   "lateRowsDropped": 0,
+   "scopesTruncated": 0,
+   "scopesUnbalanced": 0,
+   "faults": 0,
+   "switches": {
+    "aware.incident-journal": true,
+    "aware.origin-context": true,
+    "aware.origin-generation": true,
+    "aware.origin-spawn": true,
+    "aware.disk-rows": true,
+    "aware.wild-spawner-block": true,
+    "aware.thing-explain": true
+   },
+   "meters": {
+    "aware.incident-journal": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-context": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-generation": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-spawn": {
+     "calls": 19,
+     "meanUs": 153.916,
+     "maxUs": 2494.2,
+     "totalMs": 2.924,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.disk-rows": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.wild-spawner-block": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.thing-explain": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    }
+   },
+   "disk": {
+    "armed": true,
+    "until": "2026-10-10T22:16:19.3918828Z",
+    "rows": 0,
+    "dropped": 0,
+    "writerRunning": true
+   },
+   "wildSpawner": {
+    "blocked": false,
+    "skippedTicks": 0,
+    "patch": "not patched"
+   },
+   "generationHook": "installed lazily by jawa/awareness arm at 2026-10-10T21:16:19.4147773Z",
+   "options": {
+    "install.generation-early": false
+   },
+   "foreignThreadCalls": 19,
+   "ticksGame": 5738,
+   "operation": {
+    "OperationId": "op_1ba57a7d8fad4e42b62aecc327828be4",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 16
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5738
+   }
+  },
+  "killHostiles": {
+   "acted": 0,
+   "verified": true,
+   "residue": []
+  },
+  "anchor": [
+   50,
+   50
+  ],
+  "journal0": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "switchOn": true,
+   "epoch": 1,
+   "overwritten": 0,
+   "oldestRetainedSeq": -1,
+   "truncatedByLimit": 0,
+   "rows": [],
+   "coverage": "TryExecute calls only; an incident body a mod runs without TryExecute is not seen, and deferred deliveries (drop pods, shuttles) land after the call",
+   "ticksGame": 5738,
+   "operation": {
+    "OperationId": "op_453ef8349f854bcdb46e6353b4728e06",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 24
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5738
+   }
+  },
+  "spawn_Tribal_Warrior": {
+   "success": true,
+   "message": "Spawned 1/1 Tribal_Warrior in faction Pirate.",
+   "spawnedCount": 1,
+   "failedCount": 0,
+   "substitutedCount": 0,
+   "pawns": [
+    {
+     "ok": true,
+     "id": "Human63234",
+     "name": "Vix",
+     "kindRequested": "Tribal_Warrior",
+     "kindActual": "Tribal_Warrior",
+     "kindSubstituted": false,
+     "faction": "Pirate",
+     "hostile": true,
+     "x": 54,
+     "z": 54,
+     "spawned": true,
+     "xenotype": "RSW_RimMandrakeZygerrian",
+     "xenotypeApplied": true
+    }
+   ],
+   "ticksGame": 5738,
+   "operation": {
+    "OperationId": "op_f2986bdb1c6049eab627cf37a497a1f8",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 186
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5738
+   }
+  },
+  "spawn_Muffalo": {
+   "success": true,
+   "message": "Spawned 1/1 Muffalo in faction (none).",
+   "spawnedCount": 1,
+   "failedCount": 0,
+   "substitutedCount": 0,
+   "pawns": [
+    {
+     "ok": true,
+     "id": "Muffalo63241",
+     "name": "Muffalo",
+     "kindRequested": "Muffalo",
+     "kindActual": "Muffalo",
+     "kindSubstituted": false,
+     "hostile": false,
+     "x": 57,
+     "z": 54,
+     "spawned": true,
+     "xenotypeApplied": true
+    }
+   ],
+   "ticksGame": 5738,
+   "operation": {
+    "OperationId": "op_1691770053a742c1b3c0a31214e98560",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 29
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5738
+   }
+  },
+  "spawn_Villager": {
+   "success": true,
+   "message": "Spawned 1/1 Villager in faction PlayerColony.",
+   "spawnedCount": 1,
+   "failedCount": 0,
+   "substitutedCount": 0,
+   "pawns": [
+    {
+     "ok": true,
+     "id": "Human63242",
+     "name": "Hairy",
+     "kindRequested": "Villager",
+     "kindActual": "Villager",
+     "kindSubstituted": false,
+     "faction": "PlayerColony",
+     "hostile": false,
+     "x": 60,
+     "z": 54,
+     "spawned": true,
+     "xenotype": "Baseliner",
+     "xenotypeApplied": true
+    }
+   ],
+   "ticksGame": 5738,
+   "operation": {
+    "OperationId": "op_e1865921d1994afab5f18f583f0c995f",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 393
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5738
+   }
+  },
+  "receipts": [
+   {
+    "actionId": "spawn0",
+    "tool": "jawa/spawn_pawn",
+    "requestedKind": "Tribal_Warrior",
+    "returnedIds": [
+     "Human63234"
+    ],
+    "toolKinds": [
+     "Tribal_Warrior"
+    ],
+    "readBackKinds": [
+     "Tribal_Warrior"
+    ],
+    "missingOnReadBack": [],
+    "mismatch": false,
+    "toolSuccess": true
+   },
+   {
+    "actionId": "spawn1",
+    "tool": "jawa/spawn_pawn",
+    "requestedKind": "Muffalo",
+    "returnedIds": [
+     "Muffalo63241"
+    ],
+    "toolKinds": [
+     "Muffalo"
+    ],
+    "readBackKinds": [
+     "Muffalo"
+    ],
+    "missingOnReadBack": [],
+    "mismatch": false,
+    "toolSuccess": true
+   },
+   {
+    "actionId": "spawn2",
+    "tool": "jawa/spawn_pawn",
+    "requestedKind": "Villager",
+    "returnedIds": [
+     "Human63242"
+    ],
+    "toolKinds": [
+     "Villager"
+    ],
+    "readBackKinds": [
+     "Villager"
+    ],
+    "missingOnReadBack": [],
+    "mismatch": false,
+    "toolSuccess": true
+   }
+  ],
+  "origin_spawned": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "startedBy": "bridge-registration",
+   "epoch": 1,
+   "notFound": [],
+   "pawns": [
+    {
+     "id": "Human63234",
+     "kind": "Tribal_Warrior",
+     "generation": {
+      "seq": 21,
+      "tick": 5738,
+      "chain": "bridge:jawa/spawn_pawn#15",
+      "cause": "bridge:jawa/spawn_pawn#15",
+      "reuse": "new",
+      "reobserved": 0,
+      "thread": "main"
+     },
+     "spawn": {
+      "seq": 22,
+      "tick": 5738,
+      "map": 0,
+      "classification": "firstObservedSpawn",
+      "spawnChain": "bridge:jawa/spawn_pawn#15",
+      "ranOriginal": true
+     },
+     "ourInvolvement": "confirmedIndirectAction",
+     "statement": "generated during bridge:jawa/spawn_pawn#15; first observed spawn in this recording epoch; spawned during bridge:jawa/spawn_pawn#15"
+    },
+    {
+     "id": "Muffalo63241",
+     "kind": "Muffalo",
+     "generation": {
+      "seq": 23,
+      "tick": 5738,
+      "chain": "bridge:jawa/spawn_pawn#16",
+      "cause": "bridge:jawa/spawn_pawn#16",
+      "reuse": "new",
+      "reobserved": 0,
+      "thread": "main"
+     },
+     "spawn": {
+      "seq": 24,
+      "tick": 5738,
+      "map": 0,
+      "classification": "firstObservedSpawn",
+      "spawnChain": "bridge:jawa/spawn_pawn#16",
+      "ranOriginal": true
+     },
+     "ourInvolvement": "confirmedIndirectAction",
+     "statement": "generated during bridge:jawa/spawn_pawn#16; first observed spawn in this recording epoch; spawned during bridge:jawa/spawn_pawn#16"
+    },
+    {
+     "id": "Human63242",
+     "kind": "Villager",
+     "generation": {
+      "seq": 25,
+      "tick": 5738,
+      "chain": "bridge:jawa/spawn_pawn#17",
+      "cause": "bridge:jawa/spawn_pawn#17",
+      "reuse": "new",
+      "reobserved": 0,
+      "thread": "main"
+     },
+     "spawn": {
+      "seq": 26,
+      "tick": 5738,
+      "map": 0,
+      "classification": "firstObservedSpawn",
+      "spawnChain": "bridge:jawa/spawn_pawn#17",
+      "ranOriginal": true
+     },
+     "ourInvolvement": "confirmedIndirectAction",
+     "statement": "generated during bridge:jawa/spawn_pawn#17; first observed spawn in this recording epoch; spawned during bridge:jawa/spawn_pawn#17"
+    }
+   ],
+   "health": {
+    "untaggedGenerations": 0,
+    "tagEvictions": 0,
+    "seenEvictions": 0,
+    "spawnOverwritten": 0,
+    "faults": 0
+   },
+   "limits": "provenance does not survive a save/load (a load opens a new epoch); a pawn present before install reads 'origin unknown'; ourInvolvement confirmedIndirectAction means generated DURING one of our bridge operations, never 'made on purpose by us'",
+   "ticksGame": 5738,
+   "operation": {
+    "OperationId": "op_f5f540758a5c4bd69bec52b7e018d099",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 32
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5738
+   }
+  },
+  "fire_raid": {
+   "success": false,
+   "message": "\ud83d\udd34 A DIALOG SWALLOWED THIS FIRING. 1 window(s) opened during the call (Verse.Dialog_NodeTree) and the incident produced nothing. A Harmony prefix - Leo.RaidProtectionFee is the known one - can replace the incident with a modal and still set __result = true, so 'executed' is NOT evidence the incident happened. Nothing on the bridge clicks a button, so the modal will never be answered and it will block later calls. Clear it with jawa/window_list_close {action:'close', typeName:'<the type above>', closeAll:true}, then either disable the intercepting mod or fire at a faction it exempts.",
+   "incident": "RaidEnemy",
+   "category": "ThreatBig",
+   "canFireNow": false,
+   "forced": false,
+   "fired": true,
+   "windowsOpened": [
+    {
+     "type": "Verse.Dialog_NodeTree",
+     "forcePause": true,
+     "isDebug": false,
+     "id": 3
+    }
+   ],
+   "blockedByDialog": true,
+   "points": 195.000015,
+   "faction": "OuterRim_BinaryStarRaiders",
+   "ticksGame": 5738,
+   "operation": {
+    "OperationId": "op_3332d03293e045369d105abd4a60b7f0",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 113
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5738
+   }
+  },
+  "raid_new_pawns": [],
+  "journal_raid": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "switchOn": true,
+   "epoch": 1,
+   "overwritten": 0,
+   "oldestRetainedSeq": 27,
+   "truncatedByLimit": 0,
+   "rows": [
+    {
+     "aseq": 27,
+     "epoch": 1,
+     "tick": 5738,
+     "def": "RaidEnemy",
+     "target": "map:0",
+     "forced": false,
+     "points": 195.000015,
+     "called": true,
+     "outerBodyRan": "true",
+     "returned": "true",
+     "workerEntered": "unknown",
+     "workerEnteredWhy": "not instrumented",
+     "pawnsGeneratedDuring": 0,
+     "pawnsSpawnedDuring": 0,
+     "chain": "bridge:jawa/fire_incident#18 > incident:RaidEnemy#19",
+     "statement": "incident RaidEnemy was called; outer body ran: true; returned true; worker entered: unknown"
+    }
+   ],
+   "coverage": "TryExecute calls only; an incident body a mod runs without TryExecute is not seen, and deferred deliveries (drop pods, shuttles) land after the call",
+   "ticksGame": 5833,
+   "operation": {
+    "OperationId": "op_74e6efac3185428bad996db72f230ea7",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 23
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5833
+   }
+  },
+  "fire_infestation": {
+   "success": true,
+   "message": "Infestation fired with 200 points.",
+   "incident": "Infestation",
+   "category": "ThreatBig",
+   "canFireNow": false,
+   "forced": false,
+   "fired": true,
+   "windowsOpened": [],
+   "blockedByDialog": false,
+   "points": 200.0,
+   "ticksGame": 5833,
+   "operation": {
+    "OperationId": "op_44cb3525602a4c77a7c31561a5236ac9",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 53
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5833
+   }
+  },
+  "journal_infestation": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "switchOn": true,
+   "epoch": 1,
+   "overwritten": 0,
+   "oldestRetainedSeq": 27,
+   "truncatedByLimit": 0,
+   "rows": [
+    {
+     "aseq": 28,
+     "epoch": 1,
+     "tick": 5833,
+     "def": "Infestation",
+     "target": "map:0",
+     "forced": false,
+     "points": 200.0,
+     "called": true,
+     "outerBodyRan": "true",
+     "returned": "true",
+     "workerEntered": "unknown",
+     "workerEnteredWhy": "not instrumented",
+     "pawnsGeneratedDuring": 0,
+     "pawnsSpawnedDuring": 0,
+     "chain": "bridge:jawa/fire_incident#20 > incident:Infestation#21",
+     "statement": "incident Infestation was called; outer body ran: true; returned true; worker entered: unknown"
+    }
+   ],
+   "coverage": "TryExecute calls only; an incident body a mod runs without TryExecute is not seen, and deferred deliveries (drop pods, shuttles) land after the call",
+   "ticksGame": 5833,
+   "operation": {
+    "OperationId": "op_3268fb249f75492ca642e5f454b41f1c",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 20
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5833
+   }
+  },
+  "awareness_status_end": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "installDetail": "IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok",
+   "startedBy": "bridge-registration",
+   "installedUtc": "2026-10-10T21:00:01.5371776Z",
+   "settings": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\tps\\awareness_settings.json",
+   "settingsNote": "ok",
+   "epoch": 1,
+   "seq": 28,
+   "installSeq": 1,
+   "retained": {
+    "generationTags": 3,
+    "spawns": 22,
+    "incidents": 2,
+    "seen": 22
+   },
+   "evictions": {
+    "generationTags": 0,
+    "seen": 0,
+    "spawns": 0,
+    "incidents": 0
+   },
+   "untaggedGenerations": 0,
+   "loadRespawns": 0,
+   "lateRowsDropped": 0,
+   "scopesTruncated": 0,
+   "scopesUnbalanced": 0,
+   "faults": 0,
+   "switches": {
+    "aware.incident-journal": true,
+    "aware.origin-context": true,
+    "aware.origin-generation": true,
+    "aware.origin-spawn": true,
+    "aware.disk-rows": true,
+    "aware.wild-spawner-block": true,
+    "aware.thing-explain": true
+   },
+   "meters": {
+    "aware.incident-journal": {
+     "calls": 2,
+     "meanUs": 43195.25,
+     "maxUs": 49080.9,
+     "totalMs": 86.39,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-context": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-generation": {
+     "calls": 3,
+     "meanUs": 69192.233,
+     "maxUs": 139611.2,
+     "totalMs": 207.577,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-spawn": {
+     "calls": 22,
+     "meanUs": 139.668,
+     "maxUs": 2494.2,
+     "totalMs": 3.073,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.disk-rows": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.wild-spawner-block": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.thing-explain": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    }
+   },
+   "disk": {
+    "armed": true,
+    "until": "2026-10-10T22:16:19.3918828Z",
+    "rows": 5,
+    "dropped": 0,
+    "writerRunning": true
+   },
+   "wildSpawner": {
+    "blocked": false,
+    "skippedTicks": 0,
+    "patch": "not patched"
+   },
+   "generationHook": "installed lazily by jawa/awareness arm at 2026-10-10T21:16:19.4147773Z",
+   "options": {
+    "install.generation-early": false
+   },
+   "foreignThreadCalls": 19,
+   "ticksGame": 5833,
+   "operation": {
+    "OperationId": "op_84031f7a77ba40dfbe7e0d3e1e29308e",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 16
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5833
+   }
+  },
+  "killHostiles_end": {
+   "acted": 1,
+   "verified": true,
+   "residue": []
+  },
+  "fire_raid_mech": {
+   "success": true,
+   "message": "RaidEnemy fired with 176 points.",
+   "incident": "RaidEnemy",
+   "category": "ThreatBig",
+   "canFireNow": false,
+   "forced": false,
+   "fired": true,
+   "windowsOpened": [],
+   "blockedByDialog": false,
+   "points": 175.500015,
+   "faction": "Mechanoid",
+   "ticksGame": 5833,
+   "operation": {
+    "OperationId": "op_ce965803e3e0401c885600c3d8433155",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 1649
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 5833
+   }
+  },
+  "step_mech": {
+   "success": false,
+   "stepId": "step_fcb54c25d4954a95b4b89fca8903319b",
+   "status": "timedout",
+   "requestedTicks": 900,
+   "completedTicks": 92,
+   "remainingTicks": 808,
+   "startTicksGame": 5833,
+   "endTicksGame": 5925,
+   "advancedTicks": 92,
+   "initialFrame": 1871245,
+   "lastFrame": 1871337,
+   "advancedFrames": 93,
+   "initialTimeSpeed": "Paused",
+   "startedAtUtc": "2026-10-10T21:17:16.9639446+00:00",
+   "completedAtUtc": "2026-10-10T21:17:26.9756952+00:00",
+   "message": "Timed out after advancing 92 of 900 requested tick(s).",
+   "state": {
+    "programState": "Playing",
+    "inEntryScene": false,
+    "hasCurrentGame": true,
+    "currentMapId": "Map_0",
+    "longEventPending": false,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "playable": true,
+    "visualReady": true,
+    "automationReady": true,
+    "tick": 5925
+   },
+   "operation": {
+    "OperationId": "op_a0cee87e3a8d41de8d36032b6bebcc63",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 10026
+   }
+  },
+  "mech_new_pawns": [
+   {
+    "id": "AM_Daggersnout63357",
+    "kindDef": "AM_Daggersnout",
+    "kind": "AM_Daggersnout",
+    "faction": "Mechanoid",
+    "hostile": true
+   }
+  ],
+  "journal_mech": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "switchOn": true,
+   "epoch": 1,
+   "overwritten": 0,
+   "oldestRetainedSeq": 27,
+   "truncatedByLimit": 0,
+   "rows": [
+    {
+     "aseq": 29,
+     "epoch": 1,
+     "tick": 5833,
+     "def": "RaidEnemy",
+     "target": "map:0",
+     "faction": "Mechanoid",
+     "forced": false,
+     "points": 195.000015,
+     "called": true,
+     "outerBodyRan": "true",
+     "returned": "true",
+     "workerEntered": "unknown",
+     "workerEnteredWhy": "not instrumented",
+     "pawnsGeneratedDuring": 1,
+     "pawnsSpawnedDuring": 0,
+     "chain": "bridge:jawa/fire_incident#22 > incident:RaidEnemy#23",
+     "statement": "incident RaidEnemy was called; outer body ran: true; returned true; worker entered: unknown; during the call 1 pawn(s) generated, 0 spawned (deferred deliveries are not counted here)"
+    }
+   ],
+   "coverage": "TryExecute calls only; an incident body a mod runs without TryExecute is not seen, and deferred deliveries (drop pods, shuttles) land after the call",
+   "ticksGame": 6177,
+   "operation": {
+    "OperationId": "op_bac22b5061e4437cbbbd9e39075b6752",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 21
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 6177
+   }
+  },
+  "infestation_things": {
+   "TunnelHiveSpawner": {
+    "success": true,
+    "things": [],
+    "scanned": 36886,
+    "countReturned": 0,
+    "countMatched": 0,
+    "isCompleteList": true,
+    "truncated": 0,
+    "pawnsSkipped": 22,
+    "perDef": {},
+    "ticksGame": 6177,
+    "message": "NOTHING MATCHED. 36886 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+    "operation": {
+     "OperationId": "op_4f315a4c9ad44281896719d466e8aee8",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 21
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 6177
+    }
+   },
+   "Hive": {
+    "success": true,
+    "things": [
+     {
+      "id": "Hive7733",
+      "def": "Hive",
+      "label": "Hive",
+      "x": 230,
+      "z": 194,
+      "spawned": true,
+      "rot": 0,
+      "stackCount": 1,
+      "hitPoints": 130,
+      "maxHitPoints": 130,
+      "faction": "Insect",
+      "factionName": "Hive"
+     }
+    ],
+    "scanned": 36886,
+    "countReturned": 1,
+    "countMatched": 1,
+    "isCompleteList": true,
+    "truncated": 0,
+    "pawnsSkipped": 22,
+    "perDef": {
+     "Hive": 1
+    },
+    "ticksGame": 6177,
+    "message": "1 of 1 matching thing(s) returned, 36886 examined.",
+    "operation": {
+     "OperationId": "op_c486039f739b482c822e9c4b0b9b1b56",
+     "Status": "Completed",
+     "Success": true,
+     "DurationMs": 24
+    },
+    "state": {
+     "programState": "Playing",
+     "hasCurrentGame": true,
+     "paused": true,
+     "timeSpeed": "Paused",
+     "tick": 6177
+    }
+   }
+  },
+  "awareness_status_end2": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "installDetail": "IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok",
+   "startedBy": "bridge-registration",
+   "installedUtc": "2026-10-10T21:00:01.5371776Z",
+   "settings": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\tps\\awareness_settings.json",
+   "settingsNote": "ok",
+   "epoch": 1,
+   "seq": 31,
+   "installSeq": 1,
+   "retained": {
+    "generationTags": 4,
+    "spawns": 23,
+    "incidents": 3,
+    "seen": 23
+   },
+   "evictions": {
+    "generationTags": 0,
+    "seen": 0,
+    "spawns": 0,
+    "incidents": 0
+   },
+   "untaggedGenerations": 0,
+   "loadRespawns": 0,
+   "lateRowsDropped": 0,
+   "scopesTruncated": 0,
+   "scopesUnbalanced": 0,
+   "faults": 0,
+   "switches": {
+    "aware.incident-journal": true,
+    "aware.origin-context": true,
+    "aware.origin-generation": true,
+    "aware.origin-spawn": true,
+    "aware.disk-rows": true,
+    "aware.wild-spawner-block": true,
+    "aware.thing-explain": true
+   },
+   "meters": {
+    "aware.incident-journal": {
+     "calls": 3,
+     "meanUs": 570966.8,
+     "maxUs": 1626509.9,
+     "totalMs": 1712.9,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-context": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-generation": {
+     "calls": 4,
+     "meanUs": 54528.9,
+     "maxUs": 139611.2,
+     "totalMs": 218.116,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-spawn": {
+     "calls": 23,
+     "meanUs": 135.5,
+     "maxUs": 2494.2,
+     "totalMs": 3.116,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.disk-rows": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.wild-spawner-block": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.thing-explain": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    }
+   },
+   "disk": {
+    "armed": true,
+    "until": "2026-10-10T22:16:19.3918828Z",
+    "rows": 7,
+    "dropped": 0,
+    "writerRunning": true
+   },
+   "wildSpawner": {
+    "blocked": false,
+    "skippedTicks": 0,
+    "patch": "not patched"
+   },
+   "generationHook": "installed lazily by jawa/awareness arm at 2026-10-10T21:16:19.4147773Z",
+   "options": {
+    "install.generation-early": false
+   },
+   "foreignThreadCalls": 19,
+   "ticksGame": 6177,
+   "operation": {
+    "OperationId": "op_3dd0f3445f1b454ab7d1789ef80850cd",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 18
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 6177
+   }
+  },
+  "killHostiles_end2": {
+   "acted": 1,
+   "verified": true,
+   "residue": []
+  },
+  "origin_mech": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "startedBy": "bridge-registration",
+   "epoch": 1,
+   "notFound": [],
+   "pawns": [
+    {
+     "id": "AM_Daggersnout63357",
+     "kind": "AM_Daggersnout",
+     "generation": {
+      "seq": 30,
+      "tick": 5833,
+      "chain": "bridge:jawa/fire_incident#22 > incident:RaidEnemy#23",
+      "cause": "incident:RaidEnemy#23",
+      "reuse": "new",
+      "reobserved": 0,
+      "thread": "main"
+     },
+     "spawn": {
+      "seq": 31,
+      "tick": 6166,
+      "map": 0,
+      "classification": "firstObservedSpawn",
+      "ranOriginal": true
+     },
+     "ourInvolvement": "confirmedIndirectAction",
+     "statement": "generated during bridge:jawa/fire_incident#22 > incident:RaidEnemy#23; first observed spawn in this recording epoch"
+    }
+   ],
+   "health": {
+    "untaggedGenerations": 0,
+    "tagEvictions": 0,
+    "seenEvictions": 0,
+    "spawnOverwritten": 0,
+    "faults": 0
+   },
+   "limits": "provenance does not survive a save/load (a load opens a new epoch); a pawn present before install reads 'origin unknown'; ourInvolvement confirmedIndirectAction means generated DURING one of our bridge operations, never 'made on purpose by us'",
+   "ticksGame": 6177,
+   "operation": {
+    "OperationId": "op_e8f3f2e1a5fc4543a62a7e95248bb5db",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 17
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 6177
+   }
+  },
+  "handshake_ingame": {
+   "schema": "companion_handshake/1",
+   "success": true,
+   "utc": "2026-10-10T21:27:12.3536611Z",
+   "companionAssembly": "JawaBench.BridgeTools",
+   "companionVersion": "0.1.0+f34b77501ea04c0c9e3ea17bac5922ca4c48733d",
+   "companionSha": "f34b77501ea04c0c9e3ea17bac5922ca4c48733d",
+   "companionMvid": "0fcde4c0-b7bc-40aa-88ba-93509667ab54",
+   "companionFileSha256": "96e05a9ed60ca63abd3a2bca51d806439b788e58e6f127d520743534c61b17d4",
+   "companionPath": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\BridgeTools\\JawaBench\\JawaBench.BridgeTools.dll",
+   "compileProfile": "gm",
+   "runtimeProfile": "test",
+   "effectiveProfile": "test",
+   "profileWhy": "profile file says test until 2026-10-11T12:00:00.0000000Z",
+   "profileFile": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\companion_profile.json",
+   "policy": {
+    "name": "test",
+    "recorderBudgetShare": 1.0,
+    "tpsSampler": true,
+    "tpsAttribution": true,
+    "awarenessCheapHooks": true,
+    "awarenessGenerationHook": true,
+    "wildSpawnerBlock": true,
+    "budget": {
+     "verdict": "unmeasured",
+     "note": "the recorders' real cost is the C0-C5 restart protocol (RECORDER_OVERHEAD_MEASURE_SIX_CONFIGS_DEEP); the partial figure below is awareness HOOK BODIES ONLY over process uptime (no Harmony dispatch, no TPS hooks) and is not a verdict",
+     "awarenessBodiesMs": 2880.3,
+     "uptimeS": 2843.0,
+     "awarenessBodiesShare": 0.00101,
+     "awarenessBodiesVerdict": "within"
+    }
+   },
+   "gate": {
+    "status": "complete",
+    "detail": "397 tools gated, 0 unguarded, by bridge-registration",
+    "guarded": 397,
+    "unguarded": [],
+    "installMs": 2466.3,
+    "refusals": 0,
+    "gateErrors": 0,
+    "campaignDenied": 32
+   },
+   "hooks": {
+    "tps": {
+     "installStatus": "complete",
+     "detail": "TickManagerUpdate: ok; Root.Update: ok; LongEventsUpdate: ok; SaveGame: ok; LoadGame: ok",
+     "coverage": {
+      "Root.Update": {
+       "coverage": "ok",
+       "entered": 281638,
+       "foreignRejected": 0,
+       "nestedRejected": 0,
+       "orphanExits": 0,
+       "unbalanced": 0,
+       "originalSkipped": 0,
+       "originalThrew": 0,
+       "faults": 0
+      },
+      "TickManagerUpdate": {
+       "coverage": "ok",
+       "entered": 70852,
+       "foreignRejected": 0,
+       "nestedRejected": 0,
+       "orphanExits": 0,
+       "unbalanced": 0,
+       "originalSkipped": 0,
+       "originalThrew": 0,
+       "faults": 0
+      },
+      "LongEventsUpdate": {
+       "coverage": "ok",
+       "entered": 281638,
+       "foreignRejected": 0,
+       "nestedRejected": 0,
+       "orphanExits": 0,
+       "unbalanced": 0,
+       "originalSkipped": 0,
+       "originalThrew": 0,
+       "faults": 0
+      },
+      "SaveGame": {
+       "coverage": "ok",
+       "entered": 0,
+       "foreignRejected": 0,
+       "nestedRejected": 0,
+       "orphanExits": 0,
+       "unbalanced": 0,
+       "originalSkipped": 0,
+       "originalThrew": 0,
+       "faults": 0
+      },
+      "LoadGame": {
+       "coverage": "ok",
+       "entered": 0,
+       "foreignRejected": 0,
+       "nestedRejected": 0,
+       "orphanExits": 0,
+       "unbalanced": 0,
+       "originalSkipped": 0,
+       "originalThrew": 0,
+       "faults": 0
+      }
+     }
+    },
+    "attribution": {
+     "installStatus": "complete",
+     "detail": "DoSingleTick: ok; TickList.Tick: ok; WorldTick: ok; WorldPostTick: ok; MapPreTick: ok; MapPostTick: ok; MapComponentTick: ok; GameComponentTick: ok",
+     "coverage": {
+      "DoSingleTick": {
+       "coverage": "ok",
+       "entered": 6568,
+       "foreignRejected": 0,
+       "nestedRejected": 0,
+       "orphanExits": 0,
+       "unbalanced": 0,
+       "originalSkipped": 0,
+       "originalThrew": 0,
+       "faults": 0
+      },
+      "stages": {
+       "coverage": "ok",
+       "entered": 59112,
+       "foreignRejected": 0,
+       "nestedRejected": 0,
+       "orphanExits": 0,
+       "unbalanced": 0,
+       "originalSkipped": 0,
+       "originalThrew": 0,
+       "faults": 0
+      }
+     }
+    },
+    "awareness": {
+     "installStatus": "complete",
+     "detail": "IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok",
+     "generationHook": "installed lazily by jawa/awareness arm at 2026-10-10T21:16:19.4147773Z",
+     "faults": 0,
+     "foreignThreadCalls": 19
+    },
+    "argGuard": {
+     "installed": true,
+     "staleRefusals": 0
+    },
+    "wildSpawner": {
+     "patch": "patched",
+     "blocked": false,
+     "lastRelease": "released"
+    }
+   },
+   "rimBridgeServer": {
+    "loaded": true,
+    "version": "2.3.0.0",
+    "informationalVersion": "2.3.0+8e4eaba26da9c852780c44d5e110768350426197"
+   },
+   "harmony": {
+    "version": "2.4.2.0"
+   },
+   "game": {
+    "available": true,
+    "epoch": 1,
+    "programState": "Playing",
+    "ticksGame": 9237,
+    "mapIds": [
+     0
+    ],
+    "currentMapId": 0,
+    "saveNote": "save is the name the TPS lifecycle saw loaded (null for a new game, or when the sampler is off)"
+   },
+   "reservedArgs": [
+    "expectGameEpoch",
+    "expectMapId",
+    "expectCurrentMapId"
+   ],
+   "operation": {
+    "OperationId": "op_3d8c063cd9f54e0fb38710e9e27ecbf9",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 21
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 9237
+   }
+  },
+  "disarm": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "installDetail": "IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok",
+   "startedBy": "bridge-registration",
+   "installedUtc": "2026-10-10T21:00:01.5371776Z",
+   "settings": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\tps\\awareness_settings.json",
+   "settingsNote": "ok",
+   "epoch": 1,
+   "seq": 70,
+   "installSeq": 1,
+   "retained": {
+    "generationTags": 18,
+    "spawns": 48,
+    "incidents": 3,
+    "seen": 46
+   },
+   "evictions": {
+    "generationTags": 0,
+    "seen": 0,
+    "spawns": 0,
+    "incidents": 0
+   },
+   "untaggedGenerations": 9,
+   "loadRespawns": 0,
+   "lateRowsDropped": 0,
+   "scopesTruncated": 0,
+   "scopesUnbalanced": 0,
+   "faults": 0,
+   "switches": {
+    "aware.incident-journal": true,
+    "aware.origin-context": true,
+    "aware.origin-generation": true,
+    "aware.origin-spawn": true,
+    "aware.disk-rows": true,
+    "aware.wild-spawner-block": true,
+    "aware.thing-explain": true
+   },
+   "meters": {
+    "aware.incident-journal": {
+     "calls": 3,
+     "meanUs": 570966.8,
+     "maxUs": 1626509.9,
+     "totalMs": 1712.9,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-context": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-generation": {
+     "calls": 27,
+     "meanUs": 43030.348,
+     "maxUs": 159080.7,
+     "totalMs": 1161.819,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-spawn": {
+     "calls": 48,
+     "meanUs": 117.112,
+     "maxUs": 2494.2,
+     "totalMs": 5.621,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.disk-rows": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.wild-spawner-block": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.thing-explain": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    }
+   },
+   "disk": {
+    "armed": false,
+    "rows": 32,
+    "dropped": 0,
+    "writerRunning": true
+   },
+   "wildSpawner": {
+    "blocked": false,
+    "skippedTicks": 3060,
+    "patch": "patched",
+    "by": "jawa/wild_spawner_block",
+    "lastRelease": "released"
+   },
+   "generationHook": "installed lazily by jawa/awareness arm at 2026-10-10T21:16:19.4147773Z",
+   "options": {
+    "install.generation-early": false
+   },
+   "foreignThreadCalls": 19,
+   "ticksGame": 9237,
+   "operation": {
+    "OperationId": "op_99ee49cb13fd4054ae1e7c87bd33cade",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 18
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 9237
+   }
+  },
+  "disarm_utc": "2026-10-10T21:27:12.402807Z",
+  "fire_after_disarm": {
+   "success": true,
+   "message": "ResourcePodCrash fired with 35 points.",
+   "incident": "ResourcePodCrash",
+   "category": "Misc",
+   "canFireNow": true,
+   "forced": false,
+   "fired": true,
+   "windowsOpened": [],
+   "blockedByDialog": false,
+   "points": 35.0,
+   "ticksGame": 9237,
+   "operation": {
+    "OperationId": "op_c2dfc1e7175b4094b8f98c60a9ae61ad",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 65
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 9237
+   }
+  },
+  "journal_after_disarm": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "switchOn": true,
+   "epoch": 1,
+   "overwritten": 0,
+   "oldestRetainedSeq": 27,
+   "truncatedByLimit": 1,
+   "rows": [
+    {
+     "aseq": 28,
+     "epoch": 1,
+     "tick": 5833,
+     "def": "Infestation",
+     "target": "map:0",
+     "forced": false,
+     "points": 200.0,
+     "called": true,
+     "outerBodyRan": "true",
+     "returned": "true",
+     "workerEntered": "unknown",
+     "workerEnteredWhy": "not instrumented",
+     "pawnsGeneratedDuring": 0,
+     "pawnsSpawnedDuring": 0,
+     "chain": "bridge:jawa/fire_incident#20 > incident:Infestation#21",
+     "statement": "incident Infestation was called; outer body ran: true; returned true; worker entered: unknown"
+    },
+    {
+     "aseq": 29,
+     "epoch": 1,
+     "tick": 5833,
+     "def": "RaidEnemy",
+     "target": "map:0",
+     "faction": "Mechanoid",
+     "forced": false,
+     "points": 195.000015,
+     "called": true,
+     "outerBodyRan": "true",
+     "returned": "true",
+     "workerEntered": "unknown",
+     "workerEnteredWhy": "not instrumented",
+     "pawnsGeneratedDuring": 1,
+     "pawnsSpawnedDuring": 0,
+     "chain": "bridge:jawa/fire_incident#22 > incident:RaidEnemy#23",
+     "statement": "incident RaidEnemy was called; outer body ran: true; returned true; worker entered: unknown; during the call 1 pawn(s) generated, 0 spawned (deferred deliveries are not counted here)"
+    },
+    {
+     "aseq": 71,
+     "epoch": 1,
+     "tick": 9237,
+     "def": "ResourcePodCrash",
+     "target": "map:0",
+     "forced": false,
+     "points": 35.0,
+     "called": true,
+     "outerBodyRan": "true",
+     "returned": "true",
+     "workerEntered": "unknown",
+     "workerEnteredWhy": "not instrumented",
+     "pawnsGeneratedDuring": 0,
+     "pawnsSpawnedDuring": 0,
+     "chain": "bridge:jawa/fire_incident#42 > incident:ResourcePodCrash#43",
+     "statement": "incident ResourcePodCrash was called; outer body ran: true; returned true; worker entered: unknown"
+    }
+   ],
+   "coverage": "TryExecute calls only; an incident body a mod runs without TryExecute is not seen, and deferred deliveries (drop pods, shuttles) land after the call",
+   "ticksGame": 9237,
+   "operation": {
+    "OperationId": "op_9bd0578e8c254522ab4bedf309aaefc6",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 22
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 9237
+   }
+  },
+  "wild_ids": [],
+  "origin_wild": null,
+  "awareness_final": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "installDetail": "IncidentWorker.TryExecute: ok; Pawn.SpawnSetup: ok; MapGenerator.GenerateContentsIntoMap: ok; WildAnimalSpawner.SpawnRandomWildAnimalAt: ok; CompSpawnerPawn.TrySpawnPawn: ok; CompHatcher.Hatch: ok; Hediff_Pregnant.DoBirthSpawn: ok",
+   "startedBy": "bridge-registration",
+   "installedUtc": "2026-10-10T21:00:01.5371776Z",
+   "settings": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\tps\\awareness_settings.json",
+   "settingsNote": "ok",
+   "epoch": 1,
+   "seq": 71,
+   "installSeq": 1,
+   "retained": {
+    "generationTags": 18,
+    "spawns": 48,
+    "incidents": 4,
+    "seen": 46
+   },
+   "evictions": {
+    "generationTags": 0,
+    "seen": 0,
+    "spawns": 0,
+    "incidents": 0
+   },
+   "untaggedGenerations": 9,
+   "loadRespawns": 0,
+   "lateRowsDropped": 0,
+   "scopesTruncated": 0,
+   "scopesUnbalanced": 0,
+   "faults": 0,
+   "switches": {
+    "aware.incident-journal": true,
+    "aware.origin-context": true,
+    "aware.origin-generation": true,
+    "aware.origin-spawn": true,
+    "aware.disk-rows": true,
+    "aware.wild-spawner-block": true,
+    "aware.thing-explain": true
+   },
+   "meters": {
+    "aware.incident-journal": {
+     "calls": 4,
+     "meanUs": 437761.025,
+     "maxUs": 1626509.9,
+     "totalMs": 1751.044,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-context": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-generation": {
+     "calls": 27,
+     "meanUs": 43030.348,
+     "maxUs": 159080.7,
+     "totalMs": 1161.819,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.origin-spawn": {
+     "calls": 48,
+     "meanUs": 117.112,
+     "maxUs": 2494.2,
+     "totalMs": 5.621,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.disk-rows": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.wild-spawner-block": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    },
+    "aware.thing-explain": {
+     "calls": 0,
+     "meanUs": 0.0,
+     "maxUs": 0.0,
+     "totalMs": 0.0,
+     "note": "hook body only; Harmony dispatch not included"
+    }
+   },
+   "disk": {
+    "armed": false,
+    "rows": 32,
+    "dropped": 0,
+    "writerRunning": true
+   },
+   "wildSpawner": {
+    "blocked": false,
+    "skippedTicks": 3060,
+    "patch": "patched",
+    "by": "jawa/wild_spawner_block",
+    "lastRelease": "released"
+   },
+   "generationHook": "installed lazily by jawa/awareness arm at 2026-10-10T21:16:19.4147773Z",
+   "options": {
+    "install.generation-early": false
+   },
+   "foreignThreadCalls": 19,
+   "ticksGame": 9237,
+   "operation": {
+    "OperationId": "op_6a869dd1987c4797960abe023c5b8688",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 21
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 9237
+   }
+  },
+  "tps_report_final": {
+   "success": true,
+   "installed": true,
+   "installStatus": "complete",
+   "installDetail": "TickManagerUpdate: ok; Root.Update: ok; LongEventsUpdate: ok; SaveGame: ok; LoadGame: ok",
+   "startedBy": "bridge-registration",
+   "samplerStartedUtc": "2026-10-10T21:00:01.260Z",
+   "session": "c1a88107dac242c49924c8c6e10642b1",
+   "note": "Starts at game load (RimBridgeServer companion registration), no bridge call needed. Judge ratio (ticks / expected ticks integrated frame by frame over unpaused time); only state=run windows are judged. Stalls are kept as incidents. Read history with src/RimMandrake/Utils/tps_record.py --at/--since.",
+   "cadenceSeconds": 5.0,
+   "recordDir": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\tps",
+   "segment": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\tps\\tps_20261010T210001Z_c1a88107dac242c49924c8c6e10642b1_1568_000.jsonl",
+   "writer": {
+    "enqueued": 344,
+    "written": 344,
+    "dropped": 0,
+    "writeErrors": 0,
+    "queue": 0
+   },
+   "watchdog": {
+    "phase": "update",
+    "silenceLines": 2,
+    "heartbeat": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\JawaBench\\tps\\hb_c1a88107dac242c49924c8c6e10642b1.json"
+   },
+   "hooks": {
+    "Root.Update": {
+     "coverage": "ok",
+     "entered": 281658,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    },
+    "TickManagerUpdate": {
+     "coverage": "ok",
+     "entered": 70871,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    },
+    "LongEventsUpdate": {
+     "coverage": "ok",
+     "entered": 281658,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    },
+    "SaveGame": {
+     "coverage": "ok",
+     "entered": 0,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    },
+    "LoadGame": {
+     "coverage": "ok",
+     "entered": 0,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    }
+   },
+   "attributionHooks": {
+    "DoSingleTick": {
+     "coverage": "ok",
+     "entered": 6568,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    },
+    "stages": {
+     "coverage": "ok",
+     "entered": 59112,
+     "foreignRejected": 0,
+     "nestedRejected": 0,
+     "orphanExits": 0,
+     "unbalanced": 0,
+     "originalSkipped": 0,
+     "originalThrew": 0,
+     "faults": 0
+    }
+   },
+   "attribution": {
+    "installed": true,
+    "stages": 8,
+    "status": "complete",
+    "detail": "DoSingleTick: ok; TickList.Tick: ok; WorldTick: ok; WorldPostTick: ok; MapPreTick: ok; MapPostTick: ok; MapComponentTick: ok; GameComponentTick: ok",
+    "costPerTimerPairUs": 0.0387
+   },
+   "settings": "{\"sampler\":true,\"attribution\":true,\"watchdog\":true,\"archivePlayerLog\":true,\"retentionDays\":7,\"retentionMB\":256,\"logRetentionMB\":1024,\"_doc\":\"design/RimMandrake/tps_record.md - defaults are the shipped behaviour; retention can only grow; read at game launch\"}",
+   "windows": 278,
+   "incidents": 1,
+   "samplesInMemory": 278,
+   "returned": 60,
+   "runWindows": 0,
+   "sustained": "unknown",
+   "samplesJsonl": [
+    "{\"utc\":\"2026-10-10T21:22:14.235Z\",\"state\":\"paused\",\"monoStart\":1327.657,\"monoEnd\":1333.02,\"dReal\":5.364,\"dTicks\":32,\"ratio\":null,\"tps\":0,\"tpsWall\":5.97,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.364,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":436,\"fps\":81.3,\"gapMaxMs\":389.2,\"gaps\":0,\"simMs\":0.5,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":7649,\"tickMs\":95.139,\"focused\":false,\"gc\":607,\"heapMB\":5578.1,\"attr\":{\"tick\":[32,2909,377.5],\"tl:Normal\":[32,45.4,13.7],\"tl:Rare\":[32,3.2,0.1],\"tl:Long\":[32,3.8,1.4],\"world\":[32,27.2,1.3],\"worldPost\":[32,0,0],\"mapPre\":[32,19.2,0.9],\"mapPost\":[32,2806.2,373.9],\"mapComp\":[32,2801,373.7],\"gameComp\":[32,3.2,0.7]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":7621,\"ms\":149.1,\"top\":\"mapComp 90%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":13.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":133.6,\"gameComp\":0.1}},{\"tg\":7645,\"ms\":145.3,\"top\":\"mapComp 97%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":2.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":141,\"gameComp\":0.1}},{\"tg\":7649,\"ms\":377.5,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.2,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":373.7,\"gameComp\":0.7}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":320,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:22:19.275Z\",\"state\":\"paused\",\"monoStart\":1333.02,\"monoEnd\":1338.06,\"dReal\":5.04,\"dTicks\":43,\"ratio\":null,\"tps\":0,\"tpsWall\":8.53,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.04,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":105,\"fps\":20.8,\"gapMaxMs\":373.8,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":7692,\"tickMs\":95.139,\"focused\":false,\"gc\":609,\"heapMB\":4953.8,\"attr\":{\"tick\":[43,4419.1,366.6],\"tl:Normal\":[43,55.9,11.8],\"tl:Rare\":[43,4.4,0.1],\"tl:Long\":[43,3.1,0.1],\"world\":[43,39,1.8],\"worldPost\":[43,0,0],\"mapPre\":[43,25.6,1.1],\"mapPost\":[43,4285.8,361.8],\"mapComp\":[43,4276.4,361.6],\"gameComp\":[43,4.3,0.5]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":7651,\"ms\":366.6,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":2.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.2,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":361.6,\"gameComp\":0.2}},{\"tg\":7688,\"ms\":348.7,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":2.2,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":344.5,\"gameComp\":0.1}},{\"tg\":7689,\"ms\":314.5,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.5,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":311.3,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":430,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:22:24.277Z\",\"state\":\"paused\",\"monoStart\":1338.06,\"monoEnd\":1343.063,\"dReal\":5.003,\"dTicks\":45,\"ratio\":null,\"tps\":0,\"tpsWall\":9,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.003,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":105,\"fps\":21,\"gapMaxMs\":338.4,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":7737,\"tickMs\":95.139,\"focused\":false,\"gc\":610,\"heapMB\":5090.4,\"attr\":{\"tick\":[45,4300.7,332.6],\"tl:Normal\":[45,73.9,15.8],\"tl:Rare\":[45,4.5,0.1],\"tl:Long\":[45,3.5,0.1],\"world\":[45,40.1,1.2],\"worldPost\":[45,0,0],\"mapPre\":[45,26.8,0.9],\"mapPost\":[45,4147.4,329.5],\"mapComp\":[45,4140.9,329.4],\"gameComp\":[45,3.4,0.5]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":7701,\"ms\":158.4,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.1,\"worldPost\":0,\"mapPre\":0.9,\"mapPost\":0.2,\"mapComp\":154.5,\"gameComp\":0.5}},{\"tg\":7723,\"ms\":332.6,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":329.4,\"gameComp\":0.1}},{\"tg\":7724,\"ms\":328.7,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":325.8,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":450,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:22:29.302Z\",\"state\":\"paused\",\"monoStart\":1343.063,\"monoEnd\":1348.087,\"dReal\":5.024,\"dTicks\":47,\"ratio\":null,\"tps\":0,\"tpsWall\":9.36,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.024,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":48,\"fps\":9.6,\"gapMaxMs\":541.9,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":7784,\"tickMs\":95.139,\"focused\":false,\"gc\":611,\"heapMB\":5345.4,\"attr\":{\"tick\":[47,4581,526.1],\"tl:Normal\":[47,45.5,2.2],\"tl:Rare\":[47,4.9,0.2],\"tl:Long\":[47,4,0.4],\"world\":[47,41,1.3],\"worldPost\":[47,0,0],\"mapPre\":[47,28.1,1.1],\"mapPost\":[47,4453.5,523.9],\"mapComp\":[47,4446.5,523.7],\"gameComp\":[47,2.9,0.1]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":7750,\"ms\":144.4,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.3,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":141.4,\"gameComp\":0.1}},{\"tg\":7759,\"ms\":526.1,\"top\":\"mapComp 100%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":523.7,\"gameComp\":0.1}},{\"tg\":7770,\"ms\":141.9,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.9,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":139.3,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":470,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:22:34.309Z\",\"state\":\"paused\",\"monoStart\":1348.087,\"monoEnd\":1353.094,\"dReal\":5.007,\"dTicks\":51,\"ratio\":null,\"tps\":0,\"tpsWall\":10.19,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.007,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":115,\"fps\":23,\"gapMaxMs\":538.3,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":7835,\"tickMs\":95.139,\"focused\":false,\"gc\":612,\"heapMB\":5525.2,\"attr\":{\"tick\":[51,4327.9,529.2],\"tl:Normal\":[51,45,3.6],\"tl:Rare\":[51,5.4,0.4],\"tl:Long\":[51,4.2,0.3],\"world\":[51,44.4,1.5],\"worldPost\":[51,0,0],\"mapPre\":[51,29.3,1.1],\"mapPost\":[51,4195.3,526.2],\"mapComp\":[51,4188.4,526],\"gameComp\":[51,3.1,0.1]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":7800,\"ms\":529.2,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":1.1,\"mapPost\":0.1,\"mapComp\":526,\"gameComp\":0.1}},{\"tg\":7811,\"ms\":142.3,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":140,\"gameComp\":0.1}},{\"tg\":7825,\"ms\":139.6,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":137.4,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":510,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:22:39.329Z\",\"state\":\"paused\",\"monoStart\":1353.094,\"monoEnd\":1358.113,\"dReal\":5.019,\"dTicks\":46,\"ratio\":null,\"tps\":0,\"tpsWall\":9.16,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.019,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":107,\"fps\":21.3,\"gapMaxMs\":346.6,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":7881,\"tickMs\":95.139,\"focused\":false,\"gc\":613,\"heapMB\":5661,\"attr\":{\"tick\":[46,4370.4,339.6],\"tl:Normal\":[46,38.2,4.7],\"tl:Rare\":[46,4.6,0.1],\"tl:Long\":[46,3.6,0.1],\"world\":[46,41.7,1.6],\"worldPost\":[46,0,0],\"mapPre\":[46,26.3,1.1],\"mapPost\":[46,4250,337.4],\"mapComp\":[46,4243.8,337.3],\"gameComp\":[46,4.9,2.2]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":7841,\"ms\":325.1,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.6,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":322.1,\"gameComp\":0.1}},{\"tg\":7842,\"ms\":331.3,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":328.7,\"gameComp\":0.1}},{\"tg\":7881,\"ms\":339.6,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":337.3,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":460,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:22:44.329Z\",\"state\":\"paused\",\"monoStart\":1358.113,\"monoEnd\":1363.114,\"dReal\":5.001,\"dTicks\":36,\"ratio\":null,\"tps\":0,\"tpsWall\":7.2,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.001,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":55,\"fps\":11,\"gapMaxMs\":339.9,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":7917,\"tickMs\":95.139,\"focused\":false,\"gc\":614,\"heapMB\":5817.2,\"attr\":{\"tick\":[36,4622.5,331.2],\"tl:Normal\":[36,26.1,1.7],\"tl:Rare\":[36,3.6,0.1],\"tl:Long\":[36,3,0.1],\"world\":[36,32.5,1.3],\"worldPost\":[36,0,0],\"mapPre\":[36,22,1.1],\"mapPost\":[36,4532,328.6],\"mapComp\":[36,4526.5,328.5],\"gameComp\":[36,2.4,0.2]},\"top\":\"mapComp 98%\",\"worst\":[{\"tg\":7882,\"ms\":331.2,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.2,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":328.5,\"gameComp\":0.1}},{\"tg\":7912,\"ms\":276.7,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.3,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":273.5,\"gameComp\":0.1}},{\"tg\":7916,\"ms\":298.6,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.3,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":295.2,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":360,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:22:49.360Z\",\"state\":\"paused\",\"monoStart\":1363.114,\"monoEnd\":1368.145,\"dReal\":5.03,\"dTicks\":33,\"ratio\":null,\"tps\":0,\"tpsWall\":6.56,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.03,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":75,\"fps\":14.9,\"gapMaxMs\":580.5,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":7950,\"tickMs\":95.139,\"focused\":false,\"gc\":615,\"heapMB\":5185.5,\"attr\":{\"tick\":[33,4366.8,564.2],\"tl:Normal\":[33,45.4,12.1],\"tl:Rare\":[33,3.4,0.1],\"tl:Long\":[33,2.5,0.1],\"world\":[33,28.3,1.2],\"worldPost\":[33,0,0],\"mapPre\":[33,19.4,0.9],\"mapPost\":[33,4264.9,561.8],\"mapComp\":[33,4253.1,561.7],\"gameComp\":[33,2.1,0.1]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":7918,\"ms\":496.2,\"top\":\"mapComp 100%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":493.9,\"gameComp\":0.1}},{\"tg\":7919,\"ms\":506.1,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.1,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":503.4,\"gameComp\":0.1}},{\"tg\":7935,\"ms\":564.2,\"top\":\"mapComp 100%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":561.7,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":330,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:22:54.426Z\",\"state\":\"paused\",\"monoStart\":1368.145,\"monoEnd\":1373.211,\"dReal\":5.067,\"dTicks\":47,\"ratio\":null,\"tps\":0,\"tpsWall\":9.28,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.067,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":109,\"fps\":21.5,\"gapMaxMs\":352.7,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":7997,\"tickMs\":95.139,\"focused\":false,\"gc\":616,\"heapMB\":5290.6,\"attr\":{\"tick\":[47,4379.9,346.2],\"tl:Normal\":[47,52.3,4.2],\"tl:Rare\":[47,4.7,0.1],\"tl:Long\":[47,3.7,0.1],\"world\":[47,42.4,1.6],\"worldPost\":[47,0,0],\"mapPre\":[47,27.2,0.8],\"mapPost\":[47,4245.5,342.9],\"mapComp\":[47,4238.3,342.8],\"gameComp\":[47,3,0.1]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":7970,\"ms\":346.2,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":342.8,\"gameComp\":0.1}},{\"tg\":7973,\"ms\":337.2,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0.1,\"tl:Normal\":0.9,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":334.5,\"gameComp\":0.1}},{\"tg\":7984,\"ms\":159.9,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":157.4,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":470,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:22:59.438Z\",\"state\":\"paused\",\"monoStart\":1373.211,\"monoEnd\":1378.223,\"dReal\":5.011,\"dTicks\":50,\"ratio\":null,\"tps\":0,\"tpsWall\":9.98,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.011,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":111,\"fps\":22.1,\"gapMaxMs\":544.1,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8047,\"tickMs\":95.139,\"focused\":false,\"gc\":617,\"heapMB\":5439.7,\"attr\":{\"tick\":[50,4327.6,538.1],\"tl:Normal\":[50,68.3,17.9],\"tl:Rare\":[50,5,0.1],\"tl:Long\":[50,3.1,0.1],\"world\":[50,44,1.2],\"worldPost\":[50,0,0],\"mapPre\":[50,28.1,0.9],\"mapPost\":[50,4174.8,535.4],\"mapComp\":[50,4166.4,535.2],\"gameComp\":[50,3,0.1]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":8000,\"ms\":190.8,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.2,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":187.9,\"gameComp\":0.1}},{\"tg\":8014,\"ms\":141.6,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":138.6,\"gameComp\":0.1}},{\"tg\":8018,\"ms\":538.1,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.2,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":535.2,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":500,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:23:04.760Z\",\"state\":\"paused\",\"monoStart\":1378.223,\"monoEnd\":1383.546,\"dReal\":5.323,\"dTicks\":48,\"ratio\":null,\"tps\":0,\"tpsWall\":9.02,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.323,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":48,\"fps\":9,\"gapMaxMs\":544.2,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8095,\"tickMs\":95.139,\"focused\":false,\"gc\":619,\"heapMB\":4818.7,\"attr\":{\"tick\":[48,4966.1,538.4],\"tl:Normal\":[48,45.8,1.7],\"tl:Rare\":[48,4.9,0.2],\"tl:Long\":[48,3.1,0.2],\"world\":[48,41.6,1.3],\"worldPost\":[48,0,0],\"mapPre\":[48,26.7,0.7],\"mapPost\":[48,4840,535.9],\"mapComp\":[48,4833.6,535.7],\"gameComp\":[48,2.9,0.1]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":8059,\"ms\":538.4,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":535.7,\"gameComp\":0.1}},{\"tg\":8072,\"ms\":158.5,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.9,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":155.9,\"gameComp\":0.1}},{\"tg\":8095,\"ms\":519.6,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":516.9,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":480,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:23:09.848Z\",\"state\":\"paused\",\"monoStart\":1383.546,\"monoEnd\":1388.633,\"dReal\":5.087,\"dTicks\":47,\"ratio\":null,\"tps\":0,\"tpsWall\":9.24,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.087,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":107,\"fps\":21,\"gapMaxMs\":529,\"gaps\":0,\"simMs\":0.3,\"simMaxMs\":0.1,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8142,\"tickMs\":95.139,\"focused\":false,\"gc\":620,\"heapMB\":4958.8,\"attr\":{\"tick\":[47,4319.3,510.5],\"tl:Normal\":[47,51.4,3.1],\"tl:Rare\":[47,4.8,0.2],\"tl:Long\":[47,2.8,0.1],\"world\":[47,42.8,1.6],\"worldPost\":[47,0,0],\"mapPre\":[47,26.6,0.9],\"mapPost\":[47,4186.5,507.3],\"mapComp\":[47,4175.5,507],\"gameComp\":[47,3.2,0.3]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":8120,\"ms\":153.8,\"top\":\"mapComp 97%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":3.1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":149,\"gameComp\":0.1}},{\"tg\":8135,\"ms\":154.8,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.9,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":152.2,\"gameComp\":0.1}},{\"tg\":8137,\"ms\":510.5,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.3,\"mapComp\":507,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":470,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:23:14.991Z\",\"state\":\"paused\",\"monoStart\":1388.633,\"monoEnd\":1393.777,\"dReal\":5.144,\"dTicks\":53,\"ratio\":null,\"tps\":0,\"tpsWall\":10.3,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.144,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":116,\"fps\":22.6,\"gapMaxMs\":394.8,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8195,\"tickMs\":95.139,\"focused\":false,\"gc\":621,\"heapMB\":5110.5,\"attr\":{\"tick\":[53,4385.4,379.1],\"tl:Normal\":[53,56.3,3.1],\"tl:Rare\":[53,5.5,0.2],\"tl:Long\":[53,4,0.1],\"world\":[53,46.9,1.3],\"worldPost\":[53,0,0],\"mapPre\":[53,30.2,1],\"mapPost\":[53,4238,376.4],\"mapComp\":[53,4229.5,376.2],\"gameComp\":[53,3.2,0.1]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":8177,\"ms\":340.1,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":337.1,\"gameComp\":0.1}},{\"tg\":8178,\"ms\":379.1,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":376.2,\"gameComp\":0.1}},{\"tg\":8182,\"ms\":149.4,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.3,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.3,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":145.9,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":530,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:23:19.991Z\",\"state\":\"paused\",\"monoStart\":1393.777,\"monoEnd\":1398.777,\"dReal\":5,\"dTicks\":22,\"ratio\":null,\"tps\":0,\"tpsWall\":4.4,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":407,\"fps\":81.4,\"gapMaxMs\":263.5,\"gaps\":0,\"simMs\":0.5,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8217,\"tickMs\":95.139,\"focused\":false,\"gc\":622,\"heapMB\":4819.6,\"attr\":{\"tick\":[22,2145,258],\"tl:Normal\":[22,161.1,116.8],\"tl:Rare\":[22,2.2,0.1],\"tl:Long\":[22,1.7,0.1],\"world\":[22,20.4,1.3],\"worldPost\":[22,0,0],\"mapPre\":[22,12.7,1.1],\"mapPost\":[22,1944.9,144.8],\"mapComp\":[22,1941.8,144.7],\"gameComp\":[22,1.4,0.1]},\"top\":\"mapComp 91%\",\"worst\":[{\"tg\":8202,\"ms\":149.9,\"top\":\"mapComp 90%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":13.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":134.6,\"gameComp\":0.1}},{\"tg\":8206,\"ms\":155.9,\"top\":\"mapComp 91%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":11.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":142.3,\"gameComp\":0.1}},{\"tg\":8208,\"ms\":258,\"top\":\"mapComp 54%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":116.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":139.4,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":220,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:23:24.993Z\",\"state\":\"paused\",\"monoStart\":1398.777,\"monoEnd\":1403.779,\"dReal\":5.002,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.002,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":930,\"fps\":185.9,\"gapMaxMs\":11.5,\"gaps\":0,\"simMs\":0.9,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8217,\"tickMs\":95.139,\"focused\":false,\"gc\":622,\"heapMB\":4844.3,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:23:29.999Z\",\"state\":\"paused\",\"monoStart\":1403.779,\"monoEnd\":1408.784,\"dReal\":5.005,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.005,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":937,\"fps\":187.2,\"gapMaxMs\":9.9,\"gaps\":0,\"simMs\":1,\"simMaxMs\":0.1,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8217,\"tickMs\":95.139,\"focused\":false,\"gc\":622,\"heapMB\":4878.2,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:23:35.000Z\",\"state\":\"paused\",\"monoStart\":1408.784,\"monoEnd\":1413.785,\"dReal\":5.002,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.002,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":913,\"fps\":182.5,\"gapMaxMs\":10.3,\"gaps\":0,\"simMs\":0.9,\"simMaxMs\":0.1,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8217,\"tickMs\":95.139,\"focused\":false,\"gc\":622,\"heapMB\":4909.7,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:23:40.002Z\",\"state\":\"paused\",\"monoStart\":1413.785,\"monoEnd\":1418.787,\"dReal\":5.002,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.002,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":932,\"fps\":186.3,\"gapMaxMs\":9.7,\"gaps\":0,\"simMs\":0.9,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8217,\"tickMs\":95.139,\"focused\":false,\"gc\":622,\"heapMB\":4977.1,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:23:45.202Z\",\"state\":\"paused\",\"monoStart\":1418.787,\"monoEnd\":1423.988,\"dReal\":5.201,\"dTicks\":17,\"ratio\":null,\"tps\":0,\"tpsWall\":3.27,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.201,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":567,\"fps\":109,\"gapMaxMs\":383.1,\"gaps\":0,\"simMs\":0.6,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8234,\"tickMs\":95.139,\"focused\":false,\"gc\":623,\"heapMB\":4851,\"attr\":{\"tick\":[17,1886.8,369],\"tl:Normal\":[17,14.9,1.2],\"tl:Rare\":[17,1.7,0.1],\"tl:Long\":[17,1.4,0.1],\"world\":[17,14.7,1.2],\"worldPost\":[17,0,0],\"mapPre\":[17,9.9,0.8],\"mapPost\":[17,1842.7,366.3],\"mapComp\":[17,1840.3,366.1],\"gameComp\":[17,1.1,0.1]},\"top\":\"mapComp 98%\",\"worst\":[{\"tg\":8232,\"ms\":319.2,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":316.4,\"gameComp\":0.1}},{\"tg\":8233,\"ms\":298.2,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":295.3,\"gameComp\":0.1}},{\"tg\":8234,\"ms\":369,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":366.1,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":170,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:23:50.345Z\",\"state\":\"paused\",\"monoStart\":1423.988,\"monoEnd\":1429.13,\"dReal\":5.143,\"dTicks\":46,\"ratio\":null,\"tps\":0,\"tpsWall\":8.95,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.143,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":111,\"fps\":21.6,\"gapMaxMs\":384.8,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8280,\"tickMs\":95.139,\"focused\":false,\"gc\":624,\"heapMB\":4948.4,\"attr\":{\"tick\":[46,4321.6,367.5],\"tl:Normal\":[46,56.6,11.4],\"tl:Rare\":[46,4.8,0.2],\"tl:Long\":[46,3.8,0.2],\"world\":[46,40.8,1.5],\"worldPost\":[46,0,0],\"mapPre\":[46,27.1,1.1],\"mapPost\":[46,4184.6,364.9],\"mapComp\":[46,4173.5,364.8],\"gameComp\":[46,2.8,0.1]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":8235,\"ms\":158.4,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.2,\"tl:Long\":0.2,\"world\":1,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":155.4,\"gameComp\":0.1}},{\"tg\":8271,\"ms\":334.2,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.9,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":331.4,\"gameComp\":0.1}},{\"tg\":8273,\"ms\":367.5,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":364.8,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":460,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:23:55.348Z\",\"state\":\"paused\",\"monoStart\":1429.13,\"monoEnd\":1434.133,\"dReal\":5.003,\"dTicks\":57,\"ratio\":null,\"tps\":0,\"tpsWall\":11.39,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.003,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":57,\"fps\":11.4,\"gapMaxMs\":552.5,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8337,\"tickMs\":95.139,\"focused\":false,\"gc\":625,\"heapMB\":5130.5,\"attr\":{\"tick\":[57,4537.1,541.3],\"tl:Normal\":[57,57.8,4.5],\"tl:Rare\":[57,5.9,0.2],\"tl:Long\":[57,4.4,0.1],\"world\":[57,51.9,1.6],\"worldPost\":[57,0,0],\"mapPre\":[57,32.9,0.9],\"mapPost\":[57,4379.4,538.7],\"mapComp\":[57,4368,538.5],\"gameComp\":[57,3.3,0.1]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":8302,\"ms\":155.4,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.3,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.3,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":151.8,\"gameComp\":0.1}},{\"tg\":8317,\"ms\":541.3,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.1,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":538.5,\"gameComp\":0.1}},{\"tg\":8334,\"ms\":156.7,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.9,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":153.9,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":570,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:24:00.368Z\",\"state\":\"paused\",\"monoStart\":1434.133,\"monoEnd\":1439.154,\"dReal\":5.021,\"dTicks\":47,\"ratio\":null,\"tps\":0,\"tpsWall\":9.36,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.021,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":108,\"fps\":21.5,\"gapMaxMs\":565.8,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8384,\"tickMs\":95.139,\"focused\":false,\"gc\":626,\"heapMB\":5247.4,\"attr\":{\"tick\":[47,4238.7,558.5],\"tl:Normal\":[47,71.1,29.6],\"tl:Rare\":[47,4.9,0.3],\"tl:Long\":[47,3.7,0.1],\"world\":[47,41.7,1.5],\"worldPost\":[47,0,0],\"mapPre\":[47,26.2,0.7],\"mapPost\":[47,4086.5,556],\"mapComp\":[47,4079.2,555.4],\"gameComp\":[47,3.5,0.4]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":8364,\"ms\":558.5,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.6,\"mapComp\":555.4,\"gameComp\":0.1}},{\"tg\":8368,\"ms\":145,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":142.6,\"gameComp\":0.1}},{\"tg\":8374,\"ms\":161,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":158.4,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":470,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:24:05.376Z\",\"state\":\"paused\",\"monoStart\":1439.154,\"monoEnd\":1444.161,\"dReal\":5.008,\"dTicks\":13,\"ratio\":null,\"tps\":0,\"tpsWall\":2.6,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.008,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":541,\"fps\":108,\"gapMaxMs\":144.4,\"gaps\":0,\"simMs\":0.6,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8397,\"tickMs\":95.139,\"focused\":false,\"gc\":626,\"heapMB\":5481.1,\"attr\":{\"tick\":[13,840.1,138.1],\"tl:Normal\":[13,11.7,1.5],\"tl:Rare\":[13,1.3,0.1],\"tl:Long\":[13,1,0.1],\"world\":[13,10.5,1.2],\"worldPost\":[13,0,0],\"mapPre\":[13,7.6,1],\"mapPost\":[13,807,135.5],\"mapComp\":[13,804.9,135.4],\"gameComp\":[13,0.8,0.1]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":8386,\"ms\":137.6,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":134.4,\"gameComp\":0.1}},{\"tg\":8395,\"ms\":138.1,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":135.4,\"gameComp\":0.1}},{\"tg\":8396,\"ms\":137.4,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":134.7,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":130,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:24:10.380Z\",\"state\":\"paused\",\"monoStart\":1444.161,\"monoEnd\":1449.165,\"dReal\":5.004,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.004,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":587,\"fps\":117.3,\"gapMaxMs\":217.4,\"gaps\":0,\"simMs\":0.6,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8397,\"tickMs\":95.139,\"focused\":false,\"gc\":627,\"heapMB\":4835.7,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:24:15.687Z\",\"state\":\"paused\",\"monoStart\":1449.165,\"monoEnd\":1454.472,\"dReal\":5.307,\"dTicks\":38,\"ratio\":null,\"tps\":0,\"tpsWall\":7.16,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.307,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":320,\"fps\":60.3,\"gapMaxMs\":383.5,\"gaps\":0,\"simMs\":0.3,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8435,\"tickMs\":95.139,\"focused\":false,\"gc\":627,\"heapMB\":5584.8,\"attr\":{\"tick\":[38,3228.5,368.5],\"tl:Normal\":[38,39.9,4.4],\"tl:Rare\":[38,3.9,0.1],\"tl:Long\":[38,2.8,0.1],\"world\":[38,38.9,6.4],\"worldPost\":[38,0,0],\"mapPre\":[38,22.7,1.1],\"mapPost\":[38,3115.6,366.1],\"mapComp\":[38,3104.8,365.9],\"gameComp\":[38,3.8,1]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":8424,\"ms\":147,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.6,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":143.7,\"gameComp\":0.1}},{\"tg\":8433,\"ms\":186.4,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":183.5,\"gameComp\":0.1}},{\"tg\":8435,\"ms\":368.5,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":365.9,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":380,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:24:20.688Z\",\"state\":\"paused\",\"monoStart\":1454.472,\"monoEnd\":1459.474,\"dReal\":5.002,\"dTicks\":22,\"ratio\":null,\"tps\":0,\"tpsWall\":4.4,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.002,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":379,\"fps\":75.8,\"gapMaxMs\":190.1,\"gaps\":0,\"simMs\":0.4,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8457,\"tickMs\":95.139,\"focused\":false,\"gc\":628,\"heapMB\":5284.5,\"attr\":{\"tick\":[22,1868.1,149.4],\"tl:Normal\":[22,33.2,6],\"tl:Rare\":[22,2.2,0.1],\"tl:Long\":[22,1.7,0.1],\"world\":[22,20.1,1.5],\"worldPost\":[22,0,0],\"mapPre\":[22,12.7,0.9],\"mapPost\":[22,1795.7,145.8],\"mapComp\":[22,1792.5,145.7],\"gameComp\":[22,1.8,0.4]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":8441,\"ms\":149.4,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.2,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.5,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":145.7,\"gameComp\":0.1}},{\"tg\":8443,\"ms\":147.9,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":145.4,\"gameComp\":0.1}},{\"tg\":8446,\"ms\":145.9,\"top\":\"mapComp 95%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":137.9,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":220,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:24:25.690Z\",\"state\":\"paused\",\"monoStart\":1459.474,\"monoEnd\":1464.475,\"dReal\":5.001,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.001,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":598,\"fps\":119.6,\"gapMaxMs\":118.4,\"gaps\":0,\"simMs\":0.6,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8457,\"tickMs\":95.139,\"focused\":false,\"gc\":628,\"heapMB\":5334.7,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:24:30.697Z\",\"state\":\"paused\",\"monoStart\":1464.475,\"monoEnd\":1469.482,\"dReal\":5.007,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.007,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":671,\"fps\":134,\"gapMaxMs\":92.9,\"gaps\":0,\"simMs\":0.7,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8457,\"tickMs\":95.139,\"focused\":false,\"gc\":628,\"heapMB\":5387.3,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:24:35.703Z\",\"state\":\"paused\",\"monoStart\":1469.482,\"monoEnd\":1474.489,\"dReal\":5.007,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.007,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":712,\"fps\":142.2,\"gapMaxMs\":195.5,\"gaps\":0,\"simMs\":0.7,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8457,\"tickMs\":95.139,\"focused\":false,\"gc\":629,\"heapMB\":4847.5,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:24:40.704Z\",\"state\":\"paused\",\"monoStart\":1474.489,\"monoEnd\":1479.489,\"dReal\":5.001,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.001,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":754,\"fps\":150.8,\"gapMaxMs\":8.6,\"gaps\":0,\"simMs\":0.8,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8457,\"tickMs\":95.139,\"focused\":false,\"gc\":629,\"heapMB\":4873.5,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:24:45.706Z\",\"state\":\"paused\",\"monoStart\":1479.489,\"monoEnd\":1484.491,\"dReal\":5.001,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.001,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":727,\"fps\":145.4,\"gapMaxMs\":30.8,\"gaps\":0,\"simMs\":0.7,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8457,\"tickMs\":95.139,\"focused\":false,\"gc\":629,\"heapMB\":4908.6,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:24:50.712Z\",\"state\":\"paused\",\"monoStart\":1484.491,\"monoEnd\":1489.497,\"dReal\":5.007,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.007,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":575,\"fps\":114.8,\"gapMaxMs\":20.2,\"gaps\":0,\"simMs\":0.6,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8457,\"tickMs\":95.139,\"focused\":false,\"gc\":629,\"heapMB\":4974,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:24:55.717Z\",\"state\":\"paused\",\"monoStart\":1489.497,\"monoEnd\":1494.502,\"dReal\":5.005,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.005,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":710,\"fps\":141.9,\"gapMaxMs\":89.8,\"gaps\":0,\"simMs\":0.8,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8457,\"tickMs\":95.139,\"focused\":false,\"gc\":629,\"heapMB\":5052.4,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:25:01.012Z\",\"state\":\"paused\",\"monoStart\":1494.502,\"monoEnd\":1499.797,\"dReal\":5.295,\"dTicks\":6,\"ratio\":null,\"tps\":0,\"tpsWall\":1.13,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.295,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":506,\"fps\":95.6,\"gapMaxMs\":424.8,\"gaps\":0,\"simMs\":0.6,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8463,\"tickMs\":95.139,\"focused\":false,\"gc\":630,\"heapMB\":4865.1,\"attr\":{\"tick\":[6,1500.8,415.2],\"tl:Normal\":[6,47.9,42],\"tl:Rare\":[6,0.6,0.1],\"tl:Long\":[6,0.6,0.1],\"world\":[6,5.2,1.1],\"worldPost\":[6,0,0],\"mapPre\":[6,4,1.1],\"mapPost\":[6,1440.7,411.9],\"mapComp\":[6,1439.7,411.8],\"gameComp\":[6,1.6,0.9]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":8461,\"ms\":232.9,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.2,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":229.9,\"gameComp\":0.1}},{\"tg\":8462,\"ms\":365.3,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":362.4,\"gameComp\":0.1}},{\"tg\":8463,\"ms\":415.2,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":411.8,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":60,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:25:06.051Z\",\"state\":\"paused\",\"monoStart\":1499.797,\"monoEnd\":1504.836,\"dReal\":5.039,\"dTicks\":44,\"ratio\":null,\"tps\":0,\"tpsWall\":8.73,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.039,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":44,\"fps\":8.7,\"gapMaxMs\":396.2,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8507,\"tickMs\":95.139,\"focused\":false,\"gc\":631,\"heapMB\":5009.2,\"attr\":{\"tick\":[44,4386.8,378.1],\"tl:Normal\":[44,143.1,47.7],\"tl:Rare\":[44,4.5,0.1],\"tl:Long\":[44,3.3,0.1],\"world\":[44,38.9,1.4],\"worldPost\":[44,0,0],\"mapPre\":[44,26.2,1],\"mapPost\":[44,4166.7,371.1],\"mapComp\":[44,4155.4,370.9],\"gameComp\":[44,3,0.3]},\"top\":\"mapComp 95%\",\"worst\":[{\"tg\":8487,\"ms\":185,\"top\":\"mapComp 72%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":47.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":1.5,\"mapComp\":134,\"gameComp\":0.1}},{\"tg\":8501,\"ms\":321.3,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.2,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":318.1,\"gameComp\":0.1}},{\"tg\":8502,\"ms\":378.1,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":5.4,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":370.9,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":440,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:25:11.054Z\",\"state\":\"paused\",\"monoStart\":1504.836,\"monoEnd\":1509.839,\"dReal\":5.003,\"dTicks\":10,\"ratio\":null,\"tps\":0,\"tpsWall\":2,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.003,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":452,\"fps\":90.3,\"gapMaxMs\":756.7,\"gaps\":0,\"simMs\":0.5,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8517,\"tickMs\":95.139,\"focused\":false,\"gc\":631,\"heapMB\":5236.9,\"attr\":{\"tick\":[10,915.2,225.2],\"tl:Normal\":[10,13.5,1.8],\"tl:Rare\":[10,1.1,0.2],\"tl:Long\":[10,0.8,0.1],\"world\":[10,8.8,1.3],\"worldPost\":[10,0,0],\"mapPre\":[10,6,1.1],\"mapPost\":[10,884.2,222.4],\"mapComp\":[10,789.6,134.1],\"gameComp\":[10,0.6,0.1]},\"top\":\"mapComp 86%\",\"worst\":[{\"tg\":8513,\"ms\":135.6,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.2,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":132.3,\"gameComp\":0.1}},{\"tg\":8514,\"ms\":137.9,\"top\":\"mapComp 97%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.8,\"tl:Rare\":0.2,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":134.1,\"gameComp\":0.1}},{\"tg\":8515,\"ms\":225.2,\"top\":\"mapComp 58%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.2,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":92.9,\"mapComp\":129.5,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":100,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:25:16.200Z\",\"state\":\"paused\",\"monoStart\":1509.839,\"monoEnd\":1514.986,\"dReal\":5.146,\"dTicks\":27,\"ratio\":null,\"tps\":0,\"tpsWall\":5.25,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.146,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":261,\"fps\":50.7,\"gapMaxMs\":397,\"gaps\":0,\"simMs\":0.3,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8544,\"tickMs\":95.139,\"focused\":false,\"gc\":632,\"heapMB\":5187.1,\"attr\":{\"tick\":[27,3090.1,379.6],\"tl:Normal\":[27,62.6,21.8],\"tl:Rare\":[27,2.8,0.1],\"tl:Long\":[27,2,0.1],\"world\":[27,22.9,1.2],\"worldPost\":[27,0,0],\"mapPre\":[27,15,0.8],\"mapPost\":[27,2980.3,377.1],\"mapComp\":[27,2973,376.9],\"gameComp\":[27,3.8,1.3]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":8518,\"ms\":157,\"top\":\"mapComp 83%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":21.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":2,\"mapComp\":131,\"gameComp\":0.6}},{\"tg\":8529,\"ms\":370.9,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":4.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":364.1,\"gameComp\":0.1}},{\"tg\":8530,\"ms\":379.6,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":376.9,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":270,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:25:21.207Z\",\"state\":\"paused\",\"monoStart\":1514.986,\"monoEnd\":1519.992,\"dReal\":5.006,\"dTicks\":53,\"ratio\":null,\"tps\":0,\"tpsWall\":10.59,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.006,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":53,\"fps\":10.6,\"gapMaxMs\":346.2,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8597,\"tickMs\":95.139,\"focused\":false,\"gc\":633,\"heapMB\":5372.3,\"attr\":{\"tick\":[53,4473.1,338.5],\"tl:Normal\":[53,71.2,16.9],\"tl:Rare\":[53,5.5,0.2],\"tl:Long\":[53,3.5,0.1],\"world\":[53,46.4,1.5],\"worldPost\":[53,0,0],\"mapPre\":[53,30.5,1],\"mapPost\":[53,4311.5,335.3],\"mapComp\":[53,4298.3,335],\"gameComp\":[53,3.2,0.1]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":8549,\"ms\":149.7,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":147.2,\"gameComp\":0.1}},{\"tg\":8570,\"ms\":338.5,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":335,\"gameComp\":0.1}},{\"tg\":8571,\"ms\":337.6,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":334.6,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":530,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:25:26.209Z\",\"state\":\"paused\",\"monoStart\":1519.992,\"monoEnd\":1524.995,\"dReal\":5.003,\"dTicks\":35,\"ratio\":null,\"tps\":0,\"tpsWall\":7,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.003,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":216,\"fps\":43.2,\"gapMaxMs\":348.6,\"gaps\":0,\"simMs\":0.2,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8632,\"tickMs\":95.139,\"focused\":false,\"gc\":634,\"heapMB\":5267.7,\"attr\":{\"tick\":[35,3236.6,338.5],\"tl:Normal\":[35,29.2,3.9],\"tl:Rare\":[35,3.5,0.1],\"tl:Long\":[35,2.6,0.4],\"world\":[35,32.1,1.4],\"worldPost\":[35,0,0],\"mapPre\":[35,19.9,0.8],\"mapPost\":[35,3146,336.2],\"mapComp\":[35,3136,334.3],\"gameComp\":[35,2.3,0.2]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":8612,\"ms\":330.2,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.9,\"tl:Rare\":0.1,\"tl:Long\":0.4,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.7,\"mapPost\":0.2,\"mapComp\":327,\"gameComp\":0.1}},{\"tg\":8613,\"ms\":338.5,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":1.9,\"mapComp\":334.3,\"gameComp\":0.1}},{\"tg\":8622,\"ms\":138.8,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1,\"worldPost\":0,\"mapPre\":0.7,\"mapPost\":0.2,\"mapComp\":135.9,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":350,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:25:31.241Z\",\"state\":\"paused\",\"monoStart\":1524.995,\"monoEnd\":1530.026,\"dReal\":5.031,\"dTicks\":7,\"ratio\":null,\"tps\":0,\"tpsWall\":1.39,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.031,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":618,\"fps\":122.8,\"gapMaxMs\":145.4,\"gaps\":0,\"simMs\":0.7,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8639,\"tickMs\":95.139,\"focused\":false,\"gc\":634,\"heapMB\":5398.5,\"attr\":{\"tick\":[7,417.7,136.4],\"tl:Normal\":[7,10.1,6.5],\"tl:Rare\":[7,0.7,0.1],\"tl:Long\":[7,0.5,0.1],\"world\":[7,5.8,0.9],\"worldPost\":[7,0,0],\"mapPre\":[7,3.8,0.6],\"mapPost\":[7,396.2,134.3],\"mapComp\":[7,394.7,134.1],\"gameComp\":[7,0.4,0.1]},\"top\":\"mapComp 94%\",\"worst\":[{\"tg\":8635,\"ms\":133.8,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":131.4,\"gameComp\":0.1}},{\"tg\":8638,\"ms\":135.9,\"top\":\"mapComp 94%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":6.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":127.6,\"gameComp\":0.1}},{\"tg\":8639,\"ms\":136.4,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.4,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.3,\"mapComp\":134.1,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":70,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:25:36.313Z\",\"state\":\"paused\",\"monoStart\":1530.026,\"monoEnd\":1535.098,\"dReal\":5.072,\"dTicks\":33,\"ratio\":null,\"tps\":0,\"tpsWall\":6.51,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.072,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":33,\"fps\":6.5,\"gapMaxMs\":495.3,\"gaps\":0,\"simMs\":0,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8672,\"tickMs\":95.139,\"focused\":false,\"gc\":634,\"heapMB\":6181.2,\"attr\":{\"tick\":[33,4773.1,484.7],\"tl:Normal\":[33,16.1,1.5],\"tl:Rare\":[33,3.3,0.1],\"tl:Long\":[33,2.1,0.1],\"world\":[33,30.1,1.4],\"worldPost\":[33,0,0],\"mapPre\":[33,18.4,0.7],\"mapPost\":[33,4699.9,482.3],\"mapComp\":[33,4693.1,482.1],\"gameComp\":[33,2.1,0.2]},\"top\":\"mapComp 98%\",\"worst\":[{\"tg\":8655,\"ms\":282.6,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.3,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":280.4,\"gameComp\":0.1}},{\"tg\":8657,\"ms\":484.7,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":482.1,\"gameComp\":0.1}},{\"tg\":8658,\"ms\":481,\"top\":\"mapComp 100%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.3,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":478.8,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":330,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:25:41.428Z\",\"state\":\"paused\",\"monoStart\":1535.098,\"monoEnd\":1540.213,\"dReal\":5.115,\"dTicks\":46,\"ratio\":null,\"tps\":0,\"tpsWall\":8.99,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.115,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":110,\"fps\":21.5,\"gapMaxMs\":590.4,\"gaps\":0,\"simMs\":0.3,\"simMaxMs\":0.1,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8718,\"tickMs\":95.139,\"focused\":false,\"gc\":635,\"heapMB\":5615.4,\"attr\":{\"tick\":[46,4253.7,580.2],\"tl:Normal\":[46,127.2,84],\"tl:Rare\":[46,4.7,0.1],\"tl:Long\":[46,3.1,0.1],\"world\":[46,39.2,1.3],\"worldPost\":[46,0,0],\"mapPre\":[46,26,0.9],\"mapPost\":[46,4049.7,578.1],\"mapComp\":[46,4041.6,577.9],\"gameComp\":[46,2.8,0.1]},\"top\":\"mapComp 95%\",\"worst\":[{\"tg\":8679,\"ms\":227.3,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.3,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":225,\"gameComp\":0.1}},{\"tg\":8682,\"ms\":580.2,\"top\":\"mapComp 100%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":577.9,\"gameComp\":0.1}},{\"tg\":8710,\"ms\":217.3,\"top\":\"mapComp 61%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":84,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":131.6,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":460,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:25:46.703Z\",\"state\":\"paused\",\"monoStart\":1540.213,\"monoEnd\":1545.488,\"dReal\":5.275,\"dTicks\":47,\"ratio\":null,\"tps\":0,\"tpsWall\":8.91,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.275,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":111,\"fps\":21,\"gapMaxMs\":568.1,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8765,\"tickMs\":95.139,\"focused\":false,\"gc\":637,\"heapMB\":4848.9,\"attr\":{\"tick\":[47,4292,551.5],\"tl:Normal\":[47,62.9,13.1],\"tl:Rare\":[47,4.7,0.1],\"tl:Long\":[47,3.1,0.1],\"world\":[47,42.4,1.5],\"worldPost\":[47,0,0],\"mapPre\":[47,26.4,0.9],\"mapPost\":[47,4148.7,548],\"mapComp\":[47,4141.6,547.8],\"gameComp\":[47,2.7,0.1]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":8720,\"ms\":551.5,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":2,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":547.8,\"gameComp\":0.1}},{\"tg\":8764,\"ms\":204,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.1,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":201.4,\"gameComp\":0.1}},{\"tg\":8765,\"ms\":466.5,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":464.1,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":470,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:25:51.744Z\",\"state\":\"paused\",\"monoStart\":1545.488,\"monoEnd\":1550.53,\"dReal\":5.042,\"dTicks\":49,\"ratio\":null,\"tps\":0,\"tpsWall\":9.72,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.042,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":49,\"fps\":9.7,\"gapMaxMs\":539.2,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8814,\"tickMs\":95.139,\"focused\":false,\"gc\":638,\"heapMB\":5045.5,\"attr\":{\"tick\":[49,4639.1,530.3],\"tl:Normal\":[49,49,12.1],\"tl:Rare\":[49,5,0.1],\"tl:Long\":[49,3.3,0.1],\"world\":[49,44.4,1.4],\"worldPost\":[49,0,0],\"mapPre\":[49,27.9,1],\"mapPost\":[49,4505.1,527.8],\"mapComp\":[49,4496.6,527.6],\"gameComp\":[49,3.1,0.1]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":8797,\"ms\":153.5,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":150.9,\"gameComp\":0.1}},{\"tg\":8803,\"ms\":530.3,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.1,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":527.6,\"gameComp\":0.1}},{\"tg\":8811,\"ms\":169.6,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":167,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":490,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:25:56.797Z\",\"state\":\"paused\",\"monoStart\":1550.53,\"monoEnd\":1555.582,\"dReal\":5.052,\"dTicks\":45,\"ratio\":null,\"tps\":0,\"tpsWall\":8.91,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.052,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":112,\"fps\":22.2,\"gapMaxMs\":374.7,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8859,\"tickMs\":95.139,\"focused\":false,\"gc\":639,\"heapMB\":5164.3,\"attr\":{\"tick\":[45,4099.6,360.4],\"tl:Normal\":[45,52,15.4],\"tl:Rare\":[45,4.8,0.2],\"tl:Long\":[45,3.1,0.1],\"world\":[45,39.3,1.3],\"worldPost\":[45,0,0],\"mapPre\":[45,25.7,1],\"mapPost\":[45,3970.8,357.8],\"mapComp\":[45,3959.8,357.7],\"gameComp\":[45,2.8,0.1]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":8836,\"ms\":147.7,\"top\":\"mapComp 88%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":15.4,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":130.5,\"gameComp\":0.1}},{\"tg\":8847,\"ms\":301.8,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":299.2,\"gameComp\":0.1}},{\"tg\":8848,\"ms\":360.4,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":357.7,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":450,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:26:01.858Z\",\"state\":\"paused\",\"monoStart\":1555.582,\"monoEnd\":1560.643,\"dReal\":5.061,\"dTicks\":46,\"ratio\":null,\"tps\":0,\"tpsWall\":9.09,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.061,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":110,\"fps\":21.7,\"gapMaxMs\":540.7,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8905,\"tickMs\":95.139,\"focused\":false,\"gc\":640,\"heapMB\":5283.1,\"attr\":{\"tick\":[46,4115.6,527.6],\"tl:Normal\":[46,45.2,5.7],\"tl:Rare\":[46,4.8,0.3],\"tl:Long\":[46,3,0.1],\"world\":[46,40.5,1.6],\"worldPost\":[46,0,0],\"mapPre\":[46,25.5,0.7],\"mapPost\":[46,3992.7,524.8],\"mapComp\":[46,3984.1,523.8],\"gameComp\":[46,2.8,0.1]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":8882,\"ms\":527.6,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.2,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":1,\"mapComp\":523.8,\"gameComp\":0.1}},{\"tg\":8895,\"ms\":148.6,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":145.9,\"gameComp\":0.1}},{\"tg\":8905,\"ms\":141.2,\"top\":\"mapComp 97%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":2.3,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":137.1,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":460,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:26:06.988Z\",\"state\":\"paused\",\"monoStart\":1560.643,\"monoEnd\":1565.773,\"dReal\":5.129,\"dTicks\":38,\"ratio\":null,\"tps\":0,\"tpsWall\":7.41,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.129,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":102,\"fps\":19.9,\"gapMaxMs\":527.1,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8943,\"tickMs\":95.139,\"focused\":false,\"gc\":641,\"heapMB\":5431.2,\"attr\":{\"tick\":[38,4210.3,519.4],\"tl:Normal\":[38,47.5,15.4],\"tl:Rare\":[38,3.9,0.1],\"tl:Long\":[38,2.6,0.1],\"world\":[38,33.7,1.2],\"worldPost\":[38,0,0],\"mapPre\":[38,21.5,0.9],\"mapPost\":[38,4097.6,517.1],\"mapComp\":[38,4091.1,516.9],\"gameComp\":[38,2.6,0.2]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":8921,\"ms\":519.4,\"top\":\"mapComp 100%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.5,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":516.9,\"gameComp\":0.1}},{\"tg\":8932,\"ms\":140.8,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.1,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":138,\"gameComp\":0.1}},{\"tg\":8941,\"ms\":146.3,\"top\":\"mapComp 88%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":15.4,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":129.1,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":380,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:26:11.992Z\",\"state\":\"paused\",\"monoStart\":1565.773,\"monoEnd\":1570.777,\"dReal\":5.004,\"dTicks\":54,\"ratio\":null,\"tps\":0,\"tpsWall\":10.79,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.004,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":61,\"fps\":12.2,\"gapMaxMs\":539.8,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":8997,\"tickMs\":95.139,\"focused\":false,\"gc\":642,\"heapMB\":5621.5,\"attr\":{\"tick\":[54,4400.3,531.7],\"tl:Normal\":[54,42.4,2.4],\"tl:Rare\":[54,5.6,0.2],\"tl:Long\":[54,3.6,0.1],\"world\":[54,48.2,1.3],\"worldPost\":[54,0,0],\"mapPre\":[54,30.6,0.9],\"mapPost\":[54,4265.1,529],\"mapComp\":[54,4254.8,528.8],\"gameComp\":[54,3.3,0.1]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":8950,\"ms\":531.7,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.1,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":528.8,\"gameComp\":0.1}},{\"tg\":8953,\"ms\":142.4,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.2,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":139.6,\"gameComp\":0.1}},{\"tg\":8968,\"ms\":140,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.9,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":137.2,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":540,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:26:17.063Z\",\"state\":\"paused\",\"monoStart\":1570.777,\"monoEnd\":1575.848,\"dReal\":5.071,\"dTicks\":35,\"ratio\":null,\"tps\":0,\"tpsWall\":6.9,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.071,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":92,\"fps\":18.1,\"gapMaxMs\":453.3,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":9032,\"tickMs\":95.139,\"focused\":false,\"gc\":644,\"heapMB\":4858.7,\"attr\":{\"tick\":[35,4327,442.8],\"tl:Normal\":[35,31.5,4.6],\"tl:Rare\":[35,3.5,0.1],\"tl:Long\":[35,2.5,0.1],\"world\":[35,31.4,1.7],\"worldPost\":[35,0,0],\"mapPre\":[35,19.4,0.6],\"mapPost\":[35,4235.4,440.1],\"mapComp\":[35,4229.3,439.9],\"gameComp\":[35,2.3,0.1]},\"top\":\"mapComp 98%\",\"worst\":[{\"tg\":8998,\"ms\":267.7,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":265.2,\"gameComp\":0.1}},{\"tg\":9000,\"ms\":403.9,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0.2,\"tl:Normal\":1.4,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.2,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":400.2,\"gameComp\":0.1}},{\"tg\":9032,\"ms\":442.8,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.1,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":439.9,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":350,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:26:22.075Z\",\"state\":\"paused\",\"monoStart\":1575.848,\"monoEnd\":1580.861,\"dReal\":5.013,\"dTicks\":48,\"ratio\":null,\"tps\":0,\"tpsWall\":9.58,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.013,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":112,\"fps\":22.3,\"gapMaxMs\":597.6,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":9080,\"tickMs\":95.139,\"focused\":false,\"gc\":645,\"heapMB\":4869.8,\"attr\":{\"tick\":[48,4011.9,565.3],\"tl:Normal\":[48,49.6,6.3],\"tl:Rare\":[48,5,0.1],\"tl:Long\":[48,3.3,0.1],\"world\":[48,43.8,1.6],\"worldPost\":[48,0,0],\"mapPre\":[48,27.8,1.2],\"mapPost\":[48,3878.1,562.9],\"mapComp\":[48,3869.8,562.8],\"gameComp\":[48,3,0.1]},\"top\":\"mapComp 96%\",\"worst\":[{\"tg\":9064,\"ms\":165.4,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1.1,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":162.5,\"gameComp\":0.1}},{\"tg\":9073,\"ms\":164.5,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":161.8,\"gameComp\":0.1}},{\"tg\":9079,\"ms\":565.3,\"top\":\"mapComp 100%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":562.8,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":480,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:26:27.171Z\",\"state\":\"paused\",\"monoStart\":1580.861,\"monoEnd\":1585.955,\"dReal\":5.095,\"dTicks\":39,\"ratio\":null,\"tps\":0,\"tpsWall\":7.66,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.095,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":103,\"fps\":20.2,\"gapMaxMs\":551.9,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":9119,\"tickMs\":95.139,\"focused\":false,\"gc\":646,\"heapMB\":4947.1,\"attr\":{\"tick\":[39,4267.9,543.8],\"tl:Normal\":[39,141.1,92.8],\"tl:Rare\":[39,4,0.1],\"tl:Long\":[39,2.7,0.1],\"world\":[39,36,1.6],\"worldPost\":[39,0,0],\"mapPre\":[39,23.4,1],\"mapPost\":[39,4057.1,541.5],\"mapComp\":[39,4050.1,541.3],\"gameComp\":[39,2.5,0.1]},\"top\":\"mapComp 95%\",\"worst\":[{\"tg\":9084,\"ms\":163.2,\"top\":\"mapComp 98%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.2,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":1,\"worldPost\":0,\"mapPre\":0.8,\"mapPost\":0.7,\"mapComp\":159.2,\"gameComp\":0.1}},{\"tg\":9100,\"ms\":231.8,\"top\":\"mapComp 59%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":92.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":1,\"mapPost\":0.1,\"mapComp\":136.8,\"gameComp\":0.1}},{\"tg\":9114,\"ms\":543.8,\"top\":\"mapComp 100%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":541.3,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":390,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:26:32.199Z\",\"state\":\"paused\",\"monoStart\":1585.955,\"monoEnd\":1590.984,\"dReal\":5.029,\"dTicks\":41,\"ratio\":null,\"tps\":0,\"tpsWall\":8.15,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.029,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":41,\"fps\":8.2,\"gapMaxMs\":468.7,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":9160,\"tickMs\":95.139,\"focused\":false,\"gc\":647,\"heapMB\":5202.4,\"attr\":{\"tick\":[41,4653.6,458.1],\"tl:Normal\":[41,74.3,17.6],\"tl:Rare\":[41,4.2,0.1],\"tl:Long\":[41,3,0.3],\"world\":[41,35.5,1.3],\"worldPost\":[41,0,0],\"mapPre\":[41,23,0.8],\"mapPost\":[41,4509.9,455.2],\"mapComp\":[41,4503.6,455.1],\"gameComp\":[41,2.8,0.1]},\"top\":\"mapComp 97%\",\"worst\":[{\"tg\":9144,\"ms\":206.6,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.2,\"mapComp\":203.9,\"gameComp\":0.1}},{\"tg\":9145,\"ms\":458.1,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":1.3,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":455.1,\"gameComp\":0.1}},{\"tg\":9148,\"ms\":158.2,\"top\":\"mapComp 88%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":17.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":138.8,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":410,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:26:37.219Z\",\"state\":\"paused\",\"monoStart\":1590.984,\"monoEnd\":1596.003,\"dReal\":5.019,\"dTicks\":35,\"ratio\":null,\"tps\":0,\"tpsWall\":6.97,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.019,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":103,\"fps\":20.5,\"gapMaxMs\":463.6,\"gaps\":0,\"simMs\":0.1,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":9195,\"tickMs\":95.139,\"focused\":false,\"gc\":648,\"heapMB\":5347.4,\"attr\":{\"tick\":[35,4202.5,452.7],\"tl:Normal\":[35,34.3,5.4],\"tl:Rare\":[35,3.6,0.1],\"tl:Long\":[35,2.6,0.1],\"world\":[35,31.7,1.7],\"worldPost\":[35,0,0],\"mapPre\":[35,19.9,1],\"mapPost\":[35,4107,450.4],\"mapComp\":[35,4101.1,450.2],\"gameComp\":[35,2.4,0.2]},\"top\":\"mapComp 98%\",\"worst\":[{\"tg\":9175,\"ms\":196.3,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.8,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.7,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.1,\"mapComp\":193.8,\"gameComp\":0.1}},{\"tg\":9177,\"ms\":452.7,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":450.2,\"gameComp\":0.1}},{\"tg\":9188,\"ms\":145.9,\"top\":\"mapComp 95%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":5.4,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.3,\"mapComp\":138.5,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":350,\"profEstMs\":0.01,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:26:42.221Z\",\"state\":\"paused\",\"monoStart\":1596.003,\"monoEnd\":1601.006,\"dReal\":5.003,\"dTicks\":42,\"ratio\":null,\"tps\":0,\"tpsWall\":8.39,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.003,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":170,\"fps\":34,\"gapMaxMs\":355.9,\"gaps\":0,\"simMs\":0.2,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":9237,\"tickMs\":95.139,\"focused\":false,\"gc\":649,\"heapMB\":5322.1,\"attr\":{\"tick\":[42,3704.1,345.8],\"tl:Normal\":[42,128.2,93.4],\"tl:Rare\":[42,4.5,0.4],\"tl:Long\":[42,2.8,0.1],\"world\":[42,37.8,1.5],\"worldPost\":[42,0,0],\"mapPre\":[42,26.8,1.3],\"mapPost\":[42,3500.2,343.5],\"mapComp\":[42,3494.1,343.3],\"gameComp\":[42,2.6,0.2]},\"top\":\"mapComp 94%\",\"worst\":[{\"tg\":9211,\"ms\":316.3,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":0.6,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":313.8,\"gameComp\":0.1}},{\"tg\":9212,\"ms\":345.8,\"top\":\"mapComp 99%\",\"stages\":{\"tickOther\":0.1,\"tl:Normal\":0.7,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.8,\"worldPost\":0,\"mapPre\":0.5,\"mapPost\":0.2,\"mapComp\":343.3,\"gameComp\":0.1}},{\"tg\":9234,\"ms\":234.1,\"top\":\"mapComp 59%\",\"stages\":{\"tickOther\":0,\"tl:Normal\":93.4,\"tl:Rare\":0.1,\"tl:Long\":0.1,\"world\":0.9,\"worldPost\":0,\"mapPre\":0.6,\"mapPost\":0.1,\"mapComp\":138.8,\"gameComp\":0.1}}],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":420,\"profEstMs\":0.02,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:26:47.227Z\",\"state\":\"paused\",\"monoStart\":1601.006,\"monoEnd\":1606.011,\"dReal\":5.005,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.005,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":698,\"fps\":139.5,\"gapMaxMs\":19.6,\"gaps\":0,\"simMs\":0.9,\"simMaxMs\":0.1,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":9237,\"tickMs\":95.139,\"focused\":false,\"gc\":649,\"heapMB\":5345.7,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:26:52.230Z\",\"state\":\"paused\",\"monoStart\":1606.011,\"monoEnd\":1611.015,\"dReal\":5.004,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.004,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":720,\"fps\":143.9,\"gapMaxMs\":9.5,\"gaps\":0,\"simMs\":0.7,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":9237,\"tickMs\":95.139,\"focused\":false,\"gc\":649,\"heapMB\":5374.4,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:26:57.235Z\",\"state\":\"paused\",\"monoStart\":1611.015,\"monoEnd\":1616.02,\"dReal\":5.005,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.005,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":710,\"fps\":141.9,\"gapMaxMs\":15.6,\"gaps\":0,\"simMs\":0.7,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":9237,\"tickMs\":95.139,\"focused\":false,\"gc\":649,\"heapMB\":5405.4,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:27:02.241Z\",\"state\":\"paused\",\"monoStart\":1616.02,\"monoEnd\":1621.027,\"dReal\":5.006,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.006,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":641,\"fps\":128,\"gapMaxMs\":187.7,\"gaps\":0,\"simMs\":0.7,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":9237,\"tickMs\":95.139,\"focused\":false,\"gc\":650,\"heapMB\":4850.8,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:27:07.246Z\",\"state\":\"paused\",\"monoStart\":1621.027,\"monoEnd\":1626.031,\"dReal\":5.004,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.004,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":727,\"fps\":145.3,\"gapMaxMs\":9.2,\"gaps\":0,\"simMs\":0.8,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":9237,\"tickMs\":95.139,\"focused\":false,\"gc\":650,\"heapMB\":4871.5,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}",
+    "{\"utc\":\"2026-10-10T21:27:12.250Z\",\"state\":\"paused\",\"monoStart\":1626.031,\"monoEnd\":1631.036,\"dReal\":5.005,\"dTicks\":0,\"ratio\":null,\"tps\":0,\"tpsWall\":0,\"target\":0,\"expected\":0,\"expectedLo\":0,\"ratioHi\":null,\"runS\":0,\"pausedS\":5.005,\"explainedS\":0,\"stallS\":0,\"ambigS\":0,\"pausedFrac\":1,\"multMin\":0,\"multMax\":0,\"mult\":0,\"transitions\":0,\"frames\":721,\"fps\":144,\"gapMaxMs\":12.9,\"gaps\":0,\"simMs\":0.7,\"simMaxMs\":0,\"simShare\":0,\"capFrames\":0,\"budgetFrames\":0,\"tickReset\":false,\"game\":1,\"speed\":\"Paused\",\"tg\":9237,\"tickMs\":95.139,\"focused\":false,\"gc\":650,\"heapMB\":4896.7,\"attr\":{\"tick\":[0,0,0],\"tl:Normal\":[0,0,0],\"tl:Rare\":[0,0,0],\"tl:Long\":[0,0,0],\"world\":[0,0,0],\"worldPost\":[0,0,0],\"mapPre\":[0,0,0],\"mapPost\":[0,0,0],\"mapComp\":[0,0,0],\"gameComp\":[0,0,0]},\"top\":\"\",\"worst\":[],\"attrValid\":true,\"profSkipped\":0,\"profHooks\":0,\"profEstMs\":0,\"wq\":0,\"wfly\":0,\"wdrop\":0,\"wdropCrit\":0,\"werr\":0,\"wtorn\":0}"
+   ],
+   "operation": {
+    "OperationId": "op_24ffbaf57cc8445cb5561c9b71c6947e",
+    "Status": "Completed",
+    "Success": true,
+    "DurationMs": 6
+   },
+   "state": {
+    "programState": "Playing",
+    "hasCurrentGame": true,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "tick": 9237
+   }
+  }
+ },
+ "checks": [
+  {
+   "check": "spawn receipts: 3 calls, every id read back, requested vs tool vs read-back kinds recorded",
+   "pass": true,
+   "detail": {
+    "problems": [],
+    "receipts": [
+     {
+      "actionId": "spawn0",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Tribal_Warrior",
+      "returnedIds": [
+       "Human63234"
+      ],
+      "toolKinds": [
+       "Tribal_Warrior"
+      ],
+      "readBackKinds": [
+       "Tribal_Warrior"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "spawn1",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Muffalo",
+      "returnedIds": [
+       "Muffalo63241"
+      ],
+      "toolKinds": [
+       "Muffalo"
+      ],
+      "readBackKinds": [
+       "Muffalo"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     },
+     {
+      "actionId": "spawn2",
+      "tool": "jawa/spawn_pawn",
+      "requestedKind": "Villager",
+      "returnedIds": [
+       "Human63242"
+      ],
+      "toolKinds": [
+       "Villager"
+      ],
+      "readBackKinds": [
+       "Villager"
+      ],
+      "missingOnReadBack": [],
+      "mismatch": false,
+      "toolSuccess": true
+     }
+    ]
+   }
+  },
+  {
+   "check": "pawn_origin attributes the 3 spawns to our bridge action (jawa/spawn_pawn in the chain)",
+   "pass": true,
+   "detail": {
+    "origin": {
+     "success": true,
+     "installed": true,
+     "installStatus": "complete",
+     "startedBy": "bridge-registration",
+     "epoch": 1,
+     "notFound": [],
+     "pawns": [
+      {
+       "id": "Human63234",
+       "kind": "Tribal_Warrior",
+       "generation": {
+        "seq": 21,
+        "tick": 5738,
+        "chain": "bridge:jawa/spawn_pawn#15",
+        "cause": "bridge:jawa/spawn_pawn#15",
+        "reuse": "new",
+        "reobserved": 0,
+        "thread": "main"
+       },
+       "spawn": {
+        "seq": 22,
+        "tick": 5738,
+        "map": 0,
+        "classification": "firstObservedSpawn",
+        "spawnChain": "bridge:jawa/spawn_pawn#15",
+        "ranOriginal": true
+       },
+       "ourInvolvement": "confirmedIndirectAction",
+       "statement": "generated during bridge:jawa/spawn_pawn#15; first observed spawn in this recording epoch; spawned during bridge:jawa/spawn_pawn#15"
+      },
+      {
+       "id": "Muffalo63241",
+       "kind": "Muffalo",
+       "generation": {
+        "seq": 23,
+        "tick": 5738,
+        "chain": "bridge:jawa/spawn_pawn#16",
+        "cause": "bridge:jawa/spawn_pawn#16",
+        "reuse": "new",
+        "reobserved": 0,
+        "thread": "main"
+       },
+       "spawn": {
+        "seq": 24,
+        "tick": 5738,
+        "map": 0,
+        "classification": "firstObservedSpawn",
+        "spawnChain": "bridge:jawa/spawn_pawn#16",
+        "ranOriginal": true
+       },
+       "ourInvolvement": "confirmedIndirectAction",
+       "statement": "generated during bridge:jawa/spawn_pawn#16; first observed spawn in this recording epoch; spawned during bridge:jawa/spawn_pawn#16"
+      },
+      {
+       "id": "Human63242",
+       "kind": "Villager",
+       "generation": {
+        "seq": 25,
+        "tick": 5738,
+        "chain": "bridge:jawa/spawn_pawn#17",
+        "cause": "bridge:jawa/spawn_pawn#17",
+        "reuse": "new",
+        "reobserved": 0,
+        "thread": "main"
+       },
+       "spawn": {
+        "seq": 26,
+        "tick": 5738,
+        "map": 0,
+        "classification": "firstObservedSpawn",
+        "spawnChain": "bridge:jawa/spawn_pawn#17",
+        "ranOriginal": true
+       },
+       "ourInvolvement": "confirmedIndirectAction",
+       "statement": "generated during bridge:jawa/spawn_pawn#17; first observed spawn in this recording epoch; spawned during bridge:jawa/spawn_pawn#17"
+      }
+     ],
+     "health": {
+      "untaggedGenerations": 0,
+      "tagEvictions": 0,
+      "seenEvictions": 0,
+      "spawnOverwritten": 0,
+      "faults": 0
+     },
+     "limits": "provenance does not survive a save/load (a load opens a new epoch); a pawn present before install reads 'origin unknown'; ourInvolvement confirmedIndirectAction means generated DURING one of our bridge operations, never 'made on purpose by us'",
+     "ticksGame": 5738,
+     "operation": {
+      "OperationId": "op_f5f540758a5c4bd69bec52b7e018d099",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 32
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 5738
+     }
+    }
+   }
+  },
+  {
+   "check": "incident journal records the forced RaidEnemy with honest outcome fields",
+   "pass": true,
+   "detail": {
+    "rows": [
+     {
+      "aseq": 27,
+      "epoch": 1,
+      "tick": 5738,
+      "def": "RaidEnemy",
+      "target": "map:0",
+      "forced": false,
+      "points": 195.000015,
+      "called": true,
+      "outerBodyRan": "true",
+      "returned": "true",
+      "workerEntered": "unknown",
+      "workerEnteredWhy": "not instrumented",
+      "pawnsGeneratedDuring": 0,
+      "pawnsSpawnedDuring": 0,
+      "chain": "bridge:jawa/fire_incident#18 > incident:RaidEnemy#19",
+      "statement": "incident RaidEnemy was called; outer body ran: true; returned true; worker entered: unknown"
+     }
+    ],
+    "fired": {
+     "success": false,
+     "message": "\ud83d\udd34 A DIALOG SWALLOWED THIS FIRING. 1 window(s) opened during the call (Verse.Dialog_NodeTree) and the incident produced nothing. A Harmony prefix - Leo.RaidProtectionFee is the known one - can replace the incident with a modal and still set __result = true, so 'executed' is NOT evidence the incident happened. Nothing on the bridge clicks a button, so the modal will never be answered and it will block later calls. Clear it with jawa/window_list_close {action:'close', typeName:'<the type above>', closeAll:true}, then either disable the intercepting mod or fire at a faction it exempts.",
+     "incident": "RaidEnemy",
+     "category": "ThreatBig",
+     "canFireNow": false,
+     "forced": false,
+     "fired": true,
+     "windowsOpened": [
+      {
+       "type": "Verse.Dialog_NodeTree",
+       "forcePause": true,
+       "isDebug": false,
+       "id": 3
+      }
+     ],
+     "blockedByDialog": true,
+     "points": 195.000015,
+     "faction": "OuterRim_BinaryStarRaiders",
+     "ticksGame": 5738,
+     "operation": {
+      "OperationId": "op_3332d03293e045369d105abd4a60b7f0",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 113
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 5738
+     }
+    }
+   }
+  },
+  {
+   "check": "raid pawns carry the chain bridge:jawa/fire_incident > incident:RaidEnemy",
+   "pass": false,
+   "detail": {
+    "why": "no new pawns after 300 ticks (drop pods may still be falling)",
+    "fired": {
+     "success": false,
+     "message": "\ud83d\udd34 A DIALOG SWALLOWED THIS FIRING. 1 window(s) opened during the call (Verse.Dialog_NodeTree) and the incident produced nothing. A Harmony prefix - Leo.RaidProtectionFee is the known one - can replace the incident with a modal and still set __result = true, so 'executed' is NOT evidence the incident happened. Nothing on the bridge clicks a button, so the modal will never be answered and it will block later calls. Clear it with jawa/window_list_close {action:'close', typeName:'<the type above>', closeAll:true}, then either disable the intercepting mod or fire at a faction it exempts.",
+     "incident": "RaidEnemy",
+     "category": "ThreatBig",
+     "canFireNow": false,
+     "forced": false,
+     "fired": true,
+     "windowsOpened": [
+      {
+       "type": "Verse.Dialog_NodeTree",
+       "forcePause": true,
+       "isDebug": false,
+       "id": 3
+      }
+     ],
+     "blockedByDialog": true,
+     "points": 195.000015,
+     "faction": "OuterRim_BinaryStarRaiders",
+     "ticksGame": 5738,
+     "operation": {
+      "OperationId": "op_3332d03293e045369d105abd4a60b7f0",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 113
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 5738
+     }
+    }
+   }
+  },
+  {
+   "check": "called-is-not-fired: journal row for Infestation agrees with the tool's fired flag (True)",
+   "pass": true,
+   "detail": {
+    "rows": [
+     {
+      "aseq": 28,
+      "epoch": 1,
+      "tick": 5833,
+      "def": "Infestation",
+      "target": "map:0",
+      "forced": false,
+      "points": 200.0,
+      "called": true,
+      "outerBodyRan": "true",
+      "returned": "true",
+      "workerEntered": "unknown",
+      "workerEnteredWhy": "not instrumented",
+      "pawnsGeneratedDuring": 0,
+      "pawnsSpawnedDuring": 0,
+      "chain": "bridge:jawa/fire_incident#20 > incident:Infestation#21",
+      "statement": "incident Infestation was called; outer body ran: true; returned true; worker entered: unknown"
+     }
+    ],
+    "tool": {
+     "success": true,
+     "message": "Infestation fired with 200 points.",
+     "incident": "Infestation",
+     "category": "ThreatBig",
+     "canFireNow": false,
+     "forced": false,
+     "fired": true,
+     "windowsOpened": [],
+     "blockedByDialog": false,
+     "points": 200.0,
+     "ticksGame": 5833,
+     "operation": {
+      "OperationId": "op_44cb3525602a4c77a7c31561a5236ac9",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 53
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 5833
+     }
+    }
+   }
+  },
+  {
+   "check": "deferred delivery: raid pawns carry the chain",
+   "pass": false,
+   "detail": {
+    "why": "no new pawns after 900 ticks",
+    "fired": {
+     "success": true,
+     "message": "RaidEnemy fired with 176 points.",
+     "incident": "RaidEnemy",
+     "category": "ThreatBig",
+     "canFireNow": false,
+     "forced": false,
+     "fired": true,
+     "windowsOpened": [],
+     "blockedByDialog": false,
+     "points": 175.500015,
+     "faction": "Mechanoid",
+     "ticksGame": 5833,
+     "operation": {
+      "OperationId": "op_ce965803e3e0401c885600c3d8433155",
+      "Status": "Completed",
+      "Success": true,
+      "DurationMs": 1649
+     },
+     "state": {
+      "programState": "Playing",
+      "hasCurrentGame": true,
+      "paused": true,
+      "timeSpeed": "Paused",
+      "tick": 5833
+     }
+    },
+    "journal": [
+     {
+      "aseq": 29,
+      "epoch": 1,
+      "tick": 5833,
+      "def": "RaidEnemy",
+      "target": "map:0",
+      "faction": "Mechanoid",
+      "forced": false,
+      "points": 195.000015,
+      "called": true,
+      "outerBodyRan": "true",
+      "returned": "true",
+      "workerEntered": "unknown",
+      "workerEnteredWhy": "not instrumented",
+      "pawnsGeneratedDuring": 1,
+      "pawnsSpawnedDuring": 0,
+      "chain": "bridge:jawa/fire_incident#22 > incident:RaidEnemy#23",
+      "statement": "incident RaidEnemy was called; outer body ran: true; returned true; worker entered: unknown; during the call 1 pawn(s) generated, 0 spawned (deferred deliveries are not counted here)"
+     }
+    ]
+   }
+  },
+  {
+   "check": "deferred delivery: raid pawns carry bridge:jawa/fire_incident > incident:RaidEnemy (1 of 1)",
+   "pass": true,
+   "detail": {
+    "statements": [
+     "generated during bridge:jawa/fire_incident#22 > incident:RaidEnemy#23; first observed spawn in this recording epoch"
+    ]
+   }
+  },
+  {
+   "check": "raid pawns: ourInvolvement is ours (not a stranger)",
+   "pass": true,
+   "detail": {
+    "involvement": [
+     "confirmedIndirectAction"
+    ]
+   }
+  }
+ ]
+}

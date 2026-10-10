@@ -1,0 +1,188 @@
+{
+ "cells": {
+  "C0": {
+   "inputs": {
+    "client": {
+     "head": "504a3c7958fc",
+     "src_dirty": false
+    },
+    "collectors": {
+     "awareness_settings.json": {
+      "aware.disk-rows": true,
+      "aware.incident-journal": true,
+      "aware.origin-context": true,
+      "aware.origin-generation": true,
+      "aware.origin-spawn": true,
+      "aware.thing-explain": true,
+      "aware.wild-spawner-block": true
+     },
+     "tasks": {
+      "\\RimMandrake\\TPS Observer": "Ready"
+     },
+     "tps_settings.json": {
+      "_doc": "design/RimMandrake/tps_record.md - defaults are the shipped behaviour; retention can only grow",
+      "archivePlayerLog": true,
+      "attribution": true,
+      "logRetentionMB": 1024,
+      "retentionDays": 7,
+      "retentionMB": 256,
+      "sampler": true,
+      "watchdog": true
+     }
+    },
+    "companion": {
+     "game_build": "f34b77501ea0",
+     "game_sha": "96e05a9ed60ca63a",
+     "repo_sha": "96e05a9ed60ca63a"
+    },
+    "deps": {
+     "0Harmony.dll": "353daafec180bb8e",
+     "Assembly-CSharp.dll": "5cf1b5be399d5b1c",
+     "Gabp.Runtime.dll": "d548e8665efb033e",
+     "Lib.GAB.dll": "c06a5e04c12a477b",
+     "MoonSharp.Interpreter.dll": "1db76110f2169863",
+     "Newtonsoft.Json.dll": "f0c07af0e84d4dd4",
+     "RimBridgeServer.Contracts.dll": "91852118fdf1ee5c",
+     "RimBridgeServer.Core.dll": "fb671fcbe2c0c1dd",
+     "RimBridgeServer.Extensions.Abstractions.dll": "786668c7f53e6878",
+     "RimBridgeServer.Sdk.dll": "46abe5b6ad8a70bf",
+     "RimBridgeServer.dll": "bedefc9bf0c4ba30",
+     "RimBridgeServer.version": "2.3.0"
+    },
+    "fixture": {
+     "name": "quicktest start_debug_game_ready map 0, epoch 1",
+     "sha": null
+    },
+    "mod_dlls": {
+     "count": 116,
+     "digest": "001795a403cbae8b"
+    },
+    "modlist": {
+     "count": 550,
+     "ordered_digest": "eeeadc7cf1761ce7"
+    },
+    "saves": {},
+    "settings": {
+     "Mod_1084452457_QOLMod.xml": "5b8f9299b047b7eb",
+     "Mod_1235181370_DesignatorShapes.xml": "37ab91c8375b356b",
+     "Mod_1321849735_RimefellerMod.xml": "f799b8f4236550bd",
+     "Mod_1446523594_DubsMintMenusMod.xml": "6b2273472063c0c6",
+     "Mod_1516158345_Mod.xml": "4492fbcf507b85ec",
+     "Mod_1541721856_AlphaAnimalsEvents_Mod.xml": "1742903b8390f0bf",
+     "Mod_1541721856_AlphaAnimals_Mod.xml": "cb85f5187cfc809c",
+     "Mod_1579516669_DubsPaintShopMod.xml": "f53af0edc704fc12",
+     "Mod_1635901197_FacialAnimationMod.xml": "78646a9a4f0caaac",
+     "Mod_1662119905_DubsMintMinimapMod.xml": "273294506b1da84e",
+     "Mod_1668983184_RimThemes.xml": "b954873921e39108",
+     "Mod_1722398508_MentalManagementMod.xml": "8d00398982ac5e92",
+     "Mod_2031734067_CompactHediffsMod.xml": "6a9d113184253665",
+     "Mod_2111424996_MapDesignerMod.xml": "79c764c43af307d7",
+     "Mod_2403873031_AllowDeadAnimalsMod.xml": "3c899ac507fc8f5d",
+     "Mod_2439736083_VanillaSocialInteractionsExpandedMod.xml": "336f09b740dd9dbc",
+     "Mod_2475965842_ShowMeYourHandsMod.xml": "f3c6b5e61991ddc1",
+     "Mod_2502518544_SpeakUpMod.xml": "cee88b8e297a8c53",
+     "Mod_2558957509_Main.xml": "8e4f98f0f3954d29",
+     "Mod_2560725133_AutoStripOnHaul.xml": "be863219315eb743",
+     "Mod_2574315206_XmlMod.xml": "a0c1046c985edc6a",
+     "Mod_2582875043_ChooseBiomeCommonality_Mod.xml": "9ce6c041e0a140df",
+     "Mod_2599784515_EventsCoreMod.xml": "91b9fec3b2310f4f",
+     "Mod_2664723367_PerformanceOptimizerMod.xml": "b9f43318c14dc0fa",
+     "Mod_2773943594_GeologicalLandformsMod.xml": "9f302b34e8cd16b4",
+     "Mod_2775017012_VBEMod.xml": "6df9ecb3c7133965",
+     "Mod_2800857642_MapPreviewMod.xml": "7c3afddff30c0dfe",
+     "Mod_2882785581_Controller.xml": "d2833d54eb644eed",
+     "Mod_2898411376_SettingsController.xml": "60ad16f68c39a1b9",
+     "Mod_2922457045_GenesExpandedEyesMod.xml": "f0b8f3e93431b8d6",
+     "Mod_2941608795_RWEMod.xml": "2caed39da240c2e0",
+     "Mod_2944488802_Core.xml": "54b370682f896345",
+     "Mod_2946961833_BestApparel.xml": "6d71f3a1bbbe371b",
+     "Mod_3014915404_VehicleMod.xml": "b7d6d4e3b16eb4f6",
+     "Mod_3033901359_AdaptiveStorageFrameworkMod.xml": "c3b9fd3f74f55adf",
+     "Mod_3272330410_AtmosphereMod.xml": "c4ca9e996ba70ea8",
+     "Mod_3316062206_AM_Mod.xml": "6c8025084d7fb210",
+     "Mod_3336572602_FactionCustomizer.xml": "37f3ee77447d2711",
+     "Mod_3391128917_RealFoWModStarter.xml": "389ca1db6f288fd8",
+     "Mod_3399705740_RimTunesMod.xml": "6162ba1247aad539",
+     "Mod_3423264477_SettingWindow.xml": "539dd4d16d1d3525",
+     "Mod_3425062214_GlowingBushesMod.xml": "edc4fbe60691aa22",
+     "Mod_3430230860_TechLevelEnforcementMod.xml": "dd170c20a7f2a6fa",
+     "Mod_3498422643_IntimacyALovinExpansion.xml": "9fc86c24fd323a73",
+     "Mod_3515165298_AlmostThereMod.xml": "1814816554116ff4",
+     "Mod_3521312241_Mod_CherryPicker.PRECHANGE.20260901_081511.xml": "a2bf4a6d480ac9ee",
+     "Mod_3521312241_Mod_CherryPicker.xml": "44b151c6479aef62",
+     "Mod_3522759531_GravshipSizeSettings.xml": "42264962bb62a9e8",
+     "Mod_3532608331_DeepStorageMod.xml": "9311d74b837d364f",
+     "Mod_3534254491_IntimacyGenderWorks.xml": "9f4f4111b64ac233",
+     "Mod_3537970831_ChooseWhereToLand_Mod.xml": "f97e1a3b8f546111",
+     "Mod_3539609975_BetterTreesMod.xml": "1f36381800b73d1a",
+     "Mod_3541022508_BiomesPlusMod.xml": "07e2e8d7e5f4e964",
+     "Mod_3545374124_GravTechSettings.xml": "04ab6e68b7fdcfe9",
+     "Mod_3545384484_LandOnAnythingMod.xml": "f1f5f0fa450d6762",
+     "Mod_3547098393_ModSettingsPage.xml": "8aedb0f0aa1778bf",
+     "Mod_3551203752_Settings.xml": "3e92cb378388ad8d",
+     "Mod_3576790938_GravshipExportMod.xml": "228994ce168d1616",
+     "Mod_3612563959_R_IOTR.xml": "fbd954064db3f46a",
+     "Mod_3612632140_RimTalkEventPlus.xml": "9d6b90b4bcaa6d98",
+     "Mod_3619548407_DirectorMod.xml": "9b594b935b9bcd3e",
+     "Mod_3621784437_RFPMod.xml": "ea9150dafc57708e",
+     "Mod_3626725895_FactionTerritoriesMod.xml": "cb2c05c6cdd6a06c",
+     "Mod_3630896210_IntimacySocioButterfly.xml": "233bc3f6eace4fb4",
+     "Mod_3648390934_EvolvedOrgansReduxSettings.xml": "883311d5e7baaa87",
+     "Mod_3657580708_IsekaiMod.xml": "69679ca28dc09c35",
+     "Mod_3662962455_EDModMain.xml": "21254c0d86638604",
+     "Mod_3667667489_MechanidSkinsMod.xml": "65f9f617ecdb03f7",
+     "Mod_3673768803_CombatAIMod.xml": "277a0c8bafef2746",
+     "Mod_3674332861_Mod_GiddyUp.xml": "bf4e1a2495d06c25",
+     "Mod_3694936738_StyleExpandMod.xml": "aac3e55640915eea",
+     "Mod_3714540653_CyberChronicleMod.xml": "2d4b026de45c625e",
+     "Mod_3735443951_Forge.xml": "902f5572f37bb671",
+     "Mod_3756399441_CustomGasTypesMod.xml": "65ce141071cddce9",
+     "Mod_3760196312_PrisonerRealismMod.xml": "2ddf9ff250e8bea3",
+     "Mod_3774299554_ItemControlMod.xml": "6302d27603c4e1b2",
+     "Mod_3777700657_Main.xml": "84cb8ce3c3582128",
+     "Mod_730936602_Achtung.xml": "fb142aed1f09bff4",
+     "Mod_839005762_AlienRaceMod.xml": "f692a45143fe56bd",
+     "Mod_927155256_SimpleSidearms.xml": "7e94588a973de6d2",
+     "Mod_Bacta_BactaMod.xml": "33239c3033ec307a",
+     "Mod_FloodedCanyon_RM_FloodedCanyonMod.xml": "b245079973c5bc55",
+     "Mod_FlowWorks_RimMandrakeFlowWorksMod.xml": "0f72022114098b77",
+     "Mod_GimmeSomeSlack_AerialLinesMod.xml": "ac4a9878ca5e9a2b",
+     "Mod_GimmeSomeSlack_FireHosesMod.xml": "c182a62238d1ed70",
+     "Mod_GimmeSomeSlack_GimmeSomeSlackMod.xml": "dd7da5aed8b06afc",
+     "Mod_LuminousPigment_LuminousPigmentMod.xml": "452443c7978c0fe2",
+     "Mod_MessyConduit_AerialLinesMod.xml": "68c39d252b17a164",
+     "Mod_MessyConduit_FireHosesMod.xml": "7898def0c7f210db",
+     "Mod_MessyConduit_MessyConduitMod.xml": "cae44762552588c6",
+     "Mod_Oracle_OracleMod.xml": "4b8718df01fde091",
+     "Mod_RimMandrake.Biomes_RM_DivingInteractionMod.xml": "55f779841d9a65ff",
+     "Mod_RimMandrake.Biomes_RM_TheForgeMod.xml": "e727a84ac54bbfb0",
+     "Mod_ShipVermin_ShipVerminOptionsMod.xml": "8cd6b5e29c8a9021",
+     "Prefs.xml": "050e1fd8c4350ae1"
+    }
+   },
+   "note": "in-session attribution on/off A/B via jawa/tps_test_attribution; not the C0-C5 restart protocol",
+   "recorded": "2026-10-10T21:05:10Z",
+   "variable": [],
+   "verified": {
+    "at": "2026-10-10T21:16:16Z",
+    "moved": [],
+    "ok": true
+   }
+  }
+ },
+ "events": [
+  {
+   "at": "2026-10-10T21:05:10Z",
+   "cell": "C0",
+   "event": "record"
+  },
+  {
+   "at": "2026-10-10T21:16:16Z",
+   "cell": "C0",
+   "event": "verify",
+   "moved": [],
+   "ok": true
+  }
+ ],
+ "experiment": "TPS_ATTR_AB_INSESSION_20261010"
+}
