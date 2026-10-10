@@ -1,4 +1,6 @@
 # project: RimUtinni/ShipMemory/Source/RimMandrake.Utinni.ShipMemory.csproj
-# dll: 5c1bf81e138e6c12f156656948803e7b43910882b349f26774738eb79dbc56ed
-b15c81e55a7ae87da45b211cd85a9fd3d5b1636bb634a75ed23d7fed51e74459 ShipMemorySettings.cs
+# dll: 82f8125f28b9db12538cf6ba401e4d3284326b5a0d398ffdb27608d20988238d
+28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../../RimMandrake/_Shared/SettingsKit/SettingsKitCore.cs
+bbb03cf3f604647a292a2047dd197d6232eb19c288c51c3fd1e8597a20476d9d ShipMemorySettings.cs
+d6ec4adcaa1ab98bad5a13ce3de55647b8dfa863cfb759407b099a4ad0c0f453 ../../../RimMandrake/_Shared/SettingsKit/SettingsKitDrawer.cs
 ff829775ce48df4f5e3ee966d1eac9c09cf8e8d253f31fd7a7fb52c30f33d1d6 GameComponent_ShipMemory.cs
