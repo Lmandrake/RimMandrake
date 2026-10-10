@@ -363,6 +363,20 @@ MODS = {
         "What the wind uncovers at gale end": "Now",
         "Dust devils": "NextPulse",
     }, ("emergenceOff",)),
+    "Droidworks": ("Droidworks/RSW_DroidworksSettings.cs", "Droidworks/Droidworks.csproj", {
+        "Restraining bolts: breaks and resentment": "Now",
+        "Restraining bolts: fights and mood": "Now",
+        "Droids run on stored power (reload)": "NextGameStart",
+        "Power drain and charging": "Now",
+        "Ion hits shut a droid down": "Now",
+        "Droids blow up when destroyed": "Now",
+        "After a memory wipe": "Now",
+        "Wild droids": "Now",
+        "Salvage from a dead droid": "Now",
+        "Droids become people": "Now",
+        "Protocol droids and trade": "Now",
+        "Hutt captives (next stock)": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
@@ -428,7 +442,11 @@ def check(cs, csproj, expected, extra=()):
 
 
 def run_mod(name, cs_name, pj_name, expected, extra):
-    src = os.path.join(ROOT, name.split("#")[0], "Source")
+    base = name.split("#")[0]
+    for tier in (ROOT, os.path.join(os.path.dirname(ROOT), "RimStarWars"), os.path.join(os.path.dirname(ROOT), "RimUtinni")):
+        if os.path.isdir(os.path.join(tier, base)):
+            break
+    src = os.path.join(tier, base, "Source")
     cs = open(os.path.join(src, cs_name), encoding="utf-8").read()
     pj = open(os.path.join(src, pj_name), encoding="utf-8").read()
     bad = total = 0
