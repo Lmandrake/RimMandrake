@@ -21,7 +21,9 @@
       <countPer10kCellsRange>0.15~0.3</countPer10kCellsRange>
       <minLumps>1</minLumps><!-- PROVISIONAL: floor so no desert map reads 0 -->
       <allowedBiomes>
-        <li MayRequire="mandrake.rm.stillsand">RM_Stillsand</li>
+        <!-- AnyOf: stillsand is composed into mandrake.rm.biomes and has no runtime packageId, so MayRequire on it
+             alone never loaded this entry (effective_def_lint.py member_mayrequire, 2026-10-10) -->
+        <li MayRequireAnyOf="mandrake.rm.stillsand,mandrake.rm.biomes">RM_Stillsand</li>
         <li>RUT_ExtremeDesert</li>
       </allowedBiomes>
     </genStep>
