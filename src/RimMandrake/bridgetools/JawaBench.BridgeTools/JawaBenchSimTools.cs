@@ -437,8 +437,15 @@ namespace JawaBench.BridgeTools
 
                 int countBefore = Find.Storyteller.incidentQueue.Count;
                 bool added;
-                try { added = Find.Storyteller.incidentQueue.Add(idef, fireTick, parms, retryDurationTicks); }
-                catch (Exception e) { return Fail("incidentQueue.Add threw: " + e.GetType().Name + ": " + e.Message); }
+                // map awareness: the queued parms object carries this call's context to the later TryExecute
+                var awareness = JawaBenchAwareness.BridgeBegin("jawa/incident_schedule");
+                try
+                {
+                    JawaBenchAwareness.AttachToScheduled(parms);
+                    try { added = Find.Storyteller.incidentQueue.Add(idef, fireTick, parms, retryDurationTicks); }
+                    catch (Exception e) { return Fail("incidentQueue.Add threw: " + e.GetType().Name + ": " + e.Message); }
+                }
+                finally { JawaBenchAwareness.BridgeEnd(awareness); }
                 int countAfter = Find.Storyteller.incidentQueue.Count;
 
                 object matched = null;

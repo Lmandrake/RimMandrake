@@ -256,7 +256,11 @@ namespace JawaBench.BridgeTools
                     label = l.Label,
                     defName = l.def != null ? l.def.defName : null,
                     arrivalTick = l.arrivalTick,
-                    lookTargets = l.lookTargets != null && l.lookTargets.IsValid ? l.lookTargets.ToString() : null
+                    lookTargets = l.lookTargets != null && l.lookTargets.IsValid ? l.lookTargets.ToString() : null,
+                    // map awareness: LookTargets has no ToString override (decompiled 1.6), so the string above names
+                    // nothing. The targets' ThingIDs: an ASSOCIATION with this letter, never proof the letter made them.
+                    lookTargetIds = l.lookTargets == null ? null : l.lookTargets.targets
+                        .Where(t => t.HasThing && t.Thing != null).Select(t => t.Thing.ThingID).ToList()
                 }).ToList();
 
                 return new

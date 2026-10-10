@@ -146,6 +146,14 @@ fills in **Owner verdict**.
 | `spike.gc-timing` | owed | Does a GC coincide with a gap (labelled coincidence)? | UNMEASURED | (not built) | |
 | `spike.early-load` | owed | Where does a cold load stall before the companion exists? | UNMEASURED | (not built) | |
 | `spike.minidump` | owed | What was the process doing during a hang (one capture per incident, headroom checked)? | UNMEASURED | (not built) | |
+| `aware.incident-journal` | built, not deployed | Which incidents were CALLED (any route through IncidentWorker.TryExecute), with what parms and honest outcome fields? | UNMEASURED live; `jawa/awareness` reports mean/max us per hook body | `jawa/awareness action=switch metric=aware.incident-journal on=false`, or the key in `awareness_settings.json`; delete the TryExecute patch in `JawaBenchAwareness.cs` | |
+| `aware.origin-context` | built, not deployed | Under which operation (bridge tool, incident, mapgen, wild spawner, hive, hatch, birth) did a pawn get generated or spawned? | UNMEASURED live (hook bodies metered) | switch off; without it generation/spawn rows carry no chain ("origin unknown") | |
+| `aware.origin-generation` | built, not deployed | Was this pawn generated (new) or reused during a recorded operation? | UNMEASURED live; GeneratePawn is the hottest hook (world gen), empty-context calls only bump a counter | switch off; `pawn_origin` then reads "origin unknown" for every pawn | |
+| `aware.origin-spawn` | built, not deployed | When and where was a pawn first seen spawned this epoch, or did it respawn / transfer maps? | UNMEASURED live | switch off; `pawn_origin` loses the spawn half | |
+| `aware.disk-rows` | built, not deployed | The awareness rows in the TPS record (kind `awareness`), so "what arrived at 3 pm" survives the session | UNMEASURED; written only while ARMED (TTL 30 min, max 240) | switch off or never arm; the TPS reader ignores nothing else | |
+| `aware.wild-spawner-block` | built, not deployed | Quiet-world control: block ongoing wild-animal replenishment during a validation run | UNMEASURED; one bool check per map per tick while patched (patched only on first block) | release; switch off; the patch is installed only by a block call | |
+| `aware.thing-explain` | built, not deployed | "What is that?": definition owners, state, origin statement, texture providers (OBSERVED vs CANDIDATE) | on demand only; per-call cost metered | delete the tool; nothing else reads it | |
+| `scene.report` (Python) | built | Who is on the map, decomposed hostility, our involvement vs expectation, declared coverage | ~10 bridge reads per report, on demand (a Watch writes one at baseline) | `Watch(scene=False)`; delete `modcheck/scene_report.py` | |
 | `tps.presentation-fps` | unsupported (for now) | Displayed FPS, as opposed to `Root.Update` cadence | UNMEASURED | (not built; needs a presentation-timing source nobody has identified) | |
 
 ## Owed, by ticket
@@ -159,6 +167,7 @@ fills in **Owner verdict**.
 | `TPS_HOOKS_HARDEN_REENTRY_AND_LATE_GUARDS` | The companion C# hazards from GPT review 2.3 | the companion is being deployed for the MUST 17 test; do not edit it underneath that test |
 | `RECORDER_OVERHEAD_MEASURE_SIX_CONFIGS_DEEP` | Full-list C0-C5 protocol, run over several days | MUST 17 |
 | `HEALTH_METRICS_JUDGE_EARN_THEIR_KEEP` | Owner's post-hoc review of this ledger | data from the built sources |
+| `MAP_AWARENESS_PROVE_ON_A_QUIET_MAP` | Deploy the map-awareness companion and run its live acceptance tests, measuring each `aware.*` row's cost | a bridge session with the game down for the deploy |
 | `GAME_OBSERVER_BUILD_OUTSIDE_LOOKING_IN` | Remaining: install it as a standing task, and measure sleep/resume, two processes, PID reuse and bytes per day | the owner's go-ahead to run it during the overhead test (C1 is its own configuration) |
 
 **Not installed as a standing task yet**, on purpose. Configuration C1 of the overhead protocol is "external collector
