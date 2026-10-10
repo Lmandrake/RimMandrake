@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DecayDrake.xml — the fermatalis. DONOR_CODE_PLAIN_PORTS_1 (owner pick "port" on
+  Transient/donor_code_creatures_sheet_2026-10-09: "Port plain = copy the creature into our own
+  defs and drop or swap the donor class (no new C#)").
+
+  Ported from Alpha Animals (sarg.alphaanimals, 1.6/Defs/ThingDefs_Races/Races_DecayDrake.xml).
+  Label and description are the owner-ruled fermatalis text (Miasma sheet 2026-10-08: "Rename the
+  Fermatalis. Keep the mechanic. Rewrite the description."), the words the campaign's Slime_Rename.xml
+  patches onto AA_DecayDrake. One def serves both rosters that cast it (RM_Miasma and RM_Cauldron are
+  members of the same composed mod).
+
+  DROPPED (donor assembly AlphaBehavioursAndEvents): CompProperties_GraphicsRefresher and renderTree
+  AA_Alternates — an off-by-default alternate-picture switch; nothing in play.
+  DROPPED (donor StatDefs): the VEF AnimalStatExtension info-card rows.  NOT ported: donor wildBiomes.
+  KEPT ("Keep the mechanic"), guarded on VEF (a framework we keep): the fermenting breath
+  (NearbyEffecter: listed grasses and shrubs -> RM_FermentedMound) and eating mounds and liquor
+  (EatWeirdFood). Its target lists are the donor's own, string names, copied unchanged — note they
+  name vanilla/Alpha Biomes plants, none of the Miasma's own flora, exactly as the donor did.
+  The VEF weird-eater think tree is added by Patches/RM_DecayDrake_VEFThinkTree.xml only when VEF's
+  ThinkTreeDef exists, so a VEF-less load keeps the vanilla animal think tree.
+  SWAPPED for vanilla (donor defs, no code): body AA_WingedQuadrupedAnimalWithPawsAndTail ->
+  QuadrupedAnimalWithPawsAndTail (same attack groups); AA_DecayDrake_* sounds -> Pawn_Iguana_*;
+  useMeatFrom AA_RoughPlatedMonitor -> Iguana; dessicated art -> Iguana; the mound's taste thought
+  AA_AteHorribleRot -> AteRawFood and its art -> vanilla raw fungus tinted mash-brown (placeholder).
+  ART: ours, the picture DecayDrakeArtOverride paints over the donor, installed through the art
+  ledger at Things/Pawn/Animal/RM_DecayDrake.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_DecayDrake</defName>
+    <label>fermatalis</label>
+    <description>A heavy, flightless drake with stunted wings folded over a bloated, sour-sweet belly. The fermatalis breathes out a living haze of yeasts and enzymes that sets almost anything organic around it fermenting, and drives the change at a furious pace: within hours the greenery where it has rested slumps into soft, bubbling mounds of mash. It eats the result and is usually drunk on it — four separate livers keep it alive through the habit. Cooks of the delta count it among the most valuable beasts in the Miasma, for whatever it breathes on ferments in a fraction of the usual time. Hard to tame, but a fermatalis that accepts you, especially if you bring a drink, makes a fine hunting companion.</description>
+    <statBases>
+      <MoveSpeed>4.00</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <MarketValue>350</MarketValue>
+      <FilthRate>4</FilthRate>
+      <Wildness>0.8</Wildness>
+    </statBases>
+    <tools>
+			<li>
+				<label>left claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>13</power>
+				<cooldownTime>1.5</cooldownTime>
+				<linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+				<surpriseAttack>
+					<extraMeleeDamages>
+						<li>
+							<def>Stun</def>
+							<amount>14</amount>
+						</li>
+					</extraMeleeDamages>
+				</surpriseAttack>
+			</li>
+			<li>
+				<label>right claw</label>
+				<capacities>
+					<li>Scratch</li>
+				</capacities>
+				<power>13</power>
+				<cooldownTime>1.5</cooldownTime>
+				<linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+				<surpriseAttack>
+					<extraMeleeDamages>
+						<li>
+							<def>Stun</def>
+							<amount>14</amount>
+						</li>
+					</extraMeleeDamages>
+				</surpriseAttack>
+			</li>
+			<li>
+				<label>razorfangs</label>
+				<capacities>
+					<li>Bite</li>
+				</capacities>
+				<power>15</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+				<chanceFactor>0.9</chanceFactor>
+				<surpriseAttack>
+					<extraMeleeDamages>
+						<li>
+							<def>Stun</def>
+							<amount>14</amount>
+						</li>
+					</extraMeleeDamages>
+				</surpriseAttack>
+			</li>
+			<li>
+				<label>head</label>
+				<capacities>
+					<li>Blunt</li>
+				</capacities>
+				<power>5</power>
+				<cooldownTime>2</cooldownTime>
+				<linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+				<ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+				<chanceFactor>0.2</chanceFactor>
+			</li>
+		</tools>
+    <comps>
+      <li Class="VEF.AnimalBehaviours.CompProperties_NearbyEffecter" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+				<thingsToAffect>
+					<li>Plant_Grass</li>
+					<li>Plant_TallGrass</li>
+					<li>Plant_Brambles</li>
+					<li>Plant_HealrootWild</li>
+					<li>Plant_PincushionCactus</li>
+					<li>AB_TinkleGrass</li>
+					<li>AB_GlowingGrass</li>
+					<li>AB_HardyGrass</li>
+					<li>AB_TallSlimyGrass</li>
+					<li>AB_AlienGrass</li>
+					<li>Plant_Agave</li>
+					<li>Plant_Bush</li>
+					<li>Plant_Berry</li>
+					<li>Plant_Alocasia</li>
+					<li>Plant_Clivia</li>
+					<li>Plant_Rafflesia</li>
+					<li>AB_GreenRockFern</li>
+				</thingsToAffect>
+				<thingsToConvertTo>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+					<li>RM_FermentedMound</li>
+				</thingsToConvertTo>
+				<ticksConversionRate>10000</ticksConversionRate>
+				<radius>2</radius>
+				<isForbidden>true</isForbidden>
+			</li>
+			<li Class="VEF.AnimalBehaviours.CompProperties_EatWeirdFood" MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
+				<customThingToEat>
+					<li>RM_FermentedMound</li>
+					<li>Beer</li>
+					<li>RB_Mead</li>
+					<li>cider</li>
+					<li>rum</li>
+					<li>Wine</li>
+					<li>strawberrywine</li>
+					<li>saki</li>
+					<li>vodka</li>
+					<li>tequila</li>
+					<li>whisky</li>
+					<li>BrownAle</li>
+					<li>Fruitshine</li>
+					<li>VBE_Gin</li>
+					<li>VBE_Tequila</li>
+					<li>VBE_Vodka</li>
+					<li>VBE_Whiskey</li>
+					<li>VBE_DoubleWhiskey</li>
+					<li>VBE_AmbrandyAwful</li>
+					<li>VBE_AmbrandyPoor</li>
+					<li>VBE_AmbrandyNormal</li>
+					<li>VBE_AmbrandyGood</li>
+					<li>VBE_AmbrandyExcellent</li>
+					<li>VBE_AmbrandyMasterwork</li>
+					<li>VBE_AmbrandyLegendary</li>
+					<li>VBE_SimpleCocktail</li>
+					<li>VBE_FineCocktail</li>
+					<li>VBE_LavishCocktail</li>
+					<li>VBE_GourmetCocktail</li>
+				</customThingToEat>
+				<nutrition>1</nutrition>
+				<digThingIfMapEmpty>false</digThingIfMapEmpty>
+				<fullyDestroyThing>true</fullyDestroyThing>
+				<hediffWhenEaten>AlcoholHigh</hediffWhenEaten>
+				<needsWater>true</needsWater>
+			</li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <baseBodySize>1</baseBodySize>
+      <baseHealthScale>2</baseHealthScale>
+      <baseHungerRate>0.65</baseHungerRate>
+      <foodType>Liquor,CarnivoreAnimalStrict</foodType>
+      <predator>true</predator>
+      <useMeatFrom>Iguana</useMeatFrom>
+      <maxPreyBodySize>2</maxPreyBodySize>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.35</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.35</manhunterOnDamageChance>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeExpectancy>18</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Iguana_Wounded</soundWounded>
+          <soundDeath>Pawn_Iguana_Death</soundDeath>
+          <soundCall>Pawn_Iguana_Call</soundCall>
+          <soundAngry>Pawn_Iguana_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_DecayDrake</defName>
+    <label>fermatalis</label>
+    <race>RM_DecayDrake</race>
+    <combatPower>175</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake</texPath>
+          <drawSize>1.25</drawSize>
+          <shadowData><volume>(0.30, 0.25, 0.20)</volume></shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
+          <drawSize>1.25</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake</texPath>
+          <drawSize>2</drawSize>
+          <shadowData><volume>(0.375, 0.375, 0.375)</volume></shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_DecayDrake/RM_DecayDrake</texPath>
+          <drawSize>2.75</drawSize>
+          <shadowData><volume>(0.5, 0.5, 0.4)</volume><offset>(0,0,-0.05)</offset></shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Iguana/Dessicated_Iguana</texPath>
+          <drawSize>2.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_FermentedMound</defName>
+    <label>fermented mash mound</label>
+    <description>A soft heap of greenery a fermatalis has breathed on: fermenting fast, reeking of rot and alcohol.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/PlantFoodRaw/RawFungus</texPath>
+      <color>(150,110,70)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Flammability>1.3</Flammability>
+      <Nutrition>0.2</Nutrition>
+      <MarketValue>1.45</MarketValue>
+      <Mass>0.027</Mass>
+    </statBases>
+    <ingestible>
+      <foodType>Liquor</foodType>
+      <preferability>NeverForNutrition</preferability>
+      <tasteThought>AteRawFood</tasteThought>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>AlcoholHigh</hediffDef>
+          <severity>0.1</severity>
+          <toleranceChemical>Alcohol</toleranceChemical>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+  </ThingDef>
+
+</Defs>

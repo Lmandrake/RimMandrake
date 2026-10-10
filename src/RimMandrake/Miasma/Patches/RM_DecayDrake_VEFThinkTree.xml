@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- DONOR_CODE_PLAIN_PORTS_1: the fermatalis (RM_DecayDrake) eats its own mash and liquor through VEF's
+     weird-eater think tree, as the donor did. Added only when that ThinkTreeDef exists in the loaded defs,
+     so a load without the Vanilla Expanded Framework keeps the vanilla animal think tree (and the VEF comps
+     on the def are skipped by their own MayRequire). -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThinkTreeDef[defName="VEF_AnimalWeirdEater"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RM_DecayDrake"]/race</xpath>
+      <value>
+        <thinkTreeMain>VEF_AnimalWeirdEater</thinkTreeMain>
+      </value>
+    </match>
+  </Operation>
+</Patch>
