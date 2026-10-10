@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -112,6 +114,128 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         public static string ShapeFingerprint() => minBendRadius.ToString("0.###") + "|" + slack.ToString("0.###") + "|" +
                                                    plumpAmount.ToString("0.###") + "|" + couplingSpacing +
                                                    "|L" + maxLength.ToString("0.###");   // GPT source read B8: a new hose length re-lays (and re-checks) every hose
+
+        public void DoWindowContents(Rect inRect)
+        {
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
+            list.Begin(view);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+
+            if (Group(list, "Flexible hoses", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "plumpAmount", "transitionTicks", "releaseTicks", "minPlumpDwell" }))
+            {
+            list.CheckboxLabeled("Flexible hoses (master switch)", ref enabled,
+                "Thick, stiff sack-cloth hoses laid from a hose reel. They lie flat when empty and plump up while liquid flows. " +
+                "Off: hoses are hidden; reels stay and keep their hose ends, so no save breaks.");
+            list.Label("Plump amount: " + plumpAmount.ToString("0.0") + "x");
+            plumpAmount = Mathf.Round(list.Slider(plumpAmount, 0f, 1.5f) * 10f) / 10f;
+            list.Label("Flat/plump transition: " + transitionTicks + " ticks");
+            transitionTicks = Mathf.RoundToInt(list.Slider(transitionTicks, 10f, 120f));
+            list.Label("Collapse after no flow for: " + releaseTicks + " ticks (keeps a stalling pump from flickering the hose)");
+            releaseTicks = Mathf.RoundToInt(list.Slider(releaseTicks, 100f, 1500f) / 50f) * 50;
+                list.GapLine();
+            }
+
+            if (Group(list, "Hose length and shape", RimMandrake.Shared.SettingScope.Now, new[] { "minBendRadius", "maxLength", "couplingSpacing", "slack", "maxLengthDefaults" }))
+            {
+            list.Label("Stiffness (smallest bend radius): " + minBendRadius.ToString("0.0") + " cells");
+            minBendRadius = Mathf.Round(list.Slider(minBendRadius, 0.6f, 2.5f) * 10f) / 10f;
+            list.Label("Hose length on a reel: " + maxLength.ToString("0") + " cells");
+            maxLength = Mathf.Round(list.Slider(maxLength, 8f, 60f));
+            list.Label("Hose joiners: only at bends, at least " + couplingSpacing + " cells apart", -1f,
+                (TipSignal?)"Where one hose length is screwed to the next. A straight hose has no joiner; a joiner sits at the sharpest point of a bend.");
+            couplingSpacing = Mathf.RoundToInt(list.Slider(couplingSpacing, 4f, 16f));
+            list.Label("Hose slack: " + slack.ToString("0.0") + "x");
+            slack = Mathf.Round(list.Slider(slack, 0f, 2f) * 10f) / 10f;
+                list.GapLine();
+            }
+
+            if (Group(list, "Colonists carrying hoses", RimMandrake.Shared.SettingScope.Now, new[] { "handlingTime", "windCellsPerSecond", "autoResumeDroppedHose" }))
+            {
+            list.Label("Colonists carrying hoses", -1f, (TipSignal?)("Hoses are laid by a colonist who carries the end out and winds it back in. " +
+                "The instant Lay / Reel in buttons exist only in dev mode and have no setting."));
+            list.Label("Handling time (grab, set down, couple): " + handlingTime.ToString("0.00") + "x", -1f,
+                (TipSignal?)"Scales how long a colonist takes to pick the hose end up, put it down and screw it on. 1x = 45 / 30 / 90 ticks.");
+            handlingTime = Mathf.Round(list.Slider(handlingTime, 0.25f, 3f) * 20f) / 20f;
+            list.Label("Winding speed: " + windCellsPerSecond.ToString("0.0") + " cells per second", -1f,
+                (TipSignal?)"How fast a colonist winds a hose back onto the reel (a clumsy colonist is slower).");
+            windCellsPerSecond = Mathf.Round(list.Slider(windCellsPerSecond, 1f, 8f) * 2f) / 2f;
+            list.CheckboxLabeled("Interrupted hoses are picked up again automatically", ref autoResumeDroppedHose,
+                "When a colonist is drafted, downed or distracted mid-carry the hose end lies where he left it and the order stays. " +
+                "On: an idle colonist takes it up again. Off: the end waits until you order it.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Look and FlowWorks", RimMandrake.Shared.SettingScope.Now, new[] { "tintByContents", "fillWobble", "useFlowWorksPumps", "defaultFluid" }))
+            {
+            list.CheckboxLabeled("Charged hoses darken with what they carry", ref tintByContents);
+            list.CheckboxLabeled("Brief wobble when a hose fills or drains", ref fillWobble);
+            list.CheckboxLabeled("Read FlowWorks pumps beside a reel (when FlowWorks has them)", ref useFlowWorksPumps);
+                list.GapLine();
+            }
+
+            viewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
+            list.End();
+            Widgets.EndScrollView();
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1200f;
+
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string/enum setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(HoseSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string) || f.FieldType.IsEnum)
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(HoseSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): every Hose setting is read live by the hose draw pass, a colonist job, or a re-lay on window close (the shape fingerprint changes), none at world or map generation, so all are [now]. minPlumpDwell, defaultFluid and maxLengthDefaults have no control on this screen (probe and migration values) and only reset.</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
     }
 
     public class FireHosesMod : Mod
@@ -128,55 +252,6 @@ namespace RimMandrake.GimmeSomeSlack.Hose
         /// <summary>B27: empty, so RimWorld lists no separate entry; drawn as a tab of GimmeSomeSlackMod's one window.</summary>
         public override string SettingsCategory() => "";
 
-        private static Vector2 settingsScroll;
-        private static float settingsViewHeight = 1200f;
-
-        public override void DoSettingsWindowContents(Rect inRect)
-        {
-            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
-            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
-            var l = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
-            l.Begin(settingsView);
-            l.CheckboxLabeled("Flexible hoses (master switch)", ref HoseSettings.enabled,
-                "Thick, stiff sack-cloth hoses laid from a hose reel. They lie flat when empty and plump up while liquid flows. " +
-                "Off: hoses are hidden; reels stay and keep their hose ends, so no save breaks.");
-            l.Label("Stiffness (smallest bend radius): " + HoseSettings.minBendRadius.ToString("0.0") + " cells");
-            HoseSettings.minBendRadius = Mathf.Round(l.Slider(HoseSettings.minBendRadius, 0.6f, 2.5f) * 10f) / 10f;
-            l.Label("Plump amount: " + HoseSettings.plumpAmount.ToString("0.0") + "x");
-            HoseSettings.plumpAmount = Mathf.Round(l.Slider(HoseSettings.plumpAmount, 0f, 1.5f) * 10f) / 10f;
-            l.Label("Flat/plump transition: " + HoseSettings.transitionTicks + " ticks");
-            HoseSettings.transitionTicks = Mathf.RoundToInt(l.Slider(HoseSettings.transitionTicks, 10f, 120f));
-            l.Label("Collapse after no flow for: " + HoseSettings.releaseTicks + " ticks (keeps a stalling pump from flickering the hose)");
-            HoseSettings.releaseTicks = Mathf.RoundToInt(l.Slider(HoseSettings.releaseTicks, 100f, 1500f) / 50f) * 50;
-            l.Label("Hose length on a reel: " + HoseSettings.maxLength.ToString("0") + " cells");
-            HoseSettings.maxLength = Mathf.Round(l.Slider(HoseSettings.maxLength, 8f, 60f));
-            l.Label("Hose joiners: only at bends, at least " + HoseSettings.couplingSpacing + " cells apart", -1f,
-                (TipSignal?)"Where one hose length is screwed to the next. A straight hose has no joiner; a joiner sits at the sharpest point of a bend.");
-            HoseSettings.couplingSpacing = Mathf.RoundToInt(l.Slider(HoseSettings.couplingSpacing, 4f, 16f));
-            l.Label("Hose slack: " + HoseSettings.slack.ToString("0.0") + "x");
-            HoseSettings.slack = Mathf.Round(l.Slider(HoseSettings.slack, 0f, 2f) * 10f) / 10f;
-            l.GapLine();
-            l.Label("Colonists carrying hoses", -1f, (TipSignal?)("Hoses are laid by a colonist who carries the end out and winds it back in. " +
-                "The instant Lay / Reel in buttons exist only in dev mode and have no setting."));
-            l.Label("Handling time (grab, set down, couple): " + HoseSettings.handlingTime.ToString("0.00") + "x", -1f,
-                (TipSignal?)"Scales how long a colonist takes to pick the hose end up, put it down and screw it on. 1x = 45 / 30 / 90 ticks.");
-            HoseSettings.handlingTime = Mathf.Round(l.Slider(HoseSettings.handlingTime, 0.25f, 3f) * 20f) / 20f;
-            l.Label("Winding speed: " + HoseSettings.windCellsPerSecond.ToString("0.0") + " cells per second", -1f,
-                (TipSignal?)"How fast a colonist winds a hose back onto the reel (a clumsy colonist is slower).");
-            HoseSettings.windCellsPerSecond = Mathf.Round(l.Slider(HoseSettings.windCellsPerSecond, 1f, 8f) * 2f) / 2f;
-            l.CheckboxLabeled("Interrupted hoses are picked up again automatically", ref HoseSettings.autoResumeDroppedHose,
-                "When a colonist is drafted, downed or distracted mid-carry the hose end lies where he left it and the order stays. " +
-                "On: an idle colonist takes it up again. Off: the end waits until you order it.");
-            l.GapLine();
-            l.CheckboxLabeled("Charged hoses darken with what they carry", ref HoseSettings.tintByContents);
-            l.CheckboxLabeled("Brief wobble when a hose fills or drains", ref HoseSettings.fillWobble);
-            l.CheckboxLabeled("Read FlowWorks pumps beside a reel (when FlowWorks has them)", ref HoseSettings.useFlowWorksPumps);
-            l.GapLine();
-            if (l.ButtonText("Reset to defaults")) HoseSettings.ResetToDefaults();
-            settingsViewHeight = Mathf.Max(l.CurHeight + 20f, inRect.height);
-            l.End();
-            Widgets.EndScrollView();
-        }
+        public override void DoSettingsWindowContents(Rect inRect) => Settings.DoWindowContents(inRect);
     }
 }

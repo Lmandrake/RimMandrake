@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -110,6 +112,138 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
                 c.Notify_SettingsChanged();
             }
         }
+
+        public void DoWindowContents(Rect inRect)
+        {
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
+            list.Begin(view);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+
+            if (Group(list, "Overhead power lines", RimMandrake.Shared.SettingScope.Now, new[] { "enabled", "maxSpan", "sag", "autoLink", "maxStrands", "keepWiresOnGravship" }))
+            {
+            list.CheckboxLabeled("Aerial power lines (master switch)", ref enabled,
+                "Masts, lamp masts and wall brackets carry power over open ground on sagging overhead wires. Off: they leave the " +
+                "architect menu and wires are hidden. Anchors already built stay and keep carrying power, so no save breaks.");
+            list.Label("Longest span: " + maxSpan.ToString("0") + " cells");
+            maxSpan = Mathf.Round(list.Slider(maxSpan, 8f, 40f));
+            list.Label("Sag: " + (sag * 100f).ToString("0") + "% of the span length");
+            sag = list.Slider(sag, 0f, 0.15f);
+            list.CheckboxLabeled("Link new anchors automatically to the nearest one in range", ref autoLink);
+            list.Label("Wires per span: one per insulator, at most " + maxStrands);
+            maxStrands = Mathf.RoundToInt(list.Slider(maxStrands, 1f, 3f));
+            list.CheckboxLabeled("Wires strung between two anchors on a gravship stay up through the flight", ref keepWiresOnGravship,
+                "On: a wire with both anchors aboard lands still strung and still carrying power; a wire to an anchor left on the ground " +
+                "is taken down and coiled at launch, with a message. Off: every wire on the ship is taken down and coiled at launch.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Wire sway", RimMandrake.Shared.SettingScope.Now, new[] { "sway", "swayStrength" }))
+            {
+            list.Label("Wire sway in the wind (also obeys the game's own plant sway preference)");
+            foreach (WireSwayMode m in Enum.GetValues(typeof(WireSwayMode)))
+                if (list.RadioButton(m == WireSwayMode.Auto ? "Auto" : m == WireSwayMode.CPU ? "Always (CPU)" : "Off", sway == m))
+                    sway = m;
+            list.Label("Sway strength: " + swayStrength.ToString("0.0") + "x");
+            swayStrength = list.Slider(swayStrength, 0f, 2f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Damage, shock and alerts", RimMandrake.Shared.SettingScope.Now, new[] { "explosionsCut", "kineticSway", "fallenWireShock", "fallenWireKnockback", "fallenWireIgnites", "wireDownAlert", "cutWiresOnOwnerChange" }))
+            {
+            list.CheckboxLabeled("Explosions cut wires (the halves hang and spark)", ref explosionsCut);
+            list.CheckboxLabeled("Kinetic blasts (Kinetic Arms push waves) swing wires instead of cutting them", ref kineticSway,
+                "A push wave never cuts a wire. Off: the wires ignore it.");
+            list.CheckboxLabeled("Live fallen wires shock whoever touches them", ref fallenWireShock,
+                "Anyone, colonists included, who touches a live wire lying on the ground is thrown back and knocked out for a couple " +
+                "of hours. Only a weak heart (artery blockage, a heart attack, or a damaged heart) is killed. A dead wire is harmless. " +
+                "Applies now.");
+            list.Label("Shock throws the victim back: " + fallenWireKnockback + " cell(s)");
+            fallenWireKnockback = Mathf.RoundToInt(list.Slider(fallenWireKnockback, 0f, 3f));
+            list.CheckboxLabeled("Live fallen wires light spilled fuel", ref fallenWireIgnites,
+                "A live end lying in spilled chemfuel, or in a burnable Flow Works liquid when that mod is loaded, can set it alight. " +
+                "Applies now.");
+            list.CheckboxLabeled("Alert when a wire is cut or lying on the ground", ref wireDownAlert,
+                "An alert lists each anchor with a cut or fallen wire; clicking it jumps to the anchor, where Re-string cut wires lives. " +
+                "Applies now.");
+            list.CheckboxLabeled("Claiming a pole cuts wires to the other owner", ref cutWiresOnOwnerChange,
+                "When a pole changes hands, its wires to poles of a different owner are coiled, so capturing one enemy pole never fuses your grid with theirs. " +
+                "Power-tap clamps are the one way to draw from another grid. Applies now.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Power-tap clamps", RimMandrake.Shared.SettingScope.Now, new[] { "tapsEnabled", "tapRate", "tapEvents" }))
+            {
+            list.CheckboxLabeled("Allow power-tap clamps on other factions' grids", ref tapsEnabled,
+                "A clamp bitten onto someone else's conduit quietly drains their grid into yours, one way: the grids never merge.");
+            list.Label("Tap rate: " + tapRate.ToString("0") + " W");
+            tapRate = Mathf.Round(list.Slider(tapRate, 50f, 2000f) / 50f) * 50f;
+            list.CheckboxLabeled("Report taps to consequence systems (event hook only; no alerts or raids exist yet)", ref tapEvents);
+                list.GapLine();
+            }
+
+            viewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
+            list.End();
+            Widgets.EndScrollView();
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1200f;
+
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string/enum setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(AerialSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string) || f.FieldType.IsEnum)
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(AerialSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): every Aerial setting is read live by a tick, placement, link, damage or launch handler (Apply() redraws on window close), none at world or map generation, so all are [now].</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
     }
 
     public class AerialLinesMod : Mod
@@ -133,65 +267,6 @@ namespace RimMandrake.GimmeSomeSlack.Aerial
             AerialSettings.Apply();
         }
 
-        private static Vector2 settingsScroll;
-        private static float settingsViewHeight = 1200f;
-
-        public override void DoSettingsWindowContents(Rect inRect)
-        {
-            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
-            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
-            var l = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
-            l.Begin(settingsView);
-            l.CheckboxLabeled("Aerial power lines (master switch)", ref AerialSettings.enabled,
-                "Masts, lamp masts and wall brackets carry power over open ground on sagging overhead wires. Off: they leave the " +
-                "architect menu and wires are hidden. Anchors already built stay and keep carrying power, so no save breaks.");
-            l.Label("Longest span: " + AerialSettings.maxSpan.ToString("0") + " cells");
-            AerialSettings.maxSpan = Mathf.Round(l.Slider(AerialSettings.maxSpan, 8f, 40f));
-            l.Label("Sag: " + (AerialSettings.sag * 100f).ToString("0") + "% of the span length");
-            AerialSettings.sag = l.Slider(AerialSettings.sag, 0f, 0.15f);
-            l.CheckboxLabeled("Link new anchors automatically to the nearest one in range", ref AerialSettings.autoLink);
-            l.Label("Wires per span: one per insulator, at most " + AerialSettings.maxStrands);
-            AerialSettings.maxStrands = Mathf.RoundToInt(l.Slider(AerialSettings.maxStrands, 1f, 3f));
-            l.GapLine();
-            l.Label("Wire sway in the wind (also obeys the game's own plant sway preference)");
-            foreach (WireSwayMode m in Enum.GetValues(typeof(WireSwayMode)))
-                if (l.RadioButton(m == WireSwayMode.Auto ? "Auto" : m == WireSwayMode.CPU ? "Always (CPU)" : "Off", AerialSettings.sway == m))
-                    AerialSettings.sway = m;
-            l.Label("Sway strength: " + AerialSettings.swayStrength.ToString("0.0") + "x");
-            AerialSettings.swayStrength = l.Slider(AerialSettings.swayStrength, 0f, 2f);
-            l.CheckboxLabeled("Wires strung between two anchors on a gravship stay up through the flight", ref AerialSettings.keepWiresOnGravship,
-                "On: a wire with both anchors aboard lands still strung and still carrying power; a wire to an anchor left on the ground " +
-                "is taken down and coiled at launch, with a message. Off: every wire on the ship is taken down and coiled at launch.");
-            l.CheckboxLabeled("Explosions cut wires (the halves hang and spark)", ref AerialSettings.explosionsCut);
-            l.CheckboxLabeled("Kinetic blasts (Kinetic Arms push waves) swing wires instead of cutting them", ref AerialSettings.kineticSway,
-                "A push wave never cuts a wire. Off: the wires ignore it.");
-            l.CheckboxLabeled("Live fallen wires shock whoever touches them", ref AerialSettings.fallenWireShock,
-                "Anyone, colonists included, who touches a live wire lying on the ground is thrown back and knocked out for a couple " +
-                "of hours. Only a weak heart (artery blockage, a heart attack, or a damaged heart) is killed. A dead wire is harmless. " +
-                "Applies now.");
-            l.Label("Shock throws the victim back: " + AerialSettings.fallenWireKnockback + " cell(s)");
-            AerialSettings.fallenWireKnockback = Mathf.RoundToInt(l.Slider(AerialSettings.fallenWireKnockback, 0f, 3f));
-            l.CheckboxLabeled("Live fallen wires light spilled fuel", ref AerialSettings.fallenWireIgnites,
-                "A live end lying in spilled chemfuel, or in a burnable Flow Works liquid when that mod is loaded, can set it alight. " +
-                "Applies now.");
-            l.CheckboxLabeled("Alert when a wire is cut or lying on the ground", ref AerialSettings.wireDownAlert,
-                "An alert lists each anchor with a cut or fallen wire; clicking it jumps to the anchor, where Re-string cut wires lives. " +
-                "Applies now.");
-            l.CheckboxLabeled("Claiming a pole cuts wires to the other owner", ref AerialSettings.cutWiresOnOwnerChange,
-                "When a pole changes hands, its wires to poles of a different owner are coiled, so capturing one enemy pole never fuses your grid with theirs. " +
-                "Power-tap clamps are the one way to draw from another grid. Applies now.");
-            l.GapLine();
-            l.CheckboxLabeled("Allow power-tap clamps on other factions' grids", ref AerialSettings.tapsEnabled,
-                "A clamp bitten onto someone else's conduit quietly drains their grid into yours, one way: the grids never merge.");
-            l.Label("Tap rate: " + AerialSettings.tapRate.ToString("0") + " W");
-            AerialSettings.tapRate = Mathf.Round(l.Slider(AerialSettings.tapRate, 50f, 2000f) / 50f) * 50f;
-            l.CheckboxLabeled("Report taps to consequence systems (event hook only; no alerts or raids exist yet)", ref AerialSettings.tapEvents);
-            l.GapLine();
-            if (l.ButtonText("Reset to defaults")) AerialSettings.ResetToDefaults();
-            settingsViewHeight = Mathf.Max(l.CurHeight + 20f, inRect.height);
-            l.End();
-            Widgets.EndScrollView();
-        }
+        public override void DoSettingsWindowContents(Rect inRect) => Settings.DoWindowContents(inRect);
     }
 }
