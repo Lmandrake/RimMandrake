@@ -194,36 +194,5 @@
     </comps>
   </ThingDef>
 
-  <!-- RUT_SaltCameo — the Grey's rare-table headline prize, per the doc's
-       rare-catch table: "a small creature jacketed in pillar-mineral, the
-       statuary made portable." Same ResourceBase/ExoticMisc shape as
-       RUT_SeepStone (RUT_WeepingStonesFish_Items.xml). Never rots — the
-       Grey's dead do not (ban 5), made a stat here: no CompProperties_Rottable. -->
-  <ThingDef ParentName="ResourceBase">
-    <defName>RUT_SaltCameo</defName>
-    <label>salt cameo</label>
-    <description>A small creature — nobody can say which, or ever could — jacketed whole in pillar-mineral where it sank, the Grey's own statuary shrunk to a fist and made portable. Not carved: grown, the way everything else down there grows. A salt cameo does not rot and does not wear; it is exactly as it was found, and it will still be exactly that in a hundred years.</description>
-    <graphicData>
-      <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-    </graphicData>
-    <thingCategories>
-      <li>ResourcesRaw</li>
-    </thingCategories>
-    <statBases>
-      <MaxHitPoints>60</MaxHitPoints>
-      <MarketValue>30</MarketValue>
-      <Mass>0.15</Mass>
-      <Flammability>0</Flammability>
-      <Beauty>4</Beauty>
-      <DeteriorationRate>0</DeteriorationRate>
-    </statBases>
-    <alwaysHaulable>true</alwaysHaulable>
-    <stackLimit>25</stackLimit>
-    <tradeability>Sellable</tradeability>
-    <tradeTags>
-      <li>ExoticMisc</li>
-    </tradeTags>
-  </ThingDef>
 
 </Defs>

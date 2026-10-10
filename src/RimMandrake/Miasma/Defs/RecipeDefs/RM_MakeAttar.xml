@@ -3,7 +3,7 @@
   <RecipeDef>
     <defName>RM_MakeAttar</defName>
     <label>render attar</label>
-    <description>Render attar from delta silt and delta salt.</description>
+    <description>Render attar from delta silt and salt.</description>
     <jobString>Rendering attar.</jobString>
     <workAmount>1600</workAmount>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -17,12 +17,12 @@
         <count>4</count>
       </li>
       <li>
-        <filter><thingDefs><li>RM_DeltaSalt</li></thingDefs></filter>
+        <filter><thingDefs><li>RM_RawSalt</li></thingDefs></filter>
         <count>2</count>
       </li>
     </ingredients>
     <fixedIngredientFilter>
-      <thingDefs><li>RM_DeltaSilt</li><li>RM_DeltaSalt</li></thingDefs>
+      <thingDefs><li>RM_DeltaSilt</li><li>RM_RawSalt</li></thingDefs>
     </fixedIngredientFilter>
     <products><RM_Attar>1</RM_Attar></products>
     <recipeUsers><li>RM_AttarStill</li></recipeUsers>

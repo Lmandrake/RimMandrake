@@ -8,19 +8,9 @@
   catch table and the salt cameo still carry the campaign-layer prefix while
   every named catch moved to the free tier — a small owed migration."
 
-  RM_SaltCameo is the RM_-tier twin of RUT_SaltCameo
-  (src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_GreySeaFish_Items.xml)
-  — content byte-identical (description, stats, texPath), only the defName
-  and tier move, same GREYSEA_CATCH_TIER_RENAME_1 pattern the seven catch
-  species already used.
-
-  ⚠️ RUT_SaltCameo is NOT deleted — src/RimUtinni/UtinniPatches/Defs/
-  ThingSetMakerDefs/RUT_RareGreyCatches.xml still names it and that
-  ThingSetMakerDef is reached from the FROZEN RUT_GreySea.xml ("stays as it
-  is, byte-for-byte... deleting it before then destroys the save"). Both
-  retire together at the Phase B planet repaint, not before — see
-  RM_GreySeaCatch.xml's own header for the identical reasoning on the seven
-  catch species.
+  RM_SaltCameo is the one salt cameo. Its campaign twin RUT_SaltCameo was folded into it
+  (MATERIAL_MERGES_CLEANUP_1, 2026-10-09): RUT_RareGreyCatches names RM_SaltCameo, and a saved RUT_SaltCameo
+  loads as this def through RM_MaterialMerges_Aliases.xml (EnvironmentalHazards).
   ============================================================================
 -->
 <Defs>

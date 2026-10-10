@@ -54,7 +54,7 @@
   placeholders (the same reuse RUT_TarMoat.xml/RUT_WickStem.xml use
   elsewhere in this mod) — but validate_patch.py refused all three as a hard
   ERROR: UtinniPatches already ships its OWN art under
-  Textures/Things/Item/Resource/ (RUT_Greenwood.png, RUT_Hardwood.png), so
+  Textures/Things/Item/Resource/ (RUT_Greenwood.png), so
   that folder is this mod's own claimed namespace, same trap RM_Filth_Tar.xml
   already hit for Textures/Things/Filth/. Repointed to three new RUT_-named
   folders (Graphic_StackCount is a Graphic_Collection subclass too —

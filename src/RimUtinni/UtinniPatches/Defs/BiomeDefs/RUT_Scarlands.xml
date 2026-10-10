@@ -4,8 +4,8 @@
   <!--
     FROZEN — SCARLANDS_STANDALONE_MOD_1: carrying the world until the
     terminal paint; content lives in mandrake.rm.warscar; do not edit here.
-    (RUT_Glower/RUT_GlowerCrust and RUT_ScorchedStars stay live too — their
-    RM_ duplicates are separate defs, not renames. RUT_ScarRoach stays
+    (RUT_Glower and RUT_ScorchedStars stay live too — their RM_ duplicates are
+    separate defs, not renames; RUT_GlowerCrust folded into RM_GlowerCrust 2026-10-09. RUT_ScarRoach stays
     as a hidden alias (its RM_ScarRoach successor lives in mandrake.rm.warscar);
     RUT_MortuaryCrawler is retired, replaced by RM_Pallbearer. mandrake.rut.
     scarlandsladder is untouched — see mandrake.rm.warscar's own About.xml

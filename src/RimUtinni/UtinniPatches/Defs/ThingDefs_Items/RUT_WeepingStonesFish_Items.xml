@@ -3,7 +3,7 @@
   FISH_BESTIARY_BUILD_1, wave 3 — the Weeping Stones' 6 new catch items
   (fish_bestiary_commission_2026-09-10.md §2A): RUT_Ikkal (floater), RUT_Tarrik
   (crustacean), RUT_Duul (cucumber), RUT_Ullo (jellyfish), RUT_Ozhu (eel),
-  RUT_Vobbal (octopus) — plus RUT_SeepStone, the pool's own rare prize
+  RUT_Vobbal (octopus). The pool's rare prize is RM_SeepStone
   (§2A.rare, wired via the sibling RUT_RareOasisCatches.xml). These retire the
   `swfish_` four (owner ruling 1) — see RUT_WeepingStones.xml for the wiring
   half and its retirement note.
@@ -164,35 +164,5 @@
     </comps>
   </ThingDef>
 
-  <!-- RUT_SeepStone — the §2A.rare headline prize. "A mineral concretion
-       grown in the spring throat, the Stones beneath the oasis in
-       miniature" — the oasis sibling of RM_GlassPearl (same ResourceBase
-       shape, MarketValue/Beauty per the doc's own numbers). -->
-  <ThingDef ParentName="ResourceBase">
-    <defName>RUT_SeepStone</defName>
-    <label>seep stone</label>
-    <description>A smooth mineral concretion grown drop by drop in the spring throat itself, where the seep comes up through the stones -- the Weeping Stones in miniature, banded pale and dark the same way the cliffs above the pool are. Oasis-keepers set the best ones on the shrine at the water's edge; a lesser one is sold to a pilgrim as a keepsake of the truce.</description>
-    <graphicData>
-      <texPath>Things/Plants/AB_CrystalHorn/AB_CrystalHornA</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-    </graphicData>
-    <thingCategories>
-      <li>ResourcesRaw</li>
-    </thingCategories>
-    <statBases>
-      <MaxHitPoints>60</MaxHitPoints>
-      <MarketValue>30</MarketValue>
-      <Mass>0.15</Mass>
-      <Flammability>0</Flammability>
-      <Beauty>3</Beauty>
-      <DeteriorationRate>1</DeteriorationRate>
-    </statBases>
-    <alwaysHaulable>true</alwaysHaulable>
-    <stackLimit>25</stackLimit>
-    <tradeability>Sellable</tradeability>
-    <tradeTags>
-      <li>ExoticMisc</li>
-    </tradeTags>
-  </ThingDef>
 
 </Defs>

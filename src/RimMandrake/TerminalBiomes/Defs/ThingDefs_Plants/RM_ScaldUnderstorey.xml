@@ -8,8 +8,8 @@
   (Glasskelle and Pulsebead are Route B and live in
   DivingInteraction/.../RM_ScaldVentFlora.xml; Crowncarpet is LuminousPigment's).
   Built as defs 2026-10-08. Rulings applied: plantDensity 0.30 (already set in
-  RM_TheScald.xml), thurlsponge pays real Steel, kettlewick's collar is a tiny
-  new mineral-salt keepsake (RM_KettlewickSalt, never drinkable), seepcandle
+  RM_TheScald.xml), thurlsponge pays real Steel, kettlewick's collar yields the common
+  salt RM_RawSalt (its own RM_KettlewickSalt keepsake folded in, MATERIAL_MERGES_CLEANUP_1), seepcandle
   wax is plain Chemfuel, chillbrace cut.
 
   PLACEMENT (all seven are Route A, in RM_TheScald.xml <wildPlants>):
@@ -118,7 +118,7 @@
     <plant>
       <growDays>5</growDays>
       <harvestTag>Standard</harvestTag>
-      <harvestedThingDef>RM_KettlewickSalt</harvestedThingDef>
+      <harvestedThingDef>RM_RawSalt</harvestedThingDef>
       <harvestYield>2</harvestYield>
       <harvestWork>100</harvestWork>
       <maxMeshCount>1</maxMeshCount>

@@ -62,7 +62,7 @@
     to 0 and PlantProperties.HarvestDestroys, `harvestAfterGrowth <= 0f`,
     reads true) is replaced outright with a non-destructive wool harvest —
     this landmark tree cannot ship with a mechanism that fells it.
-    harvestedThingDef -> RUT_SweetlineWool (RUT_SweetlineTree_Items.xml);
+    harvestedThingDef -> RM_SweetlineWool (mandrake.rm.biomes; the RUT_ twin folded in 2026-10-09);
     harvestYield dropped from 160 to 20 — "a rare hanging harvest", not a
     lumber yield. harvestTag changed off the inherited "Wood" to "Standard"
     (matching RUT_Fuzz/RUT_Vorrel elsewhere in this file), which would
@@ -119,7 +119,7 @@
       <visualSizeRange>7.7~10.0</visualSizeRange>
       <growDays>240</growDays>
       <harvestWork>4200</harvestWork>
-      <harvestedThingDef>RUT_SweetlineWool</harvestedThingDef>
+      <harvestedThingDef>RM_SweetlineWool</harvestedThingDef>
       <harvestYield>20</harvestYield>
       <harvestTag>Standard</harvestTag>
       <harvestAfterGrowth>0.05</harvestAfterGrowth>

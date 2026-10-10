@@ -7,9 +7,9 @@
   Byte-identical content (defName and texPath aside) — see that file's own
   header for the full account (SWEETLINE_WOOL_HARVEST_1).
 
-  🔑 The ORIGINAL RUT_SweetlineWool def is left standing in
-  mandrake.rut.ashkarrflora, untouched, for the same reason as the rest of
-  this mod's moved content — see RM_LeaningScrub_Biome.xml's own header.
+  The campaign's RUT_SweetlineWool twin was folded into this def (MATERIAL_MERGES_CLEANUP_1,
+  2026-10-09): RUT_SweetlineTree harvests RM_SweetlineWool; a saved RUT_ name loads through
+  RM_MaterialMerges_Aliases.xml (EnvironmentalHazards).
 
   Art: the felt is artpipe rut_sweetlinewool_v2 (wired 2026-10-03); the
   pilgrim's token still has no render.

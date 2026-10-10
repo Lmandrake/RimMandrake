@@ -41,15 +41,15 @@ MOVED 2026-09-24 (`LONGSHADE_RM_MOD_BUILD_1`, §7 Q8): the desert's cycle plant
 plus its hediffs, thought and recipe) is no longer part of this mod. It moved
 into `mandrake.rm.longshade` and was renamed `RM_Vorrel*` —
 `src/RimMandrake/LongShade/Defs/{ThingDefs_Plants,HediffDefs,ThingDefs_Items,
-RecipeDefs,ThoughtDefs}/`. This mod now ships only `RUT_SweetlineTree` and its
-wool, and `RUT_Fuzz`/`RUT_AridShrublandVanillaReplacements` (the arid
+RecipeDefs,ThoughtDefs}/`. This mod now ships only `RUT_SweetlineTree` (its wool is
+`RM_SweetlineWool`), and `RUT_Fuzz`/`RUT_AridShrublandVanillaReplacements` (the arid
 shrubland's own content) — no fauna-behaviors dependency remains.
 
 SWEETLINE_WOOL_HARVEST_1 (2026-09-21) — the harvest arid_shrubland.md §4
 promised and never shipped: `RUT_SweetlineTree` inherited TreeBase's
-destructive wood harvest, which fells a named landmark tree. Now ships
-`RUT_SweetlineWool` (`RUT_SweetlineTree_Items.xml`, ParentName WoolBase,
-shaped on `RSW_WoolBantha`) as the tree's harvestedThingDef, with
+destructive wood harvest, which fells a named landmark tree. The tree's harvestedThingDef is
+`RM_SweetlineWool` (mandrake.rm.biomes, Leaning Scrub; this mod's own `RUT_SweetlineWool` twin was folded
+into it by MATERIAL_MERGES_CLEANUP_1, 2026-10-09), with
 `harvestAfterGrowth` set (0.05, vanilla's own non-destructive-harvest
 mechanism — `PlantProperties.HarvestDestroys` is `harvestAfterGrowth &lt;= 0f`)
 so the tree survives every harvest and cut-plant job alike. harvestYield
@@ -59,17 +59,21 @@ and it is the cheaper build besides (one existing PlantProperties field,
 already used twice elsewhere in this mod). Unblocks
 `SHRUBLAND_TREE_GUARDIAN_1`. Naming is provisional off "sweetline"/"giant-
 wool", never off a giant species name — the giants are still unnamed
-(`ARIDSHRUBLAND_SHIPPING_NAMES_1`). Art owed, not queued (Codex quota-blocked
-until ~2026-09-26); texPath points at the future render location per this
-mod's own established convention.</description>
+(`ARIDSHRUBLAND_SHIPPING_NAMES_1`).</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>
       <displayName>RimWorld</displayName>
     </li>
+    <li>
+      <!-- MATERIAL_MERGES_CLEANUP_1: the sweetline harvest is RM_SweetlineWool, defined there. -->
+      <packageId>mandrake.rm.biomes</packageId>
+      <displayName>RimMandrake: Baroque Biomes</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.biomes</li>
     <li>ChaoticEnrico.BetterTrees</li>
     <li>Qux.Comigo.BetterTreesMod</li>
     <li>Maal.BetterTreesMod</li>

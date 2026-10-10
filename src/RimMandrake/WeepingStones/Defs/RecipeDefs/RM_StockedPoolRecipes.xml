@@ -75,7 +75,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RM_SeepSalt</li>
+            <li>RM_RawSalt</li>
           </thingDefs>
         </filter>
         <count>0.05</count>
@@ -84,7 +84,7 @@
     <fixedIngredientFilter>
       <thingDefs>
         <li>RM_MurrinMeat</li>
-        <li>RM_SeepSalt</li>
+        <li>RM_RawSalt</li>
       </thingDefs>
     </fixedIngredientFilter>
     <products>

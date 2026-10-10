@@ -29,7 +29,7 @@
   mod's own ThingDefs_Items/RM_WeepingStonesNativeFlora_Items.xml).
   RM_Salvecomb -> vanilla MedicineHerbal (the healroot pattern named in the
   roster; no new item needed — same harvestedThingDef vanilla Healroot
-  itself uses). RM_Steamfrond -> RM_SeepSalt (new item, same items file).
+  itself uses). RM_Steamfrond -> RM_RawSalt (the common salt; its own seep-salt folded in 2026-10-09).
   RM_Dewgourd -> RM_DewgourdFruit (new item, same items file). RM_Rockfinger
   -> vanilla WoodLog (an ordinary tree).
 -->
@@ -300,7 +300,7 @@
       <visualSizeRange>0.4~0.8</visualSizeRange>
       <topWindExposure>0</topWindExposure>
       <harvestTag>Standard</harvestTag>
-      <harvestedThingDef>RM_SeepSalt</harvestedThingDef>
+      <harvestedThingDef>RM_RawSalt</harvestedThingDef>
       <harvestYield>3</harvestYield>
       <harvestWork>260</harvestWork>
       <harvestAfterGrowth>0.5</harvestAfterGrowth>

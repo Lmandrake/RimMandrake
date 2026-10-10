@@ -25,7 +25,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RUT_SeepStone</li>
+                  <li>RM_SeepStone</li>
                 </thingDefs>
               </filter>
               <countRange>1~2</countRange>

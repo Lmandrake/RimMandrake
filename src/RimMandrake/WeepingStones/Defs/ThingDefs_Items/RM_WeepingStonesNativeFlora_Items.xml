@@ -37,26 +37,6 @@
     </comps>
   </ThingDef>
 
-  <!-- ══════════════════════ RM_SeepSalt — steamfrond's harvest ══════════════════════ -->
-  <ThingDef ParentName="ResourceBase">
-    <defName>RM_SeepSalt</defName>
-    <label>seep-salt</label>
-    <description>Mineral-pale salt scraped from the rim of a steamfrond vent, tasting faintly of the underworld it rose from. A preservative and a spice; the only source of it on the planet is a working seep oasis.</description>
-    <graphicData>
-      <texPath>Things/Item/Resource/RM_SeepSalt</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-    </graphicData>
-    <statBases>
-      <MarketValue>3.2</MarketValue>
-      <Mass>0.02</Mass>
-      <Flammability>0</Flammability>
-    </statBases>
-    <stackLimit>150</stackLimit>
-    <thingCategories>
-      <li>ResourcesRaw</li>
-    </thingCategories>
-  </ThingDef>
-
   <!-- ══════════════════════ RM_DewgourdFruit — the farmed crop's harvest ══════════════════════ -->
   <ThingDef ParentName="PlantFoodRawBase">
     <defName>RM_DewgourdFruit</defName>

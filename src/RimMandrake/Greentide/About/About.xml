@@ -90,9 +90,8 @@ the greatbole landmark, sharing its visual family and nothing else (no
 shared def, no growth path; the relationship is fiction by design). Felling
 one is the franchise-free source for the fruit economy above that this file
 used to call "owed separately." RM_Greatbole drops true hardwood
-(RM_GreatboleHardwood, a new RM_ tier resource — deliberately NOT a
-reference to the campaign's RUT_Hardwood, so this mod still depends on
-nothing Utinni-side) via the shared, def-agnostic RM_FellableTreeExtension /
+(RM_GreatboleHardwood, the RM_ tier resource; the campaign's RUT_Hardwood twin
+was folded into it 2026-10-09, so this mod depends on nothing Utinni-side) via the shared, def-agnostic RM_FellableTreeExtension /
 RM_TreeFallUtility mechanism in mandrake.rm.environmentalhazards. CORRECTED
 2026-09-29 (GREENTIDE_CANOPY_SWARM_1): that dependency was previously
 described here as "optional, gated per-&lt;li&gt; with MayRequire" but no

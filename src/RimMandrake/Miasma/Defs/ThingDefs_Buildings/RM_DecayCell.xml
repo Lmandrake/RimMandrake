@@ -34,7 +34,7 @@
     <costList>
       <RM_DeltaLoam>40</RM_DeltaLoam>
       <RM_DeltaSilt>20</RM_DeltaSilt>
-      <RM_DeltaSalt>10</RM_DeltaSalt>
+      <RM_RawSalt>10</RM_RawSalt>
       <Steel>30</Steel>
     </costList>
     <comps>

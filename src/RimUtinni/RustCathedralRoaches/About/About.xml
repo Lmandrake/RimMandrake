@@ -65,8 +65,8 @@ and nothing here references it. No freeze/scatter tell.
 
 Salability — DECIDED (kit spec §6): both roaches join the salable list. The
 organic butchers normally (useMeatFrom Megaspider, like the donor). The
-synthetic's butcherProducts include RUT_CathedralRoachShell, a small new
-tradeable resource (ThingDefs_Items/RUT_CathedralRoachShell.xml), alongside
+synthetic's butcherProducts include RM_CathedralRoachShell (mandrake.rm.biomes, Rust Cathedral;
+this mod's RUT_ twin was folded into it 2026-10-09), a small tradeable resource, alongside
 steel. Neither is "watched" by any hum/goodwill mechanic — no comp here
 counts or reports a harvest; this is deliberate (rationale: leaving the
 roaches out of hum inputs as well as hum displays), reversible on the

@@ -32,8 +32,11 @@
   gate; without the kit this whole operation is now a true no-op.
 
   Tuning: interval 2 days, amount 12 — forge_kit_spec.md F2's own INVENTED
-  values, verbatim ("interval 2 days, amount 12 RUT_TibannaGas"). gatherDef
-  points at RUT_TibannaGas.xml (this same pass). fullnessLabelKey repoints
+  values, verbatim ("interval 2 days, amount 12"). gatherDef is KOTOR_Tibanna, the
+  one tibanna (MATERIAL_MERGES_CLEANUP_1, 2026-10-09: the campaign's own RUT_TibannaGas folded into it), so
+  what a beldon gives is what the tibanna pipe network and the plasma recipes take. KOTOR_Tibanna is owned by
+  "Star Wars KotOR Resources and Materials" (guy762.mm.kotorcore; Armoury's absorbed copy is held), so the
+  wiring is gated on that mod too. fullnessLabelKey repoints
   the comp's default "RM_GasPressure" generic key to the concrete
   "tibanna pressure" flavor the kit spec's own text names for the inspect
   line (RUT_TibannaPressure, Languages/English/Keyed/
@@ -49,16 +52,22 @@
     <mods>
       <li>RimMandrake: Baroque Biomes</li>
     </mods>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_Beldon"]/comps</xpath>
-      <value>
-        <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas">
-          <gatherIntervalDays>2</gatherIntervalDays>
-          <gatherAmount>12</gatherAmount>
-          <gatherDef>RUT_TibannaGas</gatherDef>
-          <fullnessLabelKey>RUT_TibannaPressure</fullnessLabelKey>
-        </li>
-      </value>
+    <match Class="PatchOperationFindMod">
+      <mods>
+        <li>Star Wars KotOR Resources and Materials</li>
+        <li>Jawa Armoury Rebalance</li>
+      </mods>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RSW_Beldon"]/comps</xpath>
+        <value>
+          <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas">
+            <gatherIntervalDays>2</gatherIntervalDays>
+            <gatherAmount>12</gatherAmount>
+            <gatherDef>KOTOR_Tibanna</gatherDef>
+            <fullnessLabelKey>RUT_TibannaPressure</fullnessLabelKey>
+          </li>
+        </value>
+      </match>
     </match>
   </Operation>
 

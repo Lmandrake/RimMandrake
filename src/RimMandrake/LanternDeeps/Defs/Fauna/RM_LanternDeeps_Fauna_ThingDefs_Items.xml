@@ -61,6 +61,9 @@
     <stuffProps>
       <categories>
         <li>RM_DeepChitinStuff</li>
+        <!-- MATERIAL_MERGES_CLEANUP_1: this is the one chitin ladder (the Rot's and the Bestiary's copies fold
+             here), so it also carries the Rot's chitin category its consumers (spider helmet) ask for. -->
+        <li>RM_ChitinStuff</li>
         <li>Leathery</li>
       </categories>
       <color>(255,255,255)</color>

@@ -18,7 +18,7 @@ ancient, never small" ruling.
 
 SWEETLINE_WOOL_HARVEST_1 (2026-09-21): the harvest changed from TreeBase's
 inherited destructive wood harvest to a non-destructive giant-wool harvest
-(`harvestedThingDef` RUT_SweetlineWool, `harvestAfterGrowth` 0.05 instead of
+(`harvestedThingDef` RM_SweetlineWool since MATERIAL_MERGES_CLEANUP_1, `harvestAfterGrowth` 0.05 instead of
 TreeBase's implicit 0 -- see RUT_AshkarrFlora_Plants.xml's own header for the
 full mechanism). EXPECT_FIELDS below reflects the new values.
 `Flammability` is dropped to 0.1 (from `TreeBase`'s 0.8) per
@@ -115,7 +115,7 @@ EXPECT_STATBASES = {
 EXPECT_PLANT = {
     "growDays": "240",
     "harvestWork": "4200",
-    "harvestedThingDef": "RUT_SweetlineWool",   # SWEETLINE_WOOL_HARVEST_1: was WoodLog (inherited)
+    "harvestedThingDef": "RM_SweetlineWool",   # SWEETLINE_WOOL_HARVEST_1: was WoodLog (inherited)
     "harvestYield": "20",                        # SWEETLINE_WOOL_HARVEST_1: was 160 (wood)
     "harvestTag": "Standard",                     # SWEETLINE_WOOL_HARVEST_1: was inherited "Wood"
     "harvestAfterGrowth": "0.05",                 # SWEETLINE_WOOL_HARVEST_1: makes HarvestDestroys false
