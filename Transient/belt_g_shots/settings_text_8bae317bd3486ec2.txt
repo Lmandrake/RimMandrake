@@ -1,0 +1,175 @@
+label: Luminous Pigment
+label: THE CHAIN
+label: THE CHAIN
+label: Reset this section to defaults
+label: Wild crowncarpet on ocean shores
+label: Shore mat rarity: 0.006
+label: Shore mat rarity: 0.006
+label: Fresh crowncarpet's clock: 1.00 days
+label: Fresh crowncarpet's clock: 1.00 days
+label: That is 24 hours from harvest to death.
+label: That is 24 hours from harvest to death.
+label: How long a harvested mat survives before it dies on its own.
+label: How long a harvested mat survives before it dies on its own.
+label: Dies at once below: 10C
+label: Dies at once below: 10C
+label: THE PRESS
+label: THE PRESS
+label: Reset this section to defaults
+label: How the deepfire press (and its research) is unlocked.
+label: How the deepfire press (and its research) is unlocked.
+label: Research (default) -- gated behind a locked project, unlocked once a mat is seen
+label: Always buildable -- no research needed
+label: Unbuildable -- only where a scenario or quest places one
+label: Deepfire per batch (4 fresh mat + fixative): 2
+label: Deepfire per batch (4 fresh mat + fixative): 2
+label: Press power draw: 150 W
+label: Press power draw: 150 W
+label: DEEPFIRE
+label: DEEPFIRE
+label: Reset this section to defaults
+label: Market value per jar: 90
+label: Market value per jar: 90
+label: A deepfire stockpile glows
+label: Deepfire light shows the colony at night
+label: Visibility per lit light per dark hour: 0.05 (at most 2 an hour)
+label: Visibility per lit light per dark hour: 0.05 (at most 2 an hour)
+label: THE GLOWTANK
+label: THE GLOWTANK
+label: Reset this section to defaults
+label: GlowTank buildable
+label: Power outage before it kills the culture: 6 h
+label: Power outage before it kills the culture: 6 h
+label: Tank needs ocean water (FlowWorks)
+label: Ocean water drunk per day of running (units): 4.0
+label: Ocean water drunk per day of running (units): 4.0
+label: PAINTING
+label: PAINTING
+label: Reset this section to defaults
+label: Painting enabled
+label: Max coats: 3
+label: Max coats: 3
+label: Coat 1 radius: 1.5
+label: Coat 1 radius: 1.5
+label: Coat 1 intensity: 0.45
+label: Coat 1 intensity: 0.45
+label: Coat 2 radius: 2.0
+label: Coat 2 radius: 2.0
+label: Coat 2 intensity: 0.70
+label: Coat 2 intensity: 0.70
+label: Coat 3 radius: 2.5
+label: Coat 3 radius: 2.5
+label: Coat 3 intensity: 1.00
+label: Coat 3 intensity: 1.00
+label: Dark-dye value floor: 0.45
+label: Dark-dye value floor: 0.45
+label: Deepfire cost per target
+label: Deepfire cost per target
+label: Wall cell: 1
+label: Wall cell: 1
+label: Floor cell: 1
+label: Floor cell: 1
+label: Furniture, 1x1: 2
+label: Furniture, 1x1: 2
+label: Furniture, per extra cell: 1
+label: Furniture, per extra cell: 1
+label: Furniture cap: 6
+label: Furniture cap: 6
+label: Art item: 3
+label: Art item: 3
+label: Apparel: 3
+label: Apparel: 3
+label: Weapon: 3
+label: Weapon: 3
+label: Light clustering: 3 cell(s) per group
+label: Light clustering: 3 cell(s) per group
+label: 1 = one light per coated cell/thing (most accurate, most lights).
+label: 1 = one light per coated cell/thing (most accurate, most lights).
+label: What can take deepfire
+label: What can take deepfire
+label: Floors
+label: Walls
+label: Furniture and art
+label: Apparel
+label: Weapons
+label: Worn deepfire lights its wearer
+label: Styling-station lacquer checkbox
+label: Worn-light cell poll: every 15 ticks
+label: Worn-light cell poll: every 15 ticks
+label: Combat penalties for glowing in the dark
+label: Ranged: x1.25 target size in the dark
+label: Ranged: x1.25 target size in the dark
+label: Melee: -0.08 dodge chance in the dark
+label: Melee: -0.08 dodge chance in the dark
+label: First-coat quality bump on art items
+label: Beauty bonus (everything else): +3 flat x size, +25% of base beauty
+label: Beauty bonus (everything else): +3 flat x size, +25% of base beauty
+label: Beauty size-factor cap: 4
+label: Beauty size-factor cap: 4
+label: Floor beauty per coated cell: 0.50
+label: Floor beauty per coated cell: 0.50
+label: Room beauty per 10 coated floor cells: 2, capped at 10
+label: Room beauty per 10 coated floor cells: 2, capped at 10
+label: CUISINE
+label: CUISINE
+label: Reset this section to defaults
+label: Deepfire dishes
+label: Steered-recipe skill requirement: 10
+label: Steered-recipe skill requirement: 10
+label: Vermilion (whole-body) recipe skill requirement: 14
+label: Vermilion (whole-body) recipe skill requirement: 14
+label: Glow-hediff families a pawn can carry at once: 3
+label: Glow-hediff families a pawn can carry at once: 3
+label: Glow-hediffs give off light
+label: Steered dish, steer chance at cook skill 6 / 12 / 20: 0% / 60% / 100%
+label: Steered dish, steer chance at cook skill 6 / 12 / 20: 0% / 60% / 100%
+label: Vermilion dish, steer chance at cook skill 6 / 12 / 20: 0% / 0% / 100%
+label: Vermilion dish, steer chance at cook skill 6 / 12 / 20: 0% / 0% / 100%
+label: Plain dish odds: skin 11%, eyes 11%, cranial 11%, neural 11%, mouth 11%, products 11%, blood 5%, marrow 5%, hair 5%, gut 5%, nerves 5%, pulse 5%, lungs 5%
+label: Plain dish odds: skin 11%, eyes 11%, cranial 11%, neural 11%, mouth 11%, products 11%, blood 5%, marrow 5%, hair 5%, gut 5%, nerves 5%, pulse 5%, lungs 5%
+label: Families available to roll or steer toward:
+label: Families available to roll or steer toward:
+label: skin
+label: eyes
+label: cranial
+label: neural
+label: mouth
+label: products
+label: blood
+label: marrow
+label: hair
+label: gut
+label: nerves
+label: pulse
+label: lungs
+label: vermilion
+label: GODS (Ninefold)
+label: GODS (Ninefold)
+label: Reset this section to defaults
+label: Gods react to deepfire
+label: Liking (every god on a first coat, a dish eaten): 3
+label: Liking (every god on a first coat, a dish eaten): 3
+label: Adoration (Mob'Unloo, Rekko, Zizzik on a first coat; Mob'Unloo on a sale; Ishko's anger at worn gear and the vermilion): 8
+label: Adoration (Mob'Unloo, Rekko, Zizzik on a first coat; Mob'Unloo on a sale; Ishko's anger at worn gear and the vermilion): 8
+label: Ishko's dislike of a first coat: 3
+label: Ishko's dislike of a first coat: 3
+label: A god's own statue coated: 15
+label: A god's own statue coated: 15
+label: Full reactions per kind of thing painted, then just 1: 10
+label: Full reactions per kind of thing painted, then just 1: 10
+label: Ishko's own idol can be painted
+label: STATUS (the purple engine)
+label: STATUS (the purple engine)
+label: Reset this section to defaults
+label: Sumptuary reactions
+label: Display score cap: 6
+label: Display score cap: 6
+label: Commoner display score that offends a titled pawn: 2
+label: Commoner display score that offends a titled pawn: 2
+label: Mood scale (multiplies every deepfire status thought): x1.00
+label: Mood scale (multiplies every deepfire status thought): x1.00
+label: Opinion penalty for wearing above one's station: -15
+label: Opinion penalty for wearing above one's station: -15
+label: Goodwill per impressed visitor: 2
+label: Goodwill per impressed visitor: 2
+label: Close
