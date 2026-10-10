@@ -1,0 +1,2457 @@
+{
+ "batch": 11,
+ "category": "weapons_apparel",
+ "count": 22,
+ "instructions": "Assess every mod per design/RimMandrake/mod_audit/RUBRIC.md against design/RimMandrake/mod_audit/SCENARIO_BRIEF.md; write assessments/batch_11.jsonl. Whole-session context (TPS, memory, log probe): facts/session_context.json.",
+ "mods": [
+  {
+   "packageId": "nals.facialanimation",
+   "name": "[NL] Facial Animation - WIP",
+   "author": "Nals",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 32,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1635901197",
+   "workshop_id": "1635901197",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=1635901197",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "This MOD provides the following animations. This MOD is currently WIP.\nTherefore, specifications and functions are subject to change.\n\nAdded animation\n- Blink\n- RemoveApparel\n- Wear\n- WaitCombat\n- Goto\n- LayDown\n- Lovin\n- Ingest\n- SocialRelax\n- StandAndBeSociallyActive\n- Wait_Downed\n- Mine\n\nFuture plans\n  - Addition of eyes and eyelids\n  - Addition of manga expression\n\n\nCaution\nRedistribution of this MOD data is prohibited.\n\n\nこのMODは以下の機能を提供します。このMODは現在WIPです。\nそのため、仕様や機能は予告なく変更される場合があります。\n\n追加された表情アニメーション\n- 瞬き\n- 服を脱ぐとき\n- 服を着るとき\n- 戦闘待機\n- (どこかへ)向かうとき\n- 倒れたとき\n- ラブイン！\n- 食べ物などを摂取するとき\n- リラックスしているとき\n- パーティ開催時\n- 倒れて助けをもとめるとき\n- 採掘しているとき\n\n今後の予定\n- 目や瞼の種類の追加\n- 漫画表現の追加\n\n\n注意\n当MODの再配布を禁じます。",
+   "dependencies": [],
+   "dependants": [
+    "danzinagri.facialanimationcompatabilityproject",
+    "nals.facialanimationexperimentals",
+    "reel.facialanims",
+    "sd.fa.geneticheadsframework",
+    "vanillaexpanded.vtexe.facialanims"
+   ],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 7.07,
+   "disk_by_kind": {
+    "assemblies": {
+     "files": 7,
+     "mb": 0.43
+    },
+    "xml": {
+     "files": 221,
+     "mb": 0.29
+    },
+    "textures": {
+     "files": 1238,
+     "mb": 6.35
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1238,
+   "texture_decoded_mb_est": 1596.8,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "FacialAnimation.dll",
+     "path": "1.6/Assemblies/FacialAnimation.dll",
+     "kb": 106.0,
+     "flags": [
+      "comp_tick",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 73,
+   "defs_by_type": {
+    "FacialAnimation.FaceAnimationDef": 36,
+    "FacialAnimation.LidTypeDef": 5,
+    "FacialAnimation.BrowShapeDef": 4,
+    "FacialAnimation.EyeballTypeDef": 4,
+    "FacialAnimation.HeadTypeDef": 3,
+    "FacialAnimation.SkinTypeDef": 3,
+    "FacialAnimation.EmotionShapeDef": 2,
+    "FacialAnimation.EyeballColorDef": 2,
+    "FacialAnimation.HeadShapeDef": 2,
+    "FacialAnimation.LidShapeDef": 2,
+    "FacialAnimation.MouthShapeDef": 2,
+    "FacialAnimation.BrowTypeDef": 1,
+    "FacialAnimation.EmotionTypeDef": 1,
+    "FacialAnimation.EyeballShapeDef": 1,
+    "FacialAnimation.FaceAdjustmentDef": 1,
+    "FacialAnimation.LidOptionShapeDef": 1,
+    "FacialAnimation.MouthTypeDef": 1,
+    "FacialAnimation.SkinShapeDef": 1,
+    "MainButtonDef": 1
+   },
+   "patch_ops_all": 4,
+   "patched_def_types": {
+    "ThingDef": 3
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 3
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "jellypowered.survivaltools": 12,
+    "memegoddess.giddyup": 7,
+    "vanillaexpanded.vtexe.facialanims": 7,
+    "lovelydovey.sex.witheuterpe": 4,
+    "frozensnowfox.complexjobs": 2,
+    "meathax.showmeyourtools": 2,
+    "redmattis.betterprerequisites": 1
+   },
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 5,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "asp.halituisamaricanous",
+   "name": "Astronomy Style Pack",
+   "author": "Halituis Amaricanus",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 58,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3522312454",
+   "workshop_id": "3522312454",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3522312454",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Mod adds a Style pack for the Ideology DLC - The Astronomy style pack adds themed weapons, armor, and buildings to help fit the Space-life experince. Style and weapons are Inspired by various Fan art and online works Inspired by midworld and argi-industrial art.\n  \n  Mod Replaces / Adds 103 Unique sprites.\n\nCREDITS\n\n\t♦ Halituis Amaricanous : Art and XML\n\t♦ Music made by: Emanuel Abrudean",
+   "dependencies": [
+    "Ludeon.RimWorld.Ideology"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld.Ideology"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 13.28,
+   "disk_by_kind": {
+    "xml": {
+     "files": 7,
+     "mb": 0.02
+    },
+    "textures": {
+     "files": 138,
+     "mb": 3.15
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    },
+    "sounds": {
+     "files": 1,
+     "mb": 10.1
+    }
+   },
+   "texture_count": 138,
+   "texture_decoded_mb_est": 52.6,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 52,
+   "defs_by_type": {
+    "ThingStyleDef": 40,
+    "TerrainDef": 5,
+    "DesignatorDropdownGroupDef": 2,
+    "RitualVisualEffectDef": 1,
+    "SoundDef": 1,
+    "StyleCategoryDef": 1,
+    "TerrainTemplateDef": 1,
+    "ThingDef": 1
+   },
+   "patch_ops_all": 3,
+   "patched_def_types": {
+    "ThingDef": 12
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 12
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "examine",
+   "prior_note_2026_08_30": "Cosmetic astronomy-themed style/terrain pack — check it's actually visible/used against the desert palette, or drop as dead weight",
+   "src": null
+  },
+  {
+   "packageId": "io.github.relvl.rimworld.bestapparel",
+   "name": "BestApparel",
+   "author": "Johnson1893",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 64,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2946961833",
+   "workshop_id": "2946961833",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2946961833",
+   "about_url": "https://github.com/Relvl/Rimworld_BestApparel",
+   "supports_1_6": true,
+   "description": "A mod that will help you find the best apparel for your pawns!\nThe mod adds an interface that allows you to find the apparel by the specified layers, slots and stats.\nAllows you to sort the found apparel by a more accurate list of comparisons.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "ceteam.combatextended",
+    "skyarkhangel.HSK"
+   ],
+   "load_before": [
+    "trinity.RuntimeGCupdated"
+   ],
+   "incompatible_with": [],
+   "disk_mb": 0.62,
+   "disk_by_kind": {
+    "source": {
+     "files": 1,
+     "mb": 0.0
+    },
+    "other": {
+     "files": 5,
+     "mb": 0.03
+    },
+    "xml": {
+     "files": 35,
+     "mb": 0.04
+    },
+    "assemblies": {
+     "files": 18,
+     "mb": 0.53
+    },
+    "textures": {
+     "files": 2,
+     "mb": 0.01
+    }
+   },
+   "texture_count": 2,
+   "texture_decoded_mb_est": 0.2,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "BestApparel.dll",
+     "path": "1.6/Assemblies/BestApparel.dll",
+     "kb": 91.0,
+     "flags": [
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 1,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 10,
+   "defs_by_type": {
+    "BestApparel.ToolbarButtonDef": 5,
+    "BestApparel.ThingTabDef": 4,
+    "MainButtonDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/Relvl/Rimworld_BestApparel",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": "2025-07-11T06:22:22Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "milkwater.destinymod",
+   "name": "Destiny Exotic Weapons",
+   "author": "Milkwater",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 109,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3496200631",
+   "workshop_id": "3496200631",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3496200631",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds 9 exotic weapons to your game, as well as a new method to acquire them.\\n\\nEach exotic weapon has its own unique powers, check them out on the main steam page!",
+   "dependencies": [
+    "brrainz.harmony",
+    "OskarPotocki.VanillaFactionsExpanded.Core"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Odyssey",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "brrainz.harmony",
+    "oskarpotocki.vanillafactionsexpanded.core"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 6.13,
+   "disk_by_kind": {
+    "assemblies": {
+     "files": 2,
+     "mb": 0.05
+    },
+    "xml": {
+     "files": 33,
+     "mb": 0.11
+    },
+    "textures": {
+     "files": 33,
+     "mb": 2.32
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    },
+    "sounds": {
+     "files": 15,
+     "mb": 3.65
+    }
+   },
+   "texture_count": 33,
+   "texture_decoded_mb_est": 25.5,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "DestinyMod.dll",
+     "path": "1.6/Assemblies/DestinyMod.dll",
+     "kb": 25.0,
+     "flags": [
+      "map_component_tick"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "map_component_tick"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 59,
+   "defs_by_type": {
+    "ThingDef": 25,
+    "SoundDef": 15,
+    "FleckDef": 9,
+    "HediffDef": 8,
+    "StatDef": 1,
+    "WorkGiverDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "dubwise.dubspaintshop",
+   "name": "Dub's Paint Shop",
+   "author": "Dubwise",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 120,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1579516669",
+   "workshop_id": "1579516669",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=1579516669",
+   "about_url": "https://github.com/Dubwise56/Dubs-Paint-Shop",
+   "supports_1_6": true,
+   "description": "Adds painting tools to change the colour of stuffed or colourable buildings, apparel, and terrain\\n\\nMultiplayer Ready",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 10.73,
+   "disk_by_kind": {
+    "other": {
+     "files": 3,
+     "mb": 0.0
+    },
+    "assemblies": {
+     "files": 16,
+     "mb": 9.19
+    },
+    "xml": {
+     "files": 92,
+     "mb": 1.16
+    },
+    "textures": {
+     "files": 25,
+     "mb": 0.37
+    }
+   },
+   "texture_count": 25,
+   "texture_decoded_mb_est": 1.6,
+   "dll_count": 2,
+   "dlls": [
+    {
+     "name": "0Harmony.dll",
+     "path": "1.6/Assemblies/0Harmony.dll",
+     "kb": 2167.0,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "DubsPaintShop.dll",
+     "path": "1.6/Assemblies/DubsPaintShop.dll",
+     "kb": 73.0,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": true,
+    "github": true,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 18,
+   "defs_by_type": {
+    "DesignationDef": 4,
+    "JobDef": 4,
+    "WorkGiverDef": 3,
+    "ThingDef": 2,
+    "DubRoss.DefExtensions": 1,
+    "EffecterDef": 1,
+    "KeyBindingCategoryDef": 1,
+    "KeyBindingDef": 1,
+    "MainButtonDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "frozensnowfox.complexjobs": 3
+   },
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 4,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/Dubwise56/Dubs-Paint-Shop",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": "2026-09-18T03:18:12Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "zal.ionweaponry",
+   "name": "Ion Weaponry (Continued)",
+   "author": "Zaljerem",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 179,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3532877485",
+   "workshop_id": "3532877485",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3532877485",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Original mod by Elseud\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=3223261922\n\nCredits:\nDesign, XML, Textures: Elseud\nC# - SmArtKar\n\nAthena Framework code - MIT License\nThis mod is distributed under Creative Commons Attribution 4.0 International which means that you can use and modify this mod as long as credit is retained.\nLicense aside - if the original author requests it, I will remove this update.\n\n--\n\nNo longer requires Athena Framework; the required code has been integrated (and SmArtKar credited).\n\n--\n\nOriginal mod notes (1.5):\n\nAdds an assortment of spacer ion weapons, which sacrifice raw damage and stopping power for short cooldowns and armor penetration, along with a special EMP explosion passive.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 1.15,
+   "disk_by_kind": {
+    "assemblies": {
+     "files": 1,
+     "mb": 0.01
+    },
+    "xml": {
+     "files": 6,
+     "mb": 0.04
+    },
+    "other": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 13,
+     "mb": 0.7
+    },
+    "sounds": {
+     "files": 7,
+     "mb": 0.41
+    }
+   },
+   "texture_count": 13,
+   "texture_decoded_mb_est": 7.3,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "IonWeaponry.dll",
+     "path": "1.6/Assemblies/IonWeaponry.dll",
+     "kb": 6.5,
+     "flags": []
+    }
+   ],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 34,
+   "defs_by_type": {
+    "SoundDef": 15,
+    "ThingDef": 15,
+    "AbilityDef": 1,
+    "DamageDef": 1,
+    "HediffDef": 1,
+    "ResearchProjectDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rsw.patches": 21
+   },
+   "patched_by_ours_refs": 21,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "kikohi.jewelry",
+   "name": "Jewelry",
+   "author": "Kikohi, Sarg",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 182,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3203280763",
+   "workshop_id": "3203280763",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3203280763",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "I've always thought gold didn't have enough uses in-game. As the only real use was statues, trading and eventually floor. This is now an old story! I present you Jewelry! The mod adds new apparels: necklace, ring, bracelet and earrings. They are all made of gold, and a stuffable. It can be stone (Marble, granite...) or gemstones. Vanilla Rimworld only adds one gemstone, jade. This is why this mod also add diamond, sapphire and ruby. With all those new recipes, I thought it was also a good idea to add a new production bench. The laser sculpting table, 50% faster than the vanilla sculpting table!",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "brrainz.harmony",
+    "vanillaexpanded.achievements"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.61,
+   "disk_by_kind": {
+    "other": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "xml": {
+     "files": 52,
+     "mb": 0.13
+    },
+    "assemblies": {
+     "files": 3,
+     "mb": 0.07
+    },
+    "textures": {
+     "files": 41,
+     "mb": 0.42
+    }
+   },
+   "texture_count": 41,
+   "texture_decoded_mb_est": 5.5,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "Jewelry.dll",
+     "path": "1.6/Assemblies/Jewelry.dll",
+     "kb": 22.5,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 35,
+   "defs_by_type": {
+    "ThingDef": 15,
+    "RecipeDef": 8,
+    "TerrainDef": 3,
+    "ResearchProjectDef": 2,
+    "ApparelLayerDef": 1,
+    "BodyPartGroupDef": 1,
+    "DesignatorDropdownGroupDef": 1,
+    "ResearchTabDef": 1,
+    "StuffCategoryDef": 1,
+    "ThingCategoryDef": 1,
+    "ThoughtDef": 1
+   },
+   "patch_ops_all": 28,
+   "patched_def_types": {
+    "ThingDef": 6,
+    "PawnKindDef": 4,
+    "RoyalTitleDef": 4,
+    "BodyDef": 3,
+    "RecipeDef": 2,
+    "TraderKindDef": 2,
+    "FactionDef": 1,
+    "GenStepDef": 1,
+    "WorkGiverDef": 1
+   },
+   "patch_findmod_names": {
+    "Android Tiers Reforged": 1,
+    "Gemstones": 1,
+    "Glowstone": 1,
+    "Royalty": 1,
+    "Star Wars Races": 1
+   },
+   "patches_mods": {
+    "ludeon.rimworld.royalty": 14,
+    "ludeon.rimworld": 4,
+    "jm.bettertraders": 2,
+    "zav.glowstoneforked": 2
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.researchretag": 15,
+    "jellypowered.survivaltools": 3
+   },
+   "patched_by_ours_refs": 15,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 1,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/vbardales/Rimworld-Precious-Stones-And-Jewelry-Enhanced",
+   "source_kind": "github-search",
+   "source_confidence": "INFERRED",
+   "source_license": "other",
+   "source_last_push": "2026-09-11T15:24:01Z",
+   "source_archived": false,
+   "source_note": "top hit for the mod NAME; a name match, not proof - confirm before relying on it",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "usgiyi.slaveoutfits",
+   "name": "Slave Outfits [1.6]",
+   "author": "Usgiyi",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 283,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1522429439",
+   "workshop_id": "1522429439",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=1522429439",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "V1.7.3\t8/19/25\n    Do you have a bunch of slaves/prisoners wearing the same clothes as your colonists? Did your inner slaver get triggered because you just can't find proper a uniform mod?\n    Give your beloved prisoners the outfits they deserve at last! Concentration camps not included.\n\n    This is a really basic mod that adds some apparel for slaves and prisoners.\n\t\nUpdated to 1.0 and beyond by Usgiyi.\n\nV1.7.3\t8/19/25 Odyssey update. Spacer suit now has vacuum resistance.\nV1.7.2\t6/18/25 Changed a description. Updated to 1.6\nV1.7.1\t3/13/24 Touched up art, removed rogue coloring outside the outline of clothes. Added black outlines to hats as suggested by Arky. Doubled resolution of clothing. Fixed off center clothing sprites. Rebalanced clothing cost and stats. Fixed missing tech level for spacer uniform, thanks for pointing it out Vartarhoz.\nV1.7\t10/22/22 Hats no longer cover legs, as the workaround is no longer needed since 1.3. Added some 1.3 tags. Rebalanced stats of clothes, as a consequence the cosmetic version of the mod will be depreciated. Switched to default Rimworld apparelbase defs. Increased resolution of and touched up the female and hulk servant outfits and the bandana.\nV1.6.1\t7/25/21 Added SlaveSuppressionOffset to clothes.\nV1.6\t7/21/21 Added 1.3 to supported versions. Moved clothes to vanilla research. Fixed defName naming convention. Finally removed depreciated workbench.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 3.84,
+   "disk_by_kind": {
+    "xml": {
+     "files": 3,
+     "mb": 0.03
+    },
+    "other": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 145,
+     "mb": 3.81
+    }
+   },
+   "texture_count": 145,
+   "texture_decoded_mb_est": 44.6,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 12,
+   "defs_by_type": {
+    "ThingDef": 12
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Slave apparel — directly on-theme for the clan's enslave-not-recruit doctrine",
+   "src": null
+  },
+  {
+   "packageId": "kas.strongerscaling",
+   "name": "Stronger Quality Scaling (1.6)",
+   "author": "Kasenra",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 298,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1206001612",
+   "workshop_id": "1206001612",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=1206001612",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Because that masterwork power armor should be worth the money.\n\tMakes the stats of clothing, armor, weapons, and buildings vary more by quality.\n\t\n\tNow with armor and insulation functioning again.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.45,
+   "disk_by_kind": {
+    "xml": {
+     "files": 35,
+     "mb": 0.15
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.3
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 1.3,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 23,
+   "defs_by_type": {
+    "StatDef": 23
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "lee.theforce.lightsaber": 10,
+    "sarg.alphamemes": 6,
+    "mandrake.rm.biomes": 5,
+    "oskarpotocki.vanillafactionsexpanded.core": 4,
+    "redmattis.bigsmall.core": 3,
+    "vanillaexpanded.vfesecurity": 3,
+    "ebsg.framework": 2,
+    "gravenwitch.vsrexamined": 2,
+    "memegoddess.giddyup": 2,
+    "ludeon.rimworld.biotech": 1,
+    "mandrake.rm.luminouspigment": 1,
+    "oskarpotocki.vfe.tribals": 1,
+    "sarg.alphabiomes": 1,
+    "vanillaexpanded.vfecore": 1,
+    "vanillaexpanded.vmemese": 1
+   },
+   "patched_by_ours_refs": 6,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "addvans.wasdedpawn",
+   "name": "WASDed Pawn",
+   "author": "addvans",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 363,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3471835151",
+   "workshop_id": "3471835151",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3471835151",
+   "about_url": "https://discord.gg/VF2TgYR6Cc",
+   "supports_1_6": true,
+   "description": "Mod version: 1.1\nGet full control of your pawn in combat using WASDed mode. Move around using WASD, use weapons with LMB and aim with your mouse!\n\t\t\nDefault: press Y to go WASDed when a single drafted Pawn is chosen.\n\nLanguage: English\n\nNew features:\n• Sprint and Walk - increase or decrease your speed by 25% holding a key. Customizable in keybinds\n• Vanilla and Arcade modes - shoot standing still or run around eating in different modes\n• Better job support during WASDed\n• Arm exhaustion applies in Arcade mode if pawn is attacking melee too fast\n• Insane amount of bugfixes\n\nStay tuned for more!",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "ceteam.combatextended"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.19,
+   "disk_by_kind": {
+    "assemblies": {
+     "files": 2,
+     "mb": 0.06
+    },
+    "xml": {
+     "files": 4,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 7,
+     "mb": 0.12
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 7,
+   "texture_decoded_mb_est": 2.6,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "Source.dll",
+     "path": "1.6/Assemblies/Source.dll",
+     "kb": 32.5,
+     "flags": [
+      "game_component_tick",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "game_component_tick",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 10,
+   "defs_by_type": {
+    "KeyBindingDef": 8,
+    "HediffDef": 1,
+    "KeyBindingCategoryDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 1,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "examine",
+   "prior_note_2026_08_30": "Single hediff, unclear purpose from name alone — needs an actual open-and-look",
+   "src": null
+  },
+  {
+   "packageId": "aelanna.weaponracks",
+   "name": "Weapon Racks",
+   "author": "Aelanna",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 365,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2788630748",
+   "workshop_id": "2788630748",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2788630748",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds decorative storage racks for displaying weapons.",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.99,
+   "disk_by_kind": {
+    "xml": {
+     "files": 9,
+     "mb": 0.07
+    },
+    "assemblies": {
+     "files": 4,
+     "mb": 0.11
+    },
+    "textures": {
+     "files": 17,
+     "mb": 0.81
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 17,
+   "texture_decoded_mb_est": 5.2,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "WeaponRacks.dll",
+     "path": "1.6/Assemblies/WeaponRacks.dll",
+     "kb": 30.0,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 13,
+   "defs_by_type": {
+    "WeaponRacks.WeaponAdjustmentDef": 9,
+    "ThingDef": 4
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "sihv.rombonesport": 6,
+    "oskarpotocki.vanillafactionsexpanded.core": 5,
+    "vanillaexpanded.vee": 3,
+    "oskarpotocki.vfe.tribals": 2
+   },
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 3,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/MarvinLira/RimWorld-WeaponRacks-de",
+   "source_kind": "github-search",
+   "source_confidence": "INFERRED",
+   "source_license": "gpl-3.0",
+   "source_last_push": "2022-09-13T13:17:37Z",
+   "source_archived": false,
+   "source_note": "top hit for the mod NAME; a name match, not proof - confirm before relying on it",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "bodlosh.weaponstats",
+   "name": "WeaponStats",
+   "author": "bodlosh",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 366,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\974066449",
+   "workshop_id": "974066449",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=974066449",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds a \"Weapons\" tab - list of ranged, melee, explosive weapons and apparel. Source code included.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.99,
+   "disk_by_kind": {
+    "assemblies": {
+     "files": 8,
+     "mb": 0.41
+    },
+    "xml": {
+     "files": 9,
+     "mb": 0.01
+    },
+    "textures": {
+     "files": 40,
+     "mb": 0.15
+    },
+    "other": {
+     "files": 45,
+     "mb": 0.31
+    },
+    "source": {
+     "files": 18,
+     "mb": 0.11
+    }
+   },
+   "texture_count": 40,
+   "texture_decoded_mb_est": 4.0,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "WeaponsTab.dll",
+     "path": "1.6/Assemblies/WeaponsTab.dll",
+     "kb": 56.5,
+     "flags": []
+    }
+   ],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 14,
+    "csproj": 1,
+    "sln": 1,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": true
+   },
+   "def_total": 1,
+   "defs_by_type": {
+    "MainButtonDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "bs.mbifvte": 3
+   },
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "mlie.yayoscombat3",
+   "name": "Yayo's Combat 3 (Continued)",
+   "author": "YAYO",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 376,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2854006492",
+   "workshop_id": "2854006492",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2854006492",
+   "about_url": "https://github.com/emipa606/YayosCombat3",
+   "supports_1_6": true,
+   "description": "[img]https://img.litet.net/logos/Info.png[/img]\nUpdate of YAYOs mod\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=2038409475\nBased on the abandoned 1.3 update by Ogliss\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=2513695736\n\n[b]From 1.6, this mod does no longer require HugsLib, thanks to Zaljerem![/b]\n\n[h2]Changes from 1.5[/h2]\nThe advanced animations have been removed from the mod, if you want these animations you can add [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2877292196]Yayo's Animation[/url] as it already does the same animations.\n\n- Fixed the missing config-text\n- Added in the various fixes XT-0xFF and PrincessOfEvil in the [url=https://github.com/Ogliss/Yayos-Combat-3/tree/Dev-1.3]dev-branch[/url] of the original git-repository\n- If [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2944488802]Melee Animation[/url] is loaded the advanced animations is only used for ranged weapons\n- A big thanks to Ferris that made most of the work for the 1.5 update, without them this would have taken a lot longer!\n- Also check out the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2796514196]Yayo's Combat 3 - Addon[/url] by Syrus, it contains expanded ammo handling and some compatibility fixes for other mods.\n\n[img]https://img.litet.net/logos/Notice.png[/img]\n\n[table]\n    [tr]\n        [td][url=https://discord.gg/h5TY6DA][img]https://img.litet.net/logos/Discord.png[/img][/url][/td]\n        [td][url=https://github.com/emipa606/YayosCombat3][img]https://img.litet.net/logos/Github.png[/img][/url][/td]\n    [/tr]\n    [tr]\n        [td][img]https://img.litet.net/logos/SafeToAdd.png[/img][/td]\n        [td][img]https://img.litet.net/logos/RemoveMayWork.png[/img][/td]\n    [/tr]\n[/table]\n\t\n[img]https://img.litet.net/logos/OriginalDescription.png[/img]\n\n[h1][b]* Completely changes the combat system[/b][/h1]\n\n[h1][b]* Powerful armor algorithm[/b][/h1]\nPenetration becomes very important.\nHigh-tech armor is no longer pierced by Low-tech weapon\n\n[list][img]https://img.litet.net/9P76nG3.gif[/img][/list]\n\n[h1][b]* Ammunition system and Loadout[/b][/h1]\nAll ranged weapons are changed to consume ammunition.\nWhen the enemy runs out of ammo, they will melee combat with a gun.\n\n[list][img]https://img.litet.net/SWopiu3.gif[/img][/list]\n\nAmmunition is divided according to techlevel and damage type.\nFor example, flamethrowers require industrial explosive ammunition.\n\n[list][img]https://img.litet.net/LUrOben.png[/img][/list]\n\nYou can set the loadout of ammo and medicine in the drug policy.\n\n[list][img]https://img.litet.net/TVI7EQR.png[/img][/list]\n\n[h1][b]* Other features[/b][/h1]\n[list][*]Realistic accuracy algorithm\n\n[*]Increased projectile speed for stunning\n\n[*]Fixed armor to protect hands or feet (only when protecting arms or legs)\n[/list]\n\n[h1][b]* Options to control all of this[/b][/h1]\n\n[list][img]https://img.litet.net/forUaNt.png[/img][/list]\n\n[h1][b]* Detail[/b][/h1]\n[list][*]There is no need to use it with other yayo combat versions. The new version always includes the features of the previous version.\n\n[*]The accuracy algorithm is more closely related to the shooting skill level and eliminates the stupid situation of shooting rabbits all day long.\n\n[*]The armor algorithm compares the tech level of the weapon and the armor and applies the penetrating power differently.\n\n[*]If the armor is better, it deflect almost all attacks.\n\n[*]If the penetration of a weapon is high, the durability of the armor is sharply reduced.\n\n[*]When the armor's durability drops above a certain number, the bullet starts to hit.\n\n[*]The percentage of durability at which the bullet starts to hit is determined by comparing penetration and defense.\n\n[*]Reduce enemy armor's durability first with weapons with high tech levels and high penetration. And put the bullets at the weakened ones[/list]\n\n[h1][b]* Load Order[/b][/h1]\n[list][*]core\n[*]hugslib\n[*]gunplay\n[*]dual wield\n[*][ this mod ] \n[/list]\n\n[h1][b]* Compatibility[/b][/h1]\n[list][*]This mod has amazing compatibility.\nWeapons and armor added by most mods will automatically apply this mod's effect.\n\n[*]If a feature crash with another mod, you can fix it by turning it off in the options.\n[/list]\n\n[h1][b]* Incompatible mods[/b][/h1]\n[list][*]SheathYourSword (all animation is not work)\n[/list]\n\n[h1][b]* Recommended mod ( Not Required )[/b][/h1]\n[list][*]Combat sound\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=2280614031\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=2147296730\n\n[*]Suppression\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=2016866580\n\n[*]Shield\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=1588616696\n\n[*]Mortar Accuracy\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=1729446857[/list]\n\n[h1][b]* Special thanks[/b][/h1]\n- Nemomone3003 ( ammo graphic art )\n- Densevoid (Coding help)\n\n[h1][b]* Tutorial for modders[/b][/h1]\nset custom ammo for weapon\n\nhttps://github.com/rimworldYayo/Yayo-s-Combat/wiki/\n\n----------------\n\nWe will no longer update mods.\nSince the source code is included and uploaded, you can receive the source code by subscribing to the mod.\nAny mods are allowed to be uploaded fresh, and if someone wants to, I'm fine with delegating permission to the mod itself to continue on my behalf. (In this case, I will upload the mod for you, but in the long run, you will have to deal with bugs and rimworld versions)\n\n[img]https://img.litet.net/logos/ReportingIssues.png[/img]\n[list]\n[*] See if the the error persists if you just have this mod and its requirements active.\n[*] If not, try adding your other mods until it happens again.\n[*] Always post your log using the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Log Uploader[/url]\n[*] For best support, please use the Discord-channel for error-reporting.\n[*] Do not report errors by making a discussion-thread, I get no notification of that.\n[*] If you have the solution for a problem, please post it to the GitHub repository.\n[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods\n[/list] \n\n[url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2854006492][img]https://img.shields.io/github/v/release/emipa606/YayosCombat3?label=latest%20version&style=plastic&color=9f1111&labelColor=black[/img][/url] | tags: combat, armor, ammo",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "UnlimitedHugs.HugsLib",
+    "automatic.gunplay",
+    "Roolo.DualWield"
+   ],
+   "load_before": [
+    "Solaris.RatkinRaceMod"
+   ],
+   "incompatible_with": [
+    "Solaris.SYS"
+   ],
+   "disk_mb": 1.14,
+   "disk_by_kind": {
+    "other": {
+     "files": 6,
+     "mb": 0.01
+    },
+    "xml": {
+     "files": 87,
+     "mb": 0.33
+    },
+    "assemblies": {
+     "files": 7,
+     "mb": 0.42
+    },
+    "textures": {
+     "files": 15,
+     "mb": 0.25
+    },
+    "assetbundles": {
+     "files": 2,
+     "mb": 0.13
+    }
+   },
+   "texture_count": 15,
+   "texture_decoded_mb_est": 1.8,
+   "dll_count": 2,
+   "dlls": [
+    {
+     "name": "VersionFromManifest.dll",
+     "path": "1.6/Assemblies/VersionFromManifest.dll",
+     "kb": 5.0,
+     "flags": []
+    },
+    {
+     "name": "yayoCombat.dll",
+     "path": "1.6/Assemblies/yayoCombat.dll",
+     "kb": 79.0,
+     "flags": [
+      "comp_tick",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 40,
+   "defs_by_type": {
+    "RecipeDef": 18,
+    "ThingDef": 13,
+    "ApparelLayerDef": 5,
+    "TabulaRasa.UpdateDef": 2,
+    "JobDef": 1,
+    "ThingCategoryDef": 1
+   },
+   "patch_ops_all": 3,
+   "patched_def_types": {
+    "ThingDef": 3
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 3
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "sihv.rombonesport": 8,
+    "memegoddess.giddyup": 1
+   },
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 2,
+   "static_ctors": 1,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/emipa606/YayosCombat3",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "MIT",
+   "source_last_push": "2026-06-02T19:35:09Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "zal.moreutilitypacks",
+   "name": "More Utility Packs (Continued)",
+   "author": "Zaljerem",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 406,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3249560356",
+   "workshop_id": "3249560356",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3249560356",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Original mod by SGC\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=2357611837\nIf the original author requests it, I will remove this update.\n\n--\n\nOriginal mod notes (1.4):\n\nUnderwhelmed by the absurdly overspecialized utility items in RimWorld? When was the last time you built a jump pack or smokepop belt on purpose, anyway?\n\nMore Utility Packs adds a variety of vanilla-friendly 'general-purpose' utility items for industrial-level colonies designed to assist with general labour, augment combat capabilities, and improve caravanning. The goal was to give players a 'tough choice' in deciding between a number of balanced--but attractive--mutually exclusive bonuses for each of their colonists.\n\n**some of the packs require Royalty, Ideology, or other mods, see descriptions below.\n\n\nThe mod adds several utility items, eight of which are craftable; while the remaining are quest reward items. All packs require are constructed at the Fabrication Bench (though some require additional research in addition to this).\n\n1. Robotic Rig - A wearable robotic arm outfitted with a precision multi-tool designed to assist the wearer perform intricate tasks. While it does not provide any protection, it improves the wearer's manipulation/sight, and assists with aim time in combat.\n\n(Improves Aim Time, Shooting Accuracy, and Manipulation)\n\n2. Trauma Kit - A wearable medical kit designed to support combat functionality. Provides a small amount of protection and medical support to the wearer to keep them going longer despite severe injuries.\n\n(Increases Pain Shock and Medical Tend Quality, while decreasing both Incoming Damage, and Rest Fall Rate)\n\n3. Survival Pack - A heavy backpack and outdoors kit designed to support long trips. Various powered containers for food and gear improve carrying capacity and foraging, which keep the wearer happier and fuller while on the road.\n\n(Increases Foraging Rate and Caravan Carrying Capacity, while decreasing Mental Break Threshold and Huger Rate)\n\n4. Command Tower **Requires Royalty** - A wearable radio kit designed to assist the wearer in commanding small groups of people in the field. While it does not provide any protection, its broadcasts can either inspire or demoralize nearby allies depending on the mood of the wearer.\n\n(Increases Social Skills and reduces pain factor, while providing a small mood bonus to nearby allies proportional to the wearer's mood (which stacks up to two times with additional Command Towers).\n\n5. Portable Mortar - A scaled-down version of a standard mortar launcher. Trades the tremendous range of its full-sized cousin in favour of increased accuracy. Despite the efforts to make the device more portable, it will slow the wearer and requires a fair amount setup time per volley. It can be reloaded, but it requires a frankly unreasonable number of high-explosive shells to do so. Requires Mortar research and is crafted at the fabrication bench.\n\n(A wearable mortar useful for assaulting faction bases with limited range and a long firing period. Holds three charges of high explosive shells which can be reloaded for the price of three shells per charge.)\n\n6. Mechanoid Combat Gear **Requires Vanilla Factions Expanded - Mechanoids** - A wearable micro-shield generator and field module designed to make the wearer more effective in combat. A rudimentary onboard AI assists the wearer with a variety of tasks, from target tracking to the timely dispensing of nutrient paste and combat drugs. However, the device reacts extremely poorly when exposed to EMPs, the feedback from which is liable to knock the wearer unconscious.\n\n(Grants a quick-charging full-body shield which can be used ranged combatants, while providing a small bonus to Aim Time, Pain Shock, and Move Speed — at the price of a weakness to EMPs, which induce Brain Shock.)\n\n7. Mechanoid Industrial Gear **Requires Vanilla Factions Expanded - Mechanoids** - A bulky assistive tool kit outfitted with high-power, extreme-precision multi-tools designed to greatly increase the work capababilities of the wearer. A rudimentary on-board AI creates the perfect tool for the job, making this device especially useful for all manner of workers not involved in combat.\n\n(Grants a tremendous 50% increase in global workspeed — at the price of a weakness to EMPs, which induce Brain Shock.)\n\n8. Mechanoid Jump Jet **Requires Vanilla Factions Expanded - Mechanoids** - A wearable ultra-hardened shield generator and jump jet designed to make the wearer more effective in close-quarters combat. A rudimentary onboard AI dynamically assists with locomotion and weight distribution, allowing the wearing to move faster and hit harder.\n\nHowever, the device reacts extremely poorly when exposed to EMPs, the feedback from which is liable to knock the wearer unconscious.\n\n(Basically a jump pack with a very large shield belt. Reduces incoming damage while increasing pain shock threshold and mêlée hit/dodge change — at the price of a weakness to EMPs, which induce Brain Shock.)\n\nQuest Reward Items\n\n1. Vanometric Grav-Pack **Requires Royalty** - An inscrutable archotech device that somehow enables the wearer to move at extreme speeds and fly for short distances by manipulating gravity. Uses a small amount of uranium to refuel. On-board evasion heuristics make the wearer especially lethal in close-range combat.\n\n(A powerful ranged shield belt and jump pack that greatly improves pawn move speed and hit/dodge chance at close range while significantly reducing any incoming damage. Jumps are longer too.)\n\n2. Rescue Frame - A glitter-tech exoskeleton designed to outfit the wearer for search and rescue during disasters. The device generates a strong shield that protects the wearer from harm and extreme environments, while on-board medical tools increase tend speed to the limits of human capability. Since the device is very bulky, the wearer cannot fight properly.\n\n(Near immunity to toxic fallout and all but the most extreme temperatures. Extreme bonus to Medical Tend Speed. Smaller bonuses to Tend Quality and Surgery Success Chance. Pawns should have no issue running into burning buildings or most firefights to rescue allies.)\n\n3. Wearable Forklift - A glitter-tech industrial exoskeleton designed to outfit the wearer for heavy-duty lifting and precision manufacturing. The device allows the wearer to carry extremely heavy objects with ease, while self-guided robotic multi-tools push the user's work skills to the limits of human capability.\n\n(A tremendous 100% bonus to workspeed and 80% buff to manipulation, along with further large increases to move speed and caravan/inventory carrying capacity.)\n\nCompatibility and More Information\n\nWhat are the mod requirements?\n\nThis mod requires the Vanilla Expanded Framework and Vanilla Accessories Expanded in order to work properly. Load this mod after the Framework, Accessories, Royalty, Ideology, and Biotech (if you have them).\n\nCan this mod be added/removed from saved games without issue?\n\nYou can add to saved games without any issues. You should be able to remove the mod from any active game, provided all instances of the items/bills are removed from your map. Do so at your own risk, however.",
+   "dependencies": [
+    "OskarPotocki.VanillaFactionsExpanded.Core",
+    "VanillaExpanded.VAEAccessories"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "OskarPotocki.VanillaFactionsExpanded.Core",
+    "VanillaExpanded.VAEAccessories",
+    "OskarPotocki.VFE.Mechanoid"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 1.51,
+   "disk_by_kind": {
+    "xml": {
+     "files": 12,
+     "mb": 0.12
+    },
+    "other": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 171,
+     "mb": 1.39
+    }
+   },
+   "texture_count": 171,
+   "texture_decoded_mb_est": 46.5,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 21,
+   "defs_by_type": {
+    "ThingDef": 11,
+    "HediffDef": 7,
+    "ThoughtDef": 2,
+    "ResearchProjectDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.researchretag": 8
+   },
+   "patched_by_ours_refs": 8,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "deon.rimtek.digipal",
+   "name": "RimTek DigiPal",
+   "author": "Deon",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 419,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3500443258",
+   "workshop_id": "3500443258",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3500443258",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds a belt with a personal computer (RimTek DigiPal) that increases wearer's melee and ranged accuracy. It also allows them to play games (cerebral play) when relaxing and looking for recreation.",
+   "dependencies": [
+    "Deon.rimtek.core"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Deon.rimtek.core"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.09,
+   "disk_by_kind": {
+    "xml": {
+     "files": 5,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 2,
+     "mb": 0.08
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 2,
+   "texture_decoded_mb_est": 1.4,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 4,
+   "defs_by_type": {
+    "JobDef": 1,
+    "JoyGiverDef": 1,
+    "ThingDef": 1,
+    "ThoughtDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "mlie.showmeyourhands",
+   "name": "Show Me Your Hands",
+   "author": "Mlie",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 423,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2475965842",
+   "workshop_id": "2475965842",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2475965842",
+   "about_url": "https://github.com/emipa606/ShowMeYourHands",
+   "supports_1_6": true,
+   "description": "[img]https://img.litet.net/logos/Self-Info.png[/img]\n\nPawns show their hands on their weapon when drafted. \nShould work with most weapons, vanilla and modded.\n\nBased on [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2171708109]Clutter Weapon Hands[/url] but dynamically sets the hands based on the graphics of the weapon. It will however still use the old hand-definitions if they exist.\n\nThere is also mod-settings where you can modify the settings for each weapon. These settings can be exported and included in a mod to add native support.\nAll my \"Continued\"-mods should have native support.\n\nThere is also support for [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2543371889]Enable Oversized Weapons[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2038409475]Yayo's Combat 3[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2513695736]Yayo's Combat 3 [Adopted][/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2575938407]Yayo's Animation[/url], [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1204108550]RunAndGun[/url] and [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1628211313]Dual Wield[/url]. Hands will follow the weapons even during the extra animations. \nVerified to work with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1631756268]Combat Extended[/url]\nShows hands when using [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2355912467]Grab your Tool[/url]\nCompatible with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2944488802]Melee Animation[/url]\n\nSettings\n[list]\n[*] Coloring the hands based on apparel/armor color\n[*] Coloring the hands based on artificial limbs\n[*] Resizing the hands based on the bodysize of the pawn, this also works with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2373187996]Children[/url]\n[*] Repositioning the hands based on the weaponsize, to support oversized weapons\n[*] Showing the hands when pawns carry stuff\n[*] Showing only one hand if the pawn is missing one\n[*] Showing the hands at all times\n[/list]\n\n[h2]Credits[/h2]\nArcanant for providing hand-definitions for a lot of mods.\nTelefonmast for the support with the texture-code.\nqux for the updated hand-texture.\nshiuanyue for the Chinese translation.\nPreview-image includes armor and weapons from the excellent XCOM-mods by velcroboy333\n[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2317335843]XCOM Armor[/url]\n[url=https://steamcommunity.com/sharedfiles/filedetails/?id=2062766405]XCOM Weapons[/url]\n\nFor more realistic hand textures, see [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3302328100]Nice Hands Retexture[/url] by Andromeda\n\n[table]\n\t[tr]\n\t\t[td][url=https://discord.gg/h5TY6DA][img]https://img.litet.net/logos/Discord.png[/img][/url][/td]\n\t\t[td][url=https://github.com/emipa606/ShowMeYourHands][img]https://img.litet.net/logos/Github.png[/img][/url][/td]\n    [/tr]\n    [tr]\n        [td][img]https://img.litet.net/logos/SafeToAdd.png[/img][/td]\n        [td][img]https://img.litet.net/logos/SafeToRemove.png[/img][/td]\n    [/tr]\n[/table]\n\n[img]https://img.litet.net/logos/Self-SupportAndDonations.png[/img]\nSince modding is just a hobby for me I expect no donations to keep modding. If you still want to show your support you can gift me anything from my [url=https://store.steampowered.com/wishlist/id/Mlie]Wishlist[/url] or buy me a cup of tea.\n\n[url=https://ko-fi.com/G2G55DDYD][img]https://img.litet.net/logos/Kofi-Small.png[/img][/url]\n\n[img]https://img.litet.net/logos/Self-ReportingIssues.png[/img]\n[list]\n[*] See if the the error persists if you just have this mod and its requirements active.\n[*] If not, try adding your other mods until it happens again.\n[*] Always post your log using the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Log Uploader[/url]\n[*] For best support, please use the Discord-channel for error-reporting.\n[*] Do not report errors by making a discussion-thread, I get no notification of that.\n[*] If you have the solution for a problem, please post it to the GitHub repository.\n[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods\n[/list] \n\n[url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2475965842][img]https://img.shields.io/github/v/release/emipa606/ShowMeYourHands?label=latest%20version&style=plastic&labelColor=0070cd&color=white[/img][/url] | realism, customization, graphics",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "MalteSchulze.RIMMSqol"
+   ],
+   "load_before": [],
+   "incompatible_with": [
+    "Mlie.ClutterWeaponHands"
+   ],
+   "disk_mb": 5.61,
+   "disk_by_kind": {
+    "other": {
+     "files": 6,
+     "mb": 0.02
+    },
+    "xml": {
+     "files": 1056,
+     "mb": 4.62
+    },
+    "assemblies": {
+     "files": 26,
+     "mb": 0.6
+    },
+    "textures": {
+     "files": 10,
+     "mb": 0.38
+    }
+   },
+   "texture_count": 10,
+   "texture_decoded_mb_est": 8.3,
+   "dll_count": 3,
+   "dlls": [
+    {
+     "name": "ColorMine.dll",
+     "path": "1.6/Assemblies/ColorMine.dll",
+     "kb": 30.0,
+     "flags": []
+    },
+    {
+     "name": "ShowMeYourHands.dll",
+     "path": "1.6/Assemblies/ShowMeYourHands.dll",
+     "kb": 72.5,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    },
+    {
+     "name": "VersionFromManifest.dll",
+     "path": "1.6/Assemblies/VersionFromManifest.dll",
+     "kb": 5.0,
+     "flags": []
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 187,
+   "defs_by_type": {
+    "WHands.ClutterHandsTDef": 187
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 2,
+   "static_ctors": 4,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/emipa606/ShowMeYourHands",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "MIT",
+   "source_last_push": "2026-10-08T18:57:30Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "zacharyfoster.mineralsrock",
+   "name": "Minerals Rock",
+   "author": "Zachary S. L. Foster",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 444,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3562391080",
+   "workshop_id": "3562391080",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3562391080",
+   "about_url": "https://github.com/zachary-foster/MineralsRock",
+   "supports_1_6": true,
+   "description": "Version 0.1\n\nNOTE: Under development. This is my first time adding mods to Steam, so I have some learning to do and I am sure things will need fixing.\n\nA complete overhaul of mountainous terrain and rocks in RimWorld.\nThis has been adapted from the Hardcore SK mod \"Minerals\" by the original author (Me!).\n\n- Rocks come in different sizes, textures, and shapes other than square!\n- Different types of rocks have distinct appearances and properties, so each map looks and plays different.\n- Rock types vary more in how hard they are to mine, how much they yield when mined, how rocky the landscape is, how beautiful they are, and how much cover they provide in a gunfight.\n- Rocks are a type of \"Mineral\" from the Minerals Framework mod which grants them features such as dropping multiple types of resources while being mined. See Minerals Framework for more information.\n- Adds Basalt and makes it the only rock present in volcanic biomes\n\nSee other mods in the \"Minerals\" collection to get the full experience:\n\n- Minerals Sparkle: Valuable crystals that can be mined for gems in remote and extreme biomes\n- Minerals Frozen: Dynamic ice and snow that can be used for building and cooling rooms\n\nThe Minerals mods are still being balanced. Feel free to let me know if anything needs to be adjusted!\n\nI am not aware of any incompatibilities with other mods, but please let me know if you find any.\n\nRequires \"Minerals Framework\" mod to function.\n\nSee the source code and report issues at: https://github.com/zachary-foster/MineralsRock",
+   "dependencies": [
+    "brrainz.harmony",
+    "zacharyfoster.mineralsframework"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "sarg.alphabiomes",
+    "zacharyfoster.mineralsframework",
+    "brrainz.harmony"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 166.85,
+   "disk_by_kind": {
+    "other": {
+     "files": 226,
+     "mb": 136.73
+    },
+    "assemblies": {
+     "files": 7,
+     "mb": 18.49
+    },
+    "xml": {
+     "files": 18,
+     "mb": 0.26
+    },
+    "source": {
+     "files": 8,
+     "mb": 0.01
+    },
+    "textures": {
+     "files": 630,
+     "mb": 11.35
+    }
+   },
+   "texture_count": 630,
+   "texture_decoded_mb_est": 71.4,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "MineralsRock.dll",
+     "path": "1.6/Assemblies/MineralsRock.dll",
+     "kb": 10.0,
+     "flags": [
+      "harmony"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony"
+   ],
+   "ships_source": {
+    "cs": 6,
+    "csproj": 1,
+    "sln": 1,
+    "git": true,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 66,
+   "defs_by_type": {
+    "ThingDef": 64,
+    "RecipeDef": 1,
+    "TipSetDef": 1
+   },
+   "patch_ops_all": 4,
+   "patched_def_types": {
+    "BiomeDef": 3
+   },
+   "patch_findmod_names": {
+    "Odyssey": 3
+   },
+   "patches_mods": {
+    "ludeon.rimworld": 1,
+    "ludeon.rimworld.odyssey": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 2,
+   "log_errors_distinct": 2,
+   "log_error_samples": [
+    "[Def Error]: WeatheredBasalt",
+    "[Def Error]: PassableBasalt"
+   ],
+   "log_evidence_kinds": {
+    "def": 2
+   },
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/zachary-foster/MineralsRock",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "NOASSERTION",
+   "source_last_push": "2025-09-24T06:33:47Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "font.rimesis",
+   "name": "Rimesis",
+   "author": "Font",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 463,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3767949538",
+   "workshop_id": "3767949538",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3767949538",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Rimesis turns a small number of otherwise anonymous enemy raiders into persistent recurring antagonists with a personal history against the colony.\n\nThey remember killers, weapons, wounds, destroyed body parts, escape, extraction, captivity, betrayal, successful raids, and settlements lost to the player. When they return, they remain the same character - but their skills, equipment, armor, implants, companions, and tactics grow with their history.\n\nDestroying a faction's final settlement triggers a configurable series of escalating retaliation raids from that exact faction, even after RimWorld marks it defeated. Campaign waves wait for earlier attackers to leave the field so the pressure remains severe without becoming an unavoidable pileup.\n\nEach Rimesis receives a recognizable combat focus and tactical style. They may command sieges, breaches, flanking groups, elite troops, hordes, mechs, trained animals, vehicles, or Warcasket equipment when supported content is active. Their complete story remains available in the Chronicle, including after permanent death.\n\nNo DLC is required. Royalty, Biotech, Anomaly, Odyssey, RimHUD, Trauma and Integrity, Fantasy Biotech, Giddy-Up 2, Mount Passengers, Vehicle Raid Framework, Exosuit Framework, VFE Pirates, Isekai RPG Leveling, Eternal Pawns, and compatible modded equipment activate additional features only when available.",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "ferny.Vengeance",
+    "SR.ModRimworld.FactionalWarContinued",
+    "oskarpotocki.vanillafactionsexpanded.core",
+    "CETeam.CombatExtended",
+    "JellyCreative.IsekaiLeveling",
+    "helldan.eternalpawns",
+    "Jaxe.RimHUD",
+    "ferny.TraumaAndIntegrity",
+    "vr.fantasy.biotech",
+    "MemeGoddess.GiddyUp",
+    "font.mountpassengers",
+    "gabrieel1482.raidvehicleframework",
+    "Aoba.Exosuit.Framework",
+    "Aoba.DeadManSwitch.Core",
+    "Aoba.DeadManSwitch.MobileDragoon",
+    "OskarPotocki.VFE.Pirates",
+    "Krkr.rule56",
+    "Mlie.DireRaids",
+    "VanillaStorytellersExpanded.WinstonWave",
+    "m00nl1ght.WorldTechLevel",
+    "TSA.WorldDominationExperimental"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 2.68,
+   "disk_by_kind": {
+    "assemblies": {
+     "files": 2,
+     "mb": 1.05
+    },
+    "assetbundles": {
+     "files": 2,
+     "mb": 0.02
+    },
+    "xml": {
+     "files": 20,
+     "mb": 0.11
+    },
+    "textures": {
+     "files": 7,
+     "mb": 1.28
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    },
+    "sounds": {
+     "files": 6,
+     "mb": 0.22
+    }
+   },
+   "texture_count": 7,
+   "texture_decoded_mb_est": 8.7,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "Rimesis.dll",
+     "path": "1.6/Assemblies/Rimesis.dll",
+     "kb": 841.5,
+     "flags": [
+      "comp_tick",
+      "comp_tick_rare",
+      "harmony",
+      "settings_screen",
+      "world_component_tick"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "comp_tick_rare",
+    "harmony",
+    "settings_screen",
+    "world_component_tick"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 46,
+   "defs_by_type": {
+    "HediffDef": 17,
+    "JobDef": 4,
+    "ThoughtDef": 4,
+    "GenStepDef": 3,
+    "RaidStrategyDef": 3,
+    "RimHUD.CustomValueDef": 3,
+    "ScenPartDef": 2,
+    "SitePartDef": 2,
+    "ThingDef": 2,
+    "DutyDef": 1,
+    "GameConditionDef": 1,
+    "MainButtonDef": 1,
+    "QuestScriptDef": 1,
+    "ScenarioDef": 1,
+    "SoundDef": 1
+   },
+   "patch_ops_all": 1,
+   "patched_def_types": {
+    "ThingDef": 1
+   },
+   "patch_findmod_names": {
+    "Biotech": 1
+   },
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 3,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "petetimessix.simplesidearms",
+   "name": "Simple sidearms",
+   "author": "PeteTimesSix",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 464,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\927155256",
+   "workshop_id": "927155256",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=927155256",
+   "about_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=927155256",
+   "supports_1_6": true,
+   "description": "With the invention of pockets comes the idea of bringing EVEN MORE WEAPONS. Because your snipers are getting really tired of getting shanked.\n\nSee forum thread for details.\nhttps://ludeon.com/forums/index.php?topic=32497.0",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "UnlimitedHugs.HugsLib"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 3.18,
+   "disk_by_kind": {
+    "xml": {
+     "files": 128,
+     "mb": 0.76
+    },
+    "textures": {
+     "files": 138,
+     "mb": 1.31
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    },
+    "assemblies": {
+     "files": 7,
+     "mb": 1.1
+    }
+   },
+   "texture_count": 138,
+   "texture_decoded_mb_est": 4.5,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "SimpleSidearms.dll",
+     "path": "v1.6/Assemblies/SimpleSidearms.dll",
+     "kb": 163.5,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 34,
+   "defs_by_type": {
+    "SimpleSidearms.rimworld.SidearmWeaponTagMapDef": 21,
+    "ConceptDef": 9,
+    "JobDef": 3,
+    "ThinkTreeDef": 1
+   },
+   "patch_ops_all": 11,
+   "patched_def_types": {
+    "ThingDef": 27,
+    "ThinkTreeDef": 2
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 26
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 6,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/PeteTimesSix/SimpleSidearms",
+   "source_kind": "github-search",
+   "source_confidence": "INFERRED",
+   "source_license": "",
+   "source_last_push": "2025-08-13T07:06:53Z",
+   "source_archived": false,
+   "source_note": "top hit for the mod NAME; a name match, not proof - confirm before relying on it",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "aoba.warcasket",
+   "name": "WarCasket Expanded",
+   "author": "Aoba",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 471,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2733135485",
+   "workshop_id": "2733135485",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2733135485",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Add 3 additional WarCasket armour.",
+   "dependencies": [
+    "OskarPotocki.VFE.Pirates"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "OskarPotocki.VFE.Pirates"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 1.81,
+   "disk_by_kind": {
+    "xml": {
+     "files": 22,
+     "mb": 0.24
+    },
+    "textures": {
+     "files": 69,
+     "mb": 1.57
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 69,
+   "texture_decoded_mb_est": 28.8,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 14,
+   "defs_by_type": {
+    "VFEPirates.WarcasketDef": 12,
+    "ThingDef": 2
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "redmattis.bigweapons",
+   "name": "Big and Small - Weapons",
+   "author": "RedMattis",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 488,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3105907309",
+   "workshop_id": "3105907309",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3105907309",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "More weapon variety.\\n\\nCan be considered an addon to Big and Small Gene's much smaller/more focused weapon arsenal.",
+   "dependencies": [
+    "Ludeon.RimWorld.Biotech",
+    "brrainz.harmony",
+    "RedMattis.BigSmall.Core"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "brrainz.harmony",
+    "RedMattis.BigSmall.Core"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.58,
+   "disk_by_kind": {
+    "other": {
+     "files": 3,
+     "mb": 0.02
+    },
+    "xml": {
+     "files": 19,
+     "mb": 0.07
+    },
+    "textures": {
+     "files": 15,
+     "mb": 0.49
+    }
+   },
+   "texture_count": 15,
+   "texture_decoded_mb_est": 23.1,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 16,
+   "defs_by_type": {
+    "ThingDef": 15,
+    "SoundDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rsw.patches": 15
+   },
+   "patched_by_ours_refs": 15,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "meathax.showmeyourtools",
+   "name": "Show Me Your Tools - Forked",
+   "author": "astryl",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 505,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3774821567",
+   "workshop_id": "3774821567",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3774821567",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "[b]Forked with permission from Meathax[/b]\n\n[i]Performance optimizations for uncached / uncalled Harmony patches[/i].\n\nShow Me Your Tools overhauls how colonist work looks. Every job draws an animated hand tool over the worker — pickaxe, axe, welder, cleaver, sickle, broom, sewing needle, surgeon's saw and dozens more — each with its own swing, hit-synced strike sounds, and material-aware debris (wood chips, stone shards, welding sparks, soil clods, sawdust). Tools rest at the hip when idle, hands grip the haft (with optional forearms) via Show Me Your Hands, and particle effects recolor with the season and the worked material.\n\nLots of human touches: brow wipes on hard labor, a pickaxe that jams in the rock, a researcher scratching their head over an idea, a cook stirring the pot, sparks showering off a weld bead.\n\nHighly configurable — toggle tools and effects individually, tune particle intensity and debris size, or turn the whole thing off per tool. Soft-compatible with Yayo's Animation, Melee Animation, and Medieval Overhaul (adds tool animations to MO's workbenches). Humanlike pawns only. Safe to add or remove mid-save.",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "Mlie.ShowMeYourHands",
+    "com.yayo.yayoAni.continued",
+    "Van.DATools",
+    "co.uk.epicguru.meleeanimation",
+    "TheSimpleDude42.ToolsOPlenty",
+    "DankPyon.Medieval.Overhaul",
+    "CETeam.CombatExtended"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 5.99,
+   "disk_by_kind": {
+    "other": {
+     "files": 5,
+     "mb": 0.08
+    },
+    "xml": {
+     "files": 15,
+     "mb": 0.18
+    },
+    "textures": {
+     "files": 130,
+     "mb": 4.91
+    },
+    "assemblies": {
+     "files": 2,
+     "mb": 0.27
+    },
+    "source": {
+     "files": 23,
+     "mb": 0.56
+    }
+   },
+   "texture_count": 130,
+   "texture_decoded_mb_est": 48.5,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "JobEffects.dll",
+     "path": "Assemblies/JobEffects.dll",
+     "kb": 187.5,
+     "flags": [
+      "game_component_tick",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "game_component_tick",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 22,
+    "csproj": 1,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": true
+   },
+   "def_total": 111,
+   "defs_by_type": {
+    "JobEffects.JobToolDef": 55,
+    "FleckDef": 40,
+    "SoundDef": 16
+   },
+   "patch_ops_all": 50,
+   "patched_def_types": {
+    "JobEffects.JobToolDef": 20,
+    "EffecterDef": 19
+   },
+   "patch_findmod_names": {
+    "Appliances Expanded": 1,
+    "Combat Extended": 1,
+    "Medieval Overhaul": 1,
+    "Stoneborn - Cuisine": 1,
+    "Vanilla Furniture Expanded - Production": 1
+   },
+   "patches_mods": {
+    "ludeon.rimworld": 19,
+    "nals.facialanimation": 2,
+    "andromeda.niceresearchtab": 1,
+    "ludeon.rimworld.ideology": 1,
+    "vanillaexpanded.skills": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 6,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  }
+ ]
+}

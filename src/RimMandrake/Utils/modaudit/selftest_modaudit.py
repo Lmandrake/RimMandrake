@@ -120,7 +120,9 @@ def t_batches():
     check("ours", b.categorize(f(packageId="mandrake.rsw.armoury", **{"class": "OURS"})), "ours_rsw_rut")
     check("ours rm", b.categorize(f(packageId="mandrake.rm.flowworks", **{"class": "OURS"})), "ours_rm")
     check("core", b.categorize(f(**{"class": "CORE_DLC"})), "frameworks_libraries")
-    check("library no defs", b.categorize(f(dll_count=2)), "frameworks_libraries")
+    check("library: code + dependants", b.categorize(f(dll_count=2, dependants=["a.b"])), "frameworks_libraries")
+    check("library: code + framework word", b.categorize(f(dll_count=1, name="Some Framework")), "frameworks_libraries")
+    check("code-only, nobody depends -> behaviour/QoL", b.categorize(f(dll_count=2)), "code_tweaks_qol_ui")
     check("star wars by text", b.categorize(f(name="Star Wars: Clones", def_total=50,
                                                 defs_by_type={"ThingDef": 50})), "star_wars_donors")
     check("creatures", b.categorize(f(def_total=40, defs_by_type={"PawnKindDef": 10, "ThingDef": 30})),
@@ -130,6 +132,10 @@ def t_batches():
     parts = b.split_balanced({"a": list(range(100)), "b": list(range(10))}, target=45)
     check("split sizes", sorted(len(v) for v in parts.values()), [10, 50, 50])
     check("split names", sorted(parts), ["a_1", "a_2", "b"])
+    one = b.split_balanced({"c": list(range(60))}, target=45)
+    check("one chunk keeps plain name", sorted(one), ["c"])
+    m = b.merge_small({"x_1": list(range(40)), "x_2": list(range(30)), "tiny": [1, 2], "ours_rm": [3]}, floor=8)
+    check("tiny spills into smallest non-ours batch", (len(m["x_2"]), "tiny" in m, len(m["ours_rm"])), (32, False, 1))
 
 
 def main():

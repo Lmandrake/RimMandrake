@@ -66,6 +66,11 @@ def main():
     for patcher, p in ds["patches"].items():
         for owner, n in (p.get("targets_owner_mods") or {}).items():
             patched_by.setdefault(owner, Counter())[patcher] += n
+    dependants = {}
+    for pid0, dd in disk.items():
+        for dep in ((dd.get("about") or {}).get("modDependencies") or []):
+            if dep.get("packageId"):
+                dependants.setdefault(dep["packageId"].lower(), set()).add(pid0)
     out = []
     for r in rows:
         pid = r["packageId"]
@@ -75,7 +80,12 @@ def main():
         pt = ds["patches"].get(pid) or {}
         tgt = pt.get("targets_owner_mods") or {}
         pb = patched_by.get(pid, Counter())
-        dlls = d.get("dlls") or []
+        all_dlls = d.get("dlls") or []
+        cds = [c.rstrip("/") + "/Assemblies/" for c in ((ds["mods"].get(pid) or {}).get("contentDirs") or [])]
+        for x in all_dlls:
+            full = os.path.join(d.get("folder") or "", x["path"])
+            x["loaded"] = any(full.startswith(c) for c in cds)
+        dlls = [x for x in all_dlls if x["loaded"]]      # what the game loads for 1.6 (version folders resolved)
         flags = sorted({f for x in dlls for f in x.get("flags", [])})
         by_kind = {k: {"files": v[0], "mb": round(v[1] / 1048576.0, 2)} for k, v in ((d.get("disk") or {}).get("by_kind") or {}).items()}
         in_session = r["membership"] == "FULL.LATEST" and pid not in SESSION_EXCLUDED
@@ -92,6 +102,8 @@ def main():
             "mod_version": ab.get("modVersion"), "description": ab.get("description"),
             "dependencies": [x.get("packageId") for x in ab.get("modDependencies") or []],
             "dependencies_by_version": ab.get("modDependenciesByVersion") or {},
+            "dependants": sorted(dependants.get(pid, ())),
+            "dependants_ours": sorted(x for x in dependants.get(pid, ()) if cls.get(x) == "OURS"),
             "load_before": ab.get("loadBefore"), "load_after": ab.get("loadAfter"),
             "force_load_before": ab.get("forceLoadBefore"), "force_load_after": ab.get("forceLoadAfter"),
             "incompatible_with": ab.get("incompatibleWith"),
@@ -100,7 +112,7 @@ def main():
             "texture_count": (d.get("textures") or {}).get("images"),
             "texture_decoded_mb_est": (d.get("textures") or {}).get("decoded_mb_est"),
             "largest_textures": (d.get("textures") or {}).get("largest"),
-            "dll_count": len(dlls),
+            "dll_count": len(dlls), "dll_count_all_versions": len(all_dlls),
             "dlls": [{"name": os.path.basename(x["path"]), "path": x["path"], "kb": round(x["bytes"] / 1024.0, 1),
                       "flags": x.get("flags")} for x in dlls],
             "dll_flags": flags, "harmony_flag": "harmony" in flags, "settings_screen_flag": "settings_screen" in flags,

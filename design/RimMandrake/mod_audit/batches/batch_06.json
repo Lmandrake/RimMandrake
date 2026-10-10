@@ -1,0 +1,1357 @@
+{
+ "batch": 6,
+ "category": "star_wars_donors",
+ "count": 10,
+ "instructions": "Assess every mod per design/RimMandrake/mod_audit/RUBRIC.md against design/RimMandrake/mod_audit/SCENARIO_BRIEF.md; write assessments/batch_06.jsonl. Whole-session context (TPS, memory, log probe): facts/session_context.json.",
+ "mods": [
+  {
+   "packageId": "jecrell.jecstools",
+   "name": "JecsTools Unofficial 1.6 BETA",
+   "author": "anobs, jecrell and contributors",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 181,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3524247750",
+   "workshop_id": "3524247750",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3524247750",
+   "about_url": "https://discord.gg/AaVFA7V",
+   "supports_1_6": true,
+   "description": "Ported to 1.6 by me for my other jecrell mod ports. Not yet tested or proven to be fully functional. Will be tested / exit beta after the other jecrell ports are updated.\n  \nNote for Mod Devs:\nHumanlikeOrdersUtility is replaced and uses this now, anything that used it needs to be updated.\nJecsTools.FloatMenuOptionProvider_HumanlikeOrders.Register(\n    myCondition,\n    myOptionGenerator\n);\n\n  As with Mlie's unofficially updated/ported mods, I do not claim ownership of this mod. Jecrell, is free to use this mod to update their own or request its removal. I also will not accept donations for this mod since I'm not the author.\n  Original Description:\n  1.5.0.0 (04-08-2024)\n\nAdds modding components to RimWorld: vehicles, spell casting, weapon slots, oversized weapons, and more!\n\nNote to players: This mod will not change your game, but rather it lets modders do more, so you can have an even more amazing RimWorld experience.\n\nNote to modders: This mod is filled with lots of tools that allow you to do many new and different things in RimWorld. Check out RoxxPloxx's guide for more info here: https://github.com/roxxploxx/RimWorldModGuide/wiki\n\nPartial list of components:\n\nCompAbilityUser\n - Adds spell/ability casting to humanlikes.\n\nCompActivatableEffect\n - Adds an activation graphic for weapons (e.g. lightsaber beam).\n\nCompDeflector\n - Allows the ability to knock projectiles to melee weapons.\n\nCompExtraSounds\n - Allows extra melee sounds to weapons.\n\nCompLumbering\n - Makes a staggered walking animation. (e.g. ATST walking effect)\n\nCompOversizedWeapon\n - Allows weapons with graphic sizes that can be bigger than RimWorld's limits.\n\nCompSlotLoadable\n - Adds slots to objects that can be filled to have effects. (e.g. different ammo types for guns, crystals for lightsabers)\n\nCompToggleDef (by Roxxploxx)\n- Allows for something to despawn, change its def, and respawn.\n\nCompVehicle (experimental for 1.0, removed for 1.1+)\n - Allows for a pawn to be treated as a vehicle that can be loaded with pilots, gunners, crew, and passengers.\n\nCompInstalledPart (WIP)\n- Allows installation and uninstallation of things onto other things. This is particularly useful for weapons on vehicles.\n\nAdditions by ChJees\nAdditions by roxxploxx\nAdditions by Swenzi\nAdditions and transpilers by Erdelf\nExtensive hours of testing, debugging, and fixes by Xen\nImprovements by lbmaian\n\"Hey, should we make this into a public toolset for people to take advantage of all this cool stuff?\" - Jecrell\n\"Hell yes - this is awesome stuff - people will love it!\" - Xen\n\nThank you to my Patrons for supporting me in my efforts. Without you, none of this would be possible.\n\nThese are the most excellent rim dwellers who support me: \n\n\n========================\nChangelog\n========================\n1.5.0.0 (04-08-2024)\n========================\nUpdated for RimWorld 1.5\n\n1.4.1.1 (10-28-2022)\n========================\nAdded xenotype boolean for PawnkindGeneExtension. Code housekeeping done as well\n\n1.4.1.0 (10-27-2022)\n========================\nModders can now give PawnKindDefs random chances for genetics using JecsTools.PawnKindGeneExtension on PawnKindDefs under modExtensions\n\n1.4.0.0 (10-21-2022)\n========================\nInitial update for RimWorld 1.4 of JecsTools\n\n1.3.0.5 (10-09-2022)\n========================\nUpdated assemblies for RimWorld 1.4 unstable support.\n- JecsTools BackstoryDef now inherits new RimWorld BackstoryDef setup. Once again based on erdelf's work.\n\n1.3.0.4 (08-08-2022)\n========================\ndamageTypesToExclude was not working correctly and has been fixed. Grappling a pet will always succeed which should prevent some fustration. Credit for this update goes to Gefallener from our RoM Discord.\n\n1.3.0.3b (07-31-2021)\n====================\nWorkaround for mod lists that contain other mods with an outdated copy of CompOversizedWeapon that's loaded before ours\n\n1.3.0.3 (07-30-2021)\n========================\nDue to compatibility issues, the patch for Enable Oversized Weapons will require additional work. Reverting back to the previous version.\n\n1.3.0.2 (07-29-2021)\n========================\nCarny Senpai's Enable Oversized Weapons is now supported and JecsTools CompOversizedWeapon will yield for it.\n\n1.3.0.1 (07-24-2021)\n========================\nFix regression in RW 1.1 & 1.2 by using separate defs for 1.1+1.2 and 1.3\n\n1.3.0.0 (07-24-2021)\n========================\nlbmaian's 1.3 and 1.2 updates have been merged and are now available on the main JecsTools branch. Stay tuned for updates to out of date mods as we move into 1.3.\n\n1.2.0.0 (07-24-2021)\n========================\nNote: Starting from this version, changes only apply to RimWorld 1.3+.\n- source branch for assemblies supporting RimWorld 1.1 and 1.2: https://github.com/lbmaian/JecsTools/tree/rw1.2\n- source branch for assemblies supporting RimWorld 1.0: https://github.com/lbmaian/JecsTools/tree/rw1.0\nPreliminary update to support RimWorld 1.3\nLots of performance improvements (too many to list - look at the individual commit descriptions since commit d0e37a8 for details)\nNew features and fixes:\n- CompAbilityUser:\n  - revamped CombatPower-based pawn generation balancing to actually work\n  - PawnAbility.TryCastAbility now checks for matching verbProps again (regression since RW 1.1)\n  - fix AbilityDecisionNode subclasses ignoring the invert field in certain cases\n  - fix various assumptions that there's only a single CompAbilityUser when multiple CompAbilityUsers are common\n- CompOversizedWeapon: improved thing-on-ground detection for graphics\n- CompSlotLoadable:\n  - avoid showing unavailable slot options\n  - improve stats display\n  - fix doesChangeStats only affecting stats display (and not the actual stats value)\n  - updated to latest vanilla logic (exceptions noted in TODOs), centralize most stats logic\n  - avoid bloating save file if slottableThingDefs is same between SlotLoadable and SlotLoadableDef\n- CompToggleDef:\n  - improved GUI to be more like vanilla\n  - add toggle GUI for colonists with toggleable weapons\n  - fix ranged weapon toggles not working properly\n  - changed thing is reselected and has graphics refreshed after toggle\n  - avoid toggling to the same def\n- CompSlotLoadable:\n  - configurable per-body-part amountRange in SlotBonusProps_DefensiveHealChance and SlotBonusProps_VampiricEffect\n  - configurable damageDef and armorPenetration in SlotBonusProps_VampiricEffect\n  - update body part healing to be consistent between DefensiveHealChance and VampiricEffect (randomized, skip already healed body parts)\n- CompAnimated: added layerOffset to CompProperties_AnimatedOver (thanks Aelanna!)\n- BuildingExtension: wipeCategories should now consistently work\n- HediffComp_ExtraMeleeDamages: updated to latest vanilla logic (damage now created just like those from Tool.extraMeleeDamages)\n- HediffComp_DamageSoak: damage soak amount no longer rounded to integer\n- HediffComp_Knockback:\n  - configurable knockbackSound (was broken), KnockImpactDamageType (instead of always Blunt), knockbackSpeed, and knockbackThought\n  - configurable explosiveProps (CompProperties_Explosive)\n  - knockDistance now accepts floating points\n  - add knockDistanceAbsorbedPercentCurve and knockDistanceMassCurve that controls how damage soak and mass affect knock distance\n  - improve push angle algorithm so that it's no longer always a diagonal\n  - prevent multiple knockbacks occurring due to multiple damage infos (e.g. extra damage) for same instigator+target\n  - FlyingObject: configurable props (ProjectileProperties) and accuracyRadius\n  - FlyingObject_Equipable allows equipping apparel along (not just weapons)\n- PawnShields: support generating biocoded shields when generating pawns\n- PlaceWorker_UnderCeiling: works again (regression since RW 1.1)\n- PlaceWorker_OnTopOfWalls: also considers anything with BuildingProperties.isPlaceOverableWall as a wall\n- CaravanJob: fix placedThings type (old regression since RW 1.0)\n- other misc minor fixes, code cleanup, and code documentation\nDeprecated:\n- ApparelExtension:\n  - swapCondition: use vanilla apparel.gender instead\n  - coverage: use vanilla apparel.layers and custom ApparelLayerDef instead\n- AbilityUser.GetCompAbilityUser/AbilityUtility.Abilities: use GetCompAbilityUsers (plural)\n- HediffComp_Knockback explosiveKnockback/explosionDmg/explosionSize: use explosiveProps fields instead\n- FlyingObject speed/impactDamage/explosion: use props.speed/extraDamages/explosionRadius\n- ProjectileExtension: seems to have never worked properly due to incomplete implementation\n- some fields have been deprecated in favor of properties\nRemoved:\n- JecsTools' CompConsole and related Faction stuff (broken since RW B19)\n- CompVehicles (broken and commented out since RW 1.1)\n- CompProperties_OversizedWeapon.offset (mostly broken since version 1.0.9.3)\n- some public classes and methods have been moved or removed\n\n1.1.2.3 (05-09-2021)\n========================\nUpdate French translation (thanks qux!), rebuild to latest RW version\n\n1.1.2.2 (10-23-2020)\n========================\nFix CompAbilityUser subtype search to not cause errors (such as broken world gen) if another mod's assembly contains references to missing/wrong-version dependencies (even if they are optional dependencies).\n\n1.1.2.1 (08-13-2020)\n========================\nFix regressions in RW 1.1 version by compiling separate assemblies for RW 1.1 and RW 1.2 to account for different enum/constant values in RW assemblies\n\n1.1.2.0 (08-11-2020)\n========================\nPerformance improvements, various fixes, improved stats display for shields and deflectors, code cleanup (full changelog in https://github.com/jecrell/JecsTools/pull/15)\n\n1.1.1.2 (03-29-2020)\n========================\nActivatable weapons now activate in defense thanks to code from qadsad.\n\n1.1.1.1 (03-20-2020)\n========================\nFixed issues with damage soak and extra damages. Extra damage should now be dealt properly and damage soak should now deflect damage properly.\n\n1.1.1.0 (03-15-2020)\n========================\nAbilityUser should now report when line of sight failure takes place for abilities. Extra damages no longer gives errors in combat logs.\n\n1.1.0.20 (03-07-2020)\n========================\nDefModExtension_ExtraSounds is now processed in the CompExtraSounds Harmony patch. Different pawns with DefModExtension_ExtraSounds in their PawnKindDef can make extra on-hit attack sounds.\n\n1.1.0.19 (02-29-2020)\n========================\nHotfix for adding compatibility between the newest version of RimWorld and the previous version of 1.0.\n\n1.1.0.18 (02-29-2020)\n========================\nAdded cross compatibility for RimWorld 1.0 as well as RimWorld 1.1.\n\n1.1.0.17 (02-29-2020)\n========================\nUpdates JecsTools for use in RimWorld 1.1\n\n1.1.0.16 (11-16-2019)\n========================\nAdds in various work-in-progress code changes. Adds a belated Japanese translation update from Proxyer. Adds a force user code fix from Mehni. Adds BigBox - a solution for larger selection boxes for oversized pawns (such as dragons).\n\n1.1.0.15 (12-14-2018)\n========================\nRemoves apparel detour and replaces it with a harmony patch (thanks to Mehni)\n\n1.1.0.14 (11-18-2018)\n========================\nAdded AlienRace BackstoryDef functionality into the JecsTools namespace\n\n1.1.0.14 (11-18-2018)\n========================\nAdded erdelfs BackstoryDef functionality from AlienRaces to JecsTools.\n\n1.1.0.13 (11-03-2018)\n========================\nRemoved unneeded assemblies from source. Properly includes ThinkNode.dll in the correct location for public usage.\n\n1.1.0.12 (11-03-2018)\n========================\nAdds ThinkNode_ConditionalWorkTypeDefs, ThinkNodes.JobGiver_Capture, JobGiver_GoToClosestThingDef, ThinkNode_ConditionalHediff, ThinkNodes.ThinkNode_ConditionalHunter, ThinkNode_ConditionalDelay, ThinkNode_ConditionalMissingHuntingWeapon by AliceCecil\n\n1.1.0.11 (10-29-2018)\n========================\nCompProperties_AnimatedOver added by AliceCecil to draw on top of existing ThingDefs.\n\n1.1.0.10 (10-28-2018)\n========================\nAliceCecil has adjusted the CompAnimated code to support buildings and other objects (ThingWithComps).\n\n1.1.0.9 (10-19-2018)\n========================\nAdded a try and catch to the ProjectileExtension Harmony patch for CanHitCellFromCellIgnoringRange. This should allow for proper ability casting again.\n\n1.1.0.8 (10-18-2018)\n========================\nChanged very few issues to allow for the update for RimWorld 1.0.\n\n1.1.0.7 (10-02-2018)\n========================\nThe wall placeworker now also allows other types of walls.\n\n1.1.0.6 (09-30-2018)\n===================\nAdds new BuildingExtension class to allow for bypasses to SpawningWipes. Perfect for adding furniture on top of existing tables.",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 29.73,
+   "disk_by_kind": {
+    "other": {
+     "files": 991,
+     "mb": 22.94
+    },
+    "xml": {
+     "files": 591,
+     "mb": 0.45
+    },
+    "assemblies": {
+     "files": 220,
+     "mb": 5.27
+    },
+    "textures": {
+     "files": 3,
+     "mb": 0.14
+    },
+    "source": {
+     "files": 605,
+     "mb": 0.94
+    }
+   },
+   "texture_count": 3,
+   "texture_decoded_mb_est": 0.8,
+   "dll_count": 18,
+   "dlls": [
+    {
+     "name": "0JecsTools.dll",
+     "path": "1.6/Assemblies/0JecsTools.dll",
+     "kb": 111.5,
+     "flags": [
+      "harmony",
+      "world_component_tick"
+     ]
+    },
+    {
+     "name": "AbilityUser.dll",
+     "path": "1.6/Assemblies/AbilityUser.dll",
+     "kb": 75.0,
+     "flags": [
+      "comp_tick",
+      "harmony"
+     ]
+    },
+    {
+     "name": "AbilityUserAI.dll",
+     "path": "1.6/Assemblies/AbilityUserAI.dll",
+     "kb": 22.0,
+     "flags": []
+    },
+    {
+     "name": "CompActivatableEffect.dll",
+     "path": "1.6/Assemblies/CompActivatableEffect.dll",
+     "kb": 16.5,
+     "flags": [
+      "comp_tick",
+      "harmony"
+     ]
+    },
+    {
+     "name": "CompAnimated.dll",
+     "path": "1.6/Assemblies/CompAnimated.dll",
+     "kb": 11.5,
+     "flags": [
+      "comp_tick"
+     ]
+    },
+    {
+     "name": "CompBalloon.dll",
+     "path": "1.6/Assemblies/CompBalloon.dll",
+     "kb": 5.0,
+     "flags": [
+      "comp_tick"
+     ]
+    },
+    {
+     "name": "CompBigBox.dll",
+     "path": "1.6/Assemblies/CompBigBox.dll",
+     "kb": 6.5,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "CompDeflector.dll",
+     "path": "1.6/Assemblies/CompDeflector.dll",
+     "kb": 27.5,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "CompDelayedSpawner.dll",
+     "path": "1.6/Assemblies/CompDelayedSpawner.dll",
+     "kb": 8.0,
+     "flags": [
+      "comp_tick"
+     ]
+    },
+    {
+     "name": "CompExtraSounds.dll",
+     "path": "1.6/Assemblies/CompExtraSounds.dll",
+     "kb": 6.0,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "CompInstalledPart.dll",
+     "path": "1.6/Assemblies/CompInstalledPart.dll",
+     "kb": 18.5,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "CompLumbering.dll",
+     "path": "1.6/Assemblies/CompLumbering.dll",
+     "kb": 6.0,
+     "flags": [
+      "comp_tick"
+     ]
+    },
+    {
+     "name": "CompOverlays.dll",
+     "path": "1.6/Assemblies/CompOverlays.dll",
+     "kb": 5.0,
+     "flags": []
+    },
+    {
+     "name": "CompOversizedWeapon.dll",
+     "path": "1.6/Assemblies/CompOversizedWeapon.dll",
+     "kb": 8.5,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "CompSlotLoadable.dll",
+     "path": "1.6/Assemblies/CompSlotLoadable.dll",
+     "kb": 36.5,
+     "flags": [
+      "comp_tick",
+      "harmony"
+     ]
+    },
+    {
+     "name": "CompToggleDef.dll",
+     "path": "1.6/Assemblies/CompToggleDef.dll",
+     "kb": 13.0,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "PawnShields.dll",
+     "path": "1.6/Assemblies/PawnShields.dll",
+     "kb": 34.0,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "ThinkNodes.dll",
+     "path": "1.6/Assemblies/ThinkNodes.dll",
+     "kb": 8.0,
+     "flags": []
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "harmony",
+    "world_component_tick"
+   ],
+   "ships_source": {
+    "cs": 549,
+    "csproj": 18,
+    "sln": 1,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": true
+   },
+   "def_total": 25,
+   "defs_by_type": {
+    "JobDef": 6,
+    "StatDef": 6,
+    "RulePackDef": 5,
+    "StatCategoryDef": 2,
+    "ThingDef": 2,
+    "DamageDef": 1,
+    "HediffDef": 1,
+    "ThinkTreeDef": 1,
+    "WorldObjectDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 17,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/roxxploxx/RimWorldModGuide",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "Apache-2.0",
+   "source_last_push": "2017-06-23T10:26:38Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.",
+   "src": null
+  },
+  {
+   "packageId": "mlie.starwarsanimalcollection",
+   "name": "Star Wars Animal Collection (Continued)",
+   "author": "Beasstmann",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 293,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3497316713",
+   "workshop_id": "3497316713",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3497316713",
+   "about_url": "https://github.com/emipa606/StarWarsAnimalCollection",
+   "supports_1_6": true,
+   "description": "[img]https://img.litet.net/logos/Info.png[/img]\nUpdate of Beasstmanns mod\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=1342364585\nbased on the continuation by Guy\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=2006670799\n\n[b]The release of RimWorld 1.6 added improved support for [url=https://github.com/emipa606/AssetBuilder/blob/main/README.md]Asset Bundles[/url][/b].\nTo avoid doubling the size of the mod, it was re-released using only Asset Bundles, you can find the previous version of this mod [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2903582351]here[/url].\n\nIf you want to set what animals can spawn in each biome, please use [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2564042934]Choose Wild Animal Spawns[/url]\n\n[h2]Very large update![/h2]\nThanks to the excellent work of Delta this update brings alot of new animals to the mod.\nThese are from all around the Star Wars Galaxy. There are also added custom sounds and graphical variations.\nIf you have Vanilla Expanded Framework active, some animals have added behaviors regarding food and movement.\nThere are also added resources, like leathers, wool, meat, eggs and drugs; as well as skulls for trophies to collect.\nEnjoy!\n\n[h3]Updated content[/h3]\n[b]Animals[/b]\n[list]\n[*]Acklay\n[*]Aiwha\n[*]Akk\n[*]Anooba\n[*]Bantha\n[*]Behemoth\n[*]Beldon\n[*]Blarth\n[*]Blixus\n[*]Blurrg\n[*]Boarwolf\n[*]Bogwing\n[*]Bolotaur\n[*]Boma\n[*]Borcatu\n[*]Bordok\n[*]Brezak\n[*]Bursa\n[*]Can-Cell\n[*]Cannok\n[*]Chrysalide Rancor\n[*]Clodhopper\n[*]Convor\n[*]Corellian Hound\n[*]Corinathoth\n[*]Dactillion\n[*]Dalgo\n[*]Devourer\n[*]Dewback\n[*]Dianoga\n[*]Dragonsnake\n[*]Drexl\n[*]Energy Spider\n[*]Eopie\n[*]Falumpaset\n[*]Fambaa\n[*]Fanback\n[*]Feral Grazer\n[*]Feral Nerf\n[*]Frilled Gorg\n[*]Frog Dog\n[*]Gelagrub\n[*]Gizka\n[*]Gorg\n[*]Gornt\n[*]Granite Slug\n[*]Grank\n[*]Grazer\n[*]Greater Krayt Dragon\n[*]Gualaar\n[*]Gullipud\n[*]Gundark\n[*]Gutkurr\n[*]Harvester Beetle\n[*]Hawkbat\n[*]Horax\n[*]Hrumph\n[*]Hssiss\n[*]Igitz\n[*]Insectomorph\n[*]Iriaz\n[*]Iridonian Reek\n[*]Ithorian Reek\n[*]Jakobeast\n[*]Jamel\n[*]Jimvu\n[*]JungleRancor\n[*]Kaadu\n[*]Katarn\n[*]Kell Dragon\n[*]Kinrath\n[*]K'lor'slug\n[*]Kowakian Monkey Lizard\n[*]Krayt Dragon\n[*]Kreetle\n[*]Krykna\n[*]Kwazel Maw\n[*]Kwi\n[*]Kybuck\n[*]Lava Flea\n[*]Leaftail\n[*]Longtail Gorg\n[*]Loth Wolf\n[*]Lothcat\n[*]Lylek\n[*]Maalraas\n[*]Manka\n[*]Marsh Haunt\n[*]Massiff\n[*]Mastiff Phalone\n[*]Mastmot\n[*]Mawvorr\n[*]Mott\n[*]Mudhorn\n[*]Mynock\n[*]Narglatch\n[*]Neebray\n[*]Nerf\n[*]Nexu\n[*]Nuna\n[*]Ollopom\n[*]Orray\n[*]Painted Spat\n[*]Peko-Peko\n[*]Pikobis\n[*]Porg\n[*]Pufferpig\n[*]Qormot\n[*]Rancor\n[*]Raxshir\n[*]Reek\n[*]Rikknit\n[*]Roggwart\n[*]Ronto\n[*]Runyip\n[*]Rycrit\n[*]Scavrat\n[*]Scurrier\n[*]Shaak\n[*]Shiro\n[*]Shiro-Trap\n[*]Shyrack\n[*]Silooth\n[*]Skalder\n[*]Sketto\n[*]Snoruuk\n[*]Squall\n[*]Stintaril\n[*]Strill\n[*]Tach\n[*]Taozin\n[*]Tauntaun\n[*]Tee-Muss\n[*]Tet'niss Crab\n[*]Thranta\n[*]Tibidee\n[*]Tooke\n[*]Torton\n[*]Tukata\n[*]Tusk Cat\n[*]Urusai\n[*]Uvak\n[*]Vapaad\n[*]Varactyl\n[*]Veermok\n[*]Voorpak\n[*]Vornskyr\n[*]Vulptex\n[*]Wampa\n[*]War Wyrm\n[*]Warbird\n[*]Whisperbird\n[*]Womp Rat\n[*]Woolamander\n[*]Worrt\n[*]Wraid\n[*]Wyyyschokk\n[*]Yobshrimp\n[*]Zakkeg\n[*]Zeer\n[/list]\n\n[b]Plants[/b]\n[list]\n[*]Bloddle\n[*]Bubble Spore\n[*]Chakroot\n[*]Dantuber\n[*]Felucian Glowbulb\n[*]Hubba Gourd\n[*]Hydenock\n[*]Jogan Tree\n[*]Manax Fungus\n[*]Meiloorun\n[*]Muja Fruit\n[*]Munch-Fungus\n[*]Nysllin\n[*]Tooke-trap\n[/list]\n\n[b]Fish (Odyssey Resource)[/b]\n[list]\n[*]Burra\n[*]Dactopus\n[*]Daggert\n[*]Doshian Jelly\n[*]Faa\n[*]Fleek Eel\n[*]Laa\n[*]Nyork\n[*]Paddy Frog\n[*]Ray\n[*]See\n[*]Sink-Crab\n[/list]\n\n[b]Special (Odyssey Landmark)[/b]\n[list]\n[*]Sarlacc\n[/list]\n\n[img]https://img.litet.net/logos/Notice.png[/img]\n\n[table]\n    [tr]\n        [td][url=https://discord.gg/h5TY6DA][img]https://img.litet.net/logos/Discord.png[/img][/url][/td]\n        [td][url=https://github.com/emipa606/StarWarsAnimalCollection][img]https://img.litet.net/logos/Github.png[/img][/url][/td]\n    [/tr]\n    [tr]\n        [td][img]https://img.litet.net/logos/SafeToAdd.png[/img][/td]\n        [td][img]https://img.litet.net/logos/RemoveMayWork.png[/img][/td]\n    [/tr]\n[/table]\n\t\n[img]https://img.litet.net/logos/OriginalDescription.png[/img]\nStar Wars Animal Collection V 1.0.2059\n\nIncluding so far:\n[strike]\n-Krayt Dragon\n-Rancor\n-Acklay\n-Reek\n-Nexu\n-Bantha\n-Dewback\n-Tauntaun\n-Nerf\n-Gizka\n-Ronto\n-Vulptex\n-Porg\n-Frogdog\n-Wampa\n[/strike]\n\n[b]See updated creature list at the top of the description[/b]\n\nLet me know if you find any bugs or other problems within this mod.\nAlso drop some comments about balancing and let me know what animal you would like to see next.\n\t\n[img]https://img.litet.net/logos/ReportingIssues.png[/img]\n[list]\n[*] See if the the error persists if you just have this mod and its requirements active.\n[*] If not, try adding your other mods until it happens again.\n[*] Always post your log using the [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Log Uploader[/url]\n[*] For best support, please use the Discord-channel for error-reporting.\n[*] Do not report errors by making a discussion-thread, I get no notification of that.\n[*] If you have the solution for a problem, please post it to the GitHub repository.\n[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods \n\n[url=https://steamcommunity.com/sharedfiles/filedetails/changelog/3497316713][img]https://img.shields.io/github/v/release/emipa606/StarWarsAnimalCollection?label=latest%20version&style=plastic&color=9f1111&labelColor=black[/img][/url] | tags: animals, collection",
+   "dependencies": [],
+   "dependants": [
+    "mandrake.rsw.shokk",
+    "mandrake.rsw.swbestiary"
+   ],
+   "dependants_ours": [
+    "mandrake.rsw.shokk",
+    "mandrake.rsw.swbestiary"
+   ],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 37.7,
+   "disk_by_kind": {
+    "other": {
+     "files": 7,
+     "mb": 0.01
+    },
+    "xml": {
+     "files": 170,
+     "mb": 4.91
+    },
+    "textures": {
+     "files": 3,
+     "mb": 0.51
+    },
+    "assetbundles": {
+     "files": 2,
+     "mb": 32.26
+    }
+   },
+   "texture_count": 3,
+   "texture_decoded_mb_est": 5.0,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 1578,
+   "defs_by_type": {
+    "SoundDef": 589,
+    "ThingDef": 454,
+    "PawnKindDef": 160,
+    "BodyDef": 102,
+    "IdeoIconDef": 90,
+    "ThoughtDef": 33,
+    "BodyPartGroupDef": 23,
+    "RecipeDef": 20,
+    "BodyPartDef": 17,
+    "AbilityDef": 16,
+    "NegativeFishingOutcomeDef": 16,
+    "TrainableDef": 16,
+    "HediffDef": 14,
+    "TileMutatorDef": 9,
+    "RulePackDef": 3,
+    "TabulaRasa.UpdateDef": 3,
+    "ChemicalDef": 2,
+    "GenStepDef": 2,
+    "LandmarkDef": 2,
+    "NeedDef": 2,
+    "PawnRenderTreeDef": 2,
+    "EffecterDef": 1,
+    "MapGeneratorDef": 1,
+    "WorkGiverDef": 1
+   },
+   "patch_ops_all": 54,
+   "patched_def_types": {
+    "BiomeDef": 41,
+    "ThingDef": 5,
+    "RecipeDef": 3,
+    "FactionDef": 1,
+    "LandmarkDef": 1
+   },
+   "patch_findmod_names": {
+    "More Vanilla Biomes": 1,
+    "Vanilla Expanded Framework": 1
+   },
+   "patches_mods": {
+    "ludeon.rimworld": 50,
+    "ludeon.rimworld.odyssey": 38,
+    "zylle.morevanillabiomes": 17,
+    "mlie.advancedbiomes": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.patches": 1838,
+    "mandrake.rut.doctrine": 624,
+    "mandrake.rsw.swbestiary": 498,
+    "mandrake.rut.pawnflavor": 350,
+    "mandrake.rsw.armoury": 87,
+    "mandrake.rsw.patches": 16,
+    "mandrake.rsw.gizkastowaway": 8,
+    "mandrake.rut.ashkarrlandmarkart": 8,
+    "mandrake.rsw.injections": 4,
+    "mandrake.rsw.trophycraft": 3,
+    "mandrake.rm.patches": 2,
+    "mandrake.rut.shokkweaveeconomy": 1
+   },
+   "patched_by_ours_refs": 3439,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/emipa606/StarWarsAnimalCollection",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "MIT",
+   "source_last_push": "2026-06-07T22:32:02Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": true,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.",
+   "src": null
+  },
+  {
+   "packageId": "neronix17.outerrim.core",
+   "name": "Outer Rim - Core",
+   "author": "Neronix17",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 483,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2919227155",
+   "workshop_id": "2919227155",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2919227155",
+   "about_url": "https://www.patreon.com/neronix17",
+   "supports_1_6": true,
+   "description": "Core mod for the Outer Rim Series, contains only what needs to exist for the other modules to function.",
+   "dependencies": [
+    "OskarPotocki.VanillaFactionsExpanded.Core",
+    "neronix17.toolbox"
+   ],
+   "dependants": [
+    "leutiankane.mineablesor",
+    "leutiankane.mines2patchouterrim",
+    "mandrake.rsw.armoury",
+    "mandrake.rsw.ionweapons",
+    "neronix17.outerrim.galacticempire",
+    "neronix17.outerrim.rebelalliance"
+   ],
+   "dependants_ours": [
+    "mandrake.rsw.armoury",
+    "mandrake.rsw.ionweapons"
+   ],
+   "load_after": [
+    "OskarPotocki.VanillaFactionsExpanded.Core",
+    "neronix17.toolbox"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 117.39,
+   "disk_by_kind": {
+    "xml": {
+     "files": 541,
+     "mb": 4.43
+    },
+    "other": {
+     "files": 57,
+     "mb": 12.26
+    },
+    "assemblies": {
+     "files": 26,
+     "mb": 31.39
+    },
+    "source": {
+     "files": 30,
+     "mb": 0.05
+    },
+    "textures": {
+     "files": 1108,
+     "mb": 25.87
+    },
+    "assetbundles": {
+     "files": 2,
+     "mb": 36.56
+    },
+    "sounds": {
+     "files": 149,
+     "mb": 6.84
+    }
+   },
+   "texture_count": 1108,
+   "texture_decoded_mb_est": 708.7,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "OuterRimCore.dll",
+     "path": "1.6/Assemblies/OuterRimCore.dll",
+     "kb": 27.5,
+     "flags": [
+      "comp_tick",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 28,
+    "csproj": 1,
+    "sln": 1,
+    "git": false,
+    "github": false,
+    "readme": [
+     "1.6/Source/OuterRimCore/packages/Lib.Harmony.2.3.6/README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 404,
+   "defs_by_type": {
+    "ThingDef": 179,
+    "SoundDef": 58,
+    "TerrainDef": 42,
+    "PawnKindDef": 17,
+    "ResearchProjectDef": 16,
+    "DesignatorDropdownGroupDef": 13,
+    "VBE.BackgroundImageDef": 13,
+    "VEF.Abilities.AbilityDef": 9,
+    "DamageDef": 8,
+    "RecipeDef": 8,
+    "HediffDef": 7,
+    "TraderKindDef": 6,
+    "LifeStageDef": 5,
+    "PlaceDef": 4,
+    "JobDef": 3,
+    "TabulaRasa.UpdateDef": 3,
+    "VEF.Weapons.ExpandableProjectileDef": 3,
+    "FactionDef": 2,
+    "DesignationCategoryDef": 1,
+    "FleckDef": 1,
+    "JoyGiverDef": 1,
+    "PipeSystem.PipeNetDef": 1,
+    "ResearchTabDef": 1,
+    "ThingSetMakerDef": 1,
+    "VEF.Storyteller.QuestGiverDef": 1
+   },
+   "patch_ops_all": 1,
+   "patched_def_types": {
+    "ThingDef": 1
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.researchretag": 139,
+    "mandrake.rsw.armoury": 94,
+    "mandrake.rsw.patches": 12,
+    "mandrake.rut.patches": 11,
+    "leutiankane.mines2patchouterrim": 9,
+    "leutiankane.mineablesor": 3
+   },
+   "patched_by_ours_refs": 256,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 2,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/pardeike/Harmony",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "MIT",
+   "source_last_push": "2026-10-08T22:55:32Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": true,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.",
+   "src": null
+  },
+  {
+   "packageId": "leutiankane.mineablesor",
+   "name": "LK Mineable Resources Outer Rim",
+   "author": "LeutianKane",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 493,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3565716659",
+   "workshop_id": "3565716659",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3565716659",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds Outer Rim Core metals to the game as mineable from mountains and deep drilling etc.",
+   "dependencies": [
+    "brrainz.harmony",
+    "Neronix17.OuterRim.Core"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "Ludeon.RimWorld.Odyssey",
+    "brrainz.harmony",
+    "Neronix17.OuterRim.Core"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.42,
+   "disk_by_kind": {
+    "xml": {
+     "files": 4,
+     "mb": 0.01
+    },
+    "textures": {
+     "files": 2,
+     "mb": 0.41
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 2,
+   "texture_decoded_mb_est": 2.0,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 4,
+   "defs_by_type": {
+    "ThingDef": 4
+   },
+   "patch_ops_all": 13,
+   "patched_def_types": {
+    "GenStepDef": 6,
+    "SitePartDef": 4,
+    "ThingDef": 3
+   },
+   "patch_findmod_names": {
+    "Ideology": 4,
+    "Odyssey": 2
+   },
+   "patches_mods": {
+    "ludeon.rimworld": 4,
+    "ludeon.rimworld.ideology": 4,
+    "neronix17.outerrim.core": 3,
+    "ludeon.rimworld.odyssey": 2
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.",
+   "src": null
+  },
+  {
+   "packageId": "leutiankane.mines2patchouterrim",
+   "name": "LK Mines 2.0 Compatability[Outer Rim Core]",
+   "author": "LeutianKane",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 494,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3558833789",
+   "workshop_id": "3558833789",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3558833789",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Patches that will add resources from Outer Rim Core to mines 2.0 bills if installed.\n    \n    \n    [H1][B]Credits[/B][/H1]\n    Mines 2.0 for the mod that ive patched and the preview image ive edited.\n    Ludeon for making Rimworld.",
+   "dependencies": [
+    "brrainz.harmony",
+    "Cain.Mineshaft",
+    "Neronix17.OuterRim.Core"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "Ludeon.RimWorld.Odyssey",
+    "brrainz.harmony",
+    "Cain.Mineshaft",
+    "Neronix17.OuterRim.Core"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.94,
+   "disk_by_kind": {
+    "xml": {
+     "files": 2,
+     "mb": 0.01
+    },
+    "textures": {
+     "files": 3,
+     "mb": 0.94
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 3,
+   "texture_decoded_mb_est": 3.8,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 9,
+   "patched_def_types": {
+    "ThingDef": 9
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "neronix17.outerrim.core": 9
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.",
+   "src": null
+  },
+  {
+   "packageId": "neronix17.outerrim.furnitureanddecor",
+   "name": "Outer Rim - Furniture & Decor",
+   "author": "Neronix17",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 495,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2919553599",
+   "workshop_id": "2919553599",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2919553599",
+   "about_url": "https://www.patreon.com/neronix17",
+   "supports_1_6": true,
+   "description": "Outer Rim module containing all the furniture, decals, joy buildings, statues, etc. If loaded without Outer Rim - Core it will automatically patch all contained items to use vanilla materials in place of the usual Outer Rim ones, and switch the required research to Complex Furniture.",
+   "dependencies": [
+    "neronix17.toolbox"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "neronix17.toolbox",
+    "Neronix17.OuterRim.Core"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 50.21,
+   "disk_by_kind": {
+    "xml": {
+     "files": 99,
+     "mb": 0.72
+    },
+    "textures": {
+     "files": 507,
+     "mb": 30.01
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    },
+    "assetbundles": {
+     "files": 2,
+     "mb": 19.49
+    }
+   },
+   "texture_count": 507,
+   "texture_decoded_mb_est": 643.8,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 276,
+   "defs_by_type": {
+    "ThingDef": 258,
+    "TabulaRasa.HologramDef": 10,
+    "JobDef": 2,
+    "JoyGiverDef": 2,
+    "DesignationCategoryDef": 1,
+    "DesignatorDropdownGroupDef": 1,
+    "JoyKindDef": 1,
+    "TabulaRasa.UpdateDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.",
+   "src": null
+  },
+  {
+   "packageId": "neronix17.outerrim.galacticempire",
+   "name": "Outer Rim - Galactic Empire",
+   "author": "Neronix17",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 496,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2919248699",
+   "workshop_id": "2919248699",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2919248699",
+   "about_url": "https://www.patreon.com/neronix17",
+   "supports_1_6": true,
+   "description": "Outer Rim module adding the Galactic Empire faction.",
+   "dependencies": [
+    "Neronix17.OuterRim.Core"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Neronix17.OuterRim.Core"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 54.85,
+   "disk_by_kind": {
+    "xml": {
+     "files": 178,
+     "mb": 3.25
+    },
+    "other": {
+     "files": 28,
+     "mb": 11.84
+    },
+    "assemblies": {
+     "files": 26,
+     "mb": 31.29
+    },
+    "source": {
+     "files": 9,
+     "mb": 0.02
+    },
+    "textures": {
+     "files": 700,
+     "mb": 4.91
+    },
+    "assetbundles": {
+     "files": 2,
+     "mb": 3.53
+    }
+   },
+   "texture_count": 700,
+   "texture_decoded_mb_est": 364.3,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "OuterRimGalacticEmpire.dll",
+     "path": "1.6/Assemblies/OuterRimGalacticEmpire.dll",
+     "kb": 10.5,
+     "flags": [
+      "harmony"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony"
+   ],
+   "ships_source": {
+    "cs": 7,
+    "csproj": 1,
+    "sln": 1,
+    "git": false,
+    "github": false,
+    "readme": [
+     "1.6/Source/OuterRimGalacticEmpire/packages/Lib.Harmony.2.3.6/README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 104,
+   "defs_by_type": {
+    "ThingDef": 61,
+    "PawnKindDef": 23,
+    "RulePackDef": 5,
+    "HediffDef": 3,
+    "TraderKindDef": 3,
+    "FactionDef": 2,
+    "TabulaRasa.UpdateDef": 2,
+    "CultureDef": 1,
+    "IdeoIconDef": 1,
+    "ScenarioDef": 1,
+    "VEF.Abilities.AbilityDef": 1,
+    "VEF.Weapons.ExpandableProjectileDef": 1
+   },
+   "patch_ops_all": 2,
+   "patched_def_types": {
+    "FactionDef": 1,
+    "ThingSetMakerDef": 1,
+    "XenotypeDef": 1
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rsw.patches": 9,
+    "mandrake.rut.patches": 5,
+    "regrowth.botr.core": 1
+   },
+   "patched_by_ours_refs": 14,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/pardeike/Harmony",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "MIT",
+   "source_last_push": "2026-10-08T22:55:32Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": true,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.",
+   "src": null
+  },
+  {
+   "packageId": "neronix17.outerrim.rebelalliance",
+   "name": "Outer Rim - Rebel Alliance",
+   "author": "Neronix17",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 497,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2919249903",
+   "workshop_id": "2919249903",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2919249903",
+   "about_url": "https://www.patreon.com/neronix17",
+   "supports_1_6": true,
+   "description": "Outer Rim module adding the Rebel Alliance faction.",
+   "dependencies": [
+    "Neronix17.OuterRim.Core"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Neronix17.OuterRim.Core"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 3.9,
+   "disk_by_kind": {
+    "xml": {
+     "files": 89,
+     "mb": 0.26
+    },
+    "other": {
+     "files": 3,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 216,
+     "mb": 2.18
+    },
+    "assetbundles": {
+     "files": 2,
+     "mb": 1.46
+    }
+   },
+   "texture_count": 216,
+   "texture_decoded_mb_est": 165.3,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 46,
+   "defs_by_type": {
+    "ThingDef": 20,
+    "PawnKindDef": 11,
+    "RulePackDef": 5,
+    "TraderKindDef": 3,
+    "FactionDef": 2,
+    "CultureDef": 1,
+    "IdeoIconDef": 1,
+    "ScenarioDef": 1,
+    "TabulaRasa.UpdateDef": 1,
+    "VEF.Abilities.AbilityDef": 1
+   },
+   "patch_ops_all": 1,
+   "patched_def_types": {
+    "ThingSetMakerDef": 1
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.patches": 12,
+    "mandrake.rsw.patches": 3,
+    "mandrake.rsw.armoury": 1,
+    "regrowth.botr.core": 1
+   },
+   "patched_by_ours_refs": 16,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": true,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.",
+   "src": null
+  },
+  {
+   "packageId": "lee.theforce.lightsaber",
+   "name": "Star Wars : The Force - Lightsaber",
+   "author": "Lee",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 506,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3466124712",
+   "workshop_id": "3466124712",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3466124712",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "This mod adds Lightsabers to Rimworld. Split from my original Mod. This mod will include the various lightsaber related components such as Kyber Crystals, Upgrades, and whatever else I feel like adding. Also includes a expiremental melee parry system within the mod. For the full experience i recommend royalty, so that you have access to the Stance System as well. CE is Compatible",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "brrainz.harmony",
+    "OskarPotocki.VanillaFactionsExpanded.Core",
+    "jecrell.jecstools",
+    "Roolo.DualWield",
+    "kaitorisenkou.ModularWeapons",
+    "Killathon.AndroidTiersReforged",
+    "Killathon.MechanicalHumanlikesCore",
+    "smartkar.athenaframework",
+    "VanillaExpanded.VPsycastsE",
+    "VanillaExpanded.VPE.Puppeteer",
+    "Ogam.MedievalOverhaul.ArcaneArchaeologists",
+    "jecrell.StarWarsTheForce",
+    "co.uk.epicguru.meleeanimation"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 9.63,
+   "disk_by_kind": {
+    "xml": {
+     "files": 72,
+     "mb": 0.76
+    },
+    "assemblies": {
+     "files": 11,
+     "mb": 0.67
+    },
+    "textures": {
+     "files": 444,
+     "mb": 3.18
+    },
+    "other": {
+     "files": 22,
+     "mb": 1.61
+    },
+    "assetbundles": {
+     "files": 13,
+     "mb": 0.4
+    },
+    "sounds": {
+     "files": 38,
+     "mb": 3.02
+    }
+   },
+   "texture_count": 444,
+   "texture_decoded_mb_est": 260.3,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "Lightsaber.dll",
+     "path": "1.6/Assemblies/Lightsaber.dll",
+     "kb": 273.0,
+     "flags": [
+      "comp_tick",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 328,
+   "defs_by_type": {
+    "Lightsaber.HiltDef": 112,
+    "Lightsaber.HiltPartDef": 60,
+    "ThingDef": 33,
+    "SoundDef": 30,
+    "RulePackDef": 12,
+    "RecipeDef": 9,
+    "DamageDef": 7,
+    "HediffDef": 7,
+    "TraitDef": 7,
+    "DutyDef": 5,
+    "Lightsaber.HiltPartCategoryDef": 5,
+    "FleckDef": 4,
+    "JobDef": 4,
+    "ManeuverDef": 4,
+    "ToolCapacityDef": 4,
+    "AbilityDef": 3,
+    "EffecterDef": 3,
+    "WeaponCategoryDef": 3,
+    "GenStepDef": 2,
+    "Lightsaber.LightsaberPresetDef": 2,
+    "Lightsaber.LightsaberShaderDef": 2,
+    "LetterDef": 1,
+    "MentalStateDef": 1,
+    "PreceptDef": 1,
+    "RaidStrategyDef": 1
+   },
+   "patch_ops_all": 52,
+   "patched_def_types": {
+    "TraitDef": 43,
+    "StatDef": 13
+   },
+   "patch_findmod_names": {
+    "Royalty": 2
+   },
+   "patches_mods": {
+    "ludeon.rimworld": 95,
+    "winggar.meaningfulparties": 12,
+    "kas.strongerscaling": 10,
+    "ludeon.rimworld.royalty": 4,
+    "smashphil.vehicleframework": 3,
+    "ludeon.rimworld.ideology": 2,
+    "redmattis.bigsmall.core": 2,
+    "ludeon.rimworld.biotech": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rsw.armoury": 29,
+    "mandrake.rut.patches": 3
+   },
+   "patched_by_ours_refs": 32,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 9,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": true,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.",
+   "src": null
+  },
+  {
+   "packageId": "btd.gbp.shippack.kotor.vge",
+   "name": "[BTD] Ship Pack: KotOR Ships VGE",
+   "author": "beeteedubs",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 525,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3614012898",
+   "workshop_id": "3614012898",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3614012898",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds Gravship Designs inspired by Star Wars: Knights of the Old Republic.",
+   "dependencies": [
+    "ludeon.rimworld.odyssey",
+    "brrainz.harmony",
+    "btd.remix.gravshipblueprints"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "btd.remix.gravshipblueprints",
+    "guy762.KotORDroids"
+   ],
+   "load_before": [],
+   "incompatible_with": [
+    "btd.gbp.shippack.kotor"
+   ],
+   "disk_mb": 5.56,
+   "disk_by_kind": {
+    "other": {
+     "files": 5,
+     "mb": 0.09
+    },
+    "xml": {
+     "files": 5,
+     "mb": 0.01
+    },
+    "textures": {
+     "files": 4,
+     "mb": 5.46
+    }
+   },
+   "texture_count": 4,
+   "texture_decoded_mb_est": 34.0,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.txt"
+    ],
+    "source_dir": false
+   },
+   "def_total": 0,
+   "defs_by_type": {},
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.",
+   "src": null
+  }
+ ]
+}

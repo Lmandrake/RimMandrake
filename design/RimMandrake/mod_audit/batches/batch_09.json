@@ -1,0 +1,1706 @@
+{
+ "batch": 9,
+ "category": "creatures_animals",
+ "count": 13,
+ "instructions": "Assess every mod per design/RimMandrake/mod_audit/RUBRIC.md against design/RimMandrake/mod_audit/SCENARIO_BRIEF.md; write assessments/batch_09.jsonl. Whole-session context (TPS, memory, log probe): facts/session_context.json.",
+ "mods": [
+  {
+   "packageId": "aoba.framework",
+   "name": "Fortified Features Framework",
+   "author": "AOBA",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 14,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3498575851",
+   "workshop_id": "3498575851",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3498575851",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "A unified and integrated set of commonly used features for rimworld mod.",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "Ludeon.RimWorld",
+    "CETeam.CombatExtended"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 3.76,
+   "disk_by_kind": {
+    "other": {
+     "files": 3,
+     "mb": 0.01
+    },
+    "xml": {
+     "files": 183,
+     "mb": 0.36
+    },
+    "assemblies": {
+     "files": 3,
+     "mb": 1.26
+    },
+    "assetbundles": {
+     "files": 3,
+     "mb": 0.06
+    },
+    "textures": {
+     "files": 79,
+     "mb": 2.08
+    }
+   },
+   "texture_count": 79,
+   "texture_decoded_mb_est": 41.3,
+   "dll_count": 2,
+   "dlls": [
+    {
+     "name": "0MultiplayerAPI.dll",
+     "path": "1.6/Assemblies/0MultiplayerAPI.dll",
+     "kb": 23.0,
+     "flags": []
+    },
+    {
+     "name": "Fortified.dll",
+     "path": "1.6/Assemblies/Fortified.dll",
+     "kb": 1206.5,
+     "flags": [
+      "comp_tick",
+      "comp_tick_rare",
+      "game_component_tick",
+      "harmony",
+      "map_component_tick",
+      "world_component_tick"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "comp_tick_rare",
+    "game_component_tick",
+    "harmony",
+    "map_component_tick",
+    "world_component_tick"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "1.5/readme.txt"
+    ],
+    "source_dir": false
+   },
+   "def_total": 164,
+   "defs_by_type": {
+    "Fortified.FFF_InfoDef": 65,
+    "JobDef": 23,
+    "ThingDef": 17,
+    "Fortified.HeavyEquippableDef": 8,
+    "EffecterDef": 7,
+    "FleckDef": 7,
+    "Fortified.FFF_CamoDef": 6,
+    "StatDef": 5,
+    "ScenPartDef": 4,
+    "WorkGiverDef": 4,
+    "ConceptDef": 2,
+    "DutyDef": 2,
+    "HediffDef": 2,
+    "StatCategoryDef": 2,
+    "ThinkTreeDef": 2,
+    "DamageDef": 1,
+    "DesignationCategoryDef": 1,
+    "DesignationDef": 1,
+    "IncidentDef": 1,
+    "MentalStateDef": 1,
+    "PawnKindDef": 1,
+    "QuestScriptDef": 1,
+    "WorldGenStepDef": 1
+   },
+   "patch_ops_all": 1,
+   "patched_def_types": {
+    "ThinkTreeDef": 1
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 1,
+   "static_ctors": 29,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "ebsg.framework",
+   "name": "EBSG Framework",
+   "author": "alite",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 23,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3112549163",
+   "workshop_id": "3112549163",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3112549163",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "[img]https://i.imgur.com/Aq17Utk.png[/img]\n\n[img]https://i.imgur.com/d62qHAC.png[/img]\n\nThis framework contains all the C# that I made that can be utilized for broad purposes. In addition to the stuff for the Expanded Biotech Style Genes series, it also has generic copies of some of the code made for the Superhero Genes series, like the code used to remove multiple hediffs with one ability, along with many other ideas I've had and various requests from others. By putting it all in one framework, I'm hoping it will make it easier for others to do some of this stuff.\n\nThis framework does not have any hard requirement on any DLC. However please keep in mind none of the gene stuff will work without Biotech, and the precept thought workers will usually require both Biotech and Ideology.\n\n[img]https://i.imgur.com/0gYfTPj.png[/img]\n - Stats that alter deathrest, pregnancy, and blood recovery speeds.\n - Create basic resource genes like Hemogen using just xml\n - Locking equipment based on genes, xenotypes, and hediffs, using required or forbidden options.\n - Locking genes and xenotypes to only use certain equipment, or have certain equipment forbidden.\n - Create thoughts that check for trees similar to the Trees Desired precept.\n - Create mood curves based on how many people are in the colony.\n - Create hediffs that damage and even completely remove specific parts.\n - Other stuff I'm sure. I may or may not have been drunk for parts of this, so I don't remember everything in it right now. [url=https://github.com/KonradHeinser/EBSGFramework/wiki]The wiki's list is a lot more extensive[/url].\n\n[url=https://github.com/KonradHeinser/EBSGFramework/wiki/Updates]To read about past updates and the next major update (if I'm presently working on it), take a look at the updates page on the wiki.[/url]\n\n[img]https://i.imgur.com/o3vWOw6.png[/img]\n- CE has marked some of the mods that depend on this framework as compatible, so I assume most of this framework is compatible.\n- HAR may not be compatible with the fertility curve. Awaiting large scale input from community.\n- No other issues are known at the moment.\n\nIf you encounter a bug, please make sure you force Steam to redownload this framework and verify file integrity to ensure Steam has not been skipping updates again. If the issue persists, feel free to make the report below, but if there are errors or warnings in your log, send the entire log rather than just that specific bit as those individual bits can often be missing a lot of required context.\n\n[img]https://i.imgur.com/TdjmzJr.png[/img]\n[url=https://steamcommunity.com/id/Sovereign484854/myworkshopfiles/]Sovereign[/url] has helped come up with several of the ideas in the mod, and, more importantly, has helped me with art stuff to compensate for my inability to do art stuff.\n\n[url=https://steamcommunity.com/profiles/76561199377833097/myworkshopfiles/]The preview and mod icon were made by Elseud[/url]\n\nSmartKar allowed me to take a bunch of stuff from the Athena Framework\n\n[url=https://steamcommunity.com/profiles/76561198159316632/myworkshopfiles/?appid=294100]Matsay[/url] helped create some of the comps in this framework\n\nIf you're interested in downloading manually, casually looking at the code, or taking a look at its functions to use in your own mods, click the Github link. While I do encourage looking at the C# if you want an example on how to do something, you do NOT have permission to just copy my code into your own mod without attribution. If you want to use something directly from this, it's generally better to just make this mod a dependency. \n\nIn the event that I unexpectedly completely vanish for some reason, this and all my other mods use the [url=https://creativecommons.org/licenses/by-nc-sa/4.0/]CC BY-NC-SA 4.0 license[/url] as normal. Technically also counts while I'm not vanished, but that discussion pops up a lot less during those times\n\n[url=https://github.com/KonradHeinser/EBSGFramework/wiki][img]https://i.imgur.com/kTkpTOE.png[/img][/url]\n\n[url=https://ko-fi.com/alite56114][img]https://i.imgur.com/Utx6OIH.png[/img][/url]\n\n[url=https://discord.gg/fYP8qkcNDh][img]https://i.imgur.com/0dG2g3t.png[/img][/url]",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [
+    "det.brawnum",
+    "det.buzzers",
+    "elsov.beliar",
+    "elsov.highborn",
+    "mandrake.rsw.armoury"
+   ],
+   "dependants_ours": [
+    "mandrake.rsw.armoury"
+   ],
+   "load_after": [
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "OskarPotocki.VanillaFactionsExpanded.Core"
+   ],
+   "load_before": [
+    "tiagocc0.FemaleBodyVariants"
+   ],
+   "incompatible_with": [],
+   "disk_mb": 2.46,
+   "disk_by_kind": {
+    "xml": {
+     "files": 45,
+     "mb": 0.24
+    },
+    "assemblies": {
+     "files": 3,
+     "mb": 1.6
+    },
+    "other": {
+     "files": 2,
+     "mb": 0.46
+    },
+    "textures": {
+     "files": 9,
+     "mb": 0.16
+    }
+   },
+   "texture_count": 8,
+   "texture_decoded_mb_est": 4.3,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "EBSGFramework.dll",
+     "path": "1.6/Assemblies/EBSGFramework.dll",
+     "kb": 754.0,
+     "flags": [
+      "comp_tick",
+      "comp_tick_rare",
+      "game_component_tick",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "comp_tick_rare",
+    "game_component_tick",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 117,
+   "defs_by_type": {
+    "StatDef": 66,
+    "ThingDef": 14,
+    "JobDef": 9,
+    "HediffDef": 8,
+    "ThoughtDef": 6,
+    "WorkGiverDef": 4,
+    "ThinkTreeDef": 2,
+    "ConceptDef": 1,
+    "DamageDef": 1,
+    "EBSGFramework.EBSGRecorder": 1,
+    "JoyGiverDef": 1,
+    "MentalStateDef": 1,
+    "PawnKindDef": 1,
+    "RoomRoleDef": 1,
+    "WorldObjectDef": 1
+   },
+   "patch_ops_all": 23,
+   "patched_def_types": {
+    "StatDef": 27,
+    "GeneDef": 23,
+    "Statdef": 1
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 19,
+    "ludeon.rimworld.biotech": 17,
+    "kas.strongerscaling": 2,
+    "smashphil.vehicleframework": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.pawnflavor": 120
+   },
+   "patched_by_ours_refs": 120,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 10,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/KonradHeinser/EBSGFramework",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": "2026-10-04T18:08:52Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "armoredampharos.fancyrats",
+   "name": "AA FancyRats",
+   "author": "ArmoredAmpharos",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 41,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2113851330",
+   "workshop_id": "2113851330",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2113851330",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds some rats to Rimworld.",
+   "dependencies": [],
+   "dependants": [
+    "tyrannidae.fancyratsplus"
+   ],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 1.29,
+   "disk_by_kind": {
+    "xml": {
+     "files": 4,
+     "mb": 0.01
+    },
+    "textures": {
+     "files": 79,
+     "mb": 1.28
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 77,
+   "texture_decoded_mb_est": 7.2,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 2,
+   "defs_by_type": {
+    "PawnKindDef": 1,
+    "ThingDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "tyrannidae.fancyratsplus": 6,
+    "mandrake.rut.patches": 2
+   },
+   "patched_by_ours_refs": 2,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "sarg.alphamechs",
+   "name": "Alpha Mechs",
+   "author": "Sarg Bjornson",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 52,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2973169158",
+   "workshop_id": "2973169158",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2973169158",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds multiple unique new mechs to Rimworld.\n\n<size=24>Features</size>\n \n- Adds 7 new mechanoids\n- With Biotech: adds around 20 more, as well as apparel, buildings, research, a lot,\n\n<size=24>Issues</size>\n\nNo issues known at the moment \n\n<size=24>Plans for the future</size>\n\nOh you can bet I will add new things!\n\n<size=24>Changelog</size>\n\nFull changelog on GitHub",
+   "dependencies": [
+    "brrainz.harmony",
+    "OskarPotocki.VanillaFactionsExpanded.Core"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "OskarPotocki.VanillaFactionsExpanded.Core",
+    "OskarPotocki.VFE.Mechanoid",
+    "VanillaExpanded.VPsycastsE",
+    "VanillaExpanded.VCEF"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 10.41,
+   "disk_by_kind": {
+    "xml": {
+     "files": 266,
+     "mb": 1.0
+    },
+    "assemblies": {
+     "files": 2,
+     "mb": 0.1
+    },
+    "textures": {
+     "files": 664,
+     "mb": 8.49
+    },
+    "other": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "sounds": {
+     "files": 16,
+     "mb": 0.82
+    }
+   },
+   "texture_count": 664,
+   "texture_decoded_mb_est": 254.7,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "AlphaMechs.dll",
+     "path": "1.6/Assemblies/AlphaMechs.dll",
+     "kb": 49.0,
+     "flags": [
+      "comp_tick",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 242,
+   "defs_by_type": {
+    "ThingDef": 92,
+    "PawnKindDef": 27,
+    "RecipeDef": 26,
+    "SoundDef": 17,
+    "BodyPartDef": 13,
+    "HediffDef": 11,
+    "BodyDef": 10,
+    "ResearchProjectDef": 8,
+    "AbilityDef": 6,
+    "DamageDef": 5,
+    "BodyPartGroupDef": 4,
+    "VEF.Weapons.ExpandableProjectileDef": 4,
+    "BossDef": 3,
+    "BossgroupDef": 3,
+    "EffecterDef": 2,
+    "FleckDef": 2,
+    "LifeStageDef": 2,
+    "AlphaMechs.WarcasketAbilityMechBlacklistDef": 1,
+    "DutyDef": 1,
+    "ManeuverDef": 1,
+    "ResearchTabDef": 1,
+    "ThinkTreeDef": 1,
+    "ThoughtDef": 1,
+    "ToolCapacityDef": 1
+   },
+   "patch_ops_all": 23,
+   "patched_def_types": {
+    "ThingDef": 10,
+    "RecipeDef": 5,
+    "FactionDef": 2
+   },
+   "patch_findmod_names": {
+    "Biotech": 5,
+    "Royalty": 3,
+    "Alpha Animals": 1
+   },
+   "patches_mods": {
+    "ludeon.rimworld.biotech": 11,
+    "ludeon.rimworld": 2,
+    "ludeon.rimworld.odyssey": 2,
+    "ludeon.rimworld.royalty": 2
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.researchretag": 52,
+    "mandrake.rsw.patches": 18,
+    "mandrake.rsw.armoury": 3,
+    "frozensnowfox.complexjobs": 2
+   },
+   "patched_by_ours_refs": 73,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 6,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/Smxrez/Alpha-Mechs-ReExamined",
+   "source_kind": "github-search",
+   "source_confidence": "INFERRED",
+   "source_license": "",
+   "source_last_push": "2026-02-13T23:54:17Z",
+   "source_archived": false,
+   "source_note": "top hit for the mod NAME; a name match, not proof - confirm before relying on it",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "mlie.beastsoftherim",
+   "name": "Beasts of the Rim (Continued)",
+   "author": "Hey my team rules!",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 62,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2194018641",
+   "workshop_id": "2194018641",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2194018641",
+   "about_url": "https://github.com/emipa606/BeastsoftheRim",
+   "supports_1_6": true,
+   "description": "[img]https://i.imgur.com/buuPQel.png[/img]\nUpdate Hey my team rules!s mod\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=767300413\n\n\n\n[img]https://i.imgur.com/pufA0kM.png[/img]\n\n[table]\n\t[tr]\n\t\t[td][url=https://dsc.gg/mlie][img]https://i.imgur.com/zdzzBrc.png[/img][/url][/td]\n\t\t[td][url=https://github.com/emipa606/BeastsoftheRim][img]https://i.imgur.com/kTkpTOE.png[/img][/url][/td]\n    [/tr]\n    [tr]\n        [td][img]https://i.imgur.com/WjDSfUn.png[/img][/td]\n        [td][img]https://i.imgur.com/Be8E2qJ.png[/img][/td]\n    [/tr]\n[/table]\n\t\n[img]https://i.imgur.com/Z4GOv8H.png[/img]\n\nHey all,\n\nI decided to start working on an animal mod for RimWorld called Beasts of the Rim. So far the mod adds 18 new wild animals to the biomes of RimWorld.\nSome of the creatures are animal species that I wanted to see included in the game. Others are derived from speculative biology books such as After Man: A Zoology of the Future and the Discovery Channel documentary The Future is Wild. I think that it makes sense story-wise that animals would be put under different selective pressures on the rim and adapt into new forms. So far the new creatures I've added are...\n\nArmadillo:A desert mammal with a leathery armour shell. The armadillo is well-adapted for defense against larger predators.\nAlligator Man: A large person with the head of an alligator.\nBardelot: A large, migratory, tundra-dwelling predator rat from the Northern Hemisphere tundra. It is capable of producing litters with genetic input from many mates.\nBlack Bear: Black bears are extremely adaptable and show a great variation in habitat types, though they are primarily found in forested areas with thick ground vegetation and an abundance of fruits, nuts, and vegetation. In the northern areas, they can be found in the tundra, and they will sometimes forage in fields or meadows.\nBlack Bear Man: A large person with the head of a black bear\nPenguin: An aquatic, flightless bird native to the coldest climates. Known for their cuteness. They are friendly to humans.\nGiant Earthworm: A large worm. Its digestive system runs through the length of its body. Worms reproduce quickly.\nGiantala: A large ground sloth-like marsupial that lives in the undergrowth of the tropical forests. Its giant tail acts as an extra leg to help it stand upright.\nGigantelope: An enormous creature with short legs. These giant herbivores have long abandoned the antelopes running gait and taken on a plodding existence.\nJerbal: A large kangaroo-like gerbil adapted to desert environments. It uses its tail to store fat. It can go for long periods without eating when food is unavailable.\nMandrill: Mandrills are colorful, large monkeys of the old world. Large groups of them live in the tropical rainforests.\nMandrill Man: A blue-rumped person with the head of a mandrill.\nMegasquid: The megasquid is a large omnivorous terasquid. Heavier than an elephant and almost as tall, a megasquid lumbers through the forest, moving at speeds similar to a human's walking pace.\nNeanderthal: Humanity's closest relative. Neanderthals communicate using primitive vocalizations without understanding actual language. They are apex predators, capable of bringing down a wide range of prey.\nRabbuck: Heavily built with rolls of insulating fat, the rabbuck is found in the far north of the continent, in the region of the tundra and coniferous forests.\nToraton: Due to its sheer size, an adult toraton has no predators and no longer has any need for a shell. Small sections of the ancestoral shell do remain, however, forming an external support for the creature's muscles, which its feeble ribs and vertebrae alone cannot carry.\nYippa: A long necked lama-like herbivore. Native to tropical climates. The upper layers of vegetation are exploited by the yippa.\nZarander: The zarander is a large elephant-like suine. Despite its large trunk, it has little sense of smell. It relies on keen hearing to detect predators.\nZebra: A black and white striped herbivore. They are stubborn and have never been truely domesticated.\n\nYou can download the A17 mod files by following this link: https://www.dropbox.com/s/z0clfuulxqh85hs/Beasts%20of%20the%20Rim%20A17.zip?dl=0\nLet me know of any suggestions or improvements if you come up with any. Thanks.\n\nFor compatibility between Beasts of the Rim and A Dog Said use [url=http://steamcommunity.com/sharedfiles/filedetails/?id=944381237]LBE's ADS Easy Patcher![/url] Use the easy patcher if you are using muliple race/animal mods.\n\nIf you want a version of the mod that doesn't add any humanoid creatures to RimWorld, then please follow the link to Beasts of the Rim (Classic): http://steamcommunity.com/sharedfiles/filedetails/?id=949084914\n\n\n[img]https://i.imgur.com/PwoNOj4.png[/img]\n[list]\n[*] See if the the error persists if you just have this mod and its requirements active.\n[*] If not, try adding your other mods until it happens again.\n[*] Post your error-log using [url=https://steamcommunity.com/workshop/filedetails/?id=818773962]HugsLib[/url] or the standalone [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Uploader[/url] and command Ctrl+F12\n[*] For best support, please use the Discord-channel for error-reporting.\n[*] Do not report errors by making a discussion-thread, I get no notification of that.\n[*] If you have the solution for a problem, please post it to the GitHub repository.\n[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods\n[/list] \n\n[url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2194018641][img]https://img.shields.io/github/v/release/emipa606/BeastsoftheRim?label=latest%20version&style=plastic&color=9f1111&labelColor=black[/img][/url] | tags:  speculative biology",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "lbeaston.ADogSaidEasyPatcher"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 2.72,
+   "disk_by_kind": {
+    "other": {
+     "files": 4,
+     "mb": 0.01
+    },
+    "xml": {
+     "files": 322,
+     "mb": 0.88
+    },
+    "textures": {
+     "files": 77,
+     "mb": 1.22
+    },
+    "assetbundles": {
+     "files": 2,
+     "mb": 0.62
+    }
+   },
+   "texture_count": 77,
+   "texture_decoded_mb_est": 25.0,
+   "dll_count": 0,
+   "dlls": [],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 64,
+   "defs_by_type": {
+    "ThingDef": 45,
+    "PawnKindDef": 19
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.patches": 26,
+    "mandrake.rsw.armoury": 3,
+    "neronix17.outland.genetics": 3,
+    "memegoddess.giddyup": 2,
+    "lazyfridaystudio.genesexpandedeyes": 1
+   },
+   "patched_by_ours_refs": 29,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/emipa606/BeastsoftheRim",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "MIT",
+   "source_last_push": "2025-06-15T21:29:42Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "zal.betterinfestations",
+   "name": "Better Infestations (Continued)",
+   "author": "Zaljerem",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 69,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3285516766",
+   "workshop_id": "3285516766",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3285516766",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Original mod by Machine\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=1319614331\nIf the original author requests it, I will remove this update.\n\n--\n\nFixed:\n1. Amusing as it sometimes was, insectoids no longer haul their meat to your stockpile.\n2. World map infestations are now functional again.\n\nIncreased infestation chance (that's what we're here for, right?)\nLowered min days until refire\n\nAnd yes, before anyone asks: I will certainly be looking at compatibility/synergy between this and Vanilla Factions Expanded - Insectoids 2\n\n--\n\nOriginal mod notes (1.4):\n\nThis mod changes almost everything about infestations, the way they produce and insect behavior.\n\nFeatures:\nInfestations can start in most biomes, almost anywhere. The only exception is icelands. The bugs like warmer, rocky areas, preferably dark caves. If you build in a cave, that area will be less likely to get an infestation. The new dev mode draw infestation chance cell finder highlights all the areas the bugs will most likely spawn at.\n\nGroup AI for insects: When a hive spawns it will have 2 groups, 1 defending and 1 offensive. The defending group takes care of the hive. They butcher carcasses, maintain the hive, dig rock and attack intruders. As the offensive group grows in strength it will determine when to hunt and they seek out food, corpses, animals and pawns! They bring back the food to the hive for the colony workers. After the hive reproduces it will unlock more offensive groups, up to a maximum of 3 groups. All insects like to sleep during the day and are active at night.\n\nQueens: When the defending group has spawned enough takecarers the hive has a chance to spawn a queen. The queen is another member of the defending group but has an additional job, creating more hives! Not only can the hives reproduce on their own, the queen can assist the expansion. Every few days it will journey to an area on the map to spawn another hive. The queen also gives a 30% spawnrate time reduction bonus to all the groups of the hive the queen is a member of. The hive can only produce 1 queen so if you kill it the hive loses its bonus and can't spawn another one but the other hives can produce their own queen. Multiple queens can be active at the same time.\n\nWorld Map: There are insect hive colonies all over the world and some will naturally appear over the course of the game. The colonies there are matured and numerous. Sometimes you might find valuables from the corpses of pawns that strayed too close. Wiping out infestations around the world makes no difference to the infestation events however. They are intelligent but not sentient. You can also get raids from insects seeing as they are now a growing problem on the planet and they cannot be defeated, only suppressed.\n\nThe insects can surprise you. They can dig through rock to get to areas they need to hunt and are very adaptable. You can't build them in. Fires can be beaten out. They will occasionally chew your power conduits if they are near a power source. Attacking one of them draws their entire group in. They are highly aggressive. Things can spiral out of control very quickly if you don't contain them.",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "zal.vfeinsectoid",
+    "zal.vaecaves"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.9,
+   "disk_by_kind": {
+    "xml": {
+     "files": 27,
+     "mb": 0.05
+    },
+    "assemblies": {
+     "files": 2,
+     "mb": 0.25
+    },
+    "source": {
+     "files": 21,
+     "mb": 0.25
+    },
+    "other": {
+     "files": 7,
+     "mb": 0.13
+    },
+    "textures": {
+     "files": 7,
+     "mb": 0.24
+    }
+   },
+   "texture_count": 7,
+   "texture_decoded_mb_est": 2.2,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "BetterInfestations.dll",
+     "path": "1.6/Assemblies/BetterInfestations.dll",
+     "kb": 120.0,
+     "flags": [
+      "comp_tick",
+      "comp_tick_rare",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "comp_tick_rare",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 20,
+    "csproj": 1,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 20,
+   "defs_by_type": {
+    "JobDef": 5,
+    "DutyDef": 3,
+    "IncidentDef": 3,
+    "ThingDef": 3,
+    "GenStepDef": 2,
+    "PawnKindDef": 1,
+    "RuleDef": 1,
+    "SitePartDef": 1,
+    "WorldObjectDef": 1
+   },
+   "patch_ops_all": 15,
+   "patched_def_types": {
+    "ThingDef": 9,
+    "IncidentDef": 3,
+    "MapGeneratorDef": 1
+   },
+   "patch_findmod_names": {
+    "VFE Insectoids - Legacy Edition": 1,
+    "Vanilla Animals Expanded - Caves (Fork)": 1,
+    "Vanilla Factions Expanded - Insectoids (Fork)": 1
+   },
+   "patches_mods": {
+    "ludeon.rimworld": 7,
+    "ludeon.rimworld.ideology": 3,
+    "winggar.meaningfulparties": 3
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.patches": 9,
+    "mandrake.rut.doctrine": 3
+   },
+   "patched_by_ours_refs": 12,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 3,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "albion.goexplore",
+   "name": "Go Explore!",
+   "author": "Albion",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 145,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\1814100216",
+   "workshop_id": "1814100216",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=1814100216",
+   "about_url": "https://ludeon.com/forums/index.php?topic=49239.0",
+   "supports_1_6": true,
+   "description": "This mod adds various new world events.\n\nLost city - The location of a ruined city is discovered. It is dangerous but there is loot from the former inhabitants.\nAmbrosia addicted animals - A large ambrosia sprout happened nearby. However some animals seem to be hooked in the fruits and defend them.\nShip core startup - You detect a nearby energy signature of a ship reactor powering up. Go investigate.\nNew settlement - Some faction founded a new settlement in your general area.\nPrisoner camp - A non-hostile faction asks you to free some of their prisoners held on a site near your colony.\nResearch request - Another faction is requesting the help of your best researcher in exchange for some insight and a relationship boost.\nIntercepted message - You intercepted a message that indicates an item stash. Is it a trap or will you find some loot?\n\\nIncludes spanish, french, russian and ukranian translation.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 7.48,
+   "disk_by_kind": {
+    "other": {
+     "files": 31,
+     "mb": 2.32
+    },
+    "xml": {
+     "files": 1769,
+     "mb": 1.48
+    },
+    "assemblies": {
+     "files": 7,
+     "mb": 0.61
+    },
+    "source": {
+     "files": 181,
+     "mb": 1.2
+    },
+    "textures": {
+     "files": 92,
+     "mb": 1.88
+    }
+   },
+   "texture_count": 92,
+   "texture_decoded_mb_est": 62.7,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "LetsGoExplore.dll",
+     "path": "1.6/Assemblies/LetsGoExplore.dll",
+     "kb": 92.0,
+     "flags": [
+      "comp_tick",
+      "map_component_tick",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "map_component_tick",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 167,
+    "csproj": 7,
+    "sln": 7,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 58,
+   "defs_by_type": {
+    "RuleDef": 21,
+    "GenStepDef": 10,
+    "SitePartDef": 8,
+    "IncidentDef": 7,
+    "ThingDef": 4,
+    "WorldObjectDef": 4,
+    "DutyDef": 2,
+    "JobDef": 1,
+    "PawnKindDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "lingluo.cockroach",
+   "name": "Rim cockroach",
+   "author": "LingLuo",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 257,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3196253802",
+   "workshop_id": "3196253802",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3196253802",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "添加了一种巨型蟑螂和一种机械蟑螂.\n巨型蟑螂会在温热带或沙漠以较低概率出现,它们有着庞大的体型和吞噬污染的能力,能够帮助你处理打包的垃圾和地上的污渍,此外也能够在需要的是作为基地的先锋为你阻挡敌人,不过最好不要让它们在食用了大量垃圾后突然死亡,否则那些被吞噬的垃圾会一涌而出.\n机械蟑螂则是可以通过机械师在大型机械培育器上制作,其厚重的机械装甲和强而有力的弹跳装置可以在敌人反应过来之前便扑到敌人脸上,对于绝大多数的生物来讲,这种机械都有着极高的威胁性.\n\nAdded two types of cockroaches: a giant cockroach and a mechanical cockroach.\nGiant cockroaches spawn with a low probability in warm, tropical, or desert regions. They have massive bodies and the ability to consume pollution, helping you dispose of packed trash and clean up stains on the ground. Additionally, they can serve as frontline defenders for your base when needed, blocking enemies. However, it's best not to let them die suddenly after consuming large amounts of garbage, as all the swallowed waste will gush out at once.\nMechanical cockroaches, on the other hand, can be crafted by mechanics in a large mechanical incubator. Their heavy armor and powerful jumping mechanisms allow them to pounce onto enemies before they can react. For most creatures, these mechanical pests pose an extremely high threat.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.7,
+   "disk_by_kind": {
+    "xml": {
+     "files": 17,
+     "mb": 0.05
+    },
+    "assemblies": {
+     "files": 2,
+     "mb": 0.02
+    },
+    "textures": {
+     "files": 13,
+     "mb": 0.63
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 13,
+   "texture_decoded_mb_est": 6.5,
+   "dll_count": 2,
+   "dlls": [
+    {
+     "name": "Ling_Cockroach.dll",
+     "path": "1.6/Assemblies/Ling_Cockroach.dll",
+     "kb": 12.0,
+     "flags": []
+    },
+    {
+     "name": "Ling_Cockroach.dll",
+     "path": "Assemblies/Ling_Cockroach.dll",
+     "kb": 12.0,
+     "flags": []
+    }
+   ],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 20,
+   "defs_by_type": {
+    "ThingDef": 6,
+    "PawnKindDef": 4,
+    "BodyDef": 2,
+    "HediffDef": 2,
+    "JobDef": 2,
+    "RecipeDef": 2,
+    "ThinkTreeDef": 2
+   },
+   "patch_ops_all": 1,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld.biotech": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.patches": 15,
+    "mandrake.rut.doctrine": 7
+   },
+   "patched_by_ours_refs": 22,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "mlie.spaceworms",
+   "name": "Space Worms (Continued)",
+   "author": "Demeggy",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 289,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2105322804",
+   "workshop_id": "2105322804",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2105322804",
+   "about_url": "https://github.com/emipa606/SpaceWorms",
+   "supports_1_6": true,
+   "description": "[img]https://i.imgur.com/buuPQel.png[/img]\nUpdate of Demeggys mod\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=1078857582\n\n- Added mod-setting for changing the incident basechance\n- [strike]For a higher quality texture, try [url= https://steamcommunity.com/sharedfiles/filedetails/?id=2739609830] Mashed Space Worms Re-texture[/url] by SirMashedPotato[/strike]\nNow included in the mod, thanks SirMashedPotato for allowing it!\n- No longer infects mech types\n\nThe following options added by Ferris:\n- Option for infection chance rather than being 100% on hit\n- Option to spawn raiders/visitors as infected when they arrive\n- Option for ensuring the worm does not re-infect the same pawn\n- Option for allowing infection on non humans\n\n[img]https://i.imgur.com/pufA0kM.png[/img]\n\n[table]\n\t[tr]\n\t\t[td][url=https://dsc.gg/mlie][img]https://i.imgur.com/zdzzBrc.png[/img][/url][/td]\n\t\t[td][url=https://github.com/emipa606/SpaceWorms][img]https://i.imgur.com/kTkpTOE.png[/img][/url][/td]\n    [/tr]\n    [tr]\n        [td][img]https://i.imgur.com/WjDSfUn.png[/img][/td]\n        [td][img]https://i.imgur.com/Be8E2qJ.png[/img][/td]\n    [/tr]\n[/table]\n\t\n[img]https://i.imgur.com/Z4GOv8H.png[/img]\n\nRimworld Build: 1.0\n\nMod Author: Demeggy\n\nFeatures:\n\n- A new parasitic creature called the Space Worm\n- A new Level 3 technology (Xenobiology) to research\n- A new surgical procedure to extract Space Worm larvae from Hosts\n\nFuture Plans:\n\n- Chance of impregnation with Worm Queen (a weak, non-aggressive breed that will grow into a Worm churning larvae maker)\n- Reinstate Larvae Implantation\n\nHow does the mod work?\n\n- An escape pod with an infected survivor crashlands. With a chance of it gestating inside Refugee Pod survivors, it only takes one infected human to wipe a Colony out entirely if not dealt with quickly...\n- If your colony has researched the Level 4 technology of Xenobiology, they'll be able to automatically see the Parasitic Infection on the survivors health records, and surgically extract the larvae from the patient with the right medical skills and supplies... \nIf not, the infected host will birth a brand new Space Worm violently within 24 hours, dying in the process, with the new breed on the hunt for a new host...\n\nTips:\n\n- A host is impregnated the second a Space Worm successfully bites a human (the Space Worm will die during impregnation). The human will have approximately 24 hours in-game to be diagnosed and operated on before the larvae breeches, killing the Host in the process.\n- Hosts in Stasis can withhold the gestation process, so if you don't have the tech researched - put 'em on ice!\n- Space Worms are fast, but weak. When born, their instant bloodlust will drive them to impregnate the nearest human host - so be prepared with quarantine wards and rapid weapons!\n\nKnown Bugs/Incompatibilities:\n\n- Gestation period is approximately between 12 and 24 hours\n- World travel whilst impregnated hasn't been fully tested, but may cause issues\n- Larvae implantation has been temporarily removed - this is to allow for some changes to the Worm Queen progress currently in WIP\n\n\n[img]https://i.imgur.com/PwoNOj4.png[/img]\n[list]\n[*] See if the the error persists if you just have this mod and its requirements active.\n[*] If not, try adding your other mods until it happens again.\n[*] Post your error-log using [url=https://steamcommunity.com/workshop/filedetails/?id=818773962]HugsLib[/url] or the standalone [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2873415404]Uploader[/url] and command Ctrl+F12\n[*] For best support, please use the Discord-channel for error-reporting.\n[*] Do not report errors by making a discussion-thread, I get no notification of that.\n[*] If you have the solution for a problem, please post it to the GitHub repository.\n[*] Use [url=https://github.com/RimSort/RimSort/releases/latest]RimSort[/url] to sort your mods\n[/list] \n\n[url=https://steamcommunity.com/sharedfiles/filedetails/changelog/2105322804][img]https://img.shields.io/github/v/release/emipa606/SpaceWorms?label=latest%20version&style=plastic&color=9f1111&labelColor=black[/img][/url] | tags:  alien, parasite",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.49,
+   "disk_by_kind": {
+    "other": {
+     "files": 4,
+     "mb": 0.01
+    },
+    "assemblies": {
+     "files": 10,
+     "mb": 0.13
+    },
+    "xml": {
+     "files": 82,
+     "mb": 0.13
+    },
+    "textures": {
+     "files": 11,
+     "mb": 0.23
+    }
+   },
+   "texture_count": 11,
+   "texture_decoded_mb_est": 3.6,
+   "dll_count": 2,
+   "dlls": [
+    {
+     "name": "Scuttlebugs.dll",
+     "path": "1.6/Assemblies/Scuttlebugs.dll",
+     "kb": 20.0,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    },
+    {
+     "name": "VersionFromManifest.dll",
+     "path": "1.6/Assemblies/VersionFromManifest.dll",
+     "kb": 5.0,
+     "flags": []
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": false
+   },
+   "def_total": 16,
+   "defs_by_type": {
+    "ThingDef": 4,
+    "HediffDef": 2,
+    "RecipeDef": 2,
+    "BodyPartGroupDef": 1,
+    "DamageDef": 1,
+    "IncidentDef": 1,
+    "ManeuverDef": 1,
+    "PawnKindDef": 1,
+    "ResearchProjectDef": 1,
+    "TabulaRasa.UpdateDef": 1,
+    "ToolCapacityDef": 1
+   },
+   "patch_ops_all": 3,
+   "patched_def_types": {
+    "ThingDef": 2
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 2
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.researchretag": 11,
+    "mandrake.rut.patches": 9
+   },
+   "patched_by_ours_refs": 20,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 2,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "https://github.com/emipa606/SpaceWorms",
+   "source_kind": "github",
+   "source_confidence": "MEASURED",
+   "source_license": "MIT",
+   "source_last_push": "2025-07-15T14:35:41Z",
+   "source_archived": false,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "automatic.traderships",
+   "name": "Trader ships",
+   "author": "AUTOMATIC",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 310,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2046222331",
+   "workshop_id": "2046222331",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2046222331",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Adds trader spaceships to the game. Ships will visit your colony, preferring landing pads, and trade with you just like visiting caravans, without the need for trade beacons or comm console. Trader ships are meant to replace orbital traders, but you can set both to be active in settings.",
+   "dependencies": [],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 7.22,
+   "disk_by_kind": {
+    "other": {
+     "files": 4,
+     "mb": 0.0
+    },
+    "source": {
+     "files": 30,
+     "mb": 0.07
+    },
+    "assemblies": {
+     "files": 12,
+     "mb": 4.54
+    },
+    "xml": {
+     "files": 75,
+     "mb": 1.19
+    },
+    "textures": {
+     "files": 69,
+     "mb": 1.19
+    },
+    "sounds": {
+     "files": 4,
+     "mb": 0.23
+    }
+   },
+   "texture_count": 69,
+   "texture_decoded_mb_est": 13.9,
+   "dll_count": 2,
+   "dlls": [
+    {
+     "name": "0Harmony.dll",
+     "path": "1.6/Assemblies/0Harmony.dll",
+     "kb": 730.0,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "TraderShips.dll",
+     "path": "1.6/Assemblies/TraderShips.dll",
+     "kb": 48.5,
+     "flags": [
+      "comp_tick",
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 28,
+    "csproj": 1,
+    "sln": 1,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README.md"
+    ],
+    "source_dir": true
+   },
+   "def_total": 48,
+   "defs_by_type": {
+    "TraderShips.ShipSpritePartDef": 30,
+    "ThingDef": 5,
+    "SoundDef": 4,
+    "TraderShips.ShipgenDef": 4,
+    "IncidentDef": 2,
+    "JobDef": 1,
+    "PawnKindDef": 1,
+    "QuestScriptDef": 1
+   },
+   "patch_ops_all": 1,
+   "patched_def_types": {
+    "DesignationCategoryDef": 1
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "zal.spaceports": 2
+   },
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 1,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "zal.gianttoads",
+   "name": "Giant Toads (Continued)",
+   "author": "Zaljerem",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 396,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3365223736",
+   "workshop_id": "3365223736",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3365223736",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "Original mod by Yamazaki and OfGreyHairWaifu\nhttps://steamcommunity.com/sharedfiles/filedetails/?id=2941194426\nIf the original author requests it, I will remove this update.\n\n--\n\nOriginal mod notes (1.4):\n\nArt by lovely Yamazaki.\n\nLarge toads fit to trample your enemies under their muscular hind legs. A sidegrade to bears in terms of raw DPS, but as fast as horses.\nNow with an event and a horribly destructive King Toad. Beware the red devil, or you will all end up deep in his belly.\nWith Giddy Up they get faster and have more armour.\nAbsolutely not balanced for vanilla.",
+   "dependencies": [
+    "OskarPotocki.VanillaFactionsExpanded.Core"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "Owlchemist.GiddyUp",
+    "MemeGoddess.GiddyUp",
+    "OskarPotocki.VanillaFactionsExpanded.Core"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 0.98,
+   "disk_by_kind": {
+    "assemblies": {
+     "files": 2,
+     "mb": 0.01
+    },
+    "xml": {
+     "files": 17,
+     "mb": 0.05
+    },
+    "source": {
+     "files": 3,
+     "mb": 0.0
+    },
+    "other": {
+     "files": 2,
+     "mb": 0.0
+    },
+    "textures": {
+     "files": 16,
+     "mb": 0.86
+    },
+    "sounds": {
+     "files": 6,
+     "mb": 0.06
+    }
+   },
+   "texture_count": 16,
+   "texture_decoded_mb_est": 19.1,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "KingToadEvent.dll",
+     "path": "1.6/Assemblies/KingToadEvent.dll",
+     "kb": 7.0,
+     "flags": []
+    }
+   ],
+   "dll_flags": [],
+   "ships_source": {
+    "cs": 2,
+    "csproj": 1,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 15,
+   "defs_by_type": {
+    "ThingDef": 4,
+    "SoundDef": 3,
+    "PawnKindDef": 2,
+    "BodyDef": 1,
+    "BodyPartGroupDef": 1,
+    "DamageDef": 1,
+    "IncidentDef": 1,
+    "ManeuverDef": 1,
+    "ToolCapacityDef": 1
+   },
+   "patch_ops_all": 0,
+   "patched_def_types": {},
+   "patch_findmod_names": {},
+   "patches_mods": {},
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.doctrine": 12,
+    "mandrake.rut.patches": 4
+   },
+   "patched_by_ours_refs": 16,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 0,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  },
+  {
+   "packageId": "regrowth.botr.core",
+   "name": "ReGrowth 2",
+   "author": "Helixien",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 413,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2260097569",
+   "workshop_id": "2260097569",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2260097569",
+   "about_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=2260097569",
+   "supports_1_6": true,
+   "description": "ReGrowth: Core is both a content mod and a small framework, aiming to overhaul and improve on Rimworlds vanilla biomes, add new and unique features and biomes, replace many of the vanilla plant textures with HD ones and, in combination with its companion mods, add new plants that fit perfectly into the vanilla artstyle. On top of that, it adds a lot of new weather types, many with custom visual effects to spice up your game.\n\nReGrowth is, at its core, a mod deeply influenced by the philosophy of the Vanilla Expanded Series. Everything it adds fits into Vanilla Rimworld. Every system (like for example new terrain) is designed to mimic how similar vanilla systems work while also being as friendly to your games performance as possible. NOTHING in this mod will absolutely tank your FPS and the few features that do cost some performance are optional.\n\nThis mod is the Core, which is a requirement for all other ReGrowth mods. Please note the new terrain will only be seen in new biomes that use them, not in vanilla biomes.\n\nThis mod is as lightweight as possible, adding the minimum of code required and every bit of code written has performance in mind!",
+   "dependencies": [
+    "brrainz.harmony"
+   ],
+   "dependants": [],
+   "dependants_ours": [],
+   "load_after": [
+    "brrainz.harmony",
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "Ludeon.RimWorld.Odyssey",
+    "OskarPotocki.VanillaFactionsExpanded.Core",
+    "VanillaExpanded.VCEF",
+    "OskarPotocki.VFE.Tribals",
+    "oskarpotocki.vfe.empire"
+   ],
+   "load_before": [
+    "Balthoraz.RimUniverse.BiomesModule",
+    "VanillaExpanded.VPlantsE",
+    "VanillaExpanded.VPlantsEMushrooms",
+    "sarg.rimbees",
+    "Argon.TribalMedicineRemake",
+    "ReTextured.HD"
+   ],
+   "incompatible_with": [
+    "HerdMigration.velcroboy333",
+    "ONegative.AnimatedMarshes",
+    "Shotgunfrenzy.Rain.Removes.Filth",
+    "dninemfive.moa",
+    "hlx.dontsettlethere",
+    "project.neutrolope.dslexodus",
+    "Archangel.ReplantSpTrees"
+   ],
+   "disk_mb": 118.14,
+   "disk_by_kind": {
+    "other": {
+     "files": 6,
+     "mb": 0.0
+    },
+    "xml": {
+     "files": 203,
+     "mb": 0.77
+    },
+    "assemblies": {
+     "files": 8,
+     "mb": 0.41
+    },
+    "textures": {
+     "files": 826,
+     "mb": 100.75
+    },
+    "source": {
+     "files": 4,
+     "mb": 0.01
+    },
+    "assetbundles": {
+     "files": 2,
+     "mb": 8.11
+    },
+    "sounds": {
+     "files": 13,
+     "mb": 8.08
+    }
+   },
+   "texture_count": 825,
+   "texture_decoded_mb_est": 582.8,
+   "dll_count": 3,
+   "dlls": [
+    {
+     "name": "0ModSettingsFramework.dll",
+     "path": "1.6/Assemblies/0ModSettingsFramework.dll",
+     "kb": 31.0,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    },
+    {
+     "name": "LogModVersion.dll",
+     "path": "1.6/Assemblies/LogModVersion.dll",
+     "kb": 6.0,
+     "flags": [
+      "harmony"
+     ]
+    },
+    {
+     "name": "ReGrowthCore.dll",
+     "path": "1.6/Assemblies/ReGrowthCore.dll",
+     "kb": 196.5,
+     "flags": [
+      "comp_tick",
+      "comp_tick_rare",
+      "harmony",
+      "map_component_tick"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "comp_tick",
+    "comp_tick_rare",
+    "harmony",
+    "map_component_tick",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 2,
+    "csproj": 1,
+    "sln": 1,
+    "git": false,
+    "github": false,
+    "readme": [
+     "README_NON-STEAM-USERS.txt"
+    ],
+    "source_dir": false
+   },
+   "def_total": 151,
+   "defs_by_type": {
+    "ThingDef": 94,
+    "SoundDef": 9,
+    "ThoughtDef": 9,
+    "ModSettingsFramework.ModOptionCategoryDef": 8,
+    "PawnKindDef": 6,
+    "FleckDef": 4,
+    "WeatherDef": 4,
+    "BodyDef": 2,
+    "GenStepDef": 2,
+    "ResearchProjectDef": 2,
+    "BodyPartDef": 1,
+    "BodyPartGroupDef": 1,
+    "HediffDef": 1,
+    "IncidentDef": 1,
+    "JobDef": 1,
+    "JoyGiverDef": 1,
+    "MapGeneratorDef": 1,
+    "ResearchTabDef": 1,
+    "TerrainAffordanceDef": 1,
+    "TerrainDef": 1,
+    "VEF.AnimalBehaviours.GenericToggleableAnimalDef": 1
+   },
+   "patch_ops_all": 370,
+   "patched_def_types": {
+    "ThingDef": 199,
+    "BiomeDef": 57,
+    "FactionDef": 23,
+    "TerrainDef": 17,
+    "PawnKindDef": 15,
+    "WorldObjectDef": 5,
+    "LayoutRoomDef": 4,
+    "ResearchProjectDef": 3,
+    "PlanetLayerDef": 2,
+    "DesignationCategoryDef": 1
+   },
+   "patch_findmod_names": {
+    "Vanilla Ideology Expanded - Anima Theme": 3,
+    "RimJobWorld": 2,
+    "ReGrowth 2: Aspen": 1,
+    "Simple FX: Smoke": 1,
+    "Vanilla Plants Expanded - Mushrooms": 1
+   },
+   "patches_mods": {
+    "ludeon.rimworld": 224,
+    "ludeon.rimworld.odyssey": 33,
+    "ludeon.rimworld.biotech": 21,
+    "ludeon.rimworld.ideology": 13,
+    "ludeon.rimworld.royalty": 7,
+    "ludeon.rimworld.anomaly": 4,
+    "oskarpotocki.vfe.pirates": 3,
+    "neronix17.outerrim.galacticempire": 1,
+    "neronix17.outerrim.rebelalliance": 1,
+    "van.beasts": 1
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {
+    "mandrake.rut.patches": 204,
+    "mandrake.rut.doctrine": 20,
+    "mandrake.rut.researchretag": 15,
+    "fourtoo.glowingbush": 8,
+    "mandrake.rsw.armoury": 3,
+    "zylle.morevanillabiomes": 3,
+    "mandrake.rsw.patches": 2
+   },
+   "patched_by_ours_refs": 244,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 0,
+   "static_ctors": 14,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": "(C# source inside the mod folder)",
+   "source_kind": "ships-source",
+   "source_confidence": "MEASURED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": null,
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "Referenced in an existing design doc / canon.yml — already has a documented adoption reason.",
+   "src": null
+  },
+  {
+   "packageId": "teiwaz.gtgtradercore",
+   "name": "GTG Trader Core",
+   "author": "Teiwaz",
+   "class": "THIRD_PARTY",
+   "membership": "FULL.LATEST",
+   "full_latest_position": 458,
+   "folder": "C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\3682209120",
+   "workshop_id": "3682209120",
+   "steam_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3682209120",
+   "about_url": null,
+   "supports_1_6": true,
+   "description": "GTG Trader Core is a centralized dependency framework designed to provide shared code, performance optimization, and enhanced stability features for all my trader-related mods.",
+   "dependencies": [],
+   "dependants": [
+    "teiwaz.taajg",
+    "teiwaz.tacac"
+   ],
+   "dependants_ours": [],
+   "load_after": [
+    "Ludeon.RimWorld",
+    "Ludeon.RimWorld.Royalty",
+    "Ludeon.RimWorld.Ideology",
+    "Ludeon.RimWorld.Biotech",
+    "Ludeon.RimWorld.Anomaly",
+    "Ludeon.RimWorld.Odyssey",
+    "erdelf.humanoidalienraces",
+    "oskarpotocki.vanillafactionsexpanded.core",
+    "solaris.ratkinracemod"
+   ],
+   "load_before": [],
+   "incompatible_with": [],
+   "disk_mb": 1.06,
+   "disk_by_kind": {
+    "assemblies": {
+     "files": 1,
+     "mb": 0.19
+    },
+    "xml": {
+     "files": 32,
+     "mb": 0.18
+    },
+    "textures": {
+     "files": 1,
+     "mb": 0.69
+    },
+    "other": {
+     "files": 1,
+     "mb": 0.0
+    }
+   },
+   "texture_count": 1,
+   "texture_decoded_mb_est": 3.0,
+   "dll_count": 1,
+   "dlls": [
+    {
+     "name": "GTGTraderCore.dll",
+     "path": "1.6/Assemblies/GTGTraderCore.dll",
+     "kb": 193.0,
+     "flags": [
+      "harmony",
+      "settings_screen"
+     ]
+    }
+   ],
+   "dll_flags": [
+    "harmony",
+    "settings_screen"
+   ],
+   "ships_source": {
+    "cs": 0,
+    "csproj": 0,
+    "sln": 0,
+    "git": false,
+    "github": false,
+    "readme": [],
+    "source_dir": false
+   },
+   "def_total": 13,
+   "defs_by_type": {
+    "PawnKindDef": 6,
+    "GTGTraderCore.GTGTC_Def_MercenaryTemplate": 4,
+    "HediffDef": 3
+   },
+   "patch_ops_all": 26,
+   "patched_def_types": {
+    "ThingDef": 13,
+    "PawnKindDef": 12
+   },
+   "patch_findmod_names": {},
+   "patches_mods": {
+    "ludeon.rimworld.odyssey": 5,
+    "ludeon.rimworld": 2,
+    "ludeon.rimworld.biotech": 2
+   },
+   "patches_ours_refs": 0,
+   "patched_by": {},
+   "patched_by_ours_refs": 0,
+   "runtime_scope": "550-mod session 2026-10-10 (pid 1568)",
+   "log_error_occurrences": 0,
+   "log_errors_distinct": 0,
+   "log_error_samples": [],
+   "log_evidence_kinds": {},
+   "log_chatter_lines": 4,
+   "static_ctors": 7,
+   "tps_cost": "UNMEASURED (record is stage-level, see session_context.json)",
+   "memory_cost": "UNMEASURED (process-level only; texture_decoded_mb_est is the INFERRED proxy)",
+   "source_url": null,
+   "source_kind": "steam-only",
+   "source_confidence": "INFERRED",
+   "source_license": null,
+   "source_last_push": null,
+   "source_archived": null,
+   "source_note": "SEARCHED",
+   "in_vendor_sources_md": false,
+   "mentioned_in_forbidden_mods_md": false,
+   "prior_verdict_2026_08_30": "keep",
+   "prior_note_2026_08_30": "No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.",
+   "src": null
+  }
+ ]
+}

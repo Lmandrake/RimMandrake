@@ -9,7 +9,8 @@ The CATEGORY is a ROUTING label so one assessor sees related mods together (it c
 packs, or frameworks against their dependants). It is not a verdict and an assessor may say a mod is misfiled.
 Rules run in order (first match wins), over measured facts plus the mod's own name/description text:
   ours_rm / ours_rsw_rut   our own mods (by packageId tier)
-  frameworks_libraries     Core/DLC; or a mod with assemblies and < 10 non-abstract defs and few textures
+  frameworks_libraries     Core/DLC; or code with < 10 defs that another universe mod depends on / names itself a
+                           framework, library, API, core, loader
   star_wars_donors         Star Wars text in name/packageId/description
   vanilla_expanded         a Vanilla Expanded / Oskar Potocki mod
   biomes_world             BiomeDef/TerrainDef/WorldObjectDef/GenStep/MapGenerator/TileMutator/Landmark dominant
@@ -17,7 +18,7 @@ Rules run in order (first match wins), over measured facts plus the mod's own na
   factions_pawns           FactionDef / XenotypeDef / GeneDef / BackstoryDef / IdeoPresetDef / PreceptDef present
   weapons_apparel          weapon/armor/apparel words, or many ThingDefs + SoundDefs with weapon words
   buildings_production     furniture/building/production/power/storage words or DesignationCategory/Recipe heavy
-  ui_qol_performance       DLL + settings + few defs, or UI/QoL/performance words
+  code_tweaks_qol_ui       code-only behaviour mods nobody depends on (DLL, < 10 defs), or UI/QoL/performance words
   misc_content             everything else
 A category over `target` mods is split into numbered chunks of near-equal size (keeping universe order inside);
 a batch file lists, per mod, the facts an assessor needs without opening mod_facts.jsonl.
@@ -45,6 +46,8 @@ VE_WORDS = re.compile(r"^vanillaexpanded\.|^oskarpotocki\.|^vanilla(?:factions|f
 WEAPON_WORDS = re.compile(r"weapon|armou?r|apparel|gun|rifle|blaster|sword|melee|clothing|helmet|outfit|ammo", re.I)
 BUILD_WORDS = re.compile(r"furniture|building|production|power|storage|door|wall|floor|bench|crafting|kitchen|"
                          r"farm|bed|light|turret|structure|workbench|fridge|shelf", re.I)
+FRAMEWORK_WORDS = re.compile(r"framework|librar|\blib\b|\bapi\b|harmony|hugslib|prepatcher|\bcore\b|loader|"
+                             r"utilit|toolkit|\bshared\b", re.I)
 UI_WORDS = re.compile(r"\bui\b|interface|quality of life|\bqol\b|performance|optimi[sz]|tab\b|menu|speed|"
                       r"tweak|fix|bug|camera|zoom|overlay|alert|notification|search|sort|mod manager|log", re.I)
 
@@ -65,7 +68,10 @@ def categorize(f):
     total = f.get("def_total") or 0
     if (f.get("dll_count") or 0) > 0 and total < 10 and (f.get("texture_count") or 0) < 40 and \
             not SW_WORDS.search(text):
-        return "frameworks_libraries" if not UI_WORDS.search(f.get("name") or "") else "ui_qol_performance"
+        # a library is something others build on: a dependant in the universe, or it says so in its name
+        if f.get("dependants") or FRAMEWORK_WORDS.search((f.get("name") or "") + " " + pid):
+            return "frameworks_libraries"
+        return "code_tweaks_qol_ui"
     if total == 0 and (f.get("dll_count") or 0) == 0 and not SW_WORDS.search(text):
         return "misc_content"
     if SW_WORDS.search(f.get("name") or "") or SW_WORDS.search(pid) or SW_WORDS.search(text):
@@ -88,7 +94,7 @@ def categorize(f):
     if BUILD_WORDS.search(f.get("name") or ""):
         return "buildings_production"
     if UI_WORDS.search(f.get("name") or ""):
-        return "ui_qol_performance"
+        return "code_tweaks_qol_ui"
     if pk:
         return "creatures_animals"
     if WEAPON_WORDS.search(text):
@@ -107,13 +113,16 @@ def split_balanced(groups, target=45):
             out[cat] = list(items)
             continue
         k = max(1, int(round(len(items) / float(target))))   # chunk size nearest the target
+        if k == 1:
+            out[cat] = list(items)
+            continue
         size = math.ceil(len(items) / float(k))
         for i in range(k):
             out["%s_%d" % (cat, i + 1)] = list(items[i * size:(i + 1) * size])
     return out
 
 
-def merge_small(parts, floor=12):
+def merge_small(parts, floor=8):
     """Fold batches under `floor` mods into misc so no assessor gets a near-empty file."""
     out = OrderedDict()
     spill = []
@@ -123,13 +132,17 @@ def merge_small(parts, floor=12):
         else:
             out[k] = v
     if spill:
-        out.setdefault("misc_content", [])
-        out["misc_content"] = out["misc_content"] + [x for _, x in spill]
+        cands = [k for k in out if not k.startswith("ours")]
+        if not cands:
+            out["misc_content"] = []
+            cands = ["misc_content"]
+        dest = min(cands, key=lambda k: len(out[k]))      # the smallest non-ours batch absorbs the leftovers
+        out[dest] = out[dest] + [x for _, x in spill]
     return out
 
 
 BATCH_FIELDS = ("packageId", "name", "author", "class", "membership", "full_latest_position", "folder", "workshop_id",
-                "steam_url", "about_url", "supports_1_6", "description", "dependencies", "load_after", "load_before",
+                "steam_url", "about_url", "supports_1_6", "description", "dependencies", "dependants", "dependants_ours", "load_after", "load_before",
                 "incompatible_with", "disk_mb", "disk_by_kind", "texture_count", "texture_decoded_mb_est",
                 "dll_count", "dlls", "dll_flags", "ships_source", "def_total", "defs_by_type", "patch_ops_all",
                 "patched_def_types", "patch_findmod_names", "patches_mods", "patches_ours_refs", "patched_by",
@@ -147,7 +160,7 @@ def main(argv=None):
     a = ap.parse_args(argv)
     facts = [json.loads(l) for l in open(os.path.join(FACTS_DIR, "mod_facts.jsonl"))]
     groups = OrderedDict()
-    order = ["frameworks_libraries", "ui_qol_performance", "star_wars_donors", "vanilla_expanded", "biomes_world",
+    order = ["frameworks_libraries", "code_tweaks_qol_ui", "star_wars_donors", "vanilla_expanded", "biomes_world",
              "creatures_animals", "factions_pawns", "weapons_apparel", "buildings_production", "misc_content",
              "ours_rm", "ours_rsw_rut"]
     for c in order:
