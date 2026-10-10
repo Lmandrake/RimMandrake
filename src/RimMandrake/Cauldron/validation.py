@@ -1036,8 +1036,8 @@ def fauna_chain(t):
     try:
         with _comp(t, "fauna_spawns"):
             if _live(t):
-                if len(KINDS) < 6:
-                    _fail("parsed %d PawnKindDefs, expected 6" % len(KINDS))
+                if len(KINDS) < 5:
+                    _fail("parsed %d PawnKindDefs, expected 5" % len(KINDS))
                 ids = {}
                 for i, kind in enumerate(KINDS):
                     ids[kind] = _spawn(t, kind, x0 + (i % 4) * 5, z0 + (i // 4) * 5)

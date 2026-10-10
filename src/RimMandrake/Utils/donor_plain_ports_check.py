@@ -50,10 +50,6 @@ PORTS = [
      "roster": "Defs/BiomeDefs/RM_Miasma.xml", "placeholder_tex": set()},
     {"mod": "Miasma", "file": "Defs/ThingDefs_Races/RM_DecayDrake.xml", "ours": "RM_DecayDrake", "donor": "AA_DecayDrake",
      "roster_mod": "Cauldron", "roster": "Defs/BiomeDefs/RM_Cauldron.xml", "placeholder_tex": set()},
-    {"mod": "Cauldron", "file": "Defs/ThingDefs_Races/RM_RipperHound.xml", "ours": "RM_RipperHound", "donor": "AA_RipperHound",
-     "roster": None, "uncast_why": "the owner's Cauldron sheet cut AA_RipperHound from RM_Cauldron (8eaa2b252, 2026-10-09)",
-     "placeholder_tex": {"Things/Pawn/Animal/AA_RipperHound/AA_RipperHound", "Things/Pawn/Animal/AA_RipperHound/AA_RipperHoundLeftClaw",
-                         "Things/Pawn/Animal/AA_RipperHound/AA_RipperHoundRightClaw"}},
 ]
 
 
