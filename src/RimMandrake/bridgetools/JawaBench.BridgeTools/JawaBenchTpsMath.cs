@@ -71,8 +71,11 @@ namespace JawaBench.BridgeTools
         /// <summary>Same rule for archived Player.logs, with their own cap.</summary>
         public const long LogRetentionBytes = 1024L * 1024L * 1024L;
 
-        /// <summary>Writer queue bound: a line beyond it is DROPPED and counted, never blocks the game.</summary>
+        /// <summary>Writer bound on ALL outstanding lines (queued + retry + in flight): beyond it a line is DROPPED
+        /// and counted, never blocks the game.</summary>
         public const int QueueCapacity = 4096;
+        /// <summary>Of QueueCapacity, this many lines are reserved for critical (non-bulk) rows.</summary>
+        public const int CriticalReserve = 512;
 
         /// <summary>Watchdog thread: main-thread silence longer than this is written down, then every repeat.</summary>
         public const double SilenceSeconds = 10.0;

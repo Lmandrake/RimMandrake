@@ -55,7 +55,32 @@ namespace JawaBench.BridgeTools
         internal static readonly Stopwatch Clock = Stopwatch.StartNew();   // monotonic, process-relative
 
         internal static bool Running => _thread != null;
-        internal static int QueueDepth { get { lock (Q) return Pending.Count + Retry.Count; } }
+
+        // ---- test seams (the offline harness swaps these to inject faults; production never touches them) ----
+        /// <summary>Append bytes to a file. Default: open for append, write, close.</summary>
+        internal static Action<string, byte[], int> AppendImpl = (path, buf, len) =>
+        {
+            using (var fs = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.ReadWrite | FileShare.Delete))
+                fs.Write(buf, 0, len);
+        };
+        private static volatile bool _stop;
+
+        /// <summary>Stop the writer thread (harness only) and forget all state, so a test starts clean.</summary>
+        internal static void ResetForTest()
+        {
+            _stop = true;
+            lock (Q) Monitor.PulseAll(Q);
+            _thread?.Join(5000);
+            lock (Q)
+            {
+                _thread = null; _stop = false;
+                Pending.Clear(); Retry.Clear(); _inFlight = 0; _seq = 0; _draining = false;
+                Enqueued = Written = Dropped = WriteErrors = 0; LastError = null;
+            }
+        }
+        /// <summary>All outstanding lines: queued + awaiting retry + in flight (MUST 14).</summary>
+        internal static int QueueDepth { get { lock (Q) return Pending.Count + Retry.Count + _inFlight; } }
+        internal static long TornTails;
 
         internal static void Start(string dir, string session, int pid)
         {
@@ -91,6 +116,12 @@ namespace JawaBench.BridgeTools
         /// <summary>
         /// Append one record line. <paramref name="fields"/> are JSON fields without braces (may be empty).
         /// Thread-safe, never blocks on disk, never throws. Returns the line's seq, or -1 if dropped.
+        /// MUST 14: the bound is on ALL outstanding work - queued, waiting for retry AND in flight in the writer
+        /// thread - so it can never approach twice QueueCapacity. Bulk rows (sample, context, marker) may use
+        /// only QueueCapacity - CriticalReserve of it; lifecycle, incident, silence and error rows keep the
+        /// reserve, so they are written exactly when storage trouble makes them matter. A dropped row still
+        /// consumes its seq, so the gap is visible on disk; drops are counted and their seq range reported in
+        /// a `dropped` row once the writer catches up.
         /// </summary>
         internal static long Enqueue(string kind, string fields)
         {
@@ -99,9 +130,11 @@ namespace JawaBench.BridgeTools
                 lock (Q)
                 {
                     long seq = ++_seq;
-                    if (Pending.Count + Retry.Count >= M.QueueCapacity)
+                    int outstanding = Pending.Count + Retry.Count + _inFlight;
+                    int limit = IsBulk(kind) ? M.QueueCapacity - M.CriticalReserve : M.QueueCapacity;
+                    if (outstanding >= limit)
                     {
-                        Dropped++;
+                        NoteDrop(seq, !IsBulk(kind));
                         return -1;
                     }
                     Pending.Enqueue(Envelope(seq, Utc(), Clock.Elapsed.TotalSeconds, Session, kind, fields));
@@ -110,7 +143,28 @@ namespace JawaBench.BridgeTools
                     return seq;
                 }
             }
-            catch { return -1; }
+            catch
+            {
+                try { lock (Q) NoteDrop(-1, true); } catch { }
+                return -1;
+            }
+        }
+
+        internal static bool IsBulk(string kind) => kind == "sample" || kind == "context" || kind == "marker";
+
+        private static long _dropFirst = -1, _dropLast = -1, _dropPending;
+        internal static long DroppedCritical;
+
+        private static void NoteDrop(long seq, bool critical)
+        {
+            Dropped++;
+            if (critical) DroppedCritical++;
+            if (seq > 0)
+            {
+                if (_dropFirst < 0) _dropFirst = seq;
+                _dropLast = seq;
+            }
+            _dropPending++;
         }
 
         /// <summary>One record line: the envelope keys, then the caller's fields.</summary>
@@ -130,48 +184,70 @@ namespace JawaBench.BridgeTools
         internal static string HealthFields()
         {
             lock (Q)
-                return "\"wq\":" + (Pending.Count + Retry.Count) + ",\"wdrop\":" + Dropped + ",\"werr\":" + WriteErrors;
+                return "\"wq\":" + (Pending.Count + Retry.Count + _inFlight) + ",\"wfly\":" + _inFlight +
+                       ",\"wdrop\":" + Dropped + ",\"wdropCrit\":" + DroppedCritical + ",\"werr\":" + WriteErrors +
+                       ",\"wtorn\":" + TornTails;
         }
 
         private static void Loop()
         {
             var batch = new List<string>();
-            while (true)
+            while (!_stop)
             {
                 lock (Q)
                 {
-                    while (Pending.Count == 0 && Retry.Count == 0) Monitor.Wait(Q, 1000);
+                    while (Pending.Count == 0 && Retry.Count == 0 && !_stop) Monitor.Wait(Q, 1000);
+                    if (_stop) return;
                     batch.Clear();
                     batch.AddRange(Retry);
                     Retry.Clear();
                     while (Pending.Count > 0) batch.Add(Pending.Dequeue());
                     _inFlight = batch.Count;
                 }
-                if (batch.Count == 0) continue;
-                if (!WriteBatch(batch))
+                int done = WriteBatch(batch);
+                lock (Q)
                 {
-                    lock (Q)
+                    // MUST 4: commit-aware. Only the lines NOT yet on disk go back for retry (front of the
+                    // line, in order); the bound already counted them as in flight, so nothing is dropped here.
+                    Written += done;
+                    if (done < batch.Count) Retry.InsertRange(0, batch.GetRange(done, batch.Count - done));
+                    _inFlight = 0;
+                    if (done == batch.Count && _dropPending > 0)
                     {
-                        // keep for retry, oldest first, bounded: the overflow is counted, never silently lost
-                        int room = Math.Max(0, M.QueueCapacity - Pending.Count);
-                        if (batch.Count > room) { Dropped += batch.Count - room; batch.RemoveRange(0, batch.Count - room); }
-                        Retry.InsertRange(0, batch);
+                        long first = _dropFirst, last = _dropLast, n = _dropPending;
+                        _dropFirst = _dropLast = -1;
+                        _dropPending = 0;
+                        long seq = ++_seq;
+                        Pending.Enqueue(Envelope(seq, Utc(), Clock.Elapsed.TotalSeconds, Session, "dropped",
+                            "\"count\":" + n + ",\"seqFirst\":" + first + ",\"seqLast\":" + last +
+                            ",\"wdrop\":" + Dropped + ",\"wdropCrit\":" + DroppedCritical));
+                        Enqueued++;
                     }
-                    Thread.Sleep(1000);
+                    Monitor.PulseAll(Q);
                 }
-                lock (Q) { _inFlight = 0; Monitor.PulseAll(Q); }
+                if (done < batch.Count) Thread.Sleep(1000);
             }
         }
 
-        private static bool WriteBatch(List<string> lines)
+        /// <summary>
+        /// Append the lines in order, one segment-bounded chunk at a time. Returns how many lines are COMMITTED
+        /// (every byte of them appended); the caller retries only the rest. Before each append the file length
+        /// is reconciled with what we believe we wrote: a failed append can leave a TORN tail (part of a chunk),
+        /// which is truncated away, or - if truncation fails - closed with a newline so the fragment stays a
+        /// lone malformed line the reader counts instead of being glued to the next row.
+        /// </summary>
+        private static int WriteBatch(List<string> lines)
         {
+            int committed = 0;
             try
             {
                 int i = 0;
                 while (i < lines.Count)
                 {
+                    Reconcile();
                     var buf = new MemoryStream();
                     bool rotated = false;
+                    int start = i;
                     while (i < lines.Count)
                     {
                         byte[] b = Encoding.UTF8.GetBytes(lines[i] + "\n");
@@ -185,26 +261,52 @@ namespace JawaBench.BridgeTools
                     }
                     if (buf.Length > 0)
                     {
-                        using (var fs = new FileStream(CurrentPath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite | FileShare.Delete))
-                            buf.WriteTo(fs);
+                        AppendImpl(CurrentPath, buf.GetBuffer(), (int)buf.Length);
                         _bytes += buf.Length;
                     }
+                    committed = i;
                     if (rotated)
                     {
                         OpenSegment(_segment + 1);
                         RunRetention();
                     }
+                    if (i == start && !rotated) break;   // defensive: no progress
                 }
-                Written += lines.Count;
                 LastError = null;
-                return true;
+                return committed;
             }
             catch (Exception e)
             {
                 WriteErrors++;
                 LastError = e.GetType().Name + ": " + e.Message;
-                return false;
+                return committed;
             }
+        }
+
+        /// <summary>Make the file length agree with the bytes we know we committed (see WriteBatch).</summary>
+        private static void Reconcile()
+        {
+            long actual = File.Exists(CurrentPath) ? new FileInfo(CurrentPath).Length : 0L;
+            if (actual == _bytes) return;
+            if (actual > _bytes)
+            {
+                TornTails++;
+                try
+                {
+                    using (var fs = new FileStream(CurrentPath, FileMode.Open, FileAccess.Write, FileShare.ReadWrite | FileShare.Delete))
+                        fs.SetLength(_bytes);
+                    return;
+                }
+                catch
+                {
+                    var nl = new byte[] { (byte)'\n' };
+                    AppendImpl(CurrentPath, nl, 1);
+                    _bytes = actual + 1;
+                    return;
+                }
+            }
+            _bytes = actual;     // the file shrank under us (deleted / replaced): continue from what is there
+            LastError = "segment shrank under the writer: " + Path.GetFileName(CurrentPath);
         }
 
         /// <summary>Wait (bounded) until everything queued so far is on disk. For shutdown.</summary>

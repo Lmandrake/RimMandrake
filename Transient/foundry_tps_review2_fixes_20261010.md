@@ -154,6 +154,25 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
   `malformed` (173 rows read, 2 malformed) — exactly the rows MUST 1 says were wrong.
 - GREEN: python checks PASS, `C# units: 7 run, 0 failed`, companion builds.
 
+### MUST 4 + MUST 14 — commit-aware, torn-tail-safe writer; bounded outstanding work with a critical reserve
+- Seam: `JawaBenchTpsWriter.AppendImpl` (the one file append) and `ResetForTest` (stop the thread) — the
+  harness runs the REAL writer thread on real temp files and injects faults there.
+- RED: `WriterReplayAfterPartialBatch: each committed line is on disk ONCE after a retry: seqs 1,2,1,2,3`
+  (segment 0 committed, the post-rotation append failed, the whole batch was replayed);
+  `WriterTornTail: all four rows once: 1,2,1,2,3,4`; `WriterBoundCountsInFlight: ... 3584 more accepted
+  while 3584 were in flight | a critical row (error) still has reserved room ... | health shows in-flight
+  work: "wq":3585` (no in-flight in health); reader fixture `seqs [1, 1, 2, 2, 3, 4, 4], replayed None`.
+- FIX: `WriteBatch` returns the COMMITTED line count (per segment chunk) and `Loop` re-queues only the
+  rest, in order; before each append `Reconcile()` truncates a torn tail back to the committed length
+  (fallback: a newline isolates the fragment, `wtorn` counted). The bound is queued + retry + in-flight;
+  bulk rows (sample/context/marker) get `QueueCapacity - CriticalReserve` (512 reserved for lifecycle,
+  incident, silence, error); the failure path no longer drops the oldest uncommitted lines; a drop keeps
+  its seq (visible gap), is counted (`wdrop`, `wdropCrit`, also when Enqueue itself throws) and a `dropped`
+  row with `seqFirst..seqLast` is written once the writer catches up. Health: `wq` (all outstanding),
+  `wfly`, `wdropCrit`, `wtorn`. Player.log marker says `DROPPED` instead of `seq -1`. Reader: a repeated
+  `(session, seq)` is read once (`replayed`), a different row under the same key counted `conflicts`.
+- GREEN: `C# units: 10 run, 0 failed`; python PASS; companion builds.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)
