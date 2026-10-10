@@ -16,3 +16,12 @@ Do not trust the previous progress log's "Done" marks; GPT found runtime defects
 
 ## verify
 `tps_record.py --at` for a deliberately induced 90 s stall returns it as an incident with correct local time, game id and duration.
+
+## notes
+- 2026-10-10 FOUNDRY: MUST 1-16 + SHOULD 1,3,5,6,7 fixed test-first; red/green per fix in
+  Transient/foundry_tps_review2_fixes_20261010.md. C2 done (BRIDGE_TPS_CAPTURE_FIXES_1 C3/C4 and tps_record.md
+  "Acceptance" rewritten). SHOULD 2 and 4 not attempted (not in this ticket's cheap set).
+- MUST 17 stays OWED to a cold load of the full ~600-mod list: the three-configuration overhead A/B, autostart on the
+  full list, the overnight reconstruction, and a standing periodic external observer (belt_watchdog only runs when
+  run). C4 here cannot close without it.
+
