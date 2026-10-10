@@ -718,6 +718,15 @@ MODS = {
         "Brood ransom": "Now",
         "Brood ransom: casks, goodwill and gifts": "NextPulse",
     }, ("broodGiftWeightMultipliers",)),
+    "ExplosiveGrowth": ("ExplosiveGrowthMod.cs", "RM_ExplosiveGrowth.csproj", {
+        "Mod switch": "Now",
+        "The soak": "Now",
+        "Soak length": "NextPulse",
+        "Which plants soak": "Now",
+        "The charge": "Now",
+        "The tops (a disabled top falls back to the Churn)": "Now",
+        "Player verbs": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
