@@ -776,6 +776,17 @@ MODS = {
         "Medical droid (BACTA_SIDE_ITEMS_1)": "Now",
         "Field kit (BACTA_SIDE_ITEMS_1)": "Now",
     }, ()),
+    "RimProperty": ("PropertySettings.cs", "RM_Property.csproj", {
+        "Getting caught": "Now",
+        "Claim memory": "Now",
+        "Animal theft": "Now",
+        "Theft Hauler": "Now",
+        "Salvage claim fees": "Now",
+        "Walkable commerce": "Now",
+        "Pickpocket": "Now",
+        "Hire the placeless": "Now",
+        "Bribes and bought rounds": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
