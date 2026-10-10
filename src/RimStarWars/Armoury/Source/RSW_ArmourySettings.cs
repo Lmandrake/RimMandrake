@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -86,6 +88,57 @@ namespace RimMandrake.StarWars.Armoury
         public static float ionSeverity = 1f;
         public static bool plasmaGrenadeFires = true;
 
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RSW_ArmourySettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RSW_ArmourySettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
         private Vector2 scrollPosition;
 
         public override void ExposeData()
@@ -160,139 +213,148 @@ namespace RimMandrake.StarWars.Armoury
 
             Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
             list.Begin(viewRect);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
             list.Label("Every option below is a runtime mechanic. Turning one off makes that "
-                     + "mechanic do nothing — the items, buildings and weapons stay in the game. "
+                     + "mechanic do nothing - the items, buildings and weapons stay in the game. "
                      + "The weapon damage rebalance this mod is built around is part of the item "
                      + "definitions themselves and is always on.");
             list.GapLine();
 
-            // ── Extra weapon sounds ─────────────────────────────────────
-            list.Label("Extra weapon sounds");
-            list.CheckboxLabeled("Custom melee hit and miss sounds", ref extraSoundsEnabled,
-                "Weapons and pawn kinds that carry their own melee sounds use them. "
-              + "Off: the game's ordinary melee sounds play instead.");
-            list.GapLine();
+            if (Group(list, "Extra weapon sounds", RimMandrake.Shared.SettingScope.Now, new[] { "extraSoundsEnabled" }))
+            {
+                list.CheckboxLabeled("Custom melee hit and miss sounds", ref extraSoundsEnabled,
+                    "Weapons and pawn kinds that carry their own melee sounds use them. "
+                  + "Off: the game's ordinary melee sounds play instead.");
+                list.GapLine();
+            }
 
-            // ── Crystal formations (worldgen) ───────────────────────────
-            list.Label("Lightsaber crystal formations (affects new maps only)");
-            list.CheckboxLabeled("Crystals grow in caves", ref crystalFormationsEnabled,
-                "Crystal formations are scattered through the cave systems of a newly generated "
-              + "map. Off: no crystals are placed. Maps that already exist never change.");
-            list.Label("How many crystals: " + AbundanceLabel() + "  (affects new maps only)");
-            crystalAbundance = list.Slider(crystalAbundance, 0.25f, 3f);
-            list.GapLine();
+            if (Group(list, "Lightsaber crystal formations (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "crystalFormationsEnabled", "crystalAbundance" }))
+            {
+                list.CheckboxLabeled("Crystals grow in caves", ref crystalFormationsEnabled,
+                    "Crystal formations are scattered through the cave systems of a newly generated "
+                  + "map. Off: no crystals are placed. Maps that already exist never change.");
+                list.Label("How many crystals: " + AbundanceLabel());
+                crystalAbundance = list.Slider(crystalAbundance, 0.25f, 3f);
+                list.GapLine();
+            }
 
-            // ── Instant healing drug ────────────────────────────────────
-            list.Label("Emergency healing gear");
-            list.CheckboxLabeled("Enemies use healing gear when hurt", ref instantHealEnabled,
-                "Pawns who are carrying instant-healing gear reach for it in a fight, the same "
-              + "way they reach for combat drugs. Off: they never use it on their own; you can "
-              + "still trigger it yourself.");
-            list.Label("Wait before using it again: " + instantHealReuseHours.ToString("0.0") + " hours");
-            instantHealReuseHours = list.Slider(instantHealReuseHours, 0f, 24f);
-            list.Label("Counts as \"just been hurt\" for: " + instantHealRecentHarmHours.ToString("0.00") + " hours");
-            instantHealRecentHarmHours = list.Slider(instantHealRecentHarmHours, 0.1f, 6f);
-            list.GapLine();
+            if (Group(list, "Emergency healing gear", RimMandrake.Shared.SettingScope.Now, new[] { "instantHealEnabled", "instantHealReuseHours", "instantHealRecentHarmHours" }))
+            {
+                list.CheckboxLabeled("Enemies use healing gear when hurt", ref instantHealEnabled,
+                    "Pawns who are carrying instant-healing gear reach for it in a fight, the same "
+                  + "way they reach for combat drugs. Off: they never use it on their own; you can "
+                  + "still trigger it yourself.");
+                list.Label("Wait before using it again: " + instantHealReuseHours.ToString("0.0") + " hours");
+                instantHealReuseHours = list.Slider(instantHealReuseHours, 0f, 24f);
+                list.Label("Counts as \"just been hurt\" for: " + instantHealRecentHarmHours.ToString("0.00") + " hours");
+                instantHealRecentHarmHours = list.Slider(instantHealRecentHarmHours, 0.1f, 6f);
+                list.GapLine();
+            }
 
-            // ── Jumppack melee AI ───────────────────────────────────────
-            list.Label("Jumppack charges");
-            list.CheckboxLabeled("Enemies jump at you with jumppacks", ref jumppackEnabled,
-                "A hostile melee fighter wearing a jumppack leaps the gap instead of running it. "
-              + "Off: they walk, exactly like a fighter with no jumppack.");
-            list.CheckboxLabeled("  Also jump past cover at shooters", ref jumppackFlankRanged,
-                "Enemies jump behind a target who is hiding behind cover. Off: they only jump "
-              + "to close on a melee target.");
-            list.Label("How far away they will jump from: " + jumppackDistanceFactor.ToString("0.00") + "x the usual");
-            jumppackDistanceFactor = list.Slider(jumppackDistanceFactor, 0.25f, 3f);
-            list.GapLine();
+            if (Group(list, "Jumppack charges", RimMandrake.Shared.SettingScope.Now, new[] { "jumppackEnabled", "jumppackFlankRanged", "jumppackDistanceFactor" }))
+            {
+                list.CheckboxLabeled("Enemies jump at you with jumppacks", ref jumppackEnabled,
+                    "A hostile melee fighter wearing a jumppack leaps the gap instead of running it. "
+                  + "Off: they walk, exactly like a fighter with no jumppack.");
+                list.CheckboxLabeled("  Also jump past cover at shooters", ref jumppackFlankRanged,
+                    "Enemies jump behind a target who is hiding behind cover. Off: they only jump "
+                  + "to close on a melee target.");
+                list.Label("How far away they will jump from: " + jumppackDistanceFactor.ToString("0.00") + "x the usual");
+                jumppackDistanceFactor = list.Slider(jumppackDistanceFactor, 0.25f, 3f);
+                list.GapLine();
+            }
 
-            // ── Kolto tank ──────────────────────────────────────────────
-            list.Label("Kolto tank");
-            list.CheckboxLabeled("Kolto tanks heal the pawn inside", ref koltoHealEnabled,
-                "A powered, fuelled tank cures one injury at a time. Off: the tank still holds "
-              + "a pawn and still works as a container, it just does not heal.");
-            list.Label("Healing speed: " + koltoHealSpeed.ToString("0.00") + "x");
-            koltoHealSpeed = list.Slider(koltoHealSpeed, 0.25f, 3f);
-            list.GapLine();
+            if (Group(list, "Kolto tank", RimMandrake.Shared.SettingScope.Now, new[] { "koltoHealEnabled", "koltoHealSpeed" }))
+            {
+                list.CheckboxLabeled("Kolto tanks heal the pawn inside", ref koltoHealEnabled,
+                    "A powered, fuelled tank cures one injury at a time. Off: the tank still holds "
+                  + "a pawn and still works as a container, it just does not heal.");
+                list.Label("Healing speed: " + koltoHealSpeed.ToString("0.00") + "x");
+                koltoHealSpeed = list.Slider(koltoHealSpeed, 0.25f, 3f);
+                list.GapLine();
+            }
 
-            // ── Mental break blocker ────────────────────────────────────
-            list.Label("Mental break suppression");
-            list.CheckboxLabeled("Some gear and implants hold a break off", ref mentalBreakBlockerEnabled,
-                "Things that promise to stop a pawn breaking down actually stop it. "
-              + "Off: mental breaks happen normally for everyone.");
-            list.GapLine();
+            if (Group(list, "Mental break suppression", RimMandrake.Shared.SettingScope.Now, new[] { "mentalBreakBlockerEnabled" }))
+            {
+                list.CheckboxLabeled("Some gear and implants hold a break off", ref mentalBreakBlockerEnabled,
+                    "Things that promise to stop a pawn breaking down actually stop it. "
+                  + "Off: mental breaks happen normally for everyone.");
+                list.GapLine();
+            }
 
-            // ── Mine pocket ─────────────────────────────────────────────
-            list.Label("Defusing mines");
-            list.CheckboxLabeled("Mines can be defused and recovered", ref minePocketEnabled,
-                "A pawn can defuse a planted mine and pick the parts back up. "
-              + "Off: the job is never taken; mines are only removed the ordinary ways.");
-            list.Label("Time it takes: " + minePocketDefuseTime.ToString("0.00") + "x");
-            minePocketDefuseTime = list.Slider(minePocketDefuseTime, 0.25f, 5f);
-            list.GapLine();
+            if (Group(list, "Defusing mines", RimMandrake.Shared.SettingScope.Now, new[] { "minePocketEnabled", "minePocketDefuseTime" }))
+            {
+                list.CheckboxLabeled("Mines can be defused and recovered", ref minePocketEnabled,
+                    "A pawn can defuse a planted mine and pick the parts back up. "
+                  + "Off: the job is never taken; mines are only removed the ordinary ways.");
+                list.Label("Time it takes: " + minePocketDefuseTime.ToString("0.00") + "x");
+                minePocketDefuseTime = list.Slider(minePocketDefuseTime, 0.25f, 5f);
+                list.GapLine();
+            }
 
-            // ── Secondary mineable yield ────────────────────────────────
-            list.Label("Bonus finds while mining");
-            list.CheckboxLabeled("Rock sometimes gives a second material", ref secondaryYieldEnabled,
-                "Mining certain rock drops an extra item on top of the usual yield. "
-              + "Off: only the normal yield drops.");
-            list.Label("Chance of a bonus find: " + secondaryYieldChance.ToString("0.00") + "x");
-            secondaryYieldChance = list.Slider(secondaryYieldChance, 0f, 3f);
-            list.Label("Size of the bonus find: " + secondaryYieldAmount.ToString("0.00") + "x");
-            secondaryYieldAmount = list.Slider(secondaryYieldAmount, 0.25f, 3f);
-            list.GapLine();
+            if (Group(list, "Bonus finds while mining", RimMandrake.Shared.SettingScope.Now, new[] { "secondaryYieldEnabled", "secondaryYieldChance", "secondaryYieldAmount" }))
+            {
+                list.CheckboxLabeled("Rock sometimes gives a second material", ref secondaryYieldEnabled,
+                    "Mining certain rock drops an extra item on top of the usual yield. "
+                  + "Off: only the normal yield drops.");
+                list.Label("Chance of a bonus find: " + secondaryYieldChance.ToString("0.00") + "x");
+                secondaryYieldChance = list.Slider(secondaryYieldChance, 0f, 3f);
+                list.Label("Size of the bonus find: " + secondaryYieldAmount.ToString("0.00") + "x");
+                secondaryYieldAmount = list.Slider(secondaryYieldAmount, 0.25f, 3f);
+                list.GapLine();
+            }
 
-            // ── Alloy forge durasteel ───────────────────────────────────
-            list.CheckboxLabeled("Alloy forge makes durasteel from steel and zersium", ref durasteelAlloyEnabled,
-                "On (shipped default): the ship's alloy forge (VFE Factory) has a durasteel recipe, "
-              + "steel plus zersium ore, as its first alloy. Off: durasteel comes only from salvage "
-              + "and trade. Takes effect after your next game load.");
-            list.GapLine();
+            if (Group(list, "Ship alloys, doonium and slag re-melt", RimMandrake.Shared.SettingScope.Now, new[] { "durasteelAlloyEnabled", "dooniumAsteroidEnabled", "dooniumSmeltEnabled", "phrikSmeltEnabled", "slagRemeltAboardEnabled" }, "[next game start]"))
+            {
+                list.CheckboxLabeled("Alloy forge makes durasteel from steel and zersium", ref durasteelAlloyEnabled,
+                    "On (shipped default): the ship's alloy forge (VFE Factory) has a durasteel recipe, "
+                  + "steel plus zersium ore, as its first alloy. Off: durasteel comes only from salvage "
+                  + "and trade.");
+                list.CheckboxLabeled("Doonium ore on asteroid maps", ref dooniumAsteroidEnabled,
+                    "On (shipped default): Odyssey asteroid maps carry doonium ore. Off: doonium comes only from "
+                  + "salvage and trade.");
+                list.CheckboxLabeled("Ship smelter makes doonium from ore and glower crust", ref dooniumSmeltEnabled,
+                    "On (shipped default): the ship's smelter (VFE Factory) can smelt doonium ore with glower crust.");
+                list.CheckboxLabeled("Ship smelter makes phrik from phrikite", ref phrikSmeltEnabled,
+                    "On (shipped default): the ship's smelter can smelt phrikite ore into phrik.");
+                list.CheckboxLabeled("Ship smelter re-melts plasteel and durasteel slag", ref slagRemeltAboardEnabled,
+                    "On (shipped default): salvage slag of plasteel and durasteel melts back into plate on the ship's smelter.");
+                list.GapLine();
+            }
 
-            // ── Doonium, phrik, slag re-melt ────────────────────────────
-            list.CheckboxLabeled("Doonium ore on asteroid maps", ref dooniumAsteroidEnabled,
-                "On (shipped default): Odyssey asteroid maps carry doonium ore. Off: doonium comes only from "
-              + "salvage and trade. Takes effect after your next game load.");
-            list.CheckboxLabeled("Ship smelter makes doonium from ore and glower crust", ref dooniumSmeltEnabled,
-                "On (shipped default): the ship's smelter (VFE Factory) can smelt doonium ore with glower crust. "
-              + "Takes effect after your next game load.");
-            list.CheckboxLabeled("Ship smelter makes phrik from phrikite", ref phrikSmeltEnabled,
-                "On (shipped default): the ship's smelter can smelt phrikite ore into phrik. "
-              + "Takes effect after your next game load.");
-            list.CheckboxLabeled("Ship smelter re-melts plasteel and durasteel slag", ref slagRemeltAboardEnabled,
-                "On (shipped default): salvage slag of plasteel and durasteel melts back into plate on the ship's smelter. "
-              + "Takes effect after your next game load.");
-            list.GapLine();
+            if (Group(list, "Gear that buffs its wearer", RimMandrake.Shared.SettingScope.Now, new[] { "selfHediffVerbEnabled", "selfHediffCooldown" }))
+            {
+                list.CheckboxLabeled("Worn gear can be triggered for an effect", ref selfHediffVerbEnabled,
+                    "Apparel with a use-on-yourself button applies its effect. "
+                  + "Off: the button refuses and nothing is applied.");
+                list.Label("Cooldown between uses: " + selfHediffCooldown.ToString("0.00") + "x");
+                selfHediffCooldown = list.Slider(selfHediffCooldown, 0.25f, 3f);
+                list.GapLine();
+            }
 
-            // ── Self-hediff verb ────────────────────────────────────────
-            list.Label("Gear that buffs its wearer");
-            list.CheckboxLabeled("Worn gear can be triggered for an effect", ref selfHediffVerbEnabled,
-                "Apparel with a use-on-yourself button applies its effect. "
-              + "Off: the button refuses and nothing is applied.");
-            list.Label("Cooldown between uses: " + selfHediffCooldown.ToString("0.00") + "x");
-            selfHediffCooldown = list.Slider(selfHediffCooldown, 0.25f, 3f);
-            list.GapLine();
+            if (Group(list, "Thrown weapons that come back", RimMandrake.Shared.SettingScope.Now, new[] { "returningWeaponEnabled", "returningWeaponSpeed" }))
+            {
+                list.CheckboxLabeled("A thrown weapon flies home to its owner", ref returningWeaponEnabled,
+                    "The weapon spins out, hits, and returns to the hand that threw it. "
+                  + "Off: no return flight is spawned and the weapon stays drawn in hand.");
+                list.Label("Return flight speed: " + returningWeaponSpeed.ToString("0.00") + "x");
+                returningWeaponSpeed = list.Slider(returningWeaponSpeed, 0.25f, 3f);
+                list.GapLine();
+            }
 
-            // ── Returning thrown weapons ────────────────────────────────
-            list.Label("Thrown weapons that come back");
-            list.CheckboxLabeled("A thrown weapon flies home to its owner", ref returningWeaponEnabled,
-                "The weapon spins out, hits, and returns to the hand that threw it. "
-              + "Off: no return flight is spawned and the weapon stays drawn in hand.");
-            list.Label("Return flight speed: " + returningWeaponSpeed.ToString("0.00") + "x");
-            returningWeaponSpeed = list.Slider(returningWeaponSpeed, 0.25f, 3f);
-            list.GapLine();
-
-            // ── Ion damage ──────────────────────────────────────────────
-            list.Label("Ion and stun damage");
-            list.CheckboxLabeled("Ion weapons stun and disable targets", ref ionDamageEnabled,
-                "Ion and stun hits add their disabling effect on top of the damage. "
-              + "Off: those weapons deal their damage and nothing more.");
-            list.Label("Strength of the effect: " + ionSeverity.ToString("0.00") + "x");
-            ionSeverity = list.Slider(ionSeverity, 0.25f, 3f);
-            list.CheckboxLabeled("Plasma grenades set fires", ref plasmaGrenadeFires,
-                "A plasma blast can ignite what it lands on. Off: it burns targets but starts "
-              + "no fires.");
+            if (Group(list, "Ion and stun damage", RimMandrake.Shared.SettingScope.Now, new[] { "ionDamageEnabled", "ionSeverity", "plasmaGrenadeFires" }))
+            {
+                list.CheckboxLabeled("Ion weapons stun and disable targets", ref ionDamageEnabled,
+                    "Ion and stun hits add their disabling effect on top of the damage. "
+                  + "Off: those weapons deal their damage and nothing more.");
+                list.Label("Strength of the effect: " + ionSeverity.ToString("0.00") + "x");
+                ionSeverity = list.Slider(ionSeverity, 0.25f, 3f);
+                list.CheckboxLabeled("Plasma grenades set fires", ref plasmaGrenadeFires,
+                    "A plasma blast can ignite what it lands on. Off: it burns targets but starts "
+                  + "no fires.");
+                list.GapLine();
+            }
 
             settingsViewHeight = list.CurHeight + 20f;
             list.End();
