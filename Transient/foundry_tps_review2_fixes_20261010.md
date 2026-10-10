@@ -61,6 +61,22 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
   (null when the low end is a pause). The seconds are still counted ambiguous.
 - GREEN: python checks PASS; C# parity 57/57 identical (the new traces included).
 
+### MUST 3 — sample duration, simulation timing and timestamp used different boundaries
+- RED (trace `longtick`: a 40 s current invocation at the cadence boundary; `tickreset`; reader fixture):
+  `FAIL MUST 3: ... (simShare <= 1): [('run', 5, 40598, 8.12), ('stall', 40.017, 2, 0), ...]`,
+  `... the 40 s tick and the 40 s gap it caused are in the SAME window`, no `monoStart/monoEnd` on any
+  window, `tickReset` absent (`[(130, None)]`), reader placed a window at its enqueue time
+  (`[(None, 1791583200.0)]`) and missed an incident whose gap overlapped the query (`0`).
+- FIX: a window is now `[monoStart, monoEnd]` between two PREFIX observations and is closed in `Pre()`
+  (before that frame's tick work); `Post()` adds the invocation to the window open at that moment. So
+  simS/attribution physically lie inside `dReal`, and the sampler emits (and takes attribution) in
+  `TmuPrefix`. The first window starts at the first prefix with that frame's ticks/work included (review
+  item 9's first-frame misalignment). A backwards tick counter is detected per frame (`tickReset`, ticks
+  before it carried, never a silent clamp). Reader `place()`: windows at
+  `utc-(mono-monoStart) .. utc-(mono-monoEnd)`; incidents span `gapS`, `resumed` spans `silentS`;
+  timeline selects by overlap.
+- GREEN: python checks PASS, C# parity 64/64, companion builds.
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)
