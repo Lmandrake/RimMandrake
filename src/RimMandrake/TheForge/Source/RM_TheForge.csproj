@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_TheForgeMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_BiomeWorker_TheForge.cs" />
     <!-- FORGE_CYCLE_MECHANICS_1 -->
     <Compile Include="RM_ForgeCycleExtension.cs" />
