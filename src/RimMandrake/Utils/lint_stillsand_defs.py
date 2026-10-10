@@ -69,20 +69,13 @@ def _all_defnames(kind):
 def settings_checks(mod, E, W, n):
     keys = {}
     classes = 0
-    # A slider may be drawn in one settings class while the field it edits is declared in another
-    # (RM_StillsandSettings draws RM_SandSwimRemSettings.thumperRadius), so collect every declaration first.
-    alldecl = {}
-    for p in sorted(glob.glob(os.path.join(mod, "Source", "**", "*.cs"), recursive=True)):
+    alldecl = {}   # field -> (type, init) across ALL settings classes: a screen class may draw another class's field
+    for p in glob.glob(os.path.join(mod, "Source", "**", "*.cs"), recursive=True):
         if os.sep + "SelfTest" + os.sep in p or os.sep + "obj" + os.sep in p:
             continue
         t0 = L.strip_comments(open(p, encoding="utf-8-sig", errors="replace").read())
-        for sm0 in re.finditer(r"class\s+(\w+Settings)\b[^{]*\{", t0):
-            b0 = t0[sm0.end():]
-            nx0 = re.search(r"\n    (?:public |internal )?(?:static |sealed )?class\s", b0)
-            if nx0:
-                b0 = b0[:nx0.start()]
-            for t, nm, v in re.findall(r"public (?:static )?(bool|float|int|string)\s+(\w+)\s*=\s*([^;]+);", b0):
-                alldecl.setdefault(nm, (t, v.strip()))
+        for t, nm, v in re.findall(r"public static (bool|float|int|string)\s+(\w+)\s*=\s*([^;]+);", t0):
+            alldecl.setdefault(nm, (t, v.strip()))
     for p in sorted(glob.glob(os.path.join(mod, "Source", "**", "*.cs"), recursive=True)):
         if os.sep + "SelfTest" + os.sep in p or os.sep + "obj" + os.sep in p:
             continue
@@ -114,15 +107,15 @@ def settings_checks(mod, E, W, n):
                     pass
             for m in re.finditer(r"\b(\w+)\s*=\s*(?:\(\w+\))?\s*(?:Mathf\.(?:Round|RoundToInt)\(\s*)?\w+\.Slider\(\s*\1\s*,\s*(-?[\d.]+)f?\s*,\s*(-?[\d.]+)f?\s*\)", body):
                 fld, lo, hi = m.group(1), float(m.group(2)), float(m.group(3))
-                dd = decl.get(fld) or alldecl.get(fld)
-                if dd and dd[0] in ("int", "float"):
+                d = decl.get(fld) or alldecl.get(fld)
+                if d and d[0] in ("int", "float"):
                     try:
-                        dv = float(dd[1].rstrip("f"))
+                        dv = float(d[1].rstrip("f"))
                     except ValueError:
                         continue
                     n["sliders"] += 1
                     if not (lo <= dv <= hi):
-                        E("stillsand-settings", f"{cname}.{fld} defaults to {dd[1]} but its slider only spans {lo}..{hi}")
+                        E("stillsand-settings", f"{cname}.{fld} defaults to {d[1]} but its slider only spans {lo}..{hi}")
     if classes < 5:
         E("stillsand-settings", f"only {classes} settings classes found in Source (expected the 8 the mod ships): the parser is blind")
     return classes

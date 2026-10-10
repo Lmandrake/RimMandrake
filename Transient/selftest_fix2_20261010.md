@@ -1,0 +1,5 @@
+# selftest fix2 20261010
+
+1. selftest_stillsand_lint: lint_stillsand_defs.py settings_checks resolved a slider's default only in the SAME class; after the SettingsKit retrofit the Thumper slider is drawn in RM_StillsandSettings (RM_StillsandMod.cs) but thumperRadius is declared in RM_SandSwimRemSettings (RM_Thumper.cs). Now falls back to a cross-class map of public static fields. Planted defect caught: 29/29; lint sees 15 sliders (was fewer).
+2. selftest_utinnipatches_dump: NOT a defect. changed_after_dump uses `git log` in the mod dir; in a `git archive` export there is no history so every def reads "unchanged" and the post-dump defs (RUT_PhrikiteDesertLumps, renamed labels) fail. In a real git checkout of origin/main it passes (skip covers it). No code change.
+3. Full run_selftests.py on a real clone of origin/main (879a31b3e) + fix: PASS 353/361, FAIL 4, UNMEASURED 1 (bridgetools tool_metadata), SKIPPED 3. FAILs are all the A-L SettingsKit builder's: ExplosiveKnockback script+lint, KineticArms script, AcousticScanner lint. Dotnet selftests fail in a deep scratchpad path (UNC obj race) but pass from a short path.
