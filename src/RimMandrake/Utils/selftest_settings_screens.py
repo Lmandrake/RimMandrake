@@ -873,6 +873,10 @@ MODS = {
         "Fishing": "Now",
         "Repair existing worlds": "NextGameStart",
     }, ()),
+    "ProximityHatch": ("RM_ProximityHatchMod.cs", "RimMandrake_ProximityHatch.csproj", {
+        "Proximity hatching": "Now",
+        "Scan cadence": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
