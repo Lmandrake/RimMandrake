@@ -1,0 +1,173 @@
+# Icon outline census 2026-10-10
+
+Method: opaque pixels (alpha>128) with a transparent 4-neighbour = edge; share with luminance<45 = near-black. Scope: Textures/Things paths containing Item/Resource/Food, 308 measurable PNGs. Probe: Rot siblings Agarilux-family _A files read 0.00-0.10 (soft), BleedingTooth .63, VioletWimple .80; TollukCap_A reads 1.00 (outlined, confirmed). Histogram of share [<.1,.1-.3,.3-.5,.5-.7,.7-.9,.9-.99,>=.99]: 96/23/9/11/4/14/151.
+
+Outlined (>=0.9): **165** icons. Jobs filed this pass: **24** (22 existing items re-prompted from their done jobs + RM_EggScaled + rot_tollukcap_v4), file Transient/icon_outline_jobs_20261010.json, pending dir D:\Luke\dev\_artpipe\pending. Nothing installed. Existing-art check: artpipe_state find on every subject; all had only the current outlined render (no v3/no-outline render exists); RM_GreatboleHardwood already has a v3 and was skipped; Bitumen/DewgourdFruit/LilianaEgg/VorrelFruit had no job record (need hand-written prompts, left for later).
+
+## Outlined icons (share, path); Q = queued this pass
+
+-   1.00 src/RimMandrake/BlueDesert/Textures/Things/Item/Resource/RM_BlueIceMeltwaterCan/RM_BlueIceMeltwaterCan.png
+-   1.00 src/RimMandrake/BlueDesert/Textures/Things/Item/Resource/RM_CharLace/RM_CharLace.png
+- Q 1.00 src/RimMandrake/BlueDesert/Textures/Things/Item/Resource/RM_QeshraRoe/RM_QeshraRoe.png
+- Q 1.00 src/RimMandrake/Cauldron/Textures/Things/Item/RM_TsevrixPulp.png
+- Q 1.00 src/RimMandrake/Cauldron/Textures/Things/Item/RM_TsevrixRoasted.png
+- Q 1.00 src/RimMandrake/Cauldron/Textures/Things/Item/RM_Vexxith/RM_Vexxith.png
+-   1.00 src/RimMandrake/Contagion/Textures/Things/Item/Health/RM_PillarArmItem.png
+-   1.00 src/RimMandrake/Contagion/Textures/Things/Item/RM_CaudalSpringItem.png
+-   1.00 src/RimMandrake/Contagion/Textures/Things/Item/RM_EyeburstItem.png
+- Q 1.00 src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_OssagrelSap/RM_OssagrelSap.png
+- Q 1.00 src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_PottersClay/RM_PottersClay.png
+- Q 1.00 src/RimMandrake/FeverWood/Textures/Things/Item/Resource/RM_SeepOil/RM_SeepOil.png
+-   1.00 src/RimMandrake/FeverWood/Textures/Things/Item/Special/JawaClaimRumour.png
+-   1.00 src/RimMandrake/FloodedCanyon/Textures/Things/Item/RM_RuqqalFibre.png
+-   1.00 src/RimMandrake/FloodedCanyon/Textures/Things/Item/Special/RM_FossilDeepStratum/RM_FossilDeepStratum.png
+-   1.00 src/RimMandrake/GelatinousSlime/Textures/Things/Item/RM_GeneSeekerLoaded.png
+- Q 1.00 src/RimMandrake/GelatinousSlime/Textures/Things/Item/RM_RawSlime.png
+- Q 1.00 src/RimMandrake/GelatinousSlime/Textures/Things/Item/RM_SlimeAntidote.png
+- Q 1.00 src/RimMandrake/GelatinousSlime/Textures/Things/Item/RM_TitanoslimeChunk.png
+-   1.00 src/RimMandrake/Greentide/Textures/Things/Item/Fish/RM_ScaaLumsigh.png
+-   1.00 src/RimMandrake/Greentide/Textures/Things/Item/Resource/RM_GreatboleHardwood.png
+- Q 1.00 src/RimMandrake/LeaningScrub/Textures/Things/Item/Resource/RM_RawVenom/RM_RawVenom_a.png
+-   1.00 src/RimMandrake/LongShade/Textures/Things/Item/Plant/RM_RawUltracactus.png
+- Q 1.00 src/RimMandrake/LongShade/Textures/Things/Item/Plant/RM_UltracactusPad.png
+-   1.00 src/RimMandrake/LongShade/Textures/Things/Item/Plant/RM_VorrelFruit.png
+-   1.00 src/RimMandrake/LuminousPigment/Textures/Things/Item/Resource/RM_Deepfire/RM_Deepfire/RM_Deepfire_a.png
+-   1.00 src/RimMandrake/MandrakePatches/Textures/Things/Items/HiTechResearchKit/HiTechResearchKit_east.png
+-   1.00 src/RimMandrake/MandrakePatches/Textures/Things/Items/MultiAnalyzerResearchKit/MultiAnalyzerResearchKit_east.png
+-   1.00 src/RimMandrake/MandrakePatches/Textures/Things/Items/RemoteResearchKit/RemoteResearchKit_east.png
+-   1.00 src/RimMandrake/MandrakePatches/Textures/Things/Items/SimpleResearchKit/SimpleResearchKit_east.png
+-   1.00 src/RimMandrake/Miasma/Textures/Things/Item/RM_LilianaEgg/RM_LilianaEgg_A.png
+-   1.00 src/RimMandrake/Miasma/Textures/Things/Item/RM_LilianaEgg/RM_LilianaEgg_B.png
+- Q 1.00 src/RimMandrake/Miasma/Textures/Things/Item/Resource/RM_Attar/RM_Attar.png
+- Q 1.00 src/RimMandrake/Miasma/Textures/Things/Item/Resource/RM_Bones/RM_Bones.png
+-   1.00 src/RimMandrake/Miasma/Textures/Things/Item/Resource/RM_DeltaLoam/RM_DeltaLoam_a.png
+-   1.00 src/RimMandrake/Miasma/Textures/Things/Item/Resource/RM_LilianaSilk/RM_LilianaSilk_A.png
+-   1.00 src/RimMandrake/Miasma/Textures/Things/Item/Resource/RM_LilianaSilk/RM_LilianaSilk_B.png
+-   1.00 src/RimMandrake/Miasma/Textures/Things/Item/Resource/RM_LilianaSilk/RM_LilianaSilk_C.png
+-   1.00 src/RimMandrake/Pyrelands/Textures/Things/Item/Resource/RM_FE_Fulgurite.png
+-   1.00 src/RimMandrake/Pyrelands/Textures/Things/Item/Resource/RM_FE_ScorchFruit.png
+-   1.00 src/RimMandrake/Pyrinth/Textures/Things/Item/Equipment/WeaponMelee/PyrinthBlade.png
+-   1.00 src/RimMandrake/Pyrinth/Textures/Things/Item/Resource/Pyrinth/Pyrinth_a.png
+-   1.00 src/RimMandrake/Pyrinth/Textures/Things/Item/Resource/Pyrinth/Pyrinth_b.png
+-   1.00 src/RimMandrake/Pyrinth/Textures/Things/Item/Resource/Pyrinth/Pyrinth_c.png
+- Q 1.00 src/RimMandrake/Scarlands/Textures/Things/Item/RM_BloomLiquor.png
+-   1.00 src/RimMandrake/Scarlands/Textures/Things/Item/RM_DielectricGel.png
+-   1.00 src/RimMandrake/Scarlands/Textures/Things/Item/RM_Etchant.png
+-   1.00 src/RimMandrake/Scarlands/Textures/Things/Item/RM_FailedChassis.png
+-   1.00 src/RimMandrake/Scarlands/Textures/Things/Item/RM_MedicalCoagulant.png
+-   1.00 src/RimMandrake/Scarlands/Textures/Things/Item/Resource/RM_GlowerCrust/RM_GlowerCrust_a.png
+- Q 1.00 src/RimMandrake/Scarlands/Textures/Things/Item/Resource/RM_WarDust.png
+-   1.00 src/RimMandrake/Scarlands/Textures/Things/Item/Resource/RM_WreckLichenScrapings/RM_WreckLichenScrapings.png
+-   1.00 src/RimMandrake/Stillsand/Textures/Things/Item/Egg/RM_EggScaled/EggScaled_a.png
+-   1.00 src/RimMandrake/Stillsand/Textures/Things/Item/Egg/RM_EggScaled/EggScaled_b.png
+- Q 1.00 src/RimMandrake/Stillsand/Textures/Things/Item/Resource/RM_CrestPlate.png
+-   1.00 src/RimMandrake/Stillsand/Textures/Things/Item/Resource/RM_DuneCrawler.png
+-   1.00 src/RimMandrake/Stillsand/Textures/Things/Item/Resource/RM_OllimWood.png
+-   1.00 src/RimMandrake/Stillsand/Textures/Things/Item/Resource/RM_PearlLens.png
+-   1.00 src/RimMandrake/Stillsand/Textures/Things/Item/Resource/RM_SunGlass.png
+-   1.00 src/RimMandrake/Stillsand/Textures/Things/Item/Resource/RSW_KraytLens.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_BladderboilCatch.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_DossCatch.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_EeshCatch.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_EkkelCatch.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_KarrashCatch.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_MuddalCatch.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_ThuumCatch.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_GreySea/RM_EssarnCatch.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_TheChill/RM_IlissCatch.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_TwilightSea/RM_AluunCatch.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_TwilightSea/RM_NoolimCatch.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/RM_TwilightSea/RM_WeloonCatch.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_BladderboilCatch/RM_BladderboilCatch_a.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_BladderboilCatch/RM_BladderboilCatch_b.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_BladderboilCatch/RM_BladderboilCatch_c.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_DossCatch/RM_DossCatch_a.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_DossCatch/RM_DossCatch_b.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_DossCatch/RM_DossCatch_c.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_EeshCatch/RM_EeshCatch_a.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_EeshCatch/RM_EeshCatch_b.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_EeshCatch/RM_EeshCatch_c.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_EkkelCatch/RM_EkkelCatch_a.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_EkkelCatch/RM_EkkelCatch_b.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_EkkelCatch/RM_EkkelCatch_c.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_KarrashCatch/RM_KarrashCatch_a.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_KarrashCatch/RM_KarrashCatch_b.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_KarrashCatch/RM_KarrashCatch_c.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_MuddalCatch/RM_MuddalCatch_a.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_MuddalCatch/RM_MuddalCatch_b.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_MuddalCatch/RM_MuddalCatch_c.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_Saal/RM_Saal_a.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_Saal/RM_Saal_c.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_ShullaCatch/RM_ShullaCatch_c.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_ThuumCatch/RM_ThuumCatch_a.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_ThuumCatch/RM_ThuumCatch_b.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_ThuumCatch/RM_ThuumCatch_c.png
+-   1.00 src/RimMandrake/TheForge/Textures/Things/Item/RM_Floatstone/RM_Floatstone.png
+-   1.00 src/RimMandrake/TheSump/Textures/Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint.png
+-   1.00 src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_Bitumen/RM_Bitumen.png
+-   1.00 src/RimMandrake/TheSump/Textures/Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods.png
+-   1.00 src/RimMandrake/Wasteland/Textures/Things/Item/Resource/RM_BrinePlate.png
+-   1.00 src/RimMandrake/Wasteland/Textures/Things/Item/Resource/RM_SootBrick.png
+-   1.00 src/RimMandrake/Wasteland/Textures/Things/Item/Resource/RM_Tekk.png
+-   1.00 src/RimMandrake/Wasteland/Textures/Things/Item/Resource/RM_VitrifiedBezoar.png
+-   1.00 src/RimMandrake/Wasteland/Textures/Things/Item/Resource/RM_WasteCask/RM_WasteCask.png
+-   1.00 src/RimMandrake/Webwork/Textures/Things/Item/Resource/RM_BrimlockWater/RM_BrimlockWater.png
+- Q 1.00 src/RimMandrake/Webwork/Textures/Things/Item/Resource/RM_TavroskLiquor/RM_TavroskLiquor.png
+-   1.00 src/RimMandrake/WeepingStones/Textures/Things/Item/Plant/RM_DewgourdFruit.png
+- Q 1.00 src/RimMandrake/WeepingStones/Textures/Things/Item/RM_Dewsilk.png
+-   1.00 src/RimStarWars/Armoury/Textures/Things/Item/Resource/AnimalProductRaw/EggOval/EggOval_a.png
+-   1.00 src/RimStarWars/Armoury/Textures/Things/Item/Resource/AnimalProductRaw/EggOval/EggOval_b.png
+-   1.00 src/RimStarWars/Armoury/Textures/Things/Item/Resource/AnimalProductRaw/EggOval/EggOval_c.png
+-   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_BlendOnAStick/RSW_BlendOnAStick/RSW_BlendOnAStick_a.png
+-   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_CookedSkewer/RSW_CookedSkewer/RSW_CookedSkewer_a.png
+-   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_FishOnAStick/RSW_FishOnAStick/RSW_FishOnAStick_a.png
+-   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_FruitOnAStick/RSW_FruitOnAStick/RSW_FruitOnAStick_a.png
+-   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_LittleMeatOnAStick/RSW_LittleMeatOnAStick/RSW_LittleMeatOnAStick_a.png
+-   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_MeatOnAStick/RSW_MeatOnAStick/RSW_MeatOnAStick_a.png
+-   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_VegOnAStick/RSW_VegOnAStick/RSW_VegOnAStick_a.png
+-   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/RSW_MarshFungus.png
+-   1.00 src/RimStarWars/SWBestiary/Textures/Things/Item/Plant/RSW_RawUltracactus.png
+-   1.00 src/RimStarWars/SWBestiary/Textures/Things/Item/Resource/RSW_OllimWood.png
+-   1.00 src/RimUtinni/ScarlandsLadder/Textures/Things/Item/RUT_PilgrimJournal.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/Fish/RUT_BladderboilCatch.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/Fish/RUT_Doss.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/Fish/RUT_Eesh.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/Fish/RUT_Ekkel.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/Fish/RUT_Iliss.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/Fish/RUT_Karrash.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/Fish/RUT_Muddal.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/Fish/RUT_Tekk.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/Fish/RUT_Thuum.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/RUT_Mindstone/RUT_Mindstone.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/RUT_SealedWaterJar.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/Resource/RUT_CrackWax/RUT_CrackWax.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/Resource/RUT_MetalSaltBezoar/RUT_MetalSaltBezoar_a.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/Special/JawaClaimRumour.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/ToxicMeat/ToxicMeat_a.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/ToxicMeat/ToxicMeat_b.png
+-   1.00 src/RimUtinni/UtinniPatches/Textures/Things/Item/ToxicMeat/ToxicMeat_c.png
+-   1.00 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_Saal/RM_Saal_b.png
+-   1.00 src/RimMandrake/Scarlands/Textures/Things/Item/RM_ChassisCore.png
+-   1.00 src/RimStarWars/Cuisine/Textures/Things/Item/Meal/RSW_FungusOnAStick/RSW_FungusOnAStick/RSW_FungusOnAStick_a.png
+- Q 1.00 src/RimMandrake/GelatinousSlime/Textures/Things/Item/RM_SlimeBlock.png
+-   1.00 src/RimMandrake/WeepingStones/Textures/Things/Item/Plant/RM_BladderFruit.png
+-   1.00 src/RimMandrake/Wasteland/Textures/Things/Item/Resource/RM_ContaminantBezoar.png
+-   0.99 src/RimMandrake/Warcasket/Textures/Things/Item/Resource/RM_HalfExtractedCore/RM_HalfExtractedCore.png
+-   0.99 src/RimMandrake/Contagion/Textures/Things/Item/RM_BellowsItem.png
+-   0.99 src/RimMandrake/LeaningScrub/Textures/Things/Item/Resource/RM_SweetlineWool.png
+-   0.99 src/RimStarWars/TrophyCraft/Textures/Things/Item/RSW_Apparel_FangPendant/RSW_Apparel_FangPendant.png
+-   0.99 src/RimMandrake/Wasteland/Textures/Things/Item/Resource/RM_Drazz.png
+-   0.99 src/RimMandrake/Contagion/Textures/Things/Item/Equipment/RM_Sunbeam.png
+-   0.99 src/RimMandrake/LongShade/Textures/Things/Item/Meal/RM_VorrelSeedDish.png
+-   0.98 src/RimMandrake/Scarlands/Textures/Things/Item/RM_TetchikJar.png
+-   0.96 src/RimMandrake/LeaningScrub/Textures/Things/Item/Resource/RM_VisslerArm.png
+-   0.96 src/RimMandrake/WeepingStones/Textures/Things/Item/RM_MurrinCatch.png
+-   0.95 src/RimMandrake/Stillsand/Textures/Things/Item/RM_SandSieve.png
+- Q 0.94 src/RimMandrake/Cauldron/Textures/Things/Item/RM_FexxilShard.png
+-   0.94 src/RimMandrake/FloodedCanyon/Textures/Things/Item/Resource/RM_FossilSkeleton/RM_FossilSkeleton.png
+-   0.94 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_ShullaCatch/RM_ShullaCatch_a.png
+-   0.94 src/RimMandrake/FloodedCanyon/Textures/Things/Item/RM_ZennaqFilament.png
+- Q 0.93 src/RimStarWars/SWBestiary/Textures/Things/Item/RSW_KraytHorn.png
+-   0.93 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Fish/RM_ShullaCatch.png
+-   0.93 src/RimMandrake/TerminalBiomes/Textures/Things/Item/Resource/RM_ShullaCatch/RM_ShullaCatch_b.png
+-   0.92 src/RimMandrake/Stillsand/Textures/Things/Item/Resource/RM_Biosilica.png
