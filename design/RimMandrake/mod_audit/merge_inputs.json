@@ -1,0 +1,736 @@
+{
+ "_doc": "Hand-made inputs to merge_checks.py. spotchecks: the primary source the checker cited, opened by the merge author (FOUNDRY, 2026-10-11); a verdict proposal is taken only when result=CONFIRMED. card_map/measure_map: packageId -> OWNER_CARDS.md card ids / measurement tickets.",
+ "spotchecks": {
+  "deon.rimtek.core": {
+   "result": "CONFIRMED",
+   "path": "design/RimMandrake/mod_audit/facts/mod_facts.jsonl (deon.rimtek.docmate dependencies) + assessments/batch_12.jsonl",
+   "finding": "docmate hard-depends on Deon.rimtek.core and is KEEP in batch 12; a framework cannot go while a KEEP dependant needs it"
+  },
+  "sd.fa.geneticheadsframework": {
+   "result": "CONFIRMED",
+   "path": "workshop 3501317537 (Genetic Heads Biotech) Defs XML",
+   "finding": "11 FacialAnimationGeneticHeads.* class refs counted in the consumer's XML; consumer is PHASE-OUT in batch 14"
+  },
+  "m00nl1ght.unofficialupdates.preparelanding": {
+   "result": "CONFIRMED",
+   "path": "design/Jawa/mods/required_mods.md:355",
+   "finding": "'Prepare Landing (Continued) - ACCEPTED' as an authoring aid"
+  },
+  "aoba.framework": {
+   "result": "CONFIRMED",
+   "path": "facts mod_facts.jsonl aoba.fortress.industrial dependencies_by_version",
+   "finding": "v1.6 list = [brrainz.harmony, aoba.framework]; fortress.industrial is KEEP (batch 14)"
+  },
+  "vanillaracesexpanded.archon": {
+   "result": "CONFIRMED",
+   "path": "src/RimUtinni/UtinniPatches/Patches/VREArchon_MortisRename.xml:1-12",
+   "finding": "header: owner ruling 2026-09-11 'Yes, draft them now' retheme to Mortis wanderers; ELIMINATE would orphan an owner-ruled patch"
+  },
+  "karew.orcclan": {
+   "result": "CONFIRMED",
+   "path": "src/RimUtinni/UtinniPatches/Patches/OrcClan_GamorreanRename.xml:1-12; git 8e1ea6c3d",
+   "finding": "owner-ruled retheme to Gamorrean Clan (2026-09-11)"
+  },
+  "vesper.egihologramsandprojectors": {
+   "result": "CONFIRMED",
+   "path": "design/RimMandrake/atmospheric_base_mod_definition.md:104-108",
+   "finding": "L16 ruled 2026-09-17: the gods are holograms; holograms are on-genre, so the dissonance ELIMINATE needs is unproven (RUBRIC §2 conservative rule)"
+  },
+  "redmattis.bigsmall": {
+   "result": "CONFIRMED",
+   "path": "git show 6cadd01c4",
+   "finding": "'Cut Big and Small - Races via Cherry Picker: no SW canon fit ... all 86 of the pack's own defs'"
+  },
+  "deon.rimtek.digipal": {
+   "result": "NOT_CONFIRMED",
+   "path": "assessments/batch_01.jsonl vs batch_12.jsonl",
+   "finding": "evidence is only cross-batch consistency; docmate depends on core, not on digipal, and no source shows a datapad is on-genre; stays a judgement for the RimTek-trio card"
+  },
+  "heatherathebyne.craftingspotslavegear": {
+   "result": "CONFIRMED",
+   "path": "design/Jawa/mods/required_mods.md:1170-1176",
+   "finding": "slavery layer is the owner's (user, 2026-08-06); this mod is listed there as the best-fit slave gear"
+  },
+  "trouperton.trystantravellersshuttleschematics": {
+   "result": "CONFIRMED",
+   "path": "src/RimMandrake/Stillsand/Source/Kernel/RM_LeviathanKernel.cs; StillsandFuzz.cs:89",
+   "finding": "the 'Stillsand mentions trystan' REPLACE evidence is the substring entryStandable; REPLACE has no remaining evidence, conservative rule gives PHASE-OUT"
+  },
+  "danzinagri.facialanimationcompatabilityproject": {
+   "result": "CONFIRMED",
+   "path": "CLAUDE.md:831",
+   "finding": "'Cosmetic changes need his permission first - they can break animated faces'; consistent with reel.facialanims PHASE-OUT"
+  },
+  "mandrake.rut.rustcathedralroaches": {
+   "result": "CONFIRMED",
+   "path": "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/RUT_RustCathedral.xml:96",
+   "finding": "the donor edge (Ling_Cockroach MayRequire) lives in the RUT twin, not in the roaches mod"
+  },
+  "mandrake.rsw.msedroidfix": {
+   "result": "CONFIRMED",
+   "path": "src/RimStarWars/MSEDroidFix/Textures/OuterRim/Droid/MSE_north.png; src/RimStarWars/Droidworks/Textures/OuterRim/Droid/",
+   "finding": "Droidworks ships MSE_east/MSE_south only; the fix mod holds the only MSE_north.png"
+  },
+  "mandrake.rsw.kotorbandoliernorthfix": {
+   "result": "CONFIRMED",
+   "path": "src/RimStarWars/KotORBandolierNorthFix/",
+   "finding": "20 *north*.png in the fix mod; Armoury has 10 bandolier north files"
+  },
+  "nep.landonanything": {
+   "result": "CONFIRMED",
+   "path": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Config\\Mod_3545384484_LandOnAnythingMod.xml (2026-09-12) vs infrastructure/state/items/closed/GRAVSHIP_LANDING_CRUSH_1.md:3-11",
+   "finding": "AllowedToSqishRoofs=True and AllowedToLandOnAnyTerrain=True live; ruling says forced OFF"
+  },
+  "redmattis.biggergravship": {
+   "result": "CONFIRMED",
+   "path": "Config\\Mod_3522759531_GravshipSizeSettings.xml (2026-08-15)",
+   "finding": "12 stored values incl. chemFuelTankSize 1140.6, largeChemFuelTankSize 8805.5, maxThrustersSmall 20, shield radius/health"
+  },
+  "gravenwitch.vsrexamined": {
+   "result": "CONFIRMED",
+   "path": "infrastructure/state/items/STAT_NORM_WAVE3_RETIRE_1.md:1-3; infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml",
+   "finding": "ruled retired with jellypowered.survivaltools 2026-09-11; both present in FULL.LATEST"
+  },
+  "mandrake.rut.researchretag": {
+   "result": "CONFIRMED",
+   "path": "src/RimUtinni/ResearchRetag/Defs/ResearchProjectDefs/RUT_Ported_ResearchTrio.xml:92,107",
+   "finding": "researchViewX -2.00 twice"
+  },
+  "mandrake.rm.gimmesomeslack": {
+   "result": "CONFIRMED",
+   "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\GimmeSomeSlack\\northstar",
+   "finding": "76 MB of northstar test data deployed into the game's Mods folder"
+  },
+  "mandrake.rm.pyrinth": {
+   "result": "CONFIRMED",
+   "path": "infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml",
+   "finding": "det.epochspyrinth listed, mandrake.rm.pyrinth absent"
+  },
+  "mlie.miningcospaceship": {
+   "result": "CONFIRMED",
+   "path": "src/RimUtinni/UtinniPatches/Patches/MiningCo_CzerkaRename.xml:1-12",
+   "finding": "owner-ruled Czerka retheme 2026-09-11; card withdrawn"
+  },
+  "sr.modrimworld.factionalwarcontinued": {
+   "result": "CONFIRMED",
+   "path": "design/Jawa/mods/required_mods.md:887",
+   "finding": "'[SR]Factional War (fork) - FULL ACCEPT (2026-08-06, user's call)'; card withdrawn"
+  }
+ },
+ "card_map": {
+  "7f.alienworlds": [
+   "C05"
+  ],
+  "7f.alienworlds.tidallylocked": [
+   "C05"
+  ],
+  "adaptive.ideology.storage": [
+   "C17"
+  ],
+  "adaptive.primitivestorage": [
+   "C17"
+  ],
+  "adaptive.simplestorage": [
+   "C17"
+  ],
+  "addvans.walktheworld": [
+   "C11"
+  ],
+  "alleykat.persistentprecepts": [
+   "C04"
+  ],
+  "aoba.warcasket": [
+   "C15"
+  ],
+  "aqued.dredgeaberrations": [
+   "C19"
+  ],
+  "armoredampharos.fancyrats": [
+   "C19"
+  ],
+  "azravos.factioncustomizer": [
+   "C04"
+  ],
+  "bonible.medievalmeleesounds": [
+   "C19"
+  ],
+  "boots.sensiblefactions": [
+   "C05"
+  ],
+  "broms.deeporbit": [
+   "C11"
+  ],
+  "btd.gbp.shippack.kotor.vge": [
+   "C11"
+  ],
+  "btd.remix.gravshipblueprints": [
+   "C11"
+  ],
+  "chezhou.chezhoulib.lib": [
+   "C02"
+  ],
+  "chezhou.creature.sandworm": [
+   "C02"
+  ],
+  "clown.dedicatedturrets": [
+   "C10"
+  ],
+  "danzinagri.facialanimationcompatabilityproject": [
+   "C16"
+  ],
+  "deon.rimtek.core": [
+   "C21"
+  ],
+  "deon.rimtek.digipal": [
+   "C21"
+  ],
+  "deon.rimtek.docmate": [
+   "C21"
+  ],
+  "det.avaloi": [
+   "C20"
+  ],
+  "dimonsever000.ideologyvirtues": [
+   "C19"
+  ],
+  "elsov.beliar": [
+   "C20"
+  ],
+  "erdelf.minifyeverything": [
+   "C10"
+  ],
+  "ferny.worldbuilder": [
+   "C04"
+  ],
+  "flangopink.metalpipe": [
+   "C19"
+  ],
+  "flangopink.metalpipehorseshoe": [
+   "C19"
+  ],
+  "font.rimesis": [
+   "C09"
+  ],
+  "fourtoo.glowingbush": [
+   "C18"
+  ],
+  "funkyshit.mods.worldedit.alpha": [
+   "C04"
+  ],
+  "gabrieel1482.raidvehicleframework": [
+   "C11"
+  ],
+  "ghost.rootsofrimworld": [
+   "C17"
+  ],
+  "gravtide.mod": [
+   "C03"
+  ],
+  "grimterra.biomesmod": [
+   "C01"
+  ],
+  "groovytaco.beltextractors": [
+   "C10"
+  ],
+  "hailuan.customquestframework": [
+   "C22"
+  ],
+  "hali.modifylandingtile": [
+   "C04"
+  ],
+  "hmc.wall.furniture": [
+   "C10"
+  ],
+  "ionfrigate12345.coolandgoodambush": [
+   "C09"
+  ],
+  "jaeger972.factionterritories": [
+   "C05"
+  ],
+  "juanlopez2008.lightsout": [
+   "C10"
+  ],
+  "karew.orcclan": [
+   "C20"
+  ],
+  "kas.strongerscaling": [
+   "C14"
+  ],
+  "kilokio.rimai.core": [
+   "C23"
+  ],
+  "kilokio.rimai.framework": [
+   "C23"
+  ],
+  "kshtantrumsounds.mod": [
+   "C19"
+  ],
+  "kyzy.shipwallenhanced": [
+   "C10"
+  ],
+  "m00nl1ght.geologicallandforms": [
+   "C06"
+  ],
+  "m00nl1ght.geologicallandforms.biometransitions": [
+   "C06"
+  ],
+  "m00nl1ght.mappreview": [
+   "C04"
+  ],
+  "m00nl1ght.unofficialupdates.preparelanding": [
+   "C04"
+  ],
+  "mandrake.rm.biomes": [
+   "C01"
+  ],
+  "mandrake.rm.oracle": [
+   "C23"
+  ],
+  "mandrake.rm.rustchrome": [
+   "C17"
+  ],
+  "mandrake.rm.strandedquest": [
+   "C07"
+  ],
+  "mandrake.rm.warcasket": [
+   "C03"
+  ],
+  "mandrake.rsw.desertvehiclereskin": [
+   "C11"
+  ],
+  "meteores.ancienturbanruinsalldeconstructible.aurad": [
+   "C22"
+  ],
+  "meteores.ancienturbanruinsvanillaloot.aurvl": [
+   "C22"
+  ],
+  "milkwater.destinymod": [
+   "C15"
+  ],
+  "mlie.factionraidcooldown": [
+   "C09"
+  ],
+  "mlie.largefactionbases": [
+   "C09"
+  ],
+  "mlie.morefactioninteraction": [
+   "C09"
+  ],
+  "mlie.starwarsanimalcollection": [
+   "C02"
+  ],
+  "mlie.storytellerenhanced": [
+   "C09"
+  ],
+  "mlie.syrmoreslaves": [
+   "C07"
+  ],
+  "mlie.yayoscombat3": [
+   "C14"
+  ],
+  "nals.facialanimation": [
+   "C16"
+  ],
+  "neronix17.outerrim.furnitureanddecor": [
+   "C02"
+  ],
+  "neronix17.shieldgenerators": [
+   "C10"
+  ],
+  "oblitus.mylittleplanet": [
+   "C05"
+  ],
+  "oskarpotocki.vfe.tribals": [
+   "C01"
+  ],
+  "planetace.nondestructivegravlaunch": [
+   "C11"
+  ],
+  "plusblankplus.scenarioamenderfork": [
+   "C04"
+  ],
+  "redmattis.biggergravship": [
+   "C12"
+  ],
+  "redmattis.bigsmall": [
+   "C22"
+  ],
+  "reel.facialanims": [
+   "C16"
+  ],
+  "reel.turretpipeline": [
+   "C10"
+  ],
+  "regrowth.botr.core": [
+   "C01"
+  ],
+  "rwnodetree.rwplanetatmosphere": [
+   "C18"
+  ],
+  "sarg.alphaanimals": [
+   "C01"
+  ],
+  "sarg.alphabiomes": [
+   "C01"
+  ],
+  "sarg.alphagenes": [
+   "C20"
+  ],
+  "sarg.alphamechs": [
+   "C15"
+  ],
+  "sarg.alphamemes": [
+   "C01"
+  ],
+  "sarg.alphaskills": [
+   "C08"
+  ],
+  "sarg.alphavehiclesneolithic": [
+   "C11"
+  ],
+  "sd.fa.geneticheadsbiotech": [
+   "C16"
+  ],
+  "sd.fa.geneticheadsframework": [
+   "C16"
+  ],
+  "sd.fa.geneticheadsmods": [
+   "C16"
+  ],
+  "shavius.medieval.flavour": [
+   "C22"
+  ],
+  "sihv.rombonesport": [
+   "C13"
+  ],
+  "sk.gravshipraids": [
+   "C11"
+  ],
+  "sl4vp0wer.weareunited": [
+   "C07"
+  ],
+  "smashphil.vehicleframework": [
+   "C03",
+   "C11"
+  ],
+  "snobi.mutatorworldicons": [
+   "C04"
+  ],
+  "swablu.ambience": [
+   "C17"
+  ],
+  "thumb.bettercremation": [
+   "C13"
+  ],
+  "trouperton.trystantravellersshuttleschematics": [
+   "C11"
+  ],
+  "tyrannidae.fancyratsplus": [
+   "C19"
+  ],
+  "usgiyi.slaveoutfits": [
+   "C17"
+  ],
+  "van.beasts": [
+   "C19"
+  ],
+  "van.dacrypts": [
+   "C19"
+  ],
+  "vanillaexpanded.skills": [
+   "C08"
+  ],
+  "vanillaexpanded.vfefactory": [
+   "C13"
+  ],
+  "vanillaexpanded.vmemese": [
+   "C01"
+  ],
+  "vanillaexpanded.vtexe.facialanims": [
+   "C16"
+  ],
+  "vanillaexpanded.vwe": [
+   "C15"
+  ],
+  "vanillaquestsexpanded.ancients": [
+   "C15"
+  ],
+  "vanillaracesexpanded.archon": [
+   "C20"
+  ],
+  "vesper.egihologramsandprojectors": [
+   "C18"
+  ],
+  "vlvop.tormentmaster.expansion": [
+   "C19"
+  ],
+  "void.charactereditor": [
+   "C04"
+  ],
+  "xmb.ancienturbanruins.mo": [
+   "C22"
+  ],
+  "xylthixlm.races.core": [
+   "C20"
+  ],
+  "xylthixlm.races.titan": [
+   "C20"
+  ],
+  "zacharyfoster.mineralsrock": [
+   "C18"
+  ],
+  "zal.betterinfestations": [
+   "C09"
+  ],
+  "zylle.mapdesigner": [
+   "C06"
+  ],
+  "zylle.morevanillabiomes": [
+   "C01"
+  ]
+ },
+ "measure_map": {
+  "aoba.framework": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "armoredampharos.fancyrats": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "arti.shrinez": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "biomesteam.coreframework": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "bonible.medievalmeleesounds": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "btd.gbp.shippack.kotor.vge": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "danzinagri.facialanimationcompatabilityproject": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "deon.rimtek.core": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "deon.rimtek.digipal": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "dubwise.dubsbadhygiene.lite": [
+   "DUBS_LITE_VERIFY_OPTIONS_OFF"
+  ],
+  "flangopink.metalpipe": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "flangopink.metalpipehorseshoe": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "gravenwitch.vsrexamined": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "groovytaco.beltextractors": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "ionfrigate12345.coolandgoodambush": [
+   "AMBUSH_MULTIPLIER_MEASURE_DLL_DEFAULT"
+  ],
+  "jaeger972.factionterritories": [
+   "FACTION_TERRITORIES_VERIFY_SETTINGS"
+  ],
+  "karew.orcclan": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "kopp.biomecompatibilityproject": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "kshtantrumsounds.mod": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "leo.raidprotectionfee": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "lwm.deepstorage": [
+   "DEEP_STORAGE_VERIFY_CAP_SETTING"
+  ],
+  "m00nl1ght.unofficialupdates.preparelanding": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "mandrake.rm.biomes": [
+   "BIOME_DONOR_DEPENDENCY_UNTANGLE_HARD_LINK"
+  ],
+  "mandrake.rsw.droidworks": [
+   "HEAVY_TEXTURES_MEASURE_REAL_VRAM"
+  ],
+  "mandrake.rsw.msedroidfix": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "mandrake.rut.birthhatchdemo": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "meteores.ancienturbanruinsalldeconstructible.aurad": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "meteores.ancienturbanruinsvanillaloot.aurvl": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "mewn.medievalsigns": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "milkwater.destinymod": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "mlie.beastsoftherim": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "mlie.largefactionbases": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "mlie.nwnrealfogofwar": [
+   "FOG_TOGGLES_VERIFY_ROUTE_B"
+  ],
+  "mlie.starwarsanimalcollection": [
+   "SWAC_EDGES_CENSUS_PORTED_VS_LIVE"
+  ],
+  "nep.enginesunlimited": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "neronix17.outerrim.core": [
+   "OUTERRIM_CORE_HUNT_REAL_REPO"
+  ],
+  "ogliss.thewhitecrayon.quarry": [
+   "QUARRY_ERROR_REMEASURE_UNATTRIBUTED"
+  ],
+  "redmattis.bigsmall": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "reel.turretpipeline": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "rwnodetree.rwplanetatmosphere": [
+   "HEAVY_TEXTURES_MEASURE_REAL_VRAM"
+  ],
+  "sarg.alphabiomes": [
+   "BIOME_DONOR_DEPENDENCY_UNTANGLE_HARD_LINK"
+  ],
+  "sarg.alphamemes": [
+   "ALPHA_MEMES_MEASURE_STYLE_COST"
+  ],
+  "shavius.medieval.flavour": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "sr.modrimworld.factionalwarcontinued": [
+   "FACTIONAL_WAR_VERIFY_FREQUENCY_LOW"
+  ],
+  "tyrannidae.fancyratsplus": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "van.dacrypts": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "vanillaexpanded.vtexe.facialanims": [
+   "HEAVY_TEXTURES_MEASURE_REAL_VRAM"
+  ],
+  "vanillaracesexpanded.archon": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "vanillaracesexpanded.fungoid": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "vesper.egihologramsandprojectors": [
+   "HEAVY_TEXTURES_MEASURE_REAL_VRAM",
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "xmb.ancienturbanruins.mo": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "zal.largeoutpost": [
+   "DOOMED_MODS_CENSUS_SAVE_PLACEMENTS"
+  ],
+  "zal.spaceports": [
+   "SPACEPORTS_AUDIT_BAZAAR_OVERLAP"
+  ]
+ },
+ "action_map": {
+  "det.epochspyrinth": [
+   "PYRINTH_MIGRATE_LIST_NEVER_SWAPPED"
+  ],
+  "dubwise.dubsbadhygiene.lite": [
+   "RESEARCHRETAG_FIX_NEGATIVE_COORDS"
+  ],
+  "dubwise.rimefeller": [
+   "RIMEFELLER_ENFORCE_FOUND_ONLY_OIL"
+  ],
+  "ghost.rootsofrimworld": [
+   "RESEARCHRETAG_FIX_NEGATIVE_COORDS"
+  ],
+  "gravenwitch.vsrexamined": [
+   "FULL_LATEST_RETIRE_ZOMBIE_PAIR"
+  ],
+  "jellypowered.survivaltools": [
+   "FULL_LATEST_RETIRE_ZOMBIE_PAIR"
+  ],
+  "leo.raidprotectionfee": [
+   "RAID_FEE_RETIRE_UNTICK_NOT_CHERRY"
+  ],
+  "mandrake.rm.gimmesomeslack": [
+   "DEPLOY_PRUNE_NORTHSTAR_STOWAWAYS"
+  ],
+  "mandrake.rm.ninefold": [
+   "SALVATION_GODS_EXCISE_FROM_RM_TIER"
+  ],
+  "mandrake.rm.property": [
+   "PROPERTY_MIGRATE_RSW_PATCHES_LEAKED"
+  ],
+  "mandrake.rm.pyrinth": [
+   "PYRINTH_MIGRATE_LIST_NEVER_SWAPPED"
+  ],
+  "mandrake.rm.sacredgraffiti": [
+   "SALVATION_GODS_EXCISE_FROM_RM_TIER"
+  ],
+  "mandrake.rsw.kotorbandoliernorthfix": [
+   "NORTHFIX_ART_MERGE_ORPHANED_NORTHS"
+  ],
+  "mandrake.rsw.msedroidfix": [
+   "NORTHFIX_ART_MERGE_ORPHANED_NORTHS"
+  ],
+  "mandrake.rut.greentideraidant": [
+   "GREENTIDE_ANT_RENAME_STILL_EARTHLY"
+  ],
+  "mandrake.rut.researchretag": [
+   "RESEARCHRETAG_FIX_NEGATIVE_COORDS"
+  ],
+  "mandrake.rut.restrainingbolts": [
+   "RESTRAINING_BOLTS_REWIRE_DEAD_HEDIFF"
+  ],
+  "mlie.beastsoftherim": [
+   "BEASTS_OF_RIM_RETIRE_LAST_UNTICK"
+  ],
+  "nep.landonanything": [
+   "LANDONANYTHING_ENFORCE_RULING_NEVER_TOOK"
+  ],
+  "redmattis.biggergravship": [
+   "BIGGER_GRAVSHIP_RECONCILE_TWELVE_NOT_FOUR"
+  ]
+ },
+ "answered_map": {
+  "mlie.miningcoalertspeaker": "Czerka retheme of the whole MiningCo. family, owner 2026-09-11: src/RimUtinni/UtinniPatches/Patches/MiningCo_CzerkaRename.xml, git 8e1ea6c3d",
+  "mlie.miningcodrillturret": "Czerka retheme, owner 2026-09-11 (MiningCo_CzerkaRename.xml)",
+  "mlie.miningcomms": "Czerka retheme, owner 2026-09-11 (MiningCo_CzerkaRename.xml)",
+  "mlie.miningcospaceship": "Czerka retheme, owner 2026-09-11 (MiningCo_CzerkaRename.xml)",
+  "vanillaexpanded.gravship": "one kind of heat (owner 2026-09-29/30) + LiquidDef registry canon (2026-09-13): fold VGE oxygen/heat into FlowWorks is a FOUNDRY build plan, not a card",
+  "mandrake.rut.propanelakemechanics": "LiquidDef registry canon (2026-09-13): rebuild on FlowWorks is a FOUNDRY build plan",
+  "cain.mineshaft": "owner override 2026-08-12, design/Jawa/desert_world_design.md:488",
+  "zal.calltradeships": "adopted, design/Jawa/mods/required_mods.md:1358",
+  "lee.theforce.lightsaber": "owner card 2026-09-02 STAYS UPSTREAM (STARWARS_DONOR_SUNSET_1)",
+  "neronix17.outerrim.galacticempire": "faction cut, mod kept for raid armour (brief s2)",
+  "sr.modrimworld.factionalwarcontinued": "FULL ACCEPT 2026-08-06, required_mods.md:887",
+  "heatherathebyne.craftingspotslavegear": "slavery layer is the owner's (required_mods.md:1170)",
+  "gravenwitch.vsrexamined": "retired 2026-09-11, STAT_NORM_WAVE3_RETIRE_1",
+  "jellypowered.survivaltools": "retired 2026-09-11, STAT_NORM_WAVE3_RETIRE_1",
+  "meteores.ancienturbanruinsalldeconstructible.aurad": "forbidden by name, design/Jawa/mods/forbidden_mods.md",
+  "dubwise.rimefeller": "found-only oil, required_mods.md:565-575 (ACTIONS_NOW B3)",
+  "mandrake.rm.explosivegrowth": "owner-ruled design; numbers are tuning",
+  "mandrake.rm.acousticscanner": "owner picked the banded design by card"
+ }
+}
