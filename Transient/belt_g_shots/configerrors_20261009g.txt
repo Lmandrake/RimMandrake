@@ -1,0 +1,7 @@
+Config error in RM_FE_Ash_Light: burnedDef is flammable
+Config error in RM_FE_Ash_Trace: burnedDef is flammable
+Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+Config error in RM_FE_Ground_Sand: burnedDef is flammable
+Config error in RM_FE_Ground_Soil: burnedDef is flammable
+Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+Config error in RUT_FoundrySalvageCache: RM_WreckWeathering with no weathering (an unresolved RM_WreckWeatheringDef?)

@@ -26,3 +26,10 @@ Scope: GimmeSomeSlack, FlowWorks, Baroque biomes. L0-L3.
 - 18:50 SUPERDEEP_TARGET probe (live_probes/fw_superdeep_target.py) UNMEASURED: no bridge reader for a non-colonist's job/target, spawned gunner carried an EMP launcher; parked.
 - 18:51 Baroque L2: prove_biome_quicktest over 27 surface biomes in batches -> Transient/belt_g_biomes/
 - 19:00 27-biome quicktest: 0 genstep errors except RM_RustCathedral GenStep_Terrain NRE -> fixed (forced rocks lacked naturalTerrain), re-regen clean. World-texture misses noted on BAROQUE_LOAD_RESIDUE_ERRORS_1.
+- verified: LUMINOUS_PIGMENT_SETTINGS_READOUTS A1, DIVING_SETTINGS_CONTRACT A2, CREATURE_BEHAVIORS_CONFIGERRORS A1 (settings text via rimworld/get_ui_layout includeOffscreen - reads the whole dialog without scrolling).
+## Left for the next sitting
+- CORD_STATIC_DYNAMIC_HANDOFF_1 A1: needs a per-strand draw counter in GimmeSomeSlackProbe (roofed pin, owner section differs).
+- SUPERDEEP_TARGET_VALIDATOR_1 A1: needs a bridge read of a NON-colonist's current job/target (JawaBench tool) and a firearm kind.
+- GLOW_TANK A1 seeded variant: no tool to fuel a CompRefuelable; A2 needs a FlowWorks tank + salt water.
+- SETTINGS_SCREEN_KIT_1 A5 recorded FAIL: kit Draw() not adopted by any screen.
+- Filed: POND_RECESSION_STRANDS_CHANNEL_1, BAROQUE_LOAD_RESIDUE_ERRORS_1.
