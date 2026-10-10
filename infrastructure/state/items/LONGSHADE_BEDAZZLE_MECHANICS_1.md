@@ -35,10 +35,14 @@ smaller ideas are deferred to `LONGSHADE_SHADE_EXTRAS_1`.
 
 ## criteria
 
-- Each of the five features is quicktest-proven on a Long Shade map, and each ships a Mod Settings
+- A1 L2: Each of the five features is quicktest-proven on a Long Shade map, and each ships a Mod Settings
   toggle.
-- Every swimmer or mirrak kill leaves a visible sign; the test checks for it.
-- The swimmer is proven one-per-map.
+- A2 L2: Every swimmer or mirrak kill leaves a visible sign; the test checks for it.
+- A3 L2: The swimmer is proven one-per-map.
+- A4 L0: The smoke calendar's three acts (haze, ash pulse, sand-lock) are wired with toggles and pass
+  `haze_problems` + `ash_act_problems` with planted-defect selftests.
+- A5 L2: On a Long Shade quicktest, ending the haze starts the ash pulse (a plant's GrowthRate reads x1.5) and the
+  sand-lock (a submerged sand swimmer breaches on sand).
 
 ## tuning + audio pass (2026-10-03, round 36)
 
