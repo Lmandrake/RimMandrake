@@ -17,3 +17,16 @@
 - 15:39 AFTER: HugeFootprints 0.98 ms/tick (max 11.5) vs 62.6; TPS 48.2/141.9/145.0 (Normal/Fast/Superfast) vs 13.3/12.4/12.3; GC 1.5/min vs ~11; private 29.1 GB vs 29.6; giants 2739 unchanged; blockers 7447->8135 and pending 1248->1368 over ~15k ticks (growth; old code grew at the same ~0.05/tick). Normal ratio 0.87 is eaten by two one-off gameComp stalls (tg 5821 2.9 s just after load, tg 7501 6.8 s) - not HugeFootprints. Re-measuring Normal steady state + footprint spot-check.
 - 15:41 clean 60 s Normal: 57.8 TPS ratio 0.963, gapMax 359 ms, 1 GC, top tl:Normal every window (mapComp gone). Spot-check 6 giants (GiantAgarilux/WitchesOyster/PaleTree): 5-34 blockers in a 9x9 around each; DebugCounts giants=2738 realized=8141 pending=1370. Evidence Transient/foundry_hugefix_check_20261010.json
 - 15:42 awareness: INCIDENT A3 PASS (ShortCircuit + AnimalInsanityMass forced: returned false, no 'fired' wording), A4 PASS (queued ResourcePodCrash fired at tick 31457 by the queue, chain bridge:jawa/incident_schedule > incident:ResourcePodCrash); PAWN_ORIGIN A5 PASS (20/20 origin unknown after load, 0 PRE_LOAD), A6 PASS (meters per aware.* copied into game_health_record.md); VISITOR A2 NOT proven (3/3 spawns delivered the requested kind: no substitution occurred to detect).
+- 16:13 preflight --live (--accept-deps): all PASS except O04/L04 tormentmaster (waived) -> Transient/foundry_hugefix_preflight_live_20261010.txt. Closed HUGE_FOOTPRINTS_FIX_PROVE_SIXTY_ON_ROT + AWARENESS_METERS_DEPLOY_HOOK_BODY_ONLY at 5af889844; INCIDENT_JOURNAL auto-closed (A3+A4). Filed GAMECOMP_STALL_HUNT_SEVEN_SECONDS. Bridge released; game left UP (pid 39048, 550 list, HUGEFIX_ROT_AB_20261010 loaded, paused).
+
+## Result
+| | before (old DLL) | after (f3774dd15) |
+|---|---|---|
+| HugeFootprints ms/tick (map_comp_timing, 300 ticks) | 62.6 (max 516) | 0.98 (max 11.5) |
+| TPS Normal / Fast / Superfast (45 s blocks) | 13.3 / 12.4 / 12.3 | 48.2* / 141.9 / 145.0 |
+| clean 60 s Normal | - | 57.8 TPS, ratio 0.963, top tl:Normal |
+| GC / min | ~11 | ~1.5 |
+| worst frame gap | 553-589 ms | 359-372 ms steady; one-off gameComp stalls 2.9 s + 6.8 s (*ate the 45 s Normal block) |
+| private / WS | 29.6 / 17.6 GB | 29.1 / 17.8 GB (unchanged) |
+Same save both sides. Giants 2739 = save; blockers 7447 = save at load; growth to 8141 + pending 1248->1370 is maturing giants (old code grew at the same ~0.05 blockers/tick). Blockers Impassable live; spot-check of 6 giants all carry blockers.
+Owed: VISITOR A2 (no substitution occurred), A4; PAWN_ORIGIN A2 (fresh map + early generation), A4; GAMECOMP_STALL_HUNT_SEVEN_SECONDS; memory 29 GB private is not this.
