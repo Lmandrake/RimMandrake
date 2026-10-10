@@ -715,6 +715,27 @@ namespace JawaBench.BridgeTools
                 return new { success = true, requestedS = s, blockedS = Math.Round(sw.Elapsed.TotalSeconds, 3), utcStart = u0, utcEnd = W.Utc() };
             });
         }
+
+        /// <summary>
+        /// TEST ONLY (MUST 17 overhead A/B): pause / resume the attribution stage timers in a running game, so
+        /// "timers on" and "timers off" can be alternated on the same map without a restart. Off = the hooks stay
+        /// patched (Harmony dispatch still paid) but return at their first check, so the difference measures the
+        /// timer bodies, not the patching. Refuses when attribution already disabled itself after an error.
+        /// </summary>
+        [Tool(
+            "jawa/tps_test_attribution",
+            Description =
+                "TEST ONLY, GM build: on=false pauses the TPS attribution stage timers (hooks stay patched and return " +
+                "immediately), on=true resumes them. For overhead A/B within one session. Changes no game state.",
+            ResultDescription = "success, attribution (true = timing), installed, runtimeError.")]
+        public object TpsTestAttribution(
+            [ToolParameter(Description = "true = timers on, false = paused.")] bool on = true)
+        {
+            if (!JawaBenchTpsProfiler.Installed || JawaBenchTpsProfiler.RuntimeError != null)
+                return new { success = false, attribution = !JawaBenchTpsProfiler.Disabled, installed = JawaBenchTpsProfiler.Installed, runtimeError = JawaBenchTpsProfiler.RuntimeError };
+            JawaBenchTpsProfiler.Disabled = !on;
+            return new { success = true, attribution = !JawaBenchTpsProfiler.Disabled, installed = true, runtimeError = (string)null };
+        }
 #endif
 
         [Tool(
