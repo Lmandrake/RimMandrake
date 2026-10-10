@@ -152,7 +152,7 @@ namespace RimMandrake.Webwork
         /// as at startup) and emergentSpawnChanceMultiplier = mult, spawns defName (RM_Webwork_Anchor by default) on the
         /// current map, asks the vanilla Deconstruct designator and, once designated, WorkGiver_Deconstruct for a free
         /// colonist, then destroys it with DestroyMode.Deconstruct (what JobDriver_Deconstruct does on completion).
-        /// "HARVEST designatable B | workgiver B | yield N | weaveNear A->B | spawned N".</summary>
+        /// "HARVEST designatable B (after T ticks) | workgiver B | yield N | weaveNear A->B | spawned N".</summary>
         public static string ProofHarvest(string args)
         {
             Map map = Map;
@@ -182,7 +182,8 @@ namespace RimMandrake.Webwork
                 RM_WebworkSettings.emergentSpawnChanceMultiplier = mult;
                 foreach (Pawn p in map.mapPawns.AllPawnsSpawned.Where(p => p.def.defName == "RM_Ollathrix").ToList()) p.Destroy();
                 t = GenSpawn.Spawn(ThingMaker.MakeThing(node), cell, map);
-                bool designatable = new Designator_Deconstruct().CanDesignateThing(t).Accepted;
+                int seenAfter;
+                bool designatable = DesignatableAfterTicks(t, out seenAfter);
                 bool workgiver = false;
                 if (designatable)
                 {
@@ -196,7 +197,7 @@ namespace RimMandrake.Webwork
                 int spawned = map.mapPawns.AllPawnsSpawned.Count(p => p.def.defName == "RM_Ollathrix");
                 foreach (Pawn p in map.mapPawns.AllPawnsSpawned.Where(p => p.def.defName == "RM_Ollathrix").ToList()) p.Destroy();
                 foreach (Thing w in map.listerThings.ThingsOfDef(weave).Where(w => (w.Position - cell).LengthHorizontal <= 3f).ToList()) w.Destroy();
-                return "HARVEST designatable " + designatable + " | workgiver " + workgiver + " | yield " + RM_CompHarvestYield.lastYieldSpawned
+                return "HARVEST designatable " + designatable + " (after " + seenAfter + " ticks) | workgiver " + workgiver + " | yield " + RM_CompHarvestYield.lastYieldSpawned
                     + " | weaveNear " + before + "->" + after + " | spawned " + spawned;
             }
             finally
@@ -206,6 +207,21 @@ namespace RimMandrake.Webwork
                 RM_WebworkStartupGate.ApplyWebHarvest();
                 RM_WebworkSettings.emergentSpawnChanceMultiplier = wasMult;
                 RM_WebworkSettings.emergentSpawnEnabled = wasSpawn;
+            }
+        }
+
+        /// <summary>Real Fog of War prefixes Designator_Deconstruct.CanDesignateThing and refuses a thing it has not yet
+        /// seen; a thing spawned and checked in the same paused tick is always unseen on the full list (measured 2026-10-09,
+        /// 4 of 4, even beside a colonist). Step single ticks until the designator accepts, at most 250 (one rare tick).</summary>
+        private static bool DesignatableAfterTicks(Thing t, out int ticks)
+        {
+            var d = new Designator_Deconstruct();
+            for (ticks = 0; ; ticks++)
+            {
+                if (t == null || !t.Spawned) return false;
+                if (d.CanDesignateThing(t).Accepted) return true;
+                if (ticks >= 250) return false;
+                Find.TickManager.DoSingleTick();
             }
         }
 
@@ -227,9 +243,9 @@ namespace RimMandrake.Webwork
                     && x.GetFirstItem(map) == null && x != colonist.Position, out IntVec3 cell))
                 return "REFUSED: no cell";
             Thing t = GenSpawn.Spawn(ThingMaker.MakeThing(node), cell, map);
-            bool ok = new Designator_Deconstruct().CanDesignateThing(t).Accepted;
+            bool ok = DesignatableAfterTicks(t, out int seenAfter);
             if (ok) map.designationManager.AddDesignation(new Designation(t, DesignationDefOf.Deconstruct));
-            return "DESIGNATED " + cell.x + "," + cell.z + " | designatable " + ok + " | colonist " + colonist.LabelShort;
+            return "DESIGNATED " + cell.x + "," + cell.z + " | designatable " + ok + " (after " + seenAfter + " ticks) | colonist " + colonist.LabelShort;
         }
 
         /// <summary>"x,z": "READ nodePresent B | weaveNear N | lastYield N".</summary>
