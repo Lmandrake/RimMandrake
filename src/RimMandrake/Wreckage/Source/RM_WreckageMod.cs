@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -61,45 +62,129 @@ namespace RimMandrake.Wreckage
             Scribe_Values.Look(ref wreckHazards, "wreckHazards", true);
         }
 
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_WreckageSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_WreckageSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or a save loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
+        // One switch per wreck-field key (the keys come from the GenStepDefs, so the list is dynamic). Kept out of the
+        // group block so the block lists only Scribed names.
+        private static void DrawFieldToggles(Listing_Standard list)
+        {
+            foreach (string key in RM_GenStep_WreckField.AllFields().Select(f => f.settingsKey)
+                         .Where(k => !k.NullOrEmpty()).Distinct().OrderBy(k => k))
+            {
+                bool on = !FieldDisabled(key);
+                bool was = on;
+                list.CheckboxLabeled("RM_Wreckage_Setting_Field".Translate(key), ref on,
+                    "RM_Wreckage_Setting_Field_Tip".Translate(key));
+                if (on != was)
+                {
+                    SetFieldEnabled(key, on);
+                }
+            }
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 400f;
+
         public void DoWindowContents(Rect inRect)
         {
-            var list = new Listing_Standard();
-            list.Begin(inRect);
-            list.CheckboxLabeled("RM_Wreckage_Setting_SalvageLoot".Translate(), ref salvageLoot,
-                "RM_Wreckage_Setting_SalvageLoot_Tip".Translate());
-            if (salvageLoot)
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
+            list.Begin(view);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
+
+            // Scopes audited per read site: loot, generosity, skill scaling and hazards are read each time a wreck is salvaged (now);
+            // fields, density and the per-field switches are read by the wreck-field GenStep while a map generates; the fresh-wreck
+            // incident gate is read whenever that incident is rolled.
+            if (Group(list, "Salvage loot", RimMandrake.Shared.SettingScope.Now, new[] { "salvageLoot", "lootGenerosity", "skillScalesRare" }))
             {
+                list.CheckboxLabeled("RM_Wreckage_Setting_SalvageLoot".Translate(), ref salvageLoot,
+                    "RM_Wreckage_Setting_SalvageLoot_Tip".Translate());
                 list.Label("RM_Wreckage_Setting_Generosity".Translate(lootGenerosity.ToStringPercent()));
                 lootGenerosity = Mathf.Round(list.Slider(lootGenerosity, 0.25f, 3f) * 20f) / 20f;
                 list.CheckboxLabeled("RM_Wreckage_Setting_SkillScales".Translate(), ref skillScalesRare,
                     "RM_Wreckage_Setting_SkillScales_Tip".Translate());
+                list.GapLine();
             }
-            list.GapLine();
-            list.CheckboxLabeled("RM_Wreckage_Setting_WreckFields".Translate(), ref wreckFields,
-                "RM_Wreckage_Setting_WreckFields_Tip".Translate());
-            if (wreckFields)
+
+            if (Group(list, "Wreck fields (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "wreckFields", "wreckDensity", "disabledFields" }))
             {
+                list.CheckboxLabeled("RM_Wreckage_Setting_WreckFields".Translate(), ref wreckFields,
+                    "RM_Wreckage_Setting_WreckFields_Tip".Translate());
                 list.Label("RM_Wreckage_Setting_Density".Translate(wreckDensity.ToStringPercent()));
                 wreckDensity = Mathf.Round(list.Slider(wreckDensity, 0f, 3f) * 20f) / 20f;
-                foreach (string key in RM_GenStep_WreckField.AllFields().Select(f => f.settingsKey)
-                             .Where(k => !k.NullOrEmpty()).Distinct().OrderBy(k => k))
-                {
-                    bool on = !FieldDisabled(key);
-                    bool was = on;
-                    list.CheckboxLabeled("RM_Wreckage_Setting_Field".Translate(key), ref on,
-                        "RM_Wreckage_Setting_Field_Tip".Translate(key));
-                    if (on != was)
-                    {
-                        SetFieldEnabled(key, on);
-                    }
-                }
+                DrawFieldToggles(list);
+                list.GapLine();
             }
-            list.GapLine();
-            list.CheckboxLabeled("RM_Wreckage_Setting_WreckFalls".Translate(), ref wreckFalls,
-                "RM_Wreckage_Setting_WreckFalls_Tip".Translate());
-            list.CheckboxLabeled("RM_Wreckage_Setting_Hazards".Translate(), ref wreckHazards,
-                "RM_Wreckage_Setting_Hazards_Tip".Translate());
+
+            if (Group(list, "Fresh wreck falls", RimMandrake.Shared.SettingScope.NextPulse, new[] { "wreckFalls" }))
+            {
+                list.CheckboxLabeled("RM_Wreckage_Setting_WreckFalls".Translate(), ref wreckFalls,
+                    "RM_Wreckage_Setting_WreckFalls_Tip".Translate());
+                list.GapLine();
+            }
+
+            if (Group(list, "Wreck hazards", RimMandrake.Shared.SettingScope.Now, new[] { "wreckHazards" }))
+            {
+                list.CheckboxLabeled("RM_Wreckage_Setting_Hazards".Translate(), ref wreckHazards,
+                    "RM_Wreckage_Setting_Hazards_Tip".Translate());
+                list.GapLine();
+            }
+
+            viewHeight = list.CurHeight + 20f;
             list.End();
+            Widgets.EndScrollView();
         }
     }
 

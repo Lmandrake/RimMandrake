@@ -882,6 +882,12 @@ MODS = {
         "Nightside Aurora incident": "NextPulse",
         "Maximized aurora colours": "Now",
     }, ()),
+    "Wreckage": ("RM_WreckageMod.cs", "RM_Wreckage.csproj", {
+        "Salvage loot": "Now",
+        "Wreck fields (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Fresh wreck falls": "NextPulse",
+        "Wreck hazards": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
