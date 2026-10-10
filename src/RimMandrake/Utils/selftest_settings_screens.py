@@ -182,6 +182,11 @@ MODS = {
         "The dhokkur": "Now",
         "Not wired yet (these change nothing)": "Now",
     }, ()),
+    "ShipVermin": ("RM_ShipVerminMod.cs", "RM_ShipVermin.csproj", {
+        "Alert and fuel mites": "Now",
+        "Wreck-anchored vermin nests": "Now",
+        "Species a wreck nest may produce": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
