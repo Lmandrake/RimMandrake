@@ -10,6 +10,16 @@
                                saved dated under D:\\Luke\\dev\\_rmdashboard\\digests\\ and
                                shown in the widget. `./pulse back` is the "I'm back" form.
   pulse.py ack <incident> [--noise]
+  pulse.py hand <path-or-url> [--title "what it is"] [--seat BENCH|FOUNDRY]
+                               HAND THE OWNER SOMETHING TO LOOK AT. It appears in the widget's
+                               "to look at" list (one line, tiny preview for images, an open link,
+                               coloured by --seat) until he opens it, which marks it seen. Use it
+                               for a thing you deliberately made for his eyes: a contact sheet,
+                               a review page, a keeper save, a folder of shots. Relative paths
+                               resolve against the cwd; handing the same target again re-raises it.
+                               Review-sheet servers (Transient/biome_ffar/*.serve.log) need no hand:
+                               pulse lists every live one with its unseen count by itself.
+  pulse.py seen <id>           mark a look item seen without opening it (ids print from `hand`)
   pulse.py metrics             time-to-notice red, question age, alert precision
 
 State: ~/.local/state/rm-dashboard/ (state.json, pulse_now.json, pulse.jsonl, metrics.jsonl).
@@ -19,6 +29,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import re
 import json
 import os
 import sys
@@ -90,6 +101,7 @@ class Collector:
         self.ledger_cache: dict = {}
         self.prev_kinds: dict = {}
         self.kernel: dict = {}
+        self.sheets: dict = {"at": 0, "rows": []}
 
     def _ledger(self) -> list[dict]:
         sig = []
@@ -134,6 +146,14 @@ class Collector:
         if a:
             self.artpipe = a
         raw["artpipe"] = self.artpipe
+        raw["hands"] = src("hands", pc.read_hands) or []
+        if now - self.sheets["at"] > 45:
+            r = src("sheets", pc.read_sheets)
+            if r is not None:
+                self.sheets = {"at": now, "rows": r}
+        else:
+            status["sheets"] = self.snapshot.get("sources", {}).get("sheets", {"ok": True, "at": now})
+        raw["sheets"] = self.sheets["rows"]
         raw["bridge"] = src("bridge", pc.read_bridge)
         raw["probe"] = self.probe
         status["probe"] = {"ok": self.probe is not None, "at": (self.probe or {}).get("at")}
@@ -202,6 +222,55 @@ class Collector:
                                  "latency_s": round(time.time() - (row or {}).get("since", time.time()))})
         threading.Thread(target=self.tick, daemon=True).start()
         return True
+
+
+    def seen(self, sid: str) -> bool:
+        with _lock:
+            self.state.setdefault("seen_look", {})[sid] = time.time()
+            save_json("state.json", self.state)
+        threading.Thread(target=self.tick, daemon=True).start()
+        return True
+
+    def hand_row(self, sid: str) -> dict | None:
+        return next((h for h in pc.read_hands() if h["id"] == sid), None)
+
+
+def thumb_bytes(path: str, w: int = 78, h: int = 54) -> bytes | None:
+    """Cached small JPEG of a handed image (3x the 26x18 chip, so it stays sharp)."""
+    import io
+    from PIL import Image
+    src = Path(path)
+    try:
+        key = hashlib.sha1(f"{src}|{src.stat().st_mtime_ns}".encode()).hexdigest()[:16]
+        cache = pc.STATE_DIR / "thumbs"
+        cache.mkdir(parents=True, exist_ok=True)
+        c = cache / f"{key}.jpg"
+        if c.exists():
+            return c.read_bytes()
+        from PIL import ImageOps
+        with Image.open(src) as im:
+            im = ImageOps.fit(im.convert("RGB"), (w, h))
+            buf = io.BytesIO()
+            im.save(buf, "JPEG", quality=80)
+        c.write_bytes(buf.getvalue())
+        return buf.getvalue()
+    except Exception:
+        return None
+
+
+def hand(target: str, title: str | None, seat: str | None) -> dict:
+    """Write one hand-off record (pure file append; the daemon picks it up within 5 s)."""
+    if re.match(r"^https?://", target):
+        tgt, win = target, None
+    else:
+        p = Path(target).expanduser()
+        p = p if p.is_absolute() else Path.cwd() / p
+        tgt = os.path.normpath(str(p))
+        win = pc.win_path(tgt)
+    rec = {"id": "hand:" + hashlib.sha1(tgt.encode()).hexdigest()[:10], "target": tgt, "win": win,
+           "title": title or Path(tgt).name or tgt, "seat": (seat or "").upper() or None, "ts": time.time()}
+    append("hands.jsonl", rec)
+    return rec
 
 
 def widget_version() -> str:
@@ -326,6 +395,15 @@ def make_handler(col: Collector):
             elif self.path.startswith("/api/now"):
                 self._hdr()
                 self.wfile.write(json.dumps(col.snapshot).encode())
+            elif self.path.startswith("/api/thumb"):
+                from urllib.parse import parse_qs, urlparse
+                h = col.hand_row((parse_qs(urlparse(self.path).query).get("id") or [""])[0])
+                data = thumb_bytes(h["target"]) if h and not h["target"].startswith("http") else None
+                if data:
+                    self._hdr(200, "image/jpeg")
+                    self.wfile.write(data)
+                else:
+                    self._hdr(404)
             elif self.path.startswith("/api/stream"):
                 self.send_response(200)
                 self.send_header("Content-Type", "text/event-stream")
@@ -358,6 +436,10 @@ def make_handler(col: Collector):
                 body = {}
             if self.path == "/api/ack" and body.get("id"):
                 col.ack(str(body["id"]), "noise" if body.get("noise") else "actionable")
+                self._hdr()
+                self.wfile.write(b'{"ok":true}')
+            elif self.path == "/api/seen" and body.get("id"):
+                col.seen(str(body["id"]))
                 self._hdr()
                 self.wfile.write(b'{"ok":true}')
             elif self.path == "/api/probe":
@@ -434,6 +516,12 @@ def main(argv=None) -> int:
     a = sub.add_parser("ack")
     a.add_argument("incident")
     a.add_argument("--noise", action="store_true")
+    hd = sub.add_parser("hand")
+    hd.add_argument("target")
+    hd.add_argument("--title")
+    hd.add_argument("--seat")
+    sn = sub.add_parser("seen")
+    sn.add_argument("id")
     sub.add_parser("metrics")
     h = sub.add_parser("health")
     h.add_argument("--restart", action="store_true")
@@ -456,6 +544,15 @@ def main(argv=None) -> int:
         import urllib.request
         req = urllib.request.Request(f"http://127.0.0.1:{PORT}/api/ack", method="POST",
                                      data=json.dumps({"id": args.incident, "noise": args.noise}).encode(),
+                                     headers={"Content-Type": "application/json"})
+        print(urllib.request.urlopen(req, timeout=5).read().decode())
+    elif args.cmd == "hand":
+        r = hand(args.target, args.title, args.seat)
+        print(f"handed: {r['id']}  {r['title']}  ->  {r['win'] or r['target']}")
+    elif args.cmd == "seen":
+        import urllib.request
+        req = urllib.request.Request(f"http://127.0.0.1:{PORT}/api/seen", method="POST",
+                                     data=json.dumps({"id": args.id}).encode(),
                                      headers={"Content-Type": "application/json"})
         print(urllib.request.urlopen(req, timeout=5).read().decode())
     elif args.cmd == "metrics":
