@@ -41,6 +41,8 @@
   <ItemGroup>
     <Compile Include="RM_BiomeWorker_Webwork.cs" />
     <Compile Include="RM_WebworkMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_CompEmergentSpawnOnDestroy.cs" />
     <Compile Include="RM_CompHarvestYield.cs" />
     <Compile Include="RM_GenStep_WebworkNest.cs" />

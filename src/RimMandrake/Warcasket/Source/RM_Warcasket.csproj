@@ -57,6 +57,8 @@
   <ItemGroup>
     <Compile Include="RM_WarcasketDefOf.cs" />
     <Compile Include="RM_WarcasketSettings.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_JunkerSarcophagusExtension.cs" />
     <Compile Include="RM_CompWarcasketIntegrity.cs" />
     <Compile Include="RM_MapComponent_HazardousTerrainImmersion.cs" />
