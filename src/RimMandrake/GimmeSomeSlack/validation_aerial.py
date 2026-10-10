@@ -431,6 +431,29 @@ def run_live(args):
            "guardRefused_t0": r0, "guardRefused_t300": r1})
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
 
+    # ---------------------------------------------------------------- M17: GS-5 owner change cuts wires to the other owner
+    # POLE_OWNER_CHANGE_DROPS_WIRES_1. Two player masts linked; one changes owner; the 250-tick sweep (or the explicit
+    # ownersweep verb) must unlink them. Control: cutWiresOnOwnerChange=False leaves the link standing.
+    # PROVISIONAL: the L2 outcome is owed until a live run records it.
+    O1, O2 = (MSITE[0] + 2, MSITE[1] + 3), (MSITE[0] + 12, MSITE[1] + 3)
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
+    B.call("jawa/build_batch", ops=V.ops("RM_AerialMast", [O1, O2]), faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    B.ticks(3)
+    oc = anchors_by_pos(B.ap("census"))
+    o1, o2 = oc[O1]["id"], oc[O2]["id"]
+    B.ap("link:%d,%d" % (o1, o2))
+    n1, n2 = net_at(B, O1).get("net"), net_at(B, O2).get("net")
+    linked0 = n1 is not None and n1 == n2
+    B.ap("set:cutWiresOnOwnerChange=False")
+    B.ap("owner:%d,hostile" % o2)
+    off = B.ap("ownersweep").get("cut", -1)
+    B.ap("set:cutWiresOnOwnerChange=True")
+    on = B.ap("ownersweep").get("cut", -1)
+    V.row(rows, "M17_owner_change_cuts_cross_owner_wires", "PASS" if linked0 and off == 0 and on >= 1 else "FAIL", "MOD",
+          {"linkedBefore": linked0, "cutWhenToggleOff": off, "cutWhenOn": on, "provisional": True})
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
+
     # ---------------------------------------------------------------- log budget
     lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
     new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > log_base]
