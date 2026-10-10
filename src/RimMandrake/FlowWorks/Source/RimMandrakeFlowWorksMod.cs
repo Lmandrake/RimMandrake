@@ -506,6 +506,36 @@ namespace RimMandrake.FlowWorks
             RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
         }
 
+        // SETTINGS_SCREEN_KIT_1: search + collapsible sections, via the shared kit. State is per game session.
+        private static string searchQuery = "";
+        private static readonly System.Collections.Generic.HashSet<string> collapsedSections = new System.Collections.Generic.HashSet<string>();
+        private static float lastListHeight;
+
+        /// <summary>
+        /// Draws a section header (click to collapse), its reset button, and returns whether the body should draw.
+        /// A search hits when the query matches the section title or any of its setting names (case-insensitive);
+        /// non-matching sections vanish, and a search opens every matching section.
+        /// </summary>
+        private static bool Section(Listing_Standard list, string title, string[] names)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (open) DrawSectionReset(list, names);
+            return open;
+        }
+
         public void DoWindowContents(Rect inRect)
         {
             // Raised from 900 when the unproven-mechanics section landed, and
@@ -516,16 +546,16 @@ namespace RimMandrake.FlowWorks
             // edit or their block is invisible. (+2000 for the Rivers section; +2400 for the
             // tanker / sluice-gate / blood / quarry sections, 2026-10-05; +500 for liquid looks / pit outline /
             // pit shadow; +150 for hot and icy liquid, 2026-10-08; +400 for per-section reset buttons; +100 recedeSparesOutflow.)
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 11600f);
+            // Collapsing/searching shrinks the content, so after the first frame the height is what the listing measured.
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, lastListHeight > 0f ? lastListHeight + 40f : 11600f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            Text.Font = GameFont.Medium;
-            list.Label("Excavation and flow");
-            DrawSectionReset(list, new[] { "depthEngineEnabled", "digToDepthEnabled", "pulseIntervalTicks", "flowPerPulse" });
-            Text.Font = GameFont.Small;
+            if (Section(list, "Excavation and flow", new[] { "depthEngineEnabled", "digToDepthEnabled", "pulseIntervalTicks", "flowPerPulse" }))
+            {
 
             list.CheckboxLabeled("Depth engine", ref depthEngineEnabled,
                 "The depth/fill engine: liquid pours into the deepest excavated cells first "
@@ -564,11 +594,11 @@ namespace RimMandrake.FlowWorks
                      + "spills into any shallower channel dug at its edge. There is nothing "
                      + "to place and nothing to tune.");
 
+            }
+
             list.GapLine();
-            Text.Font = GameFont.Medium;
-            list.Label("Unproven mechanics — OFF by default");
-            DrawSectionReset(list, new[] { "liquidCorrosionEnabled", "liquidIgnitionEnabled" });
-            Text.Font = GameFont.Small;
+            if (Section(list, "Unproven mechanics — OFF by default", new[] { "liquidCorrosionEnabled", "liquidIgnitionEnabled" }))
+            {
             list.Label("These came in with the liquid-types merge and have never run inside a "
                      + "live game. They are off because that is what has actually shipped, not "
                      + "because they are broken. Turn one on when you want to test it, and "
@@ -588,11 +618,11 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             // PHASE 4 SECTION — kept whole and kept last, see the field block.
             // ══════════════════════════════════════════════════════════════
+            }
+
             list.GapLine();
-            Text.Font = GameFont.Medium;
-            list.Label("Stock, recession and drainage");
-            DrawSectionReset(list, new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" });
-            Text.Font = GameFont.Small;
+            if (Section(list, "Stock, recession and drainage", new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" }))
+            {
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
                      + "Everything here is on by default; turn it all off and sources are "
@@ -701,11 +731,11 @@ namespace RimMandrake.FlowWorks
               + "normally refuses. Off: the edge strip is undiggable again and nothing drains.");
 
             // ── LIQUID_HEAT_PUSH_1: hot and icy liquid ──────────────────────
+            }
+
             list.GapLine();
-            Text.Font = GameFont.Medium;
-            list.Label("Hot and icy liquid");
-            DrawSectionReset(list, new[] { "liquidHeatPushEnabled", "liquidHeatStrength" });
-            Text.Font = GameFont.Small;
+            if (Section(list, "Hot and icy liquid", new[] { "liquidHeatPushEnabled", "liquidHeatStrength" }))
+            {
             list.CheckboxLabeled("Boiling and icy liquid warm or chill the room they are in", ref liquidHeatPushEnabled,
                 "Boiling water (and any hot liquid) warms the room it stands in, the same way a heater does; icy water "
               + "chills it. A roofed hut over a boiling pool is warm, and a closed pit flooded with a hot liquid becomes "
@@ -718,11 +748,11 @@ namespace RimMandrake.FlowWorks
             }
 
             // ── PHASE 6: fire ───────────────────────────────────────────────
+            }
+
             list.GapLine();
-            Text.Font = GameFont.Medium;
-            list.Label("Burning liquid");
-            DrawSectionReset(list, new[] { "canalFireEnabled", "canalBurnDaysPerLevel", "sourceBurnDaysPerLevel", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled" });
-            Text.Font = GameFont.Small;
+            if (Section(list, "Burning liquid", new[] { "canalFireEnabled", "canalBurnDaysPerLevel", "sourceBurnDaysPerLevel", "fireFrontSpeedMultiplier", "sourceFireReach", "explosionIgnitesLiquidEnabled", "foamSmothersLiquidFireEnabled", "rainDousesLiquidFireEnabled" }))
+            {
             list.CheckboxLabeled("Flammable liquid in channels and ponds can be lit", ref canalFireEnabled,
                 "Any fire touching tar (or another burnable liquid) lights it. The fire creeps along the liquid, "
               + "back into the pond or lake that feeds it, and burns for days. Anyone standing in it catches "
@@ -756,11 +786,11 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             // PHASE 5 SECTION — kept whole and kept last, see the field block.
             // ══════════════════════════════════════════════════════════════
+            }
+
             list.GapLine();
-            Text.Font = GameFont.Medium;
-            list.Label("Pits, ladders and shooting");
-            DrawSectionReset(list, new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled" });
-            Text.Font = GameFont.Small;
+            if (Section(list, "Pits, ladders and shooting", new[] { "superdeepCaptureEnabled", "blastsBreakPitCovers", "superdeepCapturesOwnFaction", "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "ladderRaiseLowerEnabled", "pitWidthBodySizeMultiplier", "superdeepRoomsEnabled", "captureDownEnabled", "wardenFromLipEnabled", "pitDrowningEnabled", "pitDrowningRateMultiplier", "poisonFillEnabled", "pitExposureEnabled", "pitTemperatureCoupling", "pitResistanceLossMultiplier", "pitWalkNormalEnabled", "fallDamageEnabled", "fallDamageMultiplier", "spikesEnabled", "spikeDamageMultiplier", "pitDepthDrawOffsetEnabled", "pitSinkPerLevel", "excavationWallFacesEnabled", "excavationWallMaterialEnabled", "pitOutlineEnabled", "pitScorchEnabled", "pitScorchFadeDays", "pitLipOcclusionEnabled", "pitSinkClampEnabled", "pitHidesShadowEnabled", "pitLipOcclusion", "pitLipOccupantCutEnabled", "pitLipOccupantCutWidth", "liquidSurfaceMotionEnabled", "liquidWakesEnabled", "liquidLooksEnabled", "liquidBubblesEnabled", "liquidBubbleDensity", "liquidSeeThroughEnabled", "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled", "viscosityEnabled", "thickCreepEnabled", "trapTriggerEnabled", "trapSensitivityMultiplier", "superdeepShootingRuleEnabled" }))
+            {
             list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
                      + "Everything shallower is wadeable however full it is: a brimming deep canal is "
                      + "a tax on crossing it, never a barrier, so stopping power comes from superdeep "
@@ -1025,11 +1055,11 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             // LIQUID_BOTTLE_LOOP_1 SECTION — kept whole and kept last.
             // ══════════════════════════════════════════════════════════════
+            }
+
             list.GapLine();
-            Text.Font = GameFont.Medium;
-            list.Label("Bottles, buckets, barrels: fill, use, wash");
-            DrawSectionReset(list, new[] { "bottleLoopEnabled", "bottleDirtyStageEnabled", "bottleRevertEnabled" });
-            Text.Font = GameFont.Small;
+            if (Section(list, "Bottles, buckets, barrels: fill, use, wash", new[] { "bottleLoopEnabled", "bottleDirtyStageEnabled", "bottleRevertEnabled" }))
+            {
             list.Label("An empty container filled at a matching liquid's shore becomes a filled one; "
                      + "drinking or otherwise using one leaves a container behind to deal with. Buckets "
                      + "hold five bottles' worth, barrels twenty-five — same chain, same labour. "
@@ -1056,11 +1086,11 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             // LIQUID_BOTTLE_LOOP_1 TANK SECTION — kept whole and kept last.
             // ══════════════════════════════════════════════════════════════
+            }
+
             list.GapLine();
-            Text.Font = GameFont.Medium;
-            list.Label("The liquid tank");
-            DrawSectionReset(list, new[] { "tankLoopEnabled", "tankCapacityMultiplier", "liquidPumpEnabled" });
-            Text.Font = GameFont.Small;
+            if (Section(list, "The liquid tank", new[] { "tankLoopEnabled", "tankCapacityMultiplier", "liquidPumpEnabled" }))
+            {
             list.Label("A patched-together scavenger tank: a big fixed store of ONE liquid at a "
                      + "time, filled by pouring a container in and drained by filling a container "
                      + "from it. The same fetch-labour pattern as the fill/wash loop above.");
@@ -1087,11 +1117,11 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             // MANY_WATERS_DRILL_BUILDINGS_1 SECTION — kept whole and kept last.
             // ══════════════════════════════════════════════════════════════
+            }
+
             list.GapLine();
-            Text.Font = GameFont.Medium;
-            list.Label("Drilling and tapping");
-            DrawSectionReset(list, new[] { "liquidDrillingEnabled", "drillYieldChanceMultiplier", "drillUnitsPerCycle" });
-            Text.Font = GameFont.Small;
+            if (Section(list, "Drilling and tapping", new[] { "liquidDrillingEnabled", "drillYieldChanceMultiplier", "drillUnitsPerCycle" }))
+            {
             list.Label("The fourth acquisition route: some maps sit on a liquid you never see "
                      + "the surface of. A drill (powered) or a tap (hand-worked, smaller) pours "
                      + "whatever a subsurface survey found into a dug channel at its outlet, "
@@ -1121,11 +1151,11 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             // WORLDMAP_LIQUID_TAGS_1 SECTION — kept whole and kept last.
             // ══════════════════════════════════════════════════════════════
+            }
+
             list.GapLine();
-            Text.Font = GameFont.Medium;
-            list.Label("Typed bodies of water");
-            DrawSectionReset(list, new[] { "typedLiquidShoresEnabled" });
-            Text.Font = GameFont.Small;
+            if (Section(list, "Typed bodies of water", new[] { "typedLiquidShoresEnabled" }))
+            {
             list.Label("Some named seas and lakes on the planet are made of something other "
                      + "than plain water — brine, boiling water, liquid propane. Landing on "
                      + "one finds that liquid underfoot instead of generic blue water. Water "
@@ -1140,11 +1170,11 @@ namespace RimMandrake.FlowWorks
               + "you have already generated keeps the terrain it was generated with.");
 
             // ── FLOWWORKS_QUARRY_DIGGING_1 — what a canal cut turns up ────
+            }
+
             list.GapLine();
-            Text.Font = GameFont.Medium;
-            list.Label("Finds while digging");
-            DrawSectionReset(list, new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled" });
-            Text.Font = GameFont.Small;
+            if (Section(list, "Finds while digging", new[] { "digFindsEnabled", "digFindsLocalOnly", "digFindChanceMultiplier", "digFindBudgetPercent", "digFindLetterEnabled" }))
+            {
             list.CheckboxLabeled("Digging a canal can turn up minerals", ref digFindsEnabled,
                 "Each time a cell is cut a level deeper there is a small chance of a lump of something the land holds, "
               + "thrown up onto the bank. Deep and superdeep cuts can reach what a deep drill would find under that cell. "
@@ -1166,11 +1196,11 @@ namespace RimMandrake.FlowWorks
             }
 
             // ── CRACKEDLANDS_MECHANICS_BUILD_1 §1 — the swale ─────────────
+            }
+
             list.GapLine();
-            Text.Font = GameFont.Medium;
-            list.Label("Swales");
-            DrawSectionReset(list, new[] { "swaleEnabled", "swaleRateMultiplier" });
-            Text.Font = GameFont.Small;
+            if (Section(list, "Swales", new[] { "swaleEnabled", "swaleRateMultiplier" }))
+            {
             list.CheckboxLabeled("A watered swale enriches the ground around it", ref swaleEnabled,
                 "On: a swale laid in a dug channel, while its own cell carries water (a fill, a flood "
               + "or a natural source), slowly turns the ground within two cells one step richer — "
@@ -1178,6 +1208,8 @@ namespace RimMandrake.FlowWorks
               + "swale does nothing; ground it already improved stays improved.");
             list.Label("Swale pace: " + SwaleRateMultiplier.ToString("F2") + "x  (1x = one step per fed day; first-guess number)");
             swaleRateMultiplier = list.Slider(swaleRateMultiplier, 0.1f, 10f);
+
+            }
 
             // ── Rivers (River Works, merged 2026-10-05) ───────────────────
             Rivers.RM_RiversSettingsWindow.DoSettingsSection(list);
@@ -1188,6 +1220,7 @@ namespace RimMandrake.FlowWorks
             Machinery.Kits.RM_KitSettings.DoSettingsSection(list);
             Quarry.RM_QuarrySettings.DoSettingsSection(list);
 
+            lastListHeight = list.CurHeight;
             list.End();
             Widgets.EndScrollView();
         }

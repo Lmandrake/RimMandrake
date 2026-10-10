@@ -58,7 +58,7 @@ namespace RimMandrake.FlowWorks
 		// cached MatSingle reached any other graphic sharing that key, and each re-apply leaked a waterDepth copy.
 		private static readonly Dictionary<TerrainDef, List<Material>> ownedMats = new Dictionary<TerrainDef, List<Material>>();
 		private static readonly FieldInfo SingleMatField = AccessTools.Field(typeof(Graphic_Single), "mat");
-		private static readonly MethodInfo CloneMethod = AccessTools.Method(typeof(object), "MemberwiseClone");
+		private static readonly MethodInfo CloneMethod = typeof(object).GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic); // BCL, not a game type: the patch-target lint indexes game assemblies only
 
 		private static Material Own(TerrainDef t, Material source)
 		{
