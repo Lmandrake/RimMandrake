@@ -805,6 +805,13 @@ MODS = {
         "Rung memory": "NextPulse",
         "Ion cordon timing": "Now",
     }, ()),
+    "Atlas": ("AtlasSettings.cs", "RimMandrake.Utinni.Atlas.csproj", {
+        "Discovery": "Now",
+        "Spoilers": "Now",
+        "Presentation": "Now",
+        "On a new discovery: message and small rewards": "NextPulse",
+        "Regions of the ship": "Now",
+    }, ("disabledCategories",)),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
