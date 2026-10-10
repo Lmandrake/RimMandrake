@@ -1,0 +1,1 @@
+A short mental state (RM_ParentalEnrage lasts ~50 ticks once the intruder is downed or leaves the disengage radius) is invisible to scenelib.run polling on the full list: run() overshoots ~100+ ticks per call. Poll with rimworld/step_game_ticks (exact) before calling a behaviour FAIL. (bridge6 2026-10-09)

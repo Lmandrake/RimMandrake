@@ -54,4 +54,8 @@
 - NOTE: SWBestiary + compose-biomes re-apply also carried ART_OVERRIDE_FOLD_ALL_1's committed ArtFold patches into the game. The 59 *ArtOverride mods are still in Mods/ and ModsConfig (untouched as instructed), so next load runs both until that item's game-down cleanup.
 
 ## Commits
-- none yet
+- 7b3ba4fb7 ProofEnrage hook · 6976275d9 ProofHood discriminators · 04916d360 hood fix (ReGrowthCore) + evidence · eb8290867 leather texPaths + verifies + ledger + item moves · lessons (2) in the final landing.
+
+## Status at close
+- Game UP on 612 (bazaar candidate list), rehearsal COPY map only (scratch map gone; never saved). Bridge released.
+- OWED at next game-down: deploy JawaRules (hood fix 04916d360) then reread ProofHood on a swimmer (expect canDraw=True); ART_OVERRIDE_FOLD_ALL_1 cleanup (its ArtFold patches are now deployed alongside the 59 still-active override mods); leather texPath fix and ArtFold XML take effect on that load.
