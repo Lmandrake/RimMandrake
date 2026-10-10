@@ -21,7 +21,8 @@
     <category>Building</category>
     <graphicData>
       <texPath>Things/Building/Linked/PowerConduit_Atlas</texPath>
-      <graphicClass>Graphic_Linked</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>Basic</linkType>
       <color>(90,140,190)</color>
       <linkFlags>
         <li>Custom3</li>

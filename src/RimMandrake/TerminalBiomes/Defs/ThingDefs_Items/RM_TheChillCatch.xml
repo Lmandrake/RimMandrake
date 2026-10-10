@@ -71,7 +71,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until phfix_RM_FessuCatch_a/_b paints its own (Things/Item/Fish/RM_FessuCatch); was borrowing Things/Pawn/Animal/RM_Fessu/RM_Fessu. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.10</Nutrition>
@@ -118,7 +118,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until phfix_RM_OdduCatch_a/_b paints its own (Things/Item/Fish/RM_OdduCatch); was borrowing Things/Pawn/Animal/RM_Oddu/RM_Oddu. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.15</Nutrition>
@@ -187,7 +187,7 @@
     <graphicData>
       <!-- TEMPORARY: vanilla small-meat sprite until phfix_RM_TarnnCatch_a/_b paints its own (Things/Item/Fish/RM_TarnnCatch); was borrowing Things/Pawn/Animal/RM_Tarnn/RM_Tarnn. -->
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
       <Nutrition>0.08</Nutrition>

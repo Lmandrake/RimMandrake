@@ -33,9 +33,6 @@
     <costList>
       <WoodLog>10</WoodLog>
     </costList>
-    <thingCategories>
-      <li>BuildingsTemperature</li>
-    </thingCategories>
     <designationCategory>Temperature</designationCategory>
     <techLevel>Neolithic</techLevel>
     <building>

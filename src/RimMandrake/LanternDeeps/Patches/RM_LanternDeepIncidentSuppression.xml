@@ -8,19 +8,11 @@
      incident list is the donor's own (BMT_CrystalCaverns.xml:91-103),
      verbatim. None of the nine vanilla defs carries allowedBiomes (checked
      2026-09-18), so the both-lists config error cannot fire; conditional
-     blocks keep this composable if another mod adds the list first. -->
+     blocks keep this composable if another mod adds the list first.
+     Aurora, Eclipse and SolarFlare are NOT here: they target the WORLD, and the engine refuses a biome
+     list on a world-targeting incident (Config error "world-targeting incident has a biome restriction
+     list", measured live 2026-10-09 on the 15-mod list) - those three ops did nothing but log the error. -->
 <Patch>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/IncidentDef[defName="Aurora"]/disallowedBiomes</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/IncidentDef[defName="Aurora"]/disallowedBiomes</xpath>
-      <value><li>RM_LanternDeeps</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/IncidentDef[defName="Aurora"]</xpath>
-      <value><disallowedBiomes><li>RM_LanternDeeps</li></disallowedBiomes></value>
-    </nomatch>
-  </Operation>
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/IncidentDef[defName="ColdSnap"]/disallowedBiomes</xpath>
     <match Class="PatchOperationAdd">
@@ -29,17 +21,6 @@
     </match>
     <nomatch Class="PatchOperationAdd">
       <xpath>Defs/IncidentDef[defName="ColdSnap"]</xpath>
-      <value><disallowedBiomes><li>RM_LanternDeeps</li></disallowedBiomes></value>
-    </nomatch>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/IncidentDef[defName="Eclipse"]/disallowedBiomes</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/IncidentDef[defName="Eclipse"]/disallowedBiomes</xpath>
-      <value><li>RM_LanternDeeps</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/IncidentDef[defName="Eclipse"]</xpath>
       <value><disallowedBiomes><li>RM_LanternDeeps</li></disallowedBiomes></value>
     </nomatch>
   </Operation>
@@ -95,17 +76,6 @@
     </match>
     <nomatch Class="PatchOperationAdd">
       <xpath>Defs/IncidentDef[defName="VolcanicWinter"]</xpath>
-      <value><disallowedBiomes><li>RM_LanternDeeps</li></disallowedBiomes></value>
-    </nomatch>
-  </Operation>
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/IncidentDef[defName="SolarFlare"]/disallowedBiomes</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/IncidentDef[defName="SolarFlare"]/disallowedBiomes</xpath>
-      <value><li>RM_LanternDeeps</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/IncidentDef[defName="SolarFlare"]</xpath>
       <value><disallowedBiomes><li>RM_LanternDeeps</li></disallowedBiomes></value>
     </nomatch>
   </Operation>

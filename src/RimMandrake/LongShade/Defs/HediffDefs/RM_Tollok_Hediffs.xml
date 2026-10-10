@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- LONGSHADE_TOLLOK_TICKS_1. The tollok are tick-like shade-dwellers in the deep middle of OLD WILD patches. Anything that sits
-     long there picks them up; shade you built is clean. Added by RM_MapComponent_Tollok (RM_ShadeExtras.cs). All numbers PROVISIONAL. -->
+     long there picks them up; shade you built is clean. Added by RM_MapComponent_Tollok (RM_ShadeExtras.cs). All numbers PROVISIONAL.
+     The feeding stages lower BloodPumping (PROVISIONAL): HediffStage has no bleedRate field in 1.6, the old <bleedRate> lines were
+     an XML error and did nothing (measured in Player.log 2026-10-09). -->
 <Defs>
   <HediffDef>
     <defName>RM_TollokInfestation</defName>
     <label>tollok infestation</label>
-    <description>Tick-like shade-dwellers from the deep middle of an old natural patch of shade. They itch, then they bleed. They do not live in shade that somebody built, and they die off in a few days if the host stays out of the old patches.</description>
+    <description>Tick-like shade-dwellers from the deep middle of an old natural patch of shade. They itch, then they feed, and a heavy infestation leaves the host short of blood. They do not live in shade that somebody built, and they die off in a few days if the host stays out of the old patches.</description>
     <hediffClass>HediffWithComps</hediffClass>
     <isBad>true</isBad>
     <tendable>true</tendable>
@@ -30,13 +32,23 @@
         <label>feeding</label>
         <minSeverity>0.35</minSeverity>
         <painOffset>0.08</painOffset>
-        <bleedRate>0.02</bleedRate>
+        <capMods>
+          <li>
+            <capacity>BloodPumping</capacity>
+            <offset>-0.05</offset>
+          </li>
+        </capMods>
       </li>
       <li>
         <label>swarming</label>
         <minSeverity>0.75</minSeverity>
         <painOffset>0.15</painOffset>
-        <bleedRate>0.05</bleedRate>
+        <capMods>
+          <li>
+            <capacity>BloodPumping</capacity>
+            <offset>-0.12</offset>
+          </li>
+        </capMods>
       </li>
     </stages>
   </HediffDef>
