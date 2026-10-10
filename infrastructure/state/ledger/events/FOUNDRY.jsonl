@@ -5455,3 +5455,10 @@
 {"seat":"FOUNDRY","event":"close","id":"ROT_MAPCOMP_HUNT_FORTY_SEVEN_MS","sha":"f3774dd15","reason":"component named (HugeFootprints, 99% of mapComp) and fixed in f3774dd15; proof owed in HUGE_FOOTPRINTS_FIX_PROVE_SIXTY_ON_ROT","ts":"2026-10-10T22:03:07Z","tsn":1791669787695605621}
 {"seat":"FOUNDRY","event":"close","id":"FULL_LIST_TPS_DIAGNOSE_EIGHT_NOT_SIXTY","sha":"f3774dd15","reason":"diagnosed: HugeFootprints whole-map re-plan = 70 of ~94 ms/tick (mapComp 94% of tick); fix f3774dd15 committed, deploy+reload proof in HUGE_FOOTPRINTS_FIX_PROVE_SIXTY_ON_ROT; density, memory and mask follow-ups filed","ts":"2026-10-10T22:03:08Z","tsn":1791669788627047539}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-10T22:03:19Z","tsn":1791669799834654561}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"deploy HugeThings fix + awareness meters, reload, prove TPS","ts":"2026-10-10T22:04:00Z","tsn":1791669840054253031}
+{"seat":"FOUNDRY","event":"lease","id":"HUGE_FOOTPRINTS_FIX_PROVE_SIXTY_ON_ROT","action":"take","token":"FOUNDRY.pid22288.1abe1ce9","expires":"2026-10-10T22:49:07Z","ts":"2026-10-10T22:04:07Z","tsn":1791669848214184689}
+{"seat":"FOUNDRY","event":"claim","id":"HUGE_FOOTPRINTS_FIX_PROVE_SIXTY_ON_ROT","ts":"2026-10-10T22:04:08Z","tsn":1791669848454406415}
+{"seat":"FOUNDRY","event":"start","id":"HUGE_FOOTPRINTS_FIX_PROVE_SIXTY_ON_ROT","ts":"2026-10-10T22:04:08Z","tsn":1791669848699993324}
+{"seat":"FOUNDRY","event":"lease","id":"AWARENESS_METERS_DEPLOY_HOOK_BODY_ONLY","action":"take","token":"FOUNDRY.pid22290.85d9198a","expires":"2026-10-10T22:49:09Z","ts":"2026-10-10T22:04:09Z","tsn":1791669849684116847}
+{"seat":"FOUNDRY","event":"claim","id":"AWARENESS_METERS_DEPLOY_HOOK_BODY_ONLY","ts":"2026-10-10T22:04:09Z","tsn":1791669849950687807}
+{"seat":"FOUNDRY","event":"start","id":"AWARENESS_METERS_DEPLOY_HOOK_BODY_ONLY","ts":"2026-10-10T22:04:10Z","tsn":1791669850196831537}
