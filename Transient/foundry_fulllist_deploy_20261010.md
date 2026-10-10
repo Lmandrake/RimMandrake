@@ -57,3 +57,4 @@ Transient/foundry_tps_ab_result_20261010.json (+ schedule), Transient/foundry_fu
 - Quarry BuildStoneDict duplicate 'Sandstone' key; MenuShell config error (defName with a space); 29 config errors overall.
 - The 14 installed missing mods: separate follow-up now that the 550 load is clean (owner ruling).
 - 14:30 bridge released; game left UP on the 550 list (pid 1568, quicktest map, paused); health_observer.py still running until ~16:42 (python.exe --for 10800)
+- 15:40 CORRECTION: health_observer.py was stopped by the 2 h background limit (not --for 10800); it is no longer running. Not restarted (already at the maximum timeout).
