@@ -30,6 +30,12 @@ namespace RimMandrake.CreatureBehaviors
 	{
 		private int lastTriggerTick = -999999;
 
+		// PARENTAL_ENRAGE_FACTION_GUARD_1 proof: what the last CompTickRare decided, and when.
+		// Not saved; dev-only reads through ProofEnrage.
+		private int lastRareTick = -1;
+		private string lastOutcome = "never_ticked";
+		public static int rareTicksSeen;
+
 		public override void PostExposeData()
 		{
 			base.PostExposeData();
@@ -39,9 +45,13 @@ namespace RimMandrake.CreatureBehaviors
 		public override void CompTickRare()
 		{
 			base.CompTickRare();
+			rareTicksSeen++;
+			lastRareTick = Find.TickManager.TicksGame;
+			lastOutcome = "entered";
 
 			if (!RM_CreatureBehaviorsSettings.parentalEnrageEnabled)
 			{
+				lastOutcome = "disabled";
 				return;
 			}
 
@@ -86,26 +96,31 @@ namespace RimMandrake.CreatureBehaviors
 
 			if (!IsYoung(young, ext))
 			{
+				lastOutcome = "adult";
 				return; // adults carry the comp and do nothing with it
 			}
 
 			if (now - lastTriggerTick < ext.cooldownTicks)
 			{
+				lastOutcome = "cooldown";
 				return;
 			}
 
 			Pawn intruder = FindIntruder(young, ext);
 			if (intruder == null)
 			{
+				lastOutcome = "no_intruder";
 				return;
 			}
 
 			Pawn guardian = FindGuardian(young, ext, intruder);
 			if (guardian == null)
 			{
+				lastOutcome = "no_guardian intruder=" + intruder.ThingID;
 				return; // a calf genuinely alone is simply undefended
 			}
 
+			lastOutcome = "try guardian=" + guardian.ThingID + " intruder=" + intruder.ThingID;
 			TryEnrage(guardian, young, intruder, ext, now);
 		}
 
@@ -440,8 +455,10 @@ namespace RimMandrake.CreatureBehaviors
 
 			if (!started)
 			{
+				lastOutcome += " start_refused";
 				return;
 			}
+			lastOutcome += " started";
 
 			if (guardian.MentalState is RM_MentalState_ParentalEnrage state)
 			{
@@ -457,6 +474,43 @@ namespace RimMandrake.CreatureBehaviors
 			// one intruder standing in a nursery cannot rouse the whole herd
 			// every rare tick.
 			lastTriggerTick = now;
+		}
+			/// <summary>
+		/// Dev proof (PARENTAL_ENRAGE_FACTION_GUARD_1): jawa/static_call. For every spawned pawn on the
+		/// current map carrying this comp, one line: life stage, the comp's last CompTickRare tick and
+		/// decision, and a fresh side-effect-free evaluation (intruder, guardian). Arg "" = all carriers.
+		/// </summary>
+		public static string ProofEnrage(string thingIdOrEmpty)
+		{
+			Map map = Find.CurrentMap;
+			if (map == null) return "UNMEASURED no current map";
+			var sb = new System.Text.StringBuilder();
+			sb.Append("now=").Append(Find.TickManager.TicksGame).Append(" rareTicksSeen=").Append(rareTicksSeen)
+			  .Append(" enabled=").Append(RM_CreatureBehaviorsSettings.parentalEnrageEnabled);
+			int n = 0;
+			foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+			{
+				if (!string.IsNullOrEmpty(thingIdOrEmpty) && p.ThingID != thingIdOrEmpty) continue;
+				RM_CompParentalEnrage c = p.GetComp<RM_CompParentalEnrage>();
+				if (c == null) continue;
+				n++;
+				RM_ParentalEnrageExtension ext = p.def.GetModExtension<RM_ParentalEnrageExtension>();
+				sb.Append("\n").Append(p.ThingID).Append(" fac=").Append(p.Faction?.def.defName ?? "none")
+				  .Append(" stage=").Append(p.ageTracker?.CurLifeStageIndex).Append('/').Append((p.RaceProps.lifeStageAges?.Count ?? 0) - 1)
+				  .Append(" lastRare=").Append(c.lastRareTick).Append(" last=").Append(c.lastOutcome)
+				  .Append(" lastTrigger=").Append(c.lastTriggerTick)
+				  .Append(" mental=").Append(p.MentalStateDef?.defName ?? "none");
+				if (ext == null) { sb.Append(" ext=null"); continue; }
+				if (IsYoung(p, ext))
+				{
+					Pawn intr = FindIntruder(p, ext);
+					Pawn g = intr == null ? null : FindGuardian(p, ext, intr);
+					sb.Append(" young intruderNow=").Append(intr?.ThingID ?? "none").Append(" guardianNow=").Append(g?.ThingID ?? "none");
+				}
+				else sb.Append(" adult");
+			}
+			sb.Append("\ncarriers=").Append(n);
+			return sb.ToString();
 		}
 	}
 }
