@@ -73,7 +73,12 @@ LOOP_MIN_REPEATS = 20       # same normalised error line this many times in the 
 BELT_LOG_SILENT_S = 20 * 60
 RUN_RECENT_S = 3600         # a finished-UNMEASURED run older than this is history, not an alarm
 NOT_RESPONDING_WEDGE_S = 240   # 'Not Responding' this long across watchdog calls = wedged, focused or not
-LOAD_BUDGET_S = 25 * 60     # a cold load is ~15 min (MEASURED 2026-09-07); past this with no bridge = stalled
+try:                        # the ONE declared deadline policy (load_policy.json); never restate the number here
+    import load_policy as _lp
+    _PROFILE = _lp.profile_for(_lp.active_count_from_modsconfig())
+except Exception as _e:     # an unreadable policy must be visible, not a silent default
+    _PROFILE = {"name": "UNREADABLE (%s)" % _e, "process_to_bridge_warn_s": 1500, "process_to_bridge_deadline_s": 2700}
+LOAD_BUDGET_S = _PROFILE["process_to_bridge_warn_s"]   # cold-load WARN threshold: past it = investigate, never kill
 MODAL_WEDGE_BEATS = 2       # a modal still open across MORE than this many distinct heartbeats = wedged
 MODAL_FORGET_S = 900        # a modal sighting older than this is a new episode, not persistence
 
@@ -514,10 +519,13 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
         age = (game or {}).get("age")
         if age is not None and age < LOAD_BUDGET_S:
             sigs.append(Sig("bridge", INFO, "not answering, game up %s: still cold-loading? (%s)" % (
-                _age(age), br.get("error", "")[:100]), "wait; a cold load is ~15 min"))
+                _age(age), br.get("error", "")[:100]), "wait; load_policy %s warns at %s" % (
+                _PROFILE["name"], _age(LOAD_BUDGET_S))))
         else:
-            sigs.append(Sig("bridge", STALLED, "not answering (%s)" % br.get("error", "")[:140],
-                            "cold load stalled or bridge dead: check player_log tail, then kill and relaunch"))
+            sigs.append(Sig("bridge", STALLED, "not answering (%s), game up %s, past load_policy %s warn %s" % (
+                br.get("error", "")[:140], _age(age), _PROFILE["name"], _age(LOAD_BUDGET_S)),
+                "investigate, do not kill on the clock: a stall needs evidence (player_log frozen or looping, CPU "
+                "near idle, Not Responding). Capture the log tail first; kill by PID only with that evidence"))
     else:
         st = br.get("state") or {}
         bits = "ping %sms state %s%s" % (br.get("connect_ms"), st.get("programState") or

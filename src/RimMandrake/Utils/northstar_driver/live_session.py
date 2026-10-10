@@ -64,7 +64,11 @@ def stop_game():
     say("1 stop", "game exited")
 
 
-def launch_and_wait(budget=900):
+def launch_and_wait(budget=None):
+    if budget is None:          # the ONE declared deadline policy (Utils/load_policy.json)
+        sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        import load_policy
+        budget = load_policy.profile_for(load_policy.active_count_from_modsconfig())["process_to_bridge_deadline_s"]
     sh(["powershell.exe", "-NoProfile", "-Command", "Start-Process 'steam://rungameid/294100'"], timeout=60)
     t0 = time.time()
     time.sleep(20)

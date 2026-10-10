@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "declared": "2026-10-10",
+  "item": "LAUNCHER_READY_HARDEN_OLD_LOG_LINES_LIE",
+  "note": "THE one cold-load deadline policy. launch_ready.py (launch_and_wait.sh), belt_watchdog.py and live_session.py read it through load_policy.py; never restate these numbers in code or docs. Proposed conservative defaults (GPT review 2026-10-10 s4.4), NOT measured healthy-load limits. Observed full-list loads: ~15 min (599 mods, 2026-09-07), 18.5-21 min (five loads, 2026-10-03). kill_on_deadline is false and must stay false: a deadline ends the ATTEMPT, it never declares the game hung; a stall verdict needs evidence (log frozen, CPU idle, Not Responding), never the clock alone.",
+  "kill_on_deadline": false,
+  "minimal_max_active_mods": 30,
+  "profiles": {
+    "full": {
+      "launch_to_process_s": 180,
+      "process_to_bridge_warn_s": 1500,
+      "process_to_bridge_deadline_s": 2700,
+      "bridge_to_dispatcher_s": 120,
+      "kill_existing_grace_s": 90
+    },
+    "minimal": {
+      "launch_to_process_s": 180,
+      "process_to_bridge_warn_s": 180,
+      "process_to_bridge_deadline_s": 600,
+      "bridge_to_dispatcher_s": 60,
+      "kill_existing_grace_s": 90
+    }
+  }
+}

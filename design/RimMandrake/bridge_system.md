@@ -547,7 +547,7 @@ on every driver (including subagents and ad-hoc `Transient/*.py` scripts) choosi
 
 | script | launch | kill | ready signal | wait budget |
 |---|---|---|---|---|
-| `bridgetools/launch_and_wait.sh` | `cmd.exe /c start "" steam://rungameid/294100` | `taskkill.exe /F /IM RimWorldWin64.exe` (by image, all instances) | log truncates, then `GABP server running standalone` | about 180 s for truncation plus about 240–300 s for the marker. **Its exit code is unreliable**: "TIMEOUT after 273s" on a load that succeeded at 1005 s (DOC companion skill) |
+| `bridgetools/launch_and_wait.sh` → `launch_ready.py` | `cmd.exe /c start "" steam://rungameid/294100` | `taskkill.exe /PID <pid> /F` per pre-existing game, waits for exit | old Player.log **moved** to `_rmscratch\playerlog_archive\` first; then one new process started after the launch, `Bridge token:` in a log written after the launch, listener owned by that PID, `rimbridge/ping` answers, no `Resetting mods config`, not Core-only (selftest `selftest_launch_ready.py`) | `Utils/load_policy.json`; deadline ends the attempt (exit 2), never kills |
 | `Utils/northstar_driver/live_session.py` | `powershell.exe Start-Process steam://rungameid/294100` | non-forced `taskkill`, 90 s grace, then gives up | a fresh Player.log within 90 s plus `Bridge token:` | 20 s sleep then up to 900 s |
 | `Utils/loadsweep/sweep_load.sh`, `biome_load_proof.sh`, `rimbench/gl_sheet_run.sh` | `steam.exe -applaunch 294100` | `taskkill.exe /F /IM` | `Bridge token:` | up to about 420 s |
 | owner | Steam UI | closes the game | his eyes | n/a |
@@ -555,10 +555,11 @@ on every driver (including subagents and ad-hoc `Transient/*.py` scripts) choosi
 - CLAUDE.md says "kill by PID, not pattern" (memory `pkill-f-matches-my-own-shell`). Every
   scripted kill found uses **image name**, which is safe only because exactly one RimWorld is
   ever expected.
-- **Cold-load budgets disagree across the tree:** about 15 min on 599 mods (MEASURED by
-  CLAUDE.md, 2026-09-07); 25 min in `GAME_STATE_WORKFLOW.md`, `modlist_swap.py` and the
-  watchdog's `LOAD_BUDGET_S=1500`; 23–30 min in `modset_builder.py`'s comments; 33 min in this
-  task's brief. The minimal list takes about 22 s; a quicktest map about 90 s (DOC).
+- **Cold-load deadlines are ONE declared policy**, `src/RimMandrake/Utils/load_policy.json` (read via
+  `load_policy.py` by `launch_ready.py`, `belt_watchdog.py` and `live_session.py`): full list warn 25 min,
+  attempt deadline 45 min; minimal list warn 3 min, deadline 10 min; `kill_on_deadline` is false and the loader
+  refuses true. These are conservative defaults, not measured limits. Observed: ~15 min on 599 mods
+  (2026-09-07), 18.5–21 min for five loads (2026-10-03). The minimal list takes about 22 s; a quicktest map about 90 s (DOC).
 - **The settle period** of about 40 s after the bridge first answers is implemented only in
   `load_session.py --settle` (MEASURED `load_session.py:177-199`).
 
