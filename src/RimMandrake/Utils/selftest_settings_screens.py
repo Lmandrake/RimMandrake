@@ -701,6 +701,23 @@ MODS = {
         "Raiders carrying looted weapons": "NextPulse",
         "Ruins and complexes loot (WORLDGEN-AFFECTING)": "NewMapsOnly",
     }, ()),
+    "FeverWood": ("RM_FeverWoodMod.cs", "RM_FeverWood.csproj", {
+        "Tentacle bestiary and sinking": "Now",
+        "The Great Emergence (rare set-piece)": "NextPulse",
+        "Uranium suppression": "Now",
+        "Sekkulaath prison tank": "Now",
+        "Ant hive dungeons (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Ant hive alarm sealing": "NextPulse",
+        "Two-front lure: stake and rolls": "Now",
+        "Two-front lure: the waves": "NextPulse",
+        "Sap-suckers, silloch and brathek": "Now",
+        "Kurreth theft letters": "Now",
+        "Kurreth raids and raid-back": "NextPulse",
+        "Oil boil weather": "NextPulse",
+        "Oil boil: yield and flash": "Now",
+        "Brood ransom": "Now",
+        "Brood ransom: casks, goodwill and gifts": "NextPulse",
+    }, ("broodGiftWeightMultipliers",)),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
