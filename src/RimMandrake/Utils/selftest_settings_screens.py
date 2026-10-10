@@ -844,6 +844,20 @@ MODS = {
         "Breach cracks": "Now",
         "Breach cracks: the first crack's countdown": "NextPulse",
     }, ()),
+    "Armoury": ("RSW_ArmourySettings.cs", "JawaArmoury.csproj", {
+        "Extra weapon sounds": "Now",
+        "Lightsaber crystal formations (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Emergency healing gear": "Now",
+        "Jumppack charges": "Now",
+        "Kolto tank": "Now",
+        "Mental break suppression": "Now",
+        "Defusing mines": "Now",
+        "Bonus finds while mining": "Now",
+        "Ship alloys, doonium and slag re-melt": "NextGameStart",
+        "Gear that buffs its wearer": "Now",
+        "Thrown weapons that come back": "Now",
+        "Ion and stun damage": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
