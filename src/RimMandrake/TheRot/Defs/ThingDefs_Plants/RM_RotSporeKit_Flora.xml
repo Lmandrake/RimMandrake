@@ -32,7 +32,7 @@
   <ThingDef ParentName="RM_CaveTreeBase">
     <defName>RM_Skulltop</defName>
     <label>vekkra choker</label>
-    <description>A small, deadly mushroom that steadily breathes polluting toxic spores into the air around it. Anything not immune to poison that stands near one long enough chokes; it is the little cousin of the grath elder and it guards nothing but itself.</description>
+    <description>A small mushroom with a pale, bulging cap pitted like a skull, which breathes a steady haze of toxic spores into the air around it. Anything not immune to poison that lingers nearby begins to choke, and the haze fouls the ground where it settles. It is the little cousin of the grath elder, and like the elder it guards nothing but itself; clear it from paths and fields masked, or with fire.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/Skulltop/Skulltop</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -144,7 +144,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Nuitae</defName>
     <label>nissik gill</label>
-    <description>A near-black cap whose gills glow brightly beneath it, so that it lights the milk it stands in and nothing above. It grows in the shallows or in ground wet enough to pass for them.</description>
+    <description>A near-black cap whose gills glow brightly beneath it, throwing light down onto the milky water it stands in and none at all upward, so that a stand of them looks from above like a shoal of dark stones lit from below. It grows in the shallows, or in ground wet enough to pass for them.</description>
     <statBases>
       <MaxHitPoints>90</MaxHitPoints>
       <Flammability>0.0</Flammability>
@@ -219,7 +219,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Wrinklecap</defName>
     <label>rukka cap</label>
-    <description>A damp-ground mushroom with a cap wrinkled like a walnut, glowing a soft lilac from the folds. It is the grazers' staple; anything that eats fungus eats this first.</description>
+    <description>A damp-ground mushroom with a cap wrinkled and folded like a walnut, glowing a soft lilac from deep in the folds. It is the grazers' staple: anything in the pale forest that eats fungus eats this first, and a field of trampled rukka caps is a sure sign a herd is near.</description>
     <statBases>
       <MaxHitPoints>90</MaxHitPoints>
       <Flammability>0.0</Flammability>
@@ -611,7 +611,7 @@
   <ThingDef ParentName="RM_CaveTreeBase">
     <defName>RM_FlakespireFungus</defName>
     <label>tarrusk spire</label>
-    <description>A slow-growing mushroom tree with a purple-grey spire of a cap and a stalk as hard as good timber. It takes half a year to reach cutting size and is worth the wait: strong, straight, and handsome enough to build a hall from.</description>
+    <description>A slow-growing mushroom tree: a tall purple-grey spire of a cap, flaking at the edges like old paint, on a stalk as hard and straight-grained as good timber. It takes half a year to reach cutting size and is worth the wait; the stalk cuts into strong, handsome boards, enough to build a hall from.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/FlakespireFungus</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -642,7 +642,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Pusmelon</defName>
     <label>gubbra gourd</label>
-    <description>A gourd-like fungus, grey-green and bloated, that grows sacs of a foul-smelling liquid under its skin. Step on one and you will smell it for a day; nothing eats it, and nothing has to.</description>
+    <description>A bloated grey-green fungus shaped like a gourd, its skin stretched tight over sacs of a foul yellow liquid that slosh when it is touched. Step on one and you will smell it for a day. Nothing eats it, and nothing has to.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/Pusmelon</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -706,7 +706,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_TollukCap</defName>
     <label>tolluk cap</label>
-    <description>The common tall mushroom of the pale forest: a lilac cap on a thick white stalk, studded with soft knobs that glow faintly when the air is wet. It gives a few edible purple caps when harvested.</description>
+    <description>The common tall mushroom of the pale forest: a lilac cap on a thick white stalk, studded with soft knobs that glow faintly when the air is wet. Where it grows thick it makes a low, dim canopy that much of the forest's smaller life shelters under. It gives a handful of edible purple caps when harvested.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/TollukCap</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -768,7 +768,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Sagecrust</defName>
     <label>tavvik crust</label>
-    <description>A tough, leafy crust-fungus that clings to rock and mat alike and survives on almost no light. Nothing much eats it and nothing much kills it; it is the last thing to go when the ground turns cold.</description>
+    <description>A tough, leafy grey-green crust that clings to rock and fungal mat alike in overlapping scales, living on almost no light. Nothing much eats it and nothing much kills it. When the ground turns cold and everything else in the pale forest sickens back into the mat, the tavvik crust is the last thing still growing.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/Sagecrust</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -822,7 +822,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_CrimsonCap</defName>
     <label>rhessa cap</label>
-    <description>A broad crimson cap on a white stalk, the one saturated colour in a pale forest. It is good for nothing but looking at, and it is very good at that.</description>
+    <description>A broad, flat crimson cap on a tall white stalk, the one strong colour in a pale forest and visible from a long way off. It is not food, medicine or timber; it is good for nothing but looking at, and it is very good at that. Colonists plant it for the pleasure of seeing it.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/CrimsonCap</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -860,7 +860,7 @@
   <ThingDef ParentName="RM_CavePlantBase">
     <defName>RM_GreyLady</defName>
     <label>sylla lace</label>
-    <description>A grey fungus that grows a fine cloth-like lace from beneath its cap, hanging to the ground in a veil. The lace is cut and woven as cloth; it is the pale forest's only fabric, and it is better than it has any right to be.</description>
+    <description>A slender grey mushroom that grows a fine lace from beneath its cap, falling to the ground around the stalk like a veil. The lace is strong, light and soft; cut and spun, it is the pale forest's only cloth, and better than it has any right to be. It can be farmed in open ground or in fungiponic beds, and each plant gives a generous bolt.</description>
     <statBases>
       <MaxHitPoints>85</MaxHitPoints>
       <Nutrition>0.2</Nutrition>
@@ -972,7 +972,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Brightbell</defName>
     <label>tinnik bell</label>
-    <description>A small, pretty bell of a mushroom that glows a soft lantern-gold in the dark and gives a bite or two of edible fungus. Colonists plant them along paths for the light, and children pick them for no reason at all.</description>
+    <description>A small, nodding bell of a mushroom on a thin pale stem, glowing a soft honey-gold from inside the bell. A patch of them lights a path well enough to walk by at night, which is why colonists plant them along walkways and around doors, and each gives a bite or two of edible fungus besides. Easy to grow, and pleasant to have around in a forest where most things that glow want something from you.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/Brightbell</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -1020,7 +1020,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_VioletWimple</defName>
     <label>pursk hood</label>
-    <description>A big violet-capped mushroom whose cap folds down around the stalk like a hood. It is not very productive, but the hood is edible and it is everywhere, and that is enough.</description>
+    <description>A big violet-capped mushroom whose cap droops and folds down around its stalk like a hood. It is not very productive, but the hood is soft and edible, and it grows everywhere in the pale forest, and that is enough.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/VioletWimple</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -1055,7 +1055,7 @@
   <ThingDef ParentName="RM_CavePlantBase">
     <defName>RM_MortalMorelPlant</defName>
     <label>vennik salve</label>
-    <description>A slow, delicate, honeycombed mushroom whose flesh is worked into fungal medicine. Sowing and harvesting it are both slow, careful work because the whole thing crumbles at a touch, and a crumbled one is worth nothing.</description>
+    <description>A small honeycombed mushroom, brown and pitted like a dried sponge, whose flesh is worked into fungal medicine. Everything about it is slow and delicate: it takes a long time to grow, it must be sown and cut with care, and it crumbles at a careless touch into a dust worth nothing. A good patch is guarded the way other colonies guard a medicine cabinet.</description>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
       <Nutrition>0.2</Nutrition>
@@ -1094,7 +1094,7 @@
   <ThingDef ParentName="RM_CavePlantBase">
     <defName>RM_MortalMorelPlantGrowable</defName>
     <label>vennik salve</label>
-    <description>A slow-growing mushroom which yields fungal medicine when harvested. Sowing and harvesting this fungus are both very labor-intensive because of its delicate structure.</description>
+    <description>The vennik salve grown in prepared beds: a small honeycombed mushroom whose flesh is worked into fungal medicine. Sowing and harvesting it are both slow, careful work, because the whole thing crumbles at a careless touch into a dust worth nothing.</description>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
       <Nutrition>0.2</Nutrition>
@@ -1324,7 +1324,7 @@
   <ThingDef ParentName="RM_CaveBushBase">
     <defName>RM_BlastpodShroom</defName>
     <label>kabbrik pod</label>
-    <description>A wild fungus whose swollen pods are packed with an oily spore-mass volatile enough to refine into chemfuel. It grows where it pleases and nowhere anyone plants it; it cannot be cultivated, or at least nobody has managed to.</description>
+    <description>A low cluster of taut, rounded pods on short stems, the skins grey-white and glossy, each seam showing a faint warm glow. The pods are packed with an oily spore-mass volatile enough to refine into chemfuel, and colonists learn to keep fires well away from a patch. It grows where it pleases and nowhere anyone plants it; nobody has managed to cultivate it.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown</texPath>
       <graphicClass>Graphic_Random</graphicClass>

@@ -4,7 +4,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Brogg</defName>
     <label>brogg</label>
-    <description>A heavy, plated, six-legged grazer built on the dorrak, its back a mound of mycelial store under layered bracket fungus and its edges shaggy with hanging hyphae. With little to no natural predators, it grazes among the taller fungi with an unconcerned grace.</description>
+    <description>A heavy, plated, six-legged grazer built on the dorrak, its broad back a mound of stored mycelium under layered shelves of bracket fungus, its flanks shaggy with hanging hyphae that sway as it walks. It has almost nothing to fear in the pale forest and grazes among the tall caps with a slow, unconcerned grace, ignoring people unless they corner it. A tamed brogg can be milked; a hunted one gives a great deal of meat for the effort.</description>
     <statBases>
       <MoveSpeed>4.3</MoveSpeed>
       <MarketValue>350</MarketValue>
@@ -112,21 +112,6 @@
     <combatPower>100</combatPower>
     <ecoSystemWeight>1.1</ecoSystemWeight>
     <wildGroupSize>1~2</wildGroupSize>
-    <alternateGraphicChance>0.85</alternateGraphicChance>
-    <alternateGraphics>
-      <li>
-        <color>(37,50,37)</color>
-      </li>
-      <li>
-        <color>(74, 75, 66)</color>
-      </li>
-      <li>
-        <color>(89, 96, 67)</color>
-      </li>
-      <li>
-        <color>(125, 124, 72)</color>
-      </li>
-    </alternateGraphics>
     <lifeStages>
       <li>
         <label>Brogg cria</label>

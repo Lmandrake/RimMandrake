@@ -77,7 +77,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_AgelessCap</defName>
     <label>orlath cap</label>
-    <description>A pale, swollen cap said to give back years to anyone who drinks it brewed right — and it must be brewed here, alive, or not at all. It bears no malice; disturbing its mycelium is simply what makes it vent a choking cloud, and the cloud does not care why you came.</description>
+    <description>A pale, swollen cap the size of a footstool, its skin faintly translucent, as if lit from inside. Brewed alive and on the spot, it is said to give back years to whoever drinks it, and it has to be brewed here, fresh from the ground, or not at all. It bears no malice, but its mycelium runs under everything nearby, and disturbing it makes the cap vent a choking cloud that does not care why you came. It grows very slowly; harvest it gently, or masked.</description>
     <tickerType>Normal</tickerType>
     <statBases>
       <MaxHitPoints>180</MaxHitPoints>
@@ -126,7 +126,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_RegenerantVeil</defName>
     <label>mirrash veil</label>
-    <description>A translucent, slow-pulsing veil of fungal tissue laid over the ground, threaded straight into the grove's own mycelial network, from which the pale forest's healing tea is brewed alive. Wound it and the whole network answers.</description>
+    <description>A translucent, slowly pulsing sheet of fungal tissue laid over the ground like a wet cloth and threaded straight into the grove's own mycelial network. The pale forest's healing tea is brewed from it alive, fresh from the ground. Wound it and the whole network answers: the grove knows, and whatever guards the grove comes. It grows very slowly and should be harvested by someone who is not in a hurry.</description>
     <statBases>
       <MaxHitPoints>140</MaxHitPoints>
       <Beauty>15</Beauty>
@@ -195,7 +195,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_FalseFruit</defName>
     <label>pekk fruit</label>
-    <description>Grown at the edge of a lussa crown's root mat and shaped to match it: a small pale fruiting body that looks exactly like the good stuff. It is not — touch one and the whole grove knows you are there, and what lives in the grove comes to see.</description>
+    <description>A small, pale fruiting body grown at the edge of a lussa crown's root mat and shaped to match the crown's own caps, down to the sheen. It is a lure and an alarm, not food: touch one, or try to pick it, and the whole grove knows you are there, and whatever guards the grove comes to see who it is. What little flesh it has is edible, if you live to eat it.</description>
     <thingClass>RimMandrake.CreatureBehaviors.RUT_Plant_FalseFruit</thingClass>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>

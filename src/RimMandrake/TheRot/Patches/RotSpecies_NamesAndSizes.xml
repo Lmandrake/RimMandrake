@@ -36,7 +36,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/description</xpath>
-          <value><description>A low, swollen dome of a mushroom, wide as a hut and mottled in the colours things use to say do not eat me. Everyone eats it anyway: the flesh under the skin is a potent psychotropic, harvested one careful cut at a time and taken with a great deal of caution, or none.</description></value>
+          <value><description>A squat, swollen dome of a mushroom as wide as a hut, its skin blotched in the yellows and bruise-purples that every other living thing reads as a warning. People read it as an invitation. Under the skin lies a pale psychotropic flesh, cut away a sliver at a time: one sliver opens the mind, two take it somewhere it does not come back from easily. It grows slowly, and each dome gives up very little.</description></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_AgaricusDomeCap"]/plant/visualSizeRange</xpath>
@@ -57,7 +57,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/description</xpath>
-          <value><description>An elder of the pale forest, older than any settlement on the planet and wider than most. It breathes a standing cloud of suffocating spores that kills whatever wanders in, fungus or animal, and then reaches out with slow hyphae to eat the dead where they lie. Cut it and you join them, unless you are sealed against its breath to the last seam; a mortar works, from far enough away.</description></value>
+          <value><description>An elder of the pale forest, twenty paces across and older than any settlement on the planet. It never stops breathing: a standing cloud of heavy, suffocating spores rolls out from under its cap and settles around it, and anything that wanders in, whether grazer, hunter, colonist or rival fungus, chokes, lies down and does not get up. Then the slow part starts. Pale hyphae creep out from its foot to the bodies and eat them where they lie. Do not walk into its shadow. Anyone who means to cut one must be sealed against its breath to the last seam; a mortar, from far enough away, works better.</description></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_AgariluxPrime"]/plant/visualSizeRange</xpath>
@@ -78,7 +78,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/description</xpath>
-          <value><description>A fungus that long ago learned to grow a trunk. What it swallowed to learn that is gone; what is left is a pale, ridged column with a mushroom's cap and gills where a crown should be. A fair quantity of usable wood can be cut from the trunk.</description></value>
+          <value><description>A fungus that long ago swallowed a tree and kept its bones. The trunk is still wood, ridged, pale and cold to the touch, but everything above it is mushroom: a broad cap where the crown should be, gills where the leaves once grew, and a mycelium that runs far underground. Cutting one yields a good stack of real wood, and it can be planted and grown again.</description></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_ArbuscularMycorrhiza"]/plant/visualSizeRange</xpath>
@@ -116,7 +116,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/description</xpath>
-          <value><description>A huge pink-lilac cap that weeps a thick, pungent resin down its stalk without ever stopping. The resin is a neurotoxin strong enough to drop a warg; collected carefully it tips a single dart, and nobody collects it carelessly twice.</description></value>
+          <value><description>A tall pink-lilac cap that weeps without stopping: a thick, sharp-smelling resin beads at the rim, runs down the stalk and pools around its foot. The resin is a nerve poison strong enough to drop a warg in a few breaths. Gathered with care it tips a single poison dart; gathered carelessly, it is gathered once. Slow to grow, and it can be planted.</description></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_DribblingCap"]/plant/visualSizeRange</xpath>
@@ -137,7 +137,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/description</xpath>
-          <value><description>A pale forest giant whose stalk has hardened into something you can build with — a weak wood, but wood, in a biome that has none. The cap glows faintly at its knobs; the stalk is cut for mushroom logs and grows back in a season.</description></value>
+          <value><description>A pale forest giant whose stalk has hardened, over many seasons, into something close to wood: light, fibrous and weak, but wood, in a biome that grows almost none. Its broad lilac cap is studded with soft knobs that shine faintly in the wet. Cut it at the base for mushroom logs; plant the ground again and another mast stands within a season.</description></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_GiantAgarilux"]/plant/visualSizeRange</xpath>
@@ -158,7 +158,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/description</xpath>
-          <value><description>The lamp of the pale forest: a tall lilac mushroom that gives off a wide, cold violet light from every knob on its cap. It grows only wild, and gives a few edible purple caps to anyone willing to harvest in the dark it makes brighter.</description></value>
+          <value><description>The night-light of the pale forest: a tall lilac mushroom whose every knob gives off a cold violet light, bright enough to work by and to be seen by from far off. It grows only wild, and anyone harvesting its few edible purple caps does it in the light it makes, which is exactly where every hungry thing in the grove is already looking.</description></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_GlowingAgarilux"]/plant/visualSizeRange</xpath>
@@ -179,7 +179,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_Glowstool"]/description</xpath>
-          <value><description>A small brown-grey stool of a mushroom that smells like something died in a wet sack and tastes, cooked, surprisingly good. It grows in open ground here and gives a handful of edible caps.</description></value>
+          <value><description>A squat brown-grey mushroom that smells like a rag pulled out of a dead animal's stomach. Raw, it tastes the way it smells. Cooked, the stink goes and leaves something rich and savoury behind, and colonists who have eaten one stop complaining about the smell of the patch. Easy to grow in open ground, and it gives a good handful of caps.</description></value>
         </li>
       </operations>
     </match>
@@ -196,7 +196,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/description</xpath>
-          <value><description>A tall, narrow mushroom with a bright lilac cap held high on a pale spire of a stalk. It is far more nourishing than its neighbours and rather harder on the stomach; the caps are harvested a few at a time.</description></value>
+          <value><description>A tall, narrow mushroom holding a bright lilac cap high on a pale stalk. Its flesh is dense and far more filling than anything else that grows here, and much harder on the stomach: eaten raw it sits like a stone, and even cooked it disagrees with some. It grows wild and can be planted; the caps are cut a few at a time.</description></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_LilacBeacon"]/plant/visualSizeRange</xpath>
@@ -238,7 +238,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/description</xpath>
-          <value><description>A blue-pink mushroom that sweats a clear slime insects cannot resist and cannot escape: they stick, they stop, and the fungus eats them where they lie. The same slime makes its flesh unusually rich, and it can be eaten raw.</description></value>
+          <value><description>A broad blue-pink mushroom that sweats a clear, sweet-smelling slime. Insects come for the smell, stick in the slime, stop moving, and slowly dissolve into food for the cap that caught them. The same slime soaks into the flesh and makes it rich and safe to eat raw, one of the few things in the pale forest that is.</description></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_SlimyPholiota"]/plant/visualSizeRange</xpath>
@@ -259,7 +259,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/description</xpath>
-          <value><description>A branching colony of shelf-caps growing one over another from a single foot, sharp-smelling and slow to spoil. The pink caps keep for a long time after harvest — longer than anything else the pale forest gives.</description></value>
+          <value><description>A branching stack of pink shelf-caps growing one over another from a single woody foot, sharp-smelling enough to make the eyes water. The caps are tough and slow to rot: cut and stored, they keep far longer than anything else the pale forest gives, which makes it what colonists plant when they are thinking about winter.</description></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AB_WitchesOyster"]/plant/visualSizeRange</xpath>
@@ -312,7 +312,7 @@
         </li>
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AA_Agaripod"]/description</xpath>
-          <value><description>A great slow mound of animal and fungus, grown over with living caps that feed it and hide it, so heavy with growth that bullets sink into it and do little. Fire is another matter. It breeds by throwing spores and feels the wounds of its kin across the grove; hunted or kept, it gives a good yield of edible cap-flesh.</description></value>
+          <value><description>A great slow mound of animal and fungus, grown over with a hide of living caps that feed it and hide it among the domes of the pale forest. The caps soak up bullets so thoroughly that shooting one mostly decorates it; fire is another matter, and it knows it. It breeds by casting spores rather than bearing young, and every gromma in the grove flinches when one of them is hurt. Hunted or herded, it gives a heavy yield of edible cap-flesh.</description></value>
         </li>
       </operations>
     </match>
@@ -622,4 +622,57 @@
     </match>
   </Operation>
 
+
+  <!-- ============== Rot sheet 2026-10-10 (owner notes on therot_sheet_2026-10-05): AA_AngelMoth new description (rename owed: he gave no name),
+       AA_AnimaColossus -> pluur'va ("rename to a Pluur'va, tripple the cell length"). Label-only renames (save-safe);
+       eggs/items keep their donor labels, as for the other renames in this file. ============== -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_AngelMoth"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_AngelMoth"]/description</xpath>
+          <value><description>A broad-winged moth with pale, dust-soft wings, bred long ago for some forgotten waste-eating project and long since gone wild. Its grubs are timid things that nibble at sparse growth. The adults are not timid about anything: they eat cloth, wool first and then any natural fibre, worn or stored, and settle for grass only when nothing better is within reach. A tamed one can be shorn of a fine moth-silk, provided the silk is kept well away from every other moth, which will eat that too.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="AA_AnimaColossus"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_AnimaColossus"]/label</xpath>
+          <value><label>pluur'va</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_AnimaColossus"]/description</xpath>
+          <value><description>A walking hill: a cold-blooded, six-legged reptile with two spines twisted around each other and six small eyes, so long that it takes a moment to see where it ends. Trees and tall mushrooms grow rooted along its back and feed it in return for the ride. It moves slowly, eats slowly and is very hard to stop. Tamed, it can be trimmed for wood from the grove on its back, and very rarely it sheds a hardened pearl that grows into an anima tree when planted.</description></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/label</xpath>
+          <value><label>pluur'va</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>12</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>15</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
+          <value><drawSize>18</drawSize></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
 </Patch>

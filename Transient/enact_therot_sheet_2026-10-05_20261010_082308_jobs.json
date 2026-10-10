@@ -1,0 +1,40 @@
+[
+ {
+  "id": "enact_4b7d5ca2_animacolossus_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_AnimaColossus",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Regenerate (S), rename to a Pluur'va, tripple the cell length, regenerate the name.\" RimWorld sprite of the animacolossus, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Regenerate (S), rename to a Pluur'va, tripple the cell length, regenerate the name.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/2d/2d27955a87e58ef3ec971f675939f0920e08d44995b7d41e2784bec9a91f7659.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_6811876e_snoruuk_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Snoruuk",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Regenerate following the MLIE donor art + the canon art example carefully. Make it as realistic as you can and offer some variants to choose from\" RimWorld sprite of the snoruuk, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Regenerate following the MLIE donor art + the canon art example carefully. Make it as realistic as you can and offer some variants to choose from",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/84/84b5aed6c720ce44907c2bf4ca7505fafe26191f222ec7982396057411308791.png"
+  ],
+  "biome_neutral": true
+ }
+]
