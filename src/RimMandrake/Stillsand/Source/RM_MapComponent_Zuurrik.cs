@@ -82,8 +82,7 @@ namespace RimMandrake.Stillsand
         }
 
         private bool Active =>
-            RM_StillsandMod.settings != null
-            && RM_StillsandMod.settings.zuurrikEnabled
+            RM_StillsandSettings.zuurrikEnabled
             && map.Biome != null
             && map.Biome.defName == "RM_Stillsand";
 
@@ -160,7 +159,7 @@ namespace RimMandrake.Stillsand
                 return;
             }
             List<IntVec3> cells = BloodCellsOnSand();
-            int threshold = Mathf.Max(1, RM_StillsandMod.settings.zuurrikBloodThreshold);
+            int threshold = Mathf.Max(1, RM_StillsandSettings.zuurrikBloodThreshold);
             if (cells.Count < threshold)
             {
                 return;
@@ -242,7 +241,7 @@ namespace RimMandrake.Stillsand
                 }
             }
             swarm.Clear();
-            int growth = RM_StillsandMod.settings == null || RM_StillsandMod.settings.zuurrikGrowByFeeding
+            int growth = RM_StillsandSettings.zuurrikGrowByFeeding
                 ? Mathf.FloorToInt((filthEaten + corpseNutritionEaten * StainsPerNutrition) / StainsPerFatness)
                 : Mathf.Max(1, bloodAtWake / 5);
             fatness = Mathf.Min(MaxFatness, fatness + growth);

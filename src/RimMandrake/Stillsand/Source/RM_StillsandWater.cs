@@ -436,24 +436,5 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref ledgerIncidentWeighting, "water_ledgerIncidentWeighting", true);
         }
 
-        public static void Draw(Listing_Standard list)
-        {
-            list.GapLine();
-            list.Label("Water on the sand");
-            list.CheckboxLabeled("Poured water blooms", ref bloomOnPour,
-                "Water poured onto Stillsand sand sows a short-lived bloom along the pour. Off: the sand only gets wet "
-                + "(a fresh pour still draws the swimmers).");
-            // The ledger rows exist only when a tier above ships a ledger def: the RM
-            // tier has no debt and shows no debt UI.
-            RM_WaterLedgerDef ledger = RM_WaterLedger.ActiveDef;
-            if (ledger != null)
-            {
-                list.CheckboxLabeled(ledger.LabelCap + ": count the water drawn", ref ledgerEnabled,
-                    "Off: drinking and drawing water on these maps adds nothing to " + ledger.label
-                    + ", its mood line and goodwill stop moving, and it never opens a ritual.");
-                list.CheckboxLabeled(ledger.LabelCap + " weights the sand's events", ref ledgerIncidentWeighting,
-                    "Unpaid debt raises the odds of the biome's leviathans and sand-buster eruptions. Off: odds ignore the debt.");
-            }
-        }
     }
 }

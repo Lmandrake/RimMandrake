@@ -193,34 +193,5 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref singingWarningCells, "sw_singingWarningCells", 12f);
         }
 
-        public static void Draw(Listing_Standard list)
-        {
-            list.GapLine();
-            list.Label("Under the sand");
-            list.CheckboxLabeled("Thumper calls swimmers", ref thumperEnabled,
-                "A charged, beating thumper wets the sand around it and calls submerged sand swimmers within its radius toward it. Off: it never beats.");
-            list.Label("Thumper call radius: " + Mathf.RoundToInt(thumperRadius) + " cells");
-            thumperRadius = Mathf.Round(list.Slider(thumperRadius, 10f, 80f));
-            list.CheckboxLabeled("Sand fishing draws a stalker wake", ref sandFishingWakeEnabled,
-                "A fishing session on deep sand has a small chance to draw a nearby submerged swimmer toward the fisher. Off: fishing is quiet.");
-            list.Label("Chance per catch: " + sandFishingWakeChance.ToStringPercent());
-            sandFishingWakeChance = Mathf.Round(list.Slider(sandFishingWakeChance, 0f, 1f) * 100f) / 100f;
-            list.CheckboxLabeled("Swimmers swim through deep drifts", ref driftSwimEnabled,
-                "Where the dune engine is present, a drift of sand at or above the depth below counts as swim ground. Off: only sand terrain does.");
-            list.Label("Drift depth that counts as swim ground: " + driftSwimDepth.ToString("0.00"));
-            driftSwimDepth = Mathf.Round(list.Slider(driftSwimDepth, 0.1f, 1f) * 20f) / 20f;
-            list.GapLine();
-            list.Label("The Listening");
-            list.CheckboxLabeled("Wind hiss and saltation", ref listeningHissEnabled,
-                "The always-on room tone of the sand, scaled by wind speed. Off: no hiss bed.");
-            list.CheckboxLabeled("Singing dunes", ref listeningSingingEnabled,
-                "A slab sliding off a slip face booms. Off: the dunes stay quiet.");
-            list.CheckboxLabeled("Singing-dune warning", ref listeningWarningEnabled,
-                "A one-line warning the first time a singing slip face comes near one of your buildings.");
-            list.Label("Warning distance: " + Mathf.RoundToInt(singingWarningCells) + " cells");
-            singingWarningCells = Mathf.Round(list.Slider(singingWarningCells, 4f, 40f));
-            list.CheckboxLabeled("Rumble and breach sounds", ref listeningRumbleEnabled,
-                "Stillsand's own rumble and breach sounds for swimmers. Off: swimmers use whatever sound their extension names, if any.");
-        }
     }
 }

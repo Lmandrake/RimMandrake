@@ -27,12 +27,6 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref duneErasesTracks, "duneErasesTracks", true);
         }
 
-        public static void Draw(Listing_Standard list)
-        {
-            list.CheckboxLabeled("Moving sand buries tracks", ref duneErasesTracks,
-                "On a Stillsand map, a cell whose sand depth shifts noticeably loses its footprints, so dunes on the move wipe the trail. "
-              + "Off: prints stay until the track limit pushes the oldest out. Safe mid-game.");
-        }
     }
 
     [StaticConstructorOnStartup]
