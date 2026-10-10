@@ -187,13 +187,13 @@ def t_a_free_bridge_offer_says_how_to_take_it():
     to start it. Handing a seat live work with no way to begin is the same stranding."""
     fresh()
     ok("game", "UP", "--owner-said", "game up", seat="OWNER")
-    ok("file", "BRIDGE_OFFER_HINT_1", "--for", "CHECK", "--title", "drive the bridge",
+    ok("file", "BRIDGE_OFFER_HINT_PROBE_FIXTURE", "--for", "CHECK", "--title", "drive the bridge",
        "--needs", "bridge")
-    open(os.path.join(_tmp(), "items", "BRIDGE_OFFER_HINT_1.md"), "w").write(
+    open(os.path.join(_tmp(), "items", "BRIDGE_OFFER_HINT_PROBE_FIXTURE.md"), "w").write(
         "## spec\nx\n## verify\ny\n## criteria\nz\n")
-    make_ready("BRIDGE_OFFER_HINT_1", seat="CHECK")
+    make_ready("BRIDGE_OFFER_HINT_PROBE_FIXTURE", seat="CHECK")
     out = ok("next", "--seat", "CHECK", seat="CHECK")
-    assert "BRIDGE_OFFER_HINT_1" in out, (
+    assert "BRIDGE_OFFER_HINT_PROBE_FIXTURE" in out, (
         "a bridge item was withheld with the bridge FREE — the original defect: %s" % out)
     assert "rimflow bridge take" in out, (
         "offered bridge work without saying how to take the lock: %s" % out)
@@ -201,25 +201,25 @@ def t_a_free_bridge_offer_says_how_to_take_it():
 
 def t_file_claim_start_close():
     fresh()
-    out = ok("file", "DESERT_STORM_TUNING_1", "--for", "BUILD",
+    out = ok("file", "DESERT_STORM_TUNING_PROBE_FIXTURE", "--for", "BUILD",
              "--title", "Tune the sandstorm", "--row", "3")
     assert "filed for BUILD" in out and "proposed" in out, out
     assert "## spec" in out, "filing must name the sections still missing: %s" % out
-    prose("DESERT_STORM_TUNING_1")
+    prose("DESERT_STORM_TUNING_PROBE_FIXTURE")
     # step 3: claim takes a lease AND starts it; a bare `start` still works for scripts
-    out = ok("claim", "DESERT_STORM_TUNING_1")
+    out = ok("claim", "DESERT_STORM_TUNING_PROBE_FIXTURE")
     assert "-> doing" in out and "lease token" in out, out
-    assert "-> doing" in ok("start", "DESERT_STORM_TUNING_1")
-    out = ok("close", "DESERT_STORM_TUNING_1", "--sha", "deadbee")
+    assert "-> doing" in ok("start", "DESERT_STORM_TUNING_PROBE_FIXTURE")
+    out = ok("close", "DESERT_STORM_TUNING_PROBE_FIXTURE", "--sha", "deadbee")
     assert "closed at deadbee" in out, out
 
 
 def t_close_takes_git_head_when_no_sha_given():
     fresh()
-    ok("file", "SHA_FROM_GIT_1", "--for", "BUILD", "--title", "t")
-    prose("SHA_FROM_GIT_1")
-    ok("claim", "SHA_FROM_GIT_1")
-    out = ok("close", "SHA_FROM_GIT_1")
+    ok("file", "SHA_FROM_GIT_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    prose("SHA_FROM_GIT_PROBE_FIXTURE")
+    ok("claim", "SHA_FROM_GIT_PROBE_FIXTURE")
+    out = ok("close", "SHA_FROM_GIT_PROBE_FIXTURE")
     assert "closed at" in out and len(out.split("closed at ")[1].strip(" .\n")) >= 7, (
         "a close with no commit behind it is a claim, not a close: %s" % out)
 
@@ -235,10 +235,10 @@ def t_cross_seat_close_lands_and_names_the_ruling_seat():
     ledger both name the closing seat, not just the owning one.
     """
     fresh()
-    ok("file", "BUILDS_OWN_ITEM_1", "--for", "BUILD", "--title", "t")
-    prose("BUILDS_OWN_ITEM_1")
-    ok("claim", "BUILDS_OWN_ITEM_1")
-    out = ok("close", "BUILDS_OWN_ITEM_1", "--sha", "abc1234",
+    ok("file", "BUILDS_OWN_ITEM_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    prose("BUILDS_OWN_ITEM_PROBE_FIXTURE")
+    ok("claim", "BUILDS_OWN_ITEM_PROBE_FIXTURE")
+    out = ok("close", "BUILDS_OWN_ITEM_PROBE_FIXTURE", "--sha", "abc1234",
              "--reason", "shipped at 51e0ceb", seat="CHECK")
     assert "CHECK" in out and "BUILD" in out, (
         "a cross-seat close must name the ruling seat AND the owning seat: %s" % out)
@@ -248,11 +248,11 @@ def t_cross_seat_close_lands_and_names_the_ruling_seat():
 
 def t_reopening_a_closed_item_is_refused():
     fresh()
-    ok("file", "ALREADY_CLOSED_ITEM_1", "--for", "BUILD", "--title", "t")
-    prose("ALREADY_CLOSED_ITEM_1")
-    ok("claim", "ALREADY_CLOSED_ITEM_1")
-    ok("close", "ALREADY_CLOSED_ITEM_1", "--sha", "abc1234")
-    refused(("claim", "ALREADY_CLOSED_ITEM_1"), "cannot be reopened",
+    ok("file", "ALREADY_CLOSED_ITEM_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    prose("ALREADY_CLOSED_ITEM_PROBE_FIXTURE")
+    ok("claim", "ALREADY_CLOSED_ITEM_PROBE_FIXTURE")
+    ok("close", "ALREADY_CLOSED_ITEM_PROBE_FIXTURE", "--sha", "abc1234")
+    refused(("claim", "ALREADY_CLOSED_ITEM_PROBE_FIXTURE"), "cannot be reopened",
             "a closed item was reopened, which erases that it ever closed")
 
 
@@ -260,25 +260,25 @@ def t_incomplete_item_starts_fine_and_the_tool_does_not_block():
     # 🔴 Owner, 2026-08-21: the completeness gate is removed. Asserting its ABSENCE so
     # that reinstating it fails the suite.
     fresh()
-    ok("file", "NO_PROSE_ITEM_HERE_1", "--for", "BUILD", "--title", "t")
-    ok("claim", "NO_PROSE_ITEM_HERE_1")
-    ok("start", "NO_PROSE_ITEM_HERE_1")
+    ok("file", "NO_PROSE_ITEM_HERE_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    ok("claim", "NO_PROSE_ITEM_HERE_PROBE_FIXTURE")
+    ok("start", "NO_PROSE_ITEM_HERE_PROBE_FIXTURE")
 
 
 def t_next_prints_one_item_with_its_spec():
     fresh()
-    ok("file", "OFFER_THIS_ONE_1", "--for", "BUILD", "--title", "The offered one",
+    ok("file", "OFFER_THIS_ONE_PROBE_FIXTURE", "--for", "BUILD", "--title", "The offered one",
        "--row", "2")
-    ok("file", "LATER_ROW_ITEM_1", "--for", "BUILD", "--title", "Later", "--row", "9")
-    prose("OFFER_THIS_ONE_1", spec="SPEC-MARKER")
-    prose("LATER_ROW_ITEM_1")
-    make_ready("OFFER_THIS_ONE_1")
-    make_ready("LATER_ROW_ITEM_1")
+    ok("file", "LATER_ROW_ITEM_PROBE_FIXTURE", "--for", "BUILD", "--title", "Later", "--row", "9")
+    prose("OFFER_THIS_ONE_PROBE_FIXTURE", spec="SPEC-MARKER")
+    prose("LATER_ROW_ITEM_PROBE_FIXTURE")
+    make_ready("OFFER_THIS_ONE_PROBE_FIXTURE")
+    make_ready("LATER_ROW_ITEM_PROBE_FIXTURE")
     out = ok("next", "--seat", "BUILD")
-    assert body(out).startswith("OFFER_THIS_ONE_1"), "row 2 must beat row 9: %s" % out
-    assert "LATER_ROW_ITEM_1" not in out, "`next` prints ONE item, not a list: %s" % out
+    assert body(out).startswith("OFFER_THIS_ONE_PROBE_FIXTURE"), "row 2 must beat row 9: %s" % out
+    assert "LATER_ROW_ITEM_PROBE_FIXTURE" not in out, "`next` prints ONE item, not a list: %s" % out
     assert "SPEC-MARKER" in out, "next must carry the spec or the seat opens the file anyway"
-    assert "-> rimflow claim OFFER_THIS_ONE_1 --token " in out, out
+    assert "-> rimflow claim OFFER_THIS_ONE_PROBE_FIXTURE --token " in out, out
 
 
 def t_next_offers_unclaimed_spec_complete_work_instead_of_nothing():
@@ -290,13 +290,13 @@ def t_next_offers_unclaimed_spec_complete_work_instead_of_nothing():
     2026-08-21: BUILD held 21 proposed, 18 spec-complete, while `next` offered 3.
     """
     fresh()
-    ok("file", "HANDED_TO_BUILD_1", "--for", "BUILD", "--title", "Specced by someone else")
-    prose("HANDED_TO_BUILD_1", spec="HANDOFF-MARKER")
+    ok("file", "HANDED_TO_BUILD_PROBE_FIXTURE", "--for", "BUILD", "--title", "Specced by someone else")
+    prose("HANDED_TO_BUILD_PROBE_FIXTURE", spec="HANDOFF-MARKER")
     out = ok("next", "--seat", "BUILD")
     assert "nothing offered" not in out, (
         "a spec-complete unclaimed item must not read as nothing to do: %s" % out)
-    assert "HANDED_TO_BUILD_1" in out, out
-    assert "rimflow claim HANDED_TO_BUILD_1" in out, (
+    assert "HANDED_TO_BUILD_PROBE_FIXTURE" in out, out
+    assert "rimflow claim HANDED_TO_BUILD_PROBE_FIXTURE" in out, (
         "the answer must name the verb that unblocks it: %s" % out)
 
 
@@ -315,9 +315,9 @@ def t_a_thin_proposal_is_OFFERED_and_says_what_is_thin():
     walking into. Asserting only the first half would let the warning rot away.
     """
     fresh()
-    ok("file", "NO_PROSE_HANDOFF_1", "--for", "BUILD", "--title", "t")
+    ok("file", "NO_PROSE_HANDOFF_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
     out = ok("next", "--seat", "BUILD")
-    assert "NO_PROSE_HANDOFF_1" in out and "waiting for BUILD to claim" in out, (
+    assert "NO_PROSE_HANDOFF_PROBE_FIXTURE" in out and "waiting for BUILD to claim" in out, (
         "a thin item must be OFFERED, not hidden: %s" % out)
     assert "THIN ITEM" in out and "## spec" in out, (
         "offered, but the seat must be told what is missing: %s" % out)
@@ -325,16 +325,16 @@ def t_a_thin_proposal_is_OFFERED_and_says_what_is_thin():
         "the removed gate's wording came back: %s" % out)
     # ...and it must actually be claimable, not merely advertised as such. Step 3:
     # `next` RESERVED it, so the claim carries the token it printed.
-    assert "-> doing" in ok("claim", "NO_PROSE_HANDOFF_1", "--token", token_of(out))
+    assert "-> doing" in ok("claim", "NO_PROSE_HANDOFF_PROBE_FIXTURE", "--token", token_of(out))
 
 
 def t_why_explains_a_v2_item_as_planning_not_breakage():
     fresh()
-    ok("file", "SOMEDAY_ITEM_HERE_1", "--for", "BUILD", "--title", "t",
+    ok("file", "SOMEDAY_ITEM_HERE_PROBE_FIXTURE", "--for", "BUILD", "--title", "t",
        "--target-field", "v2")
-    prose("SOMEDAY_ITEM_HERE_1")
-    ok("claim", "SOMEDAY_ITEM_HERE_1")
-    out = ok("why", "SOMEDAY_ITEM_HERE_1")
+    prose("SOMEDAY_ITEM_HERE_PROBE_FIXTURE")
+    ok("claim", "SOMEDAY_ITEM_HERE_PROBE_FIXTURE")
+    out = ok("why", "SOMEDAY_ITEM_HERE_PROBE_FIXTURE")
     assert "targeted at v2" in out, out
     assert "planning decision, not a defect" in out, (
         "a v2 item must not read as broken: %s" % out)
@@ -343,11 +343,11 @@ def t_why_explains_a_v2_item_as_planning_not_breakage():
 
 def t_why_separates_a_closed_window_from_a_defect():
     fresh()
-    ok("file", "BRIDGE_WORK_ITEM_1", "--for", "CHECK", "--title", "t", "--needs",
+    ok("file", "BRIDGE_WORK_ITEM_PROBE_FIXTURE", "--for", "CHECK", "--title", "t", "--needs",
        "bridge")
-    prose("BRIDGE_WORK_ITEM_1")
-    ok("claim", "BRIDGE_WORK_ITEM_1", seat="CHECK")
-    out = ok("why", "BRIDGE_WORK_ITEM_1", seat="CHECK")
+    prose("BRIDGE_WORK_ITEM_PROBE_FIXTURE")
+    ok("claim", "BRIDGE_WORK_ITEM_PROBE_FIXTURE", seat="CHECK")
+    out = ok("why", "BRIDGE_WORK_ITEM_PROBE_FIXTURE", seat="CHECK")
     assert "NOT blocked" in out, out
     assert "window is simply closed" in out, out
 
@@ -481,13 +481,13 @@ def t_one_malformed_timestamp_cannot_promote_an_item():
     of enormous age."""
     import json
     fresh()
-    prose("MALFORMED_TS_PROBE_1")
-    ok("file", "MALFORMED_TS_PROBE_1", "--for", "BENCH", "--title", "probe",
+    prose("MALFORMED_TS_PROBE_PROBE_FIXTURE")
+    ok("file", "MALFORMED_TS_PROBE_PROBE_FIXTURE", "--for", "BENCH", "--title", "probe",
        "--needs", "offline", "--kind", "task")
-    ok("claim", "MALFORMED_TS_PROBE_1", seat="BENCH")
-    ok("start", "MALFORMED_TS_PROBE_1", seat="BENCH")
+    ok("claim", "MALFORMED_TS_PROBE_PROBE_FIXTURE", seat="BENCH")
+    ok("start", "MALFORMED_TS_PROBE_PROBE_FIXTURE", seat="BENCH")
     before = ok("next", "--bench", seat="BENCH")
-    assert "MALFORMED_TS_PROBE_1" not in before.split("IN TROUBLE")[1].split("NEEDS HIM")[0], (
+    assert "MALFORMED_TS_PROBE_PROBE_FIXTURE" not in before.split("IN TROUBLE")[1].split("NEEDS HIM")[0], (
         "the premise is broken: a just-claimed item already scores ≥3, so this case "
         "cannot show the bad stamp doing anything:\n%s" % before)
 
@@ -511,7 +511,7 @@ def t_one_malformed_timestamp_cannot_promote_an_item():
 
     after = ok("next", "--bench", seat="BENCH")
     trouble = after.split("IN TROUBLE")[1].split("NEEDS HIM")[0]
-    assert "MALFORMED_TS_PROBE_1" not in trouble, (
+    assert "MALFORMED_TS_PROBE_PROBE_FIXTURE" not in trouble, (
         "one unreadable timestamp promoted an item into IN TROUBLE:\n%s" % trouble)
     assert "495" not in trouble and "1970" not in trouble, (
         "a 1970 sentinel reached the reasons a seat reads:\n%s" % trouble)
@@ -626,101 +626,101 @@ def t_game_state_is_owner_only():
 def t_an_unresolvable_seat_refuses_rather_than_guessing():
     """🔴 A wrong seat is a permanent lie in a file with no delete."""
     e = env(seat=None)
-    refused(("note", "SOME_ITEM_HERE_1", "--text", "x"), "cannot tell which seat I am",
+    refused(("note", "SOME_ITEM_HERE_PROBE_FIXTURE", "--text", "x"), "cannot tell which seat I am",
             "the CLI guessed a seat instead of refusing", env_=e)
-    refused(("note", "SOME_ITEM_HERE_1", "--text", "x"), "set_agent_window.sh",
+    refused(("note", "SOME_ITEM_HERE_PROBE_FIXTURE", "--text", "x"), "set_agent_window.sh",
             "the refusal did not say how to fix it", env_=e)
 
 
 def t_show_and_why_still_work_with_no_seat():
     """Debugging the queue is exactly what you do when the window is misconfigured."""
     fresh()
-    ok("file", "SHOWABLE_ITEM_HERE_1", "--for", "BUILD", "--title", "t")
-    rc, out, err = run("show", "SHOWABLE_ITEM_HERE_1", env=env(seat=None))
+    ok("file", "SHOWABLE_ITEM_HERE_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    rc, out, err = run("show", "SHOWABLE_ITEM_HERE_PROBE_FIXTURE", env=env(seat=None))
     assert rc == 0, "show refused for want of a seat, but it writes nothing: %s" % err
-    assert "SHOWABLE_ITEM_HERE_1" in out
+    assert "SHOWABLE_ITEM_HERE_PROBE_FIXTURE" in out
 
 
 def t_show_renders_the_causal_chain_run_finding_spawn():
     """⭐ The R&D path of §4, end to end, through the actual commands."""
     fresh()
-    ok("file", "LIVE_CHECK_ITEM_1", "--for", "CHECK", "--title", "t")
-    prose("LIVE_CHECK_ITEM_1")
-    ok("claim", "LIVE_CHECK_ITEM_1", seat="CHECK")
-    out = ok("verify", "LIVE_CHECK_ITEM_1", "--result", "fail", "--config", "full-578",
+    ok("file", "LIVE_CHECK_ITEM_PROBE_FIXTURE", "--for", "CHECK", "--title", "t")
+    prose("LIVE_CHECK_ITEM_PROBE_FIXTURE")
+    ok("claim", "LIVE_CHECK_ITEM_PROBE_FIXTURE", seat="CHECK")
+    out = ok("verify", "LIVE_CHECK_ITEM_PROBE_FIXTURE", "--result", "fail", "--config", "full-578",
              "--evidence", "observed/logs/Player_x.log", seat="CHECK")
-    assert "LIVE_CHECK_ITEM_1/run-1@full-578" in out and "IMMUTABLE" in out, out
-    ok("finding", "--from", "LIVE_CHECK_ITEM_1/run-1@full-578",
-       "--name", "BLACKSTAR_SPAWNS_VESSELLESS_1", "--type", "integration",
+    assert "LIVE_CHECK_ITEM_PROBE_FIXTURE/run-1@full-578" in out and "IMMUTABLE" in out, out
+    ok("finding", "--from", "LIVE_CHECK_ITEM_PROBE_FIXTURE/run-1@full-578",
+       "--name", "BLACKSTAR_SPAWNS_VESSELLESS_PROBE_FIXTURE", "--type", "integration",
        "--severity", "high", seat="CHECK")
-    ok("spawn", "--from", "BLACKSTAR_SPAWNS_VESSELLESS_1", "--for", "BUILD",
-       "--name", "BLACKSTAR_VESSEL_DEF_1", seat="CHECK")
-    out = ok("show", "BLACKSTAR_VESSEL_DEF_1")
-    assert "caused by BLACKSTAR_SPAWNS_VESSELLESS_1" in out, out
-    assert "LIVE_CHECK_ITEM_1/run-1@full-578" in out, (
+    ok("spawn", "--from", "BLACKSTAR_SPAWNS_VESSELLESS_PROBE_FIXTURE", "--for", "BUILD",
+       "--name", "BLACKSTAR_VESSEL_DEF_PROBE_FIXTURE", seat="CHECK")
+    out = ok("show", "BLACKSTAR_VESSEL_DEF_PROBE_FIXTURE")
+    assert "caused by BLACKSTAR_SPAWNS_VESSELLESS_PROBE_FIXTURE" in out, out
+    assert "LIVE_CHECK_ITEM_PROBE_FIXTURE/run-1@full-578" in out, (
         "the chain must reach the RUN, or a spawned item reads as somebody's opinion "
         "rather than the consequence of a run on the record: %s" % out)
     # ⚠️ The fail run stands; the source item is NOT reopened.
-    src = ok("show", "LIVE_CHECK_ITEM_1")
+    src = ok("show", "LIVE_CHECK_ITEM_PROBE_FIXTURE")
     assert "run-1@full-578  fail" in src, src
 
 
 def t_a_failed_run_does_not_reopen_the_item():
     fresh()
-    ok("file", "TWICE_RUN_ITEM_1", "--for", "BUILD", "--title", "t")
-    prose("TWICE_RUN_ITEM_1")
-    ok("claim", "TWICE_RUN_ITEM_1")
-    ok("verify", "TWICE_RUN_ITEM_1", "--result", "fail", "--config", "min-13")
-    ok("verify", "TWICE_RUN_ITEM_1", "--result", "pass", "--config", "min-13")
-    out = ok("show", "TWICE_RUN_ITEM_1")
+    ok("file", "TWICE_RUN_ITEM_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    prose("TWICE_RUN_ITEM_PROBE_FIXTURE")
+    ok("claim", "TWICE_RUN_ITEM_PROBE_FIXTURE")
+    ok("verify", "TWICE_RUN_ITEM_PROBE_FIXTURE", "--result", "fail", "--config", "min-13")
+    ok("verify", "TWICE_RUN_ITEM_PROBE_FIXTURE", "--result", "pass", "--config", "min-13")
+    out = ok("show", "TWICE_RUN_ITEM_PROBE_FIXTURE")
     assert "run-1@min-13  fail" in out and "run-2@min-13  pass" in out, (
         "a failure must stand forever beside the later pass: %s" % out)
 
 
 def t_this_deployment_jumps_the_queue_and_clears_when_the_game_goes_down():
     fresh()
-    ok("file", "ROW_ONE_ITEM_HERE_1", "--for", "CHECK", "--title", "t", "--row", "1")
-    ok("file", "HOST_ITEM_HERE_9", "--for", "CHECK", "--title", "t")
-    prose("ROW_ONE_ITEM_HERE_1")
-    prose("HOST_ITEM_HERE_9")
-    make_ready("ROW_ONE_ITEM_HERE_1", seat="CHECK")
-    make_ready("HOST_ITEM_HERE_9", seat="CHECK")
+    ok("file", "ROW_ONE_ITEM_HERE_PROBE_FIXTURE", "--for", "CHECK", "--title", "t", "--row", "1")
+    ok("file", "HOST_ITEM_HERE_PROBE_N9", "--for", "CHECK", "--title", "t")
+    prose("ROW_ONE_ITEM_HERE_PROBE_FIXTURE")
+    prose("HOST_ITEM_HERE_PROBE_N9")
+    make_ready("ROW_ONE_ITEM_HERE_PROBE_FIXTURE", seat="CHECK")
+    make_ready("HOST_ITEM_HERE_PROBE_N9", seat="CHECK")
     ok("game", "UP", seat="OWNER")
-    ok("spawn", "--from", "HOST_ITEM_HERE_9", "--for", "CHECK",
-       "--name", "URGENT_FOLLOWUP_HERE_9", "--this-deployment", seat="CHECK")
-    prose("URGENT_FOLLOWUP_HERE_9")
-    make_ready("URGENT_FOLLOWUP_HERE_9", seat="CHECK")
+    ok("spawn", "--from", "HOST_ITEM_HERE_PROBE_N9", "--for", "CHECK",
+       "--name", "URGENT_FOLLOWUP_HERE_PROBE_N9", "--this-deployment", seat="CHECK")
+    prose("URGENT_FOLLOWUP_HERE_PROBE_N9")
+    make_ready("URGENT_FOLLOWUP_HERE_PROBE_N9", seat="CHECK")
     out = ok("next", seat="CHECK")
-    assert body(out).startswith("URGENT_FOLLOWUP_HERE_9"), (
+    assert body(out).startswith("URGENT_FOLLOWUP_HERE_PROBE_N9"), (
         "the live window is closing and row 1 is not: %s" % out)
     assert "THIS DEPLOYMENT" in out, out
     ok("game", "DOWN", seat="OWNER")
     out = ok("next", seat="CHECK")
-    assert body(out).startswith("ROW_ONE_ITEM_HERE_1"), (
+    assert body(out).startswith("ROW_ONE_ITEM_HERE_PROBE_FIXTURE"), (
         "--this-deployment leaked past the window into false urgency: %s" % out)
 
 
 def t_blocked_is_reported_and_the_item_is_withheld():
     fresh()
-    ok("file", "WAITING_ON_OWNER_1", "--for", "BUILD", "--title", "t")
-    prose("WAITING_ON_OWNER_1")
-    make_ready("WAITING_ON_OWNER_1")
-    ok("block", "WAITING_ON_OWNER_1", "--reason", "needs a ruling", "--on",
-       "SOME_DECISION_ITEM_1")
-    out = ok("why", "WAITING_ON_OWNER_1")
-    assert "BLOCKED: needs a ruling" in out and "SOME_DECISION_ITEM_1" in out, out
+    ok("file", "WAITING_ON_OWNER_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    prose("WAITING_ON_OWNER_PROBE_FIXTURE")
+    make_ready("WAITING_ON_OWNER_PROBE_FIXTURE")
+    ok("block", "WAITING_ON_OWNER_PROBE_FIXTURE", "--reason", "needs a ruling", "--on",
+       "SOME_DECISION_ITEM_PROBE_FIXTURE")
+    out = ok("why", "WAITING_ON_OWNER_PROBE_FIXTURE")
+    assert "BLOCKED: needs a ruling" in out and "SOME_DECISION_ITEM_PROBE_FIXTURE" in out, out
     assert "1  BLOCKED" in ok("next", "--seat", "BUILD"), (
         "the empty answer must bucket the reasons, not just say nothing")
-    ok("unblock", "WAITING_ON_OWNER_1")
-    assert body(ok("next", "--seat", "BUILD")).startswith("WAITING_ON_OWNER_1")
+    ok("unblock", "WAITING_ON_OWNER_PROBE_FIXTURE")
+    assert body(ok("next", "--seat", "BUILD")).startswith("WAITING_ON_OWNER_PROBE_FIXTURE")
 
 
 def t_reassign_is_bench_only():
     fresh()
-    ok("file", "REASSIGNABLE_ITEM_1", "--for", "FOUNDRY", "--title", "t")
-    refused(("reassign", "REASSIGNABLE_ITEM_1", "--to", "BENCH", "--reason", "x"),
+    ok("file", "REASSIGNABLE_ITEM_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
+    refused(("reassign", "REASSIGNABLE_ITEM_PROBE_FIXTURE", "--to", "BENCH", "--reason", "x"),
             "only BENCH", "FOUNDRY reassigned its own item", seat="FOUNDRY")
-    assert "reassign" in ok("reassign", "REASSIGNABLE_ITEM_1", "--to", "FOUNDRY",
+    assert "reassign" in ok("reassign", "REASSIGNABLE_ITEM_PROBE_FIXTURE", "--to", "FOUNDRY",
                             "--reason", "x", seat="BENCH")
 
 
@@ -733,11 +733,11 @@ def t_reassign_is_bench_only():
 # able to override."*
 def t_owner_may_reassign_and_is_told_that_he_overrode():
     fresh()
-    ok("file", "OWNER_TAKES_THIS_BACK_1", "--for", "BUILD", "--title", "t")
-    rc, out, err = run("reassign", "OWNER_TAKES_THIS_BACK_1", "--to", "CHECK",
+    ok("file", "OWNER_TAKES_THIS_BACK_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    rc, out, err = run("reassign", "OWNER_TAKES_THIS_BACK_PROBE_FIXTURE", "--to", "CHECK",
                        "--reason", "mine now", seat="OWNER")
     assert rc == 0, "the OWNER was refused a reassign\n  %s" % (out + err).strip()
-    assert "CHECK" in ok("show", "OWNER_TAKES_THIS_BACK_1"), "the reassign did nothing"
+    assert "CHECK" in ok("show", "OWNER_TAKES_THIS_BACK_PROBE_FIXTURE"), "the reassign did nothing"
     assert "OVERRIDE" in err.upper(), (
         "the override was silent. He asked to be able to override AND to be warned; "
         "an unannounced bypass is the failure mode, not the bypass.\n  stderr: %r" % err)
@@ -757,15 +757,15 @@ def t_owner_override_does_not_reach_the_state_machine():
     change who holds a closed item; he may not reopen it.
     """
     fresh()
-    ok("file", "OWNER_CANNOT_REVIVE_THIS_1", "--for", "BUILD", "--title", "t")
-    ok("drop", "OWNER_CANNOT_REVIVE_THIS_1", "--reason", "x", seat="BUILD")
-    refused(("claim", "OWNER_CANNOT_REVIVE_THIS_1"),
+    ok("file", "OWNER_CANNOT_REVIVE_THIS_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    ok("drop", "OWNER_CANNOT_REVIVE_THIS_PROBE_FIXTURE", "--reason", "x", seat="BUILD")
+    refused(("claim", "OWNER_CANNOT_REVIVE_THIS_PROBE_FIXTURE"),
             "drop", "OWNER restarted a dropped item by being the OWNER", seat="OWNER")
-    ok("reassign", "OWNER_CANNOT_REVIVE_THIS_1", "--to", "CHECK", "--reason", "x",
+    ok("reassign", "OWNER_CANNOT_REVIVE_THIS_PROBE_FIXTURE", "--to", "CHECK", "--reason", "x",
        seat="OWNER")
-    assert "dropped" in ok("show", "OWNER_CANNOT_REVIVE_THIS_1"), (
+    assert "dropped" in ok("show", "OWNER_CANNOT_REVIVE_THIS_PROBE_FIXTURE"), (
         "an owner reassign revived a terminal item")
-    refused(("reassign", "NO_SUCH_ITEM_ANYWHERE_1", "--to", "CHECK", "--reason", "x"),
+    refused(("reassign", "NO_SUCH_ITEM_ANYWHERE_PROBE_FIXTURE", "--to", "CHECK", "--reason", "x"),
             "never been filed", "OWNER overrode a typo into an event about nothing",
             seat="OWNER")
 
@@ -773,8 +773,8 @@ def t_owner_override_does_not_reach_the_state_machine():
 def t_owner_is_not_warned_where_the_rule_already_admits_him():
     """`retarget` is ("DECIDE", "owner") — he was always allowed. No warning for it."""
     fresh()
-    ok("file", "OWNER_RETARGETS_QUIETLY_1", "--for", "BUILD", "--title", "t")
-    rc, out, err = run("retarget", "OWNER_RETARGETS_QUIETLY_1", "v2",
+    ok("file", "OWNER_RETARGETS_QUIETLY_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    rc, out, err = run("retarget", "OWNER_RETARGETS_QUIETLY_PROBE_FIXTURE", "v2",
                        "--reason", "x", seat="OWNER")
     assert rc == 0, (out + err).strip()
     assert "OVERRIDE" not in err.upper(), (
@@ -888,7 +888,7 @@ def t_the_queue_views_are_rendered_beside_the_ledger_in_use():
     repo_queue = os.path.join(REPO, "queue")
     repo_derived = os.path.join(REPO, "derived")
     before = (os.path.exists(repo_queue), os.path.exists(repo_derived))
-    ok("file", "RENDER_ROOT_PROBE_1", "--for", "BENCH", "--title", "t")
+    ok("file", "RENDER_ROOT_PROBE_PROBE_FIXTURE", "--for", "BENCH", "--title", "t")
     assert (os.path.exists(repo_queue), os.path.exists(repo_derived)) == before, (
         "a write rendered the throwaway ledger's queue views into the REPO ROOT "
         "(%s / %s). The whole point of RIMFLOW_LEDGER is that a test touches nothing "
@@ -924,22 +924,22 @@ def t_going_down_does_not_claim_to_clear_this_deployment():
     machine, so this case cannot be moved by whether RimWorld happens to be running.
     """
     fresh()
-    ok("file", "DEPLOYMENT_FLAG_HOST_1", "--for", "CHECK", "--title", "t")
+    ok("file", "DEPLOYMENT_FLAG_HOST_PROBE_FIXTURE", "--for", "CHECK", "--title", "t")
     ok("game", "UP", seat="OWNER")
-    ok("spawn", "--from", "DEPLOYMENT_FLAG_HOST_1", "--for", "CHECK",
-       "--name", "DEPLOYMENT_FLAG_PROBE_1", "--this-deployment", seat="CHECK")
+    ok("spawn", "--from", "DEPLOYMENT_FLAG_HOST_PROBE_FIXTURE", "--for", "CHECK",
+       "--name", "DEPLOYMENT_FLAG_PROBE_PROBE_FIXTURE", "--this-deployment", seat="CHECK")
     out = ok("game", "GOING_DOWN", seat="OWNER")
     assert "cleared" not in out, (
         "GOING_DOWN announced a clearing that did not happen — the flag is still set "
         "and the seat was told otherwise: %s" % out)
-    assert "THIS DEPLOYMENT" in ok("show", "DEPLOYMENT_FLAG_PROBE_1"), (
+    assert "THIS DEPLOYMENT" in ok("show", "DEPLOYMENT_FLAG_PROBE_PROBE_FIXTURE"), (
         "the premise moved: GOING_DOWN now really does clear the flag, and the "
         "message this case guards would have been right all along")
     out = ok("game", "DOWN", seat="OWNER")
     assert "cleared" in out, (
         "DOWN stopped saying it clears the flags, and DOWN is the state that does: %s"
         % out)
-    assert "THIS DEPLOYMENT" not in ok("show", "DEPLOYMENT_FLAG_PROBE_1")
+    assert "THIS DEPLOYMENT" not in ok("show", "DEPLOYMENT_FLAG_PROBE_PROBE_FIXTURE")
 
 
 def t_the_bench_scan_sees_a_spawned_item():
@@ -952,16 +952,16 @@ def t_the_bench_scan_sees_a_spawned_item():
     neither screen said anything.
     """
     fresh()
-    ok("file", "SPAWN_VISIBILITY_HOST_1", "--for", "BENCH", "--title", "host")
-    ok("spawn", "--from", "SPAWN_VISIBILITY_HOST_1", "--for", "BENCH",
-       "--name", "SPAWNED_UNBLOCKED_ITEM_1", seat="BENCH")
+    ok("file", "SPAWN_VISIBILITY_HOST_PROBE_FIXTURE", "--for", "BENCH", "--title", "host")
+    ok("spawn", "--from", "SPAWN_VISIBILITY_HOST_PROBE_FIXTURE", "--for", "BENCH",
+       "--name", "SPAWNED_UNBLOCKED_ITEM_PROBE_FIXTURE", seat="BENCH")
     out = ok("next", "--bench", seat="BENCH")
-    assert "SPAWNED_UNBLOCKED_ITEM_1" in out, (
+    assert "SPAWNED_UNBLOCKED_ITEM_PROBE_FIXTURE" in out, (
         "a spawned item is missing from the BENCH scan entirely — it has no `target`, "
         "and the scan filtered on equality where the priority engine admits None:\n%s"
         % out)
     ripe = out.split("\nRIPE")[1].split("IN TROUBLE")[0]
-    assert "SPAWNED_UNBLOCKED_ITEM_1" in ripe, (
+    assert "SPAWNED_UNBLOCKED_ITEM_PROBE_FIXTURE" in ripe, (
         "counted but not RIPE — unblocked offline proposed work is the definition:\n%s"
         % ripe)
 
@@ -1101,8 +1101,8 @@ def t_the_real_ledger_was_never_touched():
         assert not path.startswith(TMP_ROOT), path
         with open(path, encoding="utf-8") as fh:
             body = fh.read()
-        for marker in ("DESERT_STORM_TUNING_1", "BLACKSTAR_VESSEL_DEF_1",
-                       "URGENT_FOLLOWUP_HERE_9"):
+        for marker in ("DESERT_STORM_TUNING_PROBE_FIXTURE", "BLACKSTAR_VESSEL_DEF_PROBE_FIXTURE",
+                       "URGENT_FOLLOWUP_HERE_PROBE_N9"):
             assert marker not in body, (
                 "%s reached the REAL ledger at %s, which is append-only and has no "
                 "undo. RIMFLOW_LEDGER is not being honoured." % (marker, path))

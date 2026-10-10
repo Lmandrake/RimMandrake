@@ -165,53 +165,53 @@ def _fixture_index(commits):
 
 def t_index_reads_subjects_and_both_trailers():
     idx = _fixture_index([
-        commit(1, "WRECK_FIELD_BUILD_1 slice 1: families"),
-        commit(2, "Belt batch: three things", body="Some prose.\n\nCloses: LANCE_TETHER_PULL_1\n"
-               "Implemented: STELLOCK_LACE_FORM_2, NEST_SORT_JOB_3\nCo-Authored-By: x"),
+        commit(1, "WRECK_FIELD_BUILD_PROBE_FIXTURE slice 1: families"),
+        commit(2, "Belt batch: three things", body="Some prose.\n\nCloses: LANCE_TETHER_PULL_PROBE_FIXTURE\n"
+               "Implemented: STELLOCK_LACE_FORM_PROBE_N2, NEST_SORT_JOB_PROBE_N3\nCo-Authored-By: x"),
         commit(3, "plain subject naming nothing"),
-        commit(4, "SUFFIX_WRECK_FIELD_BUILD_1 is a different id"),
+        commit(4, "SUFFIX_WRECK_FIELD_BUILD_PROBE_FIXTURE is a different id"),
     ])
-    assert [m.short for m in idx.matches("WRECK_FIELD_BUILD_1")] == [short(1)], \
-        idx.matches("WRECK_FIELD_BUILD_1")
-    assert idx.matches("LANCE_TETHER_PULL_1")[0].how == "closes"
-    assert [m.how for m in idx.matches("NEST_SORT_JOB_3")] == ["implemented"]
-    assert idx.matches("STELLOCK_LACE_FORM_2"), "comma-separated Implemented: missed"
+    assert [m.short for m in idx.matches("WRECK_FIELD_BUILD_PROBE_FIXTURE")] == [short(1)], \
+        idx.matches("WRECK_FIELD_BUILD_PROBE_FIXTURE")
+    assert idx.matches("LANCE_TETHER_PULL_PROBE_FIXTURE")[0].how == "closes"
+    assert [m.how for m in idx.matches("NEST_SORT_JOB_PROBE_N3")] == ["implemented"]
+    assert idx.matches("STELLOCK_LACE_FORM_PROBE_N2"), "comma-separated Implemented: missed"
     assert idx.resolve(short(3)) is not None, "a commit naming nothing must still resolve"
     assert idx.resolve("abcdef") is None, "a 6-char prefix is not a sha"
 
 
 def t_index_skips_bookkeeping_and_commits_before_creation():
     idx = _fixture_index([
-        commit(1, "ledger: WRECK_FIELD_BUILD_1 noted",
+        commit(1, "ledger: WRECK_FIELD_BUILD_PROBE_FIXTURE noted",
                files=["infrastructure/state/ledger/events/FOUNDRY.jsonl"]),
-        commit(2, "WRECK_FIELD_BUILD_1: an old mention", t=EARLIER),
-        commit(3, "WRECK_FIELD_BUILD_1: the build"),
+        commit(2, "WRECK_FIELD_BUILD_PROBE_FIXTURE: an old mention", t=EARLIER),
+        commit(3, "WRECK_FIELD_BUILD_PROBE_FIXTURE: the build"),
     ])
-    got = [m.short for m in idx.matches("WRECK_FIELD_BUILD_1", since="2026-01-01T00:00:00Z")]
+    got = [m.short for m in idx.matches("WRECK_FIELD_BUILD_PROBE_FIXTURE", since="2026-01-01T00:00:00Z")]
     assert got == [short(3)], got
-    assert len(idx.matches("WRECK_FIELD_BUILD_1", include_bookkeeping=True)) == 3
+    assert len(idx.matches("WRECK_FIELD_BUILD_PROBE_FIXTURE", include_bookkeeping=True)) == 3
 
 
 def t_real_git_log_format_parses():
     """The parser on output shaped exactly like `git log _LOG_FORMAT --name-only`."""
-    out = ("\x1e%s\x1f1791311617\x1fWRECK_FIELD_BUILD_1 slice 2: x\x1fbody\n\nCloses: "
-           "NEST_SORT_JOB_3\n\x1f\n\nsrc/a.xml\nsrc/b.cs\n"
+    out = ("\x1e%s\x1f1791311617\x1fWRECK_FIELD_BUILD_PROBE_FIXTURE slice 2: x\x1fbody\n\nCloses: "
+           "NEST_SORT_JOB_PROBE_N3\n\x1f\n\nsrc/a.xml\nsrc/b.cs\n"
            "\x1e%s\x1f1791311000\x1fno ids here\x1f\x1f\n\nTransient/x.md\n") % (sha(1), sha(2))
     named, every = gitindex._parse_log(out)
     assert len(every) == 2 and len(named) == 1, (named, every)
-    assert named[0][4] == {"WRECK_FIELD_BUILD_1": "subject", "NEST_SORT_JOB_3": "closes"}
+    assert named[0][4] == {"WRECK_FIELD_BUILD_PROBE_FIXTURE": "subject", "NEST_SORT_JOB_PROBE_N3": "closes"}
     assert named[0][3] is False and named[0][1].endswith("Z")
 
 
-def _item(iid="WRECK_FIELD_BUILD_1", created="2026-01-01T00:00:00Z"):
+def _item(iid="WRECK_FIELD_BUILD_PROBE_FIXTURE", created="2026-01-01T00:00:00Z"):
     it = model.Item(iid, 0)
     it.created_at, it.state, it.owner = created, "ready", "FOUNDRY"
     return it
 
 
 def t_assess_kinds_and_verdict_suppression():
-    idx = _fixture_index([commit(1, "WRECK_FIELD_BUILD_1 slice 1"),
-                          commit(2, "WRECK_FIELD_BUILD_1 slice 2")])
+    idx = _fixture_index([commit(1, "WRECK_FIELD_BUILD_PROBE_FIXTURE slice 1"),
+                          commit(2, "WRECK_FIELD_BUILD_PROBE_FIXTURE slice 2")])
     it = _item()
     assert reconcile.assess(it, idx).kind == "reconcile"
     assert reconcile.assess(it, None).kind == "build", "no git must never trigger"
@@ -227,16 +227,16 @@ def t_assess_kinds_and_verdict_suppression():
     it.reconciles.append({"ts": "t3", "seat": "FOUNDRY", "verdict": "complete",
                           "shas": [sha(1)], "remaining": None})
     assert reconcile.assess(it, idx).kind == "complete"
-    offers, skipped = reconcile.guard([it, _item("OTHER_THING_BUILD_1")], idx)
-    assert [a.item.id for a in skipped] == ["WRECK_FIELD_BUILD_1"]
-    assert [a.item.id for a in offers] == ["OTHER_THING_BUILD_1"]
+    offers, skipped = reconcile.guard([it, _item("OTHER_THING_BUILD_PROBE_FIXTURE")], idx)
+    assert [a.item.id for a in skipped] == ["WRECK_FIELD_BUILD_PROBE_FIXTURE"]
+    assert [a.item.id for a in offers] == ["OTHER_THING_BUILD_PROBE_FIXTURE"]
 
 
 def t_note_cited_sha_triggers_only_when_published():
     """WEBWORK_TRACTION_LANCE_BUILD_1's shape: the build commit names no item; only the
     item's own note cites it."""
     idx = _fixture_index([commit(7, "Belt batch: lance + lace (offline builds)")])
-    it = _item("LANCE_TETHER_PULL_1")
+    it = _item("LANCE_TETHER_PULL_PROBE_FIXTURE")
     it.cited_shas = [short(7), "deadbee9", "1234567"]       # two not on the ref
     a = reconcile.assess(it, idx)
     assert a.kind == "reconcile" and [m.short for m in a.unjudged] == [short(7)], a
@@ -244,17 +244,17 @@ def t_note_cited_sha_triggers_only_when_published():
 
 
 def t_model_reconcile_validates_and_changes_no_state():
-    base = [{"seat": "FOUNDRY", "event": "file", "id": "WRECK_FIELD_BUILD_1", "for": "FOUNDRY",
+    base = [{"seat": "FOUNDRY", "event": "file", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE", "for": "FOUNDRY",
              "title": "t", "kind": "task", "ts": "2026-01-01T00:00:00Z"},
-            {"seat": "FOUNDRY", "event": "claim", "id": "WRECK_FIELD_BUILD_1",
+            {"seat": "FOUNDRY", "event": "claim", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
              "ts": "2026-01-01T00:00:01Z"},
-            {"seat": "FOUNDRY", "event": "note", "id": "WRECK_FIELD_BUILD_1",
+            {"seat": "FOUNDRY", "event": "note", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
              "ts": "2026-01-01T00:00:02Z", "text": "built at 598dec613; defaced is a word"}]
-    good = {"seat": "BENCH", "event": "reconcile", "id": "WRECK_FIELD_BUILD_1",
+    good = {"seat": "BENCH", "event": "reconcile", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
             "verdict": "partial", "sha": "598dec613 a10000001", "remaining": "art install",
             "ts": "2026-01-01T00:00:03Z"}
     w = model.replay(base + [good])
-    it = w.items["WRECK_FIELD_BUILD_1"]
+    it = w.items["WRECK_FIELD_BUILD_PROBE_FIXTURE"]
     assert not w.errors, w.errors
     assert it.state == "ready" and it.owner == "FOUNDRY", "reconcile moved state/owner"
     assert it.cited_shas == ["598dec613"], it.cited_shas
@@ -273,11 +273,11 @@ def t_model_reconcile_validates_and_changes_no_state():
 def t_old_readers_ignore_reconcile():
     """A clone whose model predates the verb collects it into `world.errors` and
     projects every item exactly as before — never fatal, never a state change."""
-    evs = [{"seat": "FOUNDRY", "event": "file", "id": "WRECK_FIELD_BUILD_1", "for": "FOUNDRY",
+    evs = [{"seat": "FOUNDRY", "event": "file", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE", "for": "FOUNDRY",
             "title": "t", "kind": "task", "ts": "2026-01-01T00:00:00Z"},
-           {"seat": "FOUNDRY", "event": "claim", "id": "WRECK_FIELD_BUILD_1",
+           {"seat": "FOUNDRY", "event": "claim", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
             "ts": "2026-01-01T00:00:01Z"},
-           {"seat": "FOUNDRY", "event": "reconcile", "id": "WRECK_FIELD_BUILD_1",
+           {"seat": "FOUNDRY", "event": "reconcile", "id": "WRECK_FIELD_BUILD_PROBE_FIXTURE",
             "verdict": "complete", "sha": "598dec613", "ts": "2026-01-01T00:00:02Z"}]
     saved = model.VERBS.pop("reconcile")
     try:
@@ -286,7 +286,7 @@ def t_old_readers_ignore_reconcile():
         model.VERBS["reconcile"] = saved
     new = model.replay(evs)
     assert len(old.errors) == 1 and "unknown verb" in old.errors[0][2], old.errors
-    o, n = old.items["WRECK_FIELD_BUILD_1"], new.items["WRECK_FIELD_BUILD_1"]
+    o, n = old.items["WRECK_FIELD_BUILD_PROBE_FIXTURE"], new.items["WRECK_FIELD_BUILD_PROBE_FIXTURE"]
     assert (o.state, o.owner, o.blocked) == (n.state, n.owner, n.blocked) == \
         ("ready", "FOUNDRY", False)
     assert [e["event"] for e in model.canonical_order(list(reversed(evs)))] == \
@@ -299,133 +299,133 @@ def t_same_item_built_twice_yet_offered():
     """THE case: claimed, built in two commits, re-claimed. Before step 1 `next`
     offered it as fresh build work (SALVAGE_WRECKAGE_EVERYWHERE_1, 2026-10-06/07)."""
     fresh("built_twice")
-    file_ready("WRECK_FIELD_BUILD_1")
-    write_fixture([commit(1, "WRECK_FIELD_BUILD_1 slice 1: wreck families"),
-                   commit(2, "WRECK_FIELD_BUILD_1 slice 2: placement + density")])
+    file_ready("WRECK_FIELD_BUILD_PROBE_FIXTURE")
+    write_fixture([commit(1, "WRECK_FIELD_BUILD_PROBE_FIXTURE slice 1: wreck families"),
+                   commit(2, "WRECK_FIELD_BUILD_PROBE_FIXTURE slice 2: placement + density")])
     # the second claim, hours later. Step 3: a claim now STARTS the item under a lease, so
     # it is no longer re-offered at all; `reclaim` puts it back in the pool, which is the
     # state this case is about (a ready item git already names).
-    ok("claim", "WRECK_FIELD_BUILD_1")
-    ok("reclaim", "WRECK_FIELD_BUILD_1")
+    ok("claim", "WRECK_FIELD_BUILD_PROBE_FIXTURE")
+    ok("reclaim", "WRECK_FIELD_BUILD_PROBE_FIXTURE")
     # the rendered queue's top entry says the same thing (render-on-read). Read BEFORE the
     # non-peek `next`, which reserves the item and so moves it to IN PROGRESS.
     view = ok("queue", "FOUNDRY")
     top = view[view.index("# NEXT"):]
-    assert "action:   RECONCILE WRECK_FIELD_BUILD_1" in top, top[:1500]
+    assert "action:   RECONCILE WRECK_FIELD_BUILD_PROBE_FIXTURE" in top, top[:1500]
     out = ok("next")
-    assert "RECONCILE WRECK_FIELD_BUILD_1: commits %s %s" % (short(1), short(2)) in out, out
-    assert "rimflow claim WRECK_FIELD_BUILD_1 --token" not in out, \
+    assert "RECONCILE WRECK_FIELD_BUILD_PROBE_FIXTURE: commits %s %s" % (short(1), short(2)) in out, out
+    assert "rimflow claim WRECK_FIELD_BUILD_PROBE_FIXTURE --token" not in out, \
         "a built item was offered as build work:\n" + out
-    assert "rimflow reconcile WRECK_FIELD_BUILD_1 --verdict" in out
-    assert state_of("WRECK_FIELD_BUILD_1") == "ready", "next changed the state"
+    assert "rimflow reconcile WRECK_FIELD_BUILD_PROBE_FIXTURE --verdict" in out
+    assert state_of("WRECK_FIELD_BUILD_PROBE_FIXTURE") == "ready", "next changed the state"
     view = ok("queue", "FOUNDRY")
     assert "lease:    LIVE" in view, "the reserved item must show as active:\n" + view[:2000]
 
 
 def t_peek_writes_nothing():
     fresh("peek")
-    file_ready("WRECK_FIELD_BUILD_1")
-    write_fixture([commit(1, "WRECK_FIELD_BUILD_1 slice 1")])
+    file_ready("WRECK_FIELD_BUILD_PROBE_FIXTURE")
+    write_fixture([commit(1, "WRECK_FIELD_BUILD_PROBE_FIXTURE slice 1")])
     before = ledger_bytes()
     out = ok("next", "--peek")
-    assert "RECONCILE WRECK_FIELD_BUILD_1" in out and "[peek:" in out, out
+    assert "RECONCILE WRECK_FIELD_BUILD_PROBE_FIXTURE" in out and "[peek:" in out, out
     assert ledger_bytes() == before, "`next --peek` wrote the ledger"
 
 
 def t_partial_keeps_item_offered_with_remaining_line():
     fresh("partial")
-    file_ready("WRECK_FIELD_BUILD_1")
-    write_fixture([commit(1, "WRECK_FIELD_BUILD_1 slice 1"),
-                   commit(2, "WRECK_FIELD_BUILD_1 slice 2")])
-    refused("reconcile", "WRECK_FIELD_BUILD_1", "--verdict", "partial",
+    file_ready("WRECK_FIELD_BUILD_PROBE_FIXTURE")
+    write_fixture([commit(1, "WRECK_FIELD_BUILD_PROBE_FIXTURE slice 1"),
+                   commit(2, "WRECK_FIELD_BUILD_PROBE_FIXTURE slice 2")])
+    refused("reconcile", "WRECK_FIELD_BUILD_PROBE_FIXTURE", "--verdict", "partial",
             "--sha", short(1), short(2))                     # partial needs --remaining
-    ok("reconcile", "WRECK_FIELD_BUILD_1", "--verdict", "partial", "--sha", short(1),
+    ok("reconcile", "WRECK_FIELD_BUILD_PROBE_FIXTURE", "--verdict", "partial", "--sha", short(1),
        short(2), "--remaining", "slices 3-9: nest, appraisal, incident")
     out = ok("next")
     assert "RECONCILE" not in out, "judged commits were offered again:\n" + out
     assert "PARTLY BUILT" in out and "slices 3-9: nest, appraisal, incident" in out, out
-    assert "-> rimflow claim WRECK_FIELD_BUILD_1" in out, out
-    release_offer(out, "WRECK_FIELD_BUILD_1")
+    assert "-> rimflow claim WRECK_FIELD_BUILD_PROBE_FIXTURE" in out, out
+    release_offer(out, "WRECK_FIELD_BUILD_PROBE_FIXTURE")
     ev = [e for e in ledger_events() if e["event"] == "reconcile"]
-    assert len(ev) == 1 and ev[0]["id"] == "WRECK_FIELD_BUILD_1" and \
+    assert len(ev) == 1 and ev[0]["id"] == "WRECK_FIELD_BUILD_PROBE_FIXTURE" and \
         ev[0]["sha"] == "%s %s" % (short(1), short(2)), ev
-    assert state_of("WRECK_FIELD_BUILD_1") == "ready"
+    assert state_of("WRECK_FIELD_BUILD_PROBE_FIXTURE") == "ready"
     # a NEW commit re-triggers, naming only the new one
-    write_fixture([commit(1, "WRECK_FIELD_BUILD_1 slice 1"),
-                   commit(2, "WRECK_FIELD_BUILD_1 slice 2"),
-                   commit(3, "WRECK_FIELD_BUILD_1 slice 3")])
+    write_fixture([commit(1, "WRECK_FIELD_BUILD_PROBE_FIXTURE slice 1"),
+                   commit(2, "WRECK_FIELD_BUILD_PROBE_FIXTURE slice 2"),
+                   commit(3, "WRECK_FIELD_BUILD_PROBE_FIXTURE slice 3")])
     out = ok("next")
-    assert "RECONCILE WRECK_FIELD_BUILD_1: commits %s\n" % short(3) in out, out
+    assert "RECONCILE WRECK_FIELD_BUILD_PROBE_FIXTURE: commits %s\n" % short(3) in out, out
     assert "Earlier verdict: PARTIAL" in out, out
 
 
 def t_complete_is_not_offered_but_stays_open():
     fresh("complete")
-    file_ready("WRECK_FIELD_BUILD_1")
-    file_ready("YET_UNBUILT_THING_1")
-    write_fixture([commit(1, "WRECK_FIELD_BUILD_1: whole build")])
+    file_ready("WRECK_FIELD_BUILD_PROBE_FIXTURE")
+    file_ready("YET_UNBUILT_THING_PROBE_FIXTURE")
+    write_fixture([commit(1, "WRECK_FIELD_BUILD_PROBE_FIXTURE: whole build")])
     out = ok("next")
-    assert "RECONCILE WRECK_FIELD_BUILD_1" in out, out       # oldest first: it is on top
-    ok("reconcile", "WRECK_FIELD_BUILD_1", "--verdict", "complete", "--sha", short(1))
-    release_offer(out, "WRECK_FIELD_BUILD_1")
+    assert "RECONCILE WRECK_FIELD_BUILD_PROBE_FIXTURE" in out, out       # oldest first: it is on top
+    ok("reconcile", "WRECK_FIELD_BUILD_PROBE_FIXTURE", "--verdict", "complete", "--sha", short(1))
+    release_offer(out, "WRECK_FIELD_BUILD_PROBE_FIXTURE")
     out = ok("next")
-    assert "-> rimflow claim YET_UNBUILT_THING_1" in out, out
-    assert "NOT offered as build work" in out and "WRECK_FIELD_BUILD_1" in out, out
-    assert state_of("WRECK_FIELD_BUILD_1") == "ready", "complete must not close or move it"
+    assert "-> rimflow claim YET_UNBUILT_THING_PROBE_FIXTURE" in out, out
+    assert "NOT offered as build work" in out and "WRECK_FIELD_BUILD_PROBE_FIXTURE" in out, out
+    assert state_of("WRECK_FIELD_BUILD_PROBE_FIXTURE") == "ready", "complete must not close or move it"
     view = ok("queue", "FOUNDRY")
-    assert "# RECONCILED COMPLETE" in view and "## WRECK_FIELD_BUILD_1" in view, view
+    assert "# RECONCILED COMPLETE" in view and "## WRECK_FIELD_BUILD_PROBE_FIXTURE" in view, view
 
 
 def t_unrelated_returns_item_to_build_offer():
     fresh("unrelated")
-    file_ready("WRECK_FIELD_BUILD_1")
-    write_fixture([commit(1, "Docs sweep: mentions WRECK_FIELD_BUILD_1 in passing")])
-    ok("reconcile", "WRECK_FIELD_BUILD_1", "--verdict", "unrelated", "--sha", short(1))
+    file_ready("WRECK_FIELD_BUILD_PROBE_FIXTURE")
+    write_fixture([commit(1, "Docs sweep: mentions WRECK_FIELD_BUILD_PROBE_FIXTURE in passing")])
+    ok("reconcile", "WRECK_FIELD_BUILD_PROBE_FIXTURE", "--verdict", "unrelated", "--sha", short(1))
     out = ok("next")
-    assert "RECONCILE" not in out and "-> rimflow claim WRECK_FIELD_BUILD_1" in out, out
+    assert "RECONCILE" not in out and "-> rimflow claim WRECK_FIELD_BUILD_PROBE_FIXTURE" in out, out
 
 
 def t_note_cited_build_commit_triggers():
     """WEBWORK_TRACTION_LANCE_BUILD_1's shape: a batch commit naming no item, linked
     only by the item's own note."""
     fresh("note_cited")
-    file_ready("LANCE_TETHER_PULL_1")
+    file_ready("LANCE_TETHER_PULL_PROBE_FIXTURE")
     write_fixture([commit(5, "Belt batch: lance, lace, giant (offline builds)")])
-    ok("note", "LANCE_TETHER_PULL_1", "--text",
+    ok("note", "LANCE_TETHER_PULL_PROBE_FIXTURE", "--text",
        "%s: offline build published; live proof owed" % short(5))
     out = ok("next")
-    assert "RECONCILE LANCE_TETHER_PULL_1: commits %s" % short(5) in out, out
+    assert "RECONCILE LANCE_TETHER_PULL_PROBE_FIXTURE: commits %s" % short(5) in out, out
     assert "cited in a note" in out, out
 
 
 def t_bookkeeping_and_preexisting_commits_do_not_trigger():
     fresh("noise")
-    file_ready("WRECK_FIELD_BUILD_1")
-    write_fixture([commit(1, "ledger: WRECK_FIELD_BUILD_1 claimed",
+    file_ready("WRECK_FIELD_BUILD_PROBE_FIXTURE")
+    write_fixture([commit(1, "ledger: WRECK_FIELD_BUILD_PROBE_FIXTURE claimed",
                           files=["infrastructure/state/ledger/events/FOUNDRY.jsonl"]),
-                   commit(2, "WRECK_FIELD_BUILD_1 named before it was filed", t=EARLIER)])
+                   commit(2, "WRECK_FIELD_BUILD_PROBE_FIXTURE named before it was filed", t=EARLIER)])
     out = ok("next")
-    assert "RECONCILE" not in out and "-> rimflow claim WRECK_FIELD_BUILD_1" in out, out
+    assert "RECONCILE" not in out and "-> rimflow claim WRECK_FIELD_BUILD_PROBE_FIXTURE" in out, out
 
 
 def t_redirected_ledger_never_reads_real_history():
     """No fixture + a redirected ledger: the real repo's git must not be consulted, so a
     synthetic id that happens to exist in history cannot trigger."""
     fresh("no_fixture")
-    file_ready("SALVAGE_WRECKAGE_EVERYWHERE_1")             # a REAL id with real commits
+    file_ready("SALVAGE_WRECKAGE_EVERYWHERE_PROBE_FIXTURE")             # a REAL id with real commits
     out = ok("next", fixture=False)
-    assert "RECONCILE" not in out and "-> rimflow claim SALVAGE_WRECKAGE_EVERYWHERE_1" in out, out
+    assert "RECONCILE" not in out and "-> rimflow claim SALVAGE_WRECKAGE_EVERYWHERE_PROBE_FIXTURE" in out, out
 
 
 def t_reconcile_refuses_unknown_shas_and_items():
     fresh("refusals")
-    file_ready("WRECK_FIELD_BUILD_1")
-    write_fixture([commit(1, "WRECK_FIELD_BUILD_1 slice 1")])
-    err = refused("reconcile", "WRECK_FIELD_BUILD_1", "--verdict", "complete",
+    file_ready("WRECK_FIELD_BUILD_PROBE_FIXTURE")
+    write_fixture([commit(1, "WRECK_FIELD_BUILD_PROBE_FIXTURE slice 1")])
+    err = refused("reconcile", "WRECK_FIELD_BUILD_PROBE_FIXTURE", "--verdict", "complete",
                   "--sha", "0badc0de9")
     assert "0badc0de9" in err, err
-    refused("reconcile", "NEVER_FILED_ITEM_1", "--verdict", "complete", "--sha", short(1))
-    refused("reconcile", "WRECK_FIELD_BUILD_1", "--verdict", "maybe", "--sha", short(1))
+    refused("reconcile", "NEVER_FILED_ITEM_PROBE_FIXTURE", "--verdict", "complete", "--sha", short(1))
+    refused("reconcile", "WRECK_FIELD_BUILD_PROBE_FIXTURE", "--verdict", "maybe", "--sha", short(1))
     assert not [e for e in ledger_events() if e["event"] == "reconcile"], \
         "a refused reconcile reached the ledger"
 
@@ -436,7 +436,7 @@ def t_the_real_ledger_was_never_touched():
     for f in os.listdir(real):
         with open(os.path.join(real, f), encoding="utf-8") as fh:
             for line in fh:
-                if '"event":"reconcile"' in line and "WRECK_FIELD_BUILD_1" in line:
+                if '"event":"reconcile"' in line and "WRECK_FIELD_BUILD_PROBE_FIXTURE" in line:
                     raise AssertionError("a test reconcile reached the REAL ledger: %s" % f)
 
 

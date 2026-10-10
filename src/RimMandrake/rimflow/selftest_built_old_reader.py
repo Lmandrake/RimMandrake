@@ -40,9 +40,9 @@ from rimflow import model                                         # noqa: E402
 PASS, FAIL = [], []
 CTX = {}
 
-BUILT = "OLD_READER_BUILT_1"        # implemented with L1+L4 owed, then A1 passed
-DONE = "OLD_READER_DONE_1"          # implemented with nothing owed -> done
-PLAIN = "OLD_READER_PLAIN_1"        # untouched ready item, the control
+BUILT = "OLD_READER_BUILT_PROBE_FIXTURE"        # implemented with L1+L4 owed, then A1 passed
+DONE = "OLD_READER_DONE_PROBE_FIXTURE"          # implemented with nothing owed -> done
+PLAIN = "OLD_READER_PLAIN_PROBE_FIXTURE"        # untouched ready item, the control
 
 
 def case(name, fn):

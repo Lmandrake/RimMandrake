@@ -449,10 +449,12 @@ def main():
                     and owners(root, "unclaimed_filers").get(iid) != seat
                     and iid not in owners(root, "owner_unlocked")):
                 bits = [b for b in iid.split("_") if not b.isdigit()][:2]
+                # New ids are SUBJECT_INTENT_TWIST (ticket_naming_2026-10-10.md); the
+                # twist is the filer's to write, so the template leaves it a placeholder.
                 # Owner's ruling 2026-09-19: warn, never refuse. See ITEM_OWNED_MSG.
                 print(ITEM_OWNED_MSG % {
                     "iid": iid, "holder": holder,
-                    "new": "_".join(["CORRECT"] + bits + ["1"])}, file=sys.stderr)
+                    "new": "_".join(bits + ["ASK", holder, "<TWIST>"])}, file=sys.stderr)
                 return 1                  # non-blocking: visible, but the write lands
         return 0                          # rule 4 is about commits, not edits
 

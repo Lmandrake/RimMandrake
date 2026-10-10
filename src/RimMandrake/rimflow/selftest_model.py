@@ -106,7 +106,7 @@ def t_unknown_field():
 
 def t_id_shape():
     refuses(lambda: model.validate(filed("has spaces")),
-            "three_descriptive_words", "an id with spaces was accepted")
+            "SUBJECT_INTENT_TWIST", "an id with spaces was accepted")
 
 
 def t_legacy_id_still_ok():
@@ -1042,7 +1042,7 @@ def t_spawn_without_a_name_refuses_instead_of_crashing():
     refuses(lambda: model.validate(ev(seat="BUILD", event="spawn",
                                       **{"from": "A_B_1", "for": "BUILD",
                                          "name": "has spaces"})),
-            "three_descriptive_words", "a spawn name with spaces was accepted")
+            "SUBJECT_INTENT_TWIST", "a spawn name with spaces was accepted")
 
 
 def t_an_event_with_no_ts_is_refused_not_crashed():

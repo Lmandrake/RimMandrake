@@ -19,7 +19,7 @@ from l1_manifest_overrides import OVERRIDES  # noqa: E402
 ROOT = Path(__file__).resolve().parents[3]
 ITEMS = ROOT / "infrastructure/state/items"
 CRIT = re.compile(r"^\s+(\w+)\s+(L1)\s+(.*)$")
-ITEM = re.compile(r"^([A-Z][A-Z0-9_]+_\d+)\s+\[")
+ITEM = re.compile(r"^([A-Z][A-Z0-9_]+)\s+\[")   # legacy `_N` and SUBJECT_INTENT_TWIST ids
 TOKEN = re.compile(r"[A-Za-z][A-Za-z0-9_]{4,}")
 OUR = re.compile(r"^(RM|RSW|RUT)_")
 LIVE_HINTS = [("tool list", r"tool list|appear in the live|tools? (appear|answer)"),

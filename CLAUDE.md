@@ -728,11 +728,15 @@ to ablate expansions out of our list at this time."* `modset_builder.py`'s
 all tiers now set `dlc: True`. A tier's `want` list may still narrow which
 *mods* load for isolation — it may no longer narrow which *DLC* loads.
 
-## Queue items are NAMED, not numbered — owner, 2026-08-20
+## Queue items are NAMED, not numbered — owner, 2026-08-20; grammar 2026-10-10
 
-`THREE_UPPER_SNAKE_WORDS_#`, guessable cold: `SANDSTORM_WEATHER_TUNING_1`. No new
-`B*`/`C*`/`D*`/`W*` IDs; legacy IDs are never renamed and are always cited with
-their title attached — `B58 (the dead Jawa pawnkind)`, never bare.
+New items are **`SUBJECT_INTENT_TWIST`**: what it is, one intent word from the bank
+(what it set out to do at filing — never live state), then a **true, kind, specific**
+comic aside on how it is going: `BRIDGE_HANG_UNSTICK_THIRD_TIME_LUCKY`. No trailing
+`_1`. `rimflow namecheck <NAME>` shows the parse; `file`/`spawn` refuse the rest. Rules
+and bank: `design/RimMandrake/ticket_naming_2026-10-10.md`. Legacy `…_1` and
+`B*`/`C*`/`D*`/`W*` IDs are never renamed; B-style ones are always cited with their
+title attached — `B58 (the dead Jawa pawnkind)`, never bare.
 
 ## Correctness outranks seat ownership — owner, 2026-09-19
 
