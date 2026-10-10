@@ -1,0 +1,129 @@
+{
+ "RM_Uttaqar": {
+  "cell": [
+   103,
+   103
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Spawned 1/1 RM_Uttaqar in faction (none).\", \"spawnedCount\": 1, \"failedCount\": 0, \"substitutedCount\": 0, \"pawns\": [{\"ok\": true, \"id",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_RM_Uttaqar__cell_rect.png"
+ },
+ "RM_Muttavaq": {
+  "cell": [
+   109,
+   103
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Spawned 1/1 RM_Muttavaq in faction (none).\", \"spawnedCount\": 1, \"failedCount\": 0, \"substitutedCount\": 0, \"pawns\": [{\"ok\": true, \"i",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_RM_Muttavaq__cell_rect.png"
+ },
+ "RSW_Borcatu": {
+  "cell": [
+   115,
+   103
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Spawned 1/1 RSW_Borcatu in faction (none).\", \"spawnedCount\": 1, \"failedCount\": 0, \"substitutedCount\": 0, \"pawns\": [{\"ok\": true, \"i",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_RSW_Borcatu__cell_rect.png"
+ },
+ "RM_Frethik": {
+  "cell": [
+   121,
+   103
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Spawned 1/1 RM_Frethik in faction (none).\", \"spawnedCount\": 1, \"failedCount\": 0, \"substitutedCount\": 0, \"pawns\": [{\"ok\": true, \"id",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_RM_Frethik__cell_rect.png"
+ },
+ "RM_Kroffa": {
+  "cell": [
+   127,
+   103
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Spawned 1/1 RM_Kroffa in faction (none).\", \"spawnedCount\": 1, \"failedCount\": 0, \"substitutedCount\": 0, \"pawns\": [{\"ok\": true, \"id\"",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_RM_Kroffa__cell_rect.png"
+ },
+ "VAEWaste_Megatardi": {
+  "cell": [
+   133,
+   103
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Spawned 1/1 VAEWaste_Megatardi in faction (none).\", \"spawnedCount\": 1, \"failedCount\": 0, \"substitutedCount\": 0, \"pawns\": [{\"ok\": t",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_VAEWaste_Megatardi__cell_rect.png"
+ },
+ "RSW_SandLeaper": {
+  "cell": [
+   139,
+   103
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Spawned 1/1 RSW_SandLeaper in faction (none).\", \"spawnedCount\": 1, \"failedCount\": 0, \"substitutedCount\": 0, \"pawns\": [{\"ok\": true,",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_RSW_SandLeaper__cell_rect.png"
+ },
+ "RSW_MutagenicNorphea": {
+  "cell": [
+   103,
+   109
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Spawned 1/1 RSW_MutagenicNorphea in faction (none).\", \"spawnedCount\": 1, \"failedCount\": 0, \"substitutedCount\": 0, \"pawns\": [{\"ok\":",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_RSW_MutagenicNorphea__cell_rect.png"
+ },
+ "RSW_SandPillar": {
+  "cell": [
+   109,
+   109
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Spawned 1/1 RSW_SandPillar in faction (none).\", \"spawnedCount\": 1, \"failedCount\": 0, \"substitutedCount\": 0, \"pawns\": [{\"ok\": true,",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_RSW_SandPillar__cell_rect.png"
+ },
+ "RUT_EmperorVulture": {
+  "cell": [
+   115,
+   109
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Spawned 1/1 RUT_EmperorVulture in faction (none).\", \"spawnedCount\": 1, \"failedCount\": 0, \"substitutedCount\": 0, \"pawns\": [{\"ok\": t",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_RUT_EmperorVulture__cell_rect.png"
+ },
+ "RM_Tarruq": {
+  "cell": [
+   121,
+   109
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Spawned 1/1 RM_Tarruq in faction (none).\", \"spawnedCount\": 1, \"failedCount\": 0, \"substitutedCount\": 0, \"pawns\": [{\"ok\": true, \"id\"",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_RM_Tarruq__cell_rect.png"
+ },
+ "RM_VaultRoot": {
+  "cell": [
+   127,
+   109
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Placed 1 thing(s) of 1 requested across 1 of 1 op(s).\", \"opsRequested\": 1, \"spawned\": 1, \"failed\": 0, \"thingsRequested\": 1, \"thing",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_RM_VaultRoot__cell_rect.png"
+ },
+ "RM_WastelandScorchedStars": {
+  "cell": [
+   133,
+   109
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Placed 1 thing(s) of 1 requested across 1 of 1 op(s).\", \"opsRequested\": 1, \"spawned\": 1, \"failed\": 0, \"thingsRequested\": 1, \"thing",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_RM_WastelandScorchedStars__cell_rect.png"
+ },
+ "RM_TwistingThorngrass": {
+  "cell": [
+   139,
+   109
+  ],
+  "spawn_ok": true,
+  "spawn": "{\"success\": true, \"message\": \"Placed 1 thing(s) of 1 requested across 1 of 1 op(s).\", \"opsRequested\": 1, \"spawned\": 1, \"failed\": 0, \"thingsRequested\": 1, \"thing",
+  "shot": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck3_RM_TwistingThorngrass__cell_rect.png"
+ },
+ "_wide": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\sheetcheck_wide__cell_rect.png"
+}
