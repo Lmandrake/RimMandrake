@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Huldu fur: the trade commodity the huldu description promises. Uses the shared vanilla
+     leather texture tinted by stuff colour until its own icon lands (artpipe job
+     rm_huldufur_icon_v1, texPath Things/Item/Resource/RM_LeatherHuldu is NOT wired yet). -->
+<Defs>
+  <ThingDef ParentName="LeatherBase">
+    <defName>RM_Leather_Huldu</defName>
+    <label>huldu fur</label>
+    <description>Dense, oiled pelt that sheds water in sheets and dries to a deep, shifting sheen. Traders ask for it by name and pay well; a cloak of it is a statement.</description>
+    <graphicData>
+      <color>(150, 98, 62)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>9</MarketValue>
+      <StuffPower_Armor_Sharp>0.5</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0.12</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>22</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>8</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(150, 98, 62)</color>
+      <commonality>0.02</commonality>
+    </stuffProps>
+  </ThingDef>
+</Defs>
