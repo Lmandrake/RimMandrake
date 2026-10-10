@@ -46,10 +46,39 @@
       "prefill": "A"
     },
     "RM_Dovvik": {
-      "at": "2026-10-05T14:26:43.153Z",
+      "at": "2026-10-09T17:49:53-0700",
+      "conflictSheet": [
+        {
+          "action": "queue a redraw following the note",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_BlueDesert/Dovvik/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-05T14:26:43.153Z",
+            "decision": "B",
+            "note": "You drew a beast that appears to be eating a plant... of course they can't be like that. Also, the graphics renders in your sheet for scale are very hard to interpret as they are low res.",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-05T05:54:07.847Z",
-      "decision": "B",
-      "note": "You drew a beast that appears to be eating a plant... of course they can't be like that. Also, the graphics renders in your sheet for scale are very hard to interpret as they are low res.",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T17:49:53-0700",
+          "followed_by": [
+            "enact_e3e8ae91_dovvik_v1"
+          ],
+          "note": "You drew a beast that appears to be eating a plant... of course they can't be like that. Also, the graphics renders in your sheet for scale are very hard to interpret as they are low res.",
+          "when": "2026-10-09T18:16:08-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "9a2e9c9baf9fc063e70953ca58c97a76503b94c03f88e08a17f30ceed2bf6fbe",
@@ -140,10 +169,39 @@
       "variantsAt": "2026-10-05T14:37:22.774Z"
     },
     "RM_Murrek": {
-      "at": "2026-10-05T05:55:04.302Z",
+      "at": "2026-10-09T17:49:53-0700",
+      "conflictSheet": [
+        {
+          "action": "queue a redraw following the note",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_BlueDesert/Murrek/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-05T05:55:04.302Z",
+            "decision": "C",
+            "note": "Give it a yellower hue due to the hydrocarbon blood",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-05T05:55:04.302Z",
-      "decision": "C",
-      "note": "Give it a yellower hue due to the hydrocarbon blood",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T17:49:53-0700",
+          "followed_by": [
+            "enact_069e4d4b_murrek_v1"
+          ],
+          "note": "Give it a yellower hue due to the hydrocarbon blood",
+          "when": "2026-10-09T18:16:08-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Ossivel": {
@@ -221,10 +279,39 @@
       "prefill": "A"
     },
     "RM_Utikka": {
-      "at": "2026-10-05T14:27:38.269Z",
+      "at": "2026-10-09T17:49:53-0700",
+      "conflictSheet": [
+        {
+          "action": "queue a redraw following the note",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_BlueDesert/Utikka/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-05T14:27:38.269Z",
+            "decision": "B",
+            "note": "You made another image of an animal eating plants. It also is supposed to be hydrocarbon based (pale white/blue and yellow blood) and like nothing terrestrial. This fails all three. ",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-05T05:56:25.653Z",
-      "decision": "B",
-      "note": "You made another image of an animal eating plants. It also is supposed to be hydrocarbon based (pale white/blue and yellow blood) and like nothing terrestrial. This fails all three. ",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T17:49:53-0700",
+          "followed_by": [
+            "enact_d67b8fd8_utikka_v1"
+          ],
+          "note": "You made another image of an animal eating plants. It also is supposed to be hydrocarbon based (pale white/blue and yellow blood) and like nothing terrestrial. This fails all three. ",
+          "when": "2026-10-09T18:16:08-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "c655fb14acf92b53992f758d0c3bd10bd3d13830ca4c5004f9c16da055fd73a6",
@@ -265,6 +352,25 @@
     },
     "RM_Vhaulk": {
       "at": "2026-10-06T03:14:12.448Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_BlueDesert/Vhaulk/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:14:12.448Z",
+            "decision": "E",
+            "note": "",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-10T00:44:31.716Z"
+        }
+      ],
       "decidedAt": "2026-10-06T03:13:59.370Z",
       "decision": "E",
       "note": "",
@@ -300,10 +406,39 @@
       "variantsAt": "2026-10-06T03:15:00.961Z"
     },
     "RM_Vrisk": {
-      "at": "2026-10-05T14:36:52.957Z",
+      "at": "2026-10-09T17:49:53-0700",
+      "conflictSheet": [
+        {
+          "action": "queue a redraw following the note",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_BlueDesert/Vrisk/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-05T14:36:52.957Z",
+            "decision": "D",
+            "note": "Good, but please make the head less recognizable and more alien. Perhaps no eyes at all.",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-05T14:36:47.721Z",
-      "decision": "D",
-      "note": "Good, but please make the head less recognizable and more alien. Perhaps no eyes at all.",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T17:49:53-0700",
+          "followed_by": [
+            "enact_b3c6f3d3_vrisk_v1"
+          ],
+          "note": "Good, but please make the head less recognizable and more alien. Perhaps no eyes at all.",
+          "when": "2026-10-09T18:16:08-0700"
+        }
+      ],
       "prefill": "A",
       "purge": [
         "024ad7268a2e32bb22c85edd4f5012fdc1cde95b925b646510e7dcaef023bfc5",

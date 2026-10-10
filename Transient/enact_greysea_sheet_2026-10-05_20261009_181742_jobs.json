@@ -1,0 +1,21 @@
+[
+ {
+  "id": "enact_c0132bf3_corrik_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Corrik",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"This doesn't look like anything?\" RimWorld sprite of the corrik, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "This doesn't look like anything?",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/7b/7bc2014d99d9624c1027de147769948d6f5d502324c079de31507277b1eefc74.png"
+  ],
+  "biome_neutral": true
+ }
+]

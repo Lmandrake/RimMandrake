@@ -4,9 +4,38 @@
   "decidedCount": 12,
   "decisions": {
     "RM_Dwommo": {
-      "at": "2026-10-06T03:16:30.682Z",
-      "decision": "A",
-      "note": "floater",
+      "at": "2026-10-09T17:49:53-0700",
+      "conflictSheet": [
+        {
+          "action": "queue a redraw following the note",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_GelatinousSlime/Dwommo/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:16:30.682Z",
+            "decision": "A",
+            "note": "floater",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T17:49:53-0700",
+          "followed_by": [
+            "enact_5673ffda_dwommo_v1"
+          ],
+          "note": "floater",
+          "when": "2026-10-09T18:17:14-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Fubbum": {
@@ -53,8 +82,29 @@
     },
     "RM_Plant_Bellows": {
       "at": "2026-10-06T03:19:22.134Z",
+      "conflictSheet": [
+        {
+          "action": "pick column B instead",
+          "by": "click",
+          "choice": "A",
+          "item": "RM_GelatinousSlime/Bellows/purgedpick",
+          "kind": "purgedpick",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:19:22.134Z",
+            "decision": "A",
+            "note": "",
+            "picks": {
+              "_byname": "B"
+            },
+            "variants": null
+          },
+          "when": "2026-10-10T00:45:56.357Z"
+        }
+      ],
       "decidedAt": "2026-10-06T03:19:22.134Z",
-      "decision": "A",
+      "decision": "B",
       "note": "",
       "picks": {
         "_byname": "B"
@@ -63,13 +113,50 @@
       "purge": [
         "bf9373f689fdb2913e30e005cbd8cef2bd1d99d3567d40a5fb6160f61e827ea8"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "reference_picks": {
+        "decision": "A",
+        "picks": {
+          "_byname": "B"
+        }
+      }
     },
     "RM_Plant_Readerbloom": {
-      "at": "2026-10-06T03:19:27.436Z",
+      "at": "2026-10-10T00:46:00.833Z",
+      "conflictSheet": [
+        {
+          "action": "redo with his note 'regen for low quality'",
+          "by": "click",
+          "choice": "other",
+          "item": "RM_GelatinousSlime/Readerbloom/purgedpick",
+          "kind": "purgedpick",
+          "note": "regen for low quality",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:19:27.436Z",
+            "decision": "A",
+            "note": "",
+            "picks": {
+              "_byname": "B"
+            },
+            "variants": null
+          },
+          "when": "2026-10-10T00:46:00.833Z"
+        }
+      ],
       "decidedAt": "2026-10-06T03:19:26.430Z",
-      "decision": "A",
+      "decision": "redo",
       "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-10T00:46:00.833Z",
+          "followed_by": [
+            "enact_a78ae7bb_plant_readerbloom_v1"
+          ],
+          "note": "regen for low quality",
+          "when": "2026-10-09T18:17:14-0700"
+        }
+      ],
       "picks": {
         "_byname": "B"
       },

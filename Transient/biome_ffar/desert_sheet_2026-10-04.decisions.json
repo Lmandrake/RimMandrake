@@ -197,6 +197,25 @@
     },
     "RM_GreatDevourer": {
       "at": "2026-10-05T03:21:18.329Z",
+      "conflictSheet": [
+        {
+          "action": "owner question — not folded",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_LongShade/Great Devourer/tier",
+          "kind": "tier",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-05T03:21:18.329Z",
+            "decision": "A",
+            "note": "This is NOT Canon. Star Wars DOES have something called the Great Devourer that is unrelated. This was from Alpha Animals originally, and now we are making it ours. It is now a life stage of the Sarlacc (see entry) that quests until it finds rich food and a water source to claim. See the Sarlacc entry for what to call it properly. Remove the canon association with this animal. Lives at the RSW level (though we're adding to the Star Wars canon ourselves with this one)",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decision": "A",
       "note": "This is NOT Canon. Star Wars DOES have something called the Great Devourer that is unrelated. This was from Alpha Animals originally, and now we are making it ours. It is now a life stage of the Sarlacc (see entry) that quests until it finds rich food and a water source to claim. See the Sarlacc entry for what to call it properly. Remove the canon association with this animal. Lives at the RSW level (though we're adding to the Star Wars canon ourselves with this one)",
       "prefill": "A"
@@ -1216,6 +1235,31 @@
     },
     "RSW_Nerf": {
       "at": "2026-10-08T05:12:34.688Z",
+      "conflictSheet": [
+        {
+          "action": "column E -> main graphic swanimals/Nerf/Nerf_f",
+          "by": "click",
+          "choice": "A",
+          "item": "RM_LongShade/Nerf/amb",
+          "kind": "amb",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-08T05:12:34.688Z",
+            "decision": "E",
+            "note": "",
+            "picks": {
+              "_byname": "E",
+              "swanimals/Nerf/Nerf_j": "B",
+              "swanimals/Nerf/Nerf_m": "C"
+            },
+            "variants": [
+              "E"
+            ]
+          },
+          "when": "2026-10-10T00:45:38.518Z"
+        }
+      ],
       "decidedAt": "2026-10-08T05:12:29.408Z",
       "decision": "E",
       "note": "",
@@ -1231,7 +1275,7 @@
         }
       ],
       "picks": {
-        "_byname": "E",
+        "swanimals/Nerf/Nerf_f": "E",
         "swanimals/Nerf/Nerf_j": "B",
         "swanimals/Nerf/Nerf_m": "C"
       },

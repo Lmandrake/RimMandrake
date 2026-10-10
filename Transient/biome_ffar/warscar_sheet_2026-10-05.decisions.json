@@ -61,9 +61,45 @@
       "carriedAt": "2026-10-07",
       "carriedBy": "BENCH helper: renamed/moved row (owner note: \"Rename to Bileworm\")",
       "carriedFrom": "AA_Helixien",
+      "conflictSheet": [
+        {
+          "action": "leave the current art: unverifiable letters dropped",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Warscar/Bileworm/stale",
+          "kind": "stale",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T05:26:56.383Z",
+            "decision": "A",
+            "note": "Rename to Bileworm",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-10T00:49:44.475Z"
+        }
+      ],
       "decidedAt": "2026-10-06T05:23:51.904Z",
-      "decision": "A",
-      "note": "Rename to Bileworm"
+      "decision": "",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:26:56.383Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Rename to Bileworm",
+          "when": "2026-10-09T18:15:46-0700"
+        }
+      ],
+      "picks": {},
+      "stale_letters_dropped": {
+        "decision": "A",
+        "picks": null,
+        "variants": null
+      },
+      "variants": []
     },
     "RM_Chatrak": {
       "at": "2026-10-06T05:25:37.457Z",
@@ -80,19 +116,70 @@
       "carriedAt": "2026-10-07",
       "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
       "carriedFrom": "SW_Electricgryllotalpa",
+      "conflictSheet": [
+        {
+          "action": "leave the current art: unverifiable letters dropped",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Warscar/Electric Gryllotalpa/stale",
+          "kind": "stale",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T05:26:21.831Z",
+            "decision": "A",
+            "note": "",
+            "picks": {},
+            "variants": null
+          },
+          "when": "2026-10-10T00:49:47.767Z"
+        }
+      ],
       "decidedAt": "2026-10-06T05:26:21.831Z",
-      "decision": "A",
+      "decision": "",
       "note": "",
-      "picks": {}
+      "picks": {},
+      "stale_letters_dropped": {
+        "decision": "A",
+        "picks": {},
+        "variants": null
+      },
+      "variants": []
     },
     "RM_ElectricTick": {
       "at": "2026-10-06T05:23:39.764Z",
       "carriedAt": "2026-10-07",
       "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
       "carriedFrom": "SW_Electrictick",
+      "conflictSheet": [
+        {
+          "action": "leave the current art: unverifiable letters dropped",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Warscar/Electric Tick/stale",
+          "kind": "stale",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T05:23:39.764Z",
+            "decision": "A",
+            "note": "",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-10T00:49:50.536Z"
+        }
+      ],
       "decidedAt": "2026-10-06T05:23:39.764Z",
-      "decision": "A",
-      "note": ""
+      "decision": "",
+      "note": "",
+      "picks": {},
+      "stale_letters_dropped": {
+        "decision": "A",
+        "picks": null,
+        "variants": null
+      },
+      "variants": []
     },
     "RM_Glower": {
       "decision": "A",
@@ -104,9 +191,45 @@
       "carriedAt": "2026-10-07",
       "carriedBy": "BENCH helper: renamed/moved row (renamed port)",
       "carriedFrom": "SW_Juggernautbeetles",
+      "conflictSheet": [
+        {
+          "action": "leave the current art: unverifiable letters dropped",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Warscar/Juggernaut Beetle/stale",
+          "kind": "stale",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T05:27:49.312Z",
+            "decision": "A",
+            "note": "Redo description",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-10T00:49:52.887Z"
+        }
+      ],
       "decidedAt": "2026-10-06T05:27:19.382Z",
-      "decision": "A",
-      "note": "Redo description"
+      "decision": "",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:27:49.312Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Redo description",
+          "when": "2026-10-09T18:15:46-0700"
+        }
+      ],
+      "picks": {},
+      "stale_letters_dropped": {
+        "decision": "A",
+        "picks": null,
+        "variants": null
+      },
+      "variants": []
     },
     "RM_Pallbearer": {
       "decision": "A",

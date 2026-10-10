@@ -282,6 +282,29 @@
     },
     "RM_Halquin": {
       "at": "2026-10-08T04:24:33.899Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_FeverWood/Halquin/kept",
+          "kind": "kept",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-08T04:24:33.899Z",
+            "decision": "A",
+            "note": "",
+            "picks": {
+              "_byname": "B"
+            },
+            "variants": [
+              "B"
+            ]
+          },
+          "when": "2026-10-10T00:45:42.876Z"
+        }
+      ],
       "decidedAt": "2026-10-08T04:24:24.365Z",
       "decision": "A",
       "note": "",
@@ -327,10 +350,33 @@
       "variantsDefault": true
     },
     "RM_Maulith": {
-      "at": "2026-10-08T04:25:12.516Z",
+      "at": "2026-10-10T00:45:47.583Z",
+      "conflictSheet": [
+        {
+          "action": "redo with his note 'regen, not quality enough'",
+          "by": "click",
+          "choice": "other",
+          "item": "RM_FeverWood/Maulith/kept",
+          "kind": "kept",
+          "note": "regen, not quality enough",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-08T04:25:12.516Z",
+            "decision": "A",
+            "note": "",
+            "picks": {
+              "_byname": "B"
+            },
+            "variants": [
+              "B"
+            ]
+          },
+          "when": "2026-10-10T00:45:47.583Z"
+        }
+      ],
       "decidedAt": "2026-10-08T04:25:06.931Z",
-      "decision": "A",
-      "note": "",
+      "decision": "redo",
+      "note": "regen, not quality enough",
       "notes_followed": [
         {
           "at": "2026-10-08T04:25:12.516Z",

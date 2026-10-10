@@ -145,8 +145,27 @@
       "carriedAt": "2026-10-07",
       "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
       "carriedFrom": "RSW_Durrok",
+      "conflictSheet": [
+        {
+          "action": "leave the current art: unverifiable letters dropped",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_LeaningScrub/Durrok/stale",
+          "kind": "stale",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T01:11:14.274Z",
+            "decision": "A",
+            "note": "",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-10T00:47:19.891Z"
+        }
+      ],
       "decidedAt": "2026-10-06T01:10:57.258Z",
-      "decision": "A",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -157,7 +176,14 @@
           "note": "Change the description to match the image, get inspired.",
           "when": "2026-10-09T01:15:06-0700"
         }
-      ]
+      ],
+      "picks": {},
+      "stale_letters_dropped": {
+        "decision": "A",
+        "picks": null,
+        "variants": null
+      },
+      "variants": []
     },
     "RM_Dustflutter": {
       "at": "2026-10-06T01:11:49.945Z",
@@ -256,6 +282,27 @@
     },
     "RM_HoardVenomvine": {
       "at": "2026-10-08T15:06:56.786Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_LeaningScrub/Hoard Venomvine/noslot",
+          "kind": "noslot",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-08T15:06:56.786Z",
+            "decision": "J",
+            "note": "",
+            "picks": null,
+            "variants": [
+              "I"
+            ]
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-08T15:06:38.262Z",
       "decision": "J",
       "note": "",
@@ -300,8 +347,27 @@
       "carriedAt": "2026-10-07",
       "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
       "carriedFrom": "RSW_Mullgoth",
+      "conflictSheet": [
+        {
+          "action": "leave the current art: unverifiable letters dropped",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_LeaningScrub/Mullgoth/stale",
+          "kind": "stale",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T01:21:09.534Z",
+            "decision": "A",
+            "note": "",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-10T00:47:25.849Z"
+        }
+      ],
       "decidedAt": "2026-10-06T01:20:56.151Z",
-      "decision": "A",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -313,12 +379,19 @@
           "when": "2026-10-09T01:15:06-0700"
         }
       ],
+      "picks": {},
       "purge": [
         "c61acfc2341494de1a3dba6431fe31e787f03f236e7ff5e7ee855a5dbfb8b534",
         "745882d99a2216e009a242cbc387523a70e11dabdb488d10b2115b8f6199f6c7",
         "62e56dd1b876af8723a076f264c902318359c6577c908918b0345a711d66302c"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "stale_letters_dropped": {
+        "decision": "A",
+        "picks": null,
+        "variants": null
+      },
+      "variants": []
     },
     "RM_Pillowmoss": {
       "at": "2026-10-08T05:49:51.530Z",

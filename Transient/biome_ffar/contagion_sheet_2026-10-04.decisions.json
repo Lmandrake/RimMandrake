@@ -63,13 +63,65 @@
     },
     "RM_ContagionIkee": {
       "at": "2026-10-06T05:20:03.529Z",
+      "conflictSheet": [
+        {
+          "action": "keep the protected current picture; row pick withdrawn",
+          "by": "click",
+          "choice": "A",
+          "item": "RM_Contagion/Contagion Ikee/kept",
+          "kind": "kept",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T05:20:03.529Z",
+            "decision": "B",
+            "note": "Not again! Where's the ikee art I had before? I liked it! Why do you keep changing the ikee art?",
+            "picks": {
+              "_byname": "B"
+            },
+            "variants": null
+          },
+          "when": "2026-10-10T00:44:50.714Z"
+        },
+        {
+          "action": "note followed by the kept row (A: keep his restored art) — --mark-done",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Contagion/Contagion Ikee/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T05:20:03.529Z",
+            "decision": "",
+            "note": "Not again! Where's the ikee art I had before? I liked it! Why do you keep changing the ikee art?",
+            "picks": {},
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-06T05:20:03.529Z",
-      "decision": "B",
-      "note": "Not again! Where's the ikee art I had before? I liked it! Why do you keep changing the ikee art?",
-      "picks": {
-        "_byname": "B"
-      },
-      "prefill": "A"
+      "decision": "",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T05:20:03.529Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Not again! Where's the ikee art I had before? I liked it! Why do you keep changing the ikee art?",
+          "when": "2026-10-09T18:15:25-0700"
+        }
+      ],
+      "picks": {},
+      "prefill": "A",
+      "reference_picks": {
+        "decision": "B",
+        "picks": {
+          "_byname": "B"
+        }
+      }
     },
     "RM_Crispling": {
       "decision": "A",
@@ -82,9 +134,38 @@
       "prefill": "A"
     },
     "RM_Doublemaw": {
-      "at": "2026-10-06T05:19:25.466Z",
-      "decision": "A",
-      "note": "stop tintint red",
+      "at": "2026-10-09T17:49:53-0700",
+      "conflictSheet": [
+        {
+          "action": "queue a redraw following the note",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Contagion/Doublemaw/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T05:19:25.466Z",
+            "decision": "A",
+            "note": "stop tintint red",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T17:49:53-0700",
+          "followed_by": [
+            "enact_9b51ef78_doublemaw_v1"
+          ],
+          "note": "stop tintint red",
+          "when": "2026-10-09T18:15:25-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Eyebark": {
@@ -106,9 +187,38 @@
       "prefill": "A"
     },
     "RM_Eyestinger": {
-      "at": "2026-10-06T05:19:19.691Z",
-      "decision": "A",
-      "note": "stop tintint red",
+      "at": "2026-10-09T17:49:53-0700",
+      "conflictSheet": [
+        {
+          "action": "queue a redraw following the note",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Contagion/Eyestinger/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T05:19:19.691Z",
+            "decision": "A",
+            "note": "stop tintint red",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T17:49:53-0700",
+          "followed_by": [
+            "enact_ffe79056_eyestinger_v1"
+          ],
+          "note": "stop tintint red",
+          "when": "2026-10-09T18:15:25-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Fleshsop": {
@@ -124,9 +234,38 @@
       "purgeTouched": true
     },
     "RM_Gawpsack": {
-      "at": "2026-10-06T05:19:02.563Z",
-      "decision": "A",
-      "note": "stop tinting it pink, I like the original art as shown on left. ",
+      "at": "2026-10-09T17:49:53-0700",
+      "conflictSheet": [
+        {
+          "action": "queue a redraw following the note",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Contagion/Gawpsack/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T05:19:02.563Z",
+            "decision": "A",
+            "note": "stop tinting it pink, I like the original art as shown on left. ",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T17:49:53-0700",
+          "followed_by": [
+            "enact_712dc596_gawpsack_v1"
+          ],
+          "note": "stop tinting it pink, I like the original art as shown on left. ",
+          "when": "2026-10-09T18:15:25-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_Gnashling": {
@@ -347,9 +486,38 @@
       "prefill": "A"
     },
     "RM_Sparkleech": {
-      "at": "2026-10-06T05:20:47.388Z",
-      "decision": "A",
-      "note": "why is that showing blue?",
+      "at": "2026-10-09T17:49:53-0700",
+      "conflictSheet": [
+        {
+          "action": "queue a redraw following the note",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Contagion/Sparkleech/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T05:20:47.388Z",
+            "decision": "A",
+            "note": "why is that showing blue?",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T17:49:53-0700",
+          "followed_by": [
+            "enact_c6a3f569_sparkleech_v1"
+          ],
+          "note": "why is that showing blue?",
+          "when": "2026-10-09T18:15:25-0700"
+        }
+      ],
       "prefill": "A"
     },
     "RM_SparkleechGrub": {

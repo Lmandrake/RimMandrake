@@ -1,0 +1,78 @@
+[
+ {
+  "id": "enact_9b51ef78_doublemaw_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Doublemaw",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"stop tintint red\" RimWorld sprite of the doublemaw, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "stop tintint red",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/65/65d3280a17147e761b48d8efcf4e686df14cfa472885691a75de4caaa4314893.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_ffe79056_eyestinger_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Eyestinger",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"stop tintint red\" RimWorld sprite of the eyestinger, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "stop tintint red",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/8c/8c4cf067e1227c635eec3a1f885df8ddd7525520746a42f6a1c404e18848fd53.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_712dc596_gawpsack_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Gawpsack",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"stop tinting it pink, I like the original art as shown on left.\" RimWorld sprite of the gawpsack, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "stop tinting it pink, I like the original art as shown on left.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/2d/2d47a2273c11fd68c5c4d888137a7af1c61c6dda7fbca020615d6cf82c98a3e1.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_c6a3f569_sparkleech_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Sparkleech",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"why is that showing blue?\" RimWorld sprite of the sparkleech, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "why is that showing blue?",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/0d/0d40769ce16804fa0c6c77029bc43dfc33c5900411cffbe698d8726db6d32087.png"
+  ],
+  "biome_neutral": true
+ }
+]

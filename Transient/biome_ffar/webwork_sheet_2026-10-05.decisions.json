@@ -5,9 +5,42 @@
   "decisions": {
     "Plant_TookeTrap_Wild": {
       "at": "2026-10-07T14:31:47.458Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Webwork/Tooke Trap  Wild/failed",
+          "kind": "failed",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-07T14:31:47.458Z",
+            "decision": "redo",
+            "note": "Please follow the original in-game version more closle,y this is a canon render. Can also look this up.",
+            "picks": null,
+            "variants": [
+              "B"
+            ]
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-07T14:31:28.089Z",
       "decision": "redo",
-      "note": "Please follow the original in-game version more closle,y this is a canon render. Can also look this up.",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-07T14:31:47.458Z",
+          "followed_by": [
+            "webwork_tooketrap_redo_v3",
+            "webwork_tooketrap_redo_v4",
+            "webwork_tooketrap_redo_v2"
+          ],
+          "note": "Please follow the original in-game version more closle,y this is a canon render. Can also look this up.",
+          "when": "2026-10-09T18:18:40-0700"
+        }
+      ],
       "prefill": "A",
       "variants": [
         "B"

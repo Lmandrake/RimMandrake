@@ -5,8 +5,29 @@
   "decisions": {
     "AA_CrepuscularBeetle": {
       "at": "2026-10-06T03:02:28.064Z",
+      "conflictSheet": [
+        {
+          "action": "pick ships as its note-follow-up at RM_Moravatha (live); raw pick kept as reference",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Abyss/Crepuscular Beetle/noslot",
+          "kind": "noslot",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:02:28.064Z",
+            "decision": "C",
+            "note": "",
+            "picks": {
+              "_byname": "C"
+            },
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-06T03:02:18.564Z",
-      "decision": "C",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -20,21 +41,46 @@
           "when": "2026-10-09T01:19:07-0700"
         }
       ],
-      "picks": {
-        "_byname": "C"
-      },
+      "picks": {},
       "prefill": "A",
       "purge": [
         "7f68064aaeb849ec00b11c3c959087205cb7f04e45bff85bbaeb3ac74ad448e3",
         "2d6672a8356ded4adda531eeae2c2013282c8e3edaf1715b9d811f4401067f9e",
         "041d2a45a05b68b5ac0ee78a1b603c25632d302f8a158b54a49249a90cf72a66"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "reference_picks": {
+        "decision": "C",
+        "picks": {
+          "_byname": "C"
+        }
+      }
     },
     "AA_DarkVandal": {
       "at": "2026-10-06T03:04:50.898Z",
+      "conflictSheet": [
+        {
+          "action": "pick ships as its note-follow-up at RM_Ossumatha (live); raw pick kept as reference",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Abyss/Dark Vandal/noslot",
+          "kind": "noslot",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:04:50.898Z",
+            "decision": "D",
+            "note": "",
+            "picks": {
+              "_byname": "D"
+            },
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-06T03:04:38.850Z",
-      "decision": "D",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -50,16 +96,20 @@
           "when": "2026-10-09T01:19:07-0700"
         }
       ],
-      "picks": {
-        "_byname": "D"
-      },
+      "picks": {},
       "prefill": "A",
       "purge": [
         "319bbac758f8dcb1d1024ef28cdb893aa0ef7c85abe7c4c1583a01386d45d434",
         "2d295fdf25b6e3f67ba7a3b46abf8614e0fcb376825a7e512bd4da17cca87cd7",
         "497a96e66f1837324c050d6497b0a44c880c34c484a6e36021cac81cd79e8ce3"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "reference_picks": {
+        "decision": "D",
+        "picks": {
+          "_byname": "D"
+        }
+      }
     },
     "AA_Darkbeast": {
       "at": "2026-10-06T03:03:05.672Z",
@@ -86,8 +136,29 @@
     },
     "AA_DuskProwler": {
       "at": "2026-10-06T03:07:50.181Z",
+      "conflictSheet": [
+        {
+          "action": "pick ships as its note-follow-up at RM_Ysvaltha (live); raw pick kept as reference",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Abyss/Dusk Prowler/noslot",
+          "kind": "noslot",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:07:50.181Z",
+            "decision": "C",
+            "note": "",
+            "picks": {
+              "_byname": "C"
+            },
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-06T03:07:30.435Z",
-      "decision": "C",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -101,16 +172,20 @@
           "when": "2026-10-09T01:19:07-0700"
         }
       ],
-      "picks": {
-        "_byname": "C"
-      },
+      "picks": {},
       "prefill": "A",
       "purge": [
         "d436ab4d58be22d84c54cea1957e53675709b5adb213bf8f58253c2ee1d0fc70",
         "6c73f799e9fab30e35779bb925c202fb90572aa3ed421b4b8854609e66b3f8b1",
         "402fa518893e7d11a4c2f5a7d3e8fc1fb77e67052e53c54d11fb0b42c36c6834"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "reference_picks": {
+        "decision": "C",
+        "picks": {
+          "_byname": "C"
+        }
+      }
     },
     "AA_DuskRat": {
       "at": "2026-10-05T14:15:38.919Z",
@@ -148,8 +223,29 @@
     },
     "AA_Murkling": {
       "at": "2026-10-06T03:01:37.612Z",
+      "conflictSheet": [
+        {
+          "action": "pick ships as its note-follow-up at RM_Lirrith (live); raw pick kept as reference",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Abyss/Murkling/noslot",
+          "kind": "noslot",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:01:37.612Z",
+            "decision": "D",
+            "note": "",
+            "picks": {
+              "_byname": "D"
+            },
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-06T03:01:18.757Z",
-      "decision": "D",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -163,9 +259,7 @@
           "when": "2026-10-09T01:19:07-0700"
         }
       ],
-      "picks": {
-        "_byname": "D"
-      },
+      "picks": {},
       "prefill": "A",
       "purge": [
         "eb74804fdc77625e3f0b12f1b62d302ffc88c0b4fab2b90704c8dcce9ceb060a",
@@ -174,7 +268,13 @@
         "68c7dde016ef99d7d1651819c12142bd88ad0494ee6449f93d68a512b562fa87",
         "586bc7fab6d2d789c15efea92b3bb8ed280be19e8b6c0fa35ee1676b6a78d789"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "reference_picks": {
+        "decision": "D",
+        "picks": {
+          "_byname": "D"
+        }
+      }
     },
     "AA_NightAve": {
       "at": "2026-10-05T14:19:10.742Z",
@@ -201,6 +301,29 @@
     },
     "AA_NightMule": {
       "at": "2026-10-06T03:00:00.332Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Abyss/Night Mule/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:00:00.332Z",
+            "decision": "redo",
+            "note": "",
+            "picks": {
+              "Things/Pawn/Animal/AA_NightMule/AA_NightMule_baby": "B",
+              "Things/Pawn/Animal/AA_NightMule/AA_NightMule_female": "C",
+              "_byname": "D"
+            },
+            "variants": null
+          },
+          "when": "2026-10-10T00:43:00.015Z"
+        }
+      ],
       "decidedAt": "2026-10-06T02:59:15.015Z",
       "decision": "redo",
       "note": "",
@@ -231,8 +354,29 @@
     },
     "AA_NightRam": {
       "at": "2026-10-06T03:03:40.131Z",
+      "conflictSheet": [
+        {
+          "action": "pick ships as its note-follow-up at RM_Olumetha (live); raw pick kept as reference",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Abyss/Night Ram/noslot",
+          "kind": "noslot",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:03:40.131Z",
+            "decision": "B",
+            "note": "",
+            "picks": {
+              "_byname": "B"
+            },
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-06T03:03:24.156Z",
-      "decision": "B",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -247,21 +391,47 @@
           "when": "2026-10-09T01:19:07-0700"
         }
       ],
-      "picks": {
-        "_byname": "B"
-      },
+      "picks": {},
       "prefill": "A",
       "purge": [
         "add388e498126c854541374dc4fa715dffcc1676cff81f982dc74b93d1b7df37",
         "86e01fc989af3c3a88eab789ba730441effbbcfb49cac18e20a3f32b453c811f",
         "23ddc95e6bb277bd86fa97a760604cca0bacde7f22f36e38925925a0d9888953"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "reference_picks": {
+        "decision": "B",
+        "picks": {
+          "_byname": "B"
+        }
+      }
     },
     "AA_Nightling": {
       "at": "2026-10-06T03:05:51.279Z",
+      "conflictSheet": [
+        {
+          "action": "pick ships as its note-follow-up at RM_Sesserith (live); raw pick kept as reference",
+          "by": "click",
+          "choice": "A",
+          "item": "RM_Abyss/Nightling/amb",
+          "kind": "amb",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:05:51.279Z",
+            "decision": "E",
+            "note": "",
+            "picks": {
+              "Things/Pawn/Animal/AA_Nightling/AA_NightlingPuppy": "B",
+              "_byname": "E"
+            },
+            "variants": null
+          },
+          "when": "2026-10-10T00:43:18.358Z"
+        }
+      ],
       "decidedAt": "2026-10-06T03:05:31.691Z",
-      "decision": "E",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -276,15 +446,44 @@
         }
       ],
       "picks": {
-        "Things/Pawn/Animal/AA_Nightling/AA_NightlingPuppy": "B",
-        "_byname": "E"
+        "Things/Pawn/Animal/AA_Nightling/AA_NightlingPuppy": "B"
       },
-      "prefill": "A"
+      "prefill": "A",
+      "reference_picks": {
+        "decision": "E",
+        "picks": {
+          "Things/Pawn/Animal/AA_Nightling/AA_NightlingPuppy": "B",
+          "_byname": "E"
+        }
+      }
     },
     "AA_ShadowCharger": {
       "at": "2026-10-06T03:06:22.907Z",
+      "conflictSheet": [
+        {
+          "action": "row is cut (his 2026-10-06 'Cut this.'); pick moot",
+          "by": "click",
+          "choice": "other",
+          "item": "RM_Abyss/Shadow Charger/amb",
+          "kind": "amb",
+          "note": "broken?",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:06:22.907Z",
+            "decision": "hold",
+            "note": "",
+            "picks": {
+              "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_baby": "D",
+              "Things/Pawn/Animal/AA_ShadowCharger/AA_ShadowCharger_female": "E",
+              "_byname": "G"
+            },
+            "variants": null
+          },
+          "when": "2026-10-10T00:43:27.962Z"
+        }
+      ],
       "decidedAt": "2026-10-06T03:06:14.215Z",
-      "decision": "hold",
+      "decision": "cut",
       "note": "",
       "notes_followed": [
         {
@@ -401,8 +600,31 @@
     },
     "AB_GlowingGrass": {
       "at": "2026-10-06T03:10:41.469Z",
+      "conflictSheet": [
+        {
+          "action": "pick ships as its note-follow-up at RM_GlowingGrass (live); raw pick kept as reference",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Abyss/Glowing Grass/noslot",
+          "kind": "noslot",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:10:41.469Z",
+            "decision": "B",
+            "note": "",
+            "picks": null,
+            "variants": [
+              "B",
+              "C",
+              "D"
+            ]
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-06T03:10:25.450Z",
-      "decision": "B",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -417,7 +639,12 @@
           "when": "2026-10-09T01:19:07-0700"
         }
       ],
+      "picks": {},
       "prefill": "A",
+      "reference_picks": {
+        "decision": "B",
+        "picks": null
+      },
       "variants": [
         "B",
         "C",
@@ -507,6 +734,25 @@
       "carriedAt": "2026-10-07",
       "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
       "carriedFrom": "AA_NightMule",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Abyss/Aveluthia/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:00:00.332Z",
+            "decision": "redo",
+            "note": "",
+            "picks": {},
+            "variants": null
+          },
+          "when": "2026-10-10T00:43:35.516Z"
+        }
+      ],
       "decidedAt": "2026-10-06T02:59:15.015Z",
       "decision": "redo",
       "note": "",
@@ -603,8 +849,27 @@
       "carriedAt": "2026-10-07",
       "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
       "carriedFrom": "AB_GiantSeptimum",
+      "conflictSheet": [
+        {
+          "action": "leave the current art: unverifiable letters dropped",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Abyss/Giant Fibre Stalk/stale",
+          "kind": "stale",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:09:29.885Z",
+            "decision": "A",
+            "note": "",
+            "picks": {},
+            "variants": null
+          },
+          "when": "2026-10-10T00:43:37.928Z"
+        }
+      ],
       "decidedAt": "2026-10-06T03:09:26.161Z",
-      "decision": "A",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -616,7 +881,13 @@
           "when": "2026-10-09T01:24:12-0700"
         }
       ],
-      "picks": {}
+      "picks": {},
+      "stale_letters_dropped": {
+        "decision": "A",
+        "picks": {},
+        "variants": null
+      },
+      "variants": []
     },
     "RM_GiantGlowGlobe": {
       "agentInference": {
@@ -662,8 +933,27 @@
       "carriedAt": "2026-10-07",
       "carriedBy": "BENCH helper: renamed/moved row (owner note on the old row)",
       "carriedFrom": "AB_GlowingGrass",
+      "conflictSheet": [
+        {
+          "action": "leave the current art: unverifiable letters dropped",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Abyss/Glowing Grass/stale",
+          "kind": "stale",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:10:41.469Z",
+            "decision": "E",
+            "note": "",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-10T00:43:59.371Z"
+        }
+      ],
       "decidedAt": "2026-10-06T03:10:25.450Z",
-      "decision": "E",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -677,7 +967,14 @@
           "note": "Tint all of these to be dull yellow-green glowing.",
           "when": "2026-10-09T01:19:07-0700"
         }
-      ]
+      ],
+      "picks": {},
+      "stale_letters_dropped": {
+        "decision": "E",
+        "picks": null,
+        "variants": null
+      },
+      "variants": []
     },
     "RM_Krizzak": {
       "at": "2026-10-05T14:17:25.933Z",
@@ -726,8 +1023,27 @@
       "carriedAt": "2026-10-07",
       "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
       "carriedFrom": "AA_Darkbeast",
+      "conflictSheet": [
+        {
+          "action": "leave the current art: unverifiable letters dropped",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Abyss/Nevarithia/stale",
+          "kind": "stale",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:03:05.672Z",
+            "decision": "A",
+            "note": "",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-10T00:44:07.322Z"
+        }
+      ],
       "decidedAt": "2026-10-06T03:02:54.821Z",
-      "decision": "A",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -739,12 +1055,19 @@
           "when": "2026-10-09T01:24:12-0700"
         }
       ],
+      "picks": {},
       "purge": [
         "eefa39c16fa233eb8087adebf901f78acb70f4a4fababc1031687eeee82729e5",
         "d9c8fc71d136f4c67fe81eade19a209ffaa97942c0114ed5da7714832a6a34d1",
         "6cf3b0f64f553478175857c41c8dd6f88d3c36f0547b231d13a141faa6f3f1e2"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "stale_letters_dropped": {
+        "decision": "A",
+        "picks": null,
+        "variants": null
+      },
+      "variants": []
     },
     "RM_Olumetha": {
       "agentInference": {
@@ -813,14 +1136,39 @@
       "carriedAt": "2026-10-07",
       "carriedBy": "BENCH helper: renamed row, owner decision carried (letters remapped by identical pictures)",
       "carriedFrom": "AB_ToxicGamma",
+      "conflictSheet": [
+        {
+          "action": "leave the current art: unverifiable letters dropped",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_Abyss/Sickly Glow Mushroom/stale",
+          "kind": "stale",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:11:13.055Z",
+            "decision": "A",
+            "note": "",
+            "picks": {},
+            "variants": null
+          },
+          "when": "2026-10-10T00:44:10.142Z"
+        }
+      ],
       "decidedAt": "2026-10-06T03:11:08.720Z",
-      "decision": "A",
+      "decision": "",
       "note": "",
       "picks": {},
       "purge": [
         "c67027dd42f93671c58d792f1df5d344aec880fac63a3d22808459b58dbb291b"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "stale_letters_dropped": {
+        "decision": "A",
+        "picks": {},
+        "variants": null
+      },
+      "variants": []
     },
     "RM_Skarnix": {
       "at": "2026-10-06T03:00:35.361Z",

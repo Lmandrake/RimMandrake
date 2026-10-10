@@ -1,0 +1,78 @@
+[
+ {
+  "id": "enact_e3e8ae91_dovvik_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Dovvik",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"You drew a beast that appears to be eating a plant... of course they can't be like that. Also, the graphics renders in your sheet for scale are very hard to interpret as they are low res.\" RimWorld sprite of the dovvik, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "You drew a beast that appears to be eating a plant... of course they can't be like that. Also, the graphics renders in your sheet for scale are very hard to interpret as they are low res.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/55/55ce5c9d1a84c40755fea21d0581b56b9fde4d970d9f3285100a837a41f1899f.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_069e4d4b_murrek_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Murrek",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Give it a yellower hue due to the hydrocarbon blood\" RimWorld sprite of the murrek, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Give it a yellower hue due to the hydrocarbon blood",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6b/6ba660244ece66a1e0321a02b1da77abd3da4b23b078b291f930c0a82243ae6c.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_d67b8fd8_utikka_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Utikka",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"You made another image of an animal eating plants. It also is supposed to be hydrocarbon based (pale white/blue and yellow blood) and like nothing terrestrial. This fails all three.\" RimWorld sprite of the utikka, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "You made another image of an animal eating plants. It also is supposed to be hydrocarbon based (pale white/blue and yellow blood) and like nothing terrestrial. This fails all three.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/0e/0e1a90004719690365e475afc579bd444c13562074643519cb14d24d1fa4c9d7.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_b3c6f3d3_vrisk_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Vrisk",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Good, but please make the head less recognizable and more alien. Perhaps no eyes at all.\" RimWorld sprite of the vrisk, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Good, but please make the head less recognizable and more alien. Perhaps no eyes at all.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/44/44e40e7b7d9e18bd16a946368c45c619c8923108655993d78c71d0a09b5c2256.png"
+  ],
+  "biome_neutral": true
+ }
+]

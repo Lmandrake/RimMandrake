@@ -402,6 +402,29 @@
     },
     "RSW_KraytDragon": {
       "at": "2026-10-06T05:35:18.118Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "A",
+          "item": "RM_Stillsand/Krayt Dragon/failed",
+          "kind": "failed",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T05:35:18.118Z",
+            "decision": "redo",
+            "note": "",
+            "picks": {
+              "_byname": "E",
+              "swanimals/KraytDragon/KraytDragon_j": "B",
+              "swanimals/KraytDragon/KraytDragon_m": "C"
+            },
+            "variants": null
+          },
+          "when": "2026-10-10T00:45:12.083Z"
+        }
+      ],
       "decidedAt": "2026-10-06T05:35:18.118Z",
       "decision": "redo",
       "note": "",
@@ -435,8 +458,29 @@
     },
     "RSW_Kreetle": {
       "at": "2026-10-06T05:35:27.565Z",
+      "conflictSheet": [
+        {
+          "action": "keep the protected current picture; row pick withdrawn",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Stillsand/Kreetle/kept",
+          "kind": "kept",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T05:35:27.565Z",
+            "decision": "I",
+            "note": "",
+            "picks": {
+              "swanimals/Kreetle/Kreetle_j": "F"
+            },
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-06T05:35:27.565Z",
-      "decision": "I",
+      "decision": "",
       "note": "",
       "notes_followed": [
         {
@@ -463,7 +507,13 @@
         "72840821544035a205c7026848fedcf8d1fc7afee1764230af5196511f4a8970",
         "9fdba3024594a222f7746226f2239159c1b91cf3b4fd69bdad7587eb3a830e57"
       ],
-      "purgeTouched": true
+      "purgeTouched": true,
+      "reference_picks": {
+        "decision": "I",
+        "picks": {
+          "swanimals/Kreetle/Kreetle_j": "F"
+        }
+      }
     },
     "RSW_LightPipeNub": {
       "at": "2026-10-05T05:35:40.922Z",
@@ -549,15 +599,30 @@
     },
     "RSW_Vozzik": {
       "at": "2026-10-05T05:28:11.988Z",
+      "conflictSheet": [
+        {
+          "action": "drop the delete: 3 ✕ removed, kept",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_Stillsand/Vozzik/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-05T05:28:11.988Z",
+            "decision": "redo",
+            "note": "Please regenerate to make it obviously entirely synthetic. This should be moved to the Rust Cathedral Biome. There should be brightly glowing blue light coming from within through its metallic shell. There should be four eye stalks looking in several diretions, also glowing dull blue. ",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
       "decidedAt": "2026-10-05T05:24:10.227Z",
       "decision": "redo",
       "note": "Please regenerate to make it obviously entirely synthetic. This should be moved to the Rust Cathedral Biome. There should be brightly glowing blue light coming from within through its metallic shell. There should be four eye stalks looking in several diretions, also glowing dull blue. ",
       "prefill": "A",
-      "purge": [
-        "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e",
-        "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb",
-        "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc"
-      ],
+      "purge": [],
       "purgeTouched": true
     },
     "RSW_WarWyrm": {
