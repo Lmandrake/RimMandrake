@@ -257,8 +257,8 @@
   <!-- ══════════════════════ 2b. RM_Karrek — the flenser (swarm) ══════════════════════ -->
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Karrek</defName>
-    <label>karrek</label>
-    <description>Finger-length little armored fish, fin-rays hardened into serrated chitin combs. A boiling crowd that hits thrown feed like one animal and leaves nothing. Feed-throwing is safe; wading is not — a karrek swarm strips a bleeding cut white in seconds. Left hungry two days, the swarm starts on its own smallest.</description>
+    <label>iaala</label>
+    <description>Finger-length little armored fish, fin-rays hardened into serrated chitin combs. A boiling crowd that hits thrown feed like one animal and leaves nothing. Feed-throwing is safe; wading is not — an iaala swarm strips a bleeding cut white in seconds. Left hungry two days, the swarm starts on its own smallest.</description>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>4</MarketValue>
@@ -331,7 +331,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Karrek</defName>
-    <label>karrek</label>
+    <label>iaala</label>
     <race>RM_Karrek</race>
     <combatPower>6</combatPower>
     <ecoSystemWeight>0.25</ecoSystemWeight>

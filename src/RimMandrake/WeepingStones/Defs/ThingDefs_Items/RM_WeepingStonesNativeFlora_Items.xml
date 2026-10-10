@@ -63,4 +63,28 @@
     </comps>
   </ThingDef>
 
+
+  <!-- ══════════════════════ RM_Korrim — the steamfrond's spice ══════════════════════
+       Owner, Weeping Stones art sheet 2026-10-10, on RM_Steamfrond: "Creates a unique Star Wars cuisine
+       spice." Invented name (RM tier, Q11a; no Wookieepedia hit for "korrim"). The oasis kitchens' one
+       spice: the murrin broth (RM_StockedPoolRecipes.xml) is cooked with it. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_Korrim</defName>
+    <label>korrim</label>
+    <description>A coarse, ash-pale spice scraped from the frond rims of a steamfrond and dried in the sun. It tastes of smoke and iron with a bright, sour edge, and a pinch of it changes a pot of anything. Nothing else grows it: every grain on the planet comes from a working seep oasis, and the oasis kitchens are known for it from one end of the desert roads to the other.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_Korrim</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>4</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <stackLimit>150</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
 </Defs>

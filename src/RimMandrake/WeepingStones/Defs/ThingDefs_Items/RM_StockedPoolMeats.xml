@@ -99,8 +99,8 @@
 
   <ThingDef ParentName="OrganicProductBase">
     <defName>RM_KarrekMeat</defName>
-    <label>karrek meat</label>
-    <description>Raw meat from a karrek swarm — individually nothing, rendered by the basketful into a rich paste that keeps (see: karrek paste). Doubt-free, handler-hostile to gather.</description>
+    <label>iaala meat</label>
+    <description>Raw meat from an iaala swarm — individually nothing, rendered by the basketful into a rich paste that keeps (see: iaala paste). Doubt-free, handler-hostile to gather.</description>
     <graphicData>
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>

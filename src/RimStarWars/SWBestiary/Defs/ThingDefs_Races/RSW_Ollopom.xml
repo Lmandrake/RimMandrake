@@ -62,6 +62,8 @@
       <ComfyTemperatureMax>50</ComfyTemperatureMax>
       <FilthRate>2</FilthRate>
       <Wildness>0.4</Wildness>
+      <!-- owner, Weeping Stones art sheet 2026-10-10: "Nice. Give them a small beauty bonus then call them done." -->
+      <PawnBeauty>1</PawnBeauty>
     </statBases>
     <tools>
       <li>

@@ -25,8 +25,7 @@
   newly extracted this pass). Its Odyssey specialTrainable (AttackTarget)
   is vanilla content, left unprefixed. Sounds repoint to the
   already-absorbed sound wave (RSW_Pawn_Dactillion_*, 2026-09-02). texPaths
-  are unchanged text — extracted art (16 PNGs: base body/dessicated for 3
-  directions plus the full 4-frame flying animation set for 3 directions)
+  are unchanged text — extracted art (base body for 3 directions + dessicated)
   sits at Textures/swanimals/Dactillion/ (extract_bundle.py against the
   same AssetBundle every prior wave used; 3 extra "DactillionPack" textures
   in the bundle are unreferenced by any donor def, left unextracted).
@@ -36,6 +35,8 @@
   bare "Dactillion" entry in cast_assignment.csv / BiomeCast_Ashkarr.xml.
 -->
 <Defs>
+<!-- Flying flip-book removed (owner, Weeping Stones art sheet 2026-10-10: "Old Flyer art must be removed (remove F)").
+     It still flies (MaxFlightTime); with no frames the engine draws the body graphic in flight. -->
 <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
     <defName>RSW_Dactillion</defName>
     <label>dactillion</label>
@@ -176,12 +177,6 @@
     <race>RSW_Dactillion</race>
     <combatPower>325</combatPower>
     <ecoSystemWeight>0.30</ecoSystemWeight>
-    <flyingAnimationFramePathPrefix>swanimals/Dactillion/Dactillion_Flying_</flyingAnimationFramePathPrefix>
-    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
-    <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
-    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
-    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
-    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
     <lifeStages>
       <li>
         <label>dactillion chick</label>

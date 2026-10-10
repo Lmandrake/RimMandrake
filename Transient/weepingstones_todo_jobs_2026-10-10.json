@@ -1,0 +1,328 @@
+[
+ {
+  "id": "wsvar_plant_reeds_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_Reeds",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic.\" RimWorld plant sprite of the reeds, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 a younger, sparser specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/9d/9d8075c175f2da49ec3539464e9657ceb16f6a65602f61889a48b8bf838d5091.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_plant_reeds_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Plant_Reeds",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic.\" RimWorld plant sprite of the reeds, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 an older, fuller specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/9d/9d8075c175f2da49ec3539464e9657ceb16f6a65602f61889a48b8bf838d5091.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_dewblade_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Dewblade",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic.\" RimWorld plant sprite of the dewblade, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 a younger, sparser specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/d7/d7c1851fdaa6eec313e335048ff7be53c9bdc0d5a19fda695d1a2d2381b02c30.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_dewblade_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Dewblade",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic.\" RimWorld plant sprite of the dewblade, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 an older, fuller specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/d7/d7c1851fdaa6eec313e335048ff7be53c9bdc0d5a19fda695d1a2d2381b02c30.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_dewgourd_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Dewgourd",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic.\" RimWorld plant sprite of the dewgourd, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 a younger, sparser specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/89/89c535835e05a5076d89ce4fe9986fff722a75767da4d11eb97bdc995526ca5a.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_dewgourd_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Dewgourd",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic.\" RimWorld plant sprite of the dewgourd, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 an older, fuller specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/89/89c535835e05a5076d89ce4fe9986fff722a75767da4d11eb97bdc995526ca5a.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_dripfringe_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Dripfringe",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic.\" RimWorld plant sprite of the dripfringe, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 a younger, sparser specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/9d/9df441648b94b2fb04fe1c6827ea098b6afaac1d5fdec3bd062df129a76a659d.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_dripfringe_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Dripfringe",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic.\" RimWorld plant sprite of the dripfringe, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 an older, fuller specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/9d/9df441648b94b2fb04fe1c6827ea098b6afaac1d5fdec3bd062df129a76a659d.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_rockfinger_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Rockfinger",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic. Make this 50% larger.\" RimWorld plant sprite of the rockfinger, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 a younger, sparser specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic. Make this 50% larger.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/94/9450c823fc1f6aa006270eb5a9e23f90ac4c0e11a8b730fb6f396fb7de8d2e8b.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_rockfinger_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Rockfinger",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic. Make this 50% larger.\" RimWorld plant sprite of the rockfinger, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 an older, fuller specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic. Make this 50% larger.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/94/9450c823fc1f6aa006270eb5a9e23f90ac4c0e11a8b730fb6f396fb7de8d2e8b.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_salvecomb_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Salvecomb",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic.\" RimWorld plant sprite of the salvecomb, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 a younger, sparser specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/a1/a1110b4122e63da1fd7ac9bcfb3fec7778719b410c2dfd6a11a8451fd19d917f.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_salvecomb_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Salvecomb",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic.\" RimWorld plant sprite of the salvecomb, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 an older, fuller specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/a1/a1110b4122e63da1fd7ac9bcfb3fec7778719b410c2dfd6a11a8451fd19d917f.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_shadefern_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Shadefern",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic.\" RimWorld plant sprite of the shadefern, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 a younger, sparser specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/0e/0ecb9766ce2654949dbc2df19f74277fb98a3a8b9f77370f05526433f5a936ea.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_shadefern_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Shadefern",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic.\" RimWorld plant sprite of the shadefern, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 an older, fuller specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/0e/0ecb9766ce2654949dbc2df19f74277fb98a3a8b9f77370f05526433f5a936ea.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_verdimoss_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Verdimoss",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic. Improve the description.\" RimWorld plant sprite of the verdimoss, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 a younger, sparser specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic. Improve the description.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/67/67cbc65379e146b13cc47e291cc68b331393e6172e02e6a8d289606225f67025.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_verdimoss_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Verdimoss",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic. Improve the description.\" RimWorld plant sprite of the verdimoss, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 an older, fuller specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic. Improve the description.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/67/67cbc65379e146b13cc47e291cc68b331393e6172e02e6a8d289606225f67025.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_weepmat_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Weepmat",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic. Improve the description\" RimWorld plant sprite of the weep-mat, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 a younger, sparser specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic. Improve the description",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/38/38916358cbeef69c9d8083c5aac556d98eb2cb14455c4d1c39f1b0232ac0ad1c.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsvar_weepmat_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Weepmat",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Two more variants, more realistic. Improve the description\" RimWorld plant sprite of the weep-mat, painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW variant of the same species \u2014 an older, fuller specimen \u2014 so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Two more variants, more realistic. Improve the description",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/38/38916358cbeef69c9d8083c5aac556d98eb2cb14455c4d1c39f1b0232ac0ad1c.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsrow_colossia_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Colossia",
+  "target_original": [
+   "ColossusToad"
+  ],
+  "target_texpath": "Things/Pawn/Animal/RM_Colossia/RM_Colossia",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo more alien, rename Colossia, regenerate description, based on the current (b) but extended.\" RimWorld creature sprite of the colossia: a heavy, wet-skinned, calf-sized alien amphibian, thick folded hide translucent at the edges and glistening with slime, a ring of frilled breathing slits along its flanks, splayed finger-like forelimb paddles, a jaw that opens sideways; painterly vanilla-RimWorld house style. The attached image is his pick (b): keep its body plan and extend it, make it clearly more alien, not a frog.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Redo more alien, rename Colossia, regenerate description, based on the current (b) but extended.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/c7/c7f04b9819c03cf16e8ee0e69735ea8b52e14f24213defe52b2619c29fa5eeb4.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "enact_huldu_from_c_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Huldu",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Redo based on (c) but make more alien: an alien otter-equivalent with gripping arms and a whale-like tail, covering in luxurious fur. Hunts in the water but can drag itself onto land as needed and jump around to get where it's going. Very beautiful fur that is a trading commodity. Good name, bad description: regenerate and expand. Full art regen.\" RimWorld sprite of the huldu, painterly vanilla-RimWorld house style; redraw it \u2014 the attached image is the (c) render he named as the base, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Redo based on (c) but make more alien: an alien otter-equivalent with gripping arms and a whale-like tail, covering in luxurious fur. Hunts in the water but can drag itself onto land as needed and jump around to get where it's going. Very beautiful fur that is a trading commodity. Good name, bad description: regenerate and expand. Full art regen.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/26/26136762c89acb348ea480211859add4ae8f4139f13115cb7419d03e382989ed.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "wsitem_korrim_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Korrim",
+  "target_texpath": "Things/Item/Resource/RM_Korrim/RM_Korrim_a",
+  "prompt": "Owner's note on the steamfrond, verbatim: \"Creates a unique Star Wars cuisine spice.\" RimWorld item sprite of korrim: a small heap of coarse, ash-pale spice crystals with a faint rust-and-citrus tint, scraped from the frond rims of a desert seep plant; painterly vanilla-RimWorld house style, readable as a stack of resource on the ground.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Creates a unique Star Wars cuisine spice.  Improve the description.",
+  "canon_reference": [],
+  "biome_neutral": true
+ }
+]

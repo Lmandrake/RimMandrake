@@ -29,7 +29,7 @@ UtinniPatches/Defs/BiomeDefs/RUT_WeepingStones.xml) is FROZEN and keeps carrying
 Ash'karr world until the terminal paint (BIOME_PAINT_ONCE_AT_THE_END_1) — this mod's own
 copy is not yet on any live tile, which is the expected mid-migration state, not a defect.
 
-The BiomeDef ships with its franchise-free content only: `ColossusToad` (vanilla Odyssey),
+The BiomeDef ships with its franchise-free content only: `RM_Colossia` (ours; was vanilla Odyssey's ColossusToad until 2026-10-10),
 `AA_Eyeling` (Alpha Animals, non-Star-Wars donor), the 8 wave-2 invented natives
 (RM_Sillik/RM_Mirrik/RM_Ssurr/RM_Kirruk/RM_Tirbak/RM_Burrak/RM_Vhakk/RM_Vellak) and the
 canyon-filling crab (RM_Gorrask) in `wildAnimals`; `Plant_Reeds`, `RM_Shadefern` (RULED

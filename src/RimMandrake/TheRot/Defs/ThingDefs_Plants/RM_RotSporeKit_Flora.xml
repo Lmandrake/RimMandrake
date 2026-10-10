@@ -77,7 +77,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Dewshrooms</defName>
     <label>sikkra lure</label>
-    <description>Tiny caps that light up a cold teal in the dark to draw small prey, which lands, sticks to the gills and is slowly digested. Whole swarms of gnats die to a single patch; the light is the trap.</description>
+    <description>Clusters of tiny caps that glow a cold teal after dark. The light is a trap: gnats and small moths drift down to it, settle on the gills, stick fast in the glistening slime there and are slowly digested where they stand. A single patch can empty the air of a whole swarm in one night, and by morning its gills are furred with wings. The caps are harmless to touch and worthless to eat.</description>
     <graphicData>
       <texPath>RotSporeKit/Things/Plant/Seadew</texPath>
       <graphicClass>Graphic_Random</graphicClass>

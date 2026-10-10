@@ -29,7 +29,8 @@
   mod's own ThingDefs_Items/RM_WeepingStonesNativeFlora_Items.xml).
   RM_Salvecomb -> vanilla MedicineHerbal (the healroot pattern named in the
   roster; no new item needed — same harvestedThingDef vanilla Healroot
-  itself uses). RM_Steamfrond -> RM_RawSalt (the common salt; its own seep-salt folded in 2026-10-09).
+  itself uses). RM_Steamfrond -> RM_Korrim, its own cuisine spice (owner, Weeping Stones art sheet 2026-10-10:
+  "Creates a unique Star Wars cuisine spice."), defined in RM_WeepingStonesNativeFlora_Items.xml.
   RM_Dewgourd -> RM_DewgourdFruit (new item, same items file). RM_Rockfinger
   -> vanilla WoodLog (an ordinary tree).
 -->
@@ -67,7 +68,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Weepmat</defName>
     <label>weep-mat</label>
-    <description>A dark green-black mat hugging the cold stone faces, ridged like corduroy, every ridge square to the sea-wind, glistening along the weep-lines. It grows exactly where the stone weeps, so a weep-mat is the wet black streak's green echo -- a face without one is a face that has gone dry. Graze for the sillik.</description>
+    <description>A dark green-black mat hugging the cold stone faces, ridged like corduroy with every ridge square to the sea-wind, glistening along the lines where the rock weeps. It grows exactly where the stone sweats water and nowhere else, so a weep-mat is the green shadow of the wet black streak: a face without one is a face that has gone dry. Soft, salty and always damp, it is the grazing the sillik climb the stones for.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Weepmat</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -95,7 +96,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Verdimoss</defName>
     <label>verdimoss</label>
-    <description>Cushions of blue-green moss growing in beaded lines along seep cracks -- and over the old machines, where it takes the colour of oxidised bronze. It marks the seep lines and ages the ruins: every relic in the biome is half-mossed, which is its own sacred ambiguity. Zero yield; pure register, cheap density.</description>
+    <description>Cushions of blue-green moss growing in beaded lines along the seep cracks, and over the old machines, where it takes on the colour of oxidised bronze. Where verdimoss grows, water runs beneath the stone; a dry crack carries none. Every relic in the oasis country is half-mossed with it, and pilgrims will not scrape it off, since nobody is sure whether the moss is eating the machine or keeping it.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Verdimoss</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -241,7 +242,7 @@
       <harvestYield>16</harvestYield>
       <harvestTag>Wood</harvestTag>
       <harvestAfterGrowth>0.3</harvestAfterGrowth>
-      <visualSizeRange>1.5~3.2</visualSizeRange>
+      <visualSizeRange>2.25~4.8</visualSizeRange><!-- x1.5, owner 2026-10-10: "Make this 50% larger." -->
       <topWindExposure>0.4</topWindExposure>
       <wildClusterRadius>2</wildClusterRadius>
       <wildClusterWeight>3</wildClusterWeight>
@@ -282,7 +283,7 @@
   <ThingDef ParentName="PlantBase">
     <defName>RM_Steamfrond</defName>
     <label>steamfrond</label>
-    <description>A rosette of mineral-pale fronds spiralled around a breathing vent, rims crusted with white salt bloom. Grows only at the seep oases -- the green eye in open nothing is a steamfrond ring before it is anything else. Its harvest scrapes seep-salt, a preservative and spice with the underworld's taste, and the only source of it.</description>
+    <description>A rosette of mineral-pale fronds spiralled around a breathing vent in the stone, every rim crusted with a white bloom. It grows only at the seep oases, and from far off the green eye in open nothing is a steamfrond ring before it is anything else. The vent's warm breath carries minerals up from underneath, and the fronds lay them down along their edges as a fine, fragrant crust that tastes of smoke, iron and something close to citrus. Scraped and dried, that crust is korrim, a spice that grows nowhere else, and the reason oasis cooking tastes the way it does.</description>
     <graphicData>
       <texPath>Things/Plant/RM_Steamfrond</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -300,7 +301,7 @@
       <visualSizeRange>0.4~0.8</visualSizeRange>
       <topWindExposure>0</topWindExposure>
       <harvestTag>Standard</harvestTag>
-      <harvestedThingDef>RM_RawSalt</harvestedThingDef>
+      <harvestedThingDef>RM_Korrim</harvestedThingDef>
       <harvestYield>3</harvestYield>
       <harvestWork>260</harvestWork>
       <harvestAfterGrowth>0.5</harvestAfterGrowth>

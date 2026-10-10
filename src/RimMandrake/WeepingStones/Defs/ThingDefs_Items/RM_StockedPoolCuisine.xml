@@ -8,16 +8,16 @@
   "MealFineBase") for the feast-batch meal, tasteThought overridden per
   child def since it is a plain scalar field.
 
-  Recipe #2 (murrin-and-salt broth, below) takes the common salt RM_RawSalt; the Weeping Stones' own
-  seep-salt was folded into it (MATERIAL_MERGES_CLEANUP_1, 2026-10-09). The steamfrond still yields it.
+  Recipe #2 (murrin-and-korrim broth, below) takes RM_Korrim, the steamfrond's own spice (owner,
+  Weeping Stones art sheet 2026-10-10: "Creates a unique Star Wars cuisine spice.").
 -->
 <Defs>
 
-  <!-- ══════════════ §4.2 — murrin-and-seep-salt broth ══════════════ -->
+  <!-- ══════════════ §4.2 — murrin-and-korrim broth ══════════════ -->
   <ThingDef ParentName="MealCooked">
     <defName>RM_MealMurrinBroth</defName>
-    <label>murrin-and-seep-salt broth</label>
-    <description>The pilgrim's comfort dish: murrin simmered thin with a pinch of seep-salt. Nothing fancy — it tastes like the pool is well.</description>
+    <label>murrin-and-korrim broth</label>
+    <description>The pilgrim's comfort dish: murrin simmered thin with a pinch of korrim. Nothing fancy — it tastes like the pool is well.</description>
     <graphicData>
       <texPath>Things/Item/Meal/Simple</texPath>
       <graphicClass>Graphic_MealVariants</graphicClass>
@@ -40,8 +40,8 @@
   <!-- ══════════════ §4.3 — karrek paste, keeps a season ══════════════ -->
   <ThingDef ParentName="OrganicProductBase">
     <defName>RM_KarrekPaste</defName>
-    <label>karrek paste</label>
-    <description>A basketful of karrek rendered at a stove into a dense, gray-brown ration. Caravan food for the oasis string — eaten with resignation, not enjoyment, but it does not spoil for a season.</description>
+    <label>iaala paste</label>
+    <description>A basketful of iaala rendered at a stove into a dense, gray-brown ration. Caravan food for the oasis string — eaten with resignation, not enjoyment, but it does not spoil for a season.</description>
     <thingCategories>
       <li>Foods</li>
     </thingCategories>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Colossia — the Weeping Stones' own giant amphibian, replacing vanilla Odyssey's ColossusToad on the
+  RM_WeepingStones roster. Owner, Weeping Stones art sheet 2026-10-10, on the ColossusToad row:
+  "Redo more alien, rename Colossia, regenerate description, based on the current (b) but extended."
+  Stats, body, tools and life stages copied from Odyssey's ColossusToad (Races_Animal.xml); the comfort
+  ceiling carries the 74.3 the Ash'karr tolerance pass pinned on the toad. The vanilla toad itself is untouched
+  (it still lives in the Glowforest and on the frozen RUT_WeepingStones twin).
+  Body art: Things/Pawn/Animal/RM_Colossia/ (pick (b) installed as the interim; the "more alien, extended"
+  redraw is queued in artpipe with (b) as its reference). No swimming graphic: with none the engine draws
+  the body graphic in water. Desiccated: the vanilla toad's, until our own is drawn.
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Colossia</defName>
+    <label>colossia</label>
+    <description>A heavy, wet-skinned amphibian the size of a calf that spends its days half-sunk in the oasis pools with only its eye-ridges showing. Its hide is thick, folded and faintly translucent at the edges, and it sweats a bitter slime that keeps it from drying out on the hot stone and makes it miserable to handle. It is not a frog, whatever the first settlers called it: it breathes through a ring of frilled slits along its flanks, its forelimbs end in splayed, finger-like paddles it uses to sieve the silt, and its jaw opens sideways as well as down. Placid unless cornered, it will eat nearly anything, and it is safe to eat in turn, once the slime is scraped away. Oasis keepers tolerate a colossia in the big pools because the silt it stirs up keeps the water from going stale.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <MarketValue>220</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>74.3</ComfyTemperatureMax>
+      <Wildness>0.25</Wildness>
+      <ToxicResistance>0</ToxicResistance>
+    </statBases>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <baseBodySize>0.8</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>0.8</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <trainability>Intermediate</trainability>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <gestationPeriodDays>5.661</gestationPeriodDays>
+      <soundEating>Reptile_Eat</soundEating>
+      <lifeExpectancy>8</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2222</minAge>
+          <soundWounded>Pawn_Frog_Wounded</soundWounded>
+          <soundDeath>Pawn_Frog_Death</soundDeath>
+          <soundCall>Pawn_Frog_Call</soundCall>
+          <soundAngry>Pawn_Frog_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <headPosPerRotation>
+        <li>(0.0, 0, 0.2)</li>
+        <li>(0.33, 0, 0.03)</li>
+        <li>(0.0, 0, -0.28)</li>
+        <li>(-0.33, 0, 0.03)</li>
+      </headPosPerRotation>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Colossia</defName>
+    <label>colossia</label>
+    <race>RM_Colossia</race>
+    <combatPower>60</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Colossia/RM_Colossia</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/ColossusToad/Dessicated_ColossusToad</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Colossia/RM_Colossia</texPath>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/ColossusToad/Dessicated_ColossusToad</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Colossia/RM_Colossia</texPath>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/ColossusToad/Dessicated_ColossusToad</texPath>
+          <drawSize>1.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
