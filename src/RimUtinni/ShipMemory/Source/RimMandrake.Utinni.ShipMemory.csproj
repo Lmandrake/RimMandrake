@@ -40,6 +40,8 @@
   <ItemGroup>
     <Compile Include="GameComponent_ShipMemory.cs" />
     <Compile Include="ShipMemorySettings.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>
