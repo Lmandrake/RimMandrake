@@ -10,7 +10,7 @@ Recognised call shapes, with a LITERAL tool name:
     _call(s, "tool", k=v...)
     X.call("tool", {"k": v})  /  X.call("tool", params={"k": v})   (literal-key dict)
 Output: `file:line  tool  KIND  detail`, KIND in
-    UNKNOWN_TOOL | UNDECLARED_PARAM | MISSING_REQUIRED | UNCHECKED
+    BANNED_ROUTE | UNKNOWN_TOOL | UNDECLARED_PARAM | MISSING_REQUIRED | UNCHECKED
 `**{"k": v}` with literal keys (the only way to pass a Python keyword such as `def`) is checked.
 Anything the lint cannot see through (**kwargs, non-literal tool name, non-literal
 params dict, dict with non-literal keys) is UNCHECKED, never silently passed.
@@ -28,6 +28,38 @@ SNAPSHOT = os.path.join(HERE, "tool_schemas.json")
 TARGET_NAMES = ("validation.py", "northstar_plan.py", "northstar_site.py")
 TRANSPORT_KW = {"check"}
 STATS = {"calls": 0}
+
+# BANNED_ROUTE (FOCUS_HEAL_TAME_HANDS_OFF_HIS_WINDOWS, 2026-10-10): tools no script may call, and the side doors
+# into them. hot_reload_defs: RETIRED by the owner 2026-09-03 (broke pawn generation; rimbridge_client refuses it
+# too). search_debug_actions / list_debug_action_roots: discovery that has livelocked the full list (bridge_system.md
+# S13, P38). list_debug_action_children stays allowed. Any literal string argument naming a banned tool (run_lua,
+# run_script, static_call text) is the same call through another door, and so is a static_call into def loading.
+BANNED_TOOLS = {
+    "jawa/hot_reload_defs": "RETIRED by the owner 2026-09-03; restart on the minimal list instead",
+    "rimworld/search_debug_actions": "debug-action discovery livelocks the full list (S13)",
+    "rimworld/list_debug_action_roots": "debug-action discovery livelocks the full list (S13)",
+}
+_RELOAD_STATIC = ("playdataloader", "loadallplaydata", "hotreload", "hot_reload", "reloaddefs", "clearallplaydata")
+
+
+def _literal_strings(node):
+    for n in ast.walk(node):
+        if isinstance(n, ast.Constant) and isinstance(n.value, str):
+            yield n.value
+
+
+def banned_route(tool, node):
+    """Reason string if this call reaches a banned tool directly or through another door, else None."""
+    if tool in BANNED_TOOLS:
+        return BANNED_TOOLS[tool]
+    texts = [t for a in list(node.args)[1:] + [k.value for k in node.keywords] for t in _literal_strings(a)]
+    for t in texts:
+        for b, why in BANNED_TOOLS.items():
+            if b in t or b.split("/", 1)[1] in t:
+                return "%s reached through %s: %s" % (b, tool, why)
+    if tool == "jawa/static_call" and any(r in t.lower() for t in texts for r in _RELOAD_STATIC):
+        return "def reload through jawa/static_call: hot reload is RETIRED (owner 2026-09-03)"
+    return None
 
 
 def load_tools(path=None):
@@ -105,6 +137,10 @@ def lint_source(src, fname, tools):
             else:
                 unchecked.append("non-literal params dict")
         STATS["calls"] += 1
+        why = banned_route(tool, node)
+        if why:
+            out.append((node.lineno, tool, "BANNED_ROUTE", why))
+            continue
         spec = tools.get(tool)
         if spec is None:
             out.append((node.lineno, tool, "UNKNOWN_TOOL", "not in snapshot"))

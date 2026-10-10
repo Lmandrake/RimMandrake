@@ -1,7 +1,8 @@
 """focus_heal.py - the stronger half of bringing RimWorld forward, and the loud failure when nothing works.
 
 game_focus.focus_game() retries its gentle route (AttachThreadInput, then an Alt tap + AppActivate) a few times.
-When a media window or browser keeps winning, it hands over to `heal()` here, which escalates:
+When a media window or browser keeps winning, it hands over to `heal()` here, which - ONLY with
+RM_FOCUS_OPT_IN=minimise (owner 2026-10-04: never focus-steal; default refuses with FocusLost) - escalates:
 
     1. minimise_blocker       minimise whatever holds the foreground, then Alt tap + AppActivate RimWorld
     2. minimise_restore_game  minimise and restore RimWorld itself (Windows grants activation on restore)
@@ -91,6 +92,10 @@ def heal(gentle_error, rounds=2):
     """Called by game_focus.focus_game after its gentle retries failed with `gentle_error`. Returns on success
     (RimWorld in front); raises FocusLost otherwise."""
     import game_focus
+
+    if game_focus.opt_in() != "minimise":      # owner 2026-10-04: never minimise his windows unasked
+        raise FocusLost("FOCUS_LOST: %s; minimising the foreground window needs %s=minimise" % (
+            gentle_error, game_focus.OPT_IN_ENV), [("refused", "minimise not opted in")])
 
     def run(body):
         res = game_focus._ps(game_focus._PS_HELPER + _GET_RW + body)

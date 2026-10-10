@@ -82,5 +82,27 @@ cs = T.parse_csharp('''
 check("C# parser params", cs["jawa/demo"]["parameters"] == ["flag", "n", "need"], str(cs))
 check("C# parser required", cs["jawa/demo"]["required"] == ["need"], str(cs))
 
+# --- banned routes (FOCUS_HEAL_TAME_HANDS_OFF_HIS_WINDOWS): retired / discovery tools, direct or smuggled
+for t in ("jawa/hot_reload_defs", "rimworld/search_debug_actions", "rimworld/list_debug_action_roots"):
+    check("banned %s refused" % t, (t, "BANNED_ROUTE") in kinds('s.call("%s")' % t, tools), str(kinds('s.call("%s")' % t, tools)))
+k = kinds('s.call("rimbridge/run_lua", code="return ctx.Tools.call(\'jawa/hot_reload_defs\')")', tools)
+check("hot reload smuggled through run_lua refused", ("rimbridge/run_lua", "BANNED_ROUTE") in k, str(k))
+k = kinds('s.call("jawa/static_call", type="Verse.PlayDataLoader", method="LoadAllPlayData")', tools)
+check("def reload through static_call refused", ("jawa/static_call", "BANNED_ROUTE") in k, str(k))
+k = kinds('s.call("jawa/static_call", type="Verse.Log", method="ResetMessageCount")', tools)
+check("harmless static_call not banned", ("jawa/static_call", "BANNED_ROUTE") not in k, str(k))
+check("safe list_debug_action_children not banned",
+      ("rimworld/list_debug_action_children", "BANNED_ROUTE") not in kinds('s.call("rimworld/list_debug_action_children", path="x")', tools))
+
+# --- the snapshot is not stale against the companion source (26 tools were missing on 2026-10-10)
+import glob as _glob
+_cs = {}
+for _f in _glob.glob(os.path.join(os.path.dirname(os.path.dirname(HERE)), "bridgetools", "JawaBench.BridgeTools", "*.cs")):
+    with open(_f, encoding="utf-8", errors="replace") as _fh:
+        _cs.update(T.parse_csharp(_fh.read()))
+_missing = sorted(set(_cs) - set(tools))
+check("C# probe finds tools at all (sanity: >=300)", len(_cs) >= 300, "(%d)" % len(_cs))
+check("every companion [Tool] in source is in the snapshot", not _missing, "%d missing: %s" % (len(_missing), _missing[:8]))
+
 print("FAILED: %s" % FAILS if FAILS else "ALL PASS")
 sys.exit(1 if FAILS else 0)

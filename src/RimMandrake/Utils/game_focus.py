@@ -8,8 +8,9 @@ game's own menu: RimWorld holds prefs in memory and rewrites `Prefs.xml` on
 exit, so editing that file while the game runs gets overwritten, exactly like
 `ModsConfig.xml`.
 
-Use `preflight()` before any unattended bridge run. Focusing the window is the
-fallback for when the pref cannot be changed.
+Use `preflight()` before any unattended bridge run: it CHECKS the pref and
+refuses when it is off. Focusing the window happens only with RM_FOCUS_OPT_IN
+set (see OPT_IN_ENV below); minimising anything needs RM_FOCUS_OPT_IN=minimise.
 
 WHY THIS EXISTS
 ===============
@@ -38,7 +39,49 @@ USAGE
 RimWorld cannot be brought forward, because proceeding would silently produce
 30-second timeouts instead of data.
 """
+import os
 import subprocess
+import xml.etree.ElementTree as ET
+
+from focus_heal import FocusLost
+
+# FOCUS_HEAL_TAME_HANDS_OFF_HIS_WINDOWS (2026-10-10). Owner ruling 2026-10-04: never fullscreen, maximise or
+# focus-steal the game. Nothing here touches a window unless this env var opts in, per process:
+#   RM_FOCUS_OPT_IN=focus     focus_game() may bring RimWorld forward (never minimises anything)
+#   RM_FOCUS_OPT_IN=minimise  also lets focus_heal minimise the foreground window / minimise-restore the game
+# Unset (the default): preflight() CHECKS Prefs.xml runInBackground and refuses loudly when it is off.
+OPT_IN_ENV = "RM_FOCUS_OPT_IN"
+
+
+class FocusRefused(FocusLost):
+    """A focus act was needed and not opted into. Subclass of FocusLost so runners record UNMEASURED(FOCUS_LOST)."""
+
+    def __init__(self, msg):
+        FocusLost.__init__(self, msg, [("refused", msg[:160])])
+
+
+def opt_in():
+    v = os.environ.get(OPT_IN_ENV, "").strip().lower()
+    return v if v in ("focus", "minimise") else ""
+
+
+def _prefs_path():
+    try:
+        from game_paths import MODS_CONFIG
+    except ImportError:
+        return None
+    return os.path.join(os.path.dirname(MODS_CONFIG), "Prefs.xml")    # Config/ beside ModsConfig.xml
+
+
+def run_in_background(prefs_path=None):
+    """Prefs.xml runInBackground: True / False (absent = False, RimWorld's default) / None if unreadable.
+    The file is what the NEXT start reads and what the game last saved; an in-game toggle shows here on exit."""
+    p = prefs_path or _prefs_path()
+    try:
+        node = ET.parse(p).getroot().find("runInBackground")
+    except (OSError, ET.ParseError, TypeError):
+        return None
+    return node is not None and (node.text or "").strip().lower() == "true"
 
 _PS_HELPER = r'''
 Add-Type @"
@@ -76,12 +119,15 @@ def foreground_title():
 
 
 def focus_game(timeout_s=5, attempts=4, pause_s=3):
-    """Bring RimWorld forward. Returns the previously-focused handle, or None.
+    """Bring RimWorld forward - ONLY with RM_FOCUS_OPT_IN set. Returns the previously-focused handle, or None.
 
-    Raises RuntimeError if the window will not come forward -- callers must not
-    silently measure a starved main thread.
+    Raises FocusRefused (a FocusLost) without the opt-in, touching no window; RuntimeError / FocusLost if the
+    window will not come forward -- callers must not silently measure a starved main thread.
     """
     import time
+    if not opt_in():
+        raise FocusRefused("focus_game refused: bringing RimWorld forward needs %s=focus (owner 2026-10-04: never "
+                           "focus-steal). Turn on Options > Run in background instead." % OPT_IN_ENV)
     last = None
     for i in range(max(1, attempts)):
         try:
@@ -90,6 +136,9 @@ def focus_game(timeout_s=5, attempts=4, pause_s=3):
             last = e
             if i + 1 < attempts:
                 time.sleep(pause_s)
+    if opt_in() != "minimise":
+        raise FocusLost("could not bring RimWorld forward (%s); minimising other windows needs %s=minimise"
+                        % (last, OPT_IN_ENV), [("gentle_retries", str(last)[:160])])
     import focus_heal                         # escalate (minimise the blocker...); raises FocusLost, exit 3
     focus_heal.heal(last)
     return None
@@ -146,19 +195,30 @@ def restore_focus(prev_handle):
         pass
 
 
-def preflight():
-    """The runInBackground trap, named for `rimdrive.session.Session`'s use of it.
+def preflight(prefs_path=None):
+    """Before unattended bridge work: CHECK that Run in background is on; never heal it by focus.
 
-    Identical to `focus_game()` -- a separate name because "bring the game
-    forward before doing unattended bridge work" is a session-lifecycle
-    concept to rimdrive, not a one-off action. Returns the previous foreground
-    handle; pass it to `restore_focus()` when the session ends.
+    Returns None and touches no window when the pref is on. When it is off or unreadable: with RM_FOCUS_OPT_IN set,
+    falls back to focus_game() (returns the previous handle for restore_focus); without it, raises FocusRefused.
     """
-    return focus_game()
+    rb = run_in_background(prefs_path)
+    if rb is True:
+        return None
+    if opt_in():
+        return focus_game()
+    raise FocusRefused("Run in background is %s in %s: an unfocused RimWorld starves every main-thread bridge "
+                       "call. Turn it on in Options (the game rewrites Prefs.xml on exit), or opt in to focusing "
+                       "with %s=focus." % ("OFF" if rb is False else "UNREADABLE", prefs_path or _prefs_path(),
+                                           OPT_IN_ENV))
 
 
 if __name__ == "__main__":
-    print("foreground before:", foreground_title())
-    prev = focus_game()
-    print("foreground now   :", foreground_title())
-    print("(previous handle %s)" % prev)
+    import sys
+    print("Run in background:", run_in_background(), "(Prefs.xml %s)" % _prefs_path())
+    print("foreground:", foreground_title())
+    if "--steal" in sys.argv:                 # an explicit, human-typed opt-in for this one invocation
+        os.environ.setdefault(OPT_IN_ENV, "focus")
+        prev = focus_game()
+        print("foreground now:", foreground_title(), "(previous handle %s)" % prev)
+    else:
+        print("(checks only; pass --steal to bring RimWorld forward)")
