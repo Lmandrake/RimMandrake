@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RimFlow Pulse</title>
+<title>RimPulse</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@1,9..144,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -109,12 +109,13 @@ body.collapsed .strip{border-top:0;cursor:grab}
 @keyframes enter{from{opacity:0;transform:translateY(-3px)}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important}}
 body.still *{animation:none!important}
+.row.clk{cursor:pointer}.row.clk:hover{background:rgba(255,230,190,.06)}
 </style></head>
 <body>
 <div id="app">
   <div class="stripes" id="stripes"></div>
   <div class="tb" id="tb">
-    <span class="mark">pulse</span>
+    <span class="mark">RimPulse</span>
     <span class="sp"></span>
     <span class="lights" id="lights"></span>
     <span class="fresh" id="fresh"><i></i><span id="freshtxt">connecting</span></span>
@@ -175,7 +176,8 @@ function ruleHTML(r, isNew){
   const lk = r.link ? `<a class="lk" tabindex="0" data-link="${esc(r.link.value)}" data-type="${r.link.type}" title="${esc(r.link.value)}">open ↗</a>` : '<span></span>';
   const ack = ask && r.incident && !r.acked ? `<button class="ack" data-id="${esc(r.incident)}" title="Seen it — stop alarming">ack</button>` : '';
   const old = (Date.now()/1000 - r.since) > OLD_AGE_TAG;
-  return `<div class="row${seatCls(r)}${ask?' ask':''}${isNew?' enter':''}" title="${esc(r.text)}"><span class="bar"></span><span class="x"><span class="id">${esc(id)}</span>${esc(text)}</span><span class="rr">${lk}${ack}</span><span class="t${old?' old':''}">${ago(r.since)}</span></div>`;
+  const rl = r.link ? ` data-link="${esc(r.link.value)}" data-type="${r.link.type}"` : '';
+  return `<div class="row${seatCls(r)}${ask?' ask':''}${isNew?' enter':''}${r.link?' clk':''}"${rl} title="${esc(r.text)}"><span class="bar"></span><span class="x"><span class="id">${esc(id)}</span>${esc(text)}</span><span class="rr">${lk}${ack}</span><span class="t${old?' old':''}">${ago(r.since)}</span></div>`;
 }
 function lookHTML(r, isNew){
   const th = r.thumb ? `<span class="th"><img src="${API}/api/thumb?id=${encodeURIComponent(r.key)}" alt="" onerror="this.replaceWith(document.createTextNode('▣'))"></span>`
@@ -184,7 +186,8 @@ function lookHTML(r, isNew){
   const tip = r.names ? r.names : (r.link ? r.link.value : '');
   const lk = r.link ? `<a class="lk" tabindex="0" data-link="${esc(r.link.value)}" data-type="${r.link.type}" data-seen="${esc(r.seen_id||'')}" title="Open — marks it seen">↗</a>` : '<span></span>';
   const old = (Date.now()/1000 - r.since) > OLD_AGE_TAG;
-  return `<div class="row look${seatCls(r)}${isNew?' enter':''}" title="${esc(tip)}"><span class="bar"></span>${th}<span class="x">${esc(r.title)}${extra}<small>${esc(r.ltype)}</small></span><span class="rr">${lk}</span><span class="t${old?' old':''}">${ago(r.since)}</span></div>`;
+  const rl = r.link ? ` data-link="${esc(r.link.value)}" data-type="${r.link.type}" data-seen="${esc(r.seen_id||'')}"` : '';
+  return `<div class="row look${seatCls(r)}${isNew?' enter':''}${r.link?' clk':''}"${rl} title="${esc(tip)}"><span class="bar"></span>${th}<span class="x">${esc(r.title)}${extra}<small>${esc(r.ltype)}</small></span><span class="rr">${lk}</span><span class="t${old?' old':''}">${ago(r.since)}</span></div>`;
 }
 
 function section(label, items, key, fmt, isNew){
@@ -276,7 +279,7 @@ async function post(path, obj){ try { await fetch(API + path, {method:'POST', he
 
 document.addEventListener('click', e => {
   const a = e.target.closest('.ack'); if (a) { post('/api/ack', {id: a.dataset.id, noise: !!a.dataset.noise}); a.closest('.row').classList.add('dimr'); return; }
-  const l = e.target.closest('.lk, .done'); if (l && l.dataset.link) {
+  const l = e.target.closest('.lk, .done, .row.clk'); if (l && l.dataset.link) {
     openLink(l.dataset.link, l.dataset.type);
     if (l.dataset.seen) { gone.add(l.dataset.seen); post('/api/seen', {id: l.dataset.seen}); render(); }   // opened = seen = gone
     return; }
@@ -296,8 +299,8 @@ function fit(){ const p = api(); if (p && p.set_collapsed) p.set_collapsed(docum
 function toastNew(){ const p = api(); if (!p || !p.toast || !snap) return;
   for (const r of snap.rows) {
     if (r.acked || !r.toast_key || r.toasted_elsewhere) continue;
-    if (r.kind === 'red') p.toast(r.toast_key, 'RimFlow · ' + (r.text.startsWith('OOM') ? 'OOM kill' : 'window lost'), r.text);
-    else if (r.kind === 'amber' && r.seat) p.toast(r.toast_key, 'RimFlow · ' + r.who + ' is waiting on you', r.text);
+    if (r.kind === 'red') p.toast(r.toast_key, 'RimPulse · ' + (r.text.startsWith('OOM') ? 'OOM kill' : 'window lost'), r.text);
+    else if (r.kind === 'amber' && r.seat) p.toast(r.toast_key, 'RimPulse · ' + r.who + ' is waiting on you', r.text);
   } }
 
 window.addEventListener('pywebviewready', () => { if (snap) toastNew(); });
