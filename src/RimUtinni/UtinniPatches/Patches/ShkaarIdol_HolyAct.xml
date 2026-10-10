@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ShkaarIdol_HolyAct.xml             UtinniPatches — SUMP_UTINNI_LAYER_1 §2
+
+  Adds the "perform the sun-rite" Use interaction onto Sh'kaar's burning idol, RUT_StatueGrand_Shkaar
+  (UtinniStatues). statue_mods_spec.md §2.5: the holy act targets the Sh'kaar idol, never a flame-statues
+  (RM-tier, secular) def. Moved here 2026-10-10 from the retired RM_FlameStatuary (FLAME_STATUES_MOD_BUILD_1).
+  That def's <comps> is its own explicit list, so PatchOperationAdd appends safely.
+
+  CompProperties_Usable is vanilla: right-clicking the idol with a colonist selected offers "perform the
+  sun-rite" in the float menu. RUT_CompProperties_HolyFlameEffect (Source/RUT_CompUseEffect_HolyFlame.cs) is
+  the holy-act mechanism. Settings-gated (holyFlameActEnabled): off, the idol is a plain burning statue.
+  The Conditional makes the patch a no-op when UtinniStatues is absent (a patch that matches nothing logs
+  nothing, so validate with skills/rimworld-modding/scripts/validate_patch.py with a def dump).
+-->
+<Patch>
+
+  <Operation Class="RimMandrake.Utinni.UtinniPatches.PatchOperationSettingGate">
+    <setting>holyFlameActEnabled</setting>
+    <match Class="PatchOperationConditional" MayRequire="mandrake.rut.utinnistatues">
+      <xpath>Defs/ThingDef[defName="RUT_StatueGrand_Shkaar"]/comps</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="RUT_StatueGrand_Shkaar"]/comps</xpath>
+        <value>
+          <li Class="CompProperties_Usable">
+            <useJob>RUT_PerformHolyFlameAct</useJob>
+            <useLabel>perform the sun-rite</useLabel>
+            <useDuration>600</useDuration>
+          </li>
+          <li Class="RimMandrake.Utinni.UtinniPatches.RUT_CompProperties_HolyFlameEffect">
+            <eventDefName>RUT_PerformedHolyFlameAct</eventDefName>
+          </li>
+        </value>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>

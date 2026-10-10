@@ -6,8 +6,8 @@
   useDuration, call every CompUseEffect.DoEffect" driver (Verse.AI/
   RimWorld/JobDriver_UseItem.cs, decompiled and read in full) — no custom
   JobDriver written, avoiding a guessed pathing/toil implementation for a
-  mechanism vanilla already ships. CompProperties_Usable on RM_FlameStatuary
-  (Patches/FlameStatuary_HolyAct.xml) points its useJob at this def.
+  mechanism vanilla already ships. CompProperties_Usable on RUT_StatueGrand_Shkaar
+  (Patches/ShkaarIdol_HolyAct.xml) points its useJob at this def.
 -->
 <Defs>
 

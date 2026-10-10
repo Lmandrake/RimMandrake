@@ -3,8 +3,8 @@
   RUT_HolyFlameEvents.xml            UtinniPatches — SUMP_UTINNI_LAYER_1 §2
 
   "The holy act" — owner (2026-09-24, since ruled: no god is evil, the hungry gods): "That could be a holy act to the evil sun god."
-  Split ruled by card: flame statuary ships RM-tier secular
-  (RM_FlameStatuary, SUMP_GASLIGHT_1); the worship meaning is this Utinni
+  Split ruled by card: flame statues ship RM-tier secular
+  (mandrake.rm.flamestatues); the worship meaning is this Utinni
   layer. The deity is Sh'kaar the All-Searing (design/Jawa/
   divine_satiation_engine.md §8, "the hungry sun; the Unbeatable One" — the
   Pantheon of record, names LOCKED).
@@ -22,7 +22,7 @@
   building ANYTHING, not the flame statue specifically. Hence: our own event,
   fired only from RUT_CompUseEffect_HolyFlame.DoEffect (Source/
   RUT_CompUseEffect_HolyFlame.cs), which only runs when a pawn actually
-  performs the "perform the sun-rite" Use interaction on a flame statue.
+  performs the "perform the sun-rite" Use interaction on the burning idol of Sh'kaar.
 
   MayRequire="Ludeon.RimWorld.Ideology": matches every Ideology-gated vanilla
   HistoryEventDefOf entry (all carry [MayRequireIdeology]) and this repo's own
