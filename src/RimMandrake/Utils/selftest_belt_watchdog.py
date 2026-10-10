@@ -126,9 +126,16 @@ def t_gather(tmp):
     check("output with no verdict and NO runner -> DEAD (killed run)", w.compose(sigs)[0] == "DEAD", w.report(sigs))
     sigs = w.gather(**dict(kw, runners=["win:9 situational_rerun.py"]))
     check("same output WITH a runner, all else fine -> HEALTHY", w.compose(sigs)[0] == "HEALTHY", w.report(sigs))
+    real_rib = w.run_in_background
+    w.run_in_background = lambda: False
     sigs = w.gather(**dict(kw, runners=["win:9 x"], win=dict(game, fg="Noah Floersch - Green Flash Sunset")))
-    check("unfocused game during a run -> STALLED with the focus remedy",
-          w.compose(sigs)[0] == "STALLED" and "game_focus" in w.compose(sigs)[2], w.report(sigs))
+    check("unfocused game during a run, Run in background OFF -> STALLED with the pref remedy",
+          w.compose(sigs)[0] == "STALLED" and "Run in background" in w.compose(sigs)[2], w.report(sigs))
+    w.run_in_background = lambda: True
+    sigs = w.gather(**dict(kw, runners=["win:9 x"], win=dict(game, fg="Noah Floersch - Green Flash Sunset")))
+    check("unfocused game, Run in background ON -> HEALTHY (no focus needed)",
+          w.compose(sigs)[0] == "HEALTHY", w.report(sigs))
+    w.run_in_background = real_rib
     sigs = w.gather(**dict(kw, runners=["win:9 x"], br=dict(br, windows=[{"type": "Verse.Dialog_ModSettings"}])))
     check("ModSettings open during a run -> WEDGED", w.compose(sigs)[0] == "WEDGED", w.report(sigs))
     # the 2026-10-03 false WEDGED: naming dialog open while the situational rerun beats 12 s ago, suites PASSing

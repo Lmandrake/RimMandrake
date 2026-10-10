@@ -8,6 +8,8 @@ The lint (lint_calls.py) checks every literal bridge call against it, offline.
 REFRESH (only the bridge holder may run --live; --from-census is offline):
     python3 tool_schemas.py --from-census <file> [--supplement-csharp <dir>]
     python.exe tool_schemas.py --live [--supplement-csharp <dir>]
+    python3 tool_schemas.py --supplement-only <dir>     offline: last snapshot + C# [Tool]s (selftest_lint_calls
+                                                         fails while any source [Tool] is missing)
 `--list-tools` prints {"count": N, "tools": [{name, parameters:[{name,required}], inputSchema}]}.
 Required = parameters flagged required, plus inputSchema.required.
 --supplement-csharp adds [Tool] methods a census lacks (a census can predate a DLL build);
@@ -177,6 +179,10 @@ def main(argv):
     elif len(argv) >= 2 and argv[1] == "--live":
         out = subprocess.run([sys.executable, CLIENT, "--list-tools"], capture_output=True, text=True, check=True).stdout
         snap = build(json.loads(out), "live bridge --list-tools, %s" % today)
+    elif len(argv) >= 3 and argv[1] == "--supplement-only":
+        # offline refresh: keep the last live census, add/merge every [Tool] declared in the C# source
+        snap = load()
+        argv = argv[:1] + ["--supplement-csharp", argv[2]]
     else:
         print(__doc__)
         return 2

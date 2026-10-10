@@ -170,8 +170,8 @@ def run_output_state(text):
 def cause_remedy(cause):
     c = cause or ""
     if "FOCUS" in c or "bring RimWorld forward" in c:
-        return "focus lost: run `python3 src/RimMandrake/Utils/game_focus.py` (or enable Options > Run in " \
-               "background), then relaunch the rerun -- it is NOT running"
+        return "focus lost: turn on Options > Run in background (`python3 src/RimMandrake/Utils/game_focus.py` " \
+               "checks it; focusing needs RM_FOCUS_OPT_IN=focus), then relaunch the rerun -- it is NOT running"
     if "timed out" in c and "bridge" in c:
         return "bridge main thread starved: check player_log for a loop and foreground for focus; then rerun"
     if "BUDGET" in c:
@@ -224,6 +224,15 @@ def modal_persistence(bad, beat_ts, now, state_dir=None):
     except OSError:
         pass
     return len(beats)
+
+
+def run_in_background():
+    """Prefs.xml runInBackground (True/False/None). A module function so the selftest can pin it."""
+    try:
+        import game_focus
+        return game_focus.run_in_background()
+    except Exception:
+        return None
 
 
 def compose(sigs):
@@ -474,7 +483,8 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
                 "hang class 2: read the Player.log tail for the last thing it did, then kill by PID and relaunch"))
         elif game.get("responding") is False and unfocused:
             sigs.append(Sig("game", STALLED, bits + " -- 'Not Responding' while UNFOCUSED",
-                            "starved unless Options > Run in background is on: bring it forward (game_focus.py), "
+                            "starved unless Options > Run in background is on (game_focus.py checks it; never "
+                            "focus-steal without RM_FOCUS_OPT_IN), "
                             "re-check in 2 min before killing anything"))
         elif game.get("responding") is False:
             sigs.append(Sig("game", WEDGED, bits + " -- window NOT RESPONDING while focused",
@@ -561,8 +571,15 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
         if "rimworld" in fg.lower():
             sigs.append(Sig("foreground", OK, "RimWorld"))
         else:
-            sigs.append(Sig("foreground", STALLED if run_active else INFO, "foreground is %r" % fg[:60],
-                            "RimWorld does not render unfocused: game_focus.py, or Options > Run in background"))
+            rib = run_in_background()
+            if rib is True:
+                sigs.append(Sig("foreground", INFO, "foreground is %r; Run in background ON, so unfocused is fine"
+                                % fg[:60]))
+            else:
+                sigs.append(Sig("foreground", STALLED if run_active else INFO, "foreground is %r; Run in background %s"
+                                % (fg[:60], "OFF" if rib is False else "UNREADABLE"),
+                                "RimWorld does not render unfocused: turn on Options > Run in background "
+                                "(game_focus.py checks it); never focus-steal without RM_FOCUS_OPT_IN"))
 
     # runner + heartbeat
     sigs.append(Sig("runner", INFO, ("%d running: %s" % (len(runners), "; ".join(runners)[:200]))

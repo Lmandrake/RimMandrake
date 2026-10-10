@@ -1,5 +1,5 @@
 {
- "_source": "live bridge --list-tools, 2026-10-02 (+ jawa/comp_read, static_call, thing_ambient_temp from load 10, 2026-10-03)",
+ "_source": "live bridge --list-tools, 2026-10-02 (+ jawa/comp_read, static_call, thing_ambient_temp from load 10, 2026-10-03); +26 tools from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default",
  "tools": {
   "deepfire/add_coat": {
    "parameters": [
@@ -149,6 +149,34 @@
    ],
    "required": []
   },
+  "jawa/artboard_capture": {
+   "parameters": [
+    "clearSelection",
+    "frames",
+    "h",
+    "path",
+    "ppc",
+    "timeoutMs",
+    "w",
+    "x",
+    "z"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/artboard_stage": {
+   "parameters": [
+    "clearRect",
+    "ground",
+    "killHostiles",
+    "ops",
+    "opsPath",
+    "pause",
+    "phase"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
   "jawa/artifact_transfer": {
    "parameters": [
     "geneSource",
@@ -162,6 +190,14 @@
     "xenotypeName"
    ],
    "required": []
+  },
+  "jawa/attack_target_probe": {
+   "parameters": [
+    "maxDist",
+    "pawn"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/autosave_now": {
    "parameters": [],
@@ -177,6 +213,16 @@
     "mode"
    ],
    "required": []
+  },
+  "jawa/awareness": {
+   "parameters": [
+    "action",
+    "metric",
+    "minutes",
+    "on"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/battery_set": {
    "parameters": [
@@ -210,13 +256,18 @@
     "targetCount",
     "thingId"
    ],
-   "required": []
+   "required": [
+    "recipeDefName",
+    "thingId"
+   ]
   },
   "jawa/bill_list": {
    "parameters": [
     "thingId"
    ],
-   "required": []
+   "required": [
+    "thingId"
+   ]
   },
   "jawa/bill_remove": {
    "parameters": [
@@ -224,7 +275,10 @@
     "confirmRemove",
     "thingId"
    ],
-   "required": []
+   "required": [
+    "billIndex",
+    "thingId"
+   ]
   },
   "jawa/biome_art_audit": {
    "parameters": [
@@ -291,14 +345,20 @@
     "x",
     "z"
    ],
-   "required": []
+   "required": [
+    "x",
+    "z"
+   ]
   },
   "jawa/canal_dig": {
    "parameters": [
     "x",
     "z"
    ],
-   "required": []
+   "required": [
+    "x",
+    "z"
+   ]
   },
   "jawa/caravan_create": {
    "parameters": [
@@ -309,7 +369,9 @@
     "pawns",
     "startTile"
    ],
-   "required": []
+   "required": [
+    "pawns"
+   ]
   },
   "jawa/caravan_form_exit": {
    "parameters": [
@@ -320,13 +382,17 @@
     "faction",
     "pawns"
    ],
-   "required": []
+   "required": [
+    "pawns"
+   ]
   },
   "jawa/cathedral_attitude_set_stage": {
    "parameters": [
     "stage"
    ],
-   "required": []
+   "required": [
+    "stage"
+   ]
   },
   "jawa/cell_temperature": {
    "parameters": [
@@ -368,11 +434,14 @@
   },
   "jawa/comp_read": {
    "parameters": [
-    "thing",
     "comp",
-    "members"
+    "members",
+    "thing"
    ],
-   "required": []
+   "required": [
+    "comp",
+    "thing"
+   ]
   },
   "jawa/configure_bill": {
    "parameters": [
@@ -421,7 +490,9 @@
     "x",
     "z"
    ],
-   "required": []
+   "required": [
+    "damageDef"
+   ]
   },
   "jawa/damage_log": {
    "parameters": [
@@ -488,7 +559,9 @@
     "category",
     "rects"
    ],
-   "required": []
+   "required": [
+    "rects"
+   ]
   },
   "jawa/destroy_bulk": {
    "parameters": [
@@ -578,7 +651,9 @@
     "hidden",
     "temporary"
    ],
-   "required": []
+   "required": [
+    "faction"
+   ]
   },
   "jawa/faction_goodwill_check": {
    "parameters": [
@@ -586,7 +661,10 @@
     "goodwillChange",
     "other"
    ],
-   "required": []
+   "required": [
+    "faction",
+    "other"
+   ]
   },
   "jawa/faction_goodwill_situations": {
    "parameters": [
@@ -598,14 +676,18 @@
    "parameters": [
     "factionDefName"
    ],
-   "required": []
+   "required": [
+    "factionDefName"
+   ]
   },
   "jawa/faction_ideo_set": {
    "parameters": [
     "confirmReplace",
     "factionDefName"
    ],
-   "required": []
+   "required": [
+    "factionDefName"
+   ]
   },
   "jawa/faction_leader_get": {
    "parameters": [
@@ -653,7 +735,10 @@
     "other",
     "sendLetter"
    ],
-   "required": []
+   "required": [
+    "faction",
+    "other"
+   ]
   },
   "jawa/faction_territory_settings": {
    "parameters": [
@@ -673,10 +758,13 @@
    "parameters": [
     "dryRun",
     "faction",
+    "forced",
     "incidentDef",
     "points"
    ],
-   "required": []
+   "required": [
+    "incidentDef"
+   ]
   },
   "jawa/fire_quest": {
    "parameters": [
@@ -685,7 +773,9 @@
     "points",
     "questDef"
    ],
-   "required": []
+   "required": [
+    "questDef"
+   ]
   },
   "jawa/fire_raid": {
    "parameters": [
@@ -709,7 +799,10 @@
     "x",
     "z"
    ],
-   "required": []
+   "required": [
+    "x",
+    "z"
+   ]
   },
   "jawa/flowworks_engine_state": {
    "parameters": [],
@@ -723,7 +816,12 @@
     "x",
     "z"
    ],
-   "required": []
+   "required": [
+    "deepenLevels",
+    "setFill",
+    "x",
+    "z"
+   ]
   },
   "jawa/flowworks_excavation_rect": {
    "parameters": [
@@ -735,14 +833,22 @@
     "x",
     "z"
    ],
-   "required": []
+   "required": [
+    "h",
+    "w",
+    "x",
+    "z"
+   ]
   },
   "jawa/flowworks_excavation_report": {
    "parameters": [
     "x",
     "z"
    ],
-   "required": []
+   "required": [
+    "x",
+    "z"
+   ]
   },
   "jawa/flowworks_job_probe": {
    "parameters": [
@@ -752,7 +858,10 @@
     "x",
     "z"
    ],
-   "required": []
+   "required": [
+    "x",
+    "z"
+   ]
   },
   "jawa/flowworks_pit_report": {
    "parameters": [
@@ -760,7 +869,10 @@
     "x",
     "z"
    ],
-   "required": []
+   "required": [
+    "x",
+    "z"
+   ]
   },
   "jawa/flowworks_pulse": {
    "parameters": [
@@ -780,7 +892,9 @@
     "allowAfterClassification",
     "fluidDefName"
    ],
-   "required": []
+   "required": [
+    "fluidDefName"
+   ]
   },
   "jawa/flowworks_spawn_flood": {
    "parameters": [
@@ -789,7 +903,10 @@
     "x",
     "z"
    ],
-   "required": []
+   "required": [
+    "x",
+    "z"
+   ]
   },
   "jawa/forecast_incidents": {
    "parameters": [
@@ -846,7 +963,9 @@
     "defName",
     "defType"
    ],
-   "required": []
+   "required": [
+    "defName"
+   ]
   },
   "jawa/get_defs": {
    "parameters": [
@@ -855,7 +974,9 @@
     "fields",
     "limit"
    ],
-   "required": []
+   "required": [
+    "defs"
+   ]
   },
   "jawa/get_gravship_substructure": {
    "parameters": [
@@ -868,7 +989,9 @@
    "parameters": [
     "rects"
    ],
-   "required": []
+   "required": [
+    "rects"
+   ]
   },
   "jawa/get_terrain_batch": {
    "parameters": [
@@ -876,7 +999,9 @@
     "mapId",
     "rects"
    ],
-   "required": []
+   "required": [
+    "rects"
+   ]
   },
   "jawa/get_terrain_layers": {
    "parameters": [
@@ -927,25 +1052,65 @@
     "quality",
     "targetTile"
    ],
-   "required": []
+   "required": [
+    "targetTile"
+   ]
   },
   "jawa/gravship_launch_check": {
    "parameters": [
     "expectEngineId",
     "targetTile"
    ],
-   "required": []
+   "required": [
+    "targetTile"
+   ]
   },
   "jawa/gravship_status": {
    "parameters": [],
    "required": []
+  },
+  "jawa/gss_playtest_collect": {
+   "parameters": [
+    "runId"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/gss_playtest_start": {
+   "parameters": [
+    "force",
+    "frameBudgetMs",
+    "recipe",
+    "resume",
+    "seed",
+    "tickMode"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/gss_playtest_status": {
+   "parameters": [
+    "runId"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/gss_stage": {
+   "parameters": [
+    "ops",
+    "opsPath"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/harmony_patches": {
    "parameters": [
     "methodName",
     "typeName"
    ],
-   "required": []
+   "required": [
+    "typeName"
+   ]
   },
   "jawa/hot_reload_defs": {
    "parameters": [],
@@ -961,7 +1126,9 @@
     "hidden",
     "name"
    ],
-   "required": []
+   "required": [
+    "faction"
+   ]
   },
   "jawa/ideo_development": {
    "parameters": [
@@ -970,7 +1137,9 @@
     "ideo",
     "reform"
    ],
-   "required": []
+   "required": [
+    "ideo"
+   ]
   },
   "jawa/ideo_of": {
    "parameters": [
@@ -988,7 +1157,9 @@
     "ideo",
     "precept"
    ],
-   "required": []
+   "required": [
+    "ideo"
+   ]
   },
   "jawa/ideo_ritual_obligation": {
    "parameters": [
@@ -998,7 +1169,10 @@
     "ritual",
     "sendLetter"
    ],
-   "required": []
+   "required": [
+    "ideo",
+    "ritual"
+   ]
   },
   "jawa/ideo_ritual_obligation_remove": {
    "parameters": [
@@ -1017,7 +1191,10 @@
     "pawn",
     "role"
    ],
-   "required": []
+   "required": [
+    "pawn",
+    "role"
+   ]
   },
   "jawa/ideo_set_primary": {
    "parameters": [
@@ -1025,7 +1202,10 @@
     "faction",
     "ideo"
    ],
-   "required": []
+   "required": [
+    "faction",
+    "ideo"
+   ]
   },
   "jawa/ideo_style": {
    "parameters": [
@@ -1038,7 +1218,17 @@
     "ideo",
     "priority"
    ],
-   "required": []
+   "required": [
+    "ideo"
+   ]
+  },
+  "jawa/incident_journal": {
+   "parameters": [
+    "limit",
+    "sinceSeq"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/incident_parms_preview": {
    "parameters": [
@@ -1073,7 +1263,9 @@
     "points",
     "retryDurationTicks"
    ],
-   "required": []
+   "required": [
+    "incidentDef"
+   ]
   },
   "jawa/inhabited_settlement_create": {
    "parameters": [
@@ -1119,6 +1311,17 @@
     "rect"
    ],
    "required": []
+  },
+  "jawa/kill_hostiles": {
+   "parameters": [
+    "destroyCorpses",
+    "dryRun",
+    "factionDef",
+    "mapId",
+    "pawnDef"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/letter_list": {
    "parameters": [],
@@ -1260,14 +1463,19 @@
    "parameters": [
     "ladderId"
    ],
-   "required": []
+   "required": [
+    "ladderId"
+   ]
   },
   "jawa/lore_stage_set": {
    "parameters": [
     "ladderId",
     "stage"
    ],
-   "required": []
+   "required": [
+    "ladderId",
+    "stage"
+   ]
   },
   "jawa/make_empty_room": {
    "parameters": [
@@ -1295,6 +1503,16 @@
     "regions"
    ],
    "required": []
+  },
+  "jawa/map_comp_read": {
+   "parameters": [
+    "comp",
+    "members"
+   ],
+   "required": [
+    "comp"
+   ],
+   "source": "csharp"
   },
   "jawa/map_drop": {
    "parameters": [
@@ -1366,7 +1584,9 @@
     "typeName",
     "value"
    ],
-   "required": []
+   "required": [
+    "typeName"
+   ]
   },
   "jawa/name_colony": {
    "parameters": [
@@ -1414,7 +1634,9 @@
     "x",
     "z"
    ],
-   "required": []
+   "required": [
+    "pawnId"
+   ]
   },
   "jawa/ordered_job": {
    "parameters": [
@@ -1560,7 +1782,9 @@
     "factionDefName",
     "limit"
    ],
-   "required": []
+   "required": [
+    "factionDefName"
+   ]
   },
   "jawa/pawn_memory": {
    "parameters": [
@@ -1594,6 +1818,14 @@
     "thought"
    ],
    "required": []
+  },
+  "jawa/pawn_origin": {
+   "parameters": [
+    "ids",
+    "limit"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/pawn_portrait": {
    "parameters": [
@@ -1783,6 +2015,32 @@
    ],
    "required": []
   },
+  "jawa/playtest_collect": {
+   "parameters": [
+    "runId"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/playtest_start": {
+   "parameters": [
+    "force",
+    "frameBudgetMs",
+    "recipe",
+    "resume",
+    "seed",
+    "tickMode"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/playtest_status": {
+   "parameters": [
+    "runId"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
   "jawa/power_net": {
    "parameters": [
     "forcePowerOn",
@@ -1847,6 +2105,17 @@
    ],
    "required": []
   },
+  "jawa/projectile_damage": {
+   "parameters": [
+    "defs",
+    "includeWeapons",
+    "limit"
+   ],
+   "required": [
+    "defs"
+   ],
+   "source": "csharp"
+  },
   "jawa/quest_lifecycle": {
    "parameters": [
     "accepterPawn",
@@ -1904,19 +2173,25 @@
    "parameters": [
     "rect"
    ],
-   "required": []
+   "required": [
+    "rect"
+   ]
   },
   "jawa/research_availability": {
    "parameters": [
     "project"
    ],
-   "required": []
+   "required": [
+    "project"
+   ]
   },
   "jawa/research_bulk": {
    "parameters": [
     "mode"
    ],
-   "required": []
+   "required": [
+    "mode"
+   ]
   },
   "jawa/research_finish_project": {
    "parameters": [
@@ -1925,14 +2200,19 @@
     "project",
     "researcher"
    ],
-   "required": []
+   "required": [
+    "project"
+   ]
   },
   "jawa/research_grant_techprints": {
    "parameters": [
     "amount",
     "project"
    ],
-   "required": []
+   "required": [
+    "amount",
+    "project"
+   ]
   },
   "jawa/research_progress": {
    "parameters": [
@@ -1941,7 +2221,9 @@
     "project",
     "source"
    ],
-   "required": []
+   "required": [
+    "project"
+   ]
   },
   "jawa/research_reapply_unlocks": {
    "parameters": [],
@@ -1950,6 +2232,15 @@
   "jawa/research_reinvented_reset": {
    "parameters": [],
    "required": []
+  },
+  "jawa/review_label": {
+   "parameters": [
+    "action",
+    "ops",
+    "tag"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/rimdefdump_run": {
    "parameters": [
@@ -2077,7 +2368,10 @@
     "x",
     "z"
    ],
-   "required": []
+   "required": [
+    "label",
+    "text"
+   ]
   },
   "jawa/set_bed_owner_type": {
    "parameters": [
@@ -2101,7 +2395,9 @@
    "parameters": [
     "mapId"
    ],
-   "required": []
+   "required": [
+    "mapId"
+   ]
   },
   "jawa/set_deep_resource": {
    "parameters": [
@@ -2128,7 +2424,9 @@
     "kind",
     "sendLetter"
    ],
-   "required": []
+   "required": [
+    "faction"
+   ]
   },
   "jawa/set_fog": {
    "parameters": [
@@ -2225,7 +2523,10 @@
     "lockRotation",
     "pawnId"
    ],
-   "required": []
+   "required": [
+    "dir",
+    "pawnId"
+   ]
   },
   "jawa/set_pawn_skill": {
    "parameters": [
@@ -2250,7 +2551,9 @@
     "pawnId",
     "skinColor"
    ],
-   "required": []
+   "required": [
+    "pawnId"
+   ]
   },
   "jawa/set_pawn_xenotype": {
    "parameters": [
@@ -2258,7 +2561,10 @@
     "pawnId",
     "xenotype"
    ],
-   "required": []
+   "required": [
+    "pawnId",
+    "xenotype"
+   ]
   },
   "jawa/set_plants": {
    "parameters": [
@@ -2268,7 +2574,9 @@
     "ops",
     "seed"
    ],
-   "required": []
+   "required": [
+    "ops"
+   ]
   },
   "jawa/set_player_settings": {
    "parameters": [
@@ -2301,7 +2609,9 @@
     "refresh",
     "roofDef"
    ],
-   "required": []
+   "required": [
+    "ops"
+   ]
   },
   "jawa/set_stuff": {
    "parameters": [
@@ -2329,7 +2639,11 @@
     "x",
     "z"
    ],
-   "required": []
+   "required": [
+    "terrainDef",
+    "x",
+    "z"
+   ]
   },
   "jawa/set_terrain_batch": {
    "parameters": [
@@ -2338,7 +2652,9 @@
     "refresh",
     "terrainDef"
    ],
-   "required": []
+   "required": [
+    "ops"
+   ]
   },
   "jawa/set_terrain_layer": {
    "parameters": [
@@ -2400,6 +2716,13 @@
    ],
    "required": []
   },
+  "jawa/shade_probe": {
+   "parameters": [
+    "cells"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
   "jawa/shadegrid_read": {
    "parameters": [
     "cells"
@@ -2413,7 +2736,9 @@
     "tag",
     "textArg"
    ],
-   "required": []
+   "required": [
+    "tag"
+   ]
   },
   "jawa/site_state": {
    "parameters": [
@@ -2468,7 +2793,9 @@
     "rot",
     "stuff"
    ],
-   "required": []
+   "required": [
+    "ops"
+   ]
   },
   "jawa/spawn_fill_area": {
    "parameters": [
@@ -2497,7 +2824,11 @@
     "xenotype",
     "z"
    ],
-   "required": []
+   "required": [
+    "kindDef",
+    "x",
+    "z"
+   ]
   },
   "jawa/spawn_variant": {
    "parameters": [
@@ -2551,11 +2882,14 @@
   },
   "jawa/static_call": {
    "parameters": [
-    "type",
+    "args",
     "method",
-    "args"
+    "type"
    ],
-   "required": []
+   "required": [
+    "method",
+    "type"
+   ]
   },
   "jawa/stop_job": {
    "parameters": [
@@ -2649,7 +2983,19 @@
    "parameters": [
     "thing"
    ],
-   "required": []
+   "required": [
+    "thing"
+   ]
+  },
+  "jawa/thing_explain": {
+   "parameters": [
+    "cell",
+    "id",
+    "name",
+    "selected"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/thing_graphic": {
    "parameters": [
@@ -2674,6 +3020,30 @@
     "thing"
    ],
    "required": []
+  },
+  "jawa/thing_refuel": {
+   "parameters": [
+    "amount",
+    "fields",
+    "thingId"
+   ],
+   "required": [
+    "thingId"
+   ],
+   "source": "csharp"
+  },
+  "jawa/thing_screen_rects": {
+   "parameters": [
+    "h",
+    "includeMinor",
+    "limit",
+    "ppc",
+    "w",
+    "x",
+    "z"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/thing_stats": {
    "parameters": [
@@ -2726,7 +3096,9 @@
    "parameters": [
     "ticks"
    ],
-   "required": []
+   "required": [
+    "ticks"
+   ]
   },
   "jawa/timetable": {
    "parameters": [
@@ -2735,6 +3107,27 @@
     "pawnId"
    ],
    "required": []
+  },
+  "jawa/tps_report": {
+   "parameters": [
+    "last"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/tps_test_attribution": {
+   "parameters": [
+    "on"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
+  "jawa/tps_test_block": {
+   "parameters": [
+    "seconds"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/trade_execute": {
    "parameters": [
@@ -2772,7 +3165,9 @@
    "parameters": [
     "typeName"
    ],
-   "required": []
+   "required": [
+    "typeName"
+   ]
   },
   "jawa/type_visibility": {
    "parameters": [
@@ -2818,7 +3213,12 @@
     "tileId",
     "visibilityAtDeparture"
    ],
-   "required": []
+   "required": [
+    "layerId",
+    "ticksAgo",
+    "tileId",
+    "visibilityAtDeparture"
+   ]
   },
   "jawa/wealth_recount": {
    "parameters": [
@@ -2843,6 +3243,13 @@
     "weather"
    ],
    "required": []
+  },
+  "jawa/wild_spawner_block": {
+   "parameters": [
+    "action"
+   ],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/window_list_close": {
    "parameters": [
@@ -3107,6 +3514,15 @@
    ],
    "required": []
   },
+  "jawa/world_tile_cache_reset": {
+   "parameters": [
+    "all",
+    "range",
+    "tiles"
+   ],
+   "required": [],
+   "source": "csharp"
+  },
   "jawa/world_tile_export": {
    "parameters": [
     "extended",
@@ -3135,7 +3551,9 @@
   },
   "jawa/world_tile_map_generate": {
    "parameters": [
+    "biome",
     "dryRun",
+    "layer",
     "sizeX",
     "sizeZ",
     "suggestedMapParent",
