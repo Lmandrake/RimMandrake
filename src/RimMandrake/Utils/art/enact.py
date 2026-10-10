@@ -14,7 +14,12 @@ Without --apply it is a DRY RUN: the full plan is printed and nothing changes. S
   2 INSTALL   every keep/pick: per-graphic picks win over the row pick; a `_byname` column on a row with
               several graphics is ambiguous and becomes a CONFLICT. Each facing goes to the slot the ledger
               says is live for that texPath (any of our mods shipping it). A slot that is not ours (donor art
-              IN GAME) is left alone; a pick with no slot of ours is a TODO. Authorised by the sheet's keep ruling.
+              IN GAME) is left alone. A render picked for a graphic no slot of ours ships goes to OUR path: into a
+              Graphic_Random folder of ours as <base>_<letter>.png, or — when the row's def texPaths donor art —
+              to <category>/<row>/<row> in that def's mod with the def's texPath moved there (never "already live").
+              Variants he TICKED (not the default tick) ship too: folder files, or <res>V_<L> + alternateGraphics.
+              A folder this run fills sheds the pictures he did not keep (retired: archived in the store). Anything
+              with nowhere to go is a TODO. Authorised by the sheet's keep ruling.
   3 QUEUE     every `redo` row via fill_queue.py at priority 0 (ruled work first), his note verbatim as
               owner_note, the picked/in-game column as canon_reference. A row whose job already exists (its
               note verbatim, or the same target_def filed after his click) is reported, never re-filed. A FAILED
@@ -22,6 +27,11 @@ Without --apply it is a DRY RUN: the full plan is printed and nothing changes. S
               REFILE_CAP times) unless the same id has since run or a later job of the row covers its facing; a
               DONE render that is neither live nor purged/rejected is listed as AWAITING OWNER PICK — a row is
               "already handled" only when every job is pending/active or its render shipped or was rejected.
+              Reference: "based on (b)" -> column b; a note dropping the art (or a ✕) -> none; else the in-game
+              picture. A note that also asks for a rename/description stays OPEN (TODO) until --mark-done records
+              the def half — an art job alone never "follows" it. A catch row (RM_XCatch) is not filed while RM_X is
+              being redrawn; catch jobs drawn before RM_X was settled are withdrawn (artpipe _withdrawn/), and once
+              RM_X is picked the catch is filed with RM_X's picture as its reference.
   4 PURGE     every ✕ except protected pictures — live in a mod, owner-kept, or the row's own pick/variants.
               Those are listed as CONFLICTS, one line each, and are never deleted. A ✕ on a picture of the row's OWN
               pick/variant column wins for that picture (it is neither installed nor kept), and a keep that this same
@@ -59,6 +69,16 @@ import ingest as I  # noqa: E402
 
 WRITER_TAG = "script:src/RimMandrake/Utils/art/enact.py"
 CUT_NOTE = re.compile(r"\bcut\b|\bno longer needed\b|\bnot needed\b|\bremove (it|this|them) from\b", re.I)
+# a note that also asks for a DEF edit (name / description): an art job carries only the picture, so such a note is not
+# "followed" until --mark-done records the def half (Weeping Stones 2026-10-10: 9 renames/descriptions dropped silently)
+DEF_ASK = re.compile(r"\b(re-?nam(e|ed|ing)|call (it|them)|descriptions?|describe)\b", re.I)
+# a note that rejects the art in front of him: the row's in-game picture must not ride along as the redraw's reference
+DROP_ART = re.compile(r"\b(drop|remove|lose|ditch|scrap)\b[^.]{0,40}\bart\b|\bredo (it )?completely\b"
+                      r"|\btotal regen\b|\bstart (over|fresh)\b", re.I)
+# "based on (b)" / "based on the current (b)": the column he named IS the reference
+BASED_ON = re.compile(r"\b(?:based on|starting from|working from)\s+(?:the\s+)?(?:current\s+)?\(([a-zA-Z])\)", re.I)
+CATCH_SUFFIX = "Catch"      # RM_HulduCatch is the catch of RM_Huldu: drawn from it, so filed only once it is settled
+FACING_PREF = ("east", "south", "north", "single", "west")
 LISTS = ("wildAnimals", "wildPlants", "fishTypes")
 DEF_TYPES_WITH_ART = ("graphicData", "bodyGraphicData", "dessicatedBodyGraphicData", "femaleGraphicData")
 
@@ -80,9 +100,32 @@ REFILE_CAP = 3  # parked manifests per job id — same cap as requeue_flakes.py 
 
 
 def artpipe_aux() -> dict:
-    """The state dir's _artsrc/ (finished renders) and _requeued_manifests/ (re-file history)."""
+    """The state dir's _artsrc/ (finished renders), _requeued_manifests/ (re-file history), _withdrawn/ (jobs taken
+    back: never rendered, re-filed or installed)."""
     root = artpipe_dirs()["failed"].parent
-    return {"artsrc": root / "_artsrc", "parked": root / "_requeued_manifests"}
+    return {"artsrc": root / "_artsrc", "parked": root / "_requeued_manifests", "withdrawn": root / "_withdrawn"}
+
+
+def withdrawn_ids() -> set:
+    d = artpipe_aux()["withdrawn"]
+    return {f.stem for f in d.glob("*.json") if not f.name.endswith(".manifest.json")} if d.is_dir() else set()
+
+
+def withdraw(j: dict, reason: str) -> None:
+    """<state>/<id>.json -> _withdrawn/<id>.json with why; its manifest moves with it. An ACTIVE job is the daemon's
+    and is never moved (the caller lists it instead)."""
+    d, aux = artpipe_dirs(), artpipe_aux()
+    src = d[j["_state"]] / f"{j['id']}.json"
+    aux["withdrawn"].mkdir(parents=True, exist_ok=True)
+    body = json.loads(src.read_text())
+    body.update(withdrawn_reason=reason, withdrawn_from=j["_state"],
+                withdrawn_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), withdrawn_by=WRITER_TAG)
+    dst = aux["withdrawn"] / src.name
+    dst.write_text(json.dumps(body, indent=1))
+    man = d[j["_state"]] / f"{j['id']}.manifest.json"
+    if man.exists():
+        man.rename(aux["withdrawn"] / man.name)
+    src.unlink()
 
 
 def job_render_sha(j: dict) -> str | None:
@@ -196,6 +239,141 @@ def def_points_at(src, rel: str) -> bool:
     """A def of ours already names this file (minus its facing suffix) as a texPath: donor art that is live."""
     base = re.sub(r"(_(east|north|south|west))?\.png$", "", rel)
     return base in src_texpaths(src)
+
+
+_DEFS: dict = {}
+
+
+def our_defs_cached(src) -> dict:
+    key = str(src)
+    if key not in _DEFS:
+        _DEFS[key] = our_defs(Path(src))
+    return _DEFS[key]
+
+
+def reset_caches() -> None:
+    _TEXPATHS.clear()
+    _DEFS.clear()
+
+
+def defs_naming(src, names: set, texpath: str) -> list[dict]:
+    """Our def blocks (one of `names`) that name `texpath` as a <texPath>."""
+    pat = re.compile(r"<texPath>\s*" + re.escape(texpath) + r"\s*</texPath>")
+    defs = our_defs_cached(src)
+    return [dict(ent, defName=n) for n in sorted(names) for ent in defs.get(n, []) if pat.search(ent["text"])]
+
+
+def folder_slots(idx: L.Index, g: str) -> list[tuple[str, str, str]]:
+    """Every live (mod, rel, sha) of ours INSIDE the folder `g` (a Graphic_Random texPath: Things/Plant/RM_X/*.png)."""
+    return [(m, r, ev["sha"]) for (m, r), ev in idx.live.items() if r.startswith(g + "/") and ev.get("sha")]
+
+
+def own_slot(idx: L.Index, src, g: str, facing: str, letter: str, row: str, names: set,
+             variant: bool = False) -> dict | None:
+    """Where a picked/variant picture of ours goes when no slot of ours ships `g` at this facing:
+      folder  — `g` is a Graphic_Random folder of ours: <g>/<base>_<letter>.png beside the pictures already there;
+      rebind  — a def of ours (the row's) texPaths DONOR art at `g`: the picture goes to our own path
+                <g's category>/<row>/<row>[V_<letter>] in that def's mod, and the def's texPath is moved to it.
+    Variant of a multi-facing graphic: <g>V_<letter>_<facing>.png, wired as an alternateGraphics entry (the GorgV_G
+    convention). None: nowhere to put it (TODO)."""
+    fs = folder_slots(idx, g)
+    if fs and facing == "single":
+        return {"mod": fs[0][0], "rel": f"{g}/{g.rsplit('/', 1)[-1]}_{letter.lower()}.png", "kind": "folder", "graphic": g}
+    if variant and facing != "single":
+        base_slots = slots_for(idx, rel_for(g, facing)) or slots_for(idx, rel_for(g, "east"))
+        if base_slots:
+            res = f"{g}V_{letter}"
+            return {"mod": base_slots[0][0], "rel": rel_for(res, facing), "kind": "alt", "graphic": g, "res": res}
+    if g.count("/") < 2:
+        return None
+    hits = defs_naming(src, names, g)
+    if not hits:
+        return None
+    new_res = "/".join(g.split("/")[:-2] + [row, row])
+    if variant:
+        if facing == "single":
+            return None
+        res = f"{new_res}V_{letter}"
+        return {"mod": mod_of(hits[0]["file"]), "rel": rel_for(res, facing), "kind": "alt", "graphic": new_res,
+                "res": res, "rebind": {"old": g, "new": new_res}}
+    return {"mod": mod_of(hits[0]["file"]), "rel": rel_for(new_res, facing), "kind": "rebind", "graphic": g,
+            "rebind": {"old": g, "new": new_res}}
+
+
+def rebind_defs(src, names: set, old: str, new: str) -> list[Path]:
+    """Move every <texPath>old</texPath> inside our defs named `names` to `new`. A placeholder <color> tint in that same
+    graphic block (a vanilla animal recoloured to stand in for ours) is dropped: our own painted art draws untinted."""
+    touched = []
+    hits = defs_naming(src, names, old)
+    by_file: dict = {}
+    for h in hits:
+        by_file.setdefault(h["file"], []).append(h["span"])
+    for f, spans in by_file.items():
+        text = f.read_text(encoding="utf-8")
+        for s, e in sorted(spans, key=lambda x: -x[0]):
+            body = text[s:e]
+            out, pos = [], 0
+            for d, tag, bs, be in element_spans(body):
+                if tag not in DEF_TYPES_WITH_ART or bs < pos:
+                    continue
+                blk = body[bs:be]
+                if not re.search(r"<texPath>\s*" + re.escape(old) + r"\s*</texPath>", blk):
+                    continue
+                blk2 = re.sub(r"<texPath>\s*" + re.escape(old) + r"\s*</texPath>", f"<texPath>{new}</texPath>", blk)
+                blk2 = re.sub(r"\n[ \t]*<color>[^<]*</color>[ \t]*(?=\n)", "", blk2)
+                out.append(body[pos:bs] + blk2)
+                pos = be
+            out.append(body[pos:])
+            text = text[:s] + "".join(out) + text[e:]
+        f.write_text(text, encoding="utf-8")
+        touched.append(f)
+    reset_caches()
+    return touched
+
+
+def add_alternate_graphic(src, names: set, base_texpath: str, alt_texpath: str) -> list[Path]:
+    """Add <alternateGraphics><li><texPath>alt</texPath></li> to our PawnKindDef(s) in `names` whose body texPath is
+    `base_texpath`; alternateGraphicChance becomes n/(n+1) so base + n variants are equally likely. Idempotent."""
+    touched = []
+    defs = our_defs_cached(src)
+    pat = re.compile(r"<texPath>\s*" + re.escape(base_texpath) + r"\s*</texPath>")
+    for n in sorted(names):
+        for ent in defs.get(n, []):
+            if ent["tag"] != "PawnKindDef" or not pat.search(ent["text"]):
+                continue
+            f = ent["file"]
+            text = f.read_text(encoding="utf-8")
+            s, e = ent["span"]
+            body = text[s:e]
+            if re.search(r"<texPath>\s*" + re.escape(alt_texpath) + r"\s*</texPath>", body):
+                continue
+            ind = re.search(r"\n([ \t]*)<defName>", body)
+            ind = ind.group(1) if ind else "    "
+            li = f"{ind}  <li>\n{ind}    <texPath>{alt_texpath}</texPath>\n{ind}  </li>\n"
+            if "</alternateGraphics>" in body:
+                body = re.sub(r"([ \t]*)</alternateGraphics>", lambda m: li + m.group(0), body, count=1)
+            else:
+                anchor = re.search(r"<race>[^<]*</race>[^\n]*\n", body) or re.search(r"<defName>[^<]*</defName>[^\n]*\n", body)
+                body = (body[:anchor.end()] + f"{ind}<alternateGraphicChance>0</alternateGraphicChance>\n"
+                        f"{ind}<alternateGraphics>\n{li}{ind}</alternateGraphics>\n" + body[anchor.end():])
+            n_alt = len(re.findall(r"<li>\s*<texPath>", body[body.find("<alternateGraphics>"):body.find("</alternateGraphics>")]))
+            chance = round(n_alt / (n_alt + 1), 3)
+            if "<alternateGraphicChance>" in body:
+                body = re.sub(r"<alternateGraphicChance>[^<]*</alternateGraphicChance>",
+                              f"<alternateGraphicChance>{chance}</alternateGraphicChance>", body, count=1)
+            f.write_text(text[:s] + body + text[e:], encoding="utf-8")
+            touched.append(f)
+            reset_caches()
+            defs = our_defs_cached(src)
+    return touched
+
+
+def first_by_facing(col: dict, skip=()) -> str | None:
+    for f in FACING_PREF:
+        s = (col or {}).get(f)
+        if s and s not in skip:
+            return s
+    return None
 
 
 def is_held(row: str, holds) -> bool:
@@ -494,6 +672,63 @@ def effective_picks(v: dict, srow: dict) -> tuple[dict, list[str]]:
     return out, conflicts
 
 
+def gof_resolved(srow: dict, letter: str) -> str | None:
+    """The graphic a column stands for; a by-name render resolves only on a row with one graphic."""
+    gof = srow.get("graphic_of") or {}
+    graphics = sorted({g for g in gof.values() if g != "_byname"}) or ([srow["res"]] if srow.get("res") else [])
+    g = gof.get(letter) or (graphics[0] if len(graphics) == 1 else None)
+    if g == "_byname":
+        g = graphics[0] if len(graphics) == 1 else None
+    return g
+
+
+def catch_source(row: str, decs: dict) -> str | None:
+    """RM_HulduCatch -> RM_Huldu, when that creature is a row of the same sheet."""
+    if row.endswith(CATCH_SUFFIX) and len(row) > len(CATCH_SUFFIX):
+        s = row[:-len(CATCH_SUFFIX)]
+        return s if isinstance(decs.get(s), dict) and decs[s].get("at") else None
+    return None
+
+
+def source_settled(src_row: str, decs: dict, snap: dict, jobs: list[dict], idx: L.Index, census: dict) -> tuple:
+    """(settled, reference sha or None, why). A creature is settled once he has PICKED its picture: a letter on the
+    sheet, or a render of the redraw he asked for that is now live in a mod. While it is being redrawn, anything drawn
+    from it (its catch) would copy a picture he is about to replace."""
+    sv = decs[src_row]
+    dec = (sv.get("decision") or "").strip()
+    srow = (snap.get("rows") or {}).get(src_row) or {}
+    cols = srow.get("columns") or {}
+    if dec in cols:
+        xed = set(sv.get("purge") or [])
+        letter = (sv.get("picks") or {}).get("_byname") or dec
+        return True, first_by_facing(cols.get(letter) or {}, xed), f"{src_row} pick {letter}"
+    if dec == "cut" or (dec == "hold" and CUT_NOTE.search(I.open_note(sv) or "")):
+        return False, None, f"{src_row} is cut from this sheet"
+    names = row_names(src_row, sv, census)
+    mine = [j for j in jobs if job_defs(j) & names and str(j.get("created") or "") >= (sv.get("at") or "")[:19]]
+    for j in mine:
+        if j["_state"] == "done":
+            sha = job_render_sha(j)
+            if sha and idx.live_anywhere(sha):
+                return True, sha, f"{src_row} render {j['id']} is live"
+    states = sorted({j["_state"] for j in mine})
+    return False, None, (f"{src_row} is being redrawn ({len(mine)} job(s) {'/'.join(states) or 'not yet filed'}) and "
+                         f"no render of it is picked yet")
+
+
+def pending_def_halves(v: dict, sheet: str, row: str, done_marks: set) -> list[str]:
+    """Followed notes whose followers are ONLY art jobs, that also ask for a rename/description, with no enact_done."""
+    out = []
+    for f in v.get("notes_followed") or []:
+        if not isinstance(f, dict):
+            continue
+        nt, by = str(f.get("note") or "").strip(), f.get("followed_by") or []
+        if nt and by and not any(b in ("mark-done", "cut") for b in by) and DEF_ASK.search(nt) \
+                and (sheet, row, nt) not in done_marks and nt not in out:
+            out.append(nt)
+    return out
+
+
 def keep_ruling(idx: L.Index, row: str, letter: str, sha: str):
     for r in reversed(idx.rulings):
         tg = r.get("target") or {}
@@ -520,9 +755,20 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                if e.get("type") == "enact_done"}
     done_marks = set(done_ev)
     P = {"decisions": decisions, "sheet": sheet, "biome": biome, "held": [], "install": [], "installed_already": [],
+         "retire": [], "blocked": [], "withdraw": [],
          "install_after_ingest": [], "queue": [], "queued_already": [], "refile": [], "awaiting_pick": [], "purge": [], "purged_already": 0,
          "cuts": [], "todo": [], "done": [], "conflicts": [], "in_game_not_ours": 0, "followed": {}}
-    for row, v in (doc.get("decisions") or {}).items():
+    decs = doc.get("decisions") or {}
+    wd_ids = withdrawn_ids()
+    by_id = {j["id"]: j for j in jobs}
+
+    def refs_sha(j: dict, sha: str | None) -> bool:
+        """The job (or the east master it derives from) attaches `sha` as reference."""
+        for k in (j, by_id.get(j.get("derive_from") or "")):
+            if k and sha and any(sha in str(x) for x in [k.get("reference") or ""] + list(k.get("canon_reference") or [])):
+                return True
+        return False
+    for row, v in decs.items():
         if not isinstance(v, dict) or not v.get("at"):
             continue
         decided = bool(v.get("decidedAt")) or not v.get("purgeTouched")
@@ -539,6 +785,12 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
         dec = (v.get("decision") or "").strip()
         note = I.open_note(v)        # a note already followed is history, never an open request
         past = I.followed_notes(v)
+        # a note "followed" only by jobs since WITHDRAWN (drawn too early, e.g. a catch before its creature) is open again
+        reopened = [str(f.get("note") or "").strip() for f in (v.get("notes_followed") or []) if isinstance(f, dict)
+                    and f.get("followed_by") and all(b in wd_ids for b in f["followed_by"])]
+        if not note and reopened:
+            note = reopened[-1]
+            past = [x for x in past if x != note]
         names = row_names(row, v, census)
         xed = {s for s in (v.get("purge") or []) if s}     # his ✕ on this row: purged in step 4, never kept/installed
         # ── 5 cut
@@ -547,6 +799,8 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             P["cuts"].append({"row": row, "names": names, "note": note, "raw_note": v.get("note")})
         # ── 2 install
         protect_here = set()
+        folders: dict = {}
+        picks: dict = {}
         if decided and not is_cut and dec != "redo":
             picks, conf = effective_picks(v, srow)
             for letter, c in conf:
@@ -579,9 +833,19 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                             P["in_game_not_ours"] += 1
                         elif (sheet, row, note) in done_marks or (sheet, row, "") in done_marks:
                             pass        # --mark-done: the row was carried out by hand (the pick was a reference)
-                        elif def_points_at(src, rel):
-                            # our def's texPath already IS the picked donor art: nothing to do
+                        elif str(lab).startswith("donor original") and def_points_at(src, rel):
+                            # he picked the DONOR picture itself and our def's texPath already names it: nothing to do
                             P["installed_already"].append((row, "def texPath (donor art)", rel))
+                        elif (own := own_slot(idx, src, g, facing, letter, row, names)):
+                            # a render he picked for a graphic no slot of ours ships (a donor texPath, or a
+                            # Graphic_Random folder): it goes to OUR path, never "already live" (bug 2026-10-10:
+                            # 6 creatures stayed vanilla Warg/Tortoise/Cobra/Squirrel/Muffalo, 7 plants on old A)
+                            rul = keep_ruling(idx, row, letter, sha)
+                            P["install"].append({"row": row, "mod": own["mod"], "rel": own["rel"], "sha": sha,
+                                                 "letter": letter, "ruling": rul["id"] if rul else None,
+                                                 "kind": own["kind"], "rebind": own.get("rebind"), "names": names})
+                            if own["kind"] == "folder":
+                                folders.setdefault(g, {"mod": own["mod"], "keep": set()})["keep"].add(sha)
                         else:
                             P["todo"].append(f"{row}: pick {letter} {rel} has no slot in any of our mods "
                                              f"(donor art? needs an override texture or a def texPath)")
@@ -606,6 +870,36 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                                              "ruling": rul["id"] if rul else None})
             for vl in v.get("variants") or []:
                 protect_here |= {s for s in (cols.get(vl) or {}).values() if s and s not in xed}
+            # ── 2b variants he TICKED (not the sheet's default tick): shipped beside the pick, never only protected
+            # (bug 2026-10-10: Bladderquill/Shadefern/Steamfrond/Verdimoss/Weepmat B and Fanback C were never shipped)
+            explicit = [] if v.get("variantsDefault") else [x for x in (v.get("variants") or []) if x in cols]
+            for g in list(folders):
+                for vl in explicit:
+                    folders[g]["keep"] |= {s for s in (cols.get(vl) or {}).values() if s and s not in xed}
+            for vl in explicit:
+                gv = gof_resolved(srow, vl)
+                if not gv or picks.get(gv) == vl:
+                    continue            # the pick itself, or a letter of another graphic (a per-graphic pick)
+                for facing, sha in sorted((cols.get(vl) or {}).items()):
+                    if not sha or sha in xed or idx.is_purged(sha):
+                        continue
+                    if idx.live_anywhere(sha):
+                        P["installed_already"].append((row, idx.live_anywhere(sha)[0], f"variant {vl}"))
+                        continue
+                    own = own_slot(idx, src, gv, facing, vl, row, names, variant=True)
+                    if not own:
+                        P["todo"].append(f"{row}: ticked variant {vl} {facing} has no slot it can ship in")
+                        continue
+                    rul = keep_ruling(idx, row, vl, sha)
+                    P["install"].append({"row": row, "mod": own["mod"], "rel": own["rel"], "sha": sha, "letter": vl,
+                                         "ruling": rul["id"] if rul else None, "kind": own["kind"],
+                                         "rebind": own.get("rebind"), "names": names, "variant": True,
+                                         "alt": (own["graphic"], own["res"]) if own["kind"] == "alt" else None})
+            # a folder this run adds to ends up holding exactly his pick + ticked variants: the rest leaves the game
+            for g, fo in folders.items():
+                for m, r, live in folder_slots(idx, g):
+                    if live not in fo["keep"]:
+                        P["retire"].append({"row": row, "mod": m, "rel": r, "sha": live})
         # ── 3 queue / 6 todo
         if decided and not is_cut and (dec == "redo" or note):
             at = v.get("at") or ""
@@ -617,7 +911,31 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                       str(j.get("created") or "") >= at[:19])]
             earlier = [j for j in jobs if job_defs(j) & names and j["_state"] in ("pending", "active")
                        and j not in match]
-            if earlier and not any(j["_state"] != "failed" for j in match):
+            src_row = catch_source(row, decs) if dec == "redo" else None
+            cstate = None
+            if src_row:
+                settled, ref_sha, why = source_settled(src_row, decs, snap, jobs, idx, census)
+                # jobs drawn before the creature was settled (none carries it as reference) are superseded: withdrawn,
+                # never awaiting his pick (bug 2026-10-10: 8 catches rendered from no source at all)
+                stale = [j for j in match if not (settled and refs_sha(j, ref_sha))]
+                for j in stale:
+                    if j["_state"] == "active":
+                        P["conflicts"].append(f"{row}: job {j['id']} is rendering now, drawn before {src_row} was settled "
+                                              f"— withdraw it once it finishes")
+                    else:
+                        P["withdraw"].append({"row": row, "job": j, "why": f"drawn before {src_row} was settled ({why})"})
+                match = [j for j in match if j not in stale]
+                if not settled:
+                    P["blocked"].append(f"{row}: not filed — waiting for {src_row} to be settled ({why})")
+                    cstate = "blocked"
+                elif not match:
+                    qnote = note or (past[-1] if past else "")
+                    P["queue"].append({"row": row, "names": names, "note": qnote, "srow": srow, "v": v,
+                                       "ref_shas": [ref_sha] if ref_sha else [], "source": src_row})
+                    cstate = "queued"
+            if cstate:
+                pass
+            elif earlier and not any(j["_state"] != "failed" for j in match):
                 P["queued_already"].append(f"{row}: {len(earlier)} job(s) pending, filed BEFORE his latest note — "
                                            f"check they cover {note[:60]!r}")
             elif match:
@@ -633,7 +951,13 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                                               + (" …" if len(cj["awaiting"]) > 4 else ""))
                 carried = [j["id"] for j in match if note and note in I._note_text(j.get("owner_note"))]
                 if carried and not cj["capped"]:
-                    P["followed"][row] = {"note": v.get("note"), "by": carried}
+                    if DEF_ASK.search(note) and (sheet, row, note) not in done_marks:
+                        # the job draws the picture; the rename/description half is still owed — the note stays open
+                        P["todo"].append(f"{row}: def half of the note not enacted (the art job carries only the "
+                                         f"picture) — {note[:110]!r} (`--mark-done {row}` once the def edit is done)")
+                    else:
+                        P["followed"][row] = {"note": v.get("note"), "by": carried + (
+                            ["mark-done"] if (sheet, row, note) in done_marks else [])}
                 if not (cj["refile"] or cj["capped"] or cj["awaiting"]):
                     states = sorted({j["_state"] for j in match})
                     P["queued_already"].append(f"{row}: {len(match)} job(s) {'/'.join(states)}")
@@ -643,6 +967,9 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 P["done"].append(f"{row}: note already carried out — redo not re-queued")
             elif dec == "redo":
                 P["queue"].append({"row": row, "names": names, "note": note, "srow": srow, "v": v})
+                if note and DEF_ASK.search(note) and (sheet, row, note) not in done_marks:
+                    P["todo"].append(f"{row}: def half of the note not enacted (the art job carries only the "
+                                     f"picture) — {note[:110]!r} (`--mark-done {row}` once the def edit is done)")
             elif (sheet, row, note) in done_marks and done_ev[(sheet, row, note)].startswith("OWNER:"):
                 # --mark-done --evidence "OWNER: <question>": what could be done is done; the rest is his call
                 P["conflicts"].append(f"{row}: {done_ev[(sheet, row, note)][6:].strip()}")
@@ -651,6 +978,11 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                 P["followed"][row] = {"note": v.get("note"), "by": ["mark-done"]}
             else:
                 P["todo"].append(f"{row}: note not enacted — {note[:110]!r} (art or def edit? `--mark-done {row}` when done)")
+        # ── 6b a note already moved to notes_followed by an ART JOB alone, whose rename/description half nobody did
+        if decided and not is_cut:
+            for nt in pending_def_halves(v, sheet, row, done_marks):
+                P["todo"].append(f"{row}: def half of a followed note not enacted (followed by art job only) — "
+                                 f"{nt[:110]!r} (`--mark-done {row}` once the def edit is done)")
         # ── 4 purge
         for sha in v.get("purge") or []:
             if idx.is_purged(sha):
@@ -715,20 +1047,24 @@ def ruling_status(decisions: Path, idx: L.Index | None = None, jobs: list[dict] 
         conf, todo = mine(P["conflicts"], row), mine(P["todo"], row)
         q, rf, aw = mine(P["queue"], row), mine(P["refile"], row), mine(P["awaiting_pick"], row)
         qa, dn = mine(P["queued_already"], row), mine(P["done"], row)
-        inst, pur = mine(P["install"], row), mine(P["purge"], row)
+        inst, pur = mine(P["install"], row) + mine(P["retire"], row), mine(P["purge"], row)
+        bl, wdr = mine(P["blocked"], row), mine(P["withdraw"], row)
         cut = [c for c in P["cuts"] if c["row"] == row]
         noslot = [t for t in todo if "has no slot in any of our mods" in t]
         todo = [t for t in todo if t not in noslot]
         conf = conf + [t.replace(" (donor art? needs an override texture or a def texPath)",
                                  " — your pick is donor art no mod of ours ships; showing it means re-pointing that def")
                        for t in noslot]
-        if todo or q or inst or pur or any(c["plan"]["sites"] or c["plan"]["deleted"] for c in cut):
+        if todo or q or inst or pur or wdr or any(c["plan"]["sites"] or c["plan"]["deleted"] for c in cut):
             st = "not_acted"
             detail = "; ".join([t.split(": ", 1)[1].split(" (art or def edit?")[0] for t in todo]
                                + (["redraw not yet filed"] if q else []) + (["pick not yet installed"] if inst else [])
-                               + (["✕ not yet purged"] if pur else []) + (["cut not yet done"] if cut and st else []))
+                               + (["✕ not yet purged"] if pur else []) + (["cut not yet done"] if cut and st else [])
+                               + (["early renders not yet withdrawn"] if wdr else []))
         elif conf:
             st, detail = "conflict", "; ".join(c.split(": ", 1)[1] for c in conf)
+        elif bl:
+            st, detail = "awaiting", "; ".join(x.split(": ", 1)[1] for x in bl)
         elif rf:
             st, detail = "refiled", "failed, re-filed: " + ", ".join(x["job"]["id"] for x in rf[:4])
         elif any("pending" in x or "active" in x for x in qa):
@@ -752,23 +1088,57 @@ def ruling_status(decisions: Path, idx: L.Index | None = None, jobs: list[dict] 
 
 # ──────────────────────────────────────────────────────────── applying ──
 
+def redo_ref_shas(q: dict, idx: L.Index | None = None) -> list[str]:
+    """The ONE picture a redraw attaches as anatomy guidance, or none:
+      * a catch: its settled creature (q["ref_shas"]);
+      * "based on (b)": the column he named;
+      * otherwise the row's in-game picture — never when his note rejects the art in front of him ("drop the art",
+        "remove the turtle art", "redo completely"), and never a picture he ✕'d, purged or rejected.
+    (bug 2026-10-10: Ambrosia/Loomu/Vizhik redraws carried the very art he dropped; Vellak's "(b)" carried nothing)"""
+    idx = idx or L.cached_index()
+    if q.get("source"):
+        return [s for s in q.get("ref_shas") or [] if s and L.store_has(s) and not idx.is_purged(s)][:1]
+    srow, v, note = q["srow"], q["v"], q.get("note") or ""
+    cols, labels = srow.get("columns") or {}, srow.get("labels") or {}
+    bad = set(v.get("purge") or [])
+    m = BASED_ON.search(note)
+    if m and m.group(1).upper() in cols:
+        s = first_by_facing(cols[m.group(1).upper()], bad)
+        return [s] if s and L.store_has(s) and not idx.is_purged(s) else []
+    if DROP_ART.search(note):
+        return []
+    ref_letter = next((l for l, lab in sorted(labels.items()) if str(lab).startswith("IN GAME")), None)
+    if not ref_letter:
+        return []
+    col = cols.get(ref_letter) or {}
+    if any(s in bad for s in col.values()):
+        return []
+    s = first_by_facing(col, bad)
+    # a plain redo keeps the picture he sent back as anatomy guidance (the redo verdict itself records it as rejected,
+    # so a ledger-rejection filter would strip every reference); only his ✕, a purge or words in the note drop it
+    return [s] if s and L.store_has(s) and not idx.is_purged(s) else []
+
+
 def job_rows(P: dict) -> list[dict]:
     rows = []
+    idx = L.cached_index()
     for q in P["queue"]:
         srow, v, row = q["srow"], q["v"], q["row"]
-        labels = srow.get("labels") or {}
-        ref_letter = next((l for l, lab in sorted(labels.items()) if str(lab).startswith("IN GAME")), None)
-        refs = [str(L.store_path(s)) for s in sorted(set((srow.get("columns") or {}).get(ref_letter, {}).values()))
-                if s and L.store_has(s)][:1] if ref_letter else []
+        refs = [str(L.store_path(s)) for s in redo_ref_shas(q, idx)]
         facings = sorted({f for c in (srow.get("columns") or {}).values() for f in c
                           if f in ("east", "north", "south")}, key=["east", "south", "north"].index)
         note = q["note"]
         label = (srow.get("subject_key") or row).replace("_", " ")
-        rows.append({"id": f"enact_{L.det_id(P['sheet'], row, note, v.get('at'))[:8]}_{L.subject_key(row)}_v1",
+        src_ref = q.get("source") and refs
+        guide = (f"the attached image is the settled {q['source']} this is drawn from — match its anatomy, markings and "
+                 f"colours exactly" if src_ref else
+                 "the attached image is the picture he sent back, anatomy guidance only, not a sprite to copy"
+                 if refs else "no reference is attached: draw it fresh from the note")
+        rows.append({"id": f"enact_{L.det_id(P['sheet'], row, note, v.get('at'), *(q.get('ref_shas') or []))[:8]}"
+                           f"_{L.subject_key(row)}_v1",
                      "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1", "target_def": row,
                      "prompt": (f"Owner's note, verbatim, overrides everything below: \"{note}\" " if note else "")
-                     + f"RimWorld sprite of the {label}, painterly vanilla-RimWorld house style; redraw it — the "
-                       f"attached image is the picture he sent back, anatomy guidance only, not a sprite to copy.",
+                     + f"RimWorld sprite of the {label}, painterly vanilla-RimWorld house style; redraw it — {guide}.",
                      "canvas_w": 256, "canvas_h": 256, "facings": facings, "priority": 0,
                      "owner_note": note, "canon_reference": refs, "biome_neutral": True})
     return rows
@@ -827,7 +1197,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
     idx = L.Index()
     P = build_plan(decisions, holds, idx, stale=ing.get("stale_rows"))
     R = {"ok": True, "apply": apply, "ingest_new": ing.get("rulings", 0) + ing.get("rejected", 0),
-         "installed": 0, "queued_jobs": 0, "refiled": 0, "purged": 0, "cut_rows": 0, "defs_deleted": 0, "textures_retired": 0,
+         "installed": 0, "rebound": 0, "alts_added": 0, "retired": 0, "withdrawn": 0, "queued_jobs": 0, "refiled": 0, "purged": 0, "cut_rows": 0, "defs_deleted": 0, "textures_retired": 0,
          "deploy": [], "notes_cleared": [], "conflicts": list(P["conflicts"]), "todo": list(P["todo"]), "plan": P}
     touched_mods: set[str] = set()
     sheet = P["sheet"]
@@ -836,6 +1206,18 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
     for row in mark_done:
         v = (doc.get("decisions") or {}).get(row) or {}
         note = I.open_note(v)
+        halves = pending_def_halves(v, sheet, row, {(e.get("sheet"), e.get("row"), e.get("note")) for e in idx.events
+                                                    if e.get("type") == "enact_done"}) if not note else []
+        if halves:
+            # the rename/description half of a note an art job already took off the open list
+            w = L.Writer({e["id"] for e in idx.events})
+            for nt in halves:
+                w.add({"type": "enact_done", "id": L.det_id("enact_done", sheet, row, nt), "sheet": sheet, "row": row,
+                       "note": nt, "by": "agent", "evidence": done_evidence or "", "via": I.rel_via(decisions)})
+            w.flush()
+            R["todo"] = [t for t in R["todo"] if not t.startswith(f"{row}: def half of")]
+            P["done"].append(f"{row}: def half of {len(halves)} followed note(s) marked now")
+            continue
         if not note:
             had = [t for t in R["todo"] if t.startswith(f"{row}: pick ") and "has no slot in any of our mods" in t]
             if not had:
@@ -855,6 +1237,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
         new = w.add(ev)
         w.flush()
         R["todo"] = [t for t in R["todo"] if not t.startswith(f"{row}: note not enacted")
+                     and not t.startswith(f"{row}: def half of the note")
                      and not (t.startswith(f"{row}: pick ") and "has no slot in any of our mods" in t)]
         if new:
             P["done"].append(f"{row}: {note[:70]} (marked now)")
@@ -862,6 +1245,10 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
             P["followed"][row] = {"note": v.get("note"), "by": ["mark-done"]}
     if not apply:
         R["installed"] = len(P["install"])
+        R["rebound"] = len({(i["row"], i["rebind"]["old"]) for i in P["install"] if i.get("rebind")})
+        R["alts_added"] = len({(i["row"], i["alt"][1]) for i in P["install"] if i.get("alt")})
+        R["retired"] = len(P["retire"])
+        R["withdrawn"] = len(P["withdraw"])
         R["queued_jobs"] = len(P["queue"])
         R["refiled"] = len(P["refile"])
         R["purged"] = len(P["purge"])
@@ -874,7 +1261,9 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
             for st in c["plan"]["sites"]:
                 touched_mods.add(mod_of(st["file"]))
     else:
-        # 2 install
+        # 2 install (picks, then ticked variants), then the def edits that make the game draw them
+        src = L.src_root()
+        rebinds, alts, ok_rows = {}, {}, set()
         for i in P["install"]:
             rid = i["ruling"] or (keep_ruling(L.cached_index(), i["row"], i["letter"], i["sha"]) or {}).get("id")
             if not rid:
@@ -882,11 +1271,41 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
                 continue
             try:
                 r = L.install(i["mod"], i["rel"], i["sha"], ruling_id=rid)
-                if r["status"] == "installed":
-                    R["installed"] += 1
+                if r["status"] in ("installed", "already-live"):
+                    R["installed"] += r["status"] == "installed"
                     touched_mods.add(i["mod"])
+                    ok_rows.add(i["row"])
+                    if i.get("rebind"):
+                        rebinds[(i["row"], i["rebind"]["old"], i["rebind"]["new"])] = i
+                    if i.get("alt"):
+                        alts[(i["row"], i["alt"][0], i["alt"][1])] = i
             except L.Refused as e:
                 R["conflicts"].append(f"{i['row']}: install {i['rel']} refused — {e}")
+        for (row, old, new), i in sorted(rebinds.items()):
+            for f in rebind_defs(src, i["names"], old, new):
+                R["rebound"] += 1
+                touched_mods.add(mod_of(f))
+        for (row, base, res), i in sorted(alts.items()):
+            for f in add_alternate_graphic(src, i["names"], base, res):
+                R["alts_added"] += 1
+                touched_mods.add(mod_of(f))
+        # 2c a folder this run filled sheds the pictures he did not keep (archived in the store, never deleted)
+        for rt in P["retire"]:
+            if rt["row"] not in ok_rows:
+                continue
+            try:
+                L.retire(L.src_root().parent / rt["mod"] / "Textures" / rt["rel"], reason=WRITER_TAG)
+                R["retired"] += 1
+                touched_mods.add(rt["mod"])
+            except L.Refused as e:
+                R["conflicts"].append(f"{rt['row']}: {rt['rel']} not retired — {e}")
+        # 3a jobs drawn too early are withdrawn (never rendered, re-filed or offered for a pick)
+        for w in P["withdraw"]:
+            try:
+                withdraw(w["job"], w["why"])
+                R["withdrawn"] += 1
+            except OSError as e:
+                R["conflicts"].append(f"{w['row']}: withdraw of {w['job']['id']} failed — {e}")
         # 3 queue
         rows = job_rows(P)
         if rows:
@@ -901,7 +1320,8 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
             if r.returncode == 0:
                 R["queued_jobs"] = len(rows)
                 for q in P["queue"]:
-                    if q["note"]:
+                    if q["note"] and not (DEF_ASK.search(q["note"]) and q["row"] not in P["followed"]
+                                          and any(x.startswith(f"{q['row']}: def half of the note") for x in R["todo"])):
                         P["followed"][q["row"]] = {"note": q["v"].get("note"),
                                                    "by": [r["id"] for r in rows if r["target_def"] == q["row"]]}
             else:
@@ -1013,9 +1433,22 @@ def report(R: dict) -> str:
     L_.append(f"  ingest     {R['ingest_new']} new ruling/rejected event(s)")
     L_.append(f"  install    {R['installed']} file(s); {len(P['installed_already'])} already live; "
               f"{P['in_game_not_ours']} in-game donor picture(s) left as they are")
-    for i in P["install"][:40]:
-        L_.append(f"     {i['row']}: {i['letter']} -> {i['mod'].rsplit('/', 1)[-1]}/{i['rel']}"
+    for i in P["install"][:60]:
+        L_.append(f"     {i['row']}: {'variant ' if i.get('variant') else ''}{i['letter']} -> "
+                  f"{i['mod'].rsplit('/', 1)[-1]}/{i['rel']}"
+                  + (f"  (def texPath {i['rebind']['old']} -> {i['rebind']['new']})" if i.get("rebind") else "")
+                  + (f"  (alternateGraphics {i['alt'][1]})" if i.get("alt") else "")
                   + ("" if i["ruling"] else "  (ruling recorded by this ingest)"))
+    if P["retire"]:
+        L_.append(f"  retire     {R['retired']} picture(s) a filled folder no longer keeps")
+        for rt in P["retire"]:
+            L_.append(f"     {rt['row']}: {rt['mod'].rsplit('/', 1)[-1]}/{rt['rel']}")
+    if P["withdraw"] or P["blocked"]:
+        L_.append(f"  withdraw   {R['withdrawn']} job(s) drawn too early; {len(P['blocked'])} row(s) blocked")
+        for w in P["withdraw"]:
+            L_.append(f"     {w['row']}: {w['job']['id']} ({w['job']['_state']}) — {w['why'][:90]}")
+        for b in P["blocked"]:
+            L_.append(f"     blocked: {b}")
     L_.append(f"  queue      {R['queued_jobs']} redraw row(s) to file; {len(P['queued_already'])} already queued/rendered")
     for q in P["queue"]:
         L_.append(f"     {q['row']}: {q['note'][:90]!r}")
