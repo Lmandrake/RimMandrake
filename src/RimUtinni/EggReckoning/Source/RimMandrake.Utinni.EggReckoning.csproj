@@ -44,6 +44,8 @@
     <Compile Include="RM_QuestPart_EggHatch.cs" />
     <Compile Include="RM_QuestNode_EggHatch.cs" />
     <Compile Include="EggReckoningSettings.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>
