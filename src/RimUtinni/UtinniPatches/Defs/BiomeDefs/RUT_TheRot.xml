@@ -170,7 +170,7 @@
       <RSW_Thrumbungus MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Thrumbungus>  <!-- thrumbungus - titan, import -->
       <RSW_Yooka MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Yooka>  <!-- yooka - import -->
       <RSW_ShiroTrap MayRequire="mandrake.rsw.swbestiary">0.5</RSW_ShiroTrap>  <!-- shiro trap - floor-ambush, moved in from the Greentide's roster ruling -->
-      <AA_AnimaColossus MayRequire="sarg.alphaanimals">0.5</AA_AnimaColossus>  <!-- anima colossus - titan, already-active donor def, never wired -->
+      <AA_AnimaColossus MayRequire="sarg.alphaanimals">0.5</AA_AnimaColossus>  <!-- pluur'va (anima colossus) - titan, already-active donor def, never wired -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

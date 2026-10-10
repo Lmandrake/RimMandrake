@@ -1,0 +1,760 @@
+[
+ {
+  "id": "rotvar_ab_bryolux_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_Bryolux",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add two more realistic variants\" RimWorld plant sprite of the hessuk moss (The glow-carpet of the pale forest: a blue-white mat of tangled sticky fibres, warm to lie on and slow to walk through, because it holds your feet. Where it is bright the ground is feeding; where it goes dark, the ground is cold.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Add two more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/d3/d3565087381e7a4b38b689416bcb445f08962310276d8777289259008c148edc.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_bryolux_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_Bryolux",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Add two more realistic variants\" RimWorld plant sprite of the hessuk moss (The glow-carpet of the pale forest: a blue-white mat of tangled sticky fibres, warm to lie on and slow to walk through, because it holds your feet. Where it is bright the ground is feeding; where it goes dark, the ground is cold.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Add two more realistic variants",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/d3/d3565087381e7a4b38b689416bcb445f08962310276d8777289259008c148edc.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_dribblingcap_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_DribblingCap",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the ruvvak weeper (A tall pink-lilac cap that weeps without stopping: a thick, sharp-smelling resin beads at the rim, runs down the stalk and pools around its foot. The resin is a nerve poison strong enough to drop a warg in a few breaths. Gathered with care it tips a single poison dart; gathered carelessly, it is gathered once. Slow to grow, and it can be planted.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/cd/cd270c5f37c9f5f0b27af0eadabbbd9aef7aed1ae967f2192fe7fdcd34ad840a.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_dribblingcap_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_DribblingCap",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the ruvvak weeper (A tall pink-lilac cap that weeps without stopping: a thick, sharp-smelling resin beads at the rim, runs down the stalk and pools around its foot. The resin is a nerve poison strong enough to drop a warg in a few breaths. Gathered with care it tips a single poison dart; gathered carelessly, it is gathered once. Slow to grow, and it can be planted.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/cd/cd270c5f37c9f5f0b27af0eadabbbd9aef7aed1ae967f2192fe7fdcd34ad840a.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_giantagarilux_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_GiantAgarilux",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the vokkun pillar (A pale forest giant whose stalk has hardened, over many seasons, into something close to wood: light, fibrous and weak, but wood, in a biome that grows almost none. Its broad lilac cap is studded with soft knobs that shine faintly in the wet. Cut it at the base for mushroom logs; plant the ground again and another mast stands within a season.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6a/6a392571840af974a39d220490e80769f63598fbf42949d16b776720a822e8fc.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_giantagarilux_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_GiantAgarilux",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the vokkun pillar (A pale forest giant whose stalk has hardened, over many seasons, into something close to wood: light, fibrous and weak, but wood, in a biome that grows almost none. Its broad lilac cap is studded with soft knobs that shine faintly in the wet. Cut it at the base for mushroom logs; plant the ground again and another mast stands within a season.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6a/6a392571840af974a39d220490e80769f63598fbf42949d16b776720a822e8fc.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_glowingagarilux_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_GlowingAgarilux",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the ithra glowcap (The night-light of the pale forest: a tall lilac mushroom whose every knob gives off a cold violet light, bright enough to work by and to be seen by from far off. It grows only wild, and anyone harvesting its few edible purple caps does it in the light it makes, which is exactly where every hungry thing in the grove is already looking.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6f/6f67f77bd8b782014d847567cf9fa3e71841da8a8c834a5356b2da526e1bd2f0.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_glowingagarilux_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_GlowingAgarilux",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the ithra glowcap (The night-light of the pale forest: a tall lilac mushroom whose every knob gives off a cold violet light, bright enough to work by and to be seen by from far off. It grows only wild, and anyone harvesting its few edible purple caps does it in the light it makes, which is exactly where every hungry thing in the grove is already looking.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/6f/6f67f77bd8b782014d847567cf9fa3e71841da8a8c834a5356b2da526e1bd2f0.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_glowstool_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_Glowstool",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the nubbik stool (A squat brown-grey mushroom that smells like a rag pulled out of a dead animal's stomach. Raw, it tastes the way it smells. Cooked, the stink goes and leaves something rich and savoury behind, and colonists who have eaten one stop complaining about the smell of the patch. Easy to grow in open ground, and it gives a good handful of caps.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/11/11b913669a293262eed08221906ac3aa8f02b266a168f4c7b6f697f9f07ec533.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_glowstool_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_Glowstool",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the nubbik stool (A squat brown-grey mushroom that smells like a rag pulled out of a dead animal's stomach. Raw, it tastes the way it smells. Cooked, the stink goes and leaves something rich and savoury behind, and colonists who have eaten one stop complaining about the smell of the patch. Easy to grow in open ground, and it gives a good handful of caps.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/11/11b913669a293262eed08221906ac3aa8f02b266a168f4c7b6f697f9f07ec533.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_lilacbeacon_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_LilacBeacon",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the quessa spire (A tall, narrow mushroom holding a bright lilac cap high on a pale stalk. Its flesh is dense and far more filling than anything else that grows here, and much harder on the stomach: eaten raw it sits like a stone, and even cooked it disagrees with some. It grows wild and can be planted; the caps are cut a few at a time.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/d0/d0c0f977d67534c1e192a19d614db98ae53eaa30839434de87a95381d70d5e2f.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_lilacbeacon_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_LilacBeacon",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the quessa spire (A tall, narrow mushroom holding a bright lilac cap high on a pale stalk. Its flesh is dense and far more filling than anything else that grows here, and much harder on the stomach: eaten raw it sits like a stone, and even cooked it disagrees with some. It grows wild and can be planted; the caps are cut a few at a time.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/d0/d0c0f977d67534c1e192a19d614db98ae53eaa30839434de87a95381d70d5e2f.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_slimypholiota_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_SlimyPholiota",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the glissik slimecap (A broad blue-pink mushroom that sweats a clear, sweet-smelling slime. Insects come for the smell, stick in the slime, stop moving, and slowly dissolve into food for the cap that caught them. The same slime soaks into the flesh and makes it rich and safe to eat raw, one of the few things in the pale forest that is.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/25/25e8c5b5a5c024b466559689633c5d13b31f1c334f0c89546b440bffb1e71260.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_slimypholiota_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_SlimyPholiota",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the glissik slimecap (A broad blue-pink mushroom that sweats a clear, sweet-smelling slime. Insects come for the smell, stick in the slime, stop moving, and slowly dissolve into food for the cap that caught them. The same slime soaks into the flesh and makes it rich and safe to eat raw, one of the few things in the pale forest that is.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/25/25e8c5b5a5c024b466559689633c5d13b31f1c334f0c89546b440bffb1e71260.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_witchesoyster_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_WitchesOyster",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the turrok shelf (A branching stack of pink shelf-caps growing one over another from a single woody foot, sharp-smelling enough to make the eyes water. The caps are tough and slow to rot: cut and stored, they keep far longer than anything else the pale forest gives, which makes it what colonists plant when they are thinking about winter.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/78/780e22885637d57bafbad47e678a997348f32a754c61da0fc01fc74585438c28.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_ab_witchesoyster_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AB_WitchesOyster",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the turrok shelf (A branching stack of pink shelf-caps growing one over another from a single woody foot, sharp-smelling enough to make the eyes water. The caps are tough and slow to rot: cut and stored, they keep far longer than anything else the pale forest gives, which makes it what colonists plant when they are thinking about winter.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/78/780e22885637d57bafbad47e678a997348f32a754c61da0fc01fc74585438c28.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_agelesscap_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_AgelessCap",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the orlath cap (A pale, swollen cap the size of a footstool, its skin faintly translucent, as if lit from inside. Brewed alive and on the spot, it is said to give back years to whoever drinks it, and it has to be brewed here, fresh from the ground, or not at all. It bears no malice, but its mycelium runs under everything nearby, and disturbing it makes the cap vent a choking cloud that does not care why you came. It grows very slowly; harvest it gently, or masked.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/f7/f7fa31b5554e081b371746401c6525d5b7cdb9cd8af339c97d37fe5dcee41722.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_agelesscap_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_AgelessCap",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the orlath cap (A pale, swollen cap the size of a footstool, its skin faintly translucent, as if lit from inside. Brewed alive and on the spot, it is said to give back years to whoever drinks it, and it has to be brewed here, fresh from the ground, or not at all. It bears no malice, but its mycelium runs under everything nearby, and disturbing it makes the cap vent a choking cloud that does not care why you came. It grows very slowly; harvest it gently, or masked.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/f7/f7fa31b5554e081b371746401c6525d5b7cdb9cd8af339c97d37fe5dcee41722.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_blastpodshroom_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_BlastpodShroom",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the kabbrik pod (A low cluster of taut, rounded pods on short stems, the skins grey-white and glossy, each seam showing a faint warm glow. The pods are packed with an oily spore-mass volatile enough to refine into chemfuel, and colonists learn to keep fires well away from a patch. It grows where it pleases and nowhere anyone plants it; nobody has managed to cultivate it.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/70/7068ac6171e655c34a29f5a97451d0e6f60680783bc5f96a7987b7f4efe589ae.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_blastpodshroom_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_BlastpodShroom",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the kabbrik pod (A low cluster of taut, rounded pods on short stems, the skins grey-white and glossy, each seam showing a faint warm glow. The pods are packed with an oily spore-mass volatile enough to refine into chemfuel, and colonists learn to keep fires well away from a patch. It grows where it pleases and nowhere anyone plants it; nobody has managed to cultivate it.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/70/7068ac6171e655c34a29f5a97451d0e6f60680783bc5f96a7987b7f4efe589ae.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_brightbell_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Brightbell",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the tinnik bell (A small, nodding bell of a mushroom on a thin pale stem, glowing a soft honey-gold from inside the bell. A patch of them lights a path well enough to walk by at night, which is why colonists plant them along walkways and around doors, and each gives a bite or two of edible fungus besides. Easy to grow, and pleasant to have around in a forest where most things that glow want something from you.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/15/1547d686d365b9105d3b7a600a20ff2fa91ad71d463f14588772db0ee53d00a2.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_brightbell_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Brightbell",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the tinnik bell (A small, nodding bell of a mushroom on a thin pale stem, glowing a soft honey-gold from inside the bell. A patch of them lights a path well enough to walk by at night, which is why colonists plant them along walkways and around doors, and each gives a bite or two of edible fungus besides. Easy to grow, and pleasant to have around in a forest where most things that glow want something from you.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/15/1547d686d365b9105d3b7a600a20ff2fa91ad71d463f14588772db0ee53d00a2.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_crimsoncap_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_CrimsonCap",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the rhessa cap (A broad, flat crimson cap on a tall white stalk, the one strong colour in a pale forest and visible from a long way off. It is not food, medicine or timber; it is good for nothing but looking at, and it is very good at that. Colonists plant it for the pleasure of seeing it.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/fd/fd787ef4957cee94ac59636699aca62517d878fc7764daed4a43c6daa133b382.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_crimsoncap_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_CrimsonCap",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the rhessa cap (A broad, flat crimson cap on a tall white stalk, the one strong colour in a pale forest and visible from a long way off. It is not food, medicine or timber; it is good for nothing but looking at, and it is very good at that. Colonists plant it for the pleasure of seeing it.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/fd/fd787ef4957cee94ac59636699aca62517d878fc7764daed4a43c6daa133b382.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_falsefruit_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_FalseFruit",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the pekk fruit (A small, pale fruiting body grown at the edge of a lussa crown's root mat and shaped to match the crown's own caps, down to the sheen. It is a lure and an alarm, not food: touch one, or try to pick it, and the whole grove knows you are there, and whatever guards the grove comes to see who it is. What little flesh it has is edible, if you live to eat it.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/09/0931e7e2dde67bb6bb7861057d2fc8680888cb4fc85463a52bd8a2205457925d.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_falsefruit_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_FalseFruit",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the pekk fruit (A small, pale fruiting body grown at the edge of a lussa crown's root mat and shaped to match the crown's own caps, down to the sheen. It is a lure and an alarm, not food: touch one, or try to pick it, and the whole grove knows you are there, and whatever guards the grove comes to see who it is. What little flesh it has is edible, if you live to eat it.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/09/0931e7e2dde67bb6bb7861057d2fc8680888cb4fc85463a52bd8a2205457925d.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_flakespirefungus_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_FlakespireFungus",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the tarrusk spire (A slow-growing mushroom tree: a tall purple-grey spire of a cap, flaking at the edges like old paint, on a stalk as hard and straight-grained as good timber. It takes half a year to reach cutting size and is worth the wait; the stalk cuts into strong, handsome boards, enough to build a hall from.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/eb/eb05e7dcdc6894a1a84940620d3a8bd82d62a69605938ce3e320de822b961190.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_flakespirefungus_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_FlakespireFungus",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the tarrusk spire (A slow-growing mushroom tree: a tall purple-grey spire of a cap, flaking at the edges like old paint, on a stalk as hard and straight-grained as good timber. It takes half a year to reach cutting size and is worth the wait; the stalk cuts into strong, handsome boards, enough to build a hall from.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/eb/eb05e7dcdc6894a1a84940620d3a8bd82d62a69605938ce3e320de822b961190.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_fruitingbodies_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_FruitingBodies",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"make two other improved variants that are more realistic\" RimWorld plant sprite of the pimmik mold (The fruiting bodies of a pale mold that carpets the forest floor wherever the mat is warm: a fuzz of tiny pins, each with a bead of a head. It is the most common thing in the biome and the least noticed.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/75/753c75cdd61bc89f646dd0ad1a6a5f43a7ef3580606613f0441b321e61e6e0df.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_fruitingbodies_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_FruitingBodies",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"make two other improved variants that are more realistic\" RimWorld plant sprite of the pimmik mold (The fruiting bodies of a pale mold that carpets the forest floor wherever the mat is warm: a fuzz of tiny pins, each with a bead of a head. It is the most common thing in the biome and the least noticed.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/75/753c75cdd61bc89f646dd0ad1a6a5f43a7ef3580606613f0441b321e61e6e0df.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_mortalmorelplant_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_MortalMorelPlant",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the vennik salve (A small honeycombed mushroom, brown and pitted like a dried sponge, whose flesh is worked into fungal medicine. Everything about it is slow and delicate: it takes a long time to grow, it must be sown and cut with care, and it crumbles at a careless touch into a dust worth nothing. A good patch is guarded the way other colonies guard a medicine cabinet.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/cf/cf9a25a2014007a0c292f7d6d4779e2af4925bf5e37d79965a3b889bf45553f2.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_mortalmorelplant_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_MortalMorelPlant",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the vennik salve (A small honeycombed mushroom, brown and pitted like a dried sponge, whose flesh is worked into fungal medicine. Everything about it is slow and delicate: it takes a long time to grow, it must be sown and cut with care, and it crumbles at a careless touch into a dust worth nothing. A good patch is guarded the way other colonies guard a medicine cabinet.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/cf/cf9a25a2014007a0c292f7d6d4779e2af4925bf5e37d79965a3b889bf45553f2.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_nuitae_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Nuitae",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the nissik gill (A near-black cap whose gills glow brightly beneath it, throwing light down onto the milky water it stands in and none at all upward, so that a stand of them looks from above like a shoal of dark stones lit from below. It grows in the shallows, or in ground wet enough to pass for them.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/eb/ebc6f07ca5e19448d6593458f6bb94c828467131193253848e7f50161aefc6ad.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_nuitae_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Nuitae",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the nissik gill (A near-black cap whose gills glow brightly beneath it, throwing light down onto the milky water it stands in and none at all upward, so that a stand of them looks from above like a shoal of dark stones lit from below. It grows in the shallows, or in ground wet enough to pass for them.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/eb/ebc6f07ca5e19448d6593458f6bb94c828467131193253848e7f50161aefc6ad.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_paletree_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_PaleTree",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the quellan tree (A bone-white tower of fungus grown into the shape of a tree, ridged like old bark and humming faintly at dusk. A wandering creed of the wild holds it sacred. It heals its own wounds, seeds smaller growths around its foot, and its destruction is felt by everyone nearby. Meditate long enough in its shade and you leave with a faint pull toward something living and far larger than you, and the unshakable feeling that you should find someone who actually knows what this is.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/21/21f4283ee40c328728c7b833e88b81700aef4b4cf5f71887753101cee8168294.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_paletree_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_PaleTree",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the quellan tree (A bone-white tower of fungus grown into the shape of a tree, ridged like old bark and humming faintly at dusk. A wandering creed of the wild holds it sacred. It heals its own wounds, seeds smaller growths around its foot, and its destruction is felt by everyone nearby. Meditate long enough in its shade and you leave with a faint pull toward something living and far larger than you, and the unshakable feeling that you should find someone who actually knows what this is.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/21/21f4283ee40c328728c7b833e88b81700aef4b4cf5f71887753101cee8168294.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_pusmelon_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Pusmelon",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the gubbra gourd (A bloated grey-green fungus shaped like a gourd, its skin stretched tight over sacs of a foul yellow liquid that slosh when it is touched. Step on one and you will smell it for a day. Nothing eats it, and nothing has to.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/0d/0dbb121338e27d00ae5d149115a35e3352eda486c73201e50fb55bcfb8db419f.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_pusmelon_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Pusmelon",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Rename, improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the gubbra gourd (A bloated grey-green fungus shaped like a gourd, its skin stretched tight over sacs of a foul yellow liquid that slosh when it is touched. Step on one and you will smell it for a day. Nothing eats it, and nothing has to.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "Rename, improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/0d/0dbb121338e27d00ae5d149115a35e3352eda486c73201e50fb55bcfb8db419f.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_regenerantveil_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_RegenerantVeil",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the mirrash veil (A translucent, slowly pulsing sheet of fungal tissue laid over the ground like a wet cloth and threaded straight into the grove's own mycelial network. The pale forest's healing tea is brewed from it alive, fresh from the ground. Wound it and the whole network answers: the grove knows, and whatever guards the grove comes. It grows very slowly and should be harvested by someone who is not in a hurry.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/cf/cfa63202898cdf5306f548ca7a2374110b5eb49e7189b71e74579477c932216e.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_regenerantveil_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_RegenerantVeil",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the mirrash veil (A translucent, slowly pulsing sheet of fungal tissue laid over the ground like a wet cloth and threaded straight into the grove's own mycelial network. The pale forest's healing tea is brewed from it alive, fresh from the ground. Wound it and the whole network answers: the grove knows, and whatever guards the grove comes. It grows very slowly and should be harvested by someone who is not in a hurry.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/cf/cfa63202898cdf5306f548ca7a2374110b5eb49e7189b71e74579477c932216e.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_sagecrust_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Sagecrust",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the tavvik crust (A tough, leafy grey-green crust that clings to rock and fungal mat alike in overlapping scales, living on almost no light. Nothing much eats it and nothing much kills it. When the ground turns cold and everything else in the pale forest sickens back into the mat, the tavvik crust is the last thing still growing.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/26/2620878044a5f8e7a062bb180b1493ca77601398c1b38825dbbfbefdbdad34ca.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_sagecrust_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Sagecrust",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the tavvik crust (A tough, leafy grey-green crust that clings to rock and fungal mat alike in overlapping scales, living on almost no light. Nothing much eats it and nothing much kills it. When the ground turns cold and everything else in the pale forest sickens back into the mat, the tavvik crust is the last thing still growing.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/26/2620878044a5f8e7a062bb180b1493ca77601398c1b38825dbbfbefdbdad34ca.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_skulltop_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Skulltop",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the vekkra choker (A small mushroom with a pale, bulging cap pitted like a skull, which breathes a steady haze of toxic spores into the air around it. Anything not immune to poison that lingers nearby begins to choke, and the haze fouls the ground where it settles. It is the little cousin of the grath elder, and like the elder it guards nothing but itself; clear it from paths and fields masked, or with fire.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/d2/d29b4c46de42d5dc714dca4c7c876f3aa75a86baa52609534df815b2f3d33504.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_skulltop_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Skulltop",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the vekkra choker (A small mushroom with a pale, bulging cap pitted like a skull, which breathes a steady haze of toxic spores into the air around it. Anything not immune to poison that lingers nearby begins to choke, and the haze fouls the ground where it settles. It is the little cousin of the grath elder, and like the elder it guards nothing but itself; clear it from paths and fields masked, or with fire.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/d2/d29b4c46de42d5dc714dca4c7c876f3aa75a86baa52609534df815b2f3d33504.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_violetwimple_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_VioletWimple",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the pursk hood (A big violet-capped mushroom whose cap droops and folds down around its stalk like a hood. It is not very productive, but the hood is soft and edible, and it grows everywhere in the pale forest, and that is enough.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/cf/cf994f6d38a65ee5dce5ed77d0146135ed319cbb25ed49a0ca25e35cb6215162.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_violetwimple_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_VioletWimple",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the pursk hood (A big violet-capped mushroom whose cap droops and folds down around its stalk like a hood. It is not very productive, but the hood is soft and edible, and it grows everywhere in the pale forest, and that is enough.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/cf/cf994f6d38a65ee5dce5ed77d0146135ed319cbb25ed49a0ca25e35cb6215162.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_wrinklecap_a_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Wrinklecap",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the rukka cap (A damp-ground mushroom with a cap wrinkled and folded like a walnut, glowing a soft lilac from deep in the folds. It is the grazers' staple: anything in the pale forest that eats fungus eats this first, and a field of trampled rukka caps is a sure sign a herd is near.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, a younger, sparser specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/e3/e3b8c4841b3b109e0713b5af56e3f91e2de84b700e0484a2c7c3a48b73f0e63e.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotvar_wrinklecap_b_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "RM_Wrinklecap",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"improve description, make two other improved variants that are more realistic\" RimWorld plant sprite of the rukka cap (A damp-ground mushroom with a cap wrinkled and folded like a walnut, glowing a soft lilac from deep in the folds. It is the grazers' staple: anything in the pale forest that eats fungus eats this first, and a field of trampled rukka caps is a sure sign a herd is near.), painterly vanilla-RimWorld house style, realistic natural-history rendering. Draw a NEW, improved, more realistic variant of the same species, an older, fuller specimen, so it can sit beside the attached picture in a Graphic_Random set: same species, same palette and anatomy, different individual growth form. The attached image is the picture he picked, anatomy guidance only, not a sprite to copy.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [],
+  "priority": 0,
+  "owner_note": "improve description, make two other improved variants that are more realistic",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/e3/e3b8c4841b3b109e0713b5af56e3f91e2de84b700e0484a2c7c3a48b73f0e63e.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotrow_angelmoth_south_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "AA_AngelMoth",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Regenerate S. Otherwise accept. Rename and regenerate description.\" RimWorld sprite of the angel moth, painterly vanilla-RimWorld house style. The attached east and north pictures are the owner's kept variant of this creature; draw this same animal from the front, eyes toward the viewer, matching those pictures in palette, anatomy and finish.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south"
+  ],
+  "priority": 0,
+  "owner_note": "Regenerate S. Otherwise accept. Rename and regenerate description.",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/b8/b8d5defaf35391db4b5e13ca5f0e766c0405c625e3795dcd5fee0e8f1bed18d0.png",
+   "/mnt/d/Luke/dev/_artstore/9e/9e1cf0f9792c58427e18a98b5fd1a58f02fd03691d599ade7c1d3eed3d73152c.png"
+  ],
+  "biome_neutral": true
+ },
+ {
+  "id": "rotrow_snoruuk_v2",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "target_def": "Snoruuk",
+  "prompt": "Owner's note, verbatim, overrides everything below: \"Regenerate following the MLIE donor art + the canon art example carefully. Make it as realistic as you can and offer some variants to choose from\" RimWorld sprite of the snoruuk, painterly vanilla-RimWorld house style, realistic. A second variant for him to choose from: same species and anatomy as the attached in-game donor picture, a different individual (posture, wear, colouring within the species).",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "priority": 0,
+  "owner_note": "Regenerate following the MLIE donor art + the canon art example carefully. Make it as realistic as you can and offer some variants to choose from",
+  "canon_reference": [
+   "/mnt/d/Luke/dev/_artstore/84/84b5aed6c720ce44907c2bf4ca7505fafe26191f222ec7982396057411308791.png",
+   "/home/mandrake/rm/bench/design/RimStarWars/canon_references/snoruuk/wookieepedia_snoruuk.jpg"
+  ],
+  "biome_neutral": true
+ }
+]
