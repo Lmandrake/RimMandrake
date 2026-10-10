@@ -908,6 +908,12 @@ MODS = {
         "Burial, plants and announcements": "Now",
         "Shovelled drift": "Now",
     }, ()),
+    "TheBazaar": ("RM_BazaarSettings.cs", "RimMandrake_Bazaar.csproj", {
+        "Price economy (not wired yet: changes nothing in play)": "Now",
+        "Locality of untagged settlements (not wired yet)": "NextPulse",
+        "Trade intel by Social skill (not wired yet)": "Now",
+        "Protocol-droid intel modules (not wired yet)": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
