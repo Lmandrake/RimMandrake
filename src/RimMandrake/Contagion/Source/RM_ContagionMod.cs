@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -93,87 +95,116 @@ namespace RimMandrake.Contagion
             Widgets.BeginScrollView(inRect, ref scrollPos, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.Label("Biome rarity: " + RarityLabel());
-            list.Label("At 0 the Contagion never generates on a new planet. "
-                       + "The default places a handful of rare, hot, storm-roofed peaks. "
-                       + "Affects planets generated afterwards, never one that already exists.");
-            biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
+            if (Group(list, "Biome rarity (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "biomeRarityFactor" }))
+            {
+                list.Label("Biome rarity: " + RarityLabel());
+                list.Label("At 0 the Contagion never generates on a new planet. "
+                           + "The default places a handful of rare, hot, storm-roofed peaks. "
+                           + "Affects planets generated afterwards, never one that already exists.");
+                biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
+                list.GapLine();
+            }
 
-            list.Gap();
-            list.CheckboxLabeled(
-                "Amoeba genome/organ growing enabled",
-                ref genomeOrganGrowingEnabled,
-                "Lets a colonist extract a genome sample and inject it into a Contagion "
-                + "amoeba (the bloody mess), which gestates a one-time batch of organs matched "
-                + "to that colonist and dies producing it. Off removes the surgery recipe "
-                + "and the injection option entirely.");
+            if (Group(list, "Genome growing and the Unfinished", RimMandrake.Shared.SettingScope.Now, new[] { "genomeOrganGrowingEnabled", "unfinishedSpawnerEnabled", "grownLimbsEnabled" }))
+            {
+                list.CheckboxLabeled(
+                    "Amoeba genome/organ growing enabled",
+                    ref genomeOrganGrowingEnabled,
+                    "Lets a colonist extract a genome sample and inject it into a Contagion "
+                    + "amoeba (the bloody mess), which gestates a one-time batch of organs matched "
+                    + "to that colonist and dies producing it. Off removes the surgery recipe "
+                    + "and the injection option entirely.");
+                list.CheckboxLabeled(
+                    "The Unfinished spawner enabled",
+                    ref unfinishedSpawnerEnabled,
+                    "Lets the Contagion's bloody mess periodically bud a short-lived "
+                    + "Unfinished chimera nearby — random-limb, days-long-lived, dissolving to "
+                    + "goo on death. Off stops new ones from budding; any already alive keep "
+                    + "living out their (short) lives normally.");
+                list.CheckboxLabeled(
+                    "Grown limbs enabled",
+                    ref grownLimbsEnabled,
+                    "Monstrous genome samples (the Coalescence's death-spill) gestate one grown "
+                    + "limb, rolled at random: a Pillar Arm, a Lash, an Eyeburst, a Caudal Spring or a Bellows. Each is a real trade, never "
+                    + "an upgrade. Off: a Monstrous sample grows the normal organ batch. Limbs "
+                    + "already installed keep working.");
+                list.GapLine();
+            }
 
-            list.Gap();
-            list.CheckboxLabeled(
-                "The Unfinished spawner enabled",
-                ref unfinishedSpawnerEnabled,
-                "Lets the Contagion's bloody mess periodically bud a short-lived "
-                + "Unfinished chimera nearby — random-limb, days-long-lived, dissolving to "
-                + "goo on death. Off stops new ones from budding; any already alive keep "
-                + "living out their (short) lives normally.");
+            if (Group(list, "The Burn", RimMandrake.Shared.SettingScope.Now, new[] { "burnEnabled", "burnTellsEnabled", "burnDamageFactor" }))
+            {
+                list.CheckboxLabeled(
+                    "The Burn enabled",
+                    ref burnEnabled,
+                    "Rare tears in the Contagion's storm: the red fog lifts, ranged fire works, "
+                    + "and raw UV scorches everything under open sky — natives burn and dive for "
+                    + "roof, canopy or water; visitors take a sunscald dose. Only ever happens on a "
+                    + "Contagion map. Off: the storm never tears.");
+                list.CheckboxLabeled(
+                    "Burn tells enabled",
+                    ref burnTellsEnabled,
+                    "Shortly before a Burn the gawpsacks stop and settle, puffing, as one — "
+                    + "the only forecast the valley gives. Off: Burns arrive unannounced.");
+                list.Label("Burn damage: " + burnDamageFactor.ToString("0.00") + "x (0 = weather only, no harm)");
+                burnDamageFactor = list.Slider(burnDamageFactor, 0f, 3f);
+                list.GapLine();
+            }
 
-            list.GapLine();
-            list.CheckboxLabeled(
-                "The Burn enabled",
-                ref burnEnabled,
-                "Rare tears in the Contagion's storm: the red fog lifts, ranged fire works, "
-                + "and raw UV scorches everything under open sky — natives burn and dive for "
-                + "roof, canopy or water; visitors take a sunscald dose. Only ever happens on a "
-                + "Contagion map. Off: the storm never tears.");
-            list.CheckboxLabeled(
-                "Burn tells enabled",
-                ref burnTellsEnabled,
-                "Shortly before a Burn the gawpsacks stop and settle, puffing, as one — "
-                + "the only forecast the valley gives. Off: Burns arrive unannounced.");
-            list.Label("Burn frequency: " + burnFrequency.ToString("0.00") + "x (1 = one every ~3 days)");
-            burnFrequency = list.Slider(burnFrequency, 0.1f, 4f);
-            list.Label("Burn damage: " + burnDamageFactor.ToString("0.00") + "x (0 = weather only, no harm)");
-            burnDamageFactor = list.Slider(burnDamageFactor, 0f, 3f);
-            list.CheckboxLabeled(
-                "The Coalescence enabled",
-                ref coalescenceEnabled,
-                "During a long Bloom the Contagion can gather itself into one giant organism "
-                + "that absorbs the Unfinished, grows through three forms and sends out mad ones. "
-                + "Any Burn kills it, spilling genome samples. With the Burn switched off only "
-                + "damage or a Cloud Repulsor can kill it. Off: none forms.");
+            if (Group(list, "Burn frequency", RimMandrake.Shared.SettingScope.NextPulse, new[] { "burnFrequency" }))
+            {
+                list.Label("Burn frequency: " + burnFrequency.ToString("0.00") + "x (1 = one every ~3 days)");
+                burnFrequency = list.Slider(burnFrequency, 0.1f, 4f);
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled(
-                "Grown limbs enabled",
-                ref grownLimbsEnabled,
-                "Monstrous genome samples (the Coalescence's death-spill) gestate one grown "
-                + "limb, rolled at random: a Pillar Arm, a Lash, an Eyeburst, a Caudal Spring or a Bellows. Each is a real trade, never "
-                + "an upgrade. Off: a Monstrous sample grows the normal organ batch. Limbs "
-                + "already installed keep working.");
+            if (Group(list, "The Coalescence", RimMandrake.Shared.SettingScope.Now, new[] { "coalescenceEnabled" }))
+            {
+                list.CheckboxLabeled(
+                    "The Coalescence enabled",
+                    ref coalescenceEnabled,
+                    "During a long Bloom the Contagion can gather itself into one giant organism "
+                    + "that absorbs the Unfinished, grows through three forms and sends out mad ones. "
+                    + "Any Burn kills it, spilling genome samples. With the Burn switched off only "
+                    + "damage or a Cloud Repulsor can kill it. Off: none forms.");
+                list.GapLine();
+            }
 
-            list.GapLine();
-            list.CheckboxLabeled(
-                "Draftprints enabled",
-                ref draftprintsEnabled,
-                "A colonist can walk up to a living Unfinished and scan it into a draftprint "
-                + "recording its limbs, its most extreme stat and what failed on it. The Helix "
-                + "post contracts for particular combinations and buy matching prints. Off: no "
-                + "sampling, no contracts; prints already made keep their trade value.");
-            list.Label("Sampling provokes a conscious Unfinished: " + draftprintProvokeChance.ToStringPercent()
-                       + " (downed ones never fight back)");
-            draftprintProvokeChance = list.Slider(draftprintProvokeChance, 0f, 1f);
-            list.Label("Helix contract pay: " + helixContractRewardFactor.ToString("0.00") + "x");
-            helixContractRewardFactor = list.Slider(helixContractRewardFactor, 0.25f, 4f);
+            if (Group(list, "Draftprints", RimMandrake.Shared.SettingScope.Now, new[] { "draftprintsEnabled", "draftprintProvokeChance" }))
+            {
+                list.CheckboxLabeled(
+                    "Draftprints enabled",
+                    ref draftprintsEnabled,
+                    "A colonist can walk up to a living Unfinished and scan it into a draftprint "
+                    + "recording its limbs, its most extreme stat and what failed on it. The Helix "
+                    + "post contracts for particular combinations and buy matching prints. Off: no "
+                    + "sampling, no contracts; prints already made keep their trade value.");
+                list.Label("Sampling provokes a conscious Unfinished: " + draftprintProvokeChance.ToStringPercent()
+                           + " (downed ones never fight back)");
+                draftprintProvokeChance = list.Slider(draftprintProvokeChance, 0f, 1f);
+                list.GapLine();
+            }
 
-            list.GapLine();
-            list.CheckboxLabeled(
-                "Cloud Repulsor enabled",
-                ref cloudRepulsorEnabled,
-                "The Helix device: once warmed up and powered it forces the Burn on a "
-                + "Contagion map (its harm still follows the Burn settings above), and holds "
-                + "the sky clear of rain and fog anywhere else. Off: the device does nothing.");
-            list.Label("Sunbeam vs Contagion natives: " + sunbeamNativeFactor.ToString("0.0") + "x (1 = no bonus)");
-            sunbeamNativeFactor = list.Slider(sunbeamNativeFactor, 1f, 12f);
+            if (Group(list, "Helix contract pay", RimMandrake.Shared.SettingScope.NextPulse, new[] { "helixContractRewardFactor" }))
+            {
+                list.Label("Helix contract pay: " + helixContractRewardFactor.ToString("0.00") + "x");
+                helixContractRewardFactor = list.Slider(helixContractRewardFactor, 0.25f, 4f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Helix devices", RimMandrake.Shared.SettingScope.Now, new[] { "cloudRepulsorEnabled", "sunbeamNativeFactor" }))
+            {
+                list.CheckboxLabeled(
+                    "Cloud Repulsor enabled",
+                    ref cloudRepulsorEnabled,
+                    "The Helix device: once warmed up and powered it forces the Burn on a "
+                    + "Contagion map (its harm still follows the Burn settings above), and holds "
+                    + "the sky clear of rain and fog anywhere else. Off: the device does nothing.");
+                list.Label("Sunbeam vs Contagion natives: " + sunbeamNativeFactor.ToString("0.0") + "x (1 = no bonus)");
+                sunbeamNativeFactor = list.Slider(sunbeamNativeFactor, 1f, 12f);
+                list.GapLine();
+            }
 
             viewHeight = list.CurHeight + 12f;
             list.End();
@@ -184,6 +215,61 @@ namespace RimMandrake.Contagion
         // Starts tall so the first frame never column-wraps; then tracks the
         // listing's real height.
         private static float viewHeight = 2000f;
+
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_ContagionSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_ContagionSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. A search matches the section title or any of its setting names. Scope AUDITED per setting against its
+        /// read site (2026-10-10): the biome rarity is read by the worldgen biome worker ([new maps only]); the Burn gap length is rolled when the next Burn is scheduled and the Helix contract pay when a contract is generated ([next pulse]); every other setting is read by a tick, recipe, float-menu option, comp or damage worker ([now]).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            // tagOverride "[next game start]": the kit has no such scope; these are read while defs load or when a game loads.
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
 
         private static string RarityLabel()
         {

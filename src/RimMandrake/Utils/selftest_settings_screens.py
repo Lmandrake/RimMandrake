@@ -86,6 +86,16 @@ MODS = {
         "Brood lair details (fixed at map generation)": "NewMapsOnly",
         "Stolen egg and bonded summ": "Now",
     }, ()),
+    "Contagion": ("RM_ContagionMod.cs", "RM_Contagion.csproj", {
+        "Biome rarity (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Genome growing and the Unfinished": "Now",
+        "The Burn": "Now",
+        "Burn frequency": "NextPulse",
+        "The Coalescence": "Now",
+        "Draftprints": "Now",
+        "Helix contract pay": "NextPulse",
+        "Helix devices": "Now",
+    }, ()),
 }
 
 

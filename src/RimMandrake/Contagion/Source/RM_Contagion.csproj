@@ -41,6 +41,8 @@
 
   <ItemGroup>
     <Compile Include="RM_ContagionMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_ContagionBiome.cs" />
     <!-- CONTAGION_GENOME_ORGAN_GROWING_1 -->
     <Compile Include="RM_ContagionDefOf.cs" />
