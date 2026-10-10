@@ -19,7 +19,10 @@ Wing E (`design/Jawa/worldbuilding/ship_deck_plan.md`).
    research.
 3. Durasteel: steel + `RSW_Zersium` → `RSW_Durasteel`. Runs as **the forge's first recipe**, not on the ship
    smelter (owner, question card 2026-10-09). Zersium is a **rare local ore in ONE home biome** (owner,
-   question card 2026-10-09). Its home is **The Forge** (`RM_TheForge`; owner, question card 2026-10-09).
+   question card 2026-10-09). Its home is **The Forge** (`RM_TheForge`; owner, question card 2026-10-09), and it
+   may ALSO come from asteroids — owner, typed 2026-10-09: *"I like the forge makes that mineral. We had
+   also said asteroids. It's ok if it's both or another minerals in space either way."* Builder's call:
+   zersium in both, or a different space mineral for the asteroid side (see ASTEROID_DESERT_ORES_1).
 4. Place the forge in the ship layout once its stage in the deck plan is set.
 5. Mod Settings: the progressive gate and each recipe can be toggled.
 
