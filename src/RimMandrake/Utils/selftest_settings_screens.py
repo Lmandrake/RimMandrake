@@ -787,6 +787,12 @@ MODS = {
         "Hire the placeless": "Now",
         "Bribes and bought rounds": "Now",
     }, ()),
+    "ShipShields": ("ShipShieldsSettings.cs", "RimMandrake.Utinni.ShipShields.csproj", {
+        "Bubble shields": "Now",
+        "Field modes": "Now",
+        "Unshielded hazard exposure": "Now",
+        "On landing": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)

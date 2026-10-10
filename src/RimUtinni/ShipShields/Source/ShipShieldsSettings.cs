@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -66,61 +68,125 @@ namespace RimMandrake.Utinni.ShipShields
             RimMandrake.Shared.PatchApplier.AfterExpose();
         }
 
-        private static Vector2 settingsScroll;
-        private static float settingsViewHeight = 1200f;
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(ShipShieldsSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(ShipShieldsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static Vector2 scrollPos;
+        private static float viewHeight = 1200f;
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10).</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
 
         public void DoWindowContents(Rect inRect)
         {
             // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
-            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(settingsViewHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref settingsScroll, settingsView);
+            Rect settingsView = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, settingsView);
             Listing_Standard list = new Listing_Standard { ColumnWidth = settingsView.width, maxOneColumn = true };
             list.Begin(settingsView);
             RimMandrake.Shared.PatchApplier.DrawNotice(list);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.CheckboxLabeled("Bubble shield collapse explosion", ref collapseExplosionEnabled,
-                "A bubble-field shield generator explodes when its hit points are driven to zero.");
-            list.Label("Collapse explosion damage: " + collapseExplosionDamageMultiplier.ToString("0.00") + "x");
-            collapseExplosionDamageMultiplier = list.Slider(collapseExplosionDamageMultiplier, 0.25f, 3f);
-            list.GapLine();
+            if (Group(list, "Bubble shields", RimMandrake.Shared.SettingScope.Now, new[] { "collapseExplosionEnabled", "collapseExplosionDamageMultiplier", "bubbleSlowPassThroughEnabled", "predictiveFailureAlertEnabled" }))
+            {
+                list.CheckboxLabeled("Bubble shield collapse explosion", ref collapseExplosionEnabled,
+                    "A bubble-field shield generator explodes when its hit points are driven to zero.");
+                list.Label("Collapse explosion damage: " + collapseExplosionDamageMultiplier.ToString("0.00") + "x");
+                collapseExplosionDamageMultiplier = list.Slider(collapseExplosionDamageMultiplier, 0.25f, 3f);
+                list.CheckboxLabeled("Slow projectiles pass through shields", ref bubbleSlowPassThroughEnabled,
+                    "Canon rule: anything slow enough (including a person) presses through a bubble "
+                  + "field untouched. Off: a bubble field intercepts everything, same as a vanilla "
+                  + "projectile interceptor.");
+                list.CheckboxLabeled("Predictive shield-failure alert", ref predictiveFailureAlertEnabled,
+                    "Warn when a shield's hit points are declining fast enough to predict collapse soon, "
+                  + "so the crew has time to return to the hull and leave.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Slow projectiles pass through shields", ref bubbleSlowPassThroughEnabled,
-                "Canon rule: anything slow enough (including a person) presses through a bubble "
-              + "field untouched. Off: a bubble field intercepts everything, same as a vanilla "
-              + "projectile interceptor.");
-            list.CheckboxLabeled("Predictive shield-failure alert", ref predictiveFailureAlertEnabled,
-                "Warn when a shield's hit points are declining fast enough to predict collapse soon, "
-              + "so the crew has time to return to the hull and leave.");
-            list.GapLine();
+            if (Group(list, "Field modes", RimMandrake.Shared.SettingScope.Now, new[] { "particulateScreenEnabled", "particulateAnimalRepulsionEnabled", "particulateWeatherDamageNegationEnabled", "thermalVeilEnabled", "cryoEnvelopeEnabled" }))
+            {
+                list.CheckboxLabeled("Particulate screen filth sweep", ref particulateScreenEnabled,
+                    "The particulate field mode sweeps weather-deposited filth out of its radius.");
+                list.CheckboxLabeled("Particulate screen repels small animals", ref particulateAnimalRepulsionEnabled,
+                    "The particulate field mode makes small wild animals flee out of its radius.");
+                list.CheckboxLabeled("Particulate screen blocks airborne toxic damage", ref particulateWeatherDamageNegationEnabled,
+                    "Pawns and crops inside an active particulate field's radius are unaffected by "
+                  + "airborne Toxic Fallout exposure.");
+                list.CheckboxLabeled("Thermal veil temperature control", ref thermalVeilEnabled,
+                    "The thermal field mode nudges room temperature toward its comfort setpoint.");
+                list.CheckboxLabeled("Cryo envelope temperature control", ref cryoEnvelopeEnabled,
+                    "The cryo field mode holds back severe outside cold, but continuously drains a small "
+                  + "amount of interior heat while active as its own cost.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Particulate screen filth sweep", ref particulateScreenEnabled,
-                "The particulate field mode sweeps weather-deposited filth out of its radius.");
-            list.CheckboxLabeled("Particulate screen repels small animals", ref particulateAnimalRepulsionEnabled,
-                "The particulate field mode makes small wild animals flee out of its radius.");
-            list.CheckboxLabeled("Particulate screen blocks airborne toxic damage", ref particulateWeatherDamageNegationEnabled,
-                "Pawns and crops inside an active particulate field's radius are unaffected by "
-              + "airborne Toxic Fallout exposure.");
-            list.CheckboxLabeled("Thermal veil temperature control", ref thermalVeilEnabled,
-                "The thermal field mode nudges room temperature toward its comfort setpoint.");
-            list.CheckboxLabeled("Cryo envelope temperature control", ref cryoEnvelopeEnabled,
-                "The cryo field mode holds back severe outside cold, but continuously drains a small "
-              + "amount of interior heat while active as its own cost.");
-            list.GapLine();
+            if (Group(list, "Unshielded hazard exposure", RimMandrake.Shared.SettingScope.Now, new[] { "landingHazardExposureEnabled" }))
+            {
+                list.CheckboxLabeled("Escalating unshielded hull damage", ref landingHazardExposureEnabled,
+                    "The longer the ship sits in a hazard with no matching shield configured and powered, "
+                  + "the more its own structures take periodic damage -- accelerating after a long stretch. "
+                  + "Never a hard block, matching the advisory letter in \"On landing\".");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Landing hazard advisory", ref landingAdvisoryEnabled,
-                "On landing the gravship, warn (once, non-blocking) if a hazard is present that no "
-              + "installed shield is currently configured and powered for.");
-            list.CheckboxLabeled("Escalating unshielded hull damage", ref landingHazardExposureEnabled,
-                "The longer the ship sits in a hazard with no matching shield configured and powered, "
-              + "the more its own structures take periodic damage -- accelerating after a long stretch. "
-              + "Never a hard block, matching the advisory letter above.");
-            list.CheckboxLabeled("Lava-landing damage burst", ref lavaLandingBurstEnabled,
-                "Landing on active lava (the design's named worst case) causes one immediate, severe "
-              + "damage burst -- no shield configuration prevents this specific one.");
-            list.Label("Lava-landing burst damage: " + lavaLandingBurstDamageMultiplier.ToString("0.00") + "x");
-            lavaLandingBurstDamageMultiplier = list.Slider(lavaLandingBurstDamageMultiplier, 0.25f, 3f);
+            if (Group(list, "On landing", RimMandrake.Shared.SettingScope.NextPulse, new[] { "landingAdvisoryEnabled", "lavaLandingBurstEnabled", "lavaLandingBurstDamageMultiplier" }))
+            {
+                list.CheckboxLabeled("Landing hazard advisory", ref landingAdvisoryEnabled,
+                    "On landing the gravship, warn (once, non-blocking) if a hazard is present that no "
+                  + "installed shield is currently configured and powered for.");
+                list.CheckboxLabeled("Lava-landing damage burst", ref lavaLandingBurstEnabled,
+                    "Landing on active lava (the design's named worst case) causes one immediate, severe "
+                  + "damage burst -- no shield configuration prevents this specific one.");
+                list.Label("Lava-landing burst damage: " + lavaLandingBurstDamageMultiplier.ToString("0.00") + "x");
+                lavaLandingBurstDamageMultiplier = list.Slider(lavaLandingBurstDamageMultiplier, 0.25f, 3f);
+                list.GapLine();
+            }
 
-            settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
+            viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
         }
