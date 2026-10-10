@@ -263,3 +263,10 @@ Implications for Phase C (not yet propagated to lore docs): the Rust Cathedral's
 - **Card 10 (taking the Spire's codes):** "Cold access" — a machine that does not care who holds it. Decision taken by question card.
 - **Card 11 (the Cradle's strike target):** the war lab — the frozen original Assailants. Decision taken by question card. Owed: reconcile the Cradle strike with the player's own lab dive (the strike destroys what the player might enter).
 - **Card 12 (Reclamation vs crater):** either order, fully independent. Decision taken by question card.
+
+## RULINGS — Round 4 (owner, 2026-10-10)
+
+- **Card 13 (what starts the Reclamation):** when enough ancients are woken (a count; the number is owed tuning). Decision taken by question card. Replaces the built "45 days after refusal" trigger.
+- **Card 14 (first launch), typed after BENCH clarified "first launch" = the Cradle's first lift-off:** *"(3) Shock! Exposure! It was supposed to be a quiet heist, maybe revealing something else to salvage, maybe (just maybe) finding a fully working ship system. NEVER was it supposed to power up and fly everyone away, attract Hutt rage and Imperial curiosity/suspicion. It's a disaster, with the silver lining of absolute wonder and awe at something so ancient and majestic functional again... and then the Narrator speaks, making it all the more bizarre and surreal."* ⚠️ Note for Phase C: this reads as the OPENING flight (the theft that ends with the ship landed, flight hardware missing — G1), not a later relaunch after repair; the later relaunch's tone may still be open. Do not resolve without him.
+- **Card 15 (ladder stages):** the ship's mind reacts at each of the five stages (the ladder becomes the ship's character arc). Decision taken by question card.
+- **Card 16 (droid-theft heist payoff):** a violation — the clan takes what it cannot give back. Decision taken by question card.
