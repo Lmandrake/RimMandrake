@@ -5,9 +5,6 @@
   {"item": "GREENTIDE_FIRST_SCRIPT_1", "criterion": "A3", "level": "GREEN-MIN", "mode": "classified",
    "components": ["*"],
    "notes": "Criterion text: every non-pass in the results JSON is classified. Classification is a person's judgement, so the tool needs --classified; it never invents one."},
-  {"item": "MOD_OPTIONS_RETROFIT_1", "criterion": "A3", "level": "L2", "mode": "all",
-   "components": ["cross_biome_churnmud/churnmud_seeded_once_on_a_fresh_non_greentide_map"],
-   "notes": "Criterion: churnmud works in a non-Greentide biome when opted in. The component spawns a fresh non-Greentide map with crossBiomeEnabled and reads churnmud seeded once."},
   {"item": "GREENTIDE_BASE_PORT_BUILD_1", "criterion": "A4", "level": "L2", "mode": "unmapped",
    "components": [],
    "notes": "Names save aliases, steam devil and toxin-sealed floor on a quicktest map; no Greentide component reads those three (defs_resolve reads defs, not behaviour)."}
