@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_OdysseyAsteroidNoPlasteel.xml          mandrake.rsw.armoury
+
+  CANON_MATERIALS_BUILD_1 L4 (design canon_materials_design_2026-10-09.md section 1b, 3.3): plasteel is a
+  manufactured material, not an ore (owner ruling 2026-09-25), so Odyssey's asteroid generation must not mine it
+  or industrial components from rock. EXPLICIT ALLOWLIST: only the three asteroid GenStepDefs named below
+  (Odyssey Data/Odyssey/Defs/MapGeneration/SpaceMapGenerator.xml) and the Asteroids GeneratedLocationDef
+  (GeneratedLocationDefs/GeneratedLocations.xml) are touched, only for MineablePlasteel and
+  MineableComponentsIndustrial. Gold, silver, steel, uranium and jade stay. Each op is success=Always, so an
+  absent def (a game update renaming one) is a silent no-op: audit with Utils/canon_materials_audit.py.
+  NOT a Mod Settings toggle: an XML patch cannot read a setting; the Armoury-wide switch is not this patch's job.
+-->
+<Patch>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/GenStepDef[defName="Asteroid"]/genStep/mineableCounts/MineablePlasteel</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/GenStepDef[defName="Asteroid"]/genStep/mineableCounts/MineableComponentsIndustrial</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/GenStepDef[defName="Asteroid_NoRuins"]/genStep/mineableCounts/MineablePlasteel</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/GenStepDef[defName="Asteroid_NoRuins"]/genStep/mineableCounts/MineableComponentsIndustrial</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/GenStepDef[defName="AsteroidBasic"]/genStep/mineableCounts/MineablePlasteel</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/GenStepDef[defName="AsteroidBasic"]/genStep/mineableCounts/MineableComponentsIndustrial</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/GeneratedLocationDef[defName="Asteroids"]/preciousResources/li[text()="MineablePlasteel"]</xpath>
+  </Operation>
+  <Operation Class="PatchOperationRemove">
+    <success>Always</success>
+    <xpath>/Defs/GeneratedLocationDef[defName="Asteroids"]/preciousResources/li[text()="MineableComponentsIndustrial"]</xpath>
+  </Operation>
+</Patch>
