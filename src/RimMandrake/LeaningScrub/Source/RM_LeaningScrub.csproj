@@ -58,6 +58,8 @@
 
   <ItemGroup>
     <Compile Include="RM_LeaningScrubMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_LeaningScrubDefOf.cs" />
     <Compile Include="RM_WindCalendar.cs" />
     <Compile Include="RM_TwitcherLash.cs" />
