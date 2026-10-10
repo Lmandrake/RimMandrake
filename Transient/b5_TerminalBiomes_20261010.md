@@ -1,0 +1,9 @@
+# b5 TerminalBiomes settings retrofit (2026-10-10)
+Changed: src/RimMandrake/TerminalBiomes/Source/RM_TerminalBiomesMod.cs, Source/RM_TerminalBiomes.csproj (2 SettingsKit Compile lines), Assemblies/RimMandrake.TerminalBiomes.dll + .srchash. Only one settings class (RM_TerminalBiomesSettings); the Proof/Applier classes are untouched.
+Groups (scope): Mod and biome switches (Now); The Scald's kit (Now); Scald map-generation scatter WORLDGEN-AFFECTING (NewMapsOnly: S5, thurlsponge); Chill growers and wax procession (Now); The suulk (NextPulse); vaulisk lure WORLDGEN-AFFECTING (NewMapsOnly); Vaulisk reveal (Now); Pane strikes (NextPulse); Deck accumulation (Now); Twilight light economy (Now); Floor flora placement WORLDGEN-AFFECTING (NewMapsOnly); Floor flora light behaviour (Now); Channel current (Now); Grey hull crust (Now); Grey lamp response (Now); Not wired yet (Now, collapsed).
+Dead: twilightChainAvailability, crossBiomeEnabled/Everywhere/BiomeList/Coverage (no reader anywhere).
+False text fixed: cross-biome "WORLDGEN-AFFECTING - new maps only" (inert, nothing reads it); cages-passable "next map/region rebuild" (code now re-reads cells at once); header comment claimed three biome toggles had no consumer (all feed the Active properties); flora "Affects map generation" omitted the live well-open/close seeding.
+Mixed single fields (read at map gen AND live) placed in NewMapsOnly: scaldS5SailWalkerEnabled, vauliskEnabled, twilightFloraDressingEnabled; biome/master switches kept Now with tooltip noting the gen scatters.
+Snapshot also covers string/enum fields so the enum and string settings reset.
+Build: 0 errors. Selftest: all 8 ok incl. planted defects; scratch deleted.
+MODS entry: "TerminalBiomes": ("RM_TerminalBiomesMod.cs", "RM_TerminalBiomes.csproj", {the 16 group titles above with scopes}, ())
