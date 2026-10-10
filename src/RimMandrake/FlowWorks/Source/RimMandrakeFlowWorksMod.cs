@@ -102,6 +102,8 @@ namespace RimMandrake.FlowWorks
         public static bool recessionEnabled = true;
         // PROVISIONAL (auto-decided 2026-10-09, LIQUID_RECESSION_TOPOLOGY_1): a body with any stock keeps its last cell.
         public static bool recedeKeepsLastCell = true;
+        // PROVISIONAL (auto-decided 2026-10-09, POND_RECESSION_STRANDS_CHANNEL_1): cells feeding a dug channel recede last.
+        public static bool recedeSparesOutflow = true;
         public static bool refillEnabled = true;
         public static bool rainFillsExcavationsEnabled = true;
         public static bool edgeSinksEnabled = true;
@@ -366,6 +368,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref stickyLimitlessEnabled, "stickyLimitlessEnabled", true);
             Scribe_Values.Look(ref recessionEnabled, "recessionEnabled", true);
             Scribe_Values.Look(ref recedeKeepsLastCell, "recedeKeepsLastCell", true);
+            Scribe_Values.Look(ref recedeSparesOutflow, "recedeSparesOutflow", true);
             Scribe_Values.Look(ref refillEnabled, "refillEnabled", true);
             Scribe_Values.Look(ref rainFillsExcavationsEnabled, "rainFillsExcavationsEnabled", true);
             Scribe_Values.Look(ref edgeSinksEnabled, "edgeSinksEnabled", true);
@@ -512,8 +515,8 @@ namespace RimMandrake.FlowWorks
             // to. Anyone adding a block here raises this number in the same
             // edit or their block is invisible. (+2000 for the Rivers section; +2400 for the
             // tanker / sluice-gate / blood / quarry sections, 2026-10-05; +500 for liquid looks / pit outline /
-            // pit shadow; +150 for hot and icy liquid, 2026-10-08; +400 for per-section reset buttons.)
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 11500f);
+            // pit shadow; +150 for hot and icy liquid, 2026-10-08; +400 for per-section reset buttons; +100 recedeSparesOutflow.)
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 11600f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -588,7 +591,7 @@ namespace RimMandrake.FlowWorks
             list.GapLine();
             Text.Font = GameFont.Medium;
             list.Label("Stock, recession and drainage");
-            DrawSectionReset(list, new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "refillEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" });
+            DrawSectionReset(list, new[] { "fillInEnabled", "fillInDisplacementEnabled", "sourceBudgetEnabled", "sourceBudgetMultiplier", "stickyLimitlessEnabled", "minLimitlessBodyCells", "recessionEnabled", "recedeKeepsLastCell", "recedeSparesOutflow", "refillEnabled", "refillRateMultiplier", "rainFillsExcavationsEnabled", "rainFillPerPulse", "excavationLoadRepairEnabled", "legacyFillFallbackEnabled", "legacyFloodViaEngineEnabled", "pumpFedSpreadEnabled", "edgeSinksEnabled" });
             Text.Font = GameFont.Small;
             list.Label("How much liquid a natural body actually has, what happens when a canal "
                      + "drinks it dry, and where liquid goes when you fill a channel back in. "
@@ -643,6 +646,11 @@ namespace RimMandrake.FlowWorks
                 "While a receding body still holds any liquid at all, its last cell stays wet, so "
               + "the final dregs can still be drawn instead of sitting invisible until it refills. "
               + "Off: a body gives up a cell whenever it cannot pay for it in full, down to nothing.");
+
+            list.CheckboxLabeled("A body keeps the cells that feed a channel", ref recedeSparesOutflow,
+                "A receding body gives up the cells touching a dug channel, pump cut or pit last, so a "
+              + "canal dug off a pond keeps draining it instead of being cut off with most of the "
+              + "water stranded behind the dried inlet. Off: the inlet recedes like any other edge cell.");
 
             list.CheckboxLabeled("Bodies refill", ref refillEnabled,
                 "Seepage, rain and the season slowly put liquid back into a limited body, and "

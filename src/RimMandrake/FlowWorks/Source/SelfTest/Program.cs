@@ -367,6 +367,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "a candidate identical to the incumbent must not displace it, or the scan's result depends "
                     + "on iteration order and determinism is lost"));
 
+            Case("Recession_order_spares_an_OUTFLOW_cell_until_last", () =>
+            {
+                Assert(RM_StockMath.PrefersCandidate(false, 5, 0, 9, true, 2, 999, 0),
+                    "POND_RECESSION_STRANDS_CHANNEL_1: a cell feeding a dug channel recedes after every other cell, "
+                    + "even one with more neighbours and nearer the centroid, or the channel is cut off with the stock stranded");
+                Assert(!RM_StockMath.PrefersCandidate(true, 2, 999, 0, false, 5, 0, 9), "and the outflow cell never displaces a non-outflow one");
+                Assert(RM_StockMath.PrefersCandidate(true, 2, 0, 0, true, 5, 999, 0) == RM_StockMath.PrefersCandidate(2, 0, 0, 5, 999, 0),
+                    "between two outflow cells the old order decides");
+            });
+
             // ───── hand-traced scenario: a small pond drawn down, then refilled
 
             Case("Scenario_three_cell_pond_drawn_down_recedes_then_recovers_its_cells", () =>
