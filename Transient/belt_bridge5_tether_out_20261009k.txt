@@ -1,0 +1,1 @@
+"REEL cadence interval=33 gaps=[33,33,33,33,33,33,33] stunAfterStep=37 expectedStun=38 ticks=297 target=none outcome=arrived | unmanned interval=33 gaps=[] stunAfterStep=37 expectedStun=38 ticks=34 target=none outcome=off | unpowered UNMEASURED could not rope (canWork=False, outcome=mass) | despawn UNMEASURED could not rope (canWork=False, outcome=mass)"
