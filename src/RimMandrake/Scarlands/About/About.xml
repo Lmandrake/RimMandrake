@@ -58,8 +58,9 @@ defs -- `RM_Glower`/`RM_GlowerCrust` (this biome's only native flora; the black
 radiotrophic crust and its harvested product) and `RM_ScorchedStars` (a cactus
 shared with the frozen twin's own Wasteland sibling, duplicated rather than
 moved so neither twin gains a cross-mod dependency on the other). The frozen
-originals (`RUT_Glower`/`RUT_GlowerCrust`/`RUT_ScorchedStars`) are untouched and
-keep serving the campaign world exactly as before.
+originals (`RUT_Glower`/`RUT_ScorchedStars`) are untouched and keep serving the campaign
+world; `RUT_GlowerCrust` was folded into `RM_GlowerCrust` (MATERIAL_MERGES_CLEANUP_1, 2026-10-09), which
+`RUT_Glower` now yields.
 
 Its fauna is its own: the chatrak, tetchik, pallbearer and scar roach, plus five
 owned ports of former donor rows (rimclaw, bileworm, electric tick, electric

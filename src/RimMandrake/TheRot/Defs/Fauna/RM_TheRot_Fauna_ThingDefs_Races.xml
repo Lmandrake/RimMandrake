@@ -994,7 +994,7 @@
       <manhunterOnDamageChance>0.15</manhunterOnDamageChance>
       <trainability>None</trainability>
       <roamMtbDays>4</roamMtbDays>
-      <leatherDef>RM_RotWeakChitin</leatherDef>
+      <leatherDef>RM_WeakChitin</leatherDef>
       <lifeStageAges>
         <li>
           <def>RM_RotEusocialInsectNymphFirst</def>
@@ -1193,7 +1193,7 @@
       <trainability>Advanced</trainability>
       <manhunterOnTameFailChance>0.35</manhunterOnTameFailChance>
       <manhunterOnDamageChance>0.35</manhunterOnDamageChance>
-      <leatherDef>RM_RotMediumChitin</leatherDef>
+      <leatherDef>RM_MediumChitin</leatherDef>
       <lifeExpectancy>10</lifeExpectancy>
       <lifeStageAges>
         <li>

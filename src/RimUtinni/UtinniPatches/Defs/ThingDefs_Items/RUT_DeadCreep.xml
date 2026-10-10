@@ -27,8 +27,8 @@
   the sheet's own line — but validate_patch.py flags that choice as a hard
   ERROR under its own-namespace heuristic (UtinniPatches already ships its
   own Things/* tree elsewhere, so it cannot distinguish a deliberate
-  cross-mod reuse from a typo in this mod's own art; see RUT_TibannaGas.xml's
-  own header for the full reasoning). Points at its OWN new texPath instead
+  cross-mod reuse from a typo in this mod's own art; see src/DEPLOY_HOLD.txt's
+  F2/F5/F6 hold block for the full reasoning). Points at its OWN new texPath instead
   (Things/Filth/RUT_DeadCreep) and is held via src/DEPLOY_HOLD.txt until art
   lands.
   ============================================================================

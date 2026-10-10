@@ -8,14 +8,13 @@
      defNames, from workshop 3545374124 1.6/Defs/ThingDefs_Buildings/GravForge_GT.xml,
      read directly off disk this session (never from memory).
 
-     Also ports the three GravForge-exclusive items its own recipes and
+     Also ports the GravForge-exclusive items its own recipes and
      killedLeavings reference (checked against the live def dump and vanilla
      Data/ before deciding each needed a port):
        - Gravitonium        (ThingDefs_Items/Gravitonium_GT.xml)   - GravForge's
          own recipe product, techLevel Ultra armor/insulation stuff.
-       - ChunkSlagPlasteel_GT (ThingDefs_Misc/ChunkSlag_GT.xml)    - the
-         building's killedLeavings chunk; <smeltable> lets vanilla's own
-         Smelter mechanic recover Plasteel from it with no extra recipe.
+       - (its killedLeavings plasteel slag is KotORChunk_plasteel, the one plasteel slag;
+         the ported ChunkSlagPlasteel_GT twin was folded into it, MATERIAL_MERGES_CLEANUP_1.)
        - UnfinishedGravcore  (ThingDefs_Items/Unfinished_GT.xml)   - the
          Make_GravcoreGF recipe's unfinishedThingDef.
      Gravcore and GravlitePanel (referenced throughout) are NOT ported - both
@@ -132,7 +131,7 @@
       <li>PlaceWorker_ShowFacilitiesConnections</li>
     </placeWorkers>
     <killedLeavings>
-      <ChunkSlagPlasteel_GT>3</ChunkSlagPlasteel_GT>
+      <KotORChunk_plasteel>3</KotORChunk_plasteel>
       <GravlitePanel>30</GravlitePanel>
     </killedLeavings>
     <recipes>
@@ -560,28 +559,6 @@
     <techLevel>Ultra</techLevel>
   </ThingDef>
 
-  <ThingDef Name="ChunkSlagPlasteel" ParentName="ChunkBase">
-    <defName>ChunkSlagPlasteel_GT</defName>
-    <label>plasteel slag chunk</label>
-    <description>A chunk of plasteel slag. While it's useless in its current form, it can be smelted to recover plasteel.</description>
-    <graphicData>
-      <texPath>Things/Item/Chunk/ChunkSlag</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
-      <color>(190,280,280)</color>
-    </graphicData>
-    <statBases>
-      <MaxHitPoints>500</MaxHitPoints>
-      <Mass>5</Mass>
-    </statBases>
-    <soundDrop>ChunkSlag_Drop</soundDrop>
-    <thingCategories>
-      <li>Chunks</li>
-    </thingCategories>
-    <smeltable>true</smeltable>
-    <smeltProducts>
-      <Plasteel>15</Plasteel>
-    </smeltProducts>
-  </ThingDef>
 
   <ThingDef ParentName="UnfinishedBase">
     <defName>UnfinishedGravcore</defName>

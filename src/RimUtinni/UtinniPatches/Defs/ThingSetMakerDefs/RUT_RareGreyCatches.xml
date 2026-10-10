@@ -24,7 +24,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RUT_SaltCameo</li>
+                  <li>RM_SaltCameo</li>
                 </thingDefs>
               </filter>
               <countRange>1~1</countRange>

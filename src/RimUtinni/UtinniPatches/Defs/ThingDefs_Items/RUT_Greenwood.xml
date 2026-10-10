@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- GREENTIDE_MECHANICS_2 M6 build (greentide_kit_spec.md M6: "spawn
-     RUT_Greenwood items along the swath"). ParentName="ResourceBase" — same
-     parent RUT_Hardwood already uses (this same folder), which itself
-     confirmed the pattern against RUT_FungalSoil/Steel via
-     mcp__rimsage__get_def_details.
+     RUT_Greenwood items along the swath"). ParentName="ResourceBase", the
+     pattern confirmed against RUT_FungalSoil/Steel via mcp__rimsage__get_def_details.
 
      PLACEHOLDER ART: UtinniPatches owns its own Textures/Things/ namespace
-     (same reasoning RUT_Hardwood.xml's own header already documents —
-     reusing a vanilla WoodLog-style texPath here would be a hard
+     (reusing a vanilla WoodLog-style texPath here would be a hard
      validate_patch ERROR, not a WARN). A genuine flat-color placeholder PNG
      ships instead (Textures/Things/Item/Resource/RUT_Greenwood.png) — real
      bespoke item art is owed, DEPLOY_HOLD. -->

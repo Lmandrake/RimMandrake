@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MATERIAL_MERGES_CLEANUP_1 (canon_materials_design_2026-10-09.md §3.10, save migration §5). Each removed
+  material def loads as its survivor through RM_DefAliasDef (RM_DefAliases.cs). An alias applies only when the
+  old name resolves to nothing, so it never shadows a live def. Save check 2026-10-09 (literal scan of
+  CANONICAL_ASHKARR_START_2026-09-12.rws and The_Utinni.xml): the start save holds the six RSW_ chitins,
+  RUT_CathedralRoachShell, RUT_BrinePlate, RUT_SeepStone and RUT_Hardwood; the ship export holds none of these.
+  The rest are listed anyway: an alias costs nothing and covers any other save.
+  The strings name campaign and Star Wars defs only as save history; nothing here needs those mods loaded.
+-->
+<Defs>
+  <RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+    <defName>RM_MaterialMergesAliases</defName>
+    <aliases>
+      <!-- one chitin ladder (Lantern Deeps + Rot survivors) -->
+      <li><from>RM_RotWeakChitin</from><to>RM_WeakChitin</to><defType>ThingDef</defType></li>
+      <li><from>RM_RotMediumChitin</from><to>RM_MediumChitin</to><defType>ThingDef</defType></li>
+      <li><from>RSW_WeakChitin</from><to>RM_WeakChitin</to><defType>ThingDef</defType></li>
+      <li><from>RSW_FragileChitin</from><to>RM_FragileChitin</to><defType>ThingDef</defType></li>
+      <li><from>RSW_MediumChitin</from><to>RM_MediumChitin</to><defType>ThingDef</defType></li>
+      <li><from>RSW_ToxiChitin</from><to>RM_ToxiChitin</to><defType>ThingDef</defType></li>
+      <li><from>RSW_GrayChitin</from><to>RM_GrayChitin</to><defType>ThingDef</defType></li>
+      <li><from>RSW_CrystalChitin</from><to>RM_CrystalChitin</to><defType>ThingDef</defType></li>
+      <!-- the 7 RUT_ duplicates of RM_ items -->
+      <li><from>RUT_GlowerCrust</from><to>RM_GlowerCrust</to><defType>ThingDef</defType></li>
+      <li><from>RUT_CathedralRoachShell</from><to>RM_CathedralRoachShell</to><defType>ThingDef</defType></li>
+      <li><from>RUT_BrinePlate</from><to>RM_BrinePlate</to><defType>ThingDef</defType></li>
+      <li><from>RUT_SeepStone</from><to>RM_SeepStone</to><defType>ThingDef</defType></li>
+      <li><from>RUT_SaltCameo</from><to>RM_SaltCameo</to><defType>ThingDef</defType></li>
+      <li><from>RUT_Hardwood</from><to>RM_GreatboleHardwood</to><defType>ThingDef</defType></li>
+      <li><from>RUT_SweetlineWool</from><to>RM_SweetlineWool</to><defType>ThingDef</defType></li>
+      <!-- one common salt -->
+      <li><from>RM_DeltaSalt</from><to>RM_RawSalt</to><defType>ThingDef</defType></li>
+      <li><from>RM_SeepSalt</from><to>RM_RawSalt</to><defType>ThingDef</defType></li>
+      <li><from>RM_KettlewickSalt</from><to>RM_RawSalt</to><defType>ThingDef</defType></li>
+      <!-- plasteel slag and tibanna (survivors live in guy762.mm.kotorcore / Armoury) -->
+      <li><from>ChunkSlagPlasteel_GT</from><to>KotORChunk_plasteel</to><defType>ThingDef</defType></li>
+      <li><from>RUT_TibannaGas</from><to>KOTOR_Tibanna</to><defType>ThingDef</defType></li>
+    </aliases>
+  </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+</Defs>

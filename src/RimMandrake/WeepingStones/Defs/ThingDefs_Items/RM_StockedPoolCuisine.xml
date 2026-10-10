@@ -8,15 +8,8 @@
   "MealFineBase") for the feast-batch meal, tasteThought overridden per
   child def since it is a plain scalar field.
 
-  RM_SeepSalt shipped here in wave 1 as a STAND-IN, explicitly flagged to be
-  retired once RM_Steamfrond shipped its own real seep-salt yield. That
-  landed 2026-09-24 (WEEPING_STONES_DESIGN_SITTING_1's flora cast,
-  `Defs/ThingDefs_Items/RM_WeepingStonesNativeFlora_Items.xml`), which
-  `selftest_no_duplicate_defs.py` caught as a same-name collision (RimWorld
-  keeps only the last-loaded def and drops the other silently) — this file's
-  own stand-in is the one retired per the header note that predicted exactly
-  this: recipe #2 (murrin-and-seep-salt broth, below) still references the
-  defName `RM_SeepSalt` unchanged and now resolves to Steamfrond's real item.
+  Recipe #2 (murrin-and-salt broth, below) takes the common salt RM_RawSalt; the Weeping Stones' own
+  seep-salt was folded into it (MATERIAL_MERGES_CLEANUP_1, 2026-10-09). The steamfrond still yields it.
 -->
 <Defs>
 

@@ -4,7 +4,7 @@
      "Rename the Gristle, make it realistic"). Numbers, tools and race fields are the port's verbatim; the
      Star Wars-tier dependencies are swapped for vanilla: lifestages AnimalBaby/Juvenile/Adult (were the
      RSW_Digger* stages, near-identical factors), Megascarab voice (was the RSW truffle-mole set), no leather
-     (was RSW_MediumChitin; insect flesh). Comfy temperatures are the values AnimalTolerances_Ashkarr.xml
+     (was RM_MediumChitin; insect flesh). Comfy temperatures are the values AnimalTolerances_Ashkarr.xml
      pinned on RSW_Diggerpede (-25/75.8). Art is a byte copy of the in-game diggerpede art until the
      realistic regen (regen_gt_gristle_v2) is reviewed. RSW_Diggerpede stays only for the frozen
      RUT_Greentide twin. -->

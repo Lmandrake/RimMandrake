@@ -503,14 +503,6 @@
    "texPath": "Things/Item/Resource/RUT_Greenwood",
    "job": [],
    "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
-  },
-  {
-   "path": "src/RimUtinni/UtinniPatches/Textures/Things/Item/Resource/RUT_Hardwood.png",
-   "sha256": "f1b5e39a1b9e347018b1dee55d8c9fd752f6c1be706278f17394a352d11bd33c",
-   "added": "2026-10-07",
-   "texPath": "Things/Item/Resource/RUT_Hardwood",
-   "job": [],
-   "status": "OWED: no job queued (listed under placeholders, all kinds, placeholder_plants.md)"
   }
  ]
 }

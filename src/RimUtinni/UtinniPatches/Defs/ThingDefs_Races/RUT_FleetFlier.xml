@@ -27,7 +27,7 @@
   is left at its class default (true): floating above the vent columns
   keeps them clear of scald bursts, matching the sheet's "sky herds" framing.
   No MayRequire on the class reference - matches this same file family's own
-  precedent (RUT_DyingCreep.xml/RUT_TibannaGas.xml both reference
+  precedent (RUT_DyingCreep.xml and RUT_TibannaTap_BeldonWiring.xml reference
   RimMandrake.EnvironmentalHazards classes bare; the mod's own About.xml has
   no formal dependency on mandrake.rm.environmentalhazards at all, a
   pre-existing gap this pass did not invent and is out of this slug's scope

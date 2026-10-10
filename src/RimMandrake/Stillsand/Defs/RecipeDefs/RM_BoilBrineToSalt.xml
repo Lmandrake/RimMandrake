@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MATERIAL_MERGES_CLEANUP_1 (canon_materials_design_2026-10-09.md §3.10): brine is the Stillsand's source of the
+  one common salt. Boiled down on any cooking fire; the solar stills still take brine for its water.
+-->
+<Defs>
+  <RecipeDef>
+    <defName>RM_BoilBrineToSalt</defName>
+    <label>boil brine to salt</label>
+    <description>Boil cave brine down until only the salt is left.</description>
+    <jobString>Boiling brine.</jobString>
+    <workAmount>600</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>RM_Brine</li></thingDefs></filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs><li>RM_Brine</li></thingDefs>
+    </fixedIngredientFilter>
+    <products><RM_RawSalt>3</RM_RawSalt></products>
+    <recipeUsers>
+      <li>Campfire</li>
+      <li>FueledStove</li>
+      <li>ElectricStove</li>
+    </recipeUsers>
+  </RecipeDef>
+</Defs>

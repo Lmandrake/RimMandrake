@@ -13,30 +13,6 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="ResourceBase">
-    <defName>RM_DeltaSalt</defName>
-    <label>delta salt</label>
-    <description>Grey-white salt scraped from a brelloch's crusted bark. Coarse, faintly bitter and cheap — the Miasma's most abundant harvestable good, and the one the stills need most.</description>
-    <possessionCount>20</possessionCount>
-    <tickerType>Never</tickerType>
-    <graphicData>
-      <texPath>Things/Item/Resource/RM_DeltaSalt/RM_DeltaSalt</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>0.65</drawSize>
-    </graphicData>
-    <stackLimit>75</stackLimit>
-    <healthAffectsPrice>false</healthAffectsPrice>
-    <statBases>
-      <MaxHitPoints>50</MaxHitPoints>
-      <Mass>0.02</Mass>
-      <Flammability>0</Flammability>
-      <MarketValue>0.6</MarketValue>
-      <DeteriorationRate>0.5</DeteriorationRate>
-    </statBases>
-    <thingCategories>
-      <li>ResourcesRaw</li>
-    </thingCategories>
-  </ThingDef>
 
   <ThingDef ParentName="ResourceBase">
     <defName>RM_DeltaSilt</defName>

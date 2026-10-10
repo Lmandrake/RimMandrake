@@ -510,9 +510,9 @@ O = "out of scope (not a material)"
 CLUSTER_OVERRIDES = {
     # metal-salt / mineral salts and reagents
     **{d: "chemical reagent/salt/venom/pigment" for d in (
-        "RM_ContaminantBezoar", "RUT_MetalSaltBezoar", "RM_VitrifiedBezoar", "RM_BrinePlate", "RUT_BrinePlate",
-        "RM_RawVenom", "RM_SaltPink", "RM_SaltViolet", "RM_SaltAmber", "RM_SaltWhite", "RM_KettlewickSalt",
-        "RM_SeepSalt", "RM_Tholin", "RM_StrongTarSolvent", "RM_WeakTarSolvent", "RM_WarDust", "RM_Attar",
+        "RM_ContaminantBezoar", "RUT_MetalSaltBezoar", "RM_VitrifiedBezoar", "RM_BrinePlate",
+        "RM_RawVenom", "RM_SaltPink", "RM_SaltViolet", "RM_SaltAmber", "RM_SaltWhite",
+        "RM_Tholin", "RM_StrongTarSolvent", "RM_WeakTarSolvent", "RM_WarDust", "RM_Attar",
         "RM_RadioactiveSuppressant", "RM_VauliskLureOrgan", "RM_RawSlime", "RM_DeltaSilt")},
     **{d: "food-only" for d in (
         "RM_DrommathSap", "RM_DrommathBurstSap", "RM_ThornbugNectar", "RM_SekkulaathCream", "RM_QeshraRoe",
@@ -538,8 +538,8 @@ CLUSTER_OVERRIDES = {
     **{d: "armour hide/leather/chitin/plate" for d in ("RM_RoyalRind",)},
     **{d: "soil/fertiliser" for d in ("RM_DeltaLoam", "RUT_FungalSoil", "RM_SeedFistFertilizer")},
     **{d: "trophy/relic/curio" for d in (
-        "RM_FossilImpression", "RM_FossilDeepStratum", "RM_FossilSkeleton", "RM_SaltCameo", "RUT_SaltCameo",
-        "RM_SweetlineToken", "RM_SeepStone", "RUT_SeepStone", "RM_ElderSealedRelic", "RM_FungalMantisClaw",
+        "RM_FossilImpression", "RM_FossilDeepStratum", "RM_FossilSkeleton", "RM_SaltCameo",
+        "RM_SweetlineToken", "RM_SeepStone", "RM_ElderSealedRelic", "RM_FungalMantisClaw",
         "RSW_FungalMantisClaw", "RM_GreatboleGrubSpines", "RM_CrestPlate", "RM_BoltShedCuriosity",
         "RM_WatcherRemains_Piinnok", "RM_WombpodSac", "RM_TarRuinedGoods", "RM_GreatboleSeed")},
     **{d: O for d in (

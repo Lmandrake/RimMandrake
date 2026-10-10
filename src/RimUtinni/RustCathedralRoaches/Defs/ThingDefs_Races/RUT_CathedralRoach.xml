@@ -50,7 +50,7 @@
   built or touched here — needs a live quicktest to confirm the roach
   actually appears on a Cathedral map, which this pass was told not to run.
 
-  Salability: butcherProducts below yield RUT_CathedralRoachShell (a small
+  Salability: butcherProducts below yield RM_CathedralRoachShell (a small
   tradeable resource) alongside steel on death/disassembly — salable but
   deliberately NOT "watched" by any hum/goodwill mechanic (owner ruling,
   rationale in the item file and kit spec §6): no comp counts or reports
@@ -263,7 +263,7 @@
     </race>
     <butcherProducts>
       <Steel>4</Steel>
-      <RUT_CathedralRoachShell>1</RUT_CathedralRoachShell>
+      <RM_CathedralRoachShell>1</RM_CathedralRoachShell>
     </butcherProducts>
     <modExtensions>
       <li Class="RimMandrake.CreatureBehaviors.RM_EatCleanableExtension">

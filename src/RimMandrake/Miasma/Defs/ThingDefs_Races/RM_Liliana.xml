@@ -9,7 +9,7 @@
        biome's own mod under an RM_ defName, stats verbatim, with its silk and eggs ported
        alongside (RM_Liliana_Items.xml) and its in-game art copied byte-for-byte under
        Textures/Things/Pawn/Animal/RM_Liliana/ so nothing depends on mandrake.rsw.swbestiary.
-       Dropped in the port: leatherDef RSW_GrayChitin (LeatherAmount is 0, so it yielded
+       Dropped in the port: leatherDef RM_GrayChitin (LeatherAmount is 0, so it yielded
        nothing). Eggs hatch RM_Liliana directly — the RSW larva/pupa chain it came from has no
        metamorphosis comp and depends on SW-tier think trees and life stages.
        RSW_AaroxisDendoria itself stays in SWBestiary only because the frozen RUT_Miasma twin

@@ -91,29 +91,6 @@ copied verbatim from the donor mods' own Textures trees.
       <MarketValue>12</MarketValue>
     </statBases>
   </ThingDef>
-  <ThingDef ParentName="RSW_BiomesCore_ChitinBase">
-    <defName>RSW_WeakChitin</defName>
-    <label>brittle chitin</label>
-    <description>Chitin of a giant insect. It is one of the weakest types of chitin.</description>
-    <graphicData>
-      <color>(61,48,70)</color>
-    </graphicData>
-    <statBases>
-      <MarketValue>1.0</MarketValue>
-      <StuffPower_Armor_Sharp>0.4</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>0.4</StuffPower_Armor_Blunt>
-      <StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
-      <RSW_BC_StuffPower_FlammabilityOffset>-0.2</RSW_BC_StuffPower_FlammabilityOffset>
-    </statBases>
-    <stuffProps>
-      <color>(61,48,70)</color>
-      <statFactors>
-        <MaxHitPoints>1.0</MaxHitPoints>
-        <Beauty>1</Beauty>
-      </statFactors>
-    </stuffProps>
-  </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggSandpillarUnfertilized</defName>
     <label>sandpillar egg (unfert.)</label>
@@ -1166,29 +1143,6 @@ copied verbatim from the donor mods' own Textures trees.
       </li>
     </comps>
   </ThingDef>
-  <ThingDef ParentName="RSW_BiomesCore_ChitinBase">
-    <defName>RSW_GrayChitin</defName>
-    <label>gray shell</label>
-    <description>A strong, gray, chitinous shell.</description>
-    <graphicData>
-      <color>(56,56,56)</color>
-    </graphicData>
-    <statBases>
-      <MarketValue>2.5</MarketValue>
-      <StuffPower_Armor_Sharp>0.54</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>0.6</StuffPower_Armor_Blunt>
-      <StuffPower_Insulation_Cold>12</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>12</StuffPower_Insulation_Heat>
-      <RSW_BC_StuffPower_FlammabilityOffset>-0.2</RSW_BC_StuffPower_FlammabilityOffset>
-    </statBases>
-    <stuffProps>
-      <color>(56,56,56)</color>
-      <commonality>0.035</commonality>
-      <statFactors>
-        <MaxHitPoints>0.8</MaxHitPoints>
-      </statFactors>
-    </stuffProps>
-  </ThingDef>
   <ThingDef ParentName="StoneBlocksBase">
     <defName>RSW_ResourceBlueCrystal</defName>
     <label>crystal</label>
@@ -1283,28 +1237,6 @@ copied verbatim from the donor mods' own Textures trees.
       </li>
     </comps>
   </ThingDef>
-  <ThingDef ParentName="RSW_BiomesCore_ChitinBase">
-    <defName>RSW_ToxiChitin</defName>
-    <label>toxic chitin</label>
-    <description>Chitin of a giant insect adapted to toxic environments. It's fairly durable.</description>
-    <graphicData>
-      <color>(112,112,76)</color>
-    </graphicData>
-    <statBases>
-      <MarketValue>5.0</MarketValue>
-      <StuffPower_Armor_Sharp>1.1</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>0.6</StuffPower_Armor_Blunt>
-      <StuffPower_Insulation_Cold>15</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>15</StuffPower_Insulation_Heat>
-    </statBases>
-    <stuffProps>
-      <color>(112,112,76)</color>
-      <statFactors>
-        <MaxHitPoints>1.2</MaxHitPoints>
-        <Beauty>0.25</Beauty>
-      </statFactors>
-    </stuffProps>
-  </ThingDef>
   <ThingDef ParentName="LeatherBase">
     <defName>RSW_Leather_Amphibian</defName>
     <label>amphibianskin</label>
@@ -1342,29 +1274,6 @@ copied verbatim from the donor mods' own Textures trees.
     <statBases>
       <MarketValue>20</MarketValue>
     </statBases>
-  </ThingDef>
-  <ThingDef ParentName="RSW_BiomesCore_ChitinBase">
-    <defName>RSW_MediumChitin</defName>
-    <label>tough chitin</label>
-    <description>Chitin of a giant insect. It's quite durable.</description>
-    <graphicData>
-      <color>(63,114,123)</color>
-    </graphicData>
-    <statBases>
-      <MarketValue>5.0</MarketValue>
-      <StuffPower_Armor_Sharp>1.1</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>0.8</StuffPower_Armor_Blunt>
-      <StuffPower_Insulation_Cold>15</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>15</StuffPower_Insulation_Heat>
-      <RSW_BC_StuffPower_FlammabilityOffset>-0.2</RSW_BC_StuffPower_FlammabilityOffset>
-    </statBases>
-    <stuffProps>
-      <color>(61,48,100)</color>
-      <statFactors>
-        <MaxHitPoints>1.2</MaxHitPoints>
-        <Beauty>3</Beauty>
-      </statFactors>
-    </stuffProps>
   </ThingDef>
   <ThingDef ParentName="RSW_BiomesCore_ChitinBase">
     <defName>RSW_RoyalChitin</defName>
@@ -1439,28 +1348,6 @@ copied verbatim from the donor mods' own Textures trees.
         <hatcherPawn>RSW_Polluwog</hatcherPawn>
       </li>
     </comps>
-  </ThingDef>
-  <ThingDef ParentName="RSW_BiomesCore_ChitinBase">
-    <defName>RSW_FragileChitin</defName>
-    <label>fragile chitin</label>
-    <description>Chitin of a giant insect. It doesn't protect very well.</description>
-    <graphicData>
-      <color>(124,140,60)</color>
-    </graphicData>
-    <statBases>
-      <MarketValue>1.0</MarketValue>
-      <StuffPower_Armor_Sharp>0.45</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>0.50</StuffPower_Armor_Blunt>
-      <StuffPower_Insulation_Cold>10</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
-    </statBases>
-    <stuffProps>
-      <color>(124,140,60)</color>
-      <statFactors>
-        <MaxHitPoints>1.0</MaxHitPoints>
-        <Beauty>0.25</Beauty>
-      </statFactors>
-    </stuffProps>
   </ThingDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RSW_SmogMothEggFertilized</defName>
@@ -1588,29 +1475,6 @@ copied verbatim from the donor mods' own Textures trees.
     <statBases>
       <MarketValue>10.0</MarketValue>
     </statBases>
-  </ThingDef>
-  <ThingDef ParentName="RSW_BiomesCore_ChitinBase">
-    <defName>RSW_CrystalChitin</defName>
-    <label>crystal carapace</label>
-    <description>A crystallized carapace that is commonly found on arthropods in crystal-heavy caverns.</description>
-    <graphicData>
-      <color>(119,189,239)</color>
-    </graphicData>
-    <statBases>
-      <MarketValue>7.5</MarketValue>
-      <StuffPower_Armor_Sharp>1.25</StuffPower_Armor_Sharp>
-      <StuffPower_Armor_Blunt>0.9</StuffPower_Armor_Blunt>
-      <StuffPower_Insulation_Cold>18</StuffPower_Insulation_Cold>
-      <StuffPower_Insulation_Heat>8</StuffPower_Insulation_Heat>
-      <RSW_BC_StuffPower_FlammabilityOffset>-0.2</RSW_BC_StuffPower_FlammabilityOffset>
-    </statBases>
-    <stuffProps>
-      <color>(119,189,239)</color>
-      <statFactors>
-        <MaxHitPoints>1.4</MaxHitPoints>
-        <Beauty>4</Beauty>
-      </statFactors>
-    </stuffProps>
   </ThingDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RSW_EggFleeceSpiderFertilized</defName>

@@ -84,7 +84,7 @@
       <growDays>20</growDays>
       <harvestWork>200</harvestWork>
       <harvestYield>12</harvestYield>
-      <harvestedThingDef>RM_DeltaSalt</harvestedThingDef>
+      <harvestedThingDef>RM_RawSalt</harvestedThingDef>
       <harvestMinGrowth>0.3</harvestMinGrowth>
       <visualSizeRange>1.0~1.6</visualSizeRange>
       <topWindExposure>0.02</topWindExposure>

@@ -163,7 +163,7 @@
       <isNaturalRock>false</isNaturalRock>
       <isResourceRock>true</isResourceRock>
       <claimable>false</claimable>
-      <mineableThing>RUT_BrinePlate</mineableThing>
+      <mineableThing>RM_BrinePlate</mineableThing>
       <mineableYield>2</mineableYield>
       <veinMineable>false</veinMineable>
     </building>

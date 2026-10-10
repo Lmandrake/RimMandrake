@@ -41,8 +41,8 @@
   plant), no green-toned art, description matches the sheet's own "glassy
   dark varnish" language.
 
-  Harvest: harvestedThingDef points at RUT_GlowerCrust (RUT_ScarlandsItems.xml,
-  same file family posture as RUT_Vorrel/RUT_VorrelFruit) — a plain raw
+  Harvest: harvestedThingDef points at RM_GlowerCrust (mandrake.rm.biomes, Scarlands;
+  the RUT_ twin was folded into it 2026-10-09) — a plain raw
   resource landing now. The bespoke "glower-fuel harvest" GAMEPLAY LOOP
   (radiation-dose-vs-yield tradeoff the roster's own mechanic_load names) is
   real C# still owed to SCARLANDS_MECHANICS_2 (the live successor to the
@@ -86,7 +86,7 @@
       <visualSizeRange>0.5~0.9</visualSizeRange>
       <topWindExposure>0</topWindExposure>
       <harvestTag>Standard</harvestTag>
-      <harvestedThingDef>RUT_GlowerCrust</harvestedThingDef>
+      <harvestedThingDef>RM_GlowerCrust</harvestedThingDef>
       <harvestYield>3</harvestYield>
       <harvestWork>220</harvestWork>
       <harvestAfterGrowth>0.4</harvestAfterGrowth>

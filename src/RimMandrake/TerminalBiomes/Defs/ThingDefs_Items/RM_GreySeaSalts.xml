@@ -77,9 +77,14 @@
        minerals … the planet's evaporite treasury" at its common end.
        ================================================================== -->
   <ThingDef ParentName="ResourceBase">
+    <!-- MATERIAL_MERGES_CLEANUP_1 (2026-10-09): the planet's ONE common salt. The coarse salts that used to be
+         separate defs fold into it and every biome is a source of this def: the Grey Sea's formations, the
+         Miasma's brelloch bark (was RM_DeltaSalt), the Weeping Stones' steamfrond vents (was RM_SeepSalt), the
+         Scald's kettlewick collars (was RM_KettlewickSalt), Stillsand brine boiled down, and cracked Wasteland
+         brine plates. The four crystal salts below stay the premium curing set. -->
     <defName>RM_RawSalt</defName>
-    <label>coarse salt</label>
-    <description>Grey-white salt broken out of the Grey Sea's own formations, still gritty with the sediment it grew in. The commonest substance on a dying sea's floor and the reason anyone dives it at all: the planet's chemical works, made portable a sackful at a time.</description>
+    <label>salt</label>
+    <description>Coarse grey-white salt, gritty with whatever it grew in: broken from the Grey Sea's formations, scraped from bark and vent-rims, boiled out of brine. The commonest mineral on Ash'karr and the one every kitchen, still and tannery runs on.</description>
     <graphicData>
       <texPath>Things/Item/RM_GreySea/RM_SaltCrystalItem</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>

@@ -130,7 +130,7 @@ def static_checks():
         if items.count("<defName>%s</defName>" % d) != 1:
             bad.append("%s ThingDef missing or duplicated" % d)
     rec = open(os.path.join(HERE, "Defs", "RecipeDefs", "RM_MakeAttar.xml")).read()
-    for needle in ("<li>RM_DeltaSilt</li>", "<li>RM_DeltaSalt</li>", "<RM_Attar>1</RM_Attar>", "<li>RM_AttarStill</li>"):
+    for needle in ("<li>RM_DeltaSilt</li>", "<li>RM_RawSalt</li>", "<RM_Attar>1</RM_Attar>", "<li>RM_AttarStill</li>"):
         if needle not in rec:
             bad.append("RM_MakeAttar lacks %s" % needle)
     if "<Medicine" in rec or "Medicine" in items:
@@ -178,7 +178,7 @@ def static_checks():
         if dc.count("<defName>%s</defName>" % d) != 1:
             bad.append("%s ThingDef missing or duplicated" % d)
     for needle in ("RM_CompPowerPlantDecay", "<spentDef>RM_RottingBed</spentDef>", "<li>RM_DecayCells</li>",
-                   "<RM_DeltaLoam>", "<RM_DeltaSalt>"):
+                   "<RM_DeltaLoam>", "<RM_RawSalt>"):
         if needle not in dc:
             bad.append("RM_DecayCell lacks %s" % needle)
     rp = open(os.path.join(HERE, "Defs", "ResearchProjectDefs", "RM_DecayCells.xml"), encoding="utf-8").read()

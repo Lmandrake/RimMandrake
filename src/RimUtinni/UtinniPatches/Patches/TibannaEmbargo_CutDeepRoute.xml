@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- TibannaEmbargo_CutDeepRoute.xml     RimUtinni · MATERIAL_MERGES_CLEANUP_1 (2026-10-09)
+     the_forge.md §6 hard ban 5 (TIBANNA_SOURCE_CUT_1): no tibanna source but the beldons. KOTOR_Tibanna is now
+     the one tibanna def (the campaign's RUT_TibannaGas folded into it; RUT_TibannaTap_BeldonWiring.xml makes
+     beldons yield it), but the donor def (guy762.mm.kotorcore; Armoury's absorbed copy is held) also seeds it
+     as a deep-drill ore through deepCommonality. That route is removed here; the three deep fields go
+     together so no half-configured deep resource is left. Conditional: a def that no longer carries the
+     field is a quiet no-op, never a red error. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KOTOR_Tibanna"]/deepCommonality</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="KOTOR_Tibanna"]/deepCommonality</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KOTOR_Tibanna"]/deepCountPerPortion</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="KOTOR_Tibanna"]/deepCountPerPortion</xpath>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KOTOR_Tibanna"]/deepLumpSizeRange</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="KOTOR_Tibanna"]/deepLumpSizeRange</xpath>
+    </match>
+  </Operation>
+</Patch>

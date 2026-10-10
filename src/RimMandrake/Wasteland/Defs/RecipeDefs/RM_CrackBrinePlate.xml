@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MATERIAL_MERGES_CLEANUP_1 (canon_materials_design_2026-10-09.md §3.10): the brine plate is the Wasteland's
+  source of the one common salt. A plate sells as an oddity; cracked, it is a sackful of salt instead.
+-->
+<Defs>
+  <RecipeDef>
+    <defName>RM_CrackBrinePlate</defName>
+    <label>crack brine plate for salt</label>
+    <description>Break a spent brine plate apart and scrape the salt from its layers.</description>
+    <jobString>Cracking a brine plate.</jobString>
+    <workAmount>400</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>CutStone</effectWorking>
+    <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>RM_BrinePlate</li></thingDefs></filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs><li>RM_BrinePlate</li></thingDefs>
+    </fixedIngredientFilter>
+    <products><RM_RawSalt>20</RM_RawSalt></products>
+    <recipeUsers>
+      <li>CraftingSpot</li>
+      <li>TableStonecutter</li>
+    </recipeUsers>
+  </RecipeDef>
+</Defs>
