@@ -53,7 +53,7 @@
       <li>Foods</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/Pemmican</texPath>
+      <texPath>Things/Item/Resource/RM_KarrekPaste</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
       <color>(120, 90, 60)</color>
     </graphicData>

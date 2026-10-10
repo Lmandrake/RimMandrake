@@ -5,7 +5,7 @@
     <label>condenser water</label>
     <description>A litre of clean water drawn out of dry air by the ancient condenser, in a stoppered flask.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <texPath>Things/Item/Resource/RM_CondenserWater</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(150, 200, 225)</color>
     </graphicData>
