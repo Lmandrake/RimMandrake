@@ -977,6 +977,10 @@ MODS = {
     "ShokkweaveEconomy": ("ShokkweaveEconomySettings.cs", "RimMandrake.Utinni.ShokkweaveEconomy.csproj", {
         "Webwork silk nodes (WORLDGEN-AFFECTING)": "NewMapsOnly",
     }, ()),
+    "TrophyCraft": ("RSW_TrophyCraftSettings.cs", "RSW_TrophyCraft.csproj", {
+        "Fang pendant social consequence": "Now",
+        "Opinion magnitude": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
