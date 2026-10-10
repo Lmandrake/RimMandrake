@@ -1,3 +1,5 @@
+using System.Reflection;
+using System.Collections.Generic;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -110,136 +112,216 @@ namespace RimMandrake.Wasteland
             Scribe_Values.Look(ref tippingEnabled, "tippingEnabled", true);
         }
 
-        private static Vector2 scroll;
+                // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
+        // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_WastelandSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_WastelandSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static Vector2 scrollPos;
         private static float viewHeight = 1400f;
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string> { "Not wired yet (these change nothing)" };
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): every setting is read on a tick, a job, a storm or a launch check ([now]); nothing is read at world or map generation. The brine switch is read by nothing (its scatter is plain XML), so it sits in the collapsed change-nothing group the validation walk still expects.</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps or worlds generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
 
         public void DoWindowContents(Rect inRect)
         {
-            Rect view = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(viewHeight, inRect.height));
-            Widgets.BeginScrollView(inRect, ref scroll, view);
-            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
-            list.Begin(view);
+            // Scrolls; maxOneColumn is load-bearing: without it overflow wraps into a hidden second column.
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(viewHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPos, viewRect);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width, maxOneColumn = true };
+            list.Begin(viewRect);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
-            list.CheckboxLabeled("Wasteland enabled", ref wastelandEnabled,
-                "Master switch. Off: the biome and its defs still load (nothing here is "
-              + "worldgen-affecting — RM_Wasteland ships generatesNaturally=false, placed only "
-              + "by hand or by another mod/scenario), but every per-feature toggle below is "
-              + "ignored as off.");
-            list.GapLine();
+            if (Group(list, "Wasteland master switch", RimMandrake.Shared.SettingScope.Now, new[] { "wastelandEnabled" }))
+            {
+                list.CheckboxLabeled("Wasteland enabled", ref wastelandEnabled,
+                    "Master switch. Off: the biome and its defs still load (nothing here is "
+                  + "worldgen-affecting — RM_Wasteland ships generatesNaturally=false, placed only "
+                  + "by hand or by another mod/scenario), but every per-feature toggle below is "
+                  + "ignored as off.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Brine deposit mining", ref brineDepositsEnabled,
-                "Tekk/drazz/spent-electrode-plate deposits scatter into any generated map's "
-              + "hypersaline brine water (RM_WastelandBrineShallow terrain). NOT YET WIRED — "
-              + "the scatter is plain XML with no runtime gate, so this toggle is scaffolding "
-              + "until a GenStep_ScatterThings subclass reads it.");
-            list.GapLine();
+            if (Group(list, "Storms", RimMandrake.Shared.SettingScope.Now, new[] { "stormDoseEnabled", "stormDoseMultiplier", "ashFallPollutionEnabled", "cinderfeltGerminationEnabled", "namedStormPhasesEnabled", "namedStormWarningFactor", "cinderwireEmpEnabled" }))
+            {
+                list.Label("Storms (ash storm, deadlight halo, cinderwire storm). The weathers still occur "
+                         + "when these are off; only their effects stop. Not worldgen-affecting.");
+                list.CheckboxLabeled("Storm dose", ref stormDoseEnabled,
+                    "While a Wasteland storm runs, unroofed pawns build toxic buildup (the vanilla "
+                  + "toxic-fallout dose, scaled per storm). Only on maps whose biome opts in.");
+                list.Label("Storm dose strength: " + stormDoseMultiplier.ToStringPercent());
+                stormDoseMultiplier = list.Slider(stormDoseMultiplier, 0f, 3f);
+                list.CheckboxLabeled("Ash fall pollutes the ground", ref ashFallPollutionEnabled,
+                    "Ash storms lay Biotech pollution on unroofed cells as they blow.");
+                list.CheckboxLabeled("Cinderfelt germination", ref cinderfeltGerminationEnabled,
+                    "When an ash storm ends, cinderfelt grows on part of its fresh fall and dies "
+                  + "in about eight days. Off: cinderfelt appears only at its token wild weight.");
+                list.CheckboxLabeled("Named storm warnings", ref namedStormPhasesEnabled,
+                    "The deadlight halo and the cinderwire storm arrive with a quiet warning (doubled "
+                  + "shadows, quickening dosimeter clicks, a sickly rim-light; crawling static, "
+                  + "levitating scraps and a rising whine) before their dose, fall, EMP and lightning "
+                  + "begin. Off: they strike at once and the cues are skipped.");
+                list.Label("Storm warning length: " + namedStormWarningFactor.ToStringPercent()
+                         + " (100% = about one in-game hour)");
+                namedStormWarningFactor = list.Slider(namedStormWarningFactor, 0.25f, 3f);
+                list.CheckboxLabeled("Cinderwire EMP pulses", ref cinderwireEmpEnabled,
+                    "Once a cinderwire storm breaks, EMP pulses strike random open ground, stunning "
+                  + "powered buildings and mechanoids caught in them.");
+                list.GapLine();
+            }
 
-            list.Label("Storms (ash storm, deadlight halo, cinderwire storm). The weathers still occur "
-                     + "when these are off; only their effects stop. Not worldgen-affecting.");
-            list.CheckboxLabeled("Storm dose", ref stormDoseEnabled,
-                "While a Wasteland storm runs, unroofed pawns build toxic buildup (the vanilla "
-              + "toxic-fallout dose, scaled per storm). Only on maps whose biome opts in.");
-            list.Label("Storm dose strength: " + stormDoseMultiplier.ToStringPercent());
-            stormDoseMultiplier = list.Slider(stormDoseMultiplier, 0f, 3f);
-            list.CheckboxLabeled("Ash fall pollutes the ground", ref ashFallPollutionEnabled,
-                "Ash storms lay Biotech pollution on unroofed cells as they blow.");
-            list.CheckboxLabeled("Cinderfelt germination", ref cinderfeltGerminationEnabled,
-                "When an ash storm ends, cinderfelt grows on part of its fresh fall and dies "
-              + "in about eight days. Off: cinderfelt appears only at its token wild weight.");
-            list.CheckboxLabeled("Named storm warnings", ref namedStormPhasesEnabled,
-                "The deadlight halo and the cinderwire storm arrive with a quiet warning (doubled "
-              + "shadows, quickening dosimeter clicks, a sickly rim-light; crawling static, "
-              + "levitating scraps and a rising whine) before their dose, fall, EMP and lightning "
-              + "begin. Off: they strike at once and the cues are skipped.");
-            list.Label("Storm warning length: " + namedStormWarningFactor.ToStringPercent()
-                     + " (100% = about one in-game hour)");
-            namedStormWarningFactor = list.Slider(namedStormWarningFactor, 0.25f, 3f);
-            list.CheckboxLabeled("Cinderwire EMP pulses", ref cinderwireEmpEnabled,
-                "Once a cinderwire storm breaks, EMP pulses strike random open ground, stunning "
-              + "powered buildings and mechanoids caught in them.");
-            list.GapLine();
+            if (Group(list, "Ambient dose and radiothermal heat", RimMandrake.Shared.SettingScope.Now, new[] { "ambientDoseEnabled", "ambientDoseMultiplier", "radiothermalHeatEnabled" }))
+            {
+                list.CheckboxLabeled("Ambient dose creatures", ref ambientDoseEnabled,
+                    "Smolderbacks and the Middenshell (and its mined-out carcass) dose nearby pawns, or their "
+                  + "whole room when indoors, with toxic buildup. Never an attack.");
+                list.Label("Ambient dose strength: " + ambientDoseMultiplier.ToStringPercent());
+                ambientDoseMultiplier = list.Slider(ambientDoseMultiplier, 0f, 3f);
+                list.CheckboxLabeled("Radiothermal heat", ref radiothermalHeatEnabled,
+                    "Smolderbacks push heat like a small heater.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Ambient dose creatures", ref ambientDoseEnabled,
-                "Smolderbacks and the Middenshell (and its mined-out carcass) dose nearby pawns, or their "
-              + "whole room when indoors, with toxic buildup. Never an attack.");
-            list.Label("Ambient dose strength: " + ambientDoseMultiplier.ToStringPercent());
-            ambientDoseMultiplier = list.Slider(ambientDoseMultiplier, 0f, 3f);
-            list.CheckboxLabeled("Radiothermal heat", ref radiothermalHeatEnabled,
-                "Smolderbacks push heat like a small heater.");
-            list.GapLine();
+            if (Group(list, "Processor animals", RimMandrake.Shared.SettingScope.Now, new[] { "processorGatherEnabled", "processorUnpolluteEnabled" }))
+            {
+                list.CheckboxLabeled("Processor animals produce", ref processorGatherEnabled,
+                    "Tamed sloghogs grow bezoars and sootgrazers soot bricks, fastest on polluted "
+                  + "or ash-covered ground; collected by the milking job.");
+                list.CheckboxLabeled("Processor animals clean pollution", ref processorUnpolluteEnabled,
+                    "Processor animals occasionally un-pollute the cell they stand on.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Processor animals produce", ref processorGatherEnabled,
-                "Tamed sloghogs grow bezoars and sootgrazers soot bricks, fastest on polluted "
-              + "or ash-covered ground; collected by the milking job.");
-            list.CheckboxLabeled("Processor animals clean pollution", ref processorUnpolluteEnabled,
-                "Processor animals occasionally un-pollute the cell they stand on.");
-            list.GapLine();
+            if (Group(list, "Grippers", RimMandrake.Shared.SettingScope.Now, new[] { "gripperTheftEnabled", "gripperSpawnsCarrying", "gripperTheftMtbHours" }))
+            {
+                list.CheckboxLabeled("Grippers steal", ref gripperTheftEnabled,
+                    "Wild grippers pick up small unforbidden items they can reach, swapping "
+                  + "whatever scrap they hold for anything worth more, and scurry off with it. "
+                  + "A hurt gripper may drop its haul; a dead one always does. Tamed grippers "
+                  + "never steal. Off: grippers are ordinary beetles and carry nothing new.");
+                list.CheckboxLabeled("Grippers spawn carrying scrap", ref gripperSpawnsCarrying,
+                    "A newly arrived wild gripper already holds a scrap of junk (steel, silver, "
+                  + "cloth, a component).");
+                list.Label("Gripper theft attempts: about every "
+                         + gripperTheftMtbHours.ToString("0.#") + " hours per idle gripper");
+                gripperTheftMtbHours = list.Slider(gripperTheftMtbHours, 0.5f, 24f);
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Grippers steal", ref gripperTheftEnabled,
-                "Wild grippers pick up small unforbidden items they can reach, swapping "
-              + "whatever scrap they hold for anything worth more, and scurry off with it. "
-              + "A hurt gripper may drop its haul; a dead one always does. Tamed grippers "
-              + "never steal. Off: grippers are ordinary beetles and carry nothing new.");
-            list.CheckboxLabeled("Grippers spawn carrying scrap", ref gripperSpawnsCarrying,
-                "A newly arrived wild gripper already holds a scrap of junk (steel, silver, "
-              + "cloth, a component).");
-            list.Label("Gripper theft attempts: about every "
-                     + gripperTheftMtbHours.ToString("0.#") + " hours per idle gripper");
-            gripperTheftMtbHours = list.Slider(gripperTheftMtbHours, 0.5f, 24f);
-            list.GapLine();
+            if (Group(list, "The Middenshell", RimMandrake.Shared.SettingScope.Now, new[] { "middenshellEnabled", "middenshellGrabEnabled", "middenshellStepTicks", "middenshellProcessionEnabled", "middenshellOmenHours", "middenshellTrailEnabled", "middenshellLureEnabled", "middenshellLureRange" }))
+            {
+                list.CheckboxLabeled("The Middenshell", ref middenshellEnabled,
+                    "The twenty-cell-wide giant crawls in from a map edge on Wasteland maps (one at "
+                  + "most per map), flattening what lies in its path. Never hostile; being near it "
+                  + "doses you. Off: it never arrives, and one already on a map lies still.");
+                list.CheckboxLabeled("Middenshell tentacle grabs", ref middenshellGrabEnabled,
+                    "Now and then it lashes a tentacle at a nearby object (items, doors, walls) and "
+                  + "eats it. Never anything on gravship substructure or any gravship part.");
+                list.Label("Middenshell crawl: one cell every " + middenshellStepTicks + " ticks");
+                middenshellStepTicks = (int)list.Slider(middenshellStepTicks, 120f, 2000f);
+                list.CheckboxLabeled("Middenshell procession", ref middenshellProcessionEnabled,
+                    "It announces itself hours ahead (the crust trembles, loose metal creeps toward the "
+                  + "edge it will come from), then crosses the map on a straight, readable line and "
+                  + "leaves by the far edge. Off: it arrives unannounced and wanders until killed.");
+                list.Label("Procession warning: " + middenshellOmenHours + " hours before it arrives");
+                middenshellOmenHours = (int)list.Slider(middenshellOmenHours, 1f, 12f);
+                list.CheckboxLabeled("Middenshell trail", ref middenshellTrailEnabled,
+                    "It presses a trail of crushed ground behind it and drops hot footprints, shell "
+                  + "flakes and the odd small bezoar; where it leaves the map it tears an edge scar. "
+                  + "The trail and scar are permanent terrain.");
+                list.CheckboxLabeled("Waste stockpiles divert it", ref middenshellLureEnabled,
+                    "A stockpile holding toxic wastepacks or waste casks within range draws it off its "
+                  + "line until the waste is eaten.");
+                list.Label("Waste lure range: " + middenshellLureRange.ToString("0") + " cells");
+                middenshellLureRange = list.Slider(middenshellLureRange, 10f, 150f);
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("The Middenshell", ref middenshellEnabled,
-                "The twenty-cell-wide giant crawls in from a map edge on Wasteland maps (one at "
-              + "most per map), flattening what lies in its path. Never hostile; being near it "
-              + "doses you. Off: it never arrives, and one already on a map lies still.");
-            list.CheckboxLabeled("Middenshell tentacle grabs", ref middenshellGrabEnabled,
-                "Now and then it lashes a tentacle at a nearby object (items, doors, walls) and "
-              + "eats it. Never anything on gravship substructure or any gravship part.");
-            list.Label("Middenshell crawl: one cell every " + middenshellStepTicks + " ticks");
-            middenshellStepTicks = (int)list.Slider(middenshellStepTicks, 120f, 2000f);
-            list.CheckboxLabeled("Middenshell procession", ref middenshellProcessionEnabled,
-                "It announces itself hours ahead (the crust trembles, loose metal creeps toward the "
-              + "edge it will come from), then crosses the map on a straight, readable line and "
-              + "leaves by the far edge. Off: it arrives unannounced and wanders until killed.");
-            list.Label("Procession warning: " + middenshellOmenHours + " hours before it arrives");
-            middenshellOmenHours = (int)list.Slider(middenshellOmenHours, 1f, 12f);
-            list.CheckboxLabeled("Middenshell trail", ref middenshellTrailEnabled,
-                "It presses a trail of crushed ground behind it and drops hot footprints, shell "
-              + "flakes and the odd small bezoar; where it leaves the map it tears an edge scar. "
-              + "The trail and scar are permanent terrain.");
-            list.CheckboxLabeled("Waste stockpiles divert it", ref middenshellLureEnabled,
-                "A stockpile holding toxic wastepacks or waste casks within range draws it off its "
-              + "line until the waste is eaten.");
-            list.Label("Waste lure range: " + middenshellLureRange.ToString("0") + " cells");
-            middenshellLureRange = list.Slider(middenshellLureRange, 10f, 150f);
-            list.GapLine();
+            if (Group(list, "Waste casks and the sealed cask bay", RimMandrake.Shared.SettingScope.Now, new[] { "caskLeaksEnabled", "caskLeakSeverity", "caskBayPerCell", "caskProcessingEnabled", "caskProcessingPerDay", "caskLaunchCheckEnabled", "caskReburialEnabled" }))
+            {
+                list.Label("Waste casks and the sealed cask bay (not the warcasket bay).");
+                list.CheckboxLabeled("Breached casks leak", ref caskLeaksEnabled,
+                    "A waste cask below half its hit points, or a sealed cask bay whose seals fail, leaks tox gas "
+                  + "and pollution — always with a message and an alert. Off: casks are inert.");
+                list.Label("Leak severity: " + caskLeakSeverity.ToStringPercent());
+                caskLeakSeverity = list.Slider(caskLeakSeverity, 0.25f, 3f);
+                list.Label("Sealed cask bay capacity: " + caskBayPerCell + " casks per cell ("
+                         + (caskBayPerCell * 6) + " per bay)");
+                caskBayPerCell = (int)list.Slider(caskBayPerCell, 1f, 6f);
+                list.CheckboxLabeled("Processor animals convert casks", ref caskProcessingEnabled,
+                    "With processing switched on at a bay, a tamed sloghog or sootgrazer standing next to it "
+                  + "converts stored casks into bezoars or soot bricks.");
+                list.Label("Processing rate: " + caskProcessingPerDay.ToString("0.##") + " casks per day");
+                caskProcessingPerDay = list.Slider(caskProcessingPerDay, 0.1f, 3f);
+                list.CheckboxLabeled("Waste blocks unsafe gravship launches", ref caskLaunchCheckEnabled,
+                    "A gravship will not launch while a sealed cask bay aboard is unpowered, damaged or hot, "
+                  + "or while a waste cask sits loose on its deck.");
+                list.CheckboxLabeled("Illegal reburial", ref caskReburialEnabled,
+                    "Casks can be marked to be dug back into the ground: gone from the map, but the ground is "
+                  + "fouled and the burial may be discovered.");
+                list.GapLine();
+            }
 
-            list.Label("Waste casks and the sealed cask bay (not the warcasket bay).");
-            list.CheckboxLabeled("Breached casks leak", ref caskLeaksEnabled,
-                "A waste cask below half its hit points, or a sealed cask bay whose seals fail, leaks tox gas "
-              + "and pollution — always with a message and an alert. Off: casks are inert.");
-            list.Label("Leak severity: " + caskLeakSeverity.ToStringPercent());
-            caskLeakSeverity = list.Slider(caskLeakSeverity, 0.25f, 3f);
-            list.Label("Sealed cask bay capacity: " + caskBayPerCell + " casks per cell ("
-                     + (caskBayPerCell * 6) + " per bay)");
-            caskBayPerCell = (int)list.Slider(caskBayPerCell, 1f, 6f);
-            list.CheckboxLabeled("Processor animals convert casks", ref caskProcessingEnabled,
-                "With processing switched on at a bay, a tamed sloghog or sootgrazer standing next to it "
-              + "converts stored casks into bezoars or soot bricks.");
-            list.Label("Processing rate: " + caskProcessingPerDay.ToString("0.##") + " casks per day");
-            caskProcessingPerDay = list.Slider(caskProcessingPerDay, 0.1f, 3f);
-            list.CheckboxLabeled("Waste blocks unsafe gravship launches", ref caskLaunchCheckEnabled,
-                "A gravship will not launch while a sealed cask bay aboard is unpowered, damaged or hot, "
-              + "or while a waste cask sits loose on its deck.");
-            list.CheckboxLabeled("Illegal reburial", ref caskReburialEnabled,
-                "Casks can be marked to be dug back into the ground: gone from the map, but the ground is "
-              + "fouled and the burial may be discovered.");
-            list.GapLine();
+            if (Group(list, "Rite of Tipping", RimMandrake.Shared.SettingScope.Now, new[] { "tippingEnabled" }))
+            {
+                list.CheckboxLabeled("Rite of Tipping", ref tippingEnabled,
+                    "On Wasteland maps a supervised waste convoy may offer silver and goodwill to tip waste "
+                  + "casks on a licensed tipping pad; another faction may ask for evidence, and a third may "
+                  + "finance proper containment. Off: the offer never comes.");
+                list.GapLine();
+            }
 
-            list.CheckboxLabeled("Rite of Tipping", ref tippingEnabled,
-                "On Wasteland maps a supervised waste convoy may offer silver and goodwill to tip waste "
-              + "casks on a licensed tipping pad; another faction may ask for evidence, and a third may "
-              + "finance proper containment. Off: the offer never comes.");
+            if (Group(list, "Not wired yet (these change nothing)", RimMandrake.Shared.SettingScope.Now, new[] { "brineDepositsEnabled" }))
+            {
+                list.CheckboxLabeled("Brine deposit mining", ref brineDepositsEnabled,
+                    "Tekk/drazz/spent-electrode-plate deposits scatter into any generated map's "
+                  + "hypersaline brine water (RM_WastelandBrineShallow terrain). NOT YET WIRED — "
+                  + "the scatter is plain XML with no runtime gate, so this toggle is scaffolding "
+                  + "until a GenStep_ScatterThings subclass reads it.");
+                list.GapLine();
+            }
 
             viewHeight = list.CurHeight + 20f;
             list.End();
