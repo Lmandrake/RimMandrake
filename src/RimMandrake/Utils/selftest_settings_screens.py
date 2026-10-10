@@ -753,6 +753,9 @@ MODS = {
         "Robbed threshold": "NextPulse",
         "Beggars from displaced people": "NextPulse",
     }, ()),
+    "GravshipLanding": ("GravshipLandingMod.cs", "RM_GravshipLanding.csproj", {
+        "Landing reveal (WORLDGEN-AFFECTING)": "NewMapsOnly",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
