@@ -727,6 +727,14 @@ MODS = {
         "The tops (a disabled top falls back to the Churn)": "Now",
         "Player verbs": "Now",
     }, ()),
+    "ExplosiveKnockback": ("RM_KnockbackMod.cs", "RimMandrake_ExplosiveKnockback.csproj", {
+        "Mod switch": "Now",
+        "Throw strength and range": "Now",
+        "What gets thrown": "Now",
+        "Impact and landing": "Now",
+        "Shield belts": "Now",
+        "Performance caps and debug": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)

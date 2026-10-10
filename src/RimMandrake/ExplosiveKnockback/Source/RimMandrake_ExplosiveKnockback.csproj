@@ -38,6 +38,8 @@
     <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
     <Compile Include="RM_KnockbackMath.cs" />
     <Compile Include="RM_KnockbackMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_KnockbackCompat.cs" />
     <Compile Include="RM_Patch_DamageWorker_ExplosionKnockback.cs" />
     <Compile Include="RM_MapComponent_Knockback.cs" />
