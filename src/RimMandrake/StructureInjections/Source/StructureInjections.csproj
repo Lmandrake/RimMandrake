@@ -35,6 +35,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="Kernel\RM_PlanKernel.cs" />
     <Compile Include="RimplacePlan.cs" />
     <Compile Include="GenStep_RimplacePlan.cs" />

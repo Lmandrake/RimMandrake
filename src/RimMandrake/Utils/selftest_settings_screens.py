@@ -864,6 +864,9 @@ MODS = {
     "SacredGraffiti": ("RM_SacredGraffitiMod.cs", "SacredGraffiti.csproj", {
         "Sacred marks from rituals": "Now",
     }, ()),
+    "StructureInjections": ("RM_StructureInjectionsMod.cs", "StructureInjections.csproj", {
+        "Structure injection templates (WORLDGEN-AFFECTING)": "NewMapsOnly",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
