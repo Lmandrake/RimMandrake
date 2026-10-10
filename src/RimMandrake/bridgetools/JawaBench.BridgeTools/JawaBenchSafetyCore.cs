@@ -1,20 +1,26 @@
 // JawaBenchSafetyCore.cs - the PURE half of the companion's safety surface (no Verse, no Unity, no Harmony).
 //
-// Items: COMPANION_PROFILE_ENFORCE_SAFE_BY_DEFAULT (runtime profile + allow-list), BRIDGE_TARGETS_HARDEN_STALE_AFTER_RELOAD
+// Items: COMPANION_PROFILE_ENFORCE_SAFE_BY_DEFAULT (campaign/test profiles, per-profile policy, tool families), BRIDGE_TARGETS_HARDEN_STALE_AFTER_RELOAD
 // (game epochs, reserved expect* arguments, game-scoped dead-man quiet-world block), COMPANION_HANDSHAKE_BUILD_SAY_WHAT_LOADED
 // (the handshake's stable key set). Doc: design/RimMandrake/companion_handshake.md.
 //
 // ⛔ Compiled into bridgetools/AwarenessSelfTest too (UnitsSafety.cs): a `using Verse;` here breaks that build.
 //
-// THE PROFILE LAW
-//   * The DEFAULT is SAFE. Only tools on SafeAllowList (reviewed read-only; audit 2026-10-10) run in the safe profile.
-//     Every other jawa tool - including any tool added later and never reviewed - is refused. Fail closed.
-//   * GM is granted ONLY by JawaBench/companion_profile.json saying "profile": "gm", unexpired, and only while the
-//     loaded save is not one of its "campaignSaves". Nothing a bridge client can send raises the profile.
-//   * The compile-time GM flag (JAWA_GM_TOOLS) still decides whether the world-acting GM tools EXIST; the runtime
-//     profile decides whether anything beyond the allow-list may RUN. Both are reported by the handshake.
-//   * RimBridgeServer's own built-in tools (rimworld/*) are NOT ours and are not gated here: stripping companion
-//     exports does not make the host read-only (GPT bridge review 4.8).
+// THE PROFILE LAW (owner rulings by question card 2026-10-10, relayed by the coordinator)
+//   * Two runtime profiles. CAMPAIGN is the default: the bridge stays FULLY usable for authoring (spawn, edit,
+//     incidents, raids, inhabited interactions, content edits). It switches OFF only what costs play speed or is
+//     test-only: arbitrary invocation / debug actions, test-only tools, heavy diagnostics, the quiet-world block,
+//     and the costly awareness hook (GeneratePawn). TEST is the permissive profile for test/diagnostic setups.
+//   * Cheap always-on recorders stay ON in campaign, INCLUDING the TPS attribution that says where a slowdown comes
+//     from, so a slowdown is explained, not hidden. Each profile DECLARES its recorder budget (share of play speed the
+//     recorders may cost) as data in Policies below - campaign 10% "for now" - never as a constant inside a hook.
+//   * TEST is granted ONLY by JawaBench/companion_profile.json ("profile": "test"; "gm" is accepted as an alias),
+//     unexpired, and only while the loaded save is not one of its "campaignSaves". Nothing a bridge client sends
+//     raises the profile. Anything unreadable resolves to CAMPAIGN.
+//   * Every jawa tool belongs to a FAMILY (CampaignDenied names each denied tool and its family + reason; the rest are
+//     authoring or read). The unit test fails when a must-stay-available authoring tool is denied or a must-be-off
+//     tool is allowed. The compile-time GM flag (JAWA_GM_TOOLS) still decides whether the GM tools EXIST.
+//   * RimBridgeServer's own tools (rimworld/*) are not ours and are not gated here.
 
 using System;
 using System.Collections.Generic;
@@ -25,80 +31,113 @@ namespace JawaBench.BridgeTools
 {
     internal static class JawaBenchSafetyCore
     {
-        internal const string Safe = "safe", Gm = "gm";
+        internal const string Campaign = "campaign", Test = "test";
         internal const string HandshakeTool = "jawa/companion_handshake";
         internal const string ProfileFileName = "companion_profile.json";
 
-        /// <summary>Reviewed read-only tools (static audit 2026-10-10: no game, file, setting or RNG mutation found in
-        /// the body; several are still COSTLY on a large map - see companion_handshake.md). Adding a tool here is a
-        /// review decision, never a convenience.</summary>
-        internal static readonly string[] SafeAllowList =
+        // ------------------------------------------------------------------ per-profile policy (DATA, read by installers/hooks)
+        internal sealed class Policy
         {
-            HandshakeTool, "jawa/tps_report", "jawa/awareness", "jawa/incident_journal", "jawa/pawn_origin", "jawa/thing_explain",
-            "jawa/harmony_patches", "jawa/running_mods", "jawa/mod_inventory", "jawa/dlc_status", "jawa/savegame_mod_match",
-            "jawa/startup_types", "jawa/map_info", "jawa/list_pawns", "jawa/list_things", "jawa/list_factions", "jawa/letter_list",
-            "jawa/alerts_list", "jawa/weather_get", "jawa/gravship_status", "jawa/time_clock", "jawa/time_date_at",
-            "jawa/world_info_get", "jawa/world_stats", "jawa/pawn_get", "jawa/pawn_stats", "jawa/thing_stats", "jawa/stat_explain",
-            "jawa/get_def", "jawa/get_defs", "jawa/inspect_string", "jawa/story_stats", "jawa/room_get", "jawa/power_net",
-            "jawa/pipe_net_info", "jawa/comp_read", "jawa/map_comp_read", "jawa/faction_relations_get", "jawa/faction_name_get",
-            "jawa/faction_leader_get", "jawa/faction_ideo_get", "jawa/scenario_parts_get", "jawa/world_layers", "jawa/world_tile_get",
-            "jawa/world_landmarks_get", "jawa/world_features_get", "jawa/world_mutators_get", "jawa/world_objects_get",
-            "jawa/world_links_get", "jawa/incident_queue_peek", "jawa/tale_list", "jawa/social_list", "jawa/pawn_census",
-            "jawa/research_availability", "jawa/lore_stage_get", "jawa/anomaly_monolith_get", "jawa/bill_list",
-            "jawa/visibility_report", "jawa/cell_temperature", "jawa/thing_ambient_temp", "jawa/tile_settleable",
-            "jawa/world_neighbors", "jawa/read_opinion", "jawa/read_psychic_sensitivity", "jawa/pawn_break_thresholds",
-            "jawa/time_perf", "jawa/manhunter_preview", "jawa/type_probe", "jawa/type_visibility", "jawa/shadegrid_read",
-            "jawa/flowworks_engine_state", "jawa/gss_playtest_status", "jawa/playtest_status", "jawa/prefab_list",
+            internal string Name;
+            /// <summary>Declared ceiling on how much play speed the always-on recorders may cost, as a share (0.10 = the
+            /// game may run up to 10% slower because of them). Reported and judged (BudgetVerdict); never enforced by
+            /// silently switching a recorder off, which would hide the slowdown it explains.</summary>
+            internal double RecorderBudgetShare;
+            internal bool TpsSampler, TpsAttribution;        // cheap, always on: they explain a slowdown
+            internal bool AwarenessCheapHooks;               // incident journal, spawn, context scopes
+            internal bool AwarenessGenerationHook;           // GeneratePawn: the hottest hook
+            internal bool WildSpawnerBlock;                  // quiet-world block (a test fixture)
+            internal bool DenyCampaignFamilies;              // refuse the CampaignDenied tools
+        }
+
+        internal static readonly Policy CampaignPolicy = new Policy
+        {
+            Name = Campaign, RecorderBudgetShare = 0.10, TpsSampler = true, TpsAttribution = true, AwarenessCheapHooks = true,
+            AwarenessGenerationHook = false, WildSpawnerBlock = false, DenyCampaignFamilies = true,
         };
 
-        /// <summary>Tools that must NEVER run in the safe profile (the unit test fails if one is allowed). Not the
-        /// enforcement list - the allow-list is - but the tripwire that catches a careless allow-list edit.</summary>
-        internal static readonly string[] MustNeverBeSafe =
+        internal static readonly Policy TestPolicy = new Policy
         {
-            "jawa/static_call", "jawa/wild_spawner_block", "jawa/spawn_pawn", "jawa/spawn_batch", "jawa/spawn_fill_area",
-            "jawa/fire_raid", "jawa/fire_quest", "jawa/storyteller_fire", "jawa/incident_schedule", "jawa/hot_reload_defs",
-            "jawa/autosave_now", "jawa/prefs", "jawa/set_game_speed", "jawa/time_set_ticks", "jawa/kill_hostiles",
-            "jawa/destroy_batch", "jawa/destroy_bulk", "jawa/explosion_at", "jawa/set_terrain", "jawa/world_tile_set",
-            "jawa/pawn_health", "jawa/research_finish_project", "jawa/storyteller_swap", "jawa/debug_actions",
-            "jawa/weather_roll_next", "jawa/map_zones", "jawa/bridge_arg_report", "jawa/damage_log", "jawa/raid_preview",
-            "jawa/forecast_incidents", "jawa/log_autoopen_suppress", "jawa/take_screenshot", "jawa/clear_area", "jawa/wipe_cell",
-            "jawa/lord_assault_spawn", "jawa/map_drop", "jawa/order_pawn", "jawa/set_draft", "jawa/trade_execute",
-            "jawa/gravship_launch", "jawa/tps_test_attribution",
+            Name = Test, RecorderBudgetShare = 1.00, TpsSampler = true, TpsAttribution = true, AwarenessCheapHooks = true,
+            AwarenessGenerationHook = true, WildSpawnerBlock = true, DenyCampaignFamilies = false,
         };
 
-        private static readonly HashSet<string> AllowSet = new HashSet<string>(SafeAllowList, StringComparer.Ordinal);
+        internal static Policy PolicyFor(string profile) => profile == Test ? TestPolicy : CampaignPolicy;
+
+        /// <summary>within | over | unmeasured: recorder seconds against wall seconds of play, for a profile's budget.
+        /// The share is recorder / (wall - recorder): the slowdown relative to play without the recorders.</summary>
+        internal static string BudgetVerdict(double recorderSeconds, double playSeconds, Policy p, out double share)
+        {
+            share = double.NaN;
+            if (p == null || double.IsNaN(recorderSeconds) || recorderSeconds < 0 || !(playSeconds > 0) || recorderSeconds >= playSeconds)
+                return "unmeasured";
+            share = recorderSeconds / (playSeconds - recorderSeconds);
+            return share <= p.RecorderBudgetShare ? "within" : "over";
+        }
+
+        // ------------------------------------------------------------------ tool families denied in CAMPAIGN
+        internal const string FDebugInvoke = "debug-invoke", FTestOnly = "test-only", FHeavyDiagnostic = "heavy-diagnostic",
+                              FQuietWorld = "quiet-world";
+
+        internal static readonly Dictionary<string, string> FamilyReasons = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            [FDebugInvoke] = "arbitrary invocation / debug actions / def hot-reload: can do anything, including slow or destructive things",
+            [FTestOnly] = "a test fixture or harness driver: freezes the game, injects faults or runs playtest drivers",
+            [FHeavyDiagnostic] = "a whole-game diagnostic sweep (reflection over every assembly, every tile, every def): seconds of main thread",
+            [FQuietWorld] = "a quiet-world test control that suppresses vanilla behaviour",
+        };
+
+        /// <summary>The tools CAMPAIGN refuses, each with its family. Everything else is authoring or read and stays
+        /// available. Adding to this list is a decision about the owner's play, not a convenience.</summary>
+        internal static readonly Dictionary<string, string> CampaignDenied = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            ["jawa/static_call"] = FDebugInvoke, ["jawa/debug_actions"] = FDebugInvoke, ["jawa/debug_action_yielders"] = FDebugInvoke,
+            ["jawa/debug_settings"] = FDebugInvoke, ["jawa/hot_reload_defs"] = FDebugInvoke, ["jawa/stat_cache_bust"] = FDebugInvoke,
+            ["jawa/tps_test_block"] = FTestOnly, ["jawa/tps_test_attribution"] = FTestOnly,
+            ["jawa/playtest_start"] = FTestOnly, ["jawa/playtest_collect"] = FTestOnly, ["jawa/playtest_status"] = FTestOnly,
+            ["jawa/gss_playtest_start"] = FTestOnly, ["jawa/gss_playtest_collect"] = FTestOnly, ["jawa/gss_playtest_status"] = FTestOnly,
+            ["jawa/gss_stage"] = FTestOnly, ["jawa/oracle_selftest"] = FTestOnly, ["jawa/oracle_test_ohm_letter"] = FTestOnly,
+            ["jawa/load_stall_probe"] = FTestOnly, ["jawa/flowworks_job_probe"] = FTestOnly,
+            ["jawa/type_visibility"] = FHeavyDiagnostic, ["jawa/startup_types"] = FHeavyDiagnostic, ["jawa/forecast_incidents"] = FHeavyDiagnostic,
+            ["jawa/world_cache_audit"] = FHeavyDiagnostic, ["jawa/tile_cache_audit"] = FHeavyDiagnostic, ["jawa/texture_audit"] = FHeavyDiagnostic,
+            ["jawa/biome_art_audit"] = FHeavyDiagnostic, ["jawa/pawnkind_audit"] = FHeavyDiagnostic, ["jawa/world_mutators_audit"] = FHeavyDiagnostic,
+            ["jawa/world_lint"] = FHeavyDiagnostic, ["jawa/rimdefdump_run"] = FHeavyDiagnostic, ["jawa/export_things"] = FHeavyDiagnostic,
+            ["jawa/wild_spawner_block"] = FQuietWorld,
+        };
+
+        /// <summary>Tripwire for the unit test: authoring tools the owner ruled must stay usable in campaign.</summary>
+        internal static readonly string[] MustStayInCampaign =
+        {
+            "jawa/spawn_pawn", "jawa/spawn_batch", "jawa/fire_raid", "jawa/raid_shape_fire", "jawa/incident_schedule",
+            "jawa/inhabited_settlement_create", "jawa/lord_assault_spawn", "jawa/set_terrain", "jawa/set_pawn_backstory",
+            "jawa/world_tile_set", "jawa/pawn_health", "jawa/destroy_batch", "jawa/map_info", "jawa/tps_report", "jawa/awareness",
+            "jawa/incident_journal", "jawa/pawn_origin", "jawa/thing_explain", "jawa/bridge_arg_report", "jawa/harmony_patches",
+        };
+
+        /// <summary>Tripwire for the unit test: what the owner ruled OFF in campaign.</summary>
+        internal static readonly string[] MustBeOffInCampaign =
+        {
+            "jawa/static_call", "jawa/debug_actions", "jawa/hot_reload_defs", "jawa/wild_spawner_block", "jawa/tps_test_block",
+            "jawa/tps_test_attribution", "jawa/forecast_incidents", "jawa/type_visibility", "jawa/startup_types",
+        };
 
         internal static bool Allowed(string tool, string effectiveProfile)
         {
             if (tool == HandshakeTool) return true;
-            if (effectiveProfile == Gm) return true;
-            return tool != null && AllowSet.Contains(tool);
+            if (!PolicyFor(effectiveProfile).DenyCampaignFamilies) return true;
+            return tool != null && !CampaignDenied.ContainsKey(tool);
         }
 
-        private static readonly HashSet<string> MutatingWords = new HashSet<string>(StringComparer.Ordinal)
-        {
-            "set", "spawn", "destroy", "fire", "kill", "add", "remove", "create", "place", "paint", "drop", "grant", "force",
-            "start", "launch", "land", "clear", "wipe", "import", "commit", "reset", "apply", "finish", "edit", "swap", "send",
-            "damage", "explosion", "dig", "configure", "assign", "train", "marry", "resurrect", "restore", "transfer", "move",
-            "poke", "suppress", "block", "stage", "capture", "execute", "run", "build", "fill", "collapse", "minify", "refuel",
-            "split", "recount", "bust", "rebuild", "fix", "make", "order", "select", "attack", "found", "roll", "zones", "call",
-        };
-
-        /// <summary>A name-level tripwire for the test: a safe tool whose NAME carries a mutating verb is suspect.</summary>
-        internal static bool NameLooksMutating(string tool)
-        {
-            if (tool == null) return true;
-            var words = tool.Replace("jawa/", "").Split('_', '/');
-            if (words.Length > 1 && words[words.Length - 1] == "get") return false;   // lore_stage_get: a noun phrase read back
-            foreach (var w in words) if (MutatingWords.Contains(w)) return true;
-            return false;
-        }
+        internal static string FamilyOf(string tool) => tool != null && CampaignDenied.TryGetValue(tool, out var f) ? f : "authoring-or-read";
 
         internal static string RefusalText(string tool, string why)
         {
-            return "REFUSED by the companion's SAFE profile: " + tool + " is not on the reviewed read-only list (" + why + "). " +
-                   "GM tools run only when <SaveData>/JawaBench/" + ProfileFileName + " says {\"profile\": \"gm\"}, is unexpired, " +
-                   "and the loaded save is not one of its campaignSaves. Call jawa/companion_handshake to see the profile.";
+            string fam = FamilyOf(tool);
+            string reason = FamilyReasons.TryGetValue(fam, out var r) ? r : fam;
+            return "REFUSED in the CAMPAIGN profile: " + tool + " is " + fam + " (" + reason + "); profile: " + why + ". " +
+                   "Authoring tools stay available. Test/diagnostic tools run only when <SaveData>/JawaBench/" + ProfileFileName +
+                   " says {\"profile\": \"test\"}, is unexpired, and the loaded save is not one of its campaignSaves. " +
+                   "Call jawa/companion_handshake to see the profile.";
         }
 
         // ------------------------------------------------------------------ the profile file
@@ -109,8 +148,8 @@ namespace JawaBench.BridgeTools
             internal string[] CampaignSaves = new string[0];
             internal DateTime? ExpiresUtc;
 
-            /// <summary>{"profile": "gm"|"safe", "expiresUtc": "ISO-8601", "campaignSaves": "a, b"} (flat JSON). Null or
-            /// empty = no file. Anything unreadable is an Error, and an Error is SAFE.</summary>
+            /// <summary>{"profile": "test"|"gm"|"campaign", "expiresUtc": "ISO-8601", "campaignSaves": "a, b"} (flat JSON).
+            /// Null or empty = no file. Anything unreadable is an Error, and an Error is CAMPAIGN.</summary>
             internal static ProfileFile Parse(string json, DateTime nowUtc)
             {
                 var f = new ProfileFile();
@@ -125,6 +164,7 @@ namespace JawaBench.BridgeTools
                         case "profile":
                             f.Profile = p.Value as string;
                             if (f.Profile == null) f.Error = "profile is not a string";
+                            else if (f.Profile == "gm") f.Profile = Test;      // alias
                             break;
                         case "expiresUtc":
                             if (p.Value is string s && DateTime.TryParse(s, CultureInfo.InvariantCulture,
@@ -144,25 +184,25 @@ namespace JawaBench.BridgeTools
             }
         }
 
-        /// <summary>The effective profile, with the reason. Anything short of a clean, unexpired gm file is SAFE.</summary>
+        /// <summary>The effective profile, with the reason. Anything short of a clean, unexpired test file is CAMPAIGN.</summary>
         internal static string Effective(ProfileFile f, DateTime nowUtc, string loadedSave, out string why)
         {
-            if (f == null || !f.Present) { why = "no profile file: safe by default"; return Safe; }
-            if (f.Error != null) { why = f.Error + ": safe"; return Safe; }
-            if (f.Profile == Safe) { why = "profile file says safe"; return Safe; }
-            if (f.Profile != Gm) { why = "unknown profile '" + f.Profile + "': safe"; return Safe; }
+            if (f == null || !f.Present) { why = "no profile file: campaign by default"; return Campaign; }
+            if (f.Error != null) { why = f.Error + ": campaign"; return Campaign; }
+            if (f.Profile == Campaign) { why = "profile file says campaign"; return Campaign; }
+            if (f.Profile != Test) { why = "unknown profile '" + f.Profile + "': campaign"; return Campaign; }
             if (f.ExpiresUtc.HasValue && nowUtc >= f.ExpiresUtc.Value)
             {
-                why = "gm profile expired at " + f.ExpiresUtc.Value.ToString("o", CultureInfo.InvariantCulture) + ": safe";
-                return Safe;
+                why = "test profile expired at " + f.ExpiresUtc.Value.ToString("o", CultureInfo.InvariantCulture) + ": campaign";
+                return Campaign;
             }
             if (loadedSave != null && f.CampaignSaves.Any(c => string.Equals(c, loadedSave.Trim(), StringComparison.OrdinalIgnoreCase)))
             {
-                why = "loaded save '" + loadedSave + "' is a listed campaign save: safe";
-                return Safe;
+                why = "loaded save '" + loadedSave + "' is a listed campaign save: campaign";
+                return Campaign;
             }
-            why = "profile file says gm" + (f.ExpiresUtc.HasValue ? " until " + f.ExpiresUtc.Value.ToString("o", CultureInfo.InvariantCulture) : "");
-            return Gm;
+            why = "profile file says test" + (f.ExpiresUtc.HasValue ? " until " + f.ExpiresUtc.Value.ToString("o", CultureInfo.InvariantCulture) : "");
+            return Test;
         }
 
         // ------------------------------------------------------------------ game epochs (identity, not ticks)
@@ -260,7 +300,7 @@ namespace JawaBench.BridgeTools
         }
 
         // ------------------------------------------------------------------ the handshake (stable schema)
-        internal const string HandshakeSchema = "companion_handshake/1";
+        internal const string HandshakeSchema = "companion_handshake/1";   // not yet deployed anywhere: still /1
 
         /// <summary>The top-level keys, in order. Changing this list is a schema change: bump HandshakeSchema and update
         /// design/RimMandrake/companion_handshake.md in the same commit.</summary>
@@ -268,14 +308,14 @@ namespace JawaBench.BridgeTools
         {
             "schema", "success", "utc", "companionAssembly", "companionVersion", "companionSha", "companionMvid",
             "companionFileSha256", "companionPath", "compileProfile", "runtimeProfile", "effectiveProfile", "profileWhy",
-            "profileFile", "gate", "hooks", "rimBridgeServer", "harmony", "game", "reservedArgs",
+            "profileFile", "policy", "gate", "hooks", "rimBridgeServer", "harmony", "game", "reservedArgs",
         };
 
         internal sealed class HandshakeInput
         {
             internal string Utc, CompanionAssembly, CompanionVersion, CompanionSha, CompanionMvid, CompanionFileSha256, CompanionPath;
             internal string CompileProfile, RuntimeProfile, EffectiveProfile, ProfileWhy, ProfileFile;
-            internal object Gate, Hooks, RimBridgeServer, Harmony, Game;
+            internal object Policy, Gate, Hooks, RimBridgeServer, Harmony, Game;
         }
 
         internal static Dictionary<string, object> ComposeHandshake(HandshakeInput i)
@@ -293,9 +333,10 @@ namespace JawaBench.BridgeTools
                 ["companionPath"] = i.CompanionPath,
                 ["compileProfile"] = i.CompileProfile,
                 ["runtimeProfile"] = i.RuntimeProfile,
-                ["effectiveProfile"] = i.EffectiveProfile == Gm ? Gm : Safe,   // anything unresolved reads SAFE
+                ["effectiveProfile"] = i.EffectiveProfile == Test ? Test : Campaign,   // anything unresolved reads CAMPAIGN
                 ["profileWhy"] = i.ProfileWhy,
                 ["profileFile"] = i.ProfileFile,
+                ["policy"] = i.Policy,
                 ["gate"] = i.Gate,
                 ["hooks"] = i.Hooks,
                 ["rimBridgeServer"] = i.RimBridgeServer,

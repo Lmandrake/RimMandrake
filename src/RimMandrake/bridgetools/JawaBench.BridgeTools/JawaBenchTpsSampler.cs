@@ -106,9 +106,9 @@ namespace JawaBench.BridgeTools
                     RecordDir = Path.Combine(Path.Combine(GenFilePaths.SaveDataFolderPath, "JawaBench"), "tps");
                     Directory.CreateDirectory(RecordDir);
                     Settings = JawaBenchTpsSettings.Load(RecordDir, out SettingsNote);
-                    if (!Settings.Sampler)
+                    if (!Settings.Sampler || !JawaBenchCompanionSafety.PolicyNow().TpsSampler)
                     {
-                        InstallError = "disabled by tps_settings.json (sampler: false)";
+                        InstallError = !Settings.Sampler ? "disabled by tps_settings.json (sampler: false)" : "disabled by the profile policy";
                         InstallStatus = "disabled";
                         Log.Message("[JawaBench] TPS sampler OFF by " + Path.Combine(RecordDir, "tps_settings.json"));
                         return;
@@ -155,7 +155,8 @@ namespace JawaBench.BridgeTools
                         Log.Warning("[JawaBench] TPS sampler NOT installed: " + InstallDetail);
                         return;
                     }
-                    if (Settings.Attribution) JawaBenchTpsProfiler.Install();
+                    // per-profile POLICY (JawaBenchSafetyCore): attribution stays on in campaign because it explains a slowdown
+                    if (Settings.Attribution && JawaBenchCompanionSafety.PolicyNow().TpsAttribution) JawaBenchTpsProfiler.Install();
                     if (Settings.Watchdog) WD.Start(RecordDir);
                     try { UnityEngine.Application.quitting += OnQuit; } catch { }
                     try { AppDomain.CurrentDomain.ProcessExit += (s, e) => OnQuit(); } catch { }
