@@ -252,6 +252,13 @@ def _merge_census(pawns, census):
         p["job"] = job.get("def")
         p["isPredatorHunting"] = bool(c.get("isPredatorHunting"))
         p["preyId"] = c.get("preyId")
+        # who it is going for: the run-validity rule (contract.disruption_evidence) reads these as evidence
+        p["enemyTargetId"] = c.get("enemyTargetId")
+        p["meleeThreatId"] = c.get("meleeThreatId")
+        p["jobTargetA"] = ((job.get("targetA") or {}).get("thingId") if isinstance(job.get("targetA"), dict)
+                           else job.get("targetA"))
+        p["lord"] = c.get("lord")
+        p["duty"] = c.get("duty")
 
 
 # ---- the one function that touches the bridge ---------------------------------

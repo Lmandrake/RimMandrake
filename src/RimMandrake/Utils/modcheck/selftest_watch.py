@@ -58,10 +58,12 @@ def main():
         check("debug settings restored exactly", w.debug == before, str(w.debug))
         check("ticks_spent matches the measured clock", wt.summary()["ticks_spent"] == 2000, str(wt.summary()["ticks_spent"]))
 
-        # ---- a raid inside the wait stops it at the chunk, with evidence
+        # ---- a raid inside the wait stops it at the chunk, with evidence -- under visitor_policy="abort". The DEFAULT
+        # since the owner's rule (question card 2026-10-10) records + removes a harmless visitor and carries on:
+        # that behaviour is selftest_awareness.py's; this keeps the abort machinery itself proven.
         w = bland_world(tmp)
         w.at(1000, raid)
-        with Watch(w, (100, 100), tmp, mod="M", chain="raid", chunk=600) as wt:
+        with Watch(w, (100, 100), tmp, mod="M", chain="raid", chunk=600, visitor_policy="abort") as wt:
             try:
                 wt.wait(None, 2600)
                 aborted = None
@@ -154,7 +156,7 @@ def main():
         w = bland_world(tmp)
         w.at(500, raid)
         findings = []
-        with Watch(w, (100, 100), tmp, mod="M", chain="ctx", chunk=600) as wt:
+        with Watch(w, (100, 100), tmp, mod="M", chain="ctx", chunk=600, visitor_policy="abort") as wt:
             ctx = TestContext(w, anchor=(100, 100), on_finding=findings.append, watch=wt)
             with ctx.component("first"):
                 ctx.wait_ticks(2000)

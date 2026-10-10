@@ -41,7 +41,10 @@ SEVERITY = {
     "condition_unexpected": WARN,
     "modal_open": SURPRISE,
     "log_errors": WARN,
-    "strangers_near_anchor": WARN,
+    "strangers_near_anchor": SURPRISE,  # a visitor: under the owner rule it is recorded and REMOVED, not aborted on
+    "player_joiner": SURPRISE,          # a NEW pawn of the player faction nobody declared (wanderer joins, ...)
+    "pawn_arrived": WARN,               # any other new pawn (set diff vs the baseline); recorded, never removed
+    "pawn_state_changed": WARN,         # same id, faction/player flag changed: recruit, tame, release - NOT an arrival
     "map_context_changed": WARN,
     "settings_drift": WARN,
     "pawn_roster_transition": WARN,
@@ -114,10 +117,42 @@ def _hit(detector, summary, evidence=None, suggest=(), focus=None, fp=None, seve
 PAWN_KINDS = ("hostile", "pawn")        # kinds whose contract can break
 
 
+def entity_key(entity):
+    """Identity of a matched entity for a BOUNDED expectation: a pawn's id, a letter's fingerprint, a condition's
+    def, a queue row's (defName, fireTick); the full row as a last resort."""
+    for k in ("id", "fingerprint"):
+        if entity.get(k) is not None:
+            return (k, entity[k])
+    if entity.get("def") is not None:
+        return ("def", entity["def"])
+    if entity.get("defName") is not None:
+        return ("defName", entity["defName"], entity.get("fireTick"))
+    return ("row", repr(sorted(entity.items())))
+
+
 class _Exp(object):
-    def __init__(self, kind, matcher, until_tick, phase):
+    def __init__(self, kind, matcher, until_tick, phase, max_count=None):
         self.kind, self.matcher, self.until_tick, self.phase = kind, matcher, until_tick, phase
         self.bound = {}                 # pawn id -> faction when first seen (contract)
+        # BOUNDED expectation (the per-test contract, VISITOR_DETECTORS_MEND_NAME_THE_STRANGER): at most
+        # `max_count` DISTINCT entities are admitted, first come first served; the next one is not expected and
+        # its own detector reports it. None == unbounded (every match admitted, the behaviour before 2026-10-10).
+        self.max_count = max_count
+        self.claimed = set()
+
+    def admits(self, entity):
+        """match() plus the bound: True iff this entity is (or now becomes) one of the admitted ones."""
+        if not self.match(entity):
+            return False
+        if self.max_count is None:
+            return True
+        key = entity_key(entity)
+        if key in self.claimed:
+            return True
+        if len(self.claimed) < self.max_count:
+            self.claimed.add(key)
+            return True
+        return False
 
     def match(self, entity):
         m = self.matcher
@@ -151,8 +186,12 @@ class Expectations(object):
         self.items = []
         self.phase = None
 
-    def expect(self, kind, matcher, until_tick=None, phase=None):
-        e = _Exp(kind, matcher, until_tick, phase)
+    def expect(self, kind, matcher, until_tick=None, phase=None, max_count=None):
+        """`max_count`: admit at most that many distinct matching entities (a bounded, per-test expectation:
+        `expect("condition", {"def": "RM_ForgePulse"}, max_count=1)` admits the pulse once; a second pulse, or
+        any other condition of the same mod, is still reported). Never declare by mod package: ownership is a
+        hint for the investigator, not permission (GPT review section 5)."""
+        e = _Exp(kind, matcher, until_tick, phase, max_count)
         self.items.append(e)
         return e
 
@@ -174,7 +213,7 @@ class Expectations(object):
 
     def matches(self, kind, entity, tick=None):
         kinds = (kind, "fixture") if kind in self.FIXTURE_EXEMPT else (kind,)
-        return any(e.match(entity) for e in self.live(kinds, tick))
+        return any(e.admits(entity) for e in self.live(kinds, tick))
 
 
 # ---- shared helpers -----------------------------------------------------------------
@@ -195,6 +234,40 @@ def _focus(p):
 
 def _dist(a, b):
     return max(abs(a[0] - b[0]), abs(a[1] - b[1]))
+
+
+def pawn_state(p):
+    """The pawn's state in words, for a detector's text: dead / downed / mental:<def> / hostile-faction / standing."""
+    bits = []
+    if p.get("dead"):
+        bits.append("dead")
+    elif p.get("downed"):
+        bits.append("downed")
+    ms = p.get("mentalState")
+    if ms:
+        bits.append("mental:%s" % (ms.get("def") if isinstance(ms, dict) else ms))
+    if p.get("hostile"):
+        bits.append("hostile-faction")
+    if not p.get("spawned", True) and not p.get("dead"):
+        bits.append("unspawned")
+    return ",".join(bits) or "standing"
+
+
+def describe_pawn(p):
+    """`id (kind, faction, state)` -- what an agent needs to start from, never a bare count (E3/E4)."""
+    return "%s (%s, %s, %s)" % (p.get("id"), p.get("kindDef") or p.get("def") or "?",
+                                p.get("faction") or "no faction", pawn_state(p))
+
+
+def describe_some(rows, n=5):
+    txt = "; ".join(describe_pawn(p) for p in rows[:n])
+    return txt + ("; +%d more" % (len(rows) - n) if len(rows) > n else "")
+
+
+def pawn_evidence(p):
+    return {"id": p["id"], "kindDef": p.get("kindDef"), "def": p.get("def"), "faction": p.get("faction"),
+            "isPlayer": p.get("isPlayer"), "hostileFaction": p.get("hostile"), "state": pawn_state(p),
+            "x": p.get("x"), "z": p.get("z")}
 
 
 def _pawns_by_id(snap):
@@ -437,15 +510,17 @@ def hostile_pawns(snap, baseline, exps, ctx, anchor=None):
     if not rows:
         return []
     ctx["hostiles"] = rows
+    ctx.setdefault("reported", set()).update(p["id"] for p in rows)
     sev = SURPRISE
     if anchor is not None and all(p["x"] is not None and _dist((p["x"], p["z"]), anchor) > FAR_CELLS and
                                   p["id"] in base and (base[p["id"]]["x"], base[p["id"]]["z"]) == (p["x"], p["z"])
                                   for p in rows):
         sev = WARN
     return [_hit("hostile_pawns",
-                 "%d hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)" % len(rows),
-                 {"pawns": [{"id": p["id"], "kindDef": p["kindDef"], "faction": p["faction"],
-                             "x": p["x"], "z": p["z"]} for p in rows], "threat_confirmed": False},
+                 "%d hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat): %s"
+                 % (len(rows), describe_some(rows)),
+                 {"pawns": [pawn_evidence(p) for p in rows], "ids": [p["id"] for p in rows],
+                  "threat_confirmed": False},
                  suggest=["kill_hostiles"], focus=_focus(rows[0]), severity=sev,
                  fp="hostile_pawns:" + ",".join(sorted(p["id"] for p in rows)))]
 
@@ -474,6 +549,7 @@ def wildlife_near_colonist(snap, baseline, exps, ctx):
                 new_ids.add(p["id"])
     if not out_rows:
         return []
+    ctx.setdefault("reported", set()).update(p["id"] for p, _ in out_rows)
     out_rows.sort(key=lambda r: r[1])
     return [_hit("wildlife_near_colonist",
                  "%d wild animal(s) within %d cells of a colonist (%d new since baseline); proximity only, "
@@ -481,7 +557,9 @@ def wildlife_near_colonist(snap, baseline, exps, ctx):
                  {"animals": [{"id": p["id"], "kindDef": p["kindDef"], "x": p["x"], "z": p["z"], "dist": d,
                                "new": p["id"] in new_ids,
                                "hunting": p.get("isPredatorHunting") if p.get("census") else None}
-                              for p, d in out_rows[:10]]},
+                              for p, d in out_rows[:10]],
+                  # only animals that ARRIVED after the baseline are visitors; one already there is the map
+                  "ids": sorted(new_ids)},
                  suggest=["kill_wildlife"], focus=_focus(out_rows[0][0]),
                  severity=SURPRISE if new_ids else WARN,
                  fp="wildlife_near_colonist:" + ",".join(sorted(p["id"] for p, _ in out_rows)))]
@@ -734,11 +812,14 @@ def strangers_near_anchor(snap, baseline, exps, ctx, anchor=None, radius=STRANGE
         return []
     rows = [p for p in snap["pawns"] if not p["isPlayer"] and not p["hostile"] and not p["dead"]
             and p["spawned"] and p["x"] is not None and _dist((p["x"], p["z"]), anchor) <= radius
-            and not exps.matches("pawn", p, snap["tick"])]
+            and not exps.matches("pawn", p, snap["tick"]) and not exps.matches("hostile", p, snap["tick"])]
     if not rows:
         return []
-    return [_hit("strangers_near_anchor", "%d non-player pawn(s) within %d cells of the anchor" % (len(rows), radius),
-                 {"pawns": [{"id": p["id"], "kindDef": p["kindDef"], "faction": p["faction"]} for p in rows]},
+    ctx.setdefault("reported", set()).update(p["id"] for p in rows)
+    return [_hit("strangers_near_anchor", "%d non-player pawn(s) within %d cells of the anchor: %s"
+                 % (len(rows), radius, describe_some(rows)),
+                 {"pawns": [dict(pawn_evidence(p), dist=_dist((p["x"], p["z"]), anchor)) for p in rows],
+                  "ids": [p["id"] for p in rows]},
                  suggest=["clear_strangers"], focus=_focus(rows[0]),
                  fp="strangers:" + ",".join(sorted(p["id"] for p in rows)))]
 
@@ -781,7 +862,7 @@ def pawn_roster_transition(snap, baseline, exps, ctx):
     hits = []
     gone = [p for i, p in base.items() if i not in cur and tracked(p) and not exps.matches("pawn", p, snap["tick"])]
     came = [p for i, p in cur.items() if i not in base and tracked(p) and not p["hostile"]
-            and not exps.matches("pawn", p, snap["tick"])]
+            and i not in ctx.get("joiners", ()) and not exps.matches("pawn", p, snap["tick"])]
     for p in gone:
         hits.append(_hit("pawn_roster_transition", "pawn %s (%s) left the roster" % (p["name"], p["id"]),
                          {"id": p["id"], "direction": "gone", "faction": p["faction"]},
@@ -790,6 +871,75 @@ def pawn_roster_transition(snap, baseline, exps, ctx):
         hits.append(_hit("pawn_roster_transition", "pawn %s (%s) joined the roster" % (p["name"], p["id"]),
                          {"id": p["id"], "direction": "arrived", "faction": p["faction"]},
                          focus=_focus(p), fp="roster:arrived:%s" % p["id"]))
+    return hits
+
+
+def _pawn_baseline_usable(snap, baseline, ctx):
+    if "list_pawns" in ctx["suppressed"]:
+        return False
+    bs = baseline.snap["sources"]["list_pawns"]
+    return bs["read"] and bs["complete"]
+
+
+def _declared(p, exps, tick):
+    return exps.matches("pawn", p, tick) or exps.matches("hostile", p, tick)
+
+
+def player_joiner(snap, baseline, exps, ctx):
+    """A pawn of the PLAYER faction whose id was not in the baseline set and nobody declared: a wanderer join,
+    a quest joiner, a hatchling, a mod's gift. "non-player pawn" detectors cannot see it (GPT review s5). An id
+    already in the baseline that turned player is a STATE CHANGE (recruit/tame), reported by
+    pawn_state_changed instead."""
+    if not _pawn_baseline_usable(snap, baseline, ctx):
+        return []
+    rows = [p for p in snap["pawns"] if p["isPlayer"] and p["id"] not in baseline.pawn_ids and not p["dead"]
+            and p["spawned"] and not _declared(p, exps, snap["tick"])]
+    if not rows:
+        return []
+    ctx.setdefault("joiners", set()).update(p["id"] for p in rows)
+    ctx.setdefault("reported", set()).update(p["id"] for p in rows)
+    return [_hit("player_joiner", "%d undeclared pawn(s) joined the player faction: %s" % (len(rows), describe_some(rows)),
+                 {"pawns": [pawn_evidence(p) for p in rows], "ids": [p["id"] for p in rows]},
+                 suggest=["remove_visitors"], focus=_focus(rows[0]),
+                 fp="player_joiner:" + ",".join(sorted(p["id"] for p in rows)))]
+
+
+def pawn_arrived(snap, baseline, exps, ctx):
+    """Every other new pawn by SET DIFF against the baseline ids (never an id watermark: a redressed world pawn,
+    a returning caravan or a pre-generated quest pawn arrives with an OLD id). WARN, recorded, never removed: a
+    pawn far from everything may be the mechanic under test (a breeder's young) and only a contract can say."""
+    if not _pawn_baseline_usable(snap, baseline, ctx):
+        return []
+    seen = set(ctx.get("reported", ())) | set((h.get("id") for h in ctx.get("hostiles", ()) if isinstance(h, dict)))
+    rows = [p for p in snap["pawns"] if p["id"] not in baseline.pawn_ids and p["id"] not in seen and not p["dead"]
+            and p["spawned"] and not p["isPlayer"] and not _declared(p, exps, snap["tick"])
+            and not exps.matches("fixture", p, snap["tick"])]
+    if not rows:
+        return []
+    return [_hit("pawn_arrived", "%d pawn(s) appeared since the baseline (origin unknown): %s"
+                 % (len(rows), describe_some(rows)),
+                 {"pawns": [pawn_evidence(p) for p in rows], "ids": [p["id"] for p in rows]},
+                 focus=_focus(rows[0]), fp="pawn_arrived:" + ",".join(sorted(p["id"] for p in rows)))]
+
+
+def pawn_state_changed(snap, baseline, exps, ctx):
+    """Same id, different faction or player flag: recruited, tamed, released, converted. A state change of a pawn
+    that was already here, never an arrival (GPT review s7 phase-1 row 'same pawn recruited or tamed')."""
+    if not _pawn_baseline_usable(snap, baseline, ctx):
+        return []
+    base = _pawns_by_id(baseline.snap)
+    hits = []
+    for p in snap["pawns"]:
+        b = base.get(p["id"])
+        if b is None or (b["faction"] == p["faction"] and b["isPlayer"] == p["isPlayer"]):
+            continue
+        if exps.matches("fixture", p, snap["tick"]):
+            continue
+        hits.append(_hit("pawn_state_changed", "%s changed faction %s -> %s (state change, not an arrival)"
+                         % (describe_pawn(p), b["faction"] or "no faction", p["faction"] or "no faction"),
+                         {"id": p["id"], "factionBefore": b["faction"], "factionAfter": p["faction"],
+                          "isPlayerBefore": b["isPlayer"], "isPlayerAfter": p["isPlayer"]},
+                         focus=_focus(p), fp="pawn_state_changed:%s:%s" % (p["id"], p["faction"])))
     return hits
 
 
@@ -847,8 +997,11 @@ def sweep(snap, baseline, expectations=None, anchor=None):
         hits += predator_hunting(snap, baseline, exps, ctx)
         hits += mental_break(snap, baseline, exps, ctx)
         hits += strangers_near_anchor(snap, baseline, exps, ctx, anchor)
+        hits += player_joiner(snap, baseline, exps, ctx)
+        hits += pawn_state_changed(snap, baseline, exps, ctx)
         hits += pawn_roster_transition(snap, baseline, exps, ctx)
         hits += expected_contract_broken(snap, baseline, exps, ctx)
+        hits += pawn_arrived(snap, baseline, exps, ctx)
     elif "letter_list" not in suppressed:
         hits += colonist_died(snap, baseline, exps, ctx)       # letters / stats still speak
         hits += mental_break(snap, baseline, exps, ctx)

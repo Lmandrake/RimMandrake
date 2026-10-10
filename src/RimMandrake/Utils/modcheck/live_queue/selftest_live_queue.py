@@ -141,7 +141,7 @@ def main():
             w._t_jawa_incident_schedule = lambda **k: {"success": True}                # nothing queued
         rec = run_body("abort_proof", blind_hostiles)
         check("abort_proof FAILs when hazards do not reach the detectors",
-              rec["verdict"] == "FAIL" and "hazard hostile_raid: aborts via hostile_pawns with sidecar on disk, game paused"
+              rec["verdict"] == "FAIL" and "hazard hostile_raid: recorded + removed via hostile_pawns, run CLEAN, sidecar on disk, game paused"
               in rec["failed"] and any("predator" in f for f in rec["failed"]), rec["failed"])
 
         def noisy(w):
