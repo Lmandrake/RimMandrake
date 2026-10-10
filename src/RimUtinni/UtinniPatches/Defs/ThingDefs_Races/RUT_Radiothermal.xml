@@ -75,7 +75,7 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RUT_Radiothermal</defName>
-    <label>radiothermal</label>
+    <label>hessekh</label>
     <description>A heavy, ground-hugging animal so hot with its own decay that it must constantly dump the excess or cook from the inside. It moves rarely and alone — two of them sharing ground for long enough is a fire, not a meeting — and the cracked, faintly glowing hide is the reason nothing ever finds it by scent alone. A warm boulder sitting in otherwise dead-cold country usually means one has just moved on.</description>
     <statBases>
       <MoveSpeed>2.6</MoveSpeed>
@@ -186,8 +186,8 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RUT_Radiothermal</defName>
-    <label>radiothermal</label>
-    <labelPlural>radiothermals</labelPlural>
+    <label>hessekh</label>
+    <labelPlural>hessekh</labelPlural>
     <race>RUT_Radiothermal</race>
     <combatPower>140</combatPower>
     <wildGroupSize>1</wildGroupSize>

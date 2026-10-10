@@ -16,7 +16,7 @@
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Smolderback</defName>
-    <label>smolderback</label>
+    <label>hessekh</label>
     <description>So hot with its own decay it must dump heat to live — a living furnace that haunts the cold dark scour and cannot stand its own company. Back plates split by glowing seams, snow never lies on it, the ground steams where it beds. Tame one and winter is solved and dosed at once: it heats a shelter all winter, and irradiates it the entire time.</description>
     <statBases>
       <MoveSpeed>2.6</MoveSpeed>
@@ -91,7 +91,7 @@
   </ThingDef>
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Smolderback</defName>
-    <label>smolderback</label>
+    <label>hessekh</label>
     <race>RM_Smolderback</race>
     <combatPower>60</combatPower>
     <wildGroupSize>1~1</wildGroupSize>
