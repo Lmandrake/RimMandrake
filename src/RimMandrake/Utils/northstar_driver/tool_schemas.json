@@ -1,5 +1,5 @@
 {
- "_source": "live bridge --list-tools, 2026-10-02 (+ jawa/comp_read, static_call, thing_ambient_temp from load 10, 2026-10-03); +26 tools from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census); for tools in both, params are the union and required adds every C# parameter with no default",
+ "_source": "live bridge --list-tools, 2026-10-02 (+ jawa/comp_read, static_call, thing_ambient_temp from load 10, 2026-10-03); supplemented offline from C# [Tool] attributes in src/RimMandrake/bridgetools/JawaBench.BridgeTools (source=csharp: not yet seen in a live census), 523 tools, refreshed 2026-10-10",
  "tools": {
   "deepfire/add_coat": {
    "parameters": [
@@ -442,6 +442,11 @@
     "comp",
     "thing"
    ]
+  },
+  "jawa/companion_handshake": {
+   "parameters": [],
+   "required": [],
+   "source": "csharp"
   },
   "jawa/configure_bill": {
    "parameters": [
@@ -3246,7 +3251,8 @@
   },
   "jawa/wild_spawner_block": {
    "parameters": [
-    "action"
+    "action",
+    "minutes"
    ],
    "required": [],
    "source": "csharp"

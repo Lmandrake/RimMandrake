@@ -259,6 +259,13 @@ MEASURED `rimbridge_client.py:273-560`:
 - **One TCP socket per `RimBridge` object; one request in flight.** `_recv_response` reads
   until the matching id arrives and parks events in `self.events`, which are never consumed.
 - **Timeouts:** connect 5 s; per-call socket timeout 30 s (default, `--timeout` overrides).
+- **Per-call evidence** (since 2026-10-10, `BRIDGE_CALL_EVIDENCE_WIRE_LOST_REPLY_UNKNOWN`): every
+  `rimbridge_client.RimBridge.call` under python.exe appends `start`/`end` rows (tool, args sha256, pid, seat,
+  script, status ok/error/lost/INDETERMINATE) to `D:\Luke\dev\_rmscratch\bridge_calls.jsonl` (rotated at 20 MB).
+  A mutating call whose reply is lost, or whose process died mid-call, stays as a marker in `bridge_inflight\`
+  and every later mutating call raises `IndeterminateError` until `python.exe rimbridge_client.py --reconcile
+  --resolve <cid> --as applied|not-applied|partial --note "..."`. Clients that bypass `RimBridge.call`
+  are not covered (none found in Utils on 2026-10-10; the northstar transport wraps `RimBridge`).
   A timeout raises `"timed out … long event or the call may be frame-bound"`, and the request
   id goes into `abandoned`. If the late reply later arrives on the same socket, it is dropped
   (fix of 2026-10-01). Any other unexpected id raises "stream desynced".
