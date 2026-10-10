@@ -178,6 +178,26 @@ def slots_for(idx: L.Index, rel: str) -> list[tuple[str, str, str]]:
     return [(m, r, ev["sha"]) for (m, r), ev in idx.live.items() if r == rel and ev.get("sha")]
 
 
+_TEXPATHS: dict = {}
+
+
+def src_texpaths(src) -> set:
+    """Every <texPath> any XML under src/ names (cached per src root; one grep, not a python walk)."""
+    key = str(src)
+    if key not in _TEXPATHS:
+        import subprocess
+        out = subprocess.run(["grep", "-rhoE", "--include=*.xml", r"<texPath>[^<]+</texPath>", key],
+                             capture_output=True, text=True).stdout
+        _TEXPATHS[key] = {re.sub(r"</?texPath>", "", ln).strip() for ln in out.splitlines()}
+    return _TEXPATHS[key]
+
+
+def def_points_at(src, rel: str) -> bool:
+    """A def of ours already names this file (minus its facing suffix) as a texPath: donor art that is live."""
+    base = re.sub(r"(_(east|north|south|west))?\.png$", "", rel)
+    return base in src_texpaths(src)
+
+
 def is_held(row: str, holds) -> bool:
     rl = row.lower()
     return any(h.lower() in rl for h in holds)
@@ -557,8 +577,11 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
                     if not slots:
                         if str(lab).startswith("IN GAME"):
                             P["in_game_not_ours"] += 1
-                        elif (sheet, row, note) in done_marks:
+                        elif (sheet, row, note) in done_marks or (sheet, row, "") in done_marks:
                             pass        # --mark-done: the row was carried out by hand (the pick was a reference)
+                        elif def_points_at(src, rel):
+                            # our def's texPath already IS the picked donor art: nothing to do
+                            P["installed_already"].append((row, "def texPath (donor art)", rel))
                         else:
                             P["todo"].append(f"{row}: pick {letter} {rel} has no slot in any of our mods "
                                              f"(donor art? needs an override texture or a def texPath)")
@@ -814,14 +837,25 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
         v = (doc.get("decisions") or {}).get(row) or {}
         note = I.open_note(v)
         if not note:
-            R["conflicts"].append(f"--mark-done {row}: that row carries no note — nothing recorded")
+            had = [t for t in R["todo"] if t.startswith(f"{row}: pick ") and "has no slot in any of our mods" in t]
+            if not had:
+                R["conflicts"].append(f"--mark-done {row}: that row carries no note — nothing recorded")
+                continue
+            # a donor-pick TODO (no note): record it under note "" so the plan stops raising it
+            w = L.Writer({e["id"] for e in idx.events})
+            w.add({"type": "enact_done", "id": L.det_id("enact_done", sheet, row, ""), "sheet": sheet, "row": row,
+                   "note": "", "by": "agent", "evidence": done_evidence or "", "via": I.rel_via(decisions)})
+            w.flush()
+            R["todo"] = [t for t in R["todo"] if t not in had]
+            P["done"].append(f"{row}: donor pick marked done")
             continue
         ev = {"type": "enact_done", "id": L.det_id("enact_done", sheet, row, note), "sheet": sheet, "row": row,
               "note": note, "by": "agent", "evidence": done_evidence or "", "via": I.rel_via(decisions)}
         w = L.Writer({e["id"] for e in idx.events})
         new = w.add(ev)
         w.flush()
-        R["todo"] = [t for t in R["todo"] if not t.startswith(f"{row}: note not enacted")]
+        R["todo"] = [t for t in R["todo"] if not t.startswith(f"{row}: note not enacted")
+                     and not (t.startswith(f"{row}: pick ") and "has no slot in any of our mods" in t)]
         if new:
             P["done"].append(f"{row}: {note[:70]} (marked now)")
         if not (done_evidence or "").startswith("OWNER:"):
