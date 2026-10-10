@@ -12,3 +12,4 @@ Agent C: Harmony hook hardening, safe profile, epoch guards, handshake, lazy Gen
 - 13:00:42 landed bd7e0ec3e; running run_selftests
 - 13:06:04 OWNER RULING via coordinator: campaign profile keeps authoring; deny only monitoring/debug/test-only; 10% recorder budget constant per profile. Reworking profile core.
 - 13:08:55 reworked to campaign/test per owner ruling; 99/99 awareness units, TPS 25/25; standard build fixed (CS0649 in 72acd57dc standard build)
+- 13:10:02 tickets implemented at fd2375d54; gm DLL built (not deployed); done
