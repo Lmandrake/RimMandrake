@@ -47,6 +47,8 @@
     <Compile Include="CathedralPass.cs" />
     <Compile Include="Patch_CathedralPassHostility.cs" />
     <Compile Include="CathedralPassDebugActions.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>

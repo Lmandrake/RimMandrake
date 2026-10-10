@@ -930,6 +930,9 @@ MODS = {
         "Reading the antiquities": "Now",
         "Key text bonus": "Now",
     }, ()),
+    "CathedralPass": ("CathedralPassMod.cs", "RimMandrake.Utinni.CathedralPass.csproj", {
+        "Cathedral mechanoid pass": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
