@@ -556,7 +556,7 @@ window.artTogglePurge = (id, sha) => {
 addEventListener('DOMContentLoaded', () => {
   /* A decision click is recorded as decidedAt, so a row touched ONLY to purge or annotate
      never turns its prefill into a ruling at ingest (art_sheet.py docstring). */
-  /* Any save of a row's record first writes the defaulted variants into it, so the default is data. */
+  /* A save strips placeholder letters from HIS variant list; it never writes a default list (no pre-ticks). */
   const origQueue = window.queue;
   if (typeof origQueue === 'function') window.queue = function (id) {
     const it = byId.get(id);
@@ -1158,33 +1158,22 @@ if (!window.__bsAnim) window.__bsAnim = setInterval(() => document.querySelector
   const im = el.querySelector('img'); if (!im || !im.complete || !im.naturalWidth) return;
   el.dataset.i = i; im.src = fr[i];
 }), 66);
-/* Variant default (owner, 2026-10-06): a row whose record has no `variants` key starts with EVERY set that is ours
-   (not a donor original), not purged and not purgedLive marked as a variant; the owner turns off what is wrong.
-   An explicit list, even an empty one, is never overwritten. */
-window.artDefaultVariants = (it, d) => {
-  const purge = new Set((d && d.purge) || []);
-  const out = [];
-  for (const g of (it.graphics || [])) for (const c of g.cols) {
-    if (c.noSelect || c.purgedLive || (c.kind === 'donor' && !c.ours) || out.includes(c.letter)) continue;
-    const shas = Object.values(c.faces || {});
-    if (shas.length && shas.every(x => purge.has(x))) continue;
-    out.push(c.letter);
-  }
-  return out.sort((a, b) => LETTER_ORDER.indexOf(a) - LETTER_ORDER.indexOf(b));
-};
+/* Variant ticks (owner, by question card 2026-10-10): NEVER pre-ticked. A tick exists only on a lane where the game
+   truly draws from a random pool (a Graphic_Random folder, or alternateGraphics), and only the owner's own click puts
+   one there. A record still carrying a machine-default list from the retired 2026-10-06 rule (`variantsDefault`) shows
+   NO ticks, and a click never converts that default list into his: it starts his own list from empty. */
+window.artOwnerVariants = d => (d && !d.variantsDefault && Array.isArray(d.variants)) ? d.variants : [];
 /* Owner rule 2026-10-07 22:33 PDT: a geometric placeholder set (c.noSelect) can never be a pick or a variant. */
 window.artNoSelect = it => new Set((it.graphics || []).flatMap(g => g.cols.filter(c => c.noSelect).map(c => c.letter)));
+window.artPoolLetters = it => new Set((it.graphics || []).filter(g => g.pool).flatMap(g => g.cols.map(c => c.letter)));
 window.artEnsureVariants = (it, rec) => {
-  if (rec && !Object.prototype.hasOwnProperty.call(rec, 'variants')) {
-    rec.variants = window.artDefaultVariants(it, rec); rec.variantsDefault = true;
-  }
-  if (rec && Array.isArray(rec.variants)) { const ns = window.artNoSelect(it); rec.variants = rec.variants.filter(l => !ns.has(l)); }
+  if (rec && Array.isArray(rec.variants) && !rec.variantsDefault) { const ns = window.artNoSelect(it); rec.variants = rec.variants.filter(l => !ns.has(l)); }
 };
 const _itemBody = it => {
   const d = (typeof DEC !== 'undefined' && DEC[it.id]) || {};
   const purge = new Set(d.purge || []);
   const picks = Object.assign({}, it.prefillPicks || {}, d.picks || {});
-  const variants = new Set(Object.prototype.hasOwnProperty.call(d, 'variants') ? d.variants : window.artDefaultVariants(it, d));
+  const variants = new Set(window.artOwnerVariants(d));
   window.artNoSelect(it).forEach(l => variants.delete(l));
   const cell = (c, f) => {
     const s = c.faces[f];
@@ -1216,7 +1205,7 @@ const _itemBody = it => {
       ${faces(c, g)}
       <div class="bs-foot"><i class="bs-novar">cannot be picked or kept as a variant</i></div>
     </div>`;
-    const vbtn = `<button class="bs-var${vr ? ' on' : ''}" title="keep this set as a valid VARIANT as well as your one pick (saved as variants: [...] on the row)" onclick="event.stopPropagation();artToggleVariant('${it.id}','${c.letter}')">${vr ? '✓ variant' : '+ variant'}</button>`;
+    const vbtn = !g.pool ? '' : `<button class="bs-var${vr ? ' on' : ''}" title="keep this set as a valid VARIANT as well as your one pick (saved as variants: [...] on the row)" onclick="event.stopPropagation();artToggleVariant('${it.id}','${c.letter}')">${vr ? '✓ variant' : '+ variant'}</button>`;
     return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}${vr ? ' bs-isvar' : ''}">
       <div class="bs-head${c.purgedLive ? '' : ' bs-pick'}"${c.purgedLive ? '' : ` data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}"`} title="${esc(tip)}${c.purgedLive ? '' : '\n\nclick to pick this set'}"><b>${c.letter}</b>${c.near_of ? `<i class="bs-nearof" title="near-duplicate of set ${c.near_of} (dHash within ${NEAR_BITS} bits on every facing)">≈${c.near_of}</i>` : ''}<span>${esc(c.short)}</span>${c.placeholder ? `<i class="bs-ph" title="${esc(c.placeholder)}">PLACEHOLDER</i>` : ''}${c.purgedLive ? `<i class="bs-ph" title="You purged this picture. The game still shows it until a replacement is installed, so it is listed here for reference only and cannot be picked.">you purged this — still live until a replacement is installed</i>` : ''}${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
       ${faces(c, g)}
@@ -1284,11 +1273,12 @@ window.artToggleVariant = (id, letter) => {
   if (frozen) return;
   const it = byId.get(id); if (!it) return;
   if (window.artNoSelect(it).has(letter)) { if (typeof showErr === 'function') showErr('Set ' + letter + ' is placeholder art — it cannot be kept as a variant.'); return; }
+  if (!window.artPoolLetters(it).has(letter)) { if (typeof showErr === 'function') showErr('Set ' + letter + ' is not in a random pool — the game never draws it at random, so it cannot be a variant.'); return; }
   const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
-  window.artEnsureVariants(it, rec);
-  const s = new Set(rec.variants || []);
+  /* only HIS ticks: a machine-default list is dropped, never laundered into his (bug 2026-10-10, DESIGN §2) */
+  const s = new Set(window.artOwnerVariants(rec));
+  if (rec.variantsDefault) { rec.legacyVariantsDefault = rec.variants; delete rec.variantsDefault; }
   if (s.has(letter)) s.delete(letter); else s.add(letter);
-  delete rec.variantsDefault;
   rec.variants = [...s].sort((a, b) => LETTER_ORDER.indexOf(a) - LETTER_ORDER.indexOf(b));
   rec.variantsAt = new Date().toISOString();
   queue(id); patchRow(id); paintCounts();
@@ -1371,6 +1361,10 @@ BIOME_STYLE = """<style>
 .bs-play{outline:2px solid #e8b64c;outline-offset:-2px}
 .bs-cell{position:relative;width:86px;height:86px;display:flex;align-items:center;justify-content:center}
 .bs-cell .ac-thumb{width:86px;height:86px;flex:0 0 86px}
+/* the wing-beat playback frame is a bare <img> (no .ac-thumb): a wide flight sprite at natural size overflowed its cell
+   and sat on top of the set's footer, so the variant button under it could not be clicked (DESIGN 2026-10-10 §2) */
+.bs-cell{overflow:hidden}
+.bs-play img{max-width:100%;max-height:100%;object-fit:contain;pointer-events:none}
 .bs-gap{color:#3a4250;font-size:18px;border:1px dashed #222a33;border-radius:5px}
 .bs-face{position:absolute;left:3px;bottom:2px;font-size:9.5px;color:#8a95a5;background:#0b0d10cc;border-radius:2px;padding:0 3px;pointer-events:none}
 .bs-nearstub{align-self:stretch}
@@ -1899,6 +1893,13 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         if prim is not None and graphics.index(prim) != 0:
             graphics.remove(prim)
             graphics.insert(0, prim)
+        # a RANDOM POOL lane: the game draws one of several pictures at random (a Graphic_Random folder, or the adult body
+        # plus its alternateGraphics). Only there can a set be a variant (owner, by question card 2026-10-10)
+        _has_alt = any(g["role"] == ROLE_TEXT["alternate"] for g in graphics)
+        for gi_, g in enumerate(graphics):
+            g["pool"] = bool(g["res"]) and not g.get("flip") and (
+                any(c.get("random_variant") for c in g["cols"]) or g["role"] == ROLE_TEXT["alternate"]
+                or (_has_alt and gi_ == 0))
         allcols = [c for g in graphics for c in g["cols"]]
         mem = letter_memory.get(r["key"]) or {}
         # every picture an earlier build of this sheet put on this row (ruled snapshot + latest): a random-folder
@@ -2016,6 +2017,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 prior = {"text": text, "note": pr.get("note", ""), "was": was}
             gitems.append({
                 "key": gkey, "res": g["res"], "role": g["role"], "primary": gi == 0, "facings": facings,
+                "pool": bool(g.get("pool")),
                 "prior": prior, **flip,
                 "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
                           if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of", "placeholder", "purgedLive", "noSelect", "neverShown", "copyOf")}
@@ -2133,6 +2135,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                           "columns": {c["letter"]: c["faces"] for g in gitems for c in g["cols"]},
                           "labels": {c["letter"]: c["label"] for g in gitems for c in g["cols"]},
                           "graphic_of": {c["letter"]: g["key"] for g in gitems for c in g["cols"]},
+                          "pools": sorted(g["key"] for g in gitems if g.get("pool")),
                           "reserved": sorted(set((letter_memory.get(key) or {}).get("reserved") or [])
                                              | {c["letter"] for g in gitems for c in g["cols"]}, key=LETTERS.index),
                           "shownBase": sorted(_base_of.get(key) or ())}

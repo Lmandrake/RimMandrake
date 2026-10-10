@@ -1,0 +1,493 @@
+{
+  "biome": "RM_BlueDesert",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 20,
+  "decisions": {
+    "AA_Thunderbeast": {
+      "at": "2026-10-06T03:12:59.600Z",
+      "decidedAt": "2026-10-06T03:12:54.791Z",
+      "decision": "E",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:12:59.600Z",
+          "followed_by": [
+            "bluedesert_Thunderbeast_v4_north"
+          ],
+          "note": "Looks good, but needs its other facings. Also needs improved description. Half the size. Still missing a north facing.",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
+      "prefill": "hold",
+      "purge": [
+        "19c0fa186245ff23eae8bbc484c9d4426bd0a19445567a25c967e3b67e5b5a55",
+        "09ea0a49cc844b15badce028738b38c2c4120aeecd8ffc26102ef4bf34e10bd0",
+        "3d47e4cd574d6ccc4155dff45f708ed9f356201d4f1c245149d0387b719f4edb",
+        "5866c53a7295cca4ec96343575514e321a5a17d38011f72a251158d893dde138",
+        "01ae686025006dac908ba91ebdd7155ea2f44a95af67652dc9020f909e67745a",
+        "6c8481c109f8e82da8171bd9508a8065c90b11b8b0aa9b957fe029344250dcaa"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Chimeglobe": {
+      "at": "2026-10-06T03:14:21.801Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B"
+      ],
+      "variantsAt": "2026-10-06T03:14:21.801Z"
+    },
+    "RM_Dorrak": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Dovvik": {
+      "at": "2026-10-09T17:49:53-0700",
+      "conflictSheet": [
+        {
+          "action": "queue a redraw following the note",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_BlueDesert/Dovvik/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-05T14:26:43.153Z",
+            "decision": "B",
+            "note": "You drew a beast that appears to be eating a plant... of course they can't be like that. Also, the graphics renders in your sheet for scale are very hard to interpret as they are low res.",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
+      "decidedAt": "2026-10-05T05:54:07.847Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T17:49:53-0700",
+          "followed_by": [
+            "enact_e3e8ae91_dovvik_v1"
+          ],
+          "note": "You drew a beast that appears to be eating a plant... of course they can't be like that. Also, the graphics renders in your sheet for scale are very hard to interpret as they are low res.",
+          "when": "2026-10-09T18:16:08-0700"
+        }
+      ],
+      "prefill": "A",
+      "purge": [
+        "9a2e9c9baf9fc063e70953ca58c97a76503b94c03f88e08a17f30ceed2bf6fbe",
+        "5afdcdfafbba574d4d2ae90438b2adf380f09854c16a3151ecd43efb095c4ad3",
+        "3dfd29415782dc217ad4674edb5544f30171f8e6dd0e7fead5ece095af6a3849"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Glassfern": {
+      "at": "2026-10-06T03:14:25.538Z",
+      "decidedAt": "2026-10-04T23:42:36.375Z",
+      "decision": "B",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:14:25.538Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Keep B & C as valid variants.",
+          "when": "2026-10-09T07:19:53-0700"
+        }
+      ],
+      "prefill": "A",
+      "purge": [
+        "49c80e23debcaec53455882319587b1fcb38f79f5057e1d7786927d6cb0bcd48"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-06T03:14:25.538Z"
+    },
+    "RM_Kethevar": {
+      "at": "2026-10-05T14:37:17.720Z",
+      "decision": "A",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T14:37:17.720Z",
+          "followed_by": [
+            "RM_Kethevar_var1",
+            "RM_Kethevar_var2",
+            "RM_Kethevar_var3"
+          ],
+          "note": "Add some variants",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-05T14:37:17.720Z"
+    },
+    "RM_Krissek": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Lisqueth": {
+      "at": "2026-10-05T14:37:22.774Z",
+      "decision": "A",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T14:37:22.774Z",
+          "followed_by": [
+            "RM_Lisqueth_var1",
+            "RM_Lisqueth_var2",
+            "RM_Lisqueth_var3"
+          ],
+          "note": "Add some variants",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-05T14:37:22.774Z"
+    },
+    "RM_Murrek": {
+      "at": "2026-10-09T17:49:53-0700",
+      "conflictSheet": [
+        {
+          "action": "queue a redraw following the note",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_BlueDesert/Murrek/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-05T05:55:04.302Z",
+            "decision": "C",
+            "note": "Give it a yellower hue due to the hydrocarbon blood",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
+      "decidedAt": "2026-10-05T05:55:04.302Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T17:49:53-0700",
+          "followed_by": [
+            "enact_069e4d4b_murrek_v1"
+          ],
+          "note": "Give it a yellower hue due to the hydrocarbon blood",
+          "when": "2026-10-09T18:16:08-0700"
+        }
+      ],
+      "prefill": "A"
+    },
+    "RM_Ossivel": {
+      "at": "2026-10-06T03:12:38.560Z",
+      "decidedAt": "2026-10-05T14:27:05.681Z",
+      "decision": "B",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:12:38.560Z",
+          "followed_by": [
+            "bluedesert_Ossivel_v3_east",
+            "bluedesert_Ossivel_v3_north",
+            "bluedesert_Ossivel_v3_south",
+            "bluedesert_Ossivel_v4_east",
+            "bluedesert_Ossivel_v4_north",
+            "bluedesert_Ossivel_v4_south"
+          ],
+          "note": "This looks vaguely lewd and also somewhat humanoid. More alien please.",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
+      "prefill": "A",
+      "purge": [
+        "030dccd5223e9dd7f359d4ea95ac7ff510efef33435c348a61af6bae98bbfece",
+        "663e4bf68335f230df734a07e53f27b0ccca961cf31215ac9552f758c3d6a42f",
+        "590ba05c30d5e0593bb799f26f1c748d31cbd8a9cd853d4b8e45f01de70720f8"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "B",
+        "D"
+      ],
+      "variantsAt": "2026-10-06T03:12:38.560Z"
+    },
+    "RM_Palefloss": {
+      "at": "2026-10-05T14:37:26.890Z",
+      "decision": "A",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-05T14:37:26.890Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "All three are valid variants, keep",
+          "when": "2026-10-09T07:19:53-0700"
+        }
+      ],
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-05T14:37:26.890Z"
+    },
+    "RM_Qeshra": {
+      "at": "2026-10-06T03:14:54.825Z",
+      "decidedAt": "2026-10-04T23:43:38.375Z",
+      "decision": "A",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:14:54.825Z",
+          "followed_by": [
+            "RM_Qeshra_var1",
+            "RM_Qeshra_var2",
+            "RM_Qeshra_var3"
+          ],
+          "note": "Make some variants",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
+      "prefill": "A"
+    },
+    "RM_Utikka": {
+      "at": "2026-10-09T17:49:53-0700",
+      "conflictSheet": [
+        {
+          "action": "queue a redraw following the note",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_BlueDesert/Utikka/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-05T14:27:38.269Z",
+            "decision": "B",
+            "note": "You made another image of an animal eating plants. It also is supposed to be hydrocarbon based (pale white/blue and yellow blood) and like nothing terrestrial. This fails all three. ",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
+      "decidedAt": "2026-10-05T05:56:25.653Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T17:49:53-0700",
+          "followed_by": [
+            "enact_d67b8fd8_utikka_v1"
+          ],
+          "note": "You made another image of an animal eating plants. It also is supposed to be hydrocarbon based (pale white/blue and yellow blood) and like nothing terrestrial. This fails all three. ",
+          "when": "2026-10-09T18:16:08-0700"
+        }
+      ],
+      "prefill": "A",
+      "purge": [
+        "c655fb14acf92b53992f758d0c3bd10bd3d13830ca4c5004f9c16da055fd73a6",
+        "086e060adc0fb404fd9b5be01ac9ed63177020c3f2c5337dce8a50fc68f495a0",
+        "0037e2521adbe84e52051cb2e0feb6c0dc03705e34f46ffe862beca2a244b4ae"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Vashpuk": {
+      "at": "2026-10-06T03:14:47.467Z",
+      "decision": "A",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:14:47.467Z",
+          "followed_by": [
+            "RM_Vashpuk_var1",
+            "RM_Vashpuk_var2",
+            "RM_Vashpuk_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-06T03:14:47.467Z"
+    },
+    "RM_Vekkit": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "RM_Vhaulk": {
+      "at": "2026-10-06T03:14:12.448Z",
+      "conflictSheet": [
+        {
+          "action": "side action (install/job/purge) — letters unchanged",
+          "by": "click",
+          "choice": "B",
+          "item": "RM_BlueDesert/Vhaulk/del",
+          "kind": "del",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-06T03:14:12.448Z",
+            "decision": "E",
+            "note": "",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-10T00:44:31.716Z"
+        }
+      ],
+      "decidedAt": "2026-10-06T03:13:59.370Z",
+      "decision": "E",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Virr": {
+      "at": "2026-10-06T03:15:00.961Z",
+      "decision": "A",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:15:00.961Z",
+          "followed_by": [
+            "RM_Virr_var1",
+            "RM_Virr_var2",
+            "RM_Virr_var3"
+          ],
+          "note": "add variants",
+          "when": "2026-10-09T01:19:17-0700"
+        }
+      ],
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-06T03:15:00.961Z"
+    },
+    "RM_Vrisk": {
+      "at": "2026-10-09T17:49:53-0700",
+      "conflictSheet": [
+        {
+          "action": "queue a redraw following the note",
+          "by": "default",
+          "choice": "A",
+          "item": "RM_BlueDesert/Vrisk/note",
+          "kind": "note",
+          "note": "",
+          "sheet": "sheet_conflicts_review_2026-10-09",
+          "was": {
+            "at": "2026-10-05T14:36:52.957Z",
+            "decision": "D",
+            "note": "Good, but please make the head less recognizable and more alien. Perhaps no eyes at all.",
+            "picks": null,
+            "variants": null
+          },
+          "when": "2026-10-09T17:49:53-0700"
+        }
+      ],
+      "decidedAt": "2026-10-05T14:36:47.721Z",
+      "decision": "redo",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-09T17:49:53-0700",
+          "followed_by": [
+            "enact_b3c6f3d3_vrisk_v1"
+          ],
+          "note": "Good, but please make the head less recognizable and more alien. Perhaps no eyes at all.",
+          "when": "2026-10-09T18:16:08-0700"
+        }
+      ],
+      "prefill": "A",
+      "purge": [
+        "024ad7268a2e32bb22c85edd4f5012fdc1cde95b925b646510e7dcaef023bfc5",
+        "6e9f6f848afe411e6e922f9c8423618d2a378f92f29f532b22a6cc3cc3e81c5a",
+        "964f4cfb368c30c7501265836af6055a2dd88258fb81a108b89a1eb0dbbbd17c"
+      ],
+      "purgeTouched": true
+    },
+    "RM_Zhaaz": {
+      "decision": "A",
+      "note": "",
+      "prefill": "A"
+    },
+    "Vapaad": {
+      "at": "2026-10-06T03:13:37.129Z",
+      "decidedAt": "2026-10-06T03:13:18.395Z",
+      "decision": "G",
+      "note": "",
+      "notes_followed": [
+        {
+          "at": "2026-10-06T03:13:37.129Z",
+          "followed_by": [
+            "mark-done"
+          ],
+          "note": "Nice job! ",
+          "when": "2026-10-09T07:19:53-0700"
+        }
+      ],
+      "prefill": "A",
+      "purge": [
+        "f31b5019fc5052940411751ec9f6996c5eefff02c44b19f6992d98e070b3c803",
+        "d418708efa632ed653207322bb3ae3eb2aedf42dcaacfd141b9eb37c87be38c7",
+        "888ef88237d28c1172509750e2cd0df3ea1770cb01cefab9bf806e052fe687b1",
+        "788cd180fef48964edb84ccd387bc078f849c996b4f99d958ed28d9acb0f63f6"
+      ],
+      "purgeTouched": true
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": "2026-10-05T20:15:01-0700",
+    "by": "owner (Lukas)",
+    "evidence": "sidecar writeCount 117 (third sitting, saved on the sheet built against snapshot 03503bba); owner said in chat 'Blue Desert sheet done'",
+    "state": "ruled"
+  },
+  "savedAt": "2026-10-05T20:15:01-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "blue_desert_sheet_2026-10-04",
+  "snapshot": "infrastructure/state/art/sheets/blue_desert_sheet_2026-10-04.snapshot.json",
+  "snapshotId": "03503bba1df3f583",
+  "writeCount": 117
+}

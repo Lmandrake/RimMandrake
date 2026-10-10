@@ -83,40 +83,43 @@ def main():
     check(L.decision_letters({"decision": "redo", "variants": ["B"], "picks": {"x": "C"}}) == {"B", "C"},
           "decision_letters ignores non-letter verdicts")
 
-    # variant default (owner 2026-10-06): the page JS, run under node, defaults variants to every non-donor,
-    # non-purged, non-purgedLive set; an explicit list (even empty) is never overwritten
+    # variant ticks (owner, by question card 2026-10-10): NEVER pre-ticked; a click never launders a machine-default
+    # list into his; a tick exists only on a random-pool lane. Run under node; each check FAILS on the 10-06 code.
     import json, shutil, subprocess
     src = Path(S.__file__).read_text()
-    js = src[src.index("window.artDefaultVariants"):src.index("const _itemBody = it => {")]
     node = shutil.which("node") or str(Path.home() / ".local/bin/node")
     if not Path(node).exists():
-        check(False, "variant default selftest needs node (UNMEASURED)")
+        check(False, "variant tick selftest needs node (UNMEASURED)")
     else:
-        it = {"graphics": [{"cols": [
-            {"letter": "A", "kind": "artpipe", "faces": {"south": "a1"}},
-            {"letter": "B", "kind": "donor", "faces": {"south": "b1"}},
-            {"letter": "C", "kind": "donor", "ours": True, "faces": {"south": "c1"}},
-            {"letter": "D", "kind": "artpipe", "faces": {"south": "d1"}},
-            {"letter": "E", "kind": "artpipe", "faces": {"south": "e1"}, "purgedLive": True}]}]}
-        prog = ("const window={};const LETTER_ORDER='ABCDEFG';" + js +
-                "const it=" + json.dumps(it) + ";const o={};"
-                "const r1={purge:['d1']};window.artEnsureVariants(it,r1);o.r1=r1;"
-                "const r2={variants:[]};window.artEnsureVariants(it,r2);o.r2=r2;"
-                "const r3={variants:['A']};window.artEnsureVariants(it,r3);o.r3=r3;console.log(JSON.stringify(o))")
+        js = src[src.index("window.artOwnerVariants"):src.index("const _itemBody = it => {")]
+        tog = src[src.index("window.artToggleVariant = (id, letter) => {"):src.index("window.artPick = (id, g, letter) => {")]
+        it = {"id": "r", "graphics": [
+            {"pool": True, "cols": [{"letter": "A", "kind": "artpipe", "faces": {"south": "a1"}},
+                                    {"letter": "B", "kind": "artpipe", "faces": {"south": "b1"}},
+                                    {"letter": "C", "kind": "artpipe", "faces": {"south": "c1"}, "noSelect": True}]},
+            {"flip": True, "cols": [{"letter": "E", "kind": "artpipe", "faces": {"1_east": "e1"}}]}]}
+        prog = ("const window={};const LETTER_ORDER='ABCDEFG';let frozen=false;const errs=[];const showErr=m=>errs.push(m);"
+                "const queue=()=>{},patchRow=()=>{},paintCounts=()=>{},prefillOf=()=>'A';" + js + tog +
+                "const it=" + json.dumps(it) + ";const byId=new Map([['r',it]]);const o={};"
+                "o.none=window.artOwnerVariants({variants:['A','B'],variantsDefault:true});"
+                "o.mine=window.artOwnerVariants({variants:['A']});"
+                "const DEC={r:{decision:'A',variants:['A','B'],variantsDefault:true}};"
+                "window.artToggleVariant('r','B');o.after=JSON.parse(JSON.stringify(DEC.r));"
+                "window.artToggleVariant('r','E');o.flip=JSON.parse(JSON.stringify(DEC.r));o.errs=errs.slice();"
+                "const r5={variants:['A','C']};window.artEnsureVariants(it,r5);o.r5=r5;"
+                "const r6={variants:['A','C'],variantsDefault:true};window.artEnsureVariants(it,r6);o.r6=r6;"
+                "console.log(JSON.stringify(o))")
         out = json.loads(subprocess.run([node, "-e", prog], capture_output=True, text=True, check=True).stdout)
-        check(out["r1"]["variants"] == ["A", "C"] and out["r1"].get("variantsDefault") is True,
-              "default variants = ours, not donor original, not purged, not purgedLive; stored with variantsDefault")
-        check(out["r2"]["variants"] == [] and "variantsDefault" not in out["r2"], "an explicit empty variants list is not overwritten")
-        check(out["r3"]["variants"] == ["A"], "an explicit variants list is not overwritten")
-        # owner rule 2026-10-07 22:33 PDT: a geometric placeholder set is never a default, kept or explicit variant
-        it["graphics"][0]["cols"][0]["noSelect"] = True
-        prog = ("const window={};const LETTER_ORDER='ABCDEFG';" + js +
-                "const it=" + json.dumps(it) + ";const o={};"
-                "const r1={};window.artEnsureVariants(it,r1);o.r1=r1;"
-                "const r3={variants:['A','D']};window.artEnsureVariants(it,r3);o.r3=r3;console.log(JSON.stringify(o))")
-        out = json.loads(subprocess.run([node, "-e", prog], capture_output=True, text=True, check=True).stdout)
-        check(out["r1"]["variants"] == ["C", "D"], "a placeholder set (noSelect) is never a DEFAULT variant")
-        check(out["r3"]["variants"] == ["D"], "a placeholder letter is stripped from an explicit variants list on save")
+        check(out["none"] == [] and out["mine"] == ["A"], "a machine-default variant list shows NO ticks; his list shows")
+        check(out["after"]["variants"] == ["B"] and "variantsDefault" not in out["after"],
+              "one click ticks only THAT set: the default list is not laundered into his (was [A,B] -> click B)")
+        check(out["after"].get("legacyVariantsDefault") == ["A", "B"], "the dropped default list is kept aside as legacy, not lost")
+        check(out["flip"]["variants"] == ["B"] and any("random pool" in e for e in out["errs"]),
+              "a tick on a non-pool lane (flight frames) is refused with a reason")
+        check(out["r5"]["variants"] == ["A"], "a placeholder letter is stripped from his explicit variants list on save")
+        check(out["r6"]["variants"] == ["A", "C"] and out["r6"]["variantsDefault"],
+              "a save never rewrites (materialises) a machine-default list")
+        check("artDefaultVariants" not in src, "the pre-tick default (artDefaultVariants) is gone from the sheet")
     for frag in ("if (c.noSelect) return", "placeholder — not selectable", "artNoSelect(it).has(letter)",
                  "artNoSelect(it_).has(key)"):
         check(frag in src, f"sheet JS guards placeholders: {frag!r}")
