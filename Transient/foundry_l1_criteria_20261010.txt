@@ -1,0 +1,71 @@
+## WEEPINGSTONES_CONDENSER_QUESTS_1
+- C6: free mod alone shows no Hutt/Blackstar/canon string; campaign loaded, the slots resolve to the Hutt Cartel, Homestead and Blackstar
+## SURFACE_HOME_MAP_HELPER_1
+- A1: with a sea-floor map open as a player home, a gale/swept-away/condenser/navigator return lands on a surface home map
+## FEVERWOOD_LIMB_LINGER_CAP_1
+- A2: with the cap at 1 and one limb standing, an ordinary emergence spawns nothing and encounter pressure still rises
+## TICKER_NEVER_FIRES_FIX_1
+- A4: a powered, fuelled RM_DryAirBlower registers its room in RM_MapComponent_DryRooms
+## LIGHT_LEDGER_ONE_1
+- A2: a suulk grazing a mature sun-sphere: the sphere's GlowRadius stays reduced across 60-tick culture steps and across a save/reload (RM_MapComponent_GlowGraze keep
+- A3: on a Twilight floor map, SetLidDarkDimming(true) holds every open well at 0.1 through a waning step, a well opening meanwhile opens dark, and a reload keeps it 
+- A4: in the Abyss Dark a lamp a krizzak is feeding on is shrunk by BOTH (radius = base x dark share x krizzak share) and returns to its def radius when both leave
+- A5: a lanternstone under the aurora with sippers on it reads def x 1.75 x sipper share, and returns to def x 1.75 / def when they leave / the aurora ends
+## DEEPFIRE_WORLD_LIGHT_1
+- A1: a grey-sea "drawn" creature (or the suulk) on a map with a deepfire-painted floor and no player lamp walks to the deepfire light and basks (RM_BaskInGlow), neve
+- A2: in the Abyss Dark a deepfire floor proxy and the glow tank keep their full GlowRadius while a vanilla lamp beside them shrinks; toggling darkSparesDeepfire off 
+- A3: with the Visibility mod active, an hour of darkness on a home map with N lit deepfire lights raises shipVisibility by min(2, 0.05 x N) (dev log line "[ColonyVis
+- A4: a pawn wearing a lacquered cloak and carrying deepfire glow (worn coat or Cuisine hediff) never gains the invisibility hediff while still and unseen; it gains i
+## DUST_DEVIL_ITEM_LOSS_FIX_1
+- A1: with a dust devil lifting an item whose landing spot and devil cell both refuse placement, the item is back at its origin and not destroyed
+## UNFINISHED_LINE_SITE_CHOICE_1
+- A2: site stored on GameComponent_RUT_UnfinishedLine.lineSite with EffectiveSite default A; beats 3-5 do not yet read it (UNFINISHED_LINE_SITE_BEATS_1)
+- A3: beat 1 grade recorded via LineFlag count* flags on beat1Grade and shown in the letter text; live read owed
+## GARDEN_ESCALATION_PROGRESS_FIX_1
+- A1: Chill floor, offend with kills at the tier-1 cadence: arcs fire, then the Tarnn wake fires once escalation reaches the tier-2 threshold. PROVISIONAL numbers. Wa
+## ELDER_TRADE_TRANSACTIONAL_PAYOUT_1
+- A1: Grey Sea floor, Elder with no placeable cell for the payout: offer is refused, specimen kept, novelty still novel on retry, unique treasure still ungranted. PRO
+## CHILL_SUIT_SHELTER_RULE_1
+- A1: Chill floor: wearer in a roofed but cold space still drains; wearer in a warm room drains nothing; charger behind a wall does not recharge, same-room powered ch
+## AXIS_SURGE_CLAMP_DRIFT_1
+- A1: Miasma surge on a map with salinity near 1.0: after the recede completes no cell is fresher than its pre-surge value plus residual share of what it actually gai
+## WARBLING_GLOW_BASELINE_1
+- A1: Warbling lamp with a player-picked glow colour: after warbling the colour oscillates around the picked colour, not the def default; toggling warblingGlowEnabled
+## UNFINISHED_LINE_SITE_BEATS_1
+- A2: ProofSiteBeats resolves steward/lend/ally for A, C and D (bridge)
+- A3: ProofSendAllies on a throwaway map brings friendly defenders who fight beside the colony (bridge, owner watching)
+## EXCAVATION_LOAD_SANITY_REPAIR_1
+- A1: loading a map with dug canals in the minimal list logs no 'excavation load repair' warning and canals still flow (a clean save is untouched)
+## HAZARD_CLOCK_INSPECT_LINES_1
+- A1: in a Grey Sea map inspecting a powered bright lamp that has been lit shows 'Burning steadily for <period>' and unlit lamps show nothing
+- A2: inspecting a twilight well skylight shows opening / stands / waning with time left, and a grav engine on the Grey Sea shows the crust cell count (proves the Thi
+## TAP_CONSERVATION_SELFTEST_1
+- A1: after a bridge save+load, cstyles read twice in a row returns the same pending count and members (the read no longer drains the queue); cprocess still drains it
+## CREATURE_BEHAVIOR_LAST_OUTCOME_1
+- A2: a saved and reloaded game keeps the last-decision code on a reaction source and the aquatic ambusher (Scribe_Deep round trip)
+## GREY_TWILIGHT_SEABED_BIOME_GATE_1
+- A2: HAZARD_CLOCK_INSPECT_LINES_1 A2 re-verified on an RM_SeabedSite map
+## FLOOD_DRIVER_OWNERSHIP_CONTRACT_1
+- A2: FloodedCanyon (other mod) still calls the bool TrySetDriverFill; switching it to TrySetDriverFillOutcome so it leaves Refused cells alone is owed by that mod's 
+## KINETIC_BLAST_WEAPONS_1
+- EK.load: explosiveknockback tier loads with no red error from this mod; Harmony patches applied
+- KA.load: explosiveknockback tier + kineticarms loads, no red error; fleck and ruins maker resolve
+## LASSO_CHERRYPICKER_REMOVAL_1
+- A2: Melee Animation config LassoSpawnChance 0 (game-down)
+## ZERSIUM_FORGE_BIOME_1
+- L4: on a full-list load the three defs load with no config or cross-reference errors (`zersium_forge.zersium_defs_loaded`)
+- L5: a newly generated Forge map carries zersium ore cells; any non-Forge map carries 0 (`zersium_forge.zersium_only_in_forge`); with the toggle off a new Forge map 
+- L6: our zersium render is installed through the art ledger and the placeholder texPath replaced
+## EXCAVATION_WALL_ART_1
+- A1: Every dug depth D1..D4 draws its own wall-face height (RM_WallFaceMath.NorthByDrop strictly rising; SelfTest WallFaces_every_depth_differs), liquid covers the f
+- A2: RM_Spikes, RM_Ladder and RM_LadderRaised ship bespoke PNGs (no magenta) and no FlowWorks def points at Things/Building/Security/TrapSpikeArmed.
+## SETTINGS_SCREEN_KIT_1
+- A5: FlowWorks screen shows collapsible sections, search box and per-section reset via the kit (built f70d2283b); owed: live screenshot of the settings screen.
+## LINKED_GRAPHIC_ICON_NRE_1
+- A2: a 15-mod load with FlowWorks logs no Graphic_Linked.get_MatSingle NRE
+## CREATURE_BEHAVIORS_SETTINGS_SCREEN_1
+- A2: the CB settings window shows groups, search narrows, reset restores defaults, used-by lists read from loaded defs
+## ENVHAZARDS_SETTINGS_SCREEN_1
+- A2: EH settings window shows sections, search narrows, reset restores defaults
+## SUMP_NOOTHELM_B_PLANT_1
+- A1: RM_Lanneth and RM_RawLanneth resolve live; RSW_CookFruitOnAStick accepts RM_RawLanneth
