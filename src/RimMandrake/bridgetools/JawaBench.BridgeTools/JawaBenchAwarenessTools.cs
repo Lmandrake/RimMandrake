@@ -72,7 +72,8 @@ namespace JawaBench.BridgeTools
                         return Fail("unknown metric id '" + metric + "'", new { metricIds = A.MetricIds });
                 }
                 else if (a != "status") return Fail("action must be status, arm, disarm or switch");
-                if (genNote != null) return Fail("armed, but the GeneratePawn hook did not install: " + genNote, AwarenessStatus());
+                if (genNote != null && genNote.StartsWith("refused")) { /* campaign: disk rows armed, GeneratePawn stays off by policy */ }
+                else if (genNote != null) return Fail("armed, but the GeneratePawn hook did not install: " + genNote, AwarenessStatus());
                 return AwarenessStatus();
             }, cancellationToken).ConfigureAwait(false);
         }

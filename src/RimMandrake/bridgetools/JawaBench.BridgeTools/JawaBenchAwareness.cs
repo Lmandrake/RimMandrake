@@ -106,6 +106,11 @@ namespace JawaBench.BridgeTools
                 InstalledUtc = DateTime.UtcNow;
                 try { LoadSwitches(); } catch (Exception e) { Sw = new A.Switches { Note = "settings read failed: " + e.GetType().Name }; }
                 try { _nextThingId = AccessTools.FieldRefAccess<UniqueIDsManager, int>("nextThingID"); } catch { _nextThingId = null; }
+                if (!JawaBenchCompanionSafety.PolicyNow().AwarenessCheapHooks)
+                {
+                    InstallStatus = "disabled"; InstallDetail = "the " + JawaBenchCompanionSafety.PolicyNow().Name + " profile policy keeps awareness off";
+                    return;
+                }
                 try { _harmony = new Harmony("mandrake.jawabench.awareness"); }
                 catch (Exception e) { InstallStatus = "failed"; InstallDetail = "Harmony ctor: " + e.Message; return; }
                 var self = typeof(JawaBenchAwareness);
@@ -115,7 +120,11 @@ namespace JawaBench.BridgeTools
                     plan.Add(new KeyValuePair<JawaBenchTpsInstall.Target, string[]>(new JawaBenchTpsInstall.Target(name, false, resolve), new[] { pre, post, fin }));
                 Add("IncidentWorker.TryExecute", () => AccessTools.Method(typeof(IncidentWorker), "TryExecute", new[] { typeof(IncidentParms) }),
                     nameof(IncPre), nameof(IncPost), nameof(IncFin));
-                bool genEarly = Sw.Option(A.OptGenerationEarly);
+                // the profile's POLICY decides (JawaBenchSafetyCore.Policies), the settings option only asks: campaign never
+                // installs GeneratePawn early, whatever the file says
+                var pol = JawaBenchCompanionSafety.PolicyNow();
+                bool genEarly = Sw.Option(A.OptGenerationEarly) && pol.AwarenessGenerationHook;
+                if (Sw.Option(A.OptGenerationEarly) && !genEarly) GenerationHook = "not installed: install.generation-early is ignored in the " + pol.Name + " profile";
                 if (genEarly)
                     Add("PawnGenerator.GeneratePawn", () => AccessTools.Method(typeof(PawnGenerator), "GeneratePawn", new[] { typeof(PawnGenerationRequest) }),
                         nameof(GenPre), nameof(GenPost), nameof(GenFin));
@@ -154,6 +163,8 @@ namespace JawaBench.BridgeTools
                 try
                 {
                     if (!UnityData.IsInMainThread) return "not on the main thread";
+                    var pol = JawaBenchCompanionSafety.PolicyNow();
+                    if (!pol.AwarenessGenerationHook) return "refused: the " + pol.Name + " profile keeps the GeneratePawn hook off (it costs play speed)";
                     EnsureInstalled();
                     if (_harmony == null) return GenerationHook = "failed: no Harmony instance (" + InstallDetail + ")";
                     var m = AccessTools.Method(typeof(PawnGenerator), "GeneratePawn", new[] { typeof(PawnGenerationRequest) });
@@ -303,7 +314,7 @@ namespace JawaBench.BridgeTools
             long t0 = Now();
             try
             {
-                if (!Sw.On(A.MGeneration)) return;
+                if (!Sw.On(A.MGeneration) || !JawaBenchCompanionSafety.CurrentPolicy.AwarenessGenerationHook) return;
                 NoteThread();
                 int ep = Epoch();
                 var c = A.Scope.Current(ep);
@@ -398,6 +409,7 @@ namespace JawaBench.BridgeTools
             try
             {
                 if (!Wild.On || !Sw.On(A.MWild)) return true;
+                if (!JawaBenchCompanionSafety.CurrentPolicy.WildSpawnerBlock) { Wild.Release("campaign-profile"); return true; }
                 if (!Wild.Active(Current.Game, JawaBenchTpsWatchdog.Now)) return true;
                 System.Threading.Interlocked.Increment(ref WildSkipped);
                 return false;

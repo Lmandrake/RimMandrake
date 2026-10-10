@@ -445,8 +445,9 @@ prose).
 3. **The GM gate is binary and coarse.** Without `--gm`, `build.py` refuses as "THIS DEPLOY
    WOULD REMOVE TOOLS". With `--gm`, all 48 world-acting tools ship, `static_call` included.
    The DEPLOYED DLL has no per-tool gate and no runtime gate, and the owner's campaign game
-   gets the same DLL (§7, P20). A runtime safe profile (allow-list, default safe, gm only by
-   a profile file) is built but not deployed: `companion_handshake.md`.
+   gets the same DLL (§7, P20). A runtime profile is built but not deployed: campaign is the default and
+   refuses only the debug, test-only, heavy-diagnostic and quiet-world families; test is granted
+   by a profile file (`companion_handshake.md`).
 4. **Description prose can create phantom tools.** A `jawa/world_*` mention in a description
    made `build.py`'s byte scan see a tool named `jawa/world_`. `tool_surface()` is an upper
    bound by design (DOC companion skill §3 rule 9 and §4).

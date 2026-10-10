@@ -1,4 +1,4 @@
-# Companion handshake, safe profile and stale-target guards
+# Companion handshake, campaign/test profiles and stale-target guards
 
 For preflight (agent B) and the launcher (agent A): how to ask the running JawaBench companion **what is
 actually loaded**, how its runtime profile is decided, and how to make a call refuse a stale target.
@@ -7,40 +7,74 @@ Items: `COMPANION_HANDSHAKE_BUILD_SAY_WHAT_LOADED`, `COMPANION_PROFILE_ENFORCE_S
 `JawaBenchSafetyCore.cs` (pure rules, unit-tested in `bridgetools/AwarenessSelfTest/UnitsSafety.cs`) and
 `JawaBenchCompanionSafety.cs` (Harmony gate, binder check, the tool).
 
-**State: built offline, NOT deployed.** Nothing below has run in a live game. Every live claim is
+**State: built offline, NOT deployed.** Revised for the owner's campaign rulings of 2026-10-10 (§1). Nothing below has run in a live game. Every live claim is
 UNVERIFIED until the acceptance list at the bottom runs.
 
-## 1. The profile: safe unless a file says gm
+## 1. The profile: campaign unless a file says test
+
+Owner rulings, made by question card on 2026-10-10 and relayed by the coordinator:
+
+- The bridge stays **fully usable in the campaign** for authoring: raid improvements, inhabited interactions
+  and content edits. Campaign is NOT read-only.
+- The campaign profile switches OFF only the monitoring, debug and test interactions that could slow play.
+- Campaign play may lose **up to 10% speed for now** to the cheap always-on recorders. Those recorders include
+  the TPS attribution that explains where a slowdown comes from, so it is never hidden. Test and diagnostic
+  setups are much more permissive.
+- Each profile declares its budget as a constant. No hook hard-codes it.
 
 | layer | what decides it | values |
 |---|---|---|
 | compile profile | `build.py --gm` (`JAWA_GM_TOOLS`) | `gm` (the 48 world-acting GM tools exist) or `standard` |
-| runtime profile | `<SaveData>\JawaBench\companion_profile.json` | `gm` or `safe`; **absent, invalid, expired or unknown = safe** |
-| effective | both, plus the loaded save | `safe` or `gm` |
+| runtime profile | `<SaveData>\JawaBench\companion_profile.json` | `test` (`gm` is an alias) or `campaign`. **Absent, invalid, expired or unknown = campaign** |
+| effective | both, plus the loaded save | `campaign` or `test` |
 
-- In the **safe** profile only the reviewed read-only tools in `JawaBenchSafetyCore.SafeAllowList` run
-  (73 tools plus the handshake, from a static audit on 2026-10-10). Every other `jawa/` tool returns
-  `{success:false, refused:true, error:"REFUSED by the companion's SAFE profile: ..."}` without running.
-  A tool added later and never reviewed is refused too: the allow-list is the only way in.
-- **gm** needs the file. Nothing a bridge client sends can raise the profile.
-- A loaded save named in `campaignSaves` is **safe** even when the file says gm. The save name comes from the
-  TPS lifecycle (the `LoadGame` hook), so it is null for a new game and when the sampler is off. In those
-  cases the campaign check cannot fire.
-- The file is re-read at most every 2 s, so a launcher that rewrites it takes effect within 2 s.
-- `rimworld/*` tools belong to RimBridgeServer. They are **not** gated: stripping companion exports does not
-  make the host read-only (GPT bridge review 4.8). A truly read-only campaign still means RBS absent.
+### Policy per profile (`JawaBenchSafetyCore.CampaignPolicy` / `TestPolicy`: data, read by the installers and hooks)
 
-The file is flat JSON:
+| policy field | campaign | test |
+|---|---|---|
+| `RecorderBudgetShare` (declared ceiling on recorder slowdown) | **0.10** | 1.00 |
+| TPS sampler, TPS attribution | on | on |
+| awareness cheap hooks (incident journal, spawn, context scopes) | on | on |
+| awareness `GeneratePawn` hook | **off**: arm refuses it, and early install is ignored | on (lazy, or early by option) |
+| wild-spawner quiet-world block | **off**: tool refused, and an active block releases (`campaign-profile`) | on |
+| denied tool families | refused | none |
+
+The budget is **judged, not enforced**. `JawaBenchSafetyCore.BudgetVerdict` returns `within`, `over` or
+`unmeasured`, and the handshake reports it. Silently switching a recorder off when it runs over would hide the
+slowdown it explains. The real verdict needs the C0-C5 restart protocol
+(`RECORDER_OVERHEAD_MEASURE_SIX_CONFIGS_DEEP`). Until that runs, the handshake's `policy.budget.verdict` is
+`unmeasured`. The only figure it shows is the awareness hook bodies' share of uptime, which is labelled as partial.
+
+### Tool families (`JawaBenchSafetyCore.CampaignDenied`)
+
+| family | campaign | tools |
+|---|---|---|
+| authoring and read (everything not listed below) | **available** | spawn, edit, terrain, world, pawn, incidents, raids, lords, inhabited, zones, research, render and review, and all read tools |
+| `debug-invoke` | refused | `static_call`, `debug_actions`, `debug_action_yielders`, `debug_settings`, `hot_reload_defs`, `stat_cache_bust` |
+| `test-only` | refused | `tps_test_block`, `tps_test_attribution`, `playtest_*`, `gss_playtest_*`, `gss_stage`, `oracle_selftest`, `oracle_test_ohm_letter`, `load_stall_probe`, `flowworks_job_probe` |
+| `heavy-diagnostic` | refused | `type_visibility`, `startup_types`, `forecast_incidents`, `world_cache_audit`, `tile_cache_audit`, `texture_audit`, `biome_art_audit`, `pawnkind_audit`, `world_mutators_audit`, `world_lint`, `rimdefdump_run`, `export_things` |
+| `quiet-world` | refused | `wild_spawner_block` |
+
+- A refused call returns `{success:false, refused:true, error:"REFUSED in the CAMPAIGN profile: <tool> is <family> (...)"}`
+  and the tool does not run.
+- A tool that is not listed stays available. The unit test (`UnitsSafety.cs`) checks three things against the
+  real source census: every listed name exists, the owner's must-stay authoring tools are allowed, and the
+  must-be-off tools are refused.
+- `jawa/awareness action=arm` still arms disk rows in campaign. Only the `GeneratePawn` hook stays off.
+- **test** needs the file. Nothing a bridge client sends can change the profile.
+- A loaded save named in `campaignSaves` is **campaign** even when the file says test. The save name comes from
+  the TPS lifecycle (the `LoadGame` hook), so the campaign check cannot fire for a new game or when the sampler is off.
+- The file is re-read at most every 2 s, on any jawa call. The policy hot hooks read (`CurrentPolicy`) is refreshed
+  by the same calls, so a profile change reaches `GeneratePawn` and the wild spawner on the next jawa call.
+- `rimworld/*` tools belong to RimBridgeServer and are not gated.
 
 ```json
-{"profile": "gm", "expiresUtc": "2026-10-11T06:00:00Z", "campaignSaves": "Ashkarr, Ashkarr autosave"}
+{"profile": "test", "expiresUtc": "2026-10-11T06:00:00Z", "campaignSaves": "Ashkarr, Ashkarr autosave"}
 ```
 
-`expiresUtc` is optional but recommended: a launcher that dies leaves a gm grant that ends by itself.
-Unknown keys are tolerated.
-
-⚠️ **Deploying this build changes behaviour.** Until a launcher writes the file, every live bridge session sees
-the safe profile: spawn, edit, world and GM tools all refuse. Agent A's launcher owes the write for test sessions.
+`expiresUtc` is optional but recommended: a grant from a launcher that died ends by itself. Unknown keys are
+tolerated. **Effect of deploying:** without the file, test sessions lose only the denied families above. Agent
+A's launcher owes the file write for test and diagnostic sessions.
 
 ## 2. `jawa/companion_handshake` (schema `companion_handshake/1`)
 
@@ -59,11 +93,12 @@ the unit test fails if the composed object differs; changing it means bumping th
 | `companionFileSha256` | SHA-256 of the file at `companionPath`, or `"unavailable: <why>"` (e.g. loaded from bytes) |
 | `companionPath` | `Assembly.Location`, or null |
 | `compileProfile` | `gm` or `standard` |
-| `runtimeProfile` | what the file DECLARES: `gm`, `safe`, `none`, `invalid` or `unreadable` |
-| `effectiveProfile` | what is ENFORCED: `safe` or `gm` |
-| `profileWhy` | the reason, e.g. `no profile file: safe by default` |
+| `runtimeProfile` | what the file DECLARES: `test`, `campaign`, `none`, `invalid` or `unreadable` |
+| `effectiveProfile` | what is ENFORCED: `campaign` or `test` |
+| `profileWhy` | the reason, e.g. `no profile file: campaign by default` |
 | `profileFile` | the path the companion reads |
-| `gate` | `{status: complete|partial|failed|not installed, detail, guarded, unguarded[], installMs, refusals, lastRefusal, gateErrors, safeAllowList}` |
+| `policy` | the effective profile's policy: `recorderBudgetShare`, each recorder switch, `deniedFamilies`, and `budget` (`verdict`, plus the partial awareness figure) |
+| `gate` | `{status: complete|partial|failed|not installed, detail, guarded, unguarded[], installMs, refusals, lastRefusal, gateErrors, campaignDenied}` |
 | `hooks` | `{tps, attribution, awareness, argGuard, wildSpawner}`: install status, detail, runtime error, and per-hook `coverage` (`ok`/`degraded`/`disabled` with counters) |
 | `rimBridgeServer` | `{loaded, version, informationalVersion, path}` |
 | `harmony` | `{version, path}` |
@@ -108,11 +143,11 @@ Other persistent switches, from the 2026-10-10 audit. These are **not** auto-rel
 
 ## 5. Live acceptance owed (one bridge session, after the owner releases the deploy)
 
-1. Handshake with no profile file: `effectiveProfile:"safe"`, `gate.status:"complete"`, and `installMs` recorded
-   (the cost of patching about 400 methods on Mono is UNMEASURED). `jawa/spawn_pawn` must refuse and
-   `jawa/map_info` must answer.
-2. Write a gm file: within 2 s the handshake reads gm and `spawn_pawn` runs. Then list the loaded save in
-   `campaignSaves`: the handshake reads safe.
+1. Handshake with no profile file: `effectiveProfile:"campaign"`, `gate.status:"complete"`, and `installMs`
+   recorded (the cost of patching about 400 methods on Mono is UNMEASURED). `jawa/spawn_pawn` must run and
+   `jawa/static_call` must refuse. `jawa/awareness action=arm` must arm and leave `generationHook` not installed.
+2. Write a test file: within 2 s the handshake reads test and `static_call` runs. Then list the loaded save in
+   `campaignSaves`: the handshake reads campaign.
 3. Capture `game.epoch`, reload the same save, and send any call with the old `expectGameEpoch`: it must be
    refused. Same for `expectMapId` after a map is abandoned.
 4. Block the wild spawner, load a save, and read `lastRelease:"new-game"`. Block again with `minutes=1` and read

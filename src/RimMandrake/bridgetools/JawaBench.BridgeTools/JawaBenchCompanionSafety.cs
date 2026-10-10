@@ -1,8 +1,9 @@
 // JawaBenchCompanionSafety.cs - the Verse/Harmony half of the companion's safety surface.
 //
-//   COMPANION_PROFILE_ENFORCE_SAFE_BY_DEFAULT   a gate prefix on EVERY [Tool] method of this assembly: in the SAFE
-//                                               profile (the default) a tool off the reviewed allow-list returns a
-//                                               refusal instead of running. Rules: JawaBenchSafetyCore.cs.
+//   COMPANION_PROFILE_ENFORCE_SAFE_BY_DEFAULT   a gate prefix on EVERY [Tool] method of this assembly: in the CAMPAIGN
+//                                               profile (the default) a tool in a denied family (debug-invoke, test-only,
+//                                               heavy-diagnostic, quiet-world) returns a refusal instead of running;
+//                                               authoring tools run. Rules + per-profile policy: JawaBenchSafetyCore.cs.
 //   BRIDGE_TARGETS_HARDEN_STALE_AFTER_RELOAD    game epochs + the reserved expect* arguments (checked in the binder
 //                                               hook, JawaBenchArgGuard.Prefix).
 //   COMPANION_HANDSHAKE_BUILD_SAY_WHAT_LOADED   jawa/companion_handshake. Schema: design/RimMandrake/companion_handshake.md.
@@ -36,8 +37,8 @@ namespace JawaBench.BridgeTools
     {
         internal const string HarmonyId = "mandrake.jawabench.profilegate";
         // gm | standard: whether the JAWA_GM_TOOLS world-acting tools were COMPILED in (no #else: tool_metadata.py models #if only)
+        private static bool _gm = false;     // declared BEFORE CompileProfile: static initializers run in text order
         internal static readonly string CompileProfile = GmCompiled() ? "gm" : "standard";
-        private static bool _gm;
         private static bool GmCompiled()
         {
 #if JAWA_GM_TOOLS
@@ -61,9 +62,21 @@ namespace JawaBench.BridgeTools
         // ------------------------------------------------------------------ profile (cached, re-read every 2 s)
         private static readonly Stopwatch Clock = Stopwatch.StartNew();
         private static double _readAt = -10;
-        private static string _effective = S.Safe, _why = "not resolved yet: safe", _declared = "none";
+        private static string _effective = S.Campaign, _why = "not resolved yet: campaign", _declared = "none";
+        /// <summary>The policy of the last resolved profile: a volatile read for hot hooks (GeneratePawn, the wild
+        /// spawner). Refreshed by Effective(), i.e. by every jawa tool call and at install.</summary>
+        internal static volatile S.Policy CurrentPolicy = S.CampaignPolicy;
 
-        internal static string ProfilePath => _dir == null ? null : Path.Combine(_dir, S.ProfileFileName);
+        internal static string ProfilePath
+        {
+            get
+            {
+                if (_dir == null) { try { _dir = Path.Combine(GenFilePaths.SaveDataFolderPath, "JawaBench"); } catch { } }
+                return _dir == null ? null : Path.Combine(_dir, S.ProfileFileName);
+            }
+        }
+
+        internal static S.Policy PolicyNow() { string w, d; return S.PolicyFor(Effective(out w, out d)); }
 
         internal static string Effective(out string why, out string declared)
         {
@@ -84,7 +97,8 @@ namespace JawaBench.BridgeTools
                         _declared = !f.Present ? "none" : f.Error != null ? "invalid" : (f.Profile ?? "none");
                         if (path == null) _why += " (profile directory not resolved yet)";
                     }
-                    catch (Exception e) { _effective = S.Safe; _why = "profile unreadable (" + e.GetType().Name + "): safe"; _declared = "unreadable"; }
+                    catch (Exception e) { _effective = S.Campaign; _why = "profile unreadable (" + e.GetType().Name + "): campaign"; _declared = "unreadable"; }
+                    CurrentPolicy = S.PolicyFor(_effective);
                 }
                 why = _why; declared = _declared;
                 return _effective;
@@ -102,7 +116,6 @@ namespace JawaBench.BridgeTools
             var sw = Stopwatch.StartNew();
             try
             {
-                try { _dir = Path.Combine(GenFilePaths.SaveDataFolderPath, "JawaBench"); } catch { _dir = null; }
                 var h = new Harmony(HarmonyId);
                 var pTask = new HarmonyMethod(typeof(JawaBenchCompanionSafety).GetMethod(nameof(GateTask), BindingFlags.Static | BindingFlags.NonPublic));
                 var pObj = new HarmonyMethod(typeof(JawaBenchCompanionSafety).GetMethod(nameof(GateObject), BindingFlags.Static | BindingFlags.NonPublic));
@@ -171,7 +184,7 @@ namespace JawaBench.BridgeTools
         {
             string why, declared;
             string eff;
-            try { eff = Effective(out why, out declared); } catch { eff = S.Safe; }
+            try { eff = Effective(out why, out declared); } catch { eff = S.Campaign; }
             return new { success = false, refused = true, error = text, message = text, effectiveProfile = eff, compileProfile = CompileProfile };
         }
 
@@ -258,7 +271,8 @@ namespace JawaBench.BridgeTools
             Description =
                 "WHAT IS ACTUALLY LOADED (schema companion_handshake/1, always allowed in every profile): the companion's " +
                 "commit sha, version, MVID and on-disk SHA-256; compile profile (gm | standard) and runtime profile " +
-                "(effective safe | gm, the reason, the profile file path); the profile gate's install status; every recorder " +
+                "(effective campaign | test, the reason, the profile file path) with its policy and declared recorder budget; " +
+                "the profile gate's install status; every recorder " +
                 "hook's install status and coverage; RimBridgeServer and Harmony versions; the game epoch, save, tick and map " +
                 "ids (pass expectGameEpoch / expectMapId / expectCurrentMapId on any later call to refuse a stale target). " +
                 "Read-only. The game block is filled on the main thread with a 5 s limit and says so if it could not be.",
@@ -324,7 +338,27 @@ namespace JawaBench.BridgeTools
                 guarded = JawaBenchCompanionSafety.Guarded, unguarded = JawaBenchCompanionSafety.Unguarded.ToList(),
                 installMs = Math.Round(JawaBenchCompanionSafety.InstallMs, 1), refusals = JawaBenchCompanionSafety.Refusals,
                 lastRefusal = JawaBenchCompanionSafety.LastRefusal, gateErrors = JawaBenchCompanionSafety.GateErrors,
-                safeAllowList = S.SafeAllowList.Length
+                campaignDenied = S.CampaignDenied.Count
+            };
+            var pol = S.PolicyFor(eff);
+            double uptime = -1, awMs = 0;
+            try { uptime = (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalSeconds; } catch { }
+            try { double f = Stopwatch.Frequency; foreach (var m in JawaBenchAwareness.Meters.Values) awMs += m.TotalMs(f); } catch { awMs = double.NaN; }
+            double awShare;
+            string awVerdict = S.BudgetVerdict(awMs / 1000.0, uptime, pol, out awShare);
+            var policy = new
+            {
+                name = pol.Name, recorderBudgetShare = pol.RecorderBudgetShare, tpsSampler = pol.TpsSampler, tpsAttribution = pol.TpsAttribution,
+                awarenessCheapHooks = pol.AwarenessCheapHooks, awarenessGenerationHook = pol.AwarenessGenerationHook,
+                wildSpawnerBlock = pol.WildSpawnerBlock, deniedFamilies = pol.DenyCampaignFamilies ? S.FamilyReasons : null,
+                budget = new
+                {
+                    verdict = "unmeasured",
+                    note = "the recorders' real cost is the C0-C5 restart protocol (RECORDER_OVERHEAD_MEASURE_SIX_CONFIGS_DEEP); the partial " +
+                           "figure below is awareness HOOK BODIES ONLY over process uptime (no Harmony dispatch, no TPS hooks) and is not a verdict",
+                    awarenessBodiesMs = Math.Round(awMs, 1), uptimeS = Math.Round(uptime, 0),
+                    awarenessBodiesShare = double.IsNaN(awShare) ? (double?)null : Math.Round(awShare, 5), awarenessBodiesVerdict = awVerdict
+                }
             };
             return S.ComposeHandshake(new S.HandshakeInput
             {
@@ -333,7 +367,7 @@ namespace JawaBench.BridgeTools
                 CompanionMvid = SafeMvid(asm), CompanionFileSha256 = fileSha ?? ("unavailable: " + fileWhy), CompanionPath = SafeLocation(asm),
                 CompileProfile = JawaBenchCompanionSafety.CompileProfile, RuntimeProfile = declared, EffectiveProfile = eff,
                 ProfileWhy = why, ProfileFile = JawaBenchCompanionSafety.ProfilePath,
-                Gate = gate, Hooks = hooks, RimBridgeServer = rbs, Harmony = harmony, Game = game,
+                Policy = policy, Gate = gate, Hooks = hooks, RimBridgeServer = rbs, Harmony = harmony, Game = game,
             });
         }
 
