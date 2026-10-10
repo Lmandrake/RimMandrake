@@ -44,6 +44,13 @@ CLAMP = (AX0 + 33, AZ0 + 12)
 OCOND = [(AX0 + 35, AZ0 + 12), (AX0 + 36, AZ0 + 12)]                          # our cable, not adjacent to theirs
 OLAMP = (AX0 + 38, AZ0 + 13)                 # our only consumer on the tapped side; no source of our own
 BLAST = (AX0 + 20, AZ0 + 4)                  # under the M2-M3 span, 6 cells from both masts
+DSITE = (AX0 - 2, AZ0 - 30, 20, 16)          # M15d: a separate diagonal span south of the main site
+D1, D2 = (AX0 + 2, AZ0 - 25), (AX0 + 12, AZ0 - 18)                             # 10 x 7: a true diagonal, range 20
+DBLAST = (AX0 + 7, AZ0 - 22)                 # a cell the line crosses OFF its centre (line z at x=97.5 is 159.0)
+MSITE = (AX0 + 20, AZ0 - 30, 16, 10)         # M19m: hostile conduit run with ONE of ours on its end (one mixed net)
+MHCOND = [(AX0 + 23, AZ0 - 25), (AX0 + 24, AZ0 - 25), (AX0 + 25, AZ0 - 25)]
+MOCOND = (AX0 + 26, AZ0 - 25)                # ours, adjacent -> same net as the hostile run
+MCLAMP = (AX0 + 22, AZ0 - 25)                # nearest transmitter is FOREIGN (1 cell); ours is 4 cells away
 SHOTS = os.path.join(V.REPO, "Transient", "messy_conduit_live_20261002")
 
 
@@ -303,6 +310,44 @@ def run_live(args):
     al2 = B.ap("alert")
     V.row(rows, "M15c_wire_down_alert_clears_on_restring", "PASS" if rs.get("done") and al2.get("down") == 0 else "FAIL", "MOD", {"down": al2.get("down")})
 
+    # ---------------------------------------------------------------- M15d: a DIAGONAL span's halves meet on the line
+    # AERIAL_CUT_POINT_PRECISION_1: both halves must end at the SAME point ON the line between the poles. The M15 span is
+    # axis-aligned, so its cut point is also a cell centre and could not tell the fix from the old cell-centre aim.
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % DSITE, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % DSITE)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % DSITE)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % DSITE)
+    B.call("jawa/build_batch", ops=V.ops("RM_AerialMast", [D1, D2]), faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    B.ticks(3)
+    cd0 = anchors_by_pos(B.ap("census"))
+    dlinked = D1 in cd0 and D2 in cd0 and any(l.get("state") == "Up" for l in cd0[D1].get("links") or []) if D1 in cd0 else False
+    if D1 in cd0 and D2 in cd0 and not dlinked:
+        B.ap("link:%d,%d" % (cd0[D1]["id"], cd0[D2]["id"]))
+        B.ticks(2)
+    ced = B.ap("explode:%d,%d,2.5,50" % DBLAST)
+    B.ticks(30)
+    B.ap("poll")
+    cdx = anchors_by_pos(B.ap("census"))
+    dh = [f for p in (D1, D2) for f in cdx.get(p, {}).get("fallen", []) if f.get("cutPartner", -1) != -1]
+    ax_, az_, bx_, bz_ = D1[0] + 0.5, D1[1] + 0.5, D2[0] + 0.5, D2[1] + 0.5
+    m15d, geo = False, {}
+    if len(dh) == 2:
+        (p1x, p1z), (p2x, p2z) = dh[0]["breakAt"], dh[1]["breakAt"]
+        dx, dz = bx_ - ax_, bz_ - az_
+        L2 = dx * dx + dz * dz
+        t = ((p1x - ax_) * dx + (p1z - az_) * dz) / L2
+        perp = abs((p1x - ax_) * dz - (p1z - az_) * dx) / L2 ** 0.5
+        same = abs(p1x - p2x) < 0.01 and abs(p1z - p2z) < 0.01
+        tips = all(not f["blocked"] and abs(f["tip"][0] - f["breakAt"][0]) < 0.05 and abs(f["tip"][1] - f["breakAt"][1]) < 0.05 for f in dh)
+        centre = all(abs(f["breakAt"][0] - (f["toward"][0] + 0.5)) < 0.01 and abs(f["breakAt"][1] - (f["toward"][1] + 0.5)) < 0.01 for f in dh)
+        geo = {"breakAt": [p1x, p1z], "same": same, "t": round(t, 3), "perpToLine": round(perp, 4), "tipsAtBreak": tips,
+               "isCellCentre(old aim)": centre}
+        m15d = same and perp < 0.1 and 0 < t < 1 and tips and not centre
+    V.row(rows, "M15d_diagonal_cut_halves_meet_on_line", "PASS" if m15d else "FAIL", "MOD",
+          dict(geo, cuts=ced.get("cuts"), halves=len(dh), linkedBefore=dlinked, masts=[D1, D2], blast=DBLAST))
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % DSITE, categories="All")
+
     # ---------------------------------------------------------------- sway (motion is NOT a bar; state proxy only)
     B.ap("set:sway=CPU")
     time.sleep(0.6)
@@ -359,6 +404,32 @@ def run_live(args):
     B.ap("set:tapsEnabled=True")
     V.row(rows, "M19n_taps_off_control", "PASS" if dark and drop_off < 0.5 else "FAIL", "MOD",
           {"ourLampDark": dark, "victimDrop600": round(drop_off, 3), "note": "battery self-discharge only (5 W ~ 0.05 Wd/600 ticks)"})
+
+    # ---------------------------------------------------------------- M19m: a tap beside a MIXED-faction net
+    # POWER_TAP_MIXED_NET_CONNECT_1: the clamp's nearest transmitter is foreign, but that net also holds one of OUR
+    # conduits. The tap must connect to OUR conduit (own-faction transmitter), and the guard must not keep refusing.
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % MSITE)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % MSITE)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % MSITE)
+    mb = [B.call("jawa/build_batch", ops=V.ops("PowerConduit", MHCOND), faction="hostile", wipeExisting=False),
+          B.call("jawa/build_batch", ops=V.ops("PowerConduit", [MOCOND]), faction="player", wipeExisting=False),
+          B.call("jawa/build_batch", ops="RM_PowerTapClamp:%d,%d" % MCLAMP, faction="player", wipeExisting=False)]
+    B.call("jawa/map_commit")
+    B.ticks(5)
+    cm0 = B.ap("census")
+    r0 = cm0.get("tapGuardRefused")
+    B.ticks(300)
+    cm1 = B.ap("census")
+    r1 = cm1.get("tapGuardRefused")
+    mtap = next((t for t in cm1.get("taps") or [] if t.get("id") not in (tap.get("id"),)), {})
+    mixed_net = net_at(B, MHCOND[0]).get("net") == net_at(B, MOCOND).get("net")
+    ours = ap0[M1].get("faction")
+    m19m = bool(mtap) and mtap.get("connected") is True and mtap.get("connectFaction") == ours and r1 == r0
+    V.row(rows, "M19m_tap_mixed_net_connects_own_conduit", "PASS" if m19m else "FAIL", "MOD",
+          {"built": [b.get("survived") for b in mb], "mixedNet": mixed_net, "tap": mtap, "ourFaction": ours,
+           "guardRefused_t0": r0, "guardRefused_t300": r1})
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
 
     # ---------------------------------------------------------------- log budget
     lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")

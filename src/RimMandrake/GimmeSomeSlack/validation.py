@@ -109,7 +109,7 @@ PROBE = "RimMandrake.GimmeSomeSlack.GimmeSomeSlackProbe"
 SETTINGS = "RimMandrake.GimmeSomeSlack.GimmeSomeSlackSettings"
 TRANSPARENT = "RimMandrake/GimmeSomeSlack/ConduitTransparent"
 
-SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", "sprawlCap": "16f",
+SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", "loopBudget": "16f",
            "cordsPerConnection": "3", "tangles": "true", "needlessLoops": "true", "breakReadout": "true",
            "sparkIntensity": "1f", "hideHookupWires": "true", "debugDraw": "false",
            # phase 1b lane A
