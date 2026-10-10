@@ -207,6 +207,15 @@ namespace RimMandrake.FlowWorks
         {
             return f == null || disabledFluids == null || !disabledFluids.Contains(f.defName);
         }
+        /// <summary>Test/script hook (jawa/static_call): switch one liquid on or off exactly as the settings checkbox does.
+        /// Returns the new allowed state. Added 2026-10-09 for FLUID_DISABLE_ALL_INPUTS_1's live check: the bridge's settings
+        /// tools cannot write a static List.</summary>
+        public static bool SetFluidAllowed(string defName, bool on)
+        {
+            if (disabledFluids == null) disabledFluids = new System.Collections.Generic.List<string>();
+            if (on) disabledFluids.Remove(defName); else if (!disabledFluids.Contains(defName)) disabledFluids.Add(defName);
+            return !disabledFluids.Contains(defName);
+        }
         public static bool pitScorchEnabled = true;                // a cut that burned dry reads scorched
         public static float pitScorchFadeDays = 20f;               // PROVISIONAL; 0 = never fades
         public static bool pitOutlineEnabled = true;               // closed dark outline, strong near (south) lining
