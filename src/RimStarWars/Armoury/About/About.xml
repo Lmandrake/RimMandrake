@@ -111,6 +111,8 @@ Generated from a live post-patch def dump; load last.</description>
        extra ones; several of these (DLCs, and mods not in every list) are fine
        to declare even when inactive, as an optional-compat statement of intent. -->
   <loadAfter>
+    <li>mandrake.rm.stillsand</li>   <!-- RSW_Transparisteel_GlassFold.xml patches Stillsand's glass chain -->
+    <li>mandrake.rm.flowworks</li>   <!-- ... and FlowWorks' RM_Make_Bottle_Glass -->
     <li>als.gravtech</li>
     <li>als.gravtech.bc</li>
     <li>aoba.fortress.industrial</li>

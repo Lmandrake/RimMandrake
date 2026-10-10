@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- CANON_MATERIALS_BUILD_1 L6 (partial: transparisteel only) + GLASS_TO_TRANSPARISTEEL_1 — RSW_Transparisteel, the
+     game's only glass (design/RimMandrake/canon_materials_design_2026-10-09.md §3.8). Canon Star Wars name, so RSW tier
+     (mandrake.rsw.armoury); the franchise-free Stillsand chain keeps its own RM_SunGlass / RM_LensGlass, which the
+     campaign no longer produces (Patches/RSW_Transparisteel_GlassFold.xml folds them in).
+
+     Source: the sun furnace melts RM_FineSand (sifted from RM_GlassSand) into it; no mineable producer, no lommite def.
+
+     PROVISIONAL (no calibration, no ruling): every number is RM_SunGlass's stuff line, MarketValue/Mass/stack from
+     RM_LensGlass (the clear grade), armour powers left unset (a building/windows material, not an armour stuff).
+     Art: the sun-glass icon tinted a water-clear blue-white (material, not paint) until our render lands via art ledger. -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_Transparisteel</defName>
+    <label>transparisteel</label>
+    <description>A hard, perfectly clear alloy made from desert sand fused to a metal lattice, used for windows, canopies, domes, bottles and lenses. It is the only glass worth the name: nothing else is clear enough to grind into a lens or tough enough to stop a stray bolt.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_SunGlass</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(215,235,255)</color>
+    </graphicData>
+    <soundInteract>Stone_Drop</soundInteract>
+    <soundDrop>Stone_Drop</soundDrop>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>9</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Beauty>2</Beauty>
+      <SharpDamageMultiplier>0.4</SharpDamageMultiplier>
+      <BluntDamageMultiplier>0.5</BluntDamageMultiplier>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <burnableByRecipe>false</burnableByRecipe>
+    <smeltable>false</smeltable>
+    <stuffProps>
+      <categories>
+        <li>Stony</li>
+      </categories>
+      <commonality>0</commonality>
+      <color>(215,235,255)</color>
+      <appearance>Bricks</appearance>
+      <stuffAdjective>transparisteel</stuffAdjective>
+      <soundImpactBullet>BulletImpact_Ground</soundImpactBullet>
+      <soundMeleeHitSharp>MeleeHit_Stone</soundMeleeHitSharp>
+      <soundMeleeHitBlunt>MeleeHit_Stone</soundMeleeHitBlunt>
+      <statOffsets>
+        <WorkToBuild>120</WorkToBuild>
+      </statOffsets>
+      <statFactors>
+        <MaxHitPoints>0.8</MaxHitPoints>
+        <Beauty>1.6</Beauty>
+        <Flammability>0</Flammability>
+        <WorkToBuild>3</WorkToBuild>
+        <WorkToMake>1.2</WorkToMake>
+        <MarketValue>1.1</MarketValue>
+      </statFactors>
+      <canSuggestUseDefaultStuff>false</canSuggestUseDefaultStuff>
+    </stuffProps>
+  </ThingDef>
+
+</Defs>

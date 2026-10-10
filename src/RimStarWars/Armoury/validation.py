@@ -726,6 +726,70 @@ def plasteel_cut_static(defs_dirs=None, patch_path=None):
     return bad
 
 
+def transparisteel_fold_static(stillsand_defs=None, flowworks_defs=None, patch_path=None, own_defs=None):
+    """Offline (GLASS_TO_TRANSPARISTEEL_1): apply the fold patch to the real Stillsand + FlowWorks + Armoury defs with the
+    Utils/patch_sim.py simulator, then assert: no recipe produces RM_SunGlass/RM_LensGlass; nothing but the two glass defs
+    themselves still names them in a cost or ingredient; the lens and bottle recipes take RSW_Transparisteel; one melt
+    recipe turns RM_FineSand into it; and with Stillsand absent the patch is a no-op."""
+    import glob as _glob, sys as _sys
+    _sys.path.insert(0, _os.path.join(_os.path.dirname(_ARMOURY_DIR), "..", "RimMandrake", "Utils"))
+    import patch_sim as _ps
+    src = _os.path.normpath(_os.path.join(_ARMOURY_DIR, "..", ".."))
+    g = lambda *a: _glob.glob(_os.path.join(src, *a), recursive=True)
+    stillsand_defs = stillsand_defs if stillsand_defs is not None else g("RimMandrake", "Stillsand", "Defs", "**", "*.xml")
+    flowworks_defs = flowworks_defs if flowworks_defs is not None else g("RimMandrake", "FlowWorks", "Defs", "**", "*.xml")
+    own_defs = own_defs if own_defs is not None else [_os.path.join(_ARMOURY_DIR, "Defs", "ThingDefs", "RSW_Transparisteel.xml")]
+    patch_path = patch_path or _os.path.join(_ARMOURY_DIR, "Patches", "RSW_Transparisteel_GlassFold.xml")
+    bad = []
+    old = ("RM_SunGlass", "RM_LensGlass")
+    root = _ps.merge_defs(stillsand_defs + flowworks_defs + own_defs)
+    try:
+        _ps.apply_patch_file(patch_path, root)
+    except Exception as e:  # unsupported/failed op is UNMEASURED, never a pass
+        return ["patch did not simulate: %s" % e]
+    for r in root.iter("RecipeDef"):
+        n = r.findtext("defName")
+        for pr in r.findall("products/*"):
+            if pr.tag in old:
+                bad.append("recipe %s still produces %s" % (n, pr.tag))
+        for li in r.iter("li"):
+            if (li.text or "").strip() in old:
+                bad.append("recipe %s still takes %s" % (n, li.text.strip()))
+    for t in root.iter("ThingDef"):
+        if t.findtext("defName") in old:
+            continue
+        for e in t.findall("costList/*"):
+            if e.tag in old:
+                bad.append("%s costList still names %s" % (t.findtext("defName"), e.tag))
+    bottle = [r for r in root.iter("RecipeDef") if r.findtext("defName") == "RM_Make_Bottle_Glass"]
+    if not bottle or [li.text for li in bottle[0].findall("fixedIngredientFilter/thingDefs/li")] != ["RSW_Transparisteel"]:
+        bad.append("bottle recipe does not take RSW_Transparisteel")
+    melt = [r for r in root.iter("RecipeDef") if r.findtext("defName") == "RSW_MeltTransparisteel"]
+    if len(melt) != 1 or melt[0].find("products/RSW_Transparisteel") is None \
+            or [li.text for li in melt[0].findall("ingredients/li/filter/thingDefs/li")] != ["RM_FineSand"]:
+        bad.append("RSW_MeltTransparisteel missing or not fine sand -> transparisteel")
+    if [r.findtext("defName") for r in root.iter("RecipeDef") if r.findtext("defName") in ("RM_MeltSunGlass", "RM_MeltLensGlass")]:
+        bad.append("an old melt recipe survives")
+    # Stillsand absent: the patch must change nothing and not raise
+    lone = _ps.merge_defs(own_defs)
+    before = _ET.tostring(lone)
+    try:
+        _ps.apply_patch_file(patch_path, lone)
+        if _ET.tostring(lone) != before:
+            bad.append("patch is not a no-op without Stillsand")
+    except Exception as e:
+        bad.append("patch raised without Stillsand: %s" % e)
+    return bad
+
+
+@suite.chain("transparisteel_fold")
+def transparisteel_fold(t):
+    with t.component("transparisteel_fold_shape", beyond_toggle=True):
+        bad = transparisteel_fold_static()
+        if bad:
+            raise ExpectationFailed("; ".join(bad[:10]))
+
+
 @suite.chain("durasteel_convert")
 def durasteel_convert(t):
     with t.component("durasteel_convert_shape", beyond_toggle=True):

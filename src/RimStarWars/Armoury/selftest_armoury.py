@@ -178,6 +178,23 @@ def main():
     finally:
         shutil.rmtree(tmp)
 
+    # transparisteel fold: clean passes; planted defects caught
+    check("transparisteel fold: clean tree", V.transparisteel_fold_static() == [], V.transparisteel_fold_static())
+    tmp = tempfile.mkdtemp()
+    try:
+        d = os.path.join(tmp, "d.xml")
+        open(d, "w").write("<Defs><ThingDef><defName>RM_FineSand</defName></ThingDef><ThingDef><defName>RM_Geo</defName><costList><RM_SunGlass>7</RM_SunGlass></costList></ThingDef>"
+                           "<RecipeDef><defName>RM_Make_Bottle_Glass</defName><fixedIngredientFilter><thingDefs><li>Steel</li></thingDefs></fixedIngredientFilter></RecipeDef>"
+                           "<RecipeDef><defName>RM_Grind</defName><ingredients><li><filter><thingDefs><li>RM_LensGlass</li></thingDefs></filter></li></ingredients></RecipeDef>"
+                           "<RecipeDef><defName>RM_MeltSunGlass</defName><products><RM_SunGlass>10</RM_SunGlass></products></RecipeDef></Defs>")
+        open(os.path.join(tmp, "empty.xml"), "w").write("<Patch/>")
+        got = V.transparisteel_fold_static(stillsand_defs=[d], flowworks_defs=[], patch_path=os.path.join(tmp, "empty.xml"))
+        check("transparisteel fold: planted survivors (cost, bottle, lens, old melt) caught with an empty patch",
+              any("costList" in b for b in got) and any("bottle" in b for b in got) and any("RM_LensGlass" in b for b in got)
+              and any("produces" in b or "old melt" in b for b in got), got)
+    finally:
+        shutil.rmtree(tmp)
+
     if FAILS:
         print("\n%d Armoury selftest(s) FAILED" % len(FAILS))
         return 1
