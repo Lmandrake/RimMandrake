@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- RM_Frethik — the Wastes' salt-haired mite, RimMandrake tier.
+
+       Owner, Wasteland art sheet 2026-10-09 (row RSW_FleeceSpider, art pick A kept): "Redo Name
+       and Description. RimMandrake tier, NOt star wars at all." Ported from SWBestiary's
+       RSW_FleeceSpider (BiomesTeam port, label "puffmite") on the Miasma sheet's RM_Liliana
+       pattern: def copied whole into the biome's own mod under an RM_ defName, stats verbatim,
+       eggs ported alongside, in-game art copied byte-for-byte through the art ledger under
+       Textures/Things/Pawn/Animal/RM_Frethik/, so nothing depends on mandrake.rsw.swbestiary.
+       Name follows the Wasteland's ruled accent (kroffa / grutt / grithe: dry fricatives,
+       clipped). Life stages: the SW-tier RSW_EusocialInsectNymph* stages become vanilla
+       AnimalBaby/AnimalJuvenile. RSW_FleeceSpider stays in SWBestiary only because the frozen
+       RUT_Wasteland twin still names it; RM_Wasteland casts RM_Frethik. -->
+  <ThingDef ParentName="BaseInsect">
+    <defName>RM_Frethik</defName>
+    <label>frethik</label>
+    <description>A palm-sized mite whose back is a dense crown of glassy hairs. They are salt. The frethik drinks the brine that pools where the Wastes' rivers die, and its body pushes the salt out through its hairs, where it sets into needles with a faint pearly sheen. An old frethik drags a crown heavier than itself and leaves a trail of white grit behind it. It eats whatever falls to the ground, and it does not bite unless it is stepped on. Settlers keep them as pets. A frethik shedding its salt on a warm night glitters softly, and few other things in the Wastes are pretty to look at.</description>
+    <statBases>
+      <MoveSpeed>4.4</MoveSpeed>
+      <MarketValue>100</MarketValue>
+      <ComfyTemperatureMin>-25</ComfyTemperatureMin>
+      <ComfyTemperatureMax>20</ComfyTemperatureMax>
+      <FilthRate>0</FilthRate>
+      <Wildness>0</Wildness>
+    </statBases>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <predator>false</predator>
+      <baseBodySize>0.32</baseBodySize>
+      <maxPreyBodySize>0.25</maxPreyBodySize>
+      <baseHungerRate>0.15</baseHungerRate>
+      <baseHealthScale>0.42</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <petness>0.8</petness>
+      <trainability>None</trainability>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Comfort</li>
+      </specialTrainables>
+      <nuzzleMtbHours>12</nuzzleMtbHours>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>10</lifeExpectancy>
+      <manhunterOnTameFailChance>0.01</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.10</manhunterOnDamageChance>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+          <soundCall>Pawn_Megascarab_Call</soundCall>
+          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <headPosPerRotation>
+        <li>(0.02, 0, 0.23)</li>
+        <li>(0.35, 0, 0.05)</li>
+        <li>(0.0, 0, -0.185)</li>
+        <li>(-0.35, 0, 0.05)</li>
+      </headPosPerRotation>
+    </race>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggFertilizedDef>RM_EggFrethikFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RM_EggFrethikUnfertilized</eggUnfertilizedDef>
+        <eggFertilizationCountMax>4</eggFertilizationCountMax>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggLayIntervalDays>7</eggLayIntervalDays>
+        <eggCountRange>2~3</eggCountRange>
+      </li>
+    </comps>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalPet</li>
+      <li>AnimalInsect</li>
+    </tradeTags>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Frethik</defName>
+    <label>frethik</label>
+    <race>RM_Frethik</race>
+    <combatPower>70</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Frethik/RM_Frethik</texPath>
+          <drawSize>0.2</drawSize>
+          <shaderType>CutoutComplex</shaderType>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Frethik/RM_Frethik</texPath>
+          <drawSize>0.6</drawSize>
+          <shaderType>CutoutComplex</shaderType>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Frethik/RM_Frethik</texPath>
+          <drawSize>1</drawSize>
+          <shaderType>CutoutComplex</shaderType>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RM_EggFrethikUnfertilized</defName>
+    <label>frethik egg (unfert.)</label>
+    <description>An unfertilized frethik egg, its shell dusted with salt. It can be eaten raw, but it's much, much better cooked.</description>
+    <graphicData>
+      <texPath>Things/Item/RM_FrethikEgg</texPath>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>5.0</MarketValue>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="EggFertBase">
+    <defName>RM_EggFrethikFertilized</defName>
+    <label>frethik egg (fert.)</label>
+    <description>A fertilized frethik egg, its shell dusted with salt. If all goes well, it should hatch into a baby frethik. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>Things/Item/RM_FrethikEgg</texPath>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>10.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>6</hatcherDaystoHatch>
+        <hatcherPawn>RM_Frethik</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

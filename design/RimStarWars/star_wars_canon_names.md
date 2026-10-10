@@ -171,8 +171,8 @@ easily be mistaken for canon. They are deliberately **excluded from this referen
 |---|---|---|
 | Grithe | `GR_ParagonRat` (VE Genetics) | chitin-plated insectoid-rodent, "not a literal rat" |
 | Grutt | `GR_Molebear` (VE Genetics) | tusked armor-plated burrower |
-| Kroffa | `BMT_Maligoat` (BiomesTeam) | six-legged plated desert grazer |
-| Puffmite | `BMT_FleeceSpider` (BiomesTeam) | filament-tufted tiny arachnid |
+| Kroffa | `BMT_Maligoat` (BiomesTeam), ours as `RM_Kroffa` | plated wasteland milk-grazer |
+| Frethik | `BMT_FleeceSpider` (BiomesTeam), ours as `RM_Frethik` | salt-haired tiny brine mite |
 | Spidercat | `GR_Spidercat` (VE Genetics) | art-only reskin, donor's own name untouched |
 | (untouched) | `AA_Lockjaw` (Alpha Animals) | whale-alligator hybrid, not SW at all |
 

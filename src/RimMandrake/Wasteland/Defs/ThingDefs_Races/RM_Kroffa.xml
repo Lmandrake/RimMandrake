@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- RM_Kroffa — the Wastes' plated milk-grazer, RimMandrake tier.
+
+       Owner, Wasteland art sheet 2026-10-09 (row RSW_Maligoat, art pick A kept): "RimMandrake
+       tier, NOT Star Wars. Never was." Ported from SWBestiary's RSW_Maligoat (BiomesTeam port,
+       already ruled label "kroffa") on the Miasma sheet's RM_Liliana pattern: def copied whole
+       into the biome's own mod under an RM_ defName, stats verbatim, its milk and milk thought
+       ported alongside, in-game art copied byte-for-byte through the art ledger under
+       Textures/Things/Pawn/Animal/RM_Kroffa/. The SW-tier abstract parent
+       RSW_PollutedLands_AnimalThingBase is inlined (its ToxicResistance 0.4; its
+       BMT_PollutedLands_AllAnimals / RSW_PollutedAnimalCommon trade tags dropped). RSW_Maligoat
+       stays in SWBestiary only because the frozen RUT_Wasteland twin still names it;
+       RM_Wasteland casts RM_Kroffa. -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Kroffa</defName>
+    <label>kroffa</label>
+    <description>A squat, heavy grazer armoured in overlapping plates of hide, each one thick enough to turn a knife. Its blunt face ends in a pair of hooked mouthparts that strip the tough, bitter scrub of the Wastes, and two thick horns curl back over its neck. Kroffa can eat what poisons other grazers and stand where the fallout settles, and they keep their milk clean through all of it. That milk is rich and sweet and good to drink raw, so they are the one animal in the Wastes that settlers seek out. They are slow and do not frighten easily. A herd can be driven, but it cannot be hurried.</description>
+    <statBases>
+      <MoveSpeed>3.9</MoveSpeed>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <MarketValue>220</MarketValue>
+      <FilthRate>8</FilthRate>
+      <ToxicResistance>0.4</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <uiIconScale>1.2</uiIconScale>
+    <comps>
+      <li Class="CompProperties_Milkable">
+        <milkDef>RM_KroffaMilk</milkDef>
+        <milkIntervalDays>3</milkIntervalDays>
+        <milkAmount>12</milkAmount>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <baseBodySize>1</baseBodySize>
+      <baseHealthScale>0.7</baseHealthScale>
+      <baseHungerRate>0.225</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <roamMtbDays>8</roamMtbDays>
+      <trainability>None</trainability>
+      <gestationPeriodDays>5.61</gestationPeriodDays>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.266</minAge>
+          <soundWounded>Pawn_Goat_Wounded</soundWounded>
+          <soundDeath>Pawn_Goat_Death</soundDeath>
+          <soundCall>Pawn_Goat_Call</soundCall>
+          <soundAngry>Pawn_Goat_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+      <headPosPerRotation>
+        <li>(0.0, 0, 0.25)</li>
+        <li>(0.26, 0, 0.04)</li>
+        <li>(0, 0, 0)</li>
+        <li>(-0.26, 0, 0.04)</li>
+      </headPosPerRotation>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+    <tools>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>7.3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Kroffa</defName>
+    <label>kroffa</label>
+    <labelFemale>kroffa doe</labelFemale>
+    <race>RM_Kroffa</race>
+    <combatPower>45</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>kroffa calf</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Kroffa/RM_KroffaFemale</texPath>
+          <drawSize>0.8</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.25, 0.25)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Kroffa/Dessicated_RM_KroffaFemale</texPath>
+          <drawSize>0.8</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Kroffa/RM_Kroffa</texPath>
+          <drawSize>1.15</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Kroffa/RM_KroffaFemale</texPath>
+          <drawSize>1.1</drawSize>
+          <shadowData>
+            <volume>(0.375, 0.375, 0.375)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Kroffa/Dessicated_RM_Kroffa</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Kroffa/Dessicated_RM_KroffaFemale</texPath>
+          <drawSize>1.25</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Kroffa/RM_Kroffa</texPath>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.5)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Kroffa/RM_KroffaFemale</texPath>
+          <drawSize>1.8</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.4)</volume>
+            <offset>(0,0,-0.05)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Kroffa/Dessicated_RM_Kroffa</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+        <femaleDessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Kroffa/Dessicated_RM_KroffaFemale</texPath>
+          <drawSize>1.8</drawSize>
+        </femaleDessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RM_KroffaMilk</defName>
+    <label>kroffa milk</label>
+    <description>Thick, sweet milk from a kroffa. It comes out clean even from a herd that grazes on fallout, and it is delicious raw.</description>
+    <graphicData>
+      <texPath>Things/Item/RM_KroffaMilk</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.75</drawSize>
+    </graphicData>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>2.0</MarketValue>
+      <Mass>0.045</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Nutrition>0.1</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.0</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>14</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <foodType>AnimalProduct, Fluid</foodType>
+      <tasteThought>RM_DrankKroffaMilk</tasteThought>
+      <babiesCanIngest>true</babiesCanIngest>
+    </ingestible>
+    <thingCategories>
+      <li>AnimalProductRaw</li>
+    </thingCategories>
+    <allowedArchonexusCount>80</allowedArchonexusCount>
+  </ThingDef>
+
+  <ThoughtDef>
+    <defName>RM_DrankKroffaMilk</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>drank kroffa milk</label>
+        <description>That kroffa milk was wonderful. It was like a fine meal by itself.</description>
+        <baseMoodEffect>5</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

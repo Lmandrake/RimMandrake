@@ -25,7 +25,7 @@ acceptance, never the label alone; life stages, eggs and items that carry the st
   Dune Sea donor rows are port-named by it and confirmed below (§ Desert) — each port's
   description is the donor's text rewritten, so donor and port are one beast with one name.
 - **The Rot's ruled fauna** (rennok, gromma, durrok, mullgoth, vorrugath, chittik, skerrith,
-  grellik) stand. **The Wasteland's** grutt, grithe, kroffa, puffmite stand. **The ikee** stands.
+  grellik) stand. **The Wasteland's** grutt, grithe, kroffa stand (puffmite was renamed **frethik** by the 2026-10-09 Wasteland sheet). **The ikee** stands.
 - **Batch 3's drafts** are cross-referenced, not re-drafted: *ozhilla* (ocular jelly),
   *blistered bulloo* (infected aerofleet), *bileworm* (helixien), *mubbrak* (decay drake),
   *bezzul* (plasmorph), *thollum* (slurrypede), *kessik* (murkling), *lesser wollub* (small
@@ -154,6 +154,21 @@ stamp), applied 2026-10-07/08 (labels + fresh descriptions together, as this doc
   (he asked for a rename without naming it).
 - Donor patches: `src/RimUtinni/UtinniPatches/Patches/Miasma_Rename.xml`.
 
+### Rulings — Wasteland art sheet, 2026-10-09
+
+Owner's notes on `Transient/biome_ffar/wasteland_sheet_2026-10-05.decisions.json`, applied
+2026-10-09 (labels + fresh descriptions together):
+
+- `RSW_FleeceSpider` → **`RM_Frethik`, frethik** — *"Redo Name and Description. RimMandrake tier,
+  NOt star wars at all."* Ported to `mandrake.rm.wasteland` (`RM_Frethik.xml`, eggs alongside), cast
+  inline in `RM_Wasteland_Biome.xml`; a salt-haired brine mite. Wasteland accent: *fr-* the dry
+  rasp, *-eth-*, *-ik* small.
+- `RSW_Maligoat` → **`RM_Kroffa`**, name kroffa kept — *"RimMandrake tier, NOT Star Wars. Never
+  was."* Ported with its milk (`RM_KroffaMilk`) and milk thought; description rewritten.
+- `VAEWaste_Megatardi` → **thuffor** (batch 4g draft) — *"Remake N and S. Redo name and
+  description."* Label edited in place on our absorbed copy; N/S art redraw queued separately.
+- The RSW_ originals stay in SWBestiary only for the frozen `RUT_Wasteland` twin.
+
 ---
 
 ## Batch 4c — the Desert (`desert.json`, 53 rows; 15 in scope, 8 drafted here, 7 port-named CONFIRMED)
@@ -263,20 +278,20 @@ Read aloud with the ruled eight: thozzik, mollith, kerrugoth, illoth, brullith, 
 ## Batch 4g — the Wasteland (`wasteland.json`, 15 rows; 9 in scope, 4 drafted here)
 
 *No outlet: a just-lost sunset, flickering with wrathful lightning.* The wretched register is
-already ruled — kroffa, grutt, grithe, puffmite — so the four remaining take the same dry,
+already ruled — kroffa, grutt, grithe (and frethik, which replaced puffmite 2026-10-09) — so the four remaining take the same dry,
 fricative accent: *f*, *th*, *kh*, clipped.
 
 | defName | current label | the creature | drafted label | alternate | why |
 |---|---|---|---|---|---|
 | `RSW_BloodletterPetrel` (+ eggs) | bloodletter petrel | small bird that drinks the blood of its prey rather than eat toxic flesh (bs 0.32) | **fithrak** | graffit | A dry little rasp: *fith-* the beak, *-rak* the bird. "Petrel" is an Earth seabird, "bloodletter" an English kenning. |
-| `VAEWaste_Megatardi` | megatardi | massive slow blind six-legged tardigrade-thing, eats wastepacks, gentle pack animal, toxic cloud on death (bs 2.0) | **thuffor** | khuddoth | Slow breath through a slow body: *thuff-*, *-or*. "Tardi" is the Earth tardigrade with "mega" in front. |
+| `VAEWaste_Megatardi` | megatardi | massive slow blind six-legged tardigrade-thing, eats wastepacks, gentle pack animal, toxic cloud on death (bs 2.0) | **thuffor** — owner 2026-10-09: *"Remake N and S. Redo name and description."* (applied) | khuddoth | Slow breath through a slow body: *thuff-*, *-or*. "Tardi" is the Earth tardigrade with "mega" in front. |
 | `GR_Spidercat` | spidercat | insectoid-feline hybrid, silk-hairball spit, blinding ranged attack (bs 0.85) | **khiffet** | vraffik | *kh-* the hiss, *-iff-* the spit, *-et* small. Removes a false canon read — *Spidercat* is a real Tasariq temple guardian and this is not it (`NONCANON*`). |
 | `RSW_Sacapillar` (+ eggs) | sacapillar | timid larva-like bug floating on a thorax of putrescent gas, ridden as a pack animal (bs 2.4) | **thoffra** | khubbur | Air leaving something soft: *thoff-* the gas, *-ra* the float. "Sacapillar" is sac + caterpillar. |
 
 **Not drafted:** `VFEI2_Swarmling` / `VFEI2_BlackSwarmling` *nunda* / *black nunda* and
 `RSW_Screecher` *isskra*, `GR_Beetlefleet` *skibbex* — named above, one name planet-wide.
 `AA_Terramorph` *khorrak* — port-named. `Toxalope` — Biotech, scope question (batch 3 flag 4).
-Ruled: grutt, grithe, kroffa, puffmite. Canon kept: Borcatu.
+Ruled: grutt, grithe, kroffa, frethik; thuffor (2026-10-09). Canon kept: Borcatu.
 
 Read aloud with the ruled four: fithrak, thuffor, khiffet, thoffra.
 
