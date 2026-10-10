@@ -1,9 +1,9 @@
 {
  "biome": "RM_Contagion",
- "built": "2026-10-09T07:29:04-0700",
+ "built": "2026-10-10T10:11:07-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 68 mods \u2014 a test list): 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Bleedleaf": {
    "columns": {
@@ -39,6 +39,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "d3061e1c738b40d711e8deeeb003c20197510259abd478ea2290aedee404d3ef"
+   ],
    "subject_key": "bleedleaf"
   },
   "RM_Blisterfloat": {
@@ -59,6 +62,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "19d4f21e8ba7c0f96b2797a21467e5b023b4c744313777b69f58d13c325b69f1",
+    "6ab7560e591729faae22fe4f55bed3bd6ea13e59d15b1819a369f6063f09e3ba",
+    "93e691f9d78c0621f8d640161942e17b422dc0626708b05eeb025ea080d5cdb3"
+   ],
    "subject_key": "blisterfloat"
   },
   "RM_Bloodlurk": {
@@ -78,6 +86,11 @@
    "res": "Things/Pawn/Animal/RM_Bloodlurk/RM_Bloodlurk",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "a114f9b1b26fcd682f2c18367abc9628e30c0b80c16916f7e0777f8d3b623775",
+    "d0e68df4947a50d356a151604032e4636e1909ead17fc791b41ffdfa47ad8a51",
+    "fb1a38ff15bda5fc7fa78dc2b2ab3b05163b86b52eb95c436422a24330d6fee5"
    ],
    "subject_key": "bloodlurk"
   },
@@ -115,6 +128,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "5e708945e2eb80111076c8cb51eedde1fd91ecf12e840bea2059f3b4fb2352f7"
+   ],
    "subject_key": "bloodyfist"
   },
   "RM_BloodyMess": {
@@ -135,6 +151,14 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "0d84f5d7210f26867ad7a688107efc6c3a0d671af5a7d4ded77dd9128900f91f",
+    "30f3b7e11cc1cf3fa0c7293e4f117e4fcd09f8f017293466ae84733089bebea7",
+    "85ba049a987e3de73556e69eb3a6177c2942d3b7c423de63d35e1e3af2552200",
+    "a566f3bd25d3a9446e9c946b057cb48314262b64fd7d661a4d493dba0d2801db",
+    "bbc70a31fbe937705f1e84b9c1f17f0fac9d6b831d7a6db98073f54cad863c39",
+    "cdd3752f3f9e0c36cd4e432e9105b92a067d849b0dde066cb52b82c7e9688dd2"
    ],
    "subject_key": "bloodymess"
   },
@@ -172,6 +196,14 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "0ccc49cd92baaa1e5425597da6b14e76c3a2750edfd11111fe225fbb4ae35f29",
+    "a23d50ff708f11ac07c18688a22118d728021a38b22f16ad2a52b9fc39bd54f8",
+    "c4c193224e834bcf3d267dd8f039fea2a012e24d7b18721baf6b06d5191e77e4",
+    "c5331ce4ac40af59753d9bc04c2a7cf6e91ac34b888b5066ad4a5a9d0d11ecc6",
+    "ce45e135d05031a07f80d4200bf53836069ef313bfb2e448be32cc2e5ec1b8a9",
+    "d4ebcabdf25e116148940462b848171becb272795db0f3072a39109d11cd4c91"
+   ],
    "subject_key": "contagionikee"
   },
   "RM_Crispling": {
@@ -191,6 +223,11 @@
    "res": "Things/Pawn/Animal/RM_Crispling/RM_Crispling",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "191b5af36dab89184a694d0fa3887c7ee5c8cba7c7a3db52dc19f16efa1acc23",
+    "413b1f33c4856d4ce02315b68cecfa0c08e7361d6f540af8fdd098b4360b7e94",
+    "f17a04f318cd2f8b2a05259f2833e7b4b76722c5457b2b68b01dd8f9cf192218"
    ],
    "subject_key": "crispling"
   },
@@ -212,6 +249,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "0712b5ffecfd746d9aece691c14f200ddf2f2b8d28d68462444d09906fb9d71d",
+    "78acbbaceeb0bb464ca8b67953580f2209216ddb710987169eb88465f41d6762",
+    "fb5e8b4c2368d5479fe910f635604b31997d6c09cb9dd65a617218106ce78523"
+   ],
    "subject_key": "danglemaw"
   },
   "RM_Doublemaw": {
@@ -220,17 +262,30 @@
      "east": "cad1a884c027eb99175b0e3caede6531bfb9026b7cd5e202a11d5822bf468e1f",
      "north": "65d3280a17147e761b48d8efcf4e686df14cfa472885691a75de4caaa4314893",
      "south": "8cda2812e2c6d8bc20e639e11a50ae529d18ffe8a663d05b9c3571cc9c077117"
+    },
+    "B": {
+     "east": "3223082b70a0b23b10edde53a836e973e7e21488c38652a8b5fd6239958f4ba7",
+     "north": "b3d7e8e7fb21835349e0ad7e7e0c9cef900916bab7afc0493bbacbf3444a6d39",
+     "south": "7ca62c8257ce531f7c45110f6e1cf607b05c54065688d582af2704362435c57f"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Doublemaw/RM_Doublemaw"
+    "A": "Things/Pawn/Animal/RM_Doublemaw/RM_Doublemaw",
+    "B": "Things/Pawn/Animal/RM_Doublemaw/RM_Doublemaw"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render enact_9b51ef78_doublemaw_v1"
    },
    "res": "Things/Pawn/Animal/RM_Doublemaw/RM_Doublemaw",
    "reserved": [
-    "A"
+    "A",
+    "B"
+   ],
+   "shownBase": [
+    "65d3280a17147e761b48d8efcf4e686df14cfa472885691a75de4caaa4314893",
+    "8cda2812e2c6d8bc20e639e11a50ae529d18ffe8a663d05b9c3571cc9c077117",
+    "cad1a884c027eb99175b0e3caede6531bfb9026b7cd5e202a11d5822bf468e1f"
    ],
    "subject_key": "doublemaw"
   },
@@ -274,6 +329,10 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "c8896a1c28f41b7604d60a0acf78360f236607ef861fff183afff433420d4c4c",
+    "f243da8bacaf203b515ae6315534d1b38350af6363bc4db5f0d1bd2901abcaeb"
+   ],
    "subject_key": "eyebark"
   },
   "RM_Eyestinger": {
@@ -282,17 +341,30 @@
      "east": "8e7a8518cc61511a0a7f5aea5693c81fc8a8f915cc59670f18c71afb496de331",
      "north": "8c4cf067e1227c635eec3a1f885df8ddd7525520746a42f6a1c404e18848fd53",
      "south": "a326d8f1e83ce8027719d42806bd9e102765f030a931aac1d7c70dab554b0f5b"
+    },
+    "B": {
+     "east": "4aee0b6dfc7a76a0f48c310da775c5fb31172246af86076dfa6d9eba5b976fb8",
+     "north": "fbe6f9d39ec9240aa706c521b62ce0937c1bc27545cac27957a75e6f55bb79cf",
+     "south": "d4d4f1cb15caba42caf62a6f603f427d8d1eb238163dc9bf3dff233818211a30"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Eyestinger/RM_Eyestinger"
+    "A": "Things/Pawn/Animal/RM_Eyestinger/RM_Eyestinger",
+    "B": "Things/Pawn/Animal/RM_Eyestinger/RM_Eyestinger"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render enact_ffe79056_eyestinger_v1"
    },
    "res": "Things/Pawn/Animal/RM_Eyestinger/RM_Eyestinger",
    "reserved": [
-    "A"
+    "A",
+    "B"
+   ],
+   "shownBase": [
+    "8c4cf067e1227c635eec3a1f885df8ddd7525520746a42f6a1c404e18848fd53",
+    "8e7a8518cc61511a0a7f5aea5693c81fc8a8f915cc59670f18c71afb496de331",
+    "a326d8f1e83ce8027719d42806bd9e102765f030a931aac1d7c70dab554b0f5b"
    ],
    "subject_key": "eyestinger"
   },
@@ -315,6 +387,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "2b462d6401cffb6dc102ee9b4a80ce5b3d5e486c5fc191cdd8d1c2b7e170387e",
+    "7e03bae1276fb73b215aff8e29109eb0142b96bf7378a3a2295bde3c54dbe778",
+    "854cf9e717567ddba2094e6acc22bcf164e99c15974c6ea5e168c823145ce40e",
+    "b7de49a65193201380aefcad3f4ddb3a3a6a3ba4c5985ccadc2898e927ee862e",
+    "c2e784c442c5b090b3269604291530056fd42952d3d1365be39773d817f2b6e5",
+    "e811433e27f0f33781ccf6d35e3b4d81ea61a4ed5eea1098ca7af5cb9a9fc902"
+   ],
    "subject_key": "fleshsop"
   },
   "RM_Gawpsack": {
@@ -323,17 +403,28 @@
      "east": "55a5f4c93fa78328cf7c6d0a33229e4f7a65aefaa91be613e6c6e3a52f5742ce",
      "north": "f8245a78438ee9e5ee6c67e248deefa7dcd812d524ee504e7e58893c54eca408",
      "south": "2d47a2273c11fd68c5c4d888137a7af1c61c6dda7fbca020615d6cf82c98a3e1"
+    },
+    "B": {
+     "east": "264574025d40363b85e2cf3a91612dd45bfdb765d9d0385a79a7d40e5093e5e1"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack"
+    "A": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack",
+    "B": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render enact_712dc596_gawpsack_v1 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/RM_Gawpsack/RM_Gawpsack",
    "reserved": [
-    "A"
+    "A",
+    "B"
+   ],
+   "shownBase": [
+    "2d47a2273c11fd68c5c4d888137a7af1c61c6dda7fbca020615d6cf82c98a3e1",
+    "55a5f4c93fa78328cf7c6d0a33229e4f7a65aefaa91be613e6c6e3a52f5742ce",
+    "f8245a78438ee9e5ee6c67e248deefa7dcd812d524ee504e7e58893c54eca408"
    ],
    "subject_key": "gawpsack"
   },
@@ -355,6 +446,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "0f30ad3d3003331de909b0341db1139f20ee58cd5bee3e3de22b0ccccba1f671",
+    "6f7f10e3b8809180952d7f722b043be298dee7ad26e0395151cbd6d411828d83",
+    "f5c312be74a4a7d9d972b47b731049ad50c0fc0bb0374cbfe2d74d928a268bdb"
+   ],
    "subject_key": "gnashling"
   },
   "RM_Gorekite": {
@@ -374,6 +470,11 @@
    "res": "Things/Pawn/Animal/RM_Gorekite/RM_Gorekite",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "2b24e6bd3055738f7c0516f99c5f67ca858764591b4042ae87fb819e5f233ed5",
+    "a86f1717b2be4e22c725d8f6f1597cc01a3c3ef00b9d8c533b003fc791728d52",
+    "b03f8db9a7b41d154b0490bea7dee273fb7d116e9550ca8b93695d0e1f872757"
    ],
    "subject_key": "gorekite"
   },
@@ -411,6 +512,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "523207eca1fecbb0d7f59686ba687ada463df01add21d4a757207c147070bcf5"
+   ],
    "subject_key": "gorestalk"
   },
   "RM_HalfmadeTree": {
@@ -446,6 +550,9 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "06662f225e067db5c6780f8c3dac2f96dc0e28f309cbdc9c2b5d6bd249787573"
    ],
    "subject_key": "halfmadetree"
   },
@@ -483,6 +590,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "8d6b8df7dfe8a2658cde1acc03040cf10066ac53314d0bf9c50131beb9dd4a0b"
+   ],
    "subject_key": "halfmadetreeblighted"
   },
   "RM_Lashgrass": {
@@ -518,6 +628,9 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "ff50c7035183d622416b7acc23d935dfd24defe8a9b85773b1a72ffe5f58059b"
    ],
    "subject_key": "lashgrass"
   },
@@ -555,6 +668,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "b0dda9e113d0566f9581c403e3519e9ca1ccd7b9f2dd761886ae3a0a15ba19e6"
+   ],
    "subject_key": "meatvine"
   },
   "RM_Meltgut": {
@@ -574,6 +690,11 @@
    "res": "Things/Pawn/Animal/RM_Meltgut/RM_Meltgut",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "1d8cf74a05cb33ef10947ddb1c77a04d6c85aae03d8ccdd4296eee5982f9586c",
+    "22832bea0e572c9b779d8c5f0a8e086c5491acf1493714660f442f13c84b4cff",
+    "402731e583bdea73ffc32a36713b7e76b53e99a9519e1c62139e7fce47767fc9"
    ],
    "subject_key": "meltgut"
   },
@@ -595,6 +716,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "0ccc49cd92baaa1e5425597da6b14e76c3a2750edfd11111fe225fbb4ae35f29",
+    "c4c193224e834bcf3d267dd8f039fea2a012e24d7b18721baf6b06d5191e77e4",
+    "ce45e135d05031a07f80d4200bf53836069ef313bfb2e448be32cc2e5ec1b8a9"
+   ],
    "subject_key": "ogleknot"
   },
   "RM_Peeper": {
@@ -614,6 +740,11 @@
    "res": "Things/Pawn/Animal/RM_Peeper/RM_Peeper",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "8b975ef975dc114d237367e58788e8d9379724b0c48926c54788159004b65541",
+    "bb976333012fd3fb90afc779b773d95c1548843cd257e8e8350ddf9ef625a7ff",
+    "c188e79cae223511600cbeef6e53248fabe1d92e3c43308c86ff8333f7a99148"
    ],
    "subject_key": "peeper"
   },
@@ -651,6 +782,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "9c7913080f7037acbbcccb8c54f765fb4a9df3b7a6bd4ec9a019b152a141edf3"
+   ],
    "subject_key": "rattlegrope"
   },
   "RM_RustPuff": {
@@ -679,8 +813,8 @@
     "E": "RotSporeKit/Things/Plant/RustPuff"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render rot_rustpuff_v2",
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "B": "IN GAME \u2014 random variant RustPuff_A (1 of 1) \u2014 TheRot",
     "C": "render contagion_RustPuff_var1",
     "D": "render contagion_RustPuff_var2",
     "E": "render contagion_RustPuff_var3"
@@ -692,6 +826,10 @@
     "C",
     "D",
     "E"
+   ],
+   "shownBase": [
+    "0de2d53cf0edb6f7890d110137b4736cdafe457297ce97b05580af63fdf92081",
+    "f96230d2d72b629dd52d7e0da3985b8a17d7a403342bb7d5ab29692327d7435e"
    ],
    "subject_key": "rustpuff"
   },
@@ -729,6 +867,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "dd92c1c7fdb72a324094d83c64f60094a3fbe6586ee9854c4961f3550ee63416"
+   ],
    "subject_key": "sapblister"
   },
   "RM_Scaldhide": {
@@ -748,6 +889,11 @@
    "res": "Things/Pawn/Animal/RM_Scaldhide/RM_Scaldhide",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "228246ab38ee253d1b27a4f72973cdf91a972a34bbac76cf8e72ad03a908388d",
+    "7be08d39d58e8f9b930d13d059af961dc92f70b227f878267dfb5b410abab631",
+    "a59775c81f49f667cde078e0fdb6175967c1e5e7973295048d7072f210ff1e12"
    ],
    "subject_key": "scaldhide"
   },
@@ -774,6 +920,12 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "ce52cd467f26e62b511a528fdb0bbe0befcd88b2186843a08b4fae14aea1b3bc",
+    "dad5d1128c2228a61f4a9b20b92e33716a8bff421bd79f17fab150621dff544e",
+    "e5f138fc1c01e6e0c7ad932d19f74ece5e5b2175d67e3cd528b23a42a103dcdc",
+    "ed67a7bc6f03ee5b790dcbf8fad1aec0c0db03e64acc2ce516f74d57db7fb5df"
    ],
    "subject_key": "scorchpod"
   },
@@ -816,6 +968,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "4c93210ca24edc2a96a44e521132dd54c4982310fd2b2b7a081833409299f034",
+    "79778a06a0ca1ebc56e2b33c3794d869289b2efc882c5544a6510ae90b3890ab",
+    "fa9e4f80155a9b0bf8821205593ed5326a0ed5a7678102471158b973d4837679"
+   ],
    "subject_key": "skinflap"
   },
   "RM_Sloshbelly": {
@@ -836,6 +993,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "15f7abd43878551b7e0fb738c6d059a8980f6c7e008e5cb1e395b70c58e6e77c",
+    "71b204e544d03c7bcb68e756aa90c6a45d1137827f37b7415d048051243e1075",
+    "f785d0007e44aca36154e3c13adc31cc310442f066099f6781fd381c0d8ee71f"
+   ],
    "subject_key": "sloshbelly"
   },
   "RM_Sparkleech": {
@@ -844,17 +1006,30 @@
      "east": "0d40769ce16804fa0c6c77029bc43dfc33c5900411cffbe698d8726db6d32087",
      "north": "0f89474654a08680bee6f8250365720777603cbcf3e261ceee42bd38797d8d18",
      "south": "70a83735015b59f8f209bddb0b786169a25a6d6c81a0f1ddfbb0e500409251ef"
+    },
+    "B": {
+     "east": "f7bc3bcb7cbc47f2d92169a8ad5c530a996e5b882f8c4885802f7cf947e01ce0",
+     "north": "77dec66a26e986bc0ac9c4b6a45a8ec668638563c3ed0109683f2473dc2b855b",
+     "south": "ea20689d29d2ed02b54411d5e44b82d3549f597ef71c2498edaa111e750881e3"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech"
+    "A": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech",
+    "B": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech"
    },
    "labels": {
-    "A": "IN GAME \u2014 Contagion"
+    "A": "IN GAME \u2014 Contagion",
+    "B": "render enact_c6a3f569_sparkleech_v1"
    },
    "res": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech",
    "reserved": [
-    "A"
+    "A",
+    "B"
+   ],
+   "shownBase": [
+    "0d40769ce16804fa0c6c77029bc43dfc33c5900411cffbe698d8726db6d32087",
+    "0f89474654a08680bee6f8250365720777603cbcf3e261ceee42bd38797d8d18",
+    "70a83735015b59f8f209bddb0b786169a25a6d6c81a0f1ddfbb0e500409251ef"
    ],
    "subject_key": "sparkleech"
   },
@@ -875,6 +1050,11 @@
    "res": "Things/Pawn/Animal/RM_SparkleechGrub/RM_SparkleechGrub",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "6ab62860d817a39231640767bc28cea87c894480d898b1da07c31024a7015158",
+    "7ad3f065e798c75f63d4a7cadcd3f3478fb0c034716a2383850b1c89290b3016",
+    "d09f63f36c4c346a687429a723400a01c434026691cf50cd7eb4d40e7c44f6e3"
    ],
    "subject_key": "sparkleechgrub"
   },
@@ -912,6 +1092,9 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "1776e4b50139d2e1b6e23080214bbb87f620ba500fb0ad009697ee8cc7c021aa"
+   ],
    "subject_key": "toothmoss"
   },
   "RM_Wombpod": {
@@ -947,6 +1130,9 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "33c57fb8cd84f56f90bd4ee9510ed0114b47caacba8a0209335a63ccd323ac17"
    ],
    "subject_key": "wombpod"
   }

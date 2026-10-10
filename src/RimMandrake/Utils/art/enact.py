@@ -1018,6 +1018,19 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
             # ✕'d: ingest used to record both (fixed there; this releases the keeps it already wrote)
             kept = [k for k in kept_all if not ((k.get("target") or {}).get("row") == row
                                                 and k.get("via") == I.rel_via(decisions))]
+            # a ✕ on a picture that ships ONLY inside a Graphic_Random folder of ours (a random variant the sheet showed
+            # as its own column, owner card 2026-10-10 "Put them on the sheet"): it leaves the folder, then is purged —
+            # unless it is the folder's last picture, a pick/variant here, or kept by another ruling
+            row_folders = {g for g in (srow.get("graphic_of") or {}).values() if g and folder_slots(idx, g)}
+            fl = [(m, r) for (m, r), ev in idx.live.items() if ev.get("sha") == sha]
+            if fl and not kept and sha not in protect_here and all(
+                    r.rsplit("/", 1)[0] in row_folders
+                    and any(x[2] not in xed for x in folder_slots(idx, r.rsplit("/", 1)[0]))
+                    for _m, r in fl):
+                for m, r in fl:
+                    P["retire"].append({"row": row, "mod": m, "rel": r, "sha": sha, "xed": True})
+                P["purge"].append({"row": row, "sha": sha, "note": note, "release": bool(kept_all)})
+                continue
             if live or kept or sha in protect_here:
                 why = (f"live at {live[0]}" if live else
                        f"owner-kept ({Path(kept[0].get('via') or '').name or kept[0]['id']})" if kept else
@@ -1328,7 +1341,7 @@ def enact(decisions: Path, *, apply: bool = False, holds=(), mark_done=(), no_de
                 touched_mods.add(mod_of(f))
         # 2c a folder this run filled sheds the pictures he did not keep (archived in the store, never deleted)
         for rt in P["retire"]:
-            if rt["row"] not in ok_rows:
+            if rt["row"] not in ok_rows and not rt.get("xed"):    # a ✕'d random-folder picture leaves on its own
                 continue
             try:
                 L.retire(L.src_root().parent / rt["mod"] / "Textures" / rt["rel"], reason=WRITER_TAG)

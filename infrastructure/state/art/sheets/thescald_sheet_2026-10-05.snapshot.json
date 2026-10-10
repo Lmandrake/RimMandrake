@@ -1,9 +1,9 @@
 {
  "biome": "RM_TheScald",
- "built": "2026-10-10T02:24:28-0700",
+ "built": "2026-10-10T10:14:01-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 565 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Bladderboil": {
    "columns": {
@@ -23,6 +23,13 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "22e6f2b7e5524b65d3fac3054efa446cc507aaf8f49e7a65ac7a0c990eeade83",
+    "27336113a0293ccf2a53e9232ebbe73240b65bdb1ac621656a5b0eeae32504db",
+    "8e0be4af1d3c5d2acec661811a88314974eeeca7711ca2bb5057023ead38e9d9",
+    "8e86a4eef544283b3fa34549da167486ac9323d0738e2e2f95408c2ddc2990c4",
+    "aa52c42dea8e0b811fbfa712ee0224b800f1377f95a34e1ca5256e8e2d57ca78"
    ],
    "subject_key": "bladderboil"
   },
@@ -50,6 +57,9 @@
     },
     "G": {
      "single": "b2e72fe2387f11fa8f5567cc9b770fb9bb6ea0c9182a9cb7bf41c93a78555296"
+    },
+    "H": {
+     "single": "da933ee74f8604ddf478796f739d37dced1c91077fdbfea5da67795767ea7638"
     }
    },
    "graphic_of": {
@@ -59,16 +69,18 @@
     "D": "Things/Item/Resource/RM_BladderboilCatch",
     "E": "_byname",
     "F": "Things/Item/Resource/RM_BladderboilCatch",
-    "G": "Things/Item/Resource/RM_BladderboilCatch"
+    "G": "Things/Item/Resource/RM_BladderboilCatch",
+    "H": "Things/Item/Resource/RM_BladderboilCatch"
    },
    "labels": {
-    "A": "our deployed art (render scald2_bladderboilcatch_a) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render scald2_bladderboilcatch_b",
-    "C": "render scald2_bladderboilcatch_c",
-    "D": "render scald_bladderboilcatch_v1",
+    "A": "IN GAME \u2014 random variant RM_BladderboilCatch_a (1 of 4) \u2014 TerminalBiomes",
+    "B": "IN GAME \u2014 random variant RM_BladderboilCatch_b (2 of 4) \u2014 TerminalBiomes",
+    "C": "IN GAME \u2014 random variant RM_BladderboilCatch_c (3 of 4) \u2014 TerminalBiomes",
+    "D": "IN GAME \u2014 random variant RM_BladderboilCatch_d (4 of 4) \u2014 TerminalBiomes",
     "E": "render scaldfloor_bladderboil",
     "F": "render phfix_RUT_BladderboilCatch_b",
-    "G": "render phfix_RUT_BladderboilCatch_a"
+    "G": "render phfix_RUT_BladderboilCatch_a",
+    "H": "render RM_BladderboilCatch_v3_nooutline"
    },
    "res": "Things/Item/Resource/RM_BladderboilCatch",
    "reserved": [
@@ -78,7 +90,17 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
+   ],
+   "shownBase": [
+    "00e3641c852d05d123f6c83945e17abafd0c71c28040097bfcd23f8c4191e84c",
+    "27336113a0293ccf2a53e9232ebbe73240b65bdb1ac621656a5b0eeae32504db",
+    "310fd5db7bd3899cbe277e8138c7ab774d0d69781afa8fc1e4c442ca17b653a7",
+    "8e0be4af1d3c5d2acec661811a88314974eeeca7711ca2bb5057023ead38e9d9",
+    "8e86a4eef544283b3fa34549da167486ac9323d0738e2e2f95408c2ddc2990c4",
+    "eea25b3467344a5f2b26c6cb6ddd3d258fe4623a6018e978ffe78b54cf59fc85",
+    "fe96c6e25e7cfcce87ca217b0891dae406202a8439d880cd9b33a9e189e62dbd"
    ],
    "subject_key": "bladderboilcatch"
   },
@@ -100,9 +122,9 @@
     "J": "Things/Plant/RM_Crowncarpet"
    },
    "labels": {
-    "H": "render scald3_crowncarpet_a",
-    "I": "render scald3_crowncarpet_b",
-    "J": "render scald3_crowncarpet_c"
+    "H": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Crowncarpet_a (1 of 3) \u2014 LuminousPigment",
+    "I": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Crowncarpet_b (2 of 3) \u2014 LuminousPigment",
+    "J": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Crowncarpet_c (3 of 3) \u2014 LuminousPigment"
    },
    "res": "Things/Plant/RM_Crowncarpet",
    "reserved": [
@@ -116,6 +138,15 @@
     "H",
     "I",
     "J"
+   ],
+   "shownBase": [
+    "1484602934bc731c7065583197b1c25a3df4dcdee02c903301ddc7f85bbe08e7",
+    "17e9a7704effa59355dcb2741d59c596f30695b34fdc5201a2ad51fc4ee3b6c8",
+    "196b2031606b9df032bef7c073ec32f472e472f003cf88d5b240a86bf0c8c1f3",
+    "41e7aa57747810f0ccbc176b8ba60d77fcee9ac9259e4d52c99a5e47fdab71e4",
+    "45c031c03d39977c3d5121bf7fc3407aaca10f1df5fac167f6a0974ab8061786",
+    "f02b189595e29326568115a5c27d29c4af772510b764854edd612e0dbb94da80",
+    "fa6e5ce7aa56aaee97280ac61a9b877ba7ab579fa0cb231ad8054c7c6a4b6f9d"
    ],
    "subject_key": "crowncarpet"
   },
@@ -146,6 +177,13 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "3593cab1412c8c5fb384963bff93df7e77a176ad5efb91417e0f0075c1f8bfde",
+    "4956f595461cb83db285905e6ee1fb32775e46b7dadbd9df55e984e718977a43",
+    "5030b01144311f7a805cb4877cbd329d316bd6782d1c3aaaec694150cd3ca20c",
+    "e13906b0c20350cba187db4856cf6acc11db9be2279ca76de0a2b9f1806d79d3",
+    "e593d5cc4e21796ec066f70364bdc0c78e3348c3fb71f0db14d00afb1359646c"
+   ],
    "subject_key": "doss"
   },
   "RM_DossCatch": {
@@ -168,6 +206,9 @@
      "east": "1a0da401355631432adac68a84476db252ad05a19c0c4b08d656e56a76b11b26",
      "north": "c81b1d6c0a48e89bd1d91fa190b21f291962aea8ae9e90c2c197144accab9a51",
      "south": "e84253857c716e7d9a3840f6cccbfd331141084f896092a9c5c9cb8af09bc0cd"
+    },
+    "F": {
+     "single": "0a490d7b25d384f4d005aef250f75a949c67740c284422517d9b38266185ecbb"
     }
    },
    "graphic_of": {
@@ -175,14 +216,16 @@
     "B": "Things/Item/Resource/RM_DossCatch",
     "C": "Things/Item/Resource/RM_DossCatch",
     "D": "_byname",
-    "E": "_byname"
+    "E": "_byname",
+    "F": "Things/Item/Resource/RM_DossCatch"
    },
    "labels": {
-    "A": "our deployed art (render scald2_dosscatch_a) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render scald2_dosscatch_b",
-    "C": "render scald2_dosscatch_c",
+    "A": "IN GAME \u2014 random variant RM_DossCatch_a (1 of 3) \u2014 TerminalBiomes",
+    "B": "IN GAME \u2014 random variant RM_DossCatch_b (2 of 3) \u2014 TerminalBiomes",
+    "C": "IN GAME \u2014 random variant RM_DossCatch_c (3 of 3) \u2014 TerminalBiomes",
     "D": "render scaldfloor_doss",
-    "E": "render scald3_doss"
+    "E": "render scald3_doss",
+    "F": "render RM_DossCatch_v3_nooutline"
    },
    "res": "Things/Item/Resource/RM_DossCatch",
    "reserved": [
@@ -190,7 +233,16 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "3593cab1412c8c5fb384963bff93df7e77a176ad5efb91417e0f0075c1f8bfde",
+    "386bc4aa5eb0665e61176aa3d6cbaf8fa00f471387f6eeecf1a59495a172e441",
+    "3ab4c7a84b159efc9dbb6c939a806d942cd18ca66aeb7f321e3feb899b6ee451",
+    "5030b01144311f7a805cb4877cbd329d316bd6782d1c3aaaec694150cd3ca20c",
+    "e593d5cc4e21796ec066f70364bdc0c78e3348c3fb71f0db14d00afb1359646c",
+    "ea538fd9cad1137b76510537fa8952f0e95a28f1f188924f76c03bac32287424"
    ],
    "subject_key": "dosscatch"
   },
@@ -213,6 +265,13 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "1323da1a2c5077e80f567d1de8be151a99cc6a3c5340da89a8d9e5f21272d541",
+    "42c923f04d5fcf318feecb9ffc29821a161610b77fd74db7e6f15b9a0d61a1b3",
+    "45f0b4dfc0352ab80504397c8ade98015dbe5a72cee8d2a19b5e2e85e4c02394",
+    "7fc04c6951d58c9d3d7f17d70ca5b3d0a8f40bf54424797b52feb2abbbf7f226",
+    "c77d7f2c913c470369e4c598ff08b603fb648448e1e25e1006b8b77ff7533268"
+   ],
    "subject_key": "eesh"
   },
   "RM_EeshCatch": {
@@ -230,26 +289,40 @@
      "east": "1323da1a2c5077e80f567d1de8be151a99cc6a3c5340da89a8d9e5f21272d541",
      "north": "c77d7f2c913c470369e4c598ff08b603fb648448e1e25e1006b8b77ff7533268",
      "south": "7fc04c6951d58c9d3d7f17d70ca5b3d0a8f40bf54424797b52feb2abbbf7f226"
+    },
+    "E": {
+     "single": "e3a234eda8ecc99d6d9fe3bc070d82c4f919cc1c454f039cca0f04c367d0259f"
     }
    },
    "graphic_of": {
     "A": "Things/Item/Resource/RM_EeshCatch",
     "B": "Things/Item/Resource/RM_EeshCatch",
     "C": "Things/Item/Resource/RM_EeshCatch",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "Things/Item/Resource/RM_EeshCatch"
    },
    "labels": {
-    "A": "our deployed art (render scald2_eeshcatch_a) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render scald2_eeshcatch_b",
-    "C": "render scald2_eeshcatch_c",
-    "D": "render scaldfloor_eesh"
+    "A": "IN GAME \u2014 random variant RM_EeshCatch_a (1 of 3) \u2014 TerminalBiomes",
+    "B": "IN GAME \u2014 random variant RM_EeshCatch_b (2 of 3) \u2014 TerminalBiomes",
+    "C": "IN GAME \u2014 random variant RM_EeshCatch_c (3 of 3) \u2014 TerminalBiomes",
+    "D": "render scaldfloor_eesh",
+    "E": "render RM_EeshCatch_v3_nooutline"
    },
    "res": "Things/Item/Resource/RM_EeshCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "1323da1a2c5077e80f567d1de8be151a99cc6a3c5340da89a8d9e5f21272d541",
+    "7724d4ae5fdf4d8996e84f092c60584cc87846dfad053dd5af3cf02b91b7ba19",
+    "7fc04c6951d58c9d3d7f17d70ca5b3d0a8f40bf54424797b52feb2abbbf7f226",
+    "92bd9d5916387d1b3c6ad525a1e725fb561f353f24070d3b2aeda2d8473d54a2",
+    "b034ee1c5bde0b0d7a7da94888b88b02b16b0ca6991bfc1f5ed1a2587074fc9f",
+    "c77d7f2c913c470369e4c598ff08b603fb648448e1e25e1006b8b77ff7533268"
    ],
    "subject_key": "eeshcatch"
   },
@@ -272,6 +345,12 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "7fd74f9d8d51d25969192dca23c43601ddd457120a035c83ecc656182419670f",
+    "caa230bd40f4bac6728fa6ef0905dfb23afd843dc00382e79c50a014d755b589",
+    "e1d90db9dd5ff787edcd7cb910a5800a445fde8932beb837612eae9a22737ae8",
+    "eae1d446a1c4ee1c753c8a6e0effab016250ecd788d41cd4ce6b7578decefe0e"
+   ],
    "subject_key": "ekkel"
   },
   "RM_EkkelCatch": {
@@ -289,26 +368,40 @@
      "east": "7fd74f9d8d51d25969192dca23c43601ddd457120a035c83ecc656182419670f",
      "north": "e1d90db9dd5ff787edcd7cb910a5800a445fde8932beb837612eae9a22737ae8",
      "south": "eae1d446a1c4ee1c753c8a6e0effab016250ecd788d41cd4ce6b7578decefe0e"
+    },
+    "E": {
+     "single": "973f82434a9c3abcde6be1ff31a2ba825d4d0e441218fb6b5ce90532a0dc998d"
     }
    },
    "graphic_of": {
     "A": "Things/Item/Resource/RM_EkkelCatch",
     "B": "Things/Item/Resource/RM_EkkelCatch",
     "C": "Things/Item/Resource/RM_EkkelCatch",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "Things/Item/Resource/RM_EkkelCatch"
    },
    "labels": {
-    "A": "our deployed art (render scald2_ekkelcatch_a) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render scald2_ekkelcatch_b",
-    "C": "render scald2_ekkelcatch_c",
-    "D": "render scaldfloor_ekkel"
+    "A": "IN GAME \u2014 random variant RM_EkkelCatch_a (1 of 3) \u2014 TerminalBiomes",
+    "B": "IN GAME \u2014 random variant RM_EkkelCatch_b (2 of 3) \u2014 TerminalBiomes",
+    "C": "IN GAME \u2014 random variant RM_EkkelCatch_c (3 of 3) \u2014 TerminalBiomes",
+    "D": "render scaldfloor_ekkel",
+    "E": "render RM_EkkelCatch_v3_nooutline"
    },
    "res": "Things/Item/Resource/RM_EkkelCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "36baba10aa4730c77d65d657e913e6d81059ba339f5bd4c546a1172560646647",
+    "72b7c52ff55b4b0ee61091b19c27e24c4b586aaee07c7c6fc2d7ba29411eeb15",
+    "7fd74f9d8d51d25969192dca23c43601ddd457120a035c83ecc656182419670f",
+    "847ad00ebe986a81c9e5f43989d4f6807b2448a6b98d5e417b5bff6ed168ef5f",
+    "e1d90db9dd5ff787edcd7cb910a5800a445fde8932beb837612eae9a22737ae8",
+    "eae1d446a1c4ee1c753c8a6e0effab016250ecd788d41cd4ce6b7578decefe0e"
    ],
    "subject_key": "ekkelcatch"
   },
@@ -353,6 +446,13 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "387d7dcab2470b66d89430c7b49537ad09a58c68eb9109c6b966252e713129e9",
+    "75fc4c784a8351233193e985ace64f84408ecbcda4264e1f55ca2f2489262a3e",
+    "bd58b5e6d19f0f92b7e1bddc5d07e2ab6fa656fc078b1f0a17618f6b34089909",
+    "e079a671fe1a70f8cd59abadd8d9c22a5236e6bef3a1a19bc44692fe6f714bd7",
+    "f18bcc779d4ec1e2280c9a69b1303162d99a0ae140842bf0da6902578182dfc4"
+   ],
    "subject_key": "karrash"
   },
   "RM_KarrashCatch": {
@@ -370,26 +470,40 @@
      "east": "75fc4c784a8351233193e985ace64f84408ecbcda4264e1f55ca2f2489262a3e",
      "north": "e079a671fe1a70f8cd59abadd8d9c22a5236e6bef3a1a19bc44692fe6f714bd7",
      "south": "bd58b5e6d19f0f92b7e1bddc5d07e2ab6fa656fc078b1f0a17618f6b34089909"
+    },
+    "E": {
+     "single": "fb4fc12993f6def3056d87cfc0cad7b1bd0c626d45428b5d99d38ad6b4ff348f"
     }
    },
    "graphic_of": {
     "A": "Things/Item/Resource/RM_KarrashCatch",
     "B": "Things/Item/Resource/RM_KarrashCatch",
     "C": "Things/Item/Resource/RM_KarrashCatch",
-    "D": "_byname"
+    "D": "_byname",
+    "E": "Things/Item/Resource/RM_KarrashCatch"
    },
    "labels": {
-    "A": "our deployed art (render scald2_karrashcatch_a) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render scald2_karrashcatch_b",
-    "C": "render scald2_karrashcatch_c",
-    "D": "render scaldfloor_karrash"
+    "A": "IN GAME \u2014 random variant RM_KarrashCatch_a (1 of 3) \u2014 TerminalBiomes",
+    "B": "IN GAME \u2014 random variant RM_KarrashCatch_b (2 of 3) \u2014 TerminalBiomes",
+    "C": "IN GAME \u2014 random variant RM_KarrashCatch_c (3 of 3) \u2014 TerminalBiomes",
+    "D": "render scaldfloor_karrash",
+    "E": "render RM_KarrashCatch_v3_nooutline"
    },
    "res": "Things/Item/Resource/RM_KarrashCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "08e3b632a747a3c1a555bc989f8975b6d1f5f6eec5e800b7e49d72c9edb306d3",
+    "75fc4c784a8351233193e985ace64f84408ecbcda4264e1f55ca2f2489262a3e",
+    "bd58b5e6d19f0f92b7e1bddc5d07e2ab6fa656fc078b1f0a17618f6b34089909",
+    "bdcff0beba9f50f91a9ea5679fcb09124b71d57a288c99f71564a3553cd06e3b",
+    "c934e03786a58f6d207d0ea0da51d60135c35294053c9886cb00ce4ec19cecdd",
+    "e079a671fe1a70f8cd59abadd8d9c22a5236e6bef3a1a19bc44692fe6f714bd7"
    ],
    "subject_key": "karrashcatch"
   },
@@ -412,6 +526,13 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "5f8fd77142dd4364452824c0f51b3499a82ab55197d9daed59e2d7d60b278630",
+    "adab4d5e55d5d3bd20c5420d70e8b513f63a09ea3be300bbda0d6b0204fb9c4f",
+    "b0c4fc2fe2c6fe4b80addb7804acf662287a46ab737147aab6f635482b9fb0bf",
+    "b855975720300f0a68f49e9dc4f67267095b5728effedeea560ce5054fb1b2ba",
+    "bca68a05caf4217b0be6cdf19e957ff4071ea8054dfffd584e020d0f0f66745e"
+   ],
    "subject_key": "muddal"
   },
   "RM_MuddalCatch": {
@@ -424,24 +545,38 @@
     },
     "C": {
      "single": "3c8fc76df7e6640cd52f5ddcdcb0ff77bdddbae9def41d8ec171a992c13f898a"
+    },
+    "E": {
+     "single": "4b3deff1de43b1d7dae301af1057d5eb073888447c29cd451f70d8835accb5fc"
     }
    },
    "graphic_of": {
     "A": "Things/Item/Resource/RM_MuddalCatch",
     "B": "Things/Item/Resource/RM_MuddalCatch",
-    "C": "Things/Item/Resource/RM_MuddalCatch"
+    "C": "Things/Item/Resource/RM_MuddalCatch",
+    "E": "Things/Item/Resource/RM_MuddalCatch"
    },
    "labels": {
-    "A": "our deployed art (render scald2_muddalcatch_a) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render scald2_muddalcatch_b",
-    "C": "render scald2_muddalcatch_c"
+    "A": "IN GAME \u2014 random variant RM_MuddalCatch_a (1 of 3) \u2014 TerminalBiomes",
+    "B": "IN GAME \u2014 random variant RM_MuddalCatch_b (2 of 3) \u2014 TerminalBiomes",
+    "C": "IN GAME \u2014 random variant RM_MuddalCatch_c (3 of 3) \u2014 TerminalBiomes",
+    "E": "render RM_MuddalCatch_v3_nooutline"
    },
    "res": "Things/Item/Resource/RM_MuddalCatch",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "3c8fc76df7e6640cd52f5ddcdcb0ff77bdddbae9def41d8ec171a992c13f898a",
+    "408f440bf3cee97e1f949def40bcb8d95847e229fa3f108ff47dc1dba08f4d1c",
+    "5f8fd77142dd4364452824c0f51b3499a82ab55197d9daed59e2d7d60b278630",
+    "adab4d5e55d5d3bd20c5420d70e8b513f63a09ea3be300bbda0d6b0204fb9c4f",
+    "b1bcd4e4df7badc00c68e72236a3478318b7ab76c493d103f97876dca9e9a35d",
+    "bca68a05caf4217b0be6cdf19e957ff4071ea8054dfffd584e020d0f0f66745e"
    ],
    "subject_key": "muddalcatch"
   },
@@ -466,24 +601,47 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "474c424fd87cb158fe9cf4d56317d308365c40451314059217247d2385e2831b",
+    "5b57a72c8a56fc095014e9f04e4cf7178be82c30bbe66628f29b31835ee396b9",
+    "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
+    "9ea47869517701154046c4e55ddd36b699558de3348f569537da1281c70660d1",
+    "f6d90283fce0c02ed0bfb57300a8fb35610692931ffc9b33d92bced57eb75995"
+   ],
    "subject_key": "noohm"
   },
   "RM_Saal": {
    "columns": {
     "A": {
      "single": "b58d6343345cf8ca52f07f023df09a643b9885f69e70e9c0c747bd41c32c47ba"
+    },
+    "C": {
+     "single": "9ee9b5158aacde8ecc3d0fcc70c301c96f938a05f068a296076f72e05d304f74"
+    },
+    "D": {
+     "single": "674f12db6cd546e04ed04a1123e2501f054c9d2ff3e4fe0a3987af7de555e060"
     }
    },
    "graphic_of": {
-    "A": "Things/Item/Resource/RM_Saal"
+    "A": "Things/Item/Resource/RM_Saal",
+    "C": "Things/Item/Resource/RM_Saal",
+    "D": "Things/Item/Resource/RM_Saal"
    },
    "labels": {
-    "A": "our deployed art (render scald2_saalcatch_a) \u2014 RimMandrake: Baroque Biomes"
+    "A": "IN GAME \u2014 random variant RM_Saal_a (1 of 3) \u2014 TerminalBiomes",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Saal_b (2 of 3) \u2014 TerminalBiomes",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Saal_c (3 of 3) \u2014 TerminalBiomes"
    },
    "res": "Things/Item/Resource/RM_Saal",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
+   ],
+   "shownBase": [
+    "b58d6343345cf8ca52f07f023df09a643b9885f69e70e9c0c747bd41c32c47ba",
+    "f6d90283fce0c02ed0bfb57300a8fb35610692931ffc9b33d92bced57eb75995"
    ],
    "subject_key": "saal"
   },
@@ -513,6 +671,11 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "5f8fd77142dd4364452824c0f51b3499a82ab55197d9daed59e2d7d60b278630",
+    "adab4d5e55d5d3bd20c5420d70e8b513f63a09ea3be300bbda0d6b0204fb9c4f",
+    "bca68a05caf4217b0be6cdf19e957ff4071ea8054dfffd584e020d0f0f66745e"
+   ],
    "subject_key": "scaldwalker"
   },
   "RM_Shulla": {
@@ -535,6 +698,12 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "77751964a11bfed2c0716621d9dc813d085ae9b8848f37b9a2515e97d44e568a",
+    "92592a786b3ed9ea23a0ea87e16f300c64a58063e082cb0327e0452e3761ccb5",
+    "c77cb3c58cf01d4b8809739848ee052463d27e4be60c24adfc711e33523c353e",
+    "e65cbd2957419f8aafb858b9301e15f657e963912b8d2daa9bf48f2c08e0ccdb"
+   ],
    "subject_key": "shulla"
   },
   "RM_ShullaCatch": {
@@ -555,6 +724,9 @@
      "east": "e65cbd2957419f8aafb858b9301e15f657e963912b8d2daa9bf48f2c08e0ccdb",
      "north": "77751964a11bfed2c0716621d9dc813d085ae9b8848f37b9a2515e97d44e568a",
      "south": "c77cb3c58cf01d4b8809739848ee052463d27e4be60c24adfc711e33523c353e"
+    },
+    "F": {
+     "single": "5b3914eed767545dfd3fcc2a907f00bed31f33d19a7a9507100217be85946c47"
     }
    },
    "graphic_of": {
@@ -562,14 +734,16 @@
     "B": "Things/Item/Resource/RM_ShullaCatch",
     "C": "Things/Item/Resource/RM_ShullaCatch",
     "D": "Things/Item/Resource/RM_ShullaCatch",
-    "E": "_byname"
+    "E": "_byname",
+    "F": "Things/Item/Resource/RM_ShullaCatch"
    },
    "labels": {
-    "A": "our deployed art (render scald3_shullacatch_a) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render scald2_shullacatch_b",
-    "C": "render scald2_shullacatch_c",
+    "A": "IN GAME \u2014 random variant RM_ShullaCatch_a (1 of 3) \u2014 TerminalBiomes",
+    "B": "IN GAME \u2014 random variant RM_ShullaCatch_b (2 of 3) \u2014 TerminalBiomes",
+    "C": "IN GAME \u2014 random variant RM_ShullaCatch_c (3 of 3) \u2014 TerminalBiomes",
     "D": "render scald_shullacatch_v1",
-    "E": "render scald_shulla_v1"
+    "E": "render scald_shulla_v1",
+    "F": "render RM_ShullaCatch_v3_nooutline"
    },
    "res": "Things/Item/Resource/RM_ShullaCatch",
    "reserved": [
@@ -577,7 +751,17 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "2397bcafac35ca89d649d1af4cf2c33285bb7e95c9ea4b0e7a071df298266a44",
+    "77751964a11bfed2c0716621d9dc813d085ae9b8848f37b9a2515e97d44e568a",
+    "c77cb3c58cf01d4b8809739848ee052463d27e4be60c24adfc711e33523c353e",
+    "df523512f1caf7b007f742a34f3e7029ca1e8d3855f6c431155f4917d497db09",
+    "e65cbd2957419f8aafb858b9301e15f657e963912b8d2daa9bf48f2c08e0ccdb",
+    "e6b8772e6ba31290fb900b931e3d97097d0e77415d3c4f9d9bd0ba3a5f09a499",
+    "e9333823e69f4a7372291d552a7b2bf91d20f2459ed6e3f9444e10545f677f8e"
    ],
    "subject_key": "shullacatch"
   },
@@ -614,6 +798,13 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "24b0cc141fd659c0231309ee4bcc61af8c84b58b12ea4c567894affb6578c3fc",
+    "2c5fef11ee6d90ca097366ec2901c1a1130eb6f2cb6eea798f656d5d2bf35d18",
+    "3da97e9f9d68b64940de8cf3a3e9cb5e44d9df6e23be0a0c6514d5c9f8c422b4",
+    "acaf7b136ce563d06b1e71f3cc2a8df45afdf872ff9b46b7e46a222a631a15cc",
+    "ade8fdbe9cec1e787b8b27ec5103d357a9e5fa888fb57989e110fd1a0984f9cc"
+   ],
    "subject_key": "thuum"
   },
   "RM_ThuumCatch": {
@@ -634,6 +825,9 @@
     },
     "F": {
      "east": "3c646706b24d25794076168128fe741796de95757a90ed93af28f0c8fffc186f"
+    },
+    "G": {
+     "single": "aa9d1b127d0410a3cdc58ae2d79f881ef28f0b3c2655f25ec3a92758cef618a8"
     }
    },
    "graphic_of": {
@@ -641,14 +835,16 @@
     "B": "Things/Item/Resource/RM_ThuumCatch",
     "C": "Things/Item/Resource/RM_ThuumCatch",
     "E": "_byname",
-    "F": "_byname"
+    "F": "_byname",
+    "G": "Things/Item/Resource/RM_ThuumCatch"
    },
    "labels": {
-    "A": "our deployed art (render scald2_thuumcatch_a) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render scald2_thuumcatch_b",
-    "C": "render scald2_thuumcatch_c",
+    "A": "IN GAME \u2014 random variant RM_ThuumCatch_a (1 of 3) \u2014 TerminalBiomes",
+    "B": "IN GAME \u2014 random variant RM_ThuumCatch_b (2 of 3) \u2014 TerminalBiomes",
+    "C": "IN GAME \u2014 random variant RM_ThuumCatch_c (3 of 3) \u2014 TerminalBiomes",
     "E": "render scald4_shimmereel",
-    "F": "render scald3_shimmereel"
+    "F": "render scald3_shimmereel",
+    "G": "render RM_ThuumCatch_v3_nooutline"
    },
    "res": "Things/Item/Resource/RM_ThuumCatch",
    "reserved": [
@@ -657,7 +853,16 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
+   ],
+   "shownBase": [
+    "2c5fef11ee6d90ca097366ec2901c1a1130eb6f2cb6eea798f656d5d2bf35d18",
+    "3da97e9f9d68b64940de8cf3a3e9cb5e44d9df6e23be0a0c6514d5c9f8c422b4",
+    "ade8fdbe9cec1e787b8b27ec5103d357a9e5fa888fb57989e110fd1a0984f9cc",
+    "b76dcff49c5cde7d9864c042da36e3f9409a1a61f7899649846d4fcda0a05cbb",
+    "bcc8f6c762dd4276eeba8b54f0e409799d0734f5000c3274a13c6e5c9e71c99e",
+    "ccf3bff353fcce0a5d2b744a4d88c9c11bbad135a9f54fee8589b46ba75d4a1e"
    ],
    "subject_key": "thuumcatch"
   },

@@ -1,9 +1,9 @@
 {
  "biome": "RM_LanternDeeps",
- "built": "2026-10-09T07:35:24-0700",
+ "built": "2026-10-10T10:12:18-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Blinker": {
    "columns": {
@@ -30,6 +30,11 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "758a687ab0765a7560d6d31c97d03b695e8d203598dab57042e760a51a2c4350",
+    "b2a7c63e9e1c2278dcceb7aa26296a933f8b563ab55fd8d065da6a0e256f290b",
+    "ffe6a84d80810b4edf48ca624bb7899a45e84001c8ed7f5199291ac97d4d1dfa"
    ],
    "subject_key": "blinker"
   },
@@ -58,6 +63,11 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "8e06e17305ea704c6cb5dabd53d69a7ee042556fc29bd0eeb56660a9d522e8dd",
+    "c208a19c2f5a336c98fbd1efb64a40740843601ffedf45753d4bd9e492ed23f5",
+    "ef79ce387f646f8e642c8713825fc6d5c4345e21f7b2b2ef4532d140bfd7ad41"
    ],
    "subject_key": "bloodropmoth"
   },
@@ -92,24 +102,34 @@
     },
     "D": {
      "single": "3e97ac3aab4f10bae76433ac62ac31631dc794993097dd1ebf5e85a4c66d3a41"
+    },
+    "E": {
+     "single": "b7ff340d10d8163a03cdf0bb57d33daca404fb27fe77844bf0effd9c14048215"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/BrellikBulb",
     "C": "RM_LanternDeeps/Things/Plant/BrellikBulb",
-    "D": "RM_LanternDeeps/Things/Plant/BrellikBulb"
+    "D": "RM_LanternDeeps/Things/Plant/BrellikBulb",
+    "E": "RM_LanternDeeps/Things/Plant/BrellikBulb"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "C": "render deeps_brellikbulb_varb_v1",
-    "D": "render deeps_brellikbulb_varc_v1"
+    "A": "IN GAME \u2014 random variant A (1 of 4) \u2014 LanternDeeps",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant C (3 of 4) \u2014 LanternDeeps",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant D (4 of 4) \u2014 LanternDeeps",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 4) \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Things/Plant/BrellikBulb",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "8929ed215e73bfd524c4508d339747a392075d66f5b7608b257a1aaad927026c",
+    "ad45402154a4dc2320347faf3cabaecba337a1c5020d1603cf8914a5f1505335"
    ],
    "subject_key": "brellikbulb"
   },
@@ -130,6 +150,11 @@
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Candler/Candler",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "4fd0431f42079449aa5b60cbde97fbd78e4cec7fd222d8d9de807b4d51cb450f",
+    "673d5a57df31af1e2135b378ea66ba27576468a7de0d42dec327344941581b4e",
+    "e8017f22ecb33d29ec72e8fbe6b9fb02ebec57b8ac0e5b9dc33afb642efa2b0c"
    ],
    "subject_key": "candler"
   },
@@ -172,6 +197,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "09156b1ff3111d1b358ee04ef55c94ecdc8dec288352bc0c7cdf4f9323d81ce3",
+    "1d433b511f23cdae15262a78a39da00610d1f62d903ef05682d6e7e0efbf31a9",
+    "6df2a9d900e765afe70d77365359137ffcf66d4ffda64d301a7aecb3e81ae0e3"
+   ],
    "subject_key": "cleaver"
   },
   "RM_DeepMycelium": {
@@ -190,21 +220,31 @@
     },
     "G": {
      "single": "28b7d518c709bb8a402a427c29d349c20b96a89c23a4816bc78ddb4fdbf224d8"
+    },
+    "H": {
+     "single": "d3149d3bc0084440498133b86b0621d432aa07e431704c4ede28511efb090468"
+    },
+    "I": {
+     "single": "e1bf275ae14539083e5f9e393b1c6f725408e507ee0409584436bb36ed69c081"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/Mycelium",
     "B": "RM_LanternDeeps/Things/Plant/Mycelium",
-    "E": "_byname",
-    "F": "_byname",
-    "G": "_byname"
+    "E": "RM_LanternDeeps/Things/Plant/Mycelium",
+    "F": "RM_LanternDeeps/Things/Plant/Mycelium",
+    "G": "RM_LanternDeeps/Things/Plant/Mycelium",
+    "H": "RM_LanternDeeps/Things/Plant/Mycelium",
+    "I": "RM_LanternDeeps/Things/Plant/Mycelium"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
     "B": "render mycelium_a_v1",
-    "E": "render gapall_RM_DeepMycelium_v1",
-    "F": "render deeps_deepmycelium_varb_v1",
-    "G": "render deeps_deepmycelium_varc_v1"
+    "E": "IN GAME \u2014 random variant A (1 of 5) \u2014 LanternDeeps",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant D (4 of 5) \u2014 LanternDeeps",
+    "G": "in game now, never shown \u2014 IN GAME \u2014 random variant E (5 of 5) \u2014 LanternDeeps",
+    "H": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 5) \u2014 LanternDeeps",
+    "I": "in game now, never shown \u2014 IN GAME \u2014 random variant C (3 of 5) \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Things/Plant/Mycelium",
    "reserved": [
@@ -214,7 +254,16 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H",
+    "I"
+   ],
+   "shownBase": [
+    "6552587c2df5217a8c6313dcc76f4140a9ba930ad38e89eaed898eaeb4d1fefd",
+    "8f73f198c94d170903c91ef3881653523b98beec42d73afedd07de8d137a344b",
+    "a3acdbc5bdc39b73e49b2a4d5c38d34d9dea66656bc78f3bb8c645d470cdc107",
+    "e47f72c83faa47ecd5aa5fea88331a7465870e7804dc2ddd72cd9a9b413d99f2",
+    "eb3267af878357e08bd1031426aa1061a2614e4cecb8436ba11241490dbc5c51"
    ],
    "subject_key": "deepmycelium"
   },
@@ -235,6 +284,11 @@
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Drifter/Drifter",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "236d121519113fdefd05d699a3e541a7cf685f4ffc53396b4d341a2483962389",
+    "8f3e9bfc5bdf451b36e4382b4d0b409c3b25b716281f39e9c876f2c2efd3df07",
+    "d42add1ec219dbc97af878227ebafbdd0189436afdf10e906c2d7d5d284e2da3"
    ],
    "subject_key": "drifter"
   },
@@ -272,6 +326,11 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "32e333ddece74004673b9256b653161389f73baedb418727ffd558d1cd569112",
+    "c84f357c7c2776fb00185261014468a832b4284a60dd846359d7a5ee718b1aab",
+    "d7bcf5af2fac61f4edc79662191eb54220696ea521cbf1cce651ef54e1172666"
+   ],
    "subject_key": "facetmothlarvae"
   },
   "RM_Gembug": {
@@ -285,20 +344,49 @@
      "east": "e7df7f4ca206018ccfcdee85bbd00502a95596ffa84c6933bf7f8ab325c57def",
      "north": "e6db323954bee911a9d16c426c212cd20e9c152a3427721cbc210188f8c3c691",
      "south": "5ba8d22e8c76ceb56169084303e9836f9d2292acae23ab514f9c3306802ec0e6"
+    },
+    "C": {
+     "east": "42184c653334cdbdaaf356cddc15d8c15d7b0b0ee485d679a2fa50196d6737dd",
+     "north": "fb9c3dec3d7fdba503419418f3c82df44e1d288c323b29b6d3d2b0f10fbbd580",
+     "south": "858704b6081e8e46408a4edc7571187cc694be3a15a3ff0f3f7c01cfe50522ca"
+    },
+    "D": {
+     "east": "d526d9652abdcd7b2beef5397065ec0d9320e35fad08f72faaa8a04b858f0c46",
+     "north": "70d9604d24ad454677a6f4dcd2ee9617bb828d8c1d192a0c593905dc1cf81dc3",
+     "south": "dc09c4df2fd6a84ad2d81d022507fa78221ff08c82cfe88dba021ae27bc7684b"
+    },
+    "E": {
+     "east": "a1f6138ad5cac49fea48ae3c7f8bba0e719b9e13a383b5e44b0a70ee2ed1aa89",
+     "north": "39ec8477dc89734a688534004bc8b0f81e2cee42b709c985a82685773a4eb1be",
+     "south": "87aba9f44e887916ed8b812b59a7bfa58190c2ca3d46cff6784b6121e52a9672"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Red/Jewelbug",
+    "D": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Green/Jewelbug",
+    "E": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Yellow/Jewelbug"
    },
    "labels": {
     "A": "IN GAME \u2014 LanternDeeps",
-    "B": "render deeps_gembug_eyes_v1"
+    "B": "render deeps_gembug_eyes_v1",
+    "C": "IN GAME \u2014 LanternDeeps",
+    "D": "IN GAME \u2014 LanternDeeps",
+    "E": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/Gembug/Blue/Jewelbug",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "09ea2845f712e69ccf7f38057b46b860fe35823657fb576fa5b7577df1cdaf4f",
+    "4fe4f2b1eb78fddec42f0f0f33f6acd1f2b72fd09318b966a857de0b4e3e1dc4",
+    "86c21cd513be958bc8ba859d8a594427979a2674abfeedc96769cd0e18cbdee1"
    ],
    "subject_key": "gembug"
   },
@@ -341,6 +429,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "046faeaa8b1fed3a23959bd4b40df56c8a96fc7431b206fe282d366b5c8700e0",
+    "856fb29f04d4546358460eb532a0adfd1067abfb30dd80056110d6dbb0795183",
+    "cf2b41c514b6797b409f58bc8c3ca765f3f4686d36a47d9fd57486e20c2a8ff0"
+   ],
    "subject_key": "knocker"
   },
   "RM_KuvraSpout": {
@@ -356,26 +449,36 @@
     },
     "D": {
      "single": "314c8b96e28e5486474910c2e93eed78b67ca10083114136cf2b592142e9dc9d"
+    },
+    "E": {
+     "single": "b863a2b658cd54278d75174c032dc3c9198d7c80d53543a79aafebeeaf6d9245"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/KuvraSpout",
     "B": "RM_LanternDeeps/Things/Plant/KuvraSpout",
     "C": "RM_LanternDeeps/Things/Plant/KuvraSpout",
-    "D": "RM_LanternDeeps/Things/Plant/KuvraSpout"
+    "D": "RM_LanternDeeps/Things/Plant/KuvraSpout",
+    "E": "RM_LanternDeeps/Things/Plant/KuvraSpout"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant a (1 of 4) \u2014 LanternDeeps",
     "B": "render gapall_RM_KuvraSpout_v1",
-    "C": "render deeps_kuvraspout_varb_v1",
-    "D": "render deeps_kuvraspout_varc_v1"
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant c (3 of 4) \u2014 LanternDeeps",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant d (4 of 4) \u2014 LanternDeeps",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant b (2 of 4) \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Things/Plant/KuvraSpout",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "30ea2119cdef2ba9e390575e56bd6d04ed5ee57bd1a7a4dca53aeca9e3d72509",
+    "a78960c4c638ceb3196998cfeeaefb3b1bf9d5fb787b55e230fea514c18c7b9a"
    ],
    "subject_key": "kuvraspout"
   },
@@ -389,23 +492,34 @@
     },
     "C": {
      "single": "d83ac8fabcadb48530542ae13571f5d7dc15859fc75feb79c47276a4d135ef0c"
+    },
+    "D": {
+     "single": "489a281a49b0cd6594e5ea978670a66fd029c4ced3b3dc6c463c73e1fdc2caee"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Crystals/LanternstoneMedium",
     "B": "RM_LanternDeeps/Things/Crystals/LanternstoneMedium",
-    "C": "RM_LanternDeeps/Things/Crystals/LanternstoneMedium"
+    "C": "RM_LanternDeeps/Things/Crystals/LanternstoneMedium",
+    "D": "RM_LanternDeeps/Things/Crystals/LanternstoneSowableImmature"
    },
    "labels": {
-    "A": "our deployed art (render lanternstonemedium_b_v1) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render lanternstonemedium_c_v1",
-    "C": "render lanternstonemedium_a_v1"
+    "A": "IN GAME \u2014 random variant B (2 of 3) \u2014 LanternDeeps",
+    "B": "IN GAME \u2014 random variant C (3 of 3) \u2014 LanternDeeps",
+    "C": "IN GAME \u2014 random variant A (1 of 3) \u2014 LanternDeeps",
+    "D": "IN GAME \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Things/Crystals/LanternstoneMedium",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
+   ],
+   "shownBase": [
+    "5405bc03c34f26d83d5e6d9f49a8470c8d5b83da299726ed711f7584fd619111",
+    "d83ac8fabcadb48530542ae13571f5d7dc15859fc75feb79c47276a4d135ef0c",
+    "e4d801d366cb4584633fecc7d95be169f55215c0f63b2ae1824db7253bac25e4"
    ],
    "subject_key": "lanternstone_sowable"
   },
@@ -441,6 +555,11 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "8bbd6c1a909c7f81011b64e14b51b5f831be1ddcfc17a4127adec012039672f5",
+    "8ed46f4eaad817e3875582cdd6d60621606a672da345307cb545d9cacdd63e34",
+    "9463f9e439db5c6ef3f3f4302eb9d4667b1090982742a7dd9e11f3acb69f626e"
+   ],
    "subject_key": "megapleura"
   },
   "RM_MossBeetleLarvae": {
@@ -473,6 +592,11 @@
     "E",
     "F"
    ],
+   "shownBase": [
+    "0a4dce4cb75ea4a0429908584272bf20966704fde534ff81e58530c2ed5089ba",
+    "3160fddd814a9f36a81acb41cca3f40458e7cf9177551660a42b848d5416c249",
+    "decefe1073e5df4b973b09a5405effdfe271b9466022c962e7a1d58409dc3759"
+   ],
    "subject_key": "mossbeetlelarvae"
   },
   "RM_NurrikGill": {
@@ -488,26 +612,36 @@
     },
     "D": {
      "single": "de8984ae353beb225ee24a0c51f30b8e915d4c9651cdc7ef03a4827630ccda29"
+    },
+    "E": {
+     "single": "bd6fcfbdc9275d1430feb7e7a133fcefc973d7f2e4cca8258ed79d6a41af3e70"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/NurrikGill",
     "B": "RM_LanternDeeps/Things/Plant/NurrikGill",
     "C": "RM_LanternDeeps/Things/Plant/NurrikGill",
-    "D": "RM_LanternDeeps/Things/Plant/NurrikGill"
+    "D": "RM_LanternDeeps/Things/Plant/NurrikGill",
+    "E": "RM_LanternDeeps/Things/Plant/NurrikGill"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant A (1 of 4) \u2014 LanternDeeps",
     "B": "render gapall_RM_NurrikGill_v1",
-    "C": "render deeps_nurrikgill_varb_v1",
-    "D": "render deeps_nurrikgill_varc_v1"
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant C (3 of 4) \u2014 LanternDeeps",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant D (4 of 4) \u2014 LanternDeeps",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 4) \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Things/Plant/NurrikGill",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "2471506b87421a2e465a0db717570d710673fe8ac21874372612f10aaa262ff5",
+    "9f5e05f27e1d5133863aa328d5251ae33847acf1a41fae68b86fb4696749f00a"
    ],
    "subject_key": "nurrikgill"
   },
@@ -554,6 +688,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "6a0033e02d92bcb3a235c425e444f7a4f40c68f227bb2983a05d2febda29160a",
+    "86ba5d162b8c4bd6c6a52292a3b97d1f0b6fe879093757c7250032289829c14e",
+    "e792241a8813a3139e086785a8491463dab2cb1a1a77b90e68f82dc6582bc234"
+   ],
    "subject_key": "pooler"
   },
   "RM_PrennaLace": {
@@ -566,24 +705,46 @@
     },
     "D": {
      "single": "6b7073d662980ec92ef63eee2eab6441096ec722a069b19ffc045538486edca1"
+    },
+    "E": {
+     "single": "0d52079e15407e297f72595d45974f3f187ace0e81cb79b99caaf36add5ce4b5"
+    },
+    "F": {
+     "single": "c844d759f755857968ab05e661802a843f2881153964b4bffe40e21c9f9514e9"
+    },
+    "G": {
+     "single": "ead3eacaf9fd94550c44ded8006032232a0429315f94549a3375766b29d1df21"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
-    "C": "_byname",
-    "D": "_byname"
+    "C": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
+    "D": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
+    "E": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
+    "F": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
+    "G": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceImmature"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "C": "render deeps_prennalace_varb_v1",
-    "D": "render deeps_prennalace_varc_v1"
+    "A": "IN GAME \u2014 random variant A (1 of 5) \u2014 LanternDeeps",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant D (4 of 5) \u2014 LanternDeeps",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant E (5 of 5) \u2014 LanternDeeps",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 5) \u2014 LanternDeeps",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant C (3 of 5) \u2014 LanternDeeps",
+    "G": "in game now, never shown \u2014 IN GAME \u2014 random variant a (1 of 1) \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [
+    "8cad3faee8de265ab2784b98a63e2f59c587a54fdd1f638abba5ffaed570b13d",
+    "8fa4fe85a54fcfb04378ca925ec1284b3766cf261bd5604861153dfec5e773fe"
    ],
    "subject_key": "prennalace"
   },
@@ -600,19 +761,34 @@
     },
     "E": {
      "single": "184bbc6270baaa6bcb3a452df46dbfe12b2364472fb33dcc8f82aec3db229cdf"
+    },
+    "F": {
+     "single": "e5ba924c959eacca3cc6681f9800de0149b92c7e9c1585342c6c179465f9ca07"
+    },
+    "G": {
+     "single": "1be7d91a31f65c11dc8840e77f5502f662123ead8691507b32f80972f435546c"
+    },
+    "H": {
+     "single": "7c5e8260d3caa74a0ba1a2d42c5eedc8f9f23bf5401420f1f86ba7f12d760b33"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/QuorrFern",
     "C": "RM_LanternDeeps/Things/Plant/QuorrFern",
     "D": "RM_LanternDeeps/Things/Plant/QuorrFern",
-    "E": "RM_LanternDeeps/Things/Plant/QuorrFern"
+    "E": "RM_LanternDeeps/Things/Plant/QuorrFern",
+    "F": "RM_LanternDeeps/Things/Plant/QuorrFern",
+    "G": "RM_LanternDeeps/Things/Plant/QuorrFern",
+    "H": "RM_LanternDeeps/Things/Plant/QuorrFern"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant A (1 of 6) \u2014 LanternDeeps",
     "C": "render deeps_quorrfern_varb_v1 \u2014 failed canon check",
-    "D": "render deeps_quorrfern_varc_v1",
-    "E": "render deeps_quorrfern_varb_v2"
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant E (5 of 6) \u2014 LanternDeeps",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant F (6 of 6) \u2014 LanternDeeps",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 6) \u2014 LanternDeeps",
+    "G": "in game now, never shown \u2014 IN GAME \u2014 random variant C (3 of 6) \u2014 LanternDeeps",
+    "H": "in game now, never shown \u2014 IN GAME \u2014 random variant D (4 of 6) \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Things/Plant/QuorrFern",
    "reserved": [
@@ -620,7 +796,14 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F",
+    "G",
+    "H"
+   ],
+   "shownBase": [
+    "95f377bf312efb42ffaa888a44f3e6341628f0e4591f67408e2e95caa4e4e73f",
+    "f74dfa6ca42edd4b352dad09d215b21f6b33470462eee570a99d323b4de88730"
    ],
    "subject_key": "quorrfern"
   },
@@ -663,6 +846,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "39c1ba5992c1a44dd86fdae929db1f8ee2551258f1ff8f90f48ac70cc141d55b",
+    "b590aa32e95ecb41ede6af1e69558f79556c59f0bd28fe4cc7c8fdff18aa5001",
+    "cd392214f9c489d87e35ba09f3378c7d9f772b9b578ca3e25c78c64c890b83c7"
+   ],
    "subject_key": "shoal"
   },
   "RM_Sipper": {
@@ -682,6 +870,11 @@
    "res": "RM_LanternDeeps/Fauna/Hydrocarbon/Sipper/Sipper",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "092ee17d9c43de7b3ac756f0914673c9e471a68b6b7c28e2516077d9adac69e6",
+    "9e624d753b18509669c25471649efc0e10d94901247d61cdbddf505b9ee628c2",
+    "fa5525826372c5fae73ded70e78d100f9368490ff9d9d13974eba2da72fde723"
    ],
    "subject_key": "sipper"
   },
@@ -703,6 +896,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "176cb5443e0cecd888ac1cf4e0c08f782f7b4898c284fe60a35a4504f86fdba9",
+    "28cb7e5e938a10b8dcc2395679dfc33e964b1d6a500a845fd1f9a1d765793c60",
+    "c66883a5e478ce7eb329f2d4494adda4939250405f83aa2219f02e39f6a11ab3"
+   ],
    "subject_key": "slick"
   },
   "RM_Tapper": {
@@ -723,6 +921,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "1825f34dea0310f8aeb851dbb1dfffeb599e68a914e6a2ac6e6d3be068f3f64f",
+    "606186c59555a4a6f36becf72c22b44dfe60e5b62071f2acdae7d1977efc7bb8",
+    "fe45c01ad95bde63efc5ccca2026ad495ed2f78f4ef1cb76bcd01ee0279e557c"
+   ],
    "subject_key": "tapper"
   },
   "RM_ThrakkCap": {
@@ -732,20 +935,30 @@
     },
     "B": {
      "single": "a9d09128ea1181a4d43af7e236e1034f87a8bf750b7198b0283ee27af30a770c"
+    },
+    "C": {
+     "single": "d7a76dae6ec71a8494f1f19c8722bd0cb6e63080bdca6b869020acf7670f86c8"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/ThrakkCap",
-    "B": "RM_LanternDeeps/Things/Plant/ThrakkCap"
+    "B": "RM_LanternDeeps/Things/Plant/ThrakkCap",
+    "C": "RM_LanternDeeps/Things/Plant/ThrakkCap"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapall_RM_ThrakkCap_v1"
+    "A": "IN GAME \u2014 random variant A (1 of 3) \u2014 LanternDeeps",
+    "B": "IN GAME \u2014 random variant C (3 of 3) \u2014 LanternDeeps",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 3) \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Things/Plant/ThrakkCap",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "264cc2edceaffda72d3ccb0388c51057f753f0f9da8b6060d1f31a7ed64497c3",
+    "a9d09128ea1181a4d43af7e236e1034f87a8bf750b7198b0283ee27af30a770c"
    ],
    "subject_key": "thrakkcap"
   },
@@ -774,6 +987,15 @@
     },
     "I": {
      "single": "2aebe4d53f7f65b478500d22d197aac610053cfa4dcd011de146a72f9eb99618"
+    },
+    "J": {
+     "single": "3214750f3c58bda9e0539167fb164011e490497652cf0173500cf60fdbc75ab6"
+    },
+    "K": {
+     "single": "02bedd59f6b69b0d9ac513e489b0019cae9467b95b5a16cd9f300030d8d9892b"
+    },
+    "L": {
+     "single": "b0c25eecebc6de7e21a0cb799e9035b1852e8576a14cd7cb2e2bbd9f3954219f"
     }
    },
    "graphic_of": {
@@ -784,17 +1006,23 @@
     "F": "_byname",
     "G": "_byname",
     "H": "_byname",
-    "I": "_byname"
+    "I": "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown",
+    "J": "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown",
+    "K": "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferImmature",
+    "L": "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferHarvested"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant a (1 of 3) \u2014 LanternDeeps",
     "B": "render twitchingpuffer_grown_v1",
     "D": "render twitchingpuffer_harvested_v2",
     "E": "render twitchingpuffer_immature_v1",
     "F": "render twitchingpuffer_tendrils_v1",
     "G": "render deeps_twitchingpuffer_varb_v1",
     "H": "render deeps_twitchingpuffer_varc_v1 \u2014 failed canon check",
-    "I": "render deeps_twitchingpuffer_varc_v2"
+    "I": "in game now, never shown \u2014 IN GAME \u2014 random variant c (3 of 3) \u2014 LanternDeeps",
+    "J": "in game now, never shown \u2014 IN GAME \u2014 random variant b (2 of 3) \u2014 LanternDeeps",
+    "K": "in game now, a re-encoded copy of set E \u2014 IN GAME \u2014 random variant a (1 of 1) \u2014 LanternDeeps",
+    "L": "in game now, never shown \u2014 IN GAME \u2014 random variant a (1 of 1) \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown",
    "reserved": [
@@ -806,7 +1034,18 @@
     "F",
     "G",
     "H",
-    "I"
+    "I",
+    "J",
+    "K",
+    "L"
+   ],
+   "shownBase": [
+    "074246c6fca0c0a026bb9747a26bcbe36474230ad67a47b6025a632996dba59d",
+    "a5ee471cc6c1f2f577ea263f01f896303f108afd108e0d1f9352e518fba121d5",
+    "bc6b4ac3e55b17d8c03cbec14c2136f36441ebcf9c31908a831eb37c33d88ed8",
+    "bcb7fb1afc1b6564de7e93543de10f661091adaecfc3166cb646dd5a67c7d447",
+    "df997c12f65024f99b4fa420fe477bbc9667d698559641f52cf58b0f081157ad",
+    "ebab863d05bdab245bb5a5b45b2437f2503b56cf004c71b3f0abea1826478459"
    ],
    "subject_key": "twitchingpuffer"
   },
@@ -820,24 +1059,34 @@
     },
     "D": {
      "single": "f71c7be272a6428cc6e4f8ccbff6b5079a91d82046fe7992bae57bd1d3c65248"
+    },
+    "E": {
+     "single": "6ee815b3e847d5231a5357b8f93991649882cbf60f5b3241a7f0d831eaac1a0d"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/VellokReed",
     "C": "RM_LanternDeeps/Things/Plant/VellokReed",
-    "D": "RM_LanternDeeps/Things/Plant/VellokReed"
+    "D": "RM_LanternDeeps/Things/Plant/VellokReed",
+    "E": "RM_LanternDeeps/Things/Plant/VellokReed"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "C": "render deeps_vellokreed_varb_v1",
-    "D": "render deeps_vellokreed_varc_v1"
+    "A": "IN GAME \u2014 random variant A (1 of 4) \u2014 LanternDeeps",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant C (3 of 4) \u2014 LanternDeeps",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant D (4 of 4) \u2014 LanternDeeps",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 4) \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Things/Plant/VellokReed",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "3d2b7dd2ce4c37e4fcde45de0bd13fc92c91de4b608c57dfcb5647a40e457578",
+    "ba87b34f7a9436d65feefa5c33109cb5c626dffd1895c961ef48c99e0307d5ba"
    ],
    "subject_key": "vellokreed"
   },
@@ -851,24 +1100,34 @@
     },
     "D": {
      "single": "4bfd1a64c8422154b763906f6adfbb6ea3091c8417150440ad4f20b37ac121d6"
+    },
+    "E": {
+     "single": "9f0ec2836c609d9518fe07c4cb8d357363fe95384d04d3e3c332692f29cba1ee"
     }
    },
    "graphic_of": {
     "A": "RM_LanternDeeps/Things/Plant/ZivvitTaper",
     "C": "RM_LanternDeeps/Things/Plant/ZivvitTaper",
-    "D": "RM_LanternDeeps/Things/Plant/ZivvitTaper"
+    "D": "RM_LanternDeeps/Things/Plant/ZivvitTaper",
+    "E": "RM_LanternDeeps/Things/Plant/ZivvitTaper"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "C": "render deeps_zivvittaper_varb_v1",
-    "D": "render deeps_zivvittaper_varc_v1"
+    "A": "IN GAME \u2014 random variant A (1 of 4) \u2014 LanternDeeps",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant C (3 of 4) \u2014 LanternDeeps",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant D (4 of 4) \u2014 LanternDeeps",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant B (2 of 4) \u2014 LanternDeeps"
    },
    "res": "RM_LanternDeeps/Things/Plant/ZivvitTaper",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "259c71777f6263a9158e731add420ce12bd91a51fde29943102488c41dab1b7e",
+    "573465a45520c12ad0fed544e318c335f9f3ef14ec6f13ab4266a73cce643bcd"
    ],
    "subject_key": "zivvittaper"
   },

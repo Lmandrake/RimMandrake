@@ -1,9 +1,9 @@
 {
  "biome": "RM_Warscar",
- "built": "2026-10-09T07:44:41-0700",
+ "built": "2026-10-10T10:14:29-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_Helixien": {
    "columns": {
@@ -142,6 +142,7 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [],
    "subject_key": "bileworm"
   },
   "RM_Chatrak": {
@@ -163,6 +164,12 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "63e4cb9ea02e6f3eb706101f1fdf4d752136724b0c12fa2215d6e284e70a6a87",
+    "6aef1e9b46ccdbd9437b59922693c133b1ee2e3410a760f2c18a50e79eecf877",
+    "bb25dc81b6d69f7e80e36778c9974e67862daa558efcf7ad9f5b7719c5237e24",
+    "ce8f4355ad4bfefe3258979566fb58cff76909e0f49e8cfb0bb6c261c5c5d4c7"
+   ],
    "subject_key": "chatrak"
   },
   "RM_ElectricGryllotalpa": {
@@ -183,6 +190,7 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [],
    "subject_key": "electricgryllotalpa"
   },
   "RM_ElectricTick": {
@@ -203,6 +211,7 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [],
    "subject_key": "electrictick"
   },
   "RM_Glower": {
@@ -219,13 +228,17 @@
     "B": "Things/Plant/RM_Glower"
    },
    "labels": {
-    "A": "our deployed art (render rutglower_v1) \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant RM_Glower_a (1 of 1) \u2014 Scarlands",
     "B": "render gapall_RM_Glower_v1"
    },
    "res": "Things/Plant/RM_Glower",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "5545a8875fab6964f6c3db7b641b23a38b0e07cfb129d51b0a05793167119b21",
+    "62cb2314710beea434905e87658c46a54de0050ae8d72e9db59775f7f185ad63"
    ],
    "subject_key": "glower"
   },
@@ -247,6 +260,7 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [],
    "subject_key": "juggernautbeetle"
   },
   "RM_Pallbearer": {
@@ -266,6 +280,11 @@
    "res": "Things/Pawn/Animal/RM_Pallbearer/RM_Pallbearer",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "4b41b1e8500cd5425719476006224e88ee66722f0f080a8e709d16d4c5977ba2",
+    "4f49c7f68e6366d7e83a318e099d21fee493da87869ec2a9f501c1741f46b489",
+    "d46d41cb27548078b5c81bdb8afc281ebdd8b1cba02906367d34b917e09a63c5"
    ],
    "subject_key": "pallbearer"
   },
@@ -287,6 +306,7 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [],
    "subject_key": "rimclaw"
   },
   "RM_ScarRoach": {
@@ -307,6 +327,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "adc568a65dcc5eb835868f0dda167cfe3ea0769aa3d7198f5ec433f61943f07c",
+    "f6fce5d6f475832ba94a1cd9197c0356a27602ce11eb6ae94741c7b8d339f55e",
+    "fa9f70984cf2e72b57d0686acd5ef14a14923198d7fa924b27a0ffb6c300012f"
+   ],
    "subject_key": "scarroach"
   },
   "RM_ScorchedStars": {
@@ -314,22 +339,27 @@
     "A": {
      "single": "f86624c57933080b24a937ed8ebd53311c0f1d48f678bb4b3800e627f9609873"
     },
-    "B": {
-     "single": "ea059cd9c8d11745919b7925ffa3604a5f605c1fd1e09feeae0521f237913fbf"
+    "C": {
+     "single": "f6db81cb64ac1b1f4ba739529980b43c623a4f292ec234d602b1a2a8ce2a564e"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_ScorchedStars",
-    "B": "Things/Plant/RM_ScorchedStars"
+    "C": "Things/Plant/RM_ScorchedStars"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapfin_RM_ScorchedStars_v1"
+    "A": "IN GAME \u2014 random variant RM_ScorchedStars_a (1 of 2) \u2014 Scarlands",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_ScorchedStars_b (2 of 2) \u2014 Scarlands"
    },
    "res": "Things/Plant/RM_ScorchedStars",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "ea059cd9c8d11745919b7925ffa3604a5f605c1fd1e09feeae0521f237913fbf",
+    "f86624c57933080b24a937ed8ebd53311c0f1d48f678bb4b3800e627f9609873"
    ],
    "subject_key": "scorchedstars"
   },
@@ -351,6 +381,12 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "00b28efc95c8ff111a57b5511108939e0550d1a718aca7a2953e99dc5a1f1d87",
+    "077ed6c7c9bbfad8e034fee69373c3c794d6a37b56f2a8b0050b8e547c729768",
+    "17dff18c61d60255ccd721d556ae190b6930a10a59e60af4f00d902b10f63149",
+    "cfb56fdde3de22331930b868c08ce6ffe93a1d5cfa717b2298331b57d9f3d7cf"
    ],
    "subject_key": "tetchik"
   },
@@ -379,6 +415,14 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492",
+    "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
+    "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e",
+    "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
+    "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+    "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb"
    ],
    "subject_key": "vozzik"
   },
@@ -422,6 +466,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "35b66a2ad4d6ba7e67b086be048302b9981e506d038c159d590f2b68ea63a288",
+    "4aed6b3add2e0cb7a429c35c393b00a21f6ea693d4847c2478c94036628600e5",
+    "6fa06669bcafbe54022597936d040de50a351cdbda01eae2a3fbc8da0c8a5683",
+    "72a73e692de54389b56bb127fec348cc054f2ba0d5256034a39d6d9b586503fe",
+    "7a2d190015ccfccb423fc130e1e06215572ece40a4dd9acc48ffc2bdf38224b7",
+    "d5c46d60da621c47d296691a68d6c860eaa5544bd8948d838f31d395e9f2150c"
+   ],
    "subject_key": "foundrybeetle"
   },
   "RSW_Korrum": {
@@ -441,6 +493,11 @@
    "res": "swanimals/Korrum/Korrum",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "1f6ce37a3b0fd23ac463e67f439b2ba58bef52736c018b4c560fbd255024125c",
+    "56a594a5f898b4955e522e09a8b89229273a72d4c863dd12417519c250872e12",
+    "8dbcabeec5c08a05739b3a58d4ab381d16ce5a3b7b8bcea01e0537d8cc31e51a"
    ],
    "subject_key": "korrum"
   },
@@ -471,6 +528,11 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "0930aca68fbb08b5a8f5b6f958f602936cc232ff3122a01d0008754bd3cb1537",
+    "9024a09c35caa054e010e2da5fdab186c5ad9d6b80ab7fe292166445ef62f9f5",
+    "9bb9f217fa56a34c54b2c46ddf3e9855957446b0ffa06b912dbac452e981c557"
+   ],
    "subject_key": "megaphoridlarva"
   },
   "RSW_Mynock": {
@@ -497,6 +559,12 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "0997c491f9fe2eabf9d93aad1a53f38fd55234bd786976b5b1a80cf44b4a87ad",
+    "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5",
+    "72ad8be3cf0844bf99cab8d878b50483c679db93f06dbea013a47313c289bc06",
+    "a0781a8ba736a2203889baae18105a288fe3520477c2a00424812a0bcd071cc8"
    ],
    "subject_key": "mynock"
   },
@@ -533,6 +601,17 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "54eaebc7955c34272c46e6c9a9db4fe6d6d052fff56a19b7944c62b396aa5492",
+    "6607239b0319ba41d13e3b97f590f2e19d6546636461cb2180552b29958a485e",
+    "7d607cde373e32c9c64894bdad2493839d58d86cae941cf7a9746d4b1507507b",
+    "a05d8d0b6983842a13830002385736e26243b0c2364e0a96d82e80ebbb32ec94",
+    "a629e6f732372564bffee23678aad709cecd7fd08a43a683fa00a05f5c533b1e",
+    "ade25a4b9d3a9c7aa1b3fd873f004ed4cd5f0be8631489f001afb963aa44d6cc",
+    "aed6bf8a93d32478f75d2fbc3b44ffcbfa9651351928ba3143a6f35a0be2cb56",
+    "e0d0305e090721a3098952d1f1e95f2d7e13399a82745b62a2b995d5b03f186b",
+    "f398a29e7916a9dfb4ad00a3d47813a1980fc7f52f7c890583d4aeaa1f688dcb"
    ],
    "subject_key": "vozzik"
   },
@@ -625,5 +704,5 @@
   }
  },
  "sheetId": "warscar_sheet_2026-10-05",
- "snapshotId": "8c8a19b5e6cd5191"
+ "snapshotId": "a44f5143579c9492"
 }

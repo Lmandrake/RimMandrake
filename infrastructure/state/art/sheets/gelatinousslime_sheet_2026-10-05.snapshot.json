@@ -1,9 +1,9 @@
 {
  "biome": "RM_GelatinousSlime",
- "built": "2026-10-09T07:32:53-0700",
+ "built": "2026-10-10T10:11:46-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Dwommo": {
    "columns": {
@@ -11,17 +11,30 @@
      "east": "808e475864c6a33104e8065ff0eb1ca372d2f1d3749dc89fce809347b0e0beac",
      "north": "dafcffd0808b032753874d46e68b760387548a971950a87759134d437d8ce108",
      "south": "52ce95b020409ae041fe5c0d2c4523827449150a54fc10a4479868a2b82c5e1c"
+    },
+    "B": {
+     "east": "eaa19ac89ef91e27448321fe4edb63b2e98e5555a2e10b6d2ee77dabcd99a21d",
+     "north": "05deaed61d93ae7112ae9635065d182e8cc025652f1ce45f6d04deb818009a2c",
+     "south": "d33d528453b17d9d7db4e01e676a896002d94016a84d3f165801c61d2fd237af"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/Dwommo/RM_Dwommo"
+    "A": "Things/Pawn/Animal/Dwommo/RM_Dwommo",
+    "B": "Things/Pawn/Animal/Dwommo/RM_Dwommo"
    },
    "labels": {
-    "A": "IN GAME \u2014 GelatinousSlime"
+    "A": "IN GAME \u2014 GelatinousSlime",
+    "B": "render enact_5673ffda_dwommo_v1"
    },
    "res": "Things/Pawn/Animal/Dwommo/RM_Dwommo",
    "reserved": [
-    "A"
+    "A",
+    "B"
+   ],
+   "shownBase": [
+    "52ce95b020409ae041fe5c0d2c4523827449150a54fc10a4479868a2b82c5e1c",
+    "808e475864c6a33104e8065ff0eb1ca372d2f1d3749dc89fce809347b0e0beac",
+    "dafcffd0808b032753874d46e68b760387548a971950a87759134d437d8ce108"
    ],
    "subject_key": "dwommo"
   },
@@ -49,6 +62,11 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "6e97315c38e6df849d306ea50e00b60cfee0d1b80d3413b1ae5191b6b2bd03b1",
+    "8b287325be5df7d22f1c4e24692bff1f05a79eef6128c9b2c690acb91d49953b",
+    "b9a9818ef5aaaa94de7f408f20bd226d82f90d8e6d040e0e1499fa0d38a5399c"
+   ],
    "subject_key": "fubbum"
   },
   "RM_Gappo": {
@@ -68,6 +86,11 @@
    "res": "Things/Pawn/Animal/Gappo/RM_Gappo",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "618c3f7aa0eb9fbb842a82ddabd9d969e08c0c12d5c374baa5bb4797abb50e83",
+    "d8299031e1f6d0ec33ee7162b686c9ef5b3258d79a4f7dd0604262986bb46996",
+    "d86b01b63d66ca8844f90968232f9804a229dc810bcf3429272b0918e4a955fe"
    ],
    "subject_key": "gappo"
   },
@@ -89,6 +112,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "a719ea1be4f33bbb884bfab53e30409e3b2c987bb3f84137e8bd7205643f44f0",
+    "c061c490b7146415f038472e9b66ad369829e44fd3ed8c92c05eb47c9632752c",
+    "c2e0cfad8a9085ea6b17925a37fc72fcddc7e2a30de1ba83c446907d581b33f2"
+   ],
    "subject_key": "gappogreater"
   },
   "RM_GappoLesser": {
@@ -109,6 +137,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "158082ff7223975cd9520bb294ff00de11e8262ae5161ae295f514aae175a49a",
+    "736bc145228864a9b92b0d6d85b7032e472e2d13ecdd9b6e54d64637445b1324",
+    "b5861746c5d077a712ec3acf4d1440c99b52d31cb86054ec59049f0aa1073163"
+   ],
    "subject_key": "gappolesser"
   },
   "RM_Gelatid": {
@@ -128,6 +161,11 @@
    "res": "Things/Pawn/Animal/RM_Gelatid/RM_Gelatid",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "00416e13e69e992a162ff5f79da269a7f9401dc2ea797f917310dd0937847acd",
+    "844b48382f548c853f855908171d19d459f8b9020f44b29ad484cf17edbe3ead",
+    "f44628e62a5127b6d68321c82f40944386bb7dead6cba5709c6fab77c668b519"
    ],
    "subject_key": "gelatid"
   },
@@ -154,49 +192,53 @@
   },
   "RM_Plant_Bellows": {
    "columns": {
-    "A": {
-     "single": "bf9373f689fdb2913e30e005cbd8cef2bd1d99d3567d40a5fb6160f61e827ea8"
-    },
     "B": {
      "single": "4c2f39c6562d55aa88e0cfcb4aee822bf5f40c3b30f274baf7f87fcb920b4571"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Bush",
     "B": "Things/Plant/RM_Bellows/RM_Bellows"
    },
    "labels": {
-    "A": "donor original \u2014 Vanilla Textures Expanded",
-    "B": "render gapall_RM_Plant_Bellows_v1"
+    "B": "IN GAME \u2014 random variant RM_Bellows_a (1 of 1) \u2014 GelatinousSlime"
    },
    "res": "Things/Plant/RM_Bellows/RM_Bellows",
    "reserved": [
     "A",
     "B"
    ],
+   "shownBase": [
+    "4c2f39c6562d55aa88e0cfcb4aee822bf5f40c3b30f274baf7f87fcb920b4571",
+    "bf9373f689fdb2913e30e005cbd8cef2bd1d99d3567d40a5fb6160f61e827ea8"
+   ],
    "subject_key": "bellows"
   },
   "RM_Plant_Readerbloom": {
    "columns": {
-    "A": {
-     "single": "914e38677a20be4e72eed09b27ef41768a3c882a7e30746117ea9a938ce5ce1d"
-    },
     "B": {
      "single": "e0d843944abc6c00e62f9e247451efaeefb21007f8ac5d12e3087fa538f9fb40"
+    },
+    "C": {
+     "single": "807522dec0a95ee1dd5bab8ff0ba928e8da910c60b2ac1f51f3d0eb59261af25"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/Dandelion",
-    "B": "Things/Plant/RM_Readerbloom/RM_Readerbloom"
+    "B": "Things/Plant/RM_Readerbloom/RM_Readerbloom",
+    "C": "Things/Plant/RM_Readerbloom/RM_Readerbloom"
    },
    "labels": {
-    "A": "donor original \u2014 Vanilla Textures Expanded",
-    "B": "render RM_Readerbloom"
+    "B": "IN GAME \u2014 random variant RM_Readerbloom_a (1 of 1) \u2014 GelatinousSlime",
+    "C": "render enact_a78ae7bb_plant_readerbloom_v1"
    },
    "res": "Things/Plant/RM_Readerbloom/RM_Readerbloom",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "914e38677a20be4e72eed09b27ef41768a3c882a7e30746117ea9a938ce5ce1d",
+    "e0d843944abc6c00e62f9e247451efaeefb21007f8ac5d12e3087fa538f9fb40"
    ],
    "subject_key": "readerbloom"
   },
@@ -213,19 +255,24 @@
     },
     "F": {
      "single": "7f7689a8174c9864451409cca9d7003e78c383c876f2be12d8be4254e98b5121"
+    },
+    "G": {
+     "single": "3e8ed44c8bdd3c9f9c04975c409e41c01efcc409c8e65303e3d3bf3a1353c965"
     }
    },
    "graphic_of": {
     "C": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
     "D": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
     "E": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
-    "F": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass"
+    "F": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
+    "G": "Things/Plant/Grass_Leafless"
    },
    "labels": {
-    "C": "render RM_SlimeGrass",
-    "D": "render slime_slimegrass_var_b",
-    "E": "render slime_slimegrass_var_c",
-    "F": "render slime_slimegrass_var_d"
+    "C": "IN GAME \u2014 random variant RM_SlimeGrass_a (1 of 4) \u2014 GelatinousSlime",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_SlimeGrass_b (2 of 4) \u2014 GelatinousSlime",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_SlimeGrass_c (3 of 4) \u2014 GelatinousSlime",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_SlimeGrass_d (4 of 4) \u2014 GelatinousSlime",
+    "G": "donor original \u2014 Gerrymon's Upscaled Vanilla Textures"
    },
    "res": "Things/Plant/RM_SlimeGrass/RM_SlimeGrass",
    "reserved": [
@@ -234,7 +281,13 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
+   ],
+   "shownBase": [
+    "04e365a819c107a124d380810bd62ff8f15ab6c036636d4b081c5b725adebc3a",
+    "87c20a6d4997c3c3f1c766d3a9dbfaa88a8847c96404a21bc7123db70690b512",
+    "a488242e9afdf9e575cb601763a53bbb573f4a983e27dfa3cc1e96cb92b12c0f"
    ],
    "subject_key": "slimegrass"
   },
@@ -260,10 +313,10 @@
     "E": "Things/Plant/RM_Thumbstalk/RM_Thumbstalk"
    },
    "labels": {
-    "B": "render RM_Thumbstalk",
-    "C": "render slime_thumbstalk_var_b",
-    "D": "render slime_thumbstalk_var_c",
-    "E": "render slime_thumbstalk_var_d"
+    "B": "IN GAME \u2014 random variant RM_Thumbstalk_a (1 of 4) \u2014 GelatinousSlime",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Thumbstalk_b (2 of 4) \u2014 GelatinousSlime",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Thumbstalk_c (3 of 4) \u2014 GelatinousSlime",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_Thumbstalk_d (4 of 4) \u2014 GelatinousSlime"
    },
    "res": "Things/Plant/RM_Thumbstalk/RM_Thumbstalk",
    "reserved": [
@@ -272,6 +325,10 @@
     "C",
     "D",
     "E"
+   ],
+   "shownBase": [
+    "b84959459d9c7b751194c408e0cf90db375b4a3ba4239cad646ec7c68778547e",
+    "bf9373f689fdb2913e30e005cbd8cef2bd1d99d3567d40a5fb6160f61e827ea8"
    ],
    "subject_key": "thumbstalk"
   },
@@ -293,9 +350,14 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "731aaeff0a4792d09326d3861fe1518bc806099d36fd3a573a408ffea16bcc2c",
+    "81396f1760f5310cff8ef3a06757bc2ecb020d325a1d643e369f242a8972f66f",
+    "848a265280215bb48affa387396e5ebc4ea1b12f3728cf8330c555bb56b567b1"
+   ],
    "subject_key": "titanoslime"
   }
  },
  "sheetId": "gelatinousslime_sheet_2026-10-05",
- "snapshotId": "07c80d591b695bfb"
+ "snapshotId": "eba9c18d6387ca8f"
 }

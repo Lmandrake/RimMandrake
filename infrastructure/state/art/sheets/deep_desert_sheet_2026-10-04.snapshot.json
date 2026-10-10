@@ -1,9 +1,9 @@
 {
  "biome": "RM_Stillsand",
- "built": "2026-10-09T07:29:57-0700",
+ "built": "2026-10-10T10:11:40-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 68 mods \u2014 a test list): 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "RM_Aurrok": {
    "columns": {
@@ -31,6 +31,11 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "3511b5ed892e0e19545d465466f29b3907c5ccb0e1084a710248c68d731e3cd9",
+    "5f1ddc63c80bac5004161539c45367600c6ebabd2d7cffbd9f59c84257bffaec",
+    "d165910a7108085d8b452601f593b0e05d79942f4f183c7d916804a16e461814"
    ],
    "subject_key": "aurrok"
   },
@@ -60,6 +65,11 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "52504edc50913c2f61dd1e4768feefec1f0fbde25cd19e9951dec70cb22b29d9",
+    "8853b193d2c23fccfc2f0607e93b8cfe112b99b2a9557f886da2a336cdd96a45",
+    "89bf5dee645d839b93555f135f91b886ecc1d21917691169ed748fc488235838"
+   ],
    "subject_key": "drazzik"
   },
   "RM_DuneCrawler": {
@@ -69,20 +79,30 @@
     },
     "B": {
      "single": "85d47356ad87e3daaf8c007e30cbd4913c7da1f1a5e511890350b871bcd90987"
+    },
+    "C": {
+     "single": "28da68744208da1bcc1f5fdb27cdc118f88232743091f03655451d42c6ad99b3"
     }
    },
    "graphic_of": {
     "A": "Things/Item/Resource/RM_DuneCrawler",
-    "B": "Things/Item/Resource/RM_DuneCrawler"
+    "B": "Things/Item/Resource/RM_DuneCrawler",
+    "C": "Things/Item/Resource/RM_DuneCrawler"
    },
    "labels": {
     "A": "IN GAME \u2014 Stillsand",
-    "B": "history Stillsand 2026-10-01"
+    "B": "history Stillsand 2026-10-01",
+    "C": "render RM_DuneCrawler_v3_nooutline"
    },
    "res": "Things/Item/Resource/RM_DuneCrawler",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "85d47356ad87e3daaf8c007e30cbd4913c7da1f1a5e511890350b871bcd90987",
+    "983657f86e29d1f0e2c53626b940f1813b6ec7d6524feb6f20100036f6f155ea"
    ],
    "subject_key": "dunecrawler"
   },
@@ -113,6 +133,11 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "0dedf4298d91bd298b17c36e5a0e8b384b1fbfcdb4eebe423b3608881e4e3247",
+    "479fc204200a9841128fe620e806c29b940d17f70697788dc23f1c4312ba26d6",
+    "e03e4b7df69582e41cf607e23a9c1cbfd32fd0dd8a5ad5550c933fabcddde995"
+   ],
    "subject_key": "duumma"
   },
   "RM_Gaanok": {
@@ -133,6 +158,14 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "051ecf84cc3aae9444f51cb9b2b4a5dc49200235ec72843438189cf1dddf883b",
+    "641305e1b37353c979d41306285f1bd1897152c8a357a920b09830448ddaedb4",
+    "69f9d4e4593eab31cc968fd7f4482c3b259021fabd5b2aacf60fb5a35eff86b7",
+    "6a2c73a6ab3adc5fcf30314b2c01b8c7cdf34969c4472bfc11880f26fb4c28e4",
+    "7d8a03db1fbf0a5b7f5e9c744c5657be30a2f5f9e01e09c9d6d06b519099dc40",
+    "d23778afab12cc16f66d460bddadabf03915a7e17385cae40bbf16ac2edbb5b8"
    ],
    "subject_key": "gaanok"
   },
@@ -182,12 +215,12 @@
     "J": "Things/Plant/RM_Glasscrust"
    },
    "labels": {
-    "A": "our deployed art (render RM_Glasscrust) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render stillsand_regen_RM_Glasscrust_var1",
-    "C": "render stillsand_regen_RM_Glasscrust_var2 \u2014 failed canon check",
-    "D": "render stillsand_regen_RM_Glasscrust_var3",
-    "E": "render stillsand_regen_RM_Glasscrust_var4",
-    "F": "render stillsand_regen_RM_Glasscrust_var5 \u2014 failed canon check",
+    "A": "IN GAME \u2014 random variant RM_GlasscrustA (1 of 6) \u2014 Stillsand",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_GlasscrustB (2 of 6) \u2014 Stillsand",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_GlasscrustC (3 of 6) \u2014 Stillsand",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_GlasscrustD (4 of 6) \u2014 Stillsand",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_GlasscrustE (5 of 6) \u2014 Stillsand",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant RM_GlasscrustF (6 of 6) \u2014 Stillsand",
     "G": "render stillsand_s2_RM_Glasscrust_var6",
     "H": "render stillsand_s2_RM_Glasscrust_var7",
     "I": "render stillsand_s2_RM_Glasscrust_var8",
@@ -205,6 +238,9 @@
     "H",
     "I",
     "J"
+   ],
+   "shownBase": [
+    "b1730b227eeafc48cabba40e953958e99c36d442ca2085ce378fca0c58640775"
    ],
    "subject_key": "glasscrust"
   },
@@ -267,7 +303,7 @@
     "L": "Things/Plant/RM_KneelOllim"
    },
    "labels": {
-    "A": "our deployed art (render RM_KneelOllim_b) \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant RM_KneelOllimA (1 of 1) \u2014 Stillsand",
     "H": "render stillsand_s2_RM_KneelOllim_var10",
     "I": "render stillsand_s2_RM_KneelOllim_var6",
     "J": "render stillsand_s2_RM_KneelOllim_var7",
@@ -289,6 +325,10 @@
     "K",
     "L"
    ],
+   "shownBase": [
+    "5042a113130dad76f7656e90f910285c4f67c0d66d4ecc7953919f1694131531",
+    "9cc335f4e59aef6e681830188aaecf33008fd1dd8e679f954a35bbada27edc99"
+   ],
    "subject_key": "kneelollim"
   },
   "RM_LightPipeNub": {
@@ -309,8 +349,8 @@
     "C": "Things/Plant/RM_LightPipeNub"
    },
    "labels": {
-    "A": "our deployed art (render rslpn_v1) \u2014 RimMandrake: Baroque Biomes",
-    "B": "render stillsand_regen_RM_LightPipeNub_v1",
+    "A": "IN GAME \u2014 random variant RM_LightPipeNubA (1 of 2) \u2014 Stillsand",
+    "B": "IN GAME \u2014 random variant RM_LightPipeNubB (2 of 2) \u2014 Stillsand",
     "C": "render stillsand_s2_RM_LightPipeNub_v2"
    },
    "res": "Things/Plant/RM_LightPipeNub",
@@ -319,6 +359,7 @@
     "B",
     "C"
    ],
+   "shownBase": [],
    "subject_key": "lightpipenub"
   },
   "RM_Liikka": {
@@ -360,6 +401,7 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [],
    "subject_key": "likkalikka"
   },
   "RM_Loomma": {
@@ -381,6 +423,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "009059673d5d4f09126961d6215e639ad19c14125b001fe6722e072ed025ea6c",
+    "33ac2bfe8bbcebac05950d0d8ef53cbc6867eafce8f17fb31919f80bd6bf58e2",
+    "5afa241a3cd4f9e69471b9efecbcd499b3519df03bc01deaecaa4de352101f61",
+    "6d19c8e43905d8be9b163b3fedd858d1786c372d8eefe1dc4d7e86ab51beb65a",
+    "f1f1e0743a50aa7acc3956b40cc20f6abe1a69cbbadaea596fcc7bae01a068f4",
+    "f2147abf95da83445e586b40a2f99389778bfaba40120a1d7686a50f91391ace"
+   ],
    "subject_key": "loomma"
   },
   "RM_Ollim": {
@@ -397,7 +447,7 @@
     "B": "Things/Plant/RM_Ollim"
    },
    "labels": {
-    "A": "our deployed art (render rswollim_v1) \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant RM_OllimA (1 of 1) \u2014 Stillsand",
     "B": "render stillsand_regen_RSW_Ollim_v1"
    },
    "res": "Things/Plant/RM_Ollim",
@@ -405,6 +455,7 @@
     "A",
     "B"
    ],
+   "shownBase": [],
    "subject_key": "ollim"
   },
   "RM_Oommok": {
@@ -443,6 +494,11 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "0de995dc3a96f4a2fc7b8d692012432e4b34a938b4cdf1515feaca76ebc16c04",
+    "33e801b13a9ad4c425a322c3ea26d2fd7c252fe94fee0cbc0de85d6fe5292120",
+    "cf471436e28c9c31cafe7570f754229b7b467b4db571d9a15b9c98bc7f598331"
+   ],
    "subject_key": "oommok"
   },
   "RM_Qorrax": {
@@ -478,6 +534,14 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "125bc9e16093f82c33e2aa586d96388b8664504dbb7e90a16314e52f024aeb4a",
+    "207016afcc77718d263cae722a1562bf366f1d48069c452003f2da1647b6fbac",
+    "2dd46af366ed36159462fc2a5718ede7e1cf087509b64ebfcb3138a01080b1e1",
+    "cc31f7366d3bdf7a3b0c1786d9329b43dc9aec9745e02cc45cc5a3f1d11f6b25",
+    "d9d92a42e7410ea482d9f3e797f1637997310f766978e8f3d8f2ddf4fed04bb4",
+    "da2f73171ae951ec24ab8bec5c42023c1268ce673e44adbde2e70527ac8ac1bf"
    ],
    "subject_key": "qorrax"
   },
@@ -524,6 +588,11 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "5ba66fa8e967f738aee8ce21e0e7821a940f4abdd99969e90a42132ea09d4cca",
+    "9078c35b257ac0b34a6137557ab7c3f0b305d00486631cf499ab436b9d5324d9",
+    "ae789ac5e4076c2e415db03ab7153c28a1ce7db6cffa066cb70f80488b9b139f"
+   ],
    "subject_key": "shademite"
   },
   "RM_Siidda": {
@@ -543,6 +612,11 @@
    "res": "Things/Pawn/Animal/RM_Siidda/RM_Siidda",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "097f8d9a67cd7a4e3a234018cbffbf9e05689975541abbc1cb347c335baf7b6c",
+    "32a393d544b6f05deead05fa2d54328bdbcfda124fbdb9c5f651aec05f6a423b",
+    "6e016a0a2a89b911651e1106397b038d19d19b2f1fec39384c36cc842f5cb910"
    ],
    "subject_key": "siidda"
   },
@@ -582,6 +656,14 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "21c9191a00e167f61b89bffbd026f9d2a9034e05fef6efeaea6e94ecc11a2f9e",
+    "276a39da510922f19afe5fae1803679e62804cc4ca6d1ce953ea30696c29e905",
+    "3cea4aa7a4831843189e0edd0182398dea2aca7b7067ac7716bb8294e5c3e94a",
+    "907d0f6eed120660dfcb7624e0286233a9bbbd826b0c5036730e6c8126c9ae9d",
+    "a5de1dd5dbeb01398353ce9644f6a3bb308948c92673976e97d7414e3b5a83f3",
+    "c551c19da6700663914acb7bb6f0531afd13172ad5cdcbea04bcd74fa017b30c"
+   ],
    "subject_key": "soorrak"
   },
   "RM_Ulgga": {
@@ -620,6 +702,7 @@
     "D",
     "E"
    ],
+   "shownBase": [],
    "subject_key": "ulgga"
   },
   "RM_UltrissPad": {
@@ -640,7 +723,7 @@
     "C": "Things/Plant/RM_Ultracactus"
    },
    "labels": {
-    "A": "our deployed art (render rswultracactus_v1) \u2014 RimMandrake: Baroque Biomes",
+    "A": "IN GAME \u2014 random variant RM_Ultracactus_a (1 of 1) \u2014 LongShade",
     "B": "render longshade_rsw_ultracactus_v1",
     "C": "render enact_6f47cc65_ultracactus_v1"
    },
@@ -650,6 +733,7 @@
     "B",
     "C"
    ],
+   "shownBase": [],
    "subject_key": "ultrisspad"
   },
   "RM_Veessa": {
@@ -670,6 +754,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "1d87a14284f93df40868768269f0e4b1ff84c47c185ba604d76ecce7c809e452",
+    "a7ab80f53b3f9a77d31f96f11b948d36c4d23d8831ecde40065d0a9e6ce9ba68",
+    "c6a47079630f9ae4cdea9ec62ca1c8062bc259b966e2a23b8a6f734ff4d2babb"
+   ],
    "subject_key": "veessa"
   },
   "RM_Vekka": {
@@ -689,6 +778,11 @@
    "res": "Things/Pawn/Animal/RM_Vekka/RM_Vekka",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "3a8187936aea4ce3e939d182cd8fd8bee0228ad6e7110d3c1d42f558581ed0e1",
+    "cbe62372e95f459a56a9c6913e4c4d331dd56e21cdeec6c7008aed316283b9c9",
+    "d6a2257a89c7f88fa1880b154145f88476bcffbaf88620b0e9bc9c93bea34054"
    ],
    "subject_key": "vekka"
   },
@@ -726,6 +820,7 @@
     "B",
     "C"
    ],
+   "shownBase": [],
    "subject_key": "vosska"
   },
   "RM_Vozzik": {
@@ -781,15 +876,29 @@
      "east": "74ca463ac144c47ca2ce9f7850d467fb40cc79690509f6b47a61f1d69134ab5c",
      "north": "4cc89013eb61c973f983f78583da5688e0a8abdca3f44e6bae3ca1a6c2571620",
      "south": "7c0e612f50a796ea270d48af3df228fd4bdbe49dea05e07e5e298e047f8d3bd4"
+    },
+    "J": {
+     "east": "6bca3a6c5e7664deefc06104dc58afb94011aa76797fd0bf1662e55f792b2d0a",
+     "north": "1172ecf05b7536934c187a7b4ecfc50abe109c200cbbac3e53bc16a7857b30bd",
+     "south": "a2d1e6d4121300f1097d61e538e927369bad217661c36c1f900f7e33770eb133"
+    },
+    "K": {
+     "east": "d7782c51cc7ffc05e9fcf8afeff7992e2a24afe3befb5c657129c75b4e645158",
+     "north": "75d6ab0e1513535b1406197a799dc9c0085acef9f13d559ae79aa825f043c04a",
+     "south": "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb"
     }
    },
    "graphic_of": {
     "A": "swanimals/Gizka/Gizka",
-    "F": "swanimals/Gizka/Gizka"
+    "F": "swanimals/Gizka/Gizka",
+    "J": "swanimals/Gizka/Gizka",
+    "K": "RimStarWars/SWBestiary/Gizka/GizkaW"
    },
    "labels": {
-    "A": "IN GAME \u2014 GizkaArtOverride",
-    "F": "history GizkaArtOverride 2026-09-17"
+    "A": "history GizkaArtOverride 2026-09-20",
+    "F": "history GizkaArtOverride 2026-09-17",
+    "J": "render canonregen_rsw_gizka_v1 \u2014 failed canon check",
+    "K": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Gizka/Gizka",
    "reserved": [
@@ -801,7 +910,33 @@
     "F",
     "G",
     "H",
-    "I"
+    "I",
+    "J",
+    "K"
+   ],
+   "shownBase": [
+    "22504283ae7eb467f1b320af323201436b8e74ee14917576ca22d02ebcdbbc14",
+    "29f0bbc70c691744af2c1deaf550f1971fc9be76b31c5921a935239cb9bb614e",
+    "3599473822d4a020d4c2a72438fc7de8b1731a4e97b277e165d80f25ec1ee534",
+    "40b5b075d878e3000463f254b4509629118588f2b4a31959f06dc25bb310e8be",
+    "46fe3bd2b883ac569ce46e1bfa7a83e3948999af127dfa42b44bb63b1dbae105",
+    "4cc89013eb61c973f983f78583da5688e0a8abdca3f44e6bae3ca1a6c2571620",
+    "58b01363cd22b88d8befe4b1beb4dfe932f065ffc185ea062468f0eddf9afc8c",
+    "5a1254e1e38a975a514d2c4807bd70c9a8303eb16ef4b1820fcacdde13c7fa3c",
+    "5dba07a2b0daaf4331f9eb30931b7dc63c49505cc13fc9e62fe71c32ebb24189",
+    "74ca463ac144c47ca2ce9f7850d467fb40cc79690509f6b47a61f1d69134ab5c",
+    "78c3907eb1cace3d13c7181277cb8cf56feaa9292be2601e888f3927831a3dfc",
+    "7c0e612f50a796ea270d48af3df228fd4bdbe49dea05e07e5e298e047f8d3bd4",
+    "7d70758b7abf668cc9a39f0c6ab319ac6ce21313fe1370353013c937de643c6f",
+    "974b7c73e1b7b590028d338fb29c6c37357eeedf68a140d1a29b1ebc5149fe9f",
+    "a432eaec5293632f578e54298c98067594dba0b9680e89e0a1921e279f460460",
+    "a92076166a128cc07521e1ae06a3fa326b5d1aaf78f227b39acb48ea25476ede",
+    "b05f312fce364b981c167d3fe833406f9654aea4f1d637eda5e7a65114c9b778",
+    "ba3bb18d2faec449e9744910e69d98e006b7dc7b3fadefcfc1fd95c0dd8baf66",
+    "bdac6caa2c180b95a045c2ead87f632ebe75d65b6c41a2c3bcdd9ab7046e249a",
+    "f54b6f747c50e2f26ed741111b03f07b7e07c07b5c1da2adfb1d100ac28b9ecb",
+    "fa4c97c4f58c5ec4c0b3325ccf88d9151df5e9e7d4c573a10b0057e368437eb0",
+    "ff6f88344d7027e15acd2d4cbee32e8db753f8689f3b4237197a816ad00a889b"
    ],
    "subject_key": "gizka"
   },
@@ -840,6 +975,14 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "48fe027109f2e8bd57313d5e1800f289811cc57034d4cc3d9f697b9ff7c7b534",
+    "705da5a1d8988980f1d0ecd3f353c6334a972e2a0af00a4db3a2e60bcea3383e",
+    "ab103e9b3a0ed6e852e84ca64344b166f7cae4e04d9b592613b8e52301b7ec35",
+    "b50c86924cf449e1a045165f9b711529c1770b37fe08db1b8e94b5c7f3b921ff",
+    "c1d2796520a1a2d887d53b53463c87d9ee170b06e43592283d7956e6e5a9694d",
+    "df186199498355bf529a48aea670becfed807bee6ae563785cd990ed0f8e58c3"
+   ],
    "subject_key": "graniteslug"
   },
   "RSW_GreaterKraytDragon": {
@@ -874,7 +1017,7 @@
    "labels": {
     "A": "history GreaterKraytDragonArtOverride 2026-09-20",
     "C": "history GreaterKraytDragonArtOverride 2026-09-13",
-    "E": "IN GAME \u2014 GreaterKraytDragonArtOverride",
+    "E": "render stillsand_regen_RSW_GreaterKraytDragon_v2",
     "G": "render stillsand_s2_RSW_GreaterKraytDragon_v3 \u2014 failed canon check"
    },
    "res": "swanimals/GreaterKraytDragon/GreaterKraytDragon",
@@ -886,6 +1029,19 @@
     "E",
     "F",
     "G"
+   ],
+   "shownBase": [
+    "0ae6f02d7cd50beb9125731c496de0c0f88be26aa3014b824a414a64ae8c6c20",
+    "162477ddb4152e6fbd677c80ec69a60abdcd4134bba6280f1f406971aa14200c",
+    "4857e0383aa7071290170baace7c12e8d7d615d60c42c0ec1b735dc27bbe1b25",
+    "5f22eea3820b94b92908481ddc82e220f9b9635e7e73f7156b81247c5128c8d3",
+    "5f8a4e6ab0e79fd363e28609f2937796c22938711566b0deb24c59e87da8c6b3",
+    "971257281ef89ad736ddfc885fe231a5efff3638c49da74d747dfa53a8be77a2",
+    "ab0561c0c4f92b088271783daeb4e3a07f8a0ec75e80c05f79102e5d76ef164d",
+    "ab22d6f418d8e24f68329c1fa79f32d73c14faf631b0c93f7ed3d82665316f96",
+    "ba5e06d13eb4fc5638a3a58d55b78f9958fec06ee6cb8e8cb1f371bc2e9c7117",
+    "c2c7b257f29b46b905d12af5d5e37af52677f687ce7d0cad2c3f39a3fb3ce42e",
+    "c96fa5d97a4522d44da460f3537de64ef40e928cd37d56c13b1733559cf8eb90"
    ],
    "subject_key": "greaterkraytdragon"
   },
@@ -923,6 +1079,14 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "0a52fabd2e890b333b37b01703619d9445cf45d7531caac9a31ba2850b9f7e79",
+    "0ccc49cd92baaa1e5425597da6b14e76c3a2750edfd11111fe225fbb4ae35f29",
+    "a336837e6bad9940c46f8f6bfdc011a1a92c0430561a3e504dc628ed4af8bb20",
+    "c4c193224e834bcf3d267dd8f039fea2a012e24d7b18721baf6b06d5191e77e4",
+    "ce45e135d05031a07f80d4200bf53836069ef313bfb2e448be32cc2e5ec1b8a9",
+    "f124c52df7120969f97fcf7496ba50bd34a564c3bb44a830c0a34c6d011600ab"
+   ],
    "subject_key": "ikee"
   },
   "RSW_KraytDragon": {
@@ -949,6 +1113,9 @@
      "east": "ffdebb8da516b084e9f54ea4e845d6cc94b8afb2c6774f23ec6258dee1aff85c",
      "north": "fd5016ffc420587efdde34513bd74dc570d14901c8d7f5a89208ad327459134b",
      "south": "e1825dc95d882cd6389ec5ca0df726c710bf85c96aedb6d03c24e75db9c6923c"
+    },
+    "H": {
+     "south": "fb004be1aa6bac9e4600dcc756a75243a657a83d54f3115e2cf68f17037c4414"
     }
    },
    "graphic_of": {
@@ -956,14 +1123,16 @@
     "B": "swanimals/KraytDragon/KraytDragon_j",
     "C": "swanimals/KraytDragon/KraytDragon_m",
     "E": "_byname",
-    "G": "_byname"
+    "G": "_byname",
+    "H": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 SWBestiary",
     "C": "IN GAME \u2014 SWBestiary",
     "E": "render stillsand_regen_RSW_KraytDragon_v2 \u2014 failed canon check",
-    "G": "render stillsand_s2_RSW_KraytDragon_v3 \u2014 failed canon check"
+    "G": "render stillsand_s2_RSW_KraytDragon_v3 \u2014 failed canon check",
+    "H": "render stillsand_s3_RSW_KraytDragon_v4 \u2014 failed canon check"
    },
    "res": "swanimals/KraytDragon/KraytDragon_f",
    "reserved": [
@@ -973,7 +1142,22 @@
     "D",
     "E",
     "F",
-    "G"
+    "G",
+    "H"
+   ],
+   "shownBase": [
+    "0fb16fa689a08181253ed2b6b8428429b108175ff6250a3db6eae7d194e38ae8",
+    "2b3ea07abb6fce9386d6c9d3200b7545179f6e0ad1ea1f38efbcd01c84481988",
+    "30cae5accaca8b713286c5afa5bf3c6fa725c9692ac1a96652b112954a48a1e4",
+    "3916a3f21ab1391666c0f6c7ddf356d1fd756a9c79f467b160b068a8efa8aeb8",
+    "3e36ac51030534be3b7bdfe69d8b28bac15303a4b6e8f8f9db04b38cb195e11e",
+    "4b98fab5564bd239f9dd3240938ac70507dfa568a641e52eecb8eae52b55e558",
+    "4fe2b504c8f8569c78354ac6477f0762d314e39637e95afd279df4f23fb986f4",
+    "8050c37ed2005a4f4c2d80cf0294ad871c1becde3bac38b9e7ee70b4d16bd34d",
+    "8be79f2b641421e6e0c502975220eaadcb07e57ac3c4e1a498d8896421f9cbc2",
+    "cc3b28105a4cad876bfee53070a415833173dfaf1f784b8a4ef7a5788a91d5bd",
+    "cef15d0ce09b8e8f66e4e7bc145828f80997bf7cd1f430961edb7671bbea0851",
+    "dc9f06ae65c91341a93aa25942dc084a168baafca2585c5e701e0c569aa88975"
    ],
    "subject_key": "kraytdragon"
   },
@@ -983,9 +1167,6 @@
      "east": "e8115f1353694ff615cea90dabaf55d3726e48fbe9f52a2baeed6a93202974e1",
      "north": "ef71eb0b897ff469b3eb3a154bccbd4dfbdeb2d6cc2ef0339f696c57fa0e91d8",
      "south": "747c1cbb77a66837488f28d70b7f8a6b488f7c4c7d0897fbaa445fcd6d63eae9"
-    },
-    "I": {
-     "east": "ff14b5b4dfc1555fbc4cfc192850ca8ffc937ff35a684d32e5f2ecb1ee08af16"
     },
     "J": {
      "east": "ff14b5b4dfc1555fbc4cfc192850ca8ffc937ff35a684d32e5f2ecb1ee08af16",
@@ -1004,16 +1185,14 @@
    },
    "graphic_of": {
     "F": "swanimals/Kreetle/Kreetle_j",
-    "I": "swanimals/Kreetle/Kreetle",
     "J": "swanimals/Kreetle/Kreetle",
     "K": "swanimals/Kreetle/Kreetle",
     "L": "swanimals/Kreetle/Kreetle"
    },
    "labels": {
     "F": "IN GAME \u2014 SWBestiary",
-    "I": "render leaningscrub_kreetle_v1",
     "J": "render leaningscrub_kreetle_v1 \u2014 failed canon check",
-    "K": "IN GAME \u2014 KreetleArtOverride",
+    "K": "render stillsand_s2_RSW_Kreetle_v2",
     "L": "history KreetleArtOverride 2026-09-20"
    },
    "res": "swanimals/Kreetle/Kreetle",
@@ -1031,6 +1210,23 @@
     "K",
     "L",
     "M"
+   ],
+   "shownBase": [
+    "17cfa52e4d5af17e915ad111daad4a7284ba2e535218114039caa9ba8ad9908e",
+    "2a051dc12dfd8cd97473dea28010bb9152be424a0700087c0c60764c9a11cb7e",
+    "32f31778fac291590b1b04f8e1dd2b1e88c6b8f0275221fa2f505e7f38b58865",
+    "5336ed954b9d0bde5145fab2e4e0331c01214fbc39d31f4d68d50f94c3d8ef4c",
+    "54b3b5929300b30db237b46a1dc9f168f6341e1b3496c250ffbbf749d6f8e4f8",
+    "72840821544035a205c7026848fedcf8d1fc7afee1764230af5196511f4a8970",
+    "747c1cbb77a66837488f28d70b7f8a6b488f7c4c7d0897fbaa445fcd6d63eae9",
+    "84a47f2f6f0db216489e45e403f678093b583197e2c0f5212cbdec2ce66bf214",
+    "9fdba3024594a222f7746226f2239159c1b91cf3b4fd69bdad7587eb3a830e57",
+    "cb138e25582720a3b862c84ff7cc7819a7f4d6c7a80fa4420b9dceade4641774",
+    "e8115f1353694ff615cea90dabaf55d3726e48fbe9f52a2baeed6a93202974e1",
+    "e9657aa9c5a87f3a63204189dd787b792237ba0cb535b8fcc59839bae374bb4e",
+    "ea3297c44fad8e13acc106067e1896e9d3e0e6f6c29d4e8488dddb82835b4f43",
+    "ef71eb0b897ff469b3eb3a154bccbd4dfbdeb2d6cc2ef0339f696c57fa0e91d8",
+    "f0a167b6ad5f2ee0b6dba6a7d7c0683ec9282ce61fd17906f4b52d842a1acf2f"
    ],
    "subject_key": "kreetle"
   },
@@ -1102,13 +1298,13 @@
     "K": "Things/Plant/RSW_Plant_Bloddle"
    },
    "labels": {
-    "A": "render desertportb_plant_bloddle",
-    "B": "IN GAME \u2014 RimMandrake: SW \u2014 Bestiary",
-    "C": "render stillsand_regen_RSW_Plant_Bloddle_var1",
-    "D": "render stillsand_regen_RSW_Plant_Bloddle_var2",
-    "E": "render stillsand_regen_RSW_Plant_Bloddle_var3",
-    "F": "render stillsand_regen_RSW_Plant_Bloddle_var5",
-    "G": "render stillsand_regen_RSW_Plant_Bloddle_var4",
+    "A": "IN GAME \u2014 random variant RSW_Plant_BloddleA (1 of 7) \u2014 SWBestiary",
+    "B": "in game now, never shown \u2014 IN GAME \u2014 random variant RSW_Plant_BloddleB (2 of 7) \u2014 SWBestiary",
+    "C": "in game now, never shown \u2014 IN GAME \u2014 random variant RSW_Plant_BloddleC (3 of 7) \u2014 SWBestiary",
+    "D": "in game now, never shown \u2014 IN GAME \u2014 random variant RSW_Plant_BloddleD (4 of 7) \u2014 SWBestiary",
+    "E": "in game now, never shown \u2014 IN GAME \u2014 random variant RSW_Plant_BloddleE (5 of 7) \u2014 SWBestiary",
+    "F": "in game now, never shown \u2014 IN GAME \u2014 random variant RSW_Plant_BloddleF (6 of 7) \u2014 SWBestiary",
+    "G": "in game now, never shown \u2014 IN GAME \u2014 random variant RSW_Plant_BloddleG (7 of 7) \u2014 SWBestiary",
     "H": "render stillsand_s2_RSW_Plant_Bloddle_var6",
     "I": "render stillsand_s2_RSW_Plant_Bloddle_var7",
     "J": "render stillsand_s2_RSW_Plant_Bloddle_var8",
@@ -1127,6 +1323,9 @@
     "I",
     "J",
     "K"
+   ],
+   "shownBase": [
+    "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
    ],
    "subject_key": "bloddle"
   },
@@ -1175,6 +1374,17 @@
     "F",
     "G",
     "H"
+   ],
+   "shownBase": [
+    "15a515d0b777dc76d35838b29a9cb42770a90fde965ea27680c4934329fa98e6",
+    "16618daa21c940e2051449148bab890e3694711bd6f35db30bd53f8d48cd0769",
+    "3ab62dcb53f0ef25dace8865e42684df6a9039df6b23d510d641d57616bfff82",
+    "4013c85c85c10160455c2bb2dba89d8c5070b6a59a0775c2b3cea9d15371045e",
+    "5f001366df915888909ce053457caf791efda3e7f795cc0e7f61bc8b024de9eb",
+    "89a9bba4173fe3a6867a87f39429de32ea72ed9fd24f2eb129bd0eebc322b8ea",
+    "921f7f67eed0281f6f87bf9ef9406e8ed688ac51fc86ae82c44eecc37d77dd3d",
+    "c46bacb303eb525dd52a91d108072a7283c41c04b37f42faead8dffa4b2e2424",
+    "dfd4730c213079542f1516e29add5e2852036cf59ff84055bf691499930ee5c3"
    ],
    "subject_key": "scurrier"
   },
@@ -1243,9 +1453,17 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "562ceee378083a7330bb872c479cb28b24c34b56edbc446c53664c886eb72523",
+    "5b95d1ceda5b9fce3f55e542f2d3e1409ca4ae85ffa48c0e43bf4c7639ae0f70",
+    "72a3eac00775c60b388c250caa8b1d82c754a617b3d739bd13aa714f9e192f1e",
+    "a30dadb5653f47d232a77c5a532d8d1abecd6fad1d06ba25642ba928a77a7fc0",
+    "b1321e00704a3f10ba14f338544ca16eb86ea7994c46f061dbc683bdbc8f9cde",
+    "edb081b14409007555df46d2da17e5fb4d07cdb9bd09efb378afc41e7d20a359"
+   ],
    "subject_key": "warwyrm"
   }
  },
  "sheetId": "deep_desert_sheet_2026-10-04",
- "snapshotId": "c77ab51e3f5b4318"
+ "snapshotId": "6296593884d9b044"
 }

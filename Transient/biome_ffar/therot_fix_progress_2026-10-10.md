@@ -93,3 +93,7 @@ Script: `Transient/biome_ffar/therot_reverify_2026-10-10.py`. It compares decode
 | RM_VioletWimple | FAIL | pick A cf994f6d not in game copy ; pick A cf994f6d not in src folder (texPath may be redirected) |
 | RM_Wrinklecap | FAIL | pick A e3b8c484 not in game copy ; pick A e3b8c484 not in src folder (texPath may be redirected) |
 | Snoruuk | PASS | ; |
+## 10. VioletWimple / Wrinklecap "A" — RULED (decision taken by question card 2026-10-10)
+- His A on both rows means the painted picture his 10-09 card kept in that slot (`VioletWimple_A.png` e972e8af / `Wrinklecap_A.png` 9ffbe202, render v2), not the retired cartoon. The re-filed `rotvar_violetwimple_*_v2` / `rotvar_wrinklecap_*_v2` jobs already reference it; nothing further owed. The re-verify FAILs on these two rows are therefore resolved.
+## 11. Pictures the sheet never showed — now ON the sheet (decision taken by question card 2026-10-10: "Put them on the sheet")
+- The sheet builder now shows every picture a Graphic_Random folder draws (see `sheet_live_variants_progress_2026-10-10.md`). The Rot sheet carries 13 "in game now, never shown" columns on 5 rows (CrimsonCap b-f, BoomshroomGrown B/C + BoomshroomImmature, FruitingBodyA-C, Flakespirefungus_b, GreyLadyImmature_a), each ✕-able, and 9 columns labelled as re-encoded copies of sets already shown (VioletWimple/Wrinklecap/BleedingTooth/Seadew/MortalMorel `_p3*`). Nothing retired; he rules each.

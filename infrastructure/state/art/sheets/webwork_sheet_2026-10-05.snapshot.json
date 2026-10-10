@@ -1,9 +1,9 @@
 {
  "biome": "RM_Webwork",
- "built": "2026-10-09T07:46:01-0700",
+ "built": "2026-10-10T10:14:50-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "Plant_TookeTrap_Wild": {
    "columns": {
@@ -21,6 +21,9 @@
     },
     "E": {
      "single": "3978815419a5389546f4f9e7e053968edd6dbed9317b62dbcd372db2c01110c7"
+    },
+    "F": {
+     "single": "b12464e8182bc8d13e3818ca03f2a4dc9db508959318a54e8d826ff87c527db1"
     }
    },
    "graphic_of": {
@@ -28,14 +31,16 @@
     "B": "swplants/TookeTrap",
     "C": "swplants/TookeTrap",
     "D": "swplants/TookeTrap",
-    "E": "swplants/TookeTrap"
+    "E": "swplants/TookeTrap",
+    "F": "swplants/TookeTrap_Immature"
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Plant_TookeTrap_Wild_v1",
     "C": "render webwork_tooketrap_redo_v2",
     "D": "render webwork_tooketrap_redo_v3",
-    "E": "render webwork_tooketrap_redo_v4"
+    "E": "render webwork_tooketrap_redo_v4",
+    "F": "IN GAME \u2014 mlie.starwarsanimalcollection"
    },
    "res": "swplants/TookeTrap",
    "reserved": [
@@ -43,7 +48,14 @@
     "B",
     "C",
     "D",
-    "E"
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "17afca25e456ddcadec920e0eb029e1c9eef6df6aada0d905cafb059fced7f25",
+    "2dac016e67297c411203e6f57ae870a4e0dd885fe6aa44f18ef2c107d8d2531f",
+    "4bf9fbb9b496e18be992580e1af022200d892bda373efc8c12eb37b2442d7dce",
+    "911f269f3713e33d588b08d4871412a22286248e91a294cf6b0a9dc307c0194f"
    ],
    "subject_key": "tooketrap_wild"
   },
@@ -87,6 +99,10 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "b1a6c66def591dd6169e9a0f4b804a6097a31aa22246ef7ad0a1509b37e28e35",
+    "e34a12a61138f08702a603b800ade9755b25848ad0cbdc0b91989b02ef65e7ab"
+   ],
    "subject_key": "brennoth"
   },
   "RM_Brimlock": {
@@ -111,6 +127,11 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "4db3f0a5e8f13badace3fd7e378ff7d366a2795b4ad482e0ee2fde980dfc1e76",
+    "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331",
+    "ef14b7600dbbf26eeacc577fe2f2ea063e38e38edee3e403520e7fb9c7b404d9"
    ],
    "subject_key": "brimlock"
   },
@@ -167,6 +188,15 @@
     "E",
     "F"
    ],
+   "shownBase": [
+    "164c8ac583bc5a8a9e41e5c25ea6c99d610e07f3ebdc403248b2b04964ecc342",
+    "44ab2f9572fbd444ec4c6163476f198bd325e71e33b562f8787d2715a0142737",
+    "715dc6307a564dc16caf4306e79ae2ac58e6bf297f9cca81b2523820a499f699",
+    "80bc56e6ef5697f55ccc2db43e61a17efb4fbec36df26471c2fb9869d283d759",
+    "8fc24e98141fcf1b7550f39d8cbfd2835f03c44fcbd4fa3155cb71c033664cdd",
+    "d187e03ae2b1b5bf5f3b3d91ab5c6f225d48b35599eae4493bc12824ddea06a0",
+    "df9a038495afedb3a61683cae883fb135acc03c6cb0da0129182de2e2bca8249"
+   ],
    "subject_key": "cravvet"
   },
   "RM_Dulloth": {
@@ -197,6 +227,11 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "56089e9528339d21615229ed4439aba0d147860d7c1ab0d20664d2a7605b6d33",
+    "8d8446d2ae76b35626dd76111ffb2c628e97b2a1e19da57ae5ca48698ef01a18",
+    "8f512995cc23679dd2a83b73c538968e49afb8124c4106e7bb41c1242c9d63ce"
+   ],
    "subject_key": "dulloth"
   },
   "RM_Fellome": {
@@ -221,6 +256,10 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "22945ff7c1dcf6a612092d42a646ed242649892064ccb64710fed9cae97a5e39",
+    "263e76917d25ce455c401bfbe9a425090e66e9391df7cc7ed45e2be1ed3ba177"
+   ],
    "subject_key": "fellome"
   },
   "RM_Grennick": {
@@ -244,6 +283,10 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "17ddf73ef765f0fd5640837d745b6cb1a0a33a47ae173f151a4d0f49772cae83",
+    "b7150ada0b7d6491751d4c92fb7eeb850c7352013f48dba8afa2adb420777f98"
    ],
    "subject_key": "grennick"
   },
@@ -274,6 +317,11 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "a6be5e150455e21f3908cd3a2feca737cfe8877070c3608b18ac9ba43771c757",
+    "a9ccac026a22e1ff3deea19f75d203fe7402e640710dbf6e458ccf37a74edd3e",
+    "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
    ],
    "subject_key": "kessaroth"
   },
@@ -317,6 +365,13 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "108364673363fbda72f264db1578bec0d9bbd04d7bfa0e834f4dce7d2359b9bd",
+    "184cd8f545f4e04a0a549e4ee6008984128e56781f1013c57617868cf57a1e86",
+    "2ce187ed53b479e9d89a655425aae3d8073efc8b725f0562b3478d32ec83a047",
+    "edd16ecc48183243f944e5ee252a496975955e28552c7b2bdb36b34a8fb1c08e",
+    "fc3dbc5eee93cf105d8af600c60cde4d714d1583c453abf1494b1c312efb0c55"
+   ],
    "subject_key": "kollavane"
   },
   "RM_Norrveth": {
@@ -359,6 +414,13 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "021588e923cb114f8b26366848977a123c5e6190a9b2b6402b713d3a7d333226",
+    "1016f075623f7ce29f3edcf0315b71583305b6f6993148ae9b1093e5b396bd3e",
+    "22dbfbbef306dd8106360a437a9c310e3db83b3a5f81397df9cf7be5fd925108",
+    "96af644439dd310687d7da7db6c768ca288bad1f30a8546e97db8b0d70155e99",
+    "c1da625eed8a22f214c3d2305fcbfd9e98ce3478196a8c6c1e604b2b56c2bdb3"
+   ],
    "subject_key": "norrveth"
   },
   "RM_Ollathrix": {
@@ -386,6 +448,14 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "1882a438503a851c42b57b9d3ef675d8f362ea25e58c15cddd69bc0decd30f8b",
+    "5cdb320de39113b75466b6ba97c21974e0b40e01af1f0c1e8aadb06964278543",
+    "a5dbb13bd0c89eb97d4fe2f1a1de5960727d0186c87ebdaa86809f4daafaa6dc",
+    "bd9731c301928ef132cd7b55b0edcba4b4cb77a099332c68a867dad84fdae704",
+    "f073a9fd6fdea3b3ceff659fc81b5ed9b3e0583a287fbd67a2022e83a178e0d9",
+    "f55e010211625e46d7ce1bbbedea2999d35a44e118a626835549fe03b4f94b11"
    ],
    "subject_key": "ollathrix"
   },
@@ -416,6 +486,11 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "6532b2a91c32b174920db77d145639546bf20dfece840736ac28bc5f982ef9f7",
+    "757d2c044d1770897b537aac379e07b93481ba7c36e124ba626b2c9c89a0a678",
+    "8980027a0b9a8615764f3040ff9f507a1daf262f30b03739da60e2f8fd5ff4bb"
    ],
    "subject_key": "pellareth"
   },
@@ -452,6 +527,17 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "27d398fd803ac6c0a670d3884050f616291697f305c83ebc55dff31125c1070f",
+    "a19977745ee5e2b94da2272f2c41d443bcadb23bce10e80febec0b056a7a1b49",
+    "a4c3389b3491fc7e5afbcb47348aaad2f1d857aa6a199248c65690465cdabb25",
+    "ac6247a251cd132a1aebb9624aad35a3cf0bffc77d703372ff97b2dc0af75a76",
+    "ad9212e3b4cff37afb69851e5a23bd992ffbc1e0584c5fd1ca81c5bf5c8c4d51",
+    "b10eac762dac27e1db17e300f77a08f0e062dfe92e8af5f212499f1b09644cdf",
+    "b66ae0faf2ea273a1040e9423b9bf895a8d7cbfba84ba0a330eb66226dfac204",
+    "f34a8c0fb3d9139e9ed38ce179c05f1d2f3a685d06e87a4631c830f029fc1a30",
+    "f3befb30a20c8aad195e4269a85cfc03094b6e13675b1f4b243e28e9fba94ea3"
    ],
    "subject_key": "quarrok"
   },
@@ -495,6 +581,10 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "20185c0d058b3ca5bb6088cbea1a836764b28f0ba36b7d99bf738993017ceda6",
+    "590add898a7791919c445fd564571aa137236a68563c64bcaf0ea7f340734702"
+   ],
    "subject_key": "ruddreth"
   },
   "RM_Sellith": {
@@ -518,6 +608,10 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "61e1479838bdda20d1e74c6112aac3c9acdcb34f9bc06e36d0aab74cabcdf19e",
+    "6307cb66fc376cab9ad92258cdf665f30311b68b117ba1c747a9c9ae3a27f086"
    ],
    "subject_key": "sellith"
   },
@@ -554,6 +648,17 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "21b06609a506de790a9fe85154c969da84f639ac09af1f8461fa1ddbd8593b27",
+    "2253700e5b11d1bb1d02138dadf6de4dfa20748bdef80a7873eacf44658530c0",
+    "53392309a3eba015661fa1e0a9baf526216c97f378ea7e911d8e3dd801c58ef4",
+    "5550d4c2da44183a60b1bfbe2d4b2e284853d40e02f3250dbc086f5258d2946b",
+    "55d7ead6ab59aaeb9cb2524e8529dd94cb59b999c7c00104bf8ba1ee05a101e8",
+    "723a70e7763a1449fdd2c0fb96d03ca59cb17c3b8d5915f7c676f769ca37cf29",
+    "8bde339008be61be0262d15aae69fb5d8cc5075e65c8271caee307435baf2d6b",
+    "99047154917e55ce13165a69aca6f8da967f5eb4fd46505786afd99da5087650",
+    "9a3697437466f6ccd5ea1d154a4269cfc4989ea0d807b697a49516781c5db546"
    ],
    "subject_key": "sivvern"
   },
@@ -605,6 +710,20 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "1c94cca12221c4ca156300ab100e617e9dd61f763eeeaa05460a03fe9b9da9a9",
+    "1cb155edd03021a4efc73e0b6d9ca0d778632d36993e364acd52e24078206ecd",
+    "26225e9a940c2c004a4dc3b636eed20acbc5e09e7962c2ef214be1f3c824c391",
+    "2a343638d43a1f9d5bc58e635a17dc2e93df3b2464466aaf2e34f8aaf6ef6663",
+    "67a0044b3096a5910e04e526905f28f7f1fca7f6c83b61c05c0248e896a2aab9",
+    "8ce06eead0ef690fb1bed6a08d5458ed1f00fbc5804de3e45662be789e946f59",
+    "a015e7bb979fee3ab72c6dd2fb18e1cbaf41c9562bc66972a9cf1457efae2456",
+    "a1866b37081a6fd042d1567735cf4cf5690fec3b531a988e3d2a4f93e7217863",
+    "c782ccf9d8633ae206e14c4b35b570d936680659b766ee53f7f0dd7fbeeb97dc",
+    "e748fcc07e70650be1aacab1454657f9a7a6c0770b0173848c7599f68746b7bc",
+    "eba4ff4458336e515fc71c50ba3687f9a6122ec80b4c512df736f258b262735c",
+    "ee2116a27d08b299b5ce29296b34b154b8ef2e67109613cf022afe2b615ae5a0"
+   ],
    "subject_key": "skennet"
   },
   "RM_Sorrivel": {
@@ -647,6 +766,10 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "b38cbe5164ab0df108219f9a7d9a286ac6a3a4c06813fb6025b00ee0c2de5936",
+    "b8b5856ddaaabd7071c518459fd6071aef4c136fbd2fad2247b0276ce16d37d1"
+   ],
    "subject_key": "sorrivel"
   },
   "RM_Tavrosk": {
@@ -671,6 +794,10 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "aef5a557b797d091e8c7cd2dff217ed283c78f1ba8eab486be21480eaa92aa70",
+    "cd6823246d62e43545f73d2b288ca3ee3df7944e17fdebb51f04a6ba8f9b7f68"
+   ],
    "subject_key": "tavrosk"
   },
   "RM_Threllick": {
@@ -694,6 +821,10 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "12f5a56819a3376877eee1dde2abc91013bb00d668c5b5256150d24988aa81a4",
+    "b10f0ed989ee1ac5cd1b4d1b2b1ac32350849289f7e4fbc959d3ecb67afef71b"
    ],
    "subject_key": "threllick"
   },
@@ -724,6 +855,11 @@
     "A",
     "B",
     "C"
+   ],
+   "shownBase": [
+    "34a9e1e7faecbda3208e12a5dd3bf6310464024bab55dda55fd3ebbb9f65b398",
+    "c9eeffd3c86e4434f6e25eaf7d952b019754c8f81cc0dc1a207e9fc090faaa9c",
+    "f248be99d6ce8ca3ca6cee7a5568d718f259bf79d96ca08b7211d77487e0eb3e"
    ],
    "subject_key": "varrisk"
   },
@@ -761,6 +897,17 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "0f074616c763fe742d2c56406eb87903e4129ce18b5fc2c13dacf65c261b49be",
+    "545e085e883bd3b6bccb0e399b4f3b563ca096925bd452ef825cfdc800bb48ca",
+    "756c60053ae1f44f6242ff2b6070571f65b2159abe711d57de315c8bf9cec4f1",
+    "7674e41713d0eeae9f097b3c02f7d5b85fc1c2624f29828a736b700de2d7f279",
+    "7d42ef51e4076b067cebe1d4fa24c192638381a6f35c59c63d6737e60dc9048f",
+    "847ebfc91e965c7637e96935f7be7fa1653e5f7f149bd23897d3c592b1ba5c36",
+    "8a802d0375db893dc4b357144397388a8f761cc9bdc72d463a1f22de191c8c66",
+    "c1c1648b3597c5860412b253816dd4a8d8807ecccd42f7fea3e7e082e1ec9b8d",
+    "eea1944a0d9dc518dfface29ad8e839980b5cc9a315b879882a1e437f39f41f4"
+   ],
    "subject_key": "vennick"
   },
   "RM_Vessark": {
@@ -784,6 +931,10 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "0870b3e0c127e7806f5ff89a46dc01a31f73fea4ba802348cf8e9af63f392d13",
+    "af21e02bc1f8d1ec04bd85c6c73238fa60c99c82ca989218d70b35ac11c33d54"
    ],
    "subject_key": "vessark"
   }

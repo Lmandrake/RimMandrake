@@ -1,9 +1,9 @@
 {
  "biome": "RM_Cauldron",
- "built": "2026-10-09T08:04:19-0700",
+ "built": "2026-10-10T10:11:23-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "live ModsConfig.xml: 614 active",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 6 mods \u2014 a test list): 551 active",
  "rows": {
   "AA_BedBug": {
    "columns": {
@@ -21,23 +21,55 @@
      "east": "ba60f423cd55f02804b67c8a2118b7b5cf2d9ec67ea714873b5cca475f90baa4",
      "north": "d26ea30a5fcc5b8543f064b5c950c35ce55f46bdbbba7f63ea08c178a9ddae8e",
      "south": "1dbbf3b2b67e52bc51bd4735fef9a45577ecd18905dd71225e50e9bcae66e12f"
+    },
+    "D": {
+     "east": "057b886d93e75e4ce395f32a7bd425c5032a7468a77fa59544ab952e12e18961",
+     "north": "2dd013ef65f9551fc7f787ed9a5bce521d62a6176ede7cef3e8d56a2f12710a6",
+     "south": "57c09404603735ce282f0e0ea7cc59e8f3955ec2f7c6e08b30d9a0be83aba028"
+    },
+    "E": {
+     "east": "64e5782144cd9f1f6724fd10e71e195ead22b4a1e534cad99b2b8711c41d406c",
+     "north": "183283e6e31e28eb4db635cb1196ebd436163e7cefc30f387a34f5c14c885fb9",
+     "south": "2381b2320ac1db1924a7f5066c7cb604f03b38cc544ee799450c48831ec1bc63"
+    },
+    "F": {
+     "east": "d29edad23278ca6e44e05033e0ae4571798b283d90b58b56697a28d608915521",
+     "north": "5f4125884b79acfaa5e76660d64dec28684ef29d5335b9aef7986f1118df8329",
+     "south": "d2e620ee69a5a39f6a6f01c5bbbc3bb97a3a097b885fdf48a3b771c3e345898c"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
     "B": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
-    "C": "Things/Pawn/Animal/AA_BedBug/AA_BedBug"
+    "C": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
+    "D": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
+    "E": "Things/Pawn/Animal/AA_BedBug/AA_BedBug2",
+    "F": "Things/Pawn/Animal/AA_BedBug/AA_BedBug3"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_BedBug_v1",
-    "C": "render enact_be511e0a_bedbug_v1"
+    "C": "render enact_be511e0a_bedbug_v1",
+    "D": "render cauldronfix_bedbug_v2",
+    "E": "IN GAME \u2014 Alpha Animals",
+    "F": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_BedBug/AA_BedBug",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E",
+    "F"
+   ],
+   "shownBase": [
+    "13d24f1217a05ac42bed89e44764903fe35615b13f06701ec97042ca12d8613f",
+    "2900a6a7dcf8f0e76df5a094d4a66ada6e5a12450aa3e393130d38d2b8a8614d",
+    "44b8d1279abb53d1964c3ff4e3d0f0a8a52232a407a61016b61627681257a529",
+    "96e5cdc8131a488a93f8ddbbbbc01b6d085b48c65bfdee00f0cb2333ba236b9c",
+    "9f358da2f49ed70666cb8edca0496869d35b4e3d80b4b97eed043ac2f3af3fff",
+    "d3fe789ed08a7895c52a995432a5f2866ed4c0ef5b97539d8e31d221104dc50f"
    ],
    "subject_key": "bedbug"
   },
@@ -57,23 +89,47 @@
      "east": "c50de4b85c204bb94ca2098e994761c973c3990f693f0cb71218f7863ca1872c",
      "north": "cb2c786fc2ec6a02b76ab8ae14281f4d815f113b5ce80c4dafbc757917092c3b",
      "south": "b9ac78abe816592c882096f888e9e947be6b03b007232d7e54f4c1873e5e4417"
+    },
+    "D": {
+     "east": "f4017e55013d5661d09dca45aac59033b3c25f743bdfc5f056342eb20041bdc9",
+     "north": "fcdb465c02d69456761fe989800331564020d6011570b80fb15740ce60f03f4e",
+     "south": "5ae22e8dd7300e8834dee4ab57fb0e902db0358d81126c601bc5b4f8108c4d4a"
+    },
+    "E": {
+     "east": "be4c35bc46f335cffc0ecb8e85672f05d8712b9868fd840a978ffc4dbce79f50",
+     "north": "018019d8351bf2c5c3ec9d48c438a1dcf5883167b31b74eee91cff7b0106cd16",
+     "south": "f700810dd0b60310f52419fbad378ab19ae4f1a33f82f209de29fb38b2f61234"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
     "B": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
-    "C": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit"
+    "C": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
+    "D": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit2",
+    "E": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit3"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
     "B": "render gapall_AA_CrystalMit_v1",
-    "C": "render enact_f2b850a2_crystalmit_v1"
+    "C": "render enact_f2b850a2_crystalmit_v1",
+    "D": "IN GAME \u2014 Alpha Animals",
+    "E": "IN GAME \u2014 Alpha Animals"
    },
    "res": "Things/Pawn/Animal/AA_CrystalMit/AA_CrystalMit",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "26a6604f2f9180e3cf604527e42049b5b3aaf3250727cf3cfefbdd681370b89c",
+    "624dc66dd8a8beeac8c8815a531cd5035a0994de72be15e187a765bbb5cdeea0",
+    "9132cd9961b766996d1dc9c04d9cd45f849edddedd2e34b14d6c6ca745161044",
+    "918f4a66a4a40fdd3b1ff546d2f7ba1be6ca1a16af8cadd96f5a27eda3fbae00",
+    "b8463b4f36e3b108ff38424ec5a492299d66abb1d8f942681da64fe34f203b0a",
+    "c0ef85c2210c8d324c56f6a1ab060867dcf2281be8c981a412a43c72be139f94"
    ],
    "subject_key": "crystalmit"
   },
@@ -96,12 +152,20 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "shipped, not loaded \u2014 DecayDrakeArtOverride"
+    "B": "render gapall_AA_DecayDrake_v1"
    },
    "res": "Things/Pawn/Animal/AA_DecayDrake/AA_DecayDrake",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "35089a5429fa1ef9535baddc8c09a05f6bea8d9a6f559f09c7b7e9b94684e79f",
+    "6a1234293ef67df19a8aec0c7797b37619c165bae50c64be666b6501e5009342",
+    "79f726107e09de5ea497c6cd29aa7193720d88f0c5a2da6a431de3e1b4bfafab",
+    "ba98737edc7f536ecef779f7fd1353f6274358a61127e5e25e0259658b23f199",
+    "ca8ff92b2d64e790002839d5abe86f4af8d660933bee1c79beef33e7224823d6",
+    "e68cc3a30ed579a9230d75a41e250e96434f5233e5a9d85dd4efe048ba004e40"
    ],
    "subject_key": "decaydrake"
   },
@@ -136,6 +200,11 @@
      "east": "d9eb4a4c1dec738cd3f4a4d7fde27de8984a9c782da5fc17f2f9f9ac05cf9738",
      "north": "ee62ed5065eaaa97d8a49f1ceb43453dd07fbec6da1e1d9cf0f34626c956380c",
      "south": "ca753c575412496f9044c8ede46d56d79c0097051c06f556bd5a6931692cd414"
+    },
+    "G": {
+     "east": "dd689de83fa586a620eea2976fbb658f6c87536711491192936ca8cdd2526944",
+     "north": "e38313273886de873821a5bb1c7ac6645ac1a18ab54ce13c56a8c8c927ca7ec4",
+     "south": "77262c8a489ea8979b6c652111dc4c483ffa0727434e4610bba156cec120d0f2"
     }
    },
    "graphic_of": {
@@ -144,7 +213,8 @@
     "C": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_baby",
     "D": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female",
     "E": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie_female_baby",
-    "F": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie"
+    "F": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie",
+    "G": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie"
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
@@ -152,7 +222,8 @@
     "C": "IN GAME \u2014 Alpha Animals",
     "D": "IN GAME \u2014 Alpha Animals",
     "E": "IN GAME \u2014 Alpha Animals",
-    "F": "render enact_4d78432e_giantcrownedsilkie_v1"
+    "F": "render enact_4d78432e_giantcrownedsilkie_v1",
+    "G": "render cauldronfix_giantcrownedsilkie_v2"
    },
    "res": "Things/Pawn/Animal/AA_GiantCrownedSilkie/AA_GiantCrownedSilkie",
    "reserved": [
@@ -161,7 +232,25 @@
     "C",
     "D",
     "E",
-    "F"
+    "F",
+    "G"
+   ],
+   "shownBase": [
+    "1ddd2f062ca2c1e92927e3360a7a7f6ddb336745903e912e7ba4b0a9a8c2b9de",
+    "254ee2f5f0b0f45414564917866fcfe1e4ed2e729c64eabeb9b5bd6c4f1093cd",
+    "6ab810659674d3885d8ffe63fd1eecfef20824a274e13a0b340b59f7e81e5c6c",
+    "6bcd611a4a74aff828d3e9b89793ccad53a4b303712fba3df4ab61f0d0a5c75f",
+    "7ff4e7b4d532db1e6643557134cf27301ecb195f0d2f09103e8bc594386ce018",
+    "85af572ba1b0c82e7971e39fb13ee420f5c8e0c23d61a5a81504b196217e46c2",
+    "89ea6036368716bbb780cd7cb9bd619ff6ee60fd92dc23e007bbaa38d346964d",
+    "a4ddb93ff7a8d1e732fca5017a48313a49da2afbe78491c75a921e87b7d04674",
+    "aa6750b7c2c69a633227203ab8b5f58ce6c9344e340c0c631567df9eb7eea2f0",
+    "b28c916b9c4d5bd02539de07abb1b9d2b984066af5c1943a5435ed637d2f5195",
+    "c04cb680ccfef100bfa38965c252915babfe56430a55fab715b00d8f90c18ec8",
+    "df7d17bc033213327c1a6fa6485bfd2ddebff1daeae63b15ed2b5fc1371e1581",
+    "e5aac4b8471374432a8886660ab1c671cee784f6f9052f7c01d94a593274bbdf",
+    "e7901ee0d6b722be071c68aebca7707af32a4110824adc4341bb38e985b35217",
+    "ee251b0a55d85bef9b67d7fa172b1c4f25a5b98521e2e2d91351f2dd13396d97"
    ],
    "subject_key": "giantcrownedsilkie"
   },
@@ -190,6 +279,14 @@
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "5cefccb8a71b79fbdce2355e6655758f5206274a86a563688828e5e8a906a143",
+    "7778ee23e92f8cebf8b12c6b1c16412f4f0ede6908f9da25ff9e88144e70f63e",
+    "7dec057170bae3d2178b610e709036a4c3149dbf00b7b6a35d9aafc83a8a04bd",
+    "d95f5af4564e0369955f016ab394295e4eeecd2350215116200c2ca4fbc77cb6",
+    "fb0a4cae2598c719ef11b8fcc9b87aa757a3a9d6e7e162c0ba6e09a3d28e65c4",
+    "fb72d8180dbcdaaf28e5cd80fe92dd795242605925b2d24260c51e7fd6764b18"
    ],
    "subject_key": "helixien"
   },
@@ -227,6 +324,14 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "2208d36dc81c2c093af8672bd9b6ba8cc014eda4927d56752866eefbd10aa2cf",
+    "477b909d4b575756a025139662a96534912672c0f784d085bcdef602611ea8f6",
+    "599eeebbc85351789ecaab578c250a648a2159448d39c9cf4822674964080027",
+    "7ef5a80c63613a29d125fbfc2686d7a63eebb57c15a97f0730bbfb8ff039f9f5",
+    "a4e3fd409a10a5e9d5934b7b54677b736b5eb9c77c237fd87ee33a5a9d197360",
+    "eece65af2cc46106d247c3f17187599c591de4e5ac4c84e8973e273894f481d3"
+   ],
    "subject_key": "infectedaerofleet"
   },
   "AA_LuciferBug": {
@@ -255,6 +360,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "00ee5f3ed023d1c773ec98d5eafc58c3968f4fdfedf01d816713051399b0f574",
+    "3a21b34afff268bb7a9b3c8fc7c5b1f8aaaddbaaee7752189cc7ac72672cdb5f",
+    "5287246bc9227b6145daab16830a375b19eaa8652046b1c411f859b588cf2ad4",
+    "77717b0fe6f0525405f2b89743ffbd5e6385175adf7d6f8d7fc2978368621ede",
+    "7a8e813c4c150191d6e235fee954d07a8d3fafb4f44a422513942a4e396b3312",
+    "b29ae17df37836453c164bdbdd5616deba5828f6f8ffe8d6a997b1c06df3af05"
+   ],
    "subject_key": "luciferbug"
   },
   "AA_OcularJelly": {
@@ -276,12 +389,20 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "shipped, not loaded \u2014 OcularJellyArtOverride"
+    "B": "render gapall_AA_OcularJelly_v1"
    },
    "res": "Things/Pawn/Animal/AA_OcularJelly/AA_OcularJelly",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "57a293332e475b6b8f74dc5bfab782a5bfa500100f42a2b0d19ff4d910e72767",
+    "8ba2a523828595a6eff2f5086c0edec5085a09190d2eb225123ab0ebbd188b1a",
+    "98a20cc1e67b8f1e77017e73ba53e3eb10fdd60745f22ab9d5d693175c703c7a",
+    "b3c588199eb31bc767e0cbf343d928a7ff150a46a02dfa61b9c454542166172f",
+    "b8d7a633991873bda7f22ba36d71f5d62dc2072a3c6bc9776191d9126b025126",
+    "ff0e1e9cee9bfeff7354dcc9ff7f58ecee157f0b1a51ab98303e6ba14190fcde"
    ],
    "subject_key": "ocularjelly"
   },
@@ -304,12 +425,20 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Animals",
-    "B": "shipped, not loaded \u2014 PlasmorphArtOverride"
+    "B": "render gapall_AA_Plasmorph_v1"
    },
    "res": "Things/Pawn/Animal/AA_Plasmorph/AA_Plasmorph",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "701494c16b4df746ca2562ff499b9e5b3bfafdda2954390a18c4537c190979b2",
+    "97541fe82283bb41c830b91580232fd0893c2309fdeba9082ad5df5e14ca5acb",
+    "b3219dad7cdcea7048e5c543bc3ddc413e8c9dcc633c891dd303c8fb3d82f804",
+    "cef5fd1d9ec9ed4959e2acbc35955a405dfe2af858b23c70c723de222c8f76ab",
+    "d45640c2775d8a032302826eaaac61e6421ce8ec396516f9eb7c5c220a7917a1",
+    "dd3688a832d177e48de59c3bc9af3f7dcdda50f73342d84c03f8ff2959e358a2"
    ],
    "subject_key": "plasmorph"
   },
@@ -363,6 +492,20 @@
     "D",
     "E"
    ],
+   "shownBase": [
+    "1f49f70893fdf4f8981ab4f0dfa0b171f31c2e174ff01830f96adae064c9cbaa",
+    "240b541f8042b01dfd625a72676a7b6512538a7b2f24eca220579739de408012",
+    "37b2340d40f6b1b47e0c4494be0434a55680d447c41391f766c14c3c93188bd5",
+    "55853e80245af4c0e1faaaa5be45cd72bf1227f88bb3633c8a324a8a3506057c",
+    "74d3f4a98849921c0720e68eb11dc63cf3f4fee6ccc02c62644d5139ff92474a",
+    "7bbaf3110f603589ad686b48dfdef3be8d9c8329bf75ab36faf0ac2eee4578a5",
+    "7c420cf1cdf0fafd534bc1a920ffc9c2641ed9d1a29e0d317cd519b38ce52f7f",
+    "817bc38291addd57c32ea1c5d8d68d28971f0b268bf00dac7f4dd069bd4fe280",
+    "ab6384fff27e1a94b03029abbf81950a86a342426c220901b31d963573055fed",
+    "bb94f6544ae27d90cd6b2d600612090d7de3b6d6739d36802b5549997fd72a37",
+    "c813379ca59f16934eb0a8e1e16cdbcc5fe58832dadd1fb5609c592f1722bab9",
+    "cf3a74e2cea78cfd8001d03d9cba54e409f17566e15c50058b91addec18e40c8"
+   ],
    "subject_key": "radyak"
   },
   "AA_RipperHound": {
@@ -391,6 +534,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "2d9f0edcaa060fe101962bab6037bf1cc2aafce2e01ac1bc29ae4add585bcd55",
+    "2f4b62ac36c07c09455e0364c929f35b5e604939a049d14340bdd5efa4fbdcfa",
+    "4da8046f0cdffc9c02c5f71f015fa708302880349ad1138e0c6ddb0d09b05021",
+    "560d825ea335c9bd41cb0ad4d47722f2e0bf7ae755290762fd1d58fe3de00d48",
+    "afe150558ab8e4d9476dbfca85e10ca2efa53c75076211d1b9c9386f7b7092fc",
+    "ca076d2da86bbe486c546da898e6a30d847797e635e5288abafb5dc9362e1549"
+   ],
    "subject_key": "ripperhound"
   },
   "AM_Dryad_Corruptor": {
@@ -412,12 +563,20 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Memes",
-    "B": "shipped, not loaded \u2014 DryadCorruptorArtOverride"
+    "B": "render gapall_AM_Dryad_Corruptor_v1"
    },
    "res": "Things/Pawn/Animal/AM_Dryad_Corruptor/AM_Dryad_Corruptor",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "33d2ed6f859b3a40d56defb1a6f6afb24a132444deb46f2060d060da4d70b33b",
+    "6ed0e7bbff2aafa7eb3a2657631e5329fc6fa29bb3571d69c5c5598cb2a464e1",
+    "77b4614da6c779fc4cf11ee50f1d78998d94f2a5302388adf705b1a3404fc25d",
+    "7f17b2f4fc08b1f38beb5b6cbc5ba550e53bfec6e86fee51a8842bd21de98c21",
+    "9dec5e132f577521f6ad3e61682cc23ab58f9ea9e7264e5ae1ccf4db6f809d94",
+    "eba2af7891684abdc647afbd3c3923e51c79feb9acc0d53364086a9933af0089"
    ],
    "subject_key": "am_dryad_corruptor"
   },
@@ -447,6 +606,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "17a51f01e5e43bc5523f119b62c79648be3c8059cc0aefdf1c0a1811da6c6196",
+    "376ea56b7ceeb4ab3c61caded70366a3d179c90e2ff8193fc9d5c42bebd06586",
+    "41235e566f15eba09fdfeb0ec79ce5500df9dc5ef25071b095fb8e4be35fae1f",
+    "4b42c438b76d217e613aca4334007ce23a7a62a1128bb8ced05154aae797b8d3",
+    "770271d7ce8b1da71d032c588ae9651fc51c984485f869bcdd3b8e2a89eed670",
+    "906c7051dddb5f9ce5cbdb9440fcf092926f05d47ed1e30a5cd4032c4ad09f11"
+   ],
    "subject_key": "am_dryad_ocular"
   },
   "AM_Dryad_Tumorous": {
@@ -468,12 +635,20 @@
    },
    "labels": {
     "A": "IN GAME \u2014 Alpha Memes",
-    "B": "shipped, not loaded \u2014 DryadTumorousArtOverride"
+    "B": "render gapall_AM_Dryad_Tumorous_v1"
    },
    "res": "Things/Pawn/Animal/AM_Dryad_Tumorous/AM_Dryad_Tumorous",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "125790b7435042f9c9bd29545c2ccf696271dacd951ccab371349147a402014f",
+    "40b71112af19bdce064bb92728f83e5c54f49aecc41c37bf364f9738a16ffac6",
+    "6b077510b1ae0697d24696694eba08d573dbf151c4780a6b51bef159d9a8a901",
+    "915eec50a79164e1088732b384c6c8e7eac1d2b34d8e5dcb044accb29dcef99f",
+    "c9bf1f7db5a1a5085e4a35375486aaac2858be38ce4c5169ea6ecacb508bb098",
+    "d292b376f80428b019367ce7c7a024605425fff1fa5fe54979cea22a439850f6"
    ],
    "subject_key": "am_dryad_tumorous"
   },
@@ -506,7 +681,7 @@
    "labels": {
     "A": "IN GAME \u2014 Vanilla Genetics Expanded",
     "B": "render gapall_GR_Beetlefleet_v1",
-    "C": "shipped, not loaded \u2014 BeetlefleetArtOverride",
+    "C": "render gapall_GR_Beetlefleet_v1",
     "D": "render enact_c8bcd172_garsulix_north_v1"
    },
    "res": "Things/Pawn/Animal/AlphaAnimals/Insectoid/GR_Beetlefleet",
@@ -515,6 +690,14 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "0beaebade447fef66844c563e919c8e7a97729f42d97911c752fa13cd36675e8",
+    "1353dead6d575173a214df2274499364dd8835498c89c3e6485ebf5ca8d02559",
+    "15cd4c22ef0553b094931f85cc21e00473270dde5a6aad31e1fa0ecbcee76e82",
+    "34c7a3dfb0fec3ecaf76adc49eb074229161cf6b26025f89949f6da3b499f42a",
+    "77647aabd55332acb80ffb981e0540e1c971feb6ce332118f317aeec2c1d0871",
+    "aa08a14be420ceaa3a443d64fb0f3bc91ccda0df34c4b8669a5eb37feb37146d"
    ],
    "subject_key": "gr_beetlefleet"
   },
@@ -525,20 +708,30 @@
     },
     "B": {
      "single": "e49e65506c15f0124e8a4871efc64cecb6bd01442518eef711a67c8fb4440aef"
+    },
+    "C": {
+     "single": "913104911768dd6a8565ade6e3376eb2e60b5c721613da450094a16d863dfd5d"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a",
-    "B": "Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a"
+    "B": "Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a",
+    "C": "_byname"
    },
    "labels": {
     "A": "history Cauldron 2026-10-03",
-    "B": "IN GAME \u2014 Cauldron"
+    "B": "IN GAME \u2014 Cauldron",
+    "C": "render gap_RM_Dewfall_BloodBouquet_dew"
    },
    "res": "Things/Plant/RM_BloodBouquet/RM_BloodBouquet_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "3816fb9b23e09e1ee010b82824d0d0d41cb2951f89e46448cc67dbf24b5277e0",
+    "e49e65506c15f0124e8a4871efc64cecb6bd01442518eef711a67c8fb4440aef"
    ],
    "subject_key": "bloodbouquet"
   },
@@ -549,20 +742,30 @@
     },
     "B": {
      "single": "a4b65ae8d4d3eec0ad5dcebe19460597d9ae19f26089703b27c749cbad3ca0a5"
+    },
+    "C": {
+     "single": "a1de998ff5bb106ddd2f559489c8d11ec09b08c985e9eeb9050986629e697f29"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a",
-    "B": "Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a"
+    "B": "Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a",
+    "C": "_byname"
    },
    "labels": {
     "A": "history Cauldron 2026-10-03",
-    "B": "IN GAME \u2014 Cauldron"
+    "B": "IN GAME \u2014 Cauldron",
+    "C": "render gap_RM_Dewfall_CrystalFlower_dew"
    },
    "res": "Things/Plant/RM_CrystalFlower/RM_CrystalFlower_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "a4b65ae8d4d3eec0ad5dcebe19460597d9ae19f26089703b27c749cbad3ca0a5",
+    "c568e931edd0eed6f22d8c80dc56f1cd29abf1354a1fb4ad7c02612f27477abd"
    ],
    "subject_key": "crystalflower"
   },
@@ -581,6 +784,9 @@
    "res": "Things/Plant/RM_DarkCrust/RM_DarkCrust_a",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "167f9f9b8fa363643b809db432def4fac45c6ff9451a7753b194e4323adcaa2f"
    ],
    "subject_key": "darkcrust"
   },
@@ -610,6 +816,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "4c6dfdf8beee297a96f8b7b49efbbf3c87aec6b4c59f6a7537df223893a04018",
+    "4d185887e931c0b1a3fa83729a77439c4b211ae96a6e835d06fa2bf1a1369ee2",
+    "5af54e37c86f4bf4d6c544a40bd5111973c6fba866d4f12116a19a3f86facae3",
+    "601dfcc2d9efa7519dc626869855483a0c09a3905fa97fe77b56d71687b3e2fd",
+    "d6bc765586386f07151e40a34dd33a28392d12ba33c15c1ee2948c2c1f1fc43f",
+    "efb973f7d1ddee6e2b4b24545b3e982ae38d6c81d99d8d174d46ed61c6e02d5b"
+   ],
    "subject_key": "eskith"
   },
   "RM_Fexxil": {
@@ -627,6 +841,9 @@
    "res": "Things/Plant/RM_Fexxil/RM_Fexxil",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "9db4ce061571229009dd85b3297ab6b56c833ab3d7d8bdcda69b091c30193800"
    ],
    "subject_key": "fexxil"
   },
@@ -652,6 +869,10 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "cb27260599b15216a041802657a9cca83648719f3118d84859a507ea3956a7f1",
+    "f337f466377868514db43d45bfc45ffeeae189dbc95c455d6de98d853dd3e645"
+   ],
    "subject_key": "giantagaritox"
   },
   "RM_GiantToxicFlower": {
@@ -661,20 +882,30 @@
     },
     "B": {
      "single": "9190ebd644b66bf9daceefaafca2a610dcdee8cae74aa733d3eaa4bae1c54081"
+    },
+    "C": {
+     "single": "af2897746971bcc88bc19d8101e5910d23702ad7fa0788e1f7b1ddab2ac77f35"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a",
-    "B": "Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a"
+    "B": "Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a",
+    "C": "_byname"
    },
    "labels": {
     "A": "history Cauldron 2026-10-03",
-    "B": "IN GAME \u2014 Cauldron"
+    "B": "IN GAME \u2014 Cauldron",
+    "C": "render gap_RM_Dewfall_GiantToxicFlower_dew"
    },
    "res": "Things/Plant/RM_GiantToxicFlower/RM_GiantToxicFlower_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "9190ebd644b66bf9daceefaafca2a610dcdee8cae74aa733d3eaa4bae1c54081",
+    "e6ff924822eff20043957e3e64bc93ff9921b30ebd9220f2ab3c3430251de056"
    ],
    "subject_key": "gianttoxicflower"
   },
@@ -694,6 +925,9 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "af9371b99d63d9c87f931526ac8da63fe2eca873730ca87ced4fd73f4f2a96a7"
+   ],
    "subject_key": "ixalith"
   },
   "RM_KeeningCordax": {
@@ -703,20 +937,30 @@
     },
     "B": {
      "single": "83f4f4f653eeb3088de1e8aed1220067610a0ba9451a0f9e7a3d0923556735af"
+    },
+    "C": {
+     "single": "1f5f44ea77995894474519f5856e33eeffb8b45800e63411f65560b355a276f7"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Cauldron",
-    "B": "render keeningcordax_v3"
+    "B": "render keeningcordax_v3",
+    "C": "render gap_RM_Dewfall_KeeningCordax_dew"
    },
    "res": "Things/Plant/RM_KeeningCordax/RM_KeeningCordax_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "77b0a861734f70020d9998d4b76cfb575965d540aad07e4a20a4a63eef5593e0",
+    "83f4f4f653eeb3088de1e8aed1220067610a0ba9451a0f9e7a3d0923556735af"
    ],
    "subject_key": "keeningcordax"
   },
@@ -735,6 +979,9 @@
    "res": "Things/Plant/RM_Kissaveth/RM_Kissaveth",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "c4139aed877b52853e6d58f9addcab5bae54b234cbc9ac4a3fd30593e29d5a70"
    ],
    "subject_key": "kissaveth"
   },
@@ -755,6 +1002,11 @@
    "res": "Things/Pawn/Animal/RM_Mullgoth/RM_Mullgoth",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "014b59c7f23a75e38e64624f66fc06ff0d184a5c493676fd0ca9af759c6b4075",
+    "bc89bf873cf8ce8389189e75066b894fc8c75a08a09395c8e2d47624217238b6",
+    "c0dedfeb285204cbbed795a7d5e69e115a6658fe32ed6491b2ddebc3460251ac"
    ],
    "subject_key": "mullgoth"
   },
@@ -780,6 +1032,10 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "1ea30730e14846455c5b2d8af2582bd584801b0e49b2ea17874afe7f81315536",
+    "23f769b93f85b165693f9a50ce7e9ed44e90ea33d84ac034bc36c163acb539f4"
+   ],
    "subject_key": "ravennettle"
   },
   "RM_RedBugloss": {
@@ -789,20 +1045,30 @@
     },
     "B": {
      "single": "14d980b026c342a62a3ec6150edfc76fbee2bb76b469b48683225319e1268d50"
+    },
+    "C": {
+     "single": "4d7f93bcb0a3e4937820d6dab23028c311a20a73c2daa8cdeca81feef68dbca1"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_RedBugloss/RM_RedBugloss_a",
-    "B": "_byname"
+    "B": "_byname",
+    "C": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Cauldron",
-    "B": "render redbugloss_v3"
+    "B": "render redbugloss_v3",
+    "C": "render gap_RM_Dewfall_RedBugloss_dew"
    },
    "res": "Things/Plant/RM_RedBugloss/RM_RedBugloss_a",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C"
+   ],
+   "shownBase": [
+    "14d980b026c342a62a3ec6150edfc76fbee2bb76b469b48683225319e1268d50",
+    "bf5791e4d1bc37a177780299fdf4c7f49a48d6dadbe4e00c75c2ea5549356941"
    ],
    "subject_key": "redbugloss"
   },
@@ -828,6 +1094,10 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "5ea32dacab809a37bf3fb31e2da3728dee84d296b3148f13537a627eb9f390de",
+    "d19389d0a0cb554922ab0e883979b49668bf47a1243ea836aa3fe36f8cfa9abd"
+   ],
    "subject_key": "selvix"
   },
   "RM_Sessarix": {
@@ -845,6 +1115,9 @@
    "res": "Things/Plant/RM_Sessarix/RM_Sessarix",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "3c615f6ed0766c9f0b88540409d44b0ce4c111a7c608ace4bd04baea4165a6c3"
    ],
    "subject_key": "sessarix"
   },
@@ -866,6 +1139,11 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "11b918234ac7a17c6a4419acf92feb6694506f6c16d1dc48004b7b8cdf23cec3",
+    "84463d0fdb7b6fd71bde04fcee85a53bd2ca74adb2ef8935280216100e04f1fe",
+    "9316d67739073805bcacb4f25535ca053fbfe8f7e7dce37f0259be624404d5bd"
+   ],
    "subject_key": "suush"
   },
   "RM_TreeMartyr": {
@@ -882,13 +1160,17 @@
     "B": "Things/Plant/RM_TreeMartyr"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapall_RM_TreeMartyr_v1"
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "B": "IN GAME \u2014 random variant MartyrTree_a (1 of 1) \u2014 Cauldron"
    },
    "res": "Things/Plant/RM_TreeMartyr",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "66b3a5c0e029fa4032e8b9a913bd9e74db95662678bd53f0361d7b46143989ad",
+    "c61901582438d937a3f179165f85c928458bf8ad3fb10244c51b23f0245d40e5"
    ],
    "subject_key": "treemartyr"
   },
@@ -908,6 +1190,9 @@
    "reserved": [
     "A"
    ],
+   "shownBase": [
+    "d19389d0a0cb554922ab0e883979b49668bf47a1243ea836aa3fe36f8cfa9abd"
+   ],
    "subject_key": "tsevrix"
   },
   "RM_TwistingThornwood": {
@@ -924,13 +1209,17 @@
     "B": "Things/Plant/RM_TwistingThornwood"
    },
    "labels": {
-    "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapfin_RM_TwistingThornwood_v1"
+    "A": "our deployed art \u2014 RimMandrake: Baroque Biomes",
+    "B": "IN GAME \u2014 random variant TwistingThornwood_a (1 of 1) \u2014 Cauldron"
    },
    "res": "Things/Plant/RM_TwistingThornwood",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "d92285d8adf2c75ae3f305b9e080e09645e079db354af088ca42c8ef44b9b26c",
+    "e5fafd127835482fd4b50ff356befd1475383a7fac90e9b3c7b20ccbf07285dd"
    ],
    "subject_key": "twistingthornwood"
   },
@@ -960,6 +1249,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "4e1cb10541d63a2586631cfb334427cd32fa75e9df2c99c31b0f9c4af51ae7c4",
+    "4e54b01f0d001615f67a1d483b9f538982c74f2dd7727ebed5db634181072671",
+    "527e2e609dbb5e5612a08701c0f0af1a934a7a222b6f0017a236e70fbda41a78",
+    "bffe8fadce49725788be47da27f00789b0614986a3e7f1566a55326e09c0f7bb",
+    "c29c7ef46e3f96095e7a463eef8e3a8a18911dbd7ed22520ae15fdd060493c5f",
+    "d67349764a8a49aaebb9baae1fa3679406f3a93c1641de18f9d4a4b070bdfe07"
+   ],
    "subject_key": "vexxiss"
   },
   "RM_Xithess": {
@@ -977,6 +1274,9 @@
    "res": "Things/Plant/RM_Xithess/RM_Xithess_a",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "e30c4f7bdc04c80e10ffa4f14683ebe363cf751218eaf7c9effeb02c8d7d2616"
    ],
    "subject_key": "xithess"
   },
@@ -997,6 +1297,11 @@
    "res": "Things/Pawn/Animal/RM_Zisska/RM_Zisska",
    "reserved": [
     "A"
+   ],
+   "shownBase": [
+    "420b1bc1455e0613b65b478584ed4e5c0f88cf4df75215bcc1a5b031f116e8b2",
+    "52a8914db58a3ab19ee5e7cb8e484ac2fd53e44470bd353c3b6b957b2d477e5c",
+    "6d00d06806209611fbe24dcb7637f714548a7b6a2f2570d0ce386f894091edaa"
    ],
    "subject_key": "zisska"
   },
@@ -1034,6 +1339,17 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "14dcdb69251f771c28241ab92fb30246c32c76563b9aac3951899bc57f4f7bc7",
+    "226c1db71e7b9c8cbfe507be3dd0feaf6dfb9932a2b6c3a88038bc4d3d8e317d",
+    "579795a019c1ea1695578c69ae4ed7c3816ef79032d5de956b7707a2bde955e1",
+    "705da5a1d8988980f1d0ecd3f353c6334a972e2a0af00a4db3a2e60bcea3383e",
+    "7747115f8394efe5e565598413958477107bb86844595ace6766ad68423bf365",
+    "ab103e9b3a0ed6e852e84ca64344b166f7cae4e04d9b592613b8e52301b7ec35",
+    "c1d2796520a1a2d887d53b53463c87d9ee170b06e43592283d7956e6e5a9694d",
+    "cae403ba359002e43bc61089bfa26b1155b6a7f6aad89b62d4a7cfb23baea7ea",
+    "ed17f9f93180fffdf1aa0e15204ab5344d7c18cba004305bdb031a7a44032f0a"
+   ],
    "subject_key": "graniteslug"
   },
   "RSW_Lylek": {
@@ -1042,25 +1358,26 @@
      "east": "30ea952a4c20db6a1d5cc5f49366ef5bb14444ea38cea9ddff3899e6dcec599b",
      "north": "f9e1fe30b8821babaf01a4637de11df60fa318a4a8fb6554226ab6fdfd4abf32",
      "south": "c135525886b3e3a29cbb60236b61a747ae58999119179236f6259450af84efcf"
-    },
-    "B": {
-     "east": "7586a95880e328662548de31c764b8bbe05da39955f8892f39d7cc53caf185c1",
-     "north": "14da01de98dbfa21ff89df2eaa9553fdb429dc72680d3a7f44031c4664922220",
-     "south": "7e7ad3fc5e0485eed5985e981270ef093f180a7bc7fd29f0cb2c0f2f57336196"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Lylek/Lylek",
-    "B": "swanimals/Lylek/Lylek"
+    "A": "swanimals/Lylek/Lylek"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary",
-    "B": "history SWBestiary 2026-09-17"
+    "A": "IN GAME \u2014 SWBestiary"
    },
    "res": "swanimals/Lylek/Lylek",
    "reserved": [
     "A",
     "B"
+   ],
+   "shownBase": [
+    "14da01de98dbfa21ff89df2eaa9553fdb429dc72680d3a7f44031c4664922220",
+    "30ea952a4c20db6a1d5cc5f49366ef5bb14444ea38cea9ddff3899e6dcec599b",
+    "7586a95880e328662548de31c764b8bbe05da39955f8892f39d7cc53caf185c1",
+    "7e7ad3fc5e0485eed5985e981270ef093f180a7bc7fd29f0cb2c0f2f57336196",
+    "c135525886b3e3a29cbb60236b61a747ae58999119179236f6259450af84efcf",
+    "f9e1fe30b8821babaf01a4637de11df60fa318a4a8fb6554226ab6fdfd4abf32"
    ],
    "subject_key": "lylek"
   },
@@ -1087,6 +1404,11 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "1597dc451316c23807ed8fbec59dd73cb7e450e58dd67e368be615393823c1b5",
+    "67d410678f11cc27ff3172f4159f7400c40bbbaf08d7e1fb1c033ff8732da747",
+    "ae0b6deb62174d47fc6acc1c76cfb543f3d64a2e11effa1ee04b2c803c439eb5"
+   ],
    "subject_key": "mynock"
   },
   "RSW_Neebray": {
@@ -1110,25 +1432,50 @@
      "4_north": "a3902f829ec722c7c2a8497cdd1463c596f5b27daeee0e6d0b75417f5cf100a9",
      "4_south": "96e821fca416fa241c828624e9f3f0ae64c58b80fdb03f4f7a8ca4f9ff2bea3f"
     },
-    "C": {
-     "east": "0d49459b2320aa52c322a12f4ac96e769ef8f6823646d59cc2b6fda019a02a37"
+    "D": {
+     "east": "0d49459b2320aa52c322a12f4ac96e769ef8f6823646d59cc2b6fda019a02a37",
+     "north": "b379a9c47215ff85d2e15a190586f89f2103870139e2f015a706b3ec12fcf719",
+     "south": "4ffd4ed14037839a522b505c3c247f05d83faff47d7baf39959205a6d96b2e9d"
+    },
+    "E": {
+     "east": "3fbc68e68031cb909825fc8d4c2bd3ff8f1ddc498c1ee1e910454a755b2684f3",
+     "north": "5b434bde0eb5cd44b6ae75d14deeefe1cfc005211c1ffcbe9336a3953e909cd2",
+     "south": "0075abf2ba7ef4784b62348c2f019863997ddbc6382cafa736bfb1edecf6f506"
     }
    },
    "graphic_of": {
     "A": "swanimals/Neebray/Neebray",
     "B": "_flip:swanimals/Neebray/Neebray_Flying_",
-    "C": "swanimals/Neebray/Neebray"
+    "D": "swanimals/Neebray/Neebray",
+    "E": "swanimals/Neebray/Neebray"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
     "B": "IN GAME \u2014 Neebray_Flying_",
-    "C": "render enact_cabe4675_neebray_v1"
+    "D": "render enact_cabe4675_neebray_v1",
+    "E": "render cauldronfix_neebray_v2"
    },
    "res": "swanimals/Neebray/Neebray",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [
+    "31abfd6f66b85c947b5093bdc1cfdc0fbd98fc58313744d3514c03bdbbf600d2",
+    "49a3a4638e930c5474dfa4ade7fe68fd0481328aadb00b36093ae7fc42f63910",
+    "4dc2530034706a30ab520a5362fbe64f17fbefa6bb65886a5ee2507b129adcd7",
+    "7459ebd4694cfe0fe527fe48b0f1691474b6d01057a317f2448e27e1b29fe356",
+    "96e821fca416fa241c828624e9f3f0ae64c58b80fdb03f4f7a8ca4f9ff2bea3f",
+    "9af38d3cb719c83277c9191da79217d6ebe2382cae9d6c244de821460dc121b2",
+    "a1ae360a16d40e920d01419b511aee3b0ed9557e1f6931d0dec0adbffe6036f4",
+    "a3902f829ec722c7c2a8497cdd1463c596f5b27daeee0e6d0b75417f5cf100a9",
+    "c1f208605bd6294528e63d04c8554ca0471bc1dec78f0b9a70979d1c950d33f8",
+    "d579a48c4fdfa24ee93241b781544f38fb43d50f4f5782a931969d0a22c3d14e",
+    "d9a29a8ebb4f7898cfd9a816290462e0c40fee5dea62e917dafbb31b0781fd11",
+    "e3fdbe782458a6f6bb618542f26321039104cd174eecb942ea74fb706efe4fb3"
    ],
    "subject_key": "neebray"
   },
@@ -1166,6 +1513,17 @@
     "B",
     "C"
    ],
+   "shownBase": [
+    "0907a668426b54cbcee1e0cacf2889339b6f1abc7a3783179475dac3ee15af96",
+    "30cb690ac5a38186a3b7ccc95497a40ffca12e2216f75ef38e187bd13171864f",
+    "329ba0809e745b9e153383d6c9360f4e1127c7088bc31d5f784e8e842bb4f020",
+    "37e661b2c97cef6401128e3d875f8e2c3a77679ec272ac975a5d19a4ee5d022e",
+    "4350b5daca9bda496cf78865b547bd80c594a8d8888d27741f5b67b366a38ae1",
+    "7a4295d1173e17636d561a7b20829387971b813984b7e72f39939415e6df38cc",
+    "aa1c394b6c20be424ce98dc0d0466790dd2847e44bfa0aab5e555067387d7f02",
+    "ab46fe0c651e32f57c146d940e2f44815d3f6d83498cf0910364f431467288fd",
+    "bc5d3fb176422bd6aaa618d0f679d29544c2ae0d789da4c54cf2f5dab6179246"
+   ],
    "subject_key": "screecher"
   },
   "RSW_Skalder": {
@@ -1194,6 +1552,14 @@
     "A",
     "B"
    ],
+   "shownBase": [
+    "086e7012ec781f65a10c4a0267bc6d72d855f8ae77c477ee025e22b5d044613e",
+    "14213f8c0e6379029bcc89c43707ee81f24787ada799c55914e399f3729a6a65",
+    "6450b7aeedbfbb4bb83ae79b35d13740e4bd9e1db8f1ccd39f112221617f2c15",
+    "8a522d27100ccd11fe0d7d0cef53d650f7864087fc01933f71fc86753c9e0698",
+    "8f631848c120023acff8586cff3b792f137d95a71f6f9f7547ebe5288b946d87",
+    "91578cd65de4259e1b5bc0916a045069dbc063b28ac48f320f48497c35594de6"
+   ],
    "subject_key": "skalder"
   },
   "RSW_VentStalker": {
@@ -1218,7 +1584,7 @@
     "C": "swanimals/Kinrath/Kinrath"
    },
    "labels": {
-    "A": "IN GAME \u2014 KinrathArtOverride",
+    "A": "render regen_gt_canon_kinrath_v1",
     "B": "render kinrath_netcaster_v2",
     "C": "render kinrath_netcaster_v3"
    },
@@ -1228,6 +1594,18 @@
     "B",
     "C",
     "D"
+   ],
+   "shownBase": [
+    "0acf8db94c0d1bbe99a7f65514195706be71a256798cc1f5cc679fcd29c56580",
+    "478166e4e7ce77b5afb665777dd37ea4dd38236f7b4306f4064900baa5052334",
+    "4b122f0c7957b34fceb768dcd3647aebcab4f1226e03cadb34e1e69e9d52dd7f",
+    "65780bcefaf9011096f1f4a3615e5fe33e0a972beea836f9c874e41a84a554d3",
+    "7b329492a519dcae0883542e0619fd0ece1b5799807e50b04b111d962f2ecca5",
+    "8c84187972efc3016ac993d1ffe1bbf3202a14b63af89be64184060ee369e7e5",
+    "8f71ade410e925b9202fac04dba832272f80e5f8b92e4e5d84d1cc3ee17685e2",
+    "9a89a904bff14d577e843ae5f2c77a26ce17e9cd73534917dccd8e13e40cab8e",
+    "bef5081ec5f93526632eef147fad04cab129990b76fe641edc141d57ea8a2c41",
+    "e2a32b171d67d4bfc9a52f9be012764d42ccbdae2353d5e3938483339ca54368"
    ],
    "subject_key": "ventstalker"
   },
@@ -1248,28 +1626,80 @@
      "north": "d6b2d941d5b6270750f9f2fd77bcaddae96f08393e6780e2356691f6ad4055cf",
      "south": "ee548abc64e34a583295b675d8b882fe1a2b097acf02a8bc5cd5ab816f3c1ccf"
     },
-    "D": {
-     "east": "f37125db3a04bec19684ccb9de1b6b2e7818669ed13adbcd5a3f63cee4e8f6c5"
+    "E": {
+     "east": "f37125db3a04bec19684ccb9de1b6b2e7818669ed13adbcd5a3f63cee4e8f6c5",
+     "north": "209a404f0eedf64d73c25f7f126f51f25fea2a6c049f225b733de2224874aff3",
+     "south": "1ca98a94ea0318c3ad6b5e865f3ca5846193d63bd8c430e0fe642ef476a06846"
+    },
+    "F": {
+     "east": "7f7a8260f125ee3bda4cf404193fb8df4e138f4313ee4acecd224351519c9a0d"
+    },
+    "G": {
+     "east": "daa8f55220a1b9598b2731e4986b9cf7f920f79701dffe207d2b9cae790ae28d"
+    },
+    "H": {
+     "east": "c35c544c87ebce82cfefcde067dd2b4319ee9030a70659922f67f48090ff93d9",
+     "north": "a358803f61660a4b0bd5741066d0b8757b46469e980d2086f830b64f63dea40f",
+     "south": "7a567e48adff5d609d2bdc6c0695214cefda6102aec9404ad916c4e2679626ea"
+    },
+    "I": {
+     "east": "47e4a579b26b49f8b90c02eecb85ee361655b1192a2e731a0f095792f6ac1eb0"
+    },
+    "J": {
+     "east": "8060dfb806bdeb6d646be91703f5085b4716a96ae6f600460a883487dad101fa"
+    },
+    "K": {
+     "east": "90e21a2a9ba21b537231e1cddf88ef64faa50c6fb690a9592d0b1b292778d821"
     }
    },
    "graphic_of": {
     "A": "swanimals/Silooth/Silooth",
     "B": "swanimals/Silooth/Silooth",
     "C": "swanimals/Silooth/Silooth_j",
-    "D": "swanimals/Silooth/Silooth"
+    "E": "swanimals/Silooth/Silooth",
+    "F": "swanimals/Silooth/Silooth",
+    "G": "swanimals/Silooth/Silooth",
+    "H": "swanimals/Silooth/Silooth",
+    "I": "swanimals/Silooth/Silooth",
+    "J": "swanimals/Silooth/Silooth",
+    "K": "swanimals/Silooth/Silooth"
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.starwarsanimalcollection",
     "B": "render gapall_Silooth_v1",
     "C": "IN GAME \u2014 mlie.starwarsanimalcollection",
-    "D": "render enact_7a2b5db5_silooth_v1"
+    "E": "render enact_7a2b5db5_silooth_v1",
+    "F": "render cauldronfix_silooth_v5 \u2014 failed canon check",
+    "G": "render cauldronfix_silooth_v5b",
+    "H": "render cauldronfix_silooth_v6",
+    "I": "render cauldronfix_silooth_v2",
+    "J": "render cauldronfix_silooth_v3",
+    "K": "render cauldronfix_silooth_v4"
    },
    "res": "swanimals/Silooth/Silooth",
    "reserved": [
     "A",
     "B",
     "C",
-    "D"
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K"
+   ],
+   "shownBase": [
+    "0f73e9092f41ee7beac27c033f2fbb3968a4c041438f872e682cecc713be7252",
+    "11c9cd19d650a6c5df76d30022154573bfd4f8c2eda6b191e44b2fcb83b4a5a8",
+    "2197f6d30fa69035d0005acb6c3e8e3742df0a68a48b1008faad81c166023da2",
+    "3614c4d699690864f47a0f962ce2a0445db5d3d41776c42f34588709590485ed",
+    "ac97423b5a3b6aa554e2f7617cf09d900f7ec52d4a29c92470e92df448b3fe3f",
+    "b6d1908ee08d6493e2a987774ae41a33bef617b9b65dd5f04862f7649d189b8a",
+    "c095c2f5b2b02888cfb664d4a297c0fe2bf50026f4725e12bde242b74262c5cf",
+    "d6b2d941d5b6270750f9f2fd77bcaddae96f08393e6780e2356691f6ad4055cf",
+    "ee548abc64e34a583295b675d8b882fe1a2b097acf02a8bc5cd5ab816f3c1ccf"
    ],
    "subject_key": "silooth"
   },
@@ -1304,7 +1734,7 @@
    },
    "labels": {
     "A": "IN GAME \u2014 mlie.horrors",
-    "B": "shipped, not loaded \u2014 VisceralArtOverride",
+    "B": "render gapall_Visceral_v1",
     "C": "IN GAME \u2014 mlie.horrors",
     "D": "IN GAME \u2014 mlie.horrors"
    },
@@ -1315,9 +1745,23 @@
     "C",
     "D"
    ],
+   "shownBase": [
+    "087d730e92380879a935209343f2a09c418cf3732a37b3e63f226a037ce63b73",
+    "0ca7cfe2b679b5c5dba0a2de8fc8f6ce93ccd9379dfa290663e1df0d52bcd57e",
+    "1f6a6687379edfb7d869d053227d0fe1a580964add4fc9a823d0cd9400cf112a",
+    "247c45e65286d1c1e177ab368bf4b3ef9b6346878659df117b828a9a4e514066",
+    "4a5e7cc324b3f2d5bd2ea647fd17118a3d45641c47773900ab17e5929927bd5a",
+    "5ed9d2ac34a60f0acf5a65137c922848d7d9f5ea1c0ea5e54c0ab0854b49bf5e",
+    "67fd185ae37de3610c272a4c6d84d3f2cf53a909899a18da6795371da153bc65",
+    "a3cfe63bb45f46ddf53d73f7b846e72cc3eea522e150d01f3c355c61394d9763",
+    "b5bee4c7ca5cb0fa3006ddc3a10bdf15f35413aa12b3763401b389ea164a0501",
+    "dd2c10d78f62905230a5d5b5fa3e52450e7b607febd0959cd6edb72e8d8189b6",
+    "e3af7da6b94634b659bfb888425fea05e8607ef8f6f8d83487f5cfe9dd43478d",
+    "e8fb3cb25cf7446023c704f966531f852cb8852a482d8e922d838d77ee9e63b1"
+   ],
    "subject_key": "visceral"
   }
  },
  "sheetId": "cauldron_sheet_2026-10-04",
- "snapshotId": "e949b3f6e0e3427d"
+ "snapshotId": "ec36930b8fc0755a"
 }
