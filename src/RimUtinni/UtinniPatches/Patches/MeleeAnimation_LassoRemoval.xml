@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- LASSO_CHERRYPICKER_REMOVAL_1. Owner, typed, 2026-10-01: "Remove lasso's from the game, but keep this"
+       (the capstan turret). Melee Animation (co.uk.epicguru.meleeanimation) stays installed for its animations.
+
+       Mechanism (bridge5 2026-10-09 A3 FAIL): every Make_AM_Lasso* RecipeDef is an IMPLIED def, generated
+       from the ThingDef's <recipeMaker> by the engine's def generator before Cherry Picker runs. Cutting the
+       ThingDef in Cherry Picker strips the recipeMaker's recipeUsers but leaves the already-generated RecipeDef
+       with its own recipeUsers [ElectricTailoringBench, HandTailoringBench], and the live CP list does not cut
+       the RecipeDefs at all. No other installed mod references AM_Lasso* (swept 2026-10-09), so nothing re-adds
+       them: the recipe comes from Melee Animation's own recipeMaker.
+
+       Fix at the source: remove <recipeMaker> from the abstract parent AND every child before inheritance and
+       implied-def generation, so no lasso recipe is ever generated, whatever the Cherry Picker list says.
+       (Removing it from the parent alone would not do: each child carries its own <recipeMaker> holding
+       skillRequirements, which still yields a recipe after inheritance.) Spawning on pawns is the mod's C#
+       roll, gated by its LassoSpawnChance setting - not reachable from XML; see the item. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Melee Animation</li>
+    </mods>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/ThingDef[@Name="AM_LassoBaseMakeable" or @ParentName="AM_LassoBaseMakeable"]/recipeMaker</xpath>
+    </match>
+  </Operation>
+</Patch>
