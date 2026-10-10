@@ -981,6 +981,9 @@ MODS = {
         "Fang pendant social consequence": "Now",
         "Opinion magnitude": "Now",
     }, ()),
+    "WildsteamEggBounty": ("WildsteamEggBountySettings.cs", "RimMandrake.Utinni.WildsteamEggBounty.csproj", {
+        "Wildsteam egg bounty quest": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
