@@ -47,6 +47,8 @@
     <Compile Include="Kernel\RM_VerminKernel.cs" />
     <Compile Include="RM_Alert_ShipVermin.cs" />
     <Compile Include="RM_ShipVerminMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_CompProperties_VerminNest.cs" />
     <Compile Include="RM_CompVerminNest.cs" />
     <Compile Include="Debug\RM_ShipVerminDebugActions.cs" />
