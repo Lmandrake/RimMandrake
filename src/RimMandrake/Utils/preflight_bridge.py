@@ -223,7 +223,8 @@ def c_bridge_lease(ctx):
         return UNM('cannot read %s' % BRIDGE_FILE)
     if line.startswith('FREE'):
         return PASS(line + (' -- take it before launching: rimflow bridge take --for "<what>"' if not ctx['live'] else ''))
-    holder = line.split()[0]
+    parts = line.split()
+    holder = parts[1] if parts[0].upper() == 'HELD' and len(parts) > 1 else parts[0]
     if holder.upper().startswith(ctx['seat'].upper()):
         return PASS('held by this seat: ' + line)
     return FAIL('held by another seat: %s (rimflow bridge who; do offline work)' % line)
