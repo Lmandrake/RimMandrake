@@ -974,6 +974,9 @@ MODS = {
         "Memory-Core reveal": "Now",
         "Bioferrite stockpile trigger": "Now",
     }, ()),
+    "ShokkweaveEconomy": ("ShokkweaveEconomySettings.cs", "RimMandrake.Utinni.ShokkweaveEconomy.csproj", {
+        "Webwork silk nodes (WORLDGEN-AFFECTING)": "NewMapsOnly",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
