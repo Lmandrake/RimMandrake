@@ -519,7 +519,7 @@ namespace RimMandrake.CreatureBehaviors
 
         /// <summary>Group header (click to collapse), then the "Used by" line and effect scope, then a reset button. Returns
         /// whether the controls should draw. A search matches the group title or any of its setting names.</summary>
-        private static bool Group(Listing_Standard list, string title, string[] names, string[] keywords)
+        private static bool Group(Listing_Standard list, string title, string[] names, string[] keywords, RimMandrake.Shared.SettingScope scope = RimMandrake.Shared.SettingScope.Now)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
             if (searching)
@@ -540,9 +540,10 @@ namespace RimMandrake.CreatureBehaviors
             string who = keywords.Length == 0 ? "Used by: a map-wide message, no creature def"
                        : users.Count == 0 ? "Used by: no loaded def uses this right now"
                        : "Used by " + users.Count + " loaded def" + (users.Count == 1 ? "" : "s") + " (hover to list)";
-            // PROVISIONAL: every group reads its toggles live each pulse/tick, so a change applies at once to what is on the map;
-            // not yet audited per mechanic against the source (CREATURE_BEHAVIORS_SETTINGS_SCREEN_1 owes that).
-            list.Label((string)(who + "   " + RimMandrake.Shared.SettingsKitCore.ScopeTag(RimMandrake.Shared.SettingScope.Now)),
+            // Scope AUDITED per group against the source (2026-10-10): every setting is read where it acts, on a tick, a job or an
+            // event, so [now] is true for all groups but Sun heat. Sun heat's grid-derived settings (exposure, glare, path cost,
+            // heat kind) are baked by RM_MapComponent_ShadeGrid.Recompute every 2000 ticks (~33 s), hence [next pulse].
+            list.Label((string)(who + "   " + RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)),
                 -1f, users.Count == 0 ? (TipSignal?)null : new TipSignal(string.Join(", ", users.Take(40)) + (users.Count > 40 ? ", ..." : "")));
             RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
             return true;
@@ -1024,7 +1025,7 @@ namespace RimMandrake.CreatureBehaviors
                   + "creatures hostile to them, so wild prey is ignored.");
                 list.GapLine();
             }
-            if (Group(list, "Sun heat", new[] { "sunHeatEnabled", "sunHeatStrength", "directionalShadeEnabled", "sunPathingEnabled", "sunPathCostMultiplier", "sunLoadBarEnabled", "shadeHopEnabled", "shadeHopRangeMultiplier", "dashRingEnabled", "heatSoundscapeEnabled", "heatSoundscapeVolume", "creatureHeatSoundsEnabled", "kindFromElevationEnabled", "sandGlareEnabled", "sandGlareStrength", "glareBlindEnabled", "glareBlindRateMultiplier", "mirageEnabled", "mirageBreakChanceMultiplier" }, new[] { "SunHeat", "SunDash", "HeatSoundscape", "GlareProtection", "Footfalls" }))
+            if (Group(list, "Sun heat", new[] { "sunHeatEnabled", "sunHeatStrength", "directionalShadeEnabled", "sunPathingEnabled", "sunPathCostMultiplier", "sunLoadBarEnabled", "shadeHopEnabled", "shadeHopRangeMultiplier", "dashRingEnabled", "heatSoundscapeEnabled", "heatSoundscapeVolume", "creatureHeatSoundsEnabled", "kindFromElevationEnabled", "sandGlareEnabled", "sandGlareStrength", "glareBlindEnabled", "glareBlindRateMultiplier", "mirageEnabled", "mirageBreakChanceMultiplier" }, new[] { "SunHeat", "SunDash", "HeatSoundscape", "GlareProtection", "Footfalls" }, RimMandrake.Shared.SettingScope.NextPulse))
             {
                 list.Label("Sun heat — only on biomes built with it (the Long Shade, the deep desert, "
                          + "and the steam and volcanic lands). Everywhere else nothing changes.");
