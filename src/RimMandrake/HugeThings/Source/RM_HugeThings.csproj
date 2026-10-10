@@ -49,6 +49,8 @@
     <Compile Include="HugeThingsCore.cs" />
     <Compile Include="MapComponent_HugeFootprints.cs" />
     <Compile Include="RM_HugeThingsSettings.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <!-- the titan half, merged from Titanic Creatures 2026-10-07: namespace RimMandrake.TitanicCreatures kept (saves name its types) -->
     <Compile Include="Titanic\CorpseSite\Building_TitanicCorpseSite.cs" />
     <Compile Include="Titanic\CorpseSite\JobDriver_HarvestTitanicCorpse.cs" />

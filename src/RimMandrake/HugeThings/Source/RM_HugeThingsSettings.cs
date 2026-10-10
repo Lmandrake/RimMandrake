@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 using RimMandrake.TitanicCreatures;
@@ -126,7 +128,6 @@ namespace RimMandrake.HugeThings
 
         private static Vector2 settingsScroll;
         private static float settingsViewHeight = 1600f;
-        private const float Indent = 24f;
 
         public void DoWindowContents(Rect inRect)
         {
@@ -135,106 +136,190 @@ namespace RimMandrake.HugeThings
             Widgets.BeginScrollView(inRect, ref settingsScroll, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
 
             // HUGETHINGS_SETTINGS_HARDENING_1 (A2.7 / D1.5): every string is keyed in Languages/English/Keyed/RM_HugeThings.xml.
-            // ===== Giant plants =====
-            Text.Font = GameFont.Medium;
-            list.Label("RM_HugeThings_GiantPlants".Translate());
-            Text.Font = GameFont.Small;
-            list.CheckboxLabeled("RM_HugeThings_GiantPlantsEnabled".Translate(), ref giantPlantsEnabled, "RM_HugeThings_GiantPlantsEnabled_Desc".Translate());
-            if (giantPlantsEnabled)
+            if (Group(list, "Giant plants", RimMandrake.Shared.SettingScope.Now, new[] { "giantPlantsEnabled", "plantTrunkEnabled", "plantSelectionEnabled", "plantTrunkScale", "plantTrunkDamageEnabled", "plantItemPushEnabled" }))
             {
-                list.Indent(Indent);
-                list.ColumnWidth -= Indent;
-                list.CheckboxLabeled("RM_HugeThings_PlantTrunk".Translate(), ref plantTrunkEnabled, "RM_HugeThings_PlantTrunk_Desc".Translate());
-                if (plantTrunkEnabled)
+                list.CheckboxLabeled("RM_HugeThings_GiantPlantsEnabled".Translate(), ref giantPlantsEnabled, "RM_HugeThings_GiantPlantsEnabled_Desc".Translate());
+                if (giantPlantsEnabled)
                 {
-                    list.Label("RM_HugeThings_PlantTrunkScale".Translate(plantTrunkScale.ToString("0.00")));
-                    plantTrunkScale = list.Slider(plantTrunkScale, 0.5f, MaxTrunkScale);
-                    list.CheckboxLabeled("RM_HugeThings_PlantTrunkDamage".Translate(), ref plantTrunkDamageEnabled, "RM_HugeThings_PlantTrunkDamage_Desc".Translate());
-                    list.CheckboxLabeled("RM_HugeThings_PlantItemPush".Translate(), ref plantItemPushEnabled, "RM_HugeThings_PlantItemPush_Desc".Translate());
-                }
-                list.CheckboxLabeled("RM_HugeThings_PlantSelection".Translate(), ref plantSelectionEnabled, "RM_HugeThings_PlantSelection_Desc".Translate());
-                list.ColumnWidth += Indent;
-                list.Outdent(Indent);
-            }
-            list.GapLine();
-
-            // ===== Giant animals =====
-            Text.Font = GameFont.Medium;
-            list.Label("RM_HugeThings_GiantAnimals".Translate());
-            Text.Font = GameFont.Small;
-            list.CheckboxLabeled("RM_HugeThings_GiantAnimalsEnabled".Translate(), ref giantAnimalsEnabled, "RM_HugeThings_GiantAnimalsEnabled_Desc".Translate());
-            if (giantAnimalsEnabled)
-            {
-                list.Indent(Indent);
-                list.ColumnWidth -= Indent;
-                list.CheckboxLabeled("RM_HugeThings_PawnHitbox".Translate(), ref pawnHitboxEnabled, "RM_HugeThings_PawnHitbox_Desc".Translate());
-                if (pawnHitboxEnabled)
-                {
-                    list.Label("RM_HugeThings_PawnHitboxScale".Translate(pawnHitboxScale.ToString("0.00")));
-                    pawnHitboxScale = list.Slider(pawnHitboxScale, 0.5f, MaxTrunkScale);
-                }
-                list.CheckboxLabeled("RM_HugeThings_LargePawnsFootprint".Translate(), ref largePawnsFootprintEnabled, "RM_HugeThings_LargePawnsFootprint_Desc".Translate());
-                if (largePawnsFootprintEnabled)
-                    list.CheckboxLabeled("RM_HugeThings_LargePawnsClearingOff".Translate(), ref largePawnsClearingOff, "RM_HugeThings_LargePawnsClearingOff_Desc".Translate());
-                list.CheckboxLabeled("RM_HugeThings_TierCustom".Translate(), ref tierThresholdsCustom, "RM_HugeThings_TierCustom_Desc".Translate());
-                if (tierThresholdsCustom)
-                {
-                    list.Label("RM_HugeThings_TierT1".Translate(tierT1MinBodySize.ToString("0.0")));
-                    tierT1MinBodySize = list.Slider(tierT1MinBodySize, 1f, 30f);
-                    list.Label("RM_HugeThings_TierT2".Translate(tierT2MinBodySize.ToString("0.0")));
-                    tierT2MinBodySize = list.Slider(tierT2MinBodySize, 2f, 60f);
-                    list.Label("RM_HugeThings_TierT3".Translate(tierT3MinBodySize.ToString("0.0")));
-                    tierT3MinBodySize = list.Slider(tierT3MinBodySize, 3f, 100f);
-                    if (!RM_TitanicKernel.ThresholdsValid(tierT1MinBodySize, tierT2MinBodySize, tierT3MinBodySize))
-                        list.Label("RM_HugeThings_TierInvalid".Translate());
-                }
-                list.CheckboxLabeled("RM_HugeThings_Wake".Translate(), ref wakeEnabled, "RM_HugeThings_Wake_Desc".Translate());
-                if (wakeEnabled)
-                {
-                    list.Label("RM_HugeThings_WakeDamage".Translate(wakeCrushDamageMultiplier.ToString("0.00")));
-                    wakeCrushDamageMultiplier = list.Slider(wakeCrushDamageMultiplier, 0.25f, 3f);
-                    // B4.6: the roll is made once per footprint cell entered, not once per step.
-                    list.Label("RM_HugeThings_WakeRubble".Translate((wakeFilthTrailChance * 100f).ToString("0")));
-                    wakeFilthTrailChance = list.Slider(wakeFilthTrailChance, 0f, 1f);
-                    list.CheckboxLabeled("RM_HugeThings_WakeRoof".Translate(), ref wakeRoofHolingEnabled, "RM_HugeThings_WakeRoof_Desc".Translate());
-                    list.CheckboxLabeled("RM_HugeThings_Smash".Translate(), ref giantPlantSmashEnabled, "RM_HugeThings_Smash_Desc".Translate());
-                    if (giantPlantSmashEnabled)
+                    list.CheckboxLabeled("RM_HugeThings_PlantTrunk".Translate(), ref plantTrunkEnabled, "RM_HugeThings_PlantTrunk_Desc".Translate());
+                    if (plantTrunkEnabled)
                     {
-                        list.Label("RM_HugeThings_SmashTier".Translate(giantPlantSmashMinTier.ToString()));
-                        giantPlantSmashMinTier = Mathf.Clamp(Mathf.RoundToInt(list.Slider(giantPlantSmashMinTier, 1f, 3f)), 1, 3);
+                        list.Label("RM_HugeThings_PlantTrunkScale".Translate(plantTrunkScale.ToString("0.00")));
+                        plantTrunkScale = list.Slider(plantTrunkScale, 0.5f, MaxTrunkScale);
+                        list.CheckboxLabeled("RM_HugeThings_PlantTrunkDamage".Translate(), ref plantTrunkDamageEnabled, "RM_HugeThings_PlantTrunkDamage_Desc".Translate());
+                        list.CheckboxLabeled("RM_HugeThings_PlantItemPush".Translate(), ref plantItemPushEnabled, "RM_HugeThings_PlantItemPush_Desc".Translate());
+                    }
+                    list.CheckboxLabeled("RM_HugeThings_PlantSelection".Translate(), ref plantSelectionEnabled, "RM_HugeThings_PlantSelection_Desc".Translate());
+                }
+                list.GapLine();
+            }
+
+            if (Group(list, "Giant animals: hitbox and roofs", RimMandrake.Shared.SettingScope.Now, new[] { "giantAnimalsEnabled", "pawnHitboxEnabled", "pawnHitboxScale", "roofAvoidanceEnabled" }))
+            {
+                list.CheckboxLabeled("RM_HugeThings_GiantAnimalsEnabled".Translate(), ref giantAnimalsEnabled, "RM_HugeThings_GiantAnimalsEnabled_Desc".Translate());
+                if (giantAnimalsEnabled)
+                {
+                    list.CheckboxLabeled("RM_HugeThings_PawnHitbox".Translate(), ref pawnHitboxEnabled, "RM_HugeThings_PawnHitbox_Desc".Translate());
+                    if (pawnHitboxEnabled)
+                    {
+                        list.Label("RM_HugeThings_PawnHitboxScale".Translate(pawnHitboxScale.ToString("0.00")));
+                        pawnHitboxScale = list.Slider(pawnHitboxScale, 0.5f, MaxTrunkScale);
+                    }
+                    list.CheckboxLabeled("RM_HugeThings_RoofAvoid".Translate(), ref roofAvoidanceEnabled, "RM_HugeThings_RoofAvoid_Desc".Translate());
+                }
+                list.GapLine();
+            }
+
+            if (Group(list, "Large Pawns footprint and custom size tiers", RimMandrake.Shared.SettingScope.Now, new[] { "largePawnsFootprintEnabled", "largePawnsClearingOff", "tierThresholdsCustom", "tierT1MinBodySize", "tierT2MinBodySize", "tierT3MinBodySize" }, "[next game start]"))
+            {
+                if (giantAnimalsEnabled)
+                {
+                    list.CheckboxLabeled("RM_HugeThings_LargePawnsFootprint".Translate(), ref largePawnsFootprintEnabled, "RM_HugeThings_LargePawnsFootprint_Desc".Translate());
+                    if (largePawnsFootprintEnabled)
+                        list.CheckboxLabeled("RM_HugeThings_LargePawnsClearingOff".Translate(), ref largePawnsClearingOff, "RM_HugeThings_LargePawnsClearingOff_Desc".Translate());
+                    list.CheckboxLabeled("RM_HugeThings_TierCustom".Translate(), ref tierThresholdsCustom, "RM_HugeThings_TierCustom_Desc".Translate());
+                    if (tierThresholdsCustom)
+                    {
+                        list.Label("RM_HugeThings_TierT1".Translate(tierT1MinBodySize.ToString("0.0")));
+                        tierT1MinBodySize = list.Slider(tierT1MinBodySize, 1f, 30f);
+                        list.Label("RM_HugeThings_TierT2".Translate(tierT2MinBodySize.ToString("0.0")));
+                        tierT2MinBodySize = list.Slider(tierT2MinBodySize, 2f, 60f);
+                        list.Label("RM_HugeThings_TierT3".Translate(tierT3MinBodySize.ToString("0.0")));
+                        tierT3MinBodySize = list.Slider(tierT3MinBodySize, 3f, 100f);
+                        if (!RM_TitanicKernel.ThresholdsValid(tierT1MinBodySize, tierT2MinBodySize, tierT3MinBodySize))
+                            list.Label("RM_HugeThings_TierInvalid".Translate());
                     }
                 }
-                list.CheckboxLabeled("RM_HugeThings_RoofAvoid".Translate(), ref roofAvoidanceEnabled, "RM_HugeThings_RoofAvoid_Desc".Translate());
-                list.CheckboxLabeled("RM_HugeThings_Yield".Translate(), ref yieldCurveEnabled, "RM_HugeThings_Yield_Desc".Translate());
-                if (yieldCurveEnabled)
+                else list.Label("Turn on giant animals to change these.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Wake and plant smashing", RimMandrake.Shared.SettingScope.Now, new[] { "wakeEnabled", "wakeCrushDamageMultiplier", "wakeFilthTrailChance", "wakeRoofHolingEnabled", "giantPlantSmashEnabled", "giantPlantSmashMinTier" }))
+            {
+                if (giantAnimalsEnabled)
                 {
-                    list.Label("RM_HugeThings_YieldFloor".Translate((yieldCurveMinFactor * 100f).ToString("0")));
-                    yieldCurveMinFactor = list.Slider(yieldCurveMinFactor, 0.05f, 1f);
+                    list.CheckboxLabeled("RM_HugeThings_Wake".Translate(), ref wakeEnabled, "RM_HugeThings_Wake_Desc".Translate());
+                    if (wakeEnabled)
+                    {
+                        list.Label("RM_HugeThings_WakeDamage".Translate(wakeCrushDamageMultiplier.ToString("0.00")));
+                        wakeCrushDamageMultiplier = list.Slider(wakeCrushDamageMultiplier, 0.25f, 3f);
+                        // B4.6: the roll is made once per footprint cell entered, not once per step.
+                        list.Label("RM_HugeThings_WakeRubble".Translate((wakeFilthTrailChance * 100f).ToString("0")));
+                        wakeFilthTrailChance = list.Slider(wakeFilthTrailChance, 0f, 1f);
+                        list.CheckboxLabeled("RM_HugeThings_WakeRoof".Translate(), ref wakeRoofHolingEnabled, "RM_HugeThings_WakeRoof_Desc".Translate());
+                        list.CheckboxLabeled("RM_HugeThings_Smash".Translate(), ref giantPlantSmashEnabled, "RM_HugeThings_Smash_Desc".Translate());
+                        if (giantPlantSmashEnabled)
+                        {
+                            list.Label("RM_HugeThings_SmashTier".Translate(giantPlantSmashMinTier.ToString()));
+                            giantPlantSmashMinTier = Mathf.Clamp(Mathf.RoundToInt(list.Slider(giantPlantSmashMinTier, 1f, 3f)), 1, 3);
+                        }
+                    }
                 }
-                list.CheckboxLabeled("RM_HugeThings_CorpseSite".Translate(), ref corpseSiteEnabled, "RM_HugeThings_CorpseSite_Desc".Translate());
-                if (corpseSiteEnabled)
+                else list.Label("Turn on giant animals to change these.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Yield curve", RimMandrake.Shared.SettingScope.Now, new[] { "yieldCurveEnabled", "yieldCurveMinFactor" }))
+            {
+                if (giantAnimalsEnabled)
                 {
-                    list.Label("RM_HugeThings_CorpseMeat".Translate(corpseSiteHarvestMeatPerSession.ToString()));
-                    corpseSiteHarvestMeatPerSession = (int)list.Slider(corpseSiteHarvestMeatPerSession, 5f, 100f);
-                    list.Label("RM_HugeThings_CorpseLeather".Translate(corpseSiteHarvestLeatherPerSession.ToString()));
-                    corpseSiteHarvestLeatherPerSession = (int)list.Slider(corpseSiteHarvestLeatherPerSession, 2f, 50f);
-                    list.Label("RM_HugeThings_CorpseHours".Translate(corpseSiteWorkHoursPerSession.ToString("0.0")));
-                    corpseSiteWorkHoursPerSession = list.Slider(corpseSiteWorkHoursPerSession, 0.25f, 6f);
-                    list.Label("RM_HugeThings_CorpseMeatSpoil".Translate((corpseSiteMeatSpoilagePerDay * 100f).ToString("0")));
-                    corpseSiteMeatSpoilagePerDay = list.Slider(corpseSiteMeatSpoilagePerDay, 0.02f, 0.5f);
-                    list.Label("RM_HugeThings_CorpseLeatherSpoil".Translate((corpseSiteLeatherSpoilagePerDay * 100f).ToString("0")));
-                    corpseSiteLeatherSpoilagePerDay = list.Slider(corpseSiteLeatherSpoilagePerDay, 0.02f, 0.5f);
+                    list.CheckboxLabeled("RM_HugeThings_Yield".Translate(), ref yieldCurveEnabled, "RM_HugeThings_Yield_Desc".Translate());
+                    if (yieldCurveEnabled)
+                    {
+                        list.Label("RM_HugeThings_YieldFloor".Translate((yieldCurveMinFactor * 100f).ToString("0")));
+                        yieldCurveMinFactor = list.Slider(yieldCurveMinFactor, 0.05f, 1f);
+                    }
                 }
-                list.ColumnWidth += Indent;
-                list.Outdent(Indent);
+                else list.Label("Turn on giant animals to change these.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Titanic corpse sites", RimMandrake.Shared.SettingScope.Now, new[] { "corpseSiteEnabled", "corpseSiteHarvestMeatPerSession", "corpseSiteHarvestLeatherPerSession", "corpseSiteMeatSpoilagePerDay", "corpseSiteLeatherSpoilagePerDay", "corpseSiteWorkHoursPerSession" }))
+            {
+                if (giantAnimalsEnabled)
+                {
+                    list.CheckboxLabeled("RM_HugeThings_CorpseSite".Translate(), ref corpseSiteEnabled, "RM_HugeThings_CorpseSite_Desc".Translate());
+                    if (corpseSiteEnabled)
+                    {
+                        list.Label("RM_HugeThings_CorpseMeat".Translate(corpseSiteHarvestMeatPerSession.ToString()));
+                        corpseSiteHarvestMeatPerSession = (int)list.Slider(corpseSiteHarvestMeatPerSession, 5f, 100f);
+                        list.Label("RM_HugeThings_CorpseLeather".Translate(corpseSiteHarvestLeatherPerSession.ToString()));
+                        corpseSiteHarvestLeatherPerSession = (int)list.Slider(corpseSiteHarvestLeatherPerSession, 2f, 50f);
+                        list.Label("RM_HugeThings_CorpseHours".Translate(corpseSiteWorkHoursPerSession.ToString("0.0")));
+                        corpseSiteWorkHoursPerSession = list.Slider(corpseSiteWorkHoursPerSession, 0.25f, 6f);
+                        list.Label("RM_HugeThings_CorpseMeatSpoil".Translate((corpseSiteMeatSpoilagePerDay * 100f).ToString("0")));
+                        corpseSiteMeatSpoilagePerDay = list.Slider(corpseSiteMeatSpoilagePerDay, 0.02f, 0.5f);
+                        list.Label("RM_HugeThings_CorpseLeatherSpoil".Translate((corpseSiteLeatherSpoilagePerDay * 100f).ToString("0")));
+                        corpseSiteLeatherSpoilagePerDay = list.Slider(corpseSiteLeatherSpoilagePerDay, 0.02f, 0.5f);
+                    }
+                }
+                else list.Label("Turn on giant animals to change these.");
+                list.GapLine();
             }
             Sanitize();
 
             settingsViewHeight = Mathf.Max(list.CurHeight + 20f, inRect.height);
             list.End();
             Widgets.EndScrollView();
+        }
+
+        
+        
+
+        // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int/string/enum setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order).
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_HugeThingsSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int) || f.FieldType == typeof(string) || f.FieldType.IsEnum)
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_HugeThingsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. Scope AUDITED per setting against its read site (2026-10-10): the custom size tiers and the Large Pawns footprint and wall-break switches are latched once when the game starts (their own labels say restart), so they carry [next game start]; every other setting is read live by a tick, a job driver, a spawned building or the wake processor, none at map generation, so [now]. The giant-animals master is listed under the hitbox group but gates the other animal groups.</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label((tagOverride ?? RimMandrake.Shared.SettingsKitCore.ScopeTag(scope)) + (tagOverride != null
+                ? " changes take effect the next time the game starts or loads"
+                : scope == RimMandrake.Shared.SettingScope.NewMapsOnly ? " changes only affect maps (or planets) generated afterwards"
+                : scope == RimMandrake.Shared.SettingScope.NextPulse ? " changes apply the next time it is rolled or offered"
+                : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
         }
     }
 

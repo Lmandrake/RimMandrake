@@ -19,6 +19,14 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # folder, mod .cs, csproj, expected groups: title -> scope (the audited scopes)
 # folder: (mod .cs, csproj, expected groups, extra setting names the screen resets that are not Scribe_Values fields)
 MODS = {
+    "HugeThings": ("RM_HugeThingsSettings.cs", "RM_HugeThings.csproj", {
+        "Giant plants": "Now",
+        "Giant animals: hitbox and roofs": "Now",
+        "Large Pawns footprint and custom size tiers": "NextGameStart",
+        "Wake and plant smashing": "Now",
+        "Yield curve": "Now",
+        "Titanic corpse sites": "Now",
+    }, ()),
     "GimmeSomeSlack#Cables": ("GimmeSomeSlackMod.cs", "RimMandrake_GimmeSomeSlack.csproj", {
         "Messy cords and default style": "Now",
         "Slack, loops and tangles": "Now",
