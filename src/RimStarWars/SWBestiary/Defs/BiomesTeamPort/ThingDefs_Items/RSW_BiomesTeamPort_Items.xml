@@ -56,8 +56,8 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RSW_EggNorpheaFertilized</defName>
-    <label>norphea egg (fert.)</label>
-    <description>A fertilized norphea egg. If all goes well, it should hatch into a baby norphea. It can be eaten raw, but it's much better cooked.</description>
+    <label>qattora egg (fert.)</label>
+    <description>A fertilized qattora egg. If all goes well, it should hatch into a qattora grub. It can be eaten raw, but it's much better cooked.</description>
     <graphicData>
       <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
       <color>(167,198,153)</color>
@@ -93,8 +93,8 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggSandpillarUnfertilized</defName>
-    <label>sandpillar egg (unfert.)</label>
-    <description>An unfertilized sandpillar egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <label>luttaq egg (unfert.)</label>
+    <description>An unfertilized luttaq egg. It can be eaten raw, but it's much, much better cooked.</description>
     <graphicData>
       <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
       <color>(137,116,97)</color>
@@ -1313,8 +1313,8 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <ThingDef ParentName="EggFertBase">
     <defName>RSW_EggSandpillarFertilized</defName>
-    <label>sandpillar egg (fert.)</label>
-    <description>A sandpillar egg. If all goes well, it should hatch into a baby sandpillar. It can be eaten raw, but it's much better cooked.</description>
+    <label>luttaq egg (fert.)</label>
+    <description>A fertilized luttaq egg. If all goes well, it should hatch into a young luttaq. It can be eaten raw, but it's much better cooked.</description>
     <graphicData>
       <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
       <color>(147,126,107)</color>
@@ -1592,8 +1592,8 @@ copied verbatim from the donor mods' own Textures trees.
   </ThingDef>
   <ThingDef ParentName="EggUnfertBase">
     <defName>RSW_EggNorpheaUnfertilized</defName>
-    <label>norphea egg (unfert.)</label>
-    <description>An unfertilized norphea egg. It can be eaten raw, but it's much, much better cooked.</description>
+    <label>qattora egg (unfert.)</label>
+    <description>An unfertilized qattora egg. It can be eaten raw, but it's much, much better cooked.</description>
     <graphicData>
       <texPath>swanimals/BiomesTeam/BMT_Core/Things/Item/Eggs/OvoidBugEggs</texPath>
       <color>(157,188,143)</color>

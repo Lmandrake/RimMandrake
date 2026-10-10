@@ -16189,7 +16189,7 @@
     </match>
   </Operation>
 
-  <!-- mutagenic norphea (RSW_MutagenicNorphea) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -25..71.1 -->
+  <!-- qattora (RSW_MutagenicNorphea) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -25..71.1 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_MutagenicNorphea"]</xpath>
     <match Class="PatchOperationConditional">
@@ -16791,7 +16791,7 @@
     </match>
   </Operation>
 
-  <!-- sand leaper (RSW_SandLeaper) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -10..71.1 -->
+  <!-- qetta (RSW_SandLeaper) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -10..71.1 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_SandLeaper"]</xpath>
     <match Class="PatchOperationConditional">
@@ -16834,7 +16834,7 @@
     </match>
   </Operation>
 
-  <!-- sandpillar (RSW_SandPillar) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -25..71.1 -->
+  <!-- luttaq (RSW_SandPillar) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  -25..71.1 -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="RSW_SandPillar"]</xpath>
     <match Class="PatchOperationConditional">
