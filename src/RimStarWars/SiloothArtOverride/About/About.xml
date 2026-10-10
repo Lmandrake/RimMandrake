@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ModMetaData>
+  <packageId>mandrake.rsw.siloothartoverride</packageId>
+  <name>Silooth Art Override</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Replaces mlie.starwarsanimalcollection's Silooth adult art (south/east/north
+facings only; the larva, juvenile stage and dessicated corpse stay on donor art) with the canon Sith
+warbeast redraw picked by the owner 2026-10-09 (v6): six stilt legs, tall swept shell, horn-like
+mandibles rooted on the brow, acid spray. ART ONLY - no defName touched, no Defs, no Patches, loose
+Textures/ only, same relative path (swanimals/Silooth/Silooth_&lt;facing&gt;) the donor uses so this
+mod's later load order wins the same-path resolution.</description>
+  <loadAfter>
+    <li>mlie.starwarsanimalcollection</li>
+  </loadAfter>
+</ModMetaData>
