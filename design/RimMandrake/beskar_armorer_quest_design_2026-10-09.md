@@ -1,229 +1,298 @@
-# Beskar armorer quest: three designs (2026-10-09)
+# Beskar armorer quest: the decided design (2026-10-09)
 
-Item: `BESKAR_ARMORER_QUEST_1`. Parent: `CANON_MATERIALS_BUILD_1` (its L7). Design only; no defs.
+Item: `BESKAR_ARMORER_QUEST_1`. Parent: `CANON_MATERIALS_BUILD_1` (its L7). All design questions are ruled; this
+is the build spec for FOUNDRY.
 
-## 0. The ruling and the givens
+## 0. Rulings
 
-Owner, typed 2026-10-09: *"(1) and a quest with Blackstar allows you to access that rare individual,
-otherwise you just use the pieces you find. Never can reforge yourself, smelting destroys it (converts into
-other lesser ores), only the rare location can properly reforge."* He chose by card to have the design drafted
-now.
+- Owner, typed 2026-10-09: *"(1) and a quest with Blackstar allows you to access that rare individual,
+  otherwise you just use the pieces you find. Never can reforge yourself, smelting destroys it (converts into
+  other lesser ores), only the rare location can properly reforge."*
+- Owner, typed 2026-10-09: *"Capturing then freeing a mandalorian bounty hunter is the preferred way.
+  Alternative path later is to receive a quest to help them break out a mandalorian from a small prison run by
+  the empire. Cool quest destination and very direct. I like this quest. Raises your heat a lot."*
+- Decisions taken by question card 2026-10-09:
+  - The Armorer works at a **base in orbit**, reached **by gravship**.
+  - A reforge returns **the same beskar mass as gear of your choice**; she **keeps 1 in 5** as tribute.
+  - **Smelting beskar yourself yields steel + slag.**
+  - **You can return any time.**
+  - **Harming her or her base loses the base for good AND Blackstar hunts you at max heat.**
 
-Fixed by that ruling, and the same in all three designs:
+What follows from them:
 
 - Beskar pieces are salvage. The colony wears and wields them as found.
-- No colony recipe makes beskar. `kotor_IngotBeskar_recipe` goes, and beskar mining routes yield nothing
-  (`canon_materials_design_2026-10-09.md` §3.7, built under `CANON_MATERIALS_BUILD_1` L7).
-- Smelting beskar, or anything made of it, destroys it and yields lesser material. Each design below proposes
-  a yield; §7 compares them.
-- Reforging happens in one place, at the hands of one person, reached through Blackstar.
+- No colony recipe makes beskar, and no colony bill may consume beskar.
+- The only place beskar becomes other beskar gear is the Armorer's forge in her orbital covert.
+- Two ways to learn where the covert is: route 1 (§3), route 2 (§4). Both end in the same reveal (§3.3).
 
-What the designs differ on: how Blackstar leads you there, what and where "the rare location" is, what the
-reforge costs and how long it takes, and what smelting returns.
+## 1. Fiction
 
-## 1. What Blackstar is in this project
+**Blackstar Company** is the vanilla `Pirate` faction reskinned (`src/RimUtinni/UtinniPatches/Patches/BlackstarCompany.xml`,
+`design/Jawa/worldbuilding/FACTION_SPEC.md` entry 10), `permanentEnemy true` on purpose. Its Mandalorians are
+pawn kinds `RUT_Jawa_Blackstar_Heavy` (label "Mandalorian") and `RUT_Jawa_Blackstar_Leader` (Captain Jaxen Marr)
+in `src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaFactionRoster.xml`. Its ideoligion, the Contract, honours a
+fair release; freeing a hunter is the one lever the lore gives on a permanent enemy
+(`reconciled_lore/04_factions.md` §10).
 
-**The Blackstar Company is a faction: one mercenary outfit of contract hunters, built as a reskin of vanilla
-`Pirate`.**
+**Canon** (Wookieepedia `The_Armorer`, `Beskar`, `Mandalorian_covert`, pulled 2026-10-09): the Armorer forges in
+a hidden covert; after Nevarro hers sat on Glavis Ringworld in space, a cryo-furnace beside a corridor open to
+vacuum. She reforges salvage to the wearer's wish and keeps the excess "for future foundlings". That is the
+orbital covert and the 1-in-5 tribute.
 
-- Spec: `design/Jawa/worldbuilding/FACTION_SPEC.md` entry 10. Built: `src/RimUtinni/UtinniPatches/Patches/BlackstarCompany.xml`
-  (label, description, the `Contract` ideoligion), `Defs/RulePackDefs/Namer_BlackstarCompany.xml`, and the
-  pawn kinds `Jawa_Blackstar_Grunt · _Heavy · _Leader · _Specialist` in `Defs/PawnKindDefs/JawaFactionRoster.xml`.
-- **`permanentEnemy true`, kept on purpose** (ruling R12), so the vanilla raid economy is not gutted. Every
-  design below has to route around that: Blackstar cannot be an ordinary friendly quest asker.
-- **Fiction:** *"one dangerous person with a name who is coming for you"*; professionals under a code; they
-  take contracts and do not pillage. Ideoligion `the Contract`: *"a contract completed is sacred; a contract
-  broken is unclean"*; hostile **when someone paid them, never otherwise** (`faction_religions.md` §10).
-  No money ransom; honoured prisoner exchanges; **freeing a Named Hunter is the only lever on a permanent
-  enemy** (`reconciled_lore/04_factions.md` §10, `09_arcs_dungeons_quests.md`: "the Blackstar truce token").
-- **The Mandalorians are inside it.** Its leader is **Captain Jaxen Marr, a Mandalorian**
-  (`faction_world_spec.md` rows 79 and 127); its Heavy pawn kind is "Mandalorian, beskar-pattern plate"
-  (`pawnkind_roster.md` §10); the Creed is the faction's one sacred thing (`faction_religions.md` §10).
-  That is the canon-shaped reason Blackstar knows where an armorer is.
-- **On the planet:** 4 settlements at road junctions and ruins (`ASHKARR_WORLD_DEFINITION.md` line 586).
-- **Named cast:** `design/Jawa/bridge/INHABITED_CAST_BLACKSTAR.md`: the Signing House, the boarding crew of
-  the ship *Countersign*, and the Claims Office, which pays the Company's victims as a liability.
-- Raid weight is Heat-scaled (`faction_roster_v2.md`): quiet until the player gets "hot".
+**The beat:** a freed Mandalorian owes the clan that let him go. He pays the only way his Creed allows: he tells
+the Armorer that this clan keeps beskar honourably, and she sends coordinates.
 
-## 2. Canon: beskar and the Armorer
+## 2. The orbital covert (the one place beskar is reforged)
 
-Pulled from Wookieepedia's parse API 2026-10-09 (pages `The_Armorer`, `Beskar`, `Mandalorian_covert`):
+### 2.1 World object
 
-- The Armorer forged armour and weapons for her Tribe **in a hidden covert**: first under Nevarro, then, after
-  the Nevarro covert was exposed and massacred, a new covert on **Glavis Ringworld**, in space, whose cryo-furnace
-  sat "next to a service corridor open to the vacuum of space".
-- Tools: "a cryo-furnace, magnetic tongs, and a gravity hammer"; "the Mandalorian method for forging beskar was
-  a closely guarded secret" (also cited in `canon_metal_fabrication_2026-10-09.md`).
-- **Reforging salvage is canon, for a Mandalorian smith.** Din Djarin brought Imperial-stamped beskar from a
-  bounty; she identified it as Purge spoils, forged him a pauldron, and he **"gave the excess to the Armorer for
-  future foundlings"**. A tithe is canon.
-- She melted Ahsoka's beskar spear because it was dangerous, and **reforged it into armour for Grogu at Djarin's
-  request**: the customer chooses what the metal becomes.
-- "The metal could also be reforged to any warrior's liking."
-- She identifies signets and declares clans: the covert is a society, not a shop.
-- Jawas handling beskar as salvage is canon (*The Mandalorian* Chapter 9, Boba Fett's armour).
+- **`RM_ArmorerCovert`**: a `WorldObjectDef` on the **`Orbit`** planet layer (Odyssey `PlanetLayerDef Orbit`),
+  `worldObjectClass` = **`RimMandrake.Utinni.BeskarArmorer.RM_ArmorerCovert : MapParent`** (new, small).
+  - Permanent: it is **not** a `Site`. A quest-spawned world object survives quest end once spawned
+    (`QuestPart_SpawnWorldObject.Cleanup` destroys it only if it never spawned; decompiled 1.6).
+  - `ShouldRemoveMapNow` = no player pawns or player gravship on the map. The **map is discarded on departure
+    and regenerated from the fixed layout on each visit**; the object itself stays. Cheap, and "return any
+    time" needs nothing else.
+  - Holds, scribed: the Armorer and her two sworn guards as **world pawns** (the same three pawns every visit,
+    respawned into the regenerated map), a `lost` flag, and the revealed tick.
+  - Hidden until revealed: the object is spawned by the reveal (§3.3), never at world start, so nothing shows
+    on the planet before.
+  - 🔴 UNVERIFIED, read before building: which check lets a gravship **land on a non-`Site` `MapParent`** in
+    orbit. Vanilla Odyssey lands on `ClaimableSpaceSite` (`WorldObjectDefOf.ClaimableSpaceSite`, used by
+    `QuestNode_Root_Gravcore_OrbitalAncientPlatform`). If the landing gate is that def or `SpaceMapParent`,
+    derive `RM_ArmorerCovert` from `SpaceMapParent` instead of `MapParent`.
+- **Map**: `MapGeneratorDef` `RM_ArmorerCovertMap` = Odyssey's orbital-platform base generation (the
+  `OrbitalAncientPlatform` site part's generator is the reference) plus one `GenStep` that stamps
+  `StructureLayoutDef` `RM_ArmorerCovertLayout`: a small derelict platform, a cryo-furnace bay beside a
+  vacuum-open service corridor (canon), quarters, a landing pad. Layout pattern:
+  `src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/StructureLayoutDefs_Vaults.xml`.
+- **Faction**: `RM_TribeOfTheArmorer`, a **hidden** `FactionDef` (no settlements, not in the faction tab, starts
+  neutral-friendly, `permanentEnemy false`). Hidden so it never raids or trades; it exists so her pawns are
+  non-hostile and so harm to them is attributable.
+- **Cast**: the Armorer (`RM_TheArmorer` `PawnKindDef`: Human, Mandalorian armour of beskar stuff, the fixed
+  name *the Armorer*, unrecruitable, non-capturable by any vanilla route the C# can close) and two
+  `RM_CovertSworn` guards. Inhabited's PLACE / CAST shape (`src/RimMandrake/Inhabited`) is the reference for a
+  named persistent cast of a place.
 
-## 3. What already exists that this reuses
+### 2.2 The forge and the reforge
 
-Checked 2026-10-09: nothing in `src/` is a Mandalorian armorer quest, pawn, site or forge. What is reusable:
+- **`RM_ArmorerForge`**: a `Building_WorkTable`, **not buildable and not minifiable** (no
+  `designationCategory`, no `minifiedDef`), spawned only by `RM_ArmorerCovertLayout`. Indestructible to
+  pawns is not needed: harming it is the harm rule (§2.3).
+- **Two kinds of bill on it, and only on it:**
+  1. **`RM_Recipe_ArmorerMeltBeskar`**: any thing carrying beskar (§5.1 list) → `KOTOR_IngotBeskar` equal to
+     its **beskar mass × 0.8**. The 1-in-5 tribute is taken **here, once**. Beskar mass of a thing = its
+     `costList` count of a beskar material, or its `CostStuffCount` if it is made of beskar stuff; full mass
+     regardless of hit points. Custom `RecipeWorker` (`RM_RecipeWorker_ArmorerMelt`) computes the count.
+  2. **`RM_Reforge_<ThingDef>`**: one generated recipe per beskar product: every apparel/weapon whose
+     `costList` names a beskar material (the six Mando pieces in
+     `src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORFactions_Mando.xml`
+     and any Outer Rim beskar gear), at that def's own beskar cost, plus every stuffable `Metallic` apparel or
+     weapon made **of beskar** at its normal stuff count. Generated at startup (a `DefGenerator`-style
+     `[StaticConstructorOnStartup]` pass, `recipeUsers = RM_ArmorerForge`). That list **is** "gear of your
+     choice"; the vanilla bill UI is the reforge menu.
+  - Net effect: carry beskar pieces up, melt them (she keeps a fifth), queue the gear you want from the
+    ingots; same mass in, same mass out, less tribute. Leftover ingots can go home: they are still
+    unusable there (§5.2).
+- **Only she works these bills.** Bill postfix (§5.2) allows a pawn to start a bill at `RM_ArmorerForge` only
+  if it carries the `RM_ArmorerOfTheTribe` hediff (given to her `PawnKindDef`). Colonists cannot.
+- **Time**: her crafting skill (fixed 20) on the recipe's work amount; about a day per armour piece. The
+  gravship waits docked; fuel is the travel cost.
+- **Any time**: no visit limit, no cooldown.
 
-| piece | where | used by |
-|---|---|---|
-| Blackstar faction, pawn kinds, namer, ideo | `src/RimUtinni/UtinniPatches/` | all |
-| `NAMED_HUNTER` role: Harmony seams on `GenGuest.PrisonerRelease` and `Pawn_GuestTracker.CapturedBy` for Blackstar pawns | `src/RimMandrake/RaidRedesigner/Source/Patch_PrisonerReleasedOrNamedHunter.cs`, `RoleTag.cs` | B (the trigger), A (optional) |
-| Quest lodger in the player faction (`joinPlayer`), the shape that lets a visiting pawn be worked with | `src/RimUtinni/DroidRepairJobs/Defs/QuestScriptDefs/Quest_DroidRepairJob.xml` | B |
-| Faction-specific settlement picker in C# (`RM_QuestNode_GetWildsteamSettlement`) | `src/RimUtinni/WildsteamEggBounty/Source/` | A, C |
-| Trade-request delivery (`QuestNode_TradeRequest_Initiate`) | `RUT_WildsteamEggBounty.xml`, `RUT_FungalSoilTradeRequest.xml` | A (paying the contract in goods) |
-| Site quests with a spawned map and a timeout | `src/RimUtinni/StructureInjectionsRUT/Defs/VaultDungeons/QuestScriptDefs/RUT_VaultThaw.xml`, `RUT_KraytDenQuest.xml` | A, C |
-| Named persistent residents of a place (PLACE / CAST / ROUTE / FATE) and `SettlementManifestDefs` | `src/RimMandrake/Inhabited`, `src/RimUtinni/AshkarrInhabited/Defs/SettlementManifestDefs/` | A, C (the covert's cast) |
-| Gravship to a planet layer; a layer of our own (`RM_SeabedLayer`) | built, `2db33bf23` | C |
-| Odyssey orbital-site quest roots: `QuestNode_Root_Gravcore_OrbitalAncientPlatform`, `QuestNode_RequirementsToAcceptPlanetLayer` | decompiled 1.6 (RimSage, 2026-10-09; class names only, fields not yet read) | C |
-| Beskar as stuff (`KOTOR_IngotBeskar` has `stuffProps`) and the Outer Rim beskar items | Armoury (ours), Outer Rim | all: reforge output is gear made *of* beskar stuff |
+### 2.3 Harm rule: the base is lost for good
 
-**What none of this covers, in every design:** the reforge itself. "Only she can do it" is a new verb, so it
-needs a small C# piece (rimworld-quests §9). Cheapest form: an **Armorer's forge** workbench whose beskar
-recipes accept a bill only from a pawn carrying an `RM_ArmorerOfTheTribe` marker (hediff or trait), plus a
-`RecipeWorker` that converts the beskar *mass* of the ingredients into the chosen item. The vanilla bill UI
-then is the reforge menu. (UNVERIFIED which seam gates a bill per pawn; read `WorkGiver_DoBill` before
-building.)
+Harm = any of, by the player faction:
+- damage to the Armorer or a sworn guard (`dinfo.Instigator?.Faction == Faction.OfPlayer`), anywhere;
+- arresting or capturing any of the three (`Pawn_GuestTracker.CapturedBy` with `Faction.OfPlayer`);
+- damage to any building on the covert map, `RM_ArmorerForge` included;
+- any of the three killed while a player pawn is on the covert map.
 
-## 4. Design A — The Contract (caravan to a hidden covert)
+Consequence, at once and permanently:
+1. `RM_ArmorerCovert.lost = true`; the object is destroyed when the player leaves the map (the current visit is
+   not yanked away mid-fight). It is never re-spawned: both reveals (§3, §4) check `lost` and refuse.
+2. Her faction turns hostile for that visit (the guards fight).
+3. **Blackstar hunts at max heat** (§6): heat for `Pirate` set to max, and one Blackstar raid is fired at once
+   on the player's home map, `RaidEnemy` with faction `Pirate`, points × 2, Mandalorians preferred.
+4. A letter says so plainly: the Creed's verdict, the covert gone, Blackstar coming.
 
-**The question it answers: what if Blackstar is an employer, and the covert is a place on the planet you
-walk to?**
+## 3. Route 1 (preferred): capture, then free, a Blackstar Mandalorian
 
-**How Blackstar leads you there.** Blackstar takes contracts, and the Contract says anyone not named walks away
-untouched, so a deal with them is in character even though they stay `permanentEnemy`. Once the colony holds
-any beskar piece, a letter arrives from Captain Jaxen Marr: a Blackstar contract (one name, one price, one
-ending) that the Company would rather sub-let to a Jawa clan. The ask is one of: capture a named mark alive and
-hold him for pickup, or deliver a specific salvage item. Fulfilled, the Company pays in **the covert's
-location**, because Marr's Creed forbids paying it in beskar.
-- Quest shape: `QuestNode_Sequence` → the asker is a generated Blackstar pawn (`QuestNode_GeneratePawn`, faction
-  `Pirate`), not a settlement, so `permanentEnemy` never blocks it → the mark arrives as a quest pawn
-  (vanilla `Util_Raid`-style arrival or a site) → `mark.Captured` / delivery `TradeRequest` → reward:
-  `QuestNode_GenerateWorldObject` + `QuestNode_SpawnWorldObjects` of the covert site.
-- Failure: the mark dies (`mark.Destroyed`) or the timer runs out. No goodwill change (they are already
-  enemies); instead the next Blackstar hunt is Heat-scaled up. The quest can be offered again later.
+### 3.1 Trigger (reuse RaidRedesigner's freed-hunter detection)
 
-**The rare location.** A **hidden covert on a surface tile**, as a permanent world object: a ruin under a
-Blackstar settlement's road junction, two or three tiles from it. Inhabited supplies its cast: the Armorer and
-two sworn guards, persistent pawns. Reached **by caravan**. It appears only after the contract; before that,
-nothing on the map shows it.
+`src/RimMandrake/RaidRedesigner/Source/Patch_PrisonerReleasedOrNamedHunter.cs` already postfixes
+`GenGuest.PrisonerRelease(Pawn)` and tags any `Pirate` release `RoleTag.NamedHunter`. Add, in the BeskarArmorer
+assembly (its own Harmony postfix on the same method, so RaidRedesigner stays untouched and either mod can be
+off):
 
-**The reforge.** The caravan carries beskar in and enters the covert map. At the Armorer's forge you place
-bills (the vanilla bill UI on her workbench); she works them while the caravan waits on the map. Output: any
-apparel or weapon that takes beskar as stuff, using the **same beskar mass, minus a tithe of 1 in 5 kept "for
-the foundlings"** (canon). Time: her work speed on a cryo-furnace, about **one day per armour piece**. A visit
-can reforge everything you carried; you may return any number of times.
+- **Condition**: released pawn's `kindDef` is `RUT_Jawa_Blackstar_Heavy` or `RUT_Jawa_Blackstar_Leader`, it is
+  alive, and it was a **prisoner of the player** at release; the covert is not yet revealed and not lost; no
+  route-1 or route-2 quest is already running.
+- **Action**: `QuestUtility.GenerateQuestAndMakeAvailable(RM_Quest_ArmorerDebt, slate{ hunter })` and
+  `QuestUtility.SendLetterQuestAvailable`.
+- The choice it leaves the player is real: keep him (recruit him, strip his beskar plate, which counts as found
+  beskar) or free him and get the covert. His plate stays on him if freed.
 
-**Smelting beskar yourself:** steel and steel slag (`Steel` + `ChunkSlagSteel`), about a third of the mass
-as steel.
+### 3.2 `RM_Quest_ArmorerDebt` (QuestScriptDef shape)
 
-**Cost to build:** one quest def, one world-object/site def with a fixed map layout (StructureInjections
-pattern), one Inhabited cast, the forge workbench and its C# gate. **Risk:** caravans across Ash'karr are long;
-the covert must be placed near a Blackstar settlement on the frozen map, which touches the world-paint pass
-(`BIOME_PAINT_ONCE_AT_THE_END_1`), or be spawned by the quest at a free tile near one.
+Firing route: **from C#** (§3.1): `isRootSpecial true`, `rootSelectionWeight 0`, no `IncidentDef`.
+`autoAccept true` (it is news, not a job). `everAcceptableInSpace true`.
 
-## 5. Design B — The Truce Token (the Armorer comes to you)
+```
+root QuestNode_Sequence
+  QuestNode_GetMap                         canBeSpace true            -> map
+  QuestNode_Letter  (no inSignal: fires on accept)
+      "[hunter_nameDef] walks out of your gate. A Blackstar Mandalorian does not thank anyone. He says the Creed
+       keeps its debts, and that someone will hear of the clan that let him go."
+  QuestNode_Set  revealTicks = $(randInt(2,5)*60000)
+  QuestNode_Delay  delayTicks $revealTicks  outSignalComplete RevealDue
+  RM_QuestNode_RevealArmorerCovert        inSignal RevealDue  outSignal CovertRevealed
+  QuestNode_Letter  inSignal CovertRevealed  (positive letter, lookTargets = the covert)
+  QuestNode_End  inSignal CovertRevealed  outcome Success
+  QuestNode_End  inSignal RevealRefused   outcome Unknown   (covert already revealed or lost meanwhile)
+```
 
-**The question it answers: what if the lever is the one the lore already names, freeing a Named Hunter, and
-the "rare location" is a person who travels?**
+Text: `questName->The Creed Keeps Its Debts`; description names `[hunter_nameDef]` and says the coordinates will
+come. Every conditional symbol gets an empty fallback (rimworld-quests §5).
 
-**How Blackstar leads you there.** The lore's own mechanism: *freeing a Named Hunter is the only lever on a
-permanent enemy*. When the colony **captures a Blackstar Mandalorian** (the Heavy pawn kind, beskar-pattern
-plate) and **releases him unharmed**, the RaidRedesigner `NAMED_HUNTER` seam already fires. That release starts
-the quest: the hunter owes a debt under the Contract, and he pays it the only way his Creed allows. He tells the
-Armorer that this clan keeps beskar honourably.
-- Quest shape: fired from C# on the release seam (route: `isRootSpecial`, weight 0, started by the existing
-  Harmony patch), then a `QuestNode_Delay` of 10–20 days, then the visit.
-- The choice: keep the Mandalorian as a prisoner (recruit him, take his plate) or free him and get the
-  Armorer. His plate counts as found beskar either way; that is the trade.
+### 3.3 The reveal (shared by both routes)
 
-**The rare location.** The Armorer **comes to the colony**, set down by Blackstar's ship *Countersign*
-(shuttle arrival), with one sworn guard. She is a **quest lodger in the player faction**, the
-`Quest_DroidRepairJob` shape, so she can work bills. She raises a portable cryo-forge (quest-spawned
-building, removed when she leaves). She stays **5 days**, then leaves. "The rare location" is wherever she
-stands.
+**`RM_QuestNode_RevealArmorerCovert`** (C#, small): finds a tile on the `Orbit` layer adjacent to the player's
+home layer, 20–60 tiles out, reachable (copy `QuestNode_Root_Gravcore.TryFindSiteTile`'s query; vanilla
+`QuestNode_GetSiteTile` cannot target a different layer), generates and spawns `RM_ArmorerCovert` with its three
+world pawns, and emits `CovertRevealed`. If the covert already exists or is `lost`, it emits `RevealRefused`
+instead. `TestRunInt` returns false without Odyssey (all DLCs are assumed, but the guard costs nothing).
+Gate acceptance with `QuestNode_RequirementsToAcceptPlanetLayer` only if a reveal ever needs the player in orbit;
+it does not today.
 
-**The reforge.** During the stay, you queue bills at her forge with whatever beskar you hold. Same-mass
-output minus the 1-in-5 tithe. Time: whatever she finishes in 5 days (about 4–6 pieces). If she is harmed,
-arrested or killed: the quest fails, the guard turns hostile, and every Blackstar faction pawn gets a
-"broke the Contract" hunt against you (Heat to maximum). She returns each time **another** Named Hunter is
-freed, so the service is repeatable but paid for in prisoners.
+## 4. Route 2 (later): break a Mandalorian out of an Imperial prison
 
-**Smelting beskar yourself:** steel plus durasteel slag (`KotORChunk_durasteel`, which the materials design
-keeps re-meltable to durasteel), so a smelted beskar pauldron becomes "lesser ore" that is still a canon
-metal.
+### 4.1 The ask
 
-**Cost to build:** the least. No site, no map, no world object. One quest def on an existing seam, the lodger
-pattern already built, the forge workbench and gate. **Risk:** a visitor on your own map is less "rare place"
-than the owner's words suggest; and it depends on the player taking a Mandalorian alive.
+Blackstar sends word: one of their Mandalorians is held at a small Imperial detention post on the surface.
+Get him out. Very direct: one site, one prisoner, one fight. **Raises your heat a lot** with the Empire, and the
+freed Mandalorian pays the same debt as route 1.
 
-## 6. Design C — The Sworn Price (gravship to an orbital covert)
+### 4.2 `RM_Quest_ImperialPrisonBreak` (QuestScriptDef shape)
 
-**The question it answers: what if the covert is canon's Glavis-style forge in space, and the price is a
-person rather than goods?**
+Firing route: **a dedicated incident** `RM_BlackstarPrisonBreakOffer` (`category GiveQuest`,
+`workerClass IncidentWorker_GiveQuest`, `questScriptDef RM_Quest_ImperialPrisonBreak`); the quest has
+`isRootSpecial true`, `rootSelectionWeight 0` (an incident-plus-weight pair is a hard vanilla ConfigError,
+rimworld-quests §7). "Later": `rootEarliestDay` 30, `minRefireDays` 60 (tuning, Mod Settings). The incident's
+worker refuses while the covert is revealed or lost, or a route-1 quest is running. Shape copied from vanilla
+`OpportunitySite_PrisonerWillingToJoin` (`Defs/Core/QuestScriptDefs/Script_PrisonerWillingToJoin.xml`), which is
+a prisoner breakout at a site already:
 
-**How Blackstar leads you there.** Blackstar sells nothing to outsiders, but Captain Marr will **ransom the
-coordinates for a Mandalorian foundling**: the colony must give one colonist to the Creed. The quest offers it
-when the colony owns a gravship and holds beskar: Marr sends terms. Accept, and one colonist of your choice
-swears the Creed.
-- The sworn colonist stays yours but carries a permanent `RM_SwornOfTheCreed` state: never removes a helmet
-  (a forced-apparel rule), a mood penalty if the clan breaks a contract, and they will not fight Blackstar
-  Mandalorians. In exchange they are the only pawn the Armorer reforges for at full yield.
-- Quest shape: `QuestNode_Sequence` with a pawn picked from the colony (the vanilla "choose a pawn"
-  pattern is UNVERIFIED; read the shipped `Script_` defs before committing to it); reward: the covert site
-  on the **orbit layer**, gated by `QuestNode_RequirementsToAcceptPlanetLayer`.
+```
+root QuestNode_Sequence
+  QuestNode_SubScript Util_RandomizePointsChallengeRating
+  QuestNode_SubScript Util_AdjustPointsForDistantFight
+  QuestNode_GetMap                          canBeSpace true
+  QuestNode_GetSiteTile  storeAs siteTile   preferCloserTiles true
+  QuestNode_GetFaction (Empire)             -> siteFaction       (vanilla Empire, reskinned: Patches/GalacticEmpire.xml)
+  QuestNode_Set  sitePartDefs = [RM_ImperialDetentionPost]
+  QuestNode_GetDefaultSitePartsParams  tile $siteTile  faction $siteFaction  -> sitePartsParams
+  QuestNode_SubScript Util_GenerateSite
+  QuestNode_SpawnWorldObjects  $site
+  QuestNode_WorldObjectTimeout  $site  isQuestTimeout true  delayTicks $(randInt(10,20)*60000)
+        inSignalDisable site.MapGenerated   node: QuestNode_End outcome Fail
+  -- on arrival: he fights beside you until he is out --
+  QuestNode_ExtraFaction  inSignal site.MapGenerated  pawns [$detainee]  (lodger shape, as Quest_DroidRepairJob.xml)
+  -- success: he leaves the site map alive with you (caravan, gravship or map edge) --
+  RM_QuestNode_AddHeat  inSignal detainee.LeftMap  faction Empire  amount Large    (§6)
+  QuestNode_Delay  inSignal detainee.LeftMap  delayTicks $(randInt(2,4)*60000)  outSignalComplete PursuitDue
+  QuestNode_SubScript Util_Raid  inSignal PursuitDue  (Empire, points × 1.5: the heat arriving)
+  QuestNode_Leave  inSignal PursuitDue  pawns [$detainee]   (he goes home; no release needed)
+  RM_QuestNode_RevealArmorerCovert  inSignal PursuitDue  outSignal CovertRevealed
+  QuestNode_End  inSignal CovertRevealed  outcome Success
+  QuestNode_End  inSignal RevealRefused   outcome Success   (heat still paid; reveal already had)
+  QuestNode_End  inSignal detainee.Destroyed  outcome Fail
+  QuestNode_NoWorldObject $site  node: QuestNode_End (Unknown)
+```
 
-**The rare location.** An **orbital covert**: a derelict platform in the orbit layer with a cryo-furnace beside
-a vacuum-open corridor, as canon has it. Reached **only by gravship**, the way the seabed is. Built on Odyssey's
-orbital-platform site roots. The Armorer and a few sworn live there (Inhabited cast). A visit is one landing.
+🔴 UNVERIFIED, read before building: whether `detainee.LeftMap` fires when he leaves **inside a caravan or a
+departing gravship** as well as by the map edge (vanilla Hospitality lodgers use `.LeftMap`; check
+`QuestPart_ExtraFaction` / `Pawn.ExitMap` signal emission). If not, success is the site map's `MapRemoved` with
+`$detainee` alive and not on it, via a small check node.
 
-**The reforge.** Land, carry beskar off the ship, place bills. **One reforge per visit, for the sworn
-colonist's gear at full mass; anyone else's gear at half mass** (the rest is tithe). Time: one day per piece,
-while the gravship sits docked; gravship fuel is the travel cost. Repeatable for the rest of the game.
+### 4.3 The site: `RM_ImperialDetentionPost`
 
-**Smelting beskar yourself:** nothing useful. Beskar comes out as steel slag only (`ChunkSlagSteel`), so it is
-pointedly worse than either other design: the material is sacred and you destroyed it.
+- `SitePartDef` with its own worker `RM_SitePartWorker_ImperialDetainee` (subclass the vanilla
+  `SitePartWorker_PrisonerWillingToJoin`, which already places a prisoner in a cell and writes the slate var):
+  generates `$detainee` as a `RUT_Jawa_Blackstar_Heavy`, **faction `Pirate`**, held prisoner by the Empire,
+  stripped of weapon, plate in an evidence locker on the map (a beskar find in its own right).
+- Map: `StructureLayoutDef` `RM_ImperialDetentionPostLayout`: a small prefab post, four to six cells, a guard
+  room, a comms mast, a landing pad; Empire guards scaled by `$points`. Same StructureInjections pattern as the
+  Vault dungeons (`SitePartDefs_Vaults.xml`, `StructureLayoutDefs_Vaults.xml`).
+- Stakes: the quest can be failed (timeout, or he dies) and failing is survivable. The choice: walk away from
+  the offer, or buy the covert with Imperial heat.
 
-**Cost to build:** the most. An orbital site with a layout, an Odyssey quest root whose fields are not yet read,
-the sworn-colonist state (apparel rule and thought defs, and C# for "will not fight"), the forge and gate.
-**Risk:** the gravship is the late game, so for most of a run beskar cannot be reforged at all.
+## 5. The minimal C# seam: no reforging anywhere else, smelting yields steel + slag
 
-## 7. Side by side
+New assembly `RimMandrake.Utinni.BeskarArmorer` (its own mod folder under `src/RimUtinni/BeskarArmorer`,
+packageId `mandrake.rut.beskararmorer`, Harmony). Everything here is in it.
 
-| | A — The Contract | B — The Truce Token | C — The Sworn Price |
-|---|---|---|---|
-| Blackstar's role | employer: you do a contract | debtor: you free a Mandalorian hunter | broker: you give a colonist to the Creed |
-| what it costs you | a job (capture a mark or deliver an item) | a captured Mandalorian and his plate | one colonist bound by the Creed, plus gravship fuel |
-| the rare location | hidden covert on a surface tile | the Armorer herself, visiting by shuttle | orbital covert in the orbit layer |
-| how you reach it | caravan | she comes to you | gravship only |
-| reforge | any beskar gear, same mass less 1/5, ~1 day a piece, as often as you visit | same, but only during a 5-day stay | full mass for the sworn colonist, half for anyone else |
-| repeatable | yes, revisit freely | once per freed hunter | yes, each landing |
-| smelting yields | steel + steel slag (~1/3 mass) | steel + durasteel slag | steel slag only |
-| when in a run | early-mid | whenever Blackstar raids | late (needs a gravship) |
-| build size | medium: site, cast, quest, forge | small: quest on an existing seam, lodger, forge | large: orbital site, Odyssey root, sworn state, forge |
-| fits "rare location" literally | yes | weakest | yes, strongest |
+### 5.1 What counts as beskar
 
-## 8. Recommendation
+`DefModExtension` **`RM_BeskarMaterial`** on: `KOTOR_IngotBeskar`, `KOTOR_RawBeskar`, `OuterRim_Beskar`,
+`OuterRim_PureBeskar`, `LKBeskar_Ore`, `guy762_crystalitem_beskar` (patched in, each `MayRequire`-guarded per its
+mod; never a top-level `<Operation MayRequire>`). A thing **carries beskar** if its def has the extension, its
+stuff has it, or its `costList` names a def that has it.
 
-**Design A, with B's trigger available as a second way in.** A matches the owner's words most literally
-("the rare location" is a place, and Blackstar's quest is what grants access), fits the faction's identity
-(it takes contracts and does not pillage), and puts the reforge in reach mid-game, when beskar finds are
-most common. Releasing a Named Hunter (B's mechanism, already wired in RaidRedesigner) can **also** reveal the
-covert, so a player who never takes the contract still has a route. Keep C's orbital covert as a later
-upgrade if the owner wants the canon Glavis staging; it costs too much to be the only route.
+### 5.2 Three patches, nothing else
 
-Smelting yield for A: steel plus steel slag. It reads as "lesser ore" and keeps beskar out of every colony
-recipe chain.
+1. **No colony bill consumes beskar.** Postfix `Bill.IsFixedOrAllowedIngredient(Thing)` and
+   `Bill.IsFixedOrAllowedIngredient(ThingDef)`: if the ingredient carries beskar and the bill's
+   `billStack.billGiver` is not an `RM_ArmorerForge`, return false. This blocks the Mando gear recipes, any
+   stuffable Metallic recipe picking beskar as stuff, and any mod recipe we have not seen, with no def edits.
+   The six Mando `recipeMaker` blocks are patched out as well so the colony bench does not list bills it can
+   never fill.
+2. **Only the Armorer works her forge.** Postfix `Bill.PawnAllowedToStartAnew(Pawn)`: at `RM_ArmorerForge`,
+   false unless the pawn has hediff `RM_ArmorerOfTheTribe`.
+3. **Smelting beskar yields steel + slag.** Postfix `Thing.SmeltProducts(float)` (virtual, `Verse/Thing.cs`):
+   replace every beskar output with **`Steel` = ⌈beskar count / 3⌉** plus **one `ChunkSlagSteel`**. Covers vanilla
+   smelting of apparel and weapons at the electric smelter. (Overrides that do not call base are not covered;
+   list any found.) The 1/3 is a Mod Settings number; the owner ruled "steel + slag", not the ratio.
 
-## 9. Owner questions
+Plus the covert's own pieces: `RM_ArmorerCovert` (world object), `RM_QuestNode_RevealArmorerCovert`,
+`RM_SitePartWorker_ImperialDetainee`, `RM_RecipeWorker_ArmorerMelt`, the startup recipe generator, the
+release postfix (§3.1), and the harm watcher (§2.3: postfix `Thing.TakeDamage`, postfix
+`Pawn_GuestTracker.CapturedBy`, and a death check on her pawns).
 
-1. Which design? (A contract + caravan covert / B freed hunter + visiting Armorer / C sworn colonist + orbital covert / A with B's trigger as a second way in)
-2. What does Blackstar's quest ask of you? (capture a named mark / deliver a salvage item / free a Mandalorian prisoner / give a colonist to the Creed)
-3. Where is the Armorer? (a covert on the surface / she visits your colony / an orbital covert by gravship)
-4. What does a reforge return? (same beskar mass as gear of your choice, less a 1-in-5 tithe / same mass, no tithe / a fixed menu of Mandalorian pieces)
-5. How often? (any number of visits / once per game / once per Blackstar quest)
-6. What does smelting beskar yield? (steel + steel slag / steel + durasteel slag / slag only)
-7. If the Armorer is harmed? (quest fails and Blackstar hunts you at max Heat / quest fails, nothing else / the covert is lost for good)
+### 5.3 What goes, and where it is tracked
 
+- **The Armoury's `kotor_IngotBeskar_recipe`** (3 raw beskar → ingot at a colony smelter,
+  `src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Metals2.xml`)
+  is **removed**, and beskar mining routes yield nothing. Both are **`CANON_MATERIALS_BUILD_1` L7**, not this
+  item (`MATERIAL_MERGES_CLEANUP_1` does not list them). Patch 1 above would block that recipe anyway; L7
+  deletes it so nothing dead is listed.
+
+## 6. Heat
+
+Heat today is **`src/RimMandrake/Utils/gm_blackboard_shadow.py`** (`GM_BLACKBOARD_SHADOW_M4_1`): a Python,
+shadow-mode Imperial Heat number fed by polled bridge reads, firing nothing. Blackstar's Heat-scaled raid
+weight (`design/Jawa/worldbuilding/faction_roster_v2.md` §Blackstar) is designed, not built. So this item does
+**not** build a heat system. It does two things:
+
+- **Records** heat in game: `RM_QuestNode_AddHeat` (and the harm rule) append `{tick, faction, amount, source}`
+  to a scribed `GameComponent` `RM_HeatEvents`, and a JawaBench read tool `jawa/heat_events` exposes it, so the
+  blackboard takes it as one more input. Amounts: route 2 success = **Large** (+30 on the blackboard's scale,
+  where `HEAT_HIGH_BAND` is 40); harm = **Max** for `Pirate`.
+- **Delivers the teeth now, in vanilla**: route 2's Empire pursuit raid (§4.2), and the harm rule's immediate
+  Blackstar raid (§2.3). When the Heat-scaled raid weights are built, they read `RM_HeatEvents` and these
+  one-off raids stay as the first blow.
+
+## 7. Mod Settings
+
+On/off: route 1, route 2, the harm rule's raid. Numbers: tribute (default 1 in 5), smelt steel ratio (1/3),
+route-2 earliest day (30) and refire (60), reveal delay (2–5 days). Defaults are the shipped behaviour. With the
+whole mod off, beskar is salvage and smelts normally.
+
+## 8. Checks for FOUNDRY
+
+- `python3 skills/rimworld-quests/scripts/validate_quest.py --dir src/RimUtinni/BeskarArmorer/Defs/QuestScriptDefs`
+  clean.
+- Deterministic triggers, never the storyteller: a debug action that releases a spawned
+  `RUT_Jawa_Blackstar_Heavy` prisoner (route 1), dev *Generate quest* for `RM_Quest_ImperialPrisonBreak`
+  (route 2).
+- Selftests (offline) for: beskar mass of a thing, melt count × 0.8, smelt replacement, the bill ingredient gate.
