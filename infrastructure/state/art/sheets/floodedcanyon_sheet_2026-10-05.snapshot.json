@@ -1,9 +1,9 @@
 {
  "biome": "RM_FloodedCanyon",
- "built": "2026-10-09T07:32:26-0700",
+ "built": "2026-10-09T23:25:46-0700",
  "census": "Transient/biome_ffar/census.json",
  "census_git_head": "8b1860f2e",
- "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 68 mods \u2014 a test list): 614 active",
+ "loadOrder": "live ModsConfig.xml: 565 active",
  "rows": {
   "AA_Murkling": {
    "columns": {
@@ -67,17 +67,23 @@
    "columns": {
     "A": {
      "single": "7e17bd9e8971910603fdb5dd606d48a2140b33e048d9e986e6ab99200f6b85bd"
+    },
+    "B": {
+     "single": "5768bfdc9cce031d873ee4e662284ac2e656e9a2b15a1356311cdf89266beed2"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Harrovaq/RM_Harrovaq"
+    "A": "Things/Plant/RM_Harrovaq/RM_Harrovaq",
+    "B": "Things/Plant/RM_Harrovaq/RM_Harrovaq"
    },
    "labels": {
-    "A": "IN GAME \u2014 FloodedCanyon"
+    "A": "IN GAME \u2014 FloodedCanyon",
+    "B": "render enact_eb31f5eb_harrovaq_v1"
    },
    "res": "Things/Plant/RM_Harrovaq/RM_Harrovaq",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "harrovaq"
   },
@@ -85,17 +91,29 @@
    "columns": {
     "A": {
      "single": "1bdfa086e56084c510399a540e8f23d3cc1d05d327c8a50e5abbd524b3715f97"
+    },
+    "B": {
+     "single": "26c7dcab9c2d0ac0d81c6ccc20d69dda10c8f5cb0c0140ba78764de1ddc88d19"
+    },
+    "C": {
+     "single": "3a1ee5e018640fc9c99102fd635ebaa2619ac1a615aca8c59688b26228eba69c"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Luqqim/RM_Luqqim"
+    "A": "Things/Plant/RM_Luqqim/RM_Luqqim",
+    "B": "Things/Plant/RM_Luqqim/RM_Luqqim",
+    "C": "Things/Plant/RM_Luqqim/RM_Luqqim"
    },
    "labels": {
-    "A": "IN GAME \u2014 FloodedCanyon"
+    "A": "IN GAME \u2014 FloodedCanyon",
+    "B": "render enact_080134bc_luqqim_v1",
+    "C": "render enact_d14c4f0b_luqqim_v2"
    },
    "res": "Things/Plant/RM_Luqqim/RM_Luqqim",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "luqqim"
   },
@@ -113,23 +131,38 @@
      "east": "8beab9075503d893a172c3bed26d535fd1a39f8aefa7e8b4c484acb2bba30e9f",
      "north": "925c943b83df1c59b6f32fbd643308a5669926212dfcef0fa3820eacbd676e2e",
      "south": "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925"
+    },
+    "D": {
+     "east": "2ce253dd2ccca19244d7f1f19d8c5d5c6143b61d82a6d798cef06b192a8846b7",
+     "north": "6ca5b0a1d048de33c1aa35cd7380eac35a4a900072ee7445a7beb22bc9126d2b",
+     "south": "6f8f8c6d887c6bcb9d697c09939e420d1dec33d56933a519f1eb8076c2137bcf"
+    },
+    "E": {
+     "east": "8beab9075503d893a172c3bed26d535fd1a39f8aefa7e8b4c484acb2bba30e9f",
+     "north": "925c943b83df1c59b6f32fbd643308a5669926212dfcef0fa3820eacbd676e2e"
     }
    },
    "graphic_of": {
     "A": "Things/Pawn/Animal/Thrumbo/Thrumbo",
     "B": "_byname",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname",
+    "E": "_byname"
    },
    "labels": {
     "A": "donor original \u2014 Vanilla Textures Expanded",
     "B": "render RM_Muttavaq_v2",
-    "C": "render RM_Muttavaq"
+    "C": "render RM_Muttavaq",
+    "D": "render enact_02b55f2e_muttavaq_v1",
+    "E": "render RM_Muttavaq"
    },
    "res": "Things/Pawn/Animal/Thrumbo/Thrumbo",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "muttavaq"
   },
@@ -137,17 +170,29 @@
    "columns": {
     "A": {
      "single": "72d1d12ecb77d67a28eab1c10055e6ce5a69c9fac5159ef92e626ce5de11c68c"
+    },
+    "B": {
+     "single": "f63f2c3cb100090d1f7b612e3dd9c54a75c1a0a21d0ad2357deae65d12beaa8f"
+    },
+    "C": {
+     "single": "b2d18e0dbf9f82e0e16a2ff2be70bc3d943efe306c48abc7d30376bdd98f4373"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Nabbuq/RM_Nabbuq"
+    "A": "Things/Plant/RM_Nabbuq/RM_Nabbuq",
+    "B": "Things/Plant/RM_Nabbuq/RM_Nabbuq",
+    "C": "Things/Plant/RM_Nabbuq/RM_Nabbuq"
    },
    "labels": {
-    "A": "IN GAME \u2014 FloodedCanyon"
+    "A": "IN GAME \u2014 FloodedCanyon",
+    "B": "render enact_688d4c1b_nabbuq_v2",
+    "C": "render enact_90c43f6c_nabbuq_v1"
    },
    "res": "Things/Plant/RM_Nabbuq/RM_Nabbuq",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "nabbuq"
   },
@@ -183,17 +228,29 @@
    "columns": {
     "A": {
      "single": "2ff584fc6c75553302667405c63042eb234d6995d5850c8a11f09a5054ec5171"
+    },
+    "B": {
+     "single": "abc2aaa862987c57479bdfbe7128126fbf65aef39179335ac9b652074fc5b4ca"
+    },
+    "C": {
+     "single": "7a918c5926d2c6d5e51f70f75d8cea02d50d94147b17e1e0f197e1564b1be86a"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Ruqqal/RM_Ruqqal"
+    "A": "Things/Plant/RM_Ruqqal/RM_Ruqqal",
+    "B": "Things/Plant/RM_Ruqqal/RM_Ruqqal",
+    "C": "Things/Plant/RM_Ruqqal/RM_Ruqqal"
    },
    "labels": {
-    "A": "IN GAME \u2014 FloodedCanyon"
+    "A": "IN GAME \u2014 FloodedCanyon",
+    "B": "render enact_154c12cf_ruqqal_v2",
+    "C": "render enact_38e46a04_ruqqal_v1"
    },
    "res": "Things/Plant/RM_Ruqqal/RM_Ruqqal",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "ruqqal"
   },
@@ -201,17 +258,29 @@
    "columns": {
     "A": {
      "single": "a91737ef9a82822106d3650eae34a85c8e4dddf9683a249fc157dc75a5736f6f"
+    },
+    "B": {
+     "single": "a2421ff2c91c3b95a21235250a29db2b8ed14aadbbad63f4dd763aa52d3dd095"
+    },
+    "C": {
+     "single": "a679fdec0e7f72e2e8cc29f8a9c6d713b9818953e2e6b620d905b6292d3c56c1"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Sevvuq/RM_Sevvuq"
+    "A": "Things/Plant/RM_Sevvuq/RM_Sevvuq",
+    "B": "Things/Plant/RM_Sevvuq/RM_Sevvuq",
+    "C": "Things/Plant/RM_Sevvuq/RM_Sevvuq"
    },
    "labels": {
-    "A": "IN GAME \u2014 FloodedCanyon"
+    "A": "IN GAME \u2014 FloodedCanyon",
+    "B": "render enact_70b1f8a2_sevvuq_v1",
+    "C": "render enact_f95acc37_sevvuq_v2"
    },
    "res": "Things/Plant/RM_Sevvuq/RM_Sevvuq",
    "reserved": [
-    "A"
+    "A",
+    "B",
+    "C"
    ],
    "subject_key": "sevvuq"
   },
@@ -236,7 +305,7 @@
     "A": "donor original \u2014 Vanilla Textures Expanded",
     "B": "render RM_Tarruq"
    },
-   "res": "Things/Pawn/Animal/Monkey/Monkey",
+   "res": null,
    "reserved": [
     "A",
     "B"
@@ -250,20 +319,32 @@
     },
     "B": {
      "single": "3e8a8759be42c6463f60b1332afe7de584caef33aee4f427c64040d2917601bb"
+    },
+    "C": {
+     "single": "9b558e88f01c8d59d0e80f6fa3cf6bc21acfa5ce249e101523d3564c775b1cfe"
+    },
+    "D": {
+     "single": "8541b85f1be9810464f5cc8dde5eaf94422ad3cd2b5cbdd43333a6e00397c059"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_TwistingThorngrass",
-    "B": "Things/Plant/RM_TwistingThorngrass"
+    "B": "Things/Plant/RM_TwistingThorngrass",
+    "C": "Things/Plant/RM_TwistingThorngrass",
+    "D": "Things/Plant/RM_TwistingThorngrass"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render gapfin_RM_TwistingThorngrass_v1"
+    "B": "render gapfin_RM_TwistingThorngrass_v1",
+    "C": "render enact_10c96cdf_twistingthorngrass_v1",
+    "D": "render enact_cf1eb3bf_twistingthorngrass_v2"
    },
    "res": "Things/Plant/RM_TwistingThorngrass",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D"
    ],
    "subject_key": "twistingthorngrass"
   },
@@ -274,20 +355,38 @@
     },
     "B": {
      "single": "17eceb1e8c16ae696ed58907dc2b96debc7935a45bd5846256814c171205dfc1"
+    },
+    "C": {
+     "single": "139c55c41feffce002892ea5e7ff3e5b6a17f8bb9ea9778d6f1789ca20854b7c"
+    },
+    "D": {
+     "single": "8267bcf2d606ec2c4b9a08a540917b51539a6dfdd88fb9e98a6e3c1decce6af0"
+    },
+    "E": {
+     "single": "af488075a6159dd96351fa336f2e518f7f4e91b226f4090c547e7054d51d8e65"
     }
    },
    "graphic_of": {
     "A": "Things/Plant/RM_TwistingThornweed",
-    "B": "Things/Plant/RM_TwistingThornweed"
+    "B": "Things/Plant/RM_TwistingThornweed",
+    "C": "Things/Plant/RM_TwistingThornweed",
+    "D": "Things/Plant/RM_TwistingThornweed",
+    "E": "Things/Plant/RM_TwistingThornweed"
    },
    "labels": {
     "A": "IN GAME \u2014 RimMandrake: Baroque Biomes",
-    "B": "render twistingthornweed_v1_r2"
+    "B": "render twistingthornweed_v1_r2",
+    "C": "render enact_546016b1_twistingthornweed_v1",
+    "D": "render enact_b39e17ba_twistingthornweed_v2",
+    "E": "render legacy_d52a8f4d_plant_twistingthornweed_v1"
    },
    "res": "Things/Plant/RM_TwistingThornweed",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "twistingthornweed"
   },
@@ -307,23 +406,29 @@
      "east": "002334271c134fad2ef45a535a24704e804366e0312ef574edc0d271ce162c71",
      "north": "3f7017b2e4a1cb51a0997b15604487ba29e12113543b3b48262109d7d4bbb033",
      "south": "97a9a1452b3ccd38a85e5a34b09fc3c11af66f1eacd315a46ba8512d883cdcd0"
+    },
+    "D": {
+     "east": "9e37b9df33f588c972a0d471be90a1124890d5ea238824b39bfe5be926d3fce3"
     }
    },
    "graphic_of": {
     "A": "Animal/RockTroll/RockTroll",
     "B": "Animal/RockTroll/RockTrollBaby",
-    "C": "_byname"
+    "C": "_byname",
+    "D": "_byname"
    },
    "labels": {
     "A": "IN GAME \u2014 Dark Ages : Beasts and Monsters",
     "B": "IN GAME \u2014 Dark Ages : Beasts and Monsters",
-    "C": "render RM_Uttaqar"
+    "C": "render RM_Uttaqar",
+    "D": "render enact_uttaqar_baby_7dc56b70_uttaqar_v1 \u2014 failed canon check"
    },
    "res": "Animal/RockTroll/RockTroll",
    "reserved": [
     "A",
     "B",
-    "C"
+    "C",
+    "D"
    ],
    "subject_key": "uttaqar"
   },
@@ -349,17 +454,23 @@
    "columns": {
     "A": {
      "single": "31e7292e9aa9e9774d706adf5b7d30be59db33b2be983eb798a793c3f53d086d"
+    },
+    "B": {
+     "single": "8ab283b93dac242f48bc605f5b2f07c7b2c34e1b06136aca1d941f0fdbe19e81"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Zennaq/RM_Zennaq"
+    "A": "Things/Plant/RM_Zennaq/RM_Zennaq",
+    "B": "Things/Plant/RM_Zennaq/RM_Zennaq"
    },
    "labels": {
-    "A": "IN GAME \u2014 FloodedCanyon"
+    "A": "IN GAME \u2014 FloodedCanyon",
+    "B": "render enact_1d929b27_zennaq_v1"
    },
    "res": "Things/Plant/RM_Zennaq/RM_Zennaq",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "zennaq"
   },
@@ -369,11 +480,6 @@
      "east": "97a030819d2a629c7419b54f806a768020bdd2baa16445ee19106bd4cdeb23c1",
      "north": "5b23c42aad8a407ecf29e7948a69b2d52a42cd8106ad4a81c62f356e825bd430",
      "south": "193f16ac5764c9485b1050d23f682d19af33e02bf0b95e69e6c36423c51dd1cf"
-    },
-    "B": {
-     "east": "f06b4b74efad7d965e74b673c5dc70e23e77b44ddd9fe091a2dc53d85fb5601d",
-     "north": "8ec5fd10caf8f5902276c15e267e078835d0283619d44d6b87993564343b0790",
-     "south": "7bf4d8fbe05e6458d98f3b7bc644cd6c4e3aa2103db463e0aeefa50222bd5b4c"
     },
     "C": {
      "1_east": "ee17d0f65a39265c235507311a4d037cd1c4b79fc6c3553a1c7fb013d22da0de",
@@ -392,12 +498,10 @@
    },
    "graphic_of": {
     "A": "swanimals/CanCell/CanCell",
-    "B": "swanimals/CanCell/CanCell",
     "C": "_flip:swanimals/CanCell/CanCell_Flying_"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render canon_cancell_v1",
     "C": "IN GAME \u2014 CanCell_Flying_"
    },
    "res": "swanimals/CanCell/CanCell",
@@ -503,20 +607,38 @@
     },
     "B": {
      "single": "7da23619f0b595334c4160294c46e4228a51cd8476a59a19a3c00066735d2f5d"
+    },
+    "C": {
+     "single": "8331db87e098f178b91e9b4f01d01a682343fa8006e212ecdb2b252d59bd4428"
+    },
+    "D": {
+     "single": "db9c6a751a84685cbd71f7c81788ff9f1e3862f49fdb61da7de89e78874dd32a"
+    },
+    "E": {
+     "single": "7d1496f9d8933c8b3eb913af98838ca99700dd61b714b1ebd84c8706357abb2a"
     }
    },
    "graphic_of": {
     "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
-    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap"
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
+    "C": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
+    "D": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
+    "E": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap"
    },
    "labels": {
     "A": "IN GAME \u2014 SWBestiary",
-    "B": "render mantrap_improve_a_r7"
+    "B": "render mantrap_improve_a_r7",
+    "C": "render enact_4ec0d9cc_creature_mantrap_v3",
+    "D": "render enact_a7139488_creature_mantrap_v1",
+    "E": "render enact_f889cf2f_creature_mantrap_v2"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MantrapCreature/Mantrap",
    "reserved": [
     "A",
-    "B"
+    "B",
+    "C",
+    "D",
+    "E"
    ],
    "subject_key": "creature_mantrap"
   },
@@ -526,17 +648,25 @@
      "east": "03ba95e2744b017665c7808ce14e1dda41909e47a82756dcfd85e4502eb0855a",
      "north": "875547fc35bdd2dc6eda220f0da86406e5d9bf117ad93398068273cb198fdbd0",
      "south": "fce69d1735fc651f5030e6a26783ec6e55cd93f27f26e21934a643b61145bf57"
+    },
+    "B": {
+     "east": "6cbc4b796388c153dcc5a8c1d9fc4bf2f3a8eae42040818cc7314bdf3015bdb8",
+     "north": "d7f9e0db161bdd01c279592a796f51e81620840638902f951ad2b1d271635355",
+     "south": "15b3b3ef2e66105effa546faf1e7370ed5fd503764deac26302f4f8c5b076297"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Gornt/Gornt"
+    "A": "swanimals/Gornt/Gornt",
+    "B": "swanimals/Gornt/Gornt"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render enact_0ae79c6a_gornt_v1"
    },
    "res": "swanimals/Gornt/Gornt",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "gornt"
   },
@@ -546,17 +676,25 @@
      "east": "a2790f567690070fd77faf54dfe534df28dd826715c3b841a69ef3be21aa2bca",
      "north": "3bbef1389b7ab59c626f6e37993db45eb153311107352af9139d8bde845c3293",
      "south": "406f7891285e5de327b092ae1401f6b87a7762fa0d692be87a358980c76ed905"
+    },
+    "B": {
+     "east": "38443b91d00737824fd772d402caf561ed564b20c96f5f2047a34fb79ffb4159",
+     "north": "e28e377135c233be0fd1a5c6b0ea0c8ed13994682c1dbb2239f990ed3afbf841",
+     "south": "0e15dac3e552fdc438af68606d299b8ef5596a8f79b30c447bc63a81e28e8a0c"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea"
+    "A": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea",
+    "B": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render enact_5e098e7b_mutagenicnorphea_v1"
    },
    "res": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/MutagenicNorphea/MutagenicNorphea",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "mutagenicnorphea"
   },
@@ -566,17 +704,25 @@
      "east": "15716966a9bcf1110beb87170e53b3a01874f696738b043423df45987ca3b641",
      "north": "b8daeed8f484cb9f0b4429dec862333c29875cd0ff4451cd186cf3cdfbd3e4a7",
      "south": "4529bae6c1e65b12c61ee28f854e6d0bff20376988e5a40f2d0cd7ed9f360d1e"
+    },
+    "B": {
+     "east": "09d8c617b8b88db486d695bcfcbc3be2bc3039c6760ec603d483d23e2b27a6f5",
+     "north": "365ec9280543259a9b89f3b71097138362f6ccf2408bc4e368de4044b96f5467",
+     "south": "c2e7459b97be904d91d6bda3de549eb4be54d10e4251e1dc31f5db020045d8f3"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render enact_f4be0239_sandleaper_v1"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandLeaper/SandLeaper",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "sandleaper"
   },
@@ -586,17 +732,25 @@
      "east": "bc6ad51af41659199083f62fe71a4d0e2ac8ca0acca05c2ac9661fcae5e8f13d",
      "north": "b7bd88a93528091ce425dd60112b75d3bbab49c28a0d82ea047224d46cb51976",
      "south": "77adf2e56b7a276a92efb870b941bed515ad7da8f3701e098bad54d8bb405c72"
+    },
+    "B": {
+     "east": "9fd15b4e16c9636d18a33ab6ecb8331220621b8a9510d2b1bdbfc442213a7d4e",
+     "north": "6b9f1164bb9b1ac3089dfe7a52f16ecc75222a6356ea5dc0f25d183b2fe53902",
+     "south": "022ddcc51e990c08b23c5f428a81aa4369938f02fd1e4b74a1ddbeac0407c206"
     }
    },
    "graphic_of": {
-    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar"
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render enact_0232cc80_sandpillar_v1"
    },
    "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/SandPillar/SandPillar",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "sandpillar"
   },
@@ -606,17 +760,25 @@
      "east": "4fbc5a837cbb5e75600f27dc7f379566ebb47f91fe61e07a1bea726901cdaefd",
      "north": "65b3c7b11712b1d1c1944d9118a9489017baf7ea120738497aa9d02ed67f3042",
      "south": "d56475fa9078e1308759e126d9b5aa58e2e00543989820a4442308183c9429f1"
+    },
+    "B": {
+     "east": "48867cc5da87547a2d09615f615881ad17efffbfe8c4e8d3679b8bf596ec59b9",
+     "north": "8c4dae5133f72ab2bb19428c5e7e9e00ee6cd24273a6d808f75b2572d962ace9",
+     "south": "092e8d9609c508f8d3b3f5eb33b740b08662cc4bf1ca8c7b5e70296b8751a41e"
     }
    },
    "graphic_of": {
-    "A": "swanimals/Woolamander/Woolamander"
+    "A": "swanimals/Woolamander/Woolamander",
+    "B": "swanimals/Woolamander/Woolamander"
    },
    "labels": {
-    "A": "IN GAME \u2014 SWBestiary"
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render enact_90d52757_woolamander_v1 \u2014 failed canon check"
    },
    "res": "swanimals/Woolamander/Woolamander",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "woolamander"
   },
@@ -626,17 +788,23 @@
      "east": "81eb20ba36c3818b00695129a973b8159c34f3cf4ed31799e0eb24260915e4ec",
      "north": "17c45c085dcea55749a53339b048c80a5f83fc361067b4f33f76601cd6b327b4",
      "south": "5f63030396b0f0a31ce7be3d5c9037df7baac36d3a4695d975c3c6604ef094ae"
+    },
+    "B": {
+     "east": "5fbb4188db3d7a6285268e464520b2662a7ca4e709b31c5adf4f01f67ef7500e"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture"
+    "A": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture",
+    "B": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches"
+    "A": "IN GAME \u2014 UtinniPatches",
+    "B": "render enact_a1894dc1_emperorvulture_v1 \u2014 failed canon check"
    },
    "res": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "emperorvulture"
   },
@@ -646,21 +814,29 @@
      "east": "ed99bc9e0a98d1c1084c2452d1edff277ada6e4dbfce72e00008d72dc7affbd0",
      "north": "fa039bb7e0069e78e62af058f2ece1fe59851c66273dc914fd1c500aca08fdcd",
      "south": "72b1a2a8c4f576cb9abc63c59808a2b380abe8a86955a19ffde53308aa26ea88"
+    },
+    "B": {
+     "east": "b6358fda56656551fac2647f349023fe7faa907cc00e773c0411d9e30edcdc1c",
+     "north": "2e5ad1fdc0a41b7b336d52e08eea49f963e0f1aa4de5c9a12adf1e019f01763c",
+     "south": "0d8a262a1b71e0ad081f453069b440ae38db071bdde679b8c0f9b1604e276458"
     }
    },
    "graphic_of": {
-    "A": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper"
+    "A": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper",
+    "B": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper"
    },
    "labels": {
-    "A": "IN GAME \u2014 UtinniPatches"
+    "A": "IN GAME \u2014 UtinniPatches",
+    "B": "render enact_15eaaf39_sealedsleeper_v1"
    },
    "res": "Things/Pawn/Animal/RUT_SealedSleeper/RUT_SealedSleeper",
    "reserved": [
-    "A"
+    "A",
+    "B"
    ],
    "subject_key": "sealedsleeper"
   }
  },
  "sheetId": "floodedcanyon_sheet_2026-10-05",
- "snapshotId": "39b81786e279194e"
+ "snapshotId": "dbe36c1fa3bcab24"
 }
