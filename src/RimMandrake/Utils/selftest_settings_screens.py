@@ -406,6 +406,41 @@ MODS = {
         "Changed on return": "Now",
         "Stage III: breaching a cistern": "Now",
     }, ()),
+    "Droidworks": ("Droidworks/RSW_DroidworksSettings.cs", "Droidworks/Droidworks.csproj", {
+        "Restraining bolts: breaks and resentment": "Now",
+        "Restraining bolts: fights and mood": "Now",
+        "Droids run on stored power (reload)": "NextGameStart",
+        "Power drain and charging": "Now",
+        "Ion hits shut a droid down": "Now",
+        "Droids blow up when destroyed": "Now",
+        "After a memory wipe": "Now",
+        "Wild droids": "Now",
+        "Salvage from a dead droid": "Now",
+        "Droids become people": "Now",
+        "Protocol droids and trade": "Now",
+        "Hutt captives (next stock)": "NextPulse",
+    }, ()),
+    "GizkaStowaway": ("RSW_GizkaSettings.cs", "RimMandrakeGizkaStowaway.csproj", {
+        "Gizka stowaway events": "Now",
+        "Discovery": "Now",
+        "The turn: breeding and cap": "Now",
+        "The turn: chewing and guilt": "Now",
+        "The creature itself (every gizka)": "Now",
+    }, ()),
+    "Sarlacc": ("RSW_SarlaccSettings.cs", "Sarlacc.csproj", {
+        "Stage I to II: rooting in play": "Now",
+        "Stage II: the anchored sarlacc's tithe": "Now",
+        "The swimmer's road (Long Shade)": "Now",
+        "The swimmer comes to root (Stillsand)": "Now",
+        "Changed on return": "Now",
+        "Stage III: breaching a cistern": "Now",
+    }, ()),
+    "UtinniPatches": ("UtinniPatchesSettings.cs", "RimMandrake.Utinni.UtinniPatches.csproj", {
+        "Shrine guardians (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Geothermal density (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "Ores in new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",
+        "World-map icon and flame statue (restart)": "NextGameStart",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
