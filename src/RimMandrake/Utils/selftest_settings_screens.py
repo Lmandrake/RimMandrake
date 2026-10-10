@@ -903,6 +903,11 @@ MODS = {
         "Growth timing": "Now",
         "Radius caps (locked when an oasis-maker's quality locks)": "NextPulse",
     }, ()),
+    "MovingDunes": ("MovingDunesSettings.cs", "RimMandrake_MovingDunes.csproj", {
+        "Dune drift": "Now",
+        "Burial, plants and announcements": "Now",
+        "Shovelled drift": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
