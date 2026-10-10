@@ -56,6 +56,8 @@
 
   <ItemGroup>
     <Compile Include="RM_BlueDesertMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="RM_BlueDesertWeatherTable.cs" />
     <Compile Include="BlueDesertLife.cs" />
     <Compile Include="RM_VhaulkDetonation.cs" />
