@@ -122,3 +122,124 @@
 **Open:** none
 <sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
 
+### Vanilla Skills Rexamined (`gravenwitch.vsrexamined`)
+**Verdict:** ELIMINATE-COMPLETELY (MEASURED) · **Fit:** dissonant · **Source:** none (steam-only, None)
+**Adds:** content: 5 StatDefs only (defs_by_type) / functionality: XML patch of Vanilla Skills Expanded: 105 patch ops rebalance and condense expertise (stat offsets); no code / art: 1 image
+**Why:** The owner already ruled it retired together with Survival Tools Reborn on 2026-09-11 (STAT_NORM_WAVE3_RETIRE_1: "retire gravenwitch.VSRexamined ... TOGETHER"), and the audit measured it save-clean (0 placed; it declares only 5 StatDefs, no ThingDefs). Yet it is still in FULL.LATEST at position 355, so either the retirement was never executed on this list or it was re-added. It rebalances a VSE expertise ladder, a parallel progression system (brief section 2 anti-exponential), and declares itself incompatible with zlj.staticqualityplus and imranfish.madderskills. Nothing depends on it (dependants empty); its StatDefs are not inherited (no ParentName risk).
+**Problems:** memory 1 (texture_decoded_mb_est 1.9 MB (INFERRED header proxy, 1 textures)) · size 1 (disk_mb 0.14) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** nothing (dependants empty); save placement: 0 as of CANONICAL_ASHKARR_2026-09-09 per STAT_NORM_WAVE3_RETIRE_1 (stale save, re-check) -> None
+**Open:** Why is a ruled-retired mod still on the 550 list? Check whether ModsConfig was reverted by a later list rebuild.
+**Needs owner:** You retired Vanilla Skills Rexamined on 2026-09-11 but it is back on the full list. Should it be unticked again, or did you want it back?
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### VehicleRaid Framework (`gabrieel1482.raidvehicleframework`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: 20 defs: DutyDef 13, JobDef 3, GenStepDef 1, SoundDef 1, ThingDef 1, Vehicles.AirdropDef 1 / functionality: Harmony DLL (comp_tick, map_component_tick flags): lets other mods add raids that arrive in vehicles; needs Vehicle Framework / art: 2 images
+**Why:** The owner pre-committed (V2_DREAMS.md section 0b, 2026-08-12): "The point is to be able to have enemies use these against us in raids. If they can't or won't, then these three mods should be dropped." The test is unresolved there, and VRF_SettlementVehicleDef was empty in the dump. Nothing in the universe depends on it (dependants empty) and no mod of ours references it. It stays only until that binary test is run.
+**Problems:** memory 1 (texture_decoded_mb_est 6.4 MB (INFERRED header proxy, 2 textures)) · size 1 (disk_mb 1.14) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 2 (dll_count 1, flags ['comp_tick', 'harmony', 'map_component_tick', 'settings_screen'], static_ctors 4) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) · tps 1 (tick flags comp_tick, map_component_tick on a framework that adds raids) (U = unmeasured)
+**Holds it in / exit:** V2_DREAMS.md section 0b open test; dependency of nothing -> unfiled: RAID_VEHICLES_DO_ENEMIES_USE_THEM_1
+**Open:** Run V2_DREAMS 0b checks: does any live PawnKind or faction pawnGroupMaker use a vehicle?
+**Needs owner:** Your 2026-08-12 test says drop the vehicle-raid mods if enemies never use vehicles against us. Has anyone shown that they do? If not, drop VehicleRaid Framework (and Vehicle Framework with it?).
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Wing's Meaningful Parties (`winggar.meaningfulparties`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** https://github.com/benjaminiserman/MeaningfulParties (github, MIT)
+**Adds:** content: 119 PartyCauseDefs / functionality: Harmony DLL (world_component_tick): colonists throw parties for birthdays, raid survival, settling a tile, brewing etc without changing party frequency; 3 patch ops / art: 1 image, 0.7 MB est
+**Why:** Our mods write to its def type heavily: patched_by mandrake.rut.pawnflavor 110, mandrake.rm.biomes 27, mandrake.rsw.patches 23, plus gravtide and lightsaber mods (patched_by_ours_refs 166). It supplies reasons-to-party flavour we do not intend to rebuild, and several reasons (settling a new tile, surviving a raid) read as expedition life. MIT source verified on GitHub, last push 2025-08-12; 0 log errors.
+**Problems:** memory 1 (texture_decoded_mb_est 0.7 MB (INFERRED header proxy, 1 textures)) · size 1 (disk_mb 0.27) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 2 (dll_count 1, flags ['harmony', 'world_component_tick'], static_ctors 0) · tps 1 (tick flags ['world_component_tick']; per-mod TPS UNMEASURED) · interaction 2 (patched_by_ours_refs 166) (U = unmeasured)
+**Holds it in / exit:** 166 xpath refs from our mods (pawnflavor 110, biomes 27, rsw.patches 23) -> None
+**Open:** none
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Wirehead Style (`tleno.wireheadstyle`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** resonant · **Source:** none (steam-only, None)
+**Adds:** content: 28 defs: ThingStyleDef 25, ThingDef 2, StyleCategoryDef 1 / functionality: XML only; Ideology style category with exposed-cable techno-cultist looks / art: 68 textures, 1.9 MB disk, 18.7 MB est
+**Why:** The look (exposed cables, piles of electronics, post-apocalyptic techie) is a very good match for Jawa junk-tech. But it is all style art, donor art is not kept (brief section 2, vanilla counts as donor), so the exit is our own style set. No reference to it exists in src/, so whether any Utinni ideoligion actually picks this style is UNMEASURED.
+**Problems:** memory 1 (texture_decoded_mb_est 18.7 MB (INFERRED header proxy, 68 textures)) · size 1 (disk_mb 1.89) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** nothing found referencing it in src/ -> unfiled: UTINNI_IDEO_STYLE_OWN_ART_1
+**Open:** Does the frozen Jawa ideoligion use Wirehead style? Check the save/ideo definition.
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### [BTD] Gravship Blueprints (`btd.remix.gravshipblueprints`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: 27 defs: ThingDef 10, HistoryEventDef 3, QuestScriptDef 3, SitePartDef 3, IncidentDef 2, ScenPartDef 2 / functionality: Harmony DLL (game/map component ticks, settings): a Save Ship button on the pilot console, a scenario that starts with a saved gravship, downed-gravship quest sites and an endgame gravship salvage site / art: 40 textures, 44 MB disk, 177 MB est
+**Why:** The campaign's gravship is one fixed Rakatan ship delivered in the savegame; ship blueprints, extra downed gravships to salvage and a start-with-your-saved-ship scenario compete with that (brief section 1, flight hardware ships unbuilt). It is held in by our patches: BTDGravshipQuest_GrammarFix (mandrake.rm.patches 1; a validation walk exists) and a Droidworks distress-call repoint that is a no-op because guy762.KotORDroids is not in the facts (rsw.droidworks 2), and by a third-party dependant btd.gbp.shippack.kotor.vge. The Save Ship function may be useful for authoring.
+**Problems:** memory 2 (texture_decoded_mb_est 177.1 MB (INFERRED header proxy, 40 textures)) · size 2 (disk_mb 44.29) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 2 (dll_count 1, flags ['game_component_tick', 'harmony', 'map_component_tick', 'settings_screen'], static_ctors 4) · tps 1 (tick flags ['game_component_tick', 'map_component_tick']; per-mod TPS UNMEASURED) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) · interaction 2 (patched_by mandrake.rsw.droidworks 2, mandrake.rm.patches 1) (U = unmeasured)
+**Holds it in / exit:** mandrake.rm.patches BTDGravshipQuest_GrammarFix; mandrake.rsw.droidworks BTD_DistressCall_Repoint (inert without KotORDroids); dependant btd.gbp.shippack.kotor.vge (third party) -> unfiled: GRAVSHIP_BLUEPRINT_QUEST_SITES_DECIDE_1
+**Open:** Are the 3 QuestScriptDefs wanted as scavenging content or do they dilute the one-ship premise?
+**Needs owner:** This mod lets players save their gravship as a blueprint and finds other downed gravships to salvage. Should the campaign have any gravship other than the Utinni, or should these quests be cut?
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### [NL] Facial Animation - Experimentals (`nals.facialanimationexperimentals`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: 93 defs: FaceAnimationDef 49, LidTypeDef 7, EyeballTypeDef 6, MouthShapeDef 5, SkinTypeDef 5, BrowTypeDef 3, ... / functionality: XML only; the human-race half of [NL] Facial Animation, with textures and definitions for new features; 4 patch ops / art: 359 textures, 1.95 MB disk, 476 MB est
+**Why:** Animated faces are core to the look (owner rule: cosmetic changes can break animated faces, so ask first), and this is the human-race content of Facial Animation, patched by vanillaexpanded.vtexe.facialanims (7), memegoddess.giddyup (5) and others. But the Jawa and Star Wars pawns use their own head sets (MandrakePatches HeadSetForFA_Revive, SW_HeadTypes), so the human texture set matters mainly for non-Jawa pawns. Cost is the 476 MB decoded-texture proxy (INFERRED).
+**Problems:** memory 3 (texture_decoded_mb_est 476.1 MB (INFERRED header proxy, 359 textures)) · size 1 (disk_mb 1.95) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** patched by vtexe.facialanims 7, giddyup 5, complexjobs 2 and others; depends on nals.facialanimation -> unfiled: FACIAL_ANIMATION_HEADSET_AUDIT_1
+**Open:** Which of the 8 Facial Animation add-ons in this batch are actually reached by a pawn in the campaign?
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Character Editor Retextured (`neronix17.retexture.charactereditor`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: none (def_total 0) / functionality: retextures the UI of Character Editor; no code / art: 49 images, 1.1 MB disk, 85 MB est
+**Why:** UI skin for void.charactereditor (list position 87), an authoring/cheat tool whose own verdict belongs to its batch. Pure UI art passes the pillars trivially (brief section 4 test 4) but exists only as long as Character Editor does. Nothing depends on it.
+**Problems:** memory 2 (texture_decoded_mb_est 85.4 MB (INFERRED header proxy, 49 textures)) · size 1 (disk_mb 1.11) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** depends on Character Editor staying -> unfiled: CHARACTER_EDITOR_VERDICT_FOLLOW_1
+**Open:** Follow the Character Editor verdict.
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Fortifications - Industrial (`aoba.fortress.industrial`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** none (steam-only, None)
+**Adds:** content: 111 defs: ThingDef 53, TerrainDef 13, RecipeDef 12, ResearchProjectDef 6, SoundDef 6, FleckDef 4 / functionality: XML only; fortification walls, defences and terrain; 64 patch ops into Core, VFE Architect and VQE Ancients / art: 460 textures, 15.5 MB disk, 361.7 MB est
+**Why:** Static fortifications are a camp-defence tool (land, camp loop; brief section 1) and fit qualitative defence rather than an arms race. Our ResearchRetag retags its research (patched_by researchretag 28, armoury 2), so it is wired into the campaign research tree; the prior pass recorded a documented adoption reason. The memory proxy is the cost: 361.7 MB est (INFERRED, severity 3).
+**Problems:** memory 3 (texture_decoded_mb_est 361.7 MB (INFERRED header proxy, 460 textures)) · size 1 (disk_mb 15.46) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) · interaction 2 (patched_by researchretag 28, armoury 2) (U = unmeasured)
+**Holds it in / exit:** mandrake.rut.researchretag 28 refs; mandrake.rsw.armoury 2 refs -> None
+**Open:** Is 361 MB of decoded art justified by actual use? Not measured.
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Makeshift: Re-Examined (`smxrez.makeshiftreexamined`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** resonant · **Source:** https://github.com/Smxrez/Makeshift-ReExamined (github-search, )
+**Adds:** content: 2 ThingDefs / functionality: XML rebalance of Vanilla Weapons Expanded - Makeshift (22 patch ops on 21 ThingDefs) / art: 2 images
+**Why:** Makeshift weapons are junk-built scavenger gear (resonant), but this mod only rebalances VWE-Makeshift (vanillaexpanded.vwems, list position 358), whose own verdict is in the weapons batch; weapons are being absorbed into the RSW Armoury (brief section 3). It lives or dies with its parent. Source repo is a name match (github-search INFERRED).
+**Problems:** memory 1 (texture_decoded_mb_est 4.8 MB (INFERRED header proxy, 2 textures)) · size 1 (disk_mb 0.46) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) (U = unmeasured)
+**Holds it in / exit:** hard dependency on vanillaexpanded.vwems -> unfiled: WEAPON_DONOR_REBALANCE_FOLLOW_PARENT_1
+**Open:** Follow the vanillaexpanded.vwems verdict in batch 11.
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### More Ritual Rewards (`sinnamon.moreritualrewards`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** https://github.com/ahls/RimworldRitualExpansion (github, None)
+**Adds:** content: 22 defs: RitualAttachableOutcomeEffectDef 16, GameConditionDef 4, IncidentDef 1, WeatherDef 1 / functionality: two DLLs with Harmony: extra Ideology ritual outcome rewards including game conditions and a weather; 4 patch ops (Improved Insectoids and Precepts and Memes gated) / art: 1 image
+**Why:** Rituals carry doctrine, so extra reward outcomes touch our own ritual design; four GameConditionDefs and a WeatherDef are not content I could read in detail here, so their effect on weather pressure and rewards is UNVERIFIED. Upstream source is stale (last push 2021-09-08) and ships 6 .cs in the folder. Hold it only until our doctrine mod defines its own ritual outcomes.
+**Problems:** memory 1 (texture_decoded_mb_est 1.2 MB (INFERRED header proxy, 1 textures)) · size 1 (disk_mb 2.19) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 3 (dll_count 2, flags ['harmony'], static_ctors 1) · tps U (per-mod TPS UNMEASURED; no tick flag in the DLL) · maintenance 3 (upstream repo last push 2021-09-08) (U = unmeasured)
+**Holds it in / exit:** no dependants -> unfiled: RITUAL_REWARDS_OWN_SET_1
+**Open:** Read the 4 GameConditionDefs and the WeatherDef: do they add free benefits?
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Vanilla Mining Outpost Patch (`kuhlyus.modpatch.vanillaoutpost`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: none / functionality: XML patch adding ores from other mods to Vanilla Outposts Expanded mining outposts (21 patch ops on 19 WorldObjectDefs) / art: 2 images
+**Why:** Only useful if Vanilla Outposts Expanded stays (list position 346; its verdict is in batch 7), and most of the ore mods it targets (Gemstones, MorrowRim Adamantium, Obsidia, Kraltech, Starbound ...) are patch_findmod_names that are not among the mods I could confirm in the facts. Outposts as passive income conflict with the no-automation pillar (brief section 2), unverified. Nothing depends on it.
+**Problems:** memory 1 (texture_decoded_mb_est 2.1 MB (INFERRED header proxy, 2 textures)) · size 1 (disk_mb 0.53) · log_noise 1 (0 error occurrences / 0 distinct, chatter 1 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** depends on vanillaexpanded.outposts -> unfiled: OUTPOST_PATCHES_FOLLOW_PARENT_1
+**Open:** Which of its 13 target mods are actually in the list? Not measured.
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Alpha Animals Patch for Outposts Mines (`daria40k.alphaanimalspatchoutposts`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** https://github.com/Daria40K/Alpha-Animals-Patch-for-Outposts-Mines (github-search, )
+**Adds:** content: none / functionality: XML patch adding Alpha Animals sky steel ore to Vanilla Outposts mines (2 patch ops on 1 WorldObjectDef) / art: 1 image
+**Why:** Held only by two donors that are on the sunset track: Alpha Animals is the main absorption job (72 of 128 donor rows; donor_retirement_plan_2026-10-02 section 1) and Outposts may go. When Alpha Animals leaves, sky steel disappears and this patch is dead weight. Source link is a name match, UNVERIFIED.
+**Problems:** memory 1 (texture_decoded_mb_est 1.1 MB (INFERRED header proxy, 1 textures)) · size 1 (disk_mb 0.2) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) (U = unmeasured)
+**Holds it in / exit:** depends on sarg.alphaanimals and vanillaexpanded.outposts -> unfiled: ALPHA_ANIMALS_RETIRE_TAIL_PATCHES_1
+**Open:** Delete in the same change that retires Alpha Animals.
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Ancient Ruins All Deconstructible (`meteores.ancienturbanruinsalldeconstructible.aurad`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None)
+**Adds:** content: none (def_total 0) / functionality: XML only: 48 patch ops that make almost everything in Ancient Urban Ruins deconstructible from outside / art: 1 image
+**Why:** Two owner-side documents say cut: forbidden_mods.md lists it as the exact inverse of the exploration rule (it lets you strip ruins from outside without entering) and ancient_ruins_mod_audit.md (ANCIENT_RUINS_MOD_AUDIT_1, 2026-10-03) recommends cutting the whole family because the content (mall maps, firearms, LEGO loot) is "not very Star Wars at all". Retirement cost: it patches only defs of xmb.ancienturbanruins.mo (patches_mods), has one third-party dependant (the Hit Point mod, same verdict), no ParentName exposure (no defs of its own), and placed ruins in the current save are UNMEASURED.
+**Problems:** memory 1 (texture_decoded_mb_est 4.7 MB (INFERRED header proxy, 1 textures)) · size 1 (disk_mb 0.54) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** dependant meteores.ancienturbanruinsvanillaloot.aurvl -> None
+**Open:** forbidden_mods.md also says to use the Hit Point mod instead of AURAD, while Hit Point declares AURAD as a dependency: which document stands?
+**Needs owner:** Two earlier notes disagree about the Ancient Urban Ruins family: one says keep the Hit Point mod and forbid All Deconstructible; the 2026-10-03 audit says cut all three. Which stands?
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
