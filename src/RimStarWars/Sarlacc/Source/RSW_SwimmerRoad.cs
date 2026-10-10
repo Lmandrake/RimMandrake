@@ -62,6 +62,70 @@ namespace RimMandrake.StarWars.Sarlacc
         public float seepScoreRadius = 6.9f;
     }
 
+    /// <summary>
+    /// LONGSHADE_BEDAZZLE_MECHANICS_1, owner decision 2026-10-10 (question card): the sand-lock
+    /// (RM_SandLockCondition) also halts the young sarlacc swimmer on its road or seep walk until the
+    /// condition ends. Gated by CreatureBehaviors' sandLockEffectsEnabled via RM_ConditionGround.SandLocked
+    /// (which tests the swimmer's own cell, so a lock on sand holds it). Readable, never silent: a one-time
+    /// message when it stalls and again when it moves on, plus churned dust at its cell while stalled.
+    /// Numbers (wait/puff cadence) are PROVISIONAL.
+    /// </summary>
+    public static class RSW_SandLockHalt
+    {
+        public const int WaitTicks = 250; // PROVISIONAL
+
+        public static bool Halted(Pawn pawn)
+        {
+            return pawn != null && pawn.Spawned && RSW_MapComponent_SwimmerRoad.CreatureBehaviorsActive && SandLockedHere(pawn);
+        }
+
+        // Separate method so the CreatureBehaviors types are only touched when that mod is active.
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+        private static bool SandLockedHere(Pawn pawn)
+        {
+            return RM_ConditionGround.SandLocked(pawn.Position, pawn.Map);
+        }
+
+        public static Job WaitJob()
+        {
+            Job job = JobMaker.MakeJob(JobDefOf.Wait, WaitTicks);
+            job.expiryInterval = WaitTicks;
+            job.checkOverrideOnExpire = true;
+            return job;
+        }
+
+        /// <summary>Slow tick (every 250): stall a moving swimmer, throw the sign, announce stall and release once each.</summary>
+        public static void Tick(RSW_MapComponent_SwimmerRoad road)
+        {
+            Pawn s = road.swimmer;
+            bool halted = Halted(s);
+            if (halted)
+            {
+                if (s.pather != null && s.pather.Moving)
+                {
+                    s.jobs?.EndCurrentJob(JobCondition.InterruptForced);
+                }
+                for (int i = 0; i < 2; i++)
+                {
+                    FleckMaker.ThrowDustPuffThick(s.DrawPos + new Vector3(Rand.Range(-0.4f, 0.4f), 0f, Rand.Range(-0.4f, 0.4f)),
+                        s.Map, 1.0f + 0.3f * s.BodySize, new Color(0.7f, 0.62f, 0.45f, 0.8f));
+                }
+                if (!road.sandLockHalted)
+                {
+                    road.sandLockHalted = true;
+                    Messages.Message("The sand packs hard and the sarlacc swimmer stalls, lying still beneath it.",
+                        new LookTargets(s), MessageTypeDefOf.NeutralEvent, false);
+                }
+            }
+            else if (road.sandLockHalted && s != null && s.Spawned)
+            {
+                road.sandLockHalted = false;
+                Messages.Message("The sand loosens and the sarlacc swimmer moves on.",
+                    new LookTargets(s), MessageTypeDefOf.NeutralEvent, false);
+            }
+        }
+    }
+
     public class RSW_MapComponent_SwimmerRoad : MapComponent
     {
         private const int CheckIntervalTicks = 250;
@@ -75,6 +139,9 @@ namespace RimMandrake.StarWars.Sarlacc
 
         /// <summary>STILLSAND_EVENT_CREATURES_REMAINDER_1: this swimmer is walking to a buried seep, not a dew ring.</summary>
         public bool seepMode;
+
+        /// <summary>True while the sand-lock has the swimmer stalled (so the stall and release are each announced once).</summary>
+        public bool sandLockHalted;
 
         public RSW_MapComponent_SwimmerRoad(Map map)
             : base(map)
@@ -111,6 +178,7 @@ namespace RimMandrake.StarWars.Sarlacc
             Scribe_Values.Look(ref targetCell, "rswRoadTarget", IntVec3.Invalid);
             Scribe_Values.Look(ref incidentDefName, "rswRoadIncident");
             Scribe_Values.Look(ref seepMode, "rswRoadSeepMode", false);
+            Scribe_Values.Look(ref sandLockHalted, "rswRoadSandLockHalted", false);
         }
 
         // §6.3 "What you hear": the swimmer's under-sand grinding. Vanilla Anomaly FleshbeastDigging (a sustainer)
@@ -159,6 +227,7 @@ namespace RimMandrake.StarWars.Sarlacc
                 }
                 return;
             }
+            RSW_SandLockHalt.Tick(this);
             if (seepMode)
             {
                 if (RSW_SarlaccSettings.swimmerSeepEnabled)
@@ -243,6 +312,11 @@ namespace RimMandrake.StarWars.Sarlacc
                 return null;
             }
             RSW_MapComponent_SwimmerRoad seepRoad = RSW_MapComponent_SwimmerRoad.For(pawn.Map);
+            // Owner 2026-10-10: the sand-lock halts the road/seep swimmer too (readable: see RSW_SandLockHalt).
+            if (seepRoad != null && seepRoad.IsRoadSwimmer(pawn) && RSW_SandLockHalt.Halted(pawn))
+            {
+                return RSW_SandLockHalt.WaitJob();
+            }
             if (seepRoad != null && seepRoad.seepMode && seepRoad.IsRoadSwimmer(pawn))
             {
                 // Seep incident: needs no shade graph and no Creature Behaviors.
