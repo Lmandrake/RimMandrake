@@ -243,3 +243,206 @@
 **Needs owner:** Two earlier notes disagree about the Ancient Urban Ruins family: one says keep the Hit Point mod and forbid All Deconstructible; the 2026-10-03 audit says cut all three. Which stands?
 <sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
 
+### Utility Columns (`nephlite.orbitaltradecolumn`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** https://github.com/RealTelefonmast/UtilityColumns (github-search, gpl-3.0)
+**Adds:** content: 36 defs: ThingDef 29 columns, ResearchProjectDef 3, TerrainDef 3, RWCSettingsDef 1 / functionality: two DLLs with Harmony (comp_tick, comp_tick_rare, 5 static ctors): roof-holding utility columns incl. lamp and crystal columns; 9 patch ops into Royalty and Ideology / art: 177 textures, 15.7 MB disk, 81 MB est
+**Why:** Columns that hold up roofs and light rooms are useful aboard, but our mods are wired to it: ResearchRetag retags its research (OrbitalTradeColumnRes goes to RUT_Tree_Workshop; patched_by researchretag 16) and Armoury patches it 5 times. The 6 furniture-register rows are lighting/grave art under owner art review (none cut), and donor art is not kept (brief section 2). Source link is a name match to RealTelefonmast/UtilityColumns (GPL-3.0, last push 2024-05-13, over 2 years), UNVERIFIED as this mod's repo.
+**Problems:** memory 2 (texture_decoded_mb_est 81.0 MB (INFERRED header proxy, 177 textures)) · size 1 (disk_mb 15.72) · log_noise 1 (0 error occurrences / 0 distinct, chatter 1 in the 550-mod session) · complexity 3 (dll_count 2, flags ['comp_tick', 'comp_tick_rare', 'harmony'], static_ctors 5) · tps 1 (tick flags ['comp_tick', 'comp_tick_rare']; per-mod TPS UNMEASURED) · interaction 2 (patched_by mandrake.rut.researchretag 16, mandrake.rsw.armoury 5) · maintenance 3 (nearest matched repo last pushed 2024-05-13 (>2 years); match unverified) (U = unmeasured)
+**Holds it in / exit:** researchretag 16 refs, armoury 5 refs -> unfiled: UTILITY_COLUMNS_ART_OWN_OR_CUT_1
+**Open:** none
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Genetic Biotech for Facial Animation (`sd.fa.geneticheadsbiotech`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: 7 defs: HeadTypeDef 5, LidTypeDef 2 / functionality: XML only; extra Facial Animation head types for Biotech genes (fur-covered, gaunt, heavy jaw variants, gray/red eyes) / art: 117 textures, 0.8 MB disk, 132.9 MB est
+**Why:** Companion to the Genetic Heads Framework (sd.fa.geneticheadsframework, list position 394). Which pawns use these head types is UNMEASURED, and head sets are what our HeadSetForFA_Revive patch has to keep alive for Facial Animation; removing a head set under a placed pawn risks a missing-face error. Hold it until the head-set audit says which races the campaign actually draws.
+**Problems:** memory 2 (texture_decoded_mb_est 132.9 MB (INFERRED header proxy, 117 textures)) · size 1 (disk_mb 0.83) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** depends on the Genetic Heads Framework staying; pawn placement UNMEASURED -> unfiled: FACIAL_ANIMATION_HEADSET_AUDIT_1
+**Open:** Which Biotech xenotype in the campaign draws fur-covered heads?
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Genetic Mods for Facial Animation (`sd.fa.geneticheadsmods`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: 0 own defs; 8 patch ops; LoadFolders gates per mod / functionality: XML plus textures: head, eye, lid and mouth sets for other mods, loaded per LoadFolders only when the named mod is active (VRE Genie/Phytokin/Saurid, Faun, Bone Reapers, Profaned, ERN races, Star Wars Xenotypes) / art: 809 textures, 6.4 MB disk, 1057 MB est before LoadFolders gating (INFERRED upper bound)
+**Why:** The 1,057 MB figure is an upper bound: LoadFolders.xml (opened) loads each pack only if its host mod is active, and in the facts VRE Genie, Phytokin, Saurid, Alpha Genes and Big and Small are active while guy762.StarWarsXenotypes, Faun, Profaned, Bone Reapers and the Erin races are not found, so the Star Wars heads in this pack (Gungan, Ithorian, Mon Cal, Rodian, Wookiee, Tusken, Hutt mouth ...) appear to be inert today (INFERRED). It stays while those VRE races remain; if the VRE races go, so does this.
+**Problems:** memory 3 (texture_decoded_mb_est 1057.3 MB (INFERRED header proxy, 809 textures)) · size 1 (disk_mb 6.37) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** hosts: vanillaracesexpanded.genie, .phytokin, .saurid, sarg.alphagenes, redmattis.bigsmall.core -> unfiled: FACIAL_ANIMATION_HEADSET_AUDIT_1
+**Open:** Confirm guy762.StarWarsXenotypes absence in the live ModsConfig (facts universe lacks it).
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Reel's Facial Animation Textures (`reel.facialanims`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None)
+**Adds:** content: 23 defs: MouthTypeDef 9, EyeballTypeDef 7, LidTypeDef 7 / functionality: XML only; six custom vanilla-style eye/mouth textures "based on Roblox faces", for [NL] Facial Animation with VTE and EyeGenes2 / art: 422 textures, 2.1 MB disk, 559.7 MB est
+**Why:** Stylistically a cartoon face source (its own description names Roblox faces), which sits poorly with the matte natural-history register (brief section 2). But pawns in the save may carry its eye/mouth defs, and cosmetic changes to animated faces need the owner's permission first, so it cannot simply go. Dependant: sd.fa.reelsadjustments. Hold until the head-set audit.
+**Problems:** memory 3 (texture_decoded_mb_est 559.7 MB (INFERRED header proxy, 422 textures)) · size 1 (disk_mb 2.08) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** dependant sd.fa.reelsadjustments (third party); pawn placement UNMEASURED -> unfiled: FACIAL_ANIMATION_HEADSET_AUDIT_1
+**Open:** none
+**Needs owner:** Several Facial Animation add-ons give pawns cartoon, anime or Roblox-style faces (Reel, Danzinagri, parts of the Genetic Heads packs). Which face styles are acceptable for pawns in this campaign: only vanilla and our own, or are these fine?
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Adjustments for Reel's Facial Animation Textures (`sd.fa.reelsadjustments`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None)
+**Adds:** content: none / functionality: texture-only patch shifting Reel's female eyes and some mouths; no code / art: 179 textures, 22.6 MB disk, 247 MB est
+**Why:** Moves the placement of someone else's art (author says "I made none of the art"; will take it down if Reel asks). It lives and dies with reel.facialanims, so its verdict follows that one. Re-hosted third-party art is a licence/availability risk (maintenance).
+**Problems:** memory 2 (texture_decoded_mb_est 247.3 MB (INFERRED header proxy, 179 textures)) · size 2 (disk_mb 22.56) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** depends on reel.facialanims -> unfiled: FACIAL_ANIMATION_HEADSET_AUDIT_1
+**Open:** Same card as reel.facialanims.
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### All Specialists Can Work (`opa.allspecialistscanwork`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** none (steam-only, None)
+**Adds:** content: none (2 patch ops on PreceptDefs) / functionality: XML only; removes the work restriction on the Ideology Specialist role / art: 1 image
+**Why:** A crew of three to eight cannot spare a role-holder who refuses work (brief section 1: crew ~3-8), so removing the Specialist work ban is a small quality-of-life fix that we are not going to build ourselves. It does not touch speed or scaling, so it passes the 7 questions. Incompatible only with Ducks.SpecialistsCanWork, which is not in the facts.
+**Problems:** memory 1 (texture_decoded_mb_est 2.9 MB (INFERRED header proxy, 1 textures)) · size 1 (disk_mb 0.14) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** no dependants -> None
+**Open:** none
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Alpha Skills (`sarg.alphaskills`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** https://github.com/vbardales/Rimworld-Skill-Icons (github-search, other)
+**Adds:** content: 98 defs: PassionDef 51, HediffDef 19, ExpertiseDef 19, StatDef 5, ThoughtDef 4 / functionality: one DLL with Harmony; Vanilla Skills Expanded add-on with 13 new passions and 19 expertises / art: 120 textures, 2 MB disk, 44.2 MB est
+**Why:** It is an add-on to Vanilla Skills Expanded (hard dependency), and an expertise ladder is a parallel progression system of the kind brief section 2 excludes, though the owner ruling on VSE itself is not in the brief (see section 5 item 4, the ISEKAI tension). The alpha-family research note records that AlphaSkills was "in our stack and was not opened". So the verdict follows VSE: keep while VSE stays, and mark for review. Repo link in the facts is a name guess (vbardales/Rimworld-Skill-Icons), UNVERIFIED.
+**Problems:** memory 1 (texture_decoded_mb_est 44.2 MB (INFERRED header proxy, 120 textures)) · size 1 (disk_mb 2.0) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 2 (dll_count 1, flags ['harmony'], static_ctors 1) · tps U (per-mod TPS UNMEASURED; no tick flag in the DLL) (U = unmeasured)
+**Holds it in / exit:** hard dependency chain vanillaexpanded.skills, VEF Core -> unfiled: VSE_EXPERTISE_LADDER_RULING_1
+**Open:** Brief section 5 item 4 (ISEKAI leveling vs parallel ladders) is unresolved: expertise ladders fall under the same question.
+**Needs owner:** Alpha Skills and Vanilla Skills Expanded add more skill passions and expertises. Is a skill-specialisation ladder allowed in the campaign, or does it count as a parallel progression system you want out?
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Ancient Urban Ruins Hit Point (`meteores.ancienturbanruinsvanillaloot.aurvl`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None)
+**Adds:** content: none (22 patch ops on Ancient Urban Ruins defs) / functionality: XML only; gives hit points to ruin walls and objects and changes loot; warns of -1 HP walls and save incompatibility / art: 1 image
+**Why:** Part of the ruins family the 2026-10-03 audit (ancient_ruins_mod_audit.md) recommends cutting entirely because the content is mall maps and modern loot, not Star Wars. forbidden_mods.md wanted this very mod as the counterweight to All Deconstructible, so the two documents disagree; the later audit post-dates it. Its 22 patch ops only apply to defs of xmb.ancienturbanruins.mo, so it falls away if the base is cut. Its own About warns players who started the Scavenger Group scenario not to install it.
+**Problems:** memory 1 (texture_decoded_mb_est 5.3 MB (INFERRED header proxy, 1 textures)) · size 1 (disk_mb 0.58) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** depends on XMB.AncientUrbanrUins.MO and AURAD -> None
+**Open:** Same ruling as meteores AURAD: decide the family together.
+**Needs owner:** Same question as All Deconstructible: do we cut the whole Ancient Urban Ruins family (the base mod and both patches)?
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Keyz' Allow Utilities (`keyz182.keyzallowutilities`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** https://github.com/spdskatr/RWModdingResources (github, MIT)
+**Adds:** content: 32 defs: KeyBindingDef 17, DesignationDef 5, JobDef 2, WorkGiverDef 2, WorkTypeDef 2, EffecterDef 1 / functionality: two DLLs with Harmony (15 static ctors): bulk allow/forbid, selection helpers, haul urgently / art: 22 images, 11 MB est
+**Why:** Hauling and allowing is the daily friction of a scavenger crew sorting salvage, and nothing of ours builds a bulk-allow tool. QoL passes the 7 questions trivially. Caution: it adds two WorkTypeDefs that Complex Jobs rewrites, and our scavenge design places a new Salvaging work type in the same Work tab. The linked repo in the facts (spdskatr/RWModdingResources, MIT, pushed 2020-08-14) is a modding-resource library, not this mod's source, so source availability is UNVERIFIED.
+**Problems:** memory 1 (texture_decoded_mb_est 11.0 MB (INFERRED header proxy, 22 textures)) · size 1 (disk_mb 1.43) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 3 (dll_count 2, flags ['harmony', 'settings_screen'], static_ctors 15) · tps U (per-mod TPS UNMEASURED; no tick flag in the DLL) · interaction 1 (adds 2 WorkTypeDefs; Complex Jobs (patch_ops_all 772) rewrites worktypes) (U = unmeasured)
+**Holds it in / exit:** no dependants -> None
+**Open:** Test the 2 added work types against Complex Jobs load-last behaviour.; Find the real source repo (keyz182).
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Simple Slavery Collars (`tribeagle.simpleslaverycollars`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** (C# source inside the mod folder) (ships-source, None)
+**Adds:** content: 24 defs: JobDef 6, ThingDef 5, ThoughtDef 4, WorkGiverDef 4, HediffDef 3, MentalStateDef 1 / functionality: Harmony DLL (115 .cs files shipped, comp_tick flags, 8 static ctors): shock-style slave collars from Simple Slavery plus Ideology slavery tweaks; 24 patch ops incl. Vanilla Gravship Expanded / art: 41 images, 5.6 MB est
+**Why:** Slavery is part of the clan doctrine, and our PawnFlavor mod patches this mod 130 times (patched_by mandrake.rut.pawnflavor 130; patched_by_ours_refs 130), so it is wired into the faction flavour. It ships its full C# source folder, easing maintenance if the author stops. Overlaps in purpose with gerrymon.stylizedslavecollar (cosmetic styles).
+**Problems:** memory 1 (texture_decoded_mb_est 5.6 MB (INFERRED header proxy, 41 textures)) · size 1 (disk_mb 8.67) · log_noise 1 (0 error occurrences / 0 distinct, chatter 3 in the 550-mod session) · complexity 2 (dll_count 1, flags ['comp_tick', 'comp_tick_rare', 'harmony', 'settings_screen'], static_ctors 8) · tps 1 (tick flags ['comp_tick', 'comp_tick_rare']; per-mod TPS UNMEASURED) · interaction 2 (patched_by_ours_refs 130) (U = unmeasured)
+**Holds it in / exit:** mandrake.rut.pawnflavor 130 refs -> None
+**Open:** Three small chatter log lines (log_chatter_lines 3): read them in the next full-list session.
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Tabula Rasa (`neronix17.toolbox`)
+**Verdict:** KEEP (MEASURED) · **Fit:** neutral · **Source:** (C# source inside the mod folder) (ships-source, None)
+**Adds:** content: 13 defs: JobDef 5, ApparelLayerDef 4, FleshTypeDef 1, HediffDef 1, ScenPartDef 1, ThoughtDef 1 / functionality: library DLL (Harmony, 9 static ctors): reusable code for Outpost 21 mods; our StarWarsRaces uses its TabulaRasa.DefModExt_HeadTypeStuff / art: 66 textures, 9.7 MB disk, 43.8 MB est
+**Why:** A library with named dependants in the universe: neronix17.outerrim.core, .furnitureanddecor, neronix17.outland.genetics and neronix17.shieldgenerators. Our src/RimStarWars/StarWarsRaces SW_HeadTypes.xml carries about 36 MayRequire="neronix17.toolbox" references and JawaFactionRoster.xml 3, and PawnFlavor patches it 10 times. The MayRequire guards make it soft for us, but required_mods.md marks it a hard dep of every Outer Rim module. Source is shipped inside the mod folder.
+**Problems:** memory 1 (texture_decoded_mb_est 43.8 MB (INFERRED header proxy, 66 textures)) · size 1 (disk_mb 9.72) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 2 (dll_count 1, flags ['comp_tick', 'comp_tick_rare', 'harmony', 'settings_screen'], static_ctors 9) · tps 1 (tick flags ['comp_tick', 'comp_tick_rare']; per-mod TPS UNMEASURED) (U = unmeasured)
+**Holds it in / exit:** dependants: neronix17.outerrim.core, neronix17.outerrim.furnitureanddecor, neronix17.outland.genetics, neronix17.shieldgenerators; 36+3 MayRequire refs in our RimStarWars/RimUtinni defs; pawnflavor 10 refs -> None
+**Open:** Review the Outer Rim modules' own verdicts: if all go, the toolbox goes with them.
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### VFE Pirates - Hardworking Warcaskets (`dmp.vfepirates.warcasketwork`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: none (11 patch ops on VFE Pirates Warcasket and Trait defs) / functionality: XML only: warcasket suits may work at reduced work speed; configurable through VEF Toggable Patches / art: 2 images
+**Why:** A leaf patch that exists only for oskarpotocki.vfe.pirates (list position 449), whose own verdict is in the factions batch; warcasket-as-worker bends the "no arms race" pillar mildly by adding working labour to combat armour, unmeasured. Nothing depends on it.
+**Problems:** memory 1 (texture_decoded_mb_est 4.7 MB (INFERRED header proxy, 2 textures)) · size 1 (disk_mb 0.63) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** hard dependency on oskarpotocki.vfe.pirates -> unfiled: VFE_PIRATES_PATCHES_FOLLOW_PARENT_1
+**Open:** Follow the VFE Pirates verdict.
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### [GTG]Traders Accept All Junk Gear (`teiwaz.taajg`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** resonant · **Source:** none (steam-only, None)
+**Adds:** content: none (3 patch ops on 2 TraderKindDefs) / functionality: XML patch making certain traders buy junk gear; needs GTG Trader Core / art: 1 image
+**Why:** Selling battlefield junk is a scavenger convenience, but our scavenge design lists Teiwaz.TAAJG as a SOFT conflict touching the same yields (jawa_scavenge_system_design_2026-10-03.md line 417), and our own Bazaar trade window (a whole-deal haggle) now owns the trading experience. Held in by nothing; exit is the scavenge yield curve.
+**Problems:** memory 1 (texture_decoded_mb_est 5.9 MB (INFERRED header proxy, 1 textures)) · size 1 (disk_mb 0.95) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** depends on teiwaz.gtgtradercore -> SALVAGE_WRECKAGE_EVERYWHERE_1 (design only)
+**Open:** Check interaction with mandrake.rm.bazaar trader defs: not measured.
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### [GTG]Traders Accept Chunks & Corpses (`teiwaz.tacac`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: none (3 patch ops on 2 TraderKindDefs) / functionality: XML patch making certain caravans buy chunks and corpses; needs GTG Trader Core / art: 1 image
+**Why:** Same family and author as TAAJG; chunks and corpses selling bypasses a disposal chore. Not named in the scavenge design's conflict list, but it touches the same trader buying ranges. Exit with the scavenge yield curve and Bazaar.
+**Problems:** memory 1 (texture_decoded_mb_est 3.0 MB (INFERRED header proxy, 1 textures)) · size 1 (disk_mb 0.49) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** depends on teiwaz.gtgtradercore -> SALVAGE_WRECKAGE_EVERYWHERE_1 (design only)
+**Open:** none
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Adjustments for Vanilla Textures Expanded - [NL] Facial Animation (`sd.fa.vteadjustments`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: none / functionality: texture-only: moves side-facing male eyebrows and a Hawk mouth for VTE Facial Animation / art: 47 textures, 0.2 MB disk, 71.7 MB est
+**Why:** Placement tweak of someone else's art ("I made none of the art"); follows vanillaexpanded.vtexe.facialanims (list position 468) and the head-set audit.
+**Problems:** memory 2 (texture_decoded_mb_est 71.7 MB (INFERRED header proxy, 47 textures)) · size 1 (disk_mb 0.16) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** depends on vanillaexpanded.vtexe.facialanims -> unfiled: FACIAL_ANIMATION_HEADSET_AUDIT_1
+**Open:** none
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Beard Adjustment (`kem.beardadjustment`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: none (3 patch ops on HeadTypeDefs) / functionality: XML only: scales the narrow-head beard to fit the normal head / art: 0.01 MB
+**Why:** A tiny visual fix (0.01 MB, three patch ops) to a vanilla mismatch that we have no plan to build; passes trivially. Whether any campaign pawn wears the narrow-head beard is UNMEASURED.
+**Problems:** memory 1 (texture_decoded_mb_est 1.2 MB (INFERRED header proxy, 1 textures)) · size 1 (disk_mb 0.01) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** no dependants -> None
+**Open:** none
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### LEVIATHANS:SANDWORM (`chezhou.creature.sandworm`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** resonant · **Source:** none (steam-only, None)
+**Adds:** content: 10 defs: ThingDef 3, SoundDef 2, ClAssetLord 1, QuestScriptDef 1, SongDef 1, WeatherDef 1 / functionality: Harmony DLL (comp_tick, game/map component ticks, settings) on the closed ChezhouLib; a quest where a sandhammer summons a leviathan sandworm out of an anomalous sandstorm; Chinese-language description / art: 8 images, 38 MB in AssetBundles (decoded size not visible), 1.85 MB sounds
+**Why:** Desert, a hunt, atmosphere: strong thematic fit. But we built our own: RUT_LongHunger (SANDWORM_MYTHOS_BUILD_1, closed; src/RimUtinni/LongHunger/Source) takes this mod as its architecture reference ("quest-gated encounter, summoning device, weather") and the item states its C# is original and did not read ChezhouLib. Two sandworms would also split the mythos. setting_physics.md still names it as the working reference, so it stays until that reference role ends. No source: ChezhouLib is described as Workshop-only closed code.
+**Problems:** memory 1 (texture_decoded_mb_est 2.3 MB (INFERRED header proxy, 8 textures)) · size 2 (disk_mb 40.7) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 2 (dll_count 1, flags ['comp_tick', 'game_component_tick', 'harmony', 'map_component_tick', 'settings_screen'], static_ctors 0) · tps 1 (tick flags ['comp_tick', 'game_component_tick', 'map_component_tick']; per-mod TPS UNMEASURED) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** named as working reference in design/Jawa/worldbuilding/setting_physics.md Part 5; placed objects in the save UNMEASURED -> unfiled: CHEZHOU_SANDWORM_RETIRE_AFTER_LONGHUNGER_1
+**Open:** Is the reference role finished now that RUT_LongHunger shipped and passed quicktest?
+**Needs owner:** We built our own sandworm (the Long Hunger). Can the Chezhou Leviathans: Sandworm mod go now, or do you want it kept as a second, separate sandworm quest?
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Big and Small - Enable All Optional Content (`redmattis.optional`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** none (steam-only, None)
+**Adds:** content: none (def_total 0) / functionality: activates optional content in Big and Small - Genes & More (giant weapons, large meals, shrink rays) without needing the mods that normally trigger it / art: 2 images
+**Why:** Our UtinniPatches/GiantWeaponWielders_Ashkarr.xml (owner ruling 2026-08-23) grants BS_GiantWeaponWielder to 16 Star Wars species and says the gene opens "all 23 giant weapons AND all 15 warcasket weapons", so those weapons have to exist; this mod is what enables that optional content (INFERRED: the 2026 gene-deps item found RSW defs never name its content directly, and it was deemed not required for RSW load). Dependant in the universe: none; dependants_ours: none. Keep while the giant-weapon rule stands.
+**Problems:** memory 1 (texture_decoded_mb_est 1.2 MB (INFERRED header proxy, 2 textures)) · size 1 (disk_mb 0.21) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** GiantWeaponWielders_Ashkarr.xml needs the giant weapons to exist (weapon register has 19 bigsmall rows) -> None
+**Open:** Confirm in a quicktest that the 23 giant weapons are absent without this mod.
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### [FSF] Complex Jobs (`frozensnowfox.complexjobs`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** none (steam-only, None)
+**Adds:** content: 22 defs: WorkTypeDef 21, XmlExtensions.SettingsMenuDef 1 / functionality: XML only but 772 patch ops over 363 WorkGiverDefs, 226 ThingDefs, 136 alien-race defs, 31 GeneDefs, 14 ThinkTreeDefs; splits worktypes into finer ones / art: 2 images
+**Why:** Owner-ruled KEEP and "declared resident" (STAT_NORM_WAVE3_RETIRE_1, mod_config_rulings.md): it changes work assignment, not work speed, and the stat-normalization audit measured 0 placed and save-clean. A crew of three to eight benefits from finer jobs. Costs to watch: 772 patch ops are a load-time cost (INFERRED), it must load last, and it is incompatible with CodeOptimist.JobSplitter, DarthSergeant.NurseJob and its own Legacy build (not in facts).
+**Problems:** memory 1 (texture_decoded_mb_est 1.2 MB (INFERRED header proxy, 2 textures)) · size 1 (disk_mb 1.38) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) · interaction 2 (patches 363 WorkGiverDefs and 226 ThingDefs across mods; load-last requirement) (U = unmeasured)
+**Holds it in / exit:** owner ruling KEEP declared resident; our scavenge design adds a Salvaging work type in the same tab -> None
+**Open:** Check our planned Salvaging WorkTypeDef against Complex Jobs' worktype rewrites before it ships.
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Facial Animation Compatability Project (`danzinagri.facialanimationcompatabilityproject`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None)
+**Adds:** content: 0 own defs; 16 patch ops / functionality: Harmony DLL: Facial Animation heads in an anime style for many modded races, loaded per LoadFolders only when each race mod is active (Alpha Genes, Big and Small, VRE Phytokin/Saurid/Sanguophage/Lycanthrope, Keshig, and others) / art: 536 textures, 28.7 MB disk, 633.7 MB est before LoadFolders gating (INFERRED upper bound)
+**Why:** The author states the goal is an "anime aesthetic" for races like Ratkin, which fights the matte natural-history art register (brief section 2, art lawset). It has no defs of its own (so no ParentName exposure), nothing depends on it, and its packs load only for race mods. Remaining risk is placed pawns of Alpha Genes/VRE races that already use its heads, a save question UNMEASURED.
+**Problems:** memory 3 (texture_decoded_mb_est 633.7 MB (INFERRED header proxy, 536 textures)) · size 2 (disk_mb 28.67) · log_noise 1 (0 error occurrences / 0 distinct, chatter 1 in the 550-mod session) · complexity 2 (dll_count 1, flags ['harmony', 'settings_screen'], static_ctors 1) · tps U (per-mod TPS UNMEASURED; no tick flag in the DLL) · maintenance 2 (no source repo found (steam-only); supports 1.6 per About) (U = unmeasured)
+**Holds it in / exit:** no dependants; only affects pawns of gated race mods -> None
+**Open:** Which gated race mods are actually active in the list? Compute before removal.
+**Needs owner:** This mod redraws heads in an anime style for many fantasy races. Remove it, or keep for those races?
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### RimThemes (`arandomkiwi.rimthemes`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** https://github.com/aRandomKiwi/RimThemes (github, GPL-3.0)
+**Adds:** content: none (def_total 0) / functionality: two DLLs with Harmony, 65 static ctors and a settings screen: a UI theme engine with its own native background slot / art: 288 textures, 44.7 MB, plus 44 MB sounds and 177.7 MB other (themes)
+**Why:** A hard dependency of our mandrake.rut.menushell (dependants_ours; MenuShell About.xml lists it as a dependency and loadAfter), whose Utinni Shell theme is the campaign's UI skin (UI_SHELL_SLICE_BUILD_1; ui_shell_spec.md). The theme-versus-VBE background conflict was resolved by using RimThemes' own background slot (RIMTHEMES_VBE_BACKGROUND_CONFLICT_1). GPL-3.0 source verified on GitHub, last push 2025-07-22. It is heavy on disk (286.7 MB) and in initialisation (65 static constructors), which is the cost of keeping it.
+**Problems:** memory 2 (texture_decoded_mb_est 84.8 MB (INFERRED header proxy, 288 textures)) · size 3 (disk_mb 286.68) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 3 (dll_count 2, flags ['harmony', 'settings_screen'], static_ctors 65) · tps U (per-mod TPS UNMEASURED; no tick flag in the DLL) (U = unmeasured)
+**Holds it in / exit:** mandrake.rut.menushell hard dependency; UI_SHELL_SLICE_BUILD_1 and the shell spec -> None
+**Open:** A one-theme use may let us strip the other bundled themes later (size 286 MB).
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### SimpleStairs (Fork) (`rw.mod.simplestairs`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/rw-mod/SimpleStairs (github, None)
+**Adds:** content: 10 ThingDefs: stairs, handrails, high walls, floor fences (standable stairs, impassable fences) / functionality: XML only 1.6 fork of gomi's SimpleStairs / art: 53 textures, 0.7 MB disk, 20.6 MB est
+**Why:** Decorative multi-height-looking stairs and railings are cheap (XML only, 0.7 MB, 0 log errors) and can furnish a ship interior; no plan to build them ourselves. Incompatible with the original SimpleStairs, so do not add both. Verified GitHub repo (rw-mod/SimpleStairs, pushed 2025-07-16; licence unspecified).
+**Problems:** memory 1 (texture_decoded_mb_est 20.6 MB (INFERRED header proxy, 53 textures)) · size 1 (disk_mb 0.72) · log_noise 0 (0 error occurrences / 0 distinct, chatter 0 in the 550-mod session) · complexity 1 (XML-only (dll_count 0)) (U = unmeasured)
+**Holds it in / exit:** no dependants -> None
+**Open:** none
+<sub>facts: batch 14 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
