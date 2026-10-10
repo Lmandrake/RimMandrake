@@ -16,6 +16,14 @@ from RimSage (decompiled 1.6 + Biotech/Royalty defs) on 2026-10-09, not guessed.
   - **Abyss:** a RARE hidden lair site holding one lone Sith and their structures, which the player cannot
     build. The player raids it for loot.
   - **Empire:** a rare elite (inquisitor type) in Empire raids and visiting parties.
+- Decision taken by question card 2026-10-09, five follow-ups:
+  1. **The Anzati get their own copies** of the blood and trance genes and of the casket, so neither the Sith
+     renames nor the unbuildable rule touches them (§1.5).
+  2. **Sith genes can be extracted and implanted** as the player's own gene tech, with no extraction block.
+     Conversion stays blocked: Sith have no reimplant ability, and the absorb-xenogerm backstop stays.
+  3. **The inquisitor appears in Empire raids and base defenders only.** It has no caravan or visitor role.
+  4. **The in-game name is "Sith adept".**
+  5. **A lair is found by a rare rumour quest.**
 - **Constraint:** the `Sanguophage` XenotypeDef can't be deleted. `XenotypeDefOf.Sanguophage` is a
   `[MayRequireBiotech]` DefOf binding, and Biotech is always active
   (`infrastructure/state/items/closed/VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1.md` §2). **So the Sith line IS
@@ -27,8 +35,7 @@ from RimSage (decompiled 1.6 + Biotech/Royalty defs) on 2026-10-09, not guessed.
 
 - `src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_Xenotype.xml` already **relabels `Sanguophage`**: it sets
   the label to "Sanguophage" and adds a Jawa-voice description. It is the campaign layer, so it loads after
-  this mod and **would overwrite the Sith relabel**. That block must be rewritten to Sith wording in the same
-  change (§1.4).
+  this mod and **would overwrite the Sith relabel** (build note below).
 - `src/RimUtinni/UtinniPatches/Patches/XenotypeCut_SpawnSets.xml` already strips `Sanguophage` from the
   `Empire_*` noble xenotype sets. **Keep it.** Sith reach the Empire only through the inquisitor kind (§4),
   never as random nobles.
@@ -45,10 +52,20 @@ from RimSage (decompiled 1.6 + Biotech/Royalty defs) on 2026-10-09, not guessed.
   (`src/RimStarWars/Armoury`). The weapon `Force_Lightsaber_Inquisitor` is only *patched* in `src/`.
   **Which mod defines it is UNMEASURED**, so FOUNDRY resolves that with `measure` before referencing it, and
   every reference carries `MayRequire` on its `<li>`.
-- ⚠️ **The Anzati share this machinery.** `RSW_RimMandrakeAnzati`
+- **The Anzati share this machinery today.** `RSW_RimMandrakeAnzati`
   (`src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/RimMandrakeXenotypes.xml`) carries `Hemogenic`,
-  `HemogenDrain`, `Bloodfeeder`, `Coagulate` and `Deathrest`. Any global relabel or buildability change
-  reaches them too. See Open Question 1.
+  `HemogenDrain`, `Bloodfeeder`, `Coagulate` and `Deathrest`. §1.5 moves them onto their own copies so the
+  global relabel and the unbuildable rule miss them.
+
+### Build notes: existing files that must change in the same build
+
+- **PawnFlavor would overwrite the Sith name.**
+  `src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_Xenotype.xml` relabels `Sanguophage` to "Sanguophage"
+  from the campaign layer, which loads after this mod. Rewrite that block to "Sith adept" in the Jawa voice,
+  or the campaign shows the old name over this mod.
+- **The inquisitor's weapon has an unmeasured source.** `Force_Lightsaber_Inquisitor` is only *patched* in
+  `src/`, and which mod defines it is UNMEASURED. Resolve it with `measure` before `RSW_SithInquisitor`
+  references it.
 
 ## 1. Def list
 
@@ -77,9 +94,9 @@ Sith holocron ✓, Sith Inquisitor ✓. Everything else is invented in a Star Wa
 
 | # | Def | New name | Flavour |
 |---|---|---|---|
-| 1 | XenotypeDef `Sanguophage` | **Sith** (see OQ4) | A lineage that bound itself to the dark side and now lives on what it takes from others. Ageless, near-deathless, never one of yours. |
+| 1 | XenotypeDef `Sanguophage` | **Sith adept** | A lineage that bound itself to the dark side and now lives on what it takes from others. Ageless, near-deathless, never one of yours. |
 | 2 | FactionDef `Sanguophages` | **the Sith** | A hidden, scattered line of dark-side adepts who answer to no one. |
-| 3 | PawnKindDef `Sanguophage` | **Sith** | A lone dark-side adept. |
+| 3 | PawnKindDef `Sanguophage` | **Sith adept** | A lone dark-side adept. |
 | 4 | GeneDef `Hemogenic` | **dark-side reservoir** | The carrier holds a reserve of stolen life that fuels their other gifts. (`resourceLabel` → "essence") |
 | 5 | GeneDef `HemogenDrain` | **dark-side hunger** | The reserve bleeds away faster. The dark side is never satisfied. |
 | 6 | GeneDef `Bloodfeeder` | **life-drain** | The carrier can draw a living being's strength into themselves. |
@@ -128,6 +145,8 @@ That is a deliberate placeholder, not a defect.
 
 ### 1.3 Suppressed: 9 routes
 
+Totals: **25 reused · 37 relabelled · 9 suppressed · 11 new defs** (§1.4: inquisitor, site part, genstep, rumour quest, holocron, and the six Anzati copies), plus C#.
+
 | # | Route | Mechanism |
 |---|---|---|
 | S1 | QuestScriptDef `SanguophageMeetingHost` (host a meeting; its own text says downed sanguophages can be "forced to turn one of your own colonists") | `PatchOperationReplace` `rootSelectionWeight` 0.5 → **0** (the node exists in vanilla). |
@@ -136,7 +155,7 @@ That is a deliberate placeholder, not a defect.
 | S4 | PawnKindDef `Sanguophage_Player` | Reachable only from S3. Unreachable once S3 is hidden. No patch. |
 | S5 | PawnKindDef `SanguophageThrall` | Reachable only from S2's quest code. Unreachable once S2 is off. No patch. |
 | S6 | **Conversion by xenogerm**: GeneDef `XenogermReimplanter` → AbilityDef `ReimplantXenogerm`, and the "absorb xenogerm" float menu (`FloatMenuOptionProvider_Xenogerm` → `GeneUtility.CanAbsorbXenogerm`, which requires the target to have `XenogermReimplanter` active) | (a) `PatchOperationRemove` `XenotypeDef[defName="Sanguophage"]/genes/li[text()="XenogermReimplanter"]`. No Sith ever carries it, so the ability and the absorb option never appear. (b) Backstop: Harmony postfix on `GeneUtility.CanAbsorbXenogerm` returns false for any pawn whose `genes.Xenotype == XenotypeDefOf.Sanguophage`, which covers a dev-spawned or older-save Sith that still has the gene. |
-| S7 | **Building them**: the 6 buildings in §1.2 #24–29 | `PatchOperationRemove` `designationCategory` on `ThingDef[defName="DeathrestCasket"]` and on the abstract `ThingDef[@Name="DeathrestBuildingBase"]` (the 5 bound buildings inherit from it). With no designation category, the architect menu can't place them. |
+| S7 | **Building them**: the 6 buildings in §1.2 #24–29 | `PatchOperationRemove` `designationCategory` on `ThingDef[defName="DeathrestCasket"]` and on the abstract `ThingDef[@Name="DeathrestBuildingBase"]` (the 5 bound buildings inherit from it). With no designation category, the architect menu can't place them. The Anzati casket is a separate def (§1.5) and stays buildable. |
 | S8 | **Reinstalling a looted one** (minify → reinstall is building it) | `PatchOperationRemove` `minifiedDef` on the same two defs, and `building/claimable` → false (Add) so a lair building never becomes the player's. Deconstruction still pays out resources. |
 | S9 | **Joining the colony** | Not a def. It is the never-recruitable guard in §2. |
 
@@ -150,10 +169,38 @@ is left alone because it fires only when the player has a Sith colonist, which S
 
 `RSW_SithInquisitor` (PawnKindDef, §4) · `RSW_SithLair` (SitePartDef) · `RSW_GenStep_SithLair` (GenStepDef) ·
 `RSW_SithLairRumour` (QuestScriptDef, §3) · `RSW_SithHolocron` (loot item: art, market value, no comps) ·
-the C# (§2 guards, §3 tile picker and genstep, §4 group injector, settings).
-**Owed edit to an existing file:** the `Sanguophage` block in
-`src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_Xenotype.xml` is rewritten to Sith wording in the Jawa
-voice. If it is left as "Sanguophage", the campaign shows the old name over this mod.
+the six Anzati copies (§1.5) · the C# (§2 guards, §3 tile picker and genstep, §4 group injector, settings).
+
+### 1.5 Anzati copies (decision taken by question card 2026-10-09)
+
+The Anzati keep vanilla blood-and-trance behaviour on their own defs, which keep the **vanilla labels and
+text**. That way neither the Sith relabels nor S7/S8 reach them. They live in `mandrake.rsw.starwarsraces`
+beside the Anzati xenotype.
+
+| Copy | Of | Notes |
+|---|---|---|
+| `RSW_AnzatiHemogenic` | GeneDef `Hemogenic` | same `geneClass`/resource fields |
+| `RSW_AnzatiHemogenDrain` | GeneDef `HemogenDrain` | `prerequisite` → `RSW_AnzatiHemogenic` |
+| `RSW_AnzatiBloodfeeder` | GeneDef `Bloodfeeder` | grants vanilla AbilityDef `Bloodfeed`, which the Sith relabel shows as "Force drain". Optionally an `RSW_AnzatiBloodfeed` ability copy if the label matters. |
+| `RSW_AnzatiCoagulate` | GeneDef `Coagulate` | same caveat for the ability label |
+| `RSW_AnzatiDeathrest` | GeneDef `Deathrest` | `prerequisite` → `RSW_AnzatiHemogenic` |
+| `RSW_AnzatiDeathrestCasket` | ThingDef `DeathrestCasket` | keeps `designationCategory` and `minifiedDef`; `researchPrerequisites` vanilla `Deathrest` (PROVISIONAL) |
+
+`RSW_RimMandrakeAnzati`'s gene list is repointed from the vanilla five to the five copies.
+
+⚠️ **Build note: the engine names some of these genes by DefOf.** RimSage, 2026-10-09:
+- `GeneDefOf.Hemogenic` is read in `Recipe_ExtractHemogen` (protects hemogenic pawns),
+  `WorkGiver_Warden_DeliverHemogen`, `ITab_Pawn_Visitor` (`hideOnHemogenicPawns`) and `StartingPawnUtility`.
+- `GeneDefOf.Bloodfeeder` is read in `GeneUtility` (the `IsBloodfeeder` behind Ideology's bloodfeeder
+  precepts), `Xenogerm` and `CompAbilityEffect_ReimplantXenogerm`.
+
+A copy fails those checks, so an Anzati would lose them. Fix it with one Harmony postfix on
+`Pawn_GeneTracker.HasActiveGene` / `GetGene` that answers for the copy when asked for the original. Verify the
+exact method set in RimSage before building.
+
+The other copies (`HemogenDrain`, `Coagulate`, `Deathrest`) showed no `GeneDefOf` reads, and the casket's
+binding goes through `CompDeathrestBindable`, which is type-based. **This was not measured for every call
+path.**
 
 ## 2. Never recruitable
 
@@ -178,8 +225,9 @@ into the player faction without consulting `Recruitable` at all.
    a pawn into `Faction.OfPlayer`. Every join route ends in `SetFaction`, including quest joins and mods we
    haven't read.
 
-Capture, imprisonment, execution, hemogen farming and gene extraction are not joining, so they stay allowed
-(gene extraction: see OQ2). Ideoligion conversion changes a prisoner's ideo, not their faction, so it is
+Capture, imprisonment, execution, hemogen farming and gene extraction are not joining, so they stay allowed.
+**Gene extraction is allowed** (decision taken by question card 2026-10-09): extracted Sith genes are the
+player's own gene tech, and the colonist who receives them is not a Sith adept. Ideoligion conversion changes a prisoner's ideo, not their faction, so it is
 harmless.
 
 ## 3. Abyss lair site
@@ -194,7 +242,7 @@ clampRangeBySiteParts, selectLandmarkChance, canSelectComboLandmarks), so it nee
 `RSW_QuestNode_GetAbyssSiteTile`. That node picks a tile whose biome is `RM_Abyss` within PROVISIONAL 12
 tiles of a player map. If none exists, `TestRun` fails and the quest never offers, which is also how it
 degrades when the biomes mod is absent: a def lookup, never `MayRequire`. This route works on the frozen
-world with no repaint dependency. The alternative is OQ5.
+world with no repaint dependency.
 
 **Rarity (PROVISIONAL):** `rootSelectionWeight` 0.15 · `minRefireDays` 120 · `rootMinPoints` 400 · site
 timeout 25–40 days · at most one open lair at a time.
@@ -220,8 +268,8 @@ sanctum of about 13×13, PROVISIONAL, into the nearest rock mass, with a single 
 - 1 `RSW_SithHolocron`, market value about 1500.
 - A lightsaber with a red crystal (`guy762_SWForceLightsabers_CrystalPart_red`, MayRequire).
 - `guy762_SithHood_masked`.
-- 2–5 essence vials and 0–1 trance serum. They are worthless to the player except to sell, or to an Anzati
-  (OQ1).
+- 2–5 essence vials and 0–1 trance serum. They are worthless to the player except to sell. The Anzati's own genes still consume essence vials, which
+  are vanilla `HemogenPack`.
 - Gold, silver and psychic apparel to the points value.
 
 Deconstructing the buildings yields resources. They can't be minified (S8).
@@ -247,17 +295,13 @@ Deconstructing the buildings yields resources. They can't be minified (S8).
 **replaces** both Empire `Combat` option lists wholesale (`[commonality="100"]` and `[commonality="10"]`), so
 an option added by this RSW-tier mod would be erased whenever the campaign loads after it. Use a Harmony
 postfix on pawn-group generation instead (FOUNDRY reads the exact `PawnGroupMakerUtility` method in RimSage).
-When the group's faction def is `Empire`, the postfix may append **at most one** inquisitor, by group kind:
+When the group's faction def is `Empire`, the postfix may append **at most one** inquisitor, by group kind.
+**Only raids and base defenders get one** (decision taken by question card 2026-10-09); `Trader` groups never do:
 
 | Group kind | Chance (PROVISIONAL) | Condition |
 |---|---|---|
 | `Combat` (raids) | 4% | points ≥ 1500 |
 | `Settlement` (defenders when the player assaults an Empire base) | 25% | none |
-| `Trader` (the Empire's only "visiting party" kind: it has no `Peaceful` group, so `IncidentWorker_NeutralGroup` visitors never come from it) | 5% | none |
-
-🔴 **In the campaign the Empire is permanently hostile to the player.** `GalacticEmpire.xml` drops
-`PlayerColony`/`PlayerTribe` from `permanentEnemyToEveryoneExcept`, so Empire traders and visitors **never
-reach a Utinni colony**. The trader row works only in a non-campaign Star Wars game. See OQ3.
 
 ## 5. Mod Settings
 
@@ -274,10 +318,8 @@ vanilla routes closed", never to a broken state.
 | Inquisitors in Empire raids · chance | on · 4% | |
 | Raid minimum points | 1500 | |
 | Inquisitors defending Empire settlements · chance | on · 25% | |
-| Inquisitors with Empire caravans · chance | on · 5% | |
 | Never recruitable (the §2 guard, all four layers) | on | |
 | Block xenogerm absorb (S6b backstop) | on | |
-| Block gene extraction from Sith | per OQ2 | |
 | Vanilla sanguophage quests (S1/S2) stay off | on | Turning it off re-enables the weights, and with them the conversion offers, so the tooltip warns about that. |
 
 Label as worldgen-affecting: none. Every setting is per-game runtime.
@@ -291,7 +333,7 @@ Label as worldgen-affecting: none. Every setting is per-game runtime.
   - Hard dependencies: Biotech, Royalty, Harmony, `mandrake.rsw.armoury` (namers, hood, crystal).
   - Soft dependency: `mandrake.rm.biomes`, for `RM_Abyss`. It is detected by def lookup in C#. Never use
     `MayRequire="mandrake.rm.abyss"`: that member id doesn't exist at runtime.
-  - Load order: after Armoury. Its relabels don't depend on Utinni. The campaign's PawnFlavor edit (§1.4) is
+  - Load order: after Armoury. Its relabels don't depend on Utinni. The campaign's PawnFlavor edit (§0 build notes) is
     the only campaign-layer change.
 - **Why not fold it into `mandrake.rsw.starwarsraces`:** this needs C#, a quest, a site and settings, and that
   mod is a def pack.
@@ -301,8 +343,8 @@ Label as worldgen-affecting: none. Every setting is per-game runtime.
     "sarcophagus").
   - Invented in Star Wars style, so not IP claims: dark trance, essence, telekinetic shard, dark mending, rage
     font, trance obelisk, essence alembic.
-  - ⚠️ The **xenotype label "Sith" collides** with the existing species xenotypes `RSW_RimMandrakeSithKissai` /
-    `…Massassi` / `…SithZ` ("Red Sith"). See OQ4.
+  - The in-game name is **"Sith adept"** (decision taken by question card 2026-10-09). It sits apart from
+    the existing species xenotypes `RSW_RimMandrakeSithKissai` / `…Massassi` / `…SithZ` ("Red Sith").
 
 ## 7. First functional script
 
@@ -311,7 +353,7 @@ Label as worldgen-affecting: none. Every setting is per-game runtime.
 back through the `t.*` verbs and their `success`/`foundCount` fields, never by substring. Every setting goes
 in `suite.toggles`.
 
-1. `XenotypeDef/Sanguophage` label is the Sith label, and the campaign's PawnFlavor didn't overwrite it →
+1. `XenotypeDef/Sanguophage` label is "Sith adept", and the campaign's PawnFlavor didn't overwrite it →
    `defs.xenotype_label`
 2. `XenotypeDef/Sanguophage` genes don't contain `XenogermReimplanter` → `defs.no_reimplanter`
 3. `DeathrestCasket` and all 5 `DeathrestBuildingBase` children have no `designationCategory` and no
@@ -329,7 +371,14 @@ in `suite.toggles`.
 10. With no Abyss tile in range, the rumour's `CanRun` is false → `live.lair_no_abyss`
 11. An Empire raid at 2000 points with the chance forced to 1.0 contains exactly one `RSW_SithInquisitor` →
     `live.empire_inquisitor`
-12. Each toggle off → its effect is gone → `suite.toggles`
+12. An Empire `Trader` group with the raid chance forced to 1.0 contains no `RSW_SithInquisitor` →
+    `live.no_trader_inquisitor`
+13. `RSW_RimMandrakeAnzati` carries the five `RSW_Anzati*` genes and none of the vanilla five, and
+    `RSW_AnzatiDeathrestCasket` has a `designationCategory` → `defs.anzati_copies`
+14. A spawned Anzati answers true to `HasActiveGene(GeneDefOf.Hemogenic)` and `GeneUtility.IsBloodfeeder` →
+    `live.anzati_defof_alias`
+15. Extracting genes from a captured Sith adept yields a genepack (extraction not blocked) → `live.extraction_allowed`
+16. Each toggle off → its effect is gone → `suite.toggles`
 
 **`## anti-guessing notes` (seeded):**
 
@@ -338,35 +387,6 @@ in `suite.toggles`.
 - RULED OUT: `MayRequire="mandrake.rm.abyss"`, because Abyss is folded into `mandrake.rm.biomes`.
 - RULED OUT: adding the inquisitor to Empire `Combat` options, because the campaign replaces them. Guard:
   bar 11 runs with UtinniPatches active.
+- RULED OUT: renaming the vanilla blood genes leaves the Anzati alone, because they carry the same defs.
+  Guard: bar 13.
 - RULED OUT: `Recruitable = false` alone as permanence, because brainwipe and enslave bypass it.
-
-## 8. Open questions (only what the owner must decide)
-
-1. **The Anzati share the blood-and-trance machinery.** Renaming hemogen and deathrest to dark-side terms,
-   and making the trance buildings unbuildable, also reaches Anzati colonists.
-   (a) Accept it. "Essence" and "trance" read fine for the Anzati, but they lose the trance buildings.
-   (b) Keep the buildings buildable for non-Sith pawns. That means a research-gated exception, and it bends
-   "none of the buildings are buildable".
-   (c) Give the Anzati their own copies of the genes. That's more defs, and the Anzati drift from the shared
-   code.
-2. **Gene extraction.** A captured Sith can have its non-archite genes extracted (life-drain, dark trance,
-   dark-side reservoir) and implanted in a colonist. That gives you a blood-drinking, trancing colonist
-   without them ever being Sith.
-   (a) Block extraction from Sith. This is the purest reading of "cannot convert others".
-   (b) Allow it. It's the player's own gene tech, a hard-won prize, and the colonist still isn't Sith.
-3. **"Visiting parties" can't happen in the campaign.** The Empire is permanently hostile to the player, so
-   its caravans never visit.
-   (a) Sith appear only in raids and in Empire base defenders. Simple, and it fits the hostility.
-   (b) Also add an occasional Empire "inspection" arrival that walks through and leaves. That's a new
-   incident, so it's more work, and it makes the Empire a little less pure enemy.
-   (c) Keep the caravan escort for non-campaign games only.
-4. **The name "Sith" is already used** by the Red Sith species xenotypes (Kissai, Massassi, Sith Z).
-   (a) Label the line "Sith", the way your ruling says it, and rename nothing else. The two read as
-   "species" vs "order" only from their descriptions.
-   (b) Label it "Sith adept" or "dark acolyte". That's clearer in the UI but less punchy.
-5. **How a lair is found.**
-   (a) A rare rumour quest marks a site, as recommended above. It works on the frozen world today, the
-   player chooses whether to go, and it is rare and timed.
-   (b) The BroodLair pattern: a rare hidden tile feature you stumble on when you land on that Abyss tile. It
-   is more of a genuine surprise, but it has to be placed by hand at the final world-painting pass, and no
-   lair exists until then.
