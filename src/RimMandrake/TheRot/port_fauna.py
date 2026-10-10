@@ -21,7 +21,7 @@ ART = os.environ.get('ARTSRC', '/mnt/d/Luke/dev/_artpipe/_artsrc')
 
 CREATURES = {
     'RSW_PustuleHornet': 'RM_Thozzik', 'RSW_ColonyPustuleHornet': 'RM_ThozzikColony',
-    'RSW_PustuleHornetSpawned': 'RM_ThozzikSpawned', 'RSW_PustuleHornetQueen': 'RM_ThozzikQueen',
+    'RSW_PustuleHornetQueen': 'RM_ThozzikQueen',  # RM_ThozzikSpawned deleted (owner card 2026-10-10)
     'RSW_ColonyPustuleHornetQueen': 'RM_ThozzikColonyQueen', 'RSW_SmogMoth': 'RM_Illoth',
     'RSW_Thrumbungus': 'RM_Brullith', 'RSW_Yooka': 'RM_Brogg',
     'RSW_FungalWeevil': 'RM_Grellik', 'RSW_FungalMantis': 'RM_Skerrith',
@@ -43,7 +43,7 @@ REUSE = {
 }
 # redrawn / finished art: new creature -> (artpipe job prefix, deployed folder)
 ART_SETS = {
-    'RM_Thozzik': 'rot_thozzik_b', 'RM_ThozzikColony': 'rot_thozzik_b', 'RM_ThozzikSpawned': 'rot_thozzik_b',
+    'RM_Thozzik': 'rot_thozzik_b', 'RM_ThozzikColony': 'rot_thozzik_b',
     'RM_ThozzikQueen': 'rot_thozzikqueen', 'RM_ThozzikColonyQueen': 'rot_thozzikqueen',
     'RM_Illoth': 'rot_illoth_b', 'RM_Brogg': 'rot_brogg_b', 'RM_Brullith': 'rot_brullith',
     'RM_Skerrith': 'rot_skerrith', 'RM_Grellik': 'rot_fungalweevil_v2',
@@ -64,7 +64,6 @@ THOZZIK = ("A hive creature built on the kurreth's armoured, segmented ant body,
            "hive and gives very little meat or chitin.")
 DESC = {
     'RM_Thozzik': THOZZIK,
-    'RM_ThozzikSpawned': THOZZIK,
     'RM_ThozzikColony': THOZZIK + " This variety is loyal to the domesticated queen.",
     'RM_ThozzikQueen': ("The hive's matriarch, the kurreth's armoured body swollen around a spore-bearing "
                         "brood chamber. Very dangerous: nearly as fast as her spawn and her stings inject a more "

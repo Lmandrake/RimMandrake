@@ -188,7 +188,7 @@ def static_checks():
 
 
 # ROT_RM_CAST_MIGRATION_1: the ten ratified residents are owned RM_ defs, wired inline, hybrid, textured.
-CAST = ["Thozzik", "ThozzikColony", "ThozzikSpawned", "ThozzikQueen", "ThozzikColonyQueen",
+CAST = ["Thozzik", "ThozzikColony", "ThozzikQueen", "ThozzikColonyQueen",
         "Illoth", "Brullith", "Brogg", "Grellik", "Skerrith"]
 _BANNED = re.compile(r"wasp|hornet|moth|camel|llama|genetics|experiment|Force", re.I)
 # art owed: none (thozzik and illoth south frames landed from artpipe 2026-10-03)
