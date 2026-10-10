@@ -34,6 +34,11 @@ MUTATIONS = [
     ("scaled by the raw multiplier", "float m = ClampFuelMultiplier(multiplier);\n            return", "float m = multiplier;\n            return"),
     ("refill while consuming", "if (consumeFuelSetting || !hasRefuelable || !pollTick) return 0f;", "if (!hasRefuelable || !pollTick) return 0f;"),
     ("refill off the poll tick", "if (consumeFuelSetting || !hasRefuelable || !pollTick) return 0f;", "if (consumeFuelSetting || !hasRefuelable) return 0f;"),
+    ("pipe refund ignores the link setting", "if (!linkSetting || !pipeReceiving ||", "if (!pipeReceiving ||"),
+    ("pipe refund while unpiped", "if (!linkSetting || !pipeReceiving ||", "if (!linkSetting ||"),
+    ("pipe refund off the poll tick", "|| !consumeFuelSetting || !pollTick) return 0f;", "|| !consumeFuelSetting) return 0f;"),
+    ("pipe refund ignores the fuel setting", "|| !consumeFuelSetting || !pollTick) return 0f;", "|| !pollTick) return 0f;"),
+    ("pipe refunds a rise", "return fuel < lastFuel ? lastFuel - fuel : 0f;", "return Math.Abs(lastFuel - fuel);"),
     ("refill overfills", "return fuel < capacity ? capacity - fuel : 0f;", "return fuel < capacity ? capacity : 0f;"),
 ]
 

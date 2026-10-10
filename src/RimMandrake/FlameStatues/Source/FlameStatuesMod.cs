@@ -7,7 +7,7 @@ using Verse;
 namespace RimMandrake.FlameStatues
 {
     // FLAME_STATUES_MOD_BUILD_1 — Mod Settings, statue_mods_spec.md §2.4. Defaults = shipped behaviour.
-    // All off = plain sculptures with our art. The Helixien row arrives with step 7.
+    // All off = plain sculptures with our art. The Helixien row shows only when Vanilla Helixien Gas Expanded is active.
     public class FlameStatuesSettings : ModSettings
     {
         public static bool flamePoints = true;
@@ -15,6 +15,7 @@ namespace RimMandrake.FlameStatues
         public static bool consumeFuel = true;
         public static bool qualityScaling = true;
         public static bool glow = true;
+        public static bool helixienLink = true;
         public static float consumptionMultiplier = 1f;
 
         public override void ExposeData()
@@ -25,6 +26,7 @@ namespace RimMandrake.FlameStatues
             Scribe_Values.Look(ref consumeFuel, "consumeFuel", true);
             Scribe_Values.Look(ref qualityScaling, "qualityScaling", true);
             Scribe_Values.Look(ref glow, "glow", true);
+            Scribe_Values.Look(ref helixienLink, "helixienLink", true);
             Scribe_Values.Look(ref consumptionMultiplier, "consumptionMultiplier", 1f);
         }
 
@@ -57,6 +59,16 @@ namespace RimMandrake.FlameStatues
                 list.CheckboxLabeled("Statues use fuel", ref consumeFuel,
                     "On: flame statues burn chemfuel and go dark when empty. Off: statues never run out. "
                   + "Takes effect at once.");
+                list.GapLine();
+            }
+
+            // the row exists only when Vanilla Helixien Gas Expanded is active (spec §2.4)
+            if (!ModsConfig.IsActive("vanillaexpanded.helixiengas")) { }
+            else if (Group(list, "Helixien gas", RimMandrake.Shared.SettingScope.Now, new[] { "helixienLink" }))
+            {
+                list.CheckboxLabeled("Piped gas feeds statues", ref helixienLink,
+                    "On: a flame statue connected to a working Helixien gas pipe stops burning its own chemfuel tank "
+                  + "(it needs one first fill to light). Off: piped statues burn their tank like any other. Takes effect at once.");
                 list.GapLine();
             }
 

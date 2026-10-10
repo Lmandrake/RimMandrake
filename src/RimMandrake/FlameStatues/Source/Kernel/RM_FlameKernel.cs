@@ -85,5 +85,15 @@ namespace RimMandrake.FlameStatues
             if (consumeFuelSetting || !hasRefuelable || !pollTick) return 0f;
             return fuel < capacity ? capacity - fuel : 0f;
         }
+
+        /// <summary>Helixien link (statue_mods_spec.md §2.3): while the pipenet trader is receiving gas, a poll tick gives back
+        /// whatever the tank burned since the last poll, so a piped statue stops consuming its tank. VE's
+        /// CompResourceTrader.CanBeOn() demands refuelable.HasFuel, so the tank must stay non-empty for the pipe to stay on;
+        /// the refund is what keeps it so. lastFuel &lt; 0 = no reading yet (refunds nothing, as fuel is never negative). Never refunds a rise (a hauler's refill).</summary>
+        public static float PipeRefund(bool linkSetting, bool pipeReceiving, bool consumeFuelSetting, bool pollTick, float fuel, float lastFuel)
+        {
+            if (!linkSetting || !pipeReceiving || !consumeFuelSetting || !pollTick) return 0f;
+            return fuel < lastFuel ? lastFuel - fuel : 0f;
+        }
     }
 }

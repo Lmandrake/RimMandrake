@@ -7,7 +7,9 @@ flames each via RM_CompFlamePoints, Chemfuel only). Run:
 
 Environment: minimal + every DLC + this mod. Toggles are Mod Settings §2.4 (RM_CompFlamePoints, step 5).
 Not proven here: the flame drawing and the glow going dark without fuel (first poke: spawn a
-colossus, refuel it, screenshot, then empty it).
+colossus, refuel it, screenshot, then empty it). Also not proven: the Helixien link (step 7,
+Patches/Helixien_Pipenet.xml + RM_CompFlamePoints.PipeReceiving) -- poke: pipe a fuelled statue to a
+Helixien tank, step 2500 ticks, the chemfuel tank must not fall; cut the pipe, it must fall.
 """
 import os
 import sys
@@ -17,7 +19,7 @@ from modcheck import Suite, ExpectationFailed, shipped_defs
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 suite = Suite("FlameStatues")
-suite.toggles = ["flamePoints", "flecks", "consumeFuel", "qualityScaling", "glow"]
+suite.toggles = ["flamePoints", "flecks", "consumeFuel", "qualityScaling", "glow", "helixienLink"]
 
 STATUES = ("RM_FlameStatue_Ember", "RM_FlameStatue_Dancer", "RM_FlameStatue_Colossus")
 POINTS = {"RM_FlameStatue_Ember": 1, "RM_FlameStatue_Dancer": 3, "RM_FlameStatue_Colossus": 5}

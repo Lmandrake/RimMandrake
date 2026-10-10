@@ -746,6 +746,7 @@ MODS = {
     "FlameStatues": ("FlameStatuesMod.cs", "RimMandrake.FlameStatues.csproj", {
         "Flames and light": "Now",
         "Fuel on or off": "Now",
+        "Helixien gas": "Now",
         "Fuel use rate (restart)": "NextGameStart",
     }, ()),
     "Inhabited": ("RM_InhabitedMod.cs", "Inhabited.csproj", {

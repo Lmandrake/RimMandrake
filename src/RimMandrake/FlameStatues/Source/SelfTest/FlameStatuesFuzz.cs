@@ -16,7 +16,7 @@ namespace RimMandrake.FlameStatues.SelfTest
     internal static class FlameStatuesFuzz
     {
         public static long Cases, Steps;
-        public static long Refilled, Dark, Lit, AdversarialFrames, FleckFires;
+        public static long Refilled, Dark, Lit, AdversarialFrames, FleckFires, PipeRefunds;
         private static void Check(bool ok, string msg) { if (!ok) throw new Exception(msg); }
 
         private static List<string> Loop(string name, int n, int seed, Action<int> one)
@@ -213,6 +213,47 @@ namespace RimMandrake.FlameStatues.SelfTest
             });
         }
 
+        // ════════════════════════ pipe (Helixien link) ════════════════════════
+        private static List<string> Pipe(int n, int seed)
+        {
+            return Loop("pipe", n, seed, s =>
+            {
+                var r = new Random(s);
+                float capacity = new[] { 5f, 10f, 20f }[r.Next(3)];
+                float fuel = capacity * (float)(0.2 + 0.8 * r.NextDouble());
+                float perStep = capacity * (float)(r.NextDouble() * 0.05 + 0.001);
+                bool link = r.Next(4) != 0, piped = r.Next(2) == 0;
+                float last = -1f, startFuel = fuel;
+                for (int step = 0; step < 120; step++)
+                {
+                    Steps++;
+                    if (r.Next(15) == 0) { piped = !piped; }
+                    fuel = Math.Max(0f, fuel - perStep);                      // the vanilla comp burns every tick
+                    if (r.Next(40) == 0) fuel = capacity;                     // a hauler refills
+                    bool poll = r.Next(3) != 0;
+                    float back = RM_FlameKernel.PipeRefund(link, piped, true, poll, fuel, last);
+                    Check(back >= 0f, "negative pipe refund");
+                    if (!link || !piped || !poll || last < 0f) Check(back == 0f, "refunded while unlinked / unpiped / off-poll / unread");
+                    if (back > 0f) { PipeRefunds++; Check(fuel + back <= capacity + 1e-4f, "refund overfilled the tank"); }
+                    fuel += back;
+                    if (poll) last = fuel;
+                    Check(RM_FlameKernel.PipeRefund(link, piped, false, true, 0f, capacity) == 0f, "refunded with fuel use switched off");
+                }
+                Check(RM_FlameKernel.PipeRefund(true, true, true, true, 3f, 5f) == 2f, "refund is not the burn since the last poll");
+                Check(RM_FlameKernel.PipeRefund(true, true, true, true, 5f, 3f) == 0f, "refunded a rise (a hauler's refill)");
+                Check(RM_FlameKernel.PipeRefund(true, true, true, true, 3f, -1f) == 0f, "refunded with no previous reading");
+                // continuously piped, every tick a poll: the tank never falls more than one step below its start
+                float f2 = startFuel, l2 = -1f;
+                for (int step = 0; step < 200; step++)
+                {
+                    f2 = Math.Max(0f, f2 - perStep);
+                    f2 += RM_FlameKernel.PipeRefund(true, true, true, true, f2, l2);
+                    l2 = f2;
+                    Check(f2 >= startFuel - perStep - 1e-4f, $"piped tank drained to {f2} from {startFuel}");
+                }
+            });
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -226,6 +267,7 @@ namespace RimMandrake.FlameStatues.SelfTest
                 ("fleck", () => Fleck(N(2000), S(1))),
                 ("frame", () => Frame(N(4000), S(1))),
                 ("fuel", () => Fuel(N(3000), S(1))),
+                ("pipe", () => Pipe(N(2000), S(1))),
             };
             foreach (var f in fam)
             {
@@ -240,8 +282,8 @@ namespace RimMandrake.FlameStatues.SelfTest
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
             if (only == null && !oneSeed.HasValue && scale >= 1)
             {
-                Console.WriteLine($"reached: lit {Lit}, dark {Dark}, refills {Refilled}, flecks {FleckFires}, adversarial frames {AdversarialFrames}");
-                if (Lit == 0 || Dark == 0 || Refilled == 0 || FleckFires == 0 || AdversarialFrames == 0) { Console.WriteLine("FAIL fuzz never reached lit / dark / refill / fleck / adversarial frame (blind)"); ok = false; }
+                Console.WriteLine($"reached: lit {Lit}, dark {Dark}, refills {Refilled}, flecks {FleckFires}, adversarial frames {AdversarialFrames}, pipe refunds {PipeRefunds}");
+                if (Lit == 0 || Dark == 0 || Refilled == 0 || FleckFires == 0 || AdversarialFrames == 0 || PipeRefunds == 0) { Console.WriteLine("FAIL fuzz never reached lit / dark / refill / fleck / adversarial frame / pipe refund (blind)"); ok = false; }
             }
             Console.WriteLine($"flamestatues fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");
             return ok;
