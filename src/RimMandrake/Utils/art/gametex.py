@@ -48,7 +48,7 @@ BUNDLES = Path("/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures")
 CACHE = Path(os.environ.get("RM_GAMETEX_CACHE") or "/tmp/rm_gametex")
 GAME_VERSION = (1, 6)
 FACE_RE = re.compile(r"^(?P<stem>.+?)_(?P<facing>north|east|south|west)(?P<mask>m?)$", re.I)
-DEFTEX_SCHEMA = 2      # 2: + "extra" (alternateGraphics, plant immature/leafless) per def
+DEFTEX_SCHEMA = 3      # 2: + "extra" (alternateGraphics, plant immature/leafless) per def; 3: + "slots" (sheet_slots)
 NONBODY = re.compile(r"dess?icc?ated|_corpse$|skeleton", re.I)
 
 
@@ -291,11 +291,13 @@ def build_deftex() -> dict:
     dd = _dump_dir()
     if dd is None:
         raise SystemExit("gametex: no DefDump capture found — def texPaths UNMEASURED")
-    out, kinds = {}, {}
+    import sheet_slots as SL
+    out, kinds, kfields = {}, {}, {}
     pk = json.loads((dd / "defs" / "PawnKindDef.json").read_text())
     for d in pk["defs"]:
         f = d.get("fields") or {}
         race = f.get("race")
+        kfields.setdefault(race, []).append((d["defName"], f))
         tps = []
         for ls in f.get("lifeStages") or []:
             if isinstance(ls, dict):
@@ -324,7 +326,8 @@ def build_deftex() -> dict:
         extra = {t: r for t, r in extra.items() if t not in tps}
         if tps or extra:
             out[dn] = {"tex": tps, "extra": extra, "mod": d.get("modName"), "packageId": d.get("packageId"),
-                       "label": d.get("label")}
+                       "label": d.get("label"),
+                       "slots": SL.derive(dn, f, d.get("is") or {}, kfields.get(dn, []), catch=dn.endswith("Catch"))}
     for k, v in kinds.items():
         out.setdefault(k, {"tex": v["tex"], "extra": v.get("extra") or {}, "mod": None, "packageId": None,
                            "label": None, "race": v["race"]})
@@ -356,6 +359,11 @@ def deftex(rebuild: bool = False) -> dict:
 
 def def_texpaths(defname: str) -> list[str]:
     return list((deftex()["defs"].get(defname) or {}).get("tex") or [])
+
+
+def def_slots(defname: str) -> list[dict]:
+    """The slots (sheet_slots.derive) the game draws for DEFNAME, from the live dump; [] when the def is not in it."""
+    return [dict(s) for s in (deftex()["defs"].get(defname) or {}).get("slots") or []]
 
 
 def def_extra_texpaths(defname: str) -> dict:

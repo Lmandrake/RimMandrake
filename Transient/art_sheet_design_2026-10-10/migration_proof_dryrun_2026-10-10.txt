@@ -1,0 +1,10 @@
+{
+ "files": 27,
+ "decided_rows": 789,
+ "letters": 1291,
+ "same": 523,
+ "explained": {
+  "legacy-tick": 499
+ }
+}
+MIGRATION PROOF: PASS
