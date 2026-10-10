@@ -57,6 +57,7 @@
     <graphicData>
       <texPath>Things/Plant/VaultRoot</texPath>
       <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>2</drawSize>
       <shadowData>
         <volume>(0.22, 0.28, 0.15)</volume>
         <offset>(0,0,-0.36)</offset>
@@ -73,7 +74,7 @@
       <harvestedThingDef>WoodLog</harvestedThingDef>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <topWindExposure>0.06</topWindExposure>
-      <visualSizeRange>1.2~2.6</visualSizeRange>
+      <visualSizeRange>2.4~5.2</visualSizeRange>
       <wildClusterRadius>-1</wildClusterRadius>
       <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
     </plant>
