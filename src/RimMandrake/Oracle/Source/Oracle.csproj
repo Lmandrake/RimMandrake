@@ -74,4 +74,8 @@
     -->
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
+  </ItemGroup>
 </Project>
