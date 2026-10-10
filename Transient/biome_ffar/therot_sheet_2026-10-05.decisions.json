@@ -21,8 +21,9 @@
       "variantsDefault": true
     },
     "AA_AngelMoth": {
-      "at": "2026-10-10T15:00:59.740Z",
-      "decision": "A",
+      "at": "2026-10-10T17:34:27.653Z",
+      "decidedAt": "2026-10-10T17:34:27.653Z",
+      "decision": "C",
       "note": "Regenerate S. Otherwise accept. Rename and regenerate description.",
       "prefill": "A",
       "purge": [
@@ -152,28 +153,40 @@
       "variantsDefault": true
     },
     "AB_GlowingAgarilux": {
-      "at": "2026-10-10T15:15:26.621Z",
+      "at": "2026-10-10T17:30:41.360Z",
       "decision": "A",
       "note": "Rename, improve description, make two other improved variants that are more realistic",
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "variants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-10T17:30:41.360Z"
     },
     "AB_Glowstool": {
-      "at": "2026-10-10T15:15:35.842Z",
+      "at": "2026-10-10T17:30:47.727Z",
       "decision": "A",
       "note": "Rename, improve description, make two other improved variants that are more realistic",
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "variants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-10T17:30:47.727Z"
     },
     "AB_LilacBeacon": {
-      "at": "2026-10-10T15:16:01.710Z",
+      "at": "2026-10-10T17:31:08.922Z",
       "decision": "A",
       "note": "Rename, improve description, make two other improved variants that are more realistic",
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "variants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-10T17:31:08.922Z"
     },
     "AB_RecurvedStropharia": {
       "decision": "A",
@@ -181,25 +194,30 @@
       "prefill": "A"
     },
     "AB_SlimyPholiota": {
-      "at": "2026-10-10T15:20:05.957Z",
-      "decision": "A",
-      "note": "Rename, improve description, make two other improved variants that are more realistic",
-      "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
-    },
-    "AB_WitchesOyster": {
-      "at": "2026-10-10T15:21:40.862Z",
+      "at": "2026-10-10T17:32:56.919Z",
       "decision": "A",
       "note": "Rename, improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "variants": [
-        "A"
+        "B",
+        "C"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-10T17:32:56.919Z"
+    },
+    "AB_WitchesOyster": {
+      "at": "2026-10-10T17:33:42.054Z",
+      "decision": "A",
+      "note": "Rename, improve description, make two other improved variants that are more realistic",
+      "prefill": "A",
+      "variants": [
+        "A",
+        "B",
+        "C"
+      ],
+      "variantsAt": "2026-10-10T17:33:42.054Z"
     },
     "RM_AgelessCap": {
-      "at": "2026-10-10T15:18:16.694Z",
+      "at": "2026-10-10T17:31:37.824Z",
       "decision": "A",
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
@@ -209,9 +227,11 @@
       "purgeTouched": true,
       "variants": [
         "A",
-        "B"
+        "B",
+        "D",
+        "E"
       ],
-      "variantsAt": "2026-10-10T15:18:10.677Z"
+      "variantsAt": "2026-10-10T17:31:37.824Z"
     },
     "RM_Arpeau": {
       "at": "2026-10-10T15:14:20.534Z",
@@ -233,32 +253,58 @@
       "variantsAt": "2026-10-10T15:14:20.534Z"
     },
     "RM_BlastpodShroom": {
-      "at": "2026-10-10T15:15:56.121Z",
-      "decision": "A",
+      "at": "2026-10-10T17:31:05.081Z",
+      "decidedAt": "2026-10-10T17:31:01.123Z",
+      "decision": "C",
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "purge": [
+        "54c70554cc59376cc6e34297a2bc0a4da5dd64b7338d8f82fa0a05f07b7a3879",
+        "eaa39f8c641078bcdc08a8c93710b06e350b8ffdd435b16848481815c0b9f81c",
+        "8260cf3e56152901f89e59870281af60c0366f3c6aa49a14fe5b3500fa99d8e2"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "E",
+        "F"
+      ],
+      "variantsAt": "2026-10-10T17:30:58.040Z"
     },
     "RM_BleedingTooth": {
+      "at": "2026-10-10T17:32:46.127Z",
       "decision": "A",
       "note": "",
-      "prefill": "A"
+      "prefill": "A",
+      "purge": [
+        "847dc28fde17e2bf895a1ab225e7c8a7b7f7deec9d0f64721f982f53066b8f04"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "B",
+        "C",
+        "D",
+        "E",
+        "F"
+      ],
+      "variantsDefault": true
     },
     "RM_Brightbell": {
-      "at": "2026-10-10T15:21:08.586Z",
+      "at": "2026-10-10T17:33:28.246Z",
       "decidedAt": "2026-10-10T15:20:59.303Z",
       "decision": "C",
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
-        "465c0328034def8669d3e5b987cf0684834809e7282028fd77e88e8dbd0f665b"
+        "465c0328034def8669d3e5b987cf0684834809e7282028fd77e88e8dbd0f665b",
+        "56c96bd53a28fb3c477f9c2ca8811e3e577deee5ca054546e9bd0e0cd1513305"
       ],
       "purgeTouched": true,
       "variants": [
-        "C"
+        "C",
+        "D",
+        "E"
       ],
-      "variantsAt": "2026-10-10T15:21:01.282Z"
+      "variantsAt": "2026-10-10T17:33:26.352Z"
     },
     "RM_Brogg": {
       "at": "2026-10-10T15:03:03.284Z",
@@ -284,12 +330,25 @@
       "prefill": "A"
     },
     "RM_CrimsonCap": {
-      "at": "2026-10-10T15:19:39.415Z",
-      "decision": "A",
+      "at": "2026-10-10T17:32:39.080Z",
+      "decidedAt": "2026-10-10T17:32:39.080Z",
+      "decision": "G",
       "note": "Rename, improve description, make two other improved variants that are more realistic",
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "purge": [
+        "b2de8d98b963ce380b67abc15084fbf63e9d8384dd173b19fff750142e5310b5",
+        "54537d0083688f6c014a320d45464c43fc3a4bdb93bbbc63e87ff042ad06d0ca",
+        "c7520cdab09b6f2d8aba1d65bec63c57486f2ef57d0fbcacfd2ae9acc8dce80f",
+        "35bec7e818089a0550ddf9fa1fdfd15ace8943e08f1f660fb1115f68c9e22a29",
+        "946f33b92d3717ded1e68b19d935b628d98adb5a153878d1efa31168fb8e93ba",
+        "fd787ef4957cee94ac59636699aca62517d878fc7764daed4a43c6daa133b382"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "G",
+        "H"
+      ],
+      "variantsAt": "2026-10-10T17:32:36.382Z"
     },
     "RM_Dewshrooms": {
       "decision": "A",
@@ -314,31 +373,50 @@
       "variantsDefault": true
     },
     "RM_FalseFruit": {
-      "at": "2026-10-10T15:18:40.062Z",
+      "at": "2026-10-10T17:31:41.437Z",
       "decidedAt": "2026-10-10T15:18:23.143Z",
       "decision": "B",
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "variants": [
-        "B"
+        "B",
+        "C",
+        "D"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-10T17:31:41.437Z"
     },
     "RM_FlakespireFungus": {
-      "at": "2026-10-10T15:20:34.500Z",
+      "at": "2026-10-10T17:33:15.416Z",
       "decision": "A",
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "purge": [
+        "e871384f56ba44bda702dbce336299c74eea2caba99eb6e9a53a3c7750f7f1a5"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "A",
+        "C",
+        "D"
+      ],
+      "variantsAt": "2026-10-10T17:33:13.917Z"
     },
     "RM_FruitingBodies": {
-      "at": "2026-10-10T15:18:53.365Z",
+      "at": "2026-10-10T17:31:54.430Z",
       "decision": "A",
       "note": "make two other improved variants that are more realistic",
       "prefill": "A",
-      "variants": [],
-      "variantsDefault": true
+      "purge": [
+        "b459f5d7245439e2d16951412866b81317b6c3b83518cfb836f93fbd6e27363e",
+        "89ee1e9cfbf23702c93d4f9684bc251a6a82cfbfd1f305dc126012f09e3488b9",
+        "cab09965d3904fd685bbdfaa052171c84e3eed3adadf0b5ee214b7a0fd6c7cd5"
+      ],
+      "purgeTouched": true,
+      "variants": [
+        "E",
+        "F"
+      ],
+      "variantsAt": "2026-10-10T17:31:46.970Z"
     },
     "RM_Grellik": {
       "decision": "A",
@@ -346,11 +424,17 @@
       "prefill": "A"
     },
     "RM_GreyLady": {
-      "at": "2026-10-10T15:20:21.949Z",
+      "at": "2026-10-10T17:33:08.744Z",
       "decidedAt": "2026-10-10T15:20:15.763Z",
       "decision": "B",
       "note": "Improve description",
       "prefill": "A",
+      "purge": [
+        "58480c528d3498ec0070fa1d7caa11823b681c79f994a7806ab8354e657c095e",
+        "a31f985818ba5a63683de257bc7ea2c6d5192ce62b7073f44854e0c228fabbc1",
+        "85bf87c03fa0806592cc95a4079c72a91bde2245adc834f9d8d8197839de4a01"
+      ],
+      "purgeTouched": true,
       "variants": [
         "B",
         "C",
@@ -390,17 +474,24 @@
       "variantsAt": "2026-10-10T15:08:45.680Z"
     },
     "RM_MortalMorelPlant": {
-      "at": "2026-10-10T15:21:30.329Z",
+      "at": "2026-10-10T17:33:38.862Z",
       "decidedAt": "2026-10-10T15:21:27.393Z",
       "decision": "B",
       "note": "Rename, improve description, make two other improved variants that are more realistic",
       "prefill": "A",
+      "purge": [
+        "88d5e0e268b3b3bb1af578c92d704d06d97133cfef4c6dfbfa66e91c85e89917"
+      ],
+      "purgeTouched": true,
       "variants": [
         "B",
         "C",
-        "D"
+        "D",
+        "E",
+        "F",
+        "G"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-10T17:33:36.719Z"
     },
     "RM_Mullgoth": {
       "decision": "A",
@@ -408,7 +499,7 @@
       "prefill": "A"
     },
     "RM_Nuitae": {
-      "at": "2026-10-10T15:17:51.785Z",
+      "at": "2026-10-10T17:31:32.430Z",
       "decision": "A",
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
@@ -418,62 +509,74 @@
       ],
       "purgeTouched": true,
       "variants": [
+        "A",
         "B",
-        "C"
+        "C",
+        "F",
+        "G"
       ],
-      "variantsAt": "2026-10-10T15:17:39.616Z"
+      "variantsAt": "2026-10-10T17:31:32.430Z"
     },
     "RM_PaleTree": {
-      "at": "2026-10-10T15:19:26.134Z",
+      "at": "2026-10-10T17:32:09.359Z",
       "decision": "A",
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "variants": [
+        "A",
         "B",
-        "C"
+        "C",
+        "D",
+        "E"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-10T17:32:09.359Z"
     },
     "RM_Pusmelon": {
-      "at": "2026-10-10T15:15:44.168Z",
+      "at": "2026-10-10T17:30:51.385Z",
       "decidedAt": "2026-10-10T15:15:40.486Z",
       "decision": "B",
       "note": "Rename, improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "variants": [
-        "B"
+        "B",
+        "C",
+        "D"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-10T17:30:51.385Z"
     },
     "RM_RegenerantVeil": {
-      "at": "2026-10-10T15:17:29.407Z",
+      "at": "2026-10-10T17:31:25.486Z",
       "decision": "A",
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
-        "4459145f8a4cbabea89690312cad07f543d0a3e63e329402bfdf1a365f0bbb93"
+        "4459145f8a4cbabea89690312cad07f543d0a3e63e329402bfdf1a365f0bbb93",
+        "aa606e0edc8224783fde99ef5b87439eb6c08d44893ef6f8a6f485590a8a24e3"
       ],
       "purgeTouched": true,
       "variants": [
         "A",
-        "C"
+        "D",
+        "E"
       ],
-      "variantsAt": "2026-10-10T15:17:22.475Z"
+      "variantsAt": "2026-10-10T17:31:23.566Z"
     },
     "RM_Sagecrust": {
-      "at": "2026-10-10T15:20:53.662Z",
+      "at": "2026-10-10T17:33:22.517Z",
       "decidedAt": "2026-10-10T15:20:48.754Z",
       "decision": "C",
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
       "purge": [
-        "2de83bd7f75eba5331edfd781f4eb8c8ea0dc384f12b2df05f4fdc9655211c05"
+        "2de83bd7f75eba5331edfd781f4eb8c8ea0dc384f12b2df05f4fdc9655211c05",
+        "a9dac49e125b19e4881580693ad68bfc3907b88755ca9e83c921239f56a696a9"
       ],
       "purgeTouched": true,
       "variants": [
-        "C"
+        "C",
+        "D"
       ],
-      "variantsAt": "2026-10-10T15:20:40.823Z"
+      "variantsAt": "2026-10-10T17:33:22.517Z"
     },
     "RM_Shambles": {
       "decision": "A",
@@ -558,28 +661,40 @@
       "variantsDefault": true
     },
     "RM_VioletWimple": {
-      "at": "2026-10-10T15:19:07.984Z",
+      "at": "2026-10-10T17:32:01.227Z",
       "decision": "A",
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
+      "purge": [
+        "cf994f6d38a65ee5dce5ed77d0146135ed319cbb25ed49a0ca25e35cb6215162"
+      ],
+      "purgeTouched": true,
       "variants": [
         "B",
         "C",
-        "D"
+        "D",
+        "E",
+        "F"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-10T17:31:59.365Z"
     },
     "RM_Wrinklecap": {
-      "at": "2026-10-10T15:19:56.327Z",
+      "at": "2026-10-10T17:32:53.352Z",
       "decision": "A",
       "note": "improve description, make two other improved variants that are more realistic",
       "prefill": "A",
+      "purge": [
+        "e3b8c4841b3b109e0713b5af56e3f91e2de84b700e0484a2c7c3a48b73f0e63e"
+      ],
+      "purgeTouched": true,
       "variants": [
         "B",
         "C",
-        "D"
+        "D",
+        "E",
+        "F"
       ],
-      "variantsDefault": true
+      "variantsAt": "2026-10-10T17:32:53.352Z"
     },
     "RSW_ShiroTrap": {
       "decision": "A",
@@ -622,10 +737,10 @@
     "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet",
     "state": "prefill"
   },
-  "savedAt": "2026-10-10T08:21:41-0700",
+  "savedAt": "2026-10-10T10:34:28-0700",
   "savedBy": "review-sheet-sidecar",
   "sheetId": "therot_sheet_2026-10-05",
   "snapshot": "infrastructure/state/art/sheets/therot_sheet_2026-10-05.snapshot.json",
   "snapshotId": "cf064b3a064be0fd",
-  "writeCount": 132
+  "writeCount": 203
 }

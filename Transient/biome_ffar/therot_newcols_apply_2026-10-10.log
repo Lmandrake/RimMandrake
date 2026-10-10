@@ -1,0 +1,78 @@
+ingest: {'ok': True, 'rulings': 0, 'rejected': None, 'error': None, 'stale_rows': {}}
+keeps_recorded (0)
+installed (33)
+   AB_GlowingAgarilux B: already live src/RimMandrake/TheRot/Textures/RotSpecies/GlowingAgarilux/GlowingAgarilux_b.png
+   AB_GlowingAgarilux C: already live src/RimMandrake/TheRot/Textures/RotSpecies/GlowingAgarilux/GlowingAgarilux_c.png
+   AB_Glowstool B: already live src/RimMandrake/TheRot/Textures/RotSpecies/Glowstool/Glowstool_b.png
+   AB_Glowstool C: already live src/RimMandrake/TheRot/Textures/RotSpecies/Glowstool/Glowstool_c.png
+   AB_LilacBeacon B: already live src/RimMandrake/TheRot/Textures/RotSpecies/LilacBeacon/LilacBeacon_b.png
+   AB_LilacBeacon C: already live src/RimMandrake/TheRot/Textures/RotSpecies/LilacBeacon/LilacBeacon_c.png
+   AB_SlimyPholiota B: already live src/RimMandrake/TheRot/Textures/RotSpecies/SlimyPholiota/SlimyPholiota_b.png
+   AB_SlimyPholiota C: already live src/RimMandrake/TheRot/Textures/RotSpecies/SlimyPholiota/SlimyPholiota_c.png
+   RM_AgelessCap D: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/AgelessCap/AgelessCap_d.png
+   RM_AgelessCap E: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/AgelessCap/AgelessCap_e.png
+   RM_Brightbell D: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Brightbell/Brightbell_d.png
+   RM_Brightbell E: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Brightbell/Brightbell_e.png
+   RM_CrimsonCap G: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/CrimsonCap/CrimsonCap_g.png
+   RM_CrimsonCap H: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/CrimsonCap/CrimsonCap_h.png
+   RM_FalseFruit C: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/FalseFruit/FalseFruit_c.png
+   RM_FalseFruit D: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/FalseFruit/FalseFruit_d.png
+   RM_FlakespireFungus C: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/FlakespireFungus/FlakespireFungus_c.png
+   RM_FlakespireFungus D: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/FlakespireFungus/FlakespireFungus_d.png
+   RM_FruitingBodies E: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/FruitingBodies/FruitingBodies_e.png
+   RM_FruitingBodies F: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/FruitingBodies/FruitingBodies_f.png
+   RM_BlastpodShroom E: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown/BoomshroomGrown_e.png
+   RM_BlastpodShroom F: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown/BoomshroomGrown_f.png
+   RM_MortalMorelPlant F: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/MortalMorel/MortalMorel_f.png
+   RM_MortalMorelPlant G: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/MortalMorel/MortalMorel_g.png
+   RM_Nuitae F: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Nuitae/Nuitae_f.png
+   RM_Nuitae G: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Nuitae/Nuitae_g.png
+   RM_PaleTree D: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/PaleTree/PaleTree_d.png
+   RM_PaleTree E: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/PaleTree/PaleTree_e.png
+   RM_Pusmelon C: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Pusmelon/Pusmelon_c.png
+   RM_Pusmelon D: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Pusmelon/Pusmelon_d.png
+   RM_RegenerantVeil D: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/RegenerantVeil/RegenerantVeil_d.png
+   RM_RegenerantVeil E: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/RegenerantVeil/RegenerantVeil_e.png
+   RM_Sagecrust D: already live src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Sagecrust/Sagecrust_d.png
+retired (13)
+   RM_CrimsonCap: RotSporeKit/Things/Plant/CrimsonCap/CrimsonCap_a.png
+   RM_CrimsonCap: RotSporeKit/Things/Plant/CrimsonCap/CrimsonCap_b.png
+   RM_CrimsonCap: RotSporeKit/Things/Plant/CrimsonCap/CrimsonCap_c.png
+   RM_CrimsonCap: RotSporeKit/Things/Plant/CrimsonCap/CrimsonCap_d.png
+   RM_CrimsonCap: RotSporeKit/Things/Plant/CrimsonCap/CrimsonCap_e.png
+   RM_CrimsonCap: RotSporeKit/Things/Plant/CrimsonCap/CrimsonCap_f.png
+   RM_BlastpodShroom: RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown/BoomshroomGrown_B.png
+   RM_BlastpodShroom: RotSporeKit/Things/Plant/Boomshroom/BoomshroomGrown/BoomshroomGrown_C.png
+   RM_FruitingBodies: RotSporeKit/Things/Plant/FruitingBodies/FruitingBodyA.png
+   RM_FruitingBodies: RotSporeKit/Things/Plant/FruitingBodies/FruitingBodyB.png
+   RM_FruitingBodies: RotSporeKit/Things/Plant/FruitingBodies/FruitingBodyC.png
+   RM_FlakespireFungus: RotSporeKit/Things/Plant/FlakespireFungus/Flakespirefungus_b.png
+   RM_RegenerantVeil: RotSporeKit/Things/Plant/RegenerantVeil/RegenerantVeil_C.png
+purged (21)
+   RM_BlastpodShroom: eaa39f8c6410
+   RM_BlastpodShroom: 8260cf3e5615
+   RM_BleedingTooth: 847dc28fde17
+   RM_Brightbell: 56c96bd53a28
+   RM_CrimsonCap: b2de8d98b963
+   RM_CrimsonCap: 54537d008368
+   RM_CrimsonCap: c7520cdab09b
+   RM_CrimsonCap: 35bec7e81808
+   RM_CrimsonCap: 946f33b92d37
+   RM_CrimsonCap: fd787ef4957c
+   RM_FlakespireFungus: e871384f56ba
+   RM_FruitingBodies: b459f5d72454
+   RM_FruitingBodies: 89ee1e9cfbf2
+   RM_FruitingBodies: cab09965d390
+   RM_GreyLady: 58480c528d34
+   RM_GreyLady: 85bf87c03fa0
+   RM_MortalMorelPlant: 88d5e0e268b3
+   RM_RegenerantVeil: aa606e0edc82
+   RM_Sagecrust: a9dac49e125b
+   RM_VioletWimple: cf994f6d38a6
+   RM_Wrinklecap: e3b8c4841b3b
+kept_last (2)
+   RM_BlastpodShroom: RotSporeKit/Things/Plant/Boomshroom/BoomshroomImmature/BoomshroomImmature.png (✕ but the folder's last picture)
+   RM_GreyLady: GreyLady/GreyLadyImmature/GreyLadyImmature_a.png (✕ but the folder's only picture)
+problems (2)
+   RM_BlastpodShroom: ✕ 54c70554cc59 stays live at src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/Boomshroom/BoomshroomImmature/BoomshroomImmature.png — not purged
+   RM_GreyLady: ✕ a31f985818ba stays live at src/RimMandrake/TheRot/Textures/RotSporeKit/Things/Plant/GreyLady/GreyLadyImmature/GreyLadyImmature_a.png — not purged
