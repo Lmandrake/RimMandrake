@@ -40,8 +40,10 @@
 <Patch>
 
   <Operation Class="PatchOperationFindMod">
+    <!-- BAROQUE_LOAD_RESIDUE_ERRORS_1: the TARGET (RUT_Sump) lives in UtinniPatches, so gate on that mod; gating on
+         this mod's own name always matched and logged a failed patch whenever UtinniPatches was absent. -->
     <mods>
-      <li>RimMandrake: Baroque Biomes</li>
+      <li>RimUtinni Patches (Jawa campaign)</li>
     </mods>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="RUT_Sump"]</xpath>
