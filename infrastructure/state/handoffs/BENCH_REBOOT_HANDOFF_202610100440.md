@@ -13,7 +13,7 @@ Tonight's proof that phone question cards work: after a sweep of every item that
 
 <!-- Findings that need HIS eye or HIS decision: a number nobody ruled on, a mod that vanished from his list, a change he can veto. Say what you shipped deliberately with a flag raised. Empty is a legitimate answer. -->
 - **Restart owed. FOUNDRY holds the bridge** for its full-list acceptance sweep, so BENCH did not restart. Not yet live: Silooth v6 in 3 facings (new mod `mandrake.rsw.siloothartoverride`, enabled in ModsConfig and deployed), weather-stone item art (WeepingStones needs `deploy_custom_mods.py --compose biomes --apply`), and the 66-sheet's biome-mod and SWBestiary deploys (skipped because they write a DLL while the game runs). Plus everything from the previous handoff's restart list.
-- **ModsConfig has 613 active (MEASURED 2026-10-09 19:58), against 622 recorded at 08:54.** Something removed 9. Not investigated; probably a FOUNDRY tier swap. Backup: `ModsConfig.xml.bak_silooth_20261009_195818`.
+- **ModsConfig has 612 active (MEASURED 2026-10-09 21:50 by parsing).** That is exactly `infrastructure/state/modlists/ModsConfig.FULL.CANDIDATE_NO_TRADEUI_VTE.xml` = `FULL.LATEST` (614) minus Trade UI Revised and Vanilla Trading Expanded, retired by owner card 2026-10-09 (`BAZAAR_DISPLACEMENT_PASS_1`). No mod was lost.
 - **66-conflict sheet enacted, independent audit 66/66 PASS** (`Transient/sheet_conflicts_enact_audit_2026-10-09.md`). Redraws are still in flight: Peko Peko male (its delete waits on the replacement), Krayt, Blixus, Opee juvenile, Gawpsack.
 - **The Sith line needs a biome identified.** The owner said "lurking in the Crags biome rarely", and no RM_ biome named Crags exists (SANGUOPHAGE_KEPT_UNREACHABLE_1).
 
