@@ -18,10 +18,12 @@ pending
 - MortalMorel_p3b (his default-ticked C) left live — a default tick, not a duplicate.
 ## 5. Unshown folders — owner question
 pending
-## 6. Pluur'va dessicated drawSize
-pending
-## 7. RM_ThozzikSpawned deleted; Thozzik B ✕s; queens kept
-pending
+## 6. Pluur'va dessicated drawSize — DONE
+- `RotSpecies_NamesAndSizes.xml`: `dessicatedBodyGraphicData/drawSize` on AA_AnimaColossus lifeStages 1-3 now 12/15/18 (donor 4/5/6 ×3), matching the body. validate_patch OK.
+## 7. RM_ThozzikSpawned deleted; Thozzik B ✕s; queens kept — DONE
+- Decision taken by question card 2026-10-10: delete RM_ThozzikSpawned. Removed its ThingDef + PawnKindDef (`RM_TheRot_Fauna_ThingDefs_Races.xml`) and its 0.2 row in `RM_TheRot_Biome.xml`; dropped it from `TheRot/validation.py` CAST and `port_fauna.py` maps. References checked: no hive spawner, PawnKindDef, patch or C# names it (acoustic-payload lists name only Colony/ColonyQueen/Queen); nothing to repoint. TheRot validation STATIC PASS.
+- His 3 ✕s on RM_Thozzik render B (b2ec037d/1f3992e7/93971b55) purged; the only keep on those bytes was RM_ThozzikSpawned's default variant tick, released with it.
+- Decision taken by question card 2026-10-10: keep BOTH RM_ThozzikQueen (wild hive queen) and RM_ThozzikColonyQueen (tame colony queen).
 ## 8. Variant-job grading fix
 pending
 ## 9. Prune

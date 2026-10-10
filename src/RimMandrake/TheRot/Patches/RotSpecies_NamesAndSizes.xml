@@ -672,6 +672,18 @@
           <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>18</drawSize></value>
         </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/lifeStages/li[1]/dessicatedBodyGraphicData/drawSize</xpath>
+          <value><drawSize>12</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/lifeStages/li[2]/dessicatedBodyGraphicData/drawSize</xpath>
+          <value><drawSize>15</drawSize></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/PawnKindDef[defName="AA_AnimaColossus"]/lifeStages/li[3]/dessicatedBodyGraphicData/drawSize</xpath>
+          <value><drawSize>18</drawSize></value>
+        </li>
       </operations>
     </match>
   </Operation>
