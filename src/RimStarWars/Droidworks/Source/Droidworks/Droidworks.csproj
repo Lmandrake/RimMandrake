@@ -90,6 +90,7 @@
     <Compile Include="JobDriver_DWDataSpike.cs" />
     <Compile Include="JobDriver_DWRecharge.cs" />
     <Compile Include="JobGiver_DWRecharge.cs" />
+    <Compile Include="JobGiver_DWBlankStandby.cs" />
     <Compile Include="Need_Power.cs" />
     <Compile Include="Patch_ShouldHaveNeed_Power.cs" />
     <Compile Include="Patch_DroidBillGiverNoBed.cs" />

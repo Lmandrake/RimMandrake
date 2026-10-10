@@ -97,13 +97,27 @@ namespace RimMandrake.StarWars.Droidworks
                     + "by reflection - vanilla API has moved. RSW_DW_Power need gate NOT applied.");
                 return;
             }
-            harmony.Patch(target, postfix: new HarmonyMethod(typeof(Patch_ShouldHaveNeed_Power), nameof(Postfix)));
+            // Priority.Last: other mods' postfixes that force their own need on (hygiene and the like) run
+            // first, so the format-tier veto below is the final word for mindless/blank droids.
+            harmony.Patch(target, postfix: new HarmonyMethod(typeof(Patch_ShouldHaveNeed_Power), nameof(Postfix))
+                { priority = Priority.Last });
         }
 
         public static void Postfix(NeedDef nd, Pawn ___pawn, ref bool __result)
         {
             if (!__result) return;
-            if (nd != DroidworksDefOf.RSW_DW_Power) return;
+            if (nd != DroidworksDefOf.RSW_DW_Power)
+            {
+                // DROIDWORKS_FORMAT_TIERS_1 (bridge5 2026-10-09 A1 FAIL): mindless and blank keep ONLY the power
+                // bar. The tier stages' disablesNeeds covers the vanilla needs, but cannot name the ~12 third-party
+                // needs (Hygiene, DrugDesire, AM_TeaNeed, RomanceOnTheRim, PrisonLabor, VME_*, SEX_Intimacy...)
+                // that other mods leave ungated - so veto every non-power need here, for droids only.
+                if (___pawn?.RaceProps?.FleshType != DroidworksDefOf.RSW_DW_FleshType_Droid) return;
+                DroidFormatTier? tier = DroidFormatTierUtility.TierOf(___pawn);
+                if (tier.HasValue && !DroidworksKernel.TierAllowsNeed(tier.Value, false))
+                    __result = false;
+                return;
+            }
             // MOD_OPTIONS_RETROFIT_1: the whole "droids run on stored power"
             // mechanic, switched here because this is the one place that decides
             // whether a pawn carries the need at all. Off: the need is dropped on

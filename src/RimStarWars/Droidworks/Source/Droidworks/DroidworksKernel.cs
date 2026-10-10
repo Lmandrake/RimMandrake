@@ -107,6 +107,19 @@ namespace RimMandrake.StarWars.Droidworks
         /// </summary>
         public static bool FormatClearsServiceRecord(DroidFormatTier target) { return target == DroidFormatTier.Blank; }
 
+        /// <summary>
+        /// Ruling 4: "MINDLESS and BLANK have no needs" - the power bar excepted. A stage's disablesNeeds can only name needs
+        /// we know of; on the full list a dozen third-party needs (hygiene, tea, romance, prison labour...) reached mindless and
+        /// blank droids (bridge5 2026-10-09). So the rule is "power only", decided per need in Patch_ShouldHaveNeed_Power.
+        /// </summary>
+        public static bool TierAllowsNeed(DroidFormatTier tier, bool isPowerNeed)
+        {
+            return isPowerNeed || tier > DroidFormatTier.Mindless;
+        }
+
+        /// <summary>A BLANK droid has no programming, so it stands where it is rather than idling about (JobGiver_DWBlankStandby).</summary>
+        public static bool TierStandsIdle(DroidFormatTier tier) { return tier == DroidFormatTier.Blank; }
+
         // ================================================================= service record drift
 
         /// <summary>Ticks since the last reset; "never set" (negative) and a clock that ran backwards both read 0.</summary>

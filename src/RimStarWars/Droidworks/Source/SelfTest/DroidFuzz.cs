@@ -260,6 +260,11 @@ namespace RimMandrake.StarWars.Droidworks.SelfTest
             Check(DroidworksKernel.TicksSince(w.now, -1) == 0, "an unset clock read nonzero service time");
             Check(w.lastReset == w.oracleReset, "model clock and oracle clock diverged");
             if (a.kind != 0 && a.kind != 3) Check(w.tier == tierBefore, "tier changed outside a drift or a recipe");
+            // Ruling 4 (bridge5 2026-10-09 A1/A3): mindless + blank keep only power; only blank stands idle.
+            bool reduced = w.tier == DroidFormatTier.Blank || w.tier == DroidFormatTier.Mindless;
+            Check(DroidworksKernel.TierAllowsNeed(w.tier, true), "the power need was vetoed at " + w.tier);
+            Check(DroidworksKernel.TierAllowsNeed(w.tier, false) == !reduced, "a non-power need allowed=" + !reduced + " expected at " + w.tier);
+            Check(DroidworksKernel.TierStandsIdle(w.tier) == (w.tier == DroidFormatTier.Blank), "stand-idle wrong at " + w.tier);
         }
 
         // ===================================================================== power
