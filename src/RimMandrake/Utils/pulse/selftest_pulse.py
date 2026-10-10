@@ -250,12 +250,14 @@ check("handing the same target AGAIN after it was seen brings it back",
 SH = [{"name": "a", "url": "http://localhost:1/?t=x", "unreviewed": True, "rows": 3, "mtime": NOW - 500},
       {"name": "b", "url": "http://localhost:2/?t=y", "unreviewed": True, "rows": 3, "mtime": NOW - 400},
       {"name": "c", "url": "http://localhost:3/?t=z", "unreviewed": False, "rows": 3, "mtime": NOW - 300}]
-sr = [r for r in pc.classify_looks([], SH, {}, NOW) if r["key"] == "sheets"][0]
-check("sheets roll into one row: 3 live, 2 unseen, opens the first unseen",
-      sr["title"].startswith("3 biome") and sr["unseen"] == 2 and sr["link"]["value"].endswith("t=x"), sr)
-sr2 = [r for r in pc.classify_looks([], SH, {"sheet:a": NOW}, NOW) if r["key"] == "sheets"][0]
-check("opening a sheet marks it seen; the next click walks to the next one", sr2["unseen"] == 1 and sr2["link"]["value"].endswith("t=y"), sr2)
-check("no unseen sheets -> no sheet row", not [r for r in pc.classify_looks([], SH, {"sheet:a": NOW, "sheet:b": NOW}, NOW) if r["key"] == "sheets"])
+sr = {r["key"]: r for r in pc.classify_looks([], SH, {}, NOW)}
+check("one row per live sheet, each opening its own url (owner 2026-10-10: the rolled-up row cleared them all)",
+      set(sr) == {"sheet:a", "sheet:b", "sheet:c"} and sr["sheet:b"]["link"]["value"].endswith("t=y")
+      and sr["sheet:b"]["seen_id"] == "sheet:b", sr)
+sr2 = {r["key"] for r in pc.classify_looks([], SH, {"sheet:a": NOW}, NOW)}
+check("opening one sheet clears only that sheet", sr2 == {"sheet:b", "sheet:c"}, sr2)
+check("a sheet rebuilt after it was opened comes back",
+      "sheet:a" in {r["key"] for r in pc.classify_looks([], SH, {"sheet:a": NOW - 600}, NOW)})
 info = pc.parse_sheet_log("  sheet  x\n             24 rows · 24 decided · NEVER reviewed (pre-fill only)\n  serving    http://localhost:35397/?t=Q\n"
                           "  serving    http://localhost:40000/?t=R\n")
 check("serve.log parse: all urls in order, never-reviewed flag, row count",

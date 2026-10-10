@@ -87,7 +87,7 @@ def save(path, obj):
     os.replace(tmp, path)
 
 
-TITLE = "RimFlow Pulse"
+TITLE = "RimPulse"
 PIDFILE = os.path.join(APPDIR, "lantern.pid")
 RELAUNCHES = os.path.join(APPDIR, "relaunches.json")
 k32 = ctypes.windll.kernel32
@@ -246,7 +246,7 @@ class Api:
             elif os.path.isdir(target):
                 os.startfile(target)
             elif os.path.exists(target):
-                subprocess.Popen(["explorer.exe", "/select,", target], creationflags=NOWIN)
+                os.startfile(target)   # open the thing itself (image viewer, browser), not Explorer
             else:
                 parent = os.path.dirname(target)
                 if os.path.isdir(parent):
@@ -512,9 +512,9 @@ def main():
     kw = dict(width=WIDTH, height=h0, **pos, frameless=True, easy_drag=False, on_top=True,
               focus=False, resizable=False, background_color="#140e0a", shadow=True, js_api=api)
     if alive():
-        win = webview.create_window("RimFlow Pulse", URL, **kw)
+        win = webview.create_window("RimPulse", URL, **kw)
     else:
-        win = webview.create_window("RimFlow Pulse", html=FALLBACK, **kw)
+        win = webview.create_window("RimPulse", html=FALLBACK, **kw)
     api._window = win
 
     log(f"stage: mutex held, window created (pos={pos or 'default'}, h={h0}); starting GUI loop")

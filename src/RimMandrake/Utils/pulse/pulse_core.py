@@ -631,14 +631,15 @@ def classify_looks(hands: list[dict], sheets: list[dict], seen_look: dict, now: 
         r.update({"seat": seat, "title": r["text"], "ltype": ty, "seen_id": h["id"],
                   "thumb": ty == "image" and not tgt.startswith("http")})
         rows.append(r)
-    unseen = [x for x in sheets if x["unreviewed"] and (seen_look.get("sheet:" + x["name"]) or 0) < x["mtime"]]
-    if unseen:
-        first = min(unseen, key=lambda x: x["name"])   # each click walks to the next unseen sheet
-        r = _row("sheets", "look", "", f"{len(sheets)} biome sheets live", max(x["mtime"] for x in unseen),
-                 link={"type": "url", "value": first["url"], "label": "open"}, src="sheets")
-        r.update({"seat": None, "title": r["text"], "ltype": "sheets", "seen_id": "sheet:" + first["name"],
-                  "unseen": len(unseen), "thumb": False,
-                  "names": ", ".join(sorted(x["name"] for x in unseen))})
+    # one row per sheet rebuilt since he last opened it; clicking a row opens THAT sheet and
+    # clears only that row (owner 2026-10-10: one aggregate row walked and cleared them all)
+    for x in sorted(sheets, key=lambda x: x["name"]):
+        if (seen_look.get("sheet:" + x["name"]) or 0) >= x["mtime"]:
+            continue
+        r = _row("sheet:" + x["name"], "look", "", f"{x['name']} sheet", x["mtime"],
+                 link={"type": "url", "value": x["url"], "label": "open"}, src="sheets")
+        r.update({"seat": None, "title": r["text"], "ltype": "sheet" + (" · never reviewed" if x["unreviewed"] else ""),
+                  "seen_id": "sheet:" + x["name"], "thumb": False})
         rows.append(r)
     return rows
 
