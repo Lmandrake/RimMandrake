@@ -352,6 +352,7 @@ SUB = (0.0, 0.0)
 RIDGES = [
     # name, anchors [(arc, bear)...], crest height m, half-width deg
     ("The Scald Spine", None, 1450, 3.2),          # ring - built separately, notched
+    # ASHKARR_PAINTER_NAMES_DIVERGED_1: not on the live planet; owner call pending - do not rename or delete
     ("The Ashteeth",  [(21.5, 116), (23.5, 142), (24.5, 168), (24, 203),
                        (22, 230), (19.5, 254)], 1450, 4.0),   # cradles the Scald
     ("Fall Line", [(26, 352), (34, 357), (43, 2), (52, 6), (61, 9)], 780, 3.4),
@@ -378,6 +379,7 @@ BASINS = [
 ]
 TROUGHS = [
     ("Salt",     [(34, 288), (42, 296), (52, 304), (62, 312), (71, 320)], -430, 5.0),
+    # ASHKARR_PAINTER_NAMES_DIVERGED_1: not on the live planet; owner call pending - do not rename or delete
     ("The Ember Sink", [(36, 96), (46, 88), (57, 80), (68, 74)], -380, 4.6),
     ("Dew Belt", [(38, 184), (45, 181), (52, 178), (64, 178), (76, 179),
                       (89, 180)], -255, 6.0),
