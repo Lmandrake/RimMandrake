@@ -533,5 +533,15 @@ namespace RimMandrake.HugeThings
                 m.GetComponent<MapComponent_HugeFootprints>()?.MarkAllDirty();
             }
         }
+
+        /// <summary>Read-only state counts for a bridge probe (jawa/static_call ... DebugCounts current): registered giants,
+        /// dirty queue, realized blockers, refused (pending) cells, initialized.</summary>
+        public static string DebugCounts(Map map)
+        {
+            MapComponent_HugeFootprints c = map?.GetComponent<MapComponent_HugeFootprints>();
+            if (c == null) return "no component";
+            return "giants=" + c.comps.Count + " dirty=" + c.dirty.Count + " realized=" + c.realized.Count
+                + " pending=" + c.pending.Count + " initialized=" + c.initialized;
+        }
     }
 }
