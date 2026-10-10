@@ -933,6 +933,9 @@ MODS = {
     "CathedralPass": ("CathedralPassMod.cs", "RimMandrake.Utinni.CathedralPass.csproj", {
         "Cathedral mechanoid pass": "Now",
     }, ()),
+    "DroidRepairJobs": ("DroidRepairJobsMod.cs", "RimMandrake.Utinni.DroidRepairJobs.csproj", {
+        "Repair-job payment": "NextPulse",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
