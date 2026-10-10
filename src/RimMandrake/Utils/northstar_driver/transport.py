@@ -81,7 +81,11 @@ class TimedTransport(object):
 
     def call_many(self, calls):
         """calls: [(tool, params)] -> [result | Exception]. Order preserved."""
-        if not (self.pipeline and hasattr(self.rb, "_send")):
+        # A mutating call never rides the pipeline: rb.call is where its evidence and INDETERMINATE marker are
+        # written (BRIDGE_CALL_EVIDENCE_WIRE_LOST_REPLY_UNKNOWN), so only all-read-only batches are pipelined.
+        mutating = any(not self.rb.looks_read_only(t) for t, _ in calls) if hasattr(self.rb, "looks_read_only") \
+            else True
+        if not (self.pipeline and hasattr(self.rb, "_send")) or mutating:
             out = []
             for tool, params in calls:
                 try:

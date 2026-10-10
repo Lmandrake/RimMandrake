@@ -88,6 +88,7 @@ Dependency-free: Python 3.8+ stdlib only. Keep it that way.
 """
 
 import argparse
+import hashlib
 import json
 import os
 import re
@@ -140,6 +141,126 @@ def _log_session(started, calls, client):
             fh.write(json.dumps(row) + "\n")
     except Exception:
         pass
+
+
+# BRIDGE_CALL_EVIDENCE_WIRE_LOST_REPLY_UNKNOWN (2026-10-10): EVERY tools/call through this client - runners and
+# ad-hoc scripts alike - appends a `start` row before sending and an `end` row after (ok / error / lost /
+# INDETERMINATE) to a bounded JSONL. A MUTATING call (anything failing looks_read_only) also leaves an in-flight
+# marker that is removed only when the bridge ANSWERS. If the reply is lost (timeout, closed socket, crash) the marker
+# stays as INDETERMINATE and every later mutating call - the retry included - raises IndeterminateError until
+# `python rimbridge_client.py --reconcile` records what actually happened (read the game with read-only calls
+# first). If the intent row cannot be written, the mutation is refused; a read only warns.
+# Default on Windows only: the bridge is reachable only from python.exe (WSL2 is NAT-mode, so a WSL call dies at
+# connect, before any tools/call), and a WSL selftest faking a lost reply must never leave a REAL marker behind.
+EVIDENCE_LOG = os.environ.get("RIMBRIDGE_EVIDENCE_LOG",
+                              r"D:\Luke\dev\_rmscratch\bridge_calls.jsonl" if os.name == "nt" else "")
+EVIDENCE_MAX_BYTES = 20 * 1024 * 1024
+_RUN_ID = uuid.uuid4().hex[:12]
+_ACTIVE = set()                       # cids in flight in THIS process
+
+
+class IndeterminateError(RuntimeError):
+    """A previous mutating call's outcome is unknown; refusing further mutations until reconciled."""
+
+
+def _ev_now():
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+
+def _inflight_dir():
+    return os.path.join(os.path.dirname(EVIDENCE_LOG) or ".", "bridge_inflight")
+
+
+def _evidence(row, required=False):
+    """Append one row; rotate past EVIDENCE_MAX_BYTES. required=True raises OSError instead of swallowing it."""
+    if not EVIDENCE_LOG:
+        return
+    try:
+        d = os.path.dirname(EVIDENCE_LOG)
+        if d:
+            os.makedirs(d, exist_ok=True)
+        try:
+            if os.path.getsize(EVIDENCE_LOG) > EVIDENCE_MAX_BYTES:
+                os.replace(EVIDENCE_LOG, EVIDENCE_LOG + ".1")
+        except OSError:
+            pass
+        with open(EVIDENCE_LOG, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(row, sort_keys=True) + "\n")
+    except OSError:
+        if required:
+            raise
+        print("[rimbridge_client] evidence row NOT written to %s" % EVIDENCE_LOG, file=sys.stderr)
+
+
+def _inflight_write(rec):
+    if not EVIDENCE_LOG:
+        return
+    os.makedirs(_inflight_dir(), exist_ok=True)
+    p = os.path.join(_inflight_dir(), "%s.json" % rec["cid"])
+    tmp = p + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as fh:
+        json.dump(rec, fh)
+    os.replace(tmp, p)
+
+
+def _inflight_clear(cid):
+    try:
+        os.remove(os.path.join(_inflight_dir(), "%s.json" % cid))
+    except OSError:
+        pass
+
+
+def _pid_alive(pid):
+    if os.name == "nt":
+        import ctypes
+        h = ctypes.windll.kernel32.OpenProcess(0x1000, False, int(pid))   # PROCESS_QUERY_LIMITED_INFORMATION
+        if not h:
+            return False
+        code = ctypes.c_ulong()
+        ctypes.windll.kernel32.GetExitCodeProcess(h, ctypes.byref(code))
+        ctypes.windll.kernel32.CloseHandle(h)
+        return code.value == 259                                          # STILL_ACTIVE
+    try:
+        os.kill(int(pid), 0)
+        return True
+    except (OSError, ValueError):
+        return False
+
+
+def outstanding_indeterminate():
+    """In-flight markers whose outcome is unknown: marked INDETERMINATE, or left by a process that is gone."""
+    out = []
+    if not EVIDENCE_LOG:
+        return out
+    try:
+        names = sorted(os.listdir(_inflight_dir()))
+    except OSError:
+        return out
+    for n in names:
+        if not n.endswith(".json"):
+            continue
+        try:
+            with open(os.path.join(_inflight_dir(), n), encoding="utf-8") as fh:
+                rec = json.load(fh)
+        except (OSError, ValueError):
+            rec = {"cid": n[:-5], "status": "UNREADABLE marker"}
+        if rec.get("cid") in _ACTIVE:
+            continue
+        if rec.get("status") == "INDETERMINATE" or rec.get("status") == "UNREADABLE marker" \
+                or (rec.get("os") in (None, os.name) and not _pid_alive(rec.get("pid") or 0)):
+            out.append(rec)
+    return out
+
+
+def reconcile_resolve(cid, verdict, note):
+    """Record what a reconcile found (applied / not-applied / partial) and clear the marker. Touches no game."""
+    _evidence({"ev": "reconciled", "cid": cid, "as": verdict, "note": note, "t": _ev_now(), "pid": os.getpid()},
+              required=True)
+    _inflight_clear(cid)
+
+
+def _args_sha(params):
+    return hashlib.sha256(json.dumps(params or {}, sort_keys=True, default=str).encode("utf-8")).hexdigest()[:16]
 
 
 def _player_log_candidates():
@@ -545,8 +666,60 @@ class RimBridge:
             unchecked = self.check_params(tool, params)
             if unchecked:
                 print("[rimbridge_client] %s -> %s" % (tool, unchecked), file=sys.stderr)
+        mutating = not self.looks_read_only(tool)
+        if mutating:
+            pending = outstanding_indeterminate()
+            if pending:
+                raise IndeterminateError(
+                    "refusing %s: %d earlier mutating call(s) have an UNKNOWN outcome (%s). A retry could apply it "
+                    "twice. Read the game with read-only calls, then record the answer:\n  python "
+                    "rimbridge_client.py --reconcile [--resolve CID --as applied|not-applied|partial --note \"...\"]"
+                    % (tool, len(pending), ", ".join("%s %s" % (p.get("cid"), p.get("tool")) for p in pending[:3])))
+        cid = uuid.uuid4().hex[:16]
+        start = {"ev": "start", "cid": cid, "run": _RUN_ID, "t": _ev_now(), "tool": tool,
+                 "args_sha256": _args_sha(params), "mutating": mutating, "pid": os.getpid(), "os": os.name,
+                 "seat": os.environ.get("RIMFLOW_SEAT") or os.environ.get("AGENT_SEAT"),
+                 "script": os.path.basename(sys.argv[0]) if sys.argv else "", "client": self.client_name,
+                 "endpoint": "%s:%s" % (self.host, self.port)}
+        try:
+            _evidence(start, required=mutating)
+            if mutating:
+                _inflight_write(dict(start, status="in-flight"))
+        except OSError as ex:
+            raise RimBridgeError("refusing mutating call %s: its evidence (intent) could not be recorded at %s "
+                                 "(%s)" % (tool, EVIDENCE_LOG, ex))
+        _ACTIVE.add(cid)
+        t0 = time.time()
         self._session_calls += 1
-        return self._request("tools/call", {"name": tool, "arguments": params or {}})
+        try:
+            out = self._request("tools/call", {"name": tool, "arguments": params or {}})
+        except RimBridgeError as ex:
+            answered = " failed: " in str(ex)          # the server replied with an error: outcome known
+            status = "error" if answered else ("INDETERMINATE" if mutating else "lost")
+            _evidence({"ev": "end", "cid": cid, "status": status, "ms": int((time.time() - t0) * 1000),
+                       "error": str(ex)[:300], "t": _ev_now()})
+            if mutating and status == "INDETERMINATE":
+                try:
+                    _inflight_write(dict(start, status="INDETERMINATE", error=str(ex)[:300]))
+                except OSError:
+                    pass
+            else:
+                _inflight_clear(cid)
+            _ACTIVE.discard(cid)
+            raise
+        except BaseException:
+            _ACTIVE.discard(cid)                      # KeyboardInterrupt etc: marker stays, read as orphaned
+            if mutating:
+                try:
+                    _inflight_write(dict(start, status="INDETERMINATE", error="client interrupted"))
+                except OSError:
+                    pass
+            raise
+        _evidence({"ev": "end", "cid": cid, "status": "ok", "ms": int((time.time() - t0) * 1000), "t": _ev_now(),
+                   "success": out.get("success") if isinstance(out, dict) else None})
+        _inflight_clear(cid)
+        _ACTIVE.discard(cid)
+        return out
 
     def looks_read_only(self, tool):
         """Cheap heuristic only - a False here is a warning, a True is not a promise."""
@@ -573,7 +746,28 @@ def _main(argv=None):
     ap.add_argument("--raw", action="store_true", help="dump the full envelope result")
     ap.add_argument("--yes-i-know-this-is-live", action="store_true",
                     help="required to call a tool that fails the read-only heuristic")
+    ap.add_argument("--reconcile", action="store_true",
+                    help="list mutating calls with an UNKNOWN outcome (touches no game); with --resolve, record one")
+    ap.add_argument("--resolve", metavar="CID")
+    ap.add_argument("--as", dest="verdict", choices=("applied", "not-applied", "partial"))
+    ap.add_argument("--note", default="")
     args = ap.parse_args(argv)
+
+    if args.reconcile:
+        if args.resolve:
+            if not args.verdict or not args.note:
+                print("--resolve needs --as and a --note saying what you read to decide", file=sys.stderr)
+                return 2
+            reconcile_resolve(args.resolve, args.verdict, args.note)
+            print("reconciled %s as %s" % (args.resolve, args.verdict))
+            return 0
+        pend = outstanding_indeterminate()
+        print("evidence log %s; %d mutating call(s) with UNKNOWN outcome" % (EVIDENCE_LOG, len(pend)))
+        for p in pend:
+            print("  %s  %s  %s  args %s  pid %s %s  %s" % (p.get("cid"), p.get("t"), p.get("tool"),
+                                                         p.get("args_sha256"), p.get("pid"), p.get("script"),
+                                                         p.get("error", p.get("status"))))
+        return 1 if pend else 0
 
     host, port, token = resolve_endpoint(args.host, args.port, args.token, args.log_path)
     if not token:
