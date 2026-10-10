@@ -63,4 +63,4 @@ Huldu C and Murrin's unchanged description all correctly read as absent. **47 ru
 pass as "blocked by his own note until the creature is settled"; redo rows pass on a correct job, his pick still owed).
 
 ## Commits
-(pending)
+30c7e1a2c (enact fixes) · 95e6b3173 (OWNER questions, job ids) · 81644fae0 (descriptions/renames) · 53edd787d (installs, variants, retires, reopen fix) · 68dd276e4 (this record + follow-up item)
