@@ -119,11 +119,11 @@ done
 # than the problem. RimWorld reads ModsConfig.xml only at startup, so this is
 # only actionable BEFORE the launch, which is exactly when it prints.
 # It never blocks: any failure here is silent and the announcement proceeds.
-"$here/src/RimMandrake/Utils/modlist_swap.py" --status 2>/dev/null | grep -q 'live currently matches: FULL' || {
+python3 "$here/src/RimMandrake/Utils/modlist_swap.py" --status 2>/dev/null | grep -q 'live currently matches: FULL' || {
     printf '\033[1;31m'
     echo "  ⚠ MODLIST IS NOT THE OWNER'S FULL LIST — this launch will not be his campaign."
     printf '\033[0m'
-    "$here/src/RimMandrake/Utils/modlist_swap.py" --status 2>/dev/null | tail -4 | sed 's/^/    /'
+    python3 "$here/src/RimMandrake/Utils/modlist_swap.py" --status 2>/dev/null | tail -4 | sed 's/^/    /'
     echo "    restore before he plays:  python3 src/RimMandrake/Utils/modlist_swap.py --restore --apply"
 } 2>/dev/null
 
