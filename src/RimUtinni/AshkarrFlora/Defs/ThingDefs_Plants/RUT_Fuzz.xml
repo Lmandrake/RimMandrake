@@ -67,8 +67,8 @@
       <Beauty>0</Beauty>
     </statBases>
     <graphicData>
-      <!-- Job rutfuzz_v1, filed this pass. Pending until the daemon lands it. -->
-      <texPath>Things/Plant/RUT_Fuzz</texPath>
+      <!-- Same species as the Leaning Scrub's RM_Fuzz: draws its art (Things/Plant/RUT_Fuzz never existed). -->
+      <texPath>Things/Plant/RM_Fuzz</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.35, 0.15, 0.15)</volume>
