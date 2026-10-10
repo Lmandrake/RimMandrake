@@ -92,3 +92,93 @@ Stage-1 assessor record. Template per RUBRIC.md section 7. Facts: facts/mod_fact
 **Open:** Does the live campaign save carry an AlienWorlds scribe? A removal needs the save read (rimworld-savegame skill).; Is the source-world generation ever re-run, or is the world only repainted by bridge from here on?; Will the Ash'karr source world ever be regenerated through Alien Worlds (the remake), or is the painted save the only world from now on? If only the painted save, this and its Tidally Locked pack can be retired once the save is confirmed free of them.
 <sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
 
+### Biomes! Framework (`biomesteam.coreframework`)
+**Verdict:** ELIMINATE-COMPLETELY (INFERRED) · **Fit:** dissonant · **Source:** none (steam-only, None)
+**Adds:** content: none (def_total 0) / functionality: Code backbone of the Biomes! team mods (comps, map components; a WaterWalker sub-mod sits in its Source/ per required_mods.md); DLL flags comp_tick, comp_tick_rare, map_component_tick, harmony, settings_screen / art: 1 texture, 2.8 MB est
+**Why:** Nothing in the universe depends on it: dependants is empty, and the only Biomes! content pack in the list, biomesteam.biomesfossils, is XML-only (dll_flags empty, dependencies = harmony only) and references the family only through `MayRequire="BiomesTeam.BiomesCore,..."` on trader stock generators; biomesteam.biomescore itself is NOT in the universe, so the framework has no consumer. It carries tick code (map_component_tick, comp_tick) that runs for nobody, and Biomes! biome content is overlapped by our one biome mod `mandrake.rm.biomes` (brief section 2). Retirement cost checked: no defs (def_total 0) so no ParentName risk, no placed Things possible from its own content. Older required_mods.md adopted the whole Biomes! stack as an infrastructure dependency, but that premise (BiomesCore present) no longer holds on the 550 list.
+**Problems:** log_noise 0 (0 error occurrences in the 550-mod session) · tps 1 (map_component_tick and comp_tick flags, but no content to tick) · complexity 3 (Harmony + settings screen + 3 tick flags, 3 static ctors) · maintenance 3 (no source linked (steam-only))
+**Holds it in / exit:** no dependants (measured); old adoption note in required_mods.md predates the stack's removal -> None
+**Open:** Confirm biomesfossils (batch 8/13) is not meant to be paired with BiomesCore; if the owner wants the Biomes! family, this verdict flips.; biomesfossils shows 51 distinct log errors (BMT_GastropodMeat etc.) possibly because BiomesCore is absent: its own batch should read that.; Do you want any of the Biomes! team family (Core, Caverns, Polluted Lands, Fossils) in the campaign? Today only Fossils is present, with no Biomes! Core, so its framework does nothing.
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### BiomesKit (Continued) (`zal.biomeskit`)
+**Verdict:** KEEP-TEMPORARILY-THEN-PHASE-OUT (INFERRED) · **Fit:** dissonant · **Source:** https://github.com/CosmicOdeum/BiomesKit (github, MIT)
+**Adds:** content: 1 def (WorldGenStepDef) plus 1 patch op into Core / functionality: Framework for adding biomes to world generation with per-biome decoration controls; 1.6 build carries a BiomesKitWorldGenStep -> LateBiomeWorker (biome assignment at worldgen) and dropped the old BiomesKitWorldLayer (closed item BIOMESKIT_RENDER_LAYER_MISSING_1). Description says it is contained within ReGrowth: Core / art: 2 textures, 4.1 MB est
+**Why:** Held by one dependant, zal.comigogreaterswamps (Comigo's Greater Swamps, a donor biome mod that REQUIRES BiomesKit or ReGrowth: Core), and donor biomes are still the world's biome defs until the paint pass (brief section 2 and the_one_map.md; section 5.6). It is a worldgen/biome-assignment framework, which the brief rejects in principle (test 5) and our own mandrake.rm.biomes replaces (test 6). Exit: the one-time paint and donor retirement, BIOME_PAINT_ONCE_AT_THE_END_1; when Comigo's swamps go, this goes (ReGrowth: Core, regrowth.botr.core, is in the list and satisfies the same requirement, per the description).
+**Problems:** log_noise 0 (0 error occurrences in the 550-mod session) · complexity 1 (one small Harmony DLL, 1 static ctor) · maintenance 2 (repo linked is the ORIGINAL by CosmicOdeum (last push 2021-07-19); the 1.6 Continued build's own repo is not in the facts) · interaction 1 (patches Core only)
+**Holds it in / exit:** dependant zal.comigogreaterswamps; donor biome defs the live save may still use: UNMEASURED (brief section 5.6) -> BIOME_PAINT_ONCE_AT_THE_END_1
+**Open:** Is `BiomesKitWorldGenStep` active in practice or irrelevant once the world is a frozen save? (worldgen-only per closed item.); Continued build has no verified repo.
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Float Sub-Menus (`kathanon.floatsubmenu`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/kathanon/RimWorld-FloatSubMenu (github, BSD-3-Clause)
+**Adds:** content: none (def_total 0) / functionality: Library that lets mods add sub-menus to float menus (description); one Harmony DLL / art: 1 texture, 2.9 MB est
+**Why:** Required by kathanon.searchablemenus (Searchable Menus, a quick-search field for any float menu), which is in the list. A QoL library with no content passes the 7-question test trivially (brief section 4 test 4). It stays exactly as long as Searchable Menus does; that verdict lives in whichever batch holds Searchable Menus. Source verified (BSD-3-Clause, pushed 2025-02-01).
+**Problems:** log_noise 0 (0 error occurrences, 0 chatter lines in the 550-mod session) · complexity 2 (one Harmony DLL, no tick flags) · size 1 (0.98 MB) · maintenance 1 (source verified, last push 2025-02-01)
+**Holds it in / exit:** dependant kathanon.searchablemenus (in list) -> None
+**Open:** Verdict follows kathanon.searchablemenus.
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Gravship Exporter (`arcjc007.gravshipexporter`)
+**Verdict:** KEEP (INFERRED) · **Fit:** resonant · **Source:** https://github.com/JohnCannon87/RimworldCustomShipStart (github, Unlicense)
+**Adds:** content: 5 defs (ShipLayoutDefV2 4, SketchResolverDef 1) / functionality: Exports a built gravship as a layout to use as the starting ship of a new Gravship-start scenario; 2 DLLs, Harmony, settings screen, source shipped in the folder (52 .cs) / art: 12 textures, 23 MB est; 56.7 MB on disk incl. 34.7 MB of assemblies
+**Why:** The campaign's gravship is 'built and exported' (V1.md chain row 11, done) and only the worldmap, gravship and founders survive the expected remake (memory world-remake-is-the-last-step). BRIDGE_CAPABILITY_ROSTER.md (line 550) records `ShipLayoutDefV2` as this mod's def and verifies the mod active in the owner's list; one universe mod (arcjc007.gravshipcrashes, crashed-gravship POIs) depends on it. Keeping it protects the export/re-import path for the one thing that must survive a remake. Fit is resonant: ship-centred campaign (brief section 1). If the ship layout is ever saved as plain defs of ours it could be KEEP-TEMPORARILY, but no item says so.
+**Problems:** log_noise 0 (0 error occurrences in the 550-mod session) · size 2 (56.67 MB on disk (assemblies 34.73 MB, 31 files: likely several version folders)) · complexity 2 (2 DLLs, Harmony, 0 static ctors) · memory 1 (23.3 MB decoded est) · maintenance 1 (source verified, Unlicense, last push 2025-11-26)
+**Holds it in / exit:** V1.md row 11: gravship built and exported; ShipLayoutDefV2 defs may be referenced by the gravship scenario: UNMEASURED; dependant arcjc007.gravshipcrashes -> None
+**Open:** Does the shipped gravship scenario reference ShipLayoutDefV2 at load? If so removal breaks the start.
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Interaction Bubbles (`jaxe.bubbles`)
+**Verdict:** KEEP (MEASURED) · **Fit:** resonant · **Source:** https://github.com/Jaxe-Dev/Bubbles (github, None)
+**Adds:** content: none (def_total 0) / functionality: Shows speech bubbles for social interactions (text normally only in the log); 1 Harmony DLL, settings screen / art: 5 textures, 2.1 MB est
+**Why:** The Jawa comedy layer rests on it: SpeakUp (jpt.speakup, 185 defs) hard-requires it, and our mandrake.rsw.jawavoice (Jawaese lines with a parenthetical English gloss) renders through SpeakUp and Interaction Bubbles (design/validation_walks/RimStarWars/JawaVoice.md, required_mods.md 'anchor of the Jawa comedy layer'). Cosmetic, passes the 7 questions. Resonant: diegetic chatter (brief section 1 tone).
+**Problems:** log_noise 0 (0 error occurrences, 0 chatter lines in the 550-mod session) · complexity 2 (one Harmony DLL) · size 1 (0.62 MB) · maintenance 1 (source verified, pushed 2025-08-25 (license not declared))
+**Holds it in / exit:** dependant jpt.speakup (in list); mandrake.rsw.jawavoice validation walk assumes it -> None
+**Open:** Ours do not list it in dependencies; it arrives via SpeakUp. If JawaVoice should survive a SpeakUp swap, that is a decision for the SpeakUp row.
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Map Mode Framework (`nozome.mapmodeframework`)
+**Verdict:** KEEP (MEASURED) · **Fit:** neutral · **Source:** https://github.com/nozomemu/MapModeFramework (github, MIT)
+**Adds:** content: 9 defs (MapModeFramework.MapModeDef) / functionality: Switchable world-map view modes and C# tooling for authors; 1 Harmony DLL, 4 static ctors, source shipped (29 .cs) / art: 16 textures, 10.6 MB est
+**Why:** Two real dependencies: jaeger972.factionterritories (faction territory borders, in list) requires it, and our bridge tooling `JawaBenchMapModeTools.cs` (src/RimMandrake/bridgetools/JawaBench.BridgeTools/) drives it to switch and photograph the world view while painting the planet; closed item TERRITORY_ROAD_WEIGHTED_SCALE_1 builds on it. The world map is the painting surface for the one-time paint (brief section 2). Cosmetic view overlays pass the 7 questions.
+**Problems:** log_noise 0 (0 error occurrences in the 550-mod session) · complexity 2 (one Harmony DLL, 4 static ctors, settings screen) · interaction 1 (patches Core only; one third-party patch into it) · maintenance 1 (source verified MIT, pushed 2025-07-20)
+**Holds it in / exit:** dependant jaeger972.factionterritories; our JawaBenchMapModeTools.cs; patched by dubwise.dubsbadhygiene.lite (1 op) -> None
+**Open:** Faction Territories (another batch) decides whether the framework survives into the player build vs authoring only.
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Milky Way (`andromeda.milkyway`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/Keullaeseu/Multiplayer-Milky-Way-Patch (github-search, mit)
+**Adds:** content: none (def_total 0) / functionality: Described only as 'Framework'; 1 DLL with no flags, 2 static ctors, 6 asset bundles (0.37 MB) / art: 7 textures plus asset bundles; 2.1 MB est (bundles invisible)
+**Why:** Required by andromeda.niceresearchtab (Nice Research Tab, a research-window layout overhaul that required_mods.md ADOPTED to fit the three-gate techprint ladder), which is in the list. UI plumbing with no content; passes the 7 questions. KEEP follows the research-tab verdict. Facts' linked repo (`Keullaeseu/Multiplayer-Milky-Way-Patch`, MIT, pushed 2026-10-09) is a name-search match for a multiplayer patch, NOT this mod's repo, so source is treated as unverified.
+**Problems:** log_noise 0 (0 error occurrences, 0 chatter lines in the 550-mod session) · complexity 1 (one plain DLL) · size 1 (0.61 MB) · maintenance 2 (source unverified (search match is a different repo))
+**Holds it in / exit:** dependant andromeda.niceresearchtab -> None
+**Open:** Verdict follows Nice Research Tab (confirm it renders our modded research trees).
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### Mines 2.0 (`cain.mineshaft`)
+**Verdict:** KEEP (INFERRED) · **Fit:** dissonant · **Source:** https://github.com/ekremyk2/Mine (github, MIT)
+**Adds:** content: 4 defs (ThingDef 2, ResearchProjectDef 1, WorkGiverDef 1) plus 6 patch ops / functionality: Mines 2.0: a mine building where pawns excavate ores, extensible to other mods' resources via MinesAutomatedExtension; 2 DLLs, settings screen, source shipped (51 .cs) / art: 5 textures, 4.0 MB est
+**Why:** Owner override 2026-08-12 'Mines 2.0 IS LIVE' (desert_world_design.md; the objection is recorded as a watch item). It is referenced by src/RimUtinni/ResearchRetag (forceLoadAfter, 8 patch refs into it) and its compat pack leutiankane.mines2patchouterrim hard-references its C# class unguarded (sw_ownership_survey.md). Tension: an ore-producing bench is an automation ladder that rewards staying still, against the anti-exponential and movement-leash pillars (brief section 2; the 2026-08-30 prior verdict kept it). KEEP stands on the owner's override; the contradiction goes to the owner, not into this verdict.
+**Problems:** log_noise 0 (0 error occurrences, 0 chatter lines in the 550-mod session) · interaction 2 (patched by our mandrake.rut.researchretag (8 refs); compat pack hard-references its class) · complexity 1 (2 plain DLLs, no Harmony) · tps 1 (tick-bearing mine building possible; no tick FLAG in facts) · maintenance 1 (source verified MIT, pushed 2025-07-31)
+**Holds it in / exit:** owner override 2026-08-12; ResearchRetag forceLoadAfter and 8 patch refs (mandrake.rut.researchretag); dependant leutiankane.mines2patchouterrim (unguarded hard cross-ref) -> None
+**Open:** desert_world_design.md watch items: has the mine become a substitute for travelling?; Mines 2.0 was kept by your 2026-08-12 override even though an automated ore bench rewards staying put in a campaign built to keep moving. Do you still want it, or should it go (or be limited by Cherry Picker)?
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### HugsLib (`unlimitedhugs.hugslib`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/UnlimitedHugs/RimworldHugsLibChecker (github-search, other)
+**Adds:** content: 6 defs (KeyBindingDef 5, KeyBindingCategoryDef 1) / functionality: Shared library for other mods (settings, logging, update checks, key bindings, scheduling), v12.0.0; 3 DLLs, Harmony, settings screen, 6 static ctors / art: 6 textures, 1.2 MB est
+**Why:** Two universe mods list it as a dependency (unlimitedhugs.allowtool, elshender.stackablechunks), and nightmare.core loads after it. Our own mods do not name it (only src/RimMandrake/Utils/selftest_retirement_order.py mentions the id). Neutral infrastructure; KEEP follows Allow Tool and Stackable Chunks (batches 2-5), which are more consequential.
+**Problems:** log_noise 1 (0 error occurrences, 3 chatter lines in the 550-mod session) · complexity 2 (3 DLLs, Harmony, 6 static ctors) · maintenance 2 (facts link the HugsLibChecker repo (pushed 2022-05-29), not HugsLib itself; real source unverified) · size 1 (2.35 MB)
+**Holds it in / exit:** dependants unlimitedhugs.allowtool, elshender.stackablechunks -> None
+**Open:** If both dependants are cut, HugsLib can go (and PUAH/others that use it softly).
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
+### XML Extensions (`imranfish.xmlextensions`)
+**Verdict:** KEEP (INFERRED) · **Fit:** neutral · **Source:** https://github.com/15adhami/XmlExtensions (github-search, gpl-3.0)
+**Adds:** content: 1 def (MainButtonDef) / functionality: Extends patch operations and provides easy mod settings; while loaded, XML errors print a stack trace (description). 1 Harmony DLL, settings screen, 2 static ctors / art: none significant (1.3 MB est)
+**Why:** It is in our own load-health sweep BASE set (src/RimMandrake/Utils/loadsweep/gen_config.py, DECISION_STRINGS.md: 'proven clean 2026-09-01'), gravenwitch.vsrexamined declares it, the KotOR cluster (guy762.mm.kotorcore) declares it as its only hard dependency (sw_ownership_survey.md), and Tribute Demand (the recommended Hutt pay-or-raid beat in required_mods.md) requires it. Its XML-error stack traces help a project whose failure mode is silent XML. The KotOR dependency is on the donor sunset track, which would not remove XML Extensions while other dependants and our tooling remain.
+**Problems:** log_noise 1 (0 error occurrences, 3 chatter lines in the 550-mod session) · complexity 2 (one Harmony DLL, settings screen) · maintenance 2 (repo link is a name-search match (15adhami/XmlExtensions, gpl-3.0, pushed 2026-06-18), not a declared link)
+**Holds it in / exit:** our loadsweep base list; dependants gravenwitch.vsrexamined; guy762.mm.kotorcore (per sw_ownership_survey); Tribute Demand per required_mods.md (not in facts' dependants: facts edges are a lower bound) -> None
+**Open:** Confirm the source repo is the same author (name-match only).
+<sub>facts: batch 01 · mod_facts.jsonl 2026-10-10T14:47:38-0700 · assessed by claude-sonnet-5-5 2026-10-10</sub>
+
