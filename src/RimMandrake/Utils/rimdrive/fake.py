@@ -603,8 +603,9 @@ class FakeWorld(object):
         return {"success": True, "count": 0, "alerts": [], "ticksGame": self.ticks}
 
     def _t_jawa_weather_get(self, **_):
-        return {"success": True, "readErrors": [], "weather": {"current": "Clear"}, "conditions": [],
-                "activeConditionCount": 0, "storyteller": {"def": "Cassandra", "difficulty": "Rough",
+        conds = list(getattr(self, "conditions", []))
+        return {"success": True, "readErrors": [], "weather": {"current": "Clear"}, "conditions": conds,
+                "activeConditionCount": len(conds), "storyteller": {"def": "Cassandra", "difficulty": "Rough",
                                                             "threatScale": self.difficulty["threatScale"],
                                                             "allowBigThreats": self.difficulty["allowBigThreats"]}}
 
@@ -669,15 +670,22 @@ class FakeWorld(object):
         return {"success": True, "path": path, "sizeBytes": os.path.getsize(path)}
 
     def _t_jawa_spawn_pawn(self, kindDef=None, x=0, z=0, faction="hostile", count=1, **_):
+        """Row keys as the live tool (JawaBenchTerrainTools.cs SpawnPawn): kindRequested / kindActual /
+        kindSubstituted. Mode `spawn_substitutes` reproduces E5 (SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1): the
+        pawn comes back a vanilla Colonist."""
         self._fid += 1
         pid = "%s%d" % (kindDef, self._fid)
+        actual = "Colonist" if "spawn_substitutes" in self.modes else kindDef
         hostile = faction == "hostile"
-        humanlike = kindDef in ("Colonist", "Villager", "Tribal_Warrior", "Pirate") or hostile
-        self.pawns[pid] = pawn_row(pid, kind=kindDef, faction=("TribeRough" if hostile else
+        humanlike = actual in ("Colonist", "Villager", "Tribal_Warrior", "Pirate") or hostile
+        self.pawns[pid] = pawn_row(pid, kind=actual, faction=("TribeRough" if hostile else
                                    ("PlayerColony" if faction == "player" else None)),
                                    is_player=(faction == "player"), hostile=hostile, x=x, z=z,
                                    intelligence="Humanlike" if humanlike else "Animal")
-        return {"success": True, "spawnedCount": 1, "pawns": [{"id": pid, "name": pid, "x": x, "z": z}]}
+        ok = actual == kindDef
+        return {"success": ok, "spawnedCount": 1 if ok else 0, "substitutedCount": 0 if ok else 1,
+                "pawns": [{"ok": ok, "id": pid, "name": pid, "kindRequested": kindDef, "kindActual": actual,
+                           "kindSubstituted": not ok, "x": x, "z": z, "spawned": True}]}
 
     # ------------------------------------------------ rimdrive.Session surface used by TestContext
     def _ticks(self):

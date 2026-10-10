@@ -577,6 +577,11 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                "findings": findings, "refused": "", "walk": walk}
     if situational:
         summary["modal_check_final"] = modal_final
+        # owner rule 2026-10-10 (contract.py): a second dimension beside the verdicts. Only DISRUPTED owes a redo;
+        # CLEAN may carry recorded-and-removed visitors; INDETERMINATE means an observation failed.
+        import contract as _C  # noqa: E402
+        summary["run_validity"] = _C.worst(((ch.get("situational") or {}).get("runValidity") or {}).get("verdict")
+                                           for ch in chains_out)
     if bland_world:
         try:
             after = _BW.assert_world(session, expected_ids=sorted(fixtures))

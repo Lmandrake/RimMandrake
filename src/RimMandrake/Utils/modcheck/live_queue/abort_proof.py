@@ -7,6 +7,12 @@ detector among its hits; a sidecar json on disk; the game left paused. Control c
 and no SURPRISE/FATAL hit. The runner path is proved once end to end: a Suite chain whose component meets a
 hostile must record that component UNMEASURED naming the detector, never PASS or FAIL.
 
+🔑 OWNER RULE, question card 2026-10-10 (VISITOR_DETECTORS_MEND_NAME_THE_STRANGER): an unexpected VISITOR (a hostile,
+a stranger, new wildlife, a player-faction joiner) that shows no evidence of disrupting a colonist or a subject is
+RECORDED (sidecar first) and REMOVED, and the run carries on CLEAN. So the hostile_raid case now proves THAT path
+(`visitor=True`), and the runner path proves the component meeting a harmless hostile is not aborted; a visitor
+that hunts a colonist (predator case) still aborts, as DISRUPTED.
+
 Hazards are applied far from the starting colonists where the hazard itself allows it, and the next case's
 bland prep (kill hostiles/wildlife, extinguish, calm, resurrect) cleans up after the last.
 """
@@ -33,7 +39,7 @@ def _clamp(v, n):
     return max(5, min(n - 5, v))
 
 
-def case(s, job, name, hazard, expect_detector, wait=0, control=False, declare=None):
+def case(s, job, name, hazard, expect_detector, wait=0, control=False, declare=None, visitor=False):
     """Run one case; returns True if it met its criterion. `hazard(s, ctx)` runs after the baseline."""
     import clockgate
     import helpers as H
@@ -74,6 +80,17 @@ def case(s, job, name, hazard, expect_detector, wait=0, control=False, declare=N
         return job.check("control %s: no abort and no SURPRISE/FATAL hit" % name,
                          ab is None and not serious_seen, rec)
     from surprise import to_local_path
+    if visitor:
+        rv = w.summary().get("runValidity") or {}
+        rec["runValidity"] = rv
+        spawned = set(ctx.get("spawned") or [])
+        recorded = dict((v["id"], v) for v in rv.get("visitors") or [])
+        ev = [c.get("sidecar") for c in w.captures if c.get("sidecar") and os.path.isfile(to_local_path(c["sidecar"]))]
+        ok = (ab is None and rv.get("verdict") == "CLEAN" and spawned and ev and paused
+              and all(pid in recorded and recorded[pid].get("removed") and expect_detector in recorded[pid].get("detectors", [])
+                      for pid in spawned))
+        return job.check("hazard %s: recorded + removed via %s, run CLEAN, sidecar on disk, game paused"
+                         % (name, expect_detector), ok, rec)
     ev = [p for p in rec["evidence"] if p and os.path.isfile(to_local_path(p))]
     ok = (ab is not None and ab.kind == "surprise" and expect_detector in hits and ev and paused)
     return job.check("hazard %s: aborts via %s with sidecar on disk, game paused" % (name, expect_detector), ok, rec)
@@ -175,15 +192,19 @@ def runner_path(s, job):
             t.wait_ticks(120)
     summ = runner.run_suite(su, s, situational=True, policy="abort")
     comp = summ["chains"][0]["components"][0] if summ["chains"] and summ["chains"][0]["components"] else {}
-    named = "hostile_pawns" in str(comp.get("surprises")) or "hostile_pawns" in str(comp.get("detail"))
-    job.note("runner_path", {"verdict": comp.get("verdict"), "detail": str(comp.get("detail"))[:300]})
-    job.check("runner path: the component meeting a hostile is UNMEASURED naming hostile_pawns",
-              comp.get("verdict") == "UNMEASURED" and named, comp)
+    rv = (summ["chains"][0].get("situational") or {}).get("runValidity") or {} if summ["chains"] else {}
+    named = any("hostile_pawns" in (v.get("detectors") or []) for v in rv.get("visitors") or [])
+    job.note("runner_path", {"verdict": comp.get("verdict"), "detail": str(comp.get("detail"))[:300], "runValidity": rv})
+    # a harmless hostile: recorded + removed, the component still measures (PASS); one that attacked first: DISRUPTED
+    ok = ((comp.get("verdict") == "PASS" and rv.get("verdict") == "CLEAN" and named)
+          or (comp.get("verdict") == "UNMEASURED" and rv.get("verdict") == "DISRUPTED"))
+    job.check("runner path: the component meeting a harmless hostile carries on, the hostile recorded+removed",
+              ok, {"component": comp, "runValidity": rv})
 
 
 def body(s, job):
     case(s, job, "control_quiet", lambda s, c: None, None, wait=1200, control=True)
-    case(s, job, "hostile_raid", hz_hostile, "hostile_pawns")
+    case(s, job, "hostile_raid", hz_hostile, "hostile_pawns", visitor=True)
     case(s, job, "fire_near_colonist", hz_fire, "fire_on_map", wait=60)
     case(s, job, "colonist_killed", hz_kill_colonist, "colonist_died")
     case(s, job, "predator_hunts_colonist", hz_predator, "predator_hunting")

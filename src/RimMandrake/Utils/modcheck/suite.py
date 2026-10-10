@@ -125,6 +125,9 @@ class TestContext(object):
         self.components = []
         self._current = None
         self._on_finding = on_finding or (lambda component: None)
+        # action receipts (contract.spawn_receipt): requested vs ACTUAL kinds and ids of every pawn spawn this
+        # context made, the actual kind READ BACK from an independent list_pawns (E5: a substituted spawn).
+        self.receipts = []
 
     # ----------------------------------------------------------- guard
     def _guard(self):
@@ -189,7 +192,23 @@ class TestContext(object):
             if self.watch is not None:
                 self.watch.expect_fixture(pid, row.get("name"))   # the TEST made it: not a surprise
         self._record("spawn_pawn %s hostile=%s" % (kindDef, hostile), r)
+        self._receipt("jawa/spawn_pawn", kindDef, r)
         return pid
+
+    def _receipt(self, tool, kind, r):
+        """Record a spawn receipt; a mismatch is written into the component's evidence where it will be read."""
+        import contract  # noqa: E402  (modcheck package, same dir)
+        try:
+            rows = (self.session.call("jawa/list_pawns", limit=500) or {}).get("pawns") or []
+        except Exception:                                       # noqa: BLE001 - an unreadable map is a receipt gap
+            rows = []
+        rc = contract.spawn_receipt("A%d" % (len(self.receipts) + 1), tool, kind, r, rows)
+        self.receipts.append(rc)
+        if self.watch is not None and isinstance(getattr(self.watch, "receipts", None), list):
+            self.watch.receipts.append(rc)
+        if rc["mismatch"] or rc["missingOnReadBack"]:
+            self._record("RECEIPT %s" % "; ".join(contract.receipt_problems([rc])), rc)
+        return rc
 
     @staticmethod
     def _past(cells):
@@ -388,15 +407,23 @@ class TestContext(object):
                     if row.get("id"):
                         self.watch.expect_fixture(row["id"], row.get("name"))
             self.watch.charge_verb("bridge_call:%s" % tool)
+        if tool == "jawa/spawn_pawn":
+            self._receipt(tool, params.get("kindDef"), r)
         return r
 
-    def expect(self, kind, matcher, until_tick=None):
+    def expect(self, kind, matcher, until_tick=None, max_count=None):
         """Declare something THIS chain causes on purpose, so the situational detectors do not call it a
         surprise: a letter (`"letter", {"label_contains": "Wild droid"}`), a hostile
         (`"hostile", {"id": pid}`), a condition, a fire. Only the PRESENCE alarm is suppressed. A no-op
-        when no watch is attached, so a script may declare it unconditionally."""
+        when no watch is attached, so a script may declare it unconditionally.
+        `max_count` BOUNDS it (the per-test contract): `t.expect("condition", {"def": "RM_ForgePulse"}, max_count=1)`
+        admits one pulse; a second, or a sibling condition of the same mod, is still reported. Declare by exact
+        def/label, never by mod package: the mod under test producing something unapproved is a finding."""
         if self.watch is not None:
-            self.watch.expect(kind, matcher, until_tick=until_tick)
+            if max_count is None:
+                self.watch.expect(kind, matcher, until_tick=until_tick)
+            else:
+                self.watch.expect(kind, matcher, until_tick=until_tick, max_count=max_count)
 
     def check_surroundings(self):
         """Sweep the detectors NOW (no game time spent). A script calls this right after a mutation it

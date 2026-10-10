@@ -107,6 +107,9 @@ class SettingsTransaction(object):
         self.touched_debug = []
         self.touched_difficulty = []
         self.restored = False
+        # (label, fn) run at restore, newest first: things a profile ARMED that are not debug/difficulty values
+        # (the wild-spawner block). A cleanup that fails is a restore problem, reported like one.
+        self.cleanups = []
 
     def __enter__(self):
         self.pre_debug = read_settings(self.session)
@@ -136,8 +139,18 @@ class SettingsTransaction(object):
             if after.get(k) != v:
                 raise HelperUnverified("difficulty_tune %s: asked %r, read back %r" % (k, v, after.get(k)))
 
+    def on_restore(self, label, fn):
+        self.cleanups.append((label, fn))
+
     def restore(self):
         problems = []
+        for label, fn in reversed(self.cleanups):
+            try:
+                if fn() is False:
+                    problems.append("%s not undone" % label)
+            except Exception as e:                              # noqa: BLE001 - reported, never swallowed silently
+                problems.append("%s cleanup raised %r" % (label, e))
+        self.cleanups = []
         for f in set(self.touched_debug):
             want = self.pre_debug[f]
             self.session.call("jawa/debug_settings", action="set", field=f, value=want)
@@ -184,6 +197,82 @@ def storyteller_off(session, tx):
     r = session.call("jawa/incident_queue_clear")
     return HelperResult("storyteller_off", acted=1, verified=True,
                         evidence={"cleared_count": r.get("clearedCount"), "cleared": r.get("cleared")})
+
+
+def _try_call(session, tool, **p):
+    """-> (result or None, error text or None). A missing tool is an answer ('unavailable'), never a crash."""
+    try:
+        r = session.call(tool, **p)
+    except Exception as e:                                      # noqa: BLE001
+        return None, "%s: %s" % (type(e).__name__, e)
+    if not isinstance(r, dict) or r.get("success") is False:
+        return None, "success=false: %s" % ((r or {}).get("message") if isinstance(r, dict) else r)
+    return r, None
+
+
+# Sources the quiet profile does NOT stop (GPT review s2, Opus review findings 5 and 13). Listed on every report so
+# "quiet" is never read as "closed": a pawn from one of these is still a visitor, and the Watch records + removes it.
+QUIET_NOT_SUPPRESSED = (
+    "active quests and their parts (never ended by default: ending a quest changes the world)",
+    "scenario parts (ScenPart_CreateIncident ticks outside the storyteller)",
+    "existing game conditions, map/world/game components and mod tickers",
+    "hives and other pawn-spawning structures, births, egg hatching, breeders",
+    "pending drop pods / shuttles / transporters, caravans and world pawns arriving",
+    "weather transitions, fires, existing hostile behaviour",
+)
+
+
+def quiet_world(session, tx, wild_spawner=True, log_raids=True):
+    """The quiet-world profile for validation runs (map awareness phase 1e). Wires what exists and READS BACK what
+    was actually suppressed -- a configured flag is not proof a path obeyed it:
+      * storyteller_off + random_events_off (existing helpers);
+      * DebugSettings.logRaidInfo = true: observation, not suppression -- every raid through
+        IncidentWorker_Raid logs `Raid: <faction> <arrival> <strategy> ...` to Player.log (field VERIFIED in
+        decompiled 1.6 DebugSettings via RimSage 2026-10-10; the log line per the Opus review, IncidentWorker_Raid);
+      * wild-animal replenishment blocked with `jawa/wild_spawner_block` (companion, THING_LOOKUP_BUILD_OWNER_IS_NOT_PAINTER)
+        when the tool exists, released by the transaction on exit; 'unavailable' otherwise, never assumed;
+      * quests are NOT touched (GPT s2: ending a quest is destructive setup).
+    Never raises for an unavailable piece: the evidence says which piece is missing."""
+    ev = {"profile": "isolated", "quests": "not touched", "notSuppressed": list(QUIET_NOT_SUPPRESSED)}
+    st = storyteller_off(session, tx)
+    re_ = random_events_off(session, tx)
+    ev["storyteller"] = st.evidence
+    if log_raids:
+        if "logRaidInfo" in tx.pre_debug:
+            tx.set_debug("logRaidInfo", True)
+            ev["logRaidInfo"] = "on"
+        else:
+            ev["logRaidInfo"] = "unavailable: field not in debug_settings list"
+    if wild_spawner:
+        r, err = _try_call(session, "jawa/wild_spawner_block", action="block")
+        if err:
+            ev["wildSpawner"] = "unavailable: %s" % err
+        else:
+            tx.on_restore("wild_spawner_block", lambda: bool((_try_call(session, "jawa/wild_spawner_block",
+                                                                        action="release")[0] or {}).get("blocked") is False))
+            g, gerr = _try_call(session, "jawa/wild_spawner_block", action="get")
+            ev["wildSpawner"] = ("blocked (read back)" if g and g.get("blocked") is True
+                                 else "UNVERIFIED: asked to block, read back %r" % ((g or {}).get("blocked") if g else gerr))
+    settings = read_settings(session)
+    ev["readBack"] = dict((k, settings.get(k)) for k in ("enableStoryteller", "enableRandomMentalStates",
+                                                         "enableRandomDiseases", "logRaidInfo") if k in settings)
+    d, _ = _try_call(session, "jawa/difficulty_tune")
+    if d:
+        ev["readBack"].update(dict((k, (d.get("before") or {}).get(k)) for k in ("threatScale", "allowBigThreats")))
+    q, qerr = _try_call(session, "jawa/incident_queue_peek")
+    ev["incidentQueueAfterClear"] = len(q.get("queue") or []) if q else "unavailable: %s" % qerr
+    verified = (ev["readBack"].get("enableStoryteller") is False and ev["readBack"].get("enableRandomMentalStates") is False
+                and (not log_raids or ev.get("logRaidInfo") != "on" or ev["readBack"].get("logRaidInfo") is True)
+                and not str(ev.get("wildSpawner", "")).startswith("UNVERIFIED"))
+    return HelperResult("quiet_world", acted=st.acted + re_.acted, verified=verified,
+                        residue=[] if verified else ["read-back disagrees: %s" % ev["readBack"]], evidence=ev)
+
+
+def remove_visitors(session, ids):
+    """The owner's rule (2026-10-10): an unexpected visitor is removed and the run carries on. Exact ids, Destroy
+    (Vanish): no death, no corpse, no death action (a killed Toughspike divides into flyers that land in the NEXT
+    chain, MEASURED 2026-10-05). Verified by re-read; leftovers are residue."""
+    return _kill_ids(session, set(ids), "remove_visitors", lambda r: not r.get("dead"), action="vanish")
 
 
 def random_events_off(session, tx):
@@ -431,8 +520,8 @@ def prepare_bland_map(session, tx, expected_ids=(), kill=True, resurrect=False):
     rep = BlandReport()
     rep.steps.append(pause(session))
     if kill:
-        rep.steps.append(storyteller_off(session, tx))
-        rep.steps.append(random_events_off(session, tx))
+        # quiet_world = storyteller_off + random_events_off + logRaidInfo + the wild-spawner block, read back
+        rep.steps.append(quiet_world(session, tx))
         for h in (kill_hostiles, kill_wildlife, clear_strangers):
             rep.steps.append(h(session, expected_ids))
         rep.steps.append(extinguish(session))      # AFTER removals: a death can detonate and ignite
