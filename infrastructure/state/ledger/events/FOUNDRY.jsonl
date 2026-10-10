@@ -5273,3 +5273,4 @@
 {"seat":"FOUNDRY","event":"start","id":"BRIDGE_TPS_REVIEW2_FIXES_1","ts":"2026-10-10T15:50:33Z","tsn":1791647433415775366}
 {"seat":"FOUNDRY","event":"lease","id":"BRIDGE_TPS_REVIEW2_FIXES_1","action":"renew","token":"FOUNDRY.pid15041.f6fe1858","ts":"2026-10-10T15:58:00Z","expires":"2026-10-10T16:43:00Z","tsn":1791647880972702100}
 {"seat":"FOUNDRY","event":"lease","id":"BRIDGE_TPS_REVIEW2_FIXES_1","action":"renew","token":"FOUNDRY.pid15041.f6fe1858","ts":"2026-10-10T16:00:38Z","expires":"2026-10-10T16:45:38Z","tsn":1791648038438792551}
+{"seat":"FOUNDRY","event":"lease","id":"BRIDGE_TPS_REVIEW2_FIXES_1","action":"renew","token":"FOUNDRY.pid15041.f6fe1858","ts":"2026-10-10T16:02:50Z","expires":"2026-10-10T16:47:50Z","tsn":1791648170357032543}
