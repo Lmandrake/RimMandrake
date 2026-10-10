@@ -45,8 +45,8 @@ def top(d, n=15):
 
 
 SOURCE_SEGS = {"source", "src", ".vs", "obj", "bin", "packages", "about"}
-CHERRY_LIVE = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/"
-               "Mod_3521312241_Mod_CherryPicker.xml")       # READ-ONLY: never written by this pipeline
+from game_paths import LOCALLOW  # noqa: E402
+CHERRY_LIVE = os.path.join(LOCALLOW, "Config", "Mod_3521312241_Mod_CherryPicker.xml")  # READ-ONLY: never written by this pipeline
 
 
 # Player-facing def types: what a mod "is" to a player. Infrastructure leftovers (SoundDef, JobDef, RuleDef,

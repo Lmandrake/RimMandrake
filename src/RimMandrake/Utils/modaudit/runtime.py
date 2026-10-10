@@ -47,7 +47,7 @@ MEASURE = os.path.expanduser("~/.claude/skills/measuring-large-artifacts/scripts
 DEFAULT_LOG = "/mnt/d/Luke/dev/_rmscratch/playerlog_archive/Player.20261010T143457.log"
 DEFAULT_SESSION = "c1a88107"
 DEFAULT_TOKEN = "b4e14a17f2fb40509e71ba5e6b55fa9a"     # bridge token of that launch (launch receipt)
-LOCALLOW = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
+from game_paths import LOCALLOW  # noqa: E402
 CACHE = os.path.expanduser("~/.cache/rm_modaudit/runtime.json")
 
 BASE_NS = ("Verse", "RimWorld", "System", "UnityEngine", "Mono", "HarmonyLib", "LudeonTK", "Unity", "Steamworks",
