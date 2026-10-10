@@ -781,6 +781,14 @@ OWN_NOTE = (
     + NL)
 
 
+# Donors retired from the mod list. Their defs can linger in a dump captured while they were still
+# loaded, and an op under a FindMod naming a retired mod never runs -- dead text that also re-adds a
+# donor dependency every regen (CRYPTOFORGE_HARVEST_RETIRE_1: dcb12bc17 re-emitted the VQE block
+# 25019d7ce had deleted). Ops on these mods are dropped, and the count is printed.
+RETIRED_DONORS = ("Vanilla Quests Expanded - Cryptoforge",)
+retired_dropped = []
+
+
 def emit(fh, title, by_mod):
     """by_mod: modName -> [(defpath, op-string)].
 
@@ -799,6 +807,9 @@ def emit(fh, title, by_mod):
     own_texts = {t for mod, lst in by_mod.items() if mod in OWN_MODS
                  for _, t in lst}
     for mod, ops in sorted(by_mod.items()):
+        if mod in RETIRED_DONORS:
+            retired_dropped.extend((mod, t) for _, t in ops)
+            continue
         if mod in OWN_MODS:
             by_def = collections.OrderedDict()
             for defpath, text in ops:
@@ -985,6 +996,9 @@ if self_supplied_skipped:
           sorted(self_supplied_skipped))
 
 print("anchors: %s" % dict(anchor_src))
+if retired_dropped:
+    print("  dropped (retired donor, FindMod would never match): %d op(s) from %s"
+          % (len(retired_dropped), sorted({m for m, _ in retired_dropped})))
 if tainted_skipped:
     print("  ! %d anchors were OUR OWN values with no recorded original;"
           % len(tainted_skipped))
