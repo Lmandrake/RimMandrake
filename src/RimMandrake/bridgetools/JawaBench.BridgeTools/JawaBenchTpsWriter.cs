@@ -313,7 +313,7 @@ namespace JawaBench.BridgeTools
         internal static bool Drain(int timeoutMs)
         {
             if (_thread == null) return false;
-            var until = DateTime.UtcNow.AddMilliseconds(timeoutMs);
+            var sw = Stopwatch.StartNew();        // monotonic: a wall-clock jump cannot stretch or cut the bound
             lock (Q)
             {
                 if (_draining) return false;
@@ -323,7 +323,7 @@ namespace JawaBench.BridgeTools
                     Monitor.PulseAll(Q);
                     while (Pending.Count + Retry.Count + _inFlight > 0)
                     {
-                        int left = (int)(until - DateTime.UtcNow).TotalMilliseconds;
+                        int left = timeoutMs - (int)sw.ElapsedMilliseconds;
                         if (left <= 0) return false;
                         Monitor.Wait(Q, Math.Min(left, 100));
                     }
@@ -331,6 +331,36 @@ namespace JawaBench.BridgeTools
                 }
                 finally { _draining = false; }
             }
+        }
+
+        /// <summary>
+        /// MUST 16: shutdown as INTENT then COMPLETION. Writes `shutdown` (intent, with the caller's fields),
+        /// drains (bounded), runs <paramref name="archive"/> (the Player.log copy) on a thread and waits at most
+        /// <paramref name="archiveMs"/>, then writes `shutdown-complete` stating drained / archived /
+        /// archiveTimedOut / elapsed ms, and drains again. A reader treats only intent + completion as a clean
+        /// end. Every bound is monotonic. Returns the completion fields.
+        /// </summary>
+        internal static string Shutdown(string fields, Func<string> archive, int drainMs, int archiveMs)
+        {
+            var sw = Stopwatch.StartNew();
+            Enqueue("shutdown", "\"phase\":\"intent\"" + (string.IsNullOrEmpty(fields) ? "" : "," + fields));
+            bool drained = Drain(drainMs);
+            string archived = null;
+            bool timedOut = false;
+            if (archive != null)
+            {
+                string result = null;
+                var t = new Thread(() => { try { result = archive(); } catch { } }) { IsBackground = true, Name = "JawaBench.TpsLogCopy" };
+                t.Start();
+                timedOut = !t.Join(archiveMs);
+                archived = timedOut ? null : result;
+            }
+            string done = "\"drained\":" + (drained ? "true" : "false") + ",\"archived\":" + (archived != null ? "true" : "false") +
+                          ",\"archive\":" + Json(archived) + ",\"archiveTimedOut\":" + (timedOut ? "true" : "false") +
+                          ",\"ms\":" + sw.ElapsedMilliseconds + "," + HealthFields();
+            Enqueue("shutdown-complete", done);
+            Drain(Math.Max(200, drainMs / 2));
+            return done;
         }
 
         /// <summary>Apply retention to the record dir (segments, heartbeats, session manifests) and the log archive.</summary>

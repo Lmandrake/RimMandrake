@@ -66,6 +66,8 @@ namespace JawaBench.BridgeTools
 
         internal static bool Installed;
         internal static string InstallError, RuntimeError, StartedUtc, StartedBy, RecordDir, SettingsNote;
+        /// <summary>complete | partial | failed | disabled (MUST 16), with the per-target detail.</summary>
+        internal static string InstallStatus = "not-attempted", InstallDetail;
         internal static JawaBenchTpsSettings Settings = new JawaBenchTpsSettings();
         internal static int Windows, Incidents;
         private static bool _attempted;
@@ -95,6 +97,7 @@ namespace JawaBench.BridgeTools
                     if (!Settings.Sampler)
                     {
                         InstallError = "disabled by tps_settings.json (sampler: false)";
+                        InstallStatus = "disabled";
                         Log.Message("[JawaBench] TPS sampler OFF by " + Path.Combine(RecordDir, "tps_settings.json"));
                         return;
                     }
@@ -107,27 +110,40 @@ namespace JawaBench.BridgeTools
                     StartedBy = startedBy;
                     StartedUtc = W.Utc();
 
-                    var h = new Harmony("mandrake.jawabench.tps");
+                    // MUST 16: resolve every target, then patch; any failure rolls back THIS recorder's patches
+                    // (UnpatchAll of our own Harmony id only) - a half-installed sampler never runs.
+                    const string hid = "mandrake.jawabench.tps";
+                    var h = new Harmony(hid);
                     var self = typeof(JawaBenchTpsSampler);
                     Func<string, HarmonyMethod> hm = n => new HarmonyMethod(self.GetMethod(n, BindingFlags.Static | BindingFlags.NonPublic));
-                    var tmu = AccessTools.Method(typeof(TickManager), nameof(TickManager.TickManagerUpdate));
-                    var root = AccessTools.Method(typeof(Root), nameof(Root.Update));
-                    if (tmu == null || root == null)
+                    var targets = new List<JawaBenchTpsInstall.Target>
                     {
-                        InstallError = "TickManager.TickManagerUpdate or Root.Update not found";
-                        W.Enqueue("error", "\"where\":\"install\",\"error\":" + W.Json(InstallError));
-                        Log.Warning("[JawaBench] TPS sampler NOT installed: " + InstallError);
+                        new JawaBenchTpsInstall.Target("TickManagerUpdate", true, () => AccessTools.Method(typeof(TickManager), nameof(TickManager.TickManagerUpdate))),
+                        new JawaBenchTpsInstall.Target("Root.Update", true, () => AccessTools.Method(typeof(Root), nameof(Root.Update))),
+                        new JawaBenchTpsInstall.Target("LongEventsUpdate", false, () => AccessTools.Method(typeof(LongEventHandler), nameof(LongEventHandler.LongEventsUpdate))),
+                        new JawaBenchTpsInstall.Target("SaveGame", false, () => AccessTools.Method(typeof(GameDataSaveLoader), nameof(GameDataSaveLoader.SaveGame), new[] { typeof(string) })),
+                        new JawaBenchTpsInstall.Target("LoadGame", false, () => AccessTools.Method(typeof(GameDataSaveLoader), nameof(GameDataSaveLoader.LoadGame), new[] { typeof(string) })),
+                    };
+                    InstallStatus = JawaBenchTpsInstall.Run(targets, (name, m) =>
+                    {
+                        var mi = (MethodInfo)m;
+                        switch (name)
+                        {
+                            case "TickManagerUpdate": h.Patch(mi, prefix: hm(nameof(TmuPrefix)), postfix: hm(nameof(TmuPostfix))); break;
+                            case "Root.Update": h.Patch(mi, prefix: hm(nameof(RootPrefix)), postfix: hm(nameof(RootPostfix))); break;
+                            case "LongEventsUpdate": h.Patch(mi, prefix: hm(nameof(LePrefix)), finalizer: hm(nameof(LeFinalizer))); break;
+                            case "SaveGame": h.Patch(mi, prefix: hm(nameof(SavePrefix)), finalizer: hm(nameof(SaveFinalizer))); break;
+                            case "LoadGame": h.Patch(mi, prefix: hm(nameof(LoadPrefix))); break;
+                        }
+                    }, () => h.UnpatchAll(hid), out InstallDetail);
+                    if (InstallStatus == "failed")
+                    {
+                        InstallError = "install failed, rolled back: " + InstallDetail;
+                        W.Enqueue("error", "\"where\":\"install\",\"status\":\"failed\",\"error\":" + W.Json(InstallDetail));
+                        Log.Warning("[JawaBench] TPS sampler NOT installed: " + InstallDetail);
                         return;
                     }
-                    h.Patch(tmu, prefix: hm(nameof(TmuPrefix)), postfix: hm(nameof(TmuPostfix)));
-                    h.Patch(root, prefix: hm(nameof(RootPrefix)), postfix: hm(nameof(RootPostfix)));
-                    var le = AccessTools.Method(typeof(LongEventHandler), nameof(LongEventHandler.LongEventsUpdate));
-                    if (le != null) h.Patch(le, prefix: hm(nameof(LePrefix)), finalizer: hm(nameof(LeFinalizer)));
-                    var save = AccessTools.Method(typeof(GameDataSaveLoader), nameof(GameDataSaveLoader.SaveGame), new[] { typeof(string) });
-                    if (save != null) h.Patch(save, prefix: hm(nameof(SavePrefix)), finalizer: hm(nameof(SaveFinalizer)));
-                    var load = AccessTools.Method(typeof(GameDataSaveLoader), nameof(GameDataSaveLoader.LoadGame), new[] { typeof(string) });
-                    if (load != null) h.Patch(load, prefix: hm(nameof(LoadPrefix)));
-                    if (Settings.Attribution) JawaBenchTpsProfiler.Install(h);
+                    if (Settings.Attribution) JawaBenchTpsProfiler.Install();
                     if (Settings.Watchdog) WD.Start(RecordDir);
                     try { UnityEngine.Application.quitting += OnQuit; } catch { }
                     try { AppDomain.CurrentDomain.ProcessExit += (s, e) => OnQuit(); } catch { }
@@ -142,7 +158,10 @@ namespace JawaBench.BridgeTools
                 catch (Exception e)
                 {
                     InstallError = e.GetType().Name + ": " + e.Message;
-                    try { W.Enqueue("error", "\"where\":\"install\",\"error\":" + W.Json(InstallError)); } catch { }
+                    InstallStatus = "failed";
+                    try { new Harmony("mandrake.jawabench.tps").UnpatchAll("mandrake.jawabench.tps"); } catch { }
+                    try { JawaBenchTpsProfiler.Rollback(); } catch { }
+                    try { W.Enqueue("error", "\"where\":\"install\",\"status\":\"failed\",\"error\":" + W.Json(InstallError)); } catch { }
                     Log.Warning("[JawaBench] TPS sampler NOT installed: " + InstallError);
                 }
             }
@@ -190,6 +209,10 @@ namespace JawaBench.BridgeTools
             W.Enqueue("session", "\"pid\":" + pid + ",\"startedBy\":" + W.Json(StartedBy) + ",\"build\":" + W.Json(build) +
                                  ",\"engine\":" + W.Json(engine) + ",\"mods\":" + modCount + ",\"modDigest\":\"" + modDigest + "\"" +
                                  ",\"playerLog\":" + W.Json(logPath) + ",\"settings\":" + Settings.ToJson() + ",\"settingsNote\":" + W.Json(SettingsNote) +
+                                 ",\"install\":{\"sampler\":" + W.Json(InstallStatus) + ",\"samplerDetail\":" + W.Json(InstallDetail) +
+                                 ",\"attribution\":" + W.Json(Settings.Attribution ? JawaBenchTpsProfiler.InstallStatus : "disabled") +
+                                 ",\"attributionDetail\":" + W.Json(JawaBenchTpsProfiler.InstallDetail) +
+                                 ",\"watchdog\":" + (Settings.Watchdog ? "\"started\"" : "\"disabled\"") + "}" +
                                  ",\"segment\":" + W.Json(Path.GetFileName(W.CurrentPath)));
             ThreadPool.QueueUserWorkItem(_ =>
             {
@@ -258,14 +281,14 @@ namespace JawaBench.BridgeTools
             if (Interlocked.Exchange(ref _quit, 1) == 1) return;
             try
             {
-                W.Enqueue("shutdown", "\"windows\":" + Windows + ",\"incidents\":" + Incidents + "," + W.HealthFields());
-                W.Drain(2000);
-                if (Settings.ArchivePlayerLog)
-                {
-                    string cur = _logPath;
-                    W.ArchiveLogNow(cur, "Player_" + W.Utc().Replace(":", "").Replace("-", "").Substring(0, 15) + "Z_" + Session.Substring(0, 8) + ".log");
-                    W.Drain(1000);
-                }
+                // MUST 16: intent, bounded drain, bounded log copy, then a completion row that says what finished.
+                // No Unity API here: ProcessExit can call this off the main thread (the log path was cached).
+                string cur = _logPath;
+                W.Shutdown("\"windows\":" + Windows + ",\"incidents\":" + Incidents,
+                           Settings.ArchivePlayerLog && !string.IsNullOrEmpty(cur)
+                               ? (Func<string>)(() => W.ArchiveLogNow(cur, "Player_" + W.Utc().Replace(":", "").Replace("-", "").Substring(0, 15) + "Z_" + Session.Substring(0, 8) + ".log", Session))
+                               : null,
+                           2000, 3000);
             }
             catch { }
         }
@@ -535,6 +558,8 @@ namespace JawaBench.BridgeTools
             {
                 success = Installed && RuntimeError == null,
                 installed = Installed,
+                installStatus = InstallStatus,
+                installDetail = InstallDetail,
                 installError = InstallError,
                 runtimeError = RuntimeError,
                 writeError = W.LastError,
@@ -553,6 +578,8 @@ namespace JawaBench.BridgeTools
                 {
                     installed = JawaBenchTpsProfiler.Installed,
                     stages = JawaBenchTpsProfiler.PatchedStages,
+                    status = JawaBenchTpsProfiler.InstallStatus,
+                    detail = JawaBenchTpsProfiler.InstallDetail,
                     error = JawaBenchTpsProfiler.InstallError,
                     runtimeError = JawaBenchTpsProfiler.RuntimeError,
                     costPerTimerPairUs = Math.Round(JawaBenchTpsProfiler.CostPerPairSeconds * 1e6, 4),

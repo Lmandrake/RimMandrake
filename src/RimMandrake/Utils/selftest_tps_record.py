@@ -408,6 +408,19 @@ def reader_checks():
         check(unk.get("c3", {}).get("finding") != "exited-without-shutdown",
               "MUST 9: with the process probe unavailable, no session is declared exited: %r" % unk.get("c3"))
 
+    # MUST 16: a shutdown INTENT without its completion row is not a clean end
+    with tempfile.TemporaryDirectory() as d:
+        with open(os.path.join(d, "hb_e1.json"), "w") as fh:
+            json.dump({"pid": 77, "session": "e1", "utc": "2026-10-10T15:00:00.000Z", "silentS": 0.0}, fh)
+        os.utime(os.path.join(d, "hb_e1.json"), (time.time() - 600, time.time() - 600))
+        intent = [{"kind": "shutdown", "phase": "intent", "session": "e1", "utc": "2026-10-10T15:00:00Z", "_t": 0}]
+        f = T.observe(intent, T.read_heartbeats(d), [])
+        check(f and f[0]["finding"] == "shutdown-incomplete",
+              "MUST 16: a shutdown intent with no shutdown-complete row is reported, not taken as clean: %r" % f)
+        done = intent + [{"kind": "shutdown-complete", "session": "e1", "utc": "2026-10-10T15:00:01Z", "_t": 1,
+                          "drained": True, "archived": True}]
+        check(not T.observe(done, T.read_heartbeats(d), []), "MUST 16: intent + completion = a clean end")
+
     # sustained needs CONTIGUOUS fresh windows
     gap_rows = [sample(t15 + 5 * i, i, ratio=0.3) for i in range(3)] + \
                [sample(t15 + 600 + 5 * i, 10 + i, ratio=0.3) for i in range(3)]
@@ -568,7 +581,7 @@ def reader_checks():
 
 # names of C# unit tests (Units*.cs, T_<name>) that MUST exist and pass: a test that silently disappears
 # from the harness is a failure, not a pass.
-CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "HeartbeatSeparatesMainAndWatchdog", "RetentionLeasesAndBundles", "ArchiveNoCollisions", "ExplainedDirectSave", "ExplainedNestedOnce", "ExplainedSplitAcrossIntervals"]
+CS_UNITS = ["IncidentRowComposition", "StagesSkipSafe", "StagesWorstTick", "StagesInvalidNesting", "LifecycleScopes", "SustainedStale", "SettingsStrict", "WriterReplayAfterPartialBatch", "WriterTornTail", "WriterBoundCountsInFlight", "HeartbeatSeparatesMainAndWatchdog", "RetentionLeasesAndBundles", "ArchiveNoCollisions", "ExplainedDirectSave", "ExplainedNestedOnce", "ExplainedSplitAcrossIntervals", "InstallRollback", "ShutdownBounded"]
 
 
 def unit_checks(lines):
