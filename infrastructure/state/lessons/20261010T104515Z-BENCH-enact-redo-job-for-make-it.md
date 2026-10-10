@@ -1,0 +1,1 @@
+An enact redo job for a 'make it alien / fails the Terran check' note attached the REJECTED render as canon_reference, so the generator kept redrawing the rejected creature and the canon check failed it twice (ulvassk, 2026-10-10). A redo whose note rejects the anatomy must carry NO reference image; build the prompt from the def's description instead.
