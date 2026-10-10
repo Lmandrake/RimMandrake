@@ -405,7 +405,7 @@ def shipped_def_rows(mod_dir=None):
 def dump_presence_findings(rows_defs, dump_by_type, active_pkgs, held, changed_after_dump=None):
     """(checked, skipped dict, findings). A def is LOST when it is not held, its type is dumped, every non-DLC guard
     package is active (an anyOf guard needs one), and it is absent from the dump. Label drift is a finding too.
-    A def absent from the dump whose file was last committed AFTER the dump was captured is skipped ("changed after dump"):
+    A def absent from the dump, or carrying a different label, whose file was last committed AFTER the dump was captured is skipped ("changed after dump"):
     the dump cannot show what was added or re-gated since (e.g. a guard repointed to the host package after capture)."""
     import fnmatch
     checked, skipped, bad = 0, {"held": 0, "guard inactive": 0, "type not dumped": 0, "changed after dump": 0}, []
@@ -428,6 +428,9 @@ def dump_presence_findings(rows_defs, dump_by_type, active_pkgs, held, changed_a
             skipped["changed after dump"] += 1
         elif row is None:
             bad.append("%s %s (%s) is not in the dump" % (ty, name, rel))
+        elif label is not None and str(row.get("label")) != label and changed_after_dump is not None and changed_after_dump(rel):
+            checked -= 1
+            skipped["changed after dump"] += 1
         elif label is not None and str(row.get("label")) != label:
             bad.append("%s %s label %r in the dump, %r in the XML" % (ty, name, row.get("label"), label))
     return checked, skipped, bad

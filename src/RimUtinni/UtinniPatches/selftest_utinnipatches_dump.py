@@ -51,6 +51,8 @@ def main():
         d3 = dict((k, dict(x) if x else x) for k, x in dump.items())
         lab = next(r for r in rows_defs if r[0] == "ThingDef" and r[2] and r[1] in dump["ThingDef"])
         d3["ThingDef"][lab[1]] = dict(d3["ThingDef"][lab[1]], label="something else")
+        got = v.dump_presence_findings(rows_defs, d3, active, held, lambda rel: True)
+        check("a label that differs because the file changed after the dump is skipped, not lost (%s)" % lab[1], got[2] == [] and got[1]["changed after dump"] >= 1, got[1:])
         got = v.dump_presence_findings(rows_defs, d3, active, held, v.changed_after_dump(base))[2]
         check("break: a label that drifted is named (%s)" % lab[1], len(got) == 1 and "label" in got[0], got)
         got = v.dump_presence_findings(rows_defs, d2, active, held + ["*"])[2]
