@@ -3,7 +3,7 @@
 //
 // The main thread stamps a heartbeat every frame (Root.Update postfix, menu and play alike) and keeps a
 // small stack of coarse PHASES (update, long event, save, tick update, tick-list category, world, map
-// pre/post, components, gui/render). A background thread wakes every second:
+// pre/post, components, frame-rest = the rest of the frame: non-tick play update, GUI, rendering). A background thread wakes every second:
 //   * main thread silent > SilenceSeconds -> a `silence` line (silentS, the phase it was in and since
 //     when, ticks, speed, heap, GC count, writer health), repeated every SilenceRepeatSeconds while it
 //     lasts - so a permanent hang leaves a record that ENDS at the last heartbeat and says where;
@@ -31,7 +31,7 @@ namespace JawaBench.BridgeTools
         internal static readonly string[] PhaseNames =
         {
             "none", "update", "longEvent", "save", "load", "tickUpdate", "tick", "tl:Normal", "tl:Rare", "tl:Long",
-            "world", "worldPost", "mapPre", "mapPost", "mapComp", "gameComp", "gui/render", "menu",
+            "world", "worldPost", "mapPre", "mapPost", "mapComp", "gameComp", "frame-rest", "menu",
         };
         internal const int PNone = 0, PUpdate = 1, PLongEvent = 2, PSave = 3, PLoad = 4, PTickUpdate = 5, PTick = 6,
             PTlNormal = 7, PTlRare = 8, PTlLong = 9, PWorld = 10, PWorldPost = 11, PMapPre = 12, PMapPost = 13,

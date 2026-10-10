@@ -315,10 +315,10 @@ namespace JawaBench.BridgeTools
         // ---- Root.Update: heartbeat, menu/game transitions, long-event time (every frame) --------
         private static void RootPrefix()
         {
+            WD.Beat();      // always: a disabled sampler must not read as a silent main thread
             if (RuntimeError != null) return;
             try
             {
-                WD.Beat();
                 double now = WD.Now;
                 if (_prevFrameWaiting) _explained += now - _prevRootPre;
                 _prevRootPre = now;
