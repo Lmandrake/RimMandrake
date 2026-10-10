@@ -54,6 +54,8 @@
     <Compile Include="RM_AxisKernel.cs" />
     <Compile Include="RM_PoolKernel.cs" />
     <Compile Include="RM_EnvironmentalHazardsMod.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="CompProperties_ActiveGasEmitter.cs" />
     <Compile Include="CompActiveGasEmitter.cs" />
     <Compile Include="GasEffectExtensions.cs" />

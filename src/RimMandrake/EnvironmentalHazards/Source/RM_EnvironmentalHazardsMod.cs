@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -471,6 +473,59 @@ namespace RimMandrake.EnvironmentalHazards
         // THORNBUG_FEAR_SCOPE_1 PROVISIONAL (auto-decided 2026-10-09): owner card 3's local radius wins over the map-wide danger gate.
         public static bool thornbugFearLocalOnly = true;
 
+        // EH-3 (ENVHAZARDS_SETTINGS_SCREEN_1): shipped value of every public static bool/float/int setting, read from the field
+        // initialisers. MUST stay the LAST static field initialiser in this class (C# runs them in textual order). The
+        // per-section "Reset" writes these back.
+        private static readonly Dictionary<string, object> shippedDefaults = SnapshotDefaults();
+
+        private static Dictionary<string, object> SnapshotDefaults()
+        {
+            var d = new Dictionary<string, object>();
+            foreach (FieldInfo f in typeof(RM_EnvironmentalHazardsSettings).GetFields(BindingFlags.Public | BindingFlags.Static))
+                if (f.FieldType == typeof(bool) || f.FieldType == typeof(float) || f.FieldType == typeof(int))
+                    d[f.Name] = f.GetValue(null);
+            return d;
+        }
+
+        public static void ResetFields(string[] names)
+        {
+            foreach (string n in names)
+            {
+                FieldInfo f = typeof(RM_EnvironmentalHazardsSettings).GetField(n, BindingFlags.Public | BindingFlags.Static);
+                if (f != null && shippedDefaults.TryGetValue(n, out object v)) f.SetValue(null, v);
+            }
+        }
+
+        // ---- the screen: search, collapsible sections, per-section reset, scope tag (SETTINGS_SCREEN_KIT_1 widgets) ----
+        private static string searchQuery = "";
+        private static readonly HashSet<string> collapsedSections = new HashSet<string>();
+
+        /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
+        /// should draw. A search matches the section title or any of its setting names. Scope tags other than "new maps only"
+        /// are PROVISIONAL: toggles are read live, but each mechanic's in-play behaviour is described in its own tooltip.</summary>
+        private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names)
+        {
+            bool searching = !string.IsNullOrWhiteSpace(searchQuery);
+            if (searching)
+            {
+                bool hit = RimMandrake.Shared.SettingsKitCore.Matches(title, searchQuery);
+                foreach (string n in names) if (!hit && RimMandrake.Shared.SettingsKitCore.Matches(n, searchQuery)) hit = true;
+                if (!hit) return false;
+            }
+            bool open = searching || !collapsedSections.Contains(title);
+            Text.Font = GameFont.Medium;
+            if (list.ButtonText((open ? "- " : "+ ") + title))
+            {
+                if (!collapsedSections.Remove(title)) collapsedSections.Add(title);
+            }
+            Text.Font = GameFont.Small;
+            if (!open) return false;
+            list.Label(RimMandrake.Shared.SettingsKitCore.ScopeTag(scope) + (scope == RimMandrake.Shared.SettingScope.NewMapsOnly
+                ? " changes only affect maps generated afterwards" : " changes apply to what is on the map now"));
+            RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, () => ResetFields(names));
+            return true;
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -561,330 +616,349 @@ namespace RimMandrake.EnvironmentalHazards
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
+        private static float lastContentHeight = 5350f;
 
         public void DoWindowContents(Rect inRect)
         {
-            // 42 checkboxes (most with a two-line tooltip) plus eight labeled
-            // sliders — this is a FIXED view height, so content taller than it
-            // is clipped rather than scrolled to. Same pattern as
-            // RimMandrakeFlowWorksMod.DoWindowContents: raise this number in
-            // the same edit as whoever adds the next toggle, or their block is
-            // invisible. Bumped 4400->4480 for setting #49
-            // (groundRefusalEnabled, FEVER_WOOD_MECHANICS_1 F5). Bumped
-            // 4480->4540 for setting #50 (pollinationGateEnabled,
-            // MIASMA_KARRATHIL_POLLINATION_GATE_1).
-            // Bumped 4540->4600 for setting #51 (waterAgitationEnabled).
-            // Bumped 4600->4680 for setting #52 (tarBelchEnabled + radius slider).
-            // Bumped 4680->4740 for setting #53 (biomeArrivalLettersEnabled).
-            // Bumped 4740->4800 for setting #54 (sentinelGraveWardsEnabled).
-            // Bumped 4800->4860 for setting #55 (gradientSurgeEnabled).
-            // Bumped 4860->4920 for setting #56 (grazingSuppressionHookEnabled).
-            // Bumped 4920->4990 for setting #51a (waterAgitationDensity slider).
-            // Bumped 4990->5050 for setting #57 (hazardApparelAIAwarenessEnabled).
-            // Bumped 5050->5170 for setting #58 (sumpLivingMapEnabled + pace slider).
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, Mathf.Max(5350f, inRect.height));
+            // EH-3: the view height follows the drawn content (collapsed sections shrink it), so nobody has to bump a number
+            // when a toggle is added; lastContentHeight is the previous frame's measured height.
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, Mathf.Max(lastContentHeight, inRect.height));
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width, maxOneColumn = true };
             list.Begin(view);
-
+            searchQuery = RimMandrake.Shared.SettingsKitDrawer.SearchBox(list, searchQuery);
             list.Label("This is a toolkit other content uses to build hazards — turning a "
                      + "piece off only matters if some installed content actually uses it.");
             list.GapLine();
-
-            list.CheckboxLabeled("Gas emitters", ref gasEmittersEnabled,
-                "Vents/plants/creatures built to periodically release gas stop releasing it.");
-            list.CheckboxLabeled("Gas damage and transmuting", ref gasEffectsEnabled,
-                "A gas cloud no longer hurts, afflicts, or transforms plants it drifts over.");
-            list.CheckboxLabeled("Aerosol screens stop spore clouds", ref screenStopsSporesEnabled,
-                "On: inside the dome of a Scarlands aerosol screen, damaging gas (spore clouds included) does nothing to pawns or "
-              + "plants, as toxic fallout does not. Needs that mod and its screen switched on. Off: gas ignores screens.");
-            list.CheckboxLabeled("Periodic area attacks", ref areaAttacksEnabled,
-                "A hediff built to pulse area damage around its carrier stops pulsing.");
-            list.CheckboxLabeled("Latent hazard arming", ref latentHazardArmingEnabled,
-                "A map condition built to plant a latent hediff on the population stops planting it.");
-            list.CheckboxLabeled("Environmental weather damage", ref environmentalDamageEnabled,
-                "A hazardous weather condition stops directly damaging pawns, rotting items or "
-              + "killing plants. Its temperature and weather-forcing are unaffected.");
-            list.CheckboxLabeled("Scaled death explosions", ref scaledExplosionsEnabled,
-                "A creature built to explode on death just dies instead.");
-            list.CheckboxLabeled("Death flashstorm", ref deathFlashstormEnabled,
-                "A creature built to summon a lightning storm on death just dies instead.");
-            list.CheckboxLabeled("Targeted affliction ability effect", ref targetedHediffAbilityEnabled,
-                "An ability built on this effect does nothing when cast.");
-            list.CheckboxLabeled("Biome darkness multiplier", ref biomeGlowMultiplierEnabled,
-                "A biome built to run darker than usual (WORLDGEN-AFFECTING for anything that reads "
-              + "sunlight over time, but applies to existing maps too since it reads live sun glow) "
-              + "reads normal daylight instead.");
-            list.CheckboxLabeled("Weather-pulse bursts and flash growth", ref weatherPulseEnabled,
-                "A biome built to pulse between calm weather and a violent scalding burst stops "
-              + "bursting and stays calm; flash-growth plants stop surging in the burst window and "
-              + "grow at their normal rate instead.");
-            list.CheckboxLabeled("Local growth aura", ref localGrowthAuraEnabled,
-                "A hediff built to slightly speed up plant growth around its carrier stops doing so.");
-            list.CheckboxLabeled("Periodic inspiration dreams", ref periodicInspirationEnabled,
-                "A hediff built to rarely grant its carrier a random Inspiration stops rolling for one.");
-            list.CheckboxLabeled("Warden/crèche placement (WORLDGEN-AFFECTING)", ref wardenCrecheScattererEnabled,
-                "A biome built to place guarded crèche sites stops placing new ones on any map generated "
-              + "while this is off. Maps already generated keep whatever they already have.");
-            list.CheckboxLabeled("Crèche despoil memory", ref crecheDespoilMemoryEnabled,
-                "Killing a placed crèche's warden stops raising manhunter-pack odds on that map afterward. "
-              + "The marker itself still remembers it was despoiled either way.");
-            list.CheckboxLabeled("Bubble-sailor placement (WORLDGEN-AFFECTING)", ref bubbleSailorScattererEnabled,
-                "A biome built to place sail clusters near its vents stops placing new ones on any map "
-              + "generated while this is off. Maps already generated keep whatever they already have.");
-            list.CheckboxLabeled("Stranding pools and the stranded", ref strandingPoolsEnabled,
-                "A biome built to leave cut-off water pools behind a receding surge stops detecting new "
-              + "ones, stops spawning anything stranded in them, and freezes every pool already tracked "
-              + "(no further shrinking, no return-to-water jobs, no despawn) until this is back on.");
-            list.CheckboxLabeled("Living-tower bole placement (WORLDGEN-AFFECTING)", ref livingBolesEnabled,
-                "A biome built to place a mineable living-tower bole stops placing new ones on any map "
-              + "generated while this is off. Maps already generated keep whatever bole they already have.");
-            list.CheckboxLabeled("Living-tower regrowth", ref livingRegrowthEnabled,
-                "A placed bole stops scheduling new regrowth, stops warning, and stops crushing/ejecting "
-              + "whatever is in the way — every chamber freezes exactly as it is until this is back on. "
-              + "Mining and sealing chambers is unaffected either way.");
-            list.Label("Living-tower regrowth speed: " + livingRegrowthRateMultiplier.ToString("0.00") + "x days");
-            livingRegrowthRateMultiplier = list.Slider(livingRegrowthRateMultiplier, 0.25f, 4f);
-            list.CheckboxLabeled("Root causeway network (WORLDGEN-AFFECTING)", ref rootCausewaysEnabled,
-                "A biome built to paint a causeway network stops painting one on any map generated while "
-              + "this is off. Maps already generated keep whatever network they already have.");
-            list.CheckboxLabeled("Dry-air blower plant and animal repel", ref dryAirBlowerEnabled,
-                "A built dry-air blower stops holding back plant growth and repelling wild animals in its "
-              + "doorway arc; it still draws power/fuel and cools the room behind it.");
-            list.CheckboxLabeled("Dry-air blower cools the room behind it", ref dryAirBlowerCoolingEnabled,
-                "The blower is a room cooler that never heats any room: it cools the enclosed room behind it "
-              + "toward its target temperature, with no hot exhaust. Off: no cooling, and it draws low power.");
-            list.Label("Dry-air blower cooling strength: " + dryAirBlowerCoolingStrength.ToString("0") + " heat/s (vanilla cooler 21)");
-            dryAirBlowerCoolingStrength = Mathf.Round(list.Slider(dryAirBlowerCoolingStrength, 0f, 42f));
-            list.Label("Dry-air blower power draw while cooling: " + dryAirBlowerPowerWatts.ToString("0") + " W");
-            dryAirBlowerPowerWatts = Mathf.Round(list.Slider(dryAirBlowerPowerWatts, 0f, 600f) / 10f) * 10f;
-            list.CheckboxLabeled("Warn at gravship launch about held colonists", ref launchHeldColonistWarningEnabled,
-                "The launch confirmation names any colonist or prisoner held inside something (a brine jacket, "
-              + "a creature that swallowed them) so you can free them first. Never blocks the launch.");
-            list.CheckboxLabeled("Tree fall (crack, shatter, gnaw)", ref treeFallEnabled,
-                "A cracking giant tree stops rolling and warning, a hazard aura built to shatter trees "
-              + "stops felling them, and a creature built to gnaw one down stops seeking a trunk to chew.");
-            list.CheckboxLabeled("Breaklight clearing event", ref breaklightEnabled,
-                "A biome built with a rare weather-clearing event stops rolling for one. An occurrence "
-              + "already in progress finishes on its own instead of snapping off immediately.");
-            list.CheckboxLabeled("Steam devils", ref steamDevilEnabled,
-                "The wandering scald-damage vortex event stops occurring; one already wandering the "
-              + "map freezes in place (stops moving, damaging and felling trees) instead of vanishing.");
-            list.CheckboxLabeled("Spore cloud event", ref sporeCloudEnabled,
-                "The fungal spore cloud event stops occurring. One already settled over a map runs "
-              + "to its own scheduled end instead of snapping off immediately.");
-            list.CheckboxLabeled("Accelerated rot and outdoor filth thinning", ref acceleratedRotEnabled,
-                "A biome built to rot exposed things faster and slowly thin outdoor filth stops doing "
-              + "either; everything rots at vanilla's own rate again.");
-            list.CheckboxLabeled("Living produce room heat", ref livingProduceHeatEnabled,
-                "A stockpiled crop or food built to radiate warmth stops pushing any heat into its "
-              + "room; it still rots, ferments, or does whatever else it already did.");
-            list.CheckboxLabeled("Warm ground (living mat heating)", ref warmGroundEnabled,
-                "A biome built with warm living ground stops heating rooms floored on it; those "
-              + "rooms need heaters like anywhere else.");
-            list.CheckboxLabeled("Sheen exposure (the Rot)", ref sheenExposureEnabled,
-                "Unroofed pawns stop accumulating Sheen coating during Sheen-fall weather, and it "
-              + "can no longer seed spore flesh. The Sheen-fall/storm/mist weathers themselves "
-              + "keep occurring either way.");
-            list.CheckboxLabeled("Live preparations: strict viability", ref livePrepStrictViability,
-                "Strict: a living brew or symbiont is ruined by cold, so a fridge destroys it and it "
-              + "must be drunk where it was made. Lenient: cold no longer ruins it — but it still "
-              + "dies of old age within a couple of days either way.");
-            list.CheckboxLabeled("Treasure-sale conscience", ref treasureConscienceEnabled,
-                "A colonist carrying a symbiont stops feeling anything when the colony sells the "
-              + "treasures that symbiont came from.");
-            list.CheckboxLabeled("Sunlight scald", ref sunlightScaldEnabled,
-                "A hediff built to burn its carrier in direct sunlight stops building up; whatever "
-              + "severity a carrier already has is frozen, not cleared.");
-            list.CheckboxLabeled("Mirror pool placement (WORLDGEN-AFFECTING)", ref mirrorPoolsEnabled,
-                "A biome built to scatter small still-water pools stops placing new ones on any map "
-              + "generated while this is off. Maps already generated keep whatever pools they already have.");
-            list.CheckboxLabeled("Leachmoss wild spawning", ref leachmossEnabled,
-                "A fast-spreading moss built to race everything else for fertile open ground stops being "
-              + "offered by the wild-plant spawner, on every map immediately. Moss already growing is left "
-              + "standing; it just never re-takes an emptied cell or appears on fresh ground until this is "
-              + "back on.");
-            list.CheckboxLabeled("Tar beast eats the colony's buildings", ref tarBeastEnabled,
-                "A woken tar beast crawls to the densest cluster of your buildings, swallows them, lays tar "
-              + "and finally sinks back into the deep tar. Off: a woken beast just stands inert where it "
-              + "emerged and never eats, coats or sinks.");
-            list.CheckboxLabeled("Pour solvent into a tar bulge", ref tarSolventPourEnabled,
-                "A right-click order on a sleeping tar bulge: carry tar solvent to the tar's edge and pour it in. "
-              + "The beast wakes at once. Off: the order is never offered (digging, pumping, fire and building "
-              + "near the bulge still wake it).");
-            list.CheckboxLabeled("A solvent-woken tar beast hunts everyone", ref tarSolventManhunter,
-                "On: the beast woken by solvent goes manhunter for good and hunts every pawn on the map. "
-              + "Off: it wakes into its ordinary building-eating behaviour.");
-            list.CheckboxLabeled("Pouring needs strong tar solvent", ref tarSolventStrongRequired,
-                "On: only the strong solvent works; the weak one is not accepted.");
-            list.CheckboxLabeled("Contact venom (thorn plants)", ref contactVenomEnabled,
-                "A plant built to scratch whoever stands in it goes inert — it still grows, still "
-              + "slows movement and can still be cut, it just never scratches. Clocks already "
-              + "running freeze rather than reset, so turning this back on resumes.");
-            list.CheckboxLabeled("Show contact-venom clocks", ref hazardClockReadoutsEnabled,
-                "A thorn stand's inspect text says who stands in it and when the next scratch lands, and a small alert "
-              + "shows the same while a colonist is in contact. Text only: it changes nothing else. Applies now.");
-            list.CheckboxLabeled("Contact venom can kill", ref contactVenomLethal,
-                "On: staying in a thorn stand long enough is fatal. Off: the venom still hurts and "
-              + "disables, but is always held just short of killing. Turning this off does not heal "
-              + "anyone already past that point.");
-            list.CheckboxLabeled("Thickets block large creatures", ref bodySizeBarrierEnabled,
-                "On: a plant built as a fortress thicket is impassable to anything big — herds, "
-              + "pack animals and the largest wildlife route around a stand instead of through it, "
-              + "while small creatures cross freely and people force a slow way through. Off: "
-              + "everything moves through it on the same terms.");
-            list.CheckboxLabeled("Glasswalk slip-and-fall", ref glasswalkSlipEnabled,
-                "A floor built slick (the Sump's glasswalk) stops rarely staggering a pawn who is "
-              + "hurrying or hauling across it. No damage either way — the floor's own permanent "
-              + "speed cap is untouched by this toggle.");
-            list.CheckboxLabeled("Tar-coating sources", ref tarCoatingEnabled,
-                "A Thing built to splash a tar filth coating around itself (a belch event, a "
-              + "surfacing beast) stops splashing. Tar tracked onto the ground by ordinary foot "
-              + "traffic is a separate mechanism and keeps working either way.");
-            list.CheckboxLabeled("Tarred-pawn hediff", ref tarredHediffEnabled,
-                "Nobody newly tracking tar is given the tarred hediff, and a carrier already "
-              + "afflicted stops accruing or healing severity — frozen exactly where it is until "
-              + "this is back on.");
-            list.CheckboxLabeled("Warbling gaslight animation", ref warblingGlowEnabled,
-                "A lamp or statue built with the warbling glow comp stops dancing/pulsing and just "
-              + "glows steadily at its base color and radius, like any plain light. Scrubbing tar "
-              + "and crafting Sumpgas are unaffected either way.");
-            list.CheckboxLabeled("Water-truce retribution", ref waterTruceRetributionEnabled,
-                "A biome built with a sacred water truce stops turning wildlife against whoever "
-              + "lands the first guilty hit near the water. Defending yourself never counts as "
-              + "guilty either way — this only gates the retaliation, never who started it.");
-            list.CheckboxLabeled("Water-truce hunt suppression", ref waterTruceSuppressionEnabled,
-                "In a biome built with a sacred water truce, predators (wild or tamed) never start a hunt "
-              + "at the water, and drop a chase that crosses into it. Hunting you order yourself is "
-              + "untouched. Off: predators hunt there like anywhere else.");
-            list.Label("Water-truce radius: " + waterTruceRadius.ToString("0") + " cells");
-            list.Label("How far from standing water the truce reaches in a biome built with one: "
-                     + "inside it wildlife will not be hunted and the first guilty hit rouses them. "
-                     + "Applies to every part of the truce at once and to maps already loaded. "
-                     + "10 keeps the biome's own authored radius.");
-            waterTruceRadius = Mathf.Round(list.Slider(waterTruceRadius, 3f, 25f));
-            if (list.ButtonText("Reset truce radius to default"))
+            if (Group(list, "Gas, damage and explosions", RimMandrake.Shared.SettingScope.Now, new[] { "gasEmittersEnabled", "gasEffectsEnabled", "screenStopsSporesEnabled", "areaAttacksEnabled", "latentHazardArmingEnabled", "environmentalDamageEnabled", "scaledExplosionsEnabled", "deathFlashstormEnabled", "targetedHediffAbilityEnabled", "hazardDamageMultiplier" }))
             {
-                waterTruceRadius = WaterTruceRadiusDefault;
+                list.CheckboxLabeled("Gas emitters", ref gasEmittersEnabled,
+                    "Vents/plants/creatures built to periodically release gas stop releasing it.");
+                list.CheckboxLabeled("Gas damage and transmuting", ref gasEffectsEnabled,
+                    "A gas cloud no longer hurts, afflicts, or transforms plants it drifts over.");
+                list.CheckboxLabeled("Aerosol screens stop spore clouds", ref screenStopsSporesEnabled,
+                    "On: inside the dome of a Scarlands aerosol screen, damaging gas (spore clouds included) does nothing to pawns or "
+                  + "plants, as toxic fallout does not. Needs that mod and its screen switched on. Off: gas ignores screens.");
+                list.CheckboxLabeled("Periodic area attacks", ref areaAttacksEnabled,
+                    "A hediff built to pulse area damage around its carrier stops pulsing.");
+                list.CheckboxLabeled("Latent hazard arming", ref latentHazardArmingEnabled,
+                    "A map condition built to plant a latent hediff on the population stops planting it.");
+                list.CheckboxLabeled("Environmental weather damage", ref environmentalDamageEnabled,
+                    "A hazardous weather condition stops directly damaging pawns, rotting items or "
+                  + "killing plants. Its temperature and weather-forcing are unaffected.");
+                list.CheckboxLabeled("Scaled death explosions", ref scaledExplosionsEnabled,
+                    "A creature built to explode on death just dies instead.");
+                list.CheckboxLabeled("Death flashstorm", ref deathFlashstormEnabled,
+                    "A creature built to summon a lightning storm on death just dies instead.");
+                list.CheckboxLabeled("Targeted affliction ability effect", ref targetedHediffAbilityEnabled,
+                    "An ability built on this effect does nothing when cast.");
+                list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");
+                list.Label("Scales every damage/severity number the mechanisms above deal. Never "
+                         + "changes how often, how far, or how likely a hazard fires.");
+                hazardDamageMultiplier = list.Slider(hazardDamageMultiplier, 0.25f, 3f);
+
+                list.GapLine();
             }
-            list.CheckboxLabeled("Ground building-refusal (WORLDGEN-AFFECTING)", ref groundRefusalEnabled,
-                "A biome built to refuse heavy structures at ground level stops converting its "
-              + "remaining buildable ground to the refusal terrain on any map generated while this "
-              + "is off — that ground stays ordinary Heavy-capable soil instead. Maps already "
-              + "generated keep whatever terrain they already have.");
-            list.CheckboxLabeled("Pollination gate", ref pollinationGateEnabled,
-                "A plant built to need a pollinator species on the map (the Miasma's mangals and "
-              + "karrathil swarm) stops needing one — it can spawn new individuals with no pollinator "
-              + "present, like any ordinary wild plant. Already-grown stands are never touched either "
-              + "way, only whether they can replace themselves.");
-            list.CheckboxLabeled("Ambient water agitation ripples", ref waterAgitationEnabled,
-                "Water tagged as agitated (a biome's boiling or roiling surface) stops showing the "
-              + "ambient ripple disturbance across it. Purely cosmetic — no gameplay effect either way.");
-            list.Label("Water agitation density: " + waterAgitationDensity.ToString("0.00") + "x");
-            list.Label("How hard a screenful of boiling water churns — higher means more ripples "
-                     + "breaking at once. Never changes where the effect appears, only how busy it "
-                     + "reads. Purely cosmetic.");
-            waterAgitationDensity = list.Slider(waterAgitationDensity, 0f, 4f);
-            list.CheckboxLabeled("Tar pit belch event", ref tarBelchEnabled,
-                "The Sump's occasional \"a tar pit belches\" event stops occurring — an existing tar "
-              + "pit stops erupting and coating the ground around it in tar.");
-            list.CheckboxLabeled("Biome arrival letters", ref biomeArrivalLettersEnabled,
-                "The first gravship landing in a biome carrying a survival-reads letter stops "
-              + "announcing it. A letter already delivered this save is never recalled, and nothing "
-              + "is marked as seen while this is off, so turning it back on still introduces every "
-              + "biome not yet landed in.");
-            list.CheckboxLabeled("Sentinel grave-ward placement (WORLDGEN-AFFECTING)", ref sentinelGraveWardsEnabled,
-                "A biome built with a Forgotten Sentinel grave-ward stops placing new ones on any map "
-              + "generated while this is off. Maps already generated keep whatever grave-ward (and "
-              + "whatever Sentinels it already spawned) they already have.");
-            list.CheckboxLabeled("Breath-tide surge", ref gradientSurgeEnabled,
-                "A biome built with a fresh-to-brine salinity axis stops rolling for a new storm-driven "
-              + "surge. A surge already under way (its shove and its later recede) finishes on its own "
-              + "schedule rather than stopping mid-shift; the salt line itself keeps whatever position "
-              + "it last reached.");
-            list.CheckboxLabeled("Grazing suppression hook", ref grazingSuppressionHookEnabled,
-                "A plant-eating pawn's bite stops being recorded as encroachment suppression. Has no "
-              + "visible effect yet on any install — the hook is armed but the suppression system it "
-              + "feeds hasn't shipped.");
-            list.CheckboxLabeled("Hazard apparel AI awareness", ref hazardApparelAIAwarenessEnabled,
-                "Colonists stop factoring heat armor, heat insulation and Sheen protection into their own apparel "
-              + "choice, so nobody picks up a boil-suit unprompted — you're back to a manual outfit "
-              + "policy for hazard gear. The gear's actual protection is unaffected either way.");
-            list.CheckboxLabeled("Sump living map", ref sumpLivingMapEnabled,
-                "After tar or tar-glass rewrites the ground (a belch, a tar canal release), the Sump slowly "
-              + "answers: soffeth rings grow around the new seep, mice learn to detour around the fresh crust, "
-              + "and mirrelin creeps onto the new glass. Off: nothing new is noticed or grown; plants already "
-              + "grown stay.");
-            list.Label("Sump living map pace: " + sumpLivingMapPace.ToString("0.00") + "x (PROVISIONAL)");
-            list.Label("PROVISIONAL first-guess pacing, tuned live later: at 1.0x the first soffeth stalk comes a "
-                     + "day after a seep, mice re-route in 6 hours, mirrelin reaches new glass after 2 days and fresh "
-                     + "crust sets in 6. Higher is faster.");
-            sumpLivingMapPace = list.Slider(sumpLivingMapPace, 0.25f, 4f);
-            list.GapLine();
+            if (Group(list, "Weather, light and water", RimMandrake.Shared.SettingScope.Now, new[] { "biomeGlowMultiplierEnabled", "weatherPulseEnabled", "breaklightEnabled", "steamDevilEnabled", "sporeCloudEnabled", "gradientSurgeEnabled", "weatherGateCoversWholeCondition", "warblingGlowEnabled", "warblingGlowSpeedMultiplier", "waterAgitationEnabled", "waterAgitationDensity" }))
+            {
+                list.CheckboxLabeled("Biome darkness multiplier", ref biomeGlowMultiplierEnabled,
+                    "A biome built to run darker than usual (WORLDGEN-AFFECTING for anything that reads "
+                  + "sunlight over time, but applies to existing maps too since it reads live sun glow) "
+                  + "reads normal daylight instead.");
+                list.CheckboxLabeled("Weather-pulse bursts and flash growth", ref weatherPulseEnabled,
+                    "A biome built to pulse between calm weather and a violent scalding burst stops "
+                  + "bursting and stays calm; flash-growth plants stop surging in the burst window and "
+                  + "grow at their normal rate instead.");
+                list.CheckboxLabeled("Breaklight clearing event", ref breaklightEnabled,
+                    "A biome built with a rare weather-clearing event stops rolling for one. An occurrence "
+                  + "already in progress finishes on its own instead of snapping off immediately.");
+                list.CheckboxLabeled("Steam devils", ref steamDevilEnabled,
+                    "The wandering scald-damage vortex event stops occurring; one already wandering the "
+                  + "map freezes in place (stops moving, damaging and felling trees) instead of vanishing.");
+                list.CheckboxLabeled("Spore cloud event", ref sporeCloudEnabled,
+                    "The fungal spore cloud event stops occurring. One already settled over a map runs "
+                  + "to its own scheduled end instead of snapping off immediately.");
+                list.CheckboxLabeled("Breath-tide surge", ref gradientSurgeEnabled,
+                    "A biome built with a fresh-to-brine salinity axis stops rolling for a new storm-driven "
+                  + "surge. A surge already under way (its shove and its later recede) finishes on its own "
+                  + "schedule rather than stopping mid-shift; the salt line itself keeps whatever position "
+                  + "it last reached.");
+                list.CheckboxLabeled("A biome's weather toggle turns off its whole weather", ref weatherGateCoversWholeCondition,
+                    "On: when a biome mod's own setting switches off one of its hazardous weather conditions, the forced weather, temperature swing, animal/plant density change, outdoor-recreation block and power cut all stop too, not just the damage. Off: only the damage and cell effects stop; the sky and temperature keep being forced.");
+                list.CheckboxLabeled("Warbling gaslight animation", ref warblingGlowEnabled,
+                    "A lamp or statue built with the warbling glow comp stops dancing/pulsing and just "
+                  + "glows steadily at its base color and radius, like any plain light. Scrubbing tar "
+                  + "and crafting Sumpgas are unaffected either way.");
+                list.Label("Warbling gaslight tempo: " + warblingGlowSpeedMultiplier.ToString("0.00") + "x");
+                list.Label("How fast a warbling lamp or statue's color and radius dance. Never changes "
+                         + "how far they wander, only how quickly.");
+                warblingGlowSpeedMultiplier = list.Slider(warblingGlowSpeedMultiplier, 0.1f, 3f);
 
-            list.Label("Tar beast speed: " + tarBeastPace.ToString("0.0") + "x (three presets: under 0.75 slow, over 1.5 fast, "
-                     + "else normal; reaches beasts already awake within a few seconds)");
-            tarBeastPace = list.Slider(tarBeastPace, 0.5f, 2f);
-            list.Label("Tar beast sinks after swallowing: " + tarBeastMaxBuildings.ToString("0") + " buildings");
-            tarBeastMaxBuildings = list.Slider(tarBeastMaxBuildings, 1f, 30f);
-            list.Label("Tar bulge wake range for pumping and deep drills: " + tarBeastPumpWakeFactor.ToString("0.0") + "x (0 = never)");
-            tarBeastPumpWakeFactor = list.Slider(tarBeastPumpWakeFactor, 0f, 3f);
-            list.Label("Solvent poured to wake a tar bulge: " + tarSolventMinCount.ToString("0"));
-            tarSolventMinCount = Mathf.Round(list.Slider(tarSolventMinCount, 1f, 20f));
-            list.Label("Sh'kaar's share of a solvent-woken tar: " + tarSolventGodDeltaShkaar.ToString("0.0"));
-            tarSolventGodDeltaShkaar = list.Slider(tarSolventGodDeltaShkaar, 0f, 30f);
-            list.Label("Zizzik's share of a solvent-woken tar: " + tarSolventGodDeltaZizzik.ToString("0.0"));
-            tarSolventGodDeltaZizzik = list.Slider(tarSolventGodDeltaZizzik, 0f, 30f);
-            list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");
-            list.Label("How hard a thorn plant scratches, on top of the overall hazard damage dial. "
-                     + "The venom dose follows the damage, so this moves the poison too. At 0 the "
-                     + "plant scratches nobody.");
-            contactVenomScratchMultiplier = list.Slider(contactVenomScratchMultiplier, 0f, 3f);
+                list.CheckboxLabeled("Ambient water agitation ripples", ref waterAgitationEnabled,
+                    "Water tagged as agitated (a biome's boiling or roiling surface) stops showing the "
+                  + "ambient ripple disturbance across it. Purely cosmetic — no gameplay effect either way.");
+                list.Label("Water agitation density: " + waterAgitationDensity.ToString("0.00") + "x");
+                list.Label("How hard a screenful of boiling water churns — higher means more ripples "
+                         + "breaking at once. Never changes where the effect appears, only how busy it "
+                         + "reads. Purely cosmetic.");
+                waterAgitationDensity = list.Slider(waterAgitationDensity, 0f, 4f);
+                list.GapLine();
+            }
+            if (Group(list, "Placed on new maps (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "wardenCrecheScattererEnabled", "bubbleSailorScattererEnabled", "livingBolesEnabled", "rootCausewaysEnabled", "mirrorPoolsEnabled", "groundRefusalEnabled", "sentinelGraveWardsEnabled" }))
+            {
+                list.CheckboxLabeled("Warden/crèche placement (WORLDGEN-AFFECTING)", ref wardenCrecheScattererEnabled,
+                    "A biome built to place guarded crèche sites stops placing new ones on any map generated "
+                  + "while this is off. Maps already generated keep whatever they already have.");
+                list.CheckboxLabeled("Bubble-sailor placement (WORLDGEN-AFFECTING)", ref bubbleSailorScattererEnabled,
+                    "A biome built to place sail clusters near its vents stops placing new ones on any map "
+                  + "generated while this is off. Maps already generated keep whatever they already have.");
+                list.CheckboxLabeled("Living-tower bole placement (WORLDGEN-AFFECTING)", ref livingBolesEnabled,
+                    "A biome built to place a mineable living-tower bole stops placing new ones on any map "
+                  + "generated while this is off. Maps already generated keep whatever bole they already have.");
+                list.CheckboxLabeled("Root causeway network (WORLDGEN-AFFECTING)", ref rootCausewaysEnabled,
+                    "A biome built to paint a causeway network stops painting one on any map generated while "
+                  + "this is off. Maps already generated keep whatever network they already have.");
+                list.CheckboxLabeled("Mirror pool placement (WORLDGEN-AFFECTING)", ref mirrorPoolsEnabled,
+                    "A biome built to scatter small still-water pools stops placing new ones on any map "
+                  + "generated while this is off. Maps already generated keep whatever pools they already have.");
+                list.CheckboxLabeled("Ground building-refusal (WORLDGEN-AFFECTING)", ref groundRefusalEnabled,
+                    "A biome built to refuse heavy structures at ground level stops converting its "
+                  + "remaining buildable ground to the refusal terrain on any map generated while this "
+                  + "is off — that ground stays ordinary Heavy-capable soil instead. Maps already "
+                  + "generated keep whatever terrain they already have.");
+                list.CheckboxLabeled("Sentinel grave-ward placement (WORLDGEN-AFFECTING)", ref sentinelGraveWardsEnabled,
+                    "A biome built with a Forgotten Sentinel grave-ward stops placing new ones on any map "
+                  + "generated while this is off. Maps already generated keep whatever grave-ward (and "
+                  + "whatever Sentinels it already spawned) they already have.");
+                list.GapLine();
+            }
+            if (Group(list, "Living towers, crèches and stranded creatures", RimMandrake.Shared.SettingScope.Now, new[] { "livingRegrowthEnabled", "livingRegrowthRateMultiplier", "crecheDespoilMemoryEnabled", "strandingPoolsEnabled", "waterLockedRecoveryWalk" }))
+            {
+                list.CheckboxLabeled("Living-tower regrowth", ref livingRegrowthEnabled,
+                    "A placed bole stops scheduling new regrowth, stops warning, and stops crushing/ejecting "
+                  + "whatever is in the way — every chamber freezes exactly as it is until this is back on. "
+                  + "Mining and sealing chambers is unaffected either way.");
+                list.Label("Living-tower regrowth speed: " + livingRegrowthRateMultiplier.ToString("0.00") + "x days");
+                livingRegrowthRateMultiplier = list.Slider(livingRegrowthRateMultiplier, 0.25f, 4f);
+                list.CheckboxLabeled("Crèche despoil memory", ref crecheDespoilMemoryEnabled,
+                    "Killing a placed crèche's warden stops raising manhunter-pack odds on that map afterward. "
+                  + "The marker itself still remembers it was despoiled either way.");
+                list.CheckboxLabeled("Stranding pools and the stranded", ref strandingPoolsEnabled,
+                    "A biome built to leave cut-off water pools behind a receding surge stops detecting new "
+                  + "ones, stops spawning anything stranded in them, and freezes every pool already tracked "
+                  + "(no further shrinking, no return-to-water jobs, no despawn) until this is back on.");
+                list.CheckboxLabeled("Water-bound creatures walk back to water", ref waterLockedRecoveryWalk,
+                    "On: a water-bound creature (the warden mother) found on dry ground walks to the nearest reachable water, and a walk that is headed for water anyway is left alone. Off: she is simply stopped dead on the spot, as before.");
+                list.GapLine();
+            }
+            if (Group(list, "Dry-air blower", RimMandrake.Shared.SettingScope.Now, new[] { "dryAirBlowerEnabled", "dryAirBlowerCoolingEnabled", "dryAirBlowerCoolingStrength", "dryAirBlowerPowerWatts" }))
+            {
+                list.CheckboxLabeled("Dry-air blower plant and animal repel", ref dryAirBlowerEnabled,
+                    "A built dry-air blower stops holding back plant growth and repelling wild animals in its "
+                  + "doorway arc; it still draws power/fuel and cools the room behind it.");
+                list.CheckboxLabeled("Dry-air blower cools the room behind it", ref dryAirBlowerCoolingEnabled,
+                    "The blower is a room cooler that never heats any room: it cools the enclosed room behind it "
+                  + "toward its target temperature, with no hot exhaust. Off: no cooling, and it draws low power.");
+                list.Label("Dry-air blower cooling strength: " + dryAirBlowerCoolingStrength.ToString("0") + " heat/s (vanilla cooler 21)");
+                dryAirBlowerCoolingStrength = Mathf.Round(list.Slider(dryAirBlowerCoolingStrength, 0f, 42f));
+                list.Label("Dry-air blower power draw while cooling: " + dryAirBlowerPowerWatts.ToString("0") + " W");
+                dryAirBlowerPowerWatts = Mathf.Round(list.Slider(dryAirBlowerPowerWatts, 0f, 600f) / 10f) * 10f;
+                list.GapLine();
+            }
+            if (Group(list, "Tar and the Sump", RimMandrake.Shared.SettingScope.Now, new[] { "tarBeastEnabled", "tarSolventPourEnabled", "tarSolventManhunter", "tarSolventStrongRequired", "tarBeastPace", "tarBeastMaxBuildings", "tarBeastPumpWakeFactor", "tarSolventMinCount", "tarSolventGodDeltaShkaar", "tarSolventGodDeltaZizzik", "tarCoatingEnabled", "tarredHediffEnabled", "tarBelchEnabled", "tarBelchRadius", "sumpLivingMapEnabled", "sumpLivingMapPace", "glasswalkSlipEnabled", "glasswalkSlipChancePerSweep" }))
+            {
+                list.CheckboxLabeled("Tar beast eats the colony's buildings", ref tarBeastEnabled,
+                    "A woken tar beast crawls to the densest cluster of your buildings, swallows them, lays tar "
+                  + "and finally sinks back into the deep tar. Off: a woken beast just stands inert where it "
+                  + "emerged and never eats, coats or sinks.");
+                list.CheckboxLabeled("Pour solvent into a tar bulge", ref tarSolventPourEnabled,
+                    "A right-click order on a sleeping tar bulge: carry tar solvent to the tar's edge and pour it in. "
+                  + "The beast wakes at once. Off: the order is never offered (digging, pumping, fire and building "
+                  + "near the bulge still wake it).");
+                list.CheckboxLabeled("A solvent-woken tar beast hunts everyone", ref tarSolventManhunter,
+                    "On: the beast woken by solvent goes manhunter for good and hunts every pawn on the map. "
+                  + "Off: it wakes into its ordinary building-eating behaviour.");
+                list.CheckboxLabeled("Pouring needs strong tar solvent", ref tarSolventStrongRequired,
+                    "On: only the strong solvent works; the weak one is not accepted.");
+                list.Label("Tar beast speed: " + tarBeastPace.ToString("0.0") + "x (three presets: under 0.75 slow, over 1.5 fast, "
+                         + "else normal; reaches beasts already awake within a few seconds)");
+                tarBeastPace = list.Slider(tarBeastPace, 0.5f, 2f);
+                list.Label("Tar beast sinks after swallowing: " + tarBeastMaxBuildings.ToString("0") + " buildings");
+                tarBeastMaxBuildings = list.Slider(tarBeastMaxBuildings, 1f, 30f);
+                list.Label("Tar bulge wake range for pumping and deep drills: " + tarBeastPumpWakeFactor.ToString("0.0") + "x (0 = never)");
+                tarBeastPumpWakeFactor = list.Slider(tarBeastPumpWakeFactor, 0f, 3f);
+                list.Label("Solvent poured to wake a tar bulge: " + tarSolventMinCount.ToString("0"));
+                tarSolventMinCount = Mathf.Round(list.Slider(tarSolventMinCount, 1f, 20f));
+                list.Label("Sh'kaar's share of a solvent-woken tar: " + tarSolventGodDeltaShkaar.ToString("0.0"));
+                tarSolventGodDeltaShkaar = list.Slider(tarSolventGodDeltaShkaar, 0f, 30f);
+                list.Label("Zizzik's share of a solvent-woken tar: " + tarSolventGodDeltaZizzik.ToString("0.0"));
+                tarSolventGodDeltaZizzik = list.Slider(tarSolventGodDeltaZizzik, 0f, 30f);
+                list.CheckboxLabeled("Tar-coating sources", ref tarCoatingEnabled,
+                    "A Thing built to splash a tar filth coating around itself (a belch event, a "
+                  + "surfacing beast) stops splashing. Tar tracked onto the ground by ordinary foot "
+                  + "traffic is a separate mechanism and keeps working either way.");
+                list.CheckboxLabeled("Tarred-pawn hediff", ref tarredHediffEnabled,
+                    "Nobody newly tracking tar is given the tarred hediff, and a carrier already "
+                  + "afflicted stops accruing or healing severity — frozen exactly where it is until "
+                  + "this is back on.");
+                list.CheckboxLabeled("Tar pit belch event", ref tarBelchEnabled,
+                    "The Sump's occasional \"a tar pit belches\" event stops occurring — an existing tar "
+                  + "pit stops erupting and coating the ground around it in tar.");
+                list.Label("Tar pit belch radius: " + tarBelchRadius.ToString("0") + " cells");
+                list.Label("How far a belching tar pit's coating reaches. Never changes how often it "
+                         + "fires or how thick the coat lands, only how wide.");
+                tarBelchRadius = list.Slider(tarBelchRadius, 3f, 20f);
 
-            list.Label("Forcing a thicket: " + bodySizeBarrierThreadCostMultiplier.ToString("0.00") + "x");
-            list.Label("How slowly someone big enough to be slowed — but not big enough to be "
-                     + "stopped — crosses a fortress thicket. Does not change WHO is stopped; at 0 "
-                     + "a thicket costs nothing extra to anyone who can enter it at all.");
-            bodySizeBarrierThreadCostMultiplier = list.Slider(bodySizeBarrierThreadCostMultiplier, 0f, 1.5f);
+                list.CheckboxLabeled("Sump living map", ref sumpLivingMapEnabled,
+                    "After tar or tar-glass rewrites the ground (a belch, a tar canal release), the Sump slowly "
+                  + "answers: soffeth rings grow around the new seep, mice learn to detour around the fresh crust, "
+                  + "and mirrelin creeps onto the new glass. Off: nothing new is noticed or grown; plants already "
+                  + "grown stay.");
+                list.Label("Sump living map pace: " + sumpLivingMapPace.ToString("0.00") + "x (PROVISIONAL)");
+                list.Label("PROVISIONAL first-guess pacing, tuned live later: at 1.0x the first soffeth stalk comes a "
+                         + "day after a seep, mice re-route in 6 hours, mirrelin reaches new glass after 2 days and fresh "
+                         + "crust sets in 6. Higher is faster.");
+                sumpLivingMapPace = list.Slider(sumpLivingMapPace, 0.25f, 4f);
+                list.CheckboxLabeled("Glasswalk slip-and-fall", ref glasswalkSlipEnabled,
+                    "A floor built slick (the Sump's glasswalk) stops rarely staggering a pawn who is "
+                  + "hurrying or hauling across it. No damage either way — the floor's own permanent "
+                  + "speed cap is untouched by this toggle.");
+                list.Label("Glasswalk slip chance: " + (glasswalkSlipChancePerSweep * 100f).ToString("0.0") + "% per second while hurrying/hauling on it");
+                list.Label("How often a fast-moving or hauling pawn briefly staggers on a slick floor. "
+                         + "At 0, nobody ever slips.");
+                glasswalkSlipChancePerSweep = list.Slider(glasswalkSlipChancePerSweep, 0f, 0.2f);
 
-            list.Label("Hazard damage: " + hazardDamageMultiplier.ToString("0.00") + "x");
-            list.Label("Scales every damage/severity number the mechanisms above deal. Never "
-                     + "changes how often, how far, or how likely a hazard fires.");
-            hazardDamageMultiplier = list.Slider(hazardDamageMultiplier, 0.25f, 3f);
+                list.GapLine();
+            }
+            if (Group(list, "Thorns and thickets", RimMandrake.Shared.SettingScope.Now, new[] { "contactVenomEnabled", "hazardClockReadoutsEnabled", "contactVenomLethal", "contactVenomScratchMultiplier", "bodySizeBarrierEnabled", "bodySizeBarrierThreadCostMultiplier", "thornbugFearLocalOnly" }))
+            {
+                list.CheckboxLabeled("Contact venom (thorn plants)", ref contactVenomEnabled,
+                    "A plant built to scratch whoever stands in it goes inert — it still grows, still "
+                  + "slows movement and can still be cut, it just never scratches. Clocks already "
+                  + "running freeze rather than reset, so turning this back on resumes.");
+                list.CheckboxLabeled("Show contact-venom clocks", ref hazardClockReadoutsEnabled,
+                    "A thorn stand's inspect text says who stands in it and when the next scratch lands, and a small alert "
+                  + "shows the same while a colonist is in contact. Text only: it changes nothing else. Applies now.");
+                list.CheckboxLabeled("Contact venom can kill", ref contactVenomLethal,
+                    "On: staying in a thorn stand long enough is fatal. Off: the venom still hurts and "
+                  + "disables, but is always held just short of killing. Turning this off does not heal "
+                  + "anyone already past that point.");
+                list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");
+                list.Label("How hard a thorn plant scratches, on top of the overall hazard damage dial. "
+                         + "The venom dose follows the damage, so this moves the poison too. At 0 the "
+                         + "plant scratches nobody.");
+                contactVenomScratchMultiplier = list.Slider(contactVenomScratchMultiplier, 0f, 3f);
 
-            list.Label("Accelerated rot, dropped items: " + acceleratedRotItemMultiplier.ToString("0.0") + "x vanilla's rate");
-            acceleratedRotItemMultiplier = list.Slider(acceleratedRotItemMultiplier, 1f, 40f);
-            list.Label("Accelerated rot, corpses: " + acceleratedRotCorpseMultiplier.ToString("0.0") + "x vanilla's rate");
-            acceleratedRotCorpseMultiplier = list.Slider(acceleratedRotCorpseMultiplier, 1f, 40f);
+                list.CheckboxLabeled("Thickets block large creatures", ref bodySizeBarrierEnabled,
+                    "On: a plant built as a fortress thicket is impassable to anything big — herds, "
+                  + "pack animals and the largest wildlife route around a stand instead of through it, "
+                  + "while small creatures cross freely and people force a slow way through. Off: "
+                  + "everything moves through it on the same terms.");
+                list.Label("Forcing a thicket: " + bodySizeBarrierThreadCostMultiplier.ToString("0.00") + "x");
+                list.Label("How slowly someone big enough to be slowed — but not big enough to be "
+                         + "stopped — crosses a fortress thicket. Does not change WHO is stopped; at 0 "
+                         + "a thicket costs nothing extra to anyone who can enter it at all.");
+                bodySizeBarrierThreadCostMultiplier = list.Slider(bodySizeBarrierThreadCostMultiplier, 0f, 1.5f);
 
-            list.Label("Warm ground: up to " + warmGroundOffsetCelsius.ToString("0") + " C above the outdoor temperature");
-            list.Label("How much warmth living ground gives a room floored on it, and how fast it "
-                     + "delivers it. Never past 21 C, so it helps a lot in the cold without ever "
-                     + "replacing a heater.");
-            warmGroundOffsetCelsius = list.Slider(warmGroundOffsetCelsius, 0f, 30f);
+                list.CheckboxLabeled("Thornbugs fear only nearby hostiles", ref thornbugFearLocalOnly,
+                    "On: a calm-gated herd animal (the thornbug) is scared only by hostiles within its fear radius, so a sheltered herd on the far side of a raid stays calm. Off: any high-danger raid anywhere on the map scares every herd.");
+                list.GapLine();
+            }
+            if (Group(list, "Water truce", RimMandrake.Shared.SettingScope.Now, new[] { "waterTruceRetributionEnabled", "waterTruceSuppressionEnabled", "waterTruceRadius" }))
+            {
+                list.CheckboxLabeled("Water-truce retribution", ref waterTruceRetributionEnabled,
+                    "A biome built with a sacred water truce stops turning wildlife against whoever "
+                  + "lands the first guilty hit near the water. Defending yourself never counts as "
+                  + "guilty either way — this only gates the retaliation, never who started it.");
+                list.CheckboxLabeled("Water-truce hunt suppression", ref waterTruceSuppressionEnabled,
+                    "In a biome built with a sacred water truce, predators (wild or tamed) never start a hunt "
+                  + "at the water, and drop a chase that crosses into it. Hunting you order yourself is "
+                  + "untouched. Off: predators hunt there like anywhere else.");
+                list.Label("Water-truce radius: " + waterTruceRadius.ToString("0") + " cells");
+                list.Label("How far from standing water the truce reaches in a biome built with one: "
+                         + "inside it wildlife will not be hunted and the first guilty hit rouses them. "
+                         + "Applies to every part of the truce at once and to maps already loaded. "
+                         + "10 keeps the biome's own authored radius.");
+                waterTruceRadius = Mathf.Round(list.Slider(waterTruceRadius, 3f, 25f));
+                list.GapLine();
+            }
+            if (Group(list, "Rot, heat, growth and plants", RimMandrake.Shared.SettingScope.Now, new[] { "localGrowthAuraEnabled", "periodicInspirationEnabled", "acceleratedRotEnabled", "acceleratedRotItemMultiplier", "acceleratedRotCorpseMultiplier", "livingProduceHeatEnabled", "warmGroundEnabled", "warmGroundOffsetCelsius", "sheenExposureEnabled", "sunlightScaldEnabled", "leachmossEnabled", "pollinationGateEnabled", "treeFallEnabled" }))
+            {
+                list.CheckboxLabeled("Local growth aura", ref localGrowthAuraEnabled,
+                    "A hediff built to slightly speed up plant growth around its carrier stops doing so.");
+                list.CheckboxLabeled("Periodic inspiration dreams", ref periodicInspirationEnabled,
+                    "A hediff built to rarely grant its carrier a random Inspiration stops rolling for one.");
+                list.CheckboxLabeled("Accelerated rot and outdoor filth thinning", ref acceleratedRotEnabled,
+                    "A biome built to rot exposed things faster and slowly thin outdoor filth stops doing "
+                  + "either; everything rots at vanilla's own rate again.");
+                list.Label("Accelerated rot, dropped items: " + acceleratedRotItemMultiplier.ToString("0.0") + "x vanilla's rate");
+                acceleratedRotItemMultiplier = list.Slider(acceleratedRotItemMultiplier, 1f, 40f);
+                list.Label("Accelerated rot, corpses: " + acceleratedRotCorpseMultiplier.ToString("0.0") + "x vanilla's rate");
+                acceleratedRotCorpseMultiplier = list.Slider(acceleratedRotCorpseMultiplier, 1f, 40f);
 
-            list.Label("Glasswalk slip chance: " + (glasswalkSlipChancePerSweep * 100f).ToString("0.0") + "% per second while hurrying/hauling on it");
-            list.Label("How often a fast-moving or hauling pawn briefly staggers on a slick floor. "
-                     + "At 0, nobody ever slips.");
-            glasswalkSlipChancePerSweep = list.Slider(glasswalkSlipChancePerSweep, 0f, 0.2f);
+                list.CheckboxLabeled("Living produce room heat", ref livingProduceHeatEnabled,
+                    "A stockpiled crop or food built to radiate warmth stops pushing any heat into its "
+                  + "room; it still rots, ferments, or does whatever else it already did.");
+                list.CheckboxLabeled("Warm ground (living mat heating)", ref warmGroundEnabled,
+                    "A biome built with warm living ground stops heating rooms floored on it; those "
+                  + "rooms need heaters like anywhere else.");
+                list.Label("Warm ground: up to " + warmGroundOffsetCelsius.ToString("0") + " C above the outdoor temperature");
+                list.Label("How much warmth living ground gives a room floored on it, and how fast it "
+                         + "delivers it. Never past 21 C, so it helps a lot in the cold without ever "
+                         + "replacing a heater.");
+                warmGroundOffsetCelsius = list.Slider(warmGroundOffsetCelsius, 0f, 30f);
 
-            list.Label("Warbling gaslight tempo: " + warblingGlowSpeedMultiplier.ToString("0.00") + "x");
-            list.Label("How fast a warbling lamp or statue's color and radius dance. Never changes "
-                     + "how far they wander, only how quickly.");
-            warblingGlowSpeedMultiplier = list.Slider(warblingGlowSpeedMultiplier, 0.1f, 3f);
-
-            list.Label("Tar pit belch radius: " + tarBelchRadius.ToString("0") + " cells");
-            list.Label("How far a belching tar pit's coating reaches. Never changes how often it "
-                     + "fires or how thick the coat lands, only how wide.");
-            tarBelchRadius = list.Slider(tarBelchRadius, 3f, 20f);
-
-            list.CheckboxLabeled("Thornbugs fear only nearby hostiles", ref thornbugFearLocalOnly,
-                "On: a calm-gated herd animal (the thornbug) is scared only by hostiles within its fear radius, so a sheltered herd on the far side of a raid stays calm. Off: any high-danger raid anywhere on the map scares every herd.");
-            list.CheckboxLabeled("A biome's weather toggle turns off its whole weather", ref weatherGateCoversWholeCondition,
-                "On: when a biome mod's own setting switches off one of its hazardous weather conditions, the forced weather, temperature swing, animal/plant density change, outdoor-recreation block and power cut all stop too, not just the damage. Off: only the damage and cell effects stop; the sky and temperature keep being forced.");
-            list.CheckboxLabeled("Water-bound creatures walk back to water", ref waterLockedRecoveryWalk,
-                "On: a water-bound creature (the warden mother) found on dry ground walks to the nearest reachable water, and a walk that is headed for water anyway is left alone. Off: she is simply stopped dead on the spot, as before.");
+                list.CheckboxLabeled("Sheen exposure (the Rot)", ref sheenExposureEnabled,
+                    "Unroofed pawns stop accumulating Sheen coating during Sheen-fall weather, and it "
+                  + "can no longer seed spore flesh. The Sheen-fall/storm/mist weathers themselves "
+                  + "keep occurring either way.");
+                list.CheckboxLabeled("Sunlight scald", ref sunlightScaldEnabled,
+                    "A hediff built to burn its carrier in direct sunlight stops building up; whatever "
+                  + "severity a carrier already has is frozen, not cleared.");
+                list.CheckboxLabeled("Leachmoss wild spawning", ref leachmossEnabled,
+                    "A fast-spreading moss built to race everything else for fertile open ground stops being "
+                  + "offered by the wild-plant spawner, on every map immediately. Moss already growing is left "
+                  + "standing; it just never re-takes an emptied cell or appears on fresh ground until this is "
+                  + "back on.");
+                list.CheckboxLabeled("Pollination gate", ref pollinationGateEnabled,
+                    "A plant built to need a pollinator species on the map (the Miasma's mangals and "
+                  + "karrathil swarm) stops needing one — it can spawn new individuals with no pollinator "
+                  + "present, like any ordinary wild plant. Already-grown stands are never touched either "
+                  + "way, only whether they can replace themselves.");
+                list.CheckboxLabeled("Tree fall (crack, shatter, gnaw)", ref treeFallEnabled,
+                    "A cracking giant tree stops rolling and warning, a hazard aura built to shatter trees "
+                  + "stops felling them, and a creature built to gnaw one down stops seeking a trunk to chew.");
+                list.GapLine();
+            }
+            if (Group(list, "Gear, letters and notices", RimMandrake.Shared.SettingScope.Now, new[] { "launchHeldColonistWarningEnabled", "livePrepStrictViability", "treasureConscienceEnabled", "hazardApparelAIAwarenessEnabled", "biomeArrivalLettersEnabled", "grazingSuppressionHookEnabled" }))
+            {
+                list.CheckboxLabeled("Warn at gravship launch about held colonists", ref launchHeldColonistWarningEnabled,
+                    "The launch confirmation names any colonist or prisoner held inside something (a brine jacket, "
+                  + "a creature that swallowed them) so you can free them first. Never blocks the launch.");
+                list.CheckboxLabeled("Live preparations: strict viability", ref livePrepStrictViability,
+                    "Strict: a living brew or symbiont is ruined by cold, so a fridge destroys it and it "
+                  + "must be drunk where it was made. Lenient: cold no longer ruins it — but it still "
+                  + "dies of old age within a couple of days either way.");
+                list.CheckboxLabeled("Treasure-sale conscience", ref treasureConscienceEnabled,
+                    "A colonist carrying a symbiont stops feeling anything when the colony sells the "
+                  + "treasures that symbiont came from.");
+                list.CheckboxLabeled("Hazard apparel AI awareness", ref hazardApparelAIAwarenessEnabled,
+                    "Colonists stop factoring heat armor, heat insulation and Sheen protection into their own apparel "
+                  + "choice, so nobody picks up a boil-suit unprompted — you're back to a manual outfit "
+                  + "policy for hazard gear. The gear's actual protection is unaffected either way.");
+                list.CheckboxLabeled("Biome arrival letters", ref biomeArrivalLettersEnabled,
+                    "The first gravship landing in a biome carrying a survival-reads letter stops "
+                  + "announcing it. A letter already delivered this save is never recalled, and nothing "
+                  + "is marked as seen while this is off, so turning it back on still introduces every "
+                  + "biome not yet landed in.");
+                list.CheckboxLabeled("Grazing suppression hook", ref grazingSuppressionHookEnabled,
+                    "A plant-eating pawn's bite stops being recorded as encroachment suppression. Has no "
+                  + "visible effect yet on any install — the hook is armed but the suppression system it "
+                  + "feeds hasn't shipped.");
+                list.GapLine();
+            }
             list.End();
+            lastContentHeight = list.CurHeight + 12f;
             Widgets.EndScrollView();
         }
     }
