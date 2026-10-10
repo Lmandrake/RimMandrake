@@ -66,6 +66,8 @@
     <Compile Include="CompVWakeAgitation.cs" />
     <Compile Include="Patch_GasSaturationDeflagration.cs" />
     <Compile Include="IncidentWorker_SaturationHeistRaid.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitCore.cs" Link="Shared\SettingsKitCore.cs" />
+    <Compile Include="..\..\..\RimMandrake\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
   </ItemGroup>
 
   <ItemGroup>

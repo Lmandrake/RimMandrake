@@ -964,6 +964,12 @@ MODS = {
         "Ship break (cargo rain)": "NextPulse",
         "Emergency food relief (Thanksgiving)": "NextPulse",
     }, ()),
+    "PropaneLakeMechanics": ("PropaneLakeMechanicsSettings.cs", "RimMandrake.Utinni.PropaneLakeMechanics.csproj", {
+        "Gas vents and pipe networks": "Now",
+        "V-wake agitation": "Now",
+        "Saturation heist raid": "NextPulse",
+        "Saturation deflagration": "Now",
+    }, ()),
 }
 
 # (field, key) pairs where the Scribe key was renamed on purpose when the field's meaning changed (old saved values must not load)
