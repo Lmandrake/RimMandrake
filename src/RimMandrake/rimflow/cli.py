@@ -63,10 +63,10 @@ import sys
 import time
 
 try:                                                    # python3 -m rimflow.cli
-    from . import lease, model, priority, probe, reconcile
+    from . import driver_lock, lease, model, priority, probe, reconcile
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import lease, model, priority, probe, reconcile   # noqa: F401
+    from rimflow import driver_lock, lease, model, priority, probe, reconcile   # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -2119,6 +2119,12 @@ def _bridge_who(w, holder, since, purpose):
               "this clone's ledger does not know yet."
               % (shared["holder"], shared.get("clone") or "?", "?" if age is None else age // 60,
                  ", STALE" if age is None or age >= model.BRIDGE_STALE_SECONDS else ""))
+    dl = driver_lock.lock_path()
+    if dl:
+        st = driver_lock.status(dl)
+        print("driver lock: %s%s" % (st.get("state"), "" if st.get("state") in ("FREE",) else
+                                     "  %s %s gen %s (%s)" % (st.get("seat"), (st.get("identity") or {}).get("pid"),
+                                                              st.get("generation"), st.get("how"))))
     if not holder:
         print("bridge FREE — take it:  rimflow bridge take --for \"<what for>\"")
         return 0
@@ -2172,6 +2178,7 @@ def _bridge_give(args, seat, w, holder):
                            % (" off %s" % holder if holder else "")}, w, quiet=True)
         _mirror_from_ledger("OWNER", note="cleared by the owner")
         model.write_shared_bridge(None)
+        _driver_release(seat, force="the OWNER cleared the bridge")
         print("bridge FREE — the owner cleared it")
         return 0
     if to not in ("BENCH", "FOUNDRY"):
@@ -2184,8 +2191,19 @@ def _bridge_give(args, seat, w, holder):
     _emit(ev, w, quiet=True)
     _mirror_from_ledger("OWNER", note="handed over by the owner")
     model.write_shared_bridge(to, args.purpose)
+    _driver_release(seat, force="the OWNER handed the bridge to %s; %s takes the driver lock on its next take" % (to, to))
     print("bridge -> %s (the owner said so)" % to)
     return 0
+
+
+def _driver_release(seat, force=None):
+    """Free the process-keyed driver lock if THIS process holds it (or force). Never silent when it stays held."""
+    dl = driver_lock.lock_path()
+    if not dl:
+        return
+    r = driver_lock.release(dl, seat, driver_lock.my_identity(), force=force)
+    if not r["ok"]:
+        print("⚠️  %s - the driver lock stays; another take is refused while its holder process lives" % r["why"])
 
 
 def _bridge_release(seat, w, holder):
@@ -2208,6 +2226,7 @@ def _bridge_release(seat, w, holder):
     """
     _, w2 = load()
     holder = w2.bridge_holder
+    _driver_release(seat)
     ev = {"seat": seat, "event": "bridge", "state": "released"}
     crossed = bool(holder and holder != seat)
     if crossed:
@@ -2315,6 +2334,17 @@ def _bridge_take(args, seat, w, holder, purpose):
                 "  check again    rimflow bridge who\n"
                 "  cut across it  rimflow bridge take --force --for \"<what for>\""
                 % fresh_holder)
+    dl = driver_lock.lock_path()
+    if dl:
+        got = driver_lock.acquire(dl, seat, args.purpose, driver_lock.my_identity(),
+                                  force=("bridge take --force by %s" % seat) if args.force else None)
+        if not got["ok"]:
+            die("%s.\n  The driver lock is keyed on the holder PROCESS, so a second window of the same seat is "
+                "refused too.\n  It frees the moment that process exits.\n"
+                "  check     rimflow bridge who\n"
+                "  or cut across it (recorded)  rimflow bridge take --force --for \"<what for>\"" % got["why"])
+        if got.get("broke") and "override" not in ev:
+            ev["override"] = "took the driver lock from a dead or forced holder"
     _emit(ev, w, quiet=True)
     won = _mirror_from_ledger(
         seat, note=("taken from %s: %s" % (holder, why)) if why else None)

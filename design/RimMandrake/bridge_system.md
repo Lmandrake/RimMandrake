@@ -472,6 +472,12 @@ MEASURED from `src/RimMandrake/rimflow/cli.py:2111-2370` and `model.py`.
    The mirror is re-rendered from a fresh replay. If the replay says someone else won,
    "they took it in the same instant" is printed, and the **later event wins**.
    The code says outright this is **not atomic** (`cli.py:2288-2295`).
+6. Since 2026-10-10 (`BRIDGE_LOCK_HARDEN_ALIVE_MEANS_A_PID`) the take must also win the **driver lock**
+   `/mnt/d/Luke/dev/_rmscratch/DRIVER_LOCK.json` (`rimflow/driver_lock.py`): created `O_CREAT|O_EXCL`, held by a
+   PROCESS (the nearest `claude` ancestor: pid + start time + boot_id), live while that process lives. A second
+   window of the SAME seat is refused; a dead holder is taken over (generation bumped); an unreadable lock is an
+   explicit failure; `--force` and owner `give` break it, recorded. `release` frees it only for its holder process.
+   `model.bridge_gate` does not consult it yet.
 
 **Two witnesses of one fact** (MEASURED):
 
