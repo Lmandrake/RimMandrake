@@ -981,8 +981,8 @@ MODS = {
         "Fang pendant social consequence": "Now",
         "Opinion magnitude": "Now",
     }, ()),
-    "WildsteamEggBounty": ("WildsteamEggBountySettings.cs", "RimMandrake.Utinni.WildsteamEggBounty.csproj", {
-        "Wildsteam egg bounty quest": "NextPulse",
+    "DesertVehicleReskin": ("Fuel/RSW_DesertVehicleReskinSettings.cs", "Fuel/DesertVehicleReskin.csproj", {
+        "Vegetable fuel for draught carts": "Now",
     }, ()),
 }
 
