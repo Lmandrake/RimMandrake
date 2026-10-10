@@ -26,7 +26,9 @@
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchAwarenessCore.cs" />
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsMath.cs" />
     <Compile Include="..\JawaBench.BridgeTools\JawaBenchTpsSettings.cs" />
+    <Compile Include="..\JawaBench.BridgeTools\JawaBenchSafetyCore.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="UnitsSafety.cs" />
   </ItemGroup>
 
 </Project>

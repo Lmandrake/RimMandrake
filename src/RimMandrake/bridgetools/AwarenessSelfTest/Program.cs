@@ -167,6 +167,9 @@ namespace JawaBench.BridgeTools
             m.Add(100); m.Add(300);
             Check(m.Calls == 2 && Math.Abs(m.MeanUs(1e6) - 200) < 1e-9 && Math.Abs(m.MaxUs(1e6) - 300) < 1e-9, "meter_mean_and_max");
 
+            // --- 14. companion safety core (profile, census, epochs, quiet block, handshake, install option)
+            SafetyUnits.Run((ok, name, why) => Check(ok, name, why ?? ""));
+
             Console.WriteLine("U-count " + _n);
             return _bad == 0 ? 0 : 1;
         }
