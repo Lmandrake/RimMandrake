@@ -52,6 +52,15 @@ keys and NaN refused). `CS_UNITS` in the selftest names every unit that must run
   before it. Envelope keys reserved (comment). `render_row` prints `mult before->after`.
 - GREEN: `C# units: 1 run, 0 failed`, selftest PASS.
 
+### MUST 5 — an unexplained gap with a state change was removed from expected ticks
+- RED (traces `stallflip`: 1 s at 1x, a 90 s gap, then 3x; `stallunpause`: paused, 90 s gap, running):
+  `FAIL MUST 5: a 90 s gap across a speed change stays in expected ticks ... 'ratio': 1.102, 'expected': 59,
+  'runS': 0.983, 'ambigS': 90` — the 90 s were only ambiguous, so the window read healthy.
+- FIX (`FrameAccumulator.Pre`, C# + Python port): the gap stays in `runS`/`expected` at the HIGH end of the
+  two states (before/after; paused = 0), `expectedLo` carries the low end, and `ratioHi = dTicks/expectedLo`
+  (null when the low end is a pause). The seconds are still counted ambiguous.
+- GREEN: python checks PASS; C# parity 57/57 identical (the new traces included).
+
 (next fixes below)
 
 ## C3 controlled-interruption matrix (minimal list)
